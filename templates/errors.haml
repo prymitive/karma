@@ -1,0 +1,58 @@
+<script type="text/template" id="reload-needed">
+%div.jumbotron
+  %h1.text-center
+    New version detected, reloading ...
+    %i.fa.fa-refresh.fa-spin
+</script>
+
+
+<script type="text/template" id="update-error">
+%div.jumbotron
+  %h1.text-center
+    =error
+    %i.fa.fa-exclamation-circle.text-danger
+  -if (message) {
+    %div.text-center
+      %p
+        =message
+  -if (last_ts > 0) {
+    %div.text-center
+      %p
+        Last successful update was
+        =moment.unix(last_ts).fromNow()
+</script>
+
+
+<script type="text/template" id="fatal-error">
+%div.jumbotron
+  %h1.text-center
+    Critical error
+    %i.fa.fa-exclamation-circle.text-danger
+  %div.text-center
+    %p
+      -var msg = 'Auto refresh is enabled but last update was ' + moment.unix(last_ts).fromNow();
+      =msg
+    %p
+      This page will auto reload in
+      %span#reload-counter
+        =seconds_left
+      seconds
+</script>
+
+
+<script type="text/template" id="internal-error">
+%div.jumbotron
+  %h1.text-center
+    Internal error
+    %i.fa.fa-exclamation-circle.text-danger
+  %div.text-center
+    %p
+      -if (name) {
+        =name
+      -if (message) {
+        =message
+      -if (!name && !message) {
+        -var msg = raw.split('(');
+        -if (msg.length > 0) {
+          =msg[0]
+</script>

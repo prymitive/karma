@@ -1,0 +1,7 @@
+4.7.0-font-awesome.min.css
+3.3.7-bootstrap.min.css
+3.3.2-bootstrap-switch.min.css
+0.2.0-nprogress.min.css
+0.8.0-bootstrap-tagsinput.css
+0.8.0-bootstrap-tagsinput-typeahead.css
+0.1.2-loaders.min.css

@@ -1,0 +1,75 @@
+[submodule "vendor/github.com/DeanThompson/ginpprof"]
+	path = vendor/github.com/DeanThompson/ginpprof
+	url = https://github.com/DeanThompson/ginpprof
+[submodule "vendor/github.com/Sirupsen/logrus"]
+	path = vendor/github.com/Sirupsen/logrus
+	url = https://github.com/Sirupsen/logrus
+[submodule "vendor/github.com/asaskevich/govalidator"]
+	path = vendor/github.com/asaskevich/govalidator
+	url = https://github.com/asaskevich/govalidator
+[submodule "vendor/github.com/cnf/structhash"]
+	path = vendor/github.com/cnf/structhash
+	url = https://github.com/cnf/structhash
+[submodule "vendor/github.com/gin-gonic/gin"]
+	path = vendor/github.com/gin-gonic/gin
+	url = https://github.com/gin-gonic/gin
+[submodule "vendor/github.com/golang/protobuf"]
+	path = vendor/github.com/golang/protobuf
+	url = https://github.com/golang/protobuf
+[submodule "vendor/github.com/hansrodtang/randomcolor"]
+	path = vendor/github.com/hansrodtang/randomcolor
+	url = https://github.com/hansrodtang/randomcolor
+[submodule "vendor/github.com/kelseyhightower/envconfig"]
+	path = vendor/github.com/kelseyhightower/envconfig
+	url = https://github.com/kelseyhightower/envconfig
+[submodule "vendor/github.com/manucorporat/sse"]
+	path = vendor/github.com/manucorporat/sse
+	url = https://github.com/manucorporat/sse
+[submodule "vendor/github.com/mattn/go-isatty"]
+	path = vendor/github.com/mattn/go-isatty
+	url = https://github.com/mattn/go-isatty
+[submodule "vendor/github.com/patrickmn/go-cache"]
+	path = vendor/github.com/patrickmn/go-cache
+	url = https://github.com/patrickmn/go-cache
+[submodule "vendor/golang.org/x/net"]
+	path = vendor/golang.org/x/net
+	url = https://go.googlesource.com/net
+[submodule "vendor/gopkg.in/go-playground/validator.v8"]
+	path = vendor/gopkg.in/go-playground/validator.v8
+	url = https://gopkg.in/go-playground/validator.v8
+[submodule "vendor/gopkg.in/yaml.v2"]
+	path = vendor/gopkg.in/yaml.v2
+	url = https://gopkg.in/yaml.v2
+[submodule "vendor/github.com/certifi/gocertifi"]
+	path = vendor/github.com/certifi/gocertifi
+	url = https://github.com/certifi/gocertifi
+[submodule "vendor/github.com/getsentry/raven-go"]
+	path = vendor/github.com/getsentry/raven-go
+	url = https://github.com/getsentry/raven-go
+[submodule "vendor/github.com/gin-gonic/contrib"]
+	path = vendor/github.com/gin-gonic/contrib
+	url = https://github.com/gin-gonic/contrib
+[submodule "vendor/github.com/beorn7/perks"]
+	path = vendor/github.com/beorn7/perks
+	url = https://github.com/beorn7/perks
+[submodule "vendor/github.com/matttproud/golang_protobuf_extensions"]
+	path = vendor/github.com/matttproud/golang_protobuf_extensions
+	url = https://github.com/matttproud/golang_protobuf_extensions
+[submodule "vendor/github.com/mcuadros/go-gin-prometheus"]
+	path = vendor/github.com/mcuadros/go-gin-prometheus
+	url = https://github.com/mcuadros/go-gin-prometheus
+[submodule "vendor/github.com/prometheus/client_golang"]
+	path = vendor/github.com/prometheus/client_golang
+	url = https://github.com/prometheus/client_golang
+[submodule "vendor/github.com/prometheus/client_model"]
+	path = vendor/github.com/prometheus/client_model
+	url = https://github.com/prometheus/client_model
+[submodule "vendor/github.com/prometheus/common"]
+	path = vendor/github.com/prometheus/common
+	url = https://github.com/prometheus/common
+[submodule "vendor/github.com/prometheus/procfs"]
+	path = vendor/github.com/prometheus/procfs
+	url = https://github.com/prometheus/procfs
+[submodule "vendor/gopkg.in/jarcoal/httpmock.v1"]
+	path = vendor/gopkg.in/jarcoal/httpmock.v1
+	url = https://gopkg.in/jarcoal/httpmock.v1

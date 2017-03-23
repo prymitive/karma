@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="full" lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" id="favicon" href="/static/favicon.ico">
+
+    <title>(◕︵◕)</title>
+
+    {{ range .CSSFiles }}
+    <link rel="stylesheet" href="/static/assets/css/{{ . }}"> {{- end }}
+
+    <link rel="stylesheet" href="/static/base.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="page-header text-center">
+                <h1>
+                    Documentation
+                </h1>
+            </div>
+
+            <table class="table help">
+                <caption class="text-center">Filter match types</caption>
+                <thead>
+                    <tr>
+                        <th>Match</th>
+                        <th>Example</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center"><kbd>=</kbd></td>
+                        <td><code>$key=$value</code></td>
+                        <td>Exact match. True if compared alert attribute value is equal to <code>$value</code>.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><kbd>!=</kbd></td>
+                        <td><code>$key!=$value</code></td>
+                        <td>Negative match. True if compared alert attribute is missing or have a value that is not equal to <code>$value</code>.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><kbd>=~</kbd></td>
+                        <td><code>$key=~$value</code></td>
+                        <td>Regular expression match. True if compared alert attribute value matches <code>$value</code> regex.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><kbd>!~</kbd></td>
+                        <td><code>$key!~$value</code></td>
+                        <td>Negative regular expression match. False if compared alert attribute value matches <code>$value</code> regex.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><kbd>&gt;</kbd></td>
+                        <td><code>$key&gt;$value</code></td>
+                        <td>Greater than match. True if compared alert attribute value is greater than <code>$value</code>.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><kbd>&lt;</kbd></td>
+                        <td><code>$key&lt;$value</code></td>
+                        <td>Less than match. True if compared alert attribue value is less than <code>$value</code>.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table help">
+                <caption class="text-center">Filtering using alert labels</caption>
+                <thead>
+                    <tr>
+                        <th>Filter</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="help-labels">
+                            <code>$key(= != =~ !~ &lt; &gt;)$value</code>
+                        </td>
+                        <td>
+                            <p>Match alerts based on any label.</p>
+                            <table class="table examples">
+                                <tbody>
+                                    <tr>
+                                        <td><span class="label label-info">hostname=localhost</span></td>
+                                        <td>Match alerts with label <em>hostname</em> equal to <em>localhost</em>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">service=apache2</span></td>
+                                        <td>Match alerts with label <em>service</em> equal to <em>apache2</em>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">service!=apache3</span></td>
+                                        <td>Match alerts with label <em>service</em> missing or not equal to <em>apache3</em>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">service=~apache</span></td>
+                                        <td>Match alerts with label <em>service</em> matching regular expression <code>/.*apache.*/</code>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">service=~apache[1-3]</span></td>
+                                        <td>Match alerts with label <em>service</em> matching regular expression <code>/.*apache[1-3].*/</code>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">priority>4</span></td>
+                                        <td>Match alerts with label <em>priority</em> value > than 4. Value will be casted to integer if possible, string comparision will be used as fallback.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="table help">
+                <caption class="text-center">Filtering alerts using special filters</caption>
+                <thead>
+                    <tr>
+                        <th>Filter</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="help-silenced">
+                            <code>@silenced=(true false)</code>
+                        </td>
+                        <td>
+                            <p>Match alerts based on silence status.</p>
+                            <table class="table examples">
+                                <tbody>
+                                    <tr>
+                                        <td><span class="label label-info">@silenced=true</span></td>
+                                        <td>Match only silenced alerts.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">@silenced=false</span></td>
+                                        <td>Match only unsilenced alerts.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="help-silence_author">
+                            <code>@silence_author(= != =~ !~)$value</code>
+                        </td>
+                        <td>
+                            <p>Match alerts based on the author of silence.</p>
+                            <table class="table examples">
+                                <tbody>
+                                    <tr>
+                                        <td><span class="label label-info">@silence_author=me@domain1.com</span></td>
+                                        <td>Match alerts silenced by <em>me@domain1.com</em>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">@silence_author!=me@domain1.com</span></td>
+                                        <td>Match alerts not silenced by <em>me@domain1.com</em>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">@silence_author=~@domain2.com</span></td>
+                                        <td>Match alerts silenced by username that match regular expression <code>/.*@domain2.com.*/</code>.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="help-silence_jira">
+                            <code>@silence_jira(= != =~ !~)$value</code>
+                        </td>
+                        <td>
+                            <p>Match alerts based on the jira linked in the silence. This only works if JIRA regexp are enabled and able to match JIRA ids in the silence comment body.</p>
+                            <table class="table examples">
+                                <tbody>
+                                    <tr>
+                                        <td><span class="label label-info">@silence_jira=PROJECT-123</span></td>
+                                        <td>Match silenced alerts where detected JIRA issue id is equal to <em>PROJECT-123</em>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">@silence_jira!=PROJECT-123</span></td>
+                                        <td>Match silenced alerts where there was no JIRA issue id detected or it was not equal to <em>PROJECT-123</em>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">@silence_jira=~PROJECT</span></td>
+                                        <td>Match silenced alerts where dectected JIRA issue id matches regular expression <code>/.*PROJECT.*/</code>.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="help-limit">
+                            <code>@limit=$value</code>
+                        </td>
+                        <td>
+                            <p>Limit number of displayed alerts. Value must be a number &gt;= 1.</p>
+                            <table class="table examples">
+                                <tbody>
+                                    <tr>
+                                        <td><span class="label label-info">@limit=10</span></td>
+                                        <td>Limit number of displayed alerts to 10.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">@limit=550</span></td>
+                                        <td>Limit number of displayed alerts to 550.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="help-age">
+                            <code>@age(&lt; &gt;)$value</code>
+                        </td>
+                        <td>
+                            <p>Match alerts based on creation timestamp.</p>
+                            <table class="table examples">
+                                <tbody>
+                                    <tr>
+                                        <td><span class="label label-info">@age&gt;15m</span></td>
+                                        <td>Match alerts older than 15 minutes.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">@age&gt;1h</span></td>
+                                        <td>Match alerts older than 1 hour.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">@age&lt;10h30m</span></td>
+                                        <td>Match alerts newer than 10 hours and 30 minutes.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pager">
+                    <li>
+                        <a href="/">
+                            <i class="fa fa-arrow-circle-left"></i> Back
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
+
+{{ if .SentryDSN }}
+<script type="application/javascript">
+    $(document).ready(function () {
+        var dsn = '{{ .SentryDSN }}'.replace('\/', '/');
+        Raven.config(dsn, {
+          release: {{ .Version }}
+        }).install();
+    });
+</script>
+{{ end }}

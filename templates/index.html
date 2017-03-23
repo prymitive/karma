@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html class="full" lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" id="favicon" href="/static/favicon.ico">
+
+    <title>(◕︵◕)</title>
+
+    {{ range .CSSFiles }}
+    <link rel="stylesheet" href="/static/assets/css/{{ . }}">
+    {{- end }}
+
+    <link rel="stylesheet" href="/static/base.css?_={{ .NowQ }}">
+
+</head>
+
+<body class="dark">
+
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <a class="navbar-brand text-center">
+                    <strong id="alert-count">0</strong>
+                    <div id="spinner" class="loader-inner line-scale-pulse-out" style="display: none;">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+                </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <form class="navbar-form navbar-nav">
+                    <div class="form-group">
+                        <div class="input-group filterbar">
+                            <div class="input-group-addon input-sm">
+                                <i class="fa fa-search" id="filter-icon"></i>
+                            </div>
+                            <input id="filter"
+                                   class="form-control input-sm"
+                                   type="text"
+                                   autocomplete="off"
+                                   value="{{ .QFilter }}"
+                                   data-default-used="{{ .DefaultUsed }}"
+                                   data-default-filter="{{ .Config.DefaultFilter }}"
+                                   autofocus>
+                        </div>
+                    </div>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/help" id="help" role="button" title="Filter documentation" data-toggle="tooltip" data-placement="auto">
+                            <i class="fa fa-question-circle"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" id="refresh" role="button" title="Refresh" data-toggle="tooltip" data-placement="auto">
+                            <i class="fa fa-refresh"></i>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" id="settings" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                            title="Settings" data-toggle="tooltip" data-placement="auto">
+                            <i id="menu" class="fa fa-bars"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-form">
+                            <li class="dropdown-header text-center">
+                                Settings
+                            </li>
+                            <li class="text-nowrap dropdown-switch">
+                                <div class="checkbox">
+                                    <input type="checkbox" class="toggle" id="autorefresh"
+                                           data-label-text="Auto Refresh" checked="checked">
+                                </div>
+                            </li>
+                            <li class="text-nowrap dropdown-switch">
+                                <select class="form-control" id="refresh-interval">
+                                    <option value="10">10s refresh</option>
+                                    <option value="15" selected="selected">15s refresh</option>
+                                    <option value="20">20s refresh</option>
+                                    <option value="30">30s refresh</option>
+                                    <option value="45">45s refresh</option>
+                                    <option value="60">1m refresh</option>
+                                    <option value="120">2m refresh</option>
+                                    <option value="300">5m refresh</option>
+                                </select>
+                            </li>
+                            <li class="text-nowrap dropdown-switch">
+                                <div class="checkbox">
+                                    <input type="checkbox" class="toggle" id="show-flash"
+                                           data-label-text="Flash on changes" checked="checked">
+                                </div>
+                            </li>
+                            <li class="text-nowrap dropdown-switch">
+                                <div class="checkbox">
+                                    <input type="checkbox" class="toggle" id="append-top"
+                                           data-label-text="New alerts on top" checked="checked">
+                                </div>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li class="text-nowrap dropdown-switch text-center">
+                                <button class="btn btn-success btn-sm btn-dropdown-action"
+                                        id="save-default-filter"
+                                        title="Save current filter as default"
+                                        data-toggle="tooltip"
+                                        data-placement="auto">
+                                    <i class="fa fa-save"></i>
+                                </button>
+                                <button class="btn btn-primary btn-sm btn-dropdown-action"
+                                        id="copy-settings-with-filter"
+                                        title="Copy link with current settings and filters to clipboard"
+                                        data-toggle="tooltip"
+                                        data-placement="auto">
+                                    <i class="fa fa-clipboard"></i>
+                                </button>
+                                <button class="btn btn-danger btn-sm btn-dropdown-action"
+                                        id="reset-settings"
+                                        title="Reset all settings to default value"
+                                        data-toggle="tooltip"
+                                        data-placement="auto">
+                                    <i class="fa fa-undo"></i>
+                                </button>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid" id="container">
+        <div id="errors"></div>
+        <div id="alerts" data-static-color-labels="{{ .StaticColorLabels }}">
+            <div class="grid-sizer"></div>
+        </div>
+    </div>
+
+    <div class="flash" id="flash">
+    </div>
+
+    {{ range .JSFiles }}
+    <script type="text/javascript" src="/static/assets/js/{{ . }}"></script>
+    {{- end }}
+
+    {{ template "js.html" .}}
+
+    <div class="modal fade" id="labelModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <div class="modal-title"></div>
+          </div>
+          <div class="modal-body"></div>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>
+
+{{ template "groups.haml"}}
+{{ template "summary.haml" }}
+{{ template "errors.haml" }}
+{{ template "modal.haml"}}

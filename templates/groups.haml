@@ -1,0 +1,147 @@
+<script type="text/template" id="groups">
+%div.incident{id: group.id, 'data-hash': group.hash}
+  -var cls_panel = 'panel-success';
+  -if (group.unsilencedCount > 0) {
+    -cls_panel = 'panel-danger';
+
+  %div.panel{class: cls_panel}
+    %div.panel-heading.text-center
+      %span.badge.pull-right
+        =group.alerts.length
+      %div.panel-title
+        -if (Object.keys(group.labels).length > 0) {
+          -$.each(Alerts.SortMapByKey(group.labels), function(i, label) {
+            -var attrs = Alerts.GetLabelAttrs(label.key, label.value);
+            %div.label-list.label{class: attrs.class, style: attrs.style, 'data-label-type': "filter", 'data-label-key': label.key, 'data-label-val': label.value, type: 'button', 'data-toggle': 'modal', 'data-target': '#labelModal'}
+              =label.text
+        -else {
+          %div.label-list.label
+
+    -var labelMap = {};
+    -var skipped = 0;
+
+    -$.each(group.alerts, function(i, alert) {
+
+      -if (i > alert_limit - 1) {
+        -skipped++;
+        -$.each(alert.labels, function(label_key, label_val) {
+          -var text = label_key + ': ' + label_val;
+          -if (group.labels[label_key] == undefined) {
+            -if (labelMap[text] == undefined) {
+              -labelMap[text] = {key: label_key, value: label_val, hits: 0};
+            -labelMap[text].hits++;
+
+        -var silencedText = '@silenced: false';
+        -var isSilenced = 'false';
+        -if (alert.silenced > 0) {
+          -silencedText = '@silenced: true';
+          -isSilenced = 'true';
+        -if (labelMap[silencedText] == undefined) {
+          -labelMap[silencedText] = {key: '@silenced', value: isSilenced, hits: 0};
+        -labelMap[silencedText].hits++;
+
+      -else {
+        -var cls_body = '';
+        -var cls_age = '';
+
+        -if (i < group.alerts.length - 1) {
+          -cls_body = 'incident-group-separator';
+
+        %div.panel-body{class: cls_body}
+          %div.incident-group
+          -var now = moment();
+
+          -$.each(Alerts.SortMapByKey(alert.annotations), function(i, annotation) {
+            %div.well.well-sm.annotation-well
+              %i.fa.fa-question-circle.text-muted{title: annotation.key, 'data-toggle': 'tooltip', 'data-placement': 'top'}
+              -if (annotation.value == '') {
+                %span.text-muted
+                  [ missing annotation value ]
+              -else {
+                =annotation.value
+
+          -$.each(Alerts.SortMapByKey(alert.labels), function(i, label) {
+            -if (group.labels[label.key] == undefined) {
+              -var attrs = Alerts.GetLabelAttrs(label.key, label.value);
+              %span{class: attrs.class, style: attrs.style, 'data-label-type': "filter", 'data-label-key': label.key, 'data-label-val': label.value, type: 'button', 'data-toggle': 'modal', 'data-target': '#labelModal'}
+                =label.text
+
+          -var cls_age = '';
+          -var cls_body = '';
+
+          -var cls_indicator = 'incident-indicator-danger';
+          -if (alert.silenced > 0) {
+                -cls_indicator = 'incident-indicator-success';
+
+          %div
+            -if (alert.generatorURL) {
+              %a.label.label-list.label-default{href: alert.generatorURL, target: '_blank'}
+                %i.fa.fa-external-link
+                source
+            -$.each(alert.links, function(k, url) {
+              %a.label.label-list.label-default{href: url, target: '_blank'}
+                %i.fa.fa-external-link
+                =k
+            -if (alert.silenced > 0) {
+              %span.label.label-list.label-success{'data-label-type': "filter", 'data-label-key': "@silenced", 'data-label-val': "true", type: 'button', 'data-toggle': 'modal', 'data-target': '#labelModal'}
+                @silenced: true
+            -else {
+              %span.label.label-list.label-danger{'data-label-type': "filter", 'data-label-key': "@silenced", 'data-label-val': "false", type: 'button', 'data-toggle': 'modal', 'data-target': '#labelModal'}
+                @silenced: false
+            %a.label.label-list.label-default.label-age.label-ts{'data-toggle': 'tooltip', 'data-placement': 'top', 'data-ts': alert.startsAt}
+              %span.label-ts-span
+                =alert.startsAt
+              %div.incident-indicator.hidden{class: cls_indicator}
+
+          -if (alert.silenced > 0) {
+            %div
+              -var silence = silences[alert.silenced];
+              -if(silence) {
+                %blockquote.silence-comment
+                  -if (silence.jiraURL) {
+                    %a{target: '_blank', href: silence.jiraURL}
+                      %i.fa.fa-external-link
+                      =silence.comment
+                  -else {
+                    =silence.comment
+                  %footer
+                    %cite
+                      %abbr{'data-toggle': 'tooltip', 'data-placement': 'bottom', 'data-ts': silence.startsAt}
+                        =silence.createdBy
+
+    -if (!$.isEmptyObject(labelMap)) {
+      -labelArr = [];
+      -$.each(labelMap, function(text, label){
+        -labelArr.push({text: text, key: label.key, value: label.value, hits: label.hits});
+      -labelArr.sort(function(a, b) {
+        -if (a.hits < b.hits) return 1;
+        -if (a.hits > b.hits) return -1;
+        -if (a.text > b.text) return 1;
+        -if (a.text < b.text) return -1;
+        -return 0;
+      %div.panel-body.incident-group-separator
+        %div.incident-group
+          -var skippedLabel = '+' + skipped + " alerts";
+          %span.badge
+            =skippedLabel
+          -var rendered = 0;
+          -$.each(labelArr, function(i, label) {
+            -if (rendered > 8 && labelArr.length > 10) {
+              %span.label.label-list.label-default
+                -var text = "+" + (labelArr.length - rendered) + " labels";
+                =text
+              -return false;
+            -} else {
+              -rendered++;
+              -var attrs = Alerts.GetLabelAttrs(label.key, label.value);
+              -if (label.hits > 1) {
+                %div.label-trim-group
+                  %span.label.label-trim-tag{class: attrs.class, style: attrs.style, 'data-label-type': "filter", 'data-label-key': label.key, 'data-label-val': label.value, type: 'button', 'data-toggle': 'modal', 'data-target': '#labelModal'}
+                    =label.text
+                  %span.label.label-default.label-trim-count
+                    =label.hits
+              -else {
+                %span{class: attrs.class, style: attrs.style, 'data-label-type': "filter", 'data-label-key': label.key, 'data-label-val': label.value, type: 'button', 'data-toggle': 'modal', 'data-target': '#labelModal'}
+                  =label.text
+
+</script>

@@ -1,0 +1,22 @@
+<script type="text/template" id="modal-title">
+  %button.close{type: "button", "data-dismiss": "modal"}
+    %i.fa.fa-close
+  %div.label-list.label{class: attrs.class, style: attrs.style}
+    =attrs.text
+  %span.badge.badge-primary
+    =counter
+</script>
+
+<script type="text/template" id="modal-body">
+  %table.table.table-striped
+    %caption.text-center
+      Quick filters
+    %tbody
+      -$.each(hints, function(i, hint){
+        %tr
+          %td.modal-row-filters
+            =hint
+          %td.modal-row-actions
+            %button.btn.btn-sm.btn-primary.pull-right.modal-button-filter{type: "button", 'data-filter-append-value': hint}
+              Apply
+</script>

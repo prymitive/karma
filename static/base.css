@@ -1,0 +1,374 @@
+* {
+    font-size: 18px;
+}
+
+body.dark {
+  background-color: #2c3e50;
+  padding-top: 58px;
+}
+
+/* unsee is pretty useless with tiny width, require at least 1180px */
+@media (max-width: 1180px) {
+    body {min-width: 1180px;}
+}
+
+/* flatly default height is 60x instead of 50px, leaving 10px space below, override it*/
+.navbar-brand {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    min-width: 90px;
+}
+.navbar-nav > li > a, .navbar-brand {
+    height: 50px;
+}
+
+/* set minimum width and height for navbar */
+.navbar {
+    min-height:50px;
+    min-width: 1150px;
+}
+.navbar > .container {
+    min-width: 1180px;
+}
+
+#navbar > form.navbar-form.navbar-nav {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.navbar-nav>li>a {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+/* add some spacing in menu dropdown */
+.dropdown-switch {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+
+/* we have a popover on header, indicate that with cursor */
+.navbar-header {
+    cursor: help;
+}
+
+/* we use big popver, default width limit is too low */
+.popover {
+    max-width: 100%;
+}
+
+/* we have wide tooltips for some alert names */
+.tooltip-inner {
+    max-width: 100%;
+}
+
+/* custom badge for popover */
+.breakdown-badge {
+    display: inline-block;
+    min-width: 10px;
+    padding: 3px 7px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #ffffff;
+    line-height: 1;
+    vertical-align: middle;
+    white-space: nowrap;
+    text-align: center;
+    background-color: #2c3e50;
+    border-radius: 10px;
+}
+
+/* fullscreen flash div */
+.flash {
+    display: none;
+    position: fixed;
+    z-index: 999999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: rgba(243, 156, 18, 0.9);
+}
+
+/* space between labels */
+.label-list {
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-right: 3px;
+}
+
+a.label.label-age {
+    cursor: help;
+}
+
+span.label-ts-span {
+    font-size: inherit;
+}
+
+/* used in alert group trim summary for adding label counters */
+.label-trim-group {
+    display: inline-block;
+    margin-bottom: 2px;
+    white-space: nowrap;
+}
+.label-trim-tag {
+    padding-left: 4px;
+    padding-right: 4px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.label-trim-count {
+    margin-left: -3px;
+    padding-left: 3px;
+    padding-right: 4px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+[data-label-type="filter"] {
+  cursor: pointer;
+}
+
+/* make filter input take all the space it can */
+.filterbar {
+    width: 950px;
+}
+.filterbar > .input-group-addon.input-sm {
+    width: 10px;
+}
+
+/* fix padding with flatly */
+.bootstrap-tagsinput {
+    width: 100%;
+    padding-top: 3px;
+    padding-bottom: 6px;
+    line-height: 25px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+/* flatly makes focused input border black, which looks ugly with dark navbar
+   revert to default color for focused input */
+input#filter:focus {
+    border: 2px solid #dce4ec;
+}
+
+/* set min-width on real input so it doesn't need too much space when it's empty */
+.bootstrap-tagsinput > .twitter-typeahead > input.tt-input {
+  min-width: 10px;
+}
+
+#filter-help {
+    cursor: help;
+}
+#help-labels > code {
+    white-space: nowrap;
+}
+
+/* adjust padding for counter badge in tags input */
+.tag-badge {
+    margin-right: 3px;
+    margin-top: -2px;
+}
+.tag {
+    padding-left: 2px;
+}
+
+/* menus uses links with icons instead of buttons, fix focus color
+   so the link doesn't stay colored after clicking */
+#help:focus,
+#settings:focus,
+#refresh:focus {
+    color: #fff;
+}
+
+#help:hover,
+#settings:hover,
+#refresh:hover {
+    color: #18bc9c;
+}
+
+/* remove default 15px padding from container-fluid for incident grid */
+#container {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+/* but errors should have additional margin */
+#errors {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.panel-title {
+    overflow: hidden;
+}
+
+.panel-title > .label {
+  font-size: 90%;
+  line-height: 2em;
+}
+.panel-heading > .badge {
+    margin-left: 2px;
+    font-size: 90%;
+    margin-top: 5px;
+}
+
+/* make silence description smaller */
+.silence-comment {
+    font-size: smaller;
+    margin-top: 6px;
+    margin-bottom: 0;
+    border-left-color: #18bc9c;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.incident .panel {
+    margin-bottom: 0;
+}
+
+.incident {
+    padding: 8px;
+}
+
+.incident>.panel>.panel-heading {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.incident>.panel>.panel-body {
+    padding: 6px;
+    overflow: hidden;
+}
+
+/* incident indicator is a small circle marking most recent alerts */
+.incident-indicator-success {
+    background-color: #18bc9c;
+}
+.incident-indicator-danger {
+    background-color: #e74c3c;
+}
+.incident-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.grid-sizer, .incident {  width: 100%;  }
+@media screen and (min-width: 700px) and (max-width: 1399px) {
+  .grid-sizer, .incident { width: 50%; }
+}
+@media screen and (min-width: 1400px) and (max-width: 2099px) {
+  .grid-sizer, .incident { width: 33.333%; }
+}
+@media screen and (min-width: 2100px) and (max-width: 2799px) {
+  .grid-sizer, .incident { width: 25%; }
+}
+@media screen and (min-width: 2800px) and (max-width: 3499px) {
+  .grid-sizer, .incident { width: 20%; }
+}
+@media screen and (min-width: 3500px) and (max-width: 4199px) {
+  .grid-sizer, .incident { width: 16.666%; }
+}
+@media screen and (min-width: 4200px) and (max-width: 4899px) {
+  .grid-sizer, .incident { width: 14.285%; }
+}
+@media screen and (min-width: 4900px) and (max-width: 5599px) {
+  .grid-sizer, .incident { width: 14.285%; }
+}
+@media screen and (min-width: 5600px) {
+  .grid-sizer, .incident { width: 12.5%; }
+}
+
+.incident-group {
+    word-wrap: break-word;
+}
+
+.incident-group-separator {
+    border-bottom: 1px solid #ecf0f1;
+}
+
+.annotation-well {
+    margin-bottom: 2px;
+    padding: 4px;
+    background-color: transparent;
+}
+.annotation-well > .fa {
+    cursor: help;
+}
+
+/* move the spinner up so it's in the middle of navbar */
+#spinner {
+    margin-top: -9px;
+}
+/* change spinner color to text-warning when JSON is loaded and it's being parsed */
+#spinner > .spinner-success {
+    background-color: #f39c12;
+}
+/* and to text-danger when rendering alerts fails */
+#spinner > .spinner-error {
+    background-color: #e74c3c;
+}
+
+/* tweak typeahead look for flatly */
+.tt-cursor,
+.tt-suggestion:hover,
+.tt-suggestion:focus {
+    color: #ffffff;
+    text-decoration: none;
+    outline: 0;
+    background-color: #2c3e50;
+}
+
+
+/* tweak nprogress look for flatly */
+#nprogress .bar {
+    background: #f39c12;
+}
+#nprogress .peg {
+    box-shadow: 0 0 10px #f39c12, 0 0 5px #f39c12;
+}
+#nprogress .spinner-icon {
+    border-top-color: #f39c12;
+    border-left-color: #f39c12;
+}
+
+
+/* tweaks for help page tables */
+table.table.help {
+    margin-bottom: 42px;
+}
+table.table.help > tbody > tr > td,
+table.table.help > tbody > tr > th {
+    border-top: 1px solid #ddd;
+}
+table.table.help > thead > tr > th {
+    white-space: nowrap;
+}
+table.table.examples > tbody > tr > td {
+    padding: 6px 3px;
+}
+table.table.examples > tbody > tr td:first-child {
+    width: 1%;
+}
+
+
+/* margins between bottom action buttons in settings menu */
+.btn-dropdown-action {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.modal-body>table.table>tbody>tr>td.modal-row-filters {
+  word-break: break-all;
+}
+.modal-body>table.table>tbody>tr>td.modal-row-filters,
+.modal-body>table.table>tbody>tr>td.modal-row-actions  {
+  vertical-align: middle;
+}

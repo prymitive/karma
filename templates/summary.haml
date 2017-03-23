@@ -1,0 +1,22 @@
+<script type="text/template" id="breakdown">
+%div.popover
+  %div.arrow
+  %h1.popover-title.text-center
+  %div.popover-content{id: 'breakdown-content'}
+</script>
+
+<script type="text/template" id="breakdown-content">
+-if (tags.length > 0) {
+  %table.table
+    -$.each(tags, function(i, tag) {
+      %tr
+        %td
+          %span.label{class: tag.cls, style: tag.style}
+            =tag.name
+        %td{align: 'center'}
+          %span.breakdown-badge
+            =tag.val
+-else {
+  %p.text-muted
+    Empty
+</script>
