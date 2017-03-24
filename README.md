@@ -9,9 +9,19 @@ to alert data, therefore safe to be accessed by wider audience.
 
 ## Building and running
 
+### Running in dev mode
+
+Requires Go.
+
+    make dev
+
+Will compile unsee and run the binary (not using Docker), by default will use
+same port and Alertmanager URI as demo mode. This is intended for local
+development.
+
 ### Build a Docker image
 
-    make build
+    make docker-image
 
 This will build a Docker image from sources.
 
@@ -26,16 +36,6 @@ used, to override Alertmanager URI set `ALERTMANAGER_URI` and/or `PORT` make
 variables. Example:
 
     make PORT=5000 ALERTMANAGER_URI=https://alertmanager.unicorn.corp run
-
-### Running in dev mode
-
-Requires Go.
-
-    make dev
-
-Will compile unsee and run the binary (not using Docker), by default will use
-same port and Alertmanager URI as demo mode. This is intended for testing
-changes.
 
 ### Environment variables
 
