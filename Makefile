@@ -1,14 +1,19 @@
 VERSION := $(shell git describe --tags --always --dirty='-dev')
 
-.PHONY: build
-build:
+.build/deps.ok: .gitmodules
+	git submodule update --init --recursive
+	mkdir -p .build
+	touch $@
+
+.PHONY: docker-image
+docker-image:
 	docker build --build-arg VERSION=$(VERSION) -t unsee:$(VERSION) .
 
 ALERTMANAGER_URI := https://raw.githubusercontent.com/prymitive/alertmanager-demo-api/master
 PORT := 8080
 
 .PHONY: demo
-demo: build
+demo: docker-image
 	@docker rm -f unsee-dev || true
 	docker run \
 	    --name unsee-dev \
@@ -18,7 +23,7 @@ demo: build
 	    unsee:$(VERSION)
 
 .PHONY: dev
-dev:
+dev: .build/deps.ok
 		go build -v -ldflags "-X main.version=${VERSION:-dev}" && \
 		DEBUG=true \
 		ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
@@ -26,7 +31,7 @@ dev:
 		./unsee
 
 .PHONY: lint
-lint:
+lint: .build/deps.ok
 	@golint ./... | (grep -v ^vendor/ || true)
 
 .PHONY: test
