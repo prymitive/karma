@@ -19,7 +19,7 @@ demo: build
 
 .PHONY: dev
 dev:
-		go build -v -ldflags "-X main.version=${VERSION:-dev} && \
+		go build -v -ldflags "-X main.version=${VERSION:-dev}" && \
 		DEBUG=true \
 		ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
 		PORT=$(PORT) \
