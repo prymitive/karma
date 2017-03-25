@@ -29,11 +29,7 @@ func mockConfig() {
 func ginTestEngine() *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
-	r.LoadHTMLGlob("templates/*")
-	r.GET("/", Index)
-	r.GET("/help", Help)
-	r.GET("/alerts.json", Alerts)
-	r.GET("/autocomplete.json", Autocomplete)
+	setupRouter(r)
 	return r
 }
 

@@ -6,16 +6,33 @@ ALERTMANAGER_URI := https://raw.githubusercontent.com/prymitive/alertmanager-dem
 # Listen port when running locally
 PORT := 8080
 
-SOURCES := $(wildcard *.go) $(wildcard */*.go)
+SOURCES       := $(wildcard *.go) $(wildcard */*.go)
+ASSET_SOURCES := $(wildcard assets/*/* assets/*/*/*)
+
+GO_BINDATA_MODE := prod
+ifdef DEBUG
+	GO_BINDATA_FLAGS = -debug
+	GO_BINDATA_MODE  = debug
+endif
 
 .DEFAULT_GOAL := $(NAME)
 
 .build/deps.ok: .gitmodules
 	git submodule update --init --recursive
+	go get -u github.com/jteeuwen/go-bindata/...
+	go get -u github.com/elazarl/go-bindata-assetfs/...
 	mkdir -p .build
 	touch $@
 
-$(NAME): .build/deps.ok $(SOURCES)
+.build/bindata_assetfs.%:
+	mkdir -p .build
+	rm -f .build/bindata_assetfs.*
+	touch $@
+
+bindata_assetfs.go: .build/deps.ok .build/bindata_assetfs.$(GO_BINDATA_MODE) $(ASSET_SOURCES)
+	go-bindata-assetfs $(GO_BINDATA_FLAGS) -prefix assets -nometadata assets/templates/... assets/static/...
+
+$(NAME): .build/deps.ok bindata_assetfs.go $(SOURCES)
 	go build -ldflags "-X main.version=$(VERSION)"
 
 .PHONY: run
@@ -38,15 +55,15 @@ run-docker: docker-image
 
 .PHONY: lint
 lint: .build/deps.ok
-	@golint ./... | (grep -v ^vendor/ || true)
+	@golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
 
 .PHONY: test
-test: lint
+test: lint bindata_assetfs.go
 	@go test -cover `go list ./... | grep -v /vendor/`
 
 #======================== asset helper targets =================================
 
-ASSETS_DIR := $(CURDIR)/static/assets
+ASSETS_DIR := $(CURDIR)/assets/static/managed
 CDNJS_PREFIX := https://cdnjs.cloudflare.com/ajax/libs
 
 %.js:

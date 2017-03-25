@@ -13,7 +13,7 @@
     <title>(◕︵◕)</title>
 
     {{ range .CSSFiles }}
-    <link rel="stylesheet" href="/static/assets/css/{{ . }}">
+    <link rel="stylesheet" href="/static/managed/css/{{ . }}">
     {{- end }}
 
     <link rel="stylesheet" href="/static/base.css?_={{ .NowQ }}">
@@ -144,10 +144,10 @@
     </div>
 
     {{ range .JSFiles }}
-    <script type="text/javascript" src="/static/assets/js/{{ . }}"></script>
+    <script type="text/javascript" src="/static/managed/js/{{ . }}"></script>
     {{- end }}
 
-    {{ template "js.html" .}}
+    {{ template "templates/js.html" .}}
 
     <div class="modal fade" id="labelModal" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
@@ -163,7 +163,7 @@
 </body>
 </html>
 
-{{ template "groups.haml"}}
-{{ template "summary.haml" }}
-{{ template "errors.haml" }}
-{{ template "modal.haml"}}
+{{ template "templates/groups.haml" }}
+{{ template "templates/summary.haml" }}
+{{ template "templates/errors.haml" }}
+{{ template "templates/modal.haml" }}

@@ -31,12 +31,12 @@ func noCache(c *gin.Context) {
 	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
 }
 
-// Index view, html
-func Index(c *gin.Context) {
+// index view, html
+func index(c *gin.Context) {
 	start := time.Now()
 
-	cssFiles := ReadAssets("css")
-	jsFiles := ReadAssets("js")
+	cssFiles := readAssets("css")
+	jsFiles := readAssets("js")
 	noCache(c)
 
 	q, qPresent := c.GetQuery("q")
@@ -45,7 +45,7 @@ func Index(c *gin.Context) {
 		defaultUsed = false
 	}
 
-	c.HTML(http.StatusOK, "index.html", gin.H{
+	c.HTML(http.StatusOK, "templates/index.html", gin.H{
 		"Version":           version,
 		"SentryDSN":         config.Config.SentryPublicDSN,
 		"CSSFiles":          cssFiles,
@@ -61,11 +61,11 @@ func Index(c *gin.Context) {
 }
 
 // Help view, html
-func Help(c *gin.Context) {
+func help(c *gin.Context) {
 	start := time.Now()
-	cssFiles := ReadAssets("css")
+	cssFiles := readAssets("css")
 	noCache(c)
-	c.HTML(http.StatusOK, "help.html", gin.H{
+	c.HTML(http.StatusOK, "templates/help.html", gin.H{
 		"CSSFiles":  cssFiles,
 		"SentryDSN": config.Config.SentryPublicDSN,
 	})
@@ -76,8 +76,8 @@ func logAlertsView(c *gin.Context, cacheStatus string, duration time.Duration) {
 	log.Infof("[%s %s] <%d> %s %s took %s", c.ClientIP(), cacheStatus, http.StatusOK, c.Request.Method, c.Request.RequestURI, duration)
 }
 
-// Alerts endpoint, json, JS will query this via AJAX call
-func Alerts(c *gin.Context) {
+// alerts endpoint, json, JS will query this via AJAX call
+func alerts(c *gin.Context) {
 	noCache(c)
 	start := time.Now()
 	ts, _ := start.UTC().MarshalText()
@@ -206,8 +206,8 @@ func Alerts(c *gin.Context) {
 	logAlertsView(c, "MIS", time.Since(start))
 }
 
-// Autocomplete endpoint, json, used for filter autocomplete hints
-func Autocomplete(c *gin.Context) {
+// autocomplete endpoint, json, used for filter autocomplete hints
+func autocomplete(c *gin.Context) {
 	noCache(c)
 	start := time.Now()
 
@@ -259,4 +259,10 @@ func Autocomplete(c *gin.Context) {
 
 	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
 	logAlertsView(c, "MIS", time.Since(start))
+}
+
+func favicon(c *gin.Context) {
+	fs := newBinaryFileSystem("static")
+	fileserver := http.FileServer(fs)
+	fileserver.ServeHTTP(c.Writer, c.Request)
 }
