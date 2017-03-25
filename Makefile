@@ -1,34 +1,40 @@
+NAME    := unsee
 VERSION := $(shell git describe --tags --always --dirty='-dev')
+
+# Alertmanager instance used when running locally, points to mock data
+ALERTMANAGER_URI := https://raw.githubusercontent.com/prymitive/alertmanager-demo-api/master
+# Listen port when running locally
+PORT := 8080
+
+SOURCES := $(wildcard *.go) $(wildcard */*.go)
+
+.DEFAULT_GOAL := $(NAME)
 
 .build/deps.ok: .gitmodules
 	git submodule update --init --recursive
 	mkdir -p .build
 	touch $@
 
+$(NAME): .build/deps.ok $(SOURCES)
+	go build -ldflags "-X main.version=$(VERSION)"
+
+.PHONY: run
+run: $(NAME)
+	DEBUG=true ALERTMANAGER_URI=$(ALERTMANAGER_URI) PORT=$(PORT) ./unsee
+
 .PHONY: docker-image
-docker-image:
-	docker build --build-arg VERSION=$(VERSION) -t unsee:$(VERSION) .
+docker-image: bindata_assetfs.go
+	docker build --build-arg VERSION=$(VERSION) -t $(NAME):$(VERSION) .
 
-ALERTMANAGER_URI := https://raw.githubusercontent.com/prymitive/alertmanager-demo-api/master
-PORT := 8080
-
-.PHONY: demo
-demo: docker-image
-	@docker rm -f unsee-dev || true
+.PHONY: run-docker
+run-docker: docker-image
+	@docker rm -f $(NAME) || true
 	docker run \
-	    --name unsee-dev \
+	    --name $(NAME) \
 	    -e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
 	    -e PORT=$(PORT) \
 	    -p $(PORT):$(PORT) \
-	    unsee:$(VERSION)
-
-.PHONY: dev
-dev: .build/deps.ok
-		go build -v -ldflags "-X main.version=${VERSION:-dev}" && \
-		DEBUG=true \
-		ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
-		PORT=$(PORT) \
-		./unsee
+	    $(NAME):$(VERSION)
 
 .PHONY: lint
 lint: .build/deps.ok
@@ -37,6 +43,8 @@ lint: .build/deps.ok
 .PHONY: test
 test: lint
 	@go test -cover `go list ./... | grep -v /vendor/`
+
+#======================== asset helper targets =================================
 
 ASSETS_DIR := $(CURDIR)/static/assets
 CDNJS_PREFIX := https://cdnjs.cloudflare.com/ajax/libs
