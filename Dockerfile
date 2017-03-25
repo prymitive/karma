@@ -6,8 +6,7 @@ ARG VERSION
 
 RUN go install \
     -ldflags "-X main.version=${VERSION:-dev}" \
-    github.com/cloudflare/unsee
-
-RUN rm -fr /go/src
+    github.com/cloudflare/unsee && \
+    rm -fr /go/src
 
 CMD ["unsee"]
