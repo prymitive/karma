@@ -61,6 +61,20 @@ lint: .build/deps.ok
 test: lint bindata_assetfs.go
 	@go test -cover `go list ./... | grep -v /vendor/`
 
+.build/vendor.ok:
+	go get github.com/kovetskiy/manul
+	mkdir -p .build
+	touch $@
+
+.PHONY: vendor
+vendor: .build/vendor.ok
+	manul -Crt
+	manul -Irt
+
+.PHONY: vendor-update
+vendor-update: .build/vendor.ok
+	manul -Urt
+
 #======================== asset helper targets =================================
 
 ASSETS_DIR := $(CURDIR)/assets/static/managed
