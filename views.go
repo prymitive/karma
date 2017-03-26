@@ -4,15 +4,15 @@ import (
 	"crypto/sha1"
 	"encoding/json"
 	"fmt"
+	"github.com/cloudflare/unsee/config"
+	"github.com/cloudflare/unsee/models"
+	"github.com/cloudflare/unsee/store"
 	"io"
 	"net/http"
 	"sort"
 	"strconv"
 	"strings"
 	"time"
-	"github.com/cloudflare/unsee/config"
-	"github.com/cloudflare/unsee/models"
-	"github.com/cloudflare/unsee/store"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -54,7 +54,7 @@ func Index(c *gin.Context) {
 		"Config":            config.Config,
 		"QFilter":           q,
 		"DefaultUsed":       defaultUsed,
-		"StaticColorLabels": strings.Join(config.Config.StaticColorLabels, " "),
+		"StaticColorLabels": strings.Join(config.Config.ColorLabelsStatic, " "),
 	})
 
 	log.Infof("[%s] %s %s took %s", c.ClientIP(), c.Request.Method, c.Request.RequestURI, time.Since(start))

@@ -12,7 +12,7 @@ func StripLables(ignoredLabels []string, sourceLabels map[string]string) map[str
 	for label, value := range sourceLabels {
 		if !stringInSlice(ignoredLabels, label) {
 			// strip leading and trailung space in label value
-			// this is to normalize values in case space is added by AlertManager rules
+			// this is to normalize values in case space is added by Alertmanager rules
 			labels[label] = strings.TrimSpace(value)
 		}
 	}

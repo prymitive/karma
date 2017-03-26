@@ -5,6 +5,7 @@ import (
 	"log"
 	"regexp"
 	"strings"
+
 	"github.com/cloudflare/unsee/models"
 )
 
@@ -33,10 +34,10 @@ func ParseRules(rules []string) {
 	}
 }
 
-// DetectJIRAs will try to find JIRA links in AlertManager silence objects
+// DetectJIRAs will try to find JIRA links in Alertmanager silence objects
 // using regexp rules from configuration that were parsed and populated
 // by ParseRules call
-func DetectJIRAs(silence *models.AlertManagerSilence) (jiraID, jiraLink string) {
+func DetectJIRAs(silence *models.AlertmanagerSilence) (jiraID, jiraLink string) {
 	for _, jdr := range jiraDetectRules {
 		jiraID := jdr.Regexp.FindString(silence.Comment)
 		if jiraID != "" {

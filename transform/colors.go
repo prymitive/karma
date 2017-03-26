@@ -2,10 +2,10 @@ package transform
 
 import (
 	"crypto/sha1"
-	"io"
-	"math/rand"
 	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/models"
+	"io"
+	"math/rand"
 
 	"github.com/hansrodtang/randomcolor"
 )
@@ -25,7 +25,7 @@ func labelToSeed(key string, val string) int64 {
 // from label key and value passed here
 // It's used to generate unique colors for configured labels
 func ColorLabel(colorStore models.UnseeColorMap, key string, val string) {
-	if stringInSlice(config.Config.ColorLabels, key) == true {
+	if stringInSlice(config.Config.ColorLabelsUnique, key) == true {
 		if _, found := colorStore[key]; !found {
 			colorStore[key] = make(map[string]models.UnseeLabelColor)
 		}

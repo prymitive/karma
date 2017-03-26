@@ -45,7 +45,7 @@ func getJSONFromURL(url string, timeout time.Duration, target interface{}) error
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return fmt.Errorf("Request to AlertManager failed with %s", resp.Status)
+		return fmt.Errorf("Request to Alertmanager failed with %s", resp.Status)
 	}
 
 	defer resp.Body.Close()

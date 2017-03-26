@@ -3,6 +3,7 @@ package store
 import (
 	"sync"
 	"time"
+
 	"github.com/cloudflare/unsee/models"
 )
 
@@ -31,10 +32,10 @@ var (
 	// (alerts, silences, colors, ac)
 	StoreLock = sync.RWMutex{}
 
-	// AlertStore holds all alerts retrieved from AlertManager
+	// AlertStore holds all alerts retrieved from Alertmanager
 	AlertStore = alertStoreType{}
 
-	// SilenceStore holds all silences retrieved from AlertManager
+	// SilenceStore holds all silences retrieved from Alertmanager
 	SilenceStore = silenceStoreType{}
 
 	// ColorStore holds all color maps generated from alerts
