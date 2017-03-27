@@ -10,6 +10,7 @@ import (
 	"github.com/DeanThompson/ginpprof"
 	log "github.com/Sirupsen/logrus"
 	raven "github.com/getsentry/raven-go"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/contrib/sentry"
 	"github.com/gin-gonic/gin"
 	ginprometheus "github.com/mcuadros/go-gin-prometheus"
@@ -68,6 +69,18 @@ func init() {
 	metricAlertmanagerErrors.With(prometheus.Labels{"endpoint": "silences"}).Set(0)
 }
 
+func setupRouter(router *gin.Engine) {
+	router.SetHTMLTemplate(loadTemplates("templates"))
+
+	router.Use(static.Serve("/static", newBinaryFileSystem("static")))
+
+	router.GET("/favicon.ico", favicon)
+	router.GET("/", index)
+	router.GET("/help", help)
+	router.GET("/alerts.json", alerts)
+	router.GET("/autocomplete.json", autocomplete)
+}
+
 func main() {
 	log.Infof("Version: %s", version)
 
@@ -93,6 +106,7 @@ func main() {
 	}
 
 	router := gin.New()
+	setupRouter(router)
 
 	prom := ginprometheus.NewPrometheus("gin")
 	prom.Use(router)
@@ -105,16 +119,6 @@ func main() {
 		raven.SetRelease(version)
 		router.Use(sentry.Recovery(raven.DefaultClient, false))
 	}
-
-	router.LoadHTMLGlob("templates/*")
-
-	router.Static("/static", "./static")
-	router.StaticFile("/favicon.ico", "./static/favicon.ico")
-
-	router.GET("/", Index)
-	router.GET("/help", Help)
-	router.GET("/alerts.json", Alerts)
-	router.GET("/autocomplete.json", Autocomplete)
 
 	router.Run()
 }

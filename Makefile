@@ -1,44 +1,69 @@
+NAME    := unsee
 VERSION := $(shell git describe --tags --always --dirty='-dev')
+
+# Alertmanager instance used when running locally, points to mock data
+ALERTMANAGER_URI := https://raw.githubusercontent.com/prymitive/alertmanager-demo-api/master
+# Listen port when running locally
+PORT := 8080
+
+SOURCES       := $(wildcard *.go) $(wildcard */*.go)
+ASSET_SOURCES := $(wildcard assets/*/* assets/*/*/*)
+
+GO_BINDATA_MODE := prod
+ifdef DEBUG
+	GO_BINDATA_FLAGS = -debug
+	GO_BINDATA_MODE  = debug
+endif
+
+.DEFAULT_GOAL := $(NAME)
 
 .build/deps.ok: .gitmodules
 	git submodule update --init --recursive
+	go get -u github.com/jteeuwen/go-bindata/...
+	go get -u github.com/elazarl/go-bindata-assetfs/...
 	mkdir -p .build
 	touch $@
 
+.build/bindata_assetfs.%:
+	mkdir -p .build
+	rm -f .build/bindata_assetfs.*
+	touch $@
+
+bindata_assetfs.go: .build/deps.ok .build/bindata_assetfs.$(GO_BINDATA_MODE) $(ASSET_SOURCES)
+	go-bindata-assetfs $(GO_BINDATA_FLAGS) -prefix assets -nometadata assets/templates/... assets/static/...
+
+$(NAME): .build/deps.ok bindata_assetfs.go $(SOURCES)
+	go build -ldflags "-X main.version=$(VERSION)"
+
+.PHONY: run
+run: $(NAME)
+	DEBUG=true ALERTMANAGER_URI=$(ALERTMANAGER_URI) PORT=$(PORT) ./unsee
+
 .PHONY: docker-image
-docker-image:
-	docker build --build-arg VERSION=$(VERSION) -t unsee:$(VERSION) .
+docker-image: bindata_assetfs.go
+	docker build --build-arg VERSION=$(VERSION) -t $(NAME):$(VERSION) .
 
-ALERTMANAGER_URI := https://raw.githubusercontent.com/prymitive/alertmanager-demo-api/master
-PORT := 8080
-
-.PHONY: demo
-demo: docker-image
-	@docker rm -f unsee-dev || true
+.PHONY: run-docker
+run-docker: docker-image
+	@docker rm -f $(NAME) || true
 	docker run \
-	    --name unsee-dev \
+	    --name $(NAME) \
 	    -e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
 	    -e PORT=$(PORT) \
 	    -p $(PORT):$(PORT) \
-	    unsee:$(VERSION)
-
-.PHONY: dev
-dev: .build/deps.ok
-		go build -v -ldflags "-X main.version=${VERSION:-dev}" && \
-		DEBUG=true \
-		ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
-		PORT=$(PORT) \
-		./unsee
+	    $(NAME):$(VERSION)
 
 .PHONY: lint
 lint: .build/deps.ok
-	@golint ./... | (grep -v ^vendor/ || true)
+	@golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
 
 .PHONY: test
-test: lint
+test: lint bindata_assetfs.go
 	@go test -cover `go list ./... | grep -v /vendor/`
 
-ASSETS_DIR := $(CURDIR)/static/assets
+#======================== asset helper targets =================================
+
+ASSETS_DIR := $(CURDIR)/assets/static/managed
 CDNJS_PREFIX := https://cdnjs.cloudflare.com/ajax/libs
 
 %.js:

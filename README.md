@@ -9,15 +9,35 @@ to alert data, therefore safe to be accessed by wider audience.
 
 ## Building and running
 
-### Running in dev mode
+### Building from source
 
-Requires Go.
+To clone git repo and build the binary yourself run:
 
-    make dev
+    git clone https://github.com/cloudflare/unsee $GOPATH/src/github.com/cloudflare/unsee
+    cd $GOPATH/src/github.com/cloudflare/unsee
+    make
 
-Will compile unsee and run the binary (not using Docker), by default will use
-same port and Alertmanager URI as demo mode. This is intended for local
-development.
+`unsee` binary will be compiled in project directory.
+
+### Running
+
+`unsee` is configured via environment variables or command line flags.
+Environment variable `ALERTMANAGER_URI` or cli flag `-alertmanager.uri` is the
+only option required to run. See `Environment variables` section below for the
+full list of supported environment variables. Examples:
+
+    ALERTMANAGER_URI=https://alertmanager.example.com unsee
+    unsee -alertmanager.uri https://alertmanager.example.com
+
+There is a make target which will compile and run unsee:
+
+    make run
+
+By default it will listen on port `8080` and Alertmanager mock data will be
+used, to override Alertmanager URI set `ALERTMANAGER_URI` and/or `PORT` make
+variables. Example:
+
+    make PORT=5000 ALERTMANAGER_URI=https://alertmanager.example.com run
 
 ### Build a Docker image
 
@@ -25,17 +45,14 @@ development.
 
 This will build a Docker image from sources.
 
-### Running the Docker image in demo mode
+### Running the Docker image
 
-    make demo
+    make run-docker
 
-Will run locally build Docker image. This is intended for testing build Docker
-images or checking unsee functionality.
-By default unsee will listen on port `8080` and Alertmanager mock data will be
-used, to override Alertmanager URI set `ALERTMANAGER_URI` and/or `PORT` make
-variables. Example:
+Will run locally built Docker image. Same defaults and override variables
+apply as with `make run`. Example:
 
-    make PORT=5000 ALERTMANAGER_URI=https://alertmanager.example.com run
+    make PORT=5000 ALERTMANAGER_URI=https://alertmanager.example.com run-docker
 
 ### Environment variables
 
@@ -171,6 +188,18 @@ This option can also be set using `-jira.regex` flag. Example:
     $ unsee -jira.regex "DEVOPS-[0-9]+@https://jira.example.com"
 
 This variable is optional and default is not set (no rule will be applied).
+
+#### PORT
+
+HTTP port to listen on. Example:
+
+    PORT=8000
+
+This option can also be set using `-port` flag. Example:
+
+    $ unsee -port 8000
+
+Default is `8080`.
 
 #### SENTRY_DSN
 
