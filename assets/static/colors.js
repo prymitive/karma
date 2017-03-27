@@ -46,7 +46,7 @@ var Colors = (function() {
     }
 
     isStaticLabel = function(key) {
-        return ($.inArray(key, getStaticLabels()) >= 0);
+        return ($.inArray(key, Colors.GetStaticLabels()) >= 0);
     }
 
     init = function(staticColors) {

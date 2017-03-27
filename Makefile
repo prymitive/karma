@@ -42,7 +42,12 @@ clean:
 
 .PHONY: run
 run: $(NAME)
-	DEBUG=true ALERTMANAGER_URI=$(ALERTMANAGER_URI) PORT=$(PORT) ./$(NAME)
+	DEBUG=true \
+	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
+	COLOR_LABELS_UNIQUE="instance" \
+	COLOR_LABELS_STATIC="job" \
+	PORT=$(PORT) \
+	./$(NAME)
 
 .PHONY: docker-image
 docker-image: bindata_assetfs.go
@@ -54,6 +59,8 @@ run-docker: docker-image
 	docker run \
 	    --name $(NAME) \
 	    -e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
+			-e COLOR_LABELS_UNIQUE="instance" \
+			-e COLOR_LABELS_STATIC="job" \
 	    -e PORT=$(PORT) \
 	    -p $(PORT):$(PORT) \
 	    $(NAME):$(VERSION)
