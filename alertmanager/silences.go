@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"time"
+
 	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/models"
 
@@ -12,11 +13,11 @@ import (
 )
 
 type silencesData struct {
-	Silences      []models.AlertManagerSilence `json:"silences"`
+	Silences      []models.AlertmanagerSilence `json:"silences"`
 	TotalSilences int                          `json:"totalSilences"`
 }
 
-// SilenceAPIResponse is what AlertManager API returns
+// SilenceAPIResponse is what Alertmanager API returns
 type SilenceAPIResponse struct {
 	Status    string       `json:"status"`
 	Data      silencesData `json:"data"`
@@ -24,17 +25,17 @@ type SilenceAPIResponse struct {
 	Error     string       `json:"error"`
 }
 
-// Get will return fresh data from AlertManager API
+// Get will return fresh data from Alertmanager API
 func (response *SilenceAPIResponse) Get() error {
 	start := time.Now()
 
-	url, err := joinURL(config.Config.AlertManagerURL, "api/v1/silences")
+	url, err := joinURL(config.Config.AlertmanagerURI, "api/v1/silences")
 	if err != nil {
 		return err
 	}
 	url = fmt.Sprintf("%s?limit=%d", url, math.MaxUint32)
 
-	err = getJSONFromURL(url, config.Config.AlertManagerTimeout, response)
+	err = getJSONFromURL(url, config.Config.AlertmanagerTimeout, response)
 	if err != nil {
 		return err
 	}

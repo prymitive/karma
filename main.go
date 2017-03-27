@@ -3,6 +3,7 @@ package main
 import (
 	"sync"
 	"time"
+
 	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/transform"
 
@@ -20,7 +21,7 @@ var (
 	version = "dev"
 
 	// ticker is a timer used by background loop that will keep pulling
-	// data from AlertManager
+	// data from Alertmanager
 	ticker *time.Ticker
 
 	// apiCache will be used to keep short lived copy of JSON reponses generated for the UI
@@ -28,31 +29,31 @@ var (
 	// rather than do all the filtering every time
 	apiCache *cache.Cache
 
-	// errorLock holds a mutex used to synchronize updates to AlertManagerError
+	// errorLock holds a mutex used to synchronize updates to AlertmanagerError
 	// to avoid any race between readers and writers
 	errorLock = sync.RWMutex{}
 	// alertManagerError holds the description of last error raised when pulling data
-	// from AlertManager, if there was any error
+	// from Alertmanager, if there was any error
 	// This error will be returned in UnseeAlertsResponse and presented by Ui
 	alertManagerError string
 
 	metricAlerts = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "unsee_collected_alerts",
-			Help: "Total number of alerts collected from AlertManager API",
+			Help: "Total number of alerts collected from Alertmanager API",
 		},
 		[]string{"silenced"},
 	)
 	metricAlertGroups = prometheus.NewGauge(
 		prometheus.GaugeOpts{
 			Name: "unsee_collected_groups",
-			Help: "Total number of alert groups collected from AlertManager API",
+			Help: "Total number of alert groups collected from Alertmanager API",
 		},
 	)
-	metricAlertManagerErrors = prometheus.NewGaugeVec(
+	metricAlertmanagerErrors = prometheus.NewGaugeVec(
 		prometheus.GaugeOpts{
 			Name: "unsee_alertmanager_errors_total",
-			Help: "Total number of errors encounter when requesting data from AlertManager API",
+			Help: "Total number of errors encounter when requesting data from Alertmanager API",
 		},
 		[]string{"endpoint"},
 	)
@@ -61,27 +62,27 @@ var (
 func init() {
 	prometheus.MustRegister(metricAlerts)
 	prometheus.MustRegister(metricAlertGroups)
-	prometheus.MustRegister(metricAlertManagerErrors)
+	prometheus.MustRegister(metricAlertmanagerErrors)
 
-	metricAlertManagerErrors.With(prometheus.Labels{"endpoint": "alerts"}).Set(0)
-	metricAlertManagerErrors.With(prometheus.Labels{"endpoint": "silences"}).Set(0)
+	metricAlertmanagerErrors.With(prometheus.Labels{"endpoint": "alerts"}).Set(0)
+	metricAlertmanagerErrors.With(prometheus.Labels{"endpoint": "silences"}).Set(0)
 }
 
 func main() {
 	log.Infof("Version: %s", version)
 
 	config.Config.Read()
-	transform.ParseRules(config.Config.JIRARegexp)
+	transform.ParseRules(config.Config.JiraRegexp)
 
 	apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 
-	// before we start try to fetch data from AlertManager
-	log.Infof("Initial AlertManager query, this can delay startup up to %s", 2*config.Config.AlertManagerTimeout)
-	PullFromAlertManager()
+	// before we start try to fetch data from Alertmanager
+	log.Infof("Initial Alertmanager query, this can delay startup up to %s", 2*config.Config.AlertmanagerTimeout)
+	PullFromAlertmanager()
 	log.Info("Done, starting HTTP server")
 
-	// background loop that will fetch updates from AlertManager
-	ticker = time.NewTicker(config.Config.UpdateInterval)
+	// background loop that will fetch updates from Alertmanager
+	ticker = time.NewTicker(config.Config.AlertmanagerTTL)
 	go Tick()
 
 	switch config.Config.Debug {

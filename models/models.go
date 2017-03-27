@@ -2,8 +2,8 @@ package models
 
 import "time"
 
-// AlertManagerAlert is vanilla alert object from AlertManager
-type AlertManagerAlert struct {
+// AlertmanagerAlert is vanilla alert object from Alertmanager
+type AlertmanagerAlert struct {
 	Annotations  map[string]string `json:"annotations"`
 	Labels       map[string]string `json:"labels"`
 	StartsAt     time.Time         `json:"startsAt"`
@@ -13,16 +13,16 @@ type AlertManagerAlert struct {
 	Silenced     int               `json:"silenced"`
 }
 
-// AlertManagerAlertGroup is vanilla group object from AlertManager, exposed under api/v1/alerts/groups
-type AlertManagerAlertGroup struct {
+// AlertmanagerAlertGroup is vanilla group object from Alertmanager, exposed under api/v1/alerts/groups
+type AlertmanagerAlertGroup struct {
 	Labels map[string]string `json:"labels"`
 	Blocks []struct {
-		Alerts []AlertManagerAlert `json:"alerts"`
+		Alerts []AlertmanagerAlert `json:"alerts"`
 	} `json:"blocks"`
 }
 
-// AlertManagerSilence is vanilla silence object from AlertManager, exposed under api/v1/silences
-type AlertManagerSilence struct {
+// AlertmanagerSilence is vanilla silence object from Alertmanager, exposed under api/v1/silences
+type AlertmanagerSilence struct {
 	ID       int `json:"id"`
 	Matchers []struct {
 		Name    string `json:"name"`
@@ -41,7 +41,7 @@ type AlertManagerSilence struct {
 // extracted ID is used to generate link to JIRA issue
 // this means Unsee needs to store additional fields for each silence
 type UnseeSilence struct {
-	AlertManagerSilence
+	AlertmanagerSilence
 	JiraID  string `json:"jiraID"`
 	JiraURL string `json:"jiraURL"`
 }
@@ -52,7 +52,7 @@ type UnseeSilence struct {
 // and returned under links field, Unsee UI used this to show links differently
 // than other annotations
 type UnseeAlert struct {
-	AlertManagerAlert
+	AlertmanagerAlert
 	Links map[string]string `json:"links"`
 }
 
@@ -72,7 +72,7 @@ func (a UnseeAlertList) Less(i, j int) bool {
 	return a[i].StartsAt.Round(2 * time.Second).After(a[j].StartsAt.Round(2 * time.Second))
 }
 
-// UnseeAlertGroup is vanilla AlertManager group, but alerts are flattened
+// UnseeAlertGroup is vanilla Alertmanager group, but alerts are flattened
 // There is a hash computed from all alerts, it's used by UI to quickly tell
 // if there was any change in a group and it needs to refresh it
 type UnseeAlertGroup struct {

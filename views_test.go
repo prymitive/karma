@@ -22,7 +22,7 @@ import (
 func mockConfig() {
 	log.SetLevel(log.FatalLevel)
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
-	os.Setenv("COLOR_LABELS", "alertname")
+	os.Setenv("COLOR_LABELS_UNIQUE", "alertname")
 	config.Config.Read()
 }
 
@@ -132,7 +132,7 @@ func mockAlerts() {
   }`
 	httpmock.RegisterResponder("GET", "http://localhost/api/v1/alerts/groups", httpmock.NewStringResponder(200, alerts))
 
-	PullFromAlertManager()
+	PullFromAlertmanager()
 }
 
 func TestAlerts(t *testing.T) {

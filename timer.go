@@ -8,6 +8,7 @@ import (
 	"sort"
 	"strconv"
 	"time"
+
 	"github.com/cloudflare/unsee/alertmanager"
 	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/models"
@@ -19,10 +20,10 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 )
 
-// PullFromAlertManager will try to fetch latest alerts and silences
-// from AlertManager API, it's called by Ticker timer
-func PullFromAlertManager() {
-	log.Info("Pulling latest alerts and silences from AlertManager")
+// PullFromAlertmanager will try to fetch latest alerts and silences
+// from Alertmanager API, it's called by Ticker timer
+func PullFromAlertmanager() {
+	log.Info("Pulling latest alerts and silences from Alertmanager")
 
 	silenceResponse := alertmanager.SilenceAPIResponse{}
 	err := silenceResponse.Get()
@@ -31,7 +32,7 @@ func PullFromAlertManager() {
 		errorLock.Lock()
 		alertManagerError = err.Error()
 		errorLock.Unlock()
-		metricAlertManagerErrors.With(prometheus.Labels{"endpoint": "silences"}).Inc()
+		metricAlertmanagerErrors.With(prometheus.Labels{"endpoint": "silences"}).Inc()
 		return
 	}
 
@@ -42,7 +43,7 @@ func PullFromAlertManager() {
 		errorLock.Lock()
 		alertManagerError = err.Error()
 		errorLock.Unlock()
-		metricAlertManagerErrors.With(prometheus.Labels{"endpoint": "alerts"}).Inc()
+		metricAlertmanagerErrors.With(prometheus.Labels{"endpoint": "alerts"}).Inc()
 		return
 	}
 
@@ -50,7 +51,7 @@ func PullFromAlertManager() {
 	for _, silence := range silenceResponse.Data.Silences {
 		jiraID, jiraLink := transform.DetectJIRAs(&silence)
 		silenceStore[strconv.Itoa(silence.ID)] = models.UnseeSilence{
-			AlertManagerSilence: silence,
+			AlertmanagerSilence: silence,
 			JiraID:              jiraID,
 			JiraURL:             jiraLink,
 		}
@@ -93,7 +94,7 @@ func PullFromAlertManager() {
 
 		for _, alertBlock := range alertGroup.Blocks {
 			for _, alert := range alertBlock.Alerts {
-				apiAlert := models.UnseeAlert{AlertManagerAlert: alert}
+				apiAlert := models.UnseeAlert{AlertmanagerAlert: alert}
 
 				apiAlert.Annotations, apiAlert.Links = transform.DetectLinks(apiAlert.Annotations)
 
@@ -163,12 +164,12 @@ func PullFromAlertManager() {
 	runtime.GC()
 }
 
-// Tick is the background timer used to call PullFromAlertManager
+// Tick is the background timer used to call PullFromAlertmanager
 func Tick() {
 	for {
 		select {
 		case <-ticker.C:
-			PullFromAlertManager()
+			PullFromAlertmanager()
 		}
 	}
 }
