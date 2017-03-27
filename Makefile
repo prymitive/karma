@@ -21,6 +21,7 @@ endif
 	git submodule update --init --recursive
 	go get -u github.com/jteeuwen/go-bindata/...
 	go get -u github.com/elazarl/go-bindata-assetfs/...
+	go get -u github.com/golang/lint/golint
 	mkdir -p .build
 	touch $@
 
@@ -35,9 +36,13 @@ bindata_assetfs.go: .build/deps.ok .build/bindata_assetfs.$(GO_BINDATA_MODE) $(A
 $(NAME): .build/deps.ok bindata_assetfs.go $(SOURCES)
 	go build -ldflags "-X main.version=$(VERSION)"
 
+.PHONY: clean
+clean:
+	rm -fr .build $(NAME)
+
 .PHONY: run
 run: $(NAME)
-	DEBUG=true ALERTMANAGER_URI=$(ALERTMANAGER_URI) PORT=$(PORT) ./unsee
+	DEBUG=true ALERTMANAGER_URI=$(ALERTMANAGER_URI) PORT=$(PORT) ./$(NAME)
 
 .PHONY: docker-image
 docker-image: bindata_assetfs.go
