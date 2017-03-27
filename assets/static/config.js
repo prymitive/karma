@@ -107,7 +107,7 @@ var Config = (function() {
 
         // reset settings button action
         $(params.ResetSelector).on('click', function(elem) {
-            reset();
+            Config.Reset();
             location.reload();
         });
 

@@ -22,13 +22,13 @@ var Progress = (function() {
 
 
     complete = function() {
-        resetTimer();
+        Progress.ResetTimer();
         NProgress.done();
     }
 
 
     pause = function() {
-        resetTimer();
+        Progress.ResetTimer();
         NProgress.set(0.0);
     }
 
@@ -37,7 +37,7 @@ var Progress = (function() {
         var step_ms = 250; // animation step in ms
         var steps = (Unsee.GetRefreshRate() * 1000) / step_ms; // how many steps we have
         NProgress.set(0.0);
-        resetTimer();
+        Progress.ResetTimer();
         timer = setInterval(function() {
             NProgress.inc(1.0 / steps);
         }, step_ms);

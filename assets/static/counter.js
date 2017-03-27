@@ -66,7 +66,7 @@ var Counter = (function(params) {
             bgColor: '#333',
             textColor: '#ff0'
         });
-        setUnknown();
+        Counter.Unknown();
     }
 
 
