@@ -195,6 +195,10 @@ HTTP port to listen on. Example:
 
     PORT=8000
 
+This option can also be set using `-port` flag. Example:
+
+    $ unsee -port 8000
+
 Default is `8080`.
 
 #### SENTRY_DSN
