@@ -9,6 +9,14 @@ to alert data, therefore safe to be accessed by wider audience.
 
 ## Building and running
 
+### Installing using the go command
+
+unsee is go installable, so the easiest way is to run:
+
+    go install github.com/cloudflare/unsee
+
+The `unsee` binary will be installed into `$GOPATH/bin` directory.
+
 ### Building from source
 
 To clone git repo and build the binary yourself run:
@@ -19,7 +27,7 @@ To clone git repo and build the binary yourself run:
 
 `unsee` binary will be compiled in project directory.
 
-### Running
+## Running
 
 `unsee` is configured via environment variables or command line flags.
 Environment variable `ALERTMANAGER_URI` or cli flag `-alertmanager.uri` is the
@@ -39,7 +47,9 @@ variables. Example:
 
     make PORT=5000 ALERTMANAGER_URI=https://alertmanager.example.com run
 
-### Build a Docker image
+## Docker
+
+### Building a Docker image
 
     make docker-image
 
@@ -54,7 +64,7 @@ apply as with `make run`. Example:
 
     make PORT=5000 ALERTMANAGER_URI=https://alertmanager.example.com run-docker
 
-### Environment variables
+## Environment variables
 
 #### ALERTMANAGER_TIMEOUT
 
