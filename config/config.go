@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"flag"
 	"fmt"
+	"net/url"
 	"os"
 	"reflect"
 	"strings"
@@ -11,6 +12,7 @@ import (
 	"unicode"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/asaskevich/govalidator"
 	"github.com/kelseyhightower/envconfig"
 )
 
@@ -121,12 +123,33 @@ func (config *configEnvs) Read() {
 	}
 }
 
+func hideURLPassword(s string) (string, error) {
+	u, err := url.Parse(s)
+	if err != nil {
+		return "", err
+	}
+	if u.User != nil {
+		if _, pwdSet := u.User.Password(); pwdSet {
+			u.User = url.UserPassword(u.User.Username(), "xxx")
+		}
+	}
+	return u.String(), nil
+}
+
 func (config *configEnvs) LogValues() {
 	s := reflect.ValueOf(config).Elem()
 	typeOfT := s.Type()
 	for i := 0; i < s.NumField(); i++ {
-		f := s.Field(i)
-		log.Infof("%20s => %v", typeOfT.Field(i).Tag.Get("envconfig"), f.Interface())
+		env := typeOfT.Field(i).Tag.Get("envconfig")
+		val := fmt.Sprintf("%v", s.Field(i).Interface())
+		if govalidator.IsURL(val) {
+			var err error
+			val, err = hideURLPassword(val)
+			if err != nil {
+				log.Errorf("Failed to parse url value for %s: %s", env, err.Error())
+			}
+		}
+		log.Infof("%20s => %v", env, val)
 	}
 
 }

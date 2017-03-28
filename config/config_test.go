@@ -61,3 +61,39 @@ func TestReadConfig(t *testing.T) {
 	}
 
 }
+
+type urlSecretTest struct {
+	raw       string
+	sanitized string
+}
+
+var urlSecretTests = []urlSecretTest{
+	urlSecretTest{
+		raw:       "http://localhost",
+		sanitized: "http://localhost",
+	},
+	urlSecretTest{
+		raw:       "http://alertmanager.example.com/path",
+		sanitized: "http://alertmanager.example.com/path",
+	},
+	urlSecretTest{
+		raw:       "http://user@alertmanager.example.com/path",
+		sanitized: "http://user@alertmanager.example.com/path",
+	},
+	urlSecretTest{
+		raw:       "https://user:password@alertmanager.example.com/path",
+		sanitized: "https://user:xxx@alertmanager.example.com/path",
+	},
+}
+
+func TestUrlSecretTest(t *testing.T) {
+	for _, testCase := range urlSecretTests {
+		sanitized, err := hideURLPassword(testCase.raw)
+		if err != nil {
+			t.Errorf("Unexpected error when parsing '%s': %s", testCase.raw, err.Error())
+		}
+		if sanitized != testCase.sanitized {
+			t.Errorf("Invalid sanitized url, expected '%s', got '%s'", testCase.sanitized, sanitized)
+		}
+	}
+}
