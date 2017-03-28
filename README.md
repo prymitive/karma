@@ -7,6 +7,8 @@ lacking as a dashboard tool - unsee aims to fill this gap.
 It's developed as a dedicated tool as it's intended to provide only read access
 to alert data, therefore safe to be accessed by wider audience.
 
+![Screenshot](/screenshot.png)
+
 ## Building and running
 
 ### Installing using the go command
