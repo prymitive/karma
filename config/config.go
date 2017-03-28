@@ -77,7 +77,6 @@ func mapEnvConfigToFlags() {
 		}
 
 		envName := f.Tag.Get("envconfig")
-		defaultVal := f.Tag.Get("default")
 
 		helpMsg := fmt.Sprintf("%s. This flag can also be set via %s environment variable.", f.Tag.Get("help"), f.Tag.Get("envconfig"))
 		if f.Tag.Get("required") == "true" {
@@ -89,7 +88,7 @@ func mapEnvConfigToFlags() {
 			mapper.isBool = true
 			mapper.boolVal = flag.Bool(flagName, false, helpMsg)
 		} else {
-			mapper.stringVal = flag.String(flagName, defaultVal, helpMsg)
+			mapper.stringVal = flag.String(flagName, "", helpMsg)
 		}
 		flags[envName] = mapper
 	}
