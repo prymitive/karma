@@ -42,7 +42,6 @@ clean:
 
 .PHONY: run
 run: $(NAME)
-	DEBUG=true \
 	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
 	COLOR_LABELS_UNIQUE="instance cluster" \
 	COLOR_LABELS_STATIC="job" \
