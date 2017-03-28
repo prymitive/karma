@@ -85,6 +85,7 @@ func main() {
 	log.Infof("Version: %s", version)
 
 	config.Config.Read()
+	config.Config.LogValues()
 	transform.ParseRules(config.Config.JiraRegexp)
 
 	apiCache = cache.New(cache.NoExpiration, 10*time.Second)

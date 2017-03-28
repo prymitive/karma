@@ -119,7 +119,9 @@ func (config *configEnvs) Read() {
 	if err != nil {
 		log.Fatal(err)
 	}
+}
 
+func (config *configEnvs) LogValues() {
 	s := reflect.ValueOf(config).Elem()
 	typeOfT := s.Type()
 	for i := 0; i < s.NumField(); i++ {
