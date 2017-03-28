@@ -2,7 +2,7 @@ NAME    := unsee
 VERSION := $(shell git describe --tags --always --dirty='-dev')
 
 # Alertmanager instance used when running locally, points to mock data
-ALERTMANAGER_URI := https://raw.githubusercontent.com/prymitive/alertmanager-demo-api/master
+ALERTMANAGER_URI := https://raw.githubusercontent.com/cloudflare/unsee/master/mock
 # Listen port when running locally
 PORT := 8080
 
@@ -44,7 +44,7 @@ clean:
 run: $(NAME)
 	DEBUG=true \
 	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
-	COLOR_LABELS_UNIQUE="instance" \
+	COLOR_LABELS_UNIQUE="instance cluster" \
 	COLOR_LABELS_STATIC="job" \
 	PORT=$(PORT) \
 	./$(NAME)
@@ -59,7 +59,7 @@ run-docker: docker-image
 	docker run \
 	    --name $(NAME) \
 	    -e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
-			-e COLOR_LABELS_UNIQUE="instance" \
+			-e COLOR_LABELS_UNIQUE="instance cluster" \
 			-e COLOR_LABELS_STATIC="job" \
 	    -e PORT=$(PORT) \
 	    -p $(PORT):$(PORT) \
