@@ -29,6 +29,7 @@ func mockConfig() {
 func ginTestEngine() *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
+	r.SetHTMLTemplate(loadTemplates("templates"))
 	setupRouter(r)
 	return r
 }
@@ -256,6 +257,14 @@ var acTests = []acTestCase{
 			"node=localhost",
 		},
 	},
+	// duplicated to test reponse caching
+	acTestCase{
+		Term: "Nod",
+		Results: []string{
+			"node!=localhost",
+			"node=localhost",
+		},
+	},
 }
 
 func TestAutocomplete(t *testing.T) {
@@ -291,6 +300,48 @@ func TestAutocomplete(t *testing.T) {
 			if ur[i] != acTest.Results[i] {
 				t.Errorf("Result mismatch, got '%s' when '%s' was expected", ur[i], acTest.Results[i])
 			}
+		}
+	}
+}
+
+type staticFileTestCase struct {
+	path string
+	code int
+}
+
+var staticFileTests = []staticFileTestCase{
+	staticFileTestCase{
+		path: "/favicon.ico",
+		code: 200,
+	},
+	staticFileTestCase{
+		path: "/static/unsee.js",
+		code: 200,
+	},
+	staticFileTestCase{
+		path: "/static/managed/js/assets.txt",
+		code: 200,
+	},
+	staticFileTestCase{
+		path: "/xxx",
+		code: 404,
+	},
+	staticFileTestCase{
+		path: "/static/abcd",
+		code: 404,
+	},
+}
+
+func TestStaticFiles(t *testing.T) {
+	mockConfig()
+	mockAlerts()
+	r := ginTestEngine()
+	for _, staticFileTest := range staticFileTests {
+		req, _ := http.NewRequest("GET", staticFileTest.path, nil)
+		resp := httptest.NewRecorder()
+		r.ServeHTTP(resp, req)
+		if resp.Code != staticFileTest.code {
+			t.Errorf("Invalid status code for GET %s: %d", staticFileTest.path, resp.Code)
 		}
 	}
 }
