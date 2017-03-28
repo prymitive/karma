@@ -67,9 +67,8 @@ func (a UnseeAlertList) Swap(i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
 func (a UnseeAlertList) Less(i, j int) bool {
-	// compare timestamps rounded up to 2s, subsecond accuracy is lost to keep
-	// ordering stable even with small time drift
-	return a[i].StartsAt.Round(2 * time.Second).After(a[j].StartsAt.Round(2 * time.Second))
+	// compare timestamps, if equal compare labels
+	return a[i].StartsAt.After(a[j].StartsAt)
 }
 
 // UnseeAlertGroup is vanilla Alertmanager group, but alerts are flattened
