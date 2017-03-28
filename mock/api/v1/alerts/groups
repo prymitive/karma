@@ -1,0 +1,282 @@
+{
+  "status": "success",
+  "data": [
+    {
+      "labels": {
+        "alertname": "HTTP_Probe_Failed",
+        "cluster": "dev"
+      },
+      "blocks": [
+        {
+          "routeOpts": {
+            "receiver": "default",
+            "groupBy": [
+              "alertname",
+              "cluster"
+            ],
+            "groupWait": 30000000000,
+            "groupInterval": 300000000000,
+            "repeatInterval": 10800000000000
+          },
+          "alerts": [
+            {
+              "labels": {
+                "alertname": "HTTP_Probe_Failed",
+                "instance": "web1",
+                "job": "node_exporter",
+                "cluster": "dev"
+              },
+              "annotations": {
+                "help": "Example help annotation",
+                "summary": "Example summary",
+                "url": "http://localhost/example.html"
+              },
+              "startsAt": "2017-02-18T01:14:36Z",
+              "endsAt": "0001-01-01T00:00:00Z",
+              "generatorURL": "http://localhost/graph",
+              "inhibited": false,
+              "silenced": 1
+            },
+            {
+              "labels": {
+                "alertname": "HTTP_Probe_Failed",
+                "instance": "web2",
+                "job": "node_exporter",
+                "cluster": "dev"
+              },
+              "annotations": {
+                "summary": "Example summary"
+              },
+              "startsAt": "2017-02-18T01:14:37Z",
+              "endsAt": "0001-01-01T00:00:00Z",
+              "generatorURL": "http://localhost/graph",
+              "inhibited": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "labels": {
+        "alertname": "Host_Down"
+      },
+      "blocks": [
+        {
+          "routeOpts": {
+            "receiver": "default",
+            "groupBy": [
+              "alertname",
+              "cluster"
+            ],
+            "groupWait": 30000000000,
+            "groupInterval": 300000000000,
+            "repeatInterval": 10800000000000
+          },
+          "alerts": [
+            {
+              "labels": {
+                "alertname": "Host_Down",
+                "instance": "server1",
+                "job": "node_ping",
+                "cluster": "prod"
+              },
+              "annotations": {
+                "summary": "Example summary",
+                "url": "http://localhost/example.html"
+              },
+              "startsAt": "2017-02-18T01:14:38Z",
+              "endsAt": "0001-01-01T00:00:00Z",
+              "generatorURL": "http://localhost/graph",
+              "inhibited": false,
+              "silenced": 1
+            },
+            {
+              "labels": {
+                "alertname": "Host_Down",
+                "instance": "server2",
+                "job": "node_ping",
+                "cluster": "prod"
+              },
+              "annotations": {
+                "summary": "Example summary"
+              },
+              "startsAt": "2017-02-18T01:14:39Z",
+              "endsAt": "0001-01-01T00:00:00Z",
+              "generatorURL": "http://localhost/graph",
+              "inhibited": false
+            },
+            {
+              "labels": {
+                "alertname": "Host_Down",
+                "instance": "server3",
+                "job": "node_ping",
+                "cluster": "staging"
+              },
+              "annotations": {
+                "summary": "Example summary"
+              },
+              "startsAt": "2017-02-18T01:14:40Z",
+              "endsAt": "0001-01-01T00:00:00Z",
+              "generatorURL": "http://localhost/graph",
+              "inhibited": false
+            },
+            {
+              "labels": {
+                "alertname": "Host_Down",
+                "instance": "server4",
+                "job": "node_ping",
+                "cluster": "staging"
+              },
+              "annotations": {
+                "summary": "Example summary"
+              },
+              "startsAt": "2017-02-18T01:14:41Z",
+              "endsAt": "0001-01-01T00:00:00Z",
+              "generatorURL": "http://localhost/graph",
+              "inhibited": false
+            },
+            {
+              "labels": {
+                "alertname": "Host_Down",
+                "instance": "server5",
+                "job": "node_ping",
+                "cluster": "staging"
+              },
+              "annotations": {
+                "summary": "Example summary"
+              },
+              "startsAt": "2017-02-18T01:14:42Z",
+              "endsAt": "0001-01-01T00:00:00Z",
+              "generatorURL": "http://localhost/graph",
+              "inhibited": false
+            },
+            {
+              "labels": {
+                "alertname": "Host_Down",
+                "instance": "server6",
+                "job": "node_ping",
+                "cluster": "dev"
+              },
+              "annotations": {
+                "summary": "Example summary"
+              },
+              "startsAt": "2017-02-18T01:14:43Z",
+              "endsAt": "0001-01-01T00:00:00Z",
+              "generatorURL": "http://localhost/graph",
+              "inhibited": false,
+              "silenced": 2
+            },
+            {
+              "labels": {
+                "alertname": "Host_Down",
+                "instance": "server7",
+                "job": "node_ping",
+                "cluster": "dev"
+              },
+              "annotations": {
+                "summary": "Example summary"
+              },
+              "startsAt": "2017-02-18T01:14:34Z",
+              "endsAt": "0001-01-01T00:00:00Z",
+              "generatorURL": "http://localhost/graph",
+              "inhibited": false,
+              "silenced": 2
+            },
+            {
+              "labels": {
+                "alertname": "Host_Down",
+                "instance": "server8",
+                "job": "node_ping",
+                "cluster": "dev"
+              },
+              "annotations": {
+                "summary": "Example summary"
+              },
+              "startsAt": "2017-02-18T01:14:48Z",
+              "endsAt": "0001-01-01T00:00:00Z",
+              "generatorURL": "http://localhost/graph",
+              "inhibited": false,
+              "silenced": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "labels": {
+        "alertname": "Memory_Usage_High",
+        "cluster": "prod"
+      },
+      "blocks": [
+        {
+          "routeOpts": {
+            "receiver": "default",
+            "groupBy": [
+              "alertname",
+              "cluster"
+            ],
+            "groupWait": 30000000000,
+            "groupInterval": 300000000000,
+            "repeatInterval": 10800000000000
+          },
+          "alerts": [
+            {
+              "labels": {
+                "alertname": "Memory_Usage_Too_High",
+                "instance": "server2",
+                "job": "node_exporter",
+                "cluster": "prod"
+              },
+              "annotations": {
+                "alert": "Memory usage exceeding threshold",
+                "dashboard": "http://localhost/dashboard.html"
+              },
+              "startsAt": "2017-02-18T01:14:36Z",
+              "endsAt": "0001-01-01T00:00:00Z",
+              "generatorURL": "http://localhost/graph",
+              "inhibited": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "labels": {
+        "alertname": "Free_Disk_Space_Too_Low",
+        "cluster": "staging"
+      },
+      "blocks": [
+        {
+          "routeOpts": {
+            "receiver": "default",
+            "groupBy": [
+              "alertname",
+              "cluster"
+            ],
+            "groupWait": 30000000000,
+            "groupInterval": 300000000000,
+            "repeatInterval": 10800000000000
+          },
+          "alerts": [
+            {
+              "labels": {
+                "alertname": "Memory_Usage_Too_High",
+                "instance": "server5",
+                "job": "node_exporter",
+                "cluster": "staging"
+              },
+              "annotations": {
+                "alert": "Less than 10% disk space is free",
+                "dashboard": "http://localhost/dashboard.html"
+              },
+              "startsAt": "2017-02-18T01:14:38Z",
+              "endsAt": "0001-01-01T00:00:00Z",
+              "generatorURL": "http://localhost/graph",
+              "inhibited": false
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
