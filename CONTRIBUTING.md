@@ -2,7 +2,8 @@
 
 ## Getting Started
 
-To get started follow `Building from source` section of the `README.md` file.
+To get started follow `Building from source` section of the [README](README.md)
+file.
 
 ## Testing changes
 
@@ -31,7 +32,7 @@ To update specific vendor package run manul manually:
 ## Running
 
 To build and start `unsee` from local branch see `Running` section of the
-`README.md` file.
+[README](README.md) file.
 
 When working with assets (templates, stylesheets and javascript files) `DEBUG`
 flag for make can be set, which will recompile binary assets in debug mode,

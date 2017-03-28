@@ -31,8 +31,8 @@ To clone git repo and build the binary yourself run:
 
 `unsee` is configured via environment variables or command line flags.
 Environment variable `ALERTMANAGER_URI` or cli flag `-alertmanager.uri` is the
-only option required to run. See `Environment variables` section below for the
-full list of supported environment variables. Examples:
+only option required to run. See [Environment variables](#environment-variables)
+section below for the full list of supported environment variables. Examples:
 
     ALERTMANAGER_URI=https://alertmanager.example.com unsee
     unsee -alertmanager.uri https://alertmanager.example.com
@@ -255,3 +255,11 @@ This option can also be set using `-strip.labels` flag. Example:
     $ unsee -strip.labels "prometheus_instance alert_type"
 
 This variable is optional and default is not set (all labels will be shown).
+
+## Contributing
+
+Please see [CONTRIBUTING](/CONTRIBUTING.md) for details.
+
+## License
+
+Apache License 2.0, please see [LICENSE](/LICENSE).
