@@ -10,9 +10,12 @@ SOURCES       := $(wildcard *.go) $(wildcard */*.go)
 ASSET_SOURCES := $(wildcard assets/*/* assets/*/*/*)
 
 GO_BINDATA_MODE := prod
+GIN_DEBUG := false
 ifdef DEBUG
 	GO_BINDATA_FLAGS = -debug
 	GO_BINDATA_MODE  = debug
+	GIN_DEBUG = true
+	DOCKER_ARGS = -v $(CURDIR)/assets:$(CURDIR)/assets:ro
 endif
 
 .DEFAULT_GOAL := $(NAME)
@@ -42,10 +45,10 @@ clean:
 
 .PHONY: run
 run: $(NAME)
-	DEBUG=true \
 	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
 	COLOR_LABELS_UNIQUE="instance cluster" \
 	COLOR_LABELS_STATIC="job" \
+	DEBUG="$(GIN_DEBUG)" \
 	PORT=$(PORT) \
 	./$(NAME)
 
@@ -58,9 +61,11 @@ run-docker: docker-image
 	@docker rm -f $(NAME) || true
 	docker run \
 	    --name $(NAME) \
+			$(DOCKER_ARGS) \
 	    -e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
 			-e COLOR_LABELS_UNIQUE="instance cluster" \
 			-e COLOR_LABELS_STATIC="job" \
+			-e DEBUG="$(GIN_DEBUG)" \
 	    -e PORT=$(PORT) \
 	    -p $(PORT):$(PORT) \
 	    $(NAME):$(VERSION)

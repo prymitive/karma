@@ -4,9 +4,6 @@ import (
 	"crypto/sha1"
 	"encoding/json"
 	"fmt"
-	"github.com/cloudflare/unsee/config"
-	"github.com/cloudflare/unsee/models"
-	"github.com/cloudflare/unsee/store"
 	"io"
 	"net/http"
 	"sort"
@@ -14,8 +11,17 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudflare/unsee/config"
+	"github.com/cloudflare/unsee/models"
+	"github.com/cloudflare/unsee/store"
+
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+)
+
+var (
+	// needed for serving favicon from binary assets
+	faviconFileServer = http.FileServer(newBinaryFileSystem("static"))
 )
 
 func boolInSlice(boolArray []bool, value bool) bool {
@@ -262,7 +268,5 @@ func autocomplete(c *gin.Context) {
 }
 
 func favicon(c *gin.Context) {
-	fs := newBinaryFileSystem("static")
-	fileserver := http.FileServer(fs)
-	fileserver.ServeHTTP(c.Writer, c.Request)
+	faviconFileServer.ServeHTTP(c.Writer, c.Request)
 }
