@@ -70,8 +70,6 @@ func init() {
 }
 
 func setupRouter(router *gin.Engine) {
-	router.SetHTMLTemplate(loadTemplates("templates"))
-
 	router.Use(static.Serve("/static", newBinaryFileSystem("static")))
 
 	router.GET("/favicon.ico", favicon)
@@ -107,7 +105,7 @@ func main() {
 	}
 
 	router := gin.New()
-	setupRouter(router)
+	router.SetHTMLTemplate(loadTemplates("templates"))
 
 	prom := ginprometheus.NewPrometheus("gin")
 	prom.Use(router)
@@ -121,5 +119,6 @@ func main() {
 		router.Use(sentry.Recovery(raven.DefaultClient, false))
 	}
 
+	setupRouter(router)
 	router.Run()
 }
