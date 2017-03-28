@@ -115,7 +115,9 @@ This variable is required and there is no default value.
 
 #### DEBUG
 
-Will enable [gin](https://github.com/gin-gonic/gin) debug mode. Examples:
+Will enable [gin](https://github.com/gin-gonic/gin) debug mode. This will
+configure to print out more debugging information on startup.
+Examples:
 
     DEBUG=true
     DEBUG=false
