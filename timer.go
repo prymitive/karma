@@ -6,7 +6,6 @@ import (
 	"io"
 	"runtime"
 	"sort"
-	"strconv"
 	"time"
 
 	"github.com/cloudflare/unsee/alertmanager"
@@ -48,9 +47,9 @@ func PullFromAlertmanager() {
 	}
 
 	silenceStore := make(map[string]models.UnseeSilence)
-	for _, silence := range silenceResponse.Data.Silences {
+	for _, silence := range silenceResponse.Data {
 		jiraID, jiraLink := transform.DetectJIRAs(&silence)
-		silenceStore[strconv.Itoa(silence.ID)] = models.UnseeSilence{
+		silenceStore[silence.ID] = models.UnseeSilence{
 			AlertmanagerSilence: silence,
 			JiraID:              jiraID,
 			JiraURL:             jiraLink,
@@ -116,7 +115,7 @@ func PullFromAlertmanager() {
 
 		for _, alert := range alerts {
 			ag.Alerts = append(ag.Alerts, alert)
-			if alert.Silenced > 0 {
+			if alert.Silenced != "" {
 				counterAlertsSilenced++
 			} else {
 				counterAlertsUnsilenced++

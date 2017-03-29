@@ -7,7 +7,6 @@ import (
 	"io"
 	"net/http"
 	"sort"
-	"strconv"
 	"strings"
 	"time"
 
@@ -153,9 +152,9 @@ func alerts(c *gin.Context) {
 				}
 				io.WriteString(h, string(aj))
 
-				if alert.Silenced > 0 {
-					if silence, found := store.SilenceStore.Store[strconv.Itoa(alert.Silenced)]; found {
-						silences[strconv.Itoa(alert.Silenced)] = silence
+				if alert.Silenced != "" {
+					if silence, found := store.SilenceStore.Store[alert.Silenced]; found {
+						silences[alert.Silenced] = silence
 					}
 					agCopy.SilencedCount++
 					countLabel(counters, "@silenced", "true")

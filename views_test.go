@@ -64,10 +64,9 @@ func mockAlerts() {
 
 	silences := `{
     "status": "success",
-    "data": {
-      "silences": [
+    "data": [
         {
-          "id": 1,
+          "id": "1",
           "matchers": [
             {
               "name": "alertname",
@@ -81,9 +80,7 @@ func mockAlerts() {
           "createdBy": "john@localhost",
           "comment": "JIRA-3273"
         }
-      ],
-      "totalSilences": 1100
-    }
+      ]
   }`
 	httpmock.RegisterResponder("GET", "http://localhost/api/v1/silences?limit=4294967295", httpmock.NewStringResponder(200, silences))
 
@@ -119,7 +116,7 @@ func mockAlerts() {
               "endsAt": "0001-01-01T00:00:00Z",
               "generatorURL": "https://localhost/prometheus",
               "inhibited": false,
-              "silenced": 1
+              "silenced": "1"
             }
           ]
         }
