@@ -33,7 +33,7 @@ var Option = (function(params) {
 
             var q = QueryString.Parse();
             if (q[this.QueryParam] != undefined) {
-                this.Set(val);
+                this.Set(q[this.QueryParam]);
             }
 
             if (currentVal != val) {
