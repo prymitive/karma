@@ -20,8 +20,7 @@ endif
 
 .DEFAULT_GOAL := $(NAME)
 
-.build/deps.ok: .gitmodules
-	git submodule update --init --recursive
+.build/deps.ok:
 	go get -u github.com/jteeuwen/go-bindata/...
 	go get -u github.com/elazarl/go-bindata-assetfs/...
 	go get -u github.com/golang/lint/golint
@@ -79,18 +78,18 @@ test: lint bindata_assetfs.go
 	@go test -cover `go list ./... | grep -v /vendor/`
 
 .build/vendor.ok:
-	go get github.com/kovetskiy/manul
+	go get -u github.com/kardianos/govendor
 	mkdir -p .build
 	touch $@
 
 .PHONY: vendor
 vendor: .build/vendor.ok
-	manul -Crt
-	manul -Irt
+	govendor remove +u
+	govendor fetch +m +e
 
 .PHONY: vendor-update
 vendor-update: .build/vendor.ok
-	manul -Urt
+	govendor update +v
 
 #======================== asset helper targets =================================
 

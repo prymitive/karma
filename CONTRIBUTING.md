@@ -17,17 +17,18 @@ If you use any new dependency or remove any existing one, please run:
 
     make vendor
 
-This will install and run [manul](https://github.com/kovetskiy/manul), which
-will detect all used package and add/remove git submodule pointers in the
-vendor directory.
+This will install and run [govendor](https://github.com/kardianos/govendor),
+which will detect all used package and fetch them into the vendor directory.
 
 To update all vendor package run:
 
     make vendor-update
 
-To update specific vendor package run manul manually:
+To update specific vendor package run `govendor` manually:
 
-    manul -Urt <package>
+    govendor update <import-path-filter>
+
+See [govendor](https://github.com/kardianos/govendor) documentation for details.
 
 ## Running
 
