@@ -2,10 +2,11 @@ package transform
 
 import (
 	"crypto/sha1"
-	"github.com/cloudflare/unsee/config"
-	"github.com/cloudflare/unsee/models"
 	"io"
 	"math/rand"
+
+	"github.com/cloudflare/unsee/config"
+	"github.com/cloudflare/unsee/models"
 
 	"github.com/hansrodtang/randomcolor"
 )
