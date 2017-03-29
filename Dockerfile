@@ -9,4 +9,6 @@ RUN go install \
     github.com/cloudflare/unsee && \
     rm -fr /go/src
 
+EXPOSE 8080
+
 CMD ["unsee"]
