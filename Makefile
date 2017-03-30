@@ -89,7 +89,7 @@ vendor: .build/vendor.ok
 
 .PHONY: vendor-update
 vendor-update: .build/vendor.ok
-	govendor update +v
+	govendor fetch +v
 
 #======================== asset helper targets =================================
 
