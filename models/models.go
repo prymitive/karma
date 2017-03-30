@@ -47,13 +47,15 @@ type UnseeSilence struct {
 }
 
 // UnseeAlert is vanilla alert + some additional attributes
-// Unsee extends an alert object with Links map, it's generated from annotations
-// if annotation value is an url it's pulled out of annotation map
-// and returned under links field, Unsee UI used this to show links differently
-// than other annotations
+// unsee extends an alert object with:
+// * Links map, it's generated from annotations if annotation value is an url
+//   it's pulled out of annotation map and returned under links field,
+//   unsee UI used this to show links differently than other annotations
+// * Fingerprint, which is a sha1 of the entire alert
 type UnseeAlert struct {
 	AlertmanagerAlert
-	Links map[string]string `json:"links"`
+	Links       map[string]string `json:"links"`
+	Fingerprint string            `json:"-"`
 }
 
 // UnseeAlertList is flat list of UnseeAlert objects
@@ -67,8 +69,14 @@ func (a UnseeAlertList) Swap(i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
 func (a UnseeAlertList) Less(i, j int) bool {
-	// compare timestamps, if equal compare labels
-	return a[i].StartsAt.After(a[j].StartsAt)
+	// compare timestamps, if equal compare fingerprints to stable sort order
+	if a[i].StartsAt.After(a[j].StartsAt) {
+		return true
+	}
+	if a[i].StartsAt.Before(a[j].StartsAt) {
+		return false
+	}
+	return a[i].Fingerprint < a[j].Fingerprint
 }
 
 // UnseeAlertGroup is vanilla Alertmanager group, but alerts are flattened

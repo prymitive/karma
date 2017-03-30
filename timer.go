@@ -100,12 +100,12 @@ func PullFromAlertmanager() {
 
 				apiAlert.Labels = transform.StripLables(ignoredLabels, apiAlert.Labels)
 
-				hash := fmt.Sprintf("%x", structhash.Sha1(apiAlert, 1))
+				apiAlert.Fingerprint = fmt.Sprintf("%x", structhash.Sha1(apiAlert, 1))
 
 				// add alert to map if not yet present
-				if _, found := alerts[hash]; !found {
-					alerts[hash] = apiAlert
-					io.WriteString(agHasher, hash) // alert group hasher
+				if _, found := alerts[apiAlert.Fingerprint]; !found {
+					alerts[apiAlert.Fingerprint] = apiAlert
+					io.WriteString(agHasher, apiAlert.Fingerprint) // alert group hasher
 				}
 
 				for k, v := range alert.Labels {
