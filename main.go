@@ -1,6 +1,8 @@
 package main
 
 import (
+	"path"
+	"strings"
 	"sync"
 	"time"
 
@@ -69,14 +71,24 @@ func init() {
 	metricAlertmanagerErrors.With(prometheus.Labels{"endpoint": "silences"}).Set(0)
 }
 
-func setupRouter(router *gin.Engine) {
-	router.Use(static.Serve("/static", newBinaryFileSystem("static")))
+func getViewURL(sub string) string {
+	u := path.Join(config.Config.WebPrefix, sub)
+	if strings.HasSuffix(sub, "/") {
+		// if sub path had trailing slash then add it here, since path.Join will
+		// skip it
+		return u + "/"
+	}
+	return u
+}
 
-	router.GET("/favicon.ico", favicon)
-	router.GET("/", index)
-	router.GET("/help", help)
-	router.GET("/alerts.json", alerts)
-	router.GET("/autocomplete.json", autocomplete)
+func setupRouter(router *gin.Engine) {
+	router.Use(static.Serve(getViewURL("/static"), newBinaryFileSystem("static")))
+
+	router.GET(getViewURL("/favicon.ico"), favicon)
+	router.GET(getViewURL("/"), index)
+	router.GET(getViewURL("/help"), help)
+	router.GET(getViewURL("/alerts.json"), alerts)
+	router.GET(getViewURL("/autocomplete.json"), autocomplete)
 }
 
 func main() {

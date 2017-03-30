@@ -13,9 +13,9 @@
     <title>(◕︵◕)</title>
 
     {{ range .CSSFiles }}
-    <link rel="stylesheet" href="/static/managed/css/{{ . }}"> {{- end }}
+    <link rel="stylesheet" href="{{ $.WebPrefix }}static/managed/css/{{ . }}"> {{- end }}
 
-    <link rel="stylesheet" href="/static/base.css">
+    <link rel="stylesheet" href="{{ .WebPrefix }}static/base.css">
 
 </head>
 
@@ -248,7 +248,7 @@
             <nav>
                 <ul class="pager">
                     <li>
-                        <a href="/">
+                        <a href="{{ .WebPrefix }}">
                             <i class="fa fa-arrow-circle-left"></i> Back
                         </a>
                     </li>

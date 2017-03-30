@@ -260,6 +260,22 @@ This option can also be set using `-strip.labels` flag. Example:
 
 This variable is optional and default is not set (all labels will be shown).
 
+#### WEB_PREFIX
+
+URL root for unsee, you can use to if you wish to serve it from location other
+than /. Examples:
+
+    WEB_PREFIX=/unsee/
+
+This will configure unsee to serve requests from http://localhost/unsee/
+instead http://localhost/.
+
+This option can also be set using `-web.prefix` flag. Example:
+
+    $ unsee -web.prefix /unsee/
+
+Default is `/`.
+
 ## Contributing
 
 Please see [CONTRIBUTING](/CONTRIBUTING.md) for details.

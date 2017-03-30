@@ -36,6 +36,7 @@ type configEnvs struct {
 	SentryDSN           string             `envconfig:"SENTRY_DSN" help:"Sentry DSN for Go exceptions"`
 	SentryPublicDSN     string             `envconfig:"SENTRY_PUBLIC_DSN" help:"Sentry DSN for javascript exceptions"`
 	StripLabels         spaceSeparatedList `envconfig:"STRIP_LABELS" help:"List of labels to ignore"`
+	WebPrefix           string             `envconfig:"WEB_PREFIX" default:"/" help:"URL prefix"`
 }
 
 // Config exposes all options required to run

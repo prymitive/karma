@@ -8,15 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" id="favicon" href="/static/favicon.ico">
+    <link rel="shortcut icon" id="favicon" href="{{ .WebPrefix }}static/favicon.ico">
 
     <title>(◕︵◕)</title>
 
     {{ range .CSSFiles }}
-    <link rel="stylesheet" href="/static/managed/css/{{ . }}">
+    <link rel="stylesheet" href="{{ $.WebPrefix }}static/managed/css/{{ . }}">
     {{- end }}
 
-    <link rel="stylesheet" href="/static/base.css?_={{ .NowQ }}">
+    <link rel="stylesheet" href="{{ .WebPrefix }}static/base.css?_={{ .NowQ }}">
 
 </head>
 
@@ -144,7 +144,7 @@
     </div>
 
     {{ range .JSFiles }}
-    <script type="text/javascript" src="/static/managed/js/{{ . }}"></script>
+    <script type="text/javascript" src="{{ $.WebPrefix }}static/managed/js/{{ . }}"></script>
     {{- end }}
 
     {{ template "templates/js.html" .}}

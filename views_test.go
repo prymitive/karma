@@ -45,6 +45,19 @@ func TestIndex(t *testing.T) {
 	}
 }
 
+func TestIndexPrefix(t *testing.T) {
+	os.Setenv("WEB_PREFIX", "/prefix")
+	defer os.Unsetenv("WEB_PREFIX")
+	mockConfig()
+	r := ginTestEngine()
+	req, _ := http.NewRequest("GET", "/prefix/", nil)
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Code != http.StatusOK {
+		t.Errorf("GET /prefix/ returned status %d", resp.Code)
+	}
+}
+
 func TestHelp(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()
@@ -53,6 +66,25 @@ func TestHelp(t *testing.T) {
 	r.ServeHTTP(resp, req)
 	if resp.Code != http.StatusOK {
 		t.Errorf("GET /help returned status %d", resp.Code)
+	}
+}
+
+func TestHelpPrefix(t *testing.T) {
+	os.Setenv("WEB_PREFIX", "/prefix")
+	defer os.Unsetenv("WEB_PREFIX")
+	mockConfig()
+	r := ginTestEngine()
+	req, _ := http.NewRequest("GET", "/prefix/help", nil)
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Code != http.StatusOK {
+		t.Errorf("GET /prefix/help returned status %d", resp.Code)
+	}
+	req, _ = http.NewRequest("GET", "/help", nil)
+	resp = httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Code != http.StatusNotFound {
+		t.Errorf("GET /help returned status %d, expected 404", resp.Code)
 	}
 }
 
@@ -337,6 +369,45 @@ func TestStaticFiles(t *testing.T) {
 	mockAlerts()
 	r := ginTestEngine()
 	for _, staticFileTest := range staticFileTests {
+		req, _ := http.NewRequest("GET", staticFileTest.path, nil)
+		resp := httptest.NewRecorder()
+		r.ServeHTTP(resp, req)
+		if resp.Code != staticFileTest.code {
+			t.Errorf("Invalid status code for GET %s: %d", staticFileTest.path, resp.Code)
+		}
+	}
+}
+
+var staticFilePrefixTests = []staticFileTestCase{
+	staticFileTestCase{
+		path: "/sub/favicon.ico",
+		code: 200,
+	},
+	staticFileTestCase{
+		path: "/sub/static/unsee.js",
+		code: 200,
+	},
+	staticFileTestCase{
+		path: "/sub/static/managed/js/assets.txt",
+		code: 200,
+	},
+	staticFileTestCase{
+		path: "/sub/xxx",
+		code: 404,
+	},
+	staticFileTestCase{
+		path: "/sub/static/abcd",
+		code: 404,
+	},
+}
+
+func TestStaticFilesPrefix(t *testing.T) {
+	os.Setenv("WEB_PREFIX", "/sub")
+	defer os.Unsetenv("WEB_PREFIX")
+	mockConfig()
+	mockAlerts()
+	r := ginTestEngine()
+	for _, staticFileTest := range staticFilePrefixTests {
 		req, _ := http.NewRequest("GET", staticFileTest.path, nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
