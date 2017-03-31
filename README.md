@@ -9,6 +9,17 @@ to alert data, therefore safe to be accessed by wider audience.
 
 ![Screenshot](/screenshot.png)
 
+## Supported Alertmanager versions
+
+Alertmanager's API isn't stable yet and can change between releases, make sure
+that the correct version of unsee is used:
+
+* `0.1` release supports Alertmanager `0.4`
+* `0.2` release supports Alertmanager `0.5`
+
+`master` branch in git will always work with the latest supported Alertmanager
+release.
+
 ## Building and running
 
 ### Installing using the go command
@@ -18,6 +29,9 @@ unsee is go installable, so the easiest way is to run:
     go install github.com/cloudflare/unsee
 
 The `unsee` binary will be installed into `$GOPATH/bin` directory.
+Note that this will build the latest master version which might not work with
+your Alertmanager version. See
+[supported Alertmanager versions](#supported-alertmanager-versions).
 
 ### Building from source
 
@@ -25,9 +39,16 @@ To clone git repo and build the binary yourself run:
 
     git clone https://github.com/cloudflare/unsee $GOPATH/src/github.com/cloudflare/unsee
     cd $GOPATH/src/github.com/cloudflare/unsee
-    make
 
-`unsee` binary will be compiled in project directory.
+Check [supported Alertmanager versions](#supported-alertmanager-versions) and if
+needed switch to the release branch that supports your Alertmanager version.
+For example to build unsee `0.2.x` run:
+
+    git checkout -t release-0.2
+
+To finally compile `unsee` the binary run:
+
+    make
 
 ## Running
 
