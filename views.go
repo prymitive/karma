@@ -123,10 +123,10 @@ func alerts(c *gin.Context) {
 	silences := map[string]models.UnseeSilence{}
 	colors := models.UnseeColorMap{}
 	counters := models.UnseeCountMap{}
-	store.StoreLock.RLock()
+	store.Store.Lock.RLock()
 
 	var matches int
-	for _, ag := range store.AlertStore.Store {
+	for _, ag := range store.Store.Alerts {
 		agCopy := models.UnseeAlertGroup{
 			ID:     ag.ID,
 			Labels: ag.Labels,
@@ -155,8 +155,8 @@ func alerts(c *gin.Context) {
 				io.WriteString(h, string(aj))
 
 				if alert.Silenced != "" {
-					if silence, found := store.SilenceStore.Store[alert.Silenced]; found {
-						silences[alert.Silenced] = silence
+					if silence := store.Store.GetSilence(alert.Silenced); silence != nil {
+						silences[alert.Silenced] = *silence
 					}
 					agCopy.SilencedCount++
 					countLabel(counters, "@silenced", "true")
@@ -166,7 +166,7 @@ func alerts(c *gin.Context) {
 				}
 
 				for key, value := range alert.Labels {
-					if keyMap, foundKey := store.ColorStore.Store[key]; foundKey {
+					if keyMap, foundKey := store.Store.Colors[key]; foundKey {
 						if color, foundColor := keyMap[value]; foundColor {
 							if _, found := colors[key]; !found {
 								colors[key] = map[string]models.UnseeLabelColor{}
@@ -207,7 +207,7 @@ func alerts(c *gin.Context) {
 		panic(err)
 	}
 	apiCache.Set(cacheKey, data, -1)
-	store.StoreLock.RUnlock()
+	store.Store.Lock.RUnlock()
 
 	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
 	logAlertsView(c, "MIS", time.Since(start))
@@ -241,8 +241,8 @@ func autocomplete(c *gin.Context) {
 
 	acData := []string{}
 
-	store.StoreLock.RLock()
-	for _, hint := range store.AutocompleteStore.Store {
+	store.Store.Lock.RLock()
+	for _, hint := range store.Store.Autocomplete {
 		if strings.HasPrefix(strings.ToLower(hint.Value), strings.ToLower(term)) {
 			acData = append(acData, hint.Value)
 		} else {
@@ -253,7 +253,7 @@ func autocomplete(c *gin.Context) {
 			}
 		}
 	}
-	store.StoreLock.RUnlock()
+	store.Store.Lock.RUnlock()
 
 	sort.Strings(acData)
 	data, err := json.Marshal(acData)

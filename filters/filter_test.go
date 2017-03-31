@@ -281,10 +281,11 @@ var tests = []filterTest{
 func TestFilters(t *testing.T) {
 	for _, ft := range tests {
 		if &ft.Silence != nil {
-			store.SilenceStore.Store = map[string]models.UnseeSilence{}
-			store.SilenceStore.Store[ft.Silence.ID] = ft.Silence
+			store.Store.SetSilences(map[string]models.UnseeSilence{
+				ft.Silence.ID: ft.Silence,
+			})
 		} else {
-			store.SilenceStore.Store = map[string]models.UnseeSilence{}
+			store.Store.SetSilences(map[string]models.UnseeSilence{})
 		}
 		f := filters.NewFilter(ft.Expression)
 		if f == nil {

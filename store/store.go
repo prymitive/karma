@@ -2,45 +2,43 @@ package store
 
 import (
 	"sync"
-	"time"
 
 	"github.com/cloudflare/unsee/models"
 )
 
-type alertStoreType struct {
-	Store     []models.UnseeAlertGroup
-	Timestamp time.Time
+type dataStore struct {
+	Lock         sync.RWMutex
+	Alerts       []models.UnseeAlertGroup
+	Silences     map[string]models.UnseeSilence
+	Colors       models.UnseeColorMap
+	Autocomplete []models.UnseeAutocomplete
 }
 
-type silenceStoreType struct {
-	Store     map[string]models.UnseeSilence
-	Timestamp time.Time
+// Store will keep all Alertmanager data we collect
+var Store = dataStore{}
+
+// GetSilence returns silence data for specific silence id or nil if not found
+func (ds *dataStore) GetSilence(s string) *models.UnseeSilence {
+	ds.Lock.RLock()
+	defer ds.Lock.RUnlock()
+	if silence, found := ds.Silences[s]; found {
+		return &silence
+	}
+	return nil
 }
 
-type colorStoreType struct {
-	Store     models.UnseeColorMap
-	Timestamp time.Time
+// SetSilences allows to update silence list stored internally
+func (ds *dataStore) SetSilences(s map[string]models.UnseeSilence) {
+	ds.Lock.Lock()
+	defer ds.Lock.Unlock()
+	ds.Silences = s
 }
 
-type autocompleteStore struct {
-	Store     []models.UnseeAutocomplete
-	Timestamp time.Time
+// Update will lock the store and update internal data
+func (ds *dataStore) Update(alerts []models.UnseeAlertGroup, colors models.UnseeColorMap, autocomplete []models.UnseeAutocomplete) {
+	ds.Lock.Lock()
+	defer ds.Lock.Unlock()
+	ds.Alerts = alerts
+	ds.Colors = colors
+	ds.Autocomplete = autocomplete
 }
-
-var (
-	// StoreLock guards access to all variables storing internal data
-	// (alerts, silences, colors, ac)
-	StoreLock = sync.RWMutex{}
-
-	// AlertStore holds all alerts retrieved from Alertmanager
-	AlertStore = alertStoreType{}
-
-	// SilenceStore holds all silences retrieved from Alertmanager
-	SilenceStore = silenceStoreType{}
-
-	// ColorStore holds all color maps generated from alerts
-	ColorStore = colorStoreType{}
-
-	// AutocompleteStore holds all autocomplete data generated from alerts
-	AutocompleteStore = autocompleteStore{}
-)

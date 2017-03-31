@@ -16,11 +16,9 @@ func (filter *silenceAuthorFilter) Match(alert *models.UnseeAlert, matches int) 
 	if filter.IsValid {
 		var isMatch bool
 		if alert.Silenced != "" {
-			store.StoreLock.RLock()
-			if silence, found := store.SilenceStore.Store[alert.Silenced]; found {
+			if silence := store.Store.GetSilence(alert.Silenced); silence != nil {
 				isMatch = filter.Matcher.Compare(filter.Value, silence.CreatedBy)
 			}
-			store.StoreLock.RUnlock()
 		} else {
 			isMatch = filter.Matcher.Compare("", filter.Value)
 		}
@@ -42,8 +40,7 @@ func sinceAuthorAutocomplete(name string, operators []string, alerts []models.Un
 	tokens := map[string]models.UnseeAutocomplete{}
 	for _, alert := range alerts {
 		if alert.Silenced != "" {
-			store.StoreLock.RLock()
-			if silence, found := store.SilenceStore.Store[alert.Silenced]; found && silence.CreatedBy != "" {
+			if silence := store.Store.GetSilence(alert.Silenced); silence != nil {
 				for _, operator := range operators {
 					token := fmt.Sprintf("%s%s%s", name, operator, silence.CreatedBy)
 					tokens[token] = makeAC(token, []string{
@@ -54,7 +51,6 @@ func sinceAuthorAutocomplete(name string, operators []string, alerts []models.Un
 					})
 				}
 			}
-			store.StoreLock.RUnlock()
 		}
 	}
 	acData := []models.UnseeAutocomplete{}
