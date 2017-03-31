@@ -3,12 +3,12 @@ package main
 import (
 	"errors"
 	"fmt"
+	"html/template"
+	"net/http"
 	"strings"
 
 	log "github.com/Sirupsen/logrus"
 	assetfs "github.com/elazarl/go-bindata-assetfs"
-	"html/template"
-	"net/http"
 )
 
 type binaryFileSystem struct {
