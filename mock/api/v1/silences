@@ -14,7 +14,7 @@
         "startsAt": "2017-02-18T01:34:34Z",
         "endsAt": "0001-01-01T00:00:00Z",
         "createdAt": "2017-02-18T01:34:34Z",
-        "createdBy": "john@unicorn.corp",
+        "createdBy": "john@example.com",
         "comment": "Silenced instance"
       },
       {
@@ -34,7 +34,7 @@
         "startsAt": "2017-02-18T01:34:34Z",
         "endsAt": "0001-01-01T00:00:00Z",
         "createdAt": "2017-02-18T01:34:34Z",
-        "createdBy": "john@unicorn.corp",
+        "createdBy": "john@example.com",
         "comment": "Silenced Host_Down alerts in the dev cluster"
       }
     ],

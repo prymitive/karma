@@ -2,6 +2,7 @@ package main
 
 import (
 	"strings"
+
 	"github.com/cloudflare/unsee/filters"
 	"github.com/cloudflare/unsee/models"
 )
