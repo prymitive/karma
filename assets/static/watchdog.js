@@ -21,15 +21,13 @@ var Watchdog = (function() {
         // don't raise an error if autorefresh is disabled
         if (!Config.GetOption('autorefresh').Get()) return;
 
-        var now = moment().unix();
+        var now = moment().utc().unix();
         if (now - lastTs > maxLag) {
-            Grid.Clear();
             $('#errors').html(haml.compileHaml('fatal-error')({
                 last_ts: lastTs,
                 seconds_left: fatalCountdown
-            }));
+            })).show();
             Counter.Unknown();
-            Summary.Reset();
             if (!inCountdown) {
                 fatalCountdown = 60;
                 fatalReloadTimer = setTimeout(function() {
@@ -54,13 +52,8 @@ var Watchdog = (function() {
     }
 
 
-    updateMaxLag = function(interval) {
-        maxLag = Math.max(interval + 50, 300);
-    }
-
-
     updateTs = function(ts) {
-        lastTs = ts;
+        lastTs = ts.utc().unix();
     }
 
 
@@ -75,7 +68,6 @@ var Watchdog = (function() {
 
     return {
         Init: init,
-        UpdateTolerance: updateMaxLag,
         Pong: updateTs,
         GetLastUpdate: getTs,
         IsFatal: getFatal

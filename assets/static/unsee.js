@@ -26,7 +26,7 @@ var Unsee = (function(params) {
         Grid.Init();
         Autocomplete.Init();
         Filters.Init();
-        Watchdog.Init(10, 300);
+        Watchdog.Init(30, 60*15); // set watchdog to 15 minutes
 
         $(selectors.refreshButton).click(function() {
             if (!$(selectors.refreshButton).prop('disabled')) {
@@ -53,7 +53,6 @@ var Unsee = (function(params) {
             }
         }
         refreshInterval = rate;
-        Watchdog.UpdateTolerance(rate);
         Progress.Reset();
     }
 
@@ -131,10 +130,12 @@ var Unsee = (function(params) {
                             Colors.Update(resp['colors']);
                             Alerts.Update(resp);
                             updateCompleted();
-                            Watchdog.Pong(moment(resp['timestamp']).unix());
+                            Watchdog.Pong(moment(resp['timestamp']);
                             Unsee.WaitForNextReload();
-                            $(selectors.errors).html('');
-                            $(selectors.errors).hide('');
+                            if (!Watchdog.IsFatal()) {
+                              $(selectors.errors).html('');
+                              $(selectors.errors).hide('');
+                            }
                         } catch (err) {
                             Counter.Unknown();
                             handleError(err);
