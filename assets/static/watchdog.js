@@ -26,7 +26,7 @@ var Watchdog = (function() {
             $('#errors').html(haml.compileHaml('fatal-error')({
                 last_ts: lastTs,
                 seconds_left: fatalCountdown
-            }));
+            })).show();
             Counter.Unknown();
             if (!inCountdown) {
                 fatalCountdown = 60;
