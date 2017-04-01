@@ -132,8 +132,10 @@ var Unsee = (function(params) {
                             updateCompleted();
                             Watchdog.Pong(moment(resp['timestamp']);
                             Unsee.WaitForNextReload();
-                            $(selectors.errors).html('');
-                            $(selectors.errors).hide('');
+                            if (!Watchdog.IsFatal()) {
+                              $(selectors.errors).html('');
+                              $(selectors.errors).hide('');
+                            }
                         } catch (err) {
                             Counter.Unknown();
                             handleError(err);
