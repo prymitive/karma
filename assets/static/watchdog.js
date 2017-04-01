@@ -23,13 +23,11 @@ var Watchdog = (function() {
 
         var now = moment().utc().unix();
         if (now - lastTs > maxLag) {
-            Grid.Clear();
             $('#errors').html(haml.compileHaml('fatal-error')({
                 last_ts: lastTs,
                 seconds_left: fatalCountdown
             }));
             Counter.Unknown();
-            Summary.Reset();
             if (!inCountdown) {
                 fatalCountdown = 60;
                 fatalReloadTimer = setTimeout(function() {
