@@ -36,6 +36,5 @@
         "createdBy": "john@example.com",
         "comment": "Silenced Host_Down alerts in the dev cluster"
       }
-    ],
-  }
+  ]
 }
