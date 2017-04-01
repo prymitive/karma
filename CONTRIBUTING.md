@@ -5,6 +5,12 @@
 To get started follow `Building from source` section of the [README](README.md)
 file.
 
+## Git tags and branches
+
+Every release tag name will follow `vX.Y.Z` naming scheme, example: `v0.1.0`.
+Every release tree has a dedicated branch named `release-X.Y`, example:
+`release-0.1`.
+
 ## Testing changes
 
 To run included tests and check code style with `golint` run:
