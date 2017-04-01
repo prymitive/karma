@@ -54,11 +54,6 @@ var Watchdog = (function() {
     }
 
 
-    updateMaxLag = function(interval) {
-        maxLag = Math.max(interval + 50, 300);
-    }
-
-
     updateTs = function(ts) {
         lastTs = ts;
     }
@@ -75,7 +70,6 @@ var Watchdog = (function() {
 
     return {
         Init: init,
-        UpdateTolerance: updateMaxLag,
         Pong: updateTs,
         GetLastUpdate: getTs,
         IsFatal: getFatal

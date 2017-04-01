@@ -26,7 +26,7 @@ var Unsee = (function(params) {
         Grid.Init();
         Autocomplete.Init();
         Filters.Init();
-        Watchdog.Init(10, 300);
+        Watchdog.Init(30, 60*15); // set watchdog to 15 minutes
 
         $(selectors.refreshButton).click(function() {
             if (!$(selectors.refreshButton).prop('disabled')) {
@@ -53,7 +53,6 @@ var Unsee = (function(params) {
             }
         }
         refreshInterval = rate;
-        Watchdog.UpdateTolerance(rate);
         Progress.Reset();
     }
 
