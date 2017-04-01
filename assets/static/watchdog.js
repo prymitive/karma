@@ -21,7 +21,7 @@ var Watchdog = (function() {
         // don't raise an error if autorefresh is disabled
         if (!Config.GetOption('autorefresh').Get()) return;
 
-        var now = moment().unix();
+        var now = moment().utc().unix();
         if (now - lastTs > maxLag) {
             Grid.Clear();
             $('#errors').html(haml.compileHaml('fatal-error')({
@@ -55,7 +55,7 @@ var Watchdog = (function() {
 
 
     updateTs = function(ts) {
-        lastTs = ts;
+        lastTs = ts.utc().unix();
     }
 
 

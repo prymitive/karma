@@ -130,7 +130,7 @@ var Unsee = (function(params) {
                             Colors.Update(resp['colors']);
                             Alerts.Update(resp);
                             updateCompleted();
-                            Watchdog.Pong(moment(resp['timestamp']).unix());
+                            Watchdog.Pong(moment(resp['timestamp']);
                             Unsee.WaitForNextReload();
                             $(selectors.errors).html('');
                             $(selectors.errors).hide('');
