@@ -12,17 +12,12 @@ import (
 	log "github.com/Sirupsen/logrus"
 )
 
-type silencesData struct {
-	Silences      []models.AlertmanagerSilence `json:"silences"`
-	TotalSilences int                          `json:"totalSilences"`
-}
-
 // SilenceAPIResponse is what Alertmanager API returns
 type SilenceAPIResponse struct {
-	Status    string       `json:"status"`
-	Data      silencesData `json:"data"`
-	ErrorType string       `json:"errorType"`
-	Error     string       `json:"error"`
+	Status    string                       `json:"status"`
+	Data      []models.AlertmanagerSilence `json:"data"`
+	ErrorType string                       `json:"errorType"`
+	Error     string                       `json:"error"`
 }
 
 // Get will return fresh data from Alertmanager API
@@ -44,6 +39,6 @@ func (response *SilenceAPIResponse) Get() error {
 		return errors.New(response.Error)
 	}
 
-	log.Infof("Got %d silences(s) in %s", len(response.Data.Silences), time.Since(start))
+	log.Infof("Got %d silences(s) in %s", len(response.Data), time.Since(start))
 	return nil
 }

@@ -35,7 +35,7 @@
               "endsAt": "0001-01-01T00:00:00Z",
               "generatorURL": "http://localhost/graph",
               "inhibited": false,
-              "silenced": 1
+              "silenced": "1"
             },
             {
               "labels": {
@@ -88,7 +88,7 @@
               "endsAt": "0001-01-01T00:00:00Z",
               "generatorURL": "http://localhost/graph",
               "inhibited": false,
-              "silenced": 1
+              "silenced": "1"
             },
             {
               "labels": {
@@ -164,7 +164,7 @@
               "endsAt": "0001-01-01T00:00:00Z",
               "generatorURL": "http://localhost/graph",
               "inhibited": false,
-              "silenced": 2
+              "silenced": "2"
             },
             {
               "labels": {
@@ -180,7 +180,7 @@
               "endsAt": "0001-01-01T00:00:00Z",
               "generatorURL": "http://localhost/graph",
               "inhibited": false,
-              "silenced": 2
+              "silenced": "2"
             },
             {
               "labels": {
@@ -196,7 +196,7 @@
               "endsAt": "0001-01-01T00:00:00Z",
               "generatorURL": "http://localhost/graph",
               "inhibited": false,
-              "silenced": 2
+              "silenced": "2"
             }
           ]
         }

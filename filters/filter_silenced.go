@@ -3,6 +3,7 @@ package filters
 import (
 	"fmt"
 	"strings"
+
 	"github.com/cloudflare/unsee/models"
 )
 
@@ -30,7 +31,7 @@ func (filter *silencedFilter) init(name string, matcher *matcherT, rawText strin
 func (filter *silencedFilter) Match(alert *models.UnseeAlert, matches int) bool {
 	if filter.IsValid {
 		var isSilenced bool
-		isSilenced = (alert.Silenced > 0)
+		isSilenced = (alert.Silenced != "")
 		isMatch := filter.Matcher.Compare(isSilenced, filter.Value)
 		if isMatch {
 			filter.Hits++

@@ -1,9 +1,8 @@
 {
   "status": "success",
-  "data": {
-    "silences": [
+  "data": [
       {
-        "id": 1,
+        "id": "1",
         "matchers": [
           {
             "name": "instance",
@@ -18,7 +17,7 @@
         "comment": "Silenced instance"
       },
       {
-        "id": 2,
+        "id": "2",
         "matchers": [
           {
             "name": "alertname",
@@ -38,6 +37,5 @@
         "comment": "Silenced Host_Down alerts in the dev cluster"
       }
     ],
-    "totalSilences": 2
   }
 }

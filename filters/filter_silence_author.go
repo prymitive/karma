@@ -2,8 +2,8 @@ package filters
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
+
 	"github.com/cloudflare/unsee/models"
 	"github.com/cloudflare/unsee/store"
 )
@@ -15,9 +15,9 @@ type silenceAuthorFilter struct {
 func (filter *silenceAuthorFilter) Match(alert *models.UnseeAlert, matches int) bool {
 	if filter.IsValid {
 		var isMatch bool
-		if alert.Silenced > 0 {
+		if alert.Silenced != "" {
 			store.StoreLock.RLock()
-			if silence, found := store.SilenceStore.Store[strconv.Itoa(alert.Silenced)]; found {
+			if silence, found := store.SilenceStore.Store[alert.Silenced]; found {
 				isMatch = filter.Matcher.Compare(filter.Value, silence.CreatedBy)
 			}
 			store.StoreLock.RUnlock()
@@ -41,9 +41,9 @@ func newSilenceAuthorFilter() FilterT {
 func sinceAuthorAutocomplete(name string, operators []string, alerts []models.UnseeAlert) []models.UnseeAutocomplete {
 	tokens := map[string]models.UnseeAutocomplete{}
 	for _, alert := range alerts {
-		if alert.Silenced > 0 {
+		if alert.Silenced != "" {
 			store.StoreLock.RLock()
-			if silence, found := store.SilenceStore.Store[strconv.Itoa(alert.Silenced)]; found && silence.CreatedBy != "" {
+			if silence, found := store.SilenceStore.Store[alert.Silenced]; found && silence.CreatedBy != "" {
 				for _, operator := range operators {
 					token := fmt.Sprintf("%s%s%s", name, operator, silence.CreatedBy)
 					tokens[token] = makeAC(token, []string{

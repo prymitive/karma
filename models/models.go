@@ -10,7 +10,7 @@ type AlertmanagerAlert struct {
 	EndsAt       time.Time         `json:"endsAt"`
 	GeneratorURL string            `json:"generatorURL"`
 	Inhibited    bool              `json:"inhibited"`
-	Silenced     int               `json:"silenced"`
+	Silenced     string            `json:"silenced"`
 }
 
 // AlertmanagerAlertGroup is vanilla group object from Alertmanager, exposed under api/v1/alerts/groups
@@ -23,7 +23,7 @@ type AlertmanagerAlertGroup struct {
 
 // AlertmanagerSilence is vanilla silence object from Alertmanager, exposed under api/v1/silences
 type AlertmanagerSilence struct {
-	ID       int `json:"id"`
+	ID       string `json:"id"`
 	Matchers []struct {
 		Name    string `json:"name"`
 		Value   string `json:"value"`

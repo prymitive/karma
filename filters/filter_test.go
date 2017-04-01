@@ -2,12 +2,12 @@ package filters_test
 
 import (
 	"encoding/json"
+	"testing"
+	"time"
+
 	"github.com/cloudflare/unsee/filters"
 	"github.com/cloudflare/unsee/models"
 	"github.com/cloudflare/unsee/store"
-	"strconv"
-	"testing"
-	"time"
 )
 
 type filterTest struct {
@@ -34,13 +34,13 @@ var tests = []filterTest{
 	filterTest{
 		Expression: "@silenced=true",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silenced!=true",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
 		IsMatch:    false,
 	},
 	filterTest{
@@ -51,86 +51,86 @@ var tests = []filterTest{
 	filterTest{
 		Expression: "@silence_jira=1",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1}, JiraID: "1"},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}, JiraID: "1"},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silence_jira=2",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1}},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "@silence_jira!=3",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1}, JiraID: "x"},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}, JiraID: "x"},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silence_jira!=4",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1}, JiraID: "4"},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}, JiraID: "4"},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "@silence_jira!=5",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1}},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silence_jira=~abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1}, JiraID: "xxabcxx"},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}, JiraID: "xxabcxx"},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silence_jira=~abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1}, JiraID: "xxx"},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}, JiraID: "xxx"},
 		IsMatch:    false,
 	},
 
 	filterTest{
 		Expression: "@silence_author=john",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1, CreatedBy: "john"}},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", CreatedBy: "john"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silence_author=john",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1, CreatedBy: "bob"}},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", CreatedBy: "bob"}},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "@silence_author!=john",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1, CreatedBy: "bob"}},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", CreatedBy: "bob"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silence_author!=john",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1, CreatedBy: "john"}},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", CreatedBy: "john"}},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "@silence_author!=john",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1}},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}},
 		IsMatch:    true,
 	},
 
@@ -241,29 +241,29 @@ var tests = []filterTest{
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1, Comment: "abc"}},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", Comment: "abc"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1, Comment: "abcxxx"}},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", Comment: "abcxxx"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1, Comment: "ABCD"}},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", Comment: "ABCD"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: 1}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: 1, Comment: "xzc"}},
+		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", Comment: "xzc"}},
 		IsMatch:    false,
 	},
 	filterTest{
@@ -282,7 +282,7 @@ func TestFilters(t *testing.T) {
 	for _, ft := range tests {
 		if &ft.Silence != nil {
 			store.SilenceStore.Store = map[string]models.UnseeSilence{}
-			store.SilenceStore.Store[strconv.Itoa(ft.Silence.ID)] = ft.Silence
+			store.SilenceStore.Store[ft.Silence.ID] = ft.Silence
 		} else {
 			store.SilenceStore.Store = map[string]models.UnseeSilence{}
 		}
