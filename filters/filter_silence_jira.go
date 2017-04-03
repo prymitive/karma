@@ -16,11 +16,9 @@ func (filter *silenceJiraFilter) Match(alert *models.UnseeAlert, matches int) bo
 	if filter.IsValid {
 		var isMatch bool
 		if alert.Silenced != "" {
-			store.StoreLock.RLock()
-			if silence, found := store.SilenceStore.Store[alert.Silenced]; found {
+			if silence := store.Store.GetSilence(alert.Silenced); silence != nil {
 				isMatch = filter.Matcher.Compare(silence.JiraID, filter.Value)
 			}
-			store.StoreLock.RUnlock()
 		} else {
 			isMatch = filter.Matcher.Compare("", filter.Value)
 		}
@@ -42,8 +40,8 @@ func sinceJiraIDAutocomplete(name string, operators []string, alerts []models.Un
 	tokens := map[string]models.UnseeAutocomplete{}
 	for _, alert := range alerts {
 		if alert.Silenced != "" {
-			store.StoreLock.RLock()
-			if silence, found := store.SilenceStore.Store[alert.Silenced]; found && silence.JiraID != "" {
+			silence := store.Store.GetSilence(alert.Silenced)
+			if silence != nil && silence.JiraID != "" {
 				for _, operator := range operators {
 					token := fmt.Sprintf("%s%s%s", name, operator, silence.JiraID)
 					tokens[token] = makeAC(token, []string{
@@ -54,7 +52,6 @@ func sinceJiraIDAutocomplete(name string, operators []string, alerts []models.Un
 					})
 				}
 			}
-			store.StoreLock.RUnlock()
 		}
 	}
 	acData := []models.UnseeAutocomplete{}

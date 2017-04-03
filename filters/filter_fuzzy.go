@@ -42,7 +42,7 @@ func (filter *fuzzyFilter) Match(alert *models.UnseeAlert, matches int) bool {
 		}
 
 		if alert.Silenced != "" {
-			if silence, found := store.SilenceStore.Store[alert.Silenced]; found {
+			if silence := store.Store.GetSilence(alert.Silenced); silence != nil {
 				if filter.Matcher.Compare(silence.Comment, filter.Value) {
 					filter.Hits++
 					return true

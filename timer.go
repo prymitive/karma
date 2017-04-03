@@ -6,7 +6,6 @@ import (
 	"io"
 	"runtime"
 	"sort"
-	"time"
 
 	"github.com/cloudflare/unsee/alertmanager"
 	"github.com/cloudflare/unsee/config"
@@ -56,10 +55,7 @@ func PullFromAlertmanager() {
 		}
 	}
 
-	store.StoreLock.Lock()
-	store.SilenceStore.Store = silenceStore
-	store.SilenceStore.Timestamp = time.Now()
-	store.StoreLock.Unlock()
+	store.Store.SetSilences(silenceStore)
 
 	alertStore := []models.UnseeAlertGroup{}
 	colorStore := make(models.UnseeColorMap)
@@ -148,16 +144,7 @@ func PullFromAlertmanager() {
 	metricAlerts.With(prometheus.Labels{"silenced": "false"}).Set(counterAlertsUnsilenced)
 	metricAlertGroups.Set(float64(len(alertStore)))
 
-	now := time.Now()
-
-	store.StoreLock.Lock()
-	store.AlertStore.Store = alertStore
-	store.AlertStore.Timestamp = now
-	store.ColorStore.Store = colorStore
-	store.ColorStore.Timestamp = now
-	store.AutocompleteStore.Store = acStore
-	store.AutocompleteStore.Timestamp = now
-	store.StoreLock.Unlock()
+	store.Store.Update(alertStore, colorStore, acStore)
 	log.Info("Pull completed")
 	apiCache.Flush()
 	runtime.GC()
