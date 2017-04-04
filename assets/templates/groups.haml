@@ -75,11 +75,11 @@
 
           %div
             -if (alert.generatorURL) {
-              %a.label.label-list.label-default{href: alert.generatorURL, target: '_blank'}
+              %a.label.label-list.label-default{href: alert.generatorURL, target: '_blank', title: "Go to the alert source", 'data-toggle': 'tooltip', 'data-placement': 'top'}
                 %i.fa.fa-external-link
                 source
             -$.each(alert.links, function(k, url) {
-              %a.label.label-list.label-default{href: url, target: '_blank'}
+              %a.label.label-list.label-default{href: url, target: '_blank', title: url, 'data-toggle': 'tooltip', 'data-placement': 'top'}
                 %i.fa.fa-external-link
                 =k
             -if (alert.silenced > 0) {
