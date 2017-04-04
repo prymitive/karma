@@ -6,6 +6,14 @@
 
   %div.panel{class: cls_panel}
     %div.panel-heading.text-center
+      -if (Object.keys(group.labels).length > 0) {
+        -var filters = [];
+        -$.each(group.labels, function(label_key, label_val) {
+          -filters.push(label_key + '=' + label_val);
+        -var groupLink = '?q=' + filters.join(',');
+        %span.pull-left.alert-group-link
+          %a{href: groupLink, title: 'Link to this alert group', 'data-toggle': 'tooltip', 'data-placement': 'top'}
+            %i.fa.fa-link
       %span.badge.pull-right
         =group.alerts.length
       %div.panel-title

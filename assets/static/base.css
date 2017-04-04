@@ -372,3 +372,10 @@ table.table.examples > tbody > tr td:first-child {
 .modal-body>table.table>tbody>tr>td.modal-row-actions  {
   vertical-align: middle;
 }
+
+.panel-heading > span.alert-group-link {
+  margin-left: -8px;
+}
+span.alert-group-link > a {
+  color: #fff;
+}
