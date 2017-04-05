@@ -20,6 +20,13 @@ that the correct version of unsee is used:
 `master` branch in git will always work with the latest supported Alertmanager
 release.
 
+## Known issues
+
+* When a new alert is triggered unsee might show it for a few minutes even if
+  it's silenced. See
+  [Alertmanager issue 609](https://github.com/prometheus/alertmanager/issues/609)
+  for details.
+
 ## Building and running
 
 ### Installing using the go command
