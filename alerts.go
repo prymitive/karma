@@ -21,7 +21,7 @@ func getFiltersFromQuery(filterString string) ([]filters.FilterT, bool) {
 	return matchFilters, validFilters
 }
 
-func countLabel(countStore models.UnseeCountMap, key string, val string) {
+func countLabel(countStore models.LabelsCountMap, key string, val string) {
 	if _, found := countStore[key]; !found {
 		countStore[key] = make(map[string]int)
 	}

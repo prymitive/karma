@@ -15,7 +15,7 @@ var (
 // for a specific range of Alertmanager versions
 type AlertMapper interface {
 	IsSupported(version string) bool
-	GetAlerts() ([]models.UnseeAlertGroup, error)
+	GetAlerts() ([]models.AlertGroup, error)
 }
 
 // RegisterAlertMapper allows to register mapper implementing alert data
@@ -39,7 +39,7 @@ func GetAlertMapper(version string) (AlertMapper, error) {
 type SilenceMapper interface {
 	Release() string
 	IsSupported(version string) bool
-	GetSilences() ([]models.UnseeSilence, error)
+	GetSilences() ([]models.Silence, error)
 }
 
 // RegisterSilenceMapper allows to register mapper implementing silence data

@@ -48,8 +48,8 @@ func (m SilenceMapper) IsSupported(version string) bool {
 
 // GetSilences will make a request to Alertmanager API and parse the response
 // It will only return silences or error (if any)
-func (m SilenceMapper) GetSilences() ([]models.UnseeSilence, error) {
-	silences := []models.UnseeSilence{}
+func (m SilenceMapper) GetSilences() ([]models.Silence, error) {
+	silences := []models.Silence{}
 	resp := silenceAPISchema{}
 
 	url, err := transport.JoinURL(config.Config.AlertmanagerURI, "api/v1/silences")
@@ -67,7 +67,7 @@ func (m SilenceMapper) GetSilences() ([]models.UnseeSilence, error) {
 	}
 
 	for _, s := range resp.Data {
-		us := models.UnseeSilence{
+		us := models.Silence{
 			ID:        s.ID,
 			Matchers:  s.Matchers,
 			StartsAt:  s.StartsAt,

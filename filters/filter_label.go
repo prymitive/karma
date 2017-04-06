@@ -2,16 +2,16 @@ package filters
 
 import (
 	"fmt"
+	"github.com/cloudflare/unsee/models"
 	"strconv"
 	"strings"
-	"github.com/cloudflare/unsee/models"
 )
 
 type labelFilter struct {
 	alertFilter
 }
 
-func (filter *labelFilter) Match(alert *models.UnseeAlert, matches int) bool {
+func (filter *labelFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
 		isMatch := filter.Matcher.Compare(alert.Labels[filter.Matched], filter.Value)
 		if isMatch {
@@ -28,8 +28,8 @@ func newLabelFilter() FilterT {
 	return &f
 }
 
-func labelAutocomplete(name string, operators []string, alerts []models.UnseeAlert) []models.UnseeAutocomplete {
-	tokens := map[string]models.UnseeAutocomplete{}
+func labelAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
 		for key, value := range alert.Labels {
 			for _, operator := range operators {
@@ -76,7 +76,7 @@ func labelAutocomplete(name string, operators []string, alerts []models.UnseeAle
 			}
 		}
 	}
-	acData := []models.UnseeAutocomplete{}
+	acData := []models.Autocomplete{}
 	for _, token := range tokens {
 		acData = append(acData, token)
 	}

@@ -2,9 +2,9 @@ package filters
 
 import (
 	"fmt"
+	"github.com/cloudflare/unsee/models"
 	"strings"
 	"time"
-	"github.com/cloudflare/unsee/models"
 )
 
 type ageFilter struct {
@@ -30,7 +30,7 @@ func (filter *ageFilter) init(name string, matcher *matcherT, rawText string, is
 	}
 }
 
-func (filter *ageFilter) Match(alert *models.UnseeAlert, matches int) bool {
+func (filter *ageFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
 		ts := time.Now().Add(filter.Value.(time.Duration))
 		isMatch := filter.Matcher.Compare(int(ts.Unix()), int(alert.StartsAt.Unix()))
@@ -48,8 +48,8 @@ func newAgeFilter() FilterT {
 	return &f
 }
 
-func ageAutocomplete(name string, operators []string, alerts []models.UnseeAlert) []models.UnseeAutocomplete {
-	tokens := []models.UnseeAutocomplete{}
+func ageAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+	tokens := []models.Autocomplete{}
 	for _, operator := range operators {
 		tokens = append(tokens, makeAC(
 			fmt.Sprintf("%s%s10m", name, operator),

@@ -25,7 +25,7 @@ func (filter *fuzzyFilter) init(name string, matcher *matcherT, rawText string, 
 	}
 }
 
-func (filter *fuzzyFilter) Match(alert *models.UnseeAlert, matches int) bool {
+func (filter *fuzzyFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
 		for _, val := range alert.Annotations {
 			if filter.Matcher.Compare(val, filter.Value) {

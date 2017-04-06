@@ -51,8 +51,8 @@ func (m AlertMapper) IsSupported(version string) bool {
 
 // GetAlerts will make a request to Alertmanager API and parse the response
 // It will only return alerts or error (if any)
-func (m AlertMapper) GetAlerts() ([]models.UnseeAlertGroup, error) {
-	groups := []models.UnseeAlertGroup{}
+func (m AlertMapper) GetAlerts() ([]models.AlertGroup, error) {
+	groups := []models.AlertGroup{}
 	resp := alertsGroupsAPISchema{}
 
 	url, err := transport.JoinURL(config.Config.AlertmanagerURI, "api/v1/alerts/groups")
@@ -70,10 +70,10 @@ func (m AlertMapper) GetAlerts() ([]models.UnseeAlertGroup, error) {
 	}
 
 	for _, g := range resp.Groups {
-		alertList := models.UnseeAlertList{}
+		alertList := models.AlertList{}
 		for _, b := range g.Blocks {
 			for _, a := range b.Alerts {
-				us := models.UnseeAlert{
+				us := models.Alert{
 					Annotations:  a.Annotations,
 					Labels:       a.Labels,
 					StartsAt:     a.StartsAt,
@@ -85,7 +85,7 @@ func (m AlertMapper) GetAlerts() ([]models.UnseeAlertGroup, error) {
 				alertList = append(alertList, us)
 			}
 		}
-		ug := models.UnseeAlertGroup{
+		ug := models.AlertGroup{
 			Labels: g.Labels,
 			Alerts: alertList,
 		}

@@ -116,7 +116,7 @@ func TestAlerts(t *testing.T) {
 			t.Errorf("GET /alerts.json returned status %d", resp.Code)
 		}
 
-		ur := models.UnseeAlertsResponse{}
+		ur := models.AlertsResponse{}
 		json.Unmarshal(resp.Body.Bytes(), &ur)
 		if len(ur.Filters) != 2 {
 			t.Errorf("[%s] No filters in response", version)

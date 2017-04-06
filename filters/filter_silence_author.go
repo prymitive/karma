@@ -12,7 +12,7 @@ type silenceAuthorFilter struct {
 	alertFilter
 }
 
-func (filter *silenceAuthorFilter) Match(alert *models.UnseeAlert, matches int) bool {
+func (filter *silenceAuthorFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
 		var isMatch bool
 		if alert.Silenced != "" {
@@ -36,8 +36,8 @@ func newSilenceAuthorFilter() FilterT {
 	return &f
 }
 
-func sinceAuthorAutocomplete(name string, operators []string, alerts []models.UnseeAlert) []models.UnseeAutocomplete {
-	tokens := map[string]models.UnseeAutocomplete{}
+func sinceAuthorAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
 		if alert.Silenced != "" {
 			if silence := store.Store.GetSilence(alert.Silenced); silence != nil {
@@ -53,7 +53,7 @@ func sinceAuthorAutocomplete(name string, operators []string, alerts []models.Un
 			}
 		}
 	}
-	acData := []models.UnseeAutocomplete{}
+	acData := []models.Autocomplete{}
 	for _, token := range tokens {
 		acData = append(acData, token)
 	}

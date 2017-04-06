@@ -44,7 +44,7 @@ func PullFromAlertmanager() {
 		return
 	}
 
-	silenceStore := make(map[string]models.UnseeSilence)
+	silenceStore := make(map[string]models.Silence)
 	for _, silence := range silences {
 		silence.JiraID, silence.JiraURL = transform.DetectJIRAs(&silence)
 		silenceStore[silence.ID] = silence
@@ -52,10 +52,10 @@ func PullFromAlertmanager() {
 
 	store.Store.SetSilences(silenceStore)
 
-	alertStore := []models.UnseeAlertGroup{}
-	colorStore := make(models.UnseeColorMap)
+	alertStore := []models.AlertGroup{}
+	colorStore := make(models.LabelsColorMap)
 
-	acMap := map[string]models.UnseeAutocomplete{}
+	acMap := map[string]models.Autocomplete{}
 
 	// counters used to update metrics
 	var counterAlertsSilenced float64
@@ -65,7 +65,7 @@ func PullFromAlertmanager() {
 		// used to generate group content hash
 		agHasher := sha1.New()
 
-		alerts := map[string]models.UnseeAlert{}
+		alerts := map[string]models.Alert{}
 
 		ignoredLabels := []string{}
 		for _, il := range config.Config.StripLabels {
@@ -93,7 +93,7 @@ func PullFromAlertmanager() {
 		}
 
 		// reset alerts, we need to deduplicate
-		ag.Alerts = []models.UnseeAlert{}
+		ag.Alerts = []models.Alert{}
 		for _, alert := range alerts {
 			ag.Alerts = append(ag.Alerts, alert)
 			if alert.Silenced != "" {
@@ -116,7 +116,7 @@ func PullFromAlertmanager() {
 		alertStore = append(alertStore, ag)
 	}
 
-	acStore := []models.UnseeAutocomplete{}
+	acStore := []models.Autocomplete{}
 	for _, hint := range acMap {
 		acStore = append(acStore, hint)
 	}

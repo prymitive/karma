@@ -21,8 +21,8 @@ func init() {
 
 // GetAlerts will send request to Alertmanager and return list of alert groups
 // from the API
-func GetAlerts(version string) ([]models.UnseeAlertGroup, error) {
-	groups := []models.UnseeAlertGroup{}
+func GetAlerts(version string) ([]models.AlertGroup, error) {
+	groups := []models.AlertGroup{}
 
 	mapper, err := mapper.GetAlertMapper(version)
 	if err != nil {
@@ -40,8 +40,8 @@ func GetAlerts(version string) ([]models.UnseeAlertGroup, error) {
 
 // GetSilences will send request to Alertmanager and return list of silences
 // from the API
-func GetSilences(version string) ([]models.UnseeSilence, error) {
-	silences := []models.UnseeSilence{}
+func GetSilences(version string) ([]models.Silence, error) {
+	silences := []models.Silence{}
 
 	mapper, err := mapper.GetSilenceMapper(version)
 	if err != nil {

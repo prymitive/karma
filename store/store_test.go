@@ -8,37 +8,37 @@ import (
 )
 
 type silenceTest struct {
-	silences  map[string]models.UnseeSilence
+	silences  map[string]models.Silence
 	silenceId string
 	found     bool
 }
 
 var silenceTests = []silenceTest{
 	silenceTest{
-		silences: map[string]models.UnseeSilence{
-			"1": models.UnseeSilence{},
+		silences: map[string]models.Silence{
+			"1": models.Silence{},
 		},
 		silenceId: "1",
 		found:     true,
 	},
 	silenceTest{
-		silences: map[string]models.UnseeSilence{
-			"1": models.UnseeSilence{},
-			"2": models.UnseeSilence{},
-			"3": models.UnseeSilence{},
+		silences: map[string]models.Silence{
+			"1": models.Silence{},
+			"2": models.Silence{},
+			"3": models.Silence{},
 		},
 		silenceId: "2",
 		found:     true,
 	},
 	silenceTest{
-		silences:  map[string]models.UnseeSilence{},
+		silences:  map[string]models.Silence{},
 		silenceId: "1",
 		found:     false,
 	},
 	silenceTest{
-		silences: map[string]models.UnseeSilence{
-			"2": models.UnseeSilence{},
-			"3": models.UnseeSilence{},
+		silences: map[string]models.Silence{
+			"2": models.Silence{},
+			"3": models.Silence{},
 		},
 		silenceId: "1",
 		found:     false,
