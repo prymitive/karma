@@ -8,6 +8,7 @@ import (
 
 	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/models"
+	"github.com/cloudflare/unsee/transport"
 
 	log "github.com/Sirupsen/logrus"
 )
@@ -24,7 +25,7 @@ type SilenceAPIResponse struct {
 func (response *SilenceAPIResponse) Get() error {
 	start := time.Now()
 
-	url, err := joinURL(config.Config.AlertmanagerURI, "api/v1/silences")
+	url, err := transport.JoinURL(config.Config.AlertmanagerURI, "api/v1/silences")
 	if err != nil {
 		return err
 	}

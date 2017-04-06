@@ -6,6 +6,7 @@ import (
 
 	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/models"
+	"github.com/cloudflare/unsee/transport"
 
 	log "github.com/Sirupsen/logrus"
 )
@@ -22,7 +23,7 @@ type AlertGroupsAPIResponse struct {
 func (response *AlertGroupsAPIResponse) Get() error {
 	start := time.Now()
 
-	url, err := joinURL(config.Config.AlertmanagerURI, "api/v1/alerts/groups")
+	url, err := transport.JoinURL(config.Config.AlertmanagerURI, "api/v1/alerts/groups")
 	if err != nil {
 		return err
 	}
