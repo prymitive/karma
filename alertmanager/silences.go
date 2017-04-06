@@ -31,7 +31,7 @@ func (response *SilenceAPIResponse) Get() error {
 	}
 	url = fmt.Sprintf("%s?limit=%d", url, math.MaxUint32)
 
-	err = getJSONFromURL(url, config.Config.AlertmanagerTimeout, response)
+	err = transport.GetJSONFromURL(url, config.Config.AlertmanagerTimeout, response)
 	if err != nil {
 		return err
 	}

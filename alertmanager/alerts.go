@@ -28,7 +28,7 @@ func (response *AlertGroupsAPIResponse) Get() error {
 		return err
 	}
 
-	err = getJSONFromURL(url, config.Config.AlertmanagerTimeout, response)
+	err = transport.GetJSONFromURL(url, config.Config.AlertmanagerTimeout, response)
 	if err != nil {
 		return err
 	}
