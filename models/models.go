@@ -2,27 +2,11 @@ package models
 
 import "time"
 
-// AlertmanagerAlert is vanilla alert object from Alertmanager
-type AlertmanagerAlert struct {
-	Annotations  map[string]string `json:"annotations"`
-	Labels       map[string]string `json:"labels"`
-	StartsAt     time.Time         `json:"startsAt"`
-	EndsAt       time.Time         `json:"endsAt"`
-	GeneratorURL string            `json:"generatorURL"`
-	Inhibited    bool              `json:"inhibited"`
-	Silenced     string            `json:"silenced"`
-}
-
-// AlertmanagerAlertGroup is vanilla group object from Alertmanager, exposed under api/v1/alerts/groups
-type AlertmanagerAlertGroup struct {
-	Labels map[string]string `json:"labels"`
-	Blocks []struct {
-		Alerts []AlertmanagerAlert `json:"alerts"`
-	} `json:"blocks"`
-}
-
-// AlertmanagerSilence is vanilla silence object from Alertmanager, exposed under api/v1/silences
-type AlertmanagerSilence struct {
+// UnseeSilence is vanilla silence + some additional attributes
+// Unsee adds JIRA support, it can extract JIRA IDs from comments
+// extracted ID is used to generate link to JIRA issue
+// this means Unsee needs to store additional fields for each silence
+type UnseeSilence struct {
 	ID       string `json:"id"`
 	Matchers []struct {
 		Name    string `json:"name"`
@@ -34,14 +18,7 @@ type AlertmanagerSilence struct {
 	CreatedAt time.Time `json:"createdAt"`
 	CreatedBy string    `json:"createdBy"`
 	Comment   string    `json:"comment"`
-}
-
-// UnseeSilence is vanilla silence + some additional attributes
-// Unsee adds JIRA support, it can extract JIRA IDs from comments
-// extracted ID is used to generate link to JIRA issue
-// this means Unsee needs to store additional fields for each silence
-type UnseeSilence struct {
-	AlertmanagerSilence
+	// unsee fields
 	JiraID  string `json:"jiraID"`
 	JiraURL string `json:"jiraURL"`
 }
@@ -53,7 +30,14 @@ type UnseeSilence struct {
 //   unsee UI used this to show links differently than other annotations
 // * Fingerprint, which is a sha1 of the entire alert
 type UnseeAlert struct {
-	AlertmanagerAlert
+	Annotations  map[string]string `json:"annotations"`
+	Labels       map[string]string `json:"labels"`
+	StartsAt     time.Time         `json:"startsAt"`
+	EndsAt       time.Time         `json:"endsAt"`
+	GeneratorURL string            `json:"generatorURL"`
+	Inhibited    bool              `json:"inhibited"`
+	Silenced     string            `json:"silenced"`
+	// unsee fields
 	Links       map[string]string `json:"links"`
 	Fingerprint string            `json:"-"`
 }

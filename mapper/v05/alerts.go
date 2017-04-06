@@ -74,15 +74,13 @@ func (m AlertMapper) GetAlerts() ([]models.UnseeAlertGroup, error) {
 		for _, b := range g.Blocks {
 			for _, a := range b.Alerts {
 				us := models.UnseeAlert{
-					AlertmanagerAlert: models.AlertmanagerAlert{
-						Annotations:  a.Annotations,
-						Labels:       a.Labels,
-						StartsAt:     a.StartsAt,
-						EndsAt:       a.EndsAt,
-						GeneratorURL: a.GeneratorURL,
-						Inhibited:    a.Inhibited,
-						Silenced:     a.Silenced,
-					},
+					Annotations:  a.Annotations,
+					Labels:       a.Labels,
+					StartsAt:     a.StartsAt,
+					EndsAt:       a.EndsAt,
+					GeneratorURL: a.GeneratorURL,
+					Inhibited:    a.Inhibited,
+					Silenced:     a.Silenced,
 				}
 				alertList = append(alertList, us)
 			}

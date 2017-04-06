@@ -21,71 +21,53 @@ var jiraRules = []string{
 var jiraTests = []jiraTest{
 	jiraTest{
 		silence: models.UnseeSilence{
-			AlertmanagerSilence: models.AlertmanagerSilence{
-				Comment: "Lorem ipsum dolor sit amet",
-			},
+			Comment: "Lorem ipsum dolor sit amet",
 		},
 	},
 	jiraTest{
 		silence: models.UnseeSilence{
-			AlertmanagerSilence: models.AlertmanagerSilence{
-				Comment: "DVOPS-123",
-			},
+			Comment: "DVOPS-123",
 		},
 	},
 	jiraTest{
 		silence: models.UnseeSilence{
-			AlertmanagerSilence: models.AlertmanagerSilence{
-				Comment: "DEVOPS team",
-			},
+			Comment: "DEVOPS team",
 		},
 	},
 	jiraTest{
 		silence: models.UnseeSilence{
-			AlertmanagerSilence: models.AlertmanagerSilence{
-				Comment: "a project-1 b",
-			},
+			Comment: "a project-1 b",
 		},
 	},
 	jiraTest{
 		silence: models.UnseeSilence{
-			AlertmanagerSilence: models.AlertmanagerSilence{
-				Comment: "a PROJECT- b",
-			},
+			Comment: "a PROJECT- b",
 		},
 	},
 	jiraTest{
 		silence: models.UnseeSilence{
-			AlertmanagerSilence: models.AlertmanagerSilence{
-				Comment: "DEVOPS-1",
-			},
+			Comment: "DEVOPS-1",
 		},
 		jiraID:   "DEVOPS-1",
 		jiraLink: "https://jira.example.com/browse/DEVOPS-1",
 	},
 	jiraTest{
 		silence: models.UnseeSilence{
-			AlertmanagerSilence: models.AlertmanagerSilence{
-				Comment: "DEVOPS-123",
-			},
+			Comment: "DEVOPS-123",
 		},
 		jiraID:   "DEVOPS-123",
 		jiraLink: "https://jira.example.com/browse/DEVOPS-123",
 	},
 	jiraTest{
 		silence: models.UnseeSilence{
-			AlertmanagerSilence: models.AlertmanagerSilence{
-				Comment: "a DEVOPS-1 b",
-			},
+			Comment: "a DEVOPS-1 b",
 		},
 		jiraID:   "DEVOPS-1",
 		jiraLink: "https://jira.example.com/browse/DEVOPS-1",
 	},
 	jiraTest{
 		silence: models.UnseeSilence{
-			AlertmanagerSilence: models.AlertmanagerSilence{
-				Comment: "PROJECT-9",
-			},
+			Comment: "PROJECT-9",
 		},
 		jiraID:   "PROJECT-9",
 		jiraLink: "https://example.com/browse/PROJECT-9",

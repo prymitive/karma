@@ -68,15 +68,13 @@ func (m SilenceMapper) GetSilences() ([]models.UnseeSilence, error) {
 
 	for _, s := range resp.Data {
 		us := models.UnseeSilence{
-			AlertmanagerSilence: models.AlertmanagerSilence{
-				ID:        s.ID,
-				Matchers:  s.Matchers,
-				StartsAt:  s.StartsAt,
-				EndsAt:    s.EndsAt,
-				CreatedAt: s.CreatedAt,
-				CreatedBy: s.CreatedBy,
-				Comment:   s.Comment,
-			},
+			ID:        s.ID,
+			Matchers:  s.Matchers,
+			StartsAt:  s.StartsAt,
+			EndsAt:    s.EndsAt,
+			CreatedAt: s.CreatedAt,
+			CreatedBy: s.CreatedBy,
+			Comment:   s.Comment,
 		}
 		silences = append(silences, us)
 	}
