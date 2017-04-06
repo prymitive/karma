@@ -2,9 +2,10 @@ package filters
 
 import (
 	"fmt"
-	"github.com/cloudflare/unsee/models"
 	"strconv"
 	"strings"
+
+	"github.com/cloudflare/unsee/models"
 )
 
 type limitFilter struct {

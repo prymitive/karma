@@ -2,9 +2,10 @@ package filters
 
 import (
 	"fmt"
-	"github.com/cloudflare/unsee/models"
 	"regexp"
 	"strings"
+
+	"github.com/cloudflare/unsee/models"
 )
 
 // FilterT provides methods for interacting with alert filters

@@ -2,9 +2,10 @@ package filters
 
 import (
 	"fmt"
-	"github.com/cloudflare/unsee/models"
 	"strings"
 	"time"
+
+	"github.com/cloudflare/unsee/models"
 )
 
 type ageFilter struct {
