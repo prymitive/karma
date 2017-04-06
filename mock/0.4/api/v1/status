@@ -1,0 +1,21 @@
+{
+  "status": "success",
+  "data": {
+    "configJSON": {
+      "global": {},
+      "route": {},
+      "inhibit_rules": [],
+      "receivers": [],
+      "templates": []
+    },
+    "versionInfo": {
+      "branch": "master",
+      "buildDate": "20160831-22:29:03",
+      "buildUser": "root@d97584317568",
+      "goVersion": "go1.6.2",
+      "revision": "230a80a08942c78e1213e69959d571c292473bde",
+      "version": "0.4.1"
+    },
+    "uptime": "2017-04-01T16:41:51.716681297Z"
+  }
+}
