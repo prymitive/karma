@@ -363,7 +363,6 @@ var staticFileTests = []staticFileTestCase{
 
 func TestStaticFiles(t *testing.T) {
 	mockConfig()
-	mockAlerts()
 	r := ginTestEngine()
 	for _, staticFileTest := range staticFileTests {
 		req, _ := http.NewRequest("GET", staticFileTest.path, nil)
@@ -402,7 +401,6 @@ func TestStaticFilesPrefix(t *testing.T) {
 	os.Setenv("WEB_PREFIX", "/sub")
 	defer os.Unsetenv("WEB_PREFIX")
 	mockConfig()
-	mockAlerts()
 	r := ginTestEngine()
 	for _, staticFileTest := range staticFilePrefixTests {
 		req, _ := http.NewRequest("GET", staticFileTest.path, nil)
