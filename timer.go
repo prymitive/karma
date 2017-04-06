@@ -22,9 +22,9 @@ import (
 // from Alertmanager API, it's called by Ticker timer
 func PullFromAlertmanager() {
 	log.Info("Pulling latest alerts and silences from Alertmanager")
+	v := alertmanager.GetVersion()
 
-	silenceResponse := alertmanager.SilenceAPIResponse{}
-	err := silenceResponse.Get()
+	silences, err := alertmanager.GetSilences(v)
 	if err != nil {
 		log.Error(err.Error())
 		errorLock.Lock()
@@ -34,8 +34,7 @@ func PullFromAlertmanager() {
 		return
 	}
 
-	alertGroups := alertmanager.AlertGroupsAPIResponse{}
-	err = alertGroups.Get()
+	alertGroups, err := alertmanager.GetAlerts(v)
 	if err != nil {
 		log.Error(err.Error())
 		errorLock.Lock()
@@ -46,13 +45,9 @@ func PullFromAlertmanager() {
 	}
 
 	silenceStore := make(map[string]models.UnseeSilence)
-	for _, silence := range silenceResponse.Data {
-		jiraID, jiraLink := transform.DetectJIRAs(&silence)
-		silenceStore[silence.ID] = models.UnseeSilence{
-			AlertmanagerSilence: silence,
-			JiraID:              jiraID,
-			JiraURL:             jiraLink,
-		}
+	for _, silence := range silences {
+		silence.JiraID, silence.JiraURL = transform.DetectJIRAs(&silence)
+		silenceStore[silence.ID] = silence
 	}
 
 	store.Store.SetSilences(silenceStore)
@@ -66,19 +61,9 @@ func PullFromAlertmanager() {
 	var counterAlertsSilenced float64
 	var counterAlertsUnsilenced float64
 
-	for _, alertGroup := range alertGroups.Groups {
-		if len(alertGroup.Blocks) == 0 {
-			// skip groups with empty blocks
-			continue
-		}
-
+	for _, ag := range alertGroups {
 		// used to generate group content hash
 		agHasher := sha1.New()
-
-		ag := models.UnseeAlertGroup{
-			Labels: alertGroup.Labels,
-			Alerts: []models.UnseeAlert{},
-		}
 
 		alerts := map[string]models.UnseeAlert{}
 
@@ -87,28 +72,28 @@ func PullFromAlertmanager() {
 			ignoredLabels = append(ignoredLabels, il)
 		}
 
-		for _, alertBlock := range alertGroup.Blocks {
-			for _, alert := range alertBlock.Alerts {
-				apiAlert := models.UnseeAlert{AlertmanagerAlert: alert}
-
-				apiAlert.Annotations, apiAlert.Links = transform.DetectLinks(apiAlert.Annotations)
-
-				apiAlert.Labels = transform.StripLables(ignoredLabels, apiAlert.Labels)
-
-				apiAlert.Fingerprint = fmt.Sprintf("%x", structhash.Sha1(apiAlert, 1))
-
-				// add alert to map if not yet present
-				if _, found := alerts[apiAlert.Fingerprint]; !found {
-					alerts[apiAlert.Fingerprint] = apiAlert
-					io.WriteString(agHasher, apiAlert.Fingerprint) // alert group hasher
-				}
-
-				for k, v := range alert.Labels {
-					transform.ColorLabel(colorStore, k, v)
-				}
+		for _, alert := range ag.Alerts {
+			// skip duplicated alerts
+			if _, found := alerts[alert.Fingerprint]; found {
+				continue
 			}
+
+			alert.Annotations, alert.Links = transform.DetectLinks(alert.Annotations)
+			alert.Labels = transform.StripLables(ignoredLabels, alert.Labels)
+			alert.Fingerprint = fmt.Sprintf("%x", structhash.Sha1(alert, 1))
+
+			alerts[alert.Fingerprint] = alert
+
+			io.WriteString(agHasher, alert.Fingerprint) // alert group hasher
+
+			for k, v := range alert.Labels {
+				transform.ColorLabel(colorStore, k, v)
+			}
+
 		}
 
+		// reset alerts, we need to deduplicate
+		ag.Alerts = []models.UnseeAlert{}
 		for _, alert := range alerts {
 			ag.Alerts = append(ag.Alerts, alert)
 			if alert.Silenced != "" {

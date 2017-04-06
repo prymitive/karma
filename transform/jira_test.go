@@ -8,7 +8,7 @@ import (
 )
 
 type jiraTest struct {
-	silence  models.AlertmanagerSilence
+	silence  models.UnseeSilence
 	jiraID   string
 	jiraLink string
 }
@@ -20,54 +20,72 @@ var jiraRules = []string{
 
 var jiraTests = []jiraTest{
 	jiraTest{
-		silence: models.AlertmanagerSilence{
-			Comment: "Lorem ipsum dolor sit amet",
+		silence: models.UnseeSilence{
+			AlertmanagerSilence: models.AlertmanagerSilence{
+				Comment: "Lorem ipsum dolor sit amet",
+			},
 		},
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
-			Comment: "DVOPS-123",
+		silence: models.UnseeSilence{
+			AlertmanagerSilence: models.AlertmanagerSilence{
+				Comment: "DVOPS-123",
+			},
 		},
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
-			Comment: "DEVOPS team",
+		silence: models.UnseeSilence{
+			AlertmanagerSilence: models.AlertmanagerSilence{
+				Comment: "DEVOPS team",
+			},
 		},
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
-			Comment: "a project-1 b",
+		silence: models.UnseeSilence{
+			AlertmanagerSilence: models.AlertmanagerSilence{
+				Comment: "a project-1 b",
+			},
 		},
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
-			Comment: "a PROJECT- b",
+		silence: models.UnseeSilence{
+			AlertmanagerSilence: models.AlertmanagerSilence{
+				Comment: "a PROJECT- b",
+			},
 		},
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
-			Comment: "DEVOPS-1",
+		silence: models.UnseeSilence{
+			AlertmanagerSilence: models.AlertmanagerSilence{
+				Comment: "DEVOPS-1",
+			},
 		},
 		jiraID:   "DEVOPS-1",
 		jiraLink: "https://jira.example.com/browse/DEVOPS-1",
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
-			Comment: "DEVOPS-123",
+		silence: models.UnseeSilence{
+			AlertmanagerSilence: models.AlertmanagerSilence{
+				Comment: "DEVOPS-123",
+			},
 		},
 		jiraID:   "DEVOPS-123",
 		jiraLink: "https://jira.example.com/browse/DEVOPS-123",
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
-			Comment: "a DEVOPS-1 b",
+		silence: models.UnseeSilence{
+			AlertmanagerSilence: models.AlertmanagerSilence{
+				Comment: "a DEVOPS-1 b",
+			},
 		},
 		jiraID:   "DEVOPS-1",
 		jiraLink: "https://jira.example.com/browse/DEVOPS-1",
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
-			Comment: "PROJECT-9",
+		silence: models.UnseeSilence{
+			AlertmanagerSilence: models.AlertmanagerSilence{
+				Comment: "PROJECT-9",
+			},
 		},
 		jiraID:   "PROJECT-9",
 		jiraLink: "https://example.com/browse/PROJECT-9",
