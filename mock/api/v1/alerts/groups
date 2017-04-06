@@ -204,7 +204,7 @@
     },
     {
       "labels": {
-        "alertname": "Memory_Usage_High",
+        "alertname": "Memory_Usage_Too_High",
         "cluster": "prod"
       },
       "blocks": [
@@ -260,7 +260,7 @@
           "alerts": [
             {
               "labels": {
-                "alertname": "Memory_Usage_Too_High",
+                "alertname": "Free_Disk_Space_Too_Low",
                 "instance": "server5",
                 "job": "node_exporter",
                 "cluster": "staging"
