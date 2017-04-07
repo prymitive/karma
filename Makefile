@@ -2,7 +2,7 @@ NAME    := unsee
 VERSION := $(shell git describe --tags --always --dirty='-dev')
 
 # Alertmanager instance used when running locally, points to mock data
-ALERTMANAGER_URI := https://raw.githubusercontent.com/cloudflare/unsee/master/mock
+ALERTMANAGER_URI := https://raw.githubusercontent.com/cloudflare/unsee/master/mock/0.5
 # Listen port when running locally
 PORT := 8080
 
