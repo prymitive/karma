@@ -53,8 +53,26 @@ var UI = (function(params) {
     }
 
 
+    // find all elements inside alert group panel that will use tooltips
+    // and setup those
+    setupGroupTooltips = function(groupElem) {
+        $.each(groupElem.find('[data-toggle=tooltip]'), function(i, elem) {
+            $(elem).tooltip({
+                animation: false, // slows down tooltip removal
+                delay: {
+                    show: 500,
+                    hide: 0
+                },
+                title: $(elem).attr('title') || $(elem).data('ts-title'),
+                trigger: 'hover'
+            });
+        });
+    }
+
+
     setupAlertGroupUI = function(elem) {
         setupGroupLinkHover(elem);
+        setupGroupTooltips(elem);
     }
 
 

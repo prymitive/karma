@@ -21,20 +21,7 @@ var Alerts = (function() {
 
         // called after group was rendered for the first time
         Added() {
-            var groupID = '#' + this.id;
-            var group = $(groupID);
-            $.each(group.find('[data-toggle=tooltip]'), function(i, elem) {
-                $(elem).tooltip({
-                    animation: false, // slows down tooltip removal
-                    delay: {
-                        show: 500,
-                        hide: 0
-                    },
-                    title: $(elem).attr('title') || $(elem).data('ts-title'),
-                    trigger: 'hover'
-                });
-            });
-            UI.SetupAlertGroupUI(group);
+            UI.SetupAlertGroupUI($('#' + this.id));
         }
 
         Update() {
