@@ -129,14 +129,23 @@
         -return 0;
       %div.panel-body.incident-group-separator
         %div.incident-group
-          -var skippedLabel = '+' + skipped + " alerts";
+          -var skippedLabel = '+' + skipped;
+          -if (skipped == 1) {
+            -skippedLabel += " alert";
+          -else {
+            -skippedLabel += " alerts";
           %span.badge
             =skippedLabel
           -var rendered = 0;
           -$.each(labelArr, function(i, label) {
             -if (rendered > 8 && labelArr.length > 10) {
               %span.label.label-list.label-default
-                -var text = "+" + (labelArr.length - rendered) + " labels";
+                -var skippedCount = labelArr.length - rendered;
+                -var text = "+" + skippedCount;
+                -if (skippedCount == 1) {
+                  -text += ' label';
+                -else {
+                  -text += ' labels';
                 =text
               -return false;
             -} else {
