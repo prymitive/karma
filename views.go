@@ -90,7 +90,7 @@ func alerts(c *gin.Context) {
 	ts, _ := start.UTC().MarshalText()
 
 	// intialize response object, set fields that don't require any locking
-	resp := models.UnseeAlertsResponse{}
+	resp := models.AlertsResponse{}
 	resp.Status = "success"
 	resp.Timestamp = string(ts)
 	resp.Version = version
@@ -115,22 +115,22 @@ func alerts(c *gin.Context) {
 	}
 
 	// get filters
-	apiFilters := []models.UnseeFilter{}
+	apiFilters := []models.Filter{}
 	matchFilters, validFilters := getFiltersFromQuery(c.Query("q"))
 
 	// set pointers for data store objects, need a lock until end of view is reached
-	alerts := []models.UnseeAlertGroup{}
-	silences := map[string]models.UnseeSilence{}
-	colors := models.UnseeColorMap{}
-	counters := models.UnseeCountMap{}
+	alerts := []models.AlertGroup{}
+	silences := map[string]models.Silence{}
+	colors := models.LabelsColorMap{}
+	counters := models.LabelsCountMap{}
 	store.Store.Lock.RLock()
 
 	var matches int
 	for _, ag := range store.Store.Alerts {
-		agCopy := models.UnseeAlertGroup{
+		agCopy := models.AlertGroup{
 			ID:     ag.ID,
 			Labels: ag.Labels,
-			Alerts: []models.UnseeAlert{},
+			Alerts: []models.Alert{},
 		}
 		h := sha1.New()
 
@@ -169,7 +169,7 @@ func alerts(c *gin.Context) {
 					if keyMap, foundKey := store.Store.Colors[key]; foundKey {
 						if color, foundColor := keyMap[value]; foundColor {
 							if _, found := colors[key]; !found {
-								colors[key] = map[string]models.UnseeLabelColor{}
+								colors[key] = map[string]models.LabelColors{}
 							}
 							colors[key][value] = color
 						}
@@ -192,7 +192,7 @@ func alerts(c *gin.Context) {
 	resp.Counters = counters
 
 	for _, filter := range matchFilters {
-		af := models.UnseeFilter{
+		af := models.Filter{
 			Text:    filter.GetRawText(),
 			Hits:    filter.GetHits(),
 			IsValid: filter.GetIsValid(),

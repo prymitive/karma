@@ -28,7 +28,7 @@ func (filter *silencedFilter) init(name string, matcher *matcherT, rawText strin
 	}
 }
 
-func (filter *silencedFilter) Match(alert *models.UnseeAlert, matches int) bool {
+func (filter *silencedFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
 		var isSilenced bool
 		isSilenced = (alert.Silenced != "")
@@ -47,8 +47,8 @@ func newSilencedFilter() FilterT {
 	return &f
 }
 
-func silencedAutocomplete(name string, operators []string, alerts []models.UnseeAlert) []models.UnseeAutocomplete {
-	tokens := []models.UnseeAutocomplete{}
+func silencedAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+	tokens := []models.Autocomplete{}
 	for _, operator := range operators {
 		switch operator {
 		case equalOperator:

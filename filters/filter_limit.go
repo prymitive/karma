@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
 	"github.com/cloudflare/unsee/models"
 )
 
@@ -28,7 +29,7 @@ func (filter *limitFilter) init(name string, matcher *matcherT, rawText string, 
 	}
 }
 
-func (filter *limitFilter) Match(alert *models.UnseeAlert, matches int) bool {
+func (filter *limitFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
 		if matches < filter.Value.(int) {
 			return true
@@ -45,8 +46,8 @@ func newLimitFilter() FilterT {
 	return &f
 }
 
-func limitAutocomplete(name string, operators []string, alerts []models.UnseeAlert) []models.UnseeAutocomplete {
-	tokens := []models.UnseeAutocomplete{}
+func limitAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+	tokens := []models.Autocomplete{}
 	for _, operator := range operators {
 		tokens = append(tokens, makeAC(
 			fmt.Sprintf("%s%s10", name, operator),

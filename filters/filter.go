@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"regexp"
 	"strings"
+
 	"github.com/cloudflare/unsee/models"
 )
 
 // FilterT provides methods for interacting with alert filters
 type FilterT interface {
 	init(name string, matcher *matcherT, rawText string, isValid bool, value string)
-	Match(alert *models.UnseeAlert, matches int) bool
+	Match(alert *models.Alert, matches int) bool
 	GetRawText() string
 	GetHits() int
 	GetIsValid() bool

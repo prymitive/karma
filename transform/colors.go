@@ -25,16 +25,16 @@ func labelToSeed(key string, val string) int64 {
 // ColorLabel update UnseeColorMap object with a color object generated
 // from label key and value passed here
 // It's used to generate unique colors for configured labels
-func ColorLabel(colorStore models.UnseeColorMap, key string, val string) {
+func ColorLabel(colorStore models.LabelsColorMap, key string, val string) {
 	if stringInSlice(config.Config.ColorLabelsUnique, key) == true {
 		if _, found := colorStore[key]; !found {
-			colorStore[key] = make(map[string]models.UnseeLabelColor)
+			colorStore[key] = make(map[string]models.LabelColors)
 		}
 		if _, found := colorStore[key][val]; !found {
 			rand.Seed(labelToSeed(key, val))
 			color := randomcolor.New(randomcolor.Random, randomcolor.LIGHT)
 			red, green, blue, alpha := color.RGBA()
-			bc := models.UnseeColor{
+			bc := models.Color{
 				Red:   uint8(red >> 8),
 				Green: uint8(green >> 8),
 				Blue:  uint8(blue >> 8),
@@ -44,10 +44,10 @@ func ColorLabel(colorStore models.UnseeColorMap, key string, val string) {
 			// uses https://www.w3.org/WAI/ER/WD-AERT/#color-contrast method
 			var brightness int32
 			brightness = ((int32(bc.Red) * 299) + (int32(bc.Green) * 587) + (int32(bc.Blue) * 114)) / 1000
-			var fc models.UnseeColor
+			var fc models.Color
 			if brightness <= 125 {
 				// background color is dark, use white font
-				fc = models.UnseeColor{
+				fc = models.Color{
 					Red:   255,
 					Green: 255,
 					Blue:  255,
@@ -55,7 +55,7 @@ func ColorLabel(colorStore models.UnseeColorMap, key string, val string) {
 				}
 			} else {
 				// background color is bright, use dark font
-				fc = models.UnseeColor{
+				fc = models.Color{
 					Red:   44,
 					Green: 62,
 					Blue:  80,
@@ -63,7 +63,7 @@ func ColorLabel(colorStore models.UnseeColorMap, key string, val string) {
 				}
 			}
 
-			colorStore[key][val] = models.UnseeLabelColor{
+			colorStore[key][val] = models.LabelColors{
 				Font:       fc,
 				Background: bc,
 			}

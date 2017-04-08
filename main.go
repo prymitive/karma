@@ -101,7 +101,7 @@ func main() {
 	apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 
 	// before we start try to fetch data from Alertmanager
-	log.Infof("Initial Alertmanager query, this can delay startup up to %s", 2*config.Config.AlertmanagerTimeout)
+	log.Infof("Initial Alertmanager query, this can delay startup up to %s", 3*config.Config.AlertmanagerTimeout)
 	PullFromAlertmanager()
 	log.Info("Done, starting HTTP server")
 

@@ -8,7 +8,7 @@ import (
 )
 
 type jiraTest struct {
-	silence  models.AlertmanagerSilence
+	silence  models.Silence
 	jiraID   string
 	jiraLink string
 }
@@ -20,53 +20,53 @@ var jiraRules = []string{
 
 var jiraTests = []jiraTest{
 	jiraTest{
-		silence: models.AlertmanagerSilence{
+		silence: models.Silence{
 			Comment: "Lorem ipsum dolor sit amet",
 		},
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
+		silence: models.Silence{
 			Comment: "DVOPS-123",
 		},
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
+		silence: models.Silence{
 			Comment: "DEVOPS team",
 		},
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
+		silence: models.Silence{
 			Comment: "a project-1 b",
 		},
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
+		silence: models.Silence{
 			Comment: "a PROJECT- b",
 		},
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
+		silence: models.Silence{
 			Comment: "DEVOPS-1",
 		},
 		jiraID:   "DEVOPS-1",
 		jiraLink: "https://jira.example.com/browse/DEVOPS-1",
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
+		silence: models.Silence{
 			Comment: "DEVOPS-123",
 		},
 		jiraID:   "DEVOPS-123",
 		jiraLink: "https://jira.example.com/browse/DEVOPS-123",
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
+		silence: models.Silence{
 			Comment: "a DEVOPS-1 b",
 		},
 		jiraID:   "DEVOPS-1",
 		jiraLink: "https://jira.example.com/browse/DEVOPS-1",
 	},
 	jiraTest{
-		silence: models.AlertmanagerSilence{
+		silence: models.Silence{
 			Comment: "PROJECT-9",
 		},
 		jiraID:   "PROJECT-9",

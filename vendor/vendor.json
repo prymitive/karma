@@ -27,6 +27,12 @@
 			"revisionTime": "2016-08-04T10:47:26Z"
 		},
 		{
+			"checksumSHA1": "gntLgvUzJqZWf4NYxJr3p/3gcvk=",
+			"path": "github.com/blang/semver",
+			"revision": "4a1e882c79dcf4ec00d2e29fac74b9c8938d5052",
+			"revisionTime": "2017-02-02T18:38:21Z"
+		},
+		{
 			"checksumSHA1": "TbUu0oEcNoMuYbLJbnJkTOpZ/iw=",
 			"path": "github.com/certifi/gocertifi",
 			"revision": "03be5e6bb9874570ea7fb0961225d193cbc374c5",

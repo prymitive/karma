@@ -1,0 +1,43 @@
+{
+  "status": "success",
+  "data": {
+    "silences": [
+      {
+        "id": 1,
+        "matchers": [
+          {
+            "name": "instance",
+            "value": "web1",
+            "isRegex": false
+          }
+        ],
+        "startsAt": "2017-02-18T01:34:34Z",
+        "endsAt": "0001-01-01T00:00:00Z",
+        "createdAt": "2017-02-18T01:34:34Z",
+        "createdBy": "john@example.com",
+        "comment": "Silenced instance"
+      },
+      {
+        "id": 2,
+        "matchers": [
+          {
+            "name": "alertname",
+            "value": "Host_Down",
+            "isRegex": false
+          },
+          {
+            "name": "cluster",
+            "value": "dev",
+            "isRegex": false
+          }
+        ],
+        "startsAt": "2017-02-18T01:34:34Z",
+        "endsAt": "0001-01-01T00:00:00Z",
+        "createdAt": "2017-02-18T01:34:34Z",
+        "createdBy": "john@example.com",
+        "comment": "Silenced Host_Down alerts in the dev cluster"
+      }
+    ],
+    "totalSilences": 2
+  }
+}

@@ -53,9 +53,9 @@ var alertListSortTests = []alertListSortTest{
 }
 
 func TestUnseeAlertListSort(t *testing.T) {
-	al := models.UnseeAlertList{}
+	al := models.AlertList{}
 	for _, testCase := range alertListSortTests {
-		a := models.UnseeAlert{}
+		a := models.Alert{}
 		a.StartsAt = testCase.startsAt
 		a.Fingerprint = testCase.fingerprint
 		al = append(al, a)

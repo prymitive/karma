@@ -11,14 +11,8 @@ to alert data, therefore safe to be accessed by wider audience.
 
 ## Supported Alertmanager versions
 
-Alertmanager's API isn't stable yet and can change between releases, make sure
-that the correct version of unsee is used:
-
-* `0.1` release supports Alertmanager `0.4`
-* `0.2` release supports Alertmanager `0.5`
-
-`master` branch in git will always work with the latest supported Alertmanager
-release.
+Alertmanager's API isn't stable yet and can change between releases.
+unsee currently supports Alertmanager `0.4` and `0.5`.
 
 ## Known issues
 
@@ -46,12 +40,6 @@ To clone git repo and build the binary yourself run:
 
     git clone https://github.com/cloudflare/unsee $GOPATH/src/github.com/cloudflare/unsee
     cd $GOPATH/src/github.com/cloudflare/unsee
-
-Check [supported Alertmanager versions](#supported-alertmanager-versions) and if
-needed switch to the release branch that supports your Alertmanager version.
-For example to build unsee `0.2.x` run:
-
-    git checkout -t release-0.2
 
 To finally compile `unsee` the binary run:
 

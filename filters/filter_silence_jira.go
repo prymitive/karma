@@ -12,7 +12,7 @@ type silenceJiraFilter struct {
 	alertFilter
 }
 
-func (filter *silenceJiraFilter) Match(alert *models.UnseeAlert, matches int) bool {
+func (filter *silenceJiraFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
 		var isMatch bool
 		if alert.Silenced != "" {
@@ -36,8 +36,8 @@ func newSilenceJiraFilter() FilterT {
 	return &f
 }
 
-func sinceJiraIDAutocomplete(name string, operators []string, alerts []models.UnseeAlert) []models.UnseeAutocomplete {
-	tokens := map[string]models.UnseeAutocomplete{}
+func sinceJiraIDAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
 		if alert.Silenced != "" {
 			silence := store.Store.GetSilence(alert.Silenced)
@@ -54,7 +54,7 @@ func sinceJiraIDAutocomplete(name string, operators []string, alerts []models.Un
 			}
 		}
 	}
-	acData := []models.UnseeAutocomplete{}
+	acData := []models.Autocomplete{}
 	for _, token := range tokens {
 		acData = append(acData, token)
 	}

@@ -13,8 +13,8 @@ import (
 type filterTest struct {
 	Expression string
 	IsValid    bool
-	Alert      models.UnseeAlert
-	Silence    models.UnseeSilence
+	Alert      models.Alert
+	Silence    models.Silence
 	IsMatch    bool
 }
 
@@ -22,25 +22,25 @@ var tests = []filterTest{
 	filterTest{
 		Expression: "@silenced=true",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{},
+		Alert:      models.Alert{},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "@silenced!=true",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{},
+		Alert:      models.Alert{},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silenced=true",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Alert:      models.Alert{Silenced: "1"},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silenced!=true",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
+		Alert:      models.Alert{Silenced: "1"},
 		IsMatch:    false,
 	},
 	filterTest{
@@ -51,225 +51,225 @@ var tests = []filterTest{
 	filterTest{
 		Expression: "@silence_jira=1",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}, JiraID: "1"},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", JiraID: "1"},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silence_jira=2",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1"},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "@silence_jira!=3",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}, JiraID: "x"},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", JiraID: "x"},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silence_jira!=4",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}, JiraID: "4"},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", JiraID: "4"},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "@silence_jira!=5",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1"},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silence_jira=~abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}, JiraID: "xxabcxx"},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", JiraID: "xxabcxx"},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silence_jira=~abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}, JiraID: "xxx"},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", JiraID: "xxx"},
 		IsMatch:    false,
 	},
 
 	filterTest{
 		Expression: "@silence_author=john",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", CreatedBy: "john"}},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", CreatedBy: "john"},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silence_author=john",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", CreatedBy: "bob"}},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", CreatedBy: "bob"},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "@silence_author!=john",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", CreatedBy: "bob"}},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", CreatedBy: "bob"},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@silence_author!=john",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", CreatedBy: "john"}},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", CreatedBy: "john"},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "@silence_author!=john",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1"}},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1"},
 		IsMatch:    true,
 	},
 
 	filterTest{
 		Expression: "@age<1h",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{StartsAt: time.Now().Add(time.Minute * -55)}},
+		Alert:      models.Alert{StartsAt: time.Now().Add(time.Minute * -55)},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@age>1h",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{StartsAt: time.Now().Add(time.Hour * -2)}},
+		Alert:      models.Alert{StartsAt: time.Now().Add(time.Hour * -2)},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@age<-1h",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{StartsAt: time.Now().Add(time.Minute * -55)}},
+		Alert:      models.Alert{StartsAt: time.Now().Add(time.Minute * -55)},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "@age>-1h",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{StartsAt: time.Now().Add(time.Hour * -2)}},
+		Alert:      models.Alert{StartsAt: time.Now().Add(time.Hour * -2)},
 		IsMatch:    true,
 	},
 
 	filterTest{
 		Expression: "node=vps1",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Labels: map[string]string{"node": "vps1"}}},
+		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "node=vps1",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{}},
+		Alert:      models.Alert{},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "node!=vps1",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Labels: map[string]string{"node": "vps1"}}},
+		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "node!=vps1",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Labels: map[string]string{"node": "vps2"}}},
+		Alert:      models.Alert{Labels: map[string]string{"node": "vps2"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "node=~vps",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Labels: map[string]string{"node": "vps1"}}},
+		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "node!~vps",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Labels: map[string]string{"node": "vps1"}}},
+		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "node!~abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Labels: map[string]string{"node": "vps1"}}},
+		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
 		IsMatch:    true,
 	},
 
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Labels: map[string]string{"key": "abc"}}},
+		Alert:      models.Alert{Labels: map[string]string{"key": "abc"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Labels: map[string]string{"key": "XXXabcx"}}},
+		Alert:      models.Alert{Labels: map[string]string{"key": "XXXabcx"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Labels: map[string]string{"abc": "xxxab"}}},
+		Alert:      models.Alert{Labels: map[string]string{"abc": "xxxab"}},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Annotations: map[string]string{"key": "abc"}}},
+		Alert:      models.Alert{Annotations: map[string]string{"key": "abc"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Annotations: map[string]string{"key": "ccc abc"}}},
+		Alert:      models.Alert{Annotations: map[string]string{"key": "ccc abc"}},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Annotations: map[string]string{"abc": "zzz"}}},
+		Alert:      models.Alert{Annotations: map[string]string{"abc": "zzz"}},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", Comment: "abc"}},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", Comment: "abc"},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", Comment: "abcxxx"}},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", Comment: "abcxxx"},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", Comment: "ABCD"}},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", Comment: "ABCD"},
 		IsMatch:    true,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{Silenced: "1"}},
-		Silence:    models.UnseeSilence{AlertmanagerSilence: models.AlertmanagerSilence{ID: "1", Comment: "xzc"}},
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", Comment: "xzc"},
 		IsMatch:    false,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{}},
+		Alert:      models.Alert{},
 		IsMatch:    false,
 	},
 	filterTest{
@@ -281,11 +281,11 @@ var tests = []filterTest{
 func TestFilters(t *testing.T) {
 	for _, ft := range tests {
 		if &ft.Silence != nil {
-			store.Store.SetSilences(map[string]models.UnseeSilence{
+			store.Store.SetSilences(map[string]models.Silence{
 				ft.Silence.ID: ft.Silence,
 			})
 		} else {
-			store.Store.SetSilences(map[string]models.UnseeSilence{})
+			store.Store.SetSilences(map[string]models.Silence{})
 		}
 		f := filters.NewFilter(ft.Expression)
 		if f == nil {
@@ -366,7 +366,7 @@ func TestLimitFilter(t *testing.T) {
 			t.Errorf("[%s] GetIsValid() returned %#v while %#v was expected", ft.Expression, f.GetIsValid(), ft.IsValid)
 		}
 		if f.GetIsValid() {
-			alert := models.UnseeAlert{AlertmanagerAlert: models.AlertmanagerAlert{}}
+			alert := models.Alert{}
 			var index int = 0
 			for _, isMatch := range ft.IsMatch {
 				m := f.Match(&alert, index)

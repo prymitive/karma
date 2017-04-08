@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"github.com/cloudflare/unsee/config"
+	"github.com/cloudflare/unsee/mock"
 	"github.com/cloudflare/unsee/models"
 
 	log "github.com/Sirupsen/logrus"
@@ -19,8 +20,10 @@ import (
 	"gopkg.in/jarcoal/httpmock.v1"
 )
 
+var testVersions = []string{"0.4", "0.5"}
+
 func mockConfig() {
-	log.SetLevel(log.FatalLevel)
+	log.SetLevel(log.ErrorLevel)
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
 	os.Setenv("COLOR_LABELS_UNIQUE", "alertname")
 	config.Config.Read()
@@ -88,118 +91,67 @@ func TestHelpPrefix(t *testing.T) {
 	}
 }
 
-func mockAlerts() {
+func mockAlerts(version string) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
 	apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 
-	silences := `{
-    "status": "success",
-    "data": [
-        {
-          "id": "1",
-          "matchers": [
-            {
-              "name": "alertname",
-              "value": "myService",
-              "isRegex": false
-            }
-          ],
-          "startsAt": "2016-11-08T16:30:21Z",
-          "endsAt": "2063-04-06T09:22:30Z",
-          "createdAt": "2016-11-08T16:30:21Z",
-          "createdBy": "john@localhost",
-          "comment": "JIRA-3273"
-        }
-      ]
-  }`
-	httpmock.RegisterResponder("GET", "http://localhost/api/v1/silences?limit=4294967295", httpmock.NewStringResponder(200, silences))
-
-	alerts := `{
-  "status": "success",
-  "data": [
-    {
-      "labels": {
-        "alertname": "myService"
-      },
-      "blocks": [
-        {
-          "routeOpts": {
-            "receiver": "email",
-            "groupBy": [
-              "cluster"
-            ],
-            "groupWait": 30000000000,
-            "groupInterval": 300000000000,
-            "repeatInterval": 10800000000000
-          },
-          "alerts": [
-            {
-              "labels": {
-                "alertname": "myService",
-                "node": "localhost",
-                "cluster": "prod"
-              },
-              "annotations": {
-                "dashboard": "https://localhost/dashboard"
-              },
-              "startsAt": "2016-12-10T18:57:42.308Z",
-              "endsAt": "0001-01-01T00:00:00Z",
-              "generatorURL": "https://localhost/prometheus",
-              "inhibited": false,
-              "silenced": "1"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-  }`
-	httpmock.RegisterResponder("GET", "http://localhost/api/v1/alerts/groups", httpmock.NewStringResponder(200, alerts))
+	mock.RegisterURL("http://localhost/api/v1/status", version, "status")
+	mock.RegisterURL("http://localhost/api/v1/silences", version, "silences")
+	mock.RegisterURL("http://localhost/api/v1/alerts/groups", version, "alerts/groups")
 
 	PullFromAlertmanager()
 }
 
 func TestAlerts(t *testing.T) {
 	mockConfig()
-	mockAlerts()
-	r := ginTestEngine()
-	req, _ := http.NewRequest("GET", "/alerts.json?q=alertname=myService", nil)
-	resp := httptest.NewRecorder()
-	r.ServeHTTP(resp, req)
-	if resp.Code != http.StatusOK {
-		t.Errorf("GET /alerts.json returned status %d", resp.Code)
-	}
+	for _, version := range testVersions {
+		mockAlerts(version)
+		r := ginTestEngine()
+		req, _ := http.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed,instance=web1", nil)
+		resp := httptest.NewRecorder()
+		r.ServeHTTP(resp, req)
+		if resp.Code != http.StatusOK {
+			t.Errorf("GET /alerts.json returned status %d", resp.Code)
+		}
 
-	ur := models.UnseeAlertsResponse{}
-	json.Unmarshal(resp.Body.Bytes(), &ur)
-	if len(ur.Filters) != 1 {
-		t.Error("No filters in response")
-	}
-	if len(ur.Colors) != 1 {
-		t.Error("No colors in response")
-	}
-	if len(ur.Silences) != 1 {
-		t.Error("No silences in response")
-	}
-	if len(ur.AlertGroups) != 1 {
-		t.Error("No alerts in response")
-	}
-	if ur.Version == "" {
-		t.Error("No version in response")
-	}
-	if ur.Timestamp == "" {
-		t.Error("No timestamp in response")
-	}
-	if ur.Error != "" {
-		t.Errorf("Error in response: %s", ur.Error)
-	}
-	if ur.Status != "success" {
-		t.Errorf("Invalid status in response: %s", ur.Status)
-	}
-	if len(ur.Counters) != 4 {
-		t.Errorf("Invalid number of counters in response (%d): %v", len(ur.Counters), ur.Counters)
+		ur := models.AlertsResponse{}
+		json.Unmarshal(resp.Body.Bytes(), &ur)
+		if len(ur.Filters) != 2 {
+			t.Errorf("[%s] No filters in response", version)
+		}
+		if len(ur.Colors) != 1 {
+			t.Errorf("[%s] No colors in response", version)
+		}
+		if len(ur.Silences) != 1 {
+			t.Errorf("[%s] No silences in response", version)
+		}
+		if len(ur.AlertGroups) != 1 {
+			t.Errorf("[%s] No alerts in response", version)
+		}
+		if ur.Version == "" {
+			t.Errorf("[%s] No version in response", version)
+		}
+		if ur.Timestamp == "" {
+			t.Errorf("[%s] No timestamp in response", version)
+		}
+		if ur.Error != "" {
+			t.Errorf("[%s] Error in response: %s", version, ur.Error)
+		}
+		if ur.Status != "success" {
+			t.Errorf("[%s] Invalid status in response: %s", version, ur.Status)
+		}
+		if len(ur.Counters) != 5 {
+			t.Errorf("[%s] Invalid number of counters in response (%d): %v", version, len(ur.Counters), ur.Counters)
+		}
+		for _, ag := range ur.AlertGroups {
+			for _, a := range ag.Alerts {
+				if len(a.Links) != 1 {
+					t.Errorf("Invalid number of links, got %d, expected 1, %v", len(a.Links), a)
+				}
+			}
+		}
 	}
 }
 
@@ -216,43 +168,67 @@ var acTests = []acTestCase{
 			"@age<1h",
 			"@age>10m",
 			"@age>1h",
-			"alertname!=myService",
-			"alertname=myService",
+			"alertname!=Free_Disk_Space_Too_Low",
+			"alertname!=HTTP_Probe_Failed",
+			"alertname!=Host_Down",
+			"alertname!=Memory_Usage_Too_High",
+			"alertname=Free_Disk_Space_Too_Low",
+			"alertname=HTTP_Probe_Failed",
+			"alertname=Host_Down",
+			"alertname=Memory_Usage_Too_High",
 		},
 	},
 	acTestCase{
 		Term: "alert",
 		Results: []string{
-			"alertname!=myService",
-			"alertname=myService",
+			"alertname!=Free_Disk_Space_Too_Low",
+			"alertname!=HTTP_Probe_Failed",
+			"alertname!=Host_Down",
+			"alertname!=Memory_Usage_Too_High",
+			"alertname=Free_Disk_Space_Too_Low",
+			"alertname=HTTP_Probe_Failed",
+			"alertname=Host_Down",
+			"alertname=Memory_Usage_Too_High",
 		},
 	},
 	acTestCase{
 		Term: "alertname",
 		Results: []string{
-			"alertname!=myService",
-			"alertname=myService",
+			"alertname!=Free_Disk_Space_Too_Low",
+			"alertname!=HTTP_Probe_Failed",
+			"alertname!=Host_Down",
+			"alertname!=Memory_Usage_Too_High",
+			"alertname=Free_Disk_Space_Too_Low",
+			"alertname=HTTP_Probe_Failed",
+			"alertname=Host_Down",
+			"alertname=Memory_Usage_Too_High",
 		},
 	},
 	acTestCase{
 		Term: "aLeRtNaMe",
 		Results: []string{
-			"alertname!=myService",
-			"alertname=myService",
+			"alertname!=Free_Disk_Space_Too_Low",
+			"alertname!=HTTP_Probe_Failed",
+			"alertname!=Host_Down",
+			"alertname!=Memory_Usage_Too_High",
+			"alertname=Free_Disk_Space_Too_Low",
+			"alertname=HTTP_Probe_Failed",
+			"alertname=Host_Down",
+			"alertname=Memory_Usage_Too_High",
 		},
 	},
 	acTestCase{
-		Term: "myservice",
+		Term: "http",
 		Results: []string{
-			"alertname!=myService",
-			"alertname=myService",
+			"alertname!=HTTP_Probe_Failed",
+			"alertname=HTTP_Probe_Failed",
 		},
 	},
 	acTestCase{
-		Term: "MYservice",
+		Term: "hTTp_",
 		Results: []string{
-			"alertname!=myService",
-			"alertname=myService",
+			"alertname!=HTTP_Probe_Failed",
+			"alertname=HTTP_Probe_Failed",
 		},
 	},
 	acTestCase{
@@ -264,10 +240,10 @@ var acTests = []acTestCase{
 			"@age>1h",
 			"@limit=10",
 			"@limit=50",
-			"@silence_author!=john@localhost",
-			"@silence_author!~john@localhost",
-			"@silence_author=john@localhost",
-			"@silence_author=~john@localhost",
+			"@silence_author!=john@example.com",
+			"@silence_author!~john@example.com",
+			"@silence_author=john@example.com",
+			"@silence_author=~john@example.com",
 			"@silenced=false",
 			"@silenced=true",
 		},
@@ -275,59 +251,67 @@ var acTests = []acTestCase{
 	acTestCase{
 		Term: "nod",
 		Results: []string{
-			"node!=localhost",
-			"node=localhost",
+			"job!=node_exporter",
+			"job!=node_ping",
+			"job=node_exporter",
+			"job=node_ping",
 		},
 	},
 	acTestCase{
 		Term: "Nod",
 		Results: []string{
-			"node!=localhost",
-			"node=localhost",
+			"job!=node_exporter",
+			"job!=node_ping",
+			"job=node_exporter",
+			"job=node_ping",
 		},
 	},
 	// duplicated to test reponse caching
 	acTestCase{
 		Term: "Nod",
 		Results: []string{
-			"node!=localhost",
-			"node=localhost",
+			"job!=node_exporter",
+			"job!=node_ping",
+			"job=node_exporter",
+			"job=node_ping",
 		},
 	},
 }
 
 func TestAutocomplete(t *testing.T) {
 	mockConfig()
-	mockAlerts()
-	r := ginTestEngine()
+	for _, version := range testVersions {
+		mockAlerts(version)
+		r := ginTestEngine()
 
-	req, _ := http.NewRequest("GET", "/autocomplete.json", nil)
-	resp := httptest.NewRecorder()
-	r.ServeHTTP(resp, req)
-	if resp.Code != http.StatusBadRequest {
-		t.Errorf("Invalid status code for request without any query: %d", resp.Code)
-	}
-
-	for _, acTest := range acTests {
-		url := fmt.Sprintf("/autocomplete.json?term=%s", acTest.Term)
-		req, _ := http.NewRequest("GET", url, nil)
+		req, _ := http.NewRequest("GET", "/autocomplete.json", nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
-
-		if resp.Code != http.StatusOK {
-			t.Errorf("GET %s returned status %d", url, resp.Code)
+		if resp.Code != http.StatusBadRequest {
+			t.Errorf("Invalid status code for request without any query: %d", resp.Code)
 		}
 
-		ur := []string{}
-		json.Unmarshal(resp.Body.Bytes(), &ur)
+		for _, acTest := range acTests {
+			url := fmt.Sprintf("/autocomplete.json?term=%s", acTest.Term)
+			req, _ := http.NewRequest("GET", url, nil)
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
 
-		if len(ur) != len(acTest.Results) {
-			t.Errorf("Invalid number of autocomplete hints for %s, got %d, expected %d", url, len(ur), len(acTest.Results))
-			t.Errorf("Results: %s", ur)
-		}
-		for i := range ur {
-			if ur[i] != acTest.Results[i] {
-				t.Errorf("Result mismatch, got '%s' when '%s' was expected", ur[i], acTest.Results[i])
+			if resp.Code != http.StatusOK {
+				t.Errorf("GET %s returned status %d", url, resp.Code)
+			}
+
+			ur := []string{}
+			json.Unmarshal(resp.Body.Bytes(), &ur)
+
+			if len(ur) != len(acTest.Results) {
+				t.Errorf("Invalid number of autocomplete hints for %s, got %d, expected %d", url, len(ur), len(acTest.Results))
+				t.Errorf("Results: %s", ur)
+			}
+			for i := range ur {
+				if ur[i] != acTest.Results[i] {
+					t.Errorf("Result mismatch for term='%s', got '%s' when '%s' was expected", acTest.Term, ur[i], acTest.Results[i])
+				}
 			}
 		}
 	}
@@ -363,7 +347,6 @@ var staticFileTests = []staticFileTestCase{
 
 func TestStaticFiles(t *testing.T) {
 	mockConfig()
-	mockAlerts()
 	r := ginTestEngine()
 	for _, staticFileTest := range staticFileTests {
 		req, _ := http.NewRequest("GET", staticFileTest.path, nil)
@@ -402,7 +385,6 @@ func TestStaticFilesPrefix(t *testing.T) {
 	os.Setenv("WEB_PREFIX", "/sub")
 	defer os.Unsetenv("WEB_PREFIX")
 	mockConfig()
-	mockAlerts()
 	r := ginTestEngine()
 	for _, staticFileTest := range staticFilePrefixTests {
 		req, _ := http.NewRequest("GET", staticFileTest.path, nil)
