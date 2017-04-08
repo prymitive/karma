@@ -1,6 +1,8 @@
 var UI = (function(params) {
 
 
+    // when user click on any alert label modal popup with a list of possible
+    // filter will show, this function is used to setup that modal
     setupModal = function() {
         $('#labelModal').on('show.bs.modal', function(event) {
             Unsee.Pause();
@@ -35,13 +37,35 @@ var UI = (function(params) {
     }
 
 
+    // each alert group have a link generated for it, but we hide it until
+    // user hovers over that group so it doesn't trash the UI
+    setupGroupLinkHover = function(elem) {
+        $(elem).on('mouseenter', function() {
+            $(this).find('.alert-group-link > a').finish().animate({
+                opacity: 100
+            }, 200);
+        });
+        $(elem).on('mouseleave', function() {
+            $(this).find('.alert-group-link > a').finish().animate({
+                opacity: 0
+            }, 200);
+        });
+    }
+
+
+    setupAlertGroupUI = function(elem) {
+        setupGroupLinkHover(elem);
+    }
+
+
     init = function() {
         setupModal();
     }
 
 
     return {
-        Init: init
+        Init: init,
+        SetupAlertGroupUI: setupAlertGroupUI
     }
 
 })();

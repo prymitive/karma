@@ -22,7 +22,8 @@ var Alerts = (function() {
         // called after group was rendered for the first time
         Added() {
             var groupID = '#' + this.id;
-            $.each($(groupID).find('[data-toggle=tooltip]'), function(i, elem) {
+            var group = $(groupID);
+            $.each(group.find('[data-toggle=tooltip]'), function(i, elem) {
                 $(elem).tooltip({
                     animation: false, // slows down tooltip removal
                     delay: {
@@ -33,6 +34,7 @@ var Alerts = (function() {
                     trigger: 'hover'
                 });
             });
+            UI.SetupAlertGroupUI(group);
         }
 
         Update() {

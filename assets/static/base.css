@@ -378,4 +378,5 @@ table.table.examples > tbody > tr td:first-child {
 }
 span.alert-group-link > a {
   color: #fff;
+  opacity: 0;
 }
