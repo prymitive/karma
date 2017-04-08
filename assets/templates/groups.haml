@@ -41,7 +41,7 @@
 
         -var silencedText = '@silenced: false';
         -var isSilenced = 'false';
-        -if (alert.silenced > 0) {
+        -if (alert.silenced) {
           -silencedText = '@silenced: true';
           -isSilenced = 'true';
         -if (labelMap[silencedText] == undefined) {
@@ -78,7 +78,7 @@
           -var cls_body = '';
 
           -var cls_indicator = 'incident-indicator-danger';
-          -if (alert.silenced > 0) {
+          -if (alert.silenced) {
                 -cls_indicator = 'incident-indicator-success';
 
           %div
@@ -90,7 +90,7 @@
               %a.label.label-list.label-default{href: url, target: '_blank', title: url, 'data-toggle': 'tooltip', 'data-placement': 'top'}
                 %i.fa.fa-external-link
                 =k
-            -if (alert.silenced > 0) {
+            -if (alert.silenced) {
               %span.label.label-list.label-success{'data-label-type': "filter", 'data-label-key': "@silenced", 'data-label-val': "true", type: 'button', 'data-toggle': 'modal', 'data-target': '#labelModal'}
                 @silenced: true
             -else {
@@ -101,7 +101,7 @@
                 =alert.startsAt
               %div.incident-indicator.hidden{class: cls_indicator}
 
-          -if (alert.silenced > 0) {
+          -if (alert.silenced) {
             %div
               -var silence = silences[alert.silenced];
               -if(silence) {
