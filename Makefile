@@ -167,8 +167,6 @@ assets: loaders.css/0.1.2/loaders.min.css
 assets: js-cookie/2.1.3/js.cookie.min.js
 # underscore & haml, for template rendering in js
 assets: underscore.js/1.8.3/underscore-min.js
-assets: underscore.string/2.4.0/underscore.string.min.js
-assets: clientside-haml-js/5.4/haml.js
 # masonry, for grid layout
 assets: masonry/4.1.1/masonry.pkgd.min.js
 # copy to clipboard

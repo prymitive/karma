@@ -1,0 +1,244 @@
+<script type="application/json" id="alert-group-title">
+  <% if (Object.keys(group.labels).length > 0) { %>
+    <% var filters = [] %>
+    <% _.each(group.labels, function(label_val, label_key) { filters.push(label_key + '=' + label_val) }) %>
+    <% var groupLink = '?q=' + filters.join(',') %>
+    <span class="pull-left alert-group-link">
+      <a href="<%= groupLink %>" title="Link to this alert group", data-toggle="tooltip" data-placement="top">
+        <i class="fa fa-link"/>
+      </a>
+    </span>
+    <span class="badge pull-right">
+      <%- group.alerts.length %>
+    </span>
+    <div class="panel-title">
+      <% if (Object.keys(group.labels).length > 0) { %>
+        <% _.each(Alerts.SortMapByKey(group.labels), function(label) { %>
+          <% var attrs = Alerts.GetLabelAttrs(label.key, label.value) %>
+          <%= Templates.Render('buttonLabel', {elem: 'div', elemClass: 'label label-list', attrs: attrs, label: label}) %>
+        <% }) %>
+      <% } else { %>
+        <div class="label-list label"></div>
+      <% } %>
+    </div>
+  <% } %>
+</script>
+
+<script type="application/json" id="alert-group-annotations">
+  <% _.each(Alerts.SortMapByKey(alert.annotations), function(annotation) { %>
+    <div class="well well-sm annotation-well">
+      <i class="fa fa-question-circle text-muted" title="<%= annotation.key %>" data-toggle="tooltip" data-placement="top"/>
+      <% if (annotation.value) { %>
+        <%- annotation.value %>
+      <% } else { %>
+        <span class="text-muted">
+          [ missing annotation value ]
+        </span>
+      <% } %>
+    </div>
+  <% }) %>
+</script>
+
+<script type="application/json" id="alert-group-labels">
+  <% _.each(Alerts.SortMapByKey(alert.labels), function(label) { %>
+    <% if (group.labels[label.key] == undefined) { %>
+      <% var attrs = Alerts.GetLabelAttrs(label.key, label.value) %>
+      <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: label}) %>
+    <% } %>
+  <% }) %>
+</script>
+
+<script type="application/json" id="alert-group-elements">
+  <% var cls_indicator = 'incident-indicator-danger' %>
+  <% if (alert.silenced) { cls_indicator = 'incident-indicator-success' } %>
+  <div>
+    <% if (alert.generatorURL) { %>
+      <a class="label label-list label-default"
+         href="<%= alert.generatorURL %>"
+         target="_blank"
+         title="Go to the alert source"
+         data-toggle="tooltip"
+         data-placement="top">
+        <i class="fa fa-external-link"/>
+        source
+      </a>
+    <% } %>
+    <% _.each(alert.links, function(url, text) { %>
+      <a class="label label-list label-default"
+         href="<%= url %>"
+         target="_blank"
+         title="<%= url %>"
+         data-toggle="tooltip"
+         data-placement="top">
+        <i class="fa fa-external-link"/>
+        <%- text %>
+      </a>
+    <% }) %>
+    <% if (alert.silenced) { %>
+      <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-success', label: {key: '@silenced', value: 'true', text: '@silenced: true'}}) %>
+    <% } else { %>
+      <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-danger', label: {key: '@silenced', value: 'false', text: '@silenced: false'}}) %>
+    <% } %>
+    <a class="label label-list label-default label-age label-ts"
+       data-toggle="tooltip"
+       data-placement="top"
+       data-ts="<%= alert.startsAt %>">
+       <span class="label-ts-span">
+        <%- alert.startsAt %>
+       </span>
+       <div class="incident-indicator hidden <%= cls_indicator %>">
+       </div>
+    </a>
+  </div>
+</script>
+
+<script type="application/json" id="alert-group-silence">
+  <div>
+    <% var silence = silences[alert.silenced] %>
+    <% if (silence) { %>
+      <blockquote class="silence-comment">
+        <% if (silence.jiraURL) { %>
+          <a href="<%= silence.jiraURL %>" target="_blank">
+            <i class="fa fa-external-link"/>
+            <%- silence.comment %>
+          </a>
+        <% } else { %>
+          <%- silence.comment %>
+        <% } %>
+        <footer>
+          <cite>
+            <abbr class="label-ts" data-toggle="tooltip" data-placement="top" data-ts="<%= silence.startsAt %>">
+              <%- silence.createdBy %>
+            </abbr>
+          </cite>
+        </footer>
+      </blockquote>
+    <% } %>
+  </div>
+</script>
+
+<script type="application/json" id="alert-group-label-map">
+  <% var labelArr = [] %>
+  <% _.each(labelMap, function(label, text) { %>
+    <% labelArr.push({text: text, key: label.key, value: label.value, hits: label.hits}) %>
+  <% }) %>
+  <% labelArr.sort(function(a, b) { %>
+    <% if (a.hits < b.hits) return 1 %>
+    <% if (a.hits > b.hits) return -1 %>
+    <% if (a.text > b.text) return 1 %>
+    <% if (a.text < b.text) return -1 %>
+    <% return 0 %>
+  <% }) %>
+
+  <div class="panel-body incident-group-separator">
+    <div class="incident-group">
+      <% var skippedLabel = '+' + skipped %>
+      <% if (skipped == 1) { %>
+        <% skippedLabel += " alert" %>
+      <% } else { %>
+        <% skippedLabel += " alerts" %>
+      <% } %>
+      <div class="incident-group">
+        <span class="badge">
+          <%- skippedLabel %>
+        </span>
+        <% var rendered = 0 %>
+        <!--
+        can't use underscore each() here as it doesn't support breaking the loop
+        with 'return false', use jquery method
+        -->
+        <% $.each(labelArr, function(i, label) { %>
+          <% if (rendered > 8 && labelArr.length > 10) { %>
+            <span class="label label-list label-default">
+              <% var skippedCount = labelArr.length - rendered %>
+              <% if (skippedCount == 1) { %>
+                +<%- skippedCount %> label
+              <% } else { %>
+                +<%- skippedCount %> labels
+              <% } %>
+            </span>
+            <% return false %>
+          <% } else { %>
+            <% rendered++ %>
+            <% var attrs = Alerts.GetLabelAttrs(label.key, label.value) %>
+            <% if (label.hits > 1) { %>
+              <div class="label-trim-group">
+                <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-trim-tag', attrs: attrs, label: label}) %>
+                <span class="label label-default label-trim-count">
+                  <%- label.hits %>
+                </span>
+              </div>
+            <% } else { %>
+              <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: label}) %>
+            <% } %>
+          <% } %>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+</script>
+
+<script type="application/json" id="alert-group">
+  <div class="incident" id="<%= group.id %>" data-hash="<%= group.hash %>">
+    <% var cls_panel = 'panel-success' %>
+    <% if (group.unsilencedCount > 0) { cls_panel = 'panel-danger' } %>
+    <div class="panel <%= cls_panel %>">
+      <div class="panel-heading text-center">
+        <%= Templates.Render('alertGroupTitle', {group: group}) %>
+      </div>
+      <% var labelMap = {} %>
+      <% var skipped = 0 %>
+      <% _.each(group.alerts, function(alert, i) { %>
+        <% if (i > alert_limit - 1) { %>
+          <% skipped++ %>
+          <% _.each(alert.labels, function(label_val, label_key) { %>
+            <% var text = label_key + ': ' + label_val %>
+            <% if (group.labels[label_key] == undefined) { %>
+              <% if (labelMap[text] == undefined) { labelMap[text] = {key: label_key, value: label_val, hits: 0} } %>
+              <% labelMap[text].hits++ %>
+            <% } %>
+          <% }) %>
+          <% var silencedText = '@silenced: false' %>
+          <% var isSilenced = 'false' %>
+          <% if (alert.silenced) { %>
+            <% silencedText = '@silenced: true' %>
+            <% isSilenced = 'true' %>
+          <% } %>
+          <% if (labelMap[silencedText] == undefined) { labelMap[silencedText] = {key: '@silenced', value: isSilenced, hits: 0} } %>
+          <% labelMap[silencedText].hits++ %>
+        <% } else { %>
+          <% var cls_body = '' %>
+          <% if (i < group.alerts.length - 1) { cls_body = 'incident-group-separator' } %>
+          <div class="panel-body <%= cls_body %>">
+            <div class="incident-group">
+              <%= Templates.Render('alertGroupAnnotations', {alert: alert}) %>
+              <%= Templates.Render('alertGroupLabels', {alert: alert, group: group}) %>
+              <%= Templates.Render('alertGroupElements', {alert: alert}) %>
+              <% if (alert.silenced) { %>
+                <%= Templates.Render('alertGroupSilence', {alert: alert, silences: silences}) %>
+              <% } %>
+            </div>
+          </div>
+        <% } %>
+      <% }) %>
+      <% if (!$.isEmptyObject(labelMap)) { %>
+        <%= Templates.Render('alertGroupLabelMap', {labelMap: labelMap, skipped: skipped}) %>
+      <% } %>
+    </div>
+  </div>
+</script>
+
+<script type="application/json" id="label-button-filter">
+  <% if (elemClass == undefined) { var elemClass = '' } %>
+  <% if (attrs == undefined) { var attrs = {class: '', style: ''} } %>
+  <<%= elem %> class="<%= elemClass %> <%= attrs.class %>"
+        style="<%= attrs.style %>"
+        type="button"
+        data-label-type="filter"
+        data-label-key="<%= label.key %>"
+        data-label-val="<%= label.value %>"
+        data-toggle="modal"
+        data-target="#labelModal">
+    <%- label.text %>
+  </<%= elem %>>
+</script>

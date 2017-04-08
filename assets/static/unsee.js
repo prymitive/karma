@@ -70,7 +70,7 @@ var Unsee = (function(params) {
         Counter.Error()
         Grid.Clear();
         Grid.Hide();
-        $(selectors.errors).html(haml.compileHaml(template)(context));
+        $(selectors.errors).html(Templates.Render(template, context));
         $(selectors.errors).show();
         Counter.Unknown();
         Summary.Update({});
@@ -84,7 +84,7 @@ var Unsee = (function(params) {
         if (window.console) {
             console.error(err.stack);
         }
-        renderError('internal-error', {
+        renderError('internalError', {
             name: err.name,
             message: err.message,
             raw: err
@@ -96,7 +96,7 @@ var Unsee = (function(params) {
 
 
     upgrade = function() {
-        renderError('reload-needed', {});
+        renderError('reloadNeeded', {});
         setTimeout(function() {
             location.reload();
         }, 3000);
@@ -113,7 +113,7 @@ var Unsee = (function(params) {
                     upgrade();
                 } else if (resp['error']) {
                     Counter.Unknown();
-                    renderError('update-error', {
+                    renderError('updateError', {
                         error: 'Backend error',
                         message: resp['error'],
                         last_ts: Watchdog.GetLastUpdate()
@@ -149,7 +149,7 @@ var Unsee = (function(params) {
                 // if fatal error was already triggered we have error message
                 // so don't add new one
                 if (!Watchdog.IsFatal()) {
-                    renderError('update-error', {
+                    renderError('updateError', {
                         error: 'Backend error',
                         message: 'AJAX request failed',
                         last_ts: Watchdog.GetLastUpdate()
@@ -238,6 +238,7 @@ $(document).ready(function() {
         trigger: 'hover'
     });
 
+    Templates.Init();
     UI.Init();
     Unsee.Init();
 

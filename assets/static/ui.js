@@ -13,15 +13,15 @@ var UI = (function(params) {
             var attrs = Alerts.GetLabelAttrs(label_key, label_val);
             var counter = Summary.Get(label_key, label_val);
             modal.find('.modal-title').html(
-                haml.compileHaml('modal-title')({
-                    attrs: attrs,
-                    counter: counter
+                Templates.Render('modalTitle', {
+                  attrs: attrs,
+                  counter: counter
                 })
             );
             var hints = Autocomplete.GenerateHints(label_key, label_val);
-            modal.find('.modal-body').html(haml.compileHaml('modal-body')({
-                hints: hints
-            }));
+            modal.find('.modal-body').html(
+              Templates.Render('modalBody', {hints: hints})
+            );
             modal.on('click', '.modal-button-filter', function(elem) {
                 var filter = $(elem.target).data('filter-append-value');
                 $('#labelModal').modal('hide');
