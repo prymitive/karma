@@ -1,0 +1,78 @@
+<script type="application/json" id="reload-needed">
+  <div class="jumbotron">
+    <h1 class="text-center">
+      New version detected, reloading ...
+      <i class="fa fa-refresh fa-spin"/>
+    </h1>
+  </div>
+</script>
+
+
+<script type="application/json" id="update-error">
+  <div class="jumbotron">
+    <h1 class="text-center">
+      <%- error %>
+      <% if (message) { %>
+        <div class="text-center">
+          <p>
+            <%- message %>
+          </p>
+        </div>
+      <% } %>
+      <% if (last_ts > 0) { %>
+        <div class="text-center">
+          <p>
+            Last successful update was <%= moment.unix(last_ts).fromNow() %>
+          </p>
+        </div>
+      <% } %>
+    </h1>
+  </div>
+</script>
+
+
+<script type="application/json" id="fatal-error">
+  <div class="jumbotron">
+    <h1 class="text-center">
+      Critical error
+      <i class="fa fa-exclamation-circle text-danger"/>
+    </h1>
+    <div class="text-center">
+      <p>
+        Auto refresh is enabled but last update was <%= moment.unix(last_ts).fromNow() %>
+      </p>
+      <p>
+        This page will auto reload in
+        <span id='reload-counter'>
+          <%- seconds_left %> seconds
+        </span>
+      </p>
+    </div>
+  </div>
+</script>
+
+
+<script type="application/json" id="internal-error">
+  <div class="jumbotron">
+    <h1 class="text-center">
+      Internal error
+      <i class="fa fa-exclamation-circle text-danger"/>
+    </h1>
+    <div class="text-center">
+      <p>
+        <% if (name) { %>
+          <%- name %>
+        <% } %>
+        <% if (message) { %>
+          <%- message %>
+        <% } %>
+        <% if (!name && !message) { %>
+          <% var msg = raw.split('(') %>
+          <% if (msg.length > 0) { %>
+            <%- msg[0] %>
+          <% } %>
+        <% } %>
+      </p>
+    </div>
+  </div>
+</script>

@@ -1,0 +1,30 @@
+<script type="application/json" id="breakdown">
+  <div class="popover">
+    <div class="arrow"></div>
+    <h1 class="popover-title text-center"></h1>
+    <div class="popover-content" id="breakdown-content"></div>
+  </div>
+</script>
+
+<script type="application/json" id="breakdown-content">
+  <% if(tags.length > 0) { %>
+    <table class="table">
+      <% _.each(tags, function(tag) { %>
+        <tr>
+          <td>
+            <span class="label <%= tag.cls %>" style="<%= tag.style %>">
+              <%- tag.name %>
+            </span>
+          </td>
+          <td align="center">
+            <span class="breakdown-badge">
+              <%- tag.val %>
+            </span>
+          </td>
+        </tr>
+      <% }) %>
+    </table>
+  <% } else { %>
+    <p class="text-muted">Empty</p>
+  <% } %>
+</script>

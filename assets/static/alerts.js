@@ -11,7 +11,7 @@ var Alerts = (function() {
         }
 
         Render() {
-            return haml.compileHaml('groups')({
+            return Templates.Render('alertGroup', {
                 group: this,
                 silences: silences,
                 static_color_label: Colors.GetStaticLabels(),

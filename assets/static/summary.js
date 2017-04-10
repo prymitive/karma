@@ -1,7 +1,7 @@
 var Summary = (function() {
 
 
-    var summary;
+    var summary, templates;
 
     render = function() {
         var top_tags = [];
@@ -28,9 +28,7 @@ var Summary = (function() {
             tags.push(tag);
         });
 
-        return haml.compileHaml('breakdown-content')({
-            tags: tags
-        });
+        return Templates.Render('breakdownContent', {tags: tags});
     }
 
 
@@ -43,7 +41,7 @@ var Summary = (function() {
             placement: 'bottom',
             title: 'Top labels',
             content: render,
-            template: haml.compileHaml('breakdown')()
+            template: Templates.Render('breakdown', {})
         });
     }
 

@@ -23,7 +23,7 @@ var Watchdog = (function() {
 
         var now = moment().utc().unix();
         if (now - lastTs > maxLag) {
-            $('#errors').html(haml.compileHaml('fatal-error')({
+            $('#errors').html(Templates.Render('fatalError', {
                 last_ts: lastTs,
                 seconds_left: fatalCountdown
             })).show();
