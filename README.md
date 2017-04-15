@@ -126,6 +126,15 @@ silences. Endpoints in use:
 * ${ALERTMANAGER_URI}/api/v1/alerts/groups
 * ${ALERTMANAGER_URI}/api/v1/silences
 
+Supported URI schemes:
+
+* http://
+* https://
+* file://
+
+`file://` scheme is only useful for testing purposes, it's used for `make run`
+target.
+
 Example:
 
     ALERTMANAGER_URI=https://alertmanager.example.com
