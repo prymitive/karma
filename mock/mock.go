@@ -9,11 +9,16 @@ import (
 	httpmock "gopkg.in/jarcoal/httpmock.v1"
 )
 
-// RegisterURL for given url and return 200 status register mock http responder
-func RegisterURL(url string, version string, filename string) {
+// GetAbsoluteMockPath returns absolute path for given mock file
+func GetAbsoluteMockPath(filename string, version string) string {
 	_, f, _, _ := runtime.Caller(0)
 	cwd := filepath.Dir(f)
-	fullPath := fmt.Sprintf("%s/%s/api/v1/%s", cwd, version, filename)
+	return fmt.Sprintf("%s/%s/api/v1/%s", cwd, version, filename)
+}
+
+// RegisterURL for given url and return 200 status register mock http responder
+func RegisterURL(url string, version string, filename string) {
+	fullPath := GetAbsoluteMockPath(filename, version)
 	mockJSON, err := ioutil.ReadFile(fullPath)
 	if err != nil {
 		panic(err)
