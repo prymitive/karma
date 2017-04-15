@@ -66,7 +66,7 @@ func (m SilenceMapper) GetSilences() ([]models.Silence, error) {
 
 	// Alertmanager 0.4 uses pagination for silences
 	url = fmt.Sprintf("%s?limit=%d", url, math.MaxUint32)
-	err = transport.GetJSONFromURL(url, config.Config.AlertmanagerTimeout, &resp)
+	err = transport.ReadJSON(url, config.Config.AlertmanagerTimeout, &resp)
 	if err != nil {
 		return silences, err
 	}

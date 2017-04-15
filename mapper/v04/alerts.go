@@ -62,7 +62,7 @@ func (m AlertMapper) GetAlerts() ([]models.AlertGroup, error) {
 		return groups, err
 	}
 
-	err = transport.GetJSONFromURL(url, config.Config.AlertmanagerTimeout, &resp)
+	err = transport.ReadJSON(url, config.Config.AlertmanagerTimeout, &resp)
 	if err != nil {
 		return groups, err
 	}

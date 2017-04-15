@@ -29,7 +29,7 @@ func GetVersion() string {
 		return defaultVersion
 	}
 	ver := alertmanagerVersion{}
-	err = transport.GetJSONFromURL(url, config.Config.AlertmanagerTimeout, &ver)
+	err = transport.ReadJSON(url, config.Config.AlertmanagerTimeout, &ver)
 	if err != nil {
 		log.Errorf("%s request failed: %s", url, err.Error())
 		return defaultVersion

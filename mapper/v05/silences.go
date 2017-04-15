@@ -57,7 +57,7 @@ func (m SilenceMapper) GetSilences() ([]models.Silence, error) {
 		return silences, err
 	}
 
-	err = transport.GetJSONFromURL(url, config.Config.AlertmanagerTimeout, &resp)
+	err = transport.ReadJSON(url, config.Config.AlertmanagerTimeout, &resp)
 	if err != nil {
 		return silences, err
 	}
