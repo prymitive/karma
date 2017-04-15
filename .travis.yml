@@ -1,8 +1,8 @@
 language: go
 
 go:
-  - 1.7.5
-  - 1.8
+  - 1.7.x
+  - 1.8.x
 
 go_import_path: github.com/cloudflare/unsee
 
