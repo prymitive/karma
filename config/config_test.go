@@ -84,14 +84,15 @@ var urlSecretTests = []urlSecretTest{
 		raw:       "https://user:password@alertmanager.example.com/path",
 		sanitized: "https://user:xxx@alertmanager.example.com/path",
 	},
+	urlSecretTest{
+		raw:       "file://localhost",
+		sanitized: "file://localhost",
+	},
 }
 
 func TestUrlSecretTest(t *testing.T) {
 	for _, testCase := range urlSecretTests {
-		sanitized, err := hideURLPassword(testCase.raw)
-		if err != nil {
-			t.Errorf("Unexpected error when parsing '%s': %s", testCase.raw, err.Error())
-		}
+		sanitized := hideURLPassword(testCase.raw)
 		if sanitized != testCase.sanitized {
 			t.Errorf("Invalid sanitized url, expected '%s', got '%s'", testCase.sanitized, sanitized)
 		}
