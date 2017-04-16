@@ -12,7 +12,6 @@ import (
 	"unicode"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/asaskevich/govalidator"
 	"github.com/kelseyhightower/envconfig"
 )
 
@@ -124,17 +123,18 @@ func (config *configEnvs) Read() {
 	}
 }
 
-func hideURLPassword(s string) (string, error) {
+func hideURLPassword(s string) string {
 	u, err := url.Parse(s)
 	if err != nil {
-		return "", err
+		return s
 	}
 	if u.User != nil {
 		if _, pwdSet := u.User.Password(); pwdSet {
 			u.User = url.UserPassword(u.User.Username(), "xxx")
 		}
+		return u.String()
 	}
-	return u.String(), nil
+	return s
 }
 
 func (config *configEnvs) LogValues() {
@@ -143,14 +143,7 @@ func (config *configEnvs) LogValues() {
 	for i := 0; i < s.NumField(); i++ {
 		env := typeOfT.Field(i).Tag.Get("envconfig")
 		val := fmt.Sprintf("%v", s.Field(i).Interface())
-		if govalidator.IsURL(val) {
-			var err error
-			val, err = hideURLPassword(val)
-			if err != nil {
-				log.Errorf("Failed to parse url value for %s: %s", env, err.Error())
-			}
-		}
-		log.Infof("%20s => %v", env, val)
+		log.Infof("%20s => %v", env, hideURLPassword(val))
 	}
 
 }

@@ -15,12 +15,6 @@
 			"revisionTime": "2017-03-17T14:32:14Z"
 		},
 		{
-			"checksumSHA1": "YL0j2l6a5wmMjbt8S8O8lwCIkys=",
-			"path": "github.com/asaskevich/govalidator",
-			"revision": "872bb01704d183fe276bce6fa429408a87661998",
-			"revisionTime": "2017-03-20T17:24:29Z"
-		},
-		{
 			"checksumSHA1": "spyv5/YFBjYyZLZa1U2LBfDR8PM=",
 			"path": "github.com/beorn7/perks/quantile",
 			"revision": "4c0e84591b9aa9e6dcfdf3e020114cd81f89d5f9",
