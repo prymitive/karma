@@ -5,6 +5,7 @@ import (
 	"testing"
 
 	"github.com/cloudflare/unsee/alertmanager"
+	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/mock"
 
 	log "github.com/Sirupsen/logrus"
@@ -15,13 +16,15 @@ var testVersions = []string{"0.4", "0.5"}
 
 func TestGetAlerts(t *testing.T) {
 	log.SetLevel(log.ErrorLevel)
+	config.Config.AlertmanagerURI = "http://localhost"
+
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
 	for _, version := range testVersions {
 		httpmock.Reset()
-		mock.RegisterURL("api/v1/status", version, "status")
-		mock.RegisterURL("api/v1/alerts/groups", version, "alerts/groups")
+		mock.RegisterURL("http://localhost/api/v1/status", version, "status")
+		mock.RegisterURL("http://localhost/api/v1/alerts/groups", version, "alerts/groups")
 
 		v := alertmanager.GetVersion()
 		if !strings.HasPrefix(v, version) {
@@ -40,13 +43,15 @@ func TestGetAlerts(t *testing.T) {
 
 func TestGetSilences(t *testing.T) {
 	log.SetLevel(log.ErrorLevel)
+	config.Config.AlertmanagerURI = "http://localhost"
+
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
 	for _, version := range testVersions {
 		httpmock.Reset()
-		mock.RegisterURL("api/v1/status", version, "status")
-		mock.RegisterURL("api/v1/silences", version, "silences")
+		mock.RegisterURL("http://localhost/api/v1/status", version, "status")
+		mock.RegisterURL("http://localhost/api/v1/silences", version, "silences")
 
 		v := alertmanager.GetVersion()
 		if !strings.HasPrefix(v, version) {
