@@ -272,7 +272,7 @@
               "startsAt": "2017-02-18T01:14:38Z",
               "endsAt": "0001-01-01T00:00:00Z",
               "generatorURL": "http://localhost/graph",
-              "inhibited": false
+              "inhibited": true
             }
           ]
         }
