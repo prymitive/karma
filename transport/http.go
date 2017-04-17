@@ -15,7 +15,7 @@ type httpReader struct {
 	Timeout time.Duration
 }
 
-func newHTTPReader(url string, timeout time.Duration) (*io.ReadCloser, error) {
+func newHTTPReader(url string, timeout time.Duration) (io.ReadCloser, error) {
 	hr := httpReader{URL: url, Timeout: timeout}
 
 	log.Infof("GET %s timeout=%s", hr.URL, hr.Timeout)
@@ -38,8 +38,6 @@ func newHTTPReader(url string, timeout time.Duration) (*io.ReadCloser, error) {
 		return nil, fmt.Errorf("Request to Alertmanager failed with %s", resp.Status)
 	}
 
-	defer resp.Body.Close()
-
 	var reader io.ReadCloser
 	switch resp.Header.Get("Content-Encoding") {
 	case "gzip":
@@ -47,9 +45,8 @@ func newHTTPReader(url string, timeout time.Duration) (*io.ReadCloser, error) {
 		if err != nil {
 			return nil, fmt.Errorf("Failed to decode gzipped content: %s", err.Error())
 		}
-		defer reader.Close()
 	default:
 		reader = resp.Body
 	}
-	return &reader, nil
+	return reader, nil
 }
