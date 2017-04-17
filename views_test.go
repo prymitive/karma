@@ -238,6 +238,8 @@ var acTests = []acTestCase{
 			"@age<1h",
 			"@age>10m",
 			"@age>1h",
+			"@inhibited=false",
+			"@inhibited=true",
 			"@limit=10",
 			"@limit=50",
 			"@silence_author!=john@example.com",
