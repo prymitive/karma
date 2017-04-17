@@ -34,6 +34,10 @@ var Autocomplete = (function() {
         // static list of hints for @silenced label
         hints.push('@silenced=true');
         hints.push('@silenced=false');
+      } else if (label_key == '@inhibited') {
+        // static list of hints for @inhibited label
+        hints.push('@inhibited=true');
+        hints.push('@inhibited=false');
       } else {
         // equal and non-equal hints for everything else
         hints.push(label_key + '=' + label_val);
