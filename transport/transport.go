@@ -3,25 +3,10 @@ package transport
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/url"
 	"time"
 )
-
-func readFile(filename string, target interface{}) error {
-	reader, err := newFileReader(filename)
-	if err != nil {
-		return err
-	}
-	return json.NewDecoder(reader).Decode(target)
-}
-
-func readHTTP(url string, timeout time.Duration, target interface{}) error {
-	reader, err := newHTTPReader(url, timeout)
-	if err != nil {
-		return err
-	}
-	return json.NewDecoder(*reader).Decode(target)
-}
 
 // ReadJSON using one of supported transports (file:// http://)
 func ReadJSON(uri string, timeout time.Duration, target interface{}) error {
@@ -29,11 +14,18 @@ func ReadJSON(uri string, timeout time.Duration, target interface{}) error {
 	if err != nil {
 		return err
 	}
-	if u.Scheme == "file" {
-		return readFile(u.Path, target)
+	var reader io.ReadCloser
+	switch u.Scheme {
+	case "http", "https":
+		reader, err = newHTTPReader(u.String(), timeout)
+	case "file":
+		reader, err = newFileReader(u.Path)
+	default:
+		return fmt.Errorf("Unsupported URI scheme '%s' in '%s'", u.Scheme, u)
 	}
-	if u.Scheme == "http" || u.Scheme == "https" {
-		return readHTTP(u.String(), timeout, target)
+	if err != nil {
+		return err
 	}
-	return fmt.Errorf("Unsupported URI scheme '%s' in '%s'", u.Scheme, u)
+	defer reader.Close()
+	return json.NewDecoder(reader).Decode(target)
 }
