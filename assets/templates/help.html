@@ -150,6 +150,26 @@
                         </td>
                     </tr>
                     <tr>
+                        <td id="help-inhibited">
+                            <code>@inhibited=(true false)</code>
+                        </td>
+                        <td>
+                            <p>Match alerts based on inhibition status.</p>
+                            <table class="table examples">
+                                <tbody>
+                                    <tr>
+                                        <td><span class="label label-info">@inhibited=true</span></td>
+                                        <td>Match only inhibited alerts.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">@inhibited=false</span></td>
+                                        <td>Match only non-inhibited alerts.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
                         <td id="help-silence_author">
                             <code>@silence_author(= != =~ !~)$value</code>
                         </td>
