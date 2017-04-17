@@ -7,6 +7,7 @@ import (
 	"io"
 	"net/http"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -164,6 +165,8 @@ func alerts(c *gin.Context) {
 					agCopy.UnsilencedCount++
 					countLabel(counters, "@silenced", "false")
 				}
+
+				countLabel(counters, "@inhibited", strconv.FormatBool(alert.Inhibited))
 
 				for key, value := range alert.Labels {
 					if keyMap, foundKey := store.Store.Colors[key]; foundKey {
