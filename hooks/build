@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# hub.docker.com build hook to set additional build time args
+# https://docs.docker.com/docker-cloud/builds/advanced/
+
+if [[ $DOCKER_TAG == v* ]]; then
+  # DOCKER_TAG is the tag docker will use for our image
+  # images on docker hub are only generated from master branch and tags
+  # release tags in git follow vX.Y.Z format, so if DOCKER_TAG starts with 'v'
+  # it's only a release tag, let's use that as the version
+  VERSION=${DOCKER_TAG}
+else
+  # for everything else use branch-commit as the version, e.g.
+  # master-abcdef
+  VERSION=${SOURCE_BRANCH}-${SOURCE_COMMIT:-latest}
+fi
+
+docker build --build-arg VERSION=${VERSION} -t ${IMAGE_NAME} .
