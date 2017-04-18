@@ -28,6 +28,7 @@ var Autocomplete = (function() {
     }
 
 
+    // this is used to generate quick filters for label modal
     generateHints = function(label_key, label_val) {
       var hints = [];
       if (label_key == '@silenced') {
