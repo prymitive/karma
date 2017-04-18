@@ -13,7 +13,8 @@ var Autocomplete = (function() {
                 wildcard: '%QUERY',
                 rateLimitBy: 'throttle',
                 rateLimitWait: 300
-            }
+            },
+            sufficient: 12
         });
         autocomplete.initialize();
     }
