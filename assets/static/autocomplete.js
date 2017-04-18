@@ -9,7 +9,7 @@ var Autocomplete = (function() {
             datumTokenizer: Bloodhound.tokenizers.whitespace,
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             remote: {
-                url: '/autocomplete.json?term=%QUERY',
+                url: 'autocomplete.json?term=%QUERY',
                 wildcard: '%QUERY',
                 rateLimitBy: 'throttle',
                 rateLimitWait: 300
