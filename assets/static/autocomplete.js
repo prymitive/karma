@@ -9,13 +9,13 @@ var Autocomplete = (function() {
             datumTokenizer: Bloodhound.tokenizers.whitespace,
             queryTokenizer: Bloodhound.tokenizers.whitespace,
             remote: {
-                url: '/autocomplete.json?term=%QUERY',
+                url: 'autocomplete.json?term=%QUERY',
                 wildcard: '%QUERY',
                 rateLimitBy: 'throttle',
                 rateLimitWait: 300
-            }
+            },
+            sufficient: 12
         });
-        autocomplete.initialize();
     }
 
     reset = function() {
@@ -28,6 +28,7 @@ var Autocomplete = (function() {
     }
 
 
+    // this is used to generate quick filters for label modal
     generateHints = function(label_key, label_val) {
       var hints = [];
       if (label_key == '@silenced') {

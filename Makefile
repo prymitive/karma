@@ -159,7 +159,7 @@ assets: nprogress/0.2.0/nprogress.min.css
 # tagsinput & typeahead, for filter bar and autocomplete
 assets: bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js
 assets: bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css
-assets: typeahead.js/0.11.1/typeahead.bundle.min.js
+assets: corejs-typeahead/1.1.1/typeahead.bundle.min.js
 assets: bootstrap-tagsinput/0.8.0/bootstrap-tagsinput-typeahead.css
 # loaders.css, for animated spinners
 assets: loaders.css/0.1.2/loaders.css.min.js
