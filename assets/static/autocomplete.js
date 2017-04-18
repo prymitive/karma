@@ -16,7 +16,6 @@ var Autocomplete = (function() {
             },
             sufficient: 12
         });
-        autocomplete.initialize();
     }
 
     reset = function() {
