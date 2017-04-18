@@ -142,7 +142,7 @@ func TestAlerts(t *testing.T) {
 		if ur.Status != "success" {
 			t.Errorf("[%s] Invalid status in response: %s", version, ur.Status)
 		}
-		if len(ur.Counters) != 5 {
+		if len(ur.Counters) != 6 {
 			t.Errorf("[%s] Invalid number of counters in response (%d): %v", version, len(ur.Counters), ur.Counters)
 		}
 		for _, ag := range ur.AlertGroups {
@@ -238,6 +238,8 @@ var acTests = []acTestCase{
 			"@age<1h",
 			"@age>10m",
 			"@age>1h",
+			"@inhibited=false",
+			"@inhibited=true",
 			"@limit=10",
 			"@limit=50",
 			"@silence_author!=john@example.com",

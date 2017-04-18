@@ -6,7 +6,9 @@ var Colors = (function() {
 
     var specialLabels = {
         '@silenced: false': 'label-danger',
-        '@silenced: true': 'label-success'
+        '@silenced: true': 'label-success',
+        '@inhibited: false': 'label-danger',
+        '@inhibited: true': 'label-success'
     }
 
 

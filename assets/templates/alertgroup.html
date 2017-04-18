@@ -50,7 +50,7 @@
 
 <script type="application/json" id="alert-group-elements">
   <% var cls_indicator = 'incident-indicator-danger' %>
-  <% if (alert.silenced) { cls_indicator = 'incident-indicator-success' } %>
+  <% if (alert.silenced || alert.inhibited) { cls_indicator = 'incident-indicator-success' } %>
   <div>
     <% if (alert.generatorURL) { %>
       <a class="label label-list label-default"
@@ -74,6 +74,11 @@
         <%- text %>
       </a>
     <% }) %>
+    <% if (alert.inhibited) { %>
+      <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-success', label: {key: '@inhibited', value: 'true', text: '@inhibited: true'}}) %>
+    <% } else { %>
+      <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-danger', label: {key: '@inhibited', value: 'false', text: '@inhibited: false'}}) %>
+    <% } %>
     <% if (alert.silenced) { %>
       <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-success', label: {key: '@silenced', value: 'true', text: '@silenced: true'}}) %>
     <% } else { %>
@@ -206,6 +211,16 @@
           <% } %>
           <% if (labelMap[silencedText] == undefined) { labelMap[silencedText] = {key: '@silenced', value: isSilenced, hits: 0} } %>
           <% labelMap[silencedText].hits++ %>
+
+          <% var inhibitedText = '@inhibited: false' %>
+          <% var isInhibited = 'false' %>
+          <% if (alert.inhibited) { %>
+            <% inhibitedText = '@inhibited: true' %>
+            <% isInhibited = 'true' %>
+          <% } %>
+          <% if (labelMap[inhibitedText] == undefined) { labelMap[inhibitedText] = {key: '@inhibited', value: isInhibited, hits: 0} } %>
+          <% labelMap[inhibitedText].hits++ %>
+
         <% } else { %>
           <% var cls_body = '' %>
           <% if (i < group.alerts.length - 1) { cls_body = 'incident-group-separator' } %>

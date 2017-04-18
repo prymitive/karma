@@ -49,6 +49,41 @@ var tests = []filterTest{
 	},
 
 	filterTest{
+		Expression: "@inhibited=true",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@inhibited!=true",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		IsMatch:    true,
+	},
+	filterTest{
+		Expression: "@inhibited=true",
+		IsValid:    true,
+		Alert:      models.Alert{Inhibited: true},
+		IsMatch:    true,
+	},
+	filterTest{
+		Expression: "@inhibited=true",
+		IsValid:    true,
+		Alert:      models.Alert{Inhibited: false},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@inhibited!=true",
+		IsValid:    true,
+		Alert:      models.Alert{Inhibited: true},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@inhibited=xx",
+		IsValid:    false,
+	},
+
+	filterTest{
 		Expression: "@silence_jira=1",
 		IsValid:    true,
 		Alert:      models.Alert{Silenced: "1"},

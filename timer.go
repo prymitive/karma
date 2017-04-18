@@ -57,9 +57,10 @@ func PullFromAlertmanager() {
 
 	acMap := map[string]models.Autocomplete{}
 
-	// counters used to update metrics
-	var counterAlertsSilenced float64
-	var counterAlertsUnsilenced float64
+	metricAlerts.With(prometheus.Labels{"silenced": "true", "inhibited": "true"}).Set(0)
+	metricAlerts.With(prometheus.Labels{"silenced": "true", "inhibited": "false"}).Set(0)
+	metricAlerts.With(prometheus.Labels{"silenced": "false", "inhibited": "true"}).Set(0)
+	metricAlerts.With(prometheus.Labels{"silenced": "false", "inhibited": "false"}).Set(0)
 
 	for _, ag := range alertGroups {
 		// used to generate group content hash
@@ -97,9 +98,17 @@ func PullFromAlertmanager() {
 		for _, alert := range alerts {
 			ag.Alerts = append(ag.Alerts, alert)
 			if alert.Silenced != "" {
-				counterAlertsSilenced++
+				if alert.Inhibited {
+					metricAlerts.With(prometheus.Labels{"silenced": "true", "inhibited": "true"}).Inc()
+				} else {
+					metricAlerts.With(prometheus.Labels{"silenced": "true", "inhibited": "false"}).Inc()
+				}
 			} else {
-				counterAlertsUnsilenced++
+				if alert.Inhibited {
+					metricAlerts.With(prometheus.Labels{"silenced": "false", "inhibited": "true"}).Inc()
+				} else {
+					metricAlerts.With(prometheus.Labels{"silenced": "false", "inhibited": "false"}).Inc()
+				}
 			}
 		}
 
@@ -125,8 +134,6 @@ func PullFromAlertmanager() {
 	alertManagerError = ""
 	errorLock.Unlock()
 
-	metricAlerts.With(prometheus.Labels{"silenced": "true"}).Set(counterAlertsSilenced)
-	metricAlerts.With(prometheus.Labels{"silenced": "false"}).Set(counterAlertsUnsilenced)
 	metricAlertGroups.Set(float64(len(alertStore)))
 
 	store.Store.Update(alertStore, colorStore, acStore)

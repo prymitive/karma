@@ -36,6 +36,12 @@ var AllFilters = []filterConfig{
 		Autocomplete:       silencedAutocomplete,
 	},
 	filterConfig{
+		Label:              "@inhibited",
+		SupportedOperators: []string{equalOperator, notEqualOperator},
+		Factory:            newInhibitedFilter,
+		Autocomplete:       inhibitedAutocomplete,
+	},
+	filterConfig{
 		Label:              "@age",
 		SupportedOperators: []string{lessThanOperator, moreThanOperator},
 		Factory:            newAgeFilter,
