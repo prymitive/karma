@@ -9,8 +9,7 @@ var QueryString = (function() {
             q = q.split('&');
             for (var i = 0; i < q.length; i++) {
                 hash = q[i].split('=');
-                vars.push(hash[1]);
-                vars[hash[0]] = hash[1];
+                vars[hash[0]] = hash.slice(1).join('=');
             }
         }
         return vars;
@@ -39,9 +38,20 @@ var QueryString = (function() {
     }
 
 
+    remove = function(key) {
+        var baseUrl = [location.protocol, '//', location.host, location.pathname].join(''),
+            q = QueryString.Parse();
+        if (q[key] != undefined) {
+            delete q[key];
+            window.history.replaceState({}, "", baseUrl + "?" + $.param(q));
+        }
+    }
+
+
     return {
         Parse: parse,
-        Set: update
+        Set: update,
+        Remove: remove
     }
 
 }());
