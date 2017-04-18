@@ -74,6 +74,8 @@ var Config = (function() {
 
 
     reset = function() {
+        // this is not part of options map
+        Cookies.remove("defaultFilter.v2");
         $.each(options, function(name, option) {
             Cookies.remove(option.Cookie);
         });
@@ -108,6 +110,7 @@ var Config = (function() {
         // reset settings button action
         $(params.ResetSelector).on('click', function(elem) {
             Config.Reset();
+            QueryString.Remove('q');
             location.reload();
         });
 
