@@ -67,6 +67,32 @@ variables. Example:
 
 ## Docker
 
+### Running pre-build docker image
+
+Official docker images are built and hosted on
+[hub.docker.com](https://hub.docker.com/r/cloudflare/unsee/).
+
+Images are built automatically for:
+
+  * release tags in git - `cloudflare/unsee:vX.Y.Z`
+  * master branch commits - `cloudflare/unsee:latest`
+
+#### Examples
+
+To start a release image run:
+
+  docker run -e ALERTMANAGER_URI=https://alertmanager.example.com cloudflare/unsee:vX.Y.Z
+
+Latest release details can be found on
+[GitHub](https://github.com/cloudflare/unsee/releases).
+
+To start docker image build from lastet master branch run:
+
+  docker run -e ALERTMANAGER_URI=https://alertmanager.example.com cloudflare/unsee:latest
+
+Note that latest master branch might have bugs or breaking changes. Using
+release images is strongly recommended for any production use.
+
 ### Building a Docker image
 
     make docker-image
