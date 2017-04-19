@@ -67,12 +67,11 @@ func (a AlertList) Less(i, j int) bool {
 // There is a hash computed from all alerts, it's used by UI to quickly tell
 // if there was any change in a group and it needs to refresh it
 type AlertGroup struct {
-	Labels          map[string]string `json:"labels"`
-	Alerts          AlertList         `json:"alerts"`
-	ID              string            `json:"id"`
-	Hash            string            `json:"hash"`
-	SilencedCount   int               `json:"silencedCount"`
-	UnsilencedCount int               `json:"unsilencedCount"`
+	Labels      map[string]string `json:"labels"`
+	Alerts      AlertList         `json:"alerts"`
+	ID          string            `json:"id"`
+	Hash        string            `json:"hash"`
+	ActiveCount int               `json:"activeCount"`
 }
 
 // Filter holds returned data on any filter passed by the user as part of the query
