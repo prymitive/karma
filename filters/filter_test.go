@@ -47,6 +47,22 @@ var tests = []filterTest{
 		Expression: "@silenced=xx",
 		IsValid:    false,
 	},
+	filterTest{
+		Expression: "@silenced=:xx",
+		IsValid:    false,
+	},
+	filterTest{
+		Expression: "@silenced==xx",
+		IsValid:    false,
+	},
+	filterTest{
+		Expression: "@silenced=~true",
+		IsValid:    false,
+	},
+	filterTest{
+		Expression: "@silenced=~false",
+		IsValid:    false,
+	},
 
 	filterTest{
 		Expression: "@inhibited=true",
@@ -80,6 +96,22 @@ var tests = []filterTest{
 	},
 	filterTest{
 		Expression: "@inhibited=xx",
+		IsValid:    false,
+	},
+	filterTest{
+		Expression: "@inhibited=:xx",
+		IsValid:    false,
+	},
+	filterTest{
+		Expression: "@inhibited==xx",
+		IsValid:    false,
+	},
+	filterTest{
+		Expression: "@inhibited=~true",
+		IsValid:    false,
+	},
+	filterTest{
+		Expression: "@inhibited=~false",
 		IsValid:    false,
 	},
 
@@ -132,6 +164,27 @@ var tests = []filterTest{
 		Silence:    models.Silence{ID: "1", JiraID: "xxx"},
 		IsMatch:    false,
 	},
+	filterTest{
+		Expression: "@silence_jira=~",
+		IsValid:    false,
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", JiraID: "xxx"},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@silence_jira~=",
+		IsValid:    false,
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", JiraID: "xxx"},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@silence_jira~=1",
+		IsValid:    false,
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1", JiraID: "xxx"},
+		IsMatch:    false,
+	},
 
 	filterTest{
 		Expression: "@silence_author=john",
@@ -168,6 +221,27 @@ var tests = []filterTest{
 		Silence:    models.Silence{ID: "1"},
 		IsMatch:    true,
 	},
+	filterTest{
+		Expression: "@silence_author=~",
+		IsValid:    false,
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1"},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@silence_author===x",
+		IsValid:    false,
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1"},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@silence_author=!!xxx",
+		IsValid:    false,
+		Alert:      models.Alert{Silenced: "1"},
+		Silence:    models.Silence{ID: "1"},
+		IsMatch:    false,
+	},
 
 	filterTest{
 		Expression: "@age<1h",
@@ -192,6 +266,42 @@ var tests = []filterTest{
 		IsValid:    true,
 		Alert:      models.Alert{StartsAt: time.Now().Add(time.Hour * -2)},
 		IsMatch:    true,
+	},
+	filterTest{
+		Expression: "@age=1h",
+		IsValid:    false,
+		Alert:      models.Alert{StartsAt: time.Now().Add(time.Minute * -55)},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@age=~1h",
+		IsValid:    false,
+		Alert:      models.Alert{StartsAt: time.Now().Add(time.Minute * -55)},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@age>",
+		IsValid:    false,
+		Alert:      models.Alert{StartsAt: time.Now().Add(time.Minute * -55)},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@age<",
+		IsValid:    false,
+		Alert:      models.Alert{StartsAt: time.Now().Add(time.Minute * -55)},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@age>a",
+		IsValid:    false,
+		Alert:      models.Alert{StartsAt: time.Now().Add(time.Minute * -55)},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@age<10v",
+		IsValid:    false,
+		Alert:      models.Alert{StartsAt: time.Now().Add(time.Minute * -55)},
+		IsMatch:    false,
 	},
 
 	filterTest{
@@ -235,6 +345,24 @@ var tests = []filterTest{
 		IsValid:    true,
 		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
 		IsMatch:    true,
+	},
+	filterTest{
+		Expression: "node!~",
+		IsValid:    false,
+		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "node=",
+		IsValid:    false,
+		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "node===",
+		IsValid:    false,
+		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
+		IsMatch:    false,
 	},
 
 	filterTest{
@@ -384,6 +512,18 @@ var limitTests = []limitFilterTest{
 	},
 	limitFilterTest{
 		Expression: "@limit=abc",
+		IsValid:    false,
+	},
+	limitFilterTest{
+		Expression: "@limit==0",
+		IsValid:    false,
+	},
+	limitFilterTest{
+		Expression: "@limit>0",
+		IsValid:    false,
+	},
+	limitFilterTest{
+		Expression: "@limit<0",
 		IsValid:    false,
 	},
 }
