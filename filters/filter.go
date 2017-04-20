@@ -3,7 +3,6 @@ package filters
 import (
 	"fmt"
 	"regexp"
-	"strings"
 
 	"github.com/cloudflare/unsee/models"
 )
@@ -55,10 +54,13 @@ type newFilterFactory func() FilterT
 // expression will be parsed and best filter implementation and value matcher
 // will be selected
 func NewFilter(expression string) FilterT {
-	for _, fc := range AllFilters {
+	invalid := alwaysInvalidFilter{}
+	invalid.init("", nil, expression, false, expression)
 
-		reOperators := strings.Join(fc.SupportedOperators, "|")
-		reExp := fmt.Sprintf("^(?P<matched>(%s))(?P<operator>(%s))(?P<value>(.+))", fc.Label, reOperators)
+	for _, fc := range AllFilters {
+		f := fc.Factory()
+
+		reExp := fmt.Sprintf("^(?P<matched>(%s))(?P<operator>(%s))(?P<value>(.*))", fc.Label, matcherRegex)
 		re := regexp.MustCompile(reExp)
 		match := re.FindStringSubmatch(expression)
 		result := make(map[string]string)
@@ -68,33 +70,44 @@ func NewFilter(expression string) FilterT {
 			}
 		}
 
-		if matched, found := result["matched"]; found {
-
-			f := fc.Factory()
-			if fc.IsSimple {
-				matcher, err := newMatcher(regexpOperator)
-				if err != nil {
-					f.init("", nil, expression, true, expression)
-				} else {
-					f.init("", &matcher, expression, true, expression)
-				}
-				return f
-			} else if operator, found := result["operator"]; found {
-				var err error
-				matcher, err := newMatcher(operator)
-				if err != nil {
-					f.init(matched, nil, expression, false, "")
-				} else {
-					if value, found := result["value"]; found {
-						f.init(matched, &matcher, expression, true, value)
-						return f
-					}
-					f.init(matched, &matcher, expression, false, "")
-				}
+		matched, found := result["matched"]
+		if !found && fc.IsSimple {
+			matcher, err := newMatcher(regexpOperator)
+			if err != nil {
+				f.init("", nil, expression, false, expression)
+			} else {
+				f.init("", &matcher, expression, true, expression)
 			}
+			return f
 		}
+		if !found {
+			continue
+		}
+		if value, ok := result["value"]; !ok || value == "" {
+			// value group not found in the expression
+			// example: 'label=''
+			return &invalid
+		}
+		operator, found := result["operator"]
+		if !found {
+			// used operator is not supported by the filter
+			// example: @limit=~0
+			return &invalid
+		}
+		if !stringInSlice(fc.SupportedOperators, operator) {
+			return &invalid
+		}
+		matcher, err := newMatcher(operator)
+		if err != nil {
+			f.init(matched, nil, expression, false, "")
+		} else {
+			if value, found := result["value"]; found {
+				f.init(matched, &matcher, expression, true, value)
+				return f
+			}
+			f.init(matched, &matcher, expression, false, "")
+		}
+
 	}
-	f := alwaysInvalidFilter{}
-	f.init("", nil, expression, false, expression)
-	return &f
+	return &invalid
 }
