@@ -159,14 +159,16 @@ func alerts(c *gin.Context) {
 					if silence := store.Store.GetSilence(alert.Silenced); silence != nil {
 						silences[alert.Silenced] = *silence
 					}
-					agCopy.SilencedCount++
 					countLabel(counters, "@silenced", "true")
 				} else {
-					agCopy.UnsilencedCount++
 					countLabel(counters, "@silenced", "false")
 				}
 
 				countLabel(counters, "@inhibited", strconv.FormatBool(alert.Inhibited))
+
+				if alert.Silenced == "" && !alert.Inhibited {
+					agCopy.ActiveCount++
+				}
 
 				for key, value := range alert.Labels {
 					if keyMap, foundKey := store.Store.Colors[key]; foundKey {

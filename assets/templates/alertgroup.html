@@ -186,7 +186,7 @@
 <script type="application/json" id="alert-group">
   <div class="incident" id="<%= group.id %>" data-hash="<%= group.hash %>">
     <% var cls_panel = 'panel-success' %>
-    <% if (group.unsilencedCount > 0) { cls_panel = 'panel-danger' } %>
+    <% if (group.activeCount > 0) { cls_panel = 'panel-danger' } %>
     <div class="panel <%= cls_panel %>">
       <div class="panel-heading text-center">
         <%= Templates.Render('alertGroupTitle', {group: group}) %>
