@@ -106,10 +106,10 @@ var Filters = (function() {
             $.each($('span.tag-badge'), function(j, tag) {
                 if (sha1(filter.text) == $(tag).data('badge-id')) {
                     $(tag).html(filter.hits.toString());
-                    if (filter.isValid) {
-                        $(tag).addClass('label-info').removeClass('label-danger');
+                    if (filter.isValid == true) {
+                        $(tag).parent().addClass('label-info').removeClass('label-danger');
                     } else {
-                        $(tag).addClass('label-danger').removeClass('label-info');
+                        $(tag).parent().addClass('label-danger').removeClass('label-info');
                     }
                 }
             });

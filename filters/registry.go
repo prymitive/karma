@@ -9,6 +9,12 @@ const (
 	negativeRegexOperator string = "!~"
 )
 
+// this needs to be hand crafted because any of the supported operator chars
+// should be considered part of the operator expression
+// this is needed to catch errors in operators, for example:
+// a===b should yield an error
+var matcherRegex = "[=!<>~]+"
+
 var matcherConfig = map[string]matcherT{
 	equalOperator:         &equalMatcher{},
 	notEqualOperator:      &notEqualMatcher{},
