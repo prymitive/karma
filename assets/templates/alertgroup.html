@@ -83,6 +83,17 @@
       <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-success', label: {key: '@silenced', value: 'true', text: '@silenced: true'}}) %>
     <% } else { %>
       <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-danger', label: {key: '@silenced', value: 'false', text: '@silenced: false'}}) %>
+      <% var labels = [] %>
+      <% _.each(Alerts.SortMapByKey(alert.labels), function(label) { %>
+        <% labels.push(label.key + '=' + label.value) %>
+      <% }) %>
+      <span class="label label-list label-success cursor-pointer"
+            type="button"
+            data-labels="<%= labels.join(',') %>"
+            data-toggle="modal"
+            data-target="#silenceModal">
+          <i class="fa fa-bell-slash" title="Silence this alert" data-toggle="tooltip" data-placement="top" />
+      </span>
     <% } %>
     <a class="label label-list label-default label-age label-ts"
        data-toggle="tooltip"

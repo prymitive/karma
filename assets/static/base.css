@@ -131,6 +131,10 @@ span.label-ts-span {
   cursor: pointer;
 }
 
+.cursor-pointer {
+  cursor: pointer;
+}
+
 /* make filter input take all the space it can */
 .filterbar {
     width: 950px;
@@ -379,4 +383,8 @@ table.table.examples > tbody > tr td:first-child {
 span.alert-group-link > a {
   color: #fff;
   opacity: 0;
+}
+
+.silence-result-icon {
+  font-size: 12em;
 }

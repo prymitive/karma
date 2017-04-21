@@ -160,6 +160,25 @@
       </div>
     </div>
 
+    <div class="modal fade" id="silenceModal" tabindex="-1" role="dialog" data-silence-api="{{ .SilencesApi }}">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <div class="modal-title">
+              <button class="close" type="button" data-dismiss="modal">
+                <i class="fa fa-close"></i>
+              </button>
+              <h4 class="modal-title">
+                <i class="fa fa-bell-slash"></i>
+                New silence
+              </h4>
+            </div>
+          </div>
+          <div class="modal-body"></div>
+        </div>
+      </div>
+    </div>
+
 </body>
 </html>
 
@@ -167,3 +186,4 @@
 {{ template "templates/summary.html" }}
 {{ template "templates/errors.html" }}
 {{ template "templates/modal.html" }}
+{{ template "templates/silence.html" }}

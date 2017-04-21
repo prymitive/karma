@@ -14,6 +14,7 @@ import (
 	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/models"
 	"github.com/cloudflare/unsee/store"
+	"github.com/cloudflare/unsee/transport"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -51,6 +52,11 @@ func index(c *gin.Context) {
 		defaultUsed = false
 	}
 
+	silencesAPI, err := transport.JoinURL(config.Config.AlertmanagerURI, "api/v1/silences")
+	if err != nil {
+		log.Errorf("Can't generate silences API URL: %s", err)
+	}
+
 	c.HTML(http.StatusOK, "templates/index.html", gin.H{
 		"Version":           version,
 		"SentryDSN":         config.Config.SentryPublicDSN,
@@ -62,6 +68,7 @@ func index(c *gin.Context) {
 		"DefaultUsed":       defaultUsed,
 		"StaticColorLabels": strings.Join(config.Config.ColorLabelsStatic, " "),
 		"WebPrefix":         config.Config.WebPrefix,
+		"SilencesApi":       silencesAPI,
 	})
 
 	log.Infof("[%s] %s %s took %s", c.ClientIP(), c.Request.Method, c.Request.RequestURI, time.Since(start))

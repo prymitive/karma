@@ -1,0 +1,87 @@
+<script type="application/json" id="silence-form">
+<div id="newSilenceAlert" class="alert alert-danger hidden" role="alert"></div>
+<form id="newSilenceForm">
+  <label class="control-label">Labels to match</label>
+  <% _.each(labels, function(label) { %>
+    <div class="checkbox label-checkbox">
+    <label>
+      <input type="checkbox"
+             checked="checked"
+             name="<%= label.key %>=<%= label.value %>">
+      <div class="label-list label <%= label.attrs.class %>" style="<%= label.attrs.style %>">
+        <%- label.attrs.text %>
+      </div>
+    </label>
+  </div>
+  <% }) %>
+
+  <hr class="separator">
+
+  <label class="control-label">Duration</label>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="input-group date">
+        <input type="datetime"
+               class="form-control datetime-picker"
+               id="startsAt"
+               value="<%= moment().format("YYYY-MM-DD HH:mm:ss") %>"
+               name="startsAt"
+               required>
+        <span class="input-group-addon">
+          <i class="fa fa-calendar"></i>
+        </span>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div class="input-group date">
+        <input type="datetime"
+               class="form-control datetime-picker"
+               id="endsAt"
+               value="<%= moment().add(4, 'hours').format("YYYY-MM-DD HH:mm:ss") %>"
+               name="endsAt"
+               required>
+         <span class="input-group-addon">
+           <i class="fa fa-calendar"></i>
+         </span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="separator">
+
+  <div class="form-group">
+    <label for="createdBy" class="control-label">Email</label>
+    <input type="email"
+           class="form-control"
+           id="createdBy"
+           placeholder="Email"
+           name="createdBy"
+           required>
+  </div>
+
+  <div class="form-group">
+    <label for="comment" class="control-label">Comment</label>
+    <input type="text"
+           class="form-control"
+           id="comment"
+           placeholder="Comment"
+           name="comment"
+           required>
+  </div>
+
+  <hr class="separator">
+
+  <div class="text-center">
+    <button id="silenceSubmit" type="submit" class="btn btn-default">Create</button>
+  </div>
+</form>
+</script>
+
+<script type="application/json" id="silence-form-success">
+<div class="silence-result-icon text-center text-success">
+  <i class="fa fa-check-circle"></i>
+</div>
+<p class="text-center">
+  Silence ID: <span class="text-success"><%= silenceID %></span>
+</p>
+</script>

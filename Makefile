@@ -161,6 +161,9 @@ assets: bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js
 assets: bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css
 assets: corejs-typeahead/1.1.1/typeahead.bundle.min.js
 assets: bootstrap-tagsinput/0.8.0/bootstrap-tagsinput-typeahead.css
+# datepicker widget for bootstrap3
+assets: bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js
+assets: bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css
 # loaders.css, for animated spinners
 assets: loaders.css/0.1.2/loaders.css.min.js
 assets: loaders.css/0.1.2/loaders.min.css
