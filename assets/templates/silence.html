@@ -21,29 +21,29 @@
     <div class="col-sm-6">
       <label class="control-label">Starts at</label>
       <div class="input-group date">
+        <span class="input-group-addon">
+          <i class="fa fa-calendar"></i>
+        </span>
         <input type="datetime"
                class="form-control datetime-picker"
                id="startsAt"
                value="<%= moment().format("YYYY-MM-DD HH:mm:ss") %>"
                name="startsAt"
                required>
-        <span class="input-group-addon">
-          <i class="fa fa-calendar"></i>
-        </span>
       </div>
     </div>
     <div class="col-sm-6">
       <label class="control-label">Ends at</label>
       <div class="input-group date">
+        <span class="input-group-addon">
+          <i class="fa fa-calendar"></i>
+        </span>
         <input type="datetime"
                class="form-control datetime-picker"
                id="endsAt"
                value="<%= moment().add(4, 'hours').format("YYYY-MM-DD HH:mm:ss") %>"
                name="endsAt"
                required>
-         <span class="input-group-addon">
-           <i class="fa fa-calendar"></i>
-         </span>
       </div>
     </div>
   </div>
@@ -51,21 +51,31 @@
   <hr class="separator">
 
   <div class="form-group">
-    <input type="email"
-           class="form-control"
-           id="createdBy"
-           placeholder="Email"
-           name="createdBy"
-           required>
+    <div class="input-group">
+      <span class="input-group-addon">
+        <i class="fa fa-envelope"></i>
+      </span>
+      <input type="email"
+             class="form-control"
+             id="createdBy"
+             placeholder="Email"
+             name="createdBy"
+             required>
+    </div>
   </div>
 
   <div class="form-group">
-    <input type="text"
-           class="form-control"
-           id="comment"
-           placeholder="Comment"
-           name="comment"
-           required>
+    <div class="input-group">
+      <span class="input-group-addon">
+        <i class="fa fa-comment"></i>
+      </span>
+      <input type="text"
+             class="form-control"
+             id="comment"
+             placeholder="Comment"
+             name="comment"
+             required>
+    </div>
   </div>
 
   <hr class="separator">
