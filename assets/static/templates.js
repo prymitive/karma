@@ -22,6 +22,7 @@ var Templates = (function(params) {
           // modal popup with silence form
           silenceForm: '#silence-form',
           silenceFormSuccess: '#silence-form-success',
+          silenceFormError: '#silence-form-error',
 
           // label button
           buttonLabel: '#label-button-filter',
