@@ -3,16 +3,16 @@
 <form id="newSilenceForm">
   <label class="control-label">Labels to match</label>
   <% _.each(labels, function(label) { %>
-    <div class="checkbox label-checkbox">
-    <label>
-      <input type="checkbox"
-             checked="checked"
-             name="<%= label.key %>=<%= label.value %>">
-      <div class="<%= label.attrs.class %>" style="<%= label.attrs.style %>">
-        <%- label.attrs.text %>
-      </div>
-    </label>
-  </div>
+    <div>
+      <label>
+        <input type="checkbox"
+               checked="checked"
+               name="<%= label.key %>=<%= label.value %>">
+        <span class="<%= label.attrs.class %>" style="<%= label.attrs.style %>">
+          <%- label.attrs.text %>
+        </span>
+      </label>
+    </div>
   <% }) %>
 
   <hr class="separator">
