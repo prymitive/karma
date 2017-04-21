@@ -154,7 +154,8 @@ var UI = (function(params) {
             });
 
             if (payload["matchers"].length == 0) {
-                $("#newSilenceAlert").html("Select at least on label").removeClass("hidden");
+                var errContent = Templates.Render("silenceFormError", {error: "Select at least on label"});
+                $("#newSilenceAlert").html(errContent).removeClass("hidden");
                 return false;
             }
 
@@ -179,7 +180,8 @@ var UI = (function(params) {
                       }
                   }
 
-                  $("#newSilenceAlert").html(err).removeClass("hidden");
+                  var errContent = Templates.Render("silenceFormError", {error: err});
+                  $("#newSilenceAlert").html(errContent).removeClass("hidden");
               },
               success: function(data, textStatus, xhr) {
                   if (data["status"] == "success") {
@@ -189,7 +191,8 @@ var UI = (function(params) {
                     }));
                   } else {
                     var err = "Invalid response from Alertmanager API: " + JSON.stringify(data);
-                    $("#newSilenceAlert").html(err).removeClass("hidden");
+                    var errContent = Templates.Render("silenceFormError", {error: err});
+                    $("#newSilenceAlert").html(errContent).removeClass("hidden");
                   }
               },
               dataType: "json"

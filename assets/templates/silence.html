@@ -3,46 +3,47 @@
 <form id="newSilenceForm">
   <label class="control-label">Labels to match</label>
   <% _.each(labels, function(label) { %>
-    <div class="checkbox label-checkbox">
-    <label>
-      <input type="checkbox"
-             checked="checked"
-             name="<%= label.key %>=<%= label.value %>">
-      <div class="label-list label <%= label.attrs.class %>" style="<%= label.attrs.style %>">
-        <%- label.attrs.text %>
-      </div>
-    </label>
-  </div>
+    <div>
+      <label>
+        <input type="checkbox"
+               checked="checked"
+               name="<%= label.key %>=<%= label.value %>">
+        <span class="<%= label.attrs.class %>" style="<%= label.attrs.style %>">
+          <%- label.attrs.text %>
+        </span>
+      </label>
+    </div>
   <% }) %>
 
   <hr class="separator">
 
-  <label class="control-label">Duration</label>
   <div class="row">
     <div class="col-sm-6">
+      <label class="control-label">Starts at</label>
       <div class="input-group date">
+        <span class="input-group-addon">
+          <i class="fa fa-calendar"></i>
+        </span>
         <input type="datetime"
                class="form-control datetime-picker"
                id="startsAt"
                value="<%= moment().format("YYYY-MM-DD HH:mm:ss") %>"
                name="startsAt"
                required>
-        <span class="input-group-addon">
-          <i class="fa fa-calendar"></i>
-        </span>
       </div>
     </div>
     <div class="col-sm-6">
+      <label class="control-label">Ends at</label>
       <div class="input-group date">
+        <span class="input-group-addon">
+          <i class="fa fa-calendar"></i>
+        </span>
         <input type="datetime"
                class="form-control datetime-picker"
                id="endsAt"
                value="<%= moment().add(4, 'hours').format("YYYY-MM-DD HH:mm:ss") %>"
                name="endsAt"
                required>
-         <span class="input-group-addon">
-           <i class="fa fa-calendar"></i>
-         </span>
       </div>
     </div>
   </div>
@@ -50,23 +51,31 @@
   <hr class="separator">
 
   <div class="form-group">
-    <label for="createdBy" class="control-label">Email</label>
-    <input type="email"
-           class="form-control"
-           id="createdBy"
-           placeholder="Email"
-           name="createdBy"
-           required>
+    <div class="input-group">
+      <span class="input-group-addon">
+        <i class="fa fa-envelope"></i>
+      </span>
+      <input type="email"
+             class="form-control"
+             id="createdBy"
+             placeholder="Email"
+             name="createdBy"
+             required>
+    </div>
   </div>
 
   <div class="form-group">
-    <label for="comment" class="control-label">Comment</label>
-    <input type="text"
-           class="form-control"
-           id="comment"
-           placeholder="Comment"
-           name="comment"
-           required>
+    <div class="input-group">
+      <span class="input-group-addon">
+        <i class="fa fa-comment"></i>
+      </span>
+      <input type="text"
+             class="form-control"
+             id="comment"
+             placeholder="Comment"
+             name="comment"
+             required>
+    </div>
   </div>
 
   <hr class="separator">
@@ -82,6 +91,11 @@
   <i class="fa fa-check-circle"></i>
 </div>
 <p class="text-center">
-  Silence ID: <span class="text-success"><%= silenceID %></span>
+  Silence ID: <span class="text-success"><%- silenceID %></span>
 </p>
+</script>
+
+<script type="application/json" id="silence-form-error">
+<i class="fa fa-exclamation-circle"></i>
+<%- error %>
 </script>
