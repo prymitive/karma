@@ -5,7 +5,11 @@
   <% _.each(labels, function(label_values, label_key) { %>
     <div>
       <label>
-        <select class="selectpicker silence-label-picker" data-label-key="<%= label_key %>" data-style="silence-label-select" multiple>
+        <select class="selectpicker silence-label-picker"
+                data-label-key="<%= label_key %>"
+                data-style="silence-label-select"
+                <% if (Object.keys(label_values).length > 10) { %>data-live-search="true"<% } %>
+                multiple>
           <% _.each(label_values, function(label, label_val) { %>
               <option <% if (label.selected) { %>selected="selected"<% } %>
                       value="<%= label.value %>"
