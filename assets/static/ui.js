@@ -135,6 +135,9 @@ var UI = (function(params) {
         var modal = $("#silenceModal");
         modal.on("show.bs.modal", function(event) {
             Unsee.Pause();
+            modal.find(".modal-body").html(
+                Templates.Render("silenceFormLoading", {})
+            );
             var elem = $(event.relatedTarget);
             var elemLabels = {};
             $.each(elem.data("labels").split(","), function(i, l) {
