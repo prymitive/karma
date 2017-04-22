@@ -23,6 +23,7 @@ var Templates = (function(params) {
           silenceForm: '#silence-form',
           silenceFormSuccess: '#silence-form-success',
           silenceFormError: '#silence-form-error',
+          silenceFormFatal: '#silence-form-fatal',
 
           // label button
           buttonLabel: '#label-button-filter',

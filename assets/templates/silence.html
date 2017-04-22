@@ -2,17 +2,20 @@
 <div id="newSilenceAlert" class="alert alert-danger hidden" role="alert"></div>
 <form id="newSilenceForm">
   <label class="control-label">Labels to match</label>
-  <% _.each(labels, function(label) { %>
+  <% _.each(labels, function(label_values, label_key) { %>
     <div>
       <label>
-        <input type="checkbox"
-               checked="checked"
-               name="<%= label.key %>=<%= label.value %>">
-        <span class="<%= label.attrs.class %>" style="<%= label.attrs.style %>">
-          <%- label.attrs.text %>
-        </span>
-      </label>
-    </div>
+        <select class="selectpicker silence-label-picker" data-label-key="<%= label_key %>" data-style="silence-label-select" multiple>
+          <% _.each(label_values, function(label, label_val) { %>
+              <option <% if (label.selected) { %>selected="selected"<% } %>
+                      value="<%= label.value %>"
+                      data-content="<span class='<%= label.attrs.class %>' style='<%= label.attrs.style %>'><%- label.attrs.text %></span>">
+                <%- label.attrs.text %>
+              </option>
+          <% }) %>
+        </select>
+    </label>
+  </div>
   <% }) %>
 
   <hr class="separator">
@@ -80,6 +83,16 @@
 
   <hr class="separator">
 
+  <a class="text-muted" data-toggle="collapse" href="#silenceJSON" aria-expanded="false" aria-controls="silenceJSON">
+      <i class="fa fa-chevron-right"></i>
+      <i class="fa fa-chevron-down"></i>
+  </a>
+  <div class="collapse" id="silenceJSON">
+    <p class="text-muted">
+    </p>
+    <pre id="silenceJSONBlob"></pre>
+  </div>
+
   <div class="text-center">
     <button id="silenceSubmit" type="submit" class="btn btn-default">Create</button>
   </div>
@@ -92,6 +105,18 @@
 </div>
 <p class="text-center">
   Silence ID: <span class="text-success"><%- silenceID %></span>
+</p>
+</script>
+
+<script type="application/json" id="silence-form-fatal">
+<div class="silence-result-icon text-center text-danger">
+  <i class="fa fa-exclamation-circle"></i>
+</div>
+<p class="text-center">
+  New silence form rendering failed.
+</p>
+<p class="text-center">
+  <%- error %>
 </p>
 </script>
 

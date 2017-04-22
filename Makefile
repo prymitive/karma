@@ -166,6 +166,9 @@ assets: bootstrap-tagsinput/0.8.0/bootstrap-tagsinput-typeahead.css
 # datepicker widget for bootstrap3
 assets: bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js
 assets: bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css
+# multiselect widget for bootstrap3, used for silence form
+assets: bootstrap-select/1.12.2/js/bootstrap-select.min.js
+assets: bootstrap-select/1.12.2/css/bootstrap-select.min.css
 # loaders.css, for animated spinners
 assets: loaders.css/0.1.2/loaders.css.min.js
 assets: loaders.css/0.1.2/loaders.min.css
