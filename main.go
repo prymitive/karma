@@ -120,6 +120,7 @@ func main() {
 	router.SetHTMLTemplate(loadTemplates("templates"))
 
 	prom := ginprometheus.NewPrometheus("gin")
+	prom.MetricsPath = getViewURL("/metrics")
 	prom.Use(router)
 
 	if config.Config.Debug {
