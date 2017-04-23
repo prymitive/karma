@@ -62,12 +62,12 @@ run-docker: docker-image
 	@docker rm -f $(NAME) || true
 	docker run \
 	    --name $(NAME) \
-			$(DOCKER_ARGS) \
-			-v $(MOCK_PATH):$(MOCK_PATH) \
+	    $(DOCKER_ARGS) \
+	    -v $(MOCK_PATH):$(MOCK_PATH) \
 	    -e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
-			-e COLOR_LABELS_UNIQUE="instance cluster" \
-			-e COLOR_LABELS_STATIC="job" \
-			-e DEBUG="$(GIN_DEBUG)" \
+	    -e COLOR_LABELS_UNIQUE="instance cluster" \
+	    -e COLOR_LABELS_STATIC="job" \
+	    -e DEBUG="$(GIN_DEBUG)" \
 	    -e PORT=$(PORT) \
 	    -p $(PORT):$(PORT) \
 	    $(NAME):$(VERSION)
