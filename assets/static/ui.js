@@ -183,7 +183,10 @@ var UI = (function(params) {
                         deselectAllText: 'None',
                         noneSelectedText: $(this).data('label-key') + ": none",
                         multipleSeparator: ' ',
-                        selectedTextFormat: 'count > 1'
+                        selectedTextFormat: 'count > 1',
+                        countSelectedText: function (numSelected, numTotal) {
+                          return $(elem).data('label-key') + ": " + numSelected + " values selected";
+                        }
                     });
                   });
                   $('.datetime-picker').datetimepicker({
