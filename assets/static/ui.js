@@ -174,16 +174,18 @@ var UI = (function(params) {
                   modal.find(".modal-body").html(
                     Templates.Render("silenceForm", {labels: labels})
                   );
-                  $(".selectpicker").selectpicker({
-                      iconBase: 'fa',
-                      tickIcon: 'fa-check',
-                      width: 'fit',
-                      actionsBox: true,
-                      selectAllText: 'All',
-                      deselectAllText: 'None',
-                      noneSelectedText: 'No label selected',
-                      multipleSeparator: ' ',
-                      selectedTextFormat: 'count > 2'
+                  $.each($(".selectpicker"), function(i, elem) {
+                    $(elem).selectpicker({
+                        iconBase: 'fa',
+                        tickIcon: 'fa-check',
+                        width: 'fit',
+                        actionsBox: true,
+                        selectAllText: 'All',
+                        deselectAllText: 'None',
+                        noneSelectedText: $(this).data('label-key') + ": none",
+                        multipleSeparator: ' ',
+                        selectedTextFormat: 'count > 1'
+                    });
                   });
                   $('.datetime-picker').datetimepicker({
                     format: "YYYY-MM-DD HH:mm",
