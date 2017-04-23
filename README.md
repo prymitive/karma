@@ -14,6 +14,12 @@ to alert data, therefore safe to be accessed by wider audience.
 Alertmanager's API isn't stable yet and can change between releases.
 unsee currently supports Alertmanager `0.4` and `0.5`.
 
+## Metrics
+
+unsee process metrics are accessible under `/metrics` path by default.
+If you set the [WEB_PREFIX](#web_prefix) option a path relative to it will be
+used.
+
 ## Known issues
 
 * When a new alert is triggered unsee might show it for a few minutes even if
