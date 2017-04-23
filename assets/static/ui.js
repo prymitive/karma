@@ -181,11 +181,12 @@ var UI = (function(params) {
                         width: 'fit',
                         selectAllText: 'All',
                         deselectAllText: 'None',
-                        noneSelectedText: $(this).data('label-key') + ": none",
+                        noneSelectedText: '<span class="label label-list label-default">' + $(this).data('label-key') + ": none</span>",
                         multipleSeparator: ' ',
                         selectedTextFormat: 'count > 1',
                         countSelectedText: function (numSelected, numTotal) {
-                          return $(elem).data('label-key') + ": " + numSelected + " values selected";
+                          return '<span class="label label-list label-warning">'
+                                 + $(elem).data('label-key') + ": " + numSelected + " values selected</span>";
                         }
                     });
                   });
