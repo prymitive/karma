@@ -179,7 +179,6 @@ var UI = (function(params) {
                         iconBase: 'fa',
                         tickIcon: 'fa-check',
                         width: 'fit',
-                        actionsBox: true,
                         selectAllText: 'All',
                         deselectAllText: 'None',
                         noneSelectedText: $(this).data('label-key') + ": none",
