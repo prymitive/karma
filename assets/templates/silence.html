@@ -2,17 +2,25 @@
 <div id="newSilenceAlert" class="alert alert-danger hidden" role="alert"></div>
 <form id="newSilenceForm">
   <label class="control-label">Labels to match</label>
-  <% _.each(labels, function(label) { %>
+  <% _.each(Alerts.SortMapByKey(labels), function(label) { %>
     <div>
       <label>
-        <input type="checkbox"
-               checked="checked"
-               name="<%= label.key %>=<%= label.value %>">
-        <span class="<%= label.attrs.class %>" style="<%= label.attrs.style %>">
-          <%- label.attrs.text %>
-        </span>
-      </label>
-    </div>
+        <select class="selectpicker silence-label-picker"
+                data-label-key="<%= label.key %>"
+                data-style="silence-label-select"
+                <% if (Object.keys(label.value).length > 10) { %>data-live-search="true"<% } %>
+                <% if (Object.keys(label.value).length > 1) { %>data-actions-box="true"<% } %>
+                multiple>
+          <% _.each(Alerts.SortMapByKey(label.value), function(label_val) { %>
+              <option <% if (label_val.value.selected) { %>selected="selected"<% } %>
+                      value="<%= label_val.key %>"
+                      data-content="<span class='<%= label_val.value.attrs.class %>' style='<%= label_val.value.attrs.style %>'><%- label_val.value.attrs.text %></span>">
+                <%- label_val.value.attrs.text %>
+              </option>
+          <% }) %>
+        </select>
+    </label>
+  </div>
   <% }) %>
 
   <hr class="separator">
@@ -80,8 +88,18 @@
 
   <hr class="separator">
 
+  <a class="text-muted" data-toggle="collapse" href="#silenceJSON" aria-expanded="false" aria-controls="silenceJSON">
+      <i class="fa fa-chevron-right"></i>
+      <i class="fa fa-chevron-down"></i>
+  </a>
+  <div class="collapse" id="silenceJSON">
+    <p class="text-muted">
+    </p>
+    <pre id="silenceJSONBlob"></pre>
+  </div>
+
   <div class="text-center">
-    <button id="silenceSubmit" type="submit" class="btn btn-default">Create</button>
+    <button id="silenceSubmit" type="submit" class="btn btn-success">Create</button>
   </div>
 </form>
 </script>
@@ -95,7 +113,25 @@
 </p>
 </script>
 
+<script type="application/json" id="silence-form-fatal">
+<div class="silence-result-icon text-center text-danger">
+  <i class="fa fa-exclamation-circle"></i>
+</div>
+<p class="text-center">
+  New silence form rendering failed.
+</p>
+<p class="text-center">
+  <%- error %>
+</p>
+</script>
+
 <script type="application/json" id="silence-form-error">
 <i class="fa fa-exclamation-circle"></i>
 <%- error %>
+</script>
+
+<script type="application/json" id="silence-form-loading">
+<div class="silence-result-icon text-center text-muted">
+  <i class="fa fa-refresh fa-spin"></i>
+</div>
 </script>

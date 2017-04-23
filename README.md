@@ -14,6 +14,17 @@ to alert data, therefore safe to be accessed by wider audience.
 Alertmanager's API isn't stable yet and can change between releases.
 unsee currently supports Alertmanager `0.4` and `0.5`.
 
+## Security
+
+The unsee process doesn't send any API request to the Alertmanager that could
+modify alerts or silence state, but it does provide a web interface that allows
+a user to send such requests directly to the Alertmanager API.
+If you wish to deploy unsee as a read-only tool please ensure that:
+
+  * the unsee process is able to connect to the Alertmanager API
+  * read-only users are able to connect to the unsee web interface
+  * read-only users are NOT able to connect to the Alertmanager API
+
 ## Metrics
 
 unsee process metrics are accessible under `/metrics` path by default.

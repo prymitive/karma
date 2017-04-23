@@ -82,41 +82,131 @@ var UI = (function(params) {
     }
 
 
+    silenceFormData = function() {
+        var values = $("#newSilenceForm").serializeArray();
+        var payload = {
+          matchers: [],
+          startsAt: "",
+          endsAt: "",
+          createdBy: "",
+          comment: ""
+        };
+        $.each(values, function(i, elem){
+           switch (elem.name) {
+             case "comment": case "createdBy":
+               payload[elem.name] = elem.value;
+               break;
+             case "startsAt": case "endsAt":
+               payload[elem.name] = moment(elem.value);
+               break;
+           }
+        });
+        $.each($("#newSilenceForm .selectpicker"), function(i, elem) {
+            var label_key = $(elem).data('label-key');
+            var values = $(elem).selectpicker('val');
+            if (values && values.length > 0) {
+              var pval;
+              isRegex = false;
+              if (values.length > 1) {
+                  pval = "(" + values.join("|") + ")";
+                  isRegex = true;
+              } else {
+                  pval = values[0];
+              }
+              payload["matchers"].push({
+                  name: label_key,
+                  value: pval,
+                  isRegex: isRegex
+              });
+            }
+        });
+        return payload;
+    }
+
+    silenceFormJSONRender = function() {
+      var d = "curl " + $("#silenceModal").data("silence-api")
+          + "\n    -X POST --data "
+          + JSON.stringify(silenceFormData(), undefined, 2);
+      $("#silenceJSONBlob").html(d);
+    }
+
     // modal form for creating new silences
     setupSilenceForm = function() {
         var modal = $("#silenceModal");
         modal.on("show.bs.modal", function(event) {
             Unsee.Pause();
-            var modal = $(this);
-            var elem = $(event.relatedTarget);
-            var labels = [];
-            $.each(elem.data("labels").split(","), function(i, l) {
-              labels.push({
-                key: l.split("=")[0],
-                value: l.split("=")[1],
-                attrs: Alerts.GetLabelAttrs(l.split("=")[0], l.split("=")[1])
-              });
-            });
             modal.find(".modal-body").html(
-              Templates.Render("silenceForm", {
-                labels: labels
-              })
+                Templates.Render("silenceFormLoading", {})
             );
-            $('.datetime-picker').datetimepicker({
-              format: "YYYY-MM-DD HH:mm",
-              icons: {
-                  time: 'fa fa-clock-o',
-                  date: 'fa fa-calendar',
-                  up: 'fa fa-chevron-up',
-                  down: 'fa fa-chevron-down',
-                  previous: 'fa fa-chevron-left',
-                  next: 'fa fa-chevron-right',
-                  today: 'fa fa-asterisk',
-                  clear: 'fa fa-undo',
-                  close: 'fa fa-close'
+            var elem = $(event.relatedTarget);
+            var elemLabels = {};
+            $.each(elem.data("labels").split(","), function(i, l) {
+                elemLabels[l.split("=")[0]] = l.split("=")[1];
+            });
+            $.ajax({
+              url: 'alerts.json?q=alertname=' + elem.data('alertname'),
+              error: function(xhr, textStatus, errorThrown) {
+                  var err = xhr.responseText || errorThrown || textStatus;
+                  modal.find(".modal-body").html(
+                    Templates.Render("silenceFormFatal", {error: err})
+                  );
               },
-              minDate: moment().subtract(1, 'minutes'),
-              sideBySide: true
+              success: function(data) {
+                  var modal = $("#silenceModal");
+                  var labels = {};
+                  $.each(data.groups, function(i, group) {
+                      $.each(group.alerts, function(j, alert) {
+                          $.each(alert.labels, function(label_key, label_val) {
+                              if (labels[label_key] == undefined) {
+                                  labels[label_key] = {};
+                              }
+                              if (labels[label_key][label_val] == undefined) {
+                                  labels[label_key][label_val] = {
+                                      key: label_key,
+                                      value: label_val,
+                                      attrs: Alerts.GetLabelAttrs(label_key, label_val),
+                                      selected: elemLabels[label_key] == label_val
+                                  }
+                              }
+                          });
+                      });
+                  });
+                  modal.find(".modal-body").html(
+                    Templates.Render("silenceForm", {labels: labels})
+                  );
+                  $.each($(".selectpicker"), function(i, elem) {
+                    $(elem).selectpicker({
+                        iconBase: 'fa',
+                        tickIcon: 'fa-check',
+                        width: 'fit',
+                        selectAllText: '<i class="fa fa-check-square-o"></i>',
+                        deselectAllText: '<i class="fa fa-square-o"></i>',
+                        noneSelectedText: '<span class="label label-list label-default">' + $(this).data('label-key') + ": none</span>",
+                        multipleSeparator: ' ',
+                        selectedTextFormat: 'count > 1',
+                        countSelectedText: function (numSelected, numTotal) {
+                          return '<span class="label label-list label-warning">'
+                                 + $(elem).data('label-key') + ": " + numSelected + " values selected</span>";
+                        }
+                    });
+                  });
+                  $('.datetime-picker').datetimepicker({
+                    format: "YYYY-MM-DD HH:mm",
+                    icons: {
+                        time: 'fa fa-clock-o',
+                        date: 'fa fa-calendar',
+                        up: 'fa fa-chevron-up',
+                        down: 'fa fa-chevron-down',
+                        previous: 'fa fa-chevron-left',
+                        next: 'fa fa-chevron-right',
+                        today: 'fa fa-asterisk',
+                        clear: 'fa fa-undo',
+                        close: 'fa fa-close'
+                    },
+                    minDate: moment().subtract(1, 'minutes'),
+                    sideBySide: true
+                  });
+              }
             });
 
         });
@@ -125,34 +215,14 @@ var UI = (function(params) {
             modal.find(".modal-body").children().remove();
             Unsee.WaitForNextReload();
         });
+        modal.on('show.bs.collapse, dp.change', function (e) {
+            silenceFormJSONRender();
+        });
+        modal.on('change', function (e) {
+            silenceFormJSONRender();
+        });
         modal.submit(function(event) {
-            var values = $("#newSilenceForm").serializeArray();
-            var payload = {
-              matchers: [],
-              startsAt: "",
-              endsAt: "",
-              createdBy: "",
-              comment: ""
-            };
-            $.each(values, function(i, elem){
-               switch (elem.name) {
-                 case "comment": case "createdBy":
-                   payload[elem.name] = elem.value;
-                   break;
-                 case "startsAt": case "endsAt":
-                   payload[elem.name] = moment(elem.value);
-                   break;
-                 default:
-                   if (elem.value == "on") {
-                       payload["matchers"].push({
-                         name: elem.name.split("=")[0],
-                         value: elem.name.split("=")[1],
-                         isRegex: false
-                     })
-                   }
-               }
-            });
-
+            payload = silenceFormData();
             if (payload["matchers"].length == 0) {
                 var errContent = Templates.Render("silenceFormError", {error: "Select at least on label"});
                 $("#newSilenceAlert").html(errContent).removeClass("hidden");

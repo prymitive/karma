@@ -388,3 +388,29 @@ span.alert-group-link > a {
 .silence-result-icon {
   font-size: 12em;
 }
+
+.silence-label-select {
+  background-color: inherit;
+}
+
+.bootstrap-select > button {
+  padding: 0;
+}
+.silence-label-select > .bs-caret {
+  margin-left: -6px;
+}
+.silence-label-select:hover, .silence-label-picker:hover,
+.silence-label-select:active, .silence-label-picker:active,
+.silence-label-select:focus, .silence-label-picker:focus {
+  color: inherit;
+}
+.bootstrap-select > .dropdown-menu > .dropdown-menu > li > a > .label {
+  margin-right: 20px;
+}
+
+a[aria-expanded=true] .fa-chevron-right {
+   display: none;
+}
+a[aria-expanded=false] .fa-chevron-down {
+   display: none;
+}
