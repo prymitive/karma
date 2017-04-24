@@ -6,7 +6,7 @@
     <% _.each(Alerts.SortMapByKey(labels), function(label) { %>
       <tr>
         <td align="center">
-          <span class="badge select-label-badge">
+          <span class="badge select-label-badge" title="Click to select / deselect all values" data-toggle="tooltip">
             <%- Object.keys(label.value).length %>
           </span>
         </td>

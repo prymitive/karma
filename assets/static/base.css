@@ -413,6 +413,9 @@ table.table.silence-label-selects > tbody > tr > td {
 .silence-label-select:focus, .silence-label-picker:focus {
   color: inherit;
 }
+.select-label-badge {
+  cursor: pointer;
+}
 .bootstrap-select > .dropdown-menu > .dropdown-menu > li > a > .label {
   margin-right: 20px;
 }

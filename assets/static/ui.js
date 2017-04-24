@@ -206,6 +206,17 @@ var UI = (function(params) {
                     minDate: moment().subtract(1, 'minutes'),
                     sideBySide: true
                   });
+                  setupGroupTooltips(modal);
+                  $('.select-label-badge').on('click', function(e) {
+                    var select = $(this).parent().parent().find('select');
+                    if (select.selectpicker('val')) {
+                      // if there's anything selected deselect all
+                      select.selectpicker('deselectAll')
+                    } else {
+                      // else select all
+                      select.selectpicker('selectAll')
+                    }
+                  });
               }
             });
 
