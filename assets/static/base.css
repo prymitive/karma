@@ -396,6 +396,9 @@ span.alert-group-link > a {
 .bootstrap-select > button {
   padding: 0;
 }
+.bootstrap-select > .dropdown-toggle {
+  padding-right: 6px;
+}
 table.silence-label-selects {
   width: auto;
 }
