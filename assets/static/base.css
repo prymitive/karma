@@ -396,6 +396,15 @@ span.alert-group-link > a {
 .bootstrap-select > button {
   padding: 0;
 }
+table.silence-label-selects {
+  width: auto;
+}
+table.table.silence-label-selects > tbody > tr > td {
+  padding-left: 0;
+  padding-right: 4px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 .silence-label-select > .bs-caret {
   margin-left: -6px;
 }
