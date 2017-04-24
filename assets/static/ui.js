@@ -181,7 +181,7 @@ var UI = (function(params) {
                         width: 'fit',
                         selectAllText: '<i class="fa fa-check-square-o"></i>',
                         deselectAllText: '<i class="fa fa-square-o"></i>',
-                        noneSelectedText: '<span class="label label-list label-default">' + $(this).data('label-key') + ": none</span>",
+                        noneSelectedText: '<span class="label label-list label-default">' + $(this).data('label-key') + ": </span>",
                         multipleSeparator: ' ',
                         selectedTextFormat: 'count > 1',
                         countSelectedText: function (numSelected, numTotal) {

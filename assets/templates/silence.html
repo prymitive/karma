@@ -28,7 +28,7 @@
   <div class="row">
     <div class="col-sm-6">
       <label class="control-label">Starts at</label>
-      <div class="input-group date">
+      <div class="input-group">
         <span class="input-group-addon">
           <i class="fa fa-calendar"></i>
         </span>
@@ -42,14 +42,14 @@
     </div>
     <div class="col-sm-6">
       <label class="control-label">Ends at</label>
-      <div class="input-group date">
+      <div class="input-group">
         <span class="input-group-addon">
           <i class="fa fa-calendar"></i>
         </span>
         <input type="datetime"
                class="form-control datetime-picker"
                id="endsAt"
-               value="<%= moment().add(4, 'hours').format("YYYY-MM-DD HH:mm:ss") %>"
+               value="<%= moment().add(1, 'hours').format("YYYY-MM-DD HH:mm:ss") %>"
                name="endsAt"
                required>
       </div>
