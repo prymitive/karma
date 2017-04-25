@@ -150,9 +150,6 @@ var UI = (function(params) {
       endsAtDesc = endsAtDesc.replace("in a few seconds", "now");
       endsAtDesc = endsAtDesc.replace("a few seconds ago", "now");
       $("#silence-end-description").html(endsAtDesc);
-
-      // fix endsAt min date, it cannot be < startsAt
-      $("#endsAt").data('DateTimePicker').minDate(startsAt);
     };
 
 
@@ -270,8 +267,18 @@ var UI = (function(params) {
                       select.selectpicker('selectAll');
                     }
                   });
-                  // set endsAt time to +1hour
+                  // set endsAt minDate to now + 1 minute
+                  $("#endsAt").data('DateTimePicker').minDate(moment().add(1, 'minute'));
+                  // set endsAt time to +1 hour
                   $("#endsAt").data('DateTimePicker').date(moment().add(1, 'hours'));
+                  // whenever startsAt changes set it as the minDate for endsAt
+                  // we can't have endsAt < startsAt
+                  modal.on("dp.change", "#startsAt", function(){
+                    var startsAt = $("#startsAt").data('DateTimePicker').date();
+                    // endsAt needs to be at least 1 minute after startsAt
+                    startsAt.add(1, "minute");
+                    $("#endsAt").data('DateTimePicker').minDate(startsAt);
+                  });
                   modal.on("click", "a.silence-duration-btn", silenceFormUpdateDuration);
                   modal.on("mousedown", "a.silence-duration-btn", false);
                   silenceFormCalculateDuration();
