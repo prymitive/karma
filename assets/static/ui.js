@@ -166,6 +166,7 @@ var UI = (function(params) {
       if (!$("#endsAt").data('DateTimePicker')) return false;
 
       var endsAt = $("#endsAt").data('DateTimePicker').date();
+      var endsAtMinDate = $("#endsAt").data('DateTimePicker').minDate();
       var action = $(event.target).data("duration-action");
       var unit = $(event.target).data("duration-unit");
       var step = parseInt($(event.target).data("duration-step"));
@@ -173,6 +174,11 @@ var UI = (function(params) {
         endsAt.add(step, unit);
       } else {
         endsAt.subtract(step, unit);
+        if (endsAt < endsAtMinDate) {
+          // if decrement would result in a timestamp lower than allowed minimum
+          // then just reset it to the minimum
+          endsAt = endsAtMinDate;
+        }
       }
       $("#endsAt").data('DateTimePicker').date(endsAt);
       silenceFormCalculateDuration();
