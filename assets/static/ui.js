@@ -163,16 +163,39 @@ var UI = (function(params) {
 
     silenceFormUpdateDuration = function(event) {
       // skip if datetimepicker isn't ready yet
-      if (!$("#endsAt").data('DateTimePicker')) return false;
+      if (!$("#startsAt").data('DateTimePicker') || !$("#endsAt").data('DateTimePicker')) return false;
 
+      var startsAt = $("#startsAt").data('DateTimePicker').date();
       var endsAt = $("#endsAt").data('DateTimePicker').date();
       var endsAtMinDate = $("#endsAt").data('DateTimePicker').minDate();
       var action = $(event.target).data("duration-action");
       var unit = $(event.target).data("duration-unit");
       var step = parseInt($(event.target).data("duration-step"));
+
+      // re-calculate step for low values
+      // if we have 5 minute step and current duration is 1 minute than clicking
+      // on the increment should give us 5 minute, not 6 minute duration
+      var totalValue = (endsAt.diff(startsAt, unit));
+      switch (unit) {
+        case "hours":
+          totalValue = totalValue % 24;
+          break;
+        case "minutes":
+          totalValue = totalValue % 60;
+          break;
+      }
+
       if (action == "increment") {
+        // if step is 5 minute and current value is 3 than set 5 minutes, not 8
+        if (step > 1 && totalValue < step) {
+          step = step - totalValue;
+        }
         endsAt.add(step, unit);
       } else {
+        // if step is 5 minute and current value is 3 than set 0 minutes
+        if (totalValue > 0 && step > 1 && totalValue < step) {
+          step = totalValue;
+        }
         endsAt.subtract(step, unit);
         if (endsAt < endsAtMinDate) {
           // if decrement would result in a timestamp lower than allowed minimum
