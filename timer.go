@@ -21,6 +21,9 @@ import (
 // PullFromAlertmanager will try to fetch latest alerts and silences
 // from Alertmanager API, it's called by Ticker timer
 func PullFromAlertmanager() {
+	// always flush cache once we're done
+	defer apiCache.Flush()
+
 	log.Info("Pulling latest alerts and silences from Alertmanager")
 	v := alertmanager.GetVersion()
 
@@ -138,7 +141,6 @@ func PullFromAlertmanager() {
 
 	store.Store.Update(alertStore, colorStore, acStore)
 	log.Info("Pull completed")
-	apiCache.Flush()
 	runtime.GC()
 }
 
