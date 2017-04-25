@@ -423,6 +423,37 @@ table.table.silence-label-selects > tbody > tr > td {
   margin-right: 20px;
 }
 
+.datetime-picker > .bootstrap-datetimepicker-widget > .row > .datepicker {
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+.silence-duration-table {
+  margin-left: auto;
+  margin-right: auto;
+}
+.silence-duration-text {
+  font-size: 2em;
+}
+.silence-duration-btn:hover {
+  background: #eee;
+}
+.silence-duration-btn > i {
+  pointer-events: none;
+}
+table.silence-duration-table > tbody > tr > td.silence-separator {
+  width: 10px;
+}
+table.silence-duration-table > tbody > tr > td.silence-duration-label {
+  padding-left: 0;
+  vertical-align: bottom;
+  line-height: 2em;
+}
+
+.no-margin-top {
+  margin-top: 0;
+}
+
 a[aria-expanded=true] .fa-chevron-right {
    display: none;
 }

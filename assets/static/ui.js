@@ -96,11 +96,14 @@ var UI = (function(params) {
              case "comment": case "createdBy":
                payload[elem.name] = elem.value;
                break;
-             case "startsAt": case "endsAt":
-               payload[elem.name] = moment(elem.value);
-               break;
            }
         });
+        if ($("#startsAt").data('DateTimePicker')) {
+          payload.startsAt = $("#startsAt").data('DateTimePicker').date();
+        }
+        if ($("#endsAt").data('DateTimePicker')) {
+          payload.endsAt = $("#endsAt").data('DateTimePicker').date();
+        }
         $.each($("#newSilenceForm .selectpicker"), function(i, elem) {
             var label_key = $(elem).data('label-key');
             var values = $(elem).selectpicker('val');
@@ -123,12 +126,61 @@ var UI = (function(params) {
         return payload;
     }
 
+
+    silenceFormCalculateDuration = function() {
+      // skip if datetimepicker isn't ready yet
+      if (!$("#startsAt").data('DateTimePicker') || !$("#endsAt").data('DateTimePicker')) return false;
+
+      var startsAt = $("#startsAt").data('DateTimePicker').date();
+      var endsAt = $("#endsAt").data('DateTimePicker').date();
+
+      var totalDays = (endsAt.diff(startsAt, 'days'));
+      var totalHours = (endsAt.diff(startsAt, 'hours')) % 24;
+      var totalMinutes = endsAt.diff(startsAt, 'minutes') % 60;
+      $("#silence-duration-days").html(totalDays);
+      $("#silence-duration-hours").html(totalHours);
+      $("#silence-duration-minutes").html(totalMinutes);
+
+      var startsAtDesc = moment().to(startsAt);
+      startsAtDesc = startsAtDesc.replace("in a few seconds", "now");
+      startsAtDesc = startsAtDesc.replace("a few seconds ago", "now");
+      $("#silence-start-description").html(startsAtDesc);
+
+      var endsAtDesc = moment().to(endsAt);
+      endsAtDesc = endsAtDesc.replace("in a few seconds", "now");
+      endsAtDesc = endsAtDesc.replace("a few seconds ago", "now");
+      $("#silence-end-description").html(endsAtDesc);
+
+      // fix endsAt min date, it cannot be < startsAt
+      $("#endsAt").data('DateTimePicker').minDate(startsAt);
+    }
+
+
     silenceFormJSONRender = function() {
       var d = "curl " + $("#silenceModal").data("silence-api")
           + "\n    -X POST --data "
           + JSON.stringify(silenceFormData(), undefined, 2);
       $("#silenceJSONBlob").html(d);
     }
+
+
+    silenceFormUpdateDuration = function(event) {
+      // skip if datetimepicker isn't ready yet
+      if (!$("#endsAt").data('DateTimePicker')) return false;
+
+      var endsAt = $("#endsAt").data('DateTimePicker').date();
+      var action = $(event.target).data("duration-action");
+      var unit = $(event.target).data("duration-unit");
+      var step = parseInt($(event.target).data("duration-step"));
+      if (action == "increment") {
+        endsAt.add(step, unit);
+      } else {
+        endsAt.subtract(step, unit);
+      }
+      $("#endsAt").data('DateTimePicker').date(endsAt);
+      silenceFormCalculateDuration();
+    }
+
 
     // modal form for creating new silences
     setupSilenceForm = function() {
@@ -203,8 +255,9 @@ var UI = (function(params) {
                         clear: 'fa fa-undo',
                         close: 'fa fa-close'
                     },
-                    minDate: moment().subtract(1, 'minutes'),
-                    sideBySide: true
+                    minDate: moment(),
+                    sideBySide: true,
+                    inline: true
                   });
                   setupGroupTooltips(modal);
                   $('.select-label-badge').on('click', function(e) {
@@ -217,7 +270,12 @@ var UI = (function(params) {
                       select.selectpicker('selectAll')
                     }
                   });
-              }
+                  // set endsAt time to +1hour
+                  $("#endsAt").data('DateTimePicker').date(moment().add(1, 'hours'));
+                  modal.on("click", "a.silence-duration-btn", silenceFormUpdateDuration);
+                  modal.on("mousedown", "a.silence-duration-btn", false);
+                  silenceFormCalculateDuration();
+                }
             });
 
         });
@@ -228,6 +286,7 @@ var UI = (function(params) {
         });
         modal.on('show.bs.collapse, dp.change', function (e) {
             silenceFormJSONRender();
+            silenceFormCalculateDuration();
         });
         modal.on('change', function (e) {
             silenceFormJSONRender();
