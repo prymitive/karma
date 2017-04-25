@@ -34,7 +34,7 @@ var UI = (function(params) {
             modal.find(".modal-body").children().remove();
             Unsee.WaitForNextReload();
         });
-    }
+    };
 
 
     // each alert group have a link generated for it, but we hide it until
@@ -50,7 +50,7 @@ var UI = (function(params) {
                 opacity: 0
             }, 200);
         });
-    }
+    };
 
 
     // find all elements inside alert group panel that will use tooltips
@@ -67,19 +67,19 @@ var UI = (function(params) {
                 trigger: "hover"
             });
         });
-    }
+    };
 
 
     setupAlertGroupUI = function(elem) {
         setupGroupLinkHover(elem);
         setupGroupTooltips(elem);
-    }
+    };
 
 
     init = function() {
         setupModal();
         setupSilenceForm();
-    }
+    };
 
 
     silenceFormData = function() {
@@ -116,7 +116,7 @@ var UI = (function(params) {
               } else {
                   pval = values[0];
               }
-              payload["matchers"].push({
+              payload.matchers.push({
                   name: label_key,
                   value: pval,
                   isRegex: isRegex
@@ -124,7 +124,7 @@ var UI = (function(params) {
             }
         });
         return payload;
-    }
+    };
 
 
     silenceFormCalculateDuration = function() {
@@ -153,15 +153,15 @@ var UI = (function(params) {
 
       // fix endsAt min date, it cannot be < startsAt
       $("#endsAt").data('DateTimePicker').minDate(startsAt);
-    }
+    };
 
 
     silenceFormJSONRender = function() {
-      var d = "curl " + $("#silenceModal").data("silence-api")
-          + "\n    -X POST --data "
-          + JSON.stringify(silenceFormData(), undefined, 2);
+      var d = "curl " + $("#silenceModal").data("silence-api") +
+        "\n    -X POST --data " +
+        JSON.stringify(silenceFormData(), undefined, 2);
       $("#silenceJSONBlob").html(d);
-    }
+    };
 
 
     silenceFormUpdateDuration = function(event) {
@@ -179,7 +179,7 @@ var UI = (function(params) {
       }
       $("#endsAt").data('DateTimePicker').date(endsAt);
       silenceFormCalculateDuration();
-    }
+    };
 
 
     // modal form for creating new silences
@@ -209,16 +209,16 @@ var UI = (function(params) {
                   $.each(data.groups, function(i, group) {
                       $.each(group.alerts, function(j, alert) {
                           $.each(alert.labels, function(label_key, label_val) {
-                              if (labels[label_key] == undefined) {
+                              if (labels[label_key] === undefined) {
                                   labels[label_key] = {};
                               }
-                              if (labels[label_key][label_val] == undefined) {
+                              if (labels[label_key][label_val] === undefined) {
                                   labels[label_key][label_val] = {
                                       key: label_key,
                                       value: label_val,
                                       attrs: Alerts.GetLabelAttrs(label_key, label_val),
                                       selected: elemLabels[label_key] == label_val
-                                  }
+                                  };
                               }
                           });
                       });
@@ -237,8 +237,8 @@ var UI = (function(params) {
                         multipleSeparator: ' ',
                         selectedTextFormat: 'count > 1',
                         countSelectedText: function (numSelected, numTotal) {
-                          return '<span class="label label-list label-warning">'
-                                 + $(elem).data('label-key') + ": " + numSelected + " values selected</span>";
+                          return '<span class="label label-list label-warning">' +
+                            $(elem).data('label-key') + ": " + numSelected + " values selected</span>";
                         }
                     });
                   });
@@ -264,10 +264,10 @@ var UI = (function(params) {
                     var select = $(this).parent().parent().find('select');
                     if (select.selectpicker('val')) {
                       // if there's anything selected deselect all
-                      select.selectpicker('deselectAll')
+                      select.selectpicker('deselectAll');
                     } else {
                       // else select all
-                      select.selectpicker('selectAll')
+                      select.selectpicker('selectAll');
                     }
                   });
                   // set endsAt time to +1hour
@@ -293,7 +293,7 @@ var UI = (function(params) {
         });
         modal.submit(function(event) {
             payload = silenceFormData();
-            if (payload["matchers"].length == 0) {
+            if (payload.matchers.length === 0) {
                 var errContent = Templates.Render("silenceFormError", {error: "Select at least on label"});
                 $("#newSilenceAlert").html(errContent).removeClass("hidden");
                 return false;
@@ -312,10 +312,10 @@ var UI = (function(params) {
                       // it should be error from Alertmanager (it we were able to connect)
                       try {
                         var j = JSON.parse(xhr.responseText);
-                        if (j["error"] != undefined) {
-                          err = j["error"];
+                        if (j.error !== undefined) {
+                          err = j.error;
                         }
-                      } catch (err) {
+                      } catch (error) {
                         // can't parse json, do nothing
                       }
                   }
@@ -324,10 +324,10 @@ var UI = (function(params) {
                   $("#newSilenceAlert").html(errContent).removeClass("hidden");
               },
               success: function(data, textStatus, xhr) {
-                  if (data["status"] == "success") {
+                  if (data.status == "success") {
                     $("#newSilenceAlert").addClass("hidden");
                     $('#newSilenceForm').html(Templates.Render("silenceFormSuccess", {
-                        silenceID: data["data"]["silenceId"]
+                        silenceID: data.data.silenceId
                     }));
                   } else {
                     var err = "Invalid response from Alertmanager API: " + JSON.stringify(data);
@@ -340,12 +340,12 @@ var UI = (function(params) {
 
             event.preventDefault();
         });
-    }
+    };
 
 
     return {
         Init: init,
         SetupAlertGroupUI: setupAlertGroupUI
-    }
+    };
 
 })();
