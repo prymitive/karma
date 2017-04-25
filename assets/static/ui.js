@@ -280,6 +280,7 @@ var UI = (function(params) {
                   // whenever startsAt changes set it as the minDate for endsAt
                   // we can't have endsAt < startsAt
                   modal.on("dp.change", "#startsAt", function(){
+                    if (!$("#startsAt").data('DateTimePicker')) return false;
                     var startsAt = $("#startsAt").data('DateTimePicker').date();
                     // endsAt needs to be at least 1 minute after startsAt
                     startsAt.add(1, "minute");
