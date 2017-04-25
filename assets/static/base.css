@@ -396,6 +396,18 @@ span.alert-group-link > a {
 .bootstrap-select > button {
   padding: 0;
 }
+.bootstrap-select > .dropdown-toggle {
+  padding-right: 6px;
+}
+table.silence-label-selects {
+  width: auto;
+}
+table.table.silence-label-selects > tbody > tr > td {
+  padding-left: 0;
+  padding-right: 4px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
 .silence-label-select > .bs-caret {
   margin-left: -6px;
 }
@@ -403,6 +415,9 @@ span.alert-group-link > a {
 .silence-label-select:active, .silence-label-picker:active,
 .silence-label-select:focus, .silence-label-picker:focus {
   color: inherit;
+}
+.select-label-badge {
+  cursor: pointer;
 }
 .bootstrap-select > .dropdown-menu > .dropdown-menu > li > a > .label {
   margin-right: 20px;
