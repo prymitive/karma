@@ -30,8 +30,6 @@
     <% }) %>
   </table>
 
-  <hr class="separator">
-
   <div>
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation">
@@ -132,8 +130,6 @@
     </div>
   </div>
 
-  <hr class="separator no-margin-top">
-
   <div class="form-group">
     <div class="input-group">
       <span class="input-group-addon">
@@ -164,18 +160,26 @@
 
   <hr class="separator">
 
-  <a class="text-muted" data-toggle="collapse" href="#silenceJSON" aria-expanded="false" aria-controls="silenceJSON">
-      <i class="fa fa-chevron-right"></i>
-      <i class="fa fa-chevron-down"></i>
-  </a>
+  <div class="row">
+    <div class="col-sm-6">
+      <a class="text-muted icon-as-button" data-toggle="collapse" href="#silenceJSON" aria-expanded="false" aria-controls="silenceJSON">
+          <i class="fa fa-chevron-right"></i>
+          <i class="fa fa-chevron-down"></i>
+      </a>
+    </div>
+    <div class="col-sm-6 text-right">
+      <button id="silenceSubmit" type="submit" class="btn btn-success">
+        <i class="fa fa-floppy-o"></i>
+      </button>
+    </div>
+  </div>
+
   <div class="collapse" id="silenceJSON">
     <p class="text-muted">
     </p>
     <pre id="silenceJSONBlob"></pre>
   </div>
 
-  <div class="text-center">
-    <button id="silenceSubmit" type="submit" class="btn btn-success">Create</button>
   </div>
 </form>
 </script>
