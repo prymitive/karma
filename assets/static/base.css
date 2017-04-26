@@ -449,6 +449,9 @@ table.silence-duration-table > tbody > tr > td.silence-duration-label {
   vertical-align: bottom;
   line-height: 2em;
 }
+#silenceJSON {
+  margin-top: 6px;
+}
 
 a[aria-expanded=true] .fa-chevron-right {
    display: none;
