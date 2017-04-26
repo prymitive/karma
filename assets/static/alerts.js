@@ -1,9 +1,10 @@
+// jshint esversion: 6
+
 var Alerts = (function() {
 
 
     var silences = {},
         labelCache = new LRUMap(1000);
-
 
     class AlertGroup {
         constructor(groupData) {
