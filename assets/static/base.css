@@ -450,13 +450,19 @@ table.silence-duration-table > tbody > tr > td.silence-duration-label {
   line-height: 2em;
 }
 
-.no-margin-top {
-  margin-top: 0;
-}
-
 a[aria-expanded=true] .fa-chevron-right {
    display: none;
 }
 a[aria-expanded=false] .fa-chevron-down {
    display: none;
+}
+
+/* adjust size and padding to look like bootstrap button but without all background tweaks */
+.icon-as-button {
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px 15px;
+  font-size: 15px;
+  line-height: 1.42857143;
+  display: inline-block;
 }

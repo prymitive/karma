@@ -36,6 +36,10 @@ var Summary = (function() {
         summary = {};
         $('.navbar-header').popover({
             trigger: 'hover',
+            delay: {
+              "show": 500,
+              "hide": 100
+            },
             container: 'body',
             html: true,
             placement: 'bottom',

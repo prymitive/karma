@@ -34,7 +34,7 @@ var UI = (function(params) {
             modal.find(".modal-body").children().remove();
             Unsee.WaitForNextReload();
         });
-    }
+    };
 
 
     // each alert group have a link generated for it, but we hide it until
@@ -50,7 +50,7 @@ var UI = (function(params) {
                 opacity: 0
             }, 200);
         });
-    }
+    };
 
 
     // find all elements inside alert group panel that will use tooltips
@@ -67,19 +67,19 @@ var UI = (function(params) {
                 trigger: "hover"
             });
         });
-    }
+    };
 
 
     setupAlertGroupUI = function(elem) {
         setupGroupLinkHover(elem);
         setupGroupTooltips(elem);
-    }
+    };
 
 
     init = function() {
         setupModal();
         setupSilenceForm();
-    }
+    };
 
 
     silenceFormData = function() {
@@ -116,7 +116,7 @@ var UI = (function(params) {
               } else {
                   pval = values[0];
               }
-              payload["matchers"].push({
+              payload.matchers.push({
                   name: label_key,
                   value: pval,
                   isRegex: isRegex
@@ -124,7 +124,7 @@ var UI = (function(params) {
             }
         });
         return payload;
-    }
+    };
 
 
     silenceFormCalculateDuration = function() {
@@ -150,36 +150,62 @@ var UI = (function(params) {
       endsAtDesc = endsAtDesc.replace("in a few seconds", "now");
       endsAtDesc = endsAtDesc.replace("a few seconds ago", "now");
       $("#silence-end-description").html(endsAtDesc);
-
-      // fix endsAt min date, it cannot be < startsAt
-      $("#endsAt").data('DateTimePicker').minDate(startsAt);
-    }
+    };
 
 
     silenceFormJSONRender = function() {
-      var d = "curl " + $("#silenceModal").data("silence-api")
-          + "\n    -X POST --data "
-          + JSON.stringify(silenceFormData(), undefined, 2);
+      var d = "curl " + $("#silenceModal").data("silence-api") +
+        "\n    -X POST --data " +
+        JSON.stringify(silenceFormData(), undefined, 2);
       $("#silenceJSONBlob").html(d);
-    }
+    };
 
 
     silenceFormUpdateDuration = function(event) {
       // skip if datetimepicker isn't ready yet
-      if (!$("#endsAt").data('DateTimePicker')) return false;
+      if (!$("#startsAt").data('DateTimePicker') || !$("#endsAt").data('DateTimePicker')) return false;
 
+      var startsAt = $("#startsAt").data('DateTimePicker').date();
       var endsAt = $("#endsAt").data('DateTimePicker').date();
+      var endsAtMinDate = $("#endsAt").data('DateTimePicker').minDate();
       var action = $(event.target).data("duration-action");
       var unit = $(event.target).data("duration-unit");
       var step = parseInt($(event.target).data("duration-step"));
+
+      // re-calculate step for low values
+      // if we have 5 minute step and current duration is 1 minute than clicking
+      // on the increment should give us 5 minute, not 6 minute duration
+      var totalValue = (endsAt.diff(startsAt, unit));
+      switch (unit) {
+        case "hours":
+          totalValue = totalValue % 24;
+          break;
+        case "minutes":
+          totalValue = totalValue % 60;
+          break;
+      }
+
       if (action == "increment") {
+        // if step is 5 minute and current value is 3 than set 5 minutes, not 8
+        if (step > 1 && totalValue < step) {
+          step = step - totalValue;
+        }
         endsAt.add(step, unit);
       } else {
+        // if step is 5 minute and current value is 3 than set 0 minutes
+        if (totalValue > 0 && step > 1 && totalValue < step) {
+          step = totalValue;
+        }
         endsAt.subtract(step, unit);
+        if (endsAt < endsAtMinDate) {
+          // if decrement would result in a timestamp lower than allowed minimum
+          // then just reset it to the minimum
+          endsAt = endsAtMinDate;
+        }
       }
       $("#endsAt").data('DateTimePicker').date(endsAt);
       silenceFormCalculateDuration();
-    }
+    };
 
 
     // modal form for creating new silences
@@ -209,16 +235,16 @@ var UI = (function(params) {
                   $.each(data.groups, function(i, group) {
                       $.each(group.alerts, function(j, alert) {
                           $.each(alert.labels, function(label_key, label_val) {
-                              if (labels[label_key] == undefined) {
+                              if (labels[label_key] === undefined) {
                                   labels[label_key] = {};
                               }
-                              if (labels[label_key][label_val] == undefined) {
+                              if (labels[label_key][label_val] === undefined) {
                                   labels[label_key][label_val] = {
                                       key: label_key,
                                       value: label_val,
                                       attrs: Alerts.GetLabelAttrs(label_key, label_val),
                                       selected: elemLabels[label_key] == label_val
-                                  }
+                                  };
                               }
                           });
                       });
@@ -237,8 +263,8 @@ var UI = (function(params) {
                         multipleSeparator: ' ',
                         selectedTextFormat: 'count > 1',
                         countSelectedText: function (numSelected, numTotal) {
-                          return '<span class="label label-list label-warning">'
-                                 + $(elem).data('label-key') + ": " + numSelected + " values selected</span>";
+                          return '<span class="label label-list label-warning">' +
+                            $(elem).data('label-key') + ": " + numSelected + " values selected</span>";
                         }
                     });
                   });
@@ -264,14 +290,25 @@ var UI = (function(params) {
                     var select = $(this).parent().parent().find('select');
                     if (select.selectpicker('val')) {
                       // if there's anything selected deselect all
-                      select.selectpicker('deselectAll')
+                      select.selectpicker('deselectAll');
                     } else {
                       // else select all
-                      select.selectpicker('selectAll')
+                      select.selectpicker('selectAll');
                     }
                   });
-                  // set endsAt time to +1hour
+                  // set endsAt minDate to now + 1 minute
+                  $("#endsAt").data('DateTimePicker').minDate(moment().add(1, 'minute'));
+                  // set endsAt time to +1 hour
                   $("#endsAt").data('DateTimePicker').date(moment().add(1, 'hours'));
+                  // whenever startsAt changes set it as the minDate for endsAt
+                  // we can't have endsAt < startsAt
+                  modal.on("dp.change", "#startsAt", function(){
+                    if (!$("#startsAt").data('DateTimePicker')) return false;
+                    var startsAt = $("#startsAt").data('DateTimePicker').date();
+                    // endsAt needs to be at least 1 minute after startsAt
+                    startsAt.add(1, "minute");
+                    $("#endsAt").data('DateTimePicker').minDate(startsAt);
+                  });
                   modal.on("click", "a.silence-duration-btn", silenceFormUpdateDuration);
                   modal.on("mousedown", "a.silence-duration-btn", false);
                   silenceFormCalculateDuration();
@@ -293,7 +330,7 @@ var UI = (function(params) {
         });
         modal.submit(function(event) {
             payload = silenceFormData();
-            if (payload["matchers"].length == 0) {
+            if (payload.matchers.length === 0) {
                 var errContent = Templates.Render("silenceFormError", {error: "Select at least on label"});
                 $("#newSilenceAlert").html(errContent).removeClass("hidden");
                 return false;
@@ -312,10 +349,10 @@ var UI = (function(params) {
                       // it should be error from Alertmanager (it we were able to connect)
                       try {
                         var j = JSON.parse(xhr.responseText);
-                        if (j["error"] != undefined) {
-                          err = j["error"];
+                        if (j.error !== undefined) {
+                          err = j.error;
                         }
-                      } catch (err) {
+                      } catch (error) {
                         // can't parse json, do nothing
                       }
                   }
@@ -324,10 +361,10 @@ var UI = (function(params) {
                   $("#newSilenceAlert").html(errContent).removeClass("hidden");
               },
               success: function(data, textStatus, xhr) {
-                  if (data["status"] == "success") {
+                  if (data.status == "success") {
                     $("#newSilenceAlert").addClass("hidden");
                     $('#newSilenceForm').html(Templates.Render("silenceFormSuccess", {
-                        silenceID: data["data"]["silenceId"]
+                        silenceID: data.data.silenceId
                     }));
                   } else {
                     var err = "Invalid response from Alertmanager API: " + JSON.stringify(data);
@@ -340,12 +377,12 @@ var UI = (function(params) {
 
             event.preventDefault();
         });
-    }
+    };
 
 
     return {
         Init: init,
         SetupAlertGroupUI: setupAlertGroupUI
-    }
+    };
 
 })();
