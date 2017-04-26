@@ -205,9 +205,6 @@ var UI = (function(params) {
       }
       $("#endsAt").data('DateTimePicker').date(endsAt);
       silenceFormCalculateDuration();
-
-      // prevent recursive events
-      event.stopPropagation();
     };
 
 
@@ -313,7 +310,6 @@ var UI = (function(params) {
                     $("#endsAt").data('DateTimePicker').minDate(startsAt);
                   });
                   modal.on("click", "a.silence-duration-btn", silenceFormUpdateDuration);
-                  modal.on("mousedown", "a.silence-duration-btn", false);
                   silenceFormCalculateDuration();
                 }
             });
