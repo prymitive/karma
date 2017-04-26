@@ -27,12 +27,12 @@ var Option = (function(params) {
             var currentVal = this.Get();
 
             var val = Cookies.get(this.Cookie);
-            if (val != undefined) {
+            if (val !== undefined) {
                 this.Set(val);
             }
 
             var q = QueryString.Parse();
-            if (q[this.QueryParam] != undefined) {
+            if (q[this.QueryParam] !== undefined) {
                 this.Set(q[this.QueryParam]);
             }
 
@@ -52,7 +52,7 @@ var Option = (function(params) {
 
     return {
         New: optionClass
-    }
+    };
 
 }());
 
@@ -66,11 +66,11 @@ var Config = (function() {
     loadFromCookies = function() {
         $.each(options, function(name, option) {
             var value = option.Load();
-            if (value != undefined) {
+            if (value !== undefined) {
                 option.Set(value);
             }
         });
-    }
+    };
 
 
     reset = function() {
@@ -79,7 +79,7 @@ var Config = (function() {
         $.each(options, function(name, option) {
             Cookies.remove(option.Cookie);
         });
-    }
+    };
 
 
     init = function(params) {
@@ -168,19 +168,19 @@ var Config = (function() {
             Selector: '#append-top'
         });
 
-    }
+    };
 
 
     newOption = function(params) {
         var option = new Option.New(params);
         option.Init();
         options[option.QueryParam] = option;
-    }
+    };
 
 
     getOption = function(queryParam) {
         return options[queryParam];
-    }
+    };
 
 
     return {
@@ -189,6 +189,6 @@ var Config = (function() {
         Reset: reset,
         NewOption: newOption,
         GetOption: getOption
-    }
+    };
 
 }());

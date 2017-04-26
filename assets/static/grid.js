@@ -23,22 +23,22 @@ var Grid = (function(params) {
                 opacity: 1
             }
         });
-    }
+    };
 
 
     clear = function() {
         grid.masonry('remove', $(selectors.incident));
-    }
+    };
 
 
     redraw = function() {
         grid.masonry('layout');
-    }
+    };
 
 
     remove = function(elem) {
         grid.masonry('remove', elem);
-    }
+    };
 
 
     append = function(elem) {
@@ -47,22 +47,22 @@ var Grid = (function(params) {
         } else {
             grid.append(elem).masonry('appended', elem);
         }
-    }
+    };
 
 
     items = function() {
         return grid.masonry('getItemElements');
-    }
+    };
 
 
     hide = function() {
         $(selectors.alerts).hide();
-    }
+    };
 
 
     show = function() {
         $(selectors.alerts).show();
-    }
+    };
 
 
     return {
@@ -74,6 +74,6 @@ var Grid = (function(params) {
         Append: append,
         Remove: remove,
         Items: items
-    }
+    };
 
 })();

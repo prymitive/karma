@@ -37,7 +37,7 @@ var Templates = (function(params) {
           alertGroupElements: '#alert-group-elements',
           alertGroupSilence: '#alert-group-silence',
           alertGroupLabelMap: '#alert-group-label-map'
-        }
+        };
 
 
     init = function() {
@@ -49,26 +49,26 @@ var Templates = (function(params) {
                 console.error(err);
             }
         });
-    }
+    };
 
 
     renderTemplate = function(name, context) {
         var t = templates[name];
-        if (t == undefined) {
+        if (t === undefined) {
             console.error('Unknown template ' + name);
             return '<div class="jumbotron"><h1>Internal error: unknown template ' + name + '</h1></div>';
         }
         try {
           return t(context);
         } catch (err) {
-          return '<div class="jumbotron">Failed to render template "' + name + '"<h1><p>' + err + '</p></h1></div>'
+          return '<div class="jumbotron">Failed to render template "' + name + '"<h1><p>' + err + '</p></h1></div>';
         }
-    }
+    };
 
 
     return {
         Init: init,
         Render: renderTemplate
-    }
+    };
 
 })();

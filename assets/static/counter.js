@@ -15,7 +15,7 @@ var Counter = (function(params) {
         Counter.Show();
         $(selectors.counter).html(val);
         // set alert count css based on the number of alerts
-        if (val == 0) {
+        if (val === 0) {
             $(selectors.counter).removeClass('text-warning text-danger').addClass('text-success');
             document.title = "(◕‿◕)";
         } else if (val < 10) {
@@ -25,7 +25,7 @@ var Counter = (function(params) {
             $(selectors.counter).removeClass('text-success text-warning').addClass('text-danger');
             document.title = "(◕︵◕)";
         }
-    }
+    };
 
 
     setUnknown = function() {
@@ -33,30 +33,30 @@ var Counter = (function(params) {
         Counter.Show();
         $(selectors.counter).html('?');
         $(selectors.counter).removeClass('text-success text-warning text-danger');
-    }
+    };
 
 
     hide = function() {
         $(selectors.counter).hide();
         $(selectors.spinner).children().removeClass('spinner-success spinner-error');
         $(selectors.spinner).show();
-    }
+    };
 
 
     show = function() {
         $(selectors.spinner).hide();
         $(selectors.counter).show();
-    }
+    };
 
 
     markError = function() {
         $(selectors.spinner).children().removeClass('spinner-success').addClass('spinner-error');
-    }
+    };
 
 
     markSuccess = function() {
         $(selectors.spinner).children().addClass('spinner-success');
-    }
+    };
 
 
     init = function() {
@@ -67,7 +67,7 @@ var Counter = (function(params) {
             textColor: '#ff0'
         });
         Counter.Unknown();
-    }
+    };
 
 
     return {
@@ -78,6 +78,6 @@ var Counter = (function(params) {
         Show: show,
         Error: markError,
         Success: markSuccess
-    }
+    };
 
 })();

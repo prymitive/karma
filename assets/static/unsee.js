@@ -8,7 +8,7 @@ var Unsee = (function(params) {
     var selectors = {
         refreshButton: '#refresh',
         errors: '#errors'
-    }
+    };
 
 
     init = function() {
@@ -34,12 +34,12 @@ var Unsee = (function(params) {
             }
             return false;
         });
-    }
+    };
 
 
     getRefreshRate = function() {
         return refreshInterval;
-    }
+    };
 
 
     setRefreshRate = function(seconds) {
@@ -54,20 +54,20 @@ var Unsee = (function(params) {
         }
         refreshInterval = rate;
         Progress.Reset();
-    }
+    };
 
 
     needsUpgrade = function(responseVersion) {
-        if (version == false) {
+        if (version === false) {
             version = responseVersion;
             return false;
         }
         return version != responseVersion;
-    }
+    };
 
 
     renderError = function(template, context) {
-        Counter.Error()
+        Counter.Error();
         Grid.Clear();
         Grid.Hide();
         $(selectors.errors).html(Templates.Render(template, context));
@@ -76,7 +76,7 @@ var Unsee = (function(params) {
         Summary.Update({});
         document.title = "(◕ O ◕)";
         updateCompleted();
-    }
+    };
 
 
     handleError = function(err) {
@@ -92,7 +92,7 @@ var Unsee = (function(params) {
         setTimeout(function() {
             Unsee.WaitForNextReload();
         }, 500);
-    }
+    };
 
 
     upgrade = function() {
@@ -100,7 +100,7 @@ var Unsee = (function(params) {
         setTimeout(function() {
             location.reload();
         }, 3000);
-    }
+    };
 
 
     triggerReload = function() {
@@ -109,13 +109,13 @@ var Unsee = (function(params) {
             url: 'alerts.json?q=' + Filters.GetFilters().join(','),
             success: function(resp) {
                 Counter.Success();
-                if (needsUpgrade(resp['version'])) {
+                if (needsUpgrade(resp.version)) {
                     upgrade();
-                } else if (resp['error']) {
+                } else if (resp.error) {
                     Counter.Unknown();
                     renderError('updateError', {
                         error: 'Backend error',
-                        message: resp['error'],
+                        message: resp.error,
                         last_ts: Watchdog.GetLastUpdate()
                     });
                     Unsee.WaitForNextReload();
@@ -126,11 +126,11 @@ var Unsee = (function(params) {
                     setTimeout(function() {
                         try {
                             Summary.Update({});
-                            Filters.ReloadBadges(resp['filters']);
-                            Colors.Update(resp['colors']);
+                            Filters.ReloadBadges(resp.filters);
+                            Colors.Update(resp.colors);
                             Alerts.Update(resp);
                             updateCompleted();
-                            Watchdog.Pong(moment(resp['timestamp']));
+                            Watchdog.Pong(moment(resp.timestamp));
                             Unsee.WaitForNextReload();
                             if (!Watchdog.IsFatal()) {
                               $(selectors.errors).html('');
@@ -153,19 +153,19 @@ var Unsee = (function(params) {
                         error: 'Backend error',
                         message: 'AJAX request failed',
                         last_ts: Watchdog.GetLastUpdate()
-                    })
+                    });
                 }
                 Unsee.WaitForNextReload();
             }
-        })
-    }
+        });
+    };
 
 
     updateIsReady = function() {
         Progress.Complete();
         $(selectors.refreshButton).prop('disabled', true);
         Counter.Hide();
-    }
+    };
 
 
     updateCompleted = function() {
@@ -175,17 +175,17 @@ var Unsee = (function(params) {
         $(selectors.refreshButton).prop('disabled', false);
         // hack for fixing padding since input can grow and change height
         $('body').css('padding-top', $('.navbar').height());
-    }
+    };
 
 
     pause = function() {
         Progress.Pause();
         Filters.Pause();
-        if (timer != false) {
+        if (timer !== false) {
             clearInterval(timer);
             timer = false;
         }
-    }
+    };
 
 
     resume = function() {
@@ -196,11 +196,11 @@ var Unsee = (function(params) {
             return false;
         }
         Progress.Reset();
-        if (timer != false) {
+        if (timer !== false) {
             clearInterval(timer);
         }
         timer = setTimeout(Unsee.Reload, Unsee.GetRefreshRate() * 1000);
-    }
+    };
 
 
     flash = function() {
@@ -212,7 +212,7 @@ var Unsee = (function(params) {
                 backgroundColor: bg
             }, 100).css('display', 'none');
         });
-    }
+    };
 
 
     return {
@@ -223,7 +223,7 @@ var Unsee = (function(params) {
         GetRefreshRate: getRefreshRate,
         SetRefreshRate: setRefreshRate,
         Flash: flash
-    }
+    };
 
 })();
 

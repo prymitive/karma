@@ -50,7 +50,7 @@ var Alerts = (function() {
             $(elem).remove();
         });
         Grid.Remove($('#' + groupID));
-    }
+    };
 
 
     sortMapByKey = function(mapToSort) {
@@ -65,23 +65,23 @@ var Alerts = (function() {
             });
         });
         return sorted;
-    }
+    };
 
 
     labelAttrs = function(key, value) {
         var label = key + ': ' + value;
 
         var attrs = labelCache.get(label);
-        if (attrs != undefined) return attrs;
+        if (attrs !== undefined) return attrs;
 
         attrs = {
             text: label,
             class: 'label label-list ' + Colors.GetClass(key, value),
             style: Colors.Get(key, value)
-        }
+        };
         labelCache.set(label, attrs);
         return attrs;
-    }
+    };
 
 
     humanizeTimestamps = function() {
@@ -102,7 +102,7 @@ var Alerts = (function() {
 
         // flash recent alerts
         $('.recent-alert:in-viewport').finish().fadeToggle(300).fadeToggle(300).fadeToggle(300).fadeToggle(300);
-    }
+    };
 
 
     updateAlerts = function(apiResponse) {
@@ -110,17 +110,17 @@ var Alerts = (function() {
         var groups = {};
 
         // update global silences dict as it's needed for rendering
-        silences = apiResponse['silences'];
+        silences = apiResponse.silences;
 
         var summaryData = {};
-        $.each(apiResponse['counters'], function(label_key, counters){
+        $.each(apiResponse.counters, function(label_key, counters){
             $.each(counters, function(label_val, hits){
                 summaryData[label_key + ': ' + label_val] = hits;
             });
         });
         Summary.Update(summaryData);
 
-        $.each(apiResponse['groups'], function(i, groupData) {
+        $.each(apiResponse.groups, function(i, groupData) {
             var alertGroup = new AlertGroup(groupData);
             groups[alertGroup.id] = alertGroup;
             alertCount += alertGroup.alerts.length;
@@ -134,7 +134,7 @@ var Alerts = (function() {
         // handle already existing groups
         $.each(Grid.Items(), function(i, existingGroup) {
             var group = groups[existingGroup.id];
-            if (group != undefined) {
+            if (group !== undefined) {
                 // group still present, check if changed
                 if (group.hash != existingGroup.dataset.hash) {
                     // group was updated, render changes
@@ -144,7 +144,7 @@ var Alerts = (function() {
 
                     // https://github.com/twbs/bootstrap/issues/16376
                     setTimeout(function() {
-                        group.Added()
+                        group.Added();
                     }, 1000);
                 }
             } else {
@@ -182,13 +182,13 @@ var Alerts = (function() {
             }
         }
 
-    }
+    };
 
 
     return {
         Update: updateAlerts,
         SortMapByKey: sortMapByKey,
         GetLabelAttrs: labelAttrs
-    }
+    };
 
 }());
