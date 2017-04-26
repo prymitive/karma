@@ -1,3 +1,5 @@
+<script type="text/javascript" src="{{ .WebPrefix }}static/sentry.js?_={{ .NowQ }}"></script>
+
 <script type="text/javascript" src="{{ .WebPrefix }}static/jquery.typing-0.2.0.js"></script>
 <script type="text/javascript" src="{{ .WebPrefix }}static/lru.js"></script>
 
@@ -15,14 +17,3 @@
 <script type="text/javascript" src="{{ .WebPrefix }}static/querystring.js?_={{ .NowQ }}"></script>
 <script type="text/javascript" src="{{ .WebPrefix }}static/ui.js?_={{ .NowQ }}"></script>
 <script type="text/javascript" src="{{ .WebPrefix }}static/unsee.js?_={{ .NowQ }}"></script>
-
-{{ if .SentryDSN }}
-<script type="application/javascript">
-    $(document).ready(function () {
-        var dsn = '{{ .SentryDSN }}'.replace('\/', '/');
-        Raven.config(dsn, {
-          release: {{ .Version }}
-        }).install();
-    });
-</script>
-{{ end }}

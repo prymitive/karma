@@ -281,14 +281,3 @@
 </body>
 
 </html>
-
-{{ if .SentryDSN }}
-<script type="application/javascript">
-    $(document).ready(function () {
-        var dsn = '{{ .SentryDSN }}'.replace('\/', '/');
-        Raven.config(dsn, {
-          release: {{ .Version }}
-        }).install();
-    });
-</script>
-{{ end }}

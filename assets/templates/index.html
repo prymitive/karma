@@ -20,7 +20,7 @@
 
 </head>
 
-<body class="dark">
+<body class="dark" data-raven-dsn="{{ .SentryDSN }}" data-unsee-version="{{ .Version }}">
 
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
@@ -134,10 +134,11 @@
     </nav>
 
     <div class="container-fluid" id="container">
-        <div id="errors"></div>
-        <div id="alerts" data-static-color-labels="{{ .StaticColorLabels }}">
-            <div class="grid-sizer"></div>
-        </div>
+      <div id="raven-error" class="alert alert-warning text-center hidden" role="alert"></div>
+      <div id="errors"></div>
+      <div id="alerts" data-static-color-labels="{{ .StaticColorLabels }}">
+          <div class="grid-sizer"></div>
+      </div>
     </div>
 
     <div class="flash" id="flash">

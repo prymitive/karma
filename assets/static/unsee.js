@@ -230,6 +230,8 @@ var Unsee = (function(params) {
 
 $(document).ready(function() {
 
+  // wrap all inits so we can handle errors
+  try {
     // init all elements using bootstrapSwitch
     $('.toggle').bootstrapSwitch();
 
@@ -246,5 +248,21 @@ $(document).ready(function() {
     setTimeout(function() {
         Filters.SetFilters();
     }, 100);
+  }  catch (error) {
+    Raven.captureException(error);
+    if (window.console) {
+        console.error('Error: ' + error.stack);
+    }
+    // templates might not be loaded yet, make some html manually
+    $("#errors").html(
+      '<div class="jumbotron">' +
+      '<h1 class="text-center">' +
+      'Internal error <i class="fa fa-exclamation-circle text-danger"/>' +
+      '</h1>' +
+      '<div class="text-center"><p>' +
+      error.message +
+      '</p></div></div>'
+    ).show();
+  }
 
 });
