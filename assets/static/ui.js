@@ -205,6 +205,9 @@ var UI = (function(params) {
       }
       $("#endsAt").data('DateTimePicker').date(endsAt);
       silenceFormCalculateDuration();
+
+      // prevent recursive events
+      event.stopPropagation();
     };
 
 
