@@ -436,7 +436,14 @@ table.table.silence-label-selects > tbody > tr > td {
   font-size: 2em;
 }
 .silence-duration-btn:hover {
+  color: #fff;
   background: #eee;
+}
+.silence-duration-btn:focus {
+  color: #18bc9c;
+}
+.silence-duration-btn:focus:hover {
+  color: #fff;
 }
 .silence-duration-btn > i {
   pointer-events: none;
