@@ -19,6 +19,9 @@ ifdef DEBUG
 	DOCKER_ARGS = -v $(CURDIR)/assets:$(CURDIR)/assets:ro
 endif
 
+# detect if jshint is installed
+JSHINT := $(shell which jshint)
+
 .DEFAULT_GOAL := $(NAME)
 
 .build/deps.ok:
@@ -75,6 +78,9 @@ run-docker: docker-image
 .PHONY: lint
 lint: .build/deps.ok
 	@golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
+ifneq ($(JSHINT),)
+	@$(JSHINT) assets/static/*.js
+endif
 
 .PHONY: test
 test: lint bindata_assetfs.go
