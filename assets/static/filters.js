@@ -4,7 +4,7 @@ var Filters = (function() {
     selectors = {
         filter: '#filter',
         icon: '#filter-icon'
-    }
+    };
 
 
     addBadge = function(text) {
@@ -14,7 +14,7 @@ var Filters = (function() {
                 $(tag).prepend('<span class="badge tag-badge" id="tag-counter-' + chksum + '" data-badge-id="' + chksum + '"></span>');
             }
         });
-    }
+    };
 
 
     update = function() {
@@ -25,19 +25,19 @@ var Filters = (function() {
 
         // reload alerts
         Unsee.Reload();
-    }
+    };
 
 
     init = function() {
         var initial_filter;
 
-        if ($(selectors.filter).data('default-used') == 'false' || $(selectors.filter).data('default-used') == false) {
+        if ($(selectors.filter).data('default-used') == 'false' || $(selectors.filter).data('default-used') === false) {
             // user passed ?q=filter string
             initial_filter = $(selectors.filter).val();
         } else {
             // no ?q=filter string, check if we have default filter cookie
             initial_filter = Cookies.get('defaultFilter.v2');
-            if (initial_filter == undefined) {
+            if (initial_filter === undefined) {
                 // no cookie, use global default
                 initial_filter = $(selectors.filter).data('default-filter');
             }
@@ -93,12 +93,12 @@ var Filters = (function() {
           $('body').css('padding-top', $('.navbar').height());
         });
 
-    }
+    };
 
 
     getFilters = function() {
         return $(selectors.filter).tagsinput('items');
-    }
+    };
 
 
     reloadBadges = function(filterData) {
@@ -106,7 +106,7 @@ var Filters = (function() {
             $.each($('span.tag-badge'), function(j, tag) {
                 if (sha1(filter.text) == $(tag).data('badge-id')) {
                     $(tag).html(filter.hits.toString());
-                    if (filter.isValid == true) {
+                    if (filter.isValid === true) {
                         $(tag).parent().addClass('label-info').removeClass('label-danger');
                     } else {
                         $(tag).parent().addClass('label-danger').removeClass('label-info');
@@ -114,28 +114,28 @@ var Filters = (function() {
                 }
             });
         });
-    }
+    };
 
 
     addFilter = function(text) {
         $(selectors.filter).tagsinput('add', text);
-    }
+    };
 
 
     setUpdating = function() {
       // visual hint that alerts are reloaded due to filter change
       $(selectors.icon).removeClass('fa-search fa-pause').addClass('fa-circle-o-notch fa-spin');
-    }
+    };
 
 
     updateDone = function() {
         $(selectors.icon).removeClass('fa-circle-o-notch fa-spin fa-pause').addClass('fa-search');
-    }
+    };
 
 
     setPause = function() {
       $(selectors.icon).removeClass('fa-circle-o-notch fa-spin fa-search').addClass('fa-pause');
-    }
+    };
 
 
     return {
@@ -147,7 +147,7 @@ var Filters = (function() {
         UpdateCompleted: updateDone,
         Updating: setUpdating,
         Pause: setPause
-    }
+    };
 
 
 }());

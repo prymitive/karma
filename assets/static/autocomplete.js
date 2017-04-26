@@ -16,16 +16,16 @@ var Autocomplete = (function() {
             },
             sufficient: 12
         });
-    }
+    };
 
     reset = function() {
         autocomplete.clear();
-    }
+    };
 
 
     getAutocomplete = function() {
         return autocomplete;
-    }
+    };
 
 
     // this is used to generate quick filters for label modal
@@ -62,7 +62,7 @@ var Autocomplete = (function() {
         }
       }
       return hints;
-    }
+    };
 
 
     return {
@@ -70,6 +70,6 @@ var Autocomplete = (function() {
         Reset: reset,
         Autocomplete: getAutocomplete,
         GenerateHints: generateHints
-    }
+    };
 
 }());

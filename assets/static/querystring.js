@@ -5,7 +5,7 @@ var QueryString = (function() {
         var vars = [],
             hash;
         var q = document.URL.split('?')[1];
-        if (q != undefined) {
+        if (q !== undefined) {
             q = q.split('&');
             for (var i = 0; i < q.length; i++) {
                 hash = q[i].split('=');
@@ -13,7 +13,7 @@ var QueryString = (function() {
             }
         }
         return vars;
-    }
+    };
 
 
     update = function(key, value) {
@@ -35,23 +35,23 @@ var QueryString = (function() {
             }
         }
         window.history.replaceState({}, "", baseUrl + params);
-    }
+    };
 
 
     remove = function(key) {
         var baseUrl = [location.protocol, '//', location.host, location.pathname].join(''),
             q = QueryString.Parse();
-        if (q[key] != undefined) {
+        if (q[key] !== undefined) {
             delete q[key];
             window.history.replaceState({}, "", baseUrl + "?" + $.param(q));
         }
-    }
+    };
 
 
     return {
         Parse: parse,
         Set: update,
         Remove: remove
-    }
+    };
 
 }());

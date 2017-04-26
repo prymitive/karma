@@ -10,27 +10,27 @@ var Progress = (function() {
             showSpinner: false,
             easing: 'linear'
         });
-    }
+    };
 
 
     resetTimer = function() {
-        if (timer != false) {
+        if (timer !== false) {
             clearInterval(timer);
             timer = false;
         }
-    }
+    };
 
 
     complete = function() {
         Progress.ResetTimer();
         NProgress.done();
-    }
+    };
 
 
     pause = function() {
         Progress.ResetTimer();
         NProgress.set(0.0);
-    }
+    };
 
 
     start = function() {
@@ -41,7 +41,7 @@ var Progress = (function() {
         timer = setInterval(function() {
             NProgress.inc(1.0 / steps);
         }, step_ms);
-    }
+    };
 
 
     return {
@@ -50,6 +50,6 @@ var Progress = (function() {
         Complete: complete,
         Reset: start,
         ResetTimer: resetTimer
-    }
+    };
 
 }());

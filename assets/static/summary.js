@@ -29,7 +29,7 @@ var Summary = (function() {
         });
 
         return Templates.Render('breakdownContent', {tags: tags});
-    }
+    };
 
 
     init = function() {
@@ -47,33 +47,33 @@ var Summary = (function() {
             content: render,
             template: Templates.Render('breakdown', {})
         });
-    }
+    };
 
 
     update = function(data) {
         summary = data;
-    }
+    };
 
 
     reset = function() {
         summary = {};
         render();
-    }
+    };
 
 
     push = function(labelKey, labelVal) {
         var l = labelKey + ': ' + labelVal;
-        if (summary[l] == undefined) {
+        if (summary[l] === undefined) {
             summary[l] = 1;
         } else {
             summary[l]++;
         }
-    }
+    };
 
     getCount = function(labelKey, labelVal) {
         var l = labelKey + ': ' + labelVal;
         return summary[l];
-    }
+    };
 
 
     return {
@@ -82,6 +82,6 @@ var Summary = (function() {
         Reset: reset,
         Push: push,
         Get: getCount
-    }
+    };
 
 }());

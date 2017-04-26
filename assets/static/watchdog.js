@@ -3,7 +3,7 @@ var Watchdog = (function() {
 
     var selectors = {
         countdown: '#reload-counter'
-    }
+    };
 
     var lastTs = 0;
     var maxLag;
@@ -16,7 +16,7 @@ var Watchdog = (function() {
 
 
     timerTick = function() {
-        if (lastTs == 0) return;
+        if (lastTs === 0) return;
 
         // don't raise an error if autorefresh is disabled
         if (!Config.GetOption('autorefresh').Get()) return;
@@ -43,27 +43,27 @@ var Watchdog = (function() {
             if (fatalReloadTimer) clearTimeout(fatalReloadTimer);
             if (fatalCounterTimer) clearTimeout(fatalCounterTimer);
         }
-    }
+    };
 
 
     init = function(interval, tolerance) {
         maxLag = tolerance;
         setInterval(timerTick, interval * 1000);
-    }
+    };
 
 
     updateTs = function(ts) {
         lastTs = ts.utc().unix();
-    }
+    };
 
 
     getTs = function() {
         return lastTs;
-    }
+    };
 
     getFatal = function() {
         return inCountdown;
-    }
+    };
 
 
     return {
@@ -71,6 +71,6 @@ var Watchdog = (function() {
         Pong: updateTs,
         GetLastUpdate: getTs,
         IsFatal: getFatal
-    }
+    };
 
 }());
