@@ -22,7 +22,7 @@ var UI = (function(params) {
             modal.find(".modal-body").html(
               Templates.Render("modalBody", {hints: hints})
             );
-            modal.on("click", ".modal-button-filter", function(elem) {
+            $(".modal-table").on("click", ".modal-button-filter", function(elem) {
                 var filter = $(elem.target).data("filter-append-value");
                 $("#labelModal").modal("hide");
                 Filters.AddFilter(filter);
@@ -285,7 +285,7 @@ var UI = (function(params) {
                     sideBySide: true,
                     inline: true
                   });
-                  setupGroupTooltips(modal);
+                  setupGroupTooltips($("#newSilenceForm"));
                   $('.select-label-badge').on('click', function(e) {
                     var select = $(this).parent().parent().find('select');
                     if (select.selectpicker('val')) {
@@ -302,14 +302,70 @@ var UI = (function(params) {
                   $("#endsAt").data('DateTimePicker').date(moment().add(1, 'hours'));
                   // whenever startsAt changes set it as the minDate for endsAt
                   // we can't have endsAt < startsAt
-                  modal.on("dp.change", "#startsAt", function(){
+                  $("#newSilenceForm").on("dp.change", "#startsAt", function(){
                     if (!$("#startsAt").data('DateTimePicker')) return false;
                     var startsAt = $("#startsAt").data('DateTimePicker').date();
                     // endsAt needs to be at least 1 minute after startsAt
                     startsAt.add(1, "minute");
                     $("#endsAt").data('DateTimePicker').minDate(startsAt);
                   });
-                  modal.on("click", "a.silence-duration-btn", silenceFormUpdateDuration);
+                  $("#newSilenceForm").on("click", "a.silence-duration-btn", silenceFormUpdateDuration);
+                  $("#newSilenceForm").on('show.bs.collapse, dp.change', function (e) {
+                      silenceFormJSONRender();
+                      silenceFormCalculateDuration();
+                  });
+                  $("#newSilenceForm").on('change', function (e) {
+                      silenceFormJSONRender();
+                  });
+                  $("#newSilenceForm").submit(function(event) {
+                      payload = silenceFormData();
+                      if (payload.matchers.length === 0) {
+                          var errContent = Templates.Render("silenceFormError", {error: "Select at least on label"});
+                          $("#newSilenceAlert").html(errContent).removeClass("hidden");
+                          return false;
+                      }
+
+                      var url = modal.data("silence-api");
+                      $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: JSON.stringify(payload),
+                        error: function(xhr, textStatus, errorThrown) {
+                            // default to whatever error text we can get
+                            var err = xhr.responseText || errorThrown || textStatus;
+                            if (xhr.responseText) {
+                                // if we have a reponse text try to decode it as JSON
+                                // it should be error from Alertmanager (it we were able to connect)
+                                try {
+                                  var j = JSON.parse(xhr.responseText);
+                                  if (j.error !== undefined) {
+                                    err = j.error;
+                                  }
+                                } catch (error) {
+                                  // can't parse json, do nothing
+                                }
+                            }
+
+                            var errContent = Templates.Render("silenceFormError", {error: err});
+                            $("#newSilenceAlert").html(errContent).removeClass("hidden");
+                        },
+                        success: function(data, textStatus, xhr) {
+                            if (data.status == "success") {
+                              $("#newSilenceAlert").addClass("hidden");
+                              $('#newSilenceForm').html(Templates.Render("silenceFormSuccess", {
+                                  silenceID: data.data.silenceId
+                              }));
+                            } else {
+                              var err = "Invalid response from Alertmanager API: " + JSON.stringify(data);
+                              var errContent = Templates.Render("silenceFormError", {error: err});
+                              $("#newSilenceAlert").html(errContent).removeClass("hidden");
+                            }
+                        },
+                        dataType: "json"
+                      });
+
+                      event.preventDefault();
+                  });
                   silenceFormCalculateDuration();
                 }
             });
@@ -319,62 +375,6 @@ var UI = (function(params) {
             var modal = $(this);
             modal.find(".modal-body").children().remove();
             Unsee.WaitForNextReload();
-        });
-        modal.on('show.bs.collapse, dp.change', function (e) {
-            silenceFormJSONRender();
-            silenceFormCalculateDuration();
-        });
-        modal.on('change', function (e) {
-            silenceFormJSONRender();
-        });
-        modal.submit(function(event) {
-            payload = silenceFormData();
-            if (payload.matchers.length === 0) {
-                var errContent = Templates.Render("silenceFormError", {error: "Select at least on label"});
-                $("#newSilenceAlert").html(errContent).removeClass("hidden");
-                return false;
-            }
-
-            var url = modal.data("silence-api");
-            $.ajax({
-              type: "POST",
-              url: url,
-              data: JSON.stringify(payload),
-              error: function(xhr, textStatus, errorThrown) {
-                  // default to whatever error text we can get
-                  var err = xhr.responseText || errorThrown || textStatus;
-                  if (xhr.responseText) {
-                      // if we have a reponse text try to decode it as JSON
-                      // it should be error from Alertmanager (it we were able to connect)
-                      try {
-                        var j = JSON.parse(xhr.responseText);
-                        if (j.error !== undefined) {
-                          err = j.error;
-                        }
-                      } catch (error) {
-                        // can't parse json, do nothing
-                      }
-                  }
-
-                  var errContent = Templates.Render("silenceFormError", {error: err});
-                  $("#newSilenceAlert").html(errContent).removeClass("hidden");
-              },
-              success: function(data, textStatus, xhr) {
-                  if (data.status == "success") {
-                    $("#newSilenceAlert").addClass("hidden");
-                    $('#newSilenceForm').html(Templates.Render("silenceFormSuccess", {
-                        silenceID: data.data.silenceId
-                    }));
-                  } else {
-                    var err = "Invalid response from Alertmanager API: " + JSON.stringify(data);
-                    var errContent = Templates.Render("silenceFormError", {error: err});
-                    $("#newSilenceAlert").html(errContent).removeClass("hidden");
-                  }
-              },
-              dataType: "json"
-            });
-
-            event.preventDefault();
         });
     };
 
