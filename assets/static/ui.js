@@ -111,7 +111,7 @@ var UI = (function(params) {
               var pval;
               isRegex = false;
               if (values.length > 1) {
-                  pval = "(" + values.join("|") + ")";
+                  pval = "^(?:" + values.join("|") + ")$";
                   isRegex = true;
               } else {
                   pval = values[0];
