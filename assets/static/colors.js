@@ -5,10 +5,10 @@ var Colors = (function() {
         staticColorLabels;
 
     var specialLabels = {
-        '@silenced: false': 'label-danger',
-        '@silenced: true': 'label-success',
-        '@inhibited: false': 'label-danger',
-        '@inhibited: true': 'label-success'
+        "@silenced: false": "label-danger",
+        "@silenced: true": "label-success",
+        "@inhibited: false": "label-danger",
+        "@inhibited: true": "label-success"
     };
 
     var update = function(colorData) {
@@ -16,15 +16,15 @@ var Colors = (function() {
     };
 
     var getClass = function(key, value) {
-        var label = key + ': ' + value;
-        if (key == 'alertname') {
-            return 'label-primary';  // special case for alertname label, which is the name of alert
+        var label = key + ": " + value;
+        if (key == "alertname") {
+            return "label-primary";  // special case for alertname label, which is the name of alert
         } else if (specialLabels[label] !== undefined) {
             return specialLabels[label];
         } else if (Colors.IsStaticLabel(key)) {
-            return 'label-info';
+            return "label-info";
         } else {
-            return 'label-warning';
+            return "label-warning";
         }
     };
 
@@ -33,14 +33,14 @@ var Colors = (function() {
         var style = "";
         if (colors[key] !== undefined && colors[key][value] !== undefined) {
             var c = colors[key][value];
-            style = 'background-color: rgba(' + [c.background.red, c.background.green, c.background.blue, c.background.alpha].join(', ') + '); ';
-            style += 'color: rgba(' + [c.font.red, c.font.green, c.font.blue, c.font.alpha].join(', ') + '); ';
+            style = "background-color: rgba(" + [c.background.red, c.background.green, c.background.blue, c.background.alpha].join(", ") + "); ";
+            style += "color: rgba(" + [c.font.red, c.font.green, c.font.blue, c.font.alpha].join(", ") + "); ";
         }
         return style;
     };
 
     var getStaticLabels = function() {
-        return $('#alerts').data('static-color-labels').split(' ');
+        return $("#alerts").data("static-color-labels").split(" ");
     };
 
     var isStaticLabel = function(key) {

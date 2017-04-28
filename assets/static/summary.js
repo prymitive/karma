@@ -23,30 +23,30 @@ var Summary = (function() {
 
         var tags = [];
         $.each(top_tags.slice(0, 10), function(i, tag) {
-            var label_key = tag.name.split(': ')[0];
-            var label_val = tag.name.split(': ')[1];
+            var label_key = tag.name.split(": ")[0];
+            var label_val = tag.name.split(": ")[1];
             tag.style = Colors.Get(label_key, label_val);
             tag.cls = Colors.GetClass(label_key, label_val);
             tags.push(tag);
         });
 
-        return Templates.Render('breakdownContent', {tags: tags});
+        return Templates.Render("breakdownContent", {tags: tags});
     };
 
     var init = function() {
         summary = {};
-        $('.navbar-header').popover({
-            trigger: 'hover',
+        $(".navbar-header").popover({
+            trigger: "hover",
             delay: {
               "show": 500,
               "hide": 100
             },
-            container: 'body',
+            container: "body",
             html: true,
-            placement: 'bottom',
-            title: 'Top labels',
+            placement: "bottom",
+            title: "Top labels",
             content: render,
-            template: Templates.Render('breakdown', {})
+            template: Templates.Render("breakdown", {})
         });
     };
 
@@ -60,7 +60,7 @@ var Summary = (function() {
     };
 
     var push = function(labelKey, labelVal) {
-        var l = labelKey + ': ' + labelVal;
+        var l = labelKey + ": " + labelVal;
         if (summary[l] === undefined) {
             summary[l] = 1;
         } else {
@@ -69,7 +69,7 @@ var Summary = (function() {
     };
 
     var getCount = function(labelKey, labelVal) {
-        var l = labelKey + ': ' + labelVal;
+        var l = labelKey + ": " + labelVal;
         return summary[l];
     };
 

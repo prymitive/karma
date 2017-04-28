@@ -6,7 +6,7 @@
 var Watchdog = (function() {
 
     var selectors = {
-        countdown: '#reload-counter'
+        countdown: "#reload-counter"
     };
 
     var lastTs = 0;
@@ -21,11 +21,11 @@ var Watchdog = (function() {
         if (lastTs === 0) return;
 
         // don't raise an error if autorefresh is disabled
-        if (!Config.GetOption('autorefresh').Get()) return;
+        if (!Config.GetOption("autorefresh").Get()) return;
 
         var now = moment().utc().unix();
         if (now - lastTs > maxLag) {
-            $('#errors').html(Templates.Render('fatalError', {
+            $("#errors").html(Templates.Render("fatalError", {
                 last_ts: lastTs,
                 seconds_left: fatalCountdown
             })).show();

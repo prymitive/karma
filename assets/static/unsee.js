@@ -11,17 +11,17 @@ var Unsee = (function() {
     var refreshInterval = 15;
 
     var selectors = {
-        refreshButton: '#refresh',
-        errors: '#errors'
+        refreshButton: "#refresh",
+        errors: "#errors"
     };
 
     var init = function() {
         Progress.Init();
 
         Config.Init({
-            CopySelector: '#copy-settings-with-filter',
-            SaveSelector: '#save-default-filter',
-            ResetSelector: '#reset-settings'
+            CopySelector: "#copy-settings-with-filter",
+            SaveSelector: "#save-default-filter",
+            ResetSelector: "#reset-settings"
         });
         Config.Load();
 
@@ -33,7 +33,7 @@ var Unsee = (function() {
         Watchdog.Init(30, 60*15); // set watchdog to 15 minutes
 
         $(selectors.refreshButton).click(function() {
-            if (!$(selectors.refreshButton).prop('disabled')) {
+            if (!$(selectors.refreshButton).prop("disabled")) {
                 Unsee.Reload();
             }
             return false;
@@ -48,7 +48,7 @@ var Unsee = (function() {
         var rate = parseInt(seconds);
         if (isNaN(rate)) {
             // if passed rate is incorrect use select value
-            rate = Config.GetOption('refresh').Get();
+            rate = Config.GetOption("refresh").Get();
             if (isNaN(rate)) {
                 // if that's also borked use default 15
                 rate = 15;
@@ -83,7 +83,7 @@ var Unsee = (function() {
         if (window.console) {
             console.error(err.stack);
         }
-        renderError('internalError', {
+        renderError("internalError", {
             name: err.name,
             message: err.message,
             raw: err
@@ -94,7 +94,7 @@ var Unsee = (function() {
     };
 
     var upgrade = function() {
-        renderError('reloadNeeded', {});
+        renderError("reloadNeeded", {});
         setTimeout(function() {
             location.reload();
         }, 3000);
@@ -103,15 +103,15 @@ var Unsee = (function() {
     var triggerReload = function() {
         updateIsReady();
         $.ajax({
-            url: 'alerts.json?q=' + Filters.GetFilters().join(','),
+            url: "alerts.json?q=" + Filters.GetFilters().join(","),
             success: function(resp) {
                 Counter.Success();
                 if (needsUpgrade(resp.version)) {
                     upgrade();
                 } else if (resp.error) {
                     Counter.Unknown();
-                    renderError('updateError', {
-                        error: 'Backend error',
+                    renderError("updateError", {
+                        error: "Backend error",
                         message: resp.error,
                         last_ts: Watchdog.GetLastUpdate()
                     });
@@ -130,8 +130,8 @@ var Unsee = (function() {
                             Watchdog.Pong(moment(resp.timestamp));
                             Unsee.WaitForNextReload();
                             if (!Watchdog.IsFatal()) {
-                              $(selectors.errors).html('');
-                              $(selectors.errors).hide('');
+                              $(selectors.errors).html("");
+                              $(selectors.errors).hide("");
                             }
                         } catch (err) {
                             Counter.Unknown();
@@ -146,9 +146,9 @@ var Unsee = (function() {
                 // if fatal error was already triggered we have error message
                 // so don't add new one
                 if (!Watchdog.IsFatal()) {
-                    renderError('updateError', {
-                        error: 'Backend error',
-                        message: 'AJAX request failed',
+                    renderError("updateError", {
+                        error: "Backend error",
+                        message: "AJAX request failed",
                         last_ts: Watchdog.GetLastUpdate()
                     });
                 }
@@ -159,7 +159,7 @@ var Unsee = (function() {
 
     var updateIsReady = function() {
         Progress.Complete();
-        $(selectors.refreshButton).prop('disabled', true);
+        $(selectors.refreshButton).prop("disabled", true);
         Counter.Hide();
     };
 
@@ -167,9 +167,9 @@ var Unsee = (function() {
         Counter.Show();
         Filters.UpdateCompleted();
         Progress.Complete();
-        $(selectors.refreshButton).prop('disabled', false);
+        $(selectors.refreshButton).prop("disabled", false);
         // hack for fixing padding since input can grow and change height
-        $('body').css('padding-top', $('.navbar').height());
+        $("body").css("padding-top", $(".navbar").height());
     };
 
     var pause = function() {
@@ -182,7 +182,7 @@ var Unsee = (function() {
     };
 
     var resume = function() {
-        if (Config.GetOption('autorefresh').Get()) {
+        if (Config.GetOption("autorefresh").Get()) {
             Filters.UpdateCompleted();
         } else {
             Filters.Pause();
@@ -196,13 +196,13 @@ var Unsee = (function() {
     };
 
     var flash = function() {
-        var bg = $('#flash').css('background-color');
-        $('#flash').css('display', 'block').animate({
-            backgroundColor: '#fff'
+        var bg = $("#flash").css("background-color");
+        $("#flash").css("display", "block").animate({
+            backgroundColor: "#fff"
         }, 300, function() {
             $(this).animate({
                 backgroundColor: bg
-            }, 100).css('display', 'none');
+            }, 100).css("display", "none");
         });
     };
 
@@ -223,11 +223,11 @@ $(document).ready(function() {
   // wrap all inits so we can handle errors
   try {
     // init all elements using bootstrapSwitch
-    $('.toggle').bootstrapSwitch();
+    $(".toggle").bootstrapSwitch();
 
     // enable tooltips, #settings is a dropdown so it already uses different data-toggle
-    $('[data-toggle="tooltip"], #settings').tooltip({
-        trigger: 'hover'
+    $("[data-toggle='tooltip'], #settings").tooltip({
+        trigger: "hover"
     });
 
     Templates.Init();
@@ -241,17 +241,17 @@ $(document).ready(function() {
   }  catch (error) {
     Raven.captureException(error);
     if (window.console) {
-        console.error('Error: ' + error.stack);
+        console.error("Error: " + error.stack);
     }
     // templates might not be loaded yet, make some html manually
     $("#errors").html(
-      '<div class="jumbotron">' +
-      '<h1 class="text-center">' +
-      'Internal error <i class="fa fa-exclamation-circle text-danger"/>' +
-      '</h1>' +
-      '<div class="text-center"><p>' +
+      "<div class='jumbotron'>" +
+      "<h1 class='text-center'>" +
+      "Internal error <i class='fa fa-exclamation-circle text-danger'/>" +
+      "</h1>" +
+      "<div class='text-center'><p>" +
       error.message +
-      '</p></div></div>'
+      "</p></div></div>"
     ).show();
   }
 

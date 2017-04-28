@@ -4,9 +4,9 @@
 var Grid = (function() {
 
     var selectors = {
-        alerts: '#alerts',
-        incident: '.incident',
-        gridSizer: '.grid-sizer',
+        alerts: "#alerts",
+        incident: ".incident",
+        gridSizer: ".grid-sizer",
     };
 
     var grid;
@@ -16,7 +16,7 @@ var Grid = (function() {
             itemSelector: selectors.incident,
             columnWidth: selectors.gridSizer,
             percentPosition: true,
-            transitionDuration: '0.4s',
+            transitionDuration: "0.4s",
             hiddenStyle: {
                 opacity: 0
             },
@@ -27,27 +27,27 @@ var Grid = (function() {
     };
 
     var clear = function() {
-        grid.masonry('remove', $(selectors.incident));
+        grid.masonry("remove", $(selectors.incident));
     };
 
     var redraw = function() {
-        grid.masonry('layout');
+        grid.masonry("layout");
     };
 
     var remove = function(elem) {
-        grid.masonry('remove', elem);
+        grid.masonry("remove", elem);
     };
 
     var append = function(elem) {
-        if (Config.GetOption('appendtop').Get()) {
-            grid.prepend(elem).masonry('prepended', elem);
+        if (Config.GetOption("appendtop").Get()) {
+            grid.prepend(elem).masonry("prepended", elem);
         } else {
-            grid.append(elem).masonry('appended', elem);
+            grid.append(elem).masonry("appended", elem);
         }
     };
 
     var items = function() {
-        return grid.masonry('getItemElements');
+        return grid.masonry("getItemElements");
     };
 
     var hide = function() {

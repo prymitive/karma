@@ -97,15 +97,15 @@ var UI = (function() {
                break;
            }
         });
-        if ($("#startsAt").data('DateTimePicker')) {
-          payload.startsAt = $("#startsAt").data('DateTimePicker').date();
+        if ($("#startsAt").data("DateTimePicker")) {
+          payload.startsAt = $("#startsAt").data("DateTimePicker").date();
         }
-        if ($("#endsAt").data('DateTimePicker')) {
-          payload.endsAt = $("#endsAt").data('DateTimePicker').date();
+        if ($("#endsAt").data("DateTimePicker")) {
+          payload.endsAt = $("#endsAt").data("DateTimePicker").date();
         }
         $.each($("#newSilenceForm .selectpicker"), function(i, elem) {
-            var label_key = $(elem).data('label-key');
-            var values = $(elem).selectpicker('val');
+            var label_key = $(elem).data("label-key");
+            var values = $(elem).selectpicker("val");
             if (values && values.length > 0) {
               var pval;
               var isRegex = false;
@@ -127,14 +127,14 @@ var UI = (function() {
 
     var silenceFormCalculateDuration = function() {
       // skip if datetimepicker isn't ready yet
-      if (!$("#startsAt").data('DateTimePicker') || !$("#endsAt").data('DateTimePicker')) return false;
+      if (!$("#startsAt").data("DateTimePicker") || !$("#endsAt").data("DateTimePicker")) return false;
 
-      var startsAt = $("#startsAt").data('DateTimePicker').date();
-      var endsAt = $("#endsAt").data('DateTimePicker').date();
+      var startsAt = $("#startsAt").data("DateTimePicker").date();
+      var endsAt = $("#endsAt").data("DateTimePicker").date();
 
-      var totalDays = (endsAt.diff(startsAt, 'days'));
-      var totalHours = (endsAt.diff(startsAt, 'hours')) % 24;
-      var totalMinutes = endsAt.diff(startsAt, 'minutes') % 60;
+      var totalDays = (endsAt.diff(startsAt, "days"));
+      var totalHours = (endsAt.diff(startsAt, "hours")) % 24;
+      var totalMinutes = endsAt.diff(startsAt, "minutes") % 60;
       $("#silence-duration-days").html(totalDays);
       $("#silence-duration-hours").html(totalHours);
       $("#silence-duration-minutes").html(totalMinutes);
@@ -159,11 +159,11 @@ var UI = (function() {
 
     var silenceFormUpdateDuration = function(event) {
       // skip if datetimepicker isn't ready yet
-      if (!$("#startsAt").data('DateTimePicker') || !$("#endsAt").data('DateTimePicker')) return false;
+      if (!$("#startsAt").data("DateTimePicker") || !$("#endsAt").data("DateTimePicker")) return false;
 
-      var startsAt = $("#startsAt").data('DateTimePicker').date();
-      var endsAt = $("#endsAt").data('DateTimePicker').date();
-      var endsAtMinDate = $("#endsAt").data('DateTimePicker').minDate();
+      var startsAt = $("#startsAt").data("DateTimePicker").date();
+      var endsAt = $("#endsAt").data("DateTimePicker").date();
+      var endsAtMinDate = $("#endsAt").data("DateTimePicker").minDate();
       var action = $(event.target).data("duration-action");
       var unit = $(event.target).data("duration-unit");
       var step = parseInt($(event.target).data("duration-step"));
@@ -199,7 +199,7 @@ var UI = (function() {
           endsAt = endsAtMinDate;
         }
       }
-      $("#endsAt").data('DateTimePicker').date(endsAt);
+      $("#endsAt").data("DateTimePicker").date(endsAt);
       silenceFormCalculateDuration();
     };
 
@@ -217,7 +217,7 @@ var UI = (function() {
                 elemLabels[l.split("=")[0]] = l.split("=")[1];
             });
             $.ajax({
-              url: 'alerts.json?q=alertname=' + elem.data('alertname'),
+              url: "alerts.json?q=alertname=" + elem.data("alertname"),
               error: function(xhr, textStatus, errorThrown) {
                   var err = xhr.responseText || errorThrown || textStatus;
                   modal.find(".modal-body").html(
@@ -249,67 +249,67 @@ var UI = (function() {
                   );
                   $.each($(".selectpicker"), function(i, elem) {
                     $(elem).selectpicker({
-                        iconBase: 'fa',
-                        tickIcon: 'fa-check',
-                        width: 'fit',
-                        selectAllText: '<i class="fa fa-check-square-o"></i>',
-                        deselectAllText: '<i class="fa fa-square-o"></i>',
-                        noneSelectedText: '<span class="label label-list label-default">' + $(this).data('label-key') + ": </span>",
-                        multipleSeparator: ' ',
-                        selectedTextFormat: 'count > 1',
+                        iconBase: "fa",
+                        tickIcon: "fa-check",
+                        width: "fit",
+                        selectAllText: "<i class='fa fa-check-square-o'></i>",
+                        deselectAllText: "<i class='fa fa-square-o'></i>",
+                        noneSelectedText: "<span class='label label-list label-default'>" + $(this).data("label-key") + ": </span>",
+                        multipleSeparator: " ",
+                        selectedTextFormat: "count > 1",
                         countSelectedText: function (numSelected) {
-                          return '<span class="label label-list label-warning">' +
-                            $(elem).data('label-key') + ": " + numSelected + " values selected</span>";
+                          return "<span class='label label-list label-warning'>" +
+                            $(elem).data("label-key") + ": " + numSelected + " values selected</span>";
                         }
                     });
                   });
-                  $('.datetime-picker').datetimepicker({
+                  $(".datetime-picker").datetimepicker({
                     format: "YYYY-MM-DD HH:mm",
                     icons: {
-                        time: 'fa fa-clock-o',
-                        date: 'fa fa-calendar',
-                        up: 'fa fa-chevron-up',
-                        down: 'fa fa-chevron-down',
-                        previous: 'fa fa-chevron-left',
-                        next: 'fa fa-chevron-right',
-                        today: 'fa fa-asterisk',
-                        clear: 'fa fa-undo',
-                        close: 'fa fa-close'
+                        time: "fa fa-clock-o",
+                        date: "fa fa-calendar",
+                        up: "fa fa-chevron-up",
+                        down: "fa fa-chevron-down",
+                        previous: "fa fa-chevron-left",
+                        next: "fa fa-chevron-right",
+                        today: "fa fa-asterisk",
+                        clear: "fa fa-undo",
+                        close: "fa fa-close"
                     },
                     minDate: moment(),
                     sideBySide: true,
                     inline: true
                   });
                   setupGroupTooltips($("#newSilenceForm"));
-                  $('.select-label-badge').on('click', function() {
-                    var select = $(this).parent().parent().find('select');
-                    if (select.selectpicker('val')) {
+                  $(".select-label-badge").on("click", function() {
+                    var select = $(this).parent().parent().find("select");
+                    if (select.selectpicker("val")) {
                       // if there's anything selected deselect all
-                      select.selectpicker('deselectAll');
+                      select.selectpicker("deselectAll");
                     } else {
                       // else select all
-                      select.selectpicker('selectAll');
+                      select.selectpicker("selectAll");
                     }
                   });
                   // set endsAt minDate to now + 1 minute
-                  $("#endsAt").data('DateTimePicker').minDate(moment().add(1, 'minute'));
+                  $("#endsAt").data("DateTimePicker").minDate(moment().add(1, "minute"));
                   // set endsAt time to +1 hour
-                  $("#endsAt").data('DateTimePicker').date(moment().add(1, 'hours'));
+                  $("#endsAt").data("DateTimePicker").date(moment().add(1, "hours"));
                   // whenever startsAt changes set it as the minDate for endsAt
                   // we can't have endsAt < startsAt
                   $("#newSilenceForm").on("dp.change", "#startsAt", function(){
-                    if (!$("#startsAt").data('DateTimePicker')) return false;
-                    var startsAt = $("#startsAt").data('DateTimePicker').date();
+                    if (!$("#startsAt").data("DateTimePicker")) return false;
+                    var startsAt = $("#startsAt").data("DateTimePicker").date();
                     // endsAt needs to be at least 1 minute after startsAt
                     startsAt.add(1, "minute");
-                    $("#endsAt").data('DateTimePicker').minDate(startsAt);
+                    $("#endsAt").data("DateTimePicker").minDate(startsAt);
                   });
                   $("#newSilenceForm").on("click", "a.silence-duration-btn", silenceFormUpdateDuration);
-                  $("#newSilenceForm").on('show.bs.collapse, dp.change', function () {
+                  $("#newSilenceForm").on("show.bs.collapse, dp.change", function () {
                       silenceFormJSONRender();
                       silenceFormCalculateDuration();
                   });
-                  $("#newSilenceForm").on('change', function () {
+                  $("#newSilenceForm").on("change", function () {
                       silenceFormJSONRender();
                   });
                   $("#newSilenceForm").submit(function(event) {
@@ -347,7 +347,7 @@ var UI = (function() {
                         success: function(data) {
                             if (data.status == "success") {
                               $("#newSilenceAlert").addClass("hidden");
-                              $('#newSilenceForm').html(Templates.Render("silenceFormSuccess", {
+                              $("#newSilenceForm").html(Templates.Render("silenceFormSuccess", {
                                   silenceID: data.data.silenceId
                               }));
                             } else {

@@ -11,7 +11,7 @@ var Progress = (function() {
         NProgress.configure({
             minimum: 0.01,
             showSpinner: false,
-            easing: 'linear'
+            easing: "linear"
         });
     };
 
