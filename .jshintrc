@@ -1,0 +1,7 @@
+{
+  "browser": true,
+  "jquery": true,
+
+  "undef": true,
+  "unused": true
+}
