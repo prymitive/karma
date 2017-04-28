@@ -1,5 +1,7 @@
-var Templates = (function(params) {
+/* globals _ */     // underscore.js
 
+/* exported Templates */
+var Templates = (function() {
 
     var templates = {},
         config = {
@@ -39,8 +41,7 @@ var Templates = (function(params) {
           alertGroupLabelMap: '#alert-group-label-map'
         };
 
-
-    init = function() {
+    var init = function() {
         $.each(config, function(name, selector) {
             try {
                 templates[name] = _.template($(selector).html());
@@ -51,8 +52,7 @@ var Templates = (function(params) {
         });
     };
 
-
-    renderTemplate = function(name, context) {
+    var renderTemplate = function(name, context) {
         var t = templates[name];
         if (t === undefined) {
             console.error('Unknown template ' + name);
@@ -64,7 +64,6 @@ var Templates = (function(params) {
           return '<div class="jumbotron">Failed to render template "' + name + '"<h1><p>' + err + '</p></h1></div>';
         }
     };
-
 
     return {
         Init: init,

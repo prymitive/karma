@@ -1,5 +1,10 @@
-var Unsee = (function(params) {
+/* globals Raven */     // raven.js
+/* globals moment */    // moment.js
 
+/* globals Alerts, Autocomplete, Colors, Config, Counter, Grid, Filters, Progress, Summary, Templates, UI, Watchdog */
+
+/* exported Unsee */
+var Unsee = (function() {
 
     var timer = false;
     var version = false;
@@ -10,8 +15,7 @@ var Unsee = (function(params) {
         errors: '#errors'
     };
 
-
-    init = function() {
+    var init = function() {
         Progress.Init();
 
         Config.Init({
@@ -36,13 +40,11 @@ var Unsee = (function(params) {
         });
     };
 
-
-    getRefreshRate = function() {
+    var getRefreshRate = function() {
         return refreshInterval;
     };
 
-
-    setRefreshRate = function(seconds) {
+    var setRefreshRate = function(seconds) {
         var rate = parseInt(seconds);
         if (isNaN(rate)) {
             // if passed rate is incorrect use select value
@@ -56,8 +58,7 @@ var Unsee = (function(params) {
         Progress.Reset();
     };
 
-
-    needsUpgrade = function(responseVersion) {
+    var needsUpgrade = function(responseVersion) {
         if (version === false) {
             version = responseVersion;
             return false;
@@ -65,8 +66,7 @@ var Unsee = (function(params) {
         return version != responseVersion;
     };
 
-
-    renderError = function(template, context) {
+    var renderError = function(template, context) {
         Counter.Error();
         Grid.Clear();
         Grid.Hide();
@@ -78,8 +78,7 @@ var Unsee = (function(params) {
         updateCompleted();
     };
 
-
-    handleError = function(err) {
+    var handleError = function(err) {
         Raven.captureException(err);
         if (window.console) {
             console.error(err.stack);
@@ -94,16 +93,14 @@ var Unsee = (function(params) {
         }, 500);
     };
 
-
-    upgrade = function() {
+    var upgrade = function() {
         renderError('reloadNeeded', {});
         setTimeout(function() {
             location.reload();
         }, 3000);
     };
 
-
-    triggerReload = function() {
+    var triggerReload = function() {
         updateIsReady();
         $.ajax({
             url: 'alerts.json?q=' + Filters.GetFilters().join(','),
@@ -144,7 +141,7 @@ var Unsee = (function(params) {
                     }, 50);
                 }
             },
-            error: function(jqXHR, textStatus) {
+            error: function() {
                 Counter.Unknown();
                 // if fatal error was already triggered we have error message
                 // so don't add new one
@@ -160,15 +157,13 @@ var Unsee = (function(params) {
         });
     };
 
-
-    updateIsReady = function() {
+    var updateIsReady = function() {
         Progress.Complete();
         $(selectors.refreshButton).prop('disabled', true);
         Counter.Hide();
     };
 
-
-    updateCompleted = function() {
+    var updateCompleted = function() {
         Counter.Show();
         Filters.UpdateCompleted();
         Progress.Complete();
@@ -177,8 +172,7 @@ var Unsee = (function(params) {
         $('body').css('padding-top', $('.navbar').height());
     };
 
-
-    pause = function() {
+    var pause = function() {
         Progress.Pause();
         Filters.Pause();
         if (timer !== false) {
@@ -187,8 +181,7 @@ var Unsee = (function(params) {
         }
     };
 
-
-    resume = function() {
+    var resume = function() {
         if (Config.GetOption('autorefresh').Get()) {
             Filters.UpdateCompleted();
         } else {
@@ -202,8 +195,7 @@ var Unsee = (function(params) {
         timer = setTimeout(Unsee.Reload, Unsee.GetRefreshRate() * 1000);
     };
 
-
-    flash = function() {
+    var flash = function() {
         var bg = $('#flash').css('background-color');
         $('#flash').css('display', 'block').animate({
             backgroundColor: '#fff'
@@ -213,7 +205,6 @@ var Unsee = (function(params) {
             }, 100).css('display', 'none');
         });
     };
-
 
     return {
         Init: init,
@@ -226,7 +217,6 @@ var Unsee = (function(params) {
     };
 
 })();
-
 
 $(document).ready(function() {
 

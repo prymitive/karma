@@ -1,16 +1,16 @@
-var Counter = (function(params) {
+/* globals Favico */     // favico.js
 
+/* exported Counter */
+var Counter = (function() {
 
     var selectors = {
         counter: '#alert-count',
         spinner: '#spinner'
     };
 
-
     var favicon = false;
 
-
-    setCounter = function(val) {
+    var setCounter = function(val) {
         favicon.badge(val);
         Counter.Show();
         $(selectors.counter).html(val);
@@ -27,39 +27,33 @@ var Counter = (function(params) {
         }
     };
 
-
-    setUnknown = function() {
+    var setUnknown = function() {
         favicon.badge('?');
         Counter.Show();
         $(selectors.counter).html('?');
         $(selectors.counter).removeClass('text-success text-warning text-danger');
     };
 
-
-    hide = function() {
+    var hide = function() {
         $(selectors.counter).hide();
         $(selectors.spinner).children().removeClass('spinner-success spinner-error');
         $(selectors.spinner).show();
     };
 
-
-    show = function() {
+    var show = function() {
         $(selectors.spinner).hide();
         $(selectors.counter).show();
     };
 
-
-    markError = function() {
+    var markError = function() {
         $(selectors.spinner).children().removeClass('spinner-success').addClass('spinner-error');
     };
 
-
-    markSuccess = function() {
+    var markSuccess = function() {
         $(selectors.spinner).children().addClass('spinner-success');
     };
 
-
-    init = function() {
+    var init = function() {
         favicon = new Favico({
             animation: 'none',
             position: 'up',
@@ -68,7 +62,6 @@ var Counter = (function(params) {
         });
         Counter.Unknown();
     };
-
 
     return {
         Init: init,

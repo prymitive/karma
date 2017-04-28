@@ -1,13 +1,16 @@
+/* globals sha1 */     // sha1.js
+
+/* globals Autocomplete, Cookies, QueryString, Unsee */
+
+/* exported Filters */
 var Filters = (function() {
 
-
-    selectors = {
+    var selectors = {
         filter: '#filter',
         icon: '#filter-icon'
     };
 
-
-    addBadge = function(text) {
+    var addBadge = function(text) {
         $.each($('span.tag'), function(i, tag) {
             if ($(tag).text() == text) {
                 var chksum = sha1(text);
@@ -16,8 +19,7 @@ var Filters = (function() {
         });
     };
 
-
-    update = function() {
+    var update = function() {
         Filters.Updating();
 
         // update location so it's easy to share it
@@ -27,8 +29,7 @@ var Filters = (function() {
         Unsee.Reload();
     };
 
-
-    init = function() {
+    var init = function() {
         var initial_filter;
 
         if ($(selectors.filter).data('default-used') == 'false' || $(selectors.filter).data('default-used') === false) {
@@ -71,10 +72,10 @@ var Filters = (function() {
 
         // stop when user is typing in the filter bar
         $('.bootstrap-tagsinput').typing({
-            start: function(event, elem) {
+            start: function(event) {
                 if (event.keyCode != 8 && event.keyCode != 13) Unsee.Pause();
             },
-            stop: function(event, elem) {
+            stop: function(event) {
                 if (event.keyCode != 8 && event.keyCode != 13) Unsee.WaitForNextReload();
             },
             delay: 1000
@@ -95,13 +96,11 @@ var Filters = (function() {
 
     };
 
-
-    getFilters = function() {
+    var getFilters = function() {
         return $(selectors.filter).tagsinput('items');
     };
 
-
-    reloadBadges = function(filterData) {
+    var reloadBadges = function(filterData) {
         $.each(filterData, function(i, filter) {
             $.each($('span.tag-badge'), function(j, tag) {
                 if (sha1(filter.text) == $(tag).data('badge-id')) {
@@ -116,27 +115,22 @@ var Filters = (function() {
         });
     };
 
-
-    addFilter = function(text) {
+    var addFilter = function(text) {
         $(selectors.filter).tagsinput('add', text);
     };
 
-
-    setUpdating = function() {
+    var setUpdating = function() {
       // visual hint that alerts are reloaded due to filter change
       $(selectors.icon).removeClass('fa-search fa-pause').addClass('fa-circle-o-notch fa-spin');
     };
 
-
-    updateDone = function() {
+    var updateDone = function() {
         $(selectors.icon).removeClass('fa-circle-o-notch fa-spin fa-pause').addClass('fa-search');
     };
 
-
-    setPause = function() {
+    var setPause = function() {
       $(selectors.icon).removeClass('fa-circle-o-notch fa-spin fa-search').addClass('fa-pause');
     };
-
 
     return {
         Init: init,
@@ -148,6 +142,5 @@ var Filters = (function() {
         Updating: setUpdating,
         Pause: setPause
     };
-
 
 }());

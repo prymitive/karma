@@ -1,7 +1,12 @@
 // jshint esversion: 6
 
-var Alerts = (function() {
+/* globals LRUMap */     // lru.js
+/* globals moment */     // moment.js
 
+/* globals Autocomplete, Colors, Config, Counter, Grid, Templates, Summary, UI, Unsee */
+
+/* exported Alerts */
+var Alerts = (function() {
 
     var silences = {},
         labelCache = new LRUMap(1000);
@@ -43,8 +48,7 @@ var Alerts = (function() {
 
     }
 
-
-    destroyGroup = function(groupID) {
+    var destroyGroup = function(groupID) {
         $('#' + groupID + ' [data-label-type="filter"]').popover('hide');
         $('#' + groupID + ' [data-toggle=tooltip]').tooltip('hide');
         $.each($('#' + groupID).find('.panel-body, .panel-heading'), function(i, elem) {
@@ -53,8 +57,7 @@ var Alerts = (function() {
         Grid.Remove($('#' + groupID));
     };
 
-
-    sortMapByKey = function(mapToSort) {
+    var sortMapByKey = function(mapToSort) {
         var keys = Object.keys(mapToSort);
         keys.sort();
         var sorted = [];
@@ -68,8 +71,7 @@ var Alerts = (function() {
         return sorted;
     };
 
-
-    labelAttrs = function(key, value) {
+    var labelAttrs = function(key, value) {
         var label = key + ': ' + value;
 
         var attrs = labelCache.get(label);
@@ -84,8 +86,7 @@ var Alerts = (function() {
         return attrs;
     };
 
-
-    humanizeTimestamps = function() {
+    var humanizeTimestamps = function() {
         var now = moment();
         // change timestamp labels to be relative
         $.each($('.label-ts'), function(i, elem) {
@@ -105,8 +106,7 @@ var Alerts = (function() {
         $('.recent-alert:in-viewport').finish().fadeToggle(300).fadeToggle(300).fadeToggle(300).fadeToggle(300);
     };
 
-
-    updateAlerts = function(apiResponse) {
+    var updateAlerts = function(apiResponse) {
         var alertCount = 0;
         var groups = {};
 
@@ -184,7 +184,6 @@ var Alerts = (function() {
         }
 
     };
-
 
     return {
         Update: updateAlerts,

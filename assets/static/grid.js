@@ -1,5 +1,7 @@
-var Grid = (function(params) {
+/* globals Config */
 
+/* exported Grid */
+var Grid = (function() {
 
     var selectors = {
         alerts: '#alerts',
@@ -9,8 +11,7 @@ var Grid = (function(params) {
 
     var grid;
 
-
-    init = function() {
+    var init = function() {
         grid = $(selectors.alerts).masonry({
             itemSelector: selectors.incident,
             columnWidth: selectors.gridSizer,
@@ -25,23 +26,19 @@ var Grid = (function(params) {
         });
     };
 
-
-    clear = function() {
+    var clear = function() {
         grid.masonry('remove', $(selectors.incident));
     };
 
-
-    redraw = function() {
+    var redraw = function() {
         grid.masonry('layout');
     };
 
-
-    remove = function(elem) {
+    var remove = function(elem) {
         grid.masonry('remove', elem);
     };
 
-
-    append = function(elem) {
+    var append = function(elem) {
         if (Config.GetOption('appendtop').Get()) {
             grid.prepend(elem).masonry('prepended', elem);
         } else {
@@ -49,21 +46,17 @@ var Grid = (function(params) {
         }
     };
 
-
-    items = function() {
+    var items = function() {
         return grid.masonry('getItemElements');
     };
 
-
-    hide = function() {
+    var hide = function() {
         $(selectors.alerts).hide();
     };
 
-
-    show = function() {
+    var show = function() {
         $(selectors.alerts).show();
     };
-
 
     return {
         Init: init,

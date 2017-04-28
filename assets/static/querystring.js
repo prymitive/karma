@@ -1,7 +1,7 @@
+/* exported QueryString */
 var QueryString = (function() {
 
-
-    parse = function() {
+    var parse = function() {
         var vars = [],
             hash;
         var q = document.URL.split('?')[1];
@@ -15,8 +15,7 @@ var QueryString = (function() {
         return vars;
     };
 
-
-    update = function(key, value) {
+    var update = function(key, value) {
         /* https://gist.github.com/excalq/2961415 */
         var baseUrl = [location.protocol, '//', location.host, location.pathname].join(''),
             urlQueryString = document.location.search,
@@ -25,7 +24,7 @@ var QueryString = (function() {
 
         // If the "search" string exists, then build params from it
         if (urlQueryString) {
-            keyRegex = new RegExp('([\?&])' + key + '[^&]*');
+            var keyRegex = new RegExp('([\?&])' + key + '[^&]*');
 
             // If param exists already, update it
             if (urlQueryString.match(keyRegex) !== null) {
@@ -37,8 +36,7 @@ var QueryString = (function() {
         window.history.replaceState({}, "", baseUrl + params);
     };
 
-
-    remove = function(key) {
+    var remove = function(key) {
         var baseUrl = [location.protocol, '//', location.host, location.pathname].join(''),
             q = QueryString.Parse();
         if (q[key] !== undefined) {
@@ -46,7 +44,6 @@ var QueryString = (function() {
             window.history.replaceState({}, "", baseUrl + "?" + $.param(q));
         }
     };
-
 
     return {
         Parse: parse,

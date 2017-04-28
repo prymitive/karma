@@ -1,7 +1,12 @@
 // jshint esversion: 6
 
-var Option = (function(params) {
+/* globals Clipboard */     // clipboard.js
+/* globals Cookies */       // js.cookie.js
 
+/* globals Filters, Unsee, QueryString */
+
+/* exported ConfigOption */
+var ConfigOption = (function() {
 
     class optionClass {
 
@@ -15,7 +20,7 @@ var Option = (function(params) {
             this.Set = params.Setter || function(val) {
                 $(this.Selector).bootstrapSwitch('state', $.parseJSON(val), true);
             };
-            this.Action = params.Action || function(val) {};
+            this.Action = params.Action || function() {};
             this.Init = params.Init || function() {
                 var elem = this;
                 $(this.Selector).on('switchChange.bootstrapSwitch', function(event, val) {
@@ -58,14 +63,12 @@ var Option = (function(params) {
 
 }());
 
-
+/* exported Config */
 var Config = (function() {
-
 
     var options = {};
 
-
-    loadFromCookies = function() {
+    var loadFromCookies = function() {
         $.each(options, function(name, option) {
             var value = option.Load();
             if (value !== undefined) {
@@ -74,8 +77,7 @@ var Config = (function() {
         });
     };
 
-
-    reset = function() {
+    var reset = function() {
         // this is not part of options map
         Cookies.remove("defaultFilter.v2");
         $.each(options, function(name, option) {
@@ -83,8 +85,7 @@ var Config = (function() {
         });
     };
 
-
-    init = function(params) {
+    var init = function(params) {
 
         // copy current filter button action
         new Clipboard(params.CopySelector, {
@@ -100,7 +101,7 @@ var Config = (function() {
         });
 
         // save settings button action
-        $(params.SaveSelector).on('click', function(elem) {
+        $(params.SaveSelector).on('click', function() {
             var filter = Filters.GetFilters().join(',');
             Cookies.set('defaultFilter.v2', filter, {
                 expires: 365,
@@ -110,7 +111,7 @@ var Config = (function() {
         });
 
         // reset settings button action
-        $(params.ResetSelector).on('click', function(elem) {
+        $(params.ResetSelector).on('click', function() {
             Config.Reset();
             QueryString.Remove('q');
             location.reload();
@@ -172,18 +173,15 @@ var Config = (function() {
 
     };
 
-
-    newOption = function(params) {
-        var option = new Option.New(params);
+    var newOption = function(params) {
+        var option = new ConfigOption.New(params);
         option.Init();
         options[option.QueryParam] = option;
     };
 
-
-    getOption = function(queryParam) {
+    var getOption = function(queryParam) {
         return options[queryParam];
     };
-
 
     return {
         Init: init,

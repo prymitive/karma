@@ -1,9 +1,13 @@
-var UI = (function(params) {
+/* globals moment */     // moment.js
 
+/* globals Alerts, Autocomplete, Filters, Summary, Templates, Unsee */
+
+/* exported UI */
+var UI = (function() {
 
     // when user click on any alert label modal popup with a list of possible
     // filter will show, this function is used to setup that modal
-    setupModal = function() {
+    var setupModal = function() {
         $("#labelModal").on("show.bs.modal", function(event) {
             Unsee.Pause();
             var modal = $(this);
@@ -28,7 +32,7 @@ var UI = (function(params) {
                 Filters.AddFilter(filter);
             });
         });
-        $("#labelModal").on("hidden.bs.modal", function(event) {
+        $("#labelModal").on("hidden.bs.modal", function() {
             var modal = $(this);
             modal.find(".modal-title").children().remove();
             modal.find(".modal-body").children().remove();
@@ -36,10 +40,9 @@ var UI = (function(params) {
         });
     };
 
-
     // each alert group have a link generated for it, but we hide it until
     // user hovers over that group so it doesn"t trash the UI
-    setupGroupLinkHover = function(elem) {
+    var setupGroupLinkHover = function(elem) {
         $(elem).on("mouseenter", function() {
             $(this).find(".alert-group-link > a").finish().animate({
                 opacity: 100
@@ -52,10 +55,9 @@ var UI = (function(params) {
         });
     };
 
-
     // find all elements inside alert group panel that will use tooltips
     // and setup those
-    setupGroupTooltips = function(groupElem) {
+    var setupGroupTooltips = function(groupElem) {
         $.each(groupElem.find("[data-toggle=tooltip]"), function(i, elem) {
             $(elem).tooltip({
                 animation: false, // slows down tooltip removal
@@ -69,20 +71,17 @@ var UI = (function(params) {
         });
     };
 
-
-    setupAlertGroupUI = function(elem) {
+    var setupAlertGroupUI = function(elem) {
         setupGroupLinkHover(elem);
         setupGroupTooltips(elem);
     };
 
-
-    init = function() {
+    var init = function() {
         setupModal();
         setupSilenceForm();
     };
 
-
-    silenceFormData = function() {
+    var silenceFormData = function() {
         var values = $("#newSilenceForm").serializeArray();
         var payload = {
           matchers: [],
@@ -109,7 +108,7 @@ var UI = (function(params) {
             var values = $(elem).selectpicker('val');
             if (values && values.length > 0) {
               var pval;
-              isRegex = false;
+              var isRegex = false;
               if (values.length > 1) {
                   pval = "^(?:" + values.join("|") + ")$";
                   isRegex = true;
@@ -126,8 +125,7 @@ var UI = (function(params) {
         return payload;
     };
 
-
-    silenceFormCalculateDuration = function() {
+    var silenceFormCalculateDuration = function() {
       // skip if datetimepicker isn't ready yet
       if (!$("#startsAt").data('DateTimePicker') || !$("#endsAt").data('DateTimePicker')) return false;
 
@@ -152,16 +150,14 @@ var UI = (function(params) {
       $("#silence-end-description").html(endsAtDesc);
     };
 
-
-    silenceFormJSONRender = function() {
+    var silenceFormJSONRender = function() {
       var d = "curl " + $("#silenceModal").data("silence-api") +
         "\n    -X POST --data " +
         JSON.stringify(silenceFormData(), undefined, 2);
       $("#silenceJSONBlob").html(d);
     };
 
-
-    silenceFormUpdateDuration = function(event) {
+    var silenceFormUpdateDuration = function(event) {
       // skip if datetimepicker isn't ready yet
       if (!$("#startsAt").data('DateTimePicker') || !$("#endsAt").data('DateTimePicker')) return false;
 
@@ -207,9 +203,8 @@ var UI = (function(params) {
       silenceFormCalculateDuration();
     };
 
-
     // modal form for creating new silences
-    setupSilenceForm = function() {
+    var setupSilenceForm = function() {
         var modal = $("#silenceModal");
         modal.on("show.bs.modal", function(event) {
             Unsee.Pause();
@@ -262,7 +257,7 @@ var UI = (function(params) {
                         noneSelectedText: '<span class="label label-list label-default">' + $(this).data('label-key') + ": </span>",
                         multipleSeparator: ' ',
                         selectedTextFormat: 'count > 1',
-                        countSelectedText: function (numSelected, numTotal) {
+                        countSelectedText: function (numSelected) {
                           return '<span class="label label-list label-warning">' +
                             $(elem).data('label-key') + ": " + numSelected + " values selected</span>";
                         }
@@ -286,7 +281,7 @@ var UI = (function(params) {
                     inline: true
                   });
                   setupGroupTooltips($("#newSilenceForm"));
-                  $('.select-label-badge').on('click', function(e) {
+                  $('.select-label-badge').on('click', function() {
                     var select = $(this).parent().parent().find('select');
                     if (select.selectpicker('val')) {
                       // if there's anything selected deselect all
@@ -310,15 +305,15 @@ var UI = (function(params) {
                     $("#endsAt").data('DateTimePicker').minDate(startsAt);
                   });
                   $("#newSilenceForm").on("click", "a.silence-duration-btn", silenceFormUpdateDuration);
-                  $("#newSilenceForm").on('show.bs.collapse, dp.change', function (e) {
+                  $("#newSilenceForm").on('show.bs.collapse, dp.change', function () {
                       silenceFormJSONRender();
                       silenceFormCalculateDuration();
                   });
-                  $("#newSilenceForm").on('change', function (e) {
+                  $("#newSilenceForm").on('change', function () {
                       silenceFormJSONRender();
                   });
                   $("#newSilenceForm").submit(function(event) {
-                      payload = silenceFormData();
+                      var payload = silenceFormData();
                       if (payload.matchers.length === 0) {
                           var errContent = Templates.Render("silenceFormError", {error: "Select at least on label"});
                           $("#newSilenceAlert").html(errContent).removeClass("hidden");
@@ -349,7 +344,7 @@ var UI = (function(params) {
                             var errContent = Templates.Render("silenceFormError", {error: err});
                             $("#newSilenceAlert").html(errContent).removeClass("hidden");
                         },
-                        success: function(data, textStatus, xhr) {
+                        success: function(data) {
                             if (data.status == "success") {
                               $("#newSilenceAlert").addClass("hidden");
                               $('#newSilenceForm').html(Templates.Render("silenceFormSuccess", {
@@ -371,13 +366,12 @@ var UI = (function(params) {
             });
 
         });
-        modal.on("hidden.bs.modal", function(event) {
+        modal.on("hidden.bs.modal", function() {
             var modal = $(this);
             modal.find(".modal-body").children().remove();
             Unsee.WaitForNextReload();
         });
     };
-
 
     return {
         Init: init,

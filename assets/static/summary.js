@@ -1,9 +1,11 @@
+/* globals Colors, Templates */
+
+/* exported Summary */
 var Summary = (function() {
 
+    var summary;
 
-    var summary, templates;
-
-    render = function() {
+    var render = function() {
         var top_tags = [];
         $.each(summary, function(k, v) {
             top_tags.push({
@@ -31,8 +33,7 @@ var Summary = (function() {
         return Templates.Render('breakdownContent', {tags: tags});
     };
 
-
-    init = function() {
+    var init = function() {
         summary = {};
         $('.navbar-header').popover({
             trigger: 'hover',
@@ -49,19 +50,16 @@ var Summary = (function() {
         });
     };
 
-
-    update = function(data) {
+    var update = function(data) {
         summary = data;
     };
 
-
-    reset = function() {
+    var reset = function() {
         summary = {};
         render();
     };
 
-
-    push = function(labelKey, labelVal) {
+    var push = function(labelKey, labelVal) {
         var l = labelKey + ': ' + labelVal;
         if (summary[l] === undefined) {
             summary[l] = 1;
@@ -70,11 +68,10 @@ var Summary = (function() {
         }
     };
 
-    getCount = function(labelKey, labelVal) {
+    var getCount = function(labelKey, labelVal) {
         var l = labelKey + ': ' + labelVal;
         return summary[l];
     };
-
 
     return {
         Init: init,

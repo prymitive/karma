@@ -1,5 +1,5 @@
+/* exported Colors */
 var Colors = (function() {
-
 
     var colors,
         staticColorLabels;
@@ -11,13 +11,11 @@ var Colors = (function() {
         '@inhibited: true': 'label-success'
     };
 
-
-    update = function(colorData) {
+    var update = function(colorData) {
         colors = colorData;
     };
 
-
-    getClass = function(key, value) {
+    var getClass = function(key, value) {
         var label = key + ': ' + value;
         if (key == 'alertname') {
             return 'label-primary';  // special case for alertname label, which is the name of alert
@@ -30,8 +28,7 @@ var Colors = (function() {
         }
     };
 
-
-    getStyle = function(key, value) {
+    var getStyle = function(key, value) {
         // get color data, returned as css style string
         var style = "";
         if (colors[key] !== undefined && colors[key][value] !== undefined) {
@@ -42,16 +39,15 @@ var Colors = (function() {
         return style;
     };
 
-
-    getStaticLabels = function() {
+    var getStaticLabels = function() {
         return $('#alerts').data('static-color-labels').split(' ');
     };
 
-    isStaticLabel = function(key) {
+    var isStaticLabel = function(key) {
         return ($.inArray(key, Colors.GetStaticLabels()) >= 0);
     };
 
-    init = function(staticColors) {
+    var init = function(staticColors) {
         staticColorLabels = staticColors;
     };
 

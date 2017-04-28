@@ -1,4 +1,6 @@
-var Sentry = (function() {
+/* globals Raven */     // raven.js
+
+(function() {
 
 // init sentry client if sentry dsn is set
 if ($("body").data("raven-dsn")) {

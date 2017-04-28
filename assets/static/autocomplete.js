@@ -1,10 +1,11 @@
-var Autocomplete = (function() {
+/* globals Bloodhound */   // typeahead.js
 
+/* exported Autocomplete */
+var Autocomplete = (function() {
 
     var autocomplete;
 
-
-    init = function() {
+    var init = function() {
         autocomplete = new Bloodhound({
             datumTokenizer: Bloodhound.tokenizers.whitespace,
             queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -18,18 +19,16 @@ var Autocomplete = (function() {
         });
     };
 
-    reset = function() {
+    var reset = function() {
         autocomplete.clear();
     };
 
-
-    getAutocomplete = function() {
+    var getAutocomplete = function() {
         return autocomplete;
     };
 
-
     // this is used to generate quick filters for label modal
-    generateHints = function(label_key, label_val) {
+    var generateHints = function(label_key, label_val) {
       var hints = [];
       if (label_key == '@silenced') {
         // static list of hints for @silenced label
@@ -63,7 +62,6 @@ var Autocomplete = (function() {
       }
       return hints;
     };
-
 
     return {
         Init: init,
