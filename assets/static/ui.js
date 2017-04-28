@@ -1,9 +1,13 @@
-var UI = (function(params) {
+/* globals moment */     // moment.js
 
+/* globals Alerts, Autocomplete, Filters, Summary, Templates, Unsee */
+
+/* exported UI */
+var UI = (function() {
 
     // when user click on any alert label modal popup with a list of possible
     // filter will show, this function is used to setup that modal
-    setupModal = function() {
+    var setupModal = function() {
         $("#labelModal").on("show.bs.modal", function(event) {
             Unsee.Pause();
             var modal = $(this);
@@ -28,7 +32,7 @@ var UI = (function(params) {
                 Filters.AddFilter(filter);
             });
         });
-        $("#labelModal").on("hidden.bs.modal", function(event) {
+        $("#labelModal").on("hidden.bs.modal", function() {
             var modal = $(this);
             modal.find(".modal-title").children().remove();
             modal.find(".modal-body").children().remove();
@@ -36,10 +40,9 @@ var UI = (function(params) {
         });
     };
 
-
     // each alert group have a link generated for it, but we hide it until
     // user hovers over that group so it doesn"t trash the UI
-    setupGroupLinkHover = function(elem) {
+    var setupGroupLinkHover = function(elem) {
         $(elem).on("mouseenter", function() {
             $(this).find(".alert-group-link > a").finish().animate({
                 opacity: 100
@@ -52,10 +55,9 @@ var UI = (function(params) {
         });
     };
 
-
     // find all elements inside alert group panel that will use tooltips
     // and setup those
-    setupGroupTooltips = function(groupElem) {
+    var setupGroupTooltips = function(groupElem) {
         $.each(groupElem.find("[data-toggle=tooltip]"), function(i, elem) {
             $(elem).tooltip({
                 animation: false, // slows down tooltip removal
@@ -69,20 +71,17 @@ var UI = (function(params) {
         });
     };
 
-
-    setupAlertGroupUI = function(elem) {
+    var setupAlertGroupUI = function(elem) {
         setupGroupLinkHover(elem);
         setupGroupTooltips(elem);
     };
 
-
-    init = function() {
+    var init = function() {
         setupModal();
         setupSilenceForm();
     };
 
-
-    silenceFormData = function() {
+    var silenceFormData = function() {
         var values = $("#newSilenceForm").serializeArray();
         var payload = {
           matchers: [],
@@ -98,18 +97,18 @@ var UI = (function(params) {
                break;
            }
         });
-        if ($("#startsAt").data('DateTimePicker')) {
-          payload.startsAt = $("#startsAt").data('DateTimePicker').date();
+        if ($("#startsAt").data("DateTimePicker")) {
+          payload.startsAt = $("#startsAt").data("DateTimePicker").date();
         }
-        if ($("#endsAt").data('DateTimePicker')) {
-          payload.endsAt = $("#endsAt").data('DateTimePicker').date();
+        if ($("#endsAt").data("DateTimePicker")) {
+          payload.endsAt = $("#endsAt").data("DateTimePicker").date();
         }
         $.each($("#newSilenceForm .selectpicker"), function(i, elem) {
-            var label_key = $(elem).data('label-key');
-            var values = $(elem).selectpicker('val');
+            var label_key = $(elem).data("label-key");
+            var values = $(elem).selectpicker("val");
             if (values && values.length > 0) {
               var pval;
-              isRegex = false;
+              var isRegex = false;
               if (values.length > 1) {
                   pval = "^(?:" + values.join("|") + ")$";
                   isRegex = true;
@@ -126,17 +125,16 @@ var UI = (function(params) {
         return payload;
     };
 
-
-    silenceFormCalculateDuration = function() {
+    var silenceFormCalculateDuration = function() {
       // skip if datetimepicker isn't ready yet
-      if (!$("#startsAt").data('DateTimePicker') || !$("#endsAt").data('DateTimePicker')) return false;
+      if (!$("#startsAt").data("DateTimePicker") || !$("#endsAt").data("DateTimePicker")) return false;
 
-      var startsAt = $("#startsAt").data('DateTimePicker').date();
-      var endsAt = $("#endsAt").data('DateTimePicker').date();
+      var startsAt = $("#startsAt").data("DateTimePicker").date();
+      var endsAt = $("#endsAt").data("DateTimePicker").date();
 
-      var totalDays = (endsAt.diff(startsAt, 'days'));
-      var totalHours = (endsAt.diff(startsAt, 'hours')) % 24;
-      var totalMinutes = endsAt.diff(startsAt, 'minutes') % 60;
+      var totalDays = (endsAt.diff(startsAt, "days"));
+      var totalHours = (endsAt.diff(startsAt, "hours")) % 24;
+      var totalMinutes = endsAt.diff(startsAt, "minutes") % 60;
       $("#silence-duration-days").html(totalDays);
       $("#silence-duration-hours").html(totalHours);
       $("#silence-duration-minutes").html(totalMinutes);
@@ -152,22 +150,20 @@ var UI = (function(params) {
       $("#silence-end-description").html(endsAtDesc);
     };
 
-
-    silenceFormJSONRender = function() {
+    var silenceFormJSONRender = function() {
       var d = "curl " + $("#silenceModal").data("silence-api") +
         "\n    -X POST --data " +
         JSON.stringify(silenceFormData(), undefined, 2);
       $("#silenceJSONBlob").html(d);
     };
 
-
-    silenceFormUpdateDuration = function(event) {
+    var silenceFormUpdateDuration = function(event) {
       // skip if datetimepicker isn't ready yet
-      if (!$("#startsAt").data('DateTimePicker') || !$("#endsAt").data('DateTimePicker')) return false;
+      if (!$("#startsAt").data("DateTimePicker") || !$("#endsAt").data("DateTimePicker")) return false;
 
-      var startsAt = $("#startsAt").data('DateTimePicker').date();
-      var endsAt = $("#endsAt").data('DateTimePicker').date();
-      var endsAtMinDate = $("#endsAt").data('DateTimePicker').minDate();
+      var startsAt = $("#startsAt").data("DateTimePicker").date();
+      var endsAt = $("#endsAt").data("DateTimePicker").date();
+      var endsAtMinDate = $("#endsAt").data("DateTimePicker").minDate();
       var action = $(event.target).data("duration-action");
       var unit = $(event.target).data("duration-unit");
       var step = parseInt($(event.target).data("duration-step"));
@@ -203,13 +199,12 @@ var UI = (function(params) {
           endsAt = endsAtMinDate;
         }
       }
-      $("#endsAt").data('DateTimePicker').date(endsAt);
+      $("#endsAt").data("DateTimePicker").date(endsAt);
       silenceFormCalculateDuration();
     };
 
-
     // modal form for creating new silences
-    setupSilenceForm = function() {
+    var setupSilenceForm = function() {
         var modal = $("#silenceModal");
         modal.on("show.bs.modal", function(event) {
             Unsee.Pause();
@@ -222,7 +217,7 @@ var UI = (function(params) {
                 elemLabels[l.split("=")[0]] = l.split("=")[1];
             });
             $.ajax({
-              url: 'alerts.json?q=alertname=' + elem.data('alertname'),
+              url: "alerts.json?q=alertname=" + elem.data("alertname"),
               error: function(xhr, textStatus, errorThrown) {
                   var err = xhr.responseText || errorThrown || textStatus;
                   modal.find(".modal-body").html(
@@ -254,71 +249,71 @@ var UI = (function(params) {
                   );
                   $.each($(".selectpicker"), function(i, elem) {
                     $(elem).selectpicker({
-                        iconBase: 'fa',
-                        tickIcon: 'fa-check',
-                        width: 'fit',
-                        selectAllText: '<i class="fa fa-check-square-o"></i>',
-                        deselectAllText: '<i class="fa fa-square-o"></i>',
-                        noneSelectedText: '<span class="label label-list label-default">' + $(this).data('label-key') + ": </span>",
-                        multipleSeparator: ' ',
-                        selectedTextFormat: 'count > 1',
-                        countSelectedText: function (numSelected, numTotal) {
-                          return '<span class="label label-list label-warning">' +
-                            $(elem).data('label-key') + ": " + numSelected + " values selected</span>";
+                        iconBase: "fa",
+                        tickIcon: "fa-check",
+                        width: "fit",
+                        selectAllText: "<i class='fa fa-check-square-o'></i>",
+                        deselectAllText: "<i class='fa fa-square-o'></i>",
+                        noneSelectedText: "<span class='label label-list label-default'>" + $(this).data("label-key") + ": </span>",
+                        multipleSeparator: " ",
+                        selectedTextFormat: "count > 1",
+                        countSelectedText: function (numSelected) {
+                          return "<span class='label label-list label-warning'>" +
+                            $(elem).data("label-key") + ": " + numSelected + " values selected</span>";
                         }
                     });
                   });
-                  $('.datetime-picker').datetimepicker({
+                  $(".datetime-picker").datetimepicker({
                     format: "YYYY-MM-DD HH:mm",
                     icons: {
-                        time: 'fa fa-clock-o',
-                        date: 'fa fa-calendar',
-                        up: 'fa fa-chevron-up',
-                        down: 'fa fa-chevron-down',
-                        previous: 'fa fa-chevron-left',
-                        next: 'fa fa-chevron-right',
-                        today: 'fa fa-asterisk',
-                        clear: 'fa fa-undo',
-                        close: 'fa fa-close'
+                        time: "fa fa-clock-o",
+                        date: "fa fa-calendar",
+                        up: "fa fa-chevron-up",
+                        down: "fa fa-chevron-down",
+                        previous: "fa fa-chevron-left",
+                        next: "fa fa-chevron-right",
+                        today: "fa fa-asterisk",
+                        clear: "fa fa-undo",
+                        close: "fa fa-close"
                     },
                     minDate: moment(),
                     sideBySide: true,
                     inline: true
                   });
                   setupGroupTooltips($("#newSilenceForm"));
-                  $('.select-label-badge').on('click', function(e) {
-                    var select = $(this).parent().parent().find('select');
-                    if (select.selectpicker('val')) {
+                  $(".select-label-badge").on("click", function() {
+                    var select = $(this).parent().parent().find("select");
+                    if (select.selectpicker("val")) {
                       // if there's anything selected deselect all
-                      select.selectpicker('deselectAll');
+                      select.selectpicker("deselectAll");
                     } else {
                       // else select all
-                      select.selectpicker('selectAll');
+                      select.selectpicker("selectAll");
                     }
                   });
                   // set endsAt minDate to now + 1 minute
-                  $("#endsAt").data('DateTimePicker').minDate(moment().add(1, 'minute'));
+                  $("#endsAt").data("DateTimePicker").minDate(moment().add(1, "minute"));
                   // set endsAt time to +1 hour
-                  $("#endsAt").data('DateTimePicker').date(moment().add(1, 'hours'));
+                  $("#endsAt").data("DateTimePicker").date(moment().add(1, "hours"));
                   // whenever startsAt changes set it as the minDate for endsAt
                   // we can't have endsAt < startsAt
                   $("#newSilenceForm").on("dp.change", "#startsAt", function(){
-                    if (!$("#startsAt").data('DateTimePicker')) return false;
-                    var startsAt = $("#startsAt").data('DateTimePicker').date();
+                    if (!$("#startsAt").data("DateTimePicker")) return false;
+                    var startsAt = $("#startsAt").data("DateTimePicker").date();
                     // endsAt needs to be at least 1 minute after startsAt
                     startsAt.add(1, "minute");
-                    $("#endsAt").data('DateTimePicker').minDate(startsAt);
+                    $("#endsAt").data("DateTimePicker").minDate(startsAt);
                   });
                   $("#newSilenceForm").on("click", "a.silence-duration-btn", silenceFormUpdateDuration);
-                  $("#newSilenceForm").on('show.bs.collapse, dp.change', function (e) {
+                  $("#newSilenceForm").on("show.bs.collapse, dp.change", function () {
                       silenceFormJSONRender();
                       silenceFormCalculateDuration();
                   });
-                  $("#newSilenceForm").on('change', function (e) {
+                  $("#newSilenceForm").on("change", function () {
                       silenceFormJSONRender();
                   });
                   $("#newSilenceForm").submit(function(event) {
-                      payload = silenceFormData();
+                      var payload = silenceFormData();
                       if (payload.matchers.length === 0) {
                           var errContent = Templates.Render("silenceFormError", {error: "Select at least on label"});
                           $("#newSilenceAlert").html(errContent).removeClass("hidden");
@@ -349,10 +344,10 @@ var UI = (function(params) {
                             var errContent = Templates.Render("silenceFormError", {error: err});
                             $("#newSilenceAlert").html(errContent).removeClass("hidden");
                         },
-                        success: function(data, textStatus, xhr) {
+                        success: function(data) {
                             if (data.status == "success") {
                               $("#newSilenceAlert").addClass("hidden");
-                              $('#newSilenceForm').html(Templates.Render("silenceFormSuccess", {
+                              $("#newSilenceForm").html(Templates.Render("silenceFormSuccess", {
                                   silenceID: data.data.silenceId
                               }));
                             } else {
@@ -371,13 +366,12 @@ var UI = (function(params) {
             });
 
         });
-        modal.on("hidden.bs.modal", function(event) {
+        modal.on("hidden.bs.modal", function() {
             var modal = $(this);
             modal.find(".modal-body").children().remove();
             Unsee.WaitForNextReload();
         });
     };
-
 
     return {
         Init: init,

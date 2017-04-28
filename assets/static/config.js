@@ -1,7 +1,12 @@
 // jshint esversion: 6
 
-var Option = (function(params) {
+/* globals Clipboard */     // clipboard.js
+/* globals Cookies */       // js.cookie.js
 
+/* globals Filters, Unsee, QueryString */
+
+/* exported ConfigOption */
+var ConfigOption = (function() {
 
     class optionClass {
 
@@ -13,12 +18,12 @@ var Option = (function(params) {
                 return $(this.Selector).is(":checked");
             };
             this.Set = params.Setter || function(val) {
-                $(this.Selector).bootstrapSwitch('state', $.parseJSON(val), true);
+                $(this.Selector).bootstrapSwitch("state", $.parseJSON(val), true);
             };
-            this.Action = params.Action || function(val) {};
+            this.Action = params.Action || function() {};
             this.Init = params.Init || function() {
                 var elem = this;
-                $(this.Selector).on('switchChange.bootstrapSwitch', function(event, val) {
+                $(this.Selector).on("switchChange.bootstrapSwitch", function(event, val) {
                     elem.Save(val);
                     elem.Action(val);
                 });
@@ -46,7 +51,7 @@ var Option = (function(params) {
         Save(val) {
             Cookies.set(this.Cookie, val, {
                 expires: 365,
-                path: ''
+                path: ""
             });
         }
 
@@ -58,14 +63,12 @@ var Option = (function(params) {
 
 }());
 
-
+/* exported Config */
 var Config = (function() {
-
 
     var options = {};
 
-
-    loadFromCookies = function() {
+    var loadFromCookies = function() {
         $.each(options, function(name, option) {
             var value = option.Load();
             if (value !== undefined) {
@@ -74,8 +77,7 @@ var Config = (function() {
         });
     };
 
-
-    reset = function() {
+    var reset = function() {
         // this is not part of options map
         Cookies.remove("defaultFilter.v2");
         $.each(options, function(name, option) {
@@ -83,48 +85,47 @@ var Config = (function() {
         });
     };
 
-
-    init = function(params) {
+    var init = function(params) {
 
         // copy current filter button action
         new Clipboard(params.CopySelector, {
             text: function(elem) {
-                var baseUrl = [location.protocol, '//', location.host, location.pathname].join('');
-                var query = ['q=' + Filters.GetFilters().join(',')];
+                var baseUrl = [location.protocol, "//", location.host, location.pathname].join("");
+                var query = ["q=" + Filters.GetFilters().join(",")];
                 $.each(options, function(name, option) {
-                    query.push(option.QueryParam + '=' + option.Get().toString());
+                    query.push(option.QueryParam + "=" + option.Get().toString());
                 });
                 $(elem).finish().fadeOut(100).fadeIn(300);
-                return baseUrl + '?' + query.join('&');
+                return baseUrl + "?" + query.join("&");
             }
         });
 
         // save settings button action
-        $(params.SaveSelector).on('click', function(elem) {
-            var filter = Filters.GetFilters().join(',');
-            Cookies.set('defaultFilter.v2', filter, {
+        $(params.SaveSelector).on("click", function() {
+            var filter = Filters.GetFilters().join(",");
+            Cookies.set("defaultFilter.v2", filter, {
                 expires: 365,
-                path: ''
+                path: ""
             });
             $(params.SaveSelector).finish().fadeOut(100).fadeIn(300);
         });
 
         // reset settings button action
-        $(params.ResetSelector).on('click', function(elem) {
+        $(params.ResetSelector).on("click", function() {
             Config.Reset();
-            QueryString.Remove('q');
+            QueryString.Remove("q");
             location.reload();
         });
 
         // https://github.com/twbs/bootstrap/issues/2097
-        $(document).on('click', '.dropdown-menu.dropdown-menu-form', function(e) {
+        $(document).on("click", ".dropdown-menu.dropdown-menu-form", function(e) {
             e.stopPropagation();
         });
 
         Config.NewOption({
-            Cookie: 'autoRefresh',
-            QueryParam: 'autorefresh',
-            Selector: '#autorefresh',
+            Cookie: "autoRefresh",
+            QueryParam: "autorefresh",
+            Selector: "#autorefresh",
             Action: function(val) {
                 if (val) {
                     Unsee.WaitForNextReload();
@@ -135,12 +136,12 @@ var Config = (function() {
         });
 
         Config.NewOption({
-            Cookie: 'refreshInterval',
-            QueryParam: 'refresh',
-            Selector: '#refresh-interval',
+            Cookie: "refreshInterval",
+            QueryParam: "refresh",
+            Selector: "#refresh-interval",
             Init: function() {
                 var elem = this;
-                $(this.Selector).on('change', function() {
+                $(this.Selector).on("change", function() {
                     var val = elem.Get();
                     elem.Save(val);
                     elem.Action(val);
@@ -159,31 +160,28 @@ var Config = (function() {
 
 
         Config.NewOption({
-            Cookie: 'showFlash',
-            QueryParam: 'flash',
-            Selector: '#show-flash'
+            Cookie: "showFlash",
+            QueryParam: "flash",
+            Selector: "#show-flash"
         });
 
         Config.NewOption({
-            Cookie: 'appendTop',
-            QueryParam: 'appendtop',
-            Selector: '#append-top'
+            Cookie: "appendTop",
+            QueryParam: "appendtop",
+            Selector: "#append-top"
         });
 
     };
 
-
-    newOption = function(params) {
-        var option = new Option.New(params);
+    var newOption = function(params) {
+        var option = new ConfigOption.New(params);
         option.Init();
         options[option.QueryParam] = option;
     };
 
-
-    getOption = function(queryParam) {
+    var getOption = function(queryParam) {
         return options[queryParam];
     };
-
 
     return {
         Init: init,

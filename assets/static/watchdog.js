@@ -1,29 +1,31 @@
+/* globals moment */    // moment.js
+
+/* globals Config, Counter, Templates */
+
+/* exported Watchdog */
 var Watchdog = (function() {
 
-
     var selectors = {
-        countdown: '#reload-counter'
+        countdown: "#reload-counter"
     };
 
     var lastTs = 0;
     var maxLag;
-    var timer = false;
 
     var inCountdown = false;
     var fatalCountdown = 60;
     var fatalReloadTimer = false;
     var fatalCounterTimer = false;
 
-
-    timerTick = function() {
+    var timerTick = function() {
         if (lastTs === 0) return;
 
         // don't raise an error if autorefresh is disabled
-        if (!Config.GetOption('autorefresh').Get()) return;
+        if (!Config.GetOption("autorefresh").Get()) return;
 
         var now = moment().utc().unix();
         if (now - lastTs > maxLag) {
-            $('#errors').html(Templates.Render('fatalError', {
+            $("#errors").html(Templates.Render("fatalError", {
                 last_ts: lastTs,
                 seconds_left: fatalCountdown
             })).show();
@@ -45,26 +47,22 @@ var Watchdog = (function() {
         }
     };
 
-
-    init = function(interval, tolerance) {
+    var init = function(interval, tolerance) {
         maxLag = tolerance;
         setInterval(timerTick, interval * 1000);
     };
 
-
-    updateTs = function(ts) {
+    var updateTs = function(ts) {
         lastTs = ts.utc().unix();
     };
 
-
-    getTs = function() {
+    var getTs = function() {
         return lastTs;
     };
 
-    getFatal = function() {
+    var getFatal = function() {
         return inCountdown;
     };
-
 
     return {
         Init: init,

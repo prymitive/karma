@@ -1,7 +1,12 @@
 // jshint esversion: 6
 
-var Alerts = (function() {
+/* globals LRUMap */     // lru.js
+/* globals moment */     // moment.js
 
+/* globals Autocomplete, Colors, Config, Counter, Grid, Templates, Summary, UI, Unsee */
+
+/* exported Alerts */
+var Alerts = (function() {
 
     var silences = {},
         labelCache = new LRUMap(1000);
@@ -12,7 +17,7 @@ var Alerts = (function() {
         }
 
         Render() {
-            return Templates.Render('alertGroup', {
+            return Templates.Render("alertGroup", {
                 group: this,
                 silences: silences,
                 static_color_label: Colors.GetStaticLabels(),
@@ -22,39 +27,37 @@ var Alerts = (function() {
 
         // called after group was rendered for the first time
         Added() {
-            UI.SetupAlertGroupUI($('#' + this.id));
+            UI.SetupAlertGroupUI($("#" + this.id));
         }
 
         Update() {
             // hide popovers in this group
-            $('#' + this.id + ' [data-label-type="filter"]').popover('hide');
+            $("#" + this.id + " [data-label-type='filter']").popover("hide");
 
             // remove all elements prior to content update to purge all event listeners and hooks
-            $.each($('#' + this.id).find('.panel-body, .panel-heading'), function(i, elem) {
+            $.each($("#" + this.id).find(".panel-body, .panel-heading"), function(i, elem) {
                 $(elem).remove();
             });
 
-            $('#' + this.id).html($(this.Render()).html());
-            $('#' + this.id).data('hash', this.hash);
+            $("#" + this.id).html($(this.Render()).html());
+            $("#" + this.id).data("hash", this.hash);
 
             // pulse the badge to show that group content was changed, repeat it twice
-            $('#' + this.id + ' > .panel > .panel-heading > .badge:in-viewport').finish().fadeOut(300).fadeIn(300).fadeOut(300).fadeIn(300);
+            $("#" + this.id + " > .panel > .panel-heading > .badge:in-viewport").finish().fadeOut(300).fadeIn(300).fadeOut(300).fadeIn(300);
         }
 
     }
 
-
-    destroyGroup = function(groupID) {
-        $('#' + groupID + ' [data-label-type="filter"]').popover('hide');
-        $('#' + groupID + ' [data-toggle=tooltip]').tooltip('hide');
-        $.each($('#' + groupID).find('.panel-body, .panel-heading'), function(i, elem) {
+    var destroyGroup = function(groupID) {
+        $("#" + groupID + " [data-label-type='filter']").popover("hide");
+        $("#" + groupID + " [data-toggle='tooltip']").tooltip("hide");
+        $.each($("#" + groupID).find(".panel-body, .panel-heading"), function(i, elem) {
             $(elem).remove();
         });
-        Grid.Remove($('#' + groupID));
+        Grid.Remove($("#" + groupID));
     };
 
-
-    sortMapByKey = function(mapToSort) {
+    var sortMapByKey = function(mapToSort) {
         var keys = Object.keys(mapToSort);
         keys.sort();
         var sorted = [];
@@ -62,51 +65,48 @@ var Alerts = (function() {
             sorted.push({
                 key: key,
                 value: mapToSort[key],
-                text: key + ': ' + mapToSort[key]
+                text: key + ": " + mapToSort[key]
             });
         });
         return sorted;
     };
 
-
-    labelAttrs = function(key, value) {
-        var label = key + ': ' + value;
+    var labelAttrs = function(key, value) {
+        var label = key + ": " + value;
 
         var attrs = labelCache.get(label);
         if (attrs !== undefined) return attrs;
 
         attrs = {
             text: label,
-            class: 'label label-list ' + Colors.GetClass(key, value),
+            class: "label label-list " + Colors.GetClass(key, value),
             style: Colors.Get(key, value)
         };
         labelCache.set(label, attrs);
         return attrs;
     };
 
-
-    humanizeTimestamps = function() {
+    var humanizeTimestamps = function() {
         var now = moment();
         // change timestamp labels to be relative
-        $.each($('.label-ts'), function(i, elem) {
-            var ts = moment($(elem).data('ts'), moment.ISO_8601);
+        $.each($(".label-ts"), function(i, elem) {
+            var ts = moment($(elem).data("ts"), moment.ISO_8601);
             var label = ts.fromNow();
-            $(elem).find('.label-ts-span').text(label);
-            $(elem).attr('data-ts-title', ts.toString());
-            var ts_age = now.diff(ts, 'minutes');
+            $(elem).find(".label-ts-span").text(label);
+            $(elem).attr("data-ts-title", ts.toString());
+            var ts_age = now.diff(ts, "minutes");
             if (ts_age < 3) {
-                $(elem).addClass('recent-alert').find('.incident-indicator').removeClass('hidden');
+                $(elem).addClass("recent-alert").find(".incident-indicator").removeClass("hidden");
             } else {
-                $(elem).removeClass('recent-alert').find('.incident-indicator').addClass('hidden');
+                $(elem).removeClass("recent-alert").find(".incident-indicator").addClass("hidden");
             }
         });
 
         // flash recent alerts
-        $('.recent-alert:in-viewport').finish().fadeToggle(300).fadeToggle(300).fadeToggle(300).fadeToggle(300);
+        $(".recent-alert:in-viewport").finish().fadeToggle(300).fadeToggle(300).fadeToggle(300).fadeToggle(300);
     };
 
-
-    updateAlerts = function(apiResponse) {
+    var updateAlerts = function(apiResponse) {
         var alertCount = 0;
         var groups = {};
 
@@ -116,7 +116,7 @@ var Alerts = (function() {
         var summaryData = {};
         $.each(apiResponse.counters, function(label_key, counters){
             $.each(counters, function(label_val, hits){
-                summaryData[label_key + ': ' + label_val] = hits;
+                summaryData[label_key + ": " + label_val] = hits;
             });
         });
         Summary.Update(summaryData);
@@ -164,7 +164,7 @@ var Alerts = (function() {
         });
         // append new groups in chunks
         if (content.length > 0) {
-            Grid.Append($(content.splice(0, 100).join('\n')));
+            Grid.Append($(content.splice(0, 100).join("\n")));
             dirty = true;
         }
 
@@ -178,13 +178,12 @@ var Alerts = (function() {
         if (dirty) {
             Autocomplete.Reset();
             Grid.Redraw();
-            if (Config.GetOption('flash').Get()) {
+            if (Config.GetOption("flash").Get()) {
                 Unsee.Flash();
             }
         }
 
     };
-
 
     return {
         Update: updateAlerts,

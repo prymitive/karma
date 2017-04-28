@@ -1,0 +1,11 @@
+{
+  "browser": true,
+  "jquery": true,
+  "devel": true,
+
+  "undef": true,
+  "unused": true,
+
+
+  "quotmark": "double"
+}

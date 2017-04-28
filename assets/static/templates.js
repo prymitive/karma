@@ -1,70 +1,69 @@
-var Templates = (function(params) {
+/* globals _ */     // underscore.js
 
+/* exported Templates */
+var Templates = (function() {
 
     var templates = {},
         config = {
           // popover with the list of most common labels
-          breakdown: '#breakdown',
-          breakdownContent: '#breakdown-content',
+          breakdown: "#breakdown",
+          breakdownContent: "#breakdown-content",
 
           // reload message if backend version bump is detected
-          reloadNeeded: '#reload-needed',
+          reloadNeeded: "#reload-needed",
 
           // errors
-          fatalError: '#fatal-error',
-          internalError: '#internal-error',
-          updateError: '#update-error',
+          fatalError: "#fatal-error",
+          internalError: "#internal-error",
+          updateError: "#update-error",
 
           // modal popup with label filters
-          modalTitle: '#modal-title',
-          modalBody: '#modal-body',
+          modalTitle: "#modal-title",
+          modalBody: "#modal-body",
 
           // modal popup with silence form
-          silenceForm: '#silence-form',
-          silenceFormSuccess: '#silence-form-success',
-          silenceFormError: '#silence-form-error',
-          silenceFormFatal: '#silence-form-fatal',
-          silenceFormLoading: '#silence-form-loading',
+          silenceForm: "#silence-form",
+          silenceFormSuccess: "#silence-form-success",
+          silenceFormError: "#silence-form-error",
+          silenceFormFatal: "#silence-form-fatal",
+          silenceFormLoading: "#silence-form-loading",
 
           // label button
-          buttonLabel: '#label-button-filter',
+          buttonLabel: "#label-button-filter",
 
           // alert group
-          alertGroup: '#alert-group',
-          alertGroupTitle: '#alert-group-title',
-          alertGroupAnnotations: '#alert-group-annotations',
-          alertGroupLabels: '#alert-group-labels',
-          alertGroupElements: '#alert-group-elements',
-          alertGroupSilence: '#alert-group-silence',
-          alertGroupLabelMap: '#alert-group-label-map'
+          alertGroup: "#alert-group",
+          alertGroupTitle: "#alert-group-title",
+          alertGroupAnnotations: "#alert-group-annotations",
+          alertGroupLabels: "#alert-group-labels",
+          alertGroupElements: "#alert-group-elements",
+          alertGroupSilence: "#alert-group-silence",
+          alertGroupLabelMap: "#alert-group-label-map"
         };
 
-
-    init = function() {
+    var init = function() {
         $.each(config, function(name, selector) {
             try {
                 templates[name] = _.template($(selector).html());
             } catch (err) {
-                console.error('Failed to parse template ' + name + ' ' + selector);
+                console.error("Failed to parse template " + name + " " + selector);
                 console.error(err);
             }
         });
     };
 
-
-    renderTemplate = function(name, context) {
+    var renderTemplate = function(name, context) {
         var t = templates[name];
         if (t === undefined) {
-            console.error('Unknown template ' + name);
-            return '<div class="jumbotron"><h1>Internal error: unknown template ' + name + '</h1></div>';
+            console.error("Unknown template " + name);
+            return "<div class='jumbotron'><h1>Internal error: unknown template " + name + "</h1></div>";
         }
         try {
           return t(context);
         } catch (err) {
-          return '<div class="jumbotron">Failed to render template "' + name + '"<h1><p>' + err + '</p></h1></div>';
+          return "<div class='jumbotron'>Failed to render template " + name + "<h1><p>" + err + "</p></h1></div>";
         }
     };
-
 
     return {
         Init: init,

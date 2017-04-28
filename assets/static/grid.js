@@ -1,21 +1,22 @@
-var Grid = (function(params) {
+/* globals Config */
 
+/* exported Grid */
+var Grid = (function() {
 
     var selectors = {
-        alerts: '#alerts',
-        incident: '.incident',
-        gridSizer: '.grid-sizer',
+        alerts: "#alerts",
+        incident: ".incident",
+        gridSizer: ".grid-sizer",
     };
 
     var grid;
 
-
-    init = function() {
+    var init = function() {
         grid = $(selectors.alerts).masonry({
             itemSelector: selectors.incident,
             columnWidth: selectors.gridSizer,
             percentPosition: true,
-            transitionDuration: '0.4s',
+            transitionDuration: "0.4s",
             hiddenStyle: {
                 opacity: 0
             },
@@ -25,45 +26,37 @@ var Grid = (function(params) {
         });
     };
 
-
-    clear = function() {
-        grid.masonry('remove', $(selectors.incident));
+    var clear = function() {
+        grid.masonry("remove", $(selectors.incident));
     };
 
-
-    redraw = function() {
-        grid.masonry('layout');
+    var redraw = function() {
+        grid.masonry("layout");
     };
 
-
-    remove = function(elem) {
-        grid.masonry('remove', elem);
+    var remove = function(elem) {
+        grid.masonry("remove", elem);
     };
 
-
-    append = function(elem) {
-        if (Config.GetOption('appendtop').Get()) {
-            grid.prepend(elem).masonry('prepended', elem);
+    var append = function(elem) {
+        if (Config.GetOption("appendtop").Get()) {
+            grid.prepend(elem).masonry("prepended", elem);
         } else {
-            grid.append(elem).masonry('appended', elem);
+            grid.append(elem).masonry("appended", elem);
         }
     };
 
-
-    items = function() {
-        return grid.masonry('getItemElements');
+    var items = function() {
+        return grid.masonry("getItemElements");
     };
 
-
-    hide = function() {
+    var hide = function() {
         $(selectors.alerts).hide();
     };
 
-
-    show = function() {
+    var show = function() {
         $(selectors.alerts).show();
     };
-
 
     return {
         Init: init,
