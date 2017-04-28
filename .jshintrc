@@ -4,5 +4,8 @@
   "devel": true,
 
   "undef": true,
-  "unused": true
+  "unused": true,
+
+
+  "quotmark": "double"
 }
