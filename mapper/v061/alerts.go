@@ -1,8 +1,9 @@
-// Package v05 package implements support for interacting with Alertmanager 0.5
+// Package v061 package implements support for interacting with
+// Alertmanager 0.6.1
 // Collected data will be mapped to unsee internal schema defined the
 // unsee/models package
 // This file defines Alertmanager alerts mapping
-package v05
+package v061
 
 import (
 	"errors"
@@ -21,8 +22,9 @@ type alert struct {
 	StartsAt     time.Time         `json:"startsAt"`
 	EndsAt       time.Time         `json:"endsAt"`
 	GeneratorURL string            `json:"generatorURL"`
-	Inhibited    bool              `json:"inhibited"`
-	Silenced     string            `json:"silenced"`
+	Status       string            `json:"Status"`
+	SilencedBy   []string          `json:"silencedBy"`
+	InhibitedBy  []string          `json:"inhibitedBy"`
 }
 
 type alertsGroups struct {
@@ -38,14 +40,14 @@ type alertsGroupsAPISchema struct {
 	Error  string         `json:"error"`
 }
 
-// AlertMapper implements Alertmanager 0.5 API schema
+// AlertMapper implements Alertmanager API schema
 type AlertMapper struct {
 	mapper.AlertMapper
 }
 
 // IsSupported returns true if given version string is supported
 func (m AlertMapper) IsSupported(version string) bool {
-	versionRange := semver.MustParseRange(">=0.5.0  <=0.6.0")
+	versionRange := semver.MustParseRange(">=0.6.1")
 	return versionRange(semver.MustParse(version))
 }
 
@@ -73,14 +75,18 @@ func (m AlertMapper) GetAlerts() ([]models.AlertGroup, error) {
 		alertList := models.AlertList{}
 		for _, b := range g.Blocks {
 			for _, a := range b.Alerts {
+				silenceID := ""
+				if len(a.SilencedBy) > 0 {
+					silenceID = a.SilencedBy[0]
+				}
 				us := models.Alert{
 					Annotations:  a.Annotations,
 					Labels:       a.Labels,
 					StartsAt:     a.StartsAt,
 					EndsAt:       a.EndsAt,
 					GeneratorURL: a.GeneratorURL,
-					Inhibited:    a.Inhibited,
-					Silenced:     a.Silenced,
+					Inhibited:    len(a.InhibitedBy) > 0,
+					Silenced:     silenceID,
 				}
 				alertList = append(alertList, us)
 			}
