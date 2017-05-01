@@ -12,7 +12,7 @@ import (
 	httpmock "gopkg.in/jarcoal/httpmock.v1"
 )
 
-var testVersions = []string{"0.4", "0.5"}
+var testVersions = []string{"0.4", "0.5", "0.6.1"}
 
 func TestGetAlerts(t *testing.T) {
 	log.SetLevel(log.ErrorLevel)
