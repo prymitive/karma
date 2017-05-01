@@ -15,9 +15,11 @@ type silenceAuthorFilter struct {
 func (filter *silenceAuthorFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
 		var isMatch bool
-		if alert.Silenced != "" {
-			if silence := store.Store.GetSilence(alert.Silenced); silence != nil {
-				isMatch = filter.Matcher.Compare(filter.Value, silence.CreatedBy)
+		if alert.IsSilenced() {
+			for _, silenceID := range alert.SilencedBy {
+				if silence := store.Store.GetSilence(silenceID); silence != nil {
+					isMatch = filter.Matcher.Compare(filter.Value, silence.CreatedBy)
+				}
 			}
 		} else {
 			isMatch = filter.Matcher.Compare("", filter.Value)
@@ -39,16 +41,18 @@ func newSilenceAuthorFilter() FilterT {
 func sinceAuthorAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
 	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
-		if alert.Silenced != "" {
-			if silence := store.Store.GetSilence(alert.Silenced); silence != nil {
-				for _, operator := range operators {
-					token := fmt.Sprintf("%s%s%s", name, operator, silence.CreatedBy)
-					tokens[token] = makeAC(token, []string{
-						name,
-						strings.TrimPrefix(name, "@"),
-						fmt.Sprintf("%s%s", name, operator),
-						silence.CreatedBy,
-					})
+		if alert.IsSilenced() {
+			for _, silenceID := range alert.SilencedBy {
+				if silence := store.Store.GetSilence(silenceID); silence != nil {
+					for _, operator := range operators {
+						token := fmt.Sprintf("%s%s%s", name, operator, silence.CreatedBy)
+						tokens[token] = makeAC(token, []string{
+							name,
+							strings.TrimPrefix(name, "@"),
+							fmt.Sprintf("%s%s", name, operator),
+							silence.CreatedBy,
+						})
+					}
 				}
 			}
 		}

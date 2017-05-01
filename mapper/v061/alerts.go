@@ -75,9 +75,13 @@ func (m AlertMapper) GetAlerts() ([]models.AlertGroup, error) {
 		alertList := models.AlertList{}
 		for _, b := range g.Blocks {
 			for _, a := range b.Alerts {
-				silenceID := ""
-				if len(a.SilencedBy) > 0 {
-					silenceID = a.SilencedBy[0]
+				inhibitedBy := []string{}
+				if a.InhibitedBy != nil {
+					inhibitedBy = a.InhibitedBy
+				}
+				silencedBy := []string{}
+				if a.SilencedBy != nil {
+					silencedBy = a.SilencedBy
 				}
 				us := models.Alert{
 					Annotations:  a.Annotations,
@@ -85,8 +89,9 @@ func (m AlertMapper) GetAlerts() ([]models.AlertGroup, error) {
 					StartsAt:     a.StartsAt,
 					EndsAt:       a.EndsAt,
 					GeneratorURL: a.GeneratorURL,
-					Inhibited:    len(a.InhibitedBy) > 0,
-					Silenced:     silenceID,
+					Status:       a.Status,
+					InhibitedBy:  inhibitedBy,
+					SilencedBy:   silencedBy,
 				}
 				alertList = append(alertList, us)
 			}
