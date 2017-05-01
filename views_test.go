@@ -20,8 +20,6 @@ import (
 	"gopkg.in/jarcoal/httpmock.v1"
 )
 
-var testVersions = []string{"0.4", "0.5", "0.6.1"}
-
 func stringInSlice(stringArray []string, value string) bool {
 	for _, s := range stringArray {
 		if s == value {
@@ -115,7 +113,7 @@ func mockAlerts(version string) {
 
 func TestAlerts(t *testing.T) {
 	mockConfig()
-	for _, version := range testVersions {
+	for _, version := range mock.ListAllMocks() {
 		mockAlerts(version)
 		r := ginTestEngine()
 		req, _ := http.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed,instance=web1", nil)
@@ -172,7 +170,7 @@ func TestAlerts(t *testing.T) {
 
 func TestValidateAllAlerts(t *testing.T) {
 	mockConfig()
-	for _, version := range testVersions {
+	for _, version := range mock.ListAllMocks() {
 		mockAlerts(version)
 		r := ginTestEngine()
 		req, _ := http.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed,instance=web1", nil)
@@ -326,7 +324,7 @@ var acTests = []acTestCase{
 
 func TestAutocomplete(t *testing.T) {
 	mockConfig()
-	for _, version := range testVersions {
+	for _, version := range mock.ListAllMocks() {
 		mockAlerts(version)
 		r := ginTestEngine()
 

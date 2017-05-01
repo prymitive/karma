@@ -55,23 +55,23 @@
         },
         "meshStatus": {
             "name": "02:42:ac:11:00:02",
-            "nickName": "c8a6f2549aee",
+            "nickName": "056ea9373951",
             "peers": [
                 {
                     "name": "02:42:ac:11:00:02",
-                    "nickName": "c8a6f2549aee",
-                    "uid": 5746289647142050162
+                    "nickName": "056ea9373951",
+                    "uid": 15872478154679362182
                 }
             ]
         },
-        "uptime": "2017-05-01T20:59:36.222911307Z",
+        "uptime": "2017-05-01T20:50:03.840143699Z",
         "versionInfo": {
             "branch": "master",
-            "buildDate": "20170428-10:15:22",
-            "buildUser": "root@5f1ac69d2582",
+            "buildDate": "20170425-19:48:54",
+            "buildUser": "root@e81189977445",
             "goVersion": "go1.8.1",
-            "revision": "5aeaf2cb988b0094b7998bbe6568bba23a0eb9c2",
-            "version": "0.6.1"
+            "revision": "762b5c479a8d35c8ed9763fe13a16b4e521f7c54",
+            "version": "0.6.0"
         }
     },
     "status": "success"

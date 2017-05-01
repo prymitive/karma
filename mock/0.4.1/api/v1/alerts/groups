@@ -5,29 +5,27 @@
                 {
                     "alerts": [
                         {
-                            "Status": "active",
                             "annotations": {
                                 "alert": "Less than 10% disk space is free",
                                 "dashboard": "http://localhost/dashboard.html"
                             },
                             "endsAt": "0001-01-01T00:00:00Z",
                             "generatorURL": "",
-                            "inhibitedBy": [],
+                            "inhibited": false,
                             "labels": {
                                 "alertname": "Free_Disk_Space_Too_Low",
                                 "cluster": "staging",
                                 "instance": "server5",
                                 "job": "node_exporter"
                             },
-                            "silencedBy": [],
-                            "startsAt": "2017-05-01T20:59:51.364108486Z"
+                            "startsAt": "2017-05-01T20:45:58.865330456Z"
                         }
                     ],
                     "routeOpts": {
                         "groupBy": [
-                            "service",
                             "alertname",
-                            "cluster"
+                            "cluster",
+                            "service"
                         ],
                         "groupInterval": 35000000000,
                         "groupWait": 15000000000,
@@ -36,7 +34,6 @@
                     }
                 }
             ],
-            "groupKey": "{}:{alertname=\"Free_Disk_Space_Too_Low\", cluster=\"staging\"}",
             "labels": {
                 "alertname": "Free_Disk_Space_Too_Low",
                 "cluster": "staging"
@@ -47,7 +44,6 @@
                 {
                     "alerts": [
                         {
-                            "Status": "suppressed",
                             "annotations": {
                                 "help": "Example help annotation",
                                 "summary": "Example summary",
@@ -55,34 +51,30 @@
                             },
                             "endsAt": "0001-01-01T00:00:00Z",
                             "generatorURL": "",
-                            "inhibitedBy": null,
+                            "inhibited": false,
                             "labels": {
                                 "alertname": "HTTP_Probe_Failed",
                                 "cluster": "dev",
                                 "instance": "web1",
                                 "job": "node_exporter"
                             },
-                            "silencedBy": [
-                                "d68b4fd6-f18a-474a-8953-255a86250742"
-                            ],
-                            "startsAt": "2017-05-01T20:59:51.364108486Z"
+                            "silenced": 1,
+                            "startsAt": "2017-05-01T20:45:58.865330456Z"
                         },
                         {
-                            "Status": "active",
                             "annotations": {
                                 "summary": "Example summary"
                             },
                             "endsAt": "0001-01-01T00:00:00Z",
                             "generatorURL": "",
-                            "inhibitedBy": [],
+                            "inhibited": false,
                             "labels": {
                                 "alertname": "HTTP_Probe_Failed",
                                 "cluster": "dev",
                                 "instance": "web2",
                                 "job": "node_exporter"
                             },
-                            "silencedBy": [],
-                            "startsAt": "2017-05-01T20:59:51.364108486Z"
+                            "startsAt": "2017-05-01T20:45:58.865330456Z"
                         }
                     ],
                     "routeOpts": {
@@ -98,7 +90,6 @@
                     }
                 }
             ],
-            "groupKey": "{}:{alertname=\"HTTP_Probe_Failed\", cluster=\"dev\"}",
             "labels": {
                 "alertname": "HTTP_Probe_Failed",
                 "cluster": "dev"
@@ -109,61 +100,52 @@
                 {
                     "alerts": [
                         {
-                            "Status": "suppressed",
                             "annotations": {
                                 "summary": "Example summary"
                             },
                             "endsAt": "0001-01-01T00:00:00Z",
                             "generatorURL": "",
-                            "inhibitedBy": null,
-                            "labels": {
-                                "alertname": "Host_Down",
-                                "cluster": "dev",
-                                "instance": "server6",
-                                "job": "node_ping"
-                            },
-                            "silencedBy": [
-                                "89142af0-b17f-4ffd-b2c2-2398de624466"
-                            ],
-                            "startsAt": "2017-05-01T20:59:51.364108486Z"
-                        },
-                        {
-                            "Status": "suppressed",
-                            "annotations": {
-                                "summary": "Example summary"
-                            },
-                            "endsAt": "0001-01-01T00:00:00Z",
-                            "generatorURL": "",
-                            "inhibitedBy": null,
-                            "labels": {
-                                "alertname": "Host_Down",
-                                "cluster": "dev",
-                                "instance": "server7",
-                                "job": "node_ping"
-                            },
-                            "silencedBy": [
-                                "89142af0-b17f-4ffd-b2c2-2398de624466"
-                            ],
-                            "startsAt": "2017-05-01T20:59:51.364108486Z"
-                        },
-                        {
-                            "Status": "suppressed",
-                            "annotations": {
-                                "summary": "Example summary"
-                            },
-                            "endsAt": "0001-01-01T00:00:00Z",
-                            "generatorURL": "",
-                            "inhibitedBy": null,
+                            "inhibited": false,
                             "labels": {
                                 "alertname": "Host_Down",
                                 "cluster": "dev",
                                 "instance": "server8",
                                 "job": "node_ping"
                             },
-                            "silencedBy": [
-                                "89142af0-b17f-4ffd-b2c2-2398de624466"
-                            ],
-                            "startsAt": "2017-05-01T20:59:51.364108486Z"
+                            "silenced": 2,
+                            "startsAt": "2017-05-01T20:45:58.865330456Z"
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "generatorURL": "",
+                            "inhibited": false,
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "dev",
+                                "instance": "server6",
+                                "job": "node_ping"
+                            },
+                            "silenced": 2,
+                            "startsAt": "2017-05-01T20:45:58.865330456Z"
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "generatorURL": "",
+                            "inhibited": false,
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "dev",
+                                "instance": "server7",
+                                "job": "node_ping"
+                            },
+                            "silenced": 2,
+                            "startsAt": "2017-05-01T20:45:58.865330456Z"
                         }
                     ],
                     "routeOpts": {
@@ -179,7 +161,6 @@
                     }
                 }
             ],
-            "groupKey": "{}:{alertname=\"Host_Down\", cluster=\"dev\"}",
             "labels": {
                 "alertname": "Host_Down",
                 "cluster": "dev"
@@ -190,114 +171,35 @@
                 {
                     "alerts": [
                         {
-                            "Status": "active",
                             "annotations": {
                                 "summary": "Example summary",
                                 "url": "http://localhost/example.html"
                             },
                             "endsAt": "0001-01-01T00:00:00Z",
                             "generatorURL": "",
-                            "inhibitedBy": [],
+                            "inhibited": false,
                             "labels": {
                                 "alertname": "Host_Down",
                                 "cluster": "prod",
                                 "instance": "server1",
                                 "job": "node_ping"
                             },
-                            "silencedBy": [],
-                            "startsAt": "2017-05-01T20:59:51.364108486Z"
+                            "startsAt": "2017-05-01T20:45:58.865330456Z"
                         },
                         {
-                            "Status": "active",
                             "annotations": {
                                 "summary": "Example summary"
                             },
                             "endsAt": "0001-01-01T00:00:00Z",
                             "generatorURL": "",
-                            "inhibitedBy": [],
+                            "inhibited": false,
                             "labels": {
                                 "alertname": "Host_Down",
                                 "cluster": "prod",
                                 "instance": "server2",
                                 "job": "node_ping"
                             },
-                            "silencedBy": [],
-                            "startsAt": "2017-05-01T20:59:51.364108486Z"
-                        }
-                    ],
-                    "routeOpts": {
-                        "groupBy": [
-                            "service",
-                            "alertname",
-                            "cluster"
-                        ],
-                        "groupInterval": 35000000000,
-                        "groupWait": 15000000000,
-                        "receiver": "default",
-                        "repeatInterval": 3596400000000000
-                    }
-                }
-            ],
-            "groupKey": "{}:{alertname=\"Host_Down\", cluster=\"prod\"}",
-            "labels": {
-                "alertname": "Host_Down",
-                "cluster": "prod"
-            }
-        },
-        {
-            "blocks": [
-                {
-                    "alerts": [
-                        {
-                            "Status": "active",
-                            "annotations": {
-                                "summary": "Example summary"
-                            },
-                            "endsAt": "0001-01-01T00:00:00Z",
-                            "generatorURL": "",
-                            "inhibitedBy": [],
-                            "labels": {
-                                "alertname": "Host_Down",
-                                "cluster": "staging",
-                                "instance": "server3",
-                                "job": "node_ping"
-                            },
-                            "silencedBy": [],
-                            "startsAt": "2017-05-01T20:59:51.364108486Z"
-                        },
-                        {
-                            "Status": "active",
-                            "annotations": {
-                                "summary": "Example summary"
-                            },
-                            "endsAt": "0001-01-01T00:00:00Z",
-                            "generatorURL": "",
-                            "inhibitedBy": [],
-                            "labels": {
-                                "alertname": "Host_Down",
-                                "cluster": "staging",
-                                "instance": "server4",
-                                "job": "node_ping"
-                            },
-                            "silencedBy": [],
-                            "startsAt": "2017-05-01T20:59:51.364108486Z"
-                        },
-                        {
-                            "Status": "active",
-                            "annotations": {
-                                "summary": "Example summary"
-                            },
-                            "endsAt": "0001-01-01T00:00:00Z",
-                            "generatorURL": "",
-                            "inhibitedBy": [],
-                            "labels": {
-                                "alertname": "Host_Down",
-                                "cluster": "staging",
-                                "instance": "server5",
-                                "job": "node_ping"
-                            },
-                            "silencedBy": [],
-                            "startsAt": "2017-05-01T20:59:51.364108486Z"
+                            "startsAt": "2017-05-01T20:45:58.865330456Z"
                         }
                     ],
                     "routeOpts": {
@@ -313,7 +215,74 @@
                     }
                 }
             ],
-            "groupKey": "{}:{alertname=\"Host_Down\", cluster=\"staging\"}",
+            "labels": {
+                "alertname": "Host_Down",
+                "cluster": "prod"
+            }
+        },
+        {
+            "blocks": [
+                {
+                    "alerts": [
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "generatorURL": "",
+                            "inhibited": false,
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "staging",
+                                "instance": "server3",
+                                "job": "node_ping"
+                            },
+                            "startsAt": "2017-05-01T20:45:58.865330456Z"
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "generatorURL": "",
+                            "inhibited": false,
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "staging",
+                                "instance": "server4",
+                                "job": "node_ping"
+                            },
+                            "startsAt": "2017-05-01T20:45:58.865330456Z"
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "generatorURL": "",
+                            "inhibited": false,
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "staging",
+                                "instance": "server5",
+                                "job": "node_ping"
+                            },
+                            "startsAt": "2017-05-01T20:45:58.865330456Z"
+                        }
+                    ],
+                    "routeOpts": {
+                        "groupBy": [
+                            "cluster",
+                            "service",
+                            "alertname"
+                        ],
+                        "groupInterval": 35000000000,
+                        "groupWait": 15000000000,
+                        "receiver": "default",
+                        "repeatInterval": 3596400000000000
+                    }
+                }
+            ],
             "labels": {
                 "alertname": "Host_Down",
                 "cluster": "staging"
@@ -324,29 +293,27 @@
                 {
                     "alerts": [
                         {
-                            "Status": "active",
                             "annotations": {
                                 "alert": "Memory usage exceeding threshold",
                                 "dashboard": "http://localhost/dashboard.html"
                             },
                             "endsAt": "0001-01-01T00:00:00Z",
                             "generatorURL": "",
-                            "inhibitedBy": [],
+                            "inhibited": false,
                             "labels": {
                                 "alertname": "Memory_Usage_Too_High",
                                 "cluster": "prod",
                                 "instance": "server2",
                                 "job": "node_exporter"
                             },
-                            "silencedBy": [],
-                            "startsAt": "2017-05-01T20:59:51.364108486Z"
+                            "startsAt": "2017-05-01T20:45:58.865330456Z"
                         }
                     ],
                     "routeOpts": {
                         "groupBy": [
-                            "service",
                             "alertname",
-                            "cluster"
+                            "cluster",
+                            "service"
                         ],
                         "groupInterval": 35000000000,
                         "groupWait": 15000000000,
@@ -355,7 +322,6 @@
                     }
                 }
             ],
-            "groupKey": "{}:{alertname=\"Memory_Usage_Too_High\", cluster=\"prod\"}",
             "labels": {
                 "alertname": "Memory_Usage_Too_High",
                 "cluster": "prod"

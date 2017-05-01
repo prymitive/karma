@@ -14,9 +14,7 @@
                 "smtp_auth_secret": "",
                 "smtp_auth_username": "",
                 "smtp_from": "",
-                "smtp_require_tls": true,
-                "smtp_smarthost": "",
-                "victorops_api_url": "https://alert.victorops.com/integrations/generic/20131114/alert/"
+                "smtp_smarthost": ""
             },
             "inhibit_rules": [
                 {
@@ -53,25 +51,14 @@
             },
             "templates": null
         },
-        "meshStatus": {
-            "name": "02:42:ac:11:00:02",
-            "nickName": "c8a6f2549aee",
-            "peers": [
-                {
-                    "name": "02:42:ac:11:00:02",
-                    "nickName": "c8a6f2549aee",
-                    "uid": 5746289647142050162
-                }
-            ]
-        },
-        "uptime": "2017-05-01T20:59:36.222911307Z",
+        "uptime": "2017-05-01T20:46:51.9830008Z",
         "versionInfo": {
             "branch": "master",
-            "buildDate": "20170428-10:15:22",
-            "buildUser": "root@5f1ac69d2582",
-            "goVersion": "go1.8.1",
-            "revision": "5aeaf2cb988b0094b7998bbe6568bba23a0eb9c2",
-            "version": "0.6.1"
+            "buildDate": "20160902-15:33:13",
+            "buildUser": "root@2811d2f42616",
+            "goVersion": "go1.6.3",
+            "revision": "9a5ab2fa63dd7951f4f202b0846d4f4d8e9615b0",
+            "version": "0.4.2"
         }
     },
     "status": "success"

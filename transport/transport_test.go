@@ -42,7 +42,7 @@ var transportTests = []transportTest{
 		failed: true,
 	},
 	transportTest{
-		uri: fmt.Sprintf("file://%s", mock.GetAbsoluteMockPath("status", "0.4")),
+		uri: fmt.Sprintf("file://%s", mock.GetAbsoluteMockPath("status", mock.ListAllMocks()[0])),
 	},
 	transportTest{
 		uri:    "file:///non-existing-file.abcdef",

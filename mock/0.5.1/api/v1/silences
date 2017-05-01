@@ -4,7 +4,7 @@
             "comment": "Silenced instance",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "d68b4fd6-f18a-474a-8953-255a86250742",
+            "id": "a2e60dae-4166-4b14-be6d-62e9ca32153f",
             "matchers": [
                 {
                     "isRegex": false,
@@ -12,14 +12,14 @@
                     "value": "web1"
                 }
             ],
-            "startsAt": "2017-05-01T20:59:51.359703208Z",
-            "updatedAt": "2017-05-01T20:59:51.359703208Z"
+            "startsAt": "2017-05-01T20:49:10.732910442Z",
+            "updatedAt": "2017-05-01T20:49:10.732910442Z"
         },
         {
             "comment": "Silenced Host_Down alerts in the dev cluster",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "89142af0-b17f-4ffd-b2c2-2398de624466",
+            "id": "e64b0232-fd8c-427c-9174-f77390bd0bc4",
             "matchers": [
                 {
                     "isRegex": false,
@@ -32,8 +32,8 @@
                     "value": "dev"
                 }
             ],
-            "startsAt": "2017-05-01T20:59:51.361896025Z",
-            "updatedAt": "2017-05-01T20:59:51.361896025Z"
+            "startsAt": "2017-05-01T20:49:10.735083335Z",
+            "updatedAt": "2017-05-01T20:49:10.735083335Z"
         }
     ],
     "status": "success"
