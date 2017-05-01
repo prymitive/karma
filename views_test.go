@@ -22,6 +22,15 @@ import (
 
 var testVersions = []string{"0.4", "0.5", "0.6.1"}
 
+func stringInSlice(stringArray []string, value string) bool {
+	for _, s := range stringArray {
+		if s == value {
+			return true
+		}
+	}
+	return false
+}
+
 func mockConfig() {
 	log.SetLevel(log.ErrorLevel)
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
@@ -149,6 +158,41 @@ func TestAlerts(t *testing.T) {
 			for _, a := range ag.Alerts {
 				if len(a.Links) != 1 {
 					t.Errorf("Invalid number of links, got %d, expected 1, %v", len(a.Links), a)
+				}
+				if a.InhibitedBy == nil {
+					t.Errorf("InhibitedBy is nil, %v", a)
+				}
+				if a.SilencedBy == nil {
+					t.Errorf("SilencedBy is nil, %v", a)
+				}
+			}
+		}
+	}
+}
+
+func TestValidateAllAlerts(t *testing.T) {
+	mockConfig()
+	for _, version := range testVersions {
+		mockAlerts(version)
+		r := ginTestEngine()
+		req, _ := http.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed,instance=web1", nil)
+		resp := httptest.NewRecorder()
+		r.ServeHTTP(resp, req)
+		if resp.Code != http.StatusOK {
+			t.Errorf("GET /alerts.json returned status %d", resp.Code)
+		}
+		ur := models.AlertsResponse{}
+		json.Unmarshal(resp.Body.Bytes(), &ur)
+		for _, ag := range ur.AlertGroups {
+			for _, a := range ag.Alerts {
+				if !stringInSlice(models.AlertStateList, a.Status) {
+					t.Errorf("Invalid alert status '%s', not in %v", a.Status, models.AlertStateList)
+				}
+				if a.InhibitedBy == nil {
+					t.Errorf("InhibitedBy is nil, %v", a)
+				}
+				if a.SilencedBy == nil {
+					t.Errorf("SilencedBy is nil, %v", a)
 				}
 			}
 		}
