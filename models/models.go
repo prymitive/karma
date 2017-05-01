@@ -35,6 +35,9 @@ type Alert struct {
 	StartsAt     time.Time         `json:"startsAt"`
 	EndsAt       time.Time         `json:"endsAt"`
 	GeneratorURL string            `json:"generatorURL"`
+	Status       string            `json:"Status"`
+	SilencedBy   []string          `json:"silencedBy"`
+	InhibitedBy  []string          `json:"inhibitedBy"`
 	Inhibited    bool              `json:"inhibited"`
 	Silenced     string            `json:"silenced"`
 	// unsee fields
