@@ -1,0 +1,17 @@
+route:
+  group_by: ['alertname', 'cluster', 'service']
+  group_wait: 15s
+  group_interval: 35s
+  repeat_interval: 999h
+  receiver: default
+
+inhibit_rules:
+- source_match:
+    severity: 'critical'
+  target_match:
+    severity: 'warning'
+  # Apply inhibition if the alertname is the same.
+  equal: ['alertname', 'cluster', 'service']
+
+receivers:
+- name: 'default'

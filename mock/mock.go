@@ -28,3 +28,22 @@ func RegisterURL(url string, version string, filename string) {
 	}
 	httpmock.RegisterResponder("GET", url, httpmock.NewBytesResponder(200, mockJSON))
 }
+
+// ListAllMocks will return a list of all mock versions we have files for
+func ListAllMocks() []string {
+	_, f, _, _ := runtime.Caller(0)
+	cwd := filepath.Dir(f)
+
+	dirents, err := ioutil.ReadDir(cwd)
+	if err != nil {
+		panic(err)
+	}
+
+	dirs := []string{}
+	for _, dirent := range dirents {
+		if dirent.IsDir() {
+			dirs = append(dirs, dirent.Name())
+		}
+	}
+	return dirs
+}

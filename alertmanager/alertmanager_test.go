@@ -1,7 +1,6 @@
 package alertmanager_test
 
 import (
-	"strings"
 	"testing"
 
 	"github.com/cloudflare/unsee/alertmanager"
@@ -12,8 +11,6 @@ import (
 	httpmock "gopkg.in/jarcoal/httpmock.v1"
 )
 
-var testVersions = []string{"0.4", "0.5", "0.6.1"}
-
 func TestGetAlerts(t *testing.T) {
 	log.SetLevel(log.ErrorLevel)
 	config.Config.AlertmanagerURI = "http://localhost"
@@ -21,13 +18,13 @@ func TestGetAlerts(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	for _, version := range testVersions {
+	for _, version := range mock.ListAllMocks() {
 		httpmock.Reset()
 		mock.RegisterURL("http://localhost/api/v1/status", version, "status")
 		mock.RegisterURL("http://localhost/api/v1/alerts/groups", version, "alerts/groups")
 
 		v := alertmanager.GetVersion()
-		if !strings.HasPrefix(v, version) {
+		if v != version {
 			t.Errorf("GetVersion() returned '%s', expected '%s'", v, version)
 		}
 
@@ -35,8 +32,8 @@ func TestGetAlerts(t *testing.T) {
 		if err != nil {
 			t.Errorf("GetAlerts(%s) failed: %s", version, err.Error())
 		}
-		if len(groups) != 4 {
-			t.Errorf("Got %d groups, expected %d", len(groups), 4)
+		if len(groups) != 6 {
+			t.Errorf("Got %d groups, expected 6", len(groups))
 		}
 	}
 }
@@ -48,13 +45,13 @@ func TestGetSilences(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	for _, version := range testVersions {
+	for _, version := range mock.ListAllMocks() {
 		httpmock.Reset()
 		mock.RegisterURL("http://localhost/api/v1/status", version, "status")
 		mock.RegisterURL("http://localhost/api/v1/silences", version, "silences")
 
 		v := alertmanager.GetVersion()
-		if !strings.HasPrefix(v, version) {
+		if v != version {
 			t.Errorf("GetVersion() returned '%s', expected '%s'", v, version)
 		}
 
