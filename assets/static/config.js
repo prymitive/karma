@@ -1,5 +1,3 @@
-// jshint esversion: 6
-
 /* globals Clipboard */     // clipboard.js
 /* globals Cookies */       // js.cookie.js
 
@@ -8,54 +6,50 @@
 /* exported ConfigOption */
 var ConfigOption = (function() {
 
-    class optionClass {
-
-        constructor(params) {
-            this.Cookie = params.Cookie;
-            this.QueryParam = params.QueryParam;
-            this.Selector = params.Selector;
-            this.Get = params.Getter || function() {
-                return $(this.Selector).is(":checked");
-            };
-            this.Set = params.Setter || function(val) {
-                $(this.Selector).bootstrapSwitch("state", $.parseJSON(val), true);
-            };
-            this.Action = params.Action || function() {};
-            this.Init = params.Init || function() {
-                var elem = this;
-                $(this.Selector).on("switchChange.bootstrapSwitch", function(event, val) {
-                    elem.Save(val);
-                    elem.Action(val);
-                });
-            };
-        }
-
-        Load() {
-            var currentVal = this.Get();
-
-            var val = Cookies.get(this.Cookie);
-            if (val !== undefined) {
-                this.Set(val);
-            }
-
-            var q = QueryString.Parse();
-            if (q[this.QueryParam] !== undefined) {
-                this.Set(q[this.QueryParam]);
-            }
-
-            if (currentVal != val) {
-                this.Action(val);
-            }
-        }
-
-        Save(val) {
-            Cookies.set(this.Cookie, val, {
-                expires: 365,
-                path: ""
+    function optionClass(params) {
+        this.Cookie = params.Cookie;
+        this.QueryParam = params.QueryParam;
+        this.Selector = params.Selector;
+        this.Get = params.Getter || function() {
+            return $(this.Selector).is(":checked");
+        };
+        this.Set = params.Setter || function(val) {
+            $(this.Selector).bootstrapSwitch("state", $.parseJSON(val), true);
+        };
+        this.Action = params.Action || function() {};
+        this.Init = params.Init || function() {
+            var elem = this;
+            $(this.Selector).on("switchChange.bootstrapSwitch", function(event, val) {
+                elem.Save(val);
+                elem.Action(val);
             });
+        };
+    }
+
+    optionClass.prototype.Load = function() {
+        var currentVal = this.Get();
+
+        var val = Cookies.get(this.Cookie);
+        if (val !== undefined) {
+            this.Set(val);
         }
 
-    }
+        var q = QueryString.Parse();
+        if (q[this.QueryParam] !== undefined) {
+            this.Set(q[this.QueryParam]);
+        }
+
+        if (currentVal != val) {
+            this.Action(val);
+        }
+    };
+
+    optionClass.prototype.Save = function(val) {
+        Cookies.set(this.Cookie, val, {
+            expires: 365,
+            path: ""
+        });
+    };
 
     return {
         New: optionClass

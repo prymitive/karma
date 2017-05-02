@@ -1,5 +1,3 @@
-// jshint esversion: 6
-
 /* globals LRUMap */     // lru.js
 /* globals moment */     // moment.js
 
@@ -11,42 +9,40 @@ var Alerts = (function() {
     var silences = {},
         labelCache = new LRUMap(1000);
 
-    class AlertGroup {
-        constructor(groupData) {
-            $.extend(this, groupData);
-        }
-
-        Render() {
-            return Templates.Render("alertGroup", {
-                group: this,
-                silences: silences,
-                static_color_label: Colors.GetStaticLabels(),
-                alert_limit: 5
-            });
-        }
-
-        // called after group was rendered for the first time
-        Added() {
-            UI.SetupAlertGroupUI($("#" + this.id));
-        }
-
-        Update() {
-            // hide popovers in this group
-            $("#" + this.id + " [data-label-type='filter']").popover("hide");
-
-            // remove all elements prior to content update to purge all event listeners and hooks
-            $.each($("#" + this.id).find(".panel-body, .panel-heading"), function(i, elem) {
-                $(elem).remove();
-            });
-
-            $("#" + this.id).html($(this.Render()).html());
-            $("#" + this.id).data("hash", this.hash);
-
-            // pulse the badge to show that group content was changed, repeat it twice
-            $("#" + this.id + " > .panel > .panel-heading > .badge:in-viewport").finish().fadeOut(300).fadeIn(300).fadeOut(300).fadeIn(300);
-        }
-
+    function AlertGroup(groupData) {
+        $.extend(this, groupData);
     }
+
+    AlertGroup.prototype.Render = function() {
+        return Templates.Render("alertGroup", {
+            group: this,
+            silences: silences,
+            static_color_label: Colors.GetStaticLabels(),
+            alert_limit: 5
+        });
+    };
+
+    // called after group was rendered for the first time
+    AlertGroup.prototype.Added = function() {
+        UI.SetupAlertGroupUI($("#" + this.id));
+    };
+
+    AlertGroup.prototype.Update = function() {
+        // hide popovers in this group
+        $("#" + this.id + " [data-label-type='filter']").popover("hide");
+
+        // remove all elements prior to content update to purge all event listeners and hooks
+        $.each($("#" + this.id).find(".panel-body, .panel-heading"), function(i, elem) {
+            $(elem).remove();
+        });
+
+        $("#" + this.id).html($(this.Render()).html());
+        $("#" + this.id).data("hash", this.hash);
+
+        // pulse the badge to show that group content was changed, repeat it twice
+        $("#" + this.id + " > .panel > .panel-heading > .badge:in-viewport").finish().fadeOut(300).fadeIn(300).fadeOut(300).fadeIn(300);
+    };
+
 
     var destroyGroup = function(groupID) {
         $("#" + groupID + " [data-label-type='filter']").popover("hide");
