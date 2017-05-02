@@ -41,8 +41,8 @@ func (filter *fuzzyFilter) Match(alert *models.Alert, matches int) bool {
 			}
 		}
 
-		if alert.Silenced != "" {
-			if silence := store.Store.GetSilence(alert.Silenced); silence != nil {
+		for _, silenceID := range alert.SilencedBy {
+			if silence := store.Store.GetSilence(silenceID); silence != nil {
 				if filter.Matcher.Compare(silence.Comment, filter.Value) {
 					filter.Hits++
 					return true

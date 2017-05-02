@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"strconv"
 	"time"
 
 	"github.com/blang/semver"
@@ -77,7 +78,7 @@ func (m SilenceMapper) GetSilences() ([]models.Silence, error) {
 
 	for _, s := range resp.Data.Silences {
 		us := models.Silence{
-			ID:        string(s.ID),
+			ID:        strconv.Itoa(s.ID),
 			Matchers:  s.Matchers,
 			StartsAt:  s.StartsAt,
 			EndsAt:    s.EndsAt,

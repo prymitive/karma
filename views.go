@@ -162,18 +162,20 @@ func alerts(c *gin.Context) {
 				}
 				io.WriteString(h, string(aj))
 
-				if alert.Silenced != "" {
-					if silence := store.Store.GetSilence(alert.Silenced); silence != nil {
-						silences[alert.Silenced] = *silence
-					}
+				if alert.IsSilenced() {
 					countLabel(counters, "@silenced", "true")
+					for _, silenceID := range alert.SilencedBy {
+						if silence := store.Store.GetSilence(silenceID); silence != nil {
+							silences[silenceID] = *silence
+						}
+					}
 				} else {
 					countLabel(counters, "@silenced", "false")
 				}
 
-				countLabel(counters, "@inhibited", strconv.FormatBool(alert.Inhibited))
+				countLabel(counters, "@inhibited", strconv.FormatBool(alert.IsInhibited()))
 
-				if alert.Silenced == "" && !alert.Inhibited {
+				if alert.IsActive() {
 					agCopy.ActiveCount++
 				}
 

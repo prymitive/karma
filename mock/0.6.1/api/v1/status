@@ -1,0 +1,32 @@
+{
+  "status": "success",
+  "data": {
+    "configJSON": {
+      "global": {},
+      "route": {},
+      "inhibit_rules": [],
+      "receivers": [],
+      "templates": []
+    },
+    "versionInfo": {
+      "branch": "HEAD",
+      "buildDate": "20170501-19:31:12",
+      "buildUser": "lukasz@localhost",
+      "goVersion": "go1.8.1",
+      "revision": "5aeaf2cb988b0094b7998bbe6568bba23a0eb9c2",
+      "version": "0.6.1"
+    },
+    "uptime": "2017-05-01T20:31:38.102687341+01:00",
+    "meshStatus": {
+      "name": "28:d2:44:df:95:eb",
+      "nickName": "localhost",
+      "peers": [
+        {
+          "name": "28:d2:44:df:95:eb",
+          "nickName": "localhost",
+          "uid": 18388267050726621000
+        }
+      ]
+    }
+  }
+}

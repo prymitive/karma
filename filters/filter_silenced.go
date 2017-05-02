@@ -30,9 +30,7 @@ func (filter *silencedFilter) init(name string, matcher *matcherT, rawText strin
 
 func (filter *silencedFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
-		var isSilenced bool
-		isSilenced = (alert.Silenced != "")
-		isMatch := filter.Matcher.Compare(isSilenced, filter.Value)
+		isMatch := filter.Matcher.Compare(alert.IsSilenced(), filter.Value)
 		if isMatch {
 			filter.Hits++
 		}

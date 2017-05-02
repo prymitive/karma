@@ -60,10 +60,9 @@ func PullFromAlertmanager() {
 
 	acMap := map[string]models.Autocomplete{}
 
-	metricAlerts.With(prometheus.Labels{"silenced": "true", "inhibited": "true"}).Set(0)
-	metricAlerts.With(prometheus.Labels{"silenced": "true", "inhibited": "false"}).Set(0)
-	metricAlerts.With(prometheus.Labels{"silenced": "false", "inhibited": "true"}).Set(0)
-	metricAlerts.With(prometheus.Labels{"silenced": "false", "inhibited": "false"}).Set(0)
+	for _, state := range models.AlertStateList {
+		metricAlerts.With(prometheus.Labels{"status": state}).Set(0)
+	}
 
 	for _, ag := range alertGroups {
 		// used to generate group content hash
@@ -100,19 +99,7 @@ func PullFromAlertmanager() {
 		ag.Alerts = []models.Alert{}
 		for _, alert := range alerts {
 			ag.Alerts = append(ag.Alerts, alert)
-			if alert.Silenced != "" {
-				if alert.Inhibited {
-					metricAlerts.With(prometheus.Labels{"silenced": "true", "inhibited": "true"}).Inc()
-				} else {
-					metricAlerts.With(prometheus.Labels{"silenced": "true", "inhibited": "false"}).Inc()
-				}
-			} else {
-				if alert.Inhibited {
-					metricAlerts.With(prometheus.Labels{"silenced": "false", "inhibited": "true"}).Inc()
-				} else {
-					metricAlerts.With(prometheus.Labels{"silenced": "false", "inhibited": "false"}).Inc()
-				}
-			}
+			metricAlerts.With(prometheus.Labels{"status": alert.Status}).Inc()
 		}
 
 		for _, hint := range transform.BuildAutocomplete(ag.Alerts) {

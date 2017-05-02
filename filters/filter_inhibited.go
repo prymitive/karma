@@ -30,7 +30,7 @@ func (filter *inhibitedFilter) init(name string, matcher *matcherT, rawText stri
 
 func (filter *inhibitedFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
-		isMatch := filter.Matcher.Compare(alert.Inhibited, filter.Value)
+		isMatch := filter.Matcher.Compare(alert.IsInhibited(), filter.Value)
 		if isMatch {
 			filter.Hits++
 		}

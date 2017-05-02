@@ -50,7 +50,7 @@
 
 <script type="application/json" id="alert-group-elements">
   <% var cls_indicator = 'incident-indicator-danger' %>
-  <% if (alert.silenced || alert.inhibited) { cls_indicator = 'incident-indicator-success' } %>
+  <% if (alert.status === "suppressed") { cls_indicator = 'incident-indicator-success' } %>
   <div>
     <% if (alert.generatorURL) { %>
       <a class="label label-list label-default"
@@ -74,12 +74,12 @@
         <%- text %>
       </a>
     <% }) %>
-    <% if (alert.inhibited) { %>
+    <% if (alert.inhibitedBy.length) { %>
       <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-success', label: {key: '@inhibited', value: 'true', text: '@inhibited: true'}}) %>
     <% } else { %>
       <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-danger', label: {key: '@inhibited', value: 'false', text: '@inhibited: false'}}) %>
     <% } %>
-    <% if (alert.silenced) { %>
+    <% if (alert.silencedBy.length) { %>
       <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-success', label: {key: '@silenced', value: 'true', text: '@silenced: true'}}) %>
     <% } else { %>
       <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-danger', label: {key: '@silenced', value: 'false', text: '@silenced: false'}}) %>
@@ -110,28 +110,30 @@
 </script>
 
 <script type="application/json" id="alert-group-silence">
-  <div>
-    <% var silence = silences[alert.silenced] %>
-    <% if (silence) { %>
-      <blockquote class="silence-comment">
-        <% if (silence.jiraURL) { %>
-          <a href="<%= silence.jiraURL %>" target="_blank">
-            <i class="fa fa-external-link"/>
+  <% _.each(alert.silencedBy, function(silenceID) { %>
+    <div>
+      <% var silence = silences[silenceID] %>
+      <% if (silence) { %>
+        <blockquote class="silence-comment">
+          <% if (silence.jiraURL) { %>
+            <a href="<%= silence.jiraURL %>" target="_blank">
+              <i class="fa fa-external-link"/>
+              <%- silence.comment %>
+            </a>
+          <% } else { %>
             <%- silence.comment %>
-          </a>
-        <% } else { %>
-          <%- silence.comment %>
-        <% } %>
-        <footer>
-          <cite>
-            <abbr class="label-ts" data-toggle="tooltip" data-placement="top" data-ts="<%= silence.startsAt %>">
-              <%- silence.createdBy %>
-            </abbr>
-          </cite>
-        </footer>
-      </blockquote>
-    <% } %>
-  </div>
+          <% } %>
+          <footer>
+            <cite>
+              <abbr class="label-ts" data-toggle="tooltip" data-placement="top" data-ts="<%= silence.startsAt %>">
+                <%- silence.createdBy %>
+              </abbr>
+            </cite>
+          </footer>
+        </blockquote>
+      <% } %>
+    </div>
+  <% }) %>
 </script>
 
 <script type="application/json" id="alert-group-label-map">
@@ -217,7 +219,7 @@
           <% }) %>
           <% var silencedText = '@silenced: false' %>
           <% var isSilenced = 'false' %>
-          <% if (alert.silenced) { %>
+          <% if (alert.silencedBy.length) { %>
             <% silencedText = '@silenced: true' %>
             <% isSilenced = 'true' %>
           <% } %>
@@ -226,7 +228,7 @@
 
           <% var inhibitedText = '@inhibited: false' %>
           <% var isInhibited = 'false' %>
-          <% if (alert.inhibited) { %>
+          <% if (alert.inhibitedBy.length) { %>
             <% inhibitedText = '@inhibited: true' %>
             <% isInhibited = 'true' %>
           <% } %>
@@ -241,7 +243,7 @@
               <%= Templates.Render('alertGroupAnnotations', {alert: alert}) %>
               <%= Templates.Render('alertGroupLabels', {alert: alert, group: group}) %>
               <%= Templates.Render('alertGroupElements', {alert: alert}) %>
-              <% if (alert.silenced) { %>
+              <% if (alert.silencedBy.length) { %>
                 <%= Templates.Render('alertGroupSilence', {alert: alert, silences: silences}) %>
               <% } %>
             </div>
