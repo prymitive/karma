@@ -1,5 +1,7 @@
 package filters
 
+import "regexp"
+
 const (
 	equalOperator         string = "="
 	notEqualOperator      string = "!="
@@ -29,6 +31,7 @@ var matcherConfig = map[string]matcherT{
 
 type filterConfig struct {
 	Label              string
+	LabelRe            *regexp.Regexp
 	SupportedOperators []string
 	Factory            newFilterFactory
 	Autocomplete       autocompleteFactory
@@ -39,36 +42,42 @@ type filterConfig struct {
 var AllFilters = []filterConfig{
 	filterConfig{
 		Label:              "@status",
+		LabelRe:            regexp.MustCompile("^@status$"),
 		SupportedOperators: []string{equalOperator, notEqualOperator},
 		Factory:            newstatusFilter,
 		Autocomplete:       statusAutocomplete,
 	},
 	filterConfig{
 		Label:              "@age",
+		LabelRe:            regexp.MustCompile("^@age$"),
 		SupportedOperators: []string{lessThanOperator, moreThanOperator},
 		Factory:            newAgeFilter,
 		Autocomplete:       ageAutocomplete,
 	},
 	filterConfig{
 		Label:              "@silence_jira",
+		LabelRe:            regexp.MustCompile("^@silence_jira$"),
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},
 		Factory:            newSilenceJiraFilter,
 		Autocomplete:       sinceJiraIDAutocomplete,
 	},
 	filterConfig{
 		Label:              "@silence_author",
+		LabelRe:            regexp.MustCompile("^@silence_author$"),
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},
 		Factory:            newSilenceAuthorFilter,
 		Autocomplete:       sinceAuthorAutocomplete,
 	},
 	filterConfig{
 		Label:              "@limit",
+		LabelRe:            regexp.MustCompile("^@limit$"),
 		SupportedOperators: []string{equalOperator},
 		Factory:            newLimitFilter,
 		Autocomplete:       limitAutocomplete,
 	},
 	filterConfig{
 		Label:              "[a-zA-Z_][a-zA-Z0-9_]*",
+		LabelRe:            regexp.MustCompile("^[a-zA-Z_][a-zA-Z0-9_]*$"),
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator, lessThanOperator, moreThanOperator},
 		Factory:            newLabelFilter,
 		Autocomplete:       labelAutocomplete,

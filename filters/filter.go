@@ -96,8 +96,7 @@ func NewFilter(expression string) FilterT {
 	// we have "filter=" part, lookup filter that matches
 	for _, fc := range AllFilters {
 		f := fc.Factory()
-		labelRe := regexp.MustCompile("^(?:" + fc.Label + ")$")
-		if !labelRe.MatchString(matched) {
+		if !fc.LabelRe.MatchString(matched) {
 			// filter name doesn't match, keep searching
 			continue
 		}
