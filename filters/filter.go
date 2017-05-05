@@ -57,42 +57,49 @@ func NewFilter(expression string) FilterT {
 	invalid := alwaysInvalidFilter{}
 	invalid.init("", nil, expression, false, expression)
 
+	reExp := fmt.Sprintf("^(?P<matched>(%s))(?P<operator>(%s))(?P<value>(.*))", filterRegex, matcherRegex)
+	re := regexp.MustCompile(reExp)
+	match := re.FindStringSubmatch(expression)
+	result := make(map[string]string)
+	for i, name := range re.SubexpNames() {
+		if name != "" && i > 0 && i <= len(match) {
+			result[name] = match[i]
+		}
+	}
+
+	matched, _ := result["matched"]
+	operator, _ := result["operator"]
+	value, _ := result["value"]
+
+	if matched == "" && operator == "" && value == "" {
+		// no "filter=" part, just the value, use fuzzy filter
+		f := newFuzzyFilter()
+		matcher, err := newMatcher(regexpOperator)
+		if err != nil {
+			f.init("", nil, expression, false, expression)
+		} else {
+			f.init("", &matcher, expression, true, expression)
+		}
+		return f
+	}
+
+	if value == "" {
+		// there's no value, so it's always invalid
+		return &invalid
+	}
+
+	if operator == "" {
+		// no operator, no valid filter here
+		return &invalid
+	}
+
+	// we have "filter=" part, lookup filter that matches
 	for _, fc := range AllFilters {
 		f := fc.Factory()
-
-		reExp := fmt.Sprintf("^(?P<matched>(%s))(?P<operator>(%s))(?P<value>(.*))", fc.Label, matcherRegex)
-		re := regexp.MustCompile(reExp)
-		match := re.FindStringSubmatch(expression)
-		result := make(map[string]string)
-		for i, name := range re.SubexpNames() {
-			if name != "" && i > 0 && i <= len(match) {
-				result[name] = match[i]
-			}
-		}
-
-		matched, found := result["matched"]
-		if !found && fc.IsSimple {
-			matcher, err := newMatcher(regexpOperator)
-			if err != nil {
-				f.init("", nil, expression, false, expression)
-			} else {
-				f.init("", &matcher, expression, true, expression)
-			}
-			return f
-		}
-		if !found {
+		labelRe := regexp.MustCompile("^(?:" + fc.Label + ")$")
+		if !labelRe.MatchString(matched) {
+			// filter name doesn't match, keep searching
 			continue
-		}
-		if value, ok := result["value"]; !ok || value == "" {
-			// value group not found in the expression
-			// example: 'label=''
-			return &invalid
-		}
-		operator, found := result["operator"]
-		if !found {
-			// used operator is not supported by the filter
-			// example: @limit=~0
-			return &invalid
 		}
 		if !stringInSlice(fc.SupportedOperators, operator) {
 			return &invalid
@@ -101,13 +108,13 @@ func NewFilter(expression string) FilterT {
 		if err != nil {
 			f.init(matched, nil, expression, false, "")
 		} else {
-			if value, found := result["value"]; found {
+			if value != "" {
 				f.init(matched, &matcher, expression, true, value)
 				return f
 			}
 			f.init(matched, &matcher, expression, false, "")
 		}
-
 	}
+
 	return &invalid
 }

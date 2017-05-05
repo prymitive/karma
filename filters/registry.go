@@ -15,6 +15,9 @@ const (
 // a===b should yield an error
 var matcherRegex = "[=!<>~]+"
 
+// same as matcherRegex but for the filter name part
+var filterRegex = "^(@)?[a-zA-Z_][a-zA-Z0-9_]*"
+
 var matcherConfig = map[string]matcherT{
 	equalOperator:         &equalMatcher{},
 	notEqualOperator:      &notEqualMatcher{},
@@ -25,7 +28,6 @@ var matcherConfig = map[string]matcherT{
 }
 
 type filterConfig struct {
-	IsSimple           bool
 	Label              string
 	SupportedOperators []string
 	Factory            newFilterFactory
@@ -70,9 +72,5 @@ var AllFilters = []filterConfig{
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator, lessThanOperator, moreThanOperator},
 		Factory:            newLabelFilter,
 		Autocomplete:       labelAutocomplete,
-	},
-	filterConfig{
-		IsSimple: true,
-		Factory:  newFuzzyFilter,
 	},
 }
