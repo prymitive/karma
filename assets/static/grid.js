@@ -28,6 +28,7 @@ var Grid = (function() {
 
     var clear = function() {
         grid.masonry("remove", $(selectors.incident));
+        $(selectors.incident).remove();
     };
 
     var redraw = function() {
