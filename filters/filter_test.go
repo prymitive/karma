@@ -20,99 +20,66 @@ type filterTest struct {
 
 var tests = []filterTest{
 	filterTest{
-		Expression: "@silenced=true",
+		Expression: "@status=active",
 		IsValid:    true,
 		Alert:      models.Alert{},
 		IsMatch:    false,
 	},
 	filterTest{
-		Expression: "@silenced!=true",
+		Expression: "@status!=active",
 		IsValid:    true,
 		Alert:      models.Alert{},
 		IsMatch:    true,
 	},
 	filterTest{
-		Expression: "@silenced=true",
+		Expression: "@status=suppressed",
 		IsValid:    true,
 		Alert:      models.Alert{Status: "suppressed", SilencedBy: []string{"1"}},
 		IsMatch:    true,
 	},
 	filterTest{
-		Expression: "@silenced!=true",
+		Expression: "@status!=suppressed",
 		IsValid:    true,
 		Alert:      models.Alert{Status: "suppressed", SilencedBy: []string{"1"}},
 		IsMatch:    false,
 	},
 	filterTest{
-		Expression: "@silenced=xx",
+		Expression: "@status=xx",
 		IsValid:    false,
 	},
 	filterTest{
-		Expression: "@silenced=:xx",
+		Expression: "@status=:xx",
 		IsValid:    false,
 	},
 	filterTest{
-		Expression: "@silenced==xx",
+		Expression: "@status==xx",
 		IsValid:    false,
 	},
 	filterTest{
-		Expression: "@silenced=~true",
+		Expression: "@status=~true",
 		IsValid:    false,
 	},
 	filterTest{
-		Expression: "@silenced=~false",
+		Expression: "@status=~false",
 		IsValid:    false,
 	},
-
 	filterTest{
-		Expression: "@inhibited=true",
-		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    false,
-	},
-	filterTest{
-		Expression: "@inhibited!=true",
-		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    true,
-	},
-	filterTest{
-		Expression: "@inhibited=true",
+		Expression: "@status=suppressed",
 		IsValid:    true,
 		Alert:      models.Alert{Status: "suppressed", InhibitedBy: []string{"999"}},
 		IsMatch:    true,
 	},
 	filterTest{
-		Expression: "@inhibited=true",
+		Expression: "@status=suppressed",
 		IsValid:    true,
 		Alert:      models.Alert{Status: "active"},
 		IsMatch:    false,
 	},
 	filterTest{
-		Expression: "@inhibited!=true",
+		Expression: "@status!=suppressed",
 		IsValid:    true,
 		Alert:      models.Alert{Status: "suppressed", InhibitedBy: []string{"999"}},
 		IsMatch:    false,
-	},
-	filterTest{
-		Expression: "@inhibited=xx",
-		IsValid:    false,
-	},
-	filterTest{
-		Expression: "@inhibited=:xx",
-		IsValid:    false,
-	},
-	filterTest{
-		Expression: "@inhibited==xx",
-		IsValid:    false,
-	},
-	filterTest{
-		Expression: "@inhibited=~true",
-		IsValid:    false,
-	},
-	filterTest{
-		Expression: "@inhibited=~false",
-		IsValid:    false,
 	},
 
 	filterTest{

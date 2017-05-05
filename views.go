@@ -7,7 +7,6 @@ import (
 	"io"
 	"net/http"
 	"sort"
-	"strconv"
 	"strings"
 	"time"
 
@@ -163,17 +162,14 @@ func alerts(c *gin.Context) {
 				io.WriteString(h, string(aj))
 
 				if alert.IsSilenced() {
-					countLabel(counters, "@silenced", "true")
 					for _, silenceID := range alert.SilencedBy {
 						if silence := store.Store.GetSilence(silenceID); silence != nil {
 							silences[silenceID] = *silence
 						}
 					}
-				} else {
-					countLabel(counters, "@silenced", "false")
 				}
 
-				countLabel(counters, "@inhibited", strconv.FormatBool(alert.IsInhibited()))
+				countLabel(counters, "@status", alert.Status)
 
 				if alert.IsActive() {
 					agCopy.ActiveCount++
