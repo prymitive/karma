@@ -36,16 +36,10 @@ type filterConfig struct {
 // support
 var AllFilters = []filterConfig{
 	filterConfig{
-		Label:              "@silenced",
+		Label:              "@status",
 		SupportedOperators: []string{equalOperator, notEqualOperator},
-		Factory:            newSilencedFilter,
-		Autocomplete:       silencedAutocomplete,
-	},
-	filterConfig{
-		Label:              "@inhibited",
-		SupportedOperators: []string{equalOperator, notEqualOperator},
-		Factory:            newInhibitedFilter,
-		Autocomplete:       inhibitedAutocomplete,
+		Factory:            newstatusFilter,
+		Autocomplete:       statusAutocomplete,
 	},
 	filterConfig{
 		Label:              "@age",

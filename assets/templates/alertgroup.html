@@ -74,15 +74,9 @@
         <%- text %>
       </a>
     <% }) %>
-    <% if (alert.inhibitedBy.length) { %>
-      <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-success', label: {key: '@inhibited', value: 'true', text: '@inhibited: true'}}) %>
-    <% } else { %>
-      <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-danger', label: {key: '@inhibited', value: 'false', text: '@inhibited: false'}}) %>
-    <% } %>
-    <% if (alert.silencedBy.length) { %>
-      <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-success', label: {key: '@silenced', value: 'true', text: '@silenced: true'}}) %>
-    <% } else { %>
-      <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-list label-danger', label: {key: '@silenced', value: 'false', text: '@silenced: false'}}) %>
+    <% var attrs = Alerts.GetLabelAttrs("@status", alert.status) %>
+    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@status', value: alert.status, text: '@status: ' + alert.status}}) %>
+    <% if (alert.silencedBy.length == 0) { %>
       <% var labels = [] %>
       <% _.each(Alerts.SortMapByKey(alert.labels), function(label) { %>
         <% labels.push(label.key + '=' + label.value) %>
@@ -110,6 +104,9 @@
 </script>
 
 <script type="application/json" id="alert-group-silence">
+  <small class="silence-comment-title text-muted">
+    Silenced by:
+  </small>
   <% _.each(alert.silencedBy, function(silenceID) { %>
     <div>
       <% var silence = silences[silenceID] %>
@@ -217,24 +214,9 @@
               <% labelMap[text].hits++ %>
             <% } %>
           <% }) %>
-          <% var silencedText = '@silenced: false' %>
-          <% var isSilenced = 'false' %>
-          <% if (alert.silencedBy.length) { %>
-            <% silencedText = '@silenced: true' %>
-            <% isSilenced = 'true' %>
-          <% } %>
-          <% if (labelMap[silencedText] == undefined) { labelMap[silencedText] = {key: '@silenced', value: isSilenced, hits: 0} } %>
-          <% labelMap[silencedText].hits++ %>
-
-          <% var inhibitedText = '@inhibited: false' %>
-          <% var isInhibited = 'false' %>
-          <% if (alert.inhibitedBy.length) { %>
-            <% inhibitedText = '@inhibited: true' %>
-            <% isInhibited = 'true' %>
-          <% } %>
-          <% if (labelMap[inhibitedText] == undefined) { labelMap[inhibitedText] = {key: '@inhibited', value: isInhibited, hits: 0} } %>
-          <% labelMap[inhibitedText].hits++ %>
-
+          <% var statusText = '@status: ' + alert.status %>
+          <% if (labelMap[statusText] == undefined) { labelMap[statusText] = {key: '@status', value: alert.status, hits: 0} } %>
+          <% labelMap[statusText].hits++ %>
         <% } else { %>
           <% var cls_body = '' %>
           <% if (i < group.alerts.length - 1) { cls_body = 'incident-group-separator' } %>

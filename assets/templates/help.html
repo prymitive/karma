@@ -130,40 +130,24 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td id="help-silenced">
-                            <code>@silenced=(true false)</code>
+                        <td id="help-status">
+                            <code>@status=(active suppresed unprocessed)</code>
                         </td>
                         <td>
-                            <p>Match alerts based on silence status.</p>
+                            <p>Match alerts based on the status.</p>
                             <table class="table examples">
                                 <tbody>
                                     <tr>
-                                        <td><span class="label label-info">@silenced=true</span></td>
-                                        <td>Match only silenced alerts.</td>
+                                        <td><span class="label label-info">@status=active</span></td>
+                                        <td>Match only active alerts.</td>
                                     </tr>
                                     <tr>
-                                        <td><span class="label label-info">@silenced=false</span></td>
-                                        <td>Match only unsilenced alerts.</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td id="help-inhibited">
-                            <code>@inhibited=(true false)</code>
-                        </td>
-                        <td>
-                            <p>Match alerts based on inhibition status.</p>
-                            <table class="table examples">
-                                <tbody>
-                                    <tr>
-                                        <td><span class="label label-info">@inhibited=true</span></td>
-                                        <td>Match only inhibited alerts.</td>
+                                        <td><span class="label label-info">@status=suppressed</span></td>
+                                        <td>Match only suppressed alerts.</td>
                                     </tr>
                                     <tr>
-                                        <td><span class="label label-info">@inhibited=false</span></td>
-                                        <td>Match only non-inhibited alerts.</td>
+                                        <td><span class="label label-info">@status=unprocessed</span></td>
+                                        <td>Match only unprocessed alerts.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -179,15 +163,15 @@
                                 <tbody>
                                     <tr>
                                         <td><span class="label label-info">@silence_author=me@domain1.com</span></td>
-                                        <td>Match alerts silenced by <em>me@domain1.com</em>.</td>
+                                        <td>Match alerts status by <em>me@domain1.com</em>.</td>
                                     </tr>
                                     <tr>
                                         <td><span class="label label-info">@silence_author!=me@domain1.com</span></td>
-                                        <td>Match alerts not silenced by <em>me@domain1.com</em>.</td>
+                                        <td>Match alerts not status by <em>me@domain1.com</em>.</td>
                                     </tr>
                                     <tr>
                                         <td><span class="label label-info">@silence_author=~@domain2.com</span></td>
-                                        <td>Match alerts silenced by username that match regular expression <code>/.*@domain2.com.*/</code>.</td>
+                                        <td>Match alerts status by username that match regular expression <code>/.*@domain2.com.*/</code>.</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -203,15 +187,15 @@
                                 <tbody>
                                     <tr>
                                         <td><span class="label label-info">@silence_jira=PROJECT-123</span></td>
-                                        <td>Match silenced alerts where detected JIRA issue id is equal to <em>PROJECT-123</em>.</td>
+                                        <td>Match status alerts where detected JIRA issue id is equal to <em>PROJECT-123</em>.</td>
                                     </tr>
                                     <tr>
                                         <td><span class="label label-info">@silence_jira!=PROJECT-123</span></td>
-                                        <td>Match silenced alerts where there was no JIRA issue id detected or it was not equal to <em>PROJECT-123</em>.</td>
+                                        <td>Match status alerts where there was no JIRA issue id detected or it was not equal to <em>PROJECT-123</em>.</td>
                                     </tr>
                                     <tr>
                                         <td><span class="label label-info">@silence_jira=~PROJECT</span></td>
-                                        <td>Match silenced alerts where dectected JIRA issue id matches regular expression <code>/.*PROJECT.*/</code>.</td>
+                                        <td>Match status alerts where dectected JIRA issue id matches regular expression <code>/.*PROJECT.*/</code>.</td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -5,10 +5,9 @@ var Colors = (function() {
         staticColorLabels;
 
     var specialLabels = {
-        "@silenced: false": "label-danger",
-        "@silenced: true": "label-success",
-        "@inhibited: false": "label-danger",
-        "@inhibited: true": "label-success"
+        "@status: unprocessed": "label-default",
+        "@status: active": "label-danger",
+        "@status: suppressed": "label-success",
     };
 
     var update = function(colorData) {

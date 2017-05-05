@@ -223,11 +223,14 @@ input#filter:focus {
 /* make silence description smaller */
 .silence-comment {
     font-size: smaller;
-    margin-top: 6px;
     margin-bottom: 0;
     border-left-color: #18bc9c;
     padding-top: 5px;
     padding-bottom: 5px;
+}
+.silence-comment-title {
+  margin-top: 6px;
+  display: block;
 }
 
 .incident .panel {

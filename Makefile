@@ -52,7 +52,7 @@ run: $(NAME)
 	COLOR_LABELS_UNIQUE="instance cluster" \
 	COLOR_LABELS_STATIC="job" \
 	DEBUG="$(GIN_DEBUG)" \
-	FILTER_DEFAULT="@inhibited=false" \
+	FILTER_DEFAULT="@status=active" \
 	PORT=$(PORT) \
 	./$(NAME)
 
