@@ -406,6 +406,30 @@ var tests = []filterTest{
 		Expression: "^abb[****].*****",
 		IsValid:    false,
 	},
+	filterTest{
+		Expression: "@silenced=true",
+		IsValid:    false,
+	},
+	filterTest{
+		Expression: "@silenced!=false",
+		IsValid:    false,
+	},
+	filterTest{
+		Expression: "@silenced=~false",
+		IsValid:    false,
+	},
+	filterTest{
+		Expression: "@inhibited=true",
+		IsValid:    false,
+	},
+	filterTest{
+		Expression: "@inhibited!=false",
+		IsValid:    false,
+	},
+	filterTest{
+		Expression: "@inhibited=~false",
+		IsValid:    false,
+	},
 }
 
 func TestFilters(t *testing.T) {
