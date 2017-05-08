@@ -64,6 +64,8 @@ func PullFromAlertmanager() {
 		metricAlerts.With(prometheus.Labels{"status": state}).Set(0)
 	}
 
+	uniqueAlerts := map[string]bool{}
+
 	for _, ag := range alertGroups {
 		// used to generate group content hash
 		agHasher := sha1.New()
@@ -76,14 +78,23 @@ func PullFromAlertmanager() {
 		}
 
 		for _, alert := range ag.Alerts {
-			// skip duplicated alerts
+			// generate alert fingerprint from a raw, unaltered alert object
+			alert.Fingerprint = fmt.Sprintf("%x", structhash.Sha1(alert, 1))
+
+			// skip global duplicated alerts (shared between multiple groups)
+			if _, found := uniqueAlerts[alert.Fingerprint]; found {
+				continue
+			}
+			// skip group duplicated alerts (shared between multiple blocks)
 			if _, found := alerts[alert.Fingerprint]; found {
 				continue
 			}
 
+			// mark this alert as seen
+			uniqueAlerts[alert.Fingerprint] = true
+
 			alert.Annotations, alert.Links = transform.DetectLinks(alert.Annotations)
 			alert.Labels = transform.StripLables(ignoredLabels, alert.Labels)
-			alert.Fingerprint = fmt.Sprintf("%x", structhash.Sha1(alert, 1))
 
 			alerts[alert.Fingerprint] = alert
 
