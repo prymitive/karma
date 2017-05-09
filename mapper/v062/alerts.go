@@ -1,9 +1,9 @@
-// Package v061 package implements support for interacting with
-// Alertmanager 0.6.1
+// Package v062 package implements support for interacting with
+// Alertmanager 0.6.2
 // Collected data will be mapped to unsee internal schema defined the
 // unsee/models package
 // This file defines Alertmanager alerts mapping
-package v061
+package v062
 
 import (
 	"errors"
@@ -16,15 +16,19 @@ import (
 	"github.com/cloudflare/unsee/transport"
 )
 
+type alertStatus struct {
+	State       string   `json:"state"`
+	SilencedBy  []string `json:"silencedBy"`
+	InhibitedBy []string `json:"inhibitedBy"`
+}
+
 type alert struct {
 	Annotations  map[string]string `json:"annotations"`
 	Labels       map[string]string `json:"labels"`
 	StartsAt     time.Time         `json:"startsAt"`
 	EndsAt       time.Time         `json:"endsAt"`
 	GeneratorURL string            `json:"generatorURL"`
-	Status       string            `json:"Status"`
-	SilencedBy   []string          `json:"silencedBy"`
-	InhibitedBy  []string          `json:"inhibitedBy"`
+	Status       alertStatus       `json:"status"`
 }
 
 type alertsGroups struct {
@@ -47,7 +51,7 @@ type AlertMapper struct {
 
 // IsSupported returns true if given version string is supported
 func (m AlertMapper) IsSupported(version string) bool {
-	versionRange := semver.MustParseRange("=0.6.1")
+	versionRange := semver.MustParseRange(">=0.6.2")
 	return versionRange(semver.MustParse(version))
 }
 
@@ -76,12 +80,12 @@ func (m AlertMapper) GetAlerts() ([]models.AlertGroup, error) {
 		for _, b := range g.Blocks {
 			for _, a := range b.Alerts {
 				inhibitedBy := []string{}
-				if a.InhibitedBy != nil {
-					inhibitedBy = a.InhibitedBy
+				if a.Status.InhibitedBy != nil {
+					inhibitedBy = a.Status.InhibitedBy
 				}
 				silencedBy := []string{}
-				if a.SilencedBy != nil {
-					silencedBy = a.SilencedBy
+				if a.Status.SilencedBy != nil {
+					silencedBy = a.Status.SilencedBy
 				}
 				us := models.Alert{
 					Annotations:  a.Annotations,
@@ -89,7 +93,7 @@ func (m AlertMapper) GetAlerts() ([]models.AlertGroup, error) {
 					StartsAt:     a.StartsAt,
 					EndsAt:       a.EndsAt,
 					GeneratorURL: a.GeneratorURL,
-					Status:       a.Status,
+					Status:       a.Status.State,
 					InhibitedBy:  inhibitedBy,
 					SilencedBy:   silencedBy,
 				}
