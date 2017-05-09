@@ -362,6 +362,7 @@ var UI = (function() {
                       event.preventDefault();
                   });
                   silenceFormCalculateDuration();
+                  silenceFormJSONRender();
                 }
             });
 
