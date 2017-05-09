@@ -23,10 +23,6 @@ type abstractMatcher struct {
 	Operator string
 }
 
-func (matcher *abstractMatcher) setOperator(operator string) {
-	matcher.Operator = operator
-}
-
 func (matcher *abstractMatcher) GetOperator() string {
 	return matcher.Operator
 }
