@@ -12,7 +12,7 @@ to alert data, therefore safe to be accessed by wider audience.
 ## Supported Alertmanager versions
 
 Alertmanager's API isn't stable yet and can change between releases.
-unsee currently supports Alertmanager `0.4` and `0.5`.
+unsee currently supports Alertmanager `0.4`, `0.5` and `0.6`.
 
 ## Security
 
