@@ -47,12 +47,14 @@ func PullFromAlertmanager() {
 		return
 	}
 
+	log.Infof("Detecting JIRA links in silences (%d)", len(silences))
 	silenceStore := make(map[string]models.Silence)
 	for _, silence := range silences {
 		silence.JiraID, silence.JiraURL = transform.DetectJIRAs(&silence)
 		silenceStore[silence.ID] = silence
 	}
 
+	log.Infof("Updating list of stored silences (%d)", len(silenceStore))
 	store.Store.SetSilences(silenceStore)
 
 	alertStore := []models.AlertGroup{}
@@ -66,6 +68,7 @@ func PullFromAlertmanager() {
 
 	uniqueAlerts := map[string]bool{}
 
+	log.Infof("Processing alert groups (%d)", len(alertGroups))
 	for _, ag := range alertGroups {
 		// used to generate group content hash
 		agHasher := sha1.New()
@@ -126,6 +129,7 @@ func PullFromAlertmanager() {
 		alertStore = append(alertStore, ag)
 	}
 
+	log.Infof("Merging autocomplete data (%d)", len(acMap))
 	acStore := []models.Autocomplete{}
 	for _, hint := range acMap {
 		acStore = append(acStore, hint)
@@ -137,6 +141,7 @@ func PullFromAlertmanager() {
 
 	metricAlertGroups.Set(float64(len(alertStore)))
 
+	log.Infof("Updating list of stored alert groups (%d)", len(alertStore))
 	store.Store.Update(alertStore, colorStore, acStore)
 	log.Info("Pull completed")
 	runtime.GC()
