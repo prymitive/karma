@@ -123,7 +123,6 @@ func (matcher *negativeRegexMatcher) Compare(valA, valB interface{}) bool {
 
 func newMatcher(matchType string) (matcherT, error) {
 	if m, found := matcherConfig[matchType]; found {
-		m.setOperator(matchType)
 		return m, nil
 	}
 	e := fmt.Sprintf("%s not matched with any know match type", matchType)

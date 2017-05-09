@@ -21,12 +21,12 @@ var matcherRegex = "[=!<>~]+"
 var filterRegex = "^(@)?[a-zA-Z_][a-zA-Z0-9_]*"
 
 var matcherConfig = map[string]matcherT{
-	equalOperator:         &equalMatcher{},
-	notEqualOperator:      &notEqualMatcher{},
-	moreThanOperator:      &moreThanMatcher{},
-	lessThanOperator:      &lessThanMatcher{},
-	regexpOperator:        &regexpMatcher{},
-	negativeRegexOperator: &negativeRegexMatcher{},
+	equalOperator:         &equalMatcher{abstractMatcher{Operator: equalOperator}},
+	notEqualOperator:      &notEqualMatcher{abstractMatcher{Operator: notEqualOperator}},
+	moreThanOperator:      &moreThanMatcher{abstractMatcher{Operator: moreThanOperator}},
+	lessThanOperator:      &lessThanMatcher{abstractMatcher{Operator: lessThanOperator}},
+	regexpOperator:        &regexpMatcher{abstractMatcher{Operator: regexpOperator}},
+	negativeRegexOperator: &negativeRegexMatcher{abstractMatcher{Operator: negativeRegexOperator}},
 }
 
 type filterConfig struct {
