@@ -135,9 +135,13 @@ func alerts(c *gin.Context) {
 	var matches int
 	for _, ag := range store.Store.Alerts {
 		agCopy := models.AlertGroup{
-			ID:     ag.ID,
-			Labels: ag.Labels,
-			Alerts: []models.Alert{},
+			ID:          ag.ID,
+			Labels:      ag.Labels,
+			Alerts:      []models.Alert{},
+			StatusCount: map[string]int{},
+		}
+		for _, s := range models.AlertStateList {
+			agCopy.StatusCount[s] = 0
 		}
 		h := sha1.New()
 
@@ -171,9 +175,7 @@ func alerts(c *gin.Context) {
 
 				countLabel(counters, "@status", alert.Status)
 
-				if alert.IsActive() {
-					agCopy.ActiveCount++
-				}
+				agCopy.StatusCount[alert.Status]++
 
 				for key, value := range alert.Labels {
 					if keyMap, foundKey := store.Store.Colors[key]; foundKey {

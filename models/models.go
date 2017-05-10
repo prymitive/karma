@@ -104,7 +104,7 @@ type AlertGroup struct {
 	Alerts      AlertList         `json:"alerts"`
 	ID          string            `json:"id"`
 	Hash        string            `json:"hash"`
-	ActiveCount int               `json:"activeCount"`
+	StatusCount map[string]int    `json:"statusCount"`
 }
 
 // Filter holds returned data on any filter passed by the user as part of the query
