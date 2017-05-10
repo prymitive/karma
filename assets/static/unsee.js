@@ -1,7 +1,7 @@
 /* globals Raven */     // raven.js
 /* globals moment */    // moment.js
 
-/* globals Alerts, Autocomplete, Colors, Config, Counter, Grid, Filters, Progress, Summary, Templates, UI, Watchdog */
+/* globals Alerts, Autocomplete, Colors, Config, Counter, Grid, Filters, Progress, Silence, Summary, Templates, UI, Watchdog */
 
 /* exported Unsee */
 var Unsee = (function() {
@@ -232,6 +232,7 @@ $(document).ready(function() {
 
     Templates.Init();
     UI.Init();
+    Silence.Init();
     Unsee.Init();
 
     // delay initial alert load to allow browser finish rendering
