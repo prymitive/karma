@@ -1,0 +1,40 @@
+{
+    "data": [
+        {
+            "comment": "Silenced instance",
+            "createdBy": "john@example.com",
+            "endsAt": "2063-01-01T00:00:00Z",
+            "id": "6e1d1c04-8bd1-4aee-8c48-258d3b886f49",
+            "matchers": [
+                {
+                    "isRegex": false,
+                    "name": "instance",
+                    "value": "web1"
+                }
+            ],
+            "startsAt": "2017-05-09T20:45:54.83551337Z",
+            "updatedAt": "2017-05-09T20:45:54.83551337Z"
+        },
+        {
+            "comment": "Silenced Host_Down alerts in the dev cluster",
+            "createdBy": "john@example.com",
+            "endsAt": "2063-01-01T00:00:00Z",
+            "id": "b7b316a1-9ca8-4b66-8369-83ba78984c46",
+            "matchers": [
+                {
+                    "isRegex": false,
+                    "name": "alertname",
+                    "value": "Host_Down"
+                },
+                {
+                    "isRegex": false,
+                    "name": "cluster",
+                    "value": "dev"
+                }
+            ],
+            "startsAt": "2017-05-09T20:45:54.838410296Z",
+            "updatedAt": "2017-05-09T20:45:54.838410296Z"
+        }
+    ],
+    "status": "success"
+}

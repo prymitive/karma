@@ -1,0 +1,78 @@
+{
+    "data": {
+        "config": "route:\n  group_by: ['alertname', 'cluster', 'service']\n  group_wait: 15s\n  group_interval: 35s\n  repeat_interval: 999h\n  receiver: default\n\ninhibit_rules:\n- source_match:\n    severity: 'critical'\n  target_match:\n    severity: 'warning'\n  # Apply inhibition if the alertname is the same.\n  equal: ['alertname', 'cluster', 'service']\n\nreceivers:\n- name: 'default'\n",
+        "configJSON": {
+            "global": {
+                "hipchat_auth_token": "",
+                "hipchat_url": "https://api.hipchat.com/",
+                "opsgenie_api_host": "https://api.opsgenie.com/",
+                "pagerduty_url": "https://events.pagerduty.com/generic/2010-04-15/create_event.json",
+                "resolve_timeout": 300000000000,
+                "slack_api_url": "",
+                "smtp_auth_identity": "",
+                "smtp_auth_password": "",
+                "smtp_auth_secret": "",
+                "smtp_auth_username": "",
+                "smtp_from": "",
+                "smtp_require_tls": true,
+                "smtp_smarthost": "",
+                "victorops_api_url": "https://alert.victorops.com/integrations/generic/20131114/alert/"
+            },
+            "inhibit_rules": [
+                {
+                    "equal": [
+                        "alertname",
+                        "cluster",
+                        "service"
+                    ],
+                    "source_match": {
+                        "severity": "critical"
+                    },
+                    "source_match_re": null,
+                    "target_match": {
+                        "severity": "warning"
+                    },
+                    "target_match_re": null
+                }
+            ],
+            "receivers": [
+                {
+                    "name": "default"
+                }
+            ],
+            "route": {
+                "group_by": [
+                    "alertname",
+                    "cluster",
+                    "service"
+                ],
+                "group_interval": 35000000000,
+                "group_wait": 15000000000,
+                "receiver": "default",
+                "repeat_interval": 3596400000000000
+            },
+            "templates": null
+        },
+        "meshStatus": {
+            "name": "02:42:ac:11:00:02",
+            "nickName": "16ffa16ef025",
+            "peers": [
+                {
+                    "name": "02:42:ac:11:00:02",
+                    "nickName": "16ffa16ef025",
+                    "uid": 9016669185209747900
+                }
+            ]
+        },
+        "uptime": "2017-05-09T20:45:39.702335917Z",
+        "versionInfo": {
+            "branch": "master",
+            "buildDate": "20170509-08:56:14",
+            "buildUser": "root@e3ca4de32142",
+            "goVersion": "go1.8.1",
+            "revision": "b011c0a32ce887c1a10f7d34d52fd8cce485c1cf",
+            "version": "0.6.2"
+        }
+    },
+    "status": "success"
+}
