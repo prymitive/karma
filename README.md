@@ -31,13 +31,6 @@ unsee process metrics are accessible under `/metrics` path by default.
 If you set the [WEB_PREFIX](#web_prefix) option a path relative to it will be
 used.
 
-## Known issues
-
-* When a new alert is triggered unsee might show it for a few minutes even if
-  it's silenced. See
-  [Alertmanager issue 609](https://github.com/prometheus/alertmanager/issues/609)
-  for details.
-
 ## Building and running
 
 ### Installing using the go command
