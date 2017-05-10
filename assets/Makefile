@@ -80,7 +80,7 @@ assets: js-cookie/2.1.3/js.cookie.min.js
 # underscore & haml, for template rendering in js
 assets: underscore.js/1.8.3/underscore-min.js
 # masonry, for grid layout
-assets: masonry/4.1.1/masonry.pkgd.min.js
+assets: masonry/4.2.0/masonry.pkgd.min.js
 # copy to clipboard
 assets: clipboard.js/1.5.16/clipboard.min.js
 # sentry client
