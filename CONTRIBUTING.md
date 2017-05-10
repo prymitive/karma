@@ -36,6 +36,20 @@ To update specific vendor package run `govendor` manually:
 
 See [govendor](https://github.com/kardianos/govendor) documentation for details.
 
+## Javascript & CSS assets
+
+JS and CSS assets are also vendored into `assets/static` directory.
+There is a make target that allows to fetch all needed files from the
+[cdnjs](https://cdnjs.com/) site. If you need to add a new JS or CSS file then
+add it to the `assets/Makefile` in the `assets` target and run:
+
+    make -C assets assets
+
+If the assets you're adding are not found on cdnjs then download it and place
+inside `assets/static` directory. In this case you will also need to manually
+include it in the `templates/js.html` template file (managed assets are all
+included automatically).
+
 ## Running
 
 To build and start `unsee` from local branch see `Running` section of the
