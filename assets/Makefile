@@ -40,9 +40,9 @@ clean-assets:
 .PHONY: assets
 assets: clean-assets
 # jquery, for everything
-assets: jquery/2.2.4/jquery.min.js
+assets: jquery/3.2.1/jquery.min.js
 # moment, for timestamp parsing and printing
-assets: moment.js/2.17.1/moment.min.js
+assets: moment.js/2.18.1/moment.min.js
 # favico, for adding alert counter to the favico
 assets: favico.js/0.3.10/favico.min.js
 # fontawesome, for ui icons
@@ -56,8 +56,8 @@ assets: font-awesome/4.7.0/fonts/FontAwesome.otf
 # bootstrap & bootstrap switch, for ui
 assets: twitter-bootstrap/3.3.7/js/bootstrap.min.js
 assets: bootswatch/3.3.7/flatly/bootstrap.min.css
-assets: bootstrap-switch/3.3.2/js/bootstrap-switch.min.js
-assets: bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css
+assets: bootstrap-switch/3.3.4/js/bootstrap-switch.min.js
+assets: bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css
 # nprogress, for refresh progress bar
 assets: nprogress/0.2.0/nprogress.min.js
 assets: nprogress/0.2.0/nprogress.min.css
@@ -76,18 +76,18 @@ assets: bootstrap-select/1.12.2/css/bootstrap-select.min.css
 assets: loaders.css/0.1.2/loaders.css.min.js
 assets: loaders.css/0.1.2/loaders.min.css
 # js-cookie, for preference state loading via cookies
-assets: js-cookie/2.1.3/js.cookie.min.js
+assets: js-cookie/2.1.4/js.cookie.min.js
 # underscore & haml, for template rendering in js
 assets: underscore.js/1.8.3/underscore-min.js
 # masonry, for grid layout
 assets: masonry/4.2.0/masonry.pkgd.min.js
 # copy to clipboard
-assets: clipboard.js/1.5.16/clipboard.min.js
+assets: clipboard.js/1.6.1/clipboard.min.js
 # sentry client
-assets: raven.js/3.9.1/raven.min.js
+assets: raven.js/3.15.0/raven.min.js
 # sha1 function used to generate id from string
-assets: js-sha1/0.4.0/sha1.min.js
+assets: js-sha1/0.4.1/sha1.min.js
 # allows selecting only visible elements
-assets: is-in-viewport/2.4.2/isInViewport.min.js
+assets: is-in-viewport/3.0.0/isInViewport.min.js
 assets:
 	@git add $(ASSETS_DIR)/*/*

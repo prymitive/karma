@@ -283,7 +283,7 @@ var UI = (function() {
                   setupGroupTooltips($("#newSilenceForm"));
                   $(".select-label-badge").on("click", function() {
                     var select = $(this).parent().parent().find("select");
-                    if (select.selectpicker("val")) {
+                    if (select.selectpicker("val").length) {
                       // if there's anything selected deselect all
                       select.selectpicker("deselectAll");
                     } else {
