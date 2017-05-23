@@ -183,8 +183,8 @@ func TestValidateAllAlerts(t *testing.T) {
 		json.Unmarshal(resp.Body.Bytes(), &ur)
 		for _, ag := range ur.AlertGroups {
 			for _, a := range ag.Alerts {
-				if !stringInSlice(models.AlertStateList, a.Status) {
-					t.Errorf("Invalid alert status '%s', not in %v", a.Status, models.AlertStateList)
+				if !stringInSlice(models.AlertStateList, a.State) {
+					t.Errorf("Invalid alert status '%s', not in %v", a.State, models.AlertStateList)
 				}
 				if a.InhibitedBy == nil {
 					t.Errorf("InhibitedBy is nil, %v", a)
@@ -286,10 +286,10 @@ var acTests = []acTestCase{
 			"@silence_author!~john@example.com",
 			"@silence_author=john@example.com",
 			"@silence_author=~john@example.com",
-			"@status!=active",
-			"@status!=suppressed",
-			"@status=active",
-			"@status=suppressed",
+			"@state!=active",
+			"@state!=suppressed",
+			"@state=active",
+			"@state=suppressed",
 		},
 	},
 	acTestCase{

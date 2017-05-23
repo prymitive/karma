@@ -90,7 +90,7 @@ func (m AlertMapper) GetAlerts() ([]models.AlertGroup, error) {
 					StartsAt:     a.StartsAt,
 					EndsAt:       a.EndsAt,
 					GeneratorURL: a.GeneratorURL,
-					Status:       status,
+					State:        status,
 					InhibitedBy:  inhibitedBy,
 					SilencedBy:   silencedBy,
 				}

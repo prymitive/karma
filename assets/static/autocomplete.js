@@ -30,14 +30,14 @@ var Autocomplete = (function() {
     // this is used to generate quick filters for label modal
     var generateHints = function(label_key, label_val) {
       var hints = [];
-      if (label_key == "@status") {
+      if (label_key == "@state") {
         // static list of hints for @silenced label
-        hints.push("@status=active");
-        hints.push("@status=suppressed");
-        hints.push("@status=unprocessed");
-        hints.push("@status!=active");
-        hints.push("@status!=suppressed");
-        hints.push("@status!=unprocessed");
+        hints.push("@state=active");
+        hints.push("@state=suppressed");
+        hints.push("@state=unprocessed");
+        hints.push("@state!=active");
+        hints.push("@state!=suppressed");
+        hints.push("@state!=unprocessed");
       } else {
         // equal and non-equal hints for everything else
         hints.push(label_key + "=" + label_val);

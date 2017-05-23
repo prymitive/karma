@@ -7,11 +7,11 @@ import (
 	"github.com/cloudflare/unsee/models"
 )
 
-type statusFilter struct {
+type stateFilter struct {
 	alertFilter
 }
 
-func (filter *statusFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
+func (filter *stateFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
 	filter.Matched = name
 	if matcher != nil {
 		filter.Matcher = *matcher
@@ -24,9 +24,9 @@ func (filter *statusFilter) init(name string, matcher *matcherT, rawText string,
 	}
 }
 
-func (filter *statusFilter) Match(alert *models.Alert, matches int) bool {
+func (filter *stateFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
-		isMatch := filter.Matcher.Compare(alert.Status, filter.Value)
+		isMatch := filter.Matcher.Compare(alert.State, filter.Value)
 		if isMatch {
 			filter.Hits++
 		}
@@ -36,17 +36,17 @@ func (filter *statusFilter) Match(alert *models.Alert, matches int) bool {
 	panic(e)
 }
 
-func newstatusFilter() FilterT {
-	f := statusFilter{}
+func newstateFilter() FilterT {
+	f := stateFilter{}
 	return &f
 }
 
-func statusAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+func stateAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
 	tokens := []models.Autocomplete{}
 	for _, operator := range operators {
 		for _, alert := range alerts {
 			tokens = append(tokens, makeAC(
-				name+operator+alert.Status,
+				name+operator+alert.State,
 				[]string{
 					name,
 					strings.TrimPrefix(name, "@"),

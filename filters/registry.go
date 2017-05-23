@@ -41,11 +41,11 @@ type filterConfig struct {
 // support
 var AllFilters = []filterConfig{
 	filterConfig{
-		Label:              "@status",
-		LabelRe:            regexp.MustCompile("^@status$"),
+		Label:              "@state",
+		LabelRe:            regexp.MustCompile("^@state$"),
 		SupportedOperators: []string{equalOperator, notEqualOperator},
-		Factory:            newstatusFilter,
-		Autocomplete:       statusAutocomplete,
+		Factory:            newstateFilter,
+		Autocomplete:       stateAutocomplete,
 	},
 	filterConfig{
 		Label:              "@age",
