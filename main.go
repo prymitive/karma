@@ -45,7 +45,7 @@ var (
 			Name: "unsee_collected_alerts",
 			Help: "Total number of alerts collected from Alertmanager API",
 		},
-		[]string{"status"},
+		[]string{"state"},
 	)
 	metricAlertGroups = prometheus.NewGauge(
 		prometheus.GaugeOpts{

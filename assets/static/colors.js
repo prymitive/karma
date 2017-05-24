@@ -5,9 +5,9 @@ var Colors = (function() {
         staticColorLabels;
 
     var specialLabels = {
-        "@status: unprocessed": "label-default",
-        "@status: active": "label-danger",
-        "@status: suppressed": "label-success",
+        "@state: unprocessed": "label-default",
+        "@state: active": "label-danger",
+        "@state: suppressed": "label-success",
     };
 
     var update = function(colorData) {

@@ -52,7 +52,7 @@ type Alert struct {
 	StartsAt     time.Time         `json:"startsAt"`
 	EndsAt       time.Time         `json:"endsAt"`
 	GeneratorURL string            `json:"generatorURL"`
-	Status       string            `json:"status"`
+	State        string            `json:"state"`
 	SilencedBy   []string          `json:"silencedBy"`
 	InhibitedBy  []string          `json:"inhibitedBy"`
 	// unsee fields
@@ -62,17 +62,17 @@ type Alert struct {
 
 // IsSilenced will return true if alert should be considered silenced
 func (a Alert) IsSilenced() bool {
-	return (a.Status == AlertStateSuppressed && len(a.SilencedBy) > 0)
+	return (a.State == AlertStateSuppressed && len(a.SilencedBy) > 0)
 }
 
 // IsInhibited will return true if alert should be considered silenced
 func (a Alert) IsInhibited() bool {
-	return (a.Status == AlertStateSuppressed && len(a.InhibitedBy) > 0)
+	return (a.State == AlertStateSuppressed && len(a.InhibitedBy) > 0)
 }
 
 // IsActive will return true if alert is not suppressed in any way
 func (a Alert) IsActive() bool {
-	return (a.Status == AlertStateActive)
+	return (a.State == AlertStateActive)
 }
 
 // AlertList is flat list of UnseeAlert objects
@@ -100,11 +100,11 @@ func (a AlertList) Less(i, j int) bool {
 // There is a hash computed from all alerts, it's used by UI to quickly tell
 // if there was any change in a group and it needs to refresh it
 type AlertGroup struct {
-	Labels      map[string]string `json:"labels"`
-	Alerts      AlertList         `json:"alerts"`
-	ID          string            `json:"id"`
-	Hash        string            `json:"hash"`
-	StatusCount map[string]int    `json:"statusCount"`
+	Labels     map[string]string `json:"labels"`
+	Alerts     AlertList         `json:"alerts"`
+	ID         string            `json:"id"`
+	Hash       string            `json:"hash"`
+	StateCount map[string]int    `json:"stateCount"`
 }
 
 // Filter holds returned data on any filter passed by the user as part of the query

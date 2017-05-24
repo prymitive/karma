@@ -50,7 +50,7 @@
 
 <script type="application/json" id="alert-group-elements">
   <% var cls_indicator = 'incident-indicator-danger' %>
-  <% if (alert.status === "suppressed") { cls_indicator = 'incident-indicator-success' } %>
+  <% if (alert.state === "suppressed") { cls_indicator = 'incident-indicator-success' } %>
   <div>
     <% if (alert.generatorURL) { %>
       <a class="label label-list label-default"
@@ -74,8 +74,8 @@
         <%- text %>
       </a>
     <% }) %>
-    <% var attrs = Alerts.GetLabelAttrs("@status", alert.status) %>
-    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@status', value: alert.status, text: '@status: ' + alert.status}}) %>
+    <% var attrs = Alerts.GetLabelAttrs("@state", alert.state) %>
+    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@state', value: alert.state, text: '@state: ' + alert.state}}) %>
     <% if (alert.silencedBy.length == 0) { %>
       <% var labels = [] %>
       <% _.each(Alerts.SortMapByKey(alert.labels), function(label) { %>
@@ -197,9 +197,9 @@
 <script type="application/json" id="alert-group">
   <div class="incident" id="<%= group.id %>" data-hash="<%= group.hash %>">
     <% var cls_panel = 'panel-default' %>
-    <% if (group.statusCount.active > 0) { %>
+    <% if (group.stateCount.active > 0) { %>
       <% cls_panel = 'panel-danger' %>
-    <% } else if (group.statusCount.suppressed > 0) { %>
+    <% } else if (group.stateCount.suppressed > 0) { %>
       <% cls_panel = 'panel-success' %>
     <% } %>
     <div class="panel <%= cls_panel %>">
@@ -218,9 +218,9 @@
               <% labelMap[text].hits++ %>
             <% } %>
           <% }) %>
-          <% var statusText = '@status: ' + alert.status %>
-          <% if (labelMap[statusText] == undefined) { labelMap[statusText] = {key: '@status', value: alert.status, hits: 0} } %>
-          <% labelMap[statusText].hits++ %>
+          <% var stateText = '@state: ' + alert.state %>
+          <% if (labelMap[stateText] == undefined) { labelMap[stateText] = {key: '@state', value: alert.state, hits: 0} } %>
+          <% labelMap[stateText].hits++ %>
         <% } else { %>
           <% var cls_body = '' %>
           <% if (i < group.alerts.length - 1) { cls_body = 'incident-group-separator' } %>

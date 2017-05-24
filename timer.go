@@ -63,7 +63,7 @@ func PullFromAlertmanager() {
 	acMap := map[string]models.Autocomplete{}
 
 	for _, state := range models.AlertStateList {
-		metricAlerts.With(prometheus.Labels{"status": state}).Set(0)
+		metricAlerts.With(prometheus.Labels{"state": state}).Set(0)
 	}
 
 	uniqueAlerts := map[string]bool{}
@@ -113,7 +113,7 @@ func PullFromAlertmanager() {
 		ag.Alerts = []models.Alert{}
 		for _, alert := range alerts {
 			ag.Alerts = append(ag.Alerts, alert)
-			metricAlerts.With(prometheus.Labels{"status": alert.Status}).Inc()
+			metricAlerts.With(prometheus.Labels{"state": alert.State}).Inc()
 		}
 
 		for _, hint := range transform.BuildAutocomplete(ag.Alerts) {
