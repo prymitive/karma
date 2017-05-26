@@ -533,7 +533,7 @@ func TestLimitFilter(t *testing.T) {
 		}
 		if f.GetIsValid() {
 			alert := models.Alert{}
-			var index int = 0
+			var index int
 			for _, isMatch := range ft.IsMatch {
 				m := f.Match(&alert, index)
 				if m != isMatch {
