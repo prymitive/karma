@@ -9,6 +9,11 @@ to alert data, therefore safe to be accessed by wider audience.
 
 ![Screenshot](/screenshot.png)
 
+To get notifications about new unsee releases you can subscribe to the RSS feed
+that GitHub provides - https://github.com/cloudflare/unsee/releases.atom
+To get email notifications please use one of the free services providing
+_RSS to email_ notifications, like [Blogtrottr](https://blogtrottr.com/).
+
 ## Supported Alertmanager versions
 
 Alertmanager's API isn't stable yet and can change between releases.
