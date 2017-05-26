@@ -1,6 +1,6 @@
 FROM golang:1.8.1-alpine
 
-ADD . /go/src/github.com/cloudflare/unsee
+COPY . /go/src/github.com/cloudflare/unsee
 
 ARG VERSION
 
