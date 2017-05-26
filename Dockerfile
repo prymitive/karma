@@ -1,4 +1,4 @@
-FROM golang:1.8.1-alpine
+FROM golang:1.8.3-alpine
 
 COPY . /go/src/github.com/cloudflare/unsee
 
