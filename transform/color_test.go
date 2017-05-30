@@ -74,7 +74,7 @@ func TestColorLabel(t *testing.T) {
 		}
 		for key, valueMap := range colorStore {
 			if _, found := testCase.colors[key]; found {
-				for value, _ := range valueMap {
+				for value := range valueMap {
 					if value != testCase.colors[key] {
 						t.Errorf("Unexpected value '%s' for label '%s' found in color map", value, key)
 					}

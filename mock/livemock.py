@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-import os
 import time
-import json
 import requests
 
 requests.post('http://localhost:9093/api/v1/silences',

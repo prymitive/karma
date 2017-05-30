@@ -9,7 +9,7 @@ import (
 
 type silenceTest struct {
 	silences  map[string]models.Silence
-	silenceId string
+	silenceID string
 	found     bool
 }
 
@@ -18,7 +18,7 @@ var silenceTests = []silenceTest{
 		silences: map[string]models.Silence{
 			"1": models.Silence{},
 		},
-		silenceId: "1",
+		silenceID: "1",
 		found:     true,
 	},
 	silenceTest{
@@ -27,12 +27,12 @@ var silenceTests = []silenceTest{
 			"2": models.Silence{},
 			"3": models.Silence{},
 		},
-		silenceId: "2",
+		silenceID: "2",
 		found:     true,
 	},
 	silenceTest{
 		silences:  map[string]models.Silence{},
-		silenceId: "1",
+		silenceID: "1",
 		found:     false,
 	},
 	silenceTest{
@@ -40,7 +40,7 @@ var silenceTests = []silenceTest{
 			"2": models.Silence{},
 			"3": models.Silence{},
 		},
-		silenceId: "1",
+		silenceID: "1",
 		found:     false,
 	},
 }
@@ -48,10 +48,10 @@ var silenceTests = []silenceTest{
 func TestSilences(t *testing.T) {
 	for _, testCase := range silenceTests {
 		store.Store.SetSilences(testCase.silences)
-		silence := store.Store.GetSilence(testCase.silenceId)
+		silence := store.Store.GetSilence(testCase.silenceID)
 		found := silence != nil
 		if found != testCase.found {
-			t.Errorf("GetSilence('%s') returned %v, %v was expected", testCase.silenceId, found, testCase.found)
+			t.Errorf("GetSilence('%s') returned %v, %v was expected", testCase.silenceID, found, testCase.found)
 		}
 	}
 }
