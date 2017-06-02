@@ -1,0 +1,27 @@
+env:
+  browser: true
+  jquery: true
+extends:
+  - eslint:recommended
+rules:
+  indent:
+    - error
+    - 4
+  linebreak-style:
+    - error
+    - unix
+  quotes:
+    - error
+    - double
+  array-bracket-spacing:
+    - warn
+    - always
+  block-spacing:
+    - warn
+    - always
+  brace-style:
+    - warn
+    - 1tbs
+  camelcase: warn
+  no-console: off
+  no-use-before-define: error

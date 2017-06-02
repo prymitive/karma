@@ -19,8 +19,9 @@ ifdef DEBUG
 	DOCKER_ARGS = -v $(CURDIR)/assets:$(CURDIR)/assets:ro
 endif
 
-# detect if jshint is installed
+# detect if jshint and/or eslint is installed
 JSHINT := $(shell which jshint)
+ESLINT := $(shell which eslint)
 
 .DEFAULT_GOAL := $(NAME)
 
@@ -80,6 +81,9 @@ lint: .build/deps.ok
 	@golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
 ifneq ($(JSHINT),)
 	@$(JSHINT) assets/static/*.js
+endif
+ifneq ($(ESLINT),)
+	@$(ESLINT) assets/static/*.js
 endif
 
 .PHONY: test

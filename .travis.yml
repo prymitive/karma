@@ -6,15 +6,11 @@ go:
 
 go_import_path: github.com/cloudflare/unsee
 
-# nodejs is needed so that we can install jshint
-addons:
-  apt:
-    packages:
-      - nodejs
-
-# install jshint, it's used for linting js files (needs nodejs)
+# install jshint & eslint, it's used for linting js files (needs nodejs)
 before_script:
+  - nvm install 6
   - npm install jshint
+  - npm install eslint
 
 script:
   - make test
