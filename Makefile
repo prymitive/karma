@@ -7,7 +7,7 @@ ALERTMANAGER_URI := file://$(MOCK_PATH)
 # Listen port when running locally
 PORT := 8080
 
-SOURCES       := $(wildcard *.go) $(wildcard */*.go)
+SOURCES       := $(wildcard *.go) $(wildcard */*.go) $(wildcard */*/*.go)
 ASSET_SOURCES := $(wildcard assets/*/* assets/*/*/*)
 
 GO_BINDATA_MODE := prod
@@ -50,7 +50,7 @@ clean:
 .PHONY: run
 run: $(NAME)
 	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
-	COLOR_LABELS_UNIQUE="instance cluster" \
+	COLOR_LABELS_UNIQUE="@receiver instance cluster" \
 	COLOR_LABELS_STATIC="job" \
 	DEBUG="$(GIN_DEBUG)" \
 	FILTER_DEFAULT="@state=active" \

@@ -48,6 +48,13 @@ var AllFilters = []filterConfig{
 		Autocomplete:       stateAutocomplete,
 	},
 	filterConfig{
+		Label:              "@receiver",
+		LabelRe:            regexp.MustCompile("^@receiver$"),
+		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},
+		Factory:            newreceiverFilter,
+		Autocomplete:       receiverAutocomplete,
+	},
+	filterConfig{
 		Label:              "@age",
 		LabelRe:            regexp.MustCompile("^@age$"),
 		SupportedOperators: []string{lessThanOperator, moreThanOperator},

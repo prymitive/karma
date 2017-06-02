@@ -76,6 +76,10 @@
     <% }) %>
     <% var attrs = Alerts.GetLabelAttrs("@state", alert.state) %>
     <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@state', value: alert.state, text: '@state: ' + alert.state}}) %>
+
+    <% var attrs = Alerts.GetLabelAttrs("@receiver", alert.receiver) %>
+    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@receiver', value: alert.receiver, text: '@receiver: ' + alert.receiver}}) %>
+
     <% if (alert.silencedBy.length == 0) { %>
       <% var labels = [] %>
       <% _.each(Alerts.SortMapByKey(alert.labels), function(label) { %>

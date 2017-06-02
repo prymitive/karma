@@ -12,9 +12,9 @@ import (
 	"github.com/cloudflare/unsee/models"
 	"github.com/cloudflare/unsee/store"
 	"github.com/cloudflare/unsee/transform"
+	"github.com/cnf/structhash"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/cnf/structhash"
 	"github.com/prometheus/client_golang/prometheus"
 )
 
@@ -66,53 +66,28 @@ func PullFromAlertmanager() {
 		metricAlerts.With(prometheus.Labels{"state": state}).Set(0)
 	}
 
-	uniqueAlerts := map[string]bool{}
-
 	log.Infof("Processing alert groups (%d)", len(alertGroups))
 	for _, ag := range alertGroups {
 		// used to generate group content hash
 		agHasher := sha1.New()
 
-		alerts := map[string]models.Alert{}
-
-		ignoredLabels := []string{}
-		for _, il := range config.Config.StripLabels {
-			ignoredLabels = append(ignoredLabels, il)
-		}
-
+		alerts := models.AlertList{}
 		for _, alert := range ag.Alerts {
 			// generate alert fingerprint from a raw, unaltered alert object
 			alert.Fingerprint = fmt.Sprintf("%x", structhash.Sha1(alert, 1))
 
-			// skip global duplicated alerts (shared between multiple groups)
-			if _, found := uniqueAlerts[alert.Fingerprint]; found {
-				continue
-			}
-			// skip group duplicated alerts (shared between multiple blocks)
-			if _, found := alerts[alert.Fingerprint]; found {
-				continue
-			}
-
-			// mark this alert as seen
-			uniqueAlerts[alert.Fingerprint] = true
-
 			alert.Annotations, alert.Links = transform.DetectLinks(alert.Annotations)
-			alert.Labels = transform.StripLables(ignoredLabels, alert.Labels)
-
-			alerts[alert.Fingerprint] = alert
+			alert.Labels = transform.StripLables(config.Config.StripLabels, alert.Labels)
 
 			io.WriteString(agHasher, alert.Fingerprint) // alert group hasher
 
+			transform.ColorLabel(colorStore, "@receiver", alert.Receiver)
 			for k, v := range alert.Labels {
 				transform.ColorLabel(colorStore, k, v)
 			}
+			alerts = append(alerts, alert)
 
-		}
-
-		// reset alerts, we need to deduplicate
-		ag.Alerts = []models.Alert{}
-		for _, alert := range alerts {
-			ag.Alerts = append(ag.Alerts, alert)
+			// update internal metrics
 			metricAlerts.With(prometheus.Labels{"state": alert.State}).Inc()
 		}
 
@@ -126,6 +101,7 @@ func PullFromAlertmanager() {
 		ag.ID = fmt.Sprintf("%x", structhash.Sha1(ag.Labels, 1))
 		// Hash is a checksum of all alerts, used to tell when any alert in the group changed
 		ag.Hash = fmt.Sprintf("%x", agHasher.Sum(nil))
+
 		alertStore = append(alertStore, ag)
 	}
 
