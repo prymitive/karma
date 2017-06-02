@@ -209,7 +209,7 @@
       <% var labelMap = {} %>
       <% var skipped = 0 %>
       <% _.each(group.alerts, function(alert, i) { %>
-        <% if (i > alert_limit - 1) { %>
+        <% if (i > alertLimit - 1) { %>
           <% skipped++ %>
           <% _.each(alert.labels, function(label_val, label_key) { %>
             <% var text = label_key + ': ' + label_val %>

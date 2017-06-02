@@ -66,6 +66,21 @@ var Unsee = (function() {
         return version != responseVersion;
     };
 
+    var updateIsReady = function() {
+        Progress.Complete();
+        $(selectors.refreshButton).prop("disabled", true);
+        Counter.Hide();
+    };
+
+    var updateCompleted = function() {
+        Counter.Show();
+        Filters.UpdateCompleted();
+        Progress.Complete();
+        $(selectors.refreshButton).prop("disabled", false);
+        // hack for fixing padding since input can grow and change height
+        $("body").css("padding-top", $(".navbar").height());
+    };
+
     var renderError = function(template, context) {
         Counter.Error();
         Grid.Clear();
@@ -113,7 +128,7 @@ var Unsee = (function() {
                     renderError("updateError", {
                         error: "Backend error",
                         message: resp.error,
-                        last_ts: Watchdog.GetLastUpdate()
+                        lastTs: Watchdog.GetLastUpdate()
                     });
                     Unsee.WaitForNextReload();
                 } else {
@@ -130,8 +145,8 @@ var Unsee = (function() {
                             Watchdog.Pong(moment(resp.timestamp));
                             Unsee.WaitForNextReload();
                             if (!Watchdog.IsFatal()) {
-                              $(selectors.errors).html("");
-                              $(selectors.errors).hide("");
+                                $(selectors.errors).html("");
+                                $(selectors.errors).hide("");
                             }
                         } catch (err) {
                             Counter.Unknown();
@@ -149,27 +164,12 @@ var Unsee = (function() {
                     renderError("updateError", {
                         error: "Backend error",
                         message: "AJAX request failed",
-                        last_ts: Watchdog.GetLastUpdate()
+                        lastTs: Watchdog.GetLastUpdate()
                     });
                 }
                 Unsee.WaitForNextReload();
             }
         });
-    };
-
-    var updateIsReady = function() {
-        Progress.Complete();
-        $(selectors.refreshButton).prop("disabled", true);
-        Counter.Hide();
-    };
-
-    var updateCompleted = function() {
-        Counter.Show();
-        Filters.UpdateCompleted();
-        Progress.Complete();
-        $(selectors.refreshButton).prop("disabled", false);
-        // hack for fixing padding since input can grow and change height
-        $("body").css("padding-top", $(".navbar").height());
     };
 
     var pause = function() {
@@ -220,40 +220,40 @@ var Unsee = (function() {
 
 $(document).ready(function() {
 
-  // wrap all inits so we can handle errors
-  try {
-    // init all elements using bootstrapSwitch
-    $(".toggle").bootstrapSwitch();
+    // wrap all inits so we can handle errors
+    try {
+        // init all elements using bootstrapSwitch
+        $(".toggle").bootstrapSwitch();
 
-    // enable tooltips, #settings is a dropdown so it already uses different data-toggle
-    $("[data-toggle='tooltip'], #settings").tooltip({
-        trigger: "hover"
-    });
+        // enable tooltips, #settings is a dropdown so it already uses different data-toggle
+        $("[data-toggle='tooltip'], #settings").tooltip({
+            trigger: "hover"
+        });
 
-    Templates.Init();
-    UI.Init();
-    Silence.Init();
-    Unsee.Init();
+        Templates.Init();
+        UI.Init();
+        Silence.Init();
+        Unsee.Init();
 
-    // delay initial alert load to allow browser finish rendering
-    setTimeout(function() {
-        Filters.SetFilters();
-    }, 100);
-  }  catch (error) {
-    Raven.captureException(error);
-    if (window.console) {
-        console.error("Error: " + error.stack);
+        // delay initial alert load to allow browser finish rendering
+        setTimeout(function() {
+            Filters.SetFilters();
+        }, 100);
+    }  catch (error) {
+        Raven.captureException(error);
+        if (window.console) {
+            console.error("Error: " + error.stack);
+        }
+        // templates might not be loaded yet, make some html manually
+        $("#errors").html(
+          "<div class='jumbotron'>" +
+          "<h1 class='text-center'>" +
+          "Internal error <i class='fa fa-exclamation-circle text-danger'/>" +
+          "</h1>" +
+          "<div class='text-center'><p>" +
+          error.message +
+          "</p></div></div>"
+        ).show();
     }
-    // templates might not be loaded yet, make some html manually
-    $("#errors").html(
-      "<div class='jumbotron'>" +
-      "<h1 class='text-center'>" +
-      "Internal error <i class='fa fa-exclamation-circle text-danger'/>" +
-      "</h1>" +
-      "<div class='text-center'><p>" +
-      error.message +
-      "</p></div></div>"
-    ).show();
-  }
 
 });

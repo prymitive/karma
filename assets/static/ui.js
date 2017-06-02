@@ -10,17 +10,17 @@ var UI = (function() {
             Unsee.Pause();
             var modal = $(this);
             var label = $(event.relatedTarget);
-            var label_key = label.data("label-key");
-            var label_val = label.data("label-val");
-            var attrs = Alerts.GetLabelAttrs(label_key, label_val);
-            var counter = Summary.Get(label_key, label_val);
+            var labelKey = label.data("label-key");
+            var labelVal = label.data("label-val");
+            var attrs = Alerts.GetLabelAttrs(labelKey, labelVal);
+            var counter = Summary.Get(labelKey, labelVal);
             modal.find(".modal-title").html(
                 Templates.Render("modalTitle", {
-                  attrs: attrs,
-                  counter: counter
+                    attrs: attrs,
+                    counter: counter
                 })
             );
-            var hints = Autocomplete.GenerateHints(label_key, label_val);
+            var hints = Autocomplete.GenerateHints(labelKey, labelVal);
             modal.find(".modal-body").html(
               Templates.Render("modalBody", {hints: hints})
             );

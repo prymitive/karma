@@ -26,8 +26,8 @@ var Watchdog = (function() {
         var now = moment().utc().unix();
         if (now - lastTs > maxLag) {
             $("#errors").html(Templates.Render("fatalError", {
-                last_ts: lastTs,
-                seconds_left: fatalCountdown
+                lastTs: lastTs,
+                secondsLeft: fatalCountdown
             })).show();
             Counter.Unknown();
             if (!inCountdown) {

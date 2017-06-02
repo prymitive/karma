@@ -19,10 +19,10 @@
           </p>
         </div>
       <% } %>
-      <% if (last_ts > 0) { %>
+      <% if (lastTs > 0) { %>
         <div class="text-center">
           <p>
-            Last successful update was <%= moment.unix(last_ts).fromNow() %>
+            Last successful update was <%= moment.unix(lastTs).fromNow() %>
           </p>
         </div>
       <% } %>
@@ -39,12 +39,12 @@
     </h1>
     <div class="text-center">
       <p>
-        Auto refresh is enabled but last update was <%= moment.unix(last_ts).fromNow() %>
+        Auto refresh is enabled but last update was <%= moment.unix(lastTs).fromNow() %>
       </p>
       <p>
         This page will auto reload in
         <span id='reload-counter'>
-          <%- seconds_left %> seconds
+          <%- secondsLeft %> seconds
         </span>
       </p>
     </div>
