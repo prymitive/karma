@@ -84,8 +84,8 @@ var Config = (function() {
         // copy current filter button action
         new Clipboard(params.CopySelector, {
             text: function(elem) {
-                var baseUrl = [location.protocol, "//", location.host, location.pathname].join("");
-                var query = ["q=" + Filters.GetFilters().join(",")];
+                var baseUrl = [ location.protocol, "//", location.host, location.pathname ].join("");
+                var query = [ "q=" + Filters.GetFilters().join(",") ];
                 $.each(options, function(name, option) {
                     query.push(option.QueryParam + "=" + option.Get().toString());
                 });

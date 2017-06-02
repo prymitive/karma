@@ -30,21 +30,21 @@ var Filters = (function() {
     };
 
     var init = function() {
-        var initial_filter;
+        var initialFilter;
 
         if ($(selectors.filter).data("default-used") == "false" || $(selectors.filter).data("default-used") === false) {
             // user passed ?q=filter string
-            initial_filter = $(selectors.filter).val();
+            initialFilter = $(selectors.filter).val();
         } else {
             // no ?q=filter string, check if we have default filter cookie
-            initial_filter = Cookies.get("defaultFilter.v2");
-            if (initial_filter === undefined) {
+            initialFilter = Cookies.get("defaultFilter.v2");
+            if (initialFilter === undefined) {
                 // no cookie, use global default
-                initial_filter = $(selectors.filter).data("default-filter");
+                initialFilter = $(selectors.filter).data("default-filter");
             }
         }
 
-        var initial_filter_arr = initial_filter.split(",");
+        var initialFilterArr = initialFilter.split(",");
         $(selectors.filter).val("");
         $(".filterbar :input").tagsinput({
             typeaheadjs: {
@@ -55,7 +55,7 @@ var Filters = (function() {
                 source: Autocomplete.Autocomplete()
             }
         });
-        $.each(initial_filter_arr, function(i, filter) {
+        $.each(initialFilterArr, function(i, filter) {
             $(selectors.filter).tagsinput("add", filter);
             addBadge(filter);
         });
@@ -90,8 +90,8 @@ var Filters = (function() {
         });
 
         $(".filterbar").on("resize", function(){
-          // hack for fixing padding since input can grow and change height
-          $("body").css("padding-top", $(".navbar").height());
+            // hack for fixing padding since input can grow and change height
+            $("body").css("padding-top", $(".navbar").height());
         });
 
     };
@@ -120,8 +120,8 @@ var Filters = (function() {
     };
 
     var setUpdating = function() {
-      // visual hint that alerts are reloaded due to filter change
-      $(selectors.icon).removeClass("fa-search fa-pause").addClass("fa-circle-o-notch fa-spin");
+        // visual hint that alerts are reloaded due to filter change
+        $(selectors.icon).removeClass("fa-search fa-pause").addClass("fa-circle-o-notch fa-spin");
     };
 
     var updateDone = function() {
@@ -129,7 +129,7 @@ var Filters = (function() {
     };
 
     var setPause = function() {
-      $(selectors.icon).removeClass("fa-circle-o-notch fa-spin fa-search").addClass("fa-pause");
+        $(selectors.icon).removeClass("fa-circle-o-notch fa-spin fa-search").addClass("fa-pause");
     };
 
     return {

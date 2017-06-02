@@ -1,8 +1,7 @@
 /* exported Colors */
 var Colors = (function() {
 
-    var colors,
-        staticColorLabels;
+    var colors;
 
     var specialLabels = {
         "@state: unprocessed": "label-default",
@@ -32,8 +31,8 @@ var Colors = (function() {
         var style = "";
         if (colors[key] !== undefined && colors[key][value] !== undefined) {
             var c = colors[key][value];
-            style = "background-color: rgba(" + [c.background.red, c.background.green, c.background.blue, c.background.alpha].join(", ") + "); ";
-            style += "color: rgba(" + [c.font.red, c.font.green, c.font.blue, c.font.alpha].join(", ") + "); ";
+            style = "background-color: rgba(" + [ c.background.red, c.background.green, c.background.blue, c.background.alpha ].join(", ") + "); ";
+            style += "color: rgba(" + [ c.font.red, c.font.green, c.font.blue, c.font.alpha ].join(", ") + "); ";
         }
         return style;
     };
@@ -46,12 +45,7 @@ var Colors = (function() {
         return ($.inArray(key, Colors.GetStaticLabels()) >= 0);
     };
 
-    var init = function(staticColors) {
-        staticColorLabels = staticColors;
-    };
-
     return {
-        Init: init,
         Update: update,
         Get: getStyle,
         GetClass: getClass,

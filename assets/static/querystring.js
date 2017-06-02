@@ -17,7 +17,7 @@ var QueryString = (function() {
 
     var update = function(key, value) {
         /* https://gist.github.com/excalq/2961415 */
-        var baseUrl = [location.protocol, "//", location.host, location.pathname].join(""),
+        var baseUrl = [ location.protocol, "//", location.host, location.pathname ].join(""),
             urlQueryString = document.location.search,
             newParam = key + "=" + value,
             params = "?" + newParam;
@@ -37,7 +37,7 @@ var QueryString = (function() {
     };
 
     var remove = function(key) {
-        var baseUrl = [location.protocol, "//", location.host, location.pathname].join(""),
+        var baseUrl = [ location.protocol, "//", location.host, location.pathname ].join(""),
             q = QueryString.Parse();
         if (q[key] !== undefined) {
             delete q[key];

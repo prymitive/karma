@@ -83,7 +83,7 @@ ifneq ($(JSHINT),)
 	@$(JSHINT) assets/static/*.js
 endif
 ifneq ($(ESLINT),)
-	@$(ESLINT) assets/static/*.js
+	@$(ESLINT) --quiet assets/static/*.js
 endif
 
 .PHONY: test

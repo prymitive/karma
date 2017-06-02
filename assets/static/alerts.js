@@ -17,8 +17,7 @@ var Alerts = (function() {
         return Templates.Render("alertGroup", {
             group: this,
             silences: silences,
-            static_color_label: Colors.GetStaticLabels(),
-            alert_limit: 5
+            alertLimit: 5
         });
     };
 
@@ -90,8 +89,8 @@ var Alerts = (function() {
             var label = ts.fromNow();
             $(elem).find(".label-ts-span").text(label);
             $(elem).attr("data-ts-title", ts.toString());
-            var ts_age = now.diff(ts, "minutes");
-            if (ts_age < 3) {
+            var tsAge = now.diff(ts, "minutes");
+            if (tsAge < 3) {
                 $(elem).addClass("recent-alert").find(".incident-indicator").removeClass("hidden");
             } else {
                 $(elem).removeClass("recent-alert").find(".incident-indicator").addClass("hidden");
@@ -110,9 +109,9 @@ var Alerts = (function() {
         silences = apiResponse.silences;
 
         var summaryData = {};
-        $.each(apiResponse.counters, function(label_key, counters){
-            $.each(counters, function(label_val, hits){
-                summaryData[label_key + ": " + label_val] = hits;
+        $.each(apiResponse.counters, function(labelKey, counters){
+            $.each(counters, function(labelVal, hits){
+                summaryData[labelKey + ": " + labelVal] = hits;
             });
         });
         Summary.Update(summaryData);
