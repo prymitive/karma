@@ -32,14 +32,16 @@ func receiverAutocomplete(name string, operators []string, alerts []models.Alert
 	tokens := []models.Autocomplete{}
 	for _, operator := range operators {
 		for _, alert := range alerts {
-			tokens = append(tokens, makeAC(
-				name+operator+alert.Receiver,
-				[]string{
-					name,
-					strings.TrimPrefix(name, "@"),
-					name + operator,
-				},
-			))
+			if alert.Receiver != "" {
+				tokens = append(tokens, makeAC(
+					name+operator+alert.Receiver,
+					[]string{
+						name,
+						strings.TrimPrefix(name, "@"),
+						name + operator,
+					},
+				))
+			}
 		}
 	}
 	return tokens
