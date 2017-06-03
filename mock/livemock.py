@@ -51,7 +51,8 @@ for i in xrange(0, 5):
                 "help": "Example help annotation",
                 "summary": "Example summary",
                 "url": "http://localhost/example.html"
-            }
+            },
+            "generatorURL": "localhost/prometheus"
         }, {
             "labels": {
                 "alertname": "HTTP_Probe_Failed",
@@ -61,7 +62,8 @@ for i in xrange(0, 5):
             },
             "annotations": {
                 "summary": "Example summary"
-            }
+            },
+            "generatorURL": "localhost/prometheus"
         }, {
             "labels": {
                 "alertname": "Host_Down",
@@ -72,7 +74,8 @@ for i in xrange(0, 5):
             "annotations": {
                 "summary": "Example summary",
                 "url": "http://localhost/example.html"
-            }
+            },
+            "generatorURL": "localhost/prometheus"
         }, {
             "labels": {
                 "alertname": "Host_Down",
@@ -82,7 +85,8 @@ for i in xrange(0, 5):
             },
             "annotations": {
                 "summary": "Example summary"
-            }
+            },
+            "generatorURL": "localhost/prometheus"
         }, {
             "labels": {
                 "alertname": "Host_Down",
@@ -92,7 +96,8 @@ for i in xrange(0, 5):
             },
             "annotations": {
                 "summary": "Example summary"
-            }
+            },
+            "generatorURL": "localhost/prometheus"
         }, {
             "labels": {
                 "alertname": "Host_Down",
@@ -102,7 +107,8 @@ for i in xrange(0, 5):
             },
             "annotations": {
                 "summary": "Example summary"
-            }
+            },
+            "generatorURL": "localhost/prometheus"
         }, {
             "labels": {
                 "alertname": "Host_Down",
@@ -112,7 +118,8 @@ for i in xrange(0, 5):
             },
             "annotations": {
                 "summary": "Example summary"
-            }
+            },
+            "generatorURL": "localhost/prometheus"
         }, {
             "labels": {
                 "alertname": "Host_Down",
@@ -122,7 +129,8 @@ for i in xrange(0, 5):
             },
             "annotations": {
                 "summary": "Example summary"
-            }
+            },
+            "generatorURL": "localhost/prometheus"
         }, {
             "labels": {
                 "alertname": "Host_Down",
@@ -132,7 +140,8 @@ for i in xrange(0, 5):
             },
             "annotations": {
                 "summary": "Example summary"
-            }
+            },
+            "generatorURL": "localhost/prometheus"
         }, {
             "labels": {
                 "alertname": "Host_Down",
@@ -142,7 +151,8 @@ for i in xrange(0, 5):
             },
             "annotations": {
                 "summary": "Example summary"
-            }
+            },
+            "generatorURL": "localhost/prometheus"
         }, {
             "labels": {
                 "alertname": "Memory_Usage_Too_High",
@@ -153,7 +163,8 @@ for i in xrange(0, 5):
             "annotations": {
                 "alert": "Memory usage exceeding threshold",
                 "dashboard": "http://localhost/dashboard.html"
-            }
+            },
+            "generatorURL": "localhost/prometheus"
         }, {
             "labels": {
                 "alertname": "Free_Disk_Space_Too_Low",
@@ -164,7 +175,8 @@ for i in xrange(0, 5):
             "annotations": {
                 "alert": "Less than 10% disk space is free",
                 "dashboard": "http://localhost/dashboard.html"
-            }
+            },
+            "generatorURL": "localhost/prometheus"
         }]
     )
     time.sleep(10)

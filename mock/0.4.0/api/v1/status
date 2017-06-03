@@ -1,6 +1,6 @@
 {
     "data": {
-        "config": "route:\n  group_by: ['alertname', 'cluster', 'service']\n  group_wait: 15s\n  group_interval: 35s\n  repeat_interval: 999h\n  receiver: default\n\ninhibit_rules:\n- source_match:\n    severity: 'critical'\n  target_match:\n    severity: 'warning'\n  # Apply inhibition if the alertname is the same.\n  equal: ['alertname', 'cluster', 'service']\n\nreceivers:\n- name: 'default'\n",
+        "config": "route:\n  group_by: ['alertname']\n  group_wait: 15s\n  group_interval: 35s\n  repeat_interval: 999h\n  receiver: 'default'\n  routes:\n    - receiver: 'by-cluster-service'\n      group_by: ['alertname', 'cluster', 'service']\n      match_re:\n        alertname: .*\n      continue: true\n    - receiver: 'by-name'\n      group_by: [alertname]\n      match_re:\n        alertname: .*\n      continue: true\n\ninhibit_rules:\n  - source_match:\n      severity: 'critical'\n    target_match:\n      severity: 'warning'\n    # Apply inhibition if the alertname is the same.\n    equal: ['alertname', 'cluster', 'service']\n\nreceivers:\n  - name: 'default'\n  - name: 'by-cluster-service'\n  - name: 'by-name'\n",
         "configJSON": {
             "global": {
                 "hipchat_auth_token": "",
@@ -36,22 +36,50 @@
             "receivers": [
                 {
                     "name": "default"
+                },
+                {
+                    "name": "by-cluster-service"
+                },
+                {
+                    "name": "by-name"
                 }
             ],
             "route": {
                 "group_by": [
-                    "alertname",
-                    "cluster",
-                    "service"
+                    "alertname"
                 ],
                 "group_interval": 35000000000,
                 "group_wait": 15000000000,
                 "receiver": "default",
-                "repeat_interval": 3596400000000000
+                "repeat_interval": 3596400000000000,
+                "routes": [
+                    {
+                        "continue": true,
+                        "group_by": [
+                            "alertname",
+                            "cluster",
+                            "service"
+                        ],
+                        "match_re": {
+                            "alertname": {}
+                        },
+                        "receiver": "by-cluster-service"
+                    },
+                    {
+                        "continue": true,
+                        "group_by": [
+                            "alertname"
+                        ],
+                        "match_re": {
+                            "alertname": {}
+                        },
+                        "receiver": "by-name"
+                    }
+                ]
             },
             "templates": null
         },
-        "uptime": "2017-05-01T20:44:45.763122163Z",
+        "uptime": "2017-06-03T01:40:52.406481362Z",
         "versionInfo": {
             "branch": "master",
             "buildDate": "20160823-12:57:02",
