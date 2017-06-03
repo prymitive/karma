@@ -91,11 +91,12 @@ func PullFromAlertmanager() {
 			metricAlerts.With(prometheus.Labels{"state": alert.State}).Inc()
 		}
 
-		for _, hint := range transform.BuildAutocomplete(ag.Alerts) {
+		for _, hint := range transform.BuildAutocomplete(alerts) {
 			acMap[hint.Value] = hint
 		}
 
-		sort.Sort(&ag.Alerts)
+		sort.Sort(&alerts)
+		ag.Alerts = alerts
 
 		// ID is unique to each group
 		ag.ID = fmt.Sprintf("%x", structhash.Sha1(ag.Labels, 1))
