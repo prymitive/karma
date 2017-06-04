@@ -66,8 +66,17 @@ func PullFromAlertmanager() {
 		metricAlerts.With(prometheus.Labels{"state": state}).Set(0)
 	}
 
-	log.Infof("Processing alert groups (%d)", len(alertGroups))
+	log.Infof("Deduplicating alert groups (%d)", len(alertGroups))
+	uniqueGroups := map[string]models.AlertGroup{}
 	for _, ag := range alertGroups {
+		agID := fmt.Sprintf("%x", structhash.Sha1(ag.Labels, 1))
+		if _, found := uniqueGroups[agID]; !found {
+			uniqueGroups[agID] = ag
+		}
+	}
+
+	log.Infof("Processing unique alert groups (%d)", len(uniqueGroups))
+	for _, ag := range uniqueGroups {
 		// used to generate group content hash
 		agHasher := sha1.New()
 
