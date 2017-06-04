@@ -69,7 +69,10 @@ func PullFromAlertmanager() {
 	log.Infof("Deduplicating alert groups (%d)", len(alertGroups))
 	uniqueGroups := map[string]models.AlertGroup{}
 	for _, ag := range alertGroups {
-		agID := fmt.Sprintf("%x", structhash.Sha1(ag.Labels, 1))
+		agIDHasher := sha1.New()
+		io.WriteString(agIDHasher, ag.Receiver)
+		io.WriteString(agIDHasher, fmt.Sprintf("%x", structhash.Sha1(ag.Labels, 1)))
+		agID := fmt.Sprintf("%x", agIDHasher.Sum(nil))
 		if _, found := uniqueGroups[agID]; !found {
 			uniqueGroups[agID] = ag
 		}
