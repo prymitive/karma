@@ -29,20 +29,44 @@ func newreceiverFilter() FilterT {
 }
 
 func receiverAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
-	tokens := []models.Autocomplete{}
-	for _, operator := range operators {
-		for _, alert := range alerts {
-			if alert.Receiver != "" {
-				tokens = append(tokens, makeAC(
-					name+operator+alert.Receiver,
-					[]string{
-						name,
-						strings.TrimPrefix(name, "@"),
-						name + operator,
-					},
-				))
+	tokens := map[string]models.Autocomplete{}
+	for _, alert := range alerts {
+		if alert.Receiver != "" {
+			for _, operator := range operators {
+				switch operator {
+				case equalOperator, notEqualOperator:
+					token := fmt.Sprintf("%s%s%s", name, operator, alert.Receiver)
+					tokens[token] = makeAC(
+						token,
+						[]string{
+							name,
+							strings.TrimPrefix(name, "@"),
+							name + operator,
+						},
+					)
+				case regexpOperator, negativeRegexOperator:
+					substrings := strings.Split(alert.Receiver, " ")
+					if len(substrings) > 1 {
+						for _, substring := range substrings {
+							token := fmt.Sprintf("%s%s%s", name, operator, substring)
+							tokens[token] = makeAC(
+								token,
+								[]string{
+									name,
+									strings.TrimPrefix(name, "@"),
+									name + operator,
+									substring,
+								},
+							)
+						}
+					}
+				}
 			}
 		}
 	}
-	return tokens
+	acData := []models.Autocomplete{}
+	for _, token := range tokens {
+		acData = append(acData, token)
+	}
+	return acData
 }
