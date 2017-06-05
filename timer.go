@@ -68,13 +68,29 @@ func PullFromAlertmanager() {
 
 	log.Infof("Deduplicating alert groups (%d)", len(alertGroups))
 	uniqueGroups := map[string]models.AlertGroup{}
+	uniqueAlerts := map[string]map[string]models.Alert{}
 	for _, ag := range alertGroups {
 		agIDHasher := sha1.New()
 		io.WriteString(agIDHasher, ag.Receiver)
 		io.WriteString(agIDHasher, fmt.Sprintf("%x", structhash.Sha1(ag.Labels, 1)))
 		agID := fmt.Sprintf("%x", agIDHasher.Sum(nil))
 		if _, found := uniqueGroups[agID]; !found {
-			uniqueGroups[agID] = ag
+			uniqueGroups[agID] = models.AlertGroup{
+				Receiver: ag.Receiver,
+				Labels:   ag.Labels,
+				ID:       agID,
+			}
+		}
+		for _, alert := range ag.Alerts {
+			// generate alert fingerprint from a raw, unaltered alert object
+			aID := fmt.Sprintf("%x", structhash.Sha1(alert, 1))
+			if _, found := uniqueAlerts[agID]; !found {
+				uniqueAlerts[agID] = map[string]models.Alert{}
+			}
+			if _, found := uniqueAlerts[agID][aID]; !found {
+				alert.Fingerprint = aID
+				uniqueAlerts[agID][aID] = alert
+			}
 		}
 	}
 
@@ -84,9 +100,7 @@ func PullFromAlertmanager() {
 		agHasher := sha1.New()
 
 		alerts := models.AlertList{}
-		for _, alert := range ag.Alerts {
-			// generate alert fingerprint from a raw, unaltered alert object
-			alert.Fingerprint = fmt.Sprintf("%x", structhash.Sha1(alert, 1))
+		for _, alert := range uniqueAlerts[ag.ID] {
 
 			alert.Annotations, alert.Links = transform.DetectLinks(alert.Annotations)
 			alert.Labels = transform.StripLables(config.Config.StripLabels, alert.Labels)
@@ -110,8 +124,6 @@ func PullFromAlertmanager() {
 		sort.Sort(&alerts)
 		ag.Alerts = alerts
 
-		// ID is unique to each group
-		ag.ID = fmt.Sprintf("%x", structhash.Sha1(ag.Labels, 1))
 		// Hash is a checksum of all alerts, used to tell when any alert in the group changed
 		ag.Hash = fmt.Sprintf("%x", agHasher.Sum(nil))
 
