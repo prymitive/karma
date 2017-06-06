@@ -121,9 +121,28 @@
           <% } else { %>
             <%- silence.comment %>
           <% } %>
+          <br/>
+          <div class="label label-list label-default label-age label-ts cursor-help"
+             data-toggle="tooltip"
+             data-placement="top"
+             data-ts="<%= silence.startsAt %>">
+             Started
+             <span class="label-ts-span">
+              <%- silence.startsAt %>
+             </span>
+          </div>
+          <div class="label label-list label-default label-age label-ts cursor-help"
+             data-toggle="tooltip"
+             data-placement="top"
+             data-ts="<%= silence.endsAt %>">
+             Ends
+             <span class="label-ts-span">
+              <%- silence.endsAt %>
+             </span>
+          </div>
           <footer>
             <cite>
-              <abbr class="label-ts" data-toggle="tooltip" data-placement="top" data-ts="<%= silence.startsAt %>">
+              <abbr>
                 <%- silence.createdBy %>
               </abbr>
             </cite>
