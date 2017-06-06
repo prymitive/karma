@@ -130,6 +130,30 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td id="help-receiver">
+                            <code>@receiver(= != =~ !~)$value</code>
+                        </td>
+                        <td>
+                            <p>Match alerts based on the receiver name.</p>
+                            <table class="table examples">
+                                <tbody>
+                                    <tr>
+                                        <td><span class="label label-info">@receiver=default</span></td>
+                                        <td>Match alerts sent to the default receiver.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">@receiver!=hipchat</span></td>
+                                        <td>Match alerts not sent to the hipchat receiver.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">@receiver=~email</span></td>
+                                        <td>Match alerts sent to any receiver with name matching regular expression <code>/.*email.*/</code>.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
                         <td id="help-state">
                             <code>@state=(active suppresed unprocessed)</code>
                         </td>
