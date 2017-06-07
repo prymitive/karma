@@ -90,7 +90,7 @@ var Alerts = (function() {
             $(elem).find(".label-ts-span").text(label);
             $(elem).attr("data-ts-title", ts.toString());
             var tsAge = now.diff(ts, "minutes");
-            if (tsAge < 3) {
+            if (tsAge >= 0 && tsAge < 3) {
                 $(elem).addClass("recent-alert").find(".incident-indicator").removeClass("hidden");
             } else {
                 $(elem).removeClass("recent-alert").find(".incident-indicator").addClass("hidden");
