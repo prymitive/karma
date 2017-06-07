@@ -8,9 +8,11 @@
         <i class="fa fa-link"/>
       </a>
     </span>
+    <% if (group.alerts.length > 1) { %>
     <span class="badge pull-right">
       <%- group.alerts.length %>
     </span>
+    <% } %>
     <div class="panel-title">
       <% if (Object.keys(group.labels).length > 0) { %>
         <% _.each(Alerts.SortMapByKey(group.labels), function(label) { %>
