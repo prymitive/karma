@@ -140,6 +140,15 @@
               <%- silence.endsAt %>
              </span>
           </div>
+          <% _.each(silence.matchers, function(matcher) { %>
+            <div class="label label-list label-success">
+              <% var matcherOperator = "=" %>
+              <% if (matcher.isRegex) { %>
+                <% matcherOperator = "=~" %>
+              <% } %>
+              <%- matcher.name %><%- matcherOperator %><%- matcher.value %>
+            </div>
+          <% }) %>
           <footer>
             <cite>
               <abbr>
