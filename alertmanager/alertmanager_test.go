@@ -32,8 +32,8 @@ func TestGetAlerts(t *testing.T) {
 		if err != nil {
 			t.Errorf("GetAlerts(%s) failed: %s", version, err.Error())
 		}
-		if len(groups) != 6 {
-			t.Errorf("Got %d groups, expected 6", len(groups))
+		if len(groups) != 10 {
+			t.Errorf("Got %d groups, expected 10", len(groups))
 		}
 	}
 }

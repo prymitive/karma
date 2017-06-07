@@ -56,6 +56,7 @@ type Alert struct {
 	SilencedBy   []string          `json:"silencedBy"`
 	InhibitedBy  []string          `json:"inhibitedBy"`
 	// unsee fields
+	Receiver    string            `json:"receiver"`
 	Links       map[string]string `json:"links"`
 	Fingerprint string            `json:"-"`
 }
@@ -100,6 +101,7 @@ func (a AlertList) Less(i, j int) bool {
 // There is a hash computed from all alerts, it's used by UI to quickly tell
 // if there was any change in a group and it needs to refresh it
 type AlertGroup struct {
+	Receiver   string            `json:"receiver"`
 	Labels     map[string]string `json:"labels"`
 	Alerts     AlertList         `json:"alerts"`
 	ID         string            `json:"id"`

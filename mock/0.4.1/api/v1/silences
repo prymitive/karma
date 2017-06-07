@@ -3,7 +3,7 @@
         "silences": [
             {
                 "comment": "Silenced instance",
-                "createdAt": "2017-05-01T20:45:58.802450694Z",
+                "createdAt": "2017-06-03T01:42:15.862959571Z",
                 "createdBy": "john@example.com",
                 "endsAt": "2063-01-01T00:00:00Z",
                 "id": 1,
@@ -18,7 +18,7 @@
             },
             {
                 "comment": "Silenced Host_Down alerts in the dev cluster",
-                "createdAt": "2017-05-01T20:45:58.82453438Z",
+                "createdAt": "2017-06-03T01:42:15.877866843Z",
                 "createdBy": "john@example.com",
                 "endsAt": "2063-01-01T00:00:00Z",
                 "id": 2,

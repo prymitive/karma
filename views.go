@@ -133,9 +133,10 @@ func alerts(c *gin.Context) {
 	store.Store.Lock.RLock()
 
 	var matches int
-	for _, ag := range store.Store.Alerts {
+	for _, ag := range store.Store.Groups {
 		agCopy := models.AlertGroup{
 			ID:         ag.ID,
+			Receiver:   ag.Receiver,
 			Labels:     ag.Labels,
 			Alerts:     []models.Alert{},
 			StateCount: map[string]int{},
@@ -174,6 +175,16 @@ func alerts(c *gin.Context) {
 				}
 
 				countLabel(counters, "@state", alert.State)
+
+				countLabel(counters, "@receiver", alert.Receiver)
+				if ck, foundKey := store.Store.Colors["@receiver"]; foundKey {
+					if cv, foundVal := ck[alert.Receiver]; foundVal {
+						if _, found := colors["@receiver"]; !found {
+							colors["@receiver"] = map[string]models.LabelColors{}
+						}
+						colors["@receiver"][alert.Receiver] = cv
+					}
+				}
 
 				agCopy.StateCount[alert.State]++
 

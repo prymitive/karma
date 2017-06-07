@@ -8,9 +8,11 @@
         <i class="fa fa-link"/>
       </a>
     </span>
+    <% if (group.alerts.length > 1) { %>
     <span class="badge pull-right">
       <%- group.alerts.length %>
     </span>
+    <% } %>
     <div class="panel-title">
       <% if (Object.keys(group.labels).length > 0) { %>
         <% _.each(Alerts.SortMapByKey(group.labels), function(label) { %>
@@ -37,6 +39,17 @@
       <% } %>
     </div>
   <% }) %>
+  <% _.each(alert.links, function(url, text) { %>
+    <a class="label label-list label-default"
+       href="<%= url %>"
+       target="_blank"
+       title="<%= url %>"
+       data-toggle="tooltip"
+       data-placement="top">
+      <i class="fa fa-external-link"/>
+      <%- text %>
+    </a>
+  <% }) %>
 </script>
 
 <script type="application/json" id="alert-group-labels">
@@ -59,21 +72,9 @@
          title="Go to the alert source"
          data-toggle="tooltip"
          data-placement="top">
-        <i class="fa fa-external-link"/>
-        source
+        <i class="fa fa-code"/>
       </a>
     <% } %>
-    <% _.each(alert.links, function(url, text) { %>
-      <a class="label label-list label-default"
-         href="<%= url %>"
-         target="_blank"
-         title="<%= url %>"
-         data-toggle="tooltip"
-         data-placement="top">
-        <i class="fa fa-external-link"/>
-        <%- text %>
-      </a>
-    <% }) %>
     <% var attrs = Alerts.GetLabelAttrs("@state", alert.state) %>
     <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@state', value: alert.state, text: '@state: ' + alert.state}}) %>
     <% if (alert.silencedBy.length == 0) { %>
@@ -90,6 +91,8 @@
           <i class="fa fa-bell-slash" title="Silence this alert" data-toggle="tooltip" data-placement="top" />
       </span>
     <% } %>
+    <% var attrs = Alerts.GetLabelAttrs("@receiver", alert.receiver) %>
+    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@receiver', value: alert.receiver, text: '@receiver: ' + alert.receiver}}) %>
     <a class="label label-list label-default label-age label-ts"
        data-toggle="tooltip"
        data-placement="top"
@@ -120,9 +123,37 @@
           <% } else { %>
             <%- silence.comment %>
           <% } %>
+          <br/>
+          <div class="label label-list label-default label-age label-ts cursor-help"
+             data-toggle="tooltip"
+             data-placement="top"
+             data-ts="<%= silence.startsAt %>">
+             Started
+             <span class="label-ts-span">
+              <%- silence.startsAt %>
+             </span>
+          </div>
+          <div class="label label-list label-default label-age label-ts cursor-help"
+             data-toggle="tooltip"
+             data-placement="top"
+             data-ts="<%= silence.endsAt %>">
+             Ends
+             <span class="label-ts-span">
+              <%- silence.endsAt %>
+             </span>
+          </div>
+          <% _.each(silence.matchers, function(matcher) { %>
+            <div class="label label-list label-success">
+              <% var matcherOperator = "=" %>
+              <% if (matcher.isRegex) { %>
+                <% matcherOperator = "=~" %>
+              <% } %>
+              <%- matcher.name %><%- matcherOperator %><%- matcher.value %>
+            </div>
+          <% }) %>
           <footer>
             <cite>
-              <abbr class="label-ts" data-toggle="tooltip" data-placement="top" data-ts="<%= silence.startsAt %>">
+              <abbr>
                 <%- silence.createdBy %>
               </abbr>
             </cite>

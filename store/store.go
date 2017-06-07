@@ -8,7 +8,7 @@ import (
 
 type dataStore struct {
 	Lock         sync.RWMutex
-	Alerts       []models.AlertGroup
+	Groups       []models.AlertGroup
 	Silences     map[string]models.Silence
 	Colors       models.LabelsColorMap
 	Autocomplete []models.Autocomplete
@@ -35,10 +35,10 @@ func (ds *dataStore) SetSilences(s map[string]models.Silence) {
 }
 
 // Update will lock the store and update internal data
-func (ds *dataStore) Update(alerts []models.AlertGroup, colors models.LabelsColorMap, autocomplete []models.Autocomplete) {
+func (ds *dataStore) Update(groups []models.AlertGroup, colors models.LabelsColorMap, autocomplete []models.Autocomplete) {
 	ds.Lock.Lock()
 	defer ds.Lock.Unlock()
-	ds.Alerts = alerts
+	ds.Groups = groups
 	ds.Colors = colors
 	ds.Autocomplete = autocomplete
 }

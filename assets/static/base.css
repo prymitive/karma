@@ -135,6 +135,10 @@ span.label-ts-span {
   cursor: pointer;
 }
 
+.cursor-help {
+  cursor: help;
+}
+
 /* make filter input take all the space it can */
 .filterbar {
     width: 950px;

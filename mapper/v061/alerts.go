@@ -30,14 +30,22 @@ type alert struct {
 type alertsGroups struct {
 	Labels map[string]string `json:"labels"`
 	Blocks []struct {
-		Alerts []alert `json:"alerts"`
+		Alerts   []alert `json:"alerts"`
+		RouteOps struct {
+			Receiver string `json:"receiver"`
+		} `json:"routeOpts"`
 	} `json:"blocks"`
 }
 
 type alertsGroupsAPISchema struct {
 	Status string         `json:"status"`
-	Groups []alertsGroups `json:"data"`
+	Data   []alertsGroups `json:"data"`
 	Error  string         `json:"error"`
+}
+
+type alertsGroupReceiver struct {
+	Name   string
+	Groups []models.AlertGroup
 }
 
 // AlertMapper implements Alertmanager API schema
@@ -55,6 +63,7 @@ func (m AlertMapper) IsSupported(version string) bool {
 // It will only return alerts or error (if any)
 func (m AlertMapper) GetAlerts() ([]models.AlertGroup, error) {
 	groups := []models.AlertGroup{}
+	receivers := map[string]alertsGroupReceiver{}
 	resp := alertsGroupsAPISchema{}
 
 	url, err := transport.JoinURL(config.Config.AlertmanagerURI, "api/v1/alerts/groups")
@@ -71,9 +80,16 @@ func (m AlertMapper) GetAlerts() ([]models.AlertGroup, error) {
 		return groups, errors.New(resp.Error)
 	}
 
-	for _, g := range resp.Groups {
-		alertList := models.AlertList{}
-		for _, b := range g.Blocks {
+	for _, d := range resp.Data {
+		for _, b := range d.Blocks {
+			rcv, found := receivers[b.RouteOps.Receiver]
+			if !found {
+				rcv = alertsGroupReceiver{
+					Name: b.RouteOps.Receiver,
+				}
+				receivers[b.RouteOps.Receiver] = rcv
+			}
+			alertList := models.AlertList{}
 			for _, a := range b.Alerts {
 				inhibitedBy := []string{}
 				if a.InhibitedBy != nil {
@@ -83,7 +99,8 @@ func (m AlertMapper) GetAlerts() ([]models.AlertGroup, error) {
 				if a.SilencedBy != nil {
 					silencedBy = a.SilencedBy
 				}
-				us := models.Alert{
+				a := models.Alert{
+					Receiver:     rcv.Name,
 					Annotations:  a.Annotations,
 					Labels:       a.Labels,
 					StartsAt:     a.StartsAt,
@@ -93,14 +110,21 @@ func (m AlertMapper) GetAlerts() ([]models.AlertGroup, error) {
 					InhibitedBy:  inhibitedBy,
 					SilencedBy:   silencedBy,
 				}
-				alertList = append(alertList, us)
+				alertList = append(alertList, a)
 			}
+			ug := models.AlertGroup{
+				Receiver: rcv.Name,
+				Labels:   d.Labels,
+				Alerts:   alertList,
+			}
+			rcv.Groups = append(rcv.Groups, ug)
+			receivers[rcv.Name] = rcv
 		}
-		ug := models.AlertGroup{
-			Labels: g.Labels,
-			Alerts: alertList,
+	}
+	for _, rcv := range receivers {
+		for _, ag := range rcv.Groups {
+			groups = append(groups, ag)
 		}
-		groups = append(groups, ug)
 	}
 	return groups, nil
 }

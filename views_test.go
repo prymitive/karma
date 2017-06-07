@@ -116,7 +116,7 @@ func TestAlerts(t *testing.T) {
 	for _, version := range mock.ListAllMocks() {
 		mockAlerts(version)
 		r := ginTestEngine()
-		req, _ := http.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed,instance=web1", nil)
+		req, _ := http.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service,alertname=HTTP_Probe_Failed,instance=web1", nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != http.StatusOK {
@@ -125,7 +125,7 @@ func TestAlerts(t *testing.T) {
 
 		ur := models.AlertsResponse{}
 		json.Unmarshal(resp.Body.Bytes(), &ur)
-		if len(ur.Filters) != 2 {
+		if len(ur.Filters) != 3 {
 			t.Errorf("[%s] No filters in response", version)
 		}
 		if len(ur.Colors) != 1 {
@@ -149,7 +149,7 @@ func TestAlerts(t *testing.T) {
 		if ur.Status != "success" {
 			t.Errorf("[%s] Invalid status in response: %s", version, ur.Status)
 		}
-		if len(ur.Counters) != 5 {
+		if len(ur.Counters) != 6 {
 			t.Errorf("[%s] Invalid number of counters in response (%d): %v", version, len(ur.Counters), ur.Counters)
 		}
 		for _, ag := range ur.AlertGroups {
@@ -282,6 +282,10 @@ var acTests = []acTestCase{
 			"@age>1h",
 			"@limit=10",
 			"@limit=50",
+			"@receiver!=by-cluster-service",
+			"@receiver!=by-name",
+			"@receiver=by-cluster-service",
+			"@receiver=by-name",
 			"@silence_author!=john@example.com",
 			"@silence_author!~john@example.com",
 			"@silence_author=john@example.com",
