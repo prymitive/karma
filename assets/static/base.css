@@ -302,7 +302,7 @@ input#filter:focus {
 }
 
 .incident-group-separator {
-    border-bottom: 1px solid #ecf0f1;
+    border-bottom: 1px solid #bbb;
 }
 
 .annotation-well {
