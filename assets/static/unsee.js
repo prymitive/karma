@@ -246,13 +246,13 @@ $(document).ready(function() {
         }
         // templates might not be loaded yet, make some html manually
         $("#errors").html(
-          "<div class='jumbotron'>" +
-          "<h1 class='text-center'>" +
-          "Internal error <i class='fa fa-exclamation-circle text-danger'/>" +
-          "</h1>" +
-          "<div class='text-center'><p>" +
-          error.message +
-          "</p></div></div>"
+            "<div class='jumbotron'>" +
+            "<h1 class='text-center'>" +
+            "Internal error <i class='fa fa-exclamation-circle text-danger'/>" +
+            "</h1>" +
+            "<div class='text-center'><p>" +
+            error.message +
+            "</p></div></div>"
         ).show();
     }
 
