@@ -262,7 +262,7 @@ func autocomplete(c *gin.Context) {
 		return
 	}
 
-	acData := []string{}
+	acData := sort.StringSlice{}
 
 	store.Store.Lock.RLock()
 	for _, hint := range store.Store.Autocomplete {
@@ -278,7 +278,7 @@ func autocomplete(c *gin.Context) {
 	}
 	store.Store.Lock.RUnlock()
 
-	sort.Strings(acData)
+	sort.Sort(sort.Reverse(acData))
 	data, err := json.Marshal(acData)
 	if err != nil {
 		log.Error(err.Error())
