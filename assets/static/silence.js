@@ -145,7 +145,7 @@ var Silence = (function() {
                 error: function(xhr, textStatus, errorThrown) {
                     var err = xhr.responseText || errorThrown || textStatus;
                     modal.find(".modal-body").html(
-                      Templates.Render("silenceFormFatal", {error: err})
+                        Templates.Render("silenceFormFatal", {error: err})
                     );
                 },
                 success: function(data) {
@@ -261,7 +261,7 @@ var Silence = (function() {
                                             err = j.error;
                                         }
                                     } catch (error) {
-                                      // can't parse json, do nothing
+                                        // can't parse json, do nothing
                                     }
                                 }
 
