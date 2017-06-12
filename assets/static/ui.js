@@ -22,7 +22,7 @@ var UI = (function() {
             );
             var hints = Autocomplete.GenerateHints(labelKey, labelVal);
             modal.find(".modal-body").html(
-              Templates.Render("modalBody", {hints: hints})
+                Templates.Render("modalBody", {hints: hints})
             );
             $(".modal-table").on("click", ".modal-button-filter", function(elem) {
                 var filter = $(elem.target).data("filter-append-value");
