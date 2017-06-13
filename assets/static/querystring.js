@@ -24,7 +24,7 @@ var QueryString = (function() {
 
         // If the "search" string exists, then build params from it
         if (urlQueryString) {
-            var keyRegex = new RegExp("([\?&])" + key + "[^&]*");
+            var keyRegex = new RegExp("([?&])" + key + "[^&]*");
 
             // If param exists already, update it
             if (urlQueryString.match(keyRegex) !== null) {
