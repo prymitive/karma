@@ -1,10 +1,28 @@
 {
     "data": [
         {
+            "comment": "Silenced server7",
+            "createdBy": "john@example.com",
+            "endsAt": "2063-01-01T00:00:00Z",
+            "id": "378eaa69-097d-41c4-a8c2-fe6568c3abfc",
+            "matchers": [
+                {
+                    "isRegex": false,
+                    "name": "instance",
+                    "value": "server7"
+                }
+            ],
+            "startsAt": "2017-06-21T20:00:30.102974561Z",
+            "status": {
+                "state": "active"
+            },
+            "updatedAt": "2017-06-21T20:00:30.102978028Z"
+        },
+        {
             "comment": "Silenced instance",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "3282f366-8362-4a0f-b7cb-1c4966dec0da",
+            "id": "0804764c-6163-4c64-b0a9-08feebe2db4b",
             "matchers": [
                 {
                     "isRegex": false,
@@ -12,17 +30,17 @@
                     "value": "web1"
                 }
             ],
-            "startsAt": "2017-06-10T02:51:26.336857241Z",
+            "startsAt": "2017-06-21T20:00:30.099033238Z",
             "status": {
                 "state": "active"
             },
-            "updatedAt": "2017-06-10T02:51:26.336887639Z"
+            "updatedAt": "2017-06-21T20:00:30.099037947Z"
         },
         {
             "comment": "Silenced Host_Down alerts in the dev cluster",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "d6984a93-a222-4dd9-8379-428b6db7e353",
+            "id": "168f139d-77e4-41d6-afb5-8fe2cfd0cc9d",
             "matchers": [
                 {
                     "isRegex": false,
@@ -35,11 +53,11 @@
                     "value": "dev"
                 }
             ],
-            "startsAt": "2017-06-10T02:51:26.342675638Z",
+            "startsAt": "2017-06-21T20:00:30.101324168Z",
             "status": {
                 "state": "active"
             },
-            "updatedAt": "2017-06-10T02:51:26.342684914Z"
+            "updatedAt": "2017-06-21T20:00:30.101327768Z"
         }
     ],
     "status": "success"

@@ -3,7 +3,7 @@
         "silences": [
             {
                 "comment": "Silenced instance",
-                "createdAt": "2017-06-03T01:43:27.549256427Z",
+                "createdAt": "2017-06-21T19:50:38.603387691Z",
                 "createdBy": "john@example.com",
                 "endsAt": "2063-01-01T00:00:00Z",
                 "id": 1,
@@ -18,7 +18,7 @@
             },
             {
                 "comment": "Silenced Host_Down alerts in the dev cluster",
-                "createdAt": "2017-06-03T01:43:27.562645513Z",
+                "createdAt": "2017-06-21T19:50:38.627448522Z",
                 "createdBy": "john@example.com",
                 "endsAt": "2063-01-01T00:00:00Z",
                 "id": 2,
@@ -35,9 +35,24 @@
                     }
                 ],
                 "startsAt": "2017-02-18T01:34:34Z"
+            },
+            {
+                "comment": "Silenced server7",
+                "createdAt": "2017-06-21T19:50:38.649598373Z",
+                "createdBy": "john@example.com",
+                "endsAt": "2063-01-01T00:00:00Z",
+                "id": 3,
+                "matchers": [
+                    {
+                        "isRegex": false,
+                        "name": "instance",
+                        "value": "server7"
+                    }
+                ],
+                "startsAt": "2017-02-18T01:34:34Z"
             }
         ],
-        "totalSilences": 2
+        "totalSilences": 3
     },
     "status": "success"
 }
