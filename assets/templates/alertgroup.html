@@ -111,7 +111,7 @@
     Silenced by:
   </small>
   <% _.each(alert.silencedBy, function(silenceID) { %>
-    <div>
+    <div class="silence-block">
       <% var silence = silences[silenceID] %>
       <% if (silence) { %>
         <blockquote class="silence-comment">
