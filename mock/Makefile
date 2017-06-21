@@ -3,9 +3,9 @@ DOCKER_IMAGE := prom/alertmanager
 DOCKER_ARGS  := --name $(DOCKER_NAME) --rm -d -p 9093:9093 -v $(CURDIR)/alertmanager.yml:/etc/alertmanager/config.yml
 
 # list of Alertmanager versions to generate mock files for
-VERSIONS := 0.4.0 0.4.1 0.4.2 0.5.0 0.5.1 0.6.0 0.6.1 0.6.2 0.7.0 0.7.1
+VERSIONS := 0.4.0 0.4.1 0.4.2 0.5.0 0.5.1 0.6.0 0.6.2 0.7.0 0.7.1
 
-%/.ok:
+%/.ok: livemock.py
 	$(eval VERSION := $(word 1, $(subst /, ,$@)))
 	@echo "Generating mock files for Alertmanager $(VERSION)"
 	@docker pull $(DOCKER_IMAGE):v$(VERSION) > /dev/null
