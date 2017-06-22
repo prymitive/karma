@@ -38,6 +38,21 @@ requests.post('http://localhost:9093/api/v1/silences',
       "comment": "Silenced Host_Down alerts in the dev cluster"
     })
 
+requests.post('http://localhost:9093/api/v1/silences',
+    json={
+      "matchers": [
+        {
+          "name": "instance",
+          "value": "server7",
+          "isRegex": False
+        }
+      ],
+      "startsAt": "2017-02-18T01:34:34Z",
+      "endsAt": "2063-01-01T00:00:00Z",
+      "createdBy": "john@example.com",
+      "comment": "Silenced server7"
+    })
+
 for i in xrange(0, 5):
     requests.post('http://localhost:9093/api/v1/alerts',
         json=[{

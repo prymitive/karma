@@ -59,8 +59,8 @@ func TestGetSilences(t *testing.T) {
 		if err != nil {
 			t.Errorf("GetSilences(%s) failed: %s", version, err.Error())
 		}
-		if len(silences) != 2 {
-			t.Errorf("Got %d silences, expected %d", len(silences), 2)
+		if len(silences) != 3 {
+			t.Errorf("Got %d silences, expected %d", len(silences), 3)
 		}
 	}
 }

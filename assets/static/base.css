@@ -236,6 +236,9 @@ input#filter:focus {
   margin-top: 6px;
   display: block;
 }
+.silence-block {
+  margin-bottom: 2px;
+}
 
 .incident .panel {
     margin-bottom: 0;
