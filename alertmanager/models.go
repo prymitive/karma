@@ -1,9 +1,7 @@
 package alertmanager
 
 import (
-	"crypto/sha1"
 	"fmt"
-	"io"
 	"sort"
 	"sync"
 	"time"
@@ -13,7 +11,6 @@ import (
 	"github.com/cloudflare/unsee/models"
 	"github.com/cloudflare/unsee/transform"
 	"github.com/cloudflare/unsee/transport"
-	"github.com/cnf/structhash"
 	"github.com/prometheus/client_golang/prometheus"
 
 	log "github.com/Sirupsen/logrus"
@@ -107,10 +104,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	uniqueGroups := map[string]models.AlertGroup{}
 	uniqueAlerts := map[string]map[string]models.Alert{}
 	for _, ag := range groups {
-		agIDHasher := sha1.New()
-		io.WriteString(agIDHasher, ag.Receiver)
-		io.WriteString(agIDHasher, fmt.Sprintf("%x", structhash.Sha1(ag.Labels, 1)))
-		agID := fmt.Sprintf("%x", agIDHasher.Sum(nil))
+		agID := ag.LabelsFingerprint()
 		if _, found := uniqueGroups[agID]; !found {
 			uniqueGroups[agID] = models.AlertGroup{
 				Receiver: ag.Receiver,

@@ -4,6 +4,8 @@ import (
 	"crypto/sha1"
 	"fmt"
 	"io"
+
+	"github.com/cnf/structhash"
 )
 
 // AlertList is flat list of UnseeAlert objects
@@ -37,6 +39,15 @@ type AlertGroup struct {
 	ID         string            `json:"id"`
 	Hash       string            `json:"hash"`
 	StateCount map[string]int    `json:"stateCount"`
+}
+
+// LabelsFingerprint is a checksum of this AlertGroup labels and the receiver
+// it should be unique for each AlertGroup
+func (ag AlertGroup) LabelsFingerprint() string {
+	agIDHasher := sha1.New()
+	io.WriteString(agIDHasher, ag.Receiver)
+	io.WriteString(agIDHasher, fmt.Sprintf("%x", structhash.Sha1(ag.Labels, 1)))
+	return fmt.Sprintf("%x", agIDHasher.Sum(nil))
 }
 
 // ContentFingerprint is a checksum of all alerts in the group
