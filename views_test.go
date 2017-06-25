@@ -12,6 +12,7 @@ import (
 	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/mock"
 	"github.com/cloudflare/unsee/models"
+	"github.com/cloudflare/unsee/slices"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -19,15 +20,6 @@ import (
 
 	"gopkg.in/jarcoal/httpmock.v1"
 )
-
-func stringInSlice(stringArray []string, value string) bool {
-	for _, s := range stringArray {
-		if s == value {
-			return true
-		}
-	}
-	return false
-}
 
 func mockConfig() {
 	log.SetLevel(log.ErrorLevel)
@@ -48,7 +40,7 @@ func ginTestEngine() *gin.Engine {
 func TestIndex(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()
-	req, _ := http.NewRequest("GET", "/", nil)
+	req, _ := http.NewRequest("GET", "/?q=", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
 	if resp.Code != http.StatusOK {
@@ -181,7 +173,7 @@ func TestValidateAllAlerts(t *testing.T) {
 		json.Unmarshal(resp.Body.Bytes(), &ur)
 		for _, ag := range ur.AlertGroups {
 			for _, a := range ag.Alerts {
-				if !stringInSlice(models.AlertStateList, a.State) {
+				if !slices.StringInSlice(models.AlertStateList, a.State) {
 					t.Errorf("Invalid alert status '%s', not in %v", a.State, models.AlertStateList)
 				}
 				if a.InhibitedBy == nil {

@@ -4,6 +4,8 @@ import (
 	"os"
 	"testing"
 	"time"
+
+	"github.com/cloudflare/unsee/slices"
 )
 
 type flagNameTest struct {
@@ -26,15 +28,6 @@ func TestMakeFlagName(t *testing.T) {
 	}
 }
 
-func stringInSlice(stringArray []string, value string) bool {
-	for _, s := range stringArray {
-		if s == value {
-			return true
-		}
-	}
-	return false
-}
-
 func TestReadConfig(t *testing.T) {
 	os.Setenv("ALERTMANAGER_TTL", "1s")
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
@@ -47,13 +40,13 @@ func TestReadConfig(t *testing.T) {
 	if Config.Debug != true {
 		t.Errorf("Config.Debug is %v with env DEBUG=true set", Config.Debug)
 	}
-	if !stringInSlice(Config.ColorLabelsStatic, "a") {
+	if !slices.StringInSlice(Config.ColorLabelsStatic, "a") {
 		t.Errorf("Config.ColorLabelsStatic is missing value 'a': %v", Config.ColorLabelsStatic)
 	}
-	if !stringInSlice(Config.ColorLabelsStatic, "bb") {
+	if !slices.StringInSlice(Config.ColorLabelsStatic, "bb") {
 		t.Errorf("Config.ColorLabelsStatic is missing value 'bb': %v", Config.ColorLabelsStatic)
 	}
-	if !stringInSlice(Config.ColorLabelsStatic, "ccc") {
+	if !slices.StringInSlice(Config.ColorLabelsStatic, "ccc") {
 		t.Errorf("Config.ColorLabelsStatic is missing value 'ccc': %v", Config.ColorLabelsStatic)
 	}
 	if Config.Port != 8080 {

@@ -10,6 +10,7 @@ import (
 	"github.com/cloudflare/unsee/alertmanager"
 	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/models"
+	"github.com/cloudflare/unsee/slices"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -19,15 +20,6 @@ var (
 	// needed for serving favicon from binary assets
 	faviconFileServer = http.FileServer(newBinaryFileSystem("static"))
 )
-
-func boolInSlice(boolArray []bool, value bool) bool {
-	for _, s := range boolArray {
-		if s == value {
-			return true
-		}
-	}
-	return false
-}
 
 func noCache(c *gin.Context) {
 	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
@@ -151,7 +143,7 @@ func alerts(c *gin.Context) {
 					}
 				}
 			}
-			if !validFilters || (boolInSlice(results, true) && !boolInSlice(results, false)) {
+			if !validFilters || (slices.BoolInSlice(results, true) && !slices.BoolInSlice(results, false)) {
 				matches++
 				agCopy.Alerts = append(agCopy.Alerts, alert)
 

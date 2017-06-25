@@ -4,6 +4,7 @@ import (
 	"sort"
 
 	"github.com/cloudflare/unsee/models"
+	"github.com/cloudflare/unsee/slices"
 )
 
 // DedupAlerts will collect alert groups from all defined Alertmanager
@@ -91,7 +92,7 @@ func DedupAutocomplete() []models.Autocomplete {
 			h, found := uniqueAutocomplete[hint.Value]
 			if found {
 				for _, token := range hint.Tokens {
-					if !stringInSlice(h.Tokens, token) {
+					if !slices.StringInSlice(h.Tokens, token) {
 						h.Tokens = append(h.Tokens, token)
 					}
 				}

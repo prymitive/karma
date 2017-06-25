@@ -1,6 +1,10 @@
 package transform
 
-import "net/url"
+import (
+	"net/url"
+
+	"github.com/cloudflare/unsee/slices"
+)
 
 // list of URI schema which we turn into links in the UI
 var schemes = []string{
@@ -20,7 +24,7 @@ func DetectLinks(sourceAnnotations map[string]string) (map[string]string, map[st
 		u, err := url.Parse(v)
 		if err != nil {
 			annotations[k] = v
-		} else if stringInSlice(schemes, u.Scheme) {
+		} else if slices.StringInSlice(schemes, u.Scheme) {
 			links[k] = v
 		} else {
 			annotations[k] = v
