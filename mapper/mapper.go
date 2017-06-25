@@ -2,6 +2,7 @@ package mapper
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/cloudflare/unsee/models"
 )
@@ -15,7 +16,7 @@ var (
 // for a specific range of Alertmanager versions
 type AlertMapper interface {
 	IsSupported(version string) bool
-	GetAlerts() ([]models.AlertGroup, error)
+	GetAlerts(uri string, timeout time.Duration) ([]models.AlertGroup, error)
 }
 
 // RegisterAlertMapper allows to register mapper implementing alert data
@@ -39,7 +40,7 @@ func GetAlertMapper(version string) (AlertMapper, error) {
 type SilenceMapper interface {
 	Release() string
 	IsSupported(version string) bool
-	GetSilences() ([]models.Silence, error)
+	GetSilences(uri string, timeout time.Duration) ([]models.Silence, error)
 }
 
 // RegisterSilenceMapper allows to register mapper implementing silence data

@@ -3,7 +3,7 @@ VERSION := $(shell git describe --tags --always --dirty='-dev')
 
 # Alertmanager instance used when running locally, points to mock data
 MOCK_PATH        := $(CURDIR)/mock/0.7.1
-ALERTMANAGER_URI := file://$(MOCK_PATH)
+ALERTMANAGER_URI := "localfs:file://$(MOCK_PATH) local2:file://$(CURDIR)/mock/0.7.0"
 # Listen port when running locally
 PORT := 8080
 

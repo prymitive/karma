@@ -9,7 +9,6 @@ import (
 	"time"
 
 	"github.com/blang/semver"
-	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/mapper"
 	"github.com/cloudflare/unsee/models"
 	"github.com/cloudflare/unsee/transport"
@@ -48,16 +47,16 @@ func (m SilenceMapper) IsSupported(version string) bool {
 
 // GetSilences will make a request to Alertmanager API and parse the response
 // It will only return silences or error (if any)
-func (m SilenceMapper) GetSilences() ([]models.Silence, error) {
+func (m SilenceMapper) GetSilences(uri string, timeout time.Duration) ([]models.Silence, error) {
 	silences := []models.Silence{}
 	resp := silenceAPISchema{}
 
-	url, err := transport.JoinURL(config.Config.AlertmanagerURI, "api/v1/silences")
+	url, err := transport.JoinURL(uri, "api/v1/silences")
 	if err != nil {
 		return silences, err
 	}
 
-	err = transport.ReadJSON(url, config.Config.AlertmanagerTimeout, &resp)
+	err = transport.ReadJSON(url, timeout, &resp)
 	if err != nil {
 		return silences, err
 	}

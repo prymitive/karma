@@ -5,9 +5,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudflare/unsee/alertmanager"
 	"github.com/cloudflare/unsee/filters"
 	"github.com/cloudflare/unsee/models"
-	"github.com/cloudflare/unsee/store"
+
+	log "github.com/Sirupsen/logrus"
 )
 
 type filterTest struct {
@@ -433,14 +435,27 @@ var tests = []filterTest{
 }
 
 func TestFilters(t *testing.T) {
+	log.SetLevel(log.ErrorLevel)
+
+	err := alertmanager.NewAlertmanager("test", "http://localhost", time.Second)
+	am := alertmanager.GetAlertmanagerByName("test")
+	if err != nil {
+		t.Error(err)
+	}
 	for _, ft := range tests {
+		alert := models.Alert(ft.Alert)
 		if &ft.Silence != nil {
-			store.Store.SetSilences(map[string]models.Silence{
-				ft.Silence.ID: ft.Silence,
-			})
-		} else {
-			store.Store.SetSilences(map[string]models.Silence{})
+			alert.Alertmanager = []models.AlertmanagerUpstream{
+				models.AlertmanagerUpstream{
+					Name: am.Name,
+					URI:  am.URI,
+					Silences: map[string]models.Silence{
+						ft.Silence.ID: ft.Silence,
+					},
+				},
+			}
 		}
+
 		f := filters.NewFilter(ft.Expression)
 		if f == nil {
 			t.Errorf("[%s] No filter found", ft.Expression)
@@ -452,7 +467,7 @@ func TestFilters(t *testing.T) {
 			t.Errorf("[%s] GetIsValid() returned %#v while %#v was expected", ft.Expression, f.GetIsValid(), ft.IsValid)
 		}
 		if f.GetIsValid() {
-			m := f.Match(&ft.Alert, 0)
+			m := f.Match(&alert, 0)
 			if m != ft.IsMatch {
 				j, _ := json.Marshal(ft.Alert)
 				s, _ := json.Marshal(ft.Silence)

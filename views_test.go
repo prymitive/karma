@@ -31,9 +31,10 @@ func stringInSlice(stringArray []string, value string) bool {
 
 func mockConfig() {
 	log.SetLevel(log.ErrorLevel)
-	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	os.Setenv("ALERTMANAGER_URI", "default:http://localhost")
 	os.Setenv("COLOR_LABELS_UNIQUE", "alertname")
 	config.Config.Read()
+	setupUpstreams()
 }
 
 func ginTestEngine() *gin.Engine {
@@ -108,7 +109,7 @@ func mockAlerts(version string) {
 	mock.RegisterURL("http://localhost/api/v1/silences", version, "silences")
 	mock.RegisterURL("http://localhost/api/v1/alerts/groups", version, "alerts/groups")
 
-	PullFromAlertmanager()
+	pullFromAlertmanager()
 }
 
 func TestAlerts(t *testing.T) {
@@ -126,22 +127,19 @@ func TestAlerts(t *testing.T) {
 		ur := models.AlertsResponse{}
 		json.Unmarshal(resp.Body.Bytes(), &ur)
 		if len(ur.Filters) != 3 {
-			t.Errorf("[%s] No filters in response", version)
+			t.Errorf("[%s] Got %d filter(s) in response, expected %d", version, len(ur.Filters), 3)
 		}
 		if len(ur.Colors) != 1 {
-			t.Errorf("[%s] No colors in response", version)
-		}
-		if len(ur.Silences) != 1 {
-			t.Errorf("[%s] No silences in response", version)
+			t.Errorf("[%s] Got %d color(s) in response, expected %d", version, len(ur.Colors), 1)
 		}
 		if len(ur.AlertGroups) != 1 {
-			t.Errorf("[%s] No alerts in response", version)
+			t.Errorf("[%s] Got %d alert(s) in response, expected %d", version, len(ur.AlertGroups), 1)
 		}
 		if ur.Version == "" {
-			t.Errorf("[%s] No version in response", version)
+			t.Errorf("[%s] Empty version in response", version)
 		}
 		if ur.Timestamp == "" {
-			t.Errorf("[%s] No timestamp in response", version)
+			t.Errorf("[%s] Empty timestamp in response", version)
 		}
 		if ur.Error != "" {
 			t.Errorf("[%s] Error in response: %s", version, ur.Error)

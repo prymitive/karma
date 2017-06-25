@@ -110,10 +110,9 @@
   <small class="silence-comment-title text-muted">
     Silenced by:
   </small>
-  <% _.each(alert.silencedBy, function(silenceID) { %>
-    <div class="silence-block">
-      <% var silence = silences[silenceID] %>
-      <% if (silence) { %>
+  <% _.each(alert.alertmanager, function(am) { %>
+    <% _.each(am.silences, function(silence) { %>
+      <div class="silence-block">
         <blockquote class="silence-comment">
           <% if (silence.jiraURL) { %>
             <a href="<%= silence.jiraURL %>" target="_blank">
@@ -124,6 +123,9 @@
             <%- silence.comment %>
           <% } %>
           <br/>
+          <div class="label label-list label-primary">
+            <%- am.name %>
+          </div>
           <div class="label label-list label-default label-age label-ts cursor-help"
              data-toggle="tooltip"
              data-placement="top"
@@ -159,8 +161,8 @@
             </cite>
           </footer>
         </blockquote>
-      <% } %>
-    </div>
+      </div>
+    <% }) %>
   <% }) %>
 </script>
 
@@ -261,7 +263,7 @@
               <%= Templates.Render('alertGroupLabels', {alert: alert, group: group}) %>
               <%= Templates.Render('alertGroupElements', {alert: alert}) %>
               <% if (alert.silencedBy.length) { %>
-                <%= Templates.Render('alertGroupSilence', {alert: alert, silences: silences}) %>
+                <%= Templates.Render('alertGroupSilence', {alert: alert}) %>
               <% } %>
             </div>
           </div>

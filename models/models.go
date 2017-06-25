@@ -1,6 +1,11 @@
 package models
 
-import "time"
+import (
+	"crypto/sha1"
+	"fmt"
+	"io"
+	"time"
+)
 
 // Silence is vanilla silence + some additional attributes
 // Unsee adds JIRA support, it can extract JIRA IDs from comments
@@ -40,6 +45,15 @@ var AlertStateList = []string{
 	AlertStateSuppressed,
 }
 
+// AlertmanagerUpstream describes the Alertmanager instance alert was collected
+// from
+type AlertmanagerUpstream struct {
+	Name string `json:"name"`
+	URI  string `json:"uri"`
+	// all silences matching current alert in this upstream
+	Silences map[string]Silence `json:"silences"`
+}
+
 // Alert is vanilla alert + some additional attributes
 // unsee extends an alert object with:
 // * Links map, it's generated from annotations if annotation value is an url
@@ -56,9 +70,11 @@ type Alert struct {
 	SilencedBy   []string          `json:"silencedBy"`
 	InhibitedBy  []string          `json:"inhibitedBy"`
 	// unsee fields
-	Receiver    string            `json:"receiver"`
-	Links       map[string]string `json:"links"`
-	Fingerprint string            `json:"-"`
+	Alertmanager []AlertmanagerUpstream `json:"alertmanager"`
+	Receiver     string                 `json:"receiver"`
+	Links        map[string]string      `json:"links"`
+	ID           string                 `json:"-"`
+	Fingerprint  string                 `json:"-"`
 }
 
 // IsSilenced will return true if alert should be considered silenced
@@ -109,6 +125,15 @@ type AlertGroup struct {
 	StateCount map[string]int    `json:"stateCount"`
 }
 
+// ContentFingerprint is a checksum of all alerts in the group
+func (ag AlertGroup) ContentFingerprint() string {
+	h := sha1.New()
+	for _, alert := range ag.Alerts {
+		io.WriteString(h, alert.Fingerprint)
+	}
+	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
 // Filter holds returned data on any filter passed by the user as part of the query
 type Filter struct {
 	Text    string `json:"text"`
@@ -139,15 +164,14 @@ type LabelsCountMap map[string]map[string]int
 
 // AlertsResponse is the structure of JSON response UI will use to get alert data
 type AlertsResponse struct {
-	Status      string             `json:"status"`
-	Error       string             `json:"error,omitempty"`
-	Timestamp   string             `json:"timestamp"`
-	Version     string             `json:"version"`
-	AlertGroups []AlertGroup       `json:"groups"`
-	Silences    map[string]Silence `json:"silences"`
-	Colors      LabelsColorMap     `json:"colors"`
-	Filters     []Filter           `json:"filters"`
-	Counters    LabelsCountMap     `json:"counters"`
+	Status      string         `json:"status"`
+	Error       string         `json:"error,omitempty"`
+	Timestamp   string         `json:"timestamp"`
+	Version     string         `json:"version"`
+	AlertGroups []AlertGroup   `json:"groups"`
+	Colors      LabelsColorMap `json:"colors"`
+	Filters     []Filter       `json:"filters"`
+	Counters    LabelsCountMap `json:"counters"`
 }
 
 // Autocomplete is the structure of autocomplete object for filter hints

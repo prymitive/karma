@@ -1,149 +1,37 @@
 package main
 
 import (
-	"crypto/sha1"
-	"fmt"
-	"io"
 	"runtime"
-	"sort"
+	"sync"
 
 	"github.com/cloudflare/unsee/alertmanager"
-	"github.com/cloudflare/unsee/config"
-	"github.com/cloudflare/unsee/models"
-	"github.com/cloudflare/unsee/store"
-	"github.com/cloudflare/unsee/transform"
-	"github.com/cnf/structhash"
 
 	log "github.com/Sirupsen/logrus"
-	"github.com/prometheus/client_golang/prometheus"
 )
 
-// PullFromAlertmanager will try to fetch latest alerts and silences
-// from Alertmanager API, it's called by Ticker timer
-func PullFromAlertmanager() {
+func pullFromAlertmanager() {
 	// always flush cache once we're done
 	defer apiCache.Flush()
 
 	log.Info("Pulling latest alerts and silences from Alertmanager")
-	v := alertmanager.GetVersion()
 
-	silences, err := alertmanager.GetSilences(v)
-	if err != nil {
-		log.Error(err.Error())
-		errorLock.Lock()
-		alertManagerError = err.Error()
-		errorLock.Unlock()
-		metricAlertmanagerErrors.With(prometheus.Labels{"endpoint": "silences"}).Inc()
-		return
-	}
+	upstreams := alertmanager.GetAlertmanagers()
+	wg := sync.WaitGroup{}
+	wg.Add(len(upstreams))
 
-	alertGroups, err := alertmanager.GetAlerts(v)
-	if err != nil {
-		log.Error(err.Error())
-		errorLock.Lock()
-		alertManagerError = err.Error()
-		errorLock.Unlock()
-		metricAlertmanagerErrors.With(prometheus.Labels{"endpoint": "alerts"}).Inc()
-		return
-	}
-
-	log.Infof("Detecting JIRA links in silences (%d)", len(silences))
-	silenceStore := make(map[string]models.Silence)
-	for _, silence := range silences {
-		silence.JiraID, silence.JiraURL = transform.DetectJIRAs(&silence)
-		silenceStore[silence.ID] = silence
-	}
-
-	log.Infof("Updating list of stored silences (%d)", len(silenceStore))
-	store.Store.SetSilences(silenceStore)
-
-	alertStore := []models.AlertGroup{}
-	colorStore := make(models.LabelsColorMap)
-
-	acMap := map[string]models.Autocomplete{}
-
-	for _, state := range models.AlertStateList {
-		metricAlerts.With(prometheus.Labels{"state": state}).Set(0)
-	}
-
-	log.Infof("Deduplicating alert groups (%d)", len(alertGroups))
-	uniqueGroups := map[string]models.AlertGroup{}
-	uniqueAlerts := map[string]map[string]models.Alert{}
-	for _, ag := range alertGroups {
-		agIDHasher := sha1.New()
-		io.WriteString(agIDHasher, ag.Receiver)
-		io.WriteString(agIDHasher, fmt.Sprintf("%x", structhash.Sha1(ag.Labels, 1)))
-		agID := fmt.Sprintf("%x", agIDHasher.Sum(nil))
-		if _, found := uniqueGroups[agID]; !found {
-			uniqueGroups[agID] = models.AlertGroup{
-				Receiver: ag.Receiver,
-				Labels:   ag.Labels,
-				ID:       agID,
+	for _, upstream := range upstreams {
+		go func(am *alertmanager.Alertmanager) {
+			log.Infof("[%s] Collecting alerts and silences", am.Name)
+			err := am.Pull()
+			if err != nil {
+				log.Errorf("[%s] %s", am.Name, err)
 			}
-		}
-		for _, alert := range ag.Alerts {
-			// generate alert fingerprint from a raw, unaltered alert object
-			aID := fmt.Sprintf("%x", structhash.Sha1(alert, 1))
-			if _, found := uniqueAlerts[agID]; !found {
-				uniqueAlerts[agID] = map[string]models.Alert{}
-			}
-			if _, found := uniqueAlerts[agID][aID]; !found {
-				alert.Fingerprint = aID
-				uniqueAlerts[agID][aID] = alert
-			}
-		}
+			wg.Done()
+		}(upstream)
 	}
 
-	log.Infof("Processing unique alert groups (%d)", len(uniqueGroups))
-	for _, ag := range uniqueGroups {
-		// used to generate group content hash
-		agHasher := sha1.New()
+	wg.Wait()
 
-		alerts := models.AlertList{}
-		for _, alert := range uniqueAlerts[ag.ID] {
-
-			alert.Annotations, alert.Links = transform.DetectLinks(alert.Annotations)
-			alert.Labels = transform.StripLables(config.Config.StripLabels, alert.Labels)
-
-			io.WriteString(agHasher, alert.Fingerprint) // alert group hasher
-
-			transform.ColorLabel(colorStore, "@receiver", alert.Receiver)
-			for k, v := range alert.Labels {
-				transform.ColorLabel(colorStore, k, v)
-			}
-			alerts = append(alerts, alert)
-
-			// update internal metrics
-			metricAlerts.With(prometheus.Labels{"state": alert.State}).Inc()
-		}
-
-		for _, hint := range transform.BuildAutocomplete(alerts) {
-			acMap[hint.Value] = hint
-		}
-
-		sort.Sort(&alerts)
-		ag.Alerts = alerts
-
-		// Hash is a checksum of all alerts, used to tell when any alert in the group changed
-		ag.Hash = fmt.Sprintf("%x", agHasher.Sum(nil))
-
-		alertStore = append(alertStore, ag)
-	}
-
-	log.Infof("Merging autocomplete data (%d)", len(acMap))
-	acStore := []models.Autocomplete{}
-	for _, hint := range acMap {
-		acStore = append(acStore, hint)
-	}
-
-	errorLock.Lock()
-	alertManagerError = ""
-	errorLock.Unlock()
-
-	metricAlertGroups.Set(float64(len(alertStore)))
-
-	log.Infof("Updating list of stored alert groups (%d)", len(alertStore))
-	store.Store.Update(alertStore, colorStore, acStore)
 	log.Info("Pull completed")
 	runtime.GC()
 }
@@ -153,7 +41,7 @@ func Tick() {
 	for {
 		select {
 		case <-ticker.C:
-			PullFromAlertmanager()
+			pullFromAlertmanager()
 		}
 	}
 }
