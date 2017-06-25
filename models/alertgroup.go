@@ -24,7 +24,7 @@ func (a AlertList) Less(i, j int) bool {
 	if a[i].StartsAt.Before(a[j].StartsAt) {
 		return false
 	}
-	return a[i].Fingerprint < a[j].Fingerprint
+	return a[i].ContentFingerprint() < a[j].ContentFingerprint()
 }
 
 // AlertGroup is vanilla Alertmanager group, but alerts are flattened
@@ -43,7 +43,7 @@ type AlertGroup struct {
 func (ag AlertGroup) ContentFingerprint() string {
 	h := sha1.New()
 	for _, alert := range ag.Alerts {
-		io.WriteString(h, alert.Fingerprint)
+		io.WriteString(h, alert.ContentFingerprint())
 	}
 	return fmt.Sprintf("%x", h.Sum(nil))
 }

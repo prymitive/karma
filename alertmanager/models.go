@@ -128,7 +128,6 @@ func (am *Alertmanager) pullAlerts(version string) error {
 				uniqueAlerts[agID] = map[string]models.Alert{}
 			}
 			if _, found := uniqueAlerts[agID][fp]; !found {
-				alert.Fingerprint = fp
 				uniqueAlerts[agID][fp] = alert
 			}
 		}

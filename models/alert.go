@@ -1,6 +1,11 @@
 package models
 
-import "time"
+import (
+	"fmt"
+	"time"
+
+	"github.com/cnf/structhash"
+)
 
 // AlertStateUnprocessed means that Alertmanager notify didn't yet process it
 // and AM doesn't know if alert is active or suppressed
@@ -24,7 +29,6 @@ var AlertStateList = []string{
 // * Links map, it's generated from annotations if annotation value is an url
 //   it's pulled out of annotation map and returned under links field,
 //   unsee UI used this to show links differently than other annotations
-// * Fingerprint, which is a sha1 of the entire alert
 type Alert struct {
 	Annotations  map[string]string `json:"annotations"`
 	Labels       map[string]string `json:"labels"`
@@ -39,7 +43,11 @@ type Alert struct {
 	Receiver     string                 `json:"receiver"`
 	Links        map[string]string      `json:"links"`
 	ID           string                 `json:"-"`
-	Fingerprint  string                 `json:"-"`
+}
+
+// ContentFingerprint is a checksum computed from entire alert object
+func (a Alert) ContentFingerprint() string {
+	return fmt.Sprintf("%x", structhash.Sha1(a, 1))
 }
 
 // IsSilenced will return true if alert should be considered silenced
