@@ -76,3 +76,65 @@ func TestUnseeAlertListSort(t *testing.T) {
 		t.Errorf("%d sort failures for %d checks", failures, iterations*len(al))
 	}
 }
+
+type agFPTest struct {
+	ag          models.AlertGroup
+	fingerprint string
+}
+
+var agFPTests = []agFPTest{
+	// empty group fingerprint
+	agFPTest{
+		ag:          models.AlertGroup{},
+		fingerprint: "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+	},
+	// different Receiver shouldn't change content fingerprint
+	agFPTest{
+		ag: models.AlertGroup{
+			Receiver: "default",
+		},
+		fingerprint: "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+	},
+	// different StateCount shouldn't change content fingerprint
+	agFPTest{
+		ag: models.AlertGroup{
+			Receiver:   "default",
+			StateCount: map[string]int{"default": 0},
+		},
+		fingerprint: "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+	},
+	// different Labels shouldn't change content fingerprint
+	agFPTest{
+		ag: models.AlertGroup{
+			Receiver:   "default",
+			Labels:     map[string]string{"foo": "bar"},
+			StateCount: map[string]int{"default": 0},
+		},
+		fingerprint: "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+	},
+	// different set of alerts should change content fingerprint
+	agFPTest{
+		ag: models.AlertGroup{
+			Receiver: "default",
+			Labels:   map[string]string{"foo": "bar"},
+			Alerts: models.AlertList{
+				models.Alert{
+					Labels:      map[string]string{"foo1": "bar"},
+					State:       models.AlertStateActive,
+					Fingerprint: "xxx",
+				},
+			},
+			StateCount: map[string]int{"default": 0},
+		},
+		fingerprint: "b60d121b438a380c343d5ec3c2037564b82ffef3",
+	},
+}
+
+func TestAlertGroupContentFingerprint(t *testing.T) {
+	for _, testCase := range agFPTests {
+		if testCase.ag.ContentFingerprint() != testCase.fingerprint {
+			t.Errorf("Invalid AlertGroup ContentFingerprint(), expected '%s', got '%s', AlertGroup: %v",
+				testCase.fingerprint, testCase.ag.ContentFingerprint(), testCase.ag)
+		}
+	}
+}
