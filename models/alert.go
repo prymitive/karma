@@ -42,7 +42,12 @@ type Alert struct {
 	Alertmanager []AlertmanagerUpstream `json:"alertmanager"`
 	Receiver     string                 `json:"receiver"`
 	Links        map[string]string      `json:"links"`
-	ID           string                 `json:"-"`
+}
+
+// LabelsFingerprint is a checksum computed only from labels which should be
+// unique for every alert
+func (a Alert) LabelsFingerprint() string {
+	return fmt.Sprintf("%x", structhash.Sha1(a.Labels, 1))
 }
 
 // ContentFingerprint is a checksum computed from entire alert object

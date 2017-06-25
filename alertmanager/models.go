@@ -119,16 +119,12 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			}
 		}
 		for _, alert := range ag.Alerts {
-			// generate alert id from labels
-			aID := fmt.Sprintf("%x", structhash.Sha1(alert.Labels, 1))
-			alert.ID = aID
-			// generate alert fingerprint from a raw, unaltered alert object
-			fp := fmt.Sprintf("%x", structhash.Sha1(alert, 1))
 			if _, found := uniqueAlerts[agID]; !found {
 				uniqueAlerts[agID] = map[string]models.Alert{}
 			}
-			if _, found := uniqueAlerts[agID][fp]; !found {
-				uniqueAlerts[agID][fp] = alert
+			alertCFP := alert.ContentFingerprint()
+			if _, found := uniqueAlerts[agID][alertCFP]; !found {
+				uniqueAlerts[agID][alertCFP] = alert
 			}
 		}
 

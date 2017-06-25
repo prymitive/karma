@@ -114,7 +114,7 @@ var agFPTests = []agFPTest{
 			},
 			StateCount: map[string]int{"default": 0},
 		},
-		fingerprint: "c4a76e2d59f7ef3d49b20da06c4a89f63fdf9e3f",
+		fingerprint: "954a7283c2cda4179b63499465d82a313d21180f",
 	},
 }
 

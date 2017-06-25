@@ -27,14 +27,15 @@ func DedupAlerts() []models.AlertGroup {
 		alerts := map[string]models.Alert{}
 		for _, ag := range agList {
 			for _, alert := range ag.Alerts {
-				a, found := alerts[alert.ID]
+				alertLFP := alert.LabelsFingerprint()
+				a, found := alerts[alertLFP]
 				if found {
 					for _, am := range alert.Alertmanager {
 						a.Alertmanager = append(a.Alertmanager, am)
-						alerts[alert.ID] = a
+						alerts[alertLFP] = a
 					}
 				} else {
-					alerts[alert.ID] = alert
+					alerts[alertLFP] = alert
 				}
 			}
 		}
