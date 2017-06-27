@@ -228,9 +228,12 @@ input#filter:focus {
 .silence-comment {
     font-size: smaller;
     margin-bottom: 0;
-    border-left-color: #18bc9c;
     padding-top: 5px;
     padding-bottom: 5px;
+}
+blockquote.silence-comment {
+  border-left-color: #18bc9c;
+  border-radius: 4px;
 }
 .silence-comment-title {
   margin-top: 6px;
@@ -238,6 +241,7 @@ input#filter:focus {
 }
 .silence-block {
   margin-bottom: 2px;
+  padding: 0;
 }
 
 .incident .panel {

@@ -112,7 +112,7 @@
   </small>
   <% _.each(alert.alertmanager, function(am) { %>
     <% _.each(am.silences, function(silence) { %>
-      <div class="silence-block">
+      <div class="silence-block well">
         <blockquote class="silence-comment">
           <% if (silence.jiraURL) { %>
             <a href="<%= silence.jiraURL %>" target="_blank">
