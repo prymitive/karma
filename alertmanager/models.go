@@ -28,6 +28,7 @@ type Alertmanager struct {
 	silences     map[string]models.Silence
 	colors       models.LabelsColorMap
 	autocomplete []models.Autocomplete
+	lastError    string
 }
 
 func (am *Alertmanager) detectVersion() string {
@@ -201,6 +202,7 @@ func (am *Alertmanager) Pull() error {
 
 	err := am.pullSilences(version)
 	if err != nil {
+		am.setError(err.Error())
 		metricAlertmanagerErrors.With(prometheus.Labels{
 			"alertmanager": am.Name,
 			"endpoint":     "silences",
@@ -210,6 +212,7 @@ func (am *Alertmanager) Pull() error {
 
 	err = am.pullAlerts(version)
 	if err != nil {
+		am.setError(err.Error())
 		metricAlertmanagerErrors.With(prometheus.Labels{
 			"alertmanager": am.Name,
 			"endpoint":     "alerts",
@@ -217,6 +220,7 @@ func (am *Alertmanager) Pull() error {
 		return err
 	}
 
+	am.lastError = ""
 	return nil
 }
 
@@ -267,4 +271,18 @@ func (am *Alertmanager) Autocomplete() []models.Autocomplete {
 	autocomplete := make([]models.Autocomplete, len(am.autocomplete))
 	copy(autocomplete, am.autocomplete)
 	return autocomplete
+}
+
+func (am *Alertmanager) setError(err string) {
+	am.lock.Lock()
+	defer am.lock.Unlock()
+
+	am.lastError = err
+}
+
+func (am *Alertmanager) Error() string {
+	am.lock.RLock()
+	defer am.lock.RUnlock()
+
+	return am.lastError
 }

@@ -12,7 +12,8 @@ var Unsee = (function() {
 
     var selectors = {
         refreshButton: "#refresh",
-        errors: "#errors"
+        errors: "#errors",
+        instanceErrors: "#instance-errors",
     };
 
     var init = function() {
@@ -123,47 +124,94 @@ var Unsee = (function() {
                 Counter.Success();
                 if (needsUpgrade(resp.version)) {
                     upgrade();
-                } else if (resp.error) {
-                    Counter.Unknown();
-                    renderError("updateError", {
-                        error: "Backend error",
-                        message: resp.error,
-                        lastTs: Watchdog.GetLastUpdate()
-                    });
-                    Unsee.WaitForNextReload();
                 } else {
-                    // update_alerts() is cpu heavy so it will block browser from applying css changes
-                    // inject tiny delay between addClass() above and update_alerts() so that the browser
-                    // have a chance to reflect those updates
-                    setTimeout(function() {
-                        try {
-                            Summary.Update({});
-                            Filters.ReloadBadges(resp.filters);
-                            Colors.Update(resp.colors);
-                            Alerts.Update(resp);
-                            updateCompleted();
-                            Watchdog.Pong(moment(resp.timestamp));
-                            Unsee.WaitForNextReload();
-                            if (!Watchdog.IsFatal()) {
-                                $(selectors.errors).html("");
-                                $(selectors.errors).hide("");
-                            }
-                        } catch (err) {
-                            Counter.Unknown();
-                            handleError(err);
-                            Unsee.WaitForNextReload();
+                    if (resp.upstreams.counters.total === 0) {
+                        // no upstream to use fail hard
+                        Counter.Unknown();
+                        $(selectors.instanceErrors).html("");
+                        renderError("updateError", {
+                            error: "Configuration error",
+                            messages: [ "No valid Alertmanager server configuration found" ],
+                            lastTs: Watchdog.GetLastUpdate()
+                        });
+                        Unsee.WaitForNextReload();
+                    } else if (resp.upstreams.counters.healthy > 0 ) {
+                        // we have some healthy upstreams, check for failed ones
+                        if (resp.upstreams.counters.failed > 0) {
+                            var instances = [];
+                            resp.upstreams.instances.sort(function(a, b){
+                                if(a.name < b.name) return -1;
+                                if(a.name > b.name) return 1;
+                                return 0;
+                            });
+                            $.each(resp.upstreams.instances, function(i, instance){
+                                if (instance.error !== "") {
+                                    instances.push(instance);
+                                }
+                            });
+                            $(selectors.instanceErrors).html(
+                                Templates.Render("instanceError", {
+                                    instances: instances
+                                })
+                            );
+                        } else {
+                            $(selectors.instanceErrors).html("");
                         }
-                    }, 50);
+                        // update_alerts() is cpu heavy so it will block browser from applying css changes
+                        // inject tiny delay between addClass() above and update_alerts() so that the browser
+                        // have a chance to reflect those updates
+                        setTimeout(function() {
+                            try {
+                                Summary.Update({});
+                                Filters.ReloadBadges(resp.filters);
+                                Colors.Update(resp.colors);
+                                Alerts.Update(resp);
+                                updateCompleted();
+                                Watchdog.Pong(moment(resp.timestamp));
+                                Unsee.WaitForNextReload();
+                                if (!Watchdog.IsFatal()) {
+                                    $(selectors.errors).html("");
+                                    $(selectors.errors).hide("");
+                                }
+                            } catch (err) {
+                                Counter.Unknown();
+                                handleError(err);
+                                Unsee.WaitForNextReload();
+                            }
+                        }, 50);
+                    } else {
+                        // we have upstreams but none is working, fail hard
+                        Counter.Unknown();
+                        $(selectors.instanceErrors).html("");
+                        var messages = [];
+                        resp.upstreams.instances.sort(function(a, b){
+                            if(a.name < b.name) return -1;
+                            if(a.name > b.name) return 1;
+                            return 0;
+                        });
+                        $.each(resp.upstreams.instances, function(i, instance) {
+                            if (instance.error !== "") {
+                                messages.push(instance.name + ": " + instance.error);
+                            }
+                        });
+                        renderError("updateError", {
+                            error: "Configuration error",
+                            messages: messages,
+                            lastTs: Watchdog.GetLastUpdate()
+                        });
+                        Unsee.WaitForNextReload();
+                    }
                 }
             },
             error: function() {
                 Counter.Unknown();
+                $(selectors.instanceErrors).html("");
                 // if fatal error was already triggered we have error message
                 // so don't add new one
                 if (!Watchdog.IsFatal()) {
                     renderError("updateError", {
                         error: "Backend error",
-                        message: "AJAX request failed",
+                        messages: [ "AJAX request failed" ],
                         lastTs: Watchdog.GetLastUpdate()
                     });
                 }

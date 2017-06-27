@@ -90,11 +90,9 @@ func alerts(c *gin.Context) {
 	resp.Status = "success"
 	resp.Timestamp = string(ts)
 	resp.Version = version
+	resp.Upstreams = getUpstreams()
 
-	// update error field, needs a lock
-	// FIXME resp.Error = string(alertManagerError)
-
-	if resp.Error != "" {
+	if resp.Upstreams.Counters.Failed > 0 {
 		apiCache.Flush()
 	}
 
