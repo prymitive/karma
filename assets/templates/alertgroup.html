@@ -79,12 +79,18 @@
     <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@state', value: alert.state, text: '@state: ' + alert.state}}) %>
     <% if (alert.silencedBy.length == 0) { %>
       <% var labels = [] %>
+      <% var alertmanagers = [] %>
       <% _.each(Alerts.SortMapByKey(alert.labels), function(label) { %>
         <% labels.push(label.key + '=' + label.value) %>
       <% }) %>
+      <% _.each(alert.alertmanager, function(alertmanager){ %>
+        <% alertmanagers.push(alertmanager.name) %>
+      <% }) %>
+      <% alertmanagers.sort() %>
       <span class="label label-list label-success cursor-pointer"
             type="button"
             data-labels="<%= labels.join(',') %>"
+            data-alertmanagers="<%= alertmanagers.join(',') %>"
             data-alertname="<%= alert.labels.alertname %>"
             data-toggle="modal"
             data-target="#silenceModal">

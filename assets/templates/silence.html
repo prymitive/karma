@@ -1,6 +1,29 @@
 <script type="application/json" id="silence-form">
 <div id="newSilenceAlert" class="alert alert-danger hidden" role="alert"></div>
 <form id="newSilenceForm">
+  <div>
+    <label class="control-label">Alertmanager</label>
+    <select class="selectpicker silence-alertmanager-picker"
+            data-style="silence-label-select"
+            data-icon-base="fa"
+            data-tick-icon="fa-check"
+            data-width="fit"
+            data-select-all-text="<i class='fa fa-check-square-o'></i>"
+            data-deselect-all-text="<i class='fa fa-square-o'></i>"
+            data-multiple-separator=" "
+            <% if (Object.keys(alertmanagers).length > 1) { %>data-actions-box="true"<% } %>
+            multiple
+            required>
+      <% _.each(alertmanagers, function(am) { %>
+          <option <% if (_.contains(selectedAlertmanagers, am.name)) { %>selected="selected"<% } %>
+                  value="<%= am.uri %>"
+                  data-content="<span class='label label-list label-primary'><%- am.name %></span>">
+            <%- am.name %>
+          </option>
+      <% }) %>
+    </select>
+  </div>
+
   <label class="control-label">Labels to match</label>
   <table class="table table-condensed silence-label-selects">
     <% if (Object.keys(labels).length > 0) { %>
@@ -15,6 +38,13 @@
             <select class="selectpicker silence-label-picker"
                     data-label-key="<%= label.key %>"
                     data-style="silence-label-select"
+                    data-icon-base="fa"
+                    data-tick-icon="fa-check"
+                    data-width="fit"
+                    data-select-all-text="<i class='fa fa-check-square-o'></i>"
+                    data-deselect-all-text="<i class='fa fa-square-o'></i>"
+                    data-multiple-separator=" "
+                    data-selected-text-format="count > 1"
                     <% if (Object.keys(label.value).length > 10) { %>data-live-search="true"<% } %>
                     <% if (Object.keys(label.value).length > 1) { %>data-actions-box="true"<% } %>
                     multiple>

@@ -39,12 +39,6 @@ func index(c *gin.Context) {
 		defaultUsed = false
 	}
 
-	// FIXME
-	//silencesAPI, err := transport.JoinURL(config.Config.AlertmanagerURI, "api/v1/silences")
-	//if err != nil {
-	//	log.Errorf("Can't generate silences API URL: %s", err)
-	//}
-
 	c.HTML(http.StatusOK, "templates/index.html", gin.H{
 		"Version":           version,
 		"SentryDSN":         config.Config.SentryPublicDSN,
@@ -56,7 +50,6 @@ func index(c *gin.Context) {
 		"DefaultUsed":       defaultUsed,
 		"StaticColorLabels": strings.Join(config.Config.ColorLabelsStatic, " "),
 		"WebPrefix":         config.Config.WebPrefix,
-		"SilencesApi":       "FIXME",
 	})
 
 	log.Infof("[%s] %s %s took %s", c.ClientIP(), c.Request.Method, c.Request.RequestURI, time.Since(start))
