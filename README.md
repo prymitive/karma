@@ -63,22 +63,22 @@ To finally compile `unsee` the binary run:
 ## Running
 
 `unsee` is configured via environment variables or command line flags.
-Environment variable `ALERTMANAGER_URI` or cli flag `-alertmanager.uri` is the
+Environment variable `ALERTMANAGER_URIS` or cli flag `-alertmanager.uris` is the
 only option required to run. See [Environment variables](#environment-variables)
 section below for the full list of supported environment variables. Examples:
 
-    ALERTMANAGER_URI=https://alertmanager.example.com unsee
-    unsee -alertmanager.uri https://alertmanager.example.com
+    ALERTMANAGER_URIS=default:https://alertmanager.example.com unsee
+    unsee -alertmanager.uris default:https://alertmanager.example.com
 
 There is a make target which will compile and run unsee:
 
     make run
 
 By default it will listen on port `8080` and Alertmanager mock data will be
-used, to override Alertmanager URI set `ALERTMANAGER_URI` and/or `PORT` make
+used, to override Alertmanager URI set `ALERTMANAGER_URIS` and/or `PORT` make
 variables. Example:
 
-    make PORT=5000 ALERTMANAGER_URI=https://alertmanager.example.com run
+    make PORT=5000 ALERTMANAGER_URIS=default:https://alertmanager.example.com run
 
 ## Docker
 
@@ -96,14 +96,14 @@ Images are built automatically for:
 
 To start a release image run:
 
-  docker run -e ALERTMANAGER_URI=https://alertmanager.example.com cloudflare/unsee:vX.Y.Z
+  docker run -e ALERTMANAGER_URIS=default:https://alertmanager.example.com cloudflare/unsee:vX.Y.Z
 
 Latest release details can be found on
 [GitHub](https://github.com/cloudflare/unsee/releases).
 
 To start docker image build from lastet master branch run:
 
-  docker run -e ALERTMANAGER_URI=https://alertmanager.example.com cloudflare/unsee:latest
+  docker run -e ALERTMANAGER_URIS=default:https://alertmanager.example.com cloudflare/unsee:latest
 
 Note that latest master branch might have bugs or breaking changes. Using
 release images is strongly recommended for any production use.
@@ -121,7 +121,7 @@ This will build a Docker image from sources.
 Will run locally built Docker image. Same defaults and override variables
 apply as with `make run`. Example:
 
-    make PORT=5000 ALERTMANAGER_URI=https://alertmanager.example.com run-docker
+    make PORT=5000 ALERTMANAGER_URIS=default:https://alertmanager.example.com run-docker
 
 ## Environment variables
 
@@ -159,13 +159,18 @@ The UI has a watchdog that tracks the timestamp of the last pull. If the UI
 does not receive updates for more than 15 minutes it will print an error and
 reload the page.
 
-#### ALERTMANAGER_URI
+#### ALERTMANAGER_URIS
 
-URI of the Alertmanager instance, unsee will use it to pull alert groups and
-silences. Endpoints in use:
+List of Alertmanager instances URI, unsee will use it to pull alert groups and
+silences from all defined instances and deduplicate all alerts.
+API endpoints in use:
 
 * ${ALERTMANAGER_URI}/api/v1/alerts/groups
 * ${ALERTMANAGER_URI}/api/v1/silences
+
+Expected syntax:
+
+    ${name1}:${uri} ${name2}:{uri}
 
 Supported URI schemes:
 
@@ -178,11 +183,11 @@ target.
 
 Example:
 
-    ALERTMANAGER_URI=https://alertmanager.example.com
+    ALERTMANAGER_URIS="prod:https://prod.alertmanager.example.com staging:https://staging.alertmanager.example.com"
 
-This option can also be set using `-alertmanager.uri` flag. Example:
+This option can also be set using `-alertmanager.uris` flag. Example:
 
-    $ unsee -alertmanager.uri https://alertmanager.example.com
+    $ unsee -alertmanager.uris "prod:https://prod.alertmanager.example.com staging:https://staging.alertmanager.example.com"
 
 This variable is required and there is no default value.
 

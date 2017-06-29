@@ -30,7 +30,7 @@ func TestMakeFlagName(t *testing.T) {
 
 func TestReadConfig(t *testing.T) {
 	os.Setenv("ALERTMANAGER_TTL", "1s")
-	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	os.Setenv("ALERTMANAGER_URIS", "default:http://localhost")
 	os.Setenv("DEBUG", "true")
 	os.Setenv("COLOR_LABELS_STATIC", "a bb ccc")
 	Config.Read()

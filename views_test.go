@@ -23,7 +23,7 @@ import (
 
 func mockConfig() {
 	log.SetLevel(log.ErrorLevel)
-	os.Setenv("ALERTMANAGER_URI", "default:http://localhost")
+	os.Setenv("ALERTMANAGER_URIS", "default:http://localhost")
 	os.Setenv("COLOR_LABELS_UNIQUE", "alertname")
 	config.Config.Read()
 	setupUpstreams()

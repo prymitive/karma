@@ -53,7 +53,7 @@ func setupRouter(router *gin.Engine) {
 }
 
 func setupUpstreams() {
-	for _, s := range config.Config.AlertmanagerURI {
+	for _, s := range config.Config.AlertmanagerURIs {
 		z := strings.SplitN(s, ":", 2)
 		if len(z) != 2 {
 			log.Fatalf("Invalid Alertmanager URI '%s', expected format 'name:uri'", s)
