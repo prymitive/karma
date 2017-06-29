@@ -80,15 +80,15 @@ run-docker: docker-image
 lint: .build/deps.ok
 	@golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
 ifneq ($(JSHINT),)
-	@$(JSHINT) assets/static/*.js
+	$(JSHINT) assets/static/*.js
 endif
 ifneq ($(ESLINT),)
-	@$(ESLINT) --quiet assets/static/*.js
+	$(ESLINT) --quiet assets/static/*.js
 endif
 
 .PHONY: test
 test: lint bindata_assetfs.go
-	@go test -cover `go list ./... | grep -v /vendor/`
+	go test -cover `go list ./... | grep -v /vendor/`
 
 .build/vendor.ok:
 	go get -u github.com/kardianos/govendor
