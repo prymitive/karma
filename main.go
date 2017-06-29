@@ -57,6 +57,7 @@ func setupUpstreams() {
 		z := strings.SplitN(s, ":", 2)
 		if len(z) != 2 {
 			log.Fatalf("Invalid Alertmanager URI '%s', expected format 'name:uri'", s)
+			continue
 		}
 		name := z[0]
 		uri := z[1]
@@ -74,6 +75,10 @@ func main() {
 	apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 
 	setupUpstreams()
+
+	if len(alertmanager.GetAlertmanagers()) == 0 {
+		log.Fatal("No valid Alertmanager URIs defined")
+	}
 
 	// before we start try to fetch data from Alertmanager
 	log.Infof("Initial Alertmanager query, this can delay startup up to %s", 3*config.Config.AlertmanagerTimeout)
