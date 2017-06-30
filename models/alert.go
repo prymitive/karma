@@ -34,12 +34,12 @@ type Alert struct {
 	Labels       map[string]string `json:"labels"`
 	StartsAt     time.Time         `json:"startsAt"`
 	EndsAt       time.Time         `json:"endsAt"`
-	GeneratorURL string            `json:"generatorURL"`
+	GeneratorURL string            `json:"-"`
 	State        string            `json:"state"`
 	SilencedBy   []string          `json:"silencedBy"`
 	InhibitedBy  []string          `json:"inhibitedBy"`
 	// unsee fields
-	Alertmanager []AlertmanagerUpstream `json:"alertmanager"`
+	Alertmanager []AlertmanagerInstance `json:"alertmanager"`
 	Receiver     string                 `json:"receiver"`
 	Links        map[string]string      `json:"links"`
 }

@@ -445,8 +445,8 @@ func TestFilters(t *testing.T) {
 	for _, ft := range tests {
 		alert := models.Alert(ft.Alert)
 		if &ft.Silence != nil {
-			alert.Alertmanager = []models.AlertmanagerUpstream{
-				models.AlertmanagerUpstream{
+			alert.Alertmanager = []models.AlertmanagerInstance{
+				models.AlertmanagerInstance{
 					Name: am.Name,
 					URI:  am.URI,
 					Silences: map[string]models.Silence{

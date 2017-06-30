@@ -1,10 +1,12 @@
 package models
 
-// AlertmanagerUpstream describes the Alertmanager instance alert was collected
+// AlertmanagerInstance describes the Alertmanager instance alert was collected
 // from
-type AlertmanagerUpstream struct {
+type AlertmanagerInstance struct {
 	Name string `json:"name"`
 	URI  string `json:"uri"`
+	// Source links to alert source for given alertmanager instance
+	Source string `json:"source"`
 	// all silences matching current alert in this upstream
 	Silences map[string]Silence `json:"silences"`
 }

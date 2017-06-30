@@ -65,16 +65,16 @@
   <% var cls_indicator = 'incident-indicator-danger' %>
   <% if (alert.state === "suppressed") { cls_indicator = 'incident-indicator-success' } %>
   <div>
-    <% if (alert.generatorURL) { %>
-      <a class="label label-list label-default"
-         href="<%= alert.generatorURL %>"
+    <% _.each(alert.alertmanager, function(am){ %>
+      <a class="label label-list label-primary"
+         href="<%= am.source %>"
          target="_blank"
          title="Go to the alert source"
          data-toggle="tooltip"
          data-placement="top">
-        <i class="fa fa-code"/>
+         <%- am.name %>
       </a>
-    <% } %>
+    <% }) %>
     <% var attrs = Alerts.GetLabelAttrs("@state", alert.state) %>
     <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@state', value: alert.state, text: '@state: ' + alert.state}}) %>
     <% if (alert.silencedBy.length == 0) { %>
@@ -129,9 +129,11 @@
             <%- silence.comment %>
           <% } %>
           <br/>
-          <div class="label label-list label-primary">
-            <%- am.name %>
-          </div>
+          <% if (alert.alertmanager.length > 1) { %>
+            <div class="label label-list label-primary">
+              <%- am.name %>
+            </div>
+          <% } %>
           <div class="label label-list label-default label-age label-ts cursor-help"
              data-toggle="tooltip"
              data-placement="top"

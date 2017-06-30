@@ -140,10 +140,11 @@ func (am *Alertmanager) pullAlerts(version string) error {
 					silences[silenceID] = silence
 				}
 			}
-			alert.Alertmanager = []models.AlertmanagerUpstream{
-				models.AlertmanagerUpstream{
+			alert.Alertmanager = []models.AlertmanagerInstance{
+				models.AlertmanagerInstance{
 					Name:     am.Name,
 					URI:      am.URI,
+					Source:   alert.GeneratorURL,
 					Silences: silences,
 				},
 			}
