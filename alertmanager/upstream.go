@@ -21,6 +21,12 @@ func NewAlertmanager(name, uri string, timeout time.Duration) error {
 		return fmt.Errorf("Alertmanager upstream '%s' already exist", name)
 	}
 
+	for _, am := range upstreams {
+		if am.URI == uri {
+			return fmt.Errorf("Alertmanager upstream '%s' already collects from '%s'", am.Name, am.URI)
+		}
+	}
+
 	// initialize metrics
 	metricAlertmanagerErrors.With(prometheus.Labels{
 		"alertmanager": name,
