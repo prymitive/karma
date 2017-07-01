@@ -21,12 +21,17 @@ import (
 	"gopkg.in/jarcoal/httpmock.v1"
 )
 
+var upstreamSetup = false
+
 func mockConfig() {
 	log.SetLevel(log.ErrorLevel)
 	os.Setenv("ALERTMANAGER_URIS", "default:http://localhost")
 	os.Setenv("COLOR_LABELS_UNIQUE", "alertname")
 	config.Config.Read()
-	setupUpstreams()
+	if !upstreamSetup {
+		upstreamSetup = true
+		setupUpstreams()
+	}
 }
 
 func ginTestEngine() *gin.Engine {
