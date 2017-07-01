@@ -61,7 +61,10 @@ func setupUpstreams() {
 		}
 		name := z[0]
 		uri := z[1]
-		alertmanager.NewAlertmanager(name, uri, config.Config.AlertmanagerTimeout)
+		err := alertmanager.NewAlertmanager(name, uri, config.Config.AlertmanagerTimeout)
+		if err != nil {
+			log.Fatalf("Failed to configure Alertmanager '%s' with URI '%s': %s", name, uri, err)
+		}
 	}
 }
 
