@@ -17,7 +17,7 @@ _RSS to email_ notifications, like [Blogtrottr](https://blogtrottr.com/).
 ## Supported Alertmanager versions
 
 Alertmanager's API isn't stable yet and can change between releases.
-unsee currently supports Alertmanager `0.4`, `0.5` and `0.6`.
+unsee currently supports Alertmanager `0.4`, `0.5`, `0.6` and `0.7`.
 
 ## Security
 
