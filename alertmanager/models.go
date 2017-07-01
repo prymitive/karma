@@ -153,6 +153,8 @@ func (am *Alertmanager) pullAlerts(version string) error {
 				models.AlertmanagerInstance{
 					Name:     am.Name,
 					URI:      am.URI,
+					StartsAt: alert.StartsAt,
+					EndsAt:   alert.EndsAt,
 					Source:   alert.GeneratorURL,
 					Silences: silences,
 				},

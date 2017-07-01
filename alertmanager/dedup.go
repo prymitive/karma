@@ -31,9 +31,22 @@ func DedupAlerts() []models.AlertGroup {
 				alertLFP := alert.LabelsFingerprint()
 				a, found := alerts[alertLFP]
 				if found {
+					// if we already have an alert with the same fp then just append
+					// alertmanager instances to it, this way we end up with all instances
+					// for each unique alert merged into a single alert with all
+					// alertmanager instances attached to it
 					for _, am := range alert.Alertmanager {
 						a.Alertmanager = append(a.Alertmanager, am)
 					}
+					// set startsAt to the earliest value we have
+					if alert.StartsAt.Before(a.StartsAt) {
+						a.StartsAt = alert.StartsAt
+					}
+					// set endsAt to the oldest value we have
+					if alert.EndsAt.After(a.EndsAt) {
+						a.EndsAt = alert.EndsAt
+					}
+					// update map
 					alerts[alertLFP] = a
 				} else {
 					alerts[alertLFP] = models.Alert(alert)

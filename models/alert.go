@@ -37,9 +37,10 @@ type Alert struct {
 	State       string            `json:"state"`
 	// those are not exposed in JSON, Alertmanager specific value will be in kept
 	// in the Alertmanager slice
-	GeneratorURL string   `json:"-"`
-	SilencedBy   []string `json:"-"`
-	InhibitedBy  []string `json:"-"`
+	// skip those when generating alert fingerprint too
+	GeneratorURL string   `json:"-" hash:"-"`
+	SilencedBy   []string `json:"-" hash:"-"`
+	InhibitedBy  []string `json:"-" hash:"-"`
 	// unsee fields
 	Alertmanager []AlertmanagerInstance `json:"alertmanager"`
 	Receiver     string                 `json:"receiver"`

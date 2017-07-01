@@ -1,10 +1,16 @@
 package models
 
+import "time"
+
 // AlertmanagerInstance describes the Alertmanager instance alert was collected
 // from
 type AlertmanagerInstance struct {
 	Name string `json:"name"`
 	URI  string `json:"uri"`
+	// timestamp collected from this instance, those on the alert itself
+	// will be calculated min/max values
+	StartsAt time.Time `json:"startsAt"`
+	EndsAt   time.Time `json:"endsAt"`
 	// Source links to alert source for given alertmanager instance
 	Source string `json:"source"`
 	// all silences matching current alert in this upstream
