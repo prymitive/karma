@@ -64,7 +64,7 @@
 <script type="application/json" id="alert-group-elements">
   <% var cls_indicator = 'incident-indicator-danger' %>
   <% if (alert.state === "suppressed") { cls_indicator = 'incident-indicator-success' } %>
-  <div>
+  <div class="alert-static-elements">
     <% _.each(alert.alertmanager, function(am){ %>
       <a class="label label-list label-primary"
          href="<%= am.source %>"
@@ -77,7 +77,7 @@
     <% }) %>
     <% var attrs = Alerts.GetLabelAttrs("@state", alert.state) %>
     <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@state', value: alert.state, text: '@state: ' + alert.state}}) %>
-    <% if (alert.silencedBy.length == 0) { %>
+    <% if (alert.state != "suppressed") { %>
       <% var labels = [] %>
       <% var alertmanagers = [] %>
       <% _.each(Alerts.SortMapByKey(alert.labels), function(label) { %>
@@ -113,9 +113,6 @@
 </script>
 
 <script type="application/json" id="alert-group-silence">
-  <small class="silence-comment-title text-muted">
-    Silenced by:
-  </small>
   <% _.each(alert.alertmanager, function(am) { %>
     <% _.each(am.silences, function(silence) { %>
       <div class="silence-block well">
@@ -270,7 +267,7 @@
               <%= Templates.Render('alertGroupAnnotations', {alert: alert}) %>
               <%= Templates.Render('alertGroupLabels', {alert: alert, group: group}) %>
               <%= Templates.Render('alertGroupElements', {alert: alert}) %>
-              <% if (alert.silencedBy.length) { %>
+              <% if (alert.state == "suppressed") { %>
                 <%= Templates.Render('alertGroupSilence', {alert: alert}) %>
               <% } %>
             </div>

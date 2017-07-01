@@ -9,6 +9,7 @@ type AlertmanagerInstance struct {
 	Source string `json:"source"`
 	// all silences matching current alert in this upstream
 	Silences map[string]Silence `json:"silences"`
+	// TODO also export InhibitedBy here if it ever becomes needed
 }
 
 // AlertmanagerAPIStatus describes the Alertmanager instance overall health

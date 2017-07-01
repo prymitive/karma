@@ -495,3 +495,7 @@ a[aria-expanded=false] .fa-chevron-down {
   line-height: 1.42857143;
   display: inline-block;
 }
+
+.alert-static-elements {
+  margin-bottom: 4px;
+}

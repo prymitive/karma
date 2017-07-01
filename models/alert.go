@@ -30,14 +30,16 @@ var AlertStateList = []string{
 //   it's pulled out of annotation map and returned under links field,
 //   unsee UI used this to show links differently than other annotations
 type Alert struct {
-	Annotations  map[string]string `json:"annotations"`
-	Labels       map[string]string `json:"labels"`
-	StartsAt     time.Time         `json:"startsAt"`
-	EndsAt       time.Time         `json:"endsAt"`
-	GeneratorURL string            `json:"-"`
-	State        string            `json:"state"`
-	SilencedBy   []string          `json:"silencedBy"`
-	InhibitedBy  []string          `json:"inhibitedBy"`
+	Annotations map[string]string `json:"annotations"`
+	Labels      map[string]string `json:"labels"`
+	StartsAt    time.Time         `json:"startsAt"`
+	EndsAt      time.Time         `json:"endsAt"`
+	State       string            `json:"state"`
+	// those are not exposed in JSON, Alertmanager specific value will be in kept
+	// in the Alertmanager slice
+	GeneratorURL string   `json:"-"`
+	SilencedBy   []string `json:"-"`
+	InhibitedBy  []string `json:"-"`
 	// unsee fields
 	Alertmanager []AlertmanagerInstance `json:"alertmanager"`
 	Receiver     string                 `json:"receiver"`
