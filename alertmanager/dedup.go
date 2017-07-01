@@ -36,7 +36,7 @@ func DedupAlerts() []models.AlertGroup {
 					}
 					alerts[alertLFP] = a
 				} else {
-					alerts[alertLFP] = alert
+					alerts[alertLFP] = models.Alert(alert)
 				}
 			}
 		}

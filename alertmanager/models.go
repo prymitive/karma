@@ -61,6 +61,15 @@ func (am *Alertmanager) detectVersion() string {
 	return ver.Data.VersionInfo.Version
 }
 
+func (am *Alertmanager) clearData() {
+	am.lock.Lock()
+	am.alertGroups = []models.AlertGroup{}
+	am.silences = map[string]models.Silence{}
+	am.colors = models.LabelsColorMap{}
+	am.autocomplete = []models.Autocomplete{}
+	am.lock.Unlock()
+}
+
 func (am *Alertmanager) pullSilences(version string) error {
 	mapper, err := mapper.GetSilenceMapper(version)
 	if err != nil {
@@ -203,6 +212,7 @@ func (am *Alertmanager) Pull() error {
 
 	err := am.pullSilences(version)
 	if err != nil {
+		am.clearData()
 		am.setError(err.Error())
 		metricAlertmanagerErrors.With(prometheus.Labels{
 			"alertmanager": am.Name,
@@ -213,6 +223,7 @@ func (am *Alertmanager) Pull() error {
 
 	err = am.pullAlerts(version)
 	if err != nil {
+		am.clearData()
 		am.setError(err.Error())
 		metricAlertmanagerErrors.With(prometheus.Labels{
 			"alertmanager": am.Name,
