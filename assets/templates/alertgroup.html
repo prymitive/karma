@@ -267,9 +267,7 @@
               <%= Templates.Render('alertGroupAnnotations', {alert: alert}) %>
               <%= Templates.Render('alertGroupLabels', {alert: alert, group: group}) %>
               <%= Templates.Render('alertGroupElements', {alert: alert}) %>
-              <% if (alert.state == "suppressed") { %>
-                <%= Templates.Render('alertGroupSilence', {alert: alert}) %>
-              <% } %>
+              <%= Templates.Render('alertGroupSilence', {alert: alert}) %>
             </div>
           </div>
         <% } %>
