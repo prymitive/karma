@@ -79,10 +79,16 @@ var Silence = (function() {
     };
 
     var silenceFormJSONRender = function() {
-        var d = "curl $AlertmanagerURI" +
-          "\n    -X POST --data " +
-          JSON.stringify(silenceFormData(), undefined, 2);
-        $("#silenceJSONBlob").html(d);
+        var d = [];
+        $.each(silenceFormAlertmanagerURL(), function(i, uri) {
+            if (i > 0) {
+                d.push("\n");
+            }
+            d.push("curl " + uri);
+        });
+        d.push("\n  -X POST --data ");
+        d.push(JSON.stringify(silenceFormData(), undefined, 2));
+        $("#silenceJSONBlob").html(d.join(""));
     };
 
     var silenceFormUpdateDuration = function(event) {
