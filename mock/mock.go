@@ -3,6 +3,8 @@ package mock
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
+	"path"
 	"path/filepath"
 	"runtime"
 
@@ -13,7 +15,7 @@ import (
 func GetAbsoluteMockPath(filename string, version string) string {
 	_, f, _, _ := runtime.Caller(0)
 	cwd := filepath.Dir(f)
-	return fmt.Sprintf("%s/%s/api/v1/%s", cwd, version, filename)
+	return path.Join(cwd, version, "api/v1", filename)
 }
 
 // RegisterURL for given url and return 200 status register mock http responder
@@ -42,7 +44,10 @@ func ListAllMocks() []string {
 	dirs := []string{}
 	for _, dirent := range dirents {
 		if dirent.IsDir() {
-			dirs = append(dirs, dirent.Name())
+			_, err := os.Stat(path.Join(cwd, dirent.Name(), "api"))
+			if err == nil {
+				dirs = append(dirs, dirent.Name())
+			}
 		}
 	}
 	return dirs
