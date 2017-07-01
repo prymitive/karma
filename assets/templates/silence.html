@@ -221,12 +221,36 @@
 </form>
 </script>
 
+<script type="application/json" id="silence-form-results">
+<table class="table">
+  <% _.each(alertmanagers, function(alertmanager) { %>
+    <tr>
+      <td>
+        <span class="label label-list label-primary">
+          <%- alertmanager.name %>
+        </span>
+      </td>
+      <td class="silence-post-result" data-uri="<%- alertmanager.uri %>">
+        <div class="text-center text-muted">
+          <i class="fa fa-refresh fa-spin"></i>
+        </div>
+      </td>
+    </tr>
+  <% }) %>
+</table>
+</script>
+
 <script type="application/json" id="silence-form-success">
-<div class="silence-result-icon text-center text-success">
+<p class="text-success">
   <i class="fa fa-check-circle"></i>
-</div>
-<p class="text-center">
-  Silence ID: <span class="text-success"><%- silenceID %></span>
+  <%- silenceID %>
+</p>
+</script>
+
+<script type="application/json" id="silence-form-error">
+<p class="text-danger">
+  <i class="fa fa-exclamation-circle"></i>
+  <%- error %>
 </p>
 </script>
 
@@ -240,11 +264,6 @@
 <p class="text-center">
   <%- error %>
 </p>
-</script>
-
-<script type="application/json" id="silence-form-error">
-<i class="fa fa-exclamation-circle"></i>
-<%- error %>
 </script>
 
 <script type="application/json" id="silence-form-loading">

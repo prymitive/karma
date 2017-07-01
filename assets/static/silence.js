@@ -132,9 +132,10 @@ var Silence = (function() {
     };
 
     var sendSilencePOST = function(url, payload) {
+        var elem = $(".silence-post-result[data-uri='" + url + "']");
         $.ajax({
             type: "POST",
-            url: url,
+            url: url + "/api/v1/silences",
             data: JSON.stringify(payload),
             error: function(xhr, textStatus, errorThrown) {
                 // default to whatever error text we can get
@@ -153,19 +154,18 @@ var Silence = (function() {
                 }
 
                 var errContent = Templates.Render("silenceFormError", {error: err});
-                $("#newSilenceAlert").html(errContent).removeClass("hidden");
+                $(elem).html(errContent);
             },
             success: function(data) {
                 // FIXME this is per instance now, so needs to be handled differently
                 if (data.status == "success") {
-                    $("#newSilenceAlert").addClass("hidden");
-                    $("#newSilenceForm").html(Templates.Render("silenceFormSuccess", {
+                    $(elem).html(Templates.Render("silenceFormSuccess", {
                         silenceID: data.data.silenceId
                     }));
                 } else {
                     var err = "Invalid response from Alertmanager API: " + JSON.stringify(data);
                     var errContent = Templates.Render("silenceFormError", {error: err});
-                    $("#newSilenceAlert").html(errContent).removeClass("hidden");
+                    $(elem).html(errContent);
                 }
             },
             dataType: "json"
@@ -292,8 +292,20 @@ var Silence = (function() {
                             $("#newSilenceAlert").html(errContent).removeClass("hidden");
                             return false;
                         }
+                        $("#newSilenceAlert").addClass("hidden");
 
-                        $.each(silenceFormAlertmanagerURL(), function(i, uri){
+                        var selectedAMURIs = silenceFormAlertmanagerURL();
+                        var selectedAMs = [];
+                        $.each(alertmanagers, function(i, am) {
+                            if ($.inArray(am.uri, selectedAMURIs) >= 0) {
+                                selectedAMs.push(am);
+                            }
+                        });
+                        modal.find(".modal-body").html(
+                            Templates.Render("silenceFormResults", {alertmanagers: selectedAMs})
+                        );
+
+                        $.each(selectedAMURIs, function(i, uri){
                             sendSilencePOST(uri, payload);
                         });
 
