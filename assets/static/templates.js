@@ -24,6 +24,7 @@ var Templates = (function() {
 
             // modal popup with silence form
             silenceForm: "#silence-form",
+            silenceFormValidationError: "#silence-form-validation-error",
             silenceFormResults: "#silence-form-results",
             silenceFormSuccess: "#silence-form-success",
             silenceFormError: "#silence-form-error",

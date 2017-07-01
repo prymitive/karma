@@ -288,7 +288,7 @@ var Silence = (function() {
                     $("#newSilenceForm").submit(function(event) {
                         var payload = silenceFormData();
                         if (payload.matchers.length === 0) {
-                            var errContent = Templates.Render("silenceFormError", {error: "Select at least on label"});
+                            var errContent = Templates.Render("silenceFormValidationError", {error: "Select at least on label"});
                             $("#newSilenceAlert").html(errContent).removeClass("hidden");
                             return false;
                         }
