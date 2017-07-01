@@ -158,11 +158,8 @@ func TestAlerts(t *testing.T) {
 				if len(a.Links) != 1 {
 					t.Errorf("Invalid number of links, got %d, expected 1, %v", len(a.Links), a)
 				}
-				if a.InhibitedBy == nil {
-					t.Errorf("InhibitedBy is nil, %v", a)
-				}
-				if a.SilencedBy == nil {
-					t.Errorf("SilencedBy is nil, %v", a)
+				if len(a.Alertmanager) == 0 {
+					t.Errorf("Alertmanager instance list is empty, %v", a)
 				}
 			}
 		}
@@ -187,11 +184,8 @@ func TestValidateAllAlerts(t *testing.T) {
 				if !slices.StringInSlice(models.AlertStateList, a.State) {
 					t.Errorf("Invalid alert status '%s', not in %v", a.State, models.AlertStateList)
 				}
-				if a.InhibitedBy == nil {
-					t.Errorf("InhibitedBy is nil, %v", a)
-				}
-				if a.SilencedBy == nil {
-					t.Errorf("SilencedBy is nil, %v", a)
+				if len(a.Alertmanager) == 0 {
+					t.Errorf("Alertmanager instance list is empty, %v", a)
 				}
 			}
 		}
