@@ -7,6 +7,7 @@ package v061
 
 import (
 	"errors"
+	"sort"
 	"time"
 
 	"github.com/blang/semver"
@@ -109,6 +110,8 @@ func (m AlertMapper) GetAlerts(uri string, timeout time.Duration) ([]models.Aler
 					InhibitedBy:  inhibitedBy,
 					SilencedBy:   silencedBy,
 				}
+				sort.Strings(a.InhibitedBy)
+				sort.Strings(a.SilencedBy)
 				alertList = append(alertList, a)
 			}
 			ug := models.AlertGroup{
