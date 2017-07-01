@@ -80,11 +80,10 @@
 
 <script type="application/json" id="instance-error">
   <% _.each(instances, function(instance) { %>
-    <div class="alert alert-warning" role="alert">
-      <strong>
-        <i class="fa fa-exclamation-circle"></i>
-        <%- instance.name %>:
-      </strong>
+    <div class="alert alert-warning text-center" role="alert">
+      <span class='label label-list label-primary'>
+        <%- instance.name %>
+      </span>
       <%- instance.error %>
     </div>
   <% }) %>

@@ -210,6 +210,11 @@ input#filter:focus {
     margin-right: 10px;
 }
 
+#instance-errors > .alert {
+  padding: 8px;
+  margin-bottom: 6px;
+}
+
 .panel-title {
     overflow: hidden;
 }
