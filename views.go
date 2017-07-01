@@ -85,10 +85,6 @@ func alerts(c *gin.Context) {
 	resp.Version = version
 	resp.Upstreams = getUpstreams()
 
-	if resp.Upstreams.Counters.Failed > 0 {
-		apiCache.Flush()
-	}
-
 	// use full URI (including query args) as cache key
 	cacheKey := c.Request.RequestURI
 
