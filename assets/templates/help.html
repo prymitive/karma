@@ -130,6 +130,31 @@
                 </thead>
                 <tbody>
                     <tr>
+                        <td id="help-alertmanager">
+                            <code>@alertmanager(= != =~ !~)$value</code>
+                        </td>
+                        <td>
+                            <p>Match alerts based on the Alertmanager instance name they were collected from.</p>
+                            <table class="table examples">
+                                <tbody>
+                                    <tr>
+                                        <td><span class="label label-info">@alertmanager=prod</span></td>
+                                        <td>Match alerts collected from Alertmanager instance named <code>prod</code>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">@alertmanager!=dev</span></td>
+                                        <td>Match alerts collected from Alertmanager instances except for the one named <code>dev</code>.</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="label label-info">@alertmanager=~prod</span></td>
+                                        <td>Match alerts collected from Alertmanager instances with names matching regular expression <code>.*prod.*</code>.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
                         <td id="help-receiver">
                             <code>@receiver(= != =~ !~)$value</code>
                         </td>

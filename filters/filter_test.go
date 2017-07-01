@@ -432,6 +432,42 @@ var tests = []filterTest{
 		Expression: "@inhibited=~false",
 		IsValid:    false,
 	},
+	filterTest{
+		Expression: "@alertmanager=test",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		IsMatch:    true,
+	},
+	filterTest{
+		Expression: "@alertmanager=abc",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@alertmanager=~tes",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		IsMatch:    true,
+	},
+	filterTest{
+		Expression: "@alertmanager=~000",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@alertmanager!=tes",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		IsMatch:    true,
+	},
+	filterTest{
+		Expression: "@alertmanager!~abc",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		IsMatch:    true,
+	},
 }
 
 func TestFilters(t *testing.T) {

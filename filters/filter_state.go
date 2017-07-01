@@ -37,7 +37,7 @@ func (filter *stateFilter) Match(alert *models.Alert, matches int) bool {
 	panic(e)
 }
 
-func newstateFilter() FilterT {
+func newStateFilter() FilterT {
 	f := stateFilter{}
 	return &f
 }
