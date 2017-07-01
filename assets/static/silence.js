@@ -176,11 +176,13 @@ var Silence = (function() {
     var setupSilenceForm = function() {
         var modal = $("#silenceModal");
         modal.on("show.bs.modal", function(event) {
+            var elem = $(event.relatedTarget);
+            // hide tooltip for button that triggers this modal
+            elem.find("[data-toggle]").tooltip("hide");
             Unsee.Pause();
             modal.find(".modal-body").html(
                 Templates.Render("silenceFormLoading", {})
             );
-            var elem = $(event.relatedTarget);
             var elemLabels = {};
             $.each(elem.data("labels").split(","), function(i, l) {
                 elemLabels[l.split("=")[0]] = l.split("=")[1];
