@@ -33,8 +33,8 @@ func DedupAlerts() []models.AlertGroup {
 				if found {
 					for _, am := range alert.Alertmanager {
 						a.Alertmanager = append(a.Alertmanager, am)
-						alerts[alertLFP] = a
 					}
+					alerts[alertLFP] = a
 				} else {
 					alerts[alertLFP] = alert
 				}
@@ -43,6 +43,10 @@ func DedupAlerts() []models.AlertGroup {
 		ag := models.AlertGroup(agList[0])
 		ag.Alerts = models.AlertList{}
 		for _, alert := range alerts {
+			// sort Alertmanager instances for every alert
+			sort.Slice(alert.Alertmanager, func(i, j int) bool {
+				return alert.Alertmanager[i].Name < alert.Alertmanager[j].Name
+			})
 			ag.Alerts = append(ag.Alerts, alert)
 		}
 		sort.Sort(ag.Alerts)
@@ -52,7 +56,9 @@ func DedupAlerts() []models.AlertGroup {
 
 	// sort alert groups so they are always returned in the same order
 	// use group ID which is unique and immutable
-	sort.Slice(dedupedGroups, func(i, j int) bool { return dedupedGroups[i].ID < dedupedGroups[j].ID })
+	sort.Slice(dedupedGroups, func(i, j int) bool {
+		return dedupedGroups[i].ID < dedupedGroups[j].ID
+	})
 
 	return dedupedGroups
 }
