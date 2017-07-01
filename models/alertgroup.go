@@ -26,7 +26,7 @@ func (a AlertList) Less(i, j int) bool {
 	if a[i].StartsAt.Before(a[j].StartsAt) {
 		return false
 	}
-	return a[i].ContentFingerprint() < a[j].ContentFingerprint()
+	return a[i].LabelsFingerprint() < a[j].LabelsFingerprint()
 }
 
 // AlertGroup is vanilla Alertmanager group, but alerts are flattened
