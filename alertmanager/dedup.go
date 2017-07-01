@@ -50,6 +50,10 @@ func DedupAlerts() []models.AlertGroup {
 		dedupedGroups = append(dedupedGroups, ag)
 	}
 
+	// sort alert groups so they are always returned in the same order
+	// use group ID which is unique and immutable
+	sort.Slice(dedupedGroups, func(i, j int) bool { return dedupedGroups[i].ID < dedupedGroups[j].ID })
+
 	return dedupedGroups
 }
 
