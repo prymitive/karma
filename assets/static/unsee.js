@@ -130,8 +130,8 @@ var Unsee = (function() {
                         Counter.Unknown();
                         $(selectors.instanceErrors).html("");
                         renderError("updateError", {
-                            error: "Configuration error",
-                            messages: [ "No valid Alertmanager server configuration found" ],
+                            error: "Fatal error",
+                            messages: [ "No working Alertmanager server found" ],
                             lastTs: Watchdog.GetLastUpdate()
                         });
                         Unsee.WaitForNextReload();
@@ -183,21 +183,14 @@ var Unsee = (function() {
                         // we have upstreams but none is working, fail hard
                         Counter.Unknown();
                         $(selectors.instanceErrors).html("");
-                        var messages = [];
-                        resp.upstreams.instances.sort(function(a, b){
-                            if(a.name < b.name) return -1;
-                            if(a.name > b.name) return 1;
-                            return 0;
-                        });
+                        var failedInstances = [];
                         $.each(resp.upstreams.instances, function(i, instance) {
                             if (instance.error !== "") {
-                                messages.push(instance.name + ": " + instance.error);
+                                failedInstances.push(instance);
                             }
                         });
-                        renderError("updateError", {
-                            error: "Configuration error",
-                            messages: messages,
-                            lastTs: Watchdog.GetLastUpdate()
+                        renderError("configError", {
+                            instances: failedInstances
                         });
                         Unsee.WaitForNextReload();
                     }

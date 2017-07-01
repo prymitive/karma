@@ -88,3 +88,23 @@
     </div>
   <% }) %>
 </script>
+
+
+<script type="application/json" id="configuration-error">
+<div class="jumbotron">
+  <h1 class="text-center">
+    Configuration error
+    <i class="fa fa-exclamation-circle text-danger"/>
+  </h1>
+  <div>
+    <% _.each(instances, function(instance) { %>
+      <p>
+        <span class='label label-list label-primary'>
+          <%- instance.name %>
+        </span>
+        <%- instance.error %>
+      </p>
+    <% }) %>
+  </div>
+</div>
+</script>

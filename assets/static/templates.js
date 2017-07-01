@@ -17,6 +17,7 @@ var Templates = (function() {
             internalError: "#internal-error",
             updateError: "#update-error",
             instanceError: "#instance-error",
+            configError: "#configuration-error",
 
             // modal popup with label filters
             modalTitle: "#modal-title",
