@@ -82,7 +82,7 @@
       </a>
     <% }) %>
     <% var attrs = Alerts.GetLabelAttrs("@state", alert.state) %>
-    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@state', value: alert.state, text: '@state: ' + alert.state}}) %>
+    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@state', value: alert.state, text: alert.state}}) %>
     <% if (alert.state != "suppressed") { %>
       <% var labels = [] %>
       <% var alertmanagers = [] %>
@@ -104,7 +104,7 @@
       </span>
     <% } %>
     <% var attrs = Alerts.GetLabelAttrs("@receiver", alert.receiver) %>
-    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@receiver', value: alert.receiver, text: '@receiver: ' + alert.receiver}}) %>
+    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@receiver', value: alert.receiver, text: alert.receiver}}) %>
     <a class="label label-list label-default label-age label-ts"
        data-toggle="tooltip"
        data-placement="top"
