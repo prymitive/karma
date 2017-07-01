@@ -7,6 +7,8 @@ import "time"
 type AlertmanagerInstance struct {
 	Name string `json:"name"`
 	URI  string `json:"uri"`
+	// per instance alert state
+	State string `json:"state"`
 	// timestamp collected from this instance, those on the alert itself
 	// will be calculated min/max values
 	StartsAt time.Time `json:"startsAt"`

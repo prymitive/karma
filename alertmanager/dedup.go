@@ -24,6 +24,7 @@ func DedupAlerts() []models.AlertGroup {
 	}
 
 	dedupedGroups := []models.AlertGroup{}
+	alertStates := map[string][]string{}
 	for _, agList := range uniqueGroups {
 		alerts := map[string]models.Alert{}
 		for _, ag := range agList {
@@ -48,14 +49,28 @@ func DedupAlerts() []models.AlertGroup {
 					}
 					// update map
 					alerts[alertLFP] = a
+					// and append alert state to the slice
+					alertStates[alertLFP] = append(alertStates[alertLFP], a.State)
 				} else {
 					alerts[alertLFP] = models.Alert(alert)
+					// seed alert state slice
+					alertStates[alertLFP] = []string{alert.State}
 				}
 			}
 		}
 		ag := models.AlertGroup(agList[0])
 		ag.Alerts = models.AlertList{}
 		for _, alert := range alerts {
+			// calculate final alert state based on the most important value found
+			// in the list of states from all instances
+			alertLFP := alert.LabelsFingerprint()
+			if slices.StringInSlice(alertStates[alertLFP], models.AlertStateActive) {
+				alert.State = models.AlertStateActive
+			} else if slices.StringInSlice(alertStates[alertLFP], models.AlertStateSuppressed) {
+				alert.State = models.AlertStateSuppressed
+			} else {
+				alert.State = models.AlertStateUnprocessed
+			}
 			// sort Alertmanager instances for every alert
 			sort.Slice(alert.Alertmanager, func(i, j int) bool {
 				return alert.Alertmanager[i].Name < alert.Alertmanager[j].Name
