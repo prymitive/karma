@@ -6,8 +6,7 @@
 /* exported Alerts */
 var Alerts = (function() {
 
-    var silences = {},
-        labelCache = new LRUMap(1000);
+    var labelCache = new LRUMap(1000);
 
     function AlertGroup(groupData) {
         $.extend(this, groupData);
@@ -16,7 +15,6 @@ var Alerts = (function() {
     AlertGroup.prototype.Render = function() {
         return Templates.Render("alertGroup", {
             group: this,
-            silences: silences,
             alertLimit: 5
         });
     };
@@ -104,9 +102,6 @@ var Alerts = (function() {
     var updateAlerts = function(apiResponse) {
         var alertCount = 0;
         var groups = {};
-
-        // update global silences dict as it's needed for rendering
-        silences = apiResponse.silences;
 
         var summaryData = {};
         $.each(apiResponse.counters, function(labelKey, counters){

@@ -25,7 +25,7 @@ func (mvd *spaceSeparatedList) Decode(value string) error {
 type configEnvs struct {
 	AlertmanagerTimeout time.Duration      `envconfig:"ALERTMANAGER_TIMEOUT" default:"40s" help:"Timeout for all request send to Alertmanager"`
 	AlertmanagerTTL     time.Duration      `envconfig:"ALERTMANAGER_TTL" default:"1m" help:"TTL for Alertmanager alerts and silences"`
-	AlertmanagerURI     string             `envconfig:"ALERTMANAGER_URI" required:"true" help:"Alertmanager URI"`
+	AlertmanagerURIs    spaceSeparatedList `envconfig:"ALERTMANAGER_URIS" required:"true" help:"List of Alertmanager URIs (name:uri)"`
 	ColorLabelsStatic   spaceSeparatedList `envconfig:"COLOR_LABELS_STATIC" help:"List of label names that should have the same (but distinct) color"`
 	ColorLabelsUnique   spaceSeparatedList `envconfig:"COLOR_LABELS_UNIQUE" help:"List of label names that should have unique color"`
 	Debug               bool               `envconfig:"DEBUG" default:"false" help:"Enable debug mode"`

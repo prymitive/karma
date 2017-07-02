@@ -27,7 +27,7 @@ var Silence = (function() {
         if ($("#endsAt").data("DateTimePicker")) {
             payload.endsAt = $("#endsAt").data("DateTimePicker").date();
         }
-        $.each($("#newSilenceForm .selectpicker"), function(i, elem) {
+        $.each($("#newSilenceForm select.silence-label-picker"), function(i, elem) {
             var labelKey = $(elem).data("label-key");
             var values = $(elem).selectpicker("val");
             if (values && values.length > 0) {
@@ -74,11 +74,21 @@ var Silence = (function() {
         $("#silence-end-description").html(endsAtDesc);
     };
 
+    var silenceFormAlertmanagerURL = function() {
+        return $("#newSilenceForm .silence-alertmanager-picker").selectpicker("val");
+    };
+
     var silenceFormJSONRender = function() {
-        var d = "curl " + $("#silenceModal").data("silence-api") +
-          "\n    -X POST --data " +
-          JSON.stringify(silenceFormData(), undefined, 2);
-        $("#silenceJSONBlob").html(d);
+        var d = [];
+        $.each(silenceFormAlertmanagerURL(), function(i, uri) {
+            if (i > 0) {
+                d.push("\n");
+            }
+            d.push("curl " + uri);
+        });
+        d.push("\n  -X POST --data ");
+        d.push(JSON.stringify(silenceFormData(), undefined, 2));
+        $("#silenceJSONBlob").html(d.join(""));
     };
 
     var silenceFormUpdateDuration = function(event) {
@@ -127,15 +137,58 @@ var Silence = (function() {
         silenceFormCalculateDuration();
     };
 
+    var sendSilencePOST = function(url, payload) {
+        var elem = $(".silence-post-result[data-uri='" + url + "']");
+        $.ajax({
+            type: "POST",
+            url: url + "/api/v1/silences",
+            data: JSON.stringify(payload),
+            error: function(xhr, textStatus, errorThrown) {
+                // default to whatever error text we can get
+                var err = xhr.responseText || errorThrown || textStatus;
+                if (xhr.responseText) {
+                    // if we have a reponse text try to decode it as JSON
+                    // it should be error from Alertmanager (it we were able to connect)
+                    try {
+                        var j = JSON.parse(xhr.responseText);
+                        if (j.error !== undefined) {
+                            err = j.error;
+                        }
+                    } catch (error) {
+                        // can't parse json, do nothing
+                    }
+                }
+
+                var errContent = Templates.Render("silenceFormError", {error: err});
+                $(elem).html(errContent);
+            },
+            success: function(data) {
+                // FIXME this is per instance now, so needs to be handled differently
+                if (data.status == "success") {
+                    $(elem).html(Templates.Render("silenceFormSuccess", {
+                        silenceID: data.data.silenceId
+                    }));
+                } else {
+                    var err = "Invalid response from Alertmanager API: " + JSON.stringify(data);
+                    var errContent = Templates.Render("silenceFormError", {error: err});
+                    $(elem).html(errContent);
+                }
+            },
+            dataType: "json"
+        });
+    };
+
     // modal form for creating new silences
     var setupSilenceForm = function() {
         var modal = $("#silenceModal");
         modal.on("show.bs.modal", function(event) {
+            var elem = $(event.relatedTarget);
+            // hide tooltip for button that triggers this modal
+            elem.find("[data-toggle]").tooltip("hide");
             Unsee.Pause();
             modal.find(".modal-body").html(
                 Templates.Render("silenceFormLoading", {})
             );
-            var elem = $(event.relatedTarget);
             var elemLabels = {};
             $.each(elem.data("labels").split(","), function(i, l) {
                 elemLabels[l.split("=")[0]] = l.split("=")[1];
@@ -151,6 +204,7 @@ var Silence = (function() {
                 success: function(data) {
                     var modal = $("#silenceModal");
                     var labels = {};
+                    var alertmanagers = {};
                     $.each(data.groups, function(i, group) {
                         $.each(group.alerts, function(j, alert) {
                             $.each(alert.labels, function(labelKey, labelVal) {
@@ -166,21 +220,24 @@ var Silence = (function() {
                                     };
                                 }
                             });
+                            $.each(alert.alertmanager, function(i, alertmanager){
+                                alertmanagers[alertmanager.name] = alertmanager;
+                            });
                         });
                     });
                     modal.find(".modal-body").html(
-                        Templates.Render("silenceForm", {labels: labels})
+                        Templates.Render("silenceForm", {
+                            labels: labels,
+                            alertmanagers: alertmanagers,
+                            selectedAlertmanagers: elem.data("alertmanagers").split(",")
+                        })
                     );
-                    $.each($(".selectpicker"), function(i, elem) {
+                    $.each($(".silence-alertmanager-picker"), function(i, elem) {
+                        $(elem).selectpicker();
+                    });
+                    $.each($(".silence-label-picker"), function(i, elem) {
                         $(elem).selectpicker({
-                            iconBase: "fa",
-                            tickIcon: "fa-check",
-                            width: "fit",
-                            selectAllText: "<i class='fa fa-check-square-o'></i>",
-                            deselectAllText: "<i class='fa fa-square-o'></i>",
                             noneSelectedText: "<span class='label label-list label-default'>" + $(this).data("label-key") + ": </span>",
-                            multipleSeparator: " ",
-                            selectedTextFormat: "count > 1",
                             countSelectedText: function (numSelected) {
                                 return "<span class='label label-list label-warning'>" +
                                     $(elem).data("label-key") + ": " + numSelected + " values selected</span>";
@@ -239,48 +296,25 @@ var Silence = (function() {
                     $("#newSilenceForm").submit(function(event) {
                         var payload = silenceFormData();
                         if (payload.matchers.length === 0) {
-                            var errContent = Templates.Render("silenceFormError", {error: "Select at least on label"});
+                            var errContent = Templates.Render("silenceFormValidationError", {error: "Select at least on label"});
                             $("#newSilenceAlert").html(errContent).removeClass("hidden");
                             return false;
                         }
+                        $("#newSilenceAlert").addClass("hidden");
 
-                        var url = modal.data("silence-api");
-                        $.ajax({
-                            type: "POST",
-                            url: url,
-                            data: JSON.stringify(payload),
-                            error: function(xhr, textStatus, errorThrown) {
-                                // default to whatever error text we can get
-                                var err = xhr.responseText || errorThrown || textStatus;
-                                if (xhr.responseText) {
-                                    // if we have a reponse text try to decode it as JSON
-                                    // it should be error from Alertmanager (it we were able to connect)
-                                    try {
-                                        var j = JSON.parse(xhr.responseText);
-                                        if (j.error !== undefined) {
-                                            err = j.error;
-                                        }
-                                    } catch (error) {
-                                        // can't parse json, do nothing
-                                    }
-                                }
+                        var selectedAMURIs = silenceFormAlertmanagerURL();
+                        var selectedAMs = [];
+                        $.each(alertmanagers, function(i, am) {
+                            if ($.inArray(am.uri, selectedAMURIs) >= 0) {
+                                selectedAMs.push(am);
+                            }
+                        });
+                        modal.find(".modal-body").html(
+                            Templates.Render("silenceFormResults", {alertmanagers: selectedAMs})
+                        );
 
-                                var errContent = Templates.Render("silenceFormError", {error: err});
-                                $("#newSilenceAlert").html(errContent).removeClass("hidden");
-                            },
-                            success: function(data) {
-                                if (data.status == "success") {
-                                    $("#newSilenceAlert").addClass("hidden");
-                                    $("#newSilenceForm").html(Templates.Render("silenceFormSuccess", {
-                                        silenceID: data.data.silenceId
-                                    }));
-                                } else {
-                                    var err = "Invalid response from Alertmanager API: " + JSON.stringify(data);
-                                    var errContent = Templates.Render("silenceFormError", {error: err});
-                                    $("#newSilenceAlert").html(errContent).removeClass("hidden");
-                                }
-                            },
-                            dataType: "json"
+                        $.each(selectedAMURIs, function(i, uri){
+                            sendSilencePOST(uri, payload);
                         });
 
                         event.preventDefault();

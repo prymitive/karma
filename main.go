@@ -3,9 +3,9 @@ package main
 import (
 	"path"
 	"strings"
-	"sync"
 	"time"
 
+	"github.com/cloudflare/unsee/alertmanager"
 	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/transform"
 
@@ -17,7 +17,6 @@ import (
 	"github.com/gin-gonic/gin"
 	ginprometheus "github.com/mcuadros/go-gin-prometheus"
 	"github.com/patrickmn/go-cache"
-	"github.com/prometheus/client_golang/prometheus"
 )
 
 var (
@@ -31,45 +30,7 @@ var (
 	// If there are requests with the same filter we should respond from cache
 	// rather than do all the filtering every time
 	apiCache *cache.Cache
-
-	// errorLock holds a mutex used to synchronize updates to AlertmanagerError
-	// to avoid any race between readers and writers
-	errorLock = sync.RWMutex{}
-	// alertManagerError holds the description of last error raised when pulling data
-	// from Alertmanager, if there was any error
-	// This error will be returned in UnseeAlertsResponse and presented by Ui
-	alertManagerError string
-
-	metricAlerts = prometheus.NewGaugeVec(
-		prometheus.GaugeOpts{
-			Name: "unsee_collected_alerts",
-			Help: "Total number of alerts collected from Alertmanager API",
-		},
-		[]string{"state"},
-	)
-	metricAlertGroups = prometheus.NewGauge(
-		prometheus.GaugeOpts{
-			Name: "unsee_collected_groups",
-			Help: "Total number of alert groups collected from Alertmanager API",
-		},
-	)
-	metricAlertmanagerErrors = prometheus.NewGaugeVec(
-		prometheus.GaugeOpts{
-			Name: "unsee_alertmanager_errors_total",
-			Help: "Total number of errors encounter when requesting data from Alertmanager API",
-		},
-		[]string{"endpoint"},
-	)
 )
-
-func init() {
-	prometheus.MustRegister(metricAlerts)
-	prometheus.MustRegister(metricAlertGroups)
-	prometheus.MustRegister(metricAlertmanagerErrors)
-
-	metricAlertmanagerErrors.With(prometheus.Labels{"endpoint": "alerts"}).Set(0)
-	metricAlertmanagerErrors.With(prometheus.Labels{"endpoint": "silences"}).Set(0)
-}
 
 func getViewURL(sub string) string {
 	u := path.Join(config.Config.WebPrefix, sub)
@@ -91,6 +52,22 @@ func setupRouter(router *gin.Engine) {
 	router.GET(getViewURL("/autocomplete.json"), autocomplete)
 }
 
+func setupUpstreams() {
+	for _, s := range config.Config.AlertmanagerURIs {
+		z := strings.SplitN(s, ":", 2)
+		if len(z) != 2 {
+			log.Fatalf("Invalid Alertmanager URI '%s', expected format 'name:uri'", s)
+			continue
+		}
+		name := z[0]
+		uri := z[1]
+		err := alertmanager.NewAlertmanager(name, uri, config.Config.AlertmanagerTimeout)
+		if err != nil {
+			log.Fatalf("Failed to configure Alertmanager '%s' with URI '%s': %s", name, uri, err)
+		}
+	}
+}
+
 func main() {
 	log.Infof("Version: %s", version)
 
@@ -100,9 +77,15 @@ func main() {
 
 	apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 
+	setupUpstreams()
+
+	if len(alertmanager.GetAlertmanagers()) == 0 {
+		log.Fatal("No valid Alertmanager URIs defined")
+	}
+
 	// before we start try to fetch data from Alertmanager
 	log.Infof("Initial Alertmanager query, this can delay startup up to %s", 3*config.Config.AlertmanagerTimeout)
-	PullFromAlertmanager()
+	pullFromAlertmanager()
 	log.Info("Done, starting HTTP server")
 
 	// background loop that will fetch updates from Alertmanager

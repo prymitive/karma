@@ -7,6 +7,7 @@ import (
 
 	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/models"
+	"github.com/cloudflare/unsee/slices"
 
 	"github.com/hansrodtang/randomcolor"
 )
@@ -26,7 +27,7 @@ func labelToSeed(key string, val string) int64 {
 // from label key and value passed here
 // It's used to generate unique colors for configured labels
 func ColorLabel(colorStore models.LabelsColorMap, key string, val string) {
-	if stringInSlice(config.Config.ColorLabelsUnique, key) == true {
+	if slices.StringInSlice(config.Config.ColorLabelsUnique, key) == true {
 		if _, found := colorStore[key]; !found {
 			colorStore[key] = make(map[string]models.LabelColors)
 		}

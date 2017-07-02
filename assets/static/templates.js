@@ -16,6 +16,8 @@ var Templates = (function() {
             fatalError: "#fatal-error",
             internalError: "#internal-error",
             updateError: "#update-error",
+            instanceError: "#instance-error",
+            configError: "#configuration-error",
 
             // modal popup with label filters
             modalTitle: "#modal-title",
@@ -23,6 +25,8 @@ var Templates = (function() {
 
             // modal popup with silence form
             silenceForm: "#silence-form",
+            silenceFormValidationError: "#silence-form-validation-error",
+            silenceFormResults: "#silence-form-results",
             silenceFormSuccess: "#silence-form-success",
             silenceFormError: "#silence-form-error",
             silenceFormFatal: "#silence-form-fatal",

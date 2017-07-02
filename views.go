@@ -1,19 +1,16 @@
 package main
 
 import (
-	"crypto/sha1"
 	"encoding/json"
-	"fmt"
-	"io"
 	"net/http"
 	"sort"
 	"strings"
 	"time"
 
+	"github.com/cloudflare/unsee/alertmanager"
 	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/models"
-	"github.com/cloudflare/unsee/store"
-	"github.com/cloudflare/unsee/transport"
+	"github.com/cloudflare/unsee/slices"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -23,15 +20,6 @@ var (
 	// needed for serving favicon from binary assets
 	faviconFileServer = http.FileServer(newBinaryFileSystem("static"))
 )
-
-func boolInSlice(boolArray []bool, value bool) bool {
-	for _, s := range boolArray {
-		if s == value {
-			return true
-		}
-	}
-	return false
-}
 
 func noCache(c *gin.Context) {
 	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
@@ -51,11 +39,6 @@ func index(c *gin.Context) {
 		defaultUsed = false
 	}
 
-	silencesAPI, err := transport.JoinURL(config.Config.AlertmanagerURI, "api/v1/silences")
-	if err != nil {
-		log.Errorf("Can't generate silences API URL: %s", err)
-	}
-
 	c.HTML(http.StatusOK, "templates/index.html", gin.H{
 		"Version":           version,
 		"SentryDSN":         config.Config.SentryPublicDSN,
@@ -67,7 +50,6 @@ func index(c *gin.Context) {
 		"DefaultUsed":       defaultUsed,
 		"StaticColorLabels": strings.Join(config.Config.ColorLabelsStatic, " "),
 		"WebPrefix":         config.Config.WebPrefix,
-		"SilencesApi":       silencesAPI,
 	})
 
 	log.Infof("[%s] %s %s took %s", c.ClientIP(), c.Request.Method, c.Request.RequestURI, time.Since(start))
@@ -101,15 +83,7 @@ func alerts(c *gin.Context) {
 	resp.Status = "success"
 	resp.Timestamp = string(ts)
 	resp.Version = version
-
-	// update error field, needs a lock
-	errorLock.RLock()
-	resp.Error = string(alertManagerError)
-	errorLock.RUnlock()
-
-	if resp.Error != "" {
-		apiCache.Flush()
-	}
+	resp.Upstreams = getUpstreams()
 
 	// use full URI (including query args) as cache key
 	cacheKey := c.Request.RequestURI
@@ -127,13 +101,14 @@ func alerts(c *gin.Context) {
 
 	// set pointers for data store objects, need a lock until end of view is reached
 	alerts := []models.AlertGroup{}
-	silences := map[string]models.Silence{}
 	colors := models.LabelsColorMap{}
 	counters := models.LabelsCountMap{}
-	store.Store.Lock.RLock()
+
+	dedupedAlerts := alertmanager.DedupAlerts()
+	dedupedColors := alertmanager.DedupColors()
 
 	var matches int
-	for _, ag := range store.Store.Groups {
+	for _, ag := range dedupedAlerts {
 		agCopy := models.AlertGroup{
 			ID:         ag.ID,
 			Receiver:   ag.Receiver,
@@ -144,7 +119,6 @@ func alerts(c *gin.Context) {
 		for _, s := range models.AlertStateList {
 			agCopy.StateCount[s] = 0
 		}
-		h := sha1.New()
 
 		for _, alert := range ag.Alerts {
 			results := []bool{}
@@ -156,28 +130,14 @@ func alerts(c *gin.Context) {
 					}
 				}
 			}
-			if !validFilters || (boolInSlice(results, true) && !boolInSlice(results, false)) {
+			if !validFilters || (slices.BoolInSlice(results, true) && !slices.BoolInSlice(results, false)) {
 				matches++
 				agCopy.Alerts = append(agCopy.Alerts, alert)
-				aj, err := json.Marshal(alert)
-				if err != nil {
-					log.Error(err.Error())
-					panic(err.Error())
-				}
-				io.WriteString(h, string(aj))
-
-				if alert.IsSilenced() {
-					for _, silenceID := range alert.SilencedBy {
-						if silence := store.Store.GetSilence(silenceID); silence != nil {
-							silences[silenceID] = *silence
-						}
-					}
-				}
 
 				countLabel(counters, "@state", alert.State)
 
 				countLabel(counters, "@receiver", alert.Receiver)
-				if ck, foundKey := store.Store.Colors["@receiver"]; foundKey {
+				if ck, foundKey := dedupedColors["@receiver"]; foundKey {
 					if cv, foundVal := ck[alert.Receiver]; foundVal {
 						if _, found := colors["@receiver"]; !found {
 							colors["@receiver"] = map[string]models.LabelColors{}
@@ -189,7 +149,7 @@ func alerts(c *gin.Context) {
 				agCopy.StateCount[alert.State]++
 
 				for key, value := range alert.Labels {
-					if keyMap, foundKey := store.Store.Colors[key]; foundKey {
+					if keyMap, foundKey := dedupedColors[key]; foundKey {
 						if color, foundColor := keyMap[value]; foundColor {
 							if _, found := colors[key]; !found {
 								colors[key] = map[string]models.LabelColors{}
@@ -203,14 +163,13 @@ func alerts(c *gin.Context) {
 		}
 
 		if len(agCopy.Alerts) > 0 {
-			agCopy.Hash = fmt.Sprintf("%x", h.Sum(nil))
+			agCopy.Hash = agCopy.ContentFingerprint()
 			alerts = append(alerts, agCopy)
 		}
 
 	}
 
 	resp.AlertGroups = alerts
-	resp.Silences = silences
 	resp.Colors = colors
 	resp.Counters = counters
 
@@ -230,7 +189,6 @@ func alerts(c *gin.Context) {
 		panic(err)
 	}
 	apiCache.Set(cacheKey, data, -1)
-	store.Store.Lock.RUnlock()
 
 	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
 	logAlertsView(c, "MIS", time.Since(start))
@@ -264,8 +222,9 @@ func autocomplete(c *gin.Context) {
 
 	acData := sort.StringSlice{}
 
-	store.Store.Lock.RLock()
-	for _, hint := range store.Store.Autocomplete {
+	dedupedAutocomplete := alertmanager.DedupAutocomplete()
+
+	for _, hint := range dedupedAutocomplete {
 		if strings.HasPrefix(strings.ToLower(hint.Value), strings.ToLower(term)) {
 			acData = append(acData, hint.Value)
 		} else {
@@ -276,7 +235,6 @@ func autocomplete(c *gin.Context) {
 			}
 		}
 	}
-	store.Store.Lock.RUnlock()
 
 	sort.Sort(sort.Reverse(acData))
 	data, err := json.Marshal(acData)

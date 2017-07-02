@@ -64,27 +64,39 @@
 <script type="application/json" id="alert-group-elements">
   <% var cls_indicator = 'incident-indicator-danger' %>
   <% if (alert.state === "suppressed") { cls_indicator = 'incident-indicator-success' } %>
-  <div>
-    <% if (alert.generatorURL) { %>
-      <a class="label label-list label-default"
-         href="<%= alert.generatorURL %>"
+  <div class="alert-static-elements">
+    <% _.each(alert.alertmanager, function(am){ %>
+      <% var labelCls = "label-primary" %>
+      <% if (am.state === "suppressed") { %>
+        <% labelCls = "label-success" %>
+      <% } else if (am.state === "unprocessed") { %>
+        <% labelCls = "label-default" %>
+      <% } %>
+      <a class="label label-list <%- labelCls %>"
+         href="<%= am.source %>"
          target="_blank"
          title="Go to the alert source"
          data-toggle="tooltip"
          data-placement="top">
-        <i class="fa fa-code"/>
+         <%- am.name %>
       </a>
-    <% } %>
+    <% }) %>
     <% var attrs = Alerts.GetLabelAttrs("@state", alert.state) %>
-    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@state', value: alert.state, text: '@state: ' + alert.state}}) %>
-    <% if (alert.silencedBy.length == 0) { %>
+    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@state', value: alert.state, text: alert.state}}) %>
+    <% if (alert.state != "suppressed") { %>
       <% var labels = [] %>
+      <% var alertmanagers = [] %>
       <% _.each(Alerts.SortMapByKey(alert.labels), function(label) { %>
         <% labels.push(label.key + '=' + label.value) %>
       <% }) %>
+      <% _.each(alert.alertmanager, function(alertmanager){ %>
+        <% alertmanagers.push(alertmanager.name) %>
+      <% }) %>
+      <% alertmanagers.sort() %>
       <span class="label label-list label-success cursor-pointer"
             type="button"
             data-labels="<%= labels.join(',') %>"
+            data-alertmanagers="<%= alertmanagers.join(',') %>"
             data-alertname="<%= alert.labels.alertname %>"
             data-toggle="modal"
             data-target="#silenceModal">
@@ -92,7 +104,7 @@
       </span>
     <% } %>
     <% var attrs = Alerts.GetLabelAttrs("@receiver", alert.receiver) %>
-    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@receiver', value: alert.receiver, text: '@receiver: ' + alert.receiver}}) %>
+    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@receiver', value: alert.receiver, text: alert.receiver}}) %>
     <a class="label label-list label-default label-age label-ts"
        data-toggle="tooltip"
        data-placement="top"
@@ -107,13 +119,9 @@
 </script>
 
 <script type="application/json" id="alert-group-silence">
-  <small class="silence-comment-title text-muted">
-    Silenced by:
-  </small>
-  <% _.each(alert.silencedBy, function(silenceID) { %>
-    <div class="silence-block">
-      <% var silence = silences[silenceID] %>
-      <% if (silence) { %>
+  <% _.each(alert.alertmanager, function(am) { %>
+    <% _.each(am.silences, function(silence) { %>
+      <div class="silence-block well">
         <blockquote class="silence-comment">
           <% if (silence.jiraURL) { %>
             <a href="<%= silence.jiraURL %>" target="_blank">
@@ -124,6 +132,11 @@
             <%- silence.comment %>
           <% } %>
           <br/>
+          <% if (alert.alertmanager.length > 1) { %>
+            <div class="label label-list label-primary">
+              <%- am.name %>
+            </div>
+          <% } %>
           <div class="label label-list label-default label-age label-ts cursor-help"
              data-toggle="tooltip"
              data-placement="top"
@@ -159,8 +172,8 @@
             </cite>
           </footer>
         </blockquote>
-      <% } %>
-    </div>
+      </div>
+    <% }) %>
   <% }) %>
 </script>
 
@@ -260,9 +273,7 @@
               <%= Templates.Render('alertGroupAnnotations', {alert: alert}) %>
               <%= Templates.Render('alertGroupLabels', {alert: alert, group: group}) %>
               <%= Templates.Render('alertGroupElements', {alert: alert}) %>
-              <% if (alert.silencedBy.length) { %>
-                <%= Templates.Render('alertGroupSilence', {alert: alert, silences: silences}) %>
-              <% } %>
+              <%= Templates.Render('alertGroupSilence', {alert: alert}) %>
             </div>
           </div>
         <% } %>

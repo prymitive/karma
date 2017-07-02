@@ -1,7 +1,8 @@
 package alertmanager
 
 import (
-	"github.com/cloudflare/unsee/config"
+	"time"
+
 	"github.com/cloudflare/unsee/transport"
 
 	log "github.com/Sirupsen/logrus"
@@ -19,17 +20,17 @@ type alertmanagerVersion struct {
 }
 
 // GetVersion returns version information of the remote Alertmanager endpoint
-func GetVersion() string {
+func GetVersion(uri string, timeout time.Duration) string {
 	// if everything fails assume Alertmanager is at latest possible version
 	defaultVersion := "999.0.0"
 
-	url, err := transport.JoinURL(config.Config.AlertmanagerURI, "api/v1/status")
+	url, err := transport.JoinURL(uri, "api/v1/status")
 	if err != nil {
-		log.Errorf("Failed to join url '%s' and path 'api/v1/status': %s", config.Config.AlertmanagerURI, err.Error())
+		log.Errorf("Failed to join url '%s' and path 'api/v1/status': %s", uri, err.Error())
 		return defaultVersion
 	}
 	ver := alertmanagerVersion{}
-	err = transport.ReadJSON(url, config.Config.AlertmanagerTimeout, &ver)
+	err = transport.ReadJSON(url, timeout, &ver)
 	if err != nil {
 		log.Errorf("%s request failed: %s", url, err.Error())
 		return defaultVersion

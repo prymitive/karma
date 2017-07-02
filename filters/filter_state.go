@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/cloudflare/unsee/models"
+	"github.com/cloudflare/unsee/slices"
 )
 
 type stateFilter struct {
@@ -19,7 +20,7 @@ func (filter *stateFilter) init(name string, matcher *matcherT, rawText string, 
 	filter.RawText = rawText
 	filter.IsValid = isValid
 	filter.Value = value
-	if !stringInSlice(models.AlertStateList, value) {
+	if !slices.StringInSlice(models.AlertStateList, value) {
 		filter.IsValid = false
 	}
 }
@@ -36,7 +37,7 @@ func (filter *stateFilter) Match(alert *models.Alert, matches int) bool {
 	panic(e)
 }
 
-func newstateFilter() FilterT {
+func newStateFilter() FilterT {
 	f := stateFilter{}
 	return &f
 }

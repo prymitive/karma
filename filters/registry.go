@@ -41,10 +41,17 @@ type filterConfig struct {
 // support
 var AllFilters = []filterConfig{
 	filterConfig{
+		Label:              "@alertmanager",
+		LabelRe:            regexp.MustCompile("^@alertmanager$"),
+		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},
+		Factory:            newAlertmanagerInstanceFilter,
+		Autocomplete:       alertmanagerInstanceAutocomplete,
+	},
+	filterConfig{
 		Label:              "@state",
 		LabelRe:            regexp.MustCompile("^@state$"),
 		SupportedOperators: []string{equalOperator, notEqualOperator},
-		Factory:            newstateFilter,
+		Factory:            newStateFilter,
 		Autocomplete:       stateAutocomplete,
 	},
 	filterConfig{

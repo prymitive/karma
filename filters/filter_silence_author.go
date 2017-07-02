@@ -5,7 +5,6 @@ import (
 	"strings"
 
 	"github.com/cloudflare/unsee/models"
-	"github.com/cloudflare/unsee/store"
 )
 
 type silenceAuthorFilter struct {
@@ -17,8 +16,14 @@ func (filter *silenceAuthorFilter) Match(alert *models.Alert, matches int) bool 
 		var isMatch bool
 		if alert.IsSilenced() {
 			for _, silenceID := range alert.SilencedBy {
-				if silence := store.Store.GetSilence(silenceID); silence != nil {
-					isMatch = filter.Matcher.Compare(filter.Value, silence.CreatedBy)
+				for _, am := range alert.Alertmanager {
+					silence, found := am.Silences[silenceID]
+					if found {
+						m := filter.Matcher.Compare(silence.CreatedBy, filter.Value)
+						if m {
+							isMatch = m
+						}
+					}
 				}
 			}
 		} else {
@@ -43,15 +48,18 @@ func sinceAuthorAutocomplete(name string, operators []string, alerts []models.Al
 	for _, alert := range alerts {
 		if alert.IsSilenced() {
 			for _, silenceID := range alert.SilencedBy {
-				if silence := store.Store.GetSilence(silenceID); silence != nil {
-					for _, operator := range operators {
-						token := fmt.Sprintf("%s%s%s", name, operator, silence.CreatedBy)
-						tokens[token] = makeAC(token, []string{
-							name,
-							strings.TrimPrefix(name, "@"),
-							fmt.Sprintf("%s%s", name, operator),
-							silence.CreatedBy,
-						})
+				for _, am := range alert.Alertmanager {
+					silence, found := am.Silences[silenceID]
+					if found {
+						for _, operator := range operators {
+							token := fmt.Sprintf("%s%s%s", name, operator, silence.CreatedBy)
+							tokens[token] = makeAC(token, []string{
+								name,
+								strings.TrimPrefix(name, "@"),
+								fmt.Sprintf("%s%s", name, operator),
+								silence.CreatedBy,
+							})
+						}
 					}
 				}
 			}

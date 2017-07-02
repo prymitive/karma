@@ -5,7 +5,6 @@ import (
 	"regexp"
 
 	"github.com/cloudflare/unsee/models"
-	"github.com/cloudflare/unsee/store"
 )
 
 type fuzzyFilter struct {
@@ -42,10 +41,14 @@ func (filter *fuzzyFilter) Match(alert *models.Alert, matches int) bool {
 		}
 
 		for _, silenceID := range alert.SilencedBy {
-			if silence := store.Store.GetSilence(silenceID); silence != nil {
-				if filter.Matcher.Compare(silence.Comment, filter.Value) {
-					filter.Hits++
-					return true
+			for _, am := range alert.Alertmanager {
+				silence, found := am.Silences[silenceID]
+				if found {
+					m := filter.Matcher.Compare(silence.Comment, filter.Value)
+					if m {
+						filter.Hits++
+						return true
+					}
 				}
 			}
 		}

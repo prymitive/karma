@@ -12,13 +12,13 @@
   <div class="jumbotron">
     <h1 class="text-center">
       <%- error %>
-      <% if (message) { %>
+      <% _.each(messages, function(message) { %>
         <div class="text-center">
           <p>
             <%- message %>
           </p>
         </div>
-      <% } %>
+      <% }) %>
       <% if (lastTs > 0) { %>
         <div class="text-center">
           <p>
@@ -75,4 +75,36 @@
       </p>
     </div>
   </div>
+</script>
+
+
+<script type="application/json" id="instance-error">
+  <% _.each(instances, function(instance) { %>
+    <div class="alert alert-warning text-center" role="alert">
+      <span class='label label-list label-primary'>
+        <%- instance.name %>
+      </span>
+      <%- instance.error %>
+    </div>
+  <% }) %>
+</script>
+
+
+<script type="application/json" id="configuration-error">
+<div class="jumbotron">
+  <h1 class="text-center">
+    Configuration error
+    <i class="fa fa-exclamation-circle text-danger"/>
+  </h1>
+  <div>
+    <% _.each(instances, function(instance) { %>
+      <p>
+        <span class='label label-list label-primary'>
+          <%- instance.name %>
+        </span>
+        <%- instance.error %>
+      </p>
+    <% }) %>
+  </div>
+</div>
 </script>

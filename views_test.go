@@ -12,6 +12,7 @@ import (
 	"github.com/cloudflare/unsee/config"
 	"github.com/cloudflare/unsee/mock"
 	"github.com/cloudflare/unsee/models"
+	"github.com/cloudflare/unsee/slices"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
@@ -20,20 +21,17 @@ import (
 	"gopkg.in/jarcoal/httpmock.v1"
 )
 
-func stringInSlice(stringArray []string, value string) bool {
-	for _, s := range stringArray {
-		if s == value {
-			return true
-		}
-	}
-	return false
-}
+var upstreamSetup = false
 
 func mockConfig() {
 	log.SetLevel(log.ErrorLevel)
-	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	os.Setenv("ALERTMANAGER_URIS", "default:http://localhost")
 	os.Setenv("COLOR_LABELS_UNIQUE", "alertname")
 	config.Config.Read()
+	if !upstreamSetup {
+		upstreamSetup = true
+		setupUpstreams()
+	}
 }
 
 func ginTestEngine() *gin.Engine {
@@ -47,7 +45,7 @@ func ginTestEngine() *gin.Engine {
 func TestIndex(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()
-	req, _ := http.NewRequest("GET", "/", nil)
+	req, _ := http.NewRequest("GET", "/?q=", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
 	if resp.Code != http.StatusOK {
@@ -108,7 +106,7 @@ func mockAlerts(version string) {
 	mock.RegisterURL("http://localhost/api/v1/silences", version, "silences")
 	mock.RegisterURL("http://localhost/api/v1/alerts/groups", version, "alerts/groups")
 
-	PullFromAlertmanager()
+	pullFromAlertmanager()
 }
 
 func TestAlerts(t *testing.T) {
@@ -126,25 +124,28 @@ func TestAlerts(t *testing.T) {
 		ur := models.AlertsResponse{}
 		json.Unmarshal(resp.Body.Bytes(), &ur)
 		if len(ur.Filters) != 3 {
-			t.Errorf("[%s] No filters in response", version)
+			t.Errorf("[%s] Got %d filter(s) in response, expected %d", version, len(ur.Filters), 3)
 		}
 		if len(ur.Colors) != 1 {
-			t.Errorf("[%s] No colors in response", version)
-		}
-		if len(ur.Silences) != 1 {
-			t.Errorf("[%s] No silences in response", version)
+			t.Errorf("[%s] Got %d color(s) in response, expected %d", version, len(ur.Colors), 1)
 		}
 		if len(ur.AlertGroups) != 1 {
-			t.Errorf("[%s] No alerts in response", version)
+			t.Errorf("[%s] Got %d alert(s) in response, expected %d", version, len(ur.AlertGroups), 1)
 		}
 		if ur.Version == "" {
-			t.Errorf("[%s] No version in response", version)
+			t.Errorf("[%s] Empty version in response", version)
 		}
 		if ur.Timestamp == "" {
-			t.Errorf("[%s] No timestamp in response", version)
+			t.Errorf("[%s] Empty timestamp in response", version)
 		}
-		if ur.Error != "" {
-			t.Errorf("[%s] Error in response: %s", version, ur.Error)
+		if ur.Upstreams.Counters.Total == 0 {
+			t.Errorf("[%s] No instances in upstream counter: %v", version, ur.Upstreams.Counters)
+		}
+		if len(ur.Upstreams.Instances) == 0 {
+			t.Errorf("[%s] No instances in upstream status: %v", version, ur.Upstreams.Instances)
+		}
+		if ur.Upstreams.Counters.Failed > 0 {
+			t.Errorf("[%s] %d error(s) in upstream status: %v", version, ur.Upstreams.Counters.Failed, ur.Upstreams)
 		}
 		if ur.Status != "success" {
 			t.Errorf("[%s] Invalid status in response: %s", version, ur.Status)
@@ -157,11 +158,8 @@ func TestAlerts(t *testing.T) {
 				if len(a.Links) != 1 {
 					t.Errorf("Invalid number of links, got %d, expected 1, %v", len(a.Links), a)
 				}
-				if a.InhibitedBy == nil {
-					t.Errorf("InhibitedBy is nil, %v", a)
-				}
-				if a.SilencedBy == nil {
-					t.Errorf("SilencedBy is nil, %v", a)
+				if len(a.Alertmanager) == 0 {
+					t.Errorf("Alertmanager instance list is empty, %v", a)
 				}
 			}
 		}
@@ -183,14 +181,11 @@ func TestValidateAllAlerts(t *testing.T) {
 		json.Unmarshal(resp.Body.Bytes(), &ur)
 		for _, ag := range ur.AlertGroups {
 			for _, a := range ag.Alerts {
-				if !stringInSlice(models.AlertStateList, a.State) {
+				if !slices.StringInSlice(models.AlertStateList, a.State) {
 					t.Errorf("Invalid alert status '%s', not in %v", a.State, models.AlertStateList)
 				}
-				if a.InhibitedBy == nil {
-					t.Errorf("InhibitedBy is nil, %v", a)
-				}
-				if a.SilencedBy == nil {
-					t.Errorf("SilencedBy is nil, %v", a)
+				if len(a.Alertmanager) == 0 {
+					t.Errorf("Alertmanager instance list is empty, %v", a)
 				}
 			}
 		}
@@ -214,6 +209,8 @@ var acTests = []acTestCase{
 			"alertname!=Host_Down",
 			"alertname!=HTTP_Probe_Failed",
 			"alertname!=Free_Disk_Space_Too_Low",
+			"@alertmanager=default",
+			"@alertmanager!=default",
 			"@age>1h",
 			"@age>10m",
 			"@age<1h",
@@ -231,6 +228,8 @@ var acTests = []acTestCase{
 			"alertname!=Host_Down",
 			"alertname!=HTTP_Probe_Failed",
 			"alertname!=Free_Disk_Space_Too_Low",
+			"@alertmanager=default",
+			"@alertmanager!=default",
 		},
 	},
 	acTestCase{
@@ -290,6 +289,8 @@ var acTests = []acTestCase{
 			"@receiver!=by-cluster-service",
 			"@limit=50",
 			"@limit=10",
+			"@alertmanager=default",
+			"@alertmanager!=default",
 			"@age>1h",
 			"@age>10m",
 			"@age<1h",

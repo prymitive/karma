@@ -210,6 +210,11 @@ input#filter:focus {
     margin-right: 10px;
 }
 
+#instance-errors > .alert {
+  padding: 8px;
+  margin-bottom: 6px;
+}
+
 .panel-title {
     overflow: hidden;
 }
@@ -228,9 +233,12 @@ input#filter:focus {
 .silence-comment {
     font-size: smaller;
     margin-bottom: 0;
-    border-left-color: #18bc9c;
     padding-top: 5px;
     padding-bottom: 5px;
+}
+blockquote.silence-comment {
+  border-left-color: #18bc9c;
+  border-radius: 4px;
 }
 .silence-comment-title {
   margin-top: 6px;
@@ -238,6 +246,7 @@ input#filter:focus {
 }
 .silence-block {
   margin-bottom: 2px;
+  padding: 0;
 }
 
 .incident .panel {
@@ -485,4 +494,8 @@ a[aria-expanded=false] .fa-chevron-down {
   font-size: 15px;
   line-height: 1.42857143;
   display: inline-block;
+}
+
+.alert-static-elements {
+  margin-bottom: 4px;
 }

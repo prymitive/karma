@@ -2,8 +2,8 @@ NAME    := unsee
 VERSION := $(shell git describe --tags --always --dirty='-dev')
 
 # Alertmanager instance used when running locally, points to mock data
-MOCK_PATH        := $(CURDIR)/mock/0.7.1
-ALERTMANAGER_URI := file://$(MOCK_PATH)
+MOCK_PATH         := $(CURDIR)/mock/0.7.1
+ALERTMANAGER_URIS := "mock:file://$(MOCK_PATH)"
 # Listen port when running locally
 PORT := 8080
 
@@ -49,7 +49,7 @@ clean:
 
 .PHONY: run
 run: $(NAME)
-	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
+	ALERTMANAGER_URIS=$(ALERTMANAGER_URIS) \
 	COLOR_LABELS_UNIQUE="@receiver instance cluster" \
 	COLOR_LABELS_STATIC="job" \
 	DEBUG="$(GIN_DEBUG)" \
@@ -68,7 +68,7 @@ run-docker: docker-image
 	    --name $(NAME) \
 	    $(DOCKER_ARGS) \
 	    -v $(MOCK_PATH):$(MOCK_PATH) \
-	    -e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
+	    -e ALERTMANAGER_URIS=$(ALERTMANAGER_URIS) \
 	    -e COLOR_LABELS_UNIQUE="instance cluster" \
 	    -e COLOR_LABELS_STATIC="job" \
 	    -e DEBUG="$(GIN_DEBUG)" \
@@ -80,15 +80,15 @@ run-docker: docker-image
 lint: .build/deps.ok
 	@golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
 ifneq ($(JSHINT),)
-	@$(JSHINT) assets/static/*.js
+	$(JSHINT) assets/static/*.js
 endif
 ifneq ($(ESLINT),)
-	@$(ESLINT) --quiet assets/static/*.js
+	$(ESLINT) --quiet assets/static/*.js
 endif
 
 .PHONY: test
 test: lint bindata_assetfs.go
-	@go test -cover `go list ./... | grep -v /vendor/`
+	go test -cover `go list ./... | grep -v /vendor/`
 
 .build/vendor.ok:
 	go get -u github.com/kardianos/govendor

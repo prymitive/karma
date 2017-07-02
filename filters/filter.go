@@ -5,6 +5,7 @@ import (
 	"regexp"
 
 	"github.com/cloudflare/unsee/models"
+	"github.com/cloudflare/unsee/slices"
 )
 
 // FilterT provides methods for interacting with alert filters
@@ -100,7 +101,7 @@ func NewFilter(expression string) FilterT {
 			// filter name doesn't match, keep searching
 			continue
 		}
-		if !stringInSlice(fc.SupportedOperators, operator) {
+		if !slices.StringInSlice(fc.SupportedOperators, operator) {
 			return &invalid
 		}
 		matcher, err := newMatcher(operator)

@@ -2,6 +2,8 @@ package transform
 
 import (
 	"strings"
+
+	"github.com/cloudflare/unsee/slices"
 )
 
 // StripLables allows filtering out some labels from alerts
@@ -10,7 +12,7 @@ import (
 func StripLables(ignoredLabels []string, sourceLabels map[string]string) map[string]string {
 	labels := map[string]string{}
 	for label, value := range sourceLabels {
-		if !stringInSlice(ignoredLabels, label) {
+		if !slices.StringInSlice(ignoredLabels, label) {
 			// strip leading and trailung space in label value
 			// this is to normalize values in case space is added by Alertmanager rules
 			labels[label] = strings.TrimSpace(value)
