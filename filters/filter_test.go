@@ -9,7 +9,7 @@ import (
 	"github.com/cloudflare/unsee/filters"
 	"github.com/cloudflare/unsee/models"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 type filterTest struct {

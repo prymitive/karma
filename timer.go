@@ -6,7 +6,7 @@ import (
 
 	"github.com/cloudflare/unsee/alertmanager"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 func pullFromAlertmanager() {

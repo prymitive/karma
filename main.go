@@ -10,13 +10,14 @@ import (
 	"github.com/cloudflare/unsee/transform"
 
 	"github.com/DeanThompson/ginpprof"
-	log "github.com/Sirupsen/logrus"
-	raven "github.com/getsentry/raven-go"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/contrib/sentry"
 	"github.com/gin-gonic/gin"
-	ginprometheus "github.com/mcuadros/go-gin-prometheus"
 	"github.com/patrickmn/go-cache"
+
+	raven "github.com/getsentry/raven-go"
+	ginprometheus "github.com/mcuadros/go-gin-prometheus"
+	log "github.com/sirupsen/logrus"
 )
 
 var (

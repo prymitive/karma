@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strings"
 
-	log "github.com/Sirupsen/logrus"
 	assetfs "github.com/elazarl/go-bindata-assetfs"
+	log "github.com/sirupsen/logrus"
 )
 
 type binaryFileSystem struct {

@@ -11,8 +11,9 @@ import (
 	"time"
 	"unicode"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/kelseyhightower/envconfig"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type spaceSeparatedList []string

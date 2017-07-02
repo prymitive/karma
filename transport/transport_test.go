@@ -8,7 +8,7 @@ import (
 	"github.com/cloudflare/unsee/mock"
 	"github.com/cloudflare/unsee/transport"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 	httpmock "gopkg.in/jarcoal/httpmock.v1"
 )
 

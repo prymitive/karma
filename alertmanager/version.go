@@ -5,7 +5,7 @@ import (
 
 	"github.com/cloudflare/unsee/transport"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 // AlertmanagerVersion is what api/v1/status returns, we only use it to check
