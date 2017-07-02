@@ -50,7 +50,7 @@ func DedupAlerts() []models.AlertGroup {
 					// update map
 					alerts[alertLFP] = a
 					// and append alert state to the slice
-					alertStates[alertLFP] = append(alertStates[alertLFP], a.State)
+					alertStates[alertLFP] = append(alertStates[alertLFP], alert.State)
 				} else {
 					alerts[alertLFP] = models.Alert(alert)
 					// seed alert state slice
