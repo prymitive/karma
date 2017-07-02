@@ -268,9 +268,9 @@ type context struct {
 	tags map[string]string
 }
 
-func (c *context) SetUser(u *User) { c.user = u }
-func (c *context) SetHttp(h *Http) { c.http = h }
-func (c *context) SetTags(t map[string]string) {
+func (c *context) setUser(u *User) { c.user = u }
+func (c *context) setHttp(h *Http) { c.http = h }
+func (c *context) setTags(t map[string]string) {
 	if c.tags == nil {
 		c.tags = make(map[string]string)
 	}
@@ -278,7 +278,7 @@ func (c *context) SetTags(t map[string]string) {
 		c.tags[k] = v
 	}
 }
-func (c *context) Clear() {
+func (c *context) clear() {
 	c.user = nil
 	c.http = nil
 	c.tags = nil
@@ -371,12 +371,16 @@ type Client struct {
 	// Context that will get appending to all packets
 	context *context
 
-	mu                 sync.RWMutex
-	url                string
-	projectID          string
-	authHeader         string
-	release            string
-	environment        string
+	mu          sync.RWMutex
+	url         string
+	projectID   string
+	authHeader  string
+	release     string
+	environment string
+
+	// default logger name (leave empty for 'root')
+	defaultLoggerName string
+
 	includePaths       []string
 	ignoreErrorsRegexp *regexp.Regexp
 	queue              chan *outgoingPacket
@@ -473,11 +477,23 @@ func (client *Client) SetEnvironment(environment string) {
 	client.environment = environment
 }
 
+// SetDefaultLoggerName sets the default logger name.
+func (client *Client) SetDefaultLoggerName(name string) {
+	client.mu.Lock()
+	defer client.mu.Unlock()
+	client.defaultLoggerName = name
+}
+
 // SetRelease sets the "release" tag on the default *Client
 func SetRelease(release string) { DefaultClient.SetRelease(release) }
 
 // SetEnvironment sets the "environment" tag on the default *Client
 func SetEnvironment(environment string) { DefaultClient.SetEnvironment(environment) }
+
+// SetDefaultLoggerName sets the "defaultLoggerName" on the default *Client
+func SetDefaultLoggerName(name string) {
+	DefaultClient.SetDefaultLoggerName(name)
+}
 
 func (client *Client) worker() {
 	for outgoingPacket := range client.queue {
@@ -515,14 +531,20 @@ func (client *Client) Capture(packet *Packet, captureTags map[string]string) (ev
 	// Merge capture tags and client tags
 	packet.AddTags(captureTags)
 	packet.AddTags(client.Tags)
-	packet.AddTags(client.context.tags)
 
 	// Initialize any required packet fields
 	client.mu.RLock()
+	packet.AddTags(client.context.tags)
 	projectID := client.projectID
 	release := client.release
 	environment := client.environment
+	defaultLoggerName := client.defaultLoggerName
 	client.mu.RUnlock()
+
+	// set the global logger name on the packet if we must
+	if packet.Logger == "" && defaultLoggerName != "" {
+		packet.Logger = defaultLoggerName
+	}
 
 	err := packet.Init(projectID)
 	if err != nil {
@@ -788,10 +810,29 @@ func (client *Client) SetIncludePaths(p []string) {
 	client.includePaths = p
 }
 
-func (c *Client) SetUserContext(u *User)             { c.context.SetUser(u) }
-func (c *Client) SetHttpContext(h *Http)             { c.context.SetHttp(h) }
-func (c *Client) SetTagsContext(t map[string]string) { c.context.SetTags(t) }
-func (c *Client) ClearContext()                      { c.context.Clear() }
+func (c *Client) SetUserContext(u *User) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.context.setUser(u)
+}
+
+func (c *Client) SetHttpContext(h *Http) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.context.setHttp(h)
+}
+
+func (c *Client) SetTagsContext(t map[string]string) {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.context.setTags(t)
+}
+
+func (c *Client) ClearContext() {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	c.context.clear()
+}
 
 func SetUserContext(u *User)             { DefaultClient.SetUserContext(u) }
 func SetHttpContext(h *Http)             { DefaultClient.SetHttpContext(h) }
