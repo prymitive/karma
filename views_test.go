@@ -14,10 +14,10 @@ import (
 	"github.com/cloudflare/unsee/models"
 	"github.com/cloudflare/unsee/slices"
 
-	log "github.com/Sirupsen/logrus"
-	"github.com/gin-gonic/gin"
 	cache "github.com/patrickmn/go-cache"
+	log "github.com/sirupsen/logrus"
 
+	"github.com/gin-gonic/gin"
 	"gopkg.in/jarcoal/httpmock.v1"
 )
 

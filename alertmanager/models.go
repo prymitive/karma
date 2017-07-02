@@ -13,7 +13,7 @@ import (
 	"github.com/cloudflare/unsee/transport"
 	"github.com/prometheus/client_golang/prometheus"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 // Alertmanager represents Alertmanager upstream instance

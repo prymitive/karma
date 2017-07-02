@@ -12,8 +12,9 @@ import (
 	"github.com/cloudflare/unsee/models"
 	"github.com/cloudflare/unsee/slices"
 
-	log "github.com/Sirupsen/logrus"
 	"github.com/gin-gonic/gin"
+
+	log "github.com/sirupsen/logrus"
 )
 
 var (

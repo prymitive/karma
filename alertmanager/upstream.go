@@ -8,7 +8,7 @@ import (
 	"github.com/cloudflare/unsee/models"
 	"github.com/prometheus/client_golang/prometheus"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 var (
