@@ -68,6 +68,22 @@ func (am *Alertmanager) clearData() {
 	am.colors = models.LabelsColorMap{}
 	am.autocomplete = []models.Autocomplete{}
 	am.lock.Unlock()
+	// reset metrics to 0 since we don't store anything anymore
+	am.resetMetrics()
+}
+
+func (am *Alertmanager) resetMetrics() {
+	// reset alert state/instance counters
+	for _, state := range models.AlertStateList {
+		metricAlerts.With(prometheus.Labels{
+			"alertmanager": am.Name,
+			"state":        state,
+		}).Set(0)
+	}
+	// reset alert group counters
+	metricAlertGroups.With(prometheus.Labels{
+		"alertmanager": am.Name,
+	}).Set(0)
 }
 
 func (am *Alertmanager) pullSilences(version string) error {
@@ -137,6 +153,13 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	dedupedGroups := []models.AlertGroup{}
 	colors := models.LabelsColorMap{}
 	autocompleteMap := map[string]models.Autocomplete{}
+
+	// we'll use this to update alert counter metrics (per state/instance)
+	alertMetrics := map[string]float64{}
+	for _, state := range models.AlertStateList {
+		alertMetrics[state] = 0
+	}
+
 	log.Infof("[%s] Processing unique alert groups (%d)", am.Name, len(uniqueGroups))
 	for _, ag := range uniqueGroups {
 		alerts := models.AlertList{}
@@ -172,11 +195,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			alert.UpdateFingerprints()
 			alerts = append(alerts, alert)
 
-			// update internal metrics
-			metricAlerts.With(prometheus.Labels{
-				"alertmanager": am.Name,
-				"state":        alert.State,
-			}).Inc()
+			alertMetrics[alert.State]++
 		}
 
 		for _, hint := range transform.BuildAutocomplete(alerts) {
@@ -190,6 +209,14 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		ag.Hash = ag.ContentFingerprint()
 
 		dedupedGroups = append(dedupedGroups, ag)
+	}
+
+	// update internal metrics with new computed values
+	for state, val := range alertMetrics {
+		metricAlerts.With(prometheus.Labels{
+			"alertmanager": am.Name,
+			"state":        state,
+		}).Set(val)
 	}
 
 	log.Infof("[%s] Merging autocomplete data (%d)", am.Name, len(autocompleteMap))
@@ -236,6 +263,10 @@ func (am *Alertmanager) Pull() error {
 		}).Inc()
 		return err
 	}
+
+	metricCollectRuns.With(prometheus.Labels{
+		"alertmanager": am.Name,
+	}).Inc()
 
 	am.lastError = ""
 	return nil
