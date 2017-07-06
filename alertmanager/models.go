@@ -168,6 +168,8 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			for k, v := range alert.Labels {
 				transform.ColorLabel(colors, k, v)
 			}
+
+			alert.UpdateFingerprints()
 			alerts = append(alerts, alert)
 
 			// update internal metrics

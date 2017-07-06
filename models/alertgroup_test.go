@@ -47,6 +47,7 @@ var alertListSortTests = []alertListSortTest{
 func TestUnseeAlertListSort(t *testing.T) {
 	al := models.AlertList{}
 	for _, testCase := range alertListSortTests {
+		testCase.alert.UpdateFingerprints()
 		al = append(al, testCase.alert)
 	}
 
@@ -56,6 +57,7 @@ func TestUnseeAlertListSort(t *testing.T) {
 	for i := 1; i <= iterations; i++ {
 		sort.Sort(al)
 		for _, testCase := range alertListSortTests {
+			testCase.alert.UpdateFingerprints()
 			if al[testCase.position].ContentFingerprint() != testCase.alert.ContentFingerprint() {
 				failures++
 			}
@@ -120,6 +122,13 @@ var agFPTests = []agFPTest{
 
 func TestAlertGroupContentFingerprint(t *testing.T) {
 	for _, testCase := range agFPTests {
+		alerts := models.AlertList{}
+		for _, alert := range testCase.ag.Alerts {
+			alert.UpdateFingerprints()
+			alerts = append(alerts, alert)
+		}
+		sort.Sort(alerts)
+		testCase.ag.Alerts = alerts
 		if testCase.ag.ContentFingerprint() != testCase.fingerprint {
 			t.Errorf("Invalid AlertGroup ContentFingerprint(), expected '%s', got '%s', AlertGroup: %v",
 				testCase.fingerprint, testCase.ag.ContentFingerprint(), testCase.ag)

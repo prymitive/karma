@@ -45,30 +45,41 @@ type Alert struct {
 	Alertmanager []AlertmanagerInstance `json:"alertmanager"`
 	Receiver     string                 `json:"receiver"`
 	Links        map[string]string      `json:"links"`
+	// fingerprints are precomputed for speed
+	labelsFP  string `hash:"-"`
+	contentFP string `hash:"-"`
+}
+
+// UpdateFingerprints will generate a new set of fingerprints for this alert
+// it should be called after modifying any field that isn't tagged with hash:"-"
+func (a *Alert) UpdateFingerprints() {
+	a.labelsFP = fmt.Sprintf("%x", structhash.Sha1(a.Labels, 1))
+	a.contentFP = fmt.Sprintf("%x", structhash.Sha1(a, 1))
 }
 
 // LabelsFingerprint is a checksum computed only from labels which should be
 // unique for every alert
-func (a Alert) LabelsFingerprint() string {
-	return fmt.Sprintf("%x", structhash.Sha1(a.Labels, 1))
+func (a *Alert) LabelsFingerprint() string {
+	return a.labelsFP
 }
 
 // ContentFingerprint is a checksum computed from entire alert object
-func (a Alert) ContentFingerprint() string {
-	return fmt.Sprintf("%x", structhash.Sha1(a, 1))
+// except some blacklisted fields tagged with hash:"-"
+func (a *Alert) ContentFingerprint() string {
+	return a.contentFP
 }
 
 // IsSilenced will return true if alert should be considered silenced
-func (a Alert) IsSilenced() bool {
+func (a *Alert) IsSilenced() bool {
 	return (a.State == AlertStateSuppressed && len(a.SilencedBy) > 0)
 }
 
 // IsInhibited will return true if alert should be considered silenced
-func (a Alert) IsInhibited() bool {
+func (a *Alert) IsInhibited() bool {
 	return (a.State == AlertStateSuppressed && len(a.InhibitedBy) > 0)
 }
 
 // IsActive will return true if alert is not suppressed in any way
-func (a Alert) IsActive() bool {
+func (a *Alert) IsActive() bool {
 	return (a.State == AlertStateActive)
 }
