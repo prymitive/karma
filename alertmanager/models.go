@@ -264,6 +264,10 @@ func (am *Alertmanager) Pull() error {
 		return err
 	}
 
+	metricCollectRuns.With(prometheus.Labels{
+		"alertmanager": am.Name,
+	}).Inc()
+
 	am.lastError = ""
 	return nil
 }

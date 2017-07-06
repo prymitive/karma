@@ -24,10 +24,18 @@ var (
 		},
 		[]string{"alertmanager", "endpoint"},
 	)
+	metricCollectRuns = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name: "unsee_collect_cycles_total",
+			Help: "Total number of alert collection cycles run",
+		},
+		[]string{"alertmanager"},
+	)
 )
 
 func init() {
 	prometheus.MustRegister(metricAlerts)
 	prometheus.MustRegister(metricAlertGroups)
 	prometheus.MustRegister(metricAlertmanagerErrors)
+	prometheus.MustRegister(metricCollectRuns)
 }
