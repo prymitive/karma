@@ -88,7 +88,7 @@ endif
 
 .PHONY: test
 test: lint bindata_assetfs.go
-	go test -cover `go list ./... | grep -v /vendor/`
+	go test -bench=. -cover `go list ./... | grep -v /vendor/`
 
 .build/vendor.ok:
 	go get -u github.com/kardianos/govendor

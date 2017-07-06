@@ -133,6 +133,11 @@ func alerts(c *gin.Context) {
 			}
 			if !validFilters || (slices.BoolInSlice(results, true) && !slices.BoolInSlice(results, false)) {
 				matches++
+				// we need to update fingerprints since we've modified some fields in dedup
+				// and agCopy.ContentFingerprint() depends on per alert fingerprint
+				// we update it here rather than in dedup since here we can apply it
+				// only for alerts left after filtering
+				alert.UpdateFingerprints()
 				agCopy.Alerts = append(agCopy.Alerts, alert)
 
 				countLabel(counters, "@state", alert.State)
