@@ -80,13 +80,17 @@ var Unsee = (function() {
 
     var setRefreshRate = function(seconds) {
         var rate = parseInt(seconds);
-        if (isNaN(rate)) {
+        if (isNaN(rate) || rate === null) {
             // if passed rate is incorrect use select value
             rate = Config.GetOption("refresh").Get();
-            if (isNaN(rate)) {
+            if (isNaN(rate) || rate === null) {
                 // if that's also borked use default 15
                 rate = 15;
             }
+        }
+        // don't allow setting refresh rate lower than 1s
+        if (rate < 1) {
+            rate = 1;
         }
         refreshInterval = rate;
         Progress.Reset();
