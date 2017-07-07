@@ -112,6 +112,7 @@ func (m AlertMapper) GetAlerts(uri string, timeout time.Duration) ([]models.Aler
 				}
 				sort.Strings(a.InhibitedBy)
 				sort.Strings(a.SilencedBy)
+				a.UpdateFingerprints()
 				alertList = append(alertList, a)
 			}
 			ug := models.AlertGroup{
