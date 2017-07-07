@@ -141,11 +141,14 @@ func TestAlerts(t *testing.T) {
 		if ur.Upstreams.Counters.Total == 0 {
 			t.Errorf("[%s] No instances in upstream counter: %v", version, ur.Upstreams.Counters)
 		}
-		if len(ur.Upstreams.Instances) == 0 {
-			t.Errorf("[%s] No instances in upstream status: %v", version, ur.Upstreams.Instances)
+		if ur.Upstreams.Counters.Healthy == 0 {
+			t.Errorf("[%s] No healthy instances in upstream counter: %v", version, ur.Upstreams.Counters)
 		}
 		if ur.Upstreams.Counters.Failed > 0 {
 			t.Errorf("[%s] %d error(s) in upstream status: %v", version, ur.Upstreams.Counters.Failed, ur.Upstreams)
+		}
+		if len(ur.Upstreams.Instances) == 0 {
+			t.Errorf("[%s] No instances in upstream status: %v", version, ur.Upstreams.Instances)
 		}
 		if ur.Status != "success" {
 			t.Errorf("[%s] Invalid status in response: %s", version, ur.Status)
