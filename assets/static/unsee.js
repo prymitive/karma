@@ -9,11 +9,42 @@ var Unsee = (function() {
     var timer = false;
     var version = false;
     var refreshInterval = 15;
+    var hiddenAt = false;
 
     var selectors = {
         refreshButton: "#refresh",
         errors: "#errors",
         instanceErrors: "#instance-errors",
+    };
+
+    // when user switches to a different tab but keeps unsee tab open in the background
+    // some browsers (like Chrome) will try to apply some forms of throttling for the JS
+    // code, to ensure that there are no visual artifacts (like state alerts not removed from the page)
+    // redraw all alerts if we detect that the user switches from a different tab to unsee
+    var setupPageVisibilityHandler = function() {
+        // based on https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
+        if (typeof document.hidden !== "undefined" && typeof document.addEventListener !== "undefined") {
+            document.addEventListener("visibilitychange", function() {
+                if (document.hidden) {
+                    // when tab is hidden set a timestamp of that event
+                    hiddenAt = moment().utc().unix();
+                } else {
+                    // when user switches back check if we have a timestamp
+                    // and if autorefresh is enable
+                    if (hiddenAt && Config.GetOption("autorefresh").Get()) {
+                        // get the diff to see how long tab was hidden
+                        var diff = moment().utc().unix() - hiddenAt;
+                        if (diff > refreshInterval) {
+                            // if it was hidden for more than one refresh cycle
+                            // then manually refresh alerts to ensure everything
+                            // is up to date
+                            Unsee.Reload();
+                        }
+                    }
+                    hiddenAt = false;
+                }
+            }, false);
+        }
     };
 
     var init = function() {
@@ -39,6 +70,8 @@ var Unsee = (function() {
             }
             return false;
         });
+
+        setupPageVisibilityHandler();
     };
 
     var getRefreshRate = function() {
