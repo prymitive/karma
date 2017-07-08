@@ -25,15 +25,27 @@ ESLINT := $(shell which eslint)
 
 .DEFAULT_GOAL := $(NAME)
 
-.build/deps.ok:
+.build/go-bindata:
+	@mkdir -p .build
 	go get -u github.com/jteeuwen/go-bindata/...
+	touch $@
+
+.build/go-bindata-assetfs:
+	@mkdir -p .build
 	go get -u github.com/elazarl/go-bindata-assetfs/...
+	touch $@
+
+.build/golint:
+	@mkdir -p .build
 	go get -u github.com/golang/lint/golint
-	mkdir -p .build
+	touch $@
+
+.build/deps.ok: .build/go-bindata .build/go-bindata-assetfs .build/golint
+	@mkdir -p .build
 	touch $@
 
 .build/bindata_assetfs.%:
-	mkdir -p .build
+	@mkdir -p .build
 	rm -f .build/bindata_assetfs.*
 	touch $@
 
@@ -92,7 +104,7 @@ test: lint bindata_assetfs.go
 
 .build/vendor.ok:
 	go get -u github.com/kardianos/govendor
-	mkdir -p .build
+	@mkdir -p .build
 	touch $@
 
 .PHONY: vendor
