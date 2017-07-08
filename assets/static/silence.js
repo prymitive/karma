@@ -147,22 +147,8 @@ var Silence = (function() {
             type: "POST",
             url: alertmanagerSilencesAPIUrl(url),
             data: JSON.stringify(payload),
-            error: function(xhr, textStatus, errorThrown) {
-                // default to whatever error text we can get
-                var err = xhr.responseText || errorThrown || textStatus;
-                if (xhr.responseText) {
-                    // if we have a reponse text try to decode it as JSON
-                    // it should be error from Alertmanager (it we were able to connect)
-                    try {
-                        var j = JSON.parse(xhr.responseText);
-                        if (j.error !== undefined) {
-                            err = j.error;
-                        }
-                    } catch (error) {
-                        // can't parse json, do nothing
-                    }
-                }
-
+            error: function(xhr, textStatus) {
+                var err = Unsee.ParseAJAXError(xhr, textStatus);
                 var errContent = Templates.Render("silenceFormError", {error: err});
                 $(elem).html(errContent);
             },
@@ -198,8 +184,8 @@ var Silence = (function() {
             });
             $.ajax({
                 url: "alerts.json?q=alertname=" + elem.data("alertname"),
-                error: function(xhr, textStatus, errorThrown) {
-                    var err = xhr.responseText || errorThrown || textStatus;
+                error: function(xhr, textStatus) {
+                    var err = Unsee.ParseAJAXError(xhr, textStatus);
                     modal.find(".modal-body").html(
                         Templates.Render("silenceFormFatal", {error: err})
                     );
