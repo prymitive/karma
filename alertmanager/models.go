@@ -11,10 +11,19 @@ import (
 	"github.com/cloudflare/unsee/models"
 	"github.com/cloudflare/unsee/transform"
 	"github.com/cloudflare/unsee/transport"
-	"github.com/prometheus/client_golang/prometheus"
 
 	log "github.com/sirupsen/logrus"
 )
+
+const (
+	labelValueErrorsAlerts   = "alerts"
+	labelValueErrorsSilences = "silences"
+)
+
+type alertmanagerMetrics struct {
+	cycles float64
+	errors map[string]float64
+}
 
 // Alertmanager represents Alertmanager upstream instance
 type Alertmanager struct {
@@ -29,6 +38,8 @@ type Alertmanager struct {
 	colors       models.LabelsColorMap
 	autocomplete []models.Autocomplete
 	lastError    string
+	// metrics tracked per alertmanager instance
+	metrics alertmanagerMetrics
 }
 
 func (am *Alertmanager) detectVersion() string {
@@ -68,22 +79,6 @@ func (am *Alertmanager) clearData() {
 	am.colors = models.LabelsColorMap{}
 	am.autocomplete = []models.Autocomplete{}
 	am.lock.Unlock()
-	// reset metrics to 0 since we don't store anything anymore
-	am.resetMetrics()
-}
-
-func (am *Alertmanager) resetMetrics() {
-	// reset alert state/instance counters
-	for _, state := range models.AlertStateList {
-		metricAlerts.With(prometheus.Labels{
-			"alertmanager": am.Name,
-			"state":        state,
-		}).Set(0)
-	}
-	// reset alert group counters
-	metricAlertGroups.With(prometheus.Labels{
-		"alertmanager": am.Name,
-	}).Set(0)
 }
 
 func (am *Alertmanager) pullSilences(version string) error {
@@ -154,12 +149,6 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	colors := models.LabelsColorMap{}
 	autocompleteMap := map[string]models.Autocomplete{}
 
-	// we'll use this to update alert counter metrics (per state/instance)
-	alertMetrics := map[string]float64{}
-	for _, state := range models.AlertStateList {
-		alertMetrics[state] = 0
-	}
-
 	log.Infof("[%s] Processing unique alert groups (%d)", am.Name, len(uniqueGroups))
 	for _, ag := range uniqueGroups {
 		alerts := models.AlertList{}
@@ -194,8 +183,6 @@ func (am *Alertmanager) pullAlerts(version string) error {
 
 			alert.UpdateFingerprints()
 			alerts = append(alerts, alert)
-
-			alertMetrics[alert.State]++
 		}
 
 		for _, hint := range transform.BuildAutocomplete(alerts) {
@@ -211,14 +198,6 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		dedupedGroups = append(dedupedGroups, ag)
 	}
 
-	// update internal metrics with new computed values
-	for state, val := range alertMetrics {
-		metricAlerts.With(prometheus.Labels{
-			"alertmanager": am.Name,
-			"state":        state,
-		}).Set(val)
-	}
-
 	log.Infof("[%s] Merging autocomplete data (%d)", am.Name, len(autocompleteMap))
 	autocomplete := []models.Autocomplete{}
 	for _, hint := range autocompleteMap {
@@ -231,25 +210,20 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	am.autocomplete = autocomplete
 	am.lock.Unlock()
 
-	metricAlertGroups.With(prometheus.Labels{
-		"alertmanager": am.Name,
-	}).Set(float64(len(dedupedGroups)))
-
 	return nil
 }
 
 // Pull data from upstream Alertmanager instance
 func (am *Alertmanager) Pull() error {
+	am.metrics.cycles++
+
 	version := am.detectVersion()
 
 	err := am.pullSilences(version)
 	if err != nil {
 		am.clearData()
 		am.setError(err.Error())
-		metricAlertmanagerErrors.With(prometheus.Labels{
-			"alertmanager": am.Name,
-			"endpoint":     "silences",
-		}).Inc()
+		am.metrics.errors[labelValueErrorsSilences]++
 		return err
 	}
 
@@ -257,16 +231,9 @@ func (am *Alertmanager) Pull() error {
 	if err != nil {
 		am.clearData()
 		am.setError(err.Error())
-		metricAlertmanagerErrors.With(prometheus.Labels{
-			"alertmanager": am.Name,
-			"endpoint":     "alerts",
-		}).Inc()
+		am.metrics.errors[labelValueErrorsAlerts]++
 		return err
 	}
-
-	metricCollectRuns.With(prometheus.Labels{
-		"alertmanager": am.Name,
-	}).Inc()
 
 	am.lastError = ""
 	return nil
