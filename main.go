@@ -73,6 +73,12 @@ func main() {
 	log.Infof("Version: %s", version)
 
 	config.Config.Read()
+
+	// timer duration cannot be zero second or a negative one
+	if config.Config.AlertmanagerTTL <= time.Second*0 {
+		log.Fatalf("Invalid AlertmanagerTTL value '%v'", config.Config.AlertmanagerTTL)
+	}
+
 	config.Config.LogValues()
 	transform.ParseRules(config.Config.JiraRegexp)
 
