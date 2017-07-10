@@ -254,13 +254,11 @@ func (am *Alertmanager) SilenceByID(id string) (models.Silence, error) {
 	am.lock.RLock()
 	defer am.lock.RUnlock()
 
-	for k, v := range am.silences {
-		if k == id {
-			return models.Silence(v), nil
-		}
+	s, found := am.silences[id]
+	if !found {
+		return models.Silence{}, fmt.Errorf("Silence '%s' not found", id)
 	}
-
-	return models.Silence{}, fmt.Errorf("Silence '%s' not found", id)
+	return s, nil
 }
 
 // Colors returns a copy of all color maps
