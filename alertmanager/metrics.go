@@ -108,8 +108,8 @@ func (c *unseeCollector) Collect(ch chan<- prometheus.Metric) {
 					prometheus.GaugeValue,
 					count,
 					am.Name,
-					reciver,
 					state,
+					reciver,
 				)
 			}
 		}
