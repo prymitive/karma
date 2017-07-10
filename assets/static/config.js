@@ -37,6 +37,7 @@ var ConfigOption = (function() {
         var q = QueryString.Parse();
         if (q[this.QueryParam] !== undefined) {
             this.Set(q[this.QueryParam]);
+            val = q[this.QueryParam];
         }
 
         if (currentVal != val) {
