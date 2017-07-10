@@ -47,6 +47,22 @@ var Unsee = (function() {
         }
     };
 
+    var parseAJAXError = function(xhr, textStatus) {
+        // default to textStatus, it's usually just "error" string
+        var err = textStatus;
+        if (xhr.readyState === 0) {
+            // ajax() completed but request wasn't send
+            err = "Connection to the remote endpoint failed";
+        } else if (xhr.responseJSON && xhr.responseJSON.error) {
+            // there's response JSON and an error key in it
+            err = xhr.responseJSON.error;
+        } else if (xhr.responseText) {
+            // else check response as a string
+            err = xhr.responseText;
+        }
+        return err;
+    };
+
     var init = function() {
         Progress.Init();
 
@@ -233,15 +249,16 @@ var Unsee = (function() {
                     }
                 }
             },
-            error: function() {
+            error: function(xhr, textStatus) {
                 Counter.Unknown();
                 $(selectors.instanceErrors).html("");
                 // if fatal error was already triggered we have error message
                 // so don't add new one
                 if (!Watchdog.IsFatal()) {
+                    var err = Unsee.ParseAJAXError(xhr, textStatus);
                     renderError("updateError", {
                         error: "Backend error",
-                        messages: [ "AJAX request failed" ],
+                        messages: [ err ],
                         lastTs: Watchdog.GetLastUpdate()
                     });
                 }
@@ -291,7 +308,8 @@ var Unsee = (function() {
         Reload: triggerReload,
         GetRefreshRate: getRefreshRate,
         SetRefreshRate: setRefreshRate,
-        Flash: flash
+        Flash: flash,
+        ParseAJAXError: parseAJAXError
     };
 
 })();
