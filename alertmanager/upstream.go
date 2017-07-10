@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/cloudflare/unsee/models"
-	"github.com/prometheus/client_golang/prometheus"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -27,16 +26,6 @@ func NewAlertmanager(name, uri string, timeout time.Duration) error {
 		}
 	}
 
-	// initialize metrics
-	metricAlertmanagerErrors.With(prometheus.Labels{
-		"alertmanager": name,
-		"endpoint":     "alerts",
-	}).Set(0)
-	metricAlertmanagerErrors.With(prometheus.Labels{
-		"alertmanager": name,
-		"endpoint":     "silences",
-	}).Set(0)
-
 	upstreams[name] = &Alertmanager{
 		URI:          uri,
 		Timeout:      timeout,
@@ -46,6 +35,12 @@ func NewAlertmanager(name, uri string, timeout time.Duration) error {
 		silences:     map[string]models.Silence{},
 		colors:       models.LabelsColorMap{},
 		autocomplete: []models.Autocomplete{},
+		metrics: alertmanagerMetrics{
+			errors: map[string]float64{
+				labelValueErrorsAlerts:   0,
+				labelValueErrorsSilences: 0,
+			},
+		},
 	}
 
 	log.Infof("[%s] Configured Alertmanager source at %s", name, uri)
