@@ -5,6 +5,10 @@
 /* exported Silence */
 var Silence = (function() {
 
+    var alertmanagerSilencesAPIUrl = function(prefix) {
+        return prefix + "/api/v1/silences";
+    };
+
     var silenceFormData = function() {
         var values = $("#newSilenceForm").serializeArray();
         var payload = {
@@ -84,7 +88,7 @@ var Silence = (function() {
             if (i > 0) {
                 d.push("\n");
             }
-            d.push("curl " + uri);
+            d.push("curl " + alertmanagerSilencesAPIUrl(uri));
         });
         d.push("\n  -X POST --data ");
         d.push(JSON.stringify(silenceFormData(), undefined, 2));
@@ -141,7 +145,7 @@ var Silence = (function() {
         var elem = $(".silence-post-result[data-uri='" + url + "']");
         $.ajax({
             type: "POST",
-            url: url + "/api/v1/silences",
+            url: alertmanagerSilencesAPIUrl(url),
             data: JSON.stringify(payload),
             error: function(xhr, textStatus, errorThrown) {
                 // default to whatever error text we can get
@@ -163,7 +167,6 @@ var Silence = (function() {
                 $(elem).html(errContent);
             },
             success: function(data) {
-                // FIXME this is per instance now, so needs to be handled differently
                 if (data.status == "success") {
                     $(elem).html(Templates.Render("silenceFormSuccess", {
                         silenceID: data.data.silenceId
