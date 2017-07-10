@@ -246,7 +246,21 @@ blockquote.silence-comment {
 }
 .silence-block {
   margin-bottom: 2px;
-  padding: 0;
+  padding-left: 0;
+  padding-right: 2px;
+  padding-top: 2px;
+  padding-bottom: 0;
+}
+
+/* button is an icon inside a well, it gets white color
+   make it dark gray by default, so it's visible but doesn't stand out
+  and black on hover */
+button.silence-delete {
+  color: inherit;
+}
+button.silence-delete:hover,
+button.silence-delete:focus {
+  color: #2c3e50;
 }
 
 .incident .panel {

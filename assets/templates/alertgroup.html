@@ -122,6 +122,15 @@
   <% _.each(alert.alertmanager, function(am) { %>
     <% _.each(am.silences, function(silence) { %>
       <div class="silence-block well">
+        <button type="button"
+                class="close silence-delete"
+                title="Delete this silence"
+                data-toggle="tooltip"
+                data-placement="top"
+                data-alertmanager-uri="<%- am.uri %>"
+                data-silence-id="<%- silence.id %>">
+          <span class="fa fa-trash-o"></span>
+        </button>
         <blockquote class="silence-comment">
           <% if (silence.jiraURL) { %>
             <a href="<%= silence.jiraURL %>" target="_blank">
