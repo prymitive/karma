@@ -11,21 +11,6 @@ var Grid = (function() {
 
     var grid;
 
-    // when user switches to a different tab but keeps unsee tab open in the background
-    // some browsers (like Chrome) will try to apply some forms of throttling for the JS
-    // code, to ensure that there are no visual artifacts (like state alerts not removed from the page)
-    // redraw all alerts if we detect that the user switches from a different tab to unsee
-    var setupPageVisibilityHandler = function() {
-        // based on https://developer.mozilla.org/en-US/docs/Web/API/Page_Visibility_API
-        if (typeof document.hidden !== "undefined" && typeof document.addEventListener !== "undefined") {
-            document.addEventListener("visibilitychange", function() {
-                if (!document.hidden) {
-                    Grid.Redraw();
-                }
-            }, false);
-        }
-    };
-
     var init = function() {
         grid = $(selectors.alerts).masonry({
             itemSelector: selectors.incident,
@@ -39,7 +24,6 @@ var Grid = (function() {
                 opacity: 1
             }
         });
-        setupPageVisibilityHandler();
     };
 
     var clear = function() {
