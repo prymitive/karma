@@ -36,7 +36,7 @@ To update specific vendor package run `govendor` manually:
 
 See [govendor](https://github.com/kardianos/govendor) documentation for details.
 
-## Javascript & CSS assets
+## Javascript & CSS assets and HTML templates
 
 JS and CSS assets are also vendored into `assets/static` directory.
 There is a make target that allows to fetch all needed files from the
@@ -49,6 +49,16 @@ If the assets you're adding are not found on cdnjs then download it and place
 inside `assets/static` directory. In this case you will also need to manually
 include it in the `templates/js.html` template file (managed assets are all
 included automatically).
+
+Once assets dir is modified please run:
+
+    make bindata_assetfs.go
+
+This will rebuild [https://github.com/elazarl/go-bindata-assetfs](binary assets)
+file. Be sure to include it in the commit.
+Same applies to HTML template files, please rebuild bindata_assetfs.go before
+commit. Note that Makefile targets are setup to run it automatically if changes
+are detected, so it's usually not needed for development.
 
 ## Running
 

@@ -4,8 +4,11 @@ Alert dashboard for [Prometheus Alertmanager](https://prometheus.io/docs/alertin
 
 Alertmanager UI is useful for browsing alerts and managing silences, but it's
 lacking as a dashboard tool - unsee aims to fill this gap.
-It's developed as a dedicated tool as it's intended to provide only read access
-to alert data, therefore safe to be accessed by wider audience.
+Starting with `0.7.0` release it can also aggregate alerts from multiple
+Alertmanager instances, running either in HA mode or separate. Duplicated alerts
+are deduplicated so only unique alerts are displayed. Each alert is tagged with
+names of all  Alertmanager instances it was found at and can be filtered based
+on those tags.
 
 ![Screenshot](/screenshot.png)
 
@@ -18,6 +21,9 @@ _RSS to email_ notifications, like [Blogtrottr](https://blogtrottr.com/).
 
 Alertmanager's API isn't stable yet and can change between releases.
 unsee currently supports Alertmanager `0.4`, `0.5`, `0.6` and `0.7`.
+Due to API differences between those releases some features will work
+differently or be missing, it's recommended to use the latest supported
+Alertmanager version.
 
 ## Security
 
@@ -194,7 +200,9 @@ This variable is required and there is no default value.
 #### DEBUG
 
 Will enable [gin](https://github.com/gin-gonic/gin) debug mode. This will
-configure to print out more debugging information on startup.
+configure to print out more debugging information on startup and enable
+[https://golang.org/pkg/net/http/pprof/](pprof) debug endpoints.
+
 Examples:
 
     DEBUG=true
