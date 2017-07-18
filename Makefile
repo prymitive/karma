@@ -102,16 +102,18 @@ endif
 test: lint bindata_assetfs.go
 	go test -bench=. -cover `go list ./... | grep -v /vendor/`
 
-.build/vendor.ok:
-	go get -u github.com/kardianos/govendor
+.build/dep.ok:
+	go get -u github.com/golang/dep/cmd/dep
 	@mkdir -p .build
 	touch $@
 
 .PHONY: vendor
-vendor: .build/vendor.ok
-	govendor remove +u
-	govendor fetch +m +e
+vendor: .build/dep.ok
+	dep ensure
+	dep prune
+
 
 .PHONY: vendor-update
-vendor-update: .build/vendor.ok
-	govendor fetch +v
+vendor-update: .build/dep.ok
+	dep ensure -update
+	dep prune
