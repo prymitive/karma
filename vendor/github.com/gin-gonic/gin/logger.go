@@ -25,17 +25,14 @@ var (
 	disableColor = false
 )
 
-// DisableConsoleColor disables color output in the console
 func DisableConsoleColor() {
 	disableColor = true
 }
 
-// ErrorLogger returns a handlerfunc for any error type
 func ErrorLogger() HandlerFunc {
 	return ErrorLoggerT(ErrorTypeAny)
 }
 
-// ErrorLoggerT returns a handlerfunc for a given error type
 func ErrorLoggerT(typ ErrorType) HandlerFunc {
 	return func(c *Context) {
 		c.Next()

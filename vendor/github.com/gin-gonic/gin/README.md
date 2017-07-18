@@ -1,6 +1,6 @@
 # Gin Web Framework
 
-<img align="right" src="https://raw.githubusercontent.com/gin-gonic/gin/master/logo.png">
+<img align="right" src="https://raw.githubusercontent.com/gin-gonic/gin/master/logo.jpg">
 
 [![Build Status](https://travis-ci.org/gin-gonic/gin.svg)](https://travis-ci.org/gin-gonic/gin)
  [![codecov](https://codecov.io/gh/gin-gonic/gin/branch/master/graph/badge.svg)](https://codecov.io/gh/gin-gonic/gin)
@@ -101,38 +101,6 @@ import "github.com/gin-gonic/gin"
 
 ```go
 import "net/http"
-```
-
-### Use a vendor tool like [Govendor](https://github.com/kardianos/govendor)
-
-1. `go get` govendor
-
-```sh
-$ go get github.com/kardianos/govendor
-```
-2. Create your project folder and `cd` inside
-
-```sh
-$ mkdir -p ~/go/src/github.com/myusername/project && cd "$_"
-```
-
-3. Vendor init your project and add gin
-
-```sh
-$ govendor init
-$ govendor fetch github.com/gin-gonic/gin@v1.2
-```
-
-4. Copy a starting template inside your project
-
-```sh
-$ curl https://raw.githubusercontent.com/gin-gonic/gin/master/examples/basic/main.go > main.go
-```
-
-5. Run your project
-
-```sh
-$ go run main.go
 ```
 
 ## API Examples
@@ -987,6 +955,19 @@ func main() {
 	log.Println("Server exist")
 }
 ```
+
+## Contributing 
+
+- With issues:
+  - Use the search tool before opening a new issue.
+  - Please provide source code and commit sha if you found a bug.
+  - Review existing issues and provide feedback or react to them.
+- With pull requests:
+  - Open your pull request against develop
+  - Your pull request should have no more than two commits, if not you should squash them.
+  - It should pass all tests in the available continuous integrations systems such as TravisCI.
+  - You should add/modify tests to cover your proposed code changes.
+  - If your pull request contains a new feature, please document it on the README.
 
 ## Users
 
