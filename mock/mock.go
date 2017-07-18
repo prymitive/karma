@@ -52,3 +52,14 @@ func ListAllMocks() []string {
 	}
 	return dirs
 }
+
+// ListAllMockURIs returns a list of mock APIs as file:// URIs
+func ListAllMockURIs() []string {
+	uris := []string{}
+	_, f, _, _ := runtime.Caller(0)
+	cwd := filepath.Dir(f)
+	for _, version := range ListAllMocks() {
+		uris = append(uris, "file://"+path.Join(cwd, version))
+	}
+	return uris
+}
