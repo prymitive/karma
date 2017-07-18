@@ -23,18 +23,18 @@ If you use any new dependency or remove any existing one, please run:
 
     make vendor
 
-This will install and run [govendor](https://github.com/kardianos/govendor),
-which will detect all used package and fetch them into the vendor directory.
+This will install and run [dep](https://github.com/golang/dep), which will
+detect all used package and fetch them into the vendor directory.
 
 To update all vendor package run:
 
     make vendor-update
 
-To update specific vendor package run `govendor` manually:
+To update specific vendor package run `dep` manually:
 
-    govendor update <import-path-filter>
+    dep ensure <import-path-filter>
 
-See [govendor](https://github.com/kardianos/govendor) documentation for details.
+See [dep](https://github.com/golang/dep) documentation for details.
 
 ## Javascript & CSS assets and HTML templates
 
