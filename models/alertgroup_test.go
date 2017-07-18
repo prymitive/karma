@@ -69,42 +69,42 @@ func TestUnseeAlertListSort(t *testing.T) {
 }
 
 type agFPTest struct {
-	ag          models.AlertGroup
-	fingerprint string
+	name     string            // name of the test
+	ag       models.AlertGroup // alert group data
+	fpChange bool              // true if fingerprint should change vs previous run
 }
 
 var agFPTests = []agFPTest{
-	// empty group fingerprint
 	agFPTest{
-		ag:          models.AlertGroup{},
-		fingerprint: "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+		name: "empty group fingerprint",
+		ag:   models.AlertGroup{},
 	},
-	// different Receiver shouldn't change content fingerprint
 	agFPTest{
+		name: "different Receiver shouldn't change content fingerprint",
 		ag: models.AlertGroup{
 			Receiver: "default",
 		},
-		fingerprint: "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+		fpChange: false,
 	},
-	// different StateCount shouldn't change content fingerprint
 	agFPTest{
+		name: "different StateCount shouldn't change content fingerprint",
 		ag: models.AlertGroup{
 			Receiver:   "default",
 			StateCount: map[string]int{"default": 0},
 		},
-		fingerprint: "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+		fpChange: false,
 	},
-	// different Labels shouldn't change content fingerprint
 	agFPTest{
+		name: "different Labels shouldn't change content fingerprint",
 		ag: models.AlertGroup{
 			Receiver:   "default",
 			Labels:     map[string]string{"foo": "bar"},
 			StateCount: map[string]int{"default": 0},
 		},
-		fingerprint: "da39a3ee5e6b4b0d3255bfef95601890afd80709",
+		fpChange: false,
 	},
-	// different set of alerts should change content fingerprint
 	agFPTest{
+		name: "different set of alerts should change content fingerprint",
 		ag: models.AlertGroup{
 			Receiver: "default",
 			Labels:   map[string]string{"foo": "bar"},
@@ -116,22 +116,66 @@ var agFPTests = []agFPTest{
 			},
 			StateCount: map[string]int{"default": 0},
 		},
-		fingerprint: "87e79b3d507d26f21bc5e82b8db19f87ce46c1ad",
+		fpChange: true,
+	},
+	agFPTest{
+		name: "another different set of alerts should change content fingerprint",
+		ag: models.AlertGroup{
+			Receiver: "default",
+			Labels:   map[string]string{"bar": "foo"},
+			Alerts: models.AlertList{
+				models.Alert{
+					Labels: map[string]string{"bar": "foo"},
+					State:  models.AlertStateActive,
+				},
+			},
+			StateCount: map[string]int{"default": 0},
+		},
+		fpChange: true,
+	},
+	agFPTest{
+		name: "repeating last set of alerts shouldn't change content fingerprint",
+		ag: models.AlertGroup{
+			Receiver: "default",
+			Labels:   map[string]string{"bar": "foo"},
+			Alerts: models.AlertList{
+				models.Alert{
+					Labels: map[string]string{"bar": "foo"},
+					State:  models.AlertStateActive,
+				},
+			},
+			StateCount: map[string]int{"default": 0},
+		},
+		fpChange: false,
 	},
 }
 
 func TestAlertGroupContentFingerprint(t *testing.T) {
-	for _, testCase := range agFPTests {
-		alerts := models.AlertList{}
-		for _, alert := range testCase.ag.Alerts {
-			alert.UpdateFingerprints()
-			alerts = append(alerts, alert)
-		}
-		sort.Sort(alerts)
-		testCase.ag.Alerts = alerts
-		if testCase.ag.ContentFingerprint() != testCase.fingerprint {
-			t.Errorf("Invalid AlertGroup ContentFingerprint(), expected '%s', got '%s', AlertGroup: %v",
-				testCase.fingerprint, testCase.ag.ContentFingerprint(), testCase.ag)
-		}
+	fps := []string{}
+	for i, testCase := range agFPTests {
+		t.Run(testCase.name, func(t *testing.T) {
+			alerts := models.AlertList{}
+			for _, alert := range testCase.ag.Alerts {
+				alert.UpdateFingerprints()
+				alerts = append(alerts, alert)
+			}
+			sort.Sort(alerts)
+			testCase.ag.Alerts = alerts
+			// get alert group fingerprint
+			fp := testCase.ag.ContentFingerprint()
+			// add it to the list
+			fps = append(fps, fp)
+			// skip first test case since there's nothing to compare it with
+			if i > 0 {
+				// check if current test case generated fingerprint that is different
+				// from the previous one
+				fpChange := fp != fps[i-1]
+				// check if we expected a change or not
+				if fpChange != testCase.fpChange {
+					t.Errorf("Fingerprint changed=%t while expected change=%t, alertgroup: %v",
+						fpChange, testCase.fpChange, testCase.ag)
+				}
+			}
+		})
 	}
 }
