@@ -19,8 +19,7 @@ ifdef DEBUG
 	DOCKER_ARGS = -v $(CURDIR)/assets:$(CURDIR)/assets:ro
 endif
 
-# detect if jshint and/or eslint is installed
-JSHINT := $(shell which jshint)
+# detect if eslint is installed
 ESLINT := $(shell which eslint)
 
 .DEFAULT_GOAL := $(NAME)
@@ -91,9 +90,6 @@ run-docker: docker-image
 .PHONY: lint
 lint: .build/deps.ok
 	@golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
-ifneq ($(JSHINT),)
-	$(JSHINT) assets/static/*.js
-endif
 ifneq ($(ESLINT),)
 	$(ESLINT) --quiet assets/static/*.js
 endif
