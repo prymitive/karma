@@ -16,39 +16,17 @@
  *
  *  removed  <--  <--  <--  <--  <--  <--  <--  <--  <--  <--  <--  added
  */
-
-const NEWER = Symbol('newer');
-const OLDER = Symbol('older');
-
-function LRUMap(limit, entries) {
-  if (typeof limit !== 'number') {
-    // called as (entries)
-    entries = limit;
-    limit = 0;
-  }
-
+function LRUCache (limit) {
+  // Current size of the cache. (Read-only).
   this.size = 0;
+  // Maximum number of items this cache can hold.
   this.limit = limit;
   this.oldest = this.newest = undefined;
-  this._keymap = new Map();
-
-  if (entries) {
-    this.assign(entries);
-    if (limit < 1) {
-      this.limit = this.size;
-    }
-  }
-}
-
-function Entry(key, value) {
-  this.key = key;
-  this.value = value;
-  this[NEWER] = undefined;
-  this[OLDER] = undefined;
+  this._keymap = {};
 }
 
 
-LRUMap.prototype._markEntryAsUsed = function(entry) {
+LRUCache.prototype._markEntryAsUsed = function(entry) {
   if (entry === this.newest) {
     // Already the most recenlty used entry, so no need to update the list
     return;
@@ -57,71 +35,45 @@ LRUMap.prototype._markEntryAsUsed = function(entry) {
   //   <.older   .newer>
   //  <--- add direction --
   //   A  B  C  <D>  E
-  if (entry[NEWER]) {
+  if (entry.newer) {
     if (entry === this.oldest) {
-      this.oldest = entry[NEWER];
+      this.oldest = entry.newer;
     }
-    entry[NEWER][OLDER] = entry[OLDER]; // C <-- E.
+    entry.newer.older = entry.older; // C <-- E.
   }
-  if (entry[OLDER]) {
-    entry[OLDER][NEWER] = entry[NEWER]; // C. --> E
+  if (entry.older) {
+    entry.older.newer = entry.newer; // C. --> E
   }
-  entry[NEWER] = undefined; // D --x
-  entry[OLDER] = this.newest; // D. --> E
+  entry.newer = undefined; // D --x
+  entry.older = this.newest; // D. --> E
   if (this.newest) {
-    this.newest[NEWER] = entry; // E. <-- D
+    this.newest.newer = entry; // E. <-- D
   }
   this.newest = entry;
 };
 
-LRUMap.prototype.assign = function(entries) {
-  let entry, limit = this.limit || Number.MAX_VALUE;
-  this._keymap.clear();
-  let it = entries[Symbol.iterator]();
-  for (let itv = it.next(); !itv.done; itv = it.next()) {
-    let e = new Entry(itv.value[0], itv.value[1]);
-    this._keymap.set(e.key, e);
-    if (!entry) {
-      this.oldest = e;
-    } else {
-      entry[NEWER] = e;
-      e[OLDER] = entry;
-    }
-    entry = e;
-    if (limit-- == 0) {
-      throw new Error('overflow');
-    }
-  }
-  this.newest = entry;
-  this.size = this._keymap.size;
-};
-
-LRUMap.prototype.get = function(key) {
-  // First, find our cache entry
-  var entry = this._keymap.get(key);
-  if (!entry) return; // Not cached. Sorry.
-  // As <key> was found in the cache, register it as being requested recently
-  this._markEntryAsUsed(entry);
-  return entry.value;
-};
-
-LRUMap.prototype.set = function(key, value) {
-  var entry = this._keymap.get(key);
+/**
+ * Put <value> into the cache associated with <key>. Returns the entry which was
+ * removed to make room for the new entry. Otherwise undefined is returned
+ * (i.e. if there was enough room already).
+ */
+LRUCache.prototype.put = function(key, value) {
+  var entry = this._keymap[key];
 
   if (entry) {
     // update existing
     entry.value = value;
     this._markEntryAsUsed(entry);
-    return this;
+    return;
   }
 
   // new entry
-  this._keymap.set(key, (entry = new Entry(key, value)));
+  this._keymap[key] = entry = {key:key, value:value, older:undefined, newer:undefined};
 
   if (this.newest) {
     // link previous tail to the new tail (entry)
-    this.newest[NEWER] = entry;
-    entry[OLDER] = this.newest;
+    this.newest.newer = entry;
+    entry.older = this.newest;
   } else {
     // we're first in -- yay
     this.oldest = entry;
@@ -129,23 +81,35 @@ LRUMap.prototype.set = function(key, value) {
 
   // add new entry to the end of the linked list -- it's now the freshest entry.
   this.newest = entry;
-  ++this.size;
+  this.size++;
   if (this.size > this.limit) {
     // we hit the limit -- remove the head
-    this.shift();
+    return this.shift();
   }
-
-  return this;
 };
 
-LRUMap.prototype.shift = function() {
+/**
+ * Purge the least recently used (oldest) entry from the cache. Returns the
+ * removed entry or undefined if the cache was empty.
+ *
+ * If you need to perform any form of finalization of purged items, this is a
+ * good place to do it. Simply override/replace this function:
+ *
+ *   var c = new LRUCache(123);
+ *   c.shift = function() {
+ *     var entry = LRUCache.prototype.shift.call(this);
+ *     doSomethingWith(entry);
+ *     return entry;
+ *   }
+ */
+LRUCache.prototype.shift = function() {
   // todo: handle special case when limit == 1
   var entry = this.oldest;
   if (entry) {
-    if (this.oldest[NEWER]) {
+    if (this.oldest.newer) {
       // advance the list
-      this.oldest = this.oldest[NEWER];
-      this.oldest[OLDER] = undefined;
+      this.oldest = this.oldest.newer;
+      this.oldest.older = undefined;
     } else {
       // the cache is exhausted
       this.oldest = undefined;
@@ -153,45 +117,79 @@ LRUMap.prototype.shift = function() {
     }
     // Remove last strong reference to <entry> and remove links from the purged
     // entry being returned:
-    entry[NEWER] = entry[OLDER] = undefined;
-    this._keymap.delete(entry.key);
-    --this.size;
-    return [entry.key, entry.value];
+    entry.newer = entry.older = undefined;
+    // delete is slow, but we need to do this to avoid uncontrollable growth:
+    delete this._keymap[entry.key];
+    this.size--;
   }
+  return entry;
+};
+
+/**
+ * Get and register recent use of <key>. Returns the value associated with <key>
+ * or undefined if not in cache.
+ */
+LRUCache.prototype.get = function(key, returnEntry) {
+  // First, find our cache entry
+  var entry = this._keymap[key];
+  if (entry === undefined) return; // Not cached. Sorry.
+  // As <key> was found in the cache, register it as being requested recently
+  this._markEntryAsUsed(entry);
+  return returnEntry ? entry : entry.value;
 };
 
 // ----------------------------------------------------------------------------
 // Following code is optional and can be removed without breaking the core
 // functionality.
 
-LRUMap.prototype.find = function(key) {
-  let e = this._keymap.get(key);
-  return e ? e.value : undefined;
+/**
+ * Check if <key> is in the cache without registering recent use. Feasible if
+ * you do not want to chage the state of the cache, but only "peek" at it.
+ * Returns the entry associated with <key> if found, or undefined if not found.
+ */
+LRUCache.prototype.find = function(key) {
+  return this._keymap[key];
 };
 
-LRUMap.prototype.has = function(key) {
-  return this._keymap.has(key);
+/**
+ * Update the value of entry with <key>. Returns the old value, or undefined if
+ * entry was not in the cache.
+ */
+LRUCache.prototype.set = function(key, value) {
+  var oldvalue, entry = this.get(key, true);
+  if (entry) {
+    oldvalue = entry.value;
+    entry.value = value;
+  } else {
+    oldvalue = this.put(key, value);
+    if (oldvalue) oldvalue = oldvalue.value;
+  }
+  return oldvalue;
 };
 
-LRUMap.prototype['delete'] = function(key) {
-  var entry = this._keymap.get(key);
+/**
+ * Remove entry <key> from cache and return its value. Returns undefined if not
+ * found.
+ */
+LRUCache.prototype.remove = function(key) {
+  var entry = this._keymap[key];
   if (!entry) return;
-  this._keymap.delete(entry.key);
-  if (entry[NEWER] && entry[OLDER]) {
+  delete this._keymap[entry.key]; // need to do delete unfortunately
+  if (entry.newer && entry.older) {
     // relink the older entry with the newer entry
-    entry[OLDER][NEWER] = entry[NEWER];
-    entry[NEWER][OLDER] = entry[OLDER];
-  } else if (entry[NEWER]) {
+    entry.older.newer = entry.newer;
+    entry.newer.older = entry.older;
+  } else if (entry.newer) {
     // remove the link to us
-    entry[NEWER][OLDER] = undefined;
+    entry.newer.older = undefined;
     // link the newer entry to head
-    this.oldest = entry[NEWER];
-  } else if (entry[OLDER]) {
+    this.oldest = entry.newer;
+  } else if (entry.older) {
     // remove the link to us
-    entry[OLDER][NEWER] = undefined;
+    entry.older.newer = undefined;
     // link the newer entry to head
-    this.newest = entry[OLDER];
-  } else {// if(entry[OLDER] === undefined && entry.newer === undefined) {
+    this.newest = entry.older;
+  } else {// if(entry.older === undefined && entry.newer === undefined) {
     this.oldest = this.newest = undefined;
   }
 
@@ -199,95 +197,79 @@ LRUMap.prototype['delete'] = function(key) {
   return entry.value;
 };
 
-LRUMap.prototype.clear = function() {
-  // Not clearing links should be safe, as we don't expose live links to user
+/** Removes all entries */
+LRUCache.prototype.removeAll = function() {
+  // This should be safe, as we never expose strong refrences to the outside
   this.oldest = this.newest = undefined;
   this.size = 0;
-  this._keymap.clear();
+  this._keymap = {};
 };
 
+/**
+ * Return an array containing all keys of entries stored in the cache object, in
+ * arbitrary order.
+ */
+if (typeof Object.keys === 'function') {
+  LRUCache.prototype.keys = function() {
+    return Object.keys(this._keymap);
+  };
+} else {
+  LRUCache.prototype.keys = function() {
+    var keys = [];
+    for (var k in this._keymap) {
+      keys.push(k);
+    }
+    return keys;
+  };
+}
 
-function EntryIterator(oldestEntry) { this.entry = oldestEntry; }
-EntryIterator.prototype[Symbol.iterator] = function() { return this; }
-EntryIterator.prototype.next = function() {
-  let ent = this.entry;
-  if (ent) {
-    this.entry = ent[NEWER];
-    return { done: false, value: [ent.key, ent.value] };
+/**
+ * Call `fun` for each entry. Starting with the newest entry if `desc` is a true
+ * value, otherwise starts with the oldest (head) enrty and moves towards the
+ * tail.
+ *
+ * `fun` is called with 3 arguments in the context `context`:
+ *   `fun.call(context, Object key, Object value, LRUCache self)`
+ */
+LRUCache.prototype.forEach = function(fun, context, desc) {
+  var entry;
+  if (context === true) {
+    desc = true;
+    context = undefined;
+  } else if (typeof context !== 'object') {
+    context = this;
+  }
+  if (desc) {
+    entry = this.newest;
+    while (entry) {
+      fun.call(context, entry.key, entry.value, this);
+      entry = entry.older;
+    }
   } else {
-    return { done: true, value: undefined };
-  }
-};
-
-
-function KeyIterator(oldestEntry) { this.entry = oldestEntry; }
-KeyIterator.prototype[Symbol.iterator] = function() { return this; }
-KeyIterator.prototype.next = function() {
-  let ent = this.entry;
-  if (ent) {
-    this.entry = ent[NEWER];
-    return { done: false, value: ent.key };
-  } else {
-    return { done: true, value: undefined };
-  }
-};
-
-function ValueIterator(oldestEntry) { this.entry = oldestEntry; }
-ValueIterator.prototype[Symbol.iterator] = function() { return this; }
-ValueIterator.prototype.next = function() {
-  let ent = this.entry;
-  if (ent) {
-    this.entry = ent[NEWER];
-    return { done: false, value: ent.value };
-  } else {
-    return { done: true, value: undefined };
-  }
-};
-
-
-LRUMap.prototype.keys = function() {
-  return new KeyIterator(this.oldest);
-};
-
-LRUMap.prototype.values = function() {
-  return new ValueIterator(this.oldest);
-};
-
-LRUMap.prototype.entries = function() {
-  return this;
-};
-
-LRUMap.prototype[Symbol.iterator] = function() {
-  return new EntryIterator(this.oldest);
-};
-
-LRUMap.prototype.forEach = function(fun, thisObj) {
-  if (typeof thisObj !== 'object') {
-    thisObj = this;
-  }
-  let entry = this.oldest;
-  while (entry) {
-    fun.call(thisObj, entry.value, entry.key, this);
-    entry = entry[NEWER];
+    entry = this.oldest;
+    while (entry) {
+      fun.call(context, entry.key, entry.value, this);
+      entry = entry.newer;
+    }
   }
 };
 
 /** Returns a JSON (array) representation */
-LRUMap.prototype.toJSON = function() {
+LRUCache.prototype.toJSON = function() {
   var s = new Array(this.size), i = 0, entry = this.oldest;
   while (entry) {
     s[i++] = { key: entry.key, value: entry.value };
-    entry = entry[NEWER];
+    entry = entry.newer;
   }
   return s;
 };
 
 /** Returns a String representation */
-LRUMap.prototype.toString = function() {
+LRUCache.prototype.toString = function() {
   var s = '', entry = this.oldest;
   while (entry) {
     s += String(entry.key)+':'+entry.value;
-    entry = entry[NEWER];
+    entry = entry.newer;
     if (entry) {
       s += ' < ';
     }
@@ -296,4 +278,4 @@ LRUMap.prototype.toString = function() {
 };
 
 // Export ourselves
-if (typeof this === 'object') this.LRUMap = LRUMap;
+if (typeof this === 'object') this.LRUCache = LRUCache;
