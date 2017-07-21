@@ -1,4 +1,5 @@
 const favico = require("favico");
+const $ = require("jquery");
 
 var selectors = {
     counter: "#alert-count",
