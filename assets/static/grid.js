@@ -1,73 +1,67 @@
-/* globals Config */
+const Masonry = require("masonry-layout");
+const $ = require("jquery");
 
-/* exported Grid */
-var Grid = (function() {
+var selectors = {
+    alerts: "#alerts",
+    incident: ".incident",
+    gridSizer: ".grid-sizer",
+};
 
-    var selectors = {
-        alerts: "#alerts",
-        incident: ".incident",
-        gridSizer: ".grid-sizer",
-    };
+var grid;
 
-    var grid;
-
-    var init = function() {
-        grid = $(selectors.alerts).masonry({
-            itemSelector: selectors.incident,
-            columnWidth: selectors.gridSizer,
-            percentPosition: true,
-            transitionDuration: "0.4s",
-            hiddenStyle: {
-                opacity: 0
-            },
-            visibleStyle: {
-                opacity: 1
-            }
-        });
-    };
-
-    var clear = function() {
-        grid.masonry("remove", $(selectors.incident));
-        $(selectors.incident).remove();
-    };
-
-    var redraw = function() {
-        grid.masonry("layout");
-    };
-
-    var remove = function(elem) {
-        grid.masonry("remove", elem);
-    };
-
-    var append = function(elem) {
-        if (Config.GetOption("appendtop").Get()) {
-            grid.prepend(elem).masonry("prepended", elem);
-        } else {
-            grid.append(elem).masonry("appended", elem);
+function init() {
+    grid = Masonry($(selectors.alerts), {
+        itemSelector: selectors.incident,
+        columnWidth: selectors.gridSizer,
+        percentPosition: true,
+        transitionDuration: "0.4s",
+        hiddenStyle: {
+            opacity: 0
+        },
+        visibleStyle: {
+            opacity: 1
         }
-    };
+    });
+}
 
-    var items = function() {
-        return grid.masonry("getItemElements");
-    };
+function clear() {
+    grid.masonry("remove", $(selectors.incident));
+    $(selectors.incident).remove();
+}
 
-    var hide = function() {
-        $(selectors.alerts).hide();
-    };
+function redraw() {
+    grid.masonry("layout");
+}
 
-    var show = function() {
-        $(selectors.alerts).show();
-    };
+function remove(elem) {
+    grid.masonry("remove", elem);
+}
 
-    return {
-        Init: init,
-        Clear: clear,
-        Hide: hide,
-        Show: show,
-        Redraw: redraw,
-        Append: append,
-        Remove: remove,
-        Items: items
-    };
+function append(elem) {
+    if (Config.GetOption("appendtop").Get()) {
+        grid.prepend(elem).masonry("prepended", elem);
+    } else {
+        grid.append(elem).masonry("appended", elem);
+    }
+}
 
-})();
+function items() {
+    return grid.masonry("getItemElements");
+}
+
+function hide() {
+    $(selectors.alerts).hide();
+}
+
+function show() {
+    $(selectors.alerts).show();
+}
+
+exports.init = init;
+exports.clear = clear;
+exports.redraw = redraw;
+exports.hide = hide;
+exports.show = show;
+exports.append = append;
+exports.remove = remove;
+exports.items = items;
