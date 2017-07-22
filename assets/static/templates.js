@@ -43,7 +43,11 @@ var templates = {},
         alertGroupLabelMap: "#alert-group-label-map"
     };
 
-var init = function() {
+function getConfig() {
+    return config;
+}
+
+function init() {
     $.each(config, function(name, selector) {
         try {
             templates[name] = _.template($(selector).html());
@@ -52,9 +56,9 @@ var init = function() {
             console.error(err);
         }
     });
-};
+}
 
-var renderTemplate = function(name, context) {
+function renderTemplate(name, context) {
     var t = templates[name];
     if (t === undefined) {
         console.error("Unknown template " + name);
@@ -65,7 +69,8 @@ var renderTemplate = function(name, context) {
     } catch (err) {
         return "<div class='jumbotron'>Failed to render template " + name + "<h1><p>" + err + "</p></h1></div>";
     }
-};
+}
 
 exports.init = init;
+exports.getConfig = getConfig;
 exports.renderTemplate = renderTemplate;
