@@ -1,6 +1,7 @@
 package alertmanager_test
 
 import (
+	"fmt"
 	"os"
 	"testing"
 	"time"
@@ -15,7 +16,7 @@ import (
 func init() {
 	log.SetLevel(log.ErrorLevel)
 	for i, uri := range mock.ListAllMockURIs() {
-		alertmanager.NewAlertmanager(string(i), uri, time.Second)
+		alertmanager.NewAlertmanager(fmt.Sprintf("dedup-mock-%d", i), uri, time.Second)
 	}
 }
 
@@ -44,7 +45,12 @@ func TestDedupAutocomplete(t *testing.T) {
 		t.Error(err)
 	}
 	ac := alertmanager.DedupAutocomplete()
-	expected := 74
+	// since we have alertmanager instance per mock adding new mocks will increase
+	// the number of hints, so we need to calculate the expected value here
+	// there should be 56 hints excluding @alertmanager ones, use that as our base
+	// and add 2 hints per alertmanager instance (= and != hints)
+	mockCount := len(mock.ListAllMockURIs())
+	expected := 56 + mockCount*2
 	if len(ac) != expected {
 		t.Errorf("Expected %d autocomplete hints, got %d", expected, len(ac))
 	}
