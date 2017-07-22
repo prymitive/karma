@@ -1,4 +1,4 @@
-const favico = require("favico");
+const Favico = require("favico.js");
 const $ = require("jquery");
 
 var selectors = {
@@ -52,7 +52,7 @@ function markSuccess() {
 }
 
 function init() {
-    favicon = new favico.Favico({
+    favicon = new Favico({
         animation: "none",
         position: "up",
         bgColor: "#333",
