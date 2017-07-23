@@ -1,6 +1,8 @@
 
 const $ = require("jquery");
 
+const unsee = require("./unsee");
+
 var selectors = {
     button: "button.silence-delete"
 };
@@ -19,7 +21,7 @@ function markInProgress(alertmanagerURI, silenceID) {
 }
 
 function markFailed(alertmanagerURI, silenceID, xhr) {
-    var err = Unsee.ParseAJAXError(xhr, "Failed to delete this silence from Alertmanager");
+    var err = unsee.parseAJAXError(xhr, "Failed to delete this silence from Alertmanager");
     var elem = unsilenceButtonByID(alertmanagerURI, silenceID);
     elem.attr("title", err);
     elem.tooltip("fixTitle");
