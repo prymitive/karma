@@ -123,6 +123,8 @@ function resume() {
     if (timer !== false) {
         clearInterval(timer);
     }
+    /* eslint-disable no-use-before-define */
+    // FIXME circular dependency resume -> triggerReload -> resume -> ...
     timer = setTimeout(triggerReload, getRefreshRate() * 1000);
 }
 
