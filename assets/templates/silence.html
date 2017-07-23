@@ -27,7 +27,7 @@
   <label class="control-label">Labels to match</label>
   <table class="table table-condensed silence-label-selects">
     <% if (Object.keys(labels).length > 0) { %>
-      <% _.each(Alerts.SortMapByKey(labels), function(label) { %>
+      <% _.each(sortMapByKey(labels), function(label) { %>
         <tr>
           <td align="center">
             <span class="badge select-label-badge" title="Click to select / deselect all values" data-toggle="tooltip">
@@ -48,7 +48,7 @@
                     <% if (Object.keys(label.value).length > 10) { %>data-live-search="true"<% } %>
                     <% if (Object.keys(label.value).length > 1) { %>data-actions-box="true"<% } %>
                     multiple>
-              <% _.each(Alerts.SortMapByKey(label.value), function(label_val) { %>
+              <% _.each(sortMapByKey(label.value), function(label_val) { %>
                   <option <% if (label_val.value.selected) { %>selected="selected"<% } %>
                           value="<%= label_val.key %>"
                           data-content="<span class='<%= label_val.value.attrs.class %>' style='<%= label_val.value.attrs.style %>'><%- label_val.value.attrs.text %></span>">

@@ -145,10 +145,6 @@
     <div class="flash" id="flash">
     </div>
 
-    {{ range .JSFiles }}
-    <script type="text/javascript" src="{{ $.WebPrefix }}static/managed/js/{{ . }}"></script>
-    {{- end }}
-
     {{ template "templates/js.html" .}}
 
     <div class="modal fade" id="labelModal" tabindex="-1" role="dialog">
