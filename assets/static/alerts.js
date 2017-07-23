@@ -5,6 +5,7 @@ const $ = require("jquery");
 
 const autocomplete = require("./autocomplete");
 const colors = require("./colors");
+const config = require("./config");
 const counter = require("./counter");
 const grid = require("./grid");
 const summary = require("./summary");
@@ -174,7 +175,7 @@ function updateAlerts(apiResponse) {
     if (dirty) {
         autocomplete.reset();
         grid.redraw();
-        if (Config.GetOption("flash").Get()) {
+        if (config.getOption("flash").Get()) {
             unsee.flash();
         }
     }

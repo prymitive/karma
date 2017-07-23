@@ -1,6 +1,8 @@
 const Masonry = require("masonry-layout");
 const $ = require("jquery");
 
+const config = require("./config");
+
 var selectors = {
     alerts: "#alerts",
     incident: ".incident",
@@ -38,7 +40,7 @@ function remove(elem) {
 }
 
 function append(elem) {
-    if (Config.GetOption("appendtop").Get()) {
+    if (config.getOption("appendtop").Get()) {
         grid.prepend(elem).masonry("prepended", elem);
     } else {
         grid.append(elem).masonry("appended", elem);

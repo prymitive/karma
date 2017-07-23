@@ -1,5 +1,7 @@
 const NProgress = require("nprogress");
 
+const unsee = require("./unsee");
+
 var timer;
 
 function init() {
@@ -29,7 +31,7 @@ function pause() {
 
 function start() {
     var stepMs = 250; // animation step in ms
-    var steps = (Unsee.GetRefreshRate() * 1000) / stepMs; // how many steps we have
+    var steps = (unsee.getRefreshRate() * 1000) / stepMs; // how many steps we have
     NProgress.set(0.0);
     resetTimer();
     timer = setInterval(function() {
