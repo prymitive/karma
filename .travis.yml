@@ -5,10 +5,8 @@ go:
 
 go_import_path: github.com/cloudflare/unsee
 
-# install jshint & eslint, it's used for linting js files (needs nodejs)
 before_script:
   - nvm install 6
-  - npm install jshint
   - npm install eslint
 
 script:
