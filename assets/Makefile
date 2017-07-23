@@ -39,55 +39,11 @@ clean-assets:
 
 .PHONY: assets
 assets: clean-assets
-# jquery, for everything
-assets: jquery/3.2.1/jquery.min.js
-# moment, for timestamp parsing and printing
-assets: moment.js/2.18.1/moment.min.js
-# favico, for adding alert counter to the favico
-assets: favico.js/0.3.10/favico.min.js
-# fontawesome, for ui icons
-assets: font-awesome/4.7.0/css/font-awesome.min.css
-assets: font-awesome/4.7.0/fonts/fontawesome-webfont.eot
-assets: font-awesome/4.7.0/fonts/fontawesome-webfont.svg
-assets: font-awesome/4.7.0/fonts/fontawesome-webfont.ttf
-assets: font-awesome/4.7.0/fonts/fontawesome-webfont.woff
-assets: font-awesome/4.7.0/fonts/fontawesome-webfont.woff2
-assets: font-awesome/4.7.0/fonts/FontAwesome.otf
-# bootstrap & bootstrap switch, for ui
-assets: twitter-bootstrap/3.3.7/js/bootstrap.min.js
-assets: bootswatch/3.3.7/flatly/bootstrap.min.css
-assets: bootstrap-switch/3.3.4/js/bootstrap-switch.min.js
-assets: bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css
-# nprogress, for refresh progress bar
-assets: nprogress/0.2.0/nprogress.min.js
-assets: nprogress/0.2.0/nprogress.min.css
-# tagsinput & typeahead, for filter bar and autocomplete
-assets: bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.min.js
-assets: bootstrap-tagsinput/0.8.0/bootstrap-tagsinput.css
-assets: corejs-typeahead/1.1.1/typeahead.bundle.min.js
-assets: bootstrap-tagsinput/0.8.0/bootstrap-tagsinput-typeahead.css
 # datepicker widget for bootstrap3
 assets: bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js
 assets: bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css
-# multiselect widget for bootstrap3, used for silence form
-assets: bootstrap-select/1.12.2/js/bootstrap-select.min.js
-assets: bootstrap-select/1.12.2/css/bootstrap-select.min.css
 # loaders.css, for animated spinners
 assets: loaders.css/0.1.2/loaders.css.min.js
 assets: loaders.css/0.1.2/loaders.min.css
-# js-cookie, for preference state loading via cookies
-assets: js-cookie/2.1.4/js.cookie.min.js
-# underscore & haml, for template rendering in js
-assets: underscore.js/1.8.3/underscore-min.js
-# masonry, for grid layout
-assets: masonry/4.2.0/masonry.pkgd.min.js
-# copy to clipboard
-assets: clipboard.js/1.6.1/clipboard.min.js
-# sentry client
-assets: raven.js/3.15.0/raven.min.js
-# sha1 function used to generate id from string
-assets: js-sha1/0.4.1/sha1.min.js
-# allows selecting only visible elements
-assets: is-in-viewport/3.0.0/isInViewport.min.js
 assets:
 	@git add $(ASSETS_DIR)/*/*
