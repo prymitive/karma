@@ -1,2 +1,4 @@
 .build
 unsee
+node_modules
+coverage
