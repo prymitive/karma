@@ -1,3 +1,5 @@
+"use strict";
+
 const NProgress = require("nprogress");
 
 const unsee = require("./unsee");

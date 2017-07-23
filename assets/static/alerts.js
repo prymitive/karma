@@ -1,3 +1,4 @@
+"use strict";
 
 const LRUMap = require("lru");
 const moment = require("moment");
@@ -20,7 +21,7 @@ function AlertGroup(groupData) {
 }
 
 AlertGroup.prototype.Render = function() {
-    return templates.render("alertGroup", {
+    return templates.renderTemplate("alertGroup", {
         group: this,
         alertLimit: 5
     });

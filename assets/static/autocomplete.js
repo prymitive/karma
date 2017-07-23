@@ -1,3 +1,5 @@
+"use strict";
+
 const Bloodhound = require("corejs-typeahead/dist/bloodhound");
 const $ = require("jquery");
 

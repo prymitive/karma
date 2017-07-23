@@ -1,6 +1,17 @@
-const $ = require("jquery");
+"use strict";
+
+const $ = window.$ = window.jQuery = require("jquery");
 const moment = require("moment");
 const Raven = require("raven-js");
+
+require("bootstrap-loader");
+require("font-awesome-webpack");
+
+require("bootstrap-select");
+require("bootstrap-select/less/bootstrap-select.less")
+
+require("./managed/js/4.17.47-bootstrap-datetimepicker.min.js");
+require("./managed/js/0.1.2-loaders.css.min.js");
 
 const alerts = require("./alerts");
 const autocomplete = require("./autocomplete");
@@ -186,7 +197,7 @@ function triggerReload() {
                             summary.update({});
                             filters.reloadBadges(resp.filters);
                             colors.update(resp.colors);
-                            alerts.update(resp);
+                            alerts.updateAlerts(resp);
                             updateCompleted();
                             watchdog.pong(moment(resp.timestamp));
                             resume();
@@ -336,7 +347,7 @@ $(document).ready(function() {
         colors.init($("#alerts").data("static-color-labels").split(" "));
         templates.init();
         ui.init();
-        silence.init();
+        silence.setupSilenceForm();
         unsilence.init();
         init();
 

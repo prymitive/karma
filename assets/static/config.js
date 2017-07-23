@@ -1,3 +1,5 @@
+"use strict";
+
 const $ = require("jquery");
 const Cookies = require("js-cookie");
 const Clipboard = require("clipboard");

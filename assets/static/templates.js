@@ -1,5 +1,10 @@
+"use strict";
+
 const $ = require("jquery");
 const _ = require("underscore");
+const moment = require("moment");
+
+const alerts = require("./alerts");
 
 var templates = {},
     config = {
@@ -59,6 +64,10 @@ function init() {
 }
 
 function renderTemplate(name, context) {
+    context["moment"] = moment;
+    context["renderTemplate"] = renderTemplate;
+    context["sortMapByKey"] = alerts.sortMapByKey;
+    context["getLabelAttrs"] = alerts.getLabelAttrs;
     var t = templates[name];
     if (t === undefined) {
         console.error("Unknown template " + name);

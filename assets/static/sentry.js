@@ -1,3 +1,5 @@
+"use strict";
+
 const Raven = require("raven-js");
 const $ = require("jquery");
 

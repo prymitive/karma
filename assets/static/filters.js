@@ -1,7 +1,10 @@
-const $ = require("jquery");
+"use strict";
+
+const $ = window.$ = window.jQuery = require("jquery");
 const sha1 = require("js-sha1");
 const Cookies = require("js-cookie");
 require("bootstrap-tagsinput");
+require("corejs-typeahead");
 
 const autocomplete = require("./autocomplete");
 const unsee = require("./unsee");

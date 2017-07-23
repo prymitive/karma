@@ -1,4 +1,7 @@
+"use strict";
+
 const Masonry = require("masonry-layout");
+const jQueryBridget = require("jquery-bridget");
 const $ = require("jquery");
 
 const config = require("./config");
@@ -12,7 +15,8 @@ var selectors = {
 var grid;
 
 function init() {
-    grid = Masonry($(selectors.alerts), {
+    jQueryBridget( "masonry", Masonry, $ );
+    grid = $(selectors.alerts).masonry({
         itemSelector: selectors.incident,
         columnWidth: selectors.gridSizer,
         percentPosition: true,

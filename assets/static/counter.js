@@ -1,3 +1,5 @@
+"use strict";
+
 const Favico = require("favico.js");
 const $ = require("jquery");
 

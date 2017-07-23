@@ -1,3 +1,5 @@
+"use strict";
+
 const $ = require("jquery");
 
 const colors = require("./colors");
