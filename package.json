@@ -1,0 +1,47 @@
+{
+  "name": "unsee",
+  "version": "0.0.0",
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "dependencies": {
+    "bootstrap-select": "^1.12.4",
+    "bootstrap-switch": "^3.3.4",
+    "bootstrap-tagsinput": "git+https://github.com/bootstrap-tagsinput/bootstrap-tagsinput.git",
+    "bootswatch": "^3.3.7",
+    "clipboard": "^1.7.1",
+    "corejs-typeahead": "^1.1.1",
+    "favico.js": "^0.3.10",
+    "font-awesome": "^4.7.0",
+    "font-awesome-webpack": "0.0.5-beta.2",
+    "is-in-viewport": "^3.0.0",
+    "jquery": "^3.2.1",
+    "jquery-bridget": "^2.0.1",
+    "js-cookie": "^2.1.4",
+    "js-sha1": "^0.4.1",
+    "lru": "^3.1.0",
+    "masonry-layout": "^4.2.0",
+    "moment": "^2.18.1",
+    "nprogress": "^0.2.0",
+    "raven-js": "^3.17.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-es2015": "^6.24.1",
+    "bootstrap-loader": "^2.1.0",
+    "bootstrap-sass": "^3.3.7",
+    "css-loader": "^0.28.4",
+    "expose-loader": "^0.7.3",
+    "file-loader": "^0.11.2",
+    "less": "^2.7.2",
+    "node-sass": "^4.5.3",
+    "resolve-url-loader": "^2.1.0",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.3.0"
+  }
+}
