@@ -19,8 +19,9 @@ _RSS to email_ notifications, like [Blogtrottr](https://blogtrottr.com/).
 
 ## Supported Alertmanager versions
 
-Alertmanager's API isn't stable yet and can change between releases.
-unsee currently supports Alertmanager `0.4`, `0.5`, `0.6` and `0.7`.
+Alertmanager's API isn't stable yet and can change between releases,
+see `VERSIONS` in [mock/Makefile](/mock/Makefile) for list of all Alertmanager
+releases that are tested and supported by unsee.
 Due to API differences between those releases some features will work
 differently or be missing, it's recommended to use the latest supported
 Alertmanager version.
