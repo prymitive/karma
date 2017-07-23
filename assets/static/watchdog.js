@@ -1,3 +1,10 @@
+const $ = require("jquery");
+const moment = require("moment");
+
+const config = require("./config");
+const counter = require("./counter");
+const templates = require("./templates");
+
 var selectors = {
     countdown: "#reload-counter"
 };
@@ -14,15 +21,15 @@ function timerTick() {
     if (lastTs === 0) return;
 
     // don't raise an error if autorefresh is disabled
-    if (!Config.GetOption("autorefresh").Get()) return;
+    if (!config.getOption("autorefresh").Get()) return;
 
     var now = moment().utc().unix();
     if (now - lastTs > maxLag) {
-        $("#errors").html(Templates.Render("fatalError", {
+        $("#errors").html(templates.renderTemplate("fatalError", {
             lastTs: lastTs,
             secondsLeft: fatalCountdown
         })).show();
-        Counter.Unknown();
+        counter.markUnknown();
         if (!inCountdown) {
             fatalCountdown = 60;
             fatalReloadTimer = setTimeout(function() {
