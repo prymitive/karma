@@ -19,9 +19,6 @@ ifdef DEBUG
 	DOCKER_ARGS = -v $(CURDIR)/assets:$(CURDIR)/assets:ro
 endif
 
-# detect if eslint is installed
-ESLINT := $(shell which eslint)
-
 .DEFAULT_GOAL := $(NAME)
 
 .build/go-bindata:
@@ -39,7 +36,11 @@ ESLINT := $(shell which eslint)
 	go get -u github.com/golang/lint/golint
 	touch $@
 
-.build/deps.ok: .build/go-bindata .build/go-bindata-assetfs .build/golint
+.build/npm.install: package.json package-lock.json
+	npm install
+	touch $@
+
+.build/deps.ok: .build/go-bindata .build/go-bindata-assetfs .build/golint .build/npm.install
 	@mkdir -p .build
 	touch $@
 
@@ -89,14 +90,13 @@ run-docker: docker-image
 
 .PHONY: lint
 lint: .build/deps.ok
-	@golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
-ifneq ($(ESLINT),)
-	$(ESLINT) --quiet assets/static/*.js
-endif
+	golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
+	eslint --quiet assets/static/*.js
 
 .PHONY: test
 test: lint bindata_assetfs.go
 	go test -bench=. -cover `go list ./... | grep -v /vendor/`
+	npm test
 
 .build/dep.ok:
 	go get -u github.com/golang/dep/cmd/dep
