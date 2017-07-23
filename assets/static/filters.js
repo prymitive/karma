@@ -138,6 +138,7 @@ exports.init = init;
 exports.addFilter = addFilter;
 exports.setFilters = setFilters;
 exports.getFilters = getFilters;
+exports.addBadge = addBadge;
 exports.reloadBadges = reloadBadges;
 exports.updateDone = updateDone;
 exports.setUpdating = setUpdating;
