@@ -1,4 +1,4 @@
-/* globals LRUMap */     // lru.js
+/* globals LRUCache */     // lru.js
 /* globals moment */     // moment.js
 
 /* globals Autocomplete, Colors, Config, Counter, Grid, Templates, Summary, UI, Unsee */
@@ -6,7 +6,7 @@
 /* exported Alerts */
 var Alerts = (function() {
 
-    var labelCache = new LRUMap(1000);
+    var labelCache = new LRUCache(1000);
 
     function AlertGroup(groupData) {
         $.extend(this, groupData);
