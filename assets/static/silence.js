@@ -1,6 +1,6 @@
 /* globals moment */     // moment.js
 
-/* globals Alerts, Templates, Unsee, UI */
+/* globals Alerts, Colors, Templates, Unsee, UI */
 
 /* exported Silence */
 var Silence = (function() {
@@ -191,6 +191,8 @@ var Silence = (function() {
                     );
                 },
                 success: function(data) {
+                    // add colors from the response to global color set
+                    Colors.Merge(data.colors);
                     var modal = $("#silenceModal");
                     var labels = {};
                     var alertmanagers = {};
