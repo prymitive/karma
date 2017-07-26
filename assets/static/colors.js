@@ -13,6 +13,10 @@ var Colors = (function() {
         colors = colorData;
     };
 
+    var merge = function(colorData) {
+        $.extend(colors, colorData);
+    };
+
     var getClass = function(key, value) {
         var label = key + ": " + value;
         if (key == "alertname") {
@@ -47,6 +51,7 @@ var Colors = (function() {
 
     return {
         Update: update,
+        Merge: merge,
         Get: getStyle,
         GetClass: getClass,
         GetStaticLabels: getStaticLabels,
