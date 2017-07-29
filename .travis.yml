@@ -5,10 +5,12 @@ go:
 
 go_import_path: github.com/cloudflare/unsee
 
+env:
+  - NODE_ENV=test
+
 before_script:
   - nvm install 6
-  - npm install jest
-  - npm install eslint
+  - npm install
 
 script:
   - make test

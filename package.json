@@ -5,6 +5,11 @@
   "scripts": {
     "test": "jest --coverage"
   },
+  "jest": {
+    "moduleNameMapper": {
+      "\\.(css|less)$": "<rootDir>/assets/static/__mocks__/styleMock.js"
+    }
+  },
   "dependencies": {
     "bootstrap-select": "^1.12.4",
     "bootstrap-switch": "^3.3.4",
@@ -34,8 +39,10 @@
     "bootstrap-loader": "^2.1.0",
     "bootstrap-sass": "^3.3.7",
     "css-loader": "^0.28.4",
+    "eslint": "^4.3.0",
     "expose-loader": "^0.7.3",
     "file-loader": "^0.11.2",
+    "jest": "^20.0.4",
     "less": "^2.7.2",
     "node-sass": "^4.5.3",
     "resolve-url-loader": "^2.1.0",
