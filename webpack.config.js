@@ -38,6 +38,10 @@ const config = {
                 use: "file-loader"
             },
             {
+                test: /\.ico$/,
+                loader: "file-loader?name=[name].[ext]"
+            },
+            {
                 test: /\.css$/,
                 use: [
                     { loader: "style-loader" },
