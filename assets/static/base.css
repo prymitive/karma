@@ -148,7 +148,7 @@ div.filterbar > .input-group-addon.input-sm {
 }
 
 /* fix padding with flatly */
-.bootstrap-tagsinput {
+div.bootstrap-tagsinput {
     width: 100%;
     padding-top: 3px;
     padding-bottom: 6px;
@@ -164,7 +164,7 @@ input#filter:focus {
 }
 
 /* set min-width on real input so it doesn't need too much space when it's empty */
-.bootstrap-tagsinput > .twitter-typeahead > input.tt-input {
+div.bootstrap-tagsinput > .twitter-typeahead > input.tt-input {
   min-width: 10px;
 }
 
