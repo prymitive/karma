@@ -10,7 +10,6 @@ env:
 
 before_script:
   - nvm install 6
-  - npm install
 
 script:
   - make test
