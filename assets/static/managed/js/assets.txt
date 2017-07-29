@@ -1,2 +1,0 @@
-4.17.47-bootstrap-datetimepicker.min.js
-0.1.2-loaders.css.min.js

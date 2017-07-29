@@ -10,8 +10,11 @@ require("font-awesome-webpack");
 require("bootstrap-select");
 require("bootstrap-select/dist/css/bootstrap-select.css");
 
-require("./managed/js/4.17.47-bootstrap-datetimepicker.min.js");
-require("./managed/js/0.1.2-loaders.css.min.js");
+require("loaders.css/loaders.css");
+require("loaders.css/loaders.css.js");
+
+require("eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js");
+require("eonasdan-bootstrap-datetimepicker/src/less/bootstrap-datetimepicker-build.less");
 
 const alerts = require("./alerts");
 const autocomplete = require("./autocomplete");

@@ -11,12 +11,14 @@
     }
   },
   "dependencies": {
+    "bootstrap": "^3.3.7",
     "bootstrap-select": "^1.12.4",
     "bootstrap-switch": "^3.3.4",
     "bootstrap-tagsinput": "git+https://github.com/bootstrap-tagsinput/bootstrap-tagsinput.git",
     "bootswatch": "^3.3.7",
     "clipboard": "^1.7.1",
     "corejs-typeahead": "^1.1.1",
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
     "favico.js": "^0.3.10",
     "font-awesome": "^4.7.0",
     "font-awesome-webpack": "0.0.5-beta.2",
@@ -25,6 +27,7 @@
     "jquery-bridget": "^2.0.1",
     "js-cookie": "^2.1.4",
     "js-sha1": "^0.4.1",
+    "loaders.css": "^0.1.2",
     "lru": "^3.1.0",
     "masonry-layout": "^4.2.0",
     "moment": "^2.18.1",

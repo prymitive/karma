@@ -18,6 +18,11 @@ const config = {
     externals: {
         "window":"window"
     },
+    resolve: {
+        alias: {
+            "./bootstrap/less/variables.less": path.resolve(__dirname + "/node_modules/bootswatch/flatly/variables.less") // eslint-disable-line
+        }
+    },
     module: {
         rules: [
             {
