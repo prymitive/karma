@@ -2,21 +2,13 @@
 <html class="full" lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" id="favicon" href="/static/favicon.ico">
-
+    <link rel="shortcut icon" id="favicon" href="{{ .WebPrefix }}static/dist/favicon.ico">
     <title>(◕︵◕)</title>
-
-    {{ range .CSSFiles }}
-    <link rel="stylesheet" href="{{ $.WebPrefix }}static/managed/css/{{ . }}"> {{- end }}
-
-    <link rel="stylesheet" href="{{ .WebPrefix }}static/base.css">
-
 </head>
 
 <body>
@@ -314,3 +306,5 @@
 </body>
 
 </html>
+
+<script type="text/javascript" src="{{ .WebPrefix }}static/dist/help.js?_={{ .NowQ }}"></script>

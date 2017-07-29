@@ -3,11 +3,14 @@ const path = require("path");
 
 const config = {
     context: path.resolve(__dirname, "assets/static"), // eslint-disable-line
-    entry: "./unsee.js",
+    entry: {
+        unsee: "./unsee.js",
+        help: "./help.js"
+    },
     output: {
         path: path.resolve(__dirname, "assets/static/dist"), // eslint-disable-line
         publicPath: "../static/dist/",
-        filename: "unsee.js"
+        filename: "[name].js"
     },
     plugins: [
         new webpack.ProvidePlugin({
