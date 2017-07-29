@@ -3,11 +3,16 @@
   "version": "0.0.0",
   "license": "Apache-2.0",
   "scripts": {
-    "test": "jest --coverage"
+    "test": "jest"
   },
   "jest": {
+    "collectCoverage": true,
+    "verbose": true,
     "moduleNameMapper": {
-      "\\.(css|less)$": "<rootDir>/assets/static/__mocks__/styleMock.js"
+      "\\.(css|less)$": "<rootDir>/assets/static/__mocks__/styleMock.js",
+      "no-op\\.js$": "<rootDir>/assets/static/__mocks__/styleMock.js",
+      "font-awesome.config\\.js$": "<rootDir>/assets/static/__mocks__/styleMock.js",
+      "./favicon.ico": "<rootDir>/assets/static/__mocks__/styleMock.js"
     }
   },
   "dependencies": {
