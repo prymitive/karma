@@ -62,4 +62,26 @@ test("colors getStyle()", () => {
     expect(colors.getStyle("foo", "bar")).toEqual(
         "background-color: rgba(0, 1, 2, 255); color: rgba(3, 4, 5, 128); "
     );
+    var d = {
+        "foo": {
+            "bar2": {
+                "background": {
+                    "red": 1,
+                    "green": 1,
+                    "blue": 2,
+                    "alpha": 255
+                },
+                "font": {
+                    "red": 3,
+                    "green": 4,
+                    "blue": 5,
+                    "alpha": 128
+                }
+            }
+        }
+    }
+    colors.merge(d);
+    expect(colors.getStyle("foo", "bar2")).toEqual(
+        "background-color: rgba(1, 1, 2, 255); color: rgba(3, 4, 5, 128); "
+    );
 });
