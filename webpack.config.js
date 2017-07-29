@@ -31,7 +31,10 @@ const config = {
             },
             {
                 test: /\.css$/,
-                use: "style-loader"
+                use: [
+                    { loader: "style-loader" },
+                    { loader: "css-loader" }
+                ]
             },
             {
                 test: /\.scss$/,
