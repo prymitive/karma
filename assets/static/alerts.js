@@ -3,6 +3,7 @@
 const LRUMap = require("lru");
 const moment = require("moment");
 const $ = require("jquery");
+require("is-in-viewport");
 
 const autocomplete = require("./autocomplete");
 const colors = require("./colors");

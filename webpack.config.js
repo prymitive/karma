@@ -2,10 +2,10 @@ const webpack = require("webpack");
 const path = require("path");
 
 const config = {
-    context: path.resolve(__dirname, "assets/static"),
+    context: path.resolve(__dirname, "assets/static"), // eslint-disable-line
     entry: "./unsee.js",
     output: {
-        path: path.resolve(__dirname, "assets/static/dist"),
+        path: path.resolve(__dirname, "assets/static/dist"), // eslint-disable-line
         publicPath: "../static/dist/",
         filename: "bundle.js"
     },
@@ -15,6 +15,9 @@ const config = {
             jQuery: "jquery"
         })
     ],
+    externals: {
+        "window":"window"
+    },
     module: {
         rules: [
             {
@@ -50,7 +53,7 @@ const config = {
             },
             {
                 test: /\.js$/,
-                include: path.resolve(__dirname, "assets/static"),
+                include: path.resolve(__dirname, "assets/static"), // eslint-disable-line
                 use: [ {
                     loader: "babel-loader",
                     options: {
