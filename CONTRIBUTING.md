@@ -38,17 +38,14 @@ See [dep](https://github.com/golang/dep) documentation for details.
 
 ## Javascript & CSS assets and HTML templates
 
-JS and CSS assets are also vendored into `assets/static` directory.
-There is a make target that allows to fetch all needed files from the
-[cdnjs](https://cdnjs.com/) site. If you need to add a new JS or CSS file then
-add it to the `assets/Makefile` in the `assets` target and run:
+JS and CSS assets are managed via [npm](https://www.npmjs.com/) and compiled
+into bundle files using [webpack](https://webpack.js.org/).
 
-    make -C assets assets
-
-If the assets you're adding are not found on cdnjs then download it and place
-inside `assets/static` directory. In this case you will also need to manually
-include it in the `templates/js.html` template file (managed assets are all
-included automatically).
+To add a new JS asset install it using npm with the `--save` flag, this will
+add it to the `package.json`. Now you can `require()` it in javascript code.
+JS modules are written using [CommonJS](http://www.commonjs.org/specs/modules/1.0/)
+syntax. Webpack will use [babel](https://babeljs.io/) to transform JS code to
+[ES2015](https://babeljs.io/docs/plugins/preset-es2015/).
 
 Once assets dir is modified please run:
 
