@@ -1,5 +1,7 @@
 const webpack = require("webpack");
 const path = require("path");
+const fs = require("fs");
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 const config = {
     context: path.resolve(__dirname, "assets/static"), // eslint-disable-line
@@ -9,14 +11,34 @@ const config = {
     },
     output: {
         path: path.resolve(__dirname, "assets/static/dist"), // eslint-disable-line
-        publicPath: "../static/dist/",
-        filename: "[name].js"
+        publicPath: "static/dist/",
+        filename: "[name].[chunkhash].js"
     },
     plugins: [
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
-        })
+        }),
+        new CleanWebpackPlugin([ "assets/static/dist" ]),
+        new webpack.optimize.CommonsChunkPlugin({
+            name: "shared"
+        }),
+        // this will generate loader_${name}.html files that will have
+        // a <script/> line for loading hashed chunk
+        // inspited by https://github.com/webpack/webpack/issues/86
+        function() {
+            this.plugin("done", function(statsData) {
+                var stats = statsData.toJson();
+                if (!stats.errors.length) {
+                    fs.mkdirSync(path.join(__dirname, "assets/static/dist/templates")); // eslint-disable-line
+                    for (var chunkName in stats.assetsByChunkName) {
+                        var loaderName = "loader_" + chunkName + ".html";
+                        var loaderScript = "<script type='text/javascript' src='static/dist/" + stats.assetsByChunkName[chunkName] + "'></script>";
+                        fs.writeFileSync(path.join(__dirname, "assets/static/dist/templates", loaderName), loaderScript); // eslint-disable-line
+                    }
+                }
+            });
+        }
     ],
     externals: {
         "window":"window"

@@ -169,7 +169,8 @@
 </body>
 </html>
 
-<script type="text/javascript" src="{{ .WebPrefix }}static/dist/unsee.js?_={{ .NowQ }}"></script>
+{{ template "static/dist/templates/loader_shared.html" }}
+{{ template "static/dist/templates/loader_unsee.html" }}
 
 {{ template "templates/alertgroup.html" }}
 {{ template "templates/summary.html" }}

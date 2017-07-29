@@ -1,9 +1,9 @@
 {
   "name": "unsee",
   "license": "Apache-2.0",
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/cloudflare/unsee.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cloudflare/unsee.git"
   },
   "scripts": {
     "test": "jest"
@@ -47,6 +47,7 @@
     "babel-preset-es2015": "^6.24.1",
     "bootstrap-loader": "^2.1.0",
     "bootstrap-sass": "^3.3.7",
+    "clean-webpack-plugin": "^0.1.16",
     "css-loader": "^0.28.4",
     "eslint": "^4.3.0",
     "expose-loader": "^0.7.3",

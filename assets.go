@@ -43,8 +43,7 @@ func newBinaryFileSystem(root string) *binaryFileSystem {
 // load all templates from binary asset resource
 // this function will iterate all files with given prefix (e.g. /templates/)
 // and return Template instance with all templates loaded
-func loadTemplates(prefix string) *template.Template {
-	var t *template.Template
+func loadTemplates(t *template.Template, prefix string) *template.Template {
 	for _, filename := range AssetNames() {
 		if strings.HasPrefix(filename, prefix) {
 			templateContent, err := Asset(filename)

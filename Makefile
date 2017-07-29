@@ -49,8 +49,7 @@ endif
 	rm -f .build/bindata_assetfs.*
 	touch $@
 
-bindata_assetfs.go: .build/deps.ok .build/bindata_assetfs.$(GO_BINDATA_MODE) $(ASSET_SOURCES)
-	rm -f assets/static/dist/*
+bindata_assetfs.go: .build/deps.ok .build/bindata_assetfs.$(GO_BINDATA_MODE) $(ASSET_SOURCES) webpack.config.js
 	webpack -p
 	go-bindata-assetfs $(GO_BINDATA_FLAGS) -prefix assets -nometadata assets/templates/... assets/static/dist/...
 

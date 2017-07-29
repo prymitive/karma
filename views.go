@@ -41,7 +41,6 @@ func index(c *gin.Context) {
 	c.HTML(http.StatusOK, "templates/index.html", gin.H{
 		"Version":           version,
 		"SentryDSN":         config.Config.SentryPublicDSN,
-		"NowQ":              start.Unix(),
 		"Config":            config.Config,
 		"QFilter":           q,
 		"DefaultUsed":       defaultUsed,

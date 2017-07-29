@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -37,7 +38,10 @@ func mockConfig() {
 func ginTestEngine() *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
-	r.SetHTMLTemplate(loadTemplates("templates"))
+	var t *template.Template
+	t = loadTemplates(t, "templates")
+	t = loadTemplates(t, "static/dist/templates")
+	r.SetHTMLTemplate(t)
 	setupRouter(r)
 	return r
 }
@@ -380,7 +384,7 @@ var staticFileTests = []staticFileTestCase{
 		code: 200,
 	},
 	staticFileTestCase{
-		path: "/static/dist/unsee.js",
+		path: "/static/dist/favicon.ico",
 		code: 200,
 	},
 	staticFileTestCase{
@@ -412,7 +416,7 @@ var staticFilePrefixTests = []staticFileTestCase{
 		code: 200,
 	},
 	staticFileTestCase{
-		path: "/sub/static/dist/unsee.js",
+		path: "/sub/static/dist/favicon.ico",
 		code: 200,
 	},
 	staticFileTestCase{
