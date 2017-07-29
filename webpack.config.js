@@ -15,10 +15,13 @@ const config = {
         filename: "[name].[chunkhash].js"
     },
     plugins: [
+        new webpack.PrefetchPlugin(path.join(__dirname, "assets/static/unsee.js")), // eslint-disable-line
+        new webpack.PrefetchPlugin(path.join(__dirname, "assets/static/help.js")), // eslint-disable-line
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
         }),
+        new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new CleanWebpackPlugin([ "assets/static/dist" ]),
         new webpack.optimize.CommonsChunkPlugin({
             name: "shared"
