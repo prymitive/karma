@@ -3,8 +3,11 @@
 const $ = window.$ = window.jQuery = require("jquery");
 const sha1 = require("js-sha1");
 const Cookies = require("js-cookie");
-require("bootstrap-tagsinput");
+
 require("corejs-typeahead");
+require("bootstrap-tagsinput");
+require("bootstrap-tagsinput/dist/bootstrap-tagsinput.css");
+require("bootstrap-tagsinput/dist/bootstrap-tagsinput-typeahead.css");
 
 const autocomplete = require("./autocomplete");
 const unsee = require("./unsee");

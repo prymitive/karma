@@ -1,8 +1,10 @@
 "use strict";
 
 const $ = require("jquery");
-require("bootstrap-switch");
 const Cookies = require("js-cookie");
+
+require("bootstrap-switch");
+require("bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css");
 
 const querystring = require("./querystring");
 

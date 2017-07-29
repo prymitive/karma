@@ -8,7 +8,7 @@ require("bootstrap-loader");
 require("font-awesome-webpack");
 
 require("bootstrap-select");
-require("bootstrap-select/less/bootstrap-select.less")
+require("bootstrap-select/dist/css/bootstrap-select.css");
 
 require("./managed/js/4.17.47-bootstrap-datetimepicker.min.js");
 require("./managed/js/0.1.2-loaders.css.min.js");
