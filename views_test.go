@@ -384,10 +384,6 @@ var staticFileTests = []staticFileTestCase{
 		code: 200,
 	},
 	staticFileTestCase{
-		path: "/static/managed/js/assets.txt",
-		code: 200,
-	},
-	staticFileTestCase{
 		path: "/xxx",
 		code: 404,
 	},
@@ -417,10 +413,6 @@ var staticFilePrefixTests = []staticFileTestCase{
 	},
 	staticFileTestCase{
 		path: "/sub/static/unsee.js",
-		code: 200,
-	},
-	staticFileTestCase{
-		path: "/sub/static/managed/js/assets.txt",
 		code: 200,
 	},
 	staticFileTestCase{

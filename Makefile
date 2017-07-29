@@ -50,8 +50,9 @@ endif
 	touch $@
 
 bindata_assetfs.go: .build/deps.ok .build/bindata_assetfs.$(GO_BINDATA_MODE) $(ASSET_SOURCES)
-	webpack
-	go-bindata-assetfs $(GO_BINDATA_FLAGS) -prefix assets -nometadata assets/templates/... assets/static/...
+	rm -f assets/static/dist/*
+	webpack -p
+	go-bindata-assetfs $(GO_BINDATA_FLAGS) -prefix assets -nometadata assets/templates/... assets/static/dist/...
 
 $(NAME): .build/deps.ok bindata_assetfs.go $(SOURCES)
 	go build -ldflags "-X main.version=$(VERSION)"

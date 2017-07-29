@@ -16,6 +16,8 @@ require("loaders.css/loaders.css.js");
 require("eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js");
 require("eonasdan-bootstrap-datetimepicker/src/less/bootstrap-datetimepicker-build.less");
 
+require("./base.css");
+
 const alerts = require("./alerts");
 const autocomplete = require("./autocomplete");
 const colors = require("./colors");

@@ -1,4 +1,4 @@
-f<script type="application/json" id="alert-group-title">
+<script type="application/json" id="alert-group-title">
   <% if (Object.keys(group.labels).length > 0) { %>
     <% var filters = ['@receiver=' + group.receiver] %>
     <% _.each(group.labels, function(label_val, label_key) { filters.push(label_key + '=' + label_val) }) %>

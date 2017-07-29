@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"html/template"
 	"net/http"
 	"strings"
@@ -39,28 +38,6 @@ func newBinaryFileSystem(root string) *binaryFileSystem {
 	return &binaryFileSystem{
 		fs,
 	}
-}
-
-// readAssets will read assets.txt file in given directory and return a list
-// of file names in that file
-// assets.txt contains a list of external js of css files that are mirrored
-// in static/assets directory that should be loaded in the browser
-// this way we don't have to maintain this list in the Makefile that does
-// the mirroring and in the template
-func readAssets(kind string) []string {
-	indexPath := fmt.Sprintf("static/managed/%s/assets.txt", kind)
-	assetIndex, err := Asset(indexPath)
-	if err != nil {
-		log.Error(err)
-		return []string{}
-	}
-	ret := []string{}
-	for _, l := range strings.Split(string(assetIndex), "\n") {
-		if l != "" {
-			ret = append(ret, l)
-		}
-	}
-	return ret
 }
 
 // load all templates from binary asset resource

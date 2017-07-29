@@ -2,22 +2,13 @@
 <html class="full" lang="en">
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="shortcut icon" id="favicon" href="{{ .WebPrefix }}static/favicon.ico">
-
     <title>(◕︵◕)</title>
-
-    {{ range .CSSFiles }}
-    <link rel="stylesheet" href="{{ $.WebPrefix }}static/managed/css/{{ . }}">
-    {{- end }}
-
-    <link rel="stylesheet" href="{{ .WebPrefix }}static/base.css?_={{ .NowQ }}">
-
 </head>
 
 <body class="dark" data-raven-dsn="{{ .SentryDSN }}" data-unsee-version="{{ .Version }}">
@@ -145,8 +136,6 @@
     <div class="flash" id="flash">
     </div>
 
-    {{ template "templates/js.html" .}}
-
     <div class="modal fade" id="labelModal" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -179,6 +168,8 @@
 
 </body>
 </html>
+
+<script type="text/javascript" src="{{ .WebPrefix }}static/dist/unsee.js?_={{ .NowQ }}"></script>
 
 {{ template "templates/alertgroup.html" }}
 {{ template "templates/summary.html" }}

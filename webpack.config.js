@@ -7,7 +7,7 @@ const config = {
     output: {
         path: path.resolve(__dirname, "assets/static/dist"), // eslint-disable-line
         publicPath: "../static/dist/",
-        filename: "bundle.js"
+        filename: "unsee.js"
     },
     plugins: [
         new webpack.ProvidePlugin({

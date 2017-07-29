@@ -30,8 +30,6 @@ func noCache(c *gin.Context) {
 func index(c *gin.Context) {
 	start := time.Now()
 
-	cssFiles := readAssets("css")
-	jsFiles := readAssets("js")
 	noCache(c)
 
 	q, qPresent := c.GetQuery("q")
@@ -43,8 +41,6 @@ func index(c *gin.Context) {
 	c.HTML(http.StatusOK, "templates/index.html", gin.H{
 		"Version":           version,
 		"SentryDSN":         config.Config.SentryPublicDSN,
-		"CSSFiles":          cssFiles,
-		"JSFiles":           jsFiles,
 		"NowQ":              start.Unix(),
 		"Config":            config.Config,
 		"QFilter":           q,
@@ -59,10 +55,8 @@ func index(c *gin.Context) {
 // Help view, html
 func help(c *gin.Context) {
 	start := time.Now()
-	cssFiles := readAssets("css")
 	noCache(c)
 	c.HTML(http.StatusOK, "templates/help.html", gin.H{
-		"CSSFiles":  cssFiles,
 		"SentryDSN": config.Config.SentryPublicDSN,
 		"WebPrefix": config.Config.WebPrefix,
 	})
