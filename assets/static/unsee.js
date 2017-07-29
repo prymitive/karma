@@ -125,7 +125,7 @@ function resume() {
         filters.setPause();
         return false;
     }
-    progress.resetTimer();
+    progress.start();
     if (timer !== false) {
         clearInterval(timer);
     }

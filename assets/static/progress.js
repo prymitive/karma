@@ -11,7 +11,8 @@ function init() {
     NProgress.configure({
         minimum: 0.01,
         showSpinner: false,
-        easing: "linear"
+        easing: "linear",
+        template: "<div class='bar nprogress-flatly' role='bar'><div class='peg nprogress-flatly'></div></div>"
     });
 }
 
