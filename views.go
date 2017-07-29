@@ -19,7 +19,7 @@ import (
 
 var (
 	// needed for serving favicon from binary assets
-	faviconFileServer = http.FileServer(newBinaryFileSystem("static"))
+	faviconFileServer = http.FileServer(newBinaryFileSystem("static/dist"))
 )
 
 func noCache(c *gin.Context) {

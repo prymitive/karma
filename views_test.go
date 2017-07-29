@@ -380,7 +380,7 @@ var staticFileTests = []staticFileTestCase{
 		code: 200,
 	},
 	staticFileTestCase{
-		path: "/static/unsee.js",
+		path: "/static/dist/unsee.js",
 		code: 200,
 	},
 	staticFileTestCase{
@@ -412,7 +412,7 @@ var staticFilePrefixTests = []staticFileTestCase{
 		code: 200,
 	},
 	staticFileTestCase{
-		path: "/sub/static/unsee.js",
+		path: "/sub/static/dist/unsee.js",
 		code: 200,
 	},
 	staticFileTestCase{
