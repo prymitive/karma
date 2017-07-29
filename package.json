@@ -10,6 +10,7 @@
   },
   "jest": {
     "collectCoverage": true,
+    "coverageDirectory": ".coverage",
     "verbose": true,
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/assets/static/__mocks__/styleMock.js",
