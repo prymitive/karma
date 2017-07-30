@@ -4,6 +4,7 @@ const fs = require("fs");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 const config = {
+    cache: true,
     context: path.resolve(__dirname, "assets/static"), // eslint-disable-line
     entry: {
         unsee: "./unsee.js",
@@ -94,6 +95,7 @@ const config = {
                 use: [ {
                     loader: "babel-loader",
                     options: {
+                        cacheDirectory: true,
                         presets: [
                             [ "es2015", { modules: false } ]
                         ]
