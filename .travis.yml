@@ -5,6 +5,10 @@ go:
 
 go_import_path: github.com/cloudflare/unsee
 
+cache:
+  directories:
+    - node_modules
+
 env:
   - NODE_ENV=test
 
