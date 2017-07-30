@@ -16,6 +16,7 @@
       "\\.(css|less)$": "<rootDir>/assets/static/__mocks__/styleMock.js",
       "no-op\\.js$": "<rootDir>/assets/static/__mocks__/styleMock.js",
       "font-awesome.config\\.js$": "<rootDir>/assets/static/__mocks__/styleMock.js",
+      "favico\\.js": "<rootDir>/assets/static/__mocks__/faviconMock.js",
       "./favicon.ico": "<rootDir>/assets/static/__mocks__/styleMock.js"
     }
   },
