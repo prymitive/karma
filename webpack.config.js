@@ -5,19 +5,19 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 
 const config = {
     cache: true,
-    context: path.resolve(__dirname, "assets/static"), // eslint-disable-line
+    context: path.resolve(__dirname, "assets/static"),
     entry: {
         unsee: "./unsee.js",
         help: "./help.js"
     },
     output: {
-        path: path.resolve(__dirname, "assets/static/dist"), // eslint-disable-line
+        path: path.resolve(__dirname, "assets/static/dist"),
         publicPath: "static/dist/",
         filename: "[name].[chunkhash].js"
     },
     plugins: [
-        new webpack.PrefetchPlugin(path.join(__dirname, "assets/static/unsee.js")), // eslint-disable-line
-        new webpack.PrefetchPlugin(path.join(__dirname, "assets/static/help.js")), // eslint-disable-line
+        new webpack.PrefetchPlugin(path.join(__dirname, "assets/static/unsee.js")),
+        new webpack.PrefetchPlugin(path.join(__dirname, "assets/static/help.js")),
         new webpack.ProvidePlugin({
             $: "jquery",
             jQuery: "jquery"
@@ -34,11 +34,11 @@ const config = {
             this.plugin("done", function(statsData) {
                 var stats = statsData.toJson();
                 if (!stats.errors.length) {
-                    fs.mkdirSync(path.join(__dirname, "assets/static/dist/templates")); // eslint-disable-line
+                    fs.mkdirSync(path.join(__dirname, "assets/static/dist/templates"));
                     for (var chunkName in stats.assetsByChunkName) {
                         var loaderName = "loader_" + chunkName + ".html";
                         var loaderScript = "<script type='text/javascript' src='static/dist/" + stats.assetsByChunkName[chunkName] + "'></script>";
-                        fs.writeFileSync(path.join(__dirname, "assets/static/dist/templates", loaderName), loaderScript); // eslint-disable-line
+                        fs.writeFileSync(path.join(__dirname, "assets/static/dist/templates", loaderName), loaderScript);
                     }
                 }
             });
@@ -49,7 +49,7 @@ const config = {
     },
     resolve: {
         alias: {
-            "./bootstrap/less/variables.less": path.resolve(__dirname + "/node_modules/bootswatch/flatly/variables.less") // eslint-disable-line
+            "./bootstrap/less/variables.less": path.resolve(__dirname + "/node_modules/bootswatch/flatly/variables.less")
         }
     },
     module: {
@@ -91,7 +91,7 @@ const config = {
             },
             {
                 test: /\.js$/,
-                include: path.resolve(__dirname, "assets/static"), // eslint-disable-line
+                include: path.resolve(__dirname, "assets/static"),
                 use: [ {
                     loader: "babel-loader",
                     options: {
