@@ -75,15 +75,6 @@ function setupGroupTooltips(groupElem) {
     });
 }
 
-function setupAlertGroupUI(elem) {
-    setupGroupLinkHover(elem);
-    setupGroupTooltips(elem);
-}
-
-function init() {
-    setupModal();
-}
-
-exports.init = init;
-exports.setupAlertGroupUI = setupAlertGroupUI;
+exports.setupModal = setupModal;
 exports.setupGroupTooltips = setupGroupTooltips;
+exports.setupGroupLinkHover = setupGroupLinkHover;

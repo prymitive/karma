@@ -52,14 +52,18 @@ function getConfig() {
     return config;
 }
 
+function loadTemplate(name, selector) {
+    try {
+        templates[name] = _.template($(selector).html());
+    } catch (err) {
+        console.error("Failed to parse template " + name + " " + selector);
+        console.error(err);
+    }
+}
+
 function init() {
     $.each(config, function(name, selector) {
-        try {
-            templates[name] = _.template($(selector).html());
-        } catch (err) {
-            console.error("Failed to parse template " + name + " " + selector);
-            console.error(err);
-        }
+        loadTemplate(name, selector);
     });
 }
 
@@ -82,4 +86,5 @@ function renderTemplate(name, context) {
 
 exports.init = init;
 exports.getConfig = getConfig;
+exports.loadTemplate = loadTemplate;
 exports.renderTemplate = renderTemplate;

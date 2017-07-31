@@ -30,7 +30,9 @@ AlertGroup.prototype.Render = function() {
 
 // called after group was rendered for the first time
 AlertGroup.prototype.Added = function() {
-    ui.setupAlertGroupUI($("#" + this.id));
+    var elem = $("#" + this.id);
+    ui.setupGroupTooltips(elem);
+    ui.setupGroupLinkHover(elem);
 };
 
 AlertGroup.prototype.Update = function() {

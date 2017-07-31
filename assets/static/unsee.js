@@ -354,7 +354,7 @@ $(document).ready(function() {
 
         colors.init($("#alerts").data("static-color-labels").split(" "));
         templates.init();
-        ui.init();
+        ui.setupModal();
         silence.setupSilenceForm();
         unsilence.init();
         init();
