@@ -17,8 +17,10 @@
       "bootstrap\\.loader\\!\\.\\/no-op.js$": "<rootDir>/node_modules/bootstrap-loader/lib/bootstrap.loader.js",
       "\\!\\.\\/font-awesome\\.config\\.js$": "<rootDir>/assets/static/__mocks__/styleMock.js",
       "^favico\\.js$": "<rootDir>/assets/static/__mocks__/faviconMock.js",
-      "^./favicon.ico$": "<rootDir>/assets/static/__mocks__/styleMock.js"
-    }
+      "^./favicon.ico$": "<rootDir>/assets/static/__mocks__/styleMock.js",
+      "^is-in-viewport$": "<rootDir>/assets/static/__mocks__/isInViewportMock.js"
+    },
+    "testURL": "http://localhost"
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
@@ -59,6 +61,7 @@
     "jest": "^20.0.4",
     "jquery-bridget": "^2.0.1",
     "less": "^2.7.2",
+    "mock-xhr": "^0.1.0",
     "node-sass": "^4.5.3",
     "resolve-url-loader": "^2.1.0",
     "sass-loader": "^6.0.6",

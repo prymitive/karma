@@ -136,7 +136,7 @@ function updateAlerts(apiResponse) {
     // handle already existing groups
     $.each(grid.items(), function(i, existingGroup) {
         var group = groups[existingGroup.id];
-        if (group !== undefined) {
+        if (group !== undefined && existingGroup.dataset !== undefined) {
             // group still present, check if changed
             if (group.hash != existingGroup.dataset.hash) {
                 // group was updated, render changes

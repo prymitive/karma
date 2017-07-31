@@ -331,17 +331,7 @@ function init() {
     setupPageVisibilityHandler();
 }
 
-exports.init = init;
-exports.pause = pause;
-exports.resume = resume;
-exports.triggerReload = triggerReload;
-exports.getRefreshRate = getRefreshRate;
-exports.setRefreshRate = setRefreshRate;
-exports.flash = flash;
-exports.parseAJAXError = parseAJAXError;
-
-$(document).ready(function() {
-
+function onReady() {
     // wrap all inits so we can handle errors
     try {
         // init all elements using bootstrapSwitch
@@ -379,5 +369,16 @@ $(document).ready(function() {
             "</p></div></div>"
         ).show();
     }
+}
 
-});
+exports.init = init;
+exports.pause = pause;
+exports.resume = resume;
+exports.triggerReload = triggerReload;
+exports.getRefreshRate = getRefreshRate;
+exports.setRefreshRate = setRefreshRate;
+exports.flash = flash;
+exports.parseAJAXError = parseAJAXError;
+exports.onReady = onReady;
+
+$(document).ready(onReady);
