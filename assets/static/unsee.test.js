@@ -48,14 +48,29 @@ if (alertsServer) {
         require("bootstrap/js/tooltip.js");
         require("bootstrap/js/modal.js");
         require("bootstrap/js/popover.js");
-        unsee.onReady();
         alertsServer.start();
+
+        unsee.onReady();
         unsee.triggerReload();
         jest.runOnlyPendingTimers();
-        alertsServer.stop();
-
         // we should have 2 alerts
         expect(grid.items().length).toBe(2);
         expect($("#alert-count").text()).toBe("2");
+
+        unsee.triggerReload();
+        jest.runOnlyPendingTimers();
+        // we should still have 2 alerts
+        expect(grid.items().length).toBe(2);
+        expect($("#alert-count").text()).toBe("2");
+
+        // clear grid and update again
+        grid.clear();
+        unsee.triggerReload();
+        jest.runOnlyPendingTimers();
+        // we should still have 2 alerts
+        expect(grid.items().length).toBe(2);
+        expect($("#alert-count").text()).toBe("2");
+
+        alertsServer.stop();
     });
 }
