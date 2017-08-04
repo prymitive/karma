@@ -1,53 +1,50 @@
-/* globals NProgress */     // nprogress.js
+"use strict";
 
-/* globals Unsee */
+const NProgress = require("nprogress");
+require("nprogress/nprogress.css");
 
-/* exported Progress */
-var Progress = (function() {
+const unsee = require("./unsee");
 
-    var timer;
+var timer;
 
-    var init = function() {
-        NProgress.configure({
-            minimum: 0.01,
-            showSpinner: false,
-            easing: "linear"
-        });
-    };
+function init() {
+    NProgress.configure({
+        minimum: 0.01,
+        showSpinner: false,
+        easing: "linear",
+        template: "<div class='bar nprogress-flatly' role='bar'><div class='peg nprogress-flatly'></div></div>"
+    });
+}
 
-    var resetTimer = function() {
-        if (timer !== false) {
-            clearInterval(timer);
-            timer = false;
-        }
-    };
+function resetTimer() {
+    if (timer !== false) {
+        clearInterval(timer);
+        timer = false;
+    }
+}
 
-    var complete = function() {
-        Progress.ResetTimer();
-        NProgress.done();
-    };
+function complete() {
+    resetTimer();
+    NProgress.done();
+}
 
-    var pause = function() {
-        Progress.ResetTimer();
-        NProgress.set(0.0);
-    };
+function pause() {
+    resetTimer();
+    NProgress.set(0.0);
+}
 
-    var start = function() {
-        var stepMs = 250; // animation step in ms
-        var steps = (Unsee.GetRefreshRate() * 1000) / stepMs; // how many steps we have
-        NProgress.set(0.0);
-        Progress.ResetTimer();
-        timer = setInterval(function() {
-            NProgress.inc(1.0 / steps);
-        }, stepMs);
-    };
+function start() {
+    var stepMs = 250; // animation step in ms
+    var steps = (unsee.getRefreshRate() * 1000) / stepMs; // how many steps we have
+    NProgress.set(0.0);
+    resetTimer();
+    timer = setInterval(function() {
+        NProgress.inc(1.0 / steps);
+    }, stepMs);
+}
 
-    return {
-        Init: init,
-        Pause: pause,
-        Complete: complete,
-        Reset: start,
-        ResetTimer: resetTimer
-    };
-
-}());
+exports.init = init;
+exports.pause = pause;
+exports.complete = complete;
+exports.start = start;
+exports.resetTimer = resetTimer;

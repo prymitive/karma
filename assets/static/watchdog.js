@@ -1,74 +1,72 @@
-/* globals moment */    // moment.js
+"use strict";
 
-/* globals Config, Counter, Templates */
+const $ = require("jquery");
+const moment = require("moment");
 
-/* exported Watchdog */
-var Watchdog = (function() {
+const config = require("./config");
+const counter = require("./counter");
+const templates = require("./templates");
 
-    var selectors = {
-        countdown: "#reload-counter"
-    };
+var selectors = {
+    countdown: "#reload-counter"
+};
 
-    var lastTs = 0;
-    var maxLag;
+var lastTs = 0;
+var maxLag;
 
-    var inCountdown = false;
-    var fatalCountdown = 60;
-    var fatalReloadTimer = false;
-    var fatalCounterTimer = false;
+var inCountdown = false;
+var fatalCountdown = 60;
+var fatalReloadTimer = false;
+var fatalCounterTimer = false;
 
-    var timerTick = function() {
-        if (lastTs === 0) return;
+function timerTick() {
+    if (lastTs === 0) return;
 
-        // don't raise an error if autorefresh is disabled
-        if (!Config.GetOption("autorefresh").Get()) return;
+    // don't raise an error if autorefresh is disabled
+    if (!config.getOption("autorefresh").Get()) return;
 
-        var now = moment().utc().unix();
-        if (now - lastTs > maxLag) {
-            $("#errors").html(Templates.Render("fatalError", {
-                lastTs: lastTs,
-                secondsLeft: fatalCountdown
-            })).show();
-            Counter.Unknown();
-            if (!inCountdown) {
-                fatalCountdown = 60;
-                fatalReloadTimer = setTimeout(function() {
-                    location.reload();
-                }, 60 * 1000);
-                fatalCounterTimer = setInterval(function() {
-                    $(selectors.countdown).text(--fatalCountdown);
-                }, 1000);
-                inCountdown = true;
-            }
-        } else {
-            inCountdown = false;
-            if (fatalReloadTimer) clearTimeout(fatalReloadTimer);
-            if (fatalCounterTimer) clearTimeout(fatalCounterTimer);
+    var now = moment().utc().unix();
+    if (now - lastTs > maxLag) {
+        $("#errors").html(templates.renderTemplate("fatalError", {
+            lastTs: lastTs,
+            secondsLeft: fatalCountdown
+        })).show();
+        counter.markUnknown();
+        if (!inCountdown) {
+            fatalCountdown = 60;
+            fatalReloadTimer = setTimeout(function() {
+                location.reload();
+            }, 60 * 1000);
+            fatalCounterTimer = setInterval(function() {
+                $(selectors.countdown).text(--fatalCountdown);
+            }, 1000);
+            inCountdown = true;
         }
-    };
+    } else {
+        inCountdown = false;
+        if (fatalReloadTimer) clearTimeout(fatalReloadTimer);
+        if (fatalCounterTimer) clearTimeout(fatalCounterTimer);
+    }
+}
 
-    var init = function(interval, tolerance) {
-        maxLag = tolerance;
-        setInterval(timerTick, interval * 1000);
-    };
+function init(interval, tolerance) {
+    maxLag = tolerance;
+    setInterval(timerTick, interval * 1000);
+}
 
-    var updateTs = function(ts) {
-        lastTs = ts.utc().unix();
-    };
+function pong(ts) {
+    lastTs = ts.utc().unix();
+}
 
-    var getTs = function() {
-        return lastTs;
-    };
+function getLastUpdate() {
+    return lastTs;
+}
 
-    var getFatal = function() {
-        return inCountdown;
-    };
+function isFatal() {
+    return inCountdown;
+}
 
-    return {
-        Init: init,
-        Pong: updateTs,
-        GetLastUpdate: getTs,
-        IsFatal: getFatal
-    };
-
-}());
+exports.init = init;
+exports.pong = pong;
+exports.getLastUpdate = getLastUpdate;
+exports.isFatal = isFatal;

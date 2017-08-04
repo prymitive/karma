@@ -1,2 +1,6 @@
 .build
 unsee
+assets/static/dist
+node_modules
+.coverage
+.tests

@@ -140,15 +140,15 @@ span.label-ts-span {
 }
 
 /* make filter input take all the space it can */
-.filterbar {
+div.filterbar {
     width: 950px;
 }
-.filterbar > .input-group-addon.input-sm {
+div.filterbar > .input-group-addon.input-sm {
     width: 10px;
 }
 
 /* fix padding with flatly */
-.bootstrap-tagsinput {
+div.bootstrap-tagsinput {
     width: 100%;
     padding-top: 3px;
     padding-bottom: 6px;
@@ -164,7 +164,7 @@ input#filter:focus {
 }
 
 /* set min-width on real input so it doesn't need too much space when it's empty */
-.bootstrap-tagsinput > .twitter-typeahead > input.tt-input {
+div.bootstrap-tagsinput > .twitter-typeahead > input.tt-input {
   min-width: 10px;
 }
 
@@ -365,15 +365,11 @@ button.silence-delete:focus {
 
 
 /* tweak nprogress look for flatly */
-#nprogress .bar {
+#nprogress .nprogress-flatly.bar {
     background: #f39c12;
 }
-#nprogress .peg {
+#nprogress .nprogress-flatly.peg {
     box-shadow: 0 0 10px #f39c12, 0 0 5px #f39c12;
-}
-#nprogress .spinner-icon {
-    border-top-color: #f39c12;
-    border-left-color: #f39c12;
 }
 
 

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"html/template"
 	"path"
 	"strings"
 	"time"
@@ -107,7 +108,11 @@ func main() {
 	}
 
 	router := gin.New()
-	router.SetHTMLTemplate(loadTemplates("templates"))
+
+	var t *template.Template
+	t = loadTemplates(t, "templates")
+	t = loadTemplates(t, "static/dist/templates")
+	router.SetHTMLTemplate(t)
 
 	prom := ginprometheus.NewPrometheus("gin")
 	prom.MetricsPath = getViewURL("/metrics")

@@ -3,6 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -37,7 +39,10 @@ func mockConfig() {
 func ginTestEngine() *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
-	r.SetHTMLTemplate(loadTemplates("templates"))
+	var t *template.Template
+	t = loadTemplates(t, "templates")
+	t = loadTemplates(t, "static/dist/templates")
+	r.SetHTMLTemplate(t)
 	setupRouter(r)
 	return r
 }
@@ -181,7 +186,8 @@ func TestValidateAllAlerts(t *testing.T) {
 			t.Errorf("GET /alerts.json returned status %d", resp.Code)
 		}
 		ur := models.AlertsResponse{}
-		json.Unmarshal(resp.Body.Bytes(), &ur)
+		body := resp.Body.Bytes()
+		json.Unmarshal(body, &ur)
 		for _, ag := range ur.AlertGroups {
 			for _, a := range ag.Alerts {
 				if !slices.StringInSlice(models.AlertStateList, a.State) {
@@ -191,6 +197,15 @@ func TestValidateAllAlerts(t *testing.T) {
 					t.Errorf("Alertmanager instance list is empty, %v", a)
 				}
 			}
+		}
+		// write JSON response to a file, it will be used by (optional) JS tests
+		// those require actual JSON responses and shouldn't be mocked
+		if _, err := os.Stat(".tests"); os.IsNotExist(err) {
+			os.Mkdir(".tests", 0755)
+		}
+		err := ioutil.WriteFile(".tests/alerts.json", body, 0644)
+		if err != nil {
+			t.Logf("Failed to write .tests/alerts.json: %s", err)
 		}
 	}
 }
@@ -380,11 +395,7 @@ var staticFileTests = []staticFileTestCase{
 		code: 200,
 	},
 	staticFileTestCase{
-		path: "/static/unsee.js",
-		code: 200,
-	},
-	staticFileTestCase{
-		path: "/static/managed/js/assets.txt",
+		path: "/static/dist/favicon.ico",
 		code: 200,
 	},
 	staticFileTestCase{
@@ -416,11 +427,7 @@ var staticFilePrefixTests = []staticFileTestCase{
 		code: 200,
 	},
 	staticFileTestCase{
-		path: "/sub/static/unsee.js",
-		code: 200,
-	},
-	staticFileTestCase{
-		path: "/sub/static/managed/js/assets.txt",
+		path: "/sub/static/dist/favicon.ico",
 		code: 200,
 	},
 	staticFileTestCase{

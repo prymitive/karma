@@ -15,9 +15,9 @@
     <% } %>
     <div class="panel-title">
       <% if (Object.keys(group.labels).length > 0) { %>
-        <% _.each(Alerts.SortMapByKey(group.labels), function(label) { %>
-          <% var attrs = Alerts.GetLabelAttrs(label.key, label.value) %>
-          <%= Templates.Render('buttonLabel', {elem: 'div', elemClass: 'label label-list', attrs: attrs, label: label}) %>
+        <% _.each(sortMapByKey(group.labels), function(label) { %>
+          <% var attrs = getLabelAttrs(label.key, label.value) %>
+          <%= renderTemplate('buttonLabel', {elem: 'div', elemClass: 'label label-list', attrs: attrs, label: label}) %>
         <% }) %>
       <% } else { %>
         <div class="label-list label"></div>
@@ -27,7 +27,7 @@
 </script>
 
 <script type="application/json" id="alert-group-annotations">
-  <% _.each(Alerts.SortMapByKey(alert.annotations), function(annotation) { %>
+  <% _.each(sortMapByKey(alert.annotations), function(annotation) { %>
     <div class="well well-sm annotation-well">
       <i class="fa fa-question-circle text-muted" title="<%= annotation.key %>" data-toggle="tooltip" data-placement="top"/>
       <% if (annotation.value) { %>
@@ -53,10 +53,10 @@
 </script>
 
 <script type="application/json" id="alert-group-labels">
-  <% _.each(Alerts.SortMapByKey(alert.labels), function(label) { %>
+  <% _.each(sortMapByKey(alert.labels), function(label) { %>
     <% if (group.labels[label.key] == undefined) { %>
-      <% var attrs = Alerts.GetLabelAttrs(label.key, label.value) %>
-      <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: label}) %>
+      <% var attrs = getLabelAttrs(label.key, label.value) %>
+      <%= renderTemplate('buttonLabel', {elem: 'span', attrs: attrs, label: label}) %>
     <% } %>
   <% }) %>
 </script>
@@ -81,12 +81,12 @@
          <%- am.name %>
       </a>
     <% }) %>
-    <% var attrs = Alerts.GetLabelAttrs("@state", alert.state) %>
-    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@state', value: alert.state, text: alert.state}}) %>
+    <% var attrs = getLabelAttrs("@state", alert.state) %>
+    <%= renderTemplate('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@state', value: alert.state, text: alert.state}}) %>
     <% if (alert.state != "suppressed") { %>
       <% var labels = [] %>
       <% var alertmanagers = [] %>
-      <% _.each(Alerts.SortMapByKey(alert.labels), function(label) { %>
+      <% _.each(sortMapByKey(alert.labels), function(label) { %>
         <% labels.push(label.key + '=' + label.value) %>
       <% }) %>
       <% _.each(alert.alertmanager, function(alertmanager){ %>
@@ -103,8 +103,8 @@
           <i class="fa fa-bell-slash" title="Silence this alert" data-toggle="tooltip" data-placement="top" />
       </span>
     <% } %>
-    <% var attrs = Alerts.GetLabelAttrs("@receiver", alert.receiver) %>
-    <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@receiver', value: alert.receiver, text: alert.receiver}}) %>
+    <% var attrs = getLabelAttrs("@receiver", alert.receiver) %>
+    <%= renderTemplate('buttonLabel', {elem: 'span', attrs: attrs, label: {key: '@receiver', value: alert.receiver, text: alert.receiver}}) %>
     <a class="label label-list label-default label-age label-ts"
        data-toggle="tooltip"
        data-placement="top"
@@ -229,16 +229,16 @@
             <% return false %>
           <% } else { %>
             <% rendered++ %>
-            <% var attrs = Alerts.GetLabelAttrs(label.key, label.value) %>
+            <% var attrs = getLabelAttrs(label.key, label.value) %>
             <% if (label.hits > 1) { %>
               <div class="label-trim-group">
-                <%= Templates.Render('buttonLabel', {elem: 'span', elemClass: 'label label-trim-tag', attrs: attrs, label: label}) %>
+                <%= renderTemplate('buttonLabel', {elem: 'span', elemClass: 'label label-trim-tag', attrs: attrs, label: label}) %>
                 <span class="label label-default label-trim-count">
                   <%- label.hits %>
                 </span>
               </div>
             <% } else { %>
-              <%= Templates.Render('buttonLabel', {elem: 'span', attrs: attrs, label: label}) %>
+              <%= renderTemplate('buttonLabel', {elem: 'span', attrs: attrs, label: label}) %>
             <% } %>
           <% } %>
         <% }) %>
@@ -257,7 +257,7 @@
     <% } %>
     <div class="panel <%= cls_panel %>">
       <div class="panel-heading text-center">
-        <%= Templates.Render('alertGroupTitle', {group: group}) %>
+        <%= renderTemplate('alertGroupTitle', {group: group}) %>
       </div>
       <% var labelMap = {} %>
       <% var skipped = 0 %>
@@ -279,16 +279,16 @@
           <% if (i < group.alerts.length - 1) { cls_body = 'incident-group-separator' } %>
           <div class="panel-body <%= cls_body %>">
             <div class="incident-group">
-              <%= Templates.Render('alertGroupAnnotations', {alert: alert}) %>
-              <%= Templates.Render('alertGroupLabels', {alert: alert, group: group}) %>
-              <%= Templates.Render('alertGroupElements', {alert: alert}) %>
-              <%= Templates.Render('alertGroupSilence', {alert: alert}) %>
+              <%= renderTemplate('alertGroupAnnotations', {alert: alert}) %>
+              <%= renderTemplate('alertGroupLabels', {alert: alert, group: group}) %>
+              <%= renderTemplate('alertGroupElements', {alert: alert}) %>
+              <%= renderTemplate('alertGroupSilence', {alert: alert}) %>
             </div>
           </div>
         <% } %>
       <% }) %>
       <% if (!$.isEmptyObject(labelMap)) { %>
-        <%= Templates.Render('alertGroupLabelMap', {labelMap: labelMap, skipped: skipped}) %>
+        <%= renderTemplate('alertGroupLabelMap', {labelMap: labelMap, skipped: skipped}) %>
       <% } %>
     </div>
   </div>

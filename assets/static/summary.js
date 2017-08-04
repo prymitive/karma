@@ -1,84 +1,83 @@
-/* globals Colors, Templates */
+"use strict";
 
-/* exported Summary */
-var Summary = (function() {
+const $ = require("jquery");
 
-    var summary;
+const colors = require("./colors");
+const templates = require("./templates");
 
-    var render = function() {
-        var topTags = [];
-        $.each(summary, function(k, v) {
-            topTags.push({
-                name: k,
-                val: v
-            });
+var summary = {};
+
+function render() {
+    var topTags = [];
+    $.each(summary, function(k, v) {
+        topTags.push({
+            name: k,
+            val: v
         });
-        topTags.sort(function(a, b) {
-            if (a.val > b.val) return 1;
-            if (a.val < b.val) return -1;
-            if (a.name > b.name) return -1;
-            if (a.name < b.name) return 1;
-            return 0;
-        }).reverse();
+    });
+    topTags.sort(function(a, b) {
+        if (a.val > b.val) return 1;
+        if (a.val < b.val) return -1;
+        if (a.name > b.name) return -1;
+        if (a.name < b.name) return 1;
+        return 0;
+    }).reverse();
 
-        var tags = [];
-        $.each(topTags.slice(0, 10), function(i, tag) {
-            var labelKey = tag.name.split(": ")[0];
-            var labelVal = tag.name.split(": ")[1];
-            tag.style = Colors.Get(labelKey, labelVal);
-            tag.cls = Colors.GetClass(labelKey, labelVal);
-            tags.push(tag);
-        });
+    var tags = [];
+    $.each(topTags.slice(0, 10), function(i, tag) {
+        var labelKey = tag.name.split(": ")[0];
+        var labelVal = tag.name.split(": ")[1];
+        tag.style = colors.getStyle(labelKey, labelVal);
+        tag.cls = colors.getClass(labelKey, labelVal);
+        tags.push(tag);
+    });
 
-        return Templates.Render("breakdownContent", {tags: tags});
-    };
+    return templates.renderTemplate("breakdownContent", {tags: tags});
+}
 
-    var init = function() {
-        summary = {};
-        $(".navbar-header").popover({
-            trigger: "hover",
-            delay: {
-                "show": 500,
-                "hide": 100
-            },
-            container: "body",
-            html: true,
-            placement: "bottom",
-            title: "Top labels",
-            content: render,
-            template: Templates.Render("breakdown", {})
-        });
-    };
+function init() {
+    summary = {};
+    $(".navbar-header").popover({
+        trigger: "hover",
+        delay: {
+            "show": 500,
+            "hide": 100
+        },
+        container: "body",
+        html: true,
+        placement: "bottom",
+        title: "Top labels",
+        content: render,
+        template: templates.renderTemplate("breakdown", {})
+    });
+}
 
-    var update = function(data) {
-        summary = data;
-    };
+function update(data) {
+    summary = data;
+}
 
-    var reset = function() {
-        summary = {};
-        render();
-    };
+function reset() {
+    summary = {};
+    render();
+}
 
-    var push = function(labelKey, labelVal) {
-        var l = labelKey + ": " + labelVal;
-        if (summary[l] === undefined) {
-            summary[l] = 1;
-        } else {
-            summary[l]++;
-        }
-    };
+function push(labelKey, labelVal) {
+    var l = labelKey + ": " + labelVal;
+    if (summary[l] === undefined) {
+        summary[l] = 1;
+    } else {
+        summary[l]++;
+    }
+}
 
-    var getCount = function(labelKey, labelVal) {
-        var l = labelKey + ": " + labelVal;
-        return summary[l];
-    };
+function getCount(labelKey, labelVal) {
+    var l = labelKey + ": " + labelVal;
+    return summary[l];
+}
 
-    return {
-        Init: init,
-        Update: update,
-        Reset: reset,
-        Push: push,
-        Get: getCount
-    };
-
-}());
+exports.init = init;
+exports.update = update;
+exports.reset = reset;
+exports.push = push;
+exports.getCount = getCount;
+exports.render = render;

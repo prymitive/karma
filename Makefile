@@ -19,10 +19,6 @@ ifdef DEBUG
 	DOCKER_ARGS = -v $(CURDIR)/assets:$(CURDIR)/assets:ro
 endif
 
-# detect if jshint and/or eslint is installed
-JSHINT := $(shell which jshint)
-ESLINT := $(shell which eslint)
-
 .DEFAULT_GOAL := $(NAME)
 
 .build/go-bindata:
@@ -40,7 +36,11 @@ ESLINT := $(shell which eslint)
 	go get -u github.com/golang/lint/golint
 	touch $@
 
-.build/deps.ok: .build/go-bindata .build/go-bindata-assetfs .build/golint
+.build/npm.install: package.json package-lock.json
+	npm install
+	touch $@
+
+.build/deps.ok: .build/go-bindata .build/go-bindata-assetfs .build/golint .build/npm.install
 	@mkdir -p .build
 	touch $@
 
@@ -49,8 +49,9 @@ ESLINT := $(shell which eslint)
 	rm -f .build/bindata_assetfs.*
 	touch $@
 
-bindata_assetfs.go: .build/deps.ok .build/bindata_assetfs.$(GO_BINDATA_MODE) $(ASSET_SOURCES)
-	go-bindata-assetfs $(GO_BINDATA_FLAGS) -prefix assets -nometadata assets/templates/... assets/static/...
+bindata_assetfs.go: .build/deps.ok .build/bindata_assetfs.$(GO_BINDATA_MODE) $(ASSET_SOURCES) webpack.config.js
+	$(CURDIR)/node_modules/.bin/webpack -p
+	go-bindata-assetfs $(GO_BINDATA_FLAGS) -prefix assets -nometadata assets/templates/... assets/static/dist/...
 
 $(NAME): .build/deps.ok bindata_assetfs.go $(SOURCES)
 	go build -ldflags "-X main.version=$(VERSION)"
@@ -90,17 +91,13 @@ run-docker: docker-image
 
 .PHONY: lint
 lint: .build/deps.ok
-	@golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
-ifneq ($(JSHINT),)
-	$(JSHINT) assets/static/*.js
-endif
-ifneq ($(ESLINT),)
-	$(ESLINT) --quiet assets/static/*.js
-endif
+	golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
+	$(CURDIR)/node_modules/.bin/eslint --quiet assets/static/*.js
 
 .PHONY: test
 test: lint bindata_assetfs.go
 	go test -bench=. -cover `go list ./... | grep -v /vendor/`
+	npm test
 
 .build/dep.ok:
 	go get -u github.com/golang/dep/cmd/dep
