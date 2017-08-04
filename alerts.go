@@ -3,9 +3,9 @@ package main
 import (
 	"strings"
 
-	"github.com/cloudflare/unsee/alertmanager"
-	"github.com/cloudflare/unsee/filters"
-	"github.com/cloudflare/unsee/models"
+	"github.com/cloudflare/unsee/internal/alertmanager"
+	"github.com/cloudflare/unsee/internal/filters"
+	"github.com/cloudflare/unsee/internal/models"
 )
 
 func getFiltersFromQuery(filterString string) ([]filters.FilterT, bool) {

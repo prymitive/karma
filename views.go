@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudflare/unsee/alertmanager"
-	"github.com/cloudflare/unsee/config"
-	"github.com/cloudflare/unsee/models"
-	"github.com/cloudflare/unsee/slices"
+	"github.com/cloudflare/unsee/internal/alertmanager"
+	"github.com/cloudflare/unsee/internal/config"
+	"github.com/cloudflare/unsee/internal/models"
+	"github.com/cloudflare/unsee/internal/slices"
 
 	"github.com/gin-gonic/gin"
 
