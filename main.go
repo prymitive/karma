@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cloudflare/unsee/alertmanager"
-	"github.com/cloudflare/unsee/config"
-	"github.com/cloudflare/unsee/transform"
+	"github.com/cloudflare/unsee/internal/alertmanager"
+	"github.com/cloudflare/unsee/internal/config"
+	"github.com/cloudflare/unsee/internal/transform"
 
 	"github.com/DeanThompson/ginpprof"
 	"github.com/gin-contrib/static"

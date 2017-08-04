@@ -90,4 +90,4 @@ To support a new release that breaks API following changes needs to be done:
   silences (depending if both need a new code) under mapper/vXY (X major
   Alertmanager version, Y minor version).
 * Register new mapper in the `init()` function in the
-  `alertmanager/mapper.go` file.
+  `internal/alertmanager/mapper.go` file.
