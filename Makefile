@@ -50,7 +50,7 @@ endif
 	touch $@
 
 bindata_assetfs.go: .build/deps.ok .build/bindata_assetfs.$(GO_BINDATA_MODE) $(ASSET_SOURCES) webpack.config.js
-	webpack -p
+	$(CURDIR)/node_modules/.bin/webpack -p
 	go-bindata-assetfs $(GO_BINDATA_FLAGS) -prefix assets -nometadata assets/templates/... assets/static/dist/...
 
 $(NAME): .build/deps.ok bindata_assetfs.go $(SOURCES)
@@ -92,7 +92,7 @@ run-docker: docker-image
 .PHONY: lint
 lint: .build/deps.ok
 	golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
-	eslint --quiet assets/static/*.js
+	$(CURDIR)/node_modules/.bin/eslint --quiet assets/static/*.js
 
 .PHONY: test
 test: lint bindata_assetfs.go
