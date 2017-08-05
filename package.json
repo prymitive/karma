@@ -39,6 +39,7 @@
     "favico.js": "^0.3.10",
     "font-awesome": "^4.7.0",
     "is-in-viewport": "^3.0.0",
+    "javascript-linkify": "^0.3.0",
     "jquery": "^3.2.1",
     "js-cookie": "^2.1.4",
     "js-sha1": "^0.4.1",

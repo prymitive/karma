@@ -3,6 +3,7 @@
 const $ = require("jquery");
 const _ = require("underscore");
 const moment = require("moment");
+require("javascript-linkify");
 
 const alerts = require("./alerts");
 
@@ -73,6 +74,7 @@ function init() {
 
 function renderTemplate(name, context) {
     context["moment"] = moment;
+    context["linkify"] = window.linkify;
     context["renderTemplate"] = renderTemplate;
     context["sortMapByKey"] = alerts.sortMapByKey;
     context["getLabelAttrs"] = alerts.getLabelAttrs;
