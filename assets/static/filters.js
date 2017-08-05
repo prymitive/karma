@@ -8,7 +8,7 @@ require("./jquery.typing-0.3.2.js");
 require("corejs-typeahead");
 require("bootstrap-tagsinput");
 require("bootstrap-tagsinput/dist/bootstrap-tagsinput.css");
-require("bootstrap-tagsinput/dist/bootstrap-tagsinput-typeahead.css");
+require("./bootstrap-tagsinput.less");
 
 const autocomplete = require("./autocomplete");
 const unsee = require("./unsee");
