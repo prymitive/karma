@@ -29,7 +29,7 @@
 <script type="application/json" id="alert-group-annotations">
   <% _.each(sortMapByKey(alert.annotations), function(annotation) { %>
     <div class="well well-sm annotation-well">
-      <i class="fa fa-question-circle text-muted" title="<%= annotation.key %>" data-toggle="tooltip" data-placement="top"/>
+      <i class="fa fa-info-circle text-muted" title="<%- annotation.key %>" data-toggle="tooltip" data-placement="top"/>
       <% if (annotation.value) { %>
         <%= linkify(_.escape(annotation.value)) %>
       <% } else { %>
