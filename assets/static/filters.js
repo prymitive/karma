@@ -4,7 +4,7 @@ const $ = window.$ = window.jQuery = require("jquery");
 const sha1 = require("js-sha1");
 const Cookies = require("js-cookie");
 
-require("./jquery.typing-0.2.0.js");
+require("./jquery.typing-0.3.2.js");
 require("corejs-typeahead");
 require("bootstrap-tagsinput");
 require("bootstrap-tagsinput/dist/bootstrap-tagsinput.css");
