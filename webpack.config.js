@@ -6,6 +6,7 @@ const CleanWebpackPlugin = require("clean-webpack-plugin");
 var config = {
     cache: true,
     context: path.resolve(__dirname, "assets/static"),
+    devtool: "cheap-source-map",
     entry: {
         unsee: "./unsee.js",
         help: "./help.js"
@@ -37,7 +38,7 @@ var config = {
                     fs.mkdirSync(path.join(__dirname, "assets/static/dist/templates"));
                     for (var chunkName in stats.assetsByChunkName) {
                         var loaderName = "loader_" + chunkName + ".html";
-                        var loaderScript = "<script type='text/javascript' src='static/dist/" + stats.assetsByChunkName[chunkName] + "'></script>";
+                        var loaderScript = "<script type='text/javascript' src='static/dist/" + stats.assetsByChunkName[chunkName][0] + "'></script>";
                         fs.writeFileSync(path.join(__dirname, "assets/static/dist/templates", loaderName), loaderScript);
                     }
                 }
