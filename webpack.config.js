@@ -3,7 +3,7 @@ const path = require("path");
 const fs = require("fs");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 
-const config = {
+var config = {
     cache: true,
     context: path.resolve(__dirname, "assets/static"),
     entry: {
@@ -104,6 +104,21 @@ const config = {
             }
         ]
     },
+}
+
+// check what NODE_ENV is set, if it's empty we assume production
+const isDev = (process.env.NODE_ENV === "test");
+
+// enable production only plugins
+if (!isDev) {
+    config.plugins.push(new webpack.optimize.UglifyJsPlugin());
+    config.plugins.push(new webpack.LoaderOptionsPlugin({
+        minimize: true,
+        debug: false,
+        options: {
+            context: __dirname
+        }
+    }));
 }
 
 module.exports = config
