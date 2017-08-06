@@ -47,6 +47,13 @@
                     </div>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                      <a href="#" id="history" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                          title="Filter history" data-toggle="tooltip" data-placement="auto">
+                          <i id="historyList" class="fa fa-history"></i>
+                      </a>
+                      <ul class="dropdown-menu" id="historyMenu"></ul>
+                    </li>
                     <li>
                         <a href="{{ .WebPrefix }}help" id="help" role="button" title="Filter documentation" data-toggle="tooltip" data-placement="auto">
                             <i class="fa fa-question-circle"></i>
@@ -177,3 +184,4 @@
 {{ template "templates/errors.html" }}
 {{ template "templates/modal.html" }}
 {{ template "templates/silence.html" }}
+{{ template "templates/history.html" }}

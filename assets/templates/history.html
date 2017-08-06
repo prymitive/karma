@@ -1,0 +1,33 @@
+<script type="application/json" id="history-menu">
+<% if (filters.length) { %>
+  <% _.each(filters, function(filter) { %>
+    <% if (filter !== activeFilter) { %>
+      <%= renderTemplate("historyMenuItem", {filter: filter, icon: "fa fa-circle-o transparent"}) %>
+    <% } %>
+  <% }) %>
+<% } %>
+
+<% if (defaultFilter) { %>
+  <%= renderTemplate("historyMenuItem", {filter: defaultFilter, icon: "fa fa-home"}) %>
+<% } %>
+
+<% if (savedFilter) { %>
+  <%= renderTemplate("historyMenuItem", {filter: savedFilter, icon: "fa fa-floppy-o"}) %>
+<% } %>
+</script>
+
+<script type="application/json" id="history-menu-item">
+<li class="history-menu">
+  <a class="cursor-pointer history-menu-item">
+    <span class="rawFilter hidden">
+      <%- filter %>
+    </span>
+    <i class="<%- icon %>"></i>
+    <% _.each(filter.split(","), function(filterItem) { %>
+      <span class="label-list label label-info">
+        <%- filterItem %>
+      </span>
+    <% }) %>
+  </a>
+</li>
+</script>

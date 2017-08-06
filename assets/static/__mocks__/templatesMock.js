@@ -9,6 +9,7 @@ function loadTemplates() {
         "modal.html",
         "silence.html",
         "summary.html",
+        "history.html",
     ];
     templateFiles.forEach(function(filename){
         var templatePath = path.join(__dirname, "../../templates/", filename);
