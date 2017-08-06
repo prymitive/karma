@@ -1,6 +1,7 @@
 const $ = require("jquery");
 const templatesMock = require("./__mocks__/templatesMock");
 const alertsMock = require("./__mocks__/alertsMock");
+require("./__mocks__/localStorageMock");
 
 jest.useFakeTimers();
 
