@@ -49,11 +49,11 @@ endif
 	rm -f .build/bindata_assetfs.*
 	touch $@
 
-bindata_assetfs.go: .build/deps.ok .build/bindata_assetfs.$(GO_BINDATA_MODE) $(ASSET_SOURCES) webpack.config.js
+bindata_assetfs.go: .build/deps.ok .build/bindata_assetfs.$(GO_BINDATA_MODE) $(ASSET_SOURCES) webpack.config.js .build/vendor.ok
 	$(CURDIR)/node_modules/.bin/webpack -p
 	go-bindata-assetfs $(GO_BINDATA_FLAGS) -prefix assets -nometadata assets/templates/... assets/static/dist/...
 
-$(NAME): .build/deps.ok bindata_assetfs.go $(SOURCES)
+$(NAME): .build/deps.ok .build/vendor.ok bindata_assetfs.go $(SOURCES)
 	go build -ldflags "-X main.version=$(VERSION)"
 
 .PHONY: clean
@@ -102,6 +102,11 @@ test: lint bindata_assetfs.go
 .build/dep.ok:
 	go get -u github.com/golang/dep/cmd/dep
 	@mkdir -p .build
+	touch $@
+
+.build/vendor.ok: Gopkg.lock Gopkg.toml .build/dep.ok
+	dep ensure
+	dep prune
 	touch $@
 
 .PHONY: vendor

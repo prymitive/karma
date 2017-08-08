@@ -8,6 +8,7 @@ go_import_path: github.com/cloudflare/unsee
 cache:
   directories:
     - node_modules
+    - vendor
 
 env:
   - NODE_ENV=test
