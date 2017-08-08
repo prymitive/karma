@@ -5,3 +5,4 @@ assets/static/dist
 node_modules
 .coverage
 .tests
+bindata_assetfs.go
