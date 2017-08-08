@@ -4,7 +4,7 @@ const $ = window.$ = window.jQuery = require("jquery");
 const sha1 = require("js-sha1");
 const Cookies = require("js-cookie");
 
-require("./jquery.typing-0.2.0.js");
+require("./jquery.typing-0.3.2.js");
 require("corejs-typeahead");
 require("bootstrap-tagsinput");
 require("bootstrap-tagsinput/dist/bootstrap-tagsinput.css");
@@ -118,10 +118,12 @@ function init() {
     // stop when user is typing in the filter bar
     $(".bootstrap-tagsinput").typing({
         start: function(event) {
+            // ignore backspace & enter
             if (event.keyCode != 8 && event.keyCode != 13) unsee.pause();
         },
         stop: function(event) {
-            if (event.keyCode != 8 && event.keyCode != 13) unsee.resume();
+            // ignore enter
+            if (event.keyCode != 13) unsee.resume();
         },
         delay: 1000
     });
