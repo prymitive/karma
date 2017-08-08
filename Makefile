@@ -50,7 +50,7 @@ endif
 	touch $@
 
 bindata_assetfs.go: .build/deps.ok .build/bindata_assetfs.$(GO_BINDATA_MODE) $(ASSET_SOURCES) webpack.config.js .build/vendor.ok
-	$(CURDIR)/node_modules/.bin/webpack -p
+	$(CURDIR)/node_modules/.bin/webpack
 	go-bindata-assetfs $(GO_BINDATA_FLAGS) -prefix assets -nometadata assets/templates/... assets/static/dist/...
 
 $(NAME): .build/deps.ok .build/vendor.ok bindata_assetfs.go $(SOURCES)

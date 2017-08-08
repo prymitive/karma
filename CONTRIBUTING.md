@@ -57,6 +57,10 @@ Same applies to HTML template files, please rebuild bindata_assetfs.go before
 commit. Note that Makefile targets are setup to run it automatically if changes
 are detected, so it's usually not needed for development.
 
+During development you can set `NODE_ENV=test` before running any make targets,
+this will prevent webpack from using expensive optimizations only needed when
+generating production assets.
+
 ## Running
 
 To build and start `unsee` from local branch see `Running` section of the
