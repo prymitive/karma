@@ -454,3 +454,50 @@ func TestStaticFilesPrefix(t *testing.T) {
 		}
 	}
 }
+
+func TestGzipMiddleware(t *testing.T) {
+	mockConfig()
+	r := ginTestEngine()
+	paths := []string{"/", "/help", "/alerts.json", "/autocomplete.json", "/metrics"}
+	for _, path := range paths {
+		req, _ := http.NewRequest("GET", path, nil)
+		req.Header.Set("Accept-Encoding", "gzip")
+		resp := httptest.NewRecorder()
+		r.ServeHTTP(resp, req)
+		h := resp.Header()
+
+		ce := h.Get("Content-Encoding")
+		if ce != "gzip" {
+			t.Errorf("Inavlid 'Content-Encoding' in response for '%s', expected 'gzip', got '%s'", path, ce)
+		}
+
+		bs := h.Get("Content-Length")
+		if fmt.Sprint(resp.Body.Len()) != bs {
+			t.Errorf("Invalid 'Content-Length' in response for '%s', body size was %d but header value was '%s'", path, resp.Body.Len(), bs)
+		}
+	}
+}
+
+func TestGzipMiddlewareWithoutAcceptEncoding(t *testing.T) {
+	mockConfig()
+	r := ginTestEngine()
+	paths := []string{"/", "/help", "/alerts.json", "/autocomplete.json", "/metrics"}
+	for _, path := range paths {
+		req, _ := http.NewRequest("GET", path, nil)
+		req.Header.Set("Accept-Encoding", "") // ensure that we don't pass anything up
+		resp := httptest.NewRecorder()
+		r.ServeHTTP(resp, req)
+		h := resp.Header()
+
+		ce := h.Get("Content-Encoding")
+		if ce == "gzip" {
+			t.Errorf("Inavlid 'Content-Encoding' in response for '%s', expected '', got '%s'", path, ce)
+		}
+
+		bs := h.Get("Content-Length")
+		// if we got Content-Length then compare it with body size
+		if bs != "" && fmt.Sprint(resp.Body.Len()) != bs {
+			t.Errorf("Invalid 'Content-Length' in response for '%s', body size was %d but header value was '%s'", path, resp.Body.Len(), bs)
+		}
+	}
+}
