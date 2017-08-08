@@ -112,7 +112,9 @@ const isDev = (process.env.NODE_ENV === "test");
 
 // enable production only plugins
 if (!isDev) {
-    config.plugins.push(new webpack.optimize.UglifyJsPlugin());
+    config.plugins.push(new webpack.optimize.UglifyJsPlugin({
+        sourceMap: true
+    }));
     config.plugins.push(new webpack.LoaderOptionsPlugin({
         minimize: true,
         debug: false,
