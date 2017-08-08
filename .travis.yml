@@ -13,7 +13,7 @@ env:
   - NODE_ENV=test
 
 before_script:
-  - nvm install 6
+  - nvm install 8
 
 script:
   - make test
