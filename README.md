@@ -45,17 +45,6 @@ used.
 
 ## Building and running
 
-### Installing using the go command
-
-unsee is go installable, so the easiest way is to run:
-
-    go install github.com/cloudflare/unsee
-
-The `unsee` binary will be installed into `$GOPATH/bin` directory.
-Note that this will build the latest master version which might not work with
-your Alertmanager version. See
-[supported Alertmanager versions](#supported-alertmanager-versions).
-
 ### Building from source
 
 To clone git repo and build the binary yourself run:
@@ -66,6 +55,10 @@ To clone git repo and build the binary yourself run:
 To finally compile `unsee` the binary run:
 
     make
+
+Note that building locally from sources requires Go, nodejs and npm.
+See Docker build options below for instructions on building from withing docker
+container.
 
 ## Running
 
