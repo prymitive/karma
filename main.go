@@ -11,6 +11,7 @@ import (
 	"github.com/cloudflare/unsee/internal/transform"
 
 	"github.com/DeanThompson/ginpprof"
+	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/contrib/sentry"
 	"github.com/gin-gonic/gin"
@@ -45,6 +46,7 @@ func getViewURL(sub string) string {
 }
 
 func setupRouter(router *gin.Engine) {
+	router.Use(gzip.Gzip(gzip.DefaultCompression))
 	router.Use(static.Serve(getViewURL("/static"), newBinaryFileSystem("static")))
 
 	router.GET(getViewURL("/favicon.ico"), favicon)
