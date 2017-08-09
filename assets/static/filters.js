@@ -229,3 +229,4 @@ exports.reloadBadges = reloadBadges;
 exports.updateDone = updateDone;
 exports.setUpdating = setUpdating;
 exports.setPause = setPause;
+exports.renderHistory = renderHistory;
