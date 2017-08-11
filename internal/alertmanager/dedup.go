@@ -3,8 +3,10 @@ package alertmanager
 import (
 	"sort"
 
+	"github.com/cloudflare/unsee/internal/config"
 	"github.com/cloudflare/unsee/internal/models"
 	"github.com/cloudflare/unsee/internal/slices"
+	"github.com/cloudflare/unsee/internal/transform"
 )
 
 // DedupAlerts will collect alert groups from all defined Alertmanager
@@ -61,6 +63,8 @@ func DedupAlerts() []models.AlertGroup {
 		ag := models.AlertGroup(agList[0])
 		ag.Alerts = models.AlertList{}
 		for _, alert := range alerts {
+			// strip labels user doesn't want to see in the UI
+			alert.Labels = transform.StripLables(config.Config.KeepLabels, config.Config.StripLabels, alert.Labels)
 			// calculate final alert state based on the most important value found
 			// in the list of states from all instances
 			alertLFP := alert.LabelsFingerprint()
