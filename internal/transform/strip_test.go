@@ -9,6 +9,7 @@ import (
 
 type stripTest struct {
 	strip  []string
+	keep   []string
 	before map[string]string
 	after  map[string]string
 }
@@ -16,6 +17,7 @@ type stripTest struct {
 var stripTests = []stripTest{
 	stripTest{
 		strip: []string{"env"},
+		keep:  []string{},
 		before: map[string]string{
 			"host":  "localhost",
 			"env":   "production",
@@ -28,6 +30,7 @@ var stripTests = []stripTest{
 	},
 	stripTest{
 		strip: []string{"server"},
+		keep:  []string{},
 		before: map[string]string{
 			"host":  "localhost",
 			"env":   "production",
@@ -41,6 +44,7 @@ var stripTests = []stripTest{
 	},
 	stripTest{
 		strip: []string{},
+		keep:  []string{},
 		before: map[string]string{
 			"host":  "localhost",
 			"env":   "production",
@@ -54,8 +58,42 @@ var stripTests = []stripTest{
 	},
 	stripTest{
 		strip: []string{"host"},
+		keep:  []string{},
 		before: map[string]string{
 			"host": "localhost",
+		},
+		after: map[string]string{},
+	},
+	stripTest{
+		strip: []string{},
+		keep:  []string{"env"},
+		before: map[string]string{
+			"host":  "localhost",
+			"env":   "production",
+			"level": "info",
+		},
+		after: map[string]string{
+			"env": "production",
+		},
+	},
+	stripTest{
+		strip: []string{"env"},
+		keep:  []string{"host"},
+		before: map[string]string{
+			"host":  "localhost",
+			"env":   "production",
+			"level": "info",
+		},
+		after: map[string]string{
+			"host": "localhost",
+		},
+	},
+	stripTest{
+		strip: []string{},
+		keep:  []string{"env"},
+		before: map[string]string{
+			"host":  "localhost",
+			"level": "info",
 		},
 		after: map[string]string{},
 	},
@@ -63,7 +101,7 @@ var stripTests = []stripTest{
 
 func TestStripLables(t *testing.T) {
 	for _, testCase := range stripTests {
-		labels := transform.StripLables(testCase.strip, testCase.before)
+		labels := transform.StripLables(testCase.keep, testCase.strip, testCase.before)
 		if !reflect.DeepEqual(labels, testCase.after) {
 			t.Errorf("StripLables failed, expected %v, got %v", testCase.after, labels)
 		}
