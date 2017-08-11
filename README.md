@@ -281,6 +281,21 @@ This option can also be set using `-jira.regex` flag. Example:
 
 This variable is optional and default is not set (no rule will be applied).
 
+#### KEEP_LABELS
+
+List of label names to show on the UI, all other labels will be stripped.
+This allows to hide all labels except selected few that are useful on the
+alert dashboard. Accepts space separated list of label names. Examples:
+
+    KEEP_LABELS=instance
+    KEEP_LABELS="host severity"
+
+This option can also be set using `-keep.labels` flag. Example:
+
+    $ unsee -keep.labels "host severity"
+
+This variable is optional and default is not set (all labels will be shown).
+
 #### PORT
 
 HTTP port to listen on. Example:

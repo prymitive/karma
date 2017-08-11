@@ -35,8 +35,38 @@ func TestDedupAlerts(t *testing.T) {
 		t.Error(err)
 	}
 	alertGroups := alertmanager.DedupAlerts()
+
 	if len(alertGroups) != 10 {
 		t.Errorf("Expected %d alert groups, got %d", 10, len(alertGroups))
+	}
+
+	totalAlerts := 0
+	for _, ag := range alertGroups {
+		totalAlerts += len(ag.Alerts)
+	}
+	if totalAlerts != 24 {
+		t.Errorf("Expected %d total alerts, got %d", 24, totalAlerts)
+	}
+}
+
+func TestDedupAlertsWithoutLabels(t *testing.T) {
+	config.Config.KeepLabels = []string{"xyz"}
+	if err := pullAlerts(); err != nil {
+		t.Error(err)
+	}
+	alertGroups := alertmanager.DedupAlerts()
+	config.Config.KeepLabels = []string{}
+
+	if len(alertGroups) != 10 {
+		t.Errorf("Expected %d alert groups, got %d", 10, len(alertGroups))
+	}
+
+	totalAlerts := 0
+	for _, ag := range alertGroups {
+		totalAlerts += len(ag.Alerts)
+	}
+	if totalAlerts != 24 {
+		t.Errorf("Expected %d total alerts, got %d", 24, totalAlerts)
 	}
 }
 

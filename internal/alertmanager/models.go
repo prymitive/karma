@@ -6,7 +6,6 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cloudflare/unsee/internal/config"
 	"github.com/cloudflare/unsee/internal/mapper"
 	"github.com/cloudflare/unsee/internal/models"
 	"github.com/cloudflare/unsee/internal/transform"
@@ -174,7 +173,6 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			}
 
 			alert.Annotations, alert.Links = transform.DetectLinks(alert.Annotations)
-			alert.Labels = transform.StripLables(config.Config.StripLabels, alert.Labels)
 
 			transform.ColorLabel(colors, "@receiver", alert.Receiver)
 			for k, v := range alert.Labels {
