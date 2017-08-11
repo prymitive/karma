@@ -1,5 +1,5 @@
 const $ = window.jQuery = require("jquery");
-require("./__mocks__/localStorageMock");
+const LocalStorageMock = require("./__mocks__/localStorageMock");
 
 test("filters addBadge()", () => {
     const filters = require("./filters");
@@ -7,7 +7,7 @@ test("filters addBadge()", () => {
 });
 
 test("default filter should be in history after setting filter to foo", () => {
-    localStorage.clear();
+    LocalStorageMock.clear();
     document.body.innerHTML =
         "<div class='input-group filterbar'>" +
         "  <div class='input-group-addon input-sm'>" +
@@ -26,7 +26,7 @@ test("default filter should be in history after setting filter to foo", () => {
     const filters = require("./filters");
 
     autocomplete.init();
-    filters.init();
+    filters.init(LocalStorageMock);
     filters.setFilters();
     filters.renderHistory();
 
@@ -35,11 +35,11 @@ test("default filter should be in history after setting filter to foo", () => {
     expect(elems.length).toBe(1);
     expect($(elems[0]).text().trim()).toBe("default");
     // we set foo, so that what should be in history
-    expect(localStorage.getItem("filterHistory")).toBe("foo");
+    expect(LocalStorageMock.getItem("filterHistory")).toBe("foo");
 });
 
 test("appended filtes should be present in history", () => {
-    localStorage.clear();
+    LocalStorageMock.clear();
     document.body.innerHTML =
         "<div class='input-group filterbar'>" +
         "  <div class='input-group-addon input-sm'>" +
@@ -58,7 +58,7 @@ test("appended filtes should be present in history", () => {
     const filters = require("./filters");
 
     autocomplete.init();
-    filters.init();
+    filters.init(LocalStorageMock);
     filters.setFilters();
     filters.renderHistory();
 
@@ -68,7 +68,7 @@ test("appended filtes should be present in history", () => {
     // default is used but default is always rendered so should be there
     expect($(elems[0]).text().trim()).toBe("default");
     // and that's what history should have
-    expect(localStorage.getItem("filterHistory")).toBe("default");
+    expect(LocalStorageMock.getItem("filterHistory")).toBe("default");
 
     // now we append more filters, so q=default becomes q=default,bar
     filters.addFilter("bar");
@@ -81,7 +81,7 @@ test("appended filtes should be present in history", () => {
     expect($(elems[0]).text().trim()).toBe("default");
     expect($(elems[1]).text().trim()).toBe("default");
     expect(
-        localStorage.getItem("filterHistory").split("\n")
+        LocalStorageMock.getItem("filterHistory").split("\n")
     ).toMatchObject(
         [ "default,bar", "default" ]
     );
@@ -98,7 +98,7 @@ test("appended filtes should be present in history", () => {
     expect($(elems[1]).text().trim()).toBe("default");
     expect($(elems[1]).text().trim()).toBe("default");
     expect(
-        localStorage.getItem("filterHistory").split("\n")
+        LocalStorageMock.getItem("filterHistory").split("\n")
     ).toMatchObject(
         [ "default,bar,@state=active", "default,bar", "default" ]
     );

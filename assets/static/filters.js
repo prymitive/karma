@@ -21,6 +21,7 @@ var selectors = {
     historyMenu: "#historyMenu"
 };
 var appendsEnabled = true;
+var historyStorage;
 const historyKey = "filterHistory";
 
 function addBadge(text) {
@@ -69,13 +70,11 @@ function setPause() {
 }
 
 function renderHistory() {
-    const storage = window.localStorage;
-
     var historicFilters = [];
 
     const currentFilterText = getFilters().join(",");
 
-    const history = storage.getItem(historyKey);
+    const history = historyStorage.getItem(historyKey);
     if (history) {
         historicFilters = history.split("\n");
     }
@@ -93,14 +92,12 @@ function appendFilterToHistory(text) {
     // require non empty text and enabled appends
     if (!text || !appendsEnabled) return false;
 
-    const storage = window.localStorage;
-
     // final filter list we'll save to storage
     var filterList = [ text ];
 
     // get current history list from storage and append it to our final list
     // of filters, but avoid duplicates
-    const history = storage.getItem(historyKey);
+    const history = historyStorage.getItem(historyKey);
     if (history) {
         const historyArr = history.split("\n");
         for (var i = 0; i < historyArr.length; i++) {
@@ -114,7 +111,7 @@ function appendFilterToHistory(text) {
     // truncate the history to up to 11 elements
     filterList = filterList.slice(0, 11);
 
-    storage.setItem(historyKey, filterList.join("\n"));
+    historyStorage.setItem(historyKey, filterList.join("\n"));
 }
 
 function setFilters() {
@@ -131,7 +128,8 @@ function setFilters() {
     unsee.triggerReload();
 }
 
-function init() {
+function init(historyStore) {
+    historyStorage = historyStore;
     var initialFilter;
 
     if ($(selectors.filter).data("default-used") == "false" || $(selectors.filter).data("default-used") === false) {

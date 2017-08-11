@@ -1,22 +1,21 @@
-// source: https://github.com/facebook/jest/issues/2098
+class LocalStorageMock {
 
-var localStorageMock = (function() {
-    var store = {};
+    constructor() {
+        this.store = {};
+    }
 
-    return {
-        getItem: function(key) {
-            return store[key] || null;
-        },
-        setItem: function(key, value) {
-            store[key] = value.toString();
-        },
-        clear: function() {
-            store = {};
-        }
-    };
+    getItem(key) {
+        return this.store[key] || null;
+    }
 
-})();
+    setItem(key, value) {
+        this.store[key] = value.toString();
+    }
 
-Object.defineProperty(window, "localStorage", {
-    value: localStorageMock
-});
+    clear() {
+        this.store = {};
+    }
+
+}
+
+module.exports = new LocalStorageMock();
