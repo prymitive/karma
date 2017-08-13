@@ -110,7 +110,7 @@ function appendFilterToHistory(text) {
     }
 
     // truncate the history to up to 11 elements
-    const filterListTrunc = Array.from(filterList).slice(0, 11);
+    const filterListTrunc = Array.from(filterList).slice(0, 10);
 
     historyStorage.setItem(historyKey, filterListTrunc.join("\n"));
 }

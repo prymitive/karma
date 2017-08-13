@@ -501,10 +501,6 @@ a[aria-expanded=false] .fa-chevron-down {
   margin-bottom: 4px;
 }
 
-.transparent {
-  opacity: 0;
-}
-
 li.history-menu > a.history-menu-item {
   padding-left: 10px;
   padding-right: 4px;

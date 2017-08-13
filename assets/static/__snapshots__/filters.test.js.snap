@@ -1,7 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`appended filtes should be present in history 1`] = `
-"<li class=\\"history-menu\\">
+"<li role=\\"separator\\" class=\\"divider\\"></li>
+  
+    
+<li class=\\"history-menu\\">
   <a class=\\"cursor-pointer history-menu-item\\">
     <span class=\\"rawFilter hidden\\">
       default
@@ -22,7 +25,7 @@ exports[`appended filtes should be present in history 2`] = `
     <span class=\\"rawFilter hidden\\">
       default
     </span>
-    <i class=\\"fa fa-circle-o transparent\\"></i>
+    <i class=\\"fa fa-search\\"></i>
     
       <span class=\\"label-list label label-info\\">
         default
@@ -35,7 +38,9 @@ exports[`appended filtes should be present in history 2`] = `
   
 
 
+  <li role=\\"separator\\" class=\\"divider\\"></li>
   
+    
 <li class=\\"history-menu\\">
   <a class=\\"cursor-pointer history-menu-item\\">
     <span class=\\"rawFilter hidden\\">
@@ -57,7 +62,7 @@ exports[`appended filtes should be present in history 3`] = `
     <span class=\\"rawFilter hidden\\">
       default,bar
     </span>
-    <i class=\\"fa fa-circle-o transparent\\"></i>
+    <i class=\\"fa fa-search\\"></i>
     
       <span class=\\"label-list label label-info\\">
         default
@@ -79,7 +84,7 @@ exports[`appended filtes should be present in history 3`] = `
     <span class=\\"rawFilter hidden\\">
       default
     </span>
-    <i class=\\"fa fa-circle-o transparent\\"></i>
+    <i class=\\"fa fa-search\\"></i>
     
       <span class=\\"label-list label label-info\\">
         default
@@ -92,7 +97,9 @@ exports[`appended filtes should be present in history 3`] = `
   
 
 
+  <li role=\\"separator\\" class=\\"divider\\"></li>
   
+    
 <li class=\\"history-menu\\">
   <a class=\\"cursor-pointer history-menu-item\\">
     <span class=\\"rawFilter hidden\\">
@@ -114,7 +121,7 @@ exports[`appended filtes should be present in history 4`] = `
     <span class=\\"rawFilter hidden\\">
       default,bar,@state=active
     </span>
-    <i class=\\"fa fa-circle-o transparent\\"></i>
+    <i class=\\"fa fa-search\\"></i>
     
       <span class=\\"label-list label label-info\\">
         default
@@ -140,7 +147,7 @@ exports[`appended filtes should be present in history 4`] = `
     <span class=\\"rawFilter hidden\\">
       default,bar
     </span>
-    <i class=\\"fa fa-circle-o transparent\\"></i>
+    <i class=\\"fa fa-search\\"></i>
     
       <span class=\\"label-list label label-info\\">
         default
@@ -162,7 +169,7 @@ exports[`appended filtes should be present in history 4`] = `
     <span class=\\"rawFilter hidden\\">
       default
     </span>
-    <i class=\\"fa fa-circle-o transparent\\"></i>
+    <i class=\\"fa fa-search\\"></i>
     
       <span class=\\"label-list label label-info\\">
         default
@@ -175,7 +182,9 @@ exports[`appended filtes should be present in history 4`] = `
   
 
 
+  <li role=\\"separator\\" class=\\"divider\\"></li>
   
+    
 <li class=\\"history-menu\\">
   <a class=\\"cursor-pointer history-menu-item\\">
     <span class=\\"rawFilter hidden\\">
@@ -197,7 +206,7 @@ exports[`appended filtes should be present in history 5`] = `
     <span class=\\"rawFilter hidden\\">
       default,bar,@state=active
     </span>
-    <i class=\\"fa fa-circle-o transparent\\"></i>
+    <i class=\\"fa fa-search\\"></i>
     
       <span class=\\"label-list label label-info\\">
         default
@@ -223,7 +232,7 @@ exports[`appended filtes should be present in history 5`] = `
     <span class=\\"rawFilter hidden\\">
       default,bar
     </span>
-    <i class=\\"fa fa-circle-o transparent\\"></i>
+    <i class=\\"fa fa-search\\"></i>
     
       <span class=\\"label-list label label-info\\">
         default
@@ -245,7 +254,7 @@ exports[`appended filtes should be present in history 5`] = `
     <span class=\\"rawFilter hidden\\">
       default
     </span>
-    <i class=\\"fa fa-circle-o transparent\\"></i>
+    <i class=\\"fa fa-search\\"></i>
     
       <span class=\\"label-list label label-info\\">
         default
@@ -258,7 +267,9 @@ exports[`appended filtes should be present in history 5`] = `
   
 
 
+  <li role=\\"separator\\" class=\\"divider\\"></li>
   
+    
 <li class=\\"history-menu\\">
   <a class=\\"cursor-pointer history-menu-item\\">
     <span class=\\"rawFilter hidden\\">
@@ -280,7 +291,7 @@ exports[`appended filtes should be present in history 6`] = `
     <span class=\\"rawFilter hidden\\">
       @state=active
     </span>
-    <i class=\\"fa fa-circle-o transparent\\"></i>
+    <i class=\\"fa fa-search\\"></i>
     
       <span class=\\"label-list label label-info\\">
         @state=active
@@ -298,7 +309,7 @@ exports[`appended filtes should be present in history 6`] = `
     <span class=\\"rawFilter hidden\\">
       default,bar,@state=active
     </span>
-    <i class=\\"fa fa-circle-o transparent\\"></i>
+    <i class=\\"fa fa-search\\"></i>
     
       <span class=\\"label-list label label-info\\">
         default
@@ -324,7 +335,7 @@ exports[`appended filtes should be present in history 6`] = `
     <span class=\\"rawFilter hidden\\">
       default,bar
     </span>
-    <i class=\\"fa fa-circle-o transparent\\"></i>
+    <i class=\\"fa fa-search\\"></i>
     
       <span class=\\"label-list label label-info\\">
         default
@@ -341,7 +352,9 @@ exports[`appended filtes should be present in history 6`] = `
   
 
 
+  <li role=\\"separator\\" class=\\"divider\\"></li>
   
+    
 <li class=\\"history-menu\\">
   <a class=\\"cursor-pointer history-menu-item\\">
     <span class=\\"rawFilter hidden\\">
@@ -358,7 +371,10 @@ exports[`appended filtes should be present in history 6`] = `
 `;
 
 exports[`default filter should be in history after setting filter to foo 1`] = `
-"<li class=\\"history-menu\\">
+"<li role=\\"separator\\" class=\\"divider\\"></li>
+  
+    
+<li class=\\"history-menu\\">
   <a class=\\"cursor-pointer history-menu-item\\">
     <span class=\\"rawFilter hidden\\">
       default

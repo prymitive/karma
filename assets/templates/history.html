@@ -2,15 +2,18 @@
 <% if (filters.length) { %>
   <% _.each(filters, function(filter) { %>
     <% if (filter !== activeFilter) { %>
-      <%= renderTemplate("historyMenuItem", {filter: filter, icon: "fa fa-circle-o transparent"}) %>
+      <%= renderTemplate("historyMenuItem", {filter: filter, icon: "fa fa-search"}) %>
     <% } %>
   <% }) %>
 <% } %>
-<% if (defaultFilter) { %>
-  <%= renderTemplate("historyMenuItem", {filter: defaultFilter, icon: "fa fa-home"}) %>
-<% } %>
-<% if (savedFilter) { %>
-  <%= renderTemplate("historyMenuItem", {filter: savedFilter, icon: "fa fa-floppy-o"}) %>
+<% if (defaultFilter || savedFilter) { %>
+  <li role="separator" class="divider"></li>
+  <% if (defaultFilter) { %>
+    <%= renderTemplate("historyMenuItem", {filter: defaultFilter, icon: "fa fa-home"}) %>
+  <% } %>
+  <% if (savedFilter) { %>
+    <%= renderTemplate("historyMenuItem", {filter: savedFilter, icon: "fa fa-floppy-o"}) %>
+  <% } %>
 <% } %>
 </script>
 
