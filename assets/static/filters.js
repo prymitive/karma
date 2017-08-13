@@ -93,7 +93,7 @@ function appendFilterToHistory(text) {
     if (!text || !appendsEnabled) return false;
 
     // final filter list we'll save to storage
-    var filterList = [ text ];
+    var filterList = new Set([ text ]);
 
     // get current history list from storage and append it to our final list
     // of filters, but avoid duplicates
@@ -101,17 +101,14 @@ function appendFilterToHistory(text) {
     if (history) {
         const historyArr = history.split("\n");
         for (var i = 0; i < historyArr.length; i++) {
-            var h = historyArr[i];
-            if (filterList.indexOf(h) < 0) {
-                filterList.push(h);
-            }
+            filterList.add(historyArr[i]);
         }
     }
 
     // truncate the history to up to 11 elements
-    filterList = filterList.slice(0, 11);
+    const filterListTrunc = Array.from(filterList).slice(0, 11);
 
-    historyStorage.setItem(historyKey, filterList.join("\n"));
+    historyStorage.setItem(historyKey, filterListTrunc.join("\n"));
 }
 
 function setFilters() {
