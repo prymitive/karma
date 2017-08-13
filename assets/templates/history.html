@@ -6,11 +6,9 @@
     <% } %>
   <% }) %>
 <% } %>
-
 <% if (defaultFilter) { %>
   <%= renderTemplate("historyMenuItem", {filter: defaultFilter, icon: "fa fa-home"}) %>
 <% } %>
-
 <% if (savedFilter) { %>
   <%= renderTemplate("historyMenuItem", {filter: savedFilter, icon: "fa fa-floppy-o"}) %>
 <% } %>

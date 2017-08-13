@@ -56,6 +56,10 @@ function addFilter(text) {
     $(selectors.filter).tagsinput("add", text);
 }
 
+function clearFilters() {
+    $(selectors.filter).tagsinput("removeAll");
+}
+
 function setUpdating() {
     // visual hint that alerts are reloaded due to filter change
     $(selectors.icon).removeClass("fa-search fa-pause").addClass("fa-circle-o-notch fa-spin");
@@ -217,6 +221,7 @@ function init(historyStore) {
 
 exports.init = init;
 exports.addFilter = addFilter;
+exports.clearFilters = clearFilters;
 exports.setFilters = setFilters;
 exports.getFilters = getFilters;
 exports.addBadge = addBadge;
