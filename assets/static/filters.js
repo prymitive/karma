@@ -56,6 +56,23 @@ function addFilter(text) {
     $(selectors.filter).tagsinput("add", text);
 }
 
+function applyFilterList(filterList) {
+    // we need to add filters one by one, this would reload alerts on every
+    // add() so let's pause reloads and resume once we're done with updating
+    // filters
+    unsee.pause();
+    // disable history appends as it would record each new filter in the
+    // history
+    appendsEnabled = false;
+    $(selectors.filter).tagsinput("removeAll");
+    for (var i = 0; i < filterList.length; i++) {
+        $(selectors.filter).tagsinput("add", filterList[i]);
+    }
+    // enable everything again
+    appendsEnabled = true;
+    unsee.resume();
+}
+
 function clearFilters() {
     $(selectors.filter).tagsinput("removeAll");
 }
@@ -200,21 +217,8 @@ function init(historyStore) {
     renderHistory();
     $(selectors.historyMenu).on("click", "a.history-menu-item", function(event) {
         var elem = $(event.target).parents("li.history-menu");
-        const historyArr = elem.find(".rawFilter").text().trim().split(",");
-        // we need to add filters one by one, this would reload alerts on every
-        // add() so let's pause reloads and resume once we're done with updating
-        // filters
-        unsee.pause();
-        // disable history appends as it would record each new filter in the
-        // history
-        appendsEnabled = false;
-        $(selectors.filter).tagsinput("removeAll");
-        for (var i = 0; i < historyArr.length; i++) {
-            $(selectors.filter).tagsinput("add", historyArr[i]);
-        }
-        // enable everything again
-        appendsEnabled = true;
-        unsee.resume();
+        const filtersList = elem.find(".rawFilter").text().trim().split(",");
+        applyFilterList(filtersList);
     });
 
 }
