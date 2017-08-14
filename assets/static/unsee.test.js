@@ -1,6 +1,7 @@
 const $ = require("jquery");
 const templatesMock = require("./__mocks__/templatesMock");
 const alertsMock = require("./__mocks__/alertsMock");
+const LocalStorageMock = require("./__mocks__/localStorageMock");
 
 jest.useFakeTimers();
 
@@ -50,7 +51,7 @@ if (alertsServer) {
         require("bootstrap/js/popover.js");
         alertsServer.start();
 
-        unsee.onReady();
+        unsee.onReady(LocalStorageMock);
         unsee.triggerReload();
         jest.runOnlyPendingTimers();
         // we should have 2 alerts

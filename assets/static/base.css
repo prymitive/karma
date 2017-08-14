@@ -141,7 +141,7 @@ span.label-ts-span {
 
 /* make filter input take all the space it can */
 div.filterbar {
-    width: 950px;
+    width: 905px;
 }
 div.filterbar > .input-group-addon.input-sm {
     width: 10px;
@@ -186,12 +186,14 @@ div.bootstrap-tagsinput > .twitter-typeahead > input.tt-input {
 
 /* menus uses links with icons instead of buttons, fix focus color
    so the link doesn't stay colored after clicking */
+#history:focus,
 #help:focus,
 #settings:focus,
 #refresh:focus {
     color: #fff;
 }
 
+#history:hover,
 #help:hover,
 #settings:hover,
 #refresh:hover {
@@ -497,4 +499,11 @@ a[aria-expanded=false] .fa-chevron-down {
 
 .alert-static-elements {
   margin-bottom: 4px;
+}
+
+li.history-menu > a.history-menu-item {
+  padding-left: 10px;
+  padding-right: 4px;
+  padding-top: 2px;
+  padding-bottom: 6px;
 }

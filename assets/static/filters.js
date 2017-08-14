@@ -13,11 +13,16 @@ require("./bootstrap-tagsinput.less");
 const autocomplete = require("./autocomplete");
 const unsee = require("./unsee");
 const querystring = require("./querystring");
+const templates = require("./templates");
 
 var selectors = {
     filter: "#filter",
-    icon: "#filter-icon"
+    icon: "#filter-icon",
+    historyMenu: "#historyMenu"
 };
+var appendsEnabled = true;
+var historyStorage;
+const historyKey = "filterHistory";
 
 function addBadge(text) {
     $.each($("span.tag"), function(i, tag) {
@@ -51,6 +56,27 @@ function addFilter(text) {
     $(selectors.filter).tagsinput("add", text);
 }
 
+function applyFilterList(filterList) {
+    // we need to add filters one by one, this would reload alerts on every
+    // add() so let's pause reloads and resume once we're done with updating
+    // filters
+    unsee.pause();
+    // disable history appends as it would record each new filter in the
+    // history
+    appendsEnabled = false;
+    $(selectors.filter).tagsinput("removeAll");
+    for (var i = 0; i < filterList.length; i++) {
+        $(selectors.filter).tagsinput("add", filterList[i]);
+    }
+    // enable everything again
+    appendsEnabled = true;
+    unsee.resume();
+}
+
+function clearFilters() {
+    $(selectors.filter).tagsinput("removeAll");
+}
+
 function setUpdating() {
     // visual hint that alerts are reloaded due to filter change
     $(selectors.icon).removeClass("fa-search fa-pause").addClass("fa-circle-o-notch fa-spin");
@@ -64,17 +90,64 @@ function setPause() {
     $(selectors.icon).removeClass("fa-circle-o-notch fa-spin fa-search").addClass("fa-pause");
 }
 
+function renderHistory() {
+    var historicFilters = [];
+
+    const currentFilterText = getFilters().join(",");
+
+    const history = historyStorage.getItem(historyKey);
+    if (history) {
+        historicFilters = history.split("\n");
+    }
+
+    var historyMenuHTML = templates.renderTemplate("historyMenu", {
+        activeFilter: currentFilterText,
+        defaultFilter: $(selectors.filter).data("default-filter"),
+        savedFilter: Cookies.get("defaultFilter.v2"),
+        filters: historicFilters
+    });
+    $(selectors.historyMenu).html(historyMenuHTML);
+}
+
+function appendFilterToHistory(text) {
+    // require non empty text and enabled appends
+    if (!text || !appendsEnabled) return false;
+
+    // final filter list we'll save to storage
+    var filterList = new Set([ text ]);
+
+    // get current history list from storage and append it to our final list
+    // of filters, but avoid duplicates
+    const history = historyStorage.getItem(historyKey);
+    if (history) {
+        const historyArr = history.split("\n");
+        for (var i = 0; i < historyArr.length; i++) {
+            filterList.add(historyArr[i]);
+        }
+    }
+
+    // truncate the history to up to 11 elements
+    const filterListTrunc = Array.from(filterList).slice(0, 10);
+
+    historyStorage.setItem(historyKey, filterListTrunc.join("\n"));
+}
+
 function setFilters() {
     setUpdating();
 
     // update location so it's easy to share it
     querystring.update("q", getFilters().join(","));
 
+    // append filter to the history and render it
+    appendFilterToHistory(getFilters().join(","));
+    renderHistory();
+
     // reload alerts
     unsee.triggerReload();
 }
 
-function init() {
+function init(historyStore) {
+    historyStorage = historyStore;
     var initialFilter;
 
     if ($(selectors.filter).data("default-used") == "false" || $(selectors.filter).data("default-used") === false) {
@@ -141,10 +214,18 @@ function init() {
         $("body").css("padding-top", $(".navbar").height());
     });
 
+    renderHistory();
+    $(selectors.historyMenu).on("click", "a.history-menu-item", function(event) {
+        var elem = $(event.target).parents("li.history-menu");
+        const filtersList = elem.find(".rawFilter").text().trim().split(",");
+        applyFilterList(filtersList);
+    });
+
 }
 
 exports.init = init;
 exports.addFilter = addFilter;
+exports.clearFilters = clearFilters;
 exports.setFilters = setFilters;
 exports.getFilters = getFilters;
 exports.addBadge = addBadge;
@@ -152,3 +233,4 @@ exports.reloadBadges = reloadBadges;
 exports.updateDone = updateDone;
 exports.setUpdating = setUpdating;
 exports.setPause = setPause;
+exports.renderHistory = renderHistory;

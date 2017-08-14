@@ -45,7 +45,11 @@ var templates = {},
         alertGroupLabels: "#alert-group-labels",
         alertGroupElements: "#alert-group-elements",
         alertGroupSilence: "#alert-group-silence",
-        alertGroupLabelMap: "#alert-group-label-map"
+        alertGroupLabelMap: "#alert-group-label-map",
+
+        // history dropdown
+        historyMenu: "#history-menu",
+        historyMenuItem: "#history-menu-item"
     };
 
 function getConfig() {

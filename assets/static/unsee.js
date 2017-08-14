@@ -304,7 +304,7 @@ function setupPageVisibilityHandler() {
     }
 }
 
-function init() {
+function init(localStore) {
     progress.init();
 
     config.init({
@@ -318,7 +318,7 @@ function init() {
     summary.init();
     grid.init();
     autocomplete.init();
-    filters.init();
+    filters.init(localStore);
     watchdog.init(30, 60*15); // set watchdog to 15 minutes
 
     $(selectors.refreshButton).click(function() {
@@ -331,7 +331,7 @@ function init() {
     setupPageVisibilityHandler();
 }
 
-function onReady() {
+function onReady(localStore) {
     // wrap all inits so we can handle errors
     try {
         // init all elements using bootstrapSwitch
@@ -347,7 +347,7 @@ function onReady() {
         ui.setupModal();
         silence.setupSilenceForm();
         unsilence.init();
-        init();
+        init(localStore);
 
         // delay initial alert load to allow browser finish rendering
         setTimeout(function() {
@@ -381,4 +381,6 @@ exports.flash = flash;
 exports.parseAJAXError = parseAJAXError;
 exports.onReady = onReady;
 
-$(document).ready(onReady);
+$(document).ready(function() {
+    onReady(window.localStorage);
+});
