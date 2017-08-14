@@ -1,10 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`appended filtes should be present in history 1`] = `
-"<li role=\\"separator\\" class=\\"divider\\"></li>
-  
-    
-<li class=\\"history-menu\\">
+"<li class=\\"history-menu\\">
   <a class=\\"cursor-pointer history-menu-item\\">
     <span class=\\"rawFilter hidden\\">
       default
@@ -34,11 +31,14 @@ exports[`appended filtes should be present in history 2`] = `
   </a>
 </li>
 
+      
     
   
 
 
-  <li role=\\"separator\\" class=\\"divider\\"></li>
+  
+    <li role=\\"separator\\" class=\\"divider\\"></li>
+  
   
     
 <li class=\\"history-menu\\">
@@ -75,6 +75,7 @@ exports[`appended filtes should be present in history 3`] = `
   </a>
 </li>
 
+      
     
   
     
@@ -93,11 +94,14 @@ exports[`appended filtes should be present in history 3`] = `
   </a>
 </li>
 
+      
     
   
 
 
-  <li role=\\"separator\\" class=\\"divider\\"></li>
+  
+    <li role=\\"separator\\" class=\\"divider\\"></li>
+  
   
     
 <li class=\\"history-menu\\">
@@ -138,6 +142,7 @@ exports[`appended filtes should be present in history 4`] = `
   </a>
 </li>
 
+      
     
   
     
@@ -160,6 +165,7 @@ exports[`appended filtes should be present in history 4`] = `
   </a>
 </li>
 
+      
     
   
     
@@ -178,11 +184,14 @@ exports[`appended filtes should be present in history 4`] = `
   </a>
 </li>
 
+      
     
   
 
 
-  <li role=\\"separator\\" class=\\"divider\\"></li>
+  
+    <li role=\\"separator\\" class=\\"divider\\"></li>
+  
   
     
 <li class=\\"history-menu\\">
@@ -223,6 +232,7 @@ exports[`appended filtes should be present in history 5`] = `
   </a>
 </li>
 
+      
     
   
     
@@ -245,6 +255,7 @@ exports[`appended filtes should be present in history 5`] = `
   </a>
 </li>
 
+      
     
   
     
@@ -263,11 +274,14 @@ exports[`appended filtes should be present in history 5`] = `
   </a>
 </li>
 
+      
     
   
 
 
-  <li role=\\"separator\\" class=\\"divider\\"></li>
+  
+    <li role=\\"separator\\" class=\\"divider\\"></li>
+  
   
     
 <li class=\\"history-menu\\">
@@ -300,6 +314,7 @@ exports[`appended filtes should be present in history 6`] = `
   </a>
 </li>
 
+      
     
   
     
@@ -326,6 +341,7 @@ exports[`appended filtes should be present in history 6`] = `
   </a>
 </li>
 
+      
     
   
     
@@ -348,11 +364,14 @@ exports[`appended filtes should be present in history 6`] = `
   </a>
 </li>
 
+      
     
   
 
 
-  <li role=\\"separator\\" class=\\"divider\\"></li>
+  
+    <li role=\\"separator\\" class=\\"divider\\"></li>
+  
   
     
 <li class=\\"history-menu\\">
@@ -371,10 +390,7 @@ exports[`appended filtes should be present in history 6`] = `
 `;
 
 exports[`default filter should be in history after setting filter to foo 1`] = `
-"<li role=\\"separator\\" class=\\"divider\\"></li>
-  
-    
-<li class=\\"history-menu\\">
+"<li class=\\"history-menu\\">
   <a class=\\"cursor-pointer history-menu-item\\">
     <span class=\\"rawFilter hidden\\">
       default
