@@ -56,23 +56,6 @@ function addFilter(text) {
     $(selectors.filter).tagsinput("add", text);
 }
 
-function applyFilterList(filterList) {
-    // we need to add filters one by one, this would reload alerts on every
-    // add() so let's pause reloads and resume once we're done with updating
-    // filters
-    unsee.pause();
-    // disable history appends as it would record each new filter in the
-    // history
-    appendsEnabled = false;
-    $(selectors.filter).tagsinput("removeAll");
-    for (var i = 0; i < filterList.length; i++) {
-        $(selectors.filter).tagsinput("add", filterList[i]);
-    }
-    // enable everything again
-    appendsEnabled = true;
-    unsee.resume();
-}
-
 function clearFilters() {
     $(selectors.filter).tagsinput("removeAll");
 }
@@ -146,6 +129,24 @@ function setFilters() {
     unsee.triggerReload();
 }
 
+function applyFilterList(filterList) {
+    // we need to add filters one by one, this would reload alerts on every
+    // add() so let's pause reloads and resume once we're done with updating
+    // filters
+    unsee.pause();
+    // disable history appends as it would record each new filter in the
+    // history
+    appendsEnabled = false;
+    $(selectors.filter).tagsinput("removeAll");
+    for (var i = 0; i < filterList.length; i++) {
+        $(selectors.filter).tagsinput("add", filterList[i]);
+    }
+    // enable everything again
+    appendsEnabled = true;
+    setFilters();
+    unsee.resume();
+}
+
 function init(historyStore) {
     historyStorage = historyStore;
     var initialFilter;
@@ -179,7 +180,12 @@ function init(historyStore) {
     });
 
     $(selectors.filter).on("itemAdded itemRemoved", function(event) {
-        setFilters();
+        if (appendsEnabled) {
+            // if history appends are disabled then don't set filters yet
+            // we disable appends to have batch filter updates so we shouldn't
+            // set filters yet
+            setFilters();
+        }
         // add counter badge to new tag
         if (event.type == "itemAdded") {
             addBadge(event.item);
