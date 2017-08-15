@@ -338,7 +338,7 @@ function onReady(localStore) {
         $(".toggle").bootstrapSwitch();
 
         // enable tooltips, #settings is a dropdown so it already uses different data-toggle
-        $("[data-toggle='tooltip'], #settings").tooltip({
+        $("[data-toggle='tooltip'], #settings, #history").tooltip({
             trigger: "hover"
         });
 

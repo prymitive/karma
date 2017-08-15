@@ -1,13 +1,17 @@
 <script type="application/json" id="history-menu">
+<% let filterRendered = false %>
 <% if (filters.length) { %>
   <% _.each(filters, function(filter) { %>
     <% if (filter !== activeFilter) { %>
       <%= renderTemplate("historyMenuItem", {filter: filter, icon: "fa fa-search"}) %>
+      <% filterRendered = true %>
     <% } %>
   <% }) %>
 <% } %>
 <% if (defaultFilter || savedFilter) { %>
-  <li role="separator" class="divider"></li>
+  <% if (filterRendered) { %>
+    <li role="separator" class="divider"></li>
+  <% } %>
   <% if (defaultFilter) { %>
     <%= renderTemplate("historyMenuItem", {filter: defaultFilter, icon: "fa fa-home"}) %>
   <% } %>
