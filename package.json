@@ -11,6 +11,11 @@
   "jest": {
     "collectCoverage": true,
     "coverageDirectory": ".coverage",
+    "collectCoverageFrom": [
+      "assets/static/*.js",
+      "!assets/static/jquery.typing*.js",
+      "!<rootDir>/node_modules/"
+    ],
     "verbose": true,
     "moduleNameMapper": {
       "\\.(css|less)$": "<rootDir>/assets/static/__mocks__/styleMock.js",
