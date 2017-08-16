@@ -1,5 +1,6 @@
 const $ = window.jQuery = require("jquery");
 const templatesMock = require("./__mocks__/templatesMock");
+const ajaxMock = require("./__mocks__/ajaxMock");
 
 const unsilenceButtonHTML =
     "<button class='silence-delete'" +
@@ -18,8 +19,8 @@ test("unsilence button icons after success", () => {
     require("bootstrap/js/tooltip.js");
     const unsilence = require("./unsilence");
 
-    const ajaxMock = require("./__mocks__/ajaxSuccessMock").ajaxSuccessMockServer();
-    ajaxMock.start();
+    const ajaxServer = ajaxMock.createServer(200, {"status":"success"});
+    ajaxServer.start();
 
     unsilence.init();
     // icon should be trash-o before clicking
@@ -30,7 +31,7 @@ test("unsilence button icons after success", () => {
     expect($("button > span.fa").hasClass("fa-check-circle")).toBe(true);
     expect($("button > span.fa").hasClass("text-success")).toBe(true);
 
-    ajaxMock.stop();
+    ajaxServer.stop();
 });
 
 test("unsilence button icons after failed delete", () => {
@@ -41,8 +42,12 @@ test("unsilence button icons after failed delete", () => {
     require("bootstrap/js/tooltip.js");
     const unsilence = require("./unsilence");
 
-    const ajaxMock = require("./__mocks__/ajaxErrorMock").ajaxErrorMockServer();
-    ajaxMock.start();
+    const ajaxServer = ajaxMock.createServer(500, {
+        "status": "error",
+        "errorType": "server_error",
+        "error": "end time must not be modified for elapsed silence"
+    });
+    ajaxServer.start();
 
     unsilence.init();
     // icon should be trash-o before clicking
@@ -57,5 +62,5 @@ test("unsilence button icons after failed delete", () => {
     jest.runOnlyPendingTimers();
     expect($("button > span.fa").hasClass("fa-trash-o")).toBe(true);
 
-    ajaxMock.stop();
+    ajaxServer.stop();
 });
