@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`failed sendSilencePOST() 1`] = `
+"<p class=\\"text-danger\\">
+  <i class=\\"fa fa-exclamation-circle\\"></i>
+  request failed
+</p>"
+`;
+
+exports[`successful sendSilencePOST() 1`] = `
+"<p class=\\"text-success\\">
+  <i class=\\"fa fa-check-circle\\"></i>
+  abcdef
+</p>"
+`;
