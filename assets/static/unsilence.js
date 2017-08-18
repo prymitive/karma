@@ -18,7 +18,7 @@ function markInProgress(alertmanagerURI, silenceID) {
     var elem = unsilenceButtonByID(alertmanagerURI, silenceID);
     elem.attr("title", "Silence is being deleted from Alertmanager");
     elem.tooltip("fixTitle");
-    elem.find(".fa").removeClass("fa-times").addClass("fa-refresh fa-spin");
+    elem.find(".fa").removeClass("fa-trash-o").addClass("fa-refresh fa-spin");
 }
 
 function markFailed(alertmanagerURI, silenceID, xhr) {
@@ -26,12 +26,12 @@ function markFailed(alertmanagerURI, silenceID, xhr) {
     var elem = unsilenceButtonByID(alertmanagerURI, silenceID);
     elem.attr("title", err);
     elem.tooltip("fixTitle");
-    elem.find(".fa").removeClass("fa-times fa-refresh fa-spin").addClass("fa-exclamation-circle text-danger");
+    elem.find(".fa").removeClass("fa-trash-o fa-refresh fa-spin").addClass("fa-exclamation-circle text-danger");
 
     // Disable button, wait 5s and reset button to the original state
     elem.data("disabled", "true");
     setTimeout(function() {
-        elem.find(".fa").removeClass("fa-exclamation-circle text-danger").addClass("fa-times");
+        elem.find(".fa").removeClass("fa-exclamation-circle text-danger").addClass("fa-trash-o");
         elem.removeData("disabled");
         elem.attr("title", "Delete this silence");
         elem.tooltip("fixTitle");
@@ -42,7 +42,7 @@ function markSuccess(alertmanagerURI, silenceID) {
     var elem = unsilenceButtonByID(alertmanagerURI, silenceID);
     elem.attr("title", "Silence deleted from Alertmanager");
     elem.tooltip("fixTitle");
-    elem.find(".fa").removeClass("fa-times fa-refresh fa-spin").addClass("fa-check-circle text-success");
+    elem.find(".fa").removeClass("fa-trash-o fa-refresh fa-spin").addClass("fa-check-circle text-success");
     // disable button so it's no longer clickable
     elem.data("disabled", "true");
 }

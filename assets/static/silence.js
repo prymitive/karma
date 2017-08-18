@@ -328,3 +328,4 @@ function setupSilenceForm() {
 }
 
 exports.setupSilenceForm = setupSilenceForm;
+exports.sendSilencePOST = sendSilencePOST;
