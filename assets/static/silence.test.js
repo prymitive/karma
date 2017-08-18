@@ -157,7 +157,7 @@ test("failed sendSilencePOST()", () => {
     templates.init();
 
     const ajaxServer = ajaxMock.createServer(500, {
-        "status": "success",
+        "status": "error",
         "errorType": "server_error",
         "error": "request failed"
     });
