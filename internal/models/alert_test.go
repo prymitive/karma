@@ -72,9 +72,17 @@ func BenchmarkLabelsFingerprint(b *testing.B) {
 
 func BenchmarkLabelsContent(b *testing.B) {
 	alert := models.Alert{
-		Annotations: map[string]string{
-			"foo": "bar",
-			"abc": "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+		Annotations: models.Annotations{
+			models.Annotation{
+				Name:    "foo",
+				Value:   "bar",
+				Visible: true,
+			},
+			models.Annotation{
+				Name:    "abc",
+				Value:   "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
+				Visible: true,
+			},
 		},
 		Labels: map[string]string{
 			"foo1":        "bar1",

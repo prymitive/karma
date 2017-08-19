@@ -355,20 +355,32 @@ var tests = []filterTest{
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{Annotations: map[string]string{"key": "abc"}},
-		IsMatch:    true,
+		Alert: models.Alert{
+			Annotations: models.Annotations{
+				models.Annotation{Name: "key", Value: "abc"},
+			},
+		},
+		IsMatch: true,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{Annotations: map[string]string{"key": "ccc abc"}},
-		IsMatch:    true,
+		Alert: models.Alert{
+			Annotations: models.Annotations{
+				models.Annotation{Name: "key", Value: "ccc abc"},
+			},
+		},
+		IsMatch: true,
 	},
 	filterTest{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{Annotations: map[string]string{"abc": "zzz"}},
-		IsMatch:    false,
+		Alert: models.Alert{
+			Annotations: models.Annotations{
+				models.Annotation{Name: "abc", Value: "zzz"},
+			},
+		},
+		IsMatch: false,
 	},
 	filterTest{
 		Expression: "abc",

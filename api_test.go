@@ -29,8 +29,9 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
-				Annotations: map[string]string{
-					"alert": "Memory usage exceeding threshold",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "alert", Value: "Memory usage exceeding threshold"},
+					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
 				},
 				Labels: map[string]string{
 					"alertname": "Memory_Usage_Too_High",
@@ -48,9 +49,6 @@ var groupTests = []groupTest{
 					},
 				},
 				Receiver: "by-name",
-				Links: map[string]string{
-					"dashboard": "http://localhost/dashboard.html",
-				},
 			},
 		},
 		id:   "099c5ca6d1c92f615b13056b935d0c8dee70f18c",
@@ -69,8 +67,9 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
-				Annotations: map[string]string{
-					"alert": "Memory usage exceeding threshold",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "alert", Value: "Memory usage exceeding threshold"},
+					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -85,9 +84,6 @@ var groupTests = []groupTest{
 					"cluster":   "prod",
 					"instance":  "server2",
 					"job":       "node_exporter",
-				},
-				Links: map[string]string{
-					"dashboard": "http://localhost/dashboard.html",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -109,8 +105,8 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -126,13 +122,12 @@ var groupTests = []groupTest{
 					"instance":  "server3",
 					"job":       "node_ping",
 				},
-				Links:    map[string]string{},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -148,13 +143,12 @@ var groupTests = []groupTest{
 					"instance":  "server4",
 					"job":       "node_ping",
 				},
-				Links:    map[string]string{},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -170,7 +164,6 @@ var groupTests = []groupTest{
 					"instance":  "server5",
 					"job":       "node_ping",
 				},
-				Links:    map[string]string{},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
@@ -191,8 +184,8 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -214,13 +207,12 @@ var groupTests = []groupTest{
 					"instance":  "server6",
 					"job":       "node_ping",
 				},
-				Links:    map[string]string{},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -245,13 +237,12 @@ var groupTests = []groupTest{
 					"instance":  "server7",
 					"job":       "node_ping",
 				},
-				Links:    map[string]string{},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -272,7 +263,6 @@ var groupTests = []groupTest{
 					"instance":  "server8",
 					"job":       "node_ping",
 				},
-				Links:    map[string]string{},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
@@ -292,8 +282,9 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
+					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
 				Labels: map[string]string{
 					"alertname": "Host_Down",
@@ -311,13 +302,10 @@ var groupTests = []groupTest{
 					},
 				},
 				Receiver: "by-name",
-				Links: map[string]string{
-					"url": "http://localhost/example.html",
-				},
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Labels: map[string]string{
 					"alertname": "Host_Down",
@@ -335,11 +323,10 @@ var groupTests = []groupTest{
 					},
 				},
 				Receiver: "by-name",
-				Links:    map[string]string{},
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Labels: map[string]string{
 					"alertname": "Host_Down",
@@ -357,11 +344,10 @@ var groupTests = []groupTest{
 					},
 				},
 				Receiver: "by-name",
-				Links:    map[string]string{},
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Labels: map[string]string{
 					"alertname": "Host_Down",
@@ -379,11 +365,10 @@ var groupTests = []groupTest{
 					},
 				},
 				Receiver: "by-name",
-				Links:    map[string]string{},
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Labels: map[string]string{
 					"alertname": "Host_Down",
@@ -401,11 +386,10 @@ var groupTests = []groupTest{
 					},
 				},
 				Receiver: "by-name",
-				Links:    map[string]string{},
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Labels: map[string]string{
 					"alertname": "Host_Down",
@@ -428,11 +412,10 @@ var groupTests = []groupTest{
 					},
 				},
 				Receiver: "by-name",
-				Links:    map[string]string{},
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Labels: map[string]string{
 					"alertname": "Host_Down",
@@ -459,11 +442,10 @@ var groupTests = []groupTest{
 					},
 				},
 				Receiver: "by-name",
-				Links:    map[string]string{},
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Labels: map[string]string{
 					"alertname": "Host_Down",
@@ -486,7 +468,6 @@ var groupTests = []groupTest{
 					},
 				},
 				Receiver: "by-name",
-				Links:    map[string]string{},
 			},
 		},
 		id:   "58c6a3467cebc53abe68ecbe8643ce478c5a1573",
@@ -505,8 +486,9 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
-				Annotations: map[string]string{
-					"alert": "Less than 10% disk space is free",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "alert", Value: "Less than 10% disk space is free"},
+					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -521,9 +503,6 @@ var groupTests = []groupTest{
 					"cluster":   "staging",
 					"instance":  "server5",
 					"job":       "node_exporter",
-				},
-				Links: map[string]string{
-					"dashboard": "http://localhost/dashboard.html",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -545,8 +524,9 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
+					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -562,15 +542,12 @@ var groupTests = []groupTest{
 					"instance":  "server1",
 					"job":       "node_ping",
 				},
-				Links: map[string]string{
-					"url": "http://localhost/example.html",
-				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -586,7 +563,6 @@ var groupTests = []groupTest{
 					"instance":  "server2",
 					"job":       "node_ping",
 				},
-				Links:    map[string]string{},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
@@ -606,9 +582,10 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
-					"help":    "Example help annotation",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "help", Value: "Example help annotation"},
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
+					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -629,15 +606,12 @@ var groupTests = []groupTest{
 					"instance":  "web1",
 					"job":       "node_exporter",
 				},
-				Links: map[string]string{
-					"url": "http://localhost/example.html",
-				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-name",
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -653,7 +627,6 @@ var groupTests = []groupTest{
 					"instance":  "web2",
 					"job":       "node_exporter",
 				},
-				Links:    map[string]string{},
 				State:    models.AlertStateActive,
 				Receiver: "by-name",
 			},
@@ -673,8 +646,9 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
-				Annotations: map[string]string{
-					"alert": "Less than 10% disk space is free",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "alert", Value: "Less than 10% disk space is free"},
+					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -689,9 +663,6 @@ var groupTests = []groupTest{
 					"cluster":   "staging",
 					"instance":  "server5",
 					"job":       "node_exporter",
-				},
-				Links: map[string]string{
-					"dashboard": "http://localhost/dashboard.html",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-name",
@@ -713,9 +684,10 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
-				Annotations: map[string]string{
-					"help":    "Example help annotation",
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "help", Value: "Example help annotation"},
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
+					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -736,15 +708,12 @@ var groupTests = []groupTest{
 					"instance":  "web1",
 					"job":       "node_exporter",
 				},
-				Links: map[string]string{
-					"url": "http://localhost/example.html",
-				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
-				Annotations: map[string]string{
-					"summary": "Example summary",
+				Annotations: models.Annotations{
+					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -760,7 +729,6 @@ var groupTests = []groupTest{
 					"instance":  "web2",
 					"job":       "node_exporter",
 				},
-				Links:    map[string]string{},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
@@ -874,10 +842,6 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 	if !reflect.DeepEqual(gotAlert.Labels, expectedAlert.Labels) {
 		t.Errorf("[%s] Labels mismatch on alert receiver='%s', expected labels=%v but got %v",
 			version, expectedAlert.Receiver, expectedAlert.Labels, gotAlert.Labels)
-	}
-	if !reflect.DeepEqual(gotAlert.Links, expectedAlert.Links) {
-		t.Errorf("[%s] Links mismatch on alert receiver='%s' labels=%v expected %v but got %v",
-			version, expectedAlert.Receiver, expectedAlert.Labels, expectedAlert.Links, gotAlert.Links)
 	}
 	if len(gotAlert.Alertmanager) != len(expectedAlert.Alertmanager) {
 		t.Errorf("[%s] Expected %d alertmanager instances but got %d on alert receiver='%s' labels=%v",
