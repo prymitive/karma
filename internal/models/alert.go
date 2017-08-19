@@ -30,7 +30,7 @@ var AlertStateList = []string{
 //   it's pulled out of annotation map and returned under links field,
 //   unsee UI used this to show links differently than other annotations
 type Alert struct {
-	Annotations map[string]string `json:"annotations"`
+	Annotations Annotations       `json:"annotations"`
 	Labels      map[string]string `json:"labels"`
 	StartsAt    time.Time         `json:"startsAt"`
 	EndsAt      time.Time         `json:"endsAt"`
@@ -44,7 +44,6 @@ type Alert struct {
 	// unsee fields
 	Alertmanager []AlertmanagerInstance `json:"alertmanager"`
 	Receiver     string                 `json:"receiver"`
-	Links        map[string]string      `json:"links"`
 	// fingerprints are precomputed for speed
 	labelsFP  string `hash:"-"`
 	contentFP string `hash:"-"`
