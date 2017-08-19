@@ -27,28 +27,32 @@
 </script>
 
 <script type="application/json" id="alert-group-annotations">
-  <% _.each(sortMapByKey(alert.annotations), function(annotation) { %>
-    <div class="well well-sm annotation-well">
-      <i class="fa fa-info-circle text-muted" title="<%- annotation.key %>" data-toggle="tooltip" data-placement="top"/>
-      <% if (annotation.value) { %>
-        <%= linkify(_.escape(annotation.value)) %>
-      <% } else { %>
-        <span class="text-muted">
-          [ missing annotation value ]
-        </span>
-      <% } %>
-    </div>
+  <% _.each(alert.annotations, function(annotation) { %>
+    <% if (annotation.isLink === false) { %>
+      <div class="well well-sm annotation-well">
+        <i class="fa fa-info-circle text-muted" title="<%- annotation.name %>" data-toggle="tooltip" data-placement="top"/>
+        <% if (annotation.value) { %>
+          <%= linkify(_.escape(annotation.value)) %>
+        <% } else { %>
+          <span class="text-muted">
+            [ missing annotation value ]
+          </span>
+        <% } %>
+      </div>
+    <% } %>
   <% }) %>
-  <% _.each(alert.links, function(url, text) { %>
-    <a class="label label-list label-default"
-       href="<%= url %>"
-       target="_blank"
-       title="<%= url %>"
-       data-toggle="tooltip"
-       data-placement="top">
-      <i class="fa fa-external-link"/>
-      <%- text %>
-    </a>
+  <% _.each(alert.annotations, function(annotation) { %>
+    <% if (annotation.isLink) { %>
+      <a class="label label-list label-default"
+         href="<%= annotation.value %>"
+         target="_blank"
+         title="<%= annotation.value %>"
+         data-toggle="tooltip"
+         data-placement="top">
+        <i class="fa fa-external-link"/>
+        <%- annotation.name %>
+      </a>
+    <% } %>
   <% }) %>
 </script>
 
