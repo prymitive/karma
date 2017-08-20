@@ -36,8 +36,9 @@ var templates = {},
         silenceFormFatal: "#silence-form-fatal",
         silenceFormLoading: "#silence-form-loading",
 
-        // label button
+        // alert partials
         buttonLabel: "#label-button-filter",
+        alertAnnotation: "#alert-annotation",
 
         // alert group
         alertGroup: "#alert-group",
