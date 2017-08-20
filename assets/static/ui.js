@@ -5,6 +5,7 @@ const $ = require("jquery");
 const alerts = require("./alerts");
 const autocomplete = require("./autocomplete");
 const filters = require("./filters");
+const grid = require("./grid");
 const summary = require("./summary");
 const templates = require("./templates");
 const unsee = require("./unsee");
@@ -93,6 +94,7 @@ function setupGroupAnnotationToggles(groupElem) {
                 $(annotation).removeClass("hidden");
             });
         }
+        grid.redraw();
     });
 }
 
