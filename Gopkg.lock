@@ -16,14 +16,14 @@
 [[projects]]
   name = "github.com/blang/semver"
   packages = ["."]
-  revision = "b38d23b8782a487059e8fc8773e9a5b228a77cb6"
-  version = "v3.5.0"
+  revision = "2ee87856327ba09384cabd113bc6b5d174e9ec0f"
+  version = "v3.5.1"
 
 [[projects]]
   name = "github.com/certifi/gocertifi"
   packages = ["."]
-  revision = "a9c833d2837d3b16888d55d5aafa9ffe9afb22b0"
-  version = "2017.04.17"
+  revision = "3fd9e1adb12b72d2f3f82191d49be9b93c69f67c"
+  version = "2017.07.27"
 
 [[projects]]
   branch = "master"
@@ -47,7 +47,7 @@
   branch = "master"
   name = "github.com/gin-contrib/gzip"
   packages = ["."]
-  revision = "ff223ab9f8e3e69d4eb333c90966e057c5a97873"
+  revision = "ceb0f0f8dc0ad37b1e58063b6e4290835854da83"
 
 [[projects]]
   branch = "master"
@@ -59,13 +59,13 @@
   branch = "master"
   name = "github.com/gin-contrib/static"
   packages = ["."]
-  revision = "986b610925a822771d6c475a6246ffa913085c7b"
+  revision = "a341909c87db9c7fd2e7adbf6881f440977af06c"
 
 [[projects]]
   branch = "master"
   name = "github.com/gin-gonic/contrib"
   packages = ["sentry"]
-  revision = "d4fc5a96cc0d29cb0e862bb1312dd6f4fedfcaee"
+  revision = "0f937ce6d016f44b2f5b1f03787e055977e7c0b8"
 
 [[projects]]
   name = "github.com/gin-gonic/gin"
@@ -77,7 +77,7 @@
   branch = "master"
   name = "github.com/golang/protobuf"
   packages = ["proto"]
-  revision = "0a4f71a498b7c4812f64969510bcb4eca251e33a"
+  revision = "17ce1425424ab154092bbb43af630bd647f3bb0d"
 
 [[projects]]
   branch = "master"
@@ -107,7 +107,7 @@
   branch = "master"
   name = "github.com/mcuadros/go-gin-prometheus"
   packages = ["."]
-  revision = "62e9326a4be5a839ea6d5093c34728125f58d9db"
+  revision = "56be4856691683575a5906cfa770e658aae2ae0a"
 
 [[projects]]
   name = "github.com/patrickmn/go-cache"
@@ -117,7 +117,7 @@
 
 [[projects]]
   name = "github.com/prometheus/client_golang"
-  packages = ["prometheus"]
+  packages = ["prometheus","prometheus/promhttp"]
   revision = "c5b7fccd204277076155f10851dad72b76a49317"
   version = "v0.8.0"
 
@@ -131,7 +131,7 @@
   branch = "master"
   name = "github.com/prometheus/common"
   packages = ["expfmt","internal/bitbucket.org/ww/goautoneg","model"]
-  revision = "3e6a7635bac6573d43f49f97b47eb9bda195dba8"
+  revision = "bc8b88226a1210b016e9993b1d75f858c9c8f778"
 
 [[projects]]
   branch = "master"
@@ -142,26 +142,32 @@
 [[projects]]
   name = "github.com/sirupsen/logrus"
   packages = ["."]
-  revision = "a3f95b5c423586578a4e099b11a46c2479628cac"
-  version = "1.0.2"
+  revision = "f006c2ac4710855cf0f916dd6b77acf6b048dc6e"
+  version = "v1.0.3"
 
 [[projects]]
   branch = "master"
   name = "github.com/ugorji/go"
   packages = ["codec"]
-  revision = "5efa3251c7f7d05e5d9704a69a984ec9f1386a40"
+  revision = "8c0409fcbb70099c748d71f714529204975f6c3f"
+
+[[projects]]
+  branch = "master"
+  name = "golang.org/x/crypto"
+  packages = ["ssh/terminal"]
+  revision = "81e90905daefcd6fd217b62423c0908922eadb30"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/sys"
-  packages = ["unix"]
-  revision = "4cd6d1a821c7175768725b55ca82f14683a29ea4"
+  packages = ["unix","windows"]
+  revision = "7ddbeae9ae08c6a06a59597f0c9edbc5ff2444ce"
 
 [[projects]]
   name = "gopkg.in/go-playground/validator.v8"
   packages = ["."]
-  revision = "5f57d2222ad794d0dffb07e664ea05e2ee07d60c"
-  version = "v8.18.1"
+  revision = "5f1438d3fca68893a817e4a66806cea46a9e4ebf"
+  version = "v8.18.2"
 
 [[projects]]
   branch = "v1"
@@ -173,7 +179,7 @@
   branch = "v2"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
-  revision = "3b4ad1db5b2a649883ff3782f5f9f6fb52be71af"
+  revision = "eb3733d160e74a9c7e442f435eb3bea458e1d19f"
 
 [solve-meta]
   analyzer-name = "dep"
