@@ -24,22 +24,23 @@ func (mvd *spaceSeparatedList) Decode(value string) error {
 }
 
 type configEnvs struct {
-	AlertmanagerTimeout time.Duration      `envconfig:"ALERTMANAGER_TIMEOUT" default:"40s" help:"Timeout for all request send to Alertmanager"`
-	AlertmanagerTTL     time.Duration      `envconfig:"ALERTMANAGER_TTL" default:"1m" help:"TTL for Alertmanager alerts and silences"`
-	AlertmanagerURIs    spaceSeparatedList `envconfig:"ALERTMANAGER_URIS" required:"true" help:"List of Alertmanager URIs (name:uri)"`
-	AnnotationsHidden   spaceSeparatedList `envconfig:"ANNOTATIONS_HIDDEN" help:"List of annotations that are hidden by default"`
-	AnnotationsVisible  spaceSeparatedList `envconfig:"ANNOTATIONS_VISIBLE" help:"List of annotations that are visible by default"`
-	ColorLabelsStatic   spaceSeparatedList `envconfig:"COLOR_LABELS_STATIC" help:"List of label names that should have the same (but distinct) color"`
-	ColorLabelsUnique   spaceSeparatedList `envconfig:"COLOR_LABELS_UNIQUE" help:"List of label names that should have unique color"`
-	Debug               bool               `envconfig:"DEBUG" default:"false" help:"Enable debug mode"`
-	FilterDefault       string             `envconfig:"FILTER_DEFAULT" help:"Default filter string"`
-	JiraRegexp          spaceSeparatedList `envconfig:"JIRA_REGEX" help:"List of JIRA regex rules"`
-	Port                int                `envconfig:"PORT" default:"8080" help:"HTTP port to listen on"`
-	SentryDSN           string             `envconfig:"SENTRY_DSN" help:"Sentry DSN for Go exceptions"`
-	SentryPublicDSN     string             `envconfig:"SENTRY_PUBLIC_DSN" help:"Sentry DSN for javascript exceptions"`
-	StripLabels         spaceSeparatedList `envconfig:"STRIP_LABELS" help:"List of labels to ignore"`
-	KeepLabels          spaceSeparatedList `envconfig:"KEEP_LABELS" help:"List of labels to keep, all other labels will be stripped"`
-	WebPrefix           string             `envconfig:"WEB_PREFIX" default:"/" help:"URL prefix"`
+	AlertmanagerTimeout      time.Duration      `envconfig:"ALERTMANAGER_TIMEOUT" default:"40s" help:"Timeout for all request send to Alertmanager"`
+	AlertmanagerTTL          time.Duration      `envconfig:"ALERTMANAGER_TTL" default:"1m" help:"TTL for Alertmanager alerts and silences"`
+	AlertmanagerURIs         spaceSeparatedList `envconfig:"ALERTMANAGER_URIS" required:"true" help:"List of Alertmanager URIs (name:uri)"`
+	AnnotationsHidden        spaceSeparatedList `envconfig:"ANNOTATIONS_HIDDEN" help:"List of annotations that are hidden by default"`
+	AnnotationsDefaultHidden bool               `envconfig:"ANNOTATIONS_DEFAULT_HIDDEN" default:"false" help:"Hide all annotations by default unless listed in ANNOTATIONS_VISIBLE"`
+	AnnotationsVisible       spaceSeparatedList `envconfig:"ANNOTATIONS_VISIBLE" help:"List of annotations that are visible by default"`
+	ColorLabelsStatic        spaceSeparatedList `envconfig:"COLOR_LABELS_STATIC" help:"List of label names that should have the same (but distinct) color"`
+	ColorLabelsUnique        spaceSeparatedList `envconfig:"COLOR_LABELS_UNIQUE" help:"List of label names that should have unique color"`
+	Debug                    bool               `envconfig:"DEBUG" default:"false" help:"Enable debug mode"`
+	FilterDefault            string             `envconfig:"FILTER_DEFAULT" help:"Default filter string"`
+	JiraRegexp               spaceSeparatedList `envconfig:"JIRA_REGEX" help:"List of JIRA regex rules"`
+	Port                     int                `envconfig:"PORT" default:"8080" help:"HTTP port to listen on"`
+	SentryDSN                string             `envconfig:"SENTRY_DSN" help:"Sentry DSN for Go exceptions"`
+	SentryPublicDSN          string             `envconfig:"SENTRY_PUBLIC_DSN" help:"Sentry DSN for javascript exceptions"`
+	StripLabels              spaceSeparatedList `envconfig:"STRIP_LABELS" help:"List of labels to ignore"`
+	KeepLabels               spaceSeparatedList `envconfig:"KEEP_LABELS" help:"List of labels to keep, all other labels will be stripped"`
+	WebPrefix                string             `envconfig:"WEB_PREFIX" default:"/" help:"URL prefix"`
 }
 
 // Config exposes all options required to run

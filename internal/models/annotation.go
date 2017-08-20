@@ -4,6 +4,7 @@ import (
 	"net/url"
 	"sort"
 
+	"github.com/cloudflare/unsee/internal/config"
 	"github.com/cloudflare/unsee/internal/slices"
 )
 
@@ -34,11 +35,11 @@ func (a Annotations) Less(i, j int) bool {
 // instances, it takes care of setting proper value for Visible attribute
 func AnnotationsFromMap(m map[string]string) Annotations {
 	annotations := Annotations{}
-	for key, value := range m {
+	for name, value := range m {
 		a := Annotation{
-			Name:    key,
+			Name:    name,
 			Value:   value,
-			Visible: true, // FIXME needs implementing
+			Visible: isVisible(name),
 			IsLink:  isLink(value),
 		}
 		annotations = append(annotations, a)
@@ -63,4 +64,21 @@ func isLink(s string) bool {
 		return true
 	}
 	return false
+}
+
+func isVisible(name string) bool {
+	if slices.StringInSlice(config.Config.AnnotationsVisible, name) {
+		// annotation was explicitly marked as visible
+		return true
+	}
+	if slices.StringInSlice(config.Config.AnnotationsHidden, name) {
+		// annotation was explicitly marked as hidden
+		return false
+	}
+	if config.Config.AnnotationsDefaultHidden {
+		// user specified that default is to hide anything without explicit rules
+		return false
+	}
+	// default to show everything
+	return true
 }
