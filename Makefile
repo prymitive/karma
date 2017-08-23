@@ -71,7 +71,7 @@ run: $(NAME)
 	./$(NAME)
 
 .PHONY: docker-image
-docker-image: bindata_assetfs.go
+docker-image:
 	docker build --build-arg VERSION=$(VERSION) -t $(NAME):$(VERSION) .
 
 .PHONY: run-docker
