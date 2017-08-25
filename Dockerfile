@@ -1,4 +1,4 @@
-FROM golang:1.8.3-alpine3.6 as unsee-builder
+FROM golang:1.9.0-alpine3.6 as unsee-builder
 COPY . /go/src/github.com/cloudflare/unsee
 
 ARG VERSION
