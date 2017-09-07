@@ -506,4 +506,6 @@ li.history-menu > a.history-menu-item {
   padding-right: 4px;
   padding-top: 2px;
   padding-bottom: 6px;
+  max-width: 600px;
+  overflow: hidden;
 }
