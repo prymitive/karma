@@ -33,6 +33,7 @@ AlertGroup.prototype.Added = function() {
     var elem = $("#" + this.id);
     ui.setupGroupTooltips(elem);
     ui.setupGroupLinkHover(elem);
+    ui.setupGroupAnnotationToggles(elem);
 };
 
 AlertGroup.prototype.Update = function() {

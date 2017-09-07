@@ -172,8 +172,6 @@ func (am *Alertmanager) pullAlerts(version string) error {
 				},
 			}
 
-			alert.Annotations, alert.Links = transform.DetectLinks(alert.Annotations)
-
 			transform.ColorLabel(colors, "@receiver", alert.Receiver)
 			for k, v := range alert.Labels {
 				transform.ColorLabel(colors, k, v)

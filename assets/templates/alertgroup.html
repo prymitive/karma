@@ -27,28 +27,32 @@
 </script>
 
 <script type="application/json" id="alert-group-annotations">
-  <% _.each(sortMapByKey(alert.annotations), function(annotation) { %>
-    <div class="well well-sm annotation-well">
-      <i class="fa fa-info-circle text-muted" title="<%- annotation.key %>" data-toggle="tooltip" data-placement="top"/>
-      <% if (annotation.value) { %>
-        <%= linkify(_.escape(annotation.value)) %>
-      <% } else { %>
-        <span class="text-muted">
-          [ missing annotation value ]
-        </span>
-      <% } %>
-    </div>
+  <% var hiddenCount = 0 %>
+  <% _.each(alert.annotations, function(annotation) { %>
+    <% if (annotation.isLink === false) { %>
+      <% if (annotation.visible === false) { hiddenCount++ } %>
+      <%= renderTemplate('alertAnnotation', {annotation: annotation}) %>
+    <% } %>
   <% }) %>
-  <% _.each(alert.links, function(url, text) { %>
-    <a class="label label-list label-default"
-       href="<%= url %>"
-       target="_blank"
-       title="<%= url %>"
-       data-toggle="tooltip"
-       data-placement="top">
-      <i class="fa fa-external-link"/>
-      <%- text %>
-    </a>
+  <% if (hiddenCount) { %>
+    <span class="label label-default label-list cursor-pointer"
+          data-toggle="toggle-hidden-annotation"
+          type="button">
+        <i class="fa fa-search-plus" title="Toggle hidden annotations" data-toggle="tooltip" data-placement="top" />
+    </span>
+  <% } %>
+  <% _.each(alert.annotations, function(annotation) { %>
+    <% if (annotation.isLink) { %>
+      <a class="label label-list label-default"
+         href="<%= annotation.value %>"
+         target="_blank"
+         title="<%= annotation.value %>"
+         data-toggle="tooltip"
+         data-placement="top">
+        <i class="fa fa-external-link"/>
+        <%- annotation.name %>
+      </a>
+    <% } %>
   <% }) %>
 </script>
 
@@ -307,4 +311,15 @@
         data-target="#labelModal">
     <%- label.text %>
   </<%= elem %>>
+</script>
+
+<script type="application/json" id="alert-annotation">
+<% var cls = "" %>
+<% if (annotation.visible === false) { %>
+  <% cls = "hidden hidden-annotation" %>
+<% } %>
+<div class="well well-sm annotation-well <%- cls %>">
+  <i class="fa fa-info-circle text-muted" title="<%- annotation.name %>" data-toggle="tooltip" data-placement="top"/>
+  <%= linkify(_.escape(annotation.value)) %>
+</div>
 </script>

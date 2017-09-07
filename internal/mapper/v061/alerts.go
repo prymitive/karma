@@ -101,7 +101,7 @@ func (m AlertMapper) GetAlerts(uri string, timeout time.Duration) ([]models.Aler
 				}
 				a := models.Alert{
 					Receiver:     rcv.Name,
-					Annotations:  a.Annotations,
+					Annotations:  models.AnnotationsFromMap(a.Annotations),
 					Labels:       a.Labels,
 					StartsAt:     a.StartsAt,
 					EndsAt:       a.EndsAt,

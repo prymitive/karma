@@ -163,8 +163,14 @@ func TestAlerts(t *testing.T) {
 		}
 		for _, ag := range ur.AlertGroups {
 			for _, a := range ag.Alerts {
-				if len(a.Links) != 1 {
-					t.Errorf("Invalid number of links, got %d, expected 1, %v", len(a.Links), a)
+				linkCount := 0
+				for _, annotation := range a.Annotations {
+					if annotation.IsLink {
+						linkCount++
+					}
+				}
+				if linkCount != 1 {
+					t.Errorf("Invalid number of links, got %d, expected 1, %v", linkCount, a)
 				}
 				if len(a.Alertmanager) == 0 {
 					t.Errorf("Alertmanager instance list is empty, %v", a)

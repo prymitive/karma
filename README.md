@@ -191,6 +191,62 @@ This option can also be set using `-alertmanager.uris` flag. Example:
 
 This variable is required and there is no default value.
 
+#### ANNOTATIONS_DEFAULT_HIDDEN
+
+Enabling this option will hide all annotations in the UI, except for those
+that are listed in the `ANNOTATIONS_VISIBLE` option.
+
+Examples:
+
+    ANNOTATIONS_DEFAULT_HIDDEN=true
+    ANNOTATIONS_DEFAULT_HIDDEN=false
+
+This option can also be set using `-annotations.default.hidden` flag. Example:
+
+    $ unsee -annotations.default.hidden
+
+Default is `false`, which means that all annotations are visible.
+
+#### ANNOTATIONS_HIDDEN
+
+List of annotation names that should be hidden in the UI. Hidden annotations
+can still be accessed if needed by clicking on a zoom button that will appear
+if there are any hidden annotations.
+
+Examples:
+
+    ANNOTATIONS_HIDDEN=summary
+    ANNOTATIONS_HIDDEN="summary owner"
+
+This option can also be set using `-annotations.hidden` flag. Example:
+
+    $ unsee -annotations.hidden "summary owner"
+
+This variable is optional and default is not set (all annotations are visible),
+unless user enables `ANNOTATIONS_DEFAULT_HIDDEN` option.
+
+#### ANNOTATIONS_VISIBLE
+
+List of annotation names that should be visible in the UI. This option is only
+useful when `ANNOTATIONS_DEFAULT_HIDDEN` is set.
+With `ANNOTATIONS_DEFAULT_HIDDEN` all annotations are hidden by default unless
+they are present in the `ANNOTATIONS_VISIBLE` option.
+If `ANNOTATIONS_DEFAULT_HIDDEN` is not enabled this option is no-op.
+
+Examples:
+
+    ANNOTATIONS_VISIBLE=summary
+    ANNOTATIONS_VISIBLE="summary owner"
+
+This option can also be set using `-annotations.visible` flag. Example:
+
+    $ unsee -annotations.visible "summary owner"
+
+This variable is optional and default is not set.
+If `ANNOTATIONS_HIDDEN` is enabled then all annotations are hidden by default.
+If `ANNOTATIONS_HIDDEN` is not enabled then all annotations are visible by
+default.
+
 #### DEBUG
 
 Will enable [gin](https://github.com/gin-gonic/gin) debug mode. This will
