@@ -1,0 +1,765 @@
+{
+    "data": [
+        {
+            "blocks": [
+                {
+                    "alerts": [
+                        {
+                            "annotations": {
+                                "alert": "Less than 10% disk space is free",
+                                "dashboard": "http://localhost/dashboard.html"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "f87343c11c74a3f4",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Free_Disk_Space_Too_Low",
+                                "cluster": "staging",
+                                "instance": "server5",
+                                "job": "node_exporter"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        }
+                    ],
+                    "routeOpts": {
+                        "groupBy": [
+                            "alertname"
+                        ],
+                        "groupInterval": 35000000000,
+                        "groupWait": 15000000000,
+                        "receiver": "by-name",
+                        "repeatInterval": 3596400000000000
+                    }
+                }
+            ],
+            "groupKey": "{}/{alertname=~\"^(?:.*)$\"}:{alertname=\"Free_Disk_Space_Too_Low\"}",
+            "labels": {
+                "alertname": "Free_Disk_Space_Too_Low"
+            }
+        },
+        {
+            "blocks": [
+                {
+                    "alerts": [
+                        {
+                            "annotations": {
+                                "help": "Example help annotation",
+                                "summary": "Example summary",
+                                "url": "http://localhost/example.html"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "54c2f185e49cfccb",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "HTTP_Probe_Failed",
+                                "cluster": "dev",
+                                "instance": "web1",
+                                "job": "node_exporter"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": null,
+                                "silencedBy": [
+                                    "7ff2f1c7-a5d6-4a6c-a110-e68cc7b94c99"
+                                ],
+                                "state": "suppressed"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "5cb0dd95e7f3d9c0",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "HTTP_Probe_Failed",
+                                "cluster": "dev",
+                                "instance": "web2",
+                                "job": "node_exporter"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        }
+                    ],
+                    "routeOpts": {
+                        "groupBy": [
+                            "alertname"
+                        ],
+                        "groupInterval": 35000000000,
+                        "groupWait": 15000000000,
+                        "receiver": "by-name",
+                        "repeatInterval": 3596400000000000
+                    }
+                }
+            ],
+            "groupKey": "{}/{alertname=~\"^(?:.*)$\"}:{alertname=\"HTTP_Probe_Failed\"}",
+            "labels": {
+                "alertname": "HTTP_Probe_Failed"
+            }
+        },
+        {
+            "blocks": [
+                {
+                    "alerts": [
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "44497481566cd3c7",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "dev",
+                                "instance": "server7",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": null,
+                                "silencedBy": [
+                                    "6fcaeee5-ed55-4d8b-8dfb-e21c01396c1a",
+                                    "bf098baf-fbcb-457e-afc8-f08aa7116161"
+                                ],
+                                "state": "suppressed"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "af9d8f2f0ccb3970",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "dev",
+                                "instance": "server8",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": null,
+                                "silencedBy": [
+                                    "6fcaeee5-ed55-4d8b-8dfb-e21c01396c1a"
+                                ],
+                                "state": "suppressed"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary",
+                                "url": "http://localhost/example.html"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "d0aee2649e71388b",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "prod",
+                                "instance": "server1",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "3bdb8b68bdce2ae0",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "prod",
+                                "instance": "server2",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "24e4121619386f95",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "staging",
+                                "instance": "server3",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "d9067fcc9686d942",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "staging",
+                                "instance": "server4",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "5f1306dab6671183",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "staging",
+                                "instance": "server5",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "0967807e4073b606",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "dev",
+                                "instance": "server6",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": null,
+                                "silencedBy": [
+                                    "6fcaeee5-ed55-4d8b-8dfb-e21c01396c1a"
+                                ],
+                                "state": "suppressed"
+                            }
+                        }
+                    ],
+                    "routeOpts": {
+                        "groupBy": [
+                            "alertname"
+                        ],
+                        "groupInterval": 35000000000,
+                        "groupWait": 15000000000,
+                        "receiver": "by-name",
+                        "repeatInterval": 3596400000000000
+                    }
+                }
+            ],
+            "groupKey": "{}/{alertname=~\"^(?:.*)$\"}:{alertname=\"Host_Down\"}",
+            "labels": {
+                "alertname": "Host_Down"
+            }
+        },
+        {
+            "blocks": [
+                {
+                    "alerts": [
+                        {
+                            "annotations": {
+                                "alert": "Memory usage exceeding threshold",
+                                "dashboard": "http://localhost/dashboard.html"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "7d0b114ebf24f857",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Memory_Usage_Too_High",
+                                "cluster": "prod",
+                                "instance": "server2",
+                                "job": "node_exporter"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        }
+                    ],
+                    "routeOpts": {
+                        "groupBy": [
+                            "alertname"
+                        ],
+                        "groupInterval": 35000000000,
+                        "groupWait": 15000000000,
+                        "receiver": "by-name",
+                        "repeatInterval": 3596400000000000
+                    }
+                }
+            ],
+            "groupKey": "{}/{alertname=~\"^(?:.*)$\"}:{alertname=\"Memory_Usage_Too_High\"}",
+            "labels": {
+                "alertname": "Memory_Usage_Too_High"
+            }
+        },
+        {
+            "blocks": [
+                {
+                    "alerts": [
+                        {
+                            "annotations": {
+                                "alert": "Less than 10% disk space is free",
+                                "dashboard": "http://localhost/dashboard.html"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "f87343c11c74a3f4",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Free_Disk_Space_Too_Low",
+                                "cluster": "staging",
+                                "instance": "server5",
+                                "job": "node_exporter"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        }
+                    ],
+                    "routeOpts": {
+                        "groupBy": [
+                            "alertname",
+                            "cluster",
+                            "service"
+                        ],
+                        "groupInterval": 35000000000,
+                        "groupWait": 15000000000,
+                        "receiver": "by-cluster-service",
+                        "repeatInterval": 3596400000000000
+                    }
+                }
+            ],
+            "groupKey": "{}/{alertname=~\"^(?:.*)$\"}:{alertname=\"Free_Disk_Space_Too_Low\", cluster=\"staging\"}",
+            "labels": {
+                "alertname": "Free_Disk_Space_Too_Low",
+                "cluster": "staging"
+            }
+        },
+        {
+            "blocks": [
+                {
+                    "alerts": [
+                        {
+                            "annotations": {
+                                "help": "Example help annotation",
+                                "summary": "Example summary",
+                                "url": "http://localhost/example.html"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "54c2f185e49cfccb",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "HTTP_Probe_Failed",
+                                "cluster": "dev",
+                                "instance": "web1",
+                                "job": "node_exporter"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": null,
+                                "silencedBy": [
+                                    "7ff2f1c7-a5d6-4a6c-a110-e68cc7b94c99"
+                                ],
+                                "state": "suppressed"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "5cb0dd95e7f3d9c0",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "HTTP_Probe_Failed",
+                                "cluster": "dev",
+                                "instance": "web2",
+                                "job": "node_exporter"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        }
+                    ],
+                    "routeOpts": {
+                        "groupBy": [
+                            "alertname",
+                            "cluster",
+                            "service"
+                        ],
+                        "groupInterval": 35000000000,
+                        "groupWait": 15000000000,
+                        "receiver": "by-cluster-service",
+                        "repeatInterval": 3596400000000000
+                    }
+                }
+            ],
+            "groupKey": "{}/{alertname=~\"^(?:.*)$\"}:{alertname=\"HTTP_Probe_Failed\", cluster=\"dev\"}",
+            "labels": {
+                "alertname": "HTTP_Probe_Failed",
+                "cluster": "dev"
+            }
+        },
+        {
+            "blocks": [
+                {
+                    "alerts": [
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "0967807e4073b606",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "dev",
+                                "instance": "server6",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": null,
+                                "silencedBy": [
+                                    "6fcaeee5-ed55-4d8b-8dfb-e21c01396c1a"
+                                ],
+                                "state": "suppressed"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "44497481566cd3c7",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "dev",
+                                "instance": "server7",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": null,
+                                "silencedBy": [
+                                    "6fcaeee5-ed55-4d8b-8dfb-e21c01396c1a",
+                                    "bf098baf-fbcb-457e-afc8-f08aa7116161"
+                                ],
+                                "state": "suppressed"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "af9d8f2f0ccb3970",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "dev",
+                                "instance": "server8",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": null,
+                                "silencedBy": [
+                                    "6fcaeee5-ed55-4d8b-8dfb-e21c01396c1a"
+                                ],
+                                "state": "suppressed"
+                            }
+                        }
+                    ],
+                    "routeOpts": {
+                        "groupBy": [
+                            "alertname",
+                            "cluster",
+                            "service"
+                        ],
+                        "groupInterval": 35000000000,
+                        "groupWait": 15000000000,
+                        "receiver": "by-cluster-service",
+                        "repeatInterval": 3596400000000000
+                    }
+                }
+            ],
+            "groupKey": "{}/{alertname=~\"^(?:.*)$\"}:{alertname=\"Host_Down\", cluster=\"dev\"}",
+            "labels": {
+                "alertname": "Host_Down",
+                "cluster": "dev"
+            }
+        },
+        {
+            "blocks": [
+                {
+                    "alerts": [
+                        {
+                            "annotations": {
+                                "summary": "Example summary",
+                                "url": "http://localhost/example.html"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "d0aee2649e71388b",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "prod",
+                                "instance": "server1",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "3bdb8b68bdce2ae0",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "prod",
+                                "instance": "server2",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        }
+                    ],
+                    "routeOpts": {
+                        "groupBy": [
+                            "alertname",
+                            "cluster",
+                            "service"
+                        ],
+                        "groupInterval": 35000000000,
+                        "groupWait": 15000000000,
+                        "receiver": "by-cluster-service",
+                        "repeatInterval": 3596400000000000
+                    }
+                }
+            ],
+            "groupKey": "{}/{alertname=~\"^(?:.*)$\"}:{alertname=\"Host_Down\", cluster=\"prod\"}",
+            "labels": {
+                "alertname": "Host_Down",
+                "cluster": "prod"
+            }
+        },
+        {
+            "blocks": [
+                {
+                    "alerts": [
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "24e4121619386f95",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "staging",
+                                "instance": "server3",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "d9067fcc9686d942",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "staging",
+                                "instance": "server4",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "5f1306dab6671183",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "staging",
+                                "instance": "server5",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        }
+                    ],
+                    "routeOpts": {
+                        "groupBy": [
+                            "alertname",
+                            "cluster",
+                            "service"
+                        ],
+                        "groupInterval": 35000000000,
+                        "groupWait": 15000000000,
+                        "receiver": "by-cluster-service",
+                        "repeatInterval": 3596400000000000
+                    }
+                }
+            ],
+            "groupKey": "{}/{alertname=~\"^(?:.*)$\"}:{alertname=\"Host_Down\", cluster=\"staging\"}",
+            "labels": {
+                "alertname": "Host_Down",
+                "cluster": "staging"
+            }
+        },
+        {
+            "blocks": [
+                {
+                    "alerts": [
+                        {
+                            "annotations": {
+                                "alert": "Memory usage exceeding threshold",
+                                "dashboard": "http://localhost/dashboard.html"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "7d0b114ebf24f857",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Memory_Usage_Too_High",
+                                "cluster": "prod",
+                                "instance": "server2",
+                                "job": "node_exporter"
+                            },
+                            "receivers": null,
+                            "startsAt": "2017-09-29T02:07:50.640170478Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        }
+                    ],
+                    "routeOpts": {
+                        "groupBy": [
+                            "alertname",
+                            "cluster",
+                            "service"
+                        ],
+                        "groupInterval": 35000000000,
+                        "groupWait": 15000000000,
+                        "receiver": "by-cluster-service",
+                        "repeatInterval": 3596400000000000
+                    }
+                }
+            ],
+            "groupKey": "{}/{alertname=~\"^(?:.*)$\"}:{alertname=\"Memory_Usage_Too_High\", cluster=\"prod\"}",
+            "labels": {
+                "alertname": "Memory_Usage_Too_High",
+                "cluster": "prod"
+            }
+        }
+    ],
+    "status": "success"
+}
