@@ -1,0 +1,96 @@
+{
+    "data": {
+        "configJSON": {
+            "global": {
+                "hipchat_api_url": "https://api.hipchat.com/",
+                "opsgenie_api_url": "https://api.opsgenie.com/",
+                "pagerduty_url": "https://events.pagerduty.com/v2/enqueue",
+                "resolve_timeout": 300000000000,
+                "smtp_require_tls": true,
+                "victorops_api_url": "https://alert.victorops.com/integrations/generic/20131114/alert/"
+            },
+            "inhibit_rules": [
+                {
+                    "equal": [
+                        "alertname",
+                        "cluster",
+                        "service"
+                    ],
+                    "source_match": {
+                        "severity": "critical"
+                    },
+                    "target_match": {
+                        "severity": "warning"
+                    }
+                }
+            ],
+            "receivers": [
+                {
+                    "name": "default"
+                },
+                {
+                    "name": "by-cluster-service"
+                },
+                {
+                    "name": "by-name"
+                }
+            ],
+            "route": {
+                "group_by": [
+                    "alertname"
+                ],
+                "group_interval": 35000000000,
+                "group_wait": 15000000000,
+                "receiver": "default",
+                "repeat_interval": 3596400000000000,
+                "routes": [
+                    {
+                        "continue": true,
+                        "group_by": [
+                            "alertname",
+                            "cluster",
+                            "service"
+                        ],
+                        "match_re": {
+                            "alertname": "^(?:.*)$"
+                        },
+                        "receiver": "by-cluster-service"
+                    },
+                    {
+                        "continue": true,
+                        "group_by": [
+                            "alertname"
+                        ],
+                        "match_re": {
+                            "alertname": "^(?:.*)$"
+                        },
+                        "receiver": "by-name"
+                    }
+                ]
+            },
+            "templates": null
+        },
+        "configYAML": "global:\n  resolve_timeout: 5m\n  smtp_require_tls: true\n  pagerduty_url: https://events.pagerduty.com/v2/enqueue\n  hipchat_api_url: https://api.hipchat.com/\n  opsgenie_api_url: https://api.opsgenie.com/\n  victorops_api_url: https://alert.victorops.com/integrations/generic/20131114/alert/\nroute:\n  receiver: default\n  group_by:\n  - alertname\n  routes:\n  - receiver: by-cluster-service\n    group_by:\n    - alertname\n    - cluster\n    - service\n    match_re:\n      alertname: ^(?:.*)$\n    continue: true\n  - receiver: by-name\n    group_by:\n    - alertname\n    match_re:\n      alertname: ^(?:.*)$\n    continue: true\n  group_wait: 15s\n  group_interval: 35s\n  repeat_interval: 999h\ninhibit_rules:\n- source_match:\n    severity: critical\n  target_match:\n    severity: warning\n  equal:\n  - alertname\n  - cluster\n  - service\nreceivers:\n- name: default\n- name: by-cluster-service\n- name: by-name\ntemplates: []\n",
+        "meshStatus": {
+            "name": "02:42:ac:11:00:02",
+            "nickName": "7b404cf24939",
+            "peers": [
+                {
+                    "name": "02:42:ac:11:00:02",
+                    "nickName": "7b404cf24939",
+                    "uid": 3862700015286939413
+                }
+            ]
+        },
+        "uptime": "2017-11-18T05:52:16.299600147Z",
+        "versionInfo": {
+            "branch": "HEAD",
+            "buildDate": "20171116-17:43:56",
+            "buildUser": "root@3e103e3fc918",
+            "goVersion": "go1.9.2",
+            "revision": "30dd0426c08b6479d9a26259ea5efd63bc1ee273",
+            "version": "0.11.0"
+        }
+    },
+    "status": "success"
+}
