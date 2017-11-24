@@ -409,6 +409,21 @@ This option can also be set using `-strip.labels` flag. Example:
 
 This variable is optional and default is not set (all labels will be shown).
 
+#### STRIP_RECEIVERS
+
+List of receiver names that should not be shown on the UI. This allows to hide
+all alerts for receivers that are not needed on the alert dashboard. Accepts
+space separated list of receiver names. Examples:
+
+    STRIP_RECEIVERS=hipchat-test
+    STRIP_RECEIVERS="hipchat-test blackhole"
+
+This option can also be set using `-strip.receivers` flag. Example:
+
+    $ unsee -strip.receivers "hipchat-test blackhole"
+
+This variable is optional and default is not set (all receivers will be shown).
+
 #### WEB_PREFIX
 
 URL root for unsee, you can use to if you wish to serve it from location other

@@ -26,3 +26,13 @@ func StripLables(keptLabels, ignoredLabels []string, sourceLabels map[string]str
 	}
 	return labels
 }
+
+// StripReceivers allows filtering all alerts for specified receiver(s)
+func StripReceivers(ignoredReceivers []string, alertReceiver string) bool {
+	for _, ignoredReceiver := range ignoredReceivers {
+		if alertReceiver == ignoredReceiver {
+			return true
+		}
+	}
+	return false
+}
