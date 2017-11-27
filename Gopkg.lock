@@ -98,12 +98,6 @@
   revision = "23c074d0eceb2b8a5bfdbb271ab780cde70f05a8"
 
 [[projects]]
-  name = "github.com/kelseyhightower/envconfig"
-  packages = ["."]
-  revision = "f611eb38b3875cc3bd991ca91c51d06446afa14c"
-  version = "v1.3.0"
-
-[[projects]]
   name = "github.com/magiconair/properties"
   packages = ["."]
   revision = "be5ece7dd465ab0765a9682137865547526d1dfb"
@@ -250,6 +244,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "0fe21ce1c3a725f7f6020630d021f1c02361478ce5df6713499e7a3141313902"
+  inputs-digest = "a6c129dbdbe3ff34769c04d2d246c402f2394c6a4929beeca43db05cc244a502"
   solver-name = "gps-cdcl"
   solver-version = 1
