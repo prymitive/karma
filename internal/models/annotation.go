@@ -67,15 +67,15 @@ func isLink(s string) bool {
 }
 
 func isVisible(name string) bool {
-	if slices.StringInSlice(config.Config.AnnotationsVisible, name) {
+	if slices.StringInSlice(config.Config.Annotations.Visible, name) {
 		// annotation was explicitly marked as visible
 		return true
 	}
-	if slices.StringInSlice(config.Config.AnnotationsHidden, name) {
+	if slices.StringInSlice(config.Config.Annotations.Hidden, name) {
 		// annotation was explicitly marked as hidden
 		return false
 	}
-	if config.Config.AnnotationsDefaultHidden {
+	if config.Config.Annotations.Default.Hidden {
 		// user specified that default is to hide anything without explicit rules
 		return false
 	}

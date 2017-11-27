@@ -40,12 +40,12 @@ func index(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "templates/index.html", gin.H{
 		"Version":           version,
-		"SentryDSN":         config.Config.SentryPublicDSN,
-		"Config":            config.Config,
+		"SentryDSN":         config.Config.Sentry.Public,
 		"QFilter":           q,
 		"DefaultUsed":       defaultUsed,
-		"StaticColorLabels": strings.Join(config.Config.ColorLabelsStatic, " "),
-		"WebPrefix":         config.Config.WebPrefix,
+		"DefaultFilter":     strings.Join(config.Config.Filters.Default, ","),
+		"StaticColorLabels": strings.Join(config.Config.Colors.Labels.Static, " "),
+		"WebPrefix":         config.Config.Listen.Prefix,
 	})
 
 	log.Infof("[%s] %s %s took %s", c.ClientIP(), c.Request.Method, c.Request.RequestURI, time.Since(start))
@@ -56,8 +56,8 @@ func help(c *gin.Context) {
 	start := time.Now()
 	noCache(c)
 	c.HTML(http.StatusOK, "templates/help.html", gin.H{
-		"SentryDSN": config.Config.SentryPublicDSN,
-		"WebPrefix": config.Config.WebPrefix,
+		"SentryDSN": config.Config.Sentry.Public,
+		"WebPrefix": config.Config.Listen.Prefix,
 	})
 	log.Infof("[%s] <%d> %s %s took %s", c.ClientIP(), http.StatusOK, c.Request.Method, c.Request.RequestURI, time.Since(start))
 }
@@ -249,8 +249,8 @@ func autocomplete(c *gin.Context) {
 }
 
 func favicon(c *gin.Context) {
-	if config.Config.WebPrefix != "/" {
-		c.Request.URL.Path = strings.TrimPrefix(c.Request.URL.Path, config.Config.WebPrefix)
+	if config.Config.Listen.Prefix != "/" {
+		c.Request.URL.Path = strings.TrimPrefix(c.Request.URL.Path, config.Config.Listen.Prefix)
 	}
 	faviconFileServer.ServeHTTP(c.Writer, c.Request)
 }

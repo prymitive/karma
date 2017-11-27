@@ -13,9 +13,15 @@ type jiraTest struct {
 	jiraLink string
 }
 
-var jiraRules = []string{
-	"DEVOPS-[0-9]+@https://jira.example.com",
-	"PROJECT-[0-9]+@https://example.com",
+var jiraRules = []models.JiraRule{
+	models.JiraRule{
+		Regex: "DEVOPS-[0-9]+",
+		URI:   "https://jira.example.com",
+	},
+	models.JiraRule{
+		Regex: "PROJECT-[0-9]+",
+		URI:   "https://example.com",
+	},
 }
 
 var jiraTests = []jiraTest{

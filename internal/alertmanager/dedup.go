@@ -65,11 +65,11 @@ func DedupAlerts() []models.AlertGroup {
 		for _, alert := range alerts {
 			// remove all alerts for receiver(s) that the user doesn't
 			// want to see in the UI
-			if transform.StripReceivers(config.Config.StripReceivers, alert.Receiver) {
+			if transform.StripReceivers(config.Config.Receivers.Strip, alert.Receiver) {
 				continue
 			}
 			// strip labels user doesn't want to see in the UI
-			alert.Labels = transform.StripLables(config.Config.KeepLabels, config.Config.StripLabels, alert.Labels)
+			alert.Labels = transform.StripLables(config.Config.Labels.Keep, config.Config.Labels.Strip, alert.Labels)
 			// calculate final alert state based on the most important value found
 			// in the list of states from all instances
 			alertLFP := alert.LabelsFingerprint()

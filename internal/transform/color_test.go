@@ -58,7 +58,7 @@ var colorTests = []colorTest{
 
 func TestColorLabel(t *testing.T) {
 	for _, testCase := range colorTests {
-		config.Config.ColorLabelsUnique = testCase.config
+		config.Config.Colors.Labels.Unique = testCase.config
 		colorStore := models.LabelsColorMap{}
 		for key, value := range testCase.labels {
 			transform.ColorLabel(colorStore, key, value)

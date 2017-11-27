@@ -1,155 +1,165 @@
 package config
 
 import (
+	"bufio"
 	"bytes"
 	"flag"
-	"fmt"
-	"net/url"
-	"os"
-	"reflect"
+	"path"
 	"strings"
 	"time"
-	"unicode"
 
-	"github.com/kelseyhightower/envconfig"
+	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
 
 	log "github.com/sirupsen/logrus"
+	yaml "gopkg.in/yaml.v2"
 )
 
-type spaceSeparatedList []string
+var (
+	// Config will hold final configuration read from the file and flags
+	Config configSchema
 
-func (mvd *spaceSeparatedList) Decode(value string) error {
-	*mvd = spaceSeparatedList(strings.Split(value, " "))
-	return nil
+	configDir  string
+	configFile string
+)
+
+func init() {
+	pflag.Duration("alertmanager.interval", time.Second*60,
+		"Interval for fetching data from Alertmanager servers")
+
+	pflag.Bool(
+		"annotations.default.hidden", false,
+		"Hide all annotations by default unless explicitly listed in the 'visible' list")
+	pflag.StringSlice("annotations.hidden", []string{},
+		"List of annotations that are hidden by default")
+	pflag.StringSlice("annotations.visible", []string{},
+		"List of annotations that are visible by default")
+
+	pflag.StringSlice("colors.labels.static", []string{},
+		"List of label names that should have the same (but distinct) color")
+	pflag.StringSlice("colors.labels.unique", []string{},
+		"List of label names that should have unique color")
+
+	pflag.StringVar(&configDir, "config.dir", ".",
+		"Directory with configuration file to read")
+	pflag.StringVar(&configFile, "config.file", "unsee",
+		"Name of the configuration file to read")
+
+	pflag.Bool("debug", false, "Enable debug mode")
+
+	pflag.StringSlice("filters.default", []string{}, "List of default filters")
+
+	pflag.StringSlice("labels.keep", []string{},
+		"List of labels to keep, all other labels will be stripped")
+	pflag.StringSlice("labels.strip", []string{}, "List of labels to ignore")
+
+	pflag.String("log.level", "info",
+		"Log level, one of: debug, info, warning, error, fatal and panic")
+
+	pflag.StringSlice("receivers.strip", []string{},
+		"List of receivers to not display alerts for")
+
+	pflag.Int("listen.port", 8080, "HTTP port to listen on")
+	pflag.String("listen.prefix", "/", "URL prefix")
+
+	pflag.String("sentry.public", "", "Sentry DSN for Go exceptions")
+	pflag.String("sentry.private", "", "Sentry DSN for JavaScript exceptions")
 }
 
-type configEnvs struct {
-	AlertmanagerTimeout      time.Duration      `envconfig:"ALERTMANAGER_TIMEOUT" default:"40s" help:"Timeout for all request send to Alertmanager"`
-	AlertmanagerTTL          time.Duration      `envconfig:"ALERTMANAGER_TTL" default:"1m" help:"TTL for Alertmanager alerts and silences"`
-	AlertmanagerURIs         spaceSeparatedList `envconfig:"ALERTMANAGER_URIS" required:"true" help:"List of Alertmanager URIs (name:uri)"`
-	AnnotationsHidden        spaceSeparatedList `envconfig:"ANNOTATIONS_HIDDEN" help:"List of annotations that are hidden by default"`
-	AnnotationsDefaultHidden bool               `envconfig:"ANNOTATIONS_DEFAULT_HIDDEN" default:"false" help:"Hide all annotations by default unless listed in ANNOTATIONS_VISIBLE"`
-	AnnotationsVisible       spaceSeparatedList `envconfig:"ANNOTATIONS_VISIBLE" help:"List of annotations that are visible by default"`
-	ColorLabelsStatic        spaceSeparatedList `envconfig:"COLOR_LABELS_STATIC" help:"List of label names that should have the same (but distinct) color"`
-	ColorLabelsUnique        spaceSeparatedList `envconfig:"COLOR_LABELS_UNIQUE" help:"List of label names that should have unique color"`
-	Debug                    bool               `envconfig:"DEBUG" default:"false" help:"Enable debug mode"`
-	FilterDefault            string             `envconfig:"FILTER_DEFAULT" help:"Default filter string"`
-	JiraRegexp               spaceSeparatedList `envconfig:"JIRA_REGEX" help:"List of JIRA regex rules"`
-	Port                     int                `envconfig:"PORT" default:"8080" help:"HTTP port to listen on"`
-	SentryDSN                string             `envconfig:"SENTRY_DSN" help:"Sentry DSN for Go exceptions"`
-	SentryPublicDSN          string             `envconfig:"SENTRY_PUBLIC_DSN" help:"Sentry DSN for javascript exceptions"`
-	StripLabels              spaceSeparatedList `envconfig:"STRIP_LABELS" help:"List of labels to ignore"`
-	StripReceivers           spaceSeparatedList `envconfig:"STRIP_RECEIVERS" help:"List of receivers to not display alerts for"`
-	KeepLabels               spaceSeparatedList `envconfig:"KEEP_LABELS" help:"List of labels to keep, all other labels will be stripped"`
-	WebPrefix                string             `envconfig:"WEB_PREFIX" default:"/" help:"URL prefix"`
-}
+// ReadConfig will read all sources of configuration, merge all keys and
+// populate global Config variable, it should be only called on startup
+func (config *configSchema) Read() {
+	v := viper.New()
 
-// Config exposes all options required to run
-var Config configEnvs
+	pflag.Parse()
 
-// generate flag name from the option name, a dot will be injected between
-// <lower case char><upper case char>
-func makeFlagName(s string) string {
-	var buffer bytes.Buffer
-	prevUpper := true
-	for _, rune := range s {
-		if unicode.IsUpper(rune) && !prevUpper {
-			buffer.WriteRune('.')
-		}
-		prevUpper = unicode.IsUpper(rune)
-		buffer.WriteRune(unicode.ToLower(rune))
+	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
+	pflag.Parse()
+	v.BindPFlags(pflag.CommandLine)
+
+	v.AutomaticEnv()
+	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+
+	// special envs
+	// HOST and PORT is used by gin
+	v.BindEnv("listen.address", "HOST")
+	v.BindEnv("listen.port", "PORT")
+	// raven-go expects this
+	v.BindEnv("sentry.private", "SENTRY_DSN")
+
+	// bind legacy env variables
+	config.legacyEnvs(v)
+
+	v.SetConfigType("yaml")
+	v.SetConfigName(configFile)
+	v.AddConfigPath(configDir)
+	log.Infof("Reading configuration file %s.yaml", path.Join(configDir, configFile))
+	err := v.ReadInConfig()
+	if v.ConfigFileUsed() != "" && err != nil {
+		log.Fatal(err)
 	}
-	return buffer.String()
-}
 
-// Iterate all defined envconfig variables and generate a flag for each key.
-// Next parse those flags and for each set flag inject env variable which will
-// be read by envconfig later on.
-type flagMapper struct {
-	isBool    bool
-	stringVal *string
-	boolVal   *bool
-}
-
-func mapEnvConfigToFlags() {
-	flags := make(map[string]flagMapper)
-	s := reflect.ValueOf(Config)
-	typeOfSpec := s.Type()
-	for i := 0; i < s.NumField(); i++ {
-		f := typeOfSpec.Field(i)
-
-		flagName := makeFlagName(f.Name)
-		// check if flag was already set, this usually happens only during testing
-		if flag.Lookup(flagName) != nil {
-			continue
-		}
-
-		envName := f.Tag.Get("envconfig")
-
-		helpMsg := fmt.Sprintf("%s. This flag can also be set via %s environment variable.", f.Tag.Get("help"), f.Tag.Get("envconfig"))
-		if f.Tag.Get("required") == "true" {
-			helpMsg = fmt.Sprintf("%s This option is required.", helpMsg)
-		}
-
-		mapper := flagMapper{}
-		if s.Field(i).Kind() == reflect.Bool {
-			mapper.isBool = true
-			mapper.boolVal = flag.Bool(flagName, false, helpMsg)
-		} else {
-			mapper.stringVal = flag.String(flagName, "", helpMsg)
-		}
-		flags[envName] = mapper
+	if v.ConfigFileUsed() != "" {
+		log.Infof("Config file used: %s", v.ConfigFileUsed())
 	}
-	flag.Parse()
-	for envName, mapper := range flags {
-		if mapper.isBool {
-			if *mapper.boolVal == true {
-				err := os.Setenv(envName, "true")
-				if err != nil {
-					log.Fatal(err)
-				}
-			}
-		} else {
-			if *mapper.stringVal != "" {
-				err := os.Setenv(envName, *mapper.stringVal)
-				if err != nil {
-					log.Fatal(err)
-				}
-			}
-		}
-	}
-}
 
-func (config *configEnvs) Read() {
-	mapEnvConfigToFlags()
+	config.Alertmanager.Interval = v.GetDuration("alertmanager.interval")
+	config.Annotations.Default.Hidden = v.GetBool("annotations.default.hidden")
+	config.Annotations.Hidden = v.GetStringSlice("annotations.hidden")
+	config.Annotations.Visible = v.GetStringSlice("annotations.visible")
+	config.Colors.Labels.Static = v.GetStringSlice("colors.labels.static")
+	config.Colors.Labels.Unique = v.GetStringSlice("colors.labels.unique")
+	config.Debug = v.GetBool("debug")
+	config.Filters.Default = v.GetStringSlice("filters.default")
+	config.Labels.Keep = v.GetStringSlice("labels.keep")
+	config.Labels.Strip = v.GetStringSlice("labels.strip")
+	config.Listen.Address = v.GetString("listen.address")
+	config.Listen.Port = v.GetInt("listen.port")
+	config.Listen.Prefix = v.GetString("listen.prefix")
+	config.Log.Level = v.GetString("log.level")
+	config.Receivers.Strip = v.GetStringSlice("receivers.strip")
+	config.Sentry.Private = v.GetString("sentry.private")
+	config.Sentry.Public = v.GetString("sentry.public")
 
-	err := envconfig.Process("", config)
+	err = v.UnmarshalKey("alertmanager.servers", &config.Alertmanager.Servers)
 	if err != nil {
 		log.Fatal(err)
 	}
-}
 
-func hideURLPassword(s string) string {
-	u, err := url.Parse(s)
+	err = v.UnmarshalKey("jira", &config.JIRA)
 	if err != nil {
-		return s
+		log.Fatal(err)
 	}
-	if u.User != nil {
-		if _, pwdSet := u.User.Password(); pwdSet {
-			u.User = url.UserPassword(u.User.Username(), "xxx")
-		}
-		return u.String()
-	}
-	return s
+
+	// populate legacy settings if needed
+	config.legacySettingsFallback()
 }
 
-func (config *configEnvs) LogValues() {
-	s := reflect.ValueOf(config).Elem()
-	typeOfT := s.Type()
-	for i := 0; i < s.NumField(); i++ {
-		env := typeOfT.Field(i).Tag.Get("envconfig")
-		val := fmt.Sprintf("%v", s.Field(i).Interface())
-		log.Infof("%20s => %v", env, hideURLPassword(val))
+// LogValues will dump runtime config to logs
+func (config *configSchema) LogValues() {
+	// make a copy of our config so we can edit it
+	cfg := configSchema(*config)
+
+	// replace passwords in Alertmanager URIs with 'xxx'
+	servers := []alertmanagerConfig{}
+	for _, s := range cfg.Alertmanager.Servers {
+		server := alertmanagerConfig{
+			Name:    s.Name,
+			URI:     hideURLPassword(s.URI),
+			Timeout: s.Timeout,
+		}
+		servers = append(servers, server)
+	}
+	cfg.Alertmanager.Servers = servers
+
+	out, err := yaml.Marshal(cfg)
+	if err != nil {
+		log.Error(err)
 	}
 
+	log.Info("Parsed configuration:")
+	scanner := bufio.NewScanner(bytes.NewReader(out))
+	for scanner.Scan() {
+		log.Info(scanner.Text())
+	}
 }

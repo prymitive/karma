@@ -50,12 +50,12 @@ func TestDedupAlerts(t *testing.T) {
 }
 
 func TestDedupAlertsWithoutLabels(t *testing.T) {
-	config.Config.KeepLabels = []string{"xyz"}
+	config.Config.Labels.Keep = []string{"xyz"}
 	if err := pullAlerts(); err != nil {
 		t.Error(err)
 	}
 	alertGroups := alertmanager.DedupAlerts()
-	config.Config.KeepLabels = []string{}
+	config.Config.Labels.Keep = []string{}
 
 	if len(alertGroups) != 10 {
 		t.Errorf("Expected %d alert groups, got %d", 10, len(alertGroups))
