@@ -1,0 +1,35 @@
+# Example config file
+
+alertmanager:
+  interval: 60s
+  servers:
+    - name: mock
+      uri: file://internal/mock/0.11.0
+      timeout: 10s
+annotations:
+  default:
+    hidden: false
+  hidden:
+    - help
+  visible: []
+colors:
+  labels:
+    static:
+      - job
+    unique:
+      - "@receiver"
+debug: false
+filters:
+  default: []
+listen:
+  address: "*"
+  port: 8080
+  prefix: /
+jira:
+  - regex: DEVOPS-[0-9]+
+    uri: https://jira.example.com
+receivers:
+  strip: []
+sentry:
+  private: secret
+  public: 123456789
