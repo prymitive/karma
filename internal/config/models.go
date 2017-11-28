@@ -45,7 +45,8 @@ type configSchema struct {
 		Prefix  string
 	}
 	Log struct {
-		Level string
+		Config bool
+		Level  string
 	}
 	JIRA      []jiraRule
 	Receivers struct {

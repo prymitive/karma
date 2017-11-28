@@ -3,7 +3,7 @@ VERSION := $(shell git describe --tags --always --dirty='-dev')
 
 # Alertmanager instance used when running locally, points to mock data
 MOCK_PATH         := $(CURDIR)/internal/mock/0.11.0
-ALERTMANAGER_URIS := "mock:file://$(MOCK_PATH)"
+ALERTMANAGER_URI := "file://$(MOCK_PATH)"
 # Listen port when running locally
 PORT := 8080
 
@@ -62,7 +62,7 @@ clean:
 
 .PHONY: run
 run: $(NAME)
-	ALERTMANAGER_URIS=$(ALERTMANAGER_URIS) \
+	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
 	COLOR_LABELS_UNIQUE="@receiver instance cluster" \
 	COLOR_LABELS_STATIC="job" \
 	DEBUG="$(GIN_DEBUG)" \
@@ -81,7 +81,7 @@ run-docker: docker-image
 	    --name $(NAME) \
 	    $(DOCKER_ARGS) \
 	    -v $(MOCK_PATH):$(MOCK_PATH) \
-	    -e ALERTMANAGER_URIS=$(ALERTMANAGER_URIS) \
+	    -e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
 	    -e COLOR_LABELS_UNIQUE="instance cluster" \
 	    -e COLOR_LABELS_STATIC="job" \
 	    -e DEBUG="$(GIN_DEBUG)" \

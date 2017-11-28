@@ -95,7 +95,9 @@ func main() {
 	}
 
 	log.Infof("Version: %s", version)
-	config.Config.LogValues()
+	if config.Config.Log.Config {
+		config.Config.LogValues()
+	}
 
 	jiraRules := []models.JiraRule{}
 	for _, rule := range config.Config.JIRA {

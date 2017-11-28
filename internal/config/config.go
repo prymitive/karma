@@ -24,6 +24,7 @@ var (
 )
 
 func init() {
+	pflag.String("alertmanager.uri", "", "Alertmanager server URI")
 	pflag.Duration("alertmanager.interval", time.Second*60,
 		"Interval for fetching data from Alertmanager servers")
 
@@ -53,12 +54,14 @@ func init() {
 		"List of labels to keep, all other labels will be stripped")
 	pflag.StringSlice("labels.strip", []string{}, "List of labels to ignore")
 
+	pflag.Bool("log.config", true, "Log used configuration to log on startup")
 	pflag.String("log.level", "info",
 		"Log level, one of: debug, info, warning, error, fatal and panic")
 
 	pflag.StringSlice("receivers.strip", []string{},
 		"List of receivers to not display alerts for")
 
+	pflag.String("listen.address", "*", "IP/Hostname to listen on")
 	pflag.Int("listen.port", 8080, "HTTP port to listen on")
 	pflag.String("listen.prefix", "/", "URL prefix")
 
@@ -116,6 +119,7 @@ func (config *configSchema) Read() {
 	config.Listen.Address = v.GetString("listen.address")
 	config.Listen.Port = v.GetInt("listen.port")
 	config.Listen.Prefix = v.GetString("listen.prefix")
+	config.Log.Config = v.GetBool("log.config")
 	config.Log.Level = v.GetString("log.level")
 	config.Receivers.Strip = v.GetStringSlice("receivers.strip")
 	config.Sentry.Private = v.GetString("sentry.private")
@@ -133,6 +137,17 @@ func (config *configSchema) Read() {
 
 	// populate legacy settings if needed
 	config.legacySettingsFallback()
+
+	// accept single Alertmanager server from flag/env if nothing is set yet
+	if len(config.Alertmanager.Servers) == 0 && v.GetString("alertmanager.uri") != "" {
+		config.Alertmanager.Servers = []alertmanagerConfig{
+			alertmanagerConfig{
+				Name:    "default",
+				URI:     v.GetString("alertmanager.uri"),
+				Timeout: time.Second * 40,
+			},
+		}
+	}
 }
 
 // LogValues will dump runtime config to logs

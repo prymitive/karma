@@ -43,7 +43,7 @@ func (config *configSchema) legacySettingsFallback() {
 				Timeout: time.Second * 40,
 			}
 			if os.Getenv("ALERTMANAGER_TIMEOUT") != "" {
-				log.Warn("ALERTMANAGER_TIMEOUT env variable is deprecated")
+				log.Warn("ALERTMANAGER_TIMEOUT env variable is deprecated and will be removed in the next release")
 				timeout, err := time.ParseDuration(os.Getenv("ALERTMANAGER_TIMEOUT"))
 				if err != nil {
 					log.Fatalf("Invalid ALERTMANAGER_TIMEOUT: %s", err)
@@ -56,13 +56,13 @@ func (config *configSchema) legacySettingsFallback() {
 
 	// no default filters and legacy FILTER_DEFAULT is present
 	if len(config.Filters.Default) == 0 && os.Getenv("FILTER_DEFAULT") != "" {
-		log.Warn("FILTER_DEFAULT env variable is deprecated")
+		log.Warn("FILTER_DEFAULT env variable is deprecated and will be removed in the next release")
 		config.Filters.Default = strings.Split(os.Getenv("FILTER_DEFAULT"), ",")
 	}
 
 	// no jira rules configured and legacy JIRA_REGEX is present
 	if len(config.JIRA) == 0 && os.Getenv("JIRA_REGEX") != "" {
-		log.Warn("JIRA_REGEX env variable is deprecated")
+		log.Warn("JIRA_REGEX env variable is deprecated and will be removed in the next release")
 		rules := []jiraRule{}
 		for _, s := range strings.Split(os.Getenv("JIRA_REGEX"), " ") {
 			ss := strings.SplitN(s, "@", 2)
