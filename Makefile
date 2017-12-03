@@ -103,9 +103,9 @@ lint: lint-go lint-js
 
 # Creates mock bindata_assetfs.go with source assets rather than webpack generated ones
 .PHONY: mock-assets
-mock-assets: .build/deps.ok .build/vendor.ok
-	cp $(CURDIR)/assets/static/*.* $(CURDIR)/assets/static/dist/
+mock-assets: .build/go-bindata .build/go-bindata-assetfs
 	mkdir -p $(CURDIR)/assets/static/dist/templates
+	cp $(CURDIR)/assets/static/*.* $(CURDIR)/assets/static/dist/
 	touch $(CURDIR)/assets/static/dist/templates/loader_unsee.html
 	touch $(CURDIR)/assets/static/dist/templates/loader_shared.html
 	touch $(CURDIR)/assets/static/dist/templates/loader_help.html
