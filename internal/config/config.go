@@ -18,9 +18,6 @@ import (
 var (
 	// Config will hold final configuration read from the file and flags
 	Config configSchema
-
-	configDir  string
-	configFile string
 )
 
 func init() {
@@ -36,9 +33,9 @@ func init() {
 	pflag.StringSlice("annotations.visible", []string{},
 		"List of annotations that are visible by default")
 
-	pflag.StringVar(&configDir, "config.dir", ".",
+	pflag.String("config.dir", ".",
 		"Directory with configuration file to read")
-	pflag.StringVar(&configFile, "config.file", "unsee",
+	pflag.String("config.file", "unsee",
 		"Name of the configuration file to read")
 
 	pflag.Bool("debug", false, "Enable debug mode")
@@ -94,6 +91,8 @@ func (config *configSchema) Read() {
 	// bind legacy env variables
 	config.legacyEnvs(v)
 
+	configFile := v.GetString("config.file")
+	configDir := v.GetString("config.dir")
 	v.SetConfigType("yaml")
 	v.SetConfigName(configFile)
 	v.AddConfigPath(configDir)
