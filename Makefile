@@ -37,6 +37,7 @@ endif
 	touch $@
 
 .build/npm.install: package.json package-lock.json
+	@mkdir -p .build
 	npm install
 	touch $@
 
@@ -89,15 +90,39 @@ run-docker: docker-image
 	    -p $(PORT):$(PORT) \
 	    $(NAME):$(VERSION)
 
-.PHONY: lint
-lint: .build/deps.ok
+.PHONY: lint-go
+lint-go: .build/golint
 	golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
+
+.PHONY: lint-js
+lint-js: .build/npm.install
 	$(CURDIR)/node_modules/.bin/eslint --quiet assets/static/*.js
 
-.PHONY: test
-test: lint bindata_assetfs.go
+.PHONY: lint
+lint: lint-go lint-js
+
+# Creates mock bindata_assetfs.go with source assets rather than webpack generated ones
+.PHONY: mock-assets
+mock-assets: .build/deps.ok .build/vendor.ok
+	cp $(CURDIR)/assets/static/*.* $(CURDIR)/assets/static/dist/
+	mkdir -p $(CURDIR)/assets/static/dist/templates
+	touch $(CURDIR)/assets/static/dist/templates/loader_unsee.html
+	touch $(CURDIR)/assets/static/dist/templates/loader_shared.html
+	touch $(CURDIR)/assets/static/dist/templates/loader_help.html
+	go-bindata-assetfs -prefix assets -nometadata assets/templates/... assets/static/dist/...
+	# force assets rebuild on next make run
+	rm -f .build/bindata_assetfs.*
+
+.PHONY: test-go
+test-go: .build/vendor.ok
 	go test -bench=. -cover `go list ./... | grep -v /vendor/`
+
+.PHONY: test-js
+test-js:
 	npm test
+
+.PHONY: test
+test: lint test-go test-js
 
 .build/dep.ok:
 	go get -u github.com/golang/dep/cmd/dep
@@ -113,7 +138,6 @@ test: lint bindata_assetfs.go
 vendor: .build/dep.ok
 	dep ensure
 	dep prune
-
 
 .PHONY: vendor-update
 vendor-update: .build/dep.ok
