@@ -2,6 +2,35 @@
 
 ## Config file
 
+By default unsee will try to read configuration file named `unsee.yaml` from
+current directory. Configuration file uses [YAML](http://yaml.org/) format and
+it needs to have `.yaml` extention.
+Custom filename and directory can be passed via command line flags or
+environment variables:
+
+* `--config.file` flag or `CONFIG_FILE` env variable - name of the config file
+  to load (without extention).
+* `--config.dir` flag or `CONFIG_DIR` env variable - directory where config file
+  can be found.
+
+Example with flags:
+
+```
+$ unsee --config.file example --config.dir ./docs/
+```
+
+Example with environment variables:
+
+```
+$ CONFIG_FILE="example" CONFIG_DIR="./docs/" unsee
+```
+
+Example using both:
+
+```
+$ CONFIG_FILE="example" unsee --config.dir ./docs/
+```
+
 ### Alertmanagers
 
 `alertmanager` section allows setting Alertmanager servers that should be
