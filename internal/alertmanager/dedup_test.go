@@ -99,3 +99,16 @@ func TestDedupColors(t *testing.T) {
 		t.Errorf("Expected %d color keys, got %d", expected, len(colors))
 	}
 }
+
+func TestStripReceivers(t *testing.T) {
+	os.Setenv("RECEIVERS_STRIP", "by-name by-cluster-service")
+	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	config.Config.Read()
+	if err := pullAlerts(); err != nil {
+		t.Error(err)
+	}
+	alerts := alertmanager.DedupAlerts()
+	if len(alerts) > 0 {
+		t.Errorf("Expected no alerts after stripping all receivers, got %d", len(alerts))
+	}
+}

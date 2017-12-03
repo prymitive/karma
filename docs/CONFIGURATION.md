@@ -355,19 +355,19 @@ jira: []
 ### Receivers
 
 `receivers` section allows configuring how alerts from different receivers are
-handled by unsee.
+handled by unsee. If alerts are routed to multiple receivers they can be
+duplicated in the UI, each instance will have different value for `@receiver`.
 Syntax:
 
 ```yaml
 receivers:
+  keep: list of strings
   strip: list of strings
 ```
 
-* `strip` - list of receiver names that should be ignored when collecting data
-  from Alertmanager API. If alerts are routed to multiple receivers they can be
-  duplicated in the UI, each instance will have different value for `@receiver`.
-  This options allows to set a list of receivers that will not be shown in the
-  UI.
+* `keep` - list of receivers name that are allowed, if empty all receivers are
+  allowed.
+* `strip` - list of receiver names that will not be shown in the UI.
 
 Example where alerts that are routed to the `alertmanage2es` receiver are
 ignored by unsee.
@@ -433,3 +433,10 @@ Exaceptions:
 Environment variables are mapped in a similiar way as command line flags,
 `alertmanager:interval` is accessible as `ALERTMANAGER_INTERVAL` env.
 Same exceptions apply as with command line flags.
+
+* `HOST` - used by gin webserver, same effect as setting `listen:address` config
+  option
+* `PORT` - used by gin webserver, same effect as setting `listen:port` config
+  option
+* `SENTRY_DSN` - is used by Sentry itself, same effect as passing value to
+  `sentry:private` config option.

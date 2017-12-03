@@ -36,8 +36,8 @@ type configSchema struct {
 		Default []string
 	}
 	Labels struct {
-		Strip []string
 		Keep  []string
+		Strip []string
 	}
 	Listen struct {
 		Address string
@@ -50,6 +50,7 @@ type configSchema struct {
 	}
 	JIRA      []jiraRule
 	Receivers struct {
+		Keep  []string
 		Strip []string
 	}
 	Sentry struct {
