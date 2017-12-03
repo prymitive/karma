@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"path"
 	"strings"
@@ -150,7 +151,9 @@ func main() {
 	}
 
 	setupRouter(router)
-	err := router.Run()
+	listen := fmt.Sprintf("%s:%d", config.Config.Listen.Address, config.Config.Listen.Port)
+	log.Infof("Listening on %s", listen)
+	err := router.Run(listen)
 	if err != nil {
 		log.Fatal(err)
 	}

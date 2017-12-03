@@ -62,7 +62,7 @@ func init() {
 	pflag.StringSlice("receivers.strip", []string{},
 		"List of receivers to not display alerts for")
 
-	pflag.String("listen.address", "*", "IP/Hostname to listen on")
+	pflag.String("listen.address", "", "IP/Hostname to listen on")
 	pflag.Int("listen.port", 8080, "HTTP port to listen on")
 	pflag.String("listen.prefix", "/", "URL prefix")
 
