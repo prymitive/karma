@@ -17,7 +17,6 @@ func (config *configSchema) legacyEnvs(v *viper.Viper) {
 	v.BindEnv("annotations.visible", "ANNOTATIONS_SHOW")
 	v.BindEnv("labels.color.static", "COLOR_LABELS_STATIC")
 	v.BindEnv("labels.color.unique", "COLOR_LABELS_UNIQUE")
-	v.BindEnv("filters.default", "FILTER_DEFAULT")
 	v.BindEnv("labels.keep", "KEEP_LABELS")
 	v.BindEnv("labels.strip", "STRIP_LABELS")
 	v.BindEnv("listen.prefix", "WEB_PREFIX")

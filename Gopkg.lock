@@ -140,6 +140,12 @@
   version = "v1.0.1"
 
 [[projects]]
+  name = "github.com/pmezard/go-difflib"
+  packages = ["difflib"]
+  revision = "792786c7400a136282c1664665ae0a8db921c6c2"
+  version = "v1.0.0"
+
+[[projects]]
   name = "github.com/prometheus/client_golang"
   packages = ["prometheus","prometheus/promhttp"]
   revision = "c5b7fccd204277076155f10851dad72b76a49317"
@@ -244,6 +250,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a6c129dbdbe3ff34769c04d2d246c402f2394c6a4929beeca43db05cc244a502"
+  inputs-digest = "7c17fa5806664243cc2c060fa70cbc4f9918793787662f2891b041a631724f1e"
   solver-name = "gps-cdcl"
   solver-version = 1
