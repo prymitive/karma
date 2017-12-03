@@ -87,8 +87,8 @@ func TestDedupAutocomplete(t *testing.T) {
 }
 
 func TestDedupColors(t *testing.T) {
-	os.Setenv("COLOR_LABELS_UNIQUE", "cluster instance @receiver")
-	os.Setenv("ALERTMANAGER_URIS", "default:http://localhost")
+	os.Setenv("COLORS_LABELS_UNIQUE", "cluster instance @receiver")
+	os.Setenv("ALERTMANAGER_URI", "http://localhost")
 	config.Config.Read()
 	if err := pullAlerts(); err != nil {
 		t.Error(err)

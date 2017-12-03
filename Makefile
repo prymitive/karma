@@ -63,8 +63,8 @@ clean:
 .PHONY: run
 run: $(NAME)
 	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
-	COLOR_LABELS_UNIQUE="@receiver instance cluster" \
-	COLOR_LABELS_STATIC="job" \
+	COLORS_LABELS_UNIQUE="@receiver instance cluster" \
+	COLORS_LABELS_STATIC="job" \
 	DEBUG="$(GIN_DEBUG)" \
 	FILTER_DEFAULT="@state=active" \
 	PORT=$(PORT) \
