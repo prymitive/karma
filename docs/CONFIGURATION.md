@@ -124,68 +124,6 @@ annotations:
   visible: []
 ```
 
-### Colors
-
-`colors` section allows configuring which labels should have colors applied
-to label background in the UI. Colors can help visually identify alerts
-with shared labels, for example coloring hostname label will allow to quickly
-spot all alerts for the same host.
-Syntax:
-
-```yaml
-colors:
-  labels:
-    static: list of strings
-    unique: list of strings
-```
-
-* `static` - list of label names that will all have the same color applied
-  (different than the default label color). This allows to quickly spot a
-  specific label that can have high range of values, but it's important when
-  reading the dashboard. For example coloring the instance label allows to
-  quickly learn which instance is affected by given alert.
-* `unique` - list of label names that should have unique colors generated in
-  the UI.
-
-Example with static color for the `job` label (every `job` label will have the
-same color regardless of the value) and unique color for the `@receiver` label
-(every `@receiver` label will have color unique for each value).
-
-```yaml
-colors:
-  labels:
-    static:
-      - job
-    unique:
-      - "@receiver"
-```
-
-Defaults:
-
-```yaml
-colors:
-  labels:
-    static: []
-    unique: []
-```
-
-### Debug
-
-`debug` key allows enabling [gin](https://github.com/gin-gonic/gin) debug mode.
-It will also configure to print out more debugging information on startup and
-enable [https://golang.org/pkg/net/http/pprof/](pprof) debug paths.
-Syntax:
-
-```yaml
-debug: bool
-```
-
-Defaults:
-
-```yaml
-debug: false
-```
-
 ### Filters
 
 `filters` section allows configuring default set of filters used in the UI.
@@ -219,20 +157,48 @@ filters:
 
 ### Labels
 
-`labels` section allows configuring which alert labels will be rendered in the
-UI. All labels will be parsed when collecting alerts from Alertmanager API and
-used when deduplicating alerts, this section is only used to UI rendering and
-should be used to remove those alerts that are not useful to users.
+`labels` section allows configuring how alert labels will be rendered in the
+UI.
+All labels will be parsed when collecting alerts from Alertmanager API and
+used when deduplicating alerts, but some labels aren't useful to users and so
+can be removed from the UI, this is controlled by `keep` and `strip` options.
+`colors` section allows configuring which labels should have colors applied
+to label background in the UI. Colors can help visually identify alerts
+with shared labels, for example coloring hostname label will allow to quickly
+spot all alerts for the same host.
 Syntax:
 
 ```yaml
 labels:
+  color:
+    static: []
+    unique: []
   keep: list of strings
   strip: list of strings
 ```
 
+* `color:static` - list of label names that will all have the same color applied
+  (different than the default label color). This allows to quickly spot a
+  specific label that can have high range of values, but it's important when
+  reading the dashboard. For example coloring the instance label allows to
+  quickly learn which instance is affected by given alert.
+* `color:unique` - list of label names that should have unique colors generated
+  in the UI.
 * `keep` - list of allowed labels, if empty all labels are allowed.
 * `strip` - list of ignored labels.
+
+Example with static color for the `job` label (every `job` label will have the
+same color regardless of the value) and unique color for the `@receiver` label
+(every `@receiver` label will have color unique for each value).
+
+```yaml
+colors:
+  labels:
+    static:
+      - job
+    unique:
+      - "@receiver"
+```
 
 Example where `task_id` label is ignored by unsee:
 
@@ -257,6 +223,9 @@ Defaults:
 
 ```yaml
 labels:
+  color:
+    static: []
+    unique: []
   keep: []
   strip: []
 ```

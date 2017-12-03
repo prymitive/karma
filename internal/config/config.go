@@ -36,11 +36,6 @@ func init() {
 	pflag.StringSlice("annotations.visible", []string{},
 		"List of annotations that are visible by default")
 
-	pflag.StringSlice("colors.labels.static", []string{},
-		"List of label names that should have the same (but distinct) color")
-	pflag.StringSlice("colors.labels.unique", []string{},
-		"List of label names that should have unique color")
-
 	pflag.StringVar(&configDir, "config.dir", ".",
 		"Directory with configuration file to read")
 	pflag.StringVar(&configFile, "config.file", "unsee",
@@ -50,6 +45,10 @@ func init() {
 
 	pflag.StringSlice("filters.default", []string{}, "List of default filters")
 
+	pflag.StringSlice("labels.color.static", []string{},
+		"List of label names that should have the same (but distinct) color")
+	pflag.StringSlice("labels.color.unique", []string{},
+		"List of label names that should have unique color")
 	pflag.StringSlice("labels.keep", []string{},
 		"List of labels to keep, all other labels will be stripped")
 	pflag.StringSlice("labels.strip", []string{}, "List of labels to ignore")
@@ -112,10 +111,10 @@ func (config *configSchema) Read() {
 	config.Annotations.Default.Hidden = v.GetBool("annotations.default.hidden")
 	config.Annotations.Hidden = v.GetStringSlice("annotations.hidden")
 	config.Annotations.Visible = v.GetStringSlice("annotations.visible")
-	config.Colors.Labels.Static = v.GetStringSlice("colors.labels.static")
-	config.Colors.Labels.Unique = v.GetStringSlice("colors.labels.unique")
 	config.Debug = v.GetBool("debug")
 	config.Filters.Default = v.GetStringSlice("filters.default")
+	config.Labels.Color.Static = v.GetStringSlice("labels.color.static")
+	config.Labels.Color.Unique = v.GetStringSlice("labels.color.unique")
 	config.Labels.Keep = v.GetStringSlice("labels.keep")
 	config.Labels.Strip = v.GetStringSlice("labels.strip")
 	config.Listen.Address = v.GetString("listen.address")

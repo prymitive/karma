@@ -28,7 +28,7 @@ var upstreamSetup = false
 func mockConfig() {
 	log.SetLevel(log.ErrorLevel)
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
-	os.Setenv("COLORS_LABELS_UNIQUE", "alertname")
+	os.Setenv("LABELS_COLOR_UNIQUE", "alertname")
 	config.Config.Read()
 	if !upstreamSetup {
 		upstreamSetup = true

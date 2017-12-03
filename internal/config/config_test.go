@@ -17,14 +17,14 @@ func testReadConfig(t *testing.T) {
 	if Config.Debug != true {
 		t.Errorf("Config.Debug is %v with env DEBUG=true set", Config.Debug)
 	}
-	if !slices.StringInSlice(Config.Colors.Labels.Static, "a") {
-		t.Errorf("Config.Colors.Labels.Static is missing value 'a': %v", Config.Colors.Labels.Static)
+	if !slices.StringInSlice(Config.Labels.Color.Static, "a") {
+		t.Errorf("Config.Colors.Labels.Static is missing value 'a': %v", Config.Labels.Color.Static)
 	}
-	if !slices.StringInSlice(Config.Colors.Labels.Static, "bb") {
-		t.Errorf("Config.Colors.Labels.Static is missing value 'bb': %v", Config.Colors.Labels.Static)
+	if !slices.StringInSlice(Config.Labels.Color.Static, "bb") {
+		t.Errorf("Config.Colors.Labels.Static is missing value 'bb': %v", Config.Labels.Color.Static)
 	}
-	if !slices.StringInSlice(Config.Colors.Labels.Static, "ccc") {
-		t.Errorf("Config.Colors.Labels.Static is missing value 'ccc': %v", Config.Colors.Labels.Static)
+	if !slices.StringInSlice(Config.Labels.Color.Static, "ccc") {
+		t.Errorf("Config.Colors.Labels.Static is missing value 'ccc': %v", Config.Labels.Color.Static)
 	}
 	if Config.Listen.Port != 8080 {
 		t.Errorf("Config.Listen.Port is invalid, expected 8080, got %v", Config.Listen.Port)
@@ -50,7 +50,7 @@ func TestReadConfig(t *testing.T) {
 	os.Setenv("ALERTMANAGER_INTERVAL", "1s")
 	os.Setenv("ALERTMANAGER_URIS", "default:http://localhost")
 	os.Setenv("DEBUG", "true")
-	os.Setenv("COLORS_LABELS_STATIC", "a bb ccc")
+	os.Setenv("LABELS_COLOR_STATIC", "a bb ccc")
 	Config.Read()
 	testReadConfig(t)
 }

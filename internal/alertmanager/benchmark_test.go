@@ -27,7 +27,7 @@ func BenchmarkDedupAutocomplete(b *testing.B) {
 }
 
 func BenchmarkDedupColors(b *testing.B) {
-	os.Setenv("COLORS_LABELS_UNIQUE", "cluster instance @receiver")
+	os.Setenv("LABELS_COLOR_UNIQUE", "cluster instance @receiver")
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
 	config.Config.Read()
 	if err := pullAlerts(); err != nil {

@@ -10,19 +10,18 @@ annotations:
   hidden:
     - help
   visible: []
-colors:
-  labels:
+debug: false
+filters:
+  default:
+    - "@receiver=by-cluster-service"
+labels:
+  color:
     static:
       - job
     unique:
       - cluster
       - instance
       - "@receiver"
-debug: false
-filters:
-  default:
-    - "@receiver=by-cluster-service"
-labels:
   keep: []
   strip: []
 listen:
@@ -35,6 +34,7 @@ jira:
   - regex: DEVOPS-[0-9]+
     uri: https://jira.example.com
 receivers:
+  keep: []
   strip: []
 sentry:
   private: secret

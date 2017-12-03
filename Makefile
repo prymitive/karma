@@ -63,8 +63,8 @@ clean:
 .PHONY: run
 run: $(NAME)
 	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
-	COLORS_LABELS_UNIQUE="@receiver instance cluster" \
-	COLORS_LABELS_STATIC="job" \
+	LABELS_COLOR_UNIQUE="@receiver instance cluster" \
+	LABELS_COLOR_STATIC="job" \
 	DEBUG="$(GIN_DEBUG)" \
 	FILTER_DEFAULT="@state=active" \
 	PORT=$(PORT) \
@@ -82,8 +82,8 @@ run-docker: docker-image
 	    $(DOCKER_ARGS) \
 	    -v $(MOCK_PATH):$(MOCK_PATH) \
 	    -e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
-	    -e COLOR_LABELS_UNIQUE="instance cluster" \
-	    -e COLOR_LABELS_STATIC="job" \
+	    -e LABELS_COLOR_UNIQUE="instance cluster" \
+	    -e LABELS_COLOR_STATIC="job" \
 	    -e DEBUG="$(GIN_DEBUG)" \
 	    -e PORT=$(PORT) \
 	    -p $(PORT):$(PORT) \

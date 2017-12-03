@@ -44,7 +44,7 @@ func index(c *gin.Context) {
 		"QFilter":           q,
 		"DefaultUsed":       defaultUsed,
 		"DefaultFilter":     strings.Join(config.Config.Filters.Default, ","),
-		"StaticColorLabels": strings.Join(config.Config.Colors.Labels.Static, " "),
+		"StaticColorLabels": strings.Join(config.Config.Labels.Color.Static, " "),
 		"WebPrefix":         config.Config.Listen.Prefix,
 	})
 

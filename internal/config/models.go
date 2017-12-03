@@ -25,12 +25,6 @@ type configSchema struct {
 		Hidden  []string
 		Visible []string
 	}
-	Colors struct {
-		Labels struct {
-			Static []string
-			Unique []string
-		}
-	}
 	Debug   bool
 	Filters struct {
 		Default []string
@@ -38,6 +32,10 @@ type configSchema struct {
 	Labels struct {
 		Keep  []string
 		Strip []string
+		Color struct {
+			Static []string
+			Unique []string
+		}
 	}
 	Listen struct {
 		Address string
