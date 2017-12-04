@@ -50,12 +50,12 @@ func TestDedupAlerts(t *testing.T) {
 }
 
 func TestDedupAlertsWithoutLabels(t *testing.T) {
-	config.Config.KeepLabels = []string{"xyz"}
+	config.Config.Labels.Keep = []string{"xyz"}
 	if err := pullAlerts(); err != nil {
 		t.Error(err)
 	}
 	alertGroups := alertmanager.DedupAlerts()
-	config.Config.KeepLabels = []string{}
+	config.Config.Labels.Keep = []string{}
 
 	if len(alertGroups) != 10 {
 		t.Errorf("Expected %d alert groups, got %d", 10, len(alertGroups))
@@ -87,8 +87,8 @@ func TestDedupAutocomplete(t *testing.T) {
 }
 
 func TestDedupColors(t *testing.T) {
-	os.Setenv("COLOR_LABELS_UNIQUE", "cluster instance @receiver")
-	os.Setenv("ALERTMANAGER_URIS", "default:http://localhost")
+	os.Setenv("LABELS_COLOR_UNIQUE", "cluster instance @receiver")
+	os.Setenv("ALERTMANAGER_URI", "http://localhost")
 	config.Config.Read()
 	if err := pullAlerts(); err != nil {
 		t.Error(err)
@@ -97,5 +97,18 @@ func TestDedupColors(t *testing.T) {
 	expected := 3
 	if len(colors) != expected {
 		t.Errorf("Expected %d color keys, got %d", expected, len(colors))
+	}
+}
+
+func TestStripReceivers(t *testing.T) {
+	os.Setenv("RECEIVERS_STRIP", "by-name by-cluster-service")
+	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	config.Config.Read()
+	if err := pullAlerts(); err != nil {
+		t.Error(err)
+	}
+	alerts := alertmanager.DedupAlerts()
+	if len(alerts) > 0 {
+		t.Errorf("Expected no alerts after stripping all receivers, got %d", len(alerts))
 	}
 }

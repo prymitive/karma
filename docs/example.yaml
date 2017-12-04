@@ -1,0 +1,41 @@
+alertmanager:
+  interval: 60s
+  servers:
+    - name: mock
+      uri: file://internal/mock/0.11.0
+      timeout: 10s
+annotations:
+  default:
+    hidden: false
+  hidden:
+    - help
+  visible: []
+debug: false
+filters:
+  default:
+    - "@receiver=by-cluster-service"
+labels:
+  color:
+    static:
+      - job
+    unique:
+      - cluster
+      - instance
+      - "@receiver"
+  keep: []
+  strip: []
+listen:
+  address: "0.0.0.0"
+  port: 8080
+  prefix: /
+log:
+  level: info
+jira:
+  - regex: DEVOPS-[0-9]+
+    uri: https://jira.example.com
+receivers:
+  keep: []
+  strip: []
+sentry:
+  private: secret
+  public: 123456789

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"path"
 	"strings"
@@ -8,6 +9,7 @@ import (
 
 	"github.com/cloudflare/unsee/internal/alertmanager"
 	"github.com/cloudflare/unsee/internal/config"
+	"github.com/cloudflare/unsee/internal/models"
 	"github.com/cloudflare/unsee/internal/transform"
 
 	"github.com/DeanThompson/ginpprof"
@@ -36,7 +38,7 @@ var (
 )
 
 func getViewURL(sub string) string {
-	u := path.Join(config.Config.WebPrefix, sub)
+	u := path.Join(config.Config.Listen.Prefix, sub)
 	if strings.HasSuffix(sub, "/") {
 		// if sub path had trailing slash then add it here, since path.Join will
 		// skip it
@@ -57,33 +59,52 @@ func setupRouter(router *gin.Engine) {
 }
 
 func setupUpstreams() {
-	for _, s := range config.Config.AlertmanagerURIs {
-		z := strings.SplitN(s, ":", 2)
-		if len(z) != 2 {
-			log.Fatalf("Invalid Alertmanager URI '%s', expected format 'name:uri'", s)
-			continue
-		}
-		name := z[0]
-		uri := z[1]
-		err := alertmanager.NewAlertmanager(name, uri, config.Config.AlertmanagerTimeout)
+	for _, s := range config.Config.Alertmanager.Servers {
+		err := alertmanager.NewAlertmanager(s.Name, s.URI, s.Timeout)
 		if err != nil {
-			log.Fatalf("Failed to configure Alertmanager '%s' with URI '%s': %s", name, uri, err)
+			log.Fatalf("Failed to configure Alertmanager '%s' with URI '%s': %s", s.Name, s.URI, err)
 		}
 	}
 }
 
-func main() {
-	log.Infof("Version: %s", version)
+func setupLogger() {
+	switch config.Config.Log.Level {
+	case "debug":
+		log.SetLevel(log.DebugLevel)
+	case "info":
+		log.SetLevel(log.InfoLevel)
+	case "warning":
+		log.SetLevel(log.WarnLevel)
+	case "error":
+		log.SetLevel(log.ErrorLevel)
+	case "fatal":
+		log.SetLevel(log.FatalLevel)
+	case "panic":
+		log.SetLevel(log.PanicLevel)
+	default:
+		log.Fatalf("Unknown log level '%s'", config.Config.Log.Level)
+	}
+}
 
+func main() {
 	config.Config.Read()
+	setupLogger()
 
 	// timer duration cannot be zero second or a negative one
-	if config.Config.AlertmanagerTTL <= time.Second*0 {
-		log.Fatalf("Invalid AlertmanagerTTL value '%v'", config.Config.AlertmanagerTTL)
+	if config.Config.Alertmanager.Interval <= time.Second*0 {
+		log.Fatalf("Invalid AlertmanagerTTL value '%v'", config.Config.Alertmanager.Interval)
 	}
 
-	config.Config.LogValues()
-	transform.ParseRules(config.Config.JiraRegexp)
+	log.Infof("Version: %s", version)
+	if config.Config.Log.Config {
+		config.Config.LogValues()
+	}
+
+	jiraRules := []models.JiraRule{}
+	for _, rule := range config.Config.JIRA {
+		jiraRules = append(jiraRules, models.JiraRule{Regex: rule.Regex, URI: rule.URI})
+	}
+	transform.ParseRules(jiraRules)
 
 	apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 
@@ -94,12 +115,12 @@ func main() {
 	}
 
 	// before we start try to fetch data from Alertmanager
-	log.Infof("Initial Alertmanager query, this can delay startup up to %s", 3*config.Config.AlertmanagerTimeout)
+	log.Info("Initial Alertmanager query")
 	pullFromAlertmanager()
 	log.Info("Done, starting HTTP server")
 
 	// background loop that will fetch updates from Alertmanager
-	ticker = time.NewTicker(config.Config.AlertmanagerTTL)
+	ticker = time.NewTicker(config.Config.Alertmanager.Interval)
 	go Tick()
 
 	switch config.Config.Debug {
@@ -124,13 +145,15 @@ func main() {
 		ginpprof.Wrapper(router)
 	}
 
-	if config.Config.SentryDSN != "" {
+	if config.Config.Sentry.Public != "" {
 		raven.SetRelease(version)
 		router.Use(sentry.Recovery(raven.DefaultClient, false))
 	}
 
 	setupRouter(router)
-	err := router.Run()
+	listen := fmt.Sprintf("%s:%d", config.Config.Listen.Address, config.Config.Listen.Port)
+	log.Infof("Listening on %s", listen)
+	err := router.Run(listen)
 	if err != nil {
 		log.Fatal(err)
 	}

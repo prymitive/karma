@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"regexp"
-	"strings"
 
 	"github.com/cloudflare/unsee/internal/models"
 )
@@ -18,17 +17,14 @@ var jiraDetectRules = []jiraDetectRule{}
 
 // ParseRules will parse and validate list of JIRA detection rules provided
 // from config, valid rules will be stored for future use in DetectJIRAs() calls
-func ParseRules(rules []string) {
-	for _, s := range rules {
-		ss := strings.SplitN(s, "@", 2)
-		re := ss[0]
-		url := ss[1]
-		if re == "" || url == "" {
-			log.Fatalf("Invalid JIRA rule '%s', regexp part is '%s', url is '%s'", s, re, url)
+func ParseRules(rules []models.JiraRule) {
+	for _, rule := range rules {
+		if rule.Regex == "" || rule.URI == "" {
+			log.Fatalf("Invalid JIRA rule with regexp '%s' and url '%s'", rule.Regex, rule.URI)
 		}
 		jdr := jiraDetectRule{
-			Regexp: regexp.MustCompile(re),
-			URL:    url,
+			Regexp: regexp.MustCompile(rule.Regex),
+			URL:    rule.URI,
 		}
 		jiraDetectRules = append(jiraDetectRules, jdr)
 	}
