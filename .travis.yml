@@ -1,20 +1,44 @@
-language: go
-
-go:
-  - 1.9.x
-
 go_import_path: github.com/cloudflare/unsee
 
-cache:
-  directories:
-    - node_modules
-    - vendor
+jobs:
+  include:
+    - stage: Test Go code
+      language: go
+      go:  "1.9.2"
+      before_script:
+        - make mock-assets
+      cache:
+        directories:
+          - vendor
+      script: make test-go
 
-env:
-  - NODE_ENV=test
+    - stage: Test JavaScript code
+      language: node_js
+      node_js: "8"
+      env:
+        - NODE_ENV=test
+      cache:
+        directories:
+          - node_modules
+      script: make test-js
 
-before_script:
-  - nvm install 8
+    - stage: Lint Go code
+      language: go
+      go:  "1.9.2"
+      script: make lint-go
 
-script:
-  - make test
+    - stage: Lint JavaScript code
+      language: node_js
+      node_js: "8"
+      cache:
+        directories:
+          - node_modules
+      script: make lint-js
+
+    - stage: Build Docker image
+      sudo: true
+      addons:
+        apt:
+          packages:
+            - docker-ce
+      script: make docker-image
