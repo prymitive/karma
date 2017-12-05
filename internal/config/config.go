@@ -168,6 +168,11 @@ func (config *configSchema) LogValues() {
 	}
 	cfg.Alertmanager.Servers = servers
 
+	// replace secret in Sentry DNS with 'xxx'
+	if config.Sentry.Private != "" {
+		config.Sentry.Private = hideURLPassword(config.Sentry.Private)
+	}
+
 	out, err := yaml.Marshal(cfg)
 	if err != nil {
 		log.Error(err)
