@@ -20,6 +20,8 @@ jobs:
       cache:
         directories:
           - node_modules
+      # install defaults to "npm install", which is done via make
+      install: []
       script: make test-js
 
     - stage: Lint Go code
@@ -33,6 +35,8 @@ jobs:
       cache:
         directories:
           - node_modules
+      # install defaults to "npm install", which is done via make
+      install: []
       script: make lint-js
 
     - stage: Build Docker image
