@@ -21,45 +21,60 @@ endif
 
 .DEFAULT_GOAL := $(NAME)
 
-.build/go-bindata:
+.build/deps-build-go.ok:
 	@mkdir -p .build
+	go get -u github.com/golang/dep/cmd/dep
 	go get -u github.com/jteeuwen/go-bindata/...
-	touch $@
-
-.build/go-bindata-assetfs:
-	@mkdir -p .build
 	go get -u github.com/elazarl/go-bindata-assetfs/...
 	touch $@
 
-.build/golint:
+.build/deps-lint-go.ok:
 	@mkdir -p .build
 	go get -u github.com/golang/lint/golint
 	touch $@
 
-.build/npm.install: package.json package-lock.json
+.build/deps-build-node.ok: package.json package-lock.json
 	@mkdir -p .build
 	npm install
 	touch $@
 
-.build/deps.ok: .build/go-bindata .build/go-bindata-assetfs .build/golint .build/npm.install
+.build/artifacts-bindata_assetfs.%:
 	@mkdir -p .build
+	rm -f .build/artifacts-bindata_assetfs.*
 	touch $@
 
-.build/bindata_assetfs.%:
+.build/artifacts-webpack.ok: .build/deps-build-node.ok $(ASSET_SOURCES) webpack.config.js
 	@mkdir -p .build
-	rm -f .build/bindata_assetfs.*
-	touch $@
-
-bindata_assetfs.go: .build/deps.ok .build/bindata_assetfs.$(GO_BINDATA_MODE) $(ASSET_SOURCES) webpack.config.js .build/vendor.ok
 	$(CURDIR)/node_modules/.bin/webpack
+	touch $@
+
+bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.$(GO_BINDATA_MODE) .build/vendor.ok .build/artifacts-webpack.ok
 	go-bindata-assetfs $(GO_BINDATA_FLAGS) -prefix assets -nometadata assets/templates/... assets/static/dist/...
 
-$(NAME): .build/deps.ok .build/vendor.ok bindata_assetfs.go $(SOURCES)
+$(NAME): .build/deps-build-go.ok .build/vendor.ok bindata_assetfs.go $(SOURCES)
 	go build -ldflags "-X main.version=$(VERSION)"
+
+.build/vendor.ok: .build/deps-build-go.ok Gopkg.lock Gopkg.toml
+	dep ensure
+	dep prune
+	touch $@
+
+.PHONY: vendor
+vendor: .build/deps-build-go.ok
+	dep ensure
+	dep prune
+
+.PHONY: vendor-update
+vendor-update: .build/deps-build-go.ok
+	dep ensure -update
+	dep prune
+
+.PHONY: webpack
+webpack: .build/artifacts-webpack.ok
 
 .PHONY: clean
 clean:
-	rm -fr .build $(NAME)
+	rm -fr .build bindata_assetfs.go $(NAME)
 
 .PHONY: run
 run: $(NAME)
@@ -91,11 +106,11 @@ run-docker: docker-image
 	    $(NAME):$(VERSION)
 
 .PHONY: lint-go
-lint-go: .build/golint
+lint-go: .build/deps-lint-go.ok
 	golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
 
 .PHONY: lint-js
-lint-js: .build/npm.install
+lint-js: .build/deps-build-node.ok
 	$(CURDIR)/node_modules/.bin/eslint --quiet assets/static/*.js
 
 .PHONY: lint
@@ -103,7 +118,7 @@ lint: lint-go lint-js
 
 # Creates mock bindata_assetfs.go with source assets rather than webpack generated ones
 .PHONY: mock-assets
-mock-assets: .build/go-bindata .build/go-bindata-assetfs
+mock-assets: .build/deps-build-go.ok
 	mkdir -p $(CURDIR)/assets/static/dist/templates
 	cp $(CURDIR)/assets/static/*.* $(CURDIR)/assets/static/dist/
 	touch $(CURDIR)/assets/static/dist/templates/loader_unsee.html
@@ -123,23 +138,3 @@ test-js:
 
 .PHONY: test
 test: lint test-go test-js
-
-.build/dep.ok:
-	go get -u github.com/golang/dep/cmd/dep
-	@mkdir -p .build
-	touch $@
-
-.build/vendor.ok: Gopkg.lock Gopkg.toml .build/dep.ok
-	dep ensure
-	dep prune
-	touch $@
-
-.PHONY: vendor
-vendor: .build/dep.ok
-	dep ensure
-	dep prune
-
-.PHONY: vendor-update
-vendor-update: .build/dep.ok
-	dep ensure -update
-	dep prune
