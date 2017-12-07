@@ -2,10 +2,13 @@ package alertmanager
 
 import (
 	"fmt"
+	"path"
 	"sort"
+	"strings"
 	"sync"
 	"time"
 
+	"github.com/cloudflare/unsee/internal/config"
 	"github.com/cloudflare/unsee/internal/mapper"
 	"github.com/cloudflare/unsee/internal/models"
 	"github.com/cloudflare/unsee/internal/transform"
@@ -29,6 +32,8 @@ type Alertmanager struct {
 	URI     string        `json:"uri"`
 	Timeout time.Duration `json:"timeout"`
 	Name    string        `json:"name"`
+	// whenever this instance should be proxied
+	ProxyRequests bool
 	// lock protects data access while updating
 	lock sync.RWMutex
 	// fields for storing pulled data
@@ -107,6 +112,22 @@ func (am *Alertmanager) pullSilences(version string) error {
 	return nil
 }
 
+// this is the URI of this Alertmanager we put in JSON reponse
+// it's either real full URI or a proxy relative URI
+func (am *Alertmanager) publicURI() string {
+	if am.ProxyRequests {
+		sub := fmt.Sprintf("/proxy/alertmanager/%s", am.Name)
+		uri := path.Join(config.Config.Listen.Prefix, sub)
+		if strings.HasSuffix(sub, "/") {
+			// if sub path had trailing slash then add it here, since path.Join will
+			// skip it
+			return uri + "/"
+		}
+		return uri
+	}
+	return am.URI
+}
+
 func (am *Alertmanager) pullAlerts(version string) error {
 	mapper, err := mapper.GetAlertMapper(version)
 	if err != nil {
@@ -163,7 +184,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			alert.Alertmanager = []models.AlertmanagerInstance{
 				models.AlertmanagerInstance{
 					Name:     am.Name,
-					URI:      am.URI,
+					URI:      am.publicURI(),
 					State:    alert.State,
 					StartsAt: alert.StartsAt,
 					EndsAt:   alert.EndsAt,

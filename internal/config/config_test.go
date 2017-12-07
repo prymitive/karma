@@ -53,6 +53,7 @@ func testReadConfig(t *testing.T) {
   - name: default
     uri: http://localhost
     timeout: 40s
+    proxy: false
 annotations:
   default:
     hidden: true

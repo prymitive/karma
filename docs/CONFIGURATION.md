@@ -49,6 +49,7 @@ alertmanager:
     - name: string
       uri: string
       timeout: duration
+      proxy: bool
 ```
 
 * `interval` - how often alerts should be refreshed, a string in
@@ -70,8 +71,12 @@ alertmanager:
    of unsee with `make run`.
 * `timeout` - timeout for requests send to this Alertmanager server, a string in
   [time.Duration](https://golang.org/pkg/time/#ParseDuration) format.
+* `proxy` - if enabled requests from user browsers to this Alertmanager will be
+            proxied via unsee. This applies to requests made when managing
+            silences via unsee (creating or expiring silences).
 
-Example:
+Example with two production Alertmanager instances running in HA mode and a
+staging instance that is also proxied:
 
 ```yaml
 alertmanager:
@@ -80,12 +85,15 @@ alertmanager:
     - name: production1
       uri: https://alertmanager1.prod.example.com
       timeout: 20s
+      proxy: false
     - name: production2
       uri: https://alertmanager2.prod.example.com
       timeout: 20s
+      proxy: false
     - name: staging
       uri: https://alertmanager.staging.example.com
       timeout: 30s
+      proxy: true
 ```
 
 Defaults:

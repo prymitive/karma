@@ -15,7 +15,7 @@ var (
 )
 
 // NewAlertmanager creates a new Alertmanager instance
-func NewAlertmanager(name, uri string, timeout time.Duration) error {
+func NewAlertmanager(name, uri string, timeout time.Duration, proxyRequests bool) error {
 	if _, found := upstreams[name]; found {
 		return fmt.Errorf("Alertmanager upstream '%s' already exist", name)
 	}
@@ -27,14 +27,15 @@ func NewAlertmanager(name, uri string, timeout time.Duration) error {
 	}
 
 	upstreams[name] = &Alertmanager{
-		URI:          uri,
-		Timeout:      timeout,
-		Name:         name,
-		lock:         sync.RWMutex{},
-		alertGroups:  []models.AlertGroup{},
-		silences:     map[string]models.Silence{},
-		colors:       models.LabelsColorMap{},
-		autocomplete: []models.Autocomplete{},
+		URI:           uri,
+		Timeout:       timeout,
+		Name:          name,
+		ProxyRequests: proxyRequests,
+		lock:          sync.RWMutex{},
+		alertGroups:   []models.AlertGroup{},
+		silences:      map[string]models.Silence{},
+		colors:        models.LabelsColorMap{},
+		autocomplete:  []models.Autocomplete{},
 		metrics: alertmanagerMetrics{
 			errors: map[string]float64{
 				labelValueErrorsAlerts:   0,

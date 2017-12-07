@@ -6,6 +6,7 @@ type alertmanagerConfig struct {
 	Name    string
 	URI     string
 	Timeout time.Duration
+	Proxy   bool
 }
 
 type jiraRule struct {

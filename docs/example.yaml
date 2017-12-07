@@ -1,9 +1,10 @@
 alertmanager:
   interval: 60s
   servers:
-    - name: mock
-      uri: file://internal/mock/0.11.0
+    - name: local
+      uri: http://localhost:9093
       timeout: 10s
+      proxy: true
 annotations:
   default:
     hidden: false
@@ -29,6 +30,7 @@ listen:
   port: 8080
   prefix: /
 log:
+  config: false
   level: info
 jira:
   - regex: DEVOPS-[0-9]+

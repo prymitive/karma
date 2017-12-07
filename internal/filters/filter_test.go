@@ -485,7 +485,7 @@ var tests = []filterTest{
 func TestFilters(t *testing.T) {
 	log.SetLevel(log.ErrorLevel)
 
-	err := alertmanager.NewAlertmanager("test", "http://localhost", time.Second)
+	err := alertmanager.NewAlertmanager("test", "http://localhost", time.Second, false)
 	am := alertmanager.GetAlertmanagerByName("test")
 	if err != nil {
 		t.Error(err)
