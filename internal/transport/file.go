@@ -53,6 +53,9 @@ func (t *FileTransport) Read(uri string) (io.ReadCloser, error) {
 
 	log.Infof("Reading file '%s'", filename)
 	fd, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
 	fr := fileReader{fd: fd}
-	return &fr, err
+	return &fr, nil
 }

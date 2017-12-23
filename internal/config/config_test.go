@@ -59,6 +59,10 @@ func testReadConfig(t *testing.T) {
     uri: http://localhost
     timeout: 40s
     proxy: false
+    tls:
+      ca: ""
+      cert: ""
+      key: ""
 annotations:
   default:
     hidden: true

@@ -2,6 +2,7 @@ package alertmanager
 
 import (
 	"fmt"
+	"net/http"
 	"sync"
 	"time"
 
@@ -12,7 +13,7 @@ import (
 )
 
 // Option allows to pass functional options to NewAlertmanager()
-type Option func(am *Alertmanager)
+type Option func(am *Alertmanager) error
 
 var (
 	upstreams = map[string]*Alertmanager{}
@@ -38,11 +39,14 @@ func NewAlertmanager(name, uri string, opts ...Option) (*Alertmanager, error) {
 	}
 
 	for _, opt := range opts {
-		opt(am)
+		err := opt(am)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	var err error
-	am.transport, err = transport.NewTransport(am.URI, am.RequestTimeout)
+	am.transport, err = transport.NewTransport(am.URI, am.RequestTimeout, am.httpTransport)
 	if err != nil {
 		return am, err
 	}
@@ -89,15 +93,26 @@ func GetAlertmanagerByName(name string) *Alertmanager {
 // WithProxy option can be passed to NewAlertmanager in order to enable request
 // proxying for unsee clients
 func WithProxy(proxied bool) Option {
-	return func(am *Alertmanager) {
+	return func(am *Alertmanager) error {
 		am.ProxyRequests = proxied
+		return nil
 	}
 }
 
 // WithRequestTimeout option can be passed to NewAlertmanager in order to set
 // a custom timeout for Alertmanager upstream requests
 func WithRequestTimeout(timeout time.Duration) Option {
-	return func(am *Alertmanager) {
+	return func(am *Alertmanager) error {
 		am.RequestTimeout = timeout
+		return nil
+	}
+}
+
+// WithHTTPTransport option can be passed to NewAlertmanager in order to set
+// a custom HTTP transport (http.RoundTripper implementation)
+func WithHTTPTransport(httpTransport http.RoundTripper) Option {
+	return func(am *Alertmanager) error {
+		am.httpTransport = httpTransport
+		return nil
 	}
 }

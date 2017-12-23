@@ -3,6 +3,7 @@ package alertmanager
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"path"
 	"sort"
 	"strings"
@@ -37,6 +38,9 @@ type Alertmanager struct {
 	ProxyRequests bool
 	// transport instances are specific to URI scheme we collect from
 	transport transport.Transport
+	// implements how we fetch requests from the Alertmanager, we don't set it
+	// by default so it's nil and http.DefaultTransport is used
+	httpTransport http.RoundTripper
 	// lock protects data access while updating
 	lock sync.RWMutex
 	// fields for storing pulled data
@@ -58,15 +62,16 @@ func (am *Alertmanager) detectVersion() string {
 		log.Errorf("Failed to join url '%s' and path 'api/v1/status': %s", am.URI, err)
 		return defaultVersion
 	}
+
 	ver := alertmanagerVersion{}
 
 	// read raw body from the source
 	source, err := am.transport.Read(url)
-	defer source.Close()
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
 		return defaultVersion
 	}
+	defer source.Close()
 
 	// decode body as JSON
 	err = json.NewDecoder(source).Decode(&ver)
@@ -114,11 +119,11 @@ func (am *Alertmanager) pullSilences(version string) error {
 	start := time.Now()
 	// read raw body from the source
 	source, err := am.transport.Read(url)
-	defer source.Close()
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
 		return err
 	}
+	defer source.Close()
 
 	// decode body text
 	silences, err := mapper.Decode(source)
@@ -173,11 +178,11 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	start := time.Now()
 	// read raw body from the source
 	source, err := am.transport.Read(url)
-	defer source.Close()
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
 		return err
 	}
+	defer source.Close()
 
 	// decode body text
 	groups, err := mapper.Decode(source)

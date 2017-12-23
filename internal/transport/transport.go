@@ -15,7 +15,7 @@ type Transport interface {
 
 // NewTransport creates an instance of Transport that can handle URI schema
 // for the passed uri string
-func NewTransport(uri string, timeout time.Duration) (Transport, error) {
+func NewTransport(uri string, timeout time.Duration, clientTransport http.RoundTripper) (Transport, error) {
 	u, err := url.Parse(uri)
 	if err != nil {
 		return nil, err
@@ -23,7 +23,11 @@ func NewTransport(uri string, timeout time.Duration) (Transport, error) {
 
 	switch u.Scheme {
 	case "http", "https":
-		return &HTTPTransport{client: http.Client{Timeout: timeout}}, nil
+		client := http.Client{
+			Timeout:   timeout,
+			Transport: clientTransport,
+		}
+		return &HTTPTransport{client: client}, nil
 	case "file":
 		return &FileTransport{}, nil
 	default:

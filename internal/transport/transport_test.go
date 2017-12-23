@@ -1,8 +1,13 @@
 package transport_test
 
 import (
-	"encoding/json"
+	"crypto/tls"
+	"crypto/x509"
 	"fmt"
+	"io"
+	"net/http"
+	"net/http/httptest"
+	"os"
 	"testing"
 	"time"
 
@@ -10,95 +15,149 @@ import (
 	"github.com/cloudflare/unsee/internal/transport"
 
 	log "github.com/sirupsen/logrus"
-	httpmock "gopkg.in/jarcoal/httpmock.v1"
 )
 
-type transportTest struct {
-	uri     string
-	timeout time.Duration
-	failed  bool
+func getFileSize(path string) int64 {
+	file, err := os.Open(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fi, err := file.Stat()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return fi.Size()
 }
 
-var transportTests = []transportTest{
-	transportTest{
-		uri: "http://localhost/status",
+type httpTransportTest struct {
+	timeout   time.Duration
+	useTLS    bool
+	tlsConfig *tls.Config
+	failed    bool
+}
+
+var httpTransportTests = []httpTransportTest{
+	{
+	// plain HTTP request, should work
 	},
-	transportTest{
-		uri:    "http://localhost/404",
-		failed: true,
+	{
+		// just enable TLS, will use proper RootCA certs so it should work
+		useTLS: true,
 	},
-	transportTest{
-		uri:    "http://localhost/invalid",
-		failed: true,
+	{
+		// use empty RootCA pool so we fail on verifying server certificate
+		useTLS:    true,
+		tlsConfig: &tls.Config{RootCAs: x509.NewCertPool()},
+		failed:    true,
 	},
-	transportTest{
-		uri: "https://localhost/status",
+}
+
+type fileTransportTest struct {
+	uri     string
+	failed  bool
+	timeout time.Duration
+	size    int64
+}
+
+var fileTransportTests = []fileTransportTest{
+	fileTransportTest{
+		uri:  fmt.Sprintf("file://%s", mock.GetAbsoluteMockPath("status", mock.ListAllMocks()[0])),
+		size: getFileSize(mock.GetAbsoluteMockPath("status", mock.ListAllMocks()[0])),
 	},
-	transportTest{
-		uri:    "https://localhost/404",
-		failed: true,
-	},
-	transportTest{
-		uri:    "https://localhost/invalid",
-		failed: true,
-	},
-	transportTest{
-		uri: fmt.Sprintf("file://%s", mock.GetAbsoluteMockPath("status", mock.ListAllMocks()[0])),
-	},
-	transportTest{
+	fileTransportTest{
 		uri:    "file:///non-existing-file.abcdef",
 		failed: true,
 	},
-	transportTest{
+	fileTransportTest{
 		uri:    "file://transport.go",
+		size:   getFileSize("transport.go"),
 		failed: true,
 	},
 }
 
-type mockStatus struct {
-	status  string
-	integer int
-	yes     bool
-	no      bool
+func readAll(source io.ReadCloser) int64 {
+	var readSize int64
+	b := make([]byte, 512)
+	for {
+		got, err := source.Read(b)
+		readSize += int64(got)
+		if err == io.EOF {
+			break
+		}
+	}
+	return readSize
 }
 
-func TestTransport(t *testing.T) {
+func TestHTTPReader(t *testing.T) {
 	log.SetLevel(log.FatalLevel)
-	httpmock.Activate()
-	defer httpmock.DeactivateAndReset()
-	mockJSON := `{
-			"response": "success",
-			"integer": 123,
-			"yes": true,
-			"no": false
-		}`
-	httpmock.RegisterResponder("GET", "http://localhost/status", httpmock.NewStringResponder(200, mockJSON))
-	httpmock.RegisterResponder("GET", "http://localhost/404", httpmock.NewStringResponder(404, "404"))
-	httpmock.RegisterResponder("GET", "http://localhost/invalid", httpmock.NewStringResponder(200, "bad json}{}"))
-	httpmock.RegisterResponder("GET", "https://localhost/status", httpmock.NewStringResponder(200, mockJSON))
-	httpmock.RegisterResponder("GET", "https://localhost/404", httpmock.NewStringResponder(404, "404"))
-	httpmock.RegisterResponder("GET", "https://localhost/invalid", httpmock.NewStringResponder(200, "bad json}{}"))
 
-	for _, testCase := range transportTests {
-		tr, err := transport.NewTransport(testCase.uri, testCase.timeout)
-		if err != nil {
-			t.Error(err)
+	responseBody := "1234"
+	handler := func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprintln(w, responseBody)
+	}
+	plainTS := httptest.NewServer(http.HandlerFunc(handler))
+	defer plainTS.Close()
+
+	tlsTS := httptest.NewTLSServer(http.HandlerFunc(handler))
+
+	defer tlsTS.Close()
+	caPool := x509.NewCertPool()
+	caPool.AddCert(tlsTS.Certificate())
+
+	for _, testCase := range httpTransportTests {
+		var uri string
+		if testCase.useTLS {
+			uri = tlsTS.URL
+		} else {
+			uri = plainTS.URL
 		}
 
-		source, err := tr.Read(testCase.uri)
+		tlsConfig := testCase.tlsConfig
+		if tlsConfig == nil {
+			tlsConfig = &tls.Config{RootCAs: caPool}
+		}
+
+		transp, err := transport.NewTransport(uri, testCase.timeout, &http.Transport{TLSClientConfig: tlsConfig})
+		if err != nil {
+			t.Errorf("[%v] failed to create new HTTP transport: %s", testCase, err)
+		}
+
+		source, err := transp.Read(uri)
 		if err != nil {
 			if !testCase.failed {
-				t.Errorf("[%s] transport Read() failed with: %s", testCase.uri, err)
+				t.Errorf("[%v] unexpected failure while creating reader: %s", testCase, err)
 			}
 			continue
 		}
-
-		r := mockStatus{}
-		err = json.NewDecoder(source).Decode(&r)
+		got := readAll(source)
 		source.Close()
 
-		if (err != nil) != testCase.failed {
-			t.Errorf("[%s] Expected failure: %v, Read() failed: %v, error: %s", testCase.uri, testCase.failed, (err != nil), err)
+		if got != int64(len(responseBody)+1) {
+			t.Errorf("[%v] Wrong respone size, got %d, expected %d", testCase, got, len(responseBody))
+		}
+	}
+}
+
+func TestFileReader(t *testing.T) {
+	//log.SetLevel(log.FatalLevel)
+	for _, testCase := range fileTransportTests {
+		transp, err := transport.NewTransport(testCase.uri, testCase.timeout, &http.Transport{})
+		if err != nil {
+			t.Errorf("[%v] failed to create new transport: %s", testCase, err)
+		}
+
+		source, err := transp.Read(testCase.uri)
+		if err != nil {
+			if !testCase.failed {
+				t.Errorf("[%v] unexpected failure while creating reader: %s", testCase, err)
+			}
+			continue
+		}
+		got := readAll(source)
+		source.Close()
+
+		if got != testCase.size {
+			t.Errorf("[%v] Wrong respone size, got %d, expected %d", testCase, got, testCase.size)
 		}
 	}
 }

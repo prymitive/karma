@@ -1,6 +1,7 @@
 package alertmanager
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"time"
 
@@ -21,7 +22,7 @@ type alertmanagerVersion struct {
 }
 
 // GetVersion returns version information of the remote Alertmanager endpoint
-func GetVersion(uri string, timeout time.Duration) string {
+func GetVersion(uri string, timeout time.Duration, tlsConfig *tls.Config) string {
 	// if everything fails assume Alertmanager is at latest possible version
 	defaultVersion := "999.0.0"
 
@@ -32,7 +33,7 @@ func GetVersion(uri string, timeout time.Duration) string {
 	}
 	ver := alertmanagerVersion{}
 
-	t, err := transport.NewTransport(uri, timeout)
+	t, err := transport.NewTransport(uri, timeout, tlsConfig)
 	if err != nil {
 		log.Errorf("Unable to get the version information from %s", url)
 		return defaultVersion
