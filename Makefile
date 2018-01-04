@@ -133,7 +133,7 @@ test-go: .build/vendor.ok
 	go test -bench=. -cover `go list ./... | grep -v /vendor/`
 
 .PHONY: test-js
-test-js:
+test-js: .build/deps-build-node.ok
 	npm test
 
 .PHONY: test
