@@ -150,6 +150,13 @@
               <%- am.name %>
             </div>
           <% } %>
+          <div class="label label-list label-default cursor-pointer click-to-copy"
+             title="Click to copy this silence ID to clipboard"
+             data-toggle="tooltip"
+             data-placement="top"
+             data-clipboard-text="<%- silence.id %>">
+             <%- silence.id %>
+          </div>
           <div class="label label-list label-default label-age label-ts cursor-help"
              data-toggle="tooltip"
              data-placement="top"

@@ -1,6 +1,7 @@
 "use strict";
 
 const $ = window.$ = window.jQuery = require("jquery");
+const Clipboard = require("clipboard");
 const moment = require("moment");
 const Raven = require("raven-js");
 
@@ -43,6 +44,7 @@ var selectors = {
     refreshButton: "#refresh",
     errors: "#errors",
     instanceErrors: "#instance-errors",
+    clickToCopy: ".click-to-copy"
 };
 
 function parseAJAXError(xhr, textStatus) {
@@ -340,6 +342,16 @@ function onReady(localStore) {
         // enable tooltips, #settings is a dropdown so it already uses different data-toggle
         $("[data-toggle='tooltip'], #settings, #history").tooltip({
             trigger: "hover"
+        });
+
+        var clipboard = new Clipboard(selectors.clickToCopy);
+        clipboard.on("success", function(e) {
+            // flash element after copy
+            $(e.trigger).finish().fadeOut(100).fadeIn(300);
+            // hide tooltip after flash
+            $(e.trigger).tooltip("hide");
+            // reset focus
+            e.clearSelection();
         });
 
         colors.init($("#alerts").data("static-color-labels").split(" "));
