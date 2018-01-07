@@ -17,6 +17,10 @@ func proxyPathPrefix(name string) string {
 	return fmt.Sprintf("%sproxy/alertmanager/%s", config.Config.Listen.Prefix, name)
 }
 
+func proxyPath(name, path string) string {
+	return fmt.Sprintf("%s%s", proxyPathPrefix(name), path)
+}
+
 // NewAlertmanagerProxy creates a proxy instance for given alertmanager instance
 func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) (*httputil.ReverseProxy, error) {
 	upstreamURL, err := url.Parse(alertmanager.URI)
@@ -49,10 +53,10 @@ func setupRouterProxyHandlers(router *gin.Engine, alertmanager *alertmanager.Ale
 		return err
 	}
 	router.POST(
-		fmt.Sprintf("%s/api/v1/silences", proxyPathPrefix(alertmanager.Name)),
+		proxyPath(alertmanager.Name, "/api/v1/silences"),
 		gin.WrapH(http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)))
 	router.DELETE(
-		fmt.Sprintf("%s/api/v1/silence/*id", proxyPathPrefix(alertmanager.Name)),
+		proxyPath(alertmanager.Name, "/api/v1/silence/*id"),
 		gin.WrapH(http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)))
 	return nil
 }
