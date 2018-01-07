@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"net/http/httputil"
 	"net/url"
-	"strings"
 
 	"github.com/cloudflare/unsee/internal/alertmanager"
 	"github.com/cloudflare/unsee/internal/config"
@@ -28,7 +27,6 @@ func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) (*httputil.Re
 		Director: func(req *http.Request) {
 			req.URL.Scheme = upstreamURL.Scheme
 			req.URL.Host = upstreamURL.Host
-			req.URL.Path = strings.TrimPrefix(req.URL.Path, proxyPathPrefix(alertmanager.Name))
 			// drop Accept-Encoding header so we always get uncompressed reponses from
 			// upstream, there's a gzip middleware that's global so we don't want it
 			// to gzip twice
@@ -50,7 +48,11 @@ func setupRouterProxyHandlers(router *gin.Engine, alertmanager *alertmanager.Ale
 	if err != nil {
 		return err
 	}
-	router.POST(fmt.Sprintf("%s/api/v1/silences", proxyPathPrefix(alertmanager.Name)), gin.WrapH(proxy))
-	router.DELETE(fmt.Sprintf("%s/api/v1/silence/*id", proxyPathPrefix(alertmanager.Name)), gin.WrapH(proxy))
+	router.POST(
+		fmt.Sprintf("%s/api/v1/silences", proxyPathPrefix(alertmanager.Name)),
+		gin.WrapH(http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)))
+	router.DELETE(
+		fmt.Sprintf("%s/api/v1/silence/*id", proxyPathPrefix(alertmanager.Name)),
+		gin.WrapH(http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)))
 	return nil
 }
