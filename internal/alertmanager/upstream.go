@@ -14,8 +14,7 @@ var (
 	upstreams = map[string]*Alertmanager{}
 )
 
-// NewAlertmanager creates a new Alertmanager instance
-func NewAlertmanager(name, uri string, timeout time.Duration, proxyRequests bool) error {
+func newAlertmanager(name, uri string, timeout time.Duration, proxyRequests bool) error {
 	if _, found := upstreams[name]; found {
 		return fmt.Errorf("Alertmanager upstream '%s' already exist", name)
 	}
@@ -47,6 +46,18 @@ func NewAlertmanager(name, uri string, timeout time.Duration, proxyRequests bool
 	log.Infof("[%s] Configured Alertmanager source at %s", name, uri)
 
 	return nil
+}
+
+// NewAlertmanager creates a new Alertmanager instance, unsee clients will talk
+// to directly to it without unsee proxying any request
+func NewAlertmanager(name, uri string, timeout time.Duration) error {
+	return newAlertmanager(name, uri, timeout, false)
+}
+
+// NewProxiedAlertmanager creates a new proxied Alertmanager instance, unsee
+// clients will talk to it via unsee
+func NewProxiedAlertmanager(name, uri string, timeout time.Duration) error {
+	return newAlertmanager(name, uri, timeout, false)
 }
 
 // GetAlertmanagers returns a list of all defined Alertmanager instances
