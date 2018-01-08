@@ -10,11 +10,15 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Option allows to pass functional options to NewAlertmanager()
+type Option func(am *Alertmanager)
+
 var (
 	upstreams = map[string]*Alertmanager{}
 )
 
-func newAlertmanager(name, uri string, timeout time.Duration, proxyRequests bool) error {
+// NewAlertmanager creates a new Alertmanager instance
+func NewAlertmanager(name, uri string, opts ...Option) error {
 	if _, found := upstreams[name]; found {
 		return fmt.Errorf("Alertmanager upstream '%s' already exist", name)
 	}
@@ -25,16 +29,15 @@ func newAlertmanager(name, uri string, timeout time.Duration, proxyRequests bool
 		}
 	}
 
-	upstreams[name] = &Alertmanager{
-		URI:           uri,
-		Timeout:       timeout,
-		Name:          name,
-		ProxyRequests: proxyRequests,
-		lock:          sync.RWMutex{},
-		alertGroups:   []models.AlertGroup{},
-		silences:      map[string]models.Silence{},
-		colors:        models.LabelsColorMap{},
-		autocomplete:  []models.Autocomplete{},
+	am := &Alertmanager{
+		URI:          uri,
+		Timeout:      time.Second * 10,
+		Name:         name,
+		lock:         sync.RWMutex{},
+		alertGroups:  []models.AlertGroup{},
+		silences:     map[string]models.Silence{},
+		colors:       models.LabelsColorMap{},
+		autocomplete: []models.Autocomplete{},
 		metrics: alertmanagerMetrics{
 			errors: map[string]float64{
 				labelValueErrorsAlerts:   0,
@@ -43,21 +46,15 @@ func newAlertmanager(name, uri string, timeout time.Duration, proxyRequests bool
 		},
 	}
 
+	for _, opt := range opts {
+		opt(am)
+	}
+
+	upstreams[name] = am
+
 	log.Infof("[%s] Configured Alertmanager source at %s", name, uri)
 
 	return nil
-}
-
-// NewAlertmanager creates a new Alertmanager instance, unsee clients will talk
-// to directly to it without unsee proxying any request
-func NewAlertmanager(name, uri string, timeout time.Duration) error {
-	return newAlertmanager(name, uri, timeout, false)
-}
-
-// NewProxiedAlertmanager creates a new proxied Alertmanager instance, unsee
-// clients will talk to it via unsee
-func NewProxiedAlertmanager(name, uri string, timeout time.Duration) error {
-	return newAlertmanager(name, uri, timeout, false)
 }
 
 // GetAlertmanagers returns a list of all defined Alertmanager instances
@@ -77,4 +74,20 @@ func GetAlertmanagerByName(name string) *Alertmanager {
 		return am
 	}
 	return nil
+}
+
+// WithProxy option can be passed to NewAlertmanager in order to enable request
+// proxying for unsee clients
+func WithProxy(proxied bool) Option {
+	return func(am *Alertmanager) {
+		am.ProxyRequests = proxied
+	}
+}
+
+// WithRequestTimeout option can be passed to NewAlertmanager in order to set
+// a custom timeout for Alertmanager upstream requests
+func WithRequestTimeout(timeout time.Duration) Option {
+	return func(am *Alertmanager) {
+		am.Timeout = timeout
+	}
 }

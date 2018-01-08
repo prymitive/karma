@@ -16,7 +16,8 @@ import (
 func init() {
 	log.SetLevel(log.ErrorLevel)
 	for i, uri := range mock.ListAllMockURIs() {
-		alertmanager.NewAlertmanager(fmt.Sprintf("dedup-mock-%d", i), uri, time.Second)
+		name := fmt.Sprintf("dedup-mock-%d", i)
+		alertmanager.NewAlertmanager(name, uri, alertmanager.WithRequestTimeout(time.Second))
 	}
 }
 
