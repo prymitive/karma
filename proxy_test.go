@@ -91,10 +91,10 @@ var proxyTests = []proxyTest{
 func TestProxy(t *testing.T) {
 	r := ginTestEngine()
 	setupRouterProxyHandlers(r, &alertmanager.Alertmanager{
-		URI:           "http://localhost:9093",
-		Timeout:       time.Second * 5,
-		Name:          "dummy",
-		ProxyRequests: true,
+		URI:            "http://localhost:9093",
+		RequestTimeout: time.Second * 5,
+		Name:           "dummy",
+		ProxyRequests:  true,
 	})
 
 	httpmock.Activate()

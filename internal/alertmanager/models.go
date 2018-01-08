@@ -29,9 +29,9 @@ type alertmanagerMetrics struct {
 
 // Alertmanager represents Alertmanager upstream instance
 type Alertmanager struct {
-	URI     string        `json:"uri"`
-	Timeout time.Duration `json:"timeout"`
-	Name    string        `json:"name"`
+	URI            string        `json:"uri"`
+	RequestTimeout time.Duration `json:"timeout"`
+	Name           string        `json:"name"`
 	// whenever this instance should be proxied
 	ProxyRequests bool
 	// lock protects data access while updating
@@ -56,7 +56,7 @@ func (am *Alertmanager) detectVersion() string {
 		return defaultVersion
 	}
 	ver := alertmanagerVersion{}
-	err = transport.ReadJSON(url, am.Timeout, &ver)
+	err = transport.ReadJSON(url, am.RequestTimeout, &ver)
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, url, err.Error())
 		return defaultVersion
@@ -92,7 +92,7 @@ func (am *Alertmanager) pullSilences(version string) error {
 	}
 
 	start := time.Now()
-	silences, err := mapper.GetSilences(am.URI, am.Timeout)
+	silences, err := mapper.GetSilences(am.URI, am.RequestTimeout)
 	if err != nil {
 		return err
 	}
@@ -135,7 +135,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	}
 
 	start := time.Now()
-	groups, err := mapper.GetAlerts(am.URI, am.Timeout)
+	groups, err := mapper.GetAlerts(am.URI, am.RequestTimeout)
 	if err != nil {
 		return err
 	}

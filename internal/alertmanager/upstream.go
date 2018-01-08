@@ -30,14 +30,14 @@ func NewAlertmanager(name, uri string, opts ...Option) error {
 	}
 
 	am := &Alertmanager{
-		URI:          uri,
-		Timeout:      time.Second * 10,
-		Name:         name,
-		lock:         sync.RWMutex{},
-		alertGroups:  []models.AlertGroup{},
-		silences:     map[string]models.Silence{},
-		colors:       models.LabelsColorMap{},
-		autocomplete: []models.Autocomplete{},
+		URI:            uri,
+		RequestTimeout: time.Second * 10,
+		Name:           name,
+		lock:           sync.RWMutex{},
+		alertGroups:    []models.AlertGroup{},
+		silences:       map[string]models.Silence{},
+		colors:         models.LabelsColorMap{},
+		autocomplete:   []models.Autocomplete{},
 		metrics: alertmanagerMetrics{
 			errors: map[string]float64{
 				labelValueErrorsAlerts:   0,
@@ -88,6 +88,6 @@ func WithProxy(proxied bool) Option {
 // a custom timeout for Alertmanager upstream requests
 func WithRequestTimeout(timeout time.Duration) Option {
 	return func(am *Alertmanager) {
-		am.Timeout = timeout
+		am.RequestTimeout = timeout
 	}
 }
