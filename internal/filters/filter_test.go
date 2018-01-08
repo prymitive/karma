@@ -485,11 +485,7 @@ var tests = []filterTest{
 func TestFilters(t *testing.T) {
 	log.SetLevel(log.ErrorLevel)
 
-	err := alertmanager.NewAlertmanager("test", "http://localhost", alertmanager.WithRequestTimeout(time.Second))
-	am := alertmanager.GetAlertmanagerByName("test")
-	if err != nil {
-		t.Error(err)
-	}
+	am := alertmanager.NewAlertmanager("test", "http://localhost", alertmanager.WithRequestTimeout(time.Second))
 	for _, ft := range tests {
 		alert := models.Alert(ft.Alert)
 		if &ft.Silence != nil {

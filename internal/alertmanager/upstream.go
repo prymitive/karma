@@ -18,17 +18,7 @@ var (
 )
 
 // NewAlertmanager creates a new Alertmanager instance
-func NewAlertmanager(name, uri string, opts ...Option) error {
-	if _, found := upstreams[name]; found {
-		return fmt.Errorf("Alertmanager upstream '%s' already exist", name)
-	}
-
-	for _, am := range upstreams {
-		if am.URI == uri {
-			return fmt.Errorf("Alertmanager upstream '%s' already collects from '%s'", am.Name, am.URI)
-		}
-	}
-
+func NewAlertmanager(name, uri string, opts ...Option) *Alertmanager {
 	am := &Alertmanager{
 		URI:            uri,
 		RequestTimeout: time.Second * 10,
@@ -50,10 +40,23 @@ func NewAlertmanager(name, uri string, opts ...Option) error {
 		opt(am)
 	}
 
-	upstreams[name] = am
+	return am
+}
 
-	log.Infof("[%s] Configured Alertmanager source at %s", name, uri)
+// RegisterAlertmanager will add an Alertmanager instance to the list of
+// instances used when pulling alerts from upstreams
+func RegisterAlertmanager(am *Alertmanager) error {
+	if _, found := upstreams[am.Name]; found {
+		return fmt.Errorf("Alertmanager upstream '%s' already exist", am.Name)
+	}
 
+	for _, existingAM := range upstreams {
+		if existingAM.URI == am.URI {
+			return fmt.Errorf("Alertmanager upstream '%s' already collects from '%s'", existingAM.Name, existingAM.URI)
+		}
+	}
+	upstreams[am.Name] = am
+	log.Infof("[%s] Configured Alertmanager source at %s (proxied: %v)", am.Name, am.URI, am.ProxyRequests)
 	return nil
 }
 

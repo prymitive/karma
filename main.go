@@ -60,8 +60,8 @@ func setupRouter(router *gin.Engine) {
 
 func setupUpstreams() {
 	for _, s := range config.Config.Alertmanager.Servers {
-		var err error
-		err = alertmanager.NewAlertmanager(s.Name, s.URI, alertmanager.WithRequestTimeout(s.Timeout), alertmanager.WithProxy(s.Proxy))
+		am := alertmanager.NewAlertmanager(s.Name, s.URI, alertmanager.WithRequestTimeout(s.Timeout), alertmanager.WithProxy(s.Proxy))
+		err := alertmanager.RegisterAlertmanager(am)
 		if err != nil {
 			log.Fatalf("Failed to configure Alertmanager '%s' with URI '%s': %s", s.Name, s.URI, err)
 		}
