@@ -10,31 +10,24 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
+// Option allows to pass functional options to NewAlertmanager()
+type Option func(am *Alertmanager)
+
 var (
 	upstreams = map[string]*Alertmanager{}
 )
 
 // NewAlertmanager creates a new Alertmanager instance
-func NewAlertmanager(name, uri string, timeout time.Duration) error {
-	if _, found := upstreams[name]; found {
-		return fmt.Errorf("Alertmanager upstream '%s' already exist", name)
-	}
-
-	for _, am := range upstreams {
-		if am.URI == uri {
-			return fmt.Errorf("Alertmanager upstream '%s' already collects from '%s'", am.Name, am.URI)
-		}
-	}
-
-	upstreams[name] = &Alertmanager{
-		URI:          uri,
-		Timeout:      timeout,
-		Name:         name,
-		lock:         sync.RWMutex{},
-		alertGroups:  []models.AlertGroup{},
-		silences:     map[string]models.Silence{},
-		colors:       models.LabelsColorMap{},
-		autocomplete: []models.Autocomplete{},
+func NewAlertmanager(name, uri string, opts ...Option) *Alertmanager {
+	am := &Alertmanager{
+		URI:            uri,
+		RequestTimeout: time.Second * 10,
+		Name:           name,
+		lock:           sync.RWMutex{},
+		alertGroups:    []models.AlertGroup{},
+		silences:       map[string]models.Silence{},
+		colors:         models.LabelsColorMap{},
+		autocomplete:   []models.Autocomplete{},
 		metrics: alertmanagerMetrics{
 			errors: map[string]float64{
 				labelValueErrorsAlerts:   0,
@@ -43,8 +36,27 @@ func NewAlertmanager(name, uri string, timeout time.Duration) error {
 		},
 	}
 
-	log.Infof("[%s] Configured Alertmanager source at %s", name, uri)
+	for _, opt := range opts {
+		opt(am)
+	}
 
+	return am
+}
+
+// RegisterAlertmanager will add an Alertmanager instance to the list of
+// instances used when pulling alerts from upstreams
+func RegisterAlertmanager(am *Alertmanager) error {
+	if _, found := upstreams[am.Name]; found {
+		return fmt.Errorf("Alertmanager upstream '%s' already exist", am.Name)
+	}
+
+	for _, existingAM := range upstreams {
+		if existingAM.URI == am.URI {
+			return fmt.Errorf("Alertmanager upstream '%s' already collects from '%s'", existingAM.Name, existingAM.URI)
+		}
+	}
+	upstreams[am.Name] = am
+	log.Infof("[%s] Configured Alertmanager source at %s (proxied: %v)", am.Name, am.URI, am.ProxyRequests)
 	return nil
 }
 
@@ -65,4 +77,20 @@ func GetAlertmanagerByName(name string) *Alertmanager {
 		return am
 	}
 	return nil
+}
+
+// WithProxy option can be passed to NewAlertmanager in order to enable request
+// proxying for unsee clients
+func WithProxy(proxied bool) Option {
+	return func(am *Alertmanager) {
+		am.ProxyRequests = proxied
+	}
+}
+
+// WithRequestTimeout option can be passed to NewAlertmanager in order to set
+// a custom timeout for Alertmanager upstream requests
+func WithRequestTimeout(timeout time.Duration) Option {
+	return func(am *Alertmanager) {
+		am.RequestTimeout = timeout
+	}
 }
