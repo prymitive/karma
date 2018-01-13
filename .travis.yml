@@ -1,52 +1,45 @@
 go_import_path: github.com/cloudflare/unsee
 
+defaults_go: &DEFAULTS_GO
+  language: go
+  go: "1.9.2"
+  cache:
+    directories:
+      - vendor
+
+defaults_js: &DEFAULTS_JS
+  language: node_js
+  node_js: "8"
+  # install defaults to "npm install", which is done via make
+  install: []
+  cache:
+    directories:
+      - node_modules
+
 jobs:
   include:
     - stage: Lint docs
-      language: node_js
-      node_js: "8"
-      cache:
-        directories:
-          - node_modules
-      # install defaults to "npm install", which is done via make
-      install: []
+      <<: *DEFAULTS_JS
       script: make lint-docs
 
     - stage: Test Go code
-      language: go
-      go:  "1.9.2"
+      <<: *DEFAULTS_GO
       before_script:
         - make mock-assets
-      cache:
-        directories:
-          - vendor
       script: make test-go
 
     - stage: Test JavaScript code
-      language: node_js
-      node_js: "8"
+      <<: *DEFAULTS_JS
       env:
         - NODE_ENV=test
-      cache:
-        directories:
-          - node_modules
-      # install defaults to "npm install", which is done via make
-      install: []
       script: make test-js
 
     - stage: Lint Go code
-      language: go
-      go:  "1.9.2"
+      <<: *DEFAULTS_GO
       script: make lint-go
 
     - stage: Lint JavaScript code
-      language: node_js
-      node_js: "8"
-      cache:
-        directories:
-          - node_modules
-      # install defaults to "npm install", which is done via make
-      install: []
+      <<: *DEFAULTS_JS
       script: make lint-js
 
     - stage: Build Docker image
