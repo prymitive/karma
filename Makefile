@@ -142,3 +142,7 @@ test-js: .build/deps-build-node.ok
 
 .PHONY: test
 test: lint test-go test-js
+
+.PHONY: show-version
+show-version:
+	@echo $(VERSION)
