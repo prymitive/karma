@@ -3,6 +3,7 @@ package config
 import (
 	"os"
 	"testing"
+	"time"
 
 	"github.com/pmezard/go-difflib/difflib"
 
@@ -16,6 +17,10 @@ func resetEnv() {
 	unseeEnvVariables := []string{
 		"ALERTMANAGER_INTERVAL",
 		"ALERTMANAGER_URI",
+		"ALERTMANAGER_URIS",
+		"ALERTMANAGER_NAME",
+		"ALERTMANAGET_TIMEOUT",
+		"ALERTMANAGER_TTL",
 		"ANNOTATIONS_DEFAULT_HIDDEN",
 		"ANNOTATIONS_HIDDEN",
 		"ANNOTATIONS_VISIBLE",
@@ -163,6 +168,31 @@ func TestReadConfig(t *testing.T) {
 	os.Setenv("SENTRY_PUBLIC", "public key")
 	Config.Read()
 	testReadConfig(t)
+}
+
+func TestReadSimpleConfig(t *testing.T) {
+	resetEnv()
+	log.SetLevel(log.ErrorLevel)
+	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	os.Setenv("ALERTMANAGER_NAME", "single")
+	os.Setenv("ALERTMANAGER_TIMEOUT", "15s")
+	os.Setenv("ALERTMANAGER_PROXY", "true")
+	os.Setenv("ALERTMANAGER_INTERVAL", "3m")
+	Config.Read()
+	if len(Config.Alertmanager.Servers) != 1 {
+		t.Errorf("Expected 1 Alertmanager server, got %d", len(Config.Alertmanager.Servers))
+	} else {
+		am := Config.Alertmanager.Servers[0]
+		if am.Name != "single" {
+			t.Errorf("Expect Alertmanager name 'single' got '%s'", am.Name)
+		}
+		if am.Timeout != time.Second*15 {
+			t.Errorf("Expect Alertmanager timeout '%v' got '%v'", time.Second*15, am.Timeout)
+		}
+		if Config.Alertmanager.Interval != time.Minute*3 {
+			t.Errorf("Expect Alertmanager timeout '%v' got '%v'", time.Minute*3, Config.Alertmanager.Interval)
+		}
+	}
 }
 
 type urlSecretTest struct {
