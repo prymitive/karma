@@ -21,9 +21,16 @@ var (
 )
 
 func init() {
-	pflag.String("alertmanager.uri", "", "Alertmanager server URI")
-	pflag.Duration("alertmanager.interval", time.Second*60,
+	pflag.Duration("alertmanager.interval", time.Minute,
 		"Interval for fetching data from Alertmanager servers")
+	pflag.String("alertmanager.name", "default",
+		"Name for the Alertmanager server (only used with simplified config)")
+	pflag.String("alertmanager.uri", "",
+		"Alertmanager server URI (only used with simplified config)")
+	pflag.Duration("alertmanager.timeout", time.Second*40,
+		"Timeout for requests sent to the Alertmanager server (only used with simplified config)")
+	pflag.Bool("alertmanager.proxy", false,
+		"Proxy all client requests to Alertmanager via unsee (only used with simplified config)")
 
 	pflag.Bool(
 		"annotations.default.hidden", false,
@@ -106,6 +113,7 @@ func (config *configSchema) Read() {
 		log.Infof("Config file used: %s", v.ConfigFileUsed())
 	}
 
+	config.Alertmanager.Servers = []alertmanagerConfig{}
 	config.Alertmanager.Interval = v.GetDuration("alertmanager.interval")
 	config.Annotations.Default.Hidden = v.GetBool("annotations.default.hidden")
 	config.Annotations.Hidden = v.GetStringSlice("annotations.hidden")
@@ -141,11 +149,13 @@ func (config *configSchema) Read() {
 
 	// accept single Alertmanager server from flag/env if nothing is set yet
 	if len(config.Alertmanager.Servers) == 0 && v.GetString("alertmanager.uri") != "" {
+		log.Info("Using simple config with a single Alertmanager server")
 		config.Alertmanager.Servers = []alertmanagerConfig{
 			alertmanagerConfig{
-				Name:    "default",
+				Name:    v.GetString("alertmanager.name"),
 				URI:     v.GetString("alertmanager.uri"),
-				Timeout: time.Second * 40,
+				Timeout: v.GetDuration("alertmanager.timeout"),
+				Proxy:   v.GetBool("alertmanager.proxy"),
 			},
 		}
 	}

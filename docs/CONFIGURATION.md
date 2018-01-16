@@ -4,12 +4,12 @@
 
 By default unsee will try to read configuration file named `unsee.yaml` from
 current directory. Configuration file uses [YAML](http://yaml.org/) format and
-it needs to have `.yaml` extention.
+it needs to have `.yaml` extension.
 Custom filename and directory can be passed via command line flags or
 environment variables:
 
 * `--config.file` flag or `CONFIG_FILE` env variable - name of the config file
-  to load (without extention).
+  to load (without extension).
 * `--config.dir` flag or `CONFIG_DIR` env variable - directory where config file
   can be found.
 
@@ -36,7 +36,7 @@ $ CONFIG_FILE="example" unsee --config.dir ./docs/
 `alertmanager` section allows setting Alertmanager servers that should be
 queried for alerts.
 You can configure one or more Alertmanager servers, alerts
-with identical label set will be deduplicated and labeld with each Alertmanager
+with identical label set will be deduplicated and labeled with each Alertmanager
 server they were observed at. This allows using unsee to collect alerts from a
 pair of Alertmanager instances running in
 [HA mode](https://prometheus.io/docs/alerting/alertmanager/#high-availability).
@@ -65,15 +65,15 @@ alertmanager:
   every alert in the UI and for filtering alerts using `@alertmanager=NAME`
   filter
 * `uri` - base URI of this Alertmanager server. Supported URI schemes are
-   `http://`, `https://` and `file://`. `file://` scheme is only useful for
-   testing with JSON files, see [mock](/internal/mock/) dir for examples, files
-   in this directory are used for running tests and when running demo instance
-   of unsee with `make run`.
+  `http://`, `https://` and `file://`. `file://` scheme is only useful for
+  testing with JSON files, see [mock](/internal/mock/) dir for examples, files
+  in this directory are used for running tests and when running demo instance
+  of unsee with `make run`.
 * `timeout` - timeout for requests send to this Alertmanager server, a string in
   [time.Duration](https://golang.org/pkg/time/#ParseDuration) format.
 * `proxy` - if enabled requests from user browsers to this Alertmanager will be
-            proxied via unsee. This applies to requests made when managing
-            silences via unsee (creating or expiring silences).
+  proxied via unsee. This applies to requests made when managing
+  silences via unsee (creating or expiring silences).
 
 Example with two production Alertmanager instances running in HA mode and a
 staging instance that is also proxied:
@@ -104,11 +104,14 @@ alertmanager:
   servers: []
 ```
 
-There is no default for `alertmanager.servers` and it's a required option.
+There is no default for `alertmanager.servers` and it's a required option for
+setting multiple Alertmanager servers. For cases where only a single server
+needs to be configured without a config file see
+[Simplified Configuration](#simplified-configuration).
 
 ### Annotations
 
-`annotations` section allows configuring how alert annotation are displyed in
+`annotations` section allows configuring how alert annotation are displayed in
 the UI.
 Syntax:
 
@@ -173,7 +176,7 @@ filters:
 ```
 
 * `default` - list of filters to use by default when user navigates to unsee
-  web UI. Visit `/help` page in unsee for details on avaiable filters.
+  web UI. Visit `/help` page in unsee for details on available filters.
   Note that if a string starts with `@` YAML requires to wrap it in quotes.
 
 Example:
@@ -246,7 +249,7 @@ labels:
     - task_id
 ```
 
-Example where all but `instance` and `alertname` labels are alowed:
+Example where all but `instance` and `alertname` labels are allowed:
 
 ```yaml
 labels:
@@ -269,7 +272,7 @@ labels:
 
 ### Listen
 
-`listen` section allows configuring unsee web server behaviour.
+`listen` section allows configuring unsee web server behavior.
 Syntax:
 
 ```yaml
@@ -422,23 +425,20 @@ sentry:
 Config file options are mapped to command line flags, so `alertmanager:interval`
 config file key is accessible as `--alertmanager.interval` flag, run
 `unsee --help` to see a full list.
-Exaceptions:
+Exceptions for passing flags:
 
-* `alertmanager.servers` - this config files option is a list of maps, to
-  configure multiple Alertmanager servers config file needs to be used.
-  It's possible to pass a single Alertmanager server URI using
-  `--alertmanager.uri` flag or `ALERTMANAGER_URI` environment variable. If this
-  flag/env is used name of the Alertmanager instance will be always `default`
-  and the timeout will be set to `40s`, customizing those two options requires
+* `jira` - this option is a list of maps and it's only available when using
   config file.
-* `jira` - this option is a list of maps and it's only avaiable when using
-  config file.
+
+There's no support for configuring multiple Alertmanager servers using
+flags, but it's possible to configure a single Alertmanager instance this way,
+see the [Simplified Configuration](#simplified-configuration) section.
 
 ## Environment variables
 
-Environment variables are mapped in a similiar way as command line flags,
+Environment variables are mapped in a similar way as command line flags,
 `alertmanager:interval` is accessible as `ALERTMANAGER_INTERVAL` env.
-Same exceptions apply as with command line flags.
+Exceptions for passing flags:
 
 * `HOST` - used by gin webserver, same effect as setting `listen:address` config
   option
@@ -446,3 +446,59 @@ Same exceptions apply as with command line flags.
   option
 * `SENTRY_DSN` - is used by Sentry itself, same effect as passing value to
   `sentry:private` config option.
+
+There's no support for configuring multiple alertmanager servers using
+environment variables, but it's possible to configure a single Alertmanager
+instance this way, see the [Simplified Configuration](#simplified-configuration)
+section.
+
+## Simplified Configuration
+
+To configure multiple Alertmanager instances unsee requires a config file, but
+for a single Alertmanager instance cases it's possible to configure all
+Alertmanager server options that are set for `alertmanager.servers` config
+section using only flags or environment variables.
+
+### Alertmanager URI
+
+To set the `uri` key from `alertmanager.servers` map `ALERTMANAGER_URI` env or
+`--alertmanager.uri` flag can be used.
+Example:
+
+```
+$ ALERTMANAGER_URI=https://alertmanager.example.com unsee
+$ unsee --alertmanager.uri https://alertmanager.example.com
+```
+
+### Alertmanager name
+
+To set the `name` key from `alertmanager.servers` map `ALERTMANAGER_NAME` env or
+`--alertmanager.name` flag can be used.
+Example:
+
+```
+$ ALERTMANAGER_NAME=single unsee
+$ unsee --alertmanager.name single
+```
+
+### Alertmanager timeout
+
+To set the `timeout` key from `alertmanager.servers` map `ALERTMANAGER_TIMEOUT`
+env or `--alertmanager.timeout` flag can be used.
+Example:
+
+```
+$ ALERTMANAGER_TIMEOUT=10s unsee
+$ unsee --alertmanager.timeout 10s
+```
+
+### Alertmanager request proxy
+
+To set the `proxy` key from `alertmanager.servers` map `ALERTMANAGER_PROXY`
+env or `--alertmanager.proxy` flag can be used.
+Example:
+
+```
+$ ALERTMANAGER_PROXY=true unsee
+$ unsee --alertmanager.proxy
+```
