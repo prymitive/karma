@@ -2,6 +2,16 @@ go_import_path: github.com/cloudflare/unsee
 
 jobs:
   include:
+    - stage: Lint docs
+      language: node_js
+      node_js: "8"
+      cache:
+        directories:
+          - node_modules
+      # install defaults to "npm install", which is done via make
+      install: []
+      script: make lint-docs
+
     - stage: Test Go code
       language: go
       go:  "1.9.2"
