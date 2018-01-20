@@ -1,27 +1,28 @@
 # unsee
 
-Alert dashboard for [Prometheus Alertmanager](https://prometheus.io/docs/alerting/alertmanager/).
+Alert dashboard for
+[Prometheus Alertmanager](https://prometheus.io/docs/alerting/alertmanager/).
 
 Alertmanager UI is useful for browsing alerts and managing silences, but it's
 lacking as a dashboard tool - unsee aims to fill this gap.
 Starting with `0.7.0` release it can also aggregate alerts from multiple
 Alertmanager instances, running either in HA mode or separate. Duplicated alerts
 are deduplicated so only unique alerts are displayed. Each alert is tagged with
-names of all  Alertmanager instances it was found at and can be filtered based
+names of all Alertmanager instances it was found at and can be filtered based
 on those tags.
 
 ![Screenshot](/screenshot.png)
 
 To get notifications about new unsee releases you can subscribe to the RSS feed
-that GitHub provides - https://github.com/cloudflare/unsee/releases.atom
+that [GitHub provides](https://github.com/cloudflare/unsee/releases.atom)
 To get email notifications please use one of the free services providing
 _RSS to email_ notifications, like [Blogtrottr](https://blogtrottr.com/).
 
 ## Supported Alertmanager versions
 
-Alertmanager's API isn't stable yet and can change between releases,
-see `VERSIONS` in [internal/mock/Makefile](/internal/mock/Makefile) for list of all Alertmanager
-releases that are tested and supported by unsee.
+Alertmanager's API isn't stable yet and can change between releases, see
+`VERSIONS` in [internal/mock/Makefile](/internal/mock/Makefile) for list of all
+Alertmanager releases that are tested and supported by unsee.
 Due to API differences between those releases some features will work
 differently or be missing, it's recommended to use the latest supported
 Alertmanager version.
@@ -33,9 +34,9 @@ modify alerts or silence state, but it does provide a web interface that allows
 a user to send such requests directly to the Alertmanager API.
 If you wish to deploy unsee as a read-only tool please ensure that:
 
-  * the unsee process is able to connect to the Alertmanager API
-  * read-only users are able to connect to the unsee web interface
-  * read-only users are NOT able to connect to the Alertmanager API
+* the unsee process is able to connect to the Alertmanager API
+* read-only users are able to connect to the unsee web interface
+* read-only users are NOT able to connect to the Alertmanager API
 
 ## Metrics
 
@@ -91,21 +92,21 @@ Official docker images are built and hosted on
 
 Images are built automatically for:
 
-  * release tags in git - `cloudflare/unsee:vX.Y.Z`
-  * master branch commits - `cloudflare/unsee:latest`
+* release tags in git - `cloudflare/unsee:vX.Y.Z`
+* master branch commits - `cloudflare/unsee:latest`
 
 #### Examples
 
 To start a release image run:
 
-  docker run -e ALERTMANAGER_URI=https://alertmanager.example.com cloudflare/unsee:vX.Y.Z
+    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com cloudflare/unsee:vX.Y.Z
 
 Latest release details can be found on
 [GitHub](https://github.com/cloudflare/unsee/releases).
 
 To start docker image build from lastet master branch run:
 
-  docker run -e ALERTMANAGER_URI=https://alertmanager.example.com cloudflare/unsee:latest
+    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com cloudflare/unsee:latest
 
 Note that latest master branch might have bugs or breaking changes. Using
 release images is strongly recommended for any production use.
@@ -127,7 +128,7 @@ apply as with `make run`. Example:
 
 ## Configuration
 
-Please see [CONFIGURATION](/docs/CONFIGURATION.md) for full list of avaiable
+Please see [CONFIGURATION](/docs/CONFIGURATION.md) for full list of available
 configuration options and [example.yaml](/docs/example.yaml) for a config file
 example.
 
