@@ -41,6 +41,7 @@ jobs:
       script: make lint-js
 
     - stage: Build Docker image
+      language: generic
       sudo: true
       addons:
         apt:
