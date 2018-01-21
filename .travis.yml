@@ -16,10 +16,6 @@ defaults_js: &DEFAULTS_JS
 
 jobs:
   include:
-    - stage: Lint docs
-      <<: *DEFAULTS_JS
-      script: make lint-docs
-
     - stage: Test Go code
       <<: *DEFAULTS_GO
       before_script:
@@ -39,6 +35,10 @@ jobs:
     - stage: Lint JavaScript code
       <<: *DEFAULTS_JS
       script: make lint-js
+
+    - stage: Lint docs
+      <<: *DEFAULTS_JS
+      script: make lint-docs
 
     - stage: Build Docker image
       language: generic
