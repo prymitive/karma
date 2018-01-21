@@ -1,45 +1,32 @@
 package transport
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
+	"net/http"
 	"net/url"
-	"os"
-	"path"
-	"strings"
 	"time"
 )
 
-// ReadJSON using one of supported transports (file:// http://)
-func ReadJSON(uri string, timeout time.Duration, target interface{}) error {
+// Transport reads from a specific URI schema
+type Transport interface {
+	Read(string) (io.ReadCloser, error)
+}
+
+// NewTransport creates an instance of Transport that can handle URI schema
+// for the passed uri string
+func NewTransport(uri string, timeout time.Duration) (Transport, error) {
 	u, err := url.Parse(uri)
 	if err != nil {
-		return err
+		return nil, err
 	}
-	var reader io.ReadCloser
+
 	switch u.Scheme {
 	case "http", "https":
-		reader, err = newHTTPReader(u.String(), timeout)
+		return &HTTPTransport{client: http.Client{Timeout: timeout}}, nil
 	case "file":
-		// if we have a file URI with relative path we need to expand it into an
-		// absolute path, url.Parse doesn't support relative file paths
-		if strings.HasPrefix(uri, "file:///") {
-			reader, err = newFileReader(u.Path)
-		} else {
-			wd, e := os.Getwd()
-			if e != nil {
-				return e
-			}
-			absolutePath := path.Join(wd, strings.TrimPrefix(uri, "file://"))
-			reader, err = newFileReader(absolutePath)
-		}
+		return &FileTransport{}, nil
 	default:
-		return fmt.Errorf("Unsupported URI scheme '%s' in '%s'", u.Scheme, u)
+		return nil, fmt.Errorf("Unsupported URI scheme '%s' in '%s'", u.Scheme, u)
 	}
-	if err != nil {
-		return err
-	}
-	defer reader.Close()
-	return json.NewDecoder(reader).Decode(target)
 }
