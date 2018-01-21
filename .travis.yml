@@ -1,5 +1,3 @@
-go_import_path: github.com/cloudflare/unsee
-
 defaults_go: &DEFAULTS_GO
   language: go
   go: "1.9.2"
