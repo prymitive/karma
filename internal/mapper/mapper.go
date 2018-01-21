@@ -12,15 +12,19 @@ var (
 	silenceMappers = []SilenceMapper{}
 )
 
+// Mapper converts Alertmanager response body and maps to unsee data structures
 type Mapper interface {
 	IsSupported(version string) bool
+	AbsoluteURL(baseURI string) (string, error)
 }
 
+// AlertMapper handles mapping of Alertmanager alert information to unsee AlertGroup models
 type AlertMapper interface {
 	Mapper
 	Decode(io.ReadCloser) ([]models.AlertGroup, error)
 }
 
+// SilenceMapper handles mapping of Alertmanager silence information to unsee Silence models
 type SilenceMapper interface {
 	Mapper
 	Decode(io.ReadCloser) ([]models.Silence, error)
