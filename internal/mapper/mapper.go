@@ -28,7 +28,6 @@ type AlertMapper interface {
 type SilenceMapper interface {
 	Mapper
 	Decode(io.ReadCloser) ([]models.Silence, error)
-	Release() string
 }
 
 // RegisterAlertMapper allows to register mapper implementing alert data
