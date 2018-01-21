@@ -15,21 +15,15 @@ environment variables:
 
 Example with flags:
 
-```
-$ unsee --config.file example --config.dir ./docs/
-```
+    unsee --config.file example --config.dir ./docs/
 
 Example with environment variables:
 
-```
-$ CONFIG_FILE="example" CONFIG_DIR="./docs/" unsee
-```
+    CONFIG_FILE="example" CONFIG_DIR="./docs/" unsee
 
 Example using both:
 
-```
-$ CONFIG_FILE="example" unsee --config.dir ./docs/
-```
+    CONFIG_FILE="example" unsee --config.dir ./docs/
 
 ### Alertmanagers
 
@@ -288,7 +282,7 @@ listen:
   location other than `/`. This option is mostly useful when using unsee behind
   reverse proxy with other services on the same IP but different URL root.
 
-Example where unsee would listen for HTTP requests on http://1.2.3.4:80/unsee/
+Example where unsee would listen for HTTP requests on `http://1.2.3.4:80/unsee/`
 
 ```yaml
 listen:
@@ -347,7 +341,7 @@ jira:
   (where `FOO-1` is example issue ID).
 
 Example where a string `DEVOPS-123` inside a comment would be rendered as a link
-to https://jira.example.com/browse/DEVOPS-123.
+to `https://jira.example.com/browse/DEVOPS-123`.
 
 ```yaml
 jira:
@@ -463,42 +457,34 @@ section using only flags or environment variables.
 
 To set the `uri` key from `alertmanager.servers` map `ALERTMANAGER_URI` env or
 `--alertmanager.uri` flag can be used.
-Example:
+Examples:
 
-```
-$ ALERTMANAGER_URI=https://alertmanager.example.com unsee
-$ unsee --alertmanager.uri https://alertmanager.example.com
-```
+    ALERTMANAGER_URI=https://alertmanager.example.com unsee
+    unsee --alertmanager.uri https://alertmanager.example.com
 
 ### Alertmanager name
 
 To set the `name` key from `alertmanager.servers` map `ALERTMANAGER_NAME` env or
 `--alertmanager.name` flag can be used.
-Example:
+Examples:
 
-```
-$ ALERTMANAGER_NAME=single unsee
-$ unsee --alertmanager.name single
-```
+    ALERTMANAGER_NAME=single unsee
+    unsee --alertmanager.name single
 
 ### Alertmanager timeout
 
 To set the `timeout` key from `alertmanager.servers` map `ALERTMANAGER_TIMEOUT`
 env or `--alertmanager.timeout` flag can be used.
-Example:
+Examples:
 
-```
-$ ALERTMANAGER_TIMEOUT=10s unsee
-$ unsee --alertmanager.timeout 10s
-```
+    ALERTMANAGER_TIMEOUT=10s unsee
+    unsee --alertmanager.timeout 10s
 
 ### Alertmanager request proxy
 
 To set the `proxy` key from `alertmanager.servers` map `ALERTMANAGER_PROXY`
 env or `--alertmanager.proxy` flag can be used.
-Example:
+Examples:
 
-```
-$ ALERTMANAGER_PROXY=true unsee
-$ unsee --alertmanager.proxy
-```
+    ALERTMANAGER_PROXY=true unsee
+    unsee --alertmanager.proxy

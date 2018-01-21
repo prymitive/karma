@@ -67,6 +67,7 @@
     "jest": "^21.2.1",
     "jquery-bridget": "^2.0.1",
     "less": "^2.7.3",
+    "markdownlint-cli": "^0.6.0",
     "mock-xhr": "^0.1.0",
     "node-sass": "^4.6.0",
     "resolve-url-loader": "^2.2.0",

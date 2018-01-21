@@ -113,8 +113,12 @@ lint-go: .build/deps-lint-go.ok
 lint-js: .build/deps-build-node.ok
 	$(CURDIR)/node_modules/.bin/eslint --quiet assets/static/*.js
 
+.PHONY: lint-docs
+lint-docs: .build/deps-build-node.ok
+	$(CURDIR)/node_modules/.bin/markdownlint *.md docs
+
 .PHONY: lint
-lint: lint-go lint-js
+lint: lint-go lint-js lint-docs
 
 # Creates mock bindata_assetfs.go with source assets rather than webpack generated ones
 .PHONY: mock-assets
