@@ -1,6 +1,7 @@
 package alertmanager
 
 import (
+	"encoding/json"
 	"time"
 
 	"github.com/cloudflare/unsee/internal/transport"
@@ -30,7 +31,15 @@ func GetVersion(uri string, timeout time.Duration) string {
 		return defaultVersion
 	}
 	ver := alertmanagerVersion{}
-	err = transport.ReadJSON(url, timeout, &ver)
+
+	t, err := transport.NewTransport(uri, timeout)
+	if err != nil {
+		log.Errorf("Unable to get the version information from %s", url)
+		return defaultVersion
+	}
+
+	source, err := t.Read(url)
+	err = json.NewDecoder(source).Decode(&ver)
 	if err != nil {
 		log.Errorf("%s request failed: %s", url, err.Error())
 		return defaultVersion
