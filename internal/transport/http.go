@@ -5,37 +5,31 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"time"
 
 	log "github.com/sirupsen/logrus"
 )
 
-type httpReader struct {
-	URL     string
-	Timeout time.Duration
+// HTTPTransport can read data from http:// and https:// URIs
+type HTTPTransport struct {
+	client http.Client
 }
 
-func newHTTPReader(url string, timeout time.Duration) (io.ReadCloser, error) {
-	hr := httpReader{URL: url, Timeout: timeout}
+func (t *HTTPTransport) Read(uri string) (io.ReadCloser, error) {
+	log.Infof("GET %s timeout=%s", uri, t.client.Timeout)
 
-	log.Infof("GET %s timeout=%s", hr.URL, hr.Timeout)
-
-	c := &http.Client{
-		Timeout: timeout,
-	}
-
-	req, err := http.NewRequest("GET", hr.URL, nil)
+	request, err := http.NewRequest("GET", uri, nil)
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Add("Accept-Encoding", "gzip")
-	resp, err := c.Do(req)
+	request.Header.Add("Accept-Encoding", "gzip")
+
+	resp, err := t.client.Do(request)
 	if err != nil {
 		return nil, err
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("Request to Alertmanager failed with %s", resp.Status)
+		return nil, fmt.Errorf("Request to %s failed with %s", uri, resp.Status)
 	}
 
 	var reader io.ReadCloser

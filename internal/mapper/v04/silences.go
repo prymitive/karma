@@ -5,9 +5,9 @@
 package v04
 
 import (
+	"encoding/json"
 	"errors"
-	"fmt"
-	"math"
+	"io"
 	"strconv"
 	"time"
 
@@ -47,26 +47,24 @@ type SilenceMapper struct {
 	mapper.SilenceMapper
 }
 
+// AbsoluteURL for silences API endpoint this mapper supports
+func (m SilenceMapper) AbsoluteURL(baseURI string) (string, error) {
+	return transport.JoinURL(baseURI, "api/v1/silences")
+}
+
 // IsSupported returns true if given version string is supported
 func (m SilenceMapper) IsSupported(version string) bool {
 	versionRange := semver.MustParseRange(">=0.4.0 <0.5.0")
 	return versionRange(semver.MustParse(version))
 }
 
-// GetSilences will make a request to Alertmanager API and parse the response
-// It will only return silences or error (if any)
-func (m SilenceMapper) GetSilences(uri string, timeout time.Duration) ([]models.Silence, error) {
+// Decode Alertmanager API response body and return unsee model instances
+func (m SilenceMapper) Decode(source io.ReadCloser) ([]models.Silence, error) {
 	silences := []models.Silence{}
 	resp := silenceAPISchema{}
 
-	url, err := transport.JoinURL(uri, "api/v1/silences")
-	if err != nil {
-		return silences, err
-	}
-
-	// Alertmanager 0.4 uses pagination for silences
-	url = fmt.Sprintf("%s?limit=%d", url, math.MaxUint32)
-	err = transport.ReadJSON(url, timeout, &resp)
+	defer source.Close()
+	err := json.NewDecoder(source).Decode(&resp)
 	if err != nil {
 		return silences, err
 	}

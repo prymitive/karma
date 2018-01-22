@@ -1,6 +1,7 @@
 package transport_test
 
 import (
+	"encoding/json"
 	"fmt"
 	"testing"
 	"time"
@@ -61,8 +62,8 @@ type mockStatus struct {
 	no      bool
 }
 
-func TestFileReader(t *testing.T) {
-	log.SetLevel(log.ErrorLevel)
+func TestTransport(t *testing.T) {
+	log.SetLevel(log.FatalLevel)
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 	mockJSON := `{
@@ -79,8 +80,23 @@ func TestFileReader(t *testing.T) {
 	httpmock.RegisterResponder("GET", "https://localhost/invalid", httpmock.NewStringResponder(200, "bad json}{}"))
 
 	for _, testCase := range transportTests {
+		tr, err := transport.NewTransport(testCase.uri, testCase.timeout)
+		if err != nil {
+			t.Error(err)
+		}
+
+		source, err := tr.Read(testCase.uri)
+		if err != nil {
+			if !testCase.failed {
+				t.Errorf("[%s] transport Read() failed with: %s", testCase.uri, err)
+			}
+			continue
+		}
+
 		r := mockStatus{}
-		err := transport.ReadJSON(testCase.uri, testCase.timeout, &r)
+		err = json.NewDecoder(source).Decode(&r)
+		source.Close()
+
 		if (err != nil) != testCase.failed {
 			t.Errorf("[%s] Expected failure: %v, Read() failed: %v, error: %s", testCase.uri, testCase.failed, (err != nil), err)
 		}

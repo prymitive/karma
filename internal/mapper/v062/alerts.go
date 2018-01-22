@@ -6,7 +6,9 @@
 package v062
 
 import (
+	"encoding/json"
 	"errors"
+	"io"
 	"sort"
 	"time"
 
@@ -57,25 +59,25 @@ type AlertMapper struct {
 	mapper.AlertMapper
 }
 
+// AbsoluteURL for alerts API endpoint this mapper supports
+func (m AlertMapper) AbsoluteURL(baseURI string) (string, error) {
+	return transport.JoinURL(baseURI, "api/v1/alerts/groups")
+}
+
 // IsSupported returns true if given version string is supported
 func (m AlertMapper) IsSupported(version string) bool {
 	versionRange := semver.MustParseRange(">=0.6.2")
 	return versionRange(semver.MustParse(version))
 }
 
-// GetAlerts will make a request to Alertmanager API and parse the response
-// It will only return alerts or error (if any)
-func (m AlertMapper) GetAlerts(uri string, timeout time.Duration) ([]models.AlertGroup, error) {
+// Decode Alertmanager API response body and return unsee model instances
+func (m AlertMapper) Decode(source io.ReadCloser) ([]models.AlertGroup, error) {
 	groups := []models.AlertGroup{}
 	receivers := map[string]alertsGroupReceiver{}
 	resp := alertsGroupsAPISchema{}
 
-	url, err := transport.JoinURL(uri, "api/v1/alerts/groups")
-	if err != nil {
-		return groups, err
-	}
-
-	err = transport.ReadJSON(url, timeout, &resp)
+	defer source.Close()
+	err := json.NewDecoder(source).Decode(&resp)
 	if err != nil {
 		return groups, err
 	}

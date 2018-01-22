@@ -2,7 +2,7 @@ package mapper
 
 import (
 	"fmt"
-	"time"
+	"io"
 
 	"github.com/cloudflare/unsee/internal/models"
 )
@@ -12,11 +12,22 @@ var (
 	silenceMappers = []SilenceMapper{}
 )
 
-// AlertMapper implements Alertmanager -> unsee alert data mapping that works
-// for a specific range of Alertmanager versions
-type AlertMapper interface {
+// Mapper converts Alertmanager response body and maps to unsee data structures
+type Mapper interface {
 	IsSupported(version string) bool
-	GetAlerts(uri string, timeout time.Duration) ([]models.AlertGroup, error)
+	AbsoluteURL(baseURI string) (string, error)
+}
+
+// AlertMapper handles mapping of Alertmanager alert information to unsee AlertGroup models
+type AlertMapper interface {
+	Mapper
+	Decode(io.ReadCloser) ([]models.AlertGroup, error)
+}
+
+// SilenceMapper handles mapping of Alertmanager silence information to unsee Silence models
+type SilenceMapper interface {
+	Mapper
+	Decode(io.ReadCloser) ([]models.Silence, error)
 }
 
 // RegisterAlertMapper allows to register mapper implementing alert data
@@ -33,14 +44,6 @@ func GetAlertMapper(version string) (AlertMapper, error) {
 		}
 	}
 	return nil, fmt.Errorf("Can't find alert mapper for Alertmanager %s", version)
-}
-
-// SilenceMapper implements Alertmanager -> unsee silence data mapping that
-// works for a specific range of Alertmanager versions
-type SilenceMapper interface {
-	Release() string
-	IsSupported(version string) bool
-	GetSilences(uri string, timeout time.Duration) ([]models.Silence, error)
 }
 
 // RegisterSilenceMapper allows to register mapper implementing silence data

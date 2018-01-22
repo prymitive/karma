@@ -1,6 +1,7 @@
 package alertmanager
 
 import (
+	"encoding/json"
 	"fmt"
 	"path"
 	"sort"
@@ -34,6 +35,8 @@ type Alertmanager struct {
 	Name           string        `json:"name"`
 	// whenever this instance should be proxied
 	ProxyRequests bool
+	// transport instances are specific to URI scheme we collect from
+	transport transport.Transport
 	// lock protects data access while updating
 	lock sync.RWMutex
 	// fields for storing pulled data
@@ -56,9 +59,19 @@ func (am *Alertmanager) detectVersion() string {
 		return defaultVersion
 	}
 	ver := alertmanagerVersion{}
-	err = transport.ReadJSON(url, am.RequestTimeout, &ver)
+
+	// read raw body from the source
+	source, err := am.transport.Read(url)
+	defer source.Close()
 	if err != nil {
-		log.Errorf("[%s] %s request failed: %s", am.Name, url, err.Error())
+		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
+		return defaultVersion
+	}
+
+	// decode body as JSON
+	err = json.NewDecoder(source).Decode(&ver)
+	if err != nil {
+		log.Errorf("[%s] %s failed to decode as JSON: %s", am.Name, url, err)
 		return defaultVersion
 	}
 
@@ -91,8 +104,24 @@ func (am *Alertmanager) pullSilences(version string) error {
 		return err
 	}
 
+	// generate full URL to collect silences from
+	url, err := mapper.AbsoluteURL(am.URI)
+	if err != nil {
+		log.Errorf("[%s] Failed to generate silences endpoint URL: %s", am.Name, err)
+		return err
+	}
+
 	start := time.Now()
-	silences, err := mapper.GetSilences(am.URI, am.RequestTimeout)
+	// read raw body from the source
+	source, err := am.transport.Read(url)
+	defer source.Close()
+	if err != nil {
+		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
+		return err
+	}
+
+	// decode body text
+	silences, err := mapper.Decode(source)
 	if err != nil {
 		return err
 	}
@@ -134,8 +163,24 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		return err
 	}
 
+	// generate full URL to collect alerts from
+	url, err := mapper.AbsoluteURL(am.URI)
+	if err != nil {
+		log.Errorf("[%s] Failed to generate alerts endpoint URL: %s", am.Name, err)
+		return err
+	}
+
 	start := time.Now()
-	groups, err := mapper.GetAlerts(am.URI, am.RequestTimeout)
+	// read raw body from the source
+	source, err := am.transport.Read(url)
+	defer source.Close()
+	if err != nil {
+		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
+		return err
+	}
+
+	// decode body text
+	groups, err := mapper.Decode(source)
 	if err != nil {
 		return err
 	}

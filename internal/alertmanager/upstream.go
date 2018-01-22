@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/cloudflare/unsee/internal/models"
+	"github.com/cloudflare/unsee/internal/transport"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -18,7 +19,7 @@ var (
 )
 
 // NewAlertmanager creates a new Alertmanager instance
-func NewAlertmanager(name, uri string, opts ...Option) *Alertmanager {
+func NewAlertmanager(name, uri string, opts ...Option) (*Alertmanager, error) {
 	am := &Alertmanager{
 		URI:            uri,
 		RequestTimeout: time.Second * 10,
@@ -40,7 +41,13 @@ func NewAlertmanager(name, uri string, opts ...Option) *Alertmanager {
 		opt(am)
 	}
 
-	return am
+	var err error
+	am.transport, err = transport.NewTransport(am.URI, am.RequestTimeout)
+	if err != nil {
+		return am, err
+	}
+
+	return am, nil
 }
 
 // RegisterAlertmanager will add an Alertmanager instance to the list of
