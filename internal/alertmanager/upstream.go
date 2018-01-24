@@ -46,7 +46,7 @@ func NewAlertmanager(name, upstreamURI string, opts ...Option) (*Alertmanager, e
 	}
 
 	var err error
-	am.reader, err = uri.NewReader(am.URI, am.RequestTimeout, am.httpTransport)
+	am.reader, err = uri.NewReader(am.URI, am.RequestTimeout, am.HTTPTransport)
 	if err != nil {
 		return am, err
 	}
@@ -112,7 +112,7 @@ func WithRequestTimeout(timeout time.Duration) Option {
 // a custom HTTP transport (http.RoundTripper implementation)
 func WithHTTPTransport(httpTransport http.RoundTripper) Option {
 	return func(am *Alertmanager) error {
-		am.httpTransport = httpTransport
+		am.HTTPTransport = httpTransport
 		return nil
 	}
 }

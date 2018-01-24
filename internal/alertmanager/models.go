@@ -40,7 +40,7 @@ type Alertmanager struct {
 	reader uri.Reader
 	// implements how we fetch requests from the Alertmanager, we don't set it
 	// by default so it's nil and http.DefaultTransport is used
-	httpTransport http.RoundTripper
+	HTTPTransport http.RoundTripper `json:"-"`
 	// lock protects data access while updating
 	lock sync.RWMutex
 	// fields for storing pulled data

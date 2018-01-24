@@ -37,6 +37,7 @@ func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) (*httputil.Re
 			req.Header.Del("Accept-Encoding")
 			log.Debugf("[%s] Proxy request for %s", alertmanager.Name, req.URL.Path)
 		},
+		Transport: alertmanager.HTTPTransport,
 		ModifyResponse: func(resp *http.Response) error {
 			// drop Content-Length header from upstream responses, gzip middleware
 			// will compress those and that could cause a mismatch
