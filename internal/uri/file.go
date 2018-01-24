@@ -1,4 +1,4 @@
-package transport
+package uri
 
 import (
 	"io"
@@ -22,11 +22,11 @@ func (fr *fileReader) Close() error {
 	return fr.fd.Close()
 }
 
-// FileTransport can read data from file:// URIs
-type FileTransport struct {
+// FileURIReader can read data from file:// URIs
+type FileURIReader struct {
 }
 
-func (t *FileTransport) pathFromURI(uri string) (string, error) {
+func (r *FileURIReader) pathFromURI(uri string) (string, error) {
 	u, err := url.Parse(uri)
 	if err != nil {
 		return "", err
@@ -45,14 +45,17 @@ func (t *FileTransport) pathFromURI(uri string) (string, error) {
 	return absolutePath, nil
 }
 
-func (t *FileTransport) Read(uri string) (io.ReadCloser, error) {
-	filename, err := t.pathFromURI(uri)
+func (r *FileURIReader) Read(uri string) (io.ReadCloser, error) {
+	filename, err := r.pathFromURI(uri)
 	if err != nil {
 		return nil, err
 	}
 
 	log.Infof("Reading file '%s'", filename)
 	fd, err := os.Open(filename)
+	if err != nil {
+		return nil, err
+	}
 	fr := fileReader{fd: fd}
-	return &fr, err
+	return &fr, nil
 }

@@ -44,6 +44,10 @@ alertmanager:
       uri: string
       timeout: duration
       proxy: bool
+      tls:
+        ca: string
+        cert: string
+        key: string
 ```
 
 * `interval` - how often alerts should be refreshed, a string in
@@ -66,8 +70,20 @@ alertmanager:
 * `timeout` - timeout for requests send to this Alertmanager server, a string in
   [time.Duration](https://golang.org/pkg/time/#ParseDuration) format.
 * `proxy` - if enabled requests from user browsers to this Alertmanager will be
-  proxied via unsee. This applies to requests made when managing
-  silences via unsee (creating or expiring silences).
+  proxied via unsee. This applies to requests made when managing silences via
+  unsee (creating or expiring silences).
+* `tls:ca` - path to CA certificate used to establish TLS connection to this
+  Alertmanager instance (for URIs using `https://` scheme). If unset or empty
+  string is set then Go will try to find system CA certificates using well known
+  paths.
+* `tls:cert` - path to a TLS client certificate file to use when establishing
+  TLS connections to this Alertmanager instance if it requires a TLS client
+  authentication.
+  Note that this option requires `tls:key` to be also set.
+* `tls:key` - path to a TLS client key file to use when establishing
+  TLS connections to this Alertmanager instance if it requires a TLS client
+  authentication.
+  Note that this option requires `tls:cert` to be also set.
 
 Example with two production Alertmanager instances running in HA mode and a
 staging instance that is also proxied:
@@ -88,6 +104,14 @@ alertmanager:
       uri: https://alertmanager.staging.example.com
       timeout: 30s
       proxy: true
+      tls:
+        ca: /etc/ssl/staging-ca.crt
+    - name: protected
+      uri: https://alertmanager-auth.prod.example.com
+      timeout: 20s
+      tls:
+        cert: /etc/ssl/client.pem
+        key: /etc/ssl/client.key
 ```
 
 Defaults:

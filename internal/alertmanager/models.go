@@ -3,6 +3,7 @@ package alertmanager
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"path"
 	"sort"
 	"strings"
@@ -13,7 +14,7 @@ import (
 	"github.com/cloudflare/unsee/internal/mapper"
 	"github.com/cloudflare/unsee/internal/models"
 	"github.com/cloudflare/unsee/internal/transform"
-	"github.com/cloudflare/unsee/internal/transport"
+	"github.com/cloudflare/unsee/internal/uri"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -34,9 +35,12 @@ type Alertmanager struct {
 	RequestTimeout time.Duration `json:"timeout"`
 	Name           string        `json:"name"`
 	// whenever this instance should be proxied
-	ProxyRequests bool
-	// transport instances are specific to URI scheme we collect from
-	transport transport.Transport
+	ProxyRequests bool `json:"proxyRequests"`
+	// reader instances are specific to URI scheme we collect from
+	reader uri.Reader
+	// implements how we fetch requests from the Alertmanager, we don't set it
+	// by default so it's nil and http.DefaultTransport is used
+	HTTPTransport http.RoundTripper `json:"-"`
 	// lock protects data access while updating
 	lock sync.RWMutex
 	// fields for storing pulled data
@@ -53,20 +57,21 @@ func (am *Alertmanager) detectVersion() string {
 	// if everything fails assume Alertmanager is at latest possible version
 	defaultVersion := "999.0.0"
 
-	url, err := transport.JoinURL(am.URI, "api/v1/status")
+	url, err := uri.JoinURL(am.URI, "api/v1/status")
 	if err != nil {
 		log.Errorf("Failed to join url '%s' and path 'api/v1/status': %s", am.URI, err)
 		return defaultVersion
 	}
+
 	ver := alertmanagerVersion{}
 
 	// read raw body from the source
-	source, err := am.transport.Read(url)
-	defer source.Close()
+	source, err := am.reader.Read(url)
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
 		return defaultVersion
 	}
+	defer source.Close()
 
 	// decode body as JSON
 	err = json.NewDecoder(source).Decode(&ver)
@@ -113,12 +118,12 @@ func (am *Alertmanager) pullSilences(version string) error {
 
 	start := time.Now()
 	// read raw body from the source
-	source, err := am.transport.Read(url)
-	defer source.Close()
+	source, err := am.reader.Read(url)
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
 		return err
 	}
+	defer source.Close()
 
 	// decode body text
 	silences, err := mapper.Decode(source)
@@ -172,12 +177,12 @@ func (am *Alertmanager) pullAlerts(version string) error {
 
 	start := time.Now()
 	// read raw body from the source
-	source, err := am.transport.Read(url)
-	defer source.Close()
+	source, err := am.reader.Read(url)
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
 		return err
 	}
+	defer source.Close()
 
 	// decode body text
 	groups, err := mapper.Decode(source)

@@ -5,6 +5,13 @@ alertmanager:
       uri: http://localhost:9093
       timeout: 10s
       proxy: true
+    - name: client-auth
+      uri: https://localhost:9093
+      timeout: 10s
+      tls:
+        ca: /etc/ssl/certs/ca-bundle.crt
+        cert: /etc/unsee/client.pem
+        key: /etc/unsee/client.key
 annotations:
   default:
     hidden: false

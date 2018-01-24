@@ -2,26 +2,27 @@ package alertmanager
 
 import (
 	"fmt"
+	"net/http"
 	"sync"
 	"time"
 
 	"github.com/cloudflare/unsee/internal/models"
-	"github.com/cloudflare/unsee/internal/transport"
+	"github.com/cloudflare/unsee/internal/uri"
 
 	log "github.com/sirupsen/logrus"
 )
 
 // Option allows to pass functional options to NewAlertmanager()
-type Option func(am *Alertmanager)
+type Option func(am *Alertmanager) error
 
 var (
 	upstreams = map[string]*Alertmanager{}
 )
 
 // NewAlertmanager creates a new Alertmanager instance
-func NewAlertmanager(name, uri string, opts ...Option) (*Alertmanager, error) {
+func NewAlertmanager(name, upstreamURI string, opts ...Option) (*Alertmanager, error) {
 	am := &Alertmanager{
-		URI:            uri,
+		URI:            upstreamURI,
 		RequestTimeout: time.Second * 10,
 		Name:           name,
 		lock:           sync.RWMutex{},
@@ -38,11 +39,14 @@ func NewAlertmanager(name, uri string, opts ...Option) (*Alertmanager, error) {
 	}
 
 	for _, opt := range opts {
-		opt(am)
+		err := opt(am)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	var err error
-	am.transport, err = transport.NewTransport(am.URI, am.RequestTimeout)
+	am.reader, err = uri.NewReader(am.URI, am.RequestTimeout, am.HTTPTransport)
 	if err != nil {
 		return am, err
 	}
@@ -89,15 +93,26 @@ func GetAlertmanagerByName(name string) *Alertmanager {
 // WithProxy option can be passed to NewAlertmanager in order to enable request
 // proxying for unsee clients
 func WithProxy(proxied bool) Option {
-	return func(am *Alertmanager) {
+	return func(am *Alertmanager) error {
 		am.ProxyRequests = proxied
+		return nil
 	}
 }
 
 // WithRequestTimeout option can be passed to NewAlertmanager in order to set
 // a custom timeout for Alertmanager upstream requests
 func WithRequestTimeout(timeout time.Duration) Option {
-	return func(am *Alertmanager) {
+	return func(am *Alertmanager) error {
 		am.RequestTimeout = timeout
+		return nil
+	}
+}
+
+// WithHTTPTransport option can be passed to NewAlertmanager in order to set
+// a custom HTTP transport (http.RoundTripper implementation)
+func WithHTTPTransport(httpTransport http.RoundTripper) Option {
+	return func(am *Alertmanager) error {
+		am.HTTPTransport = httpTransport
+		return nil
 	}
 }

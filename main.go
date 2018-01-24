@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"net/http"
 	"path"
 	"strings"
 	"time"
@@ -60,7 +61,24 @@ func setupRouter(router *gin.Engine) {
 
 func setupUpstreams() {
 	for _, s := range config.Config.Alertmanager.Servers {
-		am, err := alertmanager.NewAlertmanager(s.Name, s.URI, alertmanager.WithRequestTimeout(s.Timeout), alertmanager.WithProxy(s.Proxy))
+
+		var httpTransport http.RoundTripper
+		var err error
+		// if either TLS root CA or client cert is configured then initialize custom transport where we have this setup
+		if s.TLS.CA != "" || s.TLS.Cert != "" {
+			httpTransport, err = alertmanager.NewHTTTPTransport(s.TLS.CA, s.TLS.Cert, s.TLS.Key)
+			if err != nil {
+				log.Fatalf("Failed to create HTTP transport for Alertmanager '%s' with URI '%s': %s", s.Name, s.URI, err)
+			}
+		}
+
+		am, err := alertmanager.NewAlertmanager(
+			s.Name,
+			s.URI,
+			alertmanager.WithRequestTimeout(s.Timeout),
+			alertmanager.WithProxy(s.Proxy),
+			alertmanager.WithHTTPTransport(httpTransport), // we will pass a nil unless TLS.CA or TLS.Cert is set
+		)
 		if err != nil {
 			log.Fatalf("Failed to create Alertmanager '%s' with URI '%s': %s", s.Name, s.URI, err)
 		}
