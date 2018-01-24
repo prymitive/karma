@@ -66,7 +66,7 @@ func setupUpstreams() {
 		var err error
 		// if either TLS root CA or client cert is configured then initialize custom transport where we have this setup
 		if s.TLS.CA != "" || s.TLS.Cert != "" {
-			httpTransport, err = alertmanager.NewHTTTPTransport(s.TLS.CA, s.TLS.Cert, s.TLS.Key)
+			httpTransport, err = alertmanager.NewHTTPTransport(s.TLS.CA, s.TLS.Cert, s.TLS.Key)
 			if err != nil {
 				log.Fatalf("Failed to create HTTP transport for Alertmanager '%s' with URI '%s': %s", s.Name, s.URI, err)
 			}
