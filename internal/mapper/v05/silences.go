@@ -13,7 +13,7 @@ import (
 	"github.com/blang/semver"
 	"github.com/cloudflare/unsee/internal/mapper"
 	"github.com/cloudflare/unsee/internal/models"
-	"github.com/cloudflare/unsee/internal/transport"
+	"github.com/cloudflare/unsee/internal/uri"
 )
 
 type silence struct {
@@ -43,7 +43,7 @@ type SilenceMapper struct {
 
 // AbsoluteURL for silences API endpoint this mapper supports
 func (m SilenceMapper) AbsoluteURL(baseURI string) (string, error) {
-	return transport.JoinURL(baseURI, "api/v1/silences")
+	return uri.JoinURL(baseURI, "api/v1/silences")
 }
 
 // IsSupported returns true if given version string is supported

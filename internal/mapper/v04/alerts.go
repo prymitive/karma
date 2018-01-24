@@ -15,7 +15,7 @@ import (
 	"github.com/blang/semver"
 	"github.com/cloudflare/unsee/internal/mapper"
 	"github.com/cloudflare/unsee/internal/models"
-	"github.com/cloudflare/unsee/internal/transport"
+	"github.com/cloudflare/unsee/internal/uri"
 )
 
 type alert struct {
@@ -56,7 +56,7 @@ type AlertMapper struct {
 
 // AbsoluteURL for alerts API endpoint this mapper supports
 func (m AlertMapper) AbsoluteURL(baseURI string) (string, error) {
-	return transport.JoinURL(baseURI, "api/v1/alerts/groups")
+	return uri.JoinURL(baseURI, "api/v1/alerts/groups")
 }
 
 // IsSupported returns true if given version string is supported

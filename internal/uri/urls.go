@@ -1,4 +1,4 @@
-package transport
+package uri
 
 import (
 	"net/url"

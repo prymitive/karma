@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/cloudflare/unsee/internal/models"
-	"github.com/cloudflare/unsee/internal/transport"
+	"github.com/cloudflare/unsee/internal/uri"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -20,9 +20,9 @@ var (
 )
 
 // NewAlertmanager creates a new Alertmanager instance
-func NewAlertmanager(name, uri string, opts ...Option) (*Alertmanager, error) {
+func NewAlertmanager(name, upstreamURI string, opts ...Option) (*Alertmanager, error) {
 	am := &Alertmanager{
-		URI:            uri,
+		URI:            upstreamURI,
 		RequestTimeout: time.Second * 10,
 		Name:           name,
 		lock:           sync.RWMutex{},
@@ -46,7 +46,7 @@ func NewAlertmanager(name, uri string, opts ...Option) (*Alertmanager, error) {
 	}
 
 	var err error
-	am.transport, err = transport.NewTransport(am.URI, am.RequestTimeout, am.httpTransport)
+	am.transport, err = uri.NewTransport(am.URI, am.RequestTimeout, am.httpTransport)
 	if err != nil {
 		return am, err
 	}

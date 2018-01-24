@@ -1,4 +1,4 @@
-package transport_test
+package uri_test
 
 import (
 	"crypto/tls"
@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/cloudflare/unsee/internal/mock"
-	"github.com/cloudflare/unsee/internal/transport"
+	"github.com/cloudflare/unsee/internal/uri"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -69,8 +69,8 @@ var fileTransportTests = []fileTransportTest{
 		failed: true,
 	},
 	fileTransportTest{
-		uri:    "file://transport.go",
-		size:   getFileSize("transport.go"),
+		uri:    "file://uri.go",
+		size:   getFileSize("uri.go"),
 		failed: true,
 	},
 }
@@ -105,11 +105,11 @@ func TestHTTPReader(t *testing.T) {
 	caPool.AddCert(tlsTS.Certificate())
 
 	for _, testCase := range httpTransportTests {
-		var uri string
+		var amURI string
 		if testCase.useTLS {
-			uri = tlsTS.URL
+			amURI = tlsTS.URL
 		} else {
-			uri = plainTS.URL
+			amURI = plainTS.URL
 		}
 
 		tlsConfig := testCase.tlsConfig
@@ -117,12 +117,12 @@ func TestHTTPReader(t *testing.T) {
 			tlsConfig = &tls.Config{RootCAs: caPool}
 		}
 
-		transp, err := transport.NewTransport(uri, testCase.timeout, &http.Transport{TLSClientConfig: tlsConfig})
+		transp, err := uri.NewTransport(amURI, testCase.timeout, &http.Transport{TLSClientConfig: tlsConfig})
 		if err != nil {
 			t.Errorf("[%v] failed to create new HTTP transport: %s", testCase, err)
 		}
 
-		source, err := transp.Read(uri)
+		source, err := transp.Read(amURI)
 		if err != nil {
 			if !testCase.failed {
 				t.Errorf("[%v] unexpected failure while creating reader: %s", testCase, err)
@@ -141,7 +141,7 @@ func TestHTTPReader(t *testing.T) {
 func TestFileReader(t *testing.T) {
 	//log.SetLevel(log.FatalLevel)
 	for _, testCase := range fileTransportTests {
-		transp, err := transport.NewTransport(testCase.uri, testCase.timeout, &http.Transport{})
+		transp, err := uri.NewTransport(testCase.uri, testCase.timeout, &http.Transport{})
 		if err != nil {
 			t.Errorf("[%v] failed to create new transport: %s", testCase, err)
 		}

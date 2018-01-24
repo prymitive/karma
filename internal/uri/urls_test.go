@@ -1,9 +1,9 @@
-package transport_test
+package uri_test
 
 import (
 	"testing"
 
-	"github.com/cloudflare/unsee/internal/transport"
+	"github.com/cloudflare/unsee/internal/uri"
 )
 
 type joinURLTest struct {
@@ -32,7 +32,7 @@ var joinURLTests = []joinURLTest{
 
 func TestJoinURL(t *testing.T) {
 	for _, testCase := range joinURLTests {
-		url, err := transport.JoinURL(testCase.base, testCase.sub)
+		url, err := uri.JoinURL(testCase.base, testCase.sub)
 		if err != nil {
 			t.Errorf("joinURL(%v, %v) failed: %s", testCase.base, testCase.sub, err.Error())
 		}

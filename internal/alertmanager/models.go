@@ -14,7 +14,7 @@ import (
 	"github.com/cloudflare/unsee/internal/mapper"
 	"github.com/cloudflare/unsee/internal/models"
 	"github.com/cloudflare/unsee/internal/transform"
-	"github.com/cloudflare/unsee/internal/transport"
+	"github.com/cloudflare/unsee/internal/uri"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -37,7 +37,7 @@ type Alertmanager struct {
 	// whenever this instance should be proxied
 	ProxyRequests bool
 	// transport instances are specific to URI scheme we collect from
-	transport transport.Transport
+	transport uri.Transport
 	// implements how we fetch requests from the Alertmanager, we don't set it
 	// by default so it's nil and http.DefaultTransport is used
 	httpTransport http.RoundTripper
@@ -57,7 +57,7 @@ func (am *Alertmanager) detectVersion() string {
 	// if everything fails assume Alertmanager is at latest possible version
 	defaultVersion := "999.0.0"
 
-	url, err := transport.JoinURL(am.URI, "api/v1/status")
+	url, err := uri.JoinURL(am.URI, "api/v1/status")
 	if err != nil {
 		log.Errorf("Failed to join url '%s' and path 'api/v1/status': %s", am.URI, err)
 		return defaultVersion
