@@ -36,8 +36,8 @@ type Alertmanager struct {
 	Name           string        `json:"name"`
 	// whenever this instance should be proxied
 	ProxyRequests bool
-	// transport instances are specific to URI scheme we collect from
-	transport uri.Transport
+	// reader instances are specific to URI scheme we collect from
+	reader uri.Reader
 	// implements how we fetch requests from the Alertmanager, we don't set it
 	// by default so it's nil and http.DefaultTransport is used
 	httpTransport http.RoundTripper
@@ -66,7 +66,7 @@ func (am *Alertmanager) detectVersion() string {
 	ver := alertmanagerVersion{}
 
 	// read raw body from the source
-	source, err := am.transport.Read(url)
+	source, err := am.reader.Read(url)
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
 		return defaultVersion
@@ -118,7 +118,7 @@ func (am *Alertmanager) pullSilences(version string) error {
 
 	start := time.Now()
 	// read raw body from the source
-	source, err := am.transport.Read(url)
+	source, err := am.reader.Read(url)
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
 		return err
@@ -177,7 +177,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 
 	start := time.Now()
 	// read raw body from the source
-	source, err := am.transport.Read(url)
+	source, err := am.reader.Read(url)
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
 		return err

@@ -9,13 +9,13 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// HTTPTransport can read data from http:// and https:// URIs
-type HTTPTransport struct {
+// HTTPURIReader can read data from http:// and https:// URIs
+type HTTPURIReader struct {
 	client http.Client
 }
 
-func (t *HTTPTransport) Read(uri string) (io.ReadCloser, error) {
-	log.Infof("GET %s timeout=%s", uri, t.client.Timeout)
+func (r *HTTPURIReader) Read(uri string) (io.ReadCloser, error) {
+	log.Infof("GET %s timeout=%s", uri, r.client.Timeout)
 
 	request, err := http.NewRequest("GET", uri, nil)
 	if err != nil {
@@ -23,7 +23,7 @@ func (t *HTTPTransport) Read(uri string) (io.ReadCloser, error) {
 	}
 	request.Header.Add("Accept-Encoding", "gzip")
 
-	resp, err := t.client.Do(request)
+	resp, err := r.client.Do(request)
 	if err != nil {
 		return nil, err
 	}

@@ -117,7 +117,7 @@ func TestHTTPReader(t *testing.T) {
 			tlsConfig = &tls.Config{RootCAs: caPool}
 		}
 
-		transp, err := uri.NewTransport(amURI, testCase.timeout, &http.Transport{TLSClientConfig: tlsConfig})
+		transp, err := uri.NewReader(amURI, testCase.timeout, &http.Transport{TLSClientConfig: tlsConfig})
 		if err != nil {
 			t.Errorf("[%v] failed to create new HTTP transport: %s", testCase, err)
 		}
@@ -141,7 +141,7 @@ func TestHTTPReader(t *testing.T) {
 func TestFileReader(t *testing.T) {
 	//log.SetLevel(log.FatalLevel)
 	for _, testCase := range fileTransportTests {
-		transp, err := uri.NewTransport(testCase.uri, testCase.timeout, &http.Transport{})
+		transp, err := uri.NewReader(testCase.uri, testCase.timeout, &http.Transport{})
 		if err != nil {
 			t.Errorf("[%v] failed to create new transport: %s", testCase, err)
 		}

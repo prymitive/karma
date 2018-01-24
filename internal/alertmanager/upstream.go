@@ -46,7 +46,7 @@ func NewAlertmanager(name, upstreamURI string, opts ...Option) (*Alertmanager, e
 	}
 
 	var err error
-	am.transport, err = uri.NewTransport(am.URI, am.RequestTimeout, am.httpTransport)
+	am.reader, err = uri.NewReader(am.URI, am.RequestTimeout, am.httpTransport)
 	if err != nil {
 		return am, err
 	}

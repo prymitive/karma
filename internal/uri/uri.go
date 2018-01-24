@@ -8,14 +8,14 @@ import (
 	"time"
 )
 
-// Transport reads from a specific URI schema
-type Transport interface {
+// Reader reads from a specific URI schema
+type Reader interface {
 	Read(string) (io.ReadCloser, error)
 }
 
-// NewTransport creates an instance of Transport that can handle URI schema
+// NewReader creates an instance of URIReader that can handle URI schema
 // for the passed uri string
-func NewTransport(uri string, timeout time.Duration, clientTransport http.RoundTripper) (Transport, error) {
+func NewReader(uri string, timeout time.Duration, clientTransport http.RoundTripper) (Reader, error) {
 	u, err := url.Parse(uri)
 	if err != nil {
 		return nil, err
@@ -27,9 +27,9 @@ func NewTransport(uri string, timeout time.Duration, clientTransport http.RoundT
 			Timeout:   timeout,
 			Transport: clientTransport,
 		}
-		return &HTTPTransport{client: client}, nil
+		return &HTTPURIReader{client: client}, nil
 	case "file":
-		return &FileTransport{}, nil
+		return &FileURIReader{}, nil
 	default:
 		return nil, fmt.Errorf("Unsupported URI scheme '%s' in '%s'", u.Scheme, u)
 	}
