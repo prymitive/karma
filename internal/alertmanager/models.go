@@ -35,7 +35,7 @@ type Alertmanager struct {
 	RequestTimeout time.Duration `json:"timeout"`
 	Name           string        `json:"name"`
 	// whenever this instance should be proxied
-	ProxyRequests bool
+	ProxyRequests bool `json:"proxyRequests"`
 	// reader instances are specific to URI scheme we collect from
 	reader uri.Reader
 	// implements how we fetch requests from the Alertmanager, we don't set it
