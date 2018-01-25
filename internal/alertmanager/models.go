@@ -115,6 +115,11 @@ func (am *Alertmanager) pullSilences(version string) error {
 		log.Errorf("[%s] Failed to generate silences endpoint URL: %s", am.Name, err)
 		return err
 	}
+	// append query args if mapper needs those
+	queryArgs := mapper.QueryArgs()
+	if queryArgs != "" {
+		url = fmt.Sprintf("%s?%s", url, queryArgs)
+	}
 
 	start := time.Now()
 	// read raw body from the source
@@ -173,6 +178,12 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	if err != nil {
 		log.Errorf("[%s] Failed to generate alerts endpoint URL: %s", am.Name, err)
 		return err
+	}
+
+	// append query args if mapper needs those
+	queryArgs := mapper.QueryArgs()
+	if queryArgs != "" {
+		url = fmt.Sprintf("%s?%s", url, queryArgs)
 	}
 
 	start := time.Now()

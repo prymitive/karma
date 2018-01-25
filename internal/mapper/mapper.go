@@ -16,6 +16,7 @@ var (
 type Mapper interface {
 	IsSupported(version string) bool
 	AbsoluteURL(baseURI string) (string, error)
+	QueryArgs() string
 }
 
 // AlertMapper handles mapping of Alertmanager alert information to unsee AlertGroup models

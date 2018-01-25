@@ -46,6 +46,11 @@ func (m SilenceMapper) AbsoluteURL(baseURI string) (string, error) {
 	return uri.JoinURL(baseURI, "api/v1/silences")
 }
 
+// QueryArgs for HTTP requests send to the Alertmanager API endpoint
+func (m SilenceMapper) QueryArgs() string {
+	return ""
+}
+
 // IsSupported returns true if given version string is supported
 func (m SilenceMapper) IsSupported(version string) bool {
 	versionRange := semver.MustParseRange(">=0.5.0")

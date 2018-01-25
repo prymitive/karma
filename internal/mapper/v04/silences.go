@@ -7,7 +7,9 @@ package v04
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
+	"math"
 	"strconv"
 	"time"
 
@@ -50,6 +52,13 @@ type SilenceMapper struct {
 // AbsoluteURL for silences API endpoint this mapper supports
 func (m SilenceMapper) AbsoluteURL(baseURI string) (string, error) {
 	return uri.JoinURL(baseURI, "api/v1/silences")
+}
+
+// QueryArgs for HTTP requests send to the Alertmanager API endpoint
+func (m SilenceMapper) QueryArgs() string {
+	// Alertmanager 0.4 uses pagination for silences, pass a huge value so that
+	// we get all possible silences
+	return fmt.Sprintf("api/v1/silences?limit=%d", math.MaxInt32)
 }
 
 // IsSupported returns true if given version string is supported
