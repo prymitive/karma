@@ -58,7 +58,7 @@ func (m SilenceMapper) AbsoluteURL(baseURI string) (string, error) {
 func (m SilenceMapper) QueryArgs() string {
 	// Alertmanager 0.4 uses pagination for silences, pass a huge value so that
 	// we get all possible silences
-	return fmt.Sprintf("api/v1/silences?limit=%d", math.MaxInt32)
+	return fmt.Sprintf("limit=%d", math.MaxInt32)
 }
 
 // IsSupported returns true if given version string is supported
