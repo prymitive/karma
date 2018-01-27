@@ -79,8 +79,6 @@ func init() {
 func (config *configSchema) Read() {
 	v := viper.New()
 
-	pflag.Parse()
-
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
 	v.BindPFlags(pflag.CommandLine)
