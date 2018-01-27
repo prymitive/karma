@@ -73,6 +73,11 @@ var fileTransportTests = []fileTransportTest{
 		size:   getFileSize("uri.go"),
 		failed: true,
 	},
+	fileTransportTest{
+		uri:    "file://../uri/uri.go",
+		size:   getFileSize("uri.go"),
+		failed: true,
+	},
 }
 
 func readAll(source io.ReadCloser) int64 {
