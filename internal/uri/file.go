@@ -32,16 +32,17 @@ func (r *FileURIReader) pathFromURI(uri string) (string, error) {
 		return "", err
 	}
 
-	// if we have a file URI with relative path we need to expand it into an
-	// absolute path, url.Parse doesn't support relative file paths
+	// if we a file URI with an absolute path then return it
 	if strings.HasPrefix(uri, "file:///") {
 		return u.Path, nil
 	}
-	wd, err := os.Getwd()
+	// if we have a file URI with relative path we need to expand it into an
+	// absolute path, url.Parse doesn't support relative file paths
+	cwd, err := os.Getwd()
 	if err != nil {
 		return "", err
 	}
-	absolutePath := path.Join(wd, strings.TrimPrefix(uri, "file://"))
+	absolutePath := path.Join(cwd, u.Host, u.Path)
 	return absolutePath, nil
 }
 

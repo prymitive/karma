@@ -73,19 +73,26 @@ var fileTransportTests = []fileTransportTest{
 		size:   getFileSize("uri.go"),
 		failed: true,
 	},
+	fileTransportTest{
+		uri:    "file://../uri/uri.go",
+		size:   getFileSize("uri.go"),
+		failed: true,
+	},
 }
 
-func readAll(source io.ReadCloser) int64 {
+func readAll(source io.ReadCloser) (int64, error) {
 	var readSize int64
 	b := make([]byte, 512)
 	for {
 		got, err := source.Read(b)
 		readSize += int64(got)
-		if err == io.EOF {
-			break
+		if err != nil {
+			if err == io.EOF {
+				return readSize, nil
+			}
+			return readSize, err
 		}
 	}
-	return readSize
 }
 
 func TestHTTPReader(t *testing.T) {
@@ -129,8 +136,12 @@ func TestHTTPReader(t *testing.T) {
 			}
 			continue
 		}
-		got := readAll(source)
+		got, err := readAll(source)
 		source.Close()
+
+		if err != nil {
+			t.Errorf("[%v] Read() failed: %s", testCase, err)
+		}
 
 		if got != int64(len(responseBody)+1) {
 			t.Errorf("[%v] Wrong respone size, got %d, expected %d", testCase, got, len(responseBody))
@@ -153,8 +164,12 @@ func TestFileReader(t *testing.T) {
 			}
 			continue
 		}
-		got := readAll(source)
+		got, err := readAll(source)
 		source.Close()
+
+		if err != nil {
+			t.Errorf("[%v] Read() failed: %s", testCase, err)
+		}
 
 		if got != testCase.size {
 			t.Errorf("[%v] Wrong respone size, got %d, expected %d", testCase, got, testCase.size)
