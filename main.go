@@ -12,6 +12,7 @@ import (
 	"github.com/cloudflare/unsee/internal/config"
 	"github.com/cloudflare/unsee/internal/models"
 	"github.com/cloudflare/unsee/internal/transform"
+	"github.com/spf13/pflag"
 
 	"github.com/DeanThompson/ginpprof"
 	"github.com/gin-contrib/gzip"
@@ -109,6 +110,13 @@ func setupLogger() {
 }
 
 func main() {
+	printVersion := pflag.Bool("version", false, "Print version and exit")
+	pflag.Parse()
+	if *printVersion {
+		fmt.Println(version)
+		return
+	}
+
 	config.Config.Read()
 	setupLogger()
 
