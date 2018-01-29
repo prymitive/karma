@@ -52,3 +52,36 @@ jobs:
           packages:
             - docker-ce
       script: make docker-image
+
+    - stage: Build and Deploy
+      <<: *DEFAULTS_GO
+      before_script:
+        # this stage needs to build everything including assets file and that
+        # requires running webpack, so we need nodejs here
+        - nvm install 8
+      script:
+        # compile assets via webpack and build those into bindata_assetfs.go file
+        - make bindata_assetfs.go
+        # install bakelite, we can't "go get" a tag from github, so we fetch the binary
+        - export BAKELITE_VERSION="v0.1.0"
+        - export BAKELITE_OS="linux"
+        - export BAKELITE_ARCH="amd64"
+        - curl -L -o bakelite.tar.gz "https://github.com/terinjokes/bakelite/releases/download/${BAKELITE_VERSION}/bakelite-${BAKELITE_OS}-${BAKELITE_ARCH}.tar.gz"
+        - tar -xf bakelite.tar.gz
+        # and now compile using bakelite for all target archs
+        - export SOURCE_DATE_EPOCH=$(git show -s --format=%ci ${TRAVIS_TAG:-${TRAVIS_COMMIT}}^{commit})
+        - ./bakelite-${BAKELITE_OS}-${BAKELITE_ARCH} -platforms="-plan9" -ldflags="-X main.version=\"$(make show-version)\"" github.com/cloudflare/unsee
+        - for i in unsee-*; do tar --mtime="${SOURCE_DATE_EPOCH}" --owner=0 --group=0 --numeric-owner -c $i | gzip -n - > $i.tar.gz; done
+        - shasum -a 512 unsee-*.tar.gz | tee sha512sum.txt
+      deploy:
+        provider: releases
+        api_key:
+          secure: 0vwQFykHkkfQ0pTsqHF6JLgMzAMxW7aQ6xc7P8tvawEgvKNOm1DS+hVNcb5fT9c5njV1+SQw12yv63WIXBthSiQp2VXDkUHhfCtthKklcLcloojr5avrQ43pwPSI8ViczRUb86ZLRTE+VfLgKaqeq/wpnDdeIXZ6YgM5vfgLPXjQvoRNKz3xGldHdSPsl/ar4/2Emvyk2pyenv0kMMd7Q6r7H5H3y03AdhmSQ1QTnOuaxkIimsBCakSTC3GqA+Z/SHZry2CD4u6Qb4XOpMlenAXEAiSKviSN9npmFV8kutl5BwRdCwzqGaeTGANWpSev43Ucneh6aMxSiIVOhMb8JO4ahXCF4effgipgnW5RJS8skMQW4WLvZtQ5ZFT6rAegFaECLhntl9z38V/FNdqiVU0LatIVZ8Wd3Jnug/Q+zkKwTHfMyqpLQ8ff39Qxi1vlhNQZJUrFrUonX9gf1mLOz3wBavvaUJJ8DZdH2ZRU4H05m7ARQ11uSS6U6q8DjhdpdTVi+ZLr6z/S2SkjtaNAl8CVSHAgTo6vX/kI68X63WjmtX+pll4bNfEt+UXsDw5RwTlKhhZ30KPB1tPY70hhTzBPLwKtH9OG6t5WhJr/93usTuuNQmXyayEIbFAnghIK0qSnCOl54izH4H5YYU4v1zDt5CrMq7cszk3TF91naIU=
+        skip_cleanup: true
+        file_glob: true
+        file:
+          - unsee-*.tar.gz
+          - sha512sum.txt
+        on:
+          repo: cloudflare/unsee
+          tags: true
