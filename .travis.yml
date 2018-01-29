@@ -14,10 +14,6 @@ defaults_js: &DEFAULTS_JS
     directories:
       - node_modules
 
-branches:
-  only:
-    - "master"
-
 jobs:
   include:
     - stage: Test Go code
