@@ -166,6 +166,7 @@ func (config *configSchema) LogValues() {
 			URI:     hideURLPassword(s.URI),
 			Timeout: s.Timeout,
 			TLS:     s.TLS,
+			Proxy:   s.Proxy,
 		}
 		servers = append(servers, server)
 	}
