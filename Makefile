@@ -79,7 +79,7 @@ run: $(NAME)
 	LABELS_COLOR_UNIQUE="@receiver instance cluster" \
 	LABELS_COLOR_STATIC="job" \
 	DEBUG="$(GIN_DEBUG)" \
-	FILTER_DEFAULT="@state=active" \
+	FILTERS_DEFAULT="@state=active" \
 	PORT=$(PORT) \
 	./$(NAME)
 
@@ -98,6 +98,7 @@ run-docker: docker-image
 	    -e LABELS_COLOR_UNIQUE="instance cluster" \
 	    -e LABELS_COLOR_STATIC="job" \
 	    -e DEBUG="$(GIN_DEBUG)" \
+            -e FILTERS_DEFAULT="@state=active" \
 	    -e PORT=$(PORT) \
 	    -p $(PORT):$(PORT) \
 	    $(NAME):$(VERSION)
