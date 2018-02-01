@@ -56,18 +56,15 @@ $(NAME): .build/deps-build-go.ok .build/vendor.ok bindata_assetfs.go $(SOURCES)
 
 .build/vendor.ok: .build/deps-build-go.ok Gopkg.lock Gopkg.toml
 	dep ensure
-	dep prune
 	touch $@
 
 .PHONY: vendor
 vendor: .build/deps-build-go.ok
 	dep ensure
-	dep prune
 
 .PHONY: vendor-update
 vendor-update: .build/deps-build-go.ok
 	dep ensure -update
-	dep prune
 
 .PHONY: webpack
 webpack: .build/artifacts-webpack.ok
