@@ -17,10 +17,8 @@ func resetEnv() {
 	unseeEnvVariables := []string{
 		"ALERTMANAGER_INTERVAL",
 		"ALERTMANAGER_URI",
-		"ALERTMANAGER_URIS",
 		"ALERTMANAGER_NAME",
 		"ALERTMANAGET_TIMEOUT",
-		"ALERTMANAGER_TTL",
 		"ANNOTATIONS_DEFAULT_HIDDEN",
 		"ANNOTATIONS_HIDDEN",
 		"ANNOTATIONS_VISIBLE",
@@ -96,11 +94,7 @@ listen:
 log:
   config: true
   level: info
-jira:
-- regex: DEVOPS-[0-9]+
-  uri: https://jira.example.com
-- regex: FOO-[0-9]+
-  uri: https://foo.example.com
+jira: []
 receivers:
   keep: []
   strip: []
@@ -130,28 +124,6 @@ sentry:
 	}
 }
 
-func TestReadConfigLegacy(t *testing.T) {
-	resetEnv()
-	log.SetLevel(log.ErrorLevel)
-	os.Setenv("ALERTMANAGER_TTL", "1s")
-	os.Setenv("ALERTMANAGER_URIS", "default:http://localhost")
-	os.Setenv("ANNOTATIONS_DEFAULT_HIDDEN", "true")
-	os.Setenv("ANNOTATIONS_VISIBLE", "summary")
-	os.Setenv("COLOR_LABELS_STATIC", "a bb ccc")
-	os.Setenv("COLOR_LABELS_UNIQUE", "f gg")
-	os.Setenv("DEBUG", "true")
-	os.Setenv("FILTER_DEFAULT", "@state=active,foo=bar")
-	os.Setenv("JIRA_REGEX", "DEVOPS-[0-9]+@https://jira.example.com FOO-[0-9]+@https://foo.example.com")
-	os.Setenv("KEEP_LABELS", "foo bar")
-	os.Setenv("STRIP_LABELS", "abc def")
-	os.Setenv("SENTRY_DSN", "secret key")
-	os.Setenv("SENTRY_PUBLIC_DSN", "public key")
-	os.Setenv("HOST", "0.0.0.0")
-	os.Setenv("PORT", "80")
-	Config.Read()
-	testReadConfig(t)
-}
-
 func TestReadConfig(t *testing.T) {
 	resetEnv()
 	log.SetLevel(log.ErrorLevel)
@@ -161,7 +133,6 @@ func TestReadConfig(t *testing.T) {
 	os.Setenv("ANNOTATIONS_VISIBLE", "summary")
 	os.Setenv("DEBUG", "true")
 	os.Setenv("FILTERS_DEFAULT", "@state=active foo=bar")
-	os.Setenv("JIRA_REGEX", "DEVOPS-[0-9]+@https://jira.example.com FOO-[0-9]+@https://foo.example.com")
 	os.Setenv("LABELS_COLOR_STATIC", "a bb ccc")
 	os.Setenv("LABELS_COLOR_UNIQUE", "f gg")
 	os.Setenv("LABELS_KEEP", "foo bar")

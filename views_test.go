@@ -59,8 +59,8 @@ func TestIndex(t *testing.T) {
 }
 
 func TestIndexPrefix(t *testing.T) {
-	os.Setenv("WEB_PREFIX", "/prefix")
-	defer os.Unsetenv("WEB_PREFIX")
+	os.Setenv("LISTEN_PREFIX", "/prefix")
+	defer os.Unsetenv("LISTEN_PREFIX")
 	mockConfig()
 	r := ginTestEngine()
 	req, _ := http.NewRequest("GET", "/prefix/", nil)
@@ -83,8 +83,8 @@ func TestHelp(t *testing.T) {
 }
 
 func TestHelpPrefix(t *testing.T) {
-	os.Setenv("WEB_PREFIX", "/prefix")
-	defer os.Unsetenv("WEB_PREFIX")
+	os.Setenv("LISTEN_PREFIX", "/prefix")
+	defer os.Unsetenv("LISTEN_PREFIX")
 	mockConfig()
 	r := ginTestEngine()
 	req, _ := http.NewRequest("GET", "/prefix/help", nil)
@@ -447,8 +447,8 @@ var staticFilePrefixTests = []staticFileTestCase{
 }
 
 func TestStaticFilesPrefix(t *testing.T) {
-	os.Setenv("WEB_PREFIX", "/sub")
-	defer os.Unsetenv("WEB_PREFIX")
+	os.Setenv("LISTEN_PREFIX", "/sub")
+	defer os.Unsetenv("LISTEN_PREFIX")
 	mockConfig()
 	r := ginTestEngine()
 	for _, staticFileTest := range staticFilePrefixTests {

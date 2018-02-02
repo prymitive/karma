@@ -93,9 +93,6 @@ func (config *configSchema) Read() {
 	// raven-go expects this
 	v.BindEnv("sentry.private", "SENTRY_DSN")
 
-	// bind legacy env variables
-	config.legacyEnvs(v)
-
 	configFile := v.GetString("config.file")
 	configDir := v.GetString("config.dir")
 	v.SetConfigType("yaml")
@@ -142,9 +139,6 @@ func (config *configSchema) Read() {
 		log.Fatal(err)
 	}
 
-	// populate legacy settings if needed
-	config.legacySettingsFallback()
-
 	// accept single Alertmanager server from flag/env if nothing is set yet
 	if len(config.Alertmanager.Servers) == 0 && v.GetString("alertmanager.uri") != "" {
 		log.Info("Using simple config with a single Alertmanager server")
@@ -172,6 +166,7 @@ func (config *configSchema) LogValues() {
 			URI:     hideURLPassword(s.URI),
 			Timeout: s.Timeout,
 			TLS:     s.TLS,
+			Proxy:   s.Proxy,
 		}
 		servers = append(servers, server)
 	}
