@@ -117,6 +117,7 @@ func mockAlerts(version string) {
 func TestAlerts(t *testing.T) {
 	mockConfig()
 	for _, version := range mock.ListAllMocks() {
+		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := ginTestEngine()
 		req, _ := http.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service,alertname=HTTP_Probe_Failed,instance=web1", nil)
@@ -183,6 +184,7 @@ func TestAlerts(t *testing.T) {
 func TestValidateAllAlerts(t *testing.T) {
 	mockConfig()
 	for _, version := range mock.ListAllMocks() {
+		t.Logf("Validating alerts.json response using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := ginTestEngine()
 		req, _ := http.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed,instance=web1", nil)
@@ -354,6 +356,7 @@ var acTests = []acTestCase{
 func TestAutocomplete(t *testing.T) {
 	mockConfig()
 	for _, version := range mock.ListAllMocks() {
+		t.Logf("Testing autocomplete using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := ginTestEngine()
 

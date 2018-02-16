@@ -132,7 +132,7 @@ mock-assets: .build/deps-build-go.ok
 
 .PHONY: test-go
 test-go: .build/vendor.ok
-	go test -bench=. -cover `go list ./... | grep -v /vendor/`
+	go test -v -bench=. -cover `go list ./... | grep -v /vendor/`
 
 .PHONY: test-js
 test-js: .build/deps-build-node.ok

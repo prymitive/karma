@@ -931,6 +931,7 @@ func testAlertGroup(version string, t *testing.T, testCase groupTest, group mode
 func TestVerifyAllGroups(t *testing.T) {
 	mockConfig()
 	for _, version := range mock.ListAllMocks() {
+		t.Logf("Testing API using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := ginTestEngine()
 		req, _ := http.NewRequest("GET", "/alerts.json", nil)
