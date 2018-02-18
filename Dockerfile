@@ -3,7 +3,7 @@ RUN apk add --update make git
 COPY . /unsee
 RUN make -C /unsee webpack
 
-FROM golang:1.9.2-alpine3.6 as go-builder
+FROM golang:1.10-alpine as go-builder
 COPY --from=nodejs-builder /unsee /go/src/github.com/cloudflare/unsee
 ARG VERSION
 RUN apk add --update make git
