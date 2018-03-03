@@ -870,7 +870,10 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 					for _, es := range expectedAM.Silences {
 						foundSilence := false
 						for _, gs := range gotAM.Silences {
-							if es.Comment == gs.Comment && es.CreatedBy == gs.CreatedBy && es.JiraID == gs.JiraID && es.JiraURL == es.JiraURL {
+							if es.Comment == gs.Comment &&
+								es.CreatedBy == gs.CreatedBy &&
+								es.JiraID == gs.JiraID &&
+								es.JiraURL == gs.JiraURL {
 								foundSilence = true
 							}
 						}
