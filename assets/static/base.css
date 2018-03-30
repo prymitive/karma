@@ -250,8 +250,11 @@ blockquote.silence-comment {
   margin-bottom: 2px;
   padding-left: 0;
   padding-right: 2px;
-  padding-top: 2px;
+  padding-top: 0;
   padding-bottom: 0;
+}
+.silence-block.well {
+  border: 0;
 }
 
 /* button is an icon inside a well, it gets white color
@@ -259,6 +262,7 @@ blockquote.silence-comment {
   and black on hover */
 button.silence-delete {
   color: inherit;
+  margin-top: 2px;
 }
 button.silence-delete:hover,
 button.silence-delete:focus {
