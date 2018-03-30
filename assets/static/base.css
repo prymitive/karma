@@ -274,7 +274,7 @@ button.silence-delete:focus {
 }
 
 .incident {
-    padding: 8px;
+    padding: 5px;
 }
 
 .incident>.panel>.panel-heading {
