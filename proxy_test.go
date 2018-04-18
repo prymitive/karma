@@ -162,6 +162,16 @@ var proxyHeaderTests = []proxyHeaderTest{
 		authUser:         "foo",
 		authPass:         "bar",
 	},
+	{
+		method:           "POST",
+		localPath:        "/proxy/alertmanager/dummy/api/v1/silences",
+		upstreamURI:      "http://alertmanager.example.com/api/v1/silences",
+		code:             200,
+		alertmanagerURI:  "http://foo@alertmanager.example.com",
+		alertmanagerHost: "alertmanager.example.com",
+		authUser:         "foo",
+		authPass:         "",
+	},
 }
 
 func TestProxyHeaders(t *testing.T) {
