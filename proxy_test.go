@@ -123,3 +123,102 @@ func TestProxy(t *testing.T) {
 		}
 	}
 }
+
+type proxyHeaderTest struct {
+	method           string
+	localPath        string
+	upstreamURI      string
+	code             int
+	alertmanagerURI  string
+	alertmanagerHost string
+	authUser         string
+	authPass         string
+}
+
+var proxyHeaderTests = []proxyHeaderTest{
+	{
+		method:           "POST",
+		localPath:        "/proxy/alertmanager/dummy/api/v1/silences",
+		upstreamURI:      "http://localhost:9093/api/v1/silences",
+		code:             200,
+		alertmanagerURI:  "http://localhost:9093",
+		alertmanagerHost: "localhost:9093",
+	},
+	{
+		method:           "POST",
+		localPath:        "/proxy/alertmanager/dummy/api/v1/silences",
+		upstreamURI:      "http://alertmanager.example.com/api/v1/silences",
+		code:             200,
+		alertmanagerURI:  "http://alertmanager.example.com",
+		alertmanagerHost: "alertmanager.example.com",
+	},
+	{
+		method:           "POST",
+		localPath:        "/proxy/alertmanager/dummy/api/v1/silences",
+		upstreamURI:      "http://alertmanager.example.com/api/v1/silences",
+		code:             200,
+		alertmanagerURI:  "http://foo:bar@alertmanager.example.com",
+		alertmanagerHost: "alertmanager.example.com",
+		authUser:         "foo",
+		authPass:         "bar",
+	},
+	{
+		method:           "POST",
+		localPath:        "/proxy/alertmanager/dummy/api/v1/silences",
+		upstreamURI:      "http://alertmanager.example.com/api/v1/silences",
+		code:             200,
+		alertmanagerURI:  "http://foo@alertmanager.example.com",
+		alertmanagerHost: "alertmanager.example.com",
+		authUser:         "foo",
+		authPass:         "",
+	},
+}
+
+func TestProxyHeaders(t *testing.T) {
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	for _, testCase := range proxyHeaderTests {
+		r := ginTestEngine()
+		am, err := alertmanager.NewAlertmanager(
+			"dummy",
+			testCase.alertmanagerURI,
+			alertmanager.WithRequestTimeout(time.Second*5),
+			alertmanager.WithProxy(true),
+		)
+		if err != nil {
+			t.Error(err)
+		}
+		setupRouterProxyHandlers(r, am)
+
+		httpmock.Reset()
+		httpmock.RegisterResponder(testCase.method, testCase.upstreamURI, func(req *http.Request) (*http.Response, error) {
+			if req.Host != testCase.alertmanagerHost {
+				t.Errorf("req.Host is '%s' while '%s' was expected", req.Host, testCase.alertmanagerHost)
+			}
+			if req.Header.Get("Host") != "" {
+				t.Errorf("req.Header.Host is '%s' while '%s' was expected", req.Header.Get("Host"), testCase.alertmanagerHost)
+			}
+			if testCase.authUser != "" || testCase.authPass != "" {
+				user, password, _ := req.BasicAuth()
+				if testCase.authUser != "" && testCase.authUser != user {
+					t.Errorf("%s %s proxied to %s was expected to have Basic Auth user '%s', got '%s'",
+						testCase.method, testCase.localPath, testCase.upstreamURI, testCase.authUser, user)
+				}
+				if testCase.authPass != "" && testCase.authPass != password {
+					t.Errorf("%s %s proxied to %s was expected to have Basic Auth password '%s', got '%s'",
+						testCase.method, testCase.localPath, testCase.upstreamURI, testCase.authPass, password)
+				}
+			}
+			return httpmock.NewStringResponse(testCase.code, "ok"), nil
+		})
+
+		req, _ := http.NewRequest(testCase.method, testCase.localPath, nil)
+		resp := newCloseNotifyingRecorder()
+		r.ServeHTTP(resp, req)
+		if resp.Code != testCase.code {
+			t.Errorf("%s %s proxied to %s returned status %d while %d was expected",
+				testCase.method, testCase.localPath, testCase.upstreamURI, resp.Code, testCase.code)
+		}
+	}
+}
