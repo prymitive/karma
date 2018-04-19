@@ -2,7 +2,7 @@ NAME    := unsee
 VERSION := $(shell git describe --tags --always --dirty='-dev')
 
 # Alertmanager instance used when running locally, points to mock data
-MOCK_PATH         := $(CURDIR)/internal/mock/0.13.0
+MOCK_PATH         := $(CURDIR)/internal/mock/0.14.0
 ALERTMANAGER_URI := "file://$(MOCK_PATH)"
 # Listen port when running locally
 PORT := 8080
@@ -49,25 +49,22 @@ endif
 	touch $@
 
 bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.$(GO_BINDATA_MODE) .build/vendor.ok .build/artifacts-webpack.ok
-	go-bindata-assetfs $(GO_BINDATA_FLAGS) -prefix assets -nometadata assets/templates/... assets/static/dist/...
+	go-bindata-assetfs $(GO_BINDATA_FLAGS) -o bindata_assetfs.go -prefix assets -nometadata assets/templates/... assets/static/dist/...
 
 $(NAME): .build/deps-build-go.ok .build/vendor.ok bindata_assetfs.go $(SOURCES)
 	go build -ldflags "-X main.version=$(VERSION)"
 
 .build/vendor.ok: .build/deps-build-go.ok Gopkg.lock Gopkg.toml
 	dep ensure
-	dep prune
 	touch $@
 
 .PHONY: vendor
 vendor: .build/deps-build-go.ok
 	dep ensure
-	dep prune
 
 .PHONY: vendor-update
 vendor-update: .build/deps-build-go.ok
 	dep ensure -update
-	dep prune
 
 .PHONY: webpack
 webpack: .build/artifacts-webpack.ok

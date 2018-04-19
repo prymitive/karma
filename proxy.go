@@ -31,10 +31,21 @@ func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) (*httputil.Re
 		Director: func(req *http.Request) {
 			req.URL.Scheme = upstreamURL.Scheme
 			req.URL.Host = upstreamURL.Host
+
+			if upstreamURL.User.Username() != "" {
+				username := upstreamURL.User.Username()
+				password, _ := upstreamURL.User.Password()
+				req.SetBasicAuth(username, password)
+			}
+
 			// drop Accept-Encoding header so we always get uncompressed reponses from
 			// upstream, there's a gzip middleware that's global so we don't want it
 			// to gzip twice
 			req.Header.Del("Accept-Encoding")
+
+			// set hostname of proxied target
+			req.Host = upstreamURL.Host
+
 			log.Debugf("[%s] Proxy request for %s", alertmanager.Name, req.URL.Path)
 		},
 		Transport: alertmanager.HTTPTransport,

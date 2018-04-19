@@ -1,0 +1,5 @@
+# CODEOWNERS file lists people and teams responsible for code in this
+# repository.
+# See https://help.github.com/articles/about-codeowners/ for details.
+
+* @prymitive

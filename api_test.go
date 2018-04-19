@@ -870,7 +870,10 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 					for _, es := range expectedAM.Silences {
 						foundSilence := false
 						for _, gs := range gotAM.Silences {
-							if es.Comment == gs.Comment && es.CreatedBy == gs.CreatedBy && es.JiraID == gs.JiraID && es.JiraURL == es.JiraURL {
+							if es.Comment == gs.Comment &&
+								es.CreatedBy == gs.CreatedBy &&
+								es.JiraID == gs.JiraID &&
+								es.JiraURL == gs.JiraURL {
 								foundSilence = true
 							}
 						}
@@ -891,11 +894,11 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 }
 
 func testAlertGroup(version string, t *testing.T, testCase groupTest, group models.AlertGroup) {
-	if testCase.hash != group.Hash {
-		// FIXME this is different per mock version due to startsAt / endsAt
-		// t.Errorf("[%s] Alert group.Hash mismatch, expected '%s' but got '%s' for group %v",
-		// version, testCase.hash, group.Hash, group.Labels)
-	}
+	//if testCase.hash != group.Hash {
+	// FIXME this is different per mock version due to startsAt / endsAt
+	// t.Errorf("[%s] Alert group.Hash mismatch, expected '%s' but got '%s' for group %v",
+	// version, testCase.hash, group.Hash, group.Labels)
+	//}
 	if testCase.id != group.ID {
 		t.Errorf("[%s] Alert group.ID mismatch, expected '%s' but got '%s' for group %v",
 			version, testCase.id, group.ID, group.Labels)
