@@ -15,7 +15,7 @@ type HTTPURIReader struct {
 }
 
 func (r *HTTPURIReader) Read(uri string) (io.ReadCloser, error) {
-	log.Infof("GET %s timeout=%s", uri, r.client.Timeout)
+	log.Infof("GET %s timeout=%s", SanitizeURI(uri), r.client.Timeout)
 
 	request, err := http.NewRequest("GET", uri, nil)
 	if err != nil {
@@ -29,7 +29,7 @@ func (r *HTTPURIReader) Read(uri string) (io.ReadCloser, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("Request to %s failed with %s", uri, resp.Status)
+		return nil, fmt.Errorf("Request to %s failed with %s", SanitizeURI(uri), resp.Status)
 	}
 
 	var reader io.ReadCloser

@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cloudflare/unsee/internal/uri"
 	"github.com/pmezard/go-difflib/difflib"
 
 	log "github.com/sirupsen/logrus"
@@ -200,7 +201,7 @@ var urlSecretTests = []urlSecretTest{
 
 func TestUrlSecretTest(t *testing.T) {
 	for _, testCase := range urlSecretTests {
-		sanitized := hideURLPassword(testCase.raw)
+		sanitized := uri.SanitizeURI(testCase.raw)
 		if sanitized != testCase.sanitized {
 			t.Errorf("Invalid sanitized url, expected '%s', got '%s'", testCase.sanitized, sanitized)
 		}

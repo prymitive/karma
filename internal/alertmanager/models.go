@@ -59,7 +59,7 @@ func (am *Alertmanager) detectVersion() string {
 
 	url, err := uri.JoinURL(am.URI, "api/v1/status")
 	if err != nil {
-		log.Errorf("Failed to join url '%s' and path 'api/v1/status': %s", am.URI, err)
+		log.Errorf("Failed to join url '%s' and path 'api/v1/status': %s", am.SanitizedURI(), err)
 		return defaultVersion
 	}
 
@@ -68,7 +68,7 @@ func (am *Alertmanager) detectVersion() string {
 	// read raw body from the source
 	source, err := am.reader.Read(url)
 	if err != nil {
-		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
+		log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
 		return defaultVersion
 	}
 	defer source.Close()
@@ -76,17 +76,17 @@ func (am *Alertmanager) detectVersion() string {
 	// decode body as JSON
 	err = json.NewDecoder(source).Decode(&ver)
 	if err != nil {
-		log.Errorf("[%s] %s failed to decode as JSON: %s", am.Name, url, err)
+		log.Errorf("[%s] %s failed to decode as JSON: %s", am.Name, uri.SanitizeURI(url), err)
 		return defaultVersion
 	}
 
 	if ver.Status != "success" {
-		log.Errorf("[%s] Request to %s returned status %s", am.Name, url, ver.Status)
+		log.Errorf("[%s] Request to %s returned status %s", am.Name, uri.SanitizeURI(url), ver.Status)
 		return defaultVersion
 	}
 
 	if ver.Data.VersionInfo.Version == "" {
-		log.Errorf("[%s] No version information in Alertmanager API at %s", am.Name, url)
+		log.Errorf("[%s] No version information in Alertmanager API at %s", am.Name, uri.SanitizeURI(url))
 		return defaultVersion
 	}
 
@@ -125,7 +125,7 @@ func (am *Alertmanager) pullSilences(version string) error {
 	// read raw body from the source
 	source, err := am.reader.Read(url)
 	if err != nil {
-		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
+		log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
 		return err
 	}
 	defer source.Close()
@@ -190,7 +190,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	// read raw body from the source
 	source, err := am.reader.Read(url)
 	if err != nil {
-		log.Errorf("[%s] %s request failed: %s", am.Name, url, err)
+		log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
 		return err
 	}
 	defer source.Close()
@@ -376,4 +376,10 @@ func (am *Alertmanager) Error() string {
 	defer am.lock.RUnlock()
 
 	return am.lastError
+}
+
+// SanitizedURI returns a copy of Alertmanager.URI with password replaced by
+// "xxx"
+func (am *Alertmanager) SanitizedURI() string {
+	return uri.SanitizeURI(am.URI)
 }

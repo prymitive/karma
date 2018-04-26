@@ -41,3 +41,53 @@ func TestJoinURL(t *testing.T) {
 		}
 	}
 }
+
+type sanitizeURITest struct {
+	raw       string
+	sanitized string
+}
+
+var sanitizeURITests = []sanitizeURITest{
+	{
+		raw:       "http://alertmanager.example.com",
+		sanitized: "http://alertmanager.example.com",
+	},
+	{
+		raw:       "http://alertmanager.example.com/foo",
+		sanitized: "http://alertmanager.example.com/foo",
+	},
+	{
+		raw:       "http://user:pass@alertmanager.example.com",
+		sanitized: "http://user:xxx@alertmanager.example.com",
+	},
+	{
+		raw:       "http://user:pass@alertmanager.example.com/foo",
+		sanitized: "http://user:xxx@alertmanager.example.com/foo",
+	},
+	{
+		raw:       "https://alertmanager.example.com",
+		sanitized: "https://alertmanager.example.com",
+	},
+	{
+		raw:       "https://alertmanager.example.com/foo",
+		sanitized: "https://alertmanager.example.com/foo",
+	},
+	{
+		raw:       "https://user:pass@alertmanager.example.com",
+		sanitized: "https://user:xxx@alertmanager.example.com",
+	},
+	{
+		raw:       "https://user:pass@alertmanager.example.com/foo",
+		sanitized: "https://user:xxx@alertmanager.example.com/foo",
+	},
+}
+
+func TestSanitizedURI(t *testing.T) {
+	for _, test := range sanitizeURITests {
+		s := uri.SanitizeURI(test.raw)
+		if s != test.sanitized {
+			t.Errorf("Sanitized URI mismatch, expected '%s' => '%s', got '%s'",
+				test.raw, test.sanitized, s)
+		}
+	}
+}

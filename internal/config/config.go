@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cloudflare/unsee/internal/uri"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 
@@ -163,7 +164,7 @@ func (config *configSchema) LogValues() {
 	for _, s := range cfg.Alertmanager.Servers {
 		server := alertmanagerConfig{
 			Name:    s.Name,
-			URI:     hideURLPassword(s.URI),
+			URI:     uri.SanitizeURI(s.URI),
 			Timeout: s.Timeout,
 			TLS:     s.TLS,
 			Proxy:   s.Proxy,
@@ -174,7 +175,7 @@ func (config *configSchema) LogValues() {
 
 	// replace secret in Sentry DNS with 'xxx'
 	if config.Sentry.Private != "" {
-		config.Sentry.Private = hideURLPassword(config.Sentry.Private)
+		config.Sentry.Private = uri.SanitizeURI(config.Sentry.Private)
 	}
 
 	out, err := yaml.Marshal(cfg)
