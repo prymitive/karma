@@ -67,6 +67,14 @@ alertmanager:
   testing with JSON files, see [mock](/internal/mock/) dir for examples, files
   in this directory are used for running tests and when running demo instance
   of unsee with `make run`.
+  If URI contains basic auth info
+  (`https://user:password@alertmanager.example.com`) and you don't want it to
+  be visible to users then ensure `proxy: true` is also set.
+  Without proxy mode full URI needs to be passed to unsee web UI code.
+  With proxy mode all requests will be routed via unsee HTTP server and since
+  unsee has full URI in the config it only needs Alertmanager name in that
+  request.
+  `proxy: true` in order to avoid leaking auth information to the browser.
 * `timeout` - timeout for requests send to this Alertmanager server, a string in
   [time.Duration](https://golang.org/pkg/time/#ParseDuration) format.
 * `proxy` - if enabled requests from user browsers to this Alertmanager will be

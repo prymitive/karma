@@ -40,7 +40,7 @@ func getUpstreams() models.AlertmanagerAPISummary {
 	for _, upstream := range upstreams {
 		u := models.AlertmanagerAPIStatus{
 			Name:  upstream.Name,
-			URI:   upstream.URI,
+			URI:   upstream.SanitizedURI(),
 			Error: upstream.Error(),
 		}
 		summary.Instances = append(summary.Instances, u)
