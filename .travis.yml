@@ -8,11 +8,21 @@ defaults_go: &DEFAULTS_GO
 defaults_js: &DEFAULTS_JS
   language: node_js
   node_js: "8"
+  before_install:
+    - npm install -g greenkeeper-lockfile
+  before_script:
+    - greenkeeper-lockfile-update
+  after_script:
+    - greenkeeper-lockfile-upload
   # install defaults to "npm install", which is done via make
   install: []
   cache:
     directories:
       - node_modules
+
+env:
+  global:
+    - secure: "TTJvEAPR9emq472XCxLE1KIAfAjeGQrYQskw/Y5Bgo+fyRcI1Jt0+3OerCwtuHpXJPEu2bb9XFmKpp1sByV9l8zUmDaPAE20yN62g2c3+CGAbtoXOdu+ZDwGwixzfH1zOv7Hpd9ICW/KiAXk1d279ch3aUQPSVOAgu63e33pXzxYOplLcEIZtV6ATIFhYYfTJLgMpIo6LH/RHZQlGAIEbvZSRmFfjb3EMB7oKRogSjHZ8+JPYizV7CozW9PrbY2M1iGouTnO7If4TQFmBNuurqJJXidKlrckzGUBpDnD2N/5uyneKdBge1Xl5WSHPYV6bW4gsZC/ecHAVm0Oy5I+rjn5vdDgLNXd8XF6zm90b+LjXiFp9M9y1YPygSqPuYGBllNkNMiDrR2Ho7sTVe8eID4+V7Ksw7g9bI+ehESovqK0STheOiD5KsxtkurvfnLO7yb+XpgZozDwQp0FuYfbZBKdqBOEI55aCOs+9FLaCZru6aKNCT7t0qG11TVTV8chMSlhcON9VI7/L7JXXenFHmp7cakxrs2N9TpJUkajmjgUY3Ia0l5LAcCNQFrFTxqx3i58X1R5bZGeYX7jniybPQf5ZkZay99AhPx5u56AHIFy7zp9ipHwHtSkP/yRPJdjGrR67qR6O+oVYCIalXSQFVGGWYO2R2K/IymZIcYwARk="
 
 jobs:
   include:
