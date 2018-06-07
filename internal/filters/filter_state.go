@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cloudflare/unsee/internal/models"
-	"github.com/cloudflare/unsee/internal/slices"
+	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/unsee/internal/slices"
 )
 
 type stateFilter struct {

@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/cloudflare/unsee/internal/transform"
+	"github.com/prymitive/unsee/internal/transform"
 )
 
 type stripLabelTest struct {

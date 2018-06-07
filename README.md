@@ -14,7 +14,7 @@ on those tags.
 ![Screenshot](/screenshot.png)
 
 To get notifications about new unsee releases you can subscribe to the RSS feed
-that [GitHub provides](https://github.com/cloudflare/unsee/releases.atom)
+that [GitHub provides](https://github.com/prymitive/unsee/releases.atom)
 To get email notifications please use one of the free services providing
 _RSS to email_ notifications, like [Blogtrottr](https://blogtrottr.com/).
 
@@ -50,8 +50,8 @@ used.
 
 To clone git repo and build the binary yourself run:
 
-    git clone https://github.com/cloudflare/unsee $GOPATH/src/github.com/cloudflare/unsee
-    cd $GOPATH/src/github.com/cloudflare/unsee
+    git clone https://github.com/prymitive/unsee $GOPATH/src/github.com/prymitive/unsee
+    cd $GOPATH/src/github.com/prymitive/unsee
 
 To finally compile `unsee` the binary run:
 
@@ -88,25 +88,25 @@ variables. Example:
 ### Running pre-build docker image
 
 Official docker images are built and hosted on
-[hub.docker.com](https://hub.docker.com/r/cloudflare/unsee/).
+[hub.docker.com](https://hub.docker.com/r/prymitive/unsee/).
 
 Images are built automatically for:
 
-* release tags in git - `cloudflare/unsee:vX.Y.Z`
-* master branch commits - `cloudflare/unsee:latest`
+* release tags in git - `prymitive/unsee:vX.Y.Z`
+* master branch commits - `prymitive/unsee:latest`
 
 #### Examples
 
 To start a release image run:
 
-    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com cloudflare/unsee:vX.Y.Z
+    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com prymitive/unsee:vX.Y.Z
 
 Latest release details can be found on
-[GitHub](https://github.com/cloudflare/unsee/releases).
+[GitHub](https://github.com/prymitive/unsee/releases).
 
 To start docker image build from lastet master branch run:
 
-    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com cloudflare/unsee:latest
+    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com prymitive/unsee:latest
 
 Note that latest master branch might have bugs or breaking changes. Using
 release images is strongly recommended for any production use.

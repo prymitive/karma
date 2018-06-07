@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	"github.com/blang/semver"
-	"github.com/cloudflare/unsee/internal/mock"
-	"github.com/cloudflare/unsee/internal/models"
+	"github.com/prymitive/unsee/internal/mock"
+	"github.com/prymitive/unsee/internal/models"
 )
 
 type groupTest struct {

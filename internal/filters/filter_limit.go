@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cloudflare/unsee/internal/models"
+	"github.com/prymitive/unsee/internal/models"
 )
 
 type limitFilter struct {
