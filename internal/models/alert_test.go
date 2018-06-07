@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudflare/unsee/internal/models"
+	"github.com/prymitive/unsee/internal/models"
 )
 
 type alertStateTest struct {

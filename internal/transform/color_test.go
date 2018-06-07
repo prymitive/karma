@@ -3,9 +3,9 @@ package transform_test
 import (
 	"testing"
 
-	"github.com/cloudflare/unsee/internal/config"
-	"github.com/cloudflare/unsee/internal/models"
-	"github.com/cloudflare/unsee/internal/transform"
+	"github.com/prymitive/unsee/internal/config"
+	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/unsee/internal/transform"
 )
 
 type colorTest struct {

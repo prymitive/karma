@@ -4,7 +4,7 @@ import (
 	"runtime"
 	"sync"
 
-	"github.com/cloudflare/unsee/internal/alertmanager"
+	"github.com/prymitive/unsee/internal/alertmanager"
 
 	log "github.com/sirupsen/logrus"
 )

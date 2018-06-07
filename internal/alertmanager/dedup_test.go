@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudflare/unsee/internal/alertmanager"
-	"github.com/cloudflare/unsee/internal/config"
-	"github.com/cloudflare/unsee/internal/mock"
+	"github.com/prymitive/unsee/internal/alertmanager"
+	"github.com/prymitive/unsee/internal/config"
+	"github.com/prymitive/unsee/internal/mock"
 
 	log "github.com/sirupsen/logrus"
 )

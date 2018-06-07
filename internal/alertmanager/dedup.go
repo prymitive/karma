@@ -3,10 +3,10 @@ package alertmanager
 import (
 	"sort"
 
-	"github.com/cloudflare/unsee/internal/config"
-	"github.com/cloudflare/unsee/internal/models"
-	"github.com/cloudflare/unsee/internal/slices"
-	"github.com/cloudflare/unsee/internal/transform"
+	"github.com/prymitive/unsee/internal/config"
+	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/unsee/internal/slices"
+	"github.com/prymitive/unsee/internal/transform"
 )
 
 // DedupAlerts will collect alert groups from all defined Alertmanager

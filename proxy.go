@@ -6,8 +6,8 @@ import (
 	"net/http/httputil"
 	"net/url"
 
-	"github.com/cloudflare/unsee/internal/alertmanager"
-	"github.com/cloudflare/unsee/internal/config"
+	"github.com/prymitive/unsee/internal/alertmanager"
+	"github.com/prymitive/unsee/internal/config"
 	"github.com/gin-gonic/gin"
 
 	log "github.com/sirupsen/logrus"

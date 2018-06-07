@@ -66,18 +66,18 @@ jobs:
         - tar -xf bakelite.tar.gz
         # and now compile using bakelite for all target archs
         - export SOURCE_DATE_EPOCH=$(git show -s --format=%ci ${TRAVIS_TAG:-${TRAVIS_COMMIT}}^{commit})
-        - ./bakelite-${BAKELITE_OS}-${BAKELITE_ARCH} -platforms="-plan9" -ldflags="-X main.version=\"$(make show-version)\"" github.com/cloudflare/unsee
+        - ./bakelite-${BAKELITE_OS}-${BAKELITE_ARCH} -platforms="-plan9" -ldflags="-X main.version=\"$(make show-version)\"" github.com/prymitive/unsee
         - for i in unsee-*; do tar --mtime="${SOURCE_DATE_EPOCH}" --owner=0 --group=0 --numeric-owner -c $i | gzip -n - > $i.tar.gz; done
         - shasum -a 512 unsee-*.tar.gz | tee sha512sum.txt
       deploy:
         provider: releases
         api_key:
-          secure: 0vwQFykHkkfQ0pTsqHF6JLgMzAMxW7aQ6xc7P8tvawEgvKNOm1DS+hVNcb5fT9c5njV1+SQw12yv63WIXBthSiQp2VXDkUHhfCtthKklcLcloojr5avrQ43pwPSI8ViczRUb86ZLRTE+VfLgKaqeq/wpnDdeIXZ6YgM5vfgLPXjQvoRNKz3xGldHdSPsl/ar4/2Emvyk2pyenv0kMMd7Q6r7H5H3y03AdhmSQ1QTnOuaxkIimsBCakSTC3GqA+Z/SHZry2CD4u6Qb4XOpMlenAXEAiSKviSN9npmFV8kutl5BwRdCwzqGaeTGANWpSev43Ucneh6aMxSiIVOhMb8JO4ahXCF4effgipgnW5RJS8skMQW4WLvZtQ5ZFT6rAegFaECLhntl9z38V/FNdqiVU0LatIVZ8Wd3Jnug/Q+zkKwTHfMyqpLQ8ff39Qxi1vlhNQZJUrFrUonX9gf1mLOz3wBavvaUJJ8DZdH2ZRU4H05m7ARQ11uSS6U6q8DjhdpdTVi+ZLr6z/S2SkjtaNAl8CVSHAgTo6vX/kI68X63WjmtX+pll4bNfEt+UXsDw5RwTlKhhZ30KPB1tPY70hhTzBPLwKtH9OG6t5WhJr/93usTuuNQmXyayEIbFAnghIK0qSnCOl54izH4H5YYU4v1zDt5CrMq7cszk3TF91naIU=
+          secure: P0xobtDkFWfzTm6UF2OTrXicmzykk7Tnm9p3gb70DORlkbGzM+/kVNe0aYWcZrubbSi2Ld41EWifDGKOgqFi8GZYULaXanMbGHX82rElMLryhUaagXmgS1adlwhsT6Dc9bBkJnQ7ezRy5hvuzli+rXoeLO3uE8aRpf05s+CDMyVneE/vURvAxfiuMiIL+aI1Le54N8vHENaxmP8xRt9NwKt2D+fErF3isSLdS6tkW7BrsImVKIjebvG+bUnZyVjvGHokBlQFRD2W8M87frkLDYmsK2w9DCpNiyUGYQoKqqQKysswTexfrlObyGadMgb3G7BQM/8v+jlag7b/4v+EJ2AIppSXzeY1Jj8IrKqkscGihmgbJABhKp5A8VgnoCiGm5mXPuhp7A7gFtuLpR3FWpx1Xe7hbVw6bjmDRoYyRasZ0uCcsWPy/nShWFyahKSzaxdNQs1aGAWgVD6t+/EvGG5+tl1ThUm9+uw7E8FIiKe9M2mGiu5JK5mBSN4Drw4+wz+s2IfiLF3I/UVZqD7PBetHW1uv2hnlth7sIjsCkPCC/Myis99zjiR3C74rdxr99/ux/BKjH44Fm1HL2qakUcbytE0YaMppebHm35oB1kBX5RBFjXGZYtkvS+BTpUncl1IEXxuaorA8nNEv3fqH/UgpzmKIqiaryPehezYYFCI=
         skip_cleanup: true
         file_glob: true
         file:
           - unsee-*.tar.gz
           - sha512sum.txt
         on:
-          repo: cloudflare/unsee
+          repo: prymitive/unsee
           tags: true

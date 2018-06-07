@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/cloudflare/unsee/internal/models"
+	"github.com/prymitive/unsee/internal/models"
 )
 
 var (

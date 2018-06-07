@@ -11,10 +11,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cloudflare/unsee/internal/config"
-	"github.com/cloudflare/unsee/internal/mock"
-	"github.com/cloudflare/unsee/internal/models"
-	"github.com/cloudflare/unsee/internal/slices"
+	"github.com/prymitive/unsee/internal/config"
+	"github.com/prymitive/unsee/internal/mock"
+	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/unsee/internal/slices"
 
 	cache "github.com/patrickmn/go-cache"
 	log "github.com/sirupsen/logrus"

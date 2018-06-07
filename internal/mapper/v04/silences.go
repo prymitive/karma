@@ -14,9 +14,9 @@ import (
 	"time"
 
 	"github.com/blang/semver"
-	"github.com/cloudflare/unsee/internal/mapper"
-	"github.com/cloudflare/unsee/internal/models"
-	"github.com/cloudflare/unsee/internal/uri"
+	"github.com/prymitive/unsee/internal/mapper"
+	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/unsee/internal/uri"
 )
 
 // Alertmanager 0.4 silence format

@@ -3,7 +3,7 @@ package uri_test
 import (
 	"testing"
 
-	"github.com/cloudflare/unsee/internal/uri"
+	"github.com/prymitive/unsee/internal/uri"
 )
 
 type joinURLTest struct {

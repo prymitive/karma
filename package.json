@@ -3,7 +3,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/cloudflare/unsee.git"
+    "url": "https://github.com/prymitive/unsee.git"
   },
   "scripts": {
     "test": "jest"

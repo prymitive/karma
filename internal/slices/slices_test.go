@@ -3,7 +3,7 @@ package slices_test
 import (
 	"testing"
 
-	"github.com/cloudflare/unsee/internal/slices"
+	"github.com/prymitive/unsee/internal/slices"
 )
 
 type stringSliceTest struct {

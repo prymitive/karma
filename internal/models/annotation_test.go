@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/cloudflare/unsee/internal/models"
+	"github.com/prymitive/unsee/internal/models"
 )
 
 type annotationMapsTestCase struct {

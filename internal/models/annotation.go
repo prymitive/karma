@@ -4,8 +4,8 @@ import (
 	"net/url"
 	"sort"
 
-	"github.com/cloudflare/unsee/internal/config"
-	"github.com/cloudflare/unsee/internal/slices"
+	"github.com/prymitive/unsee/internal/config"
+	"github.com/prymitive/unsee/internal/slices"
 )
 
 // Annotation extends Alertmanager scheme of key:value with additional data
