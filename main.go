@@ -15,6 +15,7 @@ import (
 	"github.com/spf13/pflag"
 
 	"github.com/DeanThompson/ginpprof"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/contrib/sentry"
@@ -52,6 +53,14 @@ func getViewURL(sub string) string {
 func setupRouter(router *gin.Engine) {
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
 	router.Use(static.Serve(getViewURL("/static"), newBinaryFileSystem("static")))
+
+	router.Use(cors.New(cors.Config{
+		AllowAllOrigins:  true,
+		AllowCredentials: true,
+		AllowMethods:     []string{"GET", "POST", "DELETE"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+	}))
 
 	router.GET(getViewURL("/favicon.ico"), favicon)
 	router.GET(getViewURL("/"), index)
