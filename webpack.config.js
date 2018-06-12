@@ -2,6 +2,7 @@ const webpack = require("webpack");
 const path = require("path");
 const fs = require("fs");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 
 var config = {
     cache: true,
@@ -16,6 +17,22 @@ var config = {
         publicPath: "static/dist/",
         filename: "[name].[chunkhash].js"
     },
+    optimization: {
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: "shared",
+                    chunks: "all"
+                }
+            }
+        },
+        minimizer: [
+            new UglifyJsPlugin({
+                sourceMap: true
+            })
+        ]
+    },
     plugins: [
         new webpack.PrefetchPlugin(path.join(__dirname, "assets/static/unsee.js")),
         new webpack.PrefetchPlugin(path.join(__dirname, "assets/static/help.js")),
@@ -25,9 +42,6 @@ var config = {
         }),
         new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
         new CleanWebpackPlugin([ "assets/static/dist" ]),
-        new webpack.optimize.CommonsChunkPlugin({
-            name: "shared"
-        }),
         // this will generate loader_${name}.html files that will have
         // a <script/> line for loading hashed chunk
         // inspited by https://github.com/webpack/webpack/issues/86
@@ -112,9 +126,6 @@ const isDev = (process.env.NODE_ENV === "test");
 
 // enable production only plugins
 if (!isDev) {
-    config.plugins.push(new webpack.optimize.UglifyJsPlugin({
-        sourceMap: true
-    }));
     config.plugins.push(new webpack.LoaderOptionsPlugin({
         minimize: true,
         debug: false,
