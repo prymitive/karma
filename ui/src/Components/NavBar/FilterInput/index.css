@@ -1,0 +1,13 @@
+.components-filterinput {
+  cursor: text;
+  min-height: 2.2rem;
+}
+
+.components-filterinput-wrapper > input {
+  border: none;
+  box-shadow: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0;
+  vertical-align: middle;
+}

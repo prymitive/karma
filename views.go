@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/prymitive/unsee/internal/alertmanager"
-	"github.com/prymitive/unsee/internal/config"
 	"github.com/prymitive/unsee/internal/models"
 	"github.com/prymitive/unsee/internal/slices"
 
@@ -17,49 +16,22 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var (
-	// needed for serving favicon from binary assets
-	faviconFileServer = http.FileServer(newBinaryFileSystem("static/dist"))
-)
+func index(c *gin.Context) {
+	// http.FileServer doesn't allow serving index.html, it will always redirect
+	// such request to ./ so we need to manually read that file and return it
+	responseFromStaticFile(c, "/index.html", "text/html")
+}
+
+func help(c *gin.Context) {
+	responseFromStaticFile(c, "/help.html", "text/html")
+}
+
+func notFound(c *gin.Context) {
+	c.String(404, "404 page not found")
+}
 
 func noCache(c *gin.Context) {
 	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
-}
-
-// index view, html
-func index(c *gin.Context) {
-	start := time.Now()
-
-	noCache(c)
-
-	q, qPresent := c.GetQuery("q")
-	defaultUsed := true
-	if qPresent {
-		defaultUsed = false
-	}
-
-	c.HTML(http.StatusOK, "templates/index.html", gin.H{
-		"Version":           version,
-		"SentryDSN":         config.Config.Sentry.Public,
-		"QFilter":           q,
-		"DefaultUsed":       defaultUsed,
-		"DefaultFilter":     strings.Join(config.Config.Filters.Default, ","),
-		"StaticColorLabels": strings.Join(config.Config.Labels.Color.Static, " "),
-		"WebPrefix":         config.Config.Listen.Prefix,
-	})
-
-	log.Infof("[%s] %s %s took %s", c.ClientIP(), c.Request.Method, c.Request.RequestURI, time.Since(start))
-}
-
-// Help view, html
-func help(c *gin.Context) {
-	start := time.Now()
-	noCache(c)
-	c.HTML(http.StatusOK, "templates/help.html", gin.H{
-		"SentryDSN": config.Config.Sentry.Public,
-		"WebPrefix": config.Config.Listen.Prefix,
-	})
-	log.Infof("[%s] <%d> %s %s took %s", c.ClientIP(), http.StatusOK, c.Request.Method, c.Request.RequestURI, time.Since(start))
 }
 
 func logAlertsView(c *gin.Context, cacheStatus string, duration time.Duration) {
@@ -250,11 +222,4 @@ func autocomplete(c *gin.Context) {
 
 	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
 	logAlertsView(c, "MIS", time.Since(start))
-}
-
-func favicon(c *gin.Context) {
-	if config.Config.Listen.Prefix != "/" {
-		c.Request.URL.Path = strings.TrimPrefix(c.Request.URL.Path, config.Config.Listen.Prefix)
-	}
-	faviconFileServer.ServeHTTP(c.Writer, c.Request)
 }

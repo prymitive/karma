@@ -1,8 +1,10 @@
 .build
-unsee
-vendor
-assets/static/dist
-node_modules
 .coverage
 .tests
 bindata_assetfs.go
+unsee
+ui/build
+ui/coverage
+ui/node_modules
+vendor
+Dockerfile.web

@@ -1,0 +1,28 @@
+.badge.components-filteredinputlabel {
+  /* make fonts bigger */
+  font-size: 90%;
+  line-height: 1.4;
+
+  /* fix align after text-truncate */
+  vertical-align: middle;
+
+  /* ensure there's some space between filters
+     if there are multiple rows in the input */
+  margin-top: 1px;
+  margin-bottom: 1px;
+}
+
+.badge.components-filteredinputlabel > .badge {
+  /* match outer badge font size */
+  font-size: 90%;
+
+  /* we have badge inside a badge, make the inner one a little brighter
+     in case both use same color classes */
+  filter: brightness(115%);
+}
+
+.badge.components-filteredinputlabel > .close {
+  /* make close button bigger, to match font size of the badge */
+  font-size: 1rem;
+  margin-left: 0.25rem;
+}

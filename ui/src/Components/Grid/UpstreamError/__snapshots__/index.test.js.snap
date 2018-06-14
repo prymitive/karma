@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UpstreamError /> matches snapshot 1`] = `
+<div
+  className="alert alert-danger text-center rounded-0"
+  role="alert"
+>
+  <span
+    className="badge badge-warning mr-2"
+  >
+    foo
+  </span>
+  bar
+</div>
+`;
