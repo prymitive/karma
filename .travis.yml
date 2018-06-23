@@ -8,12 +8,6 @@ defaults_go: &DEFAULTS_GO
 defaults_js: &DEFAULTS_JS
   language: node_js
   node_js: "8"
-  before_install:
-    - npm install -g greenkeeper-lockfile
-  before_script:
-    - greenkeeper-lockfile-update
-  after_script:
-    - greenkeeper-lockfile-upload
   # install defaults to "npm install", which is done via make
   install: []
   cache:
@@ -26,6 +20,13 @@ env:
 
 jobs:
   include:
+    - stage: Greenkeeper
+      <<: *DEFAULTS_JS
+      script:
+        - npm install -g greenkeeper-lockfile
+        - greenkeeper-lockfile-update
+        - greenkeeper-lockfile-upload
+
     - stage: Test Go code
       <<: *DEFAULTS_GO
       before_script:
