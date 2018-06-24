@@ -96,6 +96,7 @@ func alerts(c *gin.Context) {
 	// set pointers for data store objects, need a lock until end of view is reached
 	alerts := []models.AlertGroup{}
 	colors := models.LabelsColorMap{}
+	// used for top labels dropdown
 	counters := models.LabelsCountMap{}
 
 	dedupedAlerts := alertmanager.DedupAlerts()
@@ -178,7 +179,9 @@ func alerts(c *gin.Context) {
 			Hits:    filter.GetHits(),
 			IsValid: filter.GetIsValid(),
 		}
-		apiFilters = append(apiFilters, af)
+		if af.Text != "" {
+			apiFilters = append(apiFilters, af)
+		}
 	}
 	resp.Filters = apiFilters
 

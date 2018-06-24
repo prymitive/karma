@@ -781,12 +781,7 @@ var countsMap = models.LabelsCountMap{
 	},
 }
 
-var filtersExpected = []models.Filter{
-	models.Filter{
-		Hits:    24,
-		IsValid: true,
-	},
-}
+var filtersExpected = []models.Filter{}
 
 func compareAlertGroups(testCase groupTest, group models.AlertGroup) bool {
 	if testCase.receiver != group.Receiver {
