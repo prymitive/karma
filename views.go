@@ -165,6 +165,7 @@ func alerts(c *gin.Context) {
 		if len(agCopy.Alerts) > 0 {
 			agCopy.Hash = agCopy.ContentFingerprint()
 			alerts[agCopy.ID] = agCopy
+			resp.TotalAlerts += len(agCopy.Alerts)
 		}
 
 	}
