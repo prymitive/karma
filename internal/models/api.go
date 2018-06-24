@@ -34,7 +34,7 @@ type AlertsResponse struct {
 	Timestamp   string                 `json:"timestamp"`
 	Version     string                 `json:"version"`
 	Upstreams   AlertmanagerAPISummary `json:"upstreams"`
-	AlertGroups []AlertGroup           `json:"groups"`
+	AlertGroups map[string]AlertGroup  `json:"groups"`
 	Colors      LabelsColorMap         `json:"colors"`
 	Filters     []Filter               `json:"filters"`
 	Counters    LabelsCountMap         `json:"counters"`
