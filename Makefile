@@ -7,8 +7,13 @@ ALERTMANAGER_URI := "file://$(MOCK_PATH)"
 # Listen port when running locally
 PORT := 8080
 
+# define a recursive wildcard function, we'll need it to find deeply nested
+# sources in the ui directory
+# based on http://blog.jgc.org/2011/07/gnu-make-recursive-wildcard-function.html
+rwildcard = $(foreach d, $(wildcard $1*), $(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
+
 SOURCES       := $(wildcard *.go) $(wildcard */*.go) $(wildcard */*/*.go)
-ASSET_SOURCES := $(wildcard ui/public/* ui/src/* ui/src/*/*)
+ASSET_SOURCES := $(call rwildcard, ui/public ui/src, *)
 
 GO_BINDATA_MODE := prod
 ifdef DEBUG
