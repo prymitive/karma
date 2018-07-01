@@ -45,7 +45,7 @@ func ginTestEngine() *gin.Engine {
 func TestIndex(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()
-	req, _ := http.NewRequest("GET", "/?q=", nil)
+	req, _ := http.NewRequest("GET", "/", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
 	if resp.Code != http.StatusOK {
@@ -115,7 +115,7 @@ func TestAlerts(t *testing.T) {
 		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := ginTestEngine()
-		req, _ := http.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service,alertname=HTTP_Probe_Failed,instance=web1", nil)
+		req, _ := http.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != http.StatusOK {
@@ -182,7 +182,7 @@ func TestValidateAllAlerts(t *testing.T) {
 		t.Logf("Validating alerts.json response using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := ginTestEngine()
-		req, _ := http.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed,instance=web1", nil)
+		req, _ := http.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != http.StatusOK {

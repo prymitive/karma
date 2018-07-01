@@ -63,7 +63,7 @@ func alerts(c *gin.Context) {
 
 	// get filters
 	apiFilters := []models.Filter{}
-	matchFilters, validFilters := getFiltersFromQuery(c.Query("q"))
+	matchFilters, validFilters := getFiltersFromQuery(c.QueryArray("q"))
 
 	// set pointers for data store objects, need a lock until end of view is reached
 	alerts := map[string]models.AlertGroup{}
