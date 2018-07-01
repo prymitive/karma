@@ -3,6 +3,9 @@ package models
 // Filter holds returned data on any filter passed by the user as part of the query
 type Filter struct {
 	Text    string `json:"text"`
+	Name    string `json:"name"`
+	Matcher string `json:"matcher"`
+	Value   string `json:"value"`
 	Hits    int    `json:"hits"`
 	IsValid bool   `json:"isValid"`
 }

@@ -149,6 +149,9 @@ func alerts(c *gin.Context) {
 	for _, filter := range matchFilters {
 		af := models.Filter{
 			Text:    filter.GetRawText(),
+			Name:    filter.GetName(),
+			Matcher: filter.GetMatcher(),
+			Value:   filter.GetValue(),
 			Hits:    filter.GetHits(),
 			IsValid: filter.GetIsValid(),
 		}
