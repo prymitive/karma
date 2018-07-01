@@ -33,15 +33,16 @@ type LabelsCountMap map[string]map[string]int
 
 // AlertsResponse is the structure of JSON response UI will use to get alert data
 type AlertsResponse struct {
-	Status      string                 `json:"status"`
-	Timestamp   string                 `json:"timestamp"`
-	Version     string                 `json:"version"`
-	Upstreams   AlertmanagerAPISummary `json:"upstreams"`
-	AlertGroups map[string]AlertGroup  `json:"groups"`
-	TotalAlerts int                    `json:"totalAlerts"`
-	Colors      LabelsColorMap         `json:"colors"`
-	Filters     []Filter               `json:"filters"`
-	Counters    LabelsCountMap         `json:"counters"`
+	Status            string                 `json:"status"`
+	Timestamp         string                 `json:"timestamp"`
+	Version           string                 `json:"version"`
+	Upstreams         AlertmanagerAPISummary `json:"upstreams"`
+	AlertGroups       map[string]AlertGroup  `json:"groups"`
+	TotalAlerts       int                    `json:"totalAlerts"`
+	Colors            LabelsColorMap         `json:"colors"`
+	Filters           []Filter               `json:"filters"`
+	Counters          LabelsCountMap         `json:"counters"`
+	StaticColorLabels []string               `json:"staticColorLabels"`
 }
 
 // Autocomplete is the structure of autocomplete object for filter hints

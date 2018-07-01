@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/prymitive/unsee/internal/alertmanager"
+	"github.com/prymitive/unsee/internal/config"
 	"github.com/prymitive/unsee/internal/models"
 	"github.com/prymitive/unsee/internal/slices"
 
@@ -50,6 +51,7 @@ func alerts(c *gin.Context) {
 	resp.Timestamp = string(ts)
 	resp.Version = version
 	resp.Upstreams = getUpstreams()
+	resp.StaticColorLabels = config.Config.Labels.Color.Static
 
 	// use full URI (including query args) as cache key
 	cacheKey := c.Request.RequestURI
