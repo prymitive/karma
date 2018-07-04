@@ -18,6 +18,7 @@ type groupTest struct {
 	alerts     []models.Alert
 	hash       string
 	id         string
+	shared     models.APIAlertGroupSharedMaps
 	stateCount map[string]int
 }
 
@@ -34,10 +35,9 @@ var groupTests = []groupTest{
 					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
 				},
 				Labels: map[string]string{
-					"alertname": "Memory_Usage_Too_High",
-					"cluster":   "prod",
-					"instance":  "server2",
-					"job":       "node_exporter",
+					"cluster":  "prod",
+					"instance": "server2",
+					"job":      "node_exporter",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -80,10 +80,8 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "Memory_Usage_Too_High",
-					"cluster":   "prod",
-					"instance":  "server2",
-					"job":       "node_exporter",
+					"instance": "server2",
+					"job":      "node_exporter",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -105,9 +103,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
 						Name:     "default",
@@ -117,18 +113,13 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "staging",
-					"instance":  "server3",
-					"job":       "node_ping",
+					"instance": "server3",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
 						Name:     "default",
@@ -138,18 +129,13 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "staging",
-					"instance":  "server4",
-					"job":       "node_ping",
+					"instance": "server4",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
 						Name:     "default",
@@ -159,10 +145,7 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "staging",
-					"instance":  "server5",
-					"job":       "node_ping",
+					"instance": "server5",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -170,6 +153,14 @@ var groupTests = []groupTest{
 		},
 		hash: "db53e38245a7afe18f923518146326b6fe53109a",
 		id:   "2d3f39413b41c873cb72e0b8065aa7b8631e983e",
+		shared: models.APIAlertGroupSharedMaps{
+			Annotations: models.Annotations{
+				models.Annotation{},
+			},
+			Labels: map[string]string{
+				"job": "node_ping",
+			},
+		},
 		stateCount: map[string]int{
 			models.AlertStateActive:      3,
 			models.AlertStateSuppressed:  0,
@@ -184,9 +175,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
 						Name:   "default",
@@ -202,18 +191,13 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "dev",
-					"instance":  "server6",
-					"job":       "node_ping",
+					"instance": "server6",
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
 						Name:   "default",
@@ -232,18 +216,13 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "dev",
-					"instance":  "server7",
-					"job":       "node_ping",
+					"instance": "server7",
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
 						Name:   "default",
@@ -258,10 +237,7 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "dev",
-					"instance":  "server8",
-					"job":       "node_ping",
+					"instance": "server8",
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
@@ -269,6 +245,14 @@ var groupTests = []groupTest{
 		},
 		hash: "bcb440cdee1d6f818599cf405c40f3382a4b1229",
 		id:   "3c09c4156e6784dcf6d5b2e1629253798f82909b",
+		shared: models.APIAlertGroupSharedMaps{
+			Annotations: models.Annotations{
+				models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
+			},
+			Labels: map[string]string{
+				"job": "node_ping",
+			},
+		},
 		stateCount: map[string]int{
 			models.AlertStateActive:      0,
 			models.AlertStateSuppressed:  3,
@@ -283,14 +267,11 @@ var groupTests = []groupTest{
 		alerts: []models.Alert{
 			models.Alert{
 				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "prod",
-					"instance":  "server1",
-					"job":       "node_ping",
+					"cluster":  "prod",
+					"instance": "server1",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -304,14 +285,10 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "prod",
-					"instance":  "server2",
-					"job":       "node_ping",
+					"cluster":  "prod",
+					"instance": "server2",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -325,14 +302,10 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "staging",
-					"instance":  "server3",
-					"job":       "node_ping",
+					"cluster":  "staging",
+					"instance": "server3",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -346,14 +319,10 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "staging",
-					"instance":  "server4",
-					"job":       "node_ping",
+					"cluster":  "staging",
+					"instance": "server4",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -367,14 +336,10 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "staging",
-					"instance":  "server5",
-					"job":       "node_ping",
+					"cluster":  "staging",
+					"instance": "server5",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -388,14 +353,10 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "dev",
-					"instance":  "server6",
-					"job":       "node_ping",
+					"cluster":  "dev",
+					"instance": "server6",
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -414,14 +375,10 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "dev",
-					"instance":  "server7",
-					"job":       "node_ping",
+					"cluster":  "dev",
+					"instance": "server7",
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -444,14 +401,10 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "dev",
-					"instance":  "server8",
-					"job":       "node_ping",
+					"cluster":  "dev",
+					"instance": "server8",
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -472,6 +425,14 @@ var groupTests = []groupTest{
 		},
 		id:   "58c6a3467cebc53abe68ecbe8643ce478c5a1573",
 		hash: "68d0ac6e27b890e0f854611963b03b51b37242cf",
+		shared: models.APIAlertGroupSharedMaps{
+			Annotations: models.Annotations{
+				models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
+			},
+			Labels: map[string]string{
+				"job": "node_ping",
+			},
+		},
 		stateCount: map[string]int{
 			models.AlertStateActive:      5,
 			models.AlertStateSuppressed:  3,
@@ -499,10 +460,8 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "Free_Disk_Space_Too_Low",
-					"cluster":   "staging",
-					"instance":  "server5",
-					"job":       "node_exporter",
+					"instance": "server5",
+					"job":      "node_exporter",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -525,7 +484,6 @@ var groupTests = []groupTest{
 		alerts: []models.Alert{
 			models.Alert{
 				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
@@ -537,18 +495,13 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "prod",
-					"instance":  "server1",
-					"job":       "node_ping",
+					"instance": "server1",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
 						Name:     "default",
@@ -558,10 +511,7 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "Host_Down",
-					"cluster":   "prod",
-					"instance":  "server2",
-					"job":       "node_ping",
+					"instance": "server2",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -569,6 +519,14 @@ var groupTests = []groupTest{
 		},
 		hash: "eee0a9960be86ab7308f50a8ff438caed5cf8540",
 		id:   "98c1a53d0f71af9c734c9180697383f3b8aff80f",
+		shared: models.APIAlertGroupSharedMaps{
+			Annotations: models.Annotations{
+				models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
+			},
+			Labels: map[string]string{
+				"job": "node_ping",
+			},
+		},
 		stateCount: map[string]int{
 			models.AlertStateActive:      2,
 			models.AlertStateSuppressed:  0,
@@ -584,7 +542,6 @@ var groupTests = []groupTest{
 			models.Alert{
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "help", Value: "Example help annotation"},
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
@@ -601,18 +558,13 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "HTTP_Probe_Failed",
-					"cluster":   "dev",
-					"instance":  "web1",
-					"job":       "node_exporter",
+					"instance": "web1",
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-name",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
 						Name:     "default",
@@ -622,10 +574,7 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "HTTP_Probe_Failed",
-					"cluster":   "dev",
-					"instance":  "web2",
-					"job":       "node_exporter",
+					"instance": "web2",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-name",
@@ -633,6 +582,15 @@ var groupTests = []groupTest{
 		},
 		hash: "cc1b20a6b0ded9265ab96699638d844a4c992614",
 		id:   "bc4845fec77585cdfebe946234279d785ca93891",
+		shared: models.APIAlertGroupSharedMaps{
+			Annotations: models.Annotations{
+				models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
+			},
+			Labels: map[string]string{
+				"cluster": "dev",
+				"job":     "node_exporter",
+			},
+		},
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  1,
@@ -659,10 +617,9 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "Free_Disk_Space_Too_Low",
-					"cluster":   "staging",
-					"instance":  "server5",
-					"job":       "node_exporter",
+					"cluster":  "staging",
+					"instance": "server5",
+					"job":      "node_exporter",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-name",
@@ -686,7 +643,6 @@ var groupTests = []groupTest{
 			models.Alert{
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "help", Value: "Example help annotation"},
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
@@ -703,18 +659,13 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "HTTP_Probe_Failed",
-					"cluster":   "dev",
-					"instance":  "web1",
-					"job":       "node_exporter",
+					"instance": "web1",
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
-				Annotations: models.Annotations{
-					models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-				},
+				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
 						Name:     "default",
@@ -724,10 +675,7 @@ var groupTests = []groupTest{
 					},
 				},
 				Labels: map[string]string{
-					"alertname": "HTTP_Probe_Failed",
-					"cluster":   "dev",
-					"instance":  "web2",
-					"job":       "node_exporter",
+					"instance": "web2",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -735,6 +683,12 @@ var groupTests = []groupTest{
 		},
 		hash: "1dd655dc8ac8ed51aca51a702e70b1a2f442f434",
 		id:   "ecefc3705b1ab4e4c3283c879540be348d2d9dce",
+		shared: models.APIAlertGroupSharedMaps{
+			Annotations: models.Annotations{},
+			Labels: map[string]string{
+				"job": "node_exporter",
+			},
+		},
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  1,
@@ -783,7 +737,7 @@ var countsMap = models.LabelsCountMap{
 
 var filtersExpected = []models.Filter{}
 
-func compareAlertGroups(testCase groupTest, group models.AlertGroup) bool {
+func compareAlertGroups(testCase groupTest, group models.APIAlertGroup) bool {
 	if testCase.receiver != group.Receiver {
 		return false
 	}
@@ -888,7 +842,7 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 	}
 }
 
-func testAlertGroup(version string, t *testing.T, testCase groupTest, group models.AlertGroup) {
+func testAlertGroup(version string, t *testing.T, testCase groupTest, group models.APIAlertGroup) {
 	//if testCase.hash != group.Hash {
 	// FIXME this is different per mock version due to startsAt / endsAt
 	// t.Errorf("[%s] Alert group.Hash mismatch, expected '%s' but got '%s' for group %v",

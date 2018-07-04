@@ -68,7 +68,7 @@ func alerts(c *gin.Context) {
 	matchFilters, validFilters := getFiltersFromQuery(c.QueryArray("q"))
 
 	// set pointers for data store objects, need a lock until end of view is reached
-	alerts := map[string]models.AlertGroup{}
+	alerts := map[string]models.APIAlertGroup{}
 	colors := models.LabelsColorMap{}
 	// used for top labels dropdown
 	counters := models.LabelsCountMap{}
@@ -138,7 +138,9 @@ func alerts(c *gin.Context) {
 
 		if len(agCopy.Alerts) > 0 {
 			agCopy.Hash = agCopy.ContentFingerprint()
-			alerts[agCopy.ID] = agCopy
+			apiAG := models.APIAlertGroup{AlertGroup: agCopy}
+			apiAG.DedupSharedMaps()
+			alerts[agCopy.ID] = apiAG
 			resp.TotalAlerts += len(agCopy.Alerts)
 		}
 
