@@ -84,11 +84,12 @@ func alerts(c *gin.Context) {
 	var matches int
 	for _, ag := range dedupedAlerts {
 		agCopy := models.AlertGroup{
-			ID:         ag.ID,
-			Receiver:   ag.Receiver,
-			Labels:     ag.Labels,
-			Alerts:     []models.Alert{},
-			StateCount: map[string]int{},
+			ID:                ag.ID,
+			Receiver:          ag.Receiver,
+			Labels:            ag.Labels,
+			Alerts:            []models.Alert{},
+			AlertmanagerCount: map[string]int{},
+			StateCount:        map[string]int{},
 		}
 		for _, s := range models.AlertStateList {
 			agCopy.StateCount[s] = 0
@@ -126,6 +127,14 @@ func alerts(c *gin.Context) {
 				}
 
 				agCopy.StateCount[alert.State]++
+
+				for _, am := range alert.Alertmanager {
+					if _, found := agCopy.AlertmanagerCount[am.Name]; !found {
+						agCopy.AlertmanagerCount[am.Name] = 1
+					} else {
+						agCopy.AlertmanagerCount[am.Name]++
+					}
+				}
 
 				for key, value := range alert.Labels {
 					if keyMap, foundKey := dedupedColors[key]; foundKey {
