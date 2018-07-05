@@ -160,16 +160,17 @@ func (ag *APIAlertGroup) DedupSharedMaps() {
 
 // AlertsResponse is the structure of JSON response UI will use to get alert data
 type AlertsResponse struct {
-	Status            string                   `json:"status"`
-	Timestamp         string                   `json:"timestamp"`
-	Version           string                   `json:"version"`
-	Upstreams         AlertmanagerAPISummary   `json:"upstreams"`
-	AlertGroups       map[string]APIAlertGroup `json:"groups"`
-	TotalAlerts       int                      `json:"totalAlerts"`
-	Colors            LabelsColorMap           `json:"colors"`
-	Filters           []Filter                 `json:"filters"`
-	Counters          LabelsCountMap           `json:"counters"`
-	StaticColorLabels []string                 `json:"staticColorLabels"`
+	Status            string                        `json:"status"`
+	Timestamp         string                        `json:"timestamp"`
+	Version           string                        `json:"version"`
+	Upstreams         AlertmanagerAPISummary        `json:"upstreams"`
+	Silences          map[string]map[string]Silence `json:"silences"`
+	AlertGroups       map[string]APIAlertGroup      `json:"groups"`
+	TotalAlerts       int                           `json:"totalAlerts"`
+	Colors            LabelsColorMap                `json:"colors"`
+	Filters           []Filter                      `json:"filters"`
+	Counters          LabelsCountMap                `json:"counters"`
+	StaticColorLabels []string                      `json:"staticColorLabels"`
 }
 
 // Autocomplete is the structure of autocomplete object for filter hints

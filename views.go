@@ -76,6 +76,11 @@ func alerts(c *gin.Context) {
 	dedupedAlerts := alertmanager.DedupAlerts()
 	dedupedColors := alertmanager.DedupColors()
 
+	silences := map[string]map[string]models.Silence{}
+	for _, am := range alertmanager.GetAlertmanagers() {
+		silences[am.Name] = map[string]models.Silence{}
+	}
+
 	var matches int
 	for _, ag := range dedupedAlerts {
 		agCopy := models.AlertGroup{
@@ -137,6 +142,15 @@ func alerts(c *gin.Context) {
 		}
 
 		if len(agCopy.Alerts) > 0 {
+			for _, alert := range agCopy.Alerts {
+				if alert.IsSilenced() {
+					for _, am := range alert.Alertmanager {
+						for _, silence := range am.Silences {
+							silences[am.Name][silence.ID] = *silence
+						}
+					}
+				}
+			}
 			agCopy.Hash = agCopy.ContentFingerprint()
 			apiAG := models.APIAlertGroup{AlertGroup: agCopy}
 			apiAG.DedupSharedMaps()
@@ -147,6 +161,7 @@ func alerts(c *gin.Context) {
 	}
 
 	resp.AlertGroups = alerts
+	resp.Silences = silences
 	resp.Colors = colors
 	resp.Counters = counters
 

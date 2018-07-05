@@ -42,10 +42,10 @@ var groupTests = []groupTest{
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Receiver: "by-name",
@@ -73,10 +73,10 @@ var groupTests = []groupTest{
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Labels: map[string]string{
@@ -106,10 +106,10 @@ var groupTests = []groupTest{
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Labels: map[string]string{
@@ -122,10 +122,10 @@ var groupTests = []groupTest{
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Labels: map[string]string{
@@ -138,10 +138,10 @@ var groupTests = []groupTest{
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Labels: map[string]string{
@@ -178,16 +178,10 @@ var groupTests = []groupTest{
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:   "default",
-						State:  models.AlertStateSuppressed,
-						Source: "localhost/prometheus",
-						Silences: map[string]models.Silence{
-							"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d": models.Silence{
-								ID:        "168f139d-77e4-41d6-afb5-8fe2cfd0cc9d",
-								CreatedBy: "john@example.com",
-								Comment:   "Silenced Host_Down alerts in the dev cluster",
-							},
-						},
+						Name:       "default",
+						State:      models.AlertStateSuppressed,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d"},
 					},
 				},
 				Labels: map[string]string{
@@ -200,19 +194,10 @@ var groupTests = []groupTest{
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:   "default",
-						State:  models.AlertStateSuppressed,
-						Source: "localhost/prometheus",
-						Silences: map[string]models.Silence{
-							"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d": models.Silence{
-								CreatedBy: "john@example.com",
-								Comment:   "Silenced Host_Down alerts in the dev cluster",
-							},
-							"378eaa69-097d-41c4-a8c2-fe6568c3abfc": models.Silence{
-								CreatedBy: "john@example.com",
-								Comment:   "Silenced server7",
-							},
-						},
+						Name:       "default",
+						State:      models.AlertStateSuppressed,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d", "378eaa69-097d-41c4-a8c2-fe6568c3abfc"},
 					},
 				},
 				Labels: map[string]string{
@@ -225,15 +210,10 @@ var groupTests = []groupTest{
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:   "default",
-						State:  models.AlertStateSuppressed,
-						Source: "localhost/prometheus",
-						Silences: map[string]models.Silence{
-							"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d": models.Silence{
-								CreatedBy: "john@example.com",
-								Comment:   "Silenced Host_Down alerts in the dev cluster",
-							},
-						},
+						Name:       "default",
+						State:      models.AlertStateSuppressed,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d"},
 					},
 				},
 				Labels: map[string]string{
@@ -276,10 +256,10 @@ var groupTests = []groupTest{
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Receiver: "by-name",
@@ -293,10 +273,10 @@ var groupTests = []groupTest{
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Receiver: "by-name",
@@ -310,10 +290,10 @@ var groupTests = []groupTest{
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Receiver: "by-name",
@@ -327,10 +307,10 @@ var groupTests = []groupTest{
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Receiver: "by-name",
@@ -344,10 +324,10 @@ var groupTests = []groupTest{
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Receiver: "by-name",
@@ -361,15 +341,10 @@ var groupTests = []groupTest{
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:   "default",
-						State:  models.AlertStateSuppressed,
-						Source: "localhost/prometheus",
-						Silences: map[string]models.Silence{
-							"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d": models.Silence{
-								CreatedBy: "john@example.com",
-								Comment:   "Silenced Host_Down alerts in the dev cluster",
-							},
-						},
+						Name:       "default",
+						State:      models.AlertStateSuppressed,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d"},
 					},
 				},
 				Receiver: "by-name",
@@ -383,19 +358,10 @@ var groupTests = []groupTest{
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:   "default",
-						State:  models.AlertStateSuppressed,
-						Source: "localhost/prometheus",
-						Silences: map[string]models.Silence{
-							"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d": models.Silence{
-								CreatedBy: "john@example.com",
-								Comment:   "Silenced Host_Down alerts in the dev cluster",
-							},
-							"378eaa69-097d-41c4-a8c2-fe6568c3abfc": models.Silence{
-								CreatedBy: "john@example.com",
-								Comment:   "Silenced server7",
-							},
-						},
+						Name:       "default",
+						State:      models.AlertStateSuppressed,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d", "378eaa69-097d-41c4-a8c2-fe6568c3abfc"},
 					},
 				},
 				Receiver: "by-name",
@@ -409,15 +375,10 @@ var groupTests = []groupTest{
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:   "default",
-						State:  models.AlertStateSuppressed,
-						Source: "localhost/prometheus",
-						Silences: map[string]models.Silence{
-							"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d": models.Silence{
-								CreatedBy: "john@example.com",
-								Comment:   "Silenced Host_Down alerts in the dev cluster",
-							},
-						},
+						Name:       "default",
+						State:      models.AlertStateSuppressed,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d"},
 					},
 				},
 				Receiver: "by-name",
@@ -453,10 +414,10 @@ var groupTests = []groupTest{
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Labels: map[string]string{
@@ -488,10 +449,10 @@ var groupTests = []groupTest{
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Labels: map[string]string{
@@ -504,10 +465,10 @@ var groupTests = []groupTest{
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Labels: map[string]string{
@@ -549,12 +510,6 @@ var groupTests = []groupTest{
 						Name:   "default",
 						State:  models.AlertStateSuppressed,
 						Source: "localhost/prometheus",
-						Silences: map[string]models.Silence{
-							"0804764c-6163-4c64-b0a9-08feebe2db4b": models.Silence{
-								CreatedBy: "john@example.com",
-								Comment:   "Silenced instance",
-							},
-						},
 					},
 				},
 				Labels: map[string]string{
@@ -567,10 +522,10 @@ var groupTests = []groupTest{
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Labels: map[string]string{
@@ -610,10 +565,10 @@ var groupTests = []groupTest{
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Labels: map[string]string{
@@ -647,15 +602,10 @@ var groupTests = []groupTest{
 				},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:   "default",
-						State:  models.AlertStateSuppressed,
-						Source: "localhost/prometheus",
-						Silences: map[string]models.Silence{
-							"0804764c-6163-4c64-b0a9-08feebe2db4b": models.Silence{
-								CreatedBy: "john@example.com",
-								Comment:   "Silenced instance",
-							},
-						},
+						Name:       "default",
+						State:      models.AlertStateSuppressed,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{"0804764c-6163-4c64-b0a9-08feebe2db4b"},
 					},
 				},
 				Labels: map[string]string{
@@ -668,10 +618,10 @@ var groupTests = []groupTest{
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
-						Name:     "default",
-						State:    models.AlertStateActive,
-						Source:   "localhost/prometheus",
-						Silences: map[string]models.Silence{},
+						Name:       "default",
+						State:      models.AlertStateActive,
+						Source:     "localhost/prometheus",
+						SilencedBy: []string{},
 					},
 				},
 				Labels: map[string]string{
@@ -913,6 +863,14 @@ func TestVerifyAllGroups(t *testing.T) {
 					version, testCase.receiver, testCase.labels)
 			}
 		}
+
+		am, foundAM := ur.Silences["default"]
+		if !foundAM {
+			t.Errorf("[%s] Alertmanager 'default' missing from silences", version)
+		} else if len(am) == 0 {
+			t.Errorf("[%s] Silences mismatch, expected >0 but got %d", version, len(am))
+		}
+
 		for key, expectedCounts := range countsMap {
 			gotCounts, foundCounts := ur.Counters[key]
 			if !foundCounts {
