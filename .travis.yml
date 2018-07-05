@@ -12,7 +12,7 @@ defaults_js: &DEFAULTS_JS
   install: []
   cache:
     directories:
-      - node_modules
+      - ui/node_modules
 
 env:
   global:
