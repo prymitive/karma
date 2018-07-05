@@ -23,9 +23,7 @@ jobs:
     - stage: Greenkeeper
       <<: *DEFAULTS_JS
       script:
-        - npm install -g greenkeeper-lockfile
-        - greenkeeper-lockfile-update
-        - greenkeeper-lockfile-upload
+        - make greenkeeper-lockfile
 
     - stage: Test Go code
       <<: *DEFAULTS_GO

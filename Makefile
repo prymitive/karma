@@ -140,3 +140,9 @@ mock-assets: .build/deps-build-go.ok
 
 .PHONY: ui
 ui: .build/artifacts-ui.ok
+
+.PHONY: greenkeeper-lockfile
+greenkeeper-lockfile:
+	npm install -g greenkeeper-lockfile
+	cd ui && greenkeeper-lockfile-update
+	cd ui && greenkeeper-lockfile-upload
