@@ -170,7 +170,11 @@ class AlertStore {
         .then(result => {
           this.parseAPIResponse(result);
         })
-        .catch(err => this.handleFetchError(err.toString()));
+        .catch(err =>
+          this.handleFetchError(
+            `Request for ${alertsURI} failed with "${err.message}"`
+          )
+        );
     }, 500)
   );
 
@@ -188,7 +192,7 @@ class AlertStore {
     const responseFilters = new Set(result.filters.map(m => m.text).sort());
     if (JSON.stringify(queryFilters) !== JSON.stringify(responseFilters)) {
       console.info(
-        `Got response with filters=${responseFilters} while expecting results for ${queryFilters}, ignoring!`
+        `Got response with filters=${responseFilters} while expecting results for ${queryFilters}, ignoring`
       );
       return;
     }
@@ -213,7 +217,7 @@ class AlertStore {
         console.warn(
           `Got response with filter ${
             filter.text
-          } which isn't one of applied filters!`
+          } which isn't one of applied filters, ignoring`
         );
         return;
       }
@@ -245,7 +249,6 @@ class AlertStore {
   });
 
   handleFetchError = action(err => {
-    console.error(`fetch() failed: ${err}`);
     this.status.setFailure(err);
 
     // reset alert counter since we won't be rendering any alerts

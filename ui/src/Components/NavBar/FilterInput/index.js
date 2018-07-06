@@ -80,7 +80,7 @@ const FilterInput = observer(
             .then(result => {
               this.inputStore.suggestions = result;
             })
-            .catch(err => console.error(err.toString()));
+            .catch(err => console.error(err.message));
         }
       }),
       300
