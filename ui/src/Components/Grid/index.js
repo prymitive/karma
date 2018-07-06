@@ -5,7 +5,6 @@ import { observer } from "mobx-react";
 
 import { AlertStore } from "Stores/AlertStore";
 import { AlertGrid } from "./AlertGrid";
-import { BlankPage } from "./BlankPage";
 import { FatalError } from "./FatalError";
 import { UpstreamError } from "./UpstreamError";
 
@@ -20,10 +19,6 @@ const Grid = observer(
 
       if (alertStore.status.error) {
         return <FatalError message={alertStore.status.error} />;
-      }
-
-      if (Object.keys(alertStore.data.groups).length === 0) {
-        return <BlankPage />;
       }
 
       return (

@@ -10,13 +10,11 @@ class UpstreamError extends Component {
   render() {
     const { name, message } = this.props;
     return (
-      <div
-        key={name}
-        className="alert alert-danger text-center rounded-0"
-        role="alert"
-      >
-        <span className="badge badge-warning mr-2">{name}</span>
-        {message}
+      <div className="alert alert-danger text-center" role="alert">
+        <h4 className="alert-heading mb-0">
+          Alertmanager <span className="font-weight-bold">{name}</span> raised
+          an error: {message}
+        </h4>
       </div>
     );
   }
