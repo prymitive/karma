@@ -11,3 +11,15 @@
   padding: 0;
   vertical-align: middle;
 }
+
+.dropdown-menu.components-navbar-historymenu {
+  max-width: 400px;
+}
+
+.dropdown-menu.components-navbar-historymenu > .dropdown-item {
+  white-space: normal;
+}
+
+.components-navbar-historymenu-labels {
+  border-left: 3px solid;
+}

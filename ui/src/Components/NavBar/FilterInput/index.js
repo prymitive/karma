@@ -16,6 +16,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import { AlertStore, FormatUnseeBackendURI } from "Stores/AlertStore";
 import { FilterInputLabel } from "Components/Labels/FilterInputLabel";
 import { AutosuggestTheme } from "./Constants";
+import { History } from "./History";
 
 import "./index.css";
 
@@ -123,6 +124,9 @@ const FilterInput = observer(
               placeholder=""
               {...otherProps}
             />
+          </div>
+          <div className="input-group-append">
+            <History alertStore={alertStore} />
           </div>
         </div>
       );

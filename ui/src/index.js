@@ -9,7 +9,7 @@ import { App } from "./App";
 if (process.env.NODE_ENV === "development") {
   const { whyDidYouUpdate } = require("why-did-you-update");
   whyDidYouUpdate(React, {
-    exclude: [/^Linkify$/, /^CSSTransition$/, /^inject-/]
+    exclude: [/^Linkify$/, /^CSSTransition$/, /^inject-/, /^InnerReference$/]
   });
 }
 

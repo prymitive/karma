@@ -27,6 +27,7 @@
     "react-linkify": "^0.2.2",
     "react-masonry-infinite": "^1.2.2",
     "react-moment": "^0.7.9",
+    "react-popper": "^1.0.0",
     "react-resize-detector": "^3.0.1",
     "react-scripts": "1.1.4",
     "react-transition-group": "^2.4.0",
