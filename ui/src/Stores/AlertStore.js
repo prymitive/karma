@@ -197,7 +197,7 @@ class AlertStore {
       return;
     }
 
-    for (let filter of result.filters) {
+    for (const filter of result.filters) {
       const storedIndex = this.filters.values.findIndex(
         f => f.raw === filter.text
       );
@@ -225,7 +225,13 @@ class AlertStore {
 
     let updates = {};
     // update data dicts if they changed
-    for (let key of ["colors", "counters", "groups", "silences", "upstreams"]) {
+    for (const key of [
+      "colors",
+      "counters",
+      "groups",
+      "silences",
+      "upstreams"
+    ]) {
       if (!equal(this.data[key], result[key])) {
         updates[key] = result[key];
       }
@@ -235,7 +241,7 @@ class AlertStore {
     }
 
     // update extra root level keys that are stored under 'info'
-    for (let key of ["totalAlerts", "version"]) {
+    for (const key of ["totalAlerts", "version"]) {
       if (this.info[key] !== result[key]) {
         this.info[key] = result[key];
       }
@@ -255,7 +261,7 @@ class AlertStore {
     this.info.totalAlerts = 0;
 
     // all unapplied filters should be marked applied to reset progress indicator
-    for (let [index, filter] of this.filters.values.entries()) {
+    for (const [index, filter] of this.filters.values.entries()) {
       if (!filter.applied) {
         this.filters.values[index].applied = true;
       }
