@@ -144,12 +144,7 @@ const AlertGroup = observer(
           <div className="components-grid-alertgrid-alertgroup p-1">
             <div className="card">
               <div className="card-body px-2 pt-2 pb-1">
-                <GroupHeader
-                  collapseStore={this.collapse}
-                  labels={group.labels}
-                  receiver={group.receiver}
-                  stateCount={group.stateCount}
-                />
+                <GroupHeader collapseStore={this.collapse} group={group} />
                 {this.collapse.value ? null : (
                   <ul className="list-group mt-1">
                     {group.alerts

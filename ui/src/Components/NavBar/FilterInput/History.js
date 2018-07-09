@@ -6,6 +6,7 @@ import { observer } from "mobx-react";
 import { localStored } from "mobx-stored";
 
 import { Manager, Reference, Popper } from "react-popper";
+import onClickOutside from "react-onclickoutside";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
@@ -28,49 +29,51 @@ function reduceFilter(filter) {
   };
 }
 
-const HistoryMenu = ({
-  popperPlacement,
-  popperRef,
-  popperStyle,
-  filters,
-  alertStore,
-  afterClick
-}) => {
-  return (
-    <div
-      className="dropdown-menu d-block components-navbar-historymenu"
-      ref={popperRef}
-      style={popperStyle}
-      data-placement={popperPlacement}
-    >
-      {filters.length === 0 ? (
-        <h6 className="dropdown-header text-muted text-center">Empty</h6>
-      ) : (
-        filters.map(historyFilters => (
-          <button
-            className="dropdown-item cursor-pointer px-3"
-            key={JSON.stringify(historyFilters.map(f => f.raw))}
-            onClick={() => {
-              alertStore.filters.setFilters(historyFilters.map(f => f.raw));
-              afterClick();
-            }}
-          >
-            <div className="components-navbar-historymenu-labels pl-2">
-              {historyFilters.map(f => (
-                <HistoryLabel
-                  key={f.raw}
-                  alertStore={alertStore}
-                  name={f.name}
-                  value={f.value}
-                />
-              ))}
-            </div>
-          </button>
-        ))
-      )}
-    </div>
-  );
-};
+const HistoryMenu = onClickOutside(
+  ({
+    popperPlacement,
+    popperRef,
+    popperStyle,
+    filters,
+    alertStore,
+    afterClick
+  }) => {
+    return (
+      <div
+        className="dropdown-menu d-block components-navbar-historymenu"
+        ref={popperRef}
+        style={popperStyle}
+        data-placement={popperPlacement}
+      >
+        {filters.length === 0 ? (
+          <h6 className="dropdown-header text-muted text-center">Empty</h6>
+        ) : (
+          filters.map(historyFilters => (
+            <button
+              className="dropdown-item cursor-pointer px-3"
+              key={JSON.stringify(historyFilters.map(f => f.raw))}
+              onClick={() => {
+                alertStore.filters.setFilters(historyFilters.map(f => f.raw));
+                afterClick();
+              }}
+            >
+              <div className="components-navbar-historymenu-labels pl-2">
+                {historyFilters.map(f => (
+                  <HistoryLabel
+                    key={f.raw}
+                    alertStore={alertStore}
+                    name={f.name}
+                    value={f.value}
+                  />
+                ))}
+              </div>
+            </button>
+          ))
+        )}
+      </div>
+    );
+  }
+);
 HistoryMenu.propTypes = {
   popperPlacement: PropTypes.string,
   popperRef: PropTypes.func,
@@ -140,6 +143,10 @@ const History = observer(
       this.appendToHistory();
     }
 
+    handleClickOutside = action(event => {
+      this.collapse.hide();
+    });
+
     render() {
       const { alertStore } = this.props;
 
@@ -159,7 +166,7 @@ const History = observer(
               <button
                 ref={ref}
                 onClick={this.collapse.toggle}
-                className="btn btn-light dropdown-toggle rounded-right"
+                className="btn btn-light dropdown-toggle rounded-right components-navbar-history"
                 type="button"
                 data-toggle="dropdown"
                 aria-haspopup="true"
@@ -170,7 +177,6 @@ const History = observer(
             )}
           </Reference>
           <Popper
-            placement="top"
             modifiers={{
               arrow: { enabled: false }
             }}
@@ -185,6 +191,8 @@ const History = observer(
                     filters={this.history.filters}
                     alertStore={alertStore}
                     afterClick={this.collapse.hide}
+                    handleClickOutside={this.collapse.hide}
+                    outsideClickIgnoreClass="components-navbar-history"
                   />
                 )}
           </Popper>
