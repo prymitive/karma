@@ -37,11 +37,7 @@ function getStepSize(totalSize) {
 
 const LoadButton = ({ icon, action }) => {
   return (
-    <button
-      type="button"
-      className="btn btn-sm py-0 hover-bg-light"
-      onClick={action}
-    >
+    <button type="button" className="btn btn-sm py-0 bg-white" onClick={action}>
       <FontAwesomeIcon className="text-muted" icon={icon} />
     </button>
   );
