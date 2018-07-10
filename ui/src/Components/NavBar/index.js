@@ -28,9 +28,9 @@ const NavBar = observer(
       const { alertStore } = this.props;
       return (
         <div className="container">
-          <nav className="navbar fixed-top navbar-expand-md navbar-dark py-1 bg-primary-transparent">
+          <nav className="navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent">
             <ReactResizeDetector handleHeight onResize={navbarResize} />
-            <span className="navbar-brand my-0 h1 d-none d-sm-block">
+            <span className="navbar-brand my-0 mx-2 h1 d-none d-sm-block">
               {alertStore.info.totalAlerts}
               <FetchIndicator status={alertStore.status.value.toString()} />
             </span>
@@ -38,7 +38,7 @@ const NavBar = observer(
             <ul className="navbar-nav">
               <li className="nav-item dropdown">
                 <a
-                  className="nav-link dropdown-toggle"
+                  className="nav-link dropdown-toggle mx-1"
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="true"
