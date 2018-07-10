@@ -31,8 +31,7 @@
     "react-popper": "^1.0.0",
     "react-resize-detector": "^3.0.1",
     "react-scripts": "1.1.4",
-    "react-transition-group": "^2.4.0",
-    "why-did-you-update": "^0.1.1"
+    "react-transition-group": "^2.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -46,6 +45,7 @@
     "eslint-plugin-react": "^7.10.0",
     "markdownlint-cli": "^0.10.0",
     "node-sass-chokidar": "^1.3.0",
-    "react-test-renderer": "^16.4.1"
+    "react-test-renderer": "^16.4.1",
+    "why-did-you-update": "^0.1.1"
   }
 }
