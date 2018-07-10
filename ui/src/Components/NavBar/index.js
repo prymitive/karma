@@ -38,7 +38,7 @@ const NavBar = observer(
             <ul className="navbar-nav">
               <li className="nav-item dropdown">
                 <a
-                  className="nav-link dropdown-toggle mx-1"
+                  className="nav-link mx-1"
                   data-toggle="dropdown"
                   aria-haspopup="true"
                   aria-expanded="true"

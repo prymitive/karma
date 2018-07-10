@@ -6391,14 +6391,5 @@ a.text-dark:hover, a.text-dark:focus {
 .bg-primary-transparent {
   background-color: rgba(69, 90, 100, 0.95); }
 
-.hover-bg-light:hover {
-  background-color: #ecf0f1; }
-
-.hover-bg-light:focus {
-  box-shadow: unset; }
-
 .cursor-pointer {
   cursor: pointer; }
-
-.dropdown-toggle::after {
-  display: none; }

@@ -25,19 +25,6 @@ $dark: #3b4247;
   background-color: rgba($primary, 0.95);
 }
 
-// silence block gets a different color on hover
-.hover-bg-light:hover {
-  background-color: $light;
-}
-.hover-bg-light:focus {
-  box-shadow: unset;
-}
-
 .cursor-pointer {
   cursor: pointer;
-}
-
-// remove triangle from dropdowns
-.dropdown-toggle::after {
-  display: none;
 }
