@@ -6391,5 +6391,8 @@ a.text-dark:hover, a.text-dark:focus {
 .bg-primary-transparent {
   background-color: rgba(69, 90, 100, 0.95); }
 
+.bg-primary-transparent-80 {
+  background-color: rgba(59, 66, 71, 0.8); }
+
 .cursor-pointer {
   cursor: pointer; }

@@ -24,6 +24,10 @@ $dark: #3b4247;
 .bg-primary-transparent {
   background-color: rgba($primary, 0.95);
 }
+// version for modals
+.bg-primary-transparent-80 {
+  background-color: rgba($dark, 0.8);
+}
 
 .cursor-pointer {
   cursor: pointer;

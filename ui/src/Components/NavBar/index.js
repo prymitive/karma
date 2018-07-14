@@ -5,12 +5,10 @@ import { observer } from "mobx-react";
 
 import ReactResizeDetector from "react-resize-detector";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
-
 import { AlertStore } from "Stores/AlertStore";
 import { FetchIndicator } from "./FetchIndicator";
 import { FilterInput } from "./FilterInput";
+import { MainModal } from "Components/MainModal";
 
 import "./index.css";
 
@@ -35,18 +33,7 @@ const NavBar = observer(
               <FetchIndicator status={alertStore.status.value.toString()} />
             </span>
             <FilterInput alertStore={alertStore} />
-            <ul className="navbar-nav">
-              <li className="nav-item dropdown">
-                <a
-                  className="nav-link mx-1"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="true"
-                >
-                  <FontAwesomeIcon icon={faCog} />
-                </a>
-              </li>
-            </ul>
+            <MainModal />
           </nav>
         </div>
       );
