@@ -65,7 +65,6 @@ func setupRouter(router *gin.Engine) {
 	}))
 
 	router.GET(getViewURL("/"), index)
-	router.GET(getViewURL("/help"), help)
 	router.GET(getViewURL("/alerts.json"), alerts)
 	router.GET(getViewURL("/autocomplete.json"), autocomplete)
 	router.NoRoute(notFound)

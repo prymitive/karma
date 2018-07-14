@@ -66,36 +66,6 @@ func TestIndexPrefix(t *testing.T) {
 	}
 }
 
-func TestHelp(t *testing.T) {
-	mockConfig()
-	r := ginTestEngine()
-	req, _ := http.NewRequest("GET", "/help", nil)
-	resp := httptest.NewRecorder()
-	r.ServeHTTP(resp, req)
-	if resp.Code != http.StatusOK {
-		t.Errorf("GET /help returned status %d", resp.Code)
-	}
-}
-
-func TestHelpPrefix(t *testing.T) {
-	os.Setenv("LISTEN_PREFIX", "/prefix")
-	defer os.Unsetenv("LISTEN_PREFIX")
-	mockConfig()
-	r := ginTestEngine()
-	req, _ := http.NewRequest("GET", "/prefix/help", nil)
-	resp := httptest.NewRecorder()
-	r.ServeHTTP(resp, req)
-	if resp.Code != http.StatusOK {
-		t.Errorf("GET /prefix/help returned status %d", resp.Code)
-	}
-	req, _ = http.NewRequest("GET", "/help", nil)
-	resp = httptest.NewRecorder()
-	r.ServeHTTP(resp, req)
-	if resp.Code != http.StatusNotFound {
-		t.Errorf("GET /help returned status %d, expected 404", resp.Code)
-	}
-}
-
 func mockAlerts(version string) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
@@ -399,10 +369,6 @@ var staticFileTests = []staticFileTestCase{
 		code: 200,
 	},
 	staticFileTestCase{
-		path: "/help.html",
-		code: 200,
-	},
-	staticFileTestCase{
 		path: "/manifest.json",
 		code: 200,
 	},
@@ -436,10 +402,6 @@ func TestStaticFiles(t *testing.T) {
 var staticFilePrefixTests = []staticFileTestCase{
 	staticFileTestCase{
 		path: "/sub/favicon.ico",
-		code: 200,
-	},
-	staticFileTestCase{
-		path: "/sub/help.html",
 		code: 200,
 	},
 	staticFileTestCase{
@@ -478,7 +440,7 @@ func TestStaticFilesPrefix(t *testing.T) {
 func TestGzipMiddleware(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()
-	paths := []string{"/", "/help", "/alerts.json", "/autocomplete.json", "/metrics"}
+	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
 		req, _ := http.NewRequest("GET", path, nil)
 		req.Header.Set("Accept-Encoding", "gzip")
@@ -501,7 +463,7 @@ func TestGzipMiddleware(t *testing.T) {
 func TestGzipMiddlewareWithoutAcceptEncoding(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()
-	paths := []string{"/", "/help", "/alerts.json", "/autocomplete.json", "/metrics"}
+	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
 		req, _ := http.NewRequest("GET", path, nil)
 		req.Header.Set("Accept-Encoding", "") // ensure that we don't pass anything up

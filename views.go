@@ -23,10 +23,6 @@ func index(c *gin.Context) {
 	responseFromStaticFile(c, "/index.html", "text/html")
 }
 
-func help(c *gin.Context) {
-	responseFromStaticFile(c, "/help.html", "text/html")
-}
-
 func notFound(c *gin.Context) {
 	c.String(404, "404 page not found")
 }
