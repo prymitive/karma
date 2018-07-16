@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -39,6 +40,11 @@ func ginTestEngine() *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
 	setupRouter(r)
+
+	var t *template.Template
+	t = loadTemplate(t, "ui/build/index.html")
+	r.SetHTMLTemplate(t)
+
 	return r
 }
 

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"net/http"
 	"sort"
@@ -17,18 +18,32 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func index(c *gin.Context) {
-	// http.FileServer doesn't allow serving index.html, it will always redirect
-	// such request to ./ so we need to manually read that file and return it
-	responseFromStaticFile(c, "/index.html", "text/html")
-}
-
 func notFound(c *gin.Context) {
 	c.String(404, "404 page not found")
 }
 
 func noCache(c *gin.Context) {
 	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
+}
+
+func index(c *gin.Context) {
+	start := time.Now()
+
+	noCache(c)
+
+	filtersJSON, err := json.Marshal(config.Config.Filters.Default)
+	if err != nil {
+		panic(err)
+	}
+	filtersB64 := base64.StdEncoding.EncodeToString(filtersJSON)
+
+	c.HTML(http.StatusOK, "ui/build/index.html", gin.H{
+		"Version":       version,
+		"SentryDSN":     config.Config.Sentry.Public,
+		"DefaultFilter": filtersB64,
+	})
+
+	log.Infof("[%s] %s %s took %s", c.ClientIP(), c.Request.Method, c.Request.RequestURI, time.Since(start))
 }
 
 func logAlertsView(c *gin.Context, cacheStatus string, duration time.Duration) {

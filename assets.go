@@ -3,11 +3,14 @@ package main
 import (
 	"bytes"
 	"errors"
+	"html/template"
 	"net/http"
 	"strings"
 
-	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/gin-gonic/gin"
+
+	assetfs "github.com/elazarl/go-bindata-assetfs"
+	log "github.com/sirupsen/logrus"
 )
 
 type binaryFileSystem struct {
@@ -41,6 +44,36 @@ func newBinaryFileSystem(root string) *binaryFileSystem {
 		Prefix: root,
 	}
 	return &binaryFileSystem{fs}
+}
+
+// load a template from binary asset resource
+func loadTemplate(t *template.Template, path string) *template.Template {
+	templateContent, err := Asset(path)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var tmpl *template.Template
+	if t == nil {
+		// if template wasn't yet initialized do it here
+		t = template.New(path)
+	}
+
+	if path == t.Name() {
+		tmpl = t
+	} else {
+		// if we already have an instance of template.Template then
+		// add a new file to it
+		tmpl = t.New(path)
+	}
+
+	_, err = tmpl.Parse(string(templateContent))
+	if err != nil {
+		log.Fatal(err)
+		return nil
+	}
+
+	return t
 }
 
 func responseFromStaticFile(c *gin.Context, filepath string, contentType string) {
