@@ -117,13 +117,13 @@ class AlertStore {
     { name: "API response info" }
   );
 
-  staticColorLabels = observable(
+  settings = observable(
     {
-      values: []
+      values: { staticColorLabels: [] }
     },
     {},
     {
-      name: "List of labels with static color"
+      name: "Global settings"
     }
   );
 
@@ -247,8 +247,9 @@ class AlertStore {
       }
     }
 
-    if (!equal(this.staticColorLabels, result.staticColorLabels)) {
-      this.staticColorLabels.values = result.staticColorLabels;
+    // settings exported via API
+    if (!equal(this.settings, result.settings)) {
+      this.settings.values = result.settings;
     }
 
     this.status.setIdle();

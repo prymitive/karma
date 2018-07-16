@@ -24,7 +24,7 @@ class BaseLabel extends Component {
   isStaticColorLabel(name) {
     const { alertStore } = this.props;
 
-    return alertStore.staticColorLabels.values.includes(name);
+    return alertStore.settings.values.staticColorLabels.includes(name);
   }
 
   getColorClass(name, value) {
