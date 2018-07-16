@@ -76,7 +76,7 @@ run: $(NAME)
 	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
 	LABELS_COLOR_UNIQUE="@receiver instance cluster" \
 	LABELS_COLOR_STATIC="job" \
-	FILTERS_DEFAULT="@state=active" \
+	FILTERS_DEFAULT="@state=active @receiver=by-cluster-service" \
 	PORT=$(PORT) \
 	./$(NAME)
 
@@ -93,7 +93,7 @@ run-docker: docker-image
 	    -e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
 	    -e LABELS_COLOR_UNIQUE="instance cluster" \
 	    -e LABELS_COLOR_STATIC="job" \
-      -e FILTERS_DEFAULT="@state=active" \
+      -e FILTERS_DEFAULT="@state=active @receiver=by-cluster-service" \
 	    -e PORT=$(PORT) \
 	    -p $(PORT):$(PORT) \
 	    $(NAME):$(VERSION)
