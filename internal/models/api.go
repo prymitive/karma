@@ -158,19 +158,25 @@ func (ag *APIAlertGroup) DedupSharedMaps() {
 	}
 }
 
+// Settings is used to export unsee configuration that is used by UI
+type Settings struct {
+	StaticColorLabels []string `json:"staticColorLabels"`
+	DefaultFilters    []string `json:"defaultFilters"`
+}
+
 // AlertsResponse is the structure of JSON response UI will use to get alert data
 type AlertsResponse struct {
-	Status            string                        `json:"status"`
-	Timestamp         string                        `json:"timestamp"`
-	Version           string                        `json:"version"`
-	Upstreams         AlertmanagerAPISummary        `json:"upstreams"`
-	Silences          map[string]map[string]Silence `json:"silences"`
-	AlertGroups       map[string]APIAlertGroup      `json:"groups"`
-	TotalAlerts       int                           `json:"totalAlerts"`
-	Colors            LabelsColorMap                `json:"colors"`
-	Filters           []Filter                      `json:"filters"`
-	Counters          LabelsCountMap                `json:"counters"`
-	StaticColorLabels []string                      `json:"staticColorLabels"`
+	Status      string                        `json:"status"`
+	Timestamp   string                        `json:"timestamp"`
+	Version     string                        `json:"version"`
+	Upstreams   AlertmanagerAPISummary        `json:"upstreams"`
+	Silences    map[string]map[string]Silence `json:"silences"`
+	AlertGroups map[string]APIAlertGroup      `json:"groups"`
+	TotalAlerts int                           `json:"totalAlerts"`
+	Colors      LabelsColorMap                `json:"colors"`
+	Filters     []Filter                      `json:"filters"`
+	Counters    LabelsCountMap                `json:"counters"`
+	Settings    Settings                      `json:"settings"`
 }
 
 // Autocomplete is the structure of autocomplete object for filter hints

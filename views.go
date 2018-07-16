@@ -47,7 +47,9 @@ func alerts(c *gin.Context) {
 	resp.Timestamp = string(ts)
 	resp.Version = version
 	resp.Upstreams = getUpstreams()
-	resp.StaticColorLabels = config.Config.Labels.Color.Static
+	resp.Settings = models.Settings{
+		StaticColorLabels: config.Config.Labels.Color.Static,
+	}
 
 	// use full URI (including query args) as cache key
 	cacheKey := c.Request.RequestURI
