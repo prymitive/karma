@@ -161,7 +161,6 @@ func (ag *APIAlertGroup) DedupSharedMaps() {
 // Settings is used to export unsee configuration that is used by UI
 type Settings struct {
 	StaticColorLabels []string `json:"staticColorLabels"`
-	DefaultFilters    []string `json:"defaultFilters"`
 }
 
 // AlertsResponse is the structure of JSON response UI will use to get alert data

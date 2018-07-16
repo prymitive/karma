@@ -8,10 +8,13 @@ import qs from "qs";
 
 // generate URL for the UI with a set of filters
 function FormatAPIFilterQuery(filters) {
-  return qs.stringify(Object.assign(DecodeLocationSearch(), { q: filters }), {
-    encodeValuesOnly: true, // don't encode q[]
-    indices: false // go-gin doesn't support parsing q[0]=foo&q[1]=bar
-  });
+  return qs.stringify(
+    Object.assign(DecodeLocationSearch().params, { q: filters }),
+    {
+      encodeValuesOnly: true, // don't encode q[]
+      indices: false // go-gin doesn't support parsing q[0]=foo&q[1]=bar
+    }
+  );
 }
 
 // format URI for react UI -> Go backend requests
@@ -21,18 +24,26 @@ function FormatUnseeBackendURI(path) {
 }
 
 function DecodeLocationSearch() {
+  let defaultsUsed = true;
   let params = { q: [] };
 
   if (window.location.search !== "") {
     const parsed = qs.parse(window.location.search.split("?")[1]);
-    if (Array.isArray(parsed.q)) {
-      params.q = parsed.q;
-    } else {
-      params.q = [parsed.q];
+    params = Object.assign(params, parsed);
+
+    if (parsed.q !== undefined) {
+      defaultsUsed = false;
+      if (parsed.q === "") {
+        params.q = [];
+      } else if (Array.isArray(parsed.q)) {
+        params.q = parsed.q;
+      } else {
+        params.q = [parsed.q];
+      }
     }
   }
 
-  return params;
+  return { params: params, defaultsUsed: defaultsUsed };
 }
 
 function UpdateLocationSearch(newParams) {
