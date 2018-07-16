@@ -53,7 +53,7 @@ const FilterExample = ({ example, children }) => (
 );
 FilterExample.propTypes = {
   example: PropTypes.string.isRequired,
-  children: PropTypes.array
+  children: PropTypes.node
 };
 
 const Help = () => (
