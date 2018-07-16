@@ -92,6 +92,12 @@ const FilterInput = observer(
       this.props.alertStore.filters.addFilter(suggestion);
     });
 
+    onInputClick = (inputReference, event) => {
+      if (event.target.className.split(" ").includes("form-control")) {
+        inputReference.input.focus();
+      }
+    };
+
     renderSuggestion = (suggestion, { query, isHighlighted }) => {
       return <Highlight search={query}>{suggestion}</Highlight>;
     };
@@ -108,8 +114,8 @@ const FilterInput = observer(
           </div>
           <div
             className="form-control p-1 components-filterinput"
-            onClick={() => {
-              inputReference.input.focus();
+            onClick={event => {
+              this.onInputClick(inputReference, event);
             }}
           >
             {alertStore.filters.values.map(filter => (
