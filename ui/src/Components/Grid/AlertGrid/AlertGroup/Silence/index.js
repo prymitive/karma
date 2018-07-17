@@ -86,10 +86,18 @@ const SilenceDetails = ({ alertmanager, silence }) => {
 
   return (
     <div className="mt-1">
-      <FilteringLabel name={StaticLabels.AlertManager} value={alertmanager} />
-      <span className="badge badge-secondary text-nowrap text-truncate px-1 mr-1">
+      <FilteringLabel
+        name={StaticLabels.AlertManager}
+        value={alertmanager.name}
+      />
+      <a
+        className="badge badge-secondary text-nowrap text-truncate px-1 mr-1"
+        href={`${alertmanager.uri}/#/silences/${silence.id}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         {silence.id}
-      </span>
+      </a>
       <span className="badge badge-secondary text-nowrap text-truncate px-1 mr-1">
         Silenced <Moment fromNow>{silence.startsAt}</Moment>
       </span>
@@ -112,7 +120,7 @@ const SilenceDetails = ({ alertmanager, silence }) => {
   );
 };
 SilenceDetails.propTypes = {
-  alertmanager: PropTypes.string.isRequired,
+  alertmanager: PropTypes.object.isRequired,
   silence: PropTypes.object.isRequired
 };
 
@@ -121,13 +129,13 @@ const FallbackSilenceDesciption = ({ alertmanager, silenceID }) => {
   return (
     <div>
       <small className="text-muted">
-        Silenced by {alertmanager}/{silenceID}
+        Silenced by {alertmanager.name}/{silenceID}
       </small>
     </div>
   );
 };
 FallbackSilenceDesciption.propTypes = {
-  alertmanager: PropTypes.string.isRequired,
+  alertmanager: PropTypes.object.isRequired,
   silenceID: PropTypes.string.isRequired
 };
 
@@ -136,7 +144,7 @@ const Silence = inject("alertStore")(
     class Silence extends Component {
       static propTypes = {
         alertStore: PropTypes.object.isRequired,
-        alertmanager: PropTypes.string.isRequired,
+        alertmanager: PropTypes.object.isRequired,
         silenceID: PropTypes.string.isRequired,
         afterUpdate: PropTypes.func.isRequired
       };
@@ -166,7 +174,7 @@ const Silence = inject("alertStore")(
         // and we need to lookup the actual silence data in the store.
         // Data might be missing from the store so first check if we have
         // anything for this alertmanager instance
-        const amSilences = alertStore.data.silences[alertmanager];
+        const amSilences = alertStore.data.silences[alertmanager.name];
         if (!amSilences)
           return (
             <FallbackSilenceDesciption
