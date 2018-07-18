@@ -46,6 +46,7 @@ endif
 
 .build/artifacts-ui.ok: .build/deps-build-node.ok $(ASSET_SOURCES)
 	@mkdir -p .build
+	cd ui && npm run-script build-css
 	cd ui && npm run build
 	touch $@
 
