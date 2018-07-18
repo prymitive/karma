@@ -94,6 +94,13 @@ class AlertStore {
           UpdateLocationSearch({ q: this.values.map(f => f.raw) });
         }
       },
+      replaceFilter(oldRaw, newRaw) {
+        const index = this.values.findIndex(e => e.raw === oldRaw);
+        if (index >= 0) {
+          this.values[index] = newUnappliedFilter(newRaw);
+          UpdateLocationSearch({ q: this.values.map(f => f.raw) });
+        }
+      },
       setFilters(raws) {
         this.values = raws.map(raw => newUnappliedFilter(raw));
         UpdateLocationSearch({ q: this.values.map(f => f.raw) });
@@ -102,6 +109,7 @@ class AlertStore {
     {
       addFilter: action.bound,
       removeFilter: action.bound,
+      replaceFilter: action.bound,
       setFilters: action.bound
     },
     { name: "API Filters" }

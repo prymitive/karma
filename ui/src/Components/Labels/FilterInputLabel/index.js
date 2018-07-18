@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
 
+import { RIEInput } from "@attently/riek";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
@@ -26,6 +28,18 @@ const FilterInputLabel = observer(
         matcher: PropTypes.string,
         value: PropTypes.string
       })
+    };
+
+    onChange = update => {
+      const { alertStore, filter } = this.props;
+
+      // if filter is empty string then remove it
+      if (update.raw === "") {
+        alertStore.filters.removeFilter(filter.raw);
+      }
+
+      // if not empty replace it
+      alertStore.filters.replaceFilter(filter.raw, update.raw);
     };
 
     render() {
@@ -79,8 +93,13 @@ const FilterInputLabel = observer(
               <FontAwesomeIcon icon={faExclamationCircle} />
             </span>
           )}
-
-          {filter.raw}
+          <RIEInput
+            defaultValue=""
+            value={filter.raw}
+            propName="raw"
+            change={this.onChange}
+            classEditing="py-0 border-0 bg-light"
+          />
         </span>
       );
     }
