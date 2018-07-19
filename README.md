@@ -13,10 +13,19 @@ on those tags.
 
 ![Screenshot](/screenshot.png)
 
+[Online demo](https://unsee-demo.herokuapp.com/)
+
 To get notifications about new unsee releases you can subscribe to the RSS feed
 that [GitHub provides](https://github.com/prymitive/unsee/releases.atom)
 To get email notifications please use one of the free services providing
 _RSS to email_ notifications, like [Blogtrottr](https://blogtrottr.com/).
+
+## History
+
+I created unsee while working for [Cloudflare](https://cloudflare.com/).
+After leaving the company I maintain a private fork, this version is
+incompatible with the [original codebase](https://github.com/cloudflare/unsee)
+since the UI was rewritten using [React](https://reactjs.org/).
 
 ## Supported Alertmanager versions
 
@@ -34,9 +43,9 @@ modify alerts or silence state, but it does provide a web interface that allows
 a user to send such requests directly to the Alertmanager API.
 If you wish to deploy unsee as a read-only tool please ensure that:
 
-* the unsee process is able to connect to the Alertmanager API
-* read-only users are able to connect to the unsee web interface
-* read-only users are NOT able to connect to the Alertmanager API
+- the unsee process is able to connect to the Alertmanager API
+- read-only users are able to connect to the unsee web interface
+- read-only users are NOT able to connect to the Alertmanager API
 
 ## Metrics
 
@@ -92,8 +101,8 @@ Official docker images are built and hosted on
 
 Images are built automatically for:
 
-* release tags in git - `prymitive/unsee:vX.Y.Z`
-* master branch commits - `prymitive/unsee:latest`
+- release tags in git - `prymitive/unsee:vX.Y.Z`
+- master branch commits - `prymitive/unsee:latest`
 
 #### Examples
 
