@@ -1,10 +1,17 @@
 #!/usr/bin/env python
 
+import json
 import time
-import requests
+import urllib2
 
-requests.post('http://localhost:9093/api/v1/silences',
-    json={
+def requests_post(url, data):
+    req = urllib2.Request(url)
+    req.add_header('Content-Type', 'application/json')
+    response = urllib2.urlopen(req, json.dumps(data))
+
+
+requests_post('http://localhost:9093/api/v1/silences',
+    {
       "matchers": [
         {
           "name": "instance",
@@ -18,8 +25,8 @@ requests.post('http://localhost:9093/api/v1/silences',
       "comment": "Silenced instance"
     })
 
-requests.post('http://localhost:9093/api/v1/silences',
-    json={
+requests_post('http://localhost:9093/api/v1/silences',
+    {
       "matchers": [
         {
           "name": "alertname",
@@ -38,8 +45,8 @@ requests.post('http://localhost:9093/api/v1/silences',
       "comment": "Silenced Host_Down alerts in the dev cluster"
     })
 
-requests.post('http://localhost:9093/api/v1/silences',
-    json={
+requests_post('http://localhost:9093/api/v1/silences',
+    {
       "matchers": [
         {
           "name": "instance",
@@ -54,8 +61,8 @@ requests.post('http://localhost:9093/api/v1/silences',
     })
 
 for i in xrange(0, 5):
-    requests.post('http://localhost:9093/api/v1/alerts',
-        json=[{
+    requests_post('http://localhost:9093/api/v1/alerts',
+        [{
             "labels": {
                 "alertname": "HTTP_Probe_Failed",
                 "instance": "web1",
