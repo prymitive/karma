@@ -6,6 +6,7 @@ import { observer } from "mobx-react";
 import ReactResizeDetector from "react-resize-detector";
 
 import { AlertStore } from "Stores/AlertStore";
+import { Settings } from "Stores/Settings";
 import { FetchIndicator } from "./FetchIndicator";
 import { FilterInput } from "./FilterInput";
 import { MainModal } from "Components/MainModal";
@@ -19,11 +20,12 @@ const navbarResize = function(width, height) {
 const NavBar = observer(
   class NavBar extends Component {
     static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+      settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
 
     render() {
-      const { alertStore } = this.props;
+      const { alertStore, settingsStore } = this.props;
       return (
         <div className="container">
           <nav className="navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent">
@@ -32,7 +34,10 @@ const NavBar = observer(
               {alertStore.info.totalAlerts}
               <FetchIndicator status={alertStore.status.value.toString()} />
             </span>
-            <FilterInput alertStore={alertStore} />
+            <FilterInput
+              alertStore={alertStore}
+              settingsStore={settingsStore}
+            />
             <MainModal />
           </nav>
         </div>

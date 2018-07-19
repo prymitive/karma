@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { Provider } from "mobx-react";
 
 import { AlertStore, DecodeLocationSearch } from "Stores/AlertStore";
+import { Settings } from "Stores/Settings";
 import { NavBar } from "Components/NavBar";
 import { Grid } from "Components/Grid";
 import { Fetcher } from "Components/Fetcher";
@@ -20,6 +21,8 @@ class App extends Component {
 
     const { defaultFilters } = this.props;
 
+    this.settingsStore = new Settings();
+
     let filters;
 
     // parse and decode request query args
@@ -27,8 +30,12 @@ class App extends Component {
 
     // p.defaultsUsed means that unsee URI didn't have ?q=foo query args
     if (p.defaultsUsed) {
-      // no ?q=foo set, use defaults from backend config
-      filters = defaultFilters;
+      // no ?q=foo set, use defaults saved by the user or from backend config
+      if (this.settingsStore.savedFilters.present) {
+        filters = this.settingsStore.savedFilters.filters;
+      } else {
+        filters = defaultFilters;
+      }
     } else {
       // user passed ?q=foo, use it as initial filters
       filters = p.params.q;
@@ -40,7 +47,10 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <NavBar alertStore={this.alertStore} />
+        <NavBar
+          alertStore={this.alertStore}
+          settingsStore={this.settingsStore}
+        />
         <Provider alertStore={this.alertStore}>
           <Grid alertStore={this.alertStore} />
         </Provider>

@@ -10,8 +10,12 @@ import onClickOutside from "react-onclickoutside";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
+import { faSave } from "@fortawesome/free-regular-svg-icons/faSave";
+import { faUndoAlt } from "@fortawesome/free-solid-svg-icons/faUndoAlt";
+import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 
 import { AlertStore } from "Stores/AlertStore";
+import { Settings } from "Stores/Settings";
 import { HistoryLabel } from "Components/Labels/HistoryLabel";
 
 const defaultHistory = {
@@ -36,7 +40,9 @@ const HistoryMenu = onClickOutside(
     popperStyle,
     filters,
     alertStore,
-    afterClick
+    settingsStore,
+    afterClick,
+    onClear
   }) => {
     return (
       <div
@@ -70,6 +76,38 @@ const HistoryMenu = onClickOutside(
             </button>
           ))
         )}
+        <div className="dropdown-divider" />
+        <div className="container text-center">
+          <button className="btn btn-sm btn-success mr-4">
+            <FontAwesomeIcon
+              icon={faSave}
+              onClick={() => {
+                settingsStore.saveFilters(
+                  alertStore.filters.values.map(f => f.raw)
+                );
+                afterClick();
+              }}
+            />
+          </button>
+          <button
+            className="btn btn-sm btn-danger mr-4"
+            onClick={() => {
+              settingsStore.clearSavedFilters();
+              afterClick();
+            }}
+          >
+            <FontAwesomeIcon icon={faUndoAlt} />
+          </button>
+          <button
+            className="btn btn-sm btn-dark"
+            onClick={() => {
+              onClear();
+              afterClick();
+            }}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </button>
+        </div>
       </div>
     );
   }
@@ -80,13 +118,16 @@ HistoryMenu.propTypes = {
   popperStyle: PropTypes.object,
   filters: PropTypes.array.isRequired,
   alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  afterClick: PropTypes.func.isRequired
+  settingsStore: PropTypes.instanceOf(Settings).isRequired,
+  afterClick: PropTypes.func.isRequired,
+  onClear: PropTypes.func.isRequired
 };
 
 const History = observer(
   class History extends Component {
     static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+      settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
 
     // how many filter sets do we store in local storage and render in the
@@ -137,6 +178,10 @@ const History = observer(
       this.history.filters = newHistory;
     });
 
+    clearHistory = action(() => {
+      this.history.filters = [];
+    });
+
     componentDidUpdate() {
       // every time this component updates we will rewrite history
       // (if there are changes)
@@ -148,7 +193,7 @@ const History = observer(
     });
 
     render() {
-      const { alertStore } = this.props;
+      const { alertStore, settingsStore } = this.props;
 
       return (
         // data-filters is there to register filters for observation in mobx
@@ -189,7 +234,9 @@ const History = observer(
                     popperRef={ref}
                     popperStyle={style}
                     filters={this.history.filters}
+                    onClear={this.clearHistory}
                     alertStore={alertStore}
+                    settingsStore={settingsStore}
                     afterClick={this.collapse.hide}
                     handleClickOutside={this.collapse.hide}
                     outsideClickIgnoreClass="components-navbar-history"

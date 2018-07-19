@@ -14,6 +14,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 
 import { AlertStore, FormatUnseeBackendURI } from "Stores/AlertStore";
+import { Settings } from "Stores/Settings";
 import { FilterInputLabel } from "Components/Labels/FilterInputLabel";
 import { AutosuggestTheme } from "./Constants";
 import { History } from "./History";
@@ -23,7 +24,8 @@ import "./index.css";
 const FilterInput = observer(
   class FilterInput extends Component {
     static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+      settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
 
     inputStore = observable(
@@ -103,7 +105,12 @@ const FilterInput = observer(
     };
 
     renderInputComponent = inputProps => {
-      var { inputReference, alertStore, ...otherProps } = inputProps;
+      var {
+        inputReference,
+        alertStore,
+        settingsStore,
+        ...otherProps
+      } = inputProps;
 
       return (
         <div className="input-group input-group-sm mr-2">
@@ -132,14 +139,14 @@ const FilterInput = observer(
             />
           </div>
           <div className="input-group-append">
-            <History alertStore={alertStore} />
+            <History alertStore={alertStore} settingsStore={settingsStore} />
           </div>
         </div>
       );
     };
 
     render() {
-      const { alertStore } = this.props;
+      const { alertStore, settingsStore } = this.props;
 
       return (
         // data-filters is there to register filters for observation in mobx
@@ -163,7 +170,8 @@ const FilterInput = observer(
               value: this.inputStore.value,
               onChange: this.onChange,
               inputReference: this.inputStore.ref,
-              alertStore: alertStore
+              alertStore: alertStore,
+              settingsStore: settingsStore
             }}
             theme={AutosuggestTheme}
           />
