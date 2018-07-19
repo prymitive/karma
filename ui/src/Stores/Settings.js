@@ -1,10 +1,13 @@
-import { localStored } from "mobx-stored";
-
 import { action } from "mobx";
+import { localStored } from "mobx-stored";
 
 const defaultSavedFilters = {
   filters: [],
   present: false
+};
+
+const defaultFetchConfig = {
+  interval: 30
 };
 
 class Settings {
@@ -20,6 +23,12 @@ class Settings {
   clearSavedFilters = action(() => {
     this.savedFilters.filters = [];
     this.savedFilters.present = false;
+  });
+
+  fetchConfig = localStored("fetchConfig", defaultFetchConfig, { delay: 100 });
+
+  setFetchInterval = action(newInterval => {
+    this.fetchConfig.interval = newInterval;
   });
 }
 

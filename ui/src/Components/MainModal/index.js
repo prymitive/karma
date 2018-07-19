@@ -7,6 +7,8 @@ import { observable, action } from "mobx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
 
+import { Settings } from "Stores/Settings";
+import { Configuration } from "./Configuration";
 import { Help } from "./Help";
 
 import "./index.css";
@@ -26,12 +28,16 @@ Tab.propTypes = {
 };
 
 const TabNames = Object.freeze({
-  Settings: "settings",
+  Configuration: "configuration",
   Help: "help"
 });
 
 const MainModal = observer(
   class MainModal extends Component {
+    static propTypes = {
+      settingsStore: PropTypes.instanceOf(Settings).isRequired
+    };
+
     toggle = observable(
       {
         show: false,
@@ -47,7 +53,7 @@ const MainModal = observer(
 
     tab = observable(
       {
-        current: TabNames.Settings,
+        current: TabNames.Configuration,
         setTab(newTab) {
           this.current = newTab;
         }
@@ -64,6 +70,8 @@ const MainModal = observer(
     }
 
     render() {
+      const { settingsStore } = this.props;
+
       return (
         <React.Fragment>
           <ul className="navbar-nav">
@@ -87,9 +95,9 @@ const MainModal = observer(
                   <div className="modal-header py-2">
                     <nav className="nav nav-pills nav-justified w-100">
                       <Tab
-                        title="Settings"
-                        active={this.tab.current === TabNames.Settings}
-                        onClick={() => this.tab.setTab(TabNames.Settings)}
+                        title="Configuration"
+                        active={this.tab.current === TabNames.Configuration}
+                        onClick={() => this.tab.setTab(TabNames.Configuration)}
                       />
                       <Tab
                         title="Help"
@@ -107,6 +115,9 @@ const MainModal = observer(
                   </div>
                   <div className="modal-body">
                     {this.tab.current === TabNames.Help ? <Help /> : null}
+                    {this.tab.current === TabNames.Configuration ? (
+                      <Configuration settingsStore={settingsStore} />
+                    ) : null}
                   </div>
                 </div>
               </div>

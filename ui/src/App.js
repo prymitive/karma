@@ -54,7 +54,10 @@ class App extends Component {
         <Provider alertStore={this.alertStore}>
           <Grid alertStore={this.alertStore} />
         </Provider>
-        <Fetcher alertStore={this.alertStore} />
+        <Fetcher
+          alertStore={this.alertStore}
+          settingsStore={this.settingsStore}
+        />
       </React.Fragment>
     );
   }

@@ -1,25 +1,45 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+import { toJS } from "mobx";
 import { observer } from "mobx-react";
 
 import { AlertStore } from "Stores/AlertStore";
+import { Settings } from "Stores/Settings";
 
 const Fetcher = observer(
   class Fetcher extends Component {
     static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+      settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
 
     timer = null;
 
-    // FIXME store last update timestamp and timer should inspect it (fire it
-    // every 1s) rather than forcing fetch each time
+    interval = null;
+
+    setTimer() {
+      const { alertStore, settingsStore } = this.props;
+
+      const newInterval = toJS(settingsStore.fetchConfig.interval);
+
+      if (this.interval !== newInterval) {
+        if (this.timer !== null) clearInterval(this.timer);
+
+        this.interval = newInterval;
+        this.timer = setInterval(
+          () => alertStore.fetch(),
+          this.interval * 1000
+        );
+      }
+    }
 
     componentDidUpdate() {
       const { alertStore } = this.props;
 
       alertStore.fetch();
+
+      this.setTimer();
     }
 
     componentDidMount() {
@@ -27,7 +47,7 @@ const Fetcher = observer(
 
       alertStore.fetch();
 
-      this.timer = setInterval(() => this.props.alertStore.fetch(), 15000);
+      this.setTimer();
     }
 
     componentWillUnmount() {
@@ -36,12 +56,13 @@ const Fetcher = observer(
     }
 
     render() {
-      const { alertStore } = this.props;
+      const { alertStore, settingsStore } = this.props;
 
       return (
         // data-filters is there to register filters for observation in mobx
         <span
           data-filters={alertStore.filters.values.map(f => f.raw).join(" ")}
+          data-interval={settingsStore.fetchConfig.interval}
         />
       );
     }
