@@ -63,7 +63,10 @@ func alerts(c *gin.Context) {
 	resp.Version = version
 	resp.Upstreams = getUpstreams()
 	resp.Settings = models.Settings{
-		StaticColorLabels: config.Config.Labels.Color.Static,
+		StaticColorLabels:        config.Config.Labels.Color.Static,
+		AnnotationsDefaultHidden: config.Config.Annotations.Default.Hidden,
+		AnnotationsHidden:        config.Config.Annotations.Hidden,
+		AnnotationsVisible:       config.Config.Annotations.Visible,
 	}
 
 	// use full URI (including query args) as cache key
