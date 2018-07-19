@@ -1,6 +1,8 @@
 DOCKER_NAME  := alertmanager-unsee-mock
 DOCKER_IMAGE := prom/alertmanager
-DOCKER_ARGS  := --name $(DOCKER_NAME) --rm -d -p 9093:9093 -v $(CURDIR)/alertmanager.yml:/etc/alertmanager/config.yml
+DOCKER_ARGS  := --name $(DOCKER_NAME) --rm -d -p 9093:9093 \
+                -v $(CURDIR)/alertmanager.yml:/etc/alertmanager/config.yml \
+								-v $(CURDIR)/alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
 # list of Alertmanager versions to generate mock files for
 VERSIONS := 0.4.0 0.4.1 0.4.2 0.5.0 0.5.1 0.6.0 0.6.2 0.7.0 0.7.1 0.8.0 0.9.0 0.9.1 0.10.0 0.11.0 0.12.0 0.13.0 0.14.0 0.15.0 0.15.1
