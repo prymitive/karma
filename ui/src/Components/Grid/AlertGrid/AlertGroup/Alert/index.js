@@ -50,6 +50,7 @@ const Alert = observer(
                   key={a.name}
                   name={a.name}
                   value={a.value}
+                  afterUpdate={afterUpdate}
                 />
               ))}
           </div>

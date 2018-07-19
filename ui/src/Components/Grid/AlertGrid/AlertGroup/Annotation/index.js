@@ -17,18 +17,21 @@ const RenderNonLinkAnnotation = inject("alertStore")(
       static propTypes = {
         alertStore: PropTypes.object.isRequired,
         name: PropTypes.string.isRequired,
-        value: PropTypes.string.isRequired
+        value: PropTypes.string.isRequired,
+        afterUpdate: PropTypes.func.isRequired
       };
 
       // keep state of this annotation visibility, this is controlled by user
       toggle = observable(
         {
           visible: true,
-          show() {
-            this.visible = true;
+          show(e) {
+            // don't action link clicks inside Linkify
+            if (e.target.nodeName !== "A") this.visible = true;
           },
-          hide() {
-            this.visible = false;
+          hide(e) {
+            // don't action link clicks inside Linkify
+            if (e.target.nodeName !== "A") this.visible = false;
           }
         },
         {
@@ -41,6 +44,12 @@ const RenderNonLinkAnnotation = inject("alertStore")(
         super(props);
 
         this.toggle.visible = this.isVisible();
+      }
+
+      componentDidUpdate() {
+        const { afterUpdate } = this.props;
+
+        afterUpdate();
       }
 
       // determinate if this annotation should be hidden by default or not
@@ -74,28 +83,31 @@ const RenderNonLinkAnnotation = inject("alertStore")(
       render() {
         const { name, value } = this.props;
 
+        const className =
+          "mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded";
+
         if (!this.toggle.visible) {
           return (
-            <span
-              className="text-nowrap text-truncate px-1 mr-1 badge badge-light cursor-pointer"
-              onClick={this.toggle.show}
-            >
+            <div className={className} onClick={this.toggle.show}>
               <FontAwesomeIcon icon={faSearchPlus} className="mr-1" />
               {name}
-            </span>
+            </div>
           );
         }
 
         return (
-          <span
-            key={name}
-            className="text-nowrap text-truncate px-1 mr-1 badge badge-light cursor-pointer"
-            onClick={this.toggle.hide}
-          >
+          <div key={name} className={className} onClick={this.toggle.hide}>
             <FontAwesomeIcon icon={faSearchMinus} className="mr-1" />
             <span className="text-muted">{name}: </span>
-            <Linkify>{value}</Linkify>
-          </span>
+            <Linkify
+              properties={{
+                target: "_blank",
+                rel: "noopener noreferrer"
+              }}
+            >
+              {value}
+            </Linkify>
+          </div>
         );
       }
     }

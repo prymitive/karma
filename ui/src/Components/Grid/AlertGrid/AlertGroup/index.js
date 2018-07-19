@@ -174,6 +174,7 @@ const AlertGroup = observer(
                 <GroupFooter
                   group={group}
                   alertmanagers={footerAlertmanagers}
+                  afterUpdate={afterUpdate}
                 />
               ) : null}
             </div>

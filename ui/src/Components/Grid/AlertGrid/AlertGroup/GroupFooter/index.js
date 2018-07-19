@@ -11,23 +11,27 @@ const GroupFooter = observer(
   class GroupFooter extends Component {
     static propTypes = {
       group: PropTypes.object.isRequired,
-      alertmanagers: PropTypes.arrayOf(PropTypes.string).isRequired
+      alertmanagers: PropTypes.arrayOf(PropTypes.string).isRequired,
+      afterUpdate: PropTypes.func.isRequired
     };
 
     render() {
-      const { group, alertmanagers } = this.props;
+      const { group, alertmanagers, afterUpdate } = this.props;
 
       return (
         <div className="card-footer px-2 py-1">
-          {group.shared.annotations
-            .filter(a => a.isLink === false)
-            .map(a => (
-              <RenderNonLinkAnnotation
-                key={a.name}
-                name={a.name}
-                value={a.value}
-              />
-            ))}
+          <div className="mb-1">
+            {group.shared.annotations
+              .filter(a => a.isLink === false)
+              .map(a => (
+                <RenderNonLinkAnnotation
+                  key={a.name}
+                  name={a.name}
+                  value={a.value}
+                  afterUpdate={afterUpdate}
+                />
+              ))}
+          </div>
           {Object.entries(group.shared.labels).map(([name, value]) => (
             <FilteringLabel key={name} name={name} value={value} />
           ))}
