@@ -5,9 +5,9 @@
   "private": true,
   "dependencies": {
     "@attently/riek": "^2.0.1",
-    "@fortawesome/fontawesome-svg-core": "^1.2.0",
-    "@fortawesome/free-regular-svg-icons": "^5.1.0",
-    "@fortawesome/free-solid-svg-icons": "^5.1.0",
+    "@fortawesome/fontawesome-svg-core": "^1.2.1",
+    "@fortawesome/free-regular-svg-icons": "^5.1.1",
+    "@fortawesome/free-solid-svg-icons": "^5.1.1",
     "@fortawesome/react-fontawesome": "0.1.0",
     "bootstrap": "^4.1.1",
     "bootswatch": "^4.1.1",
