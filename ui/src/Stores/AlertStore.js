@@ -138,7 +138,12 @@ class AlertStore {
 
   settings = observable(
     {
-      values: { staticColorLabels: [] }
+      values: {
+        staticColorLabels: [],
+        annotationsDefaultHidden: false,
+        annotationsHidden: [],
+        annotationsVisible: []
+      }
     },
     {},
     {

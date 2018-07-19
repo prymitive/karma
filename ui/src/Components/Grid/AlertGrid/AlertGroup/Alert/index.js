@@ -42,15 +42,17 @@ const Alert = observer(
 
       return (
         <li className={classNames.join(" ")}>
-          {alert.annotations
-            .filter(a => a.isLink === false)
-            .map(a => (
-              <RenderNonLinkAnnotation
-                key={a.name}
-                name={a.name}
-                value={a.value}
-              />
-            ))}
+          <div className="mb-1">
+            {alert.annotations
+              .filter(a => a.isLink === false)
+              .map(a => (
+                <RenderNonLinkAnnotation
+                  key={a.name}
+                  name={a.name}
+                  value={a.value}
+                />
+              ))}
+          </div>
           <span className="text-nowrap text-truncate px-1 mr-1 badge badge-secondary">
             <Moment fromNow>{alert.startsAt}</Moment>
           </span>
