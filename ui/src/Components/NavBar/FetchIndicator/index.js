@@ -17,7 +17,7 @@ class FetchIndicator extends Component {
     return (
       <FontAwesomeIcon
         style={{ opacity: visible ? 1 : 0 }}
-        className="ml-1 text-muted"
+        className="mx-1 text-muted"
         icon={faCircleNotch}
         size="lg"
         spin

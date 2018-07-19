@@ -3,7 +3,7 @@
 exports[`<FetchIndicator /> matches snapshot when fetch is in progress 1`] = `
 <svg
   aria-hidden="true"
-  className="svg-inline--fa fa-circle-notch fa-w-16 fa-spin fa-lg ml-1 text-muted"
+  className="svg-inline--fa fa-circle-notch fa-w-16 fa-spin fa-lg mx-1 text-muted"
   data-icon="circle-notch"
   data-prefix="fas"
   role="img"
@@ -26,7 +26,7 @@ exports[`<FetchIndicator /> matches snapshot when fetch is in progress 1`] = `
 exports[`<FetchIndicator /> matches snapshot when idle 1`] = `
 <svg
   aria-hidden="true"
-  className="svg-inline--fa fa-circle-notch fa-w-16 fa-spin fa-lg ml-1 text-muted"
+  className="svg-inline--fa fa-circle-notch fa-w-16 fa-spin fa-lg mx-1 text-muted"
   data-icon="circle-notch"
   data-prefix="fas"
   role="img"
