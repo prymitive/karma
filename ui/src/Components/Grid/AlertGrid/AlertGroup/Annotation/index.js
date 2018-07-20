@@ -11,6 +11,8 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalL
 import { faSearchPlus } from "@fortawesome/free-solid-svg-icons/faSearchPlus";
 import { faSearchMinus } from "@fortawesome/free-solid-svg-icons/faSearchMinus";
 
+import "./index.css";
+
 const RenderNonLinkAnnotation = inject("alertStore")(
   observer(
     class RenderNonLinkAnnotation extends Component {
@@ -84,7 +86,7 @@ const RenderNonLinkAnnotation = inject("alertStore")(
         const { name, value } = this.props;
 
         const className =
-          "mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded";
+          "mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation";
 
         if (!this.toggle.visible) {
           return (
