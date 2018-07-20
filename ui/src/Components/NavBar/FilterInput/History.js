@@ -82,7 +82,7 @@ const HistoryMenu = onClickOutside(
             <FontAwesomeIcon
               icon={faSave}
               onClick={() => {
-                settingsStore.saveFilters(
+                settingsStore.savedFilters.save(
                   alertStore.filters.values.map(f => f.raw)
                 );
                 afterClick();
@@ -92,7 +92,7 @@ const HistoryMenu = onClickOutside(
           <button
             className="btn btn-sm btn-danger mr-4"
             onClick={() => {
-              settingsStore.clearSavedFilters();
+              settingsStore.savedFilters.clear();
               afterClick();
             }}
           >

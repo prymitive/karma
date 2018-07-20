@@ -31,8 +31,8 @@ class App extends Component {
     // p.defaultsUsed means that unsee URI didn't have ?q=foo query args
     if (p.defaultsUsed) {
       // no ?q=foo set, use defaults saved by the user or from backend config
-      if (this.settingsStore.savedFilters.present) {
-        filters = this.settingsStore.savedFilters.filters;
+      if (this.settingsStore.savedFilters.config.present) {
+        filters = this.settingsStore.savedFilters.config.filters;
       } else {
         filters = defaultFilters;
       }

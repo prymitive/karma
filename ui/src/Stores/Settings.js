@@ -1,35 +1,42 @@
 import { action } from "mobx";
 import { localStored } from "mobx-stored";
 
-const defaultSavedFilters = {
-  filters: [],
-  present: false
-};
+class SavedFilters {
+  config = localStored(
+    "savedFilters",
+    {
+      filters: [],
+      present: false
+    },
+    {
+      delay: 100
+    }
+  );
 
-const defaultFetchConfig = {
-  interval: 30
-};
+  save = action(newFilters => {
+    this.config.filters = newFilters;
+    this.config.present = true;
+  });
+
+  clear = action(() => {
+    this.config.filters = [];
+    this.config.present = false;
+  });
+}
+
+class FetchConfig {
+  config = localStored("fetchConfig", { interval: 30 }, { delay: 100 });
+
+  setInterval = action(newInterval => {
+    this.config.interval = newInterval;
+  });
+}
 
 class Settings {
-  savedFilters = localStored("savedFilters", defaultSavedFilters, {
-    delay: 100
-  });
-
-  saveFilters = action(newFilters => {
-    this.savedFilters.filters = newFilters;
-    this.savedFilters.present = true;
-  });
-
-  clearSavedFilters = action(() => {
-    this.savedFilters.filters = [];
-    this.savedFilters.present = false;
-  });
-
-  fetchConfig = localStored("fetchConfig", defaultFetchConfig, { delay: 100 });
-
-  setFetchInterval = action(newInterval => {
-    this.fetchConfig.interval = newInterval;
-  });
+  constructor() {
+    this.savedFilters = new SavedFilters();
+    this.fetchConfig = new FetchConfig();
+  }
 }
 
 export { Settings };

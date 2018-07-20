@@ -21,7 +21,7 @@ const Fetcher = observer(
     setTimer() {
       const { alertStore, settingsStore } = this.props;
 
-      const newInterval = toJS(settingsStore.fetchConfig.interval);
+      const newInterval = toJS(settingsStore.fetchConfig.config.interval);
 
       if (this.interval !== newInterval) {
         if (this.timer !== null) clearInterval(this.timer);
@@ -62,7 +62,7 @@ const Fetcher = observer(
         // data-filters is there to register filters for observation in mobx
         <span
           data-filters={alertStore.filters.values.map(f => f.raw).join(" ")}
-          data-interval={settingsStore.fetchConfig.interval}
+          data-interval={settingsStore.fetchConfig.config.interval}
         />
       );
     }

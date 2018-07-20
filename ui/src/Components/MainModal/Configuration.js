@@ -20,7 +20,7 @@ const Configuration = observer(
       super(props);
 
       this.config = observable({
-        fetchInterval: toJS(props.settingsStore.fetchConfig.interval)
+        fetchInterval: toJS(props.settingsStore.fetchConfig.config.interval)
       });
     }
 
@@ -31,7 +31,7 @@ const Configuration = observer(
     onChangeComplete = action(value => {
       const { settingsStore } = this.props;
 
-      settingsStore.setFetchInterval(value);
+      settingsStore.fetchConfig.setInterval(value);
     });
 
     formatLabel(value) {
