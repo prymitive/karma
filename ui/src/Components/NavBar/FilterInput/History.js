@@ -5,6 +5,8 @@ import { action, observable, toJS } from "mobx";
 import { observer } from "mobx-react";
 import { localStored } from "mobx-stored";
 
+import hash from "object-hash";
+
 import { Manager, Reference, Popper } from "react-popper";
 import onClickOutside from "react-onclickoutside";
 
@@ -57,7 +59,7 @@ const HistoryMenu = onClickOutside(
           filters.map(historyFilters => (
             <button
               className="dropdown-item cursor-pointer px-3"
-              key={JSON.stringify(historyFilters.map(f => f.raw))}
+              key={hash(historyFilters.map(f => f.raw))}
               onClick={() => {
                 alertStore.filters.setFilters(historyFilters.map(f => f.raw));
                 afterClick();

@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { observable, action } from "mobx";
 import { observer, inject } from "mobx-react";
 
+import hash from "object-hash";
+
 import moment from "moment";
 import Moment from "react-moment";
 
@@ -108,7 +110,7 @@ const SilenceDetails = ({ alertmanager, silence }) => {
       </span>
       {silence.matchers.map(matcher => (
         <span
-          key={JSON.stringify(matcher)}
+          key={hash(matcher)}
           className="badge badge-success text-nowrap text-truncate px-1 mr-1"
         >
           {matcher.name}
