@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
-import { observable, action } from "mobx";
+import { observable, action, toJS } from "mobx";
 
 import hash from "object-hash";
 
@@ -12,30 +12,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
 
+import { Settings } from "Stores/Settings";
 import { GroupHeader } from "./GroupHeader";
 import { Alert } from "./Alert";
 import { GroupFooter } from "./GroupFooter";
 
 import "./index.css";
-
-const initialAlertsToRender = 5;
-
-// Used to calculate step size when loading more alerts.
-// Step is calculated from the excesive alert count
-// (what's > initialAlertsToRender) by dividing it into 5 clicks.
-// Don't use step lower than 5, too much clicking if we have a group of 9:
-// * we'll show initially 5
-// * step would be 1
-// * 4 extra clicks to see the entire group
-// but ensure that step wouldn't push us above totalSize
-// With 9 alerts and rendering 5 initially we want to show extra 9 after one
-// click, and when user clicks showLess we want to go back to 5.
-function getStepSize(totalSize) {
-  return Math.min(
-    Math.max(Math.round((totalSize - initialAlertsToRender) / 5), 5),
-    totalSize - initialAlertsToRender
-  );
-}
 
 const LoadButton = ({ icon, action }) => {
   return (
@@ -54,8 +36,21 @@ const AlertGroup = observer(
     static propTypes = {
       afterUpdate: PropTypes.func.isRequired,
       group: PropTypes.object.isRequired,
-      showAlertmanagers: PropTypes.bool.isRequired
+      showAlertmanagers: PropTypes.bool.isRequired,
+      settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
+
+    constructor(props) {
+      super(props);
+
+      this.defaultRenderCount = toJS(
+        props.settingsStore.alertGroupConfig.config.defaultRenderCount
+      );
+
+      this.renderConfig = observable({
+        alertsToRender: this.defaultRenderCount
+      });
+    }
 
     // store collapse state, alert groups can be collapsed to only show
     // the header, this is controlled by UI element on the header itself, so
@@ -73,14 +68,10 @@ const AlertGroup = observer(
       { name: "Collpase toggle" }
     );
 
-    renderConfig = observable({
-      alertsToRender: initialAlertsToRender
-    });
-
     loadMore = action(() => {
       const { group } = this.props;
 
-      const step = getStepSize(group.alerts.length);
+      const step = this.getStepSize(group.alerts.length);
 
       // show cur+step, but not more that total alert count
       this.renderConfig.alertsToRender = Math.min(
@@ -92,7 +83,7 @@ const AlertGroup = observer(
     loadLess = action(() => {
       const { group } = this.props;
 
-      const step = getStepSize(group.alerts.length);
+      const step = this.getStepSize(group.alerts.length);
 
       // show cur-step, but not less than 1
       this.renderConfig.alertsToRender = Math.max(
@@ -100,6 +91,25 @@ const AlertGroup = observer(
         1
       );
     });
+
+    // Used to calculate step size when loading more alerts.
+    // Step is calculated from the excesive alert count
+    // (what's > defaultRenderCount) by dividing it into 5 clicks.
+    // Don't use step lower than 5, too much clicking if we have a group of 9:
+    // * we'll show initially 5
+    // * step would be 1
+    // * 4 extra clicks to see the entire group
+    // but ensure that step wouldn't push us above totalSize
+    // With 9 alerts and rendering 5 initially we want to show extra 9 after one
+    // click, and when user clicks showLess we want to go back to 5.
+    getStepSize(totalSize) {
+      const val = Math.min(
+        Math.max(Math.round((totalSize - this.defaultRenderCount) / 5), 5),
+        totalSize - this.defaultRenderCount
+      );
+      console.info("getStepSize => " + val);
+      return val;
+    }
 
     componentDidUpdate() {
       // whenever grid component re-renders we need to ensure that grid elements
@@ -158,7 +168,7 @@ const AlertGroup = observer(
                           afterUpdate={afterUpdate}
                         />
                       ))}
-                    {group.alerts.length > initialAlertsToRender ? (
+                    {group.alerts.length > this.defaultRenderCount ? (
                       <li className="list-group-item border-0 p-0 text-center">
                         <LoadButton icon={faMinus} action={this.loadLess} />
                         <small className="text-muted mx-2">

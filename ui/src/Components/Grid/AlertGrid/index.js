@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 
 import { AlertStore } from "Stores/AlertStore";
+import { Settings } from "Stores/Settings";
 import { AlertGroup } from "./AlertGroup";
 import { GridSizesConfig } from "./Constants";
 
@@ -18,7 +19,8 @@ import "./index.css";
 const AlertGrid = observer(
   class AlertGrid extends Component {
     static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+      settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
 
     // store reference to generated masonry component so we can call it
@@ -70,7 +72,7 @@ const AlertGrid = observer(
     }
 
     render() {
-      const { alertStore } = this.props;
+      const { alertStore, settingsStore } = this.props;
 
       return (
         <React.Fragment>
@@ -102,6 +104,7 @@ const AlertGrid = observer(
                     alertStore.data.upstreams.instances.length > 1
                   }
                   afterUpdate={this.masonryRepack}
+                  settingsStore={settingsStore}
                 />
               ))}
           </MasonryInfiniteScroller>

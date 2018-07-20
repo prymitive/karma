@@ -52,7 +52,10 @@ class App extends Component {
           settingsStore={this.settingsStore}
         />
         <Provider alertStore={this.alertStore}>
-          <Grid alertStore={this.alertStore} />
+          <Grid
+            alertStore={this.alertStore}
+            settingsStore={this.settingsStore}
+          />
         </Provider>
         <Fetcher
           alertStore={this.alertStore}

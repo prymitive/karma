@@ -8,10 +8,10 @@ import InputRange from "react-input-range";
 
 import { Settings } from "Stores/Settings";
 
-import "./Configuration.css";
+import "./InputRange.css";
 
-const Configuration = observer(
-  class Configuration extends Component {
+const FetchConfiguration = observer(
+  class FetchConfiguration extends Component {
     static propTypes = {
       settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
@@ -40,24 +40,22 @@ const Configuration = observer(
 
     render() {
       return (
-        <form className="px-3">
-          <div className="form-group text-center">
-            <label className="mb-4">Refresh interval</label>
-            <InputRange
-              minValue={10}
-              maxValue={120}
-              step={10}
-              value={this.config.fetchInterval}
-              id="formControlRange"
-              formatLabel={this.formatLabel}
-              onChange={this.onChange}
-              onChangeComplete={this.onChangeComplete}
-            />
-          </div>
-        </form>
+        <div className="form-group text-center">
+          <label className="mb-4">Refresh interval</label>
+          <InputRange
+            minValue={10}
+            maxValue={120}
+            step={10}
+            value={this.config.fetchInterval}
+            id="formControlRange"
+            formatLabel={this.formatLabel}
+            onChange={this.onChange}
+            onChangeComplete={this.onChangeComplete}
+          />
+        </div>
       );
     }
   }
 );
 
-export { Configuration };
+export { FetchConfiguration };

@@ -32,10 +32,25 @@ class FetchConfig {
   });
 }
 
+class AlertGroupConfig {
+  config = localStored(
+    "alertGroupConfig",
+    { defaultRenderCount: 5 },
+    { delay: 100 }
+  );
+
+  update = action(data => {
+    for (const [key, val] of Object.entries(data)) {
+      this.config[key] = val;
+    }
+  });
+}
+
 class Settings {
   constructor() {
     this.savedFilters = new SavedFilters();
     this.fetchConfig = new FetchConfig();
+    this.alertGroupConfig = new AlertGroupConfig();
   }
 }
 
