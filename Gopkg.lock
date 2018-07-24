@@ -66,6 +66,14 @@
   revision = "563b81fc02b75d664e54da31f787c2cc2186780b"
 
 [[projects]]
+  digest = "1:2b59aca2665ff804f6606c8829eaee133ddd3aefbc841014660d961b0034f888"
+  name = "github.com/gin-contrib/cors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "cf4846e6a636a76237a28d9286f163c132e841bc"
+  version = "v1.2"
+
+[[projects]]
   branch = "master"
   digest = "1:944620dd72b65b9bac1b715134540e5546ffbf84876c3fe065ec594eef640eaf"
   name = "github.com/gin-contrib/gzip"
@@ -385,6 +393,7 @@
     "github.com/cnf/structhash",
     "github.com/elazarl/go-bindata-assetfs",
     "github.com/getsentry/raven-go",
+    "github.com/gin-contrib/cors",
     "github.com/gin-contrib/gzip",
     "github.com/gin-contrib/static",
     "github.com/gin-gonic/contrib/sentry",

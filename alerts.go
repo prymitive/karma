@@ -1,18 +1,15 @@
 package main
 
 import (
-	"strings"
-
 	"github.com/prymitive/unsee/internal/alertmanager"
 	"github.com/prymitive/unsee/internal/filters"
 	"github.com/prymitive/unsee/internal/models"
 )
 
-func getFiltersFromQuery(filterString string) ([]filters.FilterT, bool) {
+func getFiltersFromQuery(filterStrings []string) ([]filters.FilterT, bool) {
 	validFilters := false
 	matchFilters := []filters.FilterT{}
-	qList := strings.Split(filterString, ",")
-	for _, filterExpression := range qList {
+	for _, filterExpression := range filterStrings {
 		f := filters.NewFilter(filterExpression)
 		if f.GetIsValid() {
 			validFilters = true

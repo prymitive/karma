@@ -1,1 +1,11 @@
-.gitignore
+.build
+.coverage
+.tests
+bindata_assetfs.go
+unsee
+ui/build
+ui/coverage
+ui/node_modules
+vendor
+Dockerfile
+Dockerfile.*

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"net/http"
 	"sort"
@@ -17,49 +18,32 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var (
-	// needed for serving favicon from binary assets
-	faviconFileServer = http.FileServer(newBinaryFileSystem("static/dist"))
-)
+func notFound(c *gin.Context) {
+	c.String(404, "404 page not found")
+}
 
 func noCache(c *gin.Context) {
 	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
 }
 
-// index view, html
 func index(c *gin.Context) {
 	start := time.Now()
 
 	noCache(c)
 
-	q, qPresent := c.GetQuery("q")
-	defaultUsed := true
-	if qPresent {
-		defaultUsed = false
+	filtersJSON, err := json.Marshal(config.Config.Filters.Default)
+	if err != nil {
+		panic(err)
 	}
+	filtersB64 := base64.StdEncoding.EncodeToString(filtersJSON)
 
-	c.HTML(http.StatusOK, "templates/index.html", gin.H{
-		"Version":           version,
-		"SentryDSN":         config.Config.Sentry.Public,
-		"QFilter":           q,
-		"DefaultUsed":       defaultUsed,
-		"DefaultFilter":     strings.Join(config.Config.Filters.Default, ","),
-		"StaticColorLabels": strings.Join(config.Config.Labels.Color.Static, " "),
-		"WebPrefix":         config.Config.Listen.Prefix,
+	c.HTML(http.StatusOK, "ui/build/index.html", gin.H{
+		"Version":       version,
+		"SentryDSN":     config.Config.Sentry.Public,
+		"DefaultFilter": filtersB64,
 	})
 
 	log.Infof("[%s] %s %s took %s", c.ClientIP(), c.Request.Method, c.Request.RequestURI, time.Since(start))
-}
-
-// Help view, html
-func help(c *gin.Context) {
-	start := time.Now()
-	noCache(c)
-	c.HTML(http.StatusOK, "templates/help.html", gin.H{
-		"SentryDSN": config.Config.Sentry.Public,
-		"WebPrefix": config.Config.Listen.Prefix,
-	})
-	log.Infof("[%s] <%d> %s %s took %s", c.ClientIP(), http.StatusOK, c.Request.Method, c.Request.RequestURI, time.Since(start))
 }
 
 func logAlertsView(c *gin.Context, cacheStatus string, duration time.Duration) {
@@ -78,6 +62,12 @@ func alerts(c *gin.Context) {
 	resp.Timestamp = string(ts)
 	resp.Version = version
 	resp.Upstreams = getUpstreams()
+	resp.Settings = models.Settings{
+		StaticColorLabels:        config.Config.Labels.Color.Static,
+		AnnotationsDefaultHidden: config.Config.Annotations.Default.Hidden,
+		AnnotationsHidden:        config.Config.Annotations.Hidden,
+		AnnotationsVisible:       config.Config.Annotations.Visible,
+	}
 
 	// use full URI (including query args) as cache key
 	cacheKey := c.Request.RequestURI
@@ -91,24 +81,31 @@ func alerts(c *gin.Context) {
 
 	// get filters
 	apiFilters := []models.Filter{}
-	matchFilters, validFilters := getFiltersFromQuery(c.Query("q"))
+	matchFilters, validFilters := getFiltersFromQuery(c.QueryArray("q"))
 
 	// set pointers for data store objects, need a lock until end of view is reached
-	alerts := []models.AlertGroup{}
+	alerts := map[string]models.APIAlertGroup{}
 	colors := models.LabelsColorMap{}
+	// used for top labels dropdown
 	counters := models.LabelsCountMap{}
 
 	dedupedAlerts := alertmanager.DedupAlerts()
 	dedupedColors := alertmanager.DedupColors()
 
+	silences := map[string]map[string]models.Silence{}
+	for _, am := range alertmanager.GetAlertmanagers() {
+		silences[am.Name] = map[string]models.Silence{}
+	}
+
 	var matches int
 	for _, ag := range dedupedAlerts {
 		agCopy := models.AlertGroup{
-			ID:         ag.ID,
-			Receiver:   ag.Receiver,
-			Labels:     ag.Labels,
-			Alerts:     []models.Alert{},
-			StateCount: map[string]int{},
+			ID:                ag.ID,
+			Receiver:          ag.Receiver,
+			Labels:            ag.Labels,
+			Alerts:            []models.Alert{},
+			AlertmanagerCount: map[string]int{},
+			StateCount:        map[string]int{},
 		}
 		for _, s := range models.AlertStateList {
 			agCopy.StateCount[s] = 0
@@ -147,6 +144,14 @@ func alerts(c *gin.Context) {
 
 				agCopy.StateCount[alert.State]++
 
+				for _, am := range alert.Alertmanager {
+					if _, found := agCopy.AlertmanagerCount[am.Name]; !found {
+						agCopy.AlertmanagerCount[am.Name] = 1
+					} else {
+						agCopy.AlertmanagerCount[am.Name]++
+					}
+				}
+
 				for key, value := range alert.Labels {
 					if keyMap, foundKey := dedupedColors[key]; foundKey {
 						if color, foundColor := keyMap[value]; foundColor {
@@ -162,23 +167,41 @@ func alerts(c *gin.Context) {
 		}
 
 		if len(agCopy.Alerts) > 0 {
+			for _, alert := range agCopy.Alerts {
+				if alert.IsSilenced() {
+					for _, am := range alert.Alertmanager {
+						for _, silence := range am.Silences {
+							silences[am.Name][silence.ID] = *silence
+						}
+					}
+				}
+			}
 			agCopy.Hash = agCopy.ContentFingerprint()
-			alerts = append(alerts, agCopy)
+			apiAG := models.APIAlertGroup{AlertGroup: agCopy}
+			apiAG.DedupSharedMaps()
+			alerts[agCopy.ID] = apiAG
+			resp.TotalAlerts += len(agCopy.Alerts)
 		}
 
 	}
 
 	resp.AlertGroups = alerts
+	resp.Silences = silences
 	resp.Colors = colors
 	resp.Counters = counters
 
 	for _, filter := range matchFilters {
 		af := models.Filter{
 			Text:    filter.GetRawText(),
+			Name:    filter.GetName(),
+			Matcher: filter.GetMatcher(),
+			Value:   filter.GetValue(),
 			Hits:    filter.GetHits(),
 			IsValid: filter.GetIsValid(),
 		}
-		apiFilters = append(apiFilters, af)
+		if af.Text != "" {
+			apiFilters = append(apiFilters, af)
+		}
 	}
 	resp.Filters = apiFilters
 
@@ -246,11 +269,4 @@ func autocomplete(c *gin.Context) {
 
 	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
 	logAlertsView(c, "MIS", time.Since(start))
-}
-
-func favicon(c *gin.Context) {
-	if config.Config.Listen.Prefix != "/" {
-		c.Request.URL.Path = strings.TrimPrefix(c.Request.URL.Path, config.Config.Listen.Prefix)
-	}
-	faviconFileServer.ServeHTTP(c.Writer, c.Request)
 }

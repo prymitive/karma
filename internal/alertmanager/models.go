@@ -235,22 +235,24 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		alerts := models.AlertList{}
 		for _, alert := range uniqueAlerts[ag.ID] {
 
-			silences := map[string]models.Silence{}
+			silences := map[string]*models.Silence{}
 			for _, silenceID := range alert.SilencedBy {
 				silence, err := am.SilenceByID(silenceID)
 				if err == nil {
-					silences[silenceID] = silence
+					silences[silenceID] = &silence
 				}
 			}
+
 			alert.Alertmanager = []models.AlertmanagerInstance{
 				models.AlertmanagerInstance{
-					Name:     am.Name,
-					URI:      am.publicURI(),
-					State:    alert.State,
-					StartsAt: alert.StartsAt,
-					EndsAt:   alert.EndsAt,
-					Source:   alert.GeneratorURL,
-					Silences: silences,
+					Name:       am.Name,
+					URI:        am.publicURI(),
+					State:      alert.State,
+					StartsAt:   alert.StartsAt,
+					EndsAt:     alert.EndsAt,
+					Source:     alert.GeneratorURL,
+					Silences:   silences,
+					SilencedBy: alert.SilencedBy,
 				},
 			}
 
@@ -325,6 +327,18 @@ func (am *Alertmanager) Alerts() []models.AlertGroup {
 	alerts := make([]models.AlertGroup, len(am.alertGroups))
 	copy(alerts, am.alertGroups)
 	return alerts
+}
+
+// Silences returns a copy of all silences
+func (am *Alertmanager) Silences() map[string]models.Silence {
+	am.lock.RLock()
+	defer am.lock.RUnlock()
+
+	silences := map[string]models.Silence{}
+	for id, silence := range am.silences {
+		silences[id] = silence
+	}
+	return silences
 }
 
 // SilenceByID allows to query for a silence by it's ID, returns error if not found

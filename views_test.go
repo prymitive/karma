@@ -39,18 +39,19 @@ func mockConfig() {
 func ginTestEngine() *gin.Engine {
 	gin.SetMode(gin.TestMode)
 	r := gin.New()
-	var t *template.Template
-	t = loadTemplates(t, "templates")
-	t = loadTemplates(t, "static/dist/templates")
-	r.SetHTMLTemplate(t)
 	setupRouter(r)
+
+	var t *template.Template
+	t = loadTemplate(t, "ui/build/index.html")
+	r.SetHTMLTemplate(t)
+
 	return r
 }
 
 func TestIndex(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()
-	req, _ := http.NewRequest("GET", "/?q=", nil)
+	req, _ := http.NewRequest("GET", "/", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
 	if resp.Code != http.StatusOK {
@@ -68,36 +69,6 @@ func TestIndexPrefix(t *testing.T) {
 	r.ServeHTTP(resp, req)
 	if resp.Code != http.StatusOK {
 		t.Errorf("GET /prefix/ returned status %d", resp.Code)
-	}
-}
-
-func TestHelp(t *testing.T) {
-	mockConfig()
-	r := ginTestEngine()
-	req, _ := http.NewRequest("GET", "/help", nil)
-	resp := httptest.NewRecorder()
-	r.ServeHTTP(resp, req)
-	if resp.Code != http.StatusOK {
-		t.Errorf("GET /help returned status %d", resp.Code)
-	}
-}
-
-func TestHelpPrefix(t *testing.T) {
-	os.Setenv("LISTEN_PREFIX", "/prefix")
-	defer os.Unsetenv("LISTEN_PREFIX")
-	mockConfig()
-	r := ginTestEngine()
-	req, _ := http.NewRequest("GET", "/prefix/help", nil)
-	resp := httptest.NewRecorder()
-	r.ServeHTTP(resp, req)
-	if resp.Code != http.StatusOK {
-		t.Errorf("GET /prefix/help returned status %d", resp.Code)
-	}
-	req, _ = http.NewRequest("GET", "/help", nil)
-	resp = httptest.NewRecorder()
-	r.ServeHTTP(resp, req)
-	if resp.Code != http.StatusNotFound {
-		t.Errorf("GET /help returned status %d, expected 404", resp.Code)
 	}
 }
 
@@ -120,7 +91,7 @@ func TestAlerts(t *testing.T) {
 		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := ginTestEngine()
-		req, _ := http.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service,alertname=HTTP_Probe_Failed,instance=web1", nil)
+		req, _ := http.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != http.StatusOK {
@@ -187,7 +158,7 @@ func TestValidateAllAlerts(t *testing.T) {
 		t.Logf("Validating alerts.json response using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := ginTestEngine()
-		req, _ := http.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed,instance=web1", nil)
+		req, _ := http.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != http.StatusOK {
@@ -404,8 +375,12 @@ var staticFileTests = []staticFileTestCase{
 		code: 200,
 	},
 	staticFileTestCase{
-		path: "/static/dist/favicon.ico",
+		path: "/manifest.json",
 		code: 200,
+	},
+	staticFileTestCase{
+		path: "/index.xml",
+		code: 404,
 	},
 	staticFileTestCase{
 		path: "/xxx",
@@ -436,8 +411,12 @@ var staticFilePrefixTests = []staticFileTestCase{
 		code: 200,
 	},
 	staticFileTestCase{
-		path: "/sub/static/dist/favicon.ico",
+		path: "/sub/manifest.json",
 		code: 200,
+	},
+	staticFileTestCase{
+		path: "/sub/index.xml",
+		code: 404,
 	},
 	staticFileTestCase{
 		path: "/sub/xxx",
@@ -467,7 +446,7 @@ func TestStaticFilesPrefix(t *testing.T) {
 func TestGzipMiddleware(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()
-	paths := []string{"/", "/help", "/alerts.json", "/autocomplete.json", "/metrics"}
+	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
 		req, _ := http.NewRequest("GET", path, nil)
 		req.Header.Set("Accept-Encoding", "gzip")
@@ -490,7 +469,7 @@ func TestGzipMiddleware(t *testing.T) {
 func TestGzipMiddlewareWithoutAcceptEncoding(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()
-	paths := []string{"/", "/help", "/alerts.json", "/autocomplete.json", "/metrics"}
+	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
 		req, _ := http.NewRequest("GET", path, nil)
 		req.Header.Set("Accept-Encoding", "") // ensure that we don't pass anything up

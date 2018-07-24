@@ -1,7 +1,7 @@
 FROM node:8-alpine as nodejs-builder
 RUN apk add --update make git
 COPY . /unsee
-RUN make -C /unsee webpack
+RUN make -C /unsee ui
 
 FROM golang:1.10.3-alpine as go-builder
 COPY --from=nodejs-builder /unsee /go/src/github.com/prymitive/unsee

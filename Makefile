@@ -7,16 +7,17 @@ ALERTMANAGER_URI := "file://$(MOCK_PATH)"
 # Listen port when running locally
 PORT := 8080
 
+# define a recursive wildcard function, we'll need it to find deeply nested
+# sources in the ui directory
+# based on http://blog.jgc.org/2011/07/gnu-make-recursive-wildcard-function.html
+rwildcard = $(foreach d, $(wildcard $1*), $(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
+
 SOURCES       := $(wildcard *.go) $(wildcard */*.go) $(wildcard */*/*.go)
-ASSET_SOURCES := $(wildcard assets/*/* assets/*/*/*)
+ASSET_SOURCES := $(call rwildcard, ui/public ui/src, *)
 
 GO_BINDATA_MODE := prod
-GIN_DEBUG := false
 ifdef DEBUG
-	GO_BINDATA_FLAGS = -debug
 	GO_BINDATA_MODE  = debug
-	GIN_DEBUG = true
-	DOCKER_ARGS = -v $(CURDIR)/assets:$(CURDIR)/assets:ro
 endif
 
 .DEFAULT_GOAL := $(NAME)
@@ -33,9 +34,9 @@ endif
 	go get -u github.com/golang/lint/golint
 	touch $@
 
-.build/deps-build-node.ok: package.json package-lock.json
+.build/deps-build-node.ok: ui/package.json ui/package-lock.json
 	@mkdir -p .build
-	npm install
+	cd ui && npm install
 	touch $@
 
 .build/artifacts-bindata_assetfs.%:
@@ -43,13 +44,14 @@ endif
 	rm -f .build/artifacts-bindata_assetfs.*
 	touch $@
 
-.build/artifacts-webpack.ok: .build/deps-build-node.ok $(ASSET_SOURCES) webpack.config.js
+.build/artifacts-ui.ok: .build/deps-build-node.ok $(ASSET_SOURCES)
 	@mkdir -p .build
-	$(CURDIR)/node_modules/.bin/webpack
+	cd ui && npm run-script build-css
+	cd ui && npm run build
 	touch $@
 
-bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.$(GO_BINDATA_MODE) .build/vendor.ok .build/artifacts-webpack.ok
-	go-bindata-assetfs $(GO_BINDATA_FLAGS) -o bindata_assetfs.go -prefix assets -nometadata assets/templates/... assets/static/dist/...
+bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.$(GO_BINDATA_MODE) .build/vendor.ok .build/artifacts-ui.ok
+	go-bindata-assetfs -o bindata_assetfs.go -nometadata ui/build/...
 
 $(NAME): .build/deps-build-go.ok .build/vendor.ok bindata_assetfs.go $(SOURCES)
 	go build -ldflags "-X main.version=$(VERSION)"
@@ -66,20 +68,16 @@ vendor: .build/deps-build-go.ok
 vendor-update: .build/deps-build-go.ok
 	dep ensure -update
 
-.PHONY: webpack
-webpack: .build/artifacts-webpack.ok
-
 .PHONY: clean
 clean:
-	rm -fr .build bindata_assetfs.go $(NAME)
+	rm -fr .build bindata_assetfs.go $(NAME) ui/build ui/node_modules
 
 .PHONY: run
 run: $(NAME)
 	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
 	LABELS_COLOR_UNIQUE="@receiver instance cluster" \
 	LABELS_COLOR_STATIC="job" \
-	DEBUG="$(GIN_DEBUG)" \
-	FILTERS_DEFAULT="@state=active" \
+	FILTERS_DEFAULT="@state=active @receiver=by-cluster-service" \
 	PORT=$(PORT) \
 	./$(NAME)
 
@@ -92,13 +90,11 @@ run-docker: docker-image
 	@docker rm -f $(NAME) || true
 	docker run \
 	    --name $(NAME) \
-	    $(DOCKER_ARGS) \
 	    -v $(MOCK_PATH):$(MOCK_PATH) \
 	    -e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
 	    -e LABELS_COLOR_UNIQUE="instance cluster" \
 	    -e LABELS_COLOR_STATIC="job" \
-	    -e DEBUG="$(GIN_DEBUG)" \
-            -e FILTERS_DEFAULT="@state=active" \
+      -e FILTERS_DEFAULT="@state=active @receiver=by-cluster-service" \
 	    -e PORT=$(PORT) \
 	    -p $(PORT):$(PORT) \
 	    $(NAME):$(VERSION)
@@ -109,34 +105,22 @@ lint-go: .build/deps-lint-go.ok
 
 .PHONY: lint-js
 lint-js: .build/deps-build-node.ok
-	$(CURDIR)/node_modules/.bin/eslint --quiet assets/static/*.js
+	cd ui && ./node_modules/.bin/eslint --quiet src
 
 .PHONY: lint-docs
 lint-docs: .build/deps-build-node.ok
-	$(CURDIR)/node_modules/.bin/markdownlint *.md docs
+	$(CURDIR)/ui/node_modules/.bin/markdownlint *.md docs
 
 .PHONY: lint
 lint: lint-go lint-js lint-docs
 
-# Creates mock bindata_assetfs.go with source assets rather than webpack generated ones
-.PHONY: mock-assets
-mock-assets: .build/deps-build-go.ok
-	mkdir -p $(CURDIR)/assets/static/dist/templates
-	cp $(CURDIR)/assets/static/*.* $(CURDIR)/assets/static/dist/
-	touch $(CURDIR)/assets/static/dist/templates/loader_unsee.html
-	touch $(CURDIR)/assets/static/dist/templates/loader_shared.html
-	touch $(CURDIR)/assets/static/dist/templates/loader_help.html
-	go-bindata-assetfs -prefix assets -nometadata assets/templates/... assets/static/dist/...
-	# force assets rebuild on next make run
-	rm -f .build/bindata_assetfs.*
-
 .PHONY: test-go
 test-go: .build/vendor.ok
-	go test -v -bench=. -cover `go list ./... | grep -v /vendor/`
+	go test -v -bench=. -benchmem -cover `go list ./... | grep -v /vendor/`
 
 .PHONY: test-js
 test-js: .build/deps-build-node.ok
-	npm test
+	cd ui && CI=true npm test -- --coverage
 
 .PHONY: test
 test: lint test-go test-js
@@ -144,3 +128,22 @@ test: lint test-go test-js
 .PHONY: show-version
 show-version:
 	@echo $(VERSION)
+
+# Creates mock bindata_assetfs.go with source assets
+.PHONY: mock-assets
+mock-assets: .build/deps-build-go.ok
+	rm -fr ui/build
+	mkdir ui/build
+	cp ui/public/* ui/build/
+	go-bindata-assetfs -o bindata_assetfs.go -nometadata ui/build/...
+	# force assets rebuild on next make run
+	rm -f .build/bindata_assetfs.*
+
+.PHONY: ui
+ui: .build/artifacts-ui.ok
+
+.PHONY: greenkeeper-lockfile
+greenkeeper-lockfile:
+	npm install -g greenkeeper-lockfile
+	cd ui && greenkeeper-lockfile-update
+	cd ui && greenkeeper-lockfile-upload

@@ -15,6 +15,9 @@ type FilterT interface {
 	GetRawText() string
 	GetHits() int
 	GetIsValid() bool
+	GetName() string
+	GetMatcher() string
+	GetValue() string
 }
 
 type alertFilter struct {
@@ -47,6 +50,21 @@ func (filter *alertFilter) GetHits() int {
 
 func (filter *alertFilter) GetIsValid() bool {
 	return filter.IsValid
+}
+
+func (filter *alertFilter) GetName() string {
+	return filter.Matched
+}
+
+func (filter *alertFilter) GetMatcher() string {
+	if filter.Matcher == nil {
+		return ""
+	}
+	return filter.Matcher.GetOperator()
+}
+
+func (filter *alertFilter) GetValue() string {
+	return fmt.Sprintf("%s", filter.Value)
 }
 
 type newFilterFactory func() FilterT

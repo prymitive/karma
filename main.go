@@ -12,14 +12,15 @@ import (
 	"github.com/prymitive/unsee/internal/config"
 	"github.com/prymitive/unsee/internal/models"
 	"github.com/prymitive/unsee/internal/transform"
-	"github.com/spf13/pflag"
 
 	"github.com/DeanThompson/ginpprof"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/contrib/sentry"
 	"github.com/gin-gonic/gin"
 	"github.com/patrickmn/go-cache"
+	"github.com/spf13/pflag"
 
 	raven "github.com/getsentry/raven-go"
 	ginprometheus "github.com/mcuadros/go-gin-prometheus"
@@ -37,11 +38,15 @@ var (
 	// If there are requests with the same filter we should respond from cache
 	// rather than do all the filtering every time
 	apiCache *cache.Cache
+
+	// used by static file view handlers
+	staticFileSystem = newBinaryFileSystem("ui/build")
+	staticFileServer = http.FileServer(staticFileSystem)
 )
 
 func getViewURL(sub string) string {
 	u := path.Join(config.Config.Listen.Prefix, sub)
-	if strings.HasSuffix(sub, "/") {
+	if strings.HasSuffix(sub, "/") && !strings.HasSuffix(u, "/") {
 		// if sub path had trailing slash then add it here, since path.Join will
 		// skip it
 		return u + "/"
@@ -51,13 +56,19 @@ func getViewURL(sub string) string {
 
 func setupRouter(router *gin.Engine) {
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
-	router.Use(static.Serve(getViewURL("/static"), newBinaryFileSystem("static")))
+	router.Use(static.Serve(getViewURL("/"), staticFileSystem))
+	router.Use(cors.New(cors.Config{
+		AllowAllOrigins:  true,
+		AllowCredentials: true,
+		AllowMethods:     []string{"GET", "POST", "DELETE"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+	}))
 
-	router.GET(getViewURL("/favicon.ico"), favicon)
 	router.GET(getViewURL("/"), index)
-	router.GET(getViewURL("/help"), help)
 	router.GET(getViewURL("/alerts.json"), alerts)
 	router.GET(getViewURL("/autocomplete.json"), autocomplete)
+	router.NoRoute(notFound)
 }
 
 func setupUpstreams() {
@@ -163,8 +174,7 @@ func main() {
 	router := gin.New()
 
 	var t *template.Template
-	t = loadTemplates(t, "templates")
-	t = loadTemplates(t, "static/dist/templates")
+	t = loadTemplate(t, "ui/build/index.html")
 	router.SetHTMLTemplate(t)
 
 	prom := ginprometheus.NewPrometheus("gin")

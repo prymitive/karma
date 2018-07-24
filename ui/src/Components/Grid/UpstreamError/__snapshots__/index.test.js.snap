@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UpstreamError /> matches snapshot 1`] = `
+<div
+  className="alert alert-danger text-center"
+  role="alert"
+>
+  <h4
+    className="alert-heading mb-0"
+  >
+    Alertmanager 
+    <span
+      className="font-weight-bold"
+    >
+      foo
+    </span>
+     raised an error: 
+    bar
+  </h4>
+</div>
+`;

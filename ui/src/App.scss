@@ -1,0 +1,34 @@
+// custom "dark" color, little less dark than flatly
+$blue: #455a64;
+// body background color should be same as navbar, so it blends into one
+$body-bg: $blue;
+// default is ~0.97rem
+$font-size-base: 1rem;
+
+// make links light gray by default instead of green
+$link-color: #7b8a8b; // $gray-700
+
+// make dark darker, default it's $gray-700
+$dark: #3b4247;
+
+@import "../node_modules/bootswatch/dist/flatly/variables";
+@import "../node_modules/bootstrap/scss/bootstrap";
+@import "../node_modules/bootswatch/dist/flatly/bootswatch";
+
+// negative margin used for silence expiry badges with progress
+.nmb-05 {
+  margin-bottom: -($spacer * 0.125) !important;
+}
+
+// this is used for navbar, to make it transparent
+.bg-primary-transparent {
+  background-color: rgba($primary, 0.95);
+}
+// version for modals
+.bg-primary-transparent-80 {
+  background-color: rgba($dark, 0.8);
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
