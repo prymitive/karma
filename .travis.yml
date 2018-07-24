@@ -67,6 +67,9 @@ jobs:
       script:
         # compile assets via webpack and build those into bindata_assetfs.go file
         - make bindata_assetfs.go
+        # verify that there are no uncommited changes from (re)compiling sass
+        # assets
+        - git diff --exit-code
         # install bakelite, we can't "go get" a tag from github, so we fetch the binary
         - export BAKELITE_VERSION="v0.1.0"
         - export BAKELITE_OS="linux"
