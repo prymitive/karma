@@ -1,0 +1,6 @@
+.component-history-button {
+  margin-right: 0.5rem;
+}
+.component-history-button:last-child {
+  margin-right: 0;
+}
