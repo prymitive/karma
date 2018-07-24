@@ -7,6 +7,7 @@ import { observable, action } from "mobx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
 
+import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { Configuration } from "./Configuration";
 import { Help } from "./Help";
@@ -35,6 +36,7 @@ const TabNames = Object.freeze({
 const MainModal = observer(
   class MainModal extends Component {
     static propTypes = {
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
 
@@ -70,7 +72,7 @@ const MainModal = observer(
     }
 
     render() {
-      const { settingsStore } = this.props;
+      const { alertStore, settingsStore } = this.props;
 
       return (
         <React.Fragment>
@@ -118,6 +120,11 @@ const MainModal = observer(
                     {this.tab.current === TabNames.Configuration ? (
                       <Configuration settingsStore={settingsStore} />
                     ) : null}
+                  </div>
+                  <div className="modal-footer">
+                    <span className="text-muted">
+                      Version: {alertStore.info.version}
+                    </span>
                   </div>
                 </div>
               </div>
