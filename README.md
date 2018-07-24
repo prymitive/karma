@@ -113,12 +113,12 @@ variables. Example:
 ### Running pre-build docker image
 
 Official docker images are built and hosted on
-[hub.docker.com](https://hub.docker.com/r/prymitive/unsee/).
+[hub.docker.com](https://hub.docker.com/r/lmierzwa/unsee/).
 
 Images are built automatically for:
 
-- release tags in git - `prymitive/unsee:vX.Y.Z`
-- master branch commits - `prymitive/unsee:latest`
+- release tags in git - `lmierzwa/unsee:vX.Y.Z`
+- master branch commits - `lmierzwa/unsee:latest`
 
 #### Examples
 
