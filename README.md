@@ -9,9 +9,25 @@ Starting with `0.7.0` release it can also aggregate alerts from multiple
 Alertmanager instances, running either in HA mode or separate. Duplicated alerts
 are deduplicated so only unique alerts are displayed. Each alert is tagged with
 names of all Alertmanager instances it was found at and can be filtered based
-on those tags.
+on those tags (`@alertmanager`). Note that `@alertmanager` tags will be visible
+only if unsee is configured with multiple Alertmanager instances.
 
 ![Screenshot](/screenshot.png)
+
+Alerts are displayed grouped preserving
+[group_by](https://prometheus.io/docs/alerting/configuration/#route)
+configuration option in Alertmanager. If a group contains multiple alerts only
+first few alerts will be presented, the rest can be expanded or hidden
+using - / + buttons. The default number of alerts can be configured in the UI
+settings module.
+Each individual alert will only show unique labels and annotations, labels
+and annotations that are shared between all alerts will be moved to the footer.
+Example:
+
+![Example](/alertGroup.png)
+
+Each group can be collapsed to only show the title bar using top right toggle
+icon.
 
 [Online demo](https://unsee-demo.herokuapp.com/)
 
