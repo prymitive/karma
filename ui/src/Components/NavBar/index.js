@@ -38,7 +38,7 @@ const NavBar = observer(
               alertStore={alertStore}
               settingsStore={settingsStore}
             />
-            <MainModal settingsStore={settingsStore} />
+            <MainModal alertStore={alertStore} settingsStore={settingsStore} />
           </nav>
         </div>
       );
