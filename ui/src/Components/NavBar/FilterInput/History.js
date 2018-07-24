@@ -11,6 +11,7 @@ import { Manager, Reference, Popper } from "react-popper";
 import onClickOutside from "react-onclickoutside";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHistory } from "@fortawesome/free-solid-svg-icons/faHistory";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 import { faSave } from "@fortawesome/free-regular-svg-icons/faSave";
 import { faUndoAlt } from "@fortawesome/free-solid-svg-icons/faUndoAlt";
@@ -19,6 +20,8 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { HistoryLabel } from "Components/Labels/HistoryLabel";
+
+import "./History.css";
 
 const defaultHistory = {
   filters: []
@@ -34,6 +37,26 @@ function reduceFilter(filter) {
     value: filter.value
   };
 }
+
+const ActionButton = ({ color, icon, title, action, afterClick }) => (
+  <button
+    className={`component-history-button btn btn-sm btn-outline-${color}`}
+    onClick={() => {
+      action();
+      afterClick();
+    }}
+  >
+    <FontAwesomeIcon icon={icon} className="mr-1" />
+    {title}
+  </button>
+);
+ActionButton.propTypes = {
+  color: PropTypes.string.isRequired,
+  title: PropTypes.node.isRequired,
+  icon: PropTypes.object.isRequired,
+  action: PropTypes.func.isRequired,
+  afterClick: PropTypes.func.isRequired
+};
 
 const HistoryMenu = onClickOutside(
   ({
@@ -53,6 +76,10 @@ const HistoryMenu = onClickOutside(
         style={popperStyle}
         data-placement={popperPlacement}
       >
+        <h6 className="dropdown-header text-center">
+          <FontAwesomeIcon icon={faHistory} className="mr-1" />
+          Last used filters
+        </h6>
         {filters.length === 0 ? (
           <h6 className="dropdown-header text-muted text-center">Empty</h6>
         ) : (
@@ -80,35 +107,31 @@ const HistoryMenu = onClickOutside(
         )}
         <div className="dropdown-divider" />
         <div className="container text-center">
-          <button className="btn btn-sm btn-success mr-4">
-            <FontAwesomeIcon
-              icon={faSave}
-              onClick={() => {
-                settingsStore.savedFilters.save(
-                  alertStore.filters.values.map(f => f.raw)
-                );
-                afterClick();
-              }}
-            />
-          </button>
-          <button
-            className="btn btn-sm btn-danger mr-4"
-            onClick={() => {
-              settingsStore.savedFilters.clear();
-              afterClick();
+          <ActionButton
+            color="success"
+            icon={faSave}
+            title="Save filters"
+            action={() => {
+              settingsStore.savedFilters.save(
+                alertStore.filters.values.map(f => f.raw)
+              );
             }}
-          >
-            <FontAwesomeIcon icon={faUndoAlt} />
-          </button>
-          <button
-            className="btn btn-sm btn-dark"
-            onClick={() => {
-              onClear();
-              afterClick();
-            }}
-          >
-            <FontAwesomeIcon icon={faTrash} />
-          </button>
+            afterClick={afterClick}
+          />
+          <ActionButton
+            color="danger"
+            icon={faUndoAlt}
+            title="Reset filters"
+            action={settingsStore.savedFilters.clear}
+            afterClick={afterClick}
+          />
+          <ActionButton
+            color="dark"
+            icon={faTrash}
+            title="Clear history"
+            action={onClear}
+            afterClick={afterClick}
+          />
         </div>
       </div>
     );
