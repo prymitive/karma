@@ -60,6 +60,9 @@ jobs:
 
     - stage: Build and Deploy
       <<: *DEFAULTS_GO
+      cache:
+        # disable cache so we always build from scratch
+        directories: []
       before_script:
         # this stage needs to build everything including assets file and that
         # requires running webpack, so we need nodejs here
