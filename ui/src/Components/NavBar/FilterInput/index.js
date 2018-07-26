@@ -115,7 +115,7 @@ const FilterInput = observer(
       return (
         <div className="input-group mr-2">
           <div className="input-group-prepend">
-            <span className="input-group-text">
+            <span className="input-group-text px-2">
               <FontAwesomeIcon icon={faSearch} />
             </span>
           </div>
