@@ -8,7 +8,6 @@ import { debounce } from "lodash";
 
 import Autosuggest from "react-autosuggest";
 import Highlight from "react-highlighter";
-import AutosizeInput from "react-input-autosize";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
@@ -132,7 +131,7 @@ const FilterInput = observer(
                 filter={filter}
               />
             ))}
-            <AutosizeInput
+            <input
               className="components-filterinput-wrapper"
               placeholder=""
               {...otherProps}
@@ -152,7 +151,7 @@ const FilterInput = observer(
         // data-filters is there to register filters for observation in mobx
         // in order to re-render input component
         <form
-          className="form-inline w-100"
+          className="form-inline mw-100"
           onSubmit={this.onSubmit}
           data-filters={alertStore.filters.values.map(f => f.raw).join(" ")}
         >

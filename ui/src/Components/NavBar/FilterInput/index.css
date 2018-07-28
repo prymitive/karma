@@ -1,8 +1,9 @@
-.components-filterinput {
+.form-control.components-filterinput {
   cursor: text;
+  height: auto;
 }
 
-.components-filterinput-wrapper > input {
+input.components-filterinput-wrapper {
   border: none;
   box-shadow: none;
   outline: none;

@@ -76,7 +76,7 @@ const MainModal = observer(
 
       return (
         <React.Fragment>
-          <ul className="navbar-nav">
+          <ul className="navbar-nav float-right">
             <li className="nav-item dropdown">
               <a
                 className="nav-link mx-1 cursor-pointer"
