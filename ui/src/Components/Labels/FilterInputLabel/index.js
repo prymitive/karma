@@ -76,7 +76,7 @@ const FilterInputLabel = observer(
             style={style}
             onClick={() => alertStore.filters.removeFilter(filter.raw)}
           >
-            <span aria-hidden="true">&times;</span>
+            <span className="align-text-bottom">&times;</span>
           </button>
           {filter.isValid ? (
             filter.applied ? (
