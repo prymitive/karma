@@ -18,7 +18,8 @@ const HistoryLabel = observer(
           )} mw-100`}
           style={this.getColorStyle(name, value)}
         >
-          {name}: {value}
+          {name ? `${name}: ` : null}
+          {value}
         </span>
       );
     }
