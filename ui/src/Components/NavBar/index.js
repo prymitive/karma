@@ -28,17 +28,17 @@ const NavBar = observer(
       const { alertStore, settingsStore } = this.props;
       return (
         <div className="container">
-          <nav className="navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent">
+          <nav className="navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block">
             <ReactResizeDetector handleHeight onResize={navbarResize} />
-            <span className="navbar-brand my-0 mx-2 h1 d-none d-sm-block">
+            <span className="navbar-brand my-0 mx-2 h1 d-none d-sm-block float-left">
               {alertStore.info.totalAlerts}
               <FetchIndicator status={alertStore.status.value.toString()} />
             </span>
+            <MainModal alertStore={alertStore} settingsStore={settingsStore} />
             <FilterInput
               alertStore={alertStore}
               settingsStore={settingsStore}
             />
-            <MainModal alertStore={alertStore} settingsStore={settingsStore} />
           </nav>
         </div>
       );
