@@ -35,3 +35,11 @@ input.components-filterinput-wrapper {
     max-width: 600px;
   }
 }
+
+input.components-filterinput-wrapper {
+  width: 1px;
+}
+
+input.components-filterinput-wrapper:focus {
+  width: auto;
+}
