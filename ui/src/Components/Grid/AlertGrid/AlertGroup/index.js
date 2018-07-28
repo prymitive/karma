@@ -107,7 +107,6 @@ const AlertGroup = observer(
         Math.max(Math.round((totalSize - this.defaultRenderCount) / 5), 5),
         totalSize - this.defaultRenderCount
       );
-      console.info("getStepSize => " + val);
       return val;
     }
 
