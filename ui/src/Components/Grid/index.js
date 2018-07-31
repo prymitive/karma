@@ -5,6 +5,7 @@ import { observer } from "mobx-react";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { AlertGrid } from "./AlertGrid";
 import { FatalError } from "./FatalError";
 import { UpstreamError } from "./UpstreamError";
@@ -13,11 +14,12 @@ const Grid = observer(
   class Grid extends Component {
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
     render() {
-      const { alertStore, settingsStore } = this.props;
+      const { alertStore, settingsStore, silenceFormStore } = this.props;
 
       if (alertStore.status.error) {
         return <FatalError message={alertStore.status.error} />;
@@ -35,7 +37,11 @@ const Grid = observer(
               />
             ))}
 
-          <AlertGrid alertStore={alertStore} settingsStore={settingsStore} />
+          <AlertGrid
+            alertStore={alertStore}
+            settingsStore={settingsStore}
+            silenceFormStore={silenceFormStore}
+          />
         </React.Fragment>
       );
     }

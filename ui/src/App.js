@@ -5,6 +5,7 @@ import { Provider } from "mobx-react";
 
 import { AlertStore, DecodeLocationSearch } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { NavBar } from "Components/NavBar";
 import { Grid } from "Components/Grid";
 import { Fetcher } from "Components/Fetcher";
@@ -21,6 +22,7 @@ class App extends Component {
 
     const { defaultFilters } = this.props;
 
+    this.silenceFormStore = new SilenceFormStore();
     this.settingsStore = new Settings();
 
     let filters;
@@ -50,11 +52,13 @@ class App extends Component {
         <NavBar
           alertStore={this.alertStore}
           settingsStore={this.settingsStore}
+          silenceFormStore={this.silenceFormStore}
         />
         <Provider alertStore={this.alertStore}>
           <Grid
             alertStore={this.alertStore}
             settingsStore={this.settingsStore}
+            silenceFormStore={this.silenceFormStore}
           />
         </Provider>
         <Fetcher

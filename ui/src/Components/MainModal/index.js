@@ -12,11 +12,11 @@ import { Settings } from "Stores/Settings";
 import { Configuration } from "./Configuration";
 import { Help } from "./Help";
 
-import "./index.css";
-
 const Tab = ({ title, active, onClick }) => (
   <a
-    className={`nav-item nav-link cursor-pointer ${active ? "active" : ""}`}
+    className={`nav-item nav-link cursor-pointer ${
+      active ? "active" : "text-primary"
+    }`}
     onClick={onClick}
   >
     {title}
@@ -76,17 +76,11 @@ const MainModal = observer(
 
       return (
         <React.Fragment>
-          <ul className="navbar-nav float-right">
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link mx-1 cursor-pointer"
-                data-toggle="dropdown"
-                onClick={this.toggle.toggle}
-              >
-                <FontAwesomeIcon icon={faCog} />
-              </a>
-            </li>
-          </ul>
+          <li className="nav-item">
+            <a className="nav-link cursor-pointer" onClick={this.toggle.toggle}>
+              <FontAwesomeIcon icon={faCog} />
+            </a>
+          </li>
           {this.toggle.show ? (
             <div
               className="modal d-block bg-primary-transparent-80"
@@ -106,14 +100,14 @@ const MainModal = observer(
                         active={this.tab.current === TabNames.Help}
                         onClick={() => this.tab.setTab(TabNames.Help)}
                       />
+                      <button
+                        type="button"
+                        className="close"
+                        onClick={this.toggle.hide}
+                      >
+                        <span>&times;</span>
+                      </button>
                     </nav>
-                    <button
-                      type="button"
-                      className="close"
-                      onClick={this.toggle.hide}
-                    >
-                      <span>&times;</span>
-                    </button>
                   </div>
                   <div className="modal-body">
                     {this.tab.current === TabNames.Help ? <Help /> : null}

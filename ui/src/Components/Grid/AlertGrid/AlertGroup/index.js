@@ -13,6 +13,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
 
 import { Settings } from "Stores/Settings";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { GroupHeader } from "./GroupHeader";
 import { Alert } from "./Alert";
 import { GroupFooter } from "./GroupFooter";
@@ -37,7 +38,8 @@ const AlertGroup = observer(
       afterUpdate: PropTypes.func.isRequired,
       group: PropTypes.object.isRequired,
       showAlertmanagers: PropTypes.bool.isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
     constructor(props) {
@@ -117,7 +119,12 @@ const AlertGroup = observer(
     }
 
     render() {
-      const { group, showAlertmanagers, afterUpdate } = this.props;
+      const {
+        group,
+        showAlertmanagers,
+        afterUpdate,
+        silenceFormStore
+      } = this.props;
 
       let footerAlertmanagers = [];
       let showAlertmanagersInFooter = false;
@@ -151,7 +158,11 @@ const AlertGroup = observer(
           <div className="components-grid-alertgrid-alertgroup p-1">
             <div className="card">
               <div className="card-body px-2 pt-2 pb-1">
-                <GroupHeader collapseStore={this.collapse} group={group} />
+                <GroupHeader
+                  collapseStore={this.collapse}
+                  group={group}
+                  silenceFormStore={silenceFormStore}
+                />
                 {this.collapse.value ? null : (
                   <ul className="list-group mt-1">
                     {group.alerts

@@ -12,30 +12,6 @@ input.components-filterinput-wrapper {
   vertical-align: middle;
 }
 
-.dropdown-menu.components-navbar-historymenu > .dropdown-item {
-  white-space: normal;
-}
-
-.components-navbar-historymenu-labels {
-  border-left: 3px solid;
-}
-
-@media screen and (min-width: 1px) and (max-width: 599px) {
-  .dropdown-menu.components-navbar-historymenu {
-    max-width: 100%;
-  }
-}
-@media screen and (min-width: 600px) and (max-width: 999px) {
-  .dropdown-menu.components-navbar-historymenu {
-    max-width: 500px;
-  }
-}
-@media screen and (min-width: 1000px) {
-  .dropdown-menu.components-navbar-historymenu {
-    max-width: 600px;
-  }
-}
-
 input.components-filterinput-wrapper {
   width: 1px;
 }
