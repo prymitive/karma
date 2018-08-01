@@ -162,3 +162,21 @@ func DedupAutocomplete() []models.Autocomplete {
 
 	return dedupedAutocomplete
 }
+
+// DedupKnownLabels returns a deduplicated slice of all known label names
+func DedupKnownLabels() []string {
+	dedupedLabels := map[string]bool{}
+	upstreams := GetAlertmanagers()
+
+	for _, am := range upstreams {
+		for _, key := range am.KnownLabels() {
+			dedupedLabels[key] = true
+		}
+	}
+
+	flatLabels := []string{}
+	for key := range dedupedLabels {
+		flatLabels = append(flatLabels, key)
+	}
+	return flatLabels
+}
