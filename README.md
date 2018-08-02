@@ -1,5 +1,7 @@
 # unsee
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/prymitive/unsee.svg)](https://greenkeeper.io/)
+
 Alert dashboard for
 [Prometheus Alertmanager](https://prometheus.io/docs/alerting/alertmanager/).
 
