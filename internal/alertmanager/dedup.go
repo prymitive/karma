@@ -180,3 +180,25 @@ func DedupKnownLabels() []string {
 	}
 	return flatLabels
 }
+
+// DedupKnownLabelValues returns a list of all known values for label $name
+func DedupKnownLabelValues(name string) []string {
+	dedupedValues := map[string]bool{}
+	upstreams := GetAlertmanagers()
+
+	for _, am := range upstreams {
+		for _, ag := range am.Alerts() {
+			for _, alert := range ag.Alerts {
+				if val, found := alert.Labels[name]; found {
+					dedupedValues[val] = true
+				}
+			}
+		}
+	}
+
+	flatValues := []string{}
+	for key := range dedupedValues {
+		flatValues = append(flatValues, key)
+	}
+	return flatValues
+}
