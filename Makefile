@@ -144,6 +144,6 @@ ui: .build/artifacts-ui.ok
 
 .PHONY: greenkeeper-lockfile
 greenkeeper-lockfile:
-	npm install -g greenkeeper-lockfile
+	npm install -g greenkeeper-lockfile@2
 	cd ui && greenkeeper-lockfile-update
 	cd ui && greenkeeper-lockfile-upload
