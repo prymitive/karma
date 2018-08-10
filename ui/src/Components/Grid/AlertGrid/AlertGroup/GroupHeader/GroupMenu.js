@@ -89,36 +89,34 @@ const GroupMenu = observer(
                   group.id
                 }`}
                 data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="true"
               >
                 <FontAwesomeIcon icon={faEllipsisV} />
               </a>
             )}
           </Reference>
-          <Popper
-            placement="bottom-start"
-            modifiers={{
-              arrow: { enabled: false },
-              offset: { offset: "-5px, 0px" }
-            }}
-          >
-            {this.collapse.value
-              ? ({ placement, ref, style }) => <span />
-              : ({ placement, ref, style }) => (
-                  <MenuContent
-                    popperPlacement={placement}
-                    popperRef={ref}
-                    popperStyle={style}
-                    group={group}
-                    afterClick={this.collapse.hide}
-                    handleClickOutside={this.collapse.hide}
-                    outsideClickIgnoreClass={`components-grid-alertgroup-${
-                      group.id
-                    }`}
-                  />
-                )}
-          </Popper>
+          {this.collapse.value ? null : (
+            <Popper
+              placement="bottom-start"
+              modifiers={{
+                arrow: { enabled: false },
+                offset: { offset: "-5px, 0px" }
+              }}
+            >
+              {({ placement, ref, style }) => (
+                <MenuContent
+                  popperPlacement={placement}
+                  popperRef={ref}
+                  popperStyle={style}
+                  group={group}
+                  afterClick={this.collapse.hide}
+                  handleClickOutside={this.collapse.hide}
+                  outsideClickIgnoreClass={`components-grid-alertgroup-${
+                    group.id
+                  }`}
+                />
+              )}
+            </Popper>
+          )}
         </Manager>
       );
     }
