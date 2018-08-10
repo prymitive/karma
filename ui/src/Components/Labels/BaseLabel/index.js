@@ -15,12 +15,6 @@ class BaseLabel extends Component {
     value: PropTypes.string.isRequired
   };
 
-  constructor(props) {
-    super(props);
-
-    this.handleClick = this.handleClick.bind(this);
-  }
-
   isStaticColorLabel(name) {
     const { alertStore } = this.props;
 
@@ -65,14 +59,14 @@ class BaseLabel extends Component {
     return style;
   }
 
-  handleClick(event) {
+  handleClick = event => {
     event.preventDefault();
 
     const { name, value, alertStore } = this.props;
     alertStore.filters.addFilter(
       FormatQuery(name, QueryOperators.Equal, value)
     );
-  }
+  };
 }
 
 export { BaseLabel };

@@ -1,7 +1,6 @@
 .badge.components-filteredinputlabel {
   /* make fonts bigger */
   font-size: 90%;
-  line-height: 1.4;
 
   /* fix align after text-truncate */
   vertical-align: middle;
@@ -24,5 +23,4 @@
 .badge.components-filteredinputlabel > .close {
   /* make close button bigger, to match font size of the badge */
   font-size: 1rem;
-  margin-left: 0.25rem;
 }

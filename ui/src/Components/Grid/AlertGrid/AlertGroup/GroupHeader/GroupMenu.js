@@ -10,12 +10,26 @@ import onClickOutside from "react-onclickoutside";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons/faEllipsisV";
 import { faShareSquare } from "@fortawesome/free-solid-svg-icons/faShareSquare";
+import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
 import { FormatAPIFilterQuery } from "Stores/AlertStore";
 import { QueryOperators, StaticLabels, FormatQuery } from "Common/Query";
 
+const onSilenceClick = (silenceFormStore, group) => {
+  silenceFormStore.data.resetProgress();
+  silenceFormStore.data.fillMatchersFromGroup(group);
+  silenceFormStore.toggle.show();
+};
+
 const MenuContent = onClickOutside(
-  ({ popperPlacement, popperRef, popperStyle, group, afterClick }) => {
+  ({
+    popperPlacement,
+    popperRef,
+    popperStyle,
+    group,
+    afterClick,
+    silenceFormStore
+  }) => {
     let groupFilters = Object.keys(group.labels).map(name =>
       FormatQuery(name, QueryOperators.Equal, group.labels[name])
     );
@@ -39,6 +53,12 @@ const MenuContent = onClickOutside(
         >
           <FontAwesomeIcon icon={faShareSquare} /> Link to this group
         </a>
+        <a
+          className="dropdown-item cursor-pointer"
+          onClick={() => onSilenceClick(silenceFormStore, group)}
+        >
+          <FontAwesomeIcon icon={faBellSlash} /> Silence this group
+        </a>
       </div>
     );
   }
@@ -54,7 +74,8 @@ MenuContent.propTypes = {
 const GroupMenu = observer(
   class GroupMenu extends Component {
     static propTypes = {
-      group: PropTypes.object.isRequired
+      group: PropTypes.object.isRequired,
+      silenceFormStore: PropTypes.object.isRequired
     };
 
     collapse = observable(
@@ -76,7 +97,7 @@ const GroupMenu = observer(
     });
 
     render() {
-      const { group } = this.props;
+      const { group, silenceFormStore } = this.props;
 
       return (
         <Manager>
@@ -108,6 +129,7 @@ const GroupMenu = observer(
                   popperRef={ref}
                   popperStyle={style}
                   group={group}
+                  silenceFormStore={silenceFormStore}
                   afterClick={this.collapse.hide}
                   handleClickOutside={this.collapse.hide}
                   outsideClickIgnoreClass={`components-grid-alertgroup-${

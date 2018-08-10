@@ -15,16 +15,17 @@ const GroupHeader = observer(
   class GroupHeader extends Component {
     static propTypes = {
       collapseStore: PropTypes.object.isRequired,
-      group: PropTypes.object.isRequired
+      group: PropTypes.object.isRequired,
+      silenceFormStore: PropTypes.object.isRequired
     };
 
     render() {
-      const { collapseStore, group } = this.props;
+      const { collapseStore, group, silenceFormStore } = this.props;
 
       return (
         <h5 className="card-title text-center mb-0">
           <span className="float-left">
-            <GroupMenu group={group} />
+            <GroupMenu group={group} silenceFormStore={silenceFormStore} />
           </span>
           <span className="float-right">
             <FilteringCounterBadge

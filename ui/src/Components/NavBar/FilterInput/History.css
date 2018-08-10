@@ -1,5 +1,38 @@
+.dropdown-menu.components-navbar-historymenu {
+  white-space: nowrap;
+}
+
+.dropdown-menu.components-navbar-historymenu > .dropdown-item {
+  white-space: normal;
+}
+
+.dropdown-menu.components-navbar-historymenu > .container {
+  white-space: pre;
+}
+
+.components-navbar-historymenu-labels {
+  border-left: 3px solid;
+}
+
+@media screen and (min-width: 1px) and (max-width: 599px) {
+  .dropdown-menu.components-navbar-historymenu {
+    max-width: 100%;
+  }
+}
+@media screen and (min-width: 600px) and (max-width: 999px) {
+  .dropdown-menu.components-navbar-historymenu {
+    max-width: 500px;
+  }
+}
+@media screen and (min-width: 1000px) {
+  .dropdown-menu.components-navbar-historymenu {
+    max-width: 600px;
+  }
+}
+
 .component-history-button {
   margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 .component-history-button:last-child {
   margin-right: 0;

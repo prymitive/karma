@@ -7,9 +7,11 @@ import ReactResizeDetector from "react-resize-detector";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FetchIndicator } from "./FetchIndicator";
 import { FilterInput } from "./FilterInput";
 import { MainModal } from "Components/MainModal";
+import { SilenceModal } from "Components/SilenceModal";
 
 import "./index.css";
 
@@ -21,11 +23,21 @@ const NavBar = observer(
   class NavBar extends Component {
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
     render() {
-      const { alertStore, settingsStore } = this.props;
+      const { alertStore, settingsStore, silenceFormStore } = this.props;
+
+      // if we have at least 2 filters then it's likely that filter input will
+      // use 2 lines, so set right side icons on small screeens to column mode
+      // for more compact layout
+      const flexClass =
+        alertStore.filters.values.length >= 2
+          ? "flex-column flex-sm-column flex-md-row flex-lg-row flex-xl-row"
+          : "flex-row";
+
       return (
         <div className="container">
           <nav className="navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block">
@@ -34,7 +46,16 @@ const NavBar = observer(
               {alertStore.info.totalAlerts}
               <FetchIndicator status={alertStore.status.value.toString()} />
             </span>
-            <MainModal alertStore={alertStore} settingsStore={settingsStore} />
+            <ul className={`navbar-nav float-right d-flex ${flexClass}`}>
+              <SilenceModal
+                alertStore={alertStore}
+                silenceFormStore={silenceFormStore}
+              />
+              <MainModal
+                alertStore={alertStore}
+                settingsStore={settingsStore}
+              />
+            </ul>
             <FilterInput
               alertStore={alertStore}
               settingsStore={settingsStore}

@@ -48,6 +48,7 @@ type Alertmanager struct {
 	silences     map[string]models.Silence
 	colors       models.LabelsColorMap
 	autocomplete []models.Autocomplete
+	knownLabels  []string
 	lastError    string
 	// metrics tracked per alertmanager instance
 	metrics alertmanagerMetrics
@@ -100,6 +101,7 @@ func (am *Alertmanager) clearData() {
 	am.silences = map[string]models.Silence{}
 	am.colors = models.LabelsColorMap{}
 	am.autocomplete = []models.Autocomplete{}
+	am.knownLabels = []string{}
 	am.lock.Unlock()
 }
 
@@ -205,6 +207,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	log.Infof("[%s] Deduplicating alert groups (%d)", am.Name, len(groups))
 	uniqueGroups := map[string]models.AlertGroup{}
 	uniqueAlerts := map[string]map[string]models.Alert{}
+	knownLabelsMap := map[string]bool{}
 	for _, ag := range groups {
 		agID := ag.LabelsFingerprint()
 		if _, found := uniqueGroups[agID]; !found {
@@ -221,6 +224,9 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			alertCFP := alert.ContentFingerprint()
 			if _, found := uniqueAlerts[agID][alertCFP]; !found {
 				uniqueAlerts[agID][alertCFP] = alert
+			}
+			for key := range alert.Labels {
+				knownLabelsMap[key] = true
 			}
 		}
 
@@ -284,10 +290,16 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		autocomplete = append(autocomplete, hint)
 	}
 
+	knownLabels := []string{}
+	for key := range knownLabelsMap {
+		knownLabels = append(knownLabels, key)
+	}
+
 	am.lock.Lock()
 	am.alertGroups = dedupedGroups
 	am.colors = colors
 	am.autocomplete = autocomplete
+	am.knownLabels = knownLabels
 	am.lock.Unlock()
 
 	return nil
@@ -376,6 +388,17 @@ func (am *Alertmanager) Autocomplete() []models.Autocomplete {
 	autocomplete := make([]models.Autocomplete, len(am.autocomplete))
 	copy(autocomplete, am.autocomplete)
 	return autocomplete
+}
+
+// KnownLabels returns a copy of a map with known labels
+func (am *Alertmanager) KnownLabels() []string {
+	am.lock.RLock()
+	defer am.lock.RUnlock()
+
+	knownLabels := make([]string, len(am.knownLabels))
+	copy(knownLabels, am.knownLabels)
+
+	return knownLabels
 }
 
 func (am *Alertmanager) setError(err string) {

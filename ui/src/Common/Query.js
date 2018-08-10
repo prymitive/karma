@@ -1,5 +1,6 @@
 const QueryOperators = Object.freeze({
-  Equal: "="
+  Equal: "=",
+  Regex: "=~"
 });
 
 const StaticLabels = Object.freeze({

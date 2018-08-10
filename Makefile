@@ -74,6 +74,7 @@ clean:
 
 .PHONY: run
 run: $(NAME)
+	ALERTMANAGER_INTERVAL=36000h \
 	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
 	LABELS_COLOR_UNIQUE="@receiver instance cluster" \
 	LABELS_COLOR_STATIC="job" \
@@ -89,15 +90,16 @@ docker-image:
 run-docker: docker-image
 	@docker rm -f $(NAME) || true
 	docker run \
-	    --name $(NAME) \
-	    -v $(MOCK_PATH):$(MOCK_PATH) \
-	    -e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
-	    -e LABELS_COLOR_UNIQUE="instance cluster" \
-	    -e LABELS_COLOR_STATIC="job" \
-      -e FILTERS_DEFAULT="@state=active @receiver=by-cluster-service" \
-	    -e PORT=$(PORT) \
-	    -p $(PORT):$(PORT) \
-	    $(NAME):$(VERSION)
+		--name $(NAME) \
+		-v $(MOCK_PATH):$(MOCK_PATH) \
+		-e ALERTMANAGER_INTERVAL=36000h \
+		-e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
+		-e LABELS_COLOR_UNIQUE="instance cluster" \
+		-e LABELS_COLOR_STATIC="job" \
+		-e FILTERS_DEFAULT="@state=active @receiver=by-cluster-service" \
+		-e PORT=$(PORT) \
+		-p $(PORT):$(PORT) \
+		$(NAME):$(VERSION)
 
 .PHONY: lint-go
 lint-go: .build/deps-lint-go.ok
