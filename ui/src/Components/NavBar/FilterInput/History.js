@@ -246,28 +246,28 @@ const History = observer(
               </button>
             )}
           </Reference>
-          <Popper
-            modifiers={{
-              arrow: { enabled: false }
-            }}
-          >
-            {this.collapse.value
-              ? ({ placement, ref, style }) => <span />
-              : ({ placement, ref, style }) => (
-                  <HistoryMenu
-                    popperPlacement={placement}
-                    popperRef={ref}
-                    popperStyle={style}
-                    filters={this.history.filters}
-                    onClear={this.clearHistory}
-                    alertStore={alertStore}
-                    settingsStore={settingsStore}
-                    afterClick={this.collapse.hide}
-                    handleClickOutside={this.collapse.hide}
-                    outsideClickIgnoreClass="components-navbar-history"
-                  />
-                )}
-          </Popper>
+          {this.collapse.value ? null : (
+            <Popper
+              modifiers={{
+                arrow: { enabled: false }
+              }}
+            >
+              {({ placement, ref, style }) => (
+                <HistoryMenu
+                  popperPlacement={placement}
+                  popperRef={ref}
+                  popperStyle={style}
+                  filters={this.history.filters}
+                  onClear={this.clearHistory}
+                  alertStore={alertStore}
+                  settingsStore={settingsStore}
+                  afterClick={this.collapse.hide}
+                  handleClickOutside={this.collapse.hide}
+                  outsideClickIgnoreClass="components-navbar-history"
+                />
+              )}
+            </Popper>
+          )}
         </Manager>
       );
     }
