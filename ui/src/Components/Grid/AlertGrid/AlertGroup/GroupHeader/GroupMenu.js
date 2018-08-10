@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 
+import copy from "copy-to-clipboard";
+
 import { Manager, Reference, Popper } from "react-popper";
 import onClickOutside from "react-onclickoutside";
 
@@ -36,7 +38,9 @@ const MenuContent = onClickOutside(
     groupFilters.push(
       FormatQuery(StaticLabels.Receiver, QueryOperators.Equal, group.receiver)
     );
-    const groupLink = `?${FormatAPIFilterQuery(groupFilters)}`;
+    const groupLink = `${window.location.href}?${FormatAPIFilterQuery(
+      groupFilters
+    )}`;
 
     return (
       <div
@@ -45,20 +49,21 @@ const MenuContent = onClickOutside(
         style={popperStyle}
         data-placement={popperPlacement}
       >
-        <a
-          className="dropdown-item"
-          href={groupLink}
-          target="_blank"
-          rel="noopener noreferrer"
+        <div
+          className="dropdown-item cursor-pointer"
+          onClick={() => {
+            copy(groupLink);
+            afterClick();
+          }}
         >
-          <FontAwesomeIcon icon={faShareSquare} /> Link to this group
-        </a>
-        <a
+          <FontAwesomeIcon icon={faShareSquare} /> Copy link to this group
+        </div>
+        <div
           className="dropdown-item cursor-pointer"
           onClick={() => onSilenceClick(silenceFormStore, group)}
         >
           <FontAwesomeIcon icon={faBellSlash} /> Silence this group
-        </a>
+        </div>
       </div>
     );
   }
