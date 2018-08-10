@@ -31,7 +31,7 @@ endif
 
 .build/deps-lint-go.ok:
 	@mkdir -p .build
-	go get -u github.com/golang/lint/golint
+	go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
 	touch $@
 
 .build/deps-build-node.ok: ui/package.json ui/package-lock.json
@@ -103,7 +103,7 @@ run-docker: docker-image
 
 .PHONY: lint-go
 lint-go: .build/deps-lint-go.ok
-	golint ./... | (egrep -v "^vendor/|^bindata_assetfs.go" || true)
+	golangci-lint run
 
 .PHONY: lint-js
 lint-js: .build/deps-build-node.ok

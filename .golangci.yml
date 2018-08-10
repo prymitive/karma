@@ -1,0 +1,19 @@
+run:
+  deadline: 5m
+  skip-files:
+    - bindata_assetfs.go
+
+linters:
+  enable:
+    - golint
+    - dupl
+    - goconst
+    - gocyclo
+
+linters-settings:
+  govet:
+    check-shadowing: true
+  golint:
+    min-confidence: 0
+  dupl:
+    threshold: 200

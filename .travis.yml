@@ -39,6 +39,8 @@ jobs:
 
     - stage: Lint Go code
       <<: *DEFAULTS_GO
+      before_script:
+        - make mock-assets
       script: make lint-go
 
     - stage: Lint JavaScript code
