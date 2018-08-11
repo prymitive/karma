@@ -10,12 +10,23 @@ import (
 	"github.com/prymitive/unsee/internal/slices"
 
 	"github.com/hansrodtang/randomcolor"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func labelToSeed(key string, val string) int64 {
 	h := sha1.New()
-	io.WriteString(h, key)
-	io.WriteString(h, val)
+
+	_, err := io.WriteString(h, key)
+	if err != nil {
+		log.Errorf("Failed to write label key '%s' to the seed sha1: %s", key, err)
+	}
+
+	_, err = io.WriteString(h, val)
+	if err != nil {
+		log.Errorf("Failed to write label value '%s' to the seed sha1: %s", val, err)
+	}
+
 	var seed int64
 	for _, i := range h.Sum(nil) {
 		seed += int64(i)
