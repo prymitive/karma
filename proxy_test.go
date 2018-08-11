@@ -24,10 +24,6 @@ func newCloseNotifyingRecorder() *closeNotifyingRecorder {
 	}
 }
 
-func (c *closeNotifyingRecorder) close() {
-	c.closed <- true
-}
-
 func (c *closeNotifyingRecorder) CloseNotify() <-chan bool {
 	return c.closed
 }
