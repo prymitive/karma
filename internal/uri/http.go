@@ -29,7 +29,7 @@ func (r *HTTPURIReader) Read(uri string) (io.ReadCloser, error) {
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("Request to %s failed with %s", SanitizeURI(uri), resp.Status)
+		return nil, fmt.Errorf("request to %s failed with %s", SanitizeURI(uri), resp.Status)
 	}
 
 	var reader io.ReadCloser
@@ -37,7 +37,7 @@ func (r *HTTPURIReader) Read(uri string) (io.ReadCloser, error) {
 	case "gzip":
 		reader, err = gzip.NewReader(resp.Body)
 		if err != nil {
-			return nil, fmt.Errorf("Failed to decode gzipped content: %s", err.Error())
+			return nil, fmt.Errorf("failed to decode gzipped content: %s", err.Error())
 		}
 	default:
 		reader = resp.Body

@@ -26,7 +26,7 @@ func RegisterURL(url string, version string, filename string) {
 		panic(err)
 	}
 	if len(mockJSON) == 0 {
-		panic(fmt.Errorf("Empty mock file '%s'", fullPath))
+		panic(fmt.Errorf("empty mock file '%s'", fullPath))
 	}
 	httpmock.RegisterResponder("GET", url, httpmock.NewBytesResponder(200, mockJSON))
 }

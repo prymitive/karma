@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -99,7 +98,10 @@ func TestAlerts(t *testing.T) {
 		}
 
 		ur := models.AlertsResponse{}
-		json.Unmarshal(resp.Body.Bytes(), &ur)
+		err := json.Unmarshal(resp.Body.Bytes(), &ur)
+		if err != nil {
+			t.Errorf("Failed to unmarshal response: %s", err)
+		}
 		if len(ur.Filters) != 3 {
 			t.Errorf("[%s] Got %d filter(s) in response, expected %d", version, len(ur.Filters), 3)
 		}
@@ -166,7 +168,10 @@ func TestValidateAllAlerts(t *testing.T) {
 		}
 		ur := models.AlertsResponse{}
 		body := resp.Body.Bytes()
-		json.Unmarshal(body, &ur)
+		err := json.Unmarshal(body, &ur)
+		if err != nil {
+			t.Errorf("Failed to unmarshal response: %s", err)
+		}
 		for _, ag := range ur.AlertGroups {
 			for _, a := range ag.Alerts {
 				if !slices.StringInSlice(models.AlertStateList, a.State) {
@@ -176,15 +181,6 @@ func TestValidateAllAlerts(t *testing.T) {
 					t.Errorf("Alertmanager instance list is empty, %v", a)
 				}
 			}
-		}
-		// write JSON response to a file, it will be used by (optional) JS tests
-		// those require actual JSON responses and shouldn't be mocked
-		if _, err := os.Stat(".tests"); os.IsNotExist(err) {
-			os.Mkdir(".tests", 0755)
-		}
-		err := ioutil.WriteFile(".tests/alerts.json", body, 0644)
-		if err != nil {
-			t.Logf("Failed to write .tests/alerts.json: %s", err)
 		}
 	}
 }
@@ -349,7 +345,10 @@ func TestAutocomplete(t *testing.T) {
 			}
 
 			ur := []string{}
-			json.Unmarshal(resp.Body.Bytes(), &ur)
+			err := json.Unmarshal(resp.Body.Bytes(), &ur)
+			if err != nil {
+				t.Errorf("Failed to unmarshal response: %s", err)
+			}
 
 			if len(ur) != len(acTest.Results) {
 				t.Errorf("Invalid number of autocomplete hints for %s, got %d, expected %d", url, len(ur), len(acTest.Results))

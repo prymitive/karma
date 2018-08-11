@@ -38,10 +38,7 @@ func pullFromAlertmanager() {
 
 // Tick is the background timer used to call PullFromAlertmanager
 func Tick() {
-	for {
-		select {
-		case <-ticker.C:
-			pullFromAlertmanager()
-		}
+	for range ticker.C {
+		pullFromAlertmanager()
 	}
 }

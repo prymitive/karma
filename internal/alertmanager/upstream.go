@@ -59,12 +59,12 @@ func NewAlertmanager(name, upstreamURI string, opts ...Option) (*Alertmanager, e
 // instances used when pulling alerts from upstreams
 func RegisterAlertmanager(am *Alertmanager) error {
 	if _, found := upstreams[am.Name]; found {
-		return fmt.Errorf("Alertmanager upstream '%s' already exist", am.Name)
+		return fmt.Errorf("alertmanager upstream '%s' already exist", am.Name)
 	}
 
 	for _, existingAM := range upstreams {
 		if existingAM.URI == am.URI {
-			return fmt.Errorf("Alertmanager upstream '%s' already collects from '%s'", existingAM.Name, existingAM.URI)
+			return fmt.Errorf("alertmanager upstream '%s' already collects from '%s'", existingAM.Name, existingAM.URI)
 		}
 	}
 	upstreams[am.Name] = am

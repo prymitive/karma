@@ -41,7 +41,6 @@ var (
 
 	// used by static file view handlers
 	staticFileSystem = newBinaryFileSystem("ui/build")
-	staticFileServer = http.FileServer(staticFileSystem)
 )
 
 func getViewURL(sub string) string {
@@ -194,7 +193,10 @@ func main() {
 
 	setupRouter(router)
 	for _, am := range alertmanager.GetAlertmanagers() {
-		setupRouterProxyHandlers(router, am)
+		err := setupRouterProxyHandlers(router, am)
+		if err != nil {
+			log.Fatalf("Failed to setup proxy handlers for Alertmanager '%s': %s", am.Name, err)
+		}
 	}
 	listen := fmt.Sprintf("%s:%d", config.Config.Listen.Address, config.Config.Listen.Port)
 	log.Infof("Listening on %s", listen)

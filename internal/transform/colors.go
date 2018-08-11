@@ -10,12 +10,23 @@ import (
 	"github.com/prymitive/unsee/internal/slices"
 
 	"github.com/hansrodtang/randomcolor"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func labelToSeed(key string, val string) int64 {
 	h := sha1.New()
-	io.WriteString(h, key)
-	io.WriteString(h, val)
+
+	_, err := io.WriteString(h, key)
+	if err != nil {
+		log.Errorf("Failed to write label key '%s' to the seed sha1: %s", key, err)
+	}
+
+	_, err = io.WriteString(h, val)
+	if err != nil {
+		log.Errorf("Failed to write label value '%s' to the seed sha1: %s", val, err)
+	}
+
 	var seed int64
 	for _, i := range h.Sum(nil) {
 		seed += int64(i)
@@ -27,7 +38,7 @@ func labelToSeed(key string, val string) int64 {
 // from label key and value passed here
 // It's used to generate unique colors for configured labels
 func ColorLabel(colorStore models.LabelsColorMap, key string, val string) {
-	if slices.StringInSlice(config.Config.Labels.Color.Unique, key) == true {
+	if slices.StringInSlice(config.Config.Labels.Color.Unique, key) {
 		if _, found := colorStore[key]; !found {
 			colorStore[key] = make(map[string]models.LabelColors)
 		}
@@ -43,8 +54,7 @@ func ColorLabel(colorStore models.LabelsColorMap, key string, val string) {
 			}
 			// check if color is bright or dark and pick the right background
 			// uses https://www.w3.org/WAI/ER/WD-AERT/#color-contrast method
-			var brightness int32
-			brightness = ((int32(bc.Red) * 299) + (int32(bc.Green) * 587) + (int32(bc.Blue) * 114)) / 1000
+			brightness := ((int32(bc.Red) * 299) + (int32(bc.Green) * 587) + (int32(bc.Blue) * 114)) / 1000
 			var fc models.Color
 			if brightness <= 125 {
 				// background color is dark, use white font

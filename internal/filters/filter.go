@@ -86,9 +86,9 @@ func NewFilter(expression string) FilterT {
 		}
 	}
 
-	matched, _ := result["matched"]
-	operator, _ := result["operator"]
-	value, _ := result["value"]
+	matched := result["matched"]
+	operator := result["operator"]
+	value := result["value"]
 
 	if matched == "" && operator == "" && value == "" {
 		// no "filter=" part, just the value, use fuzzy filter

@@ -6,6 +6,8 @@ import (
 	"io"
 
 	"github.com/cnf/structhash"
+
+	log "github.com/sirupsen/logrus"
 )
 
 // AlertList is flat list of UnseeAlert objects
@@ -46,8 +48,17 @@ type AlertGroup struct {
 // it should be unique for each AlertGroup
 func (ag AlertGroup) LabelsFingerprint() string {
 	agIDHasher := sha1.New()
-	io.WriteString(agIDHasher, ag.Receiver)
-	io.WriteString(agIDHasher, fmt.Sprintf("%x", structhash.Sha1(ag.Labels, 1)))
+
+	_, err := io.WriteString(agIDHasher, ag.Receiver)
+	if err != nil {
+		log.Errorf("Failed to write receiver value to alertgroup '%s' fingerprint: %s", ag.ID, err)
+	}
+
+	_, err = io.WriteString(agIDHasher, fmt.Sprintf("%x", structhash.Sha1(ag.Labels, 1)))
+	if err != nil {
+		log.Errorf("Failed to write labels sha1 value to alertgroup '%s' fingerprint: %s", ag.ID, err)
+	}
+
 	return fmt.Sprintf("%x", agIDHasher.Sum(nil))
 }
 
@@ -55,7 +66,10 @@ func (ag AlertGroup) LabelsFingerprint() string {
 func (ag AlertGroup) ContentFingerprint() string {
 	h := sha1.New()
 	for _, alert := range ag.Alerts {
-		io.WriteString(h, alert.ContentFingerprint())
+		_, err := io.WriteString(h, alert.ContentFingerprint())
+		if err != nil {
+			log.Errorf("Failed to write alert fingerprint value to alertgroup '%s' fingerprint: %s", ag.ID, err)
+		}
 	}
 	return fmt.Sprintf("%x", h.Sum(nil))
 }

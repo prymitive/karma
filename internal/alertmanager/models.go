@@ -360,7 +360,7 @@ func (am *Alertmanager) SilenceByID(id string) (models.Silence, error) {
 
 	s, found := am.silences[id]
 	if !found {
-		return models.Silence{}, fmt.Errorf("Silence '%s' not found", id)
+		return models.Silence{}, fmt.Errorf("silence '%s' not found", id)
 	}
 	return s, nil
 }
