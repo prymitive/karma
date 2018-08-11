@@ -1,13 +1,10 @@
 package main
 
 import (
-	"bytes"
 	"errors"
 	"html/template"
 	"net/http"
 	"strings"
-
-	"github.com/gin-gonic/gin"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 	log "github.com/sirupsen/logrus"
@@ -74,24 +71,4 @@ func loadTemplate(t *template.Template, path string) *template.Template {
 	}
 
 	return t
-}
-
-func responseFromStaticFile(c *gin.Context, filepath string, contentType string) {
-	if !staticFileSystem.Exists("/", filepath) {
-		c.String(404, "Not found")
-		return
-	}
-
-	file, err := staticFileSystem.Open(filepath)
-	if err != nil {
-		c.AbortWithError(500, err)
-		return
-	}
-	buf := bytes.NewBuffer(nil)
-	_, err = buf.ReadFrom(file)
-	if err != nil {
-		c.AbortWithError(500, err)
-		return
-	}
-	c.Data(200, contentType, buf.Bytes())
 }
