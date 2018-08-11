@@ -99,7 +99,10 @@ func TestProxy(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	setupRouterProxyHandlers(r, am)
+	err = setupRouterProxyHandlers(r, am)
+	if err != nil {
+		t.Errorf("Failed to setup proxy for Alertmanager %s: %s", am.Name, err)
+	}
 
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
@@ -189,7 +192,10 @@ func TestProxyHeaders(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		setupRouterProxyHandlers(r, am)
+		err = setupRouterProxyHandlers(r, am)
+		if err != nil {
+			t.Errorf("Failed to setup proxy for Alertmanager %s: %s", am.Name, err)
+		}
 
 		httpmock.Reset()
 		httpmock.RegisterResponder(testCase.method, testCase.upstreamURI, func(req *http.Request) (*http.Response, error) {
