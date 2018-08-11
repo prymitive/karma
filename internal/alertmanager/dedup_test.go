@@ -21,7 +21,10 @@ func init() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		alertmanager.RegisterAlertmanager(am)
+		err = alertmanager.RegisterAlertmanager(am)
+		if err != nil {
+			panic(fmt.Sprintf("Failed to register Alertmanager instance %s: %s", am.Name, err))
+		}
 	}
 }
 
