@@ -44,7 +44,7 @@ func GetAlertMapper(version string) (AlertMapper, error) {
 			return m, nil
 		}
 	}
-	return nil, fmt.Errorf("Can't find alert mapper for Alertmanager %s", version)
+	return nil, fmt.Errorf("can't find alert mapper for Alertmanager %s", version)
 }
 
 // RegisterSilenceMapper allows to register mapper implementing silence data
@@ -60,5 +60,5 @@ func GetSilenceMapper(version string) (SilenceMapper, error) {
 			return m, nil
 		}
 	}
-	return nil, fmt.Errorf("Can't find silence mapper for Alertmanager %s", version)
+	return nil, fmt.Errorf("can't find silence mapper for Alertmanager %s", version)
 }

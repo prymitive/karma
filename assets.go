@@ -36,7 +36,7 @@ func newBinaryFileSystem(root string) *binaryFileSystem {
 		Asset: Asset,
 		// Don't render directory index, return 404 for /static/ requests)
 		AssetDir: func(path string) ([]string, error) {
-			return nil, errors.New("Not found")
+			return nil, errors.New("not found")
 		},
 		Prefix: root,
 	}
