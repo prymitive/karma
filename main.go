@@ -41,7 +41,6 @@ var (
 
 	// used by static file view handlers
 	staticFileSystem = newBinaryFileSystem("ui/build")
-	staticFileServer = http.FileServer(staticFileSystem)
 )
 
 func getViewURL(sub string) string {
