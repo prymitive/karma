@@ -43,9 +43,7 @@ func DedupAlerts() []models.AlertGroup {
 					// alertmanager instances to it, this way we end up with all instances
 					// for each unique alert merged into a single alert with all
 					// alertmanager instances attached to it
-					for _, am := range alert.Alertmanager {
-						a.Alertmanager = append(a.Alertmanager, am)
-					}
+					a.Alertmanager = append(a.Alertmanager, alert.Alertmanager...)
 					// set startsAt to the earliest value we have
 					if alert.StartsAt.Before(a.StartsAt) {
 						a.StartsAt = alert.StartsAt
