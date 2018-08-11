@@ -59,7 +59,10 @@ func TestKnownLabelNames(t *testing.T) {
 			}
 
 			ur := []string{}
-			json.Unmarshal(resp.Body.Bytes(), &ur)
+			err := json.Unmarshal(resp.Body.Bytes(), &ur)
+			if err != nil {
+				t.Errorf("Failed to unmarshal response: %s", err)
+			}
 
 			if len(ur) != len(testCase.Results) {
 				t.Errorf("Invalid number of label names for %s, got %d, expected %d", url, len(ur), len(testCase.Results))
@@ -114,7 +117,10 @@ func TestKnownLabelValues(t *testing.T) {
 			}
 
 			ur := []string{}
-			json.Unmarshal(resp.Body.Bytes(), &ur)
+			err := json.Unmarshal(resp.Body.Bytes(), &ur)
+			if err != nil {
+				t.Errorf("Failed to unmarshal response: %s", err)
+			}
 
 			if len(ur) != len(testCase.Results) {
 				t.Errorf("Invalid number of label values for %s, got %d, expected %d", url, len(ur), len(testCase.Results))

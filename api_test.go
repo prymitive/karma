@@ -844,7 +844,10 @@ func TestVerifyAllGroups(t *testing.T) {
 		}
 
 		ur := models.AlertsResponse{}
-		json.Unmarshal(resp.Body.Bytes(), &ur)
+		err := json.Unmarshal(resp.Body.Bytes(), &ur)
+		if err != nil {
+			t.Errorf("Failed to unmarshal response: %s", err)
+		}
 
 		if len(ur.AlertGroups) != len(groupTests) {
 			t.Errorf("[%s] Got %d alert(s) in response, expected %d",
