@@ -82,17 +82,32 @@ func (config *configSchema) Read() {
 
 	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
 	pflag.Parse()
-	v.BindPFlags(pflag.CommandLine)
+
+	err := v.BindPFlags(pflag.CommandLine)
+	if err != nil {
+		log.Errorf("Failed to bind flag set to the configuration: %s", err)
+	}
 
 	v.AutomaticEnv()
 	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 
 	// special envs
 	// HOST and PORT is used by gin
-	v.BindEnv("listen.address", "HOST")
-	v.BindEnv("listen.port", "PORT")
+	err = v.BindEnv("listen.address", "HOST")
+	if err != nil {
+		log.Errorf("Failed to bind listen.address config key to the HOST env variable", err)
+	}
+
+	err = v.BindEnv("listen.port", "PORT")
+	if err != nil {
+		log.Errorf("Failed to bind listen.port config key to the PORT env variable", err)
+	}
+
 	// raven-go expects this
-	v.BindEnv("sentry.private", "SENTRY_DSN")
+	err = v.BindEnv("sentry.private", "SENTRY_DSN")
+	if err != nil {
+		log.Errorf("Failed to bind sentry.private config key to the SENTRY_DSN env variable", err)
+	}
 
 	configFile := v.GetString("config.file")
 	configDir := v.GetString("config.dir")
@@ -100,7 +115,7 @@ func (config *configSchema) Read() {
 	v.SetConfigName(configFile)
 	v.AddConfigPath(configDir)
 	log.Infof("Reading configuration file %s.yaml", path.Join(configDir, configFile))
-	err := v.ReadInConfig()
+	err = v.ReadInConfig()
 	if v.ConfigFileUsed() != "" && err != nil {
 		log.Fatal(err)
 	}
