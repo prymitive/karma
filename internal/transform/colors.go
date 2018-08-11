@@ -43,8 +43,7 @@ func ColorLabel(colorStore models.LabelsColorMap, key string, val string) {
 			}
 			// check if color is bright or dark and pick the right background
 			// uses https://www.w3.org/WAI/ER/WD-AERT/#color-contrast method
-			var brightness int32
-			brightness = ((int32(bc.Red) * 299) + (int32(bc.Green) * 587) + (int32(bc.Blue) * 114)) / 1000
+			brightness := ((int32(bc.Red) * 299) + (int32(bc.Green) * 587) + (int32(bc.Blue) * 114)) / 1000
 			var fc models.Color
 			if brightness <= 125 {
 				// background color is dark, use white font
