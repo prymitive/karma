@@ -132,9 +132,7 @@ func (m AlertMapper) Decode(source io.ReadCloser) ([]models.AlertGroup, error) {
 		}
 	}
 	for _, rcv := range receivers {
-		for _, ag := range rcv.Groups {
-			groups = append(groups, ag)
-		}
+		groups = append(groups, rcv.Groups...)
 	}
 	return groups, nil
 }
