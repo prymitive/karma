@@ -9,6 +9,7 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { NavBar } from "Components/NavBar";
 import { Grid } from "Components/Grid";
 import { Fetcher } from "Components/Fetcher";
+import { FaviconBadge } from "Components/FaviconBadge";
 
 import "./App.css";
 
@@ -49,6 +50,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
+        <FaviconBadge alertStore={this.alertStore} />
         <NavBar
           alertStore={this.alertStore}
           settingsStore={this.settingsStore}
