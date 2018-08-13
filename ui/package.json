@@ -52,7 +52,7 @@
     "watch-css": "npm run build-css && node_modules/.bin/node-sass-chokidar src/ -o src/ --watch --recursive"
   },
   "devDependencies": {
-    "eslint-plugin-react": "7.10.0",
+    "eslint-plugin-react": "7.11.0",
     "markdownlint-cli": "0.12.0",
     "node-sass-chokidar": "1.3.3",
     "react-test-renderer": "16.4.2"
