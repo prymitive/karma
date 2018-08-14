@@ -1,0 +1,64 @@
+{
+    "data": [
+        {
+            "comment": "Silenced instance",
+            "createdBy": "john@example.com",
+            "endsAt": "2063-01-01T00:00:00Z",
+            "id": "53b23b18-eb32-492c-816d-0db910bdafb1",
+            "matchers": [
+                {
+                    "isRegex": false,
+                    "name": "instance",
+                    "value": "web1"
+                }
+            ],
+            "startsAt": "2018-08-14T17:36:40.003722418Z",
+            "status": {
+                "state": "active"
+            },
+            "updatedAt": "2018-08-14T17:36:40.0037313Z"
+        },
+        {
+            "comment": "Silenced Host_Down alerts in the dev cluster",
+            "createdBy": "john@example.com",
+            "endsAt": "2063-01-01T00:00:00Z",
+            "id": "4cf5fd82-1edd-4169-99d1-ff8415e72179",
+            "matchers": [
+                {
+                    "isRegex": false,
+                    "name": "alertname",
+                    "value": "Host_Down"
+                },
+                {
+                    "isRegex": false,
+                    "name": "cluster",
+                    "value": "dev"
+                }
+            ],
+            "startsAt": "2018-08-14T17:36:40.007903563Z",
+            "status": {
+                "state": "active"
+            },
+            "updatedAt": "2018-08-14T17:36:40.007909561Z"
+        },
+        {
+            "comment": "Silenced server7",
+            "createdBy": "john@example.com",
+            "endsAt": "2063-01-01T00:00:00Z",
+            "id": "5d988cf7-c076-43c9-8c98-7724bc07894d",
+            "matchers": [
+                {
+                    "isRegex": false,
+                    "name": "instance",
+                    "value": "server7"
+                }
+            ],
+            "startsAt": "2018-08-14T17:36:40.013397062Z",
+            "status": {
+                "state": "active"
+            },
+            "updatedAt": "2018-08-14T17:36:40.013404352Z"
+        }
+    ],
+    "status": "success"
+}
