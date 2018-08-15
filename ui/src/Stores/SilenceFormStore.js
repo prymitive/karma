@@ -114,6 +114,11 @@ class SilenceFormStore {
       },
 
       verifyStarEnd() {
+        const now = moment().second(0);
+        if (this.startsAt.isBefore(now)) {
+          this.startsAt = now;
+        }
+
         if (this.endsAt.isSameOrBefore(this.startsAt)) {
           this.endsAt = moment(this.startsAt).add(1, "minutes");
         }
@@ -138,12 +143,11 @@ class SilenceFormStore {
 
       incDuration(minutes) {
         this.endsAt = moment(this.endsAt).add(minutes, "minutes");
+        this.verifyStarEnd();
       },
       decDuration(minutes) {
-        const newEndsAt = moment(this.endsAt).subtract(minutes, "minutes");
-        if (newEndsAt.isAfter(this.startsAt)) {
-          this.endsAt = newEndsAt;
-        }
+        this.endsAt = moment(this.endsAt).subtract(minutes, "minutes");
+        this.verifyStarEnd();
       },
 
       get toAlertmanagerPayload() {
@@ -163,7 +167,7 @@ class SilenceFormStore {
             .millisecond(0)
             .toISOString(),
           endsAt: this.endsAt
-            .second(59)
+            .second(0)
             .millisecond(0)
             .toISOString(),
           createdBy: this.author,

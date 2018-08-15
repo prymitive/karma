@@ -13,12 +13,32 @@ import { HourMinute } from "./HourMinute";
 
 import "./index.css";
 
+const OffsetBadge = ({ startDate, endDate, prefixLabel }) => {
+  if (!startDate) startDate = moment().seconds(0);
+
+  const days = endDate.diff(startDate, "days");
+  const hours = endDate.diff(startDate, "hours") % 24;
+  const minutes = endDate.diff(startDate, "minutes") % 60;
+
+  return (
+    <span className="badge badge-light">
+      {days <= 0 && hours <= 0 && minutes <= 0 ? "now" : prefixLabel}
+      {days > 0 ? `${days}d ` : null}
+      {hours > 0 ? `${hours}h ` : null}
+      {minutes > 0 ? `${minutes}m ` : null}
+    </span>
+  );
+};
+OffsetBadge.propTypes = {
+  startDate: PropTypes.instanceOf(moment),
+  endDate: PropTypes.instanceOf(moment).isRequired,
+  prefixLabel: PropTypes.string.isRequired
+};
+
 const Tab = ({ title, active, onClick }) => (
   <li className="nav-item">
     <a
-      className={`nav-link cursor-pointer ${
-        active ? "active text-white" : "text-primary"
-      }`}
+      className={`nav-link cursor-pointer ${active ? "active" : ""}`}
       onClick={onClick}
     >
       {title}
@@ -42,8 +62,8 @@ const TabContentStart = observer(({ silenceFormStore }) => {
     <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2 ">
       <DatePicker
         inline
-        todayButton={"Now"}
-        minDate={moment()}
+        todayButton={"Today"}
+        minDate={moment().second(0)}
         selected={silenceFormStore.data.startsAt}
         onChange={val => {
           silenceFormStore.data.startsAt = moment(val);
@@ -66,8 +86,10 @@ const TabContentEnd = observer(({ silenceFormStore }) => {
     <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2 ">
       <DatePicker
         inline
-        todayButton={"Now"}
-        minDate={moment()}
+        todayButton={"Today"}
+        minDate={moment()
+          .second(0)
+          .add(1, "minutes")}
         selected={silenceFormStore.data.endsAt}
         onChange={val => {
           silenceFormStore.data.endsAt = moment(val);
@@ -84,6 +106,16 @@ const TabContentEnd = observer(({ silenceFormStore }) => {
     </div>
   );
 });
+
+// calculate value for duration increase and decrease buttons using a goal step
+const CalculateChangeValue = (currentValue, step) => {
+  // if current value is less than step (but >0) then use 1
+  if (currentValue > 0 && currentValue < step) {
+    return 1;
+  }
+  // otherwise use step or a value that moves current value to the next step
+  return step - (currentValue % step) || step;
+};
 
 const TabContentDuration = observer(({ silenceFormStore }) => {
   return (
@@ -103,8 +135,16 @@ const TabContentDuration = observer(({ silenceFormStore }) => {
       <Duration
         label="minutes"
         value={silenceFormStore.data.toDuration.minutes}
-        onInc={() => silenceFormStore.data.incDuration(1)}
-        onDec={() => silenceFormStore.data.decDuration(1)}
+        onInc={() =>
+          silenceFormStore.data.incDuration(
+            CalculateChangeValue(silenceFormStore.data.toDuration.minutes, 5)
+          )
+        }
+        onDec={() =>
+          silenceFormStore.data.decDuration(
+            CalculateChangeValue(silenceFormStore.data.toDuration.minutes, 5)
+          )
+        }
       />
     </div>
   );
@@ -146,17 +186,42 @@ const DateTimeSelect = observer(
         <React.Fragment>
           <ul className="nav nav-tabs nav-fill">
             <Tab
-              title="Start"
+              title={
+                <React.Fragment>
+                  <span className="mr-1">Starts</span>
+                  <OffsetBadge
+                    prefixLabel="in "
+                    endDate={silenceFormStore.data.startsAt}
+                  />
+                </React.Fragment>
+              }
               active={this.tab.current === TabNames.Start}
               onClick={this.tab.setStart}
             />
             <Tab
-              title="End"
+              title={
+                <React.Fragment>
+                  <span className="mr-1">Ends</span>
+                  <OffsetBadge
+                    prefixLabel="in "
+                    endDate={silenceFormStore.data.endsAt}
+                  />
+                </React.Fragment>
+              }
               active={this.tab.current === TabNames.End}
               onClick={this.tab.setEnd}
             />
             <Tab
-              title="Duration"
+              title={
+                <React.Fragment>
+                  <span className="mr-1">Duration</span>
+                  <OffsetBadge
+                    prefixLabel=""
+                    startDate={silenceFormStore.data.startsAt}
+                    endDate={silenceFormStore.data.endsAt}
+                  />
+                </React.Fragment>
+              }
               active={this.tab.current === TabNames.Duration}
               onClick={this.tab.setDuration}
             />
