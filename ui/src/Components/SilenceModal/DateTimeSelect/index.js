@@ -16,9 +16,7 @@ import "./index.css";
 const Tab = ({ title, active, onClick }) => (
   <li className="nav-item">
     <a
-      className={`nav-link cursor-pointer ${
-        active ? "active text-white" : "text-primary"
-      }`}
+      className={`nav-link cursor-pointer ${active ? "active" : ""}`}
       onClick={onClick}
     >
       {title}
