@@ -114,6 +114,11 @@ class SilenceFormStore {
       },
 
       verifyStarEnd() {
+        const now = moment().second(0);
+        if (this.startsAt.isBefore(now)) {
+          this.startsAt = now;
+        }
+
         if (this.endsAt.isSameOrBefore(this.startsAt)) {
           this.endsAt = moment(this.startsAt).add(1, "minutes");
         }
