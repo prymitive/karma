@@ -11,6 +11,9 @@ $link-color: #7b8a8b; // $gray-700
 // make dark darker, default it's $gray-700
 $dark: #3b4247;
 
+// fix active tab color, for some reason it ends up with $primary as bg color
+$nav-tabs-link-active-bg: #fff;
+
 @import "../node_modules/bootswatch/dist/flatly/variables";
 @import "../node_modules/bootstrap/scss/bootstrap";
 @import "../node_modules/bootswatch/dist/flatly/bootswatch";
