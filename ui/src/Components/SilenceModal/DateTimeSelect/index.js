@@ -83,6 +83,16 @@ const TabContentEnd = observer(({ silenceFormStore }) => {
   );
 });
 
+// calculate value for duration increase and decrease buttons using a goal step
+const CalculateChangeValue = (currentValue, step) => {
+  // if current value is less than step (but >0) then use 1
+  if (currentValue > 0 && currentValue < step) {
+    return 1;
+  }
+  // otherwise use step or a value that moves current value to the next step
+  return step - (currentValue % step) || step;
+};
+
 const TabContentDuration = observer(({ silenceFormStore }) => {
   return (
     <div className="d-flex flex-sm-row flex-column justify-content-around mt-2 mx-3">
@@ -101,8 +111,16 @@ const TabContentDuration = observer(({ silenceFormStore }) => {
       <Duration
         label="minutes"
         value={silenceFormStore.data.toDuration.minutes}
-        onInc={() => silenceFormStore.data.incDuration(1)}
-        onDec={() => silenceFormStore.data.decDuration(1)}
+        onInc={() =>
+          silenceFormStore.data.incDuration(
+            CalculateChangeValue(silenceFormStore.data.toDuration.minutes, 5)
+          )
+        }
+        onDec={() =>
+          silenceFormStore.data.decDuration(
+            CalculateChangeValue(silenceFormStore.data.toDuration.minutes, 5)
+          )
+        }
       />
     </div>
   );
