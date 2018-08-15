@@ -50,20 +50,24 @@ class SilenceFormStore {
       endsAt: moment().add(1, "hour"),
       comment: "",
       author: "",
+
       resetProgress() {
         this.inProgress = false;
       },
+
       // append a new empty matcher to the list
       addEmptyMatcher() {
         let m = NewEmptyMatcher();
         this.matchers.push(m);
       },
+
       deleteMatcher(id) {
         // only delete matchers if we have more than 1
         if (this.matchers.length > 1) {
           this.matchers = this.matchers.filter(m => m.id !== id);
         }
       },
+
       fillMatchersFromGroup(group) {
         let matchers = [];
 
@@ -108,6 +112,40 @@ class SilenceFormStore {
 
         this.matchers = matchers;
       },
+
+      verifyStarEnd() {
+        if (this.endsAt.isSameOrBefore(this.startsAt)) {
+          this.endsAt = moment(this.startsAt).add(1, "minutes");
+        }
+      },
+      incStart(minutes) {
+        this.startsAt = moment(this.startsAt).add(minutes, "minutes");
+        this.verifyStarEnd();
+      },
+      decStart(minutes) {
+        this.startsAt = moment(this.startsAt).subtract(minutes, "minutes");
+        this.verifyStarEnd();
+      },
+
+      incEnd(minutes) {
+        this.endsAt = moment(this.endsAt).add(minutes, "minutes");
+        this.verifyStarEnd();
+      },
+      decEnd(minutes) {
+        this.endsAt = moment(this.endsAt).subtract(minutes, "minutes");
+        this.verifyStarEnd();
+      },
+
+      incDuration(minutes) {
+        this.endsAt = moment(this.endsAt).add(minutes, "minutes");
+      },
+      decDuration(minutes) {
+        const newEndsAt = moment(this.endsAt).subtract(minutes, "minutes");
+        if (newEndsAt.isAfter(this.startsAt)) {
+          this.endsAt = newEndsAt;
+        }
+      },
+
       get toAlertmanagerPayload() {
         const payload = {
           matchers: this.matchers.map(m => ({
@@ -132,6 +170,14 @@ class SilenceFormStore {
           comment: this.comment
         };
         return payload;
+      },
+      get toDuration() {
+        const data = {
+          days: this.endsAt.diff(this.startsAt, "days"),
+          hours: this.endsAt.diff(this.startsAt, "hours") % 24,
+          minutes: this.endsAt.diff(this.startsAt, "minutes") % 60
+        };
+        return data;
       }
     },
     {
@@ -139,7 +185,15 @@ class SilenceFormStore {
       addEmptyMatcher: action.bound,
       deleteMatcher: action.bound,
       fillMatchersFromGroup: action.bound,
-      toAlertmanagerPayload: computed
+      verifyStarEnd: action.bound,
+      incStart: action.bound,
+      decStart: action.bound,
+      incEnd: action.bound,
+      decEnd: action.bound,
+      incDuration: action.bound,
+      decDuration: action.bound,
+      toAlertmanagerPayload: computed,
+      toDuration: computed
     },
     { name: "Silence form store" }
   );

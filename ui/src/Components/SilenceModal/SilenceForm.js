@@ -14,7 +14,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 
 import { AlertManagerInput } from "./AlertManagerInput";
 import { SilenceMatch } from "./SilenceMatch";
-import { SilenceStartEnd } from "./SilenceStartEnd";
+import { DateTimeSelect } from "./DateTimeSelect";
 import { SilencePreview } from "./SilencePreview";
 
 const IconInput = ({ icon, placeholder, value, onChange }) => (
@@ -124,7 +124,7 @@ const SilenceForm = observer(
           >
             <FontAwesomeIcon icon={faPlus} />
           </button>
-          <SilenceStartEnd silenceFormStore={silenceFormStore} />
+          <DateTimeSelect silenceFormStore={silenceFormStore} />
           <IconInput
             placeholder="Author"
             icon={faUser}
