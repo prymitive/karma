@@ -20,44 +20,46 @@ const Duration = observer(
       const { value, label, onInc, onDec } = this.props;
 
       return (
-        <table>
-          <tbody>
-            <tr>
-              <td className="text-center">
-                <span onClick={onInc}>
-                  <FontAwesomeIcon
-                    icon={faAngleUp}
-                    size="2x"
-                    className="text-muted cursor-pointer"
-                  />
-                </span>
-              </td>
-              <td width="50%" />
-            </tr>
-            <tr>
-              <td className="text-center">
-                <h2>{value}</h2>
-              </td>
-              <td width="50%">
-                {label ? (
-                  <span className="text-muted ml-2">{label}</span>
-                ) : null}
-              </td>
-            </tr>
-            <tr>
-              <td className="text-center">
-                <span onClick={onDec}>
-                  <FontAwesomeIcon
-                    icon={faAngleDown}
-                    size="2x"
-                    className="text-muted cursor-pointer"
-                  />
-                </span>
-              </td>
-              <td width="50%" />
-            </tr>
-          </tbody>
-        </table>
+        <div>
+          <table className="w-100">
+            <tbody>
+              <tr>
+                <td className="w-50 text-center">
+                  <span onClick={onInc}>
+                    <FontAwesomeIcon
+                      icon={faAngleUp}
+                      size="2x"
+                      className="text-muted cursor-pointer"
+                    />
+                  </span>
+                </td>
+                <td className="w-50" />
+              </tr>
+              <tr>
+                <td className="w-50 text-center">
+                  <h2>{value}</h2>
+                </td>
+                <td className="w-50">
+                  {label ? (
+                    <span className="text-muted ml-2">{label}</span>
+                  ) : null}
+                </td>
+              </tr>
+              <tr>
+                <td className="w-50 text-center">
+                  <span onClick={onDec}>
+                    <FontAwesomeIcon
+                      icon={faAngleDown}
+                      size="2x"
+                      className="text-muted cursor-pointer"
+                    />
+                  </span>
+                </td>
+                <td className="w-50" />
+              </tr>
+            </tbody>
+          </table>
+        </div>
       );
     }
   }
