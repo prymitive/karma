@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUndoAlt } from "@fortawesome/free-solid-svg-icons/faUndoAlt";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 
 import { SilenceSubmitProgress } from "./SilenceSubmitProgress";
 
@@ -29,11 +29,11 @@ class SilenceSubmitController extends Component {
         <div className="d-flex flex-row-reverse">
           <button
             type="button"
-            className="btn btn-outline-success"
+            className="btn btn-outline-primary"
             onClick={silenceFormStore.data.resetProgress}
           >
-            <FontAwesomeIcon icon={faUndoAlt} className="pr-1" />
-            Reset form
+            <FontAwesomeIcon icon={faArrowLeft} className="pr-1" />
+            Back
           </button>
         </div>
       </React.Fragment>

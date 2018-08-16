@@ -17,7 +17,14 @@ import { SilenceMatch } from "./SilenceMatch";
 import { DateTimeSelect } from "./DateTimeSelect";
 import { SilencePreview } from "./SilencePreview";
 
-const IconInput = ({ icon, placeholder, value, onChange }) => (
+const IconInput = ({
+  type,
+  autoComplete,
+  icon,
+  placeholder,
+  value,
+  onChange
+}) => (
   <div className="input-group mb-3">
     <div className="input-group-prepend">
       <span className="input-group-text">
@@ -25,17 +32,19 @@ const IconInput = ({ icon, placeholder, value, onChange }) => (
       </span>
     </div>
     <input
-      type="text"
+      type={type}
       className="form-control"
       placeholder={placeholder}
       value={value}
       required
-      autoComplete="on"
+      autoComplete={autoComplete}
       onChange={onChange}
     />
   </div>
 );
 IconInput.propTypes = {
+  type: PropTypes.string.isRequired,
+  autoComplete: PropTypes.string.isRequired,
   icon: PropTypes.object.isRequired,
   placeholder: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
@@ -100,7 +109,7 @@ const SilenceForm = observer(
       const { alertStore, silenceFormStore } = this.props;
 
       return (
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} autoComplete="on">
           <div className="mb-3">
             <AlertManagerInput
               alertStore={alertStore}
@@ -126,12 +135,16 @@ const SilenceForm = observer(
           </button>
           <DateTimeSelect silenceFormStore={silenceFormStore} />
           <IconInput
-            placeholder="Author"
+            type="email"
+            autoComplete="email"
+            placeholder="Author email"
             icon={faUser}
             value={silenceFormStore.data.author}
             onChange={this.onAuthorChange}
           />
           <IconInput
+            type="text"
+            autoComplete="on"
             placeholder="Comment"
             icon={faCommentDots}
             value={silenceFormStore.data.comment}
