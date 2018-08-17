@@ -7,4 +7,3 @@ ui/build
 ui/coverage
 ui/node_modules
 vendor
-Dockerfile.web

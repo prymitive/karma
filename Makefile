@@ -149,3 +149,9 @@ greenkeeper-lockfile:
 	npm install -g greenkeeper-lockfile@2
 	cd ui && greenkeeper-lockfile-update
 	cd ui && greenkeeper-lockfile-upload
+
+.PHONY: heroku
+heroku:
+	docker pull lmierzwa/unsee:latest
+	heroku container:push web -R
+	heroku container:release web
