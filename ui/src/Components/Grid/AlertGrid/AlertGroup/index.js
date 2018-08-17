@@ -157,7 +157,11 @@ const AlertGroup = observer(
         >
           <div className="components-grid-alertgrid-alertgroup p-1">
             <div className="card">
-              <div className="card-body px-2 pt-2 pb-1">
+              <div
+                className={`card-body ${
+                  this.collapse.value ? "p-2" : "px-2 pt-2 pb-1"
+                }`}
+              >
                 <GroupHeader
                   collapseStore={this.collapse}
                   group={group}
