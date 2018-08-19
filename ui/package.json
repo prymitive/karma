@@ -31,6 +31,7 @@
     "react-datepicker": "1.6.0",
     "react-dom": "16.5.0",
     "react-highlighter": "0.4.3",
+    "react-hint": "3.1.1",
     "react-input-range": "1.3.0",
     "react-json-pretty": "1.7.9",
     "react-linkify": "0.2.2",

@@ -45,7 +45,11 @@ const MainModal = observer(
       return (
         <React.Fragment>
           <li className="nav-item">
-            <a className="nav-link cursor-pointer" onClick={this.toggle.toggle}>
+            <a
+              className="nav-link cursor-pointer"
+              onClick={this.toggle.toggle}
+              data-tooltip="Open settings"
+            >
               <FontAwesomeIcon icon={faCog} />
             </a>
           </li>

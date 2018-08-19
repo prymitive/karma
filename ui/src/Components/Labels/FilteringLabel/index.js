@@ -18,6 +18,7 @@ const FilteringLabel = inject("alertStore")(
             )} mw-100`}
             style={this.getColorStyle(name, value)}
             onClick={e => this.handleClick(e)}
+            data-tooltip="Only show alerts matching this label"
           >
             {name}: {value}
           </span>

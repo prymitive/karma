@@ -4,7 +4,9 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
 "
 <div class=\\"card-footer px-2 py-1\\">
   <div class=\\"mb-1\\">
-    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\">
+    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\"
+         data-tooltip=\\"Hide annotation\\"
+    >
       <svg aria-hidden=\\"true\\"
            data-prefix=\\"fas\\"
            data-icon=\\"search-minus\\"
@@ -25,7 +27,9 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
         This is summary
       </span>
     </div>
-    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\">
+    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\"
+         data-tooltip=\\"Expand annotation\\"
+    >
       <svg aria-hidden=\\"true\\"
            data-prefix=\\"fas\\"
            data-icon=\\"search-plus\\"
@@ -42,16 +46,24 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
       hidden
     </div>
   </div>
-  <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
+  <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\"
+        data-tooltip=\\"Only show alerts matching this label\\"
+  >
     label1: foo
   </span>
-  <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
+  <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\"
+        data-tooltip=\\"Only show alerts matching this label\\"
+  >
     label2: bar
   </span>
-  <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
+  <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\"
+        data-tooltip=\\"Only show alerts matching this label\\"
+  >
     @alertmanager: default
   </span>
-  <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
+  <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\"
+        data-tooltip=\\"Only show alerts matching this label\\"
+  >
     @receiver: by-name
   </span>
   <a href=\\"http://link.example.com\\"

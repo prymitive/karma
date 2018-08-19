@@ -242,6 +242,7 @@ const Silence = inject("alertStore")(
                   <a
                     className="float-right cursor-pointer"
                     onClick={this.collapse.toggle}
+                    data-tooltip="Collapse/expand silence details"
                   >
                     <FontAwesomeIcon
                       icon={this.collapse.value ? faChevronUp : faChevronDown}

@@ -46,6 +46,7 @@ const GroupHeader = observer(
             <a
               className="text-muted cursor-pointer badge text-nowrap text-truncate pr-0"
               onClick={collapseStore.toggle}
+              data-tooltip="Collapse/expand group details"
             >
               <FontAwesomeIcon
                 icon={collapseStore.value ? faChevronUp : faChevronDown}

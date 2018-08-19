@@ -145,6 +145,7 @@ const SilenceForm = observer(
             type="button"
             className="btn btn-outline-secondary mb-3"
             onClick={this.addMore}
+            data-tooltip="Add another label matching rule"
           >
             <FontAwesomeIcon icon={faPlus} />
           </button>
@@ -169,6 +170,7 @@ const SilenceForm = observer(
             <a
               className="btn px-0 cursor-pointer text-muted"
               onClick={this.previewCollapse.toggle}
+              data-tooltip="Preview silence request payload"
             >
               <FontAwesomeIcon
                 icon={this.previewCollapse.hidden ? faChevronUp : faChevronDown}

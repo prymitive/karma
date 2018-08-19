@@ -69,7 +69,11 @@ const FilterInputLabel = observer(
       }
 
       return (
-        <span className={classNames.join(" ")} style={style}>
+        <span
+          className={classNames.join(" ")}
+          style={style}
+          data-tooltip="Click to edit this filter"
+        >
           <button
             type="button"
             className="close ml-1"

@@ -49,7 +49,11 @@ const SilenceModal = observer(
       return (
         <React.Fragment>
           <li className="nav-item">
-            <a className="nav-link cursor-pointer" onClick={this.toggleModal}>
+            <a
+              className="nav-link cursor-pointer"
+              onClick={this.toggleModal}
+              data-tooltip="Add new silence"
+            >
               <FontAwesomeIcon icon={faBellSlash} />
             </a>
           </li>

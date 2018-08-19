@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 
 import { Provider } from "mobx-react";
 
+import ReactHintFactory from "react-hint";
+import "react-hint/css/index.css";
+
 import { AlertStore, DecodeLocationSearch } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -12,6 +15,8 @@ import { Fetcher } from "Components/Fetcher";
 import { FaviconBadge } from "Components/FaviconBadge";
 
 import "./App.css";
+
+const ReactHint = ReactHintFactory(React);
 
 class App extends Component {
   static propTypes = {
@@ -50,6 +55,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
+        <ReactHint autoPosition events delay={100} attribute="data-tooltip" />
         <FaviconBadge alertStore={this.alertStore} />
         <NavBar
           alertStore={this.alertStore}

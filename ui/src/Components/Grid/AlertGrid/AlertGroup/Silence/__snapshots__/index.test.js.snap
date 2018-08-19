@@ -17,7 +17,9 @@ exports[`<Silence /> matches snapshot when data is present in alertStore 1`] = `
     <span class=\\"text-muted my-1\\">
       Fake silence
       <span class=\\"blockquote-footer pt-1\\">
-        <a class=\\"float-right cursor-pointer\\">
+        <a class=\\"float-right cursor-pointer\\"
+           data-tooltip=\\"Collapse/expand silence details\\"
+        >
           <svg aria-hidden=\\"true\\"
                data-prefix=\\"fas\\"
                data-icon=\\"chevron-up\\"
@@ -65,7 +67,9 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
     <span class=\\"text-muted my-1\\">
       Fake silence
       <span class=\\"blockquote-footer pt-1\\">
-        <a class=\\"float-right cursor-pointer\\">
+        <a class=\\"float-right cursor-pointer\\"
+           data-tooltip=\\"Collapse/expand silence details\\"
+        >
           <svg aria-hidden=\\"true\\"
                data-prefix=\\"fas\\"
                data-icon=\\"chevron-down\\"
@@ -87,7 +91,9 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
     </span>
   </div>
   <div class=\\"mt-1\\">
-    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
+    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\"
+          data-tooltip=\\"Only show alerts matching this label\\"
+    >
       @alertmanager: default
     </span>
     <a class=\\"badge badge-secondary text-nowrap text-truncate px-1 mr-1\\"
