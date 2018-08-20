@@ -9,7 +9,9 @@ import qs from "qs";
 // generate URL for the UI with a set of filters
 function FormatAPIFilterQuery(filters) {
   return qs.stringify(
-    Object.assign(DecodeLocationSearch().params, { q: filters }),
+    Object.assign(DecodeLocationSearch(window.location.search).params, {
+      q: filters
+    }),
     {
       encodeValuesOnly: true, // don't encode q[]
       indices: false // go-gin doesn't support parsing q[0]=foo&q[1]=bar
@@ -23,12 +25,14 @@ function FormatUnseeBackendURI(path) {
   return `${uri}/${path}`;
 }
 
-function DecodeLocationSearch() {
+// takes the '?foo=bar&foo=baz' part of http://example.com?foo=bar&foo=baz
+// and decodes it into a dict with some extra metadata
+function DecodeLocationSearch(searchString) {
   let defaultsUsed = true;
   let params = { q: [] };
 
-  if (window.location.search !== "") {
-    const parsed = qs.parse(window.location.search.split("?")[1]);
+  if (searchString !== "") {
+    const parsed = qs.parse(searchString.split("?")[1]);
     params = Object.assign(params, parsed);
 
     if (parsed.q !== undefined) {
@@ -36,7 +40,8 @@ function DecodeLocationSearch() {
       if (parsed.q === "") {
         params.q = [];
       } else if (Array.isArray(parsed.q)) {
-        params.q = parsed.q;
+        // filter out empty strings, so 'q=' doesn't end up [""] but rather []
+        params.q = parsed.q.filter(v => v !== "");
       } else {
         params.q = [parsed.q];
       }
