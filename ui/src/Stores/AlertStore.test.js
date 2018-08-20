@@ -43,6 +43,78 @@ describe("AlertStore.status", () => {
   });
 });
 
+describe("AlertStore.filters", () => {
+  const formatEmptyFilter = raw => ({
+    applied: false,
+    isValid: true,
+    raw: raw,
+    hits: 0,
+    name: "",
+    matcher: "",
+    value: ""
+  });
+
+  it("addFilter('foo') should create a correct empty filter", () => {
+    const store = new AlertStore([]);
+    store.filters.addFilter("foo");
+    expect(store.filters.values).toHaveLength(1);
+    expect(store.filters.values[0]).toMatchObject(formatEmptyFilter("foo"));
+  });
+
+  it("removeFilter('foo') should remove passed filter if it's defined", () => {
+    const store = new AlertStore([]);
+    store.filters.addFilter("foo");
+    store.filters.removeFilter("foo");
+    expect(store.filters.values).toHaveLength(0);
+  });
+
+  it("removeFilter('foo') should not remove filters other than 'foo'", () => {
+    const store = new AlertStore([]);
+    store.filters.addFilter("bar");
+    store.filters.addFilter("foo");
+    store.filters.addFilter("baz");
+    store.filters.removeFilter("foo");
+    expect(store.filters.values).toHaveLength(2);
+    expect(store.filters.values[0]).toMatchObject(formatEmptyFilter("bar"));
+    expect(store.filters.values[1]).toMatchObject(formatEmptyFilter("baz"));
+  });
+
+  it("removeFilter('foo') should not remove any filter if 'foo' isn't defined", () => {
+    const store = new AlertStore([]);
+    store.filters.addFilter("bar");
+    store.filters.removeFilter("foo");
+    expect(store.filters.values).toHaveLength(1);
+    expect(store.filters.values[0]).toMatchObject(formatEmptyFilter("bar"));
+  });
+
+  it("replaceFilter('foo', 'bar') should not replace anything if filter list is empty", () => {
+    const store = new AlertStore([]);
+    store.filters.replaceFilter("foo", "bar");
+    expect(store.filters.values).toHaveLength(0);
+  });
+
+  it("replaceFilter('foo', 'new') should replace correct filter", () => {
+    const store = new AlertStore([]);
+    store.filters.addFilter("bar");
+    store.filters.addFilter("foo");
+    store.filters.addFilter("baz");
+    store.filters.replaceFilter("foo", "new");
+    expect(store.filters.values).toHaveLength(3);
+    expect(store.filters.values[0]).toMatchObject(formatEmptyFilter("bar"));
+    expect(store.filters.values[1]).toMatchObject(formatEmptyFilter("new"));
+    expect(store.filters.values[2]).toMatchObject(formatEmptyFilter("baz"));
+  });
+
+  it("replaceFilter('foo', 'bar') should not allow duplicates", () => {
+    const store = new AlertStore([]);
+    store.filters.addFilter("foo");
+    store.filters.addFilter("bar");
+    store.filters.replaceFilter("foo", "bar");
+    expect(store.filters.values).toHaveLength(1);
+    expect(store.filters.values[0]).toMatchObject(formatEmptyFilter("bar"));
+  });
+});
+
 describe("FormatUnseeBackendURI", () => {
   beforeEach(() => {
     // wipe REACT_APP_BACKEND_URI env on each run as it's used by some tests
