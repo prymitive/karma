@@ -41,32 +41,36 @@ func TestKnownLabelNames(t *testing.T) {
 		mockAlerts(version)
 		r := ginTestEngine()
 
-		req, _ := http.NewRequest("GET", "/labelNames.json", nil)
-		resp := httptest.NewRecorder()
-		r.ServeHTTP(resp, req)
-		if resp.Code != http.StatusOK {
-			t.Errorf("Invalid status code for request without any query: %d", resp.Code)
-		}
-
-		for _, testCase := range labelTests {
-			url := fmt.Sprintf("/labelNames.json?term=%s", testCase.Term)
-			req, _ := http.NewRequest("GET", url, nil)
+		// repeat test a few times to test cached responses
+		for i := 1; i <= 3; i++ {
+			req := httptest.NewRequest("GET", "/labelNames.json", nil)
 			resp := httptest.NewRecorder()
 			r.ServeHTTP(resp, req)
 
 			if resp.Code != http.StatusOK {
-				t.Errorf("GET %s returned status %d", url, resp.Code)
+				t.Errorf("Invalid status code for request without any query: %d", resp.Code)
 			}
 
-			ur := []string{}
-			err := json.Unmarshal(resp.Body.Bytes(), &ur)
-			if err != nil {
-				t.Errorf("Failed to unmarshal response: %s", err)
-			}
+			for _, testCase := range labelTests {
+				url := fmt.Sprintf("/labelNames.json?term=%s", testCase.Term)
+				req := httptest.NewRequest("GET", url, nil)
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
 
-			if len(ur) != len(testCase.Results) {
-				t.Errorf("Invalid number of label names for %s, got %d, expected %d", url, len(ur), len(testCase.Results))
-				t.Errorf("Results: %s", ur)
+				if resp.Code != http.StatusOK {
+					t.Errorf("GET %s returned status %d", url, resp.Code)
+				}
+
+				ur := []string{}
+				err := json.Unmarshal(resp.Body.Bytes(), &ur)
+				if err != nil {
+					t.Errorf("Failed to unmarshal response: %s", err)
+				}
+
+				if len(ur) != len(testCase.Results) {
+					t.Errorf("Invalid number of label names for %s, got %d, expected %d", url, len(ur), len(testCase.Results))
+					t.Errorf("Results: %s", ur)
+				}
 			}
 		}
 	}
@@ -99,32 +103,35 @@ func TestKnownLabelValues(t *testing.T) {
 		mockAlerts(version)
 		r := ginTestEngine()
 
-		req, _ := http.NewRequest("GET", "/labelValues.json", nil)
-		resp := httptest.NewRecorder()
-		r.ServeHTTP(resp, req)
-		if resp.Code != http.StatusBadRequest {
-			t.Errorf("Invalid status code for request without any query: %d", resp.Code)
-		}
-
-		for _, testCase := range valueTests {
-			url := fmt.Sprintf("/labelValues.json?name=%s", testCase.Name)
-			req, _ := http.NewRequest("GET", url, nil)
+		// repeat test a few times to test cached responses
+		for i := 1; i <= 3; i++ {
+			req := httptest.NewRequest("GET", "/labelValues.json", nil)
 			resp := httptest.NewRecorder()
 			r.ServeHTTP(resp, req)
-
-			if resp.Code != http.StatusOK {
-				t.Errorf("GET %s returned status %d", url, resp.Code)
+			if resp.Code != http.StatusBadRequest {
+				t.Errorf("Invalid status code for request without any query: %d", resp.Code)
 			}
 
-			ur := []string{}
-			err := json.Unmarshal(resp.Body.Bytes(), &ur)
-			if err != nil {
-				t.Errorf("Failed to unmarshal response: %s", err)
-			}
+			for _, testCase := range valueTests {
+				url := fmt.Sprintf("/labelValues.json?name=%s", testCase.Name)
+				req := httptest.NewRequest("GET", url, nil)
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
 
-			if len(ur) != len(testCase.Results) {
-				t.Errorf("Invalid number of label values for %s, got %d, expected %d", url, len(ur), len(testCase.Results))
-				t.Errorf("Results: %s", ur)
+				if resp.Code != http.StatusOK {
+					t.Errorf("GET %s returned status %d", url, resp.Code)
+				}
+
+				ur := []string{}
+				err := json.Unmarshal(resp.Body.Bytes(), &ur)
+				if err != nil {
+					t.Errorf("Failed to unmarshal response: %s", err)
+				}
+
+				if len(ur) != len(testCase.Results) {
+					t.Errorf("Invalid number of label values for %s, got %d, expected %d", url, len(ur), len(testCase.Results))
+					t.Errorf("Results: %s", ur)
+				}
 			}
 		}
 	}

@@ -222,11 +222,6 @@ func autocomplete(c *gin.Context) {
 	start := time.Now()
 
 	cacheKey := c.Request.RequestURI
-	if cacheKey == "" {
-		// FIXME c.Request.RequestURI is empty when running tests for some reason
-		// needs checking, below acts as a workaround
-		cacheKey = c.Request.URL.RawQuery
-	}
 
 	data, found := apiCache.Get(cacheKey)
 	if found {

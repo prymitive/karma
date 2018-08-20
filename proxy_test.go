@@ -108,7 +108,7 @@ func TestProxy(t *testing.T) {
 		if testCase.upstreamURI != "" {
 			httpmock.RegisterResponder(testCase.method, testCase.upstreamURI, httpmock.NewStringResponder(testCase.code, testCase.response))
 		}
-		req, _ := http.NewRequest(testCase.method, testCase.localPath, nil)
+		req := httptest.NewRequest(testCase.method, testCase.localPath, nil)
 		resp := newCloseNotifyingRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != testCase.code {
@@ -215,7 +215,7 @@ func TestProxyHeaders(t *testing.T) {
 			return httpmock.NewStringResponse(testCase.code, "ok"), nil
 		})
 
-		req, _ := http.NewRequest(testCase.method, testCase.localPath, nil)
+		req := httptest.NewRequest(testCase.method, testCase.localPath, nil)
 		resp := newCloseNotifyingRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != testCase.code {
