@@ -102,8 +102,15 @@ class AlertStore {
       replaceFilter(oldRaw, newRaw) {
         const index = this.values.findIndex(e => e.raw === oldRaw);
         if (index >= 0) {
-          this.values[index] = newUnappliedFilter(newRaw);
-          UpdateLocationSearch({ q: this.values.map(f => f.raw) });
+          // first check if we would create a duplicated filter
+          if (this.values.findIndex(e => e.raw === newRaw) >= 0) {
+            // we already have newRaw, simply drop oldRaw
+            this.removeFilter(oldRaw);
+          } else {
+            // no dups, continue with a swap
+            this.values[index] = newUnappliedFilter(newRaw);
+            UpdateLocationSearch({ q: this.values.map(f => f.raw) });
+          }
         }
       },
       setFilters(raws) {
