@@ -2,6 +2,7 @@
 .coverage
 .tests
 bindata_assetfs.go
+coverage.txt
 unsee
 ui/build
 ui/coverage

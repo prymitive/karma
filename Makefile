@@ -118,7 +118,10 @@ lint: lint-go lint-js lint-docs
 
 .PHONY: test-go
 test-go: .build/vendor.ok
-	go test -v -bench=. -benchmem -cover `go list ./... | grep -v /vendor/`
+	go test -v \
+		-bench=. -benchmem \
+		-cover -coverprofile=coverage.txt -covermode=atomic \
+		`go list ./... | grep -v /vendor/`
 
 .PHONY: test-js
 test-js: .build/deps-build-node.ok
