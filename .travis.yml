@@ -81,8 +81,8 @@ jobs:
         - git diff --exit-code
         # install bakelite, we can't "go get" a tag from github, so we fetch the binary
         - export BAKELITE_VERSION="v0.1.0"
-        - export BAKELITE_OS="linux"
-        - export BAKELITE_ARCH="amd64"
+        - export BAKELITE_OS=$(go env GOHOSTOS)
+        - export BAKELITE_ARCH="$(go env GOHOSTARCH)"
         - curl -L -o bakelite.tar.gz "https://github.com/terinjokes/bakelite/releases/download/${BAKELITE_VERSION}/bakelite-${BAKELITE_OS}-${BAKELITE_ARCH}.tar.gz"
         - tar -xf bakelite.tar.gz
         # and now compile using bakelite for all target archs
