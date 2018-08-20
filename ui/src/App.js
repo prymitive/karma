@@ -29,7 +29,7 @@ class App extends Component {
     let filters;
 
     // parse and decode request query args
-    const p = DecodeLocationSearch();
+    const p = DecodeLocationSearch(window.location.search);
 
     // p.defaultsUsed means that unsee URI didn't have ?q=foo query args
     if (p.defaultsUsed) {
