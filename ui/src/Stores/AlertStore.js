@@ -212,7 +212,7 @@ class AlertStore {
       });
   });
 
-  fetchWithThrottle = throttle(this.fetch, 500);
+  fetchWithThrottle = throttle(this.fetch, 300);
 
   parseAPIResponse = action(result => {
     if (result.error) {
