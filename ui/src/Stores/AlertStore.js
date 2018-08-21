@@ -220,18 +220,20 @@ class AlertStore {
       return;
     }
 
-    const queryFilters = new Set(
-      this.filters.values
-        .map(f => f.raw)
-        .slice()
-        .sort()
-    );
-    const responseFilters = new Set(result.filters.map(m => m.text).sort());
-    if (
-      JSON.stringify([...queryFilters]) !== JSON.stringify([...responseFilters])
-    ) {
+    const queryFilters = [
+      ...new Set(
+        this.filters.values
+          .map(f => f.raw)
+          .slice()
+          .sort()
+      )
+    ];
+    const responseFilters = [
+      ...new Set(result.filters.map(m => m.text).sort())
+    ];
+    if (JSON.stringify(queryFilters) !== JSON.stringify(responseFilters)) {
       console.info(
-        `Got response with filters=${responseFilters} while expecting results for ${queryFilters}, ignoring`
+        `Got response with filters '${responseFilters}' while expecting results for '${queryFilters}', ignoring`
       );
       return;
     }
