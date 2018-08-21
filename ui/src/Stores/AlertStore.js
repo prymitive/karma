@@ -192,31 +192,32 @@ class AlertStore {
     this.filters.setFilters(initialFilters);
   }
 
-  // fetch is throttled to once per 500ms
-  fetch = action(
-    throttle(() => {
-      this.status.setInProgress();
+  fetch = action(() => {
+    this.status.setInProgress();
 
-      const alertsURI =
-        FormatUnseeBackendURI("alerts.json?") +
-        FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
+    const alertsURI =
+      FormatUnseeBackendURI("alerts.json?") +
+      FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
 
-      fetch(alertsURI)
-        .then(result => result.json())
-        .then(result => {
-          this.parseAPIResponse(result);
-        })
-        .catch(err =>
-          this.handleFetchError(
-            `Request for ${alertsURI} failed with "${err.message}"`
-          )
+    return fetch(alertsURI)
+      .then(result => result.json())
+      .then(result => {
+        return this.parseAPIResponse(result);
+      })
+      .catch(err => {
+        console.trace(err);
+        return this.handleFetchError(
+          `Request for ${alertsURI} failed with "${err.message}"`
         );
-    }, 500)
-  );
+      });
+  });
+
+  fetchWithThrottle = throttle(this.fetch, 500);
 
   parseAPIResponse = action(result => {
     if (result.error) {
       this.handleFetchError(result.error);
+      return;
     }
 
     const queryFilters = new Set(
@@ -226,7 +227,9 @@ class AlertStore {
         .sort()
     );
     const responseFilters = new Set(result.filters.map(m => m.text).sort());
-    if (JSON.stringify(queryFilters) !== JSON.stringify(responseFilters)) {
+    if (
+      JSON.stringify([...queryFilters]) !== JSON.stringify([...responseFilters])
+    ) {
       console.info(
         `Got response with filters=${responseFilters} while expecting results for ${queryFilters}, ignoring`
       );
