@@ -28,7 +28,7 @@ const Fetcher = observer(
 
         this.interval = newInterval;
         this.timer = setInterval(
-          () => alertStore.fetch(),
+          () => alertStore.fetchWithThrottle(),
           this.interval * 1000
         );
       }
@@ -37,7 +37,7 @@ const Fetcher = observer(
     componentDidUpdate() {
       const { alertStore } = this.props;
 
-      alertStore.fetch();
+      alertStore.fetchWithThrottle();
 
       this.setTimer();
     }
@@ -45,7 +45,7 @@ const Fetcher = observer(
     componentDidMount() {
       const { alertStore } = this.props;
 
-      alertStore.fetch();
+      alertStore.fetchWithThrottle();
 
       this.setTimer();
     }
