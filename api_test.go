@@ -836,7 +836,7 @@ func TestVerifyAllGroups(t *testing.T) {
 		t.Logf("Testing API using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := ginTestEngine()
-		req, _ := http.NewRequest("GET", "/alerts.json", nil)
+		req := httptest.NewRequest("GET", "/alerts.json", nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != http.StatusOK {

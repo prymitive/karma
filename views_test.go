@@ -50,7 +50,7 @@ func ginTestEngine() *gin.Engine {
 func TestIndex(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()
-	req, _ := http.NewRequest("GET", "/", nil)
+	req := httptest.NewRequest("GET", "/", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
 	if resp.Code != http.StatusOK {
@@ -63,7 +63,7 @@ func TestIndexPrefix(t *testing.T) {
 	defer os.Unsetenv("LISTEN_PREFIX")
 	mockConfig()
 	r := ginTestEngine()
-	req, _ := http.NewRequest("GET", "/prefix/", nil)
+	req := httptest.NewRequest("GET", "/prefix/", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
 	if resp.Code != http.StatusOK {
@@ -90,7 +90,7 @@ func TestAlerts(t *testing.T) {
 		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := ginTestEngine()
-		req, _ := http.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
+		req := httptest.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != http.StatusOK {
@@ -160,7 +160,7 @@ func TestValidateAllAlerts(t *testing.T) {
 		t.Logf("Validating alerts.json response using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := ginTestEngine()
-		req, _ := http.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
+		req := httptest.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != http.StatusOK {
@@ -327,7 +327,7 @@ func TestAutocomplete(t *testing.T) {
 		mockAlerts(version)
 		r := ginTestEngine()
 
-		req, _ := http.NewRequest("GET", "/autocomplete.json", nil)
+		req := httptest.NewRequest("GET", "/autocomplete.json", nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != http.StatusBadRequest {
@@ -336,7 +336,7 @@ func TestAutocomplete(t *testing.T) {
 
 		for _, acTest := range acTests {
 			url := fmt.Sprintf("/autocomplete.json?term=%s", acTest.Term)
-			req, _ := http.NewRequest("GET", url, nil)
+			req := httptest.NewRequest("GET", url, nil)
 			resp := httptest.NewRecorder()
 			r.ServeHTTP(resp, req)
 
@@ -395,7 +395,7 @@ func TestStaticFiles(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()
 	for _, staticFileTest := range staticFileTests {
-		req, _ := http.NewRequest("GET", staticFileTest.path, nil)
+		req := httptest.NewRequest("GET", staticFileTest.path, nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != staticFileTest.code {
@@ -433,7 +433,7 @@ func TestStaticFilesPrefix(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()
 	for _, staticFileTest := range staticFilePrefixTests {
-		req, _ := http.NewRequest("GET", staticFileTest.path, nil)
+		req := httptest.NewRequest("GET", staticFileTest.path, nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != staticFileTest.code {
@@ -447,7 +447,7 @@ func TestGzipMiddleware(t *testing.T) {
 	r := ginTestEngine()
 	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
-		req, _ := http.NewRequest("GET", path, nil)
+		req := httptest.NewRequest("GET", path, nil)
 		req.Header.Set("Accept-Encoding", "gzip")
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
@@ -470,7 +470,7 @@ func TestGzipMiddlewareWithoutAcceptEncoding(t *testing.T) {
 	r := ginTestEngine()
 	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
-		req, _ := http.NewRequest("GET", path, nil)
+		req := httptest.NewRequest("GET", path, nil)
 		req.Header.Set("Accept-Encoding", "") // ensure that we don't pass anything up
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
