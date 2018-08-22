@@ -1,3 +1,8 @@
+import mockConsole from "jest-mock-console";
+
+// mock console
+mockConsole(["error", "warn", "info", "log", "trace"]);
+
 // localStorage is used for Settings store
 require("jest-localstorage-mock");
 

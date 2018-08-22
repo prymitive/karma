@@ -1,4 +1,3 @@
-import { ConsoleMock } from "__mocks__/Console";
 import { EmptyAPIResponse } from "__mocks__/Fetch";
 
 import {
@@ -192,7 +191,7 @@ describe("DecodeLocationSearch", () => {
 
 describe("AlertStore.fetch", () => {
   it("parseAPIResponse() rejects a response with mismatched filters", () => {
-    const consoleSpy = ConsoleMock("info");
+    const consoleSpy = jest.spyOn(console, "info");
 
     const response = EmptyAPIResponse();
     const store = new AlertStore([]);
@@ -202,7 +201,7 @@ describe("AlertStore.fetch", () => {
     // there should be no filters set on AlertStore instance since we started
     // with 0 and rejected response with 1 filter
     expect(store.filters.values).toHaveLength(0);
-    // console.info should have been called since we emited a warning
+    // console.info should have been called since we emited a log line
     expect(consoleSpy).toHaveBeenCalledTimes(1);
 
     consoleSpy.mockRestore();
@@ -242,7 +241,7 @@ describe("AlertStore.fetch", () => {
   });
 
   it("fetch() handles response that throws an error correctly", async () => {
-    const consoleSpy = ConsoleMock("trace");
+    const consoleSpy = jest.spyOn(console, "trace");
     fetch.mockReject("Fetch error");
 
     const store = new AlertStore([]);
