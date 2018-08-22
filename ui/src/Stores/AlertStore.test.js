@@ -1,5 +1,4 @@
-import { ConsoleMock } from "__mocks__/Console";
-import { FetchMock, EmptyAPIResponse } from "__mocks__/Fetch";
+import { EmptyAPIResponse } from "__mocks__/Fetch";
 
 import {
   AlertStore,
@@ -9,12 +8,11 @@ import {
 } from "Stores/AlertStore";
 
 beforeEach(() => {
-  // wipe REACT_APP_BACKEND_URI env on each run as it's used by some tests
-  delete process.env.REACT_APP_BACKEND_URI;
+  fetch.resetMocks();
 });
 
 afterEach(() => {
-  // same after each
+  // wipe REACT_APP_BACKEND_URI env on each run as it's used by some tests
   delete process.env.REACT_APP_BACKEND_URI;
 });
 
@@ -193,7 +191,7 @@ describe("DecodeLocationSearch", () => {
 
 describe("AlertStore.fetch", () => {
   it("parseAPIResponse() rejects a response with mismatched filters", () => {
-    const consoleSpy = ConsoleMock("info");
+    const consoleSpy = jest.spyOn(console, "info");
 
     const response = EmptyAPIResponse();
     const store = new AlertStore([]);
@@ -203,7 +201,7 @@ describe("AlertStore.fetch", () => {
     // there should be no filters set on AlertStore instance since we started
     // with 0 and rejected response with 1 filter
     expect(store.filters.values).toHaveLength(0);
-    // console.info should have been called since we emited a warning
+    // console.info should have been called since we emited a log line
     expect(consoleSpy).toHaveBeenCalledTimes(1);
 
     consoleSpy.mockRestore();
@@ -221,7 +219,7 @@ describe("AlertStore.fetch", () => {
 
   it("fetch() works with valid response", async () => {
     const response = EmptyAPIResponse();
-    global.fetch = FetchMock(response);
+    fetch.mockResponse(JSON.stringify(response));
 
     const store = new AlertStore(["label=value"]);
     await expect(store.fetch()).resolves.toBeUndefined();
@@ -229,18 +227,10 @@ describe("AlertStore.fetch", () => {
     expect(global.fetch).toHaveBeenCalledTimes(1);
     expect(store.status.value).toEqual(AlertStoreStatuses.Idle);
     expect(store.info.version).toBe("fakeVersion");
-
-    global.fetch.mockRestore();
   });
 
   it("fetch() handles response with error correctly", async () => {
-    global.fetch = jest.fn().mockImplementation(() =>
-      Promise.resolve({
-        json: () => ({
-          error: "Fetch error"
-        })
-      })
-    );
+    fetch.mockResponse(JSON.stringify({ error: "Fetch error" }));
 
     const store = new AlertStore([]);
     await expect(store.fetch()).resolves.toBeUndefined();
@@ -248,19 +238,11 @@ describe("AlertStore.fetch", () => {
     expect(global.fetch).toHaveBeenCalledTimes(1);
     expect(store.status.value).toEqual(AlertStoreStatuses.Failure);
     expect(store.info.version).toBe("unknown");
-
-    global.fetch.mockRestore();
   });
 
   it("fetch() handles response that throws an error correctly", async () => {
-    const consoleSpy = ConsoleMock("trace");
-    global.fetch = jest.fn().mockImplementation(() =>
-      Promise.resolve({
-        json: () => {
-          throw new Error("Failed fetch");
-        }
-      })
-    );
+    const consoleSpy = jest.spyOn(console, "trace");
+    fetch.mockReject("Fetch error");
 
     const store = new AlertStore([]);
     await expect(store.fetch()).resolves.toHaveProperty("error");
@@ -272,6 +254,5 @@ describe("AlertStore.fetch", () => {
     expect(consoleSpy).toHaveBeenCalledTimes(1);
 
     consoleSpy.mockRestore();
-    global.fetch.mockRestore();
   });
 });

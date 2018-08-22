@@ -71,7 +71,7 @@ const AlertStoreStatuses = Object.freeze({
   Failure: Symbol("failure")
 });
 
-function newUnappliedFilter(raw) {
+function NewUnappliedFilter(raw) {
   return {
     applied: false,
     isValid: true,
@@ -89,7 +89,7 @@ class AlertStore {
       values: [],
       addFilter(raw) {
         if (this.values.filter(f => f.raw === raw).length === 0) {
-          this.values.push(newUnappliedFilter(raw));
+          this.values.push(NewUnappliedFilter(raw));
           UpdateLocationSearch({ q: this.values.map(f => f.raw) });
         }
       },
@@ -108,13 +108,13 @@ class AlertStore {
             this.removeFilter(oldRaw);
           } else {
             // no dups, continue with a swap
-            this.values[index] = newUnappliedFilter(newRaw);
+            this.values[index] = NewUnappliedFilter(newRaw);
             UpdateLocationSearch({ q: this.values.map(f => f.raw) });
           }
         }
       },
       setFilters(raws) {
-        this.values = raws.map(raw => newUnappliedFilter(raw));
+        this.values = raws.map(raw => NewUnappliedFilter(raw));
         UpdateLocationSearch({ q: this.values.map(f => f.raw) });
       }
     },
@@ -318,5 +318,6 @@ export {
   AlertStoreStatuses,
   FormatUnseeBackendURI,
   FormatAPIFilterQuery,
-  DecodeLocationSearch
+  DecodeLocationSearch,
+  NewUnappliedFilter
 };

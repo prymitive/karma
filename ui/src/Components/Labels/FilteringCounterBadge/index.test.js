@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 
-import { AlertStore } from "Stores/AlertStore";
+import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 
 import { FilteringCounterBadge } from ".";
 
@@ -54,15 +54,9 @@ const validateOnClick = value => {
   tree.props.onClick({ preventDefault: () => {} });
 
   expect(alertStore.filters.values).toHaveLength(1);
-  expect(alertStore.filters.values).toContainEqual({
-    applied: false,
-    isValid: true,
-    raw: `@state=${value}`,
-    hits: 0,
-    name: "",
-    matcher: "",
-    value: ""
-  });
+  expect(alertStore.filters.values).toContainEqual(
+    NewUnappliedFilter(`@state=${value}`)
+  );
 };
 
 describe("<FilteringCounterBadge />", () => {

@@ -43,18 +43,18 @@ class BaseLabel extends Component {
       alertStore.data.colors[name][value] !== undefined
     ) {
       const c = alertStore.data.colors[name][value];
-      style["backgroundColor"] = `rgba(
-          ${c.background.red},
-          ${c.background.green},
-          ${c.background.blue},
-          ${c.background.alpha}
-        )`;
-      style["color"] = `rgba(
-        ${c.font.red},
-        ${c.font.green},
-        ${c.font.blue},
-        ${c.font.alpha}
-      )`;
+      style["backgroundColor"] = `rgba(${[
+        c.background.red,
+        c.background.green,
+        c.background.blue,
+        c.background.alpha
+      ].join(", ")})`;
+      style["color"] = `rgba(${[
+        c.font.red,
+        c.font.green,
+        c.font.blue,
+        c.font.alpha
+      ].join(", ")})`;
     }
     return style;
   }
