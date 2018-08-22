@@ -49,9 +49,9 @@ const ReactSelectStyles = {
   multiValue: (base, state) => ({
     ...base,
     borderRadius: "4px",
-    backgroundColor: "#95a5a6",
+    backgroundColor: "#455a64",
     "&:hover": {
-      backgroundColor: "#95a5a6"
+      backgroundColor: "#455a64"
     }
   }),
   multiValueLabel: (base, state) => ({
