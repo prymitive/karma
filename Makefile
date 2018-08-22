@@ -133,8 +133,7 @@ test-js-watch: .build/deps-build-node.ok
 	@# https://github.com/facebook/jest/issues/3436
 	@# use onchange for now
 	cd ui && ./node_modules/onchange/cli.js 'src/*.js' 'src/**/*.js' -- \
-		npm test -- \
-			--coverage --coverageReporters=lcov --onlyChanged
+		npm test -- --coverage --coverageReporters=lcov
 
 .PHONY: test
 test: lint test-go test-js
