@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from "react-test-renderer";
 
-import { FetchMock, EmptyAPIResponse } from "__mocks__/Fetch";
+import { EmptyAPIResponse } from "__mocks__/Fetch";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -16,8 +16,7 @@ let alertStore;
 let settingsStore;
 
 beforeEach(() => {
-  const response = EmptyAPIResponse();
-  global.fetch = FetchMock(response);
+  fetch.mockResponse(JSON.stringify(EmptyAPIResponse()));
 
   alertStore = new AlertStore(["label=value"]);
   settingsStore = new Settings();

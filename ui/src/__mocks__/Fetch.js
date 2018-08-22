@@ -1,12 +1,5 @@
 import moment from "moment";
 
-const FetchMock = data =>
-  jest.fn().mockImplementation(() =>
-    Promise.resolve({
-      json: () => data
-    })
-  );
-
 const EmptyAPIResponse = () => ({
   status: "success",
   timestamp: moment().toISOString(),
@@ -38,4 +31,4 @@ const EmptyAPIResponse = () => ({
   }
 });
 
-export { FetchMock, EmptyAPIResponse };
+export { EmptyAPIResponse };
