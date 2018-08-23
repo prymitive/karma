@@ -86,7 +86,7 @@ const HistoryMenu = onClickOutside(
           filters.map(historyFilters => (
             <button
               className="dropdown-item cursor-pointer px-3"
-              key={hash(historyFilters.map(f => f.raw))}
+              key={hash(historyFilters)}
               onClick={() => {
                 alertStore.filters.setFilters(historyFilters.map(f => f.raw));
                 afterClick();
@@ -98,6 +98,7 @@ const HistoryMenu = onClickOutside(
                     key={f.raw}
                     alertStore={alertStore}
                     name={f.name}
+                    matcher={f.matcher}
                     value={f.value}
                   />
                 ))}
@@ -180,8 +181,10 @@ const History = observer(
 
       // we don't store unapplied (we only have raw text for those, we need
       // name & value for coloring) or invalid filters
+      // also check for value, name might be missing for fuzzy filters, but
+      // the value should always be set
       const validAppliedFilters = alertStore.filters.values
-        .filter(f => f.applied === true && f.isValid === true)
+        .filter(f => f.applied === true && f.isValid === true && f.value)
         .map(f => ReduceFilter(f));
 
       // don't store empty filters in history
@@ -274,4 +277,4 @@ const History = observer(
   }
 );
 
-export { History, ReduceFilter };
+export { History, HistoryMenu, ReduceFilter };
