@@ -1,6 +1,8 @@
 import React from "react";
 import renderer from "react-test-renderer";
 
+import { mount } from "enzyme";
+
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { History, ReduceFilter } from "./History";
@@ -35,6 +37,19 @@ describe("<History />", () => {
     expect(dropdown.props.className.split(" ")).toContain(
       "components-navbar-history"
     );
+  });
+
+  // Due to https://github.com/FezVrasta/popper.js/issues/478 we can't test
+  // rendered dropdown content, only the fact that toggle value is updated
+  it("renders dropdown button when menu is visible", () => {
+    const tree = mount(
+      <History alertStore={alertStore} settingsStore={settingsStore} />
+    );
+    const toggle = tree.find("button.components-navbar-history");
+
+    expect(tree.instance().collapse.value).toBe(true);
+    toggle.simulate("click");
+    expect(tree.instance().collapse.value).toBe(false);
   });
 
   it("saves only applied filters to history", () => {
