@@ -1,0 +1,5 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<NavBar /> matches snapshot with 0 alerts 1`] = `"<ResizeDetector />0<FetchIndicator /><SilenceModal /><MainModal /><FilterInput />"`;
+
+exports[`<NavBar /> matches snapshot with 5 alerts 1`] = `"<ResizeDetector />5<FetchIndicator /><SilenceModal /><MainModal /><FilterInput />"`;
