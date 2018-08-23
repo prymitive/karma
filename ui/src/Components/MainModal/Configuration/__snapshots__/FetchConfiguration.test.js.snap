@@ -1,0 +1,88 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FetchConfiguration /> className matches snapshot with default values 1`] = `
+<div
+  className="form-group text-center"
+>
+  <label
+    className="mb-4"
+  >
+    Refresh interval
+  </label>
+  <div
+    aria-disabled={false}
+    className="input-range"
+    onKeyDown={[Function]}
+    onKeyUp={[Function]}
+    onMouseDown={[Function]}
+    onTouchStart={[Function]}
+  >
+    <span
+      className="input-range__label input-range__label--min"
+    >
+      <span
+        className="input-range__label-container"
+      >
+        10s
+      </span>
+    </span>
+    <div
+      className="input-range__track input-range__track--background"
+      onMouseDown={[Function]}
+      onTouchStart={[Function]}
+    >
+      <div
+        className="input-range__track input-range__track--active"
+        style={
+          Object {
+            "left": "0%",
+            "width": "18.181818181818183%",
+          }
+        }
+      />
+      <span
+        className="input-range__slider-container"
+        style={
+          Object {
+            "left": "18.181818181818183%",
+            "position": "absolute",
+          }
+        }
+      >
+        <span
+          className="input-range__label input-range__label--value"
+        >
+          <span
+            className="input-range__label-container"
+          >
+            30s
+          </span>
+        </span>
+        <div
+          aria-controls={undefined}
+          aria-labelledby={undefined}
+          aria-valuemax={120}
+          aria-valuemin={10}
+          aria-valuenow={30}
+          className="input-range__slider"
+          draggable="false"
+          onKeyDown={[Function]}
+          onMouseDown={[Function]}
+          onTouchStart={[Function]}
+          role="slider"
+          tabIndex="0"
+        />
+      </span>
+    </div>
+    <span
+      className="input-range__label input-range__label--max"
+    >
+      <span
+        className="input-range__label-container"
+      >
+        120s
+      </span>
+    </span>
+  </div>
+</div>
+`;
