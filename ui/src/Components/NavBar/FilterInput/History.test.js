@@ -91,6 +91,14 @@ describe("<History />", () => {
     expect(tree.instance().collapse.value).toBe(false);
   });
 
+  it("hides when handleClickOutside() is called", () => {
+    const tree = MountedHistory();
+    const instance = tree.instance();
+    instance.collapse.value = false;
+    instance.handleClickOutside();
+    expect(tree.instance().collapse.value).toBe(true);
+  });
+
   it("saves only applied filters to history", () => {
     alertStore.filters.values = [
       AppliedFilter("foo", "=", "bar"),
