@@ -184,7 +184,7 @@ const History = observer(
       // also check for value, name might be missing for fuzzy filters, but
       // the value should always be set
       const validAppliedFilters = alertStore.filters.values
-        .filter(f => f.applied === true && f.isValid === true && f.value)
+        .filter(f => f.applied && f.isValid && f.value)
         .map(f => ReduceFilter(f));
 
       // don't store empty filters in history
