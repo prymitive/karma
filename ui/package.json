@@ -53,6 +53,7 @@
   "devDependencies": {
     "enzyme": "3.4.4",
     "enzyme-adapter-react-16": "1.2.0",
+    "enzyme-to-json": "3.3.4",
     "eslint-plugin-react": "7.11.1",
     "jest-fetch-mock": "1.6.5",
     "jest-localstorage-mock": "2.2.0",
@@ -60,5 +61,10 @@
     "markdownlint-cli": "0.13.0",
     "node-sass-chokidar": "1.3.3",
     "onchange": "4.1.0"
+  },
+  "jest": {
+    "snapshotSerializers": [
+      "enzyme-to-json/serializer"
+    ]
   }
 }
