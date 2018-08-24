@@ -133,6 +133,23 @@ describe("<HistoryMenu />", () => {
     expect(labels.at(1).html()).toMatch(/>baz=~bar1</);
   });
 
+  it("clicking on a filter set in history populates alertStore", () => {
+    const historyTree = MountedHistory();
+    PopulateHistory(historyTree.instance(), 1);
+
+    const tree = MountedHistoryMenu(historyTree);
+    const button = tree.find("button").at(0);
+    expect(button.text()).toBe("foo=bar1baz=~bar1");
+
+    alertStore.filters.values = [AppliedFilter("job", "=", "foo")];
+    expect(alertStore.filters.values).toHaveLength(1);
+
+    button.simulate("click");
+    expect(alertStore.filters.values).toHaveLength(2);
+    expect(alertStore.filters.values[0]).toMatchObject({ raw: "foo=bar1" });
+    expect(alertStore.filters.values[1]).toMatchObject({ raw: "baz=~bar1" });
+  });
+
   it("stores only up to maxSize last filter sets in history storage", () => {
     const historyTree = MountedHistory();
     const instance = historyTree.instance();
