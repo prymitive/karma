@@ -29,7 +29,7 @@ const defaultHistory = {
 
 // takes a filter object out of alertStore.history.values and creates a new
 // object with only those keys that will be stored in history
-function reduceFilter(filter) {
+function ReduceFilter(filter) {
   return {
     raw: filter.raw,
     name: filter.name,
@@ -86,7 +86,7 @@ const HistoryMenu = onClickOutside(
           filters.map(historyFilters => (
             <button
               className="dropdown-item cursor-pointer px-3"
-              key={hash(historyFilters.map(f => f.raw))}
+              key={hash(historyFilters)}
               onClick={() => {
                 alertStore.filters.setFilters(historyFilters.map(f => f.raw));
                 afterClick();
@@ -98,6 +98,7 @@ const HistoryMenu = onClickOutside(
                     key={f.raw}
                     alertStore={alertStore}
                     name={f.name}
+                    matcher={f.matcher}
                     value={f.value}
                   />
                 ))}
@@ -158,7 +159,7 @@ const History = observer(
     // how many filter sets do we store in local storage and render in the
     // dropdown menu
     maxSize = 8;
-    // this will be dumped to local storage via mbox-stored
+    // this will be dumped to local storage via mobx-stored
     history = localStored("history.filters", defaultHistory, { delay: 100 });
 
     collapse = observable(
@@ -180,9 +181,11 @@ const History = observer(
 
       // we don't store unapplied (we only have raw text for those, we need
       // name & value for coloring) or invalid filters
+      // also check for value, name might be missing for fuzzy filters, but
+      // the value should always be set
       const validAppliedFilters = alertStore.filters.values
-        .filter(f => f.applied === true && f.isValid === true)
-        .map(f => reduceFilter(f));
+        .filter(f => f.applied && f.isValid && f.value)
+        .map(f => ReduceFilter(f));
 
       // don't store empty filters in history
       if (validAppliedFilters.length === 0) return;
@@ -228,7 +231,7 @@ const History = observer(
         // needed to keep track of all filter changes
         <Manager
           data-filters={alertStore.filters.values
-            .map(f => reduceFilter(f))
+            .map(f => ReduceFilter(f))
             .join(" ")}
         >
           <Reference>
@@ -274,4 +277,4 @@ const History = observer(
   }
 );
 
-export { History };
+export { History, HistoryMenu, ReduceFilter };

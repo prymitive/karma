@@ -1,5 +1,6 @@
 import React from "react";
-import sd from "skin-deep";
+
+import { shallow } from "enzyme";
 
 import moment from "moment";
 
@@ -22,7 +23,7 @@ beforeEach(() => {
 });
 
 const RenderNavbar = () => {
-  return sd.shallowRender(
+  return shallow(
     <NavBar
       alertStore={alertStore}
       settingsStore={settingsStore}
@@ -36,8 +37,8 @@ const ValidateNavClass = (totalFilters, expectedClass) => {
     alertStore.filters.values.push(NewUnappliedFilter(`foo=${i}`));
   }
   const tree = RenderNavbar();
-  const nav = tree.subTree(".navbar-nav");
-  expect(nav.props.className.split(" ")).toContain(expectedClass);
+  const nav = tree.find(".navbar-nav");
+  expect(nav.props().className.split(" ")).toContain(expectedClass);
 };
 
 describe("<NavBar />", () => {
@@ -55,7 +56,7 @@ describe("<NavBar />", () => {
   it("navbar-brand shows 15 alerts with totalAlerts=15", () => {
     alertStore.info.totalAlerts = 15;
     const tree = RenderNavbar();
-    const brand = tree.subTree(".navbar-brand");
+    const brand = tree.find(".navbar-brand");
     expect(brand.text()).toBe("15<FetchIndicator />");
   });
 

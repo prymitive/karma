@@ -1,0 +1,236 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MainModalContent /> matches snapshot 1`] = `
+<div
+  className="modal d-block bg-primary-transparent-80"
+  role="dialog"
+>
+  <div
+    className="modal-dialog modal-lg"
+    role="document"
+  >
+    <div
+      className="modal-content"
+    >
+      <div
+        className="modal-header py-2"
+      >
+        <nav
+          className="nav nav-pills nav-justified w-100"
+        >
+          <a
+            className="nav-item nav-link cursor-pointer active"
+            onClick={[Function]}
+          >
+            Configuration
+          </a>
+          <a
+            className="nav-item nav-link cursor-pointer text-primary"
+            onClick={[Function]}
+          >
+            Help
+          </a>
+          <button
+            className="close"
+            onClick={[Function]}
+            type="button"
+          >
+            <span>
+              ×
+            </span>
+          </button>
+        </nav>
+      </div>
+      <div
+        className="modal-body"
+      >
+        <form
+          className="px-3"
+        >
+          <div
+            className="form-group text-center"
+          >
+            <label
+              className="mb-4"
+            >
+              Refresh interval
+            </label>
+            <div
+              aria-disabled={false}
+              className="input-range"
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <span
+                className="input-range__label input-range__label--min"
+              >
+                <span
+                  className="input-range__label-container"
+                >
+                  10s
+                </span>
+              </span>
+              <div
+                className="input-range__track input-range__track--background"
+                onMouseDown={[Function]}
+                onTouchStart={[Function]}
+              >
+                <div
+                  className="input-range__track input-range__track--active"
+                  style={
+                    Object {
+                      "left": "0%",
+                      "width": "18.181818181818183%",
+                    }
+                  }
+                />
+                <span
+                  className="input-range__slider-container"
+                  style={
+                    Object {
+                      "left": "18.181818181818183%",
+                      "position": "absolute",
+                    }
+                  }
+                >
+                  <span
+                    className="input-range__label input-range__label--value"
+                  >
+                    <span
+                      className="input-range__label-container"
+                    >
+                      30s
+                    </span>
+                  </span>
+                  <div
+                    aria-controls={undefined}
+                    aria-labelledby={undefined}
+                    aria-valuemax={120}
+                    aria-valuemin={10}
+                    aria-valuenow={30}
+                    className="input-range__slider"
+                    draggable="false"
+                    onKeyDown={[Function]}
+                    onMouseDown={[Function]}
+                    onTouchStart={[Function]}
+                    role="slider"
+                    tabIndex="0"
+                  />
+                </span>
+              </div>
+              <span
+                className="input-range__label input-range__label--max"
+              >
+                <span
+                  className="input-range__label-container"
+                >
+                  120s
+                </span>
+              </span>
+            </div>
+          </div>
+          <div
+            className="mt-5"
+          />
+          <div
+            className="form-group text-center"
+          >
+            <label
+              className="mb-4"
+            >
+              Default number of alerts to show per group
+            </label>
+            <div
+              aria-disabled={false}
+              className="input-range"
+              onKeyDown={[Function]}
+              onKeyUp={[Function]}
+              onMouseDown={[Function]}
+              onTouchStart={[Function]}
+            >
+              <span
+                className="input-range__label input-range__label--min"
+              >
+                <span
+                  className="input-range__label-container"
+                >
+                  1
+                </span>
+              </span>
+              <div
+                className="input-range__track input-range__track--background"
+                onMouseDown={[Function]}
+                onTouchStart={[Function]}
+              >
+                <div
+                  className="input-range__track input-range__track--active"
+                  style={
+                    Object {
+                      "left": "0%",
+                      "width": "44.44444444444444%",
+                    }
+                  }
+                />
+                <span
+                  className="input-range__slider-container"
+                  style={
+                    Object {
+                      "left": "44.44444444444444%",
+                      "position": "absolute",
+                    }
+                  }
+                >
+                  <span
+                    className="input-range__label input-range__label--value"
+                  >
+                    <span
+                      className="input-range__label-container"
+                    >
+                      5
+                    </span>
+                  </span>
+                  <div
+                    aria-controls={undefined}
+                    aria-labelledby={undefined}
+                    aria-valuemax={10}
+                    aria-valuemin={1}
+                    aria-valuenow={5}
+                    className="input-range__slider"
+                    draggable="false"
+                    onKeyDown={[Function]}
+                    onMouseDown={[Function]}
+                    onTouchStart={[Function]}
+                    role="slider"
+                    tabIndex="0"
+                  />
+                </span>
+              </div>
+              <span
+                className="input-range__label input-range__label--max"
+              >
+                <span
+                  className="input-range__label-container"
+                >
+                  10
+                </span>
+              </span>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div
+        className="modal-footer"
+      >
+        <span
+          className="text-muted"
+        >
+          Version: 
+          unknown
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;

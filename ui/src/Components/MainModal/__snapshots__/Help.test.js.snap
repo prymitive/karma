@@ -1,0 +1,879 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Help /> matches snapshot 1`] = `
+<div>
+  <h4
+    className="text-center"
+  >
+    Filter operators
+  </h4>
+  <dl>
+    <dt>
+      <kbd>
+        =
+      </kbd>
+       
+      Exact match
+    </dt>
+    <dd
+      className="mb-3"
+    >
+      <div>
+        Example: 
+        <code>
+          key
+          =
+          value
+        </code>
+      </div>
+      <div>
+        True if compared alert attribute value is equal to 
+        <code>
+          value
+        </code>
+        .
+      </div>
+    </dd>
+    <dt>
+      <kbd>
+        !=
+      </kbd>
+       
+      Negative match
+    </dt>
+    <dd
+      className="mb-3"
+    >
+      <div>
+        Example: 
+        <code>
+          key
+          !=
+          value
+        </code>
+      </div>
+      <div>
+        True if compared alert attribute is missing or have a value that is not equal to 
+        <code>
+          value
+        </code>
+        .
+      </div>
+    </dd>
+    <dt>
+      <kbd>
+        =~
+      </kbd>
+       
+      Regular expression match
+    </dt>
+    <dd
+      className="mb-3"
+    >
+      <div>
+        Example: 
+        <code>
+          key
+          =~
+          value
+        </code>
+      </div>
+      <div>
+        True if compared alert attribute value matches 
+        <code>
+          value
+        </code>
+         regex.
+      </div>
+    </dd>
+    <dt>
+      <kbd>
+        !~
+      </kbd>
+       
+      Negative regular expression match
+    </dt>
+    <dd
+      className="mb-3"
+    >
+      <div>
+        Example: 
+        <code>
+          key
+          !~
+          value
+        </code>
+      </div>
+      <div>
+        False if compared alert attribute value matches 
+        <code>
+          value
+        </code>
+         
+        regex.
+      </div>
+    </dd>
+    <dt>
+      <kbd>
+        &gt;
+      </kbd>
+       
+      Greater than match
+    </dt>
+    <dd
+      className="mb-3"
+    >
+      <div>
+        Example: 
+        <code>
+          key
+          &gt;
+          value
+        </code>
+      </div>
+      <div>
+        True if compared alert attribute value is greater than
+         
+        <code>
+          value
+        </code>
+        .
+      </div>
+    </dd>
+    <dt>
+      <kbd>
+        &lt;
+      </kbd>
+       
+      Less than match
+    </dt>
+    <dd
+      className="mb-3"
+    >
+      <div>
+        Example: 
+        <code>
+          key
+          &lt;
+          value
+        </code>
+      </div>
+      <div>
+        True if compared alert attribue value is less than 
+        <code>
+          value
+        </code>
+        .
+      </div>
+    </dd>
+  </dl>
+  <div
+    className="mt-5"
+  >
+    <h4
+      className="text-center"
+    >
+      Filtering using alert labels
+    </h4>
+    <dl>
+      <dt>
+        Match alerts based on any label
+      </dt>
+      <dd
+        className="mb-5"
+      >
+        <div>
+          Supported operators:
+           
+          <kbd
+            className="mr-1"
+          >
+            =
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            !=
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            =~
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            !~
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            &gt;
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            &lt;
+          </kbd>
+        </div>
+        <div>
+          Examples:
+        </div>
+        <ul>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                alertname=UnableToPing
+              </span>
+            </div>
+            <div>
+              Match alerts with label 
+              <code>
+                alertname
+              </code>
+               equal to
+               
+              <code>
+                UnableToPing
+              </code>
+              .
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                hostname=localhost
+              </span>
+            </div>
+            <div>
+              Match alerts with label 
+              <code>
+                hostname
+              </code>
+               equal to
+               
+              <code>
+                localhost
+              </code>
+              .
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                service!=apache3
+              </span>
+            </div>
+            <div>
+              Match alerts with label 
+              <code>
+                service
+              </code>
+               missing or not equal to
+               
+              <code>
+                apache3
+              </code>
+              .
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                service=~apache
+              </span>
+            </div>
+            <div>
+              Match alerts with label 
+              <code>
+                service
+              </code>
+               matching regular expression 
+              <code>
+                /.*apache.*/
+              </code>
+              .
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                service=~apache[1-3]
+              </span>
+            </div>
+            <div>
+              Match alerts with label 
+              <code>
+                service
+              </code>
+               matching regular expression 
+              <code>
+                /.*apache[1-3].*/
+              </code>
+              .
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                priority&gt;4
+              </span>
+            </div>
+            <div>
+              Match alerts with label 
+              <code>
+                priority
+              </code>
+               value
+               
+              <code>
+                &gt;
+              </code>
+               than 
+              <code>
+                4
+              </code>
+              . Value will be casted to integer if possible, string comparision will be used as fallback.
+            </div>
+          </li>
+        </ul>
+      </dd>
+    </dl>
+  </div>
+  <div
+    className="mt-5"
+  >
+    <h4
+      className="text-center"
+    >
+      Filtering alerts using special filters
+    </h4>
+    <dl>
+      <dt>
+        Match alerts based on the Alertmanager instance name they were collected from
+      </dt>
+      <dd
+        className="mb-5"
+      >
+        <div>
+          Supported operators:
+           
+          <kbd
+            className="mr-1"
+          >
+            =
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            !=
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            =~
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            !~
+          </kbd>
+        </div>
+        <div>
+          Examples:
+        </div>
+        <ul>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @alertmanager=prod
+              </span>
+            </div>
+            <div>
+              Match alerts collected from Alertmanager instance named
+               
+              <code>
+                prod
+              </code>
+              .
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @alertmanager!=dev
+              </span>
+            </div>
+            <div>
+              Match alerts collected from Alertmanager instances except for the one named 
+              <code>
+                dev
+              </code>
+              .
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @alertmanager=~prod
+              </span>
+            </div>
+            <div>
+              Match alerts collected from Alertmanager instances with names matching regular expression 
+              <code>
+                /.*prod.*/
+              </code>
+              .
+            </div>
+          </li>
+        </ul>
+      </dd>
+      <dt>
+        Match alerts based on the receiver name
+      </dt>
+      <dd
+        className="mb-5"
+      >
+        <div>
+          Supported operators:
+           
+          <kbd
+            className="mr-1"
+          >
+            =
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            !=
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            =~
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            !~
+          </kbd>
+        </div>
+        <div>
+          Examples:
+        </div>
+        <ul>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @receiver=default
+              </span>
+            </div>
+            <div>
+              Match alerts sent to the default receiver.
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @receiver!=hipchat
+              </span>
+            </div>
+            <div>
+              Match alerts not sent to the hipchat receiver.
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @receiver=~email
+              </span>
+            </div>
+            <div>
+              Match alerts sent to any receiver with name matching regular expression 
+              <code>
+                /.*email.*/
+              </code>
+              .
+            </div>
+          </li>
+        </ul>
+      </dd>
+      <dt>
+        Match alerts based on the state
+      </dt>
+      <dd
+        className="mb-5"
+      >
+        <div>
+          Supported operators:
+           
+          <kbd
+            className="mr-1"
+          >
+            =
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            !=
+          </kbd>
+        </div>
+        <div>
+          Examples:
+        </div>
+        <ul>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @state=active
+              </span>
+            </div>
+            <div>
+              Match only active alerts.
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @state!=active
+              </span>
+            </div>
+            <div>
+              Match alerts that are not active, only suppressed and unprocessed will be matched.
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @state=suppressed
+              </span>
+            </div>
+            <div>
+              Match only suppressed alerts.
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @state=unprocessed
+              </span>
+            </div>
+            <div>
+              Match only unprocessed alerts.
+            </div>
+          </li>
+        </ul>
+      </dd>
+      <dt>
+        Match alerts based on the author of silence
+      </dt>
+      <dd
+        className="mb-5"
+      >
+        <div>
+          Supported operators:
+           
+          <kbd
+            className="mr-1"
+          >
+            =
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            !=
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            =~
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            !~
+          </kbd>
+        </div>
+        <div>
+          Examples:
+        </div>
+        <ul>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @silence_author=me@example.com
+              </span>
+            </div>
+            <div>
+              Match alerts silenced by 
+              <code>
+                me@example.com
+              </code>
+              .
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @silence_author!=me@example.com
+              </span>
+            </div>
+            <div>
+              Match alerts silenced by everyone except
+               
+              <code>
+                foo@example.com
+              </code>
+              .
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @silence_author=~@example.com
+              </span>
+            </div>
+            <div>
+              Match alerts silenced by author matching regular expression
+               
+              <code>
+                /.*@example.com.*/
+              </code>
+              .
+            </div>
+          </li>
+        </ul>
+      </dd>
+      <dt>
+        Match alerts based on the jira linked in the silence
+      </dt>
+      <dd
+        className="mb-5"
+      >
+        <div>
+          Supported operators:
+           
+          <kbd
+            className="mr-1"
+          >
+            =
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            !=
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            =~
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            !~
+          </kbd>
+        </div>
+        <div>
+          Examples:
+        </div>
+        <ul>
+          <div
+            className="text-warning"
+          >
+            This is supported only if JIRA regexp are enabled and able to match JIRA ids in the silence comment body.
+          </div>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @silence_jira=PROJECT-123
+              </span>
+            </div>
+            <div>
+              Match silenced alerts where detected JIRA issue id is equal to
+               
+              <code>
+                PROJECT-123
+              </code>
+              .
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @silence_jira!=PROJECT-123
+              </span>
+            </div>
+            <div>
+              Match silenced alerts where detected JIRA issue id is different than
+               
+              <code>
+                PROJECT-123
+              </code>
+              .
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @silence_jira=~PROJECT
+              </span>
+            </div>
+            <div>
+              Match silenced alerts where detected JIRA issue id matches regular expression 
+              <code>
+                /.*PROJECT.*/
+              </code>
+              .
+            </div>
+          </li>
+        </ul>
+      </dd>
+      <dt>
+        Limit number of displayed alerts
+      </dt>
+      <dd
+        className="mb-5"
+      >
+        <div>
+          Supported operators:
+           
+          <kbd
+            className="mr-1"
+          >
+            =
+          </kbd>
+        </div>
+        <div>
+          Examples:
+        </div>
+        <ul>
+          <div
+            className="text-warning"
+          >
+            Value must be a number &gt;= 1.
+          </div>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @limit=10
+              </span>
+            </div>
+            <div>
+              Limit number of displayed alerts to 10.
+            </div>
+          </li>
+        </ul>
+      </dd>
+      <dt>
+        Match alerts based on creation timestamp
+      </dt>
+      <dd
+        className="mb-5"
+      >
+        <div>
+          Supported operators:
+           
+          <kbd
+            className="mr-1"
+          >
+            &gt;
+          </kbd>
+          <kbd
+            className="mr-1"
+          >
+            &lt;
+          </kbd>
+        </div>
+        <div>
+          Examples:
+        </div>
+        <ul>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @age&gt;15m
+              </span>
+            </div>
+            <div>
+              Match alerts older than 15 minutes.
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @age&gt;1h
+              </span>
+            </div>
+            <div>
+              Match alerts older than 1 hour.
+            </div>
+          </li>
+          <li>
+            <div>
+              <span
+                className="badge badge-info"
+              >
+                @age&lt;10h30m
+              </span>
+            </div>
+            <div>
+              Match alerts more recent than 10 hours and 30 minutes.
+            </div>
+          </li>
+        </ul>
+      </dd>
+    </dl>
+  </div>
+</div>
+`;
