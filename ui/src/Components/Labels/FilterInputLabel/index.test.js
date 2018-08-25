@@ -23,7 +23,7 @@ const MockColors = () => {
   };
 };
 
-const ShallowLabel = (matcher, applied) => {
+const ShallowLabel = (matcher, applied, valid) => {
   const name = "foo";
   const value = "bar";
   const filter = NewUnappliedFilter(`${name}${matcher}${value}`);
@@ -31,11 +31,12 @@ const ShallowLabel = (matcher, applied) => {
   filter.name = name;
   filter.matcher = matcher;
   filter.value = value;
+  filter.isValid = valid;
   return shallow(<FilterInputLabel alertStore={alertStore} filter={filter} />);
 };
 
 const ValidateClass = (matcher, applied, expectedClass) => {
-  const tree = ShallowLabel(matcher, applied);
+  const tree = ShallowLabel(matcher, applied, true);
   expect(tree.props().className.split(" ")).toContain(expectedClass);
 };
 
@@ -88,25 +89,25 @@ describe("<FilterInputLabel /> className", () => {
 describe("<FilterInputLabel /> style", () => {
   it("unapplied filter with color information and '=' matcher should have empty style", () => {
     MockColors();
-    const tree = ShallowLabel("=", false);
+    const tree = ShallowLabel("=", false, true);
     expect(tree.props().style).toMatchObject({});
   });
 
   it("unapplied filter with no color information and '=' matcher should have empty style", () => {
-    const tree = ShallowLabel("=", false);
+    const tree = ShallowLabel("=", false, true);
     expect(tree.props().style).toMatchObject({});
   });
 
   it("unapplied filter with no color information and any matcher other than '=' should have empty style", () => {
     for (const matcher of NonEqualMatchers) {
-      const tree = ShallowLabel(matcher, false);
+      const tree = ShallowLabel(matcher, false, true);
       expect(tree.props().style).toMatchObject({});
     }
   });
 
   it("applied filter with color information and '=' matcher should have non empty style", () => {
     MockColors();
-    const tree = ShallowLabel("=", true);
+    const tree = ShallowLabel("=", true, true);
     expect(tree.props().style).toMatchObject({
       color: "rgba(1, 2, 3, 100)",
       backgroundColor: "rgba(4, 5, 6, 200)"
@@ -114,13 +115,13 @@ describe("<FilterInputLabel /> style", () => {
   });
 
   it("applied filter with no color information and '=' matcher should have empty style", () => {
-    const tree = ShallowLabel("=", true);
+    const tree = ShallowLabel("=", true, true);
     expect(tree.props().style).toMatchObject({});
   });
 
   it("applied filter with no color information and any matcher other than '=' should have empty style", () => {
     for (const matcher of NonEqualMatchers) {
-      const tree = ShallowLabel(matcher, true);
+      const tree = ShallowLabel(matcher, true, true);
       expect(tree.props().style).toMatchObject({});
     }
   });
@@ -176,5 +177,15 @@ describe("<FilterInputLabel /> onChange", () => {
     expect(alertStore.filters.values).toContainEqual(
       NewUnappliedFilter("bar=baz")
     );
+  });
+});
+
+describe("<FilterInputLabel /> render", () => {
+  it("invalid filter matches snapshot", () => {
+    const tree = ShallowLabel("=", true, false);
+    const errorSpan = tree.find(".text-danger");
+    expect(errorSpan).toHaveLength(1);
+    const errorIcon = errorSpan.find("FontAwesomeIcon");
+    expect(errorIcon).toHaveLength(1);
   });
 });
