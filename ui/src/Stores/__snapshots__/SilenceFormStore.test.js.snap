@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SilenceFormStore.data toAlertmanagerPayload creates payload that matches snapshot 1`] = `
+Object {
+  "comment": "toAlertmanagerPayload test",
+  "createdBy": "",
+  "endsAt": "2000-02-01T01:00:00.000Z",
+  "matchers": Array [
+    Object {
+      "isRegex": false,
+      "name": "alertname",
+      "value": "FakeAlert",
+    },
+    Object {
+      "isRegex": false,
+      "name": "job",
+      "value": "mock",
+    },
+    Object {
+      "isRegex": true,
+      "name": "instance",
+      "value": "(dev1|prod1|prod2)",
+    },
+    Object {
+      "isRegex": true,
+      "name": "cluster",
+      "value": "(dev|prod)",
+    },
+  ],
+  "startsAt": "2000-02-01T00:00:00.000Z",
+}
+`;
