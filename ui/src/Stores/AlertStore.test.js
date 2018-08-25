@@ -4,7 +4,8 @@ import {
   AlertStore,
   AlertStoreStatuses,
   FormatUnseeBackendURI,
-  DecodeLocationSearch
+  DecodeLocationSearch,
+  NewUnappliedFilter
 } from "Stores/AlertStore";
 
 beforeEach(() => {
@@ -55,21 +56,11 @@ describe("AlertStore.status", () => {
 });
 
 describe("AlertStore.filters", () => {
-  const formatEmptyFilter = raw => ({
-    applied: false,
-    isValid: true,
-    raw: raw,
-    hits: 0,
-    name: "",
-    matcher: "",
-    value: ""
-  });
-
   it("addFilter('foo') should create a correct empty filter", () => {
     const store = new AlertStore([]);
     store.filters.addFilter("foo");
     expect(store.filters.values).toHaveLength(1);
-    expect(store.filters.values[0]).toMatchObject(formatEmptyFilter("foo"));
+    expect(store.filters.values[0]).toMatchObject(NewUnappliedFilter("foo"));
   });
 
   it("removeFilter('foo') should remove passed filter if it's defined", () => {
@@ -86,8 +77,8 @@ describe("AlertStore.filters", () => {
     store.filters.addFilter("baz");
     store.filters.removeFilter("foo");
     expect(store.filters.values).toHaveLength(2);
-    expect(store.filters.values[0]).toMatchObject(formatEmptyFilter("bar"));
-    expect(store.filters.values[1]).toMatchObject(formatEmptyFilter("baz"));
+    expect(store.filters.values[0]).toMatchObject(NewUnappliedFilter("bar"));
+    expect(store.filters.values[1]).toMatchObject(NewUnappliedFilter("baz"));
   });
 
   it("removeFilter('foo') should not remove any filter if 'foo' isn't defined", () => {
@@ -95,7 +86,7 @@ describe("AlertStore.filters", () => {
     store.filters.addFilter("bar");
     store.filters.removeFilter("foo");
     expect(store.filters.values).toHaveLength(1);
-    expect(store.filters.values[0]).toMatchObject(formatEmptyFilter("bar"));
+    expect(store.filters.values[0]).toMatchObject(NewUnappliedFilter("bar"));
   });
 
   it("replaceFilter('foo', 'bar') should not replace anything if filter list is empty", () => {
@@ -111,9 +102,9 @@ describe("AlertStore.filters", () => {
     store.filters.addFilter("baz");
     store.filters.replaceFilter("foo", "new");
     expect(store.filters.values).toHaveLength(3);
-    expect(store.filters.values[0]).toMatchObject(formatEmptyFilter("bar"));
-    expect(store.filters.values[1]).toMatchObject(formatEmptyFilter("new"));
-    expect(store.filters.values[2]).toMatchObject(formatEmptyFilter("baz"));
+    expect(store.filters.values[0]).toMatchObject(NewUnappliedFilter("bar"));
+    expect(store.filters.values[1]).toMatchObject(NewUnappliedFilter("new"));
+    expect(store.filters.values[2]).toMatchObject(NewUnappliedFilter("baz"));
   });
 
   it("replaceFilter('foo', 'bar') should not allow duplicates", () => {
@@ -122,7 +113,7 @@ describe("AlertStore.filters", () => {
     store.filters.addFilter("bar");
     store.filters.replaceFilter("foo", "bar");
     expect(store.filters.values).toHaveLength(1);
-    expect(store.filters.values[0]).toMatchObject(formatEmptyFilter("bar"));
+    expect(store.filters.values[0]).toMatchObject(NewUnappliedFilter("bar"));
   });
 });
 
@@ -203,8 +194,6 @@ describe("AlertStore.fetch", () => {
     expect(store.filters.values).toHaveLength(0);
     // console.info should have been called since we emited a log line
     expect(consoleSpy).toHaveBeenCalledTimes(1);
-
-    consoleSpy.mockRestore();
   });
 
   it("parseAPIResponse() works for a single filter 'label=value'", () => {
@@ -252,7 +241,12 @@ describe("AlertStore.fetch", () => {
     expect(store.info.version).toBe("unknown");
     // there should be a trace of the error
     expect(consoleSpy).toHaveBeenCalledTimes(1);
+  });
 
-    consoleSpy.mockRestore();
+  it("unapplied filters are marked as applied on fetch error", async () => {
+    fetch.mockReject("Fetch error");
+    const store = new AlertStore([NewUnappliedFilter("foo")]);
+    await expect(store.fetch()).resolves.toHaveProperty("error");
+    expect(store.filters.values[0].applied).toBe(true);
   });
 });
