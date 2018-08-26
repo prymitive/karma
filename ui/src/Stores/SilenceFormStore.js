@@ -141,15 +141,6 @@ class SilenceFormStore {
         this.verifyStarEnd();
       },
 
-      incDuration(minutes) {
-        this.endsAt = moment(this.endsAt).add(minutes, "minutes");
-        this.verifyStarEnd();
-      },
-      decDuration(minutes) {
-        this.endsAt = moment(this.endsAt).subtract(minutes, "minutes");
-        this.verifyStarEnd();
-      },
-
       get toAlertmanagerPayload() {
         const payload = {
           matchers: this.matchers.map(m => ({
@@ -194,8 +185,6 @@ class SilenceFormStore {
       decStart: action.bound,
       incEnd: action.bound,
       decEnd: action.bound,
-      incDuration: action.bound,
-      decDuration: action.bound,
       toAlertmanagerPayload: computed,
       toDuration: computed
     },
