@@ -114,6 +114,8 @@ describe("SilenceFormStore.data", () => {
   it("toAlertmanagerPayload creates payload that matches snapshot", () => {
     const group = MockGroup();
     store.data.fillMatchersFromGroup(group);
+    // add empty matcher so we test empty string rendering
+    store.data.addEmptyMatcher();
     store.data.startsAt = moment([2000, 1, 1, 0, 0, 0]);
     store.data.endsAt = moment([2000, 1, 1, 1, 0, 0]);
     store.data.createdBy = "me@example.com";
