@@ -43,6 +43,26 @@ describe("<SilenceForm /> matchers", () => {
     expect(silenceFormStore.data.matchers).toHaveLength(2);
   });
 
+  it("trash icon is not visible when there's only one matcher", () => {
+    const tree = MountedSilenceForm();
+    expect(silenceFormStore.data.matchers).toHaveLength(1);
+
+    const matcher = tree.find("SilenceMatch");
+    const button = matcher.find("button");
+    expect(button).toHaveLength(0);
+  });
+
+  it("trash icon is visible when there are two matchers", () => {
+    silenceFormStore.data.addEmptyMatcher();
+    silenceFormStore.data.addEmptyMatcher();
+    const tree = MountedSilenceForm();
+    expect(silenceFormStore.data.matchers).toHaveLength(2);
+
+    const matcher = tree.find("SilenceMatch");
+    const button = matcher.find("button");
+    expect(button).toHaveLength(2);
+  });
+
   it("clicking trash icon on a matcher select removes it", () => {
     silenceFormStore.data.addEmptyMatcher();
     silenceFormStore.data.addEmptyMatcher();
