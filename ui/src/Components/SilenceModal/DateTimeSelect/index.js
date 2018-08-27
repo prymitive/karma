@@ -123,25 +123,25 @@ const TabContentDuration = observer(({ silenceFormStore }) => {
       <Duration
         label="days"
         value={silenceFormStore.data.toDuration.days}
-        onInc={() => silenceFormStore.data.incDuration(60 * 24)}
-        onDec={() => silenceFormStore.data.decDuration(60 * 24)}
+        onInc={() => silenceFormStore.data.incEnd(60 * 24)}
+        onDec={() => silenceFormStore.data.decEnd(60 * 24)}
       />
       <Duration
         label="hours"
         value={silenceFormStore.data.toDuration.hours}
-        onInc={() => silenceFormStore.data.incDuration(60)}
-        onDec={() => silenceFormStore.data.decDuration(60)}
+        onInc={() => silenceFormStore.data.incEnd(60)}
+        onDec={() => silenceFormStore.data.decEnd(60)}
       />
       <Duration
         label="minutes"
         value={silenceFormStore.data.toDuration.minutes}
         onInc={() =>
-          silenceFormStore.data.incDuration(
+          silenceFormStore.data.incEnd(
             CalculateChangeValue(silenceFormStore.data.toDuration.minutes, 5)
           )
         }
         onDec={() =>
-          silenceFormStore.data.decDuration(
+          silenceFormStore.data.decEnd(
             CalculateChangeValue(silenceFormStore.data.toDuration.minutes, 5)
           )
         }

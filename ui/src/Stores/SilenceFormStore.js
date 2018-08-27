@@ -4,7 +4,7 @@ import uniqueId from "lodash.uniqueid";
 
 import moment from "moment";
 
-const NewEmptyMatcher = id => {
+const NewEmptyMatcher = () => {
   return {
     id: uniqueId(),
     name: "",
@@ -17,7 +17,7 @@ const NewEmptyMatcher = id => {
   };
 };
 
-const ValueToObject = value => ({ label: value, value: value });
+const MatcherValueToObject = value => ({ label: value, value: value });
 
 class SilenceFormStore {
   // this is used to store modal visibility toggle
@@ -75,16 +75,10 @@ class SilenceFormStore {
         for (const [key, value] of Object.entries(
           Object.assign({}, group.labels, group.shared.labels)
         )) {
-          matchers.push({
-            id: uniqueId(),
-            name: key,
-            values: [ValueToObject(value)],
-            suggestions: {
-              names: [],
-              values: []
-            },
-            isRegex: false
-          });
+          const matcher = NewEmptyMatcher();
+          matcher.name = key;
+          matcher.values = [MatcherValueToObject(value)];
+          matchers.push(matcher);
         }
 
         // add matchers for all unique labels in this group
@@ -101,7 +95,9 @@ class SilenceFormStore {
           matchers.push({
             id: uniqueId(),
             name: key,
-            values: [...values].sort().map(value => ValueToObject(value)),
+            values: [...values]
+              .sort()
+              .map(value => MatcherValueToObject(value)),
             suggestions: {
               names: [],
               values: []
@@ -137,15 +133,6 @@ class SilenceFormStore {
         this.verifyStarEnd();
       },
       decEnd(minutes) {
-        this.endsAt = moment(this.endsAt).subtract(minutes, "minutes");
-        this.verifyStarEnd();
-      },
-
-      incDuration(minutes) {
-        this.endsAt = moment(this.endsAt).add(minutes, "minutes");
-        this.verifyStarEnd();
-      },
-      decDuration(minutes) {
         this.endsAt = moment(this.endsAt).subtract(minutes, "minutes");
         this.verifyStarEnd();
       },
@@ -194,8 +181,6 @@ class SilenceFormStore {
       decStart: action.bound,
       incEnd: action.bound,
       decEnd: action.bound,
-      incDuration: action.bound,
-      decDuration: action.bound,
       toAlertmanagerPayload: computed,
       toDuration: computed
     },
@@ -203,4 +188,4 @@ class SilenceFormStore {
   );
 }
 
-export { SilenceFormStore };
+export { SilenceFormStore, NewEmptyMatcher, MatcherValueToObject };

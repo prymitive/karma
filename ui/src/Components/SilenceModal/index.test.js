@@ -3,44 +3,44 @@ import React from "react";
 import { shallow, mount } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
-import { MainModal } from ".";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { SilenceModal } from ".";
 
 let alertStore;
-let settingsStore;
+let silenceFormStore;
 
 beforeEach(() => {
   alertStore = new AlertStore([]);
-  settingsStore = new Settings();
+  silenceFormStore = new SilenceFormStore();
 });
 
-const ShallowMainModal = () => {
+const ShallowSilenceModal = () => {
   return shallow(
-    <MainModal alertStore={alertStore} settingsStore={settingsStore} />
+    <SilenceModal alertStore={alertStore} silenceFormStore={silenceFormStore} />
   );
 };
 
-const MountedMainModal = () => {
+const MountedSilenceModal = () => {
   return mount(
-    <MainModal alertStore={alertStore} settingsStore={settingsStore} />
+    <SilenceModal alertStore={alertStore} silenceFormStore={silenceFormStore} />
   );
 };
 
-describe("<MainModal />", () => {
+describe("<SilenceModal />", () => {
   it("only renders FontAwesomeIcon when modal is not shown", () => {
-    const tree = ShallowMainModal();
+    const tree = ShallowSilenceModal();
     expect(tree.text()).toBe("<FontAwesomeIcon />");
   });
 
   it("renders the modal when it is shown", () => {
-    const tree = ShallowMainModal();
+    const tree = ShallowSilenceModal();
     const toggle = tree.find(".nav-link");
     toggle.simulate("click");
-    expect(tree.text()).toBe("<FontAwesomeIcon /><MainModalContent />");
+    expect(tree.text()).toBe("<FontAwesomeIcon /><SilenceModalContent />");
   });
 
   it("hides the modal when toggle() is called twice", () => {
-    const tree = ShallowMainModal();
+    const tree = ShallowSilenceModal();
     const toggle = tree.find(".nav-link");
     toggle.simulate("click");
     toggle.simulate("click");
@@ -48,24 +48,23 @@ describe("<MainModal />", () => {
   });
 
   it("hides the modal when hide() is called", () => {
-    const tree = ShallowMainModal();
+    const tree = ShallowSilenceModal();
     const toggle = tree.find(".nav-link");
     toggle.simulate("click");
-    expect(tree.text()).toBe("<FontAwesomeIcon /><MainModalContent />");
-    const instance = tree.instance();
-    instance.toggle.hide();
+    expect(tree.text()).toBe("<FontAwesomeIcon /><SilenceModalContent />");
+    silenceFormStore.toggle.hide();
     expect(tree.text()).toBe("<FontAwesomeIcon />");
   });
 
   it("'modal-open' class is appended to body node when modal is visible", () => {
-    const tree = MountedMainModal();
+    const tree = MountedSilenceModal();
     const toggle = tree.find(".nav-link");
     toggle.simulate("click");
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
   it("'modal-open' class is removed from body node after modal is hidden", () => {
-    const tree = MountedMainModal();
+    const tree = MountedSilenceModal();
     const toggle = tree.find(".nav-link");
     toggle.simulate("click");
     toggle.simulate("click");
@@ -73,7 +72,7 @@ describe("<MainModal />", () => {
   });
 
   it("'modal-open' class is removed from body node after modal is unmounted", () => {
-    const tree = MountedMainModal();
+    const tree = MountedSilenceModal();
     const toggle = tree.find(".nav-link");
     toggle.simulate("click");
     tree.unmount();

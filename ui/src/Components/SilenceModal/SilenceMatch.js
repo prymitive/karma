@@ -25,7 +25,6 @@ const SilenceMatch = observer(
 
     onIsRegexChange = action(event => {
       const { matcher } = this.props;
-      console.info(matcher.values);
 
       // only allow to change value if we don't have multiple values
       if (matcher.values.length <= 1) {

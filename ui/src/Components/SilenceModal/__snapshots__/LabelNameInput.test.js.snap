@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<LabelNameInput /> matches snapshot 1`] = `
+<StateManager
+  defaultInputValue=""
+  defaultMenuIsOpen={false}
+  defaultValue={
+    Object {
+      "label": "name",
+      "value": "name",
+    }
+  }
+  instanceId="silence-input-label-name-1"
+  onChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "job",
+        "value": "job",
+      },
+      Object {
+        "label": "cluster",
+        "value": "cluster",
+      },
+    ]
+  }
+  placeholder="Label name"
+  styles={
+    Object {
+      "control": [Function],
+      "indicatorsContainer": [Function],
+      "multiValue": [Function],
+      "multiValueLabel": [Function],
+      "multiValueRemove": [Function],
+      "option": [Function],
+      "valueContainer": [Function],
+      "valueLabel": [Function],
+    }
+  }
+/>
+`;

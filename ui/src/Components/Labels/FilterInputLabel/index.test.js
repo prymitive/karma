@@ -1,5 +1,6 @@
 import React from "react";
-import renderer from "react-test-renderer";
+
+import { shallow, mount } from "enzyme";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 
@@ -22,7 +23,7 @@ const MockColors = () => {
   };
 };
 
-const FakeLabel = (matcher, applied) => {
+const ShallowLabel = (matcher, applied, valid) => {
   const name = "foo";
   const value = "bar";
   const filter = NewUnappliedFilter(`${name}${matcher}${value}`);
@@ -30,27 +31,23 @@ const FakeLabel = (matcher, applied) => {
   filter.name = name;
   filter.matcher = matcher;
   filter.value = value;
-  return renderer.create(
-    <FilterInputLabel alertStore={alertStore} filter={filter} />
-  );
+  filter.isValid = valid;
+  return shallow(<FilterInputLabel alertStore={alertStore} filter={filter} />);
 };
 
 const ValidateClass = (matcher, applied, expectedClass) => {
-  const tree = FakeLabel(matcher, applied).toJSON();
-  expect(tree.props.className.split(" ")).toContain(expectedClass);
+  const tree = ShallowLabel(matcher, applied, true);
+  expect(tree.props().className.split(" ")).toContain(expectedClass);
 };
 
 const ValidateOnChange = newRaw => {
-  const component = renderer.create(
+  const tree = shallow(
     <FilterInputLabel
       alertStore={alertStore}
       filter={alertStore.filters.values[0]}
     />
   );
-  const tree = component.toTree();
-
-  // call onChange with new raw value
-  tree.instance.onChange({ raw: newRaw });
+  tree.instance().onChange({ raw: newRaw });
 
   return tree;
 };
@@ -92,40 +89,40 @@ describe("<FilterInputLabel /> className", () => {
 describe("<FilterInputLabel /> style", () => {
   it("unapplied filter with color information and '=' matcher should have empty style", () => {
     MockColors();
-    const tree = FakeLabel("=", false).toJSON();
-    expect(tree.props.style).toMatchObject({});
+    const tree = ShallowLabel("=", false, true);
+    expect(tree.props().style).toMatchObject({});
   });
 
   it("unapplied filter with no color information and '=' matcher should have empty style", () => {
-    const tree = FakeLabel("=", false).toJSON();
-    expect(tree.props.style).toMatchObject({});
+    const tree = ShallowLabel("=", false, true);
+    expect(tree.props().style).toMatchObject({});
   });
 
   it("unapplied filter with no color information and any matcher other than '=' should have empty style", () => {
     for (const matcher of NonEqualMatchers) {
-      const tree = FakeLabel(matcher, false).toJSON();
-      expect(tree.props.style).toMatchObject({});
+      const tree = ShallowLabel(matcher, false, true);
+      expect(tree.props().style).toMatchObject({});
     }
   });
 
   it("applied filter with color information and '=' matcher should have non empty style", () => {
     MockColors();
-    const tree = FakeLabel("=", true).toJSON();
-    expect(tree.props.style).toMatchObject({
+    const tree = ShallowLabel("=", true, true);
+    expect(tree.props().style).toMatchObject({
       color: "rgba(1, 2, 3, 100)",
       backgroundColor: "rgba(4, 5, 6, 200)"
     });
   });
 
   it("applied filter with no color information and '=' matcher should have empty style", () => {
-    const tree = FakeLabel("=", true).toJSON();
-    expect(tree.props.style).toMatchObject({});
+    const tree = ShallowLabel("=", true, true);
+    expect(tree.props().style).toMatchObject({});
   });
 
   it("applied filter with no color information and any matcher other than '=' should have empty style", () => {
     for (const matcher of NonEqualMatchers) {
-      const tree = FakeLabel(matcher, true).toJSON();
-      expect(tree.props.style).toMatchObject({});
+      const tree = ShallowLabel(matcher, true, true);
+      expect(tree.props().style).toMatchObject({});
     }
   });
 });
@@ -168,17 +165,27 @@ describe("<FilterInputLabel /> onChange", () => {
       NewUnappliedFilter("foo=bar"),
       NewUnappliedFilter("bar=baz")
     ];
-    const component = renderer.create(
+    const tree = mount(
       <FilterInputLabel
         alertStore={alertStore}
         filter={alertStore.filters.values[0]}
       />
     );
-    const button = component.root.findByType("button");
-    button.props.onClick();
+    const button = tree.find("button");
+    button.simulate("click");
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(
       NewUnappliedFilter("bar=baz")
     );
+  });
+});
+
+describe("<FilterInputLabel /> render", () => {
+  it("invalid filter matches snapshot", () => {
+    const tree = ShallowLabel("=", true, false);
+    const errorSpan = tree.find(".text-danger");
+    expect(errorSpan).toHaveLength(1);
+    const errorIcon = errorSpan.find("FontAwesomeIcon");
+    expect(errorIcon).toHaveLength(1);
   });
 });

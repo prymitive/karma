@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SilencePreview /> matches snapshot 1`] = `
+<div
+  class="mt-3"
+>
+  <pre
+    class="json-pretty"
+  >
+    {
+      "
+    <span
+      class="json-key"
+    >
+      matchers
+    </span>
+    ": [],
+      "
+    <span
+      class="json-key"
+    >
+      startsAt
+    </span>
+    ": 
+    <span
+      class="json-string"
+    >
+      "2000-02-01T00:00:00.000Z"
+    </span>
+    ,
+      "
+    <span
+      class="json-key"
+    >
+      endsAt
+    </span>
+    ": 
+    <span
+      class="json-string"
+    >
+      "2000-02-01T01:00:00.000Z"
+    </span>
+    ,
+      "
+    <span
+      class="json-key"
+    >
+      createdBy
+    </span>
+    ": 
+    <span
+      class="json-string"
+    >
+      ""
+    </span>
+    ,
+      "
+    <span
+      class="json-key"
+    >
+      comment
+    </span>
+    ": 
+    <span
+      class="json-string"
+    >
+      "SilencePreview test"
+    </span>
+    
+    }
+  </pre>
+</div>
+`;

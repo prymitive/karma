@@ -15,8 +15,8 @@ import { SilenceModal } from "Components/SilenceModal";
 
 import "./index.css";
 
-const navbarResize = function(width, height) {
-  document.body.style["padding-top"] = height + 4 + "px";
+const NavbarOnResize = function(width, height) {
+  document.body.style["padding-top"] = `${height + 4}px`;
 };
 
 const NavBar = observer(
@@ -41,7 +41,7 @@ const NavBar = observer(
       return (
         <div className="container">
           <nav className="navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block">
-            <ReactResizeDetector handleHeight onResize={navbarResize} />
+            <ReactResizeDetector handleHeight onResize={NavbarOnResize} />
             <span className="navbar-brand my-0 mx-2 h1 d-none d-sm-block float-left">
               {alertStore.info.totalAlerts}
               <FetchIndicator status={alertStore.status.value.toString()} />
@@ -67,4 +67,4 @@ const NavBar = observer(
   }
 );
 
-export { NavBar };
+export { NavBar, NavbarOnResize };

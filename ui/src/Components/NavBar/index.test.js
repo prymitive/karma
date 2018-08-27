@@ -7,7 +7,7 @@ import moment from "moment";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { NavBar } from ".";
+import { NavBar, NavbarOnResize } from ".";
 
 let alertStore;
 let settingsStore;
@@ -74,5 +74,23 @@ describe("<NavBar />", () => {
 
   it("navbar-nav includes 'flex-column' class with 3 filters", () => {
     ValidateNavClass(3, "flex-column");
+  });
+});
+
+describe("NavbarOnResize()", () => {
+  it("body 'padding-top' style is updated after calling NavbarOnResize()", () => {
+    NavbarOnResize(0, 10);
+    expect(
+      window
+        .getComputedStyle(document.body, null)
+        .getPropertyValue("padding-top")
+    ).toBe("14px");
+
+    NavbarOnResize(0, 36);
+    expect(
+      window
+        .getComputedStyle(document.body, null)
+        .getPropertyValue("padding-top")
+    ).toBe("40px");
   });
 });
