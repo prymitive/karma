@@ -95,18 +95,18 @@ func (config *configSchema) Read() {
 	// HOST and PORT is used by gin
 	err = v.BindEnv("listen.address", "HOST")
 	if err != nil {
-		log.Errorf("Failed to bind listen.address config key to the HOST env variable", err)
+		log.Errorf("Failed to bind listen.address config key to the HOST env variable: %s", err)
 	}
 
 	err = v.BindEnv("listen.port", "PORT")
 	if err != nil {
-		log.Errorf("Failed to bind listen.port config key to the PORT env variable", err)
+		log.Errorf("Failed to bind listen.port config key to the PORT env variable: %s", err)
 	}
 
 	// raven-go expects this
 	err = v.BindEnv("sentry.private", "SENTRY_DSN")
 	if err != nil {
-		log.Errorf("Failed to bind sentry.private config key to the SENTRY_DSN env variable", err)
+		log.Errorf("Failed to bind sentry.private config key to the SENTRY_DSN env variable: %s", err)
 	}
 
 	configFile := v.GetString("config.file")
