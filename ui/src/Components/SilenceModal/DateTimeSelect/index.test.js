@@ -216,3 +216,91 @@ describe("<TabContentDuration />", () => {
     ValidateDurationButton(8, /angle-down/, -1 * 5 * 60 * 1000);
   });
 });
+
+const SetDurationTo = (hours, minutes) => {
+  const startsAt = moment([2060, 1, 1, 0, 0, 0]);
+  const endsAt = moment(startsAt)
+    .add(hours, "hours")
+    .add(minutes, "minutes");
+  silenceFormStore.data.startsAt = startsAt;
+  silenceFormStore.data.endsAt = endsAt;
+};
+
+describe("<TabContentDuration /> inc minute CalculateChangeValue", () => {
+  it("inc on 0:1:0 duration sets 0:1:5", () => {
+    SetDurationTo(1, 0);
+    ValidateDurationButton(6, /angle-up/, 5 * 60 * 1000);
+  });
+
+  it("inc on 0:1:1 duration sets 0:1:2", () => {
+    SetDurationTo(1, 1);
+    ValidateDurationButton(6, /angle-up/, 60 * 1000);
+  });
+
+  it("inc on 0:1:4 duration sets 0:1:5", () => {
+    SetDurationTo(1, 4);
+    ValidateDurationButton(6, /angle-up/, 60 * 1000);
+  });
+
+  it("inc on 0:1:5 duration sets 0:1:10", () => {
+    SetDurationTo(1, 5);
+    ValidateDurationButton(6, /angle-up/, 5 * 60 * 1000);
+  });
+
+  it("inc on 0:1:6 duration sets 0:1:10", () => {
+    SetDurationTo(1, 6);
+    ValidateDurationButton(6, /angle-up/, 4 * 60 * 1000);
+  });
+
+  it("inc on 0:0:55 duration sets 0:1:0", () => {
+    SetDurationTo(0, 55);
+    ValidateDurationButton(6, /angle-up/, 5 * 60 * 1000);
+  });
+});
+
+describe("<TabContentDuration /> dec minute CalculateChangeValue", () => {
+  it("inc on 0:1:0 duration sets 0:0:55", () => {
+    SetDurationTo(1, 0);
+    ValidateDurationButton(8, /angle-down/, -5 * 60 * 1000);
+  });
+
+  it("inc on 0:0:59 duration sets 0:0:55", () => {
+    SetDurationTo(0, 59);
+    ValidateDurationButton(8, /angle-down/, -4 * 60 * 1000);
+  });
+
+  it("inc on 0:0:56 duration sets 0:0:55", () => {
+    SetDurationTo(0, 56);
+    ValidateDurationButton(8, /angle-down/, -1 * 60 * 1000);
+  });
+
+  it("inc on 0:0:55 duration sets 0:0:50", () => {
+    SetDurationTo(1, 0);
+    ValidateDurationButton(8, /angle-down/, -5 * 60 * 1000);
+  });
+
+  it("inc on 0:1:10 duration sets 0:1:5", () => {
+    SetDurationTo(1, 10);
+    ValidateDurationButton(8, /angle-down/, -5 * 60 * 1000);
+  });
+
+  it("inc on 0:1:6 duration sets 0:1:5", () => {
+    SetDurationTo(1, 6);
+    ValidateDurationButton(8, /angle-down/, -1 * 60 * 1000);
+  });
+
+  it("inc on 0:1:5 duration sets 0:1:0", () => {
+    SetDurationTo(1, 5);
+    ValidateDurationButton(8, /angle-down/, -5 * 60 * 1000);
+  });
+
+  it("inc on 0:1:4 duration sets 0:1:3", () => {
+    SetDurationTo(1, 4);
+    ValidateDurationButton(8, /angle-down/, -1 * 60 * 1000);
+  });
+
+  it("inc on 0:1:1 duration sets 0:1:0", () => {
+    SetDurationTo(1, 1);
+    ValidateDurationButton(8, /angle-down/, -1 * 60 * 1000);
+  });
+});
