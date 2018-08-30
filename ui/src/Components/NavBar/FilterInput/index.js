@@ -49,11 +49,10 @@ const FilterInput = observer(
     }
 
     onChange = action((event, { newValue, method }) => {
-      if (method === "enter") {
-        event.preventDefault();
-      } else {
-        this.inputStore.value = newValue;
-      }
+      // onChange here handles change for the user input in the filter bar
+      // we need to update inputStore.value every time user types in something
+      event.preventDefault();
+      this.inputStore.value = newValue;
     });
 
     onSubmit = action(event => {
