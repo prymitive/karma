@@ -102,7 +102,15 @@ const FilterInput = observer(
     };
 
     renderSuggestion = (suggestion, { query, isHighlighted }) => {
-      return <Highlight search={query}>{suggestion}</Highlight>;
+      return (
+        <Highlight
+          matchElement="span"
+          matchClass="font-weight-bold"
+          search={query}
+        >
+          {suggestion}
+        </Highlight>
+      );
     };
 
     renderInputComponent = inputProps => {
