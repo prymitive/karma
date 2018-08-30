@@ -51,6 +51,8 @@ const SilenceSubmitProgress = observer(
 
     submitState = observable(
       {
+        // store fetch result here, useful for testing
+        fetch: null,
         value: SubmitState.InProgress,
         result: null,
         markDone(result) {
@@ -68,7 +70,7 @@ const SilenceSubmitProgress = observer(
     handleAlertmanagerRequest = () => {
       const { uri, payload } = this.props;
 
-      fetch(`${uri}/api/v1/silences`, {
+      this.submitState.fetch = fetch(`${uri}/api/v1/silences`, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
@@ -91,8 +93,11 @@ const SilenceSubmitProgress = observer(
       } else if (response.status === "error") {
         this.submitState.markFailed(response.error);
       } else {
-        this.submitState.markFailed(JSON.strigify(response));
+        this.submitState.markFailed(JSON.stringify(response));
       }
+
+      // return status so we can assert it in tests
+      return response.status;
     };
 
     componentDidMount() {

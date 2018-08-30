@@ -107,14 +107,24 @@ const TabContentEnd = observer(({ silenceFormStore }) => {
   );
 });
 
-// calculate value for duration increase and decrease buttons using a goal step
-const CalculateChangeValue = (currentValue, step) => {
+// calculate value for duration increase button using a goal step
+const CalculateChangeValueUp = (currentValue, step) => {
   // if current value is less than step (but >0) then use 1
   if (currentValue > 0 && currentValue < step) {
     return 1;
   }
   // otherwise use step or a value that moves current value to the next step
   return step - (currentValue % step) || step;
+};
+
+// calculate value for duration decrease button using a goal step
+const CalculateChangeValueDown = (currentValue, step) => {
+  // if current value is less than step (but >0) then use 1
+  if (currentValue > 0 && currentValue < step) {
+    return 1;
+  }
+  // otherwise use step or a value that moves current value to the next step
+  return currentValue % step || step;
 };
 
 const TabContentDuration = observer(({ silenceFormStore }) => {
@@ -137,12 +147,15 @@ const TabContentDuration = observer(({ silenceFormStore }) => {
         value={silenceFormStore.data.toDuration.minutes}
         onInc={() =>
           silenceFormStore.data.incEnd(
-            CalculateChangeValue(silenceFormStore.data.toDuration.minutes, 5)
+            CalculateChangeValueUp(silenceFormStore.data.toDuration.minutes, 5)
           )
         }
         onDec={() =>
           silenceFormStore.data.decEnd(
-            CalculateChangeValue(silenceFormStore.data.toDuration.minutes, 5)
+            CalculateChangeValueDown(
+              silenceFormStore.data.toDuration.minutes,
+              5
+            )
           )
         }
       />
@@ -243,4 +256,4 @@ const DateTimeSelect = observer(
   }
 );
 
-export { DateTimeSelect };
+export { DateTimeSelect, TabContentStart, TabContentEnd, TabContentDuration };

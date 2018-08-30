@@ -204,6 +204,7 @@ describe("AlertStore.fetch", () => {
 
     expect(store.status.value).toEqual(AlertStoreStatuses.Idle);
     expect(store.info.version).toBe("fakeVersion");
+    expect(store.filters.values[0].applied).toBe(true);
   });
 
   it("fetch() works with valid response", async () => {

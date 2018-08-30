@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AlertManagerInput /> matches snapshot 1`] = `
+<StateManager
+  defaultInputValue=""
+  defaultMenuIsOpen={false}
+  defaultValue={
+    Array [
+      Object {
+        "label": "am1",
+        "value": "http://am1.example.com",
+        Symbol(mobx administration): ObservableObjectAdministration$$1 {
+          "defaultEnhancer": [Function],
+          "keysAtom": Atom$$1 {
+            "diffValue": 0,
+            "isBeingObserved": false,
+            "isPendingUnobservation": false,
+            "lastAccessedBy": 0,
+            "lowestObserverState": 2,
+            "name": "Silence form store.alertmanagers[..].keys",
+            "observers": Set {},
+          },
+          "name": "Silence form store.alertmanagers[..]",
+          "pendingKeys": Map {
+            "cheerio" => false,
+            "nodeType" => false,
+            "$$typeof" => false,
+            "@@__IMMUTABLE_LIST__@@" => false,
+            "@@__IMMUTABLE_SET__@@" => false,
+            "@@__IMMUTABLE_MAP__@@" => false,
+            "@@__IMMUTABLE_STACK__@@" => false,
+            "toJSON" => false,
+          },
+          "proxy": [Circular],
+          "target": Object {
+            "label": "am1",
+            "value": "http://am1.example.com",
+            Symbol(mobx administration): [Circular],
+          },
+          "values": Map {
+            "label" => "am1",
+            "value" => "http://am1.example.com",
+          },
+        },
+      },
+      Object {
+        "label": "am2",
+        "value": "http://am2.example.com",
+        Symbol(mobx administration): ObservableObjectAdministration$$1 {
+          "defaultEnhancer": [Function],
+          "keysAtom": Atom$$1 {
+            "diffValue": 0,
+            "isBeingObserved": false,
+            "isPendingUnobservation": false,
+            "lastAccessedBy": 0,
+            "lowestObserverState": 2,
+            "name": "Silence form store.alertmanagers[..].keys",
+            "observers": Set {},
+          },
+          "name": "Silence form store.alertmanagers[..]",
+          "pendingKeys": Map {
+            "cheerio" => false,
+            "nodeType" => false,
+            "$$typeof" => false,
+            "@@__IMMUTABLE_LIST__@@" => false,
+            "@@__IMMUTABLE_SET__@@" => false,
+            "@@__IMMUTABLE_MAP__@@" => false,
+            "@@__IMMUTABLE_STACK__@@" => false,
+            "toJSON" => false,
+          },
+          "proxy": [Circular],
+          "target": Object {
+            "label": "am2",
+            "value": "http://am2.example.com",
+            Symbol(mobx administration): [Circular],
+          },
+          "values": Map {
+            "label" => "am2",
+            "value" => "http://am2.example.com",
+          },
+        },
+      },
+      Object {
+        "label": "am3",
+        "value": "http://am3.example.com",
+        Symbol(mobx administration): ObservableObjectAdministration$$1 {
+          "defaultEnhancer": [Function],
+          "keysAtom": Atom$$1 {
+            "diffValue": 0,
+            "isBeingObserved": false,
+            "isPendingUnobservation": false,
+            "lastAccessedBy": 0,
+            "lowestObserverState": 2,
+            "name": "Silence form store.alertmanagers[..].keys",
+            "observers": Set {},
+          },
+          "name": "Silence form store.alertmanagers[..]",
+          "pendingKeys": Map {
+            "cheerio" => false,
+            "nodeType" => false,
+            "$$typeof" => false,
+            "@@__IMMUTABLE_LIST__@@" => false,
+            "@@__IMMUTABLE_SET__@@" => false,
+            "@@__IMMUTABLE_MAP__@@" => false,
+            "@@__IMMUTABLE_STACK__@@" => false,
+            "toJSON" => false,
+          },
+          "proxy": [Circular],
+          "target": Object {
+            "label": "am3",
+            "value": "http://am3.example.com",
+            Symbol(mobx administration): [Circular],
+          },
+          "values": Map {
+            "label" => "am3",
+            "value" => "http://am3.example.com",
+          },
+        },
+      },
+    ]
+  }
+  instanceId="silence-input-alertmanagers"
+  isMulti={true}
+  onChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "am1",
+        "value": "http://am1.example.com",
+      },
+      Object {
+        "label": "am2",
+        "value": "http://am2.example.com",
+      },
+      Object {
+        "label": "am3",
+        "value": "http://am3.example.com",
+      },
+    ]
+  }
+  placeholder="Alertmanager"
+  styles={
+    Object {
+      "control": [Function],
+      "indicatorsContainer": [Function],
+      "multiValue": [Function],
+      "multiValueLabel": [Function],
+      "multiValueRemove": [Function],
+      "option": [Function],
+      "valueContainer": [Function],
+    }
+  }
+/>
+`;

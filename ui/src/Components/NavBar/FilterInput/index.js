@@ -31,6 +31,7 @@ const FilterInput = observer(
       {
         ref: null,
         suggestions: [],
+        suggestionsFetch: null,
         value: "",
         storeInputReference(ref) {
           this.ref = ref;
@@ -49,11 +50,10 @@ const FilterInput = observer(
     }
 
     onChange = action((event, { newValue, method }) => {
-      if (method === "enter") {
-        event.preventDefault();
-      } else {
-        this.inputStore.value = newValue;
-      }
+      // onChange here handles change for the user input in the filter bar
+      // we need to update inputStore.value every time user types in something
+      event.preventDefault();
+      this.inputStore.value = newValue;
     });
 
     onSubmit = action(event => {
@@ -71,7 +71,9 @@ const FilterInput = observer(
     onSuggestionsFetchRequested = debounce(
       action(({ value }) => {
         if (value !== "") {
-          fetch(FormatUnseeBackendURI(`autocomplete.json?term=${value}`))
+          this.inputStore.suggestionsFetch = fetch(
+            FormatUnseeBackendURI(`autocomplete.json?term=${value}`)
+          )
             .then(
               result => result.json(),
               err => {

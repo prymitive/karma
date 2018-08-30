@@ -22,6 +22,12 @@ const MountedInput = () => {
   );
 };
 
+const WaitForFetch = tree => {
+  return expect(
+    tree.instance().inputStore.suggestionsFetch
+  ).resolves.toBeUndefined();
+};
+
 describe("<FilterInput />", () => {
   it("matches snapshot on default render", () => {
     const tree = render(
@@ -68,38 +74,66 @@ describe("<FilterInput />", () => {
 });
 
 describe("<FilterInput Autosuggest />", () => {
-  it("fetches suggestions on input change", done => {
+  it("fetches suggestions on input change", async () => {
     fetch.mockResponseOnce(JSON.stringify(["foo=bar", "foo=~bar"]));
 
     const tree = MountedInput();
     const instance = tree.instance();
     tree.find("input").simulate("change", { target: { value: "foo" } });
+    await WaitForFetch(tree);
 
-    // need to wait on fetch to resolve, but can't find any better way here
-    setTimeout(() => {
-      expect(fetch.mock.calls).toHaveLength(1);
-      expect(fetch.mock.calls[0]).toContain("./autocomplete.json?term=foo");
-      expect(instance.inputStore.suggestions).toHaveLength(2);
-      expect(instance.inputStore.suggestions).toContain("foo=bar");
-      expect(instance.inputStore.suggestions).toContain("foo=~bar");
-      done();
-    }, 1000);
+    expect(fetch.mock.calls).toHaveLength(1);
+    expect(fetch.mock.calls[0]).toContain("./autocomplete.json?term=foo");
+    expect(instance.inputStore.suggestions).toHaveLength(2);
+    expect(instance.inputStore.suggestions).toContain("foo=bar");
+    expect(instance.inputStore.suggestions).toContain("foo=~bar");
   });
 
-  it("handles failed suggestion fetches", done => {
+  it("clicking on a suggestion adds it to filters", async () => {
+    fetch.mockResponse(JSON.stringify(["foo=bar", "foo=~bar"]));
+
+    const tree = MountedInput();
+    tree.find("input").simulate("change", { target: { value: "foo" } });
+    // suggestions are rendered only when input is focused
+    tree.find("input").simulate("focus");
+    await WaitForFetch(tree);
+
+    // find() doesn't pick up suggestions even when tree.html() shows them
+    // forcing update seems to solve it
+    // https://github.com/airbnb/enzyme/issues/1233#issuecomment-343449560
+    tree.update();
+    // not sure why but suggestions are being found twice
+    const suggestion = tree.find(".dropdown-item").at(2);
+    expect(suggestion.text()).toBe("foo=~bar");
+    suggestion.simulate("click");
+    expect(alertStore.filters.values).toHaveLength(1);
+    expect(alertStore.filters.values[0]).toMatchObject({ raw: "foo=~bar" });
+  });
+
+  it("handles failed suggestion fetches", async () => {
     fetch.mockRejectOnce("Fetch error");
 
     const tree = MountedInput();
     const instance = tree.instance();
     tree.find("input").simulate("change", { target: { value: "bar" } });
+    await WaitForFetch(tree);
 
-    // need to wait on fetch to resolve, but can't find any better way here
-    setTimeout(() => {
-      expect(fetch.mock.calls).toHaveLength(1);
-      expect(fetch.mock.calls[0]).toContain("./autocomplete.json?term=bar");
-      expect(instance.inputStore.suggestions).toHaveLength(0);
-      done();
-    }, 1000);
+    expect(fetch.mock.calls).toHaveLength(1);
+    expect(fetch.mock.calls[0]).toContain("./autocomplete.json?term=bar");
+    expect(instance.inputStore.suggestions).toHaveLength(0);
+  });
+
+  it("handles invalid JSON in suggestion fetches", async () => {
+    fetch.mockResponseOnce("this is not JSON");
+
+    const tree = MountedInput();
+    const instance = tree.instance();
+    tree.find("input").simulate("change", { target: { value: "bar" } });
+    await WaitForFetch(tree);
+
+    expect(fetch.mock.calls).toHaveLength(1);
+    expect(fetch.mock.calls[0]).toContain("./autocomplete.json?term=bar");
+    expect(instance.inputStore.suggestions).toHaveLength(0);
   });
 
   it("clearing input clears suggestions", () => {

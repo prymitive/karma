@@ -41,11 +41,6 @@ const ReactSelectStyles = {
           borderRadius: "0.25rem",
           backgroundColor: "#fff"
         },
-  valueLabel: (base, state) => ({
-    ...base,
-    whiteSpace: "normal",
-    wordWrap: "break-word"
-  }),
   multiValue: (base, state) => ({
     ...base,
     borderRadius: "4px",

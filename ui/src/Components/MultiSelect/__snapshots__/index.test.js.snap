@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CustomMultiSelect /> matches snapshot with a value 1`] = `
+<StateManager
+  defaultInputValue=""
+  defaultMenuIsOpen={false}
+  defaultValue={
+    Object {
+      "label": "foo",
+      "value": "foo",
+    }
+  }
+  options={
+    Array [
+      Object {
+        "label": "foo",
+        "value": "foo",
+      },
+    ]
+  }
+  styles={
+    Object {
+      "control": [Function],
+      "indicatorsContainer": [Function],
+      "multiValue": [Function],
+      "multiValueLabel": [Function],
+      "multiValueRemove": [Function],
+      "option": [Function],
+      "valueContainer": [Function],
+    }
+  }
+/>
+`;
+
+exports[`<CustomMultiSelect /> matches snapshot with defaults 1`] = `
+<StateManager
+  defaultInputValue=""
+  defaultMenuIsOpen={false}
+  defaultValue={null}
+  styles={
+    Object {
+      "control": [Function],
+      "indicatorsContainer": [Function],
+      "multiValue": [Function],
+      "multiValueLabel": [Function],
+      "multiValueRemove": [Function],
+      "option": [Function],
+      "valueContainer": [Function],
+    }
+  }
+/>
+`;
+
+exports[`<CustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
+<StateManager
+  defaultInputValue=""
+  defaultMenuIsOpen={false}
+  defaultValue={null}
+  isMulti={true}
+  styles={
+    Object {
+      "control": [Function],
+      "indicatorsContainer": [Function],
+      "multiValue": [Function],
+      "multiValueLabel": [Function],
+      "multiValueRemove": [Function],
+      "option": [Function],
+      "valueContainer": [Function],
+    }
+  }
+/>
+`;
+
+exports[`<CustomMultiSelect /> matches snapshot with isMulti=true and a value 1`] = `
+<StateManager
+  defaultInputValue=""
+  defaultMenuIsOpen={false}
+  defaultValue={
+    Object {
+      "label": "foo",
+      "value": "foo",
+    }
+  }
+  isMulti={true}
+  options={
+    Array [
+      Object {
+        "label": "foo",
+        "value": "foo",
+      },
+    ]
+  }
+  styles={
+    Object {
+      "control": [Function],
+      "indicatorsContainer": [Function],
+      "multiValue": [Function],
+      "multiValueLabel": [Function],
+      "multiValueRemove": [Function],
+      "option": [Function],
+      "valueContainer": [Function],
+    }
+  }
+/>
+`;

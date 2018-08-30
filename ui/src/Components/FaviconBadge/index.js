@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
 
-import * as Favico from "favico.js";
+import Favico from "favico.js";
 
 const FaviconBadge = observer(
   class FaviconBadge extends Component {

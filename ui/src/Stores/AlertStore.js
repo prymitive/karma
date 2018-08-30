@@ -238,6 +238,23 @@ class AlertStore {
       return;
     }
 
+    for (const filter of result.filters) {
+      const storedIndex = this.filters.values.findIndex(
+        f => f.raw === filter.text
+      );
+      this.filters.values[storedIndex] = Object.assign(
+        this.filters.values[storedIndex],
+        {
+          applied: true,
+          isValid: filter.isValid,
+          hits: filter.hits,
+          name: filter.name,
+          matcher: filter.matcher,
+          value: filter.value
+        }
+      );
+    }
+
     let updates = {};
     // update data dicts if they changed
     for (const key of [

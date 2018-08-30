@@ -11,7 +11,7 @@ const Duration = observer(
   class Duration extends Component {
     static propTypes = {
       value: PropTypes.number.isRequired,
-      label: PropTypes.string,
+      label: PropTypes.string.isRequired,
       onInc: PropTypes.func.isRequired,
       onDec: PropTypes.func.isRequired
     };
@@ -40,9 +40,7 @@ const Duration = observer(
                   <h2>{value}</h2>
                 </td>
                 <td className="w-50">
-                  {label ? (
-                    <span className="text-muted ml-2">{label}</span>
-                  ) : null}
+                  <span className="text-muted ml-2">{label}</span>
                 </td>
               </tr>
               <tr>
