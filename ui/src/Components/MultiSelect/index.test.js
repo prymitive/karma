@@ -1,10 +1,17 @@
 import React from "react";
 
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 
 import { MultiSelect } from ".";
 
 const Option = value => ({ label: value, value: value });
+
+describe("<MultiSelect />", () => {
+  it("renders without any extra props", () => {
+    const tree = shallow(<MultiSelect />);
+    expect(tree.text()).toBe("<StateManager />");
+  });
+});
 
 class CustomMultiSelect extends MultiSelect {
   constructor(props) {
@@ -23,6 +30,13 @@ describe("<CustomMultiSelect />", () => {
 
   it("matches snapshot with isMulti=true", () => {
     const tree = shallow(<CustomMultiSelect isMulti />);
+    expect(tree).toMatchSnapshot();
+  });
+
+  it("matches snapshot when focused", () => {
+    // this test is to cover styles state.isFocused conditions
+    const tree = mount(<CustomMultiSelect autoFocus />);
+    tree.find("input").simulate("focus");
     expect(tree).toMatchSnapshot();
   });
 
