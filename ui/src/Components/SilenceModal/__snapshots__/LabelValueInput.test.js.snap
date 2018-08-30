@@ -30,7 +30,6 @@ exports[`<LabelValueInput /> matches snapshot 1`] = `
       "multiValueRemove": [Function],
       "option": [Function],
       "valueContainer": [Function],
-      "valueLabel": [Function],
     }
   }
 />
