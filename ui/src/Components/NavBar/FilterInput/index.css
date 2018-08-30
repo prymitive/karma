@@ -19,9 +19,3 @@ input.components-filterinput-wrapper {
 input.components-filterinput-wrapper:focus {
   width: auto;
 }
-
-/* highlighted part of the suggestion - phrase in the input that matches it */
-mark.highlight {
-  padding: 0;
-  background-color: inherit;
-}
