@@ -31,6 +31,7 @@ const FilterInput = observer(
       {
         ref: null,
         suggestions: [],
+        suggestionsFetch: null,
         value: "",
         storeInputReference(ref) {
           this.ref = ref;
@@ -70,7 +71,9 @@ const FilterInput = observer(
     onSuggestionsFetchRequested = debounce(
       action(({ value }) => {
         if (value !== "") {
-          fetch(FormatUnseeBackendURI(`autocomplete.json?term=${value}`))
+          this.inputStore.suggestionsFetch = fetch(
+            FormatUnseeBackendURI(`autocomplete.json?term=${value}`)
+          )
             .then(
               result => result.json(),
               err => {
