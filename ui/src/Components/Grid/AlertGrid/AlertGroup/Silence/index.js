@@ -228,4 +228,4 @@ const Silence = inject("alertStore")(
   )
 );
 
-export { Silence };
+export { Silence, SilenceDetails, SilenceExpiryBadgeWithProgress };
