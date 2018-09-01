@@ -76,6 +76,7 @@ clean:
 run: $(NAME)
 	ALERTMANAGER_INTERVAL=36000h \
 	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
+	ANNOTATIONS_HIDDEN="help" \
 	LABELS_COLOR_UNIQUE="@receiver instance cluster" \
 	LABELS_COLOR_STATIC="job" \
 	FILTERS_DEFAULT="@state=active @receiver=by-cluster-service" \
@@ -94,6 +95,7 @@ run-docker: docker-image
 		-v $(MOCK_PATH):$(MOCK_PATH) \
 		-e ALERTMANAGER_INTERVAL=36000h \
 		-e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
+		-e ANNOTATIONS_HIDDEN="help" \
 		-e LABELS_COLOR_UNIQUE="instance cluster" \
 		-e LABELS_COLOR_STATIC="job" \
 		-e FILTERS_DEFAULT="@state=active @receiver=by-cluster-service" \
