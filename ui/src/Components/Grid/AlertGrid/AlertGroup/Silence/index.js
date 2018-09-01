@@ -14,7 +14,7 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalL
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 
-import { StaticLabels } from "Common/Query";
+import { StaticLabels, QueryOperators } from "Common/Query";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 
 import "./index.css";
@@ -114,7 +114,7 @@ const SilenceDetails = ({ alertmanager, silence }) => {
           className="badge badge-success text-nowrap text-truncate px-1 mr-1"
         >
           {matcher.name}
-          {matcher.isRegex ? "=~" : "="}
+          {matcher.isRegex ? QueryOperators.Regex : QueryOperators.Equal}
           {matcher.value}
         </span>
       ))}
