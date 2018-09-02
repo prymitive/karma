@@ -29,8 +29,9 @@ const RenderNonLinkAnnotation = inject("alertStore")(
         {
           visible: true,
           show(e) {
-            // don't action link clicks inside Linkify
-            if (e.target.nodeName !== "A") this.visible = true;
+            // Linkify only handles value, no need to check for links of
+            // collapsed annotation
+            this.visible = true;
           },
           hide(e) {
             // don't action link clicks inside Linkify
