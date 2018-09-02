@@ -5,6 +5,7 @@ import {
   AlertStoreStatuses,
   FormatUnseeBackendURI,
   DecodeLocationSearch,
+  UpdateLocationSearch,
   NewUnappliedFilter
 } from "Stores/AlertStore";
 
@@ -61,6 +62,13 @@ describe("AlertStore.filters", () => {
     store.filters.addFilter("foo");
     expect(store.filters.values).toHaveLength(1);
     expect(store.filters.values[0]).toMatchObject(NewUnappliedFilter("foo"));
+  });
+
+  it("addFilter should not allow duplicates", () => {
+    const store = new AlertStore([]);
+    store.filters.addFilter("foo");
+    store.filters.addFilter("foo");
+    expect(store.filters.values).toHaveLength(1);
   });
 
   it("removeFilter('foo') should remove passed filter if it's defined", () => {
@@ -180,6 +188,23 @@ describe("DecodeLocationSearch", () => {
   });
 });
 
+describe("UpdateLocationSearch", () => {
+  it("{q: foo} is pushed to location.search", () => {
+    UpdateLocationSearch({ q: "foo" });
+    expect(window.location.search).toBe("?q=foo");
+  });
+
+  it("{a: foo} is not pushed to location.search", () => {
+    UpdateLocationSearch({ a: "foo" });
+    expect(window.location.search).toBe("");
+  });
+
+  it("{a: foo, q: bar} is pushed to location.search", () => {
+    UpdateLocationSearch({ a: "foo", q: "bar" });
+    expect(window.location.search).toBe("?q=bar");
+  });
+});
+
 describe("AlertStore.fetch", () => {
   it("parseAPIResponse() rejects a response with mismatched filters", () => {
     const consoleSpy = jest.spyOn(console, "info");
@@ -247,7 +272,34 @@ describe("AlertStore.fetch", () => {
   it("unapplied filters are marked as applied on fetch error", async () => {
     fetch.mockReject("Fetch error");
     const store = new AlertStore([NewUnappliedFilter("foo")]);
+    store.filters.values[0].applied = false;
     await expect(store.fetch()).resolves.toHaveProperty("error");
     expect(store.filters.values[0].applied).toBe(true);
+  });
+
+  it("stored settings are updated if needed after fetch", async () => {
+    const response = EmptyAPIResponse();
+    fetch.mockResponse(JSON.stringify(response));
+
+    const store = new AlertStore(["label=value"]);
+
+    // initial fetch, should update settings
+    store.settings.values = { foo: "bar" };
+    await expect(store.fetch()).resolves.toBeUndefined();
+    expect(store.settings.values).toMatchObject({
+      staticColorLabels: ["job"],
+      annotationsDefaultHidden: false,
+      annotationsHidden: [],
+      annotationsVisible: []
+    });
+
+    // second fetch, should keep same settings
+    await expect(store.fetch()).resolves.toBeUndefined();
+    expect(store.settings.values).toMatchObject({
+      staticColorLabels: ["job"],
+      annotationsDefaultHidden: false,
+      annotationsHidden: [],
+      annotationsVisible: []
+    });
   });
 });
