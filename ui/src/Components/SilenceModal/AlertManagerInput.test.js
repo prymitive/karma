@@ -70,6 +70,15 @@ describe("<AlertManagerInput />", () => {
     }
   });
 
+  it("doesn't override last selected Alertmanager instances on mount", () => {
+    silenceFormStore.data.alertmanagers = [AlertmanagerOption(1)];
+    ShallowAlertManagerInput();
+    expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
+    expect(silenceFormStore.data.alertmanagers).toContainEqual(
+      AlertmanagerOption(1)
+    );
+  });
+
   it("renders all 3 suggestions", () => {
     const tree = ValidateSuggestions();
     const options = tree.find("[role='option']");
