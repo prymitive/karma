@@ -280,7 +280,7 @@ class AlertStore {
     }
 
     // settings exported via API
-    if (!equal(this.settings, result.settings)) {
+    if (!equal(this.settings.values, result.settings)) {
       this.settings.values = result.settings;
     }
 
