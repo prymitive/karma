@@ -150,4 +150,4 @@ const GroupMenu = observer(
   }
 );
 
-export { GroupMenu };
+export { GroupMenu, MenuContent };

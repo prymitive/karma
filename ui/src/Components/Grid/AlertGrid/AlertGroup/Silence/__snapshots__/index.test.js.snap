@@ -1,0 +1,118 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Silence /> matches snapshot when data is not present in alertStore 1`] = `
+"
+<div>
+  <small class=\\"text-muted\\">
+    Silenced by default/4cf5fd82-1edd-4169-99d1-ff8415e72179
+  </small>
+</div>
+"
+`;
+
+exports[`<Silence /> matches snapshot when data is present in alertStore 1`] = `
+"
+<div class=\\"card mt-1 border-0 p-1\\">
+  <div class=\\"card-text mb-0\\">
+    <span class=\\"text-muted my-1\\">
+      Fake silence
+      <span class=\\"blockquote-footer pt-1\\">
+        <a class=\\"float-right cursor-pointer\\">
+          <svg aria-hidden=\\"true\\"
+               data-prefix=\\"fas\\"
+               data-icon=\\"chevron-up\\"
+               class=\\"svg-inline--fa fa-chevron-up fa-w-14 \\"
+               role=\\"img\\"
+               xmlns=\\"http://www.w3.org/2000/svg\\"
+               viewbox=\\"0 0 448 512\\"
+          >
+            <path fill=\\"currentColor\\"
+                  d=\\"M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z\\"
+            >
+            </path>
+          </svg>
+        </a>
+        <cite class=\\"components-grid-alertgroup-silences mr-2\\">
+          me@example.com
+        </cite>
+        <span class=\\"badge badge-light nmb-05 text-nowrap text-truncate mw-100 align-bottom\\">
+          Expires
+          <time datetime=\\"946756800000\\">
+            in 5 hours
+          </time>
+          <div class=\\"progress silence-progress bg-white\\">
+            <div class=\\"progress-bar bg-success\\"
+                 role=\\"progressbar\\"
+                 style=\\"width: 50%;\\"
+                 aria-valuenow=\\"50\\"
+                 aria-valuemin=\\"0\\"
+                 aria-valuemax=\\"100\\"
+            >
+            </div>
+          </div>
+        </span>
+      </span>
+    </span>
+  </div>
+</div>
+"
+`;
+
+exports[`<Silence /> matches snapshot with expaned details 1`] = `
+"
+<div class=\\"card mt-1 border-0 p-1\\">
+  <div class=\\"card-text mb-0\\">
+    <span class=\\"text-muted my-1\\">
+      Fake silence
+      <span class=\\"blockquote-footer pt-1\\">
+        <a class=\\"float-right cursor-pointer\\">
+          <svg aria-hidden=\\"true\\"
+               data-prefix=\\"fas\\"
+               data-icon=\\"chevron-down\\"
+               class=\\"svg-inline--fa fa-chevron-down fa-w-14 \\"
+               role=\\"img\\"
+               xmlns=\\"http://www.w3.org/2000/svg\\"
+               viewbox=\\"0 0 448 512\\"
+          >
+            <path fill=\\"currentColor\\"
+                  d=\\"M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z\\"
+            >
+            </path>
+          </svg>
+        </a>
+        <cite class=\\"components-grid-alertgroup-silences mr-2\\">
+          me@example.com
+        </cite>
+      </span>
+    </span>
+  </div>
+  <div class=\\"mt-1\\">
+    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
+      @alertmanager: default
+    </span>
+    <a class=\\"badge badge-secondary text-nowrap text-truncate px-1 mr-1\\"
+       href=\\"file:///mock/#/silences/4cf5fd82-1edd-4169-99d1-ff8415e72179\\"
+       target=\\"_blank\\"
+       rel=\\"noopener noreferrer\\"
+    >
+      4cf5fd82-1edd-4169-99d1-ff8415e72179
+    </a>
+    <span class=\\"badge badge-secondary text-nowrap text-truncate px-1 mr-1\\">
+      Silenced
+      <time datetime=\\"946720800000\\">
+        5 hours ago
+      </time>
+    </span>
+    <span class=\\"badge badge-secondary text-nowrap text-truncate px-1 mr-1\\">
+      Expires
+      <time datetime=\\"946756800000\\">
+        in 5 hours
+      </time>
+    </span>
+    <span class=\\"badge badge-success text-nowrap text-truncate px-1 mr-1\\">
+      alertname=MockAlert
+    </span>
+  </div>
+</div>
+"
+`;

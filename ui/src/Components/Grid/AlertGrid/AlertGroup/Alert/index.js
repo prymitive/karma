@@ -50,6 +50,7 @@ const Alert = observer(
                   key={a.name}
                   name={a.name}
                   value={a.value}
+                  visible={a.visible}
                   afterUpdate={afterUpdate}
                 />
               ))}

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { observable, action, toJS } from "mobx";
+import { observable, action } from "mobx";
 import { observer, inject } from "mobx-react";
 
 import Linkify from "react-linkify";
@@ -20,6 +20,7 @@ const RenderNonLinkAnnotation = inject("alertStore")(
         alertStore: PropTypes.object.isRequired,
         name: PropTypes.string.isRequired,
         value: PropTypes.string.isRequired,
+        visible: PropTypes.bool.isRequired,
         afterUpdate: PropTypes.func.isRequired
       };
 
@@ -45,41 +46,13 @@ const RenderNonLinkAnnotation = inject("alertStore")(
       constructor(props) {
         super(props);
 
-        this.toggle.visible = this.isVisible();
+        this.toggle.visible = props.visible;
       }
 
       componentDidUpdate() {
         const { afterUpdate } = this.props;
 
         afterUpdate();
-      }
-
-      // determinate if this annotation should be hidden by default or not
-      isVisible() {
-        const { alertStore, name } = this.props;
-
-        const annotationsHidden = toJS(
-          alertStore.settings.values.annotationsHidden
-        );
-        const isInHidden =
-          annotationsHidden !== null && annotationsHidden.indexOf(name) >= 0;
-
-        const annotationsVisible = toJS(
-          alertStore.settings.values.annotationsVisible
-        );
-        const isInVisible =
-          annotationsVisible !== null && annotationsVisible.indexOf(name) >= 0;
-
-        if (isInVisible) return true;
-
-        if (
-          toJS(alertStore.settings.values.annotationsDefaultHidden) === true ||
-          isInHidden === true
-        ) {
-          return false;
-        }
-
-        return true;
       }
 
       render() {

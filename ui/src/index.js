@@ -16,7 +16,9 @@ SetupRaven(settingsElement);
 Moment.startPooledTimer();
 
 const defaultFilters = ParseDefaultFilters(settingsElement);
-ReactDOM.render(
+
+// https://wetainment.com/testing-indexjs/
+export default ReactDOM.render(
   <App defaultFilters={defaultFilters} />,
-  document.getElementById("root")
+  document.getElementById("root") || document.createElement("div")
 );

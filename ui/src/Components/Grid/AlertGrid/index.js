@@ -82,9 +82,7 @@ const AlertGrid = observer(
             ref={this.storeMasonryRef}
             pack={true}
             sizes={GridSizesConfig}
-            loadMore={() => {
-              this.loadMore();
-            }}
+            loadMore={this.loadMore}
             hasMore={
               this.groupsToRender.value <
               Object.keys(alertStore.data.groups).length

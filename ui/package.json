@@ -51,11 +51,13 @@
     "watch-css": "npm run build-css && node_modules/.bin/node-sass-chokidar src/ -o src/ --watch --recursive"
   },
   "devDependencies": {
+    "diffable-html": "3.0.0",
     "enzyme": "3.5.0",
     "enzyme-adapter-react-16": "1.3.1",
     "enzyme-to-json": "3.3.4",
     "eslint-plugin-react": "7.11.1",
     "jest-canvas-mock": "1.1.0",
+    "jest-date-mock": "1.0.3",
     "jest-fetch-mock": "1.6.5",
     "jest-localstorage-mock": "2.2.0",
     "jest-mock-console": "0.4.0",
