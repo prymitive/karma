@@ -112,6 +112,9 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
     <span class=\\"badge badge-success text-nowrap text-truncate px-1 mr-1\\">
       alertname=MockAlert
     </span>
+    <span class=\\"badge badge-success text-nowrap text-truncate px-1 mr-1\\">
+      instance=~foo[0-9]+
+    </span>
   </div>
 </div>
 "
