@@ -32,6 +32,15 @@ LoadButton.propTypes = {
   action: PropTypes.func.isRequired
 };
 
+const AllAlertsAreUsingSameAlertmanagers = alerts => {
+  const usedAMs = alerts.map(alert =>
+    alert.alertmanager.map(am => am.name).sort()
+  );
+  return usedAMs.every(
+    listOfAMs => JSON.stringify(listOfAMs) === JSON.stringify(usedAMs[0])
+  );
+};
+
 const AlertGroup = observer(
   class AlertGroup extends Component {
     static propTypes = {
@@ -137,9 +146,7 @@ const AlertGroup = observer(
         // alertmanagers (and there's > 1 alert to show, there's no footer for 1)
         showAlertmanagersInFooter =
           group.alerts.length > 1 &&
-          Object.values(group.alertmanagerCount).every(
-            elem => elem === Object.values(group.alertmanagerCount)[0]
-          );
+          AllAlertsAreUsingSameAlertmanagers(group.alerts);
         if (showAlertmanagersInFooter) {
           footerAlertmanagers = group.alerts[0].alertmanager.map(am => am.name);
         }

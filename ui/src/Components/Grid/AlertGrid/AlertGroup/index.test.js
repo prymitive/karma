@@ -65,6 +65,27 @@ describe("<AlertGroup />", () => {
     expect(tree.find("GroupFooter").html()).toMatch(/@alertmanager: default/);
   });
 
+  it("doesn't render alertmanager labels in footer when they are unique", () => {
+    MockAlerts(5);
+    for (let i = 0; i < group.alerts.length; i++) {
+      group.alerts[i].alertmanager[0].name = `fakeAlertmanager${i}`;
+    }
+    group.alertmanagerCount = {
+      fakeAlertmanager0: 1,
+      fakeAlertmanager1: 1,
+      fakeAlertmanager2: 1,
+      fakeAlertmanager3: 1,
+      fakeAlertmanager4: 1
+    };
+    const tree = MountedAlertGroup(jest.fn(), true);
+
+    const alerts = tree.find("ul.list-group");
+    expect(alerts.html()).toMatch(/@alertmanager:/);
+
+    const footer = tree.find("GroupFooter");
+    expect(footer.html()).not.toMatch(/@alertmanager:/);
+  });
+
   it("only renders titlebar when collapsed", () => {
     MockAlerts(10);
     const tree = MountedAlertGroup(jest.fn(), false);
