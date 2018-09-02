@@ -59,6 +59,18 @@ const MountedNonLinkAnnotation = visible => {
   );
 };
 
+const MountedNonLinkAnnotationContainingLink = visible => {
+  return mount(
+    <RenderNonLinkAnnotation
+      alertStore={alertStore}
+      name="foo"
+      value="some long text with http://example.com link"
+      visible={visible}
+      afterUpdate={MockAfterUpdate}
+    />
+  );
+};
+
 describe("<RenderNonLinkAnnotation />", () => {
   it("matches snapshot when visible=true", () => {
     const tree = ShallowNonLinkAnnotation(true);
@@ -80,6 +92,12 @@ describe("<RenderNonLinkAnnotation />", () => {
     expect(tree.html()).not.toMatch(/some long text/);
   });
 
+  it("links inside annotation are rendered as a.href", () => {
+    const tree = MountedNonLinkAnnotationContainingLink(true);
+    const link = tree.find("a[href='http://example.com']");
+    expect(link.text()).toBe("http://example.com");
+  });
+
   it("clicking on + icon hides the value", () => {
     const tree = MountedNonLinkAnnotation(true);
     expect(tree.html()).toMatch(/fa-search-minus/);
@@ -87,6 +105,13 @@ describe("<RenderNonLinkAnnotation />", () => {
     tree.find("div").simulate("click");
     expect(tree.html()).toMatch(/fa-search-plus/);
     expect(tree.html()).not.toMatch(/some long text/);
+  });
+
+  it("clicking on a link inside annotation doesn't hide the value", () => {
+    const tree = MountedNonLinkAnnotationContainingLink(true);
+    expect(tree.html()).toMatch(/fa-search-minus/);
+    tree.find("a").simulate("click");
+    expect(tree.html()).toMatch(/fa-search-minus/);
   });
 
   it("clicking on - icon shows the value", () => {
