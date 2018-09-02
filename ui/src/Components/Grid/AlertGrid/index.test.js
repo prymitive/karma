@@ -89,6 +89,15 @@ describe("<AlertGrid />", () => {
     expect(instance.masonryComponentReference.ref.forcePack).toHaveBeenCalled();
   });
 
+  it("masonryRepack() doesn't crash when masonryComponentReference.ref=false`", () => {
+    const tree = ShallowAlertGrid();
+    const instance = tree.instance();
+    const repackSpy = jest.spyOn(instance, "masonryRepack");
+    instance.masonryComponentReference.ref = false;
+    instance.componentDidUpdate();
+    expect(repackSpy).toHaveBeenCalled();
+  });
+
   it("calling storeMasonryRef() saves the ref in local store", () => {
     const tree = ShallowAlertGrid();
     const instance = tree.instance();
