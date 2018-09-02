@@ -46,7 +46,7 @@ describe("<CustomMultiSelect />", () => {
     const tree = shallow(
       <CustomMultiSelect
         defaultValue={Option("foo")}
-        options={[Option("foo", Option("bar"))]}
+        options={[Option("foo"), Option("bar")]}
       />
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
@@ -57,7 +57,7 @@ describe("<CustomMultiSelect />", () => {
       <CustomMultiSelect
         isMulti
         defaultValue={Option("foo")}
-        options={[Option("foo", Option("bar"))]}
+        options={[Option("foo"), Option("bar")]}
       />
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
