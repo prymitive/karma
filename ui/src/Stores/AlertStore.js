@@ -280,7 +280,7 @@ class AlertStore {
     }
 
     // settings exported via API
-    if (!equal(this.settings, result.settings)) {
+    if (!equal(this.settings.values, result.settings)) {
       this.settings.values = result.settings;
     }
 
@@ -294,10 +294,8 @@ class AlertStore {
     this.info.totalAlerts = 0;
 
     // all unapplied filters should be marked applied to reset progress indicator
-    for (const [index, filter] of this.filters.values.entries()) {
-      if (!filter.applied) {
-        this.filters.values[index].applied = true;
-      }
+    for (let i = 0; i < this.filters.values.length; i++) {
+      this.filters.values[i].applied = true;
     }
 
     return { error: err };
@@ -310,5 +308,6 @@ export {
   FormatUnseeBackendURI,
   FormatAPIFilterQuery,
   DecodeLocationSearch,
+  UpdateLocationSearch,
   NewUnappliedFilter
 };

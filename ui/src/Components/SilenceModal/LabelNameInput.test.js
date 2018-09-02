@@ -77,7 +77,7 @@ describe("<LabelNameInput />", () => {
     }, 100);
   });
 
-  it("suggestions are empited on failed fetch", done => {
+  it("suggestions are emptied on failed fetch", done => {
     fetch.mockReject(new Error("fake error message"));
     ShallowLabelNameInput();
     // use timeout since mount will call fetch
@@ -85,5 +85,13 @@ describe("<LabelNameInput />", () => {
       expect(matcher.suggestions.names).toHaveLength(0);
       done();
     }, 100);
+  });
+
+  it("doesn't fetch suggestions if value is changed to empty string", () => {
+    const tree = MountedLabelNameInput();
+    const instance = tree.instance();
+    const fetchSpy = jest.spyOn(instance, "populateValueSuggestions");
+    instance.onChange("");
+    expect(fetchSpy).not.toHaveBeenCalled();
   });
 });

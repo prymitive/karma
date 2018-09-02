@@ -87,4 +87,14 @@ describe("ParseDefaultFilters()", () => {
     expect(filters).toContain("foo=bar");
     expect(filters).toContain("bar=~baz");
   });
+
+  it("returns [] on filters attr that decodes to an object instead of an array", () => {
+    const filters = FiltersSetting({ foo: "bar" });
+    expect(filters).toHaveLength(0);
+  });
+
+  it("returns [] on filters attr that decodes to a string instead of an array", () => {
+    const filters = FiltersSetting("foo=bar");
+    expect(filters).toHaveLength(0);
+  });
 });

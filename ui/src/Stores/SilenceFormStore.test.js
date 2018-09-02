@@ -70,6 +70,11 @@ describe("SilenceFormStore.data", () => {
     );
   });
 
+  it("deleteMatcher() is a no-op when matcher list is empty", () => {
+    store.data.deleteMatcher(1);
+    expect(store.data.matchers).toHaveLength(0);
+  });
+
   it("fillMatchersFromGroup() creates correct matcher object for a group", () => {
     const group = MockGroup();
     store.data.fillMatchersFromGroup(group);

@@ -30,6 +30,11 @@ const silence = {
       name: "alertname",
       value: "MockAlert",
       isRegex: false
+    },
+    {
+      name: "instance",
+      value: "foo[0-9]+",
+      isRegex: true
     }
   ],
   startsAt: "2000-01-01T10:00:00Z",
