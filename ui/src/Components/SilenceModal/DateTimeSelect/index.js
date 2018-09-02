@@ -114,7 +114,7 @@ const CalculateChangeValueUp = (currentValue, step) => {
     return 1;
   }
   // otherwise use step or a value that moves current value to the next step
-  return step - (currentValue % step) || step;
+  return step - (currentValue % step);
 };
 
 // calculate value for duration decrease button using a goal step
