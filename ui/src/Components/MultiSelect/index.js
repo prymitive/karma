@@ -78,7 +78,7 @@ const ReactSelectStyles = {
   }),
   option: (base, state) => ({
     ...base,
-    color: state.isSelected ? "#95a5a6" : "inherit",
+    color: "inherit",
     backgroundColor: "inherit",
     "&:hover": { color: "#fff", backgroundColor: "#455a64", cursor: "pointer" }
   })
