@@ -63,13 +63,38 @@ describe("<FilterInput />", () => {
     );
   });
 
-  it("Clicking on form-control div focuses input", () => {
+  it("submit should be no-op if input value is empty", () => {
+    const tree = MountedInput();
+    const instance = tree.instance();
+    instance.inputStore.value = "";
+    expect(alertStore.filters.values).toHaveLength(0);
+    tree.find("form").simulate("submit");
+    expect(alertStore.filters.values).toHaveLength(0);
+  });
+
+  it("clicking on form-control div focuses input", () => {
     const tree = MountedInput();
     const instance = tree.instance();
     const inputSpy = jest.spyOn(instance.inputStore.ref.input, "focus");
     const formControl = tree.find(".form-control");
     formControl.simulate("click");
     expect(inputSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("clicking on a label doesn't trigger input focus", () => {
+    alertStore.filters.values = [NewUnappliedFilter("foo=bar")];
+    const tree = MountedInput();
+    const instance = tree.instance();
+    const inputSpy = jest.spyOn(instance.inputStore.ref.input, "focus");
+    tree.find("FilterInputLabel").simulate("click");
+    expect(inputSpy).not.toHaveBeenCalled();
+  });
+
+  it("componentDidMount executes even when inputStore.ref=null", () => {
+    const tree = MountedInput();
+    const instance = tree.instance();
+    instance.inputStore.ref = null;
+    instance.componentDidMount();
   });
 });
 
@@ -87,6 +112,15 @@ describe("<FilterInput Autosuggest />", () => {
     expect(instance.inputStore.suggestions).toHaveLength(2);
     expect(instance.inputStore.suggestions).toContain("foo=bar");
     expect(instance.inputStore.suggestions).toContain("foo=~bar");
+  });
+
+  it("doesn't fetch any suggestion if the input value is empty", () => {
+    fetch.mockResponseOnce(JSON.stringify(["foo=bar", "foo=~bar"]));
+
+    const tree = MountedInput();
+    const instance = tree.instance();
+    instance.onSuggestionsFetchRequested({ value: "" });
+    expect(fetch.mock.calls).toHaveLength(0);
   });
 
   it("clicking on a suggestion adds it to filters", async () => {
