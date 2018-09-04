@@ -21,6 +21,10 @@ env:
 jobs:
   include:
     - stage: Greenkeeper
+      # this stage only runs for branches with name starting with "greenkeeper"
+      # it only needs to run as part of a PR send by Greenkeeper bot, it doesn't
+      # do anything for other branches or PRs
+      if: branch =~ /^greenkeeper.*/
       <<: *DEFAULTS_JS
       script:
         - make greenkeeper-lockfile
