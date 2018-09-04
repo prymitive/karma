@@ -1,7 +1,7 @@
 import moment from "moment";
 
 import { MockAlert, MockAlertGroup } from "__mocks__/Alerts.js";
-import { SilenceFormStore } from "./SilenceFormStore";
+import { SilenceFormStore, NewEmptyMatcher } from "./SilenceFormStore";
 
 let store;
 beforeEach(() => {
@@ -126,6 +126,83 @@ describe("SilenceFormStore.data", () => {
     store.data.createdBy = "me@example.com";
     store.data.comment = "toAlertmanagerPayload test";
     expect(store.data.toAlertmanagerPayload).toMatchSnapshot();
+  });
+});
+
+const MockAlertmanager = () => ({
+  label: "default",
+  value: "http://localhost"
+});
+
+const MockMatcher = (name, values) => {
+  const matcher = NewEmptyMatcher();
+  matcher.name = name;
+  matcher.values = values;
+  return matcher;
+};
+
+describe("SilenceFormStore.data.isValid", () => {
+  it("isValid returns 'false' if alertmanagers list is empty", () => {
+    store.data.matchers = [MockMatcher("foo", ["bar"])];
+    store.data.author = "me@example.com";
+    store.data.comment = "fake silence";
+    expect(store.data.isValid).toBe(false);
+  });
+
+  it("isValid returns 'false' if matchers list is empty", () => {
+    store.data.alertmanagers = [MockAlertmanager];
+    store.data.matchers = [];
+    store.data.author = "me@example.com";
+    store.data.comment = "fake silence";
+    expect(store.data.isValid).toBe(false);
+  });
+
+  it("isValid returns 'false' if matchers list is pupulated when a matcher without any name", () => {
+    store.data.alertmanagers = [MockAlertmanager];
+    store.data.matchers = [MockMatcher("", ["bar"])];
+    store.data.author = "me@example.com";
+    store.data.comment = "fake silence";
+    expect(store.data.isValid).toBe(false);
+  });
+
+  it("isValid returns 'false' if matchers list is pupulated when a matcher without any value ([])", () => {
+    store.data.alertmanagers = [MockAlertmanager];
+    store.data.matchers = [MockMatcher("foo", [])];
+    store.data.author = "me@example.com";
+    store.data.comment = "fake silence";
+    expect(store.data.isValid).toBe(false);
+  });
+
+  it("isValid returns 'false' if matchers list is pupulated when a matcher with empty value ([''])", () => {
+    store.data.alertmanagers = [MockAlertmanager];
+    store.data.matchers = [MockMatcher("foo", [])];
+    store.data.author = "me@example.com";
+    store.data.comment = "fake silence";
+    expect(store.data.isValid).toBe(false);
+  });
+
+  it("isValid returns 'false' if author is empty", () => {
+    store.data.alertmanagers = [MockAlertmanager];
+    store.data.matchers = [MockMatcher("foo", ["bar"])];
+    store.data.author = "";
+    store.data.comment = "fake silence";
+    expect(store.data.isValid).toBe(false);
+  });
+
+  it("isValid returns 'false' if comment is empty", () => {
+    store.data.alertmanagers = [MockAlertmanager];
+    store.data.matchers = [MockMatcher("foo", ["bar"])];
+    store.data.author = "me@example.com";
+    store.data.comment = "";
+    expect(store.data.isValid).toBe(false);
+  });
+
+  it("isValid returns 'true' if all fileds are set", () => {
+    store.data.alertmanagers = [MockAlertmanager];
+    store.data.matchers = [MockMatcher("foo", ["bar"])];
+    store.data.author = "me@example.com";
+    store.data.comment = "fake silence";
+    expect(store.data.isValid).toBe(true);
   });
 });
 

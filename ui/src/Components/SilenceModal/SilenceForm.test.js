@@ -3,7 +3,7 @@ import React from "react";
 import { mount, shallow } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { SilenceForm } from "./SilenceForm";
 
 let alertStore;
@@ -121,7 +121,22 @@ describe("<SilenceForm /> inputs", () => {
 });
 
 describe("<SilenceForm />", () => {
-  it("calling submit marks form as in progress", () => {
+  it("calling submit doesn't mark form as in progress when form is invalid", () => {
+    const tree = ShallowSilenceForm();
+    tree.simulate("submit", { preventDefault: jest.fn() });
+    expect(silenceFormStore.data.inProgress).toBe(false);
+  });
+
+  it("calling submit marks form as in progress when form is valid", () => {
+    const matcher = NewEmptyMatcher();
+    matcher.name = "job";
+    matcher.values = ["node_exporter"];
+    silenceFormStore.data.matchers = [matcher];
+    silenceFormStore.data.alertmanagers = [
+      { label: "am1", value: "http://example.com" }
+    ];
+    silenceFormStore.data.author = "me@example.com";
+    silenceFormStore.data.comment = "fake silence";
     const tree = ShallowSilenceForm();
     tree.simulate("submit", { preventDefault: jest.fn() });
     expect(silenceFormStore.data.inProgress).toBe(true);

@@ -102,7 +102,8 @@ const SilenceForm = observer(
 
       event.preventDefault();
 
-      silenceFormStore.data.inProgress = true;
+      if (silenceFormStore.data.isValid)
+        silenceFormStore.data.inProgress = true;
     });
 
     render() {
