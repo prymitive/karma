@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
 
+import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
+
 import { SilenceForm } from "./SilenceForm";
 import { SilenceSubmitController } from "./SilenceSubmitController";
 
@@ -13,6 +15,14 @@ const SilenceModalContent = observer(
       alertStore: PropTypes.object.isRequired,
       silenceFormStore: PropTypes.object.isRequired
     };
+
+    componentDidMount() {
+      disableBodyScroll(document.querySelector(".modal"));
+    }
+
+    componentWillUnmount() {
+      enableBodyScroll(document.querySelector(".modal"));
+    }
 
     render() {
       const { alertStore, silenceFormStore } = this.props;
