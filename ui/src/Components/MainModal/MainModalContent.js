@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 import { observable, action } from "mobx";
 
+import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
+
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { Configuration } from "./Configuration";
@@ -48,6 +50,14 @@ const MainModalContent = observer(
       },
       { setTab: action.bound }
     );
+
+    componentDidMount() {
+      disableBodyScroll(document.querySelector(".modal"));
+    }
+
+    componentWillUnmount() {
+      enableBodyScroll(document.querySelector(".modal"));
+    }
 
     render() {
       const { alertStore, settingsStore, onHide } = this.props;
