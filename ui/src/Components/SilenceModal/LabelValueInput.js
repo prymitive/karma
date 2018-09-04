@@ -1,14 +1,17 @@
+import React from "react";
 import PropTypes from "prop-types";
 
 import { action } from "mobx";
 import { observer } from "mobx-react";
 
 import { MultiSelect } from "Components/MultiSelect";
+import { ValidationError } from "Components/MultiSelect/ValidationError";
 
 const LabelValueInput = observer(
   class LabelValueInput extends MultiSelect {
     static propTypes = {
-      matcher: PropTypes.object.isRequired
+      matcher: PropTypes.object.isRequired,
+      isValid: PropTypes.bool.isRequired
     };
 
     onChange = action((newValue, actionMeta) => {
@@ -25,13 +28,13 @@ const LabelValueInput = observer(
     });
 
     renderProps = () => {
-      const { matcher } = this.props;
+      const { matcher, isValid } = this.props;
 
       return {
         instanceId: `silence-input-label-value-${matcher.id}`,
         defaultValue: matcher.values,
         options: matcher.suggestions.values,
-        placeholder: "Label value",
+        placeholder: isValid ? "Label value" : <ValidationError />,
         isMulti: true,
         onChange: this.onChange
       };

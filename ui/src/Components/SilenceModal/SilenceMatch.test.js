@@ -2,17 +2,25 @@ import React from "react";
 
 import { shallow } from "enzyme";
 
-import { NewEmptyMatcher, MatcherValueToObject } from "Stores/SilenceFormStore";
+import {
+  SilenceFormStore,
+  NewEmptyMatcher,
+  MatcherValueToObject
+} from "Stores/SilenceFormStore";
 import { SilenceMatch } from "./SilenceMatch";
 
+let silenceFormStore;
 let matcher;
 
 beforeEach(() => {
+  silenceFormStore = new SilenceFormStore();
   matcher = NewEmptyMatcher();
 });
 
 const ShallowLabelValueInput = () => {
-  return shallow(<SilenceMatch matcher={matcher} />);
+  return shallow(
+    <SilenceMatch matcher={matcher} silenceFormStore={silenceFormStore} />
+  );
 };
 
 describe("<SilenceMatch />", () => {

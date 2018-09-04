@@ -60,6 +60,21 @@ describe("<AlertManagerInput />", () => {
     expect(tree).toMatchSnapshot();
   });
 
+  it("doesn't render ValidationError after passed validation", () => {
+    const tree = ShallowAlertManagerInput();
+    silenceFormStore.data.wasValidated = true;
+    expect(tree.html()).not.toMatch(/fa-exclamation-circle/);
+    expect(tree.html()).not.toMatch(/Required/);
+  });
+
+  it("renders ValidationError after failed validation", () => {
+    const tree = ShallowAlertManagerInput();
+    silenceFormStore.data.alertmanagers = [];
+    silenceFormStore.data.wasValidated = true;
+    expect(tree.html()).toMatch(/fa-exclamation-circle/);
+    expect(tree.html()).toMatch(/Required/);
+  });
+
   it("all available Alertmanager instances are selected by default", () => {
     ShallowAlertManagerInput();
     expect(silenceFormStore.data.alertmanagers).toHaveLength(3);

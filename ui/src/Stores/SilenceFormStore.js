@@ -44,6 +44,7 @@ class SilenceFormStore {
   data = observable(
     {
       inProgress: false,
+      wasValidated: false,
       alertmanagers: [],
       matchers: [],
       startsAt: moment(),
@@ -51,8 +52,26 @@ class SilenceFormStore {
       comment: "",
       author: "",
 
+      get isValid() {
+        if (this.alertmanagers.length === 0) return false;
+        if (this.matchers.length === 0) return false;
+        if (
+          this.matchers.filter(
+            m =>
+              m.name === "" ||
+              m.values.length === 0 ||
+              m.values.filter(v => v === "").length > 0
+          ).length > 0
+        )
+          return false;
+        if (this.comment === "") return false;
+        if (this.author === "") return false;
+        return true;
+      },
+
       resetProgress() {
         this.inProgress = false;
+        this.wasValidated = false;
       },
 
       // append a new empty matcher to the list
@@ -181,6 +200,7 @@ class SilenceFormStore {
       decStart: action.bound,
       incEnd: action.bound,
       decEnd: action.bound,
+      isValid: computed,
       toAlertmanagerPayload: computed,
       toDuration: computed
     },
