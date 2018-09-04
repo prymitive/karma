@@ -20,16 +20,16 @@ beforeEach(() => {
   ];
 });
 
-const ShallowLabelNameInput = () => {
-  return shallow(<LabelNameInput matcher={matcher} />);
+const ShallowLabelNameInput = isValid => {
+  return shallow(<LabelNameInput matcher={matcher} isValid={isValid} />);
 };
 
-const MountedLabelNameInput = () => {
-  return mount(<LabelNameInput matcher={matcher} />);
+const MountedLabelNameInput = isValid => {
+  return mount(<LabelNameInput matcher={matcher} isValid={isValid} />);
 };
 
 const ValidateSuggestions = () => {
-  const tree = MountedLabelNameInput();
+  const tree = MountedLabelNameInput(true);
   // click on the react-select component doesn't seem to trigger options
   // rendering in tests, so change the input instead
   tree.find("input").simulate("change", { target: { value: "f" } });
@@ -38,8 +38,26 @@ const ValidateSuggestions = () => {
 
 describe("<LabelNameInput />", () => {
   it("matches snapshot", () => {
-    const tree = ShallowLabelNameInput();
+    const tree = ShallowLabelNameInput(true);
     expect(tree).toMatchSnapshot();
+  });
+
+  it("doesn't renders ValidationError after passed validation", () => {
+    // clear the name so placeholder is rendered
+    matcher.name = "";
+    const tree = ShallowLabelNameInput(true);
+    expect(tree.html()).toMatch(/Label name/);
+    expect(tree.html()).not.toMatch(/fa-exclamation-circle/);
+    expect(tree.html()).not.toMatch(/Required/);
+  });
+
+  it("renders ValidationError after failed validation", () => {
+    // clear the name so placeholder is rendered
+    matcher.name = "";
+    const tree = ShallowLabelNameInput(false);
+    expect(tree.html()).not.toMatch(/Label name/);
+    expect(tree.html()).toMatch(/fa-exclamation-circle/);
+    expect(tree.html()).toMatch(/Required/);
   });
 
   it("renders suggestions", () => {
@@ -61,7 +79,7 @@ describe("<LabelNameInput />", () => {
     fetch
       .once(JSON.stringify(["name1", "name2", "name3"]))
       .once(JSON.stringify(["value1", "value2", "value3"]));
-    ShallowLabelNameInput();
+    ShallowLabelNameInput(true);
     // use timeout since mount will call fetch
     setTimeout(() => {
       expect(matcher.suggestions.names).toHaveLength(3);
@@ -79,7 +97,7 @@ describe("<LabelNameInput />", () => {
 
   it("suggestions are emptied on failed fetch", done => {
     fetch.mockReject(new Error("fake error message"));
-    ShallowLabelNameInput();
+    ShallowLabelNameInput(true);
     // use timeout since mount will call fetch
     setTimeout(() => {
       expect(matcher.suggestions.names).toHaveLength(0);
@@ -88,7 +106,7 @@ describe("<LabelNameInput />", () => {
   });
 
   it("doesn't fetch suggestions if value is changed to empty string", () => {
-    const tree = MountedLabelNameInput();
+    const tree = MountedLabelNameInput(true);
     const instance = tree.instance();
     const fetchSpy = jest.spyOn(instance, "populateValueSuggestions");
     instance.onChange("");

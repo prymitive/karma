@@ -20,7 +20,8 @@ const SilenceMatch = observer(
         isRegex: PropTypes.bool.isRequired
       }),
       showDelete: PropTypes.bool.isRequired,
-      onDelete: PropTypes.func.isRequired
+      onDelete: PropTypes.func.isRequired,
+      isValid: PropTypes.bool.isRequired
     };
 
     onIsRegexChange = action(event => {
@@ -33,15 +34,15 @@ const SilenceMatch = observer(
     });
 
     render() {
-      const { matcher, showDelete, onDelete } = this.props;
+      const { matcher, showDelete, onDelete, isValid } = this.props;
 
       return (
         <div className="d-flex flex-fill flex-lg-row flex-column mb-3">
           <div className="flex-shrink-0 flex-grow-0 flex-basis-25 pr-lg-2 pb-2 pb-lg-0">
-            <LabelNameInput matcher={matcher} />
+            <LabelNameInput matcher={matcher} isValid={isValid} />
           </div>
           <div className="flex-shrink-0 flex-grow-0 flex-basis-50 pr-lg-2 pb-2 pb-lg-0">
-            <LabelValueInput matcher={matcher} />
+            <LabelValueInput matcher={matcher} isValid={isValid} />
           </div>
           <div className="flex-shrink-0 flex-grow-1 flex-basis-auto form-check form-check-inline d-flex justify-content-between m-0">
             <span>

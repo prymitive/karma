@@ -104,6 +104,8 @@ const SilenceForm = observer(
 
       if (silenceFormStore.data.isValid)
         silenceFormStore.data.inProgress = true;
+
+      silenceFormStore.data.wasValidated = true;
     });
 
     render() {
@@ -125,6 +127,7 @@ const SilenceForm = observer(
                 silenceFormStore.data.deleteMatcher(matcher.id);
               }}
               showDelete={silenceFormStore.data.matchers.length > 1}
+              isValid={!silenceFormStore.data.wasValidated}
             />
           ))}
           <button

@@ -7,6 +7,7 @@ import { observer } from "mobx-react";
 import ReactSelect from "react-select";
 
 import { MultiSelect, ReactSelectStyles } from "Components/MultiSelect";
+import { ValidationError } from "Components/MultiSelect/ValidationError";
 
 const AlertmanagerInstancesToOptions = instances =>
   instances.map(i => ({
@@ -75,7 +76,13 @@ const AlertManagerInput = observer(
           options={AlertmanagerInstancesToOptions(
             alertStore.data.upstreams.instances
           )}
-          placeholder="Alertmanager"
+          placeholder={
+            silenceFormStore.data.wasValidated ? (
+              <ValidationError />
+            ) : (
+              "Alertmanager"
+            )
+          }
           isMulti
           onChange={this.onChange}
         />

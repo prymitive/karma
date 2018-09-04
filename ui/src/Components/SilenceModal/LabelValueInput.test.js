@@ -20,16 +20,16 @@ beforeEach(() => {
   ];
 });
 
-const ShallowLabelValueInput = () => {
-  return shallow(<LabelValueInput matcher={matcher} />);
+const ShallowLabelValueInput = isValid => {
+  return shallow(<LabelValueInput matcher={matcher} isValid={isValid} />);
 };
 
-const MountedLabelValueInput = () => {
-  return mount(<LabelValueInput matcher={matcher} />);
+const MountedLabelValueInput = isValid => {
+  return mount(<LabelValueInput matcher={matcher} isValid={isValid} />);
 };
 
 const ValidateSuggestions = () => {
-  const tree = MountedLabelValueInput();
+  const tree = MountedLabelValueInput(true);
   // click on the react-select component doesn't seem to trigger options
   // rendering in tests, so change the input instead
   tree.find("input").simulate("change", { target: { value: "f" } });
@@ -38,8 +38,20 @@ const ValidateSuggestions = () => {
 
 describe("<LabelValueInput />", () => {
   it("matches snapshot", () => {
-    const tree = ShallowLabelValueInput();
+    const tree = ShallowLabelValueInput(true);
     expect(tree).toMatchSnapshot();
+  });
+
+  it("doesn't renders ValidationError after passed validation", () => {
+    const tree = ShallowLabelValueInput(true);
+    expect(tree.html()).not.toMatch(/fa-exclamation-circle/);
+    expect(tree.html()).not.toMatch(/Required/);
+  });
+
+  it("renders ValidationError after failed validation", () => {
+    const tree = ShallowLabelValueInput(false);
+    expect(tree.html()).toMatch(/fa-exclamation-circle/);
+    expect(tree.html()).toMatch(/Required/);
   });
 
   it("renders suggestions", () => {

@@ -44,6 +44,7 @@ class SilenceFormStore {
   data = observable(
     {
       inProgress: false,
+      wasValidated: false,
       alertmanagers: [],
       matchers: [],
       startsAt: moment(),
@@ -70,6 +71,7 @@ class SilenceFormStore {
 
       resetProgress() {
         this.inProgress = false;
+        this.wasValidated = false;
       },
 
       // append a new empty matcher to the list

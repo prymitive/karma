@@ -52,6 +52,13 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.inProgress).toBe(false);
   });
 
+  it("resetProgress() sets 'wasValidated' to false", () => {
+    store.data.wasValidated = true;
+    expect(store.data.wasValidated).toBe(true);
+    store.data.resetProgress();
+    expect(store.data.wasValidated).toBe(false);
+  });
+
   it("addEmptyMatcher() appends a matcher", () => {
     expect(store.data.matchers).toHaveLength(0);
     store.data.addEmptyMatcher();
