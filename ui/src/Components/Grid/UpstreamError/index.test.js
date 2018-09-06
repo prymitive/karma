@@ -1,13 +1,14 @@
 import React from "react";
-import renderer from "react-test-renderer";
+
+import { shallow } from "enzyme";
+
+import toDiffableHtml from "diffable-html";
 
 import { UpstreamError } from ".";
 
 describe("<UpstreamError />", () => {
   it("matches snapshot", () => {
-    const tree = renderer
-      .create(<UpstreamError name="foo" message="bar" />)
-      .toJSON();
-    expect(tree).toMatchSnapshot();
+    const tree = shallow(<UpstreamError name="foo" message="bar" />);
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 });

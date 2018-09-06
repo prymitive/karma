@@ -1,88 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FetchConfiguration /> className matches snapshot with default values 1`] = `
-<div
-  className="form-group text-center"
->
-  <label
-    className="mb-4"
-  >
+"
+<div class=\\"form-group text-center\\">
+  <label class=\\"mb-4\\">
     Refresh interval
   </label>
-  <div
-    aria-disabled={false}
-    className="input-range"
-    onKeyDown={[Function]}
-    onKeyUp={[Function]}
-    onMouseDown={[Function]}
-    onTouchStart={[Function]}
+  <div aria-disabled=\\"false\\"
+       class=\\"input-range\\"
   >
-    <span
-      className="input-range__label input-range__label--min"
-    >
-      <span
-        className="input-range__label-container"
-      >
+    <span class=\\"input-range__label input-range__label--min\\">
+      <span class=\\"input-range__label-container\\">
         10s
       </span>
     </span>
-    <div
-      className="input-range__track input-range__track--background"
-      onMouseDown={[Function]}
-      onTouchStart={[Function]}
-    >
-      <div
-        className="input-range__track input-range__track--active"
-        style={
-          Object {
-            "left": "0%",
-            "width": "18.181818181818183%",
-          }
-        }
-      />
-      <span
-        className="input-range__slider-container"
-        style={
-          Object {
-            "left": "18.181818181818183%",
-            "position": "absolute",
-          }
-        }
+    <div class=\\"input-range__track input-range__track--background\\">
+      <div style=\\"left: 0%; width: 18.181818181818183%;\\"
+           class=\\"input-range__track input-range__track--active\\"
       >
-        <span
-          className="input-range__label input-range__label--value"
-        >
-          <span
-            className="input-range__label-container"
-          >
+      </div>
+      <span class=\\"input-range__slider-container\\"
+            style=\\"position: absolute; left: 18.181818181818183%;\\"
+      >
+        <span class=\\"input-range__label input-range__label--value\\">
+          <span class=\\"input-range__label-container\\">
             30s
           </span>
         </span>
-        <div
-          aria-controls={undefined}
-          aria-labelledby={undefined}
-          aria-valuemax={120}
-          aria-valuemin={10}
-          aria-valuenow={30}
-          className="input-range__slider"
-          draggable="false"
-          onKeyDown={[Function]}
-          onMouseDown={[Function]}
-          onTouchStart={[Function]}
-          role="slider"
-          tabIndex="0"
-        />
+        <div aria-valuemax=\\"120\\"
+             aria-valuemin=\\"10\\"
+             aria-valuenow=\\"30\\"
+             class=\\"input-range__slider\\"
+             draggable=\\"false\\"
+             role=\\"slider\\"
+             tabindex=\\"0\\"
+        >
+        </div>
       </span>
     </div>
-    <span
-      className="input-range__label input-range__label--max"
-    >
-      <span
-        className="input-range__label-container"
-      >
+    <span class=\\"input-range__label input-range__label--max\\">
+      <span class=\\"input-range__label-container\\">
         120s
       </span>
     </span>
   </div>
 </div>
+"
 `;

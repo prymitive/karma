@@ -1,5 +1,8 @@
 import React from "react";
-import renderer from "react-test-renderer";
+
+import { mount } from "enzyme";
+
+import toDiffableHtml from "diffable-html";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 
@@ -12,20 +15,18 @@ beforeEach(() => {
 });
 
 const RenderAndClick = (name, value) => {
-  const tree = renderer
-    .create(
-      <FilteringLabel alertStore={alertStore} name={name} value={value} />
-    )
-    .toJSON();
-
-  tree.props.onClick({ preventDefault: () => {} });
+  const tree = mount(
+    <FilteringLabel alertStore={alertStore} name={name} value={value} />
+  );
+  tree.simulate("click");
 };
 
 describe("<FilteringLabel />", () => {
-  it("renders without crashing", () => {
-    renderer.create(
+  it("matches snapshot", () => {
+    const tree = mount(
       <FilteringLabel alertStore={alertStore} name="foo" value="bar" />
     );
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("calling onClick() adds a new filter 'foo=bar'", () => {

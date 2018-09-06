@@ -1,11 +1,14 @@
 import React from "react";
-import renderer from "react-test-renderer";
+
+import { shallow } from "enzyme";
+
+import toDiffableHtml from "diffable-html";
 
 import { FatalError } from ".";
 
 describe("<FatalError />", () => {
   it("matches snapshot", () => {
-    const tree = renderer.create(<FatalError message="foo bar" />).toJSON();
-    expect(tree).toMatchSnapshot();
+    const tree = shallow(<FatalError message="foo bar" />);
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 });

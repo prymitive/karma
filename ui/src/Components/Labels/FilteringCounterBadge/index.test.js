@@ -1,5 +1,6 @@
 import React from "react";
-import renderer from "react-test-renderer";
+
+import { mount, render } from "enzyme";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 
@@ -12,47 +13,39 @@ beforeEach(() => {
 });
 
 const validateClassName = (value, className) => {
-  const tree = renderer
-    .create(
-      <FilteringCounterBadge
-        alertStore={alertStore}
-        name="@state"
-        value={value}
-        counter={1}
-      />
-    )
-    .toJSON();
-  expect(tree.props.className.split(" ")).toContain(className);
+  const tree = mount(
+    <FilteringCounterBadge
+      alertStore={alertStore}
+      name="@state"
+      value={value}
+      counter={1}
+    />
+  );
+  expect(tree.find("span").hasClass(className)).toBe(true);
 };
 
 const validateStyle = value => {
-  const tree = renderer
-    .create(
-      <FilteringCounterBadge
-        alertStore={alertStore}
-        name="@state"
-        value={value}
-        counter={1}
-      />
-    )
-    .toJSON();
-  expect(tree.props.style).toMatchObject({});
+  const tree = mount(
+    <FilteringCounterBadge
+      alertStore={alertStore}
+      name="@state"
+      value={value}
+      counter={1}
+    />
+  );
+  expect(tree.find("span").prop("style")).toEqual({});
 };
 
 const validateOnClick = value => {
-  const tree = renderer
-    .create(
-      <FilteringCounterBadge
-        alertStore={alertStore}
-        name="@state"
-        value={value}
-        counter={1}
-      />
-    )
-    .toJSON();
-
-  tree.props.onClick({ preventDefault: () => {} });
-
+  const tree = mount(
+    <FilteringCounterBadge
+      alertStore={alertStore}
+      name="@state"
+      value={value}
+      counter={1}
+    />
+  );
+  tree.simulate("click");
   expect(alertStore.filters.values).toHaveLength(1);
   expect(alertStore.filters.values).toContainEqual(
     NewUnappliedFilter(`@state=${value}`)
@@ -81,17 +74,15 @@ describe("<FilteringCounterBadge />", () => {
   });
 
   it("counter badge should have correct children based on the counter prop value", () => {
-    const tree = renderer
-      .create(
-        <FilteringCounterBadge
-          alertStore={alertStore}
-          name="@state"
-          value="active"
-          counter={123}
-        />
-      )
-      .toJSON();
-    expect(tree.children).toEqual(["123"]);
+    const tree = render(
+      <FilteringCounterBadge
+        alertStore={alertStore}
+        name="@state"
+        value="active"
+        counter={123}
+      />
+    );
+    expect(tree.text()).toBe("123");
   });
 
   it("onClick method on @state=unprocessed counter badge should add a new filter", () => {
