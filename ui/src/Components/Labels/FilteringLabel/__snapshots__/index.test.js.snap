@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FilteringLabel /> matches snapshot 1`] = `
+"
+<span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
+  foo: bar
+</span>
+"
+`;

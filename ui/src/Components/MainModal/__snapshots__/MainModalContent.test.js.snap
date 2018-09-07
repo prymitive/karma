@@ -1,39 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<MainModalContent /> matches snapshot 1`] = `
-<div
-  className="modal d-block bg-primary-transparent-80"
-  role="dialog"
+"
+<div class=\\"modal d-block bg-primary-transparent-80\\"
+     role=\\"dialog\\"
 >
-  <div
-    className="modal-dialog modal-lg"
-    role="document"
+  <div class=\\"modal-dialog modal-lg\\"
+       role=\\"document\\"
   >
-    <div
-      className="modal-content"
-    >
-      <div
-        className="modal-header py-2"
-      >
-        <nav
-          className="nav nav-pills nav-justified w-100"
-        >
-          <a
-            className="nav-item nav-link cursor-pointer active"
-            onClick={[Function]}
-          >
+    <div class=\\"modal-content\\">
+      <div class=\\"modal-header py-2\\">
+        <nav class=\\"nav nav-pills nav-justified w-100\\">
+          <a class=\\"nav-item nav-link cursor-pointer active\\">
             Configuration
           </a>
-          <a
-            className="nav-item nav-link cursor-pointer text-primary"
-            onClick={[Function]}
-          >
+          <a class=\\"nav-item nav-link cursor-pointer text-primary\\">
             Help
           </a>
-          <button
-            className="close"
-            onClick={[Function]}
-            type="button"
+          <button type=\\"button\\"
+                  class=\\"close\\"
           >
             <span>
               ×
@@ -41,178 +26,91 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
           </button>
         </nav>
       </div>
-      <div
-        className="modal-body"
-      >
-        <form
-          className="px-3"
-        >
-          <div
-            className="form-group text-center"
-          >
-            <label
-              className="mb-4"
-            >
+      <div class=\\"modal-body\\">
+        <form class=\\"px-3\\">
+          <div class=\\"form-group text-center\\">
+            <label class=\\"mb-4\\">
               Refresh interval
             </label>
-            <div
-              aria-disabled={false}
-              className="input-range"
-              onKeyDown={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              onTouchStart={[Function]}
+            <div aria-disabled=\\"false\\"
+                 class=\\"input-range\\"
             >
-              <span
-                className="input-range__label input-range__label--min"
-              >
-                <span
-                  className="input-range__label-container"
-                >
+              <span class=\\"input-range__label input-range__label--min\\">
+                <span class=\\"input-range__label-container\\">
                   10s
                 </span>
               </span>
-              <div
-                className="input-range__track input-range__track--background"
-                onMouseDown={[Function]}
-                onTouchStart={[Function]}
-              >
-                <div
-                  className="input-range__track input-range__track--active"
-                  style={
-                    Object {
-                      "left": "0%",
-                      "width": "18.181818181818183%",
-                    }
-                  }
-                />
-                <span
-                  className="input-range__slider-container"
-                  style={
-                    Object {
-                      "left": "18.181818181818183%",
-                      "position": "absolute",
-                    }
-                  }
+              <div class=\\"input-range__track input-range__track--background\\">
+                <div style=\\"left: 0%; width: 18.181818181818183%;\\"
+                     class=\\"input-range__track input-range__track--active\\"
                 >
-                  <span
-                    className="input-range__label input-range__label--value"
-                  >
-                    <span
-                      className="input-range__label-container"
-                    >
+                </div>
+                <span class=\\"input-range__slider-container\\"
+                      style=\\"position: absolute; left: 18.181818181818183%;\\"
+                >
+                  <span class=\\"input-range__label input-range__label--value\\">
+                    <span class=\\"input-range__label-container\\">
                       30s
                     </span>
                   </span>
-                  <div
-                    aria-controls={undefined}
-                    aria-labelledby={undefined}
-                    aria-valuemax={120}
-                    aria-valuemin={10}
-                    aria-valuenow={30}
-                    className="input-range__slider"
-                    draggable="false"
-                    onKeyDown={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}
-                    role="slider"
-                    tabIndex="0"
-                  />
+                  <div aria-valuemax=\\"120\\"
+                       aria-valuemin=\\"10\\"
+                       aria-valuenow=\\"30\\"
+                       class=\\"input-range__slider\\"
+                       draggable=\\"false\\"
+                       role=\\"slider\\"
+                       tabindex=\\"0\\"
+                  >
+                  </div>
                 </span>
               </div>
-              <span
-                className="input-range__label input-range__label--max"
-              >
-                <span
-                  className="input-range__label-container"
-                >
+              <span class=\\"input-range__label input-range__label--max\\">
+                <span class=\\"input-range__label-container\\">
                   120s
                 </span>
               </span>
             </div>
           </div>
-          <div
-            className="mt-5"
-          />
-          <div
-            className="form-group text-center"
-          >
-            <label
-              className="mb-4"
-            >
+          <div class=\\"mt-5\\">
+          </div>
+          <div class=\\"form-group text-center\\">
+            <label class=\\"mb-4\\">
               Default number of alerts to show per group
             </label>
-            <div
-              aria-disabled={false}
-              className="input-range"
-              onKeyDown={[Function]}
-              onKeyUp={[Function]}
-              onMouseDown={[Function]}
-              onTouchStart={[Function]}
+            <div aria-disabled=\\"false\\"
+                 class=\\"input-range\\"
             >
-              <span
-                className="input-range__label input-range__label--min"
-              >
-                <span
-                  className="input-range__label-container"
-                >
+              <span class=\\"input-range__label input-range__label--min\\">
+                <span class=\\"input-range__label-container\\">
                   1
                 </span>
               </span>
-              <div
-                className="input-range__track input-range__track--background"
-                onMouseDown={[Function]}
-                onTouchStart={[Function]}
-              >
-                <div
-                  className="input-range__track input-range__track--active"
-                  style={
-                    Object {
-                      "left": "0%",
-                      "width": "44.44444444444444%",
-                    }
-                  }
-                />
-                <span
-                  className="input-range__slider-container"
-                  style={
-                    Object {
-                      "left": "44.44444444444444%",
-                      "position": "absolute",
-                    }
-                  }
+              <div class=\\"input-range__track input-range__track--background\\">
+                <div style=\\"left: 0%; width: 44.44444444444444%;\\"
+                     class=\\"input-range__track input-range__track--active\\"
                 >
-                  <span
-                    className="input-range__label input-range__label--value"
-                  >
-                    <span
-                      className="input-range__label-container"
-                    >
+                </div>
+                <span class=\\"input-range__slider-container\\"
+                      style=\\"position: absolute; left: 44.44444444444444%;\\"
+                >
+                  <span class=\\"input-range__label input-range__label--value\\">
+                    <span class=\\"input-range__label-container\\">
                       5
                     </span>
                   </span>
-                  <div
-                    aria-controls={undefined}
-                    aria-labelledby={undefined}
-                    aria-valuemax={10}
-                    aria-valuemin={1}
-                    aria-valuenow={5}
-                    className="input-range__slider"
-                    draggable="false"
-                    onKeyDown={[Function]}
-                    onMouseDown={[Function]}
-                    onTouchStart={[Function]}
-                    role="slider"
-                    tabIndex="0"
-                  />
+                  <div aria-valuemax=\\"10\\"
+                       aria-valuemin=\\"1\\"
+                       aria-valuenow=\\"5\\"
+                       class=\\"input-range__slider\\"
+                       draggable=\\"false\\"
+                       role=\\"slider\\"
+                       tabindex=\\"0\\"
+                  >
+                  </div>
                 </span>
               </div>
-              <span
-                className="input-range__label input-range__label--max"
-              >
-                <span
-                  className="input-range__label-container"
-                >
+              <span class=\\"input-range__label input-range__label--max\\">
+                <span class=\\"input-range__label-container\\">
                   10
                 </span>
               </span>
@@ -220,17 +118,13 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
           </div>
         </form>
       </div>
-      <div
-        className="modal-footer"
-      >
-        <span
-          className="text-muted"
-        >
-          Version: 
-          unknown
+      <div class=\\"modal-footer\\">
+        <span class=\\"text-muted\\">
+          Version: unknown
         </span>
       </div>
     </div>
   </div>
 </div>
+"
 `;

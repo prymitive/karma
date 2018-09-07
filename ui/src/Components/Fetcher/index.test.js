@@ -1,5 +1,6 @@
 import React from "react";
-import renderer from "react-test-renderer";
+
+import { mount } from "enzyme";
 
 import { EmptyAPIResponse } from "__mocks__/Fetch";
 
@@ -28,74 +29,58 @@ afterEach(() => {
   global.fetch.mockRestore();
 });
 
+const MountedFetcher = () => {
+  return mount(
+    <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+  );
+};
+
+const FetcherSpan = (label, interval) =>
+  `<span data-filters="${label}" data-interval="${interval}"></span>`;
+
 describe("<Fetcher />", () => {
   it("renders correctly with 'label=value' filter", () => {
-    const tree = renderer
-      .create(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />)
-      .toJSON();
-
-    expect(tree.props["data-filters"]).toBe("label=value");
-    expect(tree.props["data-interval"]).toBe(30);
+    const tree = MountedFetcher();
+    expect(tree.html()).toBe(FetcherSpan("label=value", 30));
   });
 
   it("re-renders on fetch interval change", () => {
-    const fetcher = renderer.create(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
-    );
-
-    expect(fetcher.toJSON().props["data-interval"]).toBe(30);
+    const tree = MountedFetcher();
+    expect(tree.html()).toBe(FetcherSpan("label=value", 30));
     settingsStore.fetchConfig.config.interval = 60;
-    expect(fetcher.toJSON().props["data-interval"]).toBe(60);
+    expect(tree.html()).toBe(FetcherSpan("label=value", 60));
   });
 
   it("re-renders on filters change", () => {
-    const fetcher = renderer.create(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
-    );
-
-    expect(fetcher.toJSON().props["data-filters"]).toBe("label=value");
+    const tree = MountedFetcher();
+    expect(tree.html()).toBe(FetcherSpan("label=value", 30));
     alertStore.filters.values = [];
-    expect(fetcher.toJSON().props["data-filters"]).toBe("");
+    expect(tree.html()).toBe(FetcherSpan("", 30));
   });
 
   it("calls alertStore.fetchWithThrottle on mount", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-
-    renderer.create(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
-    );
-
+    MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
   it("calls alertStore.fetchWithThrottle again after interval change", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-
-    renderer.create(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
-    );
+    MountedFetcher();
     settingsStore.fetchConfig.config.interval = 60;
-
     expect(fetchSpy).toHaveBeenCalledTimes(2);
   });
 
   it("calls alertStore.fetchWithThrottle again after filter change", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-
-    renderer.create(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
-    );
+    MountedFetcher();
     alertStore.filters.values = [];
-
     expect(fetchSpy).toHaveBeenCalledTimes(2);
   });
 
   it("keeps calling alertStore.fetchWithThrottle after running pending timers", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-
-    renderer.create(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
-    );
+    MountedFetcher();
     jest.runOnlyPendingTimers();
     expect(fetchSpy).toHaveBeenCalledTimes(2);
     jest.runOnlyPendingTimers();
@@ -105,18 +90,14 @@ describe("<Fetcher />", () => {
   });
 
   it("internal timer is armed after render", () => {
-    const fetcher = renderer.create(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
-    );
-    const instance = fetcher.getInstance();
+    const tree = MountedFetcher();
+    const instance = tree.instance();
     expect(instance.timer).toBeGreaterThanOrEqual(0);
   });
 
   it("internal timer is null after unmount", () => {
-    const fetcher = renderer.create(
-      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
-    );
-    const instance = fetcher.getInstance();
+    const tree = MountedFetcher();
+    const instance = tree.instance();
     instance.componentWillUnmount();
     expect(instance.timer).toBeNull();
   });
