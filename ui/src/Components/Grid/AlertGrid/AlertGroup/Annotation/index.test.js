@@ -22,7 +22,7 @@ const ShallowLinkAnnotation = () => {
 describe("<RenderLinkAnnotation />", () => {
   it("matches snapshot", () => {
     const tree = ShallowLinkAnnotation();
-    expect(tree).toMatchSnapshot();
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("contains a link", () => {
