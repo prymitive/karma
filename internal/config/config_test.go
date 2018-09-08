@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/prymitive/unsee/internal/uri"
+
 	"github.com/pmezard/go-difflib/difflib"
 
 	log "github.com/sirupsen/logrus"
@@ -206,4 +207,10 @@ func TestUrlSecretTest(t *testing.T) {
 			t.Errorf("Invalid sanitized url, expected '%s', got '%s'", testCase.sanitized, sanitized)
 		}
 	}
+}
+
+// FIXME check logged values
+func TestLogValues(t *testing.T) {
+	Config.Read()
+	Config.LogValues()
 }

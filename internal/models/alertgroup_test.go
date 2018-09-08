@@ -179,3 +179,10 @@ func TestAlertGroupContentFingerprint(t *testing.T) {
 		})
 	}
 }
+
+func TestFingerprint(t *testing.T) {
+	ag := models.AlertGroup{}
+	if ag.LabelsFingerprint() == ag.ContentFingerprint() {
+		t.Errorf("Expected LabelsFingerprint and ContentFingerprint to return different values")
+	}
+}
