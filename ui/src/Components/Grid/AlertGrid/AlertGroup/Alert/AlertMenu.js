@@ -42,6 +42,19 @@ const MenuContent = onClickOutside(
         >
           <FontAwesomeIcon icon={faBellSlash} /> Silence this alert
         </div>
+        <h6 className="dropdown-header">Alert source links:</h6>
+        {alert.alertmanager.map(am => (
+          <a
+            key={am.name}
+            className="dropdown-item"
+            href={am.source}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={afterClick}
+          >
+            {am.name}
+          </a>
+        ))}
       </div>
     );
   }
