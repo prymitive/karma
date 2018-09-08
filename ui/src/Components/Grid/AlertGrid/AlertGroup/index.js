@@ -181,12 +181,14 @@ const AlertGroup = observer(
                       .map(alert => (
                         <Alert
                           key={hash(alert.labels)}
+                          group={group}
                           alert={alert}
                           showAlertmanagers={
                             showAlertmanagers && !showAlertmanagersInFooter
                           }
                           showReceiver={group.alerts.length === 1}
                           afterUpdate={afterUpdate}
+                          silenceFormStore={silenceFormStore}
                         />
                       ))}
                     {group.alerts.length > this.defaultRenderCount ? (
