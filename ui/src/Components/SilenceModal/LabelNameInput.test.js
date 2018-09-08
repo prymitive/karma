@@ -7,6 +7,10 @@ import { LabelNameInput } from "./LabelNameInput";
 
 let matcher;
 
+beforeAll(() => {
+  fetch.mockResponse(JSON.stringify([]));
+});
+
 beforeEach(() => {
   matcher = NewEmptyMatcher();
   matcher.name = "name";
@@ -91,6 +95,27 @@ describe("<LabelNameInput />", () => {
           MatcherValueToObject(`value${i + 1}`)
         );
       }
+      done();
+    }, 100);
+  });
+
+  it("handles fetch errors when populating suggestions", done => {
+    fetch.mockReject("error");
+    ShallowLabelNameInput(true);
+    // use timeout since mount will call fetch
+    setTimeout(() => {
+      expect(matcher.suggestions.names).toHaveLength(0);
+      done();
+    }, 100);
+  });
+
+  it("handles invalid JSON when populating suggestions", done => {
+    jest.spyOn(console, "error").mockImplementation(() => {});
+    fetch.mockResponse("this is not JSON");
+    ShallowLabelNameInput(true);
+    // use timeout since mount will call fetch
+    setTimeout(() => {
+      expect(matcher.suggestions.names).toHaveLength(0);
       done();
     }, 100);
   });

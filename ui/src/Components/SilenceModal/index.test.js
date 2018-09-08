@@ -11,6 +11,10 @@ let alertStore;
 let settingsStore;
 let silenceFormStore;
 
+beforeAll(() => {
+  fetch.mockResponse(JSON.stringify([]));
+});
+
 beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings();

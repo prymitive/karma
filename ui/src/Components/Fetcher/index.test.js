@@ -29,6 +29,12 @@ afterEach(() => {
   global.fetch.mockRestore();
 });
 
+const MockEmptyAPIResponseWithoutFilters = () => {
+  const response = EmptyAPIResponse();
+  response.filters = [];
+  fetch.mockResponse(JSON.stringify(response));
+};
+
 const MountedFetcher = () => {
   return mount(
     <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
@@ -52,6 +58,7 @@ describe("<Fetcher />", () => {
   });
 
   it("re-renders on filters change", () => {
+    MockEmptyAPIResponseWithoutFilters();
     const tree = MountedFetcher();
     expect(tree.html()).toBe(FetcherSpan("label=value", 30));
     alertStore.filters.values = [];
@@ -72,6 +79,7 @@ describe("<Fetcher />", () => {
   });
 
   it("calls alertStore.fetchWithThrottle again after filter change", () => {
+    MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     MountedFetcher();
     alertStore.filters.values = [];

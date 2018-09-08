@@ -17,9 +17,17 @@ beforeEach(() => {
   matcher = NewEmptyMatcher();
 });
 
+const MockOnDelete = jest.fn();
+
 const ShallowLabelValueInput = () => {
   return shallow(
-    <SilenceMatch matcher={matcher} silenceFormStore={silenceFormStore} />
+    <SilenceMatch
+      matcher={matcher}
+      silenceFormStore={silenceFormStore}
+      showDelete={false}
+      onDelete={MockOnDelete}
+      isValid={true}
+    />
   );
 };
 
