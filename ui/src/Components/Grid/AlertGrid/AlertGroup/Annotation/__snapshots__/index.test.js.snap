@@ -5,7 +5,7 @@ exports[`<RenderLinkAnnotation /> matches snapshot 1`] = `
 <a href=\\"http://localhost/foo\\"
    target=\\"_blank\\"
    rel=\\"noopener noreferrer\\"
-   class=\\"text-nowrap text-truncate badge badge-secondary mr-1\\"
+   class=\\"components-label-with-hover text-nowrap text-truncate badge badge-secondary mr-1\\"
 >
   <svg aria-hidden=\\"true\\"
        data-prefix=\\"fas\\"
