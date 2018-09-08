@@ -16,3 +16,10 @@ require("jest-date-mock");
 // fetch is used in multiple places to interact with Go backend
 // or upstream Alertmanager API
 global.fetch = require("jest-fetch-mock");
+
+// ensure that all console messages throw errors
+for (const level of ["error", "warn", "info", "log", "trace"]) {
+  global.console[level] = (message, ...args) => {
+    throw new Error(`message=${message} args=${args}`);
+  };
+}
