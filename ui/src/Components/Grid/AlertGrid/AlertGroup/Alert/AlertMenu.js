@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 
+import hash from "object-hash";
+
 import { Manager, Reference, Popper } from "react-popper";
 import onClickOutside from "react-onclickoutside";
 
@@ -97,12 +99,16 @@ const AlertMenu = observer(
     render() {
       const { group, alert, silenceFormStore } = this.props;
 
+      const uniqueClass = `components-grid-alert-${group.id}-${hash(
+        alert.labels
+      )}`;
+
       return (
         <Manager>
           <Reference>
             {({ ref }) => (
               <span
-                className="components-label-with-hover text-nowrap text-truncate px-1 mr-1 badge badge-secondary cursor-pointer"
+                className={`components-label-with-hover text-nowrap text-truncate px-1 mr-1 badge badge-secondary cursor-pointer ${uniqueClass}`}
                 ref={ref}
                 onClick={this.collapse.toggle}
                 data-toggle="dropdown"
@@ -134,6 +140,7 @@ const AlertMenu = observer(
                   silenceFormStore={silenceFormStore}
                   afterClick={this.collapse.hide}
                   handleClickOutside={this.collapse.hide}
+                  outsideClickIgnoreClass={uniqueClass}
                 />
               )}
             </Popper>
