@@ -14,7 +14,8 @@ const SilenceModal = observer(
   class SilenceModal extends Component {
     static propTypes = {
       alertStore: PropTypes.object.isRequired,
-      silenceFormStore: PropTypes.object.isRequired
+      silenceFormStore: PropTypes.object.isRequired,
+      settingsStore: PropTypes.object.isRequired
     };
 
     componentDidUpdate() {
@@ -31,7 +32,7 @@ const SilenceModal = observer(
     }
 
     render() {
-      const { alertStore, silenceFormStore } = this.props;
+      const { alertStore, silenceFormStore, settingsStore } = this.props;
 
       return (
         <React.Fragment>
@@ -47,6 +48,7 @@ const SilenceModal = observer(
             <SilenceModalContent
               alertStore={alertStore}
               silenceFormStore={silenceFormStore}
+              settingsStore={settingsStore}
             />
           ) : null}
         </React.Fragment>

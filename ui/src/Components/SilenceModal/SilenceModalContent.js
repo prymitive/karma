@@ -13,7 +13,8 @@ const SilenceModalContent = observer(
   class SilenceModalContent extends Component {
     static propTypes = {
       alertStore: PropTypes.object.isRequired,
-      silenceFormStore: PropTypes.object.isRequired
+      silenceFormStore: PropTypes.object.isRequired,
+      settingsStore: PropTypes.object.isRequired
     };
 
     componentDidMount() {
@@ -25,7 +26,7 @@ const SilenceModalContent = observer(
     }
 
     render() {
-      const { alertStore, silenceFormStore } = this.props;
+      const { alertStore, silenceFormStore, settingsStore } = this.props;
 
       return ReactDOM.createPortal(
         <div className="modal d-block bg-primary-transparent-80" role="dialog">
@@ -50,6 +51,7 @@ const SilenceModalContent = observer(
                   <SilenceForm
                     alertStore={alertStore}
                     silenceFormStore={silenceFormStore}
+                    settingsStore={settingsStore}
                   />
                 )}
               </div>

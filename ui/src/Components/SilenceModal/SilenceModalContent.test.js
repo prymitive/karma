@@ -3,14 +3,17 @@ import React from "react";
 import { shallow } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
+import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceModalContent } from "./SilenceModalContent";
 
 let alertStore;
+let settingsStore;
 let silenceFormStore;
 
 beforeEach(() => {
   alertStore = new AlertStore([]);
+  settingsStore = new Settings();
   silenceFormStore = new SilenceFormStore();
 });
 
@@ -18,6 +21,7 @@ const ShallowSilenceModalContent = () => {
   return shallow(
     <SilenceModalContent
       alertStore={alertStore}
+      settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
     />
   );
