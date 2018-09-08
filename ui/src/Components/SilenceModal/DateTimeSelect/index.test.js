@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount, shallow } from "enzyme";
 
+import { advanceTo, clear } from "jest-date-mock";
+
 import moment from "moment";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -18,6 +20,10 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
   silenceFormStore.data.startsAt = moment([2060, 1, 1, 0, 0, 0]);
   silenceFormStore.data.endsAt = moment([2061, 1, 1, 0, 0, 0]);
+});
+
+afterEach(() => {
+  clear();
 });
 
 const ShallowDateTimeSelect = () => {
@@ -73,6 +79,39 @@ describe("<DateTimeSelect />", () => {
     expect(tab.text()).toMatch(/Duration/);
     tab.simulate("click");
     expect(tree.find(".tab-content").text()).toBe("366days0hours0minutes");
+  });
+
+  it("'Ends' tab offset badge is updated after 1 minute", () => {
+    jest.useFakeTimers();
+    advanceTo(new Date(2060, 1, 1, 12, 0, 0));
+    silenceFormStore.data.startsAt = moment([2060, 1, 1, 12, 0, 0]);
+    silenceFormStore.data.endsAt = moment([2060, 1, 1, 13, 0, 0]);
+
+    const tree = MountedDateTimeSelect();
+    expect(
+      tree
+        .find(".nav-link")
+        .at(1)
+        .text()
+    ).toBe("Endsin 1h ");
+
+    advanceTo(new Date(2060, 1, 1, 12, 1, 0));
+    jest.runOnlyPendingTimers();
+
+    expect(
+      tree
+        .find(".nav-link")
+        .at(1)
+        .text()
+    ).toBe("Endsin 59m ");
+  });
+
+  it("nowUpdateTimer is destroyed before unmount", () => {
+    const tree = MountedDateTimeSelect();
+    const instance = tree.instance();
+    expect(instance.nowUpdateTimer).toBeDefined();
+    instance.componentWillUnmount();
+    expect(instance.nowUpdateTimer).toBeNull();
   });
 });
 

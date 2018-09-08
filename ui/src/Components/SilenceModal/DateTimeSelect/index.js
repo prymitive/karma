@@ -14,8 +14,6 @@ import { HourMinute } from "./HourMinute";
 import "./index.css";
 
 const OffsetBadge = ({ startDate, endDate, prefixLabel }) => {
-  if (!startDate) startDate = moment().seconds(0);
-
   const days = endDate.diff(startDate, "days");
   const hours = endDate.diff(startDate, "hours") % 24;
   const minutes = endDate.diff(startDate, "minutes") % 60;
@@ -30,7 +28,7 @@ const OffsetBadge = ({ startDate, endDate, prefixLabel }) => {
   );
 };
 OffsetBadge.propTypes = {
-  startDate: PropTypes.instanceOf(moment),
+  startDate: PropTypes.instanceOf(moment).isRequired,
   endDate: PropTypes.instanceOf(moment).isRequired,
   prefixLabel: PropTypes.string.isRequired
 };
@@ -183,14 +181,28 @@ const DateTimeSelect = observer(
         },
         setDuration() {
           this.current = TabNames.Duration;
+        },
+        timeNow: null,
+        updateTimeNow() {
+          this.timeNow = moment().seconds(0);
         }
       },
       {
         setStart: action.bound,
         setEnd: action.bound,
-        setDuration: action.bound
+        setDuration: action.bound,
+        updateTimeNow: action.bound
       }
     );
+
+    componentDidMount() {
+      this.tab.updateTimeNow();
+      this.nowUpdateTimer = setInterval(this.tab.updateTimeNow, 30 * 1000);
+    }
+    componentWillUnmount() {
+      clearInterval(this.nowUpdateTimer);
+      this.nowUpdateTimer = null;
+    }
 
     render() {
       const { silenceFormStore } = this.props;
@@ -204,6 +216,7 @@ const DateTimeSelect = observer(
                   <span className="mr-1">Starts</span>
                   <OffsetBadge
                     prefixLabel="in "
+                    startDate={this.tab.timeNow}
                     endDate={silenceFormStore.data.startsAt}
                   />
                 </React.Fragment>
@@ -217,6 +230,7 @@ const DateTimeSelect = observer(
                   <span className="mr-1">Ends</span>
                   <OffsetBadge
                     prefixLabel="in "
+                    startDate={this.tab.timeNow}
                     endDate={silenceFormStore.data.endsAt}
                   />
                 </React.Fragment>
