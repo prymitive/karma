@@ -55,7 +55,8 @@ const SilenceForm = observer(
   class SilenceForm extends Component {
     static propTypes = {
       alertStore: PropTypes.object.isRequired,
-      silenceFormStore: PropTypes.object.isRequired
+      silenceFormStore: PropTypes.object.isRequired,
+      settingsStore: PropTypes.object.isRequired
     };
 
     // store preview visibility state here, by default preview is collapsed
@@ -72,10 +73,15 @@ const SilenceForm = observer(
     );
 
     componentDidMount() {
-      const { silenceFormStore } = this.props;
+      const { silenceFormStore, settingsStore } = this.props;
 
       if (silenceFormStore.data.matchers.length === 0) {
         silenceFormStore.data.addEmptyMatcher();
+      }
+
+      if (silenceFormStore.data.author === "") {
+        silenceFormStore.data.author =
+          settingsStore.silenceFormConfig.config.author;
       }
     }
 
@@ -98,9 +104,11 @@ const SilenceForm = observer(
     });
 
     handleSubmit = action(event => {
-      const { silenceFormStore } = this.props;
+      const { silenceFormStore, settingsStore } = this.props;
 
       event.preventDefault();
+
+      settingsStore.silenceFormConfig.saveAuthor(silenceFormStore.data.author);
 
       if (silenceFormStore.data.isValid)
         silenceFormStore.data.inProgress = true;

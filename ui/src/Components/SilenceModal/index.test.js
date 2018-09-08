@@ -3,26 +3,37 @@ import React from "react";
 import { shallow, mount } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
+import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceModal } from ".";
 
 let alertStore;
+let settingsStore;
 let silenceFormStore;
 
 beforeEach(() => {
   alertStore = new AlertStore([]);
+  settingsStore = new Settings();
   silenceFormStore = new SilenceFormStore();
 });
 
 const ShallowSilenceModal = () => {
   return shallow(
-    <SilenceModal alertStore={alertStore} silenceFormStore={silenceFormStore} />
+    <SilenceModal
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+      settingsStore={settingsStore}
+    />
   );
 };
 
 const MountedSilenceModal = () => {
   return mount(
-    <SilenceModal alertStore={alertStore} silenceFormStore={silenceFormStore} />
+    <SilenceModal
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+      settingsStore={settingsStore}
+    />
   );
 };
 

@@ -50,6 +50,7 @@ const NavBar = observer(
               <SilenceModal
                 alertStore={alertStore}
                 silenceFormStore={silenceFormStore}
+                settingsStore={settingsStore}
               />
               <MainModal
                 alertStore={alertStore}

@@ -3,26 +3,37 @@ import React from "react";
 import { mount, shallow } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
+import { Settings } from "Stores/Settings";
 import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { SilenceForm } from "./SilenceForm";
 
 let alertStore;
+let settingsStore;
 let silenceFormStore;
 
 beforeEach(() => {
   alertStore = new AlertStore([]);
+  settingsStore = new Settings();
   silenceFormStore = new SilenceFormStore();
 });
 
 const ShallowSilenceForm = () => {
   return shallow(
-    <SilenceForm alertStore={alertStore} silenceFormStore={silenceFormStore} />
+    <SilenceForm
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+      settingsStore={settingsStore}
+    />
   );
 };
 
 const MountedSilenceForm = () => {
   return mount(
-    <SilenceForm alertStore={alertStore} silenceFormStore={silenceFormStore} />
+    <SilenceForm
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+      settingsStore={settingsStore}
+    />
   );
 };
 
@@ -105,6 +116,22 @@ describe("<SilenceForm /> preview", () => {
 });
 
 describe("<SilenceForm /> inputs", () => {
+  it("default author value comes from Settings store", () => {
+    settingsStore.silenceFormConfig.config.author = "foo@example.com";
+    const tree = MountedSilenceForm();
+    const input = tree.find("input[placeholder='Author email']");
+    expect(input.props().value).toBe("foo@example.com");
+    expect(silenceFormStore.data.author).toBe("foo@example.com");
+  });
+
+  it("default author value is empty if nothing is stored in Settings", () => {
+    settingsStore.silenceFormConfig.config.author = "";
+    const tree = MountedSilenceForm();
+    const input = tree.find("input[placeholder='Author email']");
+    expect(input.text()).toBe("");
+    expect(silenceFormStore.data.author).toBe("");
+  });
+
   it("changing author input updates SilenceFormStore", () => {
     const tree = MountedSilenceForm();
     const input = tree.find("input[placeholder='Author email']");
@@ -140,5 +167,14 @@ describe("<SilenceForm />", () => {
     const tree = ShallowSilenceForm();
     tree.simulate("submit", { preventDefault: jest.fn() });
     expect(silenceFormStore.data.inProgress).toBe(true);
+  });
+
+  it("calling submit saves author value to the Settings store", () => {
+    silenceFormStore.data.author = "user@example.com";
+    const tree = ShallowSilenceForm();
+    tree.simulate("submit", { preventDefault: jest.fn() });
+    expect(settingsStore.silenceFormConfig.config.author).toBe(
+      "user@example.com"
+    );
   });
 });

@@ -46,11 +46,20 @@ class AlertGroupConfig {
   });
 }
 
+class SilenceFormConfig {
+  config = localStored("silenceFormConfig", { author: "" }, { delay: 100 });
+
+  saveAuthor = action(newAuthor => {
+    this.config.author = newAuthor;
+  });
+}
+
 class Settings {
   constructor() {
     this.savedFilters = new SavedFilters();
     this.fetchConfig = new FetchConfig();
     this.alertGroupConfig = new AlertGroupConfig();
+    this.silenceFormConfig = new SilenceFormConfig();
   }
 }
 
