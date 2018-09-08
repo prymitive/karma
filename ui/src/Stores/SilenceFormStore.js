@@ -87,7 +87,8 @@ class SilenceFormStore {
         }
       },
 
-      fillMatchersFromGroup(group) {
+      // if alerts argument is not passed all group alerts will be used
+      fillMatchersFromGroup(group, alerts) {
         let matchers = [];
 
         // add matchers for all shared labels in this group
@@ -102,7 +103,8 @@ class SilenceFormStore {
 
         // add matchers for all unique labels in this group
         let labels = {};
-        for (const alert of group.alerts) {
+        const allAlerts = alerts ? alerts : group.alerts;
+        for (const alert of allAlerts) {
           for (const [key, value] of Object.entries(alert.labels)) {
             if (!labels[key]) {
               labels[key] = new Set();
