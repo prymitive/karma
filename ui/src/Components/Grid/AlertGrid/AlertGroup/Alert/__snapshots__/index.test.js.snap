@@ -42,7 +42,22 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
       hidden
     </div>
   </div>
-  <span class=\\"text-nowrap text-truncate px-1 mr-1 badge badge-secondary\\">
+  <span class=\\"components-label-with-hover text-nowrap text-truncate px-1 mr-1 badge badge-secondary cursor-pointer\\"
+        data-toggle=\\"dropdown\\"
+  >
+    <svg aria-hidden=\\"true\\"
+         data-prefix=\\"fas\\"
+         data-icon=\\"caret-down\\"
+         class=\\"svg-inline--fa fa-caret-down fa-w-10 pr-1\\"
+         role=\\"img\\"
+         xmlns=\\"http://www.w3.org/2000/svg\\"
+         viewbox=\\"0 0 320 512\\"
+    >
+      <path fill=\\"currentColor\\"
+            d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
+      >
+      </path>
+    </svg>
     <time datetime=\\"1534268200017\\">
       a day ago
     </time>
@@ -56,7 +71,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
   <a href=\\"http://localhost\\"
      target=\\"_blank\\"
      rel=\\"noopener noreferrer\\"
-     class=\\"text-nowrap text-truncate badge badge-secondary mr-1\\"
+     class=\\"components-label-with-hover text-nowrap text-truncate badge badge-secondary mr-1\\"
   >
     <svg aria-hidden=\\"true\\"
          data-prefix=\\"fas\\"

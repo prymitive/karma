@@ -24,19 +24,19 @@ describe("<AlertGroupConfiguration /> className", () => {
 
   it("call to onChange() updates internal state", () => {
     const tree = FakeConfiguration();
-    tree.instance().onChange(11);
-    expect(tree.instance().config.defaultRenderCount).toBe(11);
+    tree.instance().onChange(9);
+    expect(tree.instance().config.defaultRenderCount).toBe(9);
   });
 
   it("settings are updated on completed change", () => {
     const tree = FakeConfiguration();
-    tree.instance().onChangeComplete(96);
-    expect(settingsStore.alertGroupConfig.config.defaultRenderCount).toBe(96);
+    tree.instance().onChangeComplete(8);
+    expect(settingsStore.alertGroupConfig.config.defaultRenderCount).toBe(8);
   });
 
   it("custom interval value is rendered correctly", () => {
-    settingsStore.alertGroupConfig.config.defaultRenderCount = 55;
+    settingsStore.alertGroupConfig.config.defaultRenderCount = 4;
     const component = FakeConfiguration();
-    expect(component.find("InputRange").props().value).toBe(55);
+    expect(component.find("InputRange").props().value).toBe(4);
   });
 });

@@ -207,7 +207,7 @@ describe("UpdateLocationSearch", () => {
 
 describe("AlertStore.fetch", () => {
   it("parseAPIResponse() rejects a response with mismatched filters", () => {
-    const consoleSpy = jest.spyOn(console, "info");
+    const consoleSpy = jest.spyOn(console, "info").mockImplementation(() => {});
 
     const response = EmptyAPIResponse();
     const store = new AlertStore([]);
@@ -256,7 +256,9 @@ describe("AlertStore.fetch", () => {
   });
 
   it("fetch() handles response that throws an error correctly", async () => {
-    const consoleSpy = jest.spyOn(console, "trace");
+    const consoleSpy = jest
+      .spyOn(console, "trace")
+      .mockImplementation(() => {});
     fetch.mockReject("Fetch error");
 
     const store = new AlertStore([]);

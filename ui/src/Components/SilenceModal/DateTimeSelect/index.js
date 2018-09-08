@@ -182,7 +182,7 @@ const DateTimeSelect = observer(
         setDuration() {
           this.current = TabNames.Duration;
         },
-        timeNow: null,
+        timeNow: moment().seconds(0),
         updateTimeNow() {
           this.timeNow = moment().seconds(0);
         }

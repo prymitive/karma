@@ -61,7 +61,9 @@ describe("SetupRaven()", () => {
   });
 
   it("logs an error when invalid DSN is passed to raven", () => {
-    const consoleSpy = jest.spyOn(console, "error");
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     const client = RavenClient("invalidDSN");
     expect(client.isSetup()).toBeFalsy();
     expect(consoleSpy).toHaveBeenCalledTimes(1);

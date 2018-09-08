@@ -10,13 +10,16 @@ import toDiffableHtml from "diffable-html";
 
 import { MockAlert, MockAnnotation } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Alert } from ".";
 
 let alertStore;
+let silenceFormStore;
 
 beforeEach(() => {
   advanceTo(new Date(2018, 7, 15, 20, 40, 0));
   alertStore = new AlertStore([]);
+  silenceFormStore = new SilenceFormStore();
 });
 
 afterEach(() => {
@@ -43,9 +46,11 @@ const MountedAlert = (alert, showAlertmanagers, showReceiver) => {
     <Provider alertStore={alertStore}>
       <Alert
         alert={alert}
+        group={{}}
         showAlertmanagers={showAlertmanagers}
         showReceiver={showReceiver}
         afterUpdate={MockAfterUpdate}
+        silenceFormStore={silenceFormStore}
       />
     </Provider>
   );

@@ -123,6 +123,40 @@ describe("SilenceFormStore.data", () => {
     );
   });
 
+  it("fillMatchersFromGroup() creates correct matcher object for a group with only a subset of alets passed", () => {
+    const group = MockGroup();
+    store.data.fillMatchersFromGroup(group, [group.alerts[0]]);
+    expect(store.data.matchers).toHaveLength(4);
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "alertname",
+        values: [{ label: "FakeAlert", value: "FakeAlert" }],
+        isRegex: false
+      })
+    );
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "job",
+        values: [{ label: "mock", value: "mock" }],
+        isRegex: false
+      })
+    );
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "instance",
+        values: [{ label: "prod1", value: "prod1" }],
+        isRegex: false
+      })
+    );
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "cluster",
+        values: [{ label: "prod", value: "prod" }],
+        isRegex: false
+      })
+    );
+  });
+
   it("toAlertmanagerPayload creates payload that matches snapshot", () => {
     const group = MockGroup();
     store.data.fillMatchersFromGroup(group);

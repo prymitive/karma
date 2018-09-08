@@ -18,7 +18,9 @@ const LabelNameInput = observer(
     populateNameSuggestions = action(() => {
       const { matcher } = this.props;
 
-      fetch(FormatUnseeBackendURI(`labelNames.json`))
+      this.nameSuggestionsFetch = fetch(
+        FormatUnseeBackendURI(`labelNames.json`)
+      )
         .then(
           result => result.json(),
           err => {
@@ -31,13 +33,18 @@ const LabelNameInput = observer(
             value: value
           }));
         })
-        .catch(err => console.error(err.message));
+        .catch(err => {
+          console.error(err.message);
+          matcher.suggestions.names = [];
+        });
     });
 
     populateValueSuggestions = action(() => {
       const { matcher } = this.props;
 
-      fetch(FormatUnseeBackendURI(`labelValues.json?name=${matcher.name}`))
+      this.valueSuggestionsFetch = fetch(
+        FormatUnseeBackendURI(`labelValues.json?name=${matcher.name}`)
+      )
         .then(
           result => result.json(),
           err => {
@@ -50,7 +57,10 @@ const LabelNameInput = observer(
             value: value
           }));
         })
-        .catch(err => console.error(err.message));
+        .catch(err => {
+          console.error(err.message);
+          matcher.suggestions.values = [];
+        });
     });
 
     onChange = action((newValue, actionMeta) => {

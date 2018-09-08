@@ -3,31 +3,34 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
 
-import Moment from "react-moment";
-
 import { GetLabelColorClass } from "Common/Colors";
 import { StaticLabels } from "Common/Query";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
 import { Silence } from "../Silence";
+import { AlertMenu } from "./AlertMenu";
 
 import "./index.css";
 
 const Alert = observer(
   class Alert extends Component {
     static propTypes = {
+      group: PropTypes.object.isRequired,
       alert: PropTypes.object.isRequired,
       showAlertmanagers: PropTypes.bool.isRequired,
       showReceiver: PropTypes.bool.isRequired,
-      afterUpdate: PropTypes.func.isRequired
+      afterUpdate: PropTypes.func.isRequired,
+      silenceFormStore: PropTypes.object.isRequired
     };
 
     render() {
       const {
+        group,
         alert,
         showAlertmanagers,
         showReceiver,
-        afterUpdate
+        afterUpdate,
+        silenceFormStore
       } = this.props;
 
       let classNames = [
@@ -55,9 +58,11 @@ const Alert = observer(
                 />
               ))}
           </div>
-          <span className="text-nowrap text-truncate px-1 mr-1 badge badge-secondary">
-            <Moment fromNow>{alert.startsAt}</Moment>
-          </span>
+          <AlertMenu
+            group={group}
+            alert={alert}
+            silenceFormStore={silenceFormStore}
+          />
           {Object.entries(alert.labels).map(([name, value]) => (
             <FilteringLabel key={name} name={name} value={value} />
           ))}

@@ -158,6 +158,7 @@ describe("<FilterInput Autosuggest />", () => {
   });
 
   it("handles invalid JSON in suggestion fetches", async () => {
+    jest.spyOn(console, "error").mockImplementation(() => {});
     fetch.mockResponseOnce("this is not JSON");
 
     const tree = MountedInput();

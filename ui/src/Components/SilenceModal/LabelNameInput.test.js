@@ -7,6 +7,10 @@ import { LabelNameInput } from "./LabelNameInput";
 
 let matcher;
 
+beforeAll(() => {
+  fetch.mockResponse(JSON.stringify([]));
+});
+
 beforeEach(() => {
   matcher = NewEmptyMatcher();
   matcher.name = "name";
@@ -75,34 +79,52 @@ describe("<LabelNameInput />", () => {
     expect(matcher.name).toBe("job");
   });
 
-  it("populates suggestions on mount", done => {
+  it("populates suggestions on mount", async () => {
     fetch
       .once(JSON.stringify(["name1", "name2", "name3"]))
       .once(JSON.stringify(["value1", "value2", "value3"]));
-    ShallowLabelNameInput(true);
-    // use timeout since mount will call fetch
-    setTimeout(() => {
-      expect(matcher.suggestions.names).toHaveLength(3);
-      for (let i = 0; i < 3; i++) {
-        expect(matcher.suggestions.names[i]).toMatchObject(
-          MatcherValueToObject(`name${i + 1}`)
-        );
-        expect(matcher.suggestions.values[i]).toMatchObject(
-          MatcherValueToObject(`value${i + 1}`)
-        );
-      }
-      done();
-    }, 100);
+    const tree = ShallowLabelNameInput(true);
+    const instance = tree.instance();
+    await expect(instance.nameSuggestionsFetch).resolves.toBeUndefined();
+    await expect(instance.valueSuggestionsFetch).resolves.toBeUndefined();
+    expect(matcher.suggestions.names).toHaveLength(3);
+    for (let i = 0; i < 3; i++) {
+      expect(matcher.suggestions.names[i]).toMatchObject(
+        MatcherValueToObject(`name${i + 1}`)
+      );
+      expect(matcher.suggestions.values[i]).toMatchObject(
+        MatcherValueToObject(`value${i + 1}`)
+      );
+    }
   });
 
-  it("suggestions are emptied on failed fetch", done => {
+  it("handles fetch errors when populating suggestions", async () => {
+    fetch.mockReject("error");
+    const tree = ShallowLabelNameInput(true);
+    const instance = tree.instance();
+    await expect(instance.nameSuggestionsFetch).resolves.toBeUndefined();
+    await expect(instance.valueSuggestionsFetch).resolves.toBeUndefined();
+    expect(matcher.suggestions.names).toHaveLength(0);
+  });
+
+  it("handles invalid JSON when populating suggestions", async () => {
+    jest.spyOn(console, "error").mockImplementation(() => {});
+    fetch.mockResponse("this is not JSON");
+    const tree = ShallowLabelNameInput(true);
+    const instance = tree.instance();
+    await expect(instance.nameSuggestionsFetch).resolves.toBeUndefined();
+    await expect(instance.valueSuggestionsFetch).resolves.toBeUndefined();
+    expect(matcher.suggestions.names).toHaveLength(0);
+    expect(matcher.suggestions.values).toHaveLength(0);
+  });
+
+  it("suggestions are emptied on failed fetch", async () => {
     fetch.mockReject(new Error("fake error message"));
-    ShallowLabelNameInput(true);
-    // use timeout since mount will call fetch
-    setTimeout(() => {
-      expect(matcher.suggestions.names).toHaveLength(0);
-      done();
-    }, 100);
+    const tree = ShallowLabelNameInput(true);
+    const instance = tree.instance();
+    await expect(instance.nameSuggestionsFetch).resolves.toBeUndefined();
+    await expect(instance.valueSuggestionsFetch).resolves.toBeUndefined();
+    expect(matcher.suggestions.names).toHaveLength(0);
   });
 
   it("doesn't fetch suggestions if value is changed to empty string", () => {

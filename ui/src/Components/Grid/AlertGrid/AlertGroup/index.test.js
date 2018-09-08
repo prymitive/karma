@@ -17,9 +17,9 @@ let settingsStore;
 let silenceFormStore;
 let group;
 
-const MockGroup = (groupName, alertCount) => {
+const MockGroup = groupName => {
   const group = MockAlertGroup(
-    { alertname: "Fake Alert", group: groupName },
+    { alertname: "Fake Alert", groupName: groupName },
     [],
     [],
     {}
@@ -31,7 +31,7 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings();
   silenceFormStore = new SilenceFormStore();
-  group = MockGroup();
+  group = MockGroup("fakeGroup");
 });
 
 const MockAlerts = alertCount => {
