@@ -74,4 +74,10 @@ describe("<MenuContent />", () => {
     button.simulate("click");
     expect(silenceFormStore.toggle.visible).toBe(true);
   });
+
+  it("source link points at alert source", () => {
+    const tree = MountedMenuContent(group);
+    const link = tree.find("a.dropdown-item[href='localhost/prometheus']");
+    expect(link.text()).toBe("default");
+  });
 });

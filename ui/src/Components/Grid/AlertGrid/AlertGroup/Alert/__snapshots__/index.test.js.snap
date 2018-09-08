@@ -42,7 +42,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
       hidden
     </div>
   </div>
-  <span class=\\"components-label-with-hover text-nowrap text-truncate px-1 mr-1 badge badge-secondary cursor-pointer\\"
+  <span class=\\"components-label-with-hover text-nowrap text-truncate px-1 mr-1 badge badge-secondary cursor-pointer components-grid-alert-undefined-0988cb349635341c67d91bfe3454d2b3178c443c\\"
         data-toggle=\\"dropdown\\"
   >
     <svg aria-hidden=\\"true\\"
