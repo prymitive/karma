@@ -16,8 +16,8 @@ const FaviconBadge = observer(
 
       this.favicon = new Favico({
         animation: "none",
-        position: "up",
-        bgColor: "#000",
+        position: "down",
+        bgColor: "#e74c3c",
         textColor: "#fff",
         fontStyle: "lighter"
       });
