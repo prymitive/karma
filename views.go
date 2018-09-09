@@ -10,6 +10,7 @@ import (
 
 	"github.com/prymitive/unsee/internal/alertmanager"
 	"github.com/prymitive/unsee/internal/config"
+	"github.com/prymitive/unsee/internal/filters"
 	"github.com/prymitive/unsee/internal/models"
 	"github.com/prymitive/unsee/internal/slices"
 	"github.com/prymitive/unsee/internal/transform"
@@ -51,6 +52,24 @@ func logAlertsView(c *gin.Context, cacheStatus string, duration time.Duration) {
 	log.Infof("[%s %s] <%d> %s %s took %s", c.ClientIP(), cacheStatus, http.StatusOK, c.Request.Method, c.Request.RequestURI, duration)
 }
 
+func populateAPIFilters(matchFilters []filters.FilterT) []models.Filter {
+	apiFilters := []models.Filter{}
+	for _, filter := range matchFilters {
+		af := models.Filter{
+			Text:    filter.GetRawText(),
+			Name:    filter.GetName(),
+			Matcher: filter.GetMatcher(),
+			Value:   filter.GetValue(),
+			Hits:    filter.GetHits(),
+			IsValid: filter.GetIsValid(),
+		}
+		if af.Text != "" {
+			apiFilters = append(apiFilters, af)
+		}
+	}
+	return apiFilters
+}
+
 // alerts endpoint, json, JS will query this via AJAX call
 func alerts(c *gin.Context) {
 	noCache(c)
@@ -81,7 +100,6 @@ func alerts(c *gin.Context) {
 	}
 
 	// get filters
-	apiFilters := []models.Filter{}
 	matchFilters, validFilters := getFiltersFromQuery(c.QueryArray("q"))
 
 	// set pointers for data store objects, need a lock until end of view is reached
@@ -196,21 +214,7 @@ func alerts(c *gin.Context) {
 	resp.Silences = silences
 	resp.Colors = colors
 	resp.Counters = counters
-
-	for _, filter := range matchFilters {
-		af := models.Filter{
-			Text:    filter.GetRawText(),
-			Name:    filter.GetName(),
-			Matcher: filter.GetMatcher(),
-			Value:   filter.GetValue(),
-			Hits:    filter.GetHits(),
-			IsValid: filter.GetIsValid(),
-		}
-		if af.Text != "" {
-			apiFilters = append(apiFilters, af)
-		}
-	}
-	resp.Filters = apiFilters
+	resp.Filters = populateAPIFilters(matchFilters)
 
 	data, err := json.Marshal(resp)
 	if err != nil {
