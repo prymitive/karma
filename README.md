@@ -41,7 +41,7 @@ _RSS to email_ notifications, like [Blogtrottr](https://blogtrottr.com/).
 ## History
 
 I created karma while working for [Cloudflare](https://cloudflare.com/),
-originally it was called [karma](https://github.com/cloudflare/karma).
+originally it was called [unsee](https://github.com/cloudflare/unsee).
 This project is based on that code but the UI part was rewritten from scratch
 using [React](https://reactjs.org/). New UI required changes to the backend so
 the API is also incompatible.
