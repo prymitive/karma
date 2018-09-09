@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/prymitive/unsee/internal/uri"
+	"github.com/prymitive/karma/internal/uri"
 
 	"github.com/pmezard/go-difflib/difflib"
 
@@ -13,10 +13,10 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-// unset all unsee supported env variables before tests so we start with no
+// unset all karma supported env variables before tests so we start with no
 // config from previous test run
 func resetEnv() {
-	unseeEnvVariables := []string{
+	karmaEnvVariables := []string{
 		"ALERTMANAGER_INTERVAL",
 		"ALERTMANAGER_URI",
 		"ALERTMANAGER_NAME",
@@ -46,7 +46,7 @@ func resetEnv() {
 		"PORT",
 		"SENTRY_DSN",
 	}
-	for _, env := range unseeEnvVariables {
+	for _, env := range karmaEnvVariables {
 		os.Unsetenv(env)
 	}
 }

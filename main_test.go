@@ -3,7 +3,7 @@ package main
 import (
 	"testing"
 
-	"github.com/prymitive/unsee/internal/config"
+	"github.com/prymitive/karma/internal/config"
 
 	log "github.com/sirupsen/logrus"
 )

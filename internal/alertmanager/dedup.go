@@ -3,10 +3,10 @@ package alertmanager
 import (
 	"sort"
 
-	"github.com/prymitive/unsee/internal/config"
-	"github.com/prymitive/unsee/internal/models"
-	"github.com/prymitive/unsee/internal/slices"
-	"github.com/prymitive/unsee/internal/transform"
+	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/slices"
+	"github.com/prymitive/karma/internal/transform"
 )
 
 // DedupAlerts will collect alert groups from all defined Alertmanager

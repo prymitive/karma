@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/prymitive/unsee/internal/mock"
+	"github.com/prymitive/karma/internal/mock"
 )
 
 type requestTest struct {

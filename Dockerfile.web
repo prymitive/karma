@@ -1,7 +1,7 @@
 FROM alpine:latest
-COPY --from=lmierzwa/unsee:latest /unsee /unsee
-RUN adduser -D unsee
-USER unsee
+COPY --from=lmierzwa/karma:latest /karma /karma
+RUN adduser -D karma
+USER karma
 ENV LOG_CONFIG=false
 ENV ALERTMANAGER_INTERVAL=2400h
 ENV ALERTMANAGER_URI=file:///mock
@@ -9,4 +9,4 @@ ENV LABELS_COLOR_UNIQUE="@receiver instance cluster"
 ENV LABELS_COLOR_STATIC="job"
 ENV FILTERS_DEFAULT="@receiver=by-cluster-service"
 COPY internal/mock/0.15.2 /mock
-CMD /unsee
+CMD /karma

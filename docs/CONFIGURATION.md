@@ -2,28 +2,28 @@
 
 ## Config file
 
-By default unsee will try to read configuration file named `unsee.yaml` from
+By default karma will try to read configuration file named `karma.yaml` from
 current directory. Configuration file uses [YAML](http://yaml.org/) format and
 it needs to have `.yaml` extension.
 Custom filename and directory can be passed via command line flags or
 environment variables:
 
-* `--config.file` flag or `CONFIG_FILE` env variable - name of the config file
+- `--config.file` flag or `CONFIG_FILE` env variable - name of the config file
   to load (without extension).
-* `--config.dir` flag or `CONFIG_DIR` env variable - directory where config file
+- `--config.dir` flag or `CONFIG_DIR` env variable - directory where config file
   can be found.
 
 Example with flags:
 
-    unsee --config.file example --config.dir ./docs/
+    karma --config.file example --config.dir ./docs/
 
 Example with environment variables:
 
-    CONFIG_FILE="example" CONFIG_DIR="./docs/" unsee
+    CONFIG_FILE="example" CONFIG_DIR="./docs/" karma
 
 Example using both:
 
-    CONFIG_FILE="example" unsee --config.dir ./docs/
+    CONFIG_FILE="example" karma --config.dir ./docs/
 
 ### Alertmanagers
 
@@ -31,7 +31,7 @@ Example using both:
 queried for alerts.
 You can configure one or more Alertmanager servers, alerts
 with identical label set will be deduplicated and labeled with each Alertmanager
-server they were observed at. This allows using unsee to collect alerts from a
+server they were observed at. This allows using karma to collect alerts from a
 pair of Alertmanager instances running in
 [HA mode](https://prometheus.io/docs/alerting/alertmanager/#high-availability).
 Syntax:
@@ -50,45 +50,45 @@ alertmanager:
         key: string
 ```
 
-* `interval` - how often alerts should be refreshed, a string in
+- `interval` - how often alerts should be refreshed, a string in
   [time.Duration](https://golang.org/pkg/time/#ParseDuration) format. If set to
-  `1m` unsee will query every Alertmanager server once a minute. This is global
+  `1m` karma will query every Alertmanager server once a minute. This is global
   setting applied to every Alertmanager server. All instances will be queried
   in parallel.
   Note that the maximum value for this option is `15m`.
   The UI has a watchdog that tracks the timestamp of the last pull. If the UI
   does not receive updates for more than 15 minutes it will print an error and
   reload the page.
-* `name` - name of this Alertmanager server, will be used as a label added to
+- `name` - name of this Alertmanager server, will be used as a label added to
   every alert in the UI and for filtering alerts using `@alertmanager=NAME`
   filter
-* `uri` - base URI of this Alertmanager server. Supported URI schemes are
+- `uri` - base URI of this Alertmanager server. Supported URI schemes are
   `http://`, `https://` and `file://`. `file://` scheme is only useful for
   testing with JSON files, see [mock](/internal/mock/) dir for examples, files
   in this directory are used for running tests and when running demo instance
-  of unsee with `make run`.
+  of karma with `make run`.
   If URI contains basic auth info
   (`https://user:password@alertmanager.example.com`) and you don't want it to
   be visible to users then ensure `proxy: true` is also set.
-  Without proxy mode full URI needs to be passed to unsee web UI code.
-  With proxy mode all requests will be routed via unsee HTTP server and since
-  unsee has full URI in the config it only needs Alertmanager name in that
+  Without proxy mode full URI needs to be passed to karma web UI code.
+  With proxy mode all requests will be routed via karma HTTP server and since
+  karma has full URI in the config it only needs Alertmanager name in that
   request.
   `proxy: true` in order to avoid leaking auth information to the browser.
-* `timeout` - timeout for requests send to this Alertmanager server, a string in
+- `timeout` - timeout for requests send to this Alertmanager server, a string in
   [time.Duration](https://golang.org/pkg/time/#ParseDuration) format.
-* `proxy` - if enabled requests from user browsers to this Alertmanager will be
-  proxied via unsee. This applies to requests made when managing silences via
-  unsee (creating or expiring silences).
-* `tls:ca` - path to CA certificate used to establish TLS connection to this
+- `proxy` - if enabled requests from user browsers to this Alertmanager will be
+  proxied via karma. This applies to requests made when managing silences via
+  karma (creating or expiring silences).
+- `tls:ca` - path to CA certificate used to establish TLS connection to this
   Alertmanager instance (for URIs using `https://` scheme). If unset or empty
   string is set then Go will try to find system CA certificates using well known
   paths.
-* `tls:cert` - path to a TLS client certificate file to use when establishing
+- `tls:cert` - path to a TLS client certificate file to use when establishing
   TLS connections to this Alertmanager instance if it requires a TLS client
   authentication.
   Note that this option requires `tls:key` to be also set.
-* `tls:key` - path to a TLS client key file to use when establishing
+- `tls:key` - path to a TLS client key file to use when establishing
   TLS connections to this Alertmanager instance if it requires a TLS client
   authentication.
   Note that this option requires `tls:cert` to be also set.
@@ -149,9 +149,9 @@ annotations:
   visible: list of strings
 ```
 
-* `default:hidden` - bool, true if all annotations should be hidden by default.
-* `hidden` - list of annotations that should be hidden by default.
-* `visible` - list of annotations that should be visible by default when
+- `default:hidden` - bool, true if all annotations should be hidden by default.
+- `hidden` - list of annotations that should be hidden by default.
+- `visible` - list of annotations that should be visible by default when
   `default:hidden` is set to `true`.
 
 Example where all annotations except `summary` are hidden by default. If there
@@ -201,8 +201,8 @@ filters:
   default: list of strings
 ```
 
-* `default` - list of filters to use by default when user navigates to unsee
-  web UI. Visit `/help` page in unsee for details on available filters.
+- `default` - list of filters to use by default when user navigates to karma
+  web UI. Visit `/help` page in karma for details on available filters.
   Note that if a string starts with `@` YAML requires to wrap it in quotes.
 
 Example:
@@ -243,15 +243,15 @@ labels:
   strip: list of strings
 ```
 
-* `color:static` - list of label names that will all have the same color applied
+- `color:static` - list of label names that will all have the same color applied
   (different than the default label color). This allows to quickly spot a
   specific label that can have high range of values, but it's important when
   reading the dashboard. For example coloring the instance label allows to
   quickly learn which instance is affected by given alert.
-* `color:unique` - list of label names that should have unique colors generated
+- `color:unique` - list of label names that should have unique colors generated
   in the UI.
-* `keep` - list of allowed labels, if empty all labels are allowed.
-* `strip` - list of ignored labels.
+- `keep` - list of allowed labels, if empty all labels are allowed.
+- `strip` - list of ignored labels.
 
 Example with static color for the `job` label (every `job` label will have the
 same color regardless of the value) and unique color for the `@receiver` label
@@ -266,7 +266,7 @@ colors:
       - "@receiver"
 ```
 
-Example where `task_id` label is ignored by unsee:
+Example where `task_id` label is ignored by karma:
 
 ```yaml
 labels:
@@ -298,7 +298,7 @@ labels:
 
 ### Listen
 
-`listen` section allows configuring unsee web server behavior.
+`listen` section allows configuring karma web server behavior.
 Syntax:
 
 ```yaml
@@ -308,19 +308,19 @@ listen:
   prefix: string
 ```
 
-* `address` -
-* `port` - HTTP port to listen on.
-* `prefix` - URL root for unsee, you can use to if you wish to serve it from
-  location other than `/`. This option is mostly useful when using unsee behind
+- `address` -
+- `port` - HTTP port to listen on.
+- `prefix` - URL root for karma, you can use to if you wish to serve it from
+  location other than `/`. This option is mostly useful when using karma behind
   reverse proxy with other services on the same IP but different URL root.
 
-Example where unsee would listen for HTTP requests on `http://1.2.3.4:80/unsee/`
+Example where karma would listen for HTTP requests on `http://1.2.3.4:80/karma/`
 
 ```yaml
 listen:
   address: 1.2.3.4
   port: 80
-  prefix: /unsee/
+  prefix: /karma/
 ```
 
 Defaults:
@@ -343,8 +343,8 @@ log:
   level: string
 ```
 
-* `config` - if set to `true` unsee will log used configuration on startup
-* `level` - log level to set for unsee, possible values are debug, info,
+- `config` - if set to `true` karma will log used configuration on startup
+- `level` - log level to set for karma, possible values are debug, info,
   warning, error, fatal and panic.
 
 Defaults:
@@ -368,8 +368,8 @@ jira:
   - uri: string
 ```
 
-* `regex` - regular expression for matching Jira issue ID.
-* `uri` - base URL for Jira instance, `/browse/FOO-1` will be appended to it
+- `regex` - regular expression for matching Jira issue ID.
+- `uri` - base URL for Jira instance, `/browse/FOO-1` will be appended to it
   (where `FOO-1` is example issue ID).
 
 Example where a string `DEVOPS-123` inside a comment would be rendered as a link
@@ -390,7 +390,7 @@ jira: []
 ### Receivers
 
 `receivers` section allows configuring how alerts from different receivers are
-handled by unsee. If alerts are routed to multiple receivers they can be
+handled by karma. If alerts are routed to multiple receivers they can be
 duplicated in the UI, each instance will have different value for `@receiver`.
 Syntax:
 
@@ -400,12 +400,12 @@ receivers:
   strip: list of strings
 ```
 
-* `keep` - list of receivers name that are allowed, if empty all receivers are
+- `keep` - list of receivers name that are allowed, if empty all receivers are
   allowed.
-* `strip` - list of receiver names that will not be shown in the UI.
+- `strip` - list of receiver names that will not be shown in the UI.
 
 Example where alerts that are routed to the `alertmanage2es` receiver are
-ignored by unsee.
+ignored by karma.
 
 ```yaml
 receivers:
@@ -433,9 +433,9 @@ sentry:
   public: string
 ```
 
-* `private` - Sentry DSN for Go exceptions, this value is only used by unsee
+- `private` - Sentry DSN for Go exceptions, this value is only used by karma
   binary and never exposed to the user.
-* `public` - Sentry DSN for JavaScript exceptions, this value will be exposed
+- `public` - Sentry DSN for JavaScript exceptions, this value will be exposed
   to the user browser.
 
 Example:
@@ -450,10 +450,10 @@ sentry:
 
 Config file options are mapped to command line flags, so `alertmanager:interval`
 config file key is accessible as `--alertmanager.interval` flag, run
-`unsee --help` to see a full list.
+`karma --help` to see a full list.
 Exceptions for passing flags:
 
-* `jira` - this option is a list of maps and it's only available when using
+- `jira` - this option is a list of maps and it's only available when using
   config file.
 
 There's no support for configuring multiple Alertmanager servers using
@@ -466,11 +466,11 @@ Environment variables are mapped in a similar way as command line flags,
 `alertmanager:interval` is accessible as `ALERTMANAGER_INTERVAL` env.
 Exceptions for passing flags:
 
-* `HOST` - used by gin webserver, same effect as setting `listen:address` config
+- `HOST` - used by gin webserver, same effect as setting `listen:address` config
   option
-* `PORT` - used by gin webserver, same effect as setting `listen:port` config
+- `PORT` - used by gin webserver, same effect as setting `listen:port` config
   option
-* `SENTRY_DSN` - is used by Sentry itself, same effect as passing value to
+- `SENTRY_DSN` - is used by Sentry itself, same effect as passing value to
   `sentry:private` config option.
 
 There's no support for configuring multiple alertmanager servers using
@@ -480,7 +480,7 @@ section.
 
 ## Simplified Configuration
 
-To configure multiple Alertmanager instances unsee requires a config file, but
+To configure multiple Alertmanager instances karma requires a config file, but
 for a single Alertmanager instance cases it's possible to configure all
 Alertmanager server options that are set for `alertmanager.servers` config
 section using only flags or environment variables.
@@ -491,8 +491,8 @@ To set the `uri` key from `alertmanager.servers` map `ALERTMANAGER_URI` env or
 `--alertmanager.uri` flag can be used.
 Examples:
 
-    ALERTMANAGER_URI=https://alertmanager.example.com unsee
-    unsee --alertmanager.uri https://alertmanager.example.com
+    ALERTMANAGER_URI=https://alertmanager.example.com karma
+    karma --alertmanager.uri https://alertmanager.example.com
 
 ### Alertmanager name
 
@@ -500,8 +500,8 @@ To set the `name` key from `alertmanager.servers` map `ALERTMANAGER_NAME` env or
 `--alertmanager.name` flag can be used.
 Examples:
 
-    ALERTMANAGER_NAME=single unsee
-    unsee --alertmanager.name single
+    ALERTMANAGER_NAME=single karma
+    karma --alertmanager.name single
 
 ### Alertmanager timeout
 
@@ -509,8 +509,8 @@ To set the `timeout` key from `alertmanager.servers` map `ALERTMANAGER_TIMEOUT`
 env or `--alertmanager.timeout` flag can be used.
 Examples:
 
-    ALERTMANAGER_TIMEOUT=10s unsee
-    unsee --alertmanager.timeout 10s
+    ALERTMANAGER_TIMEOUT=10s karma
+    karma --alertmanager.timeout 10s
 
 ### Alertmanager request proxy
 
@@ -518,5 +518,5 @@ To set the `proxy` key from `alertmanager.servers` map `ALERTMANAGER_PROXY`
 env or `--alertmanager.proxy` flag can be used.
 Examples:
 
-    ALERTMANAGER_PROXY=true unsee
-    unsee --alertmanager.proxy
+    ALERTMANAGER_PROXY=true karma
+    karma --alertmanager.proxy

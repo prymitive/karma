@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/karma/internal/models"
 )
 
 var (
@@ -12,20 +12,20 @@ var (
 	silenceMappers = []SilenceMapper{}
 )
 
-// Mapper converts Alertmanager response body and maps to unsee data structures
+// Mapper converts Alertmanager response body and maps to karma data structures
 type Mapper interface {
 	IsSupported(version string) bool
 	AbsoluteURL(baseURI string) (string, error)
 	QueryArgs() string
 }
 
-// AlertMapper handles mapping of Alertmanager alert information to unsee AlertGroup models
+// AlertMapper handles mapping of Alertmanager alert information to karma AlertGroup models
 type AlertMapper interface {
 	Mapper
 	Decode(io.ReadCloser) ([]models.AlertGroup, error)
 }
 
-// SilenceMapper handles mapping of Alertmanager silence information to unsee Silence models
+// SilenceMapper handles mapping of Alertmanager silence information to karma Silence models
 type SilenceMapper interface {
 	Mapper
 	Decode(io.ReadCloser) ([]models.Silence, error)

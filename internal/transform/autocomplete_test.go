@@ -5,8 +5,8 @@ import (
 	"sort"
 	"testing"
 
-	"github.com/prymitive/unsee/internal/models"
-	"github.com/prymitive/unsee/internal/transform"
+	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/transform"
 
 	"github.com/pmezard/go-difflib/difflib"
 )

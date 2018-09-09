@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/prymitive/unsee/internal/uri"
+	"github.com/prymitive/karma/internal/uri"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 
@@ -31,7 +31,7 @@ func init() {
 	pflag.Duration("alertmanager.timeout", time.Second*40,
 		"Timeout for requests sent to the Alertmanager server (only used with simplified config)")
 	pflag.Bool("alertmanager.proxy", false,
-		"Proxy all client requests to Alertmanager via unsee (only used with simplified config)")
+		"Proxy all client requests to Alertmanager via karma (only used with simplified config)")
 
 	pflag.Bool(
 		"annotations.default.hidden", false,
@@ -43,7 +43,7 @@ func init() {
 
 	pflag.String("config.dir", ".",
 		"Directory with configuration file to read")
-	pflag.String("config.file", "unsee",
+	pflag.String("config.file", "karma",
 		"Name of the configuration file to read")
 
 	pflag.Bool("debug", false, "Enable debug mode")

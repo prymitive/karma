@@ -31,7 +31,7 @@ class App extends Component {
     // parse and decode request query args
     const p = DecodeLocationSearch(window.location.search);
 
-    // p.defaultsUsed means that unsee URI didn't have ?q=foo query args
+    // p.defaultsUsed means that karma URI didn't have ?q=foo query args
     if (p.defaultsUsed) {
       // no ?q=foo set, use defaults saved by the user or from backend config
       if (this.settingsStore.savedFilters.config.present) {

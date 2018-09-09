@@ -1,7 +1,7 @@
 package filters
 
 import (
-	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/karma/internal/models"
 )
 
 type autocompleteFactory func(name string, operators []string, alerts []models.Alert) []models.Autocomplete

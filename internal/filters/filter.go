@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/prymitive/unsee/internal/models"
-	"github.com/prymitive/unsee/internal/slices"
+	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/slices"
 )
 
 // FilterT provides methods for interacting with alert filters

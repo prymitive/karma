@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/prymitive/unsee/internal/alertmanager"
+	"github.com/prymitive/karma/internal/alertmanager"
 
 	log "github.com/sirupsen/logrus"
 )

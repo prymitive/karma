@@ -10,10 +10,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/prymitive/unsee/internal/config"
-	"github.com/prymitive/unsee/internal/mock"
-	"github.com/prymitive/unsee/internal/models"
-	"github.com/prymitive/unsee/internal/slices"
+	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/mock"
+	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/slices"
 
 	cache "github.com/patrickmn/go-cache"
 	log "github.com/sirupsen/logrus"

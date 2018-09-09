@@ -3,8 +3,8 @@ package transform_test
 import (
 	"testing"
 
-	"github.com/prymitive/unsee/internal/models"
-	"github.com/prymitive/unsee/internal/transform"
+	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/transform"
 )
 
 type jiraTest struct {

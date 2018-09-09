@@ -5,9 +5,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/prymitive/unsee/internal/alertmanager"
-	"github.com/prymitive/unsee/internal/filters"
-	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/karma/internal/alertmanager"
+	"github.com/prymitive/karma/internal/filters"
+	"github.com/prymitive/karma/internal/models"
 
 	log "github.com/sirupsen/logrus"
 )

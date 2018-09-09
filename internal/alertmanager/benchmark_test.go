@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/prymitive/unsee/internal/alertmanager"
-	"github.com/prymitive/unsee/internal/config"
+	"github.com/prymitive/karma/internal/alertmanager"
+	"github.com/prymitive/karma/internal/config"
 )
 
 func BenchmarkDedupAlerts(b *testing.B) {

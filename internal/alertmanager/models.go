@@ -10,11 +10,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/prymitive/unsee/internal/config"
-	"github.com/prymitive/unsee/internal/mapper"
-	"github.com/prymitive/unsee/internal/models"
-	"github.com/prymitive/unsee/internal/transform"
-	"github.com/prymitive/unsee/internal/uri"
+	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/mapper"
+	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/transform"
+	"github.com/prymitive/karma/internal/uri"
 
 	log "github.com/sirupsen/logrus"
 )

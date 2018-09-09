@@ -5,9 +5,9 @@ import (
 	"io"
 	"math/rand"
 
-	"github.com/prymitive/unsee/internal/config"
-	"github.com/prymitive/unsee/internal/models"
-	"github.com/prymitive/unsee/internal/slices"
+	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/slices"
 
 	"github.com/hansrodtang/randomcolor"
 
@@ -34,7 +34,7 @@ func labelToSeed(key string, val string) int64 {
 	return seed
 }
 
-// ColorLabel update UnseeColorMap object with a color object generated
+// ColorLabel update karmaColorMap object with a color object generated
 // from label key and value passed here
 // It's used to generate unique colors for configured labels
 func ColorLabel(colorStore models.LabelsColorMap, key string, val string) {

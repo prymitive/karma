@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/karma/internal/models"
 )
 
 type silenceAuthorFilter struct {

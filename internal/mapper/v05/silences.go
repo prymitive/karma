@@ -1,6 +1,6 @@
 // Package v05 package implements support for interacting with Alertmanager 0.5
-// Collected data will be mapped to unsee internal schema defined the
-// unsee/models package
+// Collected data will be mapped to karma internal schema defined the
+// karma/models package
 // This file defines Alertmanager alerts mapping
 package v05
 
@@ -11,9 +11,9 @@ import (
 	"time"
 
 	"github.com/blang/semver"
-	"github.com/prymitive/unsee/internal/mapper"
-	"github.com/prymitive/unsee/internal/models"
-	"github.com/prymitive/unsee/internal/uri"
+	"github.com/prymitive/karma/internal/mapper"
+	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/uri"
 )
 
 type silence struct {
@@ -57,7 +57,7 @@ func (m SilenceMapper) IsSupported(version string) bool {
 	return versionRange(semver.MustParse(version))
 }
 
-// Decode Alertmanager API response body and return unsee model instances
+// Decode Alertmanager API response body and return karma model instances
 func (m SilenceMapper) Decode(source io.ReadCloser) ([]models.Silence, error) {
 	silences := []models.Silence{}
 	resp := silenceAPISchema{}
