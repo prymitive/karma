@@ -1,5 +1,6 @@
 import React from "react";
 
+import { toJS } from "mobx";
 import { Provider } from "mobx-react";
 
 import { mount, shallow } from "enzyme";
@@ -9,7 +10,7 @@ import toDiffableHtml from "diffable-html";
 import { advanceTo, clear } from "jest-date-mock";
 
 import { AlertStore } from "Stores/AlertStore";
-import { Silence, SilenceDetails, SilenceExpiryBadgeWithProgress } from ".";
+import { Silence, SilenceDetails } from ".";
 
 const mockAfterUpdate = jest.fn();
 
@@ -150,6 +151,14 @@ describe("<Silence />", () => {
     expect(link).toHaveLength(1);
     expect(link.text()).toBe("Fake silence");
   });
+
+  it("clears progress timer on unmount", () => {
+    const tree = MountedSilence().find("Silence");
+    const instance = tree.instance();
+    expect(instance.progressTimer).toBeTruthy();
+    instance.componentWillUnmount();
+    expect(instance.progressTimer).toBeNull();
+  });
 });
 
 const ShallowSilenceDetails = () => {
@@ -173,27 +182,37 @@ describe("<SilenceDetails />", () => {
   });
 });
 
-const ShallowSilenceExpiryBadgeWithProgress = () => {
-  return shallow(<SilenceExpiryBadgeWithProgress silence={silence} />);
-};
-
 describe("<SilenceExpiryBadgeWithProgress />", () => {
   it("renders with class 'danger' and no progressbar when expired", () => {
     advanceTo(new Date(2001, 0, 1, 23, 0, 0));
-    const tree = ShallowSilenceExpiryBadgeWithProgress();
+    const tree = MountedSilence();
     expect(tree.html()).toMatch(/badge-danger/);
-    expect(tree.text()).toBe("Expired <t />");
+    expect(tree.text()).toMatch(/Expired a year ago/);
   });
 
   it("progressbar uses class 'danger' when > 90%", () => {
     advanceTo(new Date(2000, 0, 1, 19, 30, 0));
-    const tree = ShallowSilenceExpiryBadgeWithProgress();
+    const tree = MountedSilence();
     expect(tree.html()).toMatch(/progress-bar bg-danger/);
   });
 
   it("progressbar uses class 'danger' when > 75%", () => {
     advanceTo(new Date(2000, 0, 1, 17, 45, 0));
-    const tree = ShallowSilenceExpiryBadgeWithProgress();
+    const tree = MountedSilence();
     expect(tree.html()).toMatch(/progress-bar bg-warning/);
+  });
+
+  it("calling calculate() on progress multiple times in a row doesn't change the value", () => {
+    const startsAt = new Date(2000, 0, 1, 10, 0, 0);
+    const endsAt = new Date(2000, 0, 1, 20, 0, 0);
+
+    const tree = MountedSilence().find("Silence");
+    const instance = tree.instance();
+
+    const value = toJS(instance.progress.value);
+    instance.progress.calculate(startsAt, endsAt);
+    instance.progress.calculate(startsAt, endsAt);
+    instance.progress.calculate(startsAt, endsAt);
+    expect(toJS(instance.progress.value)).toBe(value);
   });
 });

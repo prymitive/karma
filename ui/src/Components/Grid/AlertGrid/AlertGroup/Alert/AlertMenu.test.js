@@ -70,7 +70,7 @@ const MountedMenuContent = group => {
 describe("<MenuContent />", () => {
   it("clicking on 'Silence' icon opens the silence form modal", () => {
     const tree = MountedMenuContent(group);
-    const button = tree.find(".dropdown-item").at(0);
+    const button = tree.find(".dropdown-item").at(1);
     button.simulate("click");
     expect(silenceFormStore.toggle.visible).toBe(true);
   });

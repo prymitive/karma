@@ -93,4 +93,13 @@ describe("<SilenceModal />", () => {
     tree.unmount();
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
+
+  it("inProgress is set to false after modal is hidden", () => {
+    silenceFormStore.toggle.visible = true;
+    const tree = MountedSilenceModal();
+    silenceFormStore.data.inProgress = true;
+    const toggle = tree.find("button.close");
+    toggle.simulate("click");
+    expect(silenceFormStore.data.inProgress).toBe(false);
+  });
 });
