@@ -69,6 +69,11 @@ class SilenceFormStore {
         return true;
       },
 
+      resetStartEnd() {
+        this.startsAt = moment();
+        this.endsAt = moment().add(1, "hour");
+      },
+
       resetProgress() {
         this.inProgress = false;
         this.wasValidated = false;
@@ -193,6 +198,7 @@ class SilenceFormStore {
       }
     },
     {
+      resetStartEnd: action.bound,
       resetProgress: action.bound,
       addEmptyMatcher: action.bound,
       deleteMatcher: action.bound,

@@ -45,6 +45,16 @@ const MockGroup = () => {
 };
 
 describe("SilenceFormStore.data", () => {
+  it("resetStartEnd() sets startsAt and endsAt to defaults", () => {
+    store.data.startsAt = moment([2000, 1, 1, 0, 1, 0]);
+    store.data.endsAt = moment([2000, 1, 1, 1, 2, 0]);
+    expect(store.data.startsAt.isSame([2000, 1, 1], "day")).toBe(true);
+    expect(store.data.endsAt.isSame([2000, 1, 1], "day")).toBe(true);
+    store.data.resetStartEnd();
+    expect(store.data.startsAt.isSame([2000, 1, 1], "day")).toBe(false);
+    expect(store.data.endsAt.isSame([2000, 1, 1], "day")).toBe(false);
+  });
+
   it("resetProgress() sets 'inProgress' to false", () => {
     store.data.inProgress = true;
     expect(store.data.inProgress).toBe(true);

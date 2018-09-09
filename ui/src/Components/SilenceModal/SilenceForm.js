@@ -75,6 +75,9 @@ const SilenceForm = observer(
     componentDidMount() {
       const { silenceFormStore, settingsStore } = this.props;
 
+      // reset startsAt & endsAt on every mount
+      silenceFormStore.data.resetStartEnd();
+
       if (silenceFormStore.data.matchers.length === 0) {
         silenceFormStore.data.addEmptyMatcher();
       }
