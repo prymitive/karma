@@ -34,7 +34,7 @@ SilenceComment.propTypes = {
   silence: PropTypes.object.isRequired
 };
 
-const SilenceExpiryBadgeWithProgress = ({ silence }) => {
+const SilenceExpiryBadgeWithProgress = ({ silence, progress }) => {
   // if silence is expired we can skip progress value calculation
   if (moment(silence.endsAt) < moment()) {
     return (
@@ -44,15 +44,10 @@ const SilenceExpiryBadgeWithProgress = ({ silence }) => {
     );
   }
 
-  const durationDone = moment().unix() - moment(silence.startsAt).unix();
-  const durationTotal =
-    moment(silence.endsAt).unix() - moment(silence.startsAt).unix();
-  const durationPercent = (durationDone / durationTotal) * 100;
-
   let progressClass;
-  if (durationPercent > 90) {
+  if (progress > 90) {
     progressClass = "progress-bar bg-danger";
-  } else if (durationPercent > 75) {
+  } else if (progress > 75) {
     progressClass = "progress-bar bg-warning";
   } else {
     progressClass = "progress-bar bg-success";
@@ -65,8 +60,8 @@ const SilenceExpiryBadgeWithProgress = ({ silence }) => {
         <div
           className={progressClass}
           role="progressbar"
-          style={{ width: durationPercent + "%" }}
-          aria-valuenow={durationPercent}
+          style={{ width: progress + "%" }}
+          aria-valuenow={progress}
           aria-valuemin="0"
           aria-valuemax="100"
         />
@@ -75,7 +70,8 @@ const SilenceExpiryBadgeWithProgress = ({ silence }) => {
   );
 };
 SilenceExpiryBadgeWithProgress.propTypes = {
-  silence: PropTypes.object.isRequired
+  silence: PropTypes.object.isRequired,
+  progress: PropTypes.number.isRequired
 };
 
 const SilenceDetails = ({ alertmanager, silence }) => {
@@ -164,12 +160,34 @@ const Silence = inject("alertStore")(
         { name: "Silence collpase toggle" }
       );
 
-      componentDidUpdate() {
-        const { afterUpdate } = this.props;
-        afterUpdate();
+      progress = observable(
+        {
+          value: 0,
+          calculate(startsAt, endsAt) {
+            const durationDone = moment().unix() - moment(startsAt).unix();
+            const durationTotal =
+              moment(endsAt).unix() - moment(startsAt).unix();
+            const durationPercent = Math.floor(
+              (durationDone / durationTotal) * 100
+            );
+            if (this.value !== durationPercent) {
+              this.value = durationPercent;
+            }
+          }
+        },
+        {
+          calculate: action.bound
+        }
+      );
+
+      constructor(props) {
+        super(props);
+
+        this.recalculateProgress();
+        this.progressTimer = setInterval(this.recalculateProgress, 30 * 1000);
       }
 
-      render() {
+      getSilence = () => {
         const { alertStore, alertmanager, silenceID } = this.props;
 
         // We pass alertmanager name and silence ID to Silence component
@@ -177,16 +195,36 @@ const Silence = inject("alertStore")(
         // Data might be missing from the store so first check if we have
         // anything for this alertmanager instance
         const amSilences = alertStore.data.silences[alertmanager.name];
-        if (!amSilences)
-          return (
-            <FallbackSilenceDesciption
-              alertmanager={alertmanager}
-              silenceID={silenceID}
-            />
-          );
+        if (!amSilences) return null;
 
         // next check if alertmanager has our silence ID
         const silence = amSilences[silenceID];
+        if (!silence) return null;
+
+        return silence;
+      };
+
+      recalculateProgress = () => {
+        const silence = this.getSilence();
+        if (silence !== null) {
+          this.progress.calculate(silence.startsAt, silence.endsAt);
+        }
+      };
+
+      componentDidUpdate() {
+        const { afterUpdate } = this.props;
+        afterUpdate();
+      }
+
+      componentWillUnmount() {
+        clearInterval(this.progressTimer);
+        this.progressTimer = null;
+      }
+
+      render() {
+        const { alertmanager, silenceID } = this.props;
+
+        const silence = this.getSilence();
         if (!silence)
           return (
             <FallbackSilenceDesciption
@@ -213,7 +251,10 @@ const Silence = inject("alertStore")(
                     {silence.createdBy}
                   </cite>
                   {this.collapse.value ? (
-                    <SilenceExpiryBadgeWithProgress silence={silence} />
+                    <SilenceExpiryBadgeWithProgress
+                      silence={silence}
+                      progress={this.progress.value}
+                    />
                   ) : null}
                 </span>
               </span>
