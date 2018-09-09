@@ -38,12 +38,6 @@ const MenuContent = onClickOutside(
         style={popperStyle}
         data-placement={popperPlacement}
       >
-        <div
-          className="dropdown-item cursor-pointer"
-          onClick={() => onSilenceClick(silenceFormStore, group, alert)}
-        >
-          <FontAwesomeIcon icon={faBellSlash} /> Silence this alert
-        </div>
         <h6 className="dropdown-header">Alert source links:</h6>
         {alert.alertmanager.map(am => (
           <a
@@ -57,6 +51,13 @@ const MenuContent = onClickOutside(
             {am.name}
           </a>
         ))}
+        <div className="dropdown-divider" />
+        <div
+          className="dropdown-item cursor-pointer"
+          onClick={() => onSilenceClick(silenceFormStore, group, alert)}
+        >
+          <FontAwesomeIcon icon={faBellSlash} /> Silence this alert
+        </div>
       </div>
     );
   }
