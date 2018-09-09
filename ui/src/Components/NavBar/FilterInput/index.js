@@ -12,7 +12,7 @@ import Highlight from "react-highlighter";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 
-import { AlertStore, FormatUnseeBackendURI } from "Stores/AlertStore";
+import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { FilterInputLabel } from "Components/Labels/FilterInputLabel";
 import { AutosuggestTheme } from "./Constants";
@@ -72,7 +72,7 @@ const FilterInput = observer(
       action(({ value }) => {
         if (value !== "") {
           this.inputStore.suggestionsFetch = fetch(
-            FormatUnseeBackendURI(`autocomplete.json?term=${value}`)
+            FormatBackendURI(`autocomplete.json?term=${value}`)
           )
             .then(
               result => result.json(),

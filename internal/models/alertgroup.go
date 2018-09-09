@@ -10,7 +10,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-// AlertList is flat list of UnseeAlert objects
+// AlertList is flat list of karmaAlert objects
 type AlertList []Alert
 
 func (a AlertList) Len() int {

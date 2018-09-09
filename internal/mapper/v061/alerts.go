@@ -1,7 +1,7 @@
 // Package v061 package implements support for interacting with
 // Alertmanager 0.6.1
-// Collected data will be mapped to unsee internal schema defined the
-// unsee/models package
+// Collected data will be mapped to karma internal schema defined the
+// karma/models package
 // This file defines Alertmanager alerts mapping
 package v061
 
@@ -13,9 +13,9 @@ import (
 	"time"
 
 	"github.com/blang/semver"
-	"github.com/prymitive/unsee/internal/mapper"
-	"github.com/prymitive/unsee/internal/models"
-	"github.com/prymitive/unsee/internal/uri"
+	"github.com/prymitive/karma/internal/mapper"
+	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/uri"
 )
 
 type alert struct {
@@ -71,7 +71,7 @@ func (m AlertMapper) IsSupported(version string) bool {
 	return versionRange(semver.MustParse(version))
 }
 
-// Decode Alertmanager API response body and return unsee model instances
+// Decode Alertmanager API response body and return karma model instances
 func (m AlertMapper) Decode(source io.ReadCloser) ([]models.AlertGroup, error) {
 	groups := []models.AlertGroup{}
 	receivers := map[string]alertsGroupReceiver{}

@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/prymitive/unsee/internal/mock"
-	"github.com/prymitive/unsee/internal/uri"
+	"github.com/prymitive/karma/internal/mock"
+	"github.com/prymitive/karma/internal/uri"
 
 	log "github.com/sirupsen/logrus"
 )

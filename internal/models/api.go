@@ -3,7 +3,7 @@ package models
 import (
 	"fmt"
 
-	"github.com/prymitive/unsee/internal/slices"
+	"github.com/prymitive/karma/internal/slices"
 )
 
 // Filter holds returned data on any filter passed by the user as part of the query
@@ -16,7 +16,7 @@ type Filter struct {
 	IsValid bool   `json:"isValid"`
 }
 
-// Color is used by UnseeLabelColor to reprenset colors as RGBA
+// Color is used by karmaLabelColor to reprenset colors as RGBA
 type Color struct {
 	Red   uint8 `json:"red"`
 	Green uint8 `json:"green"`
@@ -31,7 +31,7 @@ type LabelColors struct {
 	Background Color `json:"background"`
 }
 
-// LabelsColorMap is a map of "Label Key" -> "Label Value" -> UnseeLabelColors
+// LabelsColorMap is a map of "Label Key" -> "Label Value" -> karmaLabelColors
 type LabelsColorMap map[string]map[string]LabelColors
 
 // LabelsCountMap is a map of "Label Key" -> "Label Value" -> number of occurence
@@ -158,7 +158,7 @@ func (ag *APIAlertGroup) DedupSharedMaps() {
 	}
 }
 
-// Settings is used to export unsee configuration that is used by UI
+// Settings is used to export karma configuration that is used by UI
 type Settings struct {
 	StaticColorLabels        []string `json:"staticColorLabels"`
 	AnnotationsDefaultHidden bool     `json:"annotationsDefaultHidden"`

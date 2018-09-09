@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/karma/internal/models"
 )
 
 type fuzzyFilter struct {

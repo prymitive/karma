@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/karma/internal/models"
 )
 
 type ageFilter struct {

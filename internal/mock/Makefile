@@ -1,4 +1,4 @@
-DOCKER_NAME  := alertmanager-unsee-mock
+DOCKER_NAME  := alertmanager-karma-mock
 DOCKER_IMAGE := prom/alertmanager
 DOCKER_ARGS  := --name $(DOCKER_NAME) --rm -d -p 9093:9093 \
                 -v $(CURDIR)/alertmanager.yml:/etc/alertmanager/config.yml \

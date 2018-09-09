@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/prymitive/unsee/internal/models"
-	"github.com/prymitive/unsee/internal/uri"
+	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/uri"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -92,7 +92,7 @@ func GetAlertmanagerByName(name string) *Alertmanager {
 }
 
 // WithProxy option can be passed to NewAlertmanager in order to enable request
-// proxying for unsee clients
+// proxying for karma clients
 func WithProxy(proxied bool) Option {
 	return func(am *Alertmanager) error {
 		am.ProxyRequests = proxied

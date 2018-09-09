@@ -3,7 +3,7 @@ import { EmptyAPIResponse } from "__mocks__/Fetch";
 import {
   AlertStore,
   AlertStoreStatuses,
-  FormatUnseeBackendURI,
+  FormatBackendURI,
   DecodeLocationSearch,
   UpdateLocationSearch,
   NewUnappliedFilter
@@ -125,15 +125,15 @@ describe("AlertStore.filters", () => {
   });
 });
 
-describe("FormatUnseeBackendURI", () => {
-  it("FormatUnseeBackendURI without REACT_APP_BACKEND_URI env returns ./ prefixed URIs", () => {
-    const uri = FormatUnseeBackendURI("foo/bar");
+describe("FormatBackendURI", () => {
+  it("FormatBackendURI without REACT_APP_BACKEND_URI env returns ./ prefixed URIs", () => {
+    const uri = FormatBackendURI("foo/bar");
     expect(uri).toEqual("./foo/bar");
   });
 
-  it("FormatUnseeBackendURI with REACT_APP_BACKEND_URI env returns env value prefixed URIs", () => {
+  it("FormatBackendURI with REACT_APP_BACKEND_URI env returns env value prefixed URIs", () => {
     process.env.REACT_APP_BACKEND_URI = "http://localhost:1234";
-    const uri = FormatUnseeBackendURI("foo/bar");
+    const uri = FormatBackendURI("foo/bar");
     expect(uri).toEqual("http://localhost:1234/foo/bar");
   });
 });

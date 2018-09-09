@@ -1,4 +1,4 @@
-NAME    := unsee
+NAME    := karma
 VERSION := $(shell git describe --tags --always --dirty='-dev')
 
 # Alertmanager instance used when running locally, points to mock data
@@ -165,6 +165,6 @@ greenkeeper-lockfile:
 
 .PHONY: heroku
 heroku:
-	docker pull lmierzwa/unsee:latest
+	docker pull lmierzwa/karma:latest
 	heroku container:push web -R
 	heroku container:release web

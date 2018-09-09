@@ -8,12 +8,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/prymitive/unsee/internal/alertmanager"
-	"github.com/prymitive/unsee/internal/config"
-	"github.com/prymitive/unsee/internal/filters"
-	"github.com/prymitive/unsee/internal/models"
-	"github.com/prymitive/unsee/internal/slices"
-	"github.com/prymitive/unsee/internal/transform"
+	"github.com/prymitive/karma/internal/alertmanager"
+	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/filters"
+	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/slices"
+	"github.com/prymitive/karma/internal/transform"
 
 	"github.com/gin-gonic/gin"
 

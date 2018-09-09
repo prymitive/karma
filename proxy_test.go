@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/prymitive/unsee/internal/alertmanager"
+	"github.com/prymitive/karma/internal/alertmanager"
 
 	httpmock "gopkg.in/jarcoal/httpmock.v1"
 )

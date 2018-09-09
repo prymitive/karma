@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/prymitive/unsee/internal/models"
-	"github.com/prymitive/unsee/internal/slices"
+	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/slices"
 )
 
 type stateFilter struct {

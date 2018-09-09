@@ -1,4 +1,4 @@
-# Contributing to unsee
+# Contributing to karma
 
 ## Getting Started
 
@@ -53,7 +53,7 @@ generating production assets.
 
 ## Running
 
-To build and start `unsee` from local branch see `Running` section of the
+To build and start `karma` from local branch see `Running` section of the
 [README](README.md) file.
 
 When working with assets (templates, stylesheets and javascript files) `DEBUG`
@@ -70,7 +70,7 @@ the [gin web framework](https://github.com/gin-gonic/gin) which is used
 internally, but enabling `DEBUG` via this make variable will also enable gin
 debug mode.
 When running docker image via `make run-docker` with `DEBUG` make variable set
-to `true` volume mapping will be added (in read-only mode), so that unsee
+to `true` volume mapping will be added (in read-only mode), so that karma
 instance running inside the docker can read asset files from the sources
 directory.
 
@@ -78,10 +78,10 @@ directory.
 
 To support a new release that breaks API following changes needs to be done:
 
-* Verify that `GetVersion()` function can still correctly read remote
+- Verify that `GetVersion()` function can still correctly read remote
   Alertmanager version via `/api/v1/status` endpoint, adapt it if needed.
-* Create a new mapper package implementing unmarshaling of alerts and/or
+- Create a new mapper package implementing unmarshaling of alerts and/or
   silences (depending if both need a new code) under mapper/vXY (X major
   Alertmanager version, Y minor version).
-* Register new mapper in the `init()` function in the
+- Register new mapper in the `init()` function in the
   `internal/alertmanager/mapper.go` file.

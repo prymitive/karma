@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/karma/internal/models"
 )
 
 type annotationMapsTestCase struct {

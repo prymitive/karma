@@ -1,8 +1,8 @@
 package transform
 
 import (
-	"github.com/prymitive/unsee/internal/filters"
-	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/karma/internal/filters"
+	"github.com/prymitive/karma/internal/models"
 )
 
 // BuildAutocomplete takes an alert object and generates list of autocomplete

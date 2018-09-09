@@ -2,35 +2,35 @@ package alertmanager
 
 import "github.com/prometheus/client_golang/prometheus"
 
-type unseeCollector struct {
+type karmaCollector struct {
 	collectedAlerts *prometheus.Desc
 	collectedGroups *prometheus.Desc
 	cyclesTotal     *prometheus.Desc
 	errorsTotal     *prometheus.Desc
 }
 
-func newUnseeCollector() *unseeCollector {
-	return &unseeCollector{
+func newkarmaCollector() *karmaCollector {
+	return &karmaCollector{
 		collectedAlerts: prometheus.NewDesc(
-			"unsee_collected_alerts_count",
+			"karma_collected_alerts_count",
 			"Total number of alerts collected from Alertmanager API",
 			[]string{"alertmanager", "state", "receiver"},
 			prometheus.Labels{},
 		),
 		collectedGroups: prometheus.NewDesc(
-			"unsee_collected_groups_count",
+			"karma_collected_groups_count",
 			"Total number of alert groups collected from Alertmanager API",
 			[]string{"alertmanager", "receiver"},
 			prometheus.Labels{},
 		),
 		cyclesTotal: prometheus.NewDesc(
-			"unsee_collect_cycles_total",
+			"karma_collect_cycles_total",
 			"Total number of alert collection cycles run",
 			[]string{"alertmanager"},
 			prometheus.Labels{},
 		),
 		errorsTotal: prometheus.NewDesc(
-			"unsee_alertmanager_errors_total",
+			"karma_alertmanager_errors_total",
 			"Total number of errors encounter when requesting data from Alertmanager API",
 			[]string{"alertmanager", "endpoint"},
 			prometheus.Labels{},
@@ -38,14 +38,14 @@ func newUnseeCollector() *unseeCollector {
 	}
 }
 
-func (c *unseeCollector) Describe(ch chan<- *prometheus.Desc) {
+func (c *karmaCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.collectedAlerts
 	ch <- c.collectedGroups
 	ch <- c.cyclesTotal
 	ch <- c.errorsTotal
 }
 
-func (c *unseeCollector) Collect(ch chan<- prometheus.Metric) {
+func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
 	upstreams := GetAlertmanagers()
 
 	for _, am := range upstreams {
@@ -117,5 +117,5 @@ func (c *unseeCollector) Collect(ch chan<- prometheus.Metric) {
 }
 
 func init() {
-	prometheus.MustRegister(newUnseeCollector())
+	prometheus.MustRegister(newkarmaCollector())
 }

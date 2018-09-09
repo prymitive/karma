@@ -4,7 +4,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/prymitive/unsee/internal/transform"
+	"github.com/prymitive/karma/internal/transform"
 )
 
 type stripLabelTest struct {

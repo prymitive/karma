@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 
 import { MultiSelect } from "Components/MultiSelect";
 import { ValidationError } from "Components/MultiSelect/ValidationError";
-import { FormatUnseeBackendURI } from "Stores/AlertStore";
+import { FormatBackendURI } from "Stores/AlertStore";
 
 const LabelNameInput = observer(
   class LabelNameInput extends MultiSelect {
@@ -19,7 +19,7 @@ const LabelNameInput = observer(
       const { matcher } = this.props;
 
       this.nameSuggestionsFetch = fetch(
-        FormatUnseeBackendURI(`labelNames.json`)
+        FormatBackendURI(`labelNames.json`)
       )
         .then(
           result => result.json(),
@@ -43,7 +43,7 @@ const LabelNameInput = observer(
       const { matcher } = this.props;
 
       this.valueSuggestionsFetch = fetch(
-        FormatUnseeBackendURI(`labelValues.json?name=${matcher.name}`)
+        FormatBackendURI(`labelValues.json?name=${matcher.name}`)
       )
         .then(
           result => result.json(),

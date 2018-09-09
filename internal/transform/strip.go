@@ -3,7 +3,7 @@ package transform
 import (
 	"strings"
 
-	"github.com/prymitive/unsee/internal/slices"
+	"github.com/prymitive/karma/internal/slices"
 )
 
 // StripLables allows filtering out some labels from alerts

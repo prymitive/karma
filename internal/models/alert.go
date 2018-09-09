@@ -25,10 +25,10 @@ var AlertStateList = []string{
 }
 
 // Alert is vanilla alert + some additional attributes
-// unsee extends an alert object with:
+// karma extends an alert object with:
 // * Links map, it's generated from annotations if annotation value is an url
 //   it's pulled out of annotation map and returned under links field,
-//   unsee UI used this to show links differently than other annotations
+//   karma UI used this to show links differently than other annotations
 type Alert struct {
 	Annotations Annotations       `json:"annotations"`
 	Labels      map[string]string `json:"labels"`
@@ -41,7 +41,7 @@ type Alert struct {
 	GeneratorURL string   `json:"-" hash:"-"`
 	SilencedBy   []string `json:"-" hash:"-"`
 	InhibitedBy  []string `json:"-" hash:"-"`
-	// unsee fields
+	// karma fields
 	Alertmanager []AlertmanagerInstance `json:"alertmanager"`
 	Receiver     string                 `json:"receiver"`
 	// fingerprints are precomputed for speed

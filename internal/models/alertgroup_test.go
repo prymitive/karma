@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/karma/internal/models"
 )
 
 type alertListSortTest struct {
@@ -44,7 +44,7 @@ var alertListSortTests = []alertListSortTest{
 	},
 }
 
-func TestUnseeAlertListSort(t *testing.T) {
+func TestAlertListSort(t *testing.T) {
 	al := models.AlertList{}
 	for _, testCase := range alertListSortTests {
 		testCase.alert.UpdateFingerprints()

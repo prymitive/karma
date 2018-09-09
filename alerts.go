@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/prymitive/unsee/internal/alertmanager"
-	"github.com/prymitive/unsee/internal/filters"
-	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/karma/internal/alertmanager"
+	"github.com/prymitive/karma/internal/filters"
+	"github.com/prymitive/karma/internal/models"
 )
 
 func getFiltersFromQuery(filterStrings []string) ([]filters.FilterT, bool) {

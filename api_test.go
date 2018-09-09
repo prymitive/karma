@@ -8,8 +8,8 @@ import (
 	"testing"
 
 	"github.com/blang/semver"
-	"github.com/prymitive/unsee/internal/mock"
-	"github.com/prymitive/unsee/internal/models"
+	"github.com/prymitive/karma/internal/mock"
+	"github.com/prymitive/karma/internal/models"
 )
 
 type groupTest struct {

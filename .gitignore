@@ -3,7 +3,7 @@
 .tests
 bindata_assetfs.go
 coverage.txt
-unsee
+karma
 ui/build
 ui/coverage
 ui/node_modules

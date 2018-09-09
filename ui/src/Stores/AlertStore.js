@@ -20,7 +20,7 @@ function FormatAPIFilterQuery(filters) {
 }
 
 // format URI for react UI -> Go backend requests
-function FormatUnseeBackendURI(path) {
+function FormatBackendURI(path) {
   const uri = process.env.REACT_APP_BACKEND_URI || ".";
   return `${uri}/${path}`;
 }
@@ -196,7 +196,7 @@ class AlertStore {
     this.status.setInProgress();
 
     const alertsURI =
-      FormatUnseeBackendURI("alerts.json?") +
+      FormatBackendURI("alerts.json?") +
       FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
 
     return fetch(alertsURI)
@@ -305,7 +305,7 @@ class AlertStore {
 export {
   AlertStore,
   AlertStoreStatuses,
-  FormatUnseeBackendURI,
+  FormatBackendURI,
   FormatAPIFilterQuery,
   DecodeLocationSearch,
   UpdateLocationSearch,

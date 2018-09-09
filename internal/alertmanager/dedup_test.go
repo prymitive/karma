@@ -6,9 +6,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/prymitive/unsee/internal/alertmanager"
-	"github.com/prymitive/unsee/internal/config"
-	"github.com/prymitive/unsee/internal/mock"
+	"github.com/prymitive/karma/internal/alertmanager"
+	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/mock"
 
 	log "github.com/sirupsen/logrus"
 )

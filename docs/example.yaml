@@ -10,8 +10,8 @@ alertmanager:
       timeout: 10s
       tls:
         ca: /etc/ssl/certs/ca-bundle.crt
-        cert: /etc/unsee/client.pem
-        key: /etc/unsee/client.key
+        cert: /etc/karma/client.pem
+        key: /etc/karma/client.key
 annotations:
   default:
     hidden: false

@@ -8,10 +8,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/prymitive/unsee/internal/alertmanager"
-	"github.com/prymitive/unsee/internal/config"
-	"github.com/prymitive/unsee/internal/models"
-	"github.com/prymitive/unsee/internal/transform"
+	"github.com/prymitive/karma/internal/alertmanager"
+	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/transform"
 
 	"github.com/DeanThompson/ginpprof"
 	"github.com/gin-contrib/cors"

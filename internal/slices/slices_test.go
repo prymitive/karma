@@ -3,7 +3,7 @@ package slices_test
 import (
 	"testing"
 
-	"github.com/prymitive/unsee/internal/slices"
+	"github.com/prymitive/karma/internal/slices"
 )
 
 type stringSliceTest struct {
