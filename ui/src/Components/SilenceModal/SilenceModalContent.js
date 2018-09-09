@@ -14,7 +14,8 @@ const SilenceModalContent = observer(
     static propTypes = {
       alertStore: PropTypes.object.isRequired,
       silenceFormStore: PropTypes.object.isRequired,
-      settingsStore: PropTypes.object.isRequired
+      settingsStore: PropTypes.object.isRequired,
+      onHide: PropTypes.func.isRequired
     };
 
     componentDidMount() {
@@ -26,7 +27,12 @@ const SilenceModalContent = observer(
     }
 
     render() {
-      const { alertStore, silenceFormStore, settingsStore } = this.props;
+      const {
+        alertStore,
+        silenceFormStore,
+        settingsStore,
+        onHide
+      } = this.props;
 
       return ReactDOM.createPortal(
         <div className="modal d-block bg-primary-transparent-80" role="dialog">
@@ -34,11 +40,7 @@ const SilenceModalContent = observer(
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Add new silence</h5>
-                <button
-                  type="button"
-                  className="close"
-                  onClick={silenceFormStore.toggle.hide}
-                >
+                <button type="button" className="close" onClick={onHide}>
                   <span className="align-middle">&times;</span>
                 </button>
               </div>

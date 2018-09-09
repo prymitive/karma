@@ -18,6 +18,18 @@ const SilenceModal = observer(
       settingsStore: PropTypes.object.isRequired
     };
 
+    toggleModal = () => {
+      const { silenceFormStore } = this.props;
+
+      silenceFormStore.toggle.toggle();
+      if (silenceFormStore.toggle.visible === false) {
+        // need to reset progress if we're hiding modal
+        // SilenceSubmitProgress sends a fetch on mount which would result in
+        // duplicate silences if we didn't reset state of the form on destroy
+        silenceFormStore.data.resetProgress();
+      }
+    };
+
     componentDidUpdate() {
       const { silenceFormStore } = this.props;
 
@@ -37,10 +49,7 @@ const SilenceModal = observer(
       return (
         <React.Fragment>
           <li className="nav-item">
-            <a
-              className="nav-link cursor-pointer"
-              onClick={silenceFormStore.toggle.toggle}
-            >
+            <a className="nav-link cursor-pointer" onClick={this.toggleModal}>
               <FontAwesomeIcon icon={faBellSlash} />
             </a>
           </li>
@@ -49,6 +58,7 @@ const SilenceModal = observer(
               alertStore={alertStore}
               silenceFormStore={silenceFormStore}
               settingsStore={settingsStore}
+              onHide={this.toggleModal}
             />
           ) : null}
         </React.Fragment>
