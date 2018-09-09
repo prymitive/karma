@@ -94,7 +94,8 @@ const LabelNameInput = observer(
         defaultValue: value,
         options: matcher.suggestions.names,
         placeholder: isValid ? "Label name" : <ValidationError />,
-        onChange: this.onChange
+        onChange: this.onChange,
+        hideSelectedOptions: true
       };
     };
   }

@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount, render } from "enzyme";
 
+import toDiffableHtml from "diffable-html";
+
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { FilterInput } from ".";
@@ -33,7 +35,7 @@ describe("<FilterInput />", () => {
     const tree = render(
       <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
     );
-    expect(tree).toMatchSnapshot();
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("inputStore.ref should be  != null after mount", () => {

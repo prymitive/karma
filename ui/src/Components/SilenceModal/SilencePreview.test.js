@@ -2,6 +2,8 @@ import React from "react";
 
 import { render } from "enzyme";
 
+import toDiffableHtml from "diffable-html";
+
 import moment from "moment";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -16,6 +18,6 @@ describe("<SilencePreview />", () => {
     silenceFormStore.data.comment = "SilencePreview test";
 
     const tree = render(<SilencePreview silenceFormStore={silenceFormStore} />);
-    expect(tree).toMatchSnapshot();
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 });

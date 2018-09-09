@@ -1,73 +1,50 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<SilencePreview /> matches snapshot 1`] = `
-<div
-  class="mt-3"
->
-  <pre
-    class="json-pretty"
-  >
-    {
-      "
-    <span
-      class="json-key"
-    >
-      matchers
-    </span>
-    ": [],
-      "
-    <span
-      class="json-key"
-    >
-      startsAt
-    </span>
-    ": 
-    <span
-      class="json-string"
-    >
-      "2000-02-01T00:00:00.000Z"
-    </span>
-    ,
-      "
-    <span
-      class="json-key"
-    >
-      endsAt
-    </span>
-    ": 
-    <span
-      class="json-string"
-    >
-      "2000-02-01T01:00:00.000Z"
-    </span>
-    ,
-      "
-    <span
-      class="json-key"
-    >
-      createdBy
-    </span>
-    ": 
-    <span
-      class="json-string"
-    >
-      ""
-    </span>
-    ,
-      "
-    <span
-      class="json-key"
-    >
-      comment
-    </span>
-    ": 
-    <span
-      class="json-string"
-    >
-      "SilencePreview test"
-    </span>
-    
-    }
-  </pre>
-</div>
+"
+<pre class=\\"json-pretty\\">
+  {
+  &quot;
+  <span class=\\"json-key\\">
+    matchers
+  </span>
+  &quot;: [],
+  &quot;
+  <span class=\\"json-key\\">
+    startsAt
+  </span>
+  &quot;:
+  <span class=\\"json-string\\">
+    &quot;2000-02-01T00:00:00.000Z&quot;
+  </span>
+  ,
+  &quot;
+  <span class=\\"json-key\\">
+    endsAt
+  </span>
+  &quot;:
+  <span class=\\"json-string\\">
+    &quot;2000-02-01T01:00:00.000Z&quot;
+  </span>
+  ,
+  &quot;
+  <span class=\\"json-key\\">
+    createdBy
+  </span>
+  &quot;:
+  <span class=\\"json-string\\">
+    &quot;&quot;
+  </span>
+  ,
+  &quot;
+  <span class=\\"json-key\\">
+    comment
+  </span>
+  &quot;:
+  <span class=\\"json-string\\">
+    &quot;SilencePreview test&quot;
+  </span>
+  }
+</pre>
+"
 `;

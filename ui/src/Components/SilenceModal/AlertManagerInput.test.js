@@ -2,6 +2,8 @@ import React from "react";
 
 import { shallow, mount } from "enzyme";
 
+import toDiffableHtml from "diffable-html";
+
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { AlertManagerInput } from "./AlertManagerInput";
@@ -57,7 +59,7 @@ const ValidateSuggestions = () => {
 describe("<AlertManagerInput />", () => {
   it("matches snapshot", () => {
     const tree = ShallowAlertManagerInput();
-    expect(tree).toMatchSnapshot();
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("doesn't render ValidationError after passed validation", () => {

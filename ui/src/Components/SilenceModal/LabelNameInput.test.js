@@ -2,6 +2,8 @@ import React from "react";
 
 import { shallow, mount } from "enzyme";
 
+import toDiffableHtml from "diffable-html";
+
 import { NewEmptyMatcher, MatcherValueToObject } from "Stores/SilenceFormStore";
 import { LabelNameInput } from "./LabelNameInput";
 
@@ -43,7 +45,7 @@ const ValidateSuggestions = () => {
 describe("<LabelNameInput />", () => {
   it("matches snapshot", () => {
     const tree = ShallowLabelNameInput(true);
-    expect(tree).toMatchSnapshot();
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("doesn't renders ValidationError after passed validation", () => {
