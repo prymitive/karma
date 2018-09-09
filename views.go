@@ -12,6 +12,7 @@ import (
 	"github.com/prymitive/unsee/internal/config"
 	"github.com/prymitive/unsee/internal/models"
 	"github.com/prymitive/unsee/internal/slices"
+	"github.com/prymitive/unsee/internal/transform"
 
 	"github.com/gin-gonic/gin"
 
@@ -183,6 +184,12 @@ func alerts(c *gin.Context) {
 			resp.TotalAlerts += len(agCopy.Alerts)
 		}
 
+	}
+
+	for _, filter := range matchFilters {
+		if filter.GetValue() != "" && filter.GetMatcher() == "=" {
+			transform.ColorLabel(colors, filter.GetName(), filter.GetValue())
+		}
 	}
 
 	resp.AlertGroups = alerts
