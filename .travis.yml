@@ -20,27 +20,6 @@ env:
 
 jobs:
   include:
-    - stage: Greenkeeper
-      # this stage only runs for branches with name starting with "greenkeeper"
-      # it only needs to run as part of a PR send by Greenkeeper bot, it doesn't
-      # do anything for other branches or PRs
-      if: branch =~ /^greenkeeper.*/
-      <<: *DEFAULTS_JS
-      # disable cache for Greenkeeper stage, having cache causes greenkeeper
-      # to scan the entire node_modules looking for package.json files
-      # it also doesn't need the cache for anything, it's an external command
-      # installed manually
-      cache:
-        directories: []
-      # change the name and the email in the commit modifying package-lock.json
-      # to match user commiting changes to package.json
-      # https://github.com/greenkeeperio/greenkeeper-lockfile/pull/101
-      env:
-        - GK_LOCK_COMMIT_NAME="greenkeeper[bot]"
-        - GK_LOCK_COMMIT_EMAIL="<greenkeeper[bot]@users.noreply.github.com>"
-      script:
-        - make greenkeeper-lockfile
-
     - stage: Test Go code
       <<: *DEFAULTS_GO
       before_script:
