@@ -17,12 +17,15 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
 });
 
+const MockOnHide = jest.fn();
+
 const ShallowSilenceModalContent = () => {
   return shallow(
     <SilenceModalContent
       alertStore={alertStore}
       settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
+      onHide={MockOnHide}
     />
   );
 };
