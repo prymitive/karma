@@ -27,7 +27,7 @@
     "qs": "6.5.2",
     "raven-js": "3.27.0",
     "react": "16.5.0",
-    "react-autosuggest": "9.4.0",
+    "react-autosuggest": "9.4.1",
     "react-datepicker": "1.6.0",
     "react-dom": "16.5.0",
     "react-highlighter": "0.4.3",
