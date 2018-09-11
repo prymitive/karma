@@ -97,7 +97,6 @@ func BenchmarkLabelsContent(b *testing.B) {
 		Alertmanager: []models.AlertmanagerInstance{
 			models.AlertmanagerInstance{
 				Name:  "default",
-				URI:   "http://localhost",
 				State: models.AlertStateActive,
 			},
 		},

@@ -6,7 +6,6 @@ import "time"
 // from
 type AlertmanagerInstance struct {
 	Name string `json:"name"`
-	URI  string `json:"uri"`
 	// per instance alert state
 	State string `json:"state"`
 	// timestamp collected from this instance, those on the alert itself

@@ -495,7 +495,6 @@ func TestFilters(t *testing.T) {
 			alert.Alertmanager = []models.AlertmanagerInstance{
 				models.AlertmanagerInstance{
 					Name: am.Name,
-					URI:  am.URI,
 					Silences: map[string]*models.Silence{
 						ft.Silence.ID: &ft.Silence,
 					},
