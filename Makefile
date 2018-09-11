@@ -156,9 +156,3 @@ mock-assets: .build/deps-build-go.ok
 
 .PHONY: ui
 ui: .build/artifacts-ui.ok
-
-.PHONY: heroku
-heroku:
-	docker pull lmierzwa/karma:latest
-	heroku container:push web -R
-	heroku container:release web
