@@ -7,7 +7,9 @@ defaults_go: &DEFAULTS_GO
 
 defaults_js: &DEFAULTS_JS
   language: node_js
-  node_js: "8"
+  # FIXME 8.12 includes npm 6.4.1 which generates a different lock file on
+  # macOS and Linux, causing diffs on CI and we fail builds when that happens
+  node_js: "8.11.4" # FIXME same in the 'Build and Deploy' stage
   # install defaults to "npm install", which is done via make
   install: []
   cache:
@@ -67,7 +69,7 @@ jobs:
       before_script:
         # this stage needs to build everything including assets file and that
         # requires running webpack, so we need nodejs here
-        - nvm install 8
+        - nvm install 8.11.4
       script:
         # compile assets via webpack and build those into bindata_assetfs.go file
         - make bindata_assetfs.go
