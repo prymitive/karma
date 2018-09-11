@@ -54,9 +54,9 @@ func TestAlertmanagerURI(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		if am.publicURI() != test.publicURI {
+		if am.PublicURI() != test.publicURI {
 			t.Errorf("Public URI mismatch, expected '%s' => '%s', got '%s' (proxy: %v)",
-				test.rawURI, test.publicURI, am.publicURI(), test.proxy)
+				test.rawURI, test.publicURI, am.PublicURI(), test.proxy)
 		}
 	}
 }

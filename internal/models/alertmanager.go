@@ -24,9 +24,13 @@ type AlertmanagerInstance struct {
 
 // AlertmanagerAPIStatus describes the Alertmanager instance overall health
 type AlertmanagerAPIStatus struct {
-	Name  string `json:"name"`
-	URI   string `json:"uri"`
-	Error string `json:"error"`
+	Name string `json:"name"`
+	// this is real Alertmanager instance URI
+	URI string `json:"uri"`
+	// this is URI client should use to talk to this Alertmanager, it might be
+	// same as real or proxied URI
+	PublicURI string `json:"publicURI"`
+	Error     string `json:"error"`
 }
 
 // AlertmanagerAPICounters returns number of Alertmanager instances in each
