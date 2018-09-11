@@ -19,9 +19,24 @@ const AlertmanagerOption = index => ({
 beforeEach(() => {
   alertStore = new AlertStore([]);
   alertStore.data.upstreams.instances = [
-    { name: "am1", uri: "http://am1.example.com", error: "" },
-    { name: "am2", uri: "http://am2.example.com", error: "" },
-    { name: "am3", uri: "http://am3.example.com", error: "" }
+    {
+      name: "am1",
+      uri: "http://am1.example.com",
+      publicURI: "http://am1.example.com",
+      error: ""
+    },
+    {
+      name: "am2",
+      uri: "http://am2.example.com",
+      publicURI: "http://am2.example.com",
+      error: ""
+    },
+    {
+      name: "am3",
+      uri: "http://am3.example.com",
+      publicURI: "http://am3.example.com",
+      error: ""
+    }
   ];
   silenceFormStore = new SilenceFormStore();
 });
@@ -123,7 +138,7 @@ describe("<AlertManagerInput />", () => {
     const tree = ShallowAlertManagerInput();
     alertStore.data.upstreams.instances[0] = {
       name: "am1",
-      uri: "http://am1.example.com/new",
+      publicURI: "http://am1.example.com/new",
       error: ""
     };
     // force update since this is where the mismatch check lives

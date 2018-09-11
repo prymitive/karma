@@ -12,7 +12,7 @@ import { ValidationError } from "Components/MultiSelect/ValidationError";
 const AlertmanagerInstancesToOptions = instances =>
   instances.map(i => ({
     label: i.name,
-    value: i.uri
+    value: i.publicURI
   }));
 
 const AlertManagerInput = observer(

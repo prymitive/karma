@@ -153,9 +153,9 @@ func (am *Alertmanager) pullSilences(version string) error {
 	return nil
 }
 
-// this is the URI of this Alertmanager we put in JSON reponse
+// PublicURI is the URI of this Alertmanager we put in JSON reponse
 // it's either real full URI or a proxy relative URI
-func (am *Alertmanager) publicURI() string {
+func (am *Alertmanager) PublicURI() string {
 	if am.ProxyRequests {
 		sub := fmt.Sprintf("/proxy/alertmanager/%s", am.Name)
 		uri := path.Join(config.Config.Listen.Prefix, sub)
@@ -252,7 +252,6 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			alert.Alertmanager = []models.AlertmanagerInstance{
 				models.AlertmanagerInstance{
 					Name:       am.Name,
-					URI:        am.publicURI(),
 					State:      alert.State,
 					StartsAt:   alert.StartsAt,
 					EndsAt:     alert.EndsAt,
