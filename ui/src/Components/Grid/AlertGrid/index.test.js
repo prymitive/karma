@@ -76,16 +76,27 @@ describe("<AlertGrid />", () => {
     expect(alertGroups).toHaveLength(80);
   });
 
-  it("calls masonryRepack() after update`", () => {
+  it("calls masonryUpdate() after update`", () => {
     const tree = ShallowAlertGrid();
     const instance = tree.instance();
-    const repackSpy = jest.spyOn(instance, "masonryRepack");
+    // it's a shallow render so we don't really have masonry mounted, fake it
+    instance.masonryComponentReference.ref = {
+      forceUpdate: jest.fn()
+    };
+    instance.componentDidUpdate();
+    expect(
+      instance.masonryComponentReference.ref.forceUpdate
+    ).toHaveBeenCalled();
+  });
+
+  it("masonryRepack() calls forcePack() on the masonry instance`", () => {
+    const tree = ShallowAlertGrid();
+    const instance = tree.instance();
     // it's a shallow render so we don't really have masonry mounted, fake it
     instance.masonryComponentReference.ref = {
       forcePack: jest.fn()
     };
-    instance.componentDidUpdate();
-    expect(repackSpy).toHaveBeenCalled();
+    instance.masonryRepack();
     expect(instance.masonryComponentReference.ref.forcePack).toHaveBeenCalled();
   });
 
@@ -94,8 +105,15 @@ describe("<AlertGrid />", () => {
     const instance = tree.instance();
     const repackSpy = jest.spyOn(instance, "masonryRepack");
     instance.masonryComponentReference.ref = false;
-    instance.componentDidUpdate();
+    instance.masonryRepack();
     expect(repackSpy).toHaveBeenCalled();
+  });
+
+  it("componentDidUpdate() doesn't crash when masonryComponentReference.ref=false`", () => {
+    const tree = ShallowAlertGrid();
+    const instance = tree.instance();
+    instance.masonryComponentReference.ref = false;
+    instance.componentDidUpdate();
   });
 
   it("calling storeMasonryRef() saves the ref in local store", () => {

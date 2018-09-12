@@ -68,9 +68,11 @@ const AlertGrid = observer(
     });
 
     componentDidUpdate() {
-      // whenever grid component re-renders we need to ensure that grid elements
-      // are packed correctly
-      this.masonryRepack();
+      // whenever grid component re-renders we need to ensure that new grid
+      // elements are packed correctly, but we don't need to do a full repack
+      if (this.masonryComponentReference.ref !== false) {
+        this.masonryComponentReference.ref.forceUpdate();
+      }
     }
 
     render() {
