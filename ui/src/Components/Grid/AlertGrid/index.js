@@ -82,6 +82,7 @@ const AlertGrid = observer(
             ref={this.storeMasonryRef}
             pack={true}
             sizes={GridSizesConfig}
+            position={false}
             loadMore={this.loadMore}
             hasMore={
               this.groupsToRender.value <
