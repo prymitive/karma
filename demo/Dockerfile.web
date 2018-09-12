@@ -1,0 +1,16 @@
+FROM alpine:latest
+
+RUN apk add --update supervisor python && rm  -rf /tmp/* /var/cache/apk/*
+COPY supervisord.conf /etc/supervisord.conf
+
+COPY --from=prom/alertmanager:latest /bin/alertmanager /alertmanager
+COPY alertmanager.yaml /etc/alertmanager.yaml
+
+COPY generator.py /generator.py
+
+COPY --from=lmierzwa/karma:latest /karma /karma
+COPY karma.yaml /etc/karma.yaml
+
+RUN adduser -D karma
+USER karma
+CMD supervisord --nodaemon --configuration /etc/supervisord.conf

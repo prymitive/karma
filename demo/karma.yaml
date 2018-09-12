@@ -1,0 +1,27 @@
+alertmanager:
+  interval: 10s
+  servers:
+    - name: demo
+      uri: "http://localhost:9093"
+      timeout: 10s
+      proxy: true
+annotations:
+  hidden:
+    - help
+filters:
+  default:
+    - "@receiver=by-cluster-service"
+labels:
+  color:
+    static:
+      - job
+    unique:
+      - cluster
+      - instance
+      - "@receiver"
+log:
+  config: false
+  level: warning
+sentry:
+  private: https://84a9ef37a6ed4fdb80e9ea2310d1ed26:8c6ee6f0ab02406482ff4b4e824e2c27@sentry.io/1279017
+  public: https://84a9ef37a6ed4fdb80e9ea2310d1ed26@sentry.io/1279017
