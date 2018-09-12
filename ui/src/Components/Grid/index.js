@@ -25,6 +25,18 @@ const Grid = observer(
         return <FatalError message={alertStore.status.error} />;
       }
 
+      if (
+        alertStore.data.upstreams.counters &&
+        alertStore.data.upstreams.counters.total === 1 &&
+        alertStore.data.upstreams.counters.healthy === 0 &&
+        alertStore.data.upstreams.instances[0] &&
+        alertStore.data.upstreams.instances[0].error !== ""
+      ) {
+        return (
+          <FatalError message={alertStore.data.upstreams.instances[0].error} />
+        );
+      }
+
       return (
         <React.Fragment>
           {alertStore.data.upstreams.instances
