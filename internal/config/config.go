@@ -3,7 +3,6 @@ package config
 import (
 	"bufio"
 	"bytes"
-	"flag"
 	"path"
 	"strings"
 	"time"
@@ -79,9 +78,6 @@ func init() {
 // populate global Config variable, it should be only called on startup
 func (config *configSchema) Read() {
 	v := viper.New()
-
-	pflag.CommandLine.AddGoFlagSet(flag.CommandLine)
-	pflag.Parse()
 
 	err := v.BindPFlags(pflag.CommandLine)
 	if err != nil {
