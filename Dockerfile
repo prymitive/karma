@@ -12,4 +12,4 @@ RUN CGO_ENABLED=0 make -C /go/src/github.com/prymitive/karma VERSION="${VERSION:
 FROM gcr.io/distroless/base
 COPY --from=go-builder /go/src/github.com/prymitive/karma/karma /karma
 EXPOSE 8080
-CMD ["/karma"]
+ENTRYPOINT ["/karma"]
