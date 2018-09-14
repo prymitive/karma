@@ -20,16 +20,22 @@ import { GroupFooter } from "./GroupFooter";
 
 import "./index.css";
 
-const LoadButton = ({ icon, action }) => {
+const LoadButton = ({ icon, action, tooltip }) => {
   return (
-    <button type="button" className="btn btn-sm py-0 bg-white" onClick={action}>
+    <button
+      type="button"
+      className="btn btn-sm py-0 bg-white"
+      onClick={action}
+      data-tooltip={tooltip}
+    >
       <FontAwesomeIcon className="text-muted" icon={icon} />
     </button>
   );
 };
 LoadButton.propTypes = {
   icon: PropTypes.object.isRequired,
-  action: PropTypes.func.isRequired
+  action: PropTypes.func.isRequired,
+  tooltip: PropTypes.node.isRequired
 };
 
 const AllAlertsAreUsingSameAlertmanagers = alerts => {
@@ -193,13 +199,21 @@ const AlertGroup = observer(
                       ))}
                     {group.alerts.length > this.defaultRenderCount ? (
                       <li className="list-group-item border-0 p-0 text-center">
-                        <LoadButton icon={faMinus} action={this.loadLess} />
+                        <LoadButton
+                          icon={faMinus}
+                          action={this.loadLess}
+                          tooltip="Show fewer alerts"
+                        />
                         <small className="text-muted mx-2">
                           {this.renderConfig.alertsToRender}
                           {" of "}
                           {group.alerts.length}
                         </small>
-                        <LoadButton icon={faPlus} action={this.loadMore} />
+                        <LoadButton
+                          icon={faPlus}
+                          action={this.loadMore}
+                          tooltip="Show more alerts"
+                        />
                       </li>
                     ) : null}
                   </ul>

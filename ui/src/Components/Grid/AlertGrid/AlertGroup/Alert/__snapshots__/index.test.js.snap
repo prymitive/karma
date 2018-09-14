@@ -4,7 +4,9 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
 "
 <li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
   <div class=\\"mb-1\\">
-    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\">
+    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\"
+         data-tooltip=\\"Hide annotation\\"
+    >
       <svg aria-hidden=\\"true\\"
            data-prefix=\\"fas\\"
            data-icon=\\"search-minus\\"
@@ -25,7 +27,9 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
         some long text
       </span>
     </div>
-    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\">
+    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\"
+         data-tooltip=\\"Expand annotation\\"
+    >
       <svg aria-hidden=\\"true\\"
            data-prefix=\\"fas\\"
            data-icon=\\"search-plus\\"
@@ -62,10 +66,14 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
       a day ago
     </time>
   </span>
-  <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
+  <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\"
+        data-tooltip=\\"Only show alerts matching this label\\"
+  >
     job: node_exporter
   </span>
-  <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
+  <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\"
+        data-tooltip=\\"Only show alerts matching this label\\"
+  >
     cluster: dev
   </span>
   <a href=\\"http://localhost\\"

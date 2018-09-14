@@ -29,6 +29,7 @@ const FilteringCounterBadge = inject("alertStore")(
             )} badge-pill`}
             style={this.getColorStyle(name, value)}
             onClick={e => this.handleClick(e)}
+            data-tooltip={`Only show ${value} alerts`}
           >
             {counter}
           </span>
