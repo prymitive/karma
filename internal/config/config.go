@@ -3,7 +3,6 @@ package config
 import (
 	"bufio"
 	"bytes"
-	"path"
 	"strings"
 	"time"
 
@@ -40,10 +39,7 @@ func init() {
 	pflag.StringSlice("annotations.visible", []string{},
 		"List of annotations that are visible by default")
 
-	pflag.String("config.dir", ".",
-		"Directory with configuration file to read")
-	pflag.String("config.file", "karma",
-		"Name of the configuration file to read")
+	pflag.String("config.path", "", "Full path to the configuration file")
 
 	pflag.Bool("debug", false, "Enable debug mode")
 
@@ -105,19 +101,16 @@ func (config *configSchema) Read() {
 		log.Errorf("Failed to bind sentry.private config key to the SENTRY_DSN env variable: %s", err)
 	}
 
-	configFile := v.GetString("config.file")
-	configDir := v.GetString("config.dir")
 	v.SetConfigType("yaml")
-	v.SetConfigName(configFile)
-	v.AddConfigPath(configDir)
-	log.Infof("Reading configuration file %s.yaml", path.Join(configDir, configFile))
+	configPath := v.GetString("config.path")
+	if configPath != "" {
+		log.Infof("Reading configuration file %s", configPath)
+		v.SetConfigFile(configPath)
+	}
+
 	err = v.ReadInConfig()
 	if v.ConfigFileUsed() != "" && err != nil {
 		log.Fatal(err)
-	}
-
-	if v.ConfigFileUsed() != "" {
-		log.Infof("Config file used: %s", v.ConfigFileUsed())
 	}
 
 	config.Alertmanager.Servers = []alertmanagerConfig{}
