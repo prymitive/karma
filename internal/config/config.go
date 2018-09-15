@@ -39,7 +39,7 @@ func init() {
 	pflag.StringSlice("annotations.visible", []string{},
 		"List of annotations that are visible by default")
 
-	pflag.String("config.path", "", "Full path to the configuration file")
+	pflag.String("config.file", "", "Full path to the configuration file")
 
 	pflag.Bool("debug", false, "Enable debug mode")
 
@@ -102,10 +102,10 @@ func (config *configSchema) Read() {
 	}
 
 	v.SetConfigType("yaml")
-	configPath := v.GetString("config.path")
-	if configPath != "" {
-		log.Infof("Reading configuration file %s", configPath)
-		v.SetConfigFile(configPath)
+	configFile := v.GetString("config.file")
+	if configFile != "" {
+		log.Infof("Reading configuration file %s", configFile)
+		v.SetConfigFile(configFile)
 	}
 
 	err = v.ReadInConfig()
