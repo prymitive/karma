@@ -72,7 +72,8 @@ const FilterInput = observer(
       action(({ value }) => {
         if (value !== "") {
           this.inputStore.suggestionsFetch = fetch(
-            FormatBackendURI(`autocomplete.json?term=${value}`)
+            FormatBackendURI(`autocomplete.json?term=${value}`),
+            { credentials: "include" }
           )
             .then(
               result => result.json(),
