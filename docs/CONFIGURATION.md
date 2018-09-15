@@ -8,22 +8,15 @@ it needs to have `.yaml` extension.
 Custom filename and directory can be passed via command line flags or
 environment variables:
 
-- `--config.file` flag or `CONFIG_FILE` env variable - name of the config file
-  to load (without extension).
-- `--config.dir` flag or `CONFIG_DIR` env variable - directory where config file
-  can be found.
+- `--config.file` flag or `CONFIG_FILE` env variable - path to the config file
 
 Example with flags:
 
-    karma --config.file example --config.dir ./docs/
+    karma --config.file docs/example.yaml
 
 Example with environment variables:
 
-    CONFIG_FILE="example" CONFIG_DIR="./docs/" karma
-
-Example using both:
-
-    CONFIG_FILE="example" karma --config.dir ./docs/
+    CONFIG_FILE="docs/example.yaml"
 
 ### Alertmanagers
 
