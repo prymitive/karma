@@ -18,9 +18,9 @@ const LabelNameInput = observer(
     populateNameSuggestions = action(() => {
       const { matcher } = this.props;
 
-      this.nameSuggestionsFetch = fetch(FormatBackendURI(`labelNames.json`), {
-        credentials: "include"
-      })
+      this.nameSuggestionsFetch = fetch(
+        FormatBackendURI(`labelNames.json`)
+      )
         .then(
           result => result.json(),
           err => {
@@ -43,10 +43,7 @@ const LabelNameInput = observer(
       const { matcher } = this.props;
 
       this.valueSuggestionsFetch = fetch(
-        FormatBackendURI(`labelValues.json?name=${matcher.name}`),
-        {
-          credentials: "include"
-        }
+        FormatBackendURI(`labelValues.json?name=${matcher.name}`)
       )
         .then(
           result => result.json(),

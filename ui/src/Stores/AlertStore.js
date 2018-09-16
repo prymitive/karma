@@ -199,7 +199,7 @@ class AlertStore {
       FormatBackendURI("alerts.json?") +
       FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
 
-    return fetch(alertsURI, { credentials: "include" })
+    return fetch(alertsURI)
       .then(result => result.json())
       .then(result => {
         return this.parseAPIResponse(result);
