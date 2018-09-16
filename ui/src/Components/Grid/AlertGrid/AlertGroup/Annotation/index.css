@@ -1,3 +1,10 @@
 .components-grid-annotation {
   font-size: 90%;
 }
+
+.components-grid-annotation-link {
+  text-decoration: underline;
+}
+.components-grid-annotation-link:hover {
+  text-decoration: underline;
+}

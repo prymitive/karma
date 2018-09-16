@@ -57,7 +57,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
   <a href=\\"http://link.example.com\\"
      target=\\"_blank\\"
      rel=\\"noopener noreferrer\\"
-     class=\\"components-label-with-hover text-nowrap text-truncate badge badge-secondary mr-1\\"
+     class=\\"components-label-with-hover text-nowrap text-truncate badge mr-1 components-grid-annotation-link\\"
   >
     <svg aria-hidden=\\"true\\"
          data-prefix=\\"fas\\"
