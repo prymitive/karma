@@ -97,7 +97,7 @@ const RenderLinkAnnotation = ({ name, value }) => {
       href={value}
       target="_blank"
       rel="noopener noreferrer"
-      className="components-label-with-hover text-nowrap text-truncate badge badge-secondary mr-1"
+      className="components-label-with-hover text-nowrap text-truncate badge mr-1 components-grid-annotation-link"
     >
       <FontAwesomeIcon icon={faExternalLinkAlt} /> {name}
     </a>
