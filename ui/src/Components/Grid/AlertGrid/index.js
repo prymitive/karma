@@ -95,6 +95,7 @@ const AlertGrid = observer(
             }
           >
             {Object.keys(alertStore.data.groups)
+              .sort()
               .slice(0, this.groupsToRender.value)
               .map(id => (
                 <AlertGroup
