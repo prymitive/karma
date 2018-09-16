@@ -9,6 +9,7 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { AlertGrid } from "./AlertGrid";
 import { FatalError } from "./FatalError";
 import { UpstreamError } from "./UpstreamError";
+import { UpgradeNeeded } from "./UpgradeNeeded";
 
 const Grid = observer(
   class Grid extends Component {
@@ -23,6 +24,10 @@ const Grid = observer(
 
       if (alertStore.status.error) {
         return <FatalError message={alertStore.status.error} />;
+      }
+
+      if (alertStore.info.upgradeNeeded) {
+        return <UpgradeNeeded newVersion={alertStore.info.version} />;
       }
 
       if (

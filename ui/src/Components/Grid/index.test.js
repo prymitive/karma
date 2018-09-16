@@ -73,4 +73,10 @@ describe("<Grid />", () => {
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<FatalError />");
   });
+
+  it("renders UpgradeNeeded when alertStore.info.upgradeNeeded=true", () => {
+    alertStore.info.upgradeNeeded = true;
+    const tree = ShallowGrid();
+    expect(tree.text()).toBe("<UpgradeNeeded />");
+  });
 });
