@@ -163,6 +163,10 @@ Please see [CONFIGURATION](/docs/CONFIGURATION.md) for full list of available
 configuration options and [example.yaml](/docs/example.yaml) for a config file
 example.
 
+## Release history
+
+Please see [CHANGELOG](/CHANGELOG.md)
+
 ## Contributing
 
 Please see [CONTRIBUTING](/CONTRIBUTING.md) for details.

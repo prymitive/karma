@@ -156,3 +156,15 @@ mock-assets: .build/deps-build-go.ok
 
 .PHONY: ui
 ui: .build/artifacts-ui.ok
+
+# will generate / update CHANGELOG.md file
+.PHONY: changelog
+changelog: .build/deps-build-node.ok
+	./ui/node_modules/.bin/github-changes \
+		-o prymitive \
+		-r karma \
+		-v \
+		--date-format "YYYY/MM/DD" \
+		--only-merges \
+		--use-commit-body \
+		-a
