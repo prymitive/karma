@@ -142,7 +142,8 @@ class AlertStore {
   info = observable(
     {
       totalAlerts: 0,
-      version: "unknown"
+      version: "unknown",
+      upgradeNeeded: false
     },
     {},
     { name: "API response info" }
@@ -272,6 +273,13 @@ class AlertStore {
       this.data = Object.assign(this.data, updates);
     }
 
+    // before storing new version check if we need to reload
+    if (
+      this.info.version !== "unknown" &&
+      this.info.version !== result.version
+    ) {
+      this.info.upgradeNeeded = true;
+    }
     // update extra root level keys that are stored under 'info'
     for (const key of ["totalAlerts", "version"]) {
       if (this.info[key] !== result[key]) {
