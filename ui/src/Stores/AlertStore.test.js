@@ -304,4 +304,17 @@ describe("AlertStore.fetch", () => {
       annotationsVisible: []
     });
   });
+
+  it("wants to reload page after new version is returned in the API", async () => {
+    const response = EmptyAPIResponse();
+    fetch.mockResponse(JSON.stringify(response));
+    const store = new AlertStore(["label=value"]);
+    await expect(store.fetch()).resolves.toBeUndefined();
+    expect(store.info.upgradeNeeded).toBe(false);
+
+    response.version = "newFakeVersion";
+    fetch.mockResponse(JSON.stringify(response));
+    await expect(store.fetch()).resolves.toBeUndefined();
+    expect(store.info.upgradeNeeded).toBe(true);
+  });
 });
