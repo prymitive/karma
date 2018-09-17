@@ -1,6 +1,6 @@
 import React from "react";
 
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 
 import moment from "moment";
 
@@ -24,6 +24,16 @@ beforeEach(() => {
 
 const RenderNavbar = () => {
   return shallow(
+    <NavBar
+      alertStore={alertStore}
+      settingsStore={settingsStore}
+      silenceFormStore={silenceFormStore}
+    />
+  ).find(".container");
+};
+
+const MountedNavbar = () => {
+  return mount(
     <NavBar
       alertStore={alertStore}
       settingsStore={settingsStore}
@@ -92,5 +102,36 @@ describe("NavbarOnResize()", () => {
         .getComputedStyle(document.body, null)
         .getPropertyValue("padding-top")
     ).toBe("40px");
+  });
+});
+
+describe("<IdleTimer />", () => {
+  beforeAll(() => {
+    jest.useFakeTimers();
+  });
+
+  it("hides navbar after 4 minutes", () => {
+    const tree = MountedNavbar();
+    expect(tree.find(".navbar").hasClass("d-inline-block")).toBe(true);
+    expect(tree.find(".navbar").hasClass("d-none")).toBe(false);
+
+    jest.runTimersToTime(1000 * 60 * 4);
+    tree.update();
+    expect(tree.find(".navbar").hasClass("d-inline-block")).toBe(false);
+    expect(tree.find(".navbar").hasClass("d-none")).toBe(true);
+  });
+
+  it("hidden navbar shows up again after activity", () => {
+    const tree = MountedNavbar();
+    const instance = tree.instance();
+    instance.activityStatus.idle = true;
+    tree.update();
+    expect(tree.find(".navbar").hasClass("d-inline-block")).toBe(false);
+    expect(tree.find(".navbar").hasClass("d-none")).toBe(true);
+
+    instance.activityStatus.setActive();
+    tree.update();
+    expect(tree.find(".navbar").hasClass("d-inline-block")).toBe(true);
+    expect(tree.find(".navbar").hasClass("d-none")).toBe(false);
   });
 });

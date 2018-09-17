@@ -1,9 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
 import ReactResizeDetector from "react-resize-detector";
+
+import IdleTimer from "react-idle-timer";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -27,6 +30,22 @@ const NavBar = observer(
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
+    activityStatus = observable(
+      {
+        idle: false,
+        setIdle() {
+          this.idle = true;
+        },
+        setActive() {
+          this.idle = false;
+        }
+      },
+      {
+        setIdle: action.bound,
+        setActive: action.bound
+      }
+    );
+
     render() {
       const { alertStore, settingsStore, silenceFormStore } = this.props;
 
@@ -39,30 +58,40 @@ const NavBar = observer(
           : "flex-row";
 
       return (
-        <div className="container">
-          <nav className="navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block">
-            <ReactResizeDetector handleHeight onResize={NavbarOnResize} />
-            <span className="navbar-brand my-0 mx-2 h1 d-none d-sm-block float-left">
-              {alertStore.info.totalAlerts}
-              <FetchIndicator status={alertStore.status.value.toString()} />
-            </span>
-            <ul className={`navbar-nav float-right d-flex ${flexClass}`}>
-              <SilenceModal
+        <IdleTimer
+          onActive={this.activityStatus.setActive}
+          onIdle={this.activityStatus.setIdle}
+          timeout={1000 * 60 * 3}
+        >
+          <div className="container">
+            <nav
+              className={`navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent ${
+                this.activityStatus.idle ? "d-none" : "d-inline-block"
+              }`}
+            >
+              <ReactResizeDetector handleHeight onResize={NavbarOnResize} />
+              <span className="navbar-brand my-0 mx-2 h1 d-none d-sm-block float-left">
+                {alertStore.info.totalAlerts}
+                <FetchIndicator status={alertStore.status.value.toString()} />
+              </span>
+              <ul className={`navbar-nav float-right d-flex ${flexClass}`}>
+                <SilenceModal
+                  alertStore={alertStore}
+                  silenceFormStore={silenceFormStore}
+                  settingsStore={settingsStore}
+                />
+                <MainModal
+                  alertStore={alertStore}
+                  settingsStore={settingsStore}
+                />
+              </ul>
+              <FilterInput
                 alertStore={alertStore}
-                silenceFormStore={silenceFormStore}
                 settingsStore={settingsStore}
               />
-              <MainModal
-                alertStore={alertStore}
-                settingsStore={settingsStore}
-              />
-            </ul>
-            <FilterInput
-              alertStore={alertStore}
-              settingsStore={settingsStore}
-            />
-          </nav>
-        </div>
+            </nav>
+          </div>
+        </IdleTimer>
       );
     }
   }
