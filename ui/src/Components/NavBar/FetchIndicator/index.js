@@ -13,11 +13,19 @@ class FetchIndicator extends Component {
 
   render() {
     const { status } = this.props;
-    const visible = status === AlertStoreStatuses.InProgress.toString();
+
+    const visible =
+      status === AlertStoreStatuses.Fetching.toString() ||
+      status === AlertStoreStatuses.Processing.toString();
+    const textClass =
+      status === AlertStoreStatuses.Fetching.toString()
+        ? "text-muted"
+        : "text-success";
+
     return (
       <FontAwesomeIcon
         style={{ opacity: visible ? 1 : 0 }}
-        className="mx-1 text-muted"
+        className={`mx-1 ${textClass}`}
         icon={faCircleNotch}
         size="lg"
         spin

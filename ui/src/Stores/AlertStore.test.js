@@ -25,10 +25,17 @@ describe("AlertStore.status", () => {
     expect(store.status.error).toBeNull();
   });
 
-  it("status is InProgress with no error after setInProgress", () => {
+  it("status is Fetching with no error after setFetching()", () => {
     const store = new AlertStore([]);
-    store.status.setInProgress();
-    expect(store.status.value).toEqual(AlertStoreStatuses.InProgress);
+    store.status.setFetching();
+    expect(store.status.value).toEqual(AlertStoreStatuses.Fetching);
+    expect(store.status.error).toBeNull();
+  });
+
+  it("status is Processing with no error after setProcessing()", () => {
+    const store = new AlertStore([]);
+    store.status.setProcessing();
+    expect(store.status.value).toEqual(AlertStoreStatuses.Processing);
     expect(store.status.error).toBeNull();
   });
 
@@ -39,9 +46,9 @@ describe("AlertStore.status", () => {
     expect(store.status.error).toEqual("my error");
   });
 
-  it("status is Idle with no error after setInProgress and setIdle", () => {
+  it("status is Idle with no error after setFetching and setIdle", () => {
     const store = new AlertStore([]);
-    store.status.setInProgress();
+    store.status.setFetching();
     store.status.setIdle();
     expect(store.status.value).toEqual(AlertStoreStatuses.Idle);
     expect(store.status.error).toBeNull();
