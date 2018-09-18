@@ -47,6 +47,7 @@ const SilenceModalContent = observer(
               <div className="modal-body">
                 {silenceFormStore.data.inProgress ? (
                   <SilenceSubmitController
+                    alertStore={alertStore}
                     silenceFormStore={silenceFormStore}
                   />
                 ) : (

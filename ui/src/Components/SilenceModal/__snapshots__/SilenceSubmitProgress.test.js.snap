@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SilenceSubmitProgress /> renders returned silence ID as text if alertmanager is not found in AlertStore 1`] = `
+"
+<div class=\\"p-2 flex-fill\\">
+  123456789
+</div>
+"
+`;

@@ -190,8 +190,8 @@ const Silence = inject("alertStore")(
       getAlertmanager = () => {
         const { alertStore, alertmanagerState } = this.props;
 
-        const alertmanager = alertStore.data.upstreams.instances.find(
-          am => am.name === alertmanagerState.name
+        const alertmanager = alertStore.data.getAlertmanagerByName(
+          alertmanagerState.name
         );
 
         if (alertmanager) return alertmanager;

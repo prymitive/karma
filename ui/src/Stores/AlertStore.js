@@ -134,9 +134,12 @@ class AlertStore {
       counters: {},
       groups: {},
       silences: {},
-      upstreams: { instances: [] }
+      upstreams: { instances: [] },
+      getAlertmanagerByName(name) {
+        return this.upstreams.instances.find(am => am.name === name);
+      }
     },
-    {},
+    { getAlertmanagerByName: action },
     { name: "API Response data" }
   );
 

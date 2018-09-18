@@ -46,7 +46,8 @@ const SilenceSubmitProgress = observer(
     static propTypes = {
       name: PropTypes.string.isRequired,
       uri: PropTypes.string.isRequired,
-      payload: PropTypes.object.isRequired
+      payload: PropTypes.object.isRequired,
+      alertStore: PropTypes.object.isRequired
     };
 
     submitState = observable(
@@ -83,13 +84,22 @@ const SilenceSubmitProgress = observer(
     };
 
     parseAlertmanagerResponse = response => {
-      const { uri } = this.props;
+      const { name, alertStore } = this.props;
+
+      const alertmanager = alertStore.data.getAlertmanagerByName(name);
 
       if (response.status === "success") {
-        const link = (
-          <SilenceLink uri={uri} silenceId={response.data.silenceId} />
-        );
-        this.submitState.markDone(link);
+        if (alertmanager) {
+          const link = (
+            <SilenceLink
+              uri={alertmanager.uri}
+              silenceId={response.data.silenceId}
+            />
+          );
+          this.submitState.markDone(link);
+        } else {
+          this.submitState.markDone(response.data.silenceId);
+        }
       } else if (response.status === "error") {
         this.submitState.markFailed(response.error);
       } else {

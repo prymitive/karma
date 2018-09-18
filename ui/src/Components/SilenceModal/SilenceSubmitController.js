@@ -8,11 +8,12 @@ import { SilenceSubmitProgress } from "./SilenceSubmitProgress";
 
 class SilenceSubmitController extends Component {
   static propTypes = {
+    alertStore: PropTypes.object.isRequired,
     silenceFormStore: PropTypes.object.isRequired
   };
 
   render() {
-    const { silenceFormStore } = this.props;
+    const { silenceFormStore, alertStore } = this.props;
 
     return (
       <React.Fragment>
@@ -23,6 +24,7 @@ class SilenceSubmitController extends Component {
               name={am.label}
               uri={am.value}
               payload={silenceFormStore.data.toAlertmanagerPayload}
+              alertStore={alertStore}
             />
           ))}
         </div>
