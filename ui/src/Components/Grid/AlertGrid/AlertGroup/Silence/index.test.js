@@ -16,7 +16,6 @@ const mockAfterUpdate = jest.fn();
 
 const alertmanager = {
   name: "default",
-  uri: "file:///mock",
   state: "suppressed",
   startsAt: "2000-01-01T10:00:00Z",
   endsAt: "0001-01-01T00:00:00Z",
@@ -62,6 +61,7 @@ beforeEach(() => {
       {
         name: "default",
         uri: "file:///mock",
+        publicURI: "http://example.com",
         error: ""
       }
     ]
@@ -78,12 +78,12 @@ afterEach(() => {
   clear();
 });
 
-const MountedSilence = () => {
+const MountedSilence = alertmanagerState => {
   return mount(
     <Provider alertStore={alertStore}>
       <Silence
         alertStore={alertStore}
-        alertmanager={alertmanager}
+        alertmanagerState={alertmanagerState}
         silenceID="4cf5fd82-1edd-4169-99d1-ff8415e72179"
         afterUpdate={mockAfterUpdate}
       />
@@ -91,27 +91,36 @@ const MountedSilence = () => {
   );
 };
 
+const ShallowSilenceDetails = () => {
+  return shallow(
+    <SilenceDetails
+      alertmanager={alertStore.data.upstreams.instances[0]}
+      silence={silence}
+    />
+  );
+};
+
 describe("<Silence />", () => {
   it("matches snapshot when data is present in alertStore", () => {
-    const tree = MountedSilence().find("Silence");
+    const tree = MountedSilence(alertmanager).find("Silence");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("renders full silence when data is present in alertStore", () => {
-    const tree = MountedSilence().find("Silence");
+    const tree = MountedSilence(alertmanager).find("Silence");
     const fallback = tree.find("FallbackSilenceDesciption");
     expect(fallback).toHaveLength(0);
   });
 
   it("matches snapshot when data is not present in alertStore", () => {
     alertStore.data.silences = {};
-    const tree = MountedSilence().find("Silence");
+    const tree = MountedSilence(alertmanager).find("Silence");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("renders FallbackSilenceDesciption when Alertmanager data is not present in alertStore", () => {
     alertStore.data.silences = {};
-    const tree = MountedSilence();
+    const tree = MountedSilence(alertmanager);
     const fallback = tree.find("FallbackSilenceDesciption");
     expect(fallback).toHaveLength(1);
     expect(tree.text()).toBe(
@@ -121,7 +130,7 @@ describe("<Silence />", () => {
 
   it("renders FallbackSilenceDesciption when silence data is not present in alertStore", () => {
     alertStore.data.silences.default = {};
-    const tree = MountedSilence();
+    const tree = MountedSilence(alertmanager);
     const fallback = tree.find("FallbackSilenceDesciption");
     expect(fallback).toHaveLength(1);
     expect(tree.text()).toBe(
@@ -130,7 +139,7 @@ describe("<Silence />", () => {
   });
 
   it("clicking on expand toggle shows silence details", () => {
-    const tree = MountedSilence();
+    const tree = MountedSilence(alertmanager);
     const toggle = tree.find("a.float-right.cursor-pointer");
     toggle.simulate("click");
     const details = tree.find("SilenceDetails");
@@ -138,7 +147,7 @@ describe("<Silence />", () => {
   });
 
   it("matches snapshot with expaned details", () => {
-    const tree = MountedSilence().find("Silence");
+    const tree = MountedSilence(alertmanager).find("Silence");
     tree.instance().collapse.toggle();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
@@ -146,26 +155,42 @@ describe("<Silence />", () => {
   it("renders comment as link when jiraURL is set", () => {
     alertStore.data.silences.default[silence.id].jiraURL =
       "http://jira.example.com";
-    const tree = MountedSilence().find("Silence");
+    const tree = MountedSilence(alertmanager).find("Silence");
     const link = tree.find("a[href='http://jira.example.com']");
     expect(link).toHaveLength(1);
     expect(link.text()).toBe("Fake silence");
   });
 
   it("clears progress timer on unmount", () => {
-    const tree = MountedSilence().find("Silence");
+    const tree = MountedSilence(alertmanager).find("Silence");
     const instance = tree.instance();
     expect(instance.progressTimer).toBeTruthy();
     instance.componentWillUnmount();
     expect(instance.progressTimer).toBeNull();
   });
-});
 
-const ShallowSilenceDetails = () => {
-  return shallow(
-    <SilenceDetails alertmanager={alertmanager} silence={silence} />
-  );
-};
+  it("getAlertmanager() returns alertmanager object from alertStore.data.upstreams.instances", () => {
+    const tree = MountedSilence(alertmanager).find("Silence");
+    const instance = tree.instance();
+    const am = instance.getAlertmanager();
+    expect(am).toEqual({
+      name: "default",
+      uri: "file:///mock",
+      publicURI: "http://example.com",
+      error: ""
+    });
+  });
+
+  it("getAlertmanager() return object with only name if given name is not in alertStore", () => {
+    const missingAlertmanager = { ...alertmanager, name: "notDefault" };
+    const tree = MountedSilence(missingAlertmanager).find("Silence");
+    const instance = tree.instance();
+    const am = instance.getAlertmanager();
+    expect(am).toEqual({
+      name: "notDefault"
+    });
+  });
+});
 
 describe("<SilenceDetails />", () => {
   it("unexpired silence endsAt label uses 'secondary' class", () => {
@@ -180,25 +205,33 @@ describe("<SilenceDetails />", () => {
     const endsAt = tree.find("span.badge").at(1);
     expect(endsAt.html()).toMatch(/badge-danger/);
   });
+
+  it("id links to Alertmanager silence view via alertmanager.uri", () => {
+    const tree = ShallowSilenceDetails();
+    const link = tree.find("a");
+    expect(link.props().href).toBe(
+      "file:///mock/#/silences/4cf5fd82-1edd-4169-99d1-ff8415e72179"
+    );
+  });
 });
 
 describe("<SilenceExpiryBadgeWithProgress />", () => {
   it("renders with class 'danger' and no progressbar when expired", () => {
     advanceTo(new Date(2001, 0, 1, 23, 0, 0));
-    const tree = MountedSilence();
+    const tree = MountedSilence(alertmanager);
     expect(tree.html()).toMatch(/badge-danger/);
     expect(tree.text()).toMatch(/Expired a year ago/);
   });
 
   it("progressbar uses class 'danger' when > 90%", () => {
     advanceTo(new Date(2000, 0, 1, 19, 30, 0));
-    const tree = MountedSilence();
+    const tree = MountedSilence(alertmanager);
     expect(tree.html()).toMatch(/progress-bar bg-danger/);
   });
 
   it("progressbar uses class 'danger' when > 75%", () => {
     advanceTo(new Date(2000, 0, 1, 17, 45, 0));
-    const tree = MountedSilence();
+    const tree = MountedSilence(alertmanager);
     expect(tree.html()).toMatch(/progress-bar bg-warning/);
   });
 
@@ -206,7 +239,7 @@ describe("<SilenceExpiryBadgeWithProgress />", () => {
     const startsAt = new Date(2000, 0, 1, 10, 0, 0);
     const endsAt = new Date(2000, 0, 1, 20, 0, 0);
 
-    const tree = MountedSilence().find("Silence");
+    const tree = MountedSilence(alertmanager).find("Silence");
     const instance = tree.instance();
 
     const value = toJS(instance.progress.value);

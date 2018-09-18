@@ -2,7 +2,26 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import toDiffableHtml from "diffable-html";
+
+import { AlertStore } from "Stores/AlertStore";
 import { SilenceSubmitProgress } from "./SilenceSubmitProgress";
+
+let alertStore;
+
+beforeEach(() => {
+  alertStore = new AlertStore([]);
+  alertStore.data.upstreams = {
+    instances: [
+      {
+        name: "mockAlertmanager",
+        uri: "file:///mock",
+        publicURI: "http://example.com",
+        error: ""
+      }
+    ]
+  };
+});
 
 const MountedSilenceSubmitProgress = () => {
   return mount(
@@ -10,6 +29,7 @@ const MountedSilenceSubmitProgress = () => {
       name="mockAlertmanager"
       uri="http://localhost/mock"
       payload={{ foo: "bar" }}
+      alertStore={alertStore}
     />
   );
 };
@@ -47,6 +67,21 @@ describe("<SilenceSubmitProgress />", () => {
     const silenceLink = tree.find("a");
     expect(silenceLink).toHaveLength(1);
     expect(silenceLink.text()).toBe("123456789");
+  });
+
+  it("renders returned silence ID as text if alertmanager is not found in AlertStore", async () => {
+    fetch.mockResponseOnce(
+      JSON.stringify({ status: "success", data: { silenceId: "123456789" } })
+    );
+    alertStore.data.upstreams.instances = [];
+    const tree = MountedSilenceSubmitProgress();
+    await expect(tree.instance().submitState.fetch).resolves.toBe("success");
+    // force re-render
+    tree.update();
+    const silenceLink = tree.find("a");
+    expect(silenceLink).toHaveLength(0);
+    const idDiv = tree.find("div.flex-fill").at(2);
+    expect(toDiffableHtml(idDiv.html())).toMatchSnapshot();
   });
 
   it("renders returned error message on failed fetch", async () => {

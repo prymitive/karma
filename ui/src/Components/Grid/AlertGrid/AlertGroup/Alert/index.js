@@ -94,7 +94,7 @@ const Alert = observer(
             am.silencedBy.map(silenceID => (
               <Silence
                 key={silenceID}
-                alertmanager={am}
+                alertmanagerState={am}
                 silenceID={silenceID}
                 afterUpdate={afterUpdate}
               />

@@ -123,17 +123,17 @@ SilenceDetails.propTypes = {
 };
 
 //
-const FallbackSilenceDesciption = ({ alertmanager, silenceID }) => {
+const FallbackSilenceDesciption = ({ alertmanagerName, silenceID }) => {
   return (
     <div>
       <small className="text-muted">
-        Silenced by {alertmanager.name}/{silenceID}
+        Silenced by {alertmanagerName}/{silenceID}
       </small>
     </div>
   );
 };
 FallbackSilenceDesciption.propTypes = {
-  alertmanager: PropTypes.object.isRequired,
+  alertmanagerName: PropTypes.string.isRequired,
   silenceID: PropTypes.string.isRequired
 };
 
@@ -142,7 +142,7 @@ const Silence = inject("alertStore")(
     class Silence extends Component {
       static propTypes = {
         alertStore: PropTypes.object.isRequired,
-        alertmanager: PropTypes.object.isRequired,
+        alertmanagerState: PropTypes.object.isRequired,
         silenceID: PropTypes.string.isRequired,
         afterUpdate: PropTypes.func.isRequired
       };
@@ -187,14 +187,28 @@ const Silence = inject("alertStore")(
         this.progressTimer = setInterval(this.recalculateProgress, 30 * 1000);
       }
 
+      getAlertmanager = () => {
+        const { alertStore, alertmanagerState } = this.props;
+
+        const alertmanager = alertStore.data.getAlertmanagerByName(
+          alertmanagerState.name
+        );
+
+        if (alertmanager) return alertmanager;
+
+        return {
+          name: alertmanagerState.name
+        };
+      };
+
       getSilence = () => {
-        const { alertStore, alertmanager, silenceID } = this.props;
+        const { alertStore, alertmanagerState, silenceID } = this.props;
 
         // We pass alertmanager name and silence ID to Silence component
         // and we need to lookup the actual silence data in the store.
         // Data might be missing from the store so first check if we have
         // anything for this alertmanager instance
-        const amSilences = alertStore.data.silences[alertmanager.name];
+        const amSilences = alertStore.data.silences[alertmanagerState.name];
         if (!amSilences) return null;
 
         // next check if alertmanager has our silence ID
@@ -222,16 +236,18 @@ const Silence = inject("alertStore")(
       }
 
       render() {
-        const { alertmanager, silenceID } = this.props;
+        const { alertmanagerState, silenceID } = this.props;
 
         const silence = this.getSilence();
         if (!silence)
           return (
             <FallbackSilenceDesciption
-              alertmanager={alertmanager}
+              alertmanagerName={alertmanagerState.name}
               silenceID={silenceID}
             />
           );
+
+        const alertmanager = this.getAlertmanager();
 
         return (
           <div className="card mt-1 border-0 p-1">

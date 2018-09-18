@@ -2,21 +2,27 @@ import React from "react";
 
 import { shallow } from "enzyme";
 
+import { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
   MatcherValueToObject
 } from "Stores/SilenceFormStore";
 import { SilenceSubmitController } from "./SilenceSubmitController";
 
+let alertStore;
 let silenceFormStore;
 
 beforeEach(() => {
+  alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
 });
 
 const ShallowSilenceSubmitController = () => {
   return shallow(
-    <SilenceSubmitController silenceFormStore={silenceFormStore} />
+    <SilenceSubmitController
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+    />
   );
 };
 
