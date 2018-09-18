@@ -61,6 +61,7 @@ beforeEach(() => {
       {
         name: "default",
         uri: "file:///mock",
+        publicURI: "http://example.com",
         error: ""
       }
     ]
@@ -175,6 +176,7 @@ describe("<Silence />", () => {
     expect(am).toEqual({
       name: "default",
       uri: "file:///mock",
+      publicURI: "http://example.com",
       error: ""
     });
   });
@@ -204,7 +206,7 @@ describe("<SilenceDetails />", () => {
     expect(endsAt.html()).toMatch(/badge-danger/);
   });
 
-  it("id links to Alertmanager silence view", () => {
+  it("id links to Alertmanager silence view via alertmanager.uri", () => {
     const tree = ShallowSilenceDetails();
     const link = tree.find("a");
     expect(link.props().href).toBe(
