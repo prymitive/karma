@@ -67,7 +67,8 @@ function UpdateLocationSearch(newParams) {
 
 const AlertStoreStatuses = Object.freeze({
   Idle: Symbol("idle"),
-  InProgress: Symbol("in-progres"),
+  Fetching: Symbol("fetching"),
+  Processing: Symbol("processing"),
   Failure: Symbol("failure")
 });
 
@@ -172,8 +173,12 @@ class AlertStore {
         this.value = AlertStoreStatuses.Idle;
         this.error = null;
       },
-      setInProgress() {
-        this.value = AlertStoreStatuses.InProgress;
+      setFetching() {
+        this.value = AlertStoreStatuses.Fetching;
+        this.error = null;
+      },
+      setProcessing() {
+        this.value = AlertStoreStatuses.Processing;
         this.error = null;
       },
       setFailure(err) {
@@ -183,7 +188,8 @@ class AlertStore {
     },
     {
       setIdle: action,
-      setInProgress: action,
+      setFetching: action,
+      setProcessing: action,
       setFailure: action
     },
     { name: "Store status" }
@@ -194,14 +200,17 @@ class AlertStore {
   }
 
   fetch = action(() => {
-    this.status.setInProgress();
+    this.status.setFetching();
 
     const alertsURI =
       FormatBackendURI("alerts.json?") +
       FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
 
     return fetch(alertsURI, { credentials: "include" })
-      .then(result => result.json())
+      .then(result => {
+        this.status.setProcessing();
+        return result.json();
+      })
       .then(result => {
         return this.parseAPIResponse(result);
       })
