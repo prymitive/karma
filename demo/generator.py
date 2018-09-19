@@ -8,7 +8,7 @@ $ docker run \
     --rm \
     --name prom \
     -p 9093:9093 \
-    -v $(pwd)/alertmanager.yml:/etc/alertmanager/alertmanager.yml \
+    -v $(pwd)/alertmanager.yaml:/etc/alertmanager/alertmanager.yml \
     prom/alertmanager
 
 2. Start this script
@@ -255,6 +255,34 @@ class SilencedAlert(AlertGenerator):
         ]
 
 
+class MixedAlerts(AlertGenerator):
+    name = "Mixed Alerts"
+    comment = "Some alerts are silenced, some are not"
+
+    def alerts(self):
+        return [
+            newAlert(self._labels(instance="server{}".format(i), cluster="prod"),
+                     self._annotations(
+                        alertReference="https://www."
+                                       "youtube.com/watch?v=dQw4w9WgXcQ")
+            ) for i in xrange(1, 9)
+        ]
+
+    def silences(self):
+        now = datetime.datetime.utcnow().replace(microsecond=0)
+        return [
+            (
+                [newMatcher("alertname", MixedAlerts.name, False),
+                 newMatcher("instance", "server(1|3|5|7)", True)],
+                "{}Z".format(now.isoformat()),
+                "{}Z".format((now + datetime.timedelta(
+                    minutes=20)).isoformat()),
+                "me@example.com",
+                "Silence '{}''".format(self.name)
+            )
+        ]
+
+
 if __name__ == "__main__":
     generators = [
         AlwaysOnAlert(MAX_INTERVAL),
@@ -264,6 +292,7 @@ if __name__ == "__main__":
         DiskFreeLowAlert(MIN_INTERVAL),
         SilencedAlert(MAX_INTERVAL),
         RandomName(MAX_INTERVAL),
+        MixedAlerts(MIN_INTERVAL),
     ]
     while True:
         for g in generators:
