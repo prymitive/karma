@@ -10,6 +10,7 @@ import { NavBar } from "Components/NavBar";
 import { Grid } from "Components/Grid";
 import { Fetcher } from "Components/Fetcher";
 import { FaviconBadge } from "Components/FaviconBadge";
+import { ErrorBoundary } from "./ErrorBoundary";
 
 import "./App.css";
 
@@ -49,7 +50,7 @@ class App extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <ErrorBoundary>
         <FaviconBadge alertStore={this.alertStore} />
         <NavBar
           alertStore={this.alertStore}
@@ -67,7 +68,7 @@ class App extends Component {
           alertStore={this.alertStore}
           settingsStore={this.settingsStore}
         />
-      </React.Fragment>
+      </ErrorBoundary>
     );
   }
 }

@@ -1,23 +1,29 @@
-import { SettingsElement, SetupRaven, ParseDefaultFilters } from "./AppBoot";
+import * as Sentry from "@sentry/browser";
 
-const MockSettings = (version, ravenDsn, defaultFilters) => {
+import { SettingsElement, SetupSentry, ParseDefaultFilters } from "./AppBoot";
+
+beforeEach(() => {
+  Sentry.init.mockReset();
+});
+
+const MockSettings = (version, SentryDsn, defaultFilters) => {
   return jest.spyOn(document, "getElementById").mockImplementation(() => {
     const filtersBase64 = btoa(JSON.stringify(defaultFilters));
     const settings = document.createElement("span");
     settings.id = "settings";
     settings.dataset = {
       version: version,
-      ravenDsn: ravenDsn,
+      SentryDsn: SentryDsn,
       defaultFiltersBase64: filtersBase64
     };
     return settings;
   });
 };
 
-const RavenClient = (ravenDsn, version) => {
+const SentryClient = (SentryDsn, version) => {
   const settings = document.createElement("span");
-  settings.dataset = { ravenDsn: ravenDsn, version: version };
-  return SetupRaven(settings);
+  settings.dataset = { sentryDsn: SentryDsn, version: version };
+  SetupSentry(settings);
 };
 
 const FiltersSetting = filters => {
@@ -38,34 +44,40 @@ describe("SettingsElement()", () => {
     expect(spy).toHaveBeenCalledTimes(1);
     expect(settings.id).toBe("settings");
     expect(settings.dataset.version).toBe("ver1");
-    expect(settings.dataset.ravenDsn).toBe("fakeDSN");
+    expect(settings.dataset.SentryDsn).toBe("fakeDSN");
   });
 });
 
-describe("SetupRaven()", () => {
-  it("does nothing when raven DSN is missing", () => {
-    const client = RavenClient("");
-    expect(client).toBeNull();
+describe("SetupSentry()", () => {
+  it("does nothing when Sentry DSN is missing", () => {
+    SentryClient("");
+    expect(Sentry.init).not.toHaveBeenCalled();
   });
 
-  it("configures raven when DSN is present", () => {
-    const client = RavenClient("https://key@example.com/mock");
-    expect(client.isSetup()).toBeTruthy();
-    expect(client._dsn).toBe("https://key@example.com/mock");
+  it("configures Sentry when DSN is present", () => {
+    SentryClient("https://key@example.com/mock");
+    expect(Sentry.init).toHaveBeenCalledWith({
+      dsn: "https://key@example.com/mock",
+      release: "unknown" // default version
+    });
   });
 
   it("passes release option when version attr is present", () => {
-    const client = RavenClient("https://key@example.com/mock", "ver1");
-    expect(client.isSetup()).toBeTruthy();
-    expect(client._globalOptions.release).toBe("ver1");
+    SentryClient("https://key@example.com/mock", "ver1");
+    expect(Sentry.init).toHaveBeenCalledWith({
+      dsn: "https://key@example.com/mock",
+      release: "ver1"
+    });
   });
 
-  it("logs an error when invalid DSN is passed to raven", () => {
+  it("logs an error when invalid DSN is passed to Sentry", () => {
+    Sentry.init = jest.fn().mockImplementation(() => {
+      throw new Error("Fake error");
+    });
     const consoleSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
-    const client = RavenClient("invalidDSN");
-    expect(client.isSetup()).toBeFalsy();
+    SentryClient("invalidDSN");
     expect(consoleSpy).toHaveBeenCalledTimes(1);
   });
 });

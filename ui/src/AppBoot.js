@@ -1,14 +1,14 @@
 // helpers used to bootstrap App instance and environment for it
 
-import Raven from "raven-js";
+import * as Sentry from "@sentry/browser";
 
 const SettingsElement = () => document.getElementById("settings");
 
-const SetupRaven = settingsElement => {
+const SetupSentry = settingsElement => {
   if (
     settingsElement !== null &&
-    settingsElement.dataset.ravenDsn &&
-    settingsElement.dataset.ravenDsn !== "{{ .SentryDSN }}"
+    settingsElement.dataset.sentryDsn &&
+    settingsElement.dataset.sentryDsn !== "{{ .SentryDSN }}"
   ) {
     let version = "unknown";
     if (
@@ -18,17 +18,14 @@ const SetupRaven = settingsElement => {
       version = settingsElement.dataset.version;
     }
 
-    const ravenClient = new Raven.Client();
     try {
-      ravenClient
-        .config(settingsElement.dataset.ravenDsn, {
-          release: version
-        })
-        .install();
+      return Sentry.init({
+        dsn: settingsElement.dataset.sentryDsn,
+        release: version
+      });
     } catch (err) {
-      console.error("Raven config failed: " + err);
+      console.error("Sentry config failed: " + err);
     }
-    return ravenClient;
   }
   return null;
 };
@@ -55,4 +52,4 @@ const ParseDefaultFilters = settingsElement => {
   return defaultFilters;
 };
 
-export { SettingsElement, SetupRaven, ParseDefaultFilters };
+export { SettingsElement, SetupSentry, ParseDefaultFilters };

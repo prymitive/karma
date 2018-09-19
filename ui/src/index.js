@@ -3,12 +3,12 @@ import ReactDOM from "react-dom";
 
 import Moment from "react-moment";
 
-import { SettingsElement, SetupRaven, ParseDefaultFilters } from "./AppBoot";
+import { SettingsElement, SetupSentry, ParseDefaultFilters } from "./AppBoot";
 import { App } from "./App";
 
 const settingsElement = SettingsElement();
 
-SetupRaven(settingsElement);
+SetupSentry(settingsElement);
 
 // global timer for updating timestamps to human readable offsets
 // this needs to be run before any <Moment/> instance
