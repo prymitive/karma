@@ -34,9 +34,9 @@ endif
 	go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
 	touch $@
 
-.build/deps-build-node.ok: ui/package.json ui/package-lock.json
+.build/deps-build-node.ok: ui/package.json ui/yarn.lock
 	@mkdir -p .build
-	cd ui && npm install
+	cd ui && yarn install
 	touch $@
 
 .build/artifacts-bindata_assetfs.%:
@@ -46,8 +46,8 @@ endif
 
 .build/artifacts-ui.ok: .build/deps-build-node.ok $(ASSET_SOURCES)
 	@mkdir -p .build
-	cd ui && npm run-script build-css
-	cd ui && npm run build
+	cd ui && yarn build-css
+	cd ui && yarn build
 	touch $@
 
 bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.$(GO_BINDATA_MODE) .build/vendor.ok .build/artifacts-ui.ok
@@ -127,7 +127,7 @@ test-go: .build/vendor.ok
 
 .PHONY: test-js
 test-js: .build/deps-build-node.ok
-	cd ui && CI=true npm test -- --coverage
+	cd ui && CI=true yarn test --coverage
 
 .PHONY: test-js-watch
 test-js-watch: .build/deps-build-node.ok
@@ -135,7 +135,7 @@ test-js-watch: .build/deps-build-node.ok
 	@# https://github.com/facebook/jest/issues/3436
 	@# use onchange for now
 	cd ui && ./node_modules/onchange/cli.js 'src/*.js' 'src/**/*.js' -- \
-		npm test -- --coverage --coverageReporters=lcov
+		yarn test -- --coverage --coverageReporters=lcov
 
 .PHONY: test
 test: lint test-go test-js

@@ -7,14 +7,14 @@ defaults_go: &DEFAULTS_GO
 
 defaults_js: &DEFAULTS_JS
   language: node_js
-  # FIXME 8.12 includes npm 6.4.1 which generates a different lock file on
-  # macOS and Linux, causing diffs on CI and we fail builds when that happens
-  node_js: "8.11.4" # FIXME same in the 'Build and Deploy' stage
-  # install defaults to "npm install", which is done via make
+  node_js: "8"
+  before_install:
+    - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.9.4
+    - export PATH=$HOME/.yarn/bin:$PATH
+  # install defaults to "yarn install", which is done via make
   install: []
   cache:
-    directories:
-      - ui/node_modules
+    yarn: true
 
 env:
   global:
@@ -69,7 +69,7 @@ jobs:
       before_script:
         # this stage needs to build everything including assets file and that
         # requires running webpack, so we need nodejs here
-        - nvm install 8.11.4
+        - nvm install "8"
       script:
         # compile assets via webpack and build those into bindata_assetfs.go file
         - make bindata_assetfs.go
