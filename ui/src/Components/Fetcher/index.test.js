@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import { advanceTo, advanceBy, clear } from "jest-date-mock";
+
 import { EmptyAPIResponse } from "__mocks__/Fetch";
 
 import { AlertStore } from "Stores/AlertStore";
@@ -9,24 +11,30 @@ import { Settings } from "Stores/Settings";
 
 import { Fetcher } from ".";
 
+let alertStore;
+let settingsStore;
+let fetchSpy;
+
 beforeAll(() => {
   jest.useFakeTimers();
 });
 
-let alertStore;
-let settingsStore;
-
 beforeEach(() => {
-  fetch.mockResponse(JSON.stringify(EmptyAPIResponse()));
+  advanceTo(new Date(2000, 1, 1, 0, 0, 0));
 
   alertStore = new AlertStore(["label=value"]);
+  fetchSpy = jest
+    .spyOn(alertStore, "fetchWithThrottle")
+    .mockImplementation(() => {});
+
   settingsStore = new Settings();
+  settingsStore.fetchConfig.config.interval = 30;
 });
 
 afterEach(() => {
   jest.clearAllTimers();
-
-  global.fetch.mockRestore();
+  jest.clearAllMocks();
+  clear();
 });
 
 const MockEmptyAPIResponseWithoutFilters = () => {
@@ -55,6 +63,30 @@ describe("<Fetcher />", () => {
     expect(tree.html()).toBe(FetcherSpan("label=value", 30));
     settingsStore.fetchConfig.config.interval = 60;
     expect(tree.html()).toBe(FetcherSpan("label=value", 60));
+  });
+
+  it("changing interval changes how often fetch is called", () => {
+    settingsStore.fetchConfig.config.interval = 1;
+    MountedFetcher();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+
+    settingsStore.fetchConfig.config.interval = 600;
+
+    advanceBy(3 * 1000);
+    jest.runOnlyPendingTimers();
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+
+    advanceBy(32 * 1000);
+    jest.runOnlyPendingTimers();
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+
+    advanceBy(62 * 1000);
+    jest.runOnlyPendingTimers();
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+
+    advanceBy(602 * 1000);
+    jest.runOnlyPendingTimers();
+    expect(fetchSpy).toHaveBeenCalledTimes(3);
   });
 
   it("re-renders on filters change", () => {
@@ -86,13 +118,19 @@ describe("<Fetcher />", () => {
     expect(fetchSpy).toHaveBeenCalledTimes(2);
   });
 
-  it("keeps calling alertStore.fetchWithThrottle after running pending timers", () => {
-    const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
+  it("keeps calling alertStore.fetchWithThrottle every minute", () => {
     MountedFetcher();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+
+    advanceBy(62 * 1000);
     jest.runOnlyPendingTimers();
     expect(fetchSpy).toHaveBeenCalledTimes(2);
+
+    advanceBy(62 * 1000);
     jest.runOnlyPendingTimers();
     expect(fetchSpy).toHaveBeenCalledTimes(3);
+
+    advanceBy(62 * 1000);
     jest.runOnlyPendingTimers();
     expect(fetchSpy).toHaveBeenCalledTimes(4);
   });
