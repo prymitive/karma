@@ -72,7 +72,7 @@ const NavBar = observer(
               <ReactResizeDetector handleHeight onResize={NavbarOnResize} />
               <span className="navbar-brand my-0 mx-2 h1 d-none d-sm-block float-left">
                 {alertStore.info.totalAlerts}
-                <FetchIndicator status={alertStore.status.value.toString()} />
+                <FetchIndicator alertStore={alertStore} />
               </span>
               <ul className={`navbar-nav float-right d-flex ${flexClass}`}>
                 <SilenceModal

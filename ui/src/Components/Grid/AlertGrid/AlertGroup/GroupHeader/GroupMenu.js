@@ -16,6 +16,7 @@ import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
 import { FormatAPIFilterQuery } from "Stores/AlertStore";
 import { QueryOperators, StaticLabels, FormatQuery } from "Common/Query";
+import { FetchPauser } from "Components/FetchPauser";
 
 const onSilenceClick = (silenceFormStore, group) => {
   silenceFormStore.data.resetProgress();
@@ -43,28 +44,30 @@ const MenuContent = onClickOutside(
     )}`;
 
     return (
-      <div
-        className="dropdown-menu d-block"
-        ref={popperRef}
-        style={popperStyle}
-        data-placement={popperPlacement}
-      >
+      <FetchPauser>
         <div
-          className="dropdown-item cursor-pointer"
-          onClick={() => {
-            copy(groupLink);
-            afterClick();
-          }}
+          className="dropdown-menu d-block"
+          ref={popperRef}
+          style={popperStyle}
+          data-placement={popperPlacement}
         >
-          <FontAwesomeIcon icon={faShareSquare} /> Copy link to this group
+          <div
+            className="dropdown-item cursor-pointer"
+            onClick={() => {
+              copy(groupLink);
+              afterClick();
+            }}
+          >
+            <FontAwesomeIcon icon={faShareSquare} /> Copy link to this group
+          </div>
+          <div
+            className="dropdown-item cursor-pointer"
+            onClick={() => onSilenceClick(silenceFormStore, group)}
+          >
+            <FontAwesomeIcon icon={faBellSlash} /> Silence this group
+          </div>
         </div>
-        <div
-          className="dropdown-item cursor-pointer"
-          onClick={() => onSilenceClick(silenceFormStore, group)}
-        >
-          <FontAwesomeIcon icon={faBellSlash} /> Silence this group
-        </div>
-      </div>
+      </FetchPauser>
     );
   }
 );

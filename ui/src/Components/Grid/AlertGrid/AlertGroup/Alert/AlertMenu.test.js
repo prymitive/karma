@@ -1,16 +1,21 @@
 import React from "react";
 
+import { Provider } from "mobx-react";
+
 import { mount } from "enzyme";
 
 import { MockAlertGroup, MockAlert } from "__mocks__/Alerts.js";
+import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { AlertMenu, MenuContent } from "./AlertMenu";
 
+let alertStore;
 let silenceFormStore;
 let alert;
 let group;
 
 beforeEach(() => {
+  alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
   alert = MockAlert([], { foo: "bar" }, "active");
   group = MockAlertGroup({ alertname: "Fake Alert" }, [alert], [], {});
@@ -20,12 +25,14 @@ const MockAfterClick = jest.fn();
 
 const MountedAlertMenu = group => {
   return mount(
-    <AlertMenu
-      group={group}
-      alert={alert}
-      silenceFormStore={silenceFormStore}
-    />
-  );
+    <Provider alertStore={alertStore}>
+      <AlertMenu
+        group={group}
+        alert={alert}
+        silenceFormStore={silenceFormStore}
+      />
+    </Provider>
+  ).find("AlertMenu");
 };
 
 describe("<AlertMenu />", () => {
@@ -55,15 +62,17 @@ describe("<AlertMenu />", () => {
 
 const MountedMenuContent = group => {
   return mount(
-    <MenuContent
-      popperPlacement="top"
-      popperRef={null}
-      popperStyle={{}}
-      group={group}
-      alert={alert}
-      afterClick={MockAfterClick}
-      silenceFormStore={silenceFormStore}
-    />
+    <Provider alertStore={alertStore}>
+      <MenuContent
+        popperPlacement="top"
+        popperRef={null}
+        popperStyle={{}}
+        group={group}
+        alert={alert}
+        afterClick={MockAfterClick}
+        silenceFormStore={silenceFormStore}
+      />
+    </Provider>
   );
 };
 

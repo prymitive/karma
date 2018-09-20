@@ -1,23 +1,32 @@
 import React from "react";
 
+import { Provider } from "mobx-react";
+
 import { mount } from "enzyme";
 
 import copy from "copy-to-clipboard";
 
 import { MockAlertGroup } from "__mocks__/Alerts.js";
+import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { GroupMenu, MenuContent } from "./GroupMenu";
 
+let alertStore;
 let silenceFormStore;
 
 beforeEach(() => {
+  alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
 });
 
 const MockAfterClick = jest.fn();
 
 const MountedGroupMenu = group => {
-  return mount(<GroupMenu group={group} silenceFormStore={silenceFormStore} />);
+  return mount(
+    <Provider alertStore={alertStore}>
+      <GroupMenu group={group} silenceFormStore={silenceFormStore} />
+    </Provider>
+  ).find("GroupMenu");
 };
 
 describe("<GroupMenu />", () => {
@@ -51,14 +60,16 @@ describe("<GroupMenu />", () => {
 
 const MountedMenuContent = group => {
   return mount(
-    <MenuContent
-      popperPlacement="top"
-      popperRef={null}
-      popperStyle={{}}
-      group={group}
-      afterClick={MockAfterClick}
-      silenceFormStore={silenceFormStore}
-    />
+    <Provider alertStore={alertStore}>
+      <MenuContent
+        popperPlacement="top"
+        popperRef={null}
+        popperStyle={{}}
+        group={group}
+        afterClick={MockAfterClick}
+        silenceFormStore={silenceFormStore}
+      />
+    </Provider>
   );
 };
 

@@ -147,4 +147,34 @@ describe("<Fetcher />", () => {
     instance.componentWillUnmount();
     expect(instance.timer).toBeNull();
   });
+
+  it("doesn't fetch on mount when paused", () => {
+    alertStore.status.pause();
+    MountedFetcher();
+    expect(fetchSpy).toHaveBeenCalledTimes(0);
+  });
+
+  it("doesn't fetch on update when paused", () => {
+    alertStore.status.pause();
+    const tree = MountedFetcher();
+    tree.instance().componentDidUpdate();
+    expect(fetchSpy).toHaveBeenCalledTimes(0);
+  });
+
+  it("fetches on update when resumed", () => {
+    alertStore.status.pause();
+    const tree = MountedFetcher();
+    alertStore.status.resume();
+    tree.instance().componentDidUpdate();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("fetches on resume", () => {
+    alertStore.status.pause();
+    MountedFetcher();
+    alertStore.status.resume();
+    advanceBy(2 * 1000);
+    jest.runOnlyPendingTimers();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+  });
 });

@@ -1,37 +1,57 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+import { observer } from "mobx-react";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
+import { faPauseCircle } from "@fortawesome/free-regular-svg-icons/faPauseCircle";
 
 import { AlertStoreStatuses } from "Stores/AlertStore";
 
-class FetchIndicator extends Component {
-  static propTypes = {
-    status: PropTypes.string.isRequired
-  };
+const FetchIcon = ({ icon, color, visible, spin }) => (
+  <FontAwesomeIcon
+    style={{ opacity: visible ? 1 : 0 }}
+    className={`mx-1 text-${color}`}
+    size="lg"
+    icon={icon}
+    spin={spin}
+  />
+);
+FetchIcon.propTypes = {
+  icon: PropTypes.object.isRequired,
+  color: PropTypes.string,
+  visible: PropTypes.bool,
+  spin: PropTypes.bool
+};
+FetchIcon.defaultProps = {
+  color: "muted",
+  visible: true,
+  spin: false
+};
 
-  render() {
-    const { status } = this.props;
+const FetchIndicator = observer(
+  class FetchIndicator extends Component {
+    static propTypes = {
+      alertStore: PropTypes.object.isRequired
+    };
 
-    const visible =
-      status === AlertStoreStatuses.Fetching.toString() ||
-      status === AlertStoreStatuses.Processing.toString();
-    const textClass =
-      status === AlertStoreStatuses.Fetching.toString()
-        ? "text-muted"
-        : "text-success";
+    render() {
+      const { alertStore } = this.props;
 
-    return (
-      <FontAwesomeIcon
-        style={{ opacity: visible ? 1 : 0 }}
-        className={`mx-1 ${textClass}`}
-        icon={faCircleNotch}
-        size="lg"
-        spin
-      />
-    );
+      if (alertStore.status.paused) return <FetchIcon icon={faPauseCircle} />;
+
+      const status = alertStore.status.value.toString();
+
+      if (status === AlertStoreStatuses.Fetching.toString())
+        return <FetchIcon icon={faCircleNotch} spin />;
+
+      if (status === AlertStoreStatuses.Processing.toString())
+        return <FetchIcon icon={faCircleNotch} color="success" spin />;
+
+      return <FetchIcon icon={faCircleNotch} visible={false} />;
+    }
   }
-}
+);
 
 export { FetchIndicator };

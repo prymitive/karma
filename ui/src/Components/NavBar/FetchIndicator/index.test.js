@@ -5,69 +5,88 @@ import { mount } from "enzyme";
 import toDiffableHtml from "diffable-html";
 
 import { FetchIndicator } from ".";
-import { AlertStoreStatuses } from "Stores/AlertStore";
+import { AlertStore } from "Stores/AlertStore";
+
+let alertStore;
+
+beforeEach(() => {
+  alertStore = new AlertStore([]);
+});
+
+const MountedFetchIndicator = () => {
+  return mount(<FetchIndicator alertStore={alertStore} />);
+};
 
 describe("<FetchIndicator />", () => {
+  it("shows a pause icon when fetching is paused", () => {
+    alertStore.status.pause();
+    const tree = MountedFetchIndicator();
+    expect(tree.html()).toMatch(/fa-pause-circle/);
+  });
+
+  it("shows a cirle notch icon when fetching is resumed", () => {
+    alertStore.status.resume();
+    const tree = MountedFetchIndicator();
+    expect(tree.html()).toMatch(/fa-circle-notch/);
+  });
+
   it("opacity is 1 when fetch is in progress", () => {
-    const tree = mount(
-      <FetchIndicator status={AlertStoreStatuses.Fetching.toString()} />
-    );
+    alertStore.status.setFetching();
+    const tree = MountedFetchIndicator();
     expect(tree.find("FontAwesomeIcon").props().style.opacity).toEqual(1);
   });
 
   it("uses text-muted when fetch is in progress", () => {
-    const tree = mount(
-      <FetchIndicator status={AlertStoreStatuses.Fetching.toString()} />
-    );
+    alertStore.status.setFetching();
+    const tree = MountedFetchIndicator();
     expect(tree.find("FontAwesomeIcon").hasClass("text-muted")).toBe(true);
   });
 
   it("opacity is 1 when response is processed", () => {
-    const tree = mount(
-      <FetchIndicator status={AlertStoreStatuses.Processing.toString()} />
-    );
+    alertStore.status.setProcessing();
+    const tree = MountedFetchIndicator();
     expect(tree.find("FontAwesomeIcon").props().style.opacity).toEqual(1);
   });
 
   it("uses text-success when response is processed", () => {
-    const tree = mount(
-      <FetchIndicator status={AlertStoreStatuses.Processing.toString()} />
-    );
+    alertStore.status.setProcessing();
+    const tree = MountedFetchIndicator();
     expect(tree.find("FontAwesomeIcon").hasClass("text-success")).toBe(true);
   });
 
   it("opacity is 0 when idle", () => {
-    const tree = mount(
-      <FetchIndicator status={AlertStoreStatuses.Idle.toString()} />
-    );
+    alertStore.status.setIdle();
+    const tree = MountedFetchIndicator();
     expect(tree.find("FontAwesomeIcon").props().style.opacity).toEqual(0);
   });
 
   it("opacity is 0 when fetch failed", () => {
-    const tree = mount(
-      <FetchIndicator status={AlertStoreStatuses.Failure.toString()} />
-    );
+    alertStore.status.setFailure();
+    const tree = MountedFetchIndicator();
     expect(tree.find("FontAwesomeIcon").props().style.opacity).toEqual(0);
   });
 
+  it("matches snapshot when paused", () => {
+    alertStore.status.pause();
+    const tree = MountedFetchIndicator();
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
   it("matches snapshot when fetch is in progress", () => {
-    const tree = mount(
-      <FetchIndicator status={AlertStoreStatuses.Fetching.toString()} />
-    );
+    alertStore.status.setFetching();
+    const tree = MountedFetchIndicator();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("matches snapshot when response is processed", () => {
-    const tree = mount(
-      <FetchIndicator status={AlertStoreStatuses.Processing.toString()} />
-    );
+    alertStore.status.setProcessing();
+    const tree = MountedFetchIndicator();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("matches snapshot when idle", () => {
-    const tree = mount(
-      <FetchIndicator status={AlertStoreStatuses.Idle.toString()} />
-    );
+    alertStore.status.setIdle();
+    const tree = MountedFetchIndicator();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 });
