@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { toJS } from "mobx";
+import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
-import { AlertStore } from "Stores/AlertStore";
+import moment from "moment";
+
+import { AlertStore, AlertStoreStatuses } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 
 const Fetcher = observer(
@@ -14,40 +16,53 @@ const Fetcher = observer(
       settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
 
-    timer = null;
+    lastTick = observable(
+      {
+        time: moment(0),
+        update() {
+          this.time = moment();
+        }
+      },
+      {
+        update: action
+      }
+    );
 
-    interval = null;
-
-    setTimer() {
+    fetchIfIdle = () => {
       const { alertStore, settingsStore } = this.props;
 
-      const newInterval = toJS(settingsStore.fetchConfig.config.interval);
+      const nextTick = moment(this.lastTick.time).add(
+        settingsStore.fetchConfig.config.interval,
+        "seconds"
+      );
 
-      if (this.interval !== newInterval) {
-        if (this.timer !== null) clearInterval(this.timer);
+      const pastDeadline = moment().isSameOrAfter(nextTick);
 
-        this.interval = newInterval;
-        this.timer = setInterval(
-          () => alertStore.fetchWithThrottle(),
-          this.interval * 1000
-        );
+      const status = alertStore.status.value.toString();
+      const updateInProgress =
+        status === AlertStoreStatuses.Fetching.toString() ||
+        status === AlertStoreStatuses.Processing.toString();
+
+      if (pastDeadline && !updateInProgress) {
+        this.lastTick.update();
+        alertStore.fetchWithThrottle();
       }
+    };
+
+    timerTick = () => {
+      this.fetchIfIdle();
+    };
+
+    componentDidMount() {
+      this.fetchIfIdle();
+      this.timer = setInterval(this.timerTick, 1000);
     }
 
     componentDidUpdate() {
       const { alertStore } = this.props;
 
+      this.lastTick.update();
       alertStore.fetchWithThrottle();
-
-      this.setTimer();
-    }
-
-    componentDidMount() {
-      const { alertStore } = this.props;
-
-      alertStore.fetchWithThrottle();
-
-      this.setTimer();
     }
 
     componentWillUnmount() {
