@@ -43,7 +43,7 @@ const Fetcher = observer(
         status === AlertStoreStatuses.Fetching.toString() ||
         status === AlertStoreStatuses.Processing.toString();
 
-      if (pastDeadline && !updateInProgress) {
+      if (pastDeadline && !updateInProgress && !alertStore.status.paused) {
         this.lastTick.update();
         alertStore.fetchWithThrottle();
       }
@@ -61,8 +61,10 @@ const Fetcher = observer(
     componentDidUpdate() {
       const { alertStore } = this.props;
 
-      this.lastTick.update();
-      alertStore.fetchWithThrottle();
+      if (!alertStore.status.paused) {
+        this.lastTick.update();
+        alertStore.fetchWithThrottle();
+      }
     }
 
     componentWillUnmount() {

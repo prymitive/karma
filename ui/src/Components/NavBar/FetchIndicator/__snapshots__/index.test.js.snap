@@ -24,7 +24,7 @@ exports[`<FetchIndicator /> matches snapshot when idle 1`] = `
 <svg aria-hidden=\\"true\\"
      data-prefix=\\"fas\\"
      data-icon=\\"circle-notch\\"
-     class=\\"svg-inline--fa fa-circle-notch fa-w-16 fa-spin fa-lg mx-1 text-success\\"
+     class=\\"svg-inline--fa fa-circle-notch fa-w-16 fa-lg mx-1 text-muted\\"
      role=\\"img\\"
      xmlns=\\"http://www.w3.org/2000/svg\\"
      viewbox=\\"0 0 512 512\\"
@@ -32,6 +32,25 @@ exports[`<FetchIndicator /> matches snapshot when idle 1`] = `
 >
   <path fill=\\"currentColor\\"
         d=\\"M288 39.056v16.659c0 10.804 7.281 20.159 17.686 23.066C383.204 100.434 440 171.518 440 256c0 101.689-82.295 184-184 184-101.689 0-184-82.295-184-184 0-84.47 56.786-155.564 134.312-177.219C216.719 75.874 224 66.517 224 55.712V39.064c0-15.709-14.834-27.153-30.046-23.234C86.603 43.482 7.394 141.206 8.003 257.332c.72 137.052 111.477 246.956 248.531 246.667C393.255 503.711 504 392.788 504 256c0-115.633-79.14-212.779-186.211-240.236C302.678 11.889 288 23.456 288 39.056z\\"
+  >
+  </path>
+</svg>
+"
+`;
+
+exports[`<FetchIndicator /> matches snapshot when paused 1`] = `
+"
+<svg aria-hidden=\\"true\\"
+     data-prefix=\\"far\\"
+     data-icon=\\"pause-circle\\"
+     class=\\"svg-inline--fa fa-pause-circle fa-w-16 fa-lg mx-1 text-muted\\"
+     role=\\"img\\"
+     xmlns=\\"http://www.w3.org/2000/svg\\"
+     viewbox=\\"0 0 512 512\\"
+     style=\\"opacity: 1;\\"
+>
+  <path fill=\\"currentColor\\"
+        d=\\"M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8zm0 448c-110.5 0-200-89.5-200-200S145.5 56 256 56s200 89.5 200 200-89.5 200-200 200zm96-280v160c0 8.8-7.2 16-16 16h-48c-8.8 0-16-7.2-16-16V176c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16zm-112 0v160c0 8.8-7.2 16-16 16h-48c-8.8 0-16-7.2-16-16V176c0-8.8 7.2-16 16-16h48c8.8 0 16 7.2 16 16z\\"
   >
   </path>
 </svg>

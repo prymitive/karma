@@ -172,6 +172,7 @@ class AlertStore {
     {
       value: AlertStoreStatuses.Idle,
       error: null,
+      paused: false,
       setIdle() {
         this.value = AlertStoreStatuses.Idle;
         this.error = null;
@@ -187,13 +188,21 @@ class AlertStore {
       setFailure(err) {
         this.value = AlertStoreStatuses.Failure;
         this.error = err;
+      },
+      pause() {
+        this.paused = true;
+      },
+      resume() {
+        this.paused = false;
       }
     },
     {
       setIdle: action,
       setFetching: action,
       setProcessing: action,
-      setFailure: action
+      setFailure: action,
+      pause: action,
+      resume: action
     },
     { name: "Store status" }
   );

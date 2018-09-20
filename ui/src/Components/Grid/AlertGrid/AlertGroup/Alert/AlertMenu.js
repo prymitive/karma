@@ -15,6 +15,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
+import { FetchPauser } from "Components/FetchPauser";
+
 const onSilenceClick = (silenceFormStore, group, alert) => {
   silenceFormStore.data.resetProgress();
   silenceFormStore.data.fillMatchersFromGroup(group, [alert]);
@@ -32,33 +34,35 @@ const MenuContent = onClickOutside(
     silenceFormStore
   }) => {
     return (
-      <div
-        className="dropdown-menu d-block"
-        ref={popperRef}
-        style={popperStyle}
-        data-placement={popperPlacement}
-      >
-        <h6 className="dropdown-header">Alert source links:</h6>
-        {alert.alertmanager.map(am => (
-          <a
-            key={am.name}
-            className="dropdown-item"
-            href={am.source}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={afterClick}
-          >
-            {am.name}
-          </a>
-        ))}
-        <div className="dropdown-divider" />
+      <FetchPauser>
         <div
-          className="dropdown-item cursor-pointer"
-          onClick={() => onSilenceClick(silenceFormStore, group, alert)}
+          className="dropdown-menu d-block"
+          ref={popperRef}
+          style={popperStyle}
+          data-placement={popperPlacement}
         >
-          <FontAwesomeIcon icon={faBellSlash} /> Silence this alert
+          <h6 className="dropdown-header">Alert source links:</h6>
+          {alert.alertmanager.map(am => (
+            <a
+              key={am.name}
+              className="dropdown-item"
+              href={am.source}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={afterClick}
+            >
+              {am.name}
+            </a>
+          ))}
+          <div className="dropdown-divider" />
+          <div
+            className="dropdown-item cursor-pointer"
+            onClick={() => onSilenceClick(silenceFormStore, group, alert)}
+          >
+            <FontAwesomeIcon icon={faBellSlash} /> Silence this alert
+          </div>
         </div>
-      </div>
+      </FetchPauser>
     );
   }
 );
