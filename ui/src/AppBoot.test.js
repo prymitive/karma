@@ -2,9 +2,13 @@ import * as Sentry from "@sentry/browser";
 
 import { SettingsElement, SetupSentry, ParseDefaultFilters } from "./AppBoot";
 
-beforeEach(() => {
-  Sentry.init.mockReset();
+afterEach(() => {
+  // reset sentry state before each mock, that's the only way to revert
+  // Sentry.init() that I found
+  global.__SENTRY__ = {};
 });
+
+const FakeDSN = "https://81a9ef37a6ed4fdb80e9ea2310d1ed28@127.0.0.1/1234123";
 
 const MockSettings = (version, SentryDsn, defaultFilters) => {
   return jest.spyOn(document, "getElementById").mockImplementation(() => {
@@ -50,30 +54,30 @@ describe("SettingsElement()", () => {
 
 describe("SetupSentry()", () => {
   it("does nothing when Sentry DSN is missing", () => {
+    const sentrySpy = jest.spyOn(Sentry, "init");
     SentryClient("");
-    expect(Sentry.init).not.toHaveBeenCalled();
+    expect(sentrySpy).not.toHaveBeenCalled();
   });
 
   it("configures Sentry when DSN is present", () => {
-    SentryClient("https://key@example.com/mock");
-    expect(Sentry.init).toHaveBeenCalledWith({
-      dsn: "https://key@example.com/mock",
+    const sentrySpy = jest.spyOn(Sentry, "init");
+    SentryClient(FakeDSN);
+    expect(sentrySpy).toHaveBeenCalledWith({
+      dsn: FakeDSN,
       release: "unknown" // default version
     });
   });
 
   it("passes release option when version attr is present", () => {
-    SentryClient("https://key@example.com/mock", "ver1");
-    expect(Sentry.init).toHaveBeenCalledWith({
-      dsn: "https://key@example.com/mock",
+    const sentrySpy = jest.spyOn(Sentry, "init");
+    SentryClient(FakeDSN, "ver1");
+    expect(sentrySpy).toHaveBeenCalledWith({
+      dsn: FakeDSN,
       release: "ver1"
     });
   });
 
   it("logs an error when invalid DSN is passed to Sentry", () => {
-    Sentry.init = jest.fn().mockImplementation(() => {
-      throw new Error("Fake error");
-    });
     const consoleSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => {});

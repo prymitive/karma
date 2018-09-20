@@ -19,7 +19,7 @@ const SetupSentry = settingsElement => {
     }
 
     try {
-      return Sentry.init({
+      Sentry.init({
         dsn: settingsElement.dataset.sentryDsn,
         release: version
       });
@@ -27,7 +27,6 @@ const SetupSentry = settingsElement => {
       console.error("Sentry config failed: " + err);
     }
   }
-  return null;
 };
 
 const ParseDefaultFilters = settingsElement => {

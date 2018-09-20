@@ -8,13 +8,12 @@ import * as Sentry from "@sentry/browser";
 
 import { ErrorBoundary } from "./ErrorBoundary";
 
-beforeAll(() => {
+beforeEach(() => {
   jest.useFakeTimers();
 });
 
 afterEach(() => {
   jest.clearAllTimers();
-  jest.clearAllMocks();
 });
 
 const FailingComponent = () => {
@@ -42,11 +41,15 @@ describe("<ErrorBoundary />", () => {
   });
 
   it("componentDidCatch should report to sentry", () => {
+    const sentrySpy = jest.spyOn(Sentry, "captureException");
     MountedFailingComponent();
-    expect(Sentry.captureException).toHaveBeenCalled();
+    expect(sentrySpy).toHaveBeenCalled();
   });
 
   it("componentDidCatch passes scope to sentry", () => {
+    const sentrySpy = jest.spyOn(Sentry, "configureScope");
+    Sentry.init({ dsn: "https://foobar@localhost/123456" });
+
     const tree = mount(
       <ErrorBoundary>
         <div />
@@ -54,7 +57,7 @@ describe("<ErrorBoundary />", () => {
     );
     const instance = tree.instance();
     instance.componentDidCatch("foo", { foo: "bar" });
-    expect(Sentry.MockScope.setExtra).toHaveBeenCalledWith("foo", "bar");
+    expect(sentrySpy).toHaveBeenCalled();
   });
 
   it("calls window.location.reload after 60s", () => {
