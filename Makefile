@@ -51,7 +51,7 @@ endif
 	touch $@
 
 bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.$(GO_BINDATA_MODE) .build/vendor.ok .build/artifacts-ui.ok
-	go-bindata-assetfs -o bindata_assetfs.go -nometadata ui/build/...
+	go-bindata-assetfs -o bindata_assetfs.go -nometadata ui/build/... ui/src/...
 
 $(NAME): .build/deps-build-go.ok .build/vendor.ok bindata_assetfs.go $(SOURCES)
 	go build -ldflags "-X main.version=$(VERSION)"

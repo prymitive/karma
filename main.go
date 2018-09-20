@@ -39,8 +39,8 @@ var (
 	// rather than do all the filtering every time
 	apiCache *cache.Cache
 
-	// used by static file view handlers
-	staticFileSystem = newBinaryFileSystem("ui/build")
+	staticBuildFileSystem = newBinaryFileSystem("ui/build")
+	staticSrcFileSystem   = newBinaryFileSystem("ui/src")
 )
 
 func getViewURL(sub string) string {
@@ -55,7 +55,13 @@ func getViewURL(sub string) string {
 
 func setupRouter(router *gin.Engine) {
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
-	router.Use(static.Serve(getViewURL("/"), staticFileSystem))
+	router.Use(static.Serve(getViewURL("/"), staticBuildFileSystem))
+	// next 2 lines are to allow service raw sources so sentry can fetch source maps
+	router.Use(static.Serve(getViewURL("/static/js/"), staticSrcFileSystem))
+	// FIXME
+	// compressed sources are under /static/js/main.js and reference ../static/js/main.js
+	// so we end up with /static/static/js
+	router.Use(static.Serve(getViewURL("/static/static/js/"), staticSrcFileSystem))
 	router.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true,
 		AllowCredentials: true,
