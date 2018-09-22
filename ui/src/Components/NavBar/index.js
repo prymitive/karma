@@ -19,6 +19,9 @@ import { FilterInput } from "./FilterInput";
 
 import "./index.css";
 
+const DesktopIdleTimeout = 1000 * 60 * 3;
+const MobileIdleTimeout = 1000 * 5;
+
 const NavbarOnResize = function(width, height) {
   document.body.style["padding-top"] = `${height + 4}px`;
 };
@@ -66,7 +69,9 @@ const NavBar = observer(
         <IdleTimer
           onActive={this.activityStatus.setActive}
           onIdle={this.activityStatus.setIdle}
-          timeout={1000 * 60 * 3}
+          timeout={
+            window.innerWidth >= 768 ? DesktopIdleTimeout : MobileIdleTimeout
+          }
         >
           <DropdownSlide
             in={!this.activityStatus.idle}
