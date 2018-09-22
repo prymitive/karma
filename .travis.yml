@@ -99,3 +99,30 @@ jobs:
         on:
           repo: prymitive/karma
           tags: true
+
+    # for the master branch we build and deploy a container for heroku app
+    # at http://karma-demo.herokuapp.com
+    - stage: Deploy demo app to Heroku
+      if: type != pull_request AND branch = master AND repo = prymitive/karma
+      env:
+        # HEROKU_TOKEN, valid forever, needed to push docker image and release
+        # it on heroku app
+        - secure: "zr1fHhSIZQgA7wT8PALNyAhilCZBpvziL2zuC7LJvYy9PSHatV1B+/Tl5Ao1MGlqiD9wHdRXhw/Z7Ol7vR84LlEXIQv/PZvpYtdGrwP/dmwEzRi59puNHW/sDa5fU27U5bgGW9VPYKzQFGBIknRz9yEpGAsDqzWSRwEQofgnuF1Cv0JJXN/tcZs/fcXz4AhFSXRb8Rde2geHRVGlz3UnuECQ9LnzTI/xxIP/+YORvMpTcwJtQwq/NhucYXzms19XM94xz5IE/cwf8yV9YZalm867aR2yQJvkMmOaufSYoFgRrghqnpzEe1wyuZvAXkwwZErw5swBY3Zo1YkGUeU761g3v+Nh+dlVKFaBVYgDt9W9bb1QsK1Lbgix4UYSx8Tz06X83xz2f6hWXS1Yvju7yE7M1VmjAhevWW+ZpTf3vwOH2UeUHyAMOddggMSIRfaxC9W74Trt8zxKlM+8sQiaEE3c6Ea+ZJxq1baDJvHQPdfuj2844uKaAL7qNVuRNRPAa0bp0qkzLyl3f5P3XK54mM4vayBRCQ+qflq+XGXY5G8+LukUNnKMq/KuPZZ1A6pOr3kTj4qKaxAcxOJQq4/xc+zJaiQFkzfMj1//LKMyvrRtqMnPV+P3qtgMGzA4Z3JlHUOgPHgbZ9WTlpV5yi066Onro+j2NFehjY+FV6R2gOI="
+      language: generic
+      sudo: true
+      addons:
+        apt:
+          packages:
+            - docker-ce
+      before_script:
+        # a safe and boring version of cat > .netrc < EOF
+        - echo "machine api.heroku.com" >> $HOME/.netrc
+        - echo "  login l.mierzwa@gmail.com" >> $HOME/.netrc
+        - echo "  password $HEROKU_TOKEN" >> $HOME/.netrc
+      script:
+        - docker build --build-arg VERSION=$(make show-version) -t registry.heroku.com/karma-demo/web -f demo/Dockerfile .
+        - docker login -u _ -p "$HEROKU_TOKEN" registry.heroku.com
+        - docker push registry.heroku.com/karma-demo/web
+        # bundled heroku cli doesn't know anything about containers, update it
+        - curl https://cli-assets.heroku.com/install.sh | sh
+        - heroku container:release web --app karma-demo
