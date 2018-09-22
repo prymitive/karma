@@ -6,19 +6,16 @@ import { observable, action, toJS } from "mobx";
 
 import hash from "object-hash";
 
-import { CSSTransition } from "react-transition-group";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
 
+import { MountFade } from "Components/Animations/MountFade";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { GroupHeader } from "./GroupHeader";
 import { Alert } from "./Alert";
 import { GroupFooter } from "./GroupFooter";
-
-import "./index.css";
 
 const LoadButton = ({ icon, action }) => {
   return (
@@ -153,15 +150,7 @@ const AlertGroup = observer(
       }
 
       return (
-        <CSSTransition
-          key={group.id}
-          in={true}
-          classNames="components-grid-alertgrid-alertgroup-fade"
-          timeout={400}
-          appear={true}
-          enter={true}
-          exit={true}
-        >
+        <MountFade>
           <div className="components-grid-alertgrid-alertgroup p-1">
             <div className="card">
               <div
@@ -214,7 +203,7 @@ const AlertGroup = observer(
               ) : null}
             </div>
           </div>
-        </CSSTransition>
+        </MountFade>
       );
     }
   }

@@ -1,0 +1,33 @@
+.components-animation-slide-enter,
+.components-animation-slide-appear {
+  opacity: 0.01;
+  overflow: hidden;
+  max-height: 0px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.components-animation-slide-enter-active,
+.components-animation-slide-appear-active {
+  max-height: 500px; /* can't use auto here */
+  opacity: 1;
+  transition-property: max-height, opacity;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-out;
+}
+
+.components-animation-slide-exit {
+  max-height: 500px; /* can't use auto here */
+  opacity: 1;
+}
+.components-animation-slide-exit-active {
+  opacity: 0.01;
+  overflow: hidden;
+  max-height: 0px;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  transition-property: max-height, opacity;
+  transition-duration: 0.15s;
+  transition-timing-function: ease-out;
+}

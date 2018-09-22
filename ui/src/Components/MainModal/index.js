@@ -9,6 +9,7 @@ import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { MountFade } from "Components/Animations/MountFade";
 import { MainModalContent } from "./MainModalContent";
 
 const MainModal = observer(
@@ -49,13 +50,13 @@ const MainModal = observer(
               <FontAwesomeIcon icon={faCog} />
             </a>
           </li>
-          {this.toggle.show ? (
+          <MountFade in={this.toggle.show} unmountOnExit>
             <MainModalContent
               alertStore={alertStore}
               settingsStore={settingsStore}
               onHide={this.toggle.hide}
             />
-          ) : null}
+          </MountFade>
         </React.Fragment>
       );
     }

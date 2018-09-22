@@ -16,6 +16,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
 import { FetchPauser } from "Components/FetchPauser";
+import { DropdownSlide } from "Components/Animations/DropdownSlide";
 
 const onSilenceClick = (silenceFormStore, group, alert) => {
   silenceFormStore.data.resetProgress();
@@ -127,7 +128,7 @@ const AlertMenu = observer(
               </span>
             )}
           </Reference>
-          {this.collapse.value ? null : (
+          <DropdownSlide in={!this.collapse.value} unmountOnExit>
             <Popper
               placement="bottom-start"
               modifiers={{
@@ -149,7 +150,7 @@ const AlertMenu = observer(
                 />
               )}
             </Popper>
-          )}
+          </DropdownSlide>
         </Manager>
       );
     }

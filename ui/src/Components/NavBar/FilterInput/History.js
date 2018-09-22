@@ -19,6 +19,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { HistoryLabel } from "Components/Labels/HistoryLabel";
 
 import "./History.css";
@@ -249,7 +250,7 @@ const History = observer(
               </button>
             )}
           </Reference>
-          {this.collapse.value ? null : (
+          <DropdownSlide in={!this.collapse.value} unmountOnExit>
             <Popper
               modifiers={{
                 arrow: { enabled: false }
@@ -270,7 +271,7 @@ const History = observer(
                 />
               )}
             </Popper>
-          )}
+          </DropdownSlide>
         </Manager>
       );
     }
