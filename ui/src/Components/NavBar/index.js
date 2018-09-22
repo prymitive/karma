@@ -11,12 +11,16 @@ import IdleTimer from "react-idle-timer";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { FetchIndicator } from "./FetchIndicator";
-import { FilterInput } from "./FilterInput";
+import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { MainModal } from "Components/MainModal";
 import { SilenceModal } from "Components/SilenceModal";
+import { FetchIndicator } from "./FetchIndicator";
+import { FilterInput } from "./FilterInput";
 
 import "./index.css";
+
+const DesktopIdleTimeout = 1000 * 60 * 3;
+const MobileIdleTimeout = 1000 * 5;
 
 const NavbarOnResize = function(width, height) {
   document.body.style["padding-top"] = `${height + 4}px`;
@@ -46,6 +50,10 @@ const NavBar = observer(
       }
     );
 
+    onHide = () => {
+      NavbarOnResize(0, 0);
+    };
+
     render() {
       const { alertStore, settingsStore, silenceFormStore } = this.props;
 
@@ -61,36 +69,41 @@ const NavBar = observer(
         <IdleTimer
           onActive={this.activityStatus.setActive}
           onIdle={this.activityStatus.setIdle}
-          timeout={1000 * 60 * 3}
+          timeout={
+            window.innerWidth >= 768 ? DesktopIdleTimeout : MobileIdleTimeout
+          }
         >
-          <div className="container">
-            <nav
-              className={`navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent ${
-                this.activityStatus.idle ? "d-none" : "d-inline-block"
-              }`}
-            >
-              <ReactResizeDetector handleHeight onResize={NavbarOnResize} />
-              <span className="navbar-brand my-0 mx-2 h1 d-none d-sm-block float-left">
-                {alertStore.info.totalAlerts}
-                <FetchIndicator alertStore={alertStore} />
-              </span>
-              <ul className={`navbar-nav float-right d-flex ${flexClass}`}>
-                <SilenceModal
+          <DropdownSlide
+            in={!this.activityStatus.idle}
+            appear={false}
+            onExited={this.onHide}
+            unmountOnExit
+          >
+            <div className="container">
+              <nav className="navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block">
+                <ReactResizeDetector handleHeight onResize={NavbarOnResize} />
+                <span className="navbar-brand my-0 mx-2 h1 d-none d-sm-block float-left">
+                  {alertStore.info.totalAlerts}
+                  <FetchIndicator alertStore={alertStore} />
+                </span>
+                <ul className={`navbar-nav float-right d-flex ${flexClass}`}>
+                  <SilenceModal
+                    alertStore={alertStore}
+                    silenceFormStore={silenceFormStore}
+                    settingsStore={settingsStore}
+                  />
+                  <MainModal
+                    alertStore={alertStore}
+                    settingsStore={settingsStore}
+                  />
+                </ul>
+                <FilterInput
                   alertStore={alertStore}
-                  silenceFormStore={silenceFormStore}
                   settingsStore={settingsStore}
                 />
-                <MainModal
-                  alertStore={alertStore}
-                  settingsStore={settingsStore}
-                />
-              </ul>
-              <FilterInput
-                alertStore={alertStore}
-                settingsStore={settingsStore}
-              />
-            </nav>
-          </div>
+              </nav>
+            </div>
+          </DropdownSlide>
         </IdleTimer>
       );
     }

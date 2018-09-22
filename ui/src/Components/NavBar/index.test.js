@@ -112,26 +112,39 @@ describe("<IdleTimer />", () => {
 
   it("hides navbar after 4 minutes", () => {
     const tree = MountedNavbar();
-    expect(tree.find(".navbar").hasClass("d-inline-block")).toBe(true);
-    expect(tree.find(".navbar").hasClass("d-none")).toBe(false);
+    expect(tree.find(".navbar")).toHaveLength(1);
 
     jest.runTimersToTime(1000 * 60 * 4);
     tree.update();
-    expect(tree.find(".navbar").hasClass("d-inline-block")).toBe(false);
-    expect(tree.find(".navbar").hasClass("d-none")).toBe(true);
+    expect(tree.find(".navbar")).toHaveLength(0);
   });
 
   it("hidden navbar shows up again after activity", () => {
     const tree = MountedNavbar();
     const instance = tree.instance();
+
     instance.activityStatus.idle = true;
+    jest.runOnlyPendingTimers();
     tree.update();
-    expect(tree.find(".navbar").hasClass("d-inline-block")).toBe(false);
-    expect(tree.find(".navbar").hasClass("d-none")).toBe(true);
+    expect(tree.find(".navbar")).toHaveLength(0);
 
     instance.activityStatus.setActive();
+    jest.runOnlyPendingTimers();
     tree.update();
-    expect(tree.find(".navbar").hasClass("d-inline-block")).toBe(true);
-    expect(tree.find(".navbar").hasClass("d-none")).toBe(false);
+    expect(tree.find(".navbar")).toHaveLength(1);
+  });
+
+  it("body padding-top is 4px when navbar is hidden", () => {
+    const tree = MountedNavbar();
+    const instance = tree.instance();
+
+    instance.activityStatus.setIdle();
+    jest.runOnlyPendingTimers();
+    tree.update();
+    expect(
+      window
+        .getComputedStyle(document.body, null)
+        .getPropertyValue("padding-top")
+    ).toBe("4px");
   });
 });
