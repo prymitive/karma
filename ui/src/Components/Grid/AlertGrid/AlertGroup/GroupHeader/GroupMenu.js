@@ -16,6 +16,7 @@ import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
 import { FormatAPIFilterQuery } from "Stores/AlertStore";
 import { QueryOperators, StaticLabels, FormatQuery } from "Common/Query";
+import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { FetchPauser } from "Components/FetchPauser";
 
 const onSilenceClick = (silenceFormStore, group) => {
@@ -123,7 +124,7 @@ const GroupMenu = observer(
               </a>
             )}
           </Reference>
-          {this.collapse.value ? null : (
+          <DropdownSlide in={!this.collapse.value} unmountOnExit>
             <Popper
               placement="bottom-start"
               modifiers={{
@@ -146,7 +147,7 @@ const GroupMenu = observer(
                 />
               )}
             </Popper>
-          )}
+          </DropdownSlide>
         </Manager>
       );
     }
