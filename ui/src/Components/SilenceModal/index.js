@@ -6,6 +6,7 @@ import { observer } from "mobx-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
+import { MountFade } from "Components/Animations/MountFade";
 import { SilenceModalContent } from "./SilenceModalContent";
 
 import "./index.css";
@@ -53,14 +54,14 @@ const SilenceModal = observer(
               <FontAwesomeIcon icon={faBellSlash} />
             </a>
           </li>
-          {silenceFormStore.toggle.visible ? (
+          <MountFade in={silenceFormStore.toggle.visible} unmountOnExit>
             <SilenceModalContent
               alertStore={alertStore}
               silenceFormStore={silenceFormStore}
               settingsStore={settingsStore}
               onHide={this.toggleModal}
             />
-          ) : null}
+          </MountFade>
         </React.Fragment>
       );
     }
