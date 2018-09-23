@@ -11,7 +11,7 @@ import IdleTimer from "react-idle-timer";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { DropdownSlide } from "Components/Animations/DropdownSlide";
+import { NavBarSlide } from "Components/Animations/NavBarSlide";
 import { MainModal } from "Components/MainModal";
 import { SilenceModal } from "Components/SilenceModal";
 import { FetchIndicator } from "./FetchIndicator";
@@ -20,7 +20,7 @@ import { FilterInput } from "./FilterInput";
 import "./index.css";
 
 const DesktopIdleTimeout = 1000 * 60 * 3;
-const MobileIdleTimeout = 1000 * 5;
+const MobileIdleTimeout = 1000 * 12;
 
 const NavBar = observer(
   class NavBar extends Component {
@@ -108,13 +108,12 @@ const NavBar = observer(
             window.innerWidth >= 768 ? DesktopIdleTimeout : MobileIdleTimeout
           }
         >
-          <DropdownSlide
-            in={!this.activityStatus.idle}
-            appear={false}
-            onEntered={this.onShow}
-            onExited={this.onHide}
-          >
-            <div className={`container ${this.activityStatus.className}`}>
+          <div className={`container ${this.activityStatus.className}`}>
+            <NavBarSlide
+              in={!this.activityStatus.idle}
+              onEntering={this.onShow}
+              onExited={this.onHide}
+            >
               <nav className="navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block">
                 <ReactResizeDetector handleHeight onResize={this.onResize} />
                 <span className="navbar-brand my-0 mx-2 h1 d-none d-sm-block float-left">
@@ -137,8 +136,8 @@ const NavBar = observer(
                   settingsStore={settingsStore}
                 />
               </nav>
-            </div>
-          </DropdownSlide>
+            </NavBarSlide>
+          </div>
         </IdleTimer>
       );
     }
