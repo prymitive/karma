@@ -4,6 +4,8 @@ import { shallow, mount } from "enzyme";
 
 import moment from "moment";
 
+import toDiffableHtml from "diffable-html";
+
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -54,13 +56,13 @@ const ValidateNavClass = (totalFilters, expectedClass) => {
 describe("<NavBar />", () => {
   it("matches snapshot with 0 alerts", () => {
     const tree = RenderNavbar();
-    expect(tree.text()).toMatchSnapshot();
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("matches snapshot with 5 alerts", () => {
     alertStore.info.totalAlerts = 5;
     const tree = RenderNavbar();
-    expect(tree.text()).toMatchSnapshot();
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("navbar-brand shows 15 alerts with totalAlerts=15", () => {
@@ -109,10 +111,10 @@ describe("<IdleTimer />", () => {
     jest.useFakeTimers();
   });
 
-  it("hides navbar after 5 seconds on mobile", () => {
+  it("hides navbar after 12 seconds on mobile", () => {
     global.window.innerWidth = 500;
     const tree = MountedNavbar();
-    jest.runTimersToTime(1000 * 6);
+    jest.runTimersToTime(1000 * 13);
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(false);
     expect(tree.find(".container").hasClass("invisible")).toBe(true);
