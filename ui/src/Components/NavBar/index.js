@@ -22,10 +22,6 @@ import "./index.css";
 const DesktopIdleTimeout = 1000 * 60 * 3;
 const MobileIdleTimeout = 1000 * 5;
 
-const NavbarOnResize = function(width, height) {
-  document.body.style["padding-top"] = `${height + 4}px`;
-};
-
 const NavBar = observer(
   class NavBar extends Component {
     static propTypes = {
@@ -34,24 +30,63 @@ const NavBar = observer(
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
+    elementSize = observable(
+      {
+        width: 0,
+        height: 0,
+        setSize(width, height) {
+          this.width = width;
+          this.height = height;
+        }
+      },
+      { setSize: action }
+    );
+
     activityStatus = observable(
       {
         idle: false,
+        className: "visible",
         setIdle() {
           this.idle = true;
         },
         setActive() {
           this.idle = false;
+        },
+        hide() {
+          this.className = "invisible";
+        },
+        show() {
+          this.className = "visible";
         }
       },
       {
         setIdle: action.bound,
-        setActive: action.bound
+        setActive: action.bound,
+        hide: action.bound,
+        show: action.bound
       }
     );
 
+    updateBodyPaddingTop = () => {
+      const paddingTop = this.activityStatus.idle
+        ? 0
+        : this.elementSize.height + 4;
+      document.body.style["padding-top"] = `${paddingTop}px`;
+    };
+
     onHide = () => {
-      NavbarOnResize(0, 0);
+      this.activityStatus.hide();
+      this.updateBodyPaddingTop();
+    };
+
+    onShow = () => {
+      this.updateBodyPaddingTop();
+      this.activityStatus.show();
+    };
+
+    onResize = (width, height) => {
+      this.elementSize.setSize(width, height);
+      this.updateBodyPaddingTop();
     };
 
     render() {
@@ -76,12 +111,12 @@ const NavBar = observer(
           <DropdownSlide
             in={!this.activityStatus.idle}
             appear={false}
+            onEntered={this.onShow}
             onExited={this.onHide}
-            unmountOnExit
           >
-            <div className="container">
+            <div className={`container ${this.activityStatus.className}`}>
               <nav className="navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block">
-                <ReactResizeDetector handleHeight onResize={NavbarOnResize} />
+                <ReactResizeDetector handleHeight onResize={this.onResize} />
                 <span className="navbar-brand my-0 mx-2 h1 d-none d-sm-block float-left">
                   {alertStore.info.totalAlerts}
                   <FetchIndicator alertStore={alertStore} />
@@ -110,4 +145,4 @@ const NavBar = observer(
   }
 );
 
-export { NavBar, NavbarOnResize };
+export { NavBar };
