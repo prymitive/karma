@@ -7,7 +7,7 @@ import moment from "moment";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { NavBar, NavbarOnResize } from ".";
+import { NavBar } from ".";
 
 let alertStore;
 let settingsStore;
@@ -85,18 +85,17 @@ describe("<NavBar />", () => {
   it("navbar-nav includes 'flex-column' class with 3 filters", () => {
     ValidateNavClass(3, "flex-column");
   });
-});
 
-describe("NavbarOnResize()", () => {
   it("body 'padding-top' style is updated after calling NavbarOnResize()", () => {
-    NavbarOnResize(0, 10);
+    const tree = MountedNavbar();
+    tree.instance().onResize(0, 10);
     expect(
       window
         .getComputedStyle(document.body, null)
         .getPropertyValue("padding-top")
     ).toBe("14px");
 
-    NavbarOnResize(0, 36);
+    tree.instance().onResize(0, 36);
     expect(
       window
         .getComputedStyle(document.body, null)
@@ -110,31 +109,42 @@ describe("<IdleTimer />", () => {
     jest.useFakeTimers();
   });
 
-  it("hides navbar after 4 minutes", () => {
+  it("hides navbar after 5 seconds on mobile", () => {
+    global.window.innerWidth = 500;
     const tree = MountedNavbar();
-    expect(tree.find(".navbar")).toHaveLength(1);
-
-    jest.runTimersToTime(1000 * 60 * 4);
+    jest.runTimersToTime(1000 * 6);
     tree.update();
-    expect(tree.find(".navbar")).toHaveLength(0);
+    expect(tree.find(".container").hasClass("visible")).toBe(false);
+    expect(tree.find(".container").hasClass("invisible")).toBe(true);
+  });
+
+  it("hides navbar after 3 minutes on desktop", () => {
+    global.window.innerWidth = 769;
+    const tree = MountedNavbar();
+    jest.runTimersToTime(1000 * 60 * 3 + 1000);
+    tree.update();
+    expect(tree.find(".container").hasClass("visible")).toBe(false);
+    expect(tree.find(".container").hasClass("invisible")).toBe(true);
   });
 
   it("hidden navbar shows up again after activity", () => {
     const tree = MountedNavbar();
     const instance = tree.instance();
 
-    instance.activityStatus.idle = true;
+    instance.activityStatus.setIdle();
     jest.runOnlyPendingTimers();
     tree.update();
-    expect(tree.find(".navbar")).toHaveLength(0);
+    expect(tree.find(".container").hasClass("visible")).toBe(false);
+    expect(tree.find(".container").hasClass("invisible")).toBe(true);
 
     instance.activityStatus.setActive();
     jest.runOnlyPendingTimers();
     tree.update();
-    expect(tree.find(".navbar")).toHaveLength(1);
+    expect(tree.find(".container").hasClass("visible")).toBe(true);
+    expect(tree.find(".container").hasClass("invisible")).toBe(false);
   });
 
-  it("body padding-top is 4px when navbar is hidden", () => {
+  it("body padding-top is 0px when navbar is hidden", () => {
     const tree = MountedNavbar();
     const instance = tree.instance();
 
@@ -145,6 +155,6 @@ describe("<IdleTimer />", () => {
       window
         .getComputedStyle(document.body, null)
         .getPropertyValue("padding-top")
-    ).toBe("4px");
+    ).toBe("0px");
   });
 });
