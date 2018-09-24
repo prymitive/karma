@@ -9,6 +9,9 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons/faCheckCircle";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 
+import { APISilenceMatcher } from "Models/API";
+import { AlertStore } from "Stores/AlertStore";
+
 const SubmitState = Object.freeze({
   InProgress: "InProgress",
   Done: "Done",
@@ -46,8 +49,14 @@ const SilenceSubmitProgress = observer(
     static propTypes = {
       name: PropTypes.string.isRequired,
       uri: PropTypes.string.isRequired,
-      payload: PropTypes.object.isRequired,
-      alertStore: PropTypes.object.isRequired
+      payload: PropTypes.exact({
+        matchers: PropTypes.arrayOf(APISilenceMatcher).isRequired,
+        startsAt: PropTypes.string.isRequired,
+        endsAt: PropTypes.string.isRequired,
+        createdBy: PropTypes.string.isRequired,
+        comment: PropTypes.string.isRequired
+      }).isRequired,
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired
     };
 
     submitState = observable(

@@ -7,18 +7,14 @@ import { observer } from "mobx-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 
+import { SilenceFormMatcher } from "Models/SilenceForm";
 import { LabelNameInput } from "./LabelNameInput";
 import { LabelValueInput } from "./LabelValueInput";
 
 const SilenceMatch = observer(
   class SilenceMatch extends Component {
     static propTypes = {
-      matcher: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        values: PropTypes.array.isRequired,
-        isRegex: PropTypes.bool.isRequired
-      }),
+      matcher: SilenceFormMatcher.isRequired,
       showDelete: PropTypes.bool.isRequired,
       onDelete: PropTypes.func.isRequired,
       isValid: PropTypes.bool.isRequired

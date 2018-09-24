@@ -28,7 +28,13 @@ const MountedSilenceSubmitProgress = () => {
     <SilenceSubmitProgress
       name="mockAlertmanager"
       uri="http://localhost/mock"
-      payload={{ foo: "bar" }}
+      payload={{
+        matchers: [],
+        startsAt: "now",
+        endsAt: "later",
+        createdBy: "me@example.com",
+        comment: "fake payload"
+      }}
       alertStore={alertStore}
     />
   );
@@ -52,7 +58,13 @@ describe("<SilenceSubmitProgress />", () => {
     expect(payload).toMatchObject({
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ foo: "bar" })
+      body: JSON.stringify({
+        matchers: [],
+        startsAt: "now",
+        endsAt: "later",
+        createdBy: "me@example.com",
+        comment: "fake payload"
+      })
     });
   });
 

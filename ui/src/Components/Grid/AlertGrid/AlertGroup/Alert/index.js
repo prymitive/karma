@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
 
+import { APIAlert, APIGroup } from "Models/API";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { GetLabelColorClass } from "Common/Colors";
 import { StaticLabels } from "Common/Query";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
@@ -15,12 +17,12 @@ import "./index.css";
 const Alert = observer(
   class Alert extends Component {
     static propTypes = {
-      group: PropTypes.object.isRequired,
-      alert: PropTypes.object.isRequired,
+      group: APIGroup.isRequired,
+      alert: APIAlert.isRequired,
       showAlertmanagers: PropTypes.bool.isRequired,
       showReceiver: PropTypes.bool.isRequired,
       afterUpdate: PropTypes.func.isRequired,
-      silenceFormStore: PropTypes.object.isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
     render() {

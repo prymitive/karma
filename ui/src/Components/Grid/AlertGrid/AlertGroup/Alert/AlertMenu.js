@@ -15,6 +15,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
+import { APIAlert, APIGroup } from "Models/API";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FetchPauser } from "Components/FetchPauser";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 
@@ -71,17 +73,17 @@ MenuContent.propTypes = {
   popperPlacement: PropTypes.string,
   popperRef: PropTypes.func,
   popperStyle: PropTypes.object,
-  group: PropTypes.object.isRequired,
-  alert: PropTypes.object.isRequired,
+  group: APIGroup.isRequired,
+  alert: APIAlert.isRequired,
   afterClick: PropTypes.func.isRequired
 };
 
 const AlertMenu = observer(
   class AlertMenu extends Component {
     static propTypes = {
-      group: PropTypes.object.isRequired,
-      alert: PropTypes.object.isRequired,
-      silenceFormStore: PropTypes.object.isRequired
+      group: APIGroup.isRequired,
+      alert: APIAlert.isRequired,
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
     collapse = observable(

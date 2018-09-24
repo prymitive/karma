@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { action } from "mobx";
 import { observer } from "mobx-react";
 
+import { SilenceFormMatcher } from "Models/SilenceForm";
 import { MultiSelect } from "Components/MultiSelect";
 import { ValidationError } from "Components/MultiSelect/ValidationError";
 import { FormatBackendURI } from "Stores/AlertStore";
@@ -11,7 +12,7 @@ import { FormatBackendURI } from "Stores/AlertStore";
 const LabelNameInput = observer(
   class LabelNameInput extends MultiSelect {
     static propTypes = {
-      matcher: PropTypes.object.isRequired,
+      matcher: SilenceFormMatcher.isRequired,
       isValid: PropTypes.bool.isRequired
     };
 

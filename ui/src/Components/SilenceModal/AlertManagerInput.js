@@ -6,6 +6,8 @@ import { observer } from "mobx-react";
 
 import ReactSelect from "react-select";
 
+import { AlertStore } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { MultiSelect, ReactSelectStyles } from "Components/MultiSelect";
 import { ValidationError } from "Components/MultiSelect/ValidationError";
 
@@ -18,8 +20,8 @@ const AlertmanagerInstancesToOptions = instances =>
 const AlertManagerInput = observer(
   class AlertManagerInput extends MultiSelect {
     static propTypes = {
-      alertStore: PropTypes.object.isRequired,
-      silenceFormStore: PropTypes.object.isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
     constructor(props) {

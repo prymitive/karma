@@ -8,6 +8,7 @@ import moment from "moment";
 
 import DatePicker from "react-datepicker";
 
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Duration } from "./Duration";
 import { HourMinute } from "./HourMinute";
 
@@ -161,13 +162,13 @@ const TabContentDuration = observer(({ silenceFormStore }) => {
   );
 });
 TabContentDuration.propTypes = {
-  silenceFormStore: PropTypes.object.isRequired
+  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
 };
 
 const DateTimeSelect = observer(
   class DateTimeSelect extends Component {
     static propTypes = {
-      silenceFormStore: PropTypes.object.isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
     tab = observable(

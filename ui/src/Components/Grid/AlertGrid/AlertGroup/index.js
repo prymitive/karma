@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
 
+import { APIGroup } from "Models/API";
 import { MountFade } from "Components/Animations/MountFade";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -25,7 +26,7 @@ const LoadButton = ({ icon, action }) => {
   );
 };
 LoadButton.propTypes = {
-  icon: PropTypes.object.isRequired,
+  icon: FontAwesomeIcon.propTypes.icon.isRequired,
   action: PropTypes.func.isRequired
 };
 
@@ -42,7 +43,7 @@ const AlertGroup = observer(
   class AlertGroup extends Component {
     static propTypes = {
       afterUpdate: PropTypes.func.isRequired,
-      group: PropTypes.object.isRequired,
+      group: APIGroup.isRequired,
       showAlertmanagers: PropTypes.bool.isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired

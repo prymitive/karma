@@ -14,6 +14,12 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalL
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 
+import {
+  APIAlertAlertmanagerState,
+  APIAlertmanagerUpstream,
+  APISilence
+} from "Models/API";
+import { AlertStore } from "Stores/AlertStore";
 import { StaticLabels, QueryOperators } from "Common/Query";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 
@@ -31,7 +37,7 @@ const SilenceComment = ({ silence }) => {
   return silence.comment;
 };
 SilenceComment.propTypes = {
-  silence: PropTypes.object.isRequired
+  silence: APISilence.isRequired
 };
 
 const SilenceExpiryBadgeWithProgress = ({ silence, progress }) => {
@@ -70,7 +76,7 @@ const SilenceExpiryBadgeWithProgress = ({ silence, progress }) => {
   );
 };
 SilenceExpiryBadgeWithProgress.propTypes = {
-  silence: PropTypes.object.isRequired,
+  silence: APISilence.isRequired,
   progress: PropTypes.number.isRequired
 };
 
@@ -118,8 +124,8 @@ const SilenceDetails = ({ alertmanager, silence }) => {
   );
 };
 SilenceDetails.propTypes = {
-  alertmanager: PropTypes.object.isRequired,
-  silence: PropTypes.object.isRequired
+  alertmanager: APIAlertmanagerUpstream.isRequired,
+  silence: APISilence.isRequired
 };
 
 //
@@ -141,8 +147,8 @@ const Silence = inject("alertStore")(
   observer(
     class Silence extends Component {
       static propTypes = {
-        alertStore: PropTypes.object.isRequired,
-        alertmanagerState: PropTypes.object.isRequired,
+        alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+        alertmanagerState: APIAlertAlertmanagerState.isRequired,
         silenceID: PropTypes.string.isRequired,
         afterUpdate: PropTypes.func.isRequired
       };

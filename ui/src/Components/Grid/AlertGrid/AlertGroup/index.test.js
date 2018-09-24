@@ -36,7 +36,7 @@ beforeEach(() => {
 
 const MockAlerts = alertCount => {
   for (let i = 1; i <= alertCount; i++) {
-    let alert = MockAlert([], { instance: `instance${i}` });
+    let alert = MockAlert([], { instance: `instance${i}` }, "active");
     const startsAt = moment().toISOString();
     alert.startsAt = startsAt;
     alert.alertmanager[0].startsAt = startsAt;

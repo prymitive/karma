@@ -6,15 +6,18 @@ import { observer } from "mobx-react";
 
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
+import { AlertStore } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { Settings } from "Stores/Settings";
 import { SilenceForm } from "./SilenceForm";
 import { SilenceSubmitController } from "./SilenceSubmitController";
 
 const SilenceModalContent = observer(
   class SilenceModalContent extends Component {
     static propTypes = {
-      alertStore: PropTypes.object.isRequired,
-      silenceFormStore: PropTypes.object.isRequired,
-      settingsStore: PropTypes.object.isRequired,
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
       onHide: PropTypes.func.isRequired
     };
 

@@ -6,10 +6,12 @@ import { observer } from "mobx-react";
 import JSONPretty from "react-json-pretty";
 import "react-json-pretty/src/JSONPretty.monikai.css";
 
+import { SilenceFormStore } from "Stores/SilenceFormStore";
+
 const SilencePreview = observer(
   class SilencePreview extends Component {
     static propTypes = {
-      silenceFormStore: PropTypes.object.isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
     render() {
