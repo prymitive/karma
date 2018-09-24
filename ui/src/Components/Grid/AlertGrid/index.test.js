@@ -31,7 +31,7 @@ const ShallowAlertGrid = () => {
 const MockGroup = (groupName, alertCount) => {
   let alerts = [];
   for (let i = 1; i <= alertCount; i++) {
-    alerts.push(MockAlert([], { instance: `instance${i}` }));
+    alerts.push(MockAlert([], { instance: `instance${i}` }, "active"));
   }
   const group = MockAlertGroup(
     { alertname: "Fake Alert", group: groupName },

@@ -6,6 +6,9 @@ import { observer } from "mobx-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
+import { AlertStore } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { Settings } from "Stores/Settings";
 import { MountFade } from "Components/Animations/MountFade";
 import { SilenceModalContent } from "./SilenceModalContent";
 
@@ -14,9 +17,9 @@ import "./index.css";
 const SilenceModal = observer(
   class SilenceModal extends Component {
     static propTypes = {
-      alertStore: PropTypes.object.isRequired,
-      silenceFormStore: PropTypes.object.isRequired,
-      settingsStore: PropTypes.object.isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+      settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
 
     toggleModal = () => {

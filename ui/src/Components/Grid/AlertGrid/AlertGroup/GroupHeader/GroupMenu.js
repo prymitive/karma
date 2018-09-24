@@ -14,7 +14,9 @@ import { faEllipsisV } from "@fortawesome/free-solid-svg-icons/faEllipsisV";
 import { faShareSquare } from "@fortawesome/free-solid-svg-icons/faShareSquare";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
+import { APIGroup } from "Models/API";
 import { FormatAPIFilterQuery } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { QueryOperators, StaticLabels, FormatQuery } from "Common/Query";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { FetchPauser } from "Components/FetchPauser";
@@ -76,15 +78,15 @@ MenuContent.propTypes = {
   popperPlacement: PropTypes.string,
   popperRef: PropTypes.func,
   popperStyle: PropTypes.object,
-  group: PropTypes.object.isRequired,
+  group: APIGroup.isRequired,
   afterClick: PropTypes.func.isRequired
 };
 
 const GroupMenu = observer(
   class GroupMenu extends Component {
     static propTypes = {
-      group: PropTypes.object.isRequired,
-      silenceFormStore: PropTypes.object.isRequired
+      group: APIGroup.isRequired,
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
     collapse = observable(

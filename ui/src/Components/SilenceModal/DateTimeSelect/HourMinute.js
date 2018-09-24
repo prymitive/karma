@@ -21,7 +21,7 @@ const IconTd = ({ icon, onClick }) => (
   </td>
 );
 IconTd.propTypes = {
-  icon: PropTypes.object.isRequired,
+  icon: FontAwesomeIcon.propTypes.icon.isRequired,
   onClick: PropTypes.func.isRequired
 };
 

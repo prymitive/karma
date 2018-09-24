@@ -161,7 +161,7 @@ describe("<SilenceForm />", () => {
   it("calling submit marks form as in progress when form is valid", () => {
     const matcher = NewEmptyMatcher();
     matcher.name = "job";
-    matcher.values = ["node_exporter"];
+    matcher.values = [{ label: "node_exporter", value: "node_exporter" }];
     silenceFormStore.data.matchers = [matcher];
     silenceFormStore.data.alertmanagers = [
       { label: "am1", value: "http://example.com" }

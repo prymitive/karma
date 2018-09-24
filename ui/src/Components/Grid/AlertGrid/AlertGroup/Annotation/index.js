@@ -11,13 +11,15 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalL
 import { faSearchPlus } from "@fortawesome/free-solid-svg-icons/faSearchPlus";
 import { faSearchMinus } from "@fortawesome/free-solid-svg-icons/faSearchMinus";
 
+import { AlertStore } from "Stores/AlertStore";
+
 import "./index.css";
 
 const RenderNonLinkAnnotation = inject("alertStore")(
   observer(
     class RenderNonLinkAnnotation extends Component {
       static propTypes = {
-        alertStore: PropTypes.object.isRequired,
+        alertStore: PropTypes.instanceOf(AlertStore).isRequired,
         name: PropTypes.string.isRequired,
         value: PropTypes.string.isRequired,
         visible: PropTypes.bool.isRequired,

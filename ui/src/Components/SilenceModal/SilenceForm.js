@@ -12,6 +12,9 @@ import { faSave } from "@fortawesome/free-regular-svg-icons/faSave";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 
+import { AlertStore } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { Settings } from "Stores/Settings";
 import { AlertManagerInput } from "./AlertManagerInput";
 import { SilenceMatch } from "./SilenceMatch";
 import { DateTimeSelect } from "./DateTimeSelect";
@@ -45,7 +48,7 @@ const IconInput = ({
 IconInput.propTypes = {
   type: PropTypes.string.isRequired,
   autoComplete: PropTypes.string.isRequired,
-  icon: PropTypes.object.isRequired,
+  icon: FontAwesomeIcon.propTypes.icon.isRequired,
   placeholder: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired
@@ -54,9 +57,9 @@ IconInput.propTypes = {
 const SilenceForm = observer(
   class SilenceForm extends Component {
     static propTypes = {
-      alertStore: PropTypes.object.isRequired,
-      silenceFormStore: PropTypes.object.isRequired,
-      settingsStore: PropTypes.object.isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+      settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
 
     // store preview visibility state here, by default preview is collapsed

@@ -54,7 +54,7 @@ const ActionButton = ({ color, icon, title, action, afterClick }) => (
 ActionButton.propTypes = {
   color: PropTypes.string.isRequired,
   title: PropTypes.node.isRequired,
-  icon: PropTypes.object.isRequired,
+  icon: FontAwesomeIcon.propTypes.icon.isRequired,
   action: PropTypes.func.isRequired,
   afterClick: PropTypes.func.isRequired
 };

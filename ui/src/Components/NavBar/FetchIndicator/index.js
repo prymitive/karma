@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 import { faPauseCircle } from "@fortawesome/free-regular-svg-icons/faPauseCircle";
 
-import { AlertStoreStatuses } from "Stores/AlertStore";
+import { AlertStore, AlertStoreStatuses } from "Stores/AlertStore";
 
 const FetchIcon = ({ icon, color, visible, spin }) => (
   <FontAwesomeIcon
@@ -19,7 +19,7 @@ const FetchIcon = ({ icon, color, visible, spin }) => (
   />
 );
 FetchIcon.propTypes = {
-  icon: PropTypes.object.isRequired,
+  icon: FontAwesomeIcon.propTypes.icon.isRequired,
   color: PropTypes.string,
   visible: PropTypes.bool,
   spin: PropTypes.bool
@@ -33,7 +33,7 @@ FetchIcon.defaultProps = {
 const FetchIndicator = observer(
   class FetchIndicator extends Component {
     static propTypes = {
-      alertStore: PropTypes.object.isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired
     };
 
     render() {

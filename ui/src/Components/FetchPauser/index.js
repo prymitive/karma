@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 
 import { inject } from "mobx-react";
 
+import { AlertStore } from "Stores/AlertStore";
+
 const FetchPauser = inject("alertStore")(
   class FetchPauser extends Component {
     static propTypes = {
       children: PropTypes.any,
-      alertStore: PropTypes.object.isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired
     };
 
     componentDidMount() {

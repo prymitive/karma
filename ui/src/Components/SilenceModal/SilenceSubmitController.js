@@ -4,12 +4,14 @@ import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 
+import { AlertStore } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceSubmitProgress } from "./SilenceSubmitProgress";
 
 class SilenceSubmitController extends Component {
   static propTypes = {
-    alertStore: PropTypes.object.isRequired,
-    silenceFormStore: PropTypes.object.isRequired
+    alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+    silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
   };
 
   render() {

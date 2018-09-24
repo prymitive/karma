@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
 
+import { APIGroup } from "Models/API";
 import { StaticLabels } from "Common/Query";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
@@ -10,7 +11,7 @@ import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
 const GroupFooter = observer(
   class GroupFooter extends Component {
     static propTypes = {
-      group: PropTypes.object.isRequired,
+      group: APIGroup.isRequired,
       alertmanagers: PropTypes.arrayOf(PropTypes.string).isRequired,
       afterUpdate: PropTypes.func.isRequired
     };

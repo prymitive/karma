@@ -5,10 +5,12 @@ import { observer } from "mobx-react";
 
 import Favico from "favico.js";
 
+import { AlertStore } from "Stores/AlertStore";
+
 const FaviconBadge = observer(
   class FaviconBadge extends Component {
     static propTypes = {
-      alertStore: PropTypes.object.isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired
     };
 
     constructor(props) {

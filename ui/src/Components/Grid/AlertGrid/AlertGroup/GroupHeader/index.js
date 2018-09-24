@@ -7,6 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 
+import { APIGroup } from "Models/API";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
 import { GroupMenu } from "./GroupMenu";
@@ -14,9 +16,12 @@ import { GroupMenu } from "./GroupMenu";
 const GroupHeader = observer(
   class GroupHeader extends Component {
     static propTypes = {
-      collapseStore: PropTypes.object.isRequired,
-      group: PropTypes.object.isRequired,
-      silenceFormStore: PropTypes.object.isRequired
+      collapseStore: PropTypes.shape({
+        value: PropTypes.bool.isRequired,
+        toggle: PropTypes.func.isRequired
+      }).isRequired,
+      group: APIGroup.isRequired,
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
     render() {

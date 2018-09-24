@@ -8,7 +8,7 @@ import { advanceTo, clear } from "jest-date-mock";
 
 import toDiffableHtml from "diffable-html";
 
-import { MockAlert, MockAnnotation } from "__mocks__/Alerts.js";
+import { MockAlert, MockAnnotation, MockAlertGroup } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Alert } from ".";
@@ -41,12 +41,12 @@ const MockedAlert = () => {
   );
 };
 
-const MountedAlert = (alert, showAlertmanagers, showReceiver) => {
+const MountedAlert = (alert, group, showAlertmanagers, showReceiver) => {
   return mount(
     <Provider alertStore={alertStore}>
       <Alert
         alert={alert}
-        group={{}}
+        group={group}
         showAlertmanagers={showAlertmanagers}
         showReceiver={showReceiver}
         afterUpdate={MockAfterUpdate}
@@ -59,13 +59,15 @@ const MountedAlert = (alert, showAlertmanagers, showReceiver) => {
 describe("<Alert />", () => {
   it("matches snapshot with showAlertmanagers=false showReceiver=false", () => {
     const alert = MockedAlert();
-    const tree = MountedAlert(alert, false, false);
+    const group = MockAlertGroup({}, [alert], [], {});
+    const tree = MountedAlert(alert, group, false, false);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("renders @alertmanager label with showAlertmanagers=true", () => {
     const alert = MockedAlert();
-    const tree = MountedAlert(alert, true, false);
+    const group = MockAlertGroup({}, [alert], [], {});
+    const tree = MountedAlert(alert, group, true, false);
     const label = tree
       .find("FilteringLabel")
       .filterWhere(elem => elem.props().name === "@alertmanager");
@@ -74,7 +76,8 @@ describe("<Alert />", () => {
 
   it("renders @receiver label with showReceiver=true", () => {
     const alert = MockedAlert();
-    const tree = MountedAlert(alert, false, true);
+    const group = MockAlertGroup({}, [alert], [], {});
+    const tree = MountedAlert(alert, group, false, true);
     const label = tree
       .find("FilteringLabel")
       .filterWhere(elem => elem.props().name === "@receiver");
@@ -84,7 +87,8 @@ describe("<Alert />", () => {
   it("renders a silence if alert is silenced", () => {
     const alert = MockedAlert();
     alert.alertmanager[0].silencedBy = ["silence123456789"];
-    const tree = MountedAlert(alert, false, false);
+    const group = MockAlertGroup({}, [alert], [], {});
+    const tree = MountedAlert(alert, group, false, false);
     const silence = tree.find("Silence");
     expect(silence).toHaveLength(1);
     expect(silence.html()).toMatch(/silence123456789/);
