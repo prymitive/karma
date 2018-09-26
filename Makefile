@@ -103,6 +103,10 @@ run-docker: docker-image
 		-p $(PORT):$(PORT) \
 		$(NAME):$(VERSION)
 
+.PHONY: lint-git-ci
+lint-git-ci: .build/deps-build-node.ok
+	ui/node_modules/.bin/commitlint-travis
+
 .PHONY: lint-go
 lint-go: .build/deps-lint-go.ok
 	golangci-lint run
