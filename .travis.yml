@@ -15,6 +15,10 @@ defaults_js: &DEFAULTS_JS
 
 jobs:
   include:
+    - stage: Lint git commits
+      <<: *DEFAULTS_JS
+      script: make lint-git-ci
+
     - stage: Test Go code
       <<: *DEFAULTS_GO
       before_script:
