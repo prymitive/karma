@@ -1,5 +1,7 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    ":semanticCommitTypeAll(chore)",
+    ":semanticCommitScope(package)"
   ]
 }
