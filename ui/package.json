@@ -3,7 +3,19 @@
   "version": "0.0.1",
   "license": "Apache-2.0",
   "private": true,
-  "browserslist": "> 0.5%, last 3 years, Firefox > 30, not dead",
+  "browserslist": [
+    ">= 1%",
+    "last 1 major version",
+    "not dead",
+    "Chrome >= 45",
+    "Firefox >= 38",
+    "Edge >= 12",
+    "Explorer >= 10",
+    "iOS >= 9",
+    "Safari >= 9",
+    "Android >= 4.4",
+    "Opera >= 30"
+   ],
   "dependencies": {
     "@attently/riek": "2.0.1",
     "@fortawesome/fontawesome-svg-core": "1.2.4",
