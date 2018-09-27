@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "license": "Apache-2.0",
   "private": true,
+  "browserslist": "> 0.5%, last 3 years, Firefox > 30, not dead",
   "dependencies": {
     "@attently/riek": "2.0.1",
     "@fortawesome/fontawesome-svg-core": "1.2.4",
