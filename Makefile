@@ -70,7 +70,7 @@ vendor-update: .build/deps-build-go.ok
 
 .PHONY: clean
 clean:
-	rm -fr .build bindata_assetfs.go $(NAME) ui/build ui/node_modules
+	rm -fr .build bindata_assetfs.go $(NAME) ui/build ui/node_modules vendor coverage.txt
 
 .PHONY: run
 run: $(NAME)
