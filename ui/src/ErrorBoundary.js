@@ -35,6 +35,7 @@ class ErrorBoundary extends Component {
 
   constructor(props) {
     super(props);
+    this.timer = null;
     this.state = { cachedError: null, reloadSeconds: 60 };
   }
 
@@ -55,7 +56,10 @@ class ErrorBoundary extends Component {
     });
     Sentry.captureException(error);
     // reload after 60s, this is to fix wall monitors automatically
-    setInterval(this.reloadApp, 1000);
+    // but only if the timer isn't set yet
+    if (this.timer === null) {
+      this.timer = setInterval(this.reloadApp, 1000);
+    }
   }
 
   render() {

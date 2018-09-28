@@ -70,4 +70,19 @@ describe("<ErrorBoundary />", () => {
     expect(reloadSpy).toHaveBeenCalled();
     expect(consoleSpy).toHaveBeenCalled();
   });
+
+  it("reloadSeconds is 40 after 20s with multiple exceptions", () => {
+    jest.spyOn(console, "error").mockImplementation(() => {});
+    const tree = MountedFailingComponent();
+    const instance = tree.instance();
+
+    instance.componentDidCatch("foo", { foo: "bar" });
+    jest.runTimersToTime(1000 * 10);
+    instance.componentDidCatch("foo", { foo: "bar" });
+    jest.runTimersToTime(1000 * 5);
+    instance.componentDidCatch("foo", { foo: "bar" });
+    jest.runTimersToTime(1000 * 5);
+    instance.componentDidCatch("foo", { foo: "bar" });
+    expect(tree.instance().state.reloadSeconds).toBe(40);
+  });
 });
