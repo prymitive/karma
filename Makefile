@@ -108,7 +108,7 @@ lint-git-ci: .build/deps-build-node.ok
 	ui/node_modules/.bin/commitlint-travis
 
 .PHONY: lint-go
-lint-go: .build/deps-lint-go.ok
+lint-go: .build/deps-lint-go.ok .build/vendor.ok
 	golangci-lint run
 
 .PHONY: lint-js
