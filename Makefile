@@ -70,7 +70,7 @@ vendor-update: .build/deps-build-go.ok
 
 .PHONY: clean
 clean:
-	rm -fr .build bindata_assetfs.go $(NAME) ui/build ui/node_modules
+	rm -fr .build bindata_assetfs.go $(NAME) ui/build ui/node_modules vendor coverage.txt
 
 .PHONY: run
 run: $(NAME)
@@ -108,7 +108,7 @@ lint-git-ci: .build/deps-build-node.ok
 	ui/node_modules/.bin/commitlint-travis
 
 .PHONY: lint-go
-lint-go: .build/deps-lint-go.ok
+lint-go: .build/deps-lint-go.ok .build/vendor.ok
 	golangci-lint run
 
 .PHONY: lint-js
