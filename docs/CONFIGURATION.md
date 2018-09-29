@@ -301,7 +301,7 @@ listen:
   prefix: string
 ```
 
-- `address` -
+- `address` - Hostname or IP to listen on.
 - `port` - HTTP port to listen on.
 - `prefix` - URL root for karma, you can use to if you wish to serve it from
   location other than `/`. This option is mostly useful when using karma behind
