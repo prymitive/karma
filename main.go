@@ -63,7 +63,17 @@ func setupRouter(router *gin.Engine) {
 	// so we end up with /static/static/js
 	router.Use(static.Serve(getViewURL("/static/static/js/"), staticSrcFileSystem))
 	router.Use(cors.New(cors.Config{
-		AllowAllOrigins:  true,
+		// This works different than AllowAllOrigins=true
+		// 1. AllowAllOrigins will cause responses to include
+		//    'Access-Control-Allow-Origin: *' header in all responses
+		// 2. Setting AllowOriginFunc allows to validate origin URI and if it passes
+		//    the response will include 'Access-Control-Allow-Origin: $origin'
+		//    So the logic is the same, but implementation is different.
+		// We need second behavior since setting `credentials: include` on JS
+		// fetch() will fail with 'Access-Control-Allow-Origin: *' responses
+		AllowOriginFunc: func(origin string) bool {
+			return true
+		},
 		AllowCredentials: true,
 		AllowMethods:     []string{"GET", "POST", "DELETE"},
 		AllowHeaders:     []string{"Origin"},
