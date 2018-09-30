@@ -14,7 +14,6 @@ const MockAlert = (annotations, labels, state) => ({
   alertmanager: [
     {
       name: "default",
-      uri: "file:///mock",
       state: "active",
       startsAt: "2018-08-14T17:36:40.017867056Z",
       endsAt: "0001-01-01T00:00:00Z",

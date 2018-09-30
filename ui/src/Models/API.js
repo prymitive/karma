@@ -11,7 +11,6 @@ const Annotation = PropTypes.exact({
 
 const APIAlertAlertmanagerState = PropTypes.exact({
   name: PropTypes.string.isRequired,
-  uri: PropTypes.string.isRequired,
   state: AlertState.isRequired,
   startsAt: PropTypes.string.isRequired,
   endsAt: PropTypes.string.isRequired,
