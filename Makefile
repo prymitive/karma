@@ -133,14 +133,6 @@ test-go: .build/vendor.ok
 test-js: .build/deps-build-node.ok
 	cd ui && CI=true npm test -- --coverage
 
-.PHONY: test-js-watch
-test-js-watch: .build/deps-build-node.ok
-	@# hitting issues with jest --watch due to
-	@# https://github.com/facebook/jest/issues/3436
-	@# use onchange for now
-	cd ui && ./node_modules/onchange/cli.js 'src/*.js' 'src/**/*.js' -- \
-		npm test -- --coverage --coverageReporters=lcov
-
 .PHONY: test
 test: lint test-go test-js
 
