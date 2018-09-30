@@ -17,7 +17,7 @@ const NonEqualMatchers = ["!=", "=~", "!~", ">", "<"];
 const MockColors = () => {
   alertStore.data.colors["foo"] = {
     bar: {
-      font: { red: 1, green: 2, blue: 3, alpha: 100 },
+      brightness: 200,
       background: { red: 4, green: 5, blue: 6, alpha: 200 }
     }
   };
@@ -109,7 +109,7 @@ describe("<FilterInputLabel /> style", () => {
     MockColors();
     const tree = ShallowLabel("=", true, true);
     expect(tree.props().style).toMatchObject({
-      color: "rgba(1, 2, 3, 100)",
+      color: "rgba(44, 62, 80, 255)",
       backgroundColor: "rgba(4, 5, 6, 200)"
     });
   });

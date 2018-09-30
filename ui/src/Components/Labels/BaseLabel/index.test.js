@@ -65,16 +65,30 @@ describe("<BaseLabel />", () => {
     expect(instance.getColorStyle("foo", "bar")).toMatchObject({});
   });
 
-  it("getColorStyle() on a label with color information should be correctly formatted", () => {
+  it("getColorStyle() on a label with dark background color should have a bright font", () => {
     alertStore.data.colors["foo"] = {
       bar: {
-        font: { red: 1, green: 2, blue: 3, alpha: 100 },
+        brightness: 125,
         background: { red: 4, green: 5, blue: 6, alpha: 200 }
       }
     };
     const instance = FakeBaseLabel().instance();
     expect(instance.getColorStyle("foo", "bar")).toMatchObject({
-      color: "rgba(1, 2, 3, 100)",
+      color: "rgba(255, 255, 255, 255)",
+      backgroundColor: "rgba(4, 5, 6, 200)"
+    });
+  });
+
+  it("getColorStyle() on a label with bright background color should have a dark font", () => {
+    alertStore.data.colors["foo"] = {
+      bar: {
+        brightness: 200,
+        background: { red: 4, green: 5, blue: 6, alpha: 200 }
+      }
+    };
+    const instance = FakeBaseLabel().instance();
+    expect(instance.getColorStyle("foo", "bar")).toMatchObject({
+      color: "rgba(44, 62, 80, 255)",
       backgroundColor: "rgba(4, 5, 6, 200)"
     });
   });
