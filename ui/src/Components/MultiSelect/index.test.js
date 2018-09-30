@@ -62,4 +62,15 @@ describe("<CustomMultiSelect />", () => {
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
+
+  it("matches snapshot with isDisabled=true", () => {
+    const tree = shallow(
+      <CustomMultiSelect
+        isDisabled
+        defaultValue={Option("foo")}
+        options={[Option("foo"), Option("bar")]}
+      />
+    );
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
 });

@@ -87,34 +87,111 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
     </span>
   </div>
   <div class=\\"mt-1\\">
-    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
-      @alertmanager: default
-    </span>
-    <a class=\\"badge badge-secondary text-nowrap text-truncate px-1 mr-1\\"
-       href=\\"file:///mock/#/silences/4cf5fd82-1edd-4169-99d1-ff8415e72179\\"
-       target=\\"_blank\\"
-       rel=\\"noopener noreferrer\\"
-    >
-      4cf5fd82-1edd-4169-99d1-ff8415e72179
-    </a>
-    <span class=\\"badge badge-secondary text-nowrap text-truncate px-1 mr-1\\">
-      Silenced
-      <time datetime=\\"946720800000\\">
-        5 hours ago
-      </time>
-    </span>
-    <span class=\\"badge badge-secondary text-nowrap text-truncate px-1 mr-1\\">
-      Expires
-      <time datetime=\\"946756800000\\">
-        in 5 hours
-      </time>
-    </span>
-    <span class=\\"badge badge-success text-nowrap text-truncate px-1 mr-1\\">
-      alertname=MockAlert
-    </span>
-    <span class=\\"badge badge-success text-nowrap text-truncate px-1 mr-1\\">
-      instance=~foo[0-9]+
-    </span>
+    <div>
+      <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
+        @alertmanager: default
+      </span>
+      <a href=\\"file:///mock/#/silences/4cf5fd82-1edd-4169-99d1-ff8415e72179\\"
+         target=\\"_blank\\"
+         rel=\\"noopener noreferrer\\"
+         class=\\"components-label-with-hover text-nowrap text-truncate badge mr-1 components-grid-annotation-link\\"
+      >
+        <svg aria-hidden=\\"true\\"
+             data-prefix=\\"fas\\"
+             data-icon=\\"external-link-alt\\"
+             class=\\"svg-inline--fa fa-external-link-alt fa-w-18 \\"
+             role=\\"img\\"
+             xmlns=\\"http://www.w3.org/2000/svg\\"
+             viewbox=\\"0 0 576 512\\"
+        >
+          <path fill=\\"currentColor\\"
+                d=\\"M576 24v127.984c0 21.461-25.96 31.98-40.971 16.971l-35.707-35.709-243.523 243.523c-9.373 9.373-24.568 9.373-33.941 0l-22.627-22.627c-9.373-9.373-9.373-24.569 0-33.941L442.756 76.676l-35.703-35.705C391.982 25.9 402.656 0 424.024 0H552c13.255 0 24 10.745 24 24zM407.029 270.794l-16 16A23.999 23.999 0 0 0 384 303.765V448H64V128h264a24.003 24.003 0 0 0 16.97-7.029l16-16C376.089 89.851 365.381 64 344 64H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V287.764c0-21.382-25.852-32.09-40.971-16.97z\\"
+          >
+          </path>
+        </svg>
+        4cf5fd82-1edd-4169-99d1-ff8415e72179
+      </a>
+    </div>
+    <div>
+      <span class=\\"badge text-nowrap text-truncate px-1 mr-1\\">
+        <svg aria-hidden=\\"true\\"
+             data-prefix=\\"fas\\"
+             data-icon=\\"calendar-check\\"
+             class=\\"svg-inline--fa fa-calendar-check fa-w-14 text-muted mr-1\\"
+             role=\\"img\\"
+             xmlns=\\"http://www.w3.org/2000/svg\\"
+             viewbox=\\"0 0 448 512\\"
+        >
+          <path fill=\\"currentColor\\"
+                d=\\"M436 160H12c-6.627 0-12-5.373-12-12v-36c0-26.51 21.49-48 48-48h48V12c0-6.627 5.373-12 12-12h40c6.627 0 12 5.373 12 12v52h128V12c0-6.627 5.373-12 12-12h40c6.627 0 12 5.373 12 12v52h48c26.51 0 48 21.49 48 48v36c0 6.627-5.373 12-12 12zM12 192h424c6.627 0 12 5.373 12 12v260c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V204c0-6.627 5.373-12 12-12zm333.296 95.947l-28.169-28.398c-4.667-4.705-12.265-4.736-16.97-.068L194.12 364.665l-45.98-46.352c-4.667-4.705-12.266-4.736-16.971-.068l-28.397 28.17c-4.705 4.667-4.736 12.265-.068 16.97l82.601 83.269c4.667 4.705 12.265 4.736 16.97.068l142.953-141.805c4.705-4.667 4.736-12.265.068-16.97z\\"
+          >
+          </path>
+        </svg>
+        Created
+        <time datetime=\\"946720800000\\">
+          5 hours ago
+        </time>
+      </span>
+      <span class=\\"badge  text-nowrap text-truncate px-1 mr-1\\">
+        <svg aria-hidden=\\"true\\"
+             data-prefix=\\"fas\\"
+             data-icon=\\"calendar-times\\"
+             class=\\"svg-inline--fa fa-calendar-times fa-w-14 text-muted mr-1\\"
+             role=\\"img\\"
+             xmlns=\\"http://www.w3.org/2000/svg\\"
+             viewbox=\\"0 0 448 512\\"
+        >
+          <path fill=\\"currentColor\\"
+                d=\\"M436 160H12c-6.6 0-12-5.4-12-12v-36c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48v36c0 6.6-5.4 12-12 12zM12 192h424c6.6 0 12 5.4 12 12v260c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V204c0-6.6 5.4-12 12-12zm257.3 160l48.1-48.1c4.7-4.7 4.7-12.3 0-17l-28.3-28.3c-4.7-4.7-12.3-4.7-17 0L224 306.7l-48.1-48.1c-4.7-4.7-12.3-4.7-17 0l-28.3 28.3c-4.7 4.7-4.7 12.3 0 17l48.1 48.1-48.1 48.1c-4.7 4.7-4.7 12.3 0 17l28.3 28.3c4.7 4.7 12.3 4.7 17 0l48.1-48.1 48.1 48.1c4.7 4.7 12.3 4.7 17 0l28.3-28.3c4.7-4.7 4.7-12.3 0-17L269.3 352z\\"
+          >
+          </path>
+        </svg>
+        Expires
+        <time datetime=\\"946756800000\\">
+          in 5 hours
+        </time>
+      </span>
+      <span class=\\"badge badge-secondary text-nowrap text-truncate px-1 cursor-pointer components-label-with-hover\\">
+        <svg aria-hidden=\\"true\\"
+             data-prefix=\\"fas\\"
+             data-icon=\\"edit\\"
+             class=\\"svg-inline--fa fa-edit fa-w-18 mr-1\\"
+             role=\\"img\\"
+             xmlns=\\"http://www.w3.org/2000/svg\\"
+             viewbox=\\"0 0 576 512\\"
+        >
+          <path fill=\\"currentColor\\"
+                d=\\"M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z\\"
+          >
+          </path>
+        </svg>
+        Edit
+      </span>
+    </div>
+    <div>
+      <span class=\\"badge text-nowrap text-truncate px-1 mr-1\\">
+        <svg aria-hidden=\\"true\\"
+             data-prefix=\\"fas\\"
+             data-icon=\\"filter\\"
+             class=\\"svg-inline--fa fa-filter fa-w-16 text-muted mr-1\\"
+             role=\\"img\\"
+             xmlns=\\"http://www.w3.org/2000/svg\\"
+             viewbox=\\"0 0 512 512\\"
+        >
+          <path fill=\\"currentColor\\"
+                d=\\"M487.976 0H24.028C2.71 0-8.047 25.866 7.058 40.971L192 225.941V432c0 7.831 3.821 15.17 10.237 19.662l80 55.98C298.02 518.69 320 507.493 320 487.98V225.941l184.947-184.97C520.021 25.896 509.338 0 487.976 0z\\"
+          >
+          </path>
+        </svg>
+        Matchers:
+      </span>
+      <span class=\\"badge badge-light text-nowrap text-truncate px-1 mr-1\\">
+        alertname=MockAlert
+      </span>
+      <span class=\\"badge badge-light text-nowrap text-truncate px-1 mr-1\\">
+        instance=~foo[0-9]+
+      </span>
+    </div>
   </div>
 </div>
 "

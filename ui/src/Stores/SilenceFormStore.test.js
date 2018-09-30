@@ -1,12 +1,41 @@
 import moment from "moment";
 
-import { MockAlert, MockAlertGroup } from "__mocks__/Alerts.js";
+import {
+  MockAlert,
+  MockAlertGroup,
+  MockSilence,
+  MockAlertmanager
+} from "__mocks__/Alerts.js";
 import { SilenceFormStore, NewEmptyMatcher } from "./SilenceFormStore";
 
 let store;
 beforeEach(() => {
   store = new SilenceFormStore();
 });
+
+const MockGroup = () => {
+  const alerts = [
+    MockAlert([], { instance: "prod1", cluster: "prod" }),
+    MockAlert([], { instance: "prod2", cluster: "prod" }),
+    MockAlert([], { instance: "dev1", cluster: "dev" })
+  ];
+  const group = MockAlertGroup({ alertname: "FakeAlert" }, alerts, [], {
+    job: "mock"
+  });
+  return group;
+};
+
+const MockAlertmanagerOption = () => ({
+  label: "default",
+  value: "http://localhost"
+});
+
+const MockMatcher = (name, values) => {
+  const matcher = NewEmptyMatcher();
+  matcher.name = name;
+  matcher.values = values;
+  return matcher;
+};
 
 describe("SilenceFormStore.toggle", () => {
   it("toggle() toggles 'visible' correctly", () => {
@@ -31,18 +60,6 @@ describe("SilenceFormStore.toggle", () => {
     expect(store.toggle.visible).toBe(false);
   });
 });
-
-const MockGroup = () => {
-  const alerts = [
-    MockAlert([], { instance: "prod1", cluster: "prod" }),
-    MockAlert([], { instance: "prod2", cluster: "prod" }),
-    MockAlert([], { instance: "dev1", cluster: "dev" })
-  ];
-  const group = MockAlertGroup({ alertname: "FakeAlert" }, alerts, [], {
-    job: "mock"
-  });
-  return group;
-};
 
 describe("SilenceFormStore.data", () => {
   it("resetStartEnd() sets startsAt and endsAt to defaults", () => {
@@ -167,6 +184,63 @@ describe("SilenceFormStore.data", () => {
     );
   });
 
+  it("fillFormFromSilence() sets silenceID", () => {
+    const alertmanager = MockAlertmanager();
+    const silence = MockSilence();
+    store.data.fillFormFromSilence(alertmanager, silence);
+    expect(store.data.silenceID).toBe(silence.id);
+  });
+
+  it("fillFormFromSilence() creates payload that matches silence data", () => {
+    const alertmanager = MockAlertmanager();
+    const silence = MockSilence();
+    store.data.fillFormFromSilence(alertmanager, silence);
+
+    expect(store.data.alertmanagers).toHaveLength(1);
+    expect(store.data.alertmanagers[0]).toMatchObject({
+      label: alertmanager.name,
+      value: alertmanager.publicURI
+    });
+
+    expect(store.data.matchers).toHaveLength(2);
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "foo",
+        values: [{ label: "bar", value: "bar" }],
+        isRegex: false
+      })
+    );
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "baz",
+        values: [{ label: "regex", value: "regex" }],
+        isRegex: true
+      })
+    );
+
+    expect(store.data.startsAt.toISOString()).toBe(
+      moment([2000, 0, 1, 0, 0, 0]).toISOString()
+    );
+    expect(store.data.endsAt.toISOString()).toBe(
+      moment([2000, 0, 1, 1, 0, 0]).toISOString()
+    );
+
+    expect(store.data.author).toBe("me@example.com");
+    expect(store.data.comment).toBe("Mocked Silence");
+  });
+
+  it("toAlertmanagerPayload constains id when store.data.silenceID is set", () => {
+    store.data.silenceID = "12345";
+    expect(store.data.toAlertmanagerPayload).toMatchObject({
+      id: "12345"
+    });
+  });
+
+  it("toAlertmanagerPayload doesn't contain id when store.data.silenceID is null", () => {
+    store.data.silenceID = null;
+    expect(store.data.toAlertmanagerPayload.id).toBeUndefined();
+  });
+
   it("toAlertmanagerPayload creates payload that matches snapshot", () => {
     const group = MockGroup();
     store.data.fillMatchersFromGroup(group);
@@ -174,23 +248,11 @@ describe("SilenceFormStore.data", () => {
     store.data.addEmptyMatcher();
     store.data.startsAt = moment([2000, 1, 1, 0, 0, 0]);
     store.data.endsAt = moment([2000, 1, 1, 1, 0, 0]);
-    store.data.createdBy = "me@example.com";
+    store.data.author = "me@example.com";
     store.data.comment = "toAlertmanagerPayload test";
     expect(store.data.toAlertmanagerPayload).toMatchSnapshot();
   });
 });
-
-const MockAlertmanager = () => ({
-  label: "default",
-  value: "http://localhost"
-});
-
-const MockMatcher = (name, values) => {
-  const matcher = NewEmptyMatcher();
-  matcher.name = name;
-  matcher.values = values;
-  return matcher;
-};
 
 describe("SilenceFormStore.data.isValid", () => {
   it("isValid returns 'false' if alertmanagers list is empty", () => {
@@ -201,7 +263,7 @@ describe("SilenceFormStore.data.isValid", () => {
   });
 
   it("isValid returns 'false' if matchers list is empty", () => {
-    store.data.alertmanagers = [MockAlertmanager];
+    store.data.alertmanagers = [MockAlertmanagerOption];
     store.data.matchers = [];
     store.data.author = "me@example.com";
     store.data.comment = "fake silence";
@@ -209,7 +271,7 @@ describe("SilenceFormStore.data.isValid", () => {
   });
 
   it("isValid returns 'false' if matchers list is pupulated when a matcher without any name", () => {
-    store.data.alertmanagers = [MockAlertmanager];
+    store.data.alertmanagers = [MockAlertmanagerOption];
     store.data.matchers = [MockMatcher("", ["bar"])];
     store.data.author = "me@example.com";
     store.data.comment = "fake silence";
@@ -217,7 +279,7 @@ describe("SilenceFormStore.data.isValid", () => {
   });
 
   it("isValid returns 'false' if matchers list is pupulated when a matcher without any value ([])", () => {
-    store.data.alertmanagers = [MockAlertmanager];
+    store.data.alertmanagers = [MockAlertmanagerOption];
     store.data.matchers = [MockMatcher("foo", [])];
     store.data.author = "me@example.com";
     store.data.comment = "fake silence";
@@ -225,7 +287,7 @@ describe("SilenceFormStore.data.isValid", () => {
   });
 
   it("isValid returns 'false' if matchers list is pupulated when a matcher with empty value ([''])", () => {
-    store.data.alertmanagers = [MockAlertmanager];
+    store.data.alertmanagers = [MockAlertmanagerOption];
     store.data.matchers = [MockMatcher("foo", [])];
     store.data.author = "me@example.com";
     store.data.comment = "fake silence";
@@ -233,7 +295,7 @@ describe("SilenceFormStore.data.isValid", () => {
   });
 
   it("isValid returns 'false' if author is empty", () => {
-    store.data.alertmanagers = [MockAlertmanager];
+    store.data.alertmanagers = [MockAlertmanagerOption];
     store.data.matchers = [MockMatcher("foo", ["bar"])];
     store.data.author = "";
     store.data.comment = "fake silence";
@@ -241,7 +303,7 @@ describe("SilenceFormStore.data.isValid", () => {
   });
 
   it("isValid returns 'false' if comment is empty", () => {
-    store.data.alertmanagers = [MockAlertmanager];
+    store.data.alertmanagers = [MockAlertmanagerOption];
     store.data.matchers = [MockMatcher("foo", ["bar"])];
     store.data.author = "me@example.com";
     store.data.comment = "";
@@ -249,7 +311,7 @@ describe("SilenceFormStore.data.isValid", () => {
   });
 
   it("isValid returns 'true' if all fileds are set", () => {
-    store.data.alertmanagers = [MockAlertmanager];
+    store.data.alertmanagers = [MockAlertmanagerOption];
     store.data.matchers = [MockMatcher("foo", ["bar"])];
     store.data.author = "me@example.com";
     store.data.comment = "fake silence";

@@ -27,7 +27,7 @@ const ReactSelectStyles = {
       ? {
           ...base,
           borderRadius: "0.25rem",
-          backgroundColor: "#fff",
+          backgroundColor: state.isDisabled ? "#ecf0f1" : "#fff",
           paddingLeft: "4px",
           paddingRight: "4px",
           display: "flex",
@@ -39,7 +39,7 @@ const ReactSelectStyles = {
       : {
           ...base,
           borderRadius: "0.25rem",
-          backgroundColor: "#fff"
+          backgroundColor: state.isDisabled ? "#ecf0f1" : "#fff"
         },
   multiValue: (base, state) => ({
     ...base,
@@ -72,7 +72,7 @@ const ReactSelectStyles = {
   }),
   indicatorsContainer: (base, state) => ({
     ...base,
-    backgroundColor: "#fff",
+    backgroundColor: state.isDisabled ? "#ecf0f1" : "#fff",
     borderTopRightRadius: "0.25rem",
     borderBottomRightRadius: "0.25rem"
   }),

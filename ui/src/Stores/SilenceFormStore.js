@@ -45,6 +45,7 @@ class SilenceFormStore {
     {
       inProgress: false,
       wasValidated: false,
+      silenceID: null,
       alertmanagers: [],
       matchers: [],
       startsAt: moment(),
@@ -77,6 +78,10 @@ class SilenceFormStore {
       resetProgress() {
         this.inProgress = false;
         this.wasValidated = false;
+      },
+
+      resetSilenceID() {
+        this.silenceID = null;
       },
 
       // append a new empty matcher to the list
@@ -135,6 +140,31 @@ class SilenceFormStore {
         this.matchers = matchers;
       },
 
+      fillFormFromSilence(alertmanager, silence) {
+        this.silenceID = silence.id;
+        this.alertmanagers = [
+          {
+            label: alertmanager.name,
+            value: alertmanager.publicURI
+          }
+        ];
+
+        const matchers = [];
+        for (const m of silence.matchers) {
+          const matcher = NewEmptyMatcher();
+          matcher.name = m.name;
+          matcher.values = [MatcherValueToObject(m.value)];
+          matcher.isRegex = m.isRegex;
+          matchers.push(matcher);
+        }
+        this.matchers = matchers;
+
+        this.startsAt = moment(silence.startsAt);
+        this.endsAt = moment(silence.endsAt);
+        this.comment = silence.comment;
+        this.author = silence.createdBy;
+      },
+
       verifyStarEnd() {
         const now = moment().second(0);
         if (this.startsAt.isBefore(now)) {
@@ -186,8 +216,12 @@ class SilenceFormStore {
           createdBy: this.author,
           comment: this.comment
         };
+        if (this.silenceID !== null) {
+          payload.id = this.silenceID;
+        }
         return payload;
       },
+
       get toDuration() {
         const data = {
           days: this.endsAt.diff(this.startsAt, "days"),
@@ -200,9 +234,11 @@ class SilenceFormStore {
     {
       resetStartEnd: action.bound,
       resetProgress: action.bound,
+      resetSilenceID: action.bound,
       addEmptyMatcher: action.bound,
       deleteMatcher: action.bound,
       fillMatchersFromGroup: action.bound,
+      fillFormFromSilence: action.bound,
       verifyStarEnd: action.bound,
       incStart: action.bound,
       decStart: action.bound,

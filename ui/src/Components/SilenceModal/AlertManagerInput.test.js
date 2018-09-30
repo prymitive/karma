@@ -148,4 +148,18 @@ describe("<AlertManagerInput />", () => {
       value: "http://am1.example.com/new"
     });
   });
+
+  it("is enabled when silenceFormStore.data.silenceID is null", () => {
+    silenceFormStore.data.silenceID = null;
+    const tree = MountedAlertManagerInput();
+    const select = tree.find("StateManager");
+    expect(select.props().isDisabled).toBeFalsy();
+  });
+
+  it("is disabled when silenceFormStore.data.silenceID is not null", () => {
+    silenceFormStore.data.silenceID = "1234";
+    const tree = MountedAlertManagerInput();
+    const select = tree.find("StateManager");
+    expect(select.props().isDisabled).toBe(true);
+  });
 });

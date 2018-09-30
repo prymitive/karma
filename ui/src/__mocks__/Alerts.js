@@ -49,4 +49,32 @@ const MockAlertGroup = (
   }
 });
 
-export { MockAnnotation, MockAlert, MockAlertGroup };
+const MockSilence = () => ({
+  comment: "Mocked Silence",
+  createdAt: "0001-01-01T00:00:00Z",
+  createdBy: "me@example.com",
+  startsAt: "2000-01-01T00:00:00Z",
+  endsAt: "2000-01-01T01:00:00Z",
+  id: "04d37636-2350-4878-b382-e0b50353230f",
+  jiraID: "",
+  jiraURL: "",
+  matchers: [
+    { name: "foo", value: "bar", isRegex: false },
+    { name: "baz", value: "regex", isRegex: true }
+  ]
+});
+
+const MockAlertmanager = () => ({
+  name: "default",
+  uri: "http://localhost",
+  publicURI: "http://am.example.com",
+  error: ""
+});
+
+export {
+  MockAnnotation,
+  MockAlert,
+  MockAlertGroup,
+  MockSilence,
+  MockAlertmanager
+};

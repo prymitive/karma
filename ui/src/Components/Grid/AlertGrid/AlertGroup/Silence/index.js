@@ -13,6 +13,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
+import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
+import { faCalendarCheck } from "@fortawesome/free-solid-svg-icons/faCalendarCheck";
+import { faCalendarTimes } from "@fortawesome/free-solid-svg-icons/faCalendarTimes";
+import { faFilter } from "@fortawesome/free-solid-svg-icons/faFilter";
 
 import {
   APIAlertAlertmanagerState,
@@ -20,8 +24,10 @@ import {
   APISilence
 } from "Models/API";
 import { AlertStore } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { StaticLabels, QueryOperators } from "Common/Query";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
+import { RenderLinkAnnotation } from "../Annotation";
 
 import "./index.css";
 
@@ -80,52 +86,68 @@ SilenceExpiryBadgeWithProgress.propTypes = {
   progress: PropTypes.number.isRequired
 };
 
-const SilenceDetails = ({ alertmanager, silence }) => {
-  let expiresClass = "secondary";
+const SilenceDetails = ({ alertmanager, silence, onEditSilence }) => {
+  let expiresClass = "";
   let expiresLabel = "Expires";
   if (moment(silence.endsAt) < moment()) {
-    expiresClass = "danger";
+    expiresClass = "text-danger";
     expiresLabel = "Expired";
   }
 
   return (
     <div className="mt-1">
-      <FilteringLabel
-        name={StaticLabels.AlertManager}
-        value={alertmanager.name}
-      />
-      <a
-        className="badge badge-secondary text-nowrap text-truncate px-1 mr-1"
-        href={`${alertmanager.uri}/#/silences/${silence.id}`}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {silence.id}
-      </a>
-      <span className="badge badge-secondary text-nowrap text-truncate px-1 mr-1">
-        Silenced <Moment fromNow>{silence.startsAt}</Moment>
-      </span>
-      <span
-        className={`badge badge-${expiresClass} text-nowrap text-truncate px-1 mr-1`}
-      >
-        {expiresLabel} <Moment fromNow>{silence.endsAt}</Moment>
-      </span>
-      {silence.matchers.map(matcher => (
-        <span
-          key={hash(matcher)}
-          className="badge badge-success text-nowrap text-truncate px-1 mr-1"
-        >
-          {matcher.name}
-          {matcher.isRegex ? QueryOperators.Regex : QueryOperators.Equal}
-          {matcher.value}
+      <div>
+        <FilteringLabel
+          name={StaticLabels.AlertManager}
+          value={alertmanager.name}
+        />
+        <RenderLinkAnnotation
+          name={silence.id}
+          value={`${alertmanager.uri}/#/silences/${silence.id}`}
+        />
+      </div>
+      <div>
+        <span className="badge text-nowrap text-truncate px-1 mr-1">
+          <FontAwesomeIcon className="text-muted mr-1" icon={faCalendarCheck} />
+          Created <Moment fromNow>{silence.startsAt}</Moment>
         </span>
-      ))}
+        <span
+          className={`badge ${expiresClass} text-nowrap text-truncate px-1 mr-1`}
+        >
+          <FontAwesomeIcon className="text-muted mr-1" icon={faCalendarTimes} />
+          {expiresLabel} <Moment fromNow>{silence.endsAt}</Moment>
+        </span>
+        <span
+          className="badge badge-secondary text-nowrap text-truncate px-1 cursor-pointer components-label-with-hover"
+          onClick={onEditSilence}
+        >
+          <FontAwesomeIcon className="mr-1" icon={faEdit} />
+          Edit
+        </span>
+      </div>
+      <div>
+        <span className="badge text-nowrap text-truncate px-1 mr-1">
+          <FontAwesomeIcon className="text-muted mr-1" icon={faFilter} />
+          Matchers:
+        </span>
+        {silence.matchers.map(matcher => (
+          <span
+            key={hash(matcher)}
+            className="badge badge-light text-nowrap text-truncate px-1 mr-1"
+          >
+            {matcher.name}
+            {matcher.isRegex ? QueryOperators.Regex : QueryOperators.Equal}
+            {matcher.value}
+          </span>
+        ))}
+      </div>
     </div>
   );
 };
 SilenceDetails.propTypes = {
   alertmanager: APIAlertmanagerUpstream.isRequired,
-  silence: APISilence.isRequired
+  silence: APISilence.isRequired,
+  onEditSilence: PropTypes.func.isRequired
 };
 
 //
@@ -148,6 +170,7 @@ const Silence = inject("alertStore")(
     class Silence extends Component {
       static propTypes = {
         alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+        silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
         alertmanagerState: APIAlertAlertmanagerState.isRequired,
         silenceID: PropTypes.string.isRequired,
         afterUpdate: PropTypes.func.isRequired
@@ -231,6 +254,17 @@ const Silence = inject("alertStore")(
         }
       };
 
+      onEditSilence = () => {
+        const { silenceFormStore } = this.props;
+
+        const silence = this.getSilence();
+        const alertmanager = this.getAlertmanager();
+
+        silenceFormStore.data.fillFormFromSilence(alertmanager, silence);
+        silenceFormStore.data.resetProgress();
+        silenceFormStore.toggle.show();
+      };
+
       componentDidUpdate() {
         const { afterUpdate } = this.props;
         afterUpdate();
@@ -282,7 +316,11 @@ const Silence = inject("alertStore")(
               </span>
             </div>
             {this.collapse.value ? null : (
-              <SilenceDetails alertmanager={alertmanager} silence={silence} />
+              <SilenceDetails
+                alertmanager={alertmanager}
+                silence={silence}
+                onEditSilence={this.onEditSilence}
+              />
             )}
           </div>
         );

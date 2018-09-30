@@ -44,4 +44,18 @@ describe("<SilenceModalContent />", () => {
     const ctrl = tree.find("SilenceSubmitController");
     expect(ctrl).toHaveLength(1);
   });
+
+  it("title is 'Add new silence' when silenceFormStore.data.silenceID is null", () => {
+    silenceFormStore.data.silenceID = null;
+    const tree = ShallowSilenceModalContent();
+    const title = tree.find(".modal-title");
+    expect(title.text()).toBe("Add new silence");
+  });
+
+  it("title is 'Editing silence 12345' when silenceFormStore.data.silenceID is '12345'", () => {
+    silenceFormStore.data.silenceID = "12345";
+    const tree = ShallowSilenceModalContent();
+    const title = tree.find(".modal-title");
+    expect(title.text()).toBe("Editing silence 12345");
+  });
 });

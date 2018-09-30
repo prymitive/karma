@@ -42,7 +42,11 @@ const SilenceModalContent = observer(
           <div className="modal-dialog modal-lg" role="document">
             <div className="modal-content">
               <div className="modal-header">
-                <h5 className="modal-title">Add new silence</h5>
+                <h5 className="modal-title">
+                  {silenceFormStore.data.silenceID === null
+                    ? "Add new silence"
+                    : `Editing silence ${silenceFormStore.data.silenceID}`}
+                </h5>
                 <button type="button" className="close" onClick={onHide}>
                   <span className="align-middle">&times;</span>
                 </button>

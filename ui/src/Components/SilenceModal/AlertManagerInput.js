@@ -70,6 +70,11 @@ const AlertManagerInput = observer(
     render() {
       const { alertStore, silenceFormStore } = this.props;
 
+      const extraProps = {};
+      if (silenceFormStore.data.silenceID !== null) {
+        extraProps.isDisabled = true;
+      }
+
       return (
         <ReactSelect
           styles={ReactSelectStyles}
@@ -87,6 +92,7 @@ const AlertManagerInput = observer(
           }
           isMulti
           onChange={this.onChange}
+          {...extraProps}
         />
       );
     }
