@@ -27,7 +27,7 @@ type Color struct {
 // LabelColors holds color information for labels that should be colored in the UI
 // every configured label will have a distinct coloring for each value
 type LabelColors struct {
-	Font       Color `json:"font"`
+	Brightness int32 `json:"brightness"`
 	Background Color `json:"background"`
 }
 

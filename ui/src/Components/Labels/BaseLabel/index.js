@@ -49,12 +49,10 @@ class BaseLabel extends Component {
         c.background.blue,
         c.background.alpha
       ].join(", ")})`;
-      style["color"] = `rgba(${[
-        c.font.red,
-        c.font.green,
-        c.font.blue,
-        c.font.alpha
-      ].join(", ")})`;
+      style["color"] =
+        c.brightness <= 125
+          ? "rgba(255, 255, 255, 255)"
+          : "rgba(44, 62, 80, 255)";
     }
     return style;
   }
