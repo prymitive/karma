@@ -182,3 +182,44 @@ describe("<SilenceForm />", () => {
     );
   });
 });
+
+describe("<SilenceForm /> in edit mode", () => {
+  it("opening form with silenceID set disables AlertManagerInput", () => {
+    silenceFormStore.data.silenceID = "12345";
+    const tree = MountedSilenceForm();
+    const select = tree.find("StateManager").at(0);
+    expect(select.props().isDisabled).toBe(true);
+  });
+
+  it("opening form with silenceID shows reset button", () => {
+    silenceFormStore.data.silenceID = "12345";
+    const tree = MountedSilenceForm();
+    const button = tree.find("button.btn-outline-danger");
+    expect(button).toHaveLength(1);
+  });
+
+  it("clicking on Reset button unsets silenceFormStore.data.silenceID", () => {
+    silenceFormStore.data.silenceID = "12345";
+    const tree = MountedSilenceForm();
+    const button = tree.find("button.btn-outline-danger");
+    button.simulate("click");
+    expect(silenceFormStore.data.silenceID).toBeNull();
+  });
+
+  it("clicking on Reset button hides it", () => {
+    silenceFormStore.data.silenceID = "12345";
+    const tree = MountedSilenceForm();
+    const button = tree.find("button.btn-outline-danger");
+    button.simulate("click");
+    expect(tree.find("button.btn-outline-danger")).toHaveLength(0);
+  });
+
+  it("clicking on Reset button enables AlertManagerInput", () => {
+    silenceFormStore.data.silenceID = "12345";
+    const tree = MountedSilenceForm();
+    const button = tree.find("button.btn-outline-danger");
+    button.simulate("click");
+    const select = tree.find("StateManager").at(0);
+    expect(select.props().isDisabled).toBeFalsy();
+  });
+});

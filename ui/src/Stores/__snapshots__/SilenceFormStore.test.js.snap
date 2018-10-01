@@ -3,7 +3,7 @@
 exports[`SilenceFormStore.data toAlertmanagerPayload creates payload that matches snapshot 1`] = `
 Object {
   "comment": "toAlertmanagerPayload test",
-  "createdBy": "",
+  "createdBy": "me@example.com",
   "endsAt": "2000-02-01T01:00:00.000Z",
   "matchers": Array [
     Object {

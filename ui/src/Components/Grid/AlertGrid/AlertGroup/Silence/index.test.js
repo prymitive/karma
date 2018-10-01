@@ -3,13 +3,14 @@ import React from "react";
 import { toJS } from "mobx";
 import { Provider } from "mobx-react";
 
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
 import { advanceTo, clear } from "jest-date-mock";
 
 import { AlertStore } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Silence, SilenceDetails } from ".";
 
 const mockAfterUpdate = jest.fn();
@@ -47,6 +48,7 @@ const silence = {
 };
 
 let alertStore;
+let silenceFormStore;
 
 beforeEach(() => {
   advanceTo(new Date(2000, 0, 1, 15, 0, 0));
@@ -71,6 +73,7 @@ beforeEach(() => {
       "4cf5fd82-1edd-4169-99d1-ff8415e72179": silence
     }
   };
+  silenceFormStore = new SilenceFormStore();
 });
 
 afterEach(() => {
@@ -83,6 +86,7 @@ const MountedSilence = alertmanagerState => {
     <Provider alertStore={alertStore}>
       <Silence
         alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
         alertmanagerState={alertmanagerState}
         silenceID="4cf5fd82-1edd-4169-99d1-ff8415e72179"
         afterUpdate={mockAfterUpdate}
@@ -91,13 +95,16 @@ const MountedSilence = alertmanagerState => {
   );
 };
 
-const ShallowSilenceDetails = () => {
-  return shallow(
-    <SilenceDetails
-      alertmanager={alertStore.data.upstreams.instances[0]}
-      silence={silence}
-    />
-  );
+const MountedSilenceDetails = onEditSilence => {
+  return mount(
+    <Provider alertStore={alertStore}>
+      <SilenceDetails
+        alertmanager={alertStore.data.upstreams.instances[0]}
+        silence={silence}
+        onEditSilence={onEditSilence}
+      />
+    </Provider>
+  ).find("SilenceDetails");
 };
 
 describe("<Silence />", () => {
@@ -190,24 +197,49 @@ describe("<Silence />", () => {
       name: "notDefault"
     });
   });
+
+  it("clicking on silence edit button calls silenceFormStore.data.fillFormFromSilence", () => {
+    const fillSpy = jest.spyOn(silenceFormStore.data, "fillFormFromSilence");
+    const tree = MountedSilence(alertmanager);
+
+    // expand silence
+    tree.find("a.float-right.cursor-pointer").simulate("click");
+
+    const button = tree.find(".badge-secondary.components-label-with-hover");
+    expect(button.text()).toBe("Edit");
+    button.simulate("click");
+    expect(fillSpy).toHaveBeenCalled();
+  });
+
+  it("clicking on silence edit button opens the silence form", () => {
+    const tree = MountedSilence(alertmanager);
+
+    // expand silence
+    tree.find("a.float-right.cursor-pointer").simulate("click");
+
+    const button = tree.find(".badge-secondary.components-label-with-hover");
+    expect(button.text()).toBe("Edit");
+    button.simulate("click");
+    expect(silenceFormStore.toggle.visible).toBe(true);
+  });
 });
 
 describe("<SilenceDetails />", () => {
-  it("unexpired silence endsAt label uses 'secondary' class", () => {
-    const tree = ShallowSilenceDetails();
+  it("unexpired silence endsAt label doesn't use 'danger' class", () => {
+    const tree = MountedSilenceDetails(jest.fn());
     const endsAt = tree.find("span.badge").at(1);
-    expect(endsAt.html()).toMatch(/badge-secondary/);
+    expect(endsAt.html()).not.toMatch(/text-danger/);
   });
 
   it("expired silence endsAt label uses 'danger' class", () => {
     advanceTo(new Date(2000, 0, 1, 23, 0, 0));
-    const tree = ShallowSilenceDetails();
-    const endsAt = tree.find("span.badge").at(1);
-    expect(endsAt.html()).toMatch(/badge-danger/);
+    const tree = MountedSilenceDetails(jest.fn());
+    const endsAt = tree.find("span.badge").at(2);
+    expect(endsAt.html()).toMatch(/text-danger/);
   });
 
   it("id links to Alertmanager silence view via alertmanager.uri", () => {
-    const tree = ShallowSilenceDetails();
+    const tree = MountedSilenceDetails(jest.fn());
     const link = tree.find("a");
     expect(link.props().href).toBe(
       "file:///mock/#/silences/4cf5fd82-1edd-4169-99d1-ff8415e72179"

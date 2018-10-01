@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons/faCommentDots";
+import { faUndoAlt } from "@fortawesome/free-solid-svg-icons/faUndoAlt";
 import { faSave } from "@fortawesome/free-regular-svg-icons/faSave";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
@@ -78,8 +79,12 @@ const SilenceForm = observer(
     componentDidMount() {
       const { silenceFormStore, settingsStore } = this.props;
 
-      // reset startsAt & endsAt on every mount
-      silenceFormStore.data.resetStartEnd();
+      // reset startsAt & endsAt on every mount, unless we're editing a silence
+      if (silenceFormStore.data.silenceID === null) {
+        silenceFormStore.data.resetStartEnd();
+      } else {
+        silenceFormStore.data.verifyStarEnd();
+      }
 
       if (silenceFormStore.data.matchers.length === 0) {
         silenceFormStore.data.addEmptyMatcher();
@@ -177,10 +182,22 @@ const SilenceForm = observer(
                 icon={this.previewCollapse.hidden ? faChevronUp : faChevronDown}
               />
             </a>
-            <button type="submit" className="btn btn-outline-primary">
-              <FontAwesomeIcon icon={faSave} className="mr-1" />
-              Submit
-            </button>
+            <span>
+              {silenceFormStore.data.silenceID === null ? null : (
+                <button
+                  type="button"
+                  className="btn btn-outline-danger mr-2"
+                  onClick={silenceFormStore.data.resetSilenceID}
+                >
+                  <FontAwesomeIcon icon={faUndoAlt} className="mr-1" />
+                  Reset
+                </button>
+              )}
+              <button type="submit" className="btn btn-outline-primary">
+                <FontAwesomeIcon icon={faSave} className="mr-1" />
+                Submit
+              </button>
+            </span>
           </div>
           {this.previewCollapse.hidden ? null : (
             <SilencePreview silenceFormStore={silenceFormStore} />
