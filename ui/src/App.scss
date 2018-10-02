@@ -14,9 +14,9 @@ $dark: #3b4247;
 // fix active tab color, for some reason it ends up with $primary as bg color
 $nav-tabs-link-active-bg: #fff;
 
-@import "../node_modules/bootswatch/dist/flatly/variables";
-@import "../node_modules/bootstrap/scss/bootstrap";
-@import "../node_modules/bootswatch/dist/flatly/bootswatch";
+@import "~bootswatch/dist/flatly/variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootswatch/dist/flatly/bootswatch";
 
 // negative margin used for silence expiry badges with progress
 .nmb-05 {
