@@ -3,7 +3,7 @@ RUN apk add --update make git
 COPY . /karma
 RUN make -C /karma ui
 
-FROM golang:1.11.0-alpine as go-builder
+FROM golang:1.11.1-alpine as go-builder
 COPY --from=nodejs-builder /karma /go/src/github.com/prymitive/karma
 ARG VERSION
 RUN apk add --update make git
