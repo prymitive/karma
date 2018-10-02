@@ -7,11 +7,11 @@ defaults_go: &DEFAULTS_GO
 
 defaults_js: &DEFAULTS_JS
   language: node_js
-  # install defaults to "npm install", which is done via make
+  node_js: "8.12.0"
+  # we run make to install everything
   install: []
   cache:
-    directories:
-      - ui/node_modules
+    yarn: true
 
 jobs:
   include:
@@ -63,10 +63,6 @@ jobs:
       cache:
         # disable cache so we always build from scratch
         directories: []
-      before_script:
-        # this stage needs to build everything including assets file and that
-        # requires running webpack, so we need nodejs here
-        - nvm install $(< .nvmrc)
       script:
         # compile assets via webpack and build those into bindata_assetfs.go file
         - make bindata_assetfs.go
