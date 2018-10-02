@@ -36,20 +36,11 @@ To update specific vendor package run `dep` manually:
 
 See [dep](https://github.com/golang/dep) documentation for details.
 
-## Javascript & CSS assets and HTML templates
+## Javascript & CSS assets
 
-JS and CSS assets are managed via [npm](https://www.npmjs.com/) and compiled
-into bundle files using [webpack](https://webpack.js.org/).
-
-To add a new JS asset install it using npm with the `--save` flag, this will
-add it to the `package.json`. Now you can `require()` it in javascript code.
-JS modules are written using [CommonJS](http://www.commonjs.org/specs/modules/1.0/)
-syntax. Webpack will use [babel](https://babeljs.io/) to transform JS code to
-[ES2015](https://babeljs.io/docs/plugins/preset-es2015/).
-
-During development you can set `NODE_ENV=test` before running any make targets,
-this will prevent webpack from using expensive optimizations only needed when
-generating production assets.
+UI is written using [React](https://reactjs.org), follow user guide for
+[create-react-app](https://github.com/facebook/create-react-app) to make
+changes to the UI code.
 
 ## Running
 
