@@ -46,7 +46,6 @@ endif
 
 .build/artifacts-ui.ok: .build/deps-build-node.ok $(ASSET_SOURCES)
 	@mkdir -p .build
-	cd ui && yarn build-css
 	cd ui && yarn build
 	touch $@
 
