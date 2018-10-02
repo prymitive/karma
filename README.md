@@ -1,7 +1,5 @@
 # karma
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/prymitive/karma.svg)](https://greenkeeper.io/)
-
 Alert dashboard for
 [Prometheus Alertmanager](https://prometheus.io/docs/alerting/alertmanager/).
 
