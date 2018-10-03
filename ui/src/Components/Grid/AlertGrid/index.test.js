@@ -18,6 +18,10 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
 });
 
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 const ShallowAlertGrid = () => {
   return shallow(
     <AlertGrid

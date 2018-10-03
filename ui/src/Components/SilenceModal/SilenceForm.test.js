@@ -110,7 +110,7 @@ describe("<SilenceForm /> preview", () => {
 
   it("clicking on the toggle icon toggles SilencePreview", () => {
     const tree = ShallowSilenceForm();
-    const button = tree.find("a.btn.cursor-pointer.text-muted");
+    const button = tree.find(".btn.cursor-pointer.text-muted");
     expect(tree.find("SilencePreview")).toHaveLength(0);
     button.simulate("click");
     expect(tree.find("SilencePreview")).toHaveLength(1);

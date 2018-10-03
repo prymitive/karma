@@ -12,7 +12,7 @@ import { Fetcher } from "Components/Fetcher";
 import { FaviconBadge } from "Components/FaviconBadge";
 import { ErrorBoundary } from "./ErrorBoundary";
 
-import "./App.css";
+import "./App.scss";
 
 class App extends Component {
   static propTypes = {

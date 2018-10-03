@@ -17,7 +17,7 @@ exports[`<Silence /> matches snapshot when data is present in alertStore 1`] = `
     <span class=\\"text-muted my-1\\">
       Fake silence
       <span class=\\"blockquote-footer pt-1\\">
-        <a class=\\"float-right cursor-pointer\\">
+        <span class=\\"float-right cursor-pointer\\">
           <svg aria-hidden=\\"true\\"
                data-prefix=\\"fas\\"
                data-icon=\\"chevron-up\\"
@@ -31,7 +31,7 @@ exports[`<Silence /> matches snapshot when data is present in alertStore 1`] = `
             >
             </path>
           </svg>
-        </a>
+        </span>
         <cite class=\\"components-grid-alertgroup-silences mr-2\\">
           me@example.com
         </cite>
@@ -65,7 +65,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
     <span class=\\"text-muted my-1\\">
       Fake silence
       <span class=\\"blockquote-footer pt-1\\">
-        <a class=\\"float-right cursor-pointer\\">
+        <span class=\\"float-right cursor-pointer\\">
           <svg aria-hidden=\\"true\\"
                data-prefix=\\"fas\\"
                data-icon=\\"chevron-down\\"
@@ -79,7 +79,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
             >
             </path>
           </svg>
-        </a>
+        </span>
         <cite class=\\"components-grid-alertgroup-silences mr-2\\">
           me@example.com
         </cite>

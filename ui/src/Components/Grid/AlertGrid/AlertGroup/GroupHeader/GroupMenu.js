@@ -114,7 +114,7 @@ const GroupMenu = observer(
         <Manager>
           <Reference>
             {({ ref }) => (
-              <a
+              <span
                 ref={ref}
                 onClick={this.collapse.toggle}
                 className={`text-muted cursor-pointer badge text-nowrap text-truncate pl-0 components-grid-alertgroup-${
@@ -123,7 +123,7 @@ const GroupMenu = observer(
                 data-toggle="dropdown"
               >
                 <FontAwesomeIcon icon={faEllipsisV} />
-              </a>
+              </span>
             )}
           </Reference>
           <DropdownSlide in={!this.collapse.value} unmountOnExit>

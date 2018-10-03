@@ -12,7 +12,7 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Duration } from "./Duration";
 import { HourMinute } from "./HourMinute";
 
-import "./index.css";
+import "./index.scss";
 
 const OffsetBadge = ({ startDate, endDate, prefixLabel }) => {
   const days = endDate.diff(startDate, "days");
@@ -36,12 +36,12 @@ OffsetBadge.propTypes = {
 
 const Tab = ({ title, active, onClick }) => (
   <li className="nav-item">
-    <a
+    <span
       className={`nav-link cursor-pointer ${active ? "active" : ""}`}
       onClick={onClick}
     >
       {title}
-    </a>
+    </span>
   </li>
 );
 Tab.propTypes = {

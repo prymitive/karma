@@ -40,28 +40,37 @@
     "react-onclickoutside": "6.7.1",
     "react-popper": "1.0.2",
     "react-resize-detector": "3.1.2",
-    "react-scripts": "1.1.5",
+    "react-scripts": "2.0.3",
     "react-select": "2.0.0",
     "react-transition-group": "2.5.0"
   },
   "scripts": {
     "start": "NODE_ENV=dev REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "build-css": "node_modules/.bin/node-sass --recursive src/ -o src/"
+    "test": "react-scripts test"
   },
   "devDependencies": {
     "@commitlint/travis-cli": "7.1.2",
     "diffable-html": "3.0.0",
     "enzyme": "3.6.0",
     "enzyme-adapter-react-16": "1.5.0",
-    "eslint-plugin-react": "7.11.1",
     "jest-canvas-mock": "1.1.0",
     "jest-date-mock": "1.0.5",
     "jest-fetch-mock": "1.6.6",
-    "jest-localstorage-mock": "2.2.0",
     "markdownlint-cli": "0.13.0",
     "node-sass": "4.9.3"
-  }
+  },
+  "browserslist": [
+    ">= 1%",
+    "last 1 major version",
+    "not dead",
+    "Chrome >= 45",
+    "Firefox >= 38",
+    "Edge >= 12",
+    "Explorer >= 10",
+    "iOS >= 9",
+    "Safari >= 9",
+    "Android >= 4.4",
+    "Opera >= 30"
+  ]
 }

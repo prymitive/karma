@@ -13,14 +13,14 @@ import { Configuration } from "./Configuration";
 import { Help } from "./Help";
 
 const Tab = ({ title, active, onClick }) => (
-  <a
+  <span
     className={`nav-item nav-link cursor-pointer ${
       active ? "active" : "text-primary"
     }`}
     onClick={onClick}
   >
     {title}
-  </a>
+  </span>
 );
 Tab.propTypes = {
   title: PropTypes.string.isRequired,

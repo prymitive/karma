@@ -11,6 +11,10 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
 });
 
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 const MountedFaviconBadge = () => {
   return mount(<FaviconBadge alertStore={alertStore} />);
 };

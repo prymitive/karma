@@ -53,9 +53,12 @@ const SilenceModal = observer(
       return (
         <React.Fragment>
           <li className="nav-item">
-            <a className="nav-link cursor-pointer" onClick={this.toggleModal}>
+            <span
+              className="nav-link cursor-pointer"
+              onClick={this.toggleModal}
+            >
               <FontAwesomeIcon icon={faBellSlash} />
-            </a>
+            </span>
           </li>
           <MountFade in={silenceFormStore.toggle.visible} unmountOnExit>
             <SilenceModalContent

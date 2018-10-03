@@ -39,7 +39,7 @@ describe("<GroupMenu />", () => {
   it("clicking toggle sets collapse value to 'false'", () => {
     const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {});
     const tree = MountedGroupMenu(group);
-    const toggle = tree.find("a.cursor-pointer");
+    const toggle = tree.find(".cursor-pointer");
     toggle.simulate("click");
     expect(tree.instance().collapse.value).toBe(false);
   });
@@ -48,7 +48,7 @@ describe("<GroupMenu />", () => {
     const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {});
     const tree = MountedGroupMenu(group);
 
-    const toggle = tree.find("a.cursor-pointer");
+    const toggle = tree.find(".cursor-pointer");
     toggle.simulate("click");
     expect(tree.instance().collapse.value).toBe(false);
 

@@ -5,6 +5,7 @@ import { observer } from "mobx-react";
 
 import { DefaultLabelClass } from "Common/Colors";
 import { QueryOperators } from "Common/Query";
+import { AlertStore } from "Stores/AlertStore";
 import { BaseLabel } from "Components/Labels/BaseLabel";
 
 import "./index.css";
@@ -12,7 +13,9 @@ import "./index.css";
 const HistoryLabel = observer(
   class HistoryLabel extends BaseLabel {
     static propTypes = {
-      ...BaseLabel.propTypes,
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+      name: PropTypes.string.isRequired,
+      value: PropTypes.string.isRequired,
       matcher: PropTypes.string.isRequired
     };
 

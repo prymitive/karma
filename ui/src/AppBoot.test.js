@@ -2,7 +2,16 @@ import * as Sentry from "@sentry/browser";
 
 import { SettingsElement, SetupSentry, ParseDefaultFilters } from "./AppBoot";
 
+beforeAll(() => {
+  // https://github.com/jamesmfriedman/rmwc/issues/103#issuecomment-360007979
+  Object.defineProperty(window.HTMLElement.prototype, "dataset", {
+    writable: true,
+    value: {}
+  });
+});
+
 afterEach(() => {
+  jest.restoreAllMocks();
   // reset sentry state before each mock, that's the only way to revert
   // Sentry.init() that I found
   global.__SENTRY__ = {};

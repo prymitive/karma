@@ -1,4 +1,4 @@
-@import "../../../../node_modules/bootswatch/dist/flatly/variables";
+@import "~bootswatch/dist/flatly/variables";
 
 $datepicker__background-color: $white;
 $datepicker__border-color: $gray-300;
@@ -12,7 +12,7 @@ $datepicker__font-size: $font-size-base;
 $datepicker__font-family: $font-family-sans-serif;
 $datepicker__border-radius: 0.25rem;
 
-@import "../../../../node_modules/react-datepicker/src/stylesheets/datepicker.scss";
+@import "~react-datepicker/src/stylesheets/datepicker.scss";
 
 .react-datepicker__day:not(.react-datepicker__day--disabled) {
   border-width: 1px;
