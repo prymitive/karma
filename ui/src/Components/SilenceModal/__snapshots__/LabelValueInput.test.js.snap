@@ -3,12 +3,12 @@
 exports[`<LabelValueInput /> matches snapshot 1`] = `
 "
 <div class=\\"css-10nd86i\\">
-  <div class=\\"css-1qcoghz\\">
-    <div class=\\"css-1tmgesh\\">
+  <div class=\\"css-7jxtyj\\">
+    <div class=\\"css-10war8y\\">
       <div class=\\"css-1492t68\\">
         Label value
       </div>
-      <div class=\\"css-rsyb7x\\">
+      <div class=\\"css-1g6gooi\\">
         <div class
              style=\\"display:inline-block\\"
         >
@@ -19,6 +19,7 @@ exports[`<LabelValueInput /> matches snapshot 1`] = `
                  id=\\"react-select-silence-input-label-value-1-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
+                 theme=\\"[object Object]\\"
                  value
                  aria-autocomplete=\\"list\\"
                  style=\\"box-sizing:content-box;width:1px;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"

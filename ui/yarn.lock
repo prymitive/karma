@@ -9292,10 +9292,10 @@ react-scripts@2.0.3:
   optionalDependencies:
     fsevents "1.2.4"
 
-react-select@2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.0.0.tgz#7e7ba31eff360b37ffc52b343a720f4248bd9b3b"
-  integrity sha512-i2yWg8tbsY37iPimIvQ0TtIrAzxgGWQTRDZrZPQ2QVNkyHPxDartMkzf2x2Enm6wRkt9I5+pEKSIcvkwIkkiAQ==
+react-select@2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.1.0.tgz#95977a763b14f2fc42255a510acd73bef9561f7d"
+  integrity sha512-3SdRAKX64hNzDF/DT1J1Ei3fIoQlLMkMJuB3yOY6oOYwl2A9SFJMsqXLgsveiu7UGrdo+4lyZi3mSqvw8qeGMA==
   dependencies:
     classnames "^2.2.5"
     emotion "^9.1.2"
