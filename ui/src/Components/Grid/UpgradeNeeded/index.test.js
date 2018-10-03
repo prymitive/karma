@@ -22,7 +22,9 @@ describe("<UpgradeNeeded />", () => {
   });
 
   it("calls window.location.reload after timer is done", () => {
-    const reloadSpy = jest.spyOn(global.window.location, "reload");
+    const reloadSpy = jest
+      .spyOn(global.window.location, "reload")
+      .mockImplementation(() => {});
     mount(<UpgradeNeeded newVersion="1.2.3" />);
     jest.runOnlyPendingTimers();
     expect(reloadSpy).toBeCalled();

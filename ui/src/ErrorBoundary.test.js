@@ -30,8 +30,12 @@ const MountedFailingComponent = () => {
 
 describe("<ErrorBoundary />", () => {
   it("matches snapshot", () => {
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
     const tree = MountedFailingComponent();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(consoleSpy).toHaveBeenCalled();
   });
 
   it("componentDidCatch should catch an error from FailingComponent", () => {
