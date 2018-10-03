@@ -36,10 +36,13 @@ describe("<App />", () => {
       })
     );
 
+    // https://github.com/facebook/jest/issues/6798#issuecomment-412871616
+    const getItemSpy = jest.spyOn(Storage.prototype, "getItem");
+
     const tree = shallow(<App defaultFilters={["ignore=defaults"]} />);
     const instance = tree.instance();
 
-    expect(localStorage.getItem).toHaveBeenCalledWith("savedFilters");
+    expect(getItemSpy).toHaveBeenCalledWith("savedFilters");
 
     expect(instance.alertStore.filters.values).toHaveLength(2);
     expect(instance.alertStore.filters.values[0]).toMatchObject(
@@ -48,9 +51,11 @@ describe("<App />", () => {
     expect(instance.alertStore.filters.values[1]).toMatchObject(
       NewUnappliedFilter("abc!=cba")
     );
+
+    getItemSpy.mockRestore();
   });
 
-  it("ignores saved filters if 'preset' key is falsey (use passed defaults)", () => {
+  it("ignores saved filters if 'present' key is falsey (use passed defaults)", () => {
     expect(window.location.search).toBe("");
     localStorage.setItem(
       "savedFilters",
@@ -60,15 +65,20 @@ describe("<App />", () => {
       })
     );
 
+    // https://github.com/facebook/jest/issues/6798#issuecomment-412871616
+    const getItemSpy = jest.spyOn(Storage.prototype, "getItem");
+
     const tree = shallow(<App defaultFilters={["use=defaults"]} />);
     const instance = tree.instance();
 
-    expect(localStorage.getItem).toHaveBeenCalledWith("savedFilters");
+    expect(getItemSpy).toHaveBeenCalledWith("savedFilters");
 
     expect(instance.alertStore.filters.values).toHaveLength(1);
     expect(instance.alertStore.filters.values[0]).toMatchObject(
       NewUnappliedFilter("use=defaults")
     );
+
+    getItemSpy.mockRestore();
   });
 
   it("uses filters passed via ?q= query args (ignoring saved filters and passed defaults)", () => {

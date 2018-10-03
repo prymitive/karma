@@ -4,9 +4,6 @@ import Adapter from "enzyme-adapter-react-16";
 // https://github.com/airbnb/enzyme
 Enzyme.configure({ adapter: new Adapter() });
 
-// localStorage is used for Settings store
-import("jest-localstorage-mock");
-
 // favico.js needs canvas
 import("jest-canvas-mock");
 
