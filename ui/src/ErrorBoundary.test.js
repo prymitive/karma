@@ -8,12 +8,16 @@ import * as Sentry from "@sentry/browser";
 
 import { ErrorBoundary } from "./ErrorBoundary";
 
+let consoleSpy;
+
 beforeEach(() => {
   jest.useFakeTimers();
+  consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
 });
 
 afterEach(() => {
   jest.clearAllTimers();
+  jest.restoreAllMocks();
 });
 
 const FailingComponent = () => {
@@ -30,9 +34,6 @@ const MountedFailingComponent = () => {
 
 describe("<ErrorBoundary />", () => {
   it("matches snapshot", () => {
-    const consoleSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
     const tree = MountedFailingComponent();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
     expect(consoleSpy).toHaveBeenCalled();
@@ -65,9 +66,6 @@ describe("<ErrorBoundary />", () => {
   });
 
   it("calls window.location.reload after 60s", () => {
-    const consoleSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
     const reloadSpy = jest.spyOn(global.window.location, "reload");
     MountedFailingComponent();
     jest.runTimersToTime(1000 * 61);
@@ -76,7 +74,6 @@ describe("<ErrorBoundary />", () => {
   });
 
   it("reloadSeconds is 40 after 20s with multiple exceptions", () => {
-    jest.spyOn(console, "error").mockImplementation(() => {});
     const tree = MountedFailingComponent();
     const instance = tree.instance();
 

@@ -13,6 +13,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.clearAllTimers();
+  jest.restoreAllMocks();
 });
 
 describe("<UpgradeNeeded />", () => {

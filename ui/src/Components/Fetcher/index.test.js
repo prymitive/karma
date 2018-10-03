@@ -34,6 +34,7 @@ beforeEach(() => {
 afterEach(() => {
   jest.clearAllTimers();
   jest.clearAllMocks();
+  jest.restoreAllMocks();
   clear();
 });
 

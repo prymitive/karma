@@ -11,6 +11,7 @@ beforeAll(() => {
 });
 
 afterEach(() => {
+  jest.restoreAllMocks();
   // reset sentry state before each mock, that's the only way to revert
   // Sentry.init() that I found
   global.__SENTRY__ = {};

@@ -18,6 +18,10 @@ beforeEach(() => {
   onHide.mockClear();
 });
 
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 const FakeModal = () => {
   return mount(
     <MainModalContent

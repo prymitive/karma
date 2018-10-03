@@ -18,6 +18,10 @@ beforeEach(() => {
   fetch.resetMocks();
 });
 
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 const MountedInput = () => {
   return mount(
     <FilterInput alertStore={alertStore} settingsStore={settingsStore} />

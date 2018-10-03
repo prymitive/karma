@@ -26,6 +26,10 @@ beforeEach(() => {
   ];
 });
 
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 const ShallowLabelNameInput = isValid => {
   return shallow(<LabelNameInput matcher={matcher} isValid={isValid} />);
 };

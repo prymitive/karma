@@ -12,6 +12,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  jest.restoreAllMocks();
   window.history.pushState({}, "App", "/");
 });
 

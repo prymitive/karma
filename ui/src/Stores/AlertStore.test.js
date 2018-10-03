@@ -14,6 +14,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  jest.restoreAllMocks();
   // wipe REACT_APP_BACKEND_URI env on each run as it's used by some tests
   delete process.env.REACT_APP_BACKEND_URI;
 });
@@ -279,6 +280,7 @@ describe("AlertStore.fetch", () => {
   });
 
   it("unapplied filters are marked as applied on fetch error", async () => {
+    jest.spyOn(console, "trace").mockImplementation(() => {});
     fetch.mockReject("Fetch error");
     const store = new AlertStore([NewUnappliedFilter("foo")]);
     store.filters.values[0].applied = false;
