@@ -295,14 +295,14 @@ const Silence = inject("alertStore")(
               <span className="text-muted my-1">
                 <SilenceComment silence={silence} />
                 <span className="blockquote-footer pt-1">
-                  <a
+                  <span
                     className="float-right cursor-pointer"
                     onClick={this.collapse.toggle}
                   >
                     <FontAwesomeIcon
                       icon={this.collapse.value ? faChevronUp : faChevronDown}
                     />
-                  </a>
+                  </span>
                   <cite className="components-grid-alertgroup-silences mr-2">
                     {silence.createdBy}
                   </cite>

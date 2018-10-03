@@ -36,12 +36,12 @@ OffsetBadge.propTypes = {
 
 const Tab = ({ title, active, onClick }) => (
   <li className="nav-item">
-    <a
+    <span
       className={`nav-link cursor-pointer ${active ? "active" : ""}`}
       onClick={onClick}
     >
       {title}
-    </a>
+    </span>
   </li>
 );
 Tab.propTypes = {

@@ -48,14 +48,14 @@ const GroupHeader = observer(
               value="active"
               counter={group.stateCount.active}
             />
-            <a
+            <span
               className="text-muted cursor-pointer badge text-nowrap text-truncate pr-0"
               onClick={collapseStore.toggle}
             >
               <FontAwesomeIcon
                 icon={collapseStore.value ? faChevronUp : faChevronDown}
               />
-            </a>
+            </span>
           </span>
           <span>
             {Object.keys(group.labels).map(name => (

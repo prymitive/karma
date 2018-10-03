@@ -148,7 +148,7 @@ describe("<Silence />", () => {
 
   it("clicking on expand toggle shows silence details", () => {
     const tree = MountedSilence(alertmanager);
-    const toggle = tree.find("a.float-right.cursor-pointer");
+    const toggle = tree.find(".float-right.cursor-pointer");
     toggle.simulate("click");
     const details = tree.find("SilenceDetails");
     expect(details).toHaveLength(1);
@@ -204,7 +204,7 @@ describe("<Silence />", () => {
     const tree = MountedSilence(alertmanager);
 
     // expand silence
-    tree.find("a.float-right.cursor-pointer").simulate("click");
+    tree.find(".float-right.cursor-pointer").simulate("click");
 
     const button = tree.find(".badge-secondary.components-label-with-hover");
     expect(button.text()).toBe("Edit");
@@ -216,7 +216,7 @@ describe("<Silence />", () => {
     const tree = MountedSilence(alertmanager);
 
     // expand silence
-    tree.find("a.float-right.cursor-pointer").simulate("click");
+    tree.find(".float-right.cursor-pointer").simulate("click");
 
     const button = tree.find(".badge-secondary.components-label-with-hover");
     expect(button.text()).toBe("Edit");

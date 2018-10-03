@@ -174,14 +174,14 @@ const SilenceForm = observer(
             onChange={this.onCommentChange}
           />
           <div className="d-flex flex-row justify-content-between">
-            <a
+            <span
               className="btn px-0 cursor-pointer text-muted"
               onClick={this.previewCollapse.toggle}
             >
               <FontAwesomeIcon
                 icon={this.previewCollapse.hidden ? faChevronUp : faChevronDown}
               />
-            </a>
+            </span>
             <span>
               {silenceFormStore.data.silenceID === null ? null : (
                 <button

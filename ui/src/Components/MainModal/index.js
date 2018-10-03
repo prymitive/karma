@@ -46,9 +46,12 @@ const MainModal = observer(
       return (
         <React.Fragment>
           <li className="nav-item">
-            <a className="nav-link cursor-pointer" onClick={this.toggle.toggle}>
+            <span
+              className="nav-link cursor-pointer"
+              onClick={this.toggle.toggle}
+            >
               <FontAwesomeIcon icon={faCog} />
-            </a>
+            </span>
           </li>
           <MountFade in={this.toggle.show} unmountOnExit>
             <MainModalContent

@@ -11,12 +11,12 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
     <div class=\\"modal-content\\">
       <div class=\\"modal-header py-2\\">
         <nav class=\\"nav nav-pills nav-justified w-100\\">
-          <a class=\\"nav-item nav-link cursor-pointer active\\">
+          <span class=\\"nav-item nav-link cursor-pointer active\\">
             Configuration
-          </a>
-          <a class=\\"nav-item nav-link cursor-pointer text-primary\\">
+          </span>
+          <span class=\\"nav-item nav-link cursor-pointer text-primary\\">
             Help
-          </a>
+          </span>
           <button type=\\"button\\"
                   class=\\"close\\"
           >

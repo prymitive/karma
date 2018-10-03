@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import { inject, observer } from "mobx-react";
 
+import { AlertStore } from "Stores/AlertStore";
 import { BaseLabel } from "Components/Labels/BaseLabel";
 
 // Same as FilteringLabel but for labels that are counters (usually @state)
@@ -12,7 +13,9 @@ const FilteringCounterBadge = inject("alertStore")(
   observer(
     class FilteringCounterBadge extends BaseLabel {
       static propTypes = {
-        ...BaseLabel.propTypes,
+        alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+        name: PropTypes.string.isRequired,
+        value: PropTypes.string.isRequired,
         counter: PropTypes.number.isRequired
       };
 

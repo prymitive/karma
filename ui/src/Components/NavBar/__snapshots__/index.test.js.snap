@@ -25,7 +25,7 @@ exports[`<NavBar /> matches snapshot with 0 alerts 1`] = `
     </span>
     <ul class=\\"navbar-nav float-right d-flex flex-row\\">
       <li class=\\"nav-item\\">
-        <a class=\\"nav-link cursor-pointer\\">
+        <span class=\\"nav-link cursor-pointer\\">
           <svg aria-hidden=\\"true\\"
                data-prefix=\\"fas\\"
                data-icon=\\"bell-slash\\"
@@ -39,10 +39,10 @@ exports[`<NavBar /> matches snapshot with 0 alerts 1`] = `
             >
             </path>
           </svg>
-        </a>
+        </span>
       </li>
       <li class=\\"nav-item\\">
-        <a class=\\"nav-link cursor-pointer\\">
+        <span class=\\"nav-link cursor-pointer\\">
           <svg aria-hidden=\\"true\\"
                data-prefix=\\"fas\\"
                data-icon=\\"cog\\"
@@ -56,7 +56,7 @@ exports[`<NavBar /> matches snapshot with 0 alerts 1`] = `
             >
             </path>
           </svg>
-        </a>
+        </span>
       </li>
     </ul>
     <form class=\\"form-inline mw-100\\"
@@ -156,7 +156,7 @@ exports[`<NavBar /> matches snapshot with 5 alerts 1`] = `
     </span>
     <ul class=\\"navbar-nav float-right d-flex flex-row\\">
       <li class=\\"nav-item\\">
-        <a class=\\"nav-link cursor-pointer\\">
+        <span class=\\"nav-link cursor-pointer\\">
           <svg aria-hidden=\\"true\\"
                data-prefix=\\"fas\\"
                data-icon=\\"bell-slash\\"
@@ -170,10 +170,10 @@ exports[`<NavBar /> matches snapshot with 5 alerts 1`] = `
             >
             </path>
           </svg>
-        </a>
+        </span>
       </li>
       <li class=\\"nav-item\\">
-        <a class=\\"nav-link cursor-pointer\\">
+        <span class=\\"nav-link cursor-pointer\\">
           <svg aria-hidden=\\"true\\"
                data-prefix=\\"fas\\"
                data-icon=\\"cog\\"
@@ -187,7 +187,7 @@ exports[`<NavBar /> matches snapshot with 5 alerts 1`] = `
             >
             </path>
           </svg>
-        </a>
+        </span>
       </li>
     </ul>
     <form class=\\"form-inline mw-100\\"
