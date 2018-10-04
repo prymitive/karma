@@ -28,6 +28,7 @@ const FakeModal = () => {
       alertStore={alertStore}
       settingsStore={settingsStore}
       onHide={onHide}
+      isVisible={true}
     />
   );
 };
