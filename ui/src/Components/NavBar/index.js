@@ -71,7 +71,7 @@ const NavBar = observer(
       const paddingTop = this.activityStatus.idle
         ? 0
         : this.elementSize.height + 4;
-      document.body.style["padding-top"] = `${paddingTop}px`;
+      document.body.style.paddingTop = `${paddingTop}px`;
     };
 
     onHide = () => {
