@@ -1,3 +1,7 @@
+// MUST be first thing we import
+// https://babeljs.io/docs/en/babel-polyfill#usage-in-node-browserify-webpack
+import "@babel/polyfill";
+
 import React from "react";
 import ReactDOM from "react-dom";
 
