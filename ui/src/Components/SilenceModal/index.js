@@ -9,7 +9,7 @@ import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
-import { MountFade } from "Components/Animations/MountFade";
+import { MountModal } from "Components/Animations/MountModal";
 import { SilenceModalContent } from "./SilenceModalContent";
 
 import "./index.css";
@@ -60,14 +60,14 @@ const SilenceModal = observer(
               <FontAwesomeIcon icon={faBellSlash} />
             </span>
           </li>
-          <MountFade in={silenceFormStore.toggle.visible} unmountOnExit>
+          <MountModal in={silenceFormStore.toggle.visible} unmountOnExit>
             <SilenceModalContent
               alertStore={alertStore}
               silenceFormStore={silenceFormStore}
               settingsStore={settingsStore}
               onHide={this.toggleModal}
             />
-          </MountFade>
+          </MountModal>
         </React.Fragment>
       );
     }

@@ -2,7 +2,7 @@
 
 exports[`<MainModalContent /> matches snapshot 1`] = `
 "
-<div class=\\"modal d-block bg-primary-transparent-80\\"
+<div class=\\"modal d-block\\"
      role=\\"dialog\\"
 >
   <div class=\\"modal-dialog modal-lg\\"

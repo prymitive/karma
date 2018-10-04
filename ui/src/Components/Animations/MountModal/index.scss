@@ -1,0 +1,49 @@
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+
+$duration: 0.2s;
+
+.components-animation-modal-appear,
+.components-animation-modal-enter {
+  opacity: 0.01;
+  transform: translate(0, -25%);
+}
+.components-animation-modal-appear-active,
+.components-animation-modal-enter-active {
+  opacity: 1;
+  transition: transform $duration ease-out, opacity $duration ease-in;
+  transform: translate(0, 0);
+}
+
+.components-animation-modal-exit {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+.components-animation-modal-exit-active {
+  opacity: 0.01;
+  transform: translate(0, -25%);
+  transition: transform $duration ease-in, opacity $duration ease-out;
+}
+
+.components-animation-backdrop-appear,
+.components-animation-backdrop-enter {
+  opacity: 0.01;
+}
+.components-animation-backdrop-appear-active,
+.components-animation-backdrop-enter-active {
+  opacity: $modal-backdrop-opacity;
+  transition: opacity $duration ease-in;
+}
+
+.components-animation-backdrop-enter-done {
+  opacity: $modal-backdrop-opacity;
+  transition: opacity $duration ease-in;
+}
+
+.components-animation-backdrop-exit {
+  opacity: $modal-backdrop-opacity;
+}
+.components-animation-backdrop-exit-active {
+  opacity: 0.01;
+  transition: opacity $duration ease-out;
+}
