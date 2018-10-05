@@ -2117,10 +2117,10 @@ body-parser@1.18.2:
     raw-body "2.3.2"
     type-is "~1.6.15"
 
-body-scroll-lock@2.5.8:
-  version "2.5.8"
-  resolved "https://registry.yarnpkg.com/body-scroll-lock/-/body-scroll-lock-2.5.8.tgz#f83f2fb395cd17b52df320cb280086784201c8ee"
-  integrity sha512-JwyrPnI4CUkwQo0d9sX9iAJVlRi10W2CCuVdv+wjJHfuHUYtJ+u4AEvUO8kqiwsMRE6sj483ePb329DM3EcNJQ==
+body-scroll-lock@2.5.10:
+  version "2.5.10"
+  resolved "https://registry.yarnpkg.com/body-scroll-lock/-/body-scroll-lock-2.5.10.tgz#aefde4dab39b8d41391e9d14cebc52c56694af35"
+  integrity sha512-yuVO3LEyIB1D+nzocCJGJcSV43tPD74Ma74use7wckajJsCeTvLvC1zy2rpjOWBc45uSzmrUSREoSPLUTPPG/Q==
 
 bonjour@^3.5.0:
   version "3.5.0"
