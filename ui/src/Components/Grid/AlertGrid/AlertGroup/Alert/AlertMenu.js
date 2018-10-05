@@ -14,6 +14,7 @@ import Moment from "react-moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
+import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
 
 import { APIAlert, APIGroup } from "Models/API";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -54,6 +55,7 @@ const MenuContent = onClickOutside(
               rel="noopener noreferrer"
               onClick={afterClick}
             >
+              <FontAwesomeIcon className="mr-1" icon={faExternalLinkAlt} />
               {am.name}
             </a>
           ))}
@@ -62,7 +64,8 @@ const MenuContent = onClickOutside(
             className="dropdown-item cursor-pointer"
             onClick={() => onSilenceClick(silenceFormStore, group, alert)}
           >
-            <FontAwesomeIcon icon={faBellSlash} /> Silence this alert
+            <FontAwesomeIcon className="mr-1" icon={faBellSlash} />
+            Silence this alert
           </div>
         </div>
       </FetchPauser>
