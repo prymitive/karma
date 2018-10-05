@@ -52,7 +52,7 @@
     "test": "react-scripts test"
   },
   "devDependencies": {
-    "@commitlint/travis-cli": "7.1.2",
+    "@commitlint/travis-cli": "7.2.0",
     "diffable-html": "3.0.0",
     "enzyme": "3.7.0",
     "enzyme-adapter-react-16": "1.6.0",
