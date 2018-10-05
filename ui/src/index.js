@@ -2,6 +2,9 @@
 // https://babeljs.io/docs/en/babel-polyfill#usage-in-node-browserify-webpack
 import "@babel/polyfill";
 
+// fetch() polyfill for IE and some mobile browsers
+import "whatwg-fetch";
+
 import React from "react";
 import ReactDOM from "react-dom";
 
