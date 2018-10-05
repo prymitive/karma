@@ -76,6 +76,10 @@ const ReactSelectStyles = {
     borderTopRightRadius: "0.25rem",
     borderBottomRightRadius: "0.25rem"
   }),
+  menu: (base, state) => ({
+    ...base,
+    zIndex: 100
+  }),
   option: (base, state) => ({
     ...base,
     color: "inherit",
