@@ -94,28 +94,28 @@ describe("<SilenceForm /> matchers", () => {
 });
 
 describe("<SilenceForm /> preview", () => {
-  it("doesn't render SilencePreview when previewCollapse.hidden is true", () => {
+  it("doesn't render PayloadPreview when previewCollapse.hidden is true", () => {
     const tree = ShallowSilenceForm();
     const instance = tree.instance();
     instance.previewCollapse.hidden = true;
-    expect(tree.find("SilencePreview")).toHaveLength(0);
+    expect(tree.find("PayloadPreview")).toHaveLength(0);
   });
 
-  it("renders SilencePreview when previewCollapse.hidden is false", () => {
+  it("renders PayloadPreview when previewCollapse.hidden is false", () => {
     const tree = ShallowSilenceForm();
     const instance = tree.instance();
     instance.previewCollapse.hidden = false;
-    expect(tree.find("SilencePreview")).toHaveLength(1);
+    expect(tree.find("PayloadPreview")).toHaveLength(1);
   });
 
-  it("clicking on the toggle icon toggles SilencePreview", () => {
+  it("clicking on the toggle icon toggles PayloadPreview", () => {
     const tree = ShallowSilenceForm();
     const button = tree.find(".btn.cursor-pointer.text-muted");
-    expect(tree.find("SilencePreview")).toHaveLength(0);
+    expect(tree.find("PayloadPreview")).toHaveLength(0);
     button.simulate("click");
-    expect(tree.find("SilencePreview")).toHaveLength(1);
+    expect(tree.find("PayloadPreview")).toHaveLength(1);
     button.simulate("click");
-    expect(tree.find("SilencePreview")).toHaveLength(0);
+    expect(tree.find("PayloadPreview")).toHaveLength(0);
   });
 });
 

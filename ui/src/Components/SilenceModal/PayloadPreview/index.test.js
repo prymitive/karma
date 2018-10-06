@@ -7,17 +7,17 @@ import toDiffableHtml from "diffable-html";
 import moment from "moment";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { SilencePreview } from ".";
+import { PayloadPreview } from ".";
 
-describe("<SilencePreview />", () => {
+describe("<PayloadPreview />", () => {
   it("matches snapshot", () => {
     const silenceFormStore = new SilenceFormStore();
     silenceFormStore.data.startsAt = moment([2000, 1, 1, 0, 0, 0]);
     silenceFormStore.data.endsAt = moment([2000, 1, 1, 1, 0, 0]);
     silenceFormStore.data.createdBy = "me@example.com";
-    silenceFormStore.data.comment = "SilencePreview test";
+    silenceFormStore.data.comment = "PayloadPreview test";
 
-    const tree = render(<SilencePreview silenceFormStore={silenceFormStore} />);
+    const tree = render(<PayloadPreview silenceFormStore={silenceFormStore} />);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 });

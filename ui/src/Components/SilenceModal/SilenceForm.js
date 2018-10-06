@@ -19,7 +19,7 @@ import { Settings } from "Stores/Settings";
 import { AlertManagerInput } from "./AlertManagerInput";
 import { SilenceMatch } from "./SilenceMatch";
 import { DateTimeSelect } from "./DateTimeSelect";
-import { SilencePreview } from "./SilencePreview";
+import { PayloadPreview } from "./PayloadPreview";
 
 const IconInput = ({
   type,
@@ -201,7 +201,7 @@ const SilenceForm = observer(
             </span>
           </div>
           {this.previewCollapse.hidden ? null : (
-            <SilencePreview silenceFormStore={silenceFormStore} />
+            <PayloadPreview silenceFormStore={silenceFormStore} />
           )}
         </form>
       );
