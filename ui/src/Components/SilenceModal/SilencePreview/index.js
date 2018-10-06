@@ -29,9 +29,9 @@ FetchError.propTypes = {
 };
 
 const Preview = ({ alertStore, labelsList }) => (
-  <ul className="list-group list-group-flush px-2">
+  <ul className="list-group list-group-flush">
     {labelsList.map(labels => (
-      <li key={hash(labels)} className="list-group-item px-2 pt-2 pb-1">
+      <li key={hash(labels)} className="list-group-item px-0 pt-2 pb-1">
         {Object.entries(labels).map(([name, value]) => (
           <StaticLabel
             key={name}
@@ -61,6 +61,8 @@ const SilencePreview = observer(
         alertLabels: [],
         error: null,
         fetch: null,
+        // take a list of groups and outputs a list of label sets, this ignores
+        // the receiver, so we'll end up with only unique alerts
         groupsToUniqueLabels(groups) {
           const alerts = {};
           for (const group of groups) {
@@ -123,15 +125,14 @@ const SilencePreview = observer(
 
       return (
         <React.Fragment>
-          <div className="mb-2">
+          <div className="mb-3">
             {this.matchedAlerts.error !== null ? (
               <FetchError message={this.matchedAlerts.error} />
             ) : (
               <React.Fragment>
                 <p className="lead text-center">
-                  This silence will match{" "}
-                  <strong>{this.matchedAlerts.alertLabels.length}</strong> alert
-                  {this.matchedAlerts.alertLabels.length > 1 ? "s" : ""}
+                  Unique alert label sets (without receiver) matching this
+                  silence.
                 </p>
                 <div>
                   <Preview
