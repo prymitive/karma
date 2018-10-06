@@ -4,14 +4,20 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { NewEmptyMatcher, MatcherValueToObject } from "Stores/SilenceFormStore";
+import {
+  SilenceFormStore,
+  NewEmptyMatcher,
+  MatcherValueToObject
+} from "Stores/SilenceFormStore";
 import { MatchCounter } from "./MatchCounter";
 
 let matcher;
+let silenceFormStore;
 
 beforeEach(() => {
   fetch.resetMocks();
 
+  silenceFormStore = new SilenceFormStore();
   matcher = NewEmptyMatcher();
 });
 
@@ -20,7 +26,9 @@ afterEach(() => {
 });
 
 const MountedMatchCounter = () => {
-  return mount(<MatchCounter matcher={matcher} />);
+  return mount(
+    <MatchCounter silenceFormStore={silenceFormStore} matcher={matcher} />
+  );
 };
 
 describe("<MatchCounter />", () => {
@@ -110,6 +118,39 @@ describe("<MatchCounter />", () => {
     await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
     expect(fetch.mock.calls[0][0]).toBe(
       "./alerts.json?q=foo%3D~%5E%28bar%7Cbaz%29%24"
+    );
+  });
+
+  it("selecting one Alertmanager instance appends it to the filters", async () => {
+    fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
+
+    silenceFormStore.data.alertmanagers = [MatcherValueToObject("am1")];
+    matcher.name = "foo";
+    matcher.values = [MatcherValueToObject("bar")];
+    matcher.isRegex = false;
+
+    const tree = MountedMatchCounter();
+    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
+    expect(fetch.mock.calls[0][0]).toBe(
+      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3Dam1"
+    );
+  });
+
+  it("selecting two Alertmanager instances appends it correctly to the filters", async () => {
+    fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
+
+    silenceFormStore.data.alertmanagers = [
+      MatcherValueToObject("am1"),
+      MatcherValueToObject("am1")
+    ];
+    matcher.name = "foo";
+    matcher.values = [MatcherValueToObject("bar")];
+    matcher.isRegex = false;
+
+    const tree = MountedMatchCounter();
+    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
+    expect(fetch.mock.calls[0][0]).toBe(
+      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam1%29%24"
     );
   });
 });

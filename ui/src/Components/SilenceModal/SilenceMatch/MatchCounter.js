@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
@@ -10,13 +11,15 @@ import hash from "object-hash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 
-import { FormatQuery, QueryOperators } from "Common/Query";
+import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
 import { FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceFormMatcher } from "Models/SilenceForm";
 
 const MatchCounter = observer(
   class MatchCounter extends Component {
     static propTypes = {
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       matcher: SilenceFormMatcher.isRequired
     };
 
@@ -39,7 +42,7 @@ const MatchCounter = observer(
     );
 
     onFetch = throttle(() => {
-      const { matcher } = this.props;
+      const { silenceFormStore, matcher } = this.props;
 
       const filters = [];
 
@@ -58,6 +61,26 @@ const MatchCounter = observer(
           matcher.isRegex ? `^${value}$` : value
         )
       );
+
+      if (silenceFormStore.data.alertmanagers.length > 1) {
+        filters.push(
+          FormatQuery(
+            StaticLabels.AlertManager,
+            QueryOperators.Regex,
+            `^(${silenceFormStore.data.alertmanagers
+              .map(am => am.label)
+              .join("|")})$`
+          )
+        );
+      } else if (silenceFormStore.data.alertmanagers.length === 1) {
+        filters.push(
+          FormatQuery(
+            StaticLabels.AlertManager,
+            QueryOperators.Equal,
+            silenceFormStore.data.alertmanagers[0].label
+          )
+        );
+      }
 
       const alertsURI =
         FormatBackendURI("alerts.json?") + FormatAlertsQ(filters);
@@ -97,19 +120,22 @@ const MatchCounter = observer(
     }
 
     render() {
-      const { matcher } = this.props;
-
-      const matcherHash = hash({
-        name: matcher.name,
-        values: matcher.values,
-        isRegex: matcher.isRegex
-      });
+      const { silenceFormStore, matcher } = this.props;
 
       if (this.matchedAlerts.error !== null) {
         return (
           <FontAwesomeIcon className="text-danger" icon={faExclamationCircle} />
         );
       }
+
+      const matcherHash = hash({
+        alertmanagers: silenceFormStore.data.alertmanagers,
+        matcher: {
+          name: matcher.name,
+          values: matcher.values,
+          isRegex: matcher.isRegex
+        }
+      });
 
       return (
         <span

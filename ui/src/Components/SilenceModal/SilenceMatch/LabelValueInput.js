@@ -6,6 +6,7 @@ import { observer } from "mobx-react";
 
 import { components } from "react-select";
 
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceFormMatcher } from "Models/SilenceForm";
 import { MultiSelect } from "Components/MultiSelect";
 import { ValidationError } from "Components/MultiSelect/ValidationError";
@@ -21,7 +22,10 @@ const Placeholder = props => {
 
 const ValueContainer = ({ children, ...props }) => (
   <components.ValueContainer {...props}>
-    <MatchCounter matcher={props.selectProps.matcher} />
+    <MatchCounter
+      silenceFormStore={props.selectProps.silenceFormStore}
+      matcher={props.selectProps.matcher}
+    />
     {children}
   </components.ValueContainer>
 );
@@ -29,6 +33,7 @@ const ValueContainer = ({ children, ...props }) => (
 const LabelValueInput = observer(
   class LabelValueInput extends MultiSelect {
     static propTypes = {
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       matcher: SilenceFormMatcher.isRequired,
       isValid: PropTypes.bool.isRequired
     };
@@ -47,7 +52,7 @@ const LabelValueInput = observer(
     });
 
     renderProps = () => {
-      const { matcher, isValid } = this.props;
+      const { silenceFormStore, matcher, isValid } = this.props;
 
       return {
         instanceId: `silence-input-label-value-${matcher.id}`,
@@ -57,6 +62,7 @@ const LabelValueInput = observer(
         isMulti: true,
         onChange: this.onChange,
         components: { ValueContainer, Placeholder },
+        silenceFormStore: silenceFormStore,
         matcher: matcher
       };
     };

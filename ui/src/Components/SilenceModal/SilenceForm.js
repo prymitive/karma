@@ -141,6 +141,7 @@ const SilenceForm = observer(
           {silenceFormStore.data.matchers.map(matcher => (
             <SilenceMatch
               key={matcher.id}
+              silenceFormStore={silenceFormStore}
               matcher={matcher}
               onDelete={() => {
                 silenceFormStore.data.deleteMatcher(matcher.id);

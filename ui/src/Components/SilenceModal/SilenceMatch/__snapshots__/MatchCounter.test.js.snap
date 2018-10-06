@@ -4,7 +4,7 @@ exports[`<MatchCounter /> matches snapshot with empty matcher 1`] = `
 "
 <span class=\\"badge badge-light badge-pill\\"
       style=\\"font-size: 85%;\\"
-      data-hash=\\"a775f465445363786b29ebd6162e99f6ff0d22b7\\"
+      data-hash=\\"2153b6623363af13fa91f1ad35fa4cfc6462d349\\"
 >
   0
 </span>

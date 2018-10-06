@@ -4,12 +4,18 @@ import { shallow, mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { NewEmptyMatcher, MatcherValueToObject } from "Stores/SilenceFormStore";
+import {
+  SilenceFormStore,
+  NewEmptyMatcher,
+  MatcherValueToObject
+} from "Stores/SilenceFormStore";
 import { LabelValueInput } from "./LabelValueInput";
 
+let silenceFormStore;
 let matcher;
 
 beforeEach(() => {
+  silenceFormStore = new SilenceFormStore();
   matcher = NewEmptyMatcher();
   matcher.name = "name";
   matcher.suggestions.names = [
@@ -23,11 +29,23 @@ beforeEach(() => {
 });
 
 const ShallowLabelValueInput = isValid => {
-  return shallow(<LabelValueInput matcher={matcher} isValid={isValid} />);
+  return shallow(
+    <LabelValueInput
+      silenceFormStore={silenceFormStore}
+      matcher={matcher}
+      isValid={isValid}
+    />
+  );
 };
 
 const MountedLabelValueInput = isValid => {
-  return mount(<LabelValueInput matcher={matcher} isValid={isValid} />);
+  return mount(
+    <LabelValueInput
+      silenceFormStore={silenceFormStore}
+      matcher={matcher}
+      isValid={isValid}
+    />
+  );
 };
 
 const ValidateSuggestions = () => {

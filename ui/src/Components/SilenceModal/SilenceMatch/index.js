@@ -7,6 +7,7 @@ import { observer } from "mobx-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceFormMatcher } from "Models/SilenceForm";
 import { LabelNameInput } from "./LabelNameInput";
 import { LabelValueInput } from "./LabelValueInput";
@@ -14,6 +15,7 @@ import { LabelValueInput } from "./LabelValueInput";
 const SilenceMatch = observer(
   class SilenceMatch extends Component {
     static propTypes = {
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       matcher: SilenceFormMatcher.isRequired,
       showDelete: PropTypes.bool.isRequired,
       onDelete: PropTypes.func.isRequired,
@@ -30,7 +32,13 @@ const SilenceMatch = observer(
     });
 
     render() {
-      const { matcher, showDelete, onDelete, isValid } = this.props;
+      const {
+        silenceFormStore,
+        matcher,
+        showDelete,
+        onDelete,
+        isValid
+      } = this.props;
 
       return (
         <div className="d-flex flex-fill flex-lg-row flex-column mb-3">
@@ -38,7 +46,11 @@ const SilenceMatch = observer(
             <LabelNameInput matcher={matcher} isValid={isValid} />
           </div>
           <div className="flex-shrink-0 flex-grow-0 flex-basis-50 pr-lg-2 pb-2 pb-lg-0">
-            <LabelValueInput matcher={matcher} isValid={isValid} />
+            <LabelValueInput
+              silenceFormStore={silenceFormStore}
+              matcher={matcher}
+              isValid={isValid}
+            />
           </div>
           <div className="flex-shrink-0 flex-grow-1 flex-basis-auto form-check form-check-inline d-flex justify-content-between m-0">
             <span>
