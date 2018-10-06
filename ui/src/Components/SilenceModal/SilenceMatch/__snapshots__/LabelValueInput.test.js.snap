@@ -5,8 +5,16 @@ exports[`<LabelValueInput /> matches snapshot 1`] = `
 <div class=\\"css-10nd86i\\">
   <div class=\\"css-7jxtyj\\">
     <div class=\\"css-10war8y\\">
-      <div class=\\"css-1492t68\\">
-        Label value
+      <span class=\\"badge badge-light badge-pill\\"
+            style=\\"font-size:85%\\"
+            data-hash=\\"a970b397347f75d0af6435a66f0b3aa3e2bc0b99\\"
+      >
+        0
+      </span>
+      <div>
+        <div class=\\"css-1492t68\\">
+          Label value
+        </div>
       </div>
       <div class=\\"css-1g6gooi\\">
         <div class

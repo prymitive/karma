@@ -4,9 +4,27 @@ import PropTypes from "prop-types";
 import { action } from "mobx";
 import { observer } from "mobx-react";
 
+import { components } from "react-select";
+
 import { SilenceFormMatcher } from "Models/SilenceForm";
 import { MultiSelect } from "Components/MultiSelect";
 import { ValidationError } from "Components/MultiSelect/ValidationError";
+import { MatchCounter } from "./MatchCounter";
+
+const Placeholder = props => {
+  return (
+    <div>
+      <components.Placeholder {...props} />
+    </div>
+  );
+};
+
+const ValueContainer = ({ children, ...props }) => (
+  <components.ValueContainer {...props}>
+    <MatchCounter matcher={props.selectProps.matcher} />
+    {children}
+  </components.ValueContainer>
+);
 
 const LabelValueInput = observer(
   class LabelValueInput extends MultiSelect {
@@ -37,7 +55,9 @@ const LabelValueInput = observer(
         options: matcher.suggestions.values,
         placeholder: isValid ? "Label value" : <ValidationError />,
         isMulti: true,
-        onChange: this.onChange
+        onChange: this.onChange,
+        components: { ValueContainer, Placeholder },
+        matcher: matcher
       };
     };
   }

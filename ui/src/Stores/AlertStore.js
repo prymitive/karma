@@ -6,16 +6,22 @@ import equal from "fast-deep-equal";
 
 import qs from "qs";
 
+const QueryStringEncodeOptions = {
+  encodeValuesOnly: true, // don't encode q[]
+  indices: false // go-gin doesn't support parsing q[0]=foo&q[1]=bar
+};
+
+function FormatAlertsQ(filters) {
+  return qs.stringify({ q: filters }, QueryStringEncodeOptions);
+}
+
 // generate URL for the UI with a set of filters
 function FormatAPIFilterQuery(filters) {
   return qs.stringify(
     Object.assign(DecodeLocationSearch(window.location.search).params, {
       q: filters
     }),
-    {
-      encodeValuesOnly: true, // don't encode q[]
-      indices: false // go-gin doesn't support parsing q[0]=foo&q[1]=bar
-    }
+    QueryStringEncodeOptions
   );
 }
 
@@ -336,6 +342,7 @@ export {
   AlertStoreStatuses,
   FormatBackendURI,
   FormatAPIFilterQuery,
+  FormatAlertsQ,
   DecodeLocationSearch,
   UpdateLocationSearch,
   NewUnappliedFilter
