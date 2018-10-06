@@ -9,12 +9,12 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons/faCommentDots";
 import { faUndoAlt } from "@fortawesome/free-solid-svg-icons/faUndoAlt";
-import { faSave } from "@fortawesome/free-regular-svg-icons/faSave";
+import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 
 import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { SilenceFormStore, SilenceFormStage } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
 import { AlertManagerInput } from "./AlertManagerInput";
 import { SilenceMatch } from "./SilenceMatch";
@@ -122,7 +122,7 @@ const SilenceForm = observer(
       settingsStore.silenceFormConfig.saveAuthor(silenceFormStore.data.author);
 
       if (silenceFormStore.data.isValid)
-        silenceFormStore.data.inProgress = true;
+        silenceFormStore.data.currentStage = SilenceFormStage.Preview;
 
       silenceFormStore.data.wasValidated = true;
     });
@@ -195,8 +195,8 @@ const SilenceForm = observer(
                 </button>
               )}
               <button type="submit" className="btn btn-outline-primary">
-                <FontAwesomeIcon icon={faSave} className="mr-1" />
-                Submit
+                <FontAwesomeIcon icon={faSearch} className="mr-1" />
+                Preview
               </button>
             </span>
           </div>

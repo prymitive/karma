@@ -11,10 +11,10 @@ import hash from "object-hash";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 
-import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
 import { FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceFormMatcher } from "Models/SilenceForm";
+import { MatcherToFilter, AlertManagersToFilter } from "../Matchers";
 
 const MatchCounter = observer(
   class MatchCounter extends Component {
@@ -44,41 +44,10 @@ const MatchCounter = observer(
     onFetch = throttle(() => {
       const { silenceFormStore, matcher } = this.props;
 
-      const filters = [];
-
-      // append current matcher values as a filter
-      const operator = matcher.isRegex
-        ? QueryOperators.Regex
-        : QueryOperators.Equal;
-      const value =
-        matcher.values.length > 1
-          ? `(${matcher.values.map(v => v.value).join("|")})`
-          : matcher.values[0].value;
-      filters.push(
-        FormatQuery(
-          matcher.name,
-          operator,
-          matcher.isRegex ? `^${value}$` : value
-        )
-      );
-
-      if (silenceFormStore.data.alertmanagers.length > 1) {
+      const filters = [MatcherToFilter(matcher)];
+      if (silenceFormStore.data.alertmanagers.length) {
         filters.push(
-          FormatQuery(
-            StaticLabels.AlertManager,
-            QueryOperators.Regex,
-            `^(${silenceFormStore.data.alertmanagers
-              .map(am => am.label)
-              .join("|")})$`
-          )
-        );
-      } else if (silenceFormStore.data.alertmanagers.length === 1) {
-        filters.push(
-          FormatQuery(
-            StaticLabels.AlertManager,
-            QueryOperators.Equal,
-            silenceFormStore.data.alertmanagers[0].label
-          )
+          AlertManagersToFilter(silenceFormStore.data.alertmanagers)
         );
       }
 

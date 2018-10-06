@@ -5,6 +5,7 @@ import { shallow } from "enzyme";
 import { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
+  SilenceFormStage,
   MatcherValueToObject
 } from "Stores/SilenceFormStore";
 import { SilenceSubmitController } from "./SilenceSubmitController";
@@ -36,10 +37,10 @@ describe("<SilenceSubmitController />", () => {
   });
 
   it("resets the form on 'Back' button click", () => {
-    silenceFormStore.data.inProgress = true;
+    silenceFormStore.data.currentStage = SilenceFormStage.Submit;
     const tree = ShallowSilenceSubmitController();
     const button = tree.find("button");
     button.simulate("click");
-    expect(silenceFormStore.data.inProgress).toBe(false);
+    expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.UserInput);
   });
 });
