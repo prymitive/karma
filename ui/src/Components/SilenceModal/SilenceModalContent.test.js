@@ -4,7 +4,7 @@ import { shallow } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { SilenceFormStore, SilenceFormStage } from "Stores/SilenceFormStore";
 import { SilenceModalContent } from "./SilenceModalContent";
 
 let alertStore;
@@ -31,15 +31,22 @@ const ShallowSilenceModalContent = () => {
 };
 
 describe("<SilenceModalContent />", () => {
-  it("renders SilenceForm when silenceFormStore.data.inProgress is false", () => {
-    silenceFormStore.data.inProgress = false;
+  it("renders SilenceForm when silenceFormStore.data.currentStage is 'UserInput'", () => {
+    silenceFormStore.data.currentStage = SilenceFormStage.UserInput;
     const tree = ShallowSilenceModalContent();
     const form = tree.find("SilenceForm");
     expect(form).toHaveLength(1);
   });
 
-  it("renders SilenceSubmitController when silenceFormStore.data.inProgress is true", () => {
-    silenceFormStore.data.inProgress = true;
+  it("renders SilencePreview when silenceFormStore.data.currentStage is 'Preview'", () => {
+    silenceFormStore.data.currentStage = SilenceFormStage.Preview;
+    const tree = ShallowSilenceModalContent();
+    const ctrl = tree.find("SilencePreview");
+    expect(ctrl).toHaveLength(1);
+  });
+
+  it("renders SilenceSubmitController when silenceFormStore.data.currentStage is 'Submit'", () => {
+    silenceFormStore.data.currentStage = SilenceFormStage.Submit;
     const tree = ShallowSilenceModalContent();
     const ctrl = tree.find("SilenceSubmitController");
     expect(ctrl).toHaveLength(1);

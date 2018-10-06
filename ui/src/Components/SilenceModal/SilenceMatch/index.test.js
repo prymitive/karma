@@ -7,7 +7,7 @@ import {
   NewEmptyMatcher,
   MatcherValueToObject
 } from "Stores/SilenceFormStore";
-import { SilenceMatch } from "./SilenceMatch";
+import { SilenceMatch } from ".";
 
 let silenceFormStore;
 let matcher;

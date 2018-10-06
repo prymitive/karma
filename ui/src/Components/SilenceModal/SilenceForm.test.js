@@ -4,7 +4,11 @@ import { mount, shallow } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
+import {
+  SilenceFormStore,
+  SilenceFormStage,
+  NewEmptyMatcher
+} from "Stores/SilenceFormStore";
 import { SilenceForm } from "./SilenceForm";
 
 let alertStore;
@@ -94,28 +98,28 @@ describe("<SilenceForm /> matchers", () => {
 });
 
 describe("<SilenceForm /> preview", () => {
-  it("doesn't render SilencePreview when previewCollapse.hidden is true", () => {
+  it("doesn't render PayloadPreview when previewCollapse.hidden is true", () => {
     const tree = ShallowSilenceForm();
     const instance = tree.instance();
     instance.previewCollapse.hidden = true;
-    expect(tree.find("SilencePreview")).toHaveLength(0);
+    expect(tree.find("PayloadPreview")).toHaveLength(0);
   });
 
-  it("renders SilencePreview when previewCollapse.hidden is false", () => {
+  it("renders PayloadPreview when previewCollapse.hidden is false", () => {
     const tree = ShallowSilenceForm();
     const instance = tree.instance();
     instance.previewCollapse.hidden = false;
-    expect(tree.find("SilencePreview")).toHaveLength(1);
+    expect(tree.find("PayloadPreview")).toHaveLength(1);
   });
 
-  it("clicking on the toggle icon toggles SilencePreview", () => {
+  it("clicking on the toggle icon toggles PayloadPreview", () => {
     const tree = ShallowSilenceForm();
     const button = tree.find(".btn.cursor-pointer.text-muted");
-    expect(tree.find("SilencePreview")).toHaveLength(0);
+    expect(tree.find("PayloadPreview")).toHaveLength(0);
     button.simulate("click");
-    expect(tree.find("SilencePreview")).toHaveLength(1);
+    expect(tree.find("PayloadPreview")).toHaveLength(1);
     button.simulate("click");
-    expect(tree.find("SilencePreview")).toHaveLength(0);
+    expect(tree.find("PayloadPreview")).toHaveLength(0);
   });
 });
 
@@ -152,13 +156,13 @@ describe("<SilenceForm /> inputs", () => {
 });
 
 describe("<SilenceForm />", () => {
-  it("calling submit doesn't mark form as in progress when form is invalid", () => {
+  it("calling submit doesn't move the form to Preview stage when form is invalid", () => {
     const tree = ShallowSilenceForm();
     tree.simulate("submit", { preventDefault: jest.fn() });
-    expect(silenceFormStore.data.inProgress).toBe(false);
+    expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.UserInput);
   });
 
-  it("calling submit marks form as in progress when form is valid", () => {
+  it("calling submit move form to the 'Preview' stage when form is valid", () => {
     const matcher = NewEmptyMatcher();
     matcher.name = "job";
     matcher.values = [{ label: "node_exporter", value: "node_exporter" }];
@@ -170,7 +174,7 @@ describe("<SilenceForm />", () => {
     silenceFormStore.data.comment = "fake silence";
     const tree = ShallowSilenceForm();
     tree.simulate("submit", { preventDefault: jest.fn() });
-    expect(silenceFormStore.data.inProgress).toBe(true);
+    expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.Preview);
   });
 
   it("calling submit saves author value to the Settings store", () => {

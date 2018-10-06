@@ -19,6 +19,12 @@ const NewEmptyMatcher = () => {
 
 const MatcherValueToObject = value => ({ label: value, value: value });
 
+const SilenceFormStage = Object.freeze({
+  UserInput: "form",
+  Preview: "preview",
+  Submit: "submit"
+});
+
 class SilenceFormStore {
   // this is used to store modal visibility toggle
   toggle = observable(
@@ -43,7 +49,7 @@ class SilenceFormStore {
   // this form from that alert so user can easily silence that alert
   data = observable(
     {
-      inProgress: false,
+      currentStage: SilenceFormStage.UserInput,
       wasValidated: false,
       silenceID: null,
       alertmanagers: [],
@@ -76,12 +82,16 @@ class SilenceFormStore {
       },
 
       resetProgress() {
-        this.inProgress = false;
+        this.currentStage = SilenceFormStage.UserInput;
         this.wasValidated = false;
       },
 
       resetSilenceID() {
         this.silenceID = null;
+      },
+
+      setStageSubmit() {
+        this.currentStage = SilenceFormStage.Submit;
       },
 
       // append a new empty matcher to the list
@@ -235,6 +245,7 @@ class SilenceFormStore {
       resetStartEnd: action.bound,
       resetProgress: action.bound,
       resetSilenceID: action.bound,
+      setStageSubmit: action.bound,
       addEmptyMatcher: action.bound,
       deleteMatcher: action.bound,
       fillMatchersFromGroup: action.bound,
@@ -252,4 +263,9 @@ class SilenceFormStore {
   );
 }
 
-export { SilenceFormStore, NewEmptyMatcher, MatcherValueToObject };
+export {
+  SilenceFormStore,
+  SilenceFormStage,
+  NewEmptyMatcher,
+  MatcherValueToObject
+};

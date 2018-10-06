@@ -4,7 +4,12 @@ import { mount } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import {
+  SilenceFormStore,
+  SilenceFormStage,
+  NewEmptyMatcher,
+  MatcherValueToObject
+} from "Stores/SilenceFormStore";
 import { SilenceModal } from ".";
 
 let alertStore;
@@ -100,12 +105,17 @@ describe("<SilenceModal />", () => {
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
 
-  it("inProgress is set to false after modal is hidden", () => {
+  it("currentStage is set to 'UserInput' after modal is hidden", () => {
+    const matcher = NewEmptyMatcher();
+    matcher.name = "foo";
+    matcher.values = [MatcherValueToObject("bar")];
+    silenceFormStore.data.matchers = [matcher];
+
     silenceFormStore.toggle.visible = true;
     const tree = MountedSilenceModal();
-    silenceFormStore.data.inProgress = true;
+    silenceFormStore.data.currentStage = SilenceFormStage.Preview;
     const toggle = tree.find("button.close");
     toggle.simulate("click");
-    expect(silenceFormStore.data.inProgress).toBe(false);
+    expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.UserInput);
   });
 });

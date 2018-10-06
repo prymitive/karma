@@ -4,6 +4,7 @@ import {
   AlertStore,
   AlertStoreStatuses,
   FormatBackendURI,
+  FormatAlertsQ,
   DecodeLocationSearch,
   UpdateLocationSearch,
   NewUnappliedFilter
@@ -143,6 +144,12 @@ describe("FormatBackendURI", () => {
     process.env.REACT_APP_BACKEND_URI = "http://localhost:1234";
     const uri = FormatBackendURI("foo/bar");
     expect(uri).toEqual("http://localhost:1234/foo/bar");
+  });
+});
+
+describe("FormatAlertsQ", () => {
+  it("encodes multiple values without indices", () => {
+    expect(FormatAlertsQ(["a", "b"])).toBe("q=a&q=b");
   });
 });
 

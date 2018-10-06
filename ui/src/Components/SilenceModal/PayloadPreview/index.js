@@ -8,8 +8,8 @@ import "react-json-pretty/src/JSONPretty.monikai.css";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 
-const SilencePreview = observer(
-  class SilencePreview extends Component {
+const PayloadPreview = observer(
+  class PayloadPreview extends Component {
     static propTypes = {
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
@@ -26,4 +26,4 @@ const SilencePreview = observer(
   }
 );
 
-export { SilencePreview };
+export { PayloadPreview };

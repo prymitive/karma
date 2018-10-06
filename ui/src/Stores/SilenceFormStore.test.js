@@ -6,7 +6,11 @@ import {
   MockSilence,
   MockAlertmanager
 } from "__mocks__/Alerts.js";
-import { SilenceFormStore, NewEmptyMatcher } from "./SilenceFormStore";
+import {
+  SilenceFormStore,
+  SilenceFormStage,
+  NewEmptyMatcher
+} from "./SilenceFormStore";
 
 let store;
 beforeEach(() => {
@@ -72,11 +76,10 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.endsAt.isSame([2000, 1, 1], "day")).toBe(false);
   });
 
-  it("resetProgress() sets 'inProgress' to false", () => {
-    store.data.inProgress = true;
-    expect(store.data.inProgress).toBe(true);
+  it("resetProgress() sets currentStage to UserInput", () => {
+    store.data.currentStage = SilenceFormStage.Submit;
     store.data.resetProgress();
-    expect(store.data.inProgress).toBe(false);
+    expect(store.data.currentStage).toBe(SilenceFormStage.UserInput);
   });
 
   it("resetProgress() sets 'wasValidated' to false", () => {

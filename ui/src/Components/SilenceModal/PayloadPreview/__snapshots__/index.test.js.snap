@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<SilencePreview /> matches snapshot 1`] = `
+exports[`<PayloadPreview /> matches snapshot 1`] = `
 "
 <pre class=\\"json-pretty\\">
   {
@@ -42,7 +42,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
   </span>
   &quot;:
   <span class=\\"json-string\\">
-    &quot;SilencePreview test&quot;
+    &quot;PayloadPreview test&quot;
   </span>
   }
 </pre>

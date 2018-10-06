@@ -6,7 +6,7 @@ import toDiffableHtml from "diffable-html";
 
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { AlertManagerInput } from "./AlertManagerInput";
+import { AlertManagerInput } from ".";
 
 let alertStore;
 let silenceFormStore;

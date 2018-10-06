@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MatchCounter /> matches snapshot with empty matcher 1`] = `
+"
+<span class=\\"badge badge-light badge-pill\\"
+      style=\\"font-size: 85%;\\"
+      data-hash=\\"2153b6623363af13fa91f1ad35fa4cfc6462d349\\"
+>
+  0
+</span>
+"
+`;

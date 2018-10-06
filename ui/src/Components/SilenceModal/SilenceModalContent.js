@@ -7,11 +7,12 @@ import { observer } from "mobx-react";
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
 import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { SilenceFormStore, SilenceFormStage } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
 import { MountModalBackdrop } from "Components/Animations/MountModal";
 import { SilenceForm } from "./SilenceForm";
-import { SilenceSubmitController } from "./SilenceSubmitController";
+import { SilencePreview } from "./SilencePreview";
+import { SilenceSubmitController } from "./SilenceSubmit/SilenceSubmitController";
 
 const SilenceModalContent = observer(
   class SilenceModalContent extends Component {
@@ -46,7 +47,13 @@ const SilenceModalContent = observer(
                 <div className="modal-header">
                   <h5 className="modal-title">
                     {silenceFormStore.data.silenceID === null
-                      ? "Add new silence"
+                      ? silenceFormStore.data.currentStage ===
+                        SilenceFormStage.UserInput
+                        ? "Add new silence"
+                        : silenceFormStore.data.currentStage ===
+                          SilenceFormStage.Preview
+                          ? "Preview silenced alerts"
+                          : "Silence submitted"
                       : `Editing silence ${silenceFormStore.data.silenceID}`}
                   </h5>
                   <button type="button" className="close" onClick={onHide}>
@@ -54,16 +61,23 @@ const SilenceModalContent = observer(
                   </button>
                 </div>
                 <div className="modal-body">
-                  {silenceFormStore.data.inProgress ? (
-                    <SilenceSubmitController
-                      alertStore={alertStore}
-                      silenceFormStore={silenceFormStore}
-                    />
-                  ) : (
+                  {silenceFormStore.data.currentStage ===
+                  SilenceFormStage.UserInput ? (
                     <SilenceForm
                       alertStore={alertStore}
                       silenceFormStore={silenceFormStore}
                       settingsStore={settingsStore}
+                    />
+                  ) : silenceFormStore.data.currentStage ===
+                  SilenceFormStage.Preview ? (
+                    <SilencePreview
+                      alertStore={alertStore}
+                      silenceFormStore={silenceFormStore}
+                    />
+                  ) : (
+                    <SilenceSubmitController
+                      alertStore={alertStore}
+                      silenceFormStore={silenceFormStore}
                     />
                   )}
                 </div>
