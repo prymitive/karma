@@ -11,7 +11,7 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
 import { MountModalBackdrop } from "Components/Animations/MountModal";
 import { SilenceForm } from "./SilenceForm";
-import { SilenceSubmitController } from "./SilenceSubmitController";
+import { SilenceSubmitController } from "./SilenceSubmit/SilenceSubmitController";
 
 const SilenceModalContent = observer(
   class SilenceModalContent extends Component {

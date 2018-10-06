@@ -7,7 +7,7 @@ import toDiffableHtml from "diffable-html";
 import moment from "moment";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { SilencePreview } from "./SilencePreview";
+import { SilencePreview } from ".";
 
 describe("<SilencePreview />", () => {
   it("matches snapshot", () => {
