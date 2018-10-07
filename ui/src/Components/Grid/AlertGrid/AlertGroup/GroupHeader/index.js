@@ -11,6 +11,7 @@ import { APIGroup } from "Models/API";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
+import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GroupMenu } from "./GroupMenu";
 
 const GroupHeader = observer(
@@ -52,9 +53,11 @@ const GroupHeader = observer(
               className="text-muted cursor-pointer badge text-nowrap text-truncate pr-0"
               onClick={collapseStore.toggle}
             >
-              <FontAwesomeIcon
-                icon={collapseStore.value ? faChevronUp : faChevronDown}
-              />
+              <TooltipWrapper title="Toggle group details">
+                <FontAwesomeIcon
+                  icon={collapseStore.value ? faChevronUp : faChevronDown}
+                />
+              </TooltipWrapper>
             </span>
           </span>
           <span>

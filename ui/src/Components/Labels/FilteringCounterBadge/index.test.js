@@ -45,7 +45,7 @@ const validateOnClick = value => {
       counter={1}
     />
   );
-  tree.simulate("click");
+  tree.find(".components-label").simulate("click");
   expect(alertStore.filters.values).toHaveLength(1);
   expect(alertStore.filters.values).toContainEqual(
     NewUnappliedFilter(`@state=${value}`)

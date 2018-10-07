@@ -12,6 +12,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { AlertStore } from "Stores/AlertStore";
 import { DefaultLabelClass } from "Common/Colors";
 import { QueryOperators } from "Common/Query";
+import { TooltipWrapper } from "Components/TooltipWrapper";
 import { BaseLabel } from "Components/Labels/BaseLabel";
 
 import "./index.css";
@@ -93,13 +94,15 @@ const FilterInputLabel = observer(
               <FontAwesomeIcon icon={faExclamationCircle} />
             </span>
           )}
-          <RIEInput
-            defaultValue=""
-            value={filter.raw}
-            propName="raw"
-            change={this.onChange}
-            classEditing="py-0 border-0 bg-light"
-          />
+          <TooltipWrapper title="Click to edit this filter">
+            <RIEInput
+              defaultValue=""
+              value={filter.raw}
+              propName="raw"
+              change={this.onChange}
+              classEditing="py-0 border-0 bg-light"
+            />
+          </TooltipWrapper>
         </span>
       );
     }
