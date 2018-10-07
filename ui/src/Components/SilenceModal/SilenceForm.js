@@ -16,6 +16,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, SilenceFormStage } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
+import { TooltipWrapper } from "Components/TooltipWrapper";
 import { AlertManagerInput } from "./AlertManagerInput";
 import { SilenceMatch } from "./SilenceMatch";
 import { DateTimeSelect } from "./DateTimeSelect";
@@ -150,13 +151,15 @@ const SilenceForm = observer(
               isValid={!silenceFormStore.data.wasValidated}
             />
           ))}
-          <button
-            type="button"
-            className="btn btn-outline-secondary mb-3"
-            onClick={this.addMore}
-          >
-            <FontAwesomeIcon icon={faPlus} />
-          </button>
+          <TooltipWrapper title="Add a matcher">
+            <button
+              type="button"
+              className="btn btn-outline-secondary mb-3"
+              onClick={this.addMore}
+            >
+              <FontAwesomeIcon icon={faPlus} />
+            </button>
+          </TooltipWrapper>
           <DateTimeSelect silenceFormStore={silenceFormStore} />
           <IconInput
             type="email"

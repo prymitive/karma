@@ -18,7 +18,7 @@ const RenderAndClick = (name, value) => {
   const tree = mount(
     <FilteringLabel alertStore={alertStore} name={name} value={value} />
   );
-  tree.simulate("click");
+  tree.find(".components-label").simulate("click");
 };
 
 describe("<FilteringLabel />", () => {

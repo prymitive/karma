@@ -10,6 +10,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
 import { MountModal } from "Components/Animations/MountModal";
+import { TooltipWrapper } from "Components/TooltipWrapper";
 import { SilenceModalContent } from "./SilenceModalContent";
 
 import "./index.css";
@@ -53,12 +54,14 @@ const SilenceModal = observer(
       return (
         <React.Fragment>
           <li className="nav-item">
-            <span
-              className="nav-link cursor-pointer"
-              onClick={this.toggleModal}
-            >
-              <FontAwesomeIcon icon={faBellSlash} />
-            </span>
+            <TooltipWrapper title="Add new silence">
+              <span
+                className="nav-link cursor-pointer"
+                onClick={this.toggleModal}
+              >
+                <FontAwesomeIcon icon={faBellSlash} />
+              </span>
+            </TooltipWrapper>
           </li>
           <MountModal in={silenceFormStore.toggle.visible} unmountOnExit>
             <SilenceModalContent

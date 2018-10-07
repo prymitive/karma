@@ -148,6 +148,9 @@ class SilenceFormStore {
         }
 
         this.matchers = matchers;
+        // ensure that silenceID is nulled, since it's used to edit silences
+        // and this is used to silence groups
+        this.silenceID = null;
       },
 
       fillFormFromSilence(alertmanager, silence) {

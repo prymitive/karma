@@ -10,6 +10,7 @@ import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { MountModal } from "Components/Animations/MountModal";
+import { TooltipWrapper } from "Components/TooltipWrapper";
 import { MainModalContent } from "./MainModalContent";
 
 const MainModal = observer(
@@ -46,12 +47,14 @@ const MainModal = observer(
       return (
         <React.Fragment>
           <li className="nav-item">
-            <span
-              className="nav-link cursor-pointer"
-              onClick={this.toggle.toggle}
-            >
-              <FontAwesomeIcon icon={faCog} />
-            </span>
+            <TooltipWrapper title="Settings">
+              <span
+                className="nav-link cursor-pointer"
+                onClick={this.toggle.toggle}
+              >
+                <FontAwesomeIcon icon={faCog} />
+              </span>
+            </TooltipWrapper>
           </li>
           <MountModal in={this.toggle.show} unmountOnExit>
             <MainModalContent

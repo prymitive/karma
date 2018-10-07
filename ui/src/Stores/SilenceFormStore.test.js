@@ -187,6 +187,13 @@ describe("SilenceFormStore.data", () => {
     );
   });
 
+  it("fillMatchersFromGroup() resets silenceID if set", () => {
+    store.data.silenceID = "12345";
+    const group = MockGroup();
+    store.data.fillMatchersFromGroup(group, [group.alerts[0]]);
+    expect(store.data.silenceID).toBeNull();
+  });
+
   it("fillFormFromSilence() sets silenceID", () => {
     const alertmanager = MockAlertmanager();
     const silence = MockSilence();

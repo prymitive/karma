@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { TooltipWrapper } from "Components/TooltipWrapper";
 import { SilenceFormMatcher } from "Models/SilenceForm";
 import { LabelNameInput } from "./LabelNameInput";
 import { LabelValueInput } from "./LabelValueInput";
@@ -71,13 +72,15 @@ const SilenceMatch = observer(
               </label>
             </span>
             {showDelete ? (
-              <button
-                type="button"
-                className="btn btn-outline-danger"
-                onClick={onDelete}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-              </button>
+              <TooltipWrapper title="Remove this matcher">
+                <button
+                  type="button"
+                  className="btn btn-outline-danger"
+                  onClick={onDelete}
+                >
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </TooltipWrapper>
             ) : null}
           </div>
         </div>
