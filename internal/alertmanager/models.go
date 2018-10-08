@@ -11,6 +11,7 @@ import (
 	"time"
 
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/transform"
@@ -270,7 +271,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			alerts = append(alerts, alert)
 		}
 
-		for _, hint := range transform.BuildAutocomplete(alerts) {
+		for _, hint := range filters.BuildAutocomplete(alerts) {
 			autocompleteMap[hint.Value] = hint
 		}
 

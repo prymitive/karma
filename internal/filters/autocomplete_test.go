@@ -1,12 +1,12 @@
-package transform_test
+package filters_test
 
 import (
 	"encoding/json"
 	"sort"
 	"testing"
 
+	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
-	"github.com/prymitive/karma/internal/transform"
 
 	"github.com/pmezard/go-difflib/difflib"
 )
@@ -54,7 +54,7 @@ var acTests = []acTest{
 func TestBuildAutocomplete(t *testing.T) {
 	for _, acTest := range acTests {
 		result := []string{}
-		for _, hint := range transform.BuildAutocomplete(acTest.Alerts) {
+		for _, hint := range filters.BuildAutocomplete(acTest.Alerts) {
 			result = append(result, hint.Value)
 		}
 
