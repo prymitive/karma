@@ -100,6 +100,7 @@ const MountedSilenceDetails = onEditSilence => {
   return mount(
     <Provider alertStore={alertStore}>
       <SilenceDetails
+        alertStore={alertStore}
         alertmanager={alertStore.data.upstreams.instances[0]}
         silence={silence}
         onEditSilence={onEditSilence}

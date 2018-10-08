@@ -29,6 +29,7 @@ import { StaticLabels, QueryOperators } from "Common/Query";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { RenderLinkAnnotation } from "../Annotation";
+import { DeleteSilence } from "./DeleteSilence";
 
 import "./index.css";
 
@@ -87,7 +88,12 @@ SilenceExpiryBadgeWithProgress.propTypes = {
   progress: PropTypes.number.isRequired
 };
 
-const SilenceDetails = ({ alertmanager, silence, onEditSilence }) => {
+const SilenceDetails = ({
+  alertStore,
+  alertmanager,
+  silence,
+  onEditSilence
+}) => {
   let expiresClass = "";
   let expiresLabel = "Expires";
   if (moment(silence.endsAt) < moment()) {
@@ -119,12 +125,17 @@ const SilenceDetails = ({ alertmanager, silence, onEditSilence }) => {
           {expiresLabel} <Moment fromNow>{silence.endsAt}</Moment>
         </span>
         <span
-          className="badge badge-secondary text-nowrap text-truncate px-1 cursor-pointer components-label-with-hover"
+          className="badge badge-secondary text-nowrap text-truncate px-1 cursor-pointer components-label-with-hover mr-1"
           onClick={onEditSilence}
         >
           <FontAwesomeIcon className="mr-1" icon={faEdit} />
           Edit
         </span>
+        <DeleteSilence
+          alertStore={alertStore}
+          alertmanager={alertmanager}
+          silenceID={silence.id}
+        />
       </div>
       <div>
         <span className="badge text-nowrap text-truncate px-1 mr-1">
@@ -277,7 +288,7 @@ const Silence = inject("alertStore")(
       }
 
       render() {
-        const { alertmanagerState, silenceID } = this.props;
+        const { alertStore, alertmanagerState, silenceID } = this.props;
 
         const silence = this.getSilence();
         if (!silence)
@@ -320,6 +331,7 @@ const Silence = inject("alertStore")(
             </div>
             {this.collapse.value ? null : (
               <SilenceDetails
+                alertStore={alertStore}
                 alertmanager={alertmanager}
                 silence={silence}
                 onEditSilence={this.onEditSilence}
