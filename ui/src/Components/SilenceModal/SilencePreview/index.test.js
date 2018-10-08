@@ -95,10 +95,10 @@ describe("<SilencePreview />", () => {
     tree.update();
     expect(tree.find("FetchError")).toHaveLength(1);
     expect(consoleSpy).toHaveBeenCalled();
-    expect(tree.find("Preview")).toHaveLength(0);
+    expect(tree.find("LabelSetList")).toHaveLength(0);
   });
 
-  it("renders Preview on successful fetch", async () => {
+  it("renders LabelSetList on successful fetch", async () => {
     fetch.mockResponse(JSON.stringify(MockAPIResponse()));
 
     const tree = MountedSilencePreview();
@@ -106,7 +106,7 @@ describe("<SilencePreview />", () => {
 
     tree.update();
     expect(tree.find("FetchError")).toHaveLength(0);
-    expect(tree.find("Preview")).toHaveLength(1);
+    expect(tree.find("LabelSetList")).toHaveLength(1);
   });
 
   it("clicking on the submit button moves form to the 'Submit' stage", () => {
