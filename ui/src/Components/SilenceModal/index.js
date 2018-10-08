@@ -9,7 +9,7 @@ import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
-import { MountModal } from "Components/Animations/MountModal";
+import { Modal } from "Components/Modal";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { SilenceModalContent } from "./SilenceModalContent";
 
@@ -35,19 +35,6 @@ const SilenceModal = observer(
       }
     };
 
-    componentDidUpdate() {
-      const { silenceFormStore } = this.props;
-
-      document.body.classList.toggle(
-        "modal-open",
-        silenceFormStore.toggle.visible
-      );
-    }
-
-    componentWillUnmount() {
-      document.body.classList.remove("modal-open");
-    }
-
     render() {
       const { alertStore, silenceFormStore, settingsStore } = this.props;
 
@@ -63,14 +50,14 @@ const SilenceModal = observer(
               </span>
             </TooltipWrapper>
           </li>
-          <MountModal in={silenceFormStore.toggle.visible} unmountOnExit>
+          <Modal isOpen={silenceFormStore.toggle.visible}>
             <SilenceModalContent
               alertStore={alertStore}
               silenceFormStore={silenceFormStore}
               settingsStore={settingsStore}
               onHide={this.toggleModal}
             />
-          </MountModal>
+          </Modal>
         </React.Fragment>
       );
     }

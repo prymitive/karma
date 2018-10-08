@@ -2,129 +2,121 @@
 
 exports[`<MainModalContent /> matches snapshot 1`] = `
 "
-<div class=\\"modal d-block\\"
-     role=\\"dialog\\"
->
-  <div class=\\"modal-dialog modal-lg\\"
-       role=\\"document\\"
-  >
-    <div class=\\"modal-content\\">
-      <div class=\\"modal-header py-2\\">
-        <nav class=\\"nav nav-pills nav-justified w-100\\">
-          <span class=\\"nav-item nav-link cursor-pointer active\\">
-            Configuration
-          </span>
-          <span class=\\"nav-item nav-link cursor-pointer text-primary\\">
-            Help
-          </span>
-          <button type=\\"button\\"
-                  class=\\"close\\"
-          >
-            <span>
-              ×
-            </span>
-          </button>
-        </nav>
-      </div>
-      <div class=\\"modal-body\\">
-        <form class=\\"px-3\\">
-          <div class=\\"form-group text-center\\">
-            <label class=\\"mb-4\\">
-              Refresh interval
-            </label>
-            <div aria-disabled=\\"false\\"
-                 class=\\"input-range\\"
-            >
-              <span class=\\"input-range__label input-range__label--min\\">
-                <span class=\\"input-range__label-container\\">
-                  10s
-                </span>
-              </span>
-              <div class=\\"input-range__track input-range__track--background\\">
-                <div style=\\"left: 0%; width: 18.181818181818183%;\\"
-                     class=\\"input-range__track input-range__track--active\\"
-                >
-                </div>
-                <span class=\\"input-range__slider-container\\"
-                      style=\\"position: absolute; left: 18.181818181818183%;\\"
-                >
-                  <span class=\\"input-range__label input-range__label--value\\">
-                    <span class=\\"input-range__label-container\\">
-                      30s
-                    </span>
-                  </span>
-                  <div aria-valuemax=\\"120\\"
-                       aria-valuemin=\\"10\\"
-                       aria-valuenow=\\"30\\"
-                       class=\\"input-range__slider\\"
-                       draggable=\\"false\\"
-                       role=\\"slider\\"
-                       tabindex=\\"0\\"
-                  >
-                  </div>
-                </span>
-              </div>
-              <span class=\\"input-range__label input-range__label--max\\">
-                <span class=\\"input-range__label-container\\">
-                  120s
-                </span>
-              </span>
-            </div>
-          </div>
-          <div class=\\"mt-5\\">
-          </div>
-          <div class=\\"form-group text-center\\">
-            <label class=\\"mb-4\\">
-              Default number of alerts to show per group
-            </label>
-            <div aria-disabled=\\"false\\"
-                 class=\\"input-range\\"
-            >
-              <span class=\\"input-range__label input-range__label--min\\">
-                <span class=\\"input-range__label-container\\">
-                  1
-                </span>
-              </span>
-              <div class=\\"input-range__track input-range__track--background\\">
-                <div style=\\"left: 0%; width: 44.44444444444444%;\\"
-                     class=\\"input-range__track input-range__track--active\\"
-                >
-                </div>
-                <span class=\\"input-range__slider-container\\"
-                      style=\\"position: absolute; left: 44.44444444444444%;\\"
-                >
-                  <span class=\\"input-range__label input-range__label--value\\">
-                    <span class=\\"input-range__label-container\\">
-                      5
-                    </span>
-                  </span>
-                  <div aria-valuemax=\\"10\\"
-                       aria-valuemin=\\"1\\"
-                       aria-valuenow=\\"5\\"
-                       class=\\"input-range__slider\\"
-                       draggable=\\"false\\"
-                       role=\\"slider\\"
-                       tabindex=\\"0\\"
-                  >
-                  </div>
-                </span>
-              </div>
-              <span class=\\"input-range__label input-range__label--max\\">
-                <span class=\\"input-range__label-container\\">
-                  10
-                </span>
-              </span>
-            </div>
-          </div>
-        </form>
-      </div>
-      <div class=\\"modal-footer\\">
-        <span class=\\"text-muted\\">
-          Version: unknown
+<span>
+  <div class=\\"modal-header py-2\\">
+    <nav class=\\"nav nav-pills nav-justified w-100\\">
+      <span class=\\"nav-item nav-link cursor-pointer active\\">
+        Configuration
+      </span>
+      <span class=\\"nav-item nav-link cursor-pointer text-primary\\">
+        Help
+      </span>
+      <button type=\\"button\\"
+              class=\\"close\\"
+      >
+        <span>
+          ×
         </span>
-      </div>
-    </div>
+      </button>
+    </nav>
   </div>
-</div>
+  <div class=\\"modal-body\\">
+    <form class=\\"px-3\\">
+      <div class=\\"form-group text-center\\">
+        <label class=\\"mb-4\\">
+          Refresh interval
+        </label>
+        <div aria-disabled=\\"false\\"
+             class=\\"input-range\\"
+        >
+          <span class=\\"input-range__label input-range__label--min\\">
+            <span class=\\"input-range__label-container\\">
+              10s
+            </span>
+          </span>
+          <div class=\\"input-range__track input-range__track--background\\">
+            <div style=\\"left: 0%; width: 18.181818181818183%;\\"
+                 class=\\"input-range__track input-range__track--active\\"
+            >
+            </div>
+            <span class=\\"input-range__slider-container\\"
+                  style=\\"position: absolute; left: 18.181818181818183%;\\"
+            >
+              <span class=\\"input-range__label input-range__label--value\\">
+                <span class=\\"input-range__label-container\\">
+                  30s
+                </span>
+              </span>
+              <div aria-valuemax=\\"120\\"
+                   aria-valuemin=\\"10\\"
+                   aria-valuenow=\\"30\\"
+                   class=\\"input-range__slider\\"
+                   draggable=\\"false\\"
+                   role=\\"slider\\"
+                   tabindex=\\"0\\"
+              >
+              </div>
+            </span>
+          </div>
+          <span class=\\"input-range__label input-range__label--max\\">
+            <span class=\\"input-range__label-container\\">
+              120s
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class=\\"mt-5\\">
+      </div>
+      <div class=\\"form-group text-center\\">
+        <label class=\\"mb-4\\">
+          Default number of alerts to show per group
+        </label>
+        <div aria-disabled=\\"false\\"
+             class=\\"input-range\\"
+        >
+          <span class=\\"input-range__label input-range__label--min\\">
+            <span class=\\"input-range__label-container\\">
+              1
+            </span>
+          </span>
+          <div class=\\"input-range__track input-range__track--background\\">
+            <div style=\\"left: 0%; width: 44.44444444444444%;\\"
+                 class=\\"input-range__track input-range__track--active\\"
+            >
+            </div>
+            <span class=\\"input-range__slider-container\\"
+                  style=\\"position: absolute; left: 44.44444444444444%;\\"
+            >
+              <span class=\\"input-range__label input-range__label--value\\">
+                <span class=\\"input-range__label-container\\">
+                  5
+                </span>
+              </span>
+              <div aria-valuemax=\\"10\\"
+                   aria-valuemin=\\"1\\"
+                   aria-valuenow=\\"5\\"
+                   class=\\"input-range__slider\\"
+                   draggable=\\"false\\"
+                   role=\\"slider\\"
+                   tabindex=\\"0\\"
+              >
+              </div>
+            </span>
+          </div>
+          <span class=\\"input-range__label input-range__label--max\\">
+            <span class=\\"input-range__label-container\\">
+              10
+            </span>
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class=\\"modal-footer\\">
+    <span class=\\"text-muted\\">
+      Version: unknown
+    </span>
+  </div>
+</span>
 "
 `;

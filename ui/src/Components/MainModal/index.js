@@ -9,8 +9,8 @@ import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { MountModal } from "Components/Animations/MountModal";
 import { TooltipWrapper } from "Components/TooltipWrapper";
+import { Modal } from "Components/Modal";
 import { MainModalContent } from "./MainModalContent";
 
 const MainModal = observer(
@@ -33,14 +33,6 @@ const MainModal = observer(
       { toggle: action.bound, hide: action.bound }
     );
 
-    componentDidUpdate() {
-      document.body.classList.toggle("modal-open", this.toggle.show);
-    }
-
-    componentWillUnmount() {
-      document.body.classList.remove("modal-open");
-    }
-
     render() {
       const { alertStore, settingsStore } = this.props;
 
@@ -56,14 +48,14 @@ const MainModal = observer(
               </span>
             </TooltipWrapper>
           </li>
-          <MountModal in={this.toggle.show} unmountOnExit>
+          <Modal isOpen={this.toggle.show}>
             <MainModalContent
               alertStore={alertStore}
               settingsStore={settingsStore}
               onHide={this.toggle.hide}
               isVisible={this.toggle.show}
             />
-          </MountModal>
+          </Modal>
         </React.Fragment>
       );
     }
