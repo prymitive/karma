@@ -69,18 +69,25 @@ var AllFilters = []filterConfig{
 		Autocomplete:       ageAutocomplete,
 	},
 	filterConfig{
+		Label:              "@silence_id",
+		LabelRe:            regexp.MustCompile("^@silence_id$"),
+		SupportedOperators: []string{equalOperator, notEqualOperator},
+		Factory:            newsilenceIDFilter,
+		Autocomplete:       silenceIDAutocomplete,
+	},
+	filterConfig{
 		Label:              "@silence_jira",
 		LabelRe:            regexp.MustCompile("^@silence_jira$"),
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},
 		Factory:            newSilenceJiraFilter,
-		Autocomplete:       sinceJiraIDAutocomplete,
+		Autocomplete:       silenceJiraIDAutocomplete,
 	},
 	filterConfig{
 		Label:              "@silence_author",
 		LabelRe:            regexp.MustCompile("^@silence_author$"),
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},
 		Factory:            newSilenceAuthorFilter,
-		Autocomplete:       sinceAuthorAutocomplete,
+		Autocomplete:       silenceAuthorAutocomplete,
 	},
 	filterConfig{
 		Label:              "@limit",

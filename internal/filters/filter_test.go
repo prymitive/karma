@@ -85,6 +85,67 @@ var tests = []filterTest{
 	},
 
 	filterTest{
+		Expression: "@silence_id=abcdef",
+		IsValid:    true,
+		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@silence_id=abcdef",
+		IsValid:    true,
+		Alert:      models.Alert{State: "active"},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@silence_id=abcdef",
+		IsValid:    true,
+		Alert:      models.Alert{State: "active", SilencedBy: []string{"abcdef"}},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@silence_id=abcdef",
+		IsValid:    true,
+		Alert:      models.Alert{State: "unprocessed"},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@silence_id=abcdef",
+		IsValid:    true,
+		Alert:      models.Alert{State: "unprocessed", SilencedBy: []string{"abcdef"}},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@silence_id=abcdef",
+		IsValid:    true,
+		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"abcdef"}},
+		IsMatch:    true,
+	},
+	filterTest{
+		Expression: "@silence_id!=abcdef",
+		IsValid:    true,
+		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"abcdef"}},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@silence_id!=abcdef",
+		IsValid:    true,
+		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		IsMatch:    true,
+	},
+	filterTest{
+		Expression: "@silence_id=~cde",
+		IsValid:    false,
+		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"abcdef"}},
+		IsMatch:    false,
+	},
+	filterTest{
+		Expression: "@silence_id!~abc",
+		IsValid:    false,
+		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"zwd"}},
+		IsMatch:    false,
+	},
+
+	filterTest{
 		Expression: "@silence_jira=1",
 		IsValid:    true,
 		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},

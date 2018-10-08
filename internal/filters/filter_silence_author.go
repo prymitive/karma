@@ -43,7 +43,7 @@ func newSilenceAuthorFilter() FilterT {
 	return &f
 }
 
-func sinceAuthorAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+func silenceAuthorAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
 	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
 		if alert.IsSilenced() {

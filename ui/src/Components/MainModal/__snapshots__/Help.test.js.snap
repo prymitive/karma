@@ -475,6 +475,53 @@ exports[`<Help /> matches snapshot 1`] = `
         </ul>
       </dd>
       <dt>
+        Match suppressed alerts based on the silence ID
+      </dt>
+      <dd class=\\"mb-5\\">
+        <div>
+          Supported operators:
+          <kbd class=\\"mr-1\\">
+            =
+          </kbd>
+          <kbd class=\\"mr-1\\">
+            !=
+          </kbd>
+        </div>
+        <div>
+          Examples:
+        </div>
+        <ul>
+          <li>
+            <div>
+              <span class=\\"badge badge-info\\">
+                @silence_id=abc123456789
+              </span>
+            </div>
+            <div>
+              Match alerts suppressed by silence
+              <code>
+                abc123456789
+              </code>
+              .
+            </div>
+          </li>
+          <li>
+            <div>
+              <span class=\\"badge badge-info\\">
+                @silence_id!=abc123456789
+              </span>
+            </div>
+            <div>
+              Match alerts suppressed by any silence except
+              <code>
+                abc123456789
+              </code>
+              .
+            </div>
+          </li>
+        </ul>
+      </dd>
+      <dt>
         Match alerts based on the author of silence
       </dt>
       <dd class=\\"mb-5\\">

@@ -85,10 +85,10 @@ func TestDedupAutocomplete(t *testing.T) {
 	ac := alertmanager.DedupAutocomplete()
 	// since we have alertmanager instance per mock adding new mocks will increase
 	// the number of hints, so we need to calculate the expected value here
-	// there should be 56 hints excluding @alertmanager ones, use that as our base
+	// there should be 156 hints excluding @alertmanager ones, use that as our base
 	// and add 2 hints per alertmanager instance (= and != hints)
 	mockCount := len(mock.ListAllMockURIs())
-	expected := 56 + mockCount*2
+	expected := 156 + mockCount*2
 	if len(ac) != expected {
 		t.Errorf("Expected %d autocomplete hints, got %d", expected, len(ac))
 	}
