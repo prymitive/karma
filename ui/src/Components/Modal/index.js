@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
 
-import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
+import { disableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock";
 
 import {
   MountModal,
@@ -23,7 +23,7 @@ const Modal = observer(
       if (isOpen) {
         disableBodyScroll(document.querySelector(".modal"));
       } else {
-        enableBodyScroll(document.querySelector(".modal"));
+        clearAllBodyScrollLocks();
       }
     };
 
