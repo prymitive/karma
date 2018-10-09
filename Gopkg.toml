@@ -87,7 +87,7 @@
 
 [[constraint]]
   name = "github.com/sirupsen/logrus"
-  version = "=1.0.6"
+  version = "=1.1.1"
 
 [[constraint]]
   name = "github.com/spf13/pflag"
