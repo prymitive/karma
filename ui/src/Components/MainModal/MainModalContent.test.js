@@ -28,7 +28,6 @@ const FakeModal = () => {
       alertStore={alertStore}
       settingsStore={settingsStore}
       onHide={onHide}
-      isVisible={true}
     />
   );
 };
@@ -46,7 +45,18 @@ const ValidateSetTab = (title, callArg) => {
 
 describe("<MainModalContent />", () => {
   it("matches snapshot", () => {
-    const tree = FakeModal();
+    // we have multiple fragments and enzyme only renders the first one
+    // in html() and text(), debug() would work but it's noisy
+    // https://github.com/airbnb/enzyme/issues/1213
+    const tree = mount(
+      <span>
+        <MainModalContent
+          alertStore={alertStore}
+          settingsStore={settingsStore}
+          onHide={onHide}
+        />
+      </span>
+    );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 

@@ -192,7 +192,7 @@ type acTestCase struct {
 
 var acTests = []acTestCase{
 	acTestCase{
-		Term: "a",
+		Term: "ale",
 		Results: []string{
 			"alertname=Memory_Usage_Too_High",
 			"alertname=Host_Down",
@@ -204,10 +204,6 @@ var acTests = []acTestCase{
 			"alertname!=Free_Disk_Space_Too_Low",
 			"@alertmanager=default",
 			"@alertmanager!=default",
-			"@age>1h",
-			"@age>10m",
-			"@age<1h",
-			"@age<10m",
 		},
 	},
 	acTestCase{
@@ -266,28 +262,44 @@ var acTests = []acTestCase{
 		},
 	},
 	acTestCase{
-		Term: "@",
+		Term: "@st",
 		Results: []string{
 			"@state=suppressed",
 			"@state=active",
 			"@state!=suppressed",
 			"@state!=active",
-			"@silence_author=~john@example.com",
-			"@silence_author=john@example.com",
-			"@silence_author!~john@example.com",
-			"@silence_author!=john@example.com",
+		},
+	},
+	acTestCase{
+		Term: "@r",
+		Results: []string{
 			"@receiver=by-name",
 			"@receiver=by-cluster-service",
 			"@receiver!=by-name",
 			"@receiver!=by-cluster-service",
-			"@limit=50",
-			"@limit=10",
-			"@alertmanager=default",
-			"@alertmanager!=default",
+		},
+	},
+	acTestCase{
+		Term: "@age",
+		Results: []string{
 			"@age>1h",
 			"@age>10m",
 			"@age<1h",
 			"@age<10m",
+		},
+	},
+	acTestCase{
+		Term: "@limit",
+		Results: []string{
+			"@limit=50",
+			"@limit=10",
+		},
+	},
+	acTestCase{
+		Term: "@alertmanager",
+		Results: []string{
+			"@alertmanager=default",
+			"@alertmanager!=default",
 		},
 	},
 	acTestCase{

@@ -8,7 +8,12 @@ const FilterOperatorHelp = ({ operator, description, children }) => (
     </dt>
     <dd className="mb-3">
       <div>
-        Example: <code>key{operator}value</code>
+        Example:{" "}
+        <code>
+          key
+          {operator}
+          value
+        </code>
       </div>
       <div>{children}</div>
     </dd>
@@ -176,6 +181,19 @@ const Help = () => (
           </FilterExample>
           <FilterExample example="@state=unprocessed">
             Match only unprocessed alerts.
+          </FilterExample>
+        </QueryHelp>
+
+        <QueryHelp
+          title="Match suppressed alerts based on the silence ID"
+          operators={["=", "!="]}
+        >
+          <FilterExample example="@silence_id=abc123456789">
+            Match alerts suppressed by silence <code>abc123456789</code>.
+          </FilterExample>
+          <FilterExample example="@silence_id!=abc123456789">
+            Match alerts suppressed by any silence except{" "}
+            <code>abc123456789</code>.
           </FilterExample>
         </QueryHelp>
 

@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
-import hash from "object-hash";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
@@ -13,7 +11,10 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclama
 
 import { AlertStore, FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { StaticLabel } from "Components/Labels/StaticLabel";
+import {
+  LabelSetList,
+  GroupListToUniqueLabelsList
+} from "Components/LabelSetList";
 import { MatcherToFilter, AlertManagersToFilter } from "../Matchers";
 
 const FetchError = ({ message }) => (
@@ -26,27 +27,6 @@ const FetchError = ({ message }) => (
 );
 FetchError.propTypes = {
   message: PropTypes.node.isRequired
-};
-
-const Preview = ({ alertStore, labelsList }) => (
-  <ul className="list-group list-group-flush">
-    {labelsList.map(labels => (
-      <li key={hash(labels)} className="list-group-item px-0 pt-2 pb-1">
-        {Object.entries(labels).map(([name, value]) => (
-          <StaticLabel
-            key={name}
-            alertStore={alertStore}
-            name={name}
-            value={value}
-          />
-        ))}
-      </li>
-    ))}
-  </ul>
-);
-Preview.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  labelsList: PropTypes.arrayOf(PropTypes.object).isRequired
 };
 
 const SilencePreview = observer(
@@ -64,20 +44,7 @@ const SilencePreview = observer(
         // take a list of groups and outputs a list of label sets, this ignores
         // the receiver, so we'll end up with only unique alerts
         groupsToUniqueLabels(groups) {
-          const alerts = {};
-          for (const group of groups) {
-            for (const alert of group.alerts) {
-              const alertLabels = Object.assign(
-                {},
-                group.labels,
-                group.shared.labels,
-                alert.labels
-              );
-              const alertHash = hash(alertLabels);
-              alerts[alertHash] = alertLabels;
-            }
-          }
-          this.alertLabels = Object.values(alerts);
+          this.alertLabels = GroupListToUniqueLabelsList(groups);
         },
         setError(value) {
           this.error = value;
@@ -135,7 +102,7 @@ const SilencePreview = observer(
                   silence.
                 </p>
                 <div>
-                  <Preview
+                  <LabelSetList
                     alertStore={alertStore}
                     labelsList={this.matchedAlerts.alertLabels}
                   />

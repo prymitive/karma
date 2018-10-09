@@ -7,7 +7,8 @@ const StaticLabels = Object.freeze({
   AlertName: "alertname",
   AlertManager: "@alertmanager",
   Receiver: "@receiver",
-  State: "@state"
+  State: "@state",
+  SilenceID: "@silence_id"
 });
 
 function FormatQuery(name, operator, value) {

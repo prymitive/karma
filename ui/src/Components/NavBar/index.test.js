@@ -54,17 +54,6 @@ const ValidateNavClass = (totalFilters, expectedClass) => {
 };
 
 describe("<NavBar />", () => {
-  it("matches snapshot with 0 alerts", () => {
-    const tree = RenderNavbar();
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
-  });
-
-  it("matches snapshot with 5 alerts", () => {
-    alertStore.info.totalAlerts = 5;
-    const tree = RenderNavbar();
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
-  });
-
   it("navbar-brand shows 15 alerts with totalAlerts=15", () => {
     alertStore.info.totalAlerts = 15;
     const tree = RenderNavbar();
