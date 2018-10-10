@@ -1,7 +1,16 @@
-import React from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+import { observer } from "mobx-react";
+import { observable, action } from "mobx";
+
 import hash from "object-hash";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons/faChevronLeft";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
+
+import Pagination from "react-js-pagination";
 
 import { AlertStore } from "Stores/AlertStore";
 import { StaticLabel } from "Components/Labels/StaticLabel";
@@ -25,29 +34,78 @@ const GroupListToUniqueLabelsList = groups => {
   return Object.values(alerts);
 };
 
-// used in new silence form preview stage and when deleting silences
-const LabelSetList = ({ alertStore, labelsList }) =>
-  labelsList.length > 0 ? (
-    <ul className="list-group list-group-flush">
-      {labelsList.map(labels => (
-        <li key={hash(labels)} className="list-group-item px-0 pt-2 pb-1">
-          {Object.entries(labels).map(([name, value]) => (
-            <StaticLabel
-              key={name}
-              alertStore={alertStore}
-              name={name}
-              value={value}
-            />
-          ))}
-        </li>
-      ))}
-    </ul>
-  ) : (
-    <p className="text-muted text-center">No alerts matched</p>
-  );
-LabelSetList.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  labelsList: PropTypes.arrayOf(PropTypes.object).isRequired
-};
+const LabelSetList = observer(
+  class LabelSetList extends Component {
+    static propTypes = {
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+      labelsList: PropTypes.arrayOf(PropTypes.object).isRequired
+    };
+
+    maxPerPage = 10;
+
+    pagination = observable(
+      {
+        activePage: 1,
+        onPageChange(pageNumber) {
+          this.activePage = pageNumber;
+        }
+      },
+      {
+        onPageChange: action.bound
+      }
+    );
+
+    render() {
+      const { alertStore, labelsList } = this.props;
+
+      return labelsList.length > 0 ? (
+        <React.Fragment>
+          <ul className="list-group list-group-flush">
+            {labelsList
+              .slice(
+                (this.pagination.activePage - 1) * this.maxPerPage,
+                this.pagination.activePage * this.maxPerPage
+              )
+              .map(labels => (
+                <li
+                  key={hash(labels)}
+                  className="list-group-item px-0 pt-2 pb-1"
+                >
+                  {Object.entries(labels).map(([name, value]) => (
+                    <StaticLabel
+                      key={name}
+                      alertStore={alertStore}
+                      name={name}
+                      value={value}
+                    />
+                  ))}
+                </li>
+              ))}
+          </ul>
+          {labelsList.length > this.maxPerPage ? (
+            <div className="mt-3">
+              <Pagination
+                activePage={this.pagination.activePage}
+                itemsCountPerPage={this.maxPerPage}
+                totalItemsCount={labelsList.length}
+                pageRangeDisplayed={5}
+                onChange={this.pagination.onPageChange}
+                hideFirstLastPages
+                hideDisabled
+                innerClass="pagination justify-content-center"
+                itemClass="page-item"
+                linkClass="page-link"
+                prevPageText={<FontAwesomeIcon icon={faChevronLeft} />}
+                nextPageText={<FontAwesomeIcon icon={faChevronRight} />}
+              />
+            </div>
+          ) : null}
+        </React.Fragment>
+      ) : (
+        <p className="text-muted text-center">No alerts matched</p>
+      );
+    }
+  }
+);
 
 export { LabelSetList, GroupListToUniqueLabelsList };
