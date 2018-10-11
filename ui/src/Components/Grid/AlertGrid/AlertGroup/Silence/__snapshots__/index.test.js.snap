@@ -108,8 +108,13 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
            aria-describedby=\\"tippy-tooltip-6\\"
            data-original-title=\\"Click to only show alerts with this label\\"
       >
-        <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
-          @alertmanager: default
+        <span class=\\"components-label components-label-with-hover text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+          <span class=\\"components-label-name\\">
+            @alertmanager:
+          </span>
+          <span class=\\"components-label-value\\">
+            default
+          </span>
         </span>
       </div>
       <a href=\\"file:///mock/#/silences/4cf5fd82-1edd-4169-99d1-ff8415e72179\\"

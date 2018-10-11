@@ -54,6 +54,7 @@ const FilterInputLabel = observer(
         "text-truncate",
         "mw-100"
       ];
+      let badgeClass = "";
       let style = {};
       if (!filter.applied) {
         classNames.push("badge-secondary");
@@ -65,6 +66,10 @@ const FilterInputLabel = observer(
           `badge-${this.getColorClass(filter.name, filter.value)}`
         );
         style = this.getColorStyle(filter.name, filter.value);
+
+        badgeClass = this.isBackgroundDark(filter.name, filter.value)
+          ? "components-label-dark"
+          : "components-label-bright";
       } else {
         classNames.push(`badge-${DefaultLabelClass}`);
       }
@@ -77,7 +82,7 @@ const FilterInputLabel = observer(
             style={style}
             onClick={() => alertStore.filters.removeFilter(filter.raw)}
           >
-            <span className="align-text-bottom">&times;</span>
+            <span className={`align-text-bottom ${badgeClass}`}>&times;</span>
           </button>
           {filter.isValid ? (
             filter.applied ? (
@@ -100,6 +105,7 @@ const FilterInputLabel = observer(
               value={filter.raw}
               propName="raw"
               change={this.onChange}
+              className={badgeClass}
               classEditing="py-0 border-0 bg-light"
             />
           </TooltipWrapper>

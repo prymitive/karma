@@ -143,9 +143,14 @@ class AlertStore {
       upstreams: { instances: [] },
       getAlertmanagerByName(name) {
         return this.upstreams.instances.find(am => am.name === name);
+      },
+      getColorData(name, value) {
+        if (this.colors[name] !== undefined) {
+          return this.colors[name][value];
+        }
       }
     },
-    { getAlertmanagerByName: action },
+    {},
     { name: "API Response data" }
   );
 

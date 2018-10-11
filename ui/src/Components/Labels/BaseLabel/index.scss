@@ -1,0 +1,35 @@
+@import "~bootswatch/dist/flatly/variables";
+
+.components-label-with-hover:hover {
+  filter: brightness(0.85);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.components-label {
+  margin-right: 0.25rem;
+}
+
+.components-label-bright {
+  color: $black;
+  &.components-label-name,
+  .components-label-name {
+    color: lighten($black, 20%);
+  }
+  &.components-label-value,
+  .components-label-value {
+    color: $black;
+  }
+}
+
+.components-label-dark {
+  color: $white;
+  &.components-label-name,
+  .components-label-name {
+    color: darken($white, 10%);
+  }
+  &.components-label-value,
+  .components-label-value {
+    color: $white;
+  }
+}

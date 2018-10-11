@@ -29,7 +29,7 @@ const GroupHeader = observer(
       const { collapseStore, group, silenceFormStore } = this.props;
 
       return (
-        <h5 className="card-title text-center mb-0 clearfix">
+        <h5 className="card-title mb-0 clearfix">
           <span className="float-left">
             <GroupMenu group={group} silenceFormStore={silenceFormStore} />
           </span>

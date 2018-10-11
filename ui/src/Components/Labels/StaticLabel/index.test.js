@@ -14,11 +14,39 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
 });
 
-describe("<FilteringLabel />", () => {
+const MountedStaticLabel = () => {
+  return mount(<StaticLabel alertStore={alertStore} name="foo" value="bar" />);
+};
+
+describe("<StaticLabel />", () => {
   it("matches snapshot", () => {
-    const tree = mount(
-      <StaticLabel alertStore={alertStore} name="foo" value="bar" />
-    );
+    const tree = MountedStaticLabel();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
+  it("label with dark background color should have 'components-label-dark' class", () => {
+    alertStore.data.colors["foo"] = {
+      bar: {
+        brightness: 125,
+        background: { red: 4, green: 5, blue: 6, alpha: 200 }
+      }
+    };
+    const tree = MountedStaticLabel();
+    expect(
+      tree.find(".components-label").hasClass("components-label-dark")
+    ).toBe(true);
+  });
+
+  it("label with bright background color should have 'components-label-bright' class", () => {
+    alertStore.data.colors["foo"] = {
+      bar: {
+        brightness: 200,
+        background: { red: 4, green: 5, blue: 6, alpha: 200 }
+      }
+    };
+    const tree = MountedStaticLabel();
+    expect(
+      tree.find(".components-label").hasClass("components-label-bright")
+    ).toBe(true);
   });
 });
