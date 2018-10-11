@@ -4,7 +4,7 @@ import { mount } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { SilenceFormStore, SilenceFormStage } from "Stores/SilenceFormStore";
 import { SilenceModal } from ".";
 
 let alertStore;
@@ -75,6 +75,24 @@ describe("<SilenceModal />", () => {
     jest.runOnlyPendingTimers();
     tree.update();
     expect(tree.find("SilenceModalContent")).toHaveLength(0);
+  });
+
+  it("resets progress on hide", () => {
+    const tree = MountedSilenceModal();
+    const toggle = tree.find(".nav-link");
+    toggle.simulate("click");
+
+    // mark form as dirty, resetProgress() should change this value to false
+    silenceFormStore.data.wasValidated = true;
+
+    // click to hide
+    toggle.simulate("click");
+    // wait for animation to finish
+    jest.runOnlyPendingTimers();
+    tree.update();
+    // form should be reset
+    expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.UserInput);
+    expect(silenceFormStore.data.wasValidated).toBe(false);
   });
 
   it("'modal-open' class is appended to body node when modal is visible", () => {
