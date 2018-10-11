@@ -178,15 +178,10 @@ const DeleteSilenceModalContent = observer(
                 <SuccessMessage />
               )
             ) : this.previewState.error === null ? (
-              <div>
-                <p className="lead text-center">
-                  Alerts affected by this silence
-                </p>
-                <LabelSetList
-                  alertStore={alertStore}
-                  labelsList={this.previewState.alertLabels}
-                />
-              </div>
+              <LabelSetList
+                alertStore={alertStore}
+                labelsList={this.previewState.alertLabels}
+              />
             ) : (
               <ErrorMessage message={this.previewState.error} />
             )}

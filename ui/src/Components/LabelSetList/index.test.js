@@ -28,7 +28,7 @@ describe("<LabelSetList />", () => {
   it("renders labels on populated list", () => {
     const tree = MountedLabelSetList([{ foo: "bar" }]);
     expect(tree.text()).not.toBe("No alerts matched");
-    expect(tree.text()).toBe("foo: bar");
+    expect(tree.find("ul.list-group").text()).toBe("foo: bar");
   });
 
   it("matches snapshot with populated list", () => {
@@ -59,8 +59,8 @@ describe("<LabelSetList />", () => {
     const tree = MountedLabelSetList(
       Array.from(Array(21), (_, i) => ({ instance: `server${i + 1}` }))
     );
-    const pageLink = tree.find(".page-link").at(2);
+    const pageLink = tree.find(".page-link").at(3);
     pageLink.simulate("click");
-    expect(tree.text()).toBe("instance: server21");
+    expect(tree.find("ul.list-group").text()).toBe("instance: server21");
   });
 });
