@@ -3,11 +3,11 @@
 exports[`<SilencePreview /> matches snapshot 1`] = `
 "
 <div class=\\"mb-3\\">
-  <p class=\\"lead text-center\\">
-    Unique alert label sets (without receiver) matching this silence.
-  </p>
   <div>
-    <ul class=\\"list-group list-group-flush\\">
+    <p class=\\"lead text-center\\">
+      Affected alerts
+    </p>
+    <ul class=\\"list-group list-group-flush mb-3\\">
       <li class=\\"list-group-item px-0 pt-2 pb-1\\">
         <span class=\\"components-label text-nowrap text-truncate badge badge-dark mw-100\\">
           alertname: foo

@@ -2,27 +2,32 @@
 
 exports[`<LabelSetList /> matches snapshot with populated list 1`] = `
 "
-<ul class=\\"list-group list-group-flush\\">
-  <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-    <span class=\\"components-label text-nowrap text-truncate badge badge-warning mw-100\\">
-      foo: bar
-    </span>
-  </li>
-  <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-    <span class=\\"components-label text-nowrap text-truncate badge badge-warning mw-100\\">
-      job: node_exporter
-    </span>
-  </li>
-  <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-    <span class=\\"components-label text-nowrap text-truncate badge badge-warning mw-100\\">
-      instance: server1
-    </span>
-  </li>
-  <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-    <span class=\\"components-label text-nowrap text-truncate badge badge-warning mw-100\\">
-      cluster: prod
-    </span>
-  </li>
-</ul>
+<div>
+  <p class=\\"lead text-center\\">
+    Affected alerts
+  </p>
+  <ul class=\\"list-group list-group-flush mb-3\\">
+    <li class=\\"list-group-item px-0 pt-2 pb-1\\">
+      <span class=\\"components-label text-nowrap text-truncate badge badge-warning mw-100\\">
+        foo: bar
+      </span>
+    </li>
+    <li class=\\"list-group-item px-0 pt-2 pb-1\\">
+      <span class=\\"components-label text-nowrap text-truncate badge badge-warning mw-100\\">
+        job: node_exporter
+      </span>
+    </li>
+    <li class=\\"list-group-item px-0 pt-2 pb-1\\">
+      <span class=\\"components-label text-nowrap text-truncate badge badge-warning mw-100\\">
+        instance: server1
+      </span>
+    </li>
+    <li class=\\"list-group-item px-0 pt-2 pb-1\\">
+      <span class=\\"components-label text-nowrap text-truncate badge badge-warning mw-100\\">
+        cluster: prod
+      </span>
+    </li>
+  </ul>
+</div>
 "
 `;

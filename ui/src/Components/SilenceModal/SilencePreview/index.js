@@ -96,18 +96,10 @@ const SilencePreview = observer(
             {this.matchedAlerts.error !== null ? (
               <FetchError message={this.matchedAlerts.error} />
             ) : (
-              <React.Fragment>
-                <p className="lead text-center">
-                  Unique alert label sets (without receiver) matching this
-                  silence.
-                </p>
-                <div>
-                  <LabelSetList
-                    alertStore={alertStore}
-                    labelsList={this.matchedAlerts.alertLabels}
-                  />
-                </div>
-              </React.Fragment>
+              <LabelSetList
+                alertStore={alertStore}
+                labelsList={this.matchedAlerts.alertLabels}
+              />
             )}
           </div>
           <div className="d-flex flex-row-reverse">

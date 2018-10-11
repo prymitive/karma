@@ -59,8 +59,9 @@ const LabelSetList = observer(
       const { alertStore, labelsList } = this.props;
 
       return labelsList.length > 0 ? (
-        <React.Fragment>
-          <ul className="list-group list-group-flush">
+        <div>
+          <p className="lead text-center">Affected alerts</p>
+          <ul className="list-group list-group-flush mb-3">
             {labelsList
               .slice(
                 (this.pagination.activePage - 1) * this.maxPerPage,
@@ -91,7 +92,6 @@ const LabelSetList = observer(
                 pageRangeDisplayed={5}
                 onChange={this.pagination.onPageChange}
                 hideFirstLastPages
-                hideDisabled
                 innerClass="pagination justify-content-center"
                 itemClass="page-item"
                 linkClass="page-link"
@@ -100,7 +100,7 @@ const LabelSetList = observer(
               />
             </div>
           ) : null}
-        </React.Fragment>
+        </div>
       ) : (
         <p className="text-muted text-center">No alerts matched</p>
       );
