@@ -8,7 +8,7 @@
     "@babel/polyfill": "7.0.0",
     "@fortawesome/fontawesome-svg-core": "1.2.6",
     "@fortawesome/free-regular-svg-icons": "5.4.0",
-    "@fortawesome/free-solid-svg-icons": "5.4.0",
+    "@fortawesome/free-solid-svg-icons": "5.4.1",
     "@fortawesome/react-fontawesome": "0.1.3",
     "@sentry/browser": "4.1.1",
     "body-scroll-lock": "2.5.10",
