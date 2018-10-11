@@ -42,11 +42,11 @@ const Modal = observer(
     }
 
     render() {
-      const { isOpen, children } = this.props;
+      const { isOpen, children, ...props } = this.props;
 
       return ReactDOM.createPortal(
         <React.Fragment>
-          <MountModal in={isOpen} unmountOnExit>
+          <MountModal in={isOpen} unmountOnExit {...props}>
             <div className="modal d-block" role="dialog">
               <div className="modal-dialog modal-lg" role="document">
                 <div className="modal-content">{children}</div>
