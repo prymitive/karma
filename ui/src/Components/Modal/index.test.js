@@ -28,4 +28,15 @@ describe("<Modal />", () => {
     tree.unmount();
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
+
+  it("passes extra props down to the MountModal animation component", () => {
+    const onExited = jest.fn();
+    const tree = mount(
+      <Modal isOpen={true} onExited={onExited}>
+        <div />
+      </Modal>
+    );
+    const mountModal = tree.find("MountModal");
+    expect(mountModal.props().onExited).toBe(onExited);
+  });
 });
