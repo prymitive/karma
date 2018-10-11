@@ -14,6 +14,7 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclama
 import { FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceFormMatcher } from "Models/SilenceForm";
+import { TooltipWrapper } from "Components/TooltipWrapper";
 import { MatcherToFilter, AlertManagersToFilter } from "../Matchers";
 
 const MatchCounter = observer(
@@ -93,7 +94,16 @@ const MatchCounter = observer(
 
       if (this.matchedAlerts.error !== null) {
         return (
-          <FontAwesomeIcon className="text-danger" icon={faExclamationCircle} />
+          <TooltipWrapper
+            title={`Failed to fetch alerts matching this label: ${
+              this.matchedAlerts.error
+            }`}
+          >
+            <FontAwesomeIcon
+              className="text-danger"
+              icon={faExclamationCircle}
+            />
+          </TooltipWrapper>
         );
       }
 
@@ -107,13 +117,15 @@ const MatchCounter = observer(
       });
 
       return (
-        <span
-          className="badge badge-light badge-pill"
-          style={{ fontSize: "85%" }}
-          data-hash={matcherHash}
-        >
-          {this.matchedAlerts.total}
-        </span>
+        <TooltipWrapper title="Number of alerts matching this label">
+          <span
+            className="badge badge-light badge-pill"
+            style={{ fontSize: "85%" }}
+            data-hash={matcherHash}
+          >
+            {this.matchedAlerts.total}
+          </span>
+        </TooltipWrapper>
       );
     }
   }
