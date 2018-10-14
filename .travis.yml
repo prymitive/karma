@@ -96,10 +96,8 @@ jobs:
           repo: prymitive/karma
           tags: true
 
-    # for the master branch we build and deploy a container for heroku app
-    # at http://karma-demo.herokuapp.com
     - stage: Deploy demo app to Heroku
-      if: type != pull_request AND branch = master AND repo = prymitive/karma
+      if: repo = prymitive/karma
       env:
         # HEROKU_TOKEN, valid forever, needed to push docker image and release
         # it on heroku app
