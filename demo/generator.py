@@ -283,6 +283,30 @@ class MixedAlerts(AlertGenerator):
         ]
 
 
+class LongNameAlerts(AlertGenerator):
+    name = ("Some Alerts With A Ridiculously Long Name To Test Label Truncation"
+           " In All The Places We Render Those Alerts")
+    comment = "This alert uses long strings to test the UI"
+
+    def alerts(self):
+        def _gen(size, cluster):
+            return [newAlert(
+                self._labels(instance="server{}".format(i), cluster=cluster),
+                self._annotations(
+                    verylong="Lorem ipsum dolor sit amet, consectetur "
+                             "adipiscing elit, sed do eiusmod tempor incididunt"
+                             " ut labore et dolore magna aliqua. Ut enim ad "
+                             "minim veniam, quis nostrud exercitation ullamco "
+                             "laboris nisi ut aliquip ex ea commodo consequat. "
+                             "Duis aute irure dolor in reprehenderit in "
+                             "voluptate velit esse cillum dolore eu fugiat "
+                             "nulla pariatur. Excepteur sint occaecat cupidatat"
+                             " non proident, sunt in culpa qui officia deserunt"
+                             " mollit anim id est laborum")
+            ) for i in xrange(1, size)]
+        return _gen(5, "dev") + _gen(1, "staging") + _gen(11, "prod")
+
+
 if __name__ == "__main__":
     generators = [
         AlwaysOnAlert(MAX_INTERVAL),
@@ -293,6 +317,7 @@ if __name__ == "__main__":
         SilencedAlert(MAX_INTERVAL),
         RandomName(MAX_INTERVAL),
         MixedAlerts(MIN_INTERVAL),
+        LongNameAlerts(MAX_INTERVAL),
     ]
     while True:
         for g in generators:

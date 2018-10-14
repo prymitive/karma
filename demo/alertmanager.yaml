@@ -7,6 +7,11 @@ route:
   repeat_interval: 999h
   receiver: 'default'
   routes:
+    - receiver: 'default'
+      group_by: []
+      match_re:
+        alertname: .*
+      continue: true
     - receiver: 'by-cluster-service'
       group_by: ['alertname', 'cluster', 'service']
       match_re:
@@ -14,6 +19,11 @@ route:
       continue: true
     - receiver: 'by-name'
       group_by: [alertname]
+      match_re:
+        alertname: .*
+      continue: true
+    - receiver: 'by-cluster'
+      group_by: [cluster]
       match_re:
         alertname: .*
       continue: true
@@ -30,3 +40,4 @@ receivers:
   - name: 'default'
   - name: 'by-cluster-service'
   - name: 'by-name'
+  - name: 'by-cluster'
