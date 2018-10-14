@@ -333,4 +333,56 @@ describe("AlertStore.fetch", () => {
     await expect(store.fetch()).resolves.toBeUndefined();
     expect(store.info.upgradeNeeded).toBe(true);
   });
+
+  it("adds new groups to the store after fetch", () => {
+    const response = EmptyAPIResponse();
+    response.groups = { foo: "foo", bar: "bar" };
+    const store = new AlertStore(["label=value"]);
+    store.parseAPIResponse(response);
+    expect(Object.keys(store.data.groups)).toHaveLength(2);
+    expect(store.data.groups).toMatchObject({ foo: "foo", bar: "bar" });
+  });
+
+  it("is no-op for groups that didn't change", () => {
+    const store = new AlertStore(["label=value"]);
+    store.data.groups = { foo: { hash: "foo" }, bar: { hash: "bar" } };
+
+    const response = EmptyAPIResponse();
+    response.groups = { foo: { hash: "foo" }, bar: { hash: "bar" } };
+
+    store.parseAPIResponse(response);
+    expect(Object.keys(store.data.groups)).toHaveLength(2);
+    expect(store.data.groups).toMatchObject({
+      foo: { hash: "foo" },
+      bar: { hash: "bar" }
+    });
+  });
+
+  it("removes old groups from the store after fetch", () => {
+    const store = new AlertStore(["label=value"]);
+    store.data.groups = { foo: "foo", delete: "me", bar: "bar" };
+    expect(Object.keys(store.data.groups)).toHaveLength(3);
+
+    const response = EmptyAPIResponse();
+    response.groups = { foo: "foo", bar: "bar" };
+
+    store.parseAPIResponse(response);
+    expect(Object.keys(store.data.groups)).toHaveLength(2);
+    expect(store.data.groups).toMatchObject({ foo: "foo", bar: "bar" });
+  });
+
+  it("updates groups with new hash after fetch", () => {
+    const store = new AlertStore(["label=value"]);
+    store.data.groups = { foo: { hash: "foo" }, bar: { hash: "bar" } };
+
+    const response = EmptyAPIResponse();
+    response.groups = { foo: { hash: "newFoo" }, bar: { hash: "newBar" } };
+
+    store.parseAPIResponse(response);
+    expect(Object.keys(store.data.groups)).toHaveLength(2);
+    expect(store.data.groups).toMatchObject({
+      foo: { hash: "newFoo" },
+      bar: { hash: "newBar" }
+    });
+  });
 });
