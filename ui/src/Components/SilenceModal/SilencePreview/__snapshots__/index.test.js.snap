@@ -7,86 +7,88 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
     <p class=\\"lead text-center\\">
       Affected alerts
     </p>
-    <ul class=\\"list-group list-group-flush mb-3\\">
-      <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-        <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-dark components-label-dark\\">
-          <span class=\\"components-label-name\\">
-            alertname:
+    <div>
+      <ul class=\\"list-group list-group-flush mb-3\\">
+        <li class=\\"list-group-item px-0 pt-2 pb-1\\">
+          <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-dark components-label-dark\\">
+            <span class=\\"components-label-name\\">
+              alertname:
+            </span>
+            <span class=\\"components-label-value\\">
+              foo
+            </span>
           </span>
-          <span class=\\"components-label-value\\">
-            foo
+          <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+            <span class=\\"components-label-name\\">
+              job:
+            </span>
+            <span class=\\"components-label-value\\">
+              foo
+            </span>
           </span>
-        </span>
-        <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
-          <span class=\\"components-label-name\\">
-            job:
+          <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+            <span class=\\"components-label-name\\">
+              instance:
+            </span>
+            <span class=\\"components-label-value\\">
+              foo1
+            </span>
           </span>
-          <span class=\\"components-label-value\\">
-            foo
+        </li>
+        <li class=\\"list-group-item px-0 pt-2 pb-1\\">
+          <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-dark components-label-dark\\">
+            <span class=\\"components-label-name\\">
+              alertname:
+            </span>
+            <span class=\\"components-label-value\\">
+              bar
+            </span>
           </span>
-        </span>
-        <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
-          <span class=\\"components-label-name\\">
-            instance:
+          <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+            <span class=\\"components-label-name\\">
+              job:
+            </span>
+            <span class=\\"components-label-value\\">
+              bar
+            </span>
           </span>
-          <span class=\\"components-label-value\\">
-            foo1
+          <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+            <span class=\\"components-label-name\\">
+              instance:
+            </span>
+            <span class=\\"components-label-value\\">
+              bar1
+            </span>
           </span>
-        </span>
-      </li>
-      <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-        <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-dark components-label-dark\\">
-          <span class=\\"components-label-name\\">
-            alertname:
+        </li>
+        <li class=\\"list-group-item px-0 pt-2 pb-1\\">
+          <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-dark components-label-dark\\">
+            <span class=\\"components-label-name\\">
+              alertname:
+            </span>
+            <span class=\\"components-label-value\\">
+              bar
+            </span>
           </span>
-          <span class=\\"components-label-value\\">
-            bar
+          <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+            <span class=\\"components-label-name\\">
+              job:
+            </span>
+            <span class=\\"components-label-value\\">
+              bar
+            </span>
           </span>
-        </span>
-        <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
-          <span class=\\"components-label-name\\">
-            job:
+          <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+            <span class=\\"components-label-name\\">
+              instance:
+            </span>
+            <span class=\\"components-label-value\\">
+              bar2
+            </span>
           </span>
-          <span class=\\"components-label-value\\">
-            bar
-          </span>
-        </span>
-        <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
-          <span class=\\"components-label-name\\">
-            instance:
-          </span>
-          <span class=\\"components-label-value\\">
-            bar1
-          </span>
-        </span>
-      </li>
-      <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-        <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-dark components-label-dark\\">
-          <span class=\\"components-label-name\\">
-            alertname:
-          </span>
-          <span class=\\"components-label-value\\">
-            bar
-          </span>
-        </span>
-        <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
-          <span class=\\"components-label-name\\">
-            job:
-          </span>
-          <span class=\\"components-label-value\\">
-            bar
-          </span>
-        </span>
-        <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
-          <span class=\\"components-label-name\\">
-            instance:
-          </span>
-          <span class=\\"components-label-value\\">
-            bar2
-          </span>
-        </span>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 "

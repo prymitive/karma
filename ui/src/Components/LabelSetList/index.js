@@ -61,28 +61,30 @@ const LabelSetList = observer(
       return labelsList.length > 0 ? (
         <div>
           <p className="lead text-center">Affected alerts</p>
-          <ul className="list-group list-group-flush mb-3">
-            {labelsList
-              .slice(
-                (this.pagination.activePage - 1) * this.maxPerPage,
-                this.pagination.activePage * this.maxPerPage
-              )
-              .map(labels => (
-                <li
-                  key={hash(labels)}
-                  className="list-group-item px-0 pt-2 pb-1"
-                >
-                  {Object.entries(labels).map(([name, value]) => (
-                    <StaticLabel
-                      key={name}
-                      alertStore={alertStore}
-                      name={name}
-                      value={value}
-                    />
-                  ))}
-                </li>
-              ))}
-          </ul>
+          <div>
+            <ul className="list-group list-group-flush mb-3">
+              {labelsList
+                .slice(
+                  (this.pagination.activePage - 1) * this.maxPerPage,
+                  this.pagination.activePage * this.maxPerPage
+                )
+                .map(labels => (
+                  <li
+                    key={hash(labels)}
+                    className="list-group-item px-0 pt-2 pb-1"
+                  >
+                    {Object.entries(labels).map(([name, value]) => (
+                      <StaticLabel
+                        key={name}
+                        alertStore={alertStore}
+                        name={name}
+                        value={value}
+                      />
+                    ))}
+                  </li>
+                ))}
+            </ul>
+          </div>
           {labelsList.length > this.maxPerPage ? (
             <div className="mt-3">
               <Pagination
