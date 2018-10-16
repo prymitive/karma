@@ -109,7 +109,6 @@ describe("<FilterInputLabel /> style", () => {
     MockColors();
     const tree = ShallowLabel("=", true, true);
     expect(tree.props().style).toMatchObject({
-      color: "rgba(44, 62, 80, 255)",
       backgroundColor: "rgba(4, 5, 6, 200)"
     });
   });

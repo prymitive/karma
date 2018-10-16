@@ -5,7 +5,9 @@ import { AlertStore } from "Stores/AlertStore";
 import { GetLabelColorClass, StaticColorLabelClass } from "Common/Colors";
 import { QueryOperators, FormatQuery } from "Common/Query";
 
-import "./index.css";
+import "./index.scss";
+
+const isBackgroundDark = brightness => brightness <= 125;
 
 // base class for shared code, not used directly
 class BaseLabel extends Component {
@@ -19,6 +21,16 @@ class BaseLabel extends Component {
     const { alertStore } = this.props;
 
     return alertStore.settings.values.staticColorLabels.includes(name);
+  }
+
+  isBackgroundDark(name, value) {
+    const { alertStore } = this.props;
+
+    const c = alertStore.data.getColorData(name, value);
+    if (c) {
+      return isBackgroundDark(c.brightness);
+    }
+    return true;
   }
 
   getColorClass(name, value) {
@@ -38,21 +50,14 @@ class BaseLabel extends Component {
       return style;
     }
 
-    if (
-      alertStore.data.colors[name] !== undefined &&
-      alertStore.data.colors[name][value] !== undefined
-    ) {
-      const c = alertStore.data.colors[name][value];
+    const c = alertStore.data.getColorData(name, value);
+    if (c) {
       style["backgroundColor"] = `rgba(${[
         c.background.red,
         c.background.green,
         c.background.blue,
         c.background.alpha
       ].join(", ")})`;
-      style["color"] =
-        c.brightness <= 125
-          ? "rgba(255, 255, 255, 255)"
-          : "rgba(44, 62, 80, 255)";
     }
     return style;
   }

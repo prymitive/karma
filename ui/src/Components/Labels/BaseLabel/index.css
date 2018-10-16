@@ -1,9 +1,0 @@
-.components-label-with-hover:hover {
-  filter: brightness(0.85);
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.components-label {
-  margin-right: 0.25rem;
-}

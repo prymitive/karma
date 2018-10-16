@@ -62,7 +62,7 @@ describe("<AlertGroup />", () => {
   it("renders Alertmanager labels in footer if showAlertmanagersInFooter=true", () => {
     MockAlerts(2);
     const tree = MountedAlertGroup(jest.fn(), true).find("AlertGroup");
-    expect(tree.find("GroupFooter").html()).toMatch(/@alertmanager: default/);
+    expect(tree.find("GroupFooter").html()).toMatch(/@alertmanager/);
   });
 
   it("doesn't render alertmanager labels in footer when they are unique", () => {
@@ -80,10 +80,10 @@ describe("<AlertGroup />", () => {
     const tree = MountedAlertGroup(jest.fn(), true);
 
     const alerts = tree.find("ul.list-group");
-    expect(alerts.html()).toMatch(/@alertmanager:/);
+    expect(alerts.html()).toMatch(/@alertmanager/);
 
     const footer = tree.find("GroupFooter");
-    expect(footer.html()).not.toMatch(/@alertmanager:/);
+    expect(footer.html()).not.toMatch(/@alertmanager/);
   });
 
   it("only renders titlebar when collapsed", () => {

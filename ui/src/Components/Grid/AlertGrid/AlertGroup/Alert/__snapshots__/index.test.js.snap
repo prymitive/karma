@@ -69,8 +69,13 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
        aria-describedby=\\"tippy-tooltip-1\\"
        data-original-title=\\"Click to only show alerts with this label\\"
   >
-    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
-      job: node_exporter
+    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+      <span class=\\"components-label-name\\">
+        job:
+      </span>
+      <span class=\\"components-label-value\\">
+        node_exporter
+      </span>
     </span>
   </div>
   <div class
@@ -79,8 +84,13 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
        aria-describedby=\\"tippy-tooltip-2\\"
        data-original-title=\\"Click to only show alerts with this label\\"
   >
-    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
-      cluster: dev
+    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+      <span class=\\"components-label-name\\">
+        cluster:
+      </span>
+      <span class=\\"components-label-value\\">
+        dev
+      </span>
     </span>
   </div>
   <a href=\\"http://localhost\\"

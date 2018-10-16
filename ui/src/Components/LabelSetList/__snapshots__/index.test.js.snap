@@ -8,23 +8,43 @@ exports[`<LabelSetList /> matches snapshot with populated list 1`] = `
   </p>
   <ul class=\\"list-group list-group-flush mb-3\\">
     <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-      <span class=\\"components-label text-nowrap text-truncate badge badge-warning mw-100\\">
-        foo: bar
+      <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+        <span class=\\"components-label-name\\">
+          foo:
+        </span>
+        <span class=\\"components-label-value\\">
+          bar
+        </span>
       </span>
     </li>
     <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-      <span class=\\"components-label text-nowrap text-truncate badge badge-warning mw-100\\">
-        job: node_exporter
+      <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+        <span class=\\"components-label-name\\">
+          job:
+        </span>
+        <span class=\\"components-label-value\\">
+          node_exporter
+        </span>
       </span>
     </li>
     <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-      <span class=\\"components-label text-nowrap text-truncate badge badge-warning mw-100\\">
-        instance: server1
+      <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+        <span class=\\"components-label-name\\">
+          instance:
+        </span>
+        <span class=\\"components-label-value\\">
+          server1
+        </span>
       </span>
     </li>
     <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-      <span class=\\"components-label text-nowrap text-truncate badge badge-warning mw-100\\">
-        cluster: prod
+      <span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+        <span class=\\"components-label-name\\">
+          cluster:
+        </span>
+        <span class=\\"components-label-value\\">
+          prod
+        </span>
       </span>
     </li>
   </ul>

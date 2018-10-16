@@ -29,11 +29,20 @@ const GroupHeader = observer(
       const { collapseStore, group, silenceFormStore } = this.props;
 
       return (
-        <h5 className="card-title text-center mb-0 clearfix">
-          <span className="float-left">
+        <h5 className="card-title mb-0 d-flex flex-row">
+          <span className="flex-shrink-0 flex-grow-0">
             <GroupMenu group={group} silenceFormStore={silenceFormStore} />
           </span>
-          <span className="float-right">
+          <span className="flex-shrink-1 flex-grow-1" style={{ minWidth: 0 }}>
+            {Object.keys(group.labels).map(name => (
+              <FilteringLabel
+                key={name}
+                name={name}
+                value={group.labels[name]}
+              />
+            ))}
+          </span>
+          <span className="flex-shrink-0 flex-grow-0 ml-auto pl-1">
             <FilteringCounterBadge
               name="@state"
               value="unprocessed"
@@ -50,7 +59,7 @@ const GroupHeader = observer(
               counter={group.stateCount.active}
             />
             <span
-              className="text-muted cursor-pointer badge text-nowrap text-truncate pr-0"
+              className="text-muted cursor-pointer badge text-nowrap text-truncate px-0"
               onClick={collapseStore.toggle}
             >
               <TooltipWrapper title="Toggle group details">
@@ -59,15 +68,6 @@ const GroupHeader = observer(
                 />
               </TooltipWrapper>
             </span>
-          </span>
-          <span>
-            {Object.keys(group.labels).map(name => (
-              <FilteringLabel
-                key={name}
-                name={name}
-                value={group.labels[name]}
-              />
-            ))}
           </span>
         </h5>
       );

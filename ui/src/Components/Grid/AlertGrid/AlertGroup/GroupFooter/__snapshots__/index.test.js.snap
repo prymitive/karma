@@ -48,8 +48,13 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
        aria-describedby=\\"tippy-tooltip-1\\"
        data-original-title=\\"Click to only show alerts with this label\\"
   >
-    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
-      label1: foo
+    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+      <span class=\\"components-label-name\\">
+        label1:
+      </span>
+      <span class=\\"components-label-value\\">
+        foo
+      </span>
     </span>
   </div>
   <div class
@@ -58,8 +63,13 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
        aria-describedby=\\"tippy-tooltip-2\\"
        data-original-title=\\"Click to only show alerts with this label\\"
   >
-    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
-      label2: bar
+    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+      <span class=\\"components-label-name\\">
+        label2:
+      </span>
+      <span class=\\"components-label-value\\">
+        bar
+      </span>
     </span>
   </div>
   <div class
@@ -68,8 +78,13 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
        aria-describedby=\\"tippy-tooltip-3\\"
        data-original-title=\\"Click to only show alerts with this label\\"
   >
-    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
-      @alertmanager: default
+    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+      <span class=\\"components-label-name\\">
+        @alertmanager:
+      </span>
+      <span class=\\"components-label-value\\">
+        default
+      </span>
     </span>
   </div>
   <div class
@@ -78,8 +93,13 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
        aria-describedby=\\"tippy-tooltip-4\\"
        data-original-title=\\"Click to only show alerts with this label\\"
   >
-    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate badge badge-warning mw-100\\">
-      @receiver: by-name
+    <span class=\\"components-label components-label-with-hover text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+      <span class=\\"components-label-name\\">
+        @receiver:
+      </span>
+      <span class=\\"components-label-value\\">
+        by-name
+      </span>
     </span>
   </div>
   <a href=\\"http://link.example.com\\"

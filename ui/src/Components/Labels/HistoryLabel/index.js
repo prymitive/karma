@@ -28,7 +28,11 @@ const HistoryLabel = observer(
         "text-nowrap",
         "text-truncate",
         "badge",
-        "mw-100"
+        "mw-100",
+        "components-label-value",
+        this.isBackgroundDark(name, value)
+          ? "components-label-dark"
+          : "components-label-bright"
       ];
       let style = {};
       if (matcher === QueryOperators.Equal) {

@@ -10,15 +10,24 @@ const StaticLabel = inject("alertStore")(
     class FilteringLabel extends BaseLabel {
       render() {
         const { name, value } = this.props;
+
+        const classNames = [
+          "components-label",
+          "text-nowrap text-truncate mw-100",
+          "badge",
+          `badge-${this.getColorClass(name, value)}`,
+          this.isBackgroundDark(name, value)
+            ? "components-label-dark"
+            : "components-label-bright"
+        ];
+
         return (
           <span
-            className={`components-label text-nowrap text-truncate badge badge-${this.getColorClass(
-              name,
-              value
-            )} mw-100`}
+            className={`${classNames.join(" ")}`}
             style={this.getColorStyle(name, value)}
           >
-            {name}: {value}
+            <span className="components-label-name">{name}:</span>{" "}
+            <span className="components-label-value">{value}</span>
           </span>
         );
       }

@@ -1,9 +1,14 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<FilteringLabel /> matches snapshot 1`] = `
+exports[`<StaticLabel /> matches snapshot 1`] = `
 "
-<span class=\\"components-label text-nowrap text-truncate badge badge-warning mw-100\\">
-  foo: bar
+<span class=\\"components-label text-nowrap text-truncate mw-100 badge badge-warning components-label-dark\\">
+  <span class=\\"components-label-name\\">
+    foo:
+  </span>
+  <span class=\\"components-label-value\\">
+    bar
+  </span>
 </span>
 "
 `;
