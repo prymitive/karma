@@ -9050,15 +9050,15 @@ react-autowhatever@^10.1.2:
     react-themeable "^1.1.0"
     section-iterator "^2.0.0"
 
-react-datepicker@1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-1.6.0.tgz#6b7a87e949f3bbd94872554be6a0119bd908a987"
-  integrity sha512-wfFfw3Tn+CCTtP7PPPhSAfkfVT3UTifFb8BmuhtwWKK3g4S83EEPRQE18XFtxd22dKGqp336NVtDTTyUJ1p9+g==
+react-datepicker@1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-1.7.0.tgz#a5d8c689e8c7a3753d3e277589b03f097dcb3392"
+  integrity sha512-2cRopX0/V05wMyhAG0JGw2vmYAxDTFJ+gkT8qZ3I1U9+SGrhccdpHF0WgMlcugOL7wT7zsWxMo4tpgHjJFQZ4A==
   dependencies:
     classnames "^2.2.5"
     prop-types "^15.6.0"
     react-onclickoutside "^6.7.1"
-    react-popper "^0.9.1"
+    react-popper "^1.0.2"
 
 react-dev-utils@^6.0.5:
   version "6.0.5"
@@ -9195,7 +9195,7 @@ react-onclickoutside@6.7.1, react-onclickoutside@^6.7.1:
   resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.7.1.tgz#6a5b5b8b4eae6b776259712c89c8a2b36b17be93"
   integrity sha512-p84kBqGaMoa7VYT0vZ/aOYRfJB+gw34yjpda1Z5KeLflg70HipZOT+MXQenEhdkPAABuE2Astq4zEPdMqUQxcg==
 
-react-popper@1.0.2:
+react-popper@1.0.2, react-popper@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-1.0.2.tgz#0e72f338b7f15ab9f9ec884e36ae0dad78a3e301"
   integrity sha512-vjZ94ki8sfCAg45MMi4uqnUUWdzbnYkb95sR2+HgiMaAPzQcy4DfDKYtYUOhhE+sdtkufWcUHLv09DmH2Js57w==
@@ -9206,14 +9206,6 @@ react-popper@1.0.2:
     prop-types "^15.6.1"
     typed-styles "^0.0.5"
     warning "^3.0.0"
-
-react-popper@^0.9.1:
-  version "0.9.5"
-  resolved "https://registry.yarnpkg.com/react-popper/-/react-popper-0.9.5.tgz#02a24ef3eec33af9e54e8358ab70eb0e331edd05"
-  integrity sha1-AqJO8+7DOvnlToNYq3DrDjMe3QU=
-  dependencies:
-    popper.js "^1.14.1"
-    prop-types "^15.6.1"
 
 react-resize-detector@3.1.3:
   version "3.1.3"
