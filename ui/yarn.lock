@@ -7209,10 +7209,10 @@ mkdirp@0.5.1, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdi
   dependencies:
     minimist "0.0.8"
 
-mobx-react@5.3.1:
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-5.3.1.tgz#444309742de7da4e6ec96f608b9e64dc8acc0a6c"
-  integrity sha512-VzMCirxJzfh2kd/WnNbS4sxLtHD7siuw7ZKJJoDM9tyBKHg4nv4qNa/JE6V0MbbeVdkGA9DylfcCduAu1yHXxA==
+mobx-react@5.3.2:
+  version "5.3.2"
+  resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-5.3.2.tgz#5cd0ae1911385cf55ad02938465d4b4e03dcb0f7"
+  integrity sha512-4LTK3JSwyfhJ0sNBPOyTyCcEK3wJ0fB4LRUJtOyJL3nZcH/UgsmzTSIbhSU4CeTXOmvZDbyhfi+B14HmL5oLRg==
   dependencies:
     hoist-non-react-statics "^3.0.0"
     react-lifecycles-compat "^3.0.2"
