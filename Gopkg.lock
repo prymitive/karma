@@ -59,11 +59,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4e5b77aa86d89a9dd2bcba365f4eb69a7190b6c7db964f8cb19dc10e620a65ac"
+  digest = "1:39d976dc7e048eb1d485ef540cb1148ce033d6430666b9dc71381e8d4620fecf"
   name = "github.com/getsentry/raven-go"
   packages = ["."]
   pruneopts = "UT"
-  revision = "6a5e526549c80ba591119c9688de7f6c87647d2f"
+  revision = "d1aab6ee63f4a2cca2169c538eceba058cb976b7"
 
 [[projects]]
   digest = "1:2b59aca2665ff804f6606c8829eaee133ddd3aefbc841014660d961b0034f888"
