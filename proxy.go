@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -45,6 +46,11 @@ func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) (*httputil.Re
 
 			// set hostname of proxied target
 			req.Host = upstreamURL.Host
+			
+			// Prepend with upstream URL path if exists
+			if len(upstreamURL.Path) > 0 {
+				req.URL.Path = strings.TrimSuffix(upstreamURL.Path, "/") + req.URL.Path
+			}
 
 			log.Debugf("[%s] Proxy request for %s", alertmanager.Name, req.URL.Path)
 		},
