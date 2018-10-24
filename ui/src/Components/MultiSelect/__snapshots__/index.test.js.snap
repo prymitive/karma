@@ -28,7 +28,6 @@ exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
                  id=\\"react-select-4-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 theme=\\"[object Object]\\"
                  type=\\"text\\"
                  aria-autocomplete=\\"list\\"
                  style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
@@ -81,7 +80,6 @@ exports[`<CustomMultiSelect /> matches snapshot with a value 1`] = `
                  id=\\"react-select-5-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 theme=\\"[object Object]\\"
                  value
                  aria-autocomplete=\\"list\\"
                  style=\\"box-sizing:content-box;width:1px;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
@@ -133,7 +131,6 @@ exports[`<CustomMultiSelect /> matches snapshot with defaults 1`] = `
                  id=\\"react-select-2-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 theme=\\"[object Object]\\"
                  value
                  aria-autocomplete=\\"list\\"
                  style=\\"box-sizing:content-box;width:1px;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
@@ -186,7 +183,6 @@ exports[`<CustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
                  id=\\"react-select-7-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 theme=\\"[object Object]\\"
                  value
                  aria-autocomplete=\\"list\\"
                  style=\\"box-sizing:content-box;width:1px;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
@@ -238,7 +234,6 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
                  id=\\"react-select-3-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 theme=\\"[object Object]\\"
                  value
                  aria-autocomplete=\\"list\\"
                  style=\\"box-sizing:content-box;width:1px;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
@@ -304,7 +299,6 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true and a value 1`
                  id=\\"react-select-6-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 theme=\\"[object Object]\\"
                  value
                  aria-autocomplete=\\"list\\"
                  style=\\"box-sizing:content-box;width:1px;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
