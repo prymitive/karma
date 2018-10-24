@@ -67,7 +67,6 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
                  id=\\"react-select-silence-input-alertmanagers-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 theme=\\"[object Object]\\"
                  value
                  aria-autocomplete=\\"list\\"
                  style=\\"box-sizing:content-box;width:1px;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"

@@ -42,8 +42,8 @@
   version = "=1.0.0"
 
 [[constraint]]
-  branch = "master"
   name = "github.com/getsentry/raven-go"
+  version = "=0.1.0"
 
 [[constraint]]
   name = "github.com/gin-contrib/cors"
