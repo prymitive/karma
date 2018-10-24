@@ -71,19 +71,23 @@ describe("SetupSentry()", () => {
   it("configures Sentry when DSN is present", () => {
     const sentrySpy = jest.spyOn(Sentry, "init");
     SentryClient(FakeDSN);
-    expect(sentrySpy).toHaveBeenCalledWith({
-      dsn: FakeDSN,
-      release: "unknown" // default version
-    });
+    expect(sentrySpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dsn: FakeDSN,
+        release: "unknown" // default version
+      })
+    );
   });
 
   it("passes release option when version attr is present", () => {
     const sentrySpy = jest.spyOn(Sentry, "init");
     SentryClient(FakeDSN, "ver1");
-    expect(sentrySpy).toHaveBeenCalledWith({
-      dsn: FakeDSN,
-      release: "ver1"
-    });
+    expect(sentrySpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        dsn: FakeDSN,
+        release: "ver1"
+      })
+    );
   });
 
   it("logs an error when invalid DSN is passed to Sentry", () => {
