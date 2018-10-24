@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"strings"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
+	"strings"
 
+	"github.com/gin-gonic/gin"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
-	"github.com/gin-gonic/gin"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -46,7 +46,7 @@ func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) (*httputil.Re
 
 			// set hostname of proxied target
 			req.Host = upstreamURL.Host
-			
+
 			// Prepend with upstream URL path if exists
 			if len(upstreamURL.Path) > 0 {
 				req.URL.Path = strings.TrimSuffix(upstreamURL.Path, "/") + req.URL.Path
