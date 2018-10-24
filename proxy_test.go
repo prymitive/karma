@@ -224,3 +224,34 @@ func TestProxyHeaders(t *testing.T) {
 		}
 	}
 }
+
+func TestProxyToSubURIAlertmanager(t *testing.T) {
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	r := ginTestEngine()
+	am, err := alertmanager.NewAlertmanager(
+		"suburi",
+		"http://alertmanager.example.com/suburi",
+		alertmanager.WithRequestTimeout(time.Second*5),
+		alertmanager.WithProxy(true),
+	)
+	if err != nil {
+		t.Error(err)
+	}
+	err = setupRouterProxyHandlers(r, am)
+	if err != nil {
+		t.Errorf("Failed to setup proxy for Alertmanager %s: %s", am.Name, err)
+	}
+
+	httpmock.RegisterResponder("POST", "http://alertmanager.example.com/suburi/api/v1/silences", func(req *http.Request) (*http.Response, error) {
+		return httpmock.NewStringResponse(200, "ok"), nil
+	})
+
+	req := httptest.NewRequest("POST", "/proxy/alertmanager/suburi/api/v1/silences", nil)
+	resp := newCloseNotifyingRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Code != 200 {
+		t.Errorf("Got response code %d instead of 200", resp.Code)
+	}
+}
