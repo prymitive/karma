@@ -11,21 +11,10 @@ const StaticLabel = inject("alertStore")(
       render() {
         const { name, value } = this.props;
 
-        const classNames = [
-          "components-label",
-          "text-nowrap text-truncate mw-100",
-          "badge",
-          `badge-${this.getColorClass(name, value)}`,
-          this.isBackgroundDark(name, value)
-            ? "components-label-dark"
-            : "components-label-bright"
-        ];
+        let cs = this.getClassAndStyle(name, value);
 
         return (
-          <span
-            className={`${classNames.join(" ")}`}
-            style={this.getColorStyle(name, value)}
-          >
+          <span className={cs.className} style={cs.style}>
             <span className="components-label-name">{name}:</span>{" "}
             <span className="components-label-value">{value}</span>
           </span>

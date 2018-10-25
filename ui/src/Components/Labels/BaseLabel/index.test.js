@@ -3,7 +3,12 @@ import React from "react";
 import { shallow } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
-
+import {
+  StaticColorLabelClass,
+  DefaultLabelClass,
+  AlertNameLabelClass,
+  StateLabelClassMap
+} from "Common/Colors";
 import { BaseLabel } from ".";
 
 let alertStore;
@@ -12,56 +17,92 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
 });
 
-const FakeBaseLabel = () => {
-  // BaseLabel doesn't implement render since it's an abstract component
-  // Add a dummy implementation for testing
+const FakeBaseLabel = (name = "foo", value = "bar") => {
   class RenderableBaseLabel extends BaseLabel {
     render() {
-      return null;
+      const { name, value } = this.props;
+      let cs = this.getClassAndStyle(name, value);
+      return (
+        <span className={cs.className} style={cs.style}>
+          <span className="components-label-name">{name}:</span>{" "}
+          <span className="components-label-value">{value}</span>
+        </span>
+      );
     }
   }
   return shallow(
-    <RenderableBaseLabel alertStore={alertStore} name="foo" value="bar" />
+    <RenderableBaseLabel alertStore={alertStore} name={name} value={value} />
   );
 };
 
 describe("<BaseLabel />", () => {
-  it("isStaticColorLabel() returns true for labels present in staticColorLabels", () => {
+  it("static label uses StaticColorLabelClass", () => {
     alertStore.settings.values.staticColorLabels = ["foo", "job", "bar"];
-    const instance = FakeBaseLabel().instance();
-    expect(instance.isStaticColorLabel("job")).toBeTruthy();
+    const tree = FakeBaseLabel();
+    expect(tree.find(".components-label").hasClass(StaticColorLabelClass)).toBe(
+      true
+    );
   });
 
-  it("isStaticColorLabel() returns false for labels not present in staticColorLabels", () => {
-    alertStore.settings.values.staticColorLabels = ["foo"];
-    const instance = FakeBaseLabel().instance();
-    expect(instance.isStaticColorLabel("job")).toBeFalsy();
+  it("non-static label doesn't use StaticColorLabelClass", () => {
+    alertStore.settings.values.staticColorLabels = [];
+    const tree = FakeBaseLabel();
+    expect(tree.find(".components-label").hasClass(StaticColorLabelClass)).toBe(
+      false
+    );
   });
 
-  it("getColorClass() on a label included in staticColorLabels should return 'info'", () => {
-    alertStore.settings.values.staticColorLabels = ["job"];
-    const instance = FakeBaseLabel().instance();
-    expect(instance.getColorClass("job", "foo")).toBe("info");
+  it("label with no special color information should use DefaultLabelClass", () => {
+    const tree = FakeBaseLabel();
+    expect(tree.find(".components-label").hasClass(DefaultLabelClass)).toBe(
+      true
+    );
   });
 
-  it("getColorClass() on a label without any special color should return 'warning'", () => {
-    const instance = FakeBaseLabel().instance();
-    expect(instance.getColorClass("foo", "bar")).toBe("warning");
+  it("alertname label should use AlertNameLabelClass", () => {
+    const tree = FakeBaseLabel("alertname", "foo");
+    expect(tree.find(".components-label").hasClass(AlertNameLabelClass)).toBe(
+      true
+    );
   });
 
-  it("getColorClass() on 'alertname' label should return 'dark'", () => {
-    const instance = FakeBaseLabel().instance();
-    expect(instance.getColorClass("alertname", "foo")).toBe("dark");
+  it("@state=active label should use StateLabelClassMap.active class", () => {
+    const tree = FakeBaseLabel("@state", "active");
+    expect(
+      tree.find(".components-label").hasClass(StateLabelClassMap.active)
+    ).toBe(true);
   });
 
-  it("getColorStyle() on a label included in staticColorLabels should be empty", () => {
-    alertStore.settings.values.staticColorLabels = ["job"];
-    const instance = FakeBaseLabel().instance();
-    expect(instance.getColorStyle("job", "bar")).toMatchObject({});
+  it("@state=suppressed label should use StateLabelClassMap.suppressed class", () => {
+    const tree = FakeBaseLabel("@state", "suppressed");
+    expect(
+      tree.find(".components-label").hasClass(StateLabelClassMap.suppressed)
+    ).toBe(true);
   });
 
-  it("getColorStyle() on a label without any color information should be empty", () => {
-    const instance = FakeBaseLabel().instance();
-    expect(instance.getColorStyle("foo", "bar")).toMatchObject({});
+  it("@state=unprocessed label should use StateLabelClassMap.unprocessed class", () => {
+    const tree = FakeBaseLabel("@state", "unprocessed");
+    expect(
+      tree.find(".components-label").hasClass(StateLabelClassMap.unprocessed)
+    ).toBe(true);
+  });
+
+  it("@state with unknown label should use DefaultLabelClass", () => {
+    const tree = FakeBaseLabel("@state", "foobar");
+    expect(tree.find(".components-label").hasClass(DefaultLabelClass)).toBe(
+      true
+    );
+  });
+
+  it("style prop on a label included in staticColorLabels should be empty", () => {
+    alertStore.settings.values.staticColorLabels = ["foo", "job", "bar"];
+    const tree = FakeBaseLabel();
+    expect(tree.find(".components-label").props().style).toEqual({});
+  });
+
+  it("style prop on a label without any color information should be empty", () => {
+    alertStore.settings.values.staticColorLabels = [];
+    const tree = FakeBaseLabel();
+    expect(tree.find(".components-label").props().style).toEqual({});
   });
 });

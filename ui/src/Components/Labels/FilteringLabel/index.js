@@ -12,22 +12,17 @@ const FilteringLabel = inject("alertStore")(
       render() {
         const { name, value } = this.props;
 
-        const classNames = [
-          "components-label",
-          "components-label-with-hover",
-          "text-nowrap text-truncate mw-100",
-          "badge",
-          `badge-${this.getColorClass(name, value)}`,
-          this.isBackgroundDark(name, value)
-            ? "components-label-dark"
-            : "components-label-bright"
-        ];
+        let cs = this.getClassAndStyle(
+          name,
+          value,
+          "components-label-with-hover"
+        );
 
         return (
           <TooltipWrapper title="Click to only show alerts with this label">
             <span
-              className={`${classNames.join(" ")}`}
-              style={this.getColorStyle(name, value)}
+              className={cs.className}
+              style={cs.style}
               onClick={e => this.handleClick(e)}
             >
               <span className="components-label-name">{name}:</span>{" "}
