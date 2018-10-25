@@ -1073,52 +1073,52 @@
     mkdirp "^0.5.1"
     rimraf "^2.5.2"
 
-"@sentry/browser@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-4.2.1.tgz#39cc64e79e3f7bfed5256f9b07ae81a3a0e7e079"
-  integrity sha512-jOQ+RroroGqgJFhgYxyqa+ENeZneug+A4cBmYLeSoLVYmk2xGrJBXes2jEH6eHjDSjVKgZlM+lvERNeqIa6/Fw==
+"@sentry/browser@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-4.2.2.tgz#882d85764a0c1c4b7dcfab6974d22e929198b062"
+  integrity sha512-kXmFpAb+a5mFoncmvrSPDESFfseVB/izXHPCnvErK4LPko9dgYKCMVlcGLSYTSRTcvikWH4ijsXMkRFaBPaxhw==
   dependencies:
-    "@sentry/core" "4.2.1"
-    "@sentry/types" "4.2.1"
-    "@sentry/utils" "4.2.1"
+    "@sentry/core" "4.2.2"
+    "@sentry/types" "4.2.2"
+    "@sentry/utils" "4.2.2"
 
-"@sentry/core@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.2.1.tgz#156b1fa03ebc8dbc9e13bdf162631bdae6fb110e"
-  integrity sha512-gU2y0iO2zJqhPCazq3L0q/yfhkja3kB7AxBGrhYdVW/k3JN2dpokAu+VkHDDHYfrPm+SDAjdVWJNpo47WV/fFw==
+"@sentry/core@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.2.2.tgz#b4e5f9d135030b82715f3ecfcfe0980bcfffbd8c"
+  integrity sha512-/3pE5LdoD/s+v4QxeQTibXDQWjCFiPLlYDj8dGqZ72ZW/GK7Wx3cCvVZ9Lo4SxnrOwREJDyUpeITkRCS42S2oQ==
   dependencies:
-    "@sentry/hub" "4.2.1"
-    "@sentry/minimal" "4.2.1"
-    "@sentry/types" "4.2.1"
-    "@sentry/utils" "4.2.1"
+    "@sentry/hub" "4.2.2"
+    "@sentry/minimal" "4.2.2"
+    "@sentry/types" "4.2.2"
+    "@sentry/utils" "4.2.2"
 
-"@sentry/hub@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-4.2.1.tgz#8adfe7657e69a60c1689e10a98b89f3c664e7e25"
-  integrity sha512-YXLMxepptx/6RkszgeVEhyUNCFsXbhXO+bS411PMFzRBBLUoJGis60JENNTjnmuuNnLcmz+HmpubQr3ygGrcLw==
+"@sentry/hub@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-4.2.2.tgz#9ee45b657ae8753f0d8dc54ab283bb76c309a30d"
+  integrity sha512-yyeyiiQtSCymNr/0IhVAPFqekNj6Ci1cDRQGhImQCsV4Wv6HOcsWORWPUOc+hazGhDAoEEFngMsNgL9BTWNjqA==
   dependencies:
-    "@sentry/types" "4.2.1"
-    "@sentry/utils" "4.2.1"
+    "@sentry/types" "4.2.2"
+    "@sentry/utils" "4.2.2"
 
-"@sentry/minimal@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-4.2.1.tgz#bdd5f2bbf6ea6981b9e7b8a36aa5224aa36f9693"
-  integrity sha512-VmwOzWXa1Z8mFMx3k9+8jIK8ExWVmU48SItD4IsxXQx1jL5ECIxpIpt4n4LWKp00VJ2AcwjpHJM+ShIFHUqubg==
+"@sentry/minimal@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-4.2.2.tgz#106401fc0dce3e84d278871ef7d4d9e6b334c45f"
+  integrity sha512-Ijtvfx9TmnfkSFq/ewZGWIri6Irk039f8wpofvV19lPAux23JCGE19QtXkARTWZ4QCAp4Y788AZQfUzK5hAB3g==
   dependencies:
-    "@sentry/hub" "4.2.1"
-    "@sentry/types" "4.2.1"
+    "@sentry/hub" "4.2.2"
+    "@sentry/types" "4.2.2"
 
-"@sentry/types@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-4.2.1.tgz#b0b290f0021d1ce005eac864ff4740578afad379"
-  integrity sha512-9Fo2QQi2+QfxlnaqQm60OfRRg/R2Ks9v4uxeEeQhj9NanhUXFu2+SBS7LJGG/upYGWxDXejyhu4XM/H3kXUdyw==
+"@sentry/types@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-4.2.2.tgz#a87de157a4be49d8114fb79953bc924ea93262c5"
+  integrity sha512-ftrJA5PAIScE+ujBLtqqFpxBQItkvDR1eYiNAmNe6irqAtsvJ/P4db1LskxxWju+AZ9XpfoN0U+CTHPcRsF73w==
 
-"@sentry/utils@4.2.1":
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-4.2.1.tgz#8ea2bf2c2ee8bbe85b94df4834eb3b3ae2c3d034"
-  integrity sha512-e2EaWa1Re8MC9FHNH81OqzuN01eBV1eTqyi83wgluRKx8iDf+3HvWG8mfuccBR/67Ae6h+KoNt+cKVHExsLzcA==
+"@sentry/utils@4.2.2":
+  version "4.2.2"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-4.2.2.tgz#a12d2c29ae1ad1d741b654c97a0ba13495449d10"
+  integrity sha512-R2D0sjBv9H5qNirbTV6hKZ0nUBu7hifbSohzeYGQilwqOgXOP6/JINH1ChSI2BDBm75b8/lUbygJsI2X3YnATw==
   dependencies:
-    "@sentry/types" "4.2.1"
+    "@sentry/types" "4.2.2"
 
 "@svgr/core@^2.4.1":
   version "2.4.1"
