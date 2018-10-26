@@ -405,11 +405,11 @@
 
 [[projects]]
   branch = "v1"
-  digest = "1:23fc86a644517c24115801c487921dbca64199a17b4c4bd057dcd97e59605684"
+  digest = "1:e6a5421ece62f71bef4f9d957747f5837900caa2e5e343da6e124a1b88abbfd0"
   name = "gopkg.in/jarcoal/httpmock.v1"
   packages = ["."]
   pruneopts = "UT"
-  revision = "8007e27cdb3239fcfc95c1274d7d8cbcc68b7d52"
+  revision = "c463961d8bfec5823f8100e620bcc73e9afdd7d4"
 
 [[projects]]
   digest = "1:342378ac4dcb378a5448dd723f0784ae519383532f5e70ade24132c4c8693202"
