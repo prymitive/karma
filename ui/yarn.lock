@@ -1054,12 +1054,12 @@
   dependencies:
     "@fortawesome/fontawesome-common-types" "^0.2.6"
 
-"@fortawesome/free-solid-svg-icons@5.4.1":
-  version "5.4.1"
-  resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.4.1.tgz#9aa1a07176a16886aa176fc0c9d809ab1697fd47"
-  integrity sha512-GRYr+T0sAnfjImhDJt6Gko3sW554+/fEUHgDFJonEEFYLbfLyv6Qn5i/VB8nXcJJLgqHbVwIvwH5Ol3IehIjow==
+"@fortawesome/free-solid-svg-icons@5.4.2":
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/@fortawesome/free-solid-svg-icons/-/free-solid-svg-icons-5.4.2.tgz#185fdab8806d5726846719dd7f8a2756c7b4f7fe"
+  integrity sha512-emie9CsLZPLVPH1adR3MNGNlm0GSVvEuUbZkQr0uXSp+Q9SZL0/OF6ava3DCKkwDbjn3jDKPchOraj0Vkuat6Q==
   dependencies:
-    "@fortawesome/fontawesome-common-types" "^0.2.6"
+    "@fortawesome/fontawesome-common-types" "^0.2.7"
 
 "@fortawesome/react-fontawesome@0.1.3":
   version "0.1.3"
