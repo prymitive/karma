@@ -47,7 +47,7 @@ const Alert = observer(
 
       return (
         <li className={classNames.join(" ")}>
-          <div className="mb-1">
+          <div>
             {alert.annotations.filter(a => a.isLink === false).map(a => (
               <RenderNonLinkAnnotation
                 key={a.name}
