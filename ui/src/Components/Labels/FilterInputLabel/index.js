@@ -10,7 +10,6 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclama
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
 import { AlertStore } from "Stores/AlertStore";
-import { DefaultLabelClass } from "Common/Colors";
 import { QueryOperators } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { BaseLabel } from "Components/Labels/BaseLabel";
@@ -46,43 +45,32 @@ const FilterInputLabel = observer(
     render() {
       const { filter, alertStore } = this.props;
 
-      let classNames = [
-        "components-label",
-        "components-filteredinputlabel",
-        "badge",
-        "text-nowrap",
-        "text-truncate",
-        "mw-100"
-      ];
-      let badgeClass = "";
-      let style = {};
-      if (!filter.applied) {
-        classNames.push("badge-secondary");
-      } else if (filter.matcher === QueryOperators.Equal) {
-        // only pass color class & style for equality matchers (foo=bar)
-        // if we have foo!=bar filter then it should't get the color we use
-        // for "foo: bar" labels
-        classNames.push(
-          `badge-${this.getColorClass(filter.name, filter.value)}`
-        );
-        style = this.getColorStyle(filter.name, filter.value);
-
-        badgeClass = this.isBackgroundDark(filter.name, filter.value)
-          ? "components-label-dark"
-          : "components-label-bright";
-      } else {
-        classNames.push(`badge-${DefaultLabelClass}`);
-      }
+      let cs = this.getClassAndStyle(
+        filter.matcher === QueryOperators.Equal ? filter.name : "",
+        filter.matcher === QueryOperators.Equal ? filter.value : "",
+        "components-filteredinputlabel"
+      );
 
       return (
-        <span className={classNames.join(" ")} style={style}>
+        <span
+          className={
+            filter.applied
+              ? cs.className
+              : ["badge-secondary", ...cs.baseClassNames].join(" ")
+          }
+          style={cs.style}
+        >
           <button
             type="button"
             className="close ml-1"
-            style={style}
+            style={cs.style}
             onClick={() => alertStore.filters.removeFilter(filter.raw)}
           >
-            <span className={`align-text-bottom ${badgeClass}`}>&times;</span>
+            <span
+              className={`align-text-bottom ${cs.colorClassNames.join(" ")}`}
+            >
+              &times;
+            </span>
           </button>
           {filter.isValid ? (
             filter.applied ? (
@@ -105,7 +93,7 @@ const FilterInputLabel = observer(
               value={filter.raw}
               propName="raw"
               change={this.onChange}
-              className={badgeClass}
+              className={cs.colorClassNames.join(" ")}
               classEditing="py-0 border-0 bg-light"
             />
           </TooltipWrapper>

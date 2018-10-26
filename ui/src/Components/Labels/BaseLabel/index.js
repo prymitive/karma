@@ -2,8 +2,13 @@ import { Component } from "react";
 import PropTypes from "prop-types";
 
 import { AlertStore } from "Stores/AlertStore";
-import { GetLabelColorClass, StaticColorLabelClass } from "Common/Colors";
-import { QueryOperators, FormatQuery } from "Common/Query";
+import {
+  StaticColorLabelClass,
+  StateLabelClassMap,
+  DefaultLabelClass,
+  AlertNameLabelClass
+} from "Common/Colors";
+import { QueryOperators, FormatQuery, StaticLabels } from "Common/Query";
 
 import "./index.scss";
 
@@ -17,49 +22,54 @@ class BaseLabel extends Component {
     value: PropTypes.string.isRequired
   };
 
-  isStaticColorLabel(name) {
+  getClassAndStyle(name, value, extraClass = "") {
     const { alertStore } = this.props;
 
-    return alertStore.settings.values.staticColorLabels.includes(name);
-  }
+    const data = {
+      style: {},
+      className: "",
+      baseClassNames: [
+        "components-label",
+        "badge",
+        "text-nowrap",
+        "text-truncate",
+        "mw-100"
+      ],
+      colorClassNames: []
+    };
 
-  isBackgroundDark(name, value) {
-    const { alertStore } = this.props;
+    if (name === StaticLabels.AlertName) {
+      data.colorClassNames.push(AlertNameLabelClass);
+    } else if (name === StaticLabels.State) {
+      data.colorClassNames.push(StateLabelClassMap[value] || DefaultLabelClass);
+    } else if (alertStore.settings.values.staticColorLabels.includes(name)) {
+      data.colorClassNames.push(StaticColorLabelClass);
+    } else {
+      const c = alertStore.data.getColorData(name, value);
+      if (c) {
+        // if there's color information use it
+        data.style["backgroundColor"] = `rgba(${[
+          c.background.red,
+          c.background.green,
+          c.background.blue,
+          c.background.alpha
+        ].join(", ")})`;
 
-    const c = alertStore.data.getColorData(name, value);
-    if (c) {
-      return isBackgroundDark(c.brightness);
+        data.colorClassNames.push(
+          isBackgroundDark(c.brightness)
+            ? "components-label-dark"
+            : "components-label-bright"
+        );
+      } else {
+        // if not fall back to class
+        data.colorClassNames.push(DefaultLabelClass);
+      }
     }
-    return true;
-  }
+    data.className = `${[...data.baseClassNames, ...data.colorClassNames].join(
+      " "
+    )} ${extraClass}`;
 
-  getColorClass(name, value) {
-    if (this.isStaticColorLabel(name)) {
-      return StaticColorLabelClass;
-    }
-    return GetLabelColorClass(name, value);
-  }
-
-  getColorStyle(name, value) {
-    const { alertStore } = this.props;
-
-    let style = {};
-
-    if (this.isStaticColorLabel(name)) {
-      // static labels only get class, no unique colors
-      return style;
-    }
-
-    const c = alertStore.data.getColorData(name, value);
-    if (c) {
-      style["backgroundColor"] = `rgba(${[
-        c.background.red,
-        c.background.green,
-        c.background.blue,
-        c.background.alpha
-      ].join(", ")})`;
-    }
-    return style;
+    return data;
   }
 
   handleClick = event => {

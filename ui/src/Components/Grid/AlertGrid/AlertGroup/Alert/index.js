@@ -5,7 +5,7 @@ import { observer } from "mobx-react";
 
 import { APIAlert, APIGroup } from "Models/API";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { GetLabelColorClass } from "Common/Colors";
+import { BorderClassMap } from "Common/Colors";
 import { StaticLabels } from "Common/Query";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
@@ -42,23 +42,21 @@ const Alert = observer(
         "my-1",
         "rounded-0",
         "border-left-1 border-right-0 border-top-0 border-bottom-0",
-        `border-${GetLabelColorClass(StaticLabels.State, alert.state)}`
+        BorderClassMap[alert.state] || "border-warning"
       ];
 
       return (
         <li className={classNames.join(" ")}>
           <div className="mb-1">
-            {alert.annotations
-              .filter(a => a.isLink === false)
-              .map(a => (
-                <RenderNonLinkAnnotation
-                  key={a.name}
-                  name={a.name}
-                  value={a.value}
-                  visible={a.visible}
-                  afterUpdate={afterUpdate}
-                />
-              ))}
+            {alert.annotations.filter(a => a.isLink === false).map(a => (
+              <RenderNonLinkAnnotation
+                key={a.name}
+                name={a.name}
+                value={a.value}
+                visible={a.visible}
+                afterUpdate={afterUpdate}
+              />
+            ))}
           </div>
           <AlertMenu
             group={group}
@@ -83,15 +81,9 @@ const Alert = observer(
               value={alert.receiver}
             />
           ) : null}
-          {alert.annotations
-            .filter(a => a.isLink === true)
-            .map(a => (
-              <RenderLinkAnnotation
-                key={a.name}
-                name={a.name}
-                value={a.value}
-              />
-            ))}
+          {alert.annotations.filter(a => a.isLink === true).map(a => (
+            <RenderLinkAnnotation key={a.name} name={a.name} value={a.value} />
+          ))}
           {alert.alertmanager.map(am =>
             am.silencedBy.map(silenceID => (
               <Silence

@@ -25,14 +25,17 @@ const FilteringCounterBadge = inject("alertStore")(
 
         if (counter === 0) return null;
 
+        let cs = this.getClassAndStyle(
+          name,
+          value,
+          "badge-pill components-label-with-hover"
+        );
+
         return (
           <TooltipWrapper title={`Click to only show ${value} alerts`}>
             <span
-              className={`components-label components-label-with-hover text-nowrap text-truncate badge badge-${this.getColorClass(
-                name,
-                value
-              )} badge-pill`}
-              style={this.getColorStyle(name, value)}
+              className={cs.className}
+              style={cs.style}
               onClick={e => this.handleClick(e)}
             >
               {counter}

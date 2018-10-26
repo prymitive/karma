@@ -11,6 +11,7 @@ import toDiffableHtml from "diffable-html";
 import { MockAlert, MockAnnotation, MockAlertGroup } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { BorderClassMap } from "Common/Colors";
 import { Alert } from ".";
 
 let alertStore;
@@ -25,6 +26,7 @@ beforeEach(() => {
 afterEach(() => {
   // reset Date() to current time
   clear();
+  jest.restoreAllMocks();
 });
 
 const MockAfterUpdate = jest.fn();
@@ -92,5 +94,55 @@ describe("<Alert />", () => {
     const silence = tree.find("Silence");
     expect(silence).toHaveLength(1);
     expect(silence.html()).toMatch(/silence123456789/);
+  });
+
+  it("uses BorderClassMap.active when @state=active", () => {
+    const alert = MockedAlert();
+    alert.state = "active";
+    const group = MockAlertGroup({}, [alert], [], {});
+    const tree = MountedAlert(alert, group, false, false);
+    expect(
+      tree
+        .find(".components-grid-alertgrid-alertgroup-alert")
+        .hasClass(BorderClassMap.active)
+    ).toBe(true);
+  });
+
+  it("uses BorderClassMap.suppressed when @state=suppressed", () => {
+    const alert = MockedAlert();
+    alert.state = "suppressed";
+    const group = MockAlertGroup({}, [alert], [], {});
+    const tree = MountedAlert(alert, group, false, false);
+    expect(
+      tree
+        .find(".components-grid-alertgrid-alertgroup-alert")
+        .hasClass(BorderClassMap.suppressed)
+    ).toBe(true);
+  });
+
+  it("uses BorderClassMap.unprocessed when @state=unprocessed", () => {
+    const alert = MockedAlert();
+    alert.state = "unprocessed";
+    const group = MockAlertGroup({}, [alert], [], {});
+    const tree = MountedAlert(alert, group, false, false);
+    expect(
+      tree
+        .find(".components-grid-alertgrid-alertgroup-alert")
+        .hasClass(BorderClassMap.unprocessed)
+    ).toBe(true);
+  });
+
+  it("uses 'border-warning' with unknown @state", () => {
+    jest.spyOn(console, "error").mockImplementation(() => {});
+
+    const alert = MockedAlert();
+    alert.state = "foobar";
+    const group = MockAlertGroup({}, [alert], [], {});
+    const tree = MountedAlert(alert, group, false, false);
+    expect(
+      tree
+        .find(".components-grid-alertgrid-alertgroup-alert")
+        .hasClass("border-warning")
+    ).toBe(true);
   });
 });

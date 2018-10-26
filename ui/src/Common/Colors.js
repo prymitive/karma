@@ -1,27 +1,29 @@
-import { StaticLabels } from "./Query";
+// fallback class for labels
+const DefaultLabelClass = "badge-warning components-label-dark";
 
-const StaticColorLabelClass = "info";
-const DefaultLabelClass = "warning";
+// labels configured as static will have badge-${this class}
+const StaticColorLabelClass = "badge-info components-label-dark";
 
-// returns bootstrap class for coloring based on pased label name & value
-function GetLabelColorClass(name, value) {
-  if (name === StaticLabels.AlertName) {
-    // special case for alertname label, which is the name of an alert
-    return "dark";
-  }
+// alertname label will use this one
+const AlertNameLabelClass = "badge-dark components-label-dark";
 
-  if (name === StaticLabels.State) {
-    switch (value) {
-      case "active":
-        return "danger";
-      case "suppressed":
-        return "success";
-      default:
-        return "secondary";
-    }
-  }
+// alert state label will use one of those, based on the value
+const StateLabelClassMap = Object.freeze({
+  active: "badge-danger components-label-dark",
+  suppressed: "badge-success components-label-dark",
+  unprocessed: "badge-secondary components-label-bright"
+});
+// same but for borders
+const BorderClassMap = Object.freeze({
+  active: "border-danger",
+  suppressed: "border-success",
+  unprocessed: "border-secondary"
+});
 
-  return DefaultLabelClass;
-}
-
-export { GetLabelColorClass, StaticColorLabelClass, DefaultLabelClass };
+export {
+  DefaultLabelClass,
+  StaticColorLabelClass,
+  AlertNameLabelClass,
+  StateLabelClassMap,
+  BorderClassMap
+};

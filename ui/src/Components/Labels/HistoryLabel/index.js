@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
 
-import { DefaultLabelClass } from "Common/Colors";
 import { QueryOperators } from "Common/Query";
 import { AlertStore } from "Stores/AlertStore";
 import { BaseLabel } from "Components/Labels/BaseLabel";
@@ -22,28 +21,14 @@ const HistoryLabel = observer(
     render() {
       const { name, matcher, value } = this.props;
 
-      let classNames = [
-        "components-label",
-        "components-label-history",
-        "text-nowrap",
-        "text-truncate",
-        "badge",
-        "mw-100",
-        "components-label-value",
-        this.isBackgroundDark(name, value)
-          ? "components-label-dark"
-          : "components-label-bright"
-      ];
-      let style = {};
-      if (matcher === QueryOperators.Equal) {
-        classNames.push(`badge-${this.getColorClass(name, value)}`);
-        style = this.getColorStyle(name, value);
-      } else {
-        classNames.push(`badge-${DefaultLabelClass}`);
-      }
+      let cs = this.getClassAndStyle(
+        matcher === QueryOperators.Equal ? name : "",
+        matcher === QueryOperators.Equal ? value : "",
+        "components-label-history components-label-value"
+      );
 
       return (
-        <span className={classNames.join(" ")} style={style}>
+        <span className={cs.className} style={cs.style}>
           {name ? `${name}${matcher}` : null}
           {value}
         </span>
