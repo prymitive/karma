@@ -56,7 +56,10 @@ const FilterInputLabel = observer(
           className={
             filter.applied
               ? cs.className
-              : ["badge-secondary", ...cs.baseClassNames].join(" ")
+              : [
+                  "badge-secondary components-filteredinputlabel",
+                  ...cs.baseClassNames
+                ].join(" ")
           }
           style={cs.style}
         >
@@ -67,7 +70,9 @@ const FilterInputLabel = observer(
             onClick={() => alertStore.filters.removeFilter(filter.raw)}
           >
             <span
-              className={`align-text-bottom ${cs.colorClassNames.join(" ")}`}
+              className={`align-text-bottom ${cs.colorClassNames
+                .filter(c => !c.match(/badge-/))
+                .join(" ")}`}
             >
               &times;
             </span>
@@ -78,7 +83,7 @@ const FilterInputLabel = observer(
                 {filter.hits}
               </span>
             ) : (
-              <span className="mr-1">
+              <span className="badge mr-1">
                 <FontAwesomeIcon icon={faSpinner} spin />
               </span>
             )
@@ -93,7 +98,6 @@ const FilterInputLabel = observer(
               value={filter.raw}
               propName="raw"
               change={this.onChange}
-              className={cs.colorClassNames.join(" ")}
               classEditing="py-0 border-0 bg-light"
             />
           </TooltipWrapper>
