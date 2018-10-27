@@ -2,6 +2,7 @@ package models_test
 
 import (
 	"reflect"
+	"sort"
 	"testing"
 
 	"github.com/prymitive/karma/internal/models"
@@ -13,7 +14,7 @@ type annotationMapsTestCase struct {
 }
 
 var annotationMapsTestCases = []annotationMapsTestCase{
-	annotationMapsTestCase{
+	{
 		annotationMap: map[string]string{
 			"foo": "bar",
 		},
@@ -26,7 +27,7 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 			},
 		},
 	},
-	annotationMapsTestCase{
+	{
 		annotationMap: map[string]string{
 			"foo": "http://localhost",
 		},
@@ -39,7 +40,7 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 			},
 		},
 	},
-	annotationMapsTestCase{
+	{
 		annotationMap: map[string]string{
 			"foo": "ftp://localhost",
 		},
@@ -52,7 +53,7 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 			},
 		},
 	},
-	annotationMapsTestCase{
+	{
 		annotationMap: map[string]string{
 			"foo": "https://localhost/xxx",
 			"abc": "xyz",
@@ -81,5 +82,35 @@ func TestAnnotationsFromMap(t *testing.T) {
 			t.Errorf("AnnotationsFromMap result mismatch for map %v, expected %v got %v",
 				testCase.annotationMap, testCase.annotations, result)
 		}
+	}
+}
+
+func TestAnnotationsSort(t *testing.T) {
+	annotations := models.Annotations{
+		models.Annotation{
+			Name:    "bar",
+			Value:   "abc",
+			Visible: true,
+			IsLink:  false,
+		},
+		models.Annotation{
+			Name:    "xyz",
+			Value:   "xyz",
+			Visible: true,
+			IsLink:  true,
+		},
+		models.Annotation{
+			Name:    "abc",
+			Value:   "bar",
+			Visible: true,
+			IsLink:  true,
+		},
+	}
+	sort.Stable(annotations)
+	if annotations[0].Name != "abc" {
+		t.Errorf("Expected 'abc' to be first, got '%s'", annotations[0].Name)
+	}
+	if annotations[2].Name != "xyz" {
+		t.Errorf("Expected 'xyz' to be last, got '%s'", annotations[2].Name)
 	}
 }
