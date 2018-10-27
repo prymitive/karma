@@ -302,7 +302,10 @@ class LongNameAlerts(AlertGenerator):
                              "voluptate velit esse cillum dolore eu fugiat "
                              "nulla pariatur. Excepteur sint occaecat cupidatat"
                              " non proident, sunt in culpa qui officia deserunt"
-                             " mollit anim id est laborum")
+                             " mollit anim id est laborum vvvvvvvvveeeeeeeeeeee"
+                             "errrrrrrrrrrrrrrrrrryyyyyyyyyyyyylllllllllooooooo"
+                             "nnnnnnngggggggggggggggwwwwwwwwwwwwooooooooooooooo"
+                             "rrrrrrrrrrrrrrddddddddddddddddddd")
             ) for i in xrange(1, size)]
         return _gen(5, "dev") + _gen(1, "staging") + _gen(11, "prod")
 
