@@ -128,14 +128,14 @@ Images are built automatically for:
 
 To start a release image run:
 
-    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com prymitive/karma:vX.Y.Z
+    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com lmierzwa/karma:vX.Y.Z
 
 Latest release details can be found on
 [GitHub](https://github.com/prymitive/karma/releases).
 
 To start docker image build from lastet master branch run:
 
-    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com prymitive/karma:latest
+    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com lmierzwa/karma:latest
 
 Note that latest master branch might have bugs or breaking changes. Using
 release images is strongly recommended for any production use.
