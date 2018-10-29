@@ -439,6 +439,34 @@ sentry:
   public: https://<key>:<secret>@sentry.io/<project>
 ```
 
+## Customizing karma
+
+In order to keep the core code simple karma doesn't support any way of extending
+provided functionality. There is however possibility to inject custom CSS &
+JavaScript code, which can be used to either override built in CSS styles
+or integrate with extra services, for example using error handlers other than
+Sentry.
+
+```yaml
+custom:
+  css: string
+  js: string
+```
+
+- `css` - path to a CSS file
+- `js` - path to JavaScript file
+
+Example:
+
+```yaml
+custom:
+  css: /theme/custom.css
+  js: /assets/custom.js
+```
+
+Use at your own risk and be aware that used CSS class names might change without
+warning. This feature is provided as is without any guarantees.
+
 ## Command line flags
 
 Config file options are mapped to command line flags, so `alertmanager:interval`

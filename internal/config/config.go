@@ -41,6 +41,9 @@ func init() {
 
 	pflag.String("config.file", "", "Full path to the configuration file")
 
+	pflag.String("custom.css", "", "Path to a file with custom CSS to load")
+	pflag.String("custom.js", "", "Path to a file with custom JavaScript to load")
+
 	pflag.Bool("debug", false, "Enable debug mode")
 
 	pflag.StringSlice("filters.default", []string{}, "List of default filters")
@@ -118,6 +121,8 @@ func (config *configSchema) Read() {
 	config.Annotations.Default.Hidden = v.GetBool("annotations.default.hidden")
 	config.Annotations.Hidden = v.GetStringSlice("annotations.hidden")
 	config.Annotations.Visible = v.GetStringSlice("annotations.visible")
+	config.Custom.CSS = v.GetString("custom.css")
+	config.Custom.JS = v.GetString("custom.js")
 	config.Debug = v.GetBool("debug")
 	config.Filters.Default = v.GetStringSlice("filters.default")
 	config.Labels.Color.Static = v.GetStringSlice("labels.color.static")

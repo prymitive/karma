@@ -4,9 +4,11 @@ import (
 	"errors"
 	"html/template"
 	"net/http"
+	"os"
 	"strings"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
+	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -71,4 +73,16 @@ func loadTemplate(t *template.Template, path string) *template.Template {
 	}
 
 	return t
+}
+
+func serverFileOrEmpty(path string, contentType string, c *gin.Context) {
+	if path == "" {
+		c.Data(200, contentType, nil)
+		return
+	}
+	if _, err := os.Stat(path); os.IsNotExist(err) {
+		c.Data(200, contentType, nil)
+		return
+	}
+	c.File(path)
 }
