@@ -8,6 +8,8 @@ alertmanager:
 annotations:
   hidden:
     - help
+custom:
+  js: /custom.js
 filters:
   default:
     - "@receiver=by-cluster-service"

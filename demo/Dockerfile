@@ -17,6 +17,7 @@ COPY demo/alertmanager.yaml /etc/alertmanager.yaml
 COPY demo/generator.py /generator.py
 COPY --from=go-builder /go/src/github.com/prymitive/karma/karma /karma
 COPY demo/karma.yaml /etc/karma.yaml
+COPY demo/custom.js /custom.js
 RUN adduser -D karma
 USER karma
 CMD supervisord --nodaemon --configuration /etc/supervisord.conf
