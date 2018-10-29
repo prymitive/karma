@@ -9207,15 +9207,15 @@ react-popper@1.0.2, react-popper@^1.0.2:
     typed-styles "^0.0.5"
     warning "^3.0.0"
 
-react-resize-detector@3.1.3:
-  version "3.1.3"
-  resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-3.1.3.tgz#23ecf44db98f09dc0d39f34d2ddbadf4dde6e5c8"
-  integrity sha512-j8Ds5AQA5SiNmOSSQp1XeiaHt763KWV4p2HHsxaOeT3jML9MpPoCiqwiBje5yRrgy38sW2v0Qw5T8pW1doiUIw==
+react-resize-detector@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-3.2.0.tgz#3fef8af60c749e623bf49f06caaaadf08d43357d"
+  integrity sha512-c6HyDD1UHqiyw1P2QzukSANAmWUodR9c4mnzxkWxxLQW0l5BAR9c9zx02EgYhUyAcjf7HSsE9B1yCIP7LgJ26w==
   dependencies:
     lodash.debounce "^4.0.8"
     lodash.isfunction "^3.0.9"
     lodash.throttle "^4.1.1"
-    prop-types "^15.6.1"
+    prop-types "^15.6.2"
     resize-observer-polyfill "^1.5.0"
 
 react-scripts@2.0.5:
