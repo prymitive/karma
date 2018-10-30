@@ -14,38 +14,49 @@ defaults_js: &DEFAULTS_JS
 
 jobs:
   include:
-    - stage: Lint git commits
-      <<: *DEFAULTS_JS
-      script: make lint-git-ci
-
-    - stage: Test Go code
+    - stage: Test
       <<: *DEFAULTS_GO
+      env:
+        - DESC="Test Go code"
       before_script:
         - make mock-assets
       script: make test-go
       after_success:
         - bash <(curl -s https://codecov.io/bash) -F backend
 
-    - stage: Test JavaScript code
+    - stage: Test
       <<: *DEFAULTS_JS
       env:
+        - DESC="Test JavaScript code"
         - NODE_ENV=test
       script: make test-js
       after_success:
         - bash <(curl -s https://codecov.io/bash) -F ui -s ui
 
-    - stage: Lint Go code
+    - stage: Lint
+      <<: *DEFAULTS_JS
+      env:
+        - DESC="Lint git commit"
+      script: make lint-git-ci
+
+    - stage: Lint
       <<: *DEFAULTS_GO
+      env:
+        - DESC="Lint Go code"
       before_script:
         - make mock-assets
       script: make lint-go
 
-    - stage: Lint JavaScript code
+    - stage: Lint
       <<: *DEFAULTS_JS
+      env:
+        - DESC="Lint JavaScript code"
       script: make lint-js
 
-    - stage: Lint docs
+    - stage: Lint
       <<: *DEFAULTS_JS
+      env:
+        - DESC="Lint documentation"
       script: make lint-docs
 
     - stage: Build Docker image
