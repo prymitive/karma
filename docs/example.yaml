@@ -18,6 +18,9 @@ annotations:
   hidden:
     - help
   visible: []
+custom:
+  css: /custom.css
+  js: /custom.js
 debug: false
 filters:
   default:

@@ -31,6 +31,10 @@ type configSchema struct {
 		Hidden  []string
 		Visible []string
 	}
+	Custom struct {
+		CSS string
+		JS  string
+	}
 	Debug   bool
 	Filters struct {
 		Default []string

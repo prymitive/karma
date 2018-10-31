@@ -85,6 +85,14 @@ func setupRouter(router *gin.Engine) {
 	router.GET(getViewURL("/autocomplete.json"), autocomplete)
 	router.GET(getViewURL("/labelNames.json"), knownLabelNames)
 	router.GET(getViewURL("/labelValues.json"), knownLabelValues)
+
+	router.GET(getViewURL("/custom.css"), func(c *gin.Context) {
+		serverFileOrEmpty(config.Config.Custom.CSS, "text/css", c)
+	})
+	router.GET(getViewURL("/custom.js"), func(c *gin.Context) {
+		serverFileOrEmpty(config.Config.Custom.JS, "application/javascript", c)
+	})
+
 	router.NoRoute(notFound)
 }
 

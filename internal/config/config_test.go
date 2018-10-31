@@ -25,6 +25,8 @@ func resetEnv() {
 		"ANNOTATIONS_HIDDEN",
 		"ANNOTATIONS_VISIBLE",
 		"CONFIG_FILE",
+		"CUSTOM_CSS",
+		"CUSTOM_JS",
 		"DEBUG",
 		"FILTERS_DEFAULT",
 		"LABELS_COLOR_STATIC",
@@ -68,6 +70,9 @@ annotations:
   hidden: []
   visible:
   - summary
+custom:
+  css: /custom.css
+  js: /custom.js
 debug: true
 filters:
   default:
@@ -132,6 +137,8 @@ func TestReadConfig(t *testing.T) {
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
 	os.Setenv("ANNOTATIONS_DEFAULT_HIDDEN", "true")
 	os.Setenv("ANNOTATIONS_VISIBLE", "summary")
+	os.Setenv("CUSTOM_CSS", "/custom.css")
+	os.Setenv("CUSTOM_JS", "/custom.js")
 	os.Setenv("DEBUG", "true")
 	os.Setenv("FILTERS_DEFAULT", "@state=active foo=bar")
 	os.Setenv("LABELS_COLOR_STATIC", "a bb ccc")
