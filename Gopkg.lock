@@ -195,11 +195,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:6b5a4150d244cc9966fcf654c8354c96827786bb5b59cc09604cd0c566e35b02"
+  digest = "1:bcc3e8b281f79d903661fe821e5271e3732bfed74e7bb61f489f23321e664234"
   name = "github.com/mcuadros/go-gin-prometheus"
   packages = ["."]
   pruneopts = "UT"
-  revision = "f09dfa9cedec6f3e4ed39e49cceeda09cbed464f"
+  revision = "58963fb32f547bd98cc0150a6bcbdf181a430967"
 
 [[projects]]
   digest = "1:53bc4cd4914cd7cd52139990d5170d6dc99067ae31c56530621b18b35fc30318"
