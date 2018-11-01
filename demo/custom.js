@@ -21,3 +21,26 @@
 
 ga("create", "UA-128338979-1", "auto");
 ga("send", "pageview");
+
+function getSearch() {
+  return window.location.search;
+}
+
+let search = getSearch();
+
+function updateSearch() {
+  let newSearch = getSearch();
+  if (newSearch !== search) {
+    search = newSearch;
+    ga("set", "page", window.location.pathname + window.location.search);
+  }
+}
+
+setInterval(function() {
+  updateSearch();
+  ga("send", {
+    hitType: "event",
+    eventCategory: "heartbeat",
+    eventAction: "ping"
+  });
+}, 15 * 1000);
