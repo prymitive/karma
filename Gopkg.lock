@@ -103,7 +103,7 @@
   name = "github.com/gin-gonic/contrib"
   packages = ["sentry"]
   pruneopts = "UT"
-  revision = "da231e72d04fa00873b0244684773ba5f91172c0"
+  revision = "54170a7b0b4b2f9219c79599b1b03830a5a7d68d"
 
 [[projects]]
   digest = "1:d5083934eb25e45d17f72ffa86cae3814f4a9d6c073c4f16b64147169b245606"
