@@ -33,15 +33,15 @@ func TestCustomizationAssets(t *testing.T) {
 		{
 			customJS: "foo/bar/custom.js",
 			path:     "/custom.js",
-			code:     200,
-			body:     "",
+			code:     404,
+			body:     "foo/bar/custom.js not found",
 			mime:     "application/javascript",
 		},
 		{
 			customCSS: "foo/bar/custom.css",
 			path:      "/custom.css",
-			code:      200,
-			body:      "",
+			code:      404,
+			body:      "foo/bar/custom.css not found",
 			mime:      "text/css",
 		},
 		{

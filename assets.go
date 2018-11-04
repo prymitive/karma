@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"html/template"
 	"net/http"
 	"os"
@@ -81,7 +82,7 @@ func serverFileOrEmpty(path string, contentType string, c *gin.Context) {
 		return
 	}
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		c.Data(200, contentType, nil)
+		c.Data(404, contentType, []byte(fmt.Sprintf("%s not found", path)))
 		return
 	}
 	c.File(path)
