@@ -75,11 +75,11 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:4502ebf1d3fff349d694807160ce3a4dea1834729e6cedf7f58f0b385bd8ee58"
+  digest = "1:17c33d1997b6e9fee31405d449556c2cfde75435931bebbc9eb477b4a827273b"
   name = "github.com/gin-contrib/gzip"
   packages = ["."]
   pruneopts = "UT"
-  revision = "f4623742155704b95c69be0017fd88ba93445808"
+  revision = "d9117ce29a07e74cd267e057bd881564417bf74f"
 
 [[projects]]
   branch = "master"
