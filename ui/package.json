@@ -10,7 +10,7 @@
     "@fortawesome/free-regular-svg-icons": "5.5.0",
     "@fortawesome/free-solid-svg-icons": "5.5.0",
     "@fortawesome/react-fontawesome": "0.1.3",
-    "@sentry/browser": "4.2.4",
+    "@sentry/browser": "4.3.0",
     "body-scroll-lock": "2.5.10",
     "bootstrap": "4.1.3",
     "bootswatch": "4.1.3",
