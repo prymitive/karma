@@ -11,7 +11,10 @@ $ docker run \
     -v $(pwd)/alertmanager.yaml:/etc/alertmanager/alertmanager.yml \
     prom/alertmanager
 
-2. Start this script
+2. Start this script:
+
+$ ./generator.py
+
 3. Start karma:
 
 $ karma \
@@ -24,14 +27,14 @@ $ karma \
 """
 
 
-import random
-import json
 import datetime
+import json
+import random
 import time
 import urllib2
 
 
-API = "http://localhost:9093"
+APIs = ["http://localhost:9093", "http://localhost:9094"]
 MAX_INTERVAL = 10
 MIN_INTERVAL = 5
 
@@ -48,7 +51,7 @@ def jsonPostRequest(uri, data):
 
 
 def addSilence(matchers, startsAt, endsAt, createdBy, comment):
-    uri = "{}/api/v1/silences".format(API)
+    uri = "{}/api/v1/silences".format(APIs[0])
 
     silences = jsonGetRequest(uri)
     found = False
@@ -72,7 +75,8 @@ def addSilence(matchers, startsAt, endsAt, createdBy, comment):
 
 
 def addAlerts(alerts):
-    jsonPostRequest("{}/api/v1/alerts".format(API), alerts)
+    for api in APIs:
+        jsonPostRequest("{}/api/v1/alerts".format(api), alerts)
 
 
 def newMatcher(name, value, isRegex):

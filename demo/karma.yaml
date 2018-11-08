@@ -1,8 +1,12 @@
 alertmanager:
   interval: 10s
   servers:
-    - name: demo
+    - name: ha1
       uri: "http://localhost:9093"
+      timeout: 10s
+      proxy: true
+    - name: ha2
+      uri: "http://localhost:9094"
       timeout: 10s
       proxy: true
 annotations:
