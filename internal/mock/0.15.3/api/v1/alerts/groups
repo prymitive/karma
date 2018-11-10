@@ -19,7 +19,7 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -63,11 +63,11 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": null,
                                 "silencedBy": [
-                                    "047f8ae4-5bd6-45ab-aef1-3895958173b1"
+                                    "16ee9fd6-612e-47b0-bbfe-e3b22dfa5b7b"
                                 ],
                                 "state": "suppressed"
                             }
@@ -86,7 +86,7 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -128,7 +128,7 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -149,7 +149,7 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -170,7 +170,7 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -191,7 +191,7 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -212,11 +212,11 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": null,
                                 "silencedBy": [
-                                    "29ec77b4-81b9-4c4c-8cbd-f7c837e06e8c"
+                                    "7d0e6d8c-3eb8-4693-bb8f-5917ddd14708"
                                 ],
                                 "state": "suppressed"
                             }
@@ -235,12 +235,12 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": null,
                                 "silencedBy": [
-                                    "c359edb8-5971-41f7-bfdd-693d51fb7a54",
-                                    "29ec77b4-81b9-4c4c-8cbd-f7c837e06e8c"
+                                    "7d0e6d8c-3eb8-4693-bb8f-5917ddd14708",
+                                    "74105d8c-e858-4a2e-ae2b-1f8953a3ad82"
                                 ],
                                 "state": "suppressed"
                             }
@@ -259,11 +259,11 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": null,
                                 "silencedBy": [
-                                    "29ec77b4-81b9-4c4c-8cbd-f7c837e06e8c"
+                                    "7d0e6d8c-3eb8-4693-bb8f-5917ddd14708"
                                 ],
                                 "state": "suppressed"
                             }
@@ -283,7 +283,7 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -326,7 +326,7 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -369,7 +369,7 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -416,11 +416,11 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": null,
                                 "silencedBy": [
-                                    "047f8ae4-5bd6-45ab-aef1-3895958173b1"
+                                    "16ee9fd6-612e-47b0-bbfe-e3b22dfa5b7b"
                                 ],
                                 "state": "suppressed"
                             }
@@ -439,7 +439,7 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -449,9 +449,9 @@
                     ],
                     "routeOpts": {
                         "groupBy": [
-                            "alertname",
                             "cluster",
-                            "service"
+                            "service",
+                            "alertname"
                         ],
                         "groupInterval": 35000000000,
                         "groupWait": 15000000000,
@@ -484,11 +484,11 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": null,
                                 "silencedBy": [
-                                    "29ec77b4-81b9-4c4c-8cbd-f7c837e06e8c"
+                                    "7d0e6d8c-3eb8-4693-bb8f-5917ddd14708"
                                 ],
                                 "state": "suppressed"
                             }
@@ -507,12 +507,12 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": null,
                                 "silencedBy": [
-                                    "c359edb8-5971-41f7-bfdd-693d51fb7a54",
-                                    "29ec77b4-81b9-4c4c-8cbd-f7c837e06e8c"
+                                    "7d0e6d8c-3eb8-4693-bb8f-5917ddd14708",
+                                    "74105d8c-e858-4a2e-ae2b-1f8953a3ad82"
                                 ],
                                 "state": "suppressed"
                             }
@@ -531,11 +531,11 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": null,
                                 "silencedBy": [
-                                    "29ec77b4-81b9-4c4c-8cbd-f7c837e06e8c"
+                                    "7d0e6d8c-3eb8-4693-bb8f-5917ddd14708"
                                 ],
                                 "state": "suppressed"
                             }
@@ -543,9 +543,9 @@
                     ],
                     "routeOpts": {
                         "groupBy": [
+                            "service",
                             "alertname",
-                            "cluster",
-                            "service"
+                            "cluster"
                         ],
                         "groupInterval": 35000000000,
                         "groupWait": 15000000000,
@@ -566,27 +566,6 @@
                     "alerts": [
                         {
                             "annotations": {
-                                "summary": "Example summary"
-                            },
-                            "endsAt": "0001-01-01T00:00:00Z",
-                            "fingerprint": "3bdb8b68bdce2ae0",
-                            "generatorURL": "localhost/prometheus",
-                            "labels": {
-                                "alertname": "Host_Down",
-                                "cluster": "prod",
-                                "instance": "server2",
-                                "job": "node_ping"
-                            },
-                            "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
-                            "status": {
-                                "inhibitedBy": [],
-                                "silencedBy": [],
-                                "state": "active"
-                            }
-                        },
-                        {
-                            "annotations": {
                                 "summary": "Example summary",
                                 "url": "http://localhost/example.html"
                             },
@@ -600,7 +579,28 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
+                            "status": {
+                                "inhibitedBy": [],
+                                "silencedBy": [],
+                                "state": "active"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "fingerprint": "3bdb8b68bdce2ae0",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "prod",
+                                "instance": "server2",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -645,7 +645,7 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -666,7 +666,7 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -687,7 +687,7 @@
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -697,9 +697,9 @@
                     ],
                     "routeOpts": {
                         "groupBy": [
-                            "service",
                             "alertname",
-                            "cluster"
+                            "cluster",
+                            "service"
                         ],
                         "groupInterval": 35000000000,
                         "groupWait": 15000000000,
@@ -733,7 +733,7 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2018-11-10T10:18:05.284375341Z",
+                            "startsAt": "2018-11-10T12:48:10.73047806Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
