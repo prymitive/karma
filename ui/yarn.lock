@@ -6063,10 +6063,10 @@ jest-environment-node@^23.4.0:
     jest-mock "^23.2.0"
     jest-util "^23.4.0"
 
-jest-fetch-mock@1.7.2:
-  version "1.7.2"
-  resolved "https://registry.yarnpkg.com/jest-fetch-mock/-/jest-fetch-mock-1.7.2.tgz#9d6cc44486cbaea8d23707d1ef47e2418d78dce1"
-  integrity sha512-eSXNMOuRNRovNqBiXXfy1+MyDdB3yxXciSwdYtVJzSK86jPpmMUntoWCyc7DuAomgTbPQr1DMUeo8IC8v6ay8g==
+jest-fetch-mock@1.7.3:
+  version "1.7.3"
+  resolved "https://registry.yarnpkg.com/jest-fetch-mock/-/jest-fetch-mock-1.7.3.tgz#39fa4490d38624fc0b1bfb940b52b714ac4afea3"
+  integrity sha512-svYd6xgYPkwHEGUTCgzH24bZOFlYYjdrDmhSWFM6EGunN1gWrBXE1KIMqaznDN57cVcOXivszG/igwaNQPo4RA==
   dependencies:
     cross-fetch "^2.2.2"
     promise-polyfill "^7.1.1"

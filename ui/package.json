@@ -60,7 +60,7 @@
     "enzyme-adapter-react-16": "1.7.0",
     "jest-canvas-mock": "1.1.0",
     "jest-date-mock": "1.0.5",
-    "jest-fetch-mock": "1.7.2",
+    "jest-fetch-mock": "1.7.3",
     "markdownlint-cli": "0.13.0",
     "node-sass": "4.10.0"
   },
