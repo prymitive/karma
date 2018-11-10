@@ -2,7 +2,7 @@ NAME    := karma
 VERSION := $(shell git describe --tags --always --dirty='-dev')
 
 # Alertmanager instance used when running locally, points to mock data
-MOCK_PATH         := $(CURDIR)/internal/mock/0.15.2
+MOCK_PATH         := $(CURDIR)/internal/mock/0.15.3
 ALERTMANAGER_URI := "file://$(MOCK_PATH)"
 # Listen port when running locally
 PORT := 8080
