@@ -1095,52 +1095,52 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@sentry/browser@4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-4.3.0.tgz#07660b2b17b12a6d8953be20eb8efaa8683fafb9"
-  integrity sha512-Np3T12mpvuih9IouwD44BgDdiQWjdEo2eeYwrh6ZzVLn7UKK2eV1VUsSiYADTN2HQB7TbtAnO0IFI5MZl7CccA==
+"@sentry/browser@4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-4.3.1.tgz#b41f5920aeee1c3fd4d6d4500b894aa20f411dc2"
+  integrity sha512-4WPVCUeCyfQdYt/QESnUCfUDthezrvh5IFew3swMieMuD65g3gFe25XR3i4od2Bu2I+ib132rx10hjrAfPctjA==
   dependencies:
-    "@sentry/core" "4.3.0"
-    "@sentry/types" "4.3.0"
-    "@sentry/utils" "4.3.0"
+    "@sentry/core" "4.3.1"
+    "@sentry/types" "4.3.1"
+    "@sentry/utils" "4.3.1"
 
-"@sentry/core@4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.3.0.tgz#f51f86b380637b5f2348cd35fdb96c224023c103"
-  integrity sha512-VEMRshyF2J2IJkGTF9fnAd2/a/wR+42qrKwCLVeNxHzZm53VAnSfJd8ZA5jnN5RiydQVGDOylqvdfij/LmmsuQ==
+"@sentry/core@4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-4.3.1.tgz#b9c14e893d6e869819a2373795fbf8636cdcfa9f"
+  integrity sha512-CrhjFFmetvnw6u4dk1fjFTfOXvzOaqufrA52FBYtc8/qEsu6jdlt8xSj2el5PVpBXrFDEvOPcUqQB0kjOIqtfA==
   dependencies:
-    "@sentry/hub" "4.3.0"
-    "@sentry/minimal" "4.3.0"
-    "@sentry/types" "4.3.0"
-    "@sentry/utils" "4.3.0"
+    "@sentry/hub" "4.3.1"
+    "@sentry/minimal" "4.3.1"
+    "@sentry/types" "4.3.1"
+    "@sentry/utils" "4.3.1"
 
-"@sentry/hub@4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-4.3.0.tgz#ed7731583d81664057de73e3221a393116362b04"
-  integrity sha512-9nh4Hcx2tZQVHr5JGy1XZd1RgwC2C+1tNFXu06rcxYB20nhKOKtOAH9STrv64vpnK+70AC4miRdlCgqHOKLdxA==
+"@sentry/hub@4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@sentry/hub/-/hub-4.3.1.tgz#eb0514523eb855ce21dfb15e3c071da367ef7683"
+  integrity sha512-+LDacBsr4s4MwX1lwqVyorOOwnA7qykyxOm2PiXfjPsJScZ84DrnlpRs+aXY69++2o350M+KUATyKP02lzwxOQ==
   dependencies:
-    "@sentry/types" "4.3.0"
-    "@sentry/utils" "4.3.0"
+    "@sentry/types" "4.3.1"
+    "@sentry/utils" "4.3.1"
 
-"@sentry/minimal@4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-4.3.0.tgz#d83826e713d54c95d4986187d223ef1fabc4e1ed"
-  integrity sha512-yRN+L3O9mlcjqpWiivqJsm3Cy/YNh0ejQKpxxxPD186tl5nzEkAqRq5jCYelYIAdH1eBvg87H5VNNFr/shHxaQ==
+"@sentry/minimal@4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@sentry/minimal/-/minimal-4.3.1.tgz#13103426dc2ff1a1f4237d478bb055e4f6c76d22"
+  integrity sha512-pSjJ97Cv0Ya/7UlFt7AJIXYkRMCPIhuk0hx/gU1188sn75Y2msmAC25/Ru1vW5sHhm5X2FPCMYiJd6zdPLUcyA==
   dependencies:
-    "@sentry/hub" "4.3.0"
-    "@sentry/types" "4.3.0"
+    "@sentry/hub" "4.3.1"
+    "@sentry/types" "4.3.1"
 
-"@sentry/types@4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-4.3.0.tgz#a5cec425764a72a0817329ac212c5ce085ecdd05"
-  integrity sha512-oBAusA+/JFJJlNfHgikyBPTyvmCr/YxZsLWL2FNOBNJkMClW+m7tQ63x/ZAqRSEd8lnJQxJSU7LfAYDH6LcChQ==
+"@sentry/types@4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-4.3.1.tgz#95b6dfca52f95e32389921286f8e867b56f1d0c4"
+  integrity sha512-I7cR2fqJKF4rjjv3LK/W6GgSpfwCWZFyuO5V6TwM17wq8uLLrjQ/tYrJC2Rg6kxKIqS2kGxcZqRekRTXVpxdeA==
 
-"@sentry/utils@4.3.0":
-  version "4.3.0"
-  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-4.3.0.tgz#4d278b55deb6175ada2a78b56716aa2df97cd389"
-  integrity sha512-cEGygJbyc1SUGxbanvk3+JYadiywJupdEkp6L8rRfxur/nNQZq1Jd7tkdm4I2rz5YFVg+yayadAquvr4DIu9nA==
+"@sentry/utils@4.3.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-4.3.1.tgz#3047056aea29d3c5dfb11f438f386f1a65ba19d1"
+  integrity sha512-UFubNT39mM4EQp56BFYmB936Vyy1F7ytvDT3czsvnZu7zVCrGYZftC2Lv1cTa1Gy8SliBXp2pdbCpIdPTgirVg==
   dependencies:
-    "@sentry/types" "4.3.0"
+    "@sentry/types" "4.3.1"
 
 "@svgr/core@^2.4.1":
   version "2.4.1"
