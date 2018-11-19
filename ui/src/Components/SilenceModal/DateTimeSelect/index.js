@@ -62,8 +62,10 @@ const TabContentStart = observer(({ silenceFormStore }) => {
       <DatePicker
         inline
         todayButton={"Today"}
-        minDate={moment().second(0)}
-        selected={silenceFormStore.data.startsAt}
+        minDate={moment()
+          .second(0)
+          .toDate()}
+        selected={silenceFormStore.data.startsAt.toDate()}
         onChange={val => {
           silenceFormStore.data.startsAt = moment(val);
           silenceFormStore.data.verifyStarEnd();
@@ -88,8 +90,9 @@ const TabContentEnd = observer(({ silenceFormStore }) => {
         todayButton={"Today"}
         minDate={moment()
           .second(0)
-          .add(1, "minutes")}
-        selected={silenceFormStore.data.endsAt}
+          .add(1, "minutes")
+          .toDate()}
+        selected={silenceFormStore.data.endsAt.toDate()}
         onChange={val => {
           silenceFormStore.data.endsAt = moment(val);
           silenceFormStore.data.verifyStarEnd();
