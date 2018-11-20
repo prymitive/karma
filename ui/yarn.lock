@@ -7303,10 +7303,10 @@ mkdirp@0.5.1, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdi
   dependencies:
     minimist "0.0.8"
 
-mobx-react@5.4.0:
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-5.4.0.tgz#25540c57a92b078d0955d08166fcc39c88b0f89e"
-  integrity sha512-IHX/PmHDH4UHHLavIZnL6XxGEafMq9bzDodWSx3dwnZp4WhX0yyhktzieFClKIxCef+jQIpwDk2KrUXg+vW+SQ==
+mobx-react@5.4.1:
+  version "5.4.1"
+  resolved "https://registry.yarnpkg.com/mobx-react/-/mobx-react-5.4.1.tgz#8129676520171f743de764b9b4a919a5f16637f2"
+  integrity sha512-Obh366R3u/QMJzfR+nXYwCVTQ9bsgPTDoDnYsmgsuUk8Bw5G7dJWkN0UiwRGkt4pszvBO63ECKy1W23vF8PFtA==
   dependencies:
     hoist-non-react-statics "^3.0.0"
     react-is "^16.3.2"
