@@ -9212,10 +9212,10 @@ react-highlighter@0.4.3:
     escape-string-regexp "^1.0.5"
     prop-types "^15.6.0"
 
-react-idle-timer@4.1.1:
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/react-idle-timer/-/react-idle-timer-4.1.1.tgz#9ab5b018ea20f1aec8e1909df608502979b256a3"
-  integrity sha512-h0ppoLbiOz/BJQjAgvff9BgrVdAti6hLPdQtdCZrR+LAqia/BkkibHOKBE8TY5BzhQTKpc257TwOjVnbNkIOyQ==
+react-idle-timer@4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/react-idle-timer/-/react-idle-timer-4.1.2.tgz#3a7d284b48e0435e84ead2f9cb459afda9f2fb88"
+  integrity sha512-T7k2oiS7lz49D1s9ojjSTv5AMp244kqiEZFg3i74JBEwx6aMPhlS61nK0bpRcCNny7I0emy7emCmmxClpMRhdw==
 
 react-infinite-scroller@^1.0.12:
   version "1.2.2"
