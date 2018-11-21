@@ -18,10 +18,15 @@ const Modal = observer(
       children: PropTypes.node.isRequired
     };
 
+    constructor(props) {
+      super(props);
+      this.modalRef = React.createRef();
+    }
+
     toggleBodyClass = isOpen => {
       document.body.classList.toggle("modal-open", isOpen);
       if (isOpen) {
-        disableBodyScroll(document.querySelector(".modal"));
+        disableBodyScroll(this.modalRef.current);
       } else {
         clearAllBodyScrollLocks();
       }
@@ -47,7 +52,7 @@ const Modal = observer(
       return ReactDOM.createPortal(
         <React.Fragment>
           <MountModal in={isOpen} unmountOnExit {...props}>
-            <div className="modal d-block" role="dialog">
+            <div ref={this.modalRef} className="modal d-block" role="dialog">
               <div className="modal-dialog modal-lg" role="document">
                 <div className="modal-content">{children}</div>
               </div>
