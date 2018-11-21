@@ -11,7 +11,7 @@
     "@fortawesome/free-solid-svg-icons": "5.5.0",
     "@fortawesome/react-fontawesome": "0.1.3",
     "@sentry/browser": "4.3.4",
-    "body-scroll-lock": "2.5.10",
+    "body-scroll-lock": "2.6.0",
     "bootstrap": "4.1.3",
     "bootswatch": "4.1.3",
     "copy-to-clipboard": "3.0.8",
