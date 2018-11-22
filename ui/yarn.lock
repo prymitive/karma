@@ -6056,10 +6056,10 @@ jest-config@^23.6.0:
     micromatch "^2.3.11"
     pretty-format "^23.6.0"
 
-jest-date-mock@1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/jest-date-mock/-/jest-date-mock-1.0.5.tgz#b9a5ece8908338cac5ba1faec882e53aabbc7e9b"
-  integrity sha512-SxH6SDCfUQFtnUB8muWp6Rowc8jn5BVIYaMT4NUBYwbaVBqGRml4VVNkiVMUt3eBtoXtuNUzF9T+vq8vlIuAmQ==
+jest-date-mock@1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/jest-date-mock/-/jest-date-mock-1.0.6.tgz#7ea405d1fa68f86bb727d12e47b9c5e6760066a6"
+  integrity sha512-wnLgDaK3i2md/cQ1wKx/+/78PieO4nkGen8avEmHd4dt1NGGxeuW8/oLAF5qsatQBXdn08pxpqRtUoDvTTLdRg==
 
 jest-diff@^23.6.0:
   version "23.6.0"
