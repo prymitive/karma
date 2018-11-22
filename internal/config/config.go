@@ -3,6 +3,7 @@ package config
 import (
 	"bufio"
 	"bytes"
+	"os"
 	"strings"
 	"time"
 
@@ -106,6 +107,12 @@ func (config *configSchema) Read() {
 
 	v.SetConfigType("yaml")
 	configFile := v.GetString("config.file")
+	// if config file is not set then try loading karma.yaml from current directory
+	if configFile == "" {
+		if _, err = os.Stat("karma.yaml"); !os.IsNotExist(err) {
+			configFile = "karma.yaml"
+		}
+	}
 	if configFile != "" {
 		log.Infof("Reading configuration file %s", configFile)
 		v.SetConfigFile(configFile)
