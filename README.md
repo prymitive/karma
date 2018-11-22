@@ -1,5 +1,7 @@
 # karma
 
+This fork adds /bin/sh, /bin/wget, and a HEALTHCHECK to a Dockerfile
+
 Alert dashboard for
 [Prometheus Alertmanager](https://prometheus.io/docs/alerting/alertmanager/).
 
