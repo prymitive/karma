@@ -1,3 +1,11 @@
+# There are security implecations when using this image, as the busybox binary is added
+# to facilite Docker container HEALTHCHECK, at least until the following issue is addressed:
+#   https://github.com/GoogleContainerTools/jib/issues/676
+# As the attack surface increaces in containers exposing a web service and a containing a
+# shell, use this image only on a protected network. Use of Caddy, Traefik, or other proxy
+# for further protecting this image through a layer of indirection is recommended.
+# See https://github.com/swarmstack/swarmstack for an example Docker compose stack for Karma.
+
 FROM node:10.13.0-alpine as nodejs-builder
 RUN apk add --update make git
 COPY . /karma
