@@ -160,7 +160,7 @@ const AlertGroup = observer(
 
       return (
         <MountFade>
-          <div className="components-grid-alertgrid-alertgroup p-1">
+          <div data-group-json={JSON.stringify(group)} className="components-grid-alertgrid-alertgroup p-1">
             <div className="card">
               <div
                 className={`card-body ${

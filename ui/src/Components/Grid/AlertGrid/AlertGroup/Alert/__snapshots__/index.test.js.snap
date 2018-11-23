@@ -2,7 +2,9 @@
 
 exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=false 1`] = `
 "
-<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
+<li data-alert-json=\\"{&quot;annotations&quot;:[{&quot;name&quot;:&quot;help&quot;,&quot;value&quot;:&quot;some long text&quot;,&quot;visible&quot;:true,&quot;isLink&quot;:false},{&quot;name&quot;:&quot;hidden&quot;,&quot;value&quot;:&quot;some hidden text&quot;,&quot;visible&quot;:false,&quot;isLink&quot;:false},{&quot;name&quot;:&quot;link&quot;,&quot;value&quot;:&quot;http://localhost&quot;,&quot;visible&quot;:true,&quot;isLink&quot;:true}],&quot;labels&quot;:{&quot;job&quot;:&quot;node_exporter&quot;,&quot;cluster&quot;:&quot;dev&quot;},&quot;startsAt&quot;:&quot;2018-08-14T17:36:40.017867056Z&quot;,&quot;endsAt&quot;:&quot;0001-01-01T00:00:00Z&quot;,&quot;state&quot;:&quot;active&quot;,&quot;alertmanager&quot;:[{&quot;name&quot;:&quot;default&quot;,&quot;state&quot;:&quot;active&quot;,&quot;startsAt&quot;:&quot;2018-08-14T17:36:40.017867056Z&quot;,&quot;endsAt&quot;:&quot;0001-01-01T00:00:00Z&quot;,&quot;source&quot;:&quot;localhost/prometheus&quot;,&quot;silencedBy&quot;:[]}],&quot;receiver&quot;:&quot;by-name&quot;}\\"
+    class=\\"components-grid-alertgrid-alertgroup-alert list-group-item pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\"
+>
   <div>
     <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\">
       <svg aria-hidden=\\"true\\"

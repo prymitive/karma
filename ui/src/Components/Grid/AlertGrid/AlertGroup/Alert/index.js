@@ -46,7 +46,7 @@ const Alert = observer(
       ];
 
       return (
-        <li className={classNames.join(" ")}>
+        <li data-alert-json={JSON.stringify(alert)} className={classNames.join(" ")}>
           <div>
             {alert.annotations.filter(a => a.isLink === false).map(a => (
               <RenderNonLinkAnnotation
