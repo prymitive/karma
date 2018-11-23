@@ -9,12 +9,13 @@ ARG VERSION
 RUN apk add --update make git
 RUN CGO_ENABLED=0 make -C /go/src/github.com/prymitive/karma VERSION="${VERSION:-dev}" karma
 
+FROM gcr.io/distroless/base:debug as busybox
+
 FROM gcr.io/distroless/base
 COPY --from=go-builder /go/src/github.com/prymitive/karma/karma /karma
-COPY --from=go-builder /bin/sh /bin/sh
-COPY --from=go-builder /usr/bin/wget /bin/wget
+COPY --from=busybox /busybox/busybox /bin/sh
 
-HEALTHCHECK --interval=25s --timeout=10s --start-period=15s CMD /bin/wget -q -Y off http://localhost:8080 -O /dev/null > /dev/null 2>&1
+HEALTHCHECK --interval=25s --timeout=10s --start-period=15s CMD wget -q -Y off http://localhost:8080/metrics -O /dev/null > /dev/null 2>&1
 
 EXPOSE 8080
 ENTRYPOINT ["/karma"]

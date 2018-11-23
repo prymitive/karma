@@ -13,3 +13,4 @@ FROM gcr.io/distroless/base
 COPY --from=go-builder /go/src/github.com/prymitive/karma/karma /karma
 EXPOSE 8080
 ENTRYPOINT ["/karma"]
+
