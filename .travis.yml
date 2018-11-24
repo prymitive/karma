@@ -107,7 +107,10 @@ jobs:
           tags: true
 
     - stage: Deploy demo app to Heroku
-      if: repo = prymitive/karma
+      # deploy on every job that isn't a PR, this way we:
+      # * don't deploy on PRs send from forks, only internal
+      # * deploy only once per PR - since we will deploy on branch job
+      if: repo = prymitive/karma AND type != pull_request
       env:
         # HEROKU_TOKEN, valid forever, needed to push docker image and release
         # it on heroku app
