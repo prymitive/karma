@@ -43,7 +43,7 @@
 
 [[constraint]]
   name = "github.com/getsentry/raven-go"
-  version = "=0.1.0"
+  version = "=0.1.1"
 
 [[constraint]]
   name = "github.com/gin-contrib/cors"
