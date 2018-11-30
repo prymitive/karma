@@ -1,6 +1,5 @@
 .build
 .coverage
-.tests
 bindata_assetfs.go
 karma
 ui/build

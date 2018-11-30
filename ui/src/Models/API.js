@@ -68,7 +68,9 @@ const APIAlertmanagerUpstream = PropTypes.exact({
   name: PropTypes.string.isRequired,
   uri: PropTypes.string.isRequired,
   publicURI: PropTypes.string.isRequired,
-  error: PropTypes.string.isRequired
+  error: PropTypes.string.isRequired,
+  version: PropTypes.string.isRequired,
+  clusterMembers: PropTypes.arrayOf(PropTypes.string).isRequired
 });
 
 export {

@@ -64,9 +64,12 @@ beforeEach(() => {
         name: "default",
         uri: "file:///mock",
         publicURI: "http://example.com",
-        error: ""
+        error: "",
+        version: "0.15.0",
+        clusterMembers: ["default"]
       }
-    ]
+    ],
+    clusters: [["default"]]
   };
   alertStore.data.silences = {
     default: {
@@ -186,7 +189,9 @@ describe("<Silence />", () => {
       name: "default",
       uri: "file:///mock",
       publicURI: "http://example.com",
-      error: ""
+      error: "",
+      version: "0.15.0",
+      clusterMembers: ["default"]
     });
   });
 

@@ -17,7 +17,9 @@ beforeEach(() => {
         name: "mockAlertmanager",
         uri: "file:///mock",
         publicURI: "http://example.com",
-        error: ""
+        error: "",
+        version: "0.15.0",
+        clusterMembers: ["mockAlertmanager"]
       }
     ]
   };
