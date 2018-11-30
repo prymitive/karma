@@ -47,4 +47,5 @@ type AlertmanagerAPICounters struct {
 type AlertmanagerAPISummary struct {
 	Counters  AlertmanagerAPICounters `json:"counters"`
 	Instances []AlertmanagerAPIStatus `json:"instances"`
+	Clusters  [][]string              `json:"clusters"`
 }

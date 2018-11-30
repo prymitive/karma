@@ -1,6 +1,9 @@
 package main
 
 import (
+	"sort"
+	"strings"
+
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
@@ -33,15 +36,23 @@ func countLabel(countStore models.LabelsCountMap, key string, val string) {
 func getUpstreams() models.AlertmanagerAPISummary {
 	summary := models.AlertmanagerAPISummary{}
 
+	clusters := map[string][]string{}
 	upstreams := alertmanager.GetAlertmanagers()
 	for _, upstream := range upstreams {
+		members := upstream.ClusterMemberNames()
+		sort.Strings(members)
+		key := strings.Join(members[:], "\n")
+		if _, found := clusters[key]; !found {
+			clusters[key] = members
+		}
+
 		u := models.AlertmanagerAPIStatus{
 			Name:           upstream.Name,
 			URI:            upstream.SanitizedURI(),
 			PublicURI:      upstream.PublicURI(),
 			Error:          upstream.Error(),
 			Version:        upstream.Version(),
-			ClusterMembers: upstream.ClusterMemberNames(),
+			ClusterMembers: members,
 		}
 		summary.Instances = append(summary.Instances, u)
 
@@ -51,6 +62,10 @@ func getUpstreams() models.AlertmanagerAPISummary {
 		} else {
 			summary.Counters.Failed++
 		}
+	}
+
+	for _, cluster := range clusters {
+		summary.Clusters = append(summary.Clusters, cluster)
 	}
 
 	return summary
