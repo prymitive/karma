@@ -29,8 +29,10 @@ type AlertmanagerAPIStatus struct {
 	URI string `json:"uri"`
 	// this is URI client should use to talk to this Alertmanager, it might be
 	// same as real or proxied URI
-	PublicURI string `json:"publicURI"`
-	Error     string `json:"error"`
+	PublicURI      string   `json:"publicURI"`
+	Error          string   `json:"error"`
+	Version        string   `json:"version"`
+	ClusterMembers []string `json:"clusterMembers"`
 }
 
 // AlertmanagerAPICounters returns number of Alertmanager instances in each
