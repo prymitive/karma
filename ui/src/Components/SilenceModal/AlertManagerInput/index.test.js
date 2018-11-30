@@ -23,19 +23,25 @@ beforeEach(() => {
       name: "am1",
       uri: "http://am1.example.com",
       publicURI: "http://am1.example.com",
-      error: ""
+      error: "",
+      version: "0.15.0",
+      clusterMembers: ["am1"]
     },
     {
       name: "am2",
       uri: "http://am2.example.com",
       publicURI: "http://am2.example.com",
-      error: ""
+      error: "",
+      version: "0.15.0",
+      clusterMembers: ["am2"]
     },
     {
       name: "am3",
       uri: "http://am3.example.com",
       publicURI: "http://am3.example.com",
-      error: ""
+      error: "",
+      version: "0.15.0",
+      clusterMembers: ["am3"]
     }
   ];
   silenceFormStore = new SilenceFormStore();
@@ -139,7 +145,9 @@ describe("<AlertManagerInput />", () => {
     alertStore.data.upstreams.instances[0] = {
       name: "am1",
       publicURI: "http://am1.example.com/new",
-      error: ""
+      error: "",
+      version: "0.15.0",
+      clusterMembers: ["am1"]
     };
     // force update since this is where the mismatch check lives
     tree.instance().componentDidUpdate();

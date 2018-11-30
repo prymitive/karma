@@ -68,7 +68,9 @@ const MockAlertmanager = () => ({
   name: "default",
   uri: "http://localhost",
   publicURI: "http://am.example.com",
-  error: ""
+  error: "",
+  version: "0.15.0",
+  clusterMembers: ["default"]
 });
 
 export {
