@@ -69,7 +69,7 @@ beforeEach(() => {
         clusterMembers: ["default"]
       }
     ],
-    clusters: [["default"]]
+    clusters: { default: ["default"] }
   };
   alertStore.data.silences = {
     default: {
