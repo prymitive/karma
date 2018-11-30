@@ -1,5 +1,10 @@
 package slices
 
+import (
+	"crypto/sha1"
+	"fmt"
+)
+
 // BoolInSlice returns true if given bool is found in a slice of bools
 func BoolInSlice(boolArray []bool, value bool) bool {
 	for _, s := range boolArray {
@@ -18,4 +23,20 @@ func StringInSlice(stringArray []string, value string) bool {
 		}
 	}
 	return false
+}
+
+// StringSliceToSHA1 returns a SHA1 hash computed from a slice of strings
+func StringSliceToSHA1(stringArray []string) (string, error) {
+	h := sha1.New()
+	for _, s := range stringArray {
+		_, err := h.Write([]byte(s))
+		if err != nil {
+			return "", err
+		}
+		_, err = h.Write([]byte("\n"))
+		if err != nil {
+			return "", err
+		}
+	}
+	return fmt.Sprintf("%x", h.Sum(nil)), nil
 }
