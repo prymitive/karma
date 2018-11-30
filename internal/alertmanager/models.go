@@ -500,5 +500,6 @@ func (am *Alertmanager) ClusterMemberNames() []string {
 		}
 	}
 
+	sort.Strings(members)
 	return members
 }

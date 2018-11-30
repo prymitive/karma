@@ -1,8 +1,6 @@
 package main
 
 import (
-	"sort"
-
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
@@ -42,7 +40,6 @@ func getUpstreams() models.AlertmanagerAPISummary {
 	upstreams := alertmanager.GetAlertmanagers()
 	for _, upstream := range upstreams {
 		members := upstream.ClusterMemberNames()
-		sort.Strings(members)
 		key, err := slices.StringSliceToSHA1(members)
 		if err != nil {
 			log.Errorf("slices.StringSliceToSHA1 error: %s", err)
