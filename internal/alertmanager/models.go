@@ -284,6 +284,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			alert.Alertmanager = []models.AlertmanagerInstance{
 				models.AlertmanagerInstance{
 					Name:       am.Name,
+					Cluster:    am.ClusterID(),
 					State:      alert.State,
 					StartsAt:   alert.StartsAt,
 					EndsAt:     alert.EndsAt,
@@ -500,5 +501,18 @@ func (am *Alertmanager) ClusterMemberNames() []string {
 		}
 	}
 
+	sort.Strings(members)
 	return members
+}
+
+// ClusterID returns the ID (sha1) of the cluster this Alertmanager instance
+// belongs to
+func (am *Alertmanager) ClusterID() string {
+	members := am.ClusterMemberNames()
+	id, err := slices.StringSliceToSHA1(members)
+	if err != nil {
+		log.Errorf("slices.StringSliceToSHA1 error: %s", err)
+		return am.Name
+	}
+	return id
 }

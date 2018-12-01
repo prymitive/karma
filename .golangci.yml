@@ -8,7 +8,6 @@ linters:
     - golint
     - dupl
     - goconst
-    - gocyclo
 
 linters-settings:
   govet:

@@ -45,18 +45,35 @@ const Alert = observer(
         BorderClassMap[alert.state] || "border-warning"
       ];
 
+      let silences = {};
+      for (let am of alert.alertmanager) {
+        if (!silences[am.cluster]) {
+          silences[am.cluster] = {
+            alertmanager: am,
+            silences: []
+          };
+        }
+        for (let silenceID of am.silencedBy) {
+          if (!silences[am.cluster].silences.includes(silenceID)) {
+            silences[am.cluster].silences.push(silenceID);
+          }
+        }
+      }
+
       return (
         <li className={classNames.join(" ")}>
           <div>
-            {alert.annotations.filter(a => a.isLink === false).map(a => (
-              <RenderNonLinkAnnotation
-                key={a.name}
-                name={a.name}
-                value={a.value}
-                visible={a.visible}
-                afterUpdate={afterUpdate}
-              />
-            ))}
+            {alert.annotations
+              .filter(a => a.isLink === false)
+              .map(a => (
+                <RenderNonLinkAnnotation
+                  key={a.name}
+                  name={a.name}
+                  value={a.value}
+                  visible={a.visible}
+                  afterUpdate={afterUpdate}
+                />
+              ))}
           </div>
           <AlertMenu
             group={group}
@@ -81,15 +98,21 @@ const Alert = observer(
               value={alert.receiver}
             />
           ) : null}
-          {alert.annotations.filter(a => a.isLink === true).map(a => (
-            <RenderLinkAnnotation key={a.name} name={a.name} value={a.value} />
-          ))}
-          {alert.alertmanager.map(am =>
-            am.silencedBy.map(silenceID => (
+          {alert.annotations
+            .filter(a => a.isLink === true)
+            .map(a => (
+              <RenderLinkAnnotation
+                key={a.name}
+                name={a.name}
+                value={a.value}
+              />
+            ))}
+          {Object.values(silences).map(clusterSilences =>
+            clusterSilences.silences.map(silenceID => (
               <Silence
                 key={silenceID}
                 silenceFormStore={silenceFormStore}
-                alertmanagerState={am}
+                alertmanagerState={clusterSilences.alertmanager}
                 silenceID={silenceID}
                 afterUpdate={afterUpdate}
               />

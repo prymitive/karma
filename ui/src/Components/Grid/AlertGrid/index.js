@@ -102,7 +102,7 @@ const AlertGrid = observer(
                   key={id}
                   group={alertStore.data.groups[id]}
                   showAlertmanagers={
-                    alertStore.data.upstreams.clusters.length > 1
+                    Object.keys(alertStore.data.upstreams.clusters).length > 1
                   }
                   afterUpdate={this.masonryRepack}
                   settingsStore={settingsStore}

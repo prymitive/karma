@@ -59,7 +59,7 @@ const MockGroupList = count => {
   alertStore.data.upstreams = {
     counters: { total: 0, healthy: 1, failed: 0 },
     instances: [{ name: "am", uri: "http://am", error: "" }],
-    clusters: [["am"]]
+    clusters: { am: ["am"] }
   };
   alertStore.data.groups = groups;
 };

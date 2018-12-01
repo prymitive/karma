@@ -249,7 +249,7 @@ const Silence = inject("alertStore")(
         // and we need to lookup the actual silence data in the store.
         // Data might be missing from the store so first check if we have
         // anything for this alertmanager instance
-        const amSilences = alertStore.data.silences[alertmanagerState.name];
+        const amSilences = alertStore.data.silences[alertmanagerState.cluster];
         if (!amSilences) return null;
 
         // next check if alertmanager has our silence ID

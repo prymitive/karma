@@ -1,12 +1,12 @@
 package main
 
 import (
-	"sort"
-	"strings"
-
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/slices"
+
+	log "github.com/sirupsen/logrus"
 )
 
 func getFiltersFromQuery(filterStrings []string) ([]filters.FilterT, bool) {
@@ -40,8 +40,11 @@ func getUpstreams() models.AlertmanagerAPISummary {
 	upstreams := alertmanager.GetAlertmanagers()
 	for _, upstream := range upstreams {
 		members := upstream.ClusterMemberNames()
-		sort.Strings(members)
-		key := strings.Join(members[:], "\n")
+		key, err := slices.StringSliceToSHA1(members)
+		if err != nil {
+			log.Errorf("slices.StringSliceToSHA1 error: %s", err)
+			continue
+		}
 		if _, found := clusters[key]; !found {
 			clusters[key] = members
 		}
@@ -52,6 +55,7 @@ func getUpstreams() models.AlertmanagerAPISummary {
 			PublicURI:      upstream.PublicURI(),
 			Error:          upstream.Error(),
 			Version:        upstream.Version(),
+			Cluster:        upstream.ClusterID(),
 			ClusterMembers: members,
 		}
 		summary.Instances = append(summary.Instances, u)
@@ -63,10 +67,7 @@ func getUpstreams() models.AlertmanagerAPISummary {
 			summary.Counters.Failed++
 		}
 	}
-
-	for _, cluster := range clusters {
-		summary.Clusters = append(summary.Clusters, cluster)
-	}
+	summary.Clusters = clusters
 
 	return summary
 }

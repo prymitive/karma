@@ -111,9 +111,15 @@ func alerts(c *gin.Context) {
 	dedupedAlerts := alertmanager.DedupAlerts()
 	dedupedColors := alertmanager.DedupColors()
 
+	amNameToCluster := map[string]string{}
 	silences := map[string]map[string]models.Silence{}
 	for _, am := range alertmanager.GetAlertmanagers() {
-		silences[am.Name] = map[string]models.Silence{}
+		key := am.ClusterID()
+		amNameToCluster[am.Name] = key
+		_, found := silences[key]
+		if !found {
+			silences[key] = map[string]models.Silence{}
+		}
 	}
 
 	var matches int
@@ -186,11 +192,18 @@ func alerts(c *gin.Context) {
 		}
 
 		if len(agCopy.Alerts) > 0 {
-			for _, alert := range agCopy.Alerts {
+			for i, alert := range agCopy.Alerts {
 				if alert.IsSilenced() {
-					for _, am := range alert.Alertmanager {
+					for j, am := range alert.Alertmanager {
+						key := amNameToCluster[am.Name]
+						// cluster might be wrong when collecting (races between fetches)
+						// update is with current cluster discovery state
+						agCopy.Alerts[i].Alertmanager[j].Cluster = key
 						for _, silence := range am.Silences {
-							silences[am.Name][silence.ID] = *silence
+							_, found := silences[key][silence.ID]
+							if !found {
+								silences[key][silence.ID] = *silence
+							}
 						}
 					}
 				}

@@ -11,10 +11,10 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { MultiSelect, ReactSelectStyles } from "Components/MultiSelect";
 import { ValidationError } from "Components/MultiSelect/ValidationError";
 
-const AlertmanagerInstancesToOptions = instances =>
-  instances.map(i => ({
-    label: i.name,
-    value: i.publicURI
+const AlertmanagerClustersToOption = clusterDict =>
+  Object.entries(clusterDict).map(([clusterID, clusterMembers]) => ({
+    label: clusterMembers.join(" | "),
+    value: clusterMembers
   }));
 
 const AlertManagerInput = observer(
@@ -30,8 +30,8 @@ const AlertManagerInput = observer(
       const { alertStore, silenceFormStore } = props;
 
       if (silenceFormStore.data.alertmanagers.length === 0) {
-        silenceFormStore.data.alertmanagers = AlertmanagerInstancesToOptions(
-          alertStore.data.upstreams.instances
+        silenceFormStore.data.alertmanagers = AlertmanagerClustersToOption(
+          alertStore.data.upstreams.clusters
         );
       }
     }
@@ -46,23 +46,17 @@ const AlertManagerInput = observer(
       const { alertStore, silenceFormStore } = this.props;
 
       // get the list of last known alertmanagers
-      const currentAlertmanagers = AlertmanagerInstancesToOptions(
-        alertStore.data.upstreams.instances
+      const currentAlertmanagers = AlertmanagerClustersToOption(
+        alertStore.data.upstreams.clusters
       );
 
       // now iterate what's set as silence form values and reset it if any
-      // mismatch is detected (uri changed for example)
+      // mismatch is detected
       for (const silenceAM of silenceFormStore.data.alertmanagers) {
-        for (const currentAM of currentAlertmanagers) {
-          if (
-            silenceAM.label === currentAM.label &&
-            silenceAM.value !== currentAM.value
-          ) {
-            silenceFormStore.data.alertmanagers = AlertmanagerInstancesToOptions(
-              alertStore.data.upstreams.instances
-            );
-            return;
-          }
+        if (
+          !currentAlertmanagers.map(am => am.label).includes(silenceAM.label)
+        ) {
+          silenceFormStore.data.alertmanagers = currentAlertmanagers;
         }
       }
     }
@@ -80,8 +74,8 @@ const AlertManagerInput = observer(
           styles={ReactSelectStyles}
           instanceId="silence-input-alertmanagers"
           defaultValue={silenceFormStore.data.alertmanagers}
-          options={AlertmanagerInstancesToOptions(
-            alertStore.data.upstreams.instances
+          options={AlertmanagerClustersToOption(
+            alertStore.data.upstreams.clusters
           )}
           placeholder={
             silenceFormStore.data.wasValidated ? (

@@ -37,7 +37,7 @@ describe("<Grid />", () => {
     alertStore.data.upstreams = {
       counters: { total: 1, healthy: 0, failed: 1 },
       instances: [{ name: "am1", uri: "http://am1", error: "error" }],
-      clusters: [["am1"]]
+      clusters: { am1: ["am1"] }
     };
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<FatalError />");
@@ -47,7 +47,7 @@ describe("<Grid />", () => {
     alertStore.data.upstreams = {
       counters: { total: 1, healthy: 0, failed: 1 },
       instances: [{ name: "am1", uri: "http://am1", error: "" }],
-      clusters: [["am1"]]
+      clusters: { am1: ["am1"] }
     };
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<AlertGrid />");
@@ -61,7 +61,7 @@ describe("<Grid />", () => {
         { name: "am2", uri: "file:///mock", error: "" },
         { name: "am3", uri: "http://am1", error: "error 2" }
       ],
-      clusters: [["am1"], ["am2"], ["am3"]]
+      clusters: { am1: ["am1"], am2: ["am2"], am3: ["am3"] }
     };
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<UpstreamError /><UpstreamError /><AlertGrid />");
@@ -72,7 +72,7 @@ describe("<Grid />", () => {
     alertStore.data.upstreams = {
       counters: { total: 0, healthy: 0, failed: 1 },
       instances: [{ name: "am", uri: "http://am1", error: "error" }],
-      clusters: [["am"]]
+      clusters: { am1: ["am1"] }
     };
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<FatalError />");

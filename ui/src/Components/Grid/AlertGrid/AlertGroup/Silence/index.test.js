@@ -17,6 +17,7 @@ const mockAfterUpdate = jest.fn();
 
 const alertmanager = {
   name: "default",
+  cluster: "default",
   state: "suppressed",
   startsAt: "2000-01-01T10:00:00Z",
   endsAt: "0001-01-01T00:00:00Z",
@@ -62,6 +63,7 @@ beforeEach(() => {
     instances: [
       {
         name: "default",
+        cluster: "default",
         uri: "file:///mock",
         publicURI: "http://example.com",
         error: "",
@@ -69,7 +71,7 @@ beforeEach(() => {
         clusterMembers: ["default"]
       }
     ],
-    clusters: [["default"]]
+    clusters: { default: ["default"] }
   };
   alertStore.data.silences = {
     default: {
@@ -187,6 +189,7 @@ describe("<Silence />", () => {
     const am = instance.getAlertmanager();
     expect(am).toEqual({
       name: "default",
+      cluster: "default",
       uri: "file:///mock",
       publicURI: "http://example.com",
       error: "",
