@@ -11,13 +11,12 @@ import { AlertManagerInput } from ".";
 let alertStore;
 let silenceFormStore;
 
-const AlertmanagerOption = index => ({
-  label: `am${index}`,
-  value: `http://am${index}.example.com`
-});
-
 beforeEach(() => {
   alertStore = new AlertStore([]);
+  alertStore.data.upstreams.clusters = {
+    ha: ["am1", "am2"],
+    am3: ["am3"]
+  };
   alertStore.data.upstreams.instances = [
     {
       name: "am1",
@@ -25,8 +24,8 @@ beforeEach(() => {
       publicURI: "http://am1.example.com",
       error: "",
       version: "0.15.0",
-      cluster: "am1",
-      clusterMembers: ["am1"]
+      cluster: "ha",
+      clusterMembers: ["am1", "am2"]
     },
     {
       name: "am2",
@@ -34,8 +33,8 @@ beforeEach(() => {
       publicURI: "http://am2.example.com",
       error: "",
       version: "0.15.0",
-      cluster: "am2",
-      clusterMembers: ["am2"]
+      cluster: "ha",
+      clusterMembers: ["am1", "am2"]
     },
     {
       name: "am3",
@@ -103,61 +102,62 @@ describe("<AlertManagerInput />", () => {
 
   it("all available Alertmanager instances are selected by default", () => {
     ShallowAlertManagerInput();
-    expect(silenceFormStore.data.alertmanagers).toHaveLength(3);
-    for (let i = 1; i <= 3; i++) {
-      expect(silenceFormStore.data.alertmanagers).toContainEqual(
-        AlertmanagerOption(i)
-      );
-    }
+    expect(silenceFormStore.data.alertmanagers).toHaveLength(2);
+    expect(silenceFormStore.data.alertmanagers).toContainEqual({
+      label: "am1 | am2",
+      value: ["am1", "am2"]
+    });
+    expect(silenceFormStore.data.alertmanagers).toContainEqual({
+      label: "am3",
+      value: ["am3"]
+    });
   });
 
   it("doesn't override last selected Alertmanager instances on mount", () => {
-    silenceFormStore.data.alertmanagers = [AlertmanagerOption(1)];
+    silenceFormStore.data.alertmanagers = [{ label: "am3", value: ["am3"] }];
     ShallowAlertManagerInput();
     expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
-    expect(silenceFormStore.data.alertmanagers).toContainEqual(
-      AlertmanagerOption(1)
-    );
+    expect(silenceFormStore.data.alertmanagers).toContainEqual({
+      label: "am3",
+      value: ["am3"]
+    });
   });
 
   it("renders all 3 suggestions", () => {
     const tree = ValidateSuggestions();
     const options = tree.find("[role='option']");
-    expect(options).toHaveLength(3);
-    expect(options.at(0).text()).toBe("am1");
-    expect(options.at(1).text()).toBe("am2");
-    expect(options.at(2).text()).toBe("am3");
+    expect(options).toHaveLength(2);
+    expect(options.at(0).text()).toBe("am1 | am2");
+    expect(options.at(1).text()).toBe("am3");
   });
 
   it("clicking on options appends them to silenceFormStore.data.alertmanagers", () => {
+    silenceFormStore.data.alertmanagers = [];
     const tree = ValidateSuggestions();
     const options = tree.find("[role='option']");
     options.at(0).simulate("click");
-    options.at(2).simulate("click");
+    options.at(1).simulate("click");
     expect(silenceFormStore.data.alertmanagers).toHaveLength(2);
-    expect(silenceFormStore.data.alertmanagers).toContainEqual(
-      AlertmanagerOption(1)
-    );
-    expect(silenceFormStore.data.alertmanagers).toContainEqual(
-      AlertmanagerOption(3)
-    );
+    expect(silenceFormStore.data.alertmanagers).toContainEqual({
+      label: "am1 | am2",
+      value: ["am1", "am2"]
+    });
+    expect(silenceFormStore.data.alertmanagers).toContainEqual({
+      label: "am3",
+      value: ["am3"]
+    });
   });
 
   it("silenceFormStore.data.alertmanagers gets updated from alertStore.data.upstreams.instances on mismatch", () => {
     const tree = ShallowAlertManagerInput();
-    alertStore.data.upstreams.instances[0] = {
-      name: "am1",
-      publicURI: "http://am1.example.com/new",
-      error: "",
-      version: "0.15.0",
-      cluster: "am1",
-      clusterMembers: ["am1"]
+    alertStore.data.upstreams.clusters = {
+      amNew: ["amNew"]
     };
     // force update since this is where the mismatch check lives
     tree.instance().componentDidUpdate();
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
-      label: "am1",
-      value: "http://am1.example.com/new"
+      label: "amNew",
+      value: ["amNew"]
     });
   });
 

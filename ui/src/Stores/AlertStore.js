@@ -140,7 +140,7 @@ class AlertStore {
       counters: {},
       groups: {},
       silences: {},
-      upstreams: { instances: [] },
+      upstreams: { instances: [], clusters: {} },
       getAlertmanagerByName(name) {
         return this.upstreams.instances.find(am => am.name === name);
       },

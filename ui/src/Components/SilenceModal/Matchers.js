@@ -16,19 +16,12 @@ const MatcherToFilter = matcher => {
 };
 
 const AlertManagersToFilter = alertmanagers => {
-  if (alertmanagers.length > 1) {
-    return FormatQuery(
-      StaticLabels.AlertManager,
-      QueryOperators.Regex,
-      `^(${alertmanagers.map(am => am.label).join("|")})$`
-    );
-  } else if (alertmanagers.length === 1) {
-    return FormatQuery(
-      StaticLabels.AlertManager,
-      QueryOperators.Equal,
-      alertmanagers[0].label
-    );
-  }
+  let amNames = [].concat(...alertmanagers.map(am => am.value));
+  return FormatQuery(
+    StaticLabels.AlertManager,
+    QueryOperators.Regex,
+    `^(${amNames.join("|")})$`
+  );
 };
 
 export { MatcherToFilter, AlertManagersToFilter };

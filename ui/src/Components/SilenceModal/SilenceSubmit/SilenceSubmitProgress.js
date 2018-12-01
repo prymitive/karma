@@ -47,8 +47,8 @@ SilenceLink.propTypes = {
 const SilenceSubmitProgress = observer(
   class SilenceSubmitProgress extends Component {
     static propTypes = {
-      name: PropTypes.string.isRequired,
-      uri: PropTypes.string.isRequired,
+      cluster: PropTypes.string.isRequired,
+      members: PropTypes.arrayOf(PropTypes.string).isRequired,
       payload: PropTypes.exact({
         matchers: PropTypes.arrayOf(APISilenceMatcher).isRequired,
         startsAt: PropTypes.string.isRequired,
@@ -63,6 +63,7 @@ const SilenceSubmitProgress = observer(
       {
         // store fetch result here, useful for testing
         fetch: null,
+        membersToTry: [],
         value: SubmitState.InProgress,
         result: null,
         markDone(result) {
@@ -77,10 +78,28 @@ const SilenceSubmitProgress = observer(
       { markDone: action.bound, markFailed: action.bound }
     );
 
-    handleAlertmanagerRequest = () => {
-      const { uri, payload } = this.props;
+    maybeTryAgainAfterError = err => {
+      if (this.submitState.membersToTry.length) {
+        this.handleAlertmanagerRequest();
+      } else {
+        this.submitState.markFailed(err.message);
+      }
+    };
 
-      this.submitState.fetch = fetch(`${uri}/api/v1/silences`, {
+    handleAlertmanagerRequest = () => {
+      const { payload, alertStore } = this.props;
+
+      const member = this.submitState.membersToTry.pop();
+
+      const am = alertStore.data.getAlertmanagerByName(member);
+      if (am === undefined) {
+        const err = `Alertmanager instance "${member} not found`;
+        console.error(err);
+        this.maybeTryAgainAfterError(err);
+        return;
+      }
+
+      this.submitState.fetch = fetch(`${am.publicURI}/api/v1/silences`, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
@@ -88,27 +107,16 @@ const SilenceSubmitProgress = observer(
         }
       })
         .then(result => result.json())
-        .then(result => this.parseAlertmanagerResponse(result))
-        .catch(err => this.submitState.markFailed(err.message));
+        .then(result => this.parseAlertmanagerResponse(am.uri, result))
+        .catch(err => this.maybeTryAgainAfterError(err));
     };
 
-    parseAlertmanagerResponse = response => {
-      const { name, alertStore } = this.props;
-
-      const alertmanager = alertStore.data.getAlertmanagerByName(name);
-
+    parseAlertmanagerResponse = (uri, response) => {
       if (response.status === "success") {
-        if (alertmanager) {
-          const link = (
-            <SilenceLink
-              uri={alertmanager.uri}
-              silenceId={response.data.silenceId}
-            />
-          );
-          this.submitState.markDone(link);
-        } else {
-          this.submitState.markDone(response.data.silenceId);
-        }
+        const link = (
+          <SilenceLink uri={uri} silenceId={response.data.silenceId} />
+        );
+        this.submitState.markDone(link);
       } else if (response.status === "error") {
         this.submitState.markFailed(response.error);
       } else {
@@ -120,18 +128,20 @@ const SilenceSubmitProgress = observer(
     };
 
     componentDidMount() {
+      const { members } = this.props;
+      this.submitState.membersToTry = [...members];
       this.handleAlertmanagerRequest();
     }
 
     render() {
-      const { name } = this.props;
+      const { cluster } = this.props;
 
       return (
         <div className="d-flex">
           <div className="p-2 flex-fill">
             <SubmitIcon stateValue={this.submitState.value} />
           </div>
-          <div className="p-2 flex-fill">{name}</div>
+          <div className="p-2 flex-fill">{cluster}</div>
           <div className="p-2 flex-fill">{this.submitState.result}</div>
         </div>
       );
