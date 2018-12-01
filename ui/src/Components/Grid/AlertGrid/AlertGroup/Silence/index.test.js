@@ -62,6 +62,7 @@ beforeEach(() => {
     instances: [
       {
         name: "default",
+        cluster: "default",
         uri: "file:///mock",
         publicURI: "http://example.com",
         error: "",
@@ -187,6 +188,7 @@ describe("<Silence />", () => {
     const am = instance.getAlertmanager();
     expect(am).toEqual({
       name: "default",
+      cluster: "default",
       uri: "file:///mock",
       publicURI: "http://example.com",
       error: "",

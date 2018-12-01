@@ -25,6 +25,7 @@ beforeEach(() => {
       publicURI: "http://am1.example.com",
       error: "",
       version: "0.15.0",
+      cluster: "am1",
       clusterMembers: ["am1"]
     },
     {
@@ -33,6 +34,7 @@ beforeEach(() => {
       publicURI: "http://am2.example.com",
       error: "",
       version: "0.15.0",
+      cluster: "am2",
       clusterMembers: ["am2"]
     },
     {
@@ -41,6 +43,7 @@ beforeEach(() => {
       publicURI: "http://am3.example.com",
       error: "",
       version: "0.15.0",
+      cluster: "am3",
       clusterMembers: ["am3"]
     }
   ];
@@ -147,6 +150,7 @@ describe("<AlertManagerInput />", () => {
       publicURI: "http://am1.example.com/new",
       error: "",
       version: "0.15.0",
+      cluster: "am1",
       clusterMembers: ["am1"]
     };
     // force update since this is where the mismatch check lives

@@ -66,6 +66,7 @@ const APISilence = PropTypes.exact({
 
 const APIAlertmanagerUpstream = PropTypes.exact({
   name: PropTypes.string.isRequired,
+  cluster: PropTypes.string.isRequired,
   uri: PropTypes.string.isRequired,
   publicURI: PropTypes.string.isRequired,
   error: PropTypes.string.isRequired,

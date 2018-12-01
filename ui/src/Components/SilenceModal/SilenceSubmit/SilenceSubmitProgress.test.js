@@ -19,6 +19,7 @@ beforeEach(() => {
         publicURI: "http://example.com",
         error: "",
         version: "0.15.0",
+        cluster: "mockAlertmanager",
         clusterMembers: ["mockAlertmanager"]
       }
     ]

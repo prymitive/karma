@@ -66,6 +66,7 @@ const MockSilence = () => ({
 
 const MockAlertmanager = () => ({
   name: "default",
+  cluster: "default",
   uri: "http://localhost",
   publicURI: "http://am.example.com",
   error: "",
