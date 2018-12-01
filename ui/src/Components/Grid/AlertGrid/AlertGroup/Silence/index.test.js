@@ -17,6 +17,7 @@ const mockAfterUpdate = jest.fn();
 
 const alertmanager = {
   name: "default",
+  cluster: "default",
   state: "suppressed",
   startsAt: "2000-01-01T10:00:00Z",
   endsAt: "0001-01-01T00:00:00Z",

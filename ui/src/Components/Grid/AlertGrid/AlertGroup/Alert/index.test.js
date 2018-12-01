@@ -96,6 +96,35 @@ describe("<Alert />", () => {
     expect(silence.html()).toMatch(/silence123456789/);
   });
 
+  it("renders only one silence for HA cluster", () => {
+    const alert = MockedAlert();
+    alert.alertmanager = [
+      {
+        name: "am1",
+        cluster: "ha",
+        state: "suppressed",
+        startsAt: "2018-08-14T17:36:40.017867056Z",
+        endsAt: "0001-01-01T00:00:00Z",
+        source: "localhost/am1",
+        silencedBy: ["silence123456789"]
+      },
+      {
+        name: "am2",
+        cluster: "ha",
+        state: "suppressed",
+        startsAt: "2018-08-14T17:36:40.017867056Z",
+        endsAt: "0001-01-01T00:00:00Z",
+        source: "localhost/am2",
+        silencedBy: ["silence123456789"]
+      }
+    ];
+    const group = MockAlertGroup({}, [alert], [], {});
+    const tree = MountedAlert(alert, group, false, false);
+    const silence = tree.find("Silence");
+    expect(silence).toHaveLength(1);
+    expect(silence.html()).toMatch(/silence123456789/);
+  });
+
   it("uses BorderClassMap.active when @state=active", () => {
     const alert = MockedAlert();
     alert.state = "active";
