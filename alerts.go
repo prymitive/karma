@@ -55,6 +55,7 @@ func getUpstreams() models.AlertmanagerAPISummary {
 			PublicURI:      upstream.PublicURI(),
 			Error:          upstream.Error(),
 			Version:        upstream.Version(),
+			Cluster:        upstream.ClusterID(),
 			ClusterMembers: members,
 		}
 		summary.Instances = append(summary.Instances, u)
