@@ -192,10 +192,13 @@ func alerts(c *gin.Context) {
 		}
 
 		if len(agCopy.Alerts) > 0 {
-			for _, alert := range agCopy.Alerts {
+			for i, alert := range agCopy.Alerts {
 				if alert.IsSilenced() {
-					for _, am := range alert.Alertmanager {
+					for j, am := range alert.Alertmanager {
 						key := amNameToCluster[am.Name]
+						// cluster might be wrong when collecting (races between fetches)
+						// update is with current cluster discovery state
+						agCopy.Alerts[i].Alertmanager[j].Cluster = key
 						for _, silence := range am.Silences {
 							_, found := silences[key][silence.ID]
 							if !found {
