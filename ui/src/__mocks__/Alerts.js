@@ -14,6 +14,7 @@ const MockAlert = (annotations, labels, state) => ({
   alertmanager: [
     {
       name: "default",
+      cluster: "default",
       state: "active",
       startsAt: "2018-08-14T17:36:40.017867056Z",
       endsAt: "0001-01-01T00:00:00Z",
@@ -66,9 +67,12 @@ const MockSilence = () => ({
 
 const MockAlertmanager = () => ({
   name: "default",
+  cluster: "default",
   uri: "http://localhost",
   publicURI: "http://am.example.com",
-  error: ""
+  error: "",
+  version: "0.15.0",
+  clusterMembers: ["default"]
 });
 
 export {

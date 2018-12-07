@@ -3,11 +3,7 @@ import React from "react";
 import { shallow } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
-import {
-  SilenceFormStore,
-  SilenceFormStage,
-  MatcherValueToObject
-} from "Stores/SilenceFormStore";
+import { SilenceFormStore, SilenceFormStage } from "Stores/SilenceFormStore";
 import { SilenceSubmitController } from "./SilenceSubmitController";
 
 let alertStore;
@@ -29,8 +25,11 @@ const ShallowSilenceSubmitController = () => {
 
 describe("<SilenceSubmitController />", () => {
   it("renders all passed SilenceSubmitProgress", () => {
-    silenceFormStore.data.alertmanagers.push(MatcherValueToObject("am1"));
-    silenceFormStore.data.alertmanagers.push(MatcherValueToObject("am2"));
+    silenceFormStore.data.alertmanagers.push({ label: "am1", value: ["am1"] });
+    silenceFormStore.data.alertmanagers.push({
+      label: "ha",
+      value: ["am2", "am3"]
+    });
     const tree = ShallowSilenceSubmitController();
     const alertmanagers = tree.find("SilenceSubmitProgress");
     expect(alertmanagers).toHaveLength(2);

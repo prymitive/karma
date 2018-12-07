@@ -102,6 +102,12 @@ run-docker: docker-image
 		-p $(PORT):$(PORT) \
 		$(NAME):$(VERSION)
 
+.PHONY: run-demo
+run-demo:
+	docker build --build-arg VERSION=$(VERSION) -t $(NAME):demo -f demo/Dockerfile .
+	@docker rm -f $(NAME)-demo || true
+	docker run --name $(NAME)-demo -p $(PORT):$(PORT) -p 9093:9093 -p 9094:9094 $(NAME):demo
+
 .PHONY: lint-git-ci
 lint-git-ci: .build/deps-build-node.ok
 	ui/node_modules/.bin/commitlint-travis

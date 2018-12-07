@@ -36,7 +36,8 @@ describe("<Grid />", () => {
   it("renders FatalError if there's only one upstream and it's unhealthy", () => {
     alertStore.data.upstreams = {
       counters: { total: 1, healthy: 0, failed: 1 },
-      instances: [{ name: "am1", uri: "http://am1", error: "error" }]
+      instances: [{ name: "am1", uri: "http://am1", error: "error" }],
+      clusters: { am1: ["am1"] }
     };
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<FatalError />");
@@ -45,7 +46,8 @@ describe("<Grid />", () => {
   it("renders FatalError if there's only one upstream and it's unhealthy but without any error", () => {
     alertStore.data.upstreams = {
       counters: { total: 1, healthy: 0, failed: 1 },
-      instances: [{ name: "am1", uri: "http://am1", error: "" }]
+      instances: [{ name: "am1", uri: "http://am1", error: "" }],
+      clusters: { am1: ["am1"] }
     };
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<AlertGrid />");
@@ -58,7 +60,8 @@ describe("<Grid />", () => {
         { name: "am1", uri: "http://am1", error: "error 1" },
         { name: "am2", uri: "file:///mock", error: "" },
         { name: "am3", uri: "http://am1", error: "error 2" }
-      ]
+      ],
+      clusters: { am1: ["am1"], am2: ["am2"], am3: ["am3"] }
     };
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<UpstreamError /><UpstreamError /><AlertGrid />");
@@ -68,7 +71,8 @@ describe("<Grid />", () => {
     alertStore.status.error = "error";
     alertStore.data.upstreams = {
       counters: { total: 0, healthy: 0, failed: 1 },
-      instances: [{ name: "am", uri: "http://am1", error: "error" }]
+      instances: [{ name: "am", uri: "http://am1", error: "error" }],
+      clusters: { am1: ["am1"] }
     };
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<FatalError />");

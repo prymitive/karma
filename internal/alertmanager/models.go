@@ -14,6 +14,7 @@ import (
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/transform"
 	"github.com/prymitive/karma/internal/uri"
 
@@ -28,6 +29,12 @@ const (
 type alertmanagerMetrics struct {
 	cycles float64
 	errors map[string]float64
+}
+
+type alertmanagerStatus struct {
+	version string
+	amID    string
+	peerIDs []string
 }
 
 // Alertmanager represents Alertmanager upstream instance
@@ -51,49 +58,68 @@ type Alertmanager struct {
 	autocomplete []models.Autocomplete
 	knownLabels  []string
 	lastError    string
+	status       alertmanagerStatus
 	// metrics tracked per alertmanager instance
 	metrics alertmanagerMetrics
 }
 
-func (am *Alertmanager) detectVersion() string {
-	// if everything fails assume Alertmanager is at latest possible version
-	defaultVersion := "999.0.0"
+func (am *Alertmanager) fetchStatus() alertmanagerStatus {
+	status := alertmanagerStatus{
+		// if everything fails assume Alertmanager is at latest possible version
+		version: "999.0.0",
+		amID:    "",
+		peerIDs: []string{},
+	}
 
 	url, err := uri.JoinURL(am.URI, "api/v1/status")
 	if err != nil {
 		log.Errorf("Failed to join url '%s' and path 'api/v1/status': %s", am.SanitizedURI(), err)
-		return defaultVersion
+		return status
 	}
 
-	ver := alertmanagerVersion{}
+	resp := alertmanagerStatusResponse{}
 
 	// read raw body from the source
 	source, err := am.reader.Read(url)
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
-		return defaultVersion
+		return status
 	}
 	defer source.Close()
 
 	// decode body as JSON
-	err = json.NewDecoder(source).Decode(&ver)
+	err = json.NewDecoder(source).Decode(&resp)
 	if err != nil {
 		log.Errorf("[%s] %s failed to decode as JSON: %s", am.Name, uri.SanitizeURI(url), err)
-		return defaultVersion
+		return status
 	}
 
-	if ver.Status != "success" {
-		log.Errorf("[%s] Request to %s returned status %s", am.Name, uri.SanitizeURI(url), ver.Status)
-		return defaultVersion
+	if resp.Status != "success" {
+		log.Errorf("[%s] Request to %s returned status %s", am.Name, uri.SanitizeURI(url), resp.Status)
+		return status
 	}
 
-	if ver.Data.VersionInfo.Version == "" {
+	if resp.Data.VersionInfo.Version == "" {
 		log.Errorf("[%s] No version information in Alertmanager API at %s", am.Name, uri.SanitizeURI(url))
-		return defaultVersion
+		return status
 	}
 
-	log.Infof("[%s] Remote Alertmanager version: %s", am.Name, ver.Data.VersionInfo.Version)
-	return ver.Data.VersionInfo.Version
+	status.version = resp.Data.VersionInfo.Version
+	log.Infof("[%s] Remote Alertmanager version: %s", am.Name, status.version)
+
+	if resp.Data.ClusterStatus.Name != "" {
+		status.amID = resp.Data.ClusterStatus.Name
+		for _, peer := range resp.Data.ClusterStatus.Peers {
+			status.peerIDs = append(status.peerIDs, peer.Name)
+		}
+	} else if resp.Data.MeshStatus.Name != "" {
+		status.amID = resp.Data.MeshStatus.Name
+		for _, peer := range resp.Data.MeshStatus.Peers {
+			status.peerIDs = append(status.peerIDs, peer.Name)
+		}
+	}
+
+	return status
 }
 
 func (am *Alertmanager) clearData() {
@@ -103,6 +129,11 @@ func (am *Alertmanager) clearData() {
 	am.colors = models.LabelsColorMap{}
 	am.autocomplete = []models.Autocomplete{}
 	am.knownLabels = []string{}
+	am.status = alertmanagerStatus{
+		version: "",
+		amID:    "",
+		peerIDs: []string{},
+	}
 	am.lock.Unlock()
 }
 
@@ -253,6 +284,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			alert.Alertmanager = []models.AlertmanagerInstance{
 				models.AlertmanagerInstance{
 					Name:       am.Name,
+					Cluster:    am.ClusterID(),
 					State:      alert.State,
 					StartsAt:   alert.StartsAt,
 					EndsAt:     alert.EndsAt,
@@ -309,9 +341,9 @@ func (am *Alertmanager) pullAlerts(version string) error {
 func (am *Alertmanager) Pull() error {
 	am.metrics.cycles++
 
-	version := am.detectVersion()
+	status := am.fetchStatus()
 
-	err := am.pullSilences(version)
+	err := am.pullSilences(status.version)
 	if err != nil {
 		am.clearData()
 		am.setError(err.Error())
@@ -319,7 +351,7 @@ func (am *Alertmanager) Pull() error {
 		return err
 	}
 
-	err = am.pullAlerts(version)
+	err = am.pullAlerts(status.version)
 	if err != nil {
 		am.clearData()
 		am.setError(err.Error())
@@ -327,7 +359,11 @@ func (am *Alertmanager) Pull() error {
 		return err
 	}
 
+	am.lock.Lock()
+	am.status = status
 	am.lastError = ""
+	am.lock.Unlock()
+
 	return nil
 }
 
@@ -418,5 +454,65 @@ func (am *Alertmanager) Error() string {
 // SanitizedURI returns a copy of Alertmanager.URI with password replaced by
 // "xxx"
 func (am *Alertmanager) SanitizedURI() string {
+	am.lock.RLock()
+	defer am.lock.RUnlock()
+
 	return uri.SanitizeURI(am.URI)
+}
+
+// Version returns last known version of this Alertmanager instance
+func (am *Alertmanager) Version() string {
+	am.lock.RLock()
+	defer am.lock.RUnlock()
+
+	return am.status.version
+}
+
+// ClusterPeers returns a list of IDs of all peers this instance
+// is connected to.
+// IDs are the same as in Alertmanager API.
+func (am *Alertmanager) ClusterPeers() []string {
+	am.lock.RLock()
+	defer am.lock.RUnlock()
+
+	return am.status.peerIDs
+}
+
+// ClusterMemberNames returns a list of names of all Alertmanager instances
+// that are in the same cluster as this instance (including self).
+// Names are the same as in karma configuration.
+func (am *Alertmanager) ClusterMemberNames() []string {
+	am.lock.RLock()
+	defer am.lock.RUnlock()
+
+	members := []string{am.Name}
+
+	upstreams := GetAlertmanagers()
+	for _, upstream := range upstreams {
+		if upstream.Name == am.Name {
+			continue
+		}
+		for _, peerID := range upstream.ClusterPeers() {
+			if slices.StringInSlice(am.status.peerIDs, peerID) {
+				if !slices.StringInSlice(members, upstream.Name) {
+					members = append(members, upstream.Name)
+				}
+			}
+		}
+	}
+
+	sort.Strings(members)
+	return members
+}
+
+// ClusterID returns the ID (sha1) of the cluster this Alertmanager instance
+// belongs to
+func (am *Alertmanager) ClusterID() string {
+	members := am.ClusterMemberNames()
+	id, err := slices.StringSliceToSHA1(members)
+	if err != nil {
+		log.Errorf("slices.StringSliceToSHA1 error: %s", err)
+		return am.Name
+	}
+	return id
 }

@@ -132,7 +132,7 @@ describe("<MatchCounter />", () => {
     const tree = MountedMatchCounter();
     await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
     expect(fetch.mock.calls[0][0]).toBe(
-      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3Dam1"
+      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%29%24"
     );
   });
 

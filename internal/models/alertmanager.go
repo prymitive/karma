@@ -5,7 +5,8 @@ import "time"
 // AlertmanagerInstance describes the Alertmanager instance alert was collected
 // from
 type AlertmanagerInstance struct {
-	Name string `json:"name"`
+	Name    string `json:"name"`
+	Cluster string `json:"cluster"`
 	// per instance alert state
 	State string `json:"state"`
 	// timestamp collected from this instance, those on the alert itself
@@ -29,8 +30,11 @@ type AlertmanagerAPIStatus struct {
 	URI string `json:"uri"`
 	// this is URI client should use to talk to this Alertmanager, it might be
 	// same as real or proxied URI
-	PublicURI string `json:"publicURI"`
-	Error     string `json:"error"`
+	PublicURI      string   `json:"publicURI"`
+	Error          string   `json:"error"`
+	Version        string   `json:"version"`
+	Cluster        string   `json:"cluster"`
+	ClusterMembers []string `json:"clusterMembers"`
 }
 
 // AlertmanagerAPICounters returns number of Alertmanager instances in each
@@ -45,4 +49,5 @@ type AlertmanagerAPICounters struct {
 type AlertmanagerAPISummary struct {
 	Counters  AlertmanagerAPICounters `json:"counters"`
 	Instances []AlertmanagerAPIStatus `json:"instances"`
+	Clusters  map[string][]string     `json:"clusters"`
 }

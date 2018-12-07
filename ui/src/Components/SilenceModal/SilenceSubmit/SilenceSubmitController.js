@@ -23,8 +23,8 @@ class SilenceSubmitController extends Component {
           {silenceFormStore.data.alertmanagers.map(am => (
             <SilenceSubmitProgress
               key={am.label}
-              name={am.label}
-              uri={am.value}
+              cluster={am.label}
+              members={am.value}
               payload={silenceFormStore.data.toAlertmanagerPayload}
               alertStore={alertStore}
             />
