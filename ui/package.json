@@ -62,7 +62,7 @@
     "jest-date-mock": "1.0.6",
     "jest-fetch-mock": "2.0.1",
     "markdownlint-cli": "0.13.0",
-    "node-sass": "4.10.0"
+    "node-sass": "4.11.0"
   },
   "browserslist": [
     ">= 1%",
