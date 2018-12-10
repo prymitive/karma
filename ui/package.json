@@ -45,7 +45,7 @@
     "react-scripts": "2.1.1",
     "react-select": "2.1.2",
     "react-tippy": "1.2.3",
-    "react-transition-group": "2.5.0",
+    "react-transition-group": "2.5.1",
     "whatwg-fetch": "3.0.0"
   },
   "scripts": {
