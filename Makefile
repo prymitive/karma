@@ -24,14 +24,13 @@ endif
 
 .build/deps-build-go.ok:
 	@mkdir -p .build
-	go get -u github.com/golang/dep/cmd/dep
-	go get -u github.com/go-bindata/go-bindata/...
-	go get -u github.com/elazarl/go-bindata-assetfs/...
+	GO111MODULE=off go get -u github.com/go-bindata/go-bindata/...
+	GO111MODULE=off go get -u github.com/elazarl/go-bindata-assetfs/...
 	touch $@
 
 .build/deps-lint-go.ok:
 	@mkdir -p .build
-	go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+	GO111MODULE=off go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
 	touch $@
 
 .build/deps-build-node.ok: ui/package.json ui/yarn.lock
@@ -49,27 +48,15 @@ endif
 	cd ui && yarn build
 	touch $@
 
-bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.$(GO_BINDATA_MODE) .build/vendor.ok .build/artifacts-ui.ok
+bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.$(GO_BINDATA_MODE) .build/artifacts-ui.ok
 	go-bindata-assetfs -o bindata_assetfs.go -nometadata ui/build/... ui/src/...
 
-$(NAME): .build/deps-build-go.ok .build/vendor.ok bindata_assetfs.go $(SOURCES)
-	go build -ldflags "-X main.version=$(VERSION)"
-
-.build/vendor.ok: .build/deps-build-go.ok Gopkg.lock Gopkg.toml
-	dep ensure
-	touch $@
-
-.PHONY: vendor
-vendor: .build/deps-build-go.ok
-	dep ensure
-
-.PHONY: vendor-update
-vendor-update: .build/deps-build-go.ok
-	dep ensure -update
+$(NAME): .build/deps-build-go.ok bindata_assetfs.go $(SOURCES)
+	GO111MODULE=on go build -ldflags "-X main.version=$(VERSION)"
 
 .PHONY: clean
 clean:
-	rm -fr .build bindata_assetfs.go $(NAME) ui/build ui/node_modules vendor coverage.txt
+	rm -fr .build bindata_assetfs.go $(NAME) ui/build ui/node_modules coverage.txt
 
 .PHONY: run
 run: $(NAME)
@@ -113,8 +100,8 @@ lint-git-ci: .build/deps-build-node.ok
 	ui/node_modules/.bin/commitlint-travis
 
 .PHONY: lint-go
-lint-go: .build/deps-lint-go.ok .build/vendor.ok
-	golangci-lint run
+lint-go: .build/deps-lint-go.ok
+	GO111MODULE=on golangci-lint run
 
 .PHONY: lint-js
 lint-js: .build/deps-build-node.ok
@@ -128,11 +115,11 @@ lint-docs: .build/deps-build-node.ok
 lint: lint-go lint-js lint-docs
 
 .PHONY: test-go
-test-go: .build/vendor.ok
-	go test -v \
+test-go:
+	GO111MODULE=on go test -v \
 		-bench=. -benchmem \
 		-cover -coverprofile=coverage.txt -covermode=atomic \
-		`go list ./... | grep -v /vendor/`
+		./...
 
 .PHONY: test-js
 test-js: .build/deps-build-node.ok
