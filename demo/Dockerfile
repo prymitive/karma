@@ -1,9 +1,9 @@
-FROM node:10.14.1-alpine as nodejs-builder
+FROM node:10.14.2-alpine as nodejs-builder
 RUN apk add --update make git
 COPY . /karma
 RUN make -C /karma ui
 
-FROM golang:1.11.2-alpine as go-builder
+FROM golang:1.11.4-alpine as go-builder
 COPY --from=nodejs-builder /karma /go/src/github.com/prymitive/karma
 ARG VERSION
 RUN apk add --update make git
