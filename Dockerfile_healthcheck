@@ -44,8 +44,9 @@ RUN /karma --version
 
 FROM gcr.io/distroless/base:debug
 COPY --from=compress /karma /karma
+RUN ["/busybox/sh", "-c", "ln -s /busybox/busybox /bin/sh"]
 
-HEALTHCHECK --interval=25s --timeout=10s --start-period=15s CMD /bin/wget -q -Y off http://localhost:8080 -O /dev/null > /dev/null 2>&1
+HEALTHCHECK --interval=25s --timeout=10s --start-period=15s CMD /busybox/wget -q -Y off http://localhost:8080 -O /dev/null > /dev/null 2>&1
 
 EXPOSE 8080
 ENTRYPOINT ["/karma"]
