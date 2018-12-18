@@ -7,18 +7,16 @@
 # See https://github.com/swarmstack/swarmstack for an example Docker compose stack for Caddy
 # and Karma.
 
-FROM node:10.13.0-alpine as nodejs-builder
+FROM node:10.14.2-alpine as nodejs-builder
 RUN apk add --update make git
 COPY . /karma
 RUN make -C /karma ui
 
-FROM golang:1.11.2-alpine as go-builder
+FROM golang:1.11.4-alpine as go-builder
 COPY --from=nodejs-builder /karma /go/src/github.com/prymitive/karma
 ARG VERSION
 RUN apk add --update make git
 RUN CGO_ENABLED=0 make -C /go/src/github.com/prymitive/karma VERSION="${VERSION:-dev}" karma
-
-FROM gcr.io/distroless/base:debug as busybox
 
 # Compress Caddy with UPX
 #
@@ -39,17 +37,13 @@ RUN curl --silent --show-error --fail --location -o - \
 
 # copy and compress
 COPY --from=go-builder /go/src/github.com/prymitive/karma/karma /karma
-COPY --from=busybox /busybox/busybox /busybox
 RUN /usr/bin/upx --ultra-brute /karma
-RUN /usr/bin/upx --ultra-brute /busybox
 
 # test
 RUN /karma --version
 
-FROM gcr.io/distroless/base
+FROM gcr.io/distroless/base:debug
 COPY --from=compress /karma /karma
-COPY --from=compress /busybox /bin/sh
-COPY --from=compress /busybox /bin/wget
 
 HEALTHCHECK --interval=25s --timeout=10s --start-period=15s CMD /bin/wget -q -Y off http://localhost:8080 -O /dev/null > /dev/null 2>&1
 
