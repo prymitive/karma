@@ -1,9 +1,6 @@
 defaults_go: &DEFAULTS_GO
   language: go
   go: "1.11.4"
-  cache:
-    directories:
-      - vendor
 
 defaults_js: &DEFAULTS_JS
   language: node_js
@@ -77,13 +74,16 @@ jobs:
         # requires running webpack, so we need nodejs here
         - nvm install $(< .nvmrc)
       script:
+        - export GO111MODULE=on
         # compile assets via webpack and build those into bindata_assetfs.go file
         - make bindata_assetfs.go
+        # tidy module deps to ensure we only have what we needed (git diff will pick it up)
+        - go mod tidy -v
         # verify that there are no uncommited changes from (re)compiling sass
         # assets
         - git diff --exit-code
         # install bakelite, we can't "go get" a tag from github, so we fetch the binary
-        - export BAKELITE_VERSION="v0.1.0"
+        - export BAKELITE_VERSION="v0.2.0"
         - export BAKELITE_OS=$(go env GOHOSTOS)
         - export BAKELITE_ARCH="$(go env GOHOSTARCH)"
         - curl -L -o bakelite.tar.gz "https://github.com/terinjokes/bakelite/releases/download/${BAKELITE_VERSION}/bakelite-${BAKELITE_OS}-${BAKELITE_ARCH}.tar.gz"
