@@ -1,5 +1,5 @@
 {
   "extends": ["config:base"],
-  "prConcurrentLimit": 1,
+  "prConcurrentLimit": 3,
   "rebaseStalePrs": false
 }
