@@ -8,7 +8,7 @@ require (
 	github.com/cnf/structhash v0.0.0-20180104161610-62a607eb0224
 	github.com/elazarl/go-bindata-assetfs v1.0.0
 	github.com/getsentry/raven-go v0.2.0
-	github.com/gin-contrib/cors v0.0.0-20170318125340-cf4846e6a636
+	github.com/gin-contrib/cors v0.0.0-20181223094636-7c641a7a7dc5
 	github.com/gin-contrib/gzip v0.0.0-20181105040055-d9117ce29a07
 	github.com/gin-contrib/static v0.0.0-20180827025113-8cbcdde04781
 	github.com/gin-gonic/contrib v0.0.0-20181101072842-54170a7b0b4b
