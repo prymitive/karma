@@ -1,6 +1,11 @@
 defaults_go: &DEFAULTS_GO
   language: go
   go: "1.11.4"
+  cache:
+    directories:
+      # https://restic.net/blog/2018-09-02/travis-build-cache
+      - $HOME/.cache/go-build
+      - $HOME/gopath/pkg/mod
 
 defaults_js: &DEFAULTS_JS
   language: node_js
