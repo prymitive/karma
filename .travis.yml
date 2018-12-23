@@ -77,8 +77,6 @@ jobs:
         - export GO111MODULE=on
         # compile assets via webpack and build those into bindata_assetfs.go file
         - make bindata_assetfs.go
-        # tidy module deps to ensure we only have what we needed (git diff will pick it up)
-        - go mod tidy -v
         # verify that there are no uncommited changes from (re)compiling sass
         # assets
         - git diff --exit-code
