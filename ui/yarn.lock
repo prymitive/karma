@@ -3960,6 +3960,13 @@ escodegen@^1.11.0, escodegen@^1.9.1:
   optionalDependencies:
     source-map "~0.6.1"
 
+eslint-config-prettier@^3.3.0:
+  version "3.3.0"
+  resolved "https://registry.yarnpkg.com/eslint-config-prettier/-/eslint-config-prettier-3.3.0.tgz#41afc8d3b852e757f06274ed6c44ca16f939a57d"
+  integrity sha512-Bc3bh5bAcKNvs3HOpSi6EfGA2IIp7EzWcg2tS4vP7stnXu/J1opihHDM7jI9JCIckyIDTgZLSWn7J3HY0j2JfA==
+  dependencies:
+    get-stdin "^6.0.0"
+
 eslint-config-react-app@^3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/eslint-config-react-app/-/eslint-config-react-app-3.0.6.tgz#addcae1359235941e95f3c96970b7ac8552e1130"
@@ -4816,6 +4823,11 @@ get-stdin@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-4.0.1.tgz#b968c6b0a04384324902e8bf1a5df32579a450fe"
   integrity sha1-uWjGsKBDhDJJAui/Gl3zJXmkUP4=
+
+get-stdin@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-6.0.0.tgz#9e09bf712b360ab9225e812048f71fde9c89657b"
+  integrity sha512-jp4tHawyV7+fkkSKyvjuLZswblUtz+SQKzSWnBbii16BuZksJlU1wuBYXY75r+duh/llF1ur6oNwi+2ZzjKZ7g==
 
 get-stream@^3.0.0:
   version "3.0.0"
@@ -7383,11 +7395,12 @@ mobx-react@5.4.3:
     hoist-non-react-statics "^3.0.0"
     react-lifecycles-compat "^3.0.2"
 
-mobx-stored@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/mobx-stored/-/mobx-stored-1.0.2.tgz#a332e85190420b3e27f8a94d89e757e69bbed864"
-  integrity sha512-AurugQPK0tMrj5P4kyMWfWfVAElY2Myv/Arm01qpvRqARIktfIZBZ1K4UkoOZUr7lt9S8DpvQZOBTx/bDWY8zg==
+mobx-stored@1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/mobx-stored/-/mobx-stored-1.1.0.tgz#ca67a740ddd753b3043a9ce9d39f728d530f40ce"
+  integrity sha512-KxCIdbNx+L/GemzrFIpd+72ErkqnK4xqcCKyimTOzIn93Cwdh9+8/0sxLpASjx389l3FlDSlOovO0utDOICm+w==
   dependencies:
+    eslint-config-prettier "^3.3.0"
     lodash.clonedeep "^4.5.0"
     lodash.isobject "^3.0.2"
     lodash.merge "^4.6.1"
