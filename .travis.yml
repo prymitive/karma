@@ -35,6 +35,17 @@ jobs:
       after_success:
         - bash <(curl -s https://codecov.io/bash) -F ui -s ui
 
+    # duplicate js test but with a different time zone, to ensure that tests/code work with non-UTC time zone
+    - stage: Test
+      <<: *DEFAULTS_JS
+      env:
+        - DESC="Test JavaScript code with Pacific/Easter time zone"
+        - NODE_ENV=test
+        - TZ=Pacific/Easter
+      script: make test-js
+      after_success:
+        - bash <(curl -s https://codecov.io/bash) -F ui -s ui
+
     - stage: Lint
       <<: *DEFAULTS_JS
       env:

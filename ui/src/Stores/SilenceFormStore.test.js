@@ -228,11 +228,11 @@ describe("SilenceFormStore.data", () => {
       })
     );
 
-    expect(store.data.startsAt.toISOString()).toBe(
-      moment([2000, 0, 1, 0, 0, 0]).toISOString()
+    expect(store.data.startsAt.utc().toISOString()).toBe(
+      moment.utc([2000, 0, 1, 0, 0, 0]).toISOString()
     );
-    expect(store.data.endsAt.toISOString()).toBe(
-      moment([2000, 0, 1, 1, 0, 0]).toISOString()
+    expect(store.data.endsAt.utc().toISOString()).toBe(
+      moment.utc([2000, 0, 1, 1, 0, 0]).toISOString()
     );
 
     expect(store.data.author).toBe("me@example.com");
@@ -256,8 +256,8 @@ describe("SilenceFormStore.data", () => {
     store.data.fillMatchersFromGroup(group);
     // add empty matcher so we test empty string rendering
     store.data.addEmptyMatcher();
-    store.data.startsAt = moment([2000, 1, 1, 0, 0, 0]);
-    store.data.endsAt = moment([2000, 1, 1, 1, 0, 0]);
+    store.data.startsAt = moment.utc([2000, 1, 1, 0, 0, 0]);
+    store.data.endsAt = moment.utc([2000, 1, 1, 1, 0, 0]);
     store.data.author = "me@example.com";
     store.data.comment = "toAlertmanagerPayload test";
     expect(store.data.toAlertmanagerPayload).toMatchSnapshot();
