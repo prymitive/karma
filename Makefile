@@ -49,7 +49,7 @@ endif
 	touch $@
 
 bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.$(GO_BINDATA_MODE) .build/artifacts-ui.ok
-	go-bindata-assetfs -o bindata_assetfs.go -nometadata ui/build/... ui/src/...
+	go-bindata-assetfs -o bindata_assetfs.go ui/build/... ui/src/...
 
 $(NAME): .build/deps-build-go.ok go.mod bindata_assetfs.go $(SOURCES)
 	GO111MODULE=on go build -ldflags "-X main.version=$(VERSION)"
