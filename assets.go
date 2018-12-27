@@ -77,7 +77,7 @@ func loadTemplate(t *template.Template, path string) *template.Template {
 	return t
 }
 
-func serverFileOrEmpty(path string, contentType string, c *gin.Context) {
+func serveFileOr404(path string, contentType string, c *gin.Context) {
 	if path == "" {
 		c.Data(200, contentType, nil)
 		return
