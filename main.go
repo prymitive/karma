@@ -19,11 +19,11 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/contrib/sentry"
 	"github.com/gin-gonic/gin"
-	"github.com/patrickmn/go-cache"
 	"github.com/spf13/pflag"
 
 	raven "github.com/getsentry/raven-go"
 	ginprometheus "github.com/mcuadros/go-gin-prometheus"
+	cache "github.com/patrickmn/go-cache"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -55,6 +55,7 @@ func getViewURL(sub string) string {
 
 func setupRouter(router *gin.Engine) {
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
+	router.Use(staticHeaders(getViewURL("/static/")))
 	router.Use(static.Serve(getViewURL("/"), staticBuildFileSystem))
 	// next 2 lines are to allow service raw sources so sentry can fetch source maps
 	router.Use(static.Serve(getViewURL("/static/js/"), staticSrcFileSystem))

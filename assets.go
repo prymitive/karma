@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/gin-gonic/gin"
@@ -86,4 +87,14 @@ func serverFileOrEmpty(path string, contentType string, c *gin.Context) {
 		return
 	}
 	c.File(path)
+}
+
+func staticHeaders(prefix string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if strings.HasPrefix(c.Request.URL.Path, prefix) {
+			c.Header("Cache-Control", "public, max-age=2592000")
+			expiresTime := time.Now().AddDate(0, 0, 30).Format(http.TimeFormat)
+			c.Header("Expires", expiresTime)
+		}
+	}
 }
