@@ -54,10 +54,10 @@ const SilenceMatch = observer(
             />
           </div>
           <div className="flex-shrink-0 flex-grow-1 flex-basis-auto form-check form-check-inline d-flex justify-content-between m-0">
-            <span>
+            <span className="custom-control custom-switch">
               <input
                 id={`isRegex-${matcher.id}`}
-                className="form-check-input"
+                className="custom-control-input"
                 type="checkbox"
                 value=""
                 checked={matcher.isRegex}
@@ -65,7 +65,7 @@ const SilenceMatch = observer(
                 disabled={matcher.values.length > 1}
               />
               <label
-                className="form-check-label cursor-pointer mr-3"
+                className="custom-control-label cursor-pointer mr-3"
                 htmlFor={`isRegex-${matcher.id}`}
               >
                 Regex
