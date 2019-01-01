@@ -74,6 +74,7 @@ const AlertManagerInput = observer(
           options={AlertmanagerClustersToOption(
             alertStore.data.upstreams.clusters
           )}
+          getOptionValue={JSON.stringify}
           placeholder={
             silenceFormStore.data.wasValidated ? (
               <ValidationError />
