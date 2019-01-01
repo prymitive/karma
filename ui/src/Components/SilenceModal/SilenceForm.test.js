@@ -167,9 +167,7 @@ describe("<SilenceForm />", () => {
     matcher.name = "job";
     matcher.values = [{ label: "node_exporter", value: "node_exporter" }];
     silenceFormStore.data.matchers = [matcher];
-    silenceFormStore.data.alertmanagers = [
-      { label: "am1", value: "http://example.com" }
-    ];
+    silenceFormStore.data.alertmanagers = [{ label: "am1", value: ["am1"] }];
     silenceFormStore.data.author = "me@example.com";
     silenceFormStore.data.comment = "fake silence";
     const tree = ShallowSilenceForm();
