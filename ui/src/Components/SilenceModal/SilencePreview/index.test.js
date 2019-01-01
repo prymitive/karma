@@ -75,6 +75,34 @@ describe("<SilencePreview />", () => {
     expect(fetch).toHaveBeenCalled();
   });
 
+  it("fetch uses correct filters with single Alertmanager instance", async () => {
+    fetch.mockResponse(JSON.stringify(MockAPIResponse()));
+    silenceFormStore.data.alertmanagers = [
+      { label: "amName", value: ["amValue"] }
+    ];
+
+    const tree = MountedSilencePreview();
+    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
+    expect(fetch).toHaveBeenCalledWith(
+      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28amValue%29%24",
+      { credentials: "include" }
+    );
+  });
+
+  it("fetch uses correct filters with multiple Alertmanager instances", async () => {
+    fetch.mockResponse(JSON.stringify(MockAPIResponse()));
+    silenceFormStore.data.alertmanagers = [
+      { label: "cluster", value: ["am1", "am2"] }
+    ];
+
+    const tree = MountedSilencePreview();
+    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
+    expect(fetch).toHaveBeenCalledWith(
+      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24",
+      { credentials: "include" }
+    );
+  });
+
   it("matches snapshot", async () => {
     fetch.mockResponse(JSON.stringify(MockAPIResponse()));
 
