@@ -7,15 +7,12 @@ import { observer } from "mobx-react";
 import ReactSelect from "react-select";
 
 import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import {
+  SilenceFormStore,
+  AlertmanagerClustersToOption
+} from "Stores/SilenceFormStore";
 import { MultiSelect, ReactSelectStyles } from "Components/MultiSelect";
 import { ValidationError } from "Components/MultiSelect/ValidationError";
-
-const AlertmanagerClustersToOption = clusterDict =>
-  Object.entries(clusterDict).map(([clusterID, clusterMembers]) => ({
-    label: clusterMembers.join(" | "),
-    value: clusterMembers
-  }));
 
 const AlertManagerInput = observer(
   class AlertManagerInput extends MultiSelect {
