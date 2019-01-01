@@ -74,6 +74,15 @@ jobs:
         - DESC="Lint documentation"
       script: make lint-docs
 
+    - state: Lint
+      <<: *DEFAULTS_GO
+      env:
+        - DESC="Verify go.sum"
+      script:
+        - make mock-assets
+        - GO111MODULE=on go get -d -v
+        - git diff --exit-code
+
     - stage: Build Docker image
       language: generic
       addons:
