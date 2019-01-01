@@ -31,7 +31,7 @@ const MockGroup = () => {
 
 const MockAlertmanagerOption = () => ({
   label: "default",
-  value: "http://localhost"
+  value: ["default"]
 });
 
 const MockMatcher = (name, values) => {
@@ -209,7 +209,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.alertmanagers).toHaveLength(1);
     expect(store.data.alertmanagers[0]).toMatchObject({
       label: alertmanager.name,
-      value: alertmanager.publicURI
+      value: [alertmanager.name]
     });
 
     expect(store.data.matchers).toHaveLength(2);
