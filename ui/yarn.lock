@@ -3046,7 +3046,7 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.5.2, create-react-class@^15.6.2:
+create-react-class@^15.6.2:
   version "15.6.3"
   resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.3.tgz#2d73237fb3f970ae6ebe011a9e66f46dbca80036"
   integrity sha512-M+/3Q6E6DLO6Yx3OwrWjwHBnvfXXYA7W+dFjt/ZDBemHO1DDZhsalX/NUtnTYclN6GfnBDRh4qRHjcDHmlJBJg==
@@ -9344,12 +9344,12 @@ react-js-pagination@3.0.2:
     prop-types "15.x.x - 16.x.x"
     react "15.x.x - 16.x.x"
 
-react-json-pretty@1.7.9:
-  version "1.7.9"
-  resolved "https://registry.yarnpkg.com/react-json-pretty/-/react-json-pretty-1.7.9.tgz#d153c52579fda9e245c81fceb3da22fdf1d93c1e"
-  integrity sha512-5ATsy6b/+0OvaJqDEXl6afvgg09O3/L+U5kglE+lGMu/3hVcgGPM2jqMcqqr2eAANROvX9ewKQXDh5huDljFfg==
+react-json-pretty@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/react-json-pretty/-/react-json-pretty-2.0.0.tgz#703bdf7c680afefe3796f4ec00f6424c7865d985"
+  integrity sha512-AaOGcuoU/pBNKtAc33GgtEX7a0vepAfsw/hxhlwJl4qKf3EaHvFgBKblrkiBBIaO/XIS/8/sSwN4tShXvSTmUA==
   dependencies:
-    create-react-class "^15.5.2"
+    prop-types "^15.6.2"
 
 react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
