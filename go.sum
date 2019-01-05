@@ -9,6 +9,8 @@ github.com/blang/semver v3.5.1+incompatible h1:cQNTCjp13qL8KC3Nbxr/y2Bqb63oX6wdn
 github.com/blang/semver v3.5.1+incompatible/go.mod h1:kRBLl5iJ+tD4TcOOxsy/0fnwebNt5EWlYSAyrTnjyyk=
 github.com/certifi/gocertifi v0.0.0-20180905225744-ee1a9a0726d2 h1:MmeatFT1pTPSVb4nkPmBFN/LRZ97vPjsFKsZrU3KKTs=
 github.com/certifi/gocertifi v0.0.0-20180905225744-ee1a9a0726d2/go.mod h1:GJKEexRPVJrBSOjoqN5VNOIKJ5Q3RViH6eu3puDRwx4=
+github.com/certifi/gocertifi v0.0.0-20190105023540-abcd57078448 h1:JICEc1KlmhPaHzw9Aqw4iSJKpGwjfUxSBhhwkznf+ys=
+github.com/certifi/gocertifi v0.0.0-20190105023540-abcd57078448/go.mod h1:GJKEexRPVJrBSOjoqN5VNOIKJ5Q3RViH6eu3puDRwx4=
 github.com/cnf/structhash v0.0.0-20180104161610-62a607eb0224 h1:rnCKRrdSBqc061l0CDuYB+7X3w6w8IK/VCSChJXv62g=
 github.com/cnf/structhash v0.0.0-20180104161610-62a607eb0224/go.mod h1:pCxVEbcm3AMg7ejXyorUXi6HQCzOIBf7zEDVPtw0/U4=
 github.com/coreos/etcd v3.3.10+incompatible/go.mod h1:uF7uidLiAD3TWHmW31ZFd/JWoc32PjwdhPthX9715RE=

@@ -4,7 +4,7 @@ require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/DeanThompson/ginpprof v0.0.0-20170218162546-8c0e31bfeaa8
 	github.com/blang/semver v3.5.1+incompatible
-	github.com/certifi/gocertifi v0.0.0-20180905225744-ee1a9a0726d2 // indirect
+	github.com/certifi/gocertifi v0.0.0-20190105023540-abcd57078448 // indirect
 	github.com/cnf/structhash v0.0.0-20180104161610-62a607eb0224
 	github.com/elazarl/go-bindata-assetfs v1.0.0
 	github.com/getsentry/raven-go v0.2.0
