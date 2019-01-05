@@ -647,44 +647,6 @@ var groupTests = []groupTest{
 	},
 }
 
-var countsMap = models.LabelsCountMap{
-	"@receiver": map[string]int{
-		"by-cluster-service": 12,
-		"by-name":            12,
-	},
-	"@state": map[string]int{
-		"active":     16,
-		"suppressed": 8,
-	},
-	"alertname": map[string]int{
-		"Free_Disk_Space_Too_Low": 2,
-		"HTTP_Probe_Failed":       4,
-		"Host_Down":               16,
-		"Memory_Usage_Too_High":   2,
-	},
-	"cluster": map[string]int{
-		"dev":     10,
-		"prod":    6,
-		"staging": 8,
-	},
-	"instance": map[string]int{
-		"server1": 2,
-		"server2": 4,
-		"server3": 2,
-		"server4": 2,
-		"server5": 4,
-		"server6": 2,
-		"server7": 2,
-		"server8": 2,
-		"web1":    2,
-		"web2":    2,
-	},
-	"job": map[string]int{
-		"node_exporter": 8,
-		"node_ping":     16,
-	},
-}
-
 var filtersExpected = []models.Filter{}
 
 func compareAlertGroups(testCase groupTest, group models.APIAlertGroup) bool {
@@ -874,15 +836,6 @@ func TestVerifyAllGroups(t *testing.T) {
 			t.Errorf("[%s] Silences mismatch, expected >0 but got %d", version, len(am))
 		}
 
-		for key, expectedCounts := range countsMap {
-			gotCounts, foundCounts := ur.Counters[key]
-			if !foundCounts {
-				t.Errorf("[%s] Counters missing for key '%s'", version, key)
-			} else if !reflect.DeepEqual(expectedCounts, gotCounts) {
-				t.Errorf("[%s] Counters mismatch for key '%s', expected %v but got %v",
-					version, key, expectedCounts, gotCounts)
-			}
-		}
 		if !reflect.DeepEqual(ur.Filters, filtersExpected) {
 			t.Errorf("[%s] Filters mismatch, expected %v but got %v", version, filtersExpected, ur.Filters)
 		}

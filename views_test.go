@@ -132,9 +132,6 @@ func TestAlerts(t *testing.T) {
 		if ur.Status != "success" {
 			t.Errorf("[%s] Invalid status in response: %s", version, ur.Status)
 		}
-		if len(ur.Counters) != 6 {
-			t.Errorf("[%s] Invalid number of counters in response (%d): %v", version, len(ur.Counters), ur.Counters)
-		}
 		for _, ag := range ur.AlertGroups {
 			for _, a := range ag.Alerts {
 				linkCount := 0
