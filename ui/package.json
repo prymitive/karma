@@ -28,7 +28,7 @@
     "prop-types": "15.6.2",
     "qs": "6.6.0",
     "react": "16.7.0",
-    "react-autosuggest": "9.4.2",
+    "react-autosuggest": "9.4.3",
     "react-datepicker": "2.0.0",
     "react-dom": "16.7.0",
     "react-highlighter": "0.4.3",
