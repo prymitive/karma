@@ -6111,10 +6111,10 @@ jest-config@^23.6.0:
     micromatch "^2.3.11"
     pretty-format "^23.6.0"
 
-jest-date-mock@1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/jest-date-mock/-/jest-date-mock-1.0.6.tgz#7ea405d1fa68f86bb727d12e47b9c5e6760066a6"
-  integrity sha512-wnLgDaK3i2md/cQ1wKx/+/78PieO4nkGen8avEmHd4dt1NGGxeuW8/oLAF5qsatQBXdn08pxpqRtUoDvTTLdRg==
+jest-date-mock@1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/jest-date-mock/-/jest-date-mock-1.0.7.tgz#b1e5071beb314cbfcfb0a21d8560a2122519f5c3"
+  integrity sha512-ZgbYlURRhVpf52Jho4tlyUgpJJ+nYvhxIWhIIEdarmsSuTxFZlC9DmKCyQXsuEljfxK+7HsqdBX/L6rxwWraYw==
 
 jest-diff@^23.6.0:
   version "23.6.0"
