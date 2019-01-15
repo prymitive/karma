@@ -4,6 +4,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/transform"
 )
 
@@ -159,6 +160,75 @@ func TestStripReceivers(t *testing.T) {
 		stripped := transform.StripReceivers(testCase.keep, testCase.strip, testCase.receiver)
 		if stripped != testCase.stripped {
 			t.Errorf("StripReceivers failed, expected %v, got %v", testCase.stripped, stripped)
+		}
+	}
+}
+
+type stripAnnotationTest struct {
+	strip  []string
+	keep   []string
+	before models.Annotations
+	after  models.Annotations
+}
+
+var stripAnnotationTests = []stripAnnotationTest{
+	{
+		strip: []string{},
+		keep:  []string{},
+		before: models.Annotations{
+			models.Annotation{Name: "foo", Value: "bar"},
+		},
+		after: models.Annotations{
+			models.Annotation{Name: "foo", Value: "bar"},
+		},
+	},
+	{
+		strip: []string{"foo"},
+		keep:  []string{},
+		before: models.Annotations{
+			models.Annotation{Name: "foo", Value: "bar"},
+		},
+		after: models.Annotations{},
+	},
+	{
+		strip: []string{"foo"},
+		keep:  []string{},
+		before: models.Annotations{
+			models.Annotation{Name: "foo", Value: "bar"},
+			models.Annotation{Name: "boo", Value: "baz"},
+		},
+		after: models.Annotations{
+			models.Annotation{Name: "boo", Value: "baz"},
+		},
+	},
+	{
+		strip: []string{},
+		keep:  []string{"foo"},
+		before: models.Annotations{
+			models.Annotation{Name: "foo", Value: "bar"},
+		},
+		after: models.Annotations{
+			models.Annotation{Name: "foo", Value: "bar"},
+		},
+	},
+	{
+		strip: []string{},
+		keep:  []string{"foo"},
+		before: models.Annotations{
+			models.Annotation{Name: "foo", Value: "bar"},
+			models.Annotation{Name: "boo", Value: "baz"},
+		},
+		after: models.Annotations{
+			models.Annotation{Name: "foo", Value: "bar"},
+		},
+	},
+}
+
+func TestStripAnnotations(t *testing.T) {
+	for _, testCase := range stripAnnotationTests {
+		annotations := transform.StripAnnotations(testCase.keep, testCase.strip, testCase.before)
+		if !reflect.DeepEqual(annotations, testCase.after) {
+			t.Errorf("StripAnnotations failed, expected %v, got %v", testCase.after, annotations)
 		}
 	}
 }

@@ -70,8 +70,9 @@ func DedupAlerts() []models.AlertGroup {
 		ag := models.AlertGroup(agList[0])
 		ag.Alerts = models.AlertList{}
 		for _, alert := range alerts {
-			// strip labels user doesn't want to see in the UI
+			// strip labels and annotations user doesn't want to see in the UI
 			alert.Labels = transform.StripLables(config.Config.Labels.Keep, config.Config.Labels.Strip, alert.Labels)
+			alert.Annotations = transform.StripAnnotations(config.Config.Annotations.Keep, config.Config.Annotations.Strip, alert.Annotations)
 			// calculate final alert state based on the most important value found
 			// in the list of states from all instances
 			alertLFP := alert.LabelsFingerprint()
