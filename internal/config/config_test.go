@@ -70,6 +70,8 @@ annotations:
   hidden: []
   visible:
   - summary
+  keep: []
+  strip: []
 custom:
   css: /custom.css
   js: /custom.js

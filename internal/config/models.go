@@ -30,6 +30,8 @@ type configSchema struct {
 		}
 		Hidden  []string
 		Visible []string
+		Keep    []string
+		Strip   []string
 	}
 	Custom struct {
 		CSS string
