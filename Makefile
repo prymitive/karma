@@ -24,13 +24,13 @@ endif
 
 .build/deps-build-go.ok:
 	@mkdir -p .build
-	GO111MODULE=off go get -u github.com/go-bindata/go-bindata/...
-	GO111MODULE=off go get -u github.com/elazarl/go-bindata-assetfs/...
+	GO111MODULE=on go install github.com/go-bindata/go-bindata/...
+	GO111MODULE=on go install github.com/elazarl/go-bindata-assetfs/...
 	touch $@
 
 .build/deps-lint-go.ok:
 	@mkdir -p .build
-	GO111MODULE=off go get -u github.com/golangci/golangci-lint/cmd/golangci-lint
+	GO111MODULE=on go install github.com/golangci/golangci-lint/cmd/golangci-lint
 	touch $@
 
 .build/deps-build-node.ok: ui/package.json ui/yarn.lock
