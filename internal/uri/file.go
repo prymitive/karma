@@ -46,7 +46,7 @@ func (r *FileURIReader) pathFromURI(uri string) (string, error) {
 	return absolutePath, nil
 }
 
-func (r *FileURIReader) Read(uri string) (io.ReadCloser, error) {
+func (r *FileURIReader) Read(uri string, _ map[string]string) (io.ReadCloser, error) {
 	filename, err := r.pathFromURI(uri)
 	if err != nil {
 		return nil, err

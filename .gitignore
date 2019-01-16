@@ -1,6 +1,7 @@
 .build
 .coverage
 .tests
+.vscode
 bindata_assetfs.go
 coverage.txt
 karma
