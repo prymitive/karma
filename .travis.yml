@@ -130,6 +130,29 @@ jobs:
           repo: prymitive/karma
           tags: true
 
+    - stage: Deploy docker image
+      if: repo = prymitive/karma AND type = push AND branch = master
+      language: generic
+      addons:
+        apt:
+          packages:
+            - docker-ce
+      env:
+        # DOCKER_PASSWORD
+        - secure: "XULRlOHN17A1KUSzST1TKo5UQtSS0/T6y2Rp88gJ/jDOraFKW3IuGHBM3uE3uALBUfrLnB6DGrrtS1x3hvWSvpnBmNmCK94qGYpEppAU2b8+DfUGQqI1D7sa/FXAaxqkA6LDKxcdgbagd8kE/3gRmayjHeisCDPvy3BhVZVEfzSIaKilzXnHrCywEpB2DWRUsYkdZdw2tG674626ZcMwJUajkeW4fxmvWYrskE92+7MSuz9DExxYWLLah12+Ug1URD1UWyFeIdMK0z3S0bN4Bsd+RT0ScDelRMhad5sTTqGWbLC3nr10aMRYzXYhp2pUBPtK2abby4KebY8hToxf6Dr8f7Nz4BRA3nqwp/7Q79hloU7IYdtnvSdvMp3Pc3YDsHiYqAO+G/jfX2j4t8CGIk3hHDUZ+4/PnYddV+OFR8CujH4Wq85FzHPyfRmZuB6MdPQQEtW4B/Mmf3qsTYXZIwDSKU2fnJM6eEnDW7vZIb55Y8nFC4x8b4fVyY7/wSQgDVtd933BmYDUxYo9AjjAfigLBE30zalr/TFibIRWUewoYqvJJ803AJU/M54vzQQ9l9ypoNadGgHa0PuPrnza9WufHGNkm7jRfhKFDUi/RvdFX8u7NtTpB9bAk/Mk+9qcLIkVnm+9SCcA80KR9LLwp8SZChBMHNnNTs47T0cDzNI="
+      script:
+        - export VERSION=$(make show-version)
+        - export LOCAL_IMAGE="karma:${VERSION}"
+        - export DOCKER_USERNAME=lmierzwa
+        - export DOCKER_IMAGE=karma
+        - export IMAGE_NAME="${DOCKER_USERNAME}/${DOCKER_IMAGE}"
+        - make docker-image
+        - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+        - docker tag "${LOCAL_IMAGE}" "${IMAGE_NAME}:latest"
+        # tag with the version only if we have a git tag (new release was pushed)
+        - if [ -n "$TRAVIS_TAG" ]; then docker tag "${LOCAL_IMAGE}" "${IMAGE_NAME}:${VERSION}" ; fi
+        - docker push "${IMAGE_NAME}"
+
     - stage: Deploy demo app to Heroku
       # deploy on every job that isn't a PR, this way we:
       # * don't deploy on PRs send from forks, only internal
