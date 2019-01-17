@@ -31,6 +31,7 @@ func NewAlertmanager(name, upstreamURI string, opts ...Option) (*Alertmanager, e
 		colors:         models.LabelsColorMap{},
 		autocomplete:   []models.Autocomplete{},
 		knownLabels:    []string{},
+		HTTPHeaders:    map[string]string{},
 		metrics: alertmanagerMetrics{
 			errors: map[string]float64{
 				labelValueErrorsAlerts:   0,
@@ -48,7 +49,7 @@ func NewAlertmanager(name, upstreamURI string, opts ...Option) (*Alertmanager, e
 	}
 
 	var err error
-	am.reader, err = uri.NewReader(am.URI, am.RequestTimeout, am.HTTPTransport)
+	am.reader, err = uri.NewReader(am.URI, am.RequestTimeout, am.HTTPTransport, am.HTTPHeaders)
 	if err != nil {
 		return am, err
 	}
@@ -106,6 +107,15 @@ func WithProxy(proxied bool) Option {
 func WithRequestTimeout(timeout time.Duration) Option {
 	return func(am *Alertmanager) error {
 		am.RequestTimeout = timeout
+		return nil
+	}
+}
+
+// WithHTTPHeaders option can be passed to NewAlertManager in order to set
+// a map of headers that will be passed with every request
+func WithHTTPHeaders(headers map[string]string) Option {
+	return func(am *Alertmanager) error {
+		am.HTTPHeaders = headers
 		return nil
 	}
 }

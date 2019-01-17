@@ -61,6 +61,8 @@ type Alertmanager struct {
 	status       alertmanagerStatus
 	// metrics tracked per alertmanager instance
 	metrics alertmanagerMetrics
+	// headers to send with each AlertManager request
+	HTTPHeaders map[string]string
 }
 
 func (am *Alertmanager) fetchStatus() alertmanagerStatus {
@@ -80,7 +82,7 @@ func (am *Alertmanager) fetchStatus() alertmanagerStatus {
 	resp := alertmanagerStatusResponse{}
 
 	// read raw body from the source
-	source, err := am.reader.Read(url)
+	source, err := am.reader.Read(url, am.HTTPHeaders)
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
 		return status
@@ -157,7 +159,7 @@ func (am *Alertmanager) pullSilences(version string) error {
 
 	start := time.Now()
 	// read raw body from the source
-	source, err := am.reader.Read(url)
+	source, err := am.reader.Read(url, am.HTTPHeaders)
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
 		return err
@@ -222,7 +224,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 
 	start := time.Now()
 	// read raw body from the source
-	source, err := am.reader.Read(url)
+	source, err := am.reader.Read(url, am.HTTPHeaders)
 	if err != nil {
 		log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
 		return err

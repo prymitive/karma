@@ -34,11 +34,12 @@ type httpTransportTest struct {
 	useTLS    bool
 	tlsConfig *tls.Config
 	failed    bool
+	headers   map[string]string
 }
 
 var httpTransportTests = []httpTransportTest{
 	{
-	// plain HTTP request, should work
+		// plain HTTP request, should work
 	},
 	{
 		// just enable TLS, will use proper RootCA certs so it should work
@@ -50,6 +51,9 @@ var httpTransportTests = []httpTransportTest{
 		tlsConfig: &tls.Config{RootCAs: x509.NewCertPool()},
 		failed:    true,
 	},
+	{
+		headers: map[string]string{"X-Auth-Test": "tokenValue"},
+	},
 }
 
 type fileTransportTest struct {
@@ -57,6 +61,7 @@ type fileTransportTest struct {
 	failed  bool
 	timeout time.Duration
 	size    int64
+	headers map[string]string
 }
 
 var fileTransportTests = []fileTransportTest{
@@ -124,12 +129,12 @@ func TestHTTPReader(t *testing.T) {
 			tlsConfig = &tls.Config{RootCAs: caPool}
 		}
 
-		transp, err := uri.NewReader(amURI, testCase.timeout, &http.Transport{TLSClientConfig: tlsConfig})
+		transp, err := uri.NewReader(amURI, testCase.timeout, &http.Transport{TLSClientConfig: tlsConfig}, testCase.headers)
 		if err != nil {
 			t.Errorf("[%v] failed to create new HTTP transport: %s", testCase, err)
 		}
 
-		source, err := transp.Read(amURI)
+		source, err := transp.Read(amURI, testCase.headers)
 		if err != nil {
 			if !testCase.failed {
 				t.Errorf("[%v] unexpected failure while creating reader: %s", testCase, err)
@@ -152,12 +157,12 @@ func TestHTTPReader(t *testing.T) {
 func TestFileReader(t *testing.T) {
 	//log.SetLevel(log.FatalLevel)
 	for _, testCase := range fileTransportTests {
-		transp, err := uri.NewReader(testCase.uri, testCase.timeout, &http.Transport{})
+		transp, err := uri.NewReader(testCase.uri, testCase.timeout, &http.Transport{}, testCase.headers)
 		if err != nil {
 			t.Errorf("[%v] failed to create new transport: %s", testCase, err)
 		}
 
-		source, err := transp.Read(testCase.uri)
+		source, err := transp.Read(testCase.uri, testCase.headers)
 		if err != nil {
 			if !testCase.failed {
 				t.Errorf("[%v] unexpected failure while creating reader: %s", testCase, err)

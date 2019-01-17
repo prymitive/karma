@@ -14,7 +14,7 @@ type HTTPURIReader struct {
 	client http.Client
 }
 
-func (r *HTTPURIReader) Read(uri string) (io.ReadCloser, error) {
+func (r *HTTPURIReader) Read(uri string, headers map[string]string) (io.ReadCloser, error) {
 	log.Infof("GET %s timeout=%s", SanitizeURI(uri), r.client.Timeout)
 
 	request, err := http.NewRequest("GET", uri, nil)
@@ -22,6 +22,10 @@ func (r *HTTPURIReader) Read(uri string) (io.ReadCloser, error) {
 		return nil, err
 	}
 	request.Header.Add("Accept-Encoding", "gzip")
+
+	for header, value := range headers {
+		request.Header.Add(header, value)
+	}
 
 	resp, err := r.client.Do(request)
 	if err != nil {

@@ -170,6 +170,7 @@ func (config *configSchema) Read() {
 				URI:     v.GetString("alertmanager.uri"),
 				Timeout: v.GetDuration("alertmanager.timeout"),
 				Proxy:   v.GetBool("alertmanager.proxy"),
+				Headers: make(map[string]string),
 			},
 		}
 	}

@@ -41,6 +41,8 @@ alertmanager:
         ca: string
         cert: string
         key: string
+      headers:
+        any: string
 ```
 
 - `interval` - how often alerts should be refreshed, a string in
@@ -85,9 +87,12 @@ alertmanager:
   TLS connections to this Alertmanager instance if it requires a TLS client
   authentication.
   Note that this option requires `tls:cert` to be also set.
+- `headers` - a map with a list of key: values which are header: value.
+  These custom headers will be sent with every request to the alert manager
+  instance.
 
 Example with two production Alertmanager instances running in HA mode and a
-staging instance that is also proxied:
+staging instance that is also proxied and requires a custom auth header:
 
 ```yaml
 alertmanager:
@@ -107,6 +112,8 @@ alertmanager:
       proxy: true
       tls:
         ca: /etc/ssl/staging-ca.crt
+      headers:
+        X-Auth-Token: aValidToken
     - name: protected
       uri: https://alertmanager-auth.prod.example.com
       timeout: 20s

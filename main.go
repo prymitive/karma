@@ -116,6 +116,7 @@ func setupUpstreams() {
 			alertmanager.WithRequestTimeout(s.Timeout),
 			alertmanager.WithProxy(s.Proxy),
 			alertmanager.WithHTTPTransport(httpTransport), // we will pass a nil unless TLS.CA or TLS.Cert is set
+			alertmanager.WithHTTPHeaders(s.Headers),
 		)
 		if err != nil {
 			log.Fatalf("Failed to create Alertmanager '%s' with URI '%s': %s", s.Name, s.URI, err)

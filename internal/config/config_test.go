@@ -64,6 +64,7 @@ func testReadConfig(t *testing.T) {
       ca: ""
       cert: ""
       key: ""
+    headers: {}
 annotations:
   default:
     hidden: true
