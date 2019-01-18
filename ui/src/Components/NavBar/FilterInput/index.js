@@ -115,43 +115,14 @@ const FilterInput = observer(
     };
 
     renderInputComponent = inputProps => {
-      var {
-        inputReference,
-        alertStore,
-        settingsStore,
-        ...otherProps
-      } = inputProps;
-
+      const { value } = inputProps;
       return (
-        <div className="input-group mr-2">
-          <div className="input-group-prepend">
-            <span className="input-group-text px-2">
-              <FontAwesomeIcon icon={faSearch} />
-            </span>
-          </div>
-          <div
-            className="form-control p-1 components-filterinput"
-            onClick={event => {
-              this.onInputClick(inputReference, event);
-            }}
-          >
-            {alertStore.filters.values.map(filter => (
-              <FilterInputLabel
-                key={filter.raw}
-                alertStore={alertStore}
-                filter={filter}
-              />
-            ))}
-            <input
-              className="components-filterinput-wrapper"
-              placeholder=""
-              {...otherProps}
-            />
-          </div>
-          <div className="input-group-append">
-            <History alertStore={alertStore} settingsStore={settingsStore} />
-          </div>
-        </div>
+        <input
+          className="components-filterinput-wrapper"
+          placeholder=""
+          size={value.length + 1}
+          {...inputProps}
+        />
       );
     };
 
@@ -166,25 +137,48 @@ const FilterInput = observer(
           onSubmit={this.onSubmit}
           data-filters={alertStore.filters.values.map(f => f.raw).join(" ")}
         >
-          <Autosuggest
-            ref={this.inputStore.storeInputReference}
-            suggestions={this.inputStore.suggestions}
-            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-            onSuggestionSelected={this.onSuggestionSelected}
-            shouldRenderSuggestions={value => value && value.trim().length > 1}
-            getSuggestionValue={suggestion => suggestion}
-            renderSuggestion={this.renderSuggestion}
-            renderInputComponent={this.renderInputComponent}
-            inputProps={{
-              value: this.inputStore.value,
-              onChange: this.onChange,
-              inputReference: this.inputStore.ref,
-              alertStore: alertStore,
-              settingsStore: settingsStore
-            }}
-            theme={AutosuggestTheme}
-          />
+          <div className="input-group w-100 mr-2">
+            <div className="input-group-prepend">
+              <span className="input-group-text px-2">
+                <FontAwesomeIcon icon={faSearch} />
+              </span>
+            </div>
+            <div
+              className="form-control p-1 components-filterinput"
+              onClick={event => {
+                this.onInputClick(this.inputStore.ref, event);
+              }}
+            >
+              {alertStore.filters.values.map(filter => (
+                <FilterInputLabel
+                  key={filter.raw}
+                  alertStore={alertStore}
+                  filter={filter}
+                />
+              ))}
+              <Autosuggest
+                ref={this.inputStore.storeInputReference}
+                suggestions={this.inputStore.suggestions}
+                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                onSuggestionSelected={this.onSuggestionSelected}
+                shouldRenderSuggestions={value =>
+                  value && value.trim().length > 1
+                }
+                getSuggestionValue={suggestion => suggestion}
+                renderSuggestion={this.renderSuggestion}
+                renderInputComponent={this.renderInputComponent}
+                inputProps={{
+                  value: this.inputStore.value,
+                  onChange: this.onChange
+                }}
+                theme={AutosuggestTheme}
+              />
+            </div>
+            <div className="input-group-append">
+              <History alertStore={alertStore} settingsStore={settingsStore} />
+            </div>
+          </div>
         </form>
       );
     }

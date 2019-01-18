@@ -11,11 +11,3 @@ input.components-filterinput-wrapper {
   padding: 0;
   vertical-align: middle;
 }
-
-input.components-filterinput-wrapper {
-  width: 1px;
-}
-
-input.components-filterinput-wrapper:focus {
-  width: auto;
-}
