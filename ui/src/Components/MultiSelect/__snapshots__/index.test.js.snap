@@ -4,7 +4,6 @@ exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
 "
 <div class=\\"css-10nd86i\\">
   <span class=\\"css-bl6clz\\"
-        emotion=\\"[object Object]\\"
         aria-live=\\"assertive\\"
   >
     <p id=\\"aria-selection-event\\">
@@ -14,7 +13,7 @@ exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
       &nbsp;  0 results available. Select is focused ,type to refine list, press Down to open the menu,
     </p>
   </span>
-  <div class=\\"css-ako6on\\">
+  <div class=\\"css-7i0fzi\\">
     <div class=\\"css-pb81dw\\">
       <div class=\\"css-1492t68\\">
         Select...
