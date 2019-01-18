@@ -78,6 +78,7 @@ func loadTemplate(t *template.Template, path string) *template.Template {
 }
 
 func serveFileOr404(path string, contentType string, c *gin.Context) {
+	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
 	if path == "" {
 		c.Data(200, contentType, nil)
 		return
