@@ -12,7 +12,7 @@ RUN CGO_ENABLED=0 make -C /go/src/github.com/prymitive/karma VERSION="${VERSION:
 FROM alpine:latest
 RUN apk add --update supervisor python && rm  -rf /tmp/* /var/cache/apk/*
 COPY demo/supervisord.conf /etc/supervisord.conf
-COPY --from=prom/alertmanager:v0.15.3 /bin/alertmanager /alertmanager
+COPY --from=prom/alertmanager:v0.16.0 /bin/alertmanager /alertmanager
 COPY demo/alertmanager.yaml /etc/alertmanager.yaml
 COPY demo/generator.py /generator.py
 COPY --from=go-builder /go/src/github.com/prymitive/karma/karma /karma
