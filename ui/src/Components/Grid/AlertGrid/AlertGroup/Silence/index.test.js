@@ -7,6 +7,7 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
+import moment from "moment";
 import { advanceTo, clear } from "jest-date-mock";
 
 import { AlertStore } from "Stores/AlertStore";
@@ -52,7 +53,7 @@ let alertStore;
 let silenceFormStore;
 
 beforeEach(() => {
-  advanceTo(new Date(2000, 0, 1, 15, 0, 0));
+  advanceTo(moment.utc([2000, 0, 1, 15, 0, 0]));
   alertStore = new AlertStore([]);
   alertStore.data.upstreams = {
     counters: {
@@ -242,7 +243,7 @@ describe("<SilenceDetails />", () => {
   });
 
   it("expired silence endsAt label uses 'danger' class", () => {
-    advanceTo(new Date(2000, 0, 1, 23, 0, 0));
+    advanceTo(moment.utc([2000, 0, 1, 23, 0, 0]));
     const tree = MountedSilenceDetails(jest.fn());
     const endsAt = tree.find("span.badge").at(2);
     expect(endsAt.html()).toMatch(/text-danger/);
@@ -259,27 +260,27 @@ describe("<SilenceDetails />", () => {
 
 describe("<SilenceExpiryBadgeWithProgress />", () => {
   it("renders with class 'danger' and no progressbar when expired", () => {
-    advanceTo(new Date(2001, 0, 1, 23, 0, 0));
+    advanceTo(moment.utc([2001, 0, 1, 23, 0, 0]));
     const tree = MountedSilence(alertmanager);
     expect(tree.html()).toMatch(/badge-danger/);
     expect(tree.text()).toMatch(/Expired a year ago/);
   });
 
   it("progressbar uses class 'danger' when > 90%", () => {
-    advanceTo(new Date(2000, 0, 1, 19, 30, 0));
+    advanceTo(moment.utc([2000, 0, 1, 19, 30, 0]));
     const tree = MountedSilence(alertmanager);
     expect(tree.html()).toMatch(/progress-bar bg-danger/);
   });
 
   it("progressbar uses class 'danger' when > 75%", () => {
-    advanceTo(new Date(2000, 0, 1, 17, 45, 0));
+    advanceTo(moment.utc([2000, 0, 1, 17, 45, 0]));
     const tree = MountedSilence(alertmanager);
     expect(tree.html()).toMatch(/progress-bar bg-warning/);
   });
 
   it("calling calculate() on progress multiple times in a row doesn't change the value", () => {
-    const startsAt = new Date(2000, 0, 1, 10, 0, 0);
-    const endsAt = new Date(2000, 0, 1, 20, 0, 0);
+    const startsAt = moment.utc([2000, 0, 1, 10, 0, 0]);
+    const endsAt = moment.utc([2000, 0, 1, 20, 0, 0]);
 
     const tree = MountedSilence(alertmanager).find("Silence");
     const instance = tree.instance();

@@ -10,12 +10,12 @@ import (
 
 // Reader reads from a specific URI schema
 type Reader interface {
-	Read(string) (io.ReadCloser, error)
+	Read(string, map[string]string) (io.ReadCloser, error)
 }
 
 // NewReader creates an instance of URIReader that can handle URI schema
 // for the passed uri string
-func NewReader(uri string, timeout time.Duration, clientTransport http.RoundTripper) (Reader, error) {
+func NewReader(uri string, timeout time.Duration, clientTransport http.RoundTripper, headers map[string]string) (Reader, error) {
 	u, err := url.Parse(uri)
 	if err != nil {
 		return nil, err

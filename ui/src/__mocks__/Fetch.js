@@ -22,7 +22,6 @@ const EmptyAPIResponse = () => ({
       isValid: true
     }
   ],
-  counters: {},
   settings: {
     staticColorLabels: ["job"],
     annotationsDefaultHidden: false,

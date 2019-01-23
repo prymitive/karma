@@ -5,6 +5,8 @@ alertmanager:
       uri: http://localhost:9093
       timeout: 10s
       proxy: true
+      headers:
+        X-Auth-Test: some-token-or-other-string
     - name: client-auth
       uri: https://localhost:9093
       timeout: 10s

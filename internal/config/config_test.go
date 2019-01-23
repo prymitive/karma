@@ -64,12 +64,15 @@ func testReadConfig(t *testing.T) {
       ca: ""
       cert: ""
       key: ""
+    headers: {}
 annotations:
   default:
     hidden: true
   hidden: []
   visible:
   - summary
+  keep: []
+  strip: []
 custom:
   css: /custom.css
   js: /custom.js

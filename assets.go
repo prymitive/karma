@@ -2,10 +2,12 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"html/template"
 	"net/http"
 	"os"
 	"strings"
+	"time"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/gin-gonic/gin"
@@ -75,14 +77,25 @@ func loadTemplate(t *template.Template, path string) *template.Template {
 	return t
 }
 
-func serverFileOrEmpty(path string, contentType string, c *gin.Context) {
+func serveFileOr404(path string, contentType string, c *gin.Context) {
+	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
 	if path == "" {
 		c.Data(200, contentType, nil)
 		return
 	}
 	if _, err := os.Stat(path); os.IsNotExist(err) {
-		c.Data(200, contentType, nil)
+		c.Data(404, contentType, []byte(fmt.Sprintf("%s not found", path)))
 		return
 	}
 	c.File(path)
+}
+
+func staticHeaders(prefix string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if strings.HasPrefix(c.Request.URL.Path, prefix) {
+			c.Header("Cache-Control", "public, max-age=2592000")
+			expiresTime := time.Now().AddDate(0, 0, 30).Format(http.TimeFormat)
+			c.Header("Expires", expiresTime)
+		}
+	}
 }

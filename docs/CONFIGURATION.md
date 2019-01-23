@@ -41,6 +41,8 @@ alertmanager:
         ca: string
         cert: string
         key: string
+      headers:
+        any: string
 ```
 
 - `interval` - how often alerts should be refreshed, a string in
@@ -85,9 +87,12 @@ alertmanager:
   TLS connections to this Alertmanager instance if it requires a TLS client
   authentication.
   Note that this option requires `tls:cert` to be also set.
+- `headers` - a map with a list of key: values which are header: value.
+  These custom headers will be sent with every request to the alert manager
+  instance.
 
 Example with two production Alertmanager instances running in HA mode and a
-staging instance that is also proxied:
+staging instance that is also proxied and requires a custom auth header:
 
 ```yaml
 alertmanager:
@@ -107,6 +112,8 @@ alertmanager:
       proxy: true
       tls:
         ca: /etc/ssl/staging-ca.crt
+      headers:
+        X-Auth-Token: aValidToken
     - name: protected
       uri: https://alertmanager-auth.prod.example.com
       timeout: 20s
@@ -140,12 +147,21 @@ annotations:
     hidden: bool
   hidden: list of strings
   visible: list of strings
+  keep: list of strings
+  strip: list of strings
 ```
 
 - `default:hidden` - bool, true if all annotations should be hidden by default.
 - `hidden` - list of annotations that should be hidden by default.
 - `visible` - list of annotations that should be visible by default when
   `default:hidden` is set to `true`.
+- `keep` - list of allowed annotations, if empty all annotations are allowed.
+- `strip` - list of ignored annotations.
+
+The difference between `hidden`/`visible` and `keep`/`strip` is that hidden
+annotations are still accessible, but they are shown in the UI collapsed by
+default (only name is visible, value is shown after clicking), while stripped
+annotations are removed entirely and never presented to the user.
 
 Example where all annotations except `summary` are hidden by default. If there
 are additional annotation keys user will need to click on the `+` icon to see
@@ -158,11 +174,16 @@ annotations:
   hidden: []
   visible:
     - summary
+  keep: []
+  strip:
+    - help
+    - verylong
 ```
 
 Example where all annotations except `details` are visible by default. If
 `details` annotation is present on any alert user will need to click on the `+`
-icon to see it.
+icon to see it. Additionally `secret` annotation is stripped and never shown
+in the UI.
 
 ```yaml
 annotations:
@@ -171,6 +192,9 @@ annotations:
   hidden:
     - details
   visible: []
+  keep: []
+  strip:
+    - secret
 ```
 
 Defaults:

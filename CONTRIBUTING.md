@@ -11,6 +11,11 @@ Every release tag name will follow `vX.Y.Z` naming scheme, example: `v0.1.0`.
 Every release tree has a dedicated branch named `release-X.Y`, example:
 `release-0.1`.
 
+## Commit messages
+
+[Conventional Commits](https://www.conventionalcommits.org) format is required
+for all commits.
+
 ## Testing changes
 
 To run included tests and check code style with `golint` run:
@@ -19,22 +24,12 @@ To run included tests and check code style with `golint` run:
 
 ## Vendoring dependencies
 
-If you use any new dependency or remove any existing one, please run:
+[Go modules](https://github.com/golang/go/wiki/Modules) are used for managing
+dependecies. After adding new or removing exitsting depenencies please run
 
-    make vendor
+    go mod tidy
 
-This will install and run [dep](https://github.com/golang/dep), which will
-detect all used package and fetch them into the vendor directory.
-
-To update all vendor package run:
-
-    make vendor-update
-
-To update specific vendor package run `dep` manually:
-
-    dep ensure <import-path-filter>
-
-See [dep](https://github.com/golang/dep) documentation for details.
+to update `go.mod` and `go.sum` files.
 
 ## Javascript & CSS assets
 

@@ -1,7 +1,7 @@
 const AutosuggestTheme = {
-  container: "autosuggest d-inline-block w-100",
+  container: "autosuggest d-inline-block",
   suggestionsContainer: "dropdown",
-  suggestionsList: "dropdown-menu dropdown-menu-right show",
+  suggestionsList: "dropdown-menu show",
   suggestion: "dropdown-item cursor-pointer",
   suggestionFocused: "active",
   suggestionHighlighted: "active"

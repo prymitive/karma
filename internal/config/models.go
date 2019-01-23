@@ -12,6 +12,7 @@ type alertmanagerConfig struct {
 		Cert string
 		Key  string
 	}
+	Headers map[string]string
 }
 
 type jiraRule struct {
@@ -30,6 +31,8 @@ type configSchema struct {
 		}
 		Hidden  []string
 		Visible []string
+		Keep    []string
+		Strip   []string
 	}
 	Custom struct {
 		CSS string

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 import JSONPretty from "react-json-pretty";
-import "react-json-pretty/src/JSONPretty.monikai.css";
+import "react-json-pretty/themes/monikai.css";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 

@@ -19,11 +19,11 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/contrib/sentry"
 	"github.com/gin-gonic/gin"
-	"github.com/patrickmn/go-cache"
 	"github.com/spf13/pflag"
 
 	raven "github.com/getsentry/raven-go"
 	ginprometheus "github.com/mcuadros/go-gin-prometheus"
+	cache "github.com/patrickmn/go-cache"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -55,6 +55,7 @@ func getViewURL(sub string) string {
 
 func setupRouter(router *gin.Engine) {
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
+	router.Use(staticHeaders(getViewURL("/static/")))
 	router.Use(static.Serve(getViewURL("/"), staticBuildFileSystem))
 	// next 2 lines are to allow service raw sources so sentry can fetch source maps
 	router.Use(static.Serve(getViewURL("/static/js/"), staticSrcFileSystem))
@@ -87,10 +88,10 @@ func setupRouter(router *gin.Engine) {
 	router.GET(getViewURL("/labelValues.json"), knownLabelValues)
 
 	router.GET(getViewURL("/custom.css"), func(c *gin.Context) {
-		serverFileOrEmpty(config.Config.Custom.CSS, "text/css", c)
+		serveFileOr404(config.Config.Custom.CSS, "text/css", c)
 	})
 	router.GET(getViewURL("/custom.js"), func(c *gin.Context) {
-		serverFileOrEmpty(config.Config.Custom.JS, "application/javascript", c)
+		serveFileOr404(config.Config.Custom.JS, "application/javascript", c)
 	})
 
 	router.NoRoute(notFound)
@@ -115,6 +116,7 @@ func setupUpstreams() {
 			alertmanager.WithRequestTimeout(s.Timeout),
 			alertmanager.WithProxy(s.Proxy),
 			alertmanager.WithHTTPTransport(httpTransport), // we will pass a nil unless TLS.CA or TLS.Cert is set
+			alertmanager.WithHTTPHeaders(s.Headers),
 		)
 		if err != nil {
 			log.Fatalf("Failed to create Alertmanager '%s' with URI '%s': %s", s.Name, s.URI, err)

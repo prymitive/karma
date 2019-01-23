@@ -3,6 +3,7 @@ package transform
 import (
 	"strings"
 
+	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
 )
 
@@ -40,4 +41,23 @@ func StripReceivers(keptReceivers, ignoredReceivers []string, alertReceiver stri
 		return false
 	}
 	return true
+}
+
+// StripAnnotations allows to ignore some annotations when pulling data
+// Alertmanager, it will return true if passed annotation name should be
+// stripped
+func StripAnnotations(keptAnnotations, ignoredAnnotations []string, sourceAnnotations models.Annotations) models.Annotations {
+	// empty keep list means keep everything by default
+	keepAll := len(keptAnnotations) == 0
+	annotations := models.Annotations{}
+	for _, annotation := range sourceAnnotations {
+		// is explicitly marked to be kept
+		inKeep := slices.StringInSlice(keptAnnotations, annotation.Name)
+		// is explicitly marked to be stripped
+		inStrip := slices.StringInSlice(ignoredAnnotations, annotation.Name)
+		if (keepAll || inKeep) && !inStrip {
+			annotations = append(annotations, annotation)
+		}
+	}
+	return annotations
 }

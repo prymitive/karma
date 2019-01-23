@@ -22,17 +22,6 @@ func getFiltersFromQuery(filterStrings []string) ([]filters.FilterT, bool) {
 	return matchFilters, validFilters
 }
 
-func countLabel(countStore models.LabelsCountMap, key string, val string) {
-	if _, found := countStore[key]; !found {
-		countStore[key] = make(map[string]int)
-	}
-	if _, found := countStore[key][val]; found {
-		countStore[key][val]++
-	} else {
-		countStore[key][val] = 1
-	}
-}
-
 func getUpstreams() models.AlertmanagerAPISummary {
 	summary := models.AlertmanagerAPISummary{}
 

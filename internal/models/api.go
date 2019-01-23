@@ -34,9 +34,6 @@ type LabelColors struct {
 // LabelsColorMap is a map of "Label Key" -> "Label Value" -> karmaLabelColors
 type LabelsColorMap map[string]map[string]LabelColors
 
-// LabelsCountMap is a map of "Label Key" -> "Label Value" -> number of occurence
-type LabelsCountMap map[string]map[string]int
-
 // APIAlertGroupSharedMaps defines shared part of APIAlertGroup
 type APIAlertGroupSharedMaps struct {
 	Annotations Annotations       `json:"annotations"`
@@ -177,7 +174,6 @@ type AlertsResponse struct {
 	TotalAlerts int                           `json:"totalAlerts"`
 	Colors      LabelsColorMap                `json:"colors"`
 	Filters     []Filter                      `json:"filters"`
-	Counters    LabelsCountMap                `json:"counters"`
 	Settings    Settings                      `json:"settings"`
 }
 

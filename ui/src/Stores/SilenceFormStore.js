@@ -19,6 +19,12 @@ const NewEmptyMatcher = () => {
 
 const MatcherValueToObject = value => ({ label: value, value: value });
 
+const AlertmanagerClustersToOption = clusterDict =>
+  Object.entries(clusterDict).map(([clusterID, clusterMembers]) => ({
+    label: clusterMembers.join(" | "),
+    value: clusterMembers
+  }));
+
 const SilenceFormStage = Object.freeze({
   UserInput: "form",
   Preview: "preview",
@@ -155,12 +161,10 @@ class SilenceFormStore {
 
       fillFormFromSilence(alertmanager, silence) {
         this.silenceID = silence.id;
-        this.alertmanagers = [
-          {
-            label: alertmanager.name,
-            value: alertmanager.publicURI
-          }
-        ];
+
+        this.alertmanagers = AlertmanagerClustersToOption({
+          [alertmanager.cluster]: alertmanager.clusterMembers
+        });
 
         const matchers = [];
         for (const m of silence.matchers) {
@@ -214,8 +218,8 @@ class SilenceFormStore {
               m.values.length > 1
                 ? `(${m.values.map(v => v.value).join("|")})`
                 : m.values.length === 1
-                  ? m.values[0].value
-                  : "",
+                ? m.values[0].value
+                : "",
             isRegex: m.isRegex
           })),
           startsAt: this.startsAt
@@ -270,5 +274,6 @@ export {
   SilenceFormStore,
   SilenceFormStage,
   NewEmptyMatcher,
-  MatcherValueToObject
+  MatcherValueToObject,
+  AlertmanagerClustersToOption
 };

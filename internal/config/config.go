@@ -39,6 +39,9 @@ func init() {
 		"List of annotations that are hidden by default")
 	pflag.StringSlice("annotations.visible", []string{},
 		"List of annotations that are visible by default")
+	pflag.StringSlice("annotations.keep", []string{},
+		"List of annotations to keep, all other annotations will be stripped")
+	pflag.StringSlice("annotations.strip", []string{}, "List of annotations to ignore")
 
 	pflag.String("config.file", "", "Full path to the configuration file")
 
@@ -128,6 +131,8 @@ func (config *configSchema) Read() {
 	config.Annotations.Default.Hidden = v.GetBool("annotations.default.hidden")
 	config.Annotations.Hidden = v.GetStringSlice("annotations.hidden")
 	config.Annotations.Visible = v.GetStringSlice("annotations.visible")
+	config.Annotations.Keep = v.GetStringSlice("annotations.keep")
+	config.Annotations.Strip = v.GetStringSlice("annotations.strip")
 	config.Custom.CSS = v.GetString("custom.css")
 	config.Custom.JS = v.GetString("custom.js")
 	config.Debug = v.GetBool("debug")
@@ -165,6 +170,7 @@ func (config *configSchema) Read() {
 				URI:     v.GetString("alertmanager.uri"),
 				Timeout: v.GetDuration("alertmanager.timeout"),
 				Proxy:   v.GetBool("alertmanager.proxy"),
+				Headers: make(map[string]string),
 			},
 		}
 	}
