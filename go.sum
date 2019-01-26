@@ -105,6 +105,7 @@ github.com/golangci/golangci-lint v1.12.5 h1:907QXsdRnVubwcMZJXsL0VFabfjz60Z0AjG
 github.com/golangci/golangci-lint v1.12.5/go.mod h1:iMfuFWFYJ1CZxlMQfNWvPj3c22PuyUkw9RQ1UfhDFDk=
 github.com/golangci/golangci-lint v1.13.1 h1:e4khAARYjxlcEtEZgPqqaeoIVWlHmsZ4c+g5nJUpdUQ=
 github.com/golangci/golangci-lint v1.13.1/go.mod h1:WCZfrlychHbpDuVsy/Oo9X6LCxB43YBaKbrVHfj8Vww=
+github.com/golangci/golangci-lint v1.13.2/go.mod h1:WCZfrlychHbpDuVsy/Oo9X6LCxB43YBaKbrVHfj8Vww=
 github.com/golangci/gosec v0.0.0-20180901114220-8afd9cbb6cfb h1:Bi7BYmZVg4C+mKGi8LeohcP2GGUl2XJD4xCkJoZSaYc=
 github.com/golangci/gosec v0.0.0-20180901114220-8afd9cbb6cfb/go.mod h1:ON/c2UR0VAAv6ZEAFKhjCLplESSmRFfZcDLASbI1GWo=
 github.com/golangci/govet v0.0.0-20180818181408-44ddbe260190 h1:SLIgprnxQNjBpkz55PK1vfb64/gKU/TgVi0obFw8Lec=
