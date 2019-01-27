@@ -881,13 +881,13 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@commitlint/cli@^7.3.2":
-  version "7.3.2"
-  resolved "https://registry.yarnpkg.com/@commitlint/cli/-/cli-7.3.2.tgz#61abf30b48861e4fbd521690e6d4a3e1258980bb"
-  integrity sha512-QoVayW3kr6/pkWObaCmI6k8O02l/rOJmQIgy5785f6AVbUeHbLOVnh661XMunzAvDX2Cdz4mN+LenhsrLGsaug==
+"@commitlint/cli@^7.4.0":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/cli/-/cli-7.4.0.tgz#18dd304d2e4c87edd5e575f3ae671da6c64b5d7d"
+  integrity sha512-wwjLX+8dkqgiQgIDcKpwSoYC+vWp/njw+Q0f+TPtSB3KCARmb9A4EWmDzFocYzK1goJT+j472ZG87GqUOHmChg==
   dependencies:
-    "@commitlint/format" "^7.3.1"
-    "@commitlint/lint" "^7.3.2"
+    "@commitlint/format" "^7.4.0"
+    "@commitlint/lint" "^7.4.0"
     "@commitlint/load" "^7.3.1"
     "@commitlint/read" "^7.3.1"
     babel-polyfill "6.26.0"
@@ -912,10 +912,10 @@
   dependencies:
     babel-runtime "6.26.0"
 
-"@commitlint/format@^7.3.1":
-  version "7.3.1"
-  resolved "https://registry.yarnpkg.com/@commitlint/format/-/format-7.3.1.tgz#a099eabe3bb6f3825831da465daab269ca76c0d5"
-  integrity sha512-DP0cAYAG4HJqZjJ+EHBD5XwW0LXmQ1TxV0qD0uScrQmxrPliBBTcE/2FbtuLqXvwr8PKJsnl7KtglAdKlhrsAQ==
+"@commitlint/format@^7.4.0":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/format/-/format-7.4.0.tgz#fc927fd99835f73d17076e065296159a41592ee0"
+  integrity sha512-+/ZCR2wWP4XXt7v/+4U6dfnLCh7l/N5IF+nKDJ6r+KsAgNbW85oTsAMpVWE/++fmTMU6CVIt1Rcbex6X06ggVA==
   dependencies:
     babel-runtime "^6.23.0"
     chalk "^2.0.1"
@@ -927,14 +927,14 @@
   dependencies:
     semver "5.6.0"
 
-"@commitlint/lint@^7.3.2":
-  version "7.3.2"
-  resolved "https://registry.yarnpkg.com/@commitlint/lint/-/lint-7.3.2.tgz#e5323ce5b65512e37089ca9e5dfd065849edbf80"
-  integrity sha512-NInm96JP89lMNR77R4zJRj/vaQWc4Ie5vR/5G5auFFiHuwyKmRWfXbGMA7zVYpAylPRgewGaELhuRzNTUW0Log==
+"@commitlint/lint@^7.4.0":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/lint/-/lint-7.4.0.tgz#69a690c37c3fb7f3b55bd7bad24cf018a0b9a19b"
+  integrity sha512-Lp94Mry4AColIW1mZfEZ9YXp7hUc9GewQFcUSEBxfn12l+pUem+6eSyBdNGZpPm3JCAanudkdEey889Hw7QrFA==
   dependencies:
     "@commitlint/is-ignored" "^7.3.1"
     "@commitlint/parse" "^7.3.1"
-    "@commitlint/rules" "^7.3.1"
+    "@commitlint/rules" "^7.4.0"
     babel-runtime "^6.23.0"
     lodash "4.17.11"
 
@@ -985,10 +985,10 @@
     resolve-from "^4.0.0"
     resolve-global "^0.1.0"
 
-"@commitlint/rules@^7.3.1":
-  version "7.3.1"
-  resolved "https://registry.yarnpkg.com/@commitlint/rules/-/rules-7.3.1.tgz#7aed328af4887bcf7e06e8a7605aeac17ae1f12a"
-  integrity sha512-tLabzCzD1bwjH11F7r7XbT6uOndiYFSTijvTK7EEaVFUrA0ejzmdIlVN7OYRCt0k63+8/KXv4AVXL0rts3MXtA==
+"@commitlint/rules@^7.4.0":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/rules/-/rules-7.4.0.tgz#282329528faca3a9c1bb608b01a42e02520ec3fd"
+  integrity sha512-ltTKuKhrVgqk4BgmoVWBRLO2LCFU4x3YmMTIMyZeJ6S+WvFLdSPJ2UIxbpoOI5FEsZzcPRRb04Od7SCRXLfwwA==
   dependencies:
     "@commitlint/ensure" "^7.3.1"
     "@commitlint/message" "^7.3.1"
@@ -1007,12 +1007,12 @@
   dependencies:
     find-up "^2.1.0"
 
-"@commitlint/travis-cli@7.3.2":
-  version "7.3.2"
-  resolved "https://registry.yarnpkg.com/@commitlint/travis-cli/-/travis-cli-7.3.2.tgz#fa086b4389830a03931a316616ca13eade4f1bb7"
-  integrity sha512-3hmeQ7NRulD/VB9ifBjBmiEJl85kOffmMXCJEB2578SH1JpfyDAMrjy0ZwX/WL/yAkkJX8/e+XnEvpu5lhivyg==
+"@commitlint/travis-cli@7.4.0":
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/@commitlint/travis-cli/-/travis-cli-7.4.0.tgz#869bf4653d29aa7a01a30ebebe8126282d1bf1be"
+  integrity sha512-Q+XaNTYhPmazj8qkYoC7jJYQDNR4a/TIqz3ElhXoj7TFq+we0xeCAnVoeih+RpqulglJpP6IoBL3x1AGrxBJvQ==
   dependencies:
-    "@commitlint/cli" "^7.3.2"
+    "@commitlint/cli" "^7.4.0"
     babel-runtime "6.26.0"
     execa "0.9.0"
 
