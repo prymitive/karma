@@ -9,7 +9,7 @@ ARG VERSION
 RUN apk add --update make git
 RUN CGO_ENABLED=0 make -C /go/src/github.com/prymitive/karma VERSION="${VERSION:-dev}" karma
 
-FROM alpine:latest
+FROM alpine:3.8
 RUN apk add --update supervisor python && rm  -rf /tmp/* /var/cache/apk/*
 COPY demo/supervisord.conf /etc/supervisord.conf
 COPY --from=prom/alertmanager:v0.15.3 /bin/alertmanager /alertmanager
