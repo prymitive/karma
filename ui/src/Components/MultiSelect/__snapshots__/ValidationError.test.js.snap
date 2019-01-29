@@ -4,6 +4,7 @@ exports[`<ValidationError /> matches snapshot 1`] = `
 "
 <span class=\\"text-danger\\">
   <svg aria-hidden=\\"true\\"
+       focusable=\\"false\\"
        data-prefix=\\"fas\\"
        data-icon=\\"exclamation-circle\\"
        class=\\"svg-inline--fa fa-exclamation-circle fa-w-16 \\"

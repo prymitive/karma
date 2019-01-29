@@ -6,6 +6,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
   <div>
     <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\">
       <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
            data-prefix=\\"fas\\"
            data-icon=\\"search-minus\\"
            class=\\"svg-inline--fa fa-search-minus fa-w-16 mr-1\\"
@@ -27,6 +28,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
     </div>
     <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\">
       <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
            data-prefix=\\"fas\\"
            data-icon=\\"search-plus\\"
            class=\\"svg-inline--fa fa-search-plus fa-w-16 mr-1\\"
@@ -46,6 +48,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
         data-toggle=\\"dropdown\\"
   >
     <svg aria-hidden=\\"true\\"
+         focusable=\\"false\\"
          data-prefix=\\"fas\\"
          data-icon=\\"caret-down\\"
          class=\\"svg-inline--fa fa-caret-down fa-w-10 pr-1\\"
@@ -99,6 +102,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
      class=\\"components-label-with-hover text-nowrap text-truncate badge mr-1 components-grid-annotation-link\\"
   >
     <svg aria-hidden=\\"true\\"
+         focusable=\\"false\\"
          data-prefix=\\"fas\\"
          data-icon=\\"external-link-alt\\"
          class=\\"svg-inline--fa fa-external-link-alt fa-w-18 \\"
