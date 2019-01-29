@@ -3,6 +3,7 @@
 exports[`<FetchIndicator /> matches snapshot when fetch is in progress 1`] = `
 "
 <svg aria-hidden=\\"true\\"
+     focusable=\\"false\\"
      data-prefix=\\"fas\\"
      data-icon=\\"circle-notch\\"
      class=\\"svg-inline--fa fa-circle-notch fa-w-16 fa-spin fa-lg mx-1 text-muted\\"
@@ -22,6 +23,7 @@ exports[`<FetchIndicator /> matches snapshot when fetch is in progress 1`] = `
 exports[`<FetchIndicator /> matches snapshot when idle 1`] = `
 "
 <svg aria-hidden=\\"true\\"
+     focusable=\\"false\\"
      data-prefix=\\"fas\\"
      data-icon=\\"circle-notch\\"
      class=\\"svg-inline--fa fa-circle-notch fa-w-16 fa-lg mx-1 text-muted\\"
@@ -41,6 +43,7 @@ exports[`<FetchIndicator /> matches snapshot when idle 1`] = `
 exports[`<FetchIndicator /> matches snapshot when paused 1`] = `
 "
 <svg aria-hidden=\\"true\\"
+     focusable=\\"false\\"
      data-prefix=\\"far\\"
      data-icon=\\"pause-circle\\"
      class=\\"svg-inline--fa fa-pause-circle fa-w-16 fa-lg mx-1 text-muted\\"
@@ -60,6 +63,7 @@ exports[`<FetchIndicator /> matches snapshot when paused 1`] = `
 exports[`<FetchIndicator /> matches snapshot when response is processed 1`] = `
 "
 <svg aria-hidden=\\"true\\"
+     focusable=\\"false\\"
      data-prefix=\\"fas\\"
      data-icon=\\"circle-notch\\"
      class=\\"svg-inline--fa fa-circle-notch fa-w-16 fa-spin fa-lg mx-1 text-success\\"

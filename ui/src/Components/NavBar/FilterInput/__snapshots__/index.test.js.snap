@@ -6,6 +6,7 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
   <div class=\\"input-group-prepend\\">
     <span class=\\"input-group-text px-2\\">
       <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
            data-prefix=\\"fas\\"
            data-icon=\\"search\\"
            class=\\"svg-inline--fa fa-search fa-w-16 \\"
@@ -51,6 +52,7 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
             aria-expanded=\\"true\\"
     >
       <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
            data-prefix=\\"fas\\"
            data-icon=\\"caret-down\\"
            class=\\"svg-inline--fa fa-caret-down fa-w-10 \\"

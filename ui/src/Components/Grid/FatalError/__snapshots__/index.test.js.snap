@@ -6,6 +6,7 @@ exports[`<FatalError /> matches snapshot 1`] = `
   <div class=\\"container-fluid\\">
     <h1 class=\\"display-1 my-5 text-danger\\">
       <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
            data-prefix=\\"fas\\"
            data-icon=\\"exclamation-circle\\"
            class=\\"svg-inline--fa fa-exclamation-circle fa-w-16 \\"
