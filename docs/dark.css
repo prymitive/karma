@@ -1,0 +1,43 @@
+/* Example dark theme */
+
+body,
+.bg-primary-transparent {
+  background-color: #2e2727 !important;
+}
+
+.card,
+.list-group-item,
+.dropdown-menu,
+.modal-content {
+  background-color: #455a64 !important;
+}
+
+.input-group-text,
+.components-filterinput {
+  background-color: #455a64 !important;
+}
+
+.components-grid-annotation {
+  background-color: #95a5a6 !important;
+}
+
+.badge:not(.components-label-bright),
+.form-group > label,
+.nav-link {
+  color: #ccc !important;
+}
+
+.nav > .nav-link {
+  color: #ccc !important;
+}
+
+.nav > .nav-link.active,
+.nav-item > .nav-link.active {
+  color: #fff !important;
+  background-color: #455a64 !important;
+}
+
+.badge.badge-light {
+  color: #666;
+  background-color: #444;
+}
