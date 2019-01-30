@@ -17,6 +17,7 @@ import (
 	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/transform"
 	"github.com/prymitive/karma/internal/uri"
+	"github.com/prymitive/karma/internal/verprobe"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -63,6 +64,30 @@ type Alertmanager struct {
 	metrics alertmanagerMetrics
 	// headers to send with each AlertManager request
 	HTTPHeaders map[string]string
+}
+
+func (am *Alertmanager) probeVersion() string {
+	const fakeVersion = "999.0.0"
+
+	url, err := uri.JoinURL(am.URI, "metrics")
+	if err != nil {
+		log.Errorf("Failed to join url '%s' and path 'metrics': %s", am.SanitizedURI(), err)
+		return fakeVersion
+	}
+
+	source, err := am.reader.Read(url, am.HTTPHeaders)
+	if err != nil {
+		log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
+		return fakeVersion
+	}
+	defer source.Close()
+
+	version, err := verprobe.Detect(source)
+	if err != nil {
+		return fakeVersion
+	}
+
+	return version
 }
 
 func (am *Alertmanager) fetchStatus() alertmanagerStatus {
@@ -343,9 +368,11 @@ func (am *Alertmanager) pullAlerts(version string) error {
 func (am *Alertmanager) Pull() error {
 	am.metrics.cycles++
 
+	version := am.probeVersion()
+
 	status := am.fetchStatus()
 
-	err := am.pullSilences(status.version)
+	err := am.pullSilences(version)
 	if err != nil {
 		am.clearData()
 		am.setError(err.Error())
@@ -353,7 +380,7 @@ func (am *Alertmanager) Pull() error {
 		return err
 	}
 
-	err = am.pullAlerts(status.version)
+	err = am.pullAlerts(version)
 	if err != nil {
 		am.clearData()
 		am.setError(err.Error())

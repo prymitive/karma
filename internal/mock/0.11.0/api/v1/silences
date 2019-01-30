@@ -1,28 +1,10 @@
 {
     "data": [
         {
-            "comment": "Silenced instance",
-            "createdBy": "john@example.com",
-            "endsAt": "2063-01-01T00:00:00Z",
-            "id": "1e55eccc-1fba-45ce-a053-e025724b522e",
-            "matchers": [
-                {
-                    "isRegex": false,
-                    "name": "instance",
-                    "value": "web1"
-                }
-            ],
-            "startsAt": "2017-11-18T05:52:31.502126065Z",
-            "status": {
-                "state": "active"
-            },
-            "updatedAt": "2017-11-18T05:52:31.502132992Z"
-        },
-        {
             "comment": "Silenced Host_Down alerts in the dev cluster",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "29dc1204-6618-447f-8436-0c9068c1d05d",
+            "id": "7823a0fc-942a-4eab-bf09-32fce1099b32",
             "matchers": [
                 {
                     "isRegex": false,
@@ -35,17 +17,17 @@
                     "value": "dev"
                 }
             ],
-            "startsAt": "2017-11-18T05:52:31.504448469Z",
+            "startsAt": "2019-01-30T17:29:05.3367201Z",
             "status": {
                 "state": "active"
             },
-            "updatedAt": "2017-11-18T05:52:31.504453686Z"
+            "updatedAt": "2019-01-30T17:29:05.3367377Z"
         },
         {
             "comment": "Silenced server7",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "169a2b61-8926-4271-abef-bf67317932e5",
+            "id": "e4512e24-5a2a-4ad8-9d25-28814a98fee9",
             "matchers": [
                 {
                     "isRegex": false,
@@ -53,11 +35,29 @@
                     "value": "server7"
                 }
             ],
-            "startsAt": "2017-11-18T05:52:31.506169376Z",
+            "startsAt": "2019-01-30T17:29:05.3403788Z",
             "status": {
                 "state": "active"
             },
-            "updatedAt": "2017-11-18T05:52:31.506173805Z"
+            "updatedAt": "2019-01-30T17:29:05.3403957Z"
+        },
+        {
+            "comment": "Silenced instance",
+            "createdBy": "john@example.com",
+            "endsAt": "2063-01-01T00:00:00Z",
+            "id": "0919574a-ead5-4540-be4f-37e8f5f7ece3",
+            "matchers": [
+                {
+                    "isRegex": false,
+                    "name": "instance",
+                    "value": "web1"
+                }
+            ],
+            "startsAt": "2019-01-30T17:29:05.3331842Z",
+            "status": {
+                "state": "active"
+            },
+            "updatedAt": "2019-01-30T17:29:05.3332012Z"
         }
     ],
     "status": "success"

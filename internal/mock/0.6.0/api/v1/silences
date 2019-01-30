@@ -4,7 +4,7 @@
             "comment": "Silenced instance",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "56992aa1-3bb1-4bc9-8378-f233a2b83671",
+            "id": "584fae9a-1d22-40b8-bb1a-083e9c65b673",
             "matchers": [
                 {
                     "isRegex": false,
@@ -12,14 +12,14 @@
                     "value": "web1"
                 }
             ],
-            "startsAt": "2017-06-21T19:54:02.954898476Z",
-            "updatedAt": "2017-06-21T19:54:02.954898476Z"
+            "startsAt": "2019-01-30T17:19:30.5404029Z",
+            "updatedAt": "2019-01-30T17:19:30.5404029Z"
         },
         {
             "comment": "Silenced Host_Down alerts in the dev cluster",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "84c7dd5a-31bc-4318-a63a-2b9e7b1f62b3",
+            "id": "b65cfc66-ec1b-45c6-844a-7f3f1540721f",
             "matchers": [
                 {
                     "isRegex": false,
@@ -32,14 +32,14 @@
                     "value": "dev"
                 }
             ],
-            "startsAt": "2017-06-21T19:54:02.957027907Z",
-            "updatedAt": "2017-06-21T19:54:02.957027907Z"
+            "startsAt": "2019-01-30T17:19:30.5446497Z",
+            "updatedAt": "2019-01-30T17:19:30.5446497Z"
         },
         {
             "comment": "Silenced server7",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "60dfd0f4-bfa9-4741-aa02-74be9dc5e585",
+            "id": "2acec23d-4236-4cad-8ca3-ed488a01a8a8",
             "matchers": [
                 {
                     "isRegex": false,
@@ -47,8 +47,8 @@
                     "value": "server7"
                 }
             ],
-            "startsAt": "2017-06-21T19:54:02.958838414Z",
-            "updatedAt": "2017-06-21T19:54:02.958838414Z"
+            "startsAt": "2019-01-30T17:19:30.5482529Z",
+            "updatedAt": "2019-01-30T17:19:30.5482529Z"
         }
     ],
     "status": "success"

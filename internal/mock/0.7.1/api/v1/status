@@ -83,16 +83,16 @@
         "configYAML": "global:\n  resolve_timeout: 5m\n  smtp_from: \"\"\n  smtp_smarthost: \"\"\n  smtp_auth_username: \"\"\n  smtp_auth_password: null\n  smtp_auth_secret: null\n  smtp_auth_identity: \"\"\n  smtp_require_tls: true\n  slack_api_url: null\n  pagerduty_url: https://events.pagerduty.com/generic/2010-04-15/create_event.json\n  hipchat_url: https://api.hipchat.com/\n  hipchat_auth_token: null\n  opsgenie_api_host: https://api.opsgenie.com/\n  victorops_api_url: https://alert.victorops.com/integrations/generic/20131114/alert/\nroute:\n  receiver: default\n  group_by:\n  - alertname\n  routes:\n  - receiver: by-cluster-service\n    group_by:\n    - alertname\n    - cluster\n    - service\n    match_re:\n      alertname:\n        regexp: {}\n    continue: true\n  - receiver: by-name\n    group_by:\n    - alertname\n    match_re:\n      alertname:\n        regexp: {}\n    continue: true\n  group_wait: 15s\n  group_interval: 35s\n  repeat_interval: 999h\ninhibit_rules:\n- source_match:\n    severity: critical\n  source_match_re: {}\n  target_match:\n    severity: warning\n  target_match_re: {}\n  equal:\n  - alertname\n  - cluster\n  - service\nreceivers:\n- name: default\n- name: by-cluster-service\n- name: by-name\ntemplates: []\n",
         "meshStatus": {
             "name": "02:42:ac:11:00:02",
-            "nickName": "604ff4d14f78",
+            "nickName": "f63d7b534aec",
             "peers": [
                 {
                     "name": "02:42:ac:11:00:02",
-                    "nickName": "604ff4d14f78",
-                    "uid": 356874118448200805
+                    "nickName": "f63d7b534aec",
+                    "uid": 4063438291908688060
                 }
             ]
         },
-        "uptime": "2017-06-21T20:00:15.251363956Z",
+        "uptime": "2019-01-30T17:22:50.9317886Z",
         "versionInfo": {
             "branch": "master",
             "buildDate": "20170609-15:31:09",

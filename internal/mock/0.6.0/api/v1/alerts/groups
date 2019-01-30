@@ -18,7 +18,7 @@
                                 "instance": "server5",
                                 "job": "node_exporter"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         }
                     ],
                     "routeOpts": {
@@ -43,6 +43,21 @@
                     "alerts": [
                         {
                             "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "generatorURL": "localhost/prometheus",
+                            "inhibited": false,
+                            "labels": {
+                                "alertname": "HTTP_Probe_Failed",
+                                "cluster": "dev",
+                                "instance": "web2",
+                                "job": "node_exporter"
+                            },
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
+                        },
+                        {
+                            "annotations": {
                                 "help": "Example help annotation",
                                 "summary": "Example summary",
                                 "url": "http://localhost/example.html"
@@ -56,23 +71,8 @@
                                 "instance": "web1",
                                 "job": "node_exporter"
                             },
-                            "silenced": "56992aa1-3bb1-4bc9-8378-f233a2b83671",
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
-                        },
-                        {
-                            "annotations": {
-                                "summary": "Example summary"
-                            },
-                            "endsAt": "0001-01-01T00:00:00Z",
-                            "generatorURL": "localhost/prometheus",
-                            "inhibited": false,
-                            "labels": {
-                                "alertname": "HTTP_Probe_Failed",
-                                "cluster": "dev",
-                                "instance": "web2",
-                                "job": "node_exporter"
-                            },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "silenced": "584fae9a-1d22-40b8-bb1a-083e9c65b673",
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         }
                     ],
                     "routeOpts": {
@@ -108,8 +108,8 @@
                                 "instance": "server8",
                                 "job": "node_ping"
                             },
-                            "silenced": "84c7dd5a-31bc-4318-a63a-2b9e7b1f62b3",
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "silenced": "b65cfc66-ec1b-45c6-844a-7f3f1540721f",
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         },
                         {
                             "annotations": {
@@ -125,7 +125,7 @@
                                 "instance": "server1",
                                 "job": "node_ping"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         },
                         {
                             "annotations": {
@@ -140,7 +140,7 @@
                                 "instance": "server2",
                                 "job": "node_ping"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         },
                         {
                             "annotations": {
@@ -155,7 +155,7 @@
                                 "instance": "server3",
                                 "job": "node_ping"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         },
                         {
                             "annotations": {
@@ -170,7 +170,7 @@
                                 "instance": "server4",
                                 "job": "node_ping"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         },
                         {
                             "annotations": {
@@ -185,7 +185,7 @@
                                 "instance": "server5",
                                 "job": "node_ping"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         },
                         {
                             "annotations": {
@@ -200,8 +200,8 @@
                                 "instance": "server6",
                                 "job": "node_ping"
                             },
-                            "silenced": "84c7dd5a-31bc-4318-a63a-2b9e7b1f62b3",
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "silenced": "b65cfc66-ec1b-45c6-844a-7f3f1540721f",
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         },
                         {
                             "annotations": {
@@ -216,8 +216,8 @@
                                 "instance": "server7",
                                 "job": "node_ping"
                             },
-                            "silenced": "84c7dd5a-31bc-4318-a63a-2b9e7b1f62b3",
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "silenced": "b65cfc66-ec1b-45c6-844a-7f3f1540721f",
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         }
                     ],
                     "routeOpts": {
@@ -254,7 +254,7 @@
                                 "instance": "server2",
                                 "job": "node_exporter"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         }
                     ],
                     "routeOpts": {
@@ -291,14 +291,14 @@
                                 "instance": "server5",
                                 "job": "node_exporter"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         }
                     ],
                     "routeOpts": {
                         "groupBy": [
-                            "alertname",
                             "cluster",
-                            "service"
+                            "service",
+                            "alertname"
                         ],
                         "groupInterval": 35000000000,
                         "groupWait": 15000000000,
@@ -332,8 +332,8 @@
                                 "instance": "web1",
                                 "job": "node_exporter"
                             },
-                            "silenced": "56992aa1-3bb1-4bc9-8378-f233a2b83671",
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "silenced": "584fae9a-1d22-40b8-bb1a-083e9c65b673",
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         },
                         {
                             "annotations": {
@@ -348,7 +348,7 @@
                                 "instance": "web2",
                                 "job": "node_exporter"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         }
                     ],
                     "routeOpts": {
@@ -387,8 +387,8 @@
                                 "instance": "server6",
                                 "job": "node_ping"
                             },
-                            "silenced": "84c7dd5a-31bc-4318-a63a-2b9e7b1f62b3",
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "silenced": "b65cfc66-ec1b-45c6-844a-7f3f1540721f",
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         },
                         {
                             "annotations": {
@@ -403,8 +403,8 @@
                                 "instance": "server7",
                                 "job": "node_ping"
                             },
-                            "silenced": "84c7dd5a-31bc-4318-a63a-2b9e7b1f62b3",
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "silenced": "b65cfc66-ec1b-45c6-844a-7f3f1540721f",
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         },
                         {
                             "annotations": {
@@ -419,8 +419,8 @@
                                 "instance": "server8",
                                 "job": "node_ping"
                             },
-                            "silenced": "84c7dd5a-31bc-4318-a63a-2b9e7b1f62b3",
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "silenced": "b65cfc66-ec1b-45c6-844a-7f3f1540721f",
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         }
                     ],
                     "routeOpts": {
@@ -460,7 +460,7 @@
                                 "instance": "server1",
                                 "job": "node_ping"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         },
                         {
                             "annotations": {
@@ -475,14 +475,14 @@
                                 "instance": "server2",
                                 "job": "node_ping"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         }
                     ],
                     "routeOpts": {
                         "groupBy": [
-                            "alertname",
                             "cluster",
-                            "service"
+                            "service",
+                            "alertname"
                         ],
                         "groupInterval": 35000000000,
                         "groupWait": 15000000000,
@@ -511,25 +511,10 @@
                             "labels": {
                                 "alertname": "Host_Down",
                                 "cluster": "staging",
-                                "instance": "server5",
-                                "job": "node_ping"
-                            },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
-                        },
-                        {
-                            "annotations": {
-                                "summary": "Example summary"
-                            },
-                            "endsAt": "0001-01-01T00:00:00Z",
-                            "generatorURL": "localhost/prometheus",
-                            "inhibited": false,
-                            "labels": {
-                                "alertname": "Host_Down",
-                                "cluster": "staging",
                                 "instance": "server3",
                                 "job": "node_ping"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         },
                         {
                             "annotations": {
@@ -544,7 +529,22 @@
                                 "instance": "server4",
                                 "job": "node_ping"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "generatorURL": "localhost/prometheus",
+                            "inhibited": false,
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "staging",
+                                "instance": "server5",
+                                "job": "node_ping"
+                            },
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         }
                     ],
                     "routeOpts": {
@@ -584,7 +584,7 @@
                                 "instance": "server2",
                                 "job": "node_exporter"
                             },
-                            "startsAt": "2017-06-21T19:54:02.96073587Z"
+                            "startsAt": "2019-01-30T17:19:30.5586268Z"
                         }
                     ],
                     "routeOpts": {
