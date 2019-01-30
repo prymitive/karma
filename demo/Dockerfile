@@ -1,4 +1,4 @@
-FROM node:10.15.0-alpine as nodejs-builder
+FROM node:11.8-alpine as nodejs-builder
 RUN apk add --update make git
 COPY . /karma
 RUN make -C /karma ui
