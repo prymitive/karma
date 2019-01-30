@@ -1,7 +1,7 @@
 {
     "data": {
         "config": "route:\n  group_by: ['alertname']\n  group_wait: 15s\n  group_interval: 35s\n  repeat_interval: 999h\n  receiver: 'default'\n  routes:\n    - receiver: 'by-cluster-service'\n      group_by: ['alertname', 'cluster', 'service']\n      match_re:\n        alertname: .*\n      continue: true\n    - receiver: 'by-name'\n      group_by: [alertname]\n      match_re:\n        alertname: .*\n      continue: true\n\ninhibit_rules:\n  - source_match:\n      severity: 'critical'\n    target_match:\n      severity: 'warning'\n    # Apply inhibition if the alertname is the same.\n    equal: ['alertname', 'cluster', 'service']\n\nreceivers:\n  - name: 'default'\n  - name: 'by-cluster-service'\n  - name: 'by-name'\n",
-        "uptime": "2017-06-21T19:51:31.752337137Z",
+        "uptime": "2019-01-30T17:16:51.1637502Z",
         "versionInfo": {
             "branch": "master",
             "buildDate": "20161101-18:10:50",

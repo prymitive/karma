@@ -19,7 +19,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
-	"gopkg.in/jarcoal/httpmock.v1"
+	httpmock "gopkg.in/jarcoal/httpmock.v1"
 )
 
 var upstreamSetup = false
@@ -77,9 +77,10 @@ func mockAlerts(version string) {
 
 	apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 
-	mock.RegisterURL("http://localhost/api/v1/status", version, "status")
-	mock.RegisterURL("http://localhost/api/v1/silences", version, "silences")
-	mock.RegisterURL("http://localhost/api/v1/alerts/groups", version, "alerts/groups")
+	mock.RegisterURL("http://localhost/metrics", version, "metrics")
+	mock.RegisterURL("http://localhost/api/v1/status", version, "api/v1/status")
+	mock.RegisterURL("http://localhost/api/v1/silences", version, "api/v1/silences")
+	mock.RegisterURL("http://localhost/api/v1/alerts/groups", version, "api/v1/alerts/groups")
 
 	pullFromAlertmanager()
 }

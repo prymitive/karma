@@ -19,6 +19,7 @@ VERSIONS := 0.4.0 0.4.1 0.4.2 0.5.0 0.5.1 0.6.0 0.6.2 0.7.0 0.7.1 0.8.0 0.9.0 0.
 	@python livemock.py
 	@mkdir -p $(CURDIR)/$(VERSION)/api/v1 $(CURDIR)/$(VERSION)/api/v1/alerts
 	@echo "Collecting API responses"
+	@curl --fail -s localhost:9093/metrics > $(CURDIR)/$(VERSION)/metrics
 	@curl --fail -s localhost:9093/api/v1/status | python -m json.tool > $(CURDIR)/$(VERSION)/api/v1/status
 	@curl --fail -s localhost:9093/api/v1/silences | python -m json.tool > $(CURDIR)/$(VERSION)/api/v1/silences
 	@curl --fail -s localhost:9093/api/v1/alerts/groups | python -m json.tool > $(CURDIR)/$(VERSION)/api/v1/alerts/groups

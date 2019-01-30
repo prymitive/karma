@@ -1,0 +1,250 @@
+# HELP alertmanager_alerts_invalid_total The total number of received alerts that were invalid.
+# TYPE alertmanager_alerts_invalid_total counter
+alertmanager_alerts_invalid_total 0
+# HELP alertmanager_alerts_received_total The total number of received alerts.
+# TYPE alertmanager_alerts_received_total counter
+alertmanager_alerts_received_total{status="firing"} 60
+# HELP alertmanager_build_info A metric with a constant '1' value labeled by version, revision, branch, and goversion from which alertmanager was built.
+# TYPE alertmanager_build_info gauge
+alertmanager_build_info{branch="master",goversion="go1.6.3",revision="9a5ab2fa63dd7951f4f202b0846d4f4d8e9615b0",version="0.4.2"} 1
+# HELP alertmanager_config_last_reload_success_timestamp_seconds Timestamp of the last successful configuration reload.
+# TYPE alertmanager_config_last_reload_success_timestamp_seconds gauge
+alertmanager_config_last_reload_success_timestamp_seconds 1.548868538e+09
+# HELP alertmanager_config_last_reload_successful Whether the last configuration reload attempt was successful.
+# TYPE alertmanager_config_last_reload_successful gauge
+alertmanager_config_last_reload_successful 1
+# HELP go_gc_duration_seconds A summary of the GC invocation durations.
+# TYPE go_gc_duration_seconds summary
+go_gc_duration_seconds{quantile="0"} 0.0026947
+go_gc_duration_seconds{quantile="0.25"} 0.0026947
+go_gc_duration_seconds{quantile="0.5"} 0.0026947
+go_gc_duration_seconds{quantile="0.75"} 0.0026947
+go_gc_duration_seconds{quantile="1"} 0.0026947
+go_gc_duration_seconds_sum 0.0026947
+go_gc_duration_seconds_count 1
+# HELP go_goroutines Number of goroutines that currently exist.
+# TYPE go_goroutines gauge
+go_goroutines 31
+# HELP http_request_duration_microseconds The HTTP request latencies in microseconds.
+# TYPE http_request_duration_microseconds summary
+http_request_duration_microseconds{handler="add_alerts",quantile="0.5"} 488
+http_request_duration_microseconds{handler="add_alerts",quantile="0.9"} 711
+http_request_duration_microseconds{handler="add_alerts",quantile="0.99"} 711
+http_request_duration_microseconds_sum{handler="add_alerts"} 3250.2000000000003
+http_request_duration_microseconds_count{handler="add_alerts"} 5
+http_request_duration_microseconds{handler="add_silence",quantile="0.5"} 2037.9
+http_request_duration_microseconds{handler="add_silence",quantile="0.9"} 2151.2
+http_request_duration_microseconds{handler="add_silence",quantile="0.99"} 2151.2
+http_request_duration_microseconds_sum{handler="add_silence"} 6587
+http_request_duration_microseconds_count{handler="add_silence"} 3
+http_request_duration_microseconds{handler="alert_groups",quantile="0.5"} NaN
+http_request_duration_microseconds{handler="alert_groups",quantile="0.9"} NaN
+http_request_duration_microseconds{handler="alert_groups",quantile="0.99"} NaN
+http_request_duration_microseconds_sum{handler="alert_groups"} 0
+http_request_duration_microseconds_count{handler="alert_groups"} 0
+http_request_duration_microseconds{handler="app_files",quantile="0.5"} NaN
+http_request_duration_microseconds{handler="app_files",quantile="0.9"} NaN
+http_request_duration_microseconds{handler="app_files",quantile="0.99"} NaN
+http_request_duration_microseconds_sum{handler="app_files"} 0
+http_request_duration_microseconds_count{handler="app_files"} 0
+http_request_duration_microseconds{handler="del_silence",quantile="0.5"} NaN
+http_request_duration_microseconds{handler="del_silence",quantile="0.9"} NaN
+http_request_duration_microseconds{handler="del_silence",quantile="0.99"} NaN
+http_request_duration_microseconds_sum{handler="del_silence"} 0
+http_request_duration_microseconds_count{handler="del_silence"} 0
+http_request_duration_microseconds{handler="get_silence",quantile="0.5"} NaN
+http_request_duration_microseconds{handler="get_silence",quantile="0.9"} NaN
+http_request_duration_microseconds{handler="get_silence",quantile="0.99"} NaN
+http_request_duration_microseconds_sum{handler="get_silence"} 0
+http_request_duration_microseconds_count{handler="get_silence"} 0
+http_request_duration_microseconds{handler="index",quantile="0.5"} NaN
+http_request_duration_microseconds{handler="index",quantile="0.9"} NaN
+http_request_duration_microseconds{handler="index",quantile="0.99"} NaN
+http_request_duration_microseconds_sum{handler="index"} 0
+http_request_duration_microseconds_count{handler="index"} 0
+http_request_duration_microseconds{handler="legacy_add_alerts",quantile="0.5"} NaN
+http_request_duration_microseconds{handler="legacy_add_alerts",quantile="0.9"} NaN
+http_request_duration_microseconds{handler="legacy_add_alerts",quantile="0.99"} NaN
+http_request_duration_microseconds_sum{handler="legacy_add_alerts"} 0
+http_request_duration_microseconds_count{handler="legacy_add_alerts"} 0
+http_request_duration_microseconds{handler="lib_files",quantile="0.5"} NaN
+http_request_duration_microseconds{handler="lib_files",quantile="0.9"} NaN
+http_request_duration_microseconds{handler="lib_files",quantile="0.99"} NaN
+http_request_duration_microseconds_sum{handler="lib_files"} 0
+http_request_duration_microseconds_count{handler="lib_files"} 0
+http_request_duration_microseconds{handler="list_alerts",quantile="0.5"} NaN
+http_request_duration_microseconds{handler="list_alerts",quantile="0.9"} NaN
+http_request_duration_microseconds{handler="list_alerts",quantile="0.99"} NaN
+http_request_duration_microseconds_sum{handler="list_alerts"} 0
+http_request_duration_microseconds_count{handler="list_alerts"} 0
+http_request_duration_microseconds{handler="list_silences",quantile="0.5"} NaN
+http_request_duration_microseconds{handler="list_silences",quantile="0.9"} NaN
+http_request_duration_microseconds{handler="list_silences",quantile="0.99"} NaN
+http_request_duration_microseconds_sum{handler="list_silences"} 0
+http_request_duration_microseconds_count{handler="list_silences"} 0
+http_request_duration_microseconds{handler="prometheus",quantile="0.5"} NaN
+http_request_duration_microseconds{handler="prometheus",quantile="0.9"} NaN
+http_request_duration_microseconds{handler="prometheus",quantile="0.99"} NaN
+http_request_duration_microseconds_sum{handler="prometheus"} 0
+http_request_duration_microseconds_count{handler="prometheus"} 0
+http_request_duration_microseconds{handler="status",quantile="0.5"} NaN
+http_request_duration_microseconds{handler="status",quantile="0.9"} NaN
+http_request_duration_microseconds{handler="status",quantile="0.99"} NaN
+http_request_duration_microseconds_sum{handler="status"} 0
+http_request_duration_microseconds_count{handler="status"} 0
+# HELP http_request_size_bytes The HTTP request sizes in bytes.
+# TYPE http_request_size_bytes summary
+http_request_size_bytes{handler="add_alerts",quantile="0.5"} 2719
+http_request_size_bytes{handler="add_alerts",quantile="0.9"} 2719
+http_request_size_bytes{handler="add_alerts",quantile="0.99"} 2719
+http_request_size_bytes_sum{handler="add_alerts"} 13595
+http_request_size_bytes_count{handler="add_alerts"} 5
+http_request_size_bytes{handler="add_silence",quantile="0.5"} 358
+http_request_size_bytes{handler="add_silence",quantile="0.9"} 360
+http_request_size_bytes{handler="add_silence",quantile="0.99"} 360
+http_request_size_bytes_sum{handler="add_silence"} 1164
+http_request_size_bytes_count{handler="add_silence"} 3
+http_request_size_bytes{handler="alert_groups",quantile="0.5"} NaN
+http_request_size_bytes{handler="alert_groups",quantile="0.9"} NaN
+http_request_size_bytes{handler="alert_groups",quantile="0.99"} NaN
+http_request_size_bytes_sum{handler="alert_groups"} 0
+http_request_size_bytes_count{handler="alert_groups"} 0
+http_request_size_bytes{handler="app_files",quantile="0.5"} NaN
+http_request_size_bytes{handler="app_files",quantile="0.9"} NaN
+http_request_size_bytes{handler="app_files",quantile="0.99"} NaN
+http_request_size_bytes_sum{handler="app_files"} 0
+http_request_size_bytes_count{handler="app_files"} 0
+http_request_size_bytes{handler="del_silence",quantile="0.5"} NaN
+http_request_size_bytes{handler="del_silence",quantile="0.9"} NaN
+http_request_size_bytes{handler="del_silence",quantile="0.99"} NaN
+http_request_size_bytes_sum{handler="del_silence"} 0
+http_request_size_bytes_count{handler="del_silence"} 0
+http_request_size_bytes{handler="get_silence",quantile="0.5"} NaN
+http_request_size_bytes{handler="get_silence",quantile="0.9"} NaN
+http_request_size_bytes{handler="get_silence",quantile="0.99"} NaN
+http_request_size_bytes_sum{handler="get_silence"} 0
+http_request_size_bytes_count{handler="get_silence"} 0
+http_request_size_bytes{handler="index",quantile="0.5"} NaN
+http_request_size_bytes{handler="index",quantile="0.9"} NaN
+http_request_size_bytes{handler="index",quantile="0.99"} NaN
+http_request_size_bytes_sum{handler="index"} 0
+http_request_size_bytes_count{handler="index"} 0
+http_request_size_bytes{handler="legacy_add_alerts",quantile="0.5"} NaN
+http_request_size_bytes{handler="legacy_add_alerts",quantile="0.9"} NaN
+http_request_size_bytes{handler="legacy_add_alerts",quantile="0.99"} NaN
+http_request_size_bytes_sum{handler="legacy_add_alerts"} 0
+http_request_size_bytes_count{handler="legacy_add_alerts"} 0
+http_request_size_bytes{handler="lib_files",quantile="0.5"} NaN
+http_request_size_bytes{handler="lib_files",quantile="0.9"} NaN
+http_request_size_bytes{handler="lib_files",quantile="0.99"} NaN
+http_request_size_bytes_sum{handler="lib_files"} 0
+http_request_size_bytes_count{handler="lib_files"} 0
+http_request_size_bytes{handler="list_alerts",quantile="0.5"} NaN
+http_request_size_bytes{handler="list_alerts",quantile="0.9"} NaN
+http_request_size_bytes{handler="list_alerts",quantile="0.99"} NaN
+http_request_size_bytes_sum{handler="list_alerts"} 0
+http_request_size_bytes_count{handler="list_alerts"} 0
+http_request_size_bytes{handler="list_silences",quantile="0.5"} NaN
+http_request_size_bytes{handler="list_silences",quantile="0.9"} NaN
+http_request_size_bytes{handler="list_silences",quantile="0.99"} NaN
+http_request_size_bytes_sum{handler="list_silences"} 0
+http_request_size_bytes_count{handler="list_silences"} 0
+http_request_size_bytes{handler="prometheus",quantile="0.5"} NaN
+http_request_size_bytes{handler="prometheus",quantile="0.9"} NaN
+http_request_size_bytes{handler="prometheus",quantile="0.99"} NaN
+http_request_size_bytes_sum{handler="prometheus"} 0
+http_request_size_bytes_count{handler="prometheus"} 0
+http_request_size_bytes{handler="status",quantile="0.5"} NaN
+http_request_size_bytes{handler="status",quantile="0.9"} NaN
+http_request_size_bytes{handler="status",quantile="0.99"} NaN
+http_request_size_bytes_sum{handler="status"} 0
+http_request_size_bytes_count{handler="status"} 0
+# HELP http_requests_total Total number of HTTP requests made.
+# TYPE http_requests_total counter
+http_requests_total{code="200",handler="add_alerts",method="post"} 5
+http_requests_total{code="200",handler="add_silence",method="post"} 3
+# HELP http_response_size_bytes The HTTP response sizes in bytes.
+# TYPE http_response_size_bytes summary
+http_response_size_bytes{handler="add_alerts",quantile="0.5"} 20
+http_response_size_bytes{handler="add_alerts",quantile="0.9"} 20
+http_response_size_bytes{handler="add_alerts",quantile="0.99"} 20
+http_response_size_bytes_sum{handler="add_alerts"} 100
+http_response_size_bytes_count{handler="add_alerts"} 5
+http_response_size_bytes{handler="add_silence",quantile="0.5"} 43
+http_response_size_bytes{handler="add_silence",quantile="0.9"} 43
+http_response_size_bytes{handler="add_silence",quantile="0.99"} 43
+http_response_size_bytes_sum{handler="add_silence"} 129
+http_response_size_bytes_count{handler="add_silence"} 3
+http_response_size_bytes{handler="alert_groups",quantile="0.5"} NaN
+http_response_size_bytes{handler="alert_groups",quantile="0.9"} NaN
+http_response_size_bytes{handler="alert_groups",quantile="0.99"} NaN
+http_response_size_bytes_sum{handler="alert_groups"} 0
+http_response_size_bytes_count{handler="alert_groups"} 0
+http_response_size_bytes{handler="app_files",quantile="0.5"} NaN
+http_response_size_bytes{handler="app_files",quantile="0.9"} NaN
+http_response_size_bytes{handler="app_files",quantile="0.99"} NaN
+http_response_size_bytes_sum{handler="app_files"} 0
+http_response_size_bytes_count{handler="app_files"} 0
+http_response_size_bytes{handler="del_silence",quantile="0.5"} NaN
+http_response_size_bytes{handler="del_silence",quantile="0.9"} NaN
+http_response_size_bytes{handler="del_silence",quantile="0.99"} NaN
+http_response_size_bytes_sum{handler="del_silence"} 0
+http_response_size_bytes_count{handler="del_silence"} 0
+http_response_size_bytes{handler="get_silence",quantile="0.5"} NaN
+http_response_size_bytes{handler="get_silence",quantile="0.9"} NaN
+http_response_size_bytes{handler="get_silence",quantile="0.99"} NaN
+http_response_size_bytes_sum{handler="get_silence"} 0
+http_response_size_bytes_count{handler="get_silence"} 0
+http_response_size_bytes{handler="index",quantile="0.5"} NaN
+http_response_size_bytes{handler="index",quantile="0.9"} NaN
+http_response_size_bytes{handler="index",quantile="0.99"} NaN
+http_response_size_bytes_sum{handler="index"} 0
+http_response_size_bytes_count{handler="index"} 0
+http_response_size_bytes{handler="legacy_add_alerts",quantile="0.5"} NaN
+http_response_size_bytes{handler="legacy_add_alerts",quantile="0.9"} NaN
+http_response_size_bytes{handler="legacy_add_alerts",quantile="0.99"} NaN
+http_response_size_bytes_sum{handler="legacy_add_alerts"} 0
+http_response_size_bytes_count{handler="legacy_add_alerts"} 0
+http_response_size_bytes{handler="lib_files",quantile="0.5"} NaN
+http_response_size_bytes{handler="lib_files",quantile="0.9"} NaN
+http_response_size_bytes{handler="lib_files",quantile="0.99"} NaN
+http_response_size_bytes_sum{handler="lib_files"} 0
+http_response_size_bytes_count{handler="lib_files"} 0
+http_response_size_bytes{handler="list_alerts",quantile="0.5"} NaN
+http_response_size_bytes{handler="list_alerts",quantile="0.9"} NaN
+http_response_size_bytes{handler="list_alerts",quantile="0.99"} NaN
+http_response_size_bytes_sum{handler="list_alerts"} 0
+http_response_size_bytes_count{handler="list_alerts"} 0
+http_response_size_bytes{handler="list_silences",quantile="0.5"} NaN
+http_response_size_bytes{handler="list_silences",quantile="0.9"} NaN
+http_response_size_bytes{handler="list_silences",quantile="0.99"} NaN
+http_response_size_bytes_sum{handler="list_silences"} 0
+http_response_size_bytes_count{handler="list_silences"} 0
+http_response_size_bytes{handler="prometheus",quantile="0.5"} NaN
+http_response_size_bytes{handler="prometheus",quantile="0.9"} NaN
+http_response_size_bytes{handler="prometheus",quantile="0.99"} NaN
+http_response_size_bytes_sum{handler="prometheus"} 0
+http_response_size_bytes_count{handler="prometheus"} 0
+http_response_size_bytes{handler="status",quantile="0.5"} NaN
+http_response_size_bytes{handler="status",quantile="0.9"} NaN
+http_response_size_bytes{handler="status",quantile="0.99"} NaN
+http_response_size_bytes_sum{handler="status"} 0
+http_response_size_bytes_count{handler="status"} 0
+# HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
+# TYPE process_cpu_seconds_total counter
+process_cpu_seconds_total 0.15
+# HELP process_max_fds Maximum number of open file descriptors.
+# TYPE process_max_fds gauge
+process_max_fds 1.048576e+06
+# HELP process_open_fds Number of open file descriptors.
+# TYPE process_open_fds gauge
+process_open_fds 9
+# HELP process_resident_memory_bytes Resident memory size in bytes.
+# TYPE process_resident_memory_bytes gauge
+process_resident_memory_bytes 1.1808768e+07
+# HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
+# TYPE process_start_time_seconds gauge
+process_start_time_seconds 1.54886853731e+09
+# HELP process_virtual_memory_bytes Virtual memory size in bytes.
+# TYPE process_virtual_memory_bytes gauge
+process_virtual_memory_bytes 1.90464e+07

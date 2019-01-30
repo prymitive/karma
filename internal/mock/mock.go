@@ -15,7 +15,7 @@ import (
 func GetAbsoluteMockPath(filename string, version string) string {
 	_, f, _, _ := runtime.Caller(0)
 	cwd := filepath.Dir(f)
-	return path.Join(cwd, version, "api/v1", filename)
+	return path.Join(cwd, version, filename)
 }
 
 // RegisterURL for given url and return 200 status register mock http responder
