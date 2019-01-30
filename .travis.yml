@@ -131,7 +131,7 @@ jobs:
           tags: true
 
     - stage: Deploy docker image
-      if: repo = prymitive/karma AND branch = master AND (type = push OR tag = true)
+      if: repo = prymitive/karma AND ((type = push AND branch = master) OR tag = true)
       language: generic
       addons:
         apt:
