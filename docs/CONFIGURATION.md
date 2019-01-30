@@ -491,6 +491,14 @@ custom:
 Use at your own risk and be aware that used CSS class names might change without
 warning. This feature is provided as is without any guarantees.
 
+There is an example `dark.css` file providing a dark theme. It's included in the
+docker image as `/themes/dark.css` and can be enabled by passing environment
+variable via docker:
+
+```shell
+-e CUSTOM_CSS=/themes/dark.css
+```
+
 ## Command line flags
 
 Config file options are mapped to command line flags, so `alertmanager:interval`
