@@ -15,7 +15,11 @@ import (
 )
 
 func proxyPathPrefix(name string) string {
-	return fmt.Sprintf("%sproxy/alertmanager/%s", config.Config.Listen.Prefix, name)
+	maybeSlash := ""
+	if !strings.HasSuffix(config.Config.Listen.Prefix, "/") {
+		maybeSlash = "/"
+	}
+	return fmt.Sprintf("%s%sproxy/alertmanager/%s", config.Config.Listen.Prefix, maybeSlash, name)
 }
 
 func proxyPath(name, path string) string {
