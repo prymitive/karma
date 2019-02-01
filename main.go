@@ -103,8 +103,8 @@ func setupUpstreams() {
 		var httpTransport http.RoundTripper
 		var err error
 		// if either TLS root CA or client cert is configured then initialize custom transport where we have this setup
-		if s.TLS.CA != "" || s.TLS.Cert != "" {
-			httpTransport, err = alertmanager.NewHTTPTransport(s.TLS.CA, s.TLS.Cert, s.TLS.Key)
+		if s.TLS.CA != "" || s.TLS.Cert != "" || s.TLS.InsecureSkipVerify {
+			httpTransport, err = alertmanager.NewHTTPTransport(s.TLS.CA, s.TLS.Cert, s.TLS.Key, s.TLS.InsecureSkipVerify)
 			if err != nil {
 				log.Fatalf("Failed to create HTTP transport for Alertmanager '%s' with URI '%s': %s", s.Name, s.URI, err)
 			}

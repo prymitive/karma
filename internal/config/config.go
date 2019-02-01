@@ -190,6 +190,7 @@ func (config *configSchema) LogValues() {
 			Timeout: s.Timeout,
 			TLS:     s.TLS,
 			Proxy:   s.Proxy,
+			Headers: s.Headers,
 		}
 		servers = append(servers, server)
 	}

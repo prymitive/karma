@@ -8,9 +8,10 @@ type alertmanagerConfig struct {
 	Timeout time.Duration
 	Proxy   bool
 	TLS     struct {
-		CA   string
-		Cert string
-		Key  string
+		CA                 string
+		Cert               string
+		Key                string
+		InsecureSkipVerify bool `yaml:"insecureSkipVerify"`
 	}
 	Headers map[string]string
 }

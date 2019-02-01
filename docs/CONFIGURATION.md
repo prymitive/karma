@@ -41,6 +41,7 @@ alertmanager:
         ca: string
         cert: string
         key: string
+        insecureSkipVerify: bool
       headers:
         any: string
 ```
@@ -87,6 +88,8 @@ alertmanager:
   TLS connections to this Alertmanager instance if it requires a TLS client
   authentication.
   Note that this option requires `tls:cert` to be also set.
+- `tls:insecureSkipVerify` - disable server certificate validation, can be set
+  to allow using self-signed certs, use at your own risk
 - `headers` - a map with a list of key: values which are header: value.
   These custom headers will be sent with every request to the alert manager
   instance.
@@ -120,6 +123,10 @@ alertmanager:
       tls:
         cert: /etc/ssl/client.pem
         key: /etc/ssl/client.key
+    - name: self-signed
+      uri: https://test.example.com
+      tls:
+        insecureSkipVerify: true
 ```
 
 Defaults:
