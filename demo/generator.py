@@ -136,7 +136,8 @@ class AlwaysOnAlert(AlertGenerator):
     def alerts(self):
         def _gen(size, cluster):
             return [newAlert(
-                self._labels(instance="server{}".format(i), cluster=cluster),
+                self._labels(instance="server{}".format(i), cluster=cluster,
+                             severity="info"),
                 self._annotations(
                     summary="Silence this alert, it's always firing")
             ) for i in xrange(1, size)]
@@ -151,7 +152,8 @@ class RandomInstances(AlertGenerator):
         instances = random.randint(0, 30)
         return [
             newAlert(
-                self._labels(instance="server{}".format(i), cluster="staging"),
+                self._labels(instance="server{}".format(i), cluster="staging",
+                             severity="warning"),
                 self._annotations(
                     dashboard="https://www.google.com/search?q="
                               "server{}".format(i))
@@ -171,7 +173,7 @@ class RandomName(AlertGenerator):
                 newAlert(
                     self._labels(alertname="Alert Nr {}".format(throw),
                                  instance="server{}".format(i),
-                                 cluster="dev"),
+                                 cluster="dev", severity="info"),
                     self._annotations(
                         summary="This is a random alert",
                         dashboard="https://www.google.com/search?q="
@@ -191,7 +193,8 @@ class LowChance(AlertGenerator):
             return []
         return [
             newAlert(
-                self._labels(instance="server{}".format(i), cluster="dev"),
+                self._labels(instance="server{}".format(i), cluster="dev",
+                             severity="critical"),
                 self._annotations()
             ) for i in xrange(0, 3)
         ]
@@ -204,7 +207,8 @@ class TimeAnnotation(AlertGenerator):
 
     def alerts(self):
         return [
-            newAlert(self._labels(instance="server1", cluster="prod"),
+            newAlert(self._labels(instance="server1", cluster="prod",
+                                  severity="warning"),
                      self._annotations(time=str(int(time.time())))
             )
         ]
@@ -222,7 +226,7 @@ class DiskFreeLowAlert(AlertGenerator):
                 newAlert(self._labels(instance="server{}".format(i),
                                       cluster="prod",
                                       device="/dev/sda{}".format(i),
-                                      mount_point="/disk"),
+                                      mount_point="/disk", severity="critical"),
                          self._annotations(
                             summary="Only {}% free space left on /disk".format(
                                 spaceFree),
@@ -238,7 +242,8 @@ class SilencedAlert(AlertGenerator):
 
     def alerts(self):
         return [
-            newAlert(self._labels(instance="server1", cluster="prod"),
+            newAlert(self._labels(instance="server1", cluster="prod",
+                                  severity="info"),
                      self._annotations(
                         alertReference="https://www."
                                        "youtube.com/watch?v=dQw4w9WgXcQ")
@@ -265,7 +270,8 @@ class MixedAlerts(AlertGenerator):
 
     def alerts(self):
         return [
-            newAlert(self._labels(instance="server{}".format(i), cluster="prod"),
+            newAlert(self._labels(instance="server{}".format(i), cluster="prod",
+                                  severity="warning"),
                      self._annotations(
                         alertReference="https://www."
                                        "youtube.com/watch?v=dQw4w9WgXcQ")
@@ -295,7 +301,8 @@ class LongNameAlerts(AlertGenerator):
     def alerts(self):
         def _gen(size, cluster):
             return [newAlert(
-                self._labels(instance="server{}".format(i), cluster=cluster),
+                self._labels(instance="server{}".format(i), cluster=cluster,
+                             severity="info"),
                 self._annotations(
                     verylong="Lorem ipsum dolor sit amet, consectetur "
                              "adipiscing elit, sed do eiusmod tempor incididunt"

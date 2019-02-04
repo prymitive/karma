@@ -25,6 +25,11 @@ labels:
       - cluster
       - instance
       - "@receiver"
+    custom:
+      severity:
+        info: "#87c4e0"
+        warning: "#ffae42"
+        critical: "#ff220c"
 log:
   config: false
   level: warning
