@@ -90,6 +90,7 @@ labels:
   - abc
   - def
   color:
+    custom: {}
     static:
     - a
     - bb

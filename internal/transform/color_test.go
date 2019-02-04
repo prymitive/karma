@@ -9,22 +9,23 @@ import (
 )
 
 type colorTest struct {
-	config []string
-	labels map[string]string
-	colors map[string]string
+	uniqueLabels []string
+	customLabels map[string]map[string]string
+	labels       map[string]string
+	colors       map[string]string
 }
 
 var colorTests = []colorTest{
-	colorTest{
+	{
 		labels: map[string]string{},
 	},
-	colorTest{
+	{
 		labels: map[string]string{
 			"node": "localhost",
 		},
 	},
-	colorTest{
-		config: []string{"node"},
+	{
+		uniqueLabels: []string{"node"},
 		labels: map[string]string{
 			"node": "localhost",
 		},
@@ -32,8 +33,8 @@ var colorTests = []colorTest{
 			"node": "localhost",
 		},
 	},
-	colorTest{
-		config: []string{"node", "instance"},
+	{
+		uniqueLabels: []string{"node", "instance"},
 		labels: map[string]string{
 			"node":     "instance",
 			"env":      "instance",
@@ -45,8 +46,8 @@ var colorTests = []colorTest{
 			"instance": "server1",
 		},
 	},
-	colorTest{
-		config: []string{"job", "node", "instance"},
+	{
+		uniqueLabels: []string{"job", "node", "instance"},
 		labels: map[string]string{
 			"job": "node_ping",
 		},
@@ -54,11 +55,32 @@ var colorTests = []colorTest{
 			"job": "node_ping",
 		},
 	},
+	{
+		customLabels: map[string]map[string]string{
+			"node": map[string]string{"localhost": "#fff"},
+		},
+		labels: map[string]string{
+			"node": "localhost",
+		},
+		colors: map[string]string{
+			"node": "localhost",
+		},
+	},
+	{
+		customLabels: map[string]map[string]string{
+			"node": map[string]string{"localhost": "not a color"},
+		},
+		labels: map[string]string{
+			"node": "localhost",
+		},
+		colors: map[string]string{},
+	},
 }
 
 func TestColorLabel(t *testing.T) {
 	for _, testCase := range colorTests {
-		config.Config.Labels.Color.Unique = testCase.config
+		config.Config.Labels.Color.Unique = testCase.uniqueLabels
+		config.Config.Labels.Color.Custom = testCase.customLabels
 		colorStore := models.LabelsColorMap{}
 		for key, value := range testCase.labels {
 			transform.ColorLabel(colorStore, key, value)

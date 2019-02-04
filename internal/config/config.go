@@ -137,6 +137,7 @@ func (config *configSchema) Read() {
 	config.Custom.JS = v.GetString("custom.js")
 	config.Debug = v.GetBool("debug")
 	config.Filters.Default = v.GetStringSlice("filters.default")
+	config.Labels.Color.Custom = map[string]map[string]string{}
 	config.Labels.Color.Static = v.GetStringSlice("labels.color.static")
 	config.Labels.Color.Unique = v.GetStringSlice("labels.color.unique")
 	config.Labels.Keep = v.GetStringSlice("labels.keep")
@@ -157,6 +158,11 @@ func (config *configSchema) Read() {
 	}
 
 	err = v.UnmarshalKey("jira", &config.JIRA)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	err = v.UnmarshalKey("labels.color.custom", &config.Labels.Color.Custom)
 	if err != nil {
 		log.Fatal(err)
 	}

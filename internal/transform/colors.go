@@ -10,6 +10,7 @@ import (
 	"github.com/prymitive/karma/internal/slices"
 
 	"github.com/hansrodtang/randomcolor"
+	plcolors "gopkg.in/go-playground/colors.v1"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -34,10 +35,44 @@ func labelToSeed(key string, val string) int64 {
 	return seed
 }
 
+func rgbToBrightness(r, g, b uint8) int32 {
+	return ((int32(r) * 299) + (int32(g) * 587) + (int32(b) * 114)) / 1000
+}
+
 // ColorLabel update karmaColorMap object with a color object generated
 // from label key and value passed here
 // It's used to generate unique colors for configured labels
 func ColorLabel(colorStore models.LabelsColorMap, key string, val string) {
+	// first handle custom colors
+	_, ok := config.Config.Labels.Color.Custom[key]
+	if ok {
+		c, ol := config.Config.Labels.Color.Custom[key][val]
+		if ol {
+			color, err := plcolors.Parse(c)
+			if err != nil {
+				log.Warningf("Failed to parse custom color for %s=%s: %s", key, val, err)
+				return
+			}
+			rgb := color.ToRGB()
+			bc := models.Color{
+				Red:   rgb.R,
+				Green: rgb.G,
+				Blue:  rgb.B,
+				Alpha: 255,
+			}
+			brightness := rgbToBrightness(bc.Red, bc.Green, bc.Blue)
+			if _, found := colorStore[key]; !found {
+				colorStore[key] = make(map[string]models.LabelColors)
+			}
+			colorStore[key][val] = models.LabelColors{
+				Brightness: brightness,
+				Background: bc,
+			}
+		}
+		return
+	}
+
+	// if no custom color is found then generate unique colors if needed
 	if slices.StringInSlice(config.Config.Labels.Color.Unique, key) {
 		if _, found := colorStore[key]; !found {
 			colorStore[key] = make(map[string]models.LabelColors)
@@ -54,7 +89,7 @@ func ColorLabel(colorStore models.LabelsColorMap, key string, val string) {
 			}
 			// check if color is bright or dark and pick the right background
 			// uses https://www.w3.org/WAI/ER/WD-AERT/#color-contrast method
-			brightness := ((int32(bc.Red) * 299) + (int32(bc.Green) * 587) + (int32(bc.Blue) * 114)) / 1000
+			brightness := rgbToBrightness(bc.Red, bc.Green, bc.Blue)
 			colorStore[key][val] = models.LabelColors{
 				Brightness: brightness,
 				Background: bc,
