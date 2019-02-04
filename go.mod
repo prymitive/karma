@@ -25,6 +25,7 @@ require (
 	github.com/spf13/pflag v1.0.3
 	github.com/spf13/viper v1.3.1
 	github.com/terinjokes/bakelite v0.2.0 // indirect
+	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/jarcoal/httpmock.v1 v1.0.0-20181117152235-275e9df93516
 	gopkg.in/yaml.v2 v2.2.2
 )

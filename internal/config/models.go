@@ -47,6 +47,7 @@ type configSchema struct {
 		Keep  []string
 		Strip []string
 		Color struct {
+			Custom map[string]map[string]string
 			Static []string
 			Unique []string
 		}

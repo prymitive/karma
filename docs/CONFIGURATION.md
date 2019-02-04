@@ -263,6 +263,7 @@ labels:
   color:
     static: []
     unique: []
+    custom: {}
   keep: list of strings
   strip: list of strings
 ```
@@ -274,6 +275,13 @@ labels:
   quickly learn which instance is affected by given alert.
 - `color:unique` - list of label names that should have unique colors generated
   in the UI.
+- `color:custom` - nested map of label names and value with colors - this allows
+  to configure a set of labels with custom predefined colors applied to them
+  rather than generated. Colors can be defined as RGB or HEX values.
+  Value is a mapping with `label name` -> `label value` -> `color`, see examples
+  below.
+  Note: this option is not available via environment variables, you can only set
+  it via the config file.
 - `keep` - list of allowed labels, if empty all labels are allowed.
 - `strip` - list of ignored labels.
 
@@ -282,8 +290,8 @@ same color regardless of the value) and unique color for the `@receiver` label
 (every `@receiver` label will have color unique for each value).
 
 ```yaml
-colors:
-  labels:
+labels:
+  color:
     static:
       - job
     unique:
@@ -309,6 +317,19 @@ labels:
   strip: []
 ```
 
+Example where `severity` label will have a red color for `critical`, yellow
+for `warning` and blue for `info`:
+
+```yaml
+labels:
+  color:
+    custom:
+      severity:
+        info: "#87c4e0"
+        warning: "#ffae42"
+        critical: "#ff220c"
+```
+
 Defaults:
 
 ```yaml
@@ -316,6 +337,7 @@ labels:
   color:
     static: []
     unique: []
+    custom: {}
   keep: []
   strip: []
 ```
