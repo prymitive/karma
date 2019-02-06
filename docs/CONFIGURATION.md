@@ -324,6 +324,8 @@ for `warning` and blue for `info`:
 labels:
   color:
     custom:
+      "@alertmanager":
+        prod: "#e6e"
       severity:
         info: "#87c4e0"
         warning: "#ffae42"
