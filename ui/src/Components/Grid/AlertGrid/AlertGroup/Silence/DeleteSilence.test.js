@@ -78,7 +78,10 @@ describe("<DeleteSilence />", () => {
 
   it("opens modal on click", () => {
     const tree = MountedDeleteSilence();
-    tree.simulate("click");
+    tree
+      .find(".badge")
+      .at(0)
+      .simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(1);
   });
 });
