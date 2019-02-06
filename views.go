@@ -162,6 +162,17 @@ func alerts(c *gin.Context) {
 					}
 				}
 
+				if ck, foundKey := dedupedColors["@alertmanager"]; foundKey {
+					for _, am := range alert.Alertmanager {
+						if cv, foundVal := ck[am.Name]; foundVal {
+							if _, found := colors["@alertmanager"]; !found {
+								colors["@alertmanager"] = map[string]models.LabelColors{}
+							}
+							colors["@alertmanager"][am.Name] = cv
+						}
+					}
+				}
+
 				agCopy.StateCount[alert.State]++
 
 				for _, am := range alert.Alertmanager {
