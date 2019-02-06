@@ -70,13 +70,13 @@ const VerifyResponse = async response => {
   return tree;
 };
 
-describe("<DeleteSilence />", async () => {
+describe("<DeleteSilence />", () => {
   it("label is 'Delete' by default", () => {
     const tree = MountedDeleteSilence();
     expect(tree.text()).toBe("Delete");
   });
 
-  it("opens modal on click", async () => {
+  it("opens modal on click", () => {
     const tree = MountedDeleteSilence();
     tree.simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(1);
@@ -84,12 +84,12 @@ describe("<DeleteSilence />", async () => {
 });
 
 describe("<DeleteSilenceModalContent />", () => {
-  it("renders LabelSetList on mount", async () => {
+  it("renders LabelSetList on mount", () => {
     const tree = MountedDeleteSilenceModalContent();
     expect(tree.find("LabelSetList")).toHaveLength(1);
   });
 
-  it("fetches affected alerts on mount", async () => {
+  it("fetches affected alerts on mount", () => {
     MountedDeleteSilenceModalContent();
     expect(fetch).toHaveBeenCalled();
   });
