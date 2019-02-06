@@ -57,7 +57,7 @@
     "@commitlint/travis-cli": "7.5.0",
     "diffable-html": "4.0.0",
     "enzyme": "3.8.0",
-    "enzyme-adapter-react-16": "1.8.0",
+    "enzyme-adapter-react-16": "1.9.1",
     "jest-canvas-mock": "1.1.0",
     "jest-date-mock": "1.0.7",
     "jest-fetch-mock": "2.1.0",
