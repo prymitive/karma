@@ -1,0 +1,33 @@
+// this is used by bootswatch to import the font, zero it since we import all
+// fonts below
+$web-font-path: "";
+
+/* Lato (medium, regular) */
+@font-face {
+  font-family: "Lato";
+  font-weight: 400;
+  font-style: normal;
+  text-rendering: optimizeLegibility;
+  src: url("~lato-font/fonts/lato-medium/lato-medium.woff2") format("woff2"),
+    url("~lato-font/fonts/lato-medium/lato-medium.woff") format("woff");
+}
+/* Lato (medium, italic) */
+@font-face {
+  font-family: "Lato";
+  font-weight: 400;
+  font-style: italic;
+  text-rendering: optimizeLegibility;
+  src: url("~lato-font/fonts/lato-medium-italic/lato-medium-italic.woff2")
+      format("woff2"),
+    url("~lato-font/fonts/lato-medium-italic/lato-medium-italic.woff")
+      format("woff");
+}
+/* Lato (heavy, regular) */
+@font-face {
+  font-family: "Lato";
+  font-weight: 700;
+  font-style: normal;
+  text-rendering: optimizeLegibility;
+  src: url("~lato-font/fonts/lato-bold/lato-bold.woff2") format("woff2"),
+    url("~lato-font/fonts/lato-bold/lato-bold.woff") format("woff");
+}
