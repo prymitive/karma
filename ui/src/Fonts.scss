@@ -2,32 +2,31 @@
 // fonts below
 $web-font-path: "";
 
-/* Lato (medium, regular) */
 @font-face {
   font-family: "Lato";
   font-weight: 400;
   font-style: normal;
   text-rendering: optimizeLegibility;
-  src: url("~lato-font/fonts/lato-medium/lato-medium.woff2") format("woff2"),
-    url("~lato-font/fonts/lato-medium/lato-medium.woff") format("woff");
+  src: url("~lato-font/fonts/lato-normal/lato-normal.woff2") format("woff2"),
+    url("~lato-font/fonts/lato-normal/lato-normal.woff") format("woff");
 }
-/* Lato (medium, italic) */
+
 @font-face {
   font-family: "Lato";
   font-weight: 400;
   font-style: italic;
   text-rendering: optimizeLegibility;
-  src: url("~lato-font/fonts/lato-medium-italic/lato-medium-italic.woff2")
+  src: url("~lato-font/fonts/lato-normal-italic/lato-normal-italic.woff2")
       format("woff2"),
-    url("~lato-font/fonts/lato-medium-italic/lato-medium-italic.woff")
+    url("~lato-font/fonts/lato-normal-italic/lato-normal-italic.woff")
       format("woff");
 }
-/* Lato (heavy, regular) */
+
 @font-face {
   font-family: "Lato";
   font-weight: 700;
   font-style: normal;
   text-rendering: optimizeLegibility;
-  src: url("~lato-font/fonts/lato-bold/lato-bold.woff2") format("woff2"),
-    url("~lato-font/fonts/lato-bold/lato-bold.woff") format("woff");
+  src: url("~lato-font/fonts/lato-semibold/lato-semibold.woff2") format("woff2"),
+    url("~lato-font/fonts/lato-semibold/lato-semibold.woff") format("woff");
 }
