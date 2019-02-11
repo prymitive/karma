@@ -3,6 +3,7 @@
 $web-font-path: "";
 
 @font-face {
+  font-display: swap;
   font-family: "Lato";
   font-weight: 400;
   font-style: normal;
@@ -12,6 +13,7 @@ $web-font-path: "";
 }
 
 @font-face {
+  font-display: swap;
   font-family: "Lato";
   font-weight: 400;
   font-style: italic;
@@ -23,6 +25,7 @@ $web-font-path: "";
 }
 
 @font-face {
+  font-display: swap;
   font-family: "Lato";
   font-weight: 700;
   font-style: normal;
