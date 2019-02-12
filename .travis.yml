@@ -25,7 +25,7 @@ jobs:
         - make mock-assets
       script: make test-go
       after_success:
-        - bash <(curl -s https://codecov.io/bash) -F backend
+        - travis_retry bash <(curl -s https://codecov.io/bash) -F backend
 
     - stage: Test
       <<: *DEFAULTS_JS
@@ -34,7 +34,7 @@ jobs:
         - NODE_ENV=test
       script: make test-js
       after_success:
-        - bash <(curl -s https://codecov.io/bash) -F ui -s ui
+        - travis_retry bash <(curl -s https://codecov.io/bash) -F ui -s ui
 
     # duplicate js test but with a different time zone, to ensure that tests/code work with non-UTC time zone
     - stage: Test
@@ -45,7 +45,7 @@ jobs:
         - TZ=Pacific/Easter
       script: make test-js
       after_success:
-        - bash <(curl -s https://codecov.io/bash) -F ui -s ui
+        - travis_retry bash <(curl -s https://codecov.io/bash) -F ui -s ui
 
     - stage: Lint
       <<: *DEFAULTS_JS
@@ -61,7 +61,7 @@ jobs:
       before_script:
         - make mock-assets
         # https://github.com/golang/go/issues/26794
-        - go mod download
+        - travis_retry go mod download
       script: make lint-go
 
     - stage: Lint
@@ -83,7 +83,7 @@ jobs:
         - GO111MODULE=on
       script:
         - make mock-assets
-        - go get -d -v
+        - travis_retry go get -d -v
         - git diff --exit-code
 
     - stage: Build Docker image
@@ -103,14 +103,14 @@ jobs:
       before_script:
         # this stage needs to build everything including assets file and that
         # requires running webpack, so we need nodejs here
-        - nvm install $(< .nvmrc)
+        - travis_retry nvm install $(< .nvmrc)
       script:
         # https://github.com/golang/go/issues/26794
-        - go mod download
+        - travis_retry go mod download
         # compile assets via webpack and build those into bindata_assetfs.go file
         - make bindata_assetfs.go
         # and now compile using bakelite for all target archs
-        - go install github.com/terinjokes/bakelite
+        - travis_retry go install github.com/terinjokes/bakelite
         - export SOURCE_DATE_EPOCH=$(git show -s --format=%ci ${TRAVIS_TAG:-${TRAVIS_COMMIT}}^{commit})
         - bakelite -platforms="-plan9" -ldflags="-X main.version=\"$(make show-version)\"" github.com/prymitive/karma
         - for i in karma-*; do tar --mtime="${SOURCE_DATE_EPOCH}" --owner=0 --group=0 --numeric-owner -c $i | gzip -n - > $i.tar.gz; done
@@ -147,11 +147,11 @@ jobs:
         - export DOCKER_IMAGE=karma
         - export IMAGE_NAME="${DOCKER_USERNAME}/${DOCKER_IMAGE}"
         - make docker-image
-        - docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
+        - travis_retry docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
         - docker tag "${LOCAL_IMAGE}" "${IMAGE_NAME}:latest"
         # tag with the version only if we have a git tag (new release was pushed)
         - if [ -n "$TRAVIS_TAG" ]; then docker tag "${LOCAL_IMAGE}" "${IMAGE_NAME}:${VERSION}" ; fi
-        - docker push "${IMAGE_NAME}"
+        - travis_retry docker push "${IMAGE_NAME}"
 
     - stage: Deploy demo app to Heroku
       # deploy on every job that isn't a PR, this way we:
@@ -174,8 +174,8 @@ jobs:
         - echo "  password $HEROKU_TOKEN" >> $HOME/.netrc
       script:
         - docker build --build-arg VERSION=$(make show-version) -t registry.heroku.com/karma-demo/web -f demo/Dockerfile .
-        - docker login -u _ -p "$HEROKU_TOKEN" registry.heroku.com
-        - docker push registry.heroku.com/karma-demo/web
+        - travis_retry docker login -u _ -p "$HEROKU_TOKEN" registry.heroku.com
+        - travis_retry docker push registry.heroku.com/karma-demo/web
         # bundled heroku cli doesn't know anything about containers, update it
-        - curl https://cli-assets.heroku.com/install.sh | sh
-        - /usr/local/bin/heroku container:release web --app karma-demo
+        - travis_retry curl https://cli-assets.heroku.com/install.sh | sh
+        - travis_retry /usr/local/bin/heroku container:release web --app karma-demo
