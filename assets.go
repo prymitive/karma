@@ -93,8 +93,8 @@ func serveFileOr404(path string, contentType string, c *gin.Context) {
 func staticHeaders(prefix string) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		if strings.HasPrefix(c.Request.URL.Path, prefix) {
-			c.Header("Cache-Control", "public, max-age=2592000")
-			expiresTime := time.Now().AddDate(0, 0, 30).Format(http.TimeFormat)
+			c.Header("Cache-Control", "public, max-age=31536000")
+			expiresTime := time.Now().AddDate(0, 0, 365).Format(http.TimeFormat)
 			c.Header("Expires", expiresTime)
 		}
 	}
