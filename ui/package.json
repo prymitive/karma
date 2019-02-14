@@ -12,7 +12,7 @@
     "@fortawesome/react-fontawesome": "0.1.4",
     "@sentry/browser": "4.5.4",
     "body-scroll-lock": "2.6.1",
-    "bootstrap": "4.2.1",
+    "bootstrap": "4.3.1",
     "bootswatch": "4.2.1",
     "copy-to-clipboard": "3.0.8",
     "fast-deep-equal": "2.0.1",
