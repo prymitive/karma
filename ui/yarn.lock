@@ -2177,10 +2177,10 @@ bootstrap@4.3.1:
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.3.1.tgz#280ca8f610504d99d7b6b4bfc4b68cec601704ac"
   integrity sha512-rXqOmH1VilAt2DyPzluTi2blhk17bO7ef+zLLPlWvG494pDxcM234pJ8wTc/6R40UWizAIIMgxjvxZg5kmsbag==
 
-bootswatch@4.2.1:
-  version "4.2.1"
-  resolved "https://registry.yarnpkg.com/bootswatch/-/bootswatch-4.2.1.tgz#be402aeb8f9920c008c62f8a77c29a91a11b4c8a"
-  integrity sha512-2UV3a/3sleGVsOa8q3t5O4+u+ONfQvscMTKwqMVd0tkcypGhiLeE3W461qJ4uZzo6AzCSuYBTzGmOSdel0g9/A==
+bootswatch@4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/bootswatch/-/bootswatch-4.3.1.tgz#be54748b420a1962dbcf9782605aac092f842e38"
+  integrity sha512-kNdpo/TnhO++aic1IODLIe1V0lx6pXwHMpwXMacpANDnuVDtgU1MUgUbVMC3rSWm4UcbImfwPraNYgjKDT0BtA==
 
 brace-expansion@^1.1.7:
   version "1.1.11"
