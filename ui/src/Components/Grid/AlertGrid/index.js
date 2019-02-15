@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
+import moment from "moment";
+
 import MasonryInfiniteScroller from "react-masonry-infinite";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -67,6 +69,42 @@ const AlertGrid = observer(
       );
     });
 
+    compare = (a, b) => {
+      const { settingsStore } = this.props;
+
+      // don't sort if sorting is disabled
+      if (
+        settingsStore.gridConfig.config.sortOrder ===
+        settingsStore.gridConfig.options.disabled.value
+      )
+        return 0;
+
+      const getLabelValue = g => {
+        // if timestamp sort is enabled use latest alert for sorting
+        if (
+          settingsStore.gridConfig.config.sortOrder ===
+          settingsStore.gridConfig.options.startsAt.value
+        ) {
+          return moment.max(g.alerts.map(a => moment(a.startsAt)));
+        }
+
+        const label = settingsStore.gridConfig.config.sortLabel;
+        return g.labels[label] || g.alerts[0].labels[label] || "";
+      };
+
+      const av = getLabelValue(a);
+      const bv = getLabelValue(b);
+
+      const val = settingsStore.gridConfig.config.reverseSort ? -1 : 1;
+      if (av > bv) {
+        return val;
+      } else if (av < bv) {
+        return val * -1;
+      } else {
+        return 0;
+      }
+    };
+
     componentDidUpdate() {
       // whenever grid component re-renders we need to ensure that grid elements
       // are packed correctly
@@ -94,13 +132,13 @@ const AlertGrid = observer(
               </div>
             }
           >
-            {Object.keys(alertStore.data.groups)
-              .sort()
+            {Object.values(alertStore.data.groups)
+              .sort(this.compare)
               .slice(0, this.groupsToRender.value)
-              .map(id => (
+              .map(group => (
                 <AlertGroup
-                  key={id}
-                  group={alertStore.data.groups[id]}
+                  key={group.id}
+                  group={group}
                   showAlertmanagers={
                     Object.keys(alertStore.data.upstreams.clusters).length > 1
                   }

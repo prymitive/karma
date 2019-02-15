@@ -16,7 +16,7 @@ const FakeConfiguration = () => {
   return mount(<FetchConfiguration settingsStore={settingsStore} />);
 };
 
-describe("<FetchConfiguration /> className", () => {
+describe("<FetchConfiguration />", () => {
   it("matches snapshot with default values", () => {
     const tree = FakeConfiguration();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();

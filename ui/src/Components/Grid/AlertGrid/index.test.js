@@ -46,12 +46,12 @@ const MockGroup = (groupName, alertCount) => {
   return group;
 };
 
-const MockGroupList = count => {
+const MockGroupList = (count, alertPerGroup) => {
   let groups = {};
   for (let i = 1; i <= count; i++) {
     let id = `id${i}`;
     let hash = `hash${i}`;
-    let group = MockGroup(`group${i}`, count);
+    let group = MockGroup(`group${i}`, alertPerGroup);
     group.id = id;
     group.hash = hash;
     groups[id] = group;
@@ -66,14 +66,14 @@ const MockGroupList = count => {
 
 describe("<AlertGrid />", () => {
   it("renders only first 50 alert groups", () => {
-    MockGroupList(60);
+    MockGroupList(60, 5);
     const tree = ShallowAlertGrid();
     const alertGroups = tree.find("AlertGroup");
     expect(alertGroups).toHaveLength(50);
   });
 
   it("appends 30 groups after loadMore() call", () => {
-    MockGroupList(100);
+    MockGroupList(100, 5);
     const tree = ShallowAlertGrid();
     // call it directly, it should happen on scroll to the bottom of the page
     tree.instance().loadMore();
@@ -107,6 +107,127 @@ describe("<AlertGrid />", () => {
     const tree = ShallowAlertGrid();
     const instance = tree.instance();
     instance.storeMasonryRef("foo");
-    expect(instance.masonryComponentReference.ref).toBe("foo");
+    expect(instance.masonryComponentReference.ref).toEqual("foo");
+  });
+
+  it("doesn't sort groups when sorting is set to 'disabled'", () => {
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.disabled.value;
+    settingsStore.gridConfig.config.reverseSort = false;
+    MockGroupList(3, 1);
+    const tree = ShallowAlertGrid();
+    const alertGroups = tree.find("AlertGroup");
+    expect(alertGroups.map(g => g.props().group.id)).toEqual([
+      "id1",
+      "id2",
+      "id3"
+    ]);
+  });
+
+  it("doesn't sort groups when sorting is set to 'disabled' and 'reverse' is on", () => {
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.disabled.value;
+    settingsStore.gridConfig.config.reverseSort = true;
+    MockGroupList(3, 1);
+    const tree = ShallowAlertGrid();
+    const alertGroups = tree.find("AlertGroup");
+    expect(alertGroups.map(g => g.props().group.id)).toEqual([
+      "id1",
+      "id2",
+      "id3"
+    ]);
+  });
+
+  it("groups are sorted by timestamp when sorting is set to 'startsAt'", () => {
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.startsAt.value;
+    settingsStore.gridConfig.config.reverseSort = false;
+
+    MockGroupList(3, 1);
+    alertStore.data.groups.id1.alerts[0].startsAt = "2001-01-01T00:00:00Z";
+    alertStore.data.groups.id2.alerts[0].startsAt = "2002-01-01T00:00:00Z";
+    alertStore.data.groups.id3.alerts[0].startsAt = "2000-01-01T00:00:00Z";
+
+    const tree = ShallowAlertGrid();
+    const alertGroups = tree.find("AlertGroup");
+    expect(alertGroups.map(g => g.props().group.id)).toEqual([
+      "id3",
+      "id1",
+      "id2"
+    ]);
+  });
+
+  it("groups are sorted by reversed timestamp when sorting is set to 'startsAt' and 'reverse' is on", () => {
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.startsAt.value;
+    settingsStore.gridConfig.config.reverseSort = true;
+
+    MockGroupList(3, 1);
+    alertStore.data.groups.id1.alerts[0].startsAt = "2001-01-01T00:00:00Z";
+    alertStore.data.groups.id2.alerts[0].startsAt = "2002-01-01T00:00:00Z";
+    alertStore.data.groups.id3.alerts[0].startsAt = "2000-01-01T00:00:00Z";
+
+    const tree = ShallowAlertGrid();
+    const alertGroups = tree.find("AlertGroup");
+    expect(alertGroups.map(g => g.props().group.id)).toEqual([
+      "id2",
+      "id1",
+      "id3"
+    ]);
+  });
+
+  it("groups are sorted by label when sorting is set to 'label'", () => {
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.label.value;
+    settingsStore.gridConfig.config.sortLabel = "instance";
+    settingsStore.gridConfig.config.reverseSort = false;
+
+    MockGroupList(3, 1);
+    alertStore.data.groups.id1.alerts[0].labels.instance = "abc1";
+    alertStore.data.groups.id2.alerts[0].labels.instance = "abc3";
+    alertStore.data.groups.id3.alerts[0].labels.instance = "abc2";
+
+    const tree = ShallowAlertGrid();
+    const alertGroups = tree.find("AlertGroup");
+    expect(alertGroups.map(g => g.props().group.id)).toEqual([
+      "id1",
+      "id3",
+      "id2"
+    ]);
+  });
+
+  it("groups are sorted by reverse label when sorting is set to 'label' and 'reverse' is on", () => {
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.label.value;
+    settingsStore.gridConfig.config.sortLabel = "instance";
+    settingsStore.gridConfig.config.reverseSort = true;
+
+    MockGroupList(3, 1);
+    alertStore.data.groups.id1.alerts[0].labels.instance = "abc1";
+    alertStore.data.groups.id2.alerts[0].labels.instance = "abc3";
+    alertStore.data.groups.id3.alerts[0].labels.instance = "abc2";
+
+    const tree = ShallowAlertGrid();
+    const alertGroups = tree.find("AlertGroup");
+    expect(alertGroups.map(g => g.props().group.id)).toEqual([
+      "id2",
+      "id3",
+      "id1"
+    ]);
+  });
+
+  it("sorting is no-op when when sorting is set to 'label' and alerts lack that label", () => {
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.label.value;
+    settingsStore.gridConfig.config.sortLabel = "foo";
+    settingsStore.gridConfig.config.reverseSort = false;
+    MockGroupList(3, 1);
+    const tree = ShallowAlertGrid();
+    const alertGroups = tree.find("AlertGroup");
+    expect(alertGroups.map(g => g.props().group.id)).toEqual([
+      "id1",
+      "id2",
+      "id3"
+    ]);
   });
 });
