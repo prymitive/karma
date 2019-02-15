@@ -69,6 +69,7 @@ const AlertManagerInput = observer(
       return (
         <ReactSelect
           styles={ReactSelectStyles}
+          classNamePrefix="react-select"
           instanceId="silence-input-alertmanagers"
           defaultValue={silenceFormStore.data.alertmanagers}
           options={AlertmanagerClustersToOption(

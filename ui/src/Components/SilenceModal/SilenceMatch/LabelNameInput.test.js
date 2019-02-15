@@ -72,7 +72,7 @@ describe("<LabelNameInput />", () => {
 
   it("renders suggestions", () => {
     const tree = ValidateSuggestions();
-    const options = tree.find("[role='option']");
+    const options = tree.find(".react-select__option");
     expect(options).toHaveLength(2);
     expect(options.at(0).text()).toBe("job");
     expect(options.at(1).text()).toBe("cluster");
@@ -80,7 +80,7 @@ describe("<LabelNameInput />", () => {
 
   it("clicking on options updates the matcher", () => {
     const tree = ValidateSuggestions();
-    const option = tree.find("[role='option']").at(0);
+    const option = tree.find(".react-select__option").at(0);
     option.simulate("click");
     expect(matcher.name).toBe("job");
   });

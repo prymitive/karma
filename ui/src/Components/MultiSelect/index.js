@@ -93,7 +93,11 @@ class MultiSelect extends CreatableSelect {
 
   render() {
     return (
-      <CreatableSelect styles={ReactSelectStyles} {...this.renderProps()} />
+      <CreatableSelect
+        styles={ReactSelectStyles}
+        classNamePrefix="react-select"
+        {...this.renderProps()}
+      />
     );
   }
 }
