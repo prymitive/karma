@@ -125,7 +125,7 @@ describe("<AlertManagerInput />", () => {
 
   it("renders all 3 suggestions", () => {
     const tree = ValidateSuggestions();
-    const options = tree.find("[role='option']");
+    const options = tree.find(".react-select__option");
     expect(options).toHaveLength(2);
     expect(options.at(0).text()).toBe("am1 | am2");
     expect(options.at(1).text()).toBe("am3");
@@ -134,7 +134,7 @@ describe("<AlertManagerInput />", () => {
   it("clicking on options appends them to silenceFormStore.data.alertmanagers", () => {
     silenceFormStore.data.alertmanagers = [];
     const tree = ValidateSuggestions();
-    const options = tree.find("[role='option']");
+    const options = tree.find(".react-select__option");
     options.at(0).simulate("click");
     options.at(1).simulate("click");
     expect(silenceFormStore.data.alertmanagers).toHaveLength(2);

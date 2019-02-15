@@ -3,8 +3,8 @@
 exports[`<LabelValueInput /> matches snapshot 1`] = `
 "
 <div class=\\"css-10nd86i\\">
-  <div class=\\"css-7jxtyj\\">
-    <div class=\\"css-10war8y\\">
+  <div class=\\"css-7jxtyj react-select__control\\">
+    <div class=\\"css-10war8y react-select__value-container react-select__value-container--is-multi\\">
       <div title=\\"Number of alerts matching this label\\"
            class
            style=\\"display:inline\\"
@@ -17,12 +17,12 @@ exports[`<LabelValueInput /> matches snapshot 1`] = `
         </span>
       </div>
       <div>
-        <div class=\\"css-1492t68\\">
+        <div class=\\"css-1492t68 react-select__placeholder\\">
           Label value
         </div>
       </div>
       <div class=\\"css-1g6gooi\\">
-        <div class
+        <div class=\\"react-select__input\\"
              style=\\"display:inline-block\\"
         >
           <input type=\\"text\\"
@@ -41,11 +41,11 @@ exports[`<LabelValueInput /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"css-mik995\\">
-      <span class=\\"css-d8oujb\\">
+    <div class=\\"css-mik995 react-select__indicators\\">
+      <span class=\\"css-d8oujb react-select__indicator-separator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-1ep9fjw\\"
+           class=\\"css-1ep9fjw react-select__indicator react-select__dropdown-indicator\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
