@@ -16,7 +16,7 @@ const FakeConfiguration = () => {
   return mount(<AlertGroupConfiguration settingsStore={settingsStore} />);
 };
 
-describe("<AlertGroupConfiguration /> className", () => {
+describe("<AlertGroupConfiguration />", () => {
   it("matches snapshot with default values", () => {
     const tree = FakeConfiguration();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
