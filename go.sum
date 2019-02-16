@@ -42,6 +42,8 @@ github.com/gin-contrib/static v0.0.0-20181225054800-cf5e10bbd933 h1:qDWtY954I/NL
 github.com/gin-contrib/static v0.0.0-20181225054800-cf5e10bbd933/go.mod h1:c0Dn3Epmic//eHg5d4h6F0XcLhpwMCe4kpfgauEOy3k=
 github.com/gin-gonic/contrib v0.0.0-20181101072842-54170a7b0b4b h1:uJjmSEX74D3EyhBeht+spHAvS+aFRinOZOXjVXqb2cY=
 github.com/gin-gonic/contrib v0.0.0-20181101072842-54170a7b0b4b/go.mod h1:iqneQ2Df3omzIVTkIfn7c1acsVnMGiSLn4XF5Blh3Yg=
+github.com/gin-gonic/contrib v0.0.0-20190216092630-1ed86e31c57a h1:mpd5Il9a3m6ybiCxJNQfgSXr1YNJrzFh22M6uWoLItk=
+github.com/gin-gonic/contrib v0.0.0-20190216092630-1ed86e31c57a/go.mod h1:iqneQ2Df3omzIVTkIfn7c1acsVnMGiSLn4XF5Blh3Yg=
 github.com/gin-gonic/gin v1.3.0 h1:kCmZyPklC0gVdL728E6Aj20uYBJV93nj/TkwBTKhFbs=
 github.com/gin-gonic/gin v1.3.0/go.mod h1:7cKuhb5qV2ggCFctp2fJQ+ErvciLZrIeoOSOm6mUr7Y=
 github.com/go-bindata/go-bindata v1.0.0 h1:DZ34txDXWn1DyWa+vQf7V9ANc2ILTtrEjtlsdJRF26M=
