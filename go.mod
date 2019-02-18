@@ -13,7 +13,7 @@ require (
 	github.com/gin-gonic/contrib v0.0.0-20190216092630-1ed86e31c57a
 	github.com/gin-gonic/gin v1.3.0
 	github.com/go-bindata/go-bindata v1.0.0 // indirect
-	github.com/golangci/golangci-lint v1.14.0 // indirect
+	github.com/golangci/golangci-lint v1.15.0 // indirect
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/mcuadros/go-gin-prometheus v0.0.0-20181030200533-58963fb32f54
 	github.com/patrickmn/go-cache v2.1.0+incompatible
