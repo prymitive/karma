@@ -266,6 +266,8 @@ labels:
     custom: {}
   keep: list of strings
   strip: list of strings
+  sorting:
+    valueMapping: {}
 ```
 
 - `color:static` - list of label names that will all have the same color applied
@@ -284,6 +286,13 @@ labels:
   it via the config file.
 - `keep` - list of allowed labels, if empty all labels are allowed.
 - `strip` - list of ignored labels.
+- `sorting:valueMapping` - when sorting using alert labels values are compared
+  as strings, which work for labels like `cluster=A`, `cluster=B` & `cluster=C`,
+  but not for `cluster=prod`, `cluster=staging` & `cluster=dev`. Alphabetic
+  sort would order the second case as follows: `dev`, `prod`, `staging`.
+  To allow for more natural sorting `sorting:valueMapping` can be used to
+  map label values to integer values which will be used for sorting instead
+  of original string values.
 
 Example with static color for the `job` label (every `job` label will have the
 same color regardless of the value) and unique color for the `@receiver` label
@@ -332,6 +341,24 @@ labels:
         critical: "#ff220c"
 ```
 
+Example with custom value mapping for sorting, this allows to put `cluster=prod`
+or `severity=critical` (depending on which label is used for sorting) on top of
+the dashboard grid (or bottom if `Reverse` is enabled by user).
+
+```yaml
+labels:
+  sorting:
+    valueMapping:
+      cluster:
+        prod: 1
+        staging: 2
+        dev: 3
+      severity:
+        critical: 1
+        warning: 2
+        info: 3
+```
+
 Defaults:
 
 ```yaml
@@ -342,6 +369,8 @@ labels:
     custom: {}
   keep: []
   strip: []
+  sorting:
+    valueMapping: {}
 ```
 
 ### Listen

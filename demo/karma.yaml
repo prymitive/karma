@@ -30,6 +30,16 @@ labels:
         info: "#87c4e0"
         warning: "#ffae42"
         critical: "#ff220c"
+  sorting:
+    valueMapping:
+      cluster:
+        prod: 1
+        staging: 2
+        dev: 3
+      severity:
+        critical: 1
+        warning: 2
+        info: 3
 log:
   config: false
   level: warning

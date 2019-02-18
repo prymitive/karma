@@ -83,10 +83,17 @@ func alerts(c *gin.Context) {
 	resp.Version = version
 	resp.Upstreams = getUpstreams()
 	resp.Settings = models.Settings{
+		Sorting: models.SortSettings{
+			ValueMapping: map[string]map[string]int{},
+		},
 		StaticColorLabels:        config.Config.Labels.Color.Static,
 		AnnotationsDefaultHidden: config.Config.Annotations.Default.Hidden,
 		AnnotationsHidden:        config.Config.Annotations.Hidden,
 		AnnotationsVisible:       config.Config.Annotations.Visible,
+	}
+
+	if config.Config.Labels.Sorting.ValueMapping != nil {
+		resp.Settings.Sorting.ValueMapping = config.Config.Labels.Sorting.ValueMapping
 	}
 
 	// use full URI (including query args) as cache key

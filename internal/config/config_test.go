@@ -98,6 +98,8 @@ labels:
     unique:
     - f
     - gg
+  sorting:
+    valueMapping: {}
 listen:
   address: 0.0.0.0
   port: 80

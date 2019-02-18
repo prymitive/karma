@@ -230,4 +230,60 @@ describe("<AlertGrid />", () => {
       "id3"
     ]);
   });
+
+  it("label value mappings from settings are used to order alerts", () => {
+    alertStore.settings.values.sorting.valueMapping = {
+      cluster: {
+        prod: 1,
+        staging: 2,
+        dev: 3
+      }
+    };
+
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.label.value;
+    settingsStore.gridConfig.config.sortLabel = "cluster";
+    settingsStore.gridConfig.config.reverseSort = false;
+
+    MockGroupList(3, 1);
+    alertStore.data.groups.id1.alerts[0].labels.cluster = "dev";
+    alertStore.data.groups.id2.alerts[0].labels.cluster = "staging";
+    alertStore.data.groups.id3.alerts[0].labels.cluster = "prod";
+
+    const tree = ShallowAlertGrid();
+    const alertGroups = tree.find("AlertGroup");
+    expect(alertGroups.map(g => g.props().group.id)).toEqual([
+      "id3",
+      "id2",
+      "id1"
+    ]);
+  });
+
+  it("label value mappings from settings are used to order alerts and reverse flag is respected", () => {
+    alertStore.settings.values.sorting.valueMapping = {
+      cluster: {
+        prod: 1,
+        staging: 2,
+        dev: 3
+      }
+    };
+
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.label.value;
+    settingsStore.gridConfig.config.sortLabel = "cluster";
+    settingsStore.gridConfig.config.reverseSort = true;
+
+    MockGroupList(3, 1);
+    alertStore.data.groups.id1.alerts[0].labels.cluster = "dev";
+    alertStore.data.groups.id2.alerts[0].labels.cluster = "prod";
+    alertStore.data.groups.id3.alerts[0].labels.cluster = "staging";
+
+    const tree = ShallowAlertGrid();
+    const alertGroups = tree.find("AlertGroup");
+    expect(alertGroups.map(g => g.props().group.id)).toEqual([
+      "id1",
+      "id3",
+      "id2"
+    ]);
+  });
 });

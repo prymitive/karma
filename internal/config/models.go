@@ -51,6 +51,9 @@ type configSchema struct {
 			Static []string
 			Unique []string
 		}
+		Sorting struct {
+			ValueMapping map[string]map[string]int `yaml:"valueMapping"`
+		}
 	}
 	Listen struct {
 		Address string

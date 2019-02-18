@@ -70,7 +70,7 @@ const AlertGrid = observer(
     });
 
     compare = (a, b) => {
-      const { settingsStore } = this.props;
+      const { alertStore, settingsStore } = this.props;
 
       // don't sort if sorting is disabled
       if (
@@ -88,17 +88,42 @@ const AlertGrid = observer(
           return moment.max(g.alerts.map(a => moment(a.startsAt)));
         }
 
-        const label = settingsStore.gridConfig.config.sortLabel;
-        return g.labels[label] || g.alerts[0].labels[label] || "";
+        const labelName = settingsStore.gridConfig.config.sortLabel;
+        const labelValue =
+          g.labels[labelName] ||
+          g.shared.labels[labelName] ||
+          g.alerts[0].labels[labelName];
+        let mappedValue;
+
+        // check if we have a mapping for label value
+        if (
+          labelValue !== undefined &&
+          alertStore.settings.values.sorting.valueMapping[labelName] !==
+            undefined
+        ) {
+          mappedValue =
+            alertStore.settings.values.sorting.valueMapping[labelName][
+              labelValue
+            ];
+        }
+
+        // if we have a mapped value then return it, if not return original value
+        return mappedValue !== undefined ? mappedValue : labelValue;
       };
+
+      const val = settingsStore.gridConfig.config.reverseSort ? -1 : 1;
 
       const av = getLabelValue(a);
       const bv = getLabelValue(b);
 
-      const val = settingsStore.gridConfig.config.reverseSort ? -1 : 1;
-      if (av > bv) {
+      if (av === undefined && av === undefined) {
+        // if both alerts lack the label they are equal
+        return 0;
+      } else if (av === undefined || av > bv) {
+        // if first one lacks it it's should be rendered after alerts with that label
         return val;
-      } else if (av < bv) {
+      } else if (bv === undefined || av < bv) {
+        // if the first one has label but the second doesn't then the second should be rendered after the first
         return val * -1;
       } else {
         return 0;
