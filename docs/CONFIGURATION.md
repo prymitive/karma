@@ -29,7 +29,7 @@ pair of Alertmanager instances running in
 [HA mode](https://prometheus.io/docs/alerting/alertmanager/#high-availability).
 Syntax:
 
-```yaml
+```YAML
 alertmanager:
   interval: duration
   servers:
@@ -97,7 +97,7 @@ alertmanager:
 Example with two production Alertmanager instances running in HA mode and a
 staging instance that is also proxied and requires a custom auth header:
 
-```yaml
+```YAML
 alertmanager:
   interval: 1m
   servers:
@@ -131,7 +131,7 @@ alertmanager:
 
 Defaults:
 
-```yaml
+```YAML
 alertmanager:
   interval: 1m
   servers: []
@@ -148,7 +148,7 @@ needs to be configured without a config file see
 the UI.
 Syntax:
 
-```yaml
+```YAML
 annotations:
   default:
     hidden: bool
@@ -174,7 +174,7 @@ Example where all annotations except `summary` are hidden by default. If there
 are additional annotation keys user will need to click on the `+` icon to see
 them.
 
-```yaml
+```YAML
 annotations:
   default:
     hidden: true
@@ -192,7 +192,7 @@ Example where all annotations except `details` are visible by default. If
 icon to see it. Additionally `secret` annotation is stripped and never shown
 in the UI.
 
-```yaml
+```YAML
 annotations:
   default:
     hidden: false
@@ -206,7 +206,7 @@ annotations:
 
 Defaults:
 
-```yaml
+```YAML
 annotations:
   default:
     hidden: false
@@ -220,7 +220,7 @@ annotations:
 
 Syntax:
 
-```yaml
+```YAML
 filters:
   default: list of strings
 ```
@@ -231,7 +231,7 @@ filters:
 
 Example:
 
-```yaml
+```YAML
 filters:
   default:
     - "@state=active"
@@ -240,7 +240,7 @@ filters:
 
 Defaults:
 
-```yaml
+```YAML
 filters:
   default: []
 ```
@@ -258,7 +258,7 @@ with shared labels, for example coloring hostname label will allow to quickly
 spot all alerts for the same host.
 Syntax:
 
-```yaml
+```YAML
 labels:
   color:
     static: []
@@ -298,7 +298,7 @@ Example with static color for the `job` label (every `job` label will have the
 same color regardless of the value) and unique color for the `@receiver` label
 (every `@receiver` label will have color unique for each value).
 
-```yaml
+```YAML
 labels:
   color:
     static:
@@ -309,7 +309,7 @@ labels:
 
 Example where `task_id` label is ignored by karma:
 
-```yaml
+```YAML
 labels:
   keep: []
   strip:
@@ -318,7 +318,7 @@ labels:
 
 Example where all but `instance` and `alertname` labels are allowed:
 
-```yaml
+```YAML
 labels:
   keep:
     - alertname
@@ -329,7 +329,7 @@ labels:
 Example where `severity` label will have a red color for `critical`, yellow
 for `warning` and blue for `info`:
 
-```yaml
+```YAML
 labels:
   color:
     custom:
@@ -345,7 +345,7 @@ Example with custom value mapping for sorting, this allows to put `cluster=prod`
 or `severity=critical` (depending on which label is used for sorting) on top of
 the dashboard grid (or bottom if `Reverse` is enabled by user).
 
-```yaml
+```YAML
 labels:
   sorting:
     valueMapping:
@@ -361,7 +361,7 @@ labels:
 
 Defaults:
 
-```yaml
+```YAML
 labels:
   color:
     static: []
@@ -378,7 +378,7 @@ labels:
 `listen` section allows configuring karma web server behavior.
 Syntax:
 
-```yaml
+```YAML
 listen:
   address: string
   port: integer
@@ -393,7 +393,7 @@ listen:
 
 Example where karma would listen for HTTP requests on `http://1.2.3.4:80/karma/`
 
-```yaml
+```YAML
 listen:
   address: 1.2.3.4
   port: 80
@@ -402,7 +402,7 @@ listen:
 
 Defaults:
 
-```yaml
+```YAML
 listen:
   address: "0.0.0.0"
   port: 8080
@@ -414,7 +414,7 @@ listen:
 `log` section allows configuring logging subsystem.
 Syntax:
 
-```yaml
+```YAML
 log:
   config: bool
   level: string
@@ -426,7 +426,7 @@ log:
 
 Defaults:
 
-```yaml
+```YAML
 log:
   config: true
   level: info
@@ -439,7 +439,7 @@ issues in silence comments. If a string inside a comment matches one of the
 rules it will be rendered as a link.
 Syntax:
 
-```yaml
+```YAML
 jira:
   - regex: string
   - uri: string
@@ -452,7 +452,7 @@ jira:
 Example where a string `DEVOPS-123` inside a comment would be rendered as a link
 to `https://jira.example.com/browse/DEVOPS-123`.
 
-```yaml
+```YAML
 jira:
   - regex: DEVOPS-[0-9]+
     uri: https://jira.example.com
@@ -460,7 +460,7 @@ jira:
 
 Defaults:
 
-```yaml
+```YAML
 jira: []
 ```
 
@@ -471,7 +471,7 @@ handled by karma. If alerts are routed to multiple receivers they can be
 duplicated in the UI, each instance will have different value for `@receiver`.
 Syntax:
 
-```yaml
+```YAML
 receivers:
   keep: list of strings
   strip: list of strings
@@ -484,7 +484,7 @@ receivers:
 Example where alerts that are routed to the `alertmanage2es` receiver are
 ignored by karma.
 
-```yaml
+```YAML
 receivers:
   strip:
     - alertmanage2es
@@ -492,7 +492,7 @@ receivers:
 
 Defaults:
 
-```yaml
+```YAML
 receivers:
   strip: []
 ```
@@ -504,7 +504,7 @@ receivers:
 details.
 Syntax:
 
-```yaml
+```YAML
 sentry:
   private: string
   public: string
@@ -517,7 +517,7 @@ sentry:
 
 Example:
 
-```yaml
+```YAML
 sentry:
   private: https://<key>:<secret>@sentry.io/<project>
   public: https://<key>:<secret>@sentry.io/<project>
@@ -531,7 +531,7 @@ JavaScript code, which can be used to either override built in CSS styles
 or integrate with extra services, for example using error handlers other than
 Sentry.
 
-```yaml
+```YAML
 custom:
   css: string
   js: string
@@ -542,7 +542,7 @@ custom:
 
 Example:
 
-```yaml
+```YAML
 custom:
   css: /theme/custom.css
   js: /assets/custom.js
