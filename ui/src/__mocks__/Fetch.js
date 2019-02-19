@@ -23,6 +23,20 @@ const EmptyAPIResponse = () => ({
     }
   ],
   settings: {
+    sorting: {
+      valueMapping: {
+        cluster: {
+          dev: 3,
+          prod: 1,
+          staging: 2
+        },
+        severity: {
+          critical: 1,
+          info: 3,
+          warning: 2
+        }
+      }
+    },
     staticColorLabels: ["job"],
     annotationsDefaultHidden: false,
     annotationsHidden: [],

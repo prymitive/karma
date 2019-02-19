@@ -169,7 +169,10 @@ class AlertStore {
         staticColorLabels: [],
         annotationsDefaultHidden: false,
         annotationsHidden: [],
-        annotationsVisible: []
+        annotationsVisible: [],
+        sorting: {
+          valueMapping: {}
+        }
       }
     },
     {},

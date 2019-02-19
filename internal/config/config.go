@@ -167,6 +167,11 @@ func (config *configSchema) Read() {
 		log.Fatal(err)
 	}
 
+	err = v.UnmarshalKey("labels.sorting.valuemapping", &config.Labels.Sorting.ValueMapping)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	// accept single Alertmanager server from flag/env if nothing is set yet
 	if len(config.Alertmanager.Servers) == 0 && v.GetString("alertmanager.uri") != "" {
 		log.Info("Using simple config with a single Alertmanager server")

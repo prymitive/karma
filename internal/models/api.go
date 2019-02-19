@@ -155,12 +155,18 @@ func (ag *APIAlertGroup) DedupSharedMaps() {
 	}
 }
 
+// SortSettings nests all settings specific to sorting
+type SortSettings struct {
+	ValueMapping map[string]map[string]int `json:"valueMapping"`
+}
+
 // Settings is used to export karma configuration that is used by UI
 type Settings struct {
-	StaticColorLabels        []string `json:"staticColorLabels"`
-	AnnotationsDefaultHidden bool     `json:"annotationsDefaultHidden"`
-	AnnotationsHidden        []string `json:"annotationsHidden"`
-	AnnotationsVisible       []string `json:"annotationsVisible"`
+	StaticColorLabels        []string     `json:"staticColorLabels"`
+	AnnotationsDefaultHidden bool         `json:"annotationsDefaultHidden"`
+	AnnotationsHidden        []string     `json:"annotationsHidden"`
+	AnnotationsVisible       []string     `json:"annotationsVisible"`
+	Sorting                  SortSettings `json:"sorting"`
 }
 
 // AlertsResponse is the structure of JSON response UI will use to get alert data
