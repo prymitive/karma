@@ -17,6 +17,11 @@ custom:
 filters:
   default:
     - "@receiver=by-cluster-service"
+grid:
+  sorting:
+    order: label
+    reverse: false
+    label: severity
 labels:
   color:
     static:
