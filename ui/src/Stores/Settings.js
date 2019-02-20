@@ -1,8 +1,6 @@
 import { action } from "mobx";
 import { localStored } from "mobx-stored";
 
-import { StaticLabels } from "Common/Query";
-
 class SavedFilters {
   config = localStored(
     "savedFilters",
@@ -58,21 +56,15 @@ class SilenceFormConfig {
 
 class GridConfig {
   options = Object.freeze({
+    default: { label: "Use defaults from karma config file", value: "default" },
     disabled: { label: "No sorting", value: "disabled" },
     startsAt: { label: "Sort by alert timestamp", value: "startsAt" },
     label: { label: "Sort by alert label", value: "label" }
   });
-  defaults = {
-    sortOrder: this.options.startsAt.value,
-    reverseSort: true,
-    sortLabel: StaticLabels.AlertName
-  };
   config = localStored(
-    "gridConfig",
+    "alertGridConfig",
     {
-      sortOrder: this.defaults.sortOrder,
-      reverseSort: this.defaults.reverseSort,
-      sortLabel: this.defaults.sortLabel
+      sortOrder: this.options.default.value
     },
     { delay: 100 }
   );

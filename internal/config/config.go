@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/uri"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
@@ -59,6 +60,10 @@ func init() {
 	pflag.StringSlice("labels.keep", []string{},
 		"List of labels to keep, all other labels will be stripped")
 	pflag.StringSlice("labels.strip", []string{}, "List of labels to ignore")
+
+	pflag.String("grid.sorting.order", "startsAt", "Default sort order for alert grid")
+	pflag.Bool("grid.sorting.reverse", true, "Reverse sort order")
+	pflag.String("grid.sorting.label", "alertname", "Label name to use when sorting alert grid by label")
 
 	pflag.Bool("log.config", true, "Log used configuration to log on startup")
 	pflag.String("log.level", "info",
@@ -137,6 +142,9 @@ func (config *configSchema) Read() {
 	config.Custom.JS = v.GetString("custom.js")
 	config.Debug = v.GetBool("debug")
 	config.Filters.Default = v.GetStringSlice("filters.default")
+	config.Grid.Sorting.Order = v.GetString("grid.sorting.order")
+	config.Grid.Sorting.Reverse = v.GetBool("grid.sorting.reverse")
+	config.Grid.Sorting.Label = v.GetString("grid.sorting.label")
 	config.Labels.Color.Custom = map[string]map[string]string{}
 	config.Labels.Color.Static = v.GetStringSlice("labels.color.static")
 	config.Labels.Color.Unique = v.GetStringSlice("labels.color.unique")
@@ -170,6 +178,10 @@ func (config *configSchema) Read() {
 	err = v.UnmarshalKey("labels.sorting.valuemapping", &config.Labels.Sorting.ValueMapping)
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	if !slices.StringInSlice([]string{"disabled", "startsAt", "label"}, config.Grid.Sorting.Order) {
+		log.Fatalf("Invalid grid.sorting.order value '%s', allowed options: disabled, startsAt, label", config.Grid.Sorting.Order)
 	}
 
 	// accept single Alertmanager server from flag/env if nothing is set yet

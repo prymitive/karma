@@ -245,6 +245,61 @@ filters:
   default: []
 ```
 
+### Grid
+
+`grid` section allows customizing how alert grid is rendered in the UI.
+Sorting configuration can be overridden by each user via UI settings.
+Syntax:
+
+```YAML
+grid:
+  sorting:
+    order: string
+    reverse: bool
+    label: string
+```
+
+- `sorting:order` - default sort order for alert grid, valid values are:
+  - `disabled` - no sorting, alert groups are rendered in the order they are
+    returned by the API
+  - `startsAt` - sort by alert timestamps, most recent alert in each group will
+    be used when comparing each group
+  - `label` - sort by labels, if the label used for sorting is not shared by
+    all alerts in a group then the first alert in the group will be queried for
+    it
+- `sorting:reverse` - default value for reversed sort order
+- `sorting:label` - label name for sorting when `grid:sorting:order` is set
+  to `label`. Labels can be assigned custom values used only by sorting via
+  `labels:sorting:valueMapping`, see [Labels](#Labels) section for details.
+
+Defaults:
+
+```YAML
+grid:
+  sorting:
+    order: startsAt
+    reverse: true
+    label: alertname
+```
+
+Example with sorting using `severity` label, with extra option to map severity
+labels to numeric values for sorting:
+
+```YAML
+grid:
+  sorting:
+    order: label
+    reverse: false
+    label: severity
+labels:
+  sorting:
+    valueMapping:
+      severity:
+        critical: 1
+        warning: 2
+        info: 3
+```
+
 ### Labels
 
 `labels` section allows configuring how alert labels will be rendered in the
@@ -293,6 +348,8 @@ labels:
   To allow for more natural sorting `sorting:valueMapping` can be used to
   map label values to integer values which will be used for sorting instead
   of original string values.
+  Note: this option is not available via environment variables, you can only set
+  it via the config file.
 
 Example with static color for the `job` label (every `job` label will have the
 same color regardless of the value) and unique color for the `@receiver` label

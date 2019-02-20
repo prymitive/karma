@@ -6,6 +6,7 @@ import { observer } from "mobx-react";
 
 import CreatableSelect from "react-select/lib/Creatable";
 
+import { StaticLabels } from "Common/Query";
 import { FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { ReactSelectStyles } from "Components/MultiSelect";
@@ -17,6 +18,15 @@ const SortLabelName = observer(
     static propTypes = {
       settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
+
+    constructor(props) {
+      super(props);
+
+      if (!props.settingsStore.gridConfig.config.sortLabel) {
+        props.settingsStore.gridConfig.config.sortLabel =
+          StaticLabels.AlertName;
+      }
+    }
 
     suggestions = observable({
       names: []

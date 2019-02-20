@@ -124,7 +124,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
               <div class=\\"css-7jxtyj react-select__control\\">
                 <div class=\\"css-pb81dw react-select__value-container react-select__value-container--has-value\\">
                   <div class=\\"css-xp4uvy react-select__single-value\\">
-                    Sort by alert timestamp
+                    Use defaults from karma config file
                   </div>
                   <div class=\\"css-1g6gooi\\">
                     <div class=\\"react-select__input\\"
@@ -166,21 +166,6 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
                 </div>
               </div>
             </div>
-          </div>
-          <div class=\\"flex-shrink-1 flex-grow-0 form-check form-check-inline flex-basis-auto mt-1 mt-lg-0 ml-0 ml-lg-1 mr-0\\">
-            <span class=\\"custom-control custom-switch\\">
-              <input id=\\"configuration-sort-reverse\\"
-                     class=\\"custom-control-input\\"
-                     type=\\"checkbox\\"
-                     value
-                     checked
-              >
-              <label class=\\"custom-control-label cursor-pointer mr-3\\"
-                     for=\\"configuration-sort-reverse\\"
-              >
-                Reverse
-              </label>
-            </span>
           </div>
         </div>
       </div>

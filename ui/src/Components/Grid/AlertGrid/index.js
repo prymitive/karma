@@ -72,37 +72,48 @@ const AlertGrid = observer(
     compare = (a, b) => {
       const { alertStore, settingsStore } = this.props;
 
-      // don't sort if sorting is disabled
-      if (
+      const useDefaults =
         settingsStore.gridConfig.config.sortOrder ===
-        settingsStore.gridConfig.options.disabled.value
-      )
+        settingsStore.gridConfig.options.default.value;
+
+      const sortOrder = useDefaults
+        ? alertStore.settings.values.sorting.grid.order
+        : settingsStore.gridConfig.config.sortOrder;
+
+      // don't sort if sorting is disabled
+      if (sortOrder === settingsStore.gridConfig.options.disabled.value)
         return 0;
+
+      const sortReverse =
+        useDefaults || settingsStore.gridConfig.config.reverseSort === undefined
+          ? alertStore.settings.values.sorting.grid.reverse
+          : settingsStore.gridConfig.config.reverseSort;
+
+      const sortLabel =
+        useDefaults || settingsStore.gridConfig.config.sortLabel === undefined
+          ? alertStore.settings.values.sorting.grid.label
+          : settingsStore.gridConfig.config.sortLabel;
 
       const getLabelValue = g => {
         // if timestamp sort is enabled use latest alert for sorting
-        if (
-          settingsStore.gridConfig.config.sortOrder ===
-          settingsStore.gridConfig.options.startsAt.value
-        ) {
+        if (sortOrder === settingsStore.gridConfig.options.startsAt.value) {
           return moment.max(g.alerts.map(a => moment(a.startsAt)));
         }
 
-        const labelName = settingsStore.gridConfig.config.sortLabel;
         const labelValue =
-          g.labels[labelName] ||
-          g.shared.labels[labelName] ||
-          g.alerts[0].labels[labelName];
+          g.labels[sortLabel] ||
+          g.shared.labels[sortLabel] ||
+          g.alerts[0].labels[sortLabel];
         let mappedValue;
 
         // check if we have a mapping for label value
         if (
           labelValue !== undefined &&
-          alertStore.settings.values.sorting.valueMapping[labelName] !==
+          alertStore.settings.values.sorting.valueMapping[sortLabel] !==
             undefined
         ) {
           mappedValue =
-            alertStore.settings.values.sorting.valueMapping[labelName][
+            alertStore.settings.values.sorting.valueMapping[sortLabel][
               labelValue
             ];
         }
@@ -111,7 +122,7 @@ const AlertGrid = observer(
         return mappedValue !== undefined ? mappedValue : labelValue;
       };
 
-      const val = settingsStore.gridConfig.config.reverseSort ? -1 : 1;
+      const val = sortReverse ? -1 : 1;
 
       const av = getLabelValue(a);
       const bv = getLabelValue(b);

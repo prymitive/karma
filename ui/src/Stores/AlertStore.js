@@ -171,6 +171,11 @@ class AlertStore {
         annotationsHidden: [],
         annotationsVisible: [],
         sorting: {
+          grid: {
+            order: "startsAt",
+            reverse: false,
+            label: "alertname"
+          },
           valueMapping: {}
         }
       }

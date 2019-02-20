@@ -84,6 +84,11 @@ func alerts(c *gin.Context) {
 	resp.Upstreams = getUpstreams()
 	resp.Settings = models.Settings{
 		Sorting: models.SortSettings{
+			Grid: models.GridSettings{
+				Order:   config.Config.Grid.Sorting.Order,
+				Reverse: config.Config.Grid.Sorting.Reverse,
+				Label:   config.Config.Grid.Sorting.Label,
+			},
 			ValueMapping: map[string]map[string]int{},
 		},
 		StaticColorLabels:        config.Config.Labels.Color.Static,

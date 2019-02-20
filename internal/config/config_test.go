@@ -82,6 +82,11 @@ filters:
   default:
   - '@state=active'
   - foo=bar
+grid:
+  sorting:
+    order: startsAt
+    reverse: true
+    label: alertname
 labels:
   keep:
   - foo
