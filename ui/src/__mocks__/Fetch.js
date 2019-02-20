@@ -24,6 +24,11 @@ const EmptyAPIResponse = () => ({
   ],
   settings: {
     sorting: {
+      grid: {
+        order: "startsAt",
+        reverse: false,
+        label: "alertname"
+      },
       valueMapping: {
         cluster: {
           dev: 3,

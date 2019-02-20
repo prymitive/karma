@@ -49,7 +49,7 @@ describe("<AlertGroupSortConfiguration />", () => {
     FakeConfiguration();
     setTimeout(() => {
       expect(settingsStore.gridConfig.config.sortOrder).toBe(
-        settingsStore.gridConfig.defaults.sortOrder
+        settingsStore.gridConfig.options.default.value
       );
       done();
     }, 200);
@@ -72,6 +72,38 @@ describe("<AlertGroupSortConfiguration />", () => {
       );
       done();
     }, 200);
+  });
+
+  it("reverse checkbox is not rendered when sort order is == 'default'", () => {
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.default.value;
+    const tree = FakeConfiguration();
+    const labelSelect = tree.find("#configuration-sort-reverse");
+    expect(labelSelect).toHaveLength(0);
+  });
+
+  it("reverse checkbox is not rendered when sort order is == 'disabled'", () => {
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.disabled.value;
+    const tree = FakeConfiguration();
+    const labelSelect = tree.find("#configuration-sort-reverse");
+    expect(labelSelect).toHaveLength(0);
+  });
+
+  it("reverse checkbox is rendered when sort order is = 'startsAt'", () => {
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.startsAt.value;
+    const tree = FakeConfiguration();
+    const labelSelect = tree.find("#configuration-sort-reverse");
+    expect(labelSelect).toHaveLength(1);
+  });
+
+  it("reverse checkbox is rendered when sort order is = 'label'", () => {
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.label.value;
+    const tree = FakeConfiguration();
+    const labelSelect = tree.find("#configuration-sort-reverse");
+    expect(labelSelect).toHaveLength(1);
   });
 
   it("label select is not rendered when sort order is != 'label'", () => {

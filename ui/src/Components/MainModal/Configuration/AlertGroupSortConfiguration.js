@@ -49,12 +49,18 @@ const AlertGroupSortConfiguration = observer(
           .includes(settingsStore.gridConfig.config.sortOrder)
       ) {
         settingsStore.gridConfig.config.sortOrder =
-          settingsStore.gridConfig.defaults.sortOrder;
+          settingsStore.gridConfig.options.default.value;
       }
     });
 
     render() {
       const { settingsStore } = this.props;
+
+      const hideReverse =
+        settingsStore.gridConfig.config.sortOrder ===
+          settingsStore.gridConfig.options.default.value ||
+        settingsStore.gridConfig.config.sortOrder ===
+          settingsStore.gridConfig.options.disabled.value;
 
       return (
         <div className="form-group">
@@ -81,24 +87,28 @@ const AlertGroupSortConfiguration = observer(
                 <SortLabelName settingsStore={settingsStore} />
               </div>
             ) : null}
-            <div className="flex-shrink-1 flex-grow-0 form-check form-check-inline flex-basis-auto mt-1 mt-lg-0 ml-0 ml-lg-1 mr-0">
-              <span className="custom-control custom-switch">
-                <input
-                  id="configuration-sort-reverse"
-                  className="custom-control-input"
-                  type="checkbox"
-                  value=""
-                  checked={settingsStore.gridConfig.config.reverseSort}
-                  onChange={this.onSortReverseChange}
-                />
-                <label
-                  className="custom-control-label cursor-pointer mr-3"
-                  htmlFor="configuration-sort-reverse"
-                >
-                  Reverse
-                </label>
-              </span>
-            </div>
+            {hideReverse ? null : (
+              <div className="flex-shrink-1 flex-grow-0 form-check form-check-inline flex-basis-auto mt-1 mt-lg-0 ml-0 ml-lg-1 mr-0">
+                <span className="custom-control custom-switch">
+                  <input
+                    id="configuration-sort-reverse"
+                    className="custom-control-input"
+                    type="checkbox"
+                    value=""
+                    checked={
+                      settingsStore.gridConfig.config.reverseSort || false
+                    }
+                    onChange={this.onSortReverseChange}
+                  />
+                  <label
+                    className="custom-control-label cursor-pointer mr-3"
+                    htmlFor="configuration-sort-reverse"
+                  >
+                    Reverse
+                  </label>
+                </span>
+              </div>
+            )}
           </div>
         </div>
       );
