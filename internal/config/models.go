@@ -43,6 +43,13 @@ type configSchema struct {
 	Filters struct {
 		Default []string
 	}
+	Grid struct {
+		Sorting struct {
+			Order   string
+			Reverse bool
+			Label   string
+		}
+	}
 	Labels struct {
 		Keep  []string
 		Strip []string

@@ -155,8 +155,16 @@ func (ag *APIAlertGroup) DedupSharedMaps() {
 	}
 }
 
+// GridSettings exposes all grid settings from the config file
+type GridSettings struct {
+	Order   string `json:"order"`
+	Reverse bool   `json:"reverse"`
+	Label   string `json:"label"`
+}
+
 // SortSettings nests all settings specific to sorting
 type SortSettings struct {
+	Grid         GridSettings              `json:"grid"`
 	ValueMapping map[string]map[string]int `json:"valueMapping"`
 }
 
