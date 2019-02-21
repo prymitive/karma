@@ -257,6 +257,8 @@ grid:
     order: string
     reverse: bool
     label: string
+    customValues:
+      labels: dict
 ```
 
 - `sorting:order` - default sort order for alert grid, valid values are:
@@ -270,7 +272,16 @@ grid:
 - `sorting:reverse` - default value for reversed sort order
 - `sorting:label` - label name for sorting when `grid:sorting:order` is set
   to `label`. Labels can be assigned custom values used only by sorting via
-  `labels:sorting:valueMapping`, see [Labels](#Labels) section for details.
+  `sorting:customValues:labels`.
+- `sorting:customValues:labels` - when sorting using alert labels values are
+  compared as strings, which work for labels like `cluster=A`, `cluster=B` &
+  `cluster=C`, but not for `cluster=prod`, `cluster=staging` & `cluster=dev`.
+  Alphabetic sort would order the second case as follows: `dev`, `prod`,
+  `staging`. To allow for more natural sorting `sorting:valueMapping` can be
+  used to map label values to integer values which will be used for sorting
+  instead of original string values.
+  Note: this option is not available via environment variables, you can only set
+  it via the config file.
 
 Defaults:
 
@@ -280,10 +291,11 @@ grid:
     order: startsAt
     reverse: true
     label: alertname
+    customValues:
+      labels: {}
 ```
 
-Example with sorting using `severity` label, with extra option to map severity
-labels to numeric values for sorting:
+Example with sorting using `severity` label and value mappings for it:
 
 ```YAML
 grid:
@@ -291,13 +303,12 @@ grid:
     order: label
     reverse: false
     label: severity
-labels:
-  sorting:
-    valueMapping:
-      severity:
-        critical: 1
-        warning: 2
-        info: 3
+    customValues:
+      labels:
+        severity:
+          critical: 1
+          warning: 2
+          info: 3
 ```
 
 ### Labels
@@ -316,13 +327,11 @@ Syntax:
 ```YAML
 labels:
   color:
-    static: []
-    unique: []
-    custom: {}
+    static: list of strings
+    unique: list of strings
+    custom: dict
   keep: list of strings
   strip: list of strings
-  sorting:
-    valueMapping: {}
 ```
 
 - `color:static` - list of label names that will all have the same color applied
@@ -341,15 +350,6 @@ labels:
   it via the config file.
 - `keep` - list of allowed labels, if empty all labels are allowed.
 - `strip` - list of ignored labels.
-- `sorting:valueMapping` - when sorting using alert labels values are compared
-  as strings, which work for labels like `cluster=A`, `cluster=B` & `cluster=C`,
-  but not for `cluster=prod`, `cluster=staging` & `cluster=dev`. Alphabetic
-  sort would order the second case as follows: `dev`, `prod`, `staging`.
-  To allow for more natural sorting `sorting:valueMapping` can be used to
-  map label values to integer values which will be used for sorting instead
-  of original string values.
-  Note: this option is not available via environment variables, you can only set
-  it via the config file.
 
 Example with static color for the `job` label (every `job` label will have the
 same color regardless of the value) and unique color for the `@receiver` label
@@ -398,24 +398,6 @@ labels:
         critical: "#ff220c"
 ```
 
-Example with custom value mapping for sorting, this allows to put `cluster=prod`
-or `severity=critical` (depending on which label is used for sorting) on top of
-the dashboard grid (or bottom if `Reverse` is enabled by user).
-
-```YAML
-labels:
-  sorting:
-    valueMapping:
-      cluster:
-        prod: 1
-        staging: 2
-        dev: 3
-      severity:
-        critical: 1
-        warning: 2
-        info: 3
-```
-
 Defaults:
 
 ```YAML
@@ -426,8 +408,6 @@ labels:
     custom: {}
   keep: []
   strip: []
-  sorting:
-    valueMapping: {}
 ```
 
 ### Listen

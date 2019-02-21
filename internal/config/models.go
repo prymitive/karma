@@ -45,9 +45,12 @@ type configSchema struct {
 	}
 	Grid struct {
 		Sorting struct {
-			Order   string
-			Reverse bool
-			Label   string
+			Order        string
+			Reverse      bool
+			Label        string
+			CustomValues struct {
+				Labels map[string]map[string]int
+			} `yaml:"customValues"`
 		}
 	}
 	Labels struct {
@@ -57,9 +60,6 @@ type configSchema struct {
 			Custom map[string]map[string]string
 			Static []string
 			Unique []string
-		}
-		Sorting struct {
-			ValueMapping map[string]map[string]int `yaml:"valueMapping"`
 		}
 	}
 	Listen struct {
