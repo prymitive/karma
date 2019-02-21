@@ -87,6 +87,9 @@ jobs:
         - git diff --exit-code
 
     - stage: Build Docker image
+      # we build and push doker image on merge and tag, so this should only
+      # run for pull requests, to test that they don't break docker builds
+      if: repo = prymitive/karma AND (branch != master OR type = pull_request)
       language: generic
       addons:
         apt:
