@@ -97,8 +97,8 @@ func alerts(c *gin.Context) {
 		AnnotationsVisible:       config.Config.Annotations.Visible,
 	}
 
-	if config.Config.Labels.Sorting.ValueMapping != nil {
-		resp.Settings.Sorting.ValueMapping = config.Config.Labels.Sorting.ValueMapping
+	if config.Config.Grid.Sorting.CustomValues.Labels != nil {
+		resp.Settings.Sorting.ValueMapping = config.Config.Grid.Sorting.CustomValues.Labels
 	}
 
 	// use full URI (including query args) as cache key

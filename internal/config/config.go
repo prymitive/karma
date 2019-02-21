@@ -175,7 +175,7 @@ func (config *configSchema) Read() {
 		log.Fatal(err)
 	}
 
-	err = v.UnmarshalKey("labels.sorting.valuemapping", &config.Labels.Sorting.ValueMapping)
+	err = v.UnmarshalKey("grid.sorting.customValues.labels", &config.Grid.Sorting.CustomValues.Labels)
 	if err != nil {
 		log.Fatal(err)
 	}

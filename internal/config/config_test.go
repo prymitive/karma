@@ -87,6 +87,8 @@ grid:
     order: startsAt
     reverse: true
     label: alertname
+    customValues:
+      labels: {}
 labels:
   keep:
   - foo
@@ -103,8 +105,6 @@ labels:
     unique:
     - f
     - gg
-  sorting:
-    valueMapping: {}
 listen:
   address: 0.0.0.0
   port: 80
