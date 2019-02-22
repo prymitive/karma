@@ -54,7 +54,6 @@ const Fetcher = observer(
     };
 
     componentDidMount() {
-      setTimeout(this.fetchIfIdle, 300);
       this.timer = setInterval(this.timerTick, 1000);
     }
 
