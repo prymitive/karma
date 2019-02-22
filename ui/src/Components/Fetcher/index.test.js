@@ -69,6 +69,7 @@ describe("<Fetcher />", () => {
   it("changing interval changes how often fetch is called", () => {
     settingsStore.fetchConfig.config.interval = 1;
     MountedFetcher();
+    jest.runOnlyPendingTimers();
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
     settingsStore.fetchConfig.config.interval = 600;
@@ -101,12 +102,14 @@ describe("<Fetcher />", () => {
   it("calls alertStore.fetchWithThrottle on mount", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     MountedFetcher();
+    jest.runOnlyPendingTimers();
     expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
   it("calls alertStore.fetchWithThrottle again after interval change", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     MountedFetcher();
+    jest.runOnlyPendingTimers();
     settingsStore.fetchConfig.config.interval = 60;
     expect(fetchSpy).toHaveBeenCalledTimes(2);
   });
@@ -115,12 +118,14 @@ describe("<Fetcher />", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     MountedFetcher();
+    jest.runOnlyPendingTimers();
     alertStore.filters.values = [];
     expect(fetchSpy).toHaveBeenCalledTimes(2);
   });
 
   it("keeps calling alertStore.fetchWithThrottle every minute", () => {
     MountedFetcher();
+    jest.runOnlyPendingTimers();
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
     advanceBy(62 * 1000);
@@ -138,8 +143,8 @@ describe("<Fetcher />", () => {
 
   it("internal timer is armed after render", () => {
     const tree = MountedFetcher();
-    const instance = tree.instance();
-    expect(instance.timer).toBeGreaterThanOrEqual(0);
+    jest.runOnlyPendingTimers();
+    expect(tree.instance().timer).toBeGreaterThanOrEqual(0);
   });
 
   it("internal timer is null after unmount", () => {
@@ -152,12 +157,14 @@ describe("<Fetcher />", () => {
   it("doesn't fetch on mount when paused", () => {
     alertStore.status.pause();
     MountedFetcher();
+    jest.runOnlyPendingTimers();
     expect(fetchSpy).toHaveBeenCalledTimes(0);
   });
 
   it("doesn't fetch on update when paused", () => {
     alertStore.status.pause();
     const tree = MountedFetcher();
+    jest.runOnlyPendingTimers();
     tree.instance().componentDidUpdate();
     expect(fetchSpy).toHaveBeenCalledTimes(0);
   });
@@ -165,6 +172,7 @@ describe("<Fetcher />", () => {
   it("fetches on update when resumed", () => {
     alertStore.status.pause();
     const tree = MountedFetcher();
+    jest.runOnlyPendingTimers();
     alertStore.status.resume();
     tree.instance().componentDidUpdate();
     expect(fetchSpy).toHaveBeenCalledTimes(1);
@@ -173,6 +181,7 @@ describe("<Fetcher />", () => {
   it("fetches on resume", () => {
     alertStore.status.pause();
     MountedFetcher();
+    jest.runOnlyPendingTimers();
     alertStore.status.resume();
     advanceBy(2 * 1000);
     jest.runOnlyPendingTimers();
