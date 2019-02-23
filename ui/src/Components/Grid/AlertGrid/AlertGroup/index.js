@@ -197,7 +197,10 @@ const AlertGroup = observer(
                           tooltip="Show fewer alerts in this group"
                         />
                         <small className="text-muted mx-2">
-                          {this.renderConfig.alertsToRender}
+                          {Math.min(
+                            this.renderConfig.alertsToRender,
+                            group.alerts.length
+                          )}
                           {" of "}
                           {group.alerts.length}
                         </small>
