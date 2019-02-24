@@ -4,7 +4,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
 "
 <div class=\\"card-footer px-2 py-1\\">
   <div class=\\"mb-1\\">
-    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\">
+    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation text-break\\">
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
@@ -26,7 +26,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
         This is summary
       </span>
     </div>
-    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\">
+    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation text-break\\">
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
            data-prefix=\\"fas\\"

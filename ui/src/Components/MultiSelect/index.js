@@ -54,6 +54,7 @@ const ReactSelectStyles = {
     color: "#fff",
     whiteSpace: "normal",
     wordWrap: "break-word",
+    wordBreak: "break-word",
     "&:hover": {
       color: "#fff"
     }

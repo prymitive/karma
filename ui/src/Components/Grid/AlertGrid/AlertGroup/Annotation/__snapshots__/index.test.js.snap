@@ -28,7 +28,7 @@ exports[`<RenderLinkAnnotation /> matches snapshot 1`] = `
 
 exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=false 1`] = `
 "
-<div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\">
+<div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation text-break\\">
   <svg aria-hidden=\\"true\\"
        focusable=\\"false\\"
        data-prefix=\\"fas\\"
@@ -50,7 +50,7 @@ exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=false 1`] = `
 
 exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=true 1`] = `
 "
-<div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation\\">
+<div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation text-break\\">
   <svg aria-hidden=\\"true\\"
        focusable=\\"false\\"
        data-prefix=\\"fas\\"
