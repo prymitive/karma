@@ -272,7 +272,7 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true and a value 1`
   <div class=\\"css-7jxtyj react-select__control\\">
     <div class=\\"css-10war8y react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value\\">
       <div class=\\"css-1y5uxcf react-select__multi-value\\">
-        <div class=\\"css-yagan3 react-select__multi-value__label\\">
+        <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           foo
         </div>
         <div class=\\"css-n82uvk react-select__multi-value__remove\\">

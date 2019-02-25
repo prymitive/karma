@@ -62,7 +62,7 @@ const RenderNonLinkAnnotation = inject("alertStore")(
         const { name, value } = this.props;
 
         const className =
-          "mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation";
+          "mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation text-break";
 
         if (!this.toggle.visible) {
           return (
