@@ -9,7 +9,7 @@ require (
 	github.com/getsentry/raven-go v0.2.0
 	github.com/gin-contrib/cors v0.0.0-20190226023623-50921afdc5c1
 	github.com/gin-contrib/gzip v0.0.0-20190226090000-3ee4a99e5892
-	github.com/gin-contrib/static v0.0.0-20181225054800-cf5e10bbd933
+	github.com/gin-contrib/static v0.0.0-20190226043009-d0344934c94f
 	github.com/gin-gonic/contrib v0.0.0-20190216092630-1ed86e31c57a
 	github.com/gin-gonic/gin v1.3.0
 	github.com/go-bindata/go-bindata v1.0.0 // indirect
