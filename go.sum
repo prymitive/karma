@@ -34,6 +34,8 @@ github.com/getsentry/raven-go v0.2.0 h1:no+xWJRb5ZI7eE8TWgIq1jLulQiIoLG0IfYxv5JY
 github.com/getsentry/raven-go v0.2.0/go.mod h1:KungGk8q33+aIAZUIVWZDr2OfAEBsO49PX4NzFV5kcQ=
 github.com/gin-contrib/cors v0.0.0-20190101154528-5e7acb10687f h1:oAg7QZZZtQomjGbT8uj0T52O42vkd+tlCX29z0E/jEI=
 github.com/gin-contrib/cors v0.0.0-20190101154528-5e7acb10687f/go.mod h1:pL2kNE+DgDU+eQ+dary5bX0Z6LPP8nR6Mqs1iejILw4=
+github.com/gin-contrib/cors v0.0.0-20190226023623-50921afdc5c1 h1:/9s0BsEmYPiM9eC2kF8YzUOOG9D14jUeklGHJ3p04xk=
+github.com/gin-contrib/cors v0.0.0-20190226023623-50921afdc5c1/go.mod h1:pL2kNE+DgDU+eQ+dary5bX0Z6LPP8nR6Mqs1iejILw4=
 github.com/gin-contrib/gzip v0.0.0-20190101164802-0eb78e93402e h1:WvXjt+Xqbuaztwp25eP67CQBUGi5QE7RgjPWm9S/ahc=
 github.com/gin-contrib/gzip v0.0.0-20190101164802-0eb78e93402e/go.mod h1:fGBJBCdt6qCZuCAOwWuFhBB4OOq9EFqlo5dEaFhhu5w=
 github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7 h1:AzN37oI0cOS+cougNAV9szl6CVoj2RYwzS3DpUQNtlY=
