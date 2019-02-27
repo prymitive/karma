@@ -60,8 +60,6 @@ jobs:
         - GO111MODULE=on
       before_script:
         - make mock-assets
-        # https://github.com/golang/go/issues/26794
-        - travis_retry go mod download
       script: make lint-go
 
     - stage: Lint
@@ -108,8 +106,6 @@ jobs:
         # requires running webpack, so we need nodejs here
         - travis_retry nvm install $(< .nvmrc)
       script:
-        # https://github.com/golang/go/issues/26794
-        - travis_retry go mod download
         # compile assets via webpack and build those into bindata_assetfs.go file
         - make bindata_assetfs.go
         # and now compile using bakelite for all target archs
