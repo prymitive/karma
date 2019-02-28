@@ -6,9 +6,11 @@ Alert dashboard for
 Alertmanager UI is useful for browsing alerts and managing silences, but it's
 lacking as a dashboard tool - karma aims to fill this gap.
 Starting with the `0.7.0` release it can aggregate alerts from multiple
-Alertmanager instances, running either in HA mode or separate. Unique alerts are displayed by filtering duplicates. Each alert is tagged with the names of all Alertmanager instances it was found at and can be filtered based
-on those tags (`@alertmanager`). Note that `@alertmanager` tags will be visible
-only if karma is configured with multiple Alertmanager instances.
+Alertmanager instances, running either in HA mode or separate. Unique alerts are
+displayed by filtering duplicates. Each alert is tagged with the names of all
+Alertmanager instances it was found at and can be filtered based on those tags
+(`@alertmanager`). Note that `@alertmanager` tags will be visible only if karma
+is configured with multiple Alertmanager instances.
 
 ![Screenshot](/screenshot.png)
 
