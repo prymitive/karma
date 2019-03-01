@@ -19,7 +19,7 @@ const FilteringLabel = inject("alertStore")(
         );
 
         return (
-          <TooltipWrapper title="Click to only show alerts with this label">
+          <TooltipWrapper title="Click to only show alerts with this label or Alt+Click to hide them">
             <span
               className={cs.className}
               style={cs.style}

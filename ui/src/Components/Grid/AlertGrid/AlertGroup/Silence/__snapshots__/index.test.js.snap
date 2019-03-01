@@ -108,7 +108,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
            style=\\"display: inline;\\"
            data-tooltipped
            aria-describedby=\\"tippy-tooltip-6\\"
-           data-original-title=\\"Click to only show alerts with this label\\"
+           data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
       >
         <span class=\\"components-label badge text-nowrap text-truncate mw-100 badge-warning components-label-dark components-label-with-hover\\">
           <span class=\\"components-label-name\\">

@@ -20,9 +20,9 @@ const MountedFilteringLabel = (name, value) => {
   ).find(".components-label");
 };
 
-const RenderAndClick = (name, value) => {
+const RenderAndClick = (name, value, clickOptions) => {
   const tree = MountedFilteringLabel(name, value);
-  tree.find(".components-label").simulate("click");
+  tree.find(".components-label").simulate("click", clickOptions || {});
 };
 
 describe("<FilteringLabel />", () => {
@@ -38,6 +38,14 @@ describe("<FilteringLabel />", () => {
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(
       NewUnappliedFilter("foo=bar")
+    );
+  });
+
+  it("calling onClick() while holding Alt key adds a new filter 'foo!=bar'", () => {
+    RenderAndClick("foo", "bar", { altKey: true });
+    expect(alertStore.filters.values).toHaveLength(1);
+    expect(alertStore.filters.values).toContainEqual(
+      NewUnappliedFilter("foo!=bar")
     );
   });
 
