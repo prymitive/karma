@@ -104,7 +104,8 @@ const SilenceSubmitProgress = observer(
         body: JSON.stringify(payload),
         headers: {
           "Content-Type": "application/json"
-        }
+        },
+        credentials: "include"
       })
         .then(result => result.json())
         .then(result => this.parseAlertmanagerResponse(am.uri, result))
