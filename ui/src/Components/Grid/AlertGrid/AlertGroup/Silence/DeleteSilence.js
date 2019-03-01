@@ -141,7 +141,10 @@ const DeleteSilenceModalContent = observer(
       if (this.deleteState.done && this.deleteState.error === null) return;
 
       const uri = `${alertmanager.publicURI}/api/v1/silence/${silenceID}`;
-      this.deleteState.fetch = fetch(uri, { method: "DELETE" })
+      this.deleteState.fetch = fetch(uri, {
+        method: "DELETE",
+        credentials: "include"
+      })
         .then(result => result.json())
         .then(result => this.parseAlertmanagerResponse(result))
         .catch(err => {
