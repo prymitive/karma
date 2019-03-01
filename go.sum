@@ -37,6 +37,8 @@ github.com/gin-contrib/cors v0.0.0-20190301064136-f9e10995c85a h1:txFNQyCtGNN/tD
 github.com/gin-contrib/cors v0.0.0-20190301064136-f9e10995c85a/go.mod h1:pL2kNE+DgDU+eQ+dary5bX0Z6LPP8nR6Mqs1iejILw4=
 github.com/gin-contrib/gzip v0.0.0-20190226090000-3ee4a99e5892 h1:KqkR0xxrL/3YzBRlzyOkLbWCP1wlwkzmHm2QsDF2dPE=
 github.com/gin-contrib/gzip v0.0.0-20190226090000-3ee4a99e5892/go.mod h1:fGBJBCdt6qCZuCAOwWuFhBB4OOq9EFqlo5dEaFhhu5w=
+github.com/gin-contrib/gzip v0.0.0-20190301094516-b07653c4b4b1 h1:0IrZH6pnjo3KhZsx5NpPUkoCB+kor5R4UVpMV++uT18=
+github.com/gin-contrib/gzip v0.0.0-20190301094516-b07653c4b4b1/go.mod h1:fGBJBCdt6qCZuCAOwWuFhBB4OOq9EFqlo5dEaFhhu5w=
 github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7 h1:AzN37oI0cOS+cougNAV9szl6CVoj2RYwzS3DpUQNtlY=
 github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7/go.mod h1:VJ0WA2NBN22VlZ2dKZQPAPnyWw5XTlK1KymzLKsr59s=
 github.com/gin-contrib/static v0.0.0-20190226043009-d0344934c94f h1:sMZssSp6SzYgzpvsGkbPOYh/fnlj01MBRa/Cq+XD6pI=
