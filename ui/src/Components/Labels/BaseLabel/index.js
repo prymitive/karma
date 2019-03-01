@@ -73,12 +73,15 @@ class BaseLabel extends Component {
   }
 
   handleClick = event => {
+    // left click       => apply foo=bar filter
+    // left click + alt => apply foo!=bar filter
+    const operator =
+      event.altKey === true ? QueryOperators.NotEqual : QueryOperators.Equal;
+
     event.preventDefault();
 
     const { name, value, alertStore } = this.props;
-    alertStore.filters.addFilter(
-      FormatQuery(name, QueryOperators.Equal, value)
-    );
+    alertStore.filters.addFilter(FormatQuery(name, operator, value));
   };
 }
 

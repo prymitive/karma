@@ -32,7 +32,9 @@ const FilteringCounterBadge = inject("alertStore")(
         );
 
         return (
-          <TooltipWrapper title={`Click to only show ${value} alerts`}>
+          <TooltipWrapper
+            title={`Click to only show ${value} alerts or Alt+Click to hide them`}
+          >
             <span
               className={cs.className}
               style={cs.style}
