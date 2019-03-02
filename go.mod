@@ -10,7 +10,7 @@ require (
 	github.com/gin-contrib/cors v0.0.0-20190301064136-f9e10995c85a
 	github.com/gin-contrib/gzip v0.0.0-20190301094516-b07653c4b4b1
 	github.com/gin-contrib/static v0.0.0-20190301094727-ed515893e96b
-	github.com/gin-gonic/contrib v0.0.0-20190216092630-1ed86e31c57a
+	github.com/gin-gonic/contrib v0.0.0-20190302005408-54ff787f7c73
 	github.com/gin-gonic/gin v1.3.0
 	github.com/go-bindata/go-bindata v1.0.0 // indirect
 	github.com/golangci/golangci-lint v1.15.0 // indirect
