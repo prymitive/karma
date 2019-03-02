@@ -3,6 +3,18 @@
 Alert dashboard for
 [Prometheus Alertmanager](https://prometheus.io/docs/alerting/alertmanager/).
 
+---
+
+Alertmanager `>=0.16.0` is currently **NOT** supported by karma due to changes
+in the API, see [this issue](https://github.com/prymitive/karma/issues/115)
+for details.
+There is an issue tracking Alertmanager feature request that will enable karma
+support for future releases, see
+[this issue](https://github.com/prometheus/alertmanager/issues/868) for
+details.
+
+---
+
 Alertmanager UI is useful for browsing alerts and managing silences, but it's
 lacking as a dashboard tool - karma aims to fill this gap.
 Starting with the `0.7.0` release it can aggregate alerts from multiple
