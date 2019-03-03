@@ -2,5 +2,6 @@
   "extends": ["config:base"],
   "prHourlyLimit": 1,
   "rebaseStalePrs": false,
-  "travis": { "enabled": true }
+  "travis": { "enabled": true },
+  "masterIssue": true
 }
