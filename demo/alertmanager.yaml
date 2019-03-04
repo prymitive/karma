@@ -1,28 +1,28 @@
 global:
   resolve_timeout: 30s
 route:
-  group_by: ['alertname']
+  group_by: ["alertname"]
   group_wait: 5s
   group_interval: 10s
   repeat_interval: 999h
-  receiver: 'default'
+  receiver: "default"
   routes:
-    - receiver: 'default'
+    - receiver: "default"
       group_by: []
       match_re:
         alertname: .*
       continue: true
-    - receiver: 'by-cluster-service'
-      group_by: ['alertname', 'cluster', 'service']
+    - receiver: "by-cluster-service"
+      group_by: ["alertname", "cluster", "service"]
       match_re:
         alertname: .*
       continue: true
-    - receiver: 'by-name'
+    - receiver: "by-name"
       group_by: [alertname]
       match_re:
         alertname: .*
       continue: true
-    - receiver: 'by-cluster'
+    - receiver: "by-cluster"
       group_by: [cluster]
       match_re:
         alertname: .*
@@ -30,14 +30,14 @@ route:
 
 inhibit_rules:
   - source_match:
-      severity: 'critical'
+      severity: "critical"
     target_match:
-      severity: 'warning'
-    # Apply inhibition if the alertname is the same.
-    equal: ['alertname', 'cluster', 'service']
+      severity: "warning"
+    # Apply inhibition if the alertname and cluster is the same in both
+    equal: ["alertname", "cluster"]
 
 receivers:
-  - name: 'default'
-  - name: 'by-cluster-service'
-  - name: 'by-name'
-  - name: 'by-cluster'
+  - name: "default"
+  - name: "by-cluster-service"
+  - name: "by-name"
+  - name: "by-cluster"

@@ -321,6 +321,32 @@ class LongNameAlerts(AlertGenerator):
         return _gen(5, "dev") + _gen(1, "staging") + _gen(11, "prod")
 
 
+class InhibitedAlert(AlertGenerator):
+    name = "Inhibition Test Alert"
+    comment = "This alert should be inhibited by another alert"
+
+    def alerts(self):
+        return [
+            newAlert(self._labels(instance="server1", cluster="prod",
+                                  severity="warning"),
+                     self._annotations()
+            )
+        ]
+
+
+class InhibitingAlert(AlertGenerator):
+    name = "Inhibition Test Alert"
+    comment = "This alert should inhibit other alerts"
+
+    def alerts(self):
+        return [
+            newAlert(self._labels(instance="server1", cluster="prod",
+                                  severity="critical"),
+                     self._annotations()
+            )
+        ]
+
+
 if __name__ == "__main__":
     generators = [
         AlwaysOnAlert(MAX_INTERVAL),
@@ -332,6 +358,8 @@ if __name__ == "__main__":
         RandomName(MAX_INTERVAL),
         MixedAlerts(MIN_INTERVAL),
         LongNameAlerts(MAX_INTERVAL),
+        InhibitedAlert(MAX_INTERVAL),
+        InhibitingAlert(MAX_INTERVAL),
     ]
     while True:
         for g in generators:
