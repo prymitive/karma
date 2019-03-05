@@ -310,14 +310,15 @@ func (am *Alertmanager) pullAlerts(version string) error {
 
 			alert.Alertmanager = []models.AlertmanagerInstance{
 				models.AlertmanagerInstance{
-					Name:       am.Name,
-					Cluster:    am.ClusterID(),
-					State:      alert.State,
-					StartsAt:   alert.StartsAt,
-					EndsAt:     alert.EndsAt,
-					Source:     alert.GeneratorURL,
-					Silences:   silences,
-					SilencedBy: alert.SilencedBy,
+					Name:        am.Name,
+					Cluster:     am.ClusterID(),
+					State:       alert.State,
+					StartsAt:    alert.StartsAt,
+					EndsAt:      alert.EndsAt,
+					Source:      alert.GeneratorURL,
+					Silences:    silences,
+					SilencedBy:  alert.SilencedBy,
+					InhibitedBy: alert.InhibitedBy,
 				},
 			}
 
