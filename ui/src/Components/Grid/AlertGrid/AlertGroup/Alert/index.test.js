@@ -66,6 +66,22 @@ describe("<Alert />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
+  it("matches snapshot when inhibited", () => {
+    const alert = MockedAlert();
+    alert.alertmanager[0].inhibitedBy = ["123456"];
+    const group = MockAlertGroup({}, [alert], [], {});
+    const tree = MountedAlert(alert, group, false, false);
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
+  it("renders inhibition icon when inhibited", () => {
+    const alert = MockedAlert();
+    alert.alertmanager[0].inhibitedBy = ["123456"];
+    const group = MockAlertGroup({}, [alert], [], {});
+    const tree = MountedAlert(alert, group, false, false);
+    expect(tree.find(".fa-volume-mute")).toHaveLength(1);
+  });
+
   it("renders @alertmanager label with showAlertmanagers=true", () => {
     const alert = MockedAlert();
     const group = MockAlertGroup({}, [alert], [], {});
@@ -106,7 +122,8 @@ describe("<Alert />", () => {
         startsAt: "2018-08-14T17:36:40.017867056Z",
         endsAt: "0001-01-01T00:00:00Z",
         source: "localhost/am1",
-        silencedBy: ["silence123456789"]
+        silencedBy: ["silence123456789"],
+        inhibitedBy: []
       },
       {
         name: "am2",
@@ -115,7 +132,8 @@ describe("<Alert />", () => {
         startsAt: "2018-08-14T17:36:40.017867056Z",
         endsAt: "0001-01-01T00:00:00Z",
         source: "localhost/am2",
-        silencedBy: ["silence123456789"]
+        silencedBy: ["silence123456789"],
+        inhibitedBy: []
       }
     ];
     const group = MockAlertGroup({}, [alert], [], {});

@@ -23,7 +23,8 @@ const alertmanager = {
   startsAt: "2000-01-01T10:00:00Z",
   endsAt: "0001-01-01T00:00:00Z",
   source: "localhost/prometheus",
-  silencedBy: ["4cf5fd82-1edd-4169-99d1-ff8415e72179"]
+  silencedBy: ["4cf5fd82-1edd-4169-99d1-ff8415e72179"],
+  inhibitedBy: []
 };
 
 const silence = {
