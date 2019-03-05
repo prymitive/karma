@@ -19,8 +19,8 @@ type AlertmanagerInstance struct {
 	// in api responses, this is used internally
 	Silences map[string]*Silence `json:"-"`
 	// export list of silenced IDs in api response
-	SilencedBy []string `json:"silencedBy"`
-	// TODO also export InhibitedBy here if it ever becomes needed
+	SilencedBy  []string `json:"silencedBy"`
+	InhibitedBy []string `json:"inhibitedBy"`
 }
 
 // AlertmanagerAPIStatus describes the Alertmanager instance overall health
