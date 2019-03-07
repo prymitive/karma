@@ -259,7 +259,15 @@ class SilencedAlert(AlertGenerator):
                 "{}Z".format((now + datetime.timedelta(
                     minutes=30)).isoformat()),
                 "me@example.com",
-                "Silence '{}''".format(self.name)
+                "This alert is always silenced and the silence comment is very "
+                "long to test the UI. Lorem ipsum dolor sit amet, consectetur "
+                "adipiscing elit, sed do eiusmod tempor incididunt ut labore et"
+                " dolore magna aliqua. Ut enim ad minim veniam, quis nostrud "
+                "exercitation ullamco laboris nisi ut aliquip ex ea commodo "
+                "consequat. Duis aute irure dolor in reprehenderit in voluptate"
+                " velit esse cillum dolore eu fugiat nulla pariatur. Excepteur "
+                "sint occaecat cupidatat non proident, sunt in culpa qui "
+                "officia deserunt mollit anim id est laborum."
             )
         ]
 
@@ -347,6 +355,34 @@ class InhibitingAlert(AlertGenerator):
         ]
 
 
+class SilencedAlertWithJiraLink(AlertGenerator):
+    name = "Silenced Alert With Jira Link"
+    comment = "This alert is always silenced and links to a Jira ticket"
+
+    def alerts(self):
+        return [
+            newAlert(self._labels(instance="server%d" % i, cluster="staging",
+                                  severity="critical"),
+                     self._annotations(
+                        dashboard="https://www.atlassian.com/software/jira")
+            )  for i in xrange(1, 9)
+        ]
+
+    def silences(self):
+        now = datetime.datetime.utcnow().replace(microsecond=0)
+        return [
+            (
+                [newMatcher(
+                    "alertname", SilencedAlertWithJiraLink.name, False)],
+                "{}Z".format(now.isoformat()),
+                "{}Z".format((now + datetime.timedelta(
+                    minutes=30)).isoformat()),
+                "me@example.com",
+                "DEVOPS-123 This text should be a link to the Jira ticket",
+            )
+        ]
+
+
 if __name__ == "__main__":
     generators = [
         AlwaysOnAlert(MAX_INTERVAL),
@@ -360,6 +396,7 @@ if __name__ == "__main__":
         LongNameAlerts(MAX_INTERVAL),
         InhibitedAlert(MAX_INTERVAL),
         InhibitingAlert(MAX_INTERVAL),
+        SilencedAlertWithJiraLink(MAX_INTERVAL),
     ]
     while True:
         for g in generators:
