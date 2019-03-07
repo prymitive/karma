@@ -12,8 +12,8 @@ require (
 	github.com/gin-contrib/static v0.0.0-20190301094727-ed515893e96b
 	github.com/gin-gonic/contrib v0.0.0-20190302005408-54ff787f7c73
 	github.com/gin-gonic/gin v1.3.0
-	github.com/go-bindata/go-bindata v1.0.0 // indirect
-	github.com/golangci/golangci-lint v1.15.0 // indirect
+	github.com/go-bindata/go-bindata v1.0.0
+	github.com/golangci/golangci-lint v1.15.0
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/mcuadros/go-gin-prometheus v0.0.0-20181030200533-58963fb32f54
 	github.com/patrickmn/go-cache v2.1.0+incompatible
@@ -24,7 +24,7 @@ require (
 	github.com/sirupsen/logrus v1.3.0
 	github.com/spf13/pflag v1.0.3
 	github.com/spf13/viper v1.3.1
-	github.com/terinjokes/bakelite v0.2.0 // indirect
+	github.com/terinjokes/bakelite v0.2.0
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/jarcoal/httpmock.v1 v1.0.0-20181117152235-275e9df93516
 	gopkg.in/yaml.v2 v2.2.2

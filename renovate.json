@@ -3,5 +3,6 @@
   "prHourlyLimit": 1,
   "rebaseStalePrs": false,
   "travis": { "enabled": true },
-  "masterIssue": true
+  "masterIssue": true,
+  "postUpdateOptions": ["gomodTidy", "npmDedupe", "yarnDedupeFewer"]
 }
