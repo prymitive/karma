@@ -168,13 +168,23 @@ describe("<Silence />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("renders comment as link when jiraURL is set", () => {
+  it("renders comment as link when jiraURL is set and silence is collapsed", () => {
     alertStore.data.silences.default[silence.id].jiraURL =
       "http://jira.example.com";
     const tree = MountedSilence(alertmanager).find("Silence");
     const link = tree.find("a[href='http://jira.example.com']");
     expect(link).toHaveLength(1);
-    expect(link.text()).toBe("Fake silence");
+    expect(link.text()).toBe("Fake silence…");
+  });
+
+  it("renders comment as link when jiraURL is set and silence is expaned", () => {
+    alertStore.data.silences.default[silence.id].jiraURL =
+      "http://jira.example.com";
+    const tree = MountedSilence(alertmanager).find("Silence");
+    tree.instance().collapse.toggle();
+    const link = tree.find("a[href='http://jira.example.com']");
+    expect(link).toHaveLength(1);
+    expect(link.text()).toBe("Fake silence…");
   });
 
   it("clears progress timer on unmount", () => {
