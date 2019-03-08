@@ -1,0 +1,8 @@
+.components-grid-alertgrid-alertgroup-shared-silence {
+  border-width: 3px;
+  border-style: solid;
+}
+
+.components-grid-alertgrid-alertgroup-shared-silence > .card {
+  background-color: inherit;
+}

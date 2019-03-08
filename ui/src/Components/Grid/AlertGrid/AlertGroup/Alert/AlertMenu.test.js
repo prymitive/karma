@@ -18,7 +18,7 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
   alert = MockAlert([], { foo: "bar" }, "active");
-  group = MockAlertGroup({ alertname: "Fake Alert" }, [alert], [], {});
+  group = MockAlertGroup({ alertname: "Fake Alert" }, [alert], [], {}, {});
 });
 
 const MockAfterClick = jest.fn();

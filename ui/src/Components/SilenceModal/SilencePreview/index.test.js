@@ -42,7 +42,8 @@ const MockAPIResponse = () => {
       { alertname: "foo" },
       [MockAlert([], { instance: "foo1" }, "active")],
       [],
-      { job: "foo" }
+      { job: "foo" },
+      {}
     ),
     "2": MockAlertGroup(
       { alertname: "bar" },
@@ -51,7 +52,8 @@ const MockAPIResponse = () => {
         MockAlert([], { instance: "bar2" }, "active")
       ],
       [],
-      { job: "bar" }
+      { job: "bar" },
+      {}
     )
   };
   return response;

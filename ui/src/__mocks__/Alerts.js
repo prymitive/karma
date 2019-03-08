@@ -30,7 +30,8 @@ const MockAlertGroup = (
   rootLabels,
   alerts,
   sharedAnnotations,
-  sharedLabels
+  sharedLabels,
+  sharedSilences
 ) => ({
   receiver: "by-name",
   labels: rootLabels,
@@ -47,7 +48,8 @@ const MockAlertGroup = (
   },
   shared: {
     annotations: sharedAnnotations,
-    labels: sharedLabels
+    labels: sharedLabels,
+    silences: sharedSilences
   }
 });
 

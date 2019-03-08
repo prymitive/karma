@@ -128,3 +128,184 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
 </div>
 "
 `;
+
+exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
+"
+<div class=\\"card-footer px-2 py-1\\">
+  <div class=\\"mb-1\\">
+    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation text-break\\">
+      <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
+           data-prefix=\\"fas\\"
+           data-icon=\\"search-minus\\"
+           class=\\"svg-inline--fa fa-search-minus fa-w-16 mr-1\\"
+           role=\\"img\\"
+           xmlns=\\"http://www.w3.org/2000/svg\\"
+           viewbox=\\"0 0 512 512\\"
+      >
+        <path fill=\\"currentColor\\"
+              d=\\"M304 192v32c0 6.6-5.4 12-12 12H124c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm201 284.7L476.7 505c-9.4 9.4-24.6 9.4-33.9 0L343 405.3c-4.5-4.5-7-10.6-7-17V372c-35.3 27.6-79.7 44-128 44C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208c0 48.3-16.4 92.7-44 128h16.3c6.4 0 12.5 2.5 17 7l99.7 99.7c9.3 9.4 9.3 24.6 0 34zM344 208c0-75.2-60.8-136-136-136S72 132.8 72 208s60.8 136 136 136 136-60.8 136-136z\\"
+        >
+        </path>
+      </svg>
+      <span class=\\"text-muted\\">
+        summary:
+      </span>
+      <span class=\\"Linkify\\">
+        This is summary
+      </span>
+    </div>
+    <div class=\\"mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation text-break\\">
+      <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
+           data-prefix=\\"fas\\"
+           data-icon=\\"search-plus\\"
+           class=\\"svg-inline--fa fa-search-plus fa-w-16 mr-1\\"
+           role=\\"img\\"
+           xmlns=\\"http://www.w3.org/2000/svg\\"
+           viewbox=\\"0 0 512 512\\"
+      >
+        <path fill=\\"currentColor\\"
+              d=\\"M304 192v32c0 6.6-5.4 12-12 12h-56v56c0 6.6-5.4 12-12 12h-32c-6.6 0-12-5.4-12-12v-56h-56c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h56v-56c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v56h56c6.6 0 12 5.4 12 12zm201 284.7L476.7 505c-9.4 9.4-24.6 9.4-33.9 0L343 405.3c-4.5-4.5-7-10.6-7-17V372c-35.3 27.6-79.7 44-128 44C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208c0 48.3-16.4 92.7-44 128h16.3c6.4 0 12.5 2.5 17 7l99.7 99.7c9.3 9.4 9.3 24.6 0 34zM344 208c0-75.2-60.8-136-136-136S72 132.8 72 208s60.8 136 136 136 136-60.8 136-136z\\"
+        >
+        </path>
+      </svg>
+      hidden
+    </div>
+  </div>
+  <div class
+       style=\\"display: inline;\\"
+       data-tooltipped
+       aria-describedby=\\"tippy-tooltip-9\\"
+       data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
+  >
+    <span class=\\"components-label badge text-nowrap text-truncate mw-100 badge-warning components-label-dark components-label-with-hover\\">
+      <span class=\\"components-label-name\\">
+        label1:
+      </span>
+      <span class=\\"components-label-value\\">
+        foo
+      </span>
+    </span>
+  </div>
+  <div class
+       style=\\"display: inline;\\"
+       data-tooltipped
+       aria-describedby=\\"tippy-tooltip-10\\"
+       data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
+  >
+    <span class=\\"components-label badge text-nowrap text-truncate mw-100 badge-warning components-label-dark components-label-with-hover\\">
+      <span class=\\"components-label-name\\">
+        label2:
+      </span>
+      <span class=\\"components-label-value\\">
+        bar
+      </span>
+    </span>
+  </div>
+  <div class
+       style=\\"display: inline;\\"
+       data-tooltipped
+       aria-describedby=\\"tippy-tooltip-11\\"
+       data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
+  >
+    <span class=\\"components-label badge text-nowrap text-truncate mw-100 badge-warning components-label-dark components-label-with-hover\\">
+      <span class=\\"components-label-name\\">
+        @alertmanager:
+      </span>
+      <span class=\\"components-label-value\\">
+        default
+      </span>
+    </span>
+  </div>
+  <div class
+       style=\\"display: inline;\\"
+       data-tooltipped
+       aria-describedby=\\"tippy-tooltip-12\\"
+       data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
+  >
+    <span class=\\"components-label badge text-nowrap text-truncate mw-100 badge-warning components-label-dark components-label-with-hover\\">
+      <span class=\\"components-label-name\\">
+        @receiver:
+      </span>
+      <span class=\\"components-label-value\\">
+        by-name
+      </span>
+    </span>
+  </div>
+  <a href=\\"http://link.example.com\\"
+     target=\\"_blank\\"
+     rel=\\"noopener noreferrer\\"
+     class=\\"components-label-with-hover text-nowrap text-truncate badge mr-1 components-grid-annotation-link\\"
+  >
+    <svg aria-hidden=\\"true\\"
+         focusable=\\"false\\"
+         data-prefix=\\"fas\\"
+         data-icon=\\"external-link-alt\\"
+         class=\\"svg-inline--fa fa-external-link-alt fa-w-18 \\"
+         role=\\"img\\"
+         xmlns=\\"http://www.w3.org/2000/svg\\"
+         viewbox=\\"0 0 576 512\\"
+    >
+      <path fill=\\"currentColor\\"
+            d=\\"M576 24v127.984c0 21.461-25.96 31.98-40.971 16.971l-35.707-35.709-243.523 243.523c-9.373 9.373-24.568 9.373-33.941 0l-22.627-22.627c-9.373-9.373-9.373-24.569 0-33.941L442.756 76.676l-35.703-35.705C391.982 25.9 402.656 0 424.024 0H552c13.255 0 24 10.745 24 24zM407.029 270.794l-16 16A23.999 23.999 0 0 0 384 303.765V448H64V128h264a24.003 24.003 0 0 0 16.97-7.029l16-16C376.089 89.851 365.381 64 344 64H48C21.49 64 0 85.49 0 112v352c0 26.51 21.49 48 48 48h352c26.51 0 48-21.49 48-48V287.764c0-21.382-25.852-32.09-40.971-16.97z\\"
+      >
+      </path>
+    </svg>
+    link
+  </a>
+  <div class=\\"components-grid-alertgrid-alertgroup-shared-silence rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-success \\">
+    <div class=\\"card mt-1 border-0 p-1\\">
+      <div class=\\"card-text mb-0\\">
+        <span class=\\"text-muted my-1\\">
+          <span width=\\"0\\">
+            <span>
+            </span>
+            <span>
+              Mocked Silence
+            </span>
+            <span style=\\"position: fixed; visibility: hidden; top: 0px; left: 0px;\\">
+              …
+            </span>
+          </span>
+          <span class=\\"blockquote-footer pt-1\\">
+            <span class=\\"float-right cursor-pointer\\">
+              <div class
+                   style=\\"display: inline;\\"
+                   data-tooltipped
+                   aria-describedby=\\"tippy-tooltip-13\\"
+                   data-original-title=\\"Toggle silence details\\"
+              >
+                <svg aria-hidden=\\"true\\"
+                     focusable=\\"false\\"
+                     data-prefix=\\"fas\\"
+                     data-icon=\\"chevron-up\\"
+                     class=\\"svg-inline--fa fa-chevron-up fa-w-14 \\"
+                     role=\\"img\\"
+                     xmlns=\\"http://www.w3.org/2000/svg\\"
+                     viewbox=\\"0 0 448 512\\"
+                >
+                  <path fill=\\"currentColor\\"
+                        d=\\"M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z\\"
+                  >
+                  </path>
+                </svg>
+              </div>
+            </span>
+            <cite class=\\"components-grid-alertgroup-silences mr-2\\">
+              me@example.com
+            </cite>
+            <span class=\\"badge badge-danger text-nowrap text-truncate mw-100 align-bottom\\">
+              Expired
+              <time datetime=\\"946688400000\\">
+                14 hours ago
+              </time>
+            </span>
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+"
+`;

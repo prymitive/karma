@@ -58,7 +58,10 @@ const Alert = observer(
           };
         }
         for (let silenceID of am.silencedBy) {
-          if (!silences[am.cluster].silences.includes(silenceID)) {
+          if (
+            !silences[am.cluster].silences.includes(silenceID) &&
+            !(group.shared.silences[am.cluster] === silenceID)
+          ) {
             silences[am.cluster].silences.push(silenceID);
           }
         }

@@ -31,13 +31,13 @@ const MountedGroupMenu = group => {
 
 describe("<GroupMenu />", () => {
   it("is collapsed by default", () => {
-    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {});
+    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
     const tree = MountedGroupMenu(group);
     expect(tree.instance().collapse.value).toBe(true);
   });
 
   it("clicking toggle sets collapse value to 'false'", () => {
-    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {});
+    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
     const tree = MountedGroupMenu(group);
     const toggle = tree.find(".cursor-pointer");
     toggle.simulate("click");
@@ -45,7 +45,7 @@ describe("<GroupMenu />", () => {
   });
 
   it("handleClickOutside() call sets collapse value to 'true'", () => {
-    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {});
+    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
     const tree = MountedGroupMenu(group);
 
     const toggle = tree.find(".cursor-pointer");
@@ -75,7 +75,7 @@ const MountedMenuContent = group => {
 
 describe("<MenuContent />", () => {
   it("clicking on 'Copy' icon copies the link to clickboard", () => {
-    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {});
+    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
     const tree = MountedMenuContent(group);
     const button = tree.find(".dropdown-item").at(0);
     button.simulate("click");
@@ -83,7 +83,7 @@ describe("<MenuContent />", () => {
   });
 
   it("clicking on 'Silence' icon opens the silence form modal", () => {
-    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {});
+    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
     const tree = MountedMenuContent(group);
     const button = tree.find(".dropdown-item").at(1);
     button.simulate("click");

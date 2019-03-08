@@ -44,7 +44,8 @@ const APIGroup = PropTypes.exact({
   }),
   shared: PropTypes.exact({
     annotations: PropTypes.arrayOf(Annotation).isRequired,
-    labels: PropTypes.object.isRequired
+    labels: PropTypes.object.isRequired,
+    silences: PropTypes.object.isRequired
   }).isRequired
 });
 

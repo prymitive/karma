@@ -41,6 +41,7 @@ const MockGroup = (groupName, alertCount) => {
     { alertname: "Fake Alert", group: groupName },
     alerts,
     [],
+    {},
     {}
   );
   return group;
