@@ -4,10 +4,16 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/pmezard/go-difflib/difflib"
+
 	"github.com/prymitive/karma/internal/models"
 )
 
 func TestDedupSharedMaps(t *testing.T) {
+	am := models.AlertmanagerInstance{
+		Cluster:    "fakeCluster",
+		SilencedBy: []string{"fakeSilenceID"},
+	}
 	ag := models.APIAlertGroup{
 		AlertGroup: models.AlertGroup{
 			Labels: map[string]string{
@@ -15,6 +21,7 @@ func TestDedupSharedMaps(t *testing.T) {
 			},
 			Alerts: models.AlertList{
 				models.Alert{
+					State: models.AlertStateSuppressed,
 					Annotations: models.Annotations{
 						models.Annotation{
 							Name:  "summary",
@@ -30,8 +37,10 @@ func TestDedupSharedMaps(t *testing.T) {
 						"job":       "node_exporter",
 						"instance":  "1",
 					},
+					Alertmanager: []models.AlertmanagerInstance{am},
 				},
 				models.Alert{
+					State: models.AlertStateSuppressed,
 					Annotations: models.Annotations{
 						models.Annotation{
 							Name:  "summary",
@@ -43,8 +52,10 @@ func TestDedupSharedMaps(t *testing.T) {
 						"job":       "node_exporter",
 						"instance":  "2",
 					},
+					Alertmanager: []models.AlertmanagerInstance{am},
 				},
 				models.Alert{
+					State: models.AlertStateSuppressed,
 					Annotations: models.Annotations{
 						models.Annotation{
 							Name:  "summary",
@@ -56,6 +67,7 @@ func TestDedupSharedMaps(t *testing.T) {
 						"job":       "blackbox",
 						"instance":  "3",
 					},
+					Alertmanager: []models.AlertmanagerInstance{am},
 				},
 			},
 		},
@@ -83,8 +95,21 @@ func TestDedupSharedMaps(t *testing.T) {
       },
       "startsAt": "0001-01-01T00:00:00Z",
       "endsAt": "0001-01-01T00:00:00Z",
-      "state": "",
-      "alertmanager": null,
+      "state": "suppressed",
+      "alertmanager": [
+        {
+          "name": "",
+          "cluster": "fakeCluster",
+          "state": "",
+          "startsAt": "0001-01-01T00:00:00Z",
+          "endsAt": "0001-01-01T00:00:00Z",
+          "source": "",
+          "silencedBy": [
+            "fakeSilenceID"
+          ],
+          "inhibitedBy": null
+        }
+      ],
       "receiver": ""
     },
     {
@@ -95,8 +120,21 @@ func TestDedupSharedMaps(t *testing.T) {
       },
       "startsAt": "0001-01-01T00:00:00Z",
       "endsAt": "0001-01-01T00:00:00Z",
-      "state": "",
-      "alertmanager": null,
+      "state": "suppressed",
+      "alertmanager": [
+        {
+          "name": "",
+          "cluster": "fakeCluster",
+          "state": "",
+          "startsAt": "0001-01-01T00:00:00Z",
+          "endsAt": "0001-01-01T00:00:00Z",
+          "source": "",
+          "silencedBy": [
+            "fakeSilenceID"
+          ],
+          "inhibitedBy": null
+        }
+      ],
       "receiver": ""
     },
     {
@@ -107,8 +145,21 @@ func TestDedupSharedMaps(t *testing.T) {
       },
       "startsAt": "0001-01-01T00:00:00Z",
       "endsAt": "0001-01-01T00:00:00Z",
-      "state": "",
-      "alertmanager": null,
+      "state": "suppressed",
+      "alertmanager": [
+        {
+          "name": "",
+          "cluster": "fakeCluster",
+          "state": "",
+          "startsAt": "0001-01-01T00:00:00Z",
+          "endsAt": "0001-01-01T00:00:00Z",
+          "source": "",
+          "silencedBy": [
+            "fakeSilenceID"
+          ],
+          "inhibitedBy": null
+        }
+      ],
       "receiver": ""
     }
   ],
@@ -125,13 +176,27 @@ func TestDedupSharedMaps(t *testing.T) {
         "isLink": false
       }
     ],
-    "labels": {}
+    "labels": {},
+    "silences": {
+      "fakeCluster": "fakeSilenceID"
+    }
   }
 }`
 
 	agJSON, _ := json.MarshalIndent(ag, "", "  ")
 	if string(agJSON) != expectedJSON {
-		t.Errorf("Expected: %s\nGot: %s\n", expectedJSON, string(agJSON))
+		diff := difflib.UnifiedDiff{
+			A:        difflib.SplitLines(expectedJSON),
+			B:        difflib.SplitLines(string(agJSON)),
+			FromFile: "Expected",
+			ToFile:   "Current",
+			Context:  3,
+		}
+		text, err := difflib.GetUnifiedDiffString(diff)
+		if err != nil {
+			t.Error(err)
+		}
+		t.Errorf("JSON mismatch:\n%s", text)
 	}
 }
 

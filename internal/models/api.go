@@ -38,6 +38,7 @@ type LabelsColorMap map[string]map[string]LabelColors
 type APIAlertGroupSharedMaps struct {
 	Annotations Annotations       `json:"annotations"`
 	Labels      map[string]string `json:"labels"`
+	Silences    map[string]string `json:"silences"`
 }
 
 // APIAlertGroup is how AlertGroup is returned in the API response
@@ -138,6 +139,46 @@ func (ag *APIAlertGroup) dedupAnnotations() {
 	ag.Shared.Annotations = sharedAnnotations
 }
 
+func (ag *APIAlertGroup) dedupSilences() {
+	ag.Shared.Silences = map[string]string{}
+
+	silencesByCluster := map[string][]string{}
+
+	for _, alert := range ag.Alerts {
+		if alert.State != AlertStateSuppressed {
+			// if we find any alert that's not silenced then we can break early
+			return
+		}
+		for _, am := range alert.Alertmanager {
+			for _, silenceID := range am.SilencedBy {
+				_, ok := silencesByCluster[am.Cluster]
+				if !ok {
+					silencesByCluster[am.Cluster] = []string{}
+				}
+				if !slices.StringInSlice(silencesByCluster[am.Cluster], silenceID) {
+					silencesByCluster[am.Cluster] = append(silencesByCluster[am.Cluster], silenceID)
+				}
+			}
+		}
+	}
+
+	// only deduplicate if all alerts are silenced with the same silence from a
+	// single cluster
+	if len(silencesByCluster) != 1 {
+		return
+	}
+
+	// now check that all alerts are silenced with the same silenceID
+	for cluster, silences := range silencesByCluster {
+		for _, silenceID := range silences {
+			if silenceID != silences[0] {
+				return
+			}
+		}
+		ag.Shared.Silences[cluster] = silences[0]
+	}
+}
+
 // DedupSharedMaps will find all labels and annotations shared by all alerts
 // in this group and moved them to Shared namespace
 func (ag *APIAlertGroup) DedupSharedMaps() {
@@ -147,10 +188,12 @@ func (ag *APIAlertGroup) DedupSharedMaps() {
 	if len(ag.Alerts) > 1 {
 		ag.dedupLabels()
 		ag.dedupAnnotations()
+		ag.dedupSilences()
 	} else {
 		ag.Shared = APIAlertGroupSharedMaps{
 			Labels:      map[string]string{},
 			Annotations: Annotations{},
+			Silences:    map[string]string{},
 		}
 	}
 }

@@ -35,13 +35,16 @@ import { DeleteSilence } from "./DeleteSilence";
 
 import "./index.css";
 
-const SilenceComment = ({ silence, collapsed }) => {
+const SilenceComment = ({ silence, collapsed, afterUpdate }) => {
   const showLines = 2;
   if (silence.jiraURL) {
     return (
       <a href={silence.jiraURL} target="_blank" rel="noopener noreferrer">
         <FontAwesomeIcon className="mr-1" icon={faExternalLinkAlt} />
-        <Truncate lines={collapsed ? showLines : false}>
+        <Truncate
+          lines={collapsed ? showLines : false}
+          onTruncate={afterUpdate}
+        >
           {silence.comment}
         </Truncate>
       </a>
@@ -53,7 +56,8 @@ const SilenceComment = ({ silence, collapsed }) => {
 };
 SilenceComment.propTypes = {
   silence: APISilence.isRequired,
-  collapsed: PropTypes.bool.isRequired
+  collapsed: PropTypes.bool.isRequired,
+  afterUpdate: PropTypes.func.isRequired
 };
 
 const SilenceExpiryBadgeWithProgress = ({ silence, progress }) => {
@@ -296,7 +300,12 @@ const Silence = inject("alertStore")(
       }
 
       render() {
-        const { alertStore, alertmanagerState, silenceID } = this.props;
+        const {
+          alertStore,
+          alertmanagerState,
+          silenceID,
+          afterUpdate
+        } = this.props;
 
         const silence = this.getSilence();
         if (!silence)
@@ -316,6 +325,7 @@ const Silence = inject("alertStore")(
                 <SilenceComment
                   silence={silence}
                   collapsed={this.collapse.value}
+                  afterUpdate={afterUpdate}
                 />
                 <span className="blockquote-footer pt-1">
                   <span

@@ -23,9 +23,15 @@ const MockGroup = () => {
     MockAlert([], { instance: "prod2", cluster: "prod" }),
     MockAlert([], { instance: "dev1", cluster: "dev" })
   ];
-  const group = MockAlertGroup({ alertname: "FakeAlert" }, alerts, [], {
-    job: "mock"
-  });
+  const group = MockAlertGroup(
+    { alertname: "FakeAlert" },
+    alerts,
+    [],
+    {
+      job: "mock"
+    },
+    {}
+  );
   return group;
 };
 

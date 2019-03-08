@@ -5,19 +5,29 @@ import { observer } from "mobx-react";
 
 import { APIGroup } from "Models/API";
 import { StaticLabels } from "Common/Query";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
+import { Silence } from "../Silence";
+
+import "./index.css";
 
 const GroupFooter = observer(
   class GroupFooter extends Component {
     static propTypes = {
       group: APIGroup.isRequired,
       alertmanagers: PropTypes.arrayOf(PropTypes.string).isRequired,
-      afterUpdate: PropTypes.func.isRequired
+      afterUpdate: PropTypes.func.isRequired,
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
     render() {
-      const { group, alertmanagers, afterUpdate } = this.props;
+      const {
+        group,
+        alertmanagers,
+        afterUpdate,
+        silenceFormStore
+      } = this.props;
 
       return (
         <div className="card-footer px-2 py-1">
@@ -54,6 +64,26 @@ const GroupFooter = observer(
                 value={a.value}
               />
             ))}
+          {Object.keys(group.shared.silences).length === 0 ? null : (
+            <div className="components-grid-alertgrid-alertgroup-shared-silence rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-success ">
+              {Object.entries(group.shared.silences).map(
+                ([cluster, silenceID]) => (
+                  <Silence
+                    key={silenceID}
+                    silenceFormStore={silenceFormStore}
+                    alertmanagerState={
+                      group.alerts.map(
+                        a =>
+                          a.alertmanager.filter(am => am.cluster === cluster)[0]
+                      )[0]
+                    }
+                    silenceID={silenceID}
+                    afterUpdate={afterUpdate}
+                  />
+                )
+              )}
+            </div>
+          )}
         </div>
       );
     }
