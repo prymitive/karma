@@ -24,7 +24,7 @@ Alertmanager instances it was found at and can be filtered based on those tags
 (`@alertmanager`). Note that `@alertmanager` tags will be visible only if karma
 is configured with multiple Alertmanager instances.
 
-![Screenshot](/screenshot.png)
+![Screenshot](/docs/screenshot.png)
 
 Alerts are displayed grouped preserving
 [group_by](https://prometheus.io/docs/alerting/configuration/#route)
@@ -36,7 +36,13 @@ Each individual alert will show unique labels and annotations. Labels
 and annotations that are shared between all alerts are moved to the footer.
 Example:
 
-![Example](/alertGroup.png)
+![Example](/docs/alertGroup.png)
+
+If all alerts in a group were suppressed by the same silence then, to save
+screen space, the silence will also be moved to the footer.
+Example:
+
+![Deduplicated silence](/docs/footerSilence.png)
 
 Each group can be collapsed to only show the title bar using top right toggle
 icon.
