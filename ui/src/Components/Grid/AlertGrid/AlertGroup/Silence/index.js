@@ -9,6 +9,8 @@ import hash from "object-hash";
 import moment from "moment";
 import Moment from "react-moment";
 
+import Truncate from "react-truncate";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
@@ -33,19 +35,25 @@ import { DeleteSilence } from "./DeleteSilence";
 
 import "./index.css";
 
-const SilenceComment = ({ silence }) => {
+const SilenceComment = ({ silence, collapsed }) => {
+  const showLines = 2;
   if (silence.jiraURL) {
     return (
       <a href={silence.jiraURL} target="_blank" rel="noopener noreferrer">
         <FontAwesomeIcon className="mr-1" icon={faExternalLinkAlt} />
-        {silence.comment}
+        <Truncate lines={collapsed ? showLines : false}>
+          {silence.comment}
+        </Truncate>
       </a>
     );
   }
-  return silence.comment;
+  return (
+    <Truncate lines={collapsed ? showLines : false}>{silence.comment}</Truncate>
+  );
 };
 SilenceComment.propTypes = {
-  silence: APISilence.isRequired
+  silence: APISilence.isRequired,
+  collapsed: PropTypes.bool.isRequired
 };
 
 const SilenceExpiryBadgeWithProgress = ({ silence, progress }) => {
@@ -305,7 +313,10 @@ const Silence = inject("alertStore")(
           <div className="card mt-1 border-0 p-1">
             <div className="card-text mb-0">
               <span className="text-muted my-1">
-                <SilenceComment silence={silence} />
+                <SilenceComment
+                  silence={silence}
+                  collapsed={this.collapse.value}
+                />
                 <span className="blockquote-footer pt-1">
                   <span
                     className="float-right cursor-pointer"

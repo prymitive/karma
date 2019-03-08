@@ -51,3 +51,6 @@ log:
 sentry:
   private: https://84a9ef37a6ed4fdb80e9ea2310d1ed26:8c6ee6f0ab02406482ff4b4e824e2c27@sentry.io/1279017
   public: https://84a9ef37a6ed4fdb80e9ea2310d1ed26@sentry.io/1279017
+jira:
+  - regex: DEVOPS-[0-9]+
+    uri: https://jira.example.com

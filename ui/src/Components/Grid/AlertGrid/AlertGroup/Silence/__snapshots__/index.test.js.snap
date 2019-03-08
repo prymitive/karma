@@ -15,7 +15,16 @@ exports[`<Silence /> matches snapshot when data is present in alertStore 1`] = `
 <div class=\\"card mt-1 border-0 p-1\\">
   <div class=\\"card-text mb-0\\">
     <span class=\\"text-muted my-1\\">
-      Fake silence
+      <span width=\\"0\\">
+        <span>
+        </span>
+        <span>
+          Fake silence
+        </span>
+        <span style=\\"position: fixed; visibility: hidden; top: 0px; left: 0px;\\">
+          …
+        </span>
+      </span>
       <span class=\\"blockquote-footer pt-1\\">
         <span class=\\"float-right cursor-pointer\\">
           <div class
@@ -71,7 +80,16 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
 <div class=\\"card mt-1 border-0 p-1\\">
   <div class=\\"card-text mb-0\\">
     <span class=\\"text-muted my-1\\">
-      Fake silence
+      <span width=\\"0\\">
+        <span>
+        </span>
+        <span>
+          Fake silence
+        </span>
+        <span style=\\"position: fixed; visibility: hidden; top: 0px; left: 0px;\\">
+          …
+        </span>
+      </span>
       <span class=\\"blockquote-footer pt-1\\">
         <span class=\\"float-right cursor-pointer\\">
           <div class
