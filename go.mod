@@ -8,7 +8,7 @@ require (
 	github.com/elazarl/go-bindata-assetfs v1.0.1-0.20180223160309-38087fe4dafb
 	github.com/getsentry/raven-go v0.2.0
 	github.com/gin-contrib/cors v0.0.0-20190301064136-f9e10995c85a
-	github.com/gin-contrib/gzip v0.0.0-20190301094516-b07653c4b4b1
+	github.com/gin-contrib/gzip v0.0.1
 	github.com/gin-contrib/static v0.0.0-20190301094727-ed515893e96b
 	github.com/gin-gonic/contrib v0.0.0-20190302005408-54ff787f7c73
 	github.com/gin-gonic/gin v1.3.0
