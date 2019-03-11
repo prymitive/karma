@@ -172,7 +172,7 @@ jobs:
         - echo "  login l.mierzwa@gmail.com" >> $HOME/.netrc
         - echo "  password $HEROKU_TOKEN" >> $HOME/.netrc
       script:
-        - docker build --build-arg VERSION=$(make show-version) -t registry.heroku.com/karma-demo/web -f demo/Dockerfile .
+        - travis_retry docker build --build-arg VERSION=$(make show-version) -t registry.heroku.com/karma-demo/web -f demo/Dockerfile .
         - travis_retry docker login -u _ -p "$HEROKU_TOKEN" registry.heroku.com
         - travis_retry docker push registry.heroku.com/karma-demo/web
         # bundled heroku cli doesn't know anything about containers, update it
