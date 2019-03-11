@@ -93,7 +93,7 @@ jobs:
         apt:
           packages:
             - docker-ce
-      script: make docker-image
+      script: travis_retry make docker-image
 
     - stage: Build and Deploy
       <<: *DEFAULTS_GO
@@ -107,7 +107,7 @@ jobs:
         - travis_retry nvm install $(< .nvmrc)
       script:
         # compile assets via webpack and build those into bindata_assetfs.go file
-        - make bindata_assetfs.go
+        - travis_retry make bindata_assetfs.go
         # and now compile using bakelite for all target archs
         - travis_retry go install github.com/terinjokes/bakelite
         - export SOURCE_DATE_EPOCH=$(git show -s --format=%ci ${TRAVIS_TAG:-${TRAVIS_COMMIT}}^{commit})
@@ -145,7 +145,7 @@ jobs:
         - export DOCKER_USERNAME=lmierzwa
         - export DOCKER_IMAGE=karma
         - export IMAGE_NAME="${DOCKER_USERNAME}/${DOCKER_IMAGE}"
-        - make docker-image
+        - travis_retry make docker-image
         - travis_retry docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
         - docker tag "${LOCAL_IMAGE}" "${IMAGE_NAME}:latest"
         # tag with the version only if we have a git tag (new release was pushed)
