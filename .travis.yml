@@ -22,7 +22,7 @@ jobs:
         - DESC="Test Go code"
         - GO111MODULE=on
       before_script:
-        - make mock-assets
+        - travis_retry make mock-assets
       script: make test-go
       after_success:
         - travis_retry bash <(curl -s https://codecov.io/bash) -F backend
@@ -59,7 +59,7 @@ jobs:
         - DESC="Lint Go code"
         - GO111MODULE=on
       before_script:
-        - make mock-assets
+        - travis_retry make mock-assets
       script: make lint-go
 
     - stage: Lint
@@ -80,7 +80,7 @@ jobs:
         - DESC="Verify go.sum"
         - GO111MODULE=on
       script:
-        - make mock-assets
+        - travis_retry make mock-assets
         - travis_retry go get -d -v
         - git diff --exit-code
 
@@ -172,7 +172,7 @@ jobs:
         - echo "  login l.mierzwa@gmail.com" >> $HOME/.netrc
         - echo "  password $HEROKU_TOKEN" >> $HOME/.netrc
       script:
-        - docker build --build-arg VERSION=$(make show-version) -t registry.heroku.com/karma-demo/web -f demo/Dockerfile .
+        - travis_retry docker build --build-arg VERSION=$(make show-version) -t registry.heroku.com/karma-demo/web -f demo/Dockerfile .
         - travis_retry docker login -u _ -p "$HEROKU_TOKEN" registry.heroku.com
         - travis_retry docker push registry.heroku.com/karma-demo/web
         # bundled heroku cli doesn't know anything about containers, update it
