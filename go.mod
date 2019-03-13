@@ -23,7 +23,7 @@ require (
 	github.com/prometheus/common v0.2.0
 	github.com/sirupsen/logrus v1.4.0
 	github.com/spf13/pflag v1.0.3
-	github.com/spf13/viper v1.3.1
+	github.com/spf13/viper v1.3.2
 	github.com/terinjokes/bakelite v0.2.0
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/jarcoal/httpmock.v1 v1.0.0-20181117152235-275e9df93516
