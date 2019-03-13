@@ -98,27 +98,20 @@ describe("<RenderNonLinkAnnotation />", () => {
     expect(link.text()).toBe("http://example.com");
   });
 
-  it("clicking on + icon hides the value", () => {
+  it("clicking on - icon hides the value", () => {
     const tree = MountedNonLinkAnnotation(true);
     expect(tree.html()).toMatch(/fa-search-minus/);
     expect(tree.html()).toMatch(/some long text/);
-    tree.find("div").simulate("click");
+    tree.find(".fa-search-minus").simulate("click");
     expect(tree.html()).toMatch(/fa-search-plus/);
     expect(tree.html()).not.toMatch(/some long text/);
   });
 
-  it("clicking on a link inside annotation doesn't hide the value", () => {
-    const tree = MountedNonLinkAnnotationContainingLink(true);
-    expect(tree.html()).toMatch(/fa-search-minus/);
-    tree.find("a").simulate("click");
-    expect(tree.html()).toMatch(/fa-search-minus/);
-  });
-
-  it("clicking on - icon shows the value", () => {
+  it("clicking on + icon shows the value", () => {
     const tree = MountedNonLinkAnnotation(false);
     expect(tree.html()).toMatch(/fa-search-plus/);
     expect(tree.html()).not.toMatch(/some long text/);
-    tree.find("div").simulate("click");
+    tree.find(".components-grid-annotation").simulate("click");
     expect(tree.html()).toMatch(/fa-search-minus/);
     expect(tree.html()).toMatch(/some long text/);
   });

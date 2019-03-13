@@ -12,6 +12,7 @@ import { faSearchPlus } from "@fortawesome/free-solid-svg-icons/faSearchPlus";
 import { faSearchMinus } from "@fortawesome/free-solid-svg-icons/faSearchMinus";
 
 import { AlertStore } from "Stores/AlertStore";
+import { TooltipWrapper } from "Components/TooltipWrapper";
 
 import "./index.css";
 
@@ -36,8 +37,7 @@ const RenderNonLinkAnnotation = inject("alertStore")(
             this.visible = true;
           },
           hide(e) {
-            // don't action link clicks inside Linkify
-            if (e.target.nodeName !== "A") this.visible = false;
+            this.visible = false;
           }
         },
         {
@@ -62,30 +62,41 @@ const RenderNonLinkAnnotation = inject("alertStore")(
         const { name, value } = this.props;
 
         const className =
-          "mr-1 mb-1 p-1 bg-light cursor-pointer d-inline-block rounded components-grid-annotation text-break";
+          "mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break";
 
         if (!this.toggle.visible) {
           return (
-            <div className={className} onClick={this.toggle.show}>
-              <FontAwesomeIcon icon={faSearchPlus} className="mr-1" />
-              {name}
-            </div>
+            <TooltipWrapper title="Click to show annotation value">
+              <div
+                className={`${className} cursor-pointer`}
+                onClick={this.toggle.show}
+              >
+                <FontAwesomeIcon icon={faSearchPlus} className="mr-1" />
+                {name}
+              </div>
+            </TooltipWrapper>
           );
         }
 
         return (
-          <div key={name} className={className} onClick={this.toggle.hide}>
-            <FontAwesomeIcon icon={faSearchMinus} className="mr-1" />
-            <span className="text-muted">{name}: </span>
-            <Linkify
-              properties={{
-                target: "_blank",
-                rel: "noopener noreferrer"
-              }}
-            >
-              {value}
-            </Linkify>
-          </div>
+          <TooltipWrapper title="Click the icon to hide annotation value">
+            <div key={name} className={className}>
+              <FontAwesomeIcon
+                icon={faSearchMinus}
+                className="mr-1 cursor-pointer"
+                onClick={this.toggle.hide}
+              />
+              <span className="text-muted">{name}: </span>
+              <Linkify
+                properties={{
+                  target: "_blank",
+                  rel: "noopener noreferrer"
+                }}
+              >
+                {value}
+              </Linkify>
+            </div>
+          </TooltipWrapper>
         );
       }
     }
