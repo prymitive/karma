@@ -3,6 +3,7 @@ package config
 import (
 	"bufio"
 	"bytes"
+	"io/ioutil"
 	"os"
 	"strings"
 	"time"
@@ -182,6 +183,28 @@ func (config *configSchema) Read() {
 
 	if !slices.StringInSlice([]string{"disabled", "startsAt", "label"}, config.Grid.Sorting.Order) {
 		log.Fatalf("Invalid grid.sorting.order value '%s', allowed options: disabled, startsAt, label", config.Grid.Sorting.Order)
+	}
+
+	// FIXME workaround  for https://github.com/prymitive/karma/issues/507
+	// until https://github.com/spf13/viper/pull/635 is merged
+	// read in raw config file if it's used and override maps where keys are label
+	// names so we can't enforce parsed config key names
+	if v.ConfigFileUsed() != "" {
+		raw := configSchema{}
+
+		var rawConfigFile []byte
+		rawConfigFile, err = ioutil.ReadFile(v.ConfigFileUsed())
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = yaml.Unmarshal(rawConfigFile, &raw)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		config.Labels.Color.Custom = raw.Labels.Color.Custom
+		config.Grid.Sorting.CustomValues.Labels = raw.Grid.Sorting.CustomValues.Labels
 	}
 
 	// accept single Alertmanager server from flag/env if nothing is set yet
