@@ -84,20 +84,23 @@ jobs:
         - travis_retry go get -d -v
         - git diff --exit-code
 
-    - stage: Build Docker image
-      # we build and push doker image on merge and tag, so this should only
+    - stage: Build and Deploy
+      # we build and push docker image on merge and tag, so this should only
       # run for pull requests, to test that they don't break docker builds
-      if: repo = prymitive/karma AND (branch != master OR type = pull_request)
+      if: repo = prymitive/karma AND (branch != master OR type = pull_request) AND tag IS NOT present
       language: generic
       addons:
         apt:
           packages:
             - docker-ce
+      env:
+        - DESC="Build docker image"
       script: travis_retry make docker-image
 
     - stage: Build and Deploy
       <<: *DEFAULTS_GO
       env:
+        - DESC="Cross compile binaries"
         - GO111MODULE=on
       # disable cache so we always build from scratch
       cache: false
@@ -129,7 +132,7 @@ jobs:
           repo: prymitive/karma
           tags: true
 
-    - stage: Deploy docker image
+    - stage: Build and Deploy
       if: repo = prymitive/karma AND ((type = push AND branch = master) OR tag IS present)
       language: generic
       addons:
@@ -137,6 +140,7 @@ jobs:
           packages:
             - docker-ce
       env:
+        - DESC="Build and push docker image"
         # DOCKER_PASSWORD
         - secure: "XULRlOHN17A1KUSzST1TKo5UQtSS0/T6y2Rp88gJ/jDOraFKW3IuGHBM3uE3uALBUfrLnB6DGrrtS1x3hvWSvpnBmNmCK94qGYpEppAU2b8+DfUGQqI1D7sa/FXAaxqkA6LDKxcdgbagd8kE/3gRmayjHeisCDPvy3BhVZVEfzSIaKilzXnHrCywEpB2DWRUsYkdZdw2tG674626ZcMwJUajkeW4fxmvWYrskE92+7MSuz9DExxYWLLah12+Ug1URD1UWyFeIdMK0z3S0bN4Bsd+RT0ScDelRMhad5sTTqGWbLC3nr10aMRYzXYhp2pUBPtK2abby4KebY8hToxf6Dr8f7Nz4BRA3nqwp/7Q79hloU7IYdtnvSdvMp3Pc3YDsHiYqAO+G/jfX2j4t8CGIk3hHDUZ+4/PnYddV+OFR8CujH4Wq85FzHPyfRmZuB6MdPQQEtW4B/Mmf3qsTYXZIwDSKU2fnJM6eEnDW7vZIb55Y8nFC4x8b4fVyY7/wSQgDVtd933BmYDUxYo9AjjAfigLBE30zalr/TFibIRWUewoYqvJJ803AJU/M54vzQQ9l9ypoNadGgHa0PuPrnza9WufHGNkm7jRfhKFDUi/RvdFX8u7NtTpB9bAk/Mk+9qcLIkVnm+9SCcA80KR9LLwp8SZChBMHNnNTs47T0cDzNI="
       script:
@@ -152,12 +156,13 @@ jobs:
         - if [ -n "$TRAVIS_TAG" ]; then docker tag "${LOCAL_IMAGE}" "${IMAGE_NAME}:${VERSION}" ; fi
         - travis_retry docker push "${IMAGE_NAME}"
 
-    - stage: Deploy demo app to Heroku
+    - stage: Build and Deploy
       # deploy on every job that isn't a PR, this way we:
       # * don't deploy on PRs send from forks, only internal
       # * deploy only once per PR - since we will deploy on branch job
       if: repo = prymitive/karma AND type != pull_request
       env:
+        - DESC="Deploy demo app to Heroku"
         # HEROKU_TOKEN, valid forever, needed to push docker image and release
         # it on heroku app
         - secure: "zr1fHhSIZQgA7wT8PALNyAhilCZBpvziL2zuC7LJvYy9PSHatV1B+/Tl5Ao1MGlqiD9wHdRXhw/Z7Ol7vR84LlEXIQv/PZvpYtdGrwP/dmwEzRi59puNHW/sDa5fU27U5bgGW9VPYKzQFGBIknRz9yEpGAsDqzWSRwEQofgnuF1Cv0JJXN/tcZs/fcXz4AhFSXRb8Rde2geHRVGlz3UnuECQ9LnzTI/xxIP/+YORvMpTcwJtQwq/NhucYXzms19XM94xz5IE/cwf8yV9YZalm867aR2yQJvkMmOaufSYoFgRrghqnpzEe1wyuZvAXkwwZErw5swBY3Zo1YkGUeU761g3v+Nh+dlVKFaBVYgDt9W9bb1QsK1Lbgix4UYSx8Tz06X83xz2f6hWXS1Yvju7yE7M1VmjAhevWW+ZpTf3vwOH2UeUHyAMOddggMSIRfaxC9W74Trt8zxKlM+8sQiaEE3c6Ea+ZJxq1baDJvHQPdfuj2844uKaAL7qNVuRNRPAa0bp0qkzLyl3f5P3XK54mM4vayBRCQ+qflq+XGXY5G8+LukUNnKMq/KuPZZ1A6pOr3kTj4qKaxAcxOJQq4/xc+zJaiQFkzfMj1//LKMyvrRtqMnPV+P3qtgMGzA4Z3JlHUOgPHgbZ9WTlpV5yi066Onro+j2NFehjY+FV6R2gOI="
