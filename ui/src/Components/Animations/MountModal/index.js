@@ -7,7 +7,6 @@ import "./index.scss";
 
 const MountModal = ({ children, duration, ...props }) => (
   <CSSTransition
-    in={true}
     classNames="components-animation-modal"
     timeout={200}
     appear={true}
