@@ -9402,10 +9402,10 @@ react-popper@1.3.3, react-popper@^1.0.2:
     typed-styles "^0.0.7"
     warning "^4.0.2"
 
-react-resize-detector@4.0.2:
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-4.0.2.tgz#8eb3d0442ea352dd3e8b42cd241729006cb8bc91"
-  integrity sha512-s1O34sLjEAu8l6FLbrjVG9z6xrPeyZdbEFH50QqMmimfQ9nx7876R6zXKLFzLdBcpYSRjmPRqjt7Kkzo1mbclw==
+react-resize-detector@4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/react-resize-detector/-/react-resize-detector-4.0.4.tgz#33be9fc700398e7e1c659ce435c53c855f678e51"
+  integrity sha512-P8sjG4wNWHehWEFhn8dTPEWXaWML76KiXhLdLE56yDzRnuDphmf05ZxeB8C+Z4JdrTkVWOKR9Hx4hVrtdfzKCg==
   dependencies:
     lodash "^4.17.11"
     lodash-es "^4.17.11"
