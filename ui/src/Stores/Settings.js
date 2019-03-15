@@ -70,6 +70,18 @@ class GridConfig {
   );
 }
 
+class FilterBarConfig {
+  config = localStored(
+    "filterBarConfig",
+    {
+      autohide: true
+    },
+    {
+      delay: 100
+    }
+  );
+}
+
 class Settings {
   constructor() {
     this.savedFilters = new SavedFilters();
@@ -77,6 +89,7 @@ class Settings {
     this.alertGroupConfig = new AlertGroupConfig();
     this.gridConfig = new GridConfig();
     this.silenceFormConfig = new SilenceFormConfig();
+    this.filterBarConfig = new FilterBarConfig();
   }
 }
 

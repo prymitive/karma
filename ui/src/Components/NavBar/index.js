@@ -103,7 +103,11 @@ const NavBar = observer(
       return (
         <IdleTimer
           onActive={this.activityStatus.setActive}
-          onIdle={this.activityStatus.setIdle}
+          onIdle={() => {
+            if (settingsStore.filterBarConfig.config.autohide) {
+              this.activityStatus.setIdle();
+            }
+          }}
           timeout={
             window.innerWidth >= 768 ? DesktopIdleTimeout : MobileIdleTimeout
           }
