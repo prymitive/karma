@@ -49,21 +49,23 @@ const Alert = observer(
         BorderClassMap[alert.state] || "border-warning"
       ];
 
-      let silences = {};
-      for (let am of alert.alertmanager) {
+      const silences = {};
+      for (const am of alert.alertmanager) {
         if (!silences[am.cluster]) {
           silences[am.cluster] = {
             alertmanager: am,
-            silences: []
+            silences: [
+              ...new Set(
+                am.silencedBy.filter(
+                  silenceID =>
+                    !(
+                      group.shared.silences[am.cluster] &&
+                      group.shared.silences[am.cluster].includes(silenceID)
+                    )
+                )
+              )
+            ]
           };
-        }
-        for (let silenceID of am.silencedBy) {
-          if (
-            !silences[am.cluster].silences.includes(silenceID) &&
-            !(group.shared.silences[am.cluster] === silenceID)
-          ) {
-            silences[am.cluster].silences.push(silenceID);
-          }
         }
       }
 

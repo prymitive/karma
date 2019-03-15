@@ -105,7 +105,7 @@ describe("<Alert />", () => {
   it("renders a silence if alert is silenced", () => {
     const alert = MockedAlert();
     alert.alertmanager[0].silencedBy = ["silence123456789"];
-    const group = MockAlertGroup({}, [alert], [], {}, {});
+    const group = MockAlertGroup({}, [alert], [], {}, { default: [] });
     const tree = MountedAlert(alert, group, false, false);
     const silence = tree.find("Silence");
     expect(silence).toHaveLength(1);
@@ -141,6 +141,21 @@ describe("<Alert />", () => {
     const silence = tree.find("Silence");
     expect(silence).toHaveLength(1);
     expect(silence.html()).toMatch(/silence123456789/);
+  });
+
+  it("doesn't render shared silences", () => {
+    const alert = MockedAlert();
+    alert.alertmanager[0].silencedBy = ["silence123456789"];
+    const group = MockAlertGroup(
+      {},
+      [alert],
+      [],
+      {},
+      { default: ["silence123456789"] }
+    );
+    const tree = MountedAlert(alert, group, false, false);
+    const silence = tree.find("Silence");
+    expect(silence).toHaveLength(0);
   });
 
   it("uses BorderClassMap.active when @state=active", () => {

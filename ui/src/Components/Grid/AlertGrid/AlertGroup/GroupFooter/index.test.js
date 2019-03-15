@@ -80,7 +80,7 @@ describe("<GroupFooter />", () => {
     for (const id of Object.keys(group.alerts)) {
       group.alerts[id].alertmanager[0].silencedBy = ["123456789"];
     }
-    group.shared.silences = { default: "123456789" };
+    group.shared.silences = { default: ["123456789"] };
     const tree = MountedGroupFooter().find("GroupFooter");
     expect(tree.find("Silence")).toHaveLength(1);
   });
@@ -89,7 +89,7 @@ describe("<GroupFooter />", () => {
     for (const id of Object.keys(group.alerts)) {
       group.alerts[id].alertmanager[0].silencedBy = ["123456789"];
     }
-    group.shared.silences = { default: "123456789" };
+    group.shared.silences = { default: ["123456789"] };
 
     alertStore.data.silences = {
       default: {
