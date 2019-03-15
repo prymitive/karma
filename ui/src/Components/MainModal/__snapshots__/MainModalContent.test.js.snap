@@ -23,7 +23,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
   <div class=\\"modal-body\\">
     <form class=\\"px-3\\">
       <div class=\\"form-group text-center\\">
-        <label class=\\"mb-4\\">
+        <label class=\\"mb-4 font-weight-bold\\">
           Refresh interval
         </label>
         <div aria-disabled=\\"false\\"
@@ -67,8 +67,32 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
       </div>
       <div class=\\"mt-5\\">
       </div>
+      <div class=\\"form-group\\">
+        <div class=\\"text-center\\">
+          <label class=\\"mb-2 font-weight-bold\\">
+            Filter bar configuration
+          </label>
+        </div>
+        <div class=\\"form-check form-check-inline\\">
+          <span class=\\"custom-control custom-switch\\">
+            <input id=\\"configuration-autohide\\"
+                   class=\\"custom-control-input\\"
+                   type=\\"checkbox\\"
+                   value
+                   checked
+            >
+            <label class=\\"custom-control-label cursor-pointer mr-3\\"
+                   for=\\"configuration-autohide\\"
+            >
+              Hide filter bar when idle
+            </label>
+          </span>
+        </div>
+      </div>
+      <div class=\\"mt-5\\">
+      </div>
       <div class=\\"form-group text-center\\">
-        <label class=\\"mb-4\\">
+        <label class=\\"mb-4 font-weight-bold\\">
           Default number of alerts to show per group
         </label>
         <div aria-disabled=\\"false\\"
@@ -114,7 +138,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
       </div>
       <div class=\\"form-group\\">
         <div class=\\"text-center\\">
-          <label class=\\"mb-4\\">
+          <label class=\\"mb-2 font-weight-bold\\">
             Grid sort order
           </label>
         </div>

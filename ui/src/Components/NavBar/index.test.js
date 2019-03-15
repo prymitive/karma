@@ -148,4 +148,13 @@ describe("<IdleTimer />", () => {
         .getPropertyValue("padding-top")
     ).toBe("0px");
   });
+
+  it("doesn't hide when autohide is disabled in settingsStore", () => {
+    settingsStore.filterBarConfig.config.autohide = false;
+    const tree = MountedNavbar();
+    jest.runTimersToTime(1000 * 3600);
+    tree.update();
+    expect(tree.find(".container").hasClass("visible")).toBe(true);
+    expect(tree.find(".container").hasClass("invisible")).toBe(false);
+  });
 });

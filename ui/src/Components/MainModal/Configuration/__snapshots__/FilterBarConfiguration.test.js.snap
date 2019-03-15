@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FilterBarConfiguration /> matches snapshot with default values 1`] = `
+"
+<div class=\\"form-group\\">
+  <div class=\\"text-center\\">
+    <label class=\\"mb-2 font-weight-bold\\">
+      Filter bar configuration
+    </label>
+  </div>
+  <div class=\\"form-check form-check-inline\\">
+    <span class=\\"custom-control custom-switch\\">
+      <input id=\\"configuration-autohide\\"
+             class=\\"custom-control-input\\"
+             type=\\"checkbox\\"
+             value
+             checked
+      >
+      <label class=\\"custom-control-label cursor-pointer mr-3\\"
+             for=\\"configuration-autohide\\"
+      >
+        Hide filter bar when idle
+      </label>
+    </span>
+  </div>
+</div>
+"
+`;

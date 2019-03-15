@@ -41,7 +41,7 @@ const FetchConfiguration = observer(
     render() {
       return (
         <div className="form-group text-center">
-          <label className="mb-4">Refresh interval</label>
+          <label className="mb-4 font-weight-bold">Refresh interval</label>
           <InputRange
             minValue={10}
             maxValue={120}

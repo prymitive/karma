@@ -65,7 +65,7 @@ const AlertGroupSortConfiguration = observer(
       return (
         <div className="form-group">
           <div className="text-center">
-            <label className="mb-4">Grid sort order</label>
+            <label className="mb-2 font-weight-bold">Grid sort order</label>
           </div>
           <div className="d-flex flex-fill flex-lg-row flex-column justify-content-between">
             <div className="flex-shrink-0 flex-grow-1 flex-basis-auto">
