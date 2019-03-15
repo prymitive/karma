@@ -2,7 +2,7 @@
 
 exports[`<Silence /> matches snapshot when data is not present in alertStore 1`] = `
 "
-<div>
+<div class=\\"m-1\\">
   <small class=\\"text-muted\\">
     Silenced by default/4cf5fd82-1edd-4169-99d1-ff8415e72179
   </small>
