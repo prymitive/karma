@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"sort"
 
 	"github.com/prymitive/karma/internal/slices"
 )
@@ -179,6 +180,8 @@ func (ag *APIAlertGroup) dedupSilences() {
 					ag.Shared.Silences[cluster] = []string{}
 				}
 				ag.Shared.Silences[cluster] = append(ag.Shared.Silences[cluster], silenceID)
+				// sort to have stable order of silences
+				sort.Strings(ag.Shared.Silences[cluster])
 			}
 		}
 	}
