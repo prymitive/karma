@@ -4,7 +4,7 @@ exports[`<AlertGroupSortConfiguration /> matches snapshot with default values 1`
 "
 <div class=\\"form-group\\">
   <div class=\\"text-center\\">
-    <label class=\\"mb-4\\">
+    <label class=\\"mb-2 font-weight-bold\\">
       Grid sort order
     </label>
   </div>
