@@ -12,7 +12,7 @@ import (
 func TestDedupSharedMaps(t *testing.T) {
 	am := models.AlertmanagerInstance{
 		Cluster:    "fakeCluster",
-		SilencedBy: []string{"fakeSilenceID"},
+		SilencedBy: []string{"fakeSilence1", "fakeSilence2"},
 	}
 	ag := models.APIAlertGroup{
 		AlertGroup: models.AlertGroup{
@@ -37,7 +37,7 @@ func TestDedupSharedMaps(t *testing.T) {
 						"job":       "node_exporter",
 						"instance":  "1",
 					},
-					Alertmanager: []models.AlertmanagerInstance{am},
+					Alertmanager: []models.AlertmanagerInstance{am, am},
 				},
 				models.Alert{
 					State: models.AlertStateSuppressed,
@@ -52,7 +52,7 @@ func TestDedupSharedMaps(t *testing.T) {
 						"job":       "node_exporter",
 						"instance":  "2",
 					},
-					Alertmanager: []models.AlertmanagerInstance{am},
+					Alertmanager: []models.AlertmanagerInstance{am, am},
 				},
 				models.Alert{
 					State: models.AlertStateSuppressed,
@@ -67,7 +67,7 @@ func TestDedupSharedMaps(t *testing.T) {
 						"job":       "blackbox",
 						"instance":  "3",
 					},
-					Alertmanager: []models.AlertmanagerInstance{am},
+					Alertmanager: []models.AlertmanagerInstance{am, am},
 				},
 			},
 		},
@@ -105,7 +105,21 @@ func TestDedupSharedMaps(t *testing.T) {
           "endsAt": "0001-01-01T00:00:00Z",
           "source": "",
           "silencedBy": [
-            "fakeSilenceID"
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": null
+        },
+        {
+          "name": "",
+          "cluster": "fakeCluster",
+          "state": "",
+          "startsAt": "0001-01-01T00:00:00Z",
+          "endsAt": "0001-01-01T00:00:00Z",
+          "source": "",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
           ],
           "inhibitedBy": null
         }
@@ -130,7 +144,21 @@ func TestDedupSharedMaps(t *testing.T) {
           "endsAt": "0001-01-01T00:00:00Z",
           "source": "",
           "silencedBy": [
-            "fakeSilenceID"
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": null
+        },
+        {
+          "name": "",
+          "cluster": "fakeCluster",
+          "state": "",
+          "startsAt": "0001-01-01T00:00:00Z",
+          "endsAt": "0001-01-01T00:00:00Z",
+          "source": "",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
           ],
           "inhibitedBy": null
         }
@@ -155,7 +183,21 @@ func TestDedupSharedMaps(t *testing.T) {
           "endsAt": "0001-01-01T00:00:00Z",
           "source": "",
           "silencedBy": [
-            "fakeSilenceID"
+            "fakeSilence1",
+            "fakeSilence2"
+          ],
+          "inhibitedBy": null
+        },
+        {
+          "name": "",
+          "cluster": "fakeCluster",
+          "state": "",
+          "startsAt": "0001-01-01T00:00:00Z",
+          "endsAt": "0001-01-01T00:00:00Z",
+          "source": "",
+          "silencedBy": [
+            "fakeSilence1",
+            "fakeSilence2"
           ],
           "inhibitedBy": null
         }
@@ -178,7 +220,10 @@ func TestDedupSharedMaps(t *testing.T) {
     ],
     "labels": {},
     "silences": {
-      "fakeCluster": "fakeSilenceID"
+      "fakeCluster": [
+        "fakeSilence1",
+        "fakeSilence2"
+      ]
     }
   }
 }`

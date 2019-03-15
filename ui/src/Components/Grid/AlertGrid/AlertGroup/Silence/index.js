@@ -177,7 +177,7 @@ SilenceDetails.propTypes = {
 //
 const FallbackSilenceDesciption = ({ alertmanagerName, silenceID }) => {
   return (
-    <div>
+    <div className="m-1">
       <small className="text-muted">
         Silenced by {alertmanagerName}/{silenceID}
       </small>

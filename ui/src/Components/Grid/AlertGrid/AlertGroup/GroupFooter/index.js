@@ -67,20 +67,23 @@ const GroupFooter = observer(
           {Object.keys(group.shared.silences).length === 0 ? null : (
             <div className="components-grid-alertgrid-alertgroup-shared-silence rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-success ">
               {Object.entries(group.shared.silences).map(
-                ([cluster, silenceID]) => (
-                  <Silence
-                    key={silenceID}
-                    silenceFormStore={silenceFormStore}
-                    alertmanagerState={
-                      group.alerts.map(
-                        a =>
-                          a.alertmanager.filter(am => am.cluster === cluster)[0]
-                      )[0]
-                    }
-                    silenceID={silenceID}
-                    afterUpdate={afterUpdate}
-                  />
-                )
+                ([cluster, silences]) =>
+                  silences.map(silenceID => (
+                    <Silence
+                      key={`${cluster}/${silenceID}`}
+                      silenceFormStore={silenceFormStore}
+                      alertmanagerState={
+                        group.alerts.map(
+                          a =>
+                            a.alertmanager.filter(
+                              am => am.cluster === cluster
+                            )[0]
+                        )[0]
+                      }
+                      silenceID={silenceID}
+                      afterUpdate={afterUpdate}
+                    />
+                  ))
               )}
             </div>
           )}

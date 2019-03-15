@@ -36,9 +36,9 @@ type LabelsColorMap map[string]map[string]LabelColors
 
 // APIAlertGroupSharedMaps defines shared part of APIAlertGroup
 type APIAlertGroupSharedMaps struct {
-	Annotations Annotations       `json:"annotations"`
-	Labels      map[string]string `json:"labels"`
-	Silences    map[string]string `json:"silences"`
+	Annotations Annotations         `json:"annotations"`
+	Labels      map[string]string   `json:"labels"`
+	Silences    map[string][]string `json:"silences"`
 }
 
 // APIAlertGroup is how AlertGroup is returned in the API response
@@ -140,42 +140,47 @@ func (ag *APIAlertGroup) dedupAnnotations() {
 }
 
 func (ag *APIAlertGroup) dedupSilences() {
-	ag.Shared.Silences = map[string]string{}
+	ag.Shared.Silences = map[string][]string{}
 
-	silencesByCluster := map[string][]string{}
+	silencesByCluster := map[string]map[string]int{}
 
 	for _, alert := range ag.Alerts {
 		if alert.State != AlertStateSuppressed {
 			// if we find any alert that's not silenced then we can break early
 			return
 		}
+		// process each cluster only once, rather than each alertmanager instance
+		clusters := []string{}
 		for _, am := range alert.Alertmanager {
+			if slices.StringInSlice(clusters, am.Cluster) {
+				continue
+			}
+			clusters = append(clusters, am.Cluster)
 			for _, silenceID := range am.SilencedBy {
 				_, ok := silencesByCluster[am.Cluster]
 				if !ok {
-					silencesByCluster[am.Cluster] = []string{}
+					silencesByCluster[am.Cluster] = map[string]int{}
 				}
-				if !slices.StringInSlice(silencesByCluster[am.Cluster], silenceID) {
-					silencesByCluster[am.Cluster] = append(silencesByCluster[am.Cluster], silenceID)
+				_, ok = silencesByCluster[am.Cluster][silenceID]
+				if !ok {
+					silencesByCluster[am.Cluster][silenceID] = 0
 				}
+				silencesByCluster[am.Cluster][silenceID]++
 			}
 		}
 	}
 
-	// only deduplicate if all alerts are silenced with the same silence from a
-	// single cluster
-	if len(silencesByCluster) != 1 {
-		return
-	}
-
-	// now check that all alerts are silenced with the same silenceID
-	for cluster, silences := range silencesByCluster {
-		for _, silenceID := range silences {
-			if silenceID != silences[0] {
-				return
+	totalAlerts := len(ag.Alerts)
+	for cluster, silenceCountMap := range silencesByCluster {
+		for silenceID, affectedAlertsCount := range silenceCountMap {
+			if affectedAlertsCount == totalAlerts {
+				_, ok := ag.Shared.Silences[cluster]
+				if !ok {
+					ag.Shared.Silences[cluster] = []string{}
+				}
+				ag.Shared.Silences[cluster] = append(ag.Shared.Silences[cluster], silenceID)
 			}
 		}
-		ag.Shared.Silences[cluster] = silences[0]
 	}
 }
 
@@ -193,7 +198,7 @@ func (ag *APIAlertGroup) DedupSharedMaps() {
 		ag.Shared = APIAlertGroupSharedMaps{
 			Labels:      map[string]string{},
 			Annotations: Annotations{},
-			Silences:    map[string]string{},
+			Silences:    map[string][]string{},
 		}
 	}
 }
