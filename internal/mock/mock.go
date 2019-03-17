@@ -8,7 +8,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	httpmock "gopkg.in/jarcoal/httpmock.v1"
+	"github.com/jarcoal/httpmock"
 )
 
 // GetAbsoluteMockPath returns absolute path for given mock file
