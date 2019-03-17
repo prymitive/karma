@@ -8,7 +8,7 @@ import (
 
 	"github.com/prymitive/karma/internal/alertmanager"
 
-	httpmock "gopkg.in/jarcoal/httpmock.v1"
+	"github.com/jarcoal/httpmock"
 )
 
 // httptest.NewRecorder() doesn't implement http.CloseNotifier
