@@ -5,7 +5,7 @@
   "private": true,
   "dependencies": {
     "@attently/riek": "2.0.1",
-    "@babel/polyfill": "7.2.5",
+    "@babel/polyfill": "7.4.0",
     "@fortawesome/fontawesome-svg-core": "1.2.15",
     "@fortawesome/free-regular-svg-icons": "5.7.2",
     "@fortawesome/free-solid-svg-icons": "5.7.2",
