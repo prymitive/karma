@@ -15,6 +15,7 @@
     "bootstrap": "4.3.1",
     "bootswatch": "4.3.1",
     "copy-to-clipboard": "3.0.8",
+    "csshake": "1.5.3",
     "fast-deep-equal": "2.0.1",
     "favico.js": "0.3.10",
     "lato-font": "3.0.0",

@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBoxOpen } from "@fortawesome/free-solid-svg-icons/faBoxOpen";
+import { faRocket } from "@fortawesome/free-solid-svg-icons/faRocket";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
+
+import "csshake/scss/csshake-slow.scss";
 
 class UpgradeNeeded extends Component {
   static propTypes = {
@@ -28,8 +30,8 @@ class UpgradeNeeded extends Component {
     return (
       <div className="jumbotron text-center bg-primary my-4">
         <div className="container-fluid">
-          <h1 className="display-1 my-5 text-success">
-            <FontAwesomeIcon icon={faBoxOpen} />
+          <h1 className="display-1 my-5 text-success shake-slow shake-constant">
+            <FontAwesomeIcon icon={faRocket} />
           </h1>
           <p className="lead text-muted">
             <FontAwesomeIcon className="mr-1" icon={faSpinner} spin />
