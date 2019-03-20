@@ -41,6 +41,8 @@ labels:
       - instance
       - "@receiver"
     custom:
+      region:
+        "*": "#736598"
       severity:
         info: "#87c4e0"
         warning: "#ffae42"

@@ -75,6 +75,15 @@ var colorTests = []colorTest{
 		},
 		colors: map[string]string{},
 	},
+	{
+		customLabels: map[string]map[string]string{
+			"node": map[string]string{"*": "#123"},
+		},
+		labels: map[string]string{
+			"node": "localhost",
+		},
+		colors: map[string]string{"node": "localhost"},
+	},
 }
 
 func TestColorLabel(t *testing.T) {

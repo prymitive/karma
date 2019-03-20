@@ -137,7 +137,7 @@ class AlwaysOnAlert(AlertGenerator):
         def _gen(size, cluster):
             return [newAlert(
                 self._labels(instance="server{}".format(i), cluster=cluster,
-                             severity="info"),
+                             severity="info", job="node_exporter", region="US"),
                 self._annotations(
                     summary="Silence this alert, it's always firing")
             ) for i in xrange(1, size)]
@@ -153,7 +153,8 @@ class RandomInstances(AlertGenerator):
         return [
             newAlert(
                 self._labels(instance="server{}".format(i), cluster="staging",
-                             severity="warning"),
+                             severity="warning", job="node_exporter",
+                             region="US"),
                 self._annotations(
                     dashboard="https://www.google.com/search?q="
                               "server{}".format(i))
@@ -173,7 +174,8 @@ class RandomName(AlertGenerator):
                 newAlert(
                     self._labels(alertname="Alert Nr {}".format(throw),
                                  instance="server{}".format(i),
-                                 cluster="dev", severity="info"),
+                                 cluster="dev", severity="info",
+                                 job="random_exporter", region="EU"),
                     self._annotations(
                         summary="This is a random alert",
                         dashboard="https://www.google.com/search?q="
@@ -194,7 +196,8 @@ class LowChance(AlertGenerator):
         return [
             newAlert(
                 self._labels(instance="server{}".format(i), cluster="dev",
-                             severity="critical"),
+                             severity="critical", job="random_exporter",
+                             region="EU"),
                 self._annotations()
             ) for i in xrange(0, 3)
         ]
@@ -208,7 +211,8 @@ class TimeAnnotation(AlertGenerator):
     def alerts(self):
         return [
             newAlert(self._labels(instance="server1", cluster="prod",
-                                  severity="warning"),
+                                  severity="warning", job="ntp_exporter",
+                                  region="AP"),
                      self._annotations(time=str(int(time.time())))
             )
         ]
@@ -226,7 +230,8 @@ class DiskFreeLowAlert(AlertGenerator):
                 newAlert(self._labels(instance="server{}".format(i),
                                       cluster="prod",
                                       device="/dev/sda{}".format(i),
-                                      mount_point="/disk", severity="critical"),
+                                      mount_point="/disk", severity="critical",
+                                      job="node_exporter", region="AP"),
                          self._annotations(
                             summary="Only {}% free space left on /disk".format(
                                 spaceFree),
@@ -243,7 +248,8 @@ class SilencedAlert(AlertGenerator):
     def alerts(self):
         return [
             newAlert(self._labels(instance="server1", cluster="prod",
-                                  severity="info"),
+                                  severity="info", job="mysql_exporter",
+                                  region="SA"),
                      self._annotations(
                         alertReference="https://www."
                                        "youtube.com/watch?v=dQw4w9WgXcQ")
@@ -279,7 +285,8 @@ class MixedAlerts(AlertGenerator):
     def alerts(self):
         return [
             newAlert(self._labels(instance="server{}".format(i), cluster="prod",
-                                  severity="warning"),
+                                  severity="warning", job="node_exporter",
+                                  region="SA"),
                      self._annotations(
                         alertReference="https://www."
                                        "youtube.com/watch?v=dQw4w9WgXcQ")
@@ -310,7 +317,8 @@ class LongNameAlerts(AlertGenerator):
         def _gen(size, cluster):
             return [newAlert(
                 self._labels(instance="server{}".format(i), cluster=cluster,
-                             severity="info"),
+                             severity="info", job="textfile_exporter",
+                             region="CN"),
                 self._annotations(
                     verylong="Lorem ipsum dolor sit amet, consectetur "
                              "adipiscing elit, sed do eiusmod tempor incididunt"
@@ -336,7 +344,8 @@ class InhibitedAlert(AlertGenerator):
     def alerts(self):
         return [
             newAlert(self._labels(instance="server1", cluster="prod",
-                                  severity="warning"),
+                                  severity="warning", job="textfile_exporter",
+                                  region="CN"),
                      self._annotations()
             )
         ]
@@ -349,7 +358,8 @@ class InhibitingAlert(AlertGenerator):
     def alerts(self):
         return [
             newAlert(self._labels(instance="server1", cluster="prod",
-                                  severity="critical"),
+                                  severity="critical", job="textfile_exporter",
+                                  region="CN"),
                      self._annotations()
             )
         ]
@@ -362,7 +372,8 @@ class SilencedAlertWithJiraLink(AlertGenerator):
     def alerts(self):
         return [
             newAlert(self._labels(instance="server%d" % i, cluster="staging",
-                                  severity="critical"),
+                                  severity="critical", job="node_exporter",
+                                  region="AF"),
                      self._annotations(
                         dashboard="https://www.atlassian.com/software/jira")
             )  for i in xrange(1, 9)
