@@ -345,7 +345,10 @@ labels:
   to configure a set of labels with custom predefined colors applied to them
   rather than generated. Colors can be defined as RGB or HEX values.
   Value is a mapping with `label name` -> `label value` -> `color`, see examples
-  below.
+  below. Wildcard values (`*`) are allowed to provide a fallback custom color,
+  which can also be used instead of `color:static` option. Wildcard options
+  are evaluated after exact matches, so it's possible to mix explicit and
+  wildcard values.
   Note: this option is not available via environment variables, you can only set
   it via the config file.
 - `keep` - list of allowed labels, if empty all labels are allowed.
@@ -393,6 +396,20 @@ labels:
       "@alertmanager":
         prod: "#e6e"
       severity:
+        info: "#87c4e0"
+        warning: "#ffae42"
+        critical: "#ff220c"
+```
+
+Example with a wildcard value, `info`, `warning` and `critical` will get colors
+as below, but any value not matching those 3 values will use the color from `*`:
+
+```YAML
+labels:
+  color:
+    custom:
+      severity:
+        "*": "#736598"
         info: "#87c4e0"
         warning: "#ffae42"
         critical: "#ff220c"

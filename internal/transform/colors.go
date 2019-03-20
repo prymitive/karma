@@ -39,6 +39,29 @@ func rgbToBrightness(r, g, b uint8) int32 {
 	return ((int32(r) * 299) + (int32(g) * 587) + (int32(b) * 114)) / 1000
 }
 
+func parseCustomColor(colorStore models.LabelsColorMap, key, val, customColor string) {
+	color, err := plcolors.Parse(customColor)
+	if err != nil {
+		log.Warningf("Failed to parse custom color for %s=%s: %s", key, val, err)
+		return
+	}
+	rgb := color.ToRGB()
+	bc := models.Color{
+		Red:   rgb.R,
+		Green: rgb.G,
+		Blue:  rgb.B,
+		Alpha: 255,
+	}
+	brightness := rgbToBrightness(bc.Red, bc.Green, bc.Blue)
+	if _, found := colorStore[key]; !found {
+		colorStore[key] = make(map[string]models.LabelColors)
+	}
+	colorStore[key][val] = models.LabelColors{
+		Brightness: brightness,
+		Background: bc,
+	}
+}
+
 // ColorLabel update karmaColorMap object with a color object generated
 // from label key and value passed here
 // It's used to generate unique colors for configured labels
@@ -46,30 +69,19 @@ func ColorLabel(colorStore models.LabelsColorMap, key string, val string) {
 	// first handle custom colors
 	_, ok := config.Config.Labels.Color.Custom[key]
 	if ok {
-		c, ol := config.Config.Labels.Color.Custom[key][val]
-		if ol {
-			color, err := plcolors.Parse(c)
-			if err != nil {
-				log.Warningf("Failed to parse custom color for %s=%s: %s", key, val, err)
-				return
-			}
-			rgb := color.ToRGB()
-			bc := models.Color{
-				Red:   rgb.R,
-				Green: rgb.G,
-				Blue:  rgb.B,
-				Alpha: 255,
-			}
-			brightness := rgbToBrightness(bc.Red, bc.Green, bc.Blue)
-			if _, found := colorStore[key]; !found {
-				colorStore[key] = make(map[string]models.LabelColors)
-			}
-			colorStore[key][val] = models.LabelColors{
-				Brightness: brightness,
-				Background: bc,
-			}
+		// try matching both key and value
+		customColor, found := config.Config.Labels.Color.Custom[key][val]
+		if found {
+			parseCustomColor(colorStore, key, val, customColor)
+			return
 		}
-		return
+
+		// if not found try matching key and wildcard (*)
+		customColor, found = config.Config.Labels.Color.Custom[key]["*"]
+		if found {
+			parseCustomColor(colorStore, key, val, customColor)
+			return
+		}
 	}
 
 	// if no custom color is found then generate unique colors if needed
