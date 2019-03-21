@@ -69,18 +69,16 @@ func ColorLabel(colorStore models.LabelsColorMap, key string, val string) {
 	// first handle custom colors
 	_, ok := config.Config.Labels.Color.Custom[key]
 	if ok {
-		// try matching both key and value
-		customColor, found := config.Config.Labels.Color.Custom[key][val]
-		if found {
-			parseCustomColor(colorStore, key, val, customColor)
-			return
-		}
+		for _, colorRule := range config.Config.Labels.Color.Custom[key] {
+			if colorRule.Value == val {
+				parseCustomColor(colorStore, key, val, colorRule.Color)
+				return
+			}
 
-		// if not found try matching key and wildcard (*)
-		customColor, found = config.Config.Labels.Color.Custom[key]["*"]
-		if found {
-			parseCustomColor(colorStore, key, val, customColor)
-			return
+			if colorRule.CompiledRegex != nil && colorRule.CompiledRegex.MatchString(val) {
+				parseCustomColor(colorStore, key, val, colorRule.Color)
+				return
+			}
 		}
 	}
 

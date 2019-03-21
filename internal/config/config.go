@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"io/ioutil"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 
@@ -146,7 +147,7 @@ func (config *configSchema) Read() {
 	config.Grid.Sorting.Order = v.GetString("grid.sorting.order")
 	config.Grid.Sorting.Reverse = v.GetBool("grid.sorting.reverse")
 	config.Grid.Sorting.Label = v.GetString("grid.sorting.label")
-	config.Labels.Color.Custom = map[string]map[string]string{}
+	config.Labels.Color.Custom = CustomLabelColors{}
 	config.Labels.Color.Static = v.GetStringSlice("labels.color.static")
 	config.Labels.Color.Unique = v.GetStringSlice("labels.color.unique")
 	config.Labels.Keep = v.GetStringSlice("labels.keep")
@@ -174,6 +175,19 @@ func (config *configSchema) Read() {
 	err = v.UnmarshalKey("labels.color.custom", &config.Labels.Color.Custom)
 	if err != nil {
 		log.Fatal(err)
+	}
+	for labelName, customColors := range config.Labels.Color.Custom {
+		for i, customColor := range customColors {
+			if customColor.Value == "" && customColor.ValueRegex == "" {
+				log.Fatalf("Custom label color for '%s' is missing 'value' or 'value_re'", labelName)
+			}
+			if customColor.ValueRegex != "" {
+				config.Labels.Color.Custom[labelName][i].CompiledRegex, err = regexp.Compile(customColor.ValueRegex)
+				if err != nil {
+					log.Fatalf("Failed to parse custom color regex rule '%s' for '%s' label: %s", customColor.ValueRegex, labelName, err)
+				}
+			}
+		}
 	}
 
 	err = v.UnmarshalKey("grid.sorting.customValues.labels", &config.Grid.Sorting.CustomValues.Labels)
@@ -203,7 +217,6 @@ func (config *configSchema) Read() {
 			log.Fatal(err)
 		}
 
-		config.Labels.Color.Custom = raw.Labels.Color.Custom
 		config.Grid.Sorting.CustomValues.Labels = raw.Grid.Sorting.CustomValues.Labels
 	}
 
