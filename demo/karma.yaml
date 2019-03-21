@@ -42,11 +42,15 @@ labels:
       - "@receiver"
     custom:
       region:
-        "*": "#736598"
+        - value_re: ".*"
+          color: "#736598"
       severity:
-        info: "#87c4e0"
-        warning: "#ffae42"
-        critical: "#ff220c"
+        - value: info
+          color: "#87c4e0"
+        - value: warning
+          color: "#ffae42"
+        - value: critical
+          color: "#ff220c"
 log:
   config: false
   level: warning
