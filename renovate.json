@@ -4,5 +4,11 @@
   "rebaseStalePrs": false,
   "travis": { "enabled": true },
   "masterIssue": true,
-  "postUpdateOptions": ["gomodTidy"]
+  "postUpdateOptions": ["gomodTidy"],
+  "patch": {
+    "automerge": true
+  },
+  "devDependencies": {
+    "automerge": true
+  }
 }
