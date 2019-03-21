@@ -77,6 +77,7 @@ docker-image:
 run-docker: docker-image
 	@docker rm -f $(NAME) || true
 	docker run \
+		--rm \
 		--name $(NAME) \
 		-v $(MOCK_PATH):$(MOCK_PATH) \
 		-e ALERTMANAGER_INTERVAL=36000h \
@@ -93,7 +94,7 @@ run-docker: docker-image
 run-demo:
 	docker build --build-arg VERSION=$(VERSION) -t $(NAME):demo -f demo/Dockerfile .
 	@docker rm -f $(NAME)-demo || true
-	docker run --name $(NAME)-demo -p $(PORT):$(PORT) -p 9093:9093 -p 9094:9094 $(NAME):demo
+	docker run --rm --name $(NAME)-demo -p $(PORT):$(PORT) -p 9093:9093 -p 9094:9094 $(NAME):demo
 
 .PHONY: lint-git-ci
 lint-git-ci: .build/deps-build-node.ok

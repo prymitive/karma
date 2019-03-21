@@ -329,7 +329,11 @@ labels:
   color:
     static: list of strings
     unique: list of strings
-    custom: dict
+    custom:
+      foo:
+        - value: string
+          value_re: string
+          color: string
   keep: list of strings
   strip: list of strings
 ```
@@ -343,14 +347,20 @@ labels:
   in the UI.
 - `color:custom` - nested map of label names and value with colors - this allows
   to configure a set of labels with custom predefined colors applied to them
-  rather than generated. Colors can be defined as RGB or HEX values.
-  Value is a mapping with `label name` -> `label value` -> `color`, see examples
-  below. Wildcard values (`*`) are allowed to provide a fallback custom color,
-  which can also be used instead of `color:static` option. Wildcard options
-  are evaluated after exact matches, so it's possible to mix explicit and
-  wildcard values.
+  rather than generated. Value is a mapping with `label name` ->
+  `list of dicts`, each dict object allows setting:
+
+  - `value` - the exact value of the label to match against
+  - `value_re` - Go compatible
+    [regular expression](https://golang.org/pkg/regexp/) to match against
+  - `color`: color to apply if either `value` or `value_re` matches
+
+  Either `value` or `value_re` is required, both can be set in which case
+  `value` with be tested first. Entries are evaluated in the order they appear
+  in the config file.
   Note: this option is not available via environment variables, you can only set
   it via the config file.
+
 - `keep` - list of allowed labels, if empty all labels are allowed.
 - `strip` - list of ignored labels.
 
@@ -394,26 +404,38 @@ labels:
   color:
     custom:
       "@alertmanager":
-        prod: "#e6e"
+        - value: prod
+          color: "#e6e"
       severity:
-        info: "#87c4e0"
-        warning: "#ffae42"
-        critical: "#ff220c"
+        - value: info
+          color: "#87c4e0"
+        - value: warning
+          color: "#ffae42"
+        - value: critical
+          color: "#ff220c"
 ```
 
-Example with a wildcard value, `info`, `warning` and `critical` will get colors
-as below, but any value not matching those 3 values will use the color from `*`:
+Example with a regex value, `info`, `warning` and `critical` will get colors
+as below, but any value not matching those 3 values will use the color from
+`.*`:
 
 ```YAML
 labels:
   color:
     custom:
       severity:
-        "*": "#736598"
-        info: "#87c4e0"
-        warning: "#ffae42"
-        critical: "#ff220c"
+        - value: info
+          color: "#87c4e0"
+        - value: warning
+          color: "#ffae42"
+        - value: critical
+          color: "#ff220c"
+        - value_re: ".*"
+          color: "#736598"
 ```
+
+Note: be sure to set fallback values at the end of the list, so they're only
+evaluated if there's no exact value match
 
 Defaults:
 

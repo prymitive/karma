@@ -1,6 +1,7 @@
 package transform_test
 
 import (
+	"regexp"
 	"testing"
 
 	"github.com/prymitive/karma/internal/config"
@@ -10,7 +11,7 @@ import (
 
 type colorTest struct {
 	uniqueLabels []string
-	customLabels map[string]map[string]string
+	customLabels config.CustomLabelColors
 	labels       map[string]string
 	colors       map[string]string
 }
@@ -56,8 +57,10 @@ var colorTests = []colorTest{
 		},
 	},
 	{
-		customLabels: map[string]map[string]string{
-			"node": map[string]string{"localhost": "#fff"},
+		customLabels: config.CustomLabelColors{
+			"node": []config.CustomLabelColor{
+				config.CustomLabelColor{Value: "localhost", Color: "#fff"},
+			},
 		},
 		labels: map[string]string{
 			"node": "localhost",
@@ -67,8 +70,10 @@ var colorTests = []colorTest{
 		},
 	},
 	{
-		customLabels: map[string]map[string]string{
-			"node": map[string]string{"localhost": "not a color"},
+		customLabels: config.CustomLabelColors{
+			"node": []config.CustomLabelColor{
+				config.CustomLabelColor{Value: "localhost", Color: "not a valid color"},
+			},
 		},
 		labels: map[string]string{
 			"node": "localhost",
@@ -76,8 +81,21 @@ var colorTests = []colorTest{
 		colors: map[string]string{},
 	},
 	{
-		customLabels: map[string]map[string]string{
-			"node": map[string]string{"*": "#123"},
+		customLabels: config.CustomLabelColors{
+			"node": []config.CustomLabelColor{
+				config.CustomLabelColor{ValueRegex: ".*", Color: "#123"},
+			},
+		},
+		labels: map[string]string{
+			"node": "localhost",
+		},
+		colors: map[string]string{"node": "localhost"},
+	},
+	{
+		customLabels: config.CustomLabelColors{
+			"node": []config.CustomLabelColor{
+				config.CustomLabelColor{Value: "foo", ValueRegex: ".*", Color: "#123"},
+			},
 		},
 		labels: map[string]string{
 			"node": "localhost",
@@ -91,9 +109,19 @@ func TestColorLabel(t *testing.T) {
 		config.Config.Labels.Color.Unique = testCase.uniqueLabels
 		config.Config.Labels.Color.Custom = testCase.customLabels
 		colorStore := models.LabelsColorMap{}
+
+		for key, rules := range testCase.customLabels {
+			for i, rule := range rules {
+				if rule.ValueRegex != "" {
+					testCase.customLabels[key][i].CompiledRegex = regexp.MustCompile(rule.ValueRegex)
+				}
+			}
+		}
+
 		for key, value := range testCase.labels {
 			transform.ColorLabel(colorStore, key, value)
 		}
+
 		for key, value := range testCase.colors {
 			if label, found := colorStore[key]; found {
 				if _, found := label[value]; !found {

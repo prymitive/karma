@@ -1,6 +1,9 @@
 package config
 
-import "time"
+import (
+	"regexp"
+	"time"
+)
 
 type alertmanagerConfig struct {
 	Name    string
@@ -11,7 +14,7 @@ type alertmanagerConfig struct {
 		CA                 string
 		Cert               string
 		Key                string
-		InsecureSkipVerify bool `yaml:"insecureSkipVerify"`
+		InsecureSkipVerify bool `yaml:"insecureSkipVerify"  mapstructure:"insecureSkipVerify"`
 	}
 	Headers map[string]string
 }
@@ -20,6 +23,15 @@ type jiraRule struct {
 	Regex string
 	URI   string
 }
+
+type CustomLabelColor struct {
+	Value         string         `yaml:"value" mapstructure:"value"`
+	ValueRegex    string         `yaml:"value_re" mapstructure:"value_re"`
+	CompiledRegex *regexp.Regexp `yaml:"-" mapstructure:"-"`
+	Color         string         `yaml:"color" mapstructure:"color"`
+}
+
+type CustomLabelColors map[string][]CustomLabelColor
 
 type configSchema struct {
 	Alertmanager struct {
@@ -50,14 +62,14 @@ type configSchema struct {
 			Label        string
 			CustomValues struct {
 				Labels map[string]map[string]int
-			} `yaml:"customValues"`
+			} `yaml:"customValues" mapstructure:"customValues"`
 		}
 	}
 	Labels struct {
 		Keep  []string
 		Strip []string
 		Color struct {
-			Custom map[string]map[string]string
+			Custom CustomLabelColors
 			Static []string
 			Unique []string
 		}
