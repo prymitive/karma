@@ -51,6 +51,11 @@ const FilterInputLabel = observer(
         "components-filteredinputlabel"
       );
 
+      const showCounter =
+        alertStore.filters.values.filter(
+          f => f.hits !== alertStore.info.totalAlerts
+        ).length > 0;
+
       return (
         <span
           className={
@@ -79,9 +84,11 @@ const FilterInputLabel = observer(
           </button>
           {filter.isValid ? (
             filter.applied ? (
-              <span className="badge badge-light badge-pill mr-1">
-                {filter.hits}
-              </span>
+              showCounter ? (
+                <span className="badge badge-light badge-pill mr-1">
+                  {filter.hits}
+                </span>
+              ) : null
             ) : (
               <span className="badge mr-1">
                 <FontAwesomeIcon icon={faSpinner} spin />
@@ -94,6 +101,7 @@ const FilterInputLabel = observer(
           )}
           <TooltipWrapper title="Click to edit this filter">
             <RIEInput
+              className={showCounter ? "" : "align-middle"}
               defaultValue=""
               value={filter.raw}
               propName="raw"
