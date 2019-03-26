@@ -56,32 +56,18 @@ const FilterInputLabel = observer(
           f => f.hits !== alertStore.info.totalAlerts
         ).length > 0;
 
+      const rootClasses = filter.applied
+        ? cs.className
+        : [
+            "badge-secondary components-filteredinputlabel",
+            ...cs.baseClassNames
+          ].join(" ");
+
       return (
         <span
-          className={
-            filter.applied
-              ? cs.className
-              : [
-                  "badge-secondary components-filteredinputlabel",
-                  ...cs.baseClassNames
-                ].join(" ")
-          }
+          className={`${rootClasses} d-inline-flex flex-row`}
           style={cs.style}
         >
-          <button
-            type="button"
-            className="close ml-1"
-            style={cs.style}
-            onClick={() => alertStore.filters.removeFilter(filter.raw)}
-          >
-            <span
-              className={`align-text-bottom ${cs.colorClassNames
-                .filter(c => !c.match(/badge-/))
-                .join(" ")}`}
-            >
-              &times;
-            </span>
-          </button>
           {filter.isValid ? (
             filter.applied ? (
               showCounter ? (
@@ -99,9 +85,9 @@ const FilterInputLabel = observer(
               <FontAwesomeIcon icon={faExclamationCircle} />
             </span>
           )}
-          <TooltipWrapper title="Click to edit this filter">
+          <TooltipWrapper title="Click to edit this filter" className="my-auto">
             <RIEInput
-              className={showCounter ? "" : "align-middle"}
+              className="align-middle"
               defaultValue=""
               value={filter.raw}
               propName="raw"
@@ -109,6 +95,20 @@ const FilterInputLabel = observer(
               classEditing="py-0 border-0 bg-light"
             />
           </TooltipWrapper>
+          <button
+            type="button"
+            className="close ml-1 align-middle"
+            style={cs.style}
+            onClick={() => alertStore.filters.removeFilter(filter.raw)}
+          >
+            <span
+              className={cs.colorClassNames
+                .filter(c => !c.match(/badge-/))
+                .join(" ")}
+            >
+              &times;
+            </span>
+          </button>
         </span>
       );
     }

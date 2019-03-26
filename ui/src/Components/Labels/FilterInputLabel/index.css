@@ -22,5 +22,5 @@
 
 .badge.components-filteredinputlabel > .close {
   /* make close button bigger, to match font size of the badge */
-  font-size: 1rem;
+  font-size: 100%;
 }
