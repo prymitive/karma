@@ -82,6 +82,7 @@ jobs:
       script:
         - travis_retry make mock-assets
         - travis_retry go get -d -v
+        - travis_retry go mod tidy
         - git diff --exit-code
 
     - stage: Build and Deploy
