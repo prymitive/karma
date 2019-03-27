@@ -11,9 +11,12 @@
   margin-bottom: 1px;
 }
 
-.badge.components-filteredinputlabel > .badge {
+.badge.components-filteredinputlabel > .badge,
+.badge.components-filteredinputlabel > svg {
   /* match outer badge font size */
   font-size: 90%;
+  line-height: 100%;
+  padding-bottom: 0.1em;
 
   /* we have badge inside a badge, make the inner one a little brighter
      in case both use same color classes */
@@ -22,5 +25,5 @@
 
 .badge.components-filteredinputlabel > .close {
   /* make close button bigger, to match font size of the badge */
-  font-size: 1rem;
+  font-size: 100%;
 }
