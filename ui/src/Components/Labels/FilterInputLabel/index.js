@@ -66,7 +66,7 @@ const FilterInputLabel = observer(
       return (
         <span
           className={`${rootClasses} d-inline-flex flex-row`}
-          style={cs.style}
+          style={filter.applied ? cs.style : {}}
         >
           {filter.isValid ? (
             filter.applied ? (
@@ -98,7 +98,7 @@ const FilterInputLabel = observer(
           <button
             type="button"
             className="close ml-1 align-middle"
-            style={cs.style}
+            style={filter.applied ? cs.style : {}}
             onClick={() => alertStore.filters.removeFilter(filter.raw)}
           >
             <span
