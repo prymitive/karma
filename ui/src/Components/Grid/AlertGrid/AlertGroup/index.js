@@ -162,18 +162,14 @@ const AlertGroup = observer(
         <MountFade>
           <div className="components-grid-alertgrid-alertgroup p-1">
             <div className="card">
-              <div
-                className={`card-body ${
-                  this.collapse.value ? "p-2" : "px-2 pt-2 pb-1"
-                }`}
-              >
-                <GroupHeader
-                  collapseStore={this.collapse}
-                  group={group}
-                  silenceFormStore={silenceFormStore}
-                />
-                {this.collapse.value ? null : (
-                  <ul className="list-group mt-1">
+              <GroupHeader
+                collapseStore={this.collapse}
+                group={group}
+                silenceFormStore={silenceFormStore}
+              />
+              {this.collapse.value ? null : (
+                <div className="card-body px-2 py-1">
+                  <ul className="list-group">
                     {group.alerts
                       .slice(0, this.renderConfig.alertsToRender)
                       .map(alert => (
@@ -212,8 +208,8 @@ const AlertGroup = observer(
                       </li>
                     ) : null}
                   </ul>
-                )}
-              </div>
+                </div>
+              )}
               {this.collapse.value === false && group.alerts.length > 1 ? (
                 <GroupFooter
                   group={group}
