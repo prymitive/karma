@@ -13,7 +13,7 @@ require (
 	github.com/gin-gonic/contrib v0.0.0-20190302005408-54ff787f7c73
 	github.com/gin-gonic/gin v1.3.0
 	github.com/go-bindata/go-bindata v1.0.0
-	github.com/golangci/golangci-lint v1.15.0
+	github.com/golangci/golangci-lint v1.16.0
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.1
 	github.com/mcuadros/go-gin-prometheus v0.0.0-20181030200533-58963fb32f54
