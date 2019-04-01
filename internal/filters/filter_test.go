@@ -552,16 +552,16 @@ func TestFilters(t *testing.T) {
 	}
 	for _, ft := range tests {
 		alert := models.Alert(ft.Alert)
-		if &ft.Silence != nil {
-			alert.Alertmanager = []models.AlertmanagerInstance{
-				models.AlertmanagerInstance{
-					Name: am.Name,
-					Silences: map[string]*models.Silence{
-						ft.Silence.ID: &ft.Silence,
-					},
-					SilencedBy: []string{ft.Silence.ID},
-				},
-			}
+		alert.Alertmanager = []models.AlertmanagerInstance{
+			models.AlertmanagerInstance{
+				Name:       am.Name,
+				Silences:   map[string]*models.Silence{},
+				SilencedBy: []string{},
+			},
+		}
+		if ft.Silence.ID != "" {
+			alert.Alertmanager[0].Silences[ft.Silence.ID] = &ft.Silence
+			alert.Alertmanager[0].SilencedBy = append(alert.Alertmanager[0].SilencedBy, ft.Silence.ID)
 		}
 
 		f := filters.NewFilter(ft.Expression)
