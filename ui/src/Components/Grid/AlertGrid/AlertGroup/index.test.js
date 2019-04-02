@@ -28,11 +28,22 @@ const MockGroup = groupName => {
   return group;
 };
 
+let originalInnerWidth;
+
+beforeAll(() => {
+  originalInnerWidth = global.innerWidth;
+});
+
 beforeEach(() => {
+  global.innerWidth = originalInnerWidth;
   alertStore = new AlertStore([]);
   settingsStore = new Settings();
   silenceFormStore = new SilenceFormStore();
   group = MockGroup("fakeGroup");
+});
+
+afterEach(() => {
+  global.innerWidth = originalInnerWidth;
 });
 
 const MockAlerts = alertCount => {
@@ -96,6 +107,28 @@ describe("<AlertGroup />", () => {
     tree.update();
     expect(tree.find("Alert")).toHaveLength(0);
     expect(tree.find("ul.list-group")).toHaveLength(0);
+  });
+
+  it("is expanded by default on desktop", () => {
+    // set window.innerWidth to 2k to mock a desktop window
+    global.innerWidth = 2048;
+
+    MockAlerts(3);
+    const tree = MountedAlertGroup(jest.fn(), false);
+    const alertGroup = tree.find("AlertGroup");
+    expect(alertGroup.instance().collapse.value).toBe(false);
+    expect(tree.find("Alert")).toHaveLength(3);
+  });
+
+  it("is collapsed by default on mobile", () => {
+    // set window.innerWidth to <768 to mock a mobile window
+    global.innerWidth = 700;
+
+    MockAlerts(3);
+    const tree = MountedAlertGroup(jest.fn(), false);
+    const alertGroup = tree.find("AlertGroup");
+    expect(alertGroup.instance().collapse.value).toBe(true);
+    expect(tree.find("Alert")).toHaveLength(0);
   });
 });
 
