@@ -12,7 +12,7 @@ require (
 	github.com/gin-contrib/static v0.0.0-20190301094727-ed515893e96b
 	github.com/gin-gonic/contrib v0.0.0-20190408174833-b5986969cb50
 	github.com/gin-gonic/gin v1.3.0
-	github.com/go-bindata/go-bindata v1.0.0
+	github.com/go-bindata/go-bindata v3.1.1+incompatible
 	github.com/golangci/golangci-lint v1.16.0
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.1
