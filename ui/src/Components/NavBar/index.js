@@ -11,6 +11,7 @@ import IdleTimer from "react-idle-timer";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { IsMobile } from "Common/Device";
 import { NavBarSlide } from "Components/Animations/NavBarSlide";
 import { MainModal } from "Components/MainModal";
 import { SilenceModal } from "Components/SilenceModal";
@@ -100,6 +101,8 @@ const NavBar = observer(
           ? "flex-column flex-sm-column flex-md-row flex-lg-row flex-xl-row"
           : "flex-row";
 
+      const isMobile = IsMobile();
+
       return (
         <IdleTimer
           onActive={this.activityStatus.setActive}
@@ -108,9 +111,7 @@ const NavBar = observer(
               this.activityStatus.setIdle();
             }
           }}
-          timeout={
-            window.innerWidth >= 768 ? DesktopIdleTimeout : MobileIdleTimeout
-          }
+          timeout={isMobile ? MobileIdleTimeout : DesktopIdleTimeout}
         >
           <div className={`container ${this.activityStatus.className}`}>
             <NavBarSlide

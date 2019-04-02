@@ -13,6 +13,7 @@ import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
 import { APIGroup } from "Models/API";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { IsMobile } from "Common/Device";
 import { MountFade } from "Components/Animations/MountFade";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GroupHeader } from "./GroupHeader";
@@ -74,7 +75,7 @@ const AlertGroup = observer(
     // this observable needs to be passed down to it
     collapse = observable(
       {
-        value: false,
+        value: IsMobile(),
         toggle() {
           this.value = !this.value;
         }
