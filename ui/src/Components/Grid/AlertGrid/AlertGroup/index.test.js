@@ -70,6 +70,22 @@ const MountedAlertGroup = (afterUpdate, showAlertmanagers) => {
   );
 };
 
+const ValidateCollapse = (
+  innerWidth,
+  defaultCollapseState,
+  shouldBeCollapsed
+) => {
+  global.innerWidth = innerWidth;
+
+  settingsStore.alertGroupConfig.config.defaultCollapseState = defaultCollapseState;
+
+  MockAlerts(3);
+  const tree = MountedAlertGroup(jest.fn(), false);
+  const alertGroup = tree.find("AlertGroup");
+  expect(alertGroup.instance().collapse.value).toBe(shouldBeCollapsed);
+  expect(tree.find("Alert")).toHaveLength(shouldBeCollapsed ? 0 : 3);
+};
+
 describe("<AlertGroup />", () => {
   it("renders Alertmanager labels in footer if showAlertmanagersInFooter=true", () => {
     MockAlerts(2);
@@ -109,26 +125,58 @@ describe("<AlertGroup />", () => {
     expect(tree.find("ul.list-group")).toHaveLength(0);
   });
 
-  it("is expanded by default on desktop", () => {
+  it("is collapsed by default on desktop when defaultCollapseState=collapsed", () => {
     // set window.innerWidth to 2k to mock a desktop window
-    global.innerWidth = 2048;
-
-    MockAlerts(3);
-    const tree = MountedAlertGroup(jest.fn(), false);
-    const alertGroup = tree.find("AlertGroup");
-    expect(alertGroup.instance().collapse.value).toBe(false);
-    expect(tree.find("Alert")).toHaveLength(3);
+    ValidateCollapse(
+      2048,
+      settingsStore.alertGroupConfig.options.collapsed.value,
+      true
+    );
   });
 
-  it("is collapsed by default on mobile", () => {
+  it("is collapsed by default on mobile when defaultCollapseState=collapsed", () => {
     // set window.innerWidth to <768 to mock a mobile window
-    global.innerWidth = 700;
+    ValidateCollapse(
+      767,
+      settingsStore.alertGroupConfig.options.collapsed.value,
+      true
+    );
+  });
 
-    MockAlerts(3);
-    const tree = MountedAlertGroup(jest.fn(), false);
-    const alertGroup = tree.find("AlertGroup");
-    expect(alertGroup.instance().collapse.value).toBe(true);
-    expect(tree.find("Alert")).toHaveLength(0);
+  it("is expanded by default on desktop when defaultCollapseState=collapsedOnMobile", () => {
+    // set window.innerWidth to 2k to mock a desktop window
+    ValidateCollapse(
+      2048,
+      settingsStore.alertGroupConfig.options.collapsedOnMobile.value,
+      false
+    );
+  });
+
+  it("is collapsed by default on mobile when defaultCollapseState=collapsedOnMobile", () => {
+    // set window.innerWidth to <768 to mock a mobile window
+    ValidateCollapse(
+      767,
+      settingsStore.alertGroupConfig.options.collapsedOnMobile.value,
+      true
+    );
+  });
+
+  it("is expanded by default on desktop when defaultCollapseState=expanded", () => {
+    // set window.innerWidth to 2k to mock a desktop window
+    ValidateCollapse(
+      2048,
+      settingsStore.alertGroupConfig.options.expanded.value,
+      false
+    );
+  });
+
+  it("is expanded by default on mobile when defaultCollapseState=expanded", () => {
+    // set window.innerWidth to <768 to mock a mobile window
+    ValidateCollapse(
+      767,
+      settingsStore.alertGroupConfig.options.expanded.value,
+      false
+    );
   });
 });
 

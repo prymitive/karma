@@ -61,30 +61,45 @@ const AlertGroup = observer(
     constructor(props) {
       super(props);
 
+      const { alertGroupConfig } = props.settingsStore;
+
       this.defaultRenderCount = toJS(
-        props.settingsStore.alertGroupConfig.config.defaultRenderCount
+        alertGroupConfig.config.defaultRenderCount
       );
 
       this.renderConfig = observable({
         alertsToRender: this.defaultRenderCount
       });
-    }
 
-    // store collapse state, alert groups can be collapsed to only show
-    // the header, this is controlled by UI element on the header itself, so
-    // this observable needs to be passed down to it
-    collapse = observable(
-      {
-        value: IsMobile(),
-        toggle() {
-          this.value = !this.value;
-        }
-      },
-      {
-        toggle: action.bound
-      },
-      { name: "Collpase toggle" }
-    );
+      let defaultCollapseState;
+      switch (alertGroupConfig.config.defaultCollapseState) {
+        case alertGroupConfig.options.collapsed.value:
+          defaultCollapseState = true;
+          break;
+        case alertGroupConfig.options.collapsedOnMobile.value:
+          defaultCollapseState = IsMobile();
+          break;
+        default:
+          defaultCollapseState = false;
+          break;
+      }
+
+      // store collapse state, alert groups can be collapsed to only show
+      // the header, this is controlled by UI element on the header itself, so
+      // this observable needs to be passed down to it
+      this.collapse = observable(
+        {
+          value: defaultCollapseState,
+          toggle() {
+            this.value = !this.value;
+          }
+        },
+        {
+          toggle: action.bound
+        },
+        { name: "Collpase toggle" }
+      );
+    }
 
     loadMore = action(() => {
       const { group } = this.props;

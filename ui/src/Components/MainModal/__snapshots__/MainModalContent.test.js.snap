@@ -138,6 +138,61 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
       </div>
       <div class=\\"form-group\\">
         <div class=\\"text-center\\">
+          <label class=\\"mb-4 font-weight-bold\\">
+            Default alert group display
+          </label>
+        </div>
+        <div class=\\"css-10nd86i\\">
+          <div class=\\"css-7jxtyj react-select__control\\">
+            <div class=\\"css-pb81dw react-select__value-container react-select__value-container--has-value\\">
+              <div class=\\"css-xp4uvy react-select__single-value\\">
+                Collapse on mobile
+              </div>
+              <div class=\\"css-1g6gooi\\">
+                <div class=\\"react-select__input\\"
+                     style=\\"display: inline-block;\\"
+                >
+                  <input autocapitalize=\\"none\\"
+                         autocomplete=\\"off\\"
+                         autocorrect=\\"off\\"
+                         id=\\"react-select-configuration-collapse-input\\"
+                         spellcheck=\\"false\\"
+                         tabindex=\\"0\\"
+                         type=\\"text\\"
+                         aria-autocomplete=\\"list\\"
+                         style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                         value
+                  >
+                  <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class=\\"css-mik995 react-select__indicators\\">
+              <span class=\\"css-d8oujb react-select__indicator-separator\\">
+              </span>
+              <div aria-hidden=\\"true\\"
+                   class=\\"css-1ep9fjw react-select__indicator react-select__dropdown-indicator\\"
+              >
+                <svg height=\\"20\\"
+                     width=\\"20\\"
+                     viewbox=\\"0 0 20 20\\"
+                     aria-hidden=\\"true\\"
+                     focusable=\\"false\\"
+                     class=\\"css-19bqh2r\\"
+                >
+                  <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
+                  </path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class=\\"mt-5\\">
+      </div>
+      <div class=\\"form-group\\">
+        <div class=\\"text-center\\">
           <label class=\\"mb-2 font-weight-bold\\">
             Grid sort order
           </label>
