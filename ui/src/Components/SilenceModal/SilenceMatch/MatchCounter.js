@@ -6,10 +6,9 @@ import { observer } from "mobx-react";
 
 import { throttle } from "lodash";
 
-import hash from "object-hash";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
 import { FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -26,7 +25,7 @@ const MatchCounter = observer(
 
     matchedAlerts = observable(
       {
-        total: 0,
+        total: null,
         error: null,
         fetch: null,
         setTotal(value) {
@@ -85,13 +84,7 @@ const MatchCounter = observer(
       this.onUpdateCounter();
     }
 
-    componentDidUpdate() {
-      this.onUpdateCounter();
-    }
-
     render() {
-      const { silenceFormStore, matcher } = this.props;
-
       if (this.matchedAlerts.error !== null) {
         return (
           <TooltipWrapper
@@ -107,23 +100,17 @@ const MatchCounter = observer(
         );
       }
 
-      const matcherHash = hash({
-        alertmanagers: silenceFormStore.data.alertmanagers,
-        matcher: {
-          name: matcher.name,
-          values: matcher.values,
-          isRegex: matcher.isRegex
-        }
-      });
-
       return (
         <TooltipWrapper title="Number of alerts matching this label">
           <span
             className="badge badge-light badge-pill"
             style={{ fontSize: "85%" }}
-            data-hash={matcherHash}
           >
-            {this.matchedAlerts.total}
+            {this.matchedAlerts.total === null ? (
+              <FontAwesomeIcon icon={faSpinner} spin />
+            ) : (
+              this.matchedAlerts.total
+            )}
           </span>
         </TooltipWrapper>
       );

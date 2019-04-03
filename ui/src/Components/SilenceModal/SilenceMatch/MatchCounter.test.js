@@ -33,6 +33,7 @@ const MountedMatchCounter = () => {
 
 describe("<MatchCounter />", () => {
   it("matches snapshot with empty matcher", () => {
+    fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
     const tree = MountedMatchCounter();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
@@ -66,6 +67,7 @@ describe("<MatchCounter />", () => {
   });
 
   it("totalAlerts is 0 after mount", async () => {
+    fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
     const tree = MountedMatchCounter();
     expect(tree.text()).toBe("0");
   });
@@ -78,7 +80,7 @@ describe("<MatchCounter />", () => {
     matcher.values = [MatcherValueToObject("bar")];
 
     const tree = MountedMatchCounter();
-    expect(tree.text()).toBe("0");
+    expect(tree.text()).toBe("");
     await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
     expect(tree.text()).toBe("123");
   });
