@@ -14,6 +14,10 @@ import { LabelValueInput } from "./LabelValueInput";
 let silenceFormStore;
 let matcher;
 
+beforeAll(() => {
+  fetch.mockResponse(JSON.stringify([]));
+});
+
 beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
   matcher = NewEmptyMatcher();
@@ -26,6 +30,10 @@ beforeEach(() => {
     MatcherValueToObject("foo"),
     MatcherValueToObject("bar")
   ];
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
 const ShallowLabelValueInput = isValid => {
