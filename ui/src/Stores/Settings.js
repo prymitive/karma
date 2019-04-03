@@ -33,9 +33,20 @@ class FetchConfig {
 }
 
 class AlertGroupConfig {
+  options = Object.freeze({
+    expanded: { label: "Always expanded", value: "expanded" },
+    collapsedOnMobile: {
+      label: "Collapse on mobile",
+      value: "collapsedOnMobile"
+    },
+    collapsed: { label: "Always collapsed", value: "collapsed" }
+  });
   config = localStored(
     "alertGroupConfig",
-    { defaultRenderCount: 5 },
+    {
+      defaultRenderCount: 5,
+      defaultCollapseState: this.options.collapsedOnMobile.value
+    },
     { delay: 100 }
   );
 
