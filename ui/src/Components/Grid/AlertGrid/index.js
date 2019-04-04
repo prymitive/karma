@@ -141,6 +141,18 @@ const AlertGrid = observer(
       }
     };
 
+    componentDidMount() {
+      // Hackish workaround for font loading
+      // We have font-display:swap set for font assets, this means that on initial
+      // render a fallback font might be used and later swapped for the final one
+      // (once the final font is loaded). This means that fallback font might
+      // render to a different size and the swap can result in component resize.
+      // For our grid this resize might leave gaps since everything uses fixed
+      // position, so we inject extra repack after 1s which should be enough
+      // time for all assets to load.
+      setTimeout(this.masonryRepack, 1000);
+    }
+
     componentDidUpdate() {
       // whenever grid component re-renders we need to ensure that grid elements
       // are packed correctly
