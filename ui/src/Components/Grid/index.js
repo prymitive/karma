@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
+import screenOrientation from "screen-orientation";
+
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -29,8 +31,10 @@ const Grid = observer(
       this.viewport = observable(
         {
           width: window.innerWidth,
+          orientation: screenOrientation().direction,
           update() {
             this.width = window.innerWidth;
+            this.orientation = screenOrientation().direction;
           }
         },
         {
@@ -84,7 +88,7 @@ const Grid = observer(
             ))}
 
           <AlertGrid
-            key={this.viewport.width}
+            key={`${this.viewport.width}-${this.viewport.orientation}`}
             alertStore={alertStore}
             settingsStore={settingsStore}
             silenceFormStore={silenceFormStore}
