@@ -110,6 +110,16 @@ describe("<Grid />", () => {
     expect(tree.find("AlertGrid").key()).toBe("500");
   });
 
+  it("re-creates AlertGrid after viewport rotate", () => {
+    global.innerWidth = 2048;
+    const tree = ShallowGrid();
+    expect(tree.find("AlertGrid").key()).toBe("2048");
+
+    global.innerWidth = 500;
+    global.dispatchEvent(new Event("orientationchange"));
+    expect(tree.find("AlertGrid").key()).toBe("500");
+  });
+
   it("unmounts without crashes", () => {
     const tree = ShallowGrid();
     tree.unmount();

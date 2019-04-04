@@ -42,10 +42,12 @@ const Grid = observer(
     componentDidMount() {
       this.viewport.update();
       window.addEventListener("resize", this.viewport.update);
+      window.addEventListener("orientationchange", this.viewport.update);
     }
 
     componentWillUnmount() {
       window.removeEventListener("resize", this.viewport.update);
+      window.removeEventListener("orientationchange", this.viewport.update);
     }
 
     render() {
