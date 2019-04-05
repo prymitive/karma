@@ -12,7 +12,7 @@ RUN CGO_ENABLED=0 make -C /src VERSION="${VERSION:-dev}" karma
 FROM alpine:3.9
 RUN apk add --update supervisor python && rm  -rf /tmp/* /var/cache/apk/*
 COPY demo/supervisord.conf /etc/supervisord.conf
-COPY --from=prom/alertmanager:v0.15.3 /bin/alertmanager /alertmanager
+COPY --from=prom/alertmanager:v0.16.2 /bin/alertmanager /alertmanager
 COPY demo/alertmanager.yaml /etc/alertmanager.yaml
 COPY demo/generator.py /generator.py
 COPY --from=go-builder /src/karma /karma
