@@ -18,6 +18,7 @@
     "csshake": "1.5.3",
     "fast-deep-equal": "2.0.1",
     "favico.js": "0.3.10",
+    "fontfaceobserver": "2.1.0",
     "lato-font": "3.0.0",
     "lodash.debounce": "4.0.8",
     "lodash.throttle": "4.1.1",
