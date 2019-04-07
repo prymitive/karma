@@ -76,7 +76,7 @@ const FilterInputLabel = observer(
                 </span>
               ) : null
             ) : (
-              <span className="badge mr-1 p-0">
+              <span className="badge mr-1">
                 <FontAwesomeIcon icon={faSpinner} spin />
               </span>
             )
@@ -87,7 +87,6 @@ const FilterInputLabel = observer(
           )}
           <TooltipWrapper title="Click to edit this filter" className="my-auto">
             <RIEInput
-              className="align-middle"
               defaultValue=""
               value={filter.raw}
               propName="raw"
@@ -97,7 +96,7 @@ const FilterInputLabel = observer(
           </TooltipWrapper>
           <button
             type="button"
-            className="close ml-1 align-middle"
+            className="close ml-1"
             style={filter.applied ? cs.style : {}}
             onClick={() => alertStore.filters.removeFilter(filter.raw)}
           >
