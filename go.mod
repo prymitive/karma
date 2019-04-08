@@ -1,7 +1,7 @@
 module github.com/prymitive/karma
 
 require (
-	github.com/DeanThompson/ginpprof v0.0.0-20170218162546-8c0e31bfeaa8
+	github.com/DeanThompson/ginpprof v0.0.0-20190408070748-3be636683586
 	github.com/blang/semver v3.5.1+incompatible
 	github.com/certifi/gocertifi v0.0.0-20190105023540-abcd57078448 // indirect
 	github.com/cnf/structhash v0.0.0-20180104161610-62a607eb0224
