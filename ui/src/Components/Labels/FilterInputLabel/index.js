@@ -85,7 +85,10 @@ const FilterInputLabel = observer(
               <FontAwesomeIcon icon={faExclamationCircle} />
             </span>
           )}
-          <TooltipWrapper title="Click to edit this filter" className="my-auto">
+          <TooltipWrapper
+            title="Click to edit this filter"
+            className="my-auto mw-100 text-nowrap text-truncate"
+          >
             <RIEInput
               defaultValue=""
               value={filter.raw}
