@@ -39,8 +39,8 @@ github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7 h1:AzN37oI0cOS+cou
 github.com/gin-contrib/sse v0.0.0-20170109093832-22d885f9ecc7/go.mod h1:VJ0WA2NBN22VlZ2dKZQPAPnyWw5XTlK1KymzLKsr59s=
 github.com/gin-contrib/static v0.0.0-20190301094727-ed515893e96b h1:4bptSGIorYuYUj07QWHAjzFNCzIzcNxEEYzP5w6dB6s=
 github.com/gin-contrib/static v0.0.0-20190301094727-ed515893e96b/go.mod h1:c0Dn3Epmic//eHg5d4h6F0XcLhpwMCe4kpfgauEOy3k=
-github.com/gin-gonic/contrib v0.0.0-20190406010713-60f8537fcb8b h1:iu05QAF+JqvSfUXX0bgRn1TrbRK9gOUqcMnlMRQfqcM=
-github.com/gin-gonic/contrib v0.0.0-20190406010713-60f8537fcb8b/go.mod h1:iqneQ2Df3omzIVTkIfn7c1acsVnMGiSLn4XF5Blh3Yg=
+github.com/gin-gonic/contrib v0.0.0-20190408174833-b5986969cb50 h1:4Oea7uehNujsezUgUcxn4XPkY/6tdVGmSZ8IZPGIFxc=
+github.com/gin-gonic/contrib v0.0.0-20190408174833-b5986969cb50/go.mod h1:iqneQ2Df3omzIVTkIfn7c1acsVnMGiSLn4XF5Blh3Yg=
 github.com/gin-gonic/gin v1.3.0 h1:kCmZyPklC0gVdL728E6Aj20uYBJV93nj/TkwBTKhFbs=
 github.com/gin-gonic/gin v1.3.0/go.mod h1:7cKuhb5qV2ggCFctp2fJQ+ErvciLZrIeoOSOm6mUr7Y=
 github.com/go-bindata/go-bindata v1.0.0 h1:DZ34txDXWn1DyWa+vQf7V9ANc2ILTtrEjtlsdJRF26M=
