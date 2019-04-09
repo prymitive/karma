@@ -55,7 +55,8 @@ func getViewURL(sub string) string {
 
 func setupRouter(router *gin.Engine) {
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
-	router.Use(staticHeaders(getViewURL("/static/")))
+
+	router.Use(setStaticHeaders(getViewURL("/static/")))
 	router.Use(static.Serve(getViewURL("/"), staticBuildFileSystem))
 	// next 2 lines are to allow service raw sources so sentry can fetch source maps
 	router.Use(static.Serve(getViewURL("/static/js/"), staticSrcFileSystem))
@@ -63,6 +64,8 @@ func setupRouter(router *gin.Engine) {
 	// compressed sources are under /static/js/main.js and reference ../static/js/main.js
 	// so we end up with /static/static/js
 	router.Use(static.Serve(getViewURL("/static/static/js/"), staticSrcFileSystem))
+	router.Use(clearStaticHeaders(getViewURL("/static/")))
+
 	router.Use(cors.New(cors.Config{
 		// This works different than AllowAllOrigins=true
 		// 1. AllowAllOrigins will cause responses to include
