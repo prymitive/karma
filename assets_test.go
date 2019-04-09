@@ -80,3 +80,15 @@ func TestCustomizationAssets(t *testing.T) {
 		}
 	}
 }
+
+func TestStaticExpires404(t *testing.T) {
+	mockConfig()
+	r := ginTestEngine()
+
+	req := httptest.NewRequest("GET", "/static/foobar.js", nil)
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Result().Header.Get("Expires") != "" {
+		t.Errorf("Got Expires: '%s' header on a 404 /static/ response", resp.Result().Header.Get("Expires"))
+	}
+}
