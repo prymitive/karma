@@ -154,12 +154,13 @@ const AlertGrid = observer(
       const font400 = new FontFaceObserver("Lato", {
         weight: 400
       });
-      font400.load().then(this.masonryRepack);
+      // wait up to 30s, run no-op function on timeout
+      font400.load(null, 30000).then(this.masonryRepack, () => {});
 
       const font700 = new FontFaceObserver("Lato", {
         weight: 700
       });
-      font700.load().then(this.masonryRepack);
+      font700.load(null, 30000).then(this.masonryRepack, () => {});
     }
 
     componentDidUpdate() {
