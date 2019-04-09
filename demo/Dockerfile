@@ -3,7 +3,7 @@ RUN apk add --update make git
 COPY . /src
 RUN make -C /src ui
 
-FROM golang:1.12.2-alpine as go-builder
+FROM golang:1.12.3-alpine as go-builder
 COPY --from=nodejs-builder /src /src
 ARG VERSION
 RUN apk add --update make git
