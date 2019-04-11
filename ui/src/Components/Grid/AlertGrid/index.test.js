@@ -104,6 +104,24 @@ describe("<AlertGrid />", () => {
     expect(repackSpy).toHaveBeenCalled();
   });
 
+  it("masonryRepack() doesn't crash when masonryComponentReference.ref=null`", () => {
+    const tree = ShallowAlertGrid();
+    const instance = tree.instance();
+    const repackSpy = jest.spyOn(instance, "masonryRepack");
+    instance.masonryComponentReference.ref = null;
+    instance.componentDidUpdate();
+    expect(repackSpy).toHaveBeenCalled();
+  });
+
+  it("masonryRepack() doesn't crash when masonryComponentReference.ref=undefined`", () => {
+    const tree = ShallowAlertGrid();
+    const instance = tree.instance();
+    const repackSpy = jest.spyOn(instance, "masonryRepack");
+    instance.masonryComponentReference.ref = undefined;
+    instance.componentDidUpdate();
+    expect(repackSpy).toHaveBeenCalled();
+  });
+
   it("calling storeMasonryRef() saves the ref in local store", () => {
     const tree = ShallowAlertGrid();
     const instance = tree.instance();

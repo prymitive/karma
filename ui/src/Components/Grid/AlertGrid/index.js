@@ -44,7 +44,7 @@ const AlertGrid = observer(
     // used to call forcePack() which will repack all grid elements
     // (alert groups), this needs to be called if any group size changes
     masonryRepack = action(() => {
-      if (this.masonryComponentReference.ref !== false) {
+      if (this.masonryComponentReference.ref) {
         this.masonryComponentReference.ref.forcePack();
       }
     });
