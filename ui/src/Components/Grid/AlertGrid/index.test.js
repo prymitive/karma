@@ -2,6 +2,8 @@ import React from "react";
 
 import { shallow } from "enzyme";
 
+import { advanceBy, clear } from "jest-date-mock";
+
 import { MockAlert, MockAlertGroup } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -12,6 +14,10 @@ let alertStore;
 let settingsStore;
 let silenceFormStore;
 
+beforeAll(() => {
+  jest.useFakeTimers();
+});
+
 beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings();
@@ -19,7 +25,10 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  jest.clearAllTimers();
+  jest.clearAllMocks();
   jest.restoreAllMocks();
+  clear();
 });
 
 const ShallowAlertGrid = () => {
@@ -304,5 +313,13 @@ describe("<AlertGrid />", () => {
       "id3",
       "id2"
     ]);
+  });
+
+  it("doesn't throw errors after FontFaceObserver timeout", () => {
+    MockGroupList(60, 5);
+    ShallowAlertGrid();
+    // skip a minute to trigger FontFaceObserver timeout handler
+    advanceBy(60 * 1000);
+    jest.runOnlyPendingTimers();
   });
 });
