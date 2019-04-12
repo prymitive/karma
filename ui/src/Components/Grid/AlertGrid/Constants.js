@@ -12,4 +12,23 @@ const GridSizesConfig = [
   { mq: "5600px", columns: 8, gutter: 0 }
 ];
 
-export { GridSizesConfig };
+const GetGridElementWidth = canvasWidth =>
+  Math.floor(
+    canvasWidth < 800
+      ? canvasWidth
+      : canvasWidth < 1400
+      ? canvasWidth / 2
+      : canvasWidth < 2100
+      ? canvasWidth / 3
+      : canvasWidth < 2800
+      ? canvasWidth / 4
+      : canvasWidth < 3500
+      ? canvasWidth / 5
+      : canvasWidth < 4200
+      ? canvasWidth / 6
+      : canvasWidth < 5600
+      ? canvasWidth / 7
+      : canvasWidth / 8
+  );
+
+export { GridSizesConfig, GetGridElementWidth };

@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { observable, action } from "mobx";
 import { observer } from "mobx-react";
-
-import screenOrientation from "screen-orientation";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -21,36 +18,6 @@ const Grid = observer(
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
-
-    constructor(props) {
-      super(props);
-
-      // this is used to track viewport width, when browser window is resized
-      // we need to recreate the entire grid object to apply new column count
-      // and group size
-      this.viewport = observable(
-        {
-          width: window.innerWidth,
-          orientation: screenOrientation().direction,
-          update() {
-            this.width = window.innerWidth;
-            this.orientation = screenOrientation().direction;
-          }
-        },
-        {
-          update: action.bound
-        }
-      );
-    }
-
-    componentDidMount() {
-      this.viewport.update();
-      window.addEventListener("resize", this.viewport.update);
-    }
-
-    componentWillUnmount() {
-      window.removeEventListener("resize", this.viewport.update);
-    }
 
     render() {
       const { alertStore, settingsStore, silenceFormStore } = this.props;
@@ -88,7 +55,6 @@ const Grid = observer(
             ))}
 
           <AlertGrid
-            key={`${this.viewport.width}-${this.viewport.orientation}`}
             alertStore={alertStore}
             settingsStore={settingsStore}
             silenceFormStore={silenceFormStore}

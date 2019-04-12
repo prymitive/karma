@@ -94,24 +94,6 @@ describe("<Grid />", () => {
     expect(tree.text()).toBe("<UpgradeNeeded />");
   });
 
-  it("re-creates AlertGrid after viewport resize", () => {
-    // Different columns are positioned using css via fixed offsets, so
-    // it's hard to tell how many columns we have just by looking at the
-    // generated css
-    // This test only checks if we force re-render of the AlertGrid component
-    // by updating its key prop
-
-    global.innerWidth = 1980;
-    global.innerHeight = 1080;
-    const tree = ShallowGrid();
-    expect(tree.find("AlertGrid").key()).toBe("1980-landscape");
-
-    global.innerWidth = 500;
-    global.innerHeight = 1000;
-    global.dispatchEvent(new Event("resize"));
-    expect(tree.find("AlertGrid").key()).toBe("500-portrait");
-  });
-
   it("unmounts without crashes", () => {
     const tree = ShallowGrid();
     tree.unmount();

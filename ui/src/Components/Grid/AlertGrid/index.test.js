@@ -13,9 +13,15 @@ import { AlertGrid } from ".";
 let alertStore;
 let settingsStore;
 let silenceFormStore;
+let bodyWidth;
 
 beforeAll(() => {
   jest.useFakeTimers();
+  Object.defineProperty(document.body, "clientWidth", {
+    get: () => {
+      return bodyWidth;
+    }
+  });
 });
 
 beforeEach(() => {
@@ -72,6 +78,18 @@ const MockGroupList = (count, alertPerGroup) => {
     clusters: { am: ["am"] }
   };
   alertStore.data.groups = groups;
+};
+
+const VerifyColumnCount = (innerWidth, columns) => {
+  bodyWidth = innerWidth;
+  MockGroupList(60, 5);
+  const tree = ShallowAlertGrid();
+  expect(
+    tree
+      .find("AlertGroup")
+      .at(0)
+      .props().style.width
+  ).toBe(Math.floor(innerWidth / columns));
 };
 
 describe("<AlertGrid />", () => {
@@ -321,5 +339,90 @@ describe("<AlertGrid />", () => {
     // skip a minute to trigger FontFaceObserver timeout handler
     advanceBy(60 * 1000);
     jest.runOnlyPendingTimers();
+  });
+
+  it("renders 1 column with document.body.clientWidth=799", () => {
+    VerifyColumnCount(799, 1);
+  });
+
+  it("renders 2 columns with document.body.clientWidth=800", () => {
+    VerifyColumnCount(800, 2);
+  });
+
+  it("renders 2 columns with document.body.clientWidth=1399", () => {
+    VerifyColumnCount(1399, 2);
+  });
+
+  it("renders 3 columns with document.body.clientWidth=1400", () => {
+    VerifyColumnCount(1400, 3);
+  });
+
+  it("renders 3 columns with document.body.clientWidth=2099", () => {
+    VerifyColumnCount(2099, 3);
+  });
+
+  it("renders 4 columns with document.body.clientWidth=2100", () => {
+    VerifyColumnCount(2100, 4);
+  });
+
+  it("renders 4 columns with document.body.clientWidth=2799", () => {
+    VerifyColumnCount(2799, 4);
+  });
+
+  it("renders 5 columns with document.body.clientWidth=2800", () => {
+    VerifyColumnCount(2800, 5);
+  });
+
+  it("renders 5 columns with document.body.clientWidth=3499", () => {
+    VerifyColumnCount(3499, 5);
+  });
+
+  it("renders 6 columns with document.body.clientWidth=1399", () => {
+    VerifyColumnCount(3500, 6);
+  });
+
+  it("renders 6 columns with document.body.clientWidth=4199", () => {
+    VerifyColumnCount(4199, 6);
+  });
+
+  it("renders 7 columns with document.body.clientWidth=1399", () => {
+    VerifyColumnCount(4200, 7);
+  });
+
+  it("renders 7 columns with document.body.clientWidth=5599", () => {
+    VerifyColumnCount(5599, 7);
+  });
+
+  it("renders 8 columns with document.body.clientWidth=5600", () => {
+    VerifyColumnCount(5600, 8);
+  });
+
+  it("viewport resize also resizes alert groups", () => {
+    bodyWidth = 1980;
+    MockGroupList(60, 5);
+    const tree = ShallowAlertGrid();
+    expect(
+      tree
+        .find("AlertGroup")
+        .at(0)
+        .props().style.width
+    ).toBe(1980 / 3);
+
+    bodyWidth = 1000;
+    // not sure how to force ReactResizeDetector to detect width change, so
+    // we directly call viewport update here
+    tree.instance().viewport.update();
+    expect(
+      tree
+        .find("AlertGroup")
+        .at(0)
+        .props().style.width
+    ).toBe(1000 / 2);
+  });
+
+  it("doesn't crash on unmount", () => {
+    MockGroupList(60, 5);
+    const tree = ShallowAlertGrid();
+    tree.unmount();
   });
 });
