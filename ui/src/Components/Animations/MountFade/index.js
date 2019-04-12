@@ -8,7 +8,7 @@ import "./index.css";
 const MountFade = ({ children, duration, ...props }) => (
   <CSSTransition
     classNames="components-animation-fade"
-    timeout={150}
+    timeout={300}
     appear={true}
     enter={true}
     exit={true}

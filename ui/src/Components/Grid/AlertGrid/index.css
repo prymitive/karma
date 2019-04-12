@@ -1,0 +1,5 @@
+.components-grid-alertgrid-alertgroup {
+  transition-property: top, left;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
+}

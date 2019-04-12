@@ -23,6 +23,8 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { AlertGroup } from "./AlertGroup";
 import { GridSizesConfig, GetGridElementWidth } from "./Constants";
 
+import "./index.css";
+
 const AlertGrid = observer(
   class AlertGrid extends Component {
     static propTypes = {
