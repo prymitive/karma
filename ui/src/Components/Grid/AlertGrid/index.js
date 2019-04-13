@@ -8,6 +8,10 @@ import FontFaceObserver from "fontfaceobserver";
 
 import moment from "moment";
 
+import { debounce } from "lodash";
+
+import ReactResizeDetector from "react-resize-detector";
+
 import MasonryInfiniteScroller from "react-masonry-infinite";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,7 +21,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { AlertGroup } from "./AlertGroup";
-import { GridSizesConfig } from "./Constants";
+import { GridSizesConfig, GetGridElementWidth } from "./Constants";
 
 import "./index.css";
 
@@ -28,6 +32,25 @@ const AlertGrid = observer(
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
+
+    constructor(props) {
+      super(props);
+
+      // this is used to track viewport width, when browser window is resized
+      // we need to recreate the entire grid object to apply new column count
+      // and group size
+      this.viewport = observable(
+        {
+          width: document.body.clientWidth,
+          update() {
+            this.width = document.body.clientWidth;
+          }
+        },
+        {
+          update: action.bound
+        }
+      );
+    }
 
     // store reference to generated masonry component so we can call it
     // to repack the grid after any component was re-rendered, which could
@@ -174,6 +197,10 @@ const AlertGrid = observer(
 
       return (
         <React.Fragment>
+          <ReactResizeDetector
+            handleWidth
+            onResize={debounce(this.viewport.update, 100)}
+          />
           <MasonryInfiniteScroller
             ref={this.storeMasonryRef}
             pack={true}
@@ -203,6 +230,9 @@ const AlertGrid = observer(
                   afterUpdate={this.masonryRepack}
                   settingsStore={settingsStore}
                   silenceFormStore={silenceFormStore}
+                  style={{
+                    width: GetGridElementWidth(this.viewport.width)
+                  }}
                 />
               ))}
           </MasonryInfiniteScroller>

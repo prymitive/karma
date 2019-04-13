@@ -55,7 +55,8 @@ const AlertGroup = observer(
       group: APIGroup.isRequired,
       showAlertmanagers: PropTypes.bool.isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+      style: PropTypes.object
     };
 
     constructor(props) {
@@ -154,7 +155,8 @@ const AlertGroup = observer(
         group,
         showAlertmanagers,
         afterUpdate,
-        silenceFormStore
+        silenceFormStore,
+        style
       } = this.props;
 
       let footerAlertmanagers = [];
@@ -175,8 +177,8 @@ const AlertGroup = observer(
       }
 
       return (
-        <MountFade>
-          <div className="components-grid-alertgrid-alertgroup p-1">
+        <div className="components-grid-alertgrid-alertgroup p-1" style={style}>
+          <MountFade in={true}>
             <div className="card">
               <GroupHeader
                 collapseStore={this.collapse}
@@ -235,8 +237,8 @@ const AlertGroup = observer(
                 />
               ) : null}
             </div>
-          </div>
-        </MountFade>
+          </MountFade>
+        </div>
       );
     }
   }
