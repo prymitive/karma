@@ -75,7 +75,8 @@ class GridConfig {
   config = localStored(
     "alertGridConfig",
     {
-      sortOrder: this.options.default.value
+      sortOrder: this.options.default.value,
+      groupWidth: 420
     },
     { delay: 100 }
   );

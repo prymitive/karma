@@ -42,14 +42,20 @@ const AlertGrid = observer(
       this.viewport = observable(
         {
           width: document.body.clientWidth,
-          get gridSizesConfig() {
-            return GridSizesConfig(this.width);
-          },
-          get groupWidth() {
-            return GetGridElementWidth(this.width);
-          },
           update() {
             this.width = document.body.clientWidth;
+          },
+          get gridSizesConfig() {
+            return GridSizesConfig(
+              this.width,
+              props.settingsStore.gridConfig.config.groupWidth
+            );
+          },
+          get groupWidth() {
+            return GetGridElementWidth(
+              this.width,
+              props.settingsStore.gridConfig.config.groupWidth
+            );
           }
         },
         {
@@ -194,12 +200,6 @@ const AlertGrid = observer(
       font700.load(null, 30000).then(this.masonryRepack, () => {});
     }
 
-    componentDidUpdate() {
-      // whenever grid component re-renders we need to ensure that grid elements
-      // are packed correctly
-      this.masonryRepack();
-    }
-
     render() {
       const { alertStore, settingsStore, silenceFormStore } = this.props;
 
@@ -210,6 +210,7 @@ const AlertGrid = observer(
             onResize={debounce(this.viewport.update, 100)}
           />
           <MasonryInfiniteScroller
+            key={settingsStore.gridConfig.config.groupWidth}
             ref={this.storeMasonryRef}
             pack={true}
             sizes={this.viewport.gridSizesConfig}

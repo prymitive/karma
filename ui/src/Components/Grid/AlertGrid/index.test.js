@@ -8,7 +8,7 @@ import { MockAlert, MockAlertGroup } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { MinWidth, GetGridElementWidth } from "./GridSize";
+import { GetGridElementWidth } from "./GridSize";
 import { AlertGrid } from ".";
 
 let alertStore;
@@ -110,44 +110,36 @@ describe("<AlertGrid />", () => {
     expect(alertGroups).toHaveLength(80);
   });
 
-  it("calls masonryRepack() after update`", () => {
+  it("calling masonryRepack() calls forcePack() on Masonry instance`", () => {
     const tree = ShallowAlertGrid();
     const instance = tree.instance();
-    const repackSpy = jest.spyOn(instance, "masonryRepack");
     // it's a shallow render so we don't really have masonry mounted, fake it
     instance.masonryComponentReference.ref = {
       forcePack: jest.fn()
     };
-    instance.componentDidUpdate();
-    expect(repackSpy).toHaveBeenCalled();
+    instance.masonryRepack();
     expect(instance.masonryComponentReference.ref.forcePack).toHaveBeenCalled();
   });
 
   it("masonryRepack() doesn't crash when masonryComponentReference.ref=false`", () => {
     const tree = ShallowAlertGrid();
     const instance = tree.instance();
-    const repackSpy = jest.spyOn(instance, "masonryRepack");
     instance.masonryComponentReference.ref = false;
-    instance.componentDidUpdate();
-    expect(repackSpy).toHaveBeenCalled();
+    instance.masonryRepack();
   });
 
   it("masonryRepack() doesn't crash when masonryComponentReference.ref=null`", () => {
     const tree = ShallowAlertGrid();
     const instance = tree.instance();
-    const repackSpy = jest.spyOn(instance, "masonryRepack");
     instance.masonryComponentReference.ref = null;
-    instance.componentDidUpdate();
-    expect(repackSpy).toHaveBeenCalled();
+    instance.masonryRepack();
   });
 
   it("masonryRepack() doesn't crash when masonryComponentReference.ref=undefined`", () => {
     const tree = ShallowAlertGrid();
     const instance = tree.instance();
-    const repackSpy = jest.spyOn(instance, "masonryRepack");
     instance.masonryComponentReference.ref = undefined;
-    instance.componentDidUpdate();
-    expect(repackSpy).toHaveBeenCalled();
+    instance.masonryRepack();
   });
 
   it("calling storeMasonryRef() saves the ref in local store", () => {
@@ -345,17 +337,18 @@ describe("<AlertGrid />", () => {
   // known breakpoints calculated from GridSize logic
   [
     { breakpoint: 400, columns: 1 },
-    { breakpoint: 820, columns: 2 },
-    { breakpoint: 1245, columns: 3 },
-    { breakpoint: 1680, columns: 4 },
-    { breakpoint: 2125, columns: 5 },
-    { breakpoint: 2580, columns: 6 },
-    { breakpoint: 3045, columns: 7 },
-    { breakpoint: 3520, columns: 8 },
-    { breakpoint: 4005, columns: 9 },
-    { breakpoint: 4500, columns: 1 }
+    { breakpoint: 800, columns: 2 },
+    { breakpoint: 1200, columns: 3 },
+    { breakpoint: 1600, columns: 4 },
+    { breakpoint: 2000, columns: 5 },
+    { breakpoint: 2400, columns: 6 },
+    { breakpoint: 3000, columns: 7 },
+    { breakpoint: 3400, columns: 8 },
+    { breakpoint: 3800, columns: 9 },
+    { breakpoint: 4200, columns: 10 }
   ].map(t =>
     it(`renders ${t.columns} column(s) on ${t.breakpoint} breakpoint`, () => {
+      settingsStore.gridConfig.config.groupWidth = 400;
       VerifyColumnCount(t.canvas - 1, Math.max(1, t.columns - 1));
       VerifyColumnCount(t.canvas, t.columns);
       VerifyColumnCount(t.canvas + 1, t.columns);
@@ -369,24 +362,25 @@ describe("<AlertGrid />", () => {
     { canvas: 1280, columns: 3 },
     { canvas: 1366, columns: 3 },
     { canvas: 1440, columns: 3 },
-    { canvas: 1600, columns: 3 },
-    { canvas: 1680, columns: 3 },
+    { canvas: 1600, columns: 4 },
+    { canvas: 1680, columns: 4 },
     { canvas: 1920, columns: 4 },
-    { canvas: 2048, columns: 4 },
-    { canvas: 2560, columns: 5 },
-    { canvas: 3840, columns: 8 }
+    { canvas: 2048, columns: 5 },
+    { canvas: 2560, columns: 6 },
+    { canvas: 3840, columns: 9 }
   ].map(t =>
     it(`renders ${t.columns} column(s) with ${t.canvas} resolution`, () => {
+      settingsStore.gridConfig.config.groupWidth = 400;
       VerifyColumnCount(t.canvas, t.columns);
     })
   );
 
   it("renders expected number of columns for every resolution", () => {
+    const minWidth = 400;
     let lastColumns = 1;
     for (let i = 100; i <= 4096; i++) {
-      const minWidth = MinWidth(i);
       const expectedColumns = Math.max(Math.floor(i / minWidth), 1);
-      const columns = Math.floor(i / GetGridElementWidth(i));
+      const columns = Math.floor(i / GetGridElementWidth(i, minWidth));
 
       expect({
         resolution: i,

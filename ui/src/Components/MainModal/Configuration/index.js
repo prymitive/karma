@@ -5,6 +5,7 @@ import { Settings } from "Stores/Settings";
 import { FetchConfiguration } from "./FetchConfiguration";
 import { FilterBarConfiguration } from "./FilterBarConfiguration";
 import { AlertGroupConfiguration } from "./AlertGroupConfiguration";
+import { AlertGroupWidthConfiguration } from "./AlertGroupWidthConfiguration";
 import { AlertGroupSortConfiguration } from "./AlertGroupSortConfiguration";
 import { AlertGroupCollapseConfiguration } from "./AlertGroupCollapseConfiguration";
 
@@ -13,6 +14,8 @@ const Configuration = ({ settingsStore }) => (
     <FetchConfiguration settingsStore={settingsStore} />
     <div className="mt-5" />
     <FilterBarConfiguration settingsStore={settingsStore} />
+    <div className="mt-5" />
+    <AlertGroupWidthConfiguration settingsStore={settingsStore} />
     <div className="mt-5" />
     <AlertGroupConfiguration settingsStore={settingsStore} />
     <div className="mt-5" />

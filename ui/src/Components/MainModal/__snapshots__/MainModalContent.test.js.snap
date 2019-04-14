@@ -93,6 +93,51 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
       </div>
       <div class=\\"form-group text-center\\">
         <label class=\\"mb-4 font-weight-bold\\">
+          Minimal alert group width
+        </label>
+        <div aria-disabled=\\"false\\"
+             class=\\"input-range\\"
+        >
+          <span class=\\"input-range__label input-range__label--min\\">
+            <span class=\\"input-range__label-container\\">
+              300
+            </span>
+          </span>
+          <div class=\\"input-range__track input-range__track--background\\">
+            <div style=\\"left: 0%; width: 24%;\\"
+                 class=\\"input-range__track input-range__track--active\\"
+            >
+            </div>
+            <span class=\\"input-range__slider-container\\"
+                  style=\\"position: absolute; left: 24%;\\"
+            >
+              <span class=\\"input-range__label input-range__label--value\\">
+                <span class=\\"input-range__label-container\\">
+                  420
+                </span>
+              </span>
+              <div aria-valuemax=\\"800\\"
+                   aria-valuemin=\\"300\\"
+                   aria-valuenow=\\"420\\"
+                   class=\\"input-range__slider\\"
+                   draggable=\\"false\\"
+                   role=\\"slider\\"
+                   tabindex=\\"0\\"
+              >
+              </div>
+            </span>
+          </div>
+          <span class=\\"input-range__label input-range__label--max\\">
+            <span class=\\"input-range__label-container\\">
+              800
+            </span>
+          </span>
+        </div>
+      </div>
+      <div class=\\"mt-5\\">
+      </div>
+      <div class=\\"form-group text-center\\">
+        <label class=\\"mb-4 font-weight-bold\\">
           Default number of alerts to show per group
         </label>
         <div aria-disabled=\\"false\\"
