@@ -10,8 +10,6 @@ const MountFade = ({ children, duration, ...props }) => (
     classNames="components-animation-fade"
     timeout={300}
     appear={true}
-    enter={true}
-    exit={true}
     {...props}
   >
     {children}

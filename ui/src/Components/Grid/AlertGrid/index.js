@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import { observer } from "mobx-react";
 
 import FontFaceObserver from "fontfaceobserver";
@@ -21,7 +21,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { AlertGroup } from "./AlertGroup";
-import { GridSizesConfig, GetGridElementWidth } from "./Constants";
+import { GridSizesConfig, GetGridElementWidth } from "./GridSize";
 
 import "./index.css";
 
@@ -44,10 +44,24 @@ const AlertGrid = observer(
           width: document.body.clientWidth,
           update() {
             this.width = document.body.clientWidth;
+          },
+          get gridSizesConfig() {
+            return GridSizesConfig(
+              this.width,
+              props.settingsStore.gridConfig.config.groupWidth
+            );
+          },
+          get groupWidth() {
+            return GetGridElementWidth(
+              this.width,
+              props.settingsStore.gridConfig.config.groupWidth
+            );
           }
         },
         {
-          update: action.bound
+          update: action.bound,
+          gridSizesConfig: computed,
+          groupWidth: computed
         }
       );
     }
@@ -186,12 +200,6 @@ const AlertGrid = observer(
       font700.load(null, 30000).then(this.masonryRepack, () => {});
     }
 
-    componentDidUpdate() {
-      // whenever grid component re-renders we need to ensure that grid elements
-      // are packed correctly
-      this.masonryRepack();
-    }
-
     render() {
       const { alertStore, settingsStore, silenceFormStore } = this.props;
 
@@ -202,9 +210,10 @@ const AlertGrid = observer(
             onResize={debounce(this.viewport.update, 100)}
           />
           <MasonryInfiniteScroller
+            key={settingsStore.gridConfig.config.groupWidth}
             ref={this.storeMasonryRef}
             pack={true}
-            sizes={GridSizesConfig}
+            sizes={this.viewport.gridSizesConfig}
             loadMore={this.loadMore}
             hasMore={
               this.groupsToRender.value <
@@ -231,7 +240,7 @@ const AlertGrid = observer(
                   settingsStore={settingsStore}
                   silenceFormStore={silenceFormStore}
                   style={{
-                    width: GetGridElementWidth(this.viewport.width)
+                    width: this.viewport.groupWidth
                   }}
                 />
               ))}

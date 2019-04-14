@@ -4,8 +4,6 @@ import { shallow, mount } from "enzyme";
 
 import moment from "moment";
 
-import toDiffableHtml from "diffable-html";
-
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";

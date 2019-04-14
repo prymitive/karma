@@ -1,17 +1,7 @@
-.components-animation-fade-appear,
-.components-animation-fade-enter {
+.components-animation-fade-appear {
   opacity: 0.01;
 }
-.components-animation-fade-appear-active,
-.components-animation-fade-enter-active {
+.components-animation-fade-appear-active {
   opacity: 1;
   transition: all 0.3s ease-in;
-}
-
-.components-animation-fade-exit {
-  opacity: 1;
-}
-.components-animation-fade-exit-active {
-  opacity: 0.01;
-  transition: all 0.3s ease-out;
 }
