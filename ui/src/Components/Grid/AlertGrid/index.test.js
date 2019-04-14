@@ -8,6 +8,7 @@ import { MockAlert, MockAlertGroup } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { MinWidth, GetGridElementWidth } from "./GridSize";
 import { AlertGrid } from ".";
 
 let alertStore;
@@ -341,60 +342,67 @@ describe("<AlertGrid />", () => {
     jest.runOnlyPendingTimers();
   });
 
-  it("renders 1 column with document.body.clientWidth=799", () => {
-    VerifyColumnCount(799, 1);
-  });
+  // known breakpoints calculated from GridSize logic
+  [
+    { breakpoint: 400, columns: 1 },
+    { breakpoint: 820, columns: 2 },
+    { breakpoint: 1245, columns: 3 },
+    { breakpoint: 1680, columns: 4 },
+    { breakpoint: 2125, columns: 5 },
+    { breakpoint: 2580, columns: 6 },
+    { breakpoint: 3045, columns: 7 },
+    { breakpoint: 3520, columns: 8 },
+    { breakpoint: 4005, columns: 9 },
+    { breakpoint: 4500, columns: 1 }
+  ].map(t =>
+    it(`renders ${t.columns} column(s) on ${t.breakpoint} breakpoint`, () => {
+      VerifyColumnCount(t.canvas - 1, Math.max(1, t.columns - 1));
+      VerifyColumnCount(t.canvas, t.columns);
+      VerifyColumnCount(t.canvas + 1, t.columns);
+    })
+  );
 
-  it("renders 2 columns with document.body.clientWidth=800", () => {
-    VerifyColumnCount(800, 2);
-  });
+  // populare screen resolutions
+  [
+    { canvas: 640, columns: 1 },
+    { canvas: 1024, columns: 2 },
+    { canvas: 1280, columns: 3 },
+    { canvas: 1366, columns: 3 },
+    { canvas: 1440, columns: 3 },
+    { canvas: 1600, columns: 3 },
+    { canvas: 1680, columns: 3 },
+    { canvas: 1920, columns: 4 },
+    { canvas: 2048, columns: 4 },
+    { canvas: 2560, columns: 5 },
+    { canvas: 3840, columns: 8 }
+  ].map(t =>
+    it(`renders ${t.columns} column(s) with ${t.canvas} resolution`, () => {
+      VerifyColumnCount(t.canvas, t.columns);
+    })
+  );
 
-  it("renders 2 columns with document.body.clientWidth=1399", () => {
-    VerifyColumnCount(1399, 2);
-  });
+  it("renders expected number of columns for every resolution", () => {
+    let lastColumns = 1;
+    for (let i = 100; i <= 4096; i++) {
+      const minWidth = MinWidth(i);
+      const expectedColumns = Math.max(Math.floor(i / minWidth), 1);
+      const columns = Math.floor(i / GetGridElementWidth(i));
 
-  it("renders 3 columns with document.body.clientWidth=1400", () => {
-    VerifyColumnCount(1400, 3);
-  });
+      expect({
+        resolution: i,
+        minWidth: minWidth,
+        columns: columns
+      }).toEqual({
+        resolution: i,
+        minWidth: minWidth,
+        columns: expectedColumns
+      });
+      expect(columns).toBeGreaterThanOrEqual(lastColumns);
 
-  it("renders 3 columns with document.body.clientWidth=2099", () => {
-    VerifyColumnCount(2099, 3);
-  });
-
-  it("renders 4 columns with document.body.clientWidth=2100", () => {
-    VerifyColumnCount(2100, 4);
-  });
-
-  it("renders 4 columns with document.body.clientWidth=2799", () => {
-    VerifyColumnCount(2799, 4);
-  });
-
-  it("renders 5 columns with document.body.clientWidth=2800", () => {
-    VerifyColumnCount(2800, 5);
-  });
-
-  it("renders 5 columns with document.body.clientWidth=3499", () => {
-    VerifyColumnCount(3499, 5);
-  });
-
-  it("renders 6 columns with document.body.clientWidth=1399", () => {
-    VerifyColumnCount(3500, 6);
-  });
-
-  it("renders 6 columns with document.body.clientWidth=4199", () => {
-    VerifyColumnCount(4199, 6);
-  });
-
-  it("renders 7 columns with document.body.clientWidth=1399", () => {
-    VerifyColumnCount(4200, 7);
-  });
-
-  it("renders 7 columns with document.body.clientWidth=5599", () => {
-    VerifyColumnCount(5599, 7);
-  });
-
-  it("renders 8 columns with document.body.clientWidth=5600", () => {
-    VerifyColumnCount(5600, 8);
+      // keep track of column count to verify that each incrementing resolution
+      // doesn't result in lower number of columns rendered
+      lastColumns = columns;
+    }
   });
 
   it("viewport resize also resizes alert groups", () => {
@@ -406,7 +414,7 @@ describe("<AlertGrid />", () => {
         .find("AlertGroup")
         .at(0)
         .props().style.width
-    ).toBe(1980 / 3);
+    ).toBe(1980 / 4);
 
     bodyWidth = 1000;
     // not sure how to force ReactResizeDetector to detect width change, so

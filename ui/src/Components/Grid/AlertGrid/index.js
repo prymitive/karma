@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { observable, action } from "mobx";
+import { observable, action, computed } from "mobx";
 import { observer } from "mobx-react";
 
 import FontFaceObserver from "fontfaceobserver";
@@ -21,7 +21,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { AlertGroup } from "./AlertGroup";
-import { GridSizesConfig, GetGridElementWidth } from "./Constants";
+import { GridSizesConfig, GetGridElementWidth } from "./GridSize";
 
 import "./index.css";
 
@@ -42,12 +42,20 @@ const AlertGrid = observer(
       this.viewport = observable(
         {
           width: document.body.clientWidth,
+          get gridSizesConfig() {
+            return GridSizesConfig(this.width);
+          },
+          get groupWidth() {
+            return GetGridElementWidth(this.width);
+          },
           update() {
             this.width = document.body.clientWidth;
           }
         },
         {
-          update: action.bound
+          update: action.bound,
+          gridSizesConfig: computed,
+          groupWidth: computed
         }
       );
     }
@@ -204,7 +212,7 @@ const AlertGrid = observer(
           <MasonryInfiniteScroller
             ref={this.storeMasonryRef}
             pack={true}
-            sizes={GridSizesConfig}
+            sizes={this.viewport.gridSizesConfig}
             loadMore={this.loadMore}
             hasMore={
               this.groupsToRender.value <
@@ -231,7 +239,7 @@ const AlertGrid = observer(
                   settingsStore={settingsStore}
                   silenceFormStore={silenceFormStore}
                   style={{
-                    width: GetGridElementWidth(this.viewport.width)
+                    width: this.viewport.groupWidth
                   }}
                 />
               ))}
