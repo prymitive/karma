@@ -3,7 +3,7 @@ module github.com/prymitive/karma
 require (
 	github.com/DeanThompson/ginpprof v0.0.0-20190408070748-3be636683586
 	github.com/blang/semver v3.6.1+incompatible
-	github.com/certifi/gocertifi v0.0.0-20190410015538-59a85de7f35e // indirect
+	github.com/certifi/gocertifi v0.0.0-20190415145530-92f724a62f3e // indirect
 	github.com/cnf/structhash v0.0.0-20180104161610-62a607eb0224
 	github.com/elazarl/go-bindata-assetfs v1.0.1-0.20180223160309-38087fe4dafb
 	github.com/getsentry/raven-go v0.2.0
