@@ -6,12 +6,19 @@ import { observable, action } from "mobx";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { Modal } from "Components/Modal";
-import { MainModalContent } from "./MainModalContent";
+
+// https://github.com/facebook/react/issues/14603
+const MainModalContent = React.lazy(() =>
+  import("./MainModalContent").then(module => ({
+    default: module.MainModalContent
+  }))
+);
 
 const MainModal = observer(
   class MainModal extends Component {
@@ -49,12 +56,20 @@ const MainModal = observer(
             </TooltipWrapper>
           </li>
           <Modal isOpen={this.toggle.show}>
-            <MainModalContent
-              alertStore={alertStore}
-              settingsStore={settingsStore}
-              onHide={this.toggle.hide}
-              isVisible={this.toggle.show}
-            />
+            <React.Suspense
+              fallback={
+                <h1 className="display-1 text-secondary p-5 m-auto">
+                  <FontAwesomeIcon icon={faSpinner} size="lg" spin />
+                </h1>
+              }
+            >
+              <MainModalContent
+                alertStore={alertStore}
+                settingsStore={settingsStore}
+                onHide={this.toggle.hide}
+                isVisible={this.toggle.show}
+              />
+            </React.Suspense>
           </Modal>
         </React.Fragment>
       );
