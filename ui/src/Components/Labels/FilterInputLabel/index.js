@@ -76,12 +76,12 @@ const FilterInputLabel = observer(
                 </span>
               ) : null
             ) : (
-              <span className="badge mr-1">
+              <span className="badge">
                 <FontAwesomeIcon icon={faSpinner} spin />
               </span>
             )
           ) : (
-            <span className="text-danger mr-1">
+            <span className="badge text-danger">
               <FontAwesomeIcon icon={faExclamationCircle} />
             </span>
           )}
