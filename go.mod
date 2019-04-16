@@ -15,7 +15,7 @@ require (
 	github.com/go-bindata/go-bindata v3.1.1+incompatible
 	github.com/golangci/golangci-lint v1.16.0
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
-	github.com/jarcoal/httpmock v1.0.2
+	github.com/jarcoal/httpmock v1.0.3
 	github.com/mcuadros/go-gin-prometheus v0.0.0-20181030200533-58963fb32f54
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.8.1 // indirect
