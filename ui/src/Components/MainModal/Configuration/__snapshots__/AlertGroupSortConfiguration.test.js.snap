@@ -10,10 +10,10 @@ exports[`<AlertGroupSortConfiguration /> matches snapshot with default values 1`
   </div>
   <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
     <div class=\\"flex-shrink-0 flex-grow-1 flex-basis-auto\\">
-      <div class=\\"css-10nd86i\\">
-        <div class=\\"css-7jxtyj react-select__control\\">
+      <div class=\\"css-1pcexqc-container\\">
+        <div class=\\"css-75iuk3-control react-select__control\\">
           <div class=\\"css-pb81dw react-select__value-container react-select__value-container--has-value\\">
-            <div class=\\"css-xp4uvy react-select__single-value\\">
+            <div class=\\"css-dvua67-singleValue react-select__single-value\\">
               Use defaults from karma config file
             </div>
             <div class=\\"css-1g6gooi\\">
@@ -37,10 +37,10 @@ exports[`<AlertGroupSortConfiguration /> matches snapshot with default values 1`
             </div>
           </div>
           <div class=\\"css-mik995 react-select__indicators\\">
-            <span class=\\"css-d8oujb react-select__indicator-separator\\">
+            <span class=\\"css-bgvzuu-indicatorSeparator react-select__indicator-separator\\">
             </span>
             <div aria-hidden=\\"true\\"
-                 class=\\"css-1ep9fjw react-select__indicator react-select__dropdown-indicator\\"
+                 class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
             >
               <svg height=\\"20\\"
                    width=\\"20\\"
