@@ -2,8 +2,8 @@
 
 exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
 "
-<div class=\\"css-10nd86i\\">
-  <span class=\\"css-bl6clz\\"
+<div class=\\"css-1pcexqc-container\\">
+  <span class=\\"css-3esr4u-a11yText\\"
         aria-live=\\"assertive\\"
   >
     <p id=\\"aria-selection-event\\">
@@ -13,9 +13,9 @@ exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
       &nbsp;  0 results available. Select is focused ,type to refine list, press Down to open the menu,
     </p>
   </span>
-  <div class=\\"css-7i0fzi react-select__control react-select__control--is-focused\\">
+  <div class=\\"css-1qu0514-control react-select__control react-select__control--is-focused\\">
     <div class=\\"css-pb81dw react-select__value-container\\">
-      <div class=\\"css-1492t68 react-select__placeholder\\">
+      <div class=\\"css-151xaom-placeholder react-select__placeholder\\">
         Select...
       </div>
       <div class=\\"css-1g6gooi\\">
@@ -39,10 +39,10 @@ exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
       </div>
     </div>
     <div class=\\"css-mik995 react-select__indicators\\">
-      <span class=\\"css-d8oujb react-select__indicator-separator\\">
+      <span class=\\"css-bgvzuu-indicatorSeparator react-select__indicator-separator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-1uq0kb5 react-select__indicator react-select__dropdown-indicator\\"
+           class=\\"css-1thkkgx-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -63,10 +63,10 @@ exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
 
 exports[`<CustomMultiSelect /> matches snapshot with a value 1`] = `
 "
-<div class=\\"css-10nd86i\\">
-  <div class=\\"css-7jxtyj react-select__control\\">
+<div class=\\"css-1pcexqc-container\\">
+  <div class=\\"css-75iuk3-control react-select__control\\">
     <div class=\\"css-pb81dw react-select__value-container react-select__value-container--has-value\\">
-      <div class=\\"css-xp4uvy react-select__single-value\\">
+      <div class=\\"css-dvua67-singleValue react-select__single-value\\">
         foo
       </div>
       <div class=\\"css-1g6gooi\\">
@@ -82,7 +82,7 @@ exports[`<CustomMultiSelect /> matches snapshot with a value 1`] = `
                  tabindex=\\"0\\"
                  value
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing:content-box;width:1px;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                 style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
           >
           <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
           </div>
@@ -90,10 +90,10 @@ exports[`<CustomMultiSelect /> matches snapshot with a value 1`] = `
       </div>
     </div>
     <div class=\\"css-mik995 react-select__indicators\\">
-      <span class=\\"css-d8oujb react-select__indicator-separator\\">
+      <span class=\\"css-bgvzuu-indicatorSeparator react-select__indicator-separator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-1ep9fjw react-select__indicator react-select__dropdown-indicator\\"
+           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -114,10 +114,10 @@ exports[`<CustomMultiSelect /> matches snapshot with a value 1`] = `
 
 exports[`<CustomMultiSelect /> matches snapshot with defaults 1`] = `
 "
-<div class=\\"css-10nd86i\\">
-  <div class=\\"css-7jxtyj react-select__control\\">
+<div class=\\"css-1pcexqc-container\\">
+  <div class=\\"css-75iuk3-control react-select__control\\">
     <div class=\\"css-pb81dw react-select__value-container\\">
-      <div class=\\"css-1492t68 react-select__placeholder\\">
+      <div class=\\"css-151xaom-placeholder react-select__placeholder\\">
         Select...
       </div>
       <div class=\\"css-1g6gooi\\">
@@ -133,7 +133,7 @@ exports[`<CustomMultiSelect /> matches snapshot with defaults 1`] = `
                  tabindex=\\"0\\"
                  value
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing:content-box;width:1px;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                 style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
           >
           <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
           </div>
@@ -141,10 +141,10 @@ exports[`<CustomMultiSelect /> matches snapshot with defaults 1`] = `
       </div>
     </div>
     <div class=\\"css-mik995 react-select__indicators\\">
-      <span class=\\"css-d8oujb react-select__indicator-separator\\">
+      <span class=\\"css-bgvzuu-indicatorSeparator react-select__indicator-separator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-1ep9fjw react-select__indicator react-select__dropdown-indicator\\"
+           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -165,10 +165,10 @@ exports[`<CustomMultiSelect /> matches snapshot with defaults 1`] = `
 
 exports[`<CustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
 "
-<div class=\\"css-1sontr1 react-select--is-disabled\\">
-  <div class=\\"css-rw4imq react-select__control react-select__control--is-disabled\\">
+<div class=\\"css-ssi0ig-container react-select--is-disabled\\">
+  <div class=\\"css-63ovm4-control react-select__control react-select__control--is-disabled\\">
     <div class=\\"css-57r8lk react-select__value-container react-select__value-container--has-value\\">
-      <div class=\\"css-142w6gm react-select__single-value react-select__single-value--is-disabled\\">
+      <div class=\\"css-ue83k8-singleValue react-select__single-value react-select__single-value--is-disabled\\">
         foo
       </div>
       <div class=\\"css-1g6gooi\\">
@@ -185,7 +185,7 @@ exports[`<CustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
                  tabindex=\\"0\\"
                  value
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing:content-box;width:1px;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                 style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
           >
           <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
           </div>
@@ -193,10 +193,10 @@ exports[`<CustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
       </div>
     </div>
     <div class=\\"css-191n9vh react-select__indicators\\">
-      <span class=\\"css-ln5n5c react-select__indicator-separator\\">
+      <span class=\\"css-622gbt-indicatorSeparator react-select__indicator-separator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-1ep9fjw react-select__indicator react-select__dropdown-indicator\\"
+           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -217,10 +217,10 @@ exports[`<CustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
 
 exports[`<CustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 "
-<div class=\\"css-10nd86i\\">
-  <div class=\\"css-7jxtyj react-select__control\\">
+<div class=\\"css-1pcexqc-container\\">
+  <div class=\\"css-75iuk3-control react-select__control\\">
     <div class=\\"css-10war8y react-select__value-container react-select__value-container--is-multi\\">
-      <div class=\\"css-1492t68 react-select__placeholder\\">
+      <div class=\\"css-151xaom-placeholder react-select__placeholder\\">
         Select...
       </div>
       <div class=\\"css-1g6gooi\\">
@@ -236,7 +236,7 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
                  tabindex=\\"0\\"
                  value
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing:content-box;width:1px;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                 style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
           >
           <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
           </div>
@@ -244,10 +244,10 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
       </div>
     </div>
     <div class=\\"css-mik995 react-select__indicators\\">
-      <span class=\\"css-d8oujb react-select__indicator-separator\\">
+      <span class=\\"css-bgvzuu-indicatorSeparator react-select__indicator-separator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-1ep9fjw react-select__indicator react-select__dropdown-indicator\\"
+           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -268,10 +268,10 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 
 exports[`<CustomMultiSelect /> matches snapshot with isMulti=true and a value 1`] = `
 "
-<div class=\\"css-10nd86i\\">
-  <div class=\\"css-7jxtyj react-select__control\\">
+<div class=\\"css-1pcexqc-container\\">
+  <div class=\\"css-75iuk3-control react-select__control\\">
     <div class=\\"css-10war8y react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value\\">
-      <div class=\\"css-1y5uxcf react-select__multi-value\\">
+      <div class=\\"css-8oj454-multiValue react-select__multi-value\\">
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           foo
         </div>
@@ -301,7 +301,7 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true and a value 1`
                  tabindex=\\"0\\"
                  value
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing:content-box;width:1px;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                 style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
           >
           <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
           </div>
@@ -310,7 +310,7 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true and a value 1`
     </div>
     <div class=\\"css-mik995 react-select__indicators\\">
       <div aria-hidden=\\"true\\"
-           class=\\"css-1ep9fjw react-select__indicator react-select__clear-indicator\\"
+           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__clear-indicator\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -323,10 +323,10 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true and a value 1`
           </path>
         </svg>
       </div>
-      <span class=\\"css-d8oujb react-select__indicator-separator\\">
+      <span class=\\"css-bgvzuu-indicatorSeparator react-select__indicator-separator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-1ep9fjw react-select__indicator react-select__dropdown-indicator\\"
+           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
