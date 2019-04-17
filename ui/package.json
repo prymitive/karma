@@ -57,10 +57,12 @@
   "scripts": {
     "start": "NODE_ENV=dev REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "storybook": "start-storybook"
   },
   "devDependencies": {
     "@commitlint/travis-cli": "8.1.0",
+    "@storybook/react": "5.1.11",
     "diffable-html": "4.0.0",
     "enzyme": "3.10.0",
     "enzyme-adapter-react-16": "1.14.0",
