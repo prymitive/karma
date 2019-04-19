@@ -14,7 +14,7 @@ import { APIGroup } from "Models/API";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { IsMobile } from "Common/Device";
-import { BackgroundClassMap, BorderClassMap } from "Common/Colors";
+import { BackgroundClassMap } from "Common/Colors";
 import { MountFade } from "Components/Animations/MountFade";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GroupHeader } from "./GroupHeader";
@@ -179,19 +179,14 @@ const AlertGroup = observer(
       }
 
       let themedCounters = true;
-      const groupClassesMap = {
-        background: "bg-light",
-        border: "border-light"
-      };
-
+      let cardBackgroundClass = "bg-light";
       if (settingsStore.alertGroupConfig.config.colorTitleBar) {
         const stateList = Object.entries(group.stateCount)
           .filter(([k, v]) => v !== 0)
           .map(([k, _]) => k);
         if (stateList.length === 1) {
           const state = stateList.pop();
-          groupClassesMap.background = BackgroundClassMap[state];
-          groupClassesMap.border = BorderClassMap[state];
+          cardBackgroundClass = BackgroundClassMap[state];
           themedCounters = false;
         }
       }
@@ -199,16 +194,15 @@ const AlertGroup = observer(
       return (
         <div className="components-grid-alertgrid-alertgroup p-1" style={style}>
           <MountFade in={true}>
-            <div className={`card ${groupClassesMap.border}`}>
+            <div className={`card ${cardBackgroundClass}`}>
               <GroupHeader
                 collapseStore={this.collapse}
                 group={group}
                 silenceFormStore={silenceFormStore}
-                headerBackgroundClass={groupClassesMap.background}
                 themedCounters={themedCounters}
               />
               {this.collapse.value ? null : (
-                <div className="card-body px-2 py-1">
+                <div className="card-body bg-white px-2 py-1">
                   <ul className="list-group">
                     {group.alerts
                       .slice(0, this.renderConfig.alertsToRender)
