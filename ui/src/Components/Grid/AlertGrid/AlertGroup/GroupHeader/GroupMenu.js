@@ -122,7 +122,7 @@ const GroupMenu = observer(
                   themed ? "text-white" : "text-muted"
                 } cursor-pointer badge text-nowrap text-truncate pl-0 components-grid-alertgroup-${
                   group.id
-                }`}
+                } components-grid-alertgrid-alertgroup-header-element`}
                 data-toggle="dropdown"
               >
                 <FontAwesomeIcon icon={faEllipsisV} />

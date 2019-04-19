@@ -14,6 +14,8 @@ import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GroupMenu } from "./GroupMenu";
 
+import "./index.css";
+
 const GroupHeader = observer(
   class GroupHeader extends Component {
     static propTypes = {
@@ -35,10 +37,10 @@ const GroupHeader = observer(
       } = this.props;
 
       return (
-        <h5
+        <div
           className={`card-header mb-0 d-flex flex-row px-2 py-1 ${
             collapseStore.value ? "border-bottom-0" : ""
-          }`}
+          } components-grid-alertgrid-alertgroup-header`}
         >
           <span className="flex-shrink-0 flex-grow-0">
             <GroupMenu
@@ -78,7 +80,7 @@ const GroupHeader = observer(
             <span
               className={`${
                 themedCounters ? "text-muted" : "text-white"
-              } cursor-pointer badge text-nowrap text-truncate px-0`}
+              } cursor-pointer badge text-nowrap text-truncate px-0 components-grid-alertgrid-alertgroup-header-element`}
               onClick={collapseStore.toggle}
             >
               <TooltipWrapper title="Toggle group details">
@@ -88,7 +90,7 @@ const GroupHeader = observer(
               </TooltipWrapper>
             </span>
           </span>
-        </h5>
+        </div>
       );
     }
   }

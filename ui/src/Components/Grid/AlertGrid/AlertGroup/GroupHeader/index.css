@@ -1,0 +1,9 @@
+.components-grid-alertgrid-alertgroup-header {
+  font-size: 1.25rem;
+  line-height: 1.6rem;
+}
+
+.components-grid-alertgrid-alertgroup-header > span > div > .badge,
+.badge.components-grid-alertgrid-alertgroup-header-element {
+  vertical-align: text-bottom;
+}
