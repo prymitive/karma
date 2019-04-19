@@ -14,6 +14,7 @@ import { APIGroup } from "Models/API";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { IsMobile } from "Common/Device";
+import { BackgroundClassMap, BorderClassMap } from "Common/Colors";
 import { MountFade } from "Components/Animations/MountFade";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GroupHeader } from "./GroupHeader";
@@ -156,6 +157,7 @@ const AlertGroup = observer(
         showAlertmanagers,
         afterUpdate,
         silenceFormStore,
+        settingsStore,
         style
       } = this.props;
 
@@ -176,14 +178,34 @@ const AlertGroup = observer(
         }
       }
 
+      let themedCounters = true;
+      const groupClassesMap = {
+        background: "bg-light",
+        border: "border-light"
+      };
+
+      if (settingsStore.alertGroupConfig.config.colorTitleBar) {
+        const stateList = Object.entries(group.stateCount)
+          .filter(([k, v]) => v !== 0)
+          .map(([k, _]) => k);
+        if (stateList.length === 1) {
+          const state = stateList.pop();
+          groupClassesMap.background = BackgroundClassMap[state];
+          groupClassesMap.border = BorderClassMap[state];
+          themedCounters = false;
+        }
+      }
+
       return (
         <div className="components-grid-alertgrid-alertgroup p-1" style={style}>
           <MountFade in={true}>
-            <div className="card">
+            <div className={`card ${groupClassesMap.border}`}>
               <GroupHeader
                 collapseStore={this.collapse}
                 group={group}
                 silenceFormStore={silenceFormStore}
+                headerBackgroundClass={groupClassesMap.background}
+                themedCounters={themedCounters}
               />
               {this.collapse.value ? null : (
                 <div className="card-body px-2 py-1">

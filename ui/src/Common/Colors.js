@@ -13,6 +13,7 @@ const StateLabelClassMap = Object.freeze({
   suppressed: "badge-success components-label-dark",
   unprocessed: "badge-secondary components-label-bright"
 });
+
 // same but for borders
 const BorderClassMap = Object.freeze({
   active: "border-danger",
@@ -20,10 +21,17 @@ const BorderClassMap = Object.freeze({
   unprocessed: "border-secondary"
 });
 
+const BackgroundClassMap = Object.freeze({
+  active: "bg-danger",
+  suppressed: "bg-success",
+  unprocessed: "bg-secondary"
+});
+
 export {
   DefaultLabelClass,
   StaticColorLabelClass,
   AlertNameLabelClass,
   StateLabelClassMap,
-  BorderClassMap
+  BorderClassMap,
+  BackgroundClassMap
 };

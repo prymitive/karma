@@ -21,10 +21,14 @@ beforeEach(() => {
 
 const MockAfterClick = jest.fn();
 
-const MountedGroupMenu = group => {
+const MountedGroupMenu = (group, themed) => {
   return mount(
     <Provider alertStore={alertStore}>
-      <GroupMenu group={group} silenceFormStore={silenceFormStore} />
+      <GroupMenu
+        group={group}
+        silenceFormStore={silenceFormStore}
+        themed={themed}
+      />
     </Provider>
   ).find("GroupMenu");
 };
@@ -32,13 +36,13 @@ const MountedGroupMenu = group => {
 describe("<GroupMenu />", () => {
   it("is collapsed by default", () => {
     const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
-    const tree = MountedGroupMenu(group);
+    const tree = MountedGroupMenu(group, true);
     expect(tree.instance().collapse.value).toBe(true);
   });
 
   it("clicking toggle sets collapse value to 'false'", () => {
     const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
-    const tree = MountedGroupMenu(group);
+    const tree = MountedGroupMenu(group, true);
     const toggle = tree.find(".cursor-pointer");
     toggle.simulate("click");
     expect(tree.instance().collapse.value).toBe(false);
@@ -46,7 +50,7 @@ describe("<GroupMenu />", () => {
 
   it("handleClickOutside() call sets collapse value to 'true'", () => {
     const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
-    const tree = MountedGroupMenu(group);
+    const tree = MountedGroupMenu(group, true);
 
     const toggle = tree.find(".cursor-pointer");
     toggle.simulate("click");

@@ -91,6 +91,29 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
       </div>
       <div class=\\"mt-5\\">
       </div>
+      <div class=\\"form-group\\">
+        <div class=\\"text-center\\">
+          <label class=\\"mb-2 font-weight-bold\\">
+            Alert group titlebar configuration
+          </label>
+        </div>
+        <div class=\\"form-check form-check-inline\\">
+          <span class=\\"custom-control custom-switch\\">
+            <input id=\\"configuration-colortitlebar\\"
+                   class=\\"custom-control-input\\"
+                   type=\\"checkbox\\"
+                   value
+            >
+            <label class=\\"custom-control-label cursor-pointer mr-3\\"
+                   for=\\"configuration-colortitlebar\\"
+            >
+              Color group titlebar
+            </label>
+          </span>
+        </div>
+      </div>
+      <div class=\\"mt-5\\">
+      </div>
       <div class=\\"form-group text-center\\">
         <label class=\\"mb-4 font-weight-bold\\">
           Minimal alert group width

@@ -17,15 +17,16 @@ const FilteringCounterBadge = inject("alertStore")(
         alertStore: PropTypes.instanceOf(AlertStore).isRequired,
         name: PropTypes.string.isRequired,
         value: PropTypes.string.isRequired,
-        counter: PropTypes.number.isRequired
+        counter: PropTypes.number.isRequired,
+        themed: PropTypes.bool.isRequired
       };
 
       render() {
-        const { name, value, counter } = this.props;
+        const { name, value, counter, themed } = this.props;
 
         if (counter === 0) return null;
 
-        let cs = this.getClassAndStyle(
+        const cs = this.getClassAndStyle(
           name,
           value,
           "badge-pill components-label-with-hover"
@@ -36,8 +37,15 @@ const FilteringCounterBadge = inject("alertStore")(
             title={`Click to only show ${value} alerts or Alt+Click to hide them`}
           >
             <span
-              className={cs.className}
-              style={cs.style}
+              className={
+                themed
+                  ? cs.className
+                  : [
+                      "badge-light badge-pill components-label-with-hover",
+                      ...cs.baseClassNames
+                    ].join(" ")
+              }
+              style={themed ? {} : cs.style}
               onClick={e => this.handleClick(e)}
             >
               {counter}
