@@ -86,7 +86,8 @@ const GroupMenu = observer(
   class GroupMenu extends Component {
     static propTypes = {
       group: APIGroup.isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+      themed: PropTypes.bool.isRequired
     };
 
     collapse = observable(
@@ -108,7 +109,7 @@ const GroupMenu = observer(
     });
 
     render() {
-      const { group, silenceFormStore } = this.props;
+      const { group, silenceFormStore, themed } = this.props;
 
       return (
         <Manager>
@@ -117,7 +118,9 @@ const GroupMenu = observer(
               <span
                 ref={ref}
                 onClick={this.collapse.toggle}
-                className={`text-muted cursor-pointer badge text-nowrap text-truncate pl-0 components-grid-alertgroup-${
+                className={`${
+                  themed ? "text-white" : "text-muted"
+                } cursor-pointer badge text-nowrap text-truncate pl-0 components-grid-alertgroup-${
                   group.id
                 }`}
                 data-toggle="dropdown"

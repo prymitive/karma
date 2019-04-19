@@ -45,7 +45,8 @@ class AlertGroupConfig {
     "alertGroupConfig",
     {
       defaultRenderCount: 5,
-      defaultCollapseState: this.options.collapsedOnMobile.value
+      defaultCollapseState: this.options.collapsedOnMobile.value,
+      colorTitleBar: false
     },
     { delay: 100 }
   );

@@ -22,20 +22,32 @@ const GroupHeader = observer(
         toggle: PropTypes.func.isRequired
       }).isRequired,
       group: APIGroup.isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+      headerBackgroundClass: PropTypes.string.isRequired,
+      themedCounters: PropTypes.bool.isRequired
     };
 
     render() {
-      const { collapseStore, group, silenceFormStore } = this.props;
+      const {
+        collapseStore,
+        group,
+        silenceFormStore,
+        headerBackgroundClass,
+        themedCounters
+      } = this.props;
 
       return (
         <h5
-          className={`card-header bg-light mb-0 d-flex flex-row px-2 py-1 ${
+          className={`card-header ${headerBackgroundClass} mb-0 d-flex flex-row px-2 py-1 ${
             collapseStore.value ? "border-bottom-0" : ""
           }`}
         >
           <span className="flex-shrink-0 flex-grow-0">
-            <GroupMenu group={group} silenceFormStore={silenceFormStore} />
+            <GroupMenu
+              group={group}
+              silenceFormStore={silenceFormStore}
+              themed={!themedCounters}
+            />
           </span>
           <span className="flex-shrink-1 flex-grow-1" style={{ minWidth: 0 }}>
             {Object.keys(group.labels).map(name => (
@@ -51,19 +63,24 @@ const GroupHeader = observer(
               name="@state"
               value="unprocessed"
               counter={group.stateCount.unprocessed}
+              themed={themedCounters}
             />
             <FilteringCounterBadge
               name="@state"
               value="suppressed"
               counter={group.stateCount.suppressed}
+              themed={themedCounters}
             />
             <FilteringCounterBadge
               name="@state"
               value="active"
               counter={group.stateCount.active}
+              themed={themedCounters}
             />
             <span
-              className="text-muted cursor-pointer badge text-nowrap text-truncate px-0"
+              className={`${
+                themedCounters ? "text-muted" : "text-white"
+              } cursor-pointer badge text-nowrap text-truncate px-0`}
               onClick={collapseStore.toggle}
             >
               <TooltipWrapper title="Toggle group details">

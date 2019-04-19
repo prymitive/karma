@@ -8,12 +8,15 @@ import { AlertGroupConfiguration } from "./AlertGroupConfiguration";
 import { AlertGroupWidthConfiguration } from "./AlertGroupWidthConfiguration";
 import { AlertGroupSortConfiguration } from "./AlertGroupSortConfiguration";
 import { AlertGroupCollapseConfiguration } from "./AlertGroupCollapseConfiguration";
+import { AlertGroupTitleBarColor } from "./AlertGroupTitleBarColor";
 
 const Configuration = ({ settingsStore }) => (
   <form className="px-3">
     <FetchConfiguration settingsStore={settingsStore} />
     <div className="mt-5" />
     <FilterBarConfiguration settingsStore={settingsStore} />
+    <div className="mt-5" />
+    <AlertGroupTitleBarColor settingsStore={settingsStore} />
     <div className="mt-5" />
     <AlertGroupWidthConfiguration settingsStore={settingsStore} />
     <div className="mt-5" />
