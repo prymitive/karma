@@ -23,7 +23,6 @@ const GroupHeader = observer(
       }).isRequired,
       group: APIGroup.isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      headerBackgroundClass: PropTypes.string.isRequired,
       themedCounters: PropTypes.bool.isRequired
     };
 
@@ -32,13 +31,12 @@ const GroupHeader = observer(
         collapseStore,
         group,
         silenceFormStore,
-        headerBackgroundClass,
         themedCounters
       } = this.props;
 
       return (
         <h5
-          className={`card-header ${headerBackgroundClass} mb-0 d-flex flex-row px-2 py-1 ${
+          className={`card-header mb-0 d-flex flex-row px-2 py-1 ${
             collapseStore.value ? "border-bottom-0" : ""
           }`}
         >
