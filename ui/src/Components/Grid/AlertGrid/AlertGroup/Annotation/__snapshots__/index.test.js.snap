@@ -32,7 +32,7 @@ exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=false 1`] = `
      class
      style=\\"display:inline\\"
 >
-  <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break cursor-pointer\\">
+  <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
     <svg aria-hidden=\\"true\\"
          focusable=\\"false\\"
          data-prefix=\\"fas\\"
@@ -59,7 +59,7 @@ exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=true 1`] = `
      class
      style=\\"display:inline\\"
 >
-  <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break\\">
+  <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
     <svg aria-hidden=\\"true\\"
          focusable=\\"false\\"
          data-prefix=\\"fas\\"

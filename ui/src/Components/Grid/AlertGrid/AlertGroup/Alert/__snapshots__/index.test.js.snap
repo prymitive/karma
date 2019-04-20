@@ -10,7 +10,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
          aria-describedby=\\"tippy-tooltip-5\\"
          data-original-title=\\"Click the icon to hide annotation value\\"
     >
-      <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break\\">
+      <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -39,7 +39,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
          aria-describedby=\\"tippy-tooltip-6\\"
          data-original-title=\\"Click to show annotation value\\"
     >
-      <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break cursor-pointer\\">
+      <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -168,7 +168,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
          aria-describedby=\\"tippy-tooltip-1\\"
          data-original-title=\\"Click the icon to hide annotation value\\"
     >
-      <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break\\">
+      <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -197,7 +197,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
          aria-describedby=\\"tippy-tooltip-2\\"
          data-original-title=\\"Click to show annotation value\\"
     >
-      <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break cursor-pointer\\">
+      <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
