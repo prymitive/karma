@@ -9,7 +9,7 @@ type karmaCollector struct {
 	errorsTotal     *prometheus.Desc
 }
 
-func newkarmaCollector() *karmaCollector {
+func newKarmaCollector() *karmaCollector {
 	return &karmaCollector{
 		collectedAlerts: prometheus.NewDesc(
 			"karma_collected_alerts_count",
@@ -117,5 +117,5 @@ func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
 }
 
 func init() {
-	prometheus.MustRegister(newkarmaCollector())
+	prometheus.MustRegister(newKarmaCollector())
 }
