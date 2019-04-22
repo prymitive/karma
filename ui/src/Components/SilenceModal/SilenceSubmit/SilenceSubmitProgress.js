@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 
+import semver from "semver";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons/faCheckCircle";
@@ -54,7 +56,8 @@ const SilenceSubmitProgress = observer(
         startsAt: PropTypes.string.isRequired,
         endsAt: PropTypes.string.isRequired,
         createdBy: PropTypes.string.isRequired,
-        comment: PropTypes.string.isRequired
+        comment: PropTypes.string.isRequired,
+        id: PropTypes.string
       }).isRequired,
       alertStore: PropTypes.instanceOf(AlertStore).isRequired
     };
@@ -99,7 +102,13 @@ const SilenceSubmitProgress = observer(
         return;
       }
 
-      this.submitState.fetch = fetch(`${am.publicURI}/api/v1/silences`, {
+      const isOpenAPI = semver.satisfies(am.version, ">=0.16.0");
+
+      const uri = isOpenAPI
+        ? `${am.publicURI}/api/v2/silences`
+        : `${am.publicURI}/api/v1/silences`;
+
+      this.submitState.fetch = fetch(uri, {
         method: "POST",
         body: JSON.stringify(payload),
         headers: {
@@ -107,9 +116,34 @@ const SilenceSubmitProgress = observer(
         },
         credentials: "include"
       })
-        .then(result => result.json())
-        .then(result => this.parseAlertmanagerResponse(am.uri, result))
-        .catch(err => this.maybeTryAgainAfterError(err));
+        .then(result => {
+          if (isOpenAPI) {
+            if (result.ok) {
+              return result
+                .json()
+                .then(r => this.parseOpenAPIResponse(am.uri, r));
+            } else {
+              return result.text().then(text => {
+                this.submitState.markFailed(text);
+                return text;
+              });
+            }
+          } else {
+            return result
+              .json()
+              .then(r => this.parseAlertmanagerResponse(am.uri, r));
+          }
+        })
+        .catch(err => {
+          this.maybeTryAgainAfterError(err);
+        });
+    };
+
+    parseOpenAPIResponse = (uri, response) => {
+      const link = <SilenceLink uri={uri} silenceId={response.silenceID} />;
+      this.submitState.markDone(link);
+      // return silenceId so we can assert it in tests
+      return response.silenceID;
     };
 
     parseAlertmanagerResponse = (uri, response) => {
