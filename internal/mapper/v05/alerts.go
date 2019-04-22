@@ -69,6 +69,11 @@ func (m AlertMapper) IsSupported(version string) bool {
 	return versionRange(semver.MustParse(version))
 }
 
+// IsOpenAPI returns true is remote Alertmanager uses OpenAPI
+func (m AlertMapper) IsOpenAPI() bool {
+	return false
+}
+
 // Decode Alertmanager API response body and return karma model instances
 func (m AlertMapper) Decode(source io.ReadCloser) ([]models.AlertGroup, error) {
 	groups := []models.AlertGroup{}

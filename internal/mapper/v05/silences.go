@@ -53,8 +53,13 @@ func (m SilenceMapper) QueryArgs() string {
 
 // IsSupported returns true if given version string is supported
 func (m SilenceMapper) IsSupported(version string) bool {
-	versionRange := semver.MustParseRange(">=0.5.0")
+	versionRange := semver.MustParseRange(">=0.5.0 <0.16.0")
 	return versionRange(semver.MustParse(version))
+}
+
+// IsOpenAPI returns true is remote Alertmanager uses OpenAPI
+func (m SilenceMapper) IsOpenAPI() bool {
+	return false
 }
 
 // Decode Alertmanager API response body and return karma model instances
@@ -75,12 +80,19 @@ func (m SilenceMapper) Decode(source io.ReadCloser) ([]models.Silence, error) {
 	for _, s := range resp.Data {
 		us := models.Silence{
 			ID:        s.ID,
-			Matchers:  s.Matchers,
 			StartsAt:  s.StartsAt,
 			EndsAt:    s.EndsAt,
 			CreatedAt: s.CreatedAt,
 			CreatedBy: s.CreatedBy,
 			Comment:   s.Comment,
+		}
+		for _, m := range s.Matchers {
+			sm := models.SilenceMatcher{
+				Name:    m.Name,
+				Value:   m.Value,
+				IsRegex: m.IsRegex,
+			}
+			us.Matchers = append(us.Matchers, sm)
 		}
 		silences = append(silences, us)
 	}

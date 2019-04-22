@@ -1,9 +1,11 @@
 package v016
 
 import (
-	"io"
+	"net/http"
+	"time"
 
 	"github.com/blang/semver"
+
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/uri"
@@ -30,8 +32,12 @@ func (m AlertMapper) IsSupported(version string) bool {
 	return versionRange(semver.MustParse(version))
 }
 
-// Decode Alertmanager API response body and return karma model instances
-func (m AlertMapper) Decode(source io.ReadCloser) ([]models.AlertGroup, error) {
-	defer source.Close()
-	return Groups()
+// IsOpenAPI returns true is remote Alertmanager uses OpenAPI
+func (m AlertMapper) IsOpenAPI() bool {
+	return true
+}
+
+func (m AlertMapper) Collect(uri string, headers map[string]string, timeout time.Duration, httpTransport http.RoundTripper) ([]models.AlertGroup, error) {
+	c := newClient(uri, headers, httpTransport)
+	return groups(c, timeout)
 }

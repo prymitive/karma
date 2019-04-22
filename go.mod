@@ -31,6 +31,7 @@ require (
 	github.com/spf13/pflag v1.0.3
 	github.com/spf13/viper v1.3.2
 	github.com/terinjokes/bakelite v0.2.0
+	golang.org/x/arch v0.0.0-20190312162104-788fe5ffcd8c // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v2 v2.2.2
 )
