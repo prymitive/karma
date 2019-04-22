@@ -175,7 +175,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
           >
           </path>
         </svg>
-        Created
+        Started
         <time datetime=\\"946720800000\\">
           5 hours ago
         </time>
