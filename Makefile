@@ -12,7 +12,7 @@ PORT := 8080
 # based on http://blog.jgc.org/2011/07/gnu-make-recursive-wildcard-function.html
 rwildcard = $(foreach d, $(wildcard $1*), $(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
-SOURCES       := $(wildcard *.go) $(wildcard */*.go) $(wildcard */*/*.go)
+SOURCES       := $(wildcard *.go) $(call rwildcard, internal, *)
 ASSET_SOURCES := $(call rwildcard, ui/public ui/src, *)
 
 GO_BINDATA_MODE := prod
