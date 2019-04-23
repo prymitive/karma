@@ -1,6 +1,6 @@
 // MUST be first thing we import
-// https://babeljs.io/docs/en/babel-polyfill#usage-in-node-browserify-webpack
-import "@babel/polyfill";
+// https://github.com/facebook/create-react-app/blob/master/packages/react-app-polyfill/README.md
+import "react-app-polyfill/stable";
 
 // fetch() polyfill for IE and some mobile browsers
 import "whatwg-fetch";
