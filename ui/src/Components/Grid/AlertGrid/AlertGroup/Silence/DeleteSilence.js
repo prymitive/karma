@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
+import semver from "semver";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
@@ -119,9 +121,7 @@ const DeleteSilenceModalContent = observer(
         ]);
 
       this.previewState.fetch = fetch(alertsURI, { credentials: "include" })
-        .then(result => {
-          return result.json();
-        })
+        .then(result => result.json())
         .then(result => {
           this.previewState.groupsToUniqueLabels(Object.values(result.groups));
           this.previewState.setError(null);
@@ -140,13 +140,29 @@ const DeleteSilenceModalContent = observer(
       // if it's already deleted then do nothing
       if (this.deleteState.done && this.deleteState.error === null) return;
 
-      const uri = `${alertmanager.publicURI}/api/v1/silence/${silenceID}`;
+      const isOpenAPI = semver.satisfies(alertmanager.version, ">=0.16.0");
+
+      const uri = isOpenAPI
+        ? `${alertmanager.publicURI}/api/v2/silence/${silenceID}`
+        : `${alertmanager.publicURI}/api/v1/silence/${silenceID}`;
+
       this.deleteState.fetch = fetch(uri, {
         method: "DELETE",
         credentials: "include"
       })
-        .then(result => result.json())
-        .then(result => this.parseAlertmanagerResponse(result))
+        .then(result => {
+          if (isOpenAPI) {
+            if (result.ok) {
+              this.deleteState.setError(null);
+              this.deleteState.setDone();
+            } else {
+              result.text().then(this.deleteState.setError);
+              this.deleteState.setDone();
+            }
+          } else {
+            result.json().then(this.parseAlertmanagerResponse);
+          }
+        })
         .catch(err => {
           console.trace(err);
           this.deleteState.setDone();

@@ -80,5 +80,11 @@ func setupRouterProxyHandlers(router *gin.Engine, alertmanager *alertmanager.Ale
 	router.DELETE(
 		proxyPath(alertmanager.Name, "/api/v1/silence/*id"),
 		gin.WrapH(http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)))
+	router.POST(
+		proxyPath(alertmanager.Name, "/api/v2/silences"),
+		gin.WrapH(http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)))
+	router.DELETE(
+		proxyPath(alertmanager.Name, "/api/v2/silence/*id"),
+		gin.WrapH(http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)))
 	return nil
 }

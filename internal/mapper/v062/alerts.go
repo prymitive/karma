@@ -71,8 +71,13 @@ func (m AlertMapper) QueryArgs() string {
 
 // IsSupported returns true if given version string is supported
 func (m AlertMapper) IsSupported(version string) bool {
-	versionRange := semver.MustParseRange(">=0.6.2")
+	versionRange := semver.MustParseRange(">=0.6.2 <0.16.0")
 	return versionRange(semver.MustParse(version))
+}
+
+// IsOpenAPI returns true is remote Alertmanager uses OpenAPI
+func (m AlertMapper) IsOpenAPI() bool {
+	return false
 }
 
 // Decode Alertmanager API response body and return karma model instances

@@ -47,7 +47,10 @@ def jsonGetRequest(uri):
 def jsonPostRequest(uri, data):
     req = urllib2.Request(uri)
     req.add_header("Content-Type", "application/json")
-    response = urllib2.urlopen(req, json.dumps(data))
+    try:
+        response = urllib2.urlopen(req, json.dumps(data))
+    except Exception as e:
+        print("Request to '%s' failed: %s" % (uri, e))
 
 
 def addSilence(matchers, startsAt, endsAt, createdBy, comment):

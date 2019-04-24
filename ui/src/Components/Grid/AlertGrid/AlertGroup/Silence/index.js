@@ -128,7 +128,7 @@ const SilenceDetails = ({
       <div>
         <span className="badge text-nowrap text-truncate px-1 mr-1">
           <FontAwesomeIcon className="text-muted mr-1" icon={faCalendarCheck} />
-          Created <Moment fromNow>{silence.startsAt}</Moment>
+          Started <Moment fromNow>{silence.startsAt}</Moment>
         </span>
         <span
           className={`badge ${expiresClass} text-nowrap text-truncate px-1 mr-1`}

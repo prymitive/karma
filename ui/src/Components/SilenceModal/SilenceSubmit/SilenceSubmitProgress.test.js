@@ -48,7 +48,15 @@ describe("<SilenceSubmitProgress />", () => {
     expect(fetch.mock.calls).toHaveLength(1);
   });
 
-  it("appends /api/v1/silences to the passed URI", async () => {
+  it("[v1] appends /api/v1/silences to the passed URI", async () => {
+    const tree = MountedSilenceSubmitProgress();
+    await expect(tree.instance().submitState.fetch).resolves.toBeUndefined();
+    const uri = fetch.mock.calls[0][0];
+    expect(uri).toBe("http://example.com/api/v1/silences");
+  });
+
+  it("[v2] appends /api/v2/silences to the passed URI", async () => {
+    alertStore.data.upstreams.instances[0].version = "0.16.2";
     const tree = MountedSilenceSubmitProgress();
     await expect(tree.instance().submitState.fetch).resolves.toBeUndefined();
     const uri = fetch.mock.calls[0][0];
@@ -188,7 +196,7 @@ describe("<SilenceSubmitProgress />", () => {
     expect(tree.text()).toBe("mockAlertmanagermock error message");
   });
 
-  it("renders success icon on successful fetch", async () => {
+  it("[v1] renders success icon on successful fetch", async () => {
     fetch.mockResponseOnce(
       JSON.stringify({ status: "success", data: { silenceId: "123" } })
     );
@@ -199,10 +207,51 @@ describe("<SilenceSubmitProgress />", () => {
     expect(tree.find("FontAwesomeIcon.text-danger")).toHaveLength(0);
   });
 
-  it("renders error icon on failed fetch", async () => {
+  it("[v1] renders silence link on successful fetch", async () => {
+    fetch.mockResponseOnce(
+      JSON.stringify({ status: "success", data: { silenceId: "123" } })
+    );
+    const tree = MountedSilenceSubmitProgress();
+    await expect(tree.instance().submitState.fetch).resolves.toBe("success");
+    tree.update();
+    expect(tree.find("a").getDOMNode().getAttribute("href")).toBe("file:///mock/#/silences/123");
+  });
+
+  it("[v2] renders success icon on successful fetch", async () => {
+    alertStore.data.upstreams.instances[0].version = "0.16.2";
+    fetch.mockResponseOnce(JSON.stringify({ silenceID: "123" }));
+    const tree = MountedSilenceSubmitProgress();
+    await expect(tree.instance().submitState.fetch).resolves.toBe("123");
+    tree.update();
+    expect(tree.find("FontAwesomeIcon.text-success")).toHaveLength(1);
+    expect(tree.find("FontAwesomeIcon.text-danger")).toHaveLength(0);
+  });
+
+  it("[v2] renders silence link on successful fetch", async () => {
+    alertStore.data.upstreams.instances[0].version = "0.16.2";
+    fetch.mockResponseOnce(JSON.stringify({ silenceID: "123" }));
+    const tree = MountedSilenceSubmitProgress();
+    await expect(tree.instance().submitState.fetch).resolves.toBe("123");
+    tree.update();
+    expect(tree.find("a").getDOMNode().getAttribute("href")).toBe("file:///mock/#/silences/123");
+  });
+
+  it("[v1] renders error icon on failed fetch", async () => {
     fetch.mockResponseOnce(JSON.stringify({ status: "error" }));
     const tree = MountedSilenceSubmitProgress();
     await expect(tree.instance().submitState.fetch).resolves.toBe("error");
+    tree.update();
+    expect(tree.find("FontAwesomeIcon.text-success")).toHaveLength(0);
+    expect(tree.find("FontAwesomeIcon.text-danger")).toHaveLength(1);
+  });
+
+  it("[v2] renders error icon on failed fetch", async () => {
+    alertStore.data.upstreams.instances[0].version = "0.16.2";
+    fetch.mockResponseOnce("error message", { status: 500 });
+    const tree = MountedSilenceSubmitProgress();
+    await expect(tree.instance().submitState.fetch).resolves.toBe(
+      "error message"
+    );
     tree.update();
     expect(tree.find("FontAwesomeIcon.text-success")).toHaveLength(0);
     expect(tree.find("FontAwesomeIcon.text-danger")).toHaveLength(1);

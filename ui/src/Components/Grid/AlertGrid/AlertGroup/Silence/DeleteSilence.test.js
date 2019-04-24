@@ -13,6 +13,7 @@ let alertStore;
 beforeEach(() => {
   alertmanager = MockAlertmanager();
   alertStore = new AlertStore([]);
+  alertStore.data.upstreams.instances[0] = alertmanager;
   fetch.mockResponseOnce(JSON.stringify(MockAPIResponse()));
 
   jest.restoreAllMocks();
@@ -121,10 +122,19 @@ describe("<DeleteSilenceModalContent />", () => {
     expect(tree.find("ErrorMessage")).toHaveLength(1);
   });
 
-  it("sends a DELETE request after clicking 'Confirm' button", async () => {
+  it("[v1] sends a DELETE request after clicking 'Confirm' button ", async () => {
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
       "http://am.example.com/api/v1/silence/123456789"
+    );
+    expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
+  });
+
+  it("[v2] sends a DELETE request after clicking 'Confirm' button ", async () => {
+    alertmanager.version = "0.16.2";
+    await VerifyResponse({ status: "success" });
+    expect(fetch.mock.calls[1][0]).toBe(
+      "http://am.example.com/api/v2/silence/123456789"
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
   });
@@ -165,13 +175,29 @@ describe("<DeleteSilenceModalContent />", () => {
     expect(tree.find("ErrorMessage")).toHaveLength(1);
   });
 
-  it("renders ErrorMessage on failed fetch request", async () => {
+  it("[v1] renders ErrorMessage on failed fetch request", async () => {
     const tree = MountedDeleteSilenceModalContent();
     await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
 
     jest.spyOn(console, "trace").mockImplementation(() => {});
     fetch.resetMocks();
     fetch.mockReject("Fetch error");
+
+    tree.find(".btn-outline-danger").simulate("click");
+    await expect(tree.instance().deleteState.fetch).resolves.toBeUndefined();
+
+    tree.update();
+    expect(tree.find("ErrorMessage")).toHaveLength(1);
+  });
+
+  it("[v2] renders ErrorMessage on failed fetch request", async () => {
+    alertmanager.version = "0.16.2";
+    const tree = MountedDeleteSilenceModalContent();
+    await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
+
+    jest.spyOn(console, "trace").mockImplementation(() => {});
+    fetch.resetMocks();
+    fetch.mockResponseOnce("500 Internal Server Error", { status: 500 });
 
     tree.find(".btn-outline-danger").simulate("click");
     await expect(tree.instance().deleteState.fetch).resolves.toBeUndefined();
