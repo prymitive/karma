@@ -5,7 +5,6 @@
   "private": true,
   "dependencies": {
     "@attently/riek": "2.0.1",
-    "@babel/polyfill": "7.4.3",
     "@fortawesome/fontawesome-svg-core": "1.2.17",
     "@fortawesome/free-regular-svg-icons": "5.8.1",
     "@fortawesome/free-solid-svg-icons": "5.8.1",
@@ -31,6 +30,7 @@
     "prop-types": "15.7.2",
     "qs": "6.7.0",
     "react": "16.8.6",
+    "react-app-polyfill": "1.0.0",
     "react-autosuggest": "9.4.3",
     "react-datepicker": "2.4.0",
     "react-dom": "16.8.6",
@@ -50,8 +50,7 @@
     "react-tippy": "1.2.3",
     "react-transition-group": "4.0.0",
     "react-truncate": "2.4.0",
-    "semver": "6.0.0",
-    "whatwg-fetch": "3.0.0"
+    "semver": "6.0.0"
   },
   "scripts": {
     "start": "NODE_ENV=dev REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
@@ -73,13 +72,12 @@
     ">= 1%",
     "last 1 major version",
     "not dead",
-    "Chrome >= 45",
+    "Chrome >= 49",
     "Firefox >= 38",
     "Edge >= 12",
-    "Explorer >= 10",
     "iOS >= 9",
-    "Safari >= 9",
+    "Safari >= 10",
     "Android >= 4.4",
-    "Opera >= 30"
+    "Opera >= 36"
   ]
 }
