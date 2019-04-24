@@ -1,6 +1,7 @@
-// this is used by bootswatch to import the font, zero it since we import all
-// fonts below
-$web-font-path: "";
+// this is used by bootswatch to import the font, we bundle all fonts so there
+// is nothing to import, so let's point it at an empty file
+// https://github.com/thomaspark/bootswatch/issues/55
+$web-font-path: "./empty.css";
 
 @font-face {
   font-display: swap;
