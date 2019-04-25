@@ -80,11 +80,14 @@ const AlertGrid = observer(
     });
     // used to call forcePack() which will repack all grid elements
     // (alert groups), this needs to be called if any group size changes
-    masonryRepack = action(() => {
-      if (this.masonryComponentReference.ref) {
-        this.masonryComponentReference.ref.forcePack();
-      }
-    });
+    masonryRepack = debounce(
+      action(() => {
+        if (this.masonryComponentReference.ref) {
+          this.masonryComponentReference.ref.forcePack();
+        }
+      }),
+      50
+    );
 
     // how many alert groups to render
     // FIXME reset on filter change
