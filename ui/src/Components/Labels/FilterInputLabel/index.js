@@ -71,7 +71,7 @@ const FilterInputLabel = observer(
           {filter.isValid ? (
             filter.applied ? (
               showCounter ? (
-                <span className="badge badge-light badge-pill mr-1">
+                <span className="badge badge-light badge-pill">
                   {filter.hits}
                 </span>
               ) : null
@@ -90,6 +90,7 @@ const FilterInputLabel = observer(
             className="my-auto mw-100 text-nowrap text-truncate"
           >
             <RIEInput
+              className="ml-1"
               defaultValue=""
               value={filter.raw}
               propName="raw"
