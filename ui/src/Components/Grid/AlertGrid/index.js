@@ -86,7 +86,7 @@ const AlertGrid = observer(
           this.masonryComponentReference.ref.forcePack();
         }
       }),
-      50
+      10
     );
 
     // how many alert groups to render
