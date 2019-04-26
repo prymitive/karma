@@ -9183,10 +9183,10 @@ react-autowhatever@^10.1.2:
     react-themeable "^1.1.0"
     section-iterator "^2.0.0"
 
-react-datepicker@2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-2.4.0.tgz#0965a6004e1e6a3941d80155560b84fe8fc277e6"
-  integrity sha512-ZOY7oYmZt+jeSFGj4NHNdCg7WzzIljPui98lGRd7YHNPO3B8Re4WVNALktp/x+mz1ofNO+TPzodMLMXzqjAUnw==
+react-datepicker@2.5.0:
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-2.5.0.tgz#67c68b3ffef2eb69b4400913d3cfcfef870be2b3"
+  integrity sha512-X8D+5CqumSUwoq/x5d8O0neYDRmPmwVcyCktVbs5juXV4s73beV6sMf87hM6lxMSanWeB+jpx8waxJcPqsmCIg==
   dependencies:
     classnames "^2.2.5"
     date-fns "^2.0.0-alpha.23"
