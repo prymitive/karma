@@ -12,24 +12,45 @@
 
 .components-label-bright {
   color: $black;
+  &:hover {
+    color: $black;
+  }
+
   &.components-label-name,
   .components-label-name {
     color: lighten($black, 20%);
+    &:hover {
+      color: lighten($black, 20%);
+    }
   }
   &.components-label-value,
   .components-label-value {
     color: $black;
+    &:hover {
+      color: $black;
+    }
   }
 }
 
 .components-label-dark {
   color: $white;
+  &:hover {
+    color: $white;
+  }
+
   &.components-label-name,
   .components-label-name {
     color: darken($white, 10%);
+    &:hover {
+      color: darken($white, 10%);
+    }
   }
+
   &.components-label-value,
   .components-label-value {
     color: $white;
+    &:hover {
+      color: $white;
+    }
   }
 }

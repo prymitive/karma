@@ -21,7 +21,7 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
       </svg>
     </span>
   </div>
-  <div class=\\"form-control p-1 components-filterinput\\">
+  <div class=\\"form-control components-filterinput\\">
     <div role=\\"combobox\\"
          aria-haspopup=\\"listbox\\"
          aria-owns=\\"react-autowhatever-1\\"

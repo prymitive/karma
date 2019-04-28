@@ -1,6 +1,11 @@
 .form-control.components-filterinput {
   cursor: text;
   height: auto;
+
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
 }
 
 input.components-filterinput-wrapper {
@@ -10,4 +15,8 @@ input.components-filterinput-wrapper {
   background-color: transparent;
   padding: 0;
   vertical-align: middle;
+}
+
+.autosuggest {
+  min-height: 2rem;
 }

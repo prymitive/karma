@@ -1,17 +1,7 @@
 // fallback class for labels
-const DefaultLabelClass = "badge-warning components-label-dark";
-
-// labels configured as static will have badge-${this class}
-const StaticColorLabelClass = "badge-info components-label-dark";
-
-// alertname label will use this one
-const AlertNameLabelClass = "badge-dark components-label-dark";
-
-// alert state label will use one of those, based on the value
-const StateLabelClassMap = Object.freeze({
-  active: "badge-danger components-label-dark",
-  suppressed: "badge-success components-label-dark",
-  unprocessed: "badge-secondary components-label-bright"
+const DefaultLabelClassMap = Object.freeze({
+  badge: "badge-warning components-label-dark",
+  btn: "btn-warning components-label-dark"
 });
 
 // same but for borders
@@ -27,11 +17,27 @@ const BackgroundClassMap = Object.freeze({
   unprocessed: "bg-secondary"
 });
 
+const StaticColorLabelClassMap = Object.freeze({
+  badge: "badge-info components-label-dark",
+  btn: "btn-info components-label-dark"
+});
+
+const AlertNameLabelClassMap = Object.freeze({
+  badge: "badge-dark components-label-dark",
+  btn: "btn-dark components-label-dark"
+});
+
+const StateLabelClassMap = Object.freeze({
+  active: "danger",
+  suppressed: "success",
+  unprocessed: "secondary"
+});
+
 export {
-  DefaultLabelClass,
-  StaticColorLabelClass,
-  AlertNameLabelClass,
-  StateLabelClassMap,
+  DefaultLabelClassMap,
+  StaticColorLabelClassMap,
+  AlertNameLabelClassMap,
   BorderClassMap,
-  BackgroundClassMap
+  BackgroundClassMap,
+  StateLabelClassMap
 };

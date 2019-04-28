@@ -144,7 +144,7 @@ const FilterInput = observer(
               </span>
             </div>
             <div
-              className="form-control p-1 components-filterinput"
+              className="form-control components-filterinput"
               onClick={event => {
                 this.onInputClick(this.inputStore.ref, event);
               }}
