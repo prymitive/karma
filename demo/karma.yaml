@@ -64,3 +64,5 @@ silenceForm:
   strip:
     labels:
       - job
+      - severity
+      - region
