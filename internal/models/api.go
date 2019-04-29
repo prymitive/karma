@@ -219,13 +219,22 @@ type SortSettings struct {
 	ValueMapping map[string]map[string]int `json:"valueMapping"`
 }
 
+type SilenceFormStripSettings struct {
+	Labels []string `json:"labels"`
+}
+
+type SilenceFormSettings struct {
+	Strip SilenceFormStripSettings `json:"strip"`
+}
+
 // Settings is used to export karma configuration that is used by UI
 type Settings struct {
-	StaticColorLabels        []string     `json:"staticColorLabels"`
-	AnnotationsDefaultHidden bool         `json:"annotationsDefaultHidden"`
-	AnnotationsHidden        []string     `json:"annotationsHidden"`
-	AnnotationsVisible       []string     `json:"annotationsVisible"`
-	Sorting                  SortSettings `json:"sorting"`
+	StaticColorLabels        []string            `json:"staticColorLabels"`
+	AnnotationsDefaultHidden bool                `json:"annotationsDefaultHidden"`
+	AnnotationsHidden        []string            `json:"annotationsHidden"`
+	AnnotationsVisible       []string            `json:"annotationsVisible"`
+	Sorting                  SortSettings        `json:"sorting"`
+	SilenceForm              SilenceFormSettings `json:"silenceForm"`
 }
 
 // AlertsResponse is the structure of JSON response UI will use to get alert data

@@ -60,3 +60,7 @@ sentry:
 jira:
   - regex: DEVOPS-[0-9]+
     uri: https://jira.example.com
+silenceForm:
+  strip:
+    labels:
+      - job
