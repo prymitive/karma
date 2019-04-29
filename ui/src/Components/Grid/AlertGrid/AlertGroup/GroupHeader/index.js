@@ -8,6 +8,7 @@ import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 
 import { APIGroup } from "Models/API";
+import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
@@ -22,6 +23,7 @@ const GroupHeader = observer(
         toggle: PropTypes.func.isRequired
       }).isRequired,
       group: APIGroup.isRequired,
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       themedCounters: PropTypes.bool.isRequired
     };
@@ -30,6 +32,7 @@ const GroupHeader = observer(
       const {
         collapseStore,
         group,
+        alertStore,
         silenceFormStore,
         themedCounters
       } = this.props;
@@ -43,6 +46,7 @@ const GroupHeader = observer(
           <span className="flex-shrink-0 flex-grow-0">
             <GroupMenu
               group={group}
+              alertStore={alertStore}
               silenceFormStore={silenceFormStore}
               themed={!themedCounters}
             />

@@ -16,14 +16,18 @@ import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
 import { APIGroup } from "Models/API";
 import { FormatAPIFilterQuery } from "Stores/AlertStore";
+import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { QueryOperators, StaticLabels, FormatQuery } from "Common/Query";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { FetchPauser } from "Components/FetchPauser";
 
-const onSilenceClick = (silenceFormStore, group) => {
+const onSilenceClick = (alertStore, silenceFormStore, group) => {
   silenceFormStore.data.resetProgress();
-  silenceFormStore.data.fillMatchersFromGroup(group);
+  silenceFormStore.data.fillMatchersFromGroup(
+    group,
+    alertStore.settings.values.silenceForm.strip.labels
+  );
   silenceFormStore.toggle.show();
 };
 
@@ -34,6 +38,7 @@ const MenuContent = onClickOutside(
     popperStyle,
     group,
     afterClick,
+    alertStore,
     silenceFormStore
   }) => {
     let groupFilters = Object.keys(group.labels).map(name =>
@@ -65,7 +70,7 @@ const MenuContent = onClickOutside(
           </div>
           <div
             className="dropdown-item cursor-pointer"
-            onClick={() => onSilenceClick(silenceFormStore, group)}
+            onClick={() => onSilenceClick(alertStore, silenceFormStore, group)}
           >
             <FontAwesomeIcon icon={faBellSlash} /> Silence this group
           </div>
@@ -86,6 +91,7 @@ const GroupMenu = observer(
   class GroupMenu extends Component {
     static propTypes = {
       group: APIGroup.isRequired,
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       themed: PropTypes.bool.isRequired
     };
@@ -109,7 +115,7 @@ const GroupMenu = observer(
     });
 
     render() {
-      const { group, silenceFormStore, themed } = this.props;
+      const { group, alertStore, silenceFormStore, themed } = this.props;
 
       return (
         <Manager>
@@ -143,6 +149,7 @@ const GroupMenu = observer(
                   popperRef={ref}
                   popperStyle={style}
                   group={group}
+                  alertStore={alertStore}
                   silenceFormStore={silenceFormStore}
                   afterClick={this.collapse.hide}
                   handleClickOutside={this.collapse.hide}

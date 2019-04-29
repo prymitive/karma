@@ -42,6 +42,11 @@ const EmptyAPIResponse = () => ({
         }
       }
     },
+    silenceForm: {
+      strip: {
+        labels: []
+      }
+    },
     staticColorLabels: ["job"],
     annotationsDefaultHidden: false,
     annotationsHidden: [],

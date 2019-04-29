@@ -120,7 +120,7 @@ describe("SilenceFormStore.data", () => {
 
   it("fillMatchersFromGroup() creates correct matcher object for a group", () => {
     const group = MockGroup();
-    store.data.fillMatchersFromGroup(group);
+    store.data.fillMatchersFromGroup(group, []);
     expect(store.data.matchers).toHaveLength(4);
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -161,7 +161,7 @@ describe("SilenceFormStore.data", () => {
 
   it("fillMatchersFromGroup() creates correct matcher object for a group with only a subset of alets passed", () => {
     const group = MockGroup();
-    store.data.fillMatchersFromGroup(group, [group.alerts[0]]);
+    store.data.fillMatchersFromGroup(group, [], [group.alerts[0]]);
     expect(store.data.matchers).toHaveLength(4);
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -193,10 +193,27 @@ describe("SilenceFormStore.data", () => {
     );
   });
 
+  it("fillMatchersFromGroup() ignores labels from stripLabels list", () => {
+    const group = MockGroup();
+    store.data.fillMatchersFromGroup(
+      group,
+      ["job", "instance", "cluster"],
+      [group.alerts[0]]
+    );
+    expect(store.data.matchers).toHaveLength(1);
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "alertname",
+        values: [{ label: "FakeAlert", value: "FakeAlert" }],
+        isRegex: false
+      })
+    );
+  });
+
   it("fillMatchersFromGroup() resets silenceID if set", () => {
     store.data.silenceID = "12345";
     const group = MockGroup();
-    store.data.fillMatchersFromGroup(group, [group.alerts[0]]);
+    store.data.fillMatchersFromGroup(group, [], [group.alerts[0]]);
     expect(store.data.silenceID).toBeNull();
   });
 
@@ -259,7 +276,7 @@ describe("SilenceFormStore.data", () => {
 
   it("toAlertmanagerPayload creates payload that matches snapshot", () => {
     const group = MockGroup();
-    store.data.fillMatchersFromGroup(group);
+    store.data.fillMatchersFromGroup(group, []);
     // add empty matcher so we test empty string rendering
     store.data.addEmptyMatcher();
     store.data.startsAt = moment.utc([2000, 1, 1, 0, 0, 0]);

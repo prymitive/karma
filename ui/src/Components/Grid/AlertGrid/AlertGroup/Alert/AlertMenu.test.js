@@ -29,6 +29,7 @@ const MountedAlertMenu = group => {
       <AlertMenu
         group={group}
         alert={alert}
+        alertStore={alertStore}
         silenceFormStore={silenceFormStore}
       />
     </Provider>
@@ -70,6 +71,7 @@ const MountedMenuContent = group => {
         group={group}
         alert={alert}
         afterClick={MockAfterClick}
+        alertStore={alertStore}
         silenceFormStore={silenceFormStore}
       />
     </Provider>

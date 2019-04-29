@@ -64,6 +64,7 @@ const MountedAlertGroup = (afterUpdate, showAlertmanagers) => {
         group={group}
         showAlertmanagers={showAlertmanagers}
         settingsStore={settingsStore}
+        alertStore={alertStore}
         silenceFormStore={silenceFormStore}
       />
     </Provider>

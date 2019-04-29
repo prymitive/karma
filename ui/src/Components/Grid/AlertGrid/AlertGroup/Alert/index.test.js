@@ -52,6 +52,7 @@ const MountedAlert = (alert, group, showAlertmanagers, showReceiver) => {
         showAlertmanagers={showAlertmanagers}
         showReceiver={showReceiver}
         afterUpdate={MockAfterUpdate}
+        alertStore={alertStore}
         silenceFormStore={silenceFormStore}
       />
     </Provider>
