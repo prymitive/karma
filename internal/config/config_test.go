@@ -119,6 +119,9 @@ receivers:
 sentry:
   private: secret key
   public: public key
+silenceForm:
+  strip:
+    labels: []
 `
 
 	configDump, err := yaml.Marshal(Config)
