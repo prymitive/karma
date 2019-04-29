@@ -177,6 +177,11 @@ class AlertStore {
             label: "alertname"
           },
           valueMapping: {}
+        },
+        silenceForm: {
+          strip: {
+            labels: []
+          }
         }
       }
     },

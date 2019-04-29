@@ -17,13 +17,18 @@ import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
 
 import { APIAlert, APIGroup } from "Models/API";
+import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FetchPauser } from "Components/FetchPauser";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 
-const onSilenceClick = (silenceFormStore, group, alert) => {
+const onSilenceClick = (alertStore, silenceFormStore, group, alert) => {
   silenceFormStore.data.resetProgress();
-  silenceFormStore.data.fillMatchersFromGroup(group, [alert]);
+  silenceFormStore.data.fillMatchersFromGroup(
+    group,
+    alertStore.settings.values.silenceForm.strip.labels,
+    [alert]
+  );
   silenceFormStore.toggle.show();
 };
 
@@ -35,6 +40,7 @@ const MenuContent = onClickOutside(
     group,
     alert,
     afterClick,
+    alertStore,
     silenceFormStore
   }) => {
     return (
@@ -62,7 +68,9 @@ const MenuContent = onClickOutside(
           <div className="dropdown-divider" />
           <div
             className="dropdown-item cursor-pointer"
-            onClick={() => onSilenceClick(silenceFormStore, group, alert)}
+            onClick={() =>
+              onSilenceClick(alertStore, silenceFormStore, group, alert)
+            }
           >
             <FontAwesomeIcon className="mr-1" icon={faBellSlash} />
             Silence this alert
@@ -86,6 +94,7 @@ const AlertMenu = observer(
     static propTypes = {
       group: APIGroup.isRequired,
       alert: APIAlert.isRequired,
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
@@ -108,7 +117,7 @@ const AlertMenu = observer(
     });
 
     render() {
-      const { group, alert, silenceFormStore } = this.props;
+      const { group, alert, alertStore, silenceFormStore } = this.props;
 
       const uniqueClass = `components-grid-alert-${group.id}-${hash(
         alert.labels
@@ -148,6 +157,7 @@ const AlertMenu = observer(
                   popperStyle={style}
                   group={group}
                   alert={alert}
+                  alertStore={alertStore}
                   silenceFormStore={silenceFormStore}
                   afterClick={this.collapse.hide}
                   handleClickOutside={this.collapse.hide}

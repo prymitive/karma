@@ -26,6 +26,7 @@ const MountedGroupMenu = (group, themed) => {
     <Provider alertStore={alertStore}>
       <GroupMenu
         group={group}
+        alertStore={alertStore}
         silenceFormStore={silenceFormStore}
         themed={themed}
       />
@@ -71,6 +72,7 @@ const MountedMenuContent = group => {
         popperStyle={{}}
         group={group}
         afterClick={MockAfterClick}
+        alertStore={alertStore}
         silenceFormStore={silenceFormStore}
       />
     </Provider>

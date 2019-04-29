@@ -92,4 +92,9 @@ type configSchema struct {
 		Private string
 		Public  string
 	}
+	SilenceForm struct {
+		Strip struct {
+			Labels []string
+		}
+	} `yaml:"silenceForm"  mapstructure:"silenceForm"`
 }

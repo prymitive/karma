@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeMute } from "@fortawesome/free-solid-svg-icons/faVolumeMute";
 
 import { APIAlert, APIGroup } from "Models/API";
+import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BorderClassMap } from "Common/Colors";
 import { StaticLabels } from "Common/Query";
@@ -26,6 +27,7 @@ const Alert = observer(
       showAlertmanagers: PropTypes.bool.isRequired,
       showReceiver: PropTypes.bool.isRequired,
       afterUpdate: PropTypes.func.isRequired,
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
@@ -36,6 +38,7 @@ const Alert = observer(
         showAlertmanagers,
         showReceiver,
         afterUpdate,
+        alertStore,
         silenceFormStore
       } = this.props;
 
@@ -87,6 +90,7 @@ const Alert = observer(
           <AlertMenu
             group={group}
             alert={alert}
+            alertStore={alertStore}
             silenceFormStore={silenceFormStore}
           />
           {alert.alertmanager

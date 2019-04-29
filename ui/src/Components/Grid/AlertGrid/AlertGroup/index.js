@@ -12,6 +12,7 @@ import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
 
 import { APIGroup } from "Models/API";
 import { Settings } from "Stores/Settings";
+import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { IsMobile } from "Common/Device";
 import { BackgroundClassMap } from "Common/Colors";
@@ -55,6 +56,7 @@ const AlertGroup = observer(
       afterUpdate: PropTypes.func.isRequired,
       group: APIGroup.isRequired,
       showAlertmanagers: PropTypes.bool.isRequired,
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       style: PropTypes.object
@@ -157,6 +159,7 @@ const AlertGroup = observer(
         showAlertmanagers,
         afterUpdate,
         silenceFormStore,
+        alertStore,
         settingsStore,
         style
       } = this.props;
@@ -198,6 +201,7 @@ const AlertGroup = observer(
               <GroupHeader
                 collapseStore={this.collapse}
                 group={group}
+                alertStore={alertStore}
                 silenceFormStore={silenceFormStore}
                 themedCounters={themedCounters}
               />
@@ -216,6 +220,7 @@ const AlertGroup = observer(
                           }
                           showReceiver={group.alerts.length === 1}
                           afterUpdate={afterUpdate}
+                          alertStore={alertStore}
                           silenceFormStore={silenceFormStore}
                         />
                       ))}

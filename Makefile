@@ -66,6 +66,7 @@ run: $(NAME)
 	LABELS_COLOR_UNIQUE="@receiver instance cluster" \
 	LABELS_COLOR_STATIC="job" \
 	FILTERS_DEFAULT="@state=active @receiver=by-cluster-service" \
+	SILENCEFORM_STRIP_LABELS="job" \
 	PORT=$(PORT) \
 	./$(NAME)
 
@@ -86,6 +87,7 @@ run-docker: docker-image
 		-e LABELS_COLOR_UNIQUE="instance cluster" \
 		-e LABELS_COLOR_STATIC="job" \
 		-e FILTERS_DEFAULT="@state=active @receiver=by-cluster-service" \
+		-e SILENCEFORM_STRIP_LABELS="job" \
 		-e PORT=$(PORT) \
 		-p $(PORT):$(PORT) \
 		$(NAME):$(VERSION)

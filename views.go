@@ -95,6 +95,11 @@ func alerts(c *gin.Context) {
 		AnnotationsDefaultHidden: config.Config.Annotations.Default.Hidden,
 		AnnotationsHidden:        config.Config.Annotations.Hidden,
 		AnnotationsVisible:       config.Config.Annotations.Visible,
+		SilenceForm: models.SilenceFormSettings{
+			Strip: models.SilenceFormStripSettings{
+				Labels: config.Config.SilenceForm.Strip.Labels,
+			},
+		},
 	}
 
 	if config.Config.Grid.Sorting.CustomValues.Labels != nil {

@@ -53,3 +53,7 @@ receivers:
 sentry:
   private: secret
   public: 123456789
+silenceForm:
+  strip:
+    labels:
+      - job

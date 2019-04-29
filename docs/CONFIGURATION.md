@@ -599,6 +599,31 @@ sentry:
   public: https://<key>:<secret>@sentry.io/<project>
 ```
 
+## Silence form
+
+`silenceForm` section allow customizing silence form behavior.
+Syntax:
+
+```YAML
+silenceForm:
+  strip:
+    labels: list of strings
+```
+
+- `strip:labels` - list of labels to ignore when populating silence form from
+  individual alerts or group of alerts. This allows to create silences matching
+  only unique labels, like `instance` or `host`, ignoring any common labels like
+  `job`.
+
+Example:
+
+```YAML
+silenceForm:
+  strip:
+    labels:
+      - job
+```
+
 ## Customizing karma
 
 In order to keep the core code simple karma doesn't support any way of extending

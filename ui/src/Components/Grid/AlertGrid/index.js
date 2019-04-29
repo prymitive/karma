@@ -240,6 +240,7 @@ const AlertGrid = observer(
                     Object.keys(alertStore.data.upstreams.clusters).length > 1
                   }
                   afterUpdate={this.masonryRepack}
+                  alertStore={alertStore}
                   settingsStore={settingsStore}
                   silenceFormStore={silenceFormStore}
                   style={{

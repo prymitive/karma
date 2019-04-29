@@ -76,6 +76,8 @@ func init() {
 	pflag.StringSlice("receivers.strip", []string{},
 		"List of receivers to not display alerts for")
 
+	pflag.StringSlice("silenceform.strip.labels", []string{}, "List of labels to ignore when auto-filling silence form from alerts")
+
 	pflag.String("listen.address", "", "IP/Hostname to listen on")
 	pflag.Int("listen.port", 8080, "HTTP port to listen on")
 	pflag.String("listen.prefix", "/", "URL prefix")
@@ -161,6 +163,7 @@ func (config *configSchema) Read() {
 	config.Receivers.Strip = v.GetStringSlice("receivers.strip")
 	config.Sentry.Private = v.GetString("sentry.private")
 	config.Sentry.Public = v.GetString("sentry.public")
+	config.SilenceForm.Strip.Labels = v.GetStringSlice("silenceform.strip.labels")
 
 	err = v.UnmarshalKey("alertmanager.servers", &config.Alertmanager.Servers)
 	if err != nil {
