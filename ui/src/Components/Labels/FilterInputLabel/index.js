@@ -100,17 +100,10 @@ const FilterInputLabel = observer(
             />
           </TooltipWrapper>
           <span
-            className="close ml-1 align-text-bottom cursor-pointer"
-            style={filter.applied ? cs.style : {}}
+            className="close ml-1 align-text-bottom cursor-pointer text-reset"
             onClick={() => alertStore.filters.removeFilter(filter.raw)}
           >
-            <span
-              className={cs.colorClassNames
-                .filter(c => !c.match(/btn-|badge-/))
-                .join(" ")}
-            >
-              &times;
-            </span>
+            <span className="text-reset">&times;</span>
           </span>
         </button>
       );
