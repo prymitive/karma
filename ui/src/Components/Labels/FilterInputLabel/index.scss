@@ -1,0 +1,45 @@
+@import "~bootswatch/dist/flatly/variables";
+
+.components-filteredinputlabel > .badge,
+.components-filteredinputlabel > svg {
+  /* match outer badge font size */
+  font-size: 100%;
+
+  /* we have badge inside a badge, make the inner one a little brighter
+     in case both use same color classes */
+  filter: brightness(115%);
+}
+
+button.btn.components-filteredinputlabel {
+  cursor: default;
+  margin-top: 0.125rem;
+  margin-bottom: 0.125rem;
+}
+
+button.components-label.btn {
+  &.btn-primary:hover {
+    background-color: $primary;
+  }
+  &.btn-secondary:hover {
+    background-color: $secondary;
+  }
+  &.btn-success:hover {
+    background-color: $success;
+  }
+  &.btn-info:hover {
+    background-color: $info;
+  }
+  &.btn-warning:hover {
+    background-color: $warning;
+  }
+  &.btn-danger:hover {
+    background-color: $danger;
+  }
+  &.btn-light:hover {
+    background-color: $light;
+  }
+  &.btn-dark:hover {
+    // same as in App.scss
+    background-color: #3b4247;
+  }
+}

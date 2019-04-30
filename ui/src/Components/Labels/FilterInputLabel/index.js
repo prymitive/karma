@@ -14,7 +14,7 @@ import { QueryOperators } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { BaseLabel } from "Components/Labels/BaseLabel";
 
-import "./index.css";
+import "./index.scss";
 
 const FilterInputLabel = observer(
   class FilterInputLabel extends BaseLabel {
@@ -48,7 +48,8 @@ const FilterInputLabel = observer(
       let cs = this.getClassAndStyle(
         filter.matcher === QueryOperators.Equal ? filter.name : "",
         filter.matcher === QueryOperators.Equal ? filter.value : "",
-        "components-filteredinputlabel"
+        "components-filteredinputlabel btn-sm border-0",
+        "btn"
       );
 
       const showCounter =
@@ -59,13 +60,14 @@ const FilterInputLabel = observer(
       const rootClasses = filter.applied
         ? cs.className
         : [
-            "badge-secondary components-filteredinputlabel",
+            "btn-secondary btn-sm border-0 components-filteredinputlabel",
             ...cs.baseClassNames
           ].join(" ");
 
       return (
-        <span
-          className={`${rootClasses} d-inline-flex flex-row`}
+        <button
+          type="button"
+          className={`${rootClasses} d-inline-flex flex-row align-items-center`}
           style={filter.applied ? cs.style : {}}
         >
           {filter.isValid ? (
@@ -76,21 +78,20 @@ const FilterInputLabel = observer(
                 </span>
               ) : null
             ) : (
-              <span className="badge">
-                <FontAwesomeIcon icon={faSpinner} spin />
-              </span>
+              <FontAwesomeIcon icon={faSpinner} spin />
             )
           ) : (
-            <span className="badge text-danger">
-              <FontAwesomeIcon icon={faExclamationCircle} />
-            </span>
+            <FontAwesomeIcon
+              icon={faExclamationCircle}
+              className="text-danger"
+            />
           )}
           <TooltipWrapper
             title="Click to edit this filter"
-            className="my-auto mw-100 text-nowrap text-truncate"
+            className="my-auto text-nowrap text-truncate align-text-bottom"
           >
             <RIEInput
-              className="ml-1"
+              className="cursor-text ml-1"
               defaultValue=""
               value={filter.raw}
               propName="raw"
@@ -98,21 +99,20 @@ const FilterInputLabel = observer(
               classEditing="py-0 border-0 bg-light"
             />
           </TooltipWrapper>
-          <button
-            type="button"
-            className="close ml-1"
+          <span
+            className="close ml-1 align-text-bottom cursor-pointer"
             style={filter.applied ? cs.style : {}}
             onClick={() => alertStore.filters.removeFilter(filter.raw)}
           >
             <span
               className={cs.colorClassNames
-                .filter(c => !c.match(/badge-/))
+                .filter(c => !c.match(/btn-|badge-/))
                 .join(" ")}
             >
               &times;
             </span>
-          </button>
-        </span>
+          </span>
+        </button>
       );
     }
   }

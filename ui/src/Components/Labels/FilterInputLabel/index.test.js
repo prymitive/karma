@@ -54,35 +54,35 @@ const ValidateOnChange = newRaw => {
 };
 
 describe("<FilterInputLabel /> className", () => {
-  it("unapplied filter with '=' matcher should use 'badge-secondary' class", () => {
-    ValidateClass("=", false, "badge-secondary");
+  it("unapplied filter with '=' matcher should use 'btn-secondary' class", () => {
+    ValidateClass("=", false, "btn-secondary");
   });
 
-  it("unapplied filter with any matcher other than '=' should use 'badge-secondary' class", () => {
+  it("unapplied filter with any matcher other than '=' should use 'btn-secondary' class", () => {
     for (const matcher of NonEqualMatchers) {
-      ValidateClass(matcher, false, "badge-secondary");
+      ValidateClass(matcher, false, "btn-secondary");
     }
   });
 
-  it("applied filter with '=' matcher and no color should use 'badge-warning' class", () => {
-    ValidateClass("=", true, "badge-warning");
+  it("applied filter with '=' matcher and no color should use 'btn-warning' class", () => {
+    ValidateClass("=", true, "btn-warning");
   });
 
-  it("applied filter with any matcher other than '=' and no color should use 'badge-warning' class", () => {
+  it("applied filter with any matcher other than '=' and no color should use 'btn-warning' class", () => {
     for (const matcher of NonEqualMatchers) {
-      ValidateClass(matcher, true, "badge-warning");
+      ValidateClass(matcher, true, "btn-warning");
     }
   });
 
-  it("applied filter included in staticColorLabels with '=' matcher should use 'badge-info' class", () => {
+  it("applied filter included in staticColorLabels with '=' matcher should use 'btn-info' class", () => {
     alertStore.settings.values.staticColorLabels = ["foo"];
-    ValidateClass("=", true, "badge-info");
+    ValidateClass("=", true, "btn-info");
   });
 
-  it("applied filter included in staticColorLabels with any matcher other than '=' should use 'badge-warning' class", () => {
+  it("applied filter included in staticColorLabels with any matcher other than '=' should use 'btn-warning' class", () => {
     alertStore.settings.values.staticColorLabels = ["foo"];
     for (const matcher of NonEqualMatchers) {
-      ValidateClass(matcher, true, "badge-warning");
+      ValidateClass(matcher, true, "btn-warning");
     }
   });
 });
@@ -171,7 +171,7 @@ describe("<FilterInputLabel /> onChange", () => {
         filter={alertStore.filters.values[0]}
       />
     );
-    const button = tree.find("button");
+    const button = tree.find(".close");
     button.simulate("click");
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(

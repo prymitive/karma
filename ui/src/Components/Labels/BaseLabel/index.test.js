@@ -4,9 +4,9 @@ import { shallow } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
 import {
-  StaticColorLabelClass,
-  DefaultLabelClass,
-  AlertNameLabelClass,
+  StaticColorLabelClassMap,
+  DefaultLabelClassMap,
+  AlertNameLabelClassMap,
   StateLabelClassMap
 } from "Common/Colors";
 import { BaseLabel } from ".";
@@ -36,62 +36,68 @@ const FakeBaseLabel = (name = "foo", value = "bar") => {
 };
 
 describe("<BaseLabel />", () => {
-  it("static label uses StaticColorLabelClass", () => {
+  it("static label uses StaticColorLabelClassMap.badge", () => {
     alertStore.settings.values.staticColorLabels = ["foo", "job", "bar"];
     const tree = FakeBaseLabel();
-    expect(tree.find(".components-label").hasClass(StaticColorLabelClass)).toBe(
-      true
-    );
+    expect(
+      tree.find(".components-label").hasClass(StaticColorLabelClassMap.badge)
+    ).toBe(true);
   });
 
-  it("non-static label doesn't use StaticColorLabelClass", () => {
-    alertStore.settings.values.staticColorLabels = [];
+  Object.entries(StaticColorLabelClassMap).map(([key, val]) =>
+    it(`non-static label doesn't use StaticColorLabelClassMap.${key}`, () => {
+      alertStore.settings.values.staticColorLabels = [];
+      const tree = FakeBaseLabel();
+      expect(tree.find(".components-label").hasClass(val)).toBe(false);
+    })
+  );
+
+  it("label with no special color information should use DefaultLabelClassMap.badge", () => {
     const tree = FakeBaseLabel();
-    expect(tree.find(".components-label").hasClass(StaticColorLabelClass)).toBe(
-      false
-    );
+    expect(
+      tree.find(".components-label").hasClass(DefaultLabelClassMap.badge)
+    ).toBe(true);
   });
 
-  it("label with no special color information should use DefaultLabelClass", () => {
-    const tree = FakeBaseLabel();
-    expect(tree.find(".components-label").hasClass(DefaultLabelClass)).toBe(
-      true
-    );
-  });
-
-  it("alertname label should use AlertNameLabelClass", () => {
+  it("alertname label should use AlertNameLabelClassMap.badge", () => {
     const tree = FakeBaseLabel("alertname", "foo");
-    expect(tree.find(".components-label").hasClass(AlertNameLabelClass)).toBe(
-      true
-    );
+    expect(
+      tree.find(".components-label").hasClass(AlertNameLabelClassMap.badge)
+    ).toBe(true);
   });
 
   it("@state=active label should use StateLabelClassMap.active class", () => {
     const tree = FakeBaseLabel("@state", "active");
     expect(
-      tree.find(".components-label").hasClass(StateLabelClassMap.active)
+      tree
+        .find(".components-label")
+        .hasClass(`badge-${StateLabelClassMap.active}`)
     ).toBe(true);
   });
 
   it("@state=suppressed label should use StateLabelClassMap.suppressed class", () => {
     const tree = FakeBaseLabel("@state", "suppressed");
     expect(
-      tree.find(".components-label").hasClass(StateLabelClassMap.suppressed)
+      tree
+        .find(".components-label")
+        .hasClass(`badge-${StateLabelClassMap.suppressed}`)
     ).toBe(true);
   });
 
   it("@state=unprocessed label should use StateLabelClassMap.unprocessed class", () => {
     const tree = FakeBaseLabel("@state", "unprocessed");
     expect(
-      tree.find(".components-label").hasClass(StateLabelClassMap.unprocessed)
+      tree
+        .find(".components-label")
+        .hasClass(`badge-${StateLabelClassMap.unprocessed}`)
     ).toBe(true);
   });
 
-  it("@state with unknown label should use DefaultLabelClass", () => {
+  it("@state with unknown label should use DefaultLabelClassMap.badge", () => {
     const tree = FakeBaseLabel("@state", "foobar");
-    expect(tree.find(".components-label").hasClass(DefaultLabelClass)).toBe(
-      true
-    );
+    expect(
+      tree.find(".components-label").hasClass(DefaultLabelClassMap.badge)
+    ).toBe(true);
   });
 
   it("style prop on a label included in staticColorLabels should be empty", () => {

@@ -3,10 +3,10 @@ import PropTypes from "prop-types";
 
 import { AlertStore } from "Stores/AlertStore";
 import {
-  StaticColorLabelClass,
-  StateLabelClassMap,
-  DefaultLabelClass,
-  AlertNameLabelClass
+  StaticColorLabelClassMap,
+  DefaultLabelClassMap,
+  AlertNameLabelClassMap,
+  StateLabelClassMap
 } from "Common/Colors";
 import { QueryOperators, FormatQuery, StaticLabels } from "Common/Query";
 
@@ -22,15 +22,17 @@ class BaseLabel extends Component {
     value: PropTypes.string.isRequired
   };
 
-  getClassAndStyle(name, value, extraClass = "") {
+  getClassAndStyle(name, value, extraClass, baseClass) {
     const { alertStore } = this.props;
+
+    const elementType = baseClass || "badge";
 
     const data = {
       style: {},
       className: "",
       baseClassNames: [
         "components-label",
-        "badge",
+        elementType,
         "text-nowrap",
         "text-truncate",
         "mw-100"
@@ -39,11 +41,15 @@ class BaseLabel extends Component {
     };
 
     if (name === StaticLabels.AlertName) {
-      data.colorClassNames.push(AlertNameLabelClass);
+      data.colorClassNames.push(AlertNameLabelClassMap[elementType]);
     } else if (name === StaticLabels.State) {
-      data.colorClassNames.push(StateLabelClassMap[value] || DefaultLabelClass);
+      data.colorClassNames.push(
+        StateLabelClassMap[value]
+          ? `${elementType}-${StateLabelClassMap[value]}`
+          : DefaultLabelClassMap[elementType]
+      );
     } else if (alertStore.settings.values.staticColorLabels.includes(name)) {
-      data.colorClassNames.push(StaticColorLabelClass);
+      data.colorClassNames.push(StaticColorLabelClassMap[elementType]);
     } else {
       const c = alertStore.data.getColorData(name, value);
       if (c) {
@@ -62,12 +68,12 @@ class BaseLabel extends Component {
         );
       } else {
         // if not fall back to class
-        data.colorClassNames.push(DefaultLabelClass);
+        data.colorClassNames.push(DefaultLabelClassMap[elementType]);
       }
     }
     data.className = `${[...data.baseClassNames, ...data.colorClassNames].join(
       " "
-    )} ${extraClass}`;
+    )} ${extraClass || ""}`;
 
     return data;
   }
