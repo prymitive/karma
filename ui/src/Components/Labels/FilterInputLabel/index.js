@@ -11,7 +11,6 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
 import { AlertStore } from "Stores/AlertStore";
 import { QueryOperators } from "Common/Query";
-import { TooltipWrapper } from "Components/TooltipWrapper";
 import { BaseLabel } from "Components/Labels/BaseLabel";
 
 import "./index.scss";
@@ -86,8 +85,8 @@ const FilterInputLabel = observer(
               className="text-danger"
             />
           )}
-          <TooltipWrapper
-            title="Click to edit this filter"
+          <span
+            data-tip="Click to edit this filter"
             className="my-auto text-nowrap text-truncate align-text-bottom"
           >
             <RIEInput
@@ -98,7 +97,7 @@ const FilterInputLabel = observer(
               change={this.onChange}
               classEditing="py-0 border-0 bg-light"
             />
-          </TooltipWrapper>
+          </span>
           <span
             className="close ml-1 align-text-bottom cursor-pointer"
             style={filter.applied ? cs.style : {}}

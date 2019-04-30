@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { inject, observer } from "mobx-react";
 
 import { AlertStore } from "Stores/AlertStore";
-import { TooltipWrapper } from "Components/TooltipWrapper";
 import { BaseLabel } from "Components/Labels/BaseLabel";
 
 // Same as FilteringLabel but for labels that are counters (usually @state)
@@ -33,24 +32,21 @@ const FilteringCounterBadge = inject("alertStore")(
         );
 
         return (
-          <TooltipWrapper
-            title={`Click to only show ${value} alerts or Alt+Click to hide them`}
+          <span
+            className={
+              themed
+                ? cs.className
+                : [
+                    "badge-light badge-pill components-label-with-hover",
+                    ...cs.baseClassNames
+                  ].join(" ")
+            }
+            style={themed ? {} : cs.style}
+            onClick={e => this.handleClick(e)}
+            data-tip={`Click to only show ${value} alerts or Alt+Click to hide them`}
           >
-            <span
-              className={
-                themed
-                  ? cs.className
-                  : [
-                      "badge-light badge-pill components-label-with-hover",
-                      ...cs.baseClassNames
-                    ].join(" ")
-              }
-              style={themed ? {} : cs.style}
-              onClick={e => this.handleClick(e)}
-            >
-              {counter}
-            </span>
-          </TooltipWrapper>
+            {counter}
+          </span>
         );
       }
     }

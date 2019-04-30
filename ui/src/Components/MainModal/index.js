@@ -9,7 +9,6 @@ import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { TooltipWrapper } from "Components/TooltipWrapper";
 import { Modal } from "Components/Modal";
 import { MainModalContent } from "./MainModalContent";
 
@@ -39,14 +38,13 @@ const MainModal = observer(
       return (
         <React.Fragment>
           <li className="nav-item">
-            <TooltipWrapper title="Settings">
-              <span
-                className="nav-link cursor-pointer"
-                onClick={this.toggle.toggle}
-              >
-                <FontAwesomeIcon icon={faCog} />
-              </span>
-            </TooltipWrapper>
+            <span
+              className="nav-link cursor-pointer"
+              onClick={this.toggle.toggle}
+              data-tip="Settings"
+            >
+              <FontAwesomeIcon icon={faCog} />
+            </span>
           </li>
           <Modal isOpen={this.toggle.show}>
             <MainModalContent

@@ -29,7 +29,6 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { StaticLabels, QueryOperators } from "Common/Query";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
-import { TooltipWrapper } from "Components/TooltipWrapper";
 import { RenderLinkAnnotation } from "../Annotation";
 import { DeleteSilence } from "./DeleteSilence";
 
@@ -332,11 +331,10 @@ const Silence = inject("alertStore")(
                     className="float-right cursor-pointer"
                     onClick={this.collapse.toggle}
                   >
-                    <TooltipWrapper title="Toggle silence details">
-                      <FontAwesomeIcon
-                        icon={this.collapse.value ? faChevronUp : faChevronDown}
-                      />
-                    </TooltipWrapper>
+                    <FontAwesomeIcon
+                      icon={this.collapse.value ? faChevronUp : faChevronDown}
+                      data-tip="Toggle silence details"
+                    />
                   </span>
                   <cite className="components-grid-alertgroup-silences mr-2">
                     {silence.createdBy}

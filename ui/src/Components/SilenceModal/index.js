@@ -10,7 +10,6 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
 import { Modal } from "Components/Modal";
-import { TooltipWrapper } from "Components/TooltipWrapper";
 import { SilenceModalContent } from "./SilenceModalContent";
 
 import "./index.css";
@@ -29,14 +28,13 @@ const SilenceModal = observer(
       return (
         <React.Fragment>
           <li className="nav-item">
-            <TooltipWrapper title="Add new silence">
-              <span
-                className="nav-link cursor-pointer"
-                onClick={silenceFormStore.toggle.toggle}
-              >
-                <FontAwesomeIcon icon={faBellSlash} />
-              </span>
-            </TooltipWrapper>
+            <span
+              className="nav-link cursor-pointer"
+              onClick={silenceFormStore.toggle.toggle}
+              data-tip="Add new silence"
+            >
+              <FontAwesomeIcon icon={faBellSlash} />
+            </span>
           </li>
           <Modal
             isOpen={silenceFormStore.toggle.visible}

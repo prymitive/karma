@@ -12,7 +12,6 @@ import { faSearchPlus } from "@fortawesome/free-solid-svg-icons/faSearchPlus";
 import { faSearchMinus } from "@fortawesome/free-solid-svg-icons/faSearchMinus";
 
 import { AlertStore } from "Stores/AlertStore";
-import { TooltipWrapper } from "Components/TooltipWrapper";
 
 import "./index.css";
 
@@ -66,37 +65,38 @@ const RenderNonLinkAnnotation = inject("alertStore")(
 
         if (!this.toggle.visible) {
           return (
-            <TooltipWrapper title="Click to show annotation value">
-              <div
-                className={`${className} cursor-pointer`}
-                onClick={this.toggle.show}
-              >
-                <FontAwesomeIcon icon={faSearchPlus} className="mr-1" />
-                {name}
-              </div>
-            </TooltipWrapper>
+            <div
+              className={`${className} cursor-pointer`}
+              onClick={this.toggle.show}
+              data-tip="Click to show annotation value"
+            >
+              <FontAwesomeIcon icon={faSearchPlus} className="mr-1" />
+              {name}
+            </div>
           );
         }
 
         return (
-          <TooltipWrapper title="Click the icon to hide annotation value">
-            <div key={name} className={className}>
-              <FontAwesomeIcon
-                icon={faSearchMinus}
-                className="mr-1 cursor-pointer"
-                onClick={this.toggle.hide}
-              />
-              <span className="text-muted">{name}: </span>
-              <Linkify
-                properties={{
-                  target: "_blank",
-                  rel: "noopener noreferrer"
-                }}
-              >
-                {value}
-              </Linkify>
-            </div>
-          </TooltipWrapper>
+          <div
+            key={name}
+            className={className}
+            data-tip="Click the icon to hide annotation value"
+          >
+            <FontAwesomeIcon
+              icon={faSearchMinus}
+              className="mr-1 cursor-pointer"
+              onClick={this.toggle.hide}
+            />
+            <span className="text-muted">{name}: </span>
+            <Linkify
+              properties={{
+                target: "_blank",
+                rel: "noopener noreferrer"
+              }}
+            >
+              {value}
+            </Linkify>
+          </div>
         );
       }
     }

@@ -2,17 +2,11 @@
 
 exports[`<MatchCounter /> matches snapshot with empty matcher 1`] = `
 "
-<div class
-     style=\\"display: inline;\\"
-     data-tooltipped
-     aria-describedby=\\"tippy-tooltip-1\\"
-     data-original-title=\\"Number of alerts matching this label\\"
+<span class=\\"badge badge-light badge-pill\\"
+      style=\\"font-size: 85%;\\"
+      data-tip=\\"Number of alerts matching this label\\"
 >
-  <span class=\\"badge badge-light badge-pill\\"
-        style=\\"font-size: 85%;\\"
-  >
-    0
-  </span>
-</div>
+  0
+</span>
 "
 `;

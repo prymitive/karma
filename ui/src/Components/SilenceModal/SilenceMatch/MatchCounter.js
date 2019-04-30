@@ -13,7 +13,6 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceFormMatcher } from "Models/SilenceForm";
-import { TooltipWrapper } from "Components/TooltipWrapper";
 import { MatcherToFilter, AlertManagersToFilter } from "../Matchers";
 
 const MatchCounter = observer(
@@ -87,32 +86,28 @@ const MatchCounter = observer(
     render() {
       if (this.matchedAlerts.error !== null) {
         return (
-          <TooltipWrapper
-            title={`Failed to fetch alerts matching this label: ${
+          <FontAwesomeIcon
+            className="text-danger"
+            icon={faExclamationCircle}
+            data-tip={`Failed to fetch alerts matching this label: ${
               this.matchedAlerts.error
             }`}
-          >
-            <FontAwesomeIcon
-              className="text-danger"
-              icon={faExclamationCircle}
-            />
-          </TooltipWrapper>
+          />
         );
       }
 
       return (
-        <TooltipWrapper title="Number of alerts matching this label">
-          <span
-            className="badge badge-light badge-pill"
-            style={{ fontSize: "85%" }}
-          >
-            {this.matchedAlerts.total === null ? (
-              <FontAwesomeIcon icon={faSpinner} spin />
-            ) : (
-              this.matchedAlerts.total
-            )}
-          </span>
-        </TooltipWrapper>
+        <span
+          className="badge badge-light badge-pill"
+          style={{ fontSize: "85%" }}
+          data-tip="Number of alerts matching this label"
+        >
+          {this.matchedAlerts.total === null ? (
+            <FontAwesomeIcon icon={faSpinner} spin />
+          ) : (
+            this.matchedAlerts.total
+          )}
+        </span>
       );
     }
   }

@@ -17,22 +17,20 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { IsMobile } from "Common/Device";
 import { BackgroundClassMap } from "Common/Colors";
 import { MountFade } from "Components/Animations/MountFade";
-import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GroupHeader } from "./GroupHeader";
 import { Alert } from "./Alert";
 import { GroupFooter } from "./GroupFooter";
 
 const LoadButton = ({ icon, action, tooltip }) => {
   return (
-    <TooltipWrapper title={tooltip}>
-      <button
-        type="button"
-        className="btn btn-sm py-0 bg-white"
-        onClick={action}
-      >
-        <FontAwesomeIcon className="text-muted" icon={icon} />
-      </button>
-    </TooltipWrapper>
+    <button
+      type="button"
+      className="btn btn-sm py-0 bg-white"
+      onClick={action}
+      data-tip={tooltip}
+    >
+      <FontAwesomeIcon className="text-muted" icon={icon} />
+    </button>
   );
 };
 LoadButton.propTypes = {

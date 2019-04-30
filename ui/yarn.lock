@@ -8196,7 +8196,7 @@ pnp-webpack-plugin@1.2.1:
   dependencies:
     ts-pnp "^1.0.0"
 
-popper.js@^1.11.1, popper.js@^1.14.4:
+popper.js@^1.14.4:
   version "1.15.0"
   resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.15.0.tgz#5560b99bbad7647e9faa475c6b8056621f5a4ff2"
   integrity sha512-w010cY1oCUmI+9KwwlWki+r5jxKfTFDVoadl7MSrIujHU5MJ5OR6HTDj6Xo8aoR/QsA56x8jKjA59qGH4ELtrA==
@@ -9238,6 +9238,11 @@ react-highlighter@0.4.3:
     escape-string-regexp "^1.0.5"
     prop-types "^15.6.0"
 
+react-hint@3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-hint/-/react-hint-3.2.0.tgz#ca805a18330f03fb71bb7a96a34931598899e67d"
+  integrity sha512-ceKa6GaWtXEvj9eb1eOIpRouurb6WLV5fmApKNcxNbpY9xQkO6++1mXij9tlwGh4Ad/Vvv2pqlmoW17LIn1QTA==
+
 react-idle-timer@4.2.5:
   version "4.2.5"
   resolved "https://registry.yarnpkg.com/react-idle-timer/-/react-idle-timer-4.2.5.tgz#eb7d6e1b318f7755b5e0ee810254a8e95a2271b7"
@@ -9430,13 +9435,6 @@ react-themeable@^1.1.0:
   integrity sha1-fURm3ZsrX6dQWHJ4JenxUro3mg4=
   dependencies:
     object-assign "^3.0.0"
-
-react-tippy@1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/react-tippy/-/react-tippy-1.2.3.tgz#8aef183ec4986ca7c5c556465013d95196fecfd8"
-  integrity sha512-cEmhw29DbVP33n9ayo0nLzibuSz6o0A77cZtzno7zGsfOH8tUEGai/8a7TXRIKHPYDooW8iJkJBIPDnxmEu00g==
-  dependencies:
-    popper.js "^1.11.1"
 
 react-transition-group@4.0.0:
   version "4.0.0"

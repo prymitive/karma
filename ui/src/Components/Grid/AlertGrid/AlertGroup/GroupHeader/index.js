@@ -12,7 +12,6 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
-import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GroupMenu } from "./GroupMenu";
 
 const GroupHeader = observer(
@@ -85,11 +84,10 @@ const GroupHeader = observer(
               } cursor-pointer badge text-nowrap text-truncate px-0`}
               onClick={collapseStore.toggle}
             >
-              <TooltipWrapper title="Toggle group details">
-                <FontAwesomeIcon
-                  icon={collapseStore.value ? faChevronUp : faChevronDown}
-                />
-              </TooltipWrapper>
+              <FontAwesomeIcon
+                icon={collapseStore.value ? faChevronUp : faChevronDown}
+                data-tip="Toggle group details"
+              />
             </span>
           </span>
         </h5>

@@ -12,7 +12,6 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BorderClassMap } from "Common/Colors";
 import { StaticLabels } from "Common/Query";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
-import { TooltipWrapper } from "Components/TooltipWrapper";
 import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
 import { Silence } from "../Silence";
 import { AlertMenu } from "./AlertMenu";
@@ -96,11 +95,12 @@ const Alert = observer(
           {alert.alertmanager
             .map(am => am.inhibitedBy.length)
             .reduce((sum, x) => sum + x) > 0 ? (
-            <TooltipWrapper title="This alert is inhibited by other alerts">
-              <span className="text-nowrap text-truncate mr-1 badge badge-light">
-                <FontAwesomeIcon className="text-success" icon={faVolumeMute} />
-              </span>
-            </TooltipWrapper>
+            <span
+              className="text-nowrap text-truncate mr-1 badge badge-light"
+              data-tip="This alert is inhibited by other alerts"
+            >
+              <FontAwesomeIcon className="text-success" icon={faVolumeMute} />
+            </span>
           ) : null}
           {Object.entries(alert.labels).map(([name, value]) => (
             <FilteringLabel key={name} name={name} value={value} />
