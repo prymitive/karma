@@ -20,7 +20,7 @@ require (
 	github.com/go-openapi/validate v0.19.0
 	github.com/golangci/golangci-lint v1.16.0
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
-	github.com/jarcoal/httpmock v1.0.3
+	github.com/jarcoal/httpmock v1.0.4
 	github.com/mcuadros/go-gin-prometheus v0.0.0-20181030200533-58963fb32f54
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.8.1 // indirect
