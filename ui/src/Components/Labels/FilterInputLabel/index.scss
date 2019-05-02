@@ -1,5 +1,9 @@
 @import "~bootswatch/dist/flatly/variables";
 
+.components-filteredinputlabel-text {
+  font-size: 1rem;
+}
+
 .components-filteredinputlabel > .badge,
 .components-filteredinputlabel > svg {
   /* match outer badge font size */
