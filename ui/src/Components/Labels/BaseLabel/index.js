@@ -30,13 +30,7 @@ class BaseLabel extends Component {
     const data = {
       style: {},
       className: "",
-      baseClassNames: [
-        "components-label",
-        elementType,
-        "text-nowrap",
-        "text-truncate",
-        "mw-100"
-      ],
+      baseClassNames: ["components-label", elementType],
       colorClassNames: []
     };
 

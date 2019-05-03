@@ -5,7 +5,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
 <li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
   <div>
     <div class
-         style=\\"display: inline;\\"
+         style=\\"display: inline-block; max-width: 100%;\\"
          data-tooltipped
          aria-describedby=\\"tippy-tooltip-5\\"
          data-original-title=\\"Click the icon to hide annotation value\\"
@@ -34,7 +34,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
       </div>
     </div>
     <div class
-         style=\\"display: inline;\\"
+         style=\\"display: inline-block; max-width: 100%;\\"
          data-tooltipped
          aria-describedby=\\"tippy-tooltip-6\\"
          data-original-title=\\"Click to show annotation value\\"
@@ -58,7 +58,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
       </div>
     </div>
   </div>
-  <span class=\\"components-label-with-hover text-nowrap text-truncate px-1 mr-1 badge badge-secondary cursor-pointer components-grid-alert-099c5ca6d1c92f615b13056b935d0c8dee70f18c-0988cb349635341c67d91bfe3454d2b3178c443c\\"
+  <span class=\\"components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer components-grid-alert-099c5ca6d1c92f615b13056b935d0c8dee70f18c-0988cb349635341c67d91bfe3454d2b3178c443c\\"
         data-toggle=\\"dropdown\\"
   >
     <svg aria-hidden=\\"true\\"
@@ -81,12 +81,12 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     </time>
   </span>
   <div class
-       style=\\"display: inline;\\"
+       style=\\"display: inline-block; max-width: 100%;\\"
        data-tooltipped
        aria-describedby=\\"tippy-tooltip-7\\"
        data-original-title=\\"This alert is inhibited by other alerts\\"
   >
-    <span class=\\"text-nowrap text-truncate mr-1 badge badge-light\\">
+    <span class=\\"mr-1 badge badge-light\\">
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
@@ -104,12 +104,12 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     </span>
   </div>
   <div class
-       style=\\"display: inline;\\"
+       style=\\"display: inline-block; max-width: 100%;\\"
        data-tooltipped
        aria-describedby=\\"tippy-tooltip-8\\"
        data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
   >
-    <span class=\\"components-label badge text-nowrap text-truncate mw-100 badge-warning components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         job:
       </span>
@@ -119,12 +119,12 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     </span>
   </div>
   <div class
-       style=\\"display: inline;\\"
+       style=\\"display: inline-block; max-width: 100%;\\"
        data-tooltipped
        aria-describedby=\\"tippy-tooltip-9\\"
        data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
   >
-    <span class=\\"components-label badge text-nowrap text-truncate mw-100 badge-warning components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         cluster:
       </span>
@@ -136,7 +136,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
   <a href=\\"http://localhost\\"
      target=\\"_blank\\"
      rel=\\"noopener noreferrer\\"
-     class=\\"components-label-with-hover text-nowrap text-truncate badge mr-1 components-grid-annotation-link\\"
+     class=\\"components-label components-label-with-hover badge mr-1 components-grid-annotation-link\\"
   >
     <svg aria-hidden=\\"true\\"
          focusable=\\"false\\"
@@ -163,7 +163,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
 <li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
   <div>
     <div class
-         style=\\"display: inline;\\"
+         style=\\"display: inline-block; max-width: 100%;\\"
          data-tooltipped
          aria-describedby=\\"tippy-tooltip-1\\"
          data-original-title=\\"Click the icon to hide annotation value\\"
@@ -192,7 +192,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
       </div>
     </div>
     <div class
-         style=\\"display: inline;\\"
+         style=\\"display: inline-block; max-width: 100%;\\"
          data-tooltipped
          aria-describedby=\\"tippy-tooltip-2\\"
          data-original-title=\\"Click to show annotation value\\"
@@ -216,7 +216,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
       </div>
     </div>
   </div>
-  <span class=\\"components-label-with-hover text-nowrap text-truncate px-1 mr-1 badge badge-secondary cursor-pointer components-grid-alert-099c5ca6d1c92f615b13056b935d0c8dee70f18c-0988cb349635341c67d91bfe3454d2b3178c443c\\"
+  <span class=\\"components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer components-grid-alert-099c5ca6d1c92f615b13056b935d0c8dee70f18c-0988cb349635341c67d91bfe3454d2b3178c443c\\"
         data-toggle=\\"dropdown\\"
   >
     <svg aria-hidden=\\"true\\"
@@ -239,12 +239,12 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
     </time>
   </span>
   <div class
-       style=\\"display: inline;\\"
+       style=\\"display: inline-block; max-width: 100%;\\"
        data-tooltipped
        aria-describedby=\\"tippy-tooltip-3\\"
        data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
   >
-    <span class=\\"components-label badge text-nowrap text-truncate mw-100 badge-warning components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         job:
       </span>
@@ -254,12 +254,12 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
     </span>
   </div>
   <div class
-       style=\\"display: inline;\\"
+       style=\\"display: inline-block; max-width: 100%;\\"
        data-tooltipped
        aria-describedby=\\"tippy-tooltip-4\\"
        data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
   >
-    <span class=\\"components-label badge text-nowrap text-truncate mw-100 badge-warning components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         cluster:
       </span>
@@ -271,7 +271,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
   <a href=\\"http://localhost\\"
      target=\\"_blank\\"
      rel=\\"noopener noreferrer\\"
-     class=\\"components-label-with-hover text-nowrap text-truncate badge mr-1 components-grid-annotation-link\\"
+     class=\\"components-label components-label-with-hover badge mr-1 components-grid-annotation-link\\"
   >
     <svg aria-hidden=\\"true\\"
          focusable=\\"false\\"

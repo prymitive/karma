@@ -88,7 +88,7 @@ const FilterInputLabel = observer(
           )}
           <TooltipWrapper
             title="Click to edit this filter"
-            className="my-auto text-nowrap text-truncate align-text-bottom components-filteredinputlabel-text"
+            className="components-filteredinputlabel-text flex-grow-1 flex-shrink-1"
           >
             <RIEInput
               className="cursor-text ml-1"

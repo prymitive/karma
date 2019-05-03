@@ -7,7 +7,7 @@ exports[`<LabelValueInput /> matches snapshot 1`] = `
     <div class=\\"css-10war8y react-select__value-container react-select__value-container--is-multi\\">
       <div title=\\"Number of alerts matching this label\\"
            class
-           style=\\"display:inline\\"
+           style=\\"display:inline-block;max-width:100%\\"
       >
         <span class=\\"badge badge-light badge-pill\\"
               style=\\"font-size:85%\\"

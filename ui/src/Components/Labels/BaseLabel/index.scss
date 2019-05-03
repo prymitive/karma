@@ -8,6 +8,21 @@
 
 .components-label {
   margin-right: 0.25rem;
+
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* https://stackoverflow.com/a/20566810 */
+  vertical-align: bottom !important;
+
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+span.badge.components-label:not(.badge-pill) {
+  /* badge class uses em and we modify font sizes a bit, so switch to rem */
+  padding: 0.25rem 0.4rem;
 }
 
 .components-label-bright {

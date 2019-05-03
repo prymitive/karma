@@ -97,7 +97,7 @@ const Alert = observer(
             .map(am => am.inhibitedBy.length)
             .reduce((sum, x) => sum + x) > 0 ? (
             <TooltipWrapper title="This alert is inhibited by other alerts">
-              <span className="text-nowrap text-truncate mr-1 badge badge-light">
+              <span className="mr-1 badge badge-light">
                 <FontAwesomeIcon className="text-success" icon={faVolumeMute} />
               </span>
             </TooltipWrapper>
