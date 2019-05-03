@@ -9,12 +9,8 @@ Alertmanager `0.16.x` is **NOT** supported by karma due to changes
 in the API, see [this issue](https://github.com/prymitive/karma/issues/115)
 for details.
 A new API endpoint
-[was added](https://github.com/prometheus/alertmanager/pull/1791) and will be
-available in the next Alertmanager release (`>=0.17.0`). This new endpoint is
-supported by karma.
-
-tl;dr skip Alertmanager `0.16.x` and wait for `0.17.0` if you wish to use it
-with karma
+[was added for 0.17.0](https://github.com/prometheus/alertmanager/pull/1791) and
+alertmanager `>=0.17.0` is supported.
 
 ---
 

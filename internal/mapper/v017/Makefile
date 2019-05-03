@@ -1,6 +1,6 @@
-ALERTMANAGER_VERSION := 2fa210d0e3c86bea44a38f4131c069752738a6cb
+ALERTMANAGER_VERSION := v0.17.0
 API_VERSION          := v2
-PACKAGE              := v016
+PACKAGE              := v017
 TARGET_DIR           := /go/src/github.com/prymitive/karma/internal/mapper/$(PACKAGE)
 IMAGE_NAME           := openapi_client_$(PACKAGE)
 

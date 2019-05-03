@@ -1,4 +1,4 @@
-package v016
+package v017
 
 import (
 	"net/http"
@@ -27,7 +27,7 @@ func (m SilenceMapper) QueryArgs() string {
 
 // IsSupported returns true if given version string is supported
 func (m SilenceMapper) IsSupported(version string) bool {
-	versionRange := semver.MustParseRange(">=0.16.0")
+	versionRange := semver.MustParseRange(">=0.17.0")
 	return versionRange(semver.MustParse(version))
 }
 
