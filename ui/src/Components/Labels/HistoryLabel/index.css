@@ -1,4 +1,3 @@
-.badge.components-label-history {
-  /* fix align after text-truncate */
-  vertical-align: middle;
+.components-label.components-label-history {
+    font-size: 80%;
 }

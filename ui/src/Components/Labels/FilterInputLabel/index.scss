@@ -2,6 +2,15 @@
 
 .components-filteredinputlabel-text {
   font-size: 1rem;
+  min-width: 1%;
+
+  & > span {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+    max-width: 100%;
+  }
 }
 
 .components-filteredinputlabel > .badge,

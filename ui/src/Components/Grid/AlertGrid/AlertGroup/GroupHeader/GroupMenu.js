@@ -126,7 +126,7 @@ const GroupMenu = observer(
                 onClick={this.collapse.toggle}
                 className={`${
                   themed ? "text-white" : "text-muted"
-                } cursor-pointer badge text-nowrap text-truncate pl-0 components-grid-alertgroup-${
+                } cursor-pointer badge pl-0 components-label mr-0 components-grid-alertgroup-${
                   group.id
                 }`}
                 data-toggle="dropdown"

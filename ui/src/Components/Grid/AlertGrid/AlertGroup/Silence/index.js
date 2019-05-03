@@ -64,7 +64,7 @@ const SilenceExpiryBadgeWithProgress = ({ silence, progress }) => {
   // if silence is expired we can skip progress value calculation
   if (moment(silence.endsAt) < moment()) {
     return (
-      <span className="badge badge-danger text-nowrap text-truncate mw-100 align-bottom">
+      <span className="badge badge-danger align-bottom">
         Expired <Moment fromNow>{silence.endsAt}</Moment>
       </span>
     );
@@ -80,7 +80,7 @@ const SilenceExpiryBadgeWithProgress = ({ silence, progress }) => {
   }
 
   return (
-    <span className="badge badge-light nmb-05 text-nowrap text-truncate mw-100 align-bottom">
+    <span className="badge badge-light nmb-05 align-bottom">
       Expires <Moment fromNow>{silence.endsAt}</Moment>
       <div className="progress silence-progress bg-white">
         <div
@@ -126,18 +126,16 @@ const SilenceDetails = ({
         />
       </div>
       <div>
-        <span className="badge text-nowrap text-truncate px-1 mr-1">
+        <span className="badge px-1 mr-1">
           <FontAwesomeIcon className="text-muted mr-1" icon={faCalendarCheck} />
           Started <Moment fromNow>{silence.startsAt}</Moment>
         </span>
-        <span
-          className={`badge ${expiresClass} text-nowrap text-truncate px-1 mr-1`}
-        >
+        <span className={`badge ${expiresClass} px-1 mr-1`}>
           <FontAwesomeIcon className="text-muted mr-1" icon={faCalendarTimes} />
           {expiresLabel} <Moment fromNow>{silence.endsAt}</Moment>
         </span>
         <span
-          className="badge badge-secondary text-nowrap text-truncate px-1 cursor-pointer components-label-with-hover mr-1"
+          className="badge badge-secondary px-1 cursor-pointer components-label-with-hover mr-1"
           onClick={onEditSilence}
         >
           <FontAwesomeIcon className="mr-1" icon={faEdit} />
@@ -150,15 +148,12 @@ const SilenceDetails = ({
         />
       </div>
       <div>
-        <span className="badge text-nowrap text-truncate px-1 mr-1">
+        <span className="badge px-1 mr-1">
           <FontAwesomeIcon className="text-muted mr-1" icon={faFilter} />
           Matchers:
         </span>
         {silence.matchers.map(matcher => (
-          <span
-            key={hash(matcher)}
-            className="badge badge-light text-nowrap text-truncate px-1 mr-1"
-          >
+          <span key={hash(matcher)} className="badge badge-light px-1 mr-1">
             {matcher.name}
             {matcher.isRegex ? QueryOperators.Regex : QueryOperators.Equal}
             {matcher.value}

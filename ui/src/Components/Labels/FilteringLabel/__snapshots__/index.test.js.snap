@@ -3,12 +3,12 @@
 exports[`<FilteringLabel /> matches snapshot 1`] = `
 "
 <div class
-     style=\\"display: inline;\\"
+     style=\\"display: inline-block; max-width: 100%;\\"
      data-tooltipped
      aria-describedby=\\"tippy-tooltip-1\\"
      data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
 >
-  <span class=\\"components-label badge text-nowrap text-truncate mw-100 badge-warning components-label-dark components-label-with-hover\\">
+  <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
     <span class=\\"components-label-name\\">
       foo:
     </span>

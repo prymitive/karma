@@ -82,7 +82,7 @@ const GroupHeader = observer(
             <span
               className={`${
                 themedCounters ? "text-muted" : "text-white"
-              } cursor-pointer badge text-nowrap text-truncate px-0`}
+              } cursor-pointer badge px-0 components-label mr-0`}
               onClick={collapseStore.toggle}
             >
               <TooltipWrapper title="Toggle group details">

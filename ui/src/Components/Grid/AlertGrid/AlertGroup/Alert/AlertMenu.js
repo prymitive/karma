@@ -128,7 +128,7 @@ const AlertMenu = observer(
           <Reference>
             {({ ref }) => (
               <span
-                className={`components-label-with-hover text-nowrap text-truncate px-1 mr-1 badge badge-secondary cursor-pointer ${uniqueClass}`}
+                className={`components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer ${uniqueClass}`}
                 ref={ref}
                 onClick={this.collapse.toggle}
                 data-toggle="dropdown"

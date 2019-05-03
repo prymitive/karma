@@ -28,7 +28,7 @@ exports[`<Silence /> matches snapshot when data is present in alertStore 1`] = `
       <span class=\\"blockquote-footer pt-1\\">
         <span class=\\"float-right cursor-pointer\\">
           <div class
-               style=\\"display: inline;\\"
+               style=\\"display: inline-block; max-width: 100%;\\"
                data-tooltipped
                aria-describedby=\\"tippy-tooltip-1\\"
                data-original-title=\\"Toggle silence details\\"
@@ -52,7 +52,7 @@ exports[`<Silence /> matches snapshot when data is present in alertStore 1`] = `
         <cite class=\\"components-grid-alertgroup-silences mr-2\\">
           me@example.com
         </cite>
-        <span class=\\"badge badge-light nmb-05 text-nowrap text-truncate mw-100 align-bottom\\">
+        <span class=\\"badge badge-light nmb-05 align-bottom\\">
           Expires
           <time datetime=\\"946756800000\\">
             in 5 hours
@@ -93,7 +93,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
       <span class=\\"blockquote-footer pt-1\\">
         <span class=\\"float-right cursor-pointer\\">
           <div class
-               style=\\"display: inline;\\"
+               style=\\"display: inline-block; max-width: 100%;\\"
                data-tooltipped
                aria-describedby=\\"tippy-tooltip-5\\"
                data-original-title=\\"Toggle silence details\\"
@@ -123,12 +123,12 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
   <div class=\\"mt-1\\">
     <div>
       <div class
-           style=\\"display: inline;\\"
+           style=\\"display: inline-block; max-width: 100%;\\"
            data-tooltipped
            aria-describedby=\\"tippy-tooltip-6\\"
            data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
       >
-        <span class=\\"components-label badge text-nowrap text-truncate mw-100 badge-warning components-label-dark components-label-with-hover\\">
+        <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
           <span class=\\"components-label-name\\">
             @alertmanager:
           </span>
@@ -140,7 +140,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
       <a href=\\"file:///mock/#/silences/4cf5fd82-1edd-4169-99d1-ff8415e72179\\"
          target=\\"_blank\\"
          rel=\\"noopener noreferrer\\"
-         class=\\"components-label-with-hover text-nowrap text-truncate badge mr-1 components-grid-annotation-link\\"
+         class=\\"components-label components-label-with-hover badge mr-1 components-grid-annotation-link\\"
       >
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
@@ -160,7 +160,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
       </a>
     </div>
     <div>
-      <span class=\\"badge text-nowrap text-truncate px-1 mr-1\\">
+      <span class=\\"badge px-1 mr-1\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -180,7 +180,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
           5 hours ago
         </time>
       </span>
-      <span class=\\"badge  text-nowrap text-truncate px-1 mr-1\\">
+      <span class=\\"badge  px-1 mr-1\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -200,7 +200,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
           in 5 hours
         </time>
       </span>
-      <span class=\\"badge badge-secondary text-nowrap text-truncate px-1 cursor-pointer components-label-with-hover mr-1\\">
+      <span class=\\"badge badge-secondary px-1 cursor-pointer components-label-with-hover mr-1\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -217,7 +217,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
         </svg>
         Edit
       </span>
-      <span class=\\"badge badge-danger text-nowrap text-truncate px-1 cursor-pointer components-label-with-hover\\">
+      <span class=\\"badge badge-danger px-1 cursor-pointer components-label-with-hover\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -236,7 +236,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
       </span>
     </div>
     <div>
-      <span class=\\"badge text-nowrap text-truncate px-1 mr-1\\">
+      <span class=\\"badge px-1 mr-1\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -253,10 +253,10 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
         </svg>
         Matchers:
       </span>
-      <span class=\\"badge badge-light text-nowrap text-truncate px-1 mr-1\\">
+      <span class=\\"badge badge-light px-1 mr-1\\">
         alertname=MockAlert
       </span>
-      <span class=\\"badge badge-light text-nowrap text-truncate px-1 mr-1\\">
+      <span class=\\"badge badge-light px-1 mr-1\\">
         instance=~foo[0-9]+
       </span>
     </div>
