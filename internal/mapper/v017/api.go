@@ -1,4 +1,4 @@
-package v016
+package v017
 
 import (
 	"net/http"
@@ -10,9 +10,9 @@ import (
 	httptransport "github.com/go-openapi/runtime/client"
 
 	"github.com/prymitive/karma/internal/mapper"
-	"github.com/prymitive/karma/internal/mapper/v016/client"
-	"github.com/prymitive/karma/internal/mapper/v016/client/alertgroup"
-	"github.com/prymitive/karma/internal/mapper/v016/client/silence"
+	"github.com/prymitive/karma/internal/mapper/v017/client"
+	"github.com/prymitive/karma/internal/mapper/v017/client/alertgroup"
+	"github.com/prymitive/karma/internal/mapper/v017/client/silence"
 	"github.com/prymitive/karma/internal/models"
 )
 

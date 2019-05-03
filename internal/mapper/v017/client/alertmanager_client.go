@@ -11,11 +11,11 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	"github.com/prymitive/karma/internal/mapper/v016/client/alert"
-	"github.com/prymitive/karma/internal/mapper/v016/client/alertgroup"
-	"github.com/prymitive/karma/internal/mapper/v016/client/general"
-	"github.com/prymitive/karma/internal/mapper/v016/client/receiver"
-	"github.com/prymitive/karma/internal/mapper/v016/client/silence"
+	"github.com/prymitive/karma/internal/mapper/v017/client/alert"
+	"github.com/prymitive/karma/internal/mapper/v017/client/alertgroup"
+	"github.com/prymitive/karma/internal/mapper/v017/client/general"
+	"github.com/prymitive/karma/internal/mapper/v017/client/receiver"
+	"github.com/prymitive/karma/internal/mapper/v017/client/silence"
 )
 
 // Default alertmanager HTTP client.
