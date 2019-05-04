@@ -54,7 +54,8 @@ const Fetcher = observer(
     };
 
     componentDidMount() {
-      this.fetchIfIdle();
+      // start first fetch once the browser is done doing busy loading
+      window.requestAnimationFrame(this.fetchIfIdle);
       this.timer = setInterval(this.timerTick, 1000);
     }
 

@@ -29,9 +29,12 @@ beforeEach(() => {
 
   settingsStore = new Settings();
   settingsStore.fetchConfig.config.interval = 30;
+
+  jest.spyOn(window, "requestAnimationFrame").mockImplementation(cb => cb());
 });
 
 afterEach(() => {
+  window.requestAnimationFrame.mockRestore();
   jest.clearAllTimers();
   jest.clearAllMocks();
   jest.restoreAllMocks();
