@@ -342,9 +342,9 @@ describe("<AlertGrid />", () => {
     const tree = ShallowAlertGrid();
     const alertGroups = tree.find("AlertGroup");
     expect(alertGroups.map(g => g.props().group.id)).toEqual([
-      "id3",
+      "id2",
       "id1",
-      "id2"
+      "id3"
     ]);
   });
 

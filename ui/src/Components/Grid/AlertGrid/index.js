@@ -25,7 +25,8 @@ import { GridSizesConfig, GetGridElementWidth } from "./GridSize";
 
 import "./index.css";
 
-const getGroupStartsAt = g => moment.max(g.alerts.map(a => moment(a.startsAt)));
+const getGroupStartsAt = g =>
+  moment.max(g.alerts.map(a => moment(a.startsAt))).valueOf();
 
 const getLabelValue = (alertStore, settingsStore, sortOrder, sortLabel, g) => {
   // if timestamp sort is enabled use latest alert for sorting
@@ -50,6 +51,18 @@ const getLabelValue = (alertStore, settingsStore, sortOrder, sortLabel, g) => {
 
   // if we have a mapped value then return it, if not return original value
   return mappedValue !== undefined ? mappedValue : labelValue;
+};
+
+const compareByTimestamp = (a, b) => {
+  const ast = getGroupStartsAt(a);
+  const bst = getGroupStartsAt(b);
+  if (ast > bst) {
+    return -1;
+  } else if (ast < bst) {
+    return 1;
+  } else {
+    return 0;
+  }
 };
 
 const AlertGrid = observer(
@@ -181,8 +194,8 @@ const AlertGrid = observer(
       );
 
       if (av === undefined && av === undefined) {
-        // if both alerts lack the label they are equal
-        return 0;
+        // if both alerts lack the label they are equal, fallback to timestamps
+        return compareByTimestamp(a, b);
       } else if (av === undefined || av > bv) {
         // if first one lacks it it's should be rendered after alerts with that label
         return val;
@@ -192,15 +205,9 @@ const AlertGrid = observer(
       } else if (
         sortOrder !== settingsStore.gridConfig.options.startsAt.value
       ) {
-        const ast = getGroupStartsAt(a);
-        const bst = getGroupStartsAt(b);
-        if (ast > bst) {
-          return 1;
-        } else if (ast < bst) {
-          return -1;
-        } else {
-          return 0;
-        }
+        // if values are equal use timestamps as secondary sort, but only
+        // if we didn't already sort by timestamps
+        return compareByTimestamp(a, b);
       } else {
         return 0;
       }
