@@ -195,8 +195,11 @@ const AlertGroup = observer(
       }
 
       return (
-        <div className="components-grid-alertgrid-alertgroup p-1" style={style}>
-          <MountFade in={true}>
+        <MountFade in={true}>
+          <div
+            className="components-grid-alertgrid-alertgroup p-1"
+            style={style}
+          >
             <div className={`card ${cardBackgroundClass}`}>
               <GroupHeader
                 collapseStore={this.collapse}
@@ -258,8 +261,8 @@ const AlertGroup = observer(
                 />
               ) : null}
             </div>
-          </MountFade>
-        </div>
+          </div>
+        </MountFade>
       );
     }
   }

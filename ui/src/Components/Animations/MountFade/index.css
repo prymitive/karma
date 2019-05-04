@@ -1,7 +1,12 @@
+.components-animation-fade {
+  will-change: opacity;
+  transform: translateZ(0);
+}
+
 .components-animation-fade-appear {
   opacity: 0.01;
 }
 .components-animation-fade-appear-active {
   opacity: 1;
-  transition: all 0.3s ease-in;
+  transition: opacity 0.3s ease-in;
 }
