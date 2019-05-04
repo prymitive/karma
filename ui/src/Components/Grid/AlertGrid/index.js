@@ -25,6 +25,33 @@ import { GridSizesConfig, GetGridElementWidth } from "./GridSize";
 
 import "./index.css";
 
+const getGroupStartsAt = g => moment.max(g.alerts.map(a => moment(a.startsAt)));
+
+const getLabelValue = (alertStore, settingsStore, sortOrder, sortLabel, g) => {
+  // if timestamp sort is enabled use latest alert for sorting
+  if (sortOrder === settingsStore.gridConfig.options.startsAt.value) {
+    return getGroupStartsAt(g);
+  }
+
+  const labelValue =
+    g.labels[sortLabel] ||
+    g.shared.labels[sortLabel] ||
+    g.alerts[0].labels[sortLabel];
+  let mappedValue;
+
+  // check if we have a mapping for label value
+  if (
+    labelValue !== undefined &&
+    alertStore.settings.values.sorting.valueMapping[sortLabel] !== undefined
+  ) {
+    mappedValue =
+      alertStore.settings.values.sorting.valueMapping[sortLabel][labelValue];
+  }
+
+  // if we have a mapped value then return it, if not return original value
+  return mappedValue !== undefined ? mappedValue : labelValue;
+};
+
 const AlertGrid = observer(
   class AlertGrid extends Component {
     static propTypes = {
@@ -136,38 +163,22 @@ const AlertGrid = observer(
           ? alertStore.settings.values.sorting.grid.label
           : settingsStore.gridConfig.config.sortLabel;
 
-      const getLabelValue = g => {
-        // if timestamp sort is enabled use latest alert for sorting
-        if (sortOrder === settingsStore.gridConfig.options.startsAt.value) {
-          return moment.max(g.alerts.map(a => moment(a.startsAt)));
-        }
-
-        const labelValue =
-          g.labels[sortLabel] ||
-          g.shared.labels[sortLabel] ||
-          g.alerts[0].labels[sortLabel];
-        let mappedValue;
-
-        // check if we have a mapping for label value
-        if (
-          labelValue !== undefined &&
-          alertStore.settings.values.sorting.valueMapping[sortLabel] !==
-            undefined
-        ) {
-          mappedValue =
-            alertStore.settings.values.sorting.valueMapping[sortLabel][
-              labelValue
-            ];
-        }
-
-        // if we have a mapped value then return it, if not return original value
-        return mappedValue !== undefined ? mappedValue : labelValue;
-      };
-
       const val = sortReverse ? -1 : 1;
 
-      const av = getLabelValue(a);
-      const bv = getLabelValue(b);
+      const av = getLabelValue(
+        alertStore,
+        settingsStore,
+        sortOrder,
+        sortLabel,
+        a
+      );
+      const bv = getLabelValue(
+        alertStore,
+        settingsStore,
+        sortOrder,
+        sortLabel,
+        b
+      );
 
       if (av === undefined && av === undefined) {
         // if both alerts lack the label they are equal
@@ -178,6 +189,18 @@ const AlertGrid = observer(
       } else if (bv === undefined || av < bv) {
         // if the first one has label but the second doesn't then the second should be rendered after the first
         return val * -1;
+      } else if (
+        sortOrder !== settingsStore.gridConfig.options.startsAt.value
+      ) {
+        const ast = getGroupStartsAt(a);
+        const bst = getGroupStartsAt(b);
+        if (ast > bst) {
+          return 1;
+        } else if (ast < bst) {
+          return -1;
+        } else {
+          return 0;
+        }
       } else {
         return 0;
       }

@@ -326,6 +326,50 @@ describe("<AlertGrid />", () => {
     ]);
   });
 
+  it("startsAt is used as secondary sort key if all labels have equal value", () => {
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.label.value;
+    settingsStore.gridConfig.config.sortLabel = "cluster";
+
+    MockGroupList(3, 1);
+    alertStore.data.groups.id1.alerts[0].labels.cluster = "dev";
+    alertStore.data.groups.id1.alerts[0].startsAt = "2000-01-01T00:00:02.000Z";
+    alertStore.data.groups.id2.alerts[0].labels.cluster = "dev";
+    alertStore.data.groups.id2.alerts[0].startsAt = "2000-01-01T00:00:03.000Z";
+    alertStore.data.groups.id3.alerts[0].labels.cluster = "dev";
+    alertStore.data.groups.id3.alerts[0].startsAt = "2000-01-01T00:00:01.000Z";
+
+    const tree = ShallowAlertGrid();
+    const alertGroups = tree.find("AlertGroup");
+    expect(alertGroups.map(g => g.props().group.id)).toEqual([
+      "id3",
+      "id1",
+      "id2"
+    ]);
+  });
+
+  it("original order is preserved when startsAt is used as fallback and all alerts have the same timestamp", () => {
+    settingsStore.gridConfig.config.sortOrder =
+      settingsStore.gridConfig.options.label.value;
+    settingsStore.gridConfig.config.sortLabel = "cluster";
+
+    MockGroupList(3, 1);
+    alertStore.data.groups.id1.alerts[0].labels.cluster = "dev";
+    alertStore.data.groups.id1.alerts[0].startsAt = "2000-01-01T00:00:01.000Z";
+    alertStore.data.groups.id2.alerts[0].labels.cluster = "dev";
+    alertStore.data.groups.id2.alerts[0].startsAt = "2000-01-01T00:00:01.000Z";
+    alertStore.data.groups.id3.alerts[0].labels.cluster = "dev";
+    alertStore.data.groups.id3.alerts[0].startsAt = "2000-01-01T00:00:01.000Z";
+
+    const tree = ShallowAlertGrid();
+    const alertGroups = tree.find("AlertGroup");
+    expect(alertGroups.map(g => g.props().group.id)).toEqual([
+      "id1",
+      "id2",
+      "id3"
+    ]);
+  });
+
   it("doesn't throw errors after FontFaceObserver timeout", () => {
     MockGroupList(60, 5);
     ShallowAlertGrid();
