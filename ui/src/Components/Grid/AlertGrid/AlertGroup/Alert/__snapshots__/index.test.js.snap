@@ -86,7 +86,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
        aria-describedby=\\"tippy-tooltip-7\\"
        data-original-title=\\"This alert is inhibited by other alerts\\"
   >
-    <span class=\\"mr-1 badge badge-light\\">
+    <span class=\\"mr-1 badge badge-light components-label\\">
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
