@@ -215,6 +215,7 @@ const AlertGrid = observer(
           <MasonryInfiniteScroller
             key={settingsStore.gridConfig.config.groupWidth}
             ref={this.storeMasonryRef}
+            position={false}
             pack={true}
             sizes={this.viewport.gridSizesConfig}
             loadMore={this.loadMore}

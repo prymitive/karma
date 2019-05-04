@@ -1,5 +1,8 @@
-.components-grid-alertgrid-alertgroup {
-  transition-property: top, left;
-  transition-duration: 0.3s;
+.components-grid-alertgrid-alertgroup.components-animation-fade-appear-done {
+  will-change: transform;
+  transform: translateZ(0);
+
+  transition-property: transform;
+  transition-duration: 0.4s;
   transition-timing-function: ease;
 }

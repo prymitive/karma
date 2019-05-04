@@ -1,3 +1,8 @@
+.components-animation-navbar {
+  will-change: opacity;
+  transform: translateZ(0);
+}
+
 .components-animation-navbar-appear,
 .components-animation-navbar-enter {
   opacity: 0.01;
