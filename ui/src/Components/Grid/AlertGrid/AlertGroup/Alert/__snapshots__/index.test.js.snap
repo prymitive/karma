@@ -29,7 +29,9 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
           help:
         </span>
         <span class=\\"Linkify\\">
-          some long text
+          <span style=\\"opacity: 1;\\">
+            some long text
+          </span>
         </span>
       </div>
     </div>
@@ -187,7 +189,9 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
           help:
         </span>
         <span class=\\"Linkify\\">
-          some long text
+          <span style=\\"opacity: 1;\\">
+            some long text
+          </span>
         </span>
       </div>
     </div>

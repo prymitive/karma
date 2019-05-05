@@ -78,7 +78,9 @@ exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=true 1`] = `
       foo:
     </span>
     <span class=\\"Linkify\\">
-      some long text
+      <span>
+        some long text
+      </span>
     </span>
   </div>
 </div>
