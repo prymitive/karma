@@ -6,6 +6,8 @@ import { observer, inject } from "mobx-react";
 
 import Linkify from "react-linkify";
 
+import Flash from "react-reveal/Flash";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
 import { faSearchPlus } from "@fortawesome/free-solid-svg-icons/faSearchPlus";
@@ -93,7 +95,9 @@ const RenderNonLinkAnnotation = inject("alertStore")(
                   rel: "noopener noreferrer"
                 }}
               >
-                {value}
+                <Flash spy={value}>
+                  <span>{value}</span>
+                </Flash>
               </Linkify>
             </div>
           </TooltipWrapper>
