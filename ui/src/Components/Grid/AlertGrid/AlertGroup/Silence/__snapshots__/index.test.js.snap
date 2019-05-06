@@ -160,7 +160,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
       </a>
     </div>
     <div>
-      <span class=\\"badge px-1 mr-1\\">
+      <span class=\\"badge px-1 mr-1 components-label\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -180,7 +180,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
           5 hours ago
         </time>
       </span>
-      <span class=\\"badge  px-1 mr-1\\">
+      <span class=\\"badge  px-1 mr-1 components-label\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -200,7 +200,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
           in 5 hours
         </time>
       </span>
-      <span class=\\"badge badge-secondary px-1 cursor-pointer components-label-with-hover mr-1\\">
+      <span class=\\"badge badge-secondary cursor-pointer components-label components-label-with-hover mr-1\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -217,7 +217,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
         </svg>
         Edit
       </span>
-      <span class=\\"badge badge-danger px-1 cursor-pointer components-label-with-hover\\">
+      <span class=\\"badge badge-danger cursor-pointer components-label components-label-with-hover\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -235,30 +235,36 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
         Delete
       </span>
     </div>
-    <div>
-      <span class=\\"badge px-1 mr-1\\">
-        <svg aria-hidden=\\"true\\"
-             focusable=\\"false\\"
-             data-prefix=\\"fas\\"
-             data-icon=\\"filter\\"
-             class=\\"svg-inline--fa fa-filter fa-w-16 text-muted mr-1\\"
-             role=\\"img\\"
-             xmlns=\\"http://www.w3.org/2000/svg\\"
-             viewbox=\\"0 0 512 512\\"
-        >
-          <path fill=\\"currentColor\\"
-                d=\\"M487.976 0H24.028C2.71 0-8.047 25.866 7.058 40.971L192 225.941V432c0 7.831 3.821 15.17 10.237 19.662l80 55.98C298.02 518.69 320 507.493 320 487.98V225.941l184.947-184.97C520.021 25.896 509.338 0 487.976 0z\\"
+    <div class=\\"d-flex flex-row\\">
+      <div class=\\"flex-shrink-0 flex-grow-0\\">
+        <span class=\\"badge px-1 mr-1 components-label\\">
+          <svg aria-hidden=\\"true\\"
+               focusable=\\"false\\"
+               data-prefix=\\"fas\\"
+               data-icon=\\"filter\\"
+               class=\\"svg-inline--fa fa-filter fa-w-16 text-muted mr-1\\"
+               role=\\"img\\"
+               xmlns=\\"http://www.w3.org/2000/svg\\"
+               viewbox=\\"0 0 512 512\\"
           >
-          </path>
-        </svg>
-        Matchers:
-      </span>
-      <span class=\\"badge badge-light px-1 mr-1\\">
-        alertname=MockAlert
-      </span>
-      <span class=\\"badge badge-light px-1 mr-1\\">
-        instance=~foo[0-9]+
-      </span>
+            <path fill=\\"currentColor\\"
+                  d=\\"M487.976 0H24.028C2.71 0-8.047 25.866 7.058 40.971L192 225.941V432c0 7.831 3.821 15.17 10.237 19.662l80 55.98C298.02 518.69 320 507.493 320 487.98V225.941l184.947-184.97C520.021 25.896 509.338 0 487.976 0z\\"
+            >
+            </path>
+          </svg>
+          Matchers:
+        </span>
+      </div>
+      <div class=\\"flex-shrink-1 flex-grow-1\\"
+           style=\\"min-width: 0px;\\"
+      >
+        <span class=\\"badge badge-light px-1 mr-1 components-label\\">
+          alertname=MockAlert
+        </span>
+        <span class=\\"badge badge-light px-1 mr-1 components-label\\">
+          instance=~foo[0-9]+
+        </span>
+      </div>
     </div>
   </div>
 </div>
