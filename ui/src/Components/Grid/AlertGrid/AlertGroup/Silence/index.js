@@ -126,16 +126,16 @@ const SilenceDetails = ({
         />
       </div>
       <div>
-        <span className="badge px-1 mr-1">
+        <span className="badge px-1 mr-1 components-label">
           <FontAwesomeIcon className="text-muted mr-1" icon={faCalendarCheck} />
           Started <Moment fromNow>{silence.startsAt}</Moment>
         </span>
-        <span className={`badge ${expiresClass} px-1 mr-1`}>
+        <span className={`badge ${expiresClass} px-1 mr-1 components-label`}>
           <FontAwesomeIcon className="text-muted mr-1" icon={faCalendarTimes} />
           {expiresLabel} <Moment fromNow>{silence.endsAt}</Moment>
         </span>
         <span
-          className="badge badge-secondary px-1 cursor-pointer components-label-with-hover mr-1"
+          className="badge badge-secondary cursor-pointer components-label components-label-with-hover mr-1"
           onClick={onEditSilence}
         >
           <FontAwesomeIcon className="mr-1" icon={faEdit} />
@@ -147,18 +147,25 @@ const SilenceDetails = ({
           silenceID={silence.id}
         />
       </div>
-      <div>
-        <span className="badge px-1 mr-1">
-          <FontAwesomeIcon className="text-muted mr-1" icon={faFilter} />
-          Matchers:
-        </span>
-        {silence.matchers.map(matcher => (
-          <span key={hash(matcher)} className="badge badge-light px-1 mr-1">
-            {matcher.name}
-            {matcher.isRegex ? QueryOperators.Regex : QueryOperators.Equal}
-            {matcher.value}
+      <div className="d-flex flex-row">
+        <div className="flex-shrink-0 flex-grow-0">
+          <span className="badge px-1 mr-1 components-label">
+            <FontAwesomeIcon className="text-muted mr-1" icon={faFilter} />
+            Matchers:
           </span>
-        ))}
+        </div>
+        <div className="flex-shrink-1 flex-grow-1" style={{ minWidth: "0px" }}>
+          {silence.matchers.map(matcher => (
+            <span
+              key={hash(matcher)}
+              className="badge badge-light px-1 mr-1 components-label"
+            >
+              {matcher.name}
+              {matcher.isRegex ? QueryOperators.Regex : QueryOperators.Equal}
+              {matcher.value}
+            </span>
+          ))}
+        </div>
       </div>
     </div>
   );

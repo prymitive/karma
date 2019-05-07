@@ -250,7 +250,7 @@ const DeleteSilence = observer(
       return (
         <React.Fragment>
           <span
-            className={`badge badge-danger px-1 cursor-pointer components-label-with-hover`}
+            className={`badge badge-danger cursor-pointer components-label components-label-with-hover`}
             onClick={this.toggle.toggle}
           >
             <FontAwesomeIcon className="mr-1" icon={faTrash} />
