@@ -1190,10 +1190,10 @@
   resolved "https://registry.yarnpkg.com/@nodelib/fs.stat/-/fs.stat-1.1.3.tgz#2b5a3ab3f918cca48a8c754c08168e3f03eba61b"
   integrity sha512-shAmDyaQC4H92APFoIaVDHCx5bStIocgvbwQyxPRrbUY20V1EYTbSDchWbuwlMG3V17cprZhA6+78JfB+3DTPw==
 
-"@sentry/browser@5.1.2":
-  version "5.1.2"
-  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.1.2.tgz#9f1022c9f6390855a7b642b0c8445065f58c7ba2"
-  integrity sha512-Dxa90/Nfgr1sjdabSvnvJlRoLweuV/kv2iWJc1CO252FNncLxZCSSdl0mgltOiKmsxj+hS5oECHgXmqMnl8LCQ==
+"@sentry/browser@5.1.3":
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/@sentry/browser/-/browser-5.1.3.tgz#8fa84903fb31899da1073371a8266f50181f7bef"
+  integrity sha512-oDxc92NVbZUPyhHxuFUzYC+f+pA8KVOQLOITLbBIQnOHZpbEcgBG5oHkCeZuSD2V+TK2R826p+yFolk25Dr3aQ==
   dependencies:
     "@sentry/core" "5.1.2"
     "@sentry/types" "5.1.0"
