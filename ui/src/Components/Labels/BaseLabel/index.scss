@@ -20,9 +20,18 @@
   margin-bottom: 2px;
 }
 
+/* badge class uses em and we modify font sizes a bit, so switch to rem */
 span.badge.components-label:not(.badge-pill) {
-  /* badge class uses em and we modify font sizes a bit, so switch to rem */
-  padding: 0.25rem 0.4rem;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+}
+span.badge.components-label.badge-pill {
+  padding-right: 0.6rem;
+  padding-left: 0.6rem;
+}
+span.badge.components-label {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .components-label-bright {
