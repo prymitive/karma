@@ -7,11 +7,11 @@ require (
 	github.com/cnf/structhash v0.0.0-20180104161610-62a607eb0224
 	github.com/elazarl/go-bindata-assetfs v1.0.1-0.20180223160309-38087fe4dafb
 	github.com/getsentry/raven-go v0.2.0
-	github.com/gin-contrib/cors v0.0.0-20190424004946-bd1331c62cae
+	github.com/gin-contrib/cors v0.0.0-20190509023335-5f50d4fb4e03
 	github.com/gin-contrib/gzip v0.0.1
 	github.com/gin-contrib/static v0.0.0-20190301094727-ed515893e96b
 	github.com/gin-gonic/contrib v0.0.0-20190408174833-b5986969cb50
-	github.com/gin-gonic/gin v1.3.0
+	github.com/gin-gonic/gin v1.4.0
 	github.com/go-bindata/go-bindata v3.1.1+incompatible
 	github.com/go-openapi/errors v0.19.0
 	github.com/go-openapi/runtime v0.19.0
