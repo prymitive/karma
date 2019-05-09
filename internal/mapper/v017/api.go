@@ -18,12 +18,21 @@ import (
 
 func newClient(uri string, headers map[string]string, httpTransport http.RoundTripper) *client.Alertmanager {
 	u, _ := url.Parse(uri)
+
 	transport := httptransport.New(u.Host, path.Join(u.Path, "/api/v2"), []string{u.Scheme})
+
 	if httpTransport != nil {
 		transport.Transport = mapper.SetHeaders(httpTransport, headers)
 	} else {
 		transport.Transport = mapper.SetHeaders(transport.Transport, headers)
 	}
+
+	if u.User.Username() != "" {
+		username := u.User.Username()
+		password, _ := u.User.Password()
+		transport.Transport = mapper.SetAuth(transport.Transport, username, password)
+	}
+
 	c := client.New(transport, nil)
 	return c
 }

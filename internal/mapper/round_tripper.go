@@ -20,3 +20,22 @@ func (hrt *headersRoundTripper) RoundTrip(r *http.Request) (*http.Response, erro
 	}
 	return hrt.inner.RoundTrip(r)
 }
+
+func SetAuth(inner http.RoundTripper, username string, password string) http.RoundTripper {
+	return &authRoundTripper{
+		inner:    inner,
+		Username: username,
+		Password: password,
+	}
+}
+
+type authRoundTripper struct {
+	inner    http.RoundTripper
+	Username string
+	Password string
+}
+
+func (art *authRoundTripper) RoundTrip(r *http.Request) (*http.Response, error) {
+	r.SetBasicAuth(art.Username, art.Password)
+	return art.inner.RoundTrip(r)
+}
