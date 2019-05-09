@@ -46,7 +46,7 @@ const MenuContent = onClickOutside(
     return (
       <FetchPauser>
         <div
-          className="dropdown-menu d-block"
+          className="dropdown-menu d-block shadow"
           ref={popperRef}
           style={popperStyle}
           data-placement={popperPlacement}
