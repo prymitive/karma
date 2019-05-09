@@ -72,7 +72,7 @@ const HistoryMenu = onClickOutside(
   }) => {
     return (
       <div
-        className="dropdown-menu d-block components-navbar-historymenu"
+        className="dropdown-menu d-block shadow components-navbar-historymenu"
         ref={popperRef}
         style={popperStyle}
         data-placement={popperPlacement}
