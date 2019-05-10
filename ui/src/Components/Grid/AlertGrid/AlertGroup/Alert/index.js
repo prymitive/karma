@@ -28,7 +28,8 @@ const Alert = observer(
       showReceiver: PropTypes.bool.isRequired,
       afterUpdate: PropTypes.func.isRequired,
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+      setIsMenuOpen: PropTypes.func.isRequired
     };
 
     render() {
@@ -39,7 +40,8 @@ const Alert = observer(
         showReceiver,
         afterUpdate,
         alertStore,
-        silenceFormStore
+        silenceFormStore,
+        setIsMenuOpen
       } = this.props;
 
       let classNames = [
@@ -92,6 +94,7 @@ const Alert = observer(
             alert={alert}
             alertStore={alertStore}
             silenceFormStore={silenceFormStore}
+            setIsMenuOpen={setIsMenuOpen}
           />
           {alert.alertmanager
             .map(am => am.inhibitedBy.length)

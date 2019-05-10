@@ -20,6 +20,7 @@ beforeEach(() => {
 });
 
 const MockAfterClick = jest.fn();
+const MockSetIsMenuOpen = jest.fn();
 
 const MountedGroupMenu = (group, themed) => {
   return mount(
@@ -29,6 +30,7 @@ const MountedGroupMenu = (group, themed) => {
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
         themed={themed}
+        setIsMenuOpen={MockSetIsMenuOpen}
       />
     </Provider>
   ).find("GroupMenu");

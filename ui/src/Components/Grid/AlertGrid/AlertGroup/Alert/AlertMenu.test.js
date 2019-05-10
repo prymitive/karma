@@ -22,6 +22,7 @@ beforeEach(() => {
 });
 
 const MockAfterClick = jest.fn();
+const MockSetIsMenuOpen = jest.fn();
 
 const MountedAlertMenu = group => {
   return mount(
@@ -31,6 +32,7 @@ const MountedAlertMenu = group => {
         alert={alert}
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
+        setIsMenuOpen={MockSetIsMenuOpen}
       />
     </Provider>
   ).find("AlertMenu");
