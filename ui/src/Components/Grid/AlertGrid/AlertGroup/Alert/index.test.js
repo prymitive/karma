@@ -30,6 +30,7 @@ afterEach(() => {
 });
 
 const MockAfterUpdate = jest.fn();
+const MockSetIsMenuOpen = jest.fn();
 
 const MockedAlert = () => {
   return MockAlert(
@@ -54,6 +55,7 @@ const MountedAlert = (alert, group, showAlertmanagers, showReceiver) => {
         afterUpdate={MockAfterUpdate}
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
+        setIsMenuOpen={MockSetIsMenuOpen}
       />
     </Provider>
   );

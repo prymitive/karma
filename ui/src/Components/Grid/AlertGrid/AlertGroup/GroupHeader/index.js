@@ -25,7 +25,8 @@ const GroupHeader = observer(
       group: APIGroup.isRequired,
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      themedCounters: PropTypes.bool.isRequired
+      themedCounters: PropTypes.bool.isRequired,
+      setIsMenuOpen: PropTypes.func.isRequired
     };
 
     render() {
@@ -34,7 +35,8 @@ const GroupHeader = observer(
         group,
         alertStore,
         silenceFormStore,
-        themedCounters
+        themedCounters,
+        setIsMenuOpen
       } = this.props;
 
       return (
@@ -49,6 +51,7 @@ const GroupHeader = observer(
               alertStore={alertStore}
               silenceFormStore={silenceFormStore}
               themed={!themedCounters}
+              setIsMenuOpen={setIsMenuOpen}
             />
           </span>
           <span className="flex-shrink-1 flex-grow-1" style={{ minWidth: 0 }}>

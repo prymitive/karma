@@ -274,6 +274,50 @@ describe("<AlertGroup /> renderConfig", () => {
   it("clicking + icon loads 5 more alert if there's 25 in total and we're showing 16", () => {
     ValidateLoadButtonAction(25, 1, /fa-plus/, 22, 17);
   });
+
+  it("uses 'z-index: 100' style after setIsMenuOpen() is called on any Alert", () => {
+    MockAlerts(5);
+    const tree = MountedAlertGroup(jest.fn(), false);
+    const instance = tree.find("AlertGroup").instance();
+
+    expect(instance.renderConfig.isMenuOpen).toBe(false);
+
+    tree
+      .find("Alert")
+      .at(0)
+      .props()
+      .setIsMenuOpen(true);
+    expect(instance.renderConfig.isMenuOpen).toBe(true);
+    tree.update();
+    expect(
+      tree
+        .find(".components-grid-alertgrid-alertgroup")
+        .at(0)
+        .props().style.zIndex
+    ).toEqual(100);
+  });
+
+  it("uses 'z-index: 100' style after setIsMenuOpen() is called on AlertGroup header menu", () => {
+    MockAlerts(5);
+    const tree = MountedAlertGroup(jest.fn(), false);
+    const instance = tree.find("AlertGroup").instance();
+
+    expect(instance.renderConfig.isMenuOpen).toBe(false);
+
+    tree
+      .find("GroupHeader")
+      .at(0)
+      .props()
+      .setIsMenuOpen(true);
+    expect(instance.renderConfig.isMenuOpen).toBe(true);
+    tree.update();
+    expect(
+      tree
+        .find(".components-grid-alertgrid-alertgroup")
+        .at(0)
+        .props().style.zIndex
+    ).toEqual(100);
+  });
 });
 
 describe("<AlertGroup /> card theme", () => {

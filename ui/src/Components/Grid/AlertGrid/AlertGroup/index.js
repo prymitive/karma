@@ -71,9 +71,18 @@ const AlertGroup = observer(
         alertGroupConfig.config.defaultRenderCount
       );
 
-      this.renderConfig = observable({
-        alertsToRender: this.defaultRenderCount
-      });
+      this.renderConfig = observable(
+        {
+          alertsToRender: this.defaultRenderCount,
+          isMenuOpen: false,
+          setIsMenuOpen(val) {
+            this.isMenuOpen = val;
+          }
+        },
+        {
+          setIsMenuOpen: action.bound
+        }
+      );
 
       let defaultCollapseState;
       switch (alertGroupConfig.config.defaultCollapseState) {
@@ -194,11 +203,16 @@ const AlertGroup = observer(
         }
       }
 
+      let extraStyle = {};
+      if (this.renderConfig.isMenuOpen) {
+        extraStyle.zIndex = 100;
+      }
+
       return (
         <MountFade in={true}>
           <div
             className="components-grid-alertgrid-alertgroup p-1"
-            style={style}
+            style={{ ...style, ...extraStyle }}
           >
             <div className={`card ${cardBackgroundClass}`}>
               <GroupHeader
@@ -207,6 +221,7 @@ const AlertGroup = observer(
                 alertStore={alertStore}
                 silenceFormStore={silenceFormStore}
                 themedCounters={themedCounters}
+                setIsMenuOpen={this.renderConfig.setIsMenuOpen}
               />
               {this.collapse.value ? null : (
                 <div className="card-body bg-white px-2 py-1">
@@ -225,6 +240,7 @@ const AlertGroup = observer(
                           afterUpdate={afterUpdate}
                           alertStore={alertStore}
                           silenceFormStore={silenceFormStore}
+                          setIsMenuOpen={this.renderConfig.setIsMenuOpen}
                         />
                       ))}
                     {group.alerts.length > this.defaultRenderCount ? (

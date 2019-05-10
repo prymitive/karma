@@ -95,22 +95,29 @@ const AlertMenu = observer(
       group: APIGroup.isRequired,
       alert: APIAlert.isRequired,
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+      setIsMenuOpen: PropTypes.func.isRequired
     };
 
-    collapse = observable(
-      {
-        value: true,
-        toggle() {
-          this.value = !this.value;
+    constructor(props) {
+      super(props);
+
+      this.collapse = observable(
+        {
+          value: true,
+          toggle() {
+            this.value = !this.value;
+            props.setIsMenuOpen(!this.value);
+          },
+          hide() {
+            this.value = true;
+            props.setIsMenuOpen(!this.value);
+          }
         },
-        hide() {
-          this.value = true;
-        }
-      },
-      { toggle: action.bound, hide: action.bound },
-      { name: "Alert menu toggle" }
-    );
+        { toggle: action.bound, hide: action.bound },
+        { name: "Alert menu toggle" }
+      );
+    }
 
     handleClickOutside = action(event => {
       this.collapse.hide();
