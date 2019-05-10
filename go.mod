@@ -10,7 +10,7 @@ require (
 	github.com/gin-contrib/cors v0.0.0-20190424004946-bd1331c62cae
 	github.com/gin-contrib/gzip v0.0.1
 	github.com/gin-contrib/static v0.0.0-20190301094727-ed515893e96b
-	github.com/gin-gonic/contrib v0.0.0-20190408174833-b5986969cb50
+	github.com/gin-gonic/contrib v0.0.0-20190510073033-87e961e51ccc
 	github.com/gin-gonic/gin v1.3.0
 	github.com/go-bindata/go-bindata v3.1.1+incompatible
 	github.com/go-openapi/errors v0.19.0
