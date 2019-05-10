@@ -21,6 +21,13 @@ func GetAbsoluteMockPath(filename string, version string) string {
 // RegisterURL for given url and return 200 status register mock http responder
 func RegisterURL(url string, version string, filename string) {
 	fullPath := GetAbsoluteMockPath(filename, version)
+
+	if _, err := os.Stat(fullPath); err != nil {
+		if os.IsNotExist(err) {
+			return
+		}
+	}
+
 	mockJSON, err := ioutil.ReadFile(fullPath)
 	if err != nil {
 		panic(err)

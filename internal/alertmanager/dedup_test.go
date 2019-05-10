@@ -6,6 +6,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/jarcoal/httpmock"
+
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"
@@ -15,8 +17,10 @@ import (
 
 func init() {
 	log.SetLevel(log.ErrorLevel)
-	for i, uri := range mock.ListAllMockURIs() {
-		name := fmt.Sprintf("dedup-mock-%d", i)
+	httpmock.Activate()
+	for _, version := range mock.ListAllMocks() {
+		name := fmt.Sprintf("dedup-mock-%s", version)
+		uri := fmt.Sprintf("http://%s.localhost", version)
 		am, err := alertmanager.NewAlertmanager(name, uri, alertmanager.WithRequestTimeout(time.Second))
 		if err != nil {
 			log.Fatal(err)
@@ -25,6 +29,13 @@ func init() {
 		if err != nil {
 			panic(fmt.Sprintf("Failed to register Alertmanager instance %s: %s", am.Name, err))
 		}
+
+		mock.RegisterURL(fmt.Sprintf("%s/metrics", uri), version, "metrics")
+		mock.RegisterURL(fmt.Sprintf("%s/api/v1/status", uri), version, "api/v1/status")
+		mock.RegisterURL(fmt.Sprintf("%s/api/v1/silences", uri), version, "api/v1/silences")
+		mock.RegisterURL(fmt.Sprintf("%s/api/v2/silences", uri), version, "api/v2/silences")
+		mock.RegisterURL(fmt.Sprintf("%s/api/v1/alerts/groups", uri), version, "api/v1/alerts/groups")
+		mock.RegisterURL(fmt.Sprintf("%s/api/v2/alerts/groups", uri), version, "api/v2/alerts/groups")
 	}
 }
 
