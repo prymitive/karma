@@ -103,8 +103,8 @@ const MatchCounter = observer(
       return (
         <TooltipWrapper title="Number of alerts matching this label">
           <span
-            className="badge badge-light badge-pill"
-            style={{ fontSize: "85%" }}
+            className="badge badge-light badge-pill d-block"
+            style={{ fontSize: "85%", lineHeight: "1rem" }}
           >
             {this.matchedAlerts.total === null ? (
               <FontAwesomeIcon icon={faSpinner} spin />

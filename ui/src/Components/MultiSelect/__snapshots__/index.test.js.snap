@@ -275,7 +275,7 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true and a value 1`
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           foo
         </div>
-        <div class=\\"css-n82uvk react-select__multi-value__remove\\">
+        <div class=\\"css-1ucqin4 react-select__multi-value__remove\\">
           <svg height=\\"14\\"
                width=\\"14\\"
                viewbox=\\"0 0 20 20\\"

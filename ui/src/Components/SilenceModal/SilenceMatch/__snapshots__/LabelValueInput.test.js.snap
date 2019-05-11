@@ -9,8 +9,8 @@ exports[`<LabelValueInput /> matches snapshot 1`] = `
            class
            style=\\"display:inline-block;max-width:100%\\"
       >
-        <span class=\\"badge badge-light badge-pill\\"
-              style=\\"font-size:85%\\"
+        <span class=\\"badge badge-light badge-pill d-block\\"
+              style=\\"font-size:85%;line-height:1rem\\"
         >
           <svg aria-hidden=\\"true\\"
                focusable=\\"false\\"

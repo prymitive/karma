@@ -9,7 +9,7 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           am1 | am2
         </div>
-        <div class=\\"css-n82uvk react-select__multi-value__remove\\">
+        <div class=\\"css-1ucqin4 react-select__multi-value__remove\\">
           <svg height=\\"14\\"
                width=\\"14\\"
                viewbox=\\"0 0 20 20\\"
@@ -26,7 +26,7 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           am3
         </div>
-        <div class=\\"css-n82uvk react-select__multi-value__remove\\">
+        <div class=\\"css-1ucqin4 react-select__multi-value__remove\\">
           <svg height=\\"14\\"
                width=\\"14\\"
                viewbox=\\"0 0 20 20\\"
