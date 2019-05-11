@@ -11,7 +11,7 @@ require (
 	github.com/gin-contrib/gzip v0.0.1
 	github.com/gin-contrib/static v0.0.0-20190511132412-c1cdf9c9ec7b
 	github.com/gin-gonic/contrib v0.0.0-20190510073033-87e961e51ccc
-	github.com/gin-gonic/gin v1.3.0
+	github.com/gin-gonic/gin v1.4.0
 	github.com/go-bindata/go-bindata v3.1.1+incompatible
 	github.com/go-openapi/errors v0.19.0
 	github.com/go-openapi/runtime v0.19.0
@@ -34,3 +34,5 @@ require (
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v2 v2.2.2
 )
+
+replace github.com/ugorji/go v1.1.4 => github.com/ugorji/go/codec v0.0.0-20190204201341-e444a5086c43
