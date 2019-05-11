@@ -65,6 +65,7 @@ const ReactSelectStyles = {
     color: "#fff",
     backgroundColor: "inherit",
     opacity: "0.4",
+    borderRadius: "inherit",
     "&:hover": {
       color: "#fff",
       backgroundColor: "inherit",
