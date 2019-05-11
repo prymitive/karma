@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 import { Tooltip } from "react-tippy";
 
@@ -10,14 +9,11 @@ const TooltipWrapper = ({ children, ...props }) => (
     delay={[1000, 100]}
     size="small"
     touchHold={true}
-    style={{ display: "inline-block", "maxWidth": "100%" }}
+    style={{ display: "inline-block", maxWidth: "100%" }}
     {...props}
   >
     {children}
   </Tooltip>
 );
-Tooltip.propTypes = {
-  children: PropTypes.node.isRequired
-};
 
 export { TooltipWrapper };
