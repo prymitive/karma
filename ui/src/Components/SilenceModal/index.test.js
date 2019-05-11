@@ -39,12 +39,22 @@ describe("<SilenceModal />", () => {
     expect(tree.find("SilenceModalContent")).toHaveLength(0);
   });
 
-  it("renders the modal when it is shown", () => {
+  it("renders a spinner placeholder while modal content is loading", () => {
+    const tree = MountedSilenceModal();
+    const toggle = tree.find(".nav-link");
+    toggle.simulate("click");
+    expect(tree.find("FontAwesomeIcon")).not.toHaveLength(0);
+    expect(tree.find("SilenceModalContent")).toHaveLength(0);
+    expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(1);
+  });
+
+  it("renders modal content if fallback is not used", () => {
     const tree = MountedSilenceModal();
     const toggle = tree.find(".nav-link");
     toggle.simulate("click");
     expect(tree.find("FontAwesomeIcon")).not.toHaveLength(0);
     expect(tree.find("SilenceModalContent")).toHaveLength(1);
+    expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(0);
   });
 
   it("hides the modal when toggle() is called twice", () => {
