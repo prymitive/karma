@@ -28,8 +28,8 @@ const (
 )
 
 type alertmanagerMetrics struct {
-	cycles float64
-	errors map[string]float64
+	Cycles float64
+	Errors map[string]float64
 }
 
 type alertmanagerStatus struct {
@@ -61,7 +61,7 @@ type Alertmanager struct {
 	lastError    string
 	status       alertmanagerStatus
 	// metrics tracked per alertmanager instance
-	metrics alertmanagerMetrics
+	Metrics alertmanagerMetrics
 	// headers to send with each AlertManager request
 	HTTPHeaders map[string]string
 }
@@ -389,7 +389,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 
 // Pull data from upstream Alertmanager instance
 func (am *Alertmanager) Pull() error {
-	am.metrics.cycles++
+	am.Metrics.Cycles++
 
 	version := am.probeVersion()
 
@@ -399,7 +399,7 @@ func (am *Alertmanager) Pull() error {
 	if err != nil {
 		am.clearData()
 		am.setError(err.Error())
-		am.metrics.errors[labelValueErrorsSilences]++
+		am.Metrics.Errors[labelValueErrorsSilences]++
 		return err
 	}
 
@@ -407,7 +407,7 @@ func (am *Alertmanager) Pull() error {
 	if err != nil {
 		am.clearData()
 		am.setError(err.Error())
-		am.metrics.errors[labelValueErrorsAlerts]++
+		am.Metrics.Errors[labelValueErrorsAlerts]++
 		return err
 	}
 

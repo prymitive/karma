@@ -32,8 +32,8 @@ func NewAlertmanager(name, upstreamURI string, opts ...Option) (*Alertmanager, e
 		autocomplete:   []models.Autocomplete{},
 		knownLabels:    []string{},
 		HTTPHeaders:    map[string]string{},
-		metrics: alertmanagerMetrics{
-			errors: map[string]float64{
+		Metrics: alertmanagerMetrics{
+			Errors: map[string]float64{
 				labelValueErrorsAlerts:   0,
 				labelValueErrorsSilences: 0,
 			},

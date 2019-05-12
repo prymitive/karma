@@ -1,6 +1,9 @@
-package alertmanager
+package main
 
-import "github.com/prometheus/client_golang/prometheus"
+import (
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prymitive/karma/internal/alertmanager"
+)
 
 type karmaCollector struct {
 	collectedAlerts *prometheus.Desc
@@ -46,17 +49,17 @@ func (c *karmaCollector) Describe(ch chan<- *prometheus.Desc) {
 }
 
 func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
-	upstreams := GetAlertmanagers()
+	upstreams := alertmanager.GetAlertmanagers()
 
 	for _, am := range upstreams {
 
 		ch <- prometheus.MustNewConstMetric(
 			c.cyclesTotal,
 			prometheus.CounterValue,
-			am.metrics.cycles,
+			am.Metrics.Cycles,
 			am.Name,
 		)
-		for key, val := range am.metrics.errors {
+		for key, val := range am.Metrics.Errors {
 			ch <- prometheus.MustNewConstMetric(
 				c.errorsTotal,
 				prometheus.CounterValue,
