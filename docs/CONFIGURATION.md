@@ -12,11 +12,15 @@ environment variables:
 
 Example with flags:
 
-    karma --config.file docs/example.yaml
+```shell
+karma --config.file docs/example.yaml
+```
 
 Example with environment variables:
 
-    CONFIG_FILE="docs/example.yaml"
+```shell
+CONFIG_FILE="docs/example.yaml"
+```
 
 ### Alertmanagers
 
@@ -705,8 +709,10 @@ To set the `uri` key from `alertmanager.servers` map `ALERTMANAGER_URI` env or
 `--alertmanager.uri` flag can be used.
 Examples:
 
-    ALERTMANAGER_URI=https://alertmanager.example.com karma
-    karma --alertmanager.uri https://alertmanager.example.com
+```shell
+ALERTMANAGER_URI=https://alertmanager.example.com karma
+karma --alertmanager.uri https://alertmanager.example.com
+```
 
 ### Alertmanager name
 
@@ -714,8 +720,10 @@ To set the `name` key from `alertmanager.servers` map `ALERTMANAGER_NAME` env or
 `--alertmanager.name` flag can be used.
 Examples:
 
-    ALERTMANAGER_NAME=single karma
-    karma --alertmanager.name single
+```shell
+ALERTMANAGER_NAME=single karma
+karma --alertmanager.name single
+```
 
 ### Alertmanager timeout
 
@@ -723,8 +731,10 @@ To set the `timeout` key from `alertmanager.servers` map `ALERTMANAGER_TIMEOUT`
 env or `--alertmanager.timeout` flag can be used.
 Examples:
 
-    ALERTMANAGER_TIMEOUT=10s karma
-    karma --alertmanager.timeout 10s
+```shell
+ALERTMANAGER_TIMEOUT=10s karma
+karma --alertmanager.timeout 10s
+```
 
 ### Alertmanager request proxy
 
@@ -732,5 +742,7 @@ To set the `proxy` key from `alertmanager.servers` map `ALERTMANAGER_PROXY`
 env or `--alertmanager.proxy` flag can be used.
 Examples:
 
-    ALERTMANAGER_PROXY=true karma
-    karma --alertmanager.proxy
+```shell
+ALERTMANAGER_PROXY=true karma
+karma --alertmanager.proxy
+```
