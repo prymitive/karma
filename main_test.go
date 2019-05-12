@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/prymitive/karma/internal/config"
@@ -38,5 +39,16 @@ func TestMetrics(t *testing.T) {
 	r.ServeHTTP(resp, req)
 	if resp.Code != http.StatusOK {
 		t.Errorf("GET /metrics returned status %d", resp.Code)
+	}
+	body := resp.Body.String()
+	for _, s := range []string{
+		"karma_collected_alerts_count",
+		"karma_collected_alerts_count",
+		"karma_collect_cycles_total",
+		"karma_alertmanager_errors_total",
+	} {
+		if !strings.Contains(body, s) {
+			t.Errorf("Metric '%s' missing from /metrics response", s)
+		}
 	}
 }
