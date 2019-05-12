@@ -54,9 +54,9 @@ const ValidateNavClass = (totalFilters, expectedClass) => {
 describe("<NavBar />", () => {
   it("navbar-brand shows 15 alerts with totalAlerts=15", () => {
     alertStore.info.totalAlerts = 15;
-    const tree = RenderNavbar();
+    const tree = MountedNavbar();
     const brand = tree.find(".navbar-brand");
-    expect(brand.text()).toBe("15<FetchIndicator />");
+    expect(brand.text()).toBe("15");
   });
 
   it("navbar-nav includes 'flex-row' class with 0 filters", () => {

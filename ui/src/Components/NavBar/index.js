@@ -8,6 +8,8 @@ import ReactResizeDetector from "react-resize-detector";
 
 import IdleTimer from "react-idle-timer";
 
+import Flash from "react-reveal/Flash";
+
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -122,7 +124,11 @@ const NavBar = observer(
               <nav className="navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block">
                 <ReactResizeDetector handleHeight onResize={this.onResize} />
                 <span className="navbar-brand my-0 mx-2 h1 d-none d-sm-block float-left">
-                  {alertStore.info.totalAlerts}
+                  <Flash spy={alertStore.info.totalAlerts}>
+                    <div className="d-inline-block">
+                      {alertStore.info.totalAlerts}
+                    </div>
+                  </Flash>
                   <FetchIndicator alertStore={alertStore} />
                 </span>
                 <ul className={`navbar-nav float-right d-flex ${flexClass}`}>
