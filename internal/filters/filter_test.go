@@ -541,6 +541,30 @@ var tests = []filterTest{
 		Alert:      models.Alert{},
 		IsMatch:    true,
 	},
+	filterTest{
+		Expression: "@receiver=by-name",
+		IsValid:    true,
+		Alert: models.Alert{
+			Receiver: "by-name",
+		},
+		IsMatch: true,
+	},
+	filterTest{
+		Expression: "@receiver=by-name",
+		IsValid:    true,
+		Alert: models.Alert{
+			Receiver: "by-not-name",
+		},
+		IsMatch: false,
+	},
+	filterTest{
+		Expression: "@receiver=~name",
+		IsValid:    true,
+		Alert: models.Alert{
+			Receiver: "by-not-name",
+		},
+		IsMatch: true,
+	},
 }
 
 func TestFilters(t *testing.T) {
