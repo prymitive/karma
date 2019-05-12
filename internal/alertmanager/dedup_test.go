@@ -132,3 +132,70 @@ func TestStripReceivers(t *testing.T) {
 		t.Errorf("Expected no alerts after stripping all receivers, got %d", len(alerts))
 	}
 }
+
+func TestClearData(t *testing.T) {
+	log.SetLevel(log.PanicLevel)
+	httpmock.Activate()
+	for _, version := range mock.ListAllMocks() {
+		name := fmt.Sprintf("clear-data-mock-%s", version)
+		uri := fmt.Sprintf("http://localhost/clear/%s", version)
+		am, _ := alertmanager.NewAlertmanager(name, uri, alertmanager.WithRequestTimeout(time.Second))
+
+		mock.RegisterURL(fmt.Sprintf("%s/metrics", uri), version, "metrics")
+		_ = am.Pull()
+		if am.Version() != "" {
+			t.Errorf("[%s] Got non-empty version string: %s", am.Name, am.Version())
+		}
+		if am.Error() == "" {
+			t.Errorf("[%s] Got empty error string", am.Name)
+		}
+		if len(am.Silences()) != 0 {
+			t.Errorf("[%s] Get %d silences", am.Name, len(am.Silences()))
+		}
+		if len(am.Alerts()) != 0 {
+			t.Errorf("[%s] Get %d alerts", am.Name, len(am.Alerts()))
+		}
+		if len(am.KnownLabels()) != 0 {
+			t.Errorf("[%s] Get %d known labels", am.Name, len(am.KnownLabels()))
+		}
+
+		mock.RegisterURL(fmt.Sprintf("%s/api/v1/status", uri), version, "api/v1/status")
+		mock.RegisterURL(fmt.Sprintf("%s/api/v1/silences", uri), version, "api/v1/silences")
+		mock.RegisterURL(fmt.Sprintf("%s/api/v2/silences", uri), version, "api/v2/silences")
+		_ = am.Pull()
+		if am.Version() != "" {
+			t.Errorf("[%s] Got non-empty version string: %s", am.Name, am.Version())
+		}
+		if am.Error() == "" {
+			t.Errorf("[%s] Got empty error string", am.Name)
+		}
+		if len(am.Silences()) != 0 {
+			t.Errorf("[%s] Get %d silences", am.Name, len(am.Silences()))
+		}
+		if len(am.Alerts()) != 0 {
+			t.Errorf("[%s] Get %d alerts", am.Name, len(am.Alerts()))
+		}
+		if len(am.KnownLabels()) != 0 {
+			t.Errorf("[%s] Get %d known labels", am.Name, len(am.KnownLabels()))
+		}
+
+		mock.RegisterURL(fmt.Sprintf("%s/api/v1/alerts/groups", uri), version, "api/v1/alerts/groups")
+		mock.RegisterURL(fmt.Sprintf("%s/api/v2/alerts/groups", uri), version, "api/v2/alerts/groups")
+		_ = am.Pull()
+		if am.Version() == "" {
+			t.Errorf("[%s] Got empty version string", am.Name)
+		}
+		if am.Error() != "" {
+			t.Errorf("[%s] Got non-empty error string: %s", am.Name, am.Error())
+		}
+		if len(am.Silences()) == 0 {
+			t.Errorf("[%s] Get %d silences", am.Name, len(am.Silences()))
+		}
+		if len(am.Alerts()) == 0 {
+			t.Errorf("[%s] Get %d alerts", am.Name, len(am.Alerts()))
+		}
+		if len(am.KnownLabels()) == 0 {
+			t.Errorf("[%s] Get %d known labels", am.Name, len(am.KnownLabels()))
+		}
+	}
+}
