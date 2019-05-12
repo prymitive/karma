@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/prymitive/karma/internal/config"
@@ -24,5 +26,17 @@ func TestLogConfig(t *testing.T) {
 		if log.GetLevel() != level {
 			t.Errorf("Config.Log.Level=%s resulted in invalid log level %s", val, log.GetLevel())
 		}
+	}
+}
+
+func TestMetrics(t *testing.T) {
+	mockConfig()
+	r := ginTestEngine()
+	setupMetrics(r)
+	req := httptest.NewRequest("GET", "/metrics", nil)
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Code != http.StatusOK {
+		t.Errorf("GET /metrics returned status %d", resp.Code)
 	}
 }

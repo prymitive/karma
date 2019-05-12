@@ -100,6 +100,12 @@ func setupRouter(router *gin.Engine) {
 	router.NoRoute(notFound)
 }
 
+func setupMetrics(router *gin.Engine) {
+	prom := ginprometheus.NewPrometheus("gin")
+	prom.MetricsPath = getViewURL("/metrics")
+	prom.Use(router)
+}
+
 func setupUpstreams() {
 	for _, s := range config.Config.Alertmanager.Servers {
 
@@ -207,9 +213,7 @@ func main() {
 	t = loadTemplate(t, "ui/build/index.html")
 	router.SetHTMLTemplate(t)
 
-	prom := ginprometheus.NewPrometheus("gin")
-	prom.MetricsPath = getViewURL("/metrics")
-	prom.Use(router)
+	setupMetrics(router)
 
 	if config.Config.Debug {
 		ginpprof.Wrapper(router)
