@@ -1,11 +1,15 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"html/template"
 	"net/http"
+	"os"
+	"os/signal"
 	"path"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/prymitive/karma/internal/alertmanager"
@@ -231,10 +235,28 @@ func main() {
 			log.Fatalf("Failed to setup proxy handlers for Alertmanager '%s': %s", am.Name, err)
 		}
 	}
+
 	listen := fmt.Sprintf("%s:%d", config.Config.Listen.Address, config.Config.Listen.Port)
-	log.Infof("Listening on %s", listen)
-	err := router.Run(listen)
-	if err != nil {
-		log.Fatal(err)
+	httpServer := &http.Server{
+		Addr:    listen,
+		Handler: router,
 	}
+
+	go func() {
+		if err := httpServer.ListenAndServe(); err != nil {
+			log.Infof("Listening on %s", listen)
+		}
+	}()
+
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+	<-quit
+	log.Infof("Shutting down HTTP server")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+	if err := httpServer.Shutdown(ctx); err != nil {
+		log.Fatalf("Shutdown failed: %s", err)
+	}
+	log.Info("HTTP server shut down")
 }
