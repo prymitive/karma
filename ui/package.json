@@ -63,7 +63,7 @@
     "diffable-html": "4.0.0",
     "enzyme": "3.9.0",
     "enzyme-adapter-react-16": "1.13.0",
-    "jest-canvas-mock": "2.0.0",
+    "jest-canvas-mock": "2.1.0",
     "jest-date-mock": "1.0.7",
     "jest-fetch-mock": "2.1.2",
     "markdownlint-cli": "0.16.0",
