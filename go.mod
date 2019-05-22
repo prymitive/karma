@@ -5,7 +5,7 @@ require (
 	github.com/blang/semver v3.6.1+incompatible
 	github.com/certifi/gocertifi v0.0.0-20190506174409-d2eda7129713 // indirect
 	github.com/cnf/structhash v0.0.0-20180104161610-62a607eb0224
-	github.com/elazarl/go-bindata-assetfs v1.0.1-0.20180223160309-38087fe4dafb
+	github.com/elazarl/go-bindata-assetfs v1.0.0
 	github.com/getsentry/raven-go v0.2.0
 	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-contrib/gzip v0.0.1
@@ -21,6 +21,7 @@ require (
 	github.com/golangci/golangci-lint v1.16.0
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.4
+	github.com/jteeuwen/go-bindata v3.0.7+incompatible // indirect
 	github.com/mcuadros/go-gin-prometheus v0.0.0-20181030200533-58963fb32f54
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.8.1 // indirect

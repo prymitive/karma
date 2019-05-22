@@ -82,6 +82,10 @@ class SilenceFormStore {
         return true;
       },
 
+      setAuthor(username) {
+        this.author = username;
+      },
+
       resetStartEnd() {
         this.startsAt = moment();
         this.endsAt = moment().add(1, "hour");

@@ -25,7 +25,7 @@ class SavedFilters {
 }
 
 class FetchConfig {
-  config = localStored("fetchConfig", { interval: 30 }, { delay: 100 });
+  config = localStored("fetchConfig", { interval: 10 }, { delay: 100 });
 
   setInterval = action(newInterval => {
     this.config.interval = newInterval;
