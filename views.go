@@ -31,6 +31,8 @@ func noCache(c *gin.Context) {
 func index(c *gin.Context) {
 	start := time.Now()
 
+	username := c.GetHeader("X-WEBAUTH-USER")
+
 	noCache(c)
 
 	filtersJSON, err := json.Marshal(config.Config.Filters.Default)
@@ -38,6 +40,10 @@ func index(c *gin.Context) {
 		panic(err)
 	}
 	filtersB64 := base64.StdEncoding.EncodeToString(filtersJSON)
+
+	if username != "" {
+            c.SetCookie("am-author", username, 86400, "/", c.Request.Host, false, false)
+        }
 
 	c.HTML(http.StatusOK, "ui/build/index.html", gin.H{
 		"Version":       version,

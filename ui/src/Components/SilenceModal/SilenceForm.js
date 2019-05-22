@@ -25,6 +25,8 @@ import { PayloadPreview } from "./PayloadPreview";
 const IconInput = ({
   type,
   autoComplete,
+  disabled,
+  required,
   icon,
   placeholder,
   value,
@@ -40,8 +42,9 @@ const IconInput = ({
       type={type}
       className="form-control"
       placeholder={placeholder}
+      disabled={disabled}
       value={value}
-      required
+      required={required}
       autoComplete={autoComplete}
       onChange={onChange}
     />
@@ -50,6 +53,8 @@ const IconInput = ({
 IconInput.propTypes = {
   type: PropTypes.string.isRequired,
   autoComplete: PropTypes.string.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  required: PropTypes.bool.isRequired,
   icon: FontAwesomeIcon.propTypes.icon.isRequired,
   placeholder: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
@@ -161,18 +166,34 @@ const SilenceForm = observer(
             </button>
           </TooltipWrapper>
           <DateTimeSelect silenceFormStore={silenceFormStore} />
-          <IconInput
-            type="email"
-            autoComplete="email"
-            placeholder="Author email"
-            icon={faUser}
-            value={silenceFormStore.data.author}
-            onChange={this.onAuthorChange}
-          />
+	  {silenceFormStore.data.author === "" ? (
+              <IconInput
+                type="text"
+                autoComplete="of"
+                placeholder="Author"
+		disabled={false}
+		required={true}
+                icon={faUser}
+                value={silenceFormStore.data.author}
+                onChange={this.onAuthorChange}
+               /> ) : (
+               <IconInput
+                type="text"
+                autoComplete="off"
+                placeholder="Author"
+		disabled={true}
+		required={true}
+                icon={faUser}
+                value={silenceFormStore.data.author}
+                onChange={this.onAuthorChange}
+               /> )
+	  }
           <IconInput
             type="text"
             autoComplete="on"
             placeholder="Comment"
+	    disabled={false}
+	    required={true}
             icon={faCommentDots}
             value={silenceFormStore.data.comment}
             onChange={this.onCommentChange}

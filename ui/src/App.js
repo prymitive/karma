@@ -24,7 +24,16 @@ class App extends Component {
 
     const { defaultFilters } = this.props;
 
+    var cookies = "; " + document.cookie;
+
+    var parts = cookies.split("; am-author=");
+
     this.silenceFormStore = new SilenceFormStore();
+
+    if (parts.length == 2){
+        this.silenceFormStore.data.setAuthor(parts.pop().split(";").shift());
+    }
+
     this.settingsStore = new Settings();
 
     let filters;
