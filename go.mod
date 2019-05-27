@@ -36,3 +36,9 @@ require (
 )
 
 replace github.com/ugorji/go v1.1.4 => github.com/ugorji/go/codec v0.0.0-20190204201341-e444a5086c43
+
+replace mvdan.cc/lint v0.0.0-20170908181259-adc824a0674b => github.com/mvdan/lint v0.0.0-20170908181259-adc824a0674b
+
+replace mvdan.cc/interfacer v0.0.0-20180901003855-c20040233aed => github.com/mvdan/interfacer v0.0.0-20180901003855-c20040233aed
+
+replace mvdan.cc/unparam v0.0.0-20190124213536-fbb59629db34 => github.com/mvdan/unparam v0.0.0-20190124213536-fbb59629db34
