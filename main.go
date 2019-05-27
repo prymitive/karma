@@ -158,6 +158,15 @@ func setupLogger() {
 	default:
 		log.Fatalf("Unknown log level '%s'", config.Config.Log.Level)
 	}
+
+	switch config.Config.Log.Format {
+	case "text":
+		log.SetFormatter(&log.TextFormatter{})
+	case "json":
+		log.SetFormatter(&log.JSONFormatter{})
+	default:
+		log.Fatalf("Unknown log format '%s'", config.Config.Log.Format)
+	}
 }
 
 func main() {

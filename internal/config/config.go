@@ -70,6 +70,8 @@ func init() {
 	pflag.Bool("log.config", true, "Log used configuration to log on startup")
 	pflag.String("log.level", "info",
 		"Log level, one of: debug, info, warning, error, fatal and panic")
+	pflag.String("log.format", "text",
+		"Log format, one of: text, json")
 
 	pflag.StringSlice("receivers.keep", []string{},
 		"List of receivers to keep, all alerts with different receivers will be ignored")
@@ -159,6 +161,7 @@ func (config *configSchema) Read() {
 	config.Listen.Prefix = v.GetString("listen.prefix")
 	config.Log.Config = v.GetBool("log.config")
 	config.Log.Level = v.GetString("log.level")
+	config.Log.Format = v.GetString("log.format")
 	config.Receivers.Keep = v.GetStringSlice("receivers.keep")
 	config.Receivers.Strip = v.GetStringSlice("receivers.strip")
 	config.Sentry.Private = v.GetString("sentry.private")
