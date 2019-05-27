@@ -82,6 +82,7 @@ type configSchema struct {
 	Log struct {
 		Config bool
 		Level  string
+		Format string
 	}
 	JIRA      []jiraRule
 	Receivers struct {

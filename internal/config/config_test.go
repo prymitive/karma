@@ -112,6 +112,7 @@ listen:
 log:
   config: true
   level: info
+  format: text
 jira: []
 receivers:
   keep: []
