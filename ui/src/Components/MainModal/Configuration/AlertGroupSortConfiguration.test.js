@@ -125,7 +125,7 @@ describe("<AlertGroupSortConfiguration />", () => {
   it("label select renders suggestions on click", async () => {
     fetch.mockResponse(JSON.stringify(["alertname", "cluster", "fakeLabel"]));
     const tree = await ExpandSortLabelSuggestions();
-    const options = tree.find(".react-select__option");
+    const options = tree.find("div.react-select__option");
     expect(options).toHaveLength(3);
     expect(options.at(0).text()).toBe("alertname");
     expect(options.at(1).text()).toBe("cluster");
@@ -135,7 +135,7 @@ describe("<AlertGroupSortConfiguration />", () => {
   it("label select handles fetch errors", async () => {
     fetch.mockReject("error");
     const tree = await ExpandSortLabelSuggestions();
-    const options = tree.find(".react-select__option");
+    const options = tree.find("div.react-select__option");
     expect(options).toHaveLength(0);
   });
 
@@ -143,14 +143,14 @@ describe("<AlertGroupSortConfiguration />", () => {
     jest.spyOn(console, "error").mockImplementation(() => {});
     fetch.mockResponse("invalid JSON");
     const tree = await ExpandSortLabelSuggestions();
-    const options = tree.find(".react-select__option");
+    const options = tree.find("div.react-select__option");
     expect(options).toHaveLength(0);
   });
 
   it("clicking on a label option updates settingsStore", async done => {
     fetch.mockResponse(JSON.stringify(["alertname", "cluster", "fakeLabel"]));
     const tree = await ExpandSortLabelSuggestions();
-    const options = tree.find(".react-select__option");
+    const options = tree.find("div.react-select__option");
     options.at(1).simulate("click");
     setTimeout(() => {
       expect(settingsStore.gridConfig.config.sortLabel).toBe("cluster");

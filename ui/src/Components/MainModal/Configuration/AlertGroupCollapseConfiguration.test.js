@@ -27,7 +27,7 @@ describe("<AlertGroupCollapseConfiguration />", () => {
   it("resets stored config to defaults if it is invalid", done => {
     settingsStore.alertGroupConfig.config.defaultCollapseState = "foo";
     const tree = FakeConfiguration();
-    const select = tree.find(".react-select__value-container");
+    const select = tree.find("div.react-select__value-container");
     expect(select.text()).toBe(
       settingsStore.alertGroupConfig.options.collapsedOnMobile.label
     );
@@ -43,7 +43,7 @@ describe("<AlertGroupCollapseConfiguration />", () => {
     settingsStore.alertGroupConfig.config.defaultCollapseState =
       settingsStore.alertGroupConfig.options.expanded.value;
     const tree = FakeConfiguration();
-    const select = tree.find(".react-select__value-container");
+    const select = tree.find("div.react-select__value-container");
     setTimeout(() => {
       expect(select.text()).toBe(
         settingsStore.alertGroupConfig.options.expanded.label
@@ -57,7 +57,7 @@ describe("<AlertGroupCollapseConfiguration />", () => {
     tree
       .find("input#react-select-configuration-collapse-input")
       .simulate("change", { target: { value: " " } });
-    const options = tree.find(".react-select__option");
+    const options = tree.find("div.react-select__option");
     options.at(1).simulate("click");
     setTimeout(() => {
       expect(settingsStore.alertGroupConfig.config.defaultCollapseState).toBe(

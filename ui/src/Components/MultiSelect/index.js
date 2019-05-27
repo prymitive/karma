@@ -1,6 +1,6 @@
 import React from "react";
 
-import CreatableSelect from "react-select/lib/Creatable";
+import Creatable from "react-select/creatable";
 
 const ReactSelectStyles = {
   control: (base, state) =>
@@ -90,12 +90,12 @@ const ReactSelectStyles = {
   })
 };
 
-class MultiSelect extends CreatableSelect {
+class MultiSelect extends Creatable {
   renderProps = () => ({});
 
   render() {
     return (
-      <CreatableSelect
+      <Creatable
         styles={ReactSelectStyles}
         classNamePrefix="react-select"
         {...this.renderProps()}

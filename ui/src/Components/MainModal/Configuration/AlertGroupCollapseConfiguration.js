@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { action } from "mobx";
 import { observer } from "mobx-react";
 
-import ReactSelect from "react-select";
+import Select from "react-select";
 
 import { Settings } from "Stores/Settings";
 import { ReactSelectStyles } from "Components/MultiSelect";
@@ -60,7 +60,7 @@ const AlertGroupCollapseConfiguration = observer(
               Default alert group display
             </label>
           </div>
-          <ReactSelect
+          <Select
             styles={ReactSelectStyles}
             classNamePrefix="react-select"
             instanceId="configuration-collapse"
