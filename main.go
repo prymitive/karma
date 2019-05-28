@@ -171,7 +171,9 @@ func setupLogger() {
 
 func main() {
 	printVersion := pflag.Bool("version", false, "Print version and exit")
+	validateConfig := pflag.Bool("check-config", false, "Validate configuration and exit")
 	pflag.Parse()
+
 	if *printVersion {
 		fmt.Println(version)
 		return
@@ -202,6 +204,11 @@ func main() {
 
 	if len(alertmanager.GetAlertmanagers()) == 0 {
 		log.Fatal("No valid Alertmanager URIs defined")
+	}
+
+	if *validateConfig {
+		log.Info("Configuration is valid")
+		return
 	}
 
 	// before we start try to fetch data from Alertmanager
