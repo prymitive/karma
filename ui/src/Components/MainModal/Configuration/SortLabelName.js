@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 
-import CreatableSelect from "react-select/lib/Creatable";
+import Creatable from "react-select/creatable";
 
 import { StaticLabels } from "Common/Query";
 import { FormatBackendURI } from "Stores/AlertStore";
@@ -14,7 +14,7 @@ import { ReactSelectStyles } from "Components/MultiSelect";
 const valueToOption = v => ({ label: v, value: v });
 
 const SortLabelName = observer(
-  class SortLabelName extends CreatableSelect {
+  class SortLabelName extends Creatable {
     static propTypes = {
       settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
@@ -68,7 +68,7 @@ const SortLabelName = observer(
       const { settingsStore } = this.props;
 
       return (
-        <CreatableSelect
+        <Creatable
           styles={ReactSelectStyles}
           classNamePrefix="react-select"
           instanceId="configuration-sort-label"

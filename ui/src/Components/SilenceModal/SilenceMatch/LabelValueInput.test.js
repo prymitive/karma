@@ -84,7 +84,7 @@ describe("<LabelValueInput />", () => {
 
   it("renders suggestions", () => {
     const tree = ValidateSuggestions();
-    const options = tree.find(".react-select__option");
+    const options = tree.find("div.react-select__option");
     expect(options).toHaveLength(2);
     expect(options.at(0).text()).toBe("foo");
     expect(options.at(1).text()).toBe("bar");
@@ -92,7 +92,7 @@ describe("<LabelValueInput />", () => {
 
   it("clicking on options appends them to matcher.values", () => {
     const tree = ValidateSuggestions();
-    const options = tree.find(".react-select__option");
+    const options = tree.find("div.react-select__option");
     options.at(0).simulate("click");
     options.at(1).simulate("click");
     expect(matcher.values).toHaveLength(2);
@@ -103,7 +103,7 @@ describe("<LabelValueInput />", () => {
   it("selecting one option doesn't force matcher.isRegex=true", () => {
     const tree = ValidateSuggestions();
     expect(matcher.isRegex).toBe(false);
-    const options = tree.find(".react-select__option");
+    const options = tree.find("div.react-select__option");
     options.at(0).simulate("click");
     expect(matcher.isRegex).toBe(false);
   });
@@ -112,7 +112,7 @@ describe("<LabelValueInput />", () => {
     matcher.isRegex = true;
     const tree = ValidateSuggestions();
     expect(matcher.isRegex).toBe(true);
-    const options = tree.find(".react-select__option");
+    const options = tree.find("div.react-select__option");
     options.at(0).simulate("click");
     expect(matcher.isRegex).toBe(false);
   });
@@ -120,7 +120,7 @@ describe("<LabelValueInput />", () => {
   it("selecting multiple options forces matcher.isRegex=true", () => {
     const tree = ValidateSuggestions();
     expect(matcher.isRegex).toBe(false);
-    const options = tree.find(".react-select__option");
+    const options = tree.find("div.react-select__option");
     options.at(0).simulate("click");
     options.at(1).simulate("click");
     expect(matcher.isRegex).toBe(true);

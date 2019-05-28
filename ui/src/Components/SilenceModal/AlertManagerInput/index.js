@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { action } from "mobx";
 import { observer } from "mobx-react";
 
-import ReactSelect from "react-select";
+import Select from "react-select";
 
 import { AlertStore } from "Stores/AlertStore";
 import {
@@ -67,7 +67,7 @@ const AlertManagerInput = observer(
       }
 
       return (
-        <ReactSelect
+        <Select
           styles={ReactSelectStyles}
           classNamePrefix="react-select"
           instanceId="silence-input-alertmanagers"

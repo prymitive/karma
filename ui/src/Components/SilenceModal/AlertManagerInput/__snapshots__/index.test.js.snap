@@ -2,10 +2,10 @@
 
 exports[`<AlertManagerInput /> matches snapshot 1`] = `
 "
-<div class=\\"css-1pcexqc-container\\">
-  <div class=\\"css-75iuk3-control react-select__control\\">
-    <div class=\\"css-10war8y react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value\\">
-      <div class=\\"css-8oj454-multiValue react-select__multi-value\\">
+<div class=\\" css-2b097c-container\\">
+  <div class=\\"react-select__control css-au8pbo-control\\">
+    <div class=\\"react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-10war8y\\">
+      <div class=\\"css-owt1hd-multiValue react-select__multi-value\\">
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           am1 | am2
         </div>
@@ -22,7 +22,7 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
           </svg>
         </div>
       </div>
-      <div class=\\"css-8oj454-multiValue react-select__multi-value\\">
+      <div class=\\"css-owt1hd-multiValue react-select__multi-value\\">
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           am3
         </div>
@@ -59,9 +59,9 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"css-mik995 react-select__indicators\\">
+    <div class=\\"react-select__indicators css-mik995\\">
       <div aria-hidden=\\"true\\"
-           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__clear-indicator\\"
+           class=\\"react-select__indicator react-select__clear-indicator css-tlfecz-indicatorContainer\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -74,10 +74,10 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
           </path>
         </svg>
       </div>
-      <span class=\\"css-bgvzuu-indicatorSeparator react-select__indicator-separator\\">
+      <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
+           class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
