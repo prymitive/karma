@@ -14,15 +14,9 @@ import { AlertGrid } from ".";
 let alertStore;
 let settingsStore;
 let silenceFormStore;
-let bodyWidth;
 
 beforeAll(() => {
   jest.useFakeTimers();
-  Object.defineProperty(document.body, "clientWidth", {
-    get: () => {
-      return bodyWidth;
-    }
-  });
 });
 
 beforeEach(() => {
@@ -82,9 +76,9 @@ const MockGroupList = (count, alertPerGroup) => {
 };
 
 const VerifyColumnCount = (innerWidth, columns) => {
-  bodyWidth = innerWidth;
   MockGroupList(60, 5);
   const tree = ShallowAlertGrid();
+  tree.instance().viewport.update(innerWidth, 500);
   expect(
     tree
       .find("AlertGroup")
@@ -444,9 +438,10 @@ describe("<AlertGrid />", () => {
   });
 
   it("viewport resize also resizes alert groups", () => {
-    bodyWidth = 1980;
     MockGroupList(60, 5);
     const tree = ShallowAlertGrid();
+    // set initial width
+    tree.instance().viewport.update(1980, 500);
     expect(
       tree
         .find("AlertGroup")
@@ -454,10 +449,8 @@ describe("<AlertGrid />", () => {
         .props().style.width
     ).toBe(1980 / 4);
 
-    bodyWidth = 1000;
-    // not sure how to force ReactResizeDetector to detect width change, so
-    // we directly call viewport update here
-    tree.instance().viewport.update();
+    // then resize and verify if column count was changed
+    tree.instance().viewport.update(1000, 500);
     expect(
       tree
         .find("AlertGroup")

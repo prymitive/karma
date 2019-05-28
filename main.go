@@ -158,11 +158,22 @@ func setupLogger() {
 	default:
 		log.Fatalf("Unknown log level '%s'", config.Config.Log.Level)
 	}
+
+	switch config.Config.Log.Format {
+	case "text":
+		log.SetFormatter(&log.TextFormatter{})
+	case "json":
+		log.SetFormatter(&log.JSONFormatter{})
+	default:
+		log.Fatalf("Unknown log format '%s'", config.Config.Log.Format)
+	}
 }
 
 func main() {
 	printVersion := pflag.Bool("version", false, "Print version and exit")
+	validateConfig := pflag.Bool("check-config", false, "Validate configuration and exit")
 	pflag.Parse()
+
 	if *printVersion {
 		fmt.Println(version)
 		return
@@ -193,6 +204,11 @@ func main() {
 
 	if len(alertmanager.GetAlertmanagers()) == 0 {
 		log.Fatal("No valid Alertmanager URIs defined")
+	}
+
+	if *validateConfig {
+		log.Info("Configuration is valid")
+		return
 	}
 
 	// before we start try to fetch data from Alertmanager

@@ -498,11 +498,14 @@ Syntax:
 log:
   config: bool
   level: string
+  format: string
 ```
 
 - `config` - if set to `true` karma will log used configuration on startup
-- `level` - log level to set for karma, possible values are debug, info,
-  warning, error, fatal and panic.
+- `level` - log level to set for karma, possible values are `debug`, `info`,
+  `warning`, `error`, `fatal` and `panic`.
+- `format` - controls how log messages are formatted, possible values are
+  `text` and `json`. If set to `json` each log will be a JSON object.
 
 Defaults:
 
@@ -510,6 +513,7 @@ Defaults:
 log:
   config: true
   level: info
+  format: text
 ```
 
 ### JIRA

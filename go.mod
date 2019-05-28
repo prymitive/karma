@@ -10,7 +10,7 @@ require (
 	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-contrib/gzip v0.0.1
 	github.com/gin-contrib/static v0.0.0-20190511132412-c1cdf9c9ec7b
-	github.com/gin-gonic/contrib v0.0.0-20190510073033-87e961e51ccc
+	github.com/gin-gonic/contrib v0.0.0-20190526024457-7fb7810ed2a0
 	github.com/gin-gonic/gin v1.4.0
 	github.com/go-bindata/go-bindata v3.1.1+incompatible
 	github.com/go-openapi/errors v0.19.0
@@ -27,13 +27,19 @@ require (
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/prometheus/client_golang v0.9.3
-	github.com/prometheus/common v0.4.0
+	github.com/prometheus/common v0.4.1
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/pflag v1.0.3
-	github.com/spf13/viper v1.3.2
+	github.com/spf13/viper v1.4.0
 	github.com/terinjokes/bakelite v0.2.0
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v2 v2.2.2
 )
 
 replace github.com/ugorji/go v1.1.4 => github.com/ugorji/go/codec v0.0.0-20190204201341-e444a5086c43
+
+replace mvdan.cc/lint v0.0.0-20170908181259-adc824a0674b => github.com/mvdan/lint v0.0.0-20170908181259-adc824a0674b
+
+replace mvdan.cc/interfacer v0.0.0-20180901003855-c20040233aed => github.com/mvdan/interfacer v0.0.0-20180901003855-c20040233aed
+
+replace mvdan.cc/unparam v0.0.0-20190124213536-fbb59629db34 => github.com/mvdan/unparam v0.0.0-20190124213536-fbb59629db34

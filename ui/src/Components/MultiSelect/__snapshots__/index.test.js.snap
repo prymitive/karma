@@ -2,9 +2,9 @@
 
 exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
 "
-<div class=\\"css-1pcexqc-container\\">
-  <span class=\\"css-3esr4u-a11yText\\"
-        aria-live=\\"assertive\\"
+<div class=\\" css-2b097c-container\\">
+  <span aria-live=\\"assertive\\"
+        class=\\"css-1laao21-a11yText\\"
   >
     <p id=\\"aria-selection-event\\">
       &nbsp;
@@ -13,9 +13,9 @@ exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
       &nbsp;  0 results available. Select is focused ,type to refine list, press Down to open the menu,
     </p>
   </span>
-  <div class=\\"css-1qu0514-control react-select__control react-select__control--is-focused\\">
-    <div class=\\"css-pb81dw react-select__value-container\\">
-      <div class=\\"css-151xaom-placeholder react-select__placeholder\\">
+  <div class=\\"react-select__control react-select__control--is-focused css-nmfa0p-control\\">
+    <div class=\\"react-select__value-container css-pb81dw\\">
+      <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
       <div class=\\"css-1g6gooi\\">
@@ -38,11 +38,11 @@ exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"css-mik995 react-select__indicators\\">
-      <span class=\\"css-bgvzuu-indicatorSeparator react-select__indicator-separator\\">
+    <div class=\\"react-select__indicators css-mik995\\">
+      <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-1thkkgx-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
+           class=\\"react-select__indicator react-select__dropdown-indicator css-1gtu0rj-indicatorContainer\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -63,10 +63,10 @@ exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
 
 exports[`<CustomMultiSelect /> matches snapshot with a value 1`] = `
 "
-<div class=\\"css-1pcexqc-container\\">
-  <div class=\\"css-75iuk3-control react-select__control\\">
-    <div class=\\"css-pb81dw react-select__value-container react-select__value-container--has-value\\">
-      <div class=\\"css-dvua67-singleValue react-select__single-value\\">
+<div class=\\" css-2b097c-container\\">
+  <div class=\\"react-select__control css-au8pbo-control\\">
+    <div class=\\"react-select__value-container react-select__value-container--has-value css-pb81dw\\">
+      <div class=\\"react-select__single-value css-1uccc91-singleValue\\">
         foo
       </div>
       <div class=\\"css-1g6gooi\\">
@@ -89,11 +89,11 @@ exports[`<CustomMultiSelect /> matches snapshot with a value 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"css-mik995 react-select__indicators\\">
-      <span class=\\"css-bgvzuu-indicatorSeparator react-select__indicator-separator\\">
+    <div class=\\"react-select__indicators css-mik995\\">
+      <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
+           class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -114,10 +114,10 @@ exports[`<CustomMultiSelect /> matches snapshot with a value 1`] = `
 
 exports[`<CustomMultiSelect /> matches snapshot with defaults 1`] = `
 "
-<div class=\\"css-1pcexqc-container\\">
-  <div class=\\"css-75iuk3-control react-select__control\\">
-    <div class=\\"css-pb81dw react-select__value-container\\">
-      <div class=\\"css-151xaom-placeholder react-select__placeholder\\">
+<div class=\\" css-2b097c-container\\">
+  <div class=\\"react-select__control css-au8pbo-control\\">
+    <div class=\\"react-select__value-container css-pb81dw\\">
+      <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
       <div class=\\"css-1g6gooi\\">
@@ -140,11 +140,11 @@ exports[`<CustomMultiSelect /> matches snapshot with defaults 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"css-mik995 react-select__indicators\\">
-      <span class=\\"css-bgvzuu-indicatorSeparator react-select__indicator-separator\\">
+    <div class=\\"react-select__indicators css-mik995\\">
+      <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
+           class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -165,10 +165,10 @@ exports[`<CustomMultiSelect /> matches snapshot with defaults 1`] = `
 
 exports[`<CustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
 "
-<div class=\\"css-ssi0ig-container react-select--is-disabled\\">
-  <div class=\\"css-63ovm4-control react-select__control react-select__control--is-disabled\\">
-    <div class=\\"css-57r8lk react-select__value-container react-select__value-container--has-value\\">
-      <div class=\\"css-ue83k8-singleValue react-select__single-value react-select__single-value--is-disabled\\">
+<div class=\\"react-select--is-disabled css-14jk2my-container\\">
+  <div class=\\"react-select__control react-select__control--is-disabled css-jk9kg2-control\\">
+    <div class=\\"react-select__value-container react-select__value-container--has-value css-57r8lk\\">
+      <div class=\\"react-select__single-value react-select__single-value--is-disabled css-107lb6w-singleValue\\">
         foo
       </div>
       <div class=\\"css-1g6gooi\\">
@@ -192,11 +192,11 @@ exports[`<CustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"css-191n9vh react-select__indicators\\">
-      <span class=\\"css-622gbt-indicatorSeparator react-select__indicator-separator\\">
+    <div class=\\"react-select__indicators css-191n9vh\\">
+      <span class=\\"react-select__indicator-separator css-109onse-indicatorSeparator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
+           class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -217,10 +217,10 @@ exports[`<CustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
 
 exports[`<CustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 "
-<div class=\\"css-1pcexqc-container\\">
-  <div class=\\"css-75iuk3-control react-select__control\\">
-    <div class=\\"css-10war8y react-select__value-container react-select__value-container--is-multi\\">
-      <div class=\\"css-151xaom-placeholder react-select__placeholder\\">
+<div class=\\" css-2b097c-container\\">
+  <div class=\\"react-select__control css-au8pbo-control\\">
+    <div class=\\"react-select__value-container react-select__value-container--is-multi css-10war8y\\">
+      <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
       <div class=\\"css-1g6gooi\\">
@@ -243,11 +243,11 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"css-mik995 react-select__indicators\\">
-      <span class=\\"css-bgvzuu-indicatorSeparator react-select__indicator-separator\\">
+    <div class=\\"react-select__indicators css-mik995\\">
+      <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
+           class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -268,10 +268,10 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 
 exports[`<CustomMultiSelect /> matches snapshot with isMulti=true and a value 1`] = `
 "
-<div class=\\"css-1pcexqc-container\\">
-  <div class=\\"css-75iuk3-control react-select__control\\">
-    <div class=\\"css-10war8y react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value\\">
-      <div class=\\"css-8oj454-multiValue react-select__multi-value\\">
+<div class=\\" css-2b097c-container\\">
+  <div class=\\"react-select__control css-au8pbo-control\\">
+    <div class=\\"react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-10war8y\\">
+      <div class=\\"css-owt1hd-multiValue react-select__multi-value\\">
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           foo
         </div>
@@ -308,9 +308,9 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true and a value 1`
         </div>
       </div>
     </div>
-    <div class=\\"css-mik995 react-select__indicators\\">
+    <div class=\\"react-select__indicators css-mik995\\">
       <div aria-hidden=\\"true\\"
-           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__clear-indicator\\"
+           class=\\"react-select__indicator react-select__clear-indicator css-tlfecz-indicatorContainer\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -323,10 +323,10 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true and a value 1`
           </path>
         </svg>
       </div>
-      <span class=\\"css-bgvzuu-indicatorSeparator react-select__indicator-separator\\">
+      <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"css-16pqwjk-indicatorContainer react-select__indicator react-select__dropdown-indicator\\"
+           class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"

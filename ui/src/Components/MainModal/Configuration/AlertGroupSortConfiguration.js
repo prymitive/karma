@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { action } from "mobx";
 import { observer } from "mobx-react";
 
-import ReactSelect from "react-select";
+import Select from "react-select";
 
 import { Settings } from "Stores/Settings";
 import { ReactSelectStyles } from "Components/MultiSelect";
@@ -69,7 +69,7 @@ const AlertGroupSortConfiguration = observer(
           </div>
           <div className="d-flex flex-fill flex-lg-row flex-column justify-content-between">
             <div className="flex-shrink-0 flex-grow-1 flex-basis-auto">
-              <ReactSelect
+              <Select
                 styles={ReactSelectStyles}
                 classNamePrefix="react-select"
                 instanceId="configuration-sort-order"

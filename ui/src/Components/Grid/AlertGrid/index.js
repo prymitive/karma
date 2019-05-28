@@ -82,8 +82,8 @@ const AlertGrid = observer(
       this.viewport = observable(
         {
           width: document.body.clientWidth,
-          update() {
-            this.width = document.body.clientWidth;
+          update(width, height) {
+            this.width = width;
           },
           get gridSizesConfig() {
             return GridSizesConfig(
@@ -240,6 +240,7 @@ const AlertGrid = observer(
         <React.Fragment>
           <ReactResizeDetector
             handleWidth
+            handleHeight
             onResize={debounce(this.viewport.update, 100)}
           />
           <MasonryInfiniteScroller
