@@ -12,7 +12,8 @@ defaults_js: &DEFAULTS_JS
   # we run make to install everything
   install: []
   cache:
-    yarn: true
+    directories:
+      - ui/node_modules
 
 jobs:
   include:
