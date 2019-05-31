@@ -127,7 +127,7 @@ describe("<SilenceForm /> inputs", () => {
   it("default author value comes from Settings store", () => {
     settingsStore.silenceFormConfig.config.author = "foo@example.com";
     const tree = MountedSilenceForm();
-    const input = tree.find("input[placeholder='Author email']");
+    const input = tree.find("input[placeholder='Author']");
     expect(input.props().value).toBe("foo@example.com");
     expect(silenceFormStore.data.author).toBe("foo@example.com");
   });
@@ -135,14 +135,14 @@ describe("<SilenceForm /> inputs", () => {
   it("default author value is empty if nothing is stored in Settings", () => {
     settingsStore.silenceFormConfig.config.author = "";
     const tree = MountedSilenceForm();
-    const input = tree.find("input[placeholder='Author email']");
+    const input = tree.find("input[placeholder='Author']");
     expect(input.text()).toBe("");
     expect(silenceFormStore.data.author).toBe("");
   });
 
   it("changing author input updates SilenceFormStore", () => {
     const tree = MountedSilenceForm();
-    const input = tree.find("input[placeholder='Author email']");
+    const input = tree.find("input[placeholder='Author']");
     input.simulate("change", { target: { value: "me@example.com" } });
     expect(silenceFormStore.data.author).toBe("me@example.com");
   });

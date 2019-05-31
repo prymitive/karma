@@ -162,9 +162,9 @@ const SilenceForm = observer(
           </TooltipWrapper>
           <DateTimeSelect silenceFormStore={silenceFormStore} />
           <IconInput
-            type="email"
+            type="text"
             autoComplete="email"
-            placeholder="Author email"
+            placeholder="Author"
             icon={faUser}
             value={silenceFormStore.data.author}
             onChange={this.onAuthorChange}
