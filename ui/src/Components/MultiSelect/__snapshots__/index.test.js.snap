@@ -3,7 +3,7 @@
 exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
-  <span aria-live=\\"assertive\\"
+  <span aria-live=\\"polite\\"
         class=\\"css-1laao21-a11yText\\"
   >
     <p id=\\"aria-selection-event\\">
