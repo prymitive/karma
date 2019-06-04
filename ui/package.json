@@ -61,7 +61,7 @@
   "devDependencies": {
     "@commitlint/travis-cli": "8.0.0",
     "diffable-html": "4.0.0",
-    "enzyme": "3.9.0",
+    "enzyme": "3.10.0",
     "enzyme-adapter-react-16": "1.14.0",
     "jest-canvas-mock": "2.1.0",
     "jest-date-mock": "1.0.7",
