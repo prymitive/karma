@@ -8,6 +8,7 @@ import { RIEInput } from "@attently/riek";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
+import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 
 import { AlertStore } from "Stores/AlertStore";
 import { QueryOperators } from "Common/Query";
@@ -99,12 +100,11 @@ const FilterInputLabel = observer(
               classEditing="py-0 border-0 bg-light"
             />
           </TooltipWrapper>
-          <span
-            className="close ml-1 align-text-bottom cursor-pointer text-reset"
+          <FontAwesomeIcon
+            className="cursor-pointer text-reset ml-1 close"
+            icon={faTimes}
             onClick={() => alertStore.filters.removeFilter(filter.raw)}
-          >
-            <span className="text-reset">&times;</span>
-          </span>
+          />
         </button>
       );
     }
