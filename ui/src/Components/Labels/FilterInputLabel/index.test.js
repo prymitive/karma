@@ -171,7 +171,8 @@ describe("<FilterInputLabel /> onChange", () => {
         filter={alertStore.filters.values[0]}
       />
     );
-    const button = tree.find(".close");
+
+    const button = tree.find("svg.close");
     button.simulate("click");
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(
