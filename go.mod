@@ -19,7 +19,7 @@ require (
 	github.com/go-openapi/strfmt v0.19.0
 	github.com/go-openapi/swag v0.19.0
 	github.com/go-openapi/validate v0.19.0
-	github.com/golangci/golangci-lint v1.16.0
+	github.com/golangci/golangci-lint v1.17.0
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.4
 	github.com/mcuadros/go-gin-prometheus v0.0.0-20181030200533-58963fb32f54
