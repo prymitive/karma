@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { observable, action } from "mobx";
+import { observable, action, reaction } from "mobx";
 import { observer } from "mobx-react";
 
 import ReactResizeDetector from "react-resize-detector";
@@ -33,6 +33,46 @@ const NavBar = observer(
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
+    constructor(props) {
+      super(props);
+
+      this.idleTimer = null;
+
+      this.activityStatus = observable(
+        {
+          idle: false,
+          className: "visible",
+          setIdle() {
+            this.idle = true;
+          },
+          setActive() {
+            this.idle = false;
+          },
+          hide() {
+            this.className = "invisible";
+          },
+          show() {
+            this.className = "visible";
+          }
+        },
+        {
+          setIdle: action.bound,
+          setActive: action.bound,
+          hide: action.bound,
+          show: action.bound
+        }
+      );
+
+      this.activityStatusReaction = reaction(
+        () => props.alertStore.status.paused,
+        paused =>
+          paused
+            ? this.idleTimer && this.idleTimer.pause()
+            : this.idleTimer && this.idleTimer.reset(),
+        { fireImmediately: true }
+      );
+    }
+
     elementSize = observable(
       {
         width: 0,
@@ -43,31 +83,6 @@ const NavBar = observer(
         }
       },
       { setSize: action }
-    );
-
-    activityStatus = observable(
-      {
-        idle: false,
-        className: "visible",
-        setIdle() {
-          this.idle = true;
-        },
-        setActive() {
-          this.idle = false;
-        },
-        hide() {
-          this.className = "invisible";
-        },
-        show() {
-          this.className = "visible";
-        }
-      },
-      {
-        setIdle: action.bound,
-        setActive: action.bound,
-        hide: action.bound,
-        show: action.bound
-      }
     );
 
     updateBodyPaddingTop = () => {
@@ -107,6 +122,9 @@ const NavBar = observer(
 
       return (
         <IdleTimer
+          ref={ref => {
+            this.idleTimer = ref;
+          }}
           onActive={this.activityStatus.setActive}
           onIdle={() => {
             if (settingsStore.filterBarConfig.config.autohide) {

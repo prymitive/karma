@@ -155,4 +155,31 @@ describe("<IdleTimer />", () => {
     expect(tree.find(".container").hasClass("visible")).toBe(true);
     expect(tree.find(".container").hasClass("invisible")).toBe(false);
   });
+
+  it("doesn't hide when autohide is enabled in settingsStore but alertStore is paused", () => {
+    settingsStore.filterBarConfig.config.autohide = true;
+    const tree = MountedNavbar();
+    alertStore.status.pause();
+    jest.runTimersToTime(1000 * 3600);
+    tree.update();
+    expect(tree.find(".container").hasClass("visible")).toBe(true);
+    expect(tree.find(".container").hasClass("invisible")).toBe(false);
+  });
+
+  it("hides navbar after alertStore is resumed", () => {
+    settingsStore.filterBarConfig.config.autohide = true;
+    const tree = MountedNavbar();
+
+    alertStore.status.pause();
+    jest.runTimersToTime(1000 * 3600);
+    tree.update();
+    expect(tree.find(".container").hasClass("visible")).toBe(true);
+    expect(tree.find(".container").hasClass("invisible")).toBe(false);
+
+    alertStore.status.resume();
+    jest.runTimersToTime(1000 * 60 * 3 + 1000);
+    tree.update();
+    expect(tree.find(".container").hasClass("visible")).toBe(false);
+    expect(tree.find(".container").hasClass("invisible")).toBe(true);
+  });
 });
