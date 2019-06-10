@@ -224,8 +224,8 @@ class AlertStore {
       setFetching: action,
       setProcessing: action,
       setFailure: action,
-      pause: action,
-      resume: action
+      pause: action.bound,
+      resume: action.bound
     },
     { name: "Store status" }
   );
