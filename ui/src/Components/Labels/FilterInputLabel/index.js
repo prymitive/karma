@@ -98,6 +98,8 @@ const FilterInputLabel = observer(
               propName="raw"
               change={this.onChange}
               classEditing="py-0 border-0 bg-light"
+              afterStart={alertStore.status.pause}
+              afterFinish={alertStore.status.resume}
             />
           </TooltipWrapper>
           <FontAwesomeIcon
