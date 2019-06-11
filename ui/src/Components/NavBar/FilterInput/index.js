@@ -97,7 +97,10 @@ const FilterInput = observer(
     });
 
     onInputClick = (inputReference, event) => {
-      if (event.target.className.split(" ").includes("form-control")) {
+      if (
+        typeof event.target.className === "string" &&
+        event.target.className.split(" ").includes("form-control")
+      ) {
         inputReference.input.focus();
       }
     };
