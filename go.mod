@@ -12,7 +12,7 @@ require (
 	github.com/gin-contrib/static v0.0.0-20190511132412-c1cdf9c9ec7b
 	github.com/gin-gonic/contrib v0.0.0-20190526024457-7fb7810ed2a0
 	github.com/gin-gonic/gin v1.4.0
-	github.com/go-bindata/go-bindata v3.1.1+incompatible
+	github.com/go-bindata/go-bindata v3.1.2+incompatible
 	github.com/go-logfmt/logfmt v0.4.0
 	github.com/go-openapi/errors v0.19.0
 	github.com/go-openapi/runtime v0.19.0
