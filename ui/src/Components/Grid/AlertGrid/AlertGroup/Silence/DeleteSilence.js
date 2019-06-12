@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 
 import { APIAlertmanagerUpstream } from "Models/API";
 import { AlertStore, FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
@@ -19,6 +20,16 @@ import {
   LabelSetList,
   GroupListToUniqueLabelsList
 } from "Components/LabelSetList";
+
+const ProgressMessage = () => (
+  <div className="text-center">
+    <FontAwesomeIcon
+      icon={faCircleNotch}
+      className="text-muted display-1 mb-3"
+      spin
+    />
+  </div>
+);
 
 const ErrorMessage = ({ message }) => (
   <div className="text-center">
@@ -83,11 +94,16 @@ const DeleteSilenceModalContent = observer(
         },
         setError(err) {
           this.error = err;
+        },
+        reset() {
+          this.done = false;
+          this.error = null;
         }
       },
       {
         setDone: action.bound,
-        setError: action.bound
+        setError: action.bound,
+        reset: action.bound
       }
     );
 
@@ -139,6 +155,9 @@ const DeleteSilenceModalContent = observer(
 
       // if it's already deleted then do nothing
       if (this.deleteState.done && this.deleteState.error === null) return;
+
+      // reset state so we get a spinner
+      this.deleteState.reset();
 
       const isOpenAPI = semver.satisfies(alertmanager.version, ">=0.16.0");
 
@@ -196,6 +215,8 @@ const DeleteSilenceModalContent = observer(
               ) : (
                 <SuccessMessage />
               )
+            ) : this.deleteState.fetch !== null ? (
+              <ProgressMessage />
             ) : this.previewState.error === null ? (
               <LabelSetList
                 alertStore={alertStore}
@@ -210,6 +231,10 @@ const DeleteSilenceModalContent = observer(
                   type="button"
                   className="btn btn-outline-danger mr-2"
                   onClick={this.onDelete}
+                  disabled={
+                    this.deleteState.fetch !== null &&
+                    this.deleteState.done === false
+                  }
                 >
                   <FontAwesomeIcon icon={faCheckCircle} className="mr-1" />
                   {this.deleteState.fetch !== null &&

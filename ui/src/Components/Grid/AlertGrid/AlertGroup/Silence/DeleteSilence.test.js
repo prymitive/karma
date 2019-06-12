@@ -149,6 +149,8 @@ describe("<DeleteSilenceModalContent />", () => {
     expect(fetch.mock.calls).toHaveLength(2);
     tree.find(".btn-outline-danger").simulate("click");
     expect(fetch.mock.calls).toHaveLength(2);
+    tree.instance().onDelete();
+    expect(fetch.mock.calls).toHaveLength(2);
   });
 
   it("renders SuccessMessage on 'success' response status", async () => {
