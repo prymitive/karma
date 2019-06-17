@@ -13,7 +13,6 @@ require (
 	github.com/gin-gonic/contrib v0.0.0-20190526024457-7fb7810ed2a0
 	github.com/gin-gonic/gin v1.4.0
 	github.com/go-bindata/go-bindata v3.1.2+incompatible
-	github.com/go-logfmt/logfmt v0.4.0
 	github.com/go-openapi/errors v0.19.2
 	github.com/go-openapi/runtime v0.19.0
 	github.com/go-openapi/strfmt v0.19.0
@@ -27,7 +26,7 @@ require (
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/prometheus/client_golang v1.0.0
-	github.com/prometheus/common v0.4.1
+	github.com/prometheus/common v0.5.0
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/pflag v1.0.3
 	github.com/spf13/viper v1.4.0
