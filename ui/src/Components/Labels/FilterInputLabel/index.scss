@@ -21,6 +21,10 @@
   /* we have badge inside a badge, make the inner one a little brighter
      in case both use same color classes */
   filter: brightness(115%);
+
+  /* there's "top: -1px" on ".btn .badge"
+     which moves the badge a bit to high, reset it */
+  top: 0;
 }
 
 button.btn.components-filteredinputlabel {
