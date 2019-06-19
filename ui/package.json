@@ -18,7 +18,6 @@
     "fast-deep-equal": "2.0.1",
     "favico.js": "0.3.10",
     "fontfaceobserver": "2.1.0",
-    "lato-font": "3.0.0",
     "lodash.debounce": "4.0.8",
     "lodash.throttle": "4.1.1",
     "lodash.uniqueid": "4.0.1",
@@ -51,7 +50,8 @@
     "react-tippy": "1.2.3",
     "react-transition-group": "4.1.1",
     "react-truncate": "2.4.0",
-    "semver": "6.1.1"
+    "semver": "6.1.1",
+    "typeface-open-sans": "0.0.54"
   },
   "scripts": {
     "start": "NODE_ENV=dev REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",

@@ -220,17 +220,13 @@ const AlertGrid = observer(
       // render to a different size and the swap can result in component resize.
       // For our grid this resize might leave gaps since everything uses fixed
       // position, so we use font observer and trigger repack when fonts are loaded
-
-      const font400 = new FontFaceObserver("Lato", {
-        weight: 400
-      });
-      // wait up to 30s, run no-op function on timeout
-      font400.load(null, 30000).then(this.masonryRepack, () => {});
-
-      const font700 = new FontFaceObserver("Lato", {
-        weight: 700
-      });
-      font700.load(null, 30000).then(this.masonryRepack, () => {});
+      for (const fontWeight of [300, 400, 600]) {
+        const font = new FontFaceObserver("Open Sans", {
+          weight: fontWeight
+        });
+        // wait up to 30s, run no-op function on timeout
+        font.load(null, 30000).then(this.masonryRepack, () => {});
+      }
     }
 
     render() {
