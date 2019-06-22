@@ -70,7 +70,7 @@ func (s StatusMapper) Decode(source io.ReadCloser) (models.AlertmanagerStatus, e
 		return status, err
 	}
 
-	if resp.Status != "success" {
+	if resp.Status != mapper.AlertmanagerStatusString {
 		return status, fmt.Errorf("status endpoint returned status value '%s'", resp.Status)
 	}
 
