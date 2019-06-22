@@ -2,7 +2,7 @@
 
 exports[`<UpstreamError /> matches snapshot 1`] = `
 "
-<div class=\\"alert alert-danger text-center\\"
+<div class=\\"alert alert-danger text-center m-1\\"
      role=\\"alert\\"
 >
   <h4 class=\\"alert-heading mb-0\\">
