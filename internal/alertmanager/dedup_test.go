@@ -32,6 +32,7 @@ func init() {
 
 		mock.RegisterURL(fmt.Sprintf("%s/metrics", uri), version, "metrics")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v1/status", uri), version, "api/v1/status")
+		mock.RegisterURL(fmt.Sprintf("%s/api/v2/status", uri), version, "api/v2/status")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v1/silences", uri), version, "api/v1/silences")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/silences", uri), version, "api/v2/silences")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v1/alerts/groups", uri), version, "api/v1/alerts/groups")
@@ -160,6 +161,7 @@ func TestClearData(t *testing.T) {
 		}
 
 		mock.RegisterURL(fmt.Sprintf("%s/api/v1/status", uri), version, "api/v1/status")
+		mock.RegisterURL(fmt.Sprintf("%s/api/v2/status", uri), version, "api/v2/status")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v1/silences", uri), version, "api/v1/silences")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/silences", uri), version, "api/v2/silences")
 		_ = am.Pull()

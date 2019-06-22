@@ -3,7 +3,7 @@
         "silences": [
             {
                 "comment": "Silenced instance",
-                "createdAt": "2019-01-30T17:15:53.7422076Z",
+                "createdAt": "2019-06-22T15:05:46.075187012Z",
                 "createdBy": "john@example.com",
                 "endsAt": "2063-01-01T00:00:00Z",
                 "id": 1,
@@ -18,7 +18,7 @@
             },
             {
                 "comment": "Silenced Host_Down alerts in the dev cluster",
-                "createdAt": "2019-01-30T17:15:53.7479117Z",
+                "createdAt": "2019-06-22T15:05:46.080365872Z",
                 "createdBy": "john@example.com",
                 "endsAt": "2063-01-01T00:00:00Z",
                 "id": 2,
@@ -38,7 +38,7 @@
             },
             {
                 "comment": "Silenced server7",
-                "createdAt": "2019-01-30T17:15:53.7554814Z",
+                "createdAt": "2019-06-22T15:05:46.084392826Z",
                 "createdBy": "john@example.com",
                 "endsAt": "2063-01-01T00:00:00Z",
                 "id": 3,

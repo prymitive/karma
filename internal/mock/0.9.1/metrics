@@ -12,7 +12,7 @@ alertmanager_build_info{branch="HEAD",goversion="go1.9",revision="9f5f4b2a516d35
 alertmanager_config_hash 6.2645753076152e+13
 # HELP alertmanager_config_last_reload_success_timestamp_seconds Timestamp of the last successful configuration reload.
 # TYPE alertmanager_config_last_reload_success_timestamp_seconds gauge
-alertmanager_config_last_reload_success_timestamp_seconds 1.548869186e+09
+alertmanager_config_last_reload_success_timestamp_seconds 1.561216569e+09
 # HELP alertmanager_config_last_reload_successful Whether the last configuration reload attempt was successful.
 # TYPE alertmanager_config_last_reload_successful gauge
 alertmanager_config_last_reload_successful 1
@@ -76,7 +76,7 @@ alertmanager_silences_query_duration_seconds_bucket{le="2.5"} 48
 alertmanager_silences_query_duration_seconds_bucket{le="5"} 48
 alertmanager_silences_query_duration_seconds_bucket{le="10"} 48
 alertmanager_silences_query_duration_seconds_bucket{le="+Inf"} 48
-alertmanager_silences_query_duration_seconds_sum 0.0034855999999999984
+alertmanager_silences_query_duration_seconds_sum 0.0003497499999999999
 alertmanager_silences_query_duration_seconds_count 48
 # HELP alertmanager_silences_query_errors_total How many silence received queries did not succeed.
 # TYPE alertmanager_silences_query_errors_total counter
@@ -90,58 +90,58 @@ alertmanager_silences_snapshot_duration_seconds_sum 0
 alertmanager_silences_snapshot_duration_seconds_count 0
 # HELP go_gc_duration_seconds A summary of the GC invocation durations.
 # TYPE go_gc_duration_seconds summary
-go_gc_duration_seconds{quantile="0"} 0.0003423
-go_gc_duration_seconds{quantile="0.25"} 0.0003423
-go_gc_duration_seconds{quantile="0.5"} 0.0003423
-go_gc_duration_seconds{quantile="0.75"} 0.0003423
-go_gc_duration_seconds{quantile="1"} 0.0003423
-go_gc_duration_seconds_sum 0.0003423
+go_gc_duration_seconds{quantile="0"} 0.000275011
+go_gc_duration_seconds{quantile="0.25"} 0.000275011
+go_gc_duration_seconds{quantile="0.5"} 0.000275011
+go_gc_duration_seconds{quantile="0.75"} 0.000275011
+go_gc_duration_seconds{quantile="1"} 0.000275011
+go_gc_duration_seconds_sum 0.000275011
 go_gc_duration_seconds_count 1
 # HELP go_goroutines Number of goroutines that currently exist.
 # TYPE go_goroutines gauge
-go_goroutines 62
+go_goroutines 104
 # HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
 # TYPE go_memstats_alloc_bytes gauge
-go_memstats_alloc_bytes 4.998808e+06
+go_memstats_alloc_bytes 4.972464e+06
 # HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
 # TYPE go_memstats_alloc_bytes_total counter
-go_memstats_alloc_bytes_total 5.570112e+06
+go_memstats_alloc_bytes_total 5.542584e+06
 # HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table.
 # TYPE go_memstats_buck_hash_sys_bytes gauge
-go_memstats_buck_hash_sys_bytes 1.444872e+06
+go_memstats_buck_hash_sys_bytes 1.444144e+06
 # HELP go_memstats_frees_total Total number of frees.
 # TYPE go_memstats_frees_total counter
-go_memstats_frees_total 4557
+go_memstats_frees_total 4375
 # HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata.
 # TYPE go_memstats_gc_sys_bytes gauge
 go_memstats_gc_sys_bytes 471040
 # HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and still in use.
 # TYPE go_memstats_heap_alloc_bytes gauge
-go_memstats_heap_alloc_bytes 4.998808e+06
+go_memstats_heap_alloc_bytes 4.972464e+06
 # HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used.
 # TYPE go_memstats_heap_idle_bytes gauge
-go_memstats_heap_idle_bytes 655360
+go_memstats_heap_idle_bytes 614400
 # HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use.
 # TYPE go_memstats_heap_inuse_bytes gauge
-go_memstats_heap_inuse_bytes 5.89824e+06
+go_memstats_heap_inuse_bytes 5.906432e+06
 # HELP go_memstats_heap_objects Number of allocated objects.
 # TYPE go_memstats_heap_objects gauge
-go_memstats_heap_objects 19021
+go_memstats_heap_objects 18420
 # HELP go_memstats_heap_released_bytes_total Total number of heap bytes released to OS.
 # TYPE go_memstats_heap_released_bytes_total counter
 go_memstats_heap_released_bytes_total 0
 # HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system.
 # TYPE go_memstats_heap_sys_bytes gauge
-go_memstats_heap_sys_bytes 6.5536e+06
+go_memstats_heap_sys_bytes 6.520832e+06
 # HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
 # TYPE go_memstats_last_gc_time_seconds gauge
-go_memstats_last_gc_time_seconds 1.5488692518897934e+09
+go_memstats_last_gc_time_seconds 1.5612166349370148e+09
 # HELP go_memstats_lookups_total Total number of pointer lookups.
 # TYPE go_memstats_lookups_total counter
-go_memstats_lookups_total 40
+go_memstats_lookups_total 42
 # HELP go_memstats_mallocs_total Total number of mallocs.
 # TYPE go_memstats_mallocs_total counter
-go_memstats_mallocs_total 23578
+go_memstats_mallocs_total 22795
 # HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures.
 # TYPE go_memstats_mcache_inuse_bytes gauge
 go_memstats_mcache_inuse_bytes 3472
@@ -156,30 +156,30 @@ go_memstats_mspan_inuse_bytes 67032
 go_memstats_mspan_sys_bytes 81920
 # HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place.
 # TYPE go_memstats_next_gc_bytes gauge
-go_memstats_next_gc_bytes 8.987392e+06
+go_memstats_next_gc_bytes 8.965648e+06
 # HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations.
 # TYPE go_memstats_other_sys_bytes gauge
-go_memstats_other_sys_bytes 744688
+go_memstats_other_sys_bytes 745416
 # HELP go_memstats_stack_inuse_bytes Number of bytes in use by the stack allocator.
 # TYPE go_memstats_stack_inuse_bytes gauge
-go_memstats_stack_inuse_bytes 753664
+go_memstats_stack_inuse_bytes 786432
 # HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator.
 # TYPE go_memstats_stack_sys_bytes gauge
-go_memstats_stack_sys_bytes 753664
+go_memstats_stack_sys_bytes 786432
 # HELP go_memstats_sys_bytes Number of bytes obtained by system. Sum of all system allocations.
 # TYPE go_memstats_sys_bytes gauge
 go_memstats_sys_bytes 1.0066168e+07
 # HELP http_request_duration_microseconds The HTTP request latencies in microseconds.
 # TYPE http_request_duration_microseconds summary
-http_request_duration_microseconds{handler="add_alerts",quantile="0.5"} 588.7
-http_request_duration_microseconds{handler="add_alerts",quantile="0.9"} 800.9
-http_request_duration_microseconds{handler="add_alerts",quantile="0.99"} 800.9
-http_request_duration_microseconds_sum{handler="add_alerts"} 3668.4
+http_request_duration_microseconds{handler="add_alerts",quantile="0.5"} 572.13
+http_request_duration_microseconds{handler="add_alerts",quantile="0.9"} 819.465
+http_request_duration_microseconds{handler="add_alerts",quantile="0.99"} 819.465
+http_request_duration_microseconds_sum{handler="add_alerts"} 3396.0160000000005
 http_request_duration_microseconds_count{handler="add_alerts"} 5
-http_request_duration_microseconds{handler="add_silence",quantile="0.5"} 185.3
-http_request_duration_microseconds{handler="add_silence",quantile="0.9"} 347
-http_request_duration_microseconds{handler="add_silence",quantile="0.99"} 347
-http_request_duration_microseconds_sum{handler="add_silence"} 999.5
+http_request_duration_microseconds{handler="add_silence",quantile="0.5"} 112.947
+http_request_duration_microseconds{handler="add_silence",quantile="0.9"} 140.891
+http_request_duration_microseconds{handler="add_silence",quantile="0.99"} 140.891
+http_request_duration_microseconds_sum{handler="add_silence"} 499.476
 http_request_duration_microseconds_count{handler="add_silence"} 3
 http_request_duration_microseconds{handler="alert_groups",quantile="0.5"} NaN
 http_request_duration_microseconds{handler="alert_groups",quantile="0.9"} NaN
@@ -406,7 +406,7 @@ http_response_size_bytes_sum{handler="status"} 0
 http_response_size_bytes_count{handler="status"} 0
 # HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
 # TYPE process_cpu_seconds_total counter
-process_cpu_seconds_total 0.11
+process_cpu_seconds_total 0.06
 # HELP process_max_fds Maximum number of open file descriptors.
 # TYPE process_max_fds gauge
 process_max_fds 1.048576e+06
@@ -415,10 +415,10 @@ process_max_fds 1.048576e+06
 process_open_fds 8
 # HELP process_resident_memory_bytes Resident memory size in bytes.
 # TYPE process_resident_memory_bytes gauge
-process_resident_memory_bytes 1.1624448e+07
+process_resident_memory_bytes 1.091584e+07
 # HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
 # TYPE process_start_time_seconds gauge
-process_start_time_seconds 1.54886918516e+09
+process_start_time_seconds 1.56121656829e+09
 # HELP process_virtual_memory_bytes Virtual memory size in bytes.
 # TYPE process_virtual_memory_bytes gauge
 process_virtual_memory_bytes 2.039808e+07

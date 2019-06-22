@@ -1,10 +1,25 @@
 {
     "data": [
         {
+            "comment": "Silenced server7",
+            "createdBy": "john@example.com",
+            "endsAt": "2063-01-01T00:00:00Z",
+            "id": "fe880a8a-b84a-4a32-a59d-85ad0facf0bc",
+            "matchers": [
+                {
+                    "isRegex": false,
+                    "name": "instance",
+                    "value": "server7"
+                }
+            ],
+            "startsAt": "2019-06-22T15:10:31.214280027Z",
+            "updatedAt": "2019-06-22T15:10:31.214280027Z"
+        },
+        {
             "comment": "Silenced instance",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "2994d7ec-9651-4f68-8bc1-74a2186c1d33",
+            "id": "b841d880-264c-4c1c-a9ff-069585665c95",
             "matchers": [
                 {
                     "isRegex": false,
@@ -12,14 +27,14 @@
                     "value": "web1"
                 }
             ],
-            "startsAt": "2019-01-30T17:20:41.2985576Z",
-            "updatedAt": "2019-01-30T17:20:41.2985576Z"
+            "startsAt": "2019-06-22T15:10:31.207389093Z",
+            "updatedAt": "2019-06-22T15:10:31.207389093Z"
         },
         {
             "comment": "Silenced Host_Down alerts in the dev cluster",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "796f3800-09fa-48b7-817e-0599325797c0",
+            "id": "ea9fa8f7-44f8-44ab-9182-f4b727e9d057",
             "matchers": [
                 {
                     "isRegex": false,
@@ -32,23 +47,8 @@
                     "value": "dev"
                 }
             ],
-            "startsAt": "2019-01-30T17:20:41.3026119Z",
-            "updatedAt": "2019-01-30T17:20:41.3026119Z"
-        },
-        {
-            "comment": "Silenced server7",
-            "createdBy": "john@example.com",
-            "endsAt": "2063-01-01T00:00:00Z",
-            "id": "8c5c3e8d-1cda-4966-b6f1-74fee83ec908",
-            "matchers": [
-                {
-                    "isRegex": false,
-                    "name": "instance",
-                    "value": "server7"
-                }
-            ],
-            "startsAt": "2019-01-30T17:20:41.3065872Z",
-            "updatedAt": "2019-01-30T17:20:41.3065872Z"
+            "startsAt": "2019-06-22T15:10:31.211005395Z",
+            "updatedAt": "2019-06-22T15:10:31.211005395Z"
         }
     ],
     "status": "success"

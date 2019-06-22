@@ -38,7 +38,7 @@ func NewAlertmanager(name, upstreamURI string, opts ...Option) (*Alertmanager, e
 				labelValueErrorsSilences: 0,
 			},
 		},
-		status: alertmanagerStatus{},
+		status: models.AlertmanagerStatus{},
 	}
 
 	for _, opt := range opts {

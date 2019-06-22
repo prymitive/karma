@@ -1,7 +1,6 @@
 package alertmanager
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"path"
@@ -32,12 +31,6 @@ type alertmanagerMetrics struct {
 	Errors map[string]float64
 }
 
-type alertmanagerStatus struct {
-	version string
-	amID    string
-	peerIDs []string
-}
-
 // Alertmanager represents Alertmanager upstream instance
 type Alertmanager struct {
 	URI            string        `json:"uri"`
@@ -59,7 +52,7 @@ type Alertmanager struct {
 	autocomplete []models.Autocomplete
 	knownLabels  []string
 	lastError    string
-	status       alertmanagerStatus
+	status       models.AlertmanagerStatus
 	// metrics tracked per alertmanager instance
 	Metrics alertmanagerMetrics
 	// headers to send with each AlertManager request
@@ -90,63 +83,42 @@ func (am *Alertmanager) probeVersion() string {
 	return version
 }
 
-func (am *Alertmanager) fetchStatus() alertmanagerStatus {
-	status := alertmanagerStatus{
-		// if everything fails assume Alertmanager is at latest possible version
-		version: "999.0.0",
-		amID:    "",
-		peerIDs: []string{},
-	}
-
-	url, err := uri.JoinURL(am.URI, "api/v1/status")
+func (am *Alertmanager) fetchStatus(version string) (*models.AlertmanagerStatus, error) {
+	mapper, err := mapper.GetStatusMapper(version)
 	if err != nil {
-		log.Errorf("Failed to join url '%s' and path 'api/v1/status': %s", am.SanitizedURI(), err)
-		return status
+		return nil, err
 	}
 
-	resp := alertmanagerStatusResponse{}
+	var status models.AlertmanagerStatus
 
-	// read raw body from the source
-	source, err := am.reader.Read(url, am.HTTPHeaders)
-	if err != nil {
-		log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
-		return status
-	}
-	defer source.Close()
-
-	// decode body as JSON
-	err = json.NewDecoder(source).Decode(&resp)
-	if err != nil {
-		log.Errorf("[%s] %s failed to decode as JSON: %s", am.Name, uri.SanitizeURI(url), err)
-		return status
-	}
-
-	if resp.Status != "success" {
-		log.Errorf("[%s] Request to %s returned status %s", am.Name, uri.SanitizeURI(url), resp.Status)
-		return status
-	}
-
-	if resp.Data.VersionInfo.Version == "" {
-		log.Errorf("[%s] No version information in Alertmanager API at %s", am.Name, uri.SanitizeURI(url))
-		return status
-	}
-
-	status.version = resp.Data.VersionInfo.Version
-	log.Infof("[%s] Remote Alertmanager version: %s", am.Name, status.version)
-
-	if resp.Data.ClusterStatus.Name != "" {
-		status.amID = resp.Data.ClusterStatus.Name
-		for _, peer := range resp.Data.ClusterStatus.Peers {
-			status.peerIDs = append(status.peerIDs, peer.Name)
+	if mapper.IsOpenAPI() {
+		status, err = mapper.Collect(am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
+		if err != nil {
+			return nil, err
 		}
-	} else if resp.Data.MeshStatus.Name != "" {
-		status.amID = resp.Data.MeshStatus.Name
-		for _, peer := range resp.Data.MeshStatus.Peers {
-			status.peerIDs = append(status.peerIDs, peer.Name)
+	} else {
+		// generate full URL to collect silences from
+		url, err := mapper.AbsoluteURL(am.URI)
+		if err != nil {
+			log.Errorf("[%s] Failed to generate status endpoint URL: %s", am.Name, err)
+			return nil, err
+		}
+		// read raw body from the source
+		source, err := am.reader.Read(url, am.HTTPHeaders)
+		if err != nil {
+			log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
+			return nil, err
+		}
+		defer source.Close()
+
+		// decode body text
+		status, err = mapper.Decode(source)
+		if err != nil {
+			return nil, err
 		}
 	}
 
-	return status
+	return &status, nil
 }
 
 func (am *Alertmanager) clearData() {
@@ -156,10 +128,10 @@ func (am *Alertmanager) clearData() {
 	am.colors = models.LabelsColorMap{}
 	am.autocomplete = []models.Autocomplete{}
 	am.knownLabels = []string{}
-	am.status = alertmanagerStatus{
-		version: "",
-		amID:    "",
-		peerIDs: []string{},
+	am.status = models.AlertmanagerStatus{
+		Version: "",
+		ID:      "",
+		PeerIDs: []string{},
 	}
 	am.lock.Unlock()
 }
@@ -393,9 +365,15 @@ func (am *Alertmanager) Pull() error {
 
 	version := am.probeVersion()
 
-	status := am.fetchStatus()
+	status, err := am.fetchStatus(version)
+	if err != nil {
+		am.clearData()
+		am.setError(err.Error())
+		am.Metrics.Errors[labelValueErrorsSilences]++
+		return err
+	}
 
-	err := am.pullSilences(version)
+	err = am.pullSilences(version)
 	if err != nil {
 		am.clearData()
 		am.setError(err.Error())
@@ -412,7 +390,7 @@ func (am *Alertmanager) Pull() error {
 	}
 
 	am.lock.Lock()
-	am.status = status
+	am.status = *status
 	am.lastError = ""
 	am.lock.Unlock()
 
@@ -517,7 +495,7 @@ func (am *Alertmanager) Version() string {
 	am.lock.RLock()
 	defer am.lock.RUnlock()
 
-	return am.status.version
+	return am.status.Version
 }
 
 // ClusterPeers returns a list of IDs of all peers this instance
@@ -527,7 +505,7 @@ func (am *Alertmanager) ClusterPeers() []string {
 	am.lock.RLock()
 	defer am.lock.RUnlock()
 
-	return am.status.peerIDs
+	return am.status.PeerIDs
 }
 
 // ClusterMemberNames returns a list of names of all Alertmanager instances
@@ -545,7 +523,7 @@ func (am *Alertmanager) ClusterMemberNames() []string {
 			continue
 		}
 		for _, peerID := range upstream.ClusterPeers() {
-			if slices.StringInSlice(am.status.peerIDs, peerID) {
+			if slices.StringInSlice(am.status.PeerIDs, peerID) {
 				if !slices.StringInSlice(members, upstream.Name) {
 					members = append(members, upstream.Name)
 				}
