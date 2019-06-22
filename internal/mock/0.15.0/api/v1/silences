@@ -4,7 +4,7 @@
             "comment": "Silenced instance",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "ff7fa460-5b38-4c0c-a33b-b13d04bea1b7",
+            "id": "e35e6f7f-e359-4937-9d0e-501bf9f37c11",
             "matchers": [
                 {
                     "isRegex": false,
@@ -12,17 +12,17 @@
                     "value": "web1"
                 }
             ],
-            "startsAt": "2019-01-30T17:33:53.8335376Z",
+            "startsAt": "2019-06-22T15:23:29.482252519Z",
             "status": {
                 "state": "active"
             },
-            "updatedAt": "2019-01-30T17:33:53.8335581Z"
+            "updatedAt": "2019-06-22T15:23:29.482257964Z"
         },
         {
             "comment": "Silenced Host_Down alerts in the dev cluster",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "40d02fa1-bbcb-4fa3-9bb1-ce3430b7a6c2",
+            "id": "1e24040c-5762-4864-b1c3-e4f2a79becaa",
             "matchers": [
                 {
                     "isRegex": false,
@@ -35,17 +35,17 @@
                     "value": "dev"
                 }
             ],
-            "startsAt": "2019-01-30T17:33:53.838072Z",
+            "startsAt": "2019-06-22T15:23:29.485579645Z",
             "status": {
                 "state": "active"
             },
-            "updatedAt": "2019-01-30T17:33:53.8381795Z"
+            "updatedAt": "2019-06-22T15:23:29.485586105Z"
         },
         {
             "comment": "Silenced server7",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "7665aebb-1b9a-42ee-aa42-4fbedac19daf",
+            "id": "7343a0fe-3976-47c7-8302-97b19e531d32",
             "matchers": [
                 {
                     "isRegex": false,
@@ -53,11 +53,11 @@
                     "value": "server7"
                 }
             ],
-            "startsAt": "2019-01-30T17:33:53.8432721Z",
+            "startsAt": "2019-06-22T15:23:29.488886396Z",
             "status": {
                 "state": "active"
             },
-            "updatedAt": "2019-01-30T17:33:53.8432908Z"
+            "updatedAt": "2019-06-22T15:23:29.488942812Z"
         }
     ],
     "status": "success"

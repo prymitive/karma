@@ -73,7 +73,7 @@ func (m SilenceMapper) Decode(source io.ReadCloser) ([]models.Silence, error) {
 		return silences, err
 	}
 
-	if resp.Status != "success" {
+	if resp.Status != mapper.AlertmanagerStatusString {
 		return silences, errors.New(resp.Error)
 	}
 

@@ -79,6 +79,7 @@ func mockAlerts(version string) {
 
 	mock.RegisterURL("http://localhost/metrics", version, "metrics")
 	mock.RegisterURL("http://localhost/api/v1/status", version, "api/v1/status")
+	mock.RegisterURL("http://localhost/api/v2/status", version, "api/v2/status")
 	mock.RegisterURL("http://localhost/api/v1/silences", version, "api/v1/silences")
 	mock.RegisterURL("http://localhost/api/v2/silences", version, "api/v2/silences")
 	mock.RegisterURL("http://localhost/api/v1/alerts/groups", version, "api/v1/alerts/groups")

@@ -74,16 +74,16 @@
         "configYAML": "global:\n  resolve_timeout: 5m\n  smtp_require_tls: true\n  pagerduty_url: https://events.pagerduty.com/v2/enqueue\n  hipchat_api_url: https://api.hipchat.com/\n  opsgenie_api_url: https://api.opsgenie.com/\n  wechat_api_url: https://qyapi.weixin.qq.com/cgi-bin/\n  victorops_api_url: https://alert.victorops.com/integrations/generic/20131114/alert/\nroute:\n  receiver: default\n  group_by:\n  - alertname\n  routes:\n  - receiver: by-cluster-service\n    group_by:\n    - alertname\n    - cluster\n    - service\n    match_re:\n      alertname: ^(?:.*)$\n    continue: true\n  - receiver: by-name\n    group_by:\n    - alertname\n    match_re:\n      alertname: ^(?:.*)$\n    continue: true\n  group_wait: 15s\n  group_interval: 35s\n  repeat_interval: 999h\ninhibit_rules:\n- source_match:\n    severity: critical\n  target_match:\n    severity: warning\n  equal:\n  - alertname\n  - cluster\n  - service\nreceivers:\n- name: default\n- name: by-cluster-service\n- name: by-name\ntemplates: []\n",
         "meshStatus": {
             "name": "02:42:ac:11:00:02",
-            "nickName": "508225064f82",
+            "nickName": "3064fcdd4faa",
             "peers": [
                 {
                     "name": "02:42:ac:11:00:02",
-                    "nickName": "508225064f82",
-                    "uid": 11187596441851003591
+                    "nickName": "3064fcdd4faa",
+                    "uid": 2982288347067156722
                 }
             ]
         },
-        "uptime": "2019-01-30T17:30:02.0865936Z",
+        "uptime": "2019-06-22T15:19:41.244528727Z",
         "versionInfo": {
             "branch": "HEAD",
             "buildDate": "20171215-14:13:20",

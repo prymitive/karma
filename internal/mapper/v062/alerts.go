@@ -92,7 +92,7 @@ func (m AlertMapper) Decode(source io.ReadCloser) ([]models.AlertGroup, error) {
 		return groups, err
 	}
 
-	if resp.Status != "success" {
+	if resp.Status != mapper.AlertmanagerStatusString {
 		return groups, errors.New(resp.Error)
 	}
 

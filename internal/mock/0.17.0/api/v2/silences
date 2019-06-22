@@ -1,9 +1,27 @@
 [
     {
+        "comment": "Silenced instance",
+        "createdBy": "john@example.com",
+        "endsAt": "2063-01-01T00:00:00.000Z",
+        "id": "96b6a5de-6255-4359-9f38-4a98577fc87e",
+        "matchers": [
+            {
+                "isRegex": false,
+                "name": "instance",
+                "value": "web1"
+            }
+        ],
+        "startsAt": "2019-06-22T15:28:11.640Z",
+        "status": {
+            "state": "active"
+        },
+        "updatedAt": "2019-06-22T15:28:11.640Z"
+    },
+    {
         "comment": "Silenced Host_Down alerts in the dev cluster",
         "createdBy": "john@example.com",
         "endsAt": "2063-01-01T00:00:00.000Z",
-        "id": "01937075-4bf7-4e9f-ae3a-3f539e3040e3",
+        "id": "60e91668-e6cf-43f9-b097-cf424540c85f",
         "matchers": [
             {
                 "isRegex": false,
@@ -16,17 +34,17 @@
                 "value": "dev"
             }
         ],
-        "startsAt": "2019-05-10T19:42:25.599Z",
+        "startsAt": "2019-06-22T15:28:11.643Z",
         "status": {
             "state": "active"
         },
-        "updatedAt": "2019-05-10T19:42:25.599Z"
+        "updatedAt": "2019-06-22T15:28:11.643Z"
     },
     {
         "comment": "Silenced server7",
         "createdBy": "john@example.com",
         "endsAt": "2063-01-01T00:00:00.000Z",
-        "id": "c805d071-b605-4164-b84b-ef24bd8c595e",
+        "id": "be3ae7c9-88e2-4d89-8b61-23b65200fb64",
         "matchers": [
             {
                 "isRegex": false,
@@ -34,28 +52,10 @@
                 "value": "server7"
             }
         ],
-        "startsAt": "2019-05-10T19:42:25.603Z",
+        "startsAt": "2019-06-22T15:28:11.646Z",
         "status": {
             "state": "active"
         },
-        "updatedAt": "2019-05-10T19:42:25.603Z"
-    },
-    {
-        "comment": "Silenced instance",
-        "createdBy": "john@example.com",
-        "endsAt": "2063-01-01T00:00:00.000Z",
-        "id": "f363523b-128c-46d8-a8ab-fe9d97547741",
-        "matchers": [
-            {
-                "isRegex": false,
-                "name": "instance",
-                "value": "web1"
-            }
-        ],
-        "startsAt": "2019-05-10T19:42:25.587Z",
-        "status": {
-            "state": "active"
-        },
-        "updatedAt": "2019-05-10T19:42:25.587Z"
+        "updatedAt": "2019-06-22T15:28:11.646Z"
     }
 ]

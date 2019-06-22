@@ -83,16 +83,16 @@
         },
         "meshStatus": {
             "name": "02:42:ac:11:00:02",
-            "nickName": "aee08f2dac62",
+            "nickName": "0372ffac4129",
             "peers": [
                 {
                     "name": "02:42:ac:11:00:02",
-                    "nickName": "aee08f2dac62",
-                    "uid": 6444584588054702875
+                    "nickName": "0372ffac4129",
+                    "uid": 4908648873309523470
                 }
             ]
         },
-        "uptime": "2019-01-30T17:20:26.1429883Z",
+        "uptime": "2019-06-22T15:10:16.088673864Z",
         "versionInfo": {
             "branch": "master",
             "buildDate": "20170509-08:56:14",
