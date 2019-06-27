@@ -172,6 +172,11 @@ func (config *configSchema) Read() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	for i, s := range config.Alertmanager.Servers {
+		if s.Timeout.Seconds() == 0 {
+			config.Alertmanager.Servers[i].Timeout = v.GetDuration("alertmanager.timeout")
+		}
+	}
 
 	err = v.UnmarshalKey("jira", &config.JIRA)
 	if err != nil {
