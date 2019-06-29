@@ -647,6 +647,32 @@ var groupTests = []groupTest{
 	},
 }
 
+var countsMap = []models.LabelHits{
+	{Name: "@receiver", Value: "by-cluster-service", Hits: 12, Percent: 50},
+	{Name: "@receiver", Value: "by-name", Hits: 12, Percent: 50},
+	{Name: "@state", Value: "active", Hits: 16, Percent: 75},
+	{Name: "@state", Value: "suppressed", Hits: 8, Percent: 25},
+	{Name: "alertname", Value: "Free_Disk_Space_Too_Low", Hits: 2, Percent: 8},
+	{Name: "alertname", Value: "HTTP_Probe_Failed", Hits: 4, Percent: 16},
+	{Name: "alertname", Value: "Host_Down", Hits: 16, Percent: 75},
+	{Name: "alertname", Value: "Memory_Usage_Too_High", Hits: 2, Percent: 8},
+	{Name: "cluster", Value: "dev", Hits: 10, Percent: 40},
+	{Name: "cluster", Value: "prod", Hits: 6, Percent: 20},
+	{Name: "cluster", Value: "staging", Hits: 8, Percent: 25},
+	{Name: "instance", Value: "server1", Hits: 2, Percent: 4},
+	{Name: "instance", Value: "server2", Hits: 4, Percent: 8},
+	{Name: "instance", Value: "server3", Hits: 2, Percent: 4},
+	{Name: "instance", Value: "server4", Hits: 2, Percent: 4},
+	{Name: "instance", Value: "server5", Hits: 4, Percent: 8},
+	{Name: "instance", Value: "server6", Hits: 2, Percent: 4},
+	{Name: "instance", Value: "server7", Hits: 2, Percent: 4},
+	{Name: "instance", Value: "server8", Hits: 2, Percent: 4},
+	{Name: "instance", Value: "web1", Hits: 2, Percent: 4},
+	{Name: "instance", Value: "web2", Hits: 2, Percent: 4},
+	{Name: "job", Value: "node_exporter", Hits: 8, Percent: 8},
+	{Name: "job", Value: "node_ping", Hits: 16, Percent: 75},
+}
+
 var filtersExpected = []models.Filter{}
 
 func compareAlertGroups(testCase groupTest, group models.APIAlertGroup) bool {
@@ -836,6 +862,22 @@ func TestVerifyAllGroups(t *testing.T) {
 			t.Errorf("[%s] Silences mismatch, expected >0 but got %d", version, len(am))
 		}
 
+		for _, expectedLH := range countsMap {
+			var found bool
+			for _, lh := range ur.Counters {
+				if lh.Name == expectedLH.Name && lh.Value == expectedLH.Value {
+					if lh.Hits != expectedLH.Hits {
+						t.Errorf("[%s] Counters mismatch for '%s: %s', expected %v but got %v",
+							version, lh.Name, lh.Value, expectedLH.Hits, lh.Hits)
+					}
+					found = true
+					break
+				}
+			}
+			if !found {
+				t.Errorf("[%s] Counters missing for '%s: %s'", version, expectedLH.Name, expectedLH.Value)
+			}
+		}
 		if !reflect.DeepEqual(ur.Filters, filtersExpected) {
 			t.Errorf("[%s] Filters mismatch, expected %v but got %v", version, filtersExpected, ur.Filters)
 		}

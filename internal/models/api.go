@@ -35,6 +35,25 @@ type LabelColors struct {
 // LabelsColorMap is a map of "Label Key" -> "Label Value" -> karmaLabelColors
 type LabelsColorMap map[string]map[string]LabelColors
 
+type LabelHitsList []LabelHits
+
+func (lhl LabelHitsList) Len() int      { return len(lhl) }
+func (lhl LabelHitsList) Swap(i, j int) { lhl[i], lhl[j] = lhl[j], lhl[i] }
+func (lhl LabelHitsList) Less(i, j int) bool {
+	if lhl[i].Hits == lhl[j].Hits {
+		return lhl[i].Percent > lhl[j].Percent
+	}
+	return lhl[i].Hits > lhl[j].Hits
+}
+
+// LabelHits is used
+type LabelHits struct {
+	Name    string `json:"name"`
+	Value   string `json:"value"`
+	Hits    int    `json:"hits"`
+	Percent int    `json:"percent"`
+}
+
 // APIAlertGroupSharedMaps defines shared part of APIAlertGroup
 type APIAlertGroupSharedMaps struct {
 	Annotations Annotations         `json:"annotations"`
@@ -248,6 +267,7 @@ type AlertsResponse struct {
 	TotalAlerts int                           `json:"totalAlerts"`
 	Colors      LabelsColorMap                `json:"colors"`
 	Filters     []Filter                      `json:"filters"`
+	Counters    LabelHitsList                 `json:"counters"`
 	Settings    Settings                      `json:"settings"`
 }
 

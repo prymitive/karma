@@ -122,6 +122,7 @@ func alerts(c *gin.Context) {
 	// set pointers for data store objects, need a lock until end of view is reached
 	alerts := map[string]models.APIAlertGroup{}
 	colors := models.LabelsColorMap{}
+	counters := map[string]map[string]int{}
 
 	dedupedAlerts := alertmanager.DedupAlerts()
 	dedupedColors := alertmanager.DedupColors()
@@ -170,6 +171,9 @@ func alerts(c *gin.Context) {
 				alert.UpdateFingerprints()
 				agCopy.Alerts = append(agCopy.Alerts, alert)
 
+				countLabel(counters, "@state", alert.State)
+
+				countLabel(counters, "@receiver", alert.Receiver)
 				if ck, foundKey := dedupedColors["@receiver"]; foundKey {
 					if cv, foundVal := ck[alert.Receiver]; foundVal {
 						if _, found := colors["@receiver"]; !found {
@@ -209,6 +213,7 @@ func alerts(c *gin.Context) {
 							colors[key][value] = color
 						}
 					}
+					countLabel(counters, key, value)
 				}
 			}
 		}
@@ -248,6 +253,7 @@ func alerts(c *gin.Context) {
 	resp.AlertGroups = alerts
 	resp.Silences = silences
 	resp.Colors = colors
+	resp.Counters = countersToLabelHitsList(counters)
 	resp.Filters = populateAPIFilters(matchFilters)
 
 	data, err := json.Marshal(resp)
