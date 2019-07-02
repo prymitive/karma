@@ -48,7 +48,7 @@
     "react-scripts": "3.0.1",
     "react-select": "3.0.4",
     "react-tippy": "1.2.3",
-    "react-transition-group": "4.2.0",
+    "react-transition-group": "4.2.1",
     "react-truncate": "2.4.0",
     "semver": "6.2.0",
     "typeface-open-sans": "0.0.54"
