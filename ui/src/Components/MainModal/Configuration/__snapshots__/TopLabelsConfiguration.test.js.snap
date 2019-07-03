@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TopLabelsConfiguration /> matches snapshot with default values 1`] = `
+"
+<div class=\\"form-group\\">
+  <div class=\\"text-center\\">
+    <label class=\\"mb-4 font-weight-bold\\">
+      Top labels threshold
+    </label>
+  </div>
+  <div class=\\"mb-4\\">
+    <div aria-disabled=\\"false\\"
+         class=\\"input-range\\"
+    >
+      <span class=\\"input-range__label input-range__label--min\\">
+        <span class=\\"input-range__label-container\\">
+          0%
+        </span>
+      </span>
+      <div class=\\"input-range__track input-range__track--background\\">
+        <div style=\\"left: 0%; width: 33.33333333333333%;\\"
+             class=\\"input-range__track input-range__track--active\\"
+        >
+        </div>
+        <span class=\\"input-range__slider-container\\"
+              style=\\"position: absolute; left: 33.33333333333333%;\\"
+        >
+          <span class=\\"input-range__label input-range__label--value\\">
+            <span class=\\"input-range__label-container\\">
+              33%
+            </span>
+          </span>
+          <div aria-valuemax=\\"99\\"
+               aria-valuemin=\\"0\\"
+               aria-valuenow=\\"33\\"
+               class=\\"input-range__slider\\"
+               draggable=\\"false\\"
+               role=\\"slider\\"
+               tabindex=\\"0\\"
+          >
+          </div>
+        </span>
+      </div>
+      <span class=\\"input-range__label input-range__label--max\\">
+        <span class=\\"input-range__label-container\\">
+          99%
+        </span>
+      </span>
+    </div>
+  </div>
+  <div class=\\"form-check form-check-inline\\">
+    <span class=\\"custom-control custom-switch\\">
+      <input id=\\"topLabelsConfigShow\\"
+             class=\\"custom-control-input\\"
+             type=\\"checkbox\\"
+             value
+             checked
+      >
+      <label class=\\"custom-control-label cursor-pointer mr-3\\"
+             for=\\"topLabelsConfigShow\\"
+      >
+        Show top labels
+      </label>
+    </span>
+  </div>
+</div>
+"
+`;

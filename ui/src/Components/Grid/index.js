@@ -10,6 +10,7 @@ import { AlertGrid } from "./AlertGrid";
 import { FatalError } from "./FatalError";
 import { UpstreamError } from "./UpstreamError";
 import { UpgradeNeeded } from "./UpgradeNeeded";
+import { TopLabels } from "Components/TopLabels";
 
 const Grid = observer(
   class Grid extends Component {
@@ -53,7 +54,7 @@ const Grid = observer(
                 message={upstream.error}
               />
             ))}
-
+          <TopLabels alertStore={alertStore} settingsStore={settingsStore} />
           <AlertGrid
             alertStore={alertStore}
             settingsStore={settingsStore}

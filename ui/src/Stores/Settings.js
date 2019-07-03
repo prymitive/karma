@@ -95,6 +95,19 @@ class FilterBarConfig {
   );
 }
 
+class TopLabelsConfig {
+  config = localStored(
+    "topLabelsConfig",
+    {
+      show: true,
+      minPercent: 33
+    },
+    {
+      delay: 100
+    }
+  );
+}
+
 class Settings {
   constructor() {
     this.savedFilters = new SavedFilters();
@@ -103,6 +116,7 @@ class Settings {
     this.gridConfig = new GridConfig();
     this.silenceFormConfig = new SilenceFormConfig();
     this.filterBarConfig = new FilterBarConfig();
+    this.topLabelsConfig = new TopLabelsConfig();
   }
 }
 

@@ -9,6 +9,7 @@ import { AlertGroupWidthConfiguration } from "./AlertGroupWidthConfiguration";
 import { AlertGroupSortConfiguration } from "./AlertGroupSortConfiguration";
 import { AlertGroupCollapseConfiguration } from "./AlertGroupCollapseConfiguration";
 import { AlertGroupTitleBarColor } from "./AlertGroupTitleBarColor";
+import { TopLabelsConfiguration } from "./TopLabelsConfiguration";
 
 const Configuration = ({ settingsStore }) => (
   <form className="px-3">
@@ -25,6 +26,8 @@ const Configuration = ({ settingsStore }) => (
     <AlertGroupCollapseConfiguration settingsStore={settingsStore} />
     <div className="mt-5" />
     <AlertGroupSortConfiguration settingsStore={settingsStore} />
+    <div className="mt-5" />
+    <TopLabelsConfiguration settingsStore={settingsStore} />
   </form>
 );
 Configuration.propTypes = {

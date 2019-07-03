@@ -137,7 +137,7 @@ class AlertStore {
   data = observable(
     {
       colors: {},
-      counters: {},
+      counters: [],
       groups: {},
       silences: {},
       upstreams: { instances: [], clusters: {} },
