@@ -22,6 +22,7 @@ const EmptyAPIResponse = () => ({
       isValid: true
     }
   ],
+  counters: {},
   settings: {
     sorting: {
       grid: {

@@ -2,6 +2,7 @@ package models_test
 
 import (
 	"encoding/json"
+	"sort"
 	"testing"
 
 	"github.com/pmezard/go-difflib/difflib"
@@ -254,4 +255,181 @@ func TestDedupSharedMapsWithSingleAlert(t *testing.T) {
 		},
 	}
 	ag.DedupSharedMaps()
+}
+
+func TestNameStatsSort(t *testing.T) {
+	var nameStats = models.LabelNameStatsList{
+		{
+			Name: "@state",
+			Hits: 24,
+			Values: models.LabelValueStatsList{
+				models.LabelValueStats{
+					Value:   "suppressed",
+					Hits:    8,
+					Percent: 33,
+				},
+				models.LabelValueStats{
+					Value:   "active",
+					Hits:    16,
+					Percent: 67,
+				},
+			},
+		},
+		{
+			Name: "cluster",
+			Hits: 24,
+			Values: models.LabelValueStatsList{
+				models.LabelValueStats{
+					Value:   "dev",
+					Hits:    10,
+					Percent: 42,
+				},
+				models.LabelValueStats{
+					Value:   "prod",
+					Hits:    6,
+					Percent: 25,
+				},
+				models.LabelValueStats{
+					Value:   "staging",
+					Hits:    8,
+					Percent: 33,
+				},
+			},
+		},
+		{
+			Name: "alertname",
+			Hits: 24,
+			Values: models.LabelValueStatsList{
+				models.LabelValueStats{
+					Value:   "HTTP_Probe_Failed",
+					Hits:    4,
+					Percent: 17,
+				},
+				models.LabelValueStats{
+					Value:   "Host_Down",
+					Hits:    16,
+					Percent: 67,
+				},
+				models.LabelValueStats{
+					Value:   "Free_Disk_Space_Too_Low",
+					Hits:    2,
+					Percent: 8,
+				},
+				models.LabelValueStats{
+					Value:   "Memory_Usage_Too_High",
+					Hits:    2,
+					Percent: 8,
+				},
+			},
+		},
+		{
+			Name: "instance",
+			Hits: 24,
+			Values: models.LabelValueStatsList{
+				models.LabelValueStats{
+					Value:   "server4",
+					Hits:    2,
+					Percent: 8,
+				},
+				models.LabelValueStats{
+					Value:   "server5",
+					Hits:    4,
+					Percent: 17,
+				},
+				models.LabelValueStats{
+					Value:   "server6",
+					Hits:    2,
+					Percent: 8,
+				},
+				models.LabelValueStats{
+					Value:   "server1",
+					Hits:    2,
+					Percent: 8,
+				},
+				models.LabelValueStats{
+					Value:   "server2",
+					Hits:    4,
+					Percent: 17,
+				},
+				models.LabelValueStats{
+					Value:   "server3",
+					Hits:    2,
+					Percent: 8,
+				},
+				models.LabelValueStats{
+					Value:   "server7",
+					Hits:    2,
+					Percent: 8,
+				},
+				models.LabelValueStats{
+					Value:   "server8",
+					Hits:    2,
+					Percent: 8,
+				},
+				models.LabelValueStats{
+					Value:   "web1",
+					Hits:    2,
+					Percent: 8,
+				},
+				models.LabelValueStats{
+					Value:   "web2",
+					Hits:    2,
+					Percent: 8,
+				},
+			},
+		},
+		{
+			Name: "@receiver",
+			Hits: 24,
+			Values: models.LabelValueStatsList{
+				models.LabelValueStats{
+					Value:   "by-name",
+					Hits:    12,
+					Percent: 50,
+				},
+				models.LabelValueStats{
+					Value:   "by-cluster-service",
+					Hits:    12,
+					Percent: 50,
+				},
+			},
+		},
+		{
+			Name: "job",
+			Hits: 16,
+			Values: models.LabelValueStatsList{
+				models.LabelValueStats{
+					Value:   "node_exporter",
+					Hits:    8,
+					Percent: 50,
+				},
+				models.LabelValueStats{
+					Value:   "node_ping",
+					Hits:    8,
+					Percent: 50,
+				},
+			},
+		},
+	}
+
+	b, err := json.Marshal(nameStats)
+	if err != nil {
+		t.Error(err)
+	}
+	before := string(b)
+
+	for _, n := range nameStats {
+		sort.Sort(n.Values)
+	}
+	sort.Sort(nameStats)
+
+	a, err := json.Marshal(nameStats)
+	if err != nil {
+		t.Error(err)
+	}
+	after := string(a)
+
+	if after == before {
+		t.Errorf("Sorting LabelNameStatsList produces the same output as unsorted instance")
+	}
 }
