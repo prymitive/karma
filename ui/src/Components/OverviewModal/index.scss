@@ -1,0 +1,10 @@
+@import "~bootswatch/dist/flatly/variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootswatch/dist/flatly/bootswatch";
+
+.navbar-brand {
+  &:hover,
+  &:focus {
+    color: $green !important;
+  }
+}

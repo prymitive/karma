@@ -55,7 +55,7 @@ describe("<NavBar />", () => {
   it("navbar-brand shows 15 alerts with totalAlerts=15", () => {
     alertStore.info.totalAlerts = 15;
     const tree = MountedNavbar();
-    const brand = tree.find(".navbar-brand");
+    const brand = tree.find("span.navbar-brand");
     expect(brand.text()).toBe("15");
   });
 

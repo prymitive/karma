@@ -8,13 +8,12 @@ import ReactResizeDetector from "react-resize-detector";
 
 import IdleTimer from "react-idle-timer";
 
-import Flash from "react-reveal/Flash";
-
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { IsMobile } from "Common/Device";
 import { NavBarSlide } from "Components/Animations/NavBarSlide";
+import { OverviewModal } from "Components/OverviewModal";
 import { MainModal } from "Components/MainModal";
 import { SilenceModal } from "Components/SilenceModal";
 import { FetchIndicator } from "./FetchIndicator";
@@ -141,12 +140,8 @@ const NavBar = observer(
             >
               <nav className="navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block">
                 <ReactResizeDetector handleHeight onResize={this.onResize} />
-                <span className="navbar-brand my-0 mx-2 h1 d-none d-sm-block float-left">
-                  <Flash spy={alertStore.info.totalAlerts}>
-                    <div className="d-inline-block">
-                      {alertStore.info.totalAlerts}
-                    </div>
-                  </Flash>
+                <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block float-left">
+                  <OverviewModal alertStore={alertStore} />
                   <FetchIndicator alertStore={alertStore} />
                 </span>
                 <ul className={`navbar-nav float-right d-flex ${flexClass}`}>
