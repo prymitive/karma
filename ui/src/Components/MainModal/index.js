@@ -52,7 +52,7 @@ const MainModal = observer(
           >
             <TooltipWrapper title="Settings">
               <span
-                className="nav-link cursor-pointer"
+                className="nav-link components-navbar-button cursor-pointer"
                 onClick={this.toggle.toggle}
               >
                 <FontAwesomeIcon icon={faCog} />

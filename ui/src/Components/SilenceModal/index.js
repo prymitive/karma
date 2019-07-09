@@ -36,7 +36,7 @@ const SilenceModal = observer(
       return (
         <React.Fragment>
           <li
-            className={`nav-item ${
+            className={`nav-item components-navbar-button ${
               silenceFormStore.toggle.visible ? "border-bottom border-info" : ""
             }`}
           >
