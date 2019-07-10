@@ -137,6 +137,7 @@ class AlertStore {
   data = observable(
     {
       colors: {},
+      counters: [],
       groups: {},
       silences: {},
       upstreams: { instances: [], clusters: {} },
@@ -302,7 +303,7 @@ class AlertStore {
 
     let updates = {};
     // update data dicts if they changed
-    for (const key of ["colors", "silences", "upstreams"]) {
+    for (const key of ["colors", "counters", "silences", "upstreams"]) {
       if (!equal(this.data[key], result[key])) {
         updates[key] = result[key];
       }

@@ -321,7 +321,8 @@ class LongNameAlerts(AlertGenerator):
             return [newAlert(
                 self._labels(instance="server{}".format(i), cluster=cluster,
                              severity="info", job="textfile_exporter",
-                             region="CN"),
+                             region="CN",
+                             thisIsAVeryLongLabelNameToTestLabelTruncationInAllThePlacesWeRenderItLoremIpsumDolorSitAmet="1"),
                 self._annotations(
                     verylong="Lorem ipsum dolor sit amet, consectetur "
                              "adipiscing elit, sed do eiusmod tempor incididunt"

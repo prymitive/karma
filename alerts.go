@@ -1,6 +1,9 @@
 package main
 
 import (
+	"math"
+	"sort"
+
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
@@ -20,6 +23,45 @@ func getFiltersFromQuery(filterStrings []string) ([]filters.FilterT, bool) {
 		matchFilters = append(matchFilters, f)
 	}
 	return matchFilters, validFilters
+}
+
+func countLabel(countStore map[string]map[string]int, key string, val string) {
+	if _, found := countStore[key]; !found {
+		countStore[key] = make(map[string]int)
+	}
+	if _, found := countStore[key][val]; found {
+		countStore[key][val]++
+	} else {
+		countStore[key][val] = 1
+	}
+}
+
+func countersToLabelStats(counters map[string]map[string]int) models.LabelNameStatsList {
+	data := models.LabelNameStatsList{}
+
+	for name, valueMap := range counters {
+		nameStats := models.LabelNameStats{
+			Name:   name,
+			Values: models.LabelValueStatsList{},
+		}
+		for value, hits := range valueMap {
+			nameStats.Hits += hits
+			valueStats := models.LabelValueStats{
+				Value: value,
+				Hits:  hits,
+			}
+			nameStats.Values = append(nameStats.Values, valueStats)
+		}
+		for i, value := range nameStats.Values {
+			nameStats.Values[i].Percent = int(math.Round((float64(value.Hits) / float64(nameStats.Hits)) * 100.0))
+		}
+		sort.Sort(nameStats.Values)
+		data = append(data, nameStats)
+	}
+
+	sort.Sort(data)
+
+	return data
 }
 
 func getUpstreams() models.AlertmanagerAPISummary {

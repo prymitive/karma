@@ -647,6 +647,160 @@ var groupTests = []groupTest{
 	},
 }
 
+var countsMap = models.LabelNameStatsList{
+	{
+		Name: "@receiver",
+		Hits: 24,
+		Values: models.LabelValueStatsList{
+			models.LabelValueStats{
+				Value:   "by-cluster-service",
+				Hits:    12,
+				Percent: 50,
+			},
+			models.LabelValueStats{
+				Value:   "by-name",
+				Hits:    12,
+				Percent: 50,
+			},
+		},
+	},
+	{
+		Name: "@state",
+		Hits: 24,
+		Values: models.LabelValueStatsList{
+			models.LabelValueStats{
+				Value:   "active",
+				Hits:    16,
+				Percent: 67,
+			},
+			models.LabelValueStats{
+				Value:   "suppressed",
+				Hits:    8,
+				Percent: 33,
+			},
+		},
+	},
+	{
+		Name: "alertname",
+		Hits: 24,
+		Values: models.LabelValueStatsList{
+			models.LabelValueStats{
+				Value:   "Free_Disk_Space_Too_Low",
+				Hits:    2,
+				Percent: 8,
+			},
+			models.LabelValueStats{
+				Value:   "HTTP_Probe_Failed",
+				Hits:    4,
+				Percent: 17,
+			},
+			models.LabelValueStats{
+				Value:   "Host_Down",
+				Hits:    16,
+				Percent: 67,
+			},
+			models.LabelValueStats{
+				Value:   "Memory_Usage_Too_High",
+				Hits:    2,
+				Percent: 8,
+			},
+		},
+	},
+	{
+		Name: "cluster",
+		Hits: 24,
+		Values: models.LabelValueStatsList{
+			models.LabelValueStats{
+				Value:   "dev",
+				Hits:    10,
+				Percent: 42,
+			},
+			models.LabelValueStats{
+				Value:   "prod",
+				Hits:    6,
+				Percent: 25,
+			},
+			models.LabelValueStats{
+				Value:   "staging",
+				Hits:    8,
+				Percent: 33,
+			},
+		},
+	},
+	{
+		Name: "instance",
+		Hits: 24,
+		Values: models.LabelValueStatsList{
+			models.LabelValueStats{
+				Value:   "server1",
+				Hits:    2,
+				Percent: 8,
+			},
+			models.LabelValueStats{
+				Value:   "server2",
+				Hits:    4,
+				Percent: 17,
+			},
+			models.LabelValueStats{
+				Value:   "server3",
+				Hits:    2,
+				Percent: 8,
+			},
+			models.LabelValueStats{
+				Value:   "server4",
+				Hits:    2,
+				Percent: 8,
+			},
+			models.LabelValueStats{
+				Value:   "server5",
+				Hits:    4,
+				Percent: 17,
+			},
+			models.LabelValueStats{
+				Value:   "server6",
+				Hits:    2,
+				Percent: 8,
+			},
+			models.LabelValueStats{
+				Value:   "server7",
+				Hits:    2,
+				Percent: 8,
+			},
+			models.LabelValueStats{
+				Value:   "server8",
+				Hits:    2,
+				Percent: 8,
+			},
+			models.LabelValueStats{
+				Value:   "web1",
+				Hits:    2,
+				Percent: 8,
+			},
+			models.LabelValueStats{
+				Value:   "web2",
+				Hits:    2,
+				Percent: 8,
+			},
+		},
+	},
+	{
+		Name: "job",
+		Hits: 24,
+		Values: models.LabelValueStatsList{
+			models.LabelValueStats{
+				Value:   "node_exporter",
+				Hits:    8,
+				Percent: 33,
+			},
+			models.LabelValueStats{
+				Value:   "node_ping",
+				Hits:    16,
+				Percent: 67,
+			},
+		},
+	},
+}
+
 var filtersExpected = []models.Filter{}
 
 func compareAlertGroups(testCase groupTest, group models.APIAlertGroup) bool {
@@ -836,6 +990,44 @@ func TestVerifyAllGroups(t *testing.T) {
 			t.Errorf("[%s] Silences mismatch, expected >0 but got %d", version, len(am))
 		}
 
+		for _, expectedNameStats := range countsMap {
+			var foundName bool
+			for _, nameStats := range ur.Counters {
+				if nameStats.Name == expectedNameStats.Name {
+					if nameStats.Hits != expectedNameStats.Hits {
+						t.Errorf("[%s] Counters mismatch for '%s', expected %v hits but got %v",
+							version, nameStats.Name, expectedNameStats.Hits, nameStats.Hits)
+					}
+					for _, expectedValueStats := range expectedNameStats.Values {
+						var foundValue bool
+						for _, valueStats := range nameStats.Values {
+							if valueStats.Value == expectedValueStats.Value {
+								if valueStats.Hits != expectedValueStats.Hits {
+									t.Errorf("[%s] Counters mismatch for '%s: %s', expected %v hits but got %v",
+										version, nameStats.Name, valueStats.Value, expectedValueStats.Hits, valueStats.Hits)
+								}
+								if valueStats.Percent != expectedValueStats.Percent {
+									t.Errorf("[%s] Percent mismatch for '%s: %s', expected %v%% but got %v%%",
+										version, nameStats.Name, valueStats.Value, expectedValueStats.Percent, valueStats.Percent)
+								}
+								foundValue = true
+								break
+							}
+						}
+						if !foundValue {
+							if !foundName {
+								t.Errorf("[%s] Counters missing for label '%s: %s'", version, expectedNameStats.Name, expectedValueStats.Value)
+							}
+						}
+					}
+					foundName = true
+					break
+				}
+			}
+			if !foundName {
+				t.Errorf("[%s] Counters missing for label '%s'", version, expectedNameStats.Name)
+			}
+		}
 		if !reflect.DeepEqual(ur.Filters, filtersExpected) {
 			t.Errorf("[%s] Filters mismatch, expected %v but got %v", version, filtersExpected, ur.Filters)
 		}

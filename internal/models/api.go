@@ -35,6 +35,52 @@ type LabelColors struct {
 // LabelsColorMap is a map of "Label Key" -> "Label Value" -> karmaLabelColors
 type LabelsColorMap map[string]map[string]LabelColors
 
+// LabelsCountMap is a map of "Label Key" -> "Label Value" -> number of occurence
+type LabelsCountMap map[string]map[string]int
+
+type LabelValueStats struct {
+	Value   string `json:"value"`
+	Hits    int    `json:"hits"`
+	Percent int    `json:"percent"`
+}
+
+type LabelValueStatsList []LabelValueStats
+
+func (lvsl LabelValueStatsList) Len() int {
+	return len(lvsl)
+}
+func (lvsl LabelValueStatsList) Swap(i, j int) {
+	lvsl[i], lvsl[j] = lvsl[j], lvsl[i]
+}
+func (lvsl LabelValueStatsList) Less(i, j int) bool {
+	if lvsl[i].Hits == lvsl[j].Hits {
+		return lvsl[i].Value > lvsl[j].Value
+	}
+	return lvsl[i].Hits > lvsl[j].Hits
+}
+
+// LabelStats is used in the overview modal, it shows top labels across alerts
+type LabelNameStats struct {
+	Name   string              `json:"name"`
+	Values LabelValueStatsList `json:"values"`
+	Hits   int                 `json:"hits"`
+}
+
+type LabelNameStatsList []LabelNameStats
+
+func (lnsl LabelNameStatsList) Len() int {
+	return len(lnsl)
+}
+func (lnsl LabelNameStatsList) Swap(i, j int) {
+	lnsl[i], lnsl[j] = lnsl[j], lnsl[i]
+}
+func (lnsl LabelNameStatsList) Less(i, j int) bool {
+	if lnsl[i].Hits == lnsl[j].Hits {
+		return lnsl[i].Name > lnsl[j].Name
+	}
+	return lnsl[i].Hits > lnsl[j].Hits
+}
+
 // APIAlertGroupSharedMaps defines shared part of APIAlertGroup
 type APIAlertGroupSharedMaps struct {
 	Annotations Annotations         `json:"annotations"`
@@ -248,6 +294,7 @@ type AlertsResponse struct {
 	TotalAlerts int                           `json:"totalAlerts"`
 	Colors      LabelsColorMap                `json:"colors"`
 	Filters     []Filter                      `json:"filters"`
+	Counters    LabelNameStatsList            `json:"counters"`
 	Settings    Settings                      `json:"settings"`
 }
 

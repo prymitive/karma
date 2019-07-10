@@ -1,0 +1,11 @@
+@import "~bootswatch/dist/flatly/variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootswatch/dist/flatly/bootswatch";
+
+.navbar-brand {
+  min-width: 2.5rem;
+}
+
+.components-navbar-button:hover {
+  border-bottom: $border-width solid $info;
+}
