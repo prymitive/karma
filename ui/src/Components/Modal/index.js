@@ -14,8 +14,12 @@ import {
 const Modal = observer(
   class Modal extends Component {
     static propTypes = {
+      size: PropTypes.oneOf(["lg", "xl"]),
       isOpen: PropTypes.bool.isRequired,
       children: PropTypes.node.isRequired
+    };
+    static defaultProps = {
+      size: "lg"
     };
 
     constructor(props) {
@@ -47,13 +51,13 @@ const Modal = observer(
     }
 
     render() {
-      const { isOpen, children, ...props } = this.props;
+      const { size, isOpen, children, ...props } = this.props;
 
       return ReactDOM.createPortal(
         <React.Fragment>
           <MountModal in={isOpen} unmountOnExit {...props}>
             <div ref={this.modalRef} className="modal d-block" role="dialog">
-              <div className="modal-dialog modal-lg" role="document">
+              <div className={`modal-dialog modal-${size}`} role="document">
                 <div className="modal-content">{children}</div>
               </div>
             </div>
