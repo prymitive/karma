@@ -14,34 +14,32 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
 });
 
-const MountedLabelWithPercent = (name, value) => {
+const MountedLabelWithPercent = (name, value, hits, percent, offset) => {
   return mount(
     <LabelWithPercent
       alertStore={alertStore}
       name={name}
       value={value}
-      hits={25}
-      percent={50}
+      hits={hits}
+      percent={percent}
+      offset={offset}
     />
-  ).find(".components-label");
+  );
 };
 
 const RenderAndClick = (name, value, clickOptions) => {
-  const tree = MountedLabelWithPercent(name, value);
+  const tree = MountedLabelWithPercent(name, value, 25, 50, 0);
   tree.find(".components-label").simulate("click", clickOptions || {});
 };
 
-describe("<MountedLabelWithPercent />", () => {
-  it("matches snapshot", () => {
-    const tree = mount(
-      <LabelWithPercent
-        alertStore={alertStore}
-        name="foo"
-        value="bar"
-        hits={25}
-        percent={50}
-      />
-    );
+describe("<LabelWithPercent />", () => {
+  it("matches snapshot with offset=0", () => {
+    const tree = MountedLabelWithPercent("foo", "bar", 25, 50, 0);
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
+  it("matches snapshot with offset=25", () => {
+    const tree = MountedLabelWithPercent("foo", "bar", 25, 50, 25);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
@@ -62,41 +60,17 @@ describe("<MountedLabelWithPercent />", () => {
   });
 
   it("uses bg-danger when percent is >66", () => {
-    const tree = mount(
-      <LabelWithPercent
-        alertStore={alertStore}
-        name={"foo"}
-        value={"bar"}
-        hits={25}
-        percent={67}
-      />
-    );
+    const tree = MountedLabelWithPercent("foo", "bar", 25, 67, 0);
     expect(tree.html()).toMatch(/progress-bar bg-danger/);
   });
 
   it("uses bg-warning when percent is >33", () => {
-    const tree = mount(
-      <LabelWithPercent
-        alertStore={alertStore}
-        name={"foo"}
-        value={"bar"}
-        hits={25}
-        percent={66}
-      />
-    );
+    const tree = MountedLabelWithPercent("foo", "bar", 25, 66, 0);
     expect(tree.html()).toMatch(/progress-bar bg-warning/);
   });
 
   it("uses bg-success when percent is <=33", () => {
-    const tree = mount(
-      <LabelWithPercent
-        alertStore={alertStore}
-        name={"foo"}
-        value={"bar"}
-        hits={25}
-        percent={33}
-      />
-    );
+    const tree = MountedLabelWithPercent("foo", "bar", 25, 33, 0);
     expect(tree.html()).toMatch(/progress-bar bg-success/);
   });
 });
