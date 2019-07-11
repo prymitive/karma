@@ -60,4 +60,43 @@ describe("<MountedLabelWithPercent />", () => {
       NewUnappliedFilter("foo!=bar")
     );
   });
+
+  it("uses bg-danger when percent is >66", () => {
+    const tree = mount(
+      <LabelWithPercent
+        alertStore={alertStore}
+        name={"foo"}
+        value={"bar"}
+        hits={25}
+        percent={67}
+      />
+    );
+    expect(tree.html()).toMatch(/progress-bar bg-danger/);
+  });
+
+  it("uses bg-warning when percent is >33", () => {
+    const tree = mount(
+      <LabelWithPercent
+        alertStore={alertStore}
+        name={"foo"}
+        value={"bar"}
+        hits={25}
+        percent={66}
+      />
+    );
+    expect(tree.html()).toMatch(/progress-bar bg-warning/);
+  });
+
+  it("uses bg-success when percent is <=33", () => {
+    const tree = mount(
+      <LabelWithPercent
+        alertStore={alertStore}
+        name={"foo"}
+        value={"bar"}
+        hits={25}
+        percent={33}
+      />
+    );
+    expect(tree.html()).toMatch(/progress-bar bg-success/);
+  });
 });
