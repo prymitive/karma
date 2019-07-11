@@ -32,7 +32,7 @@ const LabelWithPercent = inject("alertStore")(
         const progressBarBg =
           percent > 66
             ? "bg-danger"
-            : percent > 66
+            : percent > 33
             ? "bg-warning"
             : "bg-success";
 
