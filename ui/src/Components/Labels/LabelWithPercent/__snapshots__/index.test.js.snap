@@ -20,7 +20,7 @@ exports[`<MountedLabelWithPercent /> matches snapshot 1`] = `
     </span>
   </span>
   <div class=\\"progress silence-progress bg-white pr-1\\">
-    <div class=\\"progress-bar bg-success\\"
+    <div class=\\"progress-bar bg-warning\\"
          role=\\"progressbar\\"
          style=\\"width: 50%;\\"
          aria-valuenow=\\"50\\"
