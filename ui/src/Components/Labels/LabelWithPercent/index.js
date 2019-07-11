@@ -17,11 +17,12 @@ const LabelWithPercent = inject("alertStore")(
         name: PropTypes.string.isRequired,
         value: PropTypes.string.isRequired,
         hits: PropTypes.number.isRequired,
-        percent: PropTypes.number.isRequired
+        percent: PropTypes.number.isRequired,
+        offset: PropTypes.number.isRequired
       };
 
       render() {
-        const { name, value, hits, percent } = this.props;
+        const { name, value, hits, percent, offset } = this.props;
 
         let cs = this.getClassAndStyle(
           name,
@@ -50,6 +51,16 @@ const LabelWithPercent = inject("alertStore")(
               <span className="components-label-value">{value}</span>
             </span>
             <div className="progress components-labelWithPercent-progress mr-1">
+              {offset === 0 ? null : (
+                <div
+                  className="progress-bar bg-transparent"
+                  role="progressbar"
+                  style={{ width: offset + "%" }}
+                  aria-valuenow={offset}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                />
+              )}
               <div
                 className={`progress-bar ${progressBarBg}`}
                 role="progressbar"
