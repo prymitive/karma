@@ -46,6 +46,12 @@ Example:
 Each group can be collapsed to only show the title bar using top right toggle
 icon.
 
+![Overview](/docs/overview.png)
+
+Clicking on the alert counter in the top left corner will open the overview
+modal, which allows to quickly get an overview of the top label values for
+all current alerts.
+
 [Online demo](https://karma-demo.herokuapp.com/)
 
 To get notifications about new karma releases you can subscribe to the RSS feed
