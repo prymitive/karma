@@ -1,4 +1,12 @@
+@import "~bootswatch/dist/flatly/variables";
+
 .components-labelWithPercent-percent {
   padding-top: 0.25rem;
   padding-bottom: 0.25rem;
+}
+
+.components-labelWithPercent-progress {
+  height: 2px;
+  margin-top: 2px;
+  background-color: darken($light, 10%);
 }

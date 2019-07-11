@@ -49,7 +49,7 @@ const LabelWithPercent = inject("alertStore")(
               <span className="components-label-name">{name}:</span>{" "}
               <span className="components-label-value">{value}</span>
             </span>
-            <div className="progress silence-progress bg-white pr-1">
+            <div className="progress components-labelWithPercent-progress mr-1">
               <div
                 className={`progress-bar ${progressBarBg}`}
                 role="progressbar"

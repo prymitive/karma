@@ -51,7 +51,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   bar1
                 </span>
               </span>
-              <div class=\\"progress silence-progress bg-white pr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
                 <div class=\\"progress-bar bg-warning\\"
                      role=\\"progressbar\\"
                      style=\\"width: 50%;\\"
@@ -79,7 +79,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   bar2
                 </span>
               </span>
-              <div class=\\"progress silence-progress bg-white pr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
                 <div class=\\"progress-bar bg-success\\"
                      role=\\"progressbar\\"
                      style=\\"width: 25%;\\"
@@ -107,7 +107,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   bar3
                 </span>
               </span>
-              <div class=\\"progress silence-progress bg-white pr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
                 <div class=\\"progress-bar bg-success\\"
                      role=\\"progressbar\\"
                      style=\\"width: 25%;\\"
