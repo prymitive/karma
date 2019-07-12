@@ -79,6 +79,8 @@ func init() {
 		"List of receivers to not display alerts for")
 
 	pflag.StringSlice("silenceform.strip.labels", []string{}, "List of labels to ignore when auto-filling silence form from alerts")
+	pflag.String("silenceform.author.populate_from_header.header", "", "Header to read the default silence author from")
+	pflag.String("silenceform.author.populate_from_header.value_re", "", "Header value regex to read the default silence author")
 
 	pflag.String("listen.address", "", "IP/Hostname to listen on")
 	pflag.Int("listen.port", 8080, "HTTP port to listen on")
@@ -167,6 +169,15 @@ func (config *configSchema) Read() {
 	config.Sentry.Private = v.GetString("sentry.private")
 	config.Sentry.Public = v.GetString("sentry.public")
 	config.SilenceForm.Strip.Labels = v.GetStringSlice("silenceform.strip.labels")
+	config.SilenceForm.Author.PopulateFromHeader.Header = v.GetString("silenceform.author.populate_from_header.header")
+	config.SilenceForm.Author.PopulateFromHeader.ValueRegex = v.GetString("silenceform.author.populate_from_header.value_re")
+
+	if config.SilenceForm.Author.PopulateFromHeader.ValueRegex != "" {
+		_, err = regexp.Compile(config.SilenceForm.Author.PopulateFromHeader.ValueRegex)
+		if err != nil {
+			log.Fatalf("Invalid regex for silenceform.author.populate_from_header.value_re: %s", err.Error())
+		}
+	}
 
 	err = v.UnmarshalKey("alertmanager.servers", &config.Alertmanager.Servers)
 	if err != nil {

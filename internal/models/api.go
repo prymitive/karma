@@ -270,7 +270,8 @@ type SilenceFormStripSettings struct {
 }
 
 type SilenceFormSettings struct {
-	Strip SilenceFormStripSettings `json:"strip"`
+	Strip  SilenceFormStripSettings `json:"strip"`
+	Author string                   `json:"author"`
 }
 
 // Settings is used to export karma configuration that is used by UI
