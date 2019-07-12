@@ -61,6 +61,10 @@ jira:
   - regex: DEVOPS-[0-9]+
     uri: https://jira.example.com
 silenceForm:
+  author:
+    populate_from_header:
+      header: "CF-RAY"
+      value_re: "^(.+)$"
   strip:
     labels:
       - job
