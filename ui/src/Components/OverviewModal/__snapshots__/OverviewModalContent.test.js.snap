@@ -44,11 +44,13 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   8
                 </span>
-                <span class=\\"components-label-name\\">
-                  foo:
-                </span>
-                <span class=\\"components-label-value\\">
-                  bar1
+                <span>
+                  <span class=\\"components-label-name\\">
+                    foo:
+                  </span>
+                  <span class=\\"components-label-value\\">
+                    bar1
+                  </span>
                 </span>
               </span>
               <div class=\\"progress components-labelWithPercent-progress mr-1\\">
@@ -72,11 +74,13 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   4
                 </span>
-                <span class=\\"components-label-name\\">
-                  foo:
-                </span>
-                <span class=\\"components-label-value\\">
-                  bar2
+                <span>
+                  <span class=\\"components-label-name\\">
+                    foo:
+                  </span>
+                  <span class=\\"components-label-value\\">
+                    bar2
+                  </span>
                 </span>
               </span>
               <div class=\\"progress components-labelWithPercent-progress mr-1\\">
@@ -108,11 +112,13 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   4
                 </span>
-                <span class=\\"components-label-name\\">
-                  foo:
-                </span>
-                <span class=\\"components-label-value\\">
-                  bar3
+                <span>
+                  <span class=\\"components-label-name\\">
+                    foo:
+                  </span>
+                  <span class=\\"components-label-value\\">
+                    bar3
+                  </span>
                 </span>
               </span>
               <div class=\\"progress components-labelWithPercent-progress mr-1\\">

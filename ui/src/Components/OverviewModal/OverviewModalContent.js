@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 import { AlertStore } from "Stores/AlertStore";
+import { QueryOperators, FormatQuery } from "Common/Query";
 import { LabelWithPercent } from "Components/Labels/LabelWithPercent";
 
 const LabelsTable = observer(({ alertStore }) => (
@@ -34,6 +35,17 @@ const LabelsTable = observer(({ alertStore }) => (
                   .slice(0, i)
                   .map(ns => ns.percent)
                   .reduce((a, b) => a + b, 0)}
+                isActive={
+                  alertStore.filters.values.filter(
+                    f =>
+                      f.raw ===
+                      FormatQuery(
+                        nameStats.name,
+                        QueryOperators.Equal,
+                        valueStats.value
+                      )
+                  ).length > 0
+                }
               />
             ))}
           </td>
