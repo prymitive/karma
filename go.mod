@@ -21,7 +21,7 @@ require (
 	github.com/golangci/golangci-lint v1.17.1
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.4
-	github.com/mcuadros/go-gin-prometheus v0.0.0-20181030200533-58963fb32f54
+	github.com/mcuadros/go-gin-prometheus v0.1.0
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0
