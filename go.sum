@@ -284,8 +284,8 @@ github.com/mattn/go-isatty v0.0.7/go.mod h1:Iq45c/XA43vh69/j3iqttzPXn0bhXyGjM0Hd
 github.com/mattn/goveralls v0.0.2/go.mod h1:8d1ZMHsd7fW6IRPKQh46F2WRpyib5/X4FOpevwGNQEw=
 github.com/matttproud/golang_protobuf_extensions v1.0.1 h1:4hp9jkHxhMHkqkrB3Ix0jegS5sx/RkqARlsWZ6pIwiU=
 github.com/matttproud/golang_protobuf_extensions v1.0.1/go.mod h1:D8He9yQNgCq6Z5Ld7szi9bcBfOoFv/3dc6xSMkL2PC0=
-github.com/mcuadros/go-gin-prometheus v0.0.0-20181030200533-58963fb32f54 h1:sFdF0yr7I7wM8xWCIeTXXKM2ScVfbXJ0VmFneymggqM=
-github.com/mcuadros/go-gin-prometheus v0.0.0-20181030200533-58963fb32f54/go.mod h1:ezECAsiHtCRIa+6Ii8THg7G7RJvpO4S19d499UkEE3s=
+github.com/mcuadros/go-gin-prometheus v0.1.0 h1:JNoWKvw/u9tyRJ8BL9ZJvfiXU8IHUw8gCvcf/5L8tnI=
+github.com/mcuadros/go-gin-prometheus v0.1.0/go.mod h1:ezECAsiHtCRIa+6Ii8THg7G7RJvpO4S19d499UkEE3s=
 github.com/mitchellh/go-homedir v1.0.0 h1:vKb8ShqSby24Yrqr/yDYkuFz8d0WUjys40rvnGC8aR0=
 github.com/mitchellh/go-homedir v1.0.0/go.mod h1:SfyaCUpYCn1Vlf4IUYiD9fPX4A5wJrkLzIz1N1q0pr0=
 github.com/mitchellh/go-ps v0.0.0-20170309133038-4fdf99ab2936/go.mod h1:r1VsdOzOPt1ZSrGZWFoNhsAedKnEd6r9Np1+5blZCWk=
