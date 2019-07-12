@@ -78,7 +78,7 @@ const SilenceForm = observer(
     );
 
     componentDidMount() {
-      const { silenceFormStore, settingsStore } = this.props;
+      const { silenceFormStore } = this.props;
 
       // reset startsAt & endsAt on every mount, unless we're editing a silence
       if (silenceFormStore.data.silenceID === null) {
@@ -91,11 +91,22 @@ const SilenceForm = observer(
         silenceFormStore.data.addEmptyMatcher();
       }
 
+      this.populateAuthor();
+    }
+
+    populateAuthor = action(() => {
+      const { alertStore, silenceFormStore, settingsStore } = this.props;
+
+      if (alertStore.settings.values.silenceForm.author !== "") {
+        settingsStore.silenceFormConfig.config.author =
+          alertStore.settings.values.silenceForm.author;
+      }
+
       if (silenceFormStore.data.author === "") {
         silenceFormStore.data.author =
           settingsStore.silenceFormConfig.config.author;
       }
-    }
+    });
 
     addMore = action(event => {
       const { silenceFormStore } = this.props;
