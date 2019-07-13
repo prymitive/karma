@@ -180,6 +180,7 @@ class AlertStore {
           valueMapping: {}
         },
         silenceForm: {
+          author: "",
           strip: {
             labels: []
           }

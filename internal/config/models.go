@@ -94,6 +94,12 @@ type configSchema struct {
 		Public  string
 	}
 	SilenceForm struct {
+		Author struct {
+			PopulateFromHeader struct {
+				Header     string `yaml:"header"  mapstructure:"header"`
+				ValueRegex string `yaml:"value_re"  mapstructure:"value_re"`
+			} `yaml:"populate_from_header"  mapstructure:"populate_from_header"`
+		} `yaml:"author"  mapstructure:"author"`
 		Strip struct {
 			Labels []string
 		}

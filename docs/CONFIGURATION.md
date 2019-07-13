@@ -610,23 +610,45 @@ sentry:
 ## Silence form
 
 `silenceForm` section allow customizing silence form behavior.
+`author:populate_from_header` subsection allows to configure fetching of author
+name used on the silence form from the request header. It can be used with
+setups where karma is deployed behind authentication proxy that adds some extra
+headers with username for all requests received by karma.
+
 Syntax:
 
 ```YAML
 silenceForm:
+  author:
+    populate_from_header:
+      header: string
+      value_re: string
   strip:
     labels: list of strings
 ```
 
+- `author:populate_from_header:header` - name of the header to read the username
+  from
+- `author:populate_from_header:value_re` -
+  [regex](https://golang.org/s/re2syntax) used to extract the username from the
+  request header. It must include one numbered capturing group, whatever is
+  matched by that group will be used as the silence form author field. Both
+  `header` and `value_re` must be set for this feature to work.
 - `strip:labels` - list of labels to ignore when populating silence form from
   individual alerts or group of alerts. This allows to create silences matching
   only unique labels, like `instance` or `host`, ignoring any common labels like
   `job`.
 
-Example:
+Example where `job` label won't be auto populated onto the silence form and
+where the `X-Auth` header with value `User foobar` will set the default silence
+author to `foobar`.
 
 ```YAML
 silenceForm:
+  author:
+    populate_from_header:
+      header: X-Auth
+      value_re: ^User (.+)$
   strip:
     labels:
       - job

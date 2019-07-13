@@ -504,3 +504,83 @@ func TestGzipMiddlewareWithoutAcceptEncoding(t *testing.T) {
 		}
 	}
 }
+
+func TestValidateAuthorFromHeaders(t *testing.T) {
+	type testValidateAuthorFromHeaders struct {
+		configHeader       string
+		configRegex        string
+		requestHeaderName  string
+		requestHeaderValue string
+		expectedAuthor     string
+	}
+
+	testCases := []testValidateAuthorFromHeaders{
+		{
+			configHeader:       "X-Auth",
+			configRegex:        "^(.*)$",
+			requestHeaderName:  "X-Auth",
+			requestHeaderValue: "foo",
+			expectedAuthor:     "foo",
+		},
+		{
+			configHeader:       "X-Auth",
+			configRegex:        "^foo(.*)bar$",
+			requestHeaderName:  "X-Auth",
+			requestHeaderValue: "foo123bar",
+			expectedAuthor:     "123",
+		},
+		{
+			configHeader:       "X-Auth",
+			configRegex:        "^(.*)$",
+			requestHeaderName:  "X-Auth-Not",
+			requestHeaderValue: "foo",
+			expectedAuthor:     "",
+		},
+		{
+			configHeader:       "",
+			configRegex:        "^(.*)$",
+			requestHeaderName:  "X-Auth",
+			requestHeaderValue: "foo",
+			expectedAuthor:     "",
+		},
+		{
+			configHeader:       "X-Auth",
+			configRegex:        "",
+			requestHeaderName:  "X-Auth",
+			requestHeaderValue: "foo",
+			expectedAuthor:     "",
+		},
+		{
+			configHeader:       "X-Auth",
+			configRegex:        "^.*$",
+			requestHeaderName:  "X-Auth",
+			requestHeaderValue: "foo",
+			expectedAuthor:     "",
+		},
+	}
+
+	mockConfig()
+	for _, testCase := range testCases {
+		config.Config.SilenceForm.Author.PopulateFromHeader.Header = testCase.configHeader
+		config.Config.SilenceForm.Author.PopulateFromHeader.ValueRegex = testCase.configRegex
+
+		r := ginTestEngine()
+		req := httptest.NewRequest("GET", "/alerts.json", nil)
+		req.Header.Set(testCase.requestHeaderName, testCase.requestHeaderValue)
+
+		resp := httptest.NewRecorder()
+		r.ServeHTTP(resp, req)
+		if resp.Code != http.StatusOK {
+			t.Errorf("GET /alerts.json returned status %d", resp.Code)
+		}
+		ur := models.AlertsResponse{}
+		body := resp.Body.Bytes()
+		err := json.Unmarshal(body, &ur)
+		if err != nil {
+			t.Errorf("Failed to unmarshal response: %s", err)
+		}
+		if ur.Settings.SilenceForm.Author != testCase.expectedAuthor {
+			t.Errorf("Expected author '%s', got '%s', test case: %+v", testCase.expectedAuthor, ur.Settings.SilenceForm.Author, testCase)
+		}
+	}
+}

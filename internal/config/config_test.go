@@ -121,6 +121,10 @@ sentry:
   private: secret key
   public: public key
 silenceForm:
+  author:
+    populate_from_header:
+      header: ""
+      value_re: ""
   strip:
     labels: []
 `
@@ -235,4 +239,20 @@ func TestUrlSecretTest(t *testing.T) {
 func TestLogValues(t *testing.T) {
 	Config.Read()
 	Config.LogValues()
+}
+
+func TestInvalidSilenceFormRegex(t *testing.T) {
+	resetEnv()
+	os.Setenv("SILENCEFORM_AUTHOR_POPULATE_FROM_HEADER_VALUE_RE", ".****")
+
+	log.SetLevel(log.PanicLevel)
+	defer func() { log.StandardLogger().ExitFunc = nil }()
+	var wasFatal bool
+	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
+
+	Config.Read()
+
+	if !wasFatal {
+		t.Error("Invalid silence form regex didn't cause log.Fatal()")
+	}
 }
