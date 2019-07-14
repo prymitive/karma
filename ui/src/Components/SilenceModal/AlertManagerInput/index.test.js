@@ -174,4 +174,19 @@ describe("<AlertManagerInput />", () => {
     const select = tree.find("StateManager");
     expect(select.props().isDisabled).toBe(true);
   });
+
+  it("removing last options sets silenceFormStore.data.alertmanagers to []", () => {
+    const tree = MountedAlertManagerInput();
+    expect(silenceFormStore.data.alertmanagers).toHaveLength(2);
+
+    tree
+      .find(".react-select__multi-value__remove")
+      .at(0)
+      .simulate("click");
+    expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
+
+    tree.find(".react-select__multi-value__remove").simulate("click");
+    expect(silenceFormStore.data.alertmanagers).toHaveLength(0);
+    expect(silenceFormStore.data.alertmanagers).toEqual([]);
+  });
 });
