@@ -38,6 +38,17 @@ describe("<OverviewModalContent />", () => {
         ]
       },
       {
+        name: "bar",
+        hits: 20,
+        values: Array.from(Array(20).keys()).map(i => ({
+          value: `baz${i + 1}`,
+          raw: `bar=baz${i + 1}`,
+          hits: 1,
+          percent: 5,
+          offset: i * 5
+        }))
+      },
+      {
         name: "alertname",
         hits: 5,
         values: [

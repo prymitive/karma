@@ -38,6 +38,11 @@ const LabelsTable = observer(({ alertStore }) => (
                 }
               />
             ))}
+            {nameStats.values.length > 9 ? (
+              <div className="components-label badge my-2 text-muted mw-100">
+                +{nameStats.values.length - 9} more
+              </div>
+            ) : null}
           </td>
         </tr>
       ))}
