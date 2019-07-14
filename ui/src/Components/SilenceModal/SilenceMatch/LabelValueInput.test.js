@@ -125,4 +125,19 @@ describe("<LabelValueInput />", () => {
     options.at(1).simulate("click");
     expect(matcher.isRegex).toBe(true);
   });
+
+  it("removing last value sets matcher.values to []", () => {
+    matcher.values = [MatcherValueToObject("foo"), MatcherValueToObject("bar")];
+    const tree = MountedLabelValueInput(true);
+
+    tree
+      .find(".react-select__multi-value__remove")
+      .at(0)
+      .simulate("click");
+    expect(matcher.values).toHaveLength(1);
+
+    tree.find(".react-select__multi-value__remove").simulate("click");
+    expect(matcher.values).toHaveLength(0);
+    expect(matcher.values).toEqual([]);
+  });
 });

@@ -57,12 +57,15 @@ const LabelValueInput = observer(
     onChange = action((newValue, actionMeta) => {
       const { matcher } = this.props;
 
-      matcher.values = newValue;
+      // we might get null if there's nothing selected
+      const value = newValue || [];
+
+      matcher.values = value;
 
       // force regex if we have multiple values
-      if (newValue.length > 1 && matcher.isRegex === false) {
+      if (value.length > 1 && matcher.isRegex === false) {
         matcher.isRegex = true;
-      } else if (newValue.length === 1 && matcher.isRegex === true) {
+      } else if (value.length === 1 && matcher.isRegex === true) {
         matcher.isRegex = false;
       }
     });
