@@ -23,17 +23,19 @@ const LabelsTable = observer(({ alertStore }) => (
             </span>
           </td>
           <td width="75%" className="mw-100 p-1">
-            {nameStats.values.slice(0, 9).map((valueStats, i, array) => (
+            {nameStats.values.slice(0, 9).map((valueStats, i) => (
               <LabelWithPercent
                 key={valueStats.value}
                 name={nameStats.name}
                 value={valueStats.value}
                 hits={valueStats.hits}
                 percent={valueStats.percent}
-                offset={array
-                  .slice(0, i)
-                  .map(ns => ns.percent)
-                  .reduce((a, b) => a + b, 0)}
+                offset={valueStats.offset}
+                isActive={
+                  alertStore.filters.values.filter(
+                    f => f.raw === valueStats.raw
+                  ).length > 0
+                }
               />
             ))}
           </td>

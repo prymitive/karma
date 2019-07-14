@@ -3,7 +3,11 @@ import PropTypes from "prop-types";
 
 import { inject, observer } from "mobx-react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
+
 import { AlertStore } from "Stores/AlertStore";
+import { QueryOperators, FormatQuery } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { BaseLabel } from "Components/Labels/BaseLabel";
 
@@ -11,18 +15,26 @@ import "./index.scss";
 
 const LabelWithPercent = inject("alertStore")(
   observer(
-    class FilteringLabel extends BaseLabel {
+    class LabelWithPercent extends BaseLabel {
       static propTypes = {
         alertStore: PropTypes.instanceOf(AlertStore).isRequired,
         name: PropTypes.string.isRequired,
         value: PropTypes.string.isRequired,
         hits: PropTypes.number.isRequired,
         percent: PropTypes.number.isRequired,
-        offset: PropTypes.number.isRequired
+        offset: PropTypes.number.isRequired,
+        isActive: PropTypes.bool.isRequired
+      };
+
+      removeFromFilters = () => {
+        const { alertStore, name, value } = this.props;
+        alertStore.filters.removeFilter(
+          FormatQuery(name, QueryOperators.Equal, value)
+        );
       };
 
       render() {
-        const { name, value, hits, percent, offset } = this.props;
+        const { name, value, hits, percent, offset, isActive } = this.props;
 
         let cs = this.getClassAndStyle(
           name,
@@ -39,16 +51,22 @@ const LabelWithPercent = inject("alertStore")(
 
         return (
           <TooltipWrapper title="Click to only show alerts with this label or Alt+Click to hide them">
-            <span
-              className={cs.className}
-              style={cs.style}
-              onClick={e => this.handleClick(e)}
-            >
+            <span className={cs.className} style={cs.style}>
               <span className="mr-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                 {hits}
               </span>
-              <span className="components-label-name">{name}:</span>{" "}
-              <span className="components-label-value">{value}</span>
+              <span onClick={e => this.handleClick(e)}>
+                <span className="components-label-name">{name}:</span>{" "}
+                <span className="components-label-value">{value}</span>
+              </span>
+              {isActive ? (
+                <FontAwesomeIcon
+                  className="cursor-pointer text-reset ml-1 close"
+                  style={{ fontSize: "100%" }}
+                  icon={faTimes}
+                  onClick={this.removeFromFilters}
+                />
+              ) : null}
             </span>
             <div className="progress components-labelWithPercent-progress mr-1">
               {offset === 0 ? null : (
