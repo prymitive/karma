@@ -36,7 +36,7 @@ const AlertManagerInput = observer(
     onChange = action((newValue, actionMeta) => {
       const { silenceFormStore } = this.props;
 
-      silenceFormStore.data.alertmanagers = newValue;
+      silenceFormStore.data.alertmanagers = newValue || [];
     });
 
     componentDidUpdate() {
