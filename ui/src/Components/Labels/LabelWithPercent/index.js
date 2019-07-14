@@ -15,7 +15,7 @@ import "./index.scss";
 
 const LabelWithPercent = inject("alertStore")(
   observer(
-    class FilteringLabel extends BaseLabel {
+    class LabelWithPercent extends BaseLabel {
       static propTypes = {
         alertStore: PropTypes.instanceOf(AlertStore).isRequired,
         name: PropTypes.string.isRequired,
