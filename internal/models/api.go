@@ -40,8 +40,10 @@ type LabelsCountMap map[string]map[string]int
 
 type LabelValueStats struct {
 	Value   string `json:"value"`
+	Raw     string `json:"raw"`
 	Hits    int    `json:"hits"`
 	Percent int    `json:"percent"`
+	Offset  int    `json:"offset"`
 }
 
 type LabelValueStatsList []LabelValueStats

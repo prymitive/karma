@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"math"
 	"sort"
 
@@ -44,18 +45,30 @@ func countersToLabelStats(counters map[string]map[string]int) models.LabelNameSt
 			Name:   name,
 			Values: models.LabelValueStatsList{},
 		}
+
 		for value, hits := range valueMap {
 			nameStats.Hits += hits
 			valueStats := models.LabelValueStats{
 				Value: value,
+				Raw:   fmt.Sprintf("%s=%s", name, value),
 				Hits:  hits,
 			}
 			nameStats.Values = append(nameStats.Values, valueStats)
 		}
+
+		// now that we have total hits we can calculate %
 		for i, value := range nameStats.Values {
 			nameStats.Values[i].Percent = int(math.Round((float64(value.Hits) / float64(nameStats.Hits)) * 100.0))
 		}
+
 		sort.Sort(nameStats.Values)
+
+		// now that we have all % and values are sorted we can calculate offsets
+		offset := 0
+		for i, value := range nameStats.Values {
+			nameStats.Values[i].Offset = offset
+			offset += value.Percent
+		}
 		data = append(data, nameStats)
 	}
 
