@@ -8,7 +8,6 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 
 import { AlertStore } from "Stores/AlertStore";
 import { QueryOperators, FormatQuery } from "Common/Query";
-import { TooltipWrapper } from "Components/TooltipWrapper";
 import { BaseLabel } from "Components/Labels/BaseLabel";
 
 import "./index.scss";
@@ -50,7 +49,7 @@ const LabelWithPercent = inject("alertStore")(
             : "bg-success";
 
         return (
-          <TooltipWrapper title="Click to only show alerts with this label or Alt+Click to hide them">
+          <div className="d-inline-block mw-100">
             <span className={cs.className} style={cs.style}>
               <span className="mr-1 px-1 bg-primary text-white components-labelWithPercent-percent">
                 {hits}
@@ -88,7 +87,7 @@ const LabelWithPercent = inject("alertStore")(
                 aria-valuemax="100"
               />
             </div>
-          </TooltipWrapper>
+          </div>
         );
       }
     }

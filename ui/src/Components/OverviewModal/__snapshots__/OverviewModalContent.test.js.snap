@@ -34,12 +34,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
           <td width=\\"75%\\"
               class=\\"mw-100 p-1\\"
           >
-            <div class
-                 style=\\"display: inline-block; max-width: 100%;\\"
-                 data-tooltipped
-                 aria-describedby=\\"tippy-tooltip-1\\"
-                 data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
-            >
+            <div class=\\"d-inline-block mw-100\\">
               <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   8
@@ -64,12 +59,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                 </div>
               </div>
             </div>
-            <div class
-                 style=\\"display: inline-block; max-width: 100%;\\"
-                 data-tooltipped
-                 aria-describedby=\\"tippy-tooltip-2\\"
-                 data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
-            >
+            <div class=\\"d-inline-block mw-100\\">
               <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   4
@@ -102,12 +92,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                 </div>
               </div>
             </div>
-            <div class
-                 style=\\"display: inline-block; max-width: 100%;\\"
-                 data-tooltipped
-                 aria-describedby=\\"tippy-tooltip-3\\"
-                 data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
-            >
+            <div class=\\"d-inline-block mw-100\\">
               <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   4
@@ -156,12 +141,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
           <td width=\\"75%\\"
               class=\\"mw-100 p-1\\"
           >
-            <div class
-                 style=\\"display: inline-block; max-width: 100%;\\"
-                 data-tooltipped
-                 aria-describedby=\\"tippy-tooltip-4\\"
-                 data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
-            >
+            <div class=\\"d-inline-block mw-100\\">
               <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
@@ -186,12 +166,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                 </div>
               </div>
             </div>
-            <div class
-                 style=\\"display: inline-block; max-width: 100%;\\"
-                 data-tooltipped
-                 aria-describedby=\\"tippy-tooltip-5\\"
-                 data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
-            >
+            <div class=\\"d-inline-block mw-100\\">
               <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
@@ -224,12 +199,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                 </div>
               </div>
             </div>
-            <div class
-                 style=\\"display: inline-block; max-width: 100%;\\"
-                 data-tooltipped
-                 aria-describedby=\\"tippy-tooltip-6\\"
-                 data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
-            >
+            <div class=\\"d-inline-block mw-100\\">
               <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
@@ -262,12 +232,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                 </div>
               </div>
             </div>
-            <div class
-                 style=\\"display: inline-block; max-width: 100%;\\"
-                 data-tooltipped
-                 aria-describedby=\\"tippy-tooltip-7\\"
-                 data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
-            >
+            <div class=\\"d-inline-block mw-100\\">
               <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
@@ -300,12 +265,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                 </div>
               </div>
             </div>
-            <div class
-                 style=\\"display: inline-block; max-width: 100%;\\"
-                 data-tooltipped
-                 aria-describedby=\\"tippy-tooltip-8\\"
-                 data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
-            >
+            <div class=\\"d-inline-block mw-100\\">
               <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
@@ -338,12 +298,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                 </div>
               </div>
             </div>
-            <div class
-                 style=\\"display: inline-block; max-width: 100%;\\"
-                 data-tooltipped
-                 aria-describedby=\\"tippy-tooltip-9\\"
-                 data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
-            >
+            <div class=\\"d-inline-block mw-100\\">
               <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
@@ -376,12 +331,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                 </div>
               </div>
             </div>
-            <div class
-                 style=\\"display: inline-block; max-width: 100%;\\"
-                 data-tooltipped
-                 aria-describedby=\\"tippy-tooltip-10\\"
-                 data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
-            >
+            <div class=\\"d-inline-block mw-100\\">
               <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
@@ -414,12 +364,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                 </div>
               </div>
             </div>
-            <div class
-                 style=\\"display: inline-block; max-width: 100%;\\"
-                 data-tooltipped
-                 aria-describedby=\\"tippy-tooltip-11\\"
-                 data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
-            >
+            <div class=\\"d-inline-block mw-100\\">
               <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
@@ -452,12 +397,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                 </div>
               </div>
             </div>
-            <div class
-                 style=\\"display: inline-block; max-width: 100%;\\"
-                 data-tooltipped
-                 aria-describedby=\\"tippy-tooltip-12\\"
-                 data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
-            >
+            <div class=\\"d-inline-block mw-100\\">
               <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
@@ -509,12 +449,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
           <td width=\\"75%\\"
               class=\\"mw-100 p-1\\"
           >
-            <div class
-                 style=\\"display: inline-block; max-width: 100%;\\"
-                 data-tooltipped
-                 aria-describedby=\\"tippy-tooltip-13\\"
-                 data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
-            >
+            <div class=\\"d-inline-block mw-100\\">
               <span class=\\"components-label badge badge-dark components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   5
