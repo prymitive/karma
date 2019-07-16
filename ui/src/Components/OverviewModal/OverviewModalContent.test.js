@@ -21,6 +21,18 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
+const MountedOverviewModalContent = () =>
+  // we have multiple fragments and enzyme only renders the first one
+  // in html() and text(), debug() would work but it's noisy
+  // https://github.com/airbnb/enzyme/issues/1213
+  mount(
+    <span>
+      <Provider alertStore={alertStore}>
+        <OverviewModalContent alertStore={alertStore} onHide={onHide} />
+      </Provider>
+    </span>
+  );
+
 describe("<OverviewModalContent />", () => {
   it("matches snapshot with labels to show", () => {
     alertStore.filters.values = [
@@ -63,32 +75,70 @@ describe("<OverviewModalContent />", () => {
       }
     ];
 
-    // we have multiple fragments and enzyme only renders the first one
-    // in html() and text(), debug() would work but it's noisy
-    // https://github.com/airbnb/enzyme/issues/1213
-    const tree = mount(
-      <span>
-        <Provider alertStore={alertStore}>
-          <OverviewModalContent alertStore={alertStore} onHide={onHide} />
-        </Provider>
-      </span>
-    );
+    const tree = MountedOverviewModalContent();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("matches snapshot with no labels to show", () => {
     alertStore.data.counters = [];
-
-    // we have multiple fragments and enzyme only renders the first one
-    // in html() and text(), debug() would work but it's noisy
-    // https://github.com/airbnb/enzyme/issues/1213
-    const tree = mount(
-      <span>
-        <Provider alertStore={alertStore}>
-          <OverviewModalContent alertStore={alertStore} onHide={onHide} />
-        </Provider>
-      </span>
-    );
+    const tree = MountedOverviewModalContent();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
+  it("renders all labels after expand button click", () => {
+    alertStore.info.totalAlerts = 5;
+    alertStore.data.counters = [
+      {
+        name: "foo",
+        hits: 5,
+        values: [
+          { value: "bar", raw: "foo=bar", hits: 5, percent: 100, offset: 0 }
+        ]
+      },
+      {
+        name: "bar",
+        hits: 3,
+        values: [
+          {
+            value: "foo",
+            raw: "bar=foo",
+            hits: 3,
+            percent: 100,
+            offset: 0
+          }
+        ]
+      }
+    ];
+    const tree = MountedOverviewModalContent();
+
+    expect(tree.find("span.components-label")).toHaveLength(2);
+    expect(
+      tree
+        .find("span.components-label")
+        .at(0)
+        .text()
+    ).toBe("5foo");
+    expect(
+      tree
+        .find("span.components-label")
+        .at(1)
+        .text()
+    ).toBe("5foo: bar");
+
+    tree.find("svg.cursor-pointer").simulate("click");
+
+    expect(tree.find("span.components-label")).toHaveLength(4);
+    expect(
+      tree
+        .find("span.components-label")
+        .at(2)
+        .text()
+    ).toBe("3bar");
+    expect(
+      tree
+        .find("span.components-label")
+        .at(3)
+        .text()
+    ).toBe("3bar: foo");
   });
 });
