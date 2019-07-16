@@ -14,6 +14,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 
 import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { IsMobile } from "Common/Device";
 import { FilterInputLabel } from "Components/Labels/FilterInputLabel";
 import { AutosuggestTheme } from "./Constants";
 import { History } from "./History";
@@ -44,7 +45,7 @@ const FilterInput = observer(
     );
 
     componentDidMount() {
-      if (this.inputStore.ref !== null) {
+      if (this.inputStore.ref !== null && !IsMobile()) {
         this.inputStore.ref.input.focus();
       }
     }

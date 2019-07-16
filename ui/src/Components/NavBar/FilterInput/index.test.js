@@ -10,8 +10,14 @@ import { FilterInput } from ".";
 
 let alertStore;
 let settingsStore;
+let originalInnerWidth;
+
+beforeAll(() => {
+  originalInnerWidth = global.window.innerWidth;
+});
 
 beforeEach(() => {
+  global.window.innerWidth = originalInnerWidth;
   alertStore = new AlertStore([]);
   settingsStore = new Settings();
 
@@ -20,6 +26,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
+  global.window.innerWidth = originalInnerWidth;
 });
 
 const MountedInput = () => {
@@ -46,6 +53,24 @@ describe("<FilterInput />", () => {
     const tree = MountedInput();
     const instance = tree.instance();
     expect(instance.inputStore.ref).not.toBeNull();
+  });
+
+  it("input gets focus by default on desktop", () => {
+    global.window.innerWidth = 768;
+    const tree = MountedInput();
+    const instance = tree.instance();
+    const inputSpy = jest.spyOn(instance.inputStore.ref.input, "focus");
+    instance.componentDidMount();
+    expect(inputSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("input doesn't get focus by default on mobile", () => {
+    global.window.innerWidth = 767;
+    const tree = MountedInput();
+    const instance = tree.instance();
+    const inputSpy = jest.spyOn(instance.inputStore.ref.input, "focus");
+    instance.componentDidMount();
+    expect(inputSpy).not.toHaveBeenCalled();
   });
 
   it("onChange should modify inputStore.value", () => {
