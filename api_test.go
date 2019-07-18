@@ -739,7 +739,7 @@ var countsMap = models.LabelNameStatsList{
 			models.LabelValueStats{
 				Value:   "server2",
 				Hits:    4,
-				Percent: 17,
+				Percent: 18,
 			},
 			models.LabelValueStats{
 				Value:   "server3",
@@ -754,7 +754,7 @@ var countsMap = models.LabelNameStatsList{
 			models.LabelValueStats{
 				Value:   "server5",
 				Hits:    4,
-				Percent: 17,
+				Percent: 18,
 			},
 			models.LabelValueStats{
 				Value:   "server6",
@@ -988,6 +988,16 @@ func TestVerifyAllGroups(t *testing.T) {
 			t.Errorf("[%s] Alertmanager cluster '843c4a11660fe38ea61e6960a29d4f4796da6488' (default) missing from silences", version)
 		} else if len(am) == 0 {
 			t.Errorf("[%s] Silences mismatch, expected >0 but got %d", version, len(am))
+		}
+
+		for _, nameStats := range ur.Counters {
+			var totalPercent int
+			for _, valueStats := range nameStats.Values {
+				totalPercent += valueStats.Percent
+			}
+			if totalPercent != 100 {
+				t.Errorf("[%s] Counters %s sum is != 100: %d", version, nameStats.Name, totalPercent)
+			}
 		}
 
 		for _, expectedNameStats := range countsMap {
