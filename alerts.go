@@ -57,11 +57,21 @@ func countersToLabelStats(counters map[string]map[string]int) models.LabelNameSt
 		}
 
 		// now that we have total hits we can calculate %
+		var totalPercent int
 		for i, value := range nameStats.Values {
 			nameStats.Values[i].Percent = int(math.Round((float64(value.Hits) / float64(nameStats.Hits)) * 100.0))
+			totalPercent += nameStats.Values[i].Percent
 		}
-
 		sort.Sort(nameStats.Values)
+		for totalPercent < 100 {
+			for i := range nameStats.Values {
+				nameStats.Values[i].Percent++
+				totalPercent++
+				if totalPercent >= 100 {
+					break
+				}
+			}
+		}
 
 		// now that we have all % and values are sorted we can calculate offsets
 		offset := 0
