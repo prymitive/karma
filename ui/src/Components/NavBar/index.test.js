@@ -64,7 +64,7 @@ describe("<NavBar />", () => {
   });
 
   it("navbar-nav includes 'flex-row' class with 1 filter", () => {
-    ValidateNavClass(1, "flex-row");
+    ValidateNavClass(1, "flex-column");
   });
 
   it("navbar-nav includes 'flex-column' class with 2 filters", () => {

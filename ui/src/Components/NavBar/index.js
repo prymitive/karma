@@ -109,11 +109,11 @@ const NavBar = observer(
     render() {
       const { alertStore, settingsStore, silenceFormStore } = this.props;
 
-      // if we have at least 2 filters then it's likely that filter input will
+      // if we have at least 1 filter then it's likely that filter input will
       // use 2 lines, so set right side icons on small screeens to column mode
       // for more compact layout
       const flexClass =
-        alertStore.filters.values.length >= 2
+        alertStore.filters.values.length >= 1
           ? "flex-column flex-sm-column flex-md-row flex-lg-row flex-xl-row"
           : "flex-row";
 
