@@ -138,7 +138,7 @@ class AlertStore {
     {
       colors: {},
       counters: [],
-      groups: {},
+      groups: [],
       silences: {},
       upstreams: { instances: [], clusters: {} },
       getAlertmanagerByName(name) {
@@ -316,22 +316,26 @@ class AlertStore {
     // update groups, it can be huge so we have custom logic with cheaper
     // comparision logic running per group using content hashes from the API
     // response
-    for (const key of Object.keys(result.groups)) {
-      // set/update each group if:
-      // * it's not yet stored in AlertStore
-      // * it's stored but hash is different than in the API response
-      if (
-        !(key in this.data.groups) ||
-        (key in this.data.groups &&
-          result.groups[key].hash !== this.data.groups[key].hash)
-      ) {
-        this.data.groups[key] = result.groups[key];
+    const storedGroups = {};
+    for (const [index, group] of Object.entries(this.data.groups)) {
+      storedGroups[group.id] = index;
+    }
+    for (const group of result.groups) {
+      const index = storedGroups[group.id];
+      if (index !== undefined) {
+        const storedGroup = this.data.groups[index];
+        if (storedGroup && storedGroup.hash !== group.hash) {
+          this.data.groups[index] = group;
+        }
+      } else {
+        this.data.groups.push(group);
       }
     }
-    for (const key of Object.keys(this.data.groups).filter(
-      k => !(k in result.groups)
-    )) {
-      delete this.data.groups[key];
+    const knownGroups = result.groups.map(g => g.id);
+    for (const [index, group] of Object.entries(this.data.groups)) {
+      if (!knownGroups.includes(group.id)) {
+        delete this.data.groups[index];
+      }
     }
 
     // before storing new version check if we need to reload

@@ -220,6 +220,7 @@ func alerts(c *gin.Context) {
 			ID:                ag.ID,
 			Receiver:          ag.Receiver,
 			Labels:            ag.Labels,
+			LatestStartsAt:    ag.LatestStartsAt,
 			Alerts:            []models.Alert{},
 			AlertmanagerCount: map[string]int{},
 			StateCount:        map[string]int{},
@@ -311,6 +312,7 @@ func alerts(c *gin.Context) {
 					}
 				}
 			}
+			agCopy.LatestStartsAt = agCopy.FindLatestStartsAt()
 			agCopy.Hash = agCopy.ContentFingerprint()
 			apiAG := models.APIAlertGroup{AlertGroup: agCopy}
 			apiAG.DedupSharedMaps()
@@ -326,7 +328,7 @@ func alerts(c *gin.Context) {
 		}
 	}
 
-	resp.AlertGroups = alerts
+	resp.AlertGroups = sortAlertGroups(c, alerts)
 	resp.Silences = silences
 	resp.Colors = colors
 	resp.Counters = countersToLabelStats(counters)

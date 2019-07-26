@@ -19,17 +19,26 @@ const Fetcher = observer(
     lastTick = observable(
       {
         time: moment(0),
+        completedAt: moment(0),
         update() {
           this.time = moment();
+        },
+        markCompleted() {
+          this.completedAt = moment();
         }
       },
       {
-        update: action
+        update: action,
+        markCompleted: action
       }
     );
 
     fetchIfIdle = () => {
       const { alertStore, settingsStore } = this.props;
+
+      // add 5s minimum interval between fetches
+      const idleAt = moment(this.lastTick.completedAt).add(5, "seconds");
+      const isIdle = moment().isSameOrAfter(idleAt);
 
       const nextTick = moment(this.lastTick.time).add(
         settingsStore.fetchConfig.config.interval,
@@ -43,14 +52,20 @@ const Fetcher = observer(
         status === AlertStoreStatuses.Fetching.toString() ||
         status === AlertStoreStatuses.Processing.toString();
 
-      if (pastDeadline && !updateInProgress && !alertStore.status.paused) {
+      if (
+        isIdle &&
+        pastDeadline &&
+        !updateInProgress &&
+        !alertStore.status.paused
+      ) {
         this.lastTick.update();
         alertStore.fetchWithThrottle();
+        this.lastTick.markCompleted();
       }
     };
 
     timerTick = () => {
-      this.fetchIfIdle();
+      window.requestAnimationFrame(this.fetchIfIdle);
     };
 
     componentDidMount() {

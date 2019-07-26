@@ -293,7 +293,7 @@ type AlertsResponse struct {
 	Version     string                        `json:"version"`
 	Upstreams   AlertmanagerAPISummary        `json:"upstreams"`
 	Silences    map[string]map[string]Silence `json:"silences"`
-	AlertGroups map[string]APIAlertGroup      `json:"groups"`
+	AlertGroups []APIAlertGroup               `json:"groups"`
 	TotalAlerts int                           `json:"totalAlerts"`
 	Colors      LabelsColorMap                `json:"colors"`
 	Filters     []Filter                      `json:"filters"`

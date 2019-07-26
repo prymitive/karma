@@ -5,7 +5,9 @@ import (
 	"math"
 	"sort"
 
+	"github.com/gin-gonic/gin"
 	"github.com/prymitive/karma/internal/alertmanager"
+	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
@@ -124,4 +126,79 @@ func getUpstreams() models.AlertmanagerAPISummary {
 	summary.Clusters = clusters
 
 	return summary
+}
+
+func resolveLabelValue(name, value string) (int, bool) {
+	valueReplacements, found := config.Config.Grid.Sorting.CustomValues.Labels[name]
+	if found {
+		if replacement, ok := valueReplacements[value]; ok {
+			return replacement, true
+		}
+	}
+	return value, false
+}
+
+func getGroupLabel(group *models.APIAlertGroup, label string) int {
+	if v, found := group.Labels[label]; found {
+		return resolveLabelValue(label, v)
+	}
+	if v, found := group.Shared.Labels[label]; found {
+		return resolveLabelValue(label, v)
+	}
+	if v, found := group.Alerts[0].Labels[label]; found {
+		return resolveLabelValue(label, v)
+	}
+	return 0
+}
+
+func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) []models.APIAlertGroup {
+	groups := make([]models.APIAlertGroup, 0, len(groupsMap))
+
+	sortOrder, found := c.GetQuery("sortOrder")
+	if !found {
+		sortOrder = config.Config.Grid.Sorting.Order
+	}
+
+	sortReverse, found := c.GetQuery("sortReverse")
+	if !found {
+		if config.Config.Grid.Sorting.Reverse {
+			sortReverse = "1"
+		} else {
+			sortReverse = "0"
+		}
+	}
+
+	sortLabel, found := c.GetQuery("sortLabel")
+	if !found {
+		sortLabel = config.Config.Grid.Sorting.Label
+	}
+
+	for _, g := range groupsMap {
+		groups = append(groups, g)
+	}
+
+	switch sortOrder {
+	case "startsAt":
+		sort.SliceStable(groups, func(i, j int) bool {
+			return groups[i].LatestStartsAt.After(groups[j].LatestStartsAt)
+		})
+	case "label":
+		sort.SliceStable(groups, func(i, j int) bool {
+			return getGroupLabel(&groups[i], sortLabel) < getGroupLabel(&groups[j], sortLabel)
+		})
+	default:
+		// sort alert groups so they are always returned in the same order
+		// use group ID which is unique and immutable
+		sort.SliceStable(groups, func(i, j int) bool {
+			return groups[i].ID < groups[j].ID
+		})
+	}
+
+	if sortReverse == "1" {
+		sort.Reverse(groups)
+	}
+
+	return groups
+
+	//
 }

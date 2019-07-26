@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"fmt"
 	"io"
+	"time"
 
 	"github.com/cnf/structhash"
 
@@ -42,6 +43,7 @@ type AlertGroup struct {
 	Hash              string            `json:"hash"`
 	AlertmanagerCount map[string]int    `json:"alertmanagerCount"`
 	StateCount        map[string]int    `json:"stateCount"`
+	LatestStartsAt    time.Time         `json:"-"`
 }
 
 // LabelsFingerprint is a checksum of this AlertGroup labels and the receiver
@@ -72,4 +74,14 @@ func (ag AlertGroup) ContentFingerprint() string {
 		}
 	}
 	return fmt.Sprintf("%x", h.Sum(nil))
+}
+
+func (ag AlertGroup) FindLatestStartsAt() time.Time {
+	var ts time.Time
+	for i, alert := range ag.Alerts {
+		if i == 0 || alert.StartsAt.After(ts) {
+			ts = alert.StartsAt
+		}
+	}
+	return ts
 }

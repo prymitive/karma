@@ -147,7 +147,7 @@ const AlertGrid = observer(
 
       this.groupsToRender.value = Math.min(
         this.groupsToRender.value + this.loadMoreStep,
-        Object.keys(alertStore.data.groups).length
+        alertStore.data.groups.length
       );
     });
 
@@ -246,10 +246,7 @@ const AlertGrid = observer(
             pack={true}
             sizes={this.viewport.gridSizesConfig}
             loadMore={this.loadMore}
-            hasMore={
-              this.groupsToRender.value <
-              Object.keys(alertStore.data.groups).length
-            }
+            hasMore={this.groupsToRender.value < alertStore.data.groups.length}
             threshold={50}
             loader={
               <div key="loader" className="text-center text-muted py-3">
@@ -257,8 +254,7 @@ const AlertGrid = observer(
               </div>
             }
           >
-            {Object.values(alertStore.data.groups)
-              .sort(this.compare)
+            {alertStore.data.groups
               .slice(0, this.groupsToRender.value)
               .map(group => (
                 <AlertGroup
