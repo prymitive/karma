@@ -6,8 +6,8 @@
   "dependencies": {
     "@attently/riek": "2.0.1",
     "@fortawesome/fontawesome-svg-core": "1.2.19",
-    "@fortawesome/free-regular-svg-icons": "5.9.0",
-    "@fortawesome/free-solid-svg-icons": "5.9.0",
+    "@fortawesome/free-regular-svg-icons": "5.10.0",
+    "@fortawesome/free-solid-svg-icons": "5.10.0",
     "@fortawesome/react-fontawesome": "0.1.4",
     "@sentry/browser": "5.5.0",
     "body-scroll-lock": "2.6.4",
