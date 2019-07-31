@@ -59,22 +59,24 @@ const Modal = observer(
       const { size, isOpen, toggleOpen, children, ...props } = this.props;
 
       return ReactDOM.createPortal(
-        <HotKeys
-          innerRef={this.HotKeysRef}
-          keyMap={{ CLOSE: "Escape" }}
-          handlers={{ CLOSE: toggleOpen }}
-        >
+        <React.Fragment>
           <MountModal in={isOpen} unmountOnExit {...props}>
-            <div ref={this.modalRef} className="modal d-block" role="dialog">
-              <div className={`modal-dialog modal-${size}`} role="document">
-                <div className="modal-content">{children}</div>
+            <HotKeys
+              innerRef={this.HotKeysRef}
+              keyMap={{ CLOSE: "Escape" }}
+              handlers={{ CLOSE: toggleOpen }}
+            >
+              <div ref={this.modalRef} className="modal d-block" role="dialog">
+                <div className={`modal-dialog modal-${size}`} role="document">
+                  <div className="modal-content">{children}</div>
+                </div>
               </div>
-            </div>
+            </HotKeys>
           </MountModal>
           <MountModalBackdrop in={isOpen} unmountOnExit>
             <div className="modal-backdrop d-block" />
           </MountModalBackdrop>
-        </HotKeys>,
+        </React.Fragment>,
         document.body
       );
     }
