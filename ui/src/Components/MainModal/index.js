@@ -59,7 +59,7 @@ const MainModal = observer(
               </span>
             </TooltipWrapper>
           </li>
-          <Modal isOpen={this.toggle.show}>
+          <Modal isOpen={this.toggle.show} toggleOpen={this.toggle.toggle}>
             <React.Suspense
               fallback={
                 <h1 className="display-1 text-secondary p-5 m-auto">

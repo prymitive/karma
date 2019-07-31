@@ -4,13 +4,19 @@ import { mount } from "enzyme";
 
 import { Modal } from ".";
 
+const fakeToggle = jest.fn();
+
 const MountedModal = isOpen => {
   return mount(
-    <Modal isOpen={isOpen}>
+    <Modal isOpen={isOpen} toggleOpen={fakeToggle}>
       <div />
     </Modal>
   );
 };
+
+afterEach(() => {
+  jest.resetAllMocks();
+});
 
 describe("<Modal />", () => {
   it("'modal-open' class is appended to body node when modal is visible", () => {
@@ -32,11 +38,17 @@ describe("<Modal />", () => {
   it("passes extra props down to the MountModal animation component", () => {
     const onExited = jest.fn();
     const tree = mount(
-      <Modal isOpen={true} onExited={onExited}>
+      <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
         <div />
       </Modal>
     );
     const mountModal = tree.find("MountModal");
     expect(mountModal.props().onExited).toBe(onExited);
+  });
+
+  it("toggleOpen is called after pressing 'esc'", () => {
+    const tree = MountedModal(true);
+    tree.simulate("keyDown", { key: "Escape", keyCode: 27, which: 27 });
+    expect(fakeToggle).toHaveBeenCalled();
   });
 });
