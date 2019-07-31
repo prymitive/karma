@@ -6,8 +6,6 @@ import { mount } from "enzyme";
 
 import moment from "moment";
 
-import toDiffableHtml from "diffable-html";
-
 import { MockAlert, MockAlertGroup } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -31,12 +29,6 @@ const MockGroup = groupName => {
 };
 
 let originalInnerWidth;
-
-const MockedLazyRender = jest.fn(({ content }) => {
-  return content;
-});
-
-jest.mock("react-lazily-render", () => props => MockedLazyRender(props));
 
 beforeAll(() => {
   originalInnerWidth = global.innerWidth;
@@ -378,52 +370,5 @@ describe("<AlertGroup /> card theme", () => {
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.find("GroupHeader").props().themedCounters).toBe(false);
-  });
-});
-
-describe("<AlertGroupContent /> lazy rendering", () => {
-  // need to add 2x mockImplementationOnce  per render since we use it twice
-  // inside each AlertGroupContent
-  const RenderPlaceholder = ({ placeholder }) => {
-    return placeholder;
-  };
-
-  it("renders FilteringLabel when visible", () => {
-    MockAlerts(5);
-    const tree = MountedAlertGroup(jest.fn(), false);
-    expect(tree.find("FilteringLabel").length).toBe(8);
-  });
-
-  it("renders GroupFooter when visible", () => {
-    MockAlerts(5);
-    const tree = MountedAlertGroup(jest.fn(), false);
-    expect(tree.find("GroupFooter").length).toBe(1);
-  });
-
-  it("renders AlertGroupPlaceholder when invisible", () => {
-    MockAlerts(5);
-    MockedLazyRender.mockImplementationOnce(
-      RenderPlaceholder
-    ).mockImplementationOnce(RenderPlaceholder);
-    const tree = MountedAlertGroup(jest.fn(), false);
-    expect(tree.find("AlertGroupPlaceholder").length).toBe(1);
-  });
-
-  it("doesn't render GroupFooter when invisible", () => {
-    MockAlerts(5);
-    MockedLazyRender.mockImplementationOnce(
-      RenderPlaceholder
-    ).mockImplementationOnce(RenderPlaceholder);
-    const tree = MountedAlertGroup(jest.fn(), false);
-    expect(tree.find("GroupFooter").length).toBe(0);
-  });
-
-  it("matches snapshot when invisible", () => {
-    MockAlerts(5);
-    MockedLazyRender.mockImplementationOnce(
-      RenderPlaceholder
-    ).mockImplementationOnce(RenderPlaceholder);
-    const tree = MountedAlertGroup(jest.fn(), false);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 });
