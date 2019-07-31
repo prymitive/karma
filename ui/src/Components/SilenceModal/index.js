@@ -51,6 +51,7 @@ const SilenceModal = observer(
           </li>
           <Modal
             isOpen={silenceFormStore.toggle.visible}
+            toggleOpen={silenceFormStore.toggle.toggle}
             onExited={silenceFormStore.data.resetProgress}
           >
             <React.Suspense

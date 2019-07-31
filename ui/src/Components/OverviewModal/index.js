@@ -58,7 +58,11 @@ const OverviewModal = observer(
               </div>
             </Flash>
           </TooltipWrapper>
-          <Modal size="xl" isOpen={this.toggle.show}>
+          <Modal
+            size="xl"
+            isOpen={this.toggle.show}
+            toggleOpen={this.toggle.toggle}
+          >
             <React.Suspense
               fallback={
                 <h1 className="display-1 text-secondary p-5 m-auto">

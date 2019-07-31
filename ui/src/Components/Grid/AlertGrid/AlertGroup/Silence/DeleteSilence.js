@@ -281,7 +281,7 @@ const DeleteSilence = observer(
             <FontAwesomeIcon className="mr-1" icon={faTrash} />
             Delete
           </span>
-          <Modal isOpen={this.toggle.visible}>
+          <Modal isOpen={this.toggle.visible} toggleOpen={this.toggle.toggle}>
             <DeleteSilenceModalContent
               alertStore={alertStore}
               alertmanager={alertmanager}
