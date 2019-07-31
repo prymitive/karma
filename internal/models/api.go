@@ -78,7 +78,7 @@ func (lnsl LabelNameStatsList) Swap(i, j int) {
 }
 func (lnsl LabelNameStatsList) Less(i, j int) bool {
 	if lnsl[i].Hits == lnsl[j].Hits {
-		return lnsl[i].Name > lnsl[j].Name
+		return lnsl[i].Name < lnsl[j].Name
 	}
 	return lnsl[i].Hits > lnsl[j].Hits
 }
