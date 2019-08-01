@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
+import { observable } from "mobx";
 
 import { disableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock";
 
@@ -29,6 +30,7 @@ const Modal = observer(
       super(props);
       this.modalRef = React.createRef();
       this.HotKeysRef = React.createRef();
+      this.lastIsOpen = observable.box(false);
     }
 
     toggleBodyClass = isOpen => {
@@ -39,16 +41,23 @@ const Modal = observer(
       } else {
         clearAllBodyScrollLocks();
       }
+      this.lastIsOpen.set(isOpen);
     };
 
     componentDidMount() {
       const { isOpen } = this.props;
-      this.toggleBodyClass(isOpen);
+      if (isOpen) {
+        this.toggleBodyClass(isOpen);
+      }
     }
 
     componentDidUpdate() {
       const { isOpen } = this.props;
-      this.toggleBodyClass(isOpen);
+      // we shouldn't update if modal is hidden and was hidden previously
+      // which can happen when the button gets re-rendered
+      if (this.lastIsOpen.get() === true || isOpen === true) {
+        this.toggleBodyClass(isOpen);
+      }
     }
 
     componentWillUnmount() {
