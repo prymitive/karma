@@ -24,15 +24,29 @@ describe("<Modal />", () => {
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
-  it("'modal-open' class is removed from body node after modal is hidden", () => {
-    MountedModal(false);
-    expect(document.body.className.split(" ")).not.toContain("modal-open");
-  });
-
   it("'modal-open' class is removed from body node after modal is unmounted", () => {
     const tree = MountedModal(true);
     tree.unmount();
     expect(document.body.className.split(" ")).not.toContain("modal-open");
+  });
+
+  it("'modal-open' class is not removed from body when hidden modal is updated", () => {
+    document.body.classList.toggle("modal-open", true);
+    const tree = MountedModal(false);
+    expect(document.body.className.split(" ")).toContain("modal-open");
+    tree.instance().componentDidUpdate();
+    expect(document.body.className.split(" ")).toContain("modal-open");
+  });
+
+  it("'modal-open' class is removed from body when visible modal is updated to be hidden", () => {
+    document.body.classList.toggle("modal-open", true);
+    let isOpen = true;
+    const tree = MountedModal(isOpen);
+    expect(document.body.className.split(" ")).toContain("modal-open");
+
+    isOpen = false;
+    tree.instance().componentDidUpdate();
+    expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
   it("passes extra props down to the MountModal animation component", () => {
