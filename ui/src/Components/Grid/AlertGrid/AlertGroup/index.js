@@ -6,8 +6,6 @@ import { observable, action, toJS } from "mobx";
 
 import hash from "object-hash";
 
-import LazilyRender from "react-lazily-render";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
@@ -51,87 +49,6 @@ const AllAlertsAreUsingSameAlertmanagers = alerts => {
     listOfAMs => JSON.stringify(listOfAMs) === JSON.stringify(usedAMs[0])
   );
 };
-
-const AlertGroupContent = observer(
-  ({
-    alertStore,
-    silenceFormStore,
-    group,
-    showAlertmanagers,
-    afterUpdate,
-    renderConfig,
-    showLoadButtons,
-    loadLess,
-    loadMore
-  }) => (
-    <div className="card-body bg-white px-2 py-1">
-      <ul className="list-group">
-        {group.alerts.slice(0, renderConfig.alertsToRender).map(alert => (
-          <Alert
-            key={hash(alert.labels)}
-            group={group}
-            alert={alert}
-            showAlertmanagers={showAlertmanagers}
-            showReceiver={group.alerts.length === 1}
-            afterUpdate={afterUpdate}
-            alertStore={alertStore}
-            silenceFormStore={silenceFormStore}
-            setIsMenuOpen={renderConfig.setIsMenuOpen}
-          />
-        ))}
-        {showLoadButtons ? (
-          <li className="list-group-item border-0 p-0 text-center">
-            <LoadButton
-              icon={faMinus}
-              action={loadLess}
-              tooltip="Show fewer alerts in this group"
-            />
-            <small className="text-muted mx-2">
-              {Math.min(renderConfig.alertsToRender, group.alerts.length)}
-              {" of "}
-              {group.alerts.length}
-            </small>
-            <LoadButton
-              icon={faPlus}
-              action={loadMore}
-              tooltip="Show more alerts in this group"
-            />
-          </li>
-        ) : null}
-      </ul>
-    </div>
-  )
-);
-
-const FakeLabel = ({ width, color }) => (
-  <div
-    className={`components-label badge badge-${color} text-${color}`}
-    style={{ width: width, height: "1.3rem" }}
-  >
-    {" "}
-  </div>
-);
-
-const AlertGroupPlaceholder = () => (
-  <div className="card-body bg-white px-2 py-1">
-    <ul className="list-group">
-      <li className="components-grid-alertgrid-alertgroup-alert list-group-item pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-light">
-        <FakeLabel width="100%" color="light" />
-        <FakeLabel width="70px" color="secondary" />
-        <FakeLabel width="150px" color="light" />
-        <FakeLabel width="80px" color="light" />
-        <FakeLabel width="70px" color="light" />
-      </li>
-      <li className="components-grid-alertgrid-alertgroup-alert list-group-item pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-light">
-        <FakeLabel width="100%" color="light" />
-        <FakeLabel width="70px" color="secondary" />
-        <FakeLabel width="80px" color="light" />
-        <FakeLabel width="90px" color="light" />
-        <FakeLabel width="120px" color="light" />
-      </li>
-    </ul>
-  </div>
-);
 
 const AlertGroup = observer(
   class AlertGroup extends Component {
@@ -307,43 +224,56 @@ const AlertGroup = observer(
                 setIsMenuOpen={this.renderConfig.setIsMenuOpen}
               />
               {this.collapse.value ? null : (
-                <LazilyRender
-                  key={group.id}
-                  offset={100}
-                  onRender={afterUpdate}
-                  content={
-                    <AlertGroupContent
-                      alertStore={alertStore}
-                      silenceFormStore={silenceFormStore}
-                      group={group}
-                      showAlertmanagers={
-                        showAlertmanagers && !showAlertmanagersInFooter
-                      }
-                      afterUpdate={afterUpdate}
-                      renderConfig={this.renderConfig}
-                      showLoadButtons={
-                        group.alerts.length > this.defaultRenderCount
-                      }
-                      loadLess={this.loadLess}
-                      loadMore={this.loadMore}
-                    />
-                  }
-                  placeholder={<AlertGroupPlaceholder />}
-                />
+                <div className="card-body bg-white px-2 py-1">
+                  <ul className="list-group">
+                    {group.alerts
+                      .slice(0, this.renderConfig.alertsToRender)
+                      .map(alert => (
+                        <Alert
+                          key={hash(alert.labels)}
+                          group={group}
+                          alert={alert}
+                          showAlertmanagers={
+                            showAlertmanagers && !showAlertmanagersInFooter
+                          }
+                          showReceiver={group.alerts.length === 1}
+                          afterUpdate={afterUpdate}
+                          alertStore={alertStore}
+                          silenceFormStore={silenceFormStore}
+                          setIsMenuOpen={this.renderConfig.setIsMenuOpen}
+                        />
+                      ))}
+                    {group.alerts.length > this.defaultRenderCount ? (
+                      <li className="list-group-item border-0 p-0 text-center">
+                        <LoadButton
+                          icon={faMinus}
+                          action={this.loadLess}
+                          tooltip="Show fewer alerts in this group"
+                        />
+                        <small className="text-muted mx-2">
+                          {Math.min(
+                            this.renderConfig.alertsToRender,
+                            group.alerts.length
+                          )}
+                          {" of "}
+                          {group.alerts.length}
+                        </small>
+                        <LoadButton
+                          icon={faPlus}
+                          action={this.loadMore}
+                          tooltip="Show more alerts in this group"
+                        />
+                      </li>
+                    ) : null}
+                  </ul>
+                </div>
               )}
               {this.collapse.value === false && group.alerts.length > 1 ? (
-                <LazilyRender
-                  offset={100}
-                  onRender={afterUpdate}
-                  content={
-                    <GroupFooter
-                      group={group}
-                      alertmanagers={footerAlertmanagers}
-                      afterUpdate={afterUpdate}
-                      silenceFormStore={silenceFormStore}
-                    />
-                  }
-                  placeholder={null}
+                <GroupFooter
+                  group={group}
+                  alertmanagers={footerAlertmanagers}
+                  afterUpdate={afterUpdate}
+                  silenceFormStore={silenceFormStore}
                 />
               ) : null}
             </div>
