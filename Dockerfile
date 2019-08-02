@@ -1,4 +1,4 @@
-FROM node:10.16.0-alpine as nodejs-builder
+FROM node:10.16.1-alpine as nodejs-builder
 RUN apk add --update make git
 COPY . /src
 RUN make -C /src ui
