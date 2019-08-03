@@ -1,7 +1,7 @@
 // this is used by bootswatch to import the font, we bundle all fonts so there
-// is nothing to import, so let's point it at an empty file
+// is nothing to import
 // https://github.com/thomaspark/bootswatch/issues/55
-$web-font-path: "./empty.css";
+$web-font-path: "data:text/css;base64,";
 
 // Default for Bootstrap is 700 and it's a bit too thick for Open Sans
 $font-weight-bold: 600;
