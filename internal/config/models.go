@@ -61,7 +61,7 @@ type configSchema struct {
 			Reverse      bool
 			Label        string
 			CustomValues struct {
-				Labels map[string]map[string]int
+				Labels map[string]map[string]string
 			} `yaml:"customValues" mapstructure:"customValues"`
 		}
 	}

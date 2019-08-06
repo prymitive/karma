@@ -144,7 +144,7 @@ func alerts(c *gin.Context) {
 				Reverse: config.Config.Grid.Sorting.Reverse,
 				Label:   config.Config.Grid.Sorting.Label,
 			},
-			ValueMapping: map[string]map[string]int{},
+			ValueMapping: map[string]map[string]string{},
 		},
 		StaticColorLabels:        config.Config.Labels.Color.Static,
 		AnnotationsDefaultHidden: config.Config.Annotations.Default.Hidden,
@@ -316,6 +316,7 @@ func alerts(c *gin.Context) {
 			agCopy.Hash = agCopy.ContentFingerprint()
 			apiAG := models.APIAlertGroup{AlertGroup: agCopy}
 			apiAG.DedupSharedMaps()
+			sort.Sort(apiAG.Alerts)
 			alerts[agCopy.ID] = apiAG
 			resp.TotalAlerts += len(agCopy.Alerts)
 		}

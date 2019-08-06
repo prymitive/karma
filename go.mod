@@ -19,6 +19,8 @@ require (
 	github.com/go-openapi/swag v0.19.4
 	github.com/go-openapi/validate v0.19.2
 	github.com/golangci/golangci-lint v1.17.1
+	github.com/google/go-cmp v0.3.0
+	github.com/google/pprof v0.0.0-20190723021845-34ac40c74b70 // indirect
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.4
 	github.com/mcuadros/go-gin-prometheus v0.1.1-0.20190723203314-c7374e9082f8
@@ -31,8 +33,10 @@ require (
 	github.com/spf13/pflag v1.0.3
 	github.com/spf13/viper v1.4.0
 	github.com/terinjokes/bakelite v0.2.0
+	golang.org/x/arch v0.0.0-20190312162104-788fe5ffcd8c // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v2 v2.2.2
+	vbom.ml/util v0.0.0-20180919145318-efcd4e0f9787
 )
 
 replace github.com/ugorji/go v1.1.4 => github.com/ugorji/go/codec v0.0.0-20190204201341-e444a5086c43

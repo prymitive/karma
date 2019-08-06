@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"sort"
 
+	"vbom.ml/util/sortorder"
+
 	"github.com/prymitive/karma/internal/slices"
 )
 
@@ -56,7 +58,7 @@ func (lvsl LabelValueStatsList) Swap(i, j int) {
 }
 func (lvsl LabelValueStatsList) Less(i, j int) bool {
 	if lvsl[i].Hits == lvsl[j].Hits {
-		return lvsl[i].Value > lvsl[j].Value
+		return sortorder.NaturalLess(lvsl[i].Value, lvsl[j].Value)
 	}
 	return lvsl[i].Hits > lvsl[j].Hits
 }
@@ -263,8 +265,8 @@ type GridSettings struct {
 
 // SortSettings nests all settings specific to sorting
 type SortSettings struct {
-	Grid         GridSettings              `json:"grid"`
-	ValueMapping map[string]map[string]int `json:"valueMapping"`
+	Grid         GridSettings                 `json:"grid"`
+	ValueMapping map[string]map[string]string `json:"valueMapping"`
 }
 
 type SilenceFormStripSettings struct {

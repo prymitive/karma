@@ -6,6 +6,8 @@ import (
 	"sort"
 
 	"github.com/gin-gonic/gin"
+	"vbom.ml/util/sortorder"
+
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
@@ -61,7 +63,7 @@ func countersToLabelStats(counters map[string]map[string]int) models.LabelNameSt
 		// now that we have total hits we can calculate %
 		var totalPercent int
 		for i, value := range nameStats.Values {
-			nameStats.Values[i].Percent = int(math.Round((float64(value.Hits) / float64(nameStats.Hits)) * 100.0))
+			nameStats.Values[i].Percent = int(math.Floor((float64(value.Hits) / float64(nameStats.Hits)) * 100.0))
 			totalPercent += nameStats.Values[i].Percent
 		}
 		sort.Sort(nameStats.Values)
@@ -128,17 +130,17 @@ func getUpstreams() models.AlertmanagerAPISummary {
 	return summary
 }
 
-func resolveLabelValue(name, value string) (int, bool) {
+func resolveLabelValue(name, value string) string {
 	valueReplacements, found := config.Config.Grid.Sorting.CustomValues.Labels[name]
 	if found {
 		if replacement, ok := valueReplacements[value]; ok {
-			return replacement, true
+			return replacement
 		}
 	}
-	return value, false
+	return value
 }
 
-func getGroupLabel(group *models.APIAlertGroup, label string) int {
+func getGroupLabel(group *models.APIAlertGroup, label string) string {
 	if v, found := group.Labels[label]; found {
 		return resolveLabelValue(label, v)
 	}
@@ -148,7 +150,15 @@ func getGroupLabel(group *models.APIAlertGroup, label string) int {
 	if v, found := group.Alerts[0].Labels[label]; found {
 		return resolveLabelValue(label, v)
 	}
-	return 0
+	return ""
+}
+
+func sortByStartsAt(i, j int, groups []models.APIAlertGroup, sortReverse bool) bool {
+	if sortReverse {
+		return groups[i].LatestStartsAt.After(groups[j].LatestStartsAt)
+	} else {
+		return groups[i].LatestStartsAt.Before(groups[j].LatestStartsAt)
+	}
 }
 
 func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) []models.APIAlertGroup {
@@ -160,7 +170,7 @@ func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) 
 	}
 
 	sortReverse, found := c.GetQuery("sortReverse")
-	if !found {
+	if !found || (sortReverse != "0" && sortReverse != "1") {
 		if config.Config.Grid.Sorting.Reverse {
 			sortReverse = "1"
 		} else {
@@ -179,26 +189,56 @@ func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) 
 
 	switch sortOrder {
 	case "startsAt":
-		sort.SliceStable(groups, func(i, j int) bool {
-			return groups[i].LatestStartsAt.After(groups[j].LatestStartsAt)
+		sort.Slice(groups, func(i, j int) bool {
+			return sortByStartsAt(i, j, groups, sortReverse == "1")
 		})
 	case "label":
-		sort.SliceStable(groups, func(i, j int) bool {
-			return getGroupLabel(&groups[i], sortLabel) < getGroupLabel(&groups[j], sortLabel)
+		sort.Slice(groups, func(i, j int) bool {
+			vi := getGroupLabel(&groups[i], sortLabel)
+			vj := getGroupLabel(&groups[j], sortLabel)
+			if vi == "" && vj == "" {
+				// both groups lack this label, fallback to timestamp sort
+				return sortByStartsAt(i, j, groups, true)
+			}
+
+			if vi == "" {
+				// first label is missing
+				if sortReverse == "0" {
+					return false
+				} else {
+					return true
+				}
+			}
+			if vj == "" {
+				// second label is missing
+				if sortReverse == "0" {
+					return true
+				} else {
+					return false
+				}
+			}
+			if vi == vj {
+				// both labels are equal fallback to timestamp sort
+				return sortByStartsAt(i, j, groups, true)
+			}
+			// finnally return groups sorted by label
+			if sortReverse == "1" {
+				return !sortorder.NaturalLess(vi, vj)
+			} else {
+				return sortorder.NaturalLess(vi, vj)
+			}
 		})
 	default:
 		// sort alert groups so they are always returned in the same order
 		// use group ID which is unique and immutable
-		sort.SliceStable(groups, func(i, j int) bool {
-			return groups[i].ID < groups[j].ID
+		sort.Slice(groups, func(i, j int) bool {
+			if sortReverse == "1" {
+				return groups[i].ID < groups[j].ID
+			} else {
+				return groups[i].ID > groups[j].ID
+			}
 		})
 	}
 
-	if sortReverse == "1" {
-		sort.Reverse(groups)
-	}
-
 	return groups
-
-	//
 }

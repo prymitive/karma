@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
@@ -9,6 +10,7 @@ import (
 	"time"
 
 	"github.com/blang/semver"
+	"github.com/google/go-cmp/cmp"
 
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
@@ -786,17 +788,17 @@ var countsMap = models.LabelNameStatsList{
 			models.LabelValueStats{
 				Value:   "server1",
 				Hits:    2,
-				Percent: 8,
+				Percent: 9,
 			},
 			models.LabelValueStats{
 				Value:   "server2",
 				Hits:    4,
-				Percent: 18,
+				Percent: 17,
 			},
 			models.LabelValueStats{
 				Value:   "server3",
 				Hits:    2,
-				Percent: 8,
+				Percent: 9,
 			},
 			models.LabelValueStats{
 				Value:   "server4",
@@ -806,7 +808,7 @@ var countsMap = models.LabelNameStatsList{
 			models.LabelValueStats{
 				Value:   "server5",
 				Hits:    4,
-				Percent: 18,
+				Percent: 17,
 			},
 			models.LabelValueStats{
 				Value:   "server6",
@@ -837,7 +839,7 @@ var countsMap = models.LabelNameStatsList{
 	},
 	{
 		Name: "ip",
-		Hits: 8,
+		Hits: 16,
 		Values: models.LabelValueStatsList{
 			models.LabelValueStats{
 				Value:   "127.0.0.1",
@@ -1138,6 +1140,126 @@ func TestVerifyAllGroups(t *testing.T) {
 		}
 		if !reflect.DeepEqual(ur.Filters, filtersExpected) {
 			t.Errorf("[%s] Filters mismatch, expected %v but got %v", version, filtersExpected, ur.Filters)
+		}
+	}
+}
+
+type sortTest struct {
+	filter         string
+	sortOrder      string
+	sortLabel      string
+	sortReverse    string
+	expectedLabel  string
+	expectedValues []string
+}
+
+var sortTests = []sortTest{
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "label",
+		sortLabel:      "cluster",
+		sortReverse:    "0",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"dev", "dev", "prod", "prod", "staging", "staging"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "label",
+		sortLabel:      "cluster",
+		sortReverse:    "1",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"staging", "staging", "prod", "prod", "dev", "dev"},
+	},
+	{
+		filter:         "q=cluster=dev",
+		sortOrder:      "label",
+		sortLabel:      "cluster",
+		sortReverse:    "0",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"dev", "dev", "dev", "dev"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "label",
+		sortLabel:      "disk",
+		sortReverse:    "0",
+		expectedLabel:  "disk",
+		expectedValues: []string{"sda", "", "", "", "", "", "", "", "", "", "", ""},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "label",
+		sortLabel:      "disk",
+		sortReverse:    "1",
+		expectedLabel:  "disk",
+		expectedValues: []string{"", "", "", "", "", "", "", "", "", "", "", "sda"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "disabled",
+		sortLabel:      "",
+		sortReverse:    "0",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"dev", "prod", "staging", "dev", "staging", "prod"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "disabled",
+		sortLabel:      "",
+		sortReverse:    "1",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"prod", "staging", "dev", "staging", "prod", "dev"},
+	},
+}
+
+func TestSortOrder(t *testing.T) {
+	mockConfig()
+	for _, version := range mock.ListAllMocks() {
+		t.Logf("Testing API using mock files from Alertmanager %s", version)
+		mockAlerts(version)
+		r := ginTestEngine()
+
+		for _, testCase := range sortTests {
+			uri := fmt.Sprintf(
+				"/alerts.json?sortOrder=%s&sortLabel=%s&sortReverse=%s&%s",
+				testCase.sortOrder,
+				testCase.sortLabel,
+				testCase.sortReverse,
+				testCase.filter,
+			)
+			t.Logf("Request URI: %s", uri)
+			req := httptest.NewRequest("GET", uri, nil)
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != http.StatusOK {
+				t.Errorf("GET /alerts.json returned status %d", resp.Code)
+			}
+
+			ur := models.AlertsResponse{}
+			err := json.Unmarshal(resp.Body.Bytes(), &ur)
+			if err != nil {
+				t.Errorf("Failed to unmarshal response: %s", err)
+			}
+
+			values := []string{}
+			for _, ag := range ur.AlertGroups {
+				v := ag.Labels[testCase.expectedLabel]
+				if v == "" {
+					v = ag.Shared.Labels[testCase.expectedLabel]
+				}
+				if v != "" {
+					values = append(values, v)
+				} else {
+					for _, alert := range ag.Alerts {
+						v = alert.Labels[testCase.expectedLabel]
+						values = append(values, v)
+					}
+				}
+			}
+
+			if diff := cmp.Diff(testCase.expectedValues, values); diff != "" {
+				t.Errorf("Incorrectly sorted values (-want +got):\n%s", diff)
+			}
 		}
 	}
 }
