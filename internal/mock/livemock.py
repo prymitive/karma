@@ -91,7 +91,8 @@ for i in xrange(0, 5):
                 "alertname": "Host_Down",
                 "instance": "server1",
                 "job": "node_ping",
-                "cluster": "prod"
+                "cluster": "prod",
+                "ip": "127.0.0.1"
             },
             "annotations": {
                 "summary": "Example summary",
@@ -103,7 +104,8 @@ for i in xrange(0, 5):
                 "alertname": "Host_Down",
                 "instance": "server2",
                 "job": "node_ping",
-                "cluster": "prod"
+                "cluster": "prod",
+                "ip": "127.0.0.2"
             },
             "annotations": {
                 "summary": "Example summary"
@@ -114,7 +116,8 @@ for i in xrange(0, 5):
                 "alertname": "Host_Down",
                 "instance": "server3",
                 "job": "node_ping",
-                "cluster": "staging"
+                "cluster": "staging",
+                "ip": "127.0.0.3"
             },
             "annotations": {
                 "summary": "Example summary"
@@ -125,7 +128,8 @@ for i in xrange(0, 5):
                 "alertname": "Host_Down",
                 "instance": "server4",
                 "job": "node_ping",
-                "cluster": "staging"
+                "cluster": "staging",
+                "ip": "127.0.0.4"
             },
             "annotations": {
                 "summary": "Example summary"
@@ -136,7 +140,8 @@ for i in xrange(0, 5):
                 "alertname": "Host_Down",
                 "instance": "server5",
                 "job": "node_ping",
-                "cluster": "staging"
+                "cluster": "staging",
+                "ip": "127.0.0.5"
             },
             "annotations": {
                 "summary": "Example summary"
@@ -147,7 +152,8 @@ for i in xrange(0, 5):
                 "alertname": "Host_Down",
                 "instance": "server6",
                 "job": "node_ping",
-                "cluster": "dev"
+                "cluster": "dev",
+                "ip": "127.0.0.6"
             },
             "annotations": {
                 "summary": "Example summary"
@@ -158,7 +164,8 @@ for i in xrange(0, 5):
                 "alertname": "Host_Down",
                 "instance": "server7",
                 "job": "node_ping",
-                "cluster": "dev"
+                "cluster": "dev",
+                "ip": "127.0.0.7"
             },
             "annotations": {
                 "summary": "Example summary"
@@ -169,7 +176,8 @@ for i in xrange(0, 5):
                 "alertname": "Host_Down",
                 "instance": "server8",
                 "job": "node_ping",
-                "cluster": "dev"
+                "cluster": "dev",
+                "ip": "127.0.0.8"
             },
             "annotations": {
                 "summary": "Example summary"
@@ -192,7 +200,8 @@ for i in xrange(0, 5):
                 "alertname": "Free_Disk_Space_Too_Low",
                 "instance": "server5",
                 "job": "node_exporter",
-                "cluster": "staging"
+                "cluster": "staging",
+                "disk": "sda",
             },
             "annotations": {
                 "alert": "Less than 10% disk space is free",

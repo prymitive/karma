@@ -6,8 +6,10 @@ import (
 	"net/http/httptest"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/blang/semver"
+
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 )
@@ -23,13 +25,14 @@ type groupTest struct {
 }
 
 var groupTests = []groupTest{
-	groupTest{
+	{
 		receiver: "by-name",
 		labels: map[string]string{
 			"alertname": "Memory_Usage_Too_High",
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 10, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "alert", Value: "Memory usage exceeding threshold"},
 					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
@@ -59,7 +62,7 @@ var groupTests = []groupTest{
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-cluster-service",
 		labels: map[string]string{
 			"alertname": "Memory_Usage_Too_High",
@@ -67,6 +70,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 10, 0, 0, 0, 1, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "alert", Value: "Memory usage exceeding threshold"},
 					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
@@ -95,7 +99,7 @@ var groupTests = []groupTest{
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-cluster-service",
 		labels: map[string]string{
 			"alertname": "Host_Down",
@@ -103,6 +107,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -114,6 +119,7 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server3",
+					"ip":       "127.0.0.3",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -130,6 +136,7 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server4",
+					"ip":       "127.0.0.4",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -146,6 +153,7 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server5",
+					"ip":       "127.0.0.5",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -167,7 +175,7 @@ var groupTests = []groupTest{
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-cluster-service",
 		labels: map[string]string{
 			"alertname": "Host_Down",
@@ -175,6 +183,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 1, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -186,11 +195,13 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server6",
+					"ip":       "127.0.0.6",
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 0, 59, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -202,11 +213,13 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server7",
+					"ip":       "127.0.0.7",
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 12, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -218,6 +231,7 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server8",
+					"ip":       "127.0.0.8",
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
@@ -239,19 +253,21 @@ var groupTests = []groupTest{
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-name",
 		labels: map[string]string{
 			"alertname": "Host_Down",
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 1, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
 				Labels: map[string]string{
 					"cluster":  "prod",
 					"instance": "server1",
+					"ip":       "127.0.0.1",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -265,10 +281,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 1, 0, 1, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "prod",
 					"instance": "server2",
+					"ip":       "127.0.0.2",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -282,10 +300,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 1, 0, 1, 0, 1, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "staging",
 					"instance": "server3",
+					"ip":       "127.0.0.3",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -299,10 +319,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 1, 0, 0, 59, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "staging",
 					"instance": "server4",
+					"ip":       "127.0.0.4",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -316,10 +338,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "staging",
 					"instance": "server5",
+					"ip":       "127.0.0.5",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -333,10 +357,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 1, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "dev",
 					"instance": "server6",
+					"ip":       "127.0.0.6",
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -350,10 +376,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 0, 20, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "dev",
 					"instance": "server7",
+					"ip":       "127.0.0.7",
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -367,10 +395,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 0, 21, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "dev",
 					"instance": "server8",
+					"ip":       "127.0.0.8",
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -400,7 +430,7 @@ var groupTests = []groupTest{
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-cluster-service",
 		labels: map[string]string{
 			"alertname": "Free_Disk_Space_Too_Low",
@@ -408,6 +438,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 10, 0, 19, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "alert", Value: "Less than 10% disk space is free"},
 					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
@@ -423,6 +454,7 @@ var groupTests = []groupTest{
 				Labels: map[string]string{
 					"instance": "server5",
 					"job":      "node_exporter",
+					"disk":     "sda",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -436,7 +468,7 @@ var groupTests = []groupTest{
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-cluster-service",
 		labels: map[string]string{
 			"alertname": "Host_Down",
@@ -444,6 +476,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 12, 0, 19, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
@@ -457,6 +490,7 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server1",
+					"ip":       "127.0.0.1",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -473,6 +507,7 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server2",
+					"ip":       "127.0.0.2",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -494,13 +529,14 @@ var groupTests = []groupTest{
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-name",
 		labels: map[string]string{
 			"alertname": "HTTP_Probe_Failed",
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 14, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "help", Value: "Example help annotation"},
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
@@ -519,6 +555,7 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 14, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -552,13 +589,14 @@ var groupTests = []groupTest{
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-name",
 		labels: map[string]string{
 			"alertname": "Free_Disk_Space_Too_Low",
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 15, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "alert", Value: "Less than 10% disk space is free"},
 					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
@@ -575,6 +613,7 @@ var groupTests = []groupTest{
 					"cluster":  "staging",
 					"instance": "server5",
 					"job":      "node_exporter",
+					"disk":     "sda",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-name",
@@ -588,7 +627,7 @@ var groupTests = []groupTest{
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-cluster-service",
 		labels: map[string]string{
 			"alertname": "HTTP_Probe_Failed",
@@ -596,6 +635,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 10, 20, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "help", Value: "Example help annotation"},
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
@@ -615,6 +655,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 19, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -728,6 +769,17 @@ var countsMap = models.LabelNameStatsList{
 		},
 	},
 	{
+		Name: "disk",
+		Hits: 2,
+		Values: models.LabelValueStatsList{
+			models.LabelValueStats{
+				Value:   "sda",
+				Hits:    2,
+				Percent: 100,
+			},
+		},
+	},
+	{
 		Name: "instance",
 		Hits: 24,
 		Values: models.LabelValueStatsList{
@@ -780,6 +832,52 @@ var countsMap = models.LabelNameStatsList{
 				Value:   "web2",
 				Hits:    2,
 				Percent: 8,
+			},
+		},
+	},
+	{
+		Name: "ip",
+		Hits: 8,
+		Values: models.LabelValueStatsList{
+			models.LabelValueStats{
+				Value:   "127.0.0.1",
+				Hits:    2,
+				Percent: 13,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.2",
+				Hits:    2,
+				Percent: 13,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.3",
+				Hits:    2,
+				Percent: 13,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.4",
+				Hits:    2,
+				Percent: 13,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.5",
+				Hits:    2,
+				Percent: 12,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.6",
+				Hits:    2,
+				Percent: 12,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.7",
+				Hits:    2,
+				Percent: 12,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.8",
+				Hits:    2,
+				Percent: 12,
 			},
 		},
 	},

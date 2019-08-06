@@ -1,25 +1,10 @@
 {
     "data": [
         {
-            "comment": "Silenced instance",
-            "createdBy": "john@example.com",
-            "endsAt": "2063-01-01T00:00:00Z",
-            "id": "59ff9975-4171-40c7-9559-ed806ee79d73",
-            "matchers": [
-                {
-                    "isRegex": false,
-                    "name": "instance",
-                    "value": "web1"
-                }
-            ],
-            "startsAt": "2019-06-22T15:09:20.923584598Z",
-            "updatedAt": "2019-06-22T15:09:20.923584598Z"
-        },
-        {
             "comment": "Silenced Host_Down alerts in the dev cluster",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "bbd0cf37-7ace-43d8-b58c-da7706bd565c",
+            "id": "e8e6ec13-e41f-48d8-95e4-7e9223403357",
             "matchers": [
                 {
                     "isRegex": false,
@@ -32,14 +17,14 @@
                     "value": "dev"
                 }
             ],
-            "startsAt": "2019-06-22T15:09:20.927215239Z",
-            "updatedAt": "2019-06-22T15:09:20.927215239Z"
+            "startsAt": "2019-08-05T22:45:49.9486555Z",
+            "updatedAt": "2019-08-05T22:45:49.9486555Z"
         },
         {
             "comment": "Silenced server7",
             "createdBy": "john@example.com",
             "endsAt": "2063-01-01T00:00:00Z",
-            "id": "b3b2f778-ea49-4a7e-970d-d5dc33849eee",
+            "id": "630eb6d2-5d06-4dbf-95cd-1cc26f7d21f5",
             "matchers": [
                 {
                     "isRegex": false,
@@ -47,8 +32,23 @@
                     "value": "server7"
                 }
             ],
-            "startsAt": "2019-06-22T15:09:20.930724148Z",
-            "updatedAt": "2019-06-22T15:09:20.930724148Z"
+            "startsAt": "2019-08-05T22:45:49.9539296Z",
+            "updatedAt": "2019-08-05T22:45:49.9539296Z"
+        },
+        {
+            "comment": "Silenced instance",
+            "createdBy": "john@example.com",
+            "endsAt": "2063-01-01T00:00:00Z",
+            "id": "a530f544-14d2-4874-ad1e-d96e0b452693",
+            "matchers": [
+                {
+                    "isRegex": false,
+                    "name": "instance",
+                    "value": "web1"
+                }
+            ],
+            "startsAt": "2019-08-05T22:45:49.9446341Z",
+            "updatedAt": "2019-08-05T22:45:49.9446341Z"
         }
     ],
     "status": "success"
