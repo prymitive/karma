@@ -16,11 +16,12 @@ type AlertList []Alert
 
 func (a AlertList) Len() int {
 	return len(a)
-
 }
+
 func (a AlertList) Swap(i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
+
 func (a AlertList) Less(i, j int) bool {
 	// compare timestamps, if equal compare fingerprints to stable sort order
 	if a[i].StartsAt.After(a[j].StartsAt) {
