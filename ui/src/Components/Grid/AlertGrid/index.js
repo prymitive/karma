@@ -6,8 +6,6 @@ import { observer } from "mobx-react";
 
 import FontFaceObserver from "fontfaceobserver";
 
-import moment from "moment";
-
 import { debounce } from "lodash";
 
 import ReactResizeDetector from "react-resize-detector";
@@ -24,46 +22,6 @@ import { AlertGroup } from "./AlertGroup";
 import { GridSizesConfig, GetGridElementWidth } from "./GridSize";
 
 import "./index.css";
-
-const getGroupStartsAt = g =>
-  moment.max(g.alerts.map(a => moment(a.startsAt))).valueOf();
-
-const getLabelValue = (alertStore, settingsStore, sortOrder, sortLabel, g) => {
-  // if timestamp sort is enabled use latest alert for sorting
-  if (sortOrder === settingsStore.gridConfig.options.startsAt.value) {
-    return getGroupStartsAt(g);
-  }
-
-  const labelValue =
-    g.labels[sortLabel] ||
-    g.shared.labels[sortLabel] ||
-    g.alerts[0].labels[sortLabel];
-  let mappedValue;
-
-  // check if we have a mapping for label value
-  if (
-    labelValue !== undefined &&
-    alertStore.settings.values.sorting.valueMapping[sortLabel] !== undefined
-  ) {
-    mappedValue =
-      alertStore.settings.values.sorting.valueMapping[sortLabel][labelValue];
-  }
-
-  // if we have a mapped value then return it, if not return original value
-  return mappedValue !== undefined ? mappedValue : labelValue;
-};
-
-const compareByTimestamp = (a, b) => {
-  const ast = getGroupStartsAt(a);
-  const bst = getGroupStartsAt(b);
-  if (ast > bst) {
-    return -1;
-  } else if (ast < bst) {
-    return 1;
-  } else {
-    return 0;
-  }
-};
 
 const AlertGrid = observer(
   class AlertGrid extends Component {
@@ -150,68 +108,6 @@ const AlertGrid = observer(
         alertStore.data.groups.length
       );
     });
-
-    compare = (a, b) => {
-      const { alertStore, settingsStore } = this.props;
-
-      const useDefaults =
-        settingsStore.gridConfig.config.sortOrder ===
-        settingsStore.gridConfig.options.default.value;
-
-      const sortOrder = useDefaults
-        ? alertStore.settings.values.sorting.grid.order
-        : settingsStore.gridConfig.config.sortOrder;
-
-      // don't sort if sorting is disabled
-      if (sortOrder === settingsStore.gridConfig.options.disabled.value)
-        return 0;
-
-      const sortReverse =
-        useDefaults || settingsStore.gridConfig.config.reverseSort === undefined
-          ? alertStore.settings.values.sorting.grid.reverse
-          : settingsStore.gridConfig.config.reverseSort;
-
-      const sortLabel =
-        useDefaults || settingsStore.gridConfig.config.sortLabel === undefined
-          ? alertStore.settings.values.sorting.grid.label
-          : settingsStore.gridConfig.config.sortLabel;
-
-      const val = sortReverse ? -1 : 1;
-
-      const av = getLabelValue(
-        alertStore,
-        settingsStore,
-        sortOrder,
-        sortLabel,
-        a
-      );
-      const bv = getLabelValue(
-        alertStore,
-        settingsStore,
-        sortOrder,
-        sortLabel,
-        b
-      );
-
-      if (av === undefined && av === undefined) {
-        // if both alerts lack the label they are equal, fallback to timestamps
-        return compareByTimestamp(a, b);
-      } else if (av === undefined || av > bv) {
-        // if first one lacks it it's should be rendered after alerts with that label
-        return val;
-      } else if (bv === undefined || av < bv) {
-        // if the first one has label but the second doesn't then the second should be rendered after the first
-        return val * -1;
-      } else if (
-        sortOrder !== settingsStore.gridConfig.options.startsAt.value
-      ) {
-        // if values are equal use timestamps as secondary sort, but only
-        // if we didn't already sort by timestamps
-        return compareByTimestamp(a, b);
-      } else {
-        return 0;
-      }
-    };
 
     componentDidMount() {
       // We have font-display:swap set for font assets, this means that on initial

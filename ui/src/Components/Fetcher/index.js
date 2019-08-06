@@ -25,13 +25,58 @@ const Fetcher = observer(
         },
         markCompleted() {
           this.completedAt = moment();
+        },
+        forceUpdate() {
+          this.time = moment(0);
         }
       },
       {
         update: action,
-        markCompleted: action
+        markCompleted: action,
+        forceUpdate: action
       }
     );
+
+    getSortSettings = () => {
+      const { alertStore, settingsStore } = this.props;
+
+      let sortSettings = {
+        useDefaults: false,
+        sortOrder: "",
+        sortLabel: "",
+        sortReverse: ""
+      };
+
+      sortSettings.useDefaults =
+        settingsStore.gridConfig.config.sortOrder ===
+        settingsStore.gridConfig.options.default.value;
+
+      if (sortSettings.useDefaults === true) {
+        return sortSettings;
+      }
+
+      sortSettings.sortOrder = alertStore.settings.values.sorting.grid.order;
+
+      // don't sort if sorting is disabled
+      if (
+        sortSettings.sortOrder ===
+        settingsStore.gridConfig.options.disabled.value
+      )
+        return sortSettings;
+
+      sortSettings.sortReverse =
+        settingsStore.gridConfig.config.reverseSort !== null
+          ? settingsStore.gridConfig.config.reverseSort === true
+            ? "1"
+            : "0"
+          : "";
+
+      if (settingsStore.gridConfig.config.sortLabel === null) {
+        sortSettings.sortLabel = settingsStore.gridConfig.config.sortLabel;
+      }
+
+      return sortSettings;
+    };
 
     fetchIfIdle = () => {
       const { alertStore, settingsStore } = this.props;
@@ -59,13 +104,24 @@ const Fetcher = observer(
         !alertStore.status.paused
       ) {
         this.lastTick.update();
-        alertStore.fetchWithThrottle();
-        this.lastTick.markCompleted();
+        this.callFetch();
       }
     };
 
     timerTick = () => {
       window.requestAnimationFrame(this.fetchIfIdle);
+    };
+
+    callFetch = () => {
+      const { alertStore } = this.props;
+
+      const sortSettings = this.getSortSettings();
+      alertStore.fetchWithThrottle(
+        sortSettings.sortOrder,
+        sortSettings.sortLabel,
+        sortSettings.sortReverse
+      );
+      this.lastTick.markCompleted();
     };
 
     componentDidMount() {
@@ -79,7 +135,7 @@ const Fetcher = observer(
 
       if (!alertStore.status.paused) {
         this.lastTick.update();
-        alertStore.fetchWithThrottle();
+        this.callFetch();
       }
     }
 
@@ -96,6 +152,9 @@ const Fetcher = observer(
         <span
           data-filters={alertStore.filters.values.map(f => f.raw).join(" ")}
           data-interval={settingsStore.fetchConfig.config.interval}
+          data-grid-sort-order={settingsStore.gridConfig.config.sortOrder}
+          data-grid-sort-label={settingsStore.gridConfig.config.sortLabel}
+          data-grid-sort-reverse={settingsStore.gridConfig.config.reverseSort}
         />
       );
     }
