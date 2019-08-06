@@ -156,9 +156,8 @@ func getGroupLabel(group *models.APIAlertGroup, label string) string {
 func sortByStartsAt(i, j int, groups []models.APIAlertGroup, sortReverse bool) bool {
 	if sortReverse {
 		return groups[i].LatestStartsAt.After(groups[j].LatestStartsAt)
-	} else {
-		return groups[i].LatestStartsAt.Before(groups[j].LatestStartsAt)
 	}
+	return groups[i].LatestStartsAt.Before(groups[j].LatestStartsAt)
 }
 
 func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) []models.APIAlertGroup {
@@ -203,19 +202,11 @@ func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) 
 
 			if vi == "" {
 				// first label is missing
-				if sortReverse == "0" {
-					return false
-				} else {
-					return true
-				}
+				return sortReverse != "0"
 			}
 			if vj == "" {
 				// second label is missing
-				if sortReverse == "0" {
-					return true
-				} else {
-					return false
-				}
+				return sortReverse == "0"
 			}
 			if vi == vj {
 				// both labels are equal fallback to timestamp sort
@@ -224,9 +215,8 @@ func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) 
 			// finnally return groups sorted by label
 			if sortReverse == "1" {
 				return !sortorder.NaturalLess(vi, vj)
-			} else {
-				return sortorder.NaturalLess(vi, vj)
 			}
+			return sortorder.NaturalLess(vi, vj)
 		})
 	default:
 		// sort alert groups so they are always returned in the same order
@@ -234,9 +224,8 @@ func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) 
 		sort.Slice(groups, func(i, j int) bool {
 			if sortReverse == "1" {
 				return groups[i].ID < groups[j].ID
-			} else {
-				return groups[i].ID > groups[j].ID
 			}
+			return groups[i].ID > groups[j].ID
 		})
 	}
 

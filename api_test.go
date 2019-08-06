@@ -20,9 +20,7 @@ type groupTest struct {
 	labels     map[string]string
 	receiver   string
 	alerts     []models.Alert
-	hash       string
 	id         string
-	shared     models.APIAlertGroupSharedMaps
 	stateCount map[string]int
 }
 
@@ -56,8 +54,7 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 		},
-		id:   "099c5ca6d1c92f615b13056b935d0c8dee70f18c",
-		hash: "e20fa82867c7f7929c7302893c303295ec2576ef",
+		id: "099c5ca6d1c92f615b13056b935d0c8dee70f18c",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
@@ -93,8 +90,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		hash: "828aa22d70e6d953eee0ea9f2c80f8b3df9ee775",
-		id:   "0b1963665aac588dc4b18e17c7a4f70466c622ea",
+		id: "0b1963665aac588dc4b18e17c7a4f70466c622ea",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
@@ -161,16 +157,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		hash: "db53e38245a7afe18f923518146326b6fe53109a",
-		id:   "2d3f39413b41c873cb72e0b8065aa7b8631e983e",
-		shared: models.APIAlertGroupSharedMaps{
-			Annotations: models.Annotations{
-				models.Annotation{},
-			},
-			Labels: map[string]string{
-				"job": "node_ping",
-			},
-		},
+		id: "2d3f39413b41c873cb72e0b8065aa7b8631e983e",
 		stateCount: map[string]int{
 			models.AlertStateActive:      3,
 			models.AlertStateSuppressed:  0,
@@ -239,16 +226,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		hash: "bcb440cdee1d6f818599cf405c40f3382a4b1229",
-		id:   "3c09c4156e6784dcf6d5b2e1629253798f82909b",
-		shared: models.APIAlertGroupSharedMaps{
-			Annotations: models.Annotations{
-				models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-			},
-			Labels: map[string]string{
-				"job": "node_ping",
-			},
-		},
+		id: "3c09c4156e6784dcf6d5b2e1629253798f82909b",
 		stateCount: map[string]int{
 			models.AlertStateActive:      0,
 			models.AlertStateSuppressed:  3,
@@ -416,16 +394,7 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 		},
-		id:   "58c6a3467cebc53abe68ecbe8643ce478c5a1573",
-		hash: "68d0ac6e27b890e0f854611963b03b51b37242cf",
-		shared: models.APIAlertGroupSharedMaps{
-			Annotations: models.Annotations{
-				models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-			},
-			Labels: map[string]string{
-				"job": "node_ping",
-			},
-		},
+		id: "58c6a3467cebc53abe68ecbe8643ce478c5a1573",
 		stateCount: map[string]int{
 			models.AlertStateActive:      5,
 			models.AlertStateSuppressed:  3,
@@ -462,8 +431,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		hash: "4917eff113e7d22d7f1e5dba1e6dbb6d7f0969ad",
-		id:   "8ca8151d9e30baba2334507dca53e16b7be93c5e",
+		id: "8ca8151d9e30baba2334507dca53e16b7be93c5e",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
@@ -515,16 +483,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		hash: "eee0a9960be86ab7308f50a8ff438caed5cf8540",
-		id:   "98c1a53d0f71af9c734c9180697383f3b8aff80f",
-		shared: models.APIAlertGroupSharedMaps{
-			Annotations: models.Annotations{
-				models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-			},
-			Labels: map[string]string{
-				"job": "node_ping",
-			},
-		},
+		id: "98c1a53d0f71af9c734c9180697383f3b8aff80f",
 		stateCount: map[string]int{
 			models.AlertStateActive:      2,
 			models.AlertStateSuppressed:  0,
@@ -574,17 +533,7 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 		},
-		hash: "cc1b20a6b0ded9265ab96699638d844a4c992614",
-		id:   "bc4845fec77585cdfebe946234279d785ca93891",
-		shared: models.APIAlertGroupSharedMaps{
-			Annotations: models.Annotations{
-				models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-			},
-			Labels: map[string]string{
-				"cluster": "dev",
-				"job":     "node_exporter",
-			},
-		},
+		id: "bc4845fec77585cdfebe946234279d785ca93891",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  1,
@@ -621,8 +570,7 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 		},
-		hash: "a596259a6ff3d8a5fdabf1a91c6d2b7e680d05d7",
-		id:   "bf78806d2a80b1c8150c1391669813722428e858",
+		id: "bf78806d2a80b1c8150c1391669813722428e858",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
@@ -674,14 +622,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		hash: "1dd655dc8ac8ed51aca51a702e70b1a2f442f434",
-		id:   "ecefc3705b1ab4e4c3283c879540be348d2d9dce",
-		shared: models.APIAlertGroupSharedMaps{
-			Annotations: models.Annotations{},
-			Labels: map[string]string{
-				"job": "node_exporter",
-			},
-		},
+		id: "ecefc3705b1ab4e4c3283c879540be348d2d9dce",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  1,
@@ -1009,11 +950,9 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 }
 
 func testAlertGroup(version string, t *testing.T, testCase groupTest, group models.APIAlertGroup) {
-	//if testCase.hash != group.Hash {
-	// FIXME this is different per mock version due to startsAt / endsAt
-	// t.Errorf("[%s] Alert group.Hash mismatch, expected '%s' but got '%s' for group %v",
-	// version, testCase.hash, group.Hash, group.Labels)
-	//}
+	if group.Hash == "" {
+		t.Errorf("Empty hash for group %v", group.Labels)
+	}
 	if testCase.id != group.ID {
 		t.Errorf("[%s] Alert group.ID mismatch, expected '%s' but got '%s' for group %v",
 			version, testCase.id, group.ID, group.Labels)
