@@ -236,12 +236,13 @@ class AlertStore {
     this.filters.setFilters(initialFilters);
   }
 
-  fetch = action(() => {
+  fetch = action((sortOrder, sortLabel, sortReverse) => {
     this.status.setFetching();
 
     const alertsURI =
-      FormatBackendURI("alerts.json?") +
-      FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
+      FormatBackendURI(
+        `alerts.json?sortOrder=${sortOrder}&sortLabel=${sortLabel}&sortReverse=${sortReverse}&`
+      ) + FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
 
     return fetch(alertsURI, { credentials: "include" })
       .then(result => {
@@ -304,38 +305,19 @@ class AlertStore {
 
     let updates = {};
     // update data dicts if they changed
-    for (const key of ["colors", "counters", "silences", "upstreams"]) {
+    for (const key of [
+      "colors",
+      "counters",
+      "groups",
+      "silences",
+      "upstreams"
+    ]) {
       if (!equal(this.data[key], result[key])) {
         updates[key] = result[key];
       }
     }
     if (Object.keys(updates).length > 0) {
       this.data = Object.assign(this.data, updates);
-    }
-
-    // update groups, it can be huge so we have custom logic with cheaper
-    // comparision logic running per group using content hashes from the API
-    // response
-    const storedGroups = {};
-    for (const [index, group] of Object.entries(this.data.groups)) {
-      storedGroups[group.id] = index;
-    }
-    for (const group of result.groups) {
-      const index = storedGroups[group.id];
-      if (index !== undefined) {
-        const storedGroup = this.data.groups[index];
-        if (storedGroup && storedGroup.hash !== group.hash) {
-          this.data.groups[index] = group;
-        }
-      } else {
-        this.data.groups.push(group);
-      }
-    }
-    const knownGroups = result.groups.map(g => g.id);
-    for (const [index, group] of Object.entries(this.data.groups)) {
-      if (!knownGroups.includes(group.id)) {
-        delete this.data.groups[index];
-      }
     }
 
     // before storing new version check if we need to reload
