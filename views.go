@@ -312,11 +312,11 @@ func alerts(c *gin.Context) {
 					}
 				}
 			}
+			sort.Sort(agCopy.Alerts)
 			agCopy.LatestStartsAt = agCopy.FindLatestStartsAt()
 			agCopy.Hash = agCopy.ContentFingerprint()
 			apiAG := models.APIAlertGroup{AlertGroup: agCopy}
 			apiAG.DedupSharedMaps()
-			sort.Sort(apiAG.Alerts)
 			alerts[agCopy.ID] = apiAG
 			resp.TotalAlerts += len(agCopy.Alerts)
 		}

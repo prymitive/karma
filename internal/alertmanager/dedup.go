@@ -48,10 +48,6 @@ func DedupAlerts() []models.AlertGroup {
 					if alert.StartsAt.Before(a.StartsAt) {
 						a.StartsAt = alert.StartsAt
 					}
-					// set endsAt to the oldest value we have
-					if alert.EndsAt.After(a.EndsAt) {
-						a.EndsAt = alert.EndsAt
-					}
 					// update map
 					alerts[alertLFP] = a
 					// and append alert state to the slice

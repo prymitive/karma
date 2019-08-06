@@ -12,7 +12,6 @@ type AlertmanagerInstance struct {
 	// timestamp collected from this instance, those on the alert itself
 	// will be calculated min/max values
 	StartsAt time.Time `json:"startsAt"`
-	EndsAt   time.Time `json:"endsAt"`
 	// Source links to alert source for given alertmanager instance
 	Source string `json:"source"`
 	// all silences matching current alert in this upstream, we don't export this

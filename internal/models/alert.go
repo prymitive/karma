@@ -33,7 +33,6 @@ type Alert struct {
 	Annotations Annotations       `json:"annotations"`
 	Labels      map[string]string `json:"labels"`
 	StartsAt    time.Time         `json:"startsAt"`
-	EndsAt      time.Time         `json:"endsAt"`
 	State       string            `json:"state"`
 	// those are not exposed in JSON, Alertmanager specific value will be in kept
 	// in the Alertmanager slice

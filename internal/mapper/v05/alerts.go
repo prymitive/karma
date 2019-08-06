@@ -21,7 +21,6 @@ type alert struct {
 	Annotations  map[string]string `json:"annotations"`
 	Labels       map[string]string `json:"labels"`
 	StartsAt     time.Time         `json:"startsAt"`
-	EndsAt       time.Time         `json:"endsAt"`
 	GeneratorURL string            `json:"generatorURL"`
 	Inhibited    bool              `json:"inhibited"`
 	Silenced     string            `json:"silenced"`
@@ -117,7 +116,6 @@ func (m AlertMapper) Decode(source io.ReadCloser) ([]models.AlertGroup, error) {
 					Annotations:  models.AnnotationsFromMap(a.Annotations),
 					Labels:       a.Labels,
 					StartsAt:     a.StartsAt,
-					EndsAt:       a.EndsAt,
 					GeneratorURL: a.GeneratorURL,
 					State:        status,
 					InhibitedBy:  inhibitedBy,

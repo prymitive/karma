@@ -305,7 +305,6 @@ func (am *Alertmanager) pullAlerts(version string) error {
 					Cluster:     am.ClusterID(),
 					State:       alert.State,
 					StartsAt:    alert.StartsAt,
-					EndsAt:      alert.EndsAt,
 					Source:      alert.GeneratorURL,
 					Silences:    silences,
 					SilencedBy:  alert.SilencedBy,

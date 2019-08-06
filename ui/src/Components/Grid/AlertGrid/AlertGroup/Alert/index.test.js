@@ -123,7 +123,6 @@ describe("<Alert />", () => {
         cluster: "ha",
         state: "suppressed",
         startsAt: "2018-08-14T17:36:40.017867056Z",
-        endsAt: "0001-01-01T00:00:00Z",
         source: "localhost/am1",
         silencedBy: ["silence123456789"],
         inhibitedBy: []
@@ -133,7 +132,6 @@ describe("<Alert />", () => {
         cluster: "ha",
         state: "suppressed",
         startsAt: "2018-08-14T17:36:40.017867056Z",
-        endsAt: "0001-01-01T00:00:00Z",
         source: "localhost/am2",
         silencedBy: ["silence123456789"],
         inhibitedBy: []
