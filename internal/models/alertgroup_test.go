@@ -186,3 +186,53 @@ func TestFingerprint(t *testing.T) {
 		t.Errorf("Expected LabelsFingerprint and ContentFingerprint to return different values")
 	}
 }
+
+type findLatestStartsAtTest struct {
+	alerts           []models.Alert
+	expectedStartsAt time.Time
+}
+
+var findLatestStartsAtTests = []findLatestStartsAtTest{
+	findLatestStartsAtTest{
+		alerts: []models.Alert{
+			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 5, time.UTC)},
+			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
+			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC)},
+		},
+		expectedStartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC),
+	},
+	findLatestStartsAtTest{
+		alerts: []models.Alert{
+			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC)},
+			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 2, time.UTC)},
+			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
+		},
+		expectedStartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC),
+	},
+	findLatestStartsAtTest{
+		alerts: []models.Alert{
+			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
+			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
+			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
+		},
+		expectedStartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC),
+	},
+	findLatestStartsAtTest{
+		alerts: []models.Alert{
+			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 5, time.UTC)},
+			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC)},
+			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
+		},
+		expectedStartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC),
+	},
+}
+
+func TestFindLatestStartsAt(t *testing.T) {
+	for _, testCase := range findLatestStartsAtTests {
+		ag := models.AlertGroup{Alerts: testCase.alerts}
+		got := ag.FindLatestStartsAt()
+		if !got.Equal(testCase.expectedStartsAt) {
+			t.Errorf("FindLatestStartsAt returned %s when %s was expected", got, testCase.expectedStartsAt)
+		}
+	}
+}

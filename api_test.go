@@ -12,6 +12,7 @@ import (
 	"github.com/blang/semver"
 	"github.com/google/go-cmp/cmp"
 
+	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 )
@@ -1149,10 +1150,47 @@ var sortTests = []sortTest{
 		expectedLabel:  "cluster",
 		expectedValues: []string{"prod", "staging", "dev", "staging", "prod", "dev"},
 	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "",
+		sortLabel:      "",
+		sortReverse:    "0",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"dev", "prod", "staging", "dev", "staging", "prod"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "",
+		sortLabel:      "",
+		sortReverse:    "1",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"prod", "staging", "dev", "staging", "prod", "dev"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "label",
+		sortLabel:      "job",
+		sortReverse:    "0",
+		expectedLabel:  "job",
+		expectedValues: []string{"node_exporter", "node_exporter", "node_exporter", "node_ping", "node_ping", "node_ping"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "label",
+		sortLabel:      "job",
+		sortReverse:    "1",
+		expectedLabel:  "job",
+		expectedValues: []string{"node_ping", "node_ping", "node_ping", "node_exporter", "node_exporter", "node_exporter"},
+	},
 }
 
 func TestSortOrder(t *testing.T) {
 	mockConfig()
+	config.Config.Grid.Sorting.CustomValues.Labels = map[string]map[string]string{}
+	config.Config.Grid.Sorting.CustomValues.Labels["job"] = map[string]string{
+		"node_exporter": "1",
+		"node_ping":     "2",
+	}
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing API using mock files from Alertmanager %s", version)
 		mockAlerts(version)
