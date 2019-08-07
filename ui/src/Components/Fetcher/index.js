@@ -25,20 +25,16 @@ const Fetcher = observer(
         },
         markCompleted() {
           this.completedAt = moment();
-        },
-        forceUpdate() {
-          this.time = moment(0);
         }
       },
       {
         update: action,
-        markCompleted: action,
-        forceUpdate: action
+        markCompleted: action
       }
     );
 
     getSortSettings = () => {
-      const { alertStore, settingsStore } = this.props;
+      const { settingsStore } = this.props;
 
       let sortSettings = {
         useDefaults: false,
@@ -55,7 +51,7 @@ const Fetcher = observer(
         return sortSettings;
       }
 
-      sortSettings.sortOrder = alertStore.settings.values.sorting.grid.order;
+      sortSettings.sortOrder = settingsStore.gridConfig.config.sortOrder;
 
       // don't sort if sorting is disabled
       if (
@@ -71,7 +67,7 @@ const Fetcher = observer(
             : "0"
           : "";
 
-      if (settingsStore.gridConfig.config.sortLabel === null) {
+      if (settingsStore.gridConfig.config.sortLabel !== null) {
         sortSettings.sortLabel = settingsStore.gridConfig.config.sortLabel;
       }
 
