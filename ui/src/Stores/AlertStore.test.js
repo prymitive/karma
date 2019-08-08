@@ -373,16 +373,22 @@ describe("AlertStore.fetch", () => {
 
   it("updates groups with new hash after fetch", () => {
     const store = new AlertStore(["label=value"]);
-    store.data.groups = { foo: { hash: "foo" }, bar: { hash: "bar" } };
+    store.data.groups = [
+      { id: "foo", hash: "foo" },
+      { id: "bar", hash: "bar" }
+    ];
 
     const response = EmptyAPIResponse();
-    response.groups = { foo: { hash: "newFoo" }, bar: { hash: "newBar" } };
+    response.groups = [
+      { id: "foo", hash: "newFoo" },
+      { id: "bar", hash: "newBar" }
+    ];
 
     store.parseAPIResponse(response);
-    expect(Object.keys(store.data.groups)).toHaveLength(2);
-    expect(store.data.groups).toMatchObject({
-      foo: { hash: "newFoo" },
-      bar: { hash: "newBar" }
-    });
+    expect(store.data.groups).toHaveLength(2);
+    expect(store.data.groups).toMatchObject([
+      { id: "foo", hash: "newFoo" },
+      { id: "bar", hash: "newBar" }
+    ]);
   });
 });

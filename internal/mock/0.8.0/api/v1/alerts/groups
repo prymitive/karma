@@ -14,11 +14,12 @@
                             "labels": {
                                 "alertname": "Free_Disk_Space_Too_Low",
                                 "cluster": "staging",
+                                "disk": "sda",
                                 "instance": "server5",
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -61,11 +62,11 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": null,
                                 "silencedBy": [
-                                    "c7e16868-d935-4da1-9b4e-e8fe130009cb"
+                                    "055b8eac-b192-4ac0-8975-8733462c60bc"
                                 ],
                                 "state": "suppressed"
                             }
@@ -83,7 +84,7 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -113,6 +114,53 @@
                     "alerts": [
                         {
                             "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "dev",
+                                "instance": "server7",
+                                "ip": "127.0.0.7",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
+                            "status": {
+                                "inhibitedBy": null,
+                                "silencedBy": [
+                                    "19b6b78d-fdc2-4ad8-a95b-0bb7bdf5479a",
+                                    "7c142fd2-46b6-4460-92c0-3bfcc545285c"
+                                ],
+                                "state": "suppressed"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "dev",
+                                "instance": "server8",
+                                "ip": "127.0.0.8",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
+                            "status": {
+                                "inhibitedBy": null,
+                                "silencedBy": [
+                                    "7c142fd2-46b6-4460-92c0-3bfcc545285c"
+                                ],
+                                "state": "suppressed"
+                            }
+                        },
+                        {
+                            "annotations": {
                                 "summary": "Example summary",
                                 "url": "http://localhost/example.html"
                             },
@@ -122,10 +170,11 @@
                                 "alertname": "Host_Down",
                                 "cluster": "prod",
                                 "instance": "server1",
+                                "ip": "127.0.0.1",
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -142,10 +191,11 @@
                                 "alertname": "Host_Down",
                                 "cluster": "prod",
                                 "instance": "server2",
+                                "ip": "127.0.0.2",
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -162,10 +212,11 @@
                                 "alertname": "Host_Down",
                                 "cluster": "staging",
                                 "instance": "server3",
+                                "ip": "127.0.0.3",
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -182,10 +233,11 @@
                                 "alertname": "Host_Down",
                                 "cluster": "staging",
                                 "instance": "server4",
+                                "ip": "127.0.0.4",
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -202,10 +254,11 @@
                                 "alertname": "Host_Down",
                                 "cluster": "staging",
                                 "instance": "server5",
+                                "ip": "127.0.0.5",
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -222,59 +275,15 @@
                                 "alertname": "Host_Down",
                                 "cluster": "dev",
                                 "instance": "server6",
+                                "ip": "127.0.0.6",
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": null,
                                 "silencedBy": [
-                                    "60c003f5-7191-46ff-a01a-64a6e898541e"
-                                ],
-                                "state": "suppressed"
-                            }
-                        },
-                        {
-                            "annotations": {
-                                "summary": "Example summary"
-                            },
-                            "endsAt": "0001-01-01T00:00:00Z",
-                            "generatorURL": "localhost/prometheus",
-                            "labels": {
-                                "alertname": "Host_Down",
-                                "cluster": "dev",
-                                "instance": "server7",
-                                "job": "node_ping"
-                            },
-                            "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
-                            "status": {
-                                "inhibitedBy": null,
-                                "silencedBy": [
-                                    "60c003f5-7191-46ff-a01a-64a6e898541e",
-                                    "9c9d468d-28a2-4b61-8b59-2f9782e0edad"
-                                ],
-                                "state": "suppressed"
-                            }
-                        },
-                        {
-                            "annotations": {
-                                "summary": "Example summary"
-                            },
-                            "endsAt": "0001-01-01T00:00:00Z",
-                            "generatorURL": "localhost/prometheus",
-                            "labels": {
-                                "alertname": "Host_Down",
-                                "cluster": "dev",
-                                "instance": "server8",
-                                "job": "node_ping"
-                            },
-                            "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
-                            "status": {
-                                "inhibitedBy": null,
-                                "silencedBy": [
-                                    "60c003f5-7191-46ff-a01a-64a6e898541e"
+                                    "7c142fd2-46b6-4460-92c0-3bfcc545285c"
                                 ],
                                 "state": "suppressed"
                             }
@@ -314,7 +323,7 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -352,11 +361,12 @@
                             "labels": {
                                 "alertname": "Free_Disk_Space_Too_Low",
                                 "cluster": "staging",
+                                "disk": "sda",
                                 "instance": "server5",
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -402,11 +412,11 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": null,
                                 "silencedBy": [
-                                    "c7e16868-d935-4da1-9b4e-e8fe130009cb"
+                                    "055b8eac-b192-4ac0-8975-8733462c60bc"
                                 ],
                                 "state": "suppressed"
                             }
@@ -424,7 +434,7 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -434,9 +444,9 @@
                     ],
                     "routeOpts": {
                         "groupBy": [
+                            "cluster",
                             "service",
-                            "alertname",
-                            "cluster"
+                            "alertname"
                         ],
                         "groupInterval": 35000000000,
                         "groupWait": 15000000000,
@@ -464,37 +474,16 @@
                             "labels": {
                                 "alertname": "Host_Down",
                                 "cluster": "dev",
-                                "instance": "server8",
-                                "job": "node_ping"
-                            },
-                            "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
-                            "status": {
-                                "inhibitedBy": null,
-                                "silencedBy": [
-                                    "60c003f5-7191-46ff-a01a-64a6e898541e"
-                                ],
-                                "state": "suppressed"
-                            }
-                        },
-                        {
-                            "annotations": {
-                                "summary": "Example summary"
-                            },
-                            "endsAt": "0001-01-01T00:00:00Z",
-                            "generatorURL": "localhost/prometheus",
-                            "labels": {
-                                "alertname": "Host_Down",
-                                "cluster": "dev",
                                 "instance": "server6",
+                                "ip": "127.0.0.6",
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": null,
                                 "silencedBy": [
-                                    "60c003f5-7191-46ff-a01a-64a6e898541e"
+                                    "7c142fd2-46b6-4460-92c0-3bfcc545285c"
                                 ],
                                 "state": "suppressed"
                             }
@@ -509,15 +498,39 @@
                                 "alertname": "Host_Down",
                                 "cluster": "dev",
                                 "instance": "server7",
+                                "ip": "127.0.0.7",
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": null,
                                 "silencedBy": [
-                                    "60c003f5-7191-46ff-a01a-64a6e898541e",
-                                    "9c9d468d-28a2-4b61-8b59-2f9782e0edad"
+                                    "19b6b78d-fdc2-4ad8-a95b-0bb7bdf5479a",
+                                    "7c142fd2-46b6-4460-92c0-3bfcc545285c"
+                                ],
+                                "state": "suppressed"
+                            }
+                        },
+                        {
+                            "annotations": {
+                                "summary": "Example summary"
+                            },
+                            "endsAt": "0001-01-01T00:00:00Z",
+                            "generatorURL": "localhost/prometheus",
+                            "labels": {
+                                "alertname": "Host_Down",
+                                "cluster": "dev",
+                                "instance": "server8",
+                                "ip": "127.0.0.8",
+                                "job": "node_ping"
+                            },
+                            "receivers": null,
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
+                            "status": {
+                                "inhibitedBy": null,
+                                "silencedBy": [
+                                    "7c142fd2-46b6-4460-92c0-3bfcc545285c"
                                 ],
                                 "state": "suppressed"
                             }
@@ -525,9 +538,9 @@
                     ],
                     "routeOpts": {
                         "groupBy": [
-                            "service",
                             "alertname",
-                            "cluster"
+                            "cluster",
+                            "service"
                         ],
                         "groupInterval": 35000000000,
                         "groupWait": 15000000000,
@@ -557,10 +570,11 @@
                                 "alertname": "Host_Down",
                                 "cluster": "prod",
                                 "instance": "server1",
+                                "ip": "127.0.0.1",
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -577,10 +591,11 @@
                                 "alertname": "Host_Down",
                                 "cluster": "prod",
                                 "instance": "server2",
+                                "ip": "127.0.0.2",
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -590,9 +605,9 @@
                     ],
                     "routeOpts": {
                         "groupBy": [
+                            "service",
                             "alertname",
-                            "cluster",
-                            "service"
+                            "cluster"
                         ],
                         "groupInterval": 35000000000,
                         "groupWait": 15000000000,
@@ -621,10 +636,11 @@
                                 "alertname": "Host_Down",
                                 "cluster": "staging",
                                 "instance": "server3",
+                                "ip": "127.0.0.3",
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -641,10 +657,11 @@
                                 "alertname": "Host_Down",
                                 "cluster": "staging",
                                 "instance": "server4",
+                                "ip": "127.0.0.4",
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -661,10 +678,11 @@
                                 "alertname": "Host_Down",
                                 "cluster": "staging",
                                 "instance": "server5",
+                                "ip": "127.0.0.5",
                                 "job": "node_ping"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],
@@ -709,7 +727,7 @@
                                 "job": "node_exporter"
                             },
                             "receivers": null,
-                            "startsAt": "2019-06-22T15:14:03.62073452Z",
+                            "startsAt": "2019-08-05T22:50:25.1199363Z",
                             "status": {
                                 "inhibitedBy": [],
                                 "silencedBy": [],

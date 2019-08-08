@@ -138,7 +138,7 @@ class AlertStore {
     {
       colors: {},
       counters: [],
-      groups: {},
+      groups: [],
       silences: {},
       upstreams: { instances: [], clusters: {} },
       getAlertmanagerByName(name) {
@@ -236,12 +236,13 @@ class AlertStore {
     this.filters.setFilters(initialFilters);
   }
 
-  fetch = action(() => {
+  fetch = action((sortOrder, sortLabel, sortReverse) => {
     this.status.setFetching();
 
     const alertsURI =
-      FormatBackendURI("alerts.json?") +
-      FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
+      FormatBackendURI(
+        `alerts.json?sortOrder=${sortOrder}&sortLabel=${sortLabel}&sortReverse=${sortReverse}&`
+      ) + FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
 
     return fetch(alertsURI, { credentials: "include" })
       .then(result => {
@@ -304,34 +305,19 @@ class AlertStore {
 
     let updates = {};
     // update data dicts if they changed
-    for (const key of ["colors", "counters", "silences", "upstreams"]) {
+    for (const key of [
+      "colors",
+      "counters",
+      "groups",
+      "silences",
+      "upstreams"
+    ]) {
       if (!equal(this.data[key], result[key])) {
         updates[key] = result[key];
       }
     }
     if (Object.keys(updates).length > 0) {
       this.data = Object.assign(this.data, updates);
-    }
-
-    // update groups, it can be huge so we have custom logic with cheaper
-    // comparision logic running per group using content hashes from the API
-    // response
-    for (const key of Object.keys(result.groups)) {
-      // set/update each group if:
-      // * it's not yet stored in AlertStore
-      // * it's stored but hash is different than in the API response
-      if (
-        !(key in this.data.groups) ||
-        (key in this.data.groups &&
-          result.groups[key].hash !== this.data.groups[key].hash)
-      ) {
-        this.data.groups[key] = result.groups[key];
-      }
-    }
-    for (const key of Object.keys(this.data.groups).filter(
-      k => !(k in result.groups)
-    )) {
-      delete this.data.groups[key];
     }
 
     // before storing new version check if we need to reload

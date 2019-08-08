@@ -9,7 +9,6 @@ const MockAlert = (annotations, labels, state) => ({
   annotations: annotations,
   labels: labels,
   startsAt: "2018-08-14T17:36:40.017867056Z",
-  endsAt: "0001-01-01T00:00:00Z",
   state: state,
   alertmanager: [
     {
@@ -17,7 +16,6 @@ const MockAlert = (annotations, labels, state) => ({
       cluster: "default",
       state: "active",
       startsAt: "2018-08-14T17:36:40.017867056Z",
-      endsAt: "0001-01-01T00:00:00Z",
       source: "localhost/prometheus",
       silencedBy: [],
       inhibitedBy: []

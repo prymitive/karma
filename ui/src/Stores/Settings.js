@@ -77,6 +77,8 @@ class GridConfig {
     "alertGridConfig",
     {
       sortOrder: this.options.default.value,
+      sortLabel: null,
+      reverseSort: null,
       groupWidth: 420
     },
     { delay: 100 }

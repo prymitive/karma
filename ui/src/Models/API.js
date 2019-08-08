@@ -14,7 +14,6 @@ const APIAlertAlertmanagerState = PropTypes.exact({
   cluster: PropTypes.string.isRequired,
   state: AlertState.isRequired,
   startsAt: PropTypes.string.isRequired,
-  endsAt: PropTypes.string.isRequired,
   source: PropTypes.string.isRequired,
   silencedBy: PropTypes.arrayOf(PropTypes.string).isRequired,
   inhibitedBy: PropTypes.arrayOf(PropTypes.string).isRequired
@@ -24,7 +23,6 @@ const APIAlert = PropTypes.exact({
   annotations: PropTypes.arrayOf(Annotation).isRequired,
   labels: PropTypes.object.isRequired,
   startsAt: PropTypes.string.isRequired,
-  endsAt: PropTypes.string.isRequired,
   state: AlertState.isRequired,
   alertmanager: PropTypes.arrayOf(APIAlertAlertmanagerState).isRequired,
   receiver: PropTypes.string.isRequired

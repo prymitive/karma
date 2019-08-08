@@ -2,12 +2,17 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
 	"testing"
+	"time"
 
 	"github.com/blang/semver"
+	"github.com/google/go-cmp/cmp"
+
+	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 )
@@ -16,20 +21,19 @@ type groupTest struct {
 	labels     map[string]string
 	receiver   string
 	alerts     []models.Alert
-	hash       string
 	id         string
-	shared     models.APIAlertGroupSharedMaps
 	stateCount map[string]int
 }
 
 var groupTests = []groupTest{
-	groupTest{
+	{
 		receiver: "by-name",
 		labels: map[string]string{
 			"alertname": "Memory_Usage_Too_High",
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 10, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "alert", Value: "Memory usage exceeding threshold"},
 					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
@@ -51,15 +55,14 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 		},
-		id:   "099c5ca6d1c92f615b13056b935d0c8dee70f18c",
-		hash: "e20fa82867c7f7929c7302893c303295ec2576ef",
+		id: "099c5ca6d1c92f615b13056b935d0c8dee70f18c",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-cluster-service",
 		labels: map[string]string{
 			"alertname": "Memory_Usage_Too_High",
@@ -67,6 +70,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 10, 0, 0, 0, 1, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "alert", Value: "Memory usage exceeding threshold"},
 					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
@@ -87,15 +91,14 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		hash: "828aa22d70e6d953eee0ea9f2c80f8b3df9ee775",
-		id:   "0b1963665aac588dc4b18e17c7a4f70466c622ea",
+		id: "0b1963665aac588dc4b18e17c7a4f70466c622ea",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-cluster-service",
 		labels: map[string]string{
 			"alertname": "Host_Down",
@@ -103,6 +106,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -114,6 +118,7 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server3",
+					"ip":       "127.0.0.3",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -130,6 +135,7 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server4",
+					"ip":       "127.0.0.4",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -146,28 +152,20 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server5",
+					"ip":       "127.0.0.5",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
 		},
-		hash: "db53e38245a7afe18f923518146326b6fe53109a",
-		id:   "2d3f39413b41c873cb72e0b8065aa7b8631e983e",
-		shared: models.APIAlertGroupSharedMaps{
-			Annotations: models.Annotations{
-				models.Annotation{},
-			},
-			Labels: map[string]string{
-				"job": "node_ping",
-			},
-		},
+		id: "2d3f39413b41c873cb72e0b8065aa7b8631e983e",
 		stateCount: map[string]int{
 			models.AlertStateActive:      3,
 			models.AlertStateSuppressed:  0,
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-cluster-service",
 		labels: map[string]string{
 			"alertname": "Host_Down",
@@ -175,6 +173,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 1, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -186,11 +185,13 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server6",
+					"ip":       "127.0.0.6",
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 0, 59, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -202,11 +203,13 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server7",
+					"ip":       "127.0.0.7",
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 12, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -218,40 +221,34 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server8",
+					"ip":       "127.0.0.8",
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
 		},
-		hash: "bcb440cdee1d6f818599cf405c40f3382a4b1229",
-		id:   "3c09c4156e6784dcf6d5b2e1629253798f82909b",
-		shared: models.APIAlertGroupSharedMaps{
-			Annotations: models.Annotations{
-				models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-			},
-			Labels: map[string]string{
-				"job": "node_ping",
-			},
-		},
+		id: "3c09c4156e6784dcf6d5b2e1629253798f82909b",
 		stateCount: map[string]int{
 			models.AlertStateActive:      0,
 			models.AlertStateSuppressed:  3,
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-name",
 		labels: map[string]string{
 			"alertname": "Host_Down",
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 1, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
 				Labels: map[string]string{
 					"cluster":  "prod",
 					"instance": "server1",
+					"ip":       "127.0.0.1",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -265,10 +262,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 1, 0, 1, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "prod",
 					"instance": "server2",
+					"ip":       "127.0.0.2",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -282,10 +281,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 1, 0, 1, 0, 1, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "staging",
 					"instance": "server3",
+					"ip":       "127.0.0.3",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -299,10 +300,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 1, 0, 0, 59, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "staging",
 					"instance": "server4",
+					"ip":       "127.0.0.4",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -316,10 +319,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "staging",
 					"instance": "server5",
+					"ip":       "127.0.0.5",
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -333,10 +338,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 1, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "dev",
 					"instance": "server6",
+					"ip":       "127.0.0.6",
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -350,10 +357,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 0, 20, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "dev",
 					"instance": "server7",
+					"ip":       "127.0.0.7",
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -367,10 +376,12 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 0, 21, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
 					"cluster":  "dev",
 					"instance": "server8",
+					"ip":       "127.0.0.8",
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -384,23 +395,14 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 		},
-		id:   "58c6a3467cebc53abe68ecbe8643ce478c5a1573",
-		hash: "68d0ac6e27b890e0f854611963b03b51b37242cf",
-		shared: models.APIAlertGroupSharedMaps{
-			Annotations: models.Annotations{
-				models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-			},
-			Labels: map[string]string{
-				"job": "node_ping",
-			},
-		},
+		id: "58c6a3467cebc53abe68ecbe8643ce478c5a1573",
 		stateCount: map[string]int{
 			models.AlertStateActive:      5,
 			models.AlertStateSuppressed:  3,
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-cluster-service",
 		labels: map[string]string{
 			"alertname": "Free_Disk_Space_Too_Low",
@@ -408,6 +410,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 10, 0, 19, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "alert", Value: "Less than 10% disk space is free"},
 					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
@@ -423,20 +426,20 @@ var groupTests = []groupTest{
 				Labels: map[string]string{
 					"instance": "server5",
 					"job":      "node_exporter",
+					"disk":     "sda",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
 		},
-		hash: "4917eff113e7d22d7f1e5dba1e6dbb6d7f0969ad",
-		id:   "8ca8151d9e30baba2334507dca53e16b7be93c5e",
+		id: "8ca8151d9e30baba2334507dca53e16b7be93c5e",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-cluster-service",
 		labels: map[string]string{
 			"alertname": "Host_Down",
@@ -444,6 +447,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 12, 0, 19, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
@@ -457,6 +461,7 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server1",
+					"ip":       "127.0.0.1",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -473,34 +478,27 @@ var groupTests = []groupTest{
 				},
 				Labels: map[string]string{
 					"instance": "server2",
+					"ip":       "127.0.0.2",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
 		},
-		hash: "eee0a9960be86ab7308f50a8ff438caed5cf8540",
-		id:   "98c1a53d0f71af9c734c9180697383f3b8aff80f",
-		shared: models.APIAlertGroupSharedMaps{
-			Annotations: models.Annotations{
-				models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-			},
-			Labels: map[string]string{
-				"job": "node_ping",
-			},
-		},
+		id: "98c1a53d0f71af9c734c9180697383f3b8aff80f",
 		stateCount: map[string]int{
 			models.AlertStateActive:      2,
 			models.AlertStateSuppressed:  0,
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-name",
 		labels: map[string]string{
 			"alertname": "HTTP_Probe_Failed",
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 14, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "help", Value: "Example help annotation"},
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
@@ -519,6 +517,7 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 14, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -535,30 +534,21 @@ var groupTests = []groupTest{
 				Receiver: "by-name",
 			},
 		},
-		hash: "cc1b20a6b0ded9265ab96699638d844a4c992614",
-		id:   "bc4845fec77585cdfebe946234279d785ca93891",
-		shared: models.APIAlertGroupSharedMaps{
-			Annotations: models.Annotations{
-				models.Annotation{Visible: true, Name: "summary", Value: "Example summary"},
-			},
-			Labels: map[string]string{
-				"cluster": "dev",
-				"job":     "node_exporter",
-			},
-		},
+		id: "bc4845fec77585cdfebe946234279d785ca93891",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  1,
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-name",
 		labels: map[string]string{
 			"alertname": "Free_Disk_Space_Too_Low",
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 15, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "alert", Value: "Less than 10% disk space is free"},
 					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
@@ -575,20 +565,20 @@ var groupTests = []groupTest{
 					"cluster":  "staging",
 					"instance": "server5",
 					"job":      "node_exporter",
+					"disk":     "sda",
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-name",
 			},
 		},
-		hash: "a596259a6ff3d8a5fdabf1a91c6d2b7e680d05d7",
-		id:   "bf78806d2a80b1c8150c1391669813722428e858",
+		id: "bf78806d2a80b1c8150c1391669813722428e858",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  0,
 			models.AlertStateUnprocessed: 0,
 		},
 	},
-	groupTest{
+	{
 		receiver: "by-cluster-service",
 		labels: map[string]string{
 			"alertname": "HTTP_Probe_Failed",
@@ -596,6 +586,7 @@ var groupTests = []groupTest{
 		},
 		alerts: []models.Alert{
 			models.Alert{
+				StartsAt: time.Date(2019, time.January, 10, 20, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "help", Value: "Example help annotation"},
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
@@ -615,6 +606,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 			models.Alert{
+				StartsAt:    time.Date(2019, time.January, 10, 19, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
 					models.AlertmanagerInstance{
@@ -631,14 +623,7 @@ var groupTests = []groupTest{
 				Receiver: "by-cluster-service",
 			},
 		},
-		hash: "1dd655dc8ac8ed51aca51a702e70b1a2f442f434",
-		id:   "ecefc3705b1ab4e4c3283c879540be348d2d9dce",
-		shared: models.APIAlertGroupSharedMaps{
-			Annotations: models.Annotations{},
-			Labels: map[string]string{
-				"job": "node_exporter",
-			},
-		},
+		id: "ecefc3705b1ab4e4c3283c879540be348d2d9dce",
 		stateCount: map[string]int{
 			models.AlertStateActive:      1,
 			models.AlertStateSuppressed:  1,
@@ -728,23 +713,34 @@ var countsMap = models.LabelNameStatsList{
 		},
 	},
 	{
+		Name: "disk",
+		Hits: 2,
+		Values: models.LabelValueStatsList{
+			models.LabelValueStats{
+				Value:   "sda",
+				Hits:    2,
+				Percent: 100,
+			},
+		},
+	},
+	{
 		Name: "instance",
 		Hits: 24,
 		Values: models.LabelValueStatsList{
 			models.LabelValueStats{
 				Value:   "server1",
 				Hits:    2,
-				Percent: 8,
+				Percent: 9,
 			},
 			models.LabelValueStats{
 				Value:   "server2",
 				Hits:    4,
-				Percent: 18,
+				Percent: 17,
 			},
 			models.LabelValueStats{
 				Value:   "server3",
 				Hits:    2,
-				Percent: 8,
+				Percent: 9,
 			},
 			models.LabelValueStats{
 				Value:   "server4",
@@ -754,7 +750,7 @@ var countsMap = models.LabelNameStatsList{
 			models.LabelValueStats{
 				Value:   "server5",
 				Hits:    4,
-				Percent: 18,
+				Percent: 17,
 			},
 			models.LabelValueStats{
 				Value:   "server6",
@@ -780,6 +776,52 @@ var countsMap = models.LabelNameStatsList{
 				Value:   "web2",
 				Hits:    2,
 				Percent: 8,
+			},
+		},
+	},
+	{
+		Name: "ip",
+		Hits: 16,
+		Values: models.LabelValueStatsList{
+			models.LabelValueStats{
+				Value:   "127.0.0.1",
+				Hits:    2,
+				Percent: 13,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.2",
+				Hits:    2,
+				Percent: 13,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.3",
+				Hits:    2,
+				Percent: 13,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.4",
+				Hits:    2,
+				Percent: 13,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.5",
+				Hits:    2,
+				Percent: 12,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.6",
+				Hits:    2,
+				Percent: 12,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.7",
+				Hits:    2,
+				Percent: 12,
+			},
+			models.LabelValueStats{
+				Value:   "127.0.0.8",
+				Hits:    2,
+				Percent: 12,
 			},
 		},
 	},
@@ -909,11 +951,9 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 }
 
 func testAlertGroup(version string, t *testing.T, testCase groupTest, group models.APIAlertGroup) {
-	//if testCase.hash != group.Hash {
-	// FIXME this is different per mock version due to startsAt / endsAt
-	// t.Errorf("[%s] Alert group.Hash mismatch, expected '%s' but got '%s' for group %v",
-	// version, testCase.hash, group.Hash, group.Labels)
-	//}
+	if group.Hash == "" {
+		t.Errorf("Empty hash for group %v", group.Labels)
+	}
 	if testCase.id != group.ID {
 		t.Errorf("[%s] Alert group.ID mismatch, expected '%s' but got '%s' for group %v",
 			version, testCase.id, group.ID, group.Labels)
@@ -1040,6 +1080,165 @@ func TestVerifyAllGroups(t *testing.T) {
 		}
 		if !reflect.DeepEqual(ur.Filters, filtersExpected) {
 			t.Errorf("[%s] Filters mismatch, expected %v but got %v", version, filtersExpected, ur.Filters)
+		}
+	}
+}
+
+type sortTest struct {
+	filter         string
+	sortOrder      string
+	sortLabel      string
+	sortReverse    string
+	expectedLabel  string
+	expectedValues []string
+}
+
+var sortTests = []sortTest{
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "label",
+		sortLabel:      "cluster",
+		sortReverse:    "0",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"dev", "dev", "prod", "prod", "staging", "staging"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "label",
+		sortLabel:      "cluster",
+		sortReverse:    "1",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"staging", "staging", "prod", "prod", "dev", "dev"},
+	},
+	{
+		filter:         "q=cluster=dev",
+		sortOrder:      "label",
+		sortLabel:      "cluster",
+		sortReverse:    "0",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"dev", "dev", "dev", "dev"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "label",
+		sortLabel:      "disk",
+		sortReverse:    "0",
+		expectedLabel:  "disk",
+		expectedValues: []string{"sda", "", "", "", "", "", "", "", "", "", "", ""},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "label",
+		sortLabel:      "disk",
+		sortReverse:    "1",
+		expectedLabel:  "disk",
+		expectedValues: []string{"", "", "", "", "", "", "", "", "", "", "", "sda"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "disabled",
+		sortLabel:      "",
+		sortReverse:    "0",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"dev", "prod", "staging", "dev", "staging", "prod"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "disabled",
+		sortLabel:      "",
+		sortReverse:    "1",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"prod", "staging", "dev", "staging", "prod", "dev"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "",
+		sortLabel:      "",
+		sortReverse:    "0",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"dev", "dev", "prod", "prod", "staging", "staging"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "",
+		sortLabel:      "",
+		sortReverse:    "1",
+		expectedLabel:  "cluster",
+		expectedValues: []string{"staging", "staging", "prod", "prod", "dev", "dev"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "label",
+		sortLabel:      "job",
+		sortReverse:    "0",
+		expectedLabel:  "job",
+		expectedValues: []string{"node_exporter", "node_exporter", "node_exporter", "node_ping", "node_ping", "node_ping"},
+	},
+	{
+		filter:         "q=@receiver=by-cluster-service",
+		sortOrder:      "label",
+		sortLabel:      "job",
+		sortReverse:    "1",
+		expectedLabel:  "job",
+		expectedValues: []string{"node_ping", "node_ping", "node_ping", "node_exporter", "node_exporter", "node_exporter"},
+	},
+}
+
+func TestSortOrder(t *testing.T) {
+	mockConfig()
+	config.Config.Grid.Sorting.Order = "label"
+	config.Config.Grid.Sorting.Label = "cluster"
+	config.Config.Grid.Sorting.CustomValues.Labels = map[string]map[string]string{}
+	config.Config.Grid.Sorting.CustomValues.Labels["job"] = map[string]string{
+		"node_exporter": "1",
+		"node_ping":     "2",
+	}
+	for _, version := range mock.ListAllMocks() {
+		t.Logf("Testing API using mock files from Alertmanager %s", version)
+		mockAlerts(version)
+		r := ginTestEngine()
+
+		for _, testCase := range sortTests {
+			uri := fmt.Sprintf(
+				"/alerts.json?sortOrder=%s&sortLabel=%s&sortReverse=%s&%s",
+				testCase.sortOrder,
+				testCase.sortLabel,
+				testCase.sortReverse,
+				testCase.filter,
+			)
+			t.Logf("Request URI: %s", uri)
+			req := httptest.NewRequest("GET", uri, nil)
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != http.StatusOK {
+				t.Errorf("GET /alerts.json returned status %d", resp.Code)
+			}
+
+			ur := models.AlertsResponse{}
+			err := json.Unmarshal(resp.Body.Bytes(), &ur)
+			if err != nil {
+				t.Errorf("Failed to unmarshal response: %s", err)
+			}
+
+			values := []string{}
+			for _, ag := range ur.AlertGroups {
+				v := ag.Labels[testCase.expectedLabel]
+				if v == "" {
+					v = ag.Shared.Labels[testCase.expectedLabel]
+				}
+				if v != "" {
+					values = append(values, v)
+				} else {
+					for _, alert := range ag.Alerts {
+						v = alert.Labels[testCase.expectedLabel]
+						values = append(values, v)
+					}
+				}
+			}
+
+			if diff := cmp.Diff(testCase.expectedValues, values); diff != "" {
+				t.Errorf("Incorrectly sorted values (-want +got):\n%s", diff)
+			}
 		}
 	}
 }

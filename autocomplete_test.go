@@ -27,12 +27,12 @@ var autocompleteTests = []autocompleteTest{
 			{
 				PathSuffix: "",
 				StatusCode: 200,
-				Results:    []string{"alertname", "cluster", "instance", "job"},
+				Results:    []string{"alertname", "cluster", "disk", "instance", "ip", "job"},
 			},
 			{
 				PathSuffix: "?term=",
 				StatusCode: 200,
-				Results:    []string{"alertname", "cluster", "instance", "job"},
+				Results:    []string{"alertname", "cluster", "disk", "instance", "ip", "job"},
 			},
 			{
 				PathSuffix: "?term=a",

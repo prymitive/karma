@@ -5,7 +5,11 @@ import (
 	"math"
 	"sort"
 
+	"github.com/gin-gonic/gin"
+	"vbom.ml/util/sortorder"
+
 	"github.com/prymitive/karma/internal/alertmanager"
+	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
@@ -59,7 +63,7 @@ func countersToLabelStats(counters map[string]map[string]int) models.LabelNameSt
 		// now that we have total hits we can calculate %
 		var totalPercent int
 		for i, value := range nameStats.Values {
-			nameStats.Values[i].Percent = int(math.Round((float64(value.Hits) / float64(nameStats.Hits)) * 100.0))
+			nameStats.Values[i].Percent = int(math.Floor((float64(value.Hits) / float64(nameStats.Hits)) * 100.0))
 			totalPercent += nameStats.Values[i].Percent
 		}
 		sort.Sort(nameStats.Values)
@@ -124,4 +128,106 @@ func getUpstreams() models.AlertmanagerAPISummary {
 	summary.Clusters = clusters
 
 	return summary
+}
+
+func resolveLabelValue(name, value string) string {
+	valueReplacements, found := config.Config.Grid.Sorting.CustomValues.Labels[name]
+	if found {
+		if replacement, ok := valueReplacements[value]; ok {
+			return replacement
+		}
+	}
+	return value
+}
+
+func getGroupLabel(group *models.APIAlertGroup, label string) string {
+	if v, found := group.Labels[label]; found {
+		return resolveLabelValue(label, v)
+	}
+	if v, found := group.Shared.Labels[label]; found {
+		return resolveLabelValue(label, v)
+	}
+	if v, found := group.Alerts[0].Labels[label]; found {
+		return resolveLabelValue(label, v)
+	}
+	return ""
+}
+
+func sortByStartsAt(i, j int, groups []models.APIAlertGroup, sortReverse bool) bool {
+	if sortReverse {
+		return groups[i].LatestStartsAt.After(groups[j].LatestStartsAt)
+	}
+	return groups[i].LatestStartsAt.Before(groups[j].LatestStartsAt)
+}
+
+func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) []models.APIAlertGroup {
+	groups := make([]models.APIAlertGroup, 0, len(groupsMap))
+
+	sortOrder, found := c.GetQuery("sortOrder")
+	if !found || sortOrder == "" {
+		sortOrder = config.Config.Grid.Sorting.Order
+	}
+
+	sortReverse, found := c.GetQuery("sortReverse")
+	if !found || (sortReverse != "0" && sortReverse != "1") {
+		if config.Config.Grid.Sorting.Reverse {
+			sortReverse = "1"
+		} else {
+			sortReverse = "0"
+		}
+	}
+
+	sortLabel, found := c.GetQuery("sortLabel")
+	if !found || sortLabel == "" {
+		sortLabel = config.Config.Grid.Sorting.Label
+	}
+
+	for _, g := range groupsMap {
+		groups = append(groups, g)
+	}
+
+	switch sortOrder {
+	case "startsAt":
+		sort.Slice(groups, func(i, j int) bool {
+			return sortByStartsAt(i, j, groups, sortReverse == "1")
+		})
+	case "label":
+		sort.Slice(groups, func(i, j int) bool {
+			vi := getGroupLabel(&groups[i], sortLabel)
+			vj := getGroupLabel(&groups[j], sortLabel)
+			if vi == "" && vj == "" {
+				// both groups lack this label, fallback to timestamp sort
+				return sortByStartsAt(i, j, groups, true)
+			}
+
+			if vi == "" {
+				// first label is missing
+				return sortReverse != "0"
+			}
+			if vj == "" {
+				// second label is missing
+				return sortReverse == "0"
+			}
+			if vi == vj {
+				// both labels are equal fallback to timestamp sort
+				return sortByStartsAt(i, j, groups, true)
+			}
+			// finnally return groups sorted by label
+			if sortReverse == "1" {
+				return !sortorder.NaturalLess(vi, vj)
+			}
+			return sortorder.NaturalLess(vi, vj)
+		})
+	default:
+		// sort alert groups so they are always returned in the same order
+		// use group ID which is unique and immutable
+		sort.Slice(groups, func(i, j int) bool {
+			if sortReverse == "1" {
+				return groups[i].ID < groups[j].ID
+			}
+			return groups[i].ID > groups[j].ID
+		})
+	}
+
+	return groups
 }

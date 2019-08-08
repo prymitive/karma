@@ -48,10 +48,6 @@ func DedupAlerts() []models.AlertGroup {
 					if alert.StartsAt.Before(a.StartsAt) {
 						a.StartsAt = alert.StartsAt
 					}
-					// set endsAt to the oldest value we have
-					if alert.EndsAt.After(a.EndsAt) {
-						a.EndsAt = alert.EndsAt
-					}
 					// update map
 					alerts[alertLFP] = a
 					// and append alert state to the slice
@@ -89,16 +85,9 @@ func DedupAlerts() []models.AlertGroup {
 			})
 			ag.Alerts = append(ag.Alerts, alert)
 		}
-		sort.Sort(ag.Alerts)
 		ag.Hash = ag.ContentFingerprint()
 		dedupedGroups = append(dedupedGroups, ag)
 	}
-
-	// sort alert groups so they are always returned in the same order
-	// use group ID which is unique and immutable
-	sort.Slice(dedupedGroups, func(i, j int) bool {
-		return dedupedGroups[i].ID < dedupedGroups[j].ID
-	})
 
 	return dedupedGroups
 }

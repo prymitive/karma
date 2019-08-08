@@ -95,7 +95,6 @@ func TestDedupSharedMaps(t *testing.T) {
         "job": "node_exporter"
       },
       "startsAt": "0001-01-01T00:00:00Z",
-      "endsAt": "0001-01-01T00:00:00Z",
       "state": "suppressed",
       "alertmanager": [
         {
@@ -103,7 +102,6 @@ func TestDedupSharedMaps(t *testing.T) {
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "endsAt": "0001-01-01T00:00:00Z",
           "source": "",
           "silencedBy": [
             "fakeSilence1",
@@ -116,7 +114,6 @@ func TestDedupSharedMaps(t *testing.T) {
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "endsAt": "0001-01-01T00:00:00Z",
           "source": "",
           "silencedBy": [
             "fakeSilence1",
@@ -134,7 +131,6 @@ func TestDedupSharedMaps(t *testing.T) {
         "job": "node_exporter"
       },
       "startsAt": "0001-01-01T00:00:00Z",
-      "endsAt": "0001-01-01T00:00:00Z",
       "state": "suppressed",
       "alertmanager": [
         {
@@ -142,7 +138,6 @@ func TestDedupSharedMaps(t *testing.T) {
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "endsAt": "0001-01-01T00:00:00Z",
           "source": "",
           "silencedBy": [
             "fakeSilence1",
@@ -155,7 +150,6 @@ func TestDedupSharedMaps(t *testing.T) {
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "endsAt": "0001-01-01T00:00:00Z",
           "source": "",
           "silencedBy": [
             "fakeSilence1",
@@ -173,7 +167,6 @@ func TestDedupSharedMaps(t *testing.T) {
         "job": "blackbox"
       },
       "startsAt": "0001-01-01T00:00:00Z",
-      "endsAt": "0001-01-01T00:00:00Z",
       "state": "suppressed",
       "alertmanager": [
         {
@@ -181,7 +174,6 @@ func TestDedupSharedMaps(t *testing.T) {
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "endsAt": "0001-01-01T00:00:00Z",
           "source": "",
           "silencedBy": [
             "fakeSilence1",
@@ -194,7 +186,6 @@ func TestDedupSharedMaps(t *testing.T) {
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "endsAt": "0001-01-01T00:00:00Z",
           "source": "",
           "silencedBy": [
             "fakeSilence1",
