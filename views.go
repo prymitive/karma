@@ -1,8 +1,12 @@
 package main
 
 import (
+	"bytes"
+	"compress/gzip"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
+	"io/ioutil"
 	"net/http"
 	"regexp"
 	"sort"
@@ -27,6 +31,41 @@ func notFound(c *gin.Context) {
 
 func noCache(c *gin.Context) {
 	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
+}
+
+func compressResponse(data []byte) ([]byte, error) {
+	var b bytes.Buffer
+	gz, err := gzip.NewWriterLevel(&b, 3)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create new compression writer: %s", err.Error())
+	}
+
+	_, err = gz.Write(data)
+	if err != nil {
+		return nil, fmt.Errorf("failed to compress data: %s", err.Error())
+	}
+
+	if err = gz.Close(); err != nil {
+		return nil, fmt.Errorf("failed to close compression writer: %s", err.Error())
+	}
+
+	compressed := b.Bytes()
+	log.Debugf("Compressed %d bytes to %d bytes (%.2f%%)", len(data), len(compressed), (float64(len(compressed))/float64(len(data)))*100)
+
+	return compressed, nil
+}
+
+func decompressCachedResponse(data []byte) ([]byte, error) {
+	b := bytes.NewReader(data)
+	z, err := gzip.NewReader(b)
+	if err != nil {
+		return nil, fmt.Errorf("failed to created new compression reader: %s", err.Error())
+	}
+	p, err := ioutil.ReadAll(z)
+	if err != nil {
+		return nil, fmt.Errorf("failed to decompress data: %s", err.Error())
+	}
+	return p, nil
 }
 
 func index(c *gin.Context) {
@@ -128,9 +167,15 @@ func alerts(c *gin.Context) {
 
 	data, found := apiCache.Get(cacheKey)
 	if found {
+		rawData, err := decompressCachedResponse(data.([]byte))
+		if err != nil {
+			log.Error(err.Error())
+			panic(err)
+		}
+
 		// need to overwrite settings as they can have user specific data
 		newResp := models.AlertsResponse{}
-		err := json.Unmarshal(data.([]byte), &newResp)
+		err = json.Unmarshal(rawData, &newResp)
 		if err != nil {
 			log.Error(err.Error())
 			panic(err)
@@ -292,7 +337,12 @@ func alerts(c *gin.Context) {
 		log.Error(err.Error())
 		panic(err)
 	}
-	apiCache.Set(cacheKey, data, -1)
+	compressedData, err := compressResponse(data.([]byte))
+	if err != nil {
+		log.Error(err.Error())
+		panic(err)
+	}
+	apiCache.Set(cacheKey, compressedData, -1)
 
 	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
 	logAlertsView(c, "MIS", time.Since(start))
