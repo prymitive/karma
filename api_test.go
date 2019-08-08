@@ -1156,7 +1156,7 @@ var sortTests = []sortTest{
 		sortLabel:      "",
 		sortReverse:    "0",
 		expectedLabel:  "cluster",
-		expectedValues: []string{"dev", "prod", "staging", "dev", "staging", "prod"},
+		expectedValues: []string{"dev", "dev", "prod", "prod", "staging", "staging"},
 	},
 	{
 		filter:         "q=@receiver=by-cluster-service",
@@ -1164,7 +1164,7 @@ var sortTests = []sortTest{
 		sortLabel:      "",
 		sortReverse:    "1",
 		expectedLabel:  "cluster",
-		expectedValues: []string{"prod", "staging", "dev", "staging", "prod", "dev"},
+		expectedValues: []string{"staging", "staging", "prod", "prod", "dev", "dev"},
 	},
 	{
 		filter:         "q=@receiver=by-cluster-service",
@@ -1186,6 +1186,8 @@ var sortTests = []sortTest{
 
 func TestSortOrder(t *testing.T) {
 	mockConfig()
+	config.Config.Grid.Sorting.Order = "label"
+	config.Config.Grid.Sorting.Label = "cluster"
 	config.Config.Grid.Sorting.CustomValues.Labels = map[string]map[string]string{}
 	config.Config.Grid.Sorting.CustomValues.Labels["job"] = map[string]string{
 		"node_exporter": "1",

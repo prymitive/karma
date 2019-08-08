@@ -164,7 +164,7 @@ func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) 
 	groups := make([]models.APIAlertGroup, 0, len(groupsMap))
 
 	sortOrder, found := c.GetQuery("sortOrder")
-	if !found {
+	if !found || sortOrder == "" {
 		sortOrder = config.Config.Grid.Sorting.Order
 	}
 
@@ -178,7 +178,7 @@ func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) 
 	}
 
 	sortLabel, found := c.GetQuery("sortLabel")
-	if !found {
+	if !found || sortLabel == "" {
 		sortLabel = config.Config.Grid.Sorting.Label
 	}
 
