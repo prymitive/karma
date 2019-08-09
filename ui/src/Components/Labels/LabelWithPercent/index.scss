@@ -5,8 +5,12 @@
   padding-bottom: 0.25rem;
 }
 
-.components-labelWithPercent-progress {
+.components-labelWithPercent-progress.progress {
   height: 2px;
   margin-top: 2px;
   background-color: darken($light, 10%);
+}
+
+.components-labelWithPercent-progress.progress > .progress-bar {
+  height: 2px;
 }
