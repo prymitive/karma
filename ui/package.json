@@ -29,7 +29,7 @@
     "prop-types": "15.7.2",
     "qs": "6.7.0",
     "react": "16.9.0",
-    "react-app-polyfill": "1.0.1",
+    "react-app-polyfill": "1.0.2",
     "react-autosuggest": "9.4.3",
     "react-datepicker": "2.8.0",
     "react-dom": "16.9.0",
