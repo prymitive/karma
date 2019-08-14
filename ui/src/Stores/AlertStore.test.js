@@ -181,6 +181,13 @@ describe("DecodeLocationSearch", () => {
     });
   });
 
+  it("no value q[]=&q[]= search param is decoded correctly", () => {
+    expect(DecodeLocationSearch("?q=")).toMatchObject({
+      defaultsUsed: false,
+      params: { q: [] }
+    });
+  });
+
   it("single value q=foo search param is decoded correctly", () => {
     expect(DecodeLocationSearch("?q=foo")).toMatchObject({
       defaultsUsed: false,
@@ -199,6 +206,20 @@ describe("DecodeLocationSearch", () => {
     expect(DecodeLocationSearch("?q[]=foo&q[]=bar")).toMatchObject({
       defaultsUsed: false,
       params: { q: ["foo", "bar"] }
+    });
+  });
+
+  it("multi value q[]=foo&q[]=bar&q[]=foo search param is decoded correctly", () => {
+    expect(DecodeLocationSearch("?q[]=foo&q[]=bar&q[]=foo")).toMatchObject({
+      defaultsUsed: false,
+      params: { q: ["foo", "bar"] }
+    });
+  });
+
+  it("multi value q[]=foo&q[]=&q[]=foo search param is decoded correctly", () => {
+    expect(DecodeLocationSearch("?q[]=foo&q[]=&q[]=foo")).toMatchObject({
+      defaultsUsed: false,
+      params: { q: ["foo"] }
     });
   });
 });

@@ -46,8 +46,11 @@ function DecodeLocationSearch(searchString) {
       if (parsed.q === "") {
         params.q = [];
       } else if (Array.isArray(parsed.q)) {
-        // filter out empty strings, so 'q=' doesn't end up [""] but rather []
-        params.q = parsed.q.filter(v => v !== "");
+        // first filter out duplicates
+        // then filter out empty strings, so 'q=' doesn't end up [""] but rather []
+        params.q = parsed.q
+          .filter((v, i) => parsed.q.indexOf(v) === i)
+          .filter(v => v !== "");
       } else {
         params.q = [parsed.q];
       }
