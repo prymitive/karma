@@ -15,7 +15,7 @@ import { faShareSquare } from "@fortawesome/free-solid-svg-icons/faShareSquare";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
 import { APIGroup } from "Models/API";
-import { FormatAPIFilterQuery } from "Stores/AlertStore";
+import { FormatAlertsQ } from "Stores/AlertStore";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { QueryOperators, StaticLabels, FormatQuery } from "Common/Query";
@@ -47,9 +47,13 @@ const MenuContent = onClickOutside(
     groupFilters.push(
       FormatQuery(StaticLabels.Receiver, QueryOperators.Equal, group.receiver)
     );
-    const groupLink = `${window.location.href}?${FormatAPIFilterQuery(
-      groupFilters
-    )}`;
+    const baseURL = [
+      window.location.protocol,
+      "//",
+      window.location.host,
+      window.location.pathname
+    ].join("");
+    const groupLink = `${baseURL}?${FormatAlertsQ(groupFilters)}`;
 
     return (
       <FetchPauser>
@@ -160,9 +164,7 @@ const GroupMenu = observer(
                   silenceFormStore={silenceFormStore}
                   afterClick={this.collapse.hide}
                   handleClickOutside={this.collapse.hide}
-                  outsideClickIgnoreClass={`components-grid-alertgroup-${
-                    group.id
-                  }`}
+                  outsideClickIgnoreClass={`components-grid-alertgroup-${group.id}`}
                 />
               )}
             </Popper>
