@@ -131,6 +131,10 @@ test-js: .build/deps-build-node.ok
 .PHONY: test
 test: lint test-go test-js
 
+.PHONY: format-go
+format-go:
+	gofmt -l -s -w .
+
 .PHONY: format-js
 format-js:
 	cd ui && ./node_modules/.bin/prettier --write 'src/**/*.js'
