@@ -214,7 +214,12 @@ describe("<SilenceSubmitProgress />", () => {
     const tree = MountedSilenceSubmitProgress();
     await expect(tree.instance().submitState.fetch).resolves.toBe("success");
     tree.update();
-    expect(tree.find("a").getDOMNode().getAttribute("href")).toBe("file:///mock/#/silences/123");
+    expect(
+      tree
+        .find("a")
+        .getDOMNode()
+        .getAttribute("href")
+    ).toBe("file:///mock/#/silences/123");
   });
 
   it("[v2] renders success icon on successful fetch", async () => {
@@ -233,7 +238,12 @@ describe("<SilenceSubmitProgress />", () => {
     const tree = MountedSilenceSubmitProgress();
     await expect(tree.instance().submitState.fetch).resolves.toBe("123");
     tree.update();
-    expect(tree.find("a").getDOMNode().getAttribute("href")).toBe("file:///mock/#/silences/123");
+    expect(
+      tree
+        .find("a")
+        .getDOMNode()
+        .getAttribute("href")
+    ).toBe("file:///mock/#/silences/123");
   });
 
   it("[v1] renders error icon on failed fetch", async () => {

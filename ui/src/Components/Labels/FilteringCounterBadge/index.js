@@ -38,22 +38,22 @@ const FilteringCounterBadge = inject("alertStore")(
           <TooltipWrapper
             title={`Click to only show ${value} alerts or Alt+Click to hide them`}
           >
-          <Flash spy={counter}>
-            <span
-              className={
-                themed
-                  ? cs.className
-                  : [
-                      "badge-light badge-pill components-label-with-hover",
-                      ...cs.baseClassNames
-                    ].join(" ")
-              }
-              style={themed ? {} : cs.style}
-              onClick={e => this.handleClick(e)}
-            >
-              {counter}
-            </span>
-          </Flash>
+            <Flash spy={counter}>
+              <span
+                className={
+                  themed
+                    ? cs.className
+                    : [
+                        "badge-light badge-pill components-label-with-hover",
+                        ...cs.baseClassNames
+                      ].join(" ")
+                }
+                style={themed ? {} : cs.style}
+                onClick={e => this.handleClick(e)}
+              >
+                {counter}
+              </span>
+            </Flash>
           </TooltipWrapper>
         );
       }
