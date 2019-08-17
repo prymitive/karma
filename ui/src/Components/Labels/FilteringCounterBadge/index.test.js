@@ -35,7 +35,8 @@ const validateStyle = (value, themed) => {
       themed={themed}
     />
   );
-  expect(tree.find("span").prop("style")).toEqual({});
+  // opacity=>1 is set by react-reveal/Flash
+  expect(tree.find("span").prop("style")).toEqual({"opacity": 1});
 };
 
 const validateOnClick = (value, themed) => {

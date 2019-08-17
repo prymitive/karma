@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import { inject, observer } from "mobx-react";
 
+import Flash from "react-reveal/Flash";
+
 import { AlertStore } from "Stores/AlertStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { BaseLabel } from "Components/Labels/BaseLabel";
@@ -36,6 +38,7 @@ const FilteringCounterBadge = inject("alertStore")(
           <TooltipWrapper
             title={`Click to only show ${value} alerts or Alt+Click to hide them`}
           >
+          <Flash spy={counter}>
             <span
               className={
                 themed
@@ -50,6 +53,7 @@ const FilteringCounterBadge = inject("alertStore")(
             >
               {counter}
             </span>
+          </Flash>
           </TooltipWrapper>
         );
       }
