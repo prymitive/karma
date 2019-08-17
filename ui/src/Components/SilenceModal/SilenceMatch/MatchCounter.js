@@ -88,9 +88,7 @@ const MatchCounter = observer(
       if (this.matchedAlerts.error !== null) {
         return (
           <TooltipWrapper
-            title={`Failed to fetch alerts matching this label: ${
-              this.matchedAlerts.error
-            }`}
+            title={`Failed to fetch alerts matching this label: ${this.matchedAlerts.error}`}
           >
             <FontAwesomeIcon
               className="text-danger"

@@ -37,8 +37,8 @@ const SilenceModalContent = observer(
                   ? "Add new silence"
                   : silenceFormStore.data.currentStage ===
                     SilenceFormStage.Preview
-                    ? "Preview silenced alerts"
-                    : "Silence submitted"
+                  ? "Preview silenced alerts"
+                  : "Silence submitted"
                 : `Editing silence ${silenceFormStore.data.silenceID}`}
             </h5>
             <button type="button" className="close" onClick={onHide}>
@@ -54,7 +54,7 @@ const SilenceModalContent = observer(
                 settingsStore={settingsStore}
               />
             ) : silenceFormStore.data.currentStage ===
-            SilenceFormStage.Preview ? (
+              SilenceFormStage.Preview ? (
               <SilencePreview
                 alertStore={alertStore}
                 silenceFormStore={silenceFormStore}
