@@ -15,14 +15,14 @@ type matchTest struct {
 func TestEqualMatcher(t *testing.T) {
 	now := time.Now()
 	tests := []matchTest{
-		matchTest{"a", "a", true, true},
-		matchTest{"abc", "abc", true, true},
-		matchTest{123, 123, true, true},
-		matchTest{now, now, true, true},
-		matchTest{"1", 1, true, false},
-		matchTest{"a", "ab", true, false},
-		matchTest{12, 13, true, false},
-		matchTest{time.Now(), time.Now(), true, false},
+		{"a", "a", true, true},
+		{"abc", "abc", true, true},
+		{123, 123, true, true},
+		{now, now, true, true},
+		{"1", 1, true, false},
+		{"a", "ab", true, false},
+		{12, 13, true, false},
+		{time.Now(), time.Now(), true, false},
 	}
 	for _, mt := range tests {
 		m := equalMatcher{}
@@ -35,14 +35,14 @@ func TestEqualMatcher(t *testing.T) {
 func TestNotEqualMatcher(t *testing.T) {
 	now := time.Now()
 	tests := []matchTest{
-		matchTest{"a", "a", true, false},
-		matchTest{"abc", "abc", true, false},
-		matchTest{123, 123, true, false},
-		matchTest{now, now, true, false},
-		matchTest{"1", 1, true, true},
-		matchTest{"a", "ab", true, true},
-		matchTest{12, 13, true, true},
-		matchTest{time.Now(), time.Now(), true, true},
+		{"a", "a", true, false},
+		{"abc", "abc", true, false},
+		{123, 123, true, false},
+		{now, now, true, false},
+		{"1", 1, true, true},
+		{"a", "ab", true, true},
+		{12, 13, true, true},
+		{time.Now(), time.Now(), true, true},
 	}
 	for _, mt := range tests {
 		m := notEqualMatcher{}
@@ -54,16 +54,16 @@ func TestNotEqualMatcher(t *testing.T) {
 
 func TestMoreThanMatcher(t *testing.T) {
 	tests := []matchTest{
-		matchTest{10, 1, true, true},
-		matchTest{"10", "1", true, true},
-		matchTest{8, 8, true, false},
-		matchTest{"8", "8", true, false},
-		matchTest{4, 9, true, false},
-		matchTest{"4", "9", true, false},
-		matchTest{"b", "a", true, true},
-		matchTest{"a", "a", true, false},
-		matchTest{"a", "b", true, false},
-		matchTest{"", "", true, false},
+		{10, 1, true, true},
+		{"10", "1", true, true},
+		{8, 8, true, false},
+		{"8", "8", true, false},
+		{4, 9, true, false},
+		{"4", "9", true, false},
+		{"b", "a", true, true},
+		{"a", "a", true, false},
+		{"a", "b", true, false},
+		{"", "", true, false},
 	}
 	for _, mt := range tests {
 		m := moreThanMatcher{}
@@ -75,16 +75,16 @@ func TestMoreThanMatcher(t *testing.T) {
 
 func TestLessThanMatcher(t *testing.T) {
 	tests := []matchTest{
-		matchTest{10, 1, true, false},
-		matchTest{"10", "1", true, false},
-		matchTest{8, 8, true, false},
-		matchTest{"8", "8", true, false},
-		matchTest{4, 9, true, true},
-		matchTest{"4", "9", true, true},
-		matchTest{"b", "a", true, false},
-		matchTest{"a", "a", true, false},
-		matchTest{"a", "b", true, true},
-		matchTest{"", "", true, false},
+		{10, 1, true, false},
+		{"10", "1", true, false},
+		{8, 8, true, false},
+		{"8", "8", true, false},
+		{4, 9, true, true},
+		{"4", "9", true, true},
+		{"b", "a", true, false},
+		{"a", "a", true, false},
+		{"a", "b", true, true},
+		{"", "", true, false},
 	}
 	for _, mt := range tests {
 		m := lessThanMatcher{}
@@ -96,14 +96,14 @@ func TestLessThanMatcher(t *testing.T) {
 
 func TestRegexpMatcher(t *testing.T) {
 	tests := []matchTest{
-		matchTest{"abcdef", "^abc", true, true},
-		matchTest{"abc", "^abc", true, true},
-		matchTest{"xxabcxx", "abc", true, true},
-		matchTest{"123", "123", true, true},
-		matchTest{"5", "^[0-9]+", true, true},
-		matchTest{"xb", "abc", true, false},
-		matchTest{"13", "12", true, false},
-		matchTest{"xx", "^[-xxx****", false, false},
+		{"abcdef", "^abc", true, true},
+		{"abc", "^abc", true, true},
+		{"xxabcxx", "abc", true, true},
+		{"123", "123", true, true},
+		{"5", "^[0-9]+", true, true},
+		{"xb", "abc", true, false},
+		{"13", "12", true, false},
+		{"xx", "^[-xxx****", false, false},
 	}
 	for _, mt := range tests {
 		m := regexpMatcher{}
@@ -116,14 +116,14 @@ func TestRegexpMatcher(t *testing.T) {
 
 func TestNegativeRegexpMatcher(t *testing.T) {
 	tests := []matchTest{
-		matchTest{"abcdef", "^abc", true, false},
-		matchTest{"abc", "^abc", true, false},
-		matchTest{"xxabcxx", "abc", true, false},
-		matchTest{"123", "123", true, false},
-		matchTest{"5", "^[0-9]+", true, false},
-		matchTest{"xb", "abc", true, true},
-		matchTest{"13", "12", true, true},
-		matchTest{"xx", "^[-xxx****", false, true},
+		{"abcdef", "^abc", true, false},
+		{"abc", "^abc", true, false},
+		{"xxabcxx", "abc", true, false},
+		{"123", "123", true, false},
+		{"5", "^[0-9]+", true, false},
+		{"xb", "abc", true, true},
+		{"13", "12", true, true},
+		{"xx", "^[-xxx****", false, true},
 	}
 	for _, mt := range tests {
 		m := negativeRegexMatcher{}

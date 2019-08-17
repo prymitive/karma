@@ -32,7 +32,7 @@ var groupTests = []groupTest{
 			"alertname": "Memory_Usage_Too_High",
 		},
 		alerts: []models.Alert{
-			models.Alert{
+			{
 				StartsAt: time.Date(2019, time.January, 10, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "alert", Value: "Memory usage exceeding threshold"},
@@ -45,7 +45,7 @@ var groupTests = []groupTest{
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -69,14 +69,14 @@ var groupTests = []groupTest{
 			"cluster":   "prod",
 		},
 		alerts: []models.Alert{
-			models.Alert{
+			{
 				StartsAt: time.Date(2019, time.January, 10, 0, 0, 0, 1, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "alert", Value: "Memory usage exceeding threshold"},
 					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -105,11 +105,11 @@ var groupTests = []groupTest{
 			"cluster":   "staging",
 		},
 		alerts: []models.Alert{
-			models.Alert{
+			{
 				StartsAt:    time.Date(2019, time.January, 10, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -123,10 +123,10 @@ var groupTests = []groupTest{
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
-			models.Alert{
+			{
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -140,10 +140,10 @@ var groupTests = []groupTest{
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
-			models.Alert{
+			{
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -172,11 +172,11 @@ var groupTests = []groupTest{
 			"cluster":   "dev",
 		},
 		alerts: []models.Alert{
-			models.Alert{
+			{
 				StartsAt:    time.Date(2019, time.January, 10, 1, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
 						Source:     "localhost/prometheus",
@@ -190,11 +190,11 @@ var groupTests = []groupTest{
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
-			models.Alert{
+			{
 				StartsAt:    time.Date(2019, time.January, 10, 0, 59, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
 						Source:     "localhost/prometheus",
@@ -208,11 +208,11 @@ var groupTests = []groupTest{
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
-			models.Alert{
+			{
 				StartsAt:    time.Date(2019, time.January, 12, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
 						Source:     "localhost/prometheus",
@@ -240,7 +240,7 @@ var groupTests = []groupTest{
 			"alertname": "Host_Down",
 		},
 		alerts: []models.Alert{
-			models.Alert{
+			{
 				StartsAt: time.Date(2019, time.January, 1, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
@@ -252,7 +252,7 @@ var groupTests = []groupTest{
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -261,7 +261,7 @@ var groupTests = []groupTest{
 				},
 				Receiver: "by-name",
 			},
-			models.Alert{
+			{
 				StartsAt:    time.Date(2019, time.January, 1, 0, 1, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
@@ -271,7 +271,7 @@ var groupTests = []groupTest{
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -280,7 +280,7 @@ var groupTests = []groupTest{
 				},
 				Receiver: "by-name",
 			},
-			models.Alert{
+			{
 				StartsAt:    time.Date(2019, time.January, 1, 0, 1, 0, 1, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
@@ -290,7 +290,7 @@ var groupTests = []groupTest{
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -299,7 +299,7 @@ var groupTests = []groupTest{
 				},
 				Receiver: "by-name",
 			},
-			models.Alert{
+			{
 				StartsAt:    time.Date(2019, time.January, 1, 0, 0, 59, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
@@ -309,7 +309,7 @@ var groupTests = []groupTest{
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -318,7 +318,7 @@ var groupTests = []groupTest{
 				},
 				Receiver: "by-name",
 			},
-			models.Alert{
+			{
 				StartsAt:    time.Date(2019, time.January, 10, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
@@ -328,7 +328,7 @@ var groupTests = []groupTest{
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -337,7 +337,7 @@ var groupTests = []groupTest{
 				},
 				Receiver: "by-name",
 			},
-			models.Alert{
+			{
 				StartsAt:    time.Date(2019, time.January, 10, 1, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
@@ -347,7 +347,7 @@ var groupTests = []groupTest{
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
 						Source:     "localhost/prometheus",
@@ -356,7 +356,7 @@ var groupTests = []groupTest{
 				},
 				Receiver: "by-name",
 			},
-			models.Alert{
+			{
 				StartsAt:    time.Date(2019, time.January, 10, 0, 20, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
@@ -366,7 +366,7 @@ var groupTests = []groupTest{
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
 						Source:     "localhost/prometheus",
@@ -375,7 +375,7 @@ var groupTests = []groupTest{
 				},
 				Receiver: "by-name",
 			},
-			models.Alert{
+			{
 				StartsAt:    time.Date(2019, time.January, 10, 0, 21, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Labels: map[string]string{
@@ -385,7 +385,7 @@ var groupTests = []groupTest{
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
 						Source:     "localhost/prometheus",
@@ -409,14 +409,14 @@ var groupTests = []groupTest{
 			"cluster":   "staging",
 		},
 		alerts: []models.Alert{
-			models.Alert{
+			{
 				StartsAt: time.Date(2019, time.January, 10, 0, 19, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "alert", Value: "Less than 10% disk space is free"},
 					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -446,13 +446,13 @@ var groupTests = []groupTest{
 			"cluster":   "prod",
 		},
 		alerts: []models.Alert{
-			models.Alert{
+			{
 				StartsAt: time.Date(2019, time.January, 12, 0, 19, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -466,10 +466,10 @@ var groupTests = []groupTest{
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
 			},
-			models.Alert{
+			{
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -497,14 +497,14 @@ var groupTests = []groupTest{
 			"alertname": "HTTP_Probe_Failed",
 		},
 		alerts: []models.Alert{
-			models.Alert{
+			{
 				StartsAt: time.Date(2019, time.January, 14, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "help", Value: "Example help annotation"},
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:   "default",
 						State:  models.AlertStateSuppressed,
 						Source: "localhost/prometheus",
@@ -516,11 +516,11 @@ var groupTests = []groupTest{
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-name",
 			},
-			models.Alert{
+			{
 				StartsAt:    time.Date(2019, time.January, 14, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -547,14 +547,14 @@ var groupTests = []groupTest{
 			"alertname": "Free_Disk_Space_Too_Low",
 		},
 		alerts: []models.Alert{
-			models.Alert{
+			{
 				StartsAt: time.Date(2019, time.January, 15, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "alert", Value: "Less than 10% disk space is free"},
 					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",
@@ -585,14 +585,14 @@ var groupTests = []groupTest{
 			"cluster":   "dev",
 		},
 		alerts: []models.Alert{
-			models.Alert{
+			{
 				StartsAt: time.Date(2019, time.January, 10, 20, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "help", Value: "Example help annotation"},
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
 						Source:     "localhost/prometheus",
@@ -605,11 +605,11 @@ var groupTests = []groupTest{
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
 			},
-			models.Alert{
+			{
 				StartsAt:    time.Date(2019, time.January, 10, 19, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
 				Alertmanager: []models.AlertmanagerInstance{
-					models.AlertmanagerInstance{
+					{
 						Name:       "default",
 						State:      models.AlertStateActive,
 						Source:     "localhost/prometheus",

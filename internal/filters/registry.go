@@ -40,63 +40,63 @@ type filterConfig struct {
 // AllFilters contains the mapping of all filters along with operators they
 // support
 var AllFilters = []filterConfig{
-	filterConfig{
+	{
 		Label:              "@alertmanager",
 		LabelRe:            regexp.MustCompile("^@alertmanager$"),
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},
 		Factory:            newAlertmanagerInstanceFilter,
 		Autocomplete:       alertmanagerInstanceAutocomplete,
 	},
-	filterConfig{
+	{
 		Label:              "@state",
 		LabelRe:            regexp.MustCompile("^@state$"),
 		SupportedOperators: []string{equalOperator, notEqualOperator},
 		Factory:            newStateFilter,
 		Autocomplete:       stateAutocomplete,
 	},
-	filterConfig{
+	{
 		Label:              "@receiver",
 		LabelRe:            regexp.MustCompile("^@receiver$"),
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},
 		Factory:            newreceiverFilter,
 		Autocomplete:       receiverAutocomplete,
 	},
-	filterConfig{
+	{
 		Label:              "@age",
 		LabelRe:            regexp.MustCompile("^@age$"),
 		SupportedOperators: []string{lessThanOperator, moreThanOperator},
 		Factory:            newAgeFilter,
 		Autocomplete:       ageAutocomplete,
 	},
-	filterConfig{
+	{
 		Label:              "@silence_id",
 		LabelRe:            regexp.MustCompile("^@silence_id$"),
 		SupportedOperators: []string{equalOperator, notEqualOperator},
 		Factory:            newsilenceIDFilter,
 		Autocomplete:       silenceIDAutocomplete,
 	},
-	filterConfig{
+	{
 		Label:              "@silence_jira",
 		LabelRe:            regexp.MustCompile("^@silence_jira$"),
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},
 		Factory:            newSilenceJiraFilter,
 		Autocomplete:       silenceJiraIDAutocomplete,
 	},
-	filterConfig{
+	{
 		Label:              "@silence_author",
 		LabelRe:            regexp.MustCompile("^@silence_author$"),
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},
 		Factory:            newSilenceAuthorFilter,
 		Autocomplete:       silenceAuthorAutocomplete,
 	},
-	filterConfig{
+	{
 		Label:              "@limit",
 		LabelRe:            regexp.MustCompile("^@limit$"),
 		SupportedOperators: []string{equalOperator},
 		Factory:            newLimitFilter,
 		Autocomplete:       limitAutocomplete,
 	},
-	filterConfig{
+	{
 		Label:              "[a-zA-Z_][a-zA-Z0-9_]*",
 		LabelRe:            regexp.MustCompile("^[a-zA-Z_][a-zA-Z0-9_]*$"),
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator, lessThanOperator, moreThanOperator},

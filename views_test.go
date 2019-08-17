@@ -195,7 +195,7 @@ type acTestCase struct {
 }
 
 var acTests = []acTestCase{
-	acTestCase{
+	{
 		Term: "ale",
 		Results: []string{
 			"alertname=Memory_Usage_Too_High",
@@ -210,7 +210,7 @@ var acTests = []acTestCase{
 			"@alertmanager!=default",
 		},
 	},
-	acTestCase{
+	{
 		Term: "alert",
 		Results: []string{
 			"alertname=Memory_Usage_Too_High",
@@ -225,7 +225,7 @@ var acTests = []acTestCase{
 			"@alertmanager!=default",
 		},
 	},
-	acTestCase{
+	{
 		Term: "alertname",
 		Results: []string{
 			"alertname=Memory_Usage_Too_High",
@@ -238,7 +238,7 @@ var acTests = []acTestCase{
 			"alertname!=Free_Disk_Space_Too_Low",
 		},
 	},
-	acTestCase{
+	{
 		Term: "aLeRtNaMe",
 		Results: []string{
 			"alertname=Memory_Usage_Too_High",
@@ -251,21 +251,21 @@ var acTests = []acTestCase{
 			"alertname!=Free_Disk_Space_Too_Low",
 		},
 	},
-	acTestCase{
+	{
 		Term: "http",
 		Results: []string{
 			"alertname=HTTP_Probe_Failed",
 			"alertname!=HTTP_Probe_Failed",
 		},
 	},
-	acTestCase{
+	{
 		Term: "hTTp_",
 		Results: []string{
 			"alertname=HTTP_Probe_Failed",
 			"alertname!=HTTP_Probe_Failed",
 		},
 	},
-	acTestCase{
+	{
 		Term: "@st",
 		Results: []string{
 			"@state=suppressed",
@@ -274,7 +274,7 @@ var acTests = []acTestCase{
 			"@state!=active",
 		},
 	},
-	acTestCase{
+	{
 		Term: "@r",
 		Results: []string{
 			"@receiver=by-name",
@@ -283,7 +283,7 @@ var acTests = []acTestCase{
 			"@receiver!=by-cluster-service",
 		},
 	},
-	acTestCase{
+	{
 		Term: "@age",
 		Results: []string{
 			"@age>1h",
@@ -292,21 +292,21 @@ var acTests = []acTestCase{
 			"@age<10m",
 		},
 	},
-	acTestCase{
+	{
 		Term: "@limit",
 		Results: []string{
 			"@limit=50",
 			"@limit=10",
 		},
 	},
-	acTestCase{
+	{
 		Term: "@alertmanager",
 		Results: []string{
 			"@alertmanager=default",
 			"@alertmanager!=default",
 		},
 	},
-	acTestCase{
+	{
 		Term: "nod",
 		Results: []string{
 			"job=node_ping",
@@ -315,7 +315,7 @@ var acTests = []acTestCase{
 			"job!=node_exporter",
 		},
 	},
-	acTestCase{
+	{
 		Term: "Nod",
 		Results: []string{
 			"job=node_ping",
@@ -325,7 +325,7 @@ var acTests = []acTestCase{
 		},
 	},
 	// duplicated to test reponse caching
-	acTestCase{
+	{
 		Term: "Nod",
 		Results: []string{
 			"job=node_ping",
@@ -385,23 +385,23 @@ type staticFileTestCase struct {
 }
 
 var staticFileTests = []staticFileTestCase{
-	staticFileTestCase{
+	{
 		path: "/favicon.ico",
 		code: 200,
 	},
-	staticFileTestCase{
+	{
 		path: "/manifest.json",
 		code: 200,
 	},
-	staticFileTestCase{
+	{
 		path: "/index.xml",
 		code: 404,
 	},
-	staticFileTestCase{
+	{
 		path: "/xxx",
 		code: 404,
 	},
-	staticFileTestCase{
+	{
 		path: "/static/abcd",
 		code: 404,
 	},
@@ -421,23 +421,23 @@ func TestStaticFiles(t *testing.T) {
 }
 
 var staticFilePrefixTests = []staticFileTestCase{
-	staticFileTestCase{
+	{
 		path: "/sub/favicon.ico",
 		code: 200,
 	},
-	staticFileTestCase{
+	{
 		path: "/sub/manifest.json",
 		code: 200,
 	},
-	staticFileTestCase{
+	{
 		path: "/sub/index.xml",
 		code: 404,
 	},
-	staticFileTestCase{
+	{
 		path: "/sub/xxx",
 		code: 404,
 	},
-	staticFileTestCase{
+	{
 		path: "/sub/static/abcd",
 		code: 404,
 	},

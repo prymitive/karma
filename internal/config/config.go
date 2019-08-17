@@ -246,7 +246,7 @@ func (config *configSchema) Read() {
 	if len(config.Alertmanager.Servers) == 0 && v.GetString("alertmanager.uri") != "" {
 		log.Info("Using simple config with a single Alertmanager server")
 		config.Alertmanager.Servers = []alertmanagerConfig{
-			alertmanagerConfig{
+			{
 				Name:    v.GetString("alertmanager.name"),
 				URI:     v.GetString("alertmanager.uri"),
 				Timeout: v.GetDuration("alertmanager.timeout"),

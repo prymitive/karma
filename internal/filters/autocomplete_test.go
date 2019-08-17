@@ -30,7 +30,7 @@ var acTests = []acTest{
 	},
 	{
 		Alerts: []models.Alert{
-			models.Alert{
+			{
 				State: models.AlertStateActive,
 				Labels: map[string]string{
 					"foo":    "bar",
@@ -42,7 +42,7 @@ var acTests = []acTest{
 					{Name: "am2"},
 				},
 			},
-			models.Alert{
+			{
 				State: models.AlertStateSuppressed,
 				Labels: map[string]string{
 					"foo":    "bar baz",
@@ -54,7 +54,7 @@ var acTests = []acTest{
 					{
 						Name: "am2",
 						Silences: map[string]*models.Silence{
-							"1234567890": &models.Silence{
+							"1234567890": {
 								ID:        "1234567890",
 								CreatedBy: "me@example.com",
 								JiraID:    "JIRA-1",

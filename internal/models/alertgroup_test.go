@@ -14,31 +14,31 @@ type alertListSortTest struct {
 }
 
 var alertListSortTests = []alertListSortTest{
-	alertListSortTest{
+	{
 		alert:    models.Alert{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 5, time.UTC)},
 		position: 0,
 	},
-	alertListSortTest{
+	{
 		alert:    models.Alert{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
 		position: 1,
 	},
-	alertListSortTest{
+	{
 		alert:    models.Alert{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 0, time.UTC)},
 		position: 2,
 	},
-	alertListSortTest{
+	{
 		alert:    models.Alert{StartsAt: time.Date(2015, time.March, 10, 0, 0, 0, 0, time.UTC)},
 		position: 6,
 	},
-	alertListSortTest{
+	{
 		alert:    models.Alert{StartsAt: time.Date(2016, time.December, 10, 0, 0, 0, 0, time.UTC)},
 		position: 4,
 	},
-	alertListSortTest{
+	{
 		alert:    models.Alert{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 0, time.UTC)},
 		position: 3,
 	},
-	alertListSortTest{
+	{
 		alert:    models.Alert{StartsAt: time.Date(2015, time.March, 10, 0, 0, 0, 0, time.UTC)},
 		position: 5,
 	},
@@ -75,18 +75,18 @@ type agFPTest struct {
 }
 
 var agFPTests = []agFPTest{
-	agFPTest{
+	{
 		name: "empty group fingerprint",
 		ag:   models.AlertGroup{},
 	},
-	agFPTest{
+	{
 		name: "different Receiver shouldn't change content fingerprint",
 		ag: models.AlertGroup{
 			Receiver: "default",
 		},
 		fpChange: false,
 	},
-	agFPTest{
+	{
 		name: "different StateCount shouldn't change content fingerprint",
 		ag: models.AlertGroup{
 			Receiver:   "default",
@@ -94,7 +94,7 @@ var agFPTests = []agFPTest{
 		},
 		fpChange: false,
 	},
-	agFPTest{
+	{
 		name: "different Labels shouldn't change content fingerprint",
 		ag: models.AlertGroup{
 			Receiver:   "default",
@@ -103,7 +103,7 @@ var agFPTests = []agFPTest{
 		},
 		fpChange: false,
 	},
-	agFPTest{
+	{
 		name: "different set of alerts should change content fingerprint",
 		ag: models.AlertGroup{
 			Receiver: "default",
@@ -118,7 +118,7 @@ var agFPTests = []agFPTest{
 		},
 		fpChange: true,
 	},
-	agFPTest{
+	{
 		name: "another different set of alerts should change content fingerprint",
 		ag: models.AlertGroup{
 			Receiver: "default",
@@ -133,7 +133,7 @@ var agFPTests = []agFPTest{
 		},
 		fpChange: true,
 	},
-	agFPTest{
+	{
 		name: "repeating last set of alerts shouldn't change content fingerprint",
 		ag: models.AlertGroup{
 			Receiver: "default",
@@ -193,7 +193,7 @@ type findLatestStartsAtTest struct {
 }
 
 var findLatestStartsAtTests = []findLatestStartsAtTest{
-	findLatestStartsAtTest{
+	{
 		alerts: []models.Alert{
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 5, time.UTC)},
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
@@ -201,7 +201,7 @@ var findLatestStartsAtTests = []findLatestStartsAtTest{
 		},
 		expectedStartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC),
 	},
-	findLatestStartsAtTest{
+	{
 		alerts: []models.Alert{
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC)},
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 2, time.UTC)},
@@ -209,7 +209,7 @@ var findLatestStartsAtTests = []findLatestStartsAtTest{
 		},
 		expectedStartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC),
 	},
-	findLatestStartsAtTest{
+	{
 		alerts: []models.Alert{
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
@@ -217,7 +217,7 @@ var findLatestStartsAtTests = []findLatestStartsAtTest{
 		},
 		expectedStartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC),
 	},
-	findLatestStartsAtTest{
+	{
 		alerts: []models.Alert{
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 5, time.UTC)},
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC)},

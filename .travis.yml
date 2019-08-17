@@ -64,10 +64,29 @@ jobs:
       script: make lint-go
 
     - stage: Lint
+      <<: *DEFAULTS_GO
+      env:
+        - DESC="Check Go code formatting"
+        - GO111MODULE=on
+      before_script:
+        - travis_retry make mock-assets
+      script:
+        - make format-go
+        - git diff --exit-code
+
+    - stage: Lint
       <<: *DEFAULTS_JS
       env:
         - DESC="Lint JavaScript code"
       script: make lint-js
+
+    - stage: Lint
+      <<: *DEFAULTS_JS
+      env:
+        - DESC="Check JavaScript code formatting"
+      script:
+        - make format-js
+        - git diff --exit-code
 
     - stage: Lint
       <<: *DEFAULTS_JS

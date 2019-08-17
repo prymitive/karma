@@ -59,7 +59,7 @@ var colorTests = []colorTest{
 	{
 		customLabels: config.CustomLabelColors{
 			"node": []config.CustomLabelColor{
-				config.CustomLabelColor{Value: "localhost", Color: "#fff"},
+				{Value: "localhost", Color: "#fff"},
 			},
 		},
 		labels: map[string]string{
@@ -72,7 +72,7 @@ var colorTests = []colorTest{
 	{
 		customLabels: config.CustomLabelColors{
 			"node": []config.CustomLabelColor{
-				config.CustomLabelColor{Value: "localhost", Color: "not a valid color"},
+				{Value: "localhost", Color: "not a valid color"},
 			},
 		},
 		labels: map[string]string{
@@ -83,7 +83,7 @@ var colorTests = []colorTest{
 	{
 		customLabels: config.CustomLabelColors{
 			"node": []config.CustomLabelColor{
-				config.CustomLabelColor{ValueRegex: ".*", Color: "#123"},
+				{ValueRegex: ".*", Color: "#123"},
 			},
 		},
 		labels: map[string]string{
@@ -94,7 +94,7 @@ var colorTests = []colorTest{
 	{
 		customLabels: config.CustomLabelColors{
 			"node": []config.CustomLabelColor{
-				config.CustomLabelColor{Value: "foo", ValueRegex: ".*", Color: "#123"},
+				{Value: "foo", ValueRegex: ".*", Color: "#123"},
 			},
 		},
 		labels: map[string]string{

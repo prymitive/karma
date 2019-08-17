@@ -13,42 +13,42 @@ type stringSliceTest struct {
 }
 
 var stringSliceTests = []stringSliceTest{
-	stringSliceTest{
+	{
 		array: []string{},
 		value: "aa",
 		found: false,
 	},
-	stringSliceTest{
+	{
 		array: []string{"aa", "bb", "cc", "dd"},
 		value: "aa",
 		found: true,
 	},
-	stringSliceTest{
+	{
 		array: []string{"aa", "bb", "cc", "dd"},
 		value: "bb",
 		found: true,
 	},
-	stringSliceTest{
+	{
 		array: []string{"aa", "bb", "cc", "dd"},
 		value: "cc",
 		found: true,
 	},
-	stringSliceTest{
+	{
 		array: []string{"aa", "bb", "cc", "dd"},
 		value: "dd",
 		found: true,
 	},
-	stringSliceTest{
+	{
 		array: []string{"aa", "bb", "cc", "dd"},
 		value: "bbcc",
 		found: false,
 	},
-	stringSliceTest{
+	{
 		array: []string{"aa", "bb", "cc", "dd"},
 		value: "b",
 		found: false,
 	},
-	stringSliceTest{
+	{
 		array: []string{"aa", "bb", "cc", "dd"},
 		value: "",
 		found: false,
@@ -71,32 +71,32 @@ type boolSliceTest struct {
 }
 
 var boolSliceTests = []boolSliceTest{
-	boolSliceTest{
+	{
 		array: []bool{},
 		value: true,
 		found: false,
 	},
-	boolSliceTest{
+	{
 		array: []bool{},
 		value: false,
 		found: false,
 	},
-	boolSliceTest{
+	{
 		array: []bool{true, false},
 		value: true,
 		found: true,
 	},
-	boolSliceTest{
+	{
 		array: []bool{true, false},
 		value: false,
 		found: true,
 	},
-	boolSliceTest{
+	{
 		array: []bool{false},
 		value: true,
 		found: false,
 	},
-	boolSliceTest{
+	{
 		array: []bool{true},
 		value: false,
 		found: false,

@@ -16,7 +16,7 @@ type stripLabelTest struct {
 }
 
 var stripLabelTests = []stripLabelTest{
-	stripLabelTest{
+	{
 		strip: []string{"env"},
 		keep:  []string{},
 		before: map[string]string{
@@ -29,7 +29,7 @@ var stripLabelTests = []stripLabelTest{
 			"level": "info",
 		},
 	},
-	stripLabelTest{
+	{
 		strip: []string{"server"},
 		keep:  []string{},
 		before: map[string]string{
@@ -43,7 +43,7 @@ var stripLabelTests = []stripLabelTest{
 			"level": "info",
 		},
 	},
-	stripLabelTest{
+	{
 		strip: []string{},
 		keep:  []string{},
 		before: map[string]string{
@@ -57,7 +57,7 @@ var stripLabelTests = []stripLabelTest{
 			"level": "info",
 		},
 	},
-	stripLabelTest{
+	{
 		strip: []string{"host"},
 		keep:  []string{},
 		before: map[string]string{
@@ -65,7 +65,7 @@ var stripLabelTests = []stripLabelTest{
 		},
 		after: map[string]string{},
 	},
-	stripLabelTest{
+	{
 		strip: []string{},
 		keep:  []string{"env"},
 		before: map[string]string{
@@ -77,7 +77,7 @@ var stripLabelTests = []stripLabelTest{
 			"env": "production",
 		},
 	},
-	stripLabelTest{
+	{
 		strip: []string{"env"},
 		keep:  []string{"host"},
 		before: map[string]string{
@@ -89,7 +89,7 @@ var stripLabelTests = []stripLabelTest{
 			"host": "localhost",
 		},
 	},
-	stripLabelTest{
+	{
 		strip: []string{},
 		keep:  []string{"env"},
 		before: map[string]string{
@@ -117,37 +117,37 @@ type stripReceiverTest struct {
 }
 
 var stripReceiverTests = []stripReceiverTest{
-	stripReceiverTest{
+	{
 		strip:    []string{},
 		keep:     []string{},
 		receiver: "default",
 		stripped: false,
 	},
-	stripReceiverTest{
+	{
 		strip:    []string{"default"},
 		keep:     []string{},
 		receiver: "default",
 		stripped: true,
 	},
-	stripReceiverTest{
+	{
 		strip:    []string{"default"},
 		keep:     []string{"default"},
 		receiver: "default",
 		stripped: true,
 	},
-	stripReceiverTest{
+	{
 		strip:    []string{},
 		keep:     []string{"default"},
 		receiver: "default",
 		stripped: false,
 	},
-	stripReceiverTest{
+	{
 		strip:    []string{"foo", "bar"},
 		keep:     []string{},
 		receiver: "default",
 		stripped: false,
 	},
-	stripReceiverTest{
+	{
 		strip:    []string{"foo", "default"},
 		keep:     []string{"foo", "bar"},
 		receiver: "default",

@@ -204,23 +204,23 @@ type urlSecretTest struct {
 }
 
 var urlSecretTests = []urlSecretTest{
-	urlSecretTest{
+	{
 		raw:       "http://localhost",
 		sanitized: "http://localhost",
 	},
-	urlSecretTest{
+	{
 		raw:       "http://alertmanager.example.com/path",
 		sanitized: "http://alertmanager.example.com/path",
 	},
-	urlSecretTest{
+	{
 		raw:       "http://user@alertmanager.example.com/path",
 		sanitized: "http://user@alertmanager.example.com/path",
 	},
-	urlSecretTest{
+	{
 		raw:       "https://user:password@alertmanager.example.com/path",
 		sanitized: "https://user:xxx@alertmanager.example.com/path",
 	},
-	urlSecretTest{
+	{
 		raw:       "file://localhost",
 		sanitized: "file://localhost",
 	},
