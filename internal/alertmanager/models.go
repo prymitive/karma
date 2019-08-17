@@ -300,7 +300,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			}
 
 			alert.Alertmanager = []models.AlertmanagerInstance{
-				models.AlertmanagerInstance{
+				{
 					Name:        am.Name,
 					Cluster:     am.ClusterID(),
 					State:       alert.State,

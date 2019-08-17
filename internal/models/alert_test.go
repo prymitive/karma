@@ -15,20 +15,20 @@ type alertStateTest struct {
 }
 
 var alertStateTests = []alertStateTest{
-	alertStateTest{
+	{
 		alert: models.Alert{
 			State: models.AlertStateActive,
 		},
 		isActive: true,
 	},
-	alertStateTest{
+	{
 		alert: models.Alert{
 			State:       models.AlertStateSuppressed,
 			InhibitedBy: []string{"1234"},
 		},
 		isInhibited: true,
 	},
-	alertStateTest{
+	{
 		alert: models.Alert{
 			State:      models.AlertStateSuppressed,
 			SilencedBy: []string{"1234"},
@@ -95,7 +95,7 @@ func BenchmarkLabelsContent(b *testing.B) {
 		State:    models.AlertStateActive,
 		StartsAt: time.Date(2015, time.March, 10, 0, 0, 0, 0, time.UTC),
 		Alertmanager: []models.AlertmanagerInstance{
-			models.AlertmanagerInstance{
+			{
 				Name:  "default",
 				State: models.AlertStateActive,
 			},

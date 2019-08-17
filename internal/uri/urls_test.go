@@ -13,17 +13,17 @@ type joinURLTest struct {
 }
 
 var joinURLTests = []joinURLTest{
-	joinURLTest{
+	{
 		base: "http://localhost",
 		sub:  "/sub",
 		url:  "http://localhost/sub",
 	},
-	joinURLTest{
+	{
 		base: "http://localhost",
 		sub:  "/sub/",
 		url:  "http://localhost/sub",
 	},
-	joinURLTest{
+	{
 		base: "http://am.example.com",
 		sub:  "/api/v1/alerts",
 		url:  "http://am.example.com/api/v1/alerts",
