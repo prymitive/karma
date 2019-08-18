@@ -31,6 +31,7 @@ func DedupAlerts() []models.AlertGroup {
 		alerts := map[string]models.Alert{}
 		for _, ag := range agList {
 			for _, alert := range ag.Alerts {
+				alert := alert // scopelint pin
 				// remove all alerts for receiver(s) that the user doesn't
 				// want to see in the UI
 				if transform.StripReceivers(config.Config.Receivers.Keep, config.Config.Receivers.Strip, alert.Receiver) {
@@ -66,6 +67,7 @@ func DedupAlerts() []models.AlertGroup {
 		ag := models.AlertGroup(agList[0])
 		ag.Alerts = models.AlertList{}
 		for _, alert := range alerts {
+			alert := alert // scopelint pin
 			// strip labels and annotations user doesn't want to see in the UI
 			alert.Labels = transform.StripLables(config.Config.Labels.Keep, config.Config.Labels.Strip, alert.Labels)
 			alert.Annotations = transform.StripAnnotations(config.Config.Annotations.Keep, config.Config.Annotations.Strip, alert.Annotations)
