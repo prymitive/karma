@@ -149,7 +149,7 @@ func TestHTTPReader(t *testing.T) {
 		}
 
 		if got != int64(len(responseBody)+1) {
-			t.Errorf("[%v] Wrong respone size, got %d, expected %d", testCase, got, len(responseBody))
+			t.Errorf("[%v] Wrong response size, got %d, expected %d", testCase, got, len(responseBody))
 		}
 	}
 }
@@ -177,7 +177,7 @@ func TestFileReader(t *testing.T) {
 		}
 
 		if got != testCase.size {
-			t.Errorf("[%v] Wrong respone size, got %d, expected %d", testCase, got, testCase.size)
+			t.Errorf("[%v] Wrong response size, got %d, expected %d", testCase, got, testCase.size)
 		}
 	}
 }

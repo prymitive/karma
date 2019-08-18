@@ -37,7 +37,7 @@ type LabelColors struct {
 // LabelsColorMap is a map of "Label Key" -> "Label Value" -> karmaLabelColors
 type LabelsColorMap map[string]map[string]LabelColors
 
-// LabelsCountMap is a map of "Label Key" -> "Label Value" -> number of occurence
+// LabelsCountMap is a map of "Label Key" -> "Label Value" -> number of occurrence
 type LabelsCountMap map[string]map[string]int
 
 type LabelValueStats struct {
@@ -304,7 +304,7 @@ type AlertsResponse struct {
 }
 
 // Autocomplete is the structure of autocomplete object for filter hints
-// this is internal represenation, not what's returned to the user
+// this is internal representation, not what's returned to the user
 type Autocomplete struct {
 	Value  string   `json:"value"`
 	Tokens []string `json:"tokens"`

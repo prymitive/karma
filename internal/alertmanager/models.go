@@ -194,7 +194,7 @@ func (am *Alertmanager) pullSilences(version string) error {
 	return nil
 }
 
-// PublicURI is the URI of this Alertmanager we put in JSON reponse
+// PublicURI is the URI of this Alertmanager we put in JSON response
 // it's either real full URI or a proxy relative URI
 func (am *Alertmanager) PublicURI() string {
 	if am.ProxyRequests {

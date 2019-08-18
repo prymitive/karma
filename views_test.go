@@ -324,7 +324,7 @@ var acTests = []acTestCase{
 			"job!=node_exporter",
 		},
 	},
-	// duplicated to test reponse caching
+	// duplicated to test response caching
 	{
 		Term: "Nod",
 		Results: []string{
