@@ -131,7 +131,7 @@ func alerts(c *gin.Context) {
 	start := time.Now()
 	ts, _ := start.UTC().MarshalText()
 
-	// intialize response object, set fields that don't require any locking
+	// initialize response object, set fields that don't require any locking
 	resp := models.AlertsResponse{}
 	resp.Status = "success"
 	resp.Timestamp = string(ts)

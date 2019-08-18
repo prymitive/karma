@@ -11,6 +11,11 @@ linters:
     - scopelint
     - maligned
     - goimports
+    - goconst
+    - misspell
+    - unparam
+    - nakedret
+    - prealloc
 
 linters-settings:
   govet:
