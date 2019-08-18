@@ -178,6 +178,7 @@ func TestProxyHeaders(t *testing.T) {
 	defer httpmock.DeactivateAndReset()
 
 	for _, testCase := range proxyHeaderTests {
+		testCase := testCase //scopelint pin
 		r := ginTestEngine()
 		am, err := alertmanager.NewAlertmanager(
 			"dummy",

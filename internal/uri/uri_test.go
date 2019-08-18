@@ -31,8 +31,8 @@ func getFileSize(path string) int64 {
 
 type httpTransportTest struct {
 	timeout   time.Duration
-	useTLS    bool
 	tlsConfig *tls.Config
+	useTLS    bool
 	failed    bool
 	headers   map[string]string
 }

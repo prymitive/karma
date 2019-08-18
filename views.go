@@ -230,6 +230,7 @@ func alerts(c *gin.Context) {
 		}
 
 		for _, alert := range ag.Alerts {
+			alert := alert // scopelint pin
 			results := []bool{}
 			if validFilters {
 				for _, filter := range matchFilters {

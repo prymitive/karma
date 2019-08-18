@@ -182,6 +182,7 @@ func (am *Alertmanager) pullSilences(version string) error {
 	log.Infof("[%s] Detecting JIRA links in silences (%d)", am.Name, len(silences))
 	silenceMap := map[string]models.Silence{}
 	for _, silence := range silences {
+		silence := silence // scopelint pin
 		silence.JiraID, silence.JiraURL = transform.DetectJIRAs(&silence)
 		silenceMap[silence.ID] = silence
 	}

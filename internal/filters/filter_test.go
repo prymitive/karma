@@ -15,9 +15,9 @@ import (
 type filterTest struct {
 	Expression string
 	IsValid    bool
+	IsMatch    bool
 	Alert      models.Alert
 	Silence    models.Silence
-	IsMatch    bool
 }
 
 var tests = []filterTest{
