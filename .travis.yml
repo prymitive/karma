@@ -133,9 +133,10 @@ jobs:
         # compile assets via webpack and build those into bindata_assetfs.go file
         - travis_retry make bindata_assetfs.go
         # and now compile using bakelite for all target archs
-        - travis_retry go install github.com/terinjokes/bakelite
+        - travis_retry go install github.com/mitchellh/gox
         - export SOURCE_DATE_EPOCH=$(git show -s --format=%ci ${TRAVIS_TAG:-${TRAVIS_COMMIT}}^{commit})
-        - bakelite -platforms="-plan9" -ldflags="-X main.version=\"$(make show-version)\"" github.com/prymitive/karma
+        - export PLATFORMS="darwin/386 darwin/amd64 dragonfly/amd64 freebsd/386 freebsd/amd64 freebsd/arm linux/386 linux/amd64 linux/arm linux/arm64 linux/mips64 linux/mips64le linux/ppc64 linux/ppc64le linux/s390x netbsd/386 netbsd/amd64 netbsd/arm openbsd/386 openbsd/amd64 windows/386 windows/amd64"
+        - gox -verbose -output="{{.Dir}}-{{.OS}}-{{.Arch}}-$(make show-version)" -ldflags="-X main.version=\"$(make show-version)\"" -osarch "${PLATFORMS}" -parallel=2
         - for i in karma-*; do tar --mtime="${SOURCE_DATE_EPOCH}" --owner=0 --group=0 --numeric-owner -c $i | gzip -n - > $i.tar.gz; done
         - shasum -a 512 karma-*.tar.gz | tee sha512sum.txt
         # verify that there are no uncommited changes

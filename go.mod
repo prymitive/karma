@@ -23,6 +23,7 @@ require (
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.4
 	github.com/mcuadros/go-gin-prometheus v0.1.1-0.20190723203314-c7374e9082f8
+	github.com/mitchellh/gox v1.0.1
 	github.com/patrickmn/go-cache v2.1.0+incompatible
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0
@@ -31,7 +32,6 @@ require (
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/pflag v1.0.3
 	github.com/spf13/viper v1.4.0
-	github.com/terinjokes/bakelite v0.2.0
 	github.com/xlab/handysort v0.0.0-20150421192137-fb3537ed64a1 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v2 v2.2.2
