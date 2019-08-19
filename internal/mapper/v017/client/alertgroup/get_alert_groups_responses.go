@@ -24,21 +24,18 @@ type GetAlertGroupsReader struct {
 // ReadResponse reads a server response into the received o.
 func (o *GetAlertGroupsReader) ReadResponse(response runtime.ClientResponse, consumer runtime.Consumer) (interface{}, error) {
 	switch response.Code() {
-
 	case 200:
 		result := NewGetAlertGroupsOK()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return result, nil
-
 	case 400:
 		result := NewGetAlertGroupsBadRequest()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
 			return nil, err
 		}
 		return nil, result
-
 	case 500:
 		result := NewGetAlertGroupsInternalServerError()
 		if err := result.readResponse(response, consumer, o.formats); err != nil {
@@ -68,6 +65,10 @@ func (o *GetAlertGroupsOK) Error() string {
 	return fmt.Sprintf("[GET /alerts/groups][%d] getAlertGroupsOK  %+v", 200, o.Payload)
 }
 
+func (o *GetAlertGroupsOK) GetPayload() models.AlertGroups {
+	return o.Payload
+}
+
 func (o *GetAlertGroupsOK) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -95,6 +96,10 @@ func (o *GetAlertGroupsBadRequest) Error() string {
 	return fmt.Sprintf("[GET /alerts/groups][%d] getAlertGroupsBadRequest  %+v", 400, o.Payload)
 }
 
+func (o *GetAlertGroupsBadRequest) GetPayload() string {
+	return o.Payload
+}
+
 func (o *GetAlertGroupsBadRequest) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {
 
 	// response payload
@@ -120,6 +125,10 @@ type GetAlertGroupsInternalServerError struct {
 
 func (o *GetAlertGroupsInternalServerError) Error() string {
 	return fmt.Sprintf("[GET /alerts/groups][%d] getAlertGroupsInternalServerError  %+v", 500, o.Payload)
+}
+
+func (o *GetAlertGroupsInternalServerError) GetPayload() string {
+	return o.Payload
 }
 
 func (o *GetAlertGroupsInternalServerError) readResponse(response runtime.ClientResponse, consumer runtime.Consumer, formats strfmt.Registry) error {

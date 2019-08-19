@@ -6,6 +6,8 @@ package silence
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"fmt"
+
 	"github.com/go-openapi/runtime"
 
 	strfmt "github.com/go-openapi/strfmt"
@@ -48,8 +50,14 @@ func (a *Client) DeleteSilence(params *DeleteSilenceParams) (*DeleteSilenceOK, e
 	if err != nil {
 		return nil, err
 	}
-	return result.(*DeleteSilenceOK), nil
-
+	success, ok := result.(*DeleteSilenceOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for deleteSilence: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -76,8 +84,14 @@ func (a *Client) GetSilence(params *GetSilenceParams) (*GetSilenceOK, error) {
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetSilenceOK), nil
-
+	success, ok := result.(*GetSilenceOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for getSilence: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -104,8 +118,14 @@ func (a *Client) GetSilences(params *GetSilencesParams) (*GetSilencesOK, error) 
 	if err != nil {
 		return nil, err
 	}
-	return result.(*GetSilencesOK), nil
-
+	success, ok := result.(*GetSilencesOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for getSilences: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 /*
@@ -132,8 +152,14 @@ func (a *Client) PostSilences(params *PostSilencesParams) (*PostSilencesOK, erro
 	if err != nil {
 		return nil, err
 	}
-	return result.(*PostSilencesOK), nil
-
+	success, ok := result.(*PostSilencesOK)
+	if ok {
+		return success, nil
+	}
+	// unexpected success response
+	// safeguard: normally, absent a default response, unknown success responses return an error above: so this is a codegen issue
+	msg := fmt.Sprintf("unexpected success response for postSilences: API contract not enforced by server. Client expected to get an error, but got: %T", result)
+	panic(msg)
 }
 
 // SetTransport changes the transport on the client
