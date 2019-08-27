@@ -119,7 +119,7 @@ jobs:
       script: travis_retry make docker-image
 
     - stage: Build and Deploy
-      if: repo = prymitive/karma AND type != pull_request
+      if: repo = prymitive/karma AND type != pull_request AND !(type = push AND branch = master)
       <<: *DEFAULTS_GO
       env:
         - DESC="Cross compile binaries"
