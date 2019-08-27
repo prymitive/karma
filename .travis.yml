@@ -108,7 +108,7 @@ jobs:
     - stage: Build and Deploy
       # we build and push docker image on merge and tag, so this should only
       # run for new branches, to test that they don't break docker builds
-      if: repo = prymitive/karma AND type != pull_request
+      if: repo = prymitive/karma AND type != pull_request AND !(type = push AND branch = master)
       language: generic
       addons:
         apt:
@@ -119,7 +119,7 @@ jobs:
       script: travis_retry make docker-image
 
     - stage: Build and Deploy
-      if: repo = prymitive/karma AND type != pull_request AND !(type = push AND branch = master)
+      if: repo = prymitive/karma AND type != pull_request
       <<: *DEFAULTS_GO
       env:
         - DESC="Cross compile binaries"
