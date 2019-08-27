@@ -19,6 +19,7 @@ func resetEnv() {
 	karmaEnvVariables := []string{
 		"ALERTMANAGER_INTERVAL",
 		"ALERTMANAGER_URI",
+		"ALERTMANAGER_EXTERNAL_URI",
 		"ALERTMANAGER_NAME",
 		"ALERTMANAGET_TIMEOUT",
 		"ANNOTATIONS_DEFAULT_HIDDEN",
@@ -58,6 +59,7 @@ func testReadConfig(t *testing.T) {
   servers:
   - name: default
     uri: http://localhost
+    external_uri: http://example.com
     timeout: 40s
     proxy: false
     tls:
@@ -155,6 +157,7 @@ func TestReadConfig(t *testing.T) {
 	log.SetLevel(log.ErrorLevel)
 	os.Setenv("ALERTMANAGER_INTERVAL", "1s")
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	os.Setenv("ALERTMANAGER_EXTERNAL_URI", "http://example.com")
 	os.Setenv("ANNOTATIONS_DEFAULT_HIDDEN", "true")
 	os.Setenv("ANNOTATIONS_VISIBLE", "summary")
 	os.Setenv("CUSTOM_CSS", "/custom.css")

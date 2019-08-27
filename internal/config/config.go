@@ -30,6 +30,8 @@ func init() {
 		"Name for the Alertmanager server (only used with simplified config)")
 	pflag.String("alertmanager.uri", "",
 		"Alertmanager server URI (only used with simplified config)")
+	pflag.String("alertmanager.external_uri", "",
+		"Alertmanager server URI used for web UI links (only used with simplified config)")
 	pflag.Duration("alertmanager.timeout", time.Second*40,
 		"Timeout for requests sent to the Alertmanager server (only used with simplified config)")
 	pflag.Bool("alertmanager.proxy", false,
@@ -247,11 +249,12 @@ func (config *configSchema) Read() {
 		log.Info("Using simple config with a single Alertmanager server")
 		config.Alertmanager.Servers = []alertmanagerConfig{
 			{
-				Name:    v.GetString("alertmanager.name"),
-				URI:     v.GetString("alertmanager.uri"),
-				Timeout: v.GetDuration("alertmanager.timeout"),
-				Proxy:   v.GetBool("alertmanager.proxy"),
-				Headers: make(map[string]string),
+				Name:        v.GetString("alertmanager.name"),
+				URI:         v.GetString("alertmanager.uri"),
+				ExternalURI: v.GetString("alertmanager.external_uri"),
+				Timeout:     v.GetDuration("alertmanager.timeout"),
+				Proxy:       v.GetBool("alertmanager.proxy"),
+				Headers:     make(map[string]string),
 			},
 		}
 	}
@@ -266,12 +269,13 @@ func (config *configSchema) LogValues() {
 	servers := []alertmanagerConfig{}
 	for _, s := range cfg.Alertmanager.Servers {
 		server := alertmanagerConfig{
-			Name:    s.Name,
-			URI:     uri.SanitizeURI(s.URI),
-			Timeout: s.Timeout,
-			TLS:     s.TLS,
-			Proxy:   s.Proxy,
-			Headers: s.Headers,
+			Name:        s.Name,
+			URI:         uri.SanitizeURI(s.URI),
+			ExternalURI: uri.SanitizeURI(s.ExternalURI),
+			Timeout:     s.Timeout,
+			TLS:         s.TLS,
+			Proxy:       s.Proxy,
+			Headers:     s.Headers,
 		}
 		servers = append(servers, server)
 	}
