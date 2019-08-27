@@ -3,6 +3,7 @@ package alertmanager
 import (
 	"fmt"
 	"net/http"
+	"net/url"
 	"sync"
 	"time"
 
@@ -23,6 +24,7 @@ var (
 func NewAlertmanager(name, upstreamURI string, opts ...Option) (*Alertmanager, error) {
 	am := &Alertmanager{
 		URI:            upstreamURI,
+		ExternalURI:    "",
 		RequestTimeout: time.Second * 10,
 		Name:           name,
 		lock:           sync.RWMutex{},
@@ -62,6 +64,10 @@ func NewAlertmanager(name, upstreamURI string, opts ...Option) (*Alertmanager, e
 func RegisterAlertmanager(am *Alertmanager) error {
 	if _, found := upstreams[am.Name]; found {
 		return fmt.Errorf("alertmanager upstream '%s' already exist", am.Name)
+	}
+
+	if am.ExternalURI != "" && am.ProxyRequests {
+		return fmt.Errorf("alertmanager upstream '%s' is configured with both proxy and external_uri, only one of those options can be enabled", am.Name)
 	}
 
 	for _, existingAM := range upstreams {
@@ -125,6 +131,19 @@ func WithHTTPHeaders(headers map[string]string) Option {
 func WithHTTPTransport(httpTransport http.RoundTripper) Option {
 	return func(am *Alertmanager) error {
 		am.HTTPTransport = httpTransport
+		return nil
+	}
+}
+
+// WithExternalURI option allows to set custom ExternalURI on our instance
+func WithExternalURI(uri string) Option {
+	return func(am *Alertmanager) error {
+		// first validate that this is a valid URI
+		_, err := url.Parse(uri)
+		if err != nil {
+			return err
+		}
+		am.ExternalURI = uri
 		return nil
 	}
 }

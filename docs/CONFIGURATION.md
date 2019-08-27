@@ -39,6 +39,7 @@ alertmanager:
   servers:
     - name: string
       uri: string
+      external_uri: string
       timeout: duration
       proxy: bool
       tls:
@@ -63,23 +64,28 @@ alertmanager:
   every alert in the UI and for filtering alerts using `@alertmanager=NAME`
   filter
 - `uri` - base URI of this Alertmanager server. Supported URI schemes are
-  `http://`, `https://` and `file://`. `file://` scheme is only useful for
-  testing with JSON files, see [mock](/internal/mock/) dir for examples, files
-  in this directory are used for running tests and when running demo instance
-  of karma with `make run`.
+  `http://` and `https://`.
   If URI contains basic auth info
   (`https://user:password@alertmanager.example.com`) and you don't want it to
-  be visible to users then ensure `proxy: true` is also set.
+  be visible to users then ensure `proxy: true` is also set in order to avoid
+  leaking auth information to the browser.
   Without proxy mode full URI needs to be passed to karma web UI code.
   With proxy mode all requests will be routed via karma HTTP server and since
   karma has full URI in the config it only needs Alertmanager name in that
   request.
-  `proxy: true` in order to avoid leaking auth information to the browser.
+  To set a different URI for all browser requests (can be any valid URI) see
+  `external_uri` option below.
+- `external_uri` - base URI of this Alertmanager server used for all browser
+  requests, which currently means requests sent to alertmanager when creating,
+  editing or deleting silences from karma web UI (unless proxy mode is set, see
+  above).
+  This option cannot be used when `proxy` is enabled.
 - `timeout` - timeout for requests send to this Alertmanager server, a string in
   [time.Duration](https://golang.org/pkg/time/#ParseDuration) format.
 - `proxy` - if enabled requests from user browsers to this Alertmanager will be
   proxied via karma. This applies to requests made when managing silences via
   karma (creating or expiring silences).
+  THis option cannot be used when `external_uri` is set.
 - `tls:ca` - path to CA certificate used to establish TLS connection to this
   Alertmanager instance (for URIs using `https://` scheme). If unset or empty
   string is set then Go will try to find system CA certificates using well known
@@ -738,6 +744,18 @@ Examples:
 ```shell
 ALERTMANAGER_URI=https://alertmanager.example.com karma
 karma --alertmanager.uri https://alertmanager.example.com
+```
+
+### Alertmanager external URI
+
+To set the `external_uri` key from `alertmanager.servers` map
+`ALERTMANAGER_EXTERNAL_URI` env or `--alertmanager.external_uri` flag can be
+used.
+Examples:
+
+```shell
+ALERTMANAGER_EXTERNAL_URI=https://alertmanager.example.com karma
+karma --alertmanager.external_uri https://alertmanager.example.com
 ```
 
 ### Alertmanager name

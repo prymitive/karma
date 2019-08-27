@@ -34,6 +34,7 @@ type alertmanagerMetrics struct {
 // Alertmanager represents Alertmanager upstream instance
 type Alertmanager struct {
 	URI            string        `json:"uri"`
+	ExternalURI    string        `json:"-"`
 	RequestTimeout time.Duration `json:"timeout"`
 	Name           string        `json:"name"`
 	// whenever this instance should be proxied
@@ -206,6 +207,9 @@ func (am *Alertmanager) PublicURI() string {
 			return uri + "/"
 		}
 		return uri
+	}
+	if am.ExternalURI != "" {
+		return am.ExternalURI
 	}
 	return am.URI
 }

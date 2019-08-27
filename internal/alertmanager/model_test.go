@@ -6,6 +6,7 @@ import (
 
 type uriTest struct {
 	rawURI    string
+	extURI    string
 	proxy     bool
 	publicURI string
 }
@@ -46,11 +47,35 @@ var uriTests = []uriTest{
 		proxy:     true,
 		publicURI: "/proxy/alertmanager/test",
 	},
+	{
+		rawURI:    "http://user:pass@alertmanager.example.com",
+		extURI:    "http://am.example.com",
+		proxy:     true,
+		publicURI: "/proxy/alertmanager/test",
+	},
+	{
+		rawURI:    "http://alertmanager.example.com",
+		extURI:    "http://am.example.com",
+		proxy:     true,
+		publicURI: "/proxy/alertmanager/test",
+	},
+	{
+		rawURI:    "http://user:pass@alertmanager.example.com",
+		extURI:    "http://am.example.com",
+		proxy:     false,
+		publicURI: "http://am.example.com",
+	},
+	{
+		rawURI:    "http://alertmanager.example.com",
+		extURI:    "http://am.example.com",
+		proxy:     false,
+		publicURI: "http://am.example.com",
+	},
 }
 
 func TestAlertmanagerURI(t *testing.T) {
 	for _, test := range uriTests {
-		am, err := NewAlertmanager("test", test.rawURI, WithProxy(test.proxy))
+		am, err := NewAlertmanager("test", test.rawURI, WithExternalURI(test.extURI), WithProxy(test.proxy))
 		if err != nil {
 			t.Error(err)
 		}

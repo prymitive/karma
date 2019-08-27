@@ -6,11 +6,12 @@ import (
 )
 
 type alertmanagerConfig struct {
-	Name    string
-	URI     string
-	Timeout time.Duration
-	Proxy   bool
-	TLS     struct {
+	Name        string
+	URI         string
+	ExternalURI string `yaml:"external_uri" mapstructure:"external_uri"`
+	Timeout     time.Duration
+	Proxy       bool
+	TLS         struct {
 		CA                 string
 		Cert               string
 		Key                string

@@ -126,6 +126,7 @@ func setupUpstreams() {
 		am, err := alertmanager.NewAlertmanager(
 			s.Name,
 			s.URI,
+			alertmanager.WithExternalURI(s.ExternalURI),
 			alertmanager.WithRequestTimeout(s.Timeout),
 			alertmanager.WithProxy(s.Proxy),
 			alertmanager.WithHTTPTransport(httpTransport), // we will pass a nil unless TLS.CA or TLS.Cert is set
