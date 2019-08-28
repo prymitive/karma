@@ -31,7 +31,6 @@ require (
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/pflag v1.0.3
 	github.com/spf13/viper v1.4.0
-	github.com/terinjokes/bakelite v0.2.0
 	github.com/xlab/handysort v0.0.0-20150421192137-fb3537ed64a1 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v2 v2.2.2

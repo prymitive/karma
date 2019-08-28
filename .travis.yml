@@ -124,19 +124,13 @@ jobs:
       env:
         - DESC="Cross compile binaries"
         - GO111MODULE=on
-      # disable cache so we always build from scratch
-      cache: false
       before_script:
         # this stage needs to build everything including assets file and that
         # requires running webpack, so we need nodejs here
         - travis_retry nvm install $(< .nvmrc)
       script:
-        # compile assets via webpack and build those into bindata_assetfs.go file
-        - travis_retry make bindata_assetfs.go
-        # and now compile using bakelite for all target archs
-        - travis_retry go install github.com/terinjokes/bakelite
         - export SOURCE_DATE_EPOCH=$(git show -s --format=%ci ${TRAVIS_TAG:-${TRAVIS_COMMIT}}^{commit})
-        - bakelite -platforms="-plan9" -ldflags="-X main.version=\"$(make show-version)\"" github.com/prymitive/karma
+        - make crosscompile -j 2
         - for i in karma-*; do tar --mtime="${SOURCE_DATE_EPOCH}" --owner=0 --group=0 --numeric-owner -c $i | gzip -n - > $i.tar.gz; done
         - shasum -a 512 karma-*.tar.gz | tee sha512sum.txt
         # verify that there are no uncommited changes

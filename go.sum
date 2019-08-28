@@ -405,8 +405,6 @@ github.com/stretchr/testify v1.2.2 h1:bSDNvY7ZPG5RlJ8otE/7V6gMiyenm9RtJ7IUVIAoJ1
 github.com/stretchr/testify v1.2.2/go.mod h1:a8OnRcib4nhh0OaRAV+Yts87kKdq0PP7pXfy6kDkUVs=
 github.com/stretchr/testify v1.3.0 h1:TivCn/peBQ7UY8ooIcPgZFpTNSz0Q2U6UrFlUfqbe0Q=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
-github.com/terinjokes/bakelite v0.2.0 h1:JGi8jKb3aJqICvSKnDOeitMW+bI+mGTamVLaXDx9KOM=
-github.com/terinjokes/bakelite v0.2.0/go.mod h1:0kyG4J0HmOjPP7UkdsV/6zaBfpd7ZpfB9kkUrfFI6Qw=
 github.com/tidwall/pretty v1.0.0 h1:HsD+QiTn7sK6flMKIvNmpqz1qrpP3Ps6jOKIKMooyg4=
 github.com/tidwall/pretty v1.0.0/go.mod h1:XNkn88O1ChpSDQmQeStsy+sBenx6DDtFZJxhVysOjyk=
 github.com/timakin/bodyclose v0.0.0-20190407043127-4a873e97b2bb h1:lI9ufgFfvuqRctP9Ny8lDDLbSWCMxBPletcSqrnyFYM=
