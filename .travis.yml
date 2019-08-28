@@ -50,6 +50,15 @@ jobs:
       after_success:
         - travis_retry curl -s --connect-timeout 30 --fail https://codecov.io/bash | bash -s -- -F ui
 
+    - stage: Test
+      name: Test Percy UI snapshots
+      if: repo = prymitive/karma AND type != pull_request
+      <<: *DEFAULTS_JS
+      env:
+        - NODE_ENV=test
+        - secure: "DTDy4as3DV3QUw6LWNInEh2iFXrsMuMnb+WRNSwORu8OcgyLKVNrQ5SwQLV1lm0RFTCEN+sSxjOJwQp5PXEgLXcT/MP5xfg2p3HDEj7k7GqJLI4OykYpdh7YHGaX+cAGsrjPfuWAf7pdBlYplEDdGHGkK9BLkBIx6owkzvw0Z8Je3+kTxRAae8vIXpzmgiN+NGzP14UF92tky+/ZS2aLrhqVbTpWEP5j0mEhOpy6Ebh31nCTuW2FA+8oD0HVckC/JTLbIGPQgpzLrdEEE/imjZB9Gx4022lkcuZjf8u+hRytgqKp93l01MPxHrGCZ9V18r3QFZCAXGtFh8dg8xSAvk1cvFfJUDHkW1XhaUdsLubGI7zDw111N+5Do9L3MjJ2jd1x7ZPUSJwKUGPeRw/7CsNDPtC2Pcmkdb3D0SNeH4ia/L43A9+e3nuJ6vthAkEd7zBIcp9diVJ2nyry0d5YdFQStezksJgFADOO/OleMyMhLTdqBUE7sFf7QtD6R9nhZuIe//3UGVRuTJJmDU8wZEzK8CUyhPjbnpMTMbyq8bIYIk96E5Nrxp65RDOv9pPpvPfHf0WvALn/fmwa79AUafugYDoAXokv1RqrU0L977MRwEDDkGOuO1civoudfNQ2sAh6SR1eaSp9AygJgvpodLy1lEJZm3VxffjrSNdoejU="
+      script: make test-percy
+
     - stage: Lint
       name: Lint git commit
       <<: *DEFAULTS_JS
