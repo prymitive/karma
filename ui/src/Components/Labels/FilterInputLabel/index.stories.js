@@ -1,4 +1,5 @@
 import React from "react";
+
 import { storiesOf } from "@storybook/react";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
@@ -21,7 +22,7 @@ storiesOf("FilterInputLabel", module)
     alertStore.filters.values = [filter];
     return <FilterInputLabel alertStore={alertStore} filter={filter} />;
   })
-  .add("Single applied => true", () => {
+  .add("applied => true without counter badge", () => {
     const alertStore = new AlertStore([]);
     alertStore.info.totalAlerts = 99;
     const filter = NewUnappliedFilter(`@state=active`);
@@ -30,7 +31,7 @@ storiesOf("FilterInputLabel", module)
     alertStore.filters.values = [filter];
     return <FilterInputLabel alertStore={alertStore} filter={filter} />;
   })
-  .add("Multiple applied => true", () => {
+  .add("applied => true with counter badge", () => {
     const alertStore = new AlertStore([]);
     const filter = NewUnappliedFilter(`@state=active`);
     filter.applied = true;
