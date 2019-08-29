@@ -6,6 +6,14 @@ defaults_go: &DEFAULTS_GO
       # https://restic.net/blog/2018-09-02/travis-build-cache
       - $HOME/.cache/go-build
       - $HOME/gopath/pkg/mod
+  before_cache:
+    # this log file is updated on every get/set operation
+    # so it forces new cache archive on every build
+    # remove it before creating cache archive
+    - rm -vf $HOME/.cache/go-build/log.txt
+    # force fixed mtime on all files so travis doesn't consider
+    # these as updated
+    - find $HOME/.cache/go-build/ -type f -exec touch -t 201909010000 {} \;
 
 defaults_js: &DEFAULTS_JS
   language: node_js
