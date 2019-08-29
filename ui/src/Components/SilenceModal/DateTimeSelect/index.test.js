@@ -4,6 +4,8 @@ import { mount, shallow } from "enzyme";
 
 import { advanceTo, clear } from "jest-date-mock";
 
+import toDiffableHtml from "diffable-html";
+
 import moment from "moment";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -51,6 +53,12 @@ describe("<DateTimeSelect />", () => {
     expect(tree.find(".tab-content").text()).toBe("366days0hours0minutes");
   });
 
+  it("'Duration' tab matches snapshot", () => {
+    advanceTo(new Date(2060, 1, 1, 0, 0, 0));
+    const tree = MountedDateTimeSelect();
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
   it("clicking on the 'Starts' tab switches content to 'startsAt' selection", () => {
     const tree = MountedDateTimeSelect();
     const tab = tree.find(".nav-link").at(0);
@@ -59,12 +67,32 @@ describe("<DateTimeSelect />", () => {
     expect(tree.find(".tab-content").text()).toMatch(/2060/);
   });
 
+  it("'Starts' tab matches snapshot", () => {
+    advanceTo(new Date(2060, 1, 1, 0, 0, 0));
+    const tree = MountedDateTimeSelect();
+    tree
+      .find(".nav-link")
+      .at(0)
+      .simulate("click");
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
   it("clicking on the 'Ends' tab switches content to 'endsAt' selection", () => {
     const tree = MountedDateTimeSelect();
     const tab = tree.find(".nav-link").at(1);
     expect(tab.text()).toMatch(/Ends/);
     tab.simulate("click");
     expect(tree.find(".tab-content").text()).toMatch(/2061/);
+  });
+
+  it("'Ends' tab matches snapshot", () => {
+    advanceTo(new Date(2060, 1, 1, 0, 0, 0));
+    const tree = MountedDateTimeSelect();
+    tree
+      .find(".nav-link")
+      .at(1)
+      .simulate("click");
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("clicking on the 'Duration' tabs switches content to duration selection", () => {
