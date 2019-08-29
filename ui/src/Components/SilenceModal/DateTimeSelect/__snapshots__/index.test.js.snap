@@ -1,0 +1,1055 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
+"
+<ul class=\\"nav nav-tabs nav-fill\\">
+  <li class=\\"nav-item\\">
+    <span class=\\"nav-link cursor-pointer \\">
+      <span class=\\"mr-1\\">
+        Starts
+      </span>
+      <span class=\\"badge badge-light\\">
+        now
+      </span>
+    </span>
+  </li>
+  <li class=\\"nav-item\\">
+    <span class=\\"nav-link cursor-pointer \\">
+      <span class=\\"mr-1\\">
+        Ends
+      </span>
+      <span class=\\"badge badge-light\\">
+        in 366d
+      </span>
+    </span>
+  </li>
+  <li class=\\"nav-item\\">
+    <span class=\\"nav-link cursor-pointer active\\">
+      <span class=\\"mr-1\\">
+        Duration
+      </span>
+      <span class=\\"badge badge-light\\">
+        366d
+      </span>
+    </span>
+  </li>
+</ul>
+<div class=\\"tab-content mb-3\\">
+  <div class=\\"d-flex flex-sm-row flex-column justify-content-around mt-2 mx-3\\">
+    <div>
+      <table class=\\"w-100\\">
+        <tbody>
+          <tr>
+            <td class=\\"w-50 text-center\\">
+              <span>
+                <svg aria-hidden=\\"true\\"
+                     focusable=\\"false\\"
+                     data-prefix=\\"fas\\"
+                     data-icon=\\"angle-up\\"
+                     class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                     role=\\"img\\"
+                     xmlns=\\"http://www.w3.org/2000/svg\\"
+                     viewbox=\\"0 0 320 512\\"
+                >
+                  <path fill=\\"currentColor\\"
+                        d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                  >
+                  </path>
+                </svg>
+              </span>
+            </td>
+            <td class=\\"w-50\\">
+            </td>
+          </tr>
+          <tr>
+            <td class=\\"w-50 text-center\\">
+              <h2>
+                366
+              </h2>
+            </td>
+            <td class=\\"w-50\\">
+              <span class=\\"text-muted ml-2\\">
+                days
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td class=\\"w-50 text-center\\">
+              <span>
+                <svg aria-hidden=\\"true\\"
+                     focusable=\\"false\\"
+                     data-prefix=\\"fas\\"
+                     data-icon=\\"angle-down\\"
+                     class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                     role=\\"img\\"
+                     xmlns=\\"http://www.w3.org/2000/svg\\"
+                     viewbox=\\"0 0 320 512\\"
+                >
+                  <path fill=\\"currentColor\\"
+                        d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                  >
+                  </path>
+                </svg>
+              </span>
+            </td>
+            <td class=\\"w-50\\">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <table class=\\"w-100\\">
+        <tbody>
+          <tr>
+            <td class=\\"w-50 text-center\\">
+              <span>
+                <svg aria-hidden=\\"true\\"
+                     focusable=\\"false\\"
+                     data-prefix=\\"fas\\"
+                     data-icon=\\"angle-up\\"
+                     class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                     role=\\"img\\"
+                     xmlns=\\"http://www.w3.org/2000/svg\\"
+                     viewbox=\\"0 0 320 512\\"
+                >
+                  <path fill=\\"currentColor\\"
+                        d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                  >
+                  </path>
+                </svg>
+              </span>
+            </td>
+            <td class=\\"w-50\\">
+            </td>
+          </tr>
+          <tr>
+            <td class=\\"w-50 text-center\\">
+              <h2>
+                0
+              </h2>
+            </td>
+            <td class=\\"w-50\\">
+              <span class=\\"text-muted ml-2\\">
+                hours
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td class=\\"w-50 text-center\\">
+              <span>
+                <svg aria-hidden=\\"true\\"
+                     focusable=\\"false\\"
+                     data-prefix=\\"fas\\"
+                     data-icon=\\"angle-down\\"
+                     class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                     role=\\"img\\"
+                     xmlns=\\"http://www.w3.org/2000/svg\\"
+                     viewbox=\\"0 0 320 512\\"
+                >
+                  <path fill=\\"currentColor\\"
+                        d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                  >
+                  </path>
+                </svg>
+              </span>
+            </td>
+            <td class=\\"w-50\\">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <table class=\\"w-100\\">
+        <tbody>
+          <tr>
+            <td class=\\"w-50 text-center\\">
+              <span>
+                <svg aria-hidden=\\"true\\"
+                     focusable=\\"false\\"
+                     data-prefix=\\"fas\\"
+                     data-icon=\\"angle-up\\"
+                     class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                     role=\\"img\\"
+                     xmlns=\\"http://www.w3.org/2000/svg\\"
+                     viewbox=\\"0 0 320 512\\"
+                >
+                  <path fill=\\"currentColor\\"
+                        d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                  >
+                  </path>
+                </svg>
+              </span>
+            </td>
+            <td class=\\"w-50\\">
+            </td>
+          </tr>
+          <tr>
+            <td class=\\"w-50 text-center\\">
+              <h2>
+                0
+              </h2>
+            </td>
+            <td class=\\"w-50\\">
+              <span class=\\"text-muted ml-2\\">
+                minutes
+              </span>
+            </td>
+          </tr>
+          <tr>
+            <td class=\\"w-50 text-center\\">
+              <span>
+                <svg aria-hidden=\\"true\\"
+                     focusable=\\"false\\"
+                     data-prefix=\\"fas\\"
+                     data-icon=\\"angle-down\\"
+                     class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                     role=\\"img\\"
+                     xmlns=\\"http://www.w3.org/2000/svg\\"
+                     viewbox=\\"0 0 320 512\\"
+                >
+                  <path fill=\\"currentColor\\"
+                        d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                  >
+                  </path>
+                </svg>
+              </span>
+            </td>
+            <td class=\\"w-50\\">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
+"
+<ul class=\\"nav nav-tabs nav-fill\\">
+  <li class=\\"nav-item\\">
+    <span class=\\"nav-link cursor-pointer \\">
+      <span class=\\"mr-1\\">
+        Starts
+      </span>
+      <span class=\\"badge badge-light\\">
+        now
+      </span>
+    </span>
+  </li>
+  <li class=\\"nav-item\\">
+    <span class=\\"nav-link cursor-pointer active\\">
+      <span class=\\"mr-1\\">
+        Ends
+      </span>
+      <span class=\\"badge badge-light\\">
+        in 366d
+      </span>
+    </span>
+  </li>
+  <li class=\\"nav-item\\">
+    <span class=\\"nav-link cursor-pointer \\">
+      <span class=\\"mr-1\\">
+        Duration
+      </span>
+      <span class=\\"badge badge-light\\">
+        366d
+      </span>
+    </span>
+  </li>
+</ul>
+<div class=\\"tab-content mb-3\\">
+  <div class=\\"d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2 \\">
+    <div class=\\"react-datepicker\\">
+      <div class=\\"react-datepicker__triangle\\">
+      </div>
+      <button type=\\"button\\"
+              class=\\"react-datepicker__navigation react-datepicker__navigation--previous\\"
+      >
+        Previous Month
+      </button>
+      <button type=\\"button\\"
+              class=\\"react-datepicker__navigation react-datepicker__navigation--next react-datepicker__navigation--next--with-today-button\\"
+      >
+        Next month
+      </button>
+      <div class=\\"react-datepicker__month-container\\">
+        <div class=\\"react-datepicker__header\\">
+          <div class=\\"react-datepicker__current-month\\">
+            February 2061
+          </div>
+          <div class=\\"react-datepicker__header__dropdown react-datepicker__header__dropdown--scroll\\">
+          </div>
+          <div class=\\"react-datepicker__day-names\\">
+            <div class=\\"react-datepicker__day-name\\">
+              Su
+            </div>
+            <div class=\\"react-datepicker__day-name\\">
+              Mo
+            </div>
+            <div class=\\"react-datepicker__day-name\\">
+              Tu
+            </div>
+            <div class=\\"react-datepicker__day-name\\">
+              We
+            </div>
+            <div class=\\"react-datepicker__day-name\\">
+              Th
+            </div>
+            <div class=\\"react-datepicker__day-name\\">
+              Fr
+            </div>
+            <div class=\\"react-datepicker__day-name\\">
+              Sa
+            </div>
+          </div>
+        </div>
+        <div class=\\"react-datepicker__month\\"
+             role=\\"listbox\\"
+             aria-label=\\"month-2061-02\\"
+        >
+          <div class=\\"react-datepicker__week\\">
+            <div class=\\"react-datepicker__day react-datepicker__day--030 react-datepicker__day--weekend react-datepicker__day--outside-month\\"
+                 aria-label=\\"day-30\\"
+                 role=\\"option\\"
+            >
+              30
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--031 react-datepicker__day--outside-month\\"
+                 aria-label=\\"day-31\\"
+                 role=\\"option\\"
+            >
+              31
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--selected\\"
+                 aria-label=\\"day-1\\"
+                 role=\\"option\\"
+            >
+              1
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--002\\"
+                 aria-label=\\"day-2\\"
+                 role=\\"option\\"
+            >
+              2
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--003\\"
+                 aria-label=\\"day-3\\"
+                 role=\\"option\\"
+            >
+              3
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--004\\"
+                 aria-label=\\"day-4\\"
+                 role=\\"option\\"
+            >
+              4
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--005 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-5\\"
+                 role=\\"option\\"
+            >
+              5
+            </div>
+          </div>
+          <div class=\\"react-datepicker__week\\">
+            <div class=\\"react-datepicker__day react-datepicker__day--006 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-6\\"
+                 role=\\"option\\"
+            >
+              6
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--007\\"
+                 aria-label=\\"day-7\\"
+                 role=\\"option\\"
+            >
+              7
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--008\\"
+                 aria-label=\\"day-8\\"
+                 role=\\"option\\"
+            >
+              8
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--009\\"
+                 aria-label=\\"day-9\\"
+                 role=\\"option\\"
+            >
+              9
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--010\\"
+                 aria-label=\\"day-10\\"
+                 role=\\"option\\"
+            >
+              10
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--011\\"
+                 aria-label=\\"day-11\\"
+                 role=\\"option\\"
+            >
+              11
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--012 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-12\\"
+                 role=\\"option\\"
+            >
+              12
+            </div>
+          </div>
+          <div class=\\"react-datepicker__week\\">
+            <div class=\\"react-datepicker__day react-datepicker__day--013 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-13\\"
+                 role=\\"option\\"
+            >
+              13
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--014\\"
+                 aria-label=\\"day-14\\"
+                 role=\\"option\\"
+            >
+              14
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--015\\"
+                 aria-label=\\"day-15\\"
+                 role=\\"option\\"
+            >
+              15
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--016\\"
+                 aria-label=\\"day-16\\"
+                 role=\\"option\\"
+            >
+              16
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--017\\"
+                 aria-label=\\"day-17\\"
+                 role=\\"option\\"
+            >
+              17
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--018\\"
+                 aria-label=\\"day-18\\"
+                 role=\\"option\\"
+            >
+              18
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--019 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-19\\"
+                 role=\\"option\\"
+            >
+              19
+            </div>
+          </div>
+          <div class=\\"react-datepicker__week\\">
+            <div class=\\"react-datepicker__day react-datepicker__day--020 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-20\\"
+                 role=\\"option\\"
+            >
+              20
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--021\\"
+                 aria-label=\\"day-21\\"
+                 role=\\"option\\"
+            >
+              21
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--022\\"
+                 aria-label=\\"day-22\\"
+                 role=\\"option\\"
+            >
+              22
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--023\\"
+                 aria-label=\\"day-23\\"
+                 role=\\"option\\"
+            >
+              23
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--024\\"
+                 aria-label=\\"day-24\\"
+                 role=\\"option\\"
+            >
+              24
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--025\\"
+                 aria-label=\\"day-25\\"
+                 role=\\"option\\"
+            >
+              25
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--026 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-26\\"
+                 role=\\"option\\"
+            >
+              26
+            </div>
+          </div>
+          <div class=\\"react-datepicker__week\\">
+            <div class=\\"react-datepicker__day react-datepicker__day--027 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-27\\"
+                 role=\\"option\\"
+            >
+              27
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--028\\"
+                 aria-label=\\"day-28\\"
+                 role=\\"option\\"
+            >
+              28
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--outside-month\\"
+                 aria-label=\\"day-1\\"
+                 role=\\"option\\"
+            >
+              1
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--002 react-datepicker__day--outside-month\\"
+                 aria-label=\\"day-2\\"
+                 role=\\"option\\"
+            >
+              2
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--003 react-datepicker__day--outside-month\\"
+                 aria-label=\\"day-3\\"
+                 role=\\"option\\"
+            >
+              3
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--004 react-datepicker__day--outside-month\\"
+                 aria-label=\\"day-4\\"
+                 role=\\"option\\"
+            >
+              4
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--005 react-datepicker__day--weekend react-datepicker__day--outside-month\\"
+                 aria-label=\\"day-5\\"
+                 role=\\"option\\"
+            >
+              5
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class=\\"react-datepicker__today-button\\">
+        Today
+      </div>
+    </div>
+    <table class=\\"text-center border-0 my-auto\\">
+      <tbody>
+        <tr>
+          <td>
+            <span>
+              <svg aria-hidden=\\"true\\"
+                   focusable=\\"false\\"
+                   data-prefix=\\"fas\\"
+                   data-icon=\\"angle-up\\"
+                   class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                   role=\\"img\\"
+                   xmlns=\\"http://www.w3.org/2000/svg\\"
+                   viewbox=\\"0 0 320 512\\"
+              >
+                <path fill=\\"currentColor\\"
+                      d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                >
+                </path>
+              </svg>
+            </span>
+          </td>
+          <td>
+          </td>
+          <td>
+            <span>
+              <svg aria-hidden=\\"true\\"
+                   focusable=\\"false\\"
+                   data-prefix=\\"fas\\"
+                   data-icon=\\"angle-up\\"
+                   class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                   role=\\"img\\"
+                   xmlns=\\"http://www.w3.org/2000/svg\\"
+                   viewbox=\\"0 0 320 512\\"
+              >
+                <path fill=\\"currentColor\\"
+                      d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                >
+                </path>
+              </svg>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h2>
+              00
+            </h2>
+          </td>
+          <td>
+            <h2 class=\\"mx-2\\">
+              :
+            </h2>
+          </td>
+          <td>
+            <h2>
+              00
+            </h2>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>
+              <svg aria-hidden=\\"true\\"
+                   focusable=\\"false\\"
+                   data-prefix=\\"fas\\"
+                   data-icon=\\"angle-down\\"
+                   class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                   role=\\"img\\"
+                   xmlns=\\"http://www.w3.org/2000/svg\\"
+                   viewbox=\\"0 0 320 512\\"
+              >
+                <path fill=\\"currentColor\\"
+                      d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                >
+                </path>
+              </svg>
+            </span>
+          </td>
+          <td>
+          </td>
+          <td>
+            <span>
+              <svg aria-hidden=\\"true\\"
+                   focusable=\\"false\\"
+                   data-prefix=\\"fas\\"
+                   data-icon=\\"angle-down\\"
+                   class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                   role=\\"img\\"
+                   xmlns=\\"http://www.w3.org/2000/svg\\"
+                   viewbox=\\"0 0 320 512\\"
+              >
+                <path fill=\\"currentColor\\"
+                      d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                >
+                </path>
+              </svg>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+"
+`;
+
+exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
+"
+<ul class=\\"nav nav-tabs nav-fill\\">
+  <li class=\\"nav-item\\">
+    <span class=\\"nav-link cursor-pointer active\\">
+      <span class=\\"mr-1\\">
+        Starts
+      </span>
+      <span class=\\"badge badge-light\\">
+        now
+      </span>
+    </span>
+  </li>
+  <li class=\\"nav-item\\">
+    <span class=\\"nav-link cursor-pointer \\">
+      <span class=\\"mr-1\\">
+        Ends
+      </span>
+      <span class=\\"badge badge-light\\">
+        in 366d
+      </span>
+    </span>
+  </li>
+  <li class=\\"nav-item\\">
+    <span class=\\"nav-link cursor-pointer \\">
+      <span class=\\"mr-1\\">
+        Duration
+      </span>
+      <span class=\\"badge badge-light\\">
+        366d
+      </span>
+    </span>
+  </li>
+</ul>
+<div class=\\"tab-content mb-3\\">
+  <div class=\\"d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2 \\">
+    <div class=\\"react-datepicker\\">
+      <div class=\\"react-datepicker__triangle\\">
+      </div>
+      <button type=\\"button\\"
+              class=\\"react-datepicker__navigation react-datepicker__navigation--next react-datepicker__navigation--next--with-today-button\\"
+      >
+        Next month
+      </button>
+      <div class=\\"react-datepicker__month-container\\">
+        <div class=\\"react-datepicker__header\\">
+          <div class=\\"react-datepicker__current-month\\">
+            February 2060
+          </div>
+          <div class=\\"react-datepicker__header__dropdown react-datepicker__header__dropdown--scroll\\">
+          </div>
+          <div class=\\"react-datepicker__day-names\\">
+            <div class=\\"react-datepicker__day-name\\">
+              Su
+            </div>
+            <div class=\\"react-datepicker__day-name\\">
+              Mo
+            </div>
+            <div class=\\"react-datepicker__day-name\\">
+              Tu
+            </div>
+            <div class=\\"react-datepicker__day-name\\">
+              We
+            </div>
+            <div class=\\"react-datepicker__day-name\\">
+              Th
+            </div>
+            <div class=\\"react-datepicker__day-name\\">
+              Fr
+            </div>
+            <div class=\\"react-datepicker__day-name\\">
+              Sa
+            </div>
+          </div>
+        </div>
+        <div class=\\"react-datepicker__month\\"
+             role=\\"listbox\\"
+             aria-label=\\"month-2060-02\\"
+        >
+          <div class=\\"react-datepicker__week\\">
+            <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--selected react-datepicker__day--today react-datepicker__day--weekend\\"
+                 aria-label=\\"day-1\\"
+                 role=\\"option\\"
+            >
+              1
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--002\\"
+                 aria-label=\\"day-2\\"
+                 role=\\"option\\"
+            >
+              2
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--003\\"
+                 aria-label=\\"day-3\\"
+                 role=\\"option\\"
+            >
+              3
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--004\\"
+                 aria-label=\\"day-4\\"
+                 role=\\"option\\"
+            >
+              4
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--005\\"
+                 aria-label=\\"day-5\\"
+                 role=\\"option\\"
+            >
+              5
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--006\\"
+                 aria-label=\\"day-6\\"
+                 role=\\"option\\"
+            >
+              6
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--007 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-7\\"
+                 role=\\"option\\"
+            >
+              7
+            </div>
+          </div>
+          <div class=\\"react-datepicker__week\\">
+            <div class=\\"react-datepicker__day react-datepicker__day--008 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-8\\"
+                 role=\\"option\\"
+            >
+              8
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--009\\"
+                 aria-label=\\"day-9\\"
+                 role=\\"option\\"
+            >
+              9
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--010\\"
+                 aria-label=\\"day-10\\"
+                 role=\\"option\\"
+            >
+              10
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--011\\"
+                 aria-label=\\"day-11\\"
+                 role=\\"option\\"
+            >
+              11
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--012\\"
+                 aria-label=\\"day-12\\"
+                 role=\\"option\\"
+            >
+              12
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--013\\"
+                 aria-label=\\"day-13\\"
+                 role=\\"option\\"
+            >
+              13
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--014 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-14\\"
+                 role=\\"option\\"
+            >
+              14
+            </div>
+          </div>
+          <div class=\\"react-datepicker__week\\">
+            <div class=\\"react-datepicker__day react-datepicker__day--015 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-15\\"
+                 role=\\"option\\"
+            >
+              15
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--016\\"
+                 aria-label=\\"day-16\\"
+                 role=\\"option\\"
+            >
+              16
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--017\\"
+                 aria-label=\\"day-17\\"
+                 role=\\"option\\"
+            >
+              17
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--018\\"
+                 aria-label=\\"day-18\\"
+                 role=\\"option\\"
+            >
+              18
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--019\\"
+                 aria-label=\\"day-19\\"
+                 role=\\"option\\"
+            >
+              19
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--020\\"
+                 aria-label=\\"day-20\\"
+                 role=\\"option\\"
+            >
+              20
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--021 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-21\\"
+                 role=\\"option\\"
+            >
+              21
+            </div>
+          </div>
+          <div class=\\"react-datepicker__week\\">
+            <div class=\\"react-datepicker__day react-datepicker__day--022 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-22\\"
+                 role=\\"option\\"
+            >
+              22
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--023\\"
+                 aria-label=\\"day-23\\"
+                 role=\\"option\\"
+            >
+              23
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--024\\"
+                 aria-label=\\"day-24\\"
+                 role=\\"option\\"
+            >
+              24
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--025\\"
+                 aria-label=\\"day-25\\"
+                 role=\\"option\\"
+            >
+              25
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--026\\"
+                 aria-label=\\"day-26\\"
+                 role=\\"option\\"
+            >
+              26
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--027\\"
+                 aria-label=\\"day-27\\"
+                 role=\\"option\\"
+            >
+              27
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--028 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-28\\"
+                 role=\\"option\\"
+            >
+              28
+            </div>
+          </div>
+          <div class=\\"react-datepicker__week\\">
+            <div class=\\"react-datepicker__day react-datepicker__day--029 react-datepicker__day--weekend\\"
+                 aria-label=\\"day-29\\"
+                 role=\\"option\\"
+            >
+              29
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--outside-month\\"
+                 aria-label=\\"day-1\\"
+                 role=\\"option\\"
+            >
+              1
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--002 react-datepicker__day--outside-month\\"
+                 aria-label=\\"day-2\\"
+                 role=\\"option\\"
+            >
+              2
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--003 react-datepicker__day--outside-month\\"
+                 aria-label=\\"day-3\\"
+                 role=\\"option\\"
+            >
+              3
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--004 react-datepicker__day--outside-month\\"
+                 aria-label=\\"day-4\\"
+                 role=\\"option\\"
+            >
+              4
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--005 react-datepicker__day--outside-month\\"
+                 aria-label=\\"day-5\\"
+                 role=\\"option\\"
+            >
+              5
+            </div>
+            <div class=\\"react-datepicker__day react-datepicker__day--006 react-datepicker__day--weekend react-datepicker__day--outside-month\\"
+                 aria-label=\\"day-6\\"
+                 role=\\"option\\"
+            >
+              6
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class=\\"react-datepicker__today-button\\">
+        Today
+      </div>
+    </div>
+    <table class=\\"text-center border-0 my-auto\\">
+      <tbody>
+        <tr>
+          <td>
+            <span>
+              <svg aria-hidden=\\"true\\"
+                   focusable=\\"false\\"
+                   data-prefix=\\"fas\\"
+                   data-icon=\\"angle-up\\"
+                   class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                   role=\\"img\\"
+                   xmlns=\\"http://www.w3.org/2000/svg\\"
+                   viewbox=\\"0 0 320 512\\"
+              >
+                <path fill=\\"currentColor\\"
+                      d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                >
+                </path>
+              </svg>
+            </span>
+          </td>
+          <td>
+          </td>
+          <td>
+            <span>
+              <svg aria-hidden=\\"true\\"
+                   focusable=\\"false\\"
+                   data-prefix=\\"fas\\"
+                   data-icon=\\"angle-up\\"
+                   class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                   role=\\"img\\"
+                   xmlns=\\"http://www.w3.org/2000/svg\\"
+                   viewbox=\\"0 0 320 512\\"
+              >
+                <path fill=\\"currentColor\\"
+                      d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                >
+                </path>
+              </svg>
+            </span>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <h2>
+              00
+            </h2>
+          </td>
+          <td>
+            <h2 class=\\"mx-2\\">
+              :
+            </h2>
+          </td>
+          <td>
+            <h2>
+              00
+            </h2>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>
+              <svg aria-hidden=\\"true\\"
+                   focusable=\\"false\\"
+                   data-prefix=\\"fas\\"
+                   data-icon=\\"angle-down\\"
+                   class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                   role=\\"img\\"
+                   xmlns=\\"http://www.w3.org/2000/svg\\"
+                   viewbox=\\"0 0 320 512\\"
+              >
+                <path fill=\\"currentColor\\"
+                      d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                >
+                </path>
+              </svg>
+            </span>
+          </td>
+          <td>
+          </td>
+          <td>
+            <span>
+              <svg aria-hidden=\\"true\\"
+                   focusable=\\"false\\"
+                   data-prefix=\\"fas\\"
+                   data-icon=\\"angle-down\\"
+                   class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                   role=\\"img\\"
+                   xmlns=\\"http://www.w3.org/2000/svg\\"
+                   viewbox=\\"0 0 320 512\\"
+              >
+                <path fill=\\"currentColor\\"
+                      d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                >
+                </path>
+              </svg>
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+"
+`;
