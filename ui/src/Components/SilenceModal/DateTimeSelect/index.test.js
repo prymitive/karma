@@ -162,22 +162,19 @@ const ValidateTimeButton = (
   expect(diffMS).toBe(expectedDiff);
 };
 
-const ShallowTabContentStart = () => {
-  return shallow(<TabContentStart silenceFormStore={silenceFormStore} />);
-};
-
 const MountedTabContentStart = () => {
   return mount(<TabContentStart silenceFormStore={silenceFormStore} />);
 };
 
 describe("<TabContentStart />", () => {
   it("selecting date on DatePicker updates startsAt", () => {
-    const tree = ShallowTabContentStart();
-    const picker = tree.find("DatePicker");
-    const startsAt = moment([2063, 10, 10, 0, 1, 2]);
-    picker.simulate("change", startsAt);
+    const tree = MountedTabContentStart();
     expect(silenceFormStore.data.startsAt.toISOString()).toBe(
-      startsAt.toISOString()
+      moment([2060, 1, 1, 0, 0, 0]).toISOString()
+    );
+    tree.find("div.react-datepicker__day--018").simulate("click");
+    expect(silenceFormStore.data.startsAt.toISOString()).toBe(
+      moment([2060, 1, 18, 0, 0, 0]).toISOString()
     );
   });
 
@@ -202,22 +199,19 @@ describe("<TabContentStart />", () => {
   });
 });
 
-const ShallowTabContentEnd = () => {
-  return shallow(<TabContentEnd silenceFormStore={silenceFormStore} />);
-};
-
 const MountedTabContentEnd = () => {
   return mount(<TabContentEnd silenceFormStore={silenceFormStore} />);
 };
 
 describe("<TabContentEnd />", () => {
   it("Selecting date on DatePicker updates endsAt", () => {
-    const tree = ShallowTabContentEnd();
-    const picker = tree.find("DatePicker");
-    const endsAt = moment([2063, 11, 5, 1, 3, 2]);
-    picker.simulate("change", endsAt);
+    const tree = MountedTabContentEnd();
     expect(silenceFormStore.data.endsAt.toISOString()).toBe(
-      endsAt.toISOString()
+      moment([2061, 1, 1, 0, 0, 0]).toISOString()
+    );
+    tree.find("div.react-datepicker__day--024").simulate("click");
+    expect(silenceFormStore.data.endsAt.toISOString()).toBe(
+      moment([2061, 1, 24, 0, 0, 0]).toISOString()
     );
   });
 
