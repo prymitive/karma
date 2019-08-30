@@ -33,14 +33,14 @@ jobs:
         - travis_retry make mock-assets
       script: make test-go
       after_success:
-        - travis_retry bash <(curl -s https://codecov.io/bash) -F backend
+        - travis_retry curl -s --fail https://codecov.io/bash | bash -s -- -F backend
 
     - stage: Test
       name: Test JavaScript code
       <<: *DEFAULTS_JS
       script: make test-js
       after_success:
-        - travis_retry bash <(curl -s https://codecov.io/bash) -F ui -s ui
+        - travis_retry curl -s --fail https://codecov.io/bash | bash -s -- -F ui
 
     # duplicate js test but with a different time zone, to ensure that tests/code work with non-UTC time zone
     - stage: Test
@@ -51,7 +51,7 @@ jobs:
         - TZ=Pacific/Easter
       script: make test-js
       after_success:
-        - travis_retry bash <(curl -s https://codecov.io/bash) -F ui -s ui
+        - travis_retry curl -s --fail https://codecov.io/bash | bash -s -- -F ui
 
     - stage: Lint
       name: Lint git commit
@@ -74,6 +74,15 @@ jobs:
         - make format-go
         - git diff --exit-code
 
+    - state: Lint
+      name: Verify go.sum
+      <<: *DEFAULTS_GO
+      script:
+        - travis_retry make mock-assets
+        - travis_retry go get -d -v
+        - travis_retry go mod tidy
+        - git diff --exit-code
+
     - stage: Lint
       name: Lint JavaScript code
       <<: *DEFAULTS_JS
@@ -90,15 +99,6 @@ jobs:
       name: Lint documentation
       <<: *DEFAULTS_JS
       script: make lint-docs
-
-    - state: Lint
-      name: Verify go.sum
-      <<: *DEFAULTS_GO
-      script:
-        - travis_retry make mock-assets
-        - travis_retry go get -d -v
-        - travis_retry go mod tidy
-        - git diff --exit-code
 
     - stage: Build and Deploy
       name: Build docker image
@@ -194,5 +194,5 @@ jobs:
         - travis_retry docker login -u _ -p "$HEROKU_TOKEN" registry.heroku.com
         - travis_retry docker push registry.heroku.com/karma-demo/web
         # bundled heroku cli doesn't know anything about containers, update it
-        - travis_retry curl https://cli-assets.heroku.com/install.sh | sh
+        - travis_retry curl -s --fail https://cli-assets.heroku.com/install.sh | sh
         - travis_retry /usr/local/bin/heroku container:release web --app karma-demo
