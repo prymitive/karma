@@ -6,14 +6,6 @@ defaults_go: &DEFAULTS_GO
       # https://restic.net/blog/2018-09-02/travis-build-cache
       - $HOME/.cache/go-build
       - $HOME/gopath/pkg/mod
-  before_cache:
-    # this log file is updated on every get/set operation
-    # so it forces new cache archive on every build
-    # remove it before creating cache archive
-    - rm -vf $HOME/.cache/go-build/log.txt
-    # force fixed mtime on all files so travis doesn't consider
-    # these as updated
-    - find $HOME/.cache/go-build/ -type f -exec touch -t 201909010000 {} \;
   env:
     - GO111MODULE=on
 
@@ -34,7 +26,9 @@ jobs:
       <<: *DEFAULTS_GO
       before_script:
         - travis_retry make mock-assets
-      script: make test-go
+      script:
+        - make test-go
+        - rm -vf $HOME/.cache/go-build/log.txt
       after_success:
         - travis_retry bash <(curl -s https://codecov.io/bash) -F backend
 
@@ -66,7 +60,9 @@ jobs:
       <<: *DEFAULTS_GO
       before_script:
         - travis_retry make mock-assets
-      script: make lint-go
+      script:
+        - make lint-go
+        - rm -vf $HOME/.cache/go-build/log.txt
 
     - stage: Lint
       name: Check Go code formatting
@@ -76,6 +72,7 @@ jobs:
       script:
         - make format-go
         - git diff --exit-code
+        - rm -vf $HOME/.cache/go-build/log.txt
 
     - stage: Lint
       name: Lint JavaScript code
@@ -102,6 +99,7 @@ jobs:
         - travis_retry go get -d -v
         - travis_retry go mod tidy
         - git diff --exit-code
+        - rm -vf $HOME/.cache/go-build/log.txt
 
     - stage: Build and Deploy
       name: Build docker image
@@ -130,6 +128,7 @@ jobs:
         - shasum -a 512 karma-*.tar.gz | tee sha512sum.txt
         # verify that there are no uncommited changes
         - git diff --exit-code
+        - rm -vf $HOME/.cache/go-build/log.txt
       deploy:
         provider: releases
         api_key:
