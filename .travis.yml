@@ -74,6 +74,15 @@ jobs:
         - make format-go
         - git diff --exit-code
 
+    - state: Lint
+      name: Verify go.sum
+      <<: *DEFAULTS_GO
+      script:
+        - travis_retry make mock-assets
+        - travis_retry go get -d -v
+        - travis_retry go mod tidy
+        - git diff --exit-code
+
     - stage: Lint
       name: Lint JavaScript code
       <<: *DEFAULTS_JS
@@ -90,15 +99,6 @@ jobs:
       name: Lint documentation
       <<: *DEFAULTS_JS
       script: make lint-docs
-
-    - state: Lint
-      name: Verify go.sum
-      <<: *DEFAULTS_GO
-      script:
-        - travis_retry make mock-assets
-        - travis_retry go get -d -v
-        - travis_retry go mod tidy
-        - git diff --exit-code
 
     - stage: Build and Deploy
       name: Build docker image
