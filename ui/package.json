@@ -59,7 +59,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "storybook": "start-storybook",
-    "snapshot": "build-storybook -s public && percy-storybook --widths=700,1280"
+    "snapshot": "build-storybook --quiet -s public && percy-storybook --widths=700,1280"
   },
   "devDependencies": {
     "@commitlint/travis-cli": "8.1.0",
