@@ -119,6 +119,11 @@ jobs:
       name: Cross compile binaries
       if: repo = prymitive/karma AND type != pull_request
       <<: *DEFAULTS_GO
+      env:
+        # add an extra env so we don't push cross compilation cache into the main archive
+        # as it slows down other jobs
+        - JOB=cc
+        - GO111MODULE=on
       before_script:
         # this stage needs to build everything including assets file and that
         # requires running webpack, so we need nodejs here
