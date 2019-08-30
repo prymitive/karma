@@ -11,9 +11,6 @@ defaults_go: &DEFAULTS_GO
     # so it forces new cache archive on every build
     # remove it before creating cache archive
     - rm -vf $HOME/.cache/go-build/log.txt
-    # force fixed mtime on all files so travis doesn't consider
-    # these as updated
-    - find $HOME/.cache/go-build/ -type f -exec touch -t 201909010000 {} \;
   env:
     - GO111MODULE=on
 
