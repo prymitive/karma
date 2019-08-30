@@ -14,6 +14,8 @@ defaults_go: &DEFAULTS_GO
     # force fixed mtime on all files so travis doesn't consider
     # these as updated
     - find $HOME/.cache/go-build/ -type f -exec touch -t 201909010000 {} \;
+  env:
+    - GO111MODULE=on
 
 defaults_js: &DEFAULTS_JS
   language: node_js
@@ -22,14 +24,14 @@ defaults_js: &DEFAULTS_JS
   cache:
     directories:
       - ui/node_modules
+  env:
+    - NODE_ENV=test
 
 jobs:
   include:
     - stage: Test
+      name: Test Go code
       <<: *DEFAULTS_GO
-      env:
-        - DESC="Test Go code"
-        - GO111MODULE=on
       before_script:
         - travis_retry make mock-assets
       script: make test-go
@@ -37,19 +39,17 @@ jobs:
         - travis_retry bash <(curl -s https://codecov.io/bash) -F backend
 
     - stage: Test
+      name: Test JavaScript code
       <<: *DEFAULTS_JS
-      env:
-        - DESC="Test JavaScript code"
-        - NODE_ENV=test
       script: make test-js
       after_success:
         - travis_retry bash <(curl -s https://codecov.io/bash) -F ui -s ui
 
     # duplicate js test but with a different time zone, to ensure that tests/code work with non-UTC time zone
     - stage: Test
+      name: Test JavaScript code with Pacific/Easter time zone
       <<: *DEFAULTS_JS
       env:
-        - DESC="Test JavaScript code with Pacific/Easter time zone"
         - NODE_ENV=test
         - TZ=Pacific/Easter
       script: make test-js
@@ -57,25 +57,20 @@ jobs:
         - travis_retry bash <(curl -s https://codecov.io/bash) -F ui -s ui
 
     - stage: Lint
+      name: Lint git commit
       <<: *DEFAULTS_JS
-      env:
-        - DESC="Lint git commit"
       script: make lint-git-ci
 
     - stage: Lint
+      name: Lint Go code
       <<: *DEFAULTS_GO
-      env:
-        - DESC="Lint Go code"
-        - GO111MODULE=on
       before_script:
         - travis_retry make mock-assets
       script: make lint-go
 
     - stage: Lint
+      name: Check Go code formatting
       <<: *DEFAULTS_GO
-      env:
-        - DESC="Check Go code formatting"
-        - GO111MODULE=on
       before_script:
         - travis_retry make mock-assets
       script:
@@ -83,30 +78,25 @@ jobs:
         - git diff --exit-code
 
     - stage: Lint
+      name: Lint JavaScript code
       <<: *DEFAULTS_JS
-      env:
-        - DESC="Lint JavaScript code"
       script: make lint-js
 
     - stage: Lint
+      name: Check JavaScript code formatting
       <<: *DEFAULTS_JS
-      env:
-        - DESC="Check JavaScript code formatting"
       script:
         - make format-js
         - git diff --exit-code
 
     - stage: Lint
+      name: Lint documentation
       <<: *DEFAULTS_JS
-      env:
-        - DESC="Lint documentation"
       script: make lint-docs
 
     - state: Lint
+      name: Verify go.sum
       <<: *DEFAULTS_GO
-      env:
-        - DESC="Verify go.sum"
-        - GO111MODULE=on
       script:
         - travis_retry make mock-assets
         - travis_retry go get -d -v
@@ -114,6 +104,7 @@ jobs:
         - git diff --exit-code
 
     - stage: Build and Deploy
+      name: Build docker image
       # we build and push docker image on merge and tag, so this should only
       # run for new branches, to test that they don't break docker builds
       if: repo = prymitive/karma AND type != pull_request AND !(type = push AND branch = master)
@@ -122,16 +113,12 @@ jobs:
         apt:
           packages:
             - docker-ce
-      env:
-        - DESC="Build docker image"
       script: travis_retry make docker-image
 
     - stage: Build and Deploy
+      name: Cross compile binaries
       if: repo = prymitive/karma AND type != pull_request
       <<: *DEFAULTS_GO
-      env:
-        - DESC="Cross compile binaries"
-        - GO111MODULE=on
       before_script:
         # this stage needs to build everything including assets file and that
         # requires running webpack, so we need nodejs here
@@ -157,6 +144,7 @@ jobs:
           tags: true
 
     - stage: Build and Deploy
+      name: Build and push docker image
       if: repo = prymitive/karma AND ((type = push AND branch = master) OR tag IS present)
       language: generic
       addons:
@@ -164,7 +152,6 @@ jobs:
           packages:
             - docker-ce
       env:
-        - DESC="Build and push docker image"
         # DOCKER_PASSWORD
         - secure: "XULRlOHN17A1KUSzST1TKo5UQtSS0/T6y2Rp88gJ/jDOraFKW3IuGHBM3uE3uALBUfrLnB6DGrrtS1x3hvWSvpnBmNmCK94qGYpEppAU2b8+DfUGQqI1D7sa/FXAaxqkA6LDKxcdgbagd8kE/3gRmayjHeisCDPvy3BhVZVEfzSIaKilzXnHrCywEpB2DWRUsYkdZdw2tG674626ZcMwJUajkeW4fxmvWYrskE92+7MSuz9DExxYWLLah12+Ug1URD1UWyFeIdMK0z3S0bN4Bsd+RT0ScDelRMhad5sTTqGWbLC3nr10aMRYzXYhp2pUBPtK2abby4KebY8hToxf6Dr8f7Nz4BRA3nqwp/7Q79hloU7IYdtnvSdvMp3Pc3YDsHiYqAO+G/jfX2j4t8CGIk3hHDUZ+4/PnYddV+OFR8CujH4Wq85FzHPyfRmZuB6MdPQQEtW4B/Mmf3qsTYXZIwDSKU2fnJM6eEnDW7vZIb55Y8nFC4x8b4fVyY7/wSQgDVtd933BmYDUxYo9AjjAfigLBE30zalr/TFibIRWUewoYqvJJ803AJU/M54vzQQ9l9ypoNadGgHa0PuPrnza9WufHGNkm7jRfhKFDUi/RvdFX8u7NtTpB9bAk/Mk+9qcLIkVnm+9SCcA80KR9LLwp8SZChBMHNnNTs47T0cDzNI="
       script:
@@ -181,12 +168,12 @@ jobs:
         - travis_retry docker push "${IMAGE_NAME}"
 
     - stage: Build and Deploy
+      name: Deploy demo app to Heroku
       # deploy on every job that isn't a PR, this way we:
       # * don't deploy on PRs send from forks, only internal
       # * deploy only once per PR - since we will deploy on branch job
       if: repo = prymitive/karma AND type != pull_request
       env:
-        - DESC="Deploy demo app to Heroku"
         # HEROKU_TOKEN, valid forever, needed to push docker image and release
         # it on heroku app
         - secure: "zr1fHhSIZQgA7wT8PALNyAhilCZBpvziL2zuC7LJvYy9PSHatV1B+/Tl5Ao1MGlqiD9wHdRXhw/Z7Ol7vR84LlEXIQv/PZvpYtdGrwP/dmwEzRi59puNHW/sDa5fU27U5bgGW9VPYKzQFGBIknRz9yEpGAsDqzWSRwEQofgnuF1Cv0JJXN/tcZs/fcXz4AhFSXRb8Rde2geHRVGlz3UnuECQ9LnzTI/xxIP/+YORvMpTcwJtQwq/NhucYXzms19XM94xz5IE/cwf8yV9YZalm867aR2yQJvkMmOaufSYoFgRrghqnpzEe1wyuZvAXkwwZErw5swBY3Zo1YkGUeU761g3v+Nh+dlVKFaBVYgDt9W9bb1QsK1Lbgix4UYSx8Tz06X83xz2f6hWXS1Yvju7yE7M1VmjAhevWW+ZpTf3vwOH2UeUHyAMOddggMSIRfaxC9W74Trt8zxKlM+8sQiaEE3c6Ea+ZJxq1baDJvHQPdfuj2844uKaAL7qNVuRNRPAa0bp0qkzLyl3f5P3XK54mM4vayBRCQ+qflq+XGXY5G8+LukUNnKMq/KuPZZ1A6pOr3kTj4qKaxAcxOJQq4/xc+zJaiQFkzfMj1//LKMyvrRtqMnPV+P3qtgMGzA4Z3JlHUOgPHgbZ9WTlpV5yi066Onro+j2NFehjY+FV6R2gOI="
