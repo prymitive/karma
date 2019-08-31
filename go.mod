@@ -1,5 +1,7 @@
 module github.com/prymitive/karma
 
+go 1.12
+
 require (
 	github.com/DeanThompson/ginpprof v0.0.0-20190408070748-3be636683586
 	github.com/blang/semver v3.6.1+incompatible
