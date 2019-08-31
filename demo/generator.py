@@ -398,6 +398,21 @@ class SilencedAlertWithJiraLink(AlertGenerator):
         ]
 
 
+class PaginationTest(AlertGenerator):
+    name = "Pagination Test"
+    comment = "Huge number of alerts to test pagination & lazy load"
+
+    def alerts(self):
+        return [
+            newAlert(
+                self._labels(instance="server{}".format(i), cluster="dev",
+                             severity="warning", job="node_exporter",
+                             region="US"),
+                self._annotations(dashboard="https://example.com")
+            ) for i in xrange(0, 1000)
+        ]
+
+
 if __name__ == "__main__":
     generators = [
         AlwaysOnAlert(MAX_INTERVAL),
@@ -412,6 +427,7 @@ if __name__ == "__main__":
         InhibitedAlert(MAX_INTERVAL),
         InhibitingAlert(MAX_INTERVAL),
         SilencedAlertWithJiraLink(MAX_INTERVAL),
+        PaginationTest(MAX_INTERVAL),
     ]
     while True:
         for g in generators:

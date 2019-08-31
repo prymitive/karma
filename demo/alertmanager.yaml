@@ -12,6 +12,11 @@ route:
       match_re:
         alertname: .*
       continue: true
+    - receiver: "pagination"
+      group_by: ["alertname", "instance"]
+      match_re:
+        alertname: Pagination Test
+      continue: false
     - receiver: "by-cluster-service"
       group_by: ["alertname", "cluster", "service"]
       match_re:
@@ -38,6 +43,7 @@ inhibit_rules:
 
 receivers:
   - name: "default"
+  - name: "pagination"
   - name: "by-cluster-service"
   - name: "by-name"
   - name: "by-cluster"
