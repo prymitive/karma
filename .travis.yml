@@ -76,7 +76,7 @@ jobs:
       <<: *DEFAULTS_GO
       script:
         - travis_retry make mock-assets
-        - travis_retry go get -d -v
+        - travis_retry go get -d -v ./cmd/karma
         - travis_retry go mod tidy
         - git diff --exit-code
 
