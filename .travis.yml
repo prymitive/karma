@@ -46,10 +46,7 @@ jobs:
     - stage: Test
       name: Test JavaScript code with Pacific/Easter time zone
       <<: *DEFAULTS_JS
-      env:
-        - NODE_ENV=test
-        - TZ=Pacific/Easter
-      script: make test-js
+      script: env TZ=Pacific/Easter make test-js
       after_success:
         - travis_retry curl -s --fail https://codecov.io/bash | bash -s -- -F ui
 
