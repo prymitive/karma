@@ -263,313 +263,315 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
 </ul>
 <div class=\\"tab-content mb-3\\">
   <div class=\\"d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2 \\">
-    <div class=\\"react-datepicker\\">
-      <div class=\\"react-datepicker__triangle\\">
-      </div>
-      <button type=\\"button\\"
-              class=\\"react-datepicker__navigation react-datepicker__navigation--previous\\"
-      >
-        Previous Month
-      </button>
-      <button type=\\"button\\"
-              class=\\"react-datepicker__navigation react-datepicker__navigation--next react-datepicker__navigation--next--with-today-button\\"
-      >
-        Next Month
-      </button>
-      <div class=\\"react-datepicker__month-container\\">
-        <div class=\\"react-datepicker__header\\">
-          <div class=\\"react-datepicker__current-month\\">
-            February 2061
-          </div>
-          <div class=\\"react-datepicker__header__dropdown react-datepicker__header__dropdown--scroll\\">
-          </div>
-          <div class=\\"react-datepicker__day-names\\">
-            <div class=\\"react-datepicker__day-name\\">
-              Su
-            </div>
-            <div class=\\"react-datepicker__day-name\\">
-              Mo
-            </div>
-            <div class=\\"react-datepicker__day-name\\">
-              Tu
-            </div>
-            <div class=\\"react-datepicker__day-name\\">
-              We
-            </div>
-            <div class=\\"react-datepicker__day-name\\">
-              Th
-            </div>
-            <div class=\\"react-datepicker__day-name\\">
-              Fr
-            </div>
-            <div class=\\"react-datepicker__day-name\\">
-              Sa
-            </div>
-          </div>
+    <div>
+      <div class=\\"react-datepicker\\">
+        <div class=\\"react-datepicker__triangle\\">
         </div>
-        <div class=\\"react-datepicker__month\\"
-             role=\\"listbox\\"
-             aria-label=\\"month-2061-02\\"
+        <button type=\\"button\\"
+                class=\\"react-datepicker__navigation react-datepicker__navigation--previous\\"
         >
-          <div class=\\"react-datepicker__week\\">
-            <div class=\\"react-datepicker__day react-datepicker__day--030 react-datepicker__day--weekend react-datepicker__day--outside-month\\"
-                 aria-label=\\"day-30\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              30
+          Previous Month
+        </button>
+        <button type=\\"button\\"
+                class=\\"react-datepicker__navigation react-datepicker__navigation--next react-datepicker__navigation--next--with-today-button\\"
+        >
+          Next Month
+        </button>
+        <div class=\\"react-datepicker__month-container\\">
+          <div class=\\"react-datepicker__header\\">
+            <div class=\\"react-datepicker__current-month\\">
+              February 2061
             </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--031 react-datepicker__day--outside-month\\"
-                 aria-label=\\"day-31\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              31
+            <div class=\\"react-datepicker__header__dropdown react-datepicker__header__dropdown--scroll\\">
             </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--selected\\"
-                 aria-label=\\"day-1\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              1
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--002\\"
-                 aria-label=\\"day-2\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              2
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--003\\"
-                 aria-label=\\"day-3\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              3
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--004\\"
-                 aria-label=\\"day-4\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              4
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--005 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-5\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              5
+            <div class=\\"react-datepicker__day-names\\">
+              <div class=\\"react-datepicker__day-name\\">
+                Su
+              </div>
+              <div class=\\"react-datepicker__day-name\\">
+                Mo
+              </div>
+              <div class=\\"react-datepicker__day-name\\">
+                Tu
+              </div>
+              <div class=\\"react-datepicker__day-name\\">
+                We
+              </div>
+              <div class=\\"react-datepicker__day-name\\">
+                Th
+              </div>
+              <div class=\\"react-datepicker__day-name\\">
+                Fr
+              </div>
+              <div class=\\"react-datepicker__day-name\\">
+                Sa
+              </div>
             </div>
           </div>
-          <div class=\\"react-datepicker__week\\">
-            <div class=\\"react-datepicker__day react-datepicker__day--006 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-6\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              6
+          <div class=\\"react-datepicker__month\\"
+               role=\\"listbox\\"
+               aria-label=\\"month-2061-02\\"
+          >
+            <div class=\\"react-datepicker__week\\">
+              <div class=\\"react-datepicker__day react-datepicker__day--030 react-datepicker__day--weekend react-datepicker__day--outside-month\\"
+                   aria-label=\\"day-30\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                30
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--031 react-datepicker__day--outside-month\\"
+                   aria-label=\\"day-31\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                31
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--selected\\"
+                   aria-label=\\"day-1\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                1
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--002\\"
+                   aria-label=\\"day-2\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                2
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--003\\"
+                   aria-label=\\"day-3\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                3
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--004\\"
+                   aria-label=\\"day-4\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                4
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--005 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-5\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                5
+              </div>
             </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--007\\"
-                 aria-label=\\"day-7\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              7
+            <div class=\\"react-datepicker__week\\">
+              <div class=\\"react-datepicker__day react-datepicker__day--006 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-6\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                6
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--007\\"
+                   aria-label=\\"day-7\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                7
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--008\\"
+                   aria-label=\\"day-8\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                8
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--009\\"
+                   aria-label=\\"day-9\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                9
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--010\\"
+                   aria-label=\\"day-10\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                10
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--011\\"
+                   aria-label=\\"day-11\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                11
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--012 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-12\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                12
+              </div>
             </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--008\\"
-                 aria-label=\\"day-8\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              8
+            <div class=\\"react-datepicker__week\\">
+              <div class=\\"react-datepicker__day react-datepicker__day--013 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-13\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                13
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--014\\"
+                   aria-label=\\"day-14\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                14
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--015\\"
+                   aria-label=\\"day-15\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                15
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--016\\"
+                   aria-label=\\"day-16\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                16
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--017\\"
+                   aria-label=\\"day-17\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                17
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--018\\"
+                   aria-label=\\"day-18\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                18
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--019 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-19\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                19
+              </div>
             </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--009\\"
-                 aria-label=\\"day-9\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              9
+            <div class=\\"react-datepicker__week\\">
+              <div class=\\"react-datepicker__day react-datepicker__day--020 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-20\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                20
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--021\\"
+                   aria-label=\\"day-21\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                21
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--022\\"
+                   aria-label=\\"day-22\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                22
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--023\\"
+                   aria-label=\\"day-23\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                23
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--024\\"
+                   aria-label=\\"day-24\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                24
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--025\\"
+                   aria-label=\\"day-25\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                25
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--026 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-26\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                26
+              </div>
             </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--010\\"
-                 aria-label=\\"day-10\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              10
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--011\\"
-                 aria-label=\\"day-11\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              11
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--012 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-12\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              12
-            </div>
-          </div>
-          <div class=\\"react-datepicker__week\\">
-            <div class=\\"react-datepicker__day react-datepicker__day--013 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-13\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              13
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--014\\"
-                 aria-label=\\"day-14\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              14
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--015\\"
-                 aria-label=\\"day-15\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              15
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--016\\"
-                 aria-label=\\"day-16\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              16
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--017\\"
-                 aria-label=\\"day-17\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              17
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--018\\"
-                 aria-label=\\"day-18\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              18
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--019 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-19\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              19
-            </div>
-          </div>
-          <div class=\\"react-datepicker__week\\">
-            <div class=\\"react-datepicker__day react-datepicker__day--020 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-20\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              20
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--021\\"
-                 aria-label=\\"day-21\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              21
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--022\\"
-                 aria-label=\\"day-22\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              22
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--023\\"
-                 aria-label=\\"day-23\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              23
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--024\\"
-                 aria-label=\\"day-24\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              24
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--025\\"
-                 aria-label=\\"day-25\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              25
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--026 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-26\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              26
-            </div>
-          </div>
-          <div class=\\"react-datepicker__week\\">
-            <div class=\\"react-datepicker__day react-datepicker__day--027 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-27\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              27
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--028\\"
-                 aria-label=\\"day-28\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              28
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--outside-month\\"
-                 aria-label=\\"day-1\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              1
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--002 react-datepicker__day--outside-month\\"
-                 aria-label=\\"day-2\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              2
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--003 react-datepicker__day--outside-month\\"
-                 aria-label=\\"day-3\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              3
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--004 react-datepicker__day--outside-month\\"
-                 aria-label=\\"day-4\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              4
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--005 react-datepicker__day--weekend react-datepicker__day--outside-month\\"
-                 aria-label=\\"day-5\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              5
+            <div class=\\"react-datepicker__week\\">
+              <div class=\\"react-datepicker__day react-datepicker__day--027 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-27\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                27
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--028\\"
+                   aria-label=\\"day-28\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                28
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--outside-month\\"
+                   aria-label=\\"day-1\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                1
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--002 react-datepicker__day--outside-month\\"
+                   aria-label=\\"day-2\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                2
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--003 react-datepicker__day--outside-month\\"
+                   aria-label=\\"day-3\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                3
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--004 react-datepicker__day--outside-month\\"
+                   aria-label=\\"day-4\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                4
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--005 react-datepicker__day--weekend react-datepicker__day--outside-month\\"
+                   aria-label=\\"day-5\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                5
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class=\\"react-datepicker__today-button\\">
-        Today
+        <div class=\\"react-datepicker__today-button\\">
+          Today
+        </div>
       </div>
     </div>
     <table class=\\"text-center border-0 my-auto\\">
@@ -714,308 +716,310 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
 </ul>
 <div class=\\"tab-content mb-3\\">
   <div class=\\"d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2 \\">
-    <div class=\\"react-datepicker\\">
-      <div class=\\"react-datepicker__triangle\\">
-      </div>
-      <button type=\\"button\\"
-              class=\\"react-datepicker__navigation react-datepicker__navigation--next react-datepicker__navigation--next--with-today-button\\"
-      >
-        Next Month
-      </button>
-      <div class=\\"react-datepicker__month-container\\">
-        <div class=\\"react-datepicker__header\\">
-          <div class=\\"react-datepicker__current-month\\">
-            February 2060
-          </div>
-          <div class=\\"react-datepicker__header__dropdown react-datepicker__header__dropdown--scroll\\">
-          </div>
-          <div class=\\"react-datepicker__day-names\\">
-            <div class=\\"react-datepicker__day-name\\">
-              Su
-            </div>
-            <div class=\\"react-datepicker__day-name\\">
-              Mo
-            </div>
-            <div class=\\"react-datepicker__day-name\\">
-              Tu
-            </div>
-            <div class=\\"react-datepicker__day-name\\">
-              We
-            </div>
-            <div class=\\"react-datepicker__day-name\\">
-              Th
-            </div>
-            <div class=\\"react-datepicker__day-name\\">
-              Fr
-            </div>
-            <div class=\\"react-datepicker__day-name\\">
-              Sa
-            </div>
-          </div>
+    <div>
+      <div class=\\"react-datepicker\\">
+        <div class=\\"react-datepicker__triangle\\">
         </div>
-        <div class=\\"react-datepicker__month\\"
-             role=\\"listbox\\"
-             aria-label=\\"month-2060-02\\"
+        <button type=\\"button\\"
+                class=\\"react-datepicker__navigation react-datepicker__navigation--next react-datepicker__navigation--next--with-today-button\\"
         >
-          <div class=\\"react-datepicker__week\\">
-            <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--selected react-datepicker__day--today react-datepicker__day--weekend\\"
-                 aria-label=\\"day-1\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              1
+          Next Month
+        </button>
+        <div class=\\"react-datepicker__month-container\\">
+          <div class=\\"react-datepicker__header\\">
+            <div class=\\"react-datepicker__current-month\\">
+              February 2060
             </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--002\\"
-                 aria-label=\\"day-2\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              2
+            <div class=\\"react-datepicker__header__dropdown react-datepicker__header__dropdown--scroll\\">
             </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--003\\"
-                 aria-label=\\"day-3\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              3
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--004\\"
-                 aria-label=\\"day-4\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              4
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--005\\"
-                 aria-label=\\"day-5\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              5
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--006\\"
-                 aria-label=\\"day-6\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              6
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--007 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-7\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              7
+            <div class=\\"react-datepicker__day-names\\">
+              <div class=\\"react-datepicker__day-name\\">
+                Su
+              </div>
+              <div class=\\"react-datepicker__day-name\\">
+                Mo
+              </div>
+              <div class=\\"react-datepicker__day-name\\">
+                Tu
+              </div>
+              <div class=\\"react-datepicker__day-name\\">
+                We
+              </div>
+              <div class=\\"react-datepicker__day-name\\">
+                Th
+              </div>
+              <div class=\\"react-datepicker__day-name\\">
+                Fr
+              </div>
+              <div class=\\"react-datepicker__day-name\\">
+                Sa
+              </div>
             </div>
           </div>
-          <div class=\\"react-datepicker__week\\">
-            <div class=\\"react-datepicker__day react-datepicker__day--008 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-8\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              8
+          <div class=\\"react-datepicker__month\\"
+               role=\\"listbox\\"
+               aria-label=\\"month-2060-02\\"
+          >
+            <div class=\\"react-datepicker__week\\">
+              <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--selected react-datepicker__day--today react-datepicker__day--weekend\\"
+                   aria-label=\\"day-1\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                1
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--002\\"
+                   aria-label=\\"day-2\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                2
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--003\\"
+                   aria-label=\\"day-3\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                3
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--004\\"
+                   aria-label=\\"day-4\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                4
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--005\\"
+                   aria-label=\\"day-5\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                5
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--006\\"
+                   aria-label=\\"day-6\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                6
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--007 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-7\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                7
+              </div>
             </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--009\\"
-                 aria-label=\\"day-9\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              9
+            <div class=\\"react-datepicker__week\\">
+              <div class=\\"react-datepicker__day react-datepicker__day--008 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-8\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                8
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--009\\"
+                   aria-label=\\"day-9\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                9
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--010\\"
+                   aria-label=\\"day-10\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                10
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--011\\"
+                   aria-label=\\"day-11\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                11
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--012\\"
+                   aria-label=\\"day-12\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                12
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--013\\"
+                   aria-label=\\"day-13\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                13
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--014 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-14\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                14
+              </div>
             </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--010\\"
-                 aria-label=\\"day-10\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              10
+            <div class=\\"react-datepicker__week\\">
+              <div class=\\"react-datepicker__day react-datepicker__day--015 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-15\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                15
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--016\\"
+                   aria-label=\\"day-16\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                16
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--017\\"
+                   aria-label=\\"day-17\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                17
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--018\\"
+                   aria-label=\\"day-18\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                18
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--019\\"
+                   aria-label=\\"day-19\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                19
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--020\\"
+                   aria-label=\\"day-20\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                20
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--021 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-21\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                21
+              </div>
             </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--011\\"
-                 aria-label=\\"day-11\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              11
+            <div class=\\"react-datepicker__week\\">
+              <div class=\\"react-datepicker__day react-datepicker__day--022 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-22\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                22
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--023\\"
+                   aria-label=\\"day-23\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                23
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--024\\"
+                   aria-label=\\"day-24\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                24
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--025\\"
+                   aria-label=\\"day-25\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                25
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--026\\"
+                   aria-label=\\"day-26\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                26
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--027\\"
+                   aria-label=\\"day-27\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                27
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--028 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-28\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                28
+              </div>
             </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--012\\"
-                 aria-label=\\"day-12\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              12
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--013\\"
-                 aria-label=\\"day-13\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              13
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--014 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-14\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              14
-            </div>
-          </div>
-          <div class=\\"react-datepicker__week\\">
-            <div class=\\"react-datepicker__day react-datepicker__day--015 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-15\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              15
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--016\\"
-                 aria-label=\\"day-16\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              16
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--017\\"
-                 aria-label=\\"day-17\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              17
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--018\\"
-                 aria-label=\\"day-18\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              18
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--019\\"
-                 aria-label=\\"day-19\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              19
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--020\\"
-                 aria-label=\\"day-20\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              20
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--021 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-21\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              21
-            </div>
-          </div>
-          <div class=\\"react-datepicker__week\\">
-            <div class=\\"react-datepicker__day react-datepicker__day--022 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-22\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              22
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--023\\"
-                 aria-label=\\"day-23\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              23
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--024\\"
-                 aria-label=\\"day-24\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              24
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--025\\"
-                 aria-label=\\"day-25\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              25
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--026\\"
-                 aria-label=\\"day-26\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              26
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--027\\"
-                 aria-label=\\"day-27\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              27
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--028 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-28\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              28
-            </div>
-          </div>
-          <div class=\\"react-datepicker__week\\">
-            <div class=\\"react-datepicker__day react-datepicker__day--029 react-datepicker__day--weekend\\"
-                 aria-label=\\"day-29\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              29
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--outside-month\\"
-                 aria-label=\\"day-1\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              1
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--002 react-datepicker__day--outside-month\\"
-                 aria-label=\\"day-2\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              2
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--003 react-datepicker__day--outside-month\\"
-                 aria-label=\\"day-3\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              3
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--004 react-datepicker__day--outside-month\\"
-                 aria-label=\\"day-4\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              4
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--005 react-datepicker__day--outside-month\\"
-                 aria-label=\\"day-5\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              5
-            </div>
-            <div class=\\"react-datepicker__day react-datepicker__day--006 react-datepicker__day--weekend react-datepicker__day--outside-month\\"
-                 aria-label=\\"day-6\\"
-                 role=\\"option\\"
-                 aria-disabled=\\"false\\"
-            >
-              6
+            <div class=\\"react-datepicker__week\\">
+              <div class=\\"react-datepicker__day react-datepicker__day--029 react-datepicker__day--weekend\\"
+                   aria-label=\\"day-29\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                29
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--outside-month\\"
+                   aria-label=\\"day-1\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                1
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--002 react-datepicker__day--outside-month\\"
+                   aria-label=\\"day-2\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                2
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--003 react-datepicker__day--outside-month\\"
+                   aria-label=\\"day-3\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                3
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--004 react-datepicker__day--outside-month\\"
+                   aria-label=\\"day-4\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                4
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--005 react-datepicker__day--outside-month\\"
+                   aria-label=\\"day-5\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                5
+              </div>
+              <div class=\\"react-datepicker__day react-datepicker__day--006 react-datepicker__day--weekend react-datepicker__day--outside-month\\"
+                   aria-label=\\"day-6\\"
+                   role=\\"option\\"
+                   aria-disabled=\\"false\\"
+              >
+                6
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class=\\"react-datepicker__today-button\\">
-        Today
+        <div class=\\"react-datepicker__today-button\\">
+          Today
+        </div>
       </div>
     </div>
     <table class=\\"text-center border-0 my-auto\\">
