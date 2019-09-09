@@ -61,21 +61,29 @@ const SilenceForm = observer(
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
+      previewOpen: PropTypes.bool
+    };
+    static defaultProps = {
+      previewOpen: false
     };
 
-    // store preview visibility state here, by default preview is collapsed
-    // and user needs to expand it
-    previewCollapse = observable(
-      {
-        hidden: true,
-        toggle() {
-          this.hidden = !this.hidden;
-        }
-      },
-      { toggle: action.bound },
-      { name: "Silence preview collpase toggle" }
-    );
+    constructor(props) {
+      super(props);
+
+      // store preview visibility state here, by default preview is collapsed
+      // and user needs to expand it
+      this.previewCollapse = observable(
+        {
+          hidden: !props.previewOpen,
+          toggle() {
+            this.hidden = !this.hidden;
+          }
+        },
+        { toggle: action.bound },
+        { name: "Silence preview collpase toggle" }
+      );
+    }
 
     componentDidMount() {
       const { silenceFormStore } = this.props;
