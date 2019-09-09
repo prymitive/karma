@@ -61,6 +61,12 @@
     "storybook": "start-storybook",
     "snapshot": "build-storybook --quiet -s public && percy-storybook --widths=700,1280"
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx}",
+      "!src/**/*.stories.{js,jsx}"
+    ]
+  },
   "devDependencies": {
     "@commitlint/travis-cli": "8.1.0",
     "@percy-io/percy-storybook": "2.1.0",
