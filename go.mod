@@ -4,7 +4,7 @@ go 1.12
 
 require (
 	github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586
-	github.com/blang/semver v3.6.1+incompatible
+	github.com/blang/semver v1.1.1-0.20190414182527-1a9109f8c4a1
 	github.com/certifi/gocertifi v0.0.0-20190905060710-a5e0173ced67 // indirect
 	github.com/cnf/structhash v0.0.0-20180104161610-62a607eb0224
 	github.com/elazarl/go-bindata-assetfs v1.0.1-0.20180223160309-38087fe4dafb
@@ -14,7 +14,7 @@ require (
 	github.com/gin-contrib/static v0.0.0-20190511124741-c1cdf9c9ec7b
 	github.com/gin-gonic/contrib v0.0.0-20190526021735-7fb7810ed2a0
 	github.com/gin-gonic/gin v1.4.0
-	github.com/go-bindata/go-bindata v3.1.2+incompatible
+	github.com/go-bindata/go-bindata v1.0.1-0.20190711162640-ee3c2418e368
 	github.com/go-openapi/errors v0.19.2
 	github.com/go-openapi/runtime v0.19.5
 	github.com/go-openapi/strfmt v0.19.3
@@ -25,7 +25,7 @@ require (
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.4
 	github.com/mcuadros/go-gin-prometheus v0.1.1-0.20190723203314-c7374e9082f8
-	github.com/patrickmn/go-cache v2.1.0+incompatible
+	github.com/patrickmn/go-cache v2.1.1-0.20180815053127-5633e0862627+incompatible
 	github.com/pkg/errors v0.8.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/prometheus/client_golang v1.1.0
