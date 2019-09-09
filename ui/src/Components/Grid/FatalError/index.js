@@ -17,7 +17,9 @@ class FatalError extends Component {
           <h1 className="display-1 my-5 text-danger">
             <FontAwesomeIcon icon={faExclamationCircle} />
           </h1>
-          <p className="lead text-muted">{message}</p>
+          <p className="lead text-white bg-secondary px-1 py-3 rounded">
+            {message}
+          </p>
         </div>
       </div>
     );
