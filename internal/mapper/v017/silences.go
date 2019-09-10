@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/blang/semver"
+	"github.com/Masterminds/semver"
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/uri"
@@ -27,8 +27,11 @@ func (m SilenceMapper) QueryArgs() string {
 
 // IsSupported returns true if given version string is supported
 func (m SilenceMapper) IsSupported(version string) bool {
-	versionRange := semver.MustParseRange(">=0.17.0")
-	return versionRange(semver.MustParse(version))
+	versionRange, err := semver.NewConstraint(">=0.17.0")
+	if err != nil {
+		panic(err)
+	}
+	return versionRange.Check(semver.MustParse(version))
 }
 
 // IsOpenAPI returns true is remote Alertmanager uses OpenAPI
