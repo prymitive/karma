@@ -145,6 +145,10 @@ test-go:
 test-js: .build/deps-build-node.ok
 	cd ui && CI=true npm test -- --coverage
 
+.PHONY: test-percy
+test-percy: .build/deps-build-node.ok
+	cd ui && CI=true npm run snapshot
+
 .PHONY: test
 test: lint test-go test-js
 

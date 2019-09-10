@@ -35,18 +35,26 @@ const MainModalContent = observer(
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
-      onHide: PropTypes.func.isRequired
+      onHide: PropTypes.func.isRequired,
+      openTab: PropTypes.oneOf(Object.values(TabNames))
+    };
+    static defaultProps = {
+      openTab: TabNames.Configuration
     };
 
-    tab = observable(
-      {
-        current: TabNames.Configuration,
-        setTab(newTab) {
-          this.current = newTab;
-        }
-      },
-      { setTab: action.bound }
-    );
+    constructor(props) {
+      super(props);
+
+      this.tab = observable(
+        {
+          current: props.openTab,
+          setTab(newTab) {
+            this.current = newTab;
+          }
+        },
+        { setTab: action.bound }
+      );
+    }
 
     render() {
       const { alertStore, settingsStore, onHide } = this.props;
@@ -87,4 +95,4 @@ const MainModalContent = observer(
   }
 );
 
-export { MainModalContent };
+export { MainModalContent, TabNames };

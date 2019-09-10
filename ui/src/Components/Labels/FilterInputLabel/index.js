@@ -24,6 +24,7 @@ const FilterInputLabel = observer(
       filter: PropTypes.shape({
         raw: PropTypes.string,
         applied: PropTypes.bool,
+        isValid: PropTypes.bool,
         hits: PropTypes.number,
         name: PropTypes.string,
         matcher: PropTypes.string,

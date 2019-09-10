@@ -13,8 +13,6 @@ import { Settings } from "Stores/Settings";
 import { Modal } from "Components/Modal";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 
-import "./index.css";
-
 // https://github.com/facebook/react/issues/14603
 const SilenceModalContent = React.lazy(() =>
   import("./SilenceModalContent").then(module => ({
