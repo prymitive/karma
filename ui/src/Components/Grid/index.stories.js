@@ -4,6 +4,8 @@ import { storiesOf } from "@storybook/react";
 
 import { Provider } from "mobx-react";
 
+import moment from "moment";
+
 import { MockAlert, MockAlertGroup } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -29,34 +31,36 @@ const MockGroup = (groupName, alertCount, active, suppressed, unprocessed) => {
       default:
         state = "active";
     }
-    alerts.push(
-      MockAlert(
-        alertCount < 4
-          ? [
-              {
-                name: "dashboard",
-                value: "http://localhost",
-                visible: true,
-                isLink: true
-              },
-              {
-                name: "help",
-                value: "this is a summary text",
-                visible: true,
-                isLink: false
-              },
-              {
-                name: "hidden",
-                value: "this is hidden by default",
-                visible: false,
-                isLink: false
-              }
-            ]
-          : [],
-        { instance: `instance${i}` },
-        state
-      )
+    const alert = MockAlert(
+      alertCount < 4
+        ? [
+            {
+              name: "dashboard",
+              value: "http://localhost",
+              visible: true,
+              isLink: true
+            },
+            {
+              name: "help",
+              value: "this is a summary text",
+              visible: true,
+              isLink: false
+            },
+            {
+              name: "hidden",
+              value: "this is hidden by default",
+              visible: false,
+              isLink: false
+            }
+          ]
+        : [],
+      { instance: `instance${i}` },
+      state
     );
+    alert.startsAt = moment()
+      .subtract(alertCount, "minutes")
+      .toISOString();
+    alerts.push(alert);
   }
   const group = MockAlertGroup(
     { alertname: "Fake Alert", group: groupName },
