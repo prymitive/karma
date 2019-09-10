@@ -33,7 +33,7 @@ class UpgradeNeeded extends Component {
           <h1 className="display-1 my-5 text-success shake-slow shake-constant">
             <FontAwesomeIcon icon={faRocket} />
           </h1>
-          <p className="lead text-white bg-secondary px-1 py-3 rounded">
+          <p className="lead text-muted">
             <FontAwesomeIcon className="mr-1" icon={faSpinner} spin />
             Upgrading to a new version: {newVersion}
           </p>
