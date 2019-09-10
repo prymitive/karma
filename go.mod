@@ -14,7 +14,7 @@ require (
 	github.com/gin-contrib/static v0.0.0-20190511124741-c1cdf9c9ec7b
 	github.com/gin-gonic/contrib v0.0.0-20190526021735-7fb7810ed2a0
 	github.com/gin-gonic/gin v1.4.0
-	github.com/go-bindata/go-bindata v1.0.1-0.20190711162640-ee3c2418e368
+	github.com/go-bindata/go-bindata/v3 v3.1.2
 	github.com/go-openapi/errors v0.19.2
 	github.com/go-openapi/runtime v0.19.5
 	github.com/go-openapi/strfmt v0.19.3
