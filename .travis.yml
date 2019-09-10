@@ -52,7 +52,7 @@ jobs:
 
     - stage: Test
       name: Test Percy UI snapshots
-      if: repo = prymitive/karma AND type != pull_request
+      if: repo = prymitive/karma AND type != pull_request AND branch != master
       <<: *DEFAULTS_JS
       env:
         - NODE_ENV=test
