@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/blang/semver"
+	"github.com/Masterminds/semver"
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/prymitive/karma/internal/config"
@@ -918,8 +918,11 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 						version, expectedAM.Name, expectedAM.Source, gotAM.Source, gotAlert.Receiver, expectedAlert.Labels)
 				}
 				// multiple silences only work for >=0.6.1
-				versionRange := semver.MustParseRange(">=0.6.1")
-				if versionRange(semver.MustParse(version)) {
+				versionRange, err := semver.NewConstraint(">=0.6.1")
+				if err != nil {
+					t.Errorf("[%s] Cannot create semver Constrain: %s", version, err)
+				}
+				if versionRange.Check(semver.MustParse(version)) {
 					if len(gotAM.Silences) != len(expectedAM.Silences) {
 						t.Errorf("[%s] Expected alertmanager '%s' to have %d silences but got %d on alert receiver='%s' labels=%v",
 							version, expectedAM.Name, len(expectedAM.Silences), len(gotAM.Silences), gotAlert.Receiver, expectedAlert.Labels)
