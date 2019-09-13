@@ -6,7 +6,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { MainModalContent, TabNames } from "./MainModalContent";
 
-import "App.scss";
+import "Percy.scss";
 
 storiesOf("MainModal", module)
   .addDecorator(storyFn => (

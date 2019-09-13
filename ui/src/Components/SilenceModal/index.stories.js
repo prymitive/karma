@@ -11,7 +11,7 @@ import {
 } from "Stores/SilenceFormStore";
 import { SilenceModalContent } from "./SilenceModalContent";
 
-import "App.scss";
+import "Percy.scss";
 
 const MockMatcher = (name, values, isRegex) => {
   const matcher = NewEmptyMatcher();

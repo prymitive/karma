@@ -7,7 +7,7 @@ import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { NavBar } from ".";
 
-import "App.scss";
+import "Percy.scss";
 
 const NewFilter = (raw, name, matcher, value, applied, isValid, hits) => {
   const filter = NewUnappliedFilter(raw);
