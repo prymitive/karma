@@ -15,7 +15,7 @@ import { FatalError } from "./FatalError";
 import { UpgradeNeeded } from "./UpgradeNeeded";
 import { AlertGrid } from "./AlertGrid";
 
-import "App.scss";
+import "Percy.scss";
 
 const MockGroup = (groupName, alertCount, active, suppressed, unprocessed) => {
   let alerts = [];
