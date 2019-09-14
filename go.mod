@@ -11,7 +11,7 @@ require (
 	github.com/getsentry/raven-go v0.2.0
 	github.com/gin-contrib/cors v1.3.0
 	github.com/gin-contrib/gzip v0.0.1
-	github.com/gin-contrib/static df30d4057ba1
+	github.com/gin-contrib/static v0.0.0-20190913125243-df30d4057ba1
 	github.com/gin-gonic/contrib v0.0.0-20190526021735-7fb7810ed2a0
 	github.com/gin-gonic/gin v1.4.1-0.20190910091637-9aa870f108a1
 	github.com/go-bindata/go-bindata v1.0.1-0.20190711162640-ee3c2418e368
