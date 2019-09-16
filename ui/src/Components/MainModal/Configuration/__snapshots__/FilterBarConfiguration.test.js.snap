@@ -2,12 +2,7 @@
 
 exports[`<FilterBarConfiguration /> matches snapshot with default values 1`] = `
 "
-<div class=\\"form-group\\">
-  <div class=\\"text-center\\">
-    <label class=\\"mb-2 font-weight-bold\\">
-      Filter bar configuration
-    </label>
-  </div>
+<div class=\\"form-group mb-0\\">
   <div class=\\"form-check form-check-inline\\">
     <span class=\\"custom-control custom-switch\\">
       <input id=\\"configuration-autohide\\"

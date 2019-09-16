@@ -2,10 +2,7 @@
 
 exports[`<AlertGroupWidthConfiguration /> matches snapshot with default values 1`] = `
 "
-<div class=\\"form-group text-center\\">
-  <label class=\\"mb-4 font-weight-bold\\">
-    Minimal alert group width
-  </label>
+<div class=\\"form-group mb-0 text-center\\">
   <div aria-disabled=\\"false\\"
        class=\\"input-range\\"
   >

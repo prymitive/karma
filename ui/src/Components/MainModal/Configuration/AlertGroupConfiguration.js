@@ -38,10 +38,7 @@ const AlertGroupConfiguration = observer(
 
     render() {
       return (
-        <div className="form-group text-center">
-          <label className="mb-4 font-weight-bold">
-            Default number of alerts to show per group
-          </label>
+        <div className="form-group mb-0 text-center">
           <InputRange
             minValue={1}
             maxValue={10}

@@ -2,12 +2,7 @@
 
 exports[`<AlertGroupCollapseConfiguration /> matches snapshot with default values 1`] = `
 "
-<div class=\\"form-group\\">
-  <div class=\\"text-center\\">
-    <label class=\\"mb-4 font-weight-bold\\">
-      Default alert group display
-    </label>
-  </div>
+<div class=\\"form-group mb-0\\">
   <div class=\\" css-2b097c-container\\">
     <div class=\\"react-select__control css-au8pbo-control\\">
       <div class=\\"react-select__value-container react-select__value-container--has-value css-pb81dw\\">

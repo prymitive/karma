@@ -2,294 +2,470 @@
 
 exports[`<Configuration /> matches snapshot 1`] = `
 "
-<form class=\\"px-3\\">
-  <div class=\\"form-group text-center\\">
-    <label class=\\"mb-4 font-weight-bold\\">
-      Refresh interval
-    </label>
-    <div aria-disabled=\\"false\\"
-         class=\\"input-range\\"
-    >
-      <span class=\\"input-range__label input-range__label--min\\">
-        <span class=\\"input-range__label-container\\">
-          10s
-        </span>
-      </span>
-      <div class=\\"input-range__track input-range__track--background\\">
-        <div style=\\"left:0%;width:18.181818181818183%\\"
-             class=\\"input-range__track input-range__track--active\\"
-        >
+<form class=\\"px-3 accordion\\">
+  <div class=\\"Collapsible card\\">
+    <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer bg-light\\">
+      <div class=\\"d-flex flex-row justify-content-between\\">
+        <div>
+          Refresh interval
         </div>
-        <span class=\\"input-range__slider-container\\"
-              style=\\"position:absolute;left:18.181818181818183%\\"
-        >
-          <span class=\\"input-range__label input-range__label--value\\">
-            <span class=\\"input-range__label-container\\">
-              30s
-            </span>
-          </span>
-          <div aria-valuemax=\\"120\\"
-               aria-valuemin=\\"10\\"
-               aria-valuenow=\\"30\\"
-               class=\\"input-range__slider\\"
-               draggable=\\"false\\"
-               role=\\"slider\\"
-               tabindex=\\"0\\"
+        <div>
+          <svg aria-hidden=\\"true\\"
+               focusable=\\"false\\"
+               data-prefix=\\"fas\\"
+               data-icon=\\"chevron-down\\"
+               class=\\"svg-inline--fa fa-chevron-down fa-w-14 text-muted\\"
+               role=\\"img\\"
+               xmlns=\\"http://www.w3.org/2000/svg\\"
+               viewbox=\\"0 0 448 512\\"
           >
-          </div>
-        </span>
-      </div>
-      <span class=\\"input-range__label input-range__label--max\\">
-        <span class=\\"input-range__label-container\\">
-          120s
-        </span>
-      </span>
-    </div>
-  </div>
-  <div class=\\"mt-5\\">
-  </div>
-  <div class=\\"form-group\\">
-    <div class=\\"text-center\\">
-      <label class=\\"mb-2 font-weight-bold\\">
-        Filter bar configuration
-      </label>
-    </div>
-    <div class=\\"form-check form-check-inline\\">
-      <span class=\\"custom-control custom-switch\\">
-        <input type=\\"checkbox\\"
-               id=\\"configuration-autohide\\"
-               class=\\"custom-control-input\\"
-               value
-               checked
-        >
-        <label class=\\"custom-control-label cursor-pointer mr-3\\"
-               for=\\"configuration-autohide\\"
-        >
-          Hide filter bar when idle
-        </label>
-      </span>
-    </div>
-  </div>
-  <div class=\\"mt-5\\">
-  </div>
-  <div class=\\"form-group\\">
-    <div class=\\"text-center\\">
-      <label class=\\"mb-2 font-weight-bold\\">
-        Alert group titlebar configuration
-      </label>
-    </div>
-    <div class=\\"form-check form-check-inline\\">
-      <span class=\\"custom-control custom-switch\\">
-        <input type=\\"checkbox\\"
-               id=\\"configuration-colortitlebar\\"
-               class=\\"custom-control-input\\"
-               value
-        >
-        <label class=\\"custom-control-label cursor-pointer mr-3\\"
-               for=\\"configuration-colortitlebar\\"
-        >
-          Color group titlebar
-        </label>
-      </span>
-    </div>
-  </div>
-  <div class=\\"mt-5\\">
-  </div>
-  <div class=\\"form-group text-center\\">
-    <label class=\\"mb-4 font-weight-bold\\">
-      Minimal alert group width
-    </label>
-    <div aria-disabled=\\"false\\"
-         class=\\"input-range\\"
-    >
-      <span class=\\"input-range__label input-range__label--min\\">
-        <span class=\\"input-range__label-container\\">
-          300
-        </span>
-      </span>
-      <div class=\\"input-range__track input-range__track--background\\">
-        <div style=\\"left:0%;width:24%\\"
-             class=\\"input-range__track input-range__track--active\\"
-        >
-        </div>
-        <span class=\\"input-range__slider-container\\"
-              style=\\"position:absolute;left:24%\\"
-        >
-          <span class=\\"input-range__label input-range__label--value\\">
-            <span class=\\"input-range__label-container\\">
-              420
-            </span>
-          </span>
-          <div aria-valuemax=\\"800\\"
-               aria-valuemin=\\"300\\"
-               aria-valuenow=\\"420\\"
-               class=\\"input-range__slider\\"
-               draggable=\\"false\\"
-               role=\\"slider\\"
-               tabindex=\\"0\\"
-          >
-          </div>
-        </span>
-      </div>
-      <span class=\\"input-range__label input-range__label--max\\">
-        <span class=\\"input-range__label-container\\">
-          800
-        </span>
-      </span>
-    </div>
-  </div>
-  <div class=\\"mt-5\\">
-  </div>
-  <div class=\\"form-group text-center\\">
-    <label class=\\"mb-4 font-weight-bold\\">
-      Default number of alerts to show per group
-    </label>
-    <div aria-disabled=\\"false\\"
-         class=\\"input-range\\"
-    >
-      <span class=\\"input-range__label input-range__label--min\\">
-        <span class=\\"input-range__label-container\\">
-          1
-        </span>
-      </span>
-      <div class=\\"input-range__track input-range__track--background\\">
-        <div style=\\"left:0%;width:44.44444444444444%\\"
-             class=\\"input-range__track input-range__track--active\\"
-        >
-        </div>
-        <span class=\\"input-range__slider-container\\"
-              style=\\"position:absolute;left:44.44444444444444%\\"
-        >
-          <span class=\\"input-range__label input-range__label--value\\">
-            <span class=\\"input-range__label-container\\">
-              5
-            </span>
-          </span>
-          <div aria-valuemax=\\"10\\"
-               aria-valuemin=\\"1\\"
-               aria-valuenow=\\"5\\"
-               class=\\"input-range__slider\\"
-               draggable=\\"false\\"
-               role=\\"slider\\"
-               tabindex=\\"0\\"
-          >
-          </div>
-        </span>
-      </div>
-      <span class=\\"input-range__label input-range__label--max\\">
-        <span class=\\"input-range__label-container\\">
-          10
-        </span>
-      </span>
-    </div>
-  </div>
-  <div class=\\"mt-5\\">
-  </div>
-  <div class=\\"form-group\\">
-    <div class=\\"text-center\\">
-      <label class=\\"mb-4 font-weight-bold\\">
-        Default alert group display
-      </label>
-    </div>
-    <div class=\\" css-2b097c-container\\">
-      <div class=\\"react-select__control css-au8pbo-control\\">
-        <div class=\\"react-select__value-container react-select__value-container--has-value css-pb81dw\\">
-          <div class=\\"react-select__single-value css-1uccc91-singleValue\\">
-            Collapse on mobile
-          </div>
-          <div class=\\"css-w8afj7-Input\\">
-            <div class=\\"react-select__input\\"
-                 style=\\"display:inline-block\\"
+            <path fill=\\"currentColor\\"
+                  d=\\"M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z\\"
             >
-              <input type=\\"text\\"
-                     autocapitalize=\\"none\\"
-                     autocomplete=\\"off\\"
-                     autocorrect=\\"off\\"
-                     id=\\"react-select-configuration-collapse-input\\"
-                     spellcheck=\\"false\\"
-                     tabindex=\\"0\\"
-                     value
-                     aria-autocomplete=\\"list\\"
-                     style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+            </path>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class=\\"Collapsible__contentOuter collapse show\\"
+         style=\\"height:auto;-webkit-transition:none;-ms-transition:none;transition:none;overflow:visible\\"
+    >
+      <div class=\\"Collapsible__contentInner card-body my-2\\">
+        <div class=\\"form-group mb-0 text-center\\">
+          <div aria-disabled=\\"false\\"
+               class=\\"input-range\\"
+          >
+            <span class=\\"input-range__label input-range__label--min\\">
+              <span class=\\"input-range__label-container\\">
+                10s
+              </span>
+            </span>
+            <div class=\\"input-range__track input-range__track--background\\">
+              <div style=\\"left:0%;width:18.181818181818183%\\"
+                   class=\\"input-range__track input-range__track--active\\"
               >
-              <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
               </div>
+              <span class=\\"input-range__slider-container\\"
+                    style=\\"position:absolute;left:18.181818181818183%\\"
+              >
+                <span class=\\"input-range__label input-range__label--value\\">
+                  <span class=\\"input-range__label-container\\">
+                    30s
+                  </span>
+                </span>
+                <div aria-valuemax=\\"120\\"
+                     aria-valuemin=\\"10\\"
+                     aria-valuenow=\\"30\\"
+                     class=\\"input-range__slider\\"
+                     draggable=\\"false\\"
+                     role=\\"slider\\"
+                     tabindex=\\"0\\"
+                >
+                </div>
+              </span>
             </div>
-          </div>
-        </div>
-        <div class=\\"react-select__indicators css-u1mhof-IndicatorsContainer\\">
-          <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
-          </span>
-          <div aria-hidden=\\"true\\"
-               class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
-          >
-            <svg height=\\"20\\"
-                 width=\\"20\\"
-                 viewbox=\\"0 0 20 20\\"
-                 aria-hidden=\\"true\\"
-                 focusable=\\"false\\"
-                 class=\\"css-tj5bde-Svg\\"
-            >
-              <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
-              </path>
-            </svg>
+            <span class=\\"input-range__label input-range__label--max\\">
+              <span class=\\"input-range__label-container\\">
+                120s
+              </span>
+            </span>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <div class=\\"mt-5\\">
-  </div>
-  <div class=\\"form-group\\">
-    <div class=\\"text-center\\">
-      <label class=\\"mb-2 font-weight-bold\\">
-        Grid sort order
-      </label>
+  <div class=\\"Collapsible card\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+      <div class=\\"d-flex flex-row justify-content-between\\">
+        <div>
+          Filter bar configuration
+        </div>
+        <div>
+          <svg aria-hidden=\\"true\\"
+               focusable=\\"false\\"
+               data-prefix=\\"fas\\"
+               data-icon=\\"chevron-up\\"
+               class=\\"svg-inline--fa fa-chevron-up fa-w-14 text-muted\\"
+               role=\\"img\\"
+               xmlns=\\"http://www.w3.org/2000/svg\\"
+               viewbox=\\"0 0 448 512\\"
+          >
+            <path fill=\\"currentColor\\"
+                  d=\\"M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z\\"
+            >
+            </path>
+          </svg>
+        </div>
+      </div>
     </div>
-    <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
-      <div class=\\"flex-shrink-0 flex-grow-1 flex-basis-auto\\">
-        <div class=\\" css-2b097c-container\\">
-          <div class=\\"react-select__control css-au8pbo-control\\">
-            <div class=\\"react-select__value-container react-select__value-container--has-value css-pb81dw\\">
-              <div class=\\"react-select__single-value css-1uccc91-singleValue\\">
-                Use defaults from karma config file
+    <div class=\\"Collapsible__contentOuter collapse show\\"
+         style=\\"height:0;-webkit-transition:height 50ms linear;-ms-transition:height 50ms linear;transition:height 50ms linear;overflow:hidden\\"
+    >
+      <div class=\\"Collapsible__contentInner card-body my-2\\">
+        <div class=\\"form-group mb-0\\">
+          <div class=\\"form-check form-check-inline\\">
+            <span class=\\"custom-control custom-switch\\">
+              <input type=\\"checkbox\\"
+                     id=\\"configuration-autohide\\"
+                     class=\\"custom-control-input\\"
+                     value
+                     checked
+              >
+              <label class=\\"custom-control-label cursor-pointer mr-3\\"
+                     for=\\"configuration-autohide\\"
+              >
+                Hide filter bar when idle
+              </label>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class=\\"Collapsible card\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+      <div class=\\"d-flex flex-row justify-content-between\\">
+        <div>
+          Alert group titlebar configuration
+        </div>
+        <div>
+          <svg aria-hidden=\\"true\\"
+               focusable=\\"false\\"
+               data-prefix=\\"fas\\"
+               data-icon=\\"chevron-up\\"
+               class=\\"svg-inline--fa fa-chevron-up fa-w-14 text-muted\\"
+               role=\\"img\\"
+               xmlns=\\"http://www.w3.org/2000/svg\\"
+               viewbox=\\"0 0 448 512\\"
+          >
+            <path fill=\\"currentColor\\"
+                  d=\\"M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z\\"
+            >
+            </path>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class=\\"Collapsible__contentOuter collapse show\\"
+         style=\\"height:0;-webkit-transition:height 50ms linear;-ms-transition:height 50ms linear;transition:height 50ms linear;overflow:hidden\\"
+    >
+      <div class=\\"Collapsible__contentInner card-body my-2\\">
+        <div class=\\"form-group mb-0\\">
+          <div class=\\"form-check form-check-inline\\">
+            <span class=\\"custom-control custom-switch\\">
+              <input type=\\"checkbox\\"
+                     id=\\"configuration-colortitlebar\\"
+                     class=\\"custom-control-input\\"
+                     value
+              >
+              <label class=\\"custom-control-label cursor-pointer mr-3\\"
+                     for=\\"configuration-colortitlebar\\"
+              >
+                Color group titlebar
+              </label>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class=\\"Collapsible card\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+      <div class=\\"d-flex flex-row justify-content-between\\">
+        <div>
+          Minimal alert group width
+        </div>
+        <div>
+          <svg aria-hidden=\\"true\\"
+               focusable=\\"false\\"
+               data-prefix=\\"fas\\"
+               data-icon=\\"chevron-up\\"
+               class=\\"svg-inline--fa fa-chevron-up fa-w-14 text-muted\\"
+               role=\\"img\\"
+               xmlns=\\"http://www.w3.org/2000/svg\\"
+               viewbox=\\"0 0 448 512\\"
+          >
+            <path fill=\\"currentColor\\"
+                  d=\\"M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z\\"
+            >
+            </path>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class=\\"Collapsible__contentOuter collapse show\\"
+         style=\\"height:0;-webkit-transition:height 50ms linear;-ms-transition:height 50ms linear;transition:height 50ms linear;overflow:hidden\\"
+    >
+      <div class=\\"Collapsible__contentInner card-body my-2\\">
+        <div class=\\"form-group mb-0 text-center\\">
+          <div aria-disabled=\\"false\\"
+               class=\\"input-range\\"
+          >
+            <span class=\\"input-range__label input-range__label--min\\">
+              <span class=\\"input-range__label-container\\">
+                300
+              </span>
+            </span>
+            <div class=\\"input-range__track input-range__track--background\\">
+              <div style=\\"left:0%;width:24%\\"
+                   class=\\"input-range__track input-range__track--active\\"
+              >
               </div>
-              <div class=\\"css-w8afj7-Input\\">
-                <div class=\\"react-select__input\\"
-                     style=\\"display:inline-block\\"
+              <span class=\\"input-range__slider-container\\"
+                    style=\\"position:absolute;left:24%\\"
+              >
+                <span class=\\"input-range__label input-range__label--value\\">
+                  <span class=\\"input-range__label-container\\">
+                    420
+                  </span>
+                </span>
+                <div aria-valuemax=\\"800\\"
+                     aria-valuemin=\\"300\\"
+                     aria-valuenow=\\"420\\"
+                     class=\\"input-range__slider\\"
+                     draggable=\\"false\\"
+                     role=\\"slider\\"
+                     tabindex=\\"0\\"
                 >
-                  <input type=\\"text\\"
-                         autocapitalize=\\"none\\"
-                         autocomplete=\\"off\\"
-                         autocorrect=\\"off\\"
-                         id=\\"react-select-configuration-sort-order-input\\"
-                         spellcheck=\\"false\\"
-                         tabindex=\\"0\\"
-                         value
-                         aria-autocomplete=\\"list\\"
-                         style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                </div>
+              </span>
+            </div>
+            <span class=\\"input-range__label input-range__label--max\\">
+              <span class=\\"input-range__label-container\\">
+                800
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class=\\"Collapsible card\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+      <div class=\\"d-flex flex-row justify-content-between\\">
+        <div>
+          Default number of alerts to show per group
+        </div>
+        <div>
+          <svg aria-hidden=\\"true\\"
+               focusable=\\"false\\"
+               data-prefix=\\"fas\\"
+               data-icon=\\"chevron-up\\"
+               class=\\"svg-inline--fa fa-chevron-up fa-w-14 text-muted\\"
+               role=\\"img\\"
+               xmlns=\\"http://www.w3.org/2000/svg\\"
+               viewbox=\\"0 0 448 512\\"
+          >
+            <path fill=\\"currentColor\\"
+                  d=\\"M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z\\"
+            >
+            </path>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class=\\"Collapsible__contentOuter collapse show\\"
+         style=\\"height:0;-webkit-transition:height 50ms linear;-ms-transition:height 50ms linear;transition:height 50ms linear;overflow:hidden\\"
+    >
+      <div class=\\"Collapsible__contentInner card-body my-2\\">
+        <div class=\\"form-group mb-0 text-center\\">
+          <div aria-disabled=\\"false\\"
+               class=\\"input-range\\"
+          >
+            <span class=\\"input-range__label input-range__label--min\\">
+              <span class=\\"input-range__label-container\\">
+                1
+              </span>
+            </span>
+            <div class=\\"input-range__track input-range__track--background\\">
+              <div style=\\"left:0%;width:44.44444444444444%\\"
+                   class=\\"input-range__track input-range__track--active\\"
+              >
+              </div>
+              <span class=\\"input-range__slider-container\\"
+                    style=\\"position:absolute;left:44.44444444444444%\\"
+              >
+                <span class=\\"input-range__label input-range__label--value\\">
+                  <span class=\\"input-range__label-container\\">
+                    5
+                  </span>
+                </span>
+                <div aria-valuemax=\\"10\\"
+                     aria-valuemin=\\"1\\"
+                     aria-valuenow=\\"5\\"
+                     class=\\"input-range__slider\\"
+                     draggable=\\"false\\"
+                     role=\\"slider\\"
+                     tabindex=\\"0\\"
+                >
+                </div>
+              </span>
+            </div>
+            <span class=\\"input-range__label input-range__label--max\\">
+              <span class=\\"input-range__label-container\\">
+                10
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class=\\"Collapsible card\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+      <div class=\\"d-flex flex-row justify-content-between\\">
+        <div>
+          Default alert group display
+        </div>
+        <div>
+          <svg aria-hidden=\\"true\\"
+               focusable=\\"false\\"
+               data-prefix=\\"fas\\"
+               data-icon=\\"chevron-up\\"
+               class=\\"svg-inline--fa fa-chevron-up fa-w-14 text-muted\\"
+               role=\\"img\\"
+               xmlns=\\"http://www.w3.org/2000/svg\\"
+               viewbox=\\"0 0 448 512\\"
+          >
+            <path fill=\\"currentColor\\"
+                  d=\\"M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z\\"
+            >
+            </path>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class=\\"Collapsible__contentOuter collapse show\\"
+         style=\\"height:0;-webkit-transition:height 50ms linear;-ms-transition:height 50ms linear;transition:height 50ms linear;overflow:hidden\\"
+    >
+      <div class=\\"Collapsible__contentInner card-body my-2\\">
+        <div class=\\"form-group mb-0\\">
+          <div class=\\" css-2b097c-container\\">
+            <div class=\\"react-select__control css-au8pbo-control\\">
+              <div class=\\"react-select__value-container react-select__value-container--has-value css-pb81dw\\">
+                <div class=\\"react-select__single-value css-1uccc91-singleValue\\">
+                  Collapse on mobile
+                </div>
+                <div class=\\"css-w8afj7-Input\\">
+                  <div class=\\"react-select__input\\"
+                       style=\\"display:inline-block\\"
                   >
-                  <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
+                    <input type=\\"text\\"
+                           autocapitalize=\\"none\\"
+                           autocomplete=\\"off\\"
+                           autocorrect=\\"off\\"
+                           id=\\"react-select-configuration-collapse-input\\"
+                           spellcheck=\\"false\\"
+                           tabindex=\\"0\\"
+                           value
+                           aria-autocomplete=\\"list\\"
+                           style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                    >
+                    <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class=\\"react-select__indicators css-u1mhof-IndicatorsContainer\\">
-              <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
-              </span>
-              <div aria-hidden=\\"true\\"
-                   class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
-              >
-                <svg height=\\"20\\"
-                     width=\\"20\\"
-                     viewbox=\\"0 0 20 20\\"
-                     aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     class=\\"css-tj5bde-Svg\\"
+              <div class=\\"react-select__indicators css-u1mhof-IndicatorsContainer\\">
+                <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
+                </span>
+                <div aria-hidden=\\"true\\"
+                     class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
                 >
-                  <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
-                  </path>
-                </svg>
+                  <svg height=\\"20\\"
+                       width=\\"20\\"
+                       viewbox=\\"0 0 20 20\\"
+                       aria-hidden=\\"true\\"
+                       focusable=\\"false\\"
+                       class=\\"css-tj5bde-Svg\\"
+                  >
+                    <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
+                    </path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class=\\"Collapsible card\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+      <div class=\\"d-flex flex-row justify-content-between\\">
+        <div>
+          Grid sort order
+        </div>
+        <div>
+          <svg aria-hidden=\\"true\\"
+               focusable=\\"false\\"
+               data-prefix=\\"fas\\"
+               data-icon=\\"chevron-up\\"
+               class=\\"svg-inline--fa fa-chevron-up fa-w-14 text-muted\\"
+               role=\\"img\\"
+               xmlns=\\"http://www.w3.org/2000/svg\\"
+               viewbox=\\"0 0 448 512\\"
+          >
+            <path fill=\\"currentColor\\"
+                  d=\\"M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z\\"
+            >
+            </path>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class=\\"Collapsible__contentOuter collapse show\\"
+         style=\\"height:0;-webkit-transition:height 50ms linear;-ms-transition:height 50ms linear;transition:height 50ms linear;overflow:hidden\\"
+    >
+      <div class=\\"Collapsible__contentInner card-body my-2\\">
+        <div class=\\"form-group mb-0\\">
+          <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
+            <div class=\\"flex-shrink-0 flex-grow-1 flex-basis-auto\\">
+              <div class=\\" css-2b097c-container\\">
+                <div class=\\"react-select__control css-au8pbo-control\\">
+                  <div class=\\"react-select__value-container react-select__value-container--has-value css-pb81dw\\">
+                    <div class=\\"react-select__single-value css-1uccc91-singleValue\\">
+                      Use defaults from karma config file
+                    </div>
+                    <div class=\\"css-w8afj7-Input\\">
+                      <div class=\\"react-select__input\\"
+                           style=\\"display:inline-block\\"
+                      >
+                        <input type=\\"text\\"
+                               autocapitalize=\\"none\\"
+                               autocomplete=\\"off\\"
+                               autocorrect=\\"off\\"
+                               id=\\"react-select-configuration-sort-order-input\\"
+                               spellcheck=\\"false\\"
+                               tabindex=\\"0\\"
+                               value
+                               aria-autocomplete=\\"list\\"
+                               style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                        >
+                        <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class=\\"react-select__indicators css-u1mhof-IndicatorsContainer\\">
+                    <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
+                    </span>
+                    <div aria-hidden=\\"true\\"
+                         class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                    >
+                      <svg height=\\"20\\"
+                           width=\\"20\\"
+                           viewbox=\\"0 0 20 20\\"
+                           aria-hidden=\\"true\\"
+                           focusable=\\"false\\"
+                           class=\\"css-tj5bde-Svg\\"
+                      >
+                        <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
+                        </path>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

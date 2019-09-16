@@ -22,12 +22,7 @@ const AlertGroupTitleBarColor = observer(
       const { settingsStore } = this.props;
 
       return (
-        <div className="form-group">
-          <div className="text-center">
-            <label className="mb-2 font-weight-bold">
-              Alert group titlebar configuration
-            </label>
-          </div>
+        <div className="form-group mb-0">
           <div className="form-check form-check-inline">
             <span className="custom-control custom-switch">
               <input

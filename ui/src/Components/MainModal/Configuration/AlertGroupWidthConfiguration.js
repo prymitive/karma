@@ -41,10 +41,7 @@ const AlertGroupWidthConfiguration = observer(
 
     render() {
       return (
-        <div className="form-group text-center">
-          <label className="mb-4 font-weight-bold">
-            Minimal alert group width
-          </label>
+        <div className="form-group mb-0 text-center">
           <InputRange
             minValue={300}
             maxValue={800}
