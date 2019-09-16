@@ -54,12 +54,7 @@ const AlertGroupCollapseConfiguration = observer(
       const { settingsStore } = this.props;
 
       return (
-        <div className="form-group">
-          <div className="text-center">
-            <label className="mb-4 font-weight-bold">
-              Default alert group display
-            </label>
-          </div>
+        <div className="form-group mb-0">
           <Select
             styles={ReactSelectStyles}
             classNamePrefix="react-select"
@@ -69,6 +64,7 @@ const AlertGroupCollapseConfiguration = observer(
             )}
             options={Object.values(settingsStore.alertGroupConfig.options)}
             onChange={this.onCollapseChange}
+            menuPosition="fixed"
             hideSelectedOptions
           />
         </div>

@@ -63,10 +63,7 @@ const AlertGroupSortConfiguration = observer(
           settingsStore.gridConfig.options.disabled.value;
 
       return (
-        <div className="form-group">
-          <div className="text-center">
-            <label className="mb-2 font-weight-bold">Grid sort order</label>
-          </div>
+        <div className="form-group mb-0">
           <div className="d-flex flex-fill flex-lg-row flex-column justify-content-between">
             <div className="flex-shrink-0 flex-grow-1 flex-basis-auto">
               <Select
@@ -78,6 +75,7 @@ const AlertGroupSortConfiguration = observer(
                 )}
                 options={Object.values(settingsStore.gridConfig.options)}
                 onChange={this.onSortOrderChange}
+                menuPosition="fixed"
                 hideSelectedOptions
               />
             </div>
