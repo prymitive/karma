@@ -1,14 +1,15 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
 	"sort"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
+
 	"github.com/prymitive/karma/internal/alertmanager"
+	"github.com/prymitive/karma/internal/json"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -45,7 +46,7 @@ func knownLabelNames(c *gin.Context) {
 		sort.Strings(acData)
 	}
 
-	data, err := json.Marshal(acData)
+	data, err := json.JSON.Marshal(acData)
 	if err != nil {
 		log.Error(err.Error())
 		panic(err)
@@ -80,7 +81,7 @@ func knownLabelValues(c *gin.Context) {
 	values := alertmanager.DedupKnownLabelValues(name)
 	sort.Strings(values)
 
-	data, err := json.Marshal(values)
+	data, err := json.JSON.Marshal(values)
 	if err != nil {
 		log.Error(err.Error())
 		panic(err)

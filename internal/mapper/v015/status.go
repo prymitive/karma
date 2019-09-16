@@ -1,12 +1,13 @@
 package v015
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 
 	"github.com/Masterminds/semver/v3"
+
+	"github.com/prymitive/karma/internal/json"
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/uri"
@@ -68,7 +69,7 @@ func (s StatusMapper) Decode(source io.ReadCloser) (models.AlertmanagerStatus, e
 	resp := alertmanagerStatusResponse{}
 
 	defer source.Close()
-	err := json.NewDecoder(source).Decode(&resp)
+	err := json.JSON.NewDecoder(source).Decode(&resp)
 	if err != nil {
 		return status, err
 	}

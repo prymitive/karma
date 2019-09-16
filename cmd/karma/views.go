@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"compress/gzip"
 	"encoding/base64"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -16,6 +15,7 @@ import (
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
+	"github.com/prymitive/karma/internal/json"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/transform"
@@ -73,7 +73,7 @@ func index(c *gin.Context) {
 
 	noCache(c)
 
-	filtersJSON, err := json.Marshal(config.Config.Filters.Default)
+	filtersJSON, err := json.JSON.Marshal(config.Config.Filters.Default)
 	if err != nil {
 		panic(err)
 	}
@@ -175,14 +175,14 @@ func alerts(c *gin.Context) {
 
 		// need to overwrite settings as they can have user specific data
 		newResp := models.AlertsResponse{}
-		err = json.Unmarshal(rawData, &newResp)
+		err = json.JSON.Unmarshal(rawData, &newResp)
 		if err != nil {
 			log.Error(err.Error())
 			panic(err)
 		}
 		newResp.Settings = resp.Settings
 		newResp.Timestamp = string(ts)
-		newData, err := json.Marshal(&newResp)
+		newData, err := json.JSON.Marshal(&newResp)
 		if err != nil {
 			log.Error(err.Error())
 			panic(err)
@@ -336,7 +336,7 @@ func alerts(c *gin.Context) {
 	resp.Counters = countersToLabelStats(counters)
 	resp.Filters = populateAPIFilters(matchFilters)
 
-	data, err := json.Marshal(resp)
+	data, err := json.JSON.Marshal(resp)
 	if err != nil {
 		log.Error(err.Error())
 		panic(err)
@@ -390,7 +390,7 @@ func autocomplete(c *gin.Context) {
 	}
 
 	sort.Sort(sort.Reverse(acData))
-	data, err := json.Marshal(acData)
+	data, err := json.JSON.Marshal(acData)
 	if err != nil {
 		log.Error(err.Error())
 		panic(err)

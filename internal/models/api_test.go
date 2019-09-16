@@ -1,12 +1,12 @@
 package models_test
 
 import (
-	"encoding/json"
 	"sort"
 	"testing"
 
 	"github.com/pmezard/go-difflib/difflib"
 
+	"github.com/prymitive/karma/internal/json"
 	"github.com/prymitive/karma/internal/models"
 )
 
@@ -220,7 +220,7 @@ func TestDedupSharedMaps(t *testing.T) {
   }
 }`
 
-	agJSON, _ := json.MarshalIndent(ag, "", "  ")
+	agJSON, _ := json.JSON.MarshalIndent(ag, "", "  ")
 	if string(agJSON) != expectedJSON {
 		diff := difflib.UnifiedDiff{
 			A:        difflib.SplitLines(expectedJSON),
@@ -449,7 +449,7 @@ func TestNameStatsSort(t *testing.T) {
 		},
 	}
 
-	b, err := json.Marshal(nameStats)
+	b, err := json.JSON.Marshal(nameStats)
 	if err != nil {
 		t.Error(err)
 	}
@@ -460,7 +460,7 @@ func TestNameStatsSort(t *testing.T) {
 	}
 	sort.Sort(nameStats)
 
-	a, err := json.Marshal(nameStats)
+	a, err := json.JSON.Marshal(nameStats)
 	if err != nil {
 		t.Error(err)
 	}

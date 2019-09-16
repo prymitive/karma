@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -11,6 +10,7 @@ import (
 	"time"
 
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/json"
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
@@ -102,7 +102,7 @@ func TestAlerts(t *testing.T) {
 		}
 
 		ur := models.AlertsResponse{}
-		err := json.Unmarshal(resp.Body.Bytes(), &ur)
+		err := json.JSON.Unmarshal(resp.Body.Bytes(), &ur)
 		if err != nil {
 			t.Errorf("Failed to unmarshal response: %s", err)
 		}
@@ -172,7 +172,7 @@ func TestValidateAllAlerts(t *testing.T) {
 		}
 		ur := models.AlertsResponse{}
 		body := resp.Body.Bytes()
-		err := json.Unmarshal(body, &ur)
+		err := json.JSON.Unmarshal(body, &ur)
 		if err != nil {
 			t.Errorf("Failed to unmarshal response: %s", err)
 		}
@@ -361,7 +361,7 @@ func TestAutocomplete(t *testing.T) {
 			}
 
 			ur := []string{}
-			err := json.Unmarshal(resp.Body.Bytes(), &ur)
+			err := json.JSON.Unmarshal(resp.Body.Bytes(), &ur)
 			if err != nil {
 				t.Errorf("Failed to unmarshal response: %s", err)
 			}
@@ -575,7 +575,7 @@ func TestValidateAuthorFromHeaders(t *testing.T) {
 		}
 		ur := models.AlertsResponse{}
 		body := resp.Body.Bytes()
-		err := json.Unmarshal(body, &ur)
+		err := json.JSON.Unmarshal(body, &ur)
 		if err != nil {
 			t.Errorf("Failed to unmarshal response: %s", err)
 		}

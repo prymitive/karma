@@ -1,11 +1,11 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http/httptest"
 	"testing"
 
+	"github.com/prymitive/karma/internal/json"
 	"github.com/prymitive/karma/internal/mock"
 )
 
@@ -100,7 +100,7 @@ func TestLabelAutocomplete(t *testing.T) {
 
 					if resp.Code < 300 {
 						ur := []string{}
-						err := json.Unmarshal(resp.Body.Bytes(), &ur)
+						err := json.JSON.Unmarshal(resp.Body.Bytes(), &ur)
 						if err != nil {
 							t.Errorf("Failed to unmarshal response: %s", err)
 						}

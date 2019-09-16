@@ -5,13 +5,14 @@
 package v05
 
 import (
-	"encoding/json"
 	"errors"
 	"io"
 	"sort"
 	"time"
 
 	"github.com/Masterminds/semver/v3"
+
+	"github.com/prymitive/karma/internal/json"
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/uri"
@@ -83,7 +84,7 @@ func (m AlertMapper) Decode(source io.ReadCloser) ([]models.AlertGroup, error) {
 	resp := alertsGroupsAPISchema{}
 
 	defer source.Close()
-	err := json.NewDecoder(source).Decode(&resp)
+	err := json.JSON.NewDecoder(source).Decode(&resp)
 	if err != nil {
 		return groups, err
 	}

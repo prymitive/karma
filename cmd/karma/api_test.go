@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -13,6 +12,7 @@ import (
 	"github.com/google/go-cmp/cmp"
 
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/json"
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 )
@@ -1003,7 +1003,7 @@ func TestVerifyAllGroups(t *testing.T) {
 		}
 
 		ur := models.AlertsResponse{}
-		err := json.Unmarshal(resp.Body.Bytes(), &ur)
+		err := json.JSON.Unmarshal(resp.Body.Bytes(), &ur)
 		if err != nil {
 			t.Errorf("Failed to unmarshal response: %s", err)
 		}
@@ -1218,7 +1218,7 @@ func TestSortOrder(t *testing.T) {
 			}
 
 			ur := models.AlertsResponse{}
-			err := json.Unmarshal(resp.Body.Bytes(), &ur)
+			err := json.JSON.Unmarshal(resp.Body.Bytes(), &ur)
 			if err != nil {
 				t.Errorf("Failed to unmarshal response: %s", err)
 			}

@@ -5,13 +5,14 @@
 package v04
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
 	"math"
 	"strconv"
 	"time"
+
+	"github.com/prymitive/karma/internal/json"
 
 	"github.com/Masterminds/semver/v3"
 	"github.com/prymitive/karma/internal/mapper"
@@ -81,7 +82,7 @@ func (m SilenceMapper) Decode(source io.ReadCloser) ([]models.Silence, error) {
 	resp := silenceAPISchema{}
 
 	defer source.Close()
-	err := json.NewDecoder(source).Decode(&resp)
+	err := json.JSON.NewDecoder(source).Decode(&resp)
 	if err != nil {
 		return silences, err
 	}

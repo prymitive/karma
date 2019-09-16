@@ -1,12 +1,12 @@
 package filters_test
 
 import (
-	"encoding/json"
 	"testing"
 	"time"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/filters"
+	"github.com/prymitive/karma/internal/json"
 	"github.com/prymitive/karma/internal/models"
 
 	log "github.com/sirupsen/logrus"
@@ -601,8 +601,8 @@ func TestFilters(t *testing.T) {
 		if f.GetIsValid() {
 			m := f.Match(&alert, 0)
 			if m != ft.IsMatch {
-				j, _ := json.Marshal(ft.Alert)
-				s, _ := json.Marshal(ft.Silence)
+				j, _ := json.JSON.Marshal(ft.Alert)
+				s, _ := json.JSON.Marshal(ft.Silence)
 				t.Errorf("[%s] Match() returned %#v while %#v was expected\nalert used: %s\nsilence used: %s", ft.Expression, m, ft.IsMatch, j, s)
 			}
 			if ft.IsMatch && f.GetHits() != 1 {

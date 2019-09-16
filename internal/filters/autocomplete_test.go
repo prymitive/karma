@@ -1,11 +1,11 @@
 package filters_test
 
 import (
-	"encoding/json"
 	"sort"
 	"testing"
 
 	"github.com/prymitive/karma/internal/filters"
+	"github.com/prymitive/karma/internal/json"
 	"github.com/prymitive/karma/internal/models"
 
 	"github.com/pmezard/go-difflib/difflib"
@@ -127,8 +127,8 @@ func TestBuildAutocomplete(t *testing.T) {
 		sort.Strings(result)
 		sort.Strings(acTest.Expected)
 
-		resultJSON, _ := json.Marshal(result)
-		expectedJSON, _ := json.Marshal(acTest.Expected)
+		resultJSON, _ := json.JSON.Marshal(result)
+		expectedJSON, _ := json.JSON.Marshal(acTest.Expected)
 
 		if string(resultJSON) != string(expectedJSON) {
 			diff := difflib.UnifiedDiff{
