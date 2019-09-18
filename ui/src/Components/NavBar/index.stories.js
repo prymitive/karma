@@ -22,7 +22,7 @@ const NewFilter = (raw, name, matcher, value, applied, isValid, hits) => {
 
 storiesOf("NavBar", module)
   .addDecorator(storyFn => (
-    <div className="overflow-auto modal d-block" role="dialog">
+    <div>
       <div className="modal-dialog modal-lg" role="document">
         <div className="modal-content">{storyFn()}</div>
       </div>
