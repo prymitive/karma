@@ -27,7 +27,12 @@ const Grid = observer(
       }
 
       if (alertStore.info.upgradeNeeded) {
-        return <UpgradeNeeded newVersion={alertStore.info.version} />;
+        return (
+          <UpgradeNeeded
+            newVersion={alertStore.info.version}
+            reloadAfter={3000}
+          />
+        );
       }
 
       if (
