@@ -9,7 +9,8 @@ import "csshake/scss/csshake-slow.scss";
 
 class UpgradeNeeded extends Component {
   static propTypes = {
-    newVersion: PropTypes.string.isRequired
+    newVersion: PropTypes.string.isRequired,
+    reloadAfter: PropTypes.number.isRequired
   };
 
   reloadApp = () => {
@@ -17,7 +18,8 @@ class UpgradeNeeded extends Component {
   };
 
   componentDidMount() {
-    this.timer = setTimeout(this.reloadApp, 3000);
+    const { reloadAfter } = this.props;
+    this.timer = setTimeout(this.reloadApp, reloadAfter);
   }
 
   componentWillUnmount() {

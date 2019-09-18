@@ -18,7 +18,9 @@ afterEach(() => {
 
 describe("<UpgradeNeeded />", () => {
   it("matches snapshot", () => {
-    const tree = shallow(<UpgradeNeeded newVersion="1.2.3" />);
+    const tree = shallow(
+      <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />
+    );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
@@ -26,13 +28,15 @@ describe("<UpgradeNeeded />", () => {
     const reloadSpy = jest
       .spyOn(global.window.location, "reload")
       .mockImplementation(() => {});
-    mount(<UpgradeNeeded newVersion="1.2.3" />);
+    mount(<UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />);
     jest.runOnlyPendingTimers();
     expect(reloadSpy).toBeCalled();
   });
 
   it("timer is cleared on unmount", () => {
-    const tree = mount(<UpgradeNeeded newVersion="1.2.3" />);
+    const tree = mount(
+      <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />
+    );
     const instance = tree.instance();
 
     instance.componentWillUnmount();

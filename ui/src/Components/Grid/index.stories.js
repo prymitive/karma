@@ -81,7 +81,7 @@ storiesOf("Grid", module)
     return <FatalError message="Something failed" />;
   })
   .add("UpgradeNeeded", () => {
-    return <UpgradeNeeded newVersion="1.2.3" />;
+    return <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />;
   })
   .add("AlertGrid", () => {
     const alertStore = new AlertStore([]);
