@@ -23,7 +23,7 @@ const MockMatcher = (name, values, isRegex) => {
 
 storiesOf("SilenceModalContent", module)
   .addDecorator(storyFn => (
-    <div className="modal d-block overflow-auto" role="dialog">
+    <div>
       <div className="modal-dialog modal-lg" role="document">
         <div className="modal-content">{storyFn()}</div>
       </div>

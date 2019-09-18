@@ -10,7 +10,7 @@ import "Percy.scss";
 
 storiesOf("MainModal", module)
   .addDecorator(storyFn => (
-    <div className="overflow-auto modal d-block" role="dialog">
+    <div>
       <div className="modal-dialog modal-lg" role="document">
         <div className="modal-content">{storyFn()}</div>
       </div>
