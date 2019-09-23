@@ -40,19 +40,49 @@ const AlertGrid = observer(
       this.viewport = observable(
         {
           width: document.body.clientWidth,
+          widthAdjust: 0,
+          widthHistory: [],
           update(width, height) {
+            if (
+              this.widthHistory.length === 4 &&
+              this.widthHistory[0] !== this.widthHistory[1] &&
+              this.widthHistory[0] !== this.widthHistory[3]
+            ) {
+              const uniqueWidths = this.widthHistory.reduce((uniques, w) => {
+                const count = uniques[w] || 0;
+                uniques[w] = count + 1;
+                return uniques;
+              }, {});
+
+              if (
+                this.widthHistory.includes(width) &&
+                Object.keys(uniqueWidths).length === 2 &&
+                Object.values(uniqueWidths)[0] ===
+                  Object.values(uniqueWidths)[1]
+              ) {
+                this.widthAdjust = Math.min(this.widthAdjust + 20, 200);
+              } else {
+                this.widthAdjust = 0;
+              }
+            }
+
             this.width = width;
+
+            this.widthHistory.unshift(width);
+            this.widthHistory = this.widthHistory.slice(0, 4);
           },
           get gridSizesConfig() {
             return GridSizesConfig(
               this.width,
-              props.settingsStore.gridConfig.config.groupWidth
+              props.settingsStore.gridConfig.config.groupWidth +
+                this.widthAdjust
             );
           },
           get groupWidth() {
             return GetGridElementWidth(
               this.width,
-              props.settingsStore.gridConfig.config.groupWidth
+              props.settingsStore.gridConfig.config.groupWidth +
+                this.widthAdjust
             );
           }
         },
@@ -136,7 +166,10 @@ const AlertGrid = observer(
             onResize={debounce(this.viewport.update, 100)}
           />
           <MasonryInfiniteScroller
-            key={settingsStore.gridConfig.config.groupWidth}
+            key={
+              settingsStore.gridConfig.config.groupWidth +
+              this.viewport.widthAdjust
+            }
             ref={this.storeMasonryRef}
             position={false}
             pack={true}
