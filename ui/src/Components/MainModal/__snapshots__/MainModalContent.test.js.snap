@@ -47,7 +47,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
           </div>
         </div>
         <div class=\\"Collapsible__contentOuter collapse show\\"
-             style=\\"height: auto; transition: none; overflow: visible;\\"
+             style=\\"height: auto; transition: none; overflow: hidden;\\"
         >
           <div class=\\"Collapsible__contentInner card-body my-2\\">
             <div class=\\"form-group mb-0 text-center\\">

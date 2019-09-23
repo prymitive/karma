@@ -22,7 +22,6 @@ const Accordion = ({ text, content, extraProps }) => (
   <Collapsible
     triggerTagName="div"
     transitionTime={50}
-    overflowWhenOpen="visible"
     className="card"
     openedClassName="card"
     triggerClassName="card-header cursor-pointer"

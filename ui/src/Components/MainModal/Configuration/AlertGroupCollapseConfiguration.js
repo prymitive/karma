@@ -64,7 +64,7 @@ const AlertGroupCollapseConfiguration = observer(
             )}
             options={Object.values(settingsStore.alertGroupConfig.options)}
             onChange={this.onCollapseChange}
-            menuPosition="fixed"
+            menuPortalTarget={document.body}
             hideSelectedOptions
           />
         </div>

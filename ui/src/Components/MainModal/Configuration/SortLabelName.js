@@ -77,7 +77,7 @@ const SortLabelName = observer(
           )}
           options={this.suggestions.names}
           onChange={this.onChange}
-          menuPosition="fixed"
+          menuPortalTarget={document.body}
         />
       );
     }
