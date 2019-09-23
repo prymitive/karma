@@ -252,6 +252,55 @@ describe("<AlertGrid />", () => {
     ).toBe(1000 / 2);
   });
 
+  it("viewport resize doesn't allow loops", () => {
+    settingsStore.gridConfig.config.groupWidth = 410;
+    const tree = ShallowAlertGrid();
+
+    let results = [];
+    for (var index = 0; index < 14; index++) {
+      MockGroupList(60, 5);
+      tree.instance().viewport.update(index % 2 === 0 ? 800 : 830, 500);
+      results.push(
+        tree
+          .find("AlertGroup")
+          .at(0)
+          .props().style.width
+      );
+    }
+
+    // first 4 results will switch beween 1 and 2 columns, but after than it
+    // should stabilise and return same result as the grid width
+    expect(results).toStrictEqual([
+      800,
+      415,
+      800,
+      415,
+      800,
+      830,
+      800,
+      830,
+      800,
+      830,
+      800,
+      830,
+      800,
+      830
+    ]);
+
+    // so now let's call it without any loop
+    results = [];
+    for (let width of [840, 820, 450, 450, 1200]) {
+      tree.instance().viewport.update(width, 500);
+      results.push(
+        tree
+          .find("AlertGroup")
+          .at(0)
+          .props().style.width
+      );
+    }
+    expect(results).toStrictEqual([420, 410, 450, 450, 600]);
+  });
+
   it("doesn't crash on unmount", () => {
     MockGroupList(60, 5);
     const tree = ShallowAlertGrid();
