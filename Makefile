@@ -1,5 +1,5 @@
 NAME    := karma
-VERSION := $(shell git describe --tags --always --dirty='-dev')
+VERSION ?= $(shell git describe --tags --always --dirty='-dev')
 
 # Alertmanager instance used when running locally, points to mock data
 MOCK_PATH         := $(CURDIR)/internal/mock/0.15.3
@@ -53,6 +53,10 @@ cmd/karma/bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_a
 
 $(NAME): .build/deps-build-go.ok go.mod cmd/karma/bindata_assetfs.go $(SOURCES)
 	GO111MODULE=on go build -ldflags "-X main.version=$(VERSION)" ./cmd/karma
+
+.PHONY: download-deps
+download-deps:
+	GO111MODULE=on go mod download
 
 word-split = $(word $2,$(subst -, ,$1))
 cc-%: .build/deps-build-go.ok go.mod cmd/karma/bindata_assetfs.go $(SOURCES)
