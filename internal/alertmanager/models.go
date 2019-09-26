@@ -211,7 +211,7 @@ func (am *Alertmanager) PublicURI() string {
 	if am.ExternalURI != "" {
 		return am.ExternalURI
 	}
-	return am.URI
+	return uri.WithoutUserinfo(am.URI)
 }
 
 func (am *Alertmanager) pullAlerts(version string) error {

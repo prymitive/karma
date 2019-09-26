@@ -8,6 +8,7 @@ import { SilenceFormMatcher } from "Models/SilenceForm";
 import { MultiSelect } from "Components/MultiSelect";
 import { ValidationError } from "Components/MultiSelect/ValidationError";
 import { FormatBackendURI } from "Stores/AlertStore";
+import { FetchWithCredentials } from "Common/Fetch";
 
 const LabelNameInput = observer(
   class LabelNameInput extends MultiSelect {
@@ -19,9 +20,10 @@ const LabelNameInput = observer(
     populateNameSuggestions = action(() => {
       const { matcher } = this.props;
 
-      this.nameSuggestionsFetch = fetch(FormatBackendURI(`labelNames.json`), {
-        credentials: "include"
-      })
+      this.nameSuggestionsFetch = FetchWithCredentials(
+        FormatBackendURI(`labelNames.json`),
+        {}
+      )
         .then(
           result => result.json(),
           err => {
@@ -43,11 +45,9 @@ const LabelNameInput = observer(
     populateValueSuggestions = action(() => {
       const { matcher } = this.props;
 
-      this.valueSuggestionsFetch = fetch(
+      this.valueSuggestionsFetch = FetchWithCredentials(
         FormatBackendURI(`labelValues.json?name=${matcher.name}`),
-        {
-          credentials: "include"
-        }
+        {}
       )
         .then(
           result => result.json(),

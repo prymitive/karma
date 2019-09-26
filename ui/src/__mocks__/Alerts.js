@@ -71,6 +71,9 @@ const MockAlertmanager = () => ({
   cluster: "default",
   uri: "http://localhost",
   publicURI: "http://am.example.com",
+  headers: {
+    Authorization: "Basic foo bar"
+  },
   error: "",
   version: "0.15.0",
   clusterMembers: ["default"]

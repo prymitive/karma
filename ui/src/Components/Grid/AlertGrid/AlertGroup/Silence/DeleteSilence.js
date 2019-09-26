@@ -15,6 +15,7 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 import { APIAlertmanagerUpstream } from "Models/API";
 import { AlertStore, FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
+import { FetchWithCredentials } from "Common/Fetch";
 import { Modal } from "Components/Modal";
 import {
   LabelSetList,
@@ -136,7 +137,7 @@ const DeleteSilenceModalContent = observer(
           FormatQuery(StaticLabels.SilenceID, QueryOperators.Equal, silenceID)
         ]);
 
-      this.previewState.fetch = fetch(alertsURI, { credentials: "include" })
+      this.previewState.fetch = FetchWithCredentials(alertsURI, {})
         .then(result => result.json())
         .then(result => {
           this.previewState.groupsToUniqueLabels(Object.values(result.groups));
@@ -165,9 +166,9 @@ const DeleteSilenceModalContent = observer(
         ? `${alertmanager.publicURI}/api/v2/silence/${silenceID}`
         : `${alertmanager.publicURI}/api/v1/silence/${silenceID}`;
 
-      this.deleteState.fetch = fetch(uri, {
+      this.deleteState.fetch = FetchWithCredentials(uri, {
         method: "DELETE",
-        credentials: "include"
+        headers: alertmanager.headers
       })
         .then(result => {
           if (isOpenAPI) {

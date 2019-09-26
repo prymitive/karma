@@ -13,6 +13,7 @@ import (
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
+	"github.com/prymitive/karma/internal/uri"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -111,10 +112,19 @@ func getUpstreams() models.AlertmanagerAPISummary {
 			Name:           upstream.Name,
 			URI:            upstream.SanitizedURI(),
 			PublicURI:      upstream.PublicURI(),
+			Headers:        map[string]string{},
 			Error:          upstream.Error(),
 			Version:        upstream.Version(),
 			Cluster:        upstream.ClusterID(),
 			ClusterMembers: members,
+		}
+		if !upstream.ProxyRequests {
+			for k, v := range uri.HeadersForBasicAuth(u.PublicURI) {
+				u.Headers[k] = v
+			}
+			for k, v := range upstream.HTTPHeaders {
+				u.Headers[k] = v
+			}
 		}
 		summary.Instances = append(summary.Instances, u)
 

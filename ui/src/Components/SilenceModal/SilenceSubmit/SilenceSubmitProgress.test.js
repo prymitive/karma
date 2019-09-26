@@ -15,6 +15,7 @@ beforeEach(() => {
         name: "mockAlertmanager",
         uri: "file:///mock",
         publicURI: "http://example.com",
+        headers: { foo: "bar" },
         error: "",
         version: "0.15.0",
         cluster: "mockAlertmanager",
@@ -68,7 +69,7 @@ describe("<SilenceSubmitProgress />", () => {
     const payload = fetch.mock.calls[0][1];
     expect(payload).toMatchObject({
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", foo: "bar" },
       body: JSON.stringify({
         matchers: [],
         startsAt: "now",
@@ -93,6 +94,7 @@ describe("<SilenceSubmitProgress />", () => {
           name: "am1",
           uri: "file:///mock",
           publicURI: "http://am1.example.com",
+          headers: {},
           error: "",
           version: "0.15.0",
           cluster: "ha",
@@ -102,6 +104,7 @@ describe("<SilenceSubmitProgress />", () => {
           name: "am2",
           uri: "file:///mock",
           publicURI: "http://am2.example.com",
+          headers: {},
           error: "",
           version: "0.15.0",
           cluster: "ha",
@@ -147,6 +150,7 @@ describe("<SilenceSubmitProgress />", () => {
           name: "am1",
           uri: "file:///mock",
           publicURI: "http://am1.example.com",
+          headers: {},
           error: "",
           version: "0.15.0",
           cluster: "ha",
