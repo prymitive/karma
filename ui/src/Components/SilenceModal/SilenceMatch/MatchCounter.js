@@ -14,6 +14,7 @@ import { FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceFormMatcher } from "Models/SilenceForm";
 import { TooltipWrapper } from "Components/TooltipWrapper";
+import { FetchWithCredentials } from "Common/Fetch";
 import { MatcherToFilter, AlertManagersToFilter } from "../Matchers";
 
 const MatchCounter = observer(
@@ -54,7 +55,7 @@ const MatchCounter = observer(
       const alertsURI =
         FormatBackendURI("alerts.json?") + FormatAlertsQ(filters);
 
-      this.matchedAlerts.fetch = fetch(alertsURI, { credentials: "include" })
+      this.matchedAlerts.fetch = FetchWithCredentials(alertsURI, {})
         .then(result => {
           return result.json();
         })

@@ -67,6 +67,7 @@ beforeEach(() => {
         cluster: "default",
         uri: "file:///mock",
         publicURI: "http://example.com",
+        headers: {},
         error: "",
         version: "0.15.0",
         clusterMembers: ["default"]
@@ -203,6 +204,7 @@ describe("<Silence />", () => {
       cluster: "default",
       uri: "file:///mock",
       publicURI: "http://example.com",
+      headers: {},
       error: "",
       version: "0.15.0",
       clusterMembers: ["default"]

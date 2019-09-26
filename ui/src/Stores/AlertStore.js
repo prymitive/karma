@@ -6,6 +6,8 @@ import equal from "fast-deep-equal";
 
 import qs from "qs";
 
+import { FetchWithCredentials } from "Common/Fetch";
+
 const QueryStringEncodeOptions = {
   encodeValuesOnly: true, // don't encode q[]
   indices: false // go-gin doesn't support parsing q[0]=foo&q[1]=bar
@@ -247,7 +249,7 @@ class AlertStore {
         `alerts.json?sortOrder=${sortOrder}&sortLabel=${sortLabel}&sortReverse=${sortReverse}&`
       ) + FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
 
-    return fetch(alertsURI, { credentials: "include" })
+    return FetchWithCredentials(alertsURI, {})
       .then(result => {
         this.status.setProcessing();
         return result.json();

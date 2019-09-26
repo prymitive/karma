@@ -122,7 +122,7 @@ describe("<DeleteSilenceModalContent />", () => {
     expect(tree.find("ErrorMessage")).toHaveLength(1);
   });
 
-  it("[v1] sends a DELETE request after clicking 'Confirm' button ", async () => {
+  it("[v1] sends a DELETE request after clicking 'Confirm' button", async () => {
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
       "http://am.example.com/api/v1/silence/123456789"
@@ -130,13 +130,40 @@ describe("<DeleteSilenceModalContent />", () => {
     expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
   });
 
-  it("[v2] sends a DELETE request after clicking 'Confirm' button ", async () => {
+  it("[v2] sends a DELETE request after clicking 'Confirm' button", async () => {
     alertmanager.version = "0.16.2";
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
       "http://am.example.com/api/v2/silence/123456789"
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
+  });
+
+  it("[v1] sends headers from alertmanager config", async () => {
+    alertmanager.headers = { Authorization: "Basic ***" };
+    await VerifyResponse({ status: "success" });
+    expect(fetch.mock.calls[1][0]).toBe(
+      "http://am.example.com/api/v1/silence/123456789"
+    );
+    expect(fetch.mock.calls[1][1]).toMatchObject({
+      credentials: "include",
+      method: "DELETE",
+      headers: { Authorization: "Basic ***" }
+    });
+  });
+
+  it("[v1] sends headers from alertmanager config", async () => {
+    alertmanager.headers = { Authorization: "Basic ***" };
+    alertmanager.version = "0.16.2";
+    await VerifyResponse({ status: "success" });
+    expect(fetch.mock.calls[1][0]).toBe(
+      "http://am.example.com/api/v2/silence/123456789"
+    );
+    expect(fetch.mock.calls[1][1]).toMatchObject({
+      credentials: "include",
+      method: "DELETE",
+      headers: { Authorization: "Basic ***" }
+    });
   });
 
   it("'Confirm' button is no-op after successful DELETE", async () => {

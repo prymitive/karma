@@ -15,6 +15,7 @@ import {
   LabelSetList,
   GroupListToUniqueLabelsList
 } from "Components/LabelSetList";
+import { FetchWithCredentials } from "Common/Fetch";
 import { MatcherToFilter, AlertManagersToFilter } from "../Matchers";
 
 const FetchError = ({ message }) => (
@@ -67,7 +68,7 @@ const SilencePreview = observer(
       const alertsURI =
         FormatBackendURI("alerts.json?") + FormatAlertsQ(filters);
 
-      this.matchedAlerts.fetch = fetch(alertsURI, { credentials: "include" })
+      this.matchedAlerts.fetch = FetchWithCredentials(alertsURI, {})
         .then(result => {
           return result.json();
         })
