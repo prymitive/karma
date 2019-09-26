@@ -69,10 +69,10 @@ alertmanager:
   (`https://user:password@alertmanager.example.com`) and you don't want it to
   be visible to users then ensure `proxy: true` is also set in order to avoid
   leaking auth information to the browser.
-  Without proxy mode full URI needs to be passed to karma web UI code.
-  With proxy mode all requests will be routed via karma HTTP server and since
-  karma has full URI in the config it only needs Alertmanager name in that
-  request.
+  Note: if URI contains username and password and proxy option is NOT enabled
+  (see below), then the username & password information will be stripped from
+  the URI and `Authorization` header using Basic Auth will be set for all
+  in browser requests.
   To set a different URI for all browser requests (can be any valid URI) see
   `external_uri` option below.
 - `external_uri` - base URI of this Alertmanager server used for all browser
