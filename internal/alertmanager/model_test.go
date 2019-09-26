@@ -35,12 +35,12 @@ var uriTests = []uriTest{
 	{
 		rawURI:    "http://user:pass@alertmanager.example.com",
 		proxy:     false,
-		publicURI: "http://user:pass@alertmanager.example.com",
+		publicURI: "http://alertmanager.example.com",
 	},
 	{
 		rawURI:    "https://user:pass@alertmanager.example.com/foo",
 		proxy:     false,
-		publicURI: "https://user:pass@alertmanager.example.com/foo",
+		publicURI: "https://alertmanager.example.com/foo",
 	},
 	{
 		rawURI:    "http://user:pass@alertmanager.example.com",
