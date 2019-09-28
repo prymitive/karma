@@ -17,7 +17,7 @@ global.fetch = require("jest-fetch-mock");
 // ensure that all console messages throw errors
 for (const level of ["error", "warn", "info", "log", "trace"]) {
   // https://reactjs.org/blog/2019/08/08/react-v16.9.0.html#new-deprecations
-  const reactDeprecationWarning = /.*has been renamed, and is not recommended for use\. See https:\/\/fb.me\/react-async-component-lifecycle-hooks for details.*/;
+  const reactDeprecationWarning = /.*has been renamed, and is not recommended for use.*/;
   global.console[level] = (message, ...args) => {
     if (reactDeprecationWarning.test(message) === false) {
       throw new Error(`message=${message} args=${args}`);
