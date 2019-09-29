@@ -19,7 +19,7 @@ exports[`<LabelWithPercent /> matches snapshot with isActive=true 1`] = `
          focusable=\\"false\\"
          data-prefix=\\"fas\\"
          data-icon=\\"times\\"
-         class=\\"svg-inline--fa fa-times fa-w-11 cursor-pointer text-reset ml-1 close\\"
+         class=\\"svg-inline--fa fa-times fa-w-11 fa-null fa-rotate-null fa-pull-null cursor-pointer text-reset ml-1 close\\"
          role=\\"img\\"
          xmlns=\\"http://www.w3.org/2000/svg\\"
          viewbox=\\"0 0 352 512\\"
