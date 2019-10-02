@@ -80,7 +80,7 @@ const ReactSelectStyles = {
   }),
   menu: (base, state) => ({
     ...base,
-    zIndex: 100
+    zIndex: 1500
   }),
   option: (base, state) => ({
     ...base,
