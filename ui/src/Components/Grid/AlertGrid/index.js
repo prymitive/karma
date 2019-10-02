@@ -149,6 +149,7 @@ const AlertGrid = observer(
             onResize={debounce(this.handleResize, 100)}
           />
           <MasonryInfiniteScroller
+            key={settingsStore.gridConfig.config.groupWidth}
             ref={this.storeMasonryRef}
             position={false}
             pack={true}
