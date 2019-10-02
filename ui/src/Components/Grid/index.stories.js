@@ -73,7 +73,6 @@ const MockGroup = (groupName, alertCount, active, suppressed, unprocessed) => {
 };
 
 storiesOf("Grid", module)
-  .addDecorator(storyFn => <div className="p-2">{storyFn()}</div>)
   .add("UpstreamError", () => {
     return <UpstreamError name="am1" message="Something failed" />;
   })

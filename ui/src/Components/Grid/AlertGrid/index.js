@@ -39,60 +39,37 @@ const AlertGrid = observer(
       // and group size
       this.viewport = observable(
         {
-          width: document.body.clientWidth,
-          widthAdjust: 0,
-          widthHistory: [],
-          update(width, height) {
-            if (
-              this.widthHistory.length === 4 &&
-              this.widthHistory[0] !== this.widthHistory[1] &&
-              this.widthHistory[0] !== this.widthHistory[3]
-            ) {
-              const uniqueWidths = this.widthHistory.reduce((uniques, w) => {
-                const count = uniques[w] || 0;
-                uniques[w] = count + 1;
-                return uniques;
-              }, {});
-
-              if (
-                this.widthHistory.includes(width) &&
-                Object.keys(uniqueWidths).length === 2 &&
-                Object.values(uniqueWidths)[0] ===
-                  Object.values(uniqueWidths)[1]
-              ) {
-                this.widthAdjust = Math.min(this.widthAdjust + 20, 200);
-              } else {
-                this.widthAdjust = 0;
-              }
-            }
-
-            this.width = width;
-
-            this.widthHistory.unshift(width);
-            this.widthHistory = this.widthHistory.slice(0, 4);
+          canvasWidth: document.body.clientWidth,
+          windowWidth: window.innerWidth,
+          updateWidths(canvasWidth, windowWidth) {
+            this.canvasWidth = canvasWidth;
+            this.windowWidth = windowWidth;
           },
           get gridSizesConfig() {
             return GridSizesConfig(
-              this.width,
-              props.settingsStore.gridConfig.config.groupWidth +
-                this.widthAdjust
+              this.windowWidth,
+              props.settingsStore.gridConfig.config.groupWidth
             );
           },
           get groupWidth() {
             return GetGridElementWidth(
-              this.width,
-              props.settingsStore.gridConfig.config.groupWidth +
-                this.widthAdjust
+              this.canvasWidth,
+              this.windowWidth,
+              props.settingsStore.gridConfig.config.groupWidth
             );
           }
         },
         {
-          update: action.bound,
+          updateWidths: action.bound,
           gridSizesConfig: computed,
           groupWidth: computed
         }
       );
     }
+
+    handleResize = debounce(() => {
+      this.viewport.updateWidths(document.body.clientWidth, window.innerWidth);
+    }, 100);
 
     // store reference to generated masonry component so we can call it
     // to repack the grid after any component was re-rendered, which could
@@ -153,6 +130,12 @@ const AlertGrid = observer(
         // wait up to 30s, run no-op function on timeout
         font.load(null, 30000).then(this.masonryRepack, () => {});
       }
+
+      window.addEventListener("resize", this.handleResize);
+    }
+
+    componentWillUnmount() {
+      window.removeEventListener("resize", this.handleResize);
     }
 
     render() {
@@ -163,13 +146,9 @@ const AlertGrid = observer(
           <ReactResizeDetector
             handleWidth
             handleHeight
-            onResize={debounce(this.viewport.update, 100)}
+            onResize={debounce(this.handleResize, 100)}
           />
           <MasonryInfiniteScroller
-            key={
-              settingsStore.gridConfig.config.groupWidth +
-              this.viewport.widthAdjust
-            }
             ref={this.storeMasonryRef}
             position={false}
             pack={true}
