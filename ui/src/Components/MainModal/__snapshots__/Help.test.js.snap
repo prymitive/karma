@@ -163,7 +163,7 @@ exports[`<Help /> matches snapshot 1`] = `
     </div>
   </div>
   <div class=\\"Collapsible card\\">
-    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
       <div class=\\"d-flex flex-row justify-content-between\\">
         <div>
           Filtering using alert labels
@@ -339,7 +339,7 @@ exports[`<Help /> matches snapshot 1`] = `
     </div>
   </div>
   <div class=\\"Collapsible card\\">
-    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
       <div class=\\"d-flex flex-row justify-content-between\\">
         <div>
           Filtering alerts using special filters

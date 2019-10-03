@@ -75,7 +75,6 @@ const AlertGroupSortConfiguration = observer(
                 )}
                 options={Object.values(settingsStore.gridConfig.options)}
                 onChange={this.onSortOrderChange}
-                menuPosition="fixed"
                 hideSelectedOptions
               />
             </div>

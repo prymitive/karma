@@ -75,7 +75,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
     </div>
   </div>
   <div class=\\"Collapsible card\\">
-    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
       <div class=\\"d-flex flex-row justify-content-between\\">
         <div>
           Filter bar configuration
@@ -123,7 +123,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
     </div>
   </div>
   <div class=\\"Collapsible card\\">
-    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
       <div class=\\"d-flex flex-row justify-content-between\\">
         <div>
           Alert group titlebar configuration
@@ -170,7 +170,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
     </div>
   </div>
   <div class=\\"Collapsible card\\">
-    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
       <div class=\\"d-flex flex-row justify-content-between\\">
         <div>
           Minimal alert group width
@@ -241,7 +241,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
     </div>
   </div>
   <div class=\\"Collapsible card\\">
-    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
       <div class=\\"d-flex flex-row justify-content-between\\">
         <div>
           Default number of alerts to show per group
@@ -312,7 +312,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
     </div>
   </div>
   <div class=\\"Collapsible card\\">
-    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
       <div class=\\"d-flex flex-row justify-content-between\\">
         <div>
           Default alert group display
@@ -391,7 +391,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
     </div>
   </div>
   <div class=\\"Collapsible card\\">
-    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+    <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
       <div class=\\"d-flex flex-row justify-content-between\\">
         <div>
           Grid sort order

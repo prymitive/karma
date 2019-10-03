@@ -94,7 +94,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
         </div>
       </div>
       <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+        <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Filter bar configuration
@@ -142,7 +142,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
         </div>
       </div>
       <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+        <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Alert group titlebar configuration
@@ -189,7 +189,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
         </div>
       </div>
       <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+        <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Minimal alert group width
@@ -260,7 +260,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
         </div>
       </div>
       <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+        <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Default number of alerts to show per group
@@ -331,7 +331,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
         </div>
       </div>
       <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+        <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Default alert group display
@@ -410,7 +410,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
         </div>
       </div>
       <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer\\">
+        <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Grid sort order
