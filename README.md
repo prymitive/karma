@@ -1,5 +1,7 @@
 # karma
 
+[![Build Status](https://travis-ci.org/prymitive/karma.svg?branch=master)](https://travis-ci.org/prymitive/karma)
+
 Alert dashboard for
 [Prometheus Alertmanager](https://prometheus.io/docs/alerting/alertmanager/).
 
