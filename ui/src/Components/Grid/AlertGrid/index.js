@@ -19,7 +19,11 @@ import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { AlertGroup } from "./AlertGroup";
-import { GridSizesConfig, GetGridElementWidth } from "./GridSize";
+import {
+  GridSizesConfig,
+  GetGridElementWidth,
+  GetColumnsCount
+} from "./GridSize";
 
 import "./index.css";
 
@@ -57,12 +61,19 @@ const AlertGrid = observer(
               this.windowWidth,
               props.settingsStore.gridConfig.config.groupWidth
             );
+          },
+          get columnsCount() {
+            return GetColumnsCount(
+              this.windowWidth,
+              props.settingsStore.gridConfig.config.groupWidth
+            );
           }
         },
         {
           updateWidths: action.bound,
           gridSizesConfig: computed,
-          groupWidth: computed
+          groupWidth: computed,
+          columnsCount: computed
         }
       );
     }
@@ -149,7 +160,7 @@ const AlertGrid = observer(
             onResize={debounce(this.handleResize, 100)}
           />
           <MasonryInfiniteScroller
-            key={settingsStore.gridConfig.config.groupWidth}
+            key={this.viewport.columnsCount}
             ref={this.storeMasonryRef}
             position={false}
             pack={true}
