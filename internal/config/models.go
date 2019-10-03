@@ -66,6 +66,9 @@ type configSchema struct {
 			} `yaml:"customValues" mapstructure:"customValues"`
 		}
 	}
+	Karma struct {
+		Name string
+	}
 	Labels struct {
 		Keep  []string
 		Strip []string

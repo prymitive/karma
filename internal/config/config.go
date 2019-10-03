@@ -37,6 +37,9 @@ func init() {
 	pflag.Bool("alertmanager.proxy", false,
 		"Proxy all client requests to Alertmanager via karma (only used with simplified config)")
 
+	pflag.String("karma.name", "karma",
+		"Name for the karma instance name")
+
 	pflag.Bool(
 		"annotations.default.hidden", false,
 		"Hide all annotations by default unless explicitly listed in the 'visible' list")
@@ -155,6 +158,7 @@ func (config *configSchema) Read() {
 	config.Grid.Sorting.Order = v.GetString("grid.sorting.order")
 	config.Grid.Sorting.Reverse = v.GetBool("grid.sorting.reverse")
 	config.Grid.Sorting.Label = v.GetString("grid.sorting.label")
+	config.Karma.Name = v.GetString("karma.name")
 	config.Labels.Color.Custom = CustomLabelColors{}
 	config.Labels.Color.Static = v.GetStringSlice("labels.color.static")
 	config.Labels.Color.Unique = v.GetStringSlice("labels.color.unique")
