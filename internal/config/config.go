@@ -90,6 +90,13 @@ func init() {
 
 	pflag.String("sentry.public", "", "Sentry DSN for Go exceptions")
 	pflag.String("sentry.private", "", "Sentry DSN for JavaScript exceptions")
+
+	pflag.Duration("ui.refresh", time.Second*30, "UI refresh interval")
+	pflag.Bool("ui.hideFiltersWhenIdle", true, "Hide the filters bar when idle")
+	pflag.Bool("ui.colorTitlebar", false, "Color alert group titlebar based on alert state")
+	pflag.Int("ui.minimalGroupWidth", 420, "Minimal width for each alert group on the grid")
+	pflag.Int("ui.alertsPerGroup", 5, "Default number of alerts to show for each alert group")
+	pflag.String("ui.collapseGroups", "collapsedOnMobile", "Default state for alert groups")
 }
 
 // ReadConfig will read all sources of configuration, merge all keys and
@@ -173,6 +180,12 @@ func (config *configSchema) Read() {
 	config.SilenceForm.Strip.Labels = v.GetStringSlice("silenceform.strip.labels")
 	config.SilenceForm.Author.PopulateFromHeader.Header = v.GetString("silenceform.author.populate_from_header.header")
 	config.SilenceForm.Author.PopulateFromHeader.ValueRegex = v.GetString("silenceform.author.populate_from_header.value_re")
+	config.UI.Refresh = v.GetDuration("ui.refresh")
+	config.UI.HideFiltersWhenIdle = v.GetBool("ui.hideFiltersWhenIdle")
+	config.UI.ColorTitlebar = v.GetBool("ui.colorTitlebar")
+	config.UI.MinimalGroupWidth = v.GetInt("ui.minimalGroupWidth")
+	config.UI.AlertsPerGroup = v.GetInt("ui.alertsPerGroup")
+	config.UI.CollapseGroups = v.GetString("ui.collapseGroups")
 
 	if config.SilenceForm.Author.PopulateFromHeader.ValueRegex != "" {
 		_, err = regexp.Compile(config.SilenceForm.Author.PopulateFromHeader.ValueRegex)
@@ -221,6 +234,10 @@ func (config *configSchema) Read() {
 
 	if !slices.StringInSlice([]string{"disabled", "startsAt", "label"}, config.Grid.Sorting.Order) {
 		log.Fatalf("Invalid grid.sorting.order value '%s', allowed options: disabled, startsAt, label", config.Grid.Sorting.Order)
+	}
+
+	if !slices.StringInSlice([]string{"expanded", "collapsed", "collapsedOnMobile"}, config.UI.CollapseGroups) {
+		log.Fatalf("Invalid ui.collapseGroups value '%s', allowed options: expanded, collapsed, collapsedOnMobile", config.UI.CollapseGroups)
 	}
 
 	// FIXME workaround  for https://github.com/prymitive/karma/issues/507
