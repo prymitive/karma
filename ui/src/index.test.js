@@ -1,6 +1,12 @@
 import { EmptyAPIResponse } from "__mocks__/Fetch";
+import { DefaultsBase64 } from "__mocks__/Defaults";
 
 it("renders without crashing", () => {
+  jest.spyOn(document, "getElementById").mockImplementationOnce(() => {
+    return {
+      innerHTML: `<div id="defaults">${DefaultsBase64}</div>`
+    };
+  });
   const response = EmptyAPIResponse();
   response.filters = [];
   fetch.mockResponse(JSON.stringify(response));
@@ -23,19 +29,19 @@ describe("console", () => {
 
   it("console.info() throws an error", () => {
     expect(() => {
-      console.warn("foo", "bar", "abc");
+      console.info("foo", "bar", "abc");
     }).toThrowError("message=foo args=bar,abc");
   });
 
   it("console.log() throws an error", () => {
     expect(() => {
-      console.warn("foo bar");
+      console.log("foo bar");
     }).toThrowError("message=foo bar args=");
   });
 
   it("console.trace() throws an error", () => {
     expect(() => {
-      console.warn();
+      console.trace();
     }).toThrowError("message=undefined args=");
   });
 

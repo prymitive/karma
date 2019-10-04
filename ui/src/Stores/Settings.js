@@ -25,11 +25,17 @@ class SavedFilters {
 }
 
 class FetchConfig {
-  config = localStored("fetchConfig", { interval: 30 }, { delay: 100 });
+  constructor(refresh) {
+    this.config = localStored(
+      "fetchConfig",
+      { interval: refresh },
+      { delay: 100 }
+    );
 
-  setInterval = action(newInterval => {
-    this.config.interval = newInterval;
-  });
+    this.setInterval = action(newInterval => {
+      this.config.interval = newInterval;
+    });
+  }
 }
 
 class AlertGroupConfig {
@@ -41,15 +47,18 @@ class AlertGroupConfig {
     },
     collapsed: { label: "Always collapsed", value: "collapsed" }
   });
-  config = localStored(
-    "alertGroupConfig",
-    {
-      defaultRenderCount: 5,
-      defaultCollapseState: this.options.collapsedOnMobile.value,
-      colorTitleBar: false
-    },
-    { delay: 100 }
-  );
+
+  constructor(renderCount, collapseState, colorTitleBar) {
+    this.config = localStored(
+      "alertGroupConfig",
+      {
+        defaultRenderCount: renderCount,
+        defaultCollapseState: collapseState,
+        colorTitleBar: colorTitleBar
+      },
+      { delay: 100 }
+    );
+  }
 
   update = action(data => {
     for (const [key, val] of Object.entries(data)) {
@@ -73,38 +82,64 @@ class GridConfig {
     startsAt: { label: "Sort by alert timestamp", value: "startsAt" },
     label: { label: "Sort by alert label", value: "label" }
   });
-  config = localStored(
-    "alertGridConfig",
-    {
-      sortOrder: this.options.default.value,
-      sortLabel: null,
-      reverseSort: null,
-      groupWidth: 420
-    },
-    { delay: 100 }
-  );
+  constructor(groupWidth) {
+    this.config = localStored(
+      "alertGridConfig",
+      {
+        sortOrder: this.options.default.value,
+        sortLabel: null,
+        reverseSort: null,
+        groupWidth: groupWidth
+      },
+      { delay: 100 }
+    );
+  }
 }
 
 class FilterBarConfig {
-  config = localStored(
-    "filterBarConfig",
-    {
-      autohide: true
-    },
-    {
-      delay: 100
-    }
-  );
+  constructor(autohide) {
+    this.config = localStored(
+      "filterBarConfig",
+      {
+        autohide: autohide
+      },
+      {
+        delay: 100
+      }
+    );
+  }
 }
 
 class Settings {
-  constructor() {
+  constructor(defaults) {
+    let defaultSettings;
+    if (defaults === undefined) {
+      defaultSettings = {
+        Refresh: 30 * 1000 * 1000 * 1000,
+        HideFiltersWhenIdle: true,
+        ColorTitlebar: false,
+        MinimalGroupWidth: 420,
+        AlertsPerGroup: 5,
+        CollapseGroups: "collapsedOnMobile"
+      };
+    } else {
+      defaultSettings = defaults;
+    }
+
     this.savedFilters = new SavedFilters();
-    this.fetchConfig = new FetchConfig();
-    this.alertGroupConfig = new AlertGroupConfig();
-    this.gridConfig = new GridConfig();
+    this.fetchConfig = new FetchConfig(
+      defaultSettings.Refresh / 1000 / 1000 / 1000
+    );
+    this.alertGroupConfig = new AlertGroupConfig(
+      defaultSettings.AlertsPerGroup,
+      defaultSettings.CollapseGroups,
+      defaultSettings.ColorTitlebar
+    );
+    this.gridConfig = new GridConfig(defaultSettings.MinimalGroupWidth);
     this.silenceFormConfig = new SilenceFormConfig();
-    this.filterBarConfig = new FilterBarConfig();
+    this.filterBarConfig = new FilterBarConfig(
+      defaultSettings.HideFiltersWhenIdle
+    );
   }
 }
 

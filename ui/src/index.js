@@ -9,8 +9,17 @@ import ReactDOM from "react-dom";
 
 import Moment from "react-moment";
 
-import { SettingsElement, SetupSentry, ParseDefaultFilters } from "./AppBoot";
+import {
+  SettingsElement,
+  SetupSentry,
+  ParseDefaultFilters,
+  ParseUIDefaults
+} from "./AppBoot";
 import { App } from "./App";
+
+const uiDefaults = ParseUIDefaults(
+  document.getElementById("defaults").innerHTML
+);
 
 const settingsElement = SettingsElement();
 
@@ -25,6 +34,6 @@ const defaultFilters = ParseDefaultFilters(settingsElement);
 
 // https://wetainment.com/testing-indexjs/
 export default ReactDOM.render(
-  <App defaultFilters={defaultFilters} />,
+  <App defaultFilters={defaultFilters} uiDefaults={uiDefaults} />,
   document.getElementById("root") || document.createElement("div")
 );
