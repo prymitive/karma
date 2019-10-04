@@ -70,3 +70,10 @@ silenceForm:
       - job
       - severity
       - region
+ui:
+  refresh: 10s
+  hideFiltersWhenIdle: true
+  colorTitlebar: false
+  minimalGroupWidth: 420
+  alertsPerGroup: 5
+  collapseGroups: collapsedOnMobile

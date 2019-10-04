@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="theme-color" content="#000000">
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="theme-color" content="#000000" />
     <!--
       manifest.json provides metadata used when your web app is added to the
       homescreen on Android. See https://developers.google.com/web/fundamentals/engage-and-retain/web-app-manifest/
     -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
-    <link rel="stylesheet" type="text/css" href="%PUBLIC_URL%/custom.css" media="screen" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="%PUBLIC_URL%/custom.css"
+      media="screen"
+    />
     <title>karma</title>
   </head>
   <body>
@@ -21,10 +29,12 @@
       Settings span is used to pass config keys that needs to be accessible
       early, before the UI app is started.
     -->
-    <span id="settings"
-          data-sentry-dsn="{{ .SentryDSN }}"
-          data-version="{{ .Version }}"
-          data-default-filters-base64="{{ .DefaultFilter }}">
+    <span
+      id="settings"
+      data-sentry-dsn="{{ .SentryDSN }}"
+      data-version="{{ .Version }}"
+      data-default-filters-base64="{{ .DefaultFilter }}"
+    >
     </span>
     <div id="root"></div>
     <!--
@@ -38,5 +48,8 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
     <script src="%PUBLIC_URL%/custom.js"></script>
+    <script type="text/plain" id="defaults">
+      {{ .Defaults }}
+    </script>
   </body>
 </html>

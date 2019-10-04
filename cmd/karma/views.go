@@ -79,10 +79,17 @@ func index(c *gin.Context) {
 	}
 	filtersB64 := base64.StdEncoding.EncodeToString(filtersJSON)
 
+	defaults, err := json.Marshal(config.Config.UI)
+	if err != nil {
+		panic(err)
+	}
+	defaultsB64 := base64.StdEncoding.EncodeToString(defaults)
+
 	c.HTML(http.StatusOK, "ui/build/index.html", gin.H{
 		"Version":       version,
 		"SentryDSN":     config.Config.Sentry.Public,
 		"DefaultFilter": filtersB64,
+		"Defaults":      defaultsB64,
 	})
 
 	log.Infof("[%s] %s %s took %s", c.ClientIP(), c.Request.Method, c.Request.RequestURI, time.Since(start))

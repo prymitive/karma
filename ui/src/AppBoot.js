@@ -51,4 +51,13 @@ const ParseDefaultFilters = settingsElement => {
   return defaultFilters;
 };
 
-export { SettingsElement, SetupSentry, ParseDefaultFilters };
+const ParseUIDefaults = b64data => {
+  const decoded = Buffer.from(b64data, "base64").toString("ascii");
+  try {
+    return JSON.parse(decoded);
+  } catch {
+    return undefined;
+  }
+};
+
+export { SettingsElement, SetupSentry, ParseDefaultFilters, ParseUIDefaults };

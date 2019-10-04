@@ -615,7 +615,7 @@ sentry:
 
 ## Silence form
 
-`silenceForm` section allow customizing silence form behavior.
+`silenceForm` section allows customizing silence form behavior.
 `author:populate_from_header` subsection allows to configure fetching of author
 name used on the silence form from the request header. It can be used with
 setups where karma is deployed behind authentication proxy that adds some extra
@@ -658,6 +658,52 @@ silenceForm:
   strip:
     labels:
       - job
+```
+
+## UI defaults
+
+`ui` section allows configuring default values for UI settings controled via the
+configuration modal. Those defaults can be overwritten by use via UI controls.
+
+Syntax:
+
+```YAML
+ui:
+  refresh: duration
+  hideFiltersWhenIdle: bool
+  colorTitlebar: bool
+  minimalGroupWidth: integer
+  alertsPerGroup: integer
+  collapseGroups: string
+```
+
+- `refresh` - default refresh interval, this tells the UI how often karma API
+  should be queried
+- `hideFiltersWhenIdle` - if enabled filter bar will be hidden after some
+  user inactivity
+- `colorTitlebar` - if enabled alert group title bar color will be set to follow
+  alerts in that group
+- `minimalGroupWidth` - minimal width (in pixels) for each alert group rendered
+  on the grid. This value is used to calculate the number of columns rendered on
+  the grid.
+- `alertsPerGroup` - default number of alerts to show for each group
+- `collapseGroups` - controls if alert groups will default to being rendered
+  expanded or collapsed (only title bar is visible). Valid values:
+  - expanded - groups are always expanded
+  - collapsed - groups are always collapsed
+  - collapsedOnMobile - groups are expanded on desktop and collapsed on mobile
+    browsers
+
+Defaults:
+
+```YAML
+ui:
+  refresh: 30s
+  hideFiltersWhenIdle: true
+  colorTitlebar: false
+  minimalGroupWidth: 420
+  alertsPerGroup: 5
+  collapseGroups: collapsedOnMobile
 ```
 
 ## Customizing karma

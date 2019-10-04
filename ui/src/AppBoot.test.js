@@ -1,6 +1,12 @@
 import * as Sentry from "@sentry/browser";
 
-import { SettingsElement, SetupSentry, ParseDefaultFilters } from "./AppBoot";
+import { DefaultsBase64, DefaultsObject } from "__mocks__/Defaults";
+import {
+  SettingsElement,
+  SetupSentry,
+  ParseDefaultFilters,
+  ParseUIDefaults
+} from "./AppBoot";
 
 beforeAll(() => {
   // https://github.com/jamesmfriedman/rmwc/issues/103#issuecomment-360007979
@@ -127,5 +133,17 @@ describe("ParseDefaultFilters()", () => {
   it("returns [] on filters attr that decodes to a string instead of an array", () => {
     const filters = FiltersSetting("foo=bar");
     expect(filters).toHaveLength(0);
+  });
+});
+
+describe("ParseUIDefaults()", () => {
+  it("parses base64 encoded JSON with defaults", () => {
+    const uiDefaults = ParseUIDefaults(DefaultsBase64);
+    expect(uiDefaults).toStrictEqual(DefaultsObject);
+  });
+
+  it("returns undefined on invalid JSON", () => {
+    const uiDefaults = ParseUIDefaults("e3h4eC9mZgo=");
+    expect(uiDefaults).toBeUndefined();
   });
 });

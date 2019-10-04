@@ -105,4 +105,12 @@ type configSchema struct {
 			Labels []string
 		}
 	} `yaml:"silenceForm"  mapstructure:"silenceForm"`
+	UI struct {
+		Refresh             time.Duration
+		HideFiltersWhenIdle bool   `yaml:"hideFiltersWhenIdle" mapstructure:"hideFiltersWhenIdle"`
+		ColorTitlebar       bool   `yaml:"colorTitlebar" mapstructure:"colorTitlebar"`
+		MinimalGroupWidth   int    `yaml:"minimalGroupWidth" mapstructure:"minimalGroupWidth"`
+		AlertsPerGroup      int    `yaml:"alertsPerGroup" mapstructure:"alertsPerGroup"`
+		CollapseGroups      string `yaml:"collapseGroups" mapstructure:"collapseGroups"`
+	}
 }
