@@ -20,7 +20,7 @@ let alertStore;
 let silenceFormStore;
 
 beforeEach(() => {
-  advanceTo(new Date(2018, 7, 15, 20, 40, 0));
+  advanceTo(new Date(Date.UTC(2018, 7, 15, 20, 40, 0)));
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
 });
