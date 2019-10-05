@@ -37,8 +37,7 @@ func init() {
 	pflag.Bool("alertmanager.proxy", false,
 		"Proxy all client requests to Alertmanager via karma (only used with simplified config)")
 
-	pflag.String("karma.name", "karma",
-		"Name for the karma instance name")
+	pflag.String("karma.name", "karma", "Name for the karma instance")
 
 	pflag.Bool(
 		"annotations.default.hidden", false,
