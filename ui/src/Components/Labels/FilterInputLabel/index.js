@@ -50,7 +50,7 @@ const FilterInputLabel = observer(
       let cs = this.getClassAndStyle(
         filter.matcher === QueryOperators.Equal ? filter.name : "",
         filter.matcher === QueryOperators.Equal ? filter.value : "",
-        "components-filteredinputlabel btn-sm border-0",
+        "components-filteredinputlabel btn-sm",
         "btn"
       );
 
@@ -62,7 +62,7 @@ const FilterInputLabel = observer(
       const rootClasses = filter.applied
         ? cs.className
         : [
-            "btn-secondary btn-sm border-0 components-filteredinputlabel",
+            "btn-secondary btn-sm components-filteredinputlabel",
             ...cs.baseClassNames
           ].join(" ");
 
