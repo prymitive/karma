@@ -32,6 +32,8 @@ grid:
           critical: 1
           warning: 2
           info: 3
+karma:
+  name: karma-demo
 labels:
   color:
     static:
