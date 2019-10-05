@@ -28,6 +28,7 @@ jobs:
   include:
     - stage: Test
       name: Test Go code
+      if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)
       <<: *DEFAULTS_GO
       before_script:
         - travis_retry make mock-assets
@@ -37,6 +38,7 @@ jobs:
 
     - stage: Test
       name: Test JavaScript code
+      if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)
       <<: *DEFAULTS_JS
       script: make test-js
       after_success:
@@ -45,6 +47,7 @@ jobs:
     # duplicate js test but with a different time zone, to ensure that tests/code work with non-UTC time zone
     - stage: Test
       name: Test JavaScript code with Pacific/Easter time zone
+      if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)
       <<: *DEFAULTS_JS
       script: env TZ=Pacific/Easter make test-js
       after_success:
@@ -52,7 +55,7 @@ jobs:
 
     - stage: Test
       name: Test Percy UI snapshots
-      if: repo = prymitive/karma AND type != pull_request
+      if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)
       <<: *DEFAULTS_JS
       env:
         - NODE_ENV=test
@@ -61,11 +64,13 @@ jobs:
 
     - stage: Lint
       name: Lint git commit
+      if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)
       <<: *DEFAULTS_JS
       script: make lint-git-ci
 
     - stage: Lint
       name: Lint Go code
+      if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)
       <<: *DEFAULTS_GO
       before_script:
         - travis_retry make mock-assets
@@ -73,6 +78,7 @@ jobs:
 
     - stage: Lint
       name: Check Go code formatting
+      if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)
       <<: *DEFAULTS_GO
       before_script:
         - travis_retry make mock-assets
@@ -82,6 +88,7 @@ jobs:
 
     - state: Lint
       name: Verify go.sum
+      if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)
       <<: *DEFAULTS_GO
       script:
         - travis_retry make mock-assets
@@ -91,11 +98,13 @@ jobs:
 
     - stage: Lint
       name: Lint JavaScript code
+      if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)
       <<: *DEFAULTS_JS
       script: make lint-js
 
     - stage: Lint
       name: Check JavaScript code formatting
+      if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)
       <<: *DEFAULTS_JS
       script:
         - make format-js
@@ -103,24 +112,13 @@ jobs:
 
     - stage: Lint
       name: Lint documentation
+      if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)
       <<: *DEFAULTS_JS
       script: make lint-docs
 
     - stage: Build and Deploy
-      name: Build docker image
-      # we build and push docker image on merge and tag, so this should only
-      # run for new branches, to test that they don't break docker builds
-      if: repo = prymitive/karma AND type != pull_request AND !(type = push AND branch = master)
-      language: generic
-      addons:
-        apt:
-          packages:
-            - docker-ce
-      script: travis_retry make docker-image
-
-    - stage: Build and Deploy
       name: Cross compile binaries
-      if: repo = prymitive/karma AND type != pull_request
+      if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)
       <<: *DEFAULTS_GO
       env:
         # add an extra env so we don't push cross compilation cache into the main archive
@@ -150,6 +148,18 @@ jobs:
         on:
           repo: prymitive/karma
           tags: true
+
+    - stage: Build and Deploy
+      name: Build docker image
+      # we build and push docker image on merge and tag, so this should only
+      # run for new branches, to test that they don't break docker builds
+      if: (repo = prymitive/karma AND type != pull_request AND !(type = push AND branch = master)) OR (repo != prymitive/karma AND type = pull_request)
+      language: generic
+      addons:
+        apt:
+          packages:
+            - docker-ce
+      script: travis_retry make docker-image
 
     - stage: Build and Deploy
       name: Build and push docker image
