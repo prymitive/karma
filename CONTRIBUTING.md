@@ -36,6 +36,15 @@ UI is written using [React](https://reactjs.org), follow user guide for
 [create-react-app](https://github.com/facebook/create-react-app) to make
 changes to the UI code.
 
+Some UI tests are using [snapshots](https://jestjs.io/docs/en/snapshot-testing).
+After making changes that affect how existing components are rendered please
+run:
+
+    cd ui && npm test -- -u
+
+to update all snapshots. Remember to commit those changes when making a pull
+request.
+
 ## Running
 
 To build and start `karma` from local branch see `Running` section of the
