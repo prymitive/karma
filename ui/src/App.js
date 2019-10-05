@@ -16,16 +16,28 @@ import "./App.scss";
 
 class App extends Component {
   static propTypes = {
-    defaultFilters: PropTypes.arrayOf(PropTypes.string).isRequired
+    defaultFilters: PropTypes.arrayOf(PropTypes.string).isRequired,
+    uiDefaults: PropTypes.exact({
+      Refresh: PropTypes.number.isRequired,
+      HideFiltersWhenIdle: PropTypes.bool.isRequired,
+      ColorTitlebar: PropTypes.bool.isRequired,
+      MinimalGroupWidth: PropTypes.number.isRequired,
+      AlertsPerGroup: PropTypes.number.isRequired,
+      CollapseGroups: PropTypes.oneOf([
+        "expanded",
+        "collapsed",
+        "collapsedOnMobile"
+      ]).isRequired
+    })
   };
 
   constructor(props) {
     super(props);
 
-    const { defaultFilters } = this.props;
+    const { defaultFilters, uiDefaults } = this.props;
 
     this.silenceFormStore = new SilenceFormStore();
-    this.settingsStore = new Settings();
+    this.settingsStore = new Settings(uiDefaults);
 
     let filters;
 

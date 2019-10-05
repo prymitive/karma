@@ -57,3 +57,10 @@ silenceForm:
   strip:
     labels:
       - job
+ui:
+  refresh: 30s
+  hideFiltersWhenIdle: true
+  colorTitlebar: false
+  minimalGroupWidth: 420
+  alertsPerGroup: 5
+  collapseGroups: collapsedOnMobile

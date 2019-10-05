@@ -132,6 +132,13 @@ silenceForm:
       value_re: ""
   strip:
     labels: []
+ui:
+  refresh: 30s
+  hideFiltersWhenIdle: true
+  colorTitlebar: false
+  minimalGroupWidth: 420
+  alertsPerGroup: 5
+  collapseGroups: collapsedOnMobile
 `
 
 	configDump, err := yaml.Marshal(Config)
@@ -261,5 +268,37 @@ func TestInvalidSilenceFormRegex(t *testing.T) {
 
 	if !wasFatal {
 		t.Error("Invalid silence form regex didn't cause log.Fatal()")
+	}
+}
+
+func TestInvalidGridSortingOrder(t *testing.T) {
+	resetEnv()
+	os.Setenv("GRID_SORTING_ORDER", "foo")
+
+	log.SetLevel(log.PanicLevel)
+	defer func() { log.StandardLogger().ExitFunc = nil }()
+	var wasFatal bool
+	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
+
+	Config.Read()
+
+	if !wasFatal {
+		t.Error("Invalid grid.sorting.order value didn't cause log.Fatal()")
+	}
+}
+
+func TestInvalidUICollapseGroups(t *testing.T) {
+	resetEnv()
+	os.Setenv("UI_COLLAPSEGROUPS", "foo")
+
+	log.SetLevel(log.PanicLevel)
+	defer func() { log.StandardLogger().ExitFunc = nil }()
+	var wasFatal bool
+	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
+
+	Config.Read()
+
+	if !wasFatal {
+		t.Error("Invalid ui.collapseGroups value didn't cause log.Fatal()")
 	}
 }

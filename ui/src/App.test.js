@@ -5,6 +5,15 @@ import { shallow } from "enzyme";
 import { NewUnappliedFilter } from "Stores/AlertStore";
 import { App } from "./App";
 
+const uiDefaults = {
+  Refresh: 30 * 1000 * 1000 * 1000,
+  HideFiltersWhenIdle: true,
+  ColorTitlebar: false,
+  MinimalGroupWidth: 420,
+  AlertsPerGroup: 5,
+  CollapseGroups: "collapsedOnMobile"
+};
+
 beforeEach(() => {
   // createing App instance will push current filters into window.location
   // ensure it's wiped after each test
@@ -19,7 +28,9 @@ afterEach(() => {
 describe("<App />", () => {
   it("uses passed default filters if there's no query args or saved filters", () => {
     expect(window.location.search).toBe("");
-    const tree = shallow(<App defaultFilters={["foo=bar"]} />);
+    const tree = shallow(
+      <App defaultFilters={["foo=bar"]} uiDefaults={uiDefaults} />
+    );
     const instance = tree.instance();
     expect(instance.alertStore.filters.values).toHaveLength(1);
     expect(instance.alertStore.filters.values[0]).toMatchObject(
@@ -40,7 +51,9 @@ describe("<App />", () => {
     // https://github.com/facebook/jest/issues/6798#issuecomment-412871616
     const getItemSpy = jest.spyOn(Storage.prototype, "getItem");
 
-    const tree = shallow(<App defaultFilters={["ignore=defaults"]} />);
+    const tree = shallow(
+      <App defaultFilters={["ignore=defaults"]} uiDefaults={uiDefaults} />
+    );
     const instance = tree.instance();
 
     expect(getItemSpy).toHaveBeenCalledWith("savedFilters");
@@ -69,7 +82,9 @@ describe("<App />", () => {
     // https://github.com/facebook/jest/issues/6798#issuecomment-412871616
     const getItemSpy = jest.spyOn(Storage.prototype, "getItem");
 
-    const tree = shallow(<App defaultFilters={["use=defaults"]} />);
+    const tree = shallow(
+      <App defaultFilters={["use=defaults"]} uiDefaults={uiDefaults} />
+    );
     const instance = tree.instance();
 
     expect(getItemSpy).toHaveBeenCalledWith("savedFilters");
@@ -94,7 +109,9 @@ describe("<App />", () => {
 
     window.history.pushState({}, "App", "/?q=use%3Dquery");
 
-    const tree = shallow(<App defaultFilters={["ignore=defaults"]} />);
+    const tree = shallow(
+      <App defaultFilters={["ignore=defaults"]} uiDefaults={uiDefaults} />
+    );
     const instance = tree.instance();
 
     expect(instance.alertStore.filters.values).toHaveLength(1);
