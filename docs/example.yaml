@@ -27,6 +27,8 @@ debug: false
 filters:
   default:
     - "@receiver=by-cluster-service"
+karma:
+  name: karma-prod
 labels:
   color:
     static:

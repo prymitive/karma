@@ -321,6 +321,27 @@ grid:
           info: 3
 ```
 
+### Karma
+
+`karma` section allows configuring miscellaneous internal options.
+
+Syntax:
+
+```YAML
+karma:
+  name: string
+```
+
+- `name` - name of given karma instance, this is currently used for the browser
+  tab title.
+
+Defaults:
+
+```YAML
+karma:
+  name: karma
+```
+
 ### Labels
 
 `labels` section allows configuring how alert labels will be rendered in the
