@@ -86,6 +86,7 @@ func index(c *gin.Context) {
 	defaultsB64 := base64.StdEncoding.EncodeToString(defaults)
 
 	c.HTML(http.StatusOK, "ui/build/index.html", gin.H{
+		"KarmaName":     config.Config.Karma.Name,
 		"Version":       version,
 		"SentryDSN":     config.Config.Sentry.Public,
 		"DefaultFilter": filtersB64,

@@ -30,6 +30,7 @@ func resetEnv() {
 		"CUSTOM_JS",
 		"DEBUG",
 		"FILTERS_DEFAULT",
+		"KARMA_NAME",
 		"LABELS_COLOR_STATIC",
 		"LABELS_COLOR_UNIQUE",
 		"LABELS_KEEP",
@@ -91,6 +92,8 @@ grid:
     label: alertname
     customValues:
       labels: {}
+karma:
+  name: another karma
 labels:
   keep:
   - foo
@@ -171,6 +174,7 @@ func TestReadConfig(t *testing.T) {
 	os.Setenv("CUSTOM_JS", "/custom.js")
 	os.Setenv("DEBUG", "true")
 	os.Setenv("FILTERS_DEFAULT", "@state=active foo=bar")
+	os.Setenv("KARMA_NAME", "another karma")
 	os.Setenv("LABELS_COLOR_STATIC", "a bb ccc")
 	os.Setenv("LABELS_COLOR_UNIQUE", "f gg")
 	os.Setenv("LABELS_KEEP", "foo bar")
