@@ -8,6 +8,8 @@ import { advanceTo, clear } from "jest-date-mock";
 
 import toDiffableHtml from "diffable-html";
 
+import Moment from "react-moment";
+
 import { MockAlert, MockAnnotation, MockAlertGroup } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -18,7 +20,7 @@ let alertStore;
 let silenceFormStore;
 
 beforeEach(() => {
-  advanceTo(new Date(2018, 7, 15, 20, 40, 0));
+  advanceTo(new Date(Date.UTC(2018, 7, 15, 20, 40, 0)));
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
 });
@@ -207,5 +209,29 @@ describe("<Alert />", () => {
         .find(".components-grid-alertgrid-alertgroup-alert")
         .hasClass("border-warning")
     ).toBe(true);
+  });
+
+  it("alert timestamp is updated every minute", () => {
+    jest.useFakeTimers();
+    Moment.startPooledTimer();
+
+    advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 36, 41)));
+
+    const alert = MockedAlert();
+    const group = MockAlertGroup({}, [alert], [], {}, {});
+    const tree = MountedAlert(alert, group, false, false);
+    expect(tree.find("time").text()).toBe("a few seconds ago");
+
+    advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 37, 41)));
+    jest.advanceTimersByTime(61 * 1000);
+    expect(tree.find("time").text()).toBe("a minute ago");
+
+    advanceTo(new Date(Date.UTC(2018, 7, 14, 18, 36, 41)));
+    jest.advanceTimersByTime(61 * 1000);
+    expect(tree.find("time").text()).toBe("an hour ago");
+
+    advanceTo(new Date(Date.UTC(2018, 7, 14, 19, 36, 41)));
+    jest.advanceTimersByTime(61 * 1000);
+    expect(tree.find("time").text()).toBe("2 hours ago");
   });
 });
