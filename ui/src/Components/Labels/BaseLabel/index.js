@@ -60,6 +60,10 @@ class BaseLabel extends Component {
             ? "components-label-dark"
             : "components-label-bright"
         );
+
+        data.colorClassNames.push(
+          `components-label-brightness-${Math.round(c.brightness / 25)}`
+        );
       } else {
         // if not fall back to class
         data.colorClassNames.push(DefaultLabelClassMap[elementType]);
