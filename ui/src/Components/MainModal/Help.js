@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faInfoCircle } from "@fortawesome/free-solid-svg-icons/faInfoCircle";
+
 import { Accordion } from "Components/Accordion";
 
 const FilterOperatorHelp = ({ operator, description, children }) => (
@@ -23,11 +26,10 @@ const FilterOperatorHelp = ({ operator, description, children }) => (
 );
 FilterOperatorHelp.propTypes = {
   operator: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  children: PropTypes.array
+  description: PropTypes.string.isRequired
 };
 
-const QueryHelp = ({ title, operators, children }) => (
+const QueryHelp = ({ title, operators, warning, children }) => (
   <React.Fragment>
     <dt>{title}</dt>
     <dd className="mb-5">
@@ -39,6 +41,12 @@ const QueryHelp = ({ title, operators, children }) => (
           </kbd>
         ))}
       </div>
+      {warning ? (
+        <div className="my-1 alert alert-light">
+          <FontAwesomeIcon icon={faInfoCircle} className="mr-1" />
+          {warning}
+        </div>
+      ) : null}
       <div>Examples:</div>
       <ul>{children}</ul>
     </dd>
@@ -47,7 +55,7 @@ const QueryHelp = ({ title, operators, children }) => (
 QueryHelp.propTypes = {
   title: PropTypes.string.isRequired,
   operators: PropTypes.arrayOf(PropTypes.string).isRequired,
-  children: PropTypes.array
+  warning: PropTypes.node
 };
 
 const FilterExample = ({ example, children }) => (
@@ -231,11 +239,9 @@ const Help = () => (
           <QueryHelp
             title="Match alerts based on the jira linked in the silence"
             operators={["=", "!=", "=~", "!~"]}
+            warning="This is supported only if JIRA regexp are enabled and able to
+            match JIRA ids in the silence comment body."
           >
-            <div className="text-warning">
-              This is supported only if JIRA regexp are enabled and able to
-              match JIRA ids in the silence comment body.
-            </div>
             <FilterExample example="@silence_jira=PROJECT-123">
               Match silenced alerts where detected JIRA issue id is equal to{" "}
               <code>PROJECT-123</code>.
@@ -250,8 +256,11 @@ const Help = () => (
             </FilterExample>
           </QueryHelp>
 
-          <QueryHelp title="Limit number of displayed alerts" operators={["="]}>
-            <div className="text-warning">Value must be a number &gt;= 1.</div>
+          <QueryHelp
+            title="Limit number of displayed alerts"
+            operators={["="]}
+            warning="Value must be a number &gt;= 1."
+          >
             <FilterExample example="@limit=10">
               Limit number of displayed alerts to 10.
             </FilterExample>
