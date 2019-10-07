@@ -94,6 +94,27 @@ describe("<Grid />", () => {
     expect(tree.text()).toBe("<UpgradeNeeded />");
   });
 
+  it("renders AlertGrid before any fetch finished when totalAlerts is 0", () => {
+    alertStore.info.version = "unknown";
+    alertStore.info.totalAlerts = 0;
+    const tree = ShallowGrid();
+    expect(tree.text()).toBe("<AlertGrid />");
+  });
+
+  it("renders EmptyGrid after first fetch when totalAlerts is 0", () => {
+    alertStore.info.version = "1.2.3";
+    alertStore.info.totalAlerts = 0;
+    const tree = ShallowGrid();
+    expect(tree.text()).toBe("<EmptyGrid />");
+  });
+
+  it("renders AlertGrid after first fetch finished when totalAlerts is >0", () => {
+    alertStore.info.version = "unknown";
+    alertStore.info.totalAlerts = 1;
+    const tree = ShallowGrid();
+    expect(tree.text()).toBe("<AlertGrid />");
+  });
+
   it("unmounts without crashes", () => {
     const tree = ShallowGrid();
     tree.unmount();

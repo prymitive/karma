@@ -10,6 +10,7 @@ import { AlertGrid } from "./AlertGrid";
 import { FatalError } from "./FatalError";
 import { UpstreamError } from "./UpstreamError";
 import { UpgradeNeeded } from "./UpgradeNeeded";
+import { EmptyGrid } from "./EmptyGrid";
 
 const Grid = observer(
   class Grid extends Component {
@@ -45,6 +46,13 @@ const Grid = observer(
         return (
           <FatalError message={alertStore.data.upstreams.instances[0].error} />
         );
+      }
+
+      if (
+        alertStore.info.version !== "unknown" &&
+        alertStore.info.totalAlerts === 0
+      ) {
+        return <EmptyGrid />;
       }
 
       return (
