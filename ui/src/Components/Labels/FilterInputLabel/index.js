@@ -75,7 +75,7 @@ const FilterInputLabel = observer(
           {filter.isValid ? (
             filter.applied ? (
               showCounter ? (
-                <span className="badge badge-light badge-pill">
+                <span className="badge badge-light badge-pill mr-1">
                   {filter.hits}
                 </span>
               ) : null
@@ -93,7 +93,7 @@ const FilterInputLabel = observer(
             className="components-filteredinputlabel-text flex-grow-1 flex-shrink-1"
           >
             <RIEInput
-              className="cursor-text ml-1"
+              className="cursor-text px-1"
               defaultValue=""
               value={filter.raw}
               propName="raw"
