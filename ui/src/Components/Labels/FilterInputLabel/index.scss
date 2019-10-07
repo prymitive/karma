@@ -11,6 +11,12 @@
     vertical-align: bottom;
     max-width: 100%;
   }
+
+  &:hover {
+    background-color: $light;
+    color: $black;
+    border-radius: 4px;
+  }
 }
 
 .btn.components-filteredinputlabel > .badge,
