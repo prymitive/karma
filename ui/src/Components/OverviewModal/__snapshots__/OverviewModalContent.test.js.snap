@@ -24,7 +24,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
           <td width=\\"25%\\"
               class=\\"text-nowrap mw-100 p-1\\"
           >
-            <span class=\\"badge badge-light components-label mx-0 my-1 pl-0 text-left\\">
+            <span class=\\"badge badge-light components-label mx-0 mt-0 mb-auto pl-0 text-left\\">
               <span class=\\"bg-primary text-white mr-1 px-1 components-labelWithPercent-percent\\">
                 16
               </span>
@@ -131,7 +131,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
           <td width=\\"25%\\"
               class=\\"text-nowrap mw-100 p-1\\"
           >
-            <span class=\\"badge badge-light components-label mx-0 my-1 pl-0 text-left\\">
+            <span class=\\"badge badge-light components-label mx-0 mt-0 mb-auto pl-0 text-left\\">
               <span class=\\"bg-primary text-white mr-1 px-1 components-labelWithPercent-percent\\">
                 20
               </span>
@@ -439,7 +439,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
           <td width=\\"25%\\"
               class=\\"text-nowrap mw-100 p-1\\"
           >
-            <span class=\\"badge badge-light components-label mx-0 my-1 pl-0 text-left\\">
+            <span class=\\"badge badge-light components-label mx-0 mt-0 mb-auto pl-0 text-left\\">
               <span class=\\"bg-primary text-white mr-1 px-1 components-labelWithPercent-percent\\">
                 5
               </span>
