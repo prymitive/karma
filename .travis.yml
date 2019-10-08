@@ -153,7 +153,7 @@ jobs:
       name: Build docker image
       # we build and push docker image on merge and tag, so this should only
       # run for new branches, to test that they don't break docker builds
-      if: (repo = prymitive/karma AND type != pull_request AND !(type = push AND branch = master)) OR (repo != prymitive/karma AND type = pull_request)
+      if: (repo = prymitive/karma AND type != pull_request AND branch != master) OR (repo != prymitive/karma AND type = pull_request)
       language: generic
       addons:
         apt:
@@ -172,6 +172,8 @@ jobs:
       env:
         # DOCKER_PASSWORD
         - secure: "XULRlOHN17A1KUSzST1TKo5UQtSS0/T6y2Rp88gJ/jDOraFKW3IuGHBM3uE3uALBUfrLnB6DGrrtS1x3hvWSvpnBmNmCK94qGYpEppAU2b8+DfUGQqI1D7sa/FXAaxqkA6LDKxcdgbagd8kE/3gRmayjHeisCDPvy3BhVZVEfzSIaKilzXnHrCywEpB2DWRUsYkdZdw2tG674626ZcMwJUajkeW4fxmvWYrskE92+7MSuz9DExxYWLLah12+Ug1URD1UWyFeIdMK0z3S0bN4Bsd+RT0ScDelRMhad5sTTqGWbLC3nr10aMRYzXYhp2pUBPtK2abby4KebY8hToxf6Dr8f7Nz4BRA3nqwp/7Q79hloU7IYdtnvSdvMp3Pc3YDsHiYqAO+G/jfX2j4t8CGIk3hHDUZ+4/PnYddV+OFR8CujH4Wq85FzHPyfRmZuB6MdPQQEtW4B/Mmf3qsTYXZIwDSKU2fnJM6eEnDW7vZIb55Y8nFC4x8b4fVyY7/wSQgDVtd933BmYDUxYo9AjjAfigLBE30zalr/TFibIRWUewoYqvJJ803AJU/M54vzQQ9l9ypoNadGgHa0PuPrnza9WufHGNkm7jRfhKFDUi/RvdFX8u7NtTpB9bAk/Mk+9qcLIkVnm+9SCcA80KR9LLwp8SZChBMHNnNTs47T0cDzNI="
+        # GITHUB_PACKAGES_TOKEN / personal token for uploading to github docker repo
+        - secure: "P2d1XVQdlbtXTi5NvGnwejJ1b16XnH4tSw2ZJkI+ETCHf1F77vcsl9DqjqkdQ64nAMwUBTC+vXR3zdKiKfno6NXphMuEBC/fMPSUyuzXgCB4EYWYQ73SnTq63bSEjUoySZz5CqwyQCw1pPSFgDe19NCb1H9gouJhIk83QqqjOz+VgSZonluSMY1KzdRVZqBWDD0/L986SKnYM2JmTGi7I2fUdPGFmhlGh2G6fQGasuF5YyTKAzEOUm4hXK/2a1xURrn0IzdJkAH1vh4ak8wxf0lG31pPJLDzykFz21vLX+Nxc9kYR2P9osHSTbISaAK7URGLD1blNgACCaWe/Ob6X89pJqcG9mVss3hUHqM5G9ZkgIeHhzIbRmbS13olH50IurMPmMc7Jj7C0oyt1bplcTLPBDZbHfk44QdjsBZKKrlUox/kH5QDf+WaVJRmSJKjJ9TR0l8uyzOiZQt36Fezj5UcfKFQKM5i0xMmDZDcnHid8kBqFuDeYeixICcPpGirZdNn0Q0ByQelbaHKYZyJlTdValuXtcyAIyG3//rI21rkvXUZgrgmBnypNn4waqcYFJ7QdHNYKqcGICAsobYaffASVQxK+BVdPwP9NTcZqhoCWOL8gDVw2fmtL0TRLEmcLDQcgEI8ClsEc5/LD1gugaskNJfew9BLTFwJPSMStKs="
       script:
         - export VERSION=$(make show-version)
         - export LOCAL_IMAGE="karma:${VERSION}"
@@ -184,6 +186,10 @@ jobs:
         # tag with the version only if we have a git tag (new release was pushed)
         - if [ -n "$TRAVIS_TAG" ]; then docker tag "${LOCAL_IMAGE}" "${IMAGE_NAME}:${VERSION}" ; fi
         - travis_retry docker push "${IMAGE_NAME}"
+        # push to github docker registry
+        - travis_retry docker login docker.pkg.github.com -u prymitive -p "${GITHUB_PACKAGES_TOKEN}"
+        - travis_retry docker tag IMAGE_ID "docker.pkg.github.com/prymitive/karma/karma:${VERSION}"
+        - travis_retry docker push "docker.pkg.github.com/prymitive/karma/karma:${VERSION}"
 
     - stage: Build and Deploy
       name: Deploy demo app to Heroku
