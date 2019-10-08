@@ -181,15 +181,19 @@ jobs:
         - export DOCKER_IMAGE=karma
         - export IMAGE_NAME="${DOCKER_USERNAME}/${DOCKER_IMAGE}"
         - travis_retry make docker-image
+        ### Docker Hub
         - travis_retry docker login -u "${DOCKER_USERNAME}" -p "${DOCKER_PASSWORD}"
         - docker tag "${LOCAL_IMAGE}" "${IMAGE_NAME}:latest"
         # tag with the version only if we have a git tag (new release was pushed)
         - if [ -n "$TRAVIS_TAG" ]; then docker tag "${LOCAL_IMAGE}" "${IMAGE_NAME}:${VERSION}" ; fi
         - travis_retry docker push "${IMAGE_NAME}"
-        # push to github docker registry
+        ### GitHub
         - travis_retry docker login docker.pkg.github.com -u prymitive -p "${GITHUB_PACKAGES_TOKEN}"
-        - travis_retry docker tag IMAGE_ID "docker.pkg.github.com/prymitive/karma/karma:${VERSION}"
-        - travis_retry docker push "docker.pkg.github.com/prymitive/karma/karma:${VERSION}"
+        # tag with the version only if we have a git tag (new release was pushed)
+        - if [ -n "$TRAVIS_TAG" ]; then docker tag IMAGE_ID "docker.pkg.github.com/prymitive/karma/karma:${VERSION}" && travis_retry docker push "docker.pkg.github.com/prymitive/karma/karma:${VERSION}" ; fi
+        # :latest
+        - travis_retry docker tag IMAGE_ID "docker.pkg.github.com/prymitive/karma/karma:latest"
+        - travis_retry docker push "docker.pkg.github.com/prymitive/karma/karma:latest"
 
     - stage: Build and Deploy
       name: Deploy demo app to Heroku
