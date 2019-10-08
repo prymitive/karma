@@ -190,9 +190,9 @@ jobs:
         ### GitHub
         - travis_retry docker login docker.pkg.github.com -u prymitive -p "${GITHUB_PACKAGES_TOKEN}"
         # tag with the version only if we have a git tag (new release was pushed)
-        - if [ -n "$TRAVIS_TAG" ]; then docker tag IMAGE_ID "docker.pkg.github.com/prymitive/karma/karma:${VERSION}" && travis_retry docker push "docker.pkg.github.com/prymitive/karma/karma:${VERSION}" ; fi
+        - if [ -n "$TRAVIS_TAG" ]; then docker tag "${LOCAL_IMAGE}" "docker.pkg.github.com/prymitive/karma/karma:${VERSION}" && travis_retry docker push "docker.pkg.github.com/prymitive/karma/karma:${VERSION}" ; fi
         # :latest
-        - travis_retry docker tag IMAGE_ID "docker.pkg.github.com/prymitive/karma/karma:latest"
+        - travis_retry docker tag "${LOCAL_IMAGE}" "docker.pkg.github.com/prymitive/karma/karma:latest"
         - travis_retry docker push "docker.pkg.github.com/prymitive/karma/karma:latest"
 
     - stage: Build and Deploy
