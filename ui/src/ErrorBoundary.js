@@ -4,28 +4,41 @@ import PropTypes from "prop-types";
 import * as Sentry from "@sentry/browser";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
+import { faBomb } from "@fortawesome/free-solid-svg-icons/faBomb";
 
-const InternalError = ({ message, secondsLeft }) => (
+const InternalError = ({ message, secondsLeft, progressLeft }) => (
   <div className="jumbotron text-center bg-primary my-4">
     <div className="container-fluid">
       <h1 className="display-1 my-5">
-        <FontAwesomeIcon
-          className="text-danger mr-2"
-          icon={faExclamationCircle}
-        />
+        <FontAwesomeIcon className="text-danger mr-2" icon={faBomb} />
         <span className="text-muted">Internal error</span>
       </h1>
-      <p className="lead text-muted">{message}</p>
-      <p className="text-muted">
+      <p className="lead text-white bg-secondary px-1 py-3 rounded">
+        {message}
+      </p>
+      <p className="text-muted d-inline-block">
         This page will auto refresh in {secondsLeft}s
+        <span
+          className="progress bg-secondary mx-auto"
+          style={{ height: "2px" }}
+        >
+          <span
+            className="progress-bar bg-info"
+            role="progressbar"
+            style={{ width: `${progressLeft}%` }}
+            aria-valuenow={progressLeft}
+            aria-valuemin="0"
+            aria-valuemax="100"
+          ></span>
+        </span>
       </p>
     </div>
   </div>
 );
 InternalError.propTypes = {
   message: PropTypes.node.isRequired,
-  secondsLeft: PropTypes.number.isRequired
+  secondsLeft: PropTypes.number.isRequired,
+  progressLeft: PropTypes.number.isRequired
 };
 
 class ErrorBoundary extends Component {
@@ -68,6 +81,7 @@ class ErrorBoundary extends Component {
         <InternalError
           message={this.state.cachedError.toString()}
           secondsLeft={this.state.reloadSeconds}
+          progressLeft={(this.state.reloadSeconds / 60.0) * 100.0}
         />
       );
     }
