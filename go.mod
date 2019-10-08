@@ -27,7 +27,7 @@ require (
 	github.com/mcuadros/go-gin-prometheus v0.1.1-0.20190723203314-c7374e9082f8
 	github.com/patrickmn/go-cache v2.1.1-0.20180815053127-5633e0862627+incompatible
 	github.com/pmezard/go-difflib v1.0.0
-	github.com/prometheus/client_golang v1.1.0
+	github.com/prometheus/client_golang v1.1.1-0.20191002102308-9a37535b1ba5
 	github.com/prometheus/common v0.7.0
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/pflag v1.0.5
