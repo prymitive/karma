@@ -98,7 +98,7 @@ const FilterInputLabel = observer(
               value={filter.raw}
               propName="raw"
               change={this.onChange}
-              classEditing="py-0 border-0 bg-light"
+              classEditing="py-0 border-0 bg-light text-black rounded"
               afterStart={alertStore.status.pause}
               afterFinish={alertStore.status.resume}
             />
