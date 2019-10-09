@@ -153,7 +153,7 @@ jobs:
       name: Build docker image
       # we build and push docker image on merge and tag, so this should only
       # run for new branches, to test that they don't break docker builds
-      if: (repo = prymitive/karma AND type != pull_request AND branch != master) OR (repo != prymitive/karma AND type = pull_request)
+      if: (repo = prymitive/karma AND type != pull_request AND tag IS NOT present) OR (repo != prymitive/karma AND type = pull_request)
       language: generic
       addons:
         apt:
@@ -188,12 +188,8 @@ jobs:
         - if [ -n "$TRAVIS_TAG" ]; then docker tag "${LOCAL_IMAGE}" "${IMAGE_NAME}:${VERSION}" ; fi
         - travis_retry docker push "${IMAGE_NAME}"
         ### GitHub
-        - travis_retry docker login docker.pkg.github.com -u prymitive -p "${GITHUB_PACKAGES_TOKEN}"
         # tag with the version only if we have a git tag (new release was pushed)
-        - if [ -n "$TRAVIS_TAG" ]; then docker tag "${LOCAL_IMAGE}" "docker.pkg.github.com/prymitive/karma/karma:${VERSION}" && travis_retry docker push "docker.pkg.github.com/prymitive/karma/karma:${VERSION}" ; fi
-        # :latest
-        - travis_retry docker tag "${LOCAL_IMAGE}" "docker.pkg.github.com/prymitive/karma/karma:latest"
-        - travis_retry docker push "docker.pkg.github.com/prymitive/karma/karma:latest"
+        - if [ -n "$TRAVIS_TAG" ]; then travis_retry docker login docker.pkg.github.com -u prymitive -p "${GITHUB_PACKAGES_TOKEN}" && docker tag "${LOCAL_IMAGE}" "docker.pkg.github.com/prymitive/karma/karma:${VERSION}" && travis_retry docker push "docker.pkg.github.com/prymitive/karma/karma:${VERSION}" ; fi
 
     - stage: Build and Deploy
       name: Deploy demo app to Heroku
