@@ -261,11 +261,11 @@ describe("<SilenceDetails />", () => {
     expect(endsAt.html()).toMatch(/text-danger/);
   });
 
-  it("id links to Alertmanager silence view via alertmanager.uri", () => {
+  it("id links to Alertmanager silence view via alertmanager.publicURI", () => {
     const tree = MountedSilenceDetails(jest.fn());
     const link = tree.find("a");
     expect(link.props().href).toBe(
-      "file:///mock/#/silences/4cf5fd82-1edd-4169-99d1-ff8415e72179"
+      "http://example.com/#/silences/4cf5fd82-1edd-4169-99d1-ff8415e72179"
     );
   });
 });

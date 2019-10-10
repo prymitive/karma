@@ -73,13 +73,9 @@ alertmanager:
   (see below), then the username & password information will be stripped from
   the URI and `Authorization` header using Basic Auth will be set for all
   in browser requests.
-  To set a different URI for all browser requests (can be any valid URI) see
-  `external_uri` option below.
-- `external_uri` - base URI of this Alertmanager server used for all browser
-  requests, which currently means requests sent to alertmanager when creating,
-  editing or deleting silences from karma web UI (unless proxy mode is set, see
-  above).
-  This option cannot be used when `proxy` is enabled.
+- `external_uri` - this option allows to override base URI of this Alertmanager
+  used for browser links and also silence requests (but only when proxy mode is
+  not enabled).
 - `timeout` - timeout for requests send to this Alertmanager server, a string in
   [time.Duration](https://golang.org/pkg/time/#ParseDuration) format.
 - `proxy` - if enabled requests from user browsers to this Alertmanager will be
@@ -103,6 +99,87 @@ alertmanager:
 - `headers` - a map with a list of key: values which are header: value.
   These custom headers will be sent with every request to the alert manager
   instance.
+
+Note: there are multiple supported combination of URI settings which result in
+a slightly different behavior. Settings that control it are:
+
+- `uri` - this option tells karma backend the URI that should be used to collect
+  all alerts and silence data from given Alertmanager instance. This setting is
+  required.
+- `proxy` - this option when set to true enables karma backend to proxy all
+  silence management requests (creating, editing or deleting silences via karma
+  UI), so when the user creates a silence via karma UI the browser makes a
+  request to karma backend, the backend then forwards this request to the
+  Alertmanager using the value of `uri` option as the URI.
+  When this option is set to `false` all browser requests will use `uri` value.
+  This setting is optional, default value for it is `false`.
+- `external_uri` - this option tells karma how the browser should connect to
+  given Alertmanager instance, it can be used for silence management requests
+  (creating, editing or deleting silences via karma UI) and how to generate
+  links to silences in Alertmanager web UI. Behavior of this option depends on
+  the value of `proxy` setting.
+  When proxy mode is enabled:
+  - silence management requests will use karma backend URI
+  - silence links to Alertmanager web UI will use `external_uri` value as base
+    URI
+  When proxy mode is disabled:
+  - silence management requests will use `external_uri` value as base URI
+  - silence links to Alertmanager web UI will use `external_uri` value as base
+    URI
+
+Breakdown of all combination of settings:
+
+1. Only `uri` is set:
+
+   ```YAML
+   uri: http://localhost:123
+   ```
+
+   Karma would use those URIs for:
+
+   | Backend | Silence management | Silence links |
+   |-|-|-|
+   | `http://localhost:123` | `http://localhost:123` | `http://localhost:123` |
+
+1. Proxy mode is enabled:
+
+   ```YAML
+   uri: http://localhost:123
+   proxy: true
+   ```
+
+   Karma would use those URIs for:
+
+   | Backend | Silence management | Silence links |
+   |-|-|-|
+   | `http://localhost:123` | Karma internal URI | `http://localhost:123` |
+
+1. `external_uri` is set, but proxy mode is disabled:
+
+   ```YAML
+   uri: http://localhost:123
+   external_uri: http://example.com
+   ```
+
+   Karma would use those URIs for:
+
+   | Backend | Silence management | Silence links |
+   |-|-|-|
+   | `http://localhost:123` | `http://example.com` | `http://example.com` |
+
+1. Proxy mode is enabled and `external_uri` is set:
+
+   ```YAML
+   uri: http://localhost:123
+   proxy: true
+   external_uri: http://example.com
+   ```
+
+   Karma would use those URIs for:
+
+   | Backend | Silence management | Silence links |
+   |-|-|-|
+   | `http://localhost:123` | Karma internal URI | `http://example.com` |
 
 Example with two production Alertmanager instances running in HA mode and a
 staging instance that is also proxied and requires a custom auth header:

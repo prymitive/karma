@@ -66,10 +66,6 @@ func RegisterAlertmanager(am *Alertmanager) error {
 		return fmt.Errorf("alertmanager upstream '%s' already exist", am.Name)
 	}
 
-	if am.ExternalURI != "" && am.ProxyRequests {
-		return fmt.Errorf("alertmanager upstream '%s' is configured with both proxy and external_uri, only one of those options can be enabled", am.Name)
-	}
-
 	for _, existingAM := range upstreams {
 		if existingAM.URI == am.URI {
 			return fmt.Errorf("alertmanager upstream '%s' already collects from '%s'", existingAM.Name, existingAM.URI)

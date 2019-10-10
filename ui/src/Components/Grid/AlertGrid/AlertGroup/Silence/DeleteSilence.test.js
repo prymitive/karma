@@ -125,7 +125,7 @@ describe("<DeleteSilenceModalContent />", () => {
   it("[v1] sends a DELETE request after clicking 'Confirm' button", async () => {
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
-      "http://am.example.com/api/v1/silence/123456789"
+      "http://localhost/api/v1/silence/123456789"
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
   });
@@ -134,7 +134,7 @@ describe("<DeleteSilenceModalContent />", () => {
     alertmanager.version = "0.16.2";
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
-      "http://am.example.com/api/v2/silence/123456789"
+      "http://localhost/api/v2/silence/123456789"
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
   });
@@ -143,7 +143,7 @@ describe("<DeleteSilenceModalContent />", () => {
     alertmanager.headers = { Authorization: "Basic ***" };
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
-      "http://am.example.com/api/v1/silence/123456789"
+      "http://localhost/api/v1/silence/123456789"
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({
       credentials: "include",
@@ -157,7 +157,7 @@ describe("<DeleteSilenceModalContent />", () => {
     alertmanager.version = "0.16.2";
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
-      "http://am.example.com/api/v2/silence/123456789"
+      "http://localhost/api/v2/silence/123456789"
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({
       credentials: "include",
@@ -169,7 +169,7 @@ describe("<DeleteSilenceModalContent />", () => {
   it("'Confirm' button is no-op after successful DELETE", async () => {
     const tree = await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
-      "http://am.example.com/api/v1/silence/123456789"
+      "http://localhost/api/v1/silence/123456789"
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
 
