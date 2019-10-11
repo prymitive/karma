@@ -409,3 +409,79 @@ func autocomplete(c *gin.Context) {
 	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
 	logAlertsView(c, "MIS", time.Since(start))
 }
+
+func silences(c *gin.Context) {
+	noCache(c)
+
+	dedupedSilences := []models.ManagedSilence{}
+
+	showExpired := false
+	showExpiredValue, found := c.GetQuery("showExpired")
+	if found && showExpiredValue == "1" {
+		showExpired = true
+	}
+
+	searchTerm := ""
+	searchTermValue, found := c.GetQuery("searchTerm")
+	if found && searchTermValue != "" {
+		searchTerm = strings.ToLower(searchTermValue)
+	}
+
+	for _, silence := range alertmanager.DedupSilences() {
+		if silence.IsExpired && !showExpired {
+			continue
+		}
+		if searchTerm != "" {
+			isMatch := false
+			if strings.Contains(strings.ToLower(silence.Silence.Comment), searchTerm) {
+				isMatch = true
+			} else if strings.Contains(strings.ToLower(silence.Silence.CreatedBy), searchTerm) {
+				isMatch = true
+			} else {
+				for _, match := range silence.Silence.Matchers {
+					eq := "="
+					if match.IsRegex {
+						eq = "=~"
+					}
+					if searchTerm == fmt.Sprintf("%s%s\"%s\"", strings.ToLower(match.Name), eq, strings.ToLower(match.Value)) {
+						isMatch = true
+					} else if searchTerm == fmt.Sprintf("%s%s%s", match.Name, eq, match.Value) {
+						isMatch = true
+					} else if strings.Contains(strings.ToLower(match.Name), searchTerm) {
+						isMatch = true
+					} else if strings.Contains(strings.ToLower(match.Value), searchTerm) {
+						isMatch = true
+					}
+				}
+			}
+			if !isMatch {
+				continue
+			}
+		}
+		dedupedSilences = append(dedupedSilences, silence)
+	}
+
+	recentFirst := true
+	sortReverse, found := c.GetQuery("sortReverse")
+	if found && sortReverse == "1" {
+		recentFirst = false
+	}
+
+	sort.Slice(dedupedSilences, func(i int, j int) bool {
+		if dedupedSilences[i].Silence.EndsAt.Equal(dedupedSilences[j].Silence.EndsAt) {
+			if dedupedSilences[i].Silence.StartsAt.Equal(dedupedSilences[j].Silence.StartsAt) {
+				return dedupedSilences[i].Silence.ID < dedupedSilences[j].Silence.ID
+			}
+			return dedupedSilences[i].Silence.StartsAt.After(dedupedSilences[j].Silence.StartsAt) == recentFirst
+		}
+		return dedupedSilences[i].Silence.EndsAt.Before(dedupedSilences[j].Silence.EndsAt) == recentFirst
+	})
+
+	data, err := json.Marshal(dedupedSilences)
+	if err != nil {
+		log.Error(err.Error())
+		panic(err)
+	}
+
+	c.Data(http.StatusOK, gin.MIMEJSON, data)
+}

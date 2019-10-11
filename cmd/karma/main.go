@@ -101,6 +101,7 @@ func setupRouter(router *gin.Engine) {
 	router.GET(getViewURL("/autocomplete.json"), autocomplete)
 	router.GET(getViewURL("/labelNames.json"), knownLabelNames)
 	router.GET(getViewURL("/labelValues.json"), knownLabelValues)
+	router.GET(getViewURL("/silences.json"), silences)
 
 	router.GET(getViewURL("/custom.css"), customCSS)
 	router.GET(getViewURL("/custom.js"), customJS)
