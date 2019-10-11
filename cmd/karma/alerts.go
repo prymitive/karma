@@ -110,7 +110,7 @@ func getUpstreams() models.AlertmanagerAPISummary {
 
 		u := models.AlertmanagerAPIStatus{
 			Name:           upstream.Name,
-			URI:            upstream.SanitizedURI(),
+			URI:            upstream.InternalURI(),
 			PublicURI:      upstream.PublicURI(),
 			Headers:        map[string]string{},
 			Error:          upstream.Error(),
@@ -119,7 +119,7 @@ func getUpstreams() models.AlertmanagerAPISummary {
 			ClusterMembers: members,
 		}
 		if !upstream.ProxyRequests {
-			for k, v := range uri.HeadersForBasicAuth(u.PublicURI) {
+			for k, v := range uri.HeadersForBasicAuth(upstream.URI) {
 				u.Headers[k] = v
 			}
 			for k, v := range upstream.HTTPHeaders {

@@ -195,9 +195,8 @@ func (am *Alertmanager) pullSilences(version string) error {
 	return nil
 }
 
-// PublicURI is the URI of this Alertmanager we put in JSON response
-// it's either real full URI or a proxy relative URI
-func (am *Alertmanager) PublicURI() string {
+// InternalURI is the URI of this Alertmanager that will be used for all request made by the UI
+func (am *Alertmanager) InternalURI() string {
 	if am.ProxyRequests {
 		sub := fmt.Sprintf("/proxy/alertmanager/%s", am.Name)
 		uri := path.Join(config.Config.Listen.Prefix, sub)
@@ -206,12 +205,22 @@ func (am *Alertmanager) PublicURI() string {
 			// skip it
 			return uri + "/"
 		}
+
 		return uri
 	}
+
+	// strip all user/pass information, fetch() doesn't support it anyway
+	return uri.WithoutUserinfo(am.PublicURI())
+}
+
+// PublicURI is the URI of this Alertmanager that will be used for browser links
+func (am *Alertmanager) PublicURI() string {
+	// external_uri is always the first setting to check for browser links
 	if am.ExternalURI != "" {
 		return am.ExternalURI
 	}
-	return uri.WithoutUserinfo(am.URI)
+
+	return am.URI
 }
 
 func (am *Alertmanager) pullAlerts(version string) error {
@@ -488,9 +497,6 @@ func (am *Alertmanager) Error() string {
 // SanitizedURI returns a copy of Alertmanager.URI with password replaced by
 // "xxx"
 func (am *Alertmanager) SanitizedURI() string {
-	am.lock.RLock()
-	defer am.lock.RUnlock()
-
 	return uri.SanitizeURI(am.URI)
 }
 

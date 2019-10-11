@@ -13,7 +13,7 @@ beforeEach(() => {
     instances: [
       {
         name: "mockAlertmanager",
-        uri: "file:///mock",
+        uri: "http://localhost",
         publicURI: "http://example.com",
         headers: { foo: "bar" },
         error: "",
@@ -53,7 +53,7 @@ describe("<SilenceSubmitProgress />", () => {
     const tree = MountedSilenceSubmitProgress();
     await expect(tree.instance().submitState.fetch).resolves.toBeUndefined();
     const uri = fetch.mock.calls[0][0];
-    expect(uri).toBe("http://example.com/api/v1/silences");
+    expect(uri).toBe("http://localhost/api/v1/silences");
   });
 
   it("[v2] appends /api/v2/silences to the passed URI", async () => {
@@ -61,7 +61,7 @@ describe("<SilenceSubmitProgress />", () => {
     const tree = MountedSilenceSubmitProgress();
     await expect(tree.instance().submitState.fetch).resolves.toBeUndefined();
     const uri = fetch.mock.calls[0][0];
-    expect(uri).toBe("http://example.com/api/v1/silences");
+    expect(uri).toBe("http://localhost/api/v1/silences");
   });
 
   it("sends correct JSON payload", () => {
@@ -92,7 +92,7 @@ describe("<SilenceSubmitProgress />", () => {
       instances: [
         {
           name: "am1",
-          uri: "file:///mock",
+          uri: "http://am1.example.com",
           publicURI: "http://am1.example.com",
           headers: {},
           error: "",
@@ -102,7 +102,7 @@ describe("<SilenceSubmitProgress />", () => {
         },
         {
           name: "am2",
-          uri: "file:///mock",
+          uri: "http://am2.example.com",
           publicURI: "http://am2.example.com",
           headers: {},
           error: "",
@@ -148,7 +148,7 @@ describe("<SilenceSubmitProgress />", () => {
       instances: [
         {
           name: "am1",
-          uri: "file:///mock",
+          uri: "http://am1.example.com",
           publicURI: "http://am1.example.com",
           headers: {},
           error: "",
@@ -223,7 +223,7 @@ describe("<SilenceSubmitProgress />", () => {
         .find("a")
         .getDOMNode()
         .getAttribute("href")
-    ).toBe("file:///mock/#/silences/123");
+    ).toBe("http://example.com/#/silences/123");
   });
 
   it("[v2] renders success icon on successful fetch", async () => {
@@ -247,7 +247,7 @@ describe("<SilenceSubmitProgress />", () => {
         .find("a")
         .getDOMNode()
         .getAttribute("href")
-    ).toBe("file:///mock/#/silences/123");
+    ).toBe("http://example.com/#/silences/123");
   });
 
   it("[v1] renders error icon on failed fetch", async () => {

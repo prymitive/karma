@@ -106,8 +106,8 @@ const SilenceSubmitProgress = observer(
       const isOpenAPI = semver.satisfies(am.version, ">=0.16.0");
 
       const uri = isOpenAPI
-        ? `${am.publicURI}/api/v2/silences`
-        : `${am.publicURI}/api/v1/silences`;
+        ? `${am.uri}/api/v2/silences`
+        : `${am.uri}/api/v1/silences`;
 
       this.submitState.fetch = FetchWithCredentials(uri, {
         method: "POST",
@@ -122,7 +122,7 @@ const SilenceSubmitProgress = observer(
             if (result.ok) {
               return result
                 .json()
-                .then(r => this.parseOpenAPIResponse(am.uri, r));
+                .then(r => this.parseOpenAPIResponse(am.publicURI, r));
             } else {
               return result.text().then(text => {
                 this.submitState.markFailed(text);
@@ -132,7 +132,7 @@ const SilenceSubmitProgress = observer(
           } else {
             return result
               .json()
-              .then(r => this.parseAlertmanagerResponse(am.uri, r));
+              .then(r => this.parseAlertmanagerResponse(am.publicURI, r));
           }
         })
         .catch(err => {

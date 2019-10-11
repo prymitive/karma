@@ -137,7 +137,7 @@ exports[`<Silence /> matches snapshot with expaned details 1`] = `
           </span>
         </span>
       </div>
-      <a href=\\"file:///mock/#/silences/4cf5fd82-1edd-4169-99d1-ff8415e72179\\"
+      <a href=\\"http://example.com/#/silences/4cf5fd82-1edd-4169-99d1-ff8415e72179\\"
          target=\\"_blank\\"
          rel=\\"noopener noreferrer\\"
          class=\\"components-label components-label-with-hover badge mr-1 components-grid-annotation-link\\"

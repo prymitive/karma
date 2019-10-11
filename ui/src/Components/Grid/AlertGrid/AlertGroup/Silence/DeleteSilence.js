@@ -163,8 +163,8 @@ const DeleteSilenceModalContent = observer(
       const isOpenAPI = semver.satisfies(alertmanager.version, ">=0.16.0");
 
       const uri = isOpenAPI
-        ? `${alertmanager.publicURI}/api/v2/silence/${silenceID}`
-        : `${alertmanager.publicURI}/api/v1/silence/${silenceID}`;
+        ? `${alertmanager.uri}/api/v2/silence/${silenceID}`
+        : `${alertmanager.uri}/api/v1/silence/${silenceID}`;
 
       this.deleteState.fetch = FetchWithCredentials(uri, {
         method: "DELETE",

@@ -122,7 +122,7 @@ const SilenceDetails = ({
         />
         <RenderLinkAnnotation
           name={silence.id}
-          value={`${alertmanager.uri}/#/silences/${silence.id}`}
+          value={`${alertmanager.publicURI}/#/silences/${silence.id}`}
         />
       </div>
       <div>
