@@ -173,12 +173,20 @@ const SilenceSubmitProgress = observer(
       const { cluster } = this.props;
 
       return (
-        <div className="d-flex">
-          <div className="p-2 flex-fill">
+        <div className="d-flex mb-2">
+          <div className="p-2 flex-fill my-auto flex-grow-0 flex-shrink-0">
             <SubmitIcon stateValue={this.submitState.value} />
           </div>
-          <div className="p-2 flex-fill">{cluster}</div>
-          <div className="p-2 flex-fill">{this.submitState.result}</div>
+          <div className="p-2 mr-1 flex-fill my-auto flex-grow-0 flex-shrink-0">
+            {cluster}
+          </div>
+          <div
+            className={`p-2 flex-fill flex-grow-1 flex-shrink-1 rounded ${
+              this.submitState.value === SubmitState.Failed ? "bg-light" : ""
+            }`}
+          >
+            {this.submitState.result}
+          </div>
         </div>
       );
     }
