@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
 import { AlertStore, FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -30,6 +31,14 @@ FetchError.propTypes = {
   message: PropTypes.node.isRequired
 };
 
+const Placeholder = () => (
+  <div className="jumbotron bg-white">
+    <h1 className="display-5 text-secondary text-center">
+      <FontAwesomeIcon icon={faSpinner} size="lg" spin />
+    </h1>
+  </div>
+);
+
 const SilencePreview = observer(
   class SilencePreview extends Component {
     static propTypes = {
@@ -42,6 +51,7 @@ const SilencePreview = observer(
         alertLabels: [],
         error: null,
         fetch: null,
+        done: false,
         // take a list of groups and outputs a list of label sets, this ignores
         // the receiver, so we'll end up with only unique alerts
         groupsToUniqueLabels(groups) {
@@ -49,11 +59,15 @@ const SilencePreview = observer(
         },
         setError(value) {
           this.error = value;
+        },
+        setDone() {
+          this.done = true;
         }
       },
       {
-        groupsToUniqueLabels: action,
-        setError: action
+        groupsToUniqueLabels: action.bound,
+        setError: action.bound,
+        setDone: action.bound
       }
     );
 
@@ -75,9 +89,11 @@ const SilencePreview = observer(
         .then(result => {
           this.matchedAlerts.groupsToUniqueLabels(Object.values(result.groups));
           this.matchedAlerts.setError(null);
+          this.matchedAlerts.setDone();
         })
         .catch(err => {
           console.trace(err);
+          this.matchedAlerts.setDone();
           return this.matchedAlerts.setError(
             `Request failed with: ${err.message}`
           );
@@ -94,7 +110,9 @@ const SilencePreview = observer(
       return (
         <React.Fragment>
           <div className="mb-3">
-            {this.matchedAlerts.error !== null ? (
+            {!this.matchedAlerts.done ? (
+              <Placeholder />
+            ) : this.matchedAlerts.error !== null ? (
               <FetchError message={this.matchedAlerts.error} />
             ) : (
               <LabelSetList
