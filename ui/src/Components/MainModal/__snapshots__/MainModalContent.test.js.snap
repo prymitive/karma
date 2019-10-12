@@ -5,10 +5,10 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
 <span>
   <div class=\\"modal-header py-2\\">
     <nav class=\\"nav nav-pills nav-justified w-100\\">
-      <span class=\\"nav-item nav-link cursor-pointer active\\">
+      <span class=\\"nav-item nav-link cursor-pointer mx-1 active\\">
         Configuration
       </span>
-      <span class=\\"nav-item nav-link cursor-pointer text-primary\\">
+      <span class=\\"nav-item nav-link cursor-pointer mx-1 components-tab-inactive\\">
         Help
       </span>
       <button type=\\"button\\"

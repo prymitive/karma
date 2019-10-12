@@ -6,24 +6,9 @@ import { observable, action } from "mobx";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { Tab } from "Components/Modal/Tab";
 import { Configuration } from "./Configuration";
 import { Help } from "./Help";
-
-const Tab = ({ title, active, onClick }) => (
-  <span
-    className={`nav-item nav-link cursor-pointer ${
-      active ? "active" : "text-primary"
-    }`}
-    onClick={onClick}
-  >
-    {title}
-  </span>
-);
-Tab.propTypes = {
-  title: PropTypes.string.isRequired,
-  active: PropTypes.bool,
-  onClick: PropTypes.func.isRequired
-};
 
 const TabNames = Object.freeze({
   Configuration: "configuration",

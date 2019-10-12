@@ -9,7 +9,7 @@ import {
   NewEmptyMatcher,
   MatcherValueToObject
 } from "Stores/SilenceFormStore";
-import { SilenceModalContent } from "./SilenceModalContent";
+import { SilenceModalContent, TabNames } from "./SilenceModalContent";
 
 import "Percy.scss";
 
@@ -59,6 +59,22 @@ storiesOf("SilenceModal", module)
         settingsStore={settingsStore}
         onHide={() => {}}
         previewOpen={true}
+        openTab={TabNames.Editor}
+      />
+    );
+  })
+  .add("Browser", () => {
+    const alertStore = new AlertStore([]);
+    const settingsStore = new Settings();
+    const silenceFormStore = new SilenceFormStore();
+
+    return (
+      <SilenceModalContent
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        settingsStore={settingsStore}
+        onHide={() => {}}
+        openTab={TabNames.Browser}
       />
     );
   });

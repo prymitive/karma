@@ -1,0 +1,210 @@
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+
+import { observable, action } from "mobx";
+import { observer, Provider } from "mobx-react";
+
+import { debounce } from "lodash";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
+
+import { faSortAmountDownAlt } from "@fortawesome/free-solid-svg-icons/faSortAmountDownAlt";
+import { faSortAmountUp } from "@fortawesome/free-solid-svg-icons/faSortAmountUp";
+
+import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { FetchWithCredentials } from "Common/Fetch";
+import { MountFade } from "Components/Animations/MountFade";
+import { ManagedSilence } from "Components/ManagedSilence";
+
+const FetchError = ({ message }) => (
+  <div className="text-center">
+    <h2 className="display-2 text-danger">
+      <FontAwesomeIcon icon={faExclamationCircle} />
+    </h2>
+    <p className="lead text-muted">{message}</p>
+  </div>
+);
+FetchError.propTypes = {
+  message: PropTypes.node.isRequired
+};
+
+const Placeholder = ({ content }) => (
+  <MountFade in={true}>
+    <div className="jumbotron bg-white">
+      <h1 className="display-5 text-secondary text-center">{content}</h1>
+    </div>
+  </MountFade>
+);
+Placeholder.propTypes = {
+  content: PropTypes.node.isRequired
+};
+
+const Browser = observer(
+  class Browser extends Component {
+    static propTypes = {
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+    };
+
+    fetchTimer = null;
+
+    dataSource = observable(
+      {
+        silences: [],
+        sortReverse: false,
+        showExpired: false,
+        searchTerm: "",
+        error: null,
+        fetch: null,
+        done: false,
+        setDone() {
+          this.done = true;
+        },
+        setError(value) {
+          this.error = value;
+        },
+        toggleSortReverse() {
+          this.sortReverse = !this.sortReverse;
+        },
+        toggleShowExpired() {
+          this.showExpired = !this.showExpired;
+        },
+        setSearchTerm(value) {
+          this.searchTerm = value;
+        }
+      },
+      {
+        setDone: action.bound,
+        setError: action.bound,
+        toggleSortReverse: action.bound,
+        toggleShowExpired: action.bound,
+        setSearchTerm: action.bound
+      }
+    );
+
+    onFetch = debounce(() => {
+      const uri = FormatBackendURI(
+        `silences.json?sortReverse=${
+          this.dataSource.sortReverse ? "1" : "0"
+        }&showExpired=${this.dataSource.showExpired ? "1" : "0"}&searchTerm=${
+          this.dataSource.searchTerm
+        }`
+      );
+
+      this.dataSource.fetch = FetchWithCredentials(uri, {})
+        .then(result => {
+          return result.json();
+        })
+        .then(result => {
+          this.dataSource.silences = result;
+          this.dataSource.setDone();
+          this.dataSource.setError(null);
+        })
+        .catch(err => {
+          console.trace(err);
+          this.dataSource.setDone();
+          return this.dataSource.setError(
+            `Request failed with: ${err.message}`
+          );
+        });
+    }, 500);
+
+    componentDidMount() {
+      this.onFetch();
+      // FIXME use settings refresh interval
+      this.fetchTimer = setInterval(this.onFetch, 10 * 1000);
+    }
+
+    componentWillUnmount() {
+      clearInterval(this.fetchTimer);
+      this.fetchTimer = null;
+    }
+
+    render() {
+      const { alertStore, silenceFormStore } = this.props;
+
+      return (
+        <React.Fragment>
+          <div className="d-flex justify-content-between mb-3">
+            <span className="custom-control custom-switch my-auto flex-grow-0 flex-shrink-0">
+              <input
+                id="silence-show-expired"
+                className="custom-control-input"
+                type="checkbox"
+                value=""
+                checked={this.dataSource.showExpired}
+                onChange={() => {
+                  this.dataSource.toggleShowExpired();
+                  this.onFetch();
+                }}
+              />
+              <label
+                className="custom-control-label cursor-pointer"
+                htmlFor="silence-show-expired"
+              >
+                Show expired
+              </label>
+            </span>
+            <input
+              type="text"
+              className="form-control flex-grow-1 flex-shrink-1 mx-3"
+              placeholder="Search query"
+              value={this.dataSource.searchTerm}
+              autoComplete="off"
+              onChange={e => {
+                this.dataSource.setSearchTerm(e.target.value);
+                this.onFetch();
+              }}
+            />
+            <button
+              type="button"
+              className="btn btn-outline-secondary flex-grow-0 flex-shrink-0"
+              onClick={() => {
+                this.dataSource.toggleSortReverse();
+                this.onFetch();
+              }}
+            >
+              <FontAwesomeIcon
+                className="mr-1"
+                icon={
+                  this.dataSource.sortReverse
+                    ? faSortAmountUp
+                    : faSortAmountDownAlt
+                }
+              />
+              Sort order
+            </button>
+          </div>
+          {this.dataSource.error !== null ? (
+            <FetchError message={this.dataSource.error} />
+          ) : this.dataSource.done ? (
+            this.dataSource.silences.length === 0 ? (
+              <Placeholder content="Nothing to show" />
+            ) : (
+              <Provider alertStore={alertStore}>
+                {this.dataSource.silences.map(silence => (
+                  <ManagedSilence
+                    key={`${silence.cluster}/${silence.silence.id}`}
+                    cluster={silence.cluster}
+                    silence={silence.silence}
+                    alertStore={alertStore}
+                    silenceFormStore={silenceFormStore}
+                  />
+                ))}
+              </Provider>
+            )
+          ) : (
+            <Placeholder
+              content={<FontAwesomeIcon icon={faSpinner} size="lg" spin />}
+            />
+          )}
+        </React.Fragment>
+      );
+    }
+  }
+);
+
+export { Browser };

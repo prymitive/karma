@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SilenceComment /> Matches snapshot when collapsed 1`] = `
+"
+<span class=\\"font-italic\\"
+      width=\\"0\\"
+>
+  <span>
+  </span>
+  <span>
+    Mocked Silence
+  </span>
+  <span style=\\"position: fixed; visibility: hidden; top: 0px; left: 0px;\\">
+    …
+  </span>
+</span>
+"
+`;
+
+exports[`<SilenceComment /> Matches snapshot when expanded 1`] = `
+"
+<span class=\\"font-italic\\"
+      width=\\"0\\"
+>
+  <span>
+  </span>
+  <span>
+    Mocked Silence
+  </span>
+  <span style=\\"position: fixed; visibility: hidden; top: 0px; left: 0px;\\">
+    …
+  </span>
+</span>
+"
+`;

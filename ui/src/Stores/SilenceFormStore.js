@@ -31,11 +31,17 @@ const SilenceFormStage = Object.freeze({
   Submit: "submit"
 });
 
+const SilenceTabNames = Object.freeze({
+  Editor: "editor",
+  Browser: "browser"
+});
+
 class SilenceFormStore {
   // this is used to store modal visibility toggle
   toggle = observable(
     {
       visible: false,
+      blurred: false,
       toggle() {
         this.visible = !this.visible;
       },
@@ -44,9 +50,29 @@ class SilenceFormStore {
       },
       show() {
         this.visible = true;
+      },
+      setBlur(val) {
+        this.blurred = val;
       }
     },
-    { toggle: action.bound, hide: action.bound, show: action.bound }
+    {
+      toggle: action.bound,
+      hide: action.bound,
+      show: action.bound,
+      setBlur: action.bound
+    }
+  );
+
+  tab = observable(
+    {
+      current: SilenceTabNames.Editor,
+      setTab(value) {
+        this.current = value;
+      }
+    },
+    {
+      setTab: action.bound
+    }
   );
 
   // form data is stored here, it's global (rather than attached to the form)
@@ -279,5 +305,6 @@ export {
   SilenceFormStage,
   NewEmptyMatcher,
   MatcherValueToObject,
-  AlertmanagerClustersToOption
+  AlertmanagerClustersToOption,
+  SilenceTabNames
 };

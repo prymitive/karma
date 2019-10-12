@@ -1,0 +1,14 @@
+@import "src/App.scss";
+
+.components-managed-silence {
+  .card,
+  .card-header,
+  .card-body {
+    background-color: $gray-100;
+  }
+
+  &.card {
+    border-left-width: 4px;
+    border-left-color: $gray-700;
+  }
+}

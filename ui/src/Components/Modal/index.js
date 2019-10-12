@@ -14,16 +14,20 @@ import {
   MountModalBackdrop
 } from "Components/Animations/MountModal";
 
+import "./index.scss";
+
 const Modal = observer(
   class Modal extends Component {
     static propTypes = {
       size: PropTypes.oneOf(["lg", "xl"]),
       isOpen: PropTypes.bool.isRequired,
+      isUpper: PropTypes.bool,
       toggleOpen: PropTypes.func.isRequired,
       children: PropTypes.node.isRequired
     };
     static defaultProps = {
-      size: "lg"
+      size: "lg",
+      isUpper: false
     };
 
     constructor(props) {
@@ -65,7 +69,14 @@ const Modal = observer(
     }
 
     render() {
-      const { size, isOpen, toggleOpen, children, ...props } = this.props;
+      const {
+        size,
+        isOpen,
+        isUpper,
+        toggleOpen,
+        children,
+        ...props
+      } = this.props;
 
       return ReactDOM.createPortal(
         <React.Fragment>
@@ -76,7 +87,11 @@ const Modal = observer(
               handlers={{ CLOSE: toggleOpen }}
             >
               <div ref={this.modalRef} className="modal d-block" role="dialog">
-                <div className={`modal-dialog modal-${size}`} role="document">
+                <div
+                  className={`modal-dialog modal-${size} ${isUpper &&
+                    "modal-upper shadow"}`}
+                  role="document"
+                >
                   <div className="modal-content">{children}</div>
                 </div>
               </div>
