@@ -31,6 +31,7 @@ const ShallowSilenceForm = () => {
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
       settingsStore={settingsStore}
+      previewOpen={false}
     />
   );
 };
@@ -41,6 +42,7 @@ const MountedSilenceForm = () => {
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
       settingsStore={settingsStore}
+      previewOpen={false}
     />
   );
 };

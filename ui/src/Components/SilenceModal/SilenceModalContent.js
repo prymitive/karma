@@ -18,7 +18,11 @@ const SilenceModalContent = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
-      onHide: PropTypes.func.isRequired
+      onHide: PropTypes.func.isRequired,
+      previewOpen: PropTypes.bool
+    };
+    static defaultProps = {
+      previewOpen: false
     };
 
     render() {
@@ -26,7 +30,8 @@ const SilenceModalContent = observer(
         alertStore,
         silenceFormStore,
         settingsStore,
-        onHide
+        onHide,
+        previewOpen
       } = this.props;
 
       return (
@@ -54,6 +59,7 @@ const SilenceModalContent = observer(
                 alertStore={alertStore}
                 silenceFormStore={silenceFormStore}
                 settingsStore={settingsStore}
+                previewOpen={previewOpen}
               />
             ) : silenceFormStore.data.currentStage ===
               SilenceFormStage.Preview ? (
