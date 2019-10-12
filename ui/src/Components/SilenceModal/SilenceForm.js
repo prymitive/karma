@@ -62,10 +62,7 @@ const SilenceForm = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
-      previewOpen: PropTypes.bool
-    };
-    static defaultProps = {
-      previewOpen: false
+      previewOpen: PropTypes.bool.isRequired
     };
 
     constructor(props) {

@@ -21,7 +21,7 @@ const MockMatcher = (name, values, isRegex) => {
   return matcher;
 };
 
-storiesOf("SilenceModalContent", module)
+storiesOf("SilenceModal", module)
   .addDecorator(storyFn => (
     <div>
       <div className="modal-dialog modal-lg" role="document">
@@ -29,7 +29,7 @@ storiesOf("SilenceModalContent", module)
       </div>
     </div>
   ))
-  .add("SilenceModalContent", () => {
+  .add("Silence Form", () => {
     const alertStore = new AlertStore([]);
     const settingsStore = new Settings();
     const silenceFormStore = new SilenceFormStore();
