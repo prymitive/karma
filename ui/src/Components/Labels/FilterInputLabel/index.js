@@ -75,7 +75,7 @@ const FilterInputLabel = observer(
           {filter.isValid ? (
             filter.applied ? (
               showCounter ? (
-                <span className="badge badge-light badge-pill mr-1">
+                <span className="badge badge-light badge-pill">
                   {filter.hits}
                 </span>
               ) : null
@@ -90,7 +90,7 @@ const FilterInputLabel = observer(
           )}
           <TooltipWrapper
             title="Click to edit this filter"
-            className="components-filteredinputlabel-text flex-grow-1 flex-shrink-1"
+            className="components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ml-1"
           >
             <RIEInput
               className="cursor-text px-1"
