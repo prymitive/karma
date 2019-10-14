@@ -72,7 +72,7 @@
   "devDependencies": {
     "@commitlint/travis-cli": "8.2.0",
     "@percy-io/percy-storybook": "2.1.0",
-    "@storybook/react": "5.2.3",
+    "@storybook/react": "5.2.4",
     "diffable-html": "4.0.0",
     "enzyme": "3.10.0",
     "enzyme-adapter-react-16": "1.15.1",
