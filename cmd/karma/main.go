@@ -23,10 +23,10 @@ import (
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/contrib/sentry"
 	"github.com/gin-gonic/gin"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/pflag"
 
 	raven "github.com/getsentry/raven-go"
-	ginprometheus "github.com/mcuadros/go-gin-prometheus"
 	cache "github.com/patrickmn/go-cache"
 	log "github.com/sirupsen/logrus"
 )
@@ -55,6 +55,14 @@ func getViewURL(sub string) string {
 		return u + "/"
 	}
 	return u
+}
+
+func customCSS(c *gin.Context) {
+	serveFileOr404(config.Config.Custom.CSS, "text/css", c)
+}
+
+func customJS(c *gin.Context) {
+	serveFileOr404(config.Config.Custom.JS, "application/javascript", c)
 }
 
 func setupRouter(router *gin.Engine) {
@@ -94,20 +102,15 @@ func setupRouter(router *gin.Engine) {
 	router.GET(getViewURL("/labelNames.json"), knownLabelNames)
 	router.GET(getViewURL("/labelValues.json"), knownLabelValues)
 
-	router.GET(getViewURL("/custom.css"), func(c *gin.Context) {
-		serveFileOr404(config.Config.Custom.CSS, "text/css", c)
-	})
-	router.GET(getViewURL("/custom.js"), func(c *gin.Context) {
-		serveFileOr404(config.Config.Custom.JS, "application/javascript", c)
-	})
+	router.GET(getViewURL("/custom.css"), customCSS)
+	router.GET(getViewURL("/custom.js"), customJS)
 
 	router.NoRoute(notFound)
 }
 
 func setupMetrics(router *gin.Engine) {
-	prom := ginprometheus.NewPrometheus("gin")
-	prom.MetricsPath = getViewURL("/metrics")
-	prom.Use(router)
+	router.Use(promMiddleware())
+	router.GET(getViewURL("/metrics"), promHandler(promhttp.Handler()))
 }
 
 func setupUpstreams() {
