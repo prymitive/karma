@@ -138,10 +138,13 @@ lint-docs: .build/deps-build-node.ok
 .PHONY: lint
 lint: lint-go lint-js lint-docs
 
+.PHONY: benchmark-go
+benchmark-go:
+	GO111MODULE=on go test -run=NONE -bench=. -benchmem ./...
+
 .PHONY: test-go
 test-go:
 	GO111MODULE=on go test -v \
-		-bench=. -benchmem \
 		-cover -coverprofile=coverage.txt -covermode=atomic \
 		./...
 
