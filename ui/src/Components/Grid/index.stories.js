@@ -10,10 +10,9 @@ import { MockAlert, MockAlertGroup } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { UpstreamError } from "./UpstreamError";
 import { FatalError } from "./FatalError";
 import { UpgradeNeeded } from "./UpgradeNeeded";
-import { AlertGrid } from "./AlertGrid";
+import { Grid } from ".";
 
 import "Percy.scss";
 
@@ -73,9 +72,6 @@ const MockGroup = (groupName, alertCount, active, suppressed, unprocessed) => {
 };
 
 storiesOf("Grid", module)
-  .add("UpstreamError", () => {
-    return <UpstreamError name="am1" message="Something failed" />;
-  })
   .add("FatalError", () => {
     return <FatalError message="Something failed" />;
   })
@@ -155,15 +151,27 @@ storiesOf("Grid", module)
       groups.push(group);
     }
     alertStore.data.upstreams = {
-      counters: { total: 0, healthy: 1, failed: 0 },
-      instances: [{ name: "am", uri: "http://am", error: "" }],
-      clusters: { am: ["am"] }
+      counters: { total: 3, healthy: 1, failed: 2 },
+      instances: [
+        { name: "am1", uri: "http://localhost:9093", error: "" },
+        {
+          name: "am2",
+          uri: "http://localhost:9094",
+          error: "Failed to connect to http://localhost:9094"
+        },
+        {
+          name: "failed",
+          uri: "https://am.example.com",
+          error: "Failed to connect to https://am.example.com"
+        }
+      ],
+      clusters: { am: ["am1", "am2"], failed: ["failed"] }
     };
     alertStore.data.groups = groups;
 
     return (
       <Provider alertStore={alertStore}>
-        <AlertGrid
+        <Grid
           alertStore={alertStore}
           settingsStore={settingsStore}
           silenceFormStore={silenceFormStore}
