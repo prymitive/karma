@@ -107,6 +107,18 @@ jobs:
       <<: *DEFAULTS_JS
       script: make lint-docs
 
+    - stage: Lint
+      name: Verify OpenAPI client code
+      if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)
+      language: generic
+      addons:
+        apt:
+          packages:
+            - docker-ce
+      script:
+        - travis_retry make openapi-client
+        - git diff --exit-code
+
     - stage: Snapshots
       name: Percy UI snapshots
       if: (repo = prymitive/karma AND type != pull_request) OR (repo != prymitive/karma AND type = pull_request)

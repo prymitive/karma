@@ -167,6 +167,10 @@ format-go: .build/deps-build-go.ok
 format-js: .build/deps-build-node.ok
 	cd ui && ./node_modules/.bin/prettier --write 'src/**/*.js'
 
+.PHONY: openapi-client
+openapi-client:
+	for f in $(wildcard internal/mapper/*/Dockerfile) ; do $(MAKE) -C `dirname "$$f"` ; done
+
 .PHONY: show-version
 show-version:
 	@echo $(VERSION)
