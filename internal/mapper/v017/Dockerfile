@@ -1,4 +1,4 @@
-FROM quay.io/goswagger/swagger:v0.20.1
+FROM quay.io/goswagger/swagger:v0.21.0
 
 RUN apk update && apk upgrade && apk add --update curl
 
