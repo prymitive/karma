@@ -287,7 +287,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
     link
   </a>
   <div class=\\"components-grid-alertgrid-alertgroup-shared-silence rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-success \\">
-    <div class=\\"card mt-1 border-0 p-1\\">
+    <div class=\\"card mt-1 border-0 p-1 bg-transparent\\">
       <div class=\\"card-text mb-0\\">
         <span class=\\"text-muted my-1\\">
           <span width=\\"0\\">

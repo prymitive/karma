@@ -17,7 +17,7 @@ import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
 import { Silence } from "../Silence";
 import { AlertMenu } from "./AlertMenu";
 
-import "./index.css";
+import "./index.scss";
 
 const Alert = observer(
   class Alert extends Component {

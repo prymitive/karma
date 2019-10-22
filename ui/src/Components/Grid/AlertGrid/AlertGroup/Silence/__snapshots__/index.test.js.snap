@@ -12,7 +12,7 @@ exports[`<Silence /> matches snapshot when data is not present in alertStore 1`]
 
 exports[`<Silence /> matches snapshot when data is present in alertStore 1`] = `
 "
-<div class=\\"card mt-1 border-0 p-1\\">
+<div class=\\"card mt-1 border-0 p-1 bg-transparent\\">
   <div class=\\"card-text mb-0\\">
     <span class=\\"text-muted my-1\\">
       <span width=\\"0\\">
@@ -77,7 +77,7 @@ exports[`<Silence /> matches snapshot when data is present in alertStore 1`] = `
 
 exports[`<Silence /> matches snapshot with expaned details 1`] = `
 "
-<div class=\\"card mt-1 border-0 p-1\\">
+<div class=\\"card mt-1 border-0 p-1 bg-transparent\\">
   <div class=\\"card-text mb-0\\">
     <span class=\\"text-muted my-1\\">
       <span width=\\"0\\">
