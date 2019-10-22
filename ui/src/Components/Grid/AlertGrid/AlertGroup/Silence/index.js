@@ -321,7 +321,7 @@ const Silence = inject("alertStore")(
         const alertmanager = this.getAlertmanager();
 
         return (
-          <div className="card mt-1 border-0 p-1">
+          <div className="card mt-1 border-0 p-1 bg-transparent">
             <div className="card-text mb-0">
               <span className="text-muted my-1">
                 <SilenceComment
