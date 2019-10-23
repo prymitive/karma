@@ -10,6 +10,10 @@
     "@fortawesome/free-solid-svg-icons": "5.11.2",
     "@fortawesome/react-fontawesome": "0.1.7",
     "@sentry/browser": "5.7.1",
+    "@types/jest": "24.0.19",
+    "@types/node": "12.11.5",
+    "@types/react": "16.9.9",
+    "@types/react-dom": "16.9.2",
     "body-scroll-lock": "2.6.4",
     "bootstrap": "4.3.1",
     "bootswatch": "4.3.1",
@@ -54,7 +58,8 @@
     "react-transition-group": "4.3.0",
     "react-truncate": "2.4.0",
     "semver": "6.3.0",
-    "typeface-open-sans": "0.0.75"
+    "typeface-open-sans": "0.0.75",
+    "typescript": "3.6.4"
   },
   "scripts": {
     "start": "NODE_ENV=dev REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",

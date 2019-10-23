@@ -113,7 +113,7 @@ class FilterBarConfig {
 class Settings {
   constructor(defaults) {
     let defaultSettings;
-    if (defaults === undefined) {
+    if (defaults === undefined || defaults === null) {
       defaultSettings = {
         Refresh: 30 * 1000 * 1000 * 1000,
         HideFiltersWhenIdle: true,

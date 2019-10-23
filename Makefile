@@ -165,7 +165,7 @@ format-go: .build/deps-build-go.ok
 
 .PHONY: format-js
 format-js: .build/deps-build-node.ok
-	cd ui && ./node_modules/.bin/prettier --write 'src/**/*.js'
+	cd ui && ./node_modules/.bin/prettier --write 'src/**/*.js' 'src/**/*.tsx'
 
 .PHONY: openapi-client
 openapi-client:

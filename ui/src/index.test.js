@@ -10,7 +10,7 @@ it("renders without crashing", () => {
   const response = EmptyAPIResponse();
   response.filters = [];
   fetch.mockResponse(JSON.stringify(response));
-  const Index = require("./index.js");
+  const Index = require("./index.tsx");
   expect(Index).toBeTruthy();
 });
 

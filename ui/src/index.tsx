@@ -17,9 +17,11 @@ import {
 } from "./AppBoot";
 import { App } from "./App";
 
-const uiDefaults = ParseUIDefaults(
-  document.getElementById("defaults").innerHTML
-);
+let uiDefaults;
+const defaultsElement = document.getElementById("defaults");
+if (defaultsElement !== null) {
+  uiDefaults = ParseUIDefaults(defaultsElement.innerHTML);
+}
 
 const settingsElement = SettingsElement();
 
