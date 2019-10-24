@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
 import { Provider } from "mobx-react";
 
@@ -14,24 +13,27 @@ import { ErrorBoundary } from "./ErrorBoundary";
 
 import "./App.scss";
 
-class App extends Component {
-  static propTypes = {
-    defaultFilters: PropTypes.arrayOf(PropTypes.string).isRequired,
-    uiDefaults: PropTypes.exact({
-      Refresh: PropTypes.number.isRequired,
-      HideFiltersWhenIdle: PropTypes.bool.isRequired,
-      ColorTitlebar: PropTypes.bool.isRequired,
-      MinimalGroupWidth: PropTypes.number.isRequired,
-      AlertsPerGroup: PropTypes.number.isRequired,
-      CollapseGroups: PropTypes.oneOf([
-        "expanded",
-        "collapsed",
-        "collapsedOnMobile"
-      ]).isRequired
-    })
-  };
+interface UIDefaults {
+  Refresh: number;
+  HideFiltersWhenIdle: boolean;
+  ColorTitlebar: boolean;
+  MinimalGroupWidth: number;
+  AlertsPerGroup: number;
+  CollapseGroups: "expanded" | "collapsed" | "collapsedOnMobile";
+}
 
-  constructor(props) {
+interface AppProps {
+  defaultFilters: Array<string>;
+  uiDefaults: UIDefaults;
+}
+
+class App extends Component<AppProps, {}> {
+  alertStore: AlertStore;
+  silenceFormStore: SilenceFormStore;
+  settingsStore: Settings;
+  filters: Array<string> = [];
+
+  constructor(props: AppProps) {
     super(props);
 
     const { defaultFilters, uiDefaults } = this.props;
