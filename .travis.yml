@@ -1,3 +1,5 @@
+version: ~> 1.0
+
 defaults_go: &DEFAULTS_GO
   language: go
   go: "1.13.3"
