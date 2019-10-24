@@ -52,7 +52,7 @@ describe("<ErrorBoundary />", () => {
   });
 
   it("componentDidCatch passes scope to sentry", () => {
-    const sentrySpy = jest.spyOn(Sentry, "configureScope");
+    const sentrySpy = jest.spyOn(Sentry, "captureException");
     Sentry.init({ dsn: "https://foobar@localhost/123456" });
 
     const tree = mount(
