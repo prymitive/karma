@@ -1,5 +1,7 @@
 import React from "react";
 
+import fetchMock from "fetch-mock";
+
 import { storiesOf } from "@storybook/react";
 
 import { MockSilence } from "__mocks__/Alerts";
@@ -93,12 +95,16 @@ storiesOf("SilenceModal", module)
     let silences = [];
     for (var index = 1; index <= 18; index++) {
       const silence = MockSilence();
+      silence.startsAt = "2018-08-14T16:00:00Z";
+      silence.endsAt = `2018-08-14T18:${index < 10 ? "0" + index : index}:00Z`;
       silence.id = `silence${index}`;
       silences.push({
         cluster: "am",
         silence: silence
       });
     }
+
+    fetchMock.restore().mock("*", silences);
 
     return (
       <SilenceModalContent
