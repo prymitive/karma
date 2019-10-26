@@ -93,7 +93,7 @@ const Browser = observer(
       }
     );
 
-    onFetch = debounce(() => {
+    onFetch = () => {
       const uri = FormatBackendURI(
         `silences.json?sortReverse=${
           this.dataSource.sortReverse ? "1" : "0"
@@ -118,7 +118,9 @@ const Browser = observer(
             `Request failed with: ${err.message}`
           );
         });
-    }, 500);
+    };
+
+    onDebouncedFetch = debounce(this.onFetch, 500);
 
     maxPerPage = 5;
 
@@ -172,7 +174,7 @@ const Browser = observer(
                 checked={this.dataSource.showExpired}
                 onChange={() => {
                   this.dataSource.toggleShowExpired();
-                  this.onFetch();
+                  this.onDebouncedFetch();
                 }}
               />
               <label
@@ -190,7 +192,7 @@ const Browser = observer(
               autoComplete="off"
               onChange={e => {
                 this.dataSource.setSearchTerm(e.target.value);
-                this.onFetch();
+                this.onDebouncedFetch();
               }}
             />
             <button
@@ -198,7 +200,7 @@ const Browser = observer(
               className="btn btn-outline-secondary flex-grow-0 flex-shrink-0"
               onClick={() => {
                 this.dataSource.toggleSortReverse();
-                this.onFetch();
+                this.onDebouncedFetch();
               }}
             >
               <FontAwesomeIcon
