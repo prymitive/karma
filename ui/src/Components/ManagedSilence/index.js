@@ -14,7 +14,6 @@ import { SilenceFormStore, SilenceTabNames } from "Stores/SilenceFormStore";
 import { MountFade } from "Components/Animations/MountFade";
 import { SilenceComment } from "./SilenceComment";
 import { SilenceDetails } from "./SilenceDetails";
-import { SilenceProgress } from "./SilenceProgress";
 
 import "./index.scss";
 
@@ -66,7 +65,7 @@ const ManagedSilence = observer(
 
       return (
         <MountFade in={true}>
-          <div className="card mb-1 components-managed-silence">
+          <div className="card my-1 components-managed-silence">
             <div className="card-header border-bottom-0">
               <div className="d-flex flex-row justify-content-between">
                 <div className="flex-grow-1 flex-shrink-1 mr-2">
@@ -75,14 +74,6 @@ const ManagedSilence = observer(
                       silence={silence}
                       collapsed={this.collapse.value}
                     />
-                    <span className="blockquote-footer pt-1">
-                      <cite className="components-grid-alertgroup-silences mr-2">
-                        {silence.createdBy}
-                      </cite>
-                      {this.collapse.value ? (
-                        <SilenceProgress silence={silence} />
-                      ) : null}
-                    </span>
                   </span>
                 </div>
                 <div className="flex-grow-0 flex-shrink-0 mt-auto mb-0">
