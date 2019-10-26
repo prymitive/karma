@@ -1,6 +1,8 @@
 // bundled font assets, so we don't need to talk to Google Fonts API
 @import "src/Fonts.scss";
 
+$lead-font-weight: 400;
+
 // custom "dark" color, little less dark than flatly
 $blue: #455a64;
 // body background color should be same as navbar, so it blends into one
