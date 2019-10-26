@@ -14,8 +14,8 @@ import { StaticLabels } from "Common/Query";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
-import { Silence } from "../Silence";
 import { AlertMenu } from "./AlertMenu";
+import { RenderSilence } from "../Silences";
 
 import "./index.scss";
 
@@ -132,16 +132,16 @@ const Alert = observer(
                 value={a.value}
               />
             ))}
-          {Object.values(silences).map(clusterSilences =>
-            clusterSilences.silences.map(silenceID => (
-              <Silence
-                key={silenceID}
-                silenceFormStore={silenceFormStore}
-                alertmanagerState={clusterSilences.alertmanager}
-                silenceID={silenceID}
-                afterUpdate={afterUpdate}
-              />
-            ))
+          {Object.entries(silences).map(([cluster, clusterSilences]) =>
+            clusterSilences.silences.map(silenceID =>
+              RenderSilence(
+                alertStore,
+                silenceFormStore,
+                afterUpdate,
+                cluster,
+                silenceID
+              )
+            )
           )}
         </li>
       );

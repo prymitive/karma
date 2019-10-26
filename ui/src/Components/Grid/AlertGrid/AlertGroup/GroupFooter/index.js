@@ -5,10 +5,11 @@ import { observer } from "mobx-react";
 
 import { APIGroup } from "Models/API";
 import { StaticLabels } from "Common/Query";
+import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
-import { Silence } from "../Silence";
+import { RenderSilence } from "../Silences";
 
 import "./index.css";
 
@@ -18,6 +19,7 @@ const GroupFooter = observer(
       group: APIGroup.isRequired,
       alertmanagers: PropTypes.arrayOf(PropTypes.string).isRequired,
       afterUpdate: PropTypes.func.isRequired,
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
 
@@ -26,6 +28,7 @@ const GroupFooter = observer(
         group,
         alertmanagers,
         afterUpdate,
+        alertStore,
         silenceFormStore
       } = this.props;
 
@@ -65,25 +68,18 @@ const GroupFooter = observer(
               />
             ))}
           {Object.keys(group.shared.silences).length === 0 ? null : (
-            <div className="components-grid-alertgrid-alertgroup-shared-silence rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-success ">
+            <div className="components-grid-alertgrid-alertgroup-shared-silence rounded-0 border-0">
               {Object.entries(group.shared.silences).map(
                 ([cluster, silences]) =>
-                  silences.map(silenceID => (
-                    <Silence
-                      key={`${cluster}/${silenceID}`}
-                      silenceFormStore={silenceFormStore}
-                      alertmanagerState={
-                        group.alerts.map(
-                          a =>
-                            a.alertmanager.filter(
-                              am => am.cluster === cluster
-                            )[0]
-                        )[0]
-                      }
-                      silenceID={silenceID}
-                      afterUpdate={afterUpdate}
-                    />
-                  ))
+                  silences.map(silenceID =>
+                    RenderSilence(
+                      alertStore,
+                      silenceFormStore,
+                      afterUpdate,
+                      cluster,
+                      silenceID
+                    )
+                  )
               )}
             </div>
           )}

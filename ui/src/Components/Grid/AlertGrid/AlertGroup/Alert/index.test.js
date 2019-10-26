@@ -10,7 +10,12 @@ import toDiffableHtml from "diffable-html";
 
 import Moment from "react-moment";
 
-import { MockAlert, MockAnnotation, MockAlertGroup } from "__mocks__/Alerts.js";
+import {
+  MockAlert,
+  MockAnnotation,
+  MockAlertGroup,
+  MockSilence
+} from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BorderClassMap } from "Common/Colors";
@@ -110,11 +115,46 @@ describe("<Alert />", () => {
   it("renders a silence if alert is silenced", () => {
     const alert = MockedAlert();
     alert.alertmanager[0].silencedBy = ["silence123456789"];
+    alertStore.data.silences = {
+      default: {
+        silence123456789: MockSilence()
+      }
+    };
     const group = MockAlertGroup({}, [alert], [], {}, { default: [] });
     const tree = MountedAlert(alert, group, false, false);
-    const silence = tree.find("Silence");
+    const silence = tree.find("ManagedSilence");
     expect(silence).toHaveLength(1);
-    expect(silence.html()).toMatch(/silence123456789/);
+    expect(silence.html()).toMatch(/Mocked Silence/);
+  });
+
+  it("renders a fallback silence if the silence is not found in alertStore", () => {
+    const alert = MockedAlert();
+    alert.alertmanager[0].silencedBy = ["silence123456789"];
+    alertStore.data.silences = {
+      default: {
+        "123": MockSilence()
+      }
+    };
+    const group = MockAlertGroup({}, [alert], [], {}, { default: [] });
+    const tree = MountedAlert(alert, group, false, false);
+    const silence = tree.find("FallbackSilenceDesciption");
+    expect(silence).toHaveLength(1);
+    expect(silence.html()).not.toMatch(/Mocked Silence/);
+  });
+
+  it("renders a fallback silence if the cluster is not found in alertStore", () => {
+    const alert = MockedAlert();
+    alert.alertmanager[0].silencedBy = ["silence123456789"];
+    alertStore.data.silences = {
+      foo: {
+        "123": MockSilence()
+      }
+    };
+    const group = MockAlertGroup({}, [alert], [], {}, { default: [] });
+    const tree = MountedAlert(alert, group, false, false);
+    const silence = tree.find("FallbackSilenceDesciption");
+    expect(silence).toHaveLength(1);
+    expect(silence.html()).not.toMatch(/Mocked Silence/);
   });
 
   it("renders only one silence for HA cluster", () => {
@@ -139,11 +179,16 @@ describe("<Alert />", () => {
         inhibitedBy: []
       }
     ];
+    alertStore.data.silences = {
+      ha: {
+        silence123456789: MockSilence()
+      }
+    };
     const group = MockAlertGroup({}, [alert], [], {}, {});
     const tree = MountedAlert(alert, group, false, false);
-    const silence = tree.find("Silence");
+    const silence = tree.find("ManagedSilence");
     expect(silence).toHaveLength(1);
-    expect(silence.html()).toMatch(/silence123456789/);
+    expect(silence.html()).toMatch(/Mocked Silence/);
   });
 
   it("doesn't render shared silences", () => {
@@ -157,7 +202,7 @@ describe("<Alert />", () => {
       { default: ["silence123456789"] }
     );
     const tree = MountedAlert(alert, group, false, false);
-    const silence = tree.find("Silence");
+    const silence = tree.find("ManagedSilence");
     expect(silence).toHaveLength(0);
   });
 

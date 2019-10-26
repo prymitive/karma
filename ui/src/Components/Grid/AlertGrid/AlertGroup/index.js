@@ -273,6 +273,7 @@ const AlertGroup = observer(
                   group={group}
                   alertmanagers={footerAlertmanagers}
                   afterUpdate={afterUpdate}
+                  alertStore={alertStore}
                   silenceFormStore={silenceFormStore}
                 />
               ) : null}
