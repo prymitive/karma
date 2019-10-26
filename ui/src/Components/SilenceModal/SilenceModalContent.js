@@ -105,6 +105,7 @@ const SilenceModalContent = observer(
               <Browser
                 alertStore={alertStore}
                 silenceFormStore={silenceFormStore}
+                settingsStore={settingsStore}
               />
             ) : null}
           </div>

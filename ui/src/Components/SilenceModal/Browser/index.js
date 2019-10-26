@@ -6,15 +6,19 @@ import { observer, Provider } from "mobx-react";
 
 import { debounce } from "lodash";
 
+import Pagination from "react-js-pagination";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
-
 import { faSortAmountDownAlt } from "@fortawesome/free-solid-svg-icons/faSortAmountDownAlt";
 import { faSortAmountUp } from "@fortawesome/free-solid-svg-icons/faSortAmountUp";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons/faChevronLeft";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
 
 import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { Settings } from "Stores/Settings";
 import { FetchWithCredentials } from "Common/Fetch";
 import { MountFade } from "Components/Animations/MountFade";
 import { ManagedSilence } from "Components/ManagedSilence";
@@ -46,7 +50,8 @@ const Browser = observer(
   class Browser extends Component {
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+      settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
 
     fetchTimer = null;
@@ -112,10 +117,28 @@ const Browser = observer(
         });
     }, 500);
 
+    maxPerPage = 5;
+
+    pagination = observable(
+      {
+        activePage: 1,
+        onPageChange(pageNumber) {
+          this.activePage = pageNumber;
+        }
+      },
+      {
+        onPageChange: action.bound
+      }
+    );
+
     componentDidMount() {
+      const { settingsStore } = this.props;
+
       this.onFetch();
-      // FIXME use settings refresh interval
-      this.fetchTimer = setInterval(this.onFetch, 10 * 1000);
+      this.fetchTimer = setInterval(
+        this.onFetch,
+        settingsStore.fetchConfig.config.interval * 1000
+      );
     }
 
     componentWillUnmount() {
@@ -124,11 +147,14 @@ const Browser = observer(
     }
 
     render() {
-      const { alertStore, silenceFormStore } = this.props;
+      const { alertStore, silenceFormStore, settingsStore } = this.props;
 
       return (
         <React.Fragment>
-          <div className="d-flex justify-content-between mb-3">
+          <div
+            className="d-flex justify-content-between mb-3"
+            data-refresh={settingsStore.fetchConfig.config.interval}
+          >
             <span className="custom-control custom-switch my-auto flex-grow-0 flex-shrink-0">
               <input
                 id="silence-show-expired"
@@ -184,17 +210,41 @@ const Browser = observer(
             this.dataSource.silences.length === 0 ? (
               <Placeholder content="Nothing to show" />
             ) : (
-              <Provider alertStore={alertStore}>
-                {this.dataSource.silences.map(silence => (
-                  <ManagedSilence
-                    key={`${silence.cluster}/${silence.silence.id}`}
-                    cluster={silence.cluster}
-                    silence={silence.silence}
-                    alertStore={alertStore}
-                    silenceFormStore={silenceFormStore}
-                  />
-                ))}
-              </Provider>
+              <React.Fragment>
+                <Provider alertStore={alertStore}>
+                  {this.dataSource.silences
+                    .slice(
+                      (this.pagination.activePage - 1) * this.maxPerPage,
+                      this.pagination.activePage * this.maxPerPage
+                    )
+                    .map(silence => (
+                      <ManagedSilence
+                        key={`${silence.cluster}/${silence.silence.id}`}
+                        cluster={silence.cluster}
+                        silence={silence.silence}
+                        alertStore={alertStore}
+                        silenceFormStore={silenceFormStore}
+                      />
+                    ))}
+                </Provider>
+                {this.dataSource.silences.length > this.maxPerPage ? (
+                  <div className="mt-3">
+                    <Pagination
+                      activePage={this.pagination.activePage}
+                      itemsCountPerPage={this.maxPerPage}
+                      totalItemsCount={this.dataSource.silences.length}
+                      pageRangeDisplayed={5}
+                      onChange={this.pagination.onPageChange}
+                      hideFirstLastPages
+                      innerClass="pagination justify-content-center"
+                      itemClass="page-item"
+                      linkClass="page-link"
+                      prevPageText={<FontAwesomeIcon icon={faChevronLeft} />}
+                      nextPageText={<FontAwesomeIcon icon={faChevronRight} />}
+                    />
+                  </div>
+                ) : null}
+              </React.Fragment>
             )
           ) : (
             <Placeholder

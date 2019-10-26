@@ -9,11 +9,13 @@ import { advanceTo, clear } from "jest-date-mock";
 
 import { MockSilence } from "__mocks__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
+import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Browser } from ".";
 
 let alertStore;
 let silenceFormStore;
+let settingsStore;
 let cluster;
 let silence;
 
@@ -22,6 +24,7 @@ beforeEach(() => {
 
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
+  settingsStore = new Settings();
   cluster = "am";
   silence = MockSilence();
 
@@ -51,9 +54,26 @@ afterEach(() => {
   clear();
 });
 
+const MockSilenceList = count => {
+  let silences = [];
+  for (var index = 1; index <= count; index++) {
+    const silence = MockSilence();
+    silence.id = `silence${index}`;
+    silences.push({
+      cluster: cluster,
+      silence: silence
+    });
+  }
+  return silences;
+};
+
 const MountedBrowser = () => {
   return mount(
-    <Browser alertStore={alertStore} silenceFormStore={silenceFormStore} />
+    <Browser
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+      settingsStore={settingsStore}
+    />
   );
 };
 
@@ -155,6 +175,27 @@ describe("<Browser />", () => {
     );
     const tree = MountedBrowser();
     await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
+    tree.update();
+    expect(tree.find("ManagedSilence")).toHaveLength(1);
+  });
+
+  it("renders only first 5 silences", async () => {
+    fetch.mockResponse(JSON.stringify(MockSilenceList(6)));
+    const tree = MountedBrowser();
+    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
+    tree.update();
+    expect(tree.find("ManagedSilence")).toHaveLength(5);
+  });
+
+  it("renders last silence after page change", async () => {
+    fetch.mockResponse(JSON.stringify(MockSilenceList(6)));
+    const tree = MountedBrowser();
+    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
+    tree.update();
+    expect(tree.find("ManagedSilence")).toHaveLength(5);
+
+    const pageLink = tree.find(".page-link").at(3);
+    pageLink.simulate("click");
     tree.update();
     expect(tree.find("ManagedSilence")).toHaveLength(1);
   });
