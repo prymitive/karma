@@ -2,14 +2,16 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 
+import { MockSilence } from "__mocks__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import {
   SilenceFormStore,
   NewEmptyMatcher,
-  MatcherValueToObject
+  MatcherValueToObject,
+  SilenceTabNames
 } from "Stores/SilenceFormStore";
-import { SilenceModalContent, TabNames } from "./SilenceModalContent";
+import { SilenceModalContent } from "./SilenceModalContent";
 
 import "Percy.scss";
 
@@ -52,6 +54,8 @@ storiesOf("SilenceModal", module)
     silenceFormStore.data.comment = "fake silence";
     silenceFormStore.data.resetStartEnd();
 
+    silenceFormStore.tab.current = SilenceTabNames.Editor;
+
     return (
       <SilenceModalContent
         alertStore={alertStore}
@@ -59,7 +63,7 @@ storiesOf("SilenceModal", module)
         settingsStore={settingsStore}
         onHide={() => {}}
         previewOpen={true}
-        openTab={TabNames.Editor}
+        onDeleteModalClose={() => {}}
       />
     );
   })
@@ -68,13 +72,41 @@ storiesOf("SilenceModal", module)
     const settingsStore = new Settings();
     const silenceFormStore = new SilenceFormStore();
 
+    silenceFormStore.tab.current = SilenceTabNames.Browser;
+
+    alertStore.data.upstreams = {
+      instances: [
+        {
+          name: "am1",
+          cluster: "am",
+          clusterMembers: ["am1"],
+          uri: "http://localhost:9093",
+          publicURI: "http://example.com",
+          error: "",
+          version: "0.15.3",
+          headers: {}
+        }
+      ],
+      clusters: { am: ["am1"] }
+    };
+
+    let silences = [];
+    for (var index = 1; index <= 18; index++) {
+      const silence = MockSilence();
+      silence.id = `silence${index}`;
+      silences.push({
+        cluster: "am",
+        silence: silence
+      });
+    }
+
     return (
       <SilenceModalContent
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
         settingsStore={settingsStore}
         onHide={() => {}}
-        openTab={TabNames.Browser}
+        onDeleteModalClose={() => {}}
       />
     );
   });

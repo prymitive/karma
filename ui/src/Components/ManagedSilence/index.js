@@ -24,7 +24,8 @@ const ManagedSilence = observer(
       silence: APISilence.isRequired,
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      onDidUpdate: PropTypes.func
+      onDidUpdate: PropTypes.func,
+      onDeleteModalClose: PropTypes.func
     };
 
     // store collapse state, by default only silence comment is visible
@@ -61,7 +62,13 @@ const ManagedSilence = observer(
     }
 
     render() {
-      const { cluster, silence, alertStore, silenceFormStore } = this.props;
+      const {
+        cluster,
+        silence,
+        alertStore,
+        silenceFormStore,
+        onDeleteModalClose
+      } = this.props;
 
       return (
         <MountFade in={true}>
@@ -94,6 +101,7 @@ const ManagedSilence = observer(
                   alertStore={alertStore}
                   silenceFormStore={silenceFormStore}
                   onEditSilence={this.onEditSilence}
+                  onDeleteModalClose={onDeleteModalClose}
                 />
               </div>
             )}

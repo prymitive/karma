@@ -53,7 +53,8 @@ const Browser = observer(
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
+      onDeleteModalClose: PropTypes.func.isRequired
     };
 
     fetchTimer = null;
@@ -149,7 +150,12 @@ const Browser = observer(
     }
 
     render() {
-      const { alertStore, silenceFormStore, settingsStore } = this.props;
+      const {
+        alertStore,
+        silenceFormStore,
+        settingsStore,
+        onDeleteModalClose
+      } = this.props;
 
       return (
         <React.Fragment>
@@ -226,6 +232,7 @@ const Browser = observer(
                         silence={silence.silence}
                         alertStore={alertStore}
                         silenceFormStore={silenceFormStore}
+                        onDeleteModalClose={onDeleteModalClose}
                       />
                     ))}
                 </Provider>

@@ -32,6 +32,7 @@ const ShallowSilenceModalContent = () => {
       settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
       onHide={MockOnHide}
+      onDeleteModalClose={jest.fn()}
     />
   );
 };

@@ -28,6 +28,16 @@ const SilenceModal = observer(
       settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
 
+    constructor(props) {
+      super(props);
+
+      this.modalRef = React.createRef();
+    }
+
+    remountModal = () => {
+      this.modalRef.current.toggleBodyClass(true);
+    };
+
     render() {
       const { alertStore, silenceFormStore, settingsStore } = this.props;
 
@@ -48,6 +58,7 @@ const SilenceModal = observer(
             </TooltipWrapper>
           </li>
           <Modal
+            ref={this.modalRef}
             isOpen={silenceFormStore.toggle.visible}
             toggleOpen={silenceFormStore.toggle.toggle}
             onExited={silenceFormStore.data.resetProgress}
@@ -64,6 +75,7 @@ const SilenceModal = observer(
                 silenceFormStore={silenceFormStore}
                 settingsStore={settingsStore}
                 onHide={silenceFormStore.toggle.hide}
+                onDeleteModalClose={this.remountModal}
               />
             </React.Suspense>
           </Modal>

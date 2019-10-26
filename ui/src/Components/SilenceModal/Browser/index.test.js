@@ -54,6 +54,8 @@ afterEach(() => {
   clear();
 });
 
+const MockOnDeleteModalClose = jest.fn();
+
 const MockSilenceList = count => {
   let silences = [];
   for (var index = 1; index <= count; index++) {
@@ -73,6 +75,7 @@ const MountedBrowser = () => {
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
       settingsStore={settingsStore}
+      onDeleteModalClose={MockOnDeleteModalClose}
     />
   );
 };

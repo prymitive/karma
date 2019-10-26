@@ -274,7 +274,8 @@ const DeleteSilence = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       cluster: PropTypes.string.isRequired,
-      silence: APISilence.isRequired
+      silence: APISilence.isRequired,
+      onModalExit: PropTypes.func
     };
 
     toggle = observable(
@@ -288,7 +289,13 @@ const DeleteSilence = observer(
     );
 
     render() {
-      const { alertStore, silenceFormStore, cluster, silence } = this.props;
+      const {
+        alertStore,
+        silenceFormStore,
+        cluster,
+        silence,
+        onModalExit
+      } = this.props;
 
       return (
         <React.Fragment>
@@ -306,6 +313,7 @@ const DeleteSilence = observer(
             isOpen={this.toggle.visible}
             isUpper={true}
             toggleOpen={this.toggle.toggle}
+            onExited={onModalExit}
           >
             <DeleteSilenceModalContent
               alertStore={alertStore}

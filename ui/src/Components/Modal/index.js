@@ -65,7 +65,11 @@ const Modal = observer(
     }
 
     componentWillUnmount() {
-      this.toggleBodyClass(false);
+      const { isOpen } = this.props;
+
+      if (isOpen) {
+        this.toggleBodyClass(false);
+      }
     }
 
     render() {

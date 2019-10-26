@@ -24,7 +24,8 @@ const SilenceDetails = ({
   silenceFormStore,
   silence,
   cluster,
-  onEditSilence
+  onEditSilence,
+  onDeleteModalClose
 }) => {
   let isExpired = moment(silence.endsAt) < moment();
   let expiresClass = "";
@@ -126,6 +127,7 @@ const SilenceDetails = ({
                 silenceFormStore={silenceFormStore}
                 cluster={cluster}
                 silence={silence}
+                onModalExit={onDeleteModalClose}
               />
             )}
           </div>
@@ -138,7 +140,8 @@ SilenceDetails.propTypes = {
   silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
   cluster: PropTypes.string.isRequired,
   silence: APISilence.isRequired,
-  onEditSilence: PropTypes.func.isRequired
+  onEditSilence: PropTypes.func.isRequired,
+  onDeleteModalClose: PropTypes.func
 };
 
 export { SilenceDetails };
