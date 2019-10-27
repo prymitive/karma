@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import Truncate from "react-truncate";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
@@ -18,27 +16,30 @@ const SilenceComment = ({
   collapseToggle,
   afterUpdate
 }) => {
-  const commentBody = (
-    <Truncate className="font-italic" lines={collapsed ? 2 : false}>
-      {silence.comment}
-    </Truncate>
-  );
   const comment = silence.jiraURL ? (
     <a href={silence.jiraURL} target="_blank" rel="noopener noreferrer">
       <FontAwesomeIcon className="mr-2" icon={faExternalLinkAlt} />
-      {commentBody}
+      {silence.comment}
     </a>
   ) : (
-    commentBody
+    silence.comment
   );
 
   return (
     <React.Fragment>
       <div className="d-flex flex-row">
-        <div className="flex-shrink-0 flex-grow-0  mr-2">
+        <div className="flex-shrink-0 flex-grow-0 mr-2">
           <FontAwesomeIcon icon={faBellSlash} className="text-muted" />
         </div>
-        <div className="flex-shrink-1 flex-grow-1">{comment}</div>
+        <div className="flex-shrink-1 flex-grow-1 mw-1p">
+          <div
+            className={`font-italic ${
+              collapsed ? "text-truncate overflow-hidden" : ""
+            }`}
+          >
+            {comment}
+          </div>
+        </div>
       </div>
       <div className="pt-1 d-flex flex-row justify-content-between">
         <div className="flex-shrink-1 flex-grow-1 components-managed-silence-cite">
