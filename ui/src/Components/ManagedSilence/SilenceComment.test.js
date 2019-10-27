@@ -18,8 +18,16 @@ afterEach(() => {
   fetch.resetMocks();
 });
 
+const CollapseMock = jest.fn();
+
 const MountedSilenceComment = collapsed => {
-  return mount(<SilenceComment silence={silence} collapsed={collapsed} />);
+  return mount(
+    <SilenceComment
+      silence={silence}
+      collapsed={collapsed}
+      collapseToggle={CollapseMock}
+    />
+  );
 };
 
 describe("<SilenceComment />", () => {
@@ -45,5 +53,12 @@ describe("<SilenceComment />", () => {
     silence.jiraID = "1234";
     const tree = MountedSilenceComment(false);
     expect(tree.find("a[href='http://localhost/1234']")).toHaveLength(1);
+  });
+
+  it("collapseToggle is called when collapse icon is clicked", () => {
+    const tree = MountedSilenceComment(true);
+    const collapse = tree.find("svg.fa-chevron-up");
+    collapse.simulate("click");
+    expect(CollapseMock).toHaveBeenCalled();
   });
 });

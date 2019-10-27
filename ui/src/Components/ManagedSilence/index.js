@@ -4,10 +4,6 @@ import PropTypes from "prop-types";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
-
 import { APISilence } from "Models/API";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, SilenceTabNames } from "Stores/SilenceFormStore";
@@ -73,24 +69,12 @@ const ManagedSilence = observer(
       return (
         <MountFade in={true}>
           <div className="card my-1 components-managed-silence">
-            <div className="card-header border-bottom-0">
-              <div className="d-flex flex-row justify-content-between mw-100">
-                <div className="flex-grow-1 flex-shrink-1 mr-2">
-                  <div className="my-1">
-                    <SilenceComment
-                      silence={silence}
-                      collapsed={this.collapse.value}
-                    />
-                  </div>
-                </div>
-                <div className="flex-grow-0 flex-shrink-0 mt-auto mb-0">
-                  <FontAwesomeIcon
-                    icon={this.collapse.value ? faChevronUp : faChevronDown}
-                    className="text-muted cursor-pointer"
-                    onClick={this.collapse.toggle}
-                  />
-                </div>
-              </div>
+            <div className="card-header border-bottom-0 px-3">
+              <SilenceComment
+                silence={silence}
+                collapsed={this.collapse.value}
+                collapseToggle={this.collapse.toggle}
+              />
             </div>
 
             {this.collapse.value ? null : (
