@@ -31,26 +31,28 @@ configuration option in Alertmanager. If a group contains multiple alerts only
 the first few alerts will be presented. Alerts are expanded or hidden
 using - / + buttons. The default number of alerts can be configured in the UI
 settings module.
+Each group can be collapsed to only show the title bar using top right toggle
+icon.
 Each individual alert will show unique labels and annotations. Labels
 and annotations that are shared between all alerts are moved to the footer.
-Example:
 
 ![Example](/docs/alertGroup.png)
 
 If all alerts in a group were suppressed by the same silence then, to save
 screen space, the silence will also be moved to the footer.
-Example:
 
 ![Deduplicated silence](/docs/footerSilence.png)
 
-Each group can be collapsed to only show the title bar using top right toggle
-icon.
+Silence modal allows to create new silences and manage all silences already
+present in Alertmanager.
 
-![Overview](/docs/overview.png)
+![Silence browser](/docs/silenceBrowser.png)
 
 Clicking on the alert counter in the top left corner will open the overview
 modal, which allows to quickly get an overview of the top label values for
 all current alerts.
+
+![Overview](/docs/overview.png)
 
 [Online demo](https://karma-demo.herokuapp.com/)
 
