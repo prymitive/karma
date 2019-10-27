@@ -203,7 +203,7 @@ describe("<Browser />", () => {
     expect(tree.find("ManagedSilence")).toHaveLength(1);
   });
 
-  it("resetes pagination to last page on truncation", async () => {
+  it("resets pagination to last page on truncation", async () => {
     fetch.mockResponseOnce(JSON.stringify(MockSilenceList(11)));
     const tree = MountedBrowser();
     const instance = tree.instance();
@@ -224,6 +224,14 @@ describe("<Browser />", () => {
 
     expect(tree.find("ManagedSilence")).toHaveLength(2);
     expect(instance.pagination.activePage).toBe(2);
+
+    fetch.mockResponseOnce(JSON.stringify([]));
+    instance.onFetch();
+    await expect(instance.dataSource.fetch).resolves.toBeUndefined();
+    tree.update();
+
+    expect(tree.find("ManagedSilence")).toHaveLength(0);
+    expect(instance.pagination.activePage).toBe(1);
   });
 
   it("renders error after failed fetch", async () => {

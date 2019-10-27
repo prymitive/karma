@@ -137,7 +137,7 @@ const Browser = observer(
         resetIfNeeded(totalItemsCount, maxPerPage) {
           const totalPages = Math.ceil(totalItemsCount / maxPerPage);
           if (this.activePage > totalPages) {
-            this.activePage = totalPages;
+            this.activePage = Math.max(1, totalPages);
           }
         }
       },
