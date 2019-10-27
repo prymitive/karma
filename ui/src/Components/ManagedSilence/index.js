@@ -74,14 +74,14 @@ const ManagedSilence = observer(
         <MountFade in={true}>
           <div className="card my-1 components-managed-silence">
             <div className="card-header border-bottom-0">
-              <div className="d-flex flex-row justify-content-between">
+              <div className="d-flex flex-row justify-content-between mw-100">
                 <div className="flex-grow-1 flex-shrink-1 mr-2">
-                  <span className="my-1">
+                  <div className="my-1">
                     <SilenceComment
                       silence={silence}
                       collapsed={this.collapse.value}
                     />
-                  </span>
+                  </div>
                 </div>
                 <div className="flex-grow-0 flex-shrink-0 mt-auto mb-0">
                   <FontAwesomeIcon

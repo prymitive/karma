@@ -4,9 +4,9 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
 "
 <div class=\\"card my-1 components-managed-silence components-animation-fade-appear components-animation-fade-appear-active\\">
   <div class=\\"card-header border-bottom-0\\">
-    <div class=\\"d-flex flex-row justify-content-between\\">
+    <div class=\\"d-flex flex-row justify-content-between mw-100\\">
       <div class=\\"flex-grow-1 flex-shrink-1 mr-2\\">
-        <span class=\\"my-1\\">
+        <div class=\\"my-1\\">
           <div class=\\"d-flex flex-row\\">
             <div class=\\"flex-shrink-0 flex-grow-0  mr-2\\">
               <svg aria-hidden=\\"true\\"
@@ -60,7 +60,7 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
               </span>
             </div>
           </div>
-        </span>
+        </div>
       </div>
       <div class=\\"flex-grow-0 flex-shrink-0 mt-auto mb-0\\">
         <svg aria-hidden=\\"true\\"
@@ -88,9 +88,9 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
 "
 <div class=\\"card my-1 components-managed-silence components-animation-fade-appear components-animation-fade-appear-active\\">
   <div class=\\"card-header border-bottom-0\\">
-    <div class=\\"d-flex flex-row justify-content-between\\">
+    <div class=\\"d-flex flex-row justify-content-between mw-100\\">
       <div class=\\"flex-grow-1 flex-shrink-1 mr-2\\">
-        <span class=\\"my-1\\">
+        <div class=\\"my-1\\">
           <div class=\\"d-flex flex-row\\">
             <div class=\\"flex-shrink-0 flex-grow-0  mr-2\\">
               <svg aria-hidden=\\"true\\"
@@ -128,7 +128,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
               </span>
             </div>
           </div>
-        </span>
+        </div>
       </div>
       <div class=\\"flex-grow-0 flex-shrink-0 mt-auto mb-0\\">
         <svg aria-hidden=\\"true\\"
