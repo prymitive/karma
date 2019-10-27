@@ -51,12 +51,17 @@ const ParseDefaultFilters = settingsElement => {
   return defaultFilters;
 };
 
-const ParseUIDefaults = b64data => {
-  const decoded = Buffer.from(b64data, "base64").toString("ascii");
+const ParseUIDefaults = defaultsElement => {
+  if (defaultsElement === null) {
+    return null;
+  }
+  const decoded = Buffer.from(defaultsElement.innerHTML, "base64").toString(
+    "ascii"
+  );
   try {
     return JSON.parse(decoded);
   } catch {
-    return undefined;
+    return null;
   }
 };
 

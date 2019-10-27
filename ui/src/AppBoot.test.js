@@ -138,12 +138,17 @@ describe("ParseDefaultFilters()", () => {
 
 describe("ParseUIDefaults()", () => {
   it("parses base64 encoded JSON with defaults", () => {
-    const uiDefaults = ParseUIDefaults(DefaultsBase64);
+    const uiDefaults = ParseUIDefaults({ innerHTML: DefaultsBase64 });
     expect(uiDefaults).toStrictEqual(DefaultsObject);
   });
 
-  it("returns undefined on invalid JSON", () => {
-    const uiDefaults = ParseUIDefaults("e3h4eC9mZgo=");
-    expect(uiDefaults).toBeUndefined();
+  it("returns null on null element", () => {
+    const uiDefaults = ParseUIDefaults(null);
+    expect(uiDefaults).toBeNull();
+  });
+
+  it("returns null on invalid JSON", () => {
+    const uiDefaults = ParseUIDefaults({ innerHTML: "e3h4eC9mZgo=" });
+    expect(uiDefaults).toBeNull();
   });
 });
