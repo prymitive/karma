@@ -33,7 +33,7 @@ storiesOf("SilenceModal", module)
       </div>
     </div>
   ))
-  .add("Silence Form", () => {
+  .add("Editor", () => {
     const alertStore = new AlertStore([]);
     const settingsStore = new Settings();
     const silenceFormStore = new SilenceFormStore();
@@ -57,6 +57,21 @@ storiesOf("SilenceModal", module)
     silenceFormStore.data.resetStartEnd();
 
     silenceFormStore.tab.current = SilenceTabNames.Editor;
+
+    fetchMock.mock(
+      "begin:/alerts.json?q=cluster",
+      { totalAlerts: 0 },
+      {
+        overwriteRoutes: true
+      }
+    );
+    fetchMock.mock(
+      "begin:/alerts.json?q=instance",
+      { totalAlerts: 23 },
+      {
+        overwriteRoutes: true
+      }
+    );
 
     return (
       <SilenceModalContent
@@ -114,7 +129,9 @@ storiesOf("SilenceModal", module)
       });
     }
 
-    fetchMock.restore().mock("*", silences);
+    fetchMock.mock("begin:/silences.json?", silences, {
+      overwriteRoutes: true
+    });
 
     return (
       <SilenceModalContent
