@@ -69,8 +69,8 @@
   },
   "jest": {
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx}",
-      "!src/**/*.stories.{js,jsx}"
+      "src/**/*.{js,jsx,tsx}",
+      "!src/**/*.stories.{js,jsx,tsx}"
     ]
   },
   "devDependencies": {
