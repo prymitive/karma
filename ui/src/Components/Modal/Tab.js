@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 const Tab = ({ title, active, onClick }) => (
   <span
-    className={`nav-item nav-link cursor-pointer mx-1 ${
+    className={`nav-item nav-link cursor-pointer mx-1 px-2 ${
       active ? "active" : "components-tab-inactive"
     }`}
     onClick={onClick}
