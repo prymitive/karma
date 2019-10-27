@@ -162,7 +162,7 @@ const Browser = observer(
       return (
         <React.Fragment>
           <div
-            className="d-flex justify-content-between mb-3"
+            className="d-flex flex-fill flex-lg-row flex-column justify-content-between mb-3"
             data-refresh={settingsStore.fetchConfig.config.interval}
           >
             <span className="custom-control custom-switch my-auto flex-grow-0 flex-shrink-0">
@@ -186,7 +186,7 @@ const Browser = observer(
             </span>
             <input
               type="text"
-              className="form-control flex-grow-1 flex-shrink-1 mx-3"
+              className="form-control flex-grow-1 flex-shrink-1 mx-lg-3 mx-0 my-lg-0 my-2"
               placeholder="Search query"
               value={this.dataSource.searchTerm}
               autoComplete="off"
