@@ -5,7 +5,7 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
 <div class=\\"card my-1 components-managed-silence components-animation-fade-appear components-animation-fade-appear-active\\">
   <div class=\\"card-header border-bottom-0 px-3\\">
     <div class=\\"d-flex flex-row\\">
-      <div class=\\"flex-shrink-0 flex-grow-0  mr-2\\">
+      <div class=\\"flex-shrink-0 flex-grow-0 mr-2\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -21,19 +21,10 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
           </path>
         </svg>
       </div>
-      <div class=\\"flex-shrink-1 flex-grow-1\\">
-        <span class=\\"font-italic\\"
-              width=\\"0\\"
-        >
-          <span>
-          </span>
-          <span>
-            Mocked Silence
-          </span>
-          <span style=\\"position: fixed; visibility: hidden; top: 0px; left: 0px;\\">
-            …
-          </span>
-        </span>
+      <div class=\\"flex-shrink-1 flex-grow-1 mw-1p\\">
+        <div class=\\"font-italic text-truncate overflow-hidden\\">
+          Mocked Silence
+        </div>
       </div>
     </div>
     <div class=\\"pt-1 d-flex flex-row justify-content-between\\">
@@ -85,7 +76,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
 <div class=\\"card my-1 components-managed-silence components-animation-fade-appear components-animation-fade-appear-active\\">
   <div class=\\"card-header border-bottom-0 px-3\\">
     <div class=\\"d-flex flex-row\\">
-      <div class=\\"flex-shrink-0 flex-grow-0  mr-2\\">
+      <div class=\\"flex-shrink-0 flex-grow-0 mr-2\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -101,19 +92,10 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
           </path>
         </svg>
       </div>
-      <div class=\\"flex-shrink-1 flex-grow-1\\">
-        <span class=\\"font-italic\\"
-              width=\\"0\\"
-        >
-          <span>
-          </span>
-          <span>
-            Mocked Silence
-          </span>
-          <span style=\\"position: fixed; visibility: hidden; top: 0px; left: 0px;\\">
-            …
-          </span>
-        </span>
+      <div class=\\"flex-shrink-1 flex-grow-1 mw-1p\\">
+        <div class=\\"font-italic \\">
+          Mocked Silence
+        </div>
       </div>
     </div>
     <div class=\\"pt-1 d-flex flex-row justify-content-between\\">
