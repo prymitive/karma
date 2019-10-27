@@ -1,11 +1,45 @@
 import { EmptyAPIResponse } from "__mocks__/Fetch";
 import { DefaultsBase64 } from "__mocks__/Defaults";
 
-it("renders without crashing", () => {
-  jest.spyOn(document, "getElementById").mockImplementationOnce(() => {
-    return {
-      innerHTML: `<div id="defaults">${DefaultsBase64}</div>`
-    };
+const settingsElement = {
+  dataset: {
+    sentryDsn: "",
+    version: "1.2.3",
+    defaultFiltersBase64: "WyJmb289YmFyIiwiYmFyPX5iYXoiXQ=="
+  }
+};
+
+it("renders without crashing with missing defaults div", () => {
+  const root = document.createElement("div");
+  jest.spyOn(global.document, "getElementById").mockImplementation(name => {
+    return name === "settings"
+      ? settingsElement
+      : name === "defaults"
+      ? null
+      : name === "root"
+      ? root
+      : null;
+  });
+  const response = EmptyAPIResponse();
+  response.filters = [];
+  fetch.mockResponse(JSON.stringify(response));
+  const Index = require("./index.tsx");
+  expect(Index).toBeTruthy();
+  expect(root.innerHTML).toMatch(/data-filters="foo=bar bar=~baz"/);
+});
+
+it("renders without crashing with defaults present", () => {
+  const root = document.createElement("div");
+  jest.spyOn(global.document, "getElementById").mockImplementation(name => {
+    return name === "settings"
+      ? settingsElement
+      : name === "defaults"
+      ? {
+          innerHTML: DefaultsBase64
+        }
+      : name === "root"
+      ? root
+      : null;
   });
   const response = EmptyAPIResponse();
   response.filters = [];

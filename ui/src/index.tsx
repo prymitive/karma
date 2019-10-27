@@ -17,25 +17,18 @@ import {
 } from "./AppBoot";
 import { App } from "./App";
 
-let uiDefaults;
-const defaultsElement = document.getElementById("defaults");
-if (defaultsElement !== null) {
-  uiDefaults = ParseUIDefaults(defaultsElement.innerHTML);
-}
-
-const settingsElement = SettingsElement();
-
-SetupSentry(settingsElement);
+SetupSentry(SettingsElement());
 
 // global timer for updating timestamps to human readable offsets
 // this needs to be run before any <Moment/> instance
 // https://www.npmjs.com/package/react-moment#pooled-timer
 Moment.startPooledTimer();
 
-const defaultFilters = ParseDefaultFilters(settingsElement);
-
 // https://wetainment.com/testing-indexjs/
 export default ReactDOM.render(
-  <App defaultFilters={defaultFilters} uiDefaults={uiDefaults} />,
-  document.getElementById("root") || document.createElement("div")
+  <App
+    defaultFilters={ParseDefaultFilters(SettingsElement())}
+    uiDefaults={ParseUIDefaults(document.getElementById("defaults"))}
+  />,
+  document.getElementById("root")
 );
