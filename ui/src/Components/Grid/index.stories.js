@@ -73,7 +73,9 @@ const MockGroup = (groupName, alertCount, active, suppressed, unprocessed) => {
 
 storiesOf("Grid", module)
   .add("FatalError", () => {
-    return <FatalError message="Something failed" />;
+    return (
+      <FatalError message="Something failed with a veryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrapping" />
+    );
   })
   .add("UpgradeNeeded", () => {
     return <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />;
@@ -162,7 +164,8 @@ storiesOf("Grid", module)
         {
           name: "failed",
           uri: "https://am.example.com",
-          error: "Failed to connect to https://am.example.com"
+          error:
+            "Failed to connect to https://am.example.com veryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrapping"
         }
       ],
       clusters: { am: ["am1", "am2"], failed: ["failed"] }
