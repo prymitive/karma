@@ -20,7 +20,7 @@ exports[`<FatalError /> matches snapshot 1`] = `
         </path>
       </svg>
     </h1>
-    <p class=\\"lead text-white bg-secondary px-1 py-3 rounded\\">
+    <p class=\\"lead text-white bg-secondary px-1 py-3 rounded text-wrap text-break\\">
       foo bar
     </p>
   </div>

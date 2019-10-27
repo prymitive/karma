@@ -584,3 +584,27 @@ func TestValidateAuthorFromHeaders(t *testing.T) {
 		}
 	}
 }
+
+func TestSilences(t *testing.T) {
+	mockConfig()
+	for _, version := range mock.ListAllMocks() {
+		t.Logf("Validating silences.json response using mock files from Alertmanager %s", version)
+		mockAlerts(version)
+		r := ginTestEngine()
+		req := httptest.NewRequest("GET", "/silences.json?showExpired=1&sortReverse=1&searchTerm=a", nil)
+		resp := httptest.NewRecorder()
+		r.ServeHTTP(resp, req)
+		if resp.Code != http.StatusOK {
+			t.Errorf("GET /silences.json returned status %d", resp.Code)
+		}
+		ur := []models.ManagedSilence{}
+		body := resp.Body.Bytes()
+		err := json.Unmarshal(body, &ur)
+		if err != nil {
+			t.Errorf("Failed to unmarshal response: %s", err)
+		}
+		if len(ur) != 3 {
+			t.Errorf("Incorrect number of silences: got %d, wanted 3", len(ur))
+		}
+	}
+}

@@ -24,6 +24,12 @@ describe("<Modal />", () => {
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
+  it("'modal-open' class is not removed from body node after hidden modal is unmounted", () => {
+    const tree = MountedModal(false);
+    tree.unmount();
+    expect(document.body.className.split(" ")).toContain("modal-open");
+  });
+
   it("'modal-open' class is removed from body node after modal is unmounted", () => {
     const tree = MountedModal(true);
     tree.unmount();

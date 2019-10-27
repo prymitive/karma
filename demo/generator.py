@@ -263,7 +263,7 @@ class SilencedAlert(AlertGenerator):
         now = datetime.datetime.utcnow().replace(microsecond=0)
         return [
             (
-                [newMatcher("alertname", SilencedAlert.name, False)],
+                [newMatcher("alertname", self.name, False)],
                 "{}Z".format(now.isoformat()),
                 "{}Z".format((now + datetime.timedelta(
                     minutes=30)).isoformat()),
@@ -300,7 +300,7 @@ class MixedAlerts(AlertGenerator):
         now = datetime.datetime.utcnow().replace(microsecond=0)
         return [
             (
-                [newMatcher("alertname", MixedAlerts.name, False),
+                [newMatcher("alertname", self.name, False),
                  newMatcher("instance", "server(1|3|5|7)", True)],
                 "{}Z".format(now.isoformat()),
                 "{}Z".format((now + datetime.timedelta(
@@ -387,8 +387,7 @@ class SilencedAlertWithJiraLink(AlertGenerator):
         now = datetime.datetime.utcnow().replace(microsecond=0)
         return [
             (
-                [newMatcher(
-                    "alertname", SilencedAlertWithJiraLink.name, False)],
+                [newMatcher("alertname", self.name, False)],
                 "{}Z".format(now.isoformat()),
                 "{}Z".format((now + datetime.timedelta(
                     minutes=30)).isoformat()),
@@ -410,6 +409,28 @@ class PaginationTest(AlertGenerator):
                              region="US"),
                 self._annotations(dashboard="https://example.com")
             ) for i in xrange(0, 1000)
+        ]
+
+    def silences(self):
+        now = datetime.datetime.utcnow().replace(microsecond=0)
+        return [
+            (
+                [
+                    newMatcher("alertname", self.name, False),
+                    newMatcher("instance", "server{}".format(i), True)
+                ],
+                "{}Z".format(now.isoformat()),
+                "{}Z".format((now + datetime.timedelta(
+                    minutes=10)).isoformat()),
+                "me@example.com",
+                "DEVOPS-123 Pagination Test alert silenced with a long text "
+                "to see if it gets truncated properly. It only matches first "
+                "20 alerts. "
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed "
+                "do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+                " Ut enim ad minim veniam, quis nostrud exercitation ullamco "
+                "laboris nisi ut aliquip ex ea commodo consequat. "
+            ) for i in xrange(0, 20)
         ]
 
 

@@ -181,7 +181,7 @@ const SilenceSubmitProgress = observer(
             {cluster}
           </div>
           <div
-            className={`p-2 flex-fill flex-grow-1 flex-shrink-1 rounded ${
+            className={`p-2 flex-fill flex-grow-1 flex-shrink-1 rounded text-center ${
               this.submitState.value === SubmitState.Failed ? "bg-light" : ""
             }`}
           >

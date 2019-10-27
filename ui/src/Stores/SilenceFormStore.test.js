@@ -9,7 +9,8 @@ import {
 import {
   SilenceFormStore,
   SilenceFormStage,
-  NewEmptyMatcher
+  NewEmptyMatcher,
+  SilenceTabNames
 } from "./SilenceFormStore";
 
 let store;
@@ -446,5 +447,17 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
     store.data.decEnd(1);
     const diffMS = store.data.endsAt.diff(endsAt);
     expect(diffMS).toBe(-1 * 60 * 1000);
+  });
+});
+
+describe("SilenceFormStore.tab", () => {
+  it("current tab is Editor by default", () => {
+    expect(store.tab.current).toBe(SilenceTabNames.Editor);
+  });
+
+  it("setTab() sets the current tab", () => {
+    expect(store.tab.current).toBe(SilenceTabNames.Editor);
+    store.tab.setTab(SilenceTabNames.Browser);
+    expect(store.tab.current).toBe(SilenceTabNames.Browser);
   });
 });

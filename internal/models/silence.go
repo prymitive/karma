@@ -24,3 +24,10 @@ type Silence struct {
 	JiraID  string `json:"jiraID"`
 	JiraURL string `json:"jiraURL"`
 }
+
+// ManagedSilence is a standalone silence detached from any alert
+type ManagedSilence struct {
+	Cluster   string  `json:"cluster"`
+	IsExpired bool    `json:"isExpired"`
+	Silence   Silence `json:"silence"`
+}

@@ -3,18 +3,36 @@ import React from "react";
 import { mount } from "enzyme";
 
 import { EmptyAPIResponse } from "__mocks__/Fetch";
-import { MockAlertGroup, MockAlert, MockAlertmanager } from "__mocks__/Alerts";
+import { MockAlertGroup, MockAlert, MockSilence } from "__mocks__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { DeleteSilence, DeleteSilenceModalContent } from "./DeleteSilence";
 
-let alertmanager;
 let alertStore;
+let silenceFormStore;
+let cluster;
+let silence;
 
 beforeEach(() => {
-  alertmanager = MockAlertmanager();
   alertStore = new AlertStore([]);
-  alertStore.data.upstreams.instances[0] = alertmanager;
+  silenceFormStore = new SilenceFormStore();
+  cluster = "am";
+  silence = MockSilence();
   fetch.mockResponseOnce(JSON.stringify(MockAPIResponse()));
+
+  alertStore.data.upstreams = {
+    instances: [
+      {
+        name: "am1",
+        cluster: "am",
+        uri: "http://localhost:9093",
+        error: "",
+        version: "0.15.3",
+        headers: {}
+      }
+    ],
+    clusters: { am: ["am1"] }
+  };
 
   jest.restoreAllMocks();
 });
@@ -44,8 +62,9 @@ const MountedDeleteSilence = () => {
   return mount(
     <DeleteSilence
       alertStore={alertStore}
-      alertmanager={alertmanager}
-      silenceID="123456789"
+      silenceFormStore={silenceFormStore}
+      cluster={cluster}
+      silence={silence}
     />
   );
 };
@@ -54,8 +73,9 @@ const MountedDeleteSilenceModalContent = () => {
   return mount(
     <DeleteSilenceModalContent
       alertStore={alertStore}
-      alertmanager={alertmanager}
-      silenceID="123456789"
+      silenceFormStore={silenceFormStore}
+      cluster={cluster}
+      silence={silence}
       onHide={MockOnHide}
     />
   );
@@ -81,7 +101,7 @@ describe("<DeleteSilence />", () => {
   it("opens modal on click", () => {
     const tree = MountedDeleteSilence();
     tree
-      .find(".badge")
+      .find("button")
       .at(0)
       .simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(1);
@@ -89,6 +109,19 @@ describe("<DeleteSilence />", () => {
 });
 
 describe("<DeleteSilenceModalContent />", () => {
+  it("blurs silence form on mount", () => {
+    expect(silenceFormStore.toggle.blurred).toBe(false);
+    MountedDeleteSilenceModalContent();
+    expect(silenceFormStore.toggle.blurred).toBe(true);
+  });
+
+  it("unblurs silence form on unmount", () => {
+    const tree = MountedDeleteSilenceModalContent();
+    expect(silenceFormStore.toggle.blurred).toBe(true);
+    tree.unmount();
+    expect(silenceFormStore.toggle.blurred).toBe(false);
+  });
+
   it("renders LabelSetList on mount", () => {
     const tree = MountedDeleteSilenceModalContent();
     expect(tree.find("LabelSetList")).toHaveLength(1);
@@ -125,25 +158,27 @@ describe("<DeleteSilenceModalContent />", () => {
   it("[v1] sends a DELETE request after clicking 'Confirm' button", async () => {
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
-      "http://localhost/api/v1/silence/123456789"
+      "http://localhost:9093/api/v1/silence/04d37636-2350-4878-b382-e0b50353230f"
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
   });
 
   it("[v2] sends a DELETE request after clicking 'Confirm' button", async () => {
-    alertmanager.version = "0.16.2";
+    alertStore.data.upstreams.instances[0].version = "0.16.2";
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
-      "http://localhost/api/v2/silence/123456789"
+      "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f"
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
   });
 
   it("[v1] sends headers from alertmanager config", async () => {
-    alertmanager.headers = { Authorization: "Basic ***" };
+    alertStore.data.upstreams.instances[0].headers = {
+      Authorization: "Basic ***"
+    };
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
-      "http://localhost/api/v1/silence/123456789"
+      "http://localhost:9093/api/v1/silence/04d37636-2350-4878-b382-e0b50353230f"
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({
       credentials: "include",
@@ -153,11 +188,13 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("[v1] sends headers from alertmanager config", async () => {
-    alertmanager.headers = { Authorization: "Basic ***" };
-    alertmanager.version = "0.16.2";
+    alertStore.data.upstreams.instances[0].headers = {
+      Authorization: "Basic ***"
+    };
+    alertStore.data.upstreams.instances[0].version = "0.16.2";
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
-      "http://localhost/api/v2/silence/123456789"
+      "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f"
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({
       credentials: "include",
@@ -169,7 +206,7 @@ describe("<DeleteSilenceModalContent />", () => {
   it("'Confirm' button is no-op after successful DELETE", async () => {
     const tree = await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
-      "http://localhost/api/v1/silence/123456789"
+      "http://localhost:9093/api/v1/silence/04d37636-2350-4878-b382-e0b50353230f"
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
 
@@ -220,7 +257,7 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("[v2] renders ErrorMessage on failed fetch request", async () => {
-    alertmanager.version = "0.16.2";
+    alertStore.data.upstreams.instances[0].version = "0.16.2";
     const tree = MountedDeleteSilenceModalContent();
     await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
 

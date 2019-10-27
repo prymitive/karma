@@ -64,6 +64,7 @@ const MountedGroupFooter = () => {
         group={group}
         alertmanagers={["default"]}
         afterUpdate={MockAfterUpdate}
+        alertStore={alertStore}
         silenceFormStore={silenceFormStore}
       />
     </Provider>
@@ -81,8 +82,40 @@ describe("<GroupFooter />", () => {
       group.alerts[id].alertmanager[0].silencedBy = ["123456789"];
     }
     group.shared.silences = { default: ["123456789"] };
+    alertStore.data.silences = {
+      default: {
+        "123456789": MockSilence()
+      }
+    };
+
     const tree = MountedGroupFooter().find("GroupFooter");
-    expect(tree.find("Silence")).toHaveLength(1);
+    expect(tree.find("ManagedSilence")).toHaveLength(1);
+  });
+
+  it("render fallback silence if not found in alertStore", () => {
+    for (const id of Object.keys(group.alerts)) {
+      group.alerts[id].alertmanager[0].silencedBy = ["123456789"];
+    }
+    group.shared.silences = { default: ["123456789"] };
+    alertStore.data.silences = {
+      default: {}
+    };
+
+    const tree = MountedGroupFooter().find("GroupFooter");
+    expect(tree.find("FallbackSilenceDesciption")).toHaveLength(1);
+  });
+
+  it("render fallback silence if cluster not found in alertStore", () => {
+    for (const id of Object.keys(group.alerts)) {
+      group.alerts[id].alertmanager[0].silencedBy = ["123456789"];
+    }
+    group.shared.silences = { default: ["123456789"] };
+    alertStore.data.silences = {
+      foo: {}
+    };
+
+    const tree = MountedGroupFooter().find("GroupFooter");
+    expect(tree.find("FallbackSilenceDesciption")).toHaveLength(1);
   });
 
   it("mathes snapshot when silence is rendered", () => {

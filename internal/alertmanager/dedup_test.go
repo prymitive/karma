@@ -90,6 +90,19 @@ func TestDedupAlertsWithoutLabels(t *testing.T) {
 	}
 }
 
+func TestDedupSilences(t *testing.T) {
+	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	config.Config.Read()
+	if err := pullAlerts(); err != nil {
+		t.Error(err)
+	}
+	silences := alertmanager.DedupSilences()
+	expected := 72
+	if len(silences) != expected {
+		t.Errorf("Expected %d silences keys, got %d", expected, len(silences))
+	}
+}
+
 func TestDedupAutocomplete(t *testing.T) {
 	if err := pullAlerts(); err != nil {
 		t.Error(err)
@@ -118,6 +131,32 @@ func TestDedupColors(t *testing.T) {
 	expected := 3
 	if len(colors) != expected {
 		t.Errorf("Expected %d color keys, got %d", expected, len(colors))
+	}
+}
+
+func TestDedupKnownLabels(t *testing.T) {
+	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	config.Config.Read()
+	if err := pullAlerts(); err != nil {
+		t.Error(err)
+	}
+	labels := alertmanager.DedupKnownLabels()
+	expected := 6
+	if len(labels) != expected {
+		t.Errorf("Expected %d knownLabels keys, got %d", expected, len(labels))
+	}
+}
+
+func TestDedupKnownLabelValues(t *testing.T) {
+	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	config.Config.Read()
+	if err := pullAlerts(); err != nil {
+		t.Error(err)
+	}
+	values := alertmanager.DedupKnownLabelValues("alertname")
+	expected := 4
+	if len(values) != expected {
+		t.Errorf("Expected %d knownLabelValues keys, got %d", expected, len(values))
 	}
 }
 

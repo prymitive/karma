@@ -12,8 +12,9 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclama
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 
-import { APIAlertmanagerUpstream } from "Models/API";
+import { APISilence } from "Models/API";
 import { AlertStore, FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
 import { FetchWithCredentials } from "Common/Fetch";
 import { Modal } from "Components/Modal";
@@ -62,9 +63,10 @@ const DeleteSilenceModalContent = observer(
   class DeleteSilenceModalContent extends Component {
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      alertmanager: APIAlertmanagerUpstream.isRequired,
-      silenceID: PropTypes.string.isRequired,
-      onHide: PropTypes.func.isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+      cluster: PropTypes.string.isRequired,
+      silence: APISilence.isRequired,
+      onHide: PropTypes.func
     };
 
     previewState = observable(
@@ -108,6 +110,11 @@ const DeleteSilenceModalContent = observer(
       }
     );
 
+    getAlertmanager = () =>
+      this.props.alertStore.data.upstreams.instances
+        .filter(u => u.cluster === this.props.cluster)
+        .slice(0, 1)[0];
+
     parseAlertmanagerResponse = response => {
       /*
       {"status": "success"}
@@ -129,12 +136,12 @@ const DeleteSilenceModalContent = observer(
     };
 
     onFetchPreview = () => {
-      const { silenceID } = this.props;
+      const { silence } = this.props;
 
       const alertsURI =
         FormatBackendURI("alerts.json?") +
         FormatAlertsQ([
-          FormatQuery(StaticLabels.SilenceID, QueryOperators.Equal, silenceID)
+          FormatQuery(StaticLabels.SilenceID, QueryOperators.Equal, silence.id)
         ]);
 
       this.previewState.fetch = FetchWithCredentials(alertsURI, {})
@@ -152,7 +159,7 @@ const DeleteSilenceModalContent = observer(
     };
 
     onDelete = () => {
-      const { alertmanager, silenceID } = this.props;
+      const { silence } = this.props;
 
       // if it's already deleted then do nothing
       if (this.deleteState.done && this.deleteState.error === null) return;
@@ -160,11 +167,13 @@ const DeleteSilenceModalContent = observer(
       // reset state so we get a spinner
       this.deleteState.reset();
 
+      const alertmanager = this.getAlertmanager();
+
       const isOpenAPI = semver.satisfies(alertmanager.version, ">=0.16.0");
 
       const uri = isOpenAPI
-        ? `${alertmanager.uri}/api/v2/silence/${silenceID}`
-        : `${alertmanager.uri}/api/v1/silence/${silenceID}`;
+        ? `${alertmanager.uri}/api/v2/silence/${silence.id}`
+        : `${alertmanager.uri}/api/v1/silence/${silence.id}`;
 
       this.deleteState.fetch = FetchWithCredentials(uri, {
         method: "DELETE",
@@ -193,7 +202,14 @@ const DeleteSilenceModalContent = observer(
     };
 
     componentDidMount() {
+      const { silenceFormStore } = this.props;
+      silenceFormStore.toggle.setBlur(true);
       this.onFetchPreview();
+    }
+
+    componentWillUnmount() {
+      const { silenceFormStore } = this.props;
+      silenceFormStore.toggle.setBlur(false);
     }
 
     render() {
@@ -256,8 +272,10 @@ const DeleteSilence = observer(
   class DeleteSilence extends Component {
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      alertmanager: APIAlertmanagerUpstream.isRequired,
-      silenceID: PropTypes.string.isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+      cluster: PropTypes.string.isRequired,
+      silence: APISilence.isRequired,
+      onModalExit: PropTypes.func
     };
 
     toggle = observable(
@@ -271,22 +289,37 @@ const DeleteSilence = observer(
     );
 
     render() {
-      const { alertStore, alertmanager, silenceID } = this.props;
+      const {
+        alertStore,
+        silenceFormStore,
+        cluster,
+        silence,
+        onModalExit
+      } = this.props;
 
       return (
         <React.Fragment>
-          <span
-            className={`badge badge-danger cursor-pointer components-label components-label-with-hover`}
+          <button
+            className="btn btn-outline-danger btn-sm"
             onClick={this.toggle.toggle}
           >
-            <FontAwesomeIcon className="mr-1" icon={faTrash} />
+            <FontAwesomeIcon
+              className="mr-1 d-none d-sm-inline-block"
+              icon={faTrash}
+            />
             Delete
-          </span>
-          <Modal isOpen={this.toggle.visible} toggleOpen={this.toggle.toggle}>
+          </button>
+          <Modal
+            isOpen={this.toggle.visible}
+            isUpper={true}
+            toggleOpen={this.toggle.toggle}
+            onExited={onModalExit}
+          >
             <DeleteSilenceModalContent
               alertStore={alertStore}
-              alertmanager={alertmanager}
-              silenceID={silenceID}
+              silenceFormStore={silenceFormStore}
+              cluster={cluster}
+              silence={silence}
               onHide={this.toggle.toggle}
             />
           </Modal>

@@ -209,7 +209,6 @@ class AlertStore {
       },
       setFetching() {
         this.value = AlertStoreStatuses.Fetching;
-        this.error = null;
       },
       setProcessing() {
         this.value = AlertStoreStatuses.Processing;

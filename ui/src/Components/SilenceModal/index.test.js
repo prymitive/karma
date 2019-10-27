@@ -127,4 +127,11 @@ describe("<SilenceModal />", () => {
     tree.unmount();
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
+
+  it("'modal-open' class is preserved on body node after remountModal is called", () => {
+    silenceFormStore.toggle.visible = true;
+    const tree = MountedSilenceModal();
+    tree.instance().remountModal();
+    expect(document.body.className.split(" ")).toContain("modal-open");
+  });
 });

@@ -1,6 +1,8 @@
 // bundled font assets, so we don't need to talk to Google Fonts API
 @import "src/Fonts.scss";
 
+$lead-font-weight: 400;
+
 // custom "dark" color, little less dark than flatly
 $blue: #455a64;
 // body background color should be same as navbar, so it blends into one
@@ -16,6 +18,15 @@ $dark: #3b4247;
 
 // fix active tab color, for some reason it ends up with $primary as bg color
 $nav-tabs-link-active-bg: #fff;
+
+// pagination tweaks
+$pagination-color: #fff;
+$pagination-bg: #b4bcc2; // gray-500
+$pagination-hover-color: #fff;
+$pagination-hover-bg: #7b8a8b; // gray-700
+$pagination-active-bg: $pagination-hover-bg;
+$pagination-disabled-color: #fff;
+$pagination-disabled-bg: #dee2e6; // gray-300
 
 @import "~bootswatch/dist/flatly/variables";
 @import "~bootstrap/scss/bootstrap";

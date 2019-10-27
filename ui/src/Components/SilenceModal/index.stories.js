@@ -1,13 +1,17 @@
 import React from "react";
 
+import fetchMock from "fetch-mock";
+
 import { storiesOf } from "@storybook/react";
 
+import { MockSilence } from "__mocks__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import {
   SilenceFormStore,
   NewEmptyMatcher,
-  MatcherValueToObject
+  MatcherValueToObject,
+  SilenceTabNames
 } from "Stores/SilenceFormStore";
 import { SilenceModalContent } from "./SilenceModalContent";
 
@@ -52,6 +56,8 @@ storiesOf("SilenceModal", module)
     silenceFormStore.data.comment = "fake silence";
     silenceFormStore.data.resetStartEnd();
 
+    silenceFormStore.tab.current = SilenceTabNames.Editor;
+
     return (
       <SilenceModalContent
         alertStore={alertStore}
@@ -59,6 +65,64 @@ storiesOf("SilenceModal", module)
         settingsStore={settingsStore}
         onHide={() => {}}
         previewOpen={true}
+        onDeleteModalClose={() => {}}
+      />
+    );
+  })
+  .add("Browser", () => {
+    const alertStore = new AlertStore([]);
+    const settingsStore = new Settings();
+    const silenceFormStore = new SilenceFormStore();
+
+    silenceFormStore.tab.current = SilenceTabNames.Browser;
+
+    alertStore.data.upstreams = {
+      instances: [
+        {
+          name: "am1",
+          cluster: "am",
+          clusterMembers: ["am1"],
+          uri: "http://localhost:9093",
+          publicURI: "http://example.com",
+          error: "",
+          version: "0.15.3",
+          headers: {}
+        }
+      ],
+      clusters: { am: ["am1"] }
+    };
+
+    let silences = [];
+    for (var index = 1; index <= 18; index++) {
+      const silence = MockSilence();
+      silence.startsAt = "2018-08-14T16:00:00Z";
+      silence.endsAt = `2018-08-14T18:${index < 10 ? "0" + index : index}:00Z`;
+      silence.matchers.push({
+        name: "thisIsAveryLongNameToTestMatcherWrapping",
+        value: "valueIsAlsoAbitLong",
+        isRegex: false
+      });
+      silence.matchers.push({
+        name: "alertname",
+        value: "(foo1|foo2|foo3|foo4)",
+        isRegex: true
+      });
+      silence.id = `silence${index}`;
+      silences.push({
+        cluster: "am",
+        silence: silence
+      });
+    }
+
+    fetchMock.restore().mock("*", silences);
+
+    return (
+      <SilenceModalContent
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        settingsStore={settingsStore}
+        onHide={() => {}}
+        onDeleteModalClose={() => {}}
       />
     );
   });

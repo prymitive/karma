@@ -2,6 +2,7 @@ package alertmanager
 
 import (
 	"sort"
+	"time"
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
@@ -92,6 +93,40 @@ func DedupAlerts() []models.AlertGroup {
 	}
 
 	return dedupedGroups
+}
+
+// DedupKnownLabels returns a deduplicated slice of all known label names
+func DedupSilences() []models.ManagedSilence {
+	silenceByCluster := map[string]map[string]models.Silence{}
+	upstreams := GetAlertmanagers()
+
+	for _, am := range upstreams {
+		for id, silence := range am.Silences() {
+			cluster := am.ClusterID()
+
+			if _, found := silenceByCluster[cluster]; !found {
+				silenceByCluster[cluster] = map[string]models.Silence{}
+			}
+
+			if _, ok := silenceByCluster[cluster][id]; !ok {
+				silenceByCluster[cluster][id] = silence
+			}
+		}
+	}
+
+	now := time.Now()
+	dedupedSilences := []models.ManagedSilence{}
+	for cluster, silenceMap := range silenceByCluster {
+		for _, silence := range silenceMap {
+			managedSilence := models.ManagedSilence{
+				Cluster:   cluster,
+				IsExpired: silence.EndsAt.Before(now),
+				Silence:   silence,
+			}
+			dedupedSilences = append(dedupedSilences, managedSilence)
+		}
+	}
+	return dedupedSilences
 }
 
 // DedupColors returns a color map merged from all Alertmanager upstream color

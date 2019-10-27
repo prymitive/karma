@@ -7,8 +7,10 @@ import { observable, action } from "mobx";
 import hash from "object-hash";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft } from "@fortawesome/free-solid-svg-icons/faChevronLeft";
-import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
+import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
+import { faAngleDoubleLeft } from "@fortawesome/free-solid-svg-icons/faAngleDoubleLeft";
+import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons/faAngleDoubleRight";
 
 import Pagination from "react-js-pagination";
 
@@ -93,12 +95,14 @@ const LabelSetList = observer(
                 totalItemsCount={labelsList.length}
                 pageRangeDisplayed={5}
                 onChange={this.pagination.onPageChange}
-                hideFirstLastPages
+                hideFirstLastPages={labelsList.length / this.maxPerPage < 10}
                 innerClass="pagination justify-content-center"
                 itemClass="page-item"
                 linkClass="page-link"
-                prevPageText={<FontAwesomeIcon icon={faChevronLeft} />}
-                nextPageText={<FontAwesomeIcon icon={faChevronRight} />}
+                prevPageText={<FontAwesomeIcon icon={faAngleLeft} />}
+                nextPageText={<FontAwesomeIcon icon={faAngleRight} />}
+                firstPageText={<FontAwesomeIcon icon={faAngleDoubleLeft} />}
+                lastPageText={<FontAwesomeIcon icon={faAngleDoubleRight} />}
               />
             </div>
           ) : null}

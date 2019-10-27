@@ -1,0 +1,30 @@
+@import "src/App.scss";
+
+.components-tab-inactive {
+  &:hover {
+    color: $white;
+    background-color: $secondary;
+  }
+}
+
+.modal-upper {
+  &.modal-dialog {
+    padding-top: 10px;
+  }
+}
+
+.modal-content-blur {
+  filter: blur(2px);
+}
+
+@include media-breakpoint-up(lg) {
+  .modal-lg.modal-upper {
+    max-width: $modal-lg + 10;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .modal-xl.modal-upper {
+    max-width: $modal-xl + 10;
+  }
+}

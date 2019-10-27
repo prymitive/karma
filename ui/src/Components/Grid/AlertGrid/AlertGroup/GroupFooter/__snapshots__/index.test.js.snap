@@ -152,7 +152,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
     <div class
          style=\\"display: inline-block; max-width: 100%;\\"
          data-tooltipped
-         aria-describedby=\\"tippy-tooltip-13\\"
+         aria-describedby=\\"tippy-tooltip-25\\"
          data-original-title=\\"Click the icon to hide annotation value\\"
     >
       <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
@@ -183,7 +183,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
     <div class
          style=\\"display: inline-block; max-width: 100%;\\"
          data-tooltipped
-         aria-describedby=\\"tippy-tooltip-14\\"
+         aria-describedby=\\"tippy-tooltip-26\\"
          data-original-title=\\"Click to show annotation value\\"
     >
       <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
@@ -208,7 +208,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
   <div class
        style=\\"display: inline-block; max-width: 100%;\\"
        data-tooltipped
-       aria-describedby=\\"tippy-tooltip-15\\"
+       aria-describedby=\\"tippy-tooltip-27\\"
        data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
   >
     <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
@@ -223,7 +223,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
   <div class
        style=\\"display: inline-block; max-width: 100%;\\"
        data-tooltipped
-       aria-describedby=\\"tippy-tooltip-16\\"
+       aria-describedby=\\"tippy-tooltip-28\\"
        data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
   >
     <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
@@ -238,7 +238,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
   <div class
        style=\\"display: inline-block; max-width: 100%;\\"
        data-tooltipped
-       aria-describedby=\\"tippy-tooltip-17\\"
+       aria-describedby=\\"tippy-tooltip-29\\"
        data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
   >
     <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
@@ -253,7 +253,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
   <div class
        style=\\"display: inline-block; max-width: 100%;\\"
        data-tooltipped
-       aria-describedby=\\"tippy-tooltip-18\\"
+       aria-describedby=\\"tippy-tooltip-30\\"
        data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
   >
     <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
@@ -286,55 +286,74 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
     </svg>
     link
   </a>
-  <div class=\\"components-grid-alertgrid-alertgroup-shared-silence rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-success \\">
-    <div class=\\"card mt-1 border-0 p-1 bg-transparent\\">
-      <div class=\\"card-text mb-0\\">
-        <span class=\\"text-muted my-1\\">
-          <span width=\\"0\\">
-            <span>
-            </span>
-            <span>
-              Mocked Silence
-            </span>
-            <span style=\\"position: fixed; visibility: hidden; top: 0px; left: 0px;\\">
-              …
-            </span>
-          </span>
-          <span class=\\"blockquote-footer pt-1\\">
-            <span class=\\"float-right cursor-pointer\\">
-              <div class
-                   style=\\"display: inline-block; max-width: 100%;\\"
-                   data-tooltipped
-                   aria-describedby=\\"tippy-tooltip-19\\"
-                   data-original-title=\\"Toggle silence details\\"
-              >
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"chevron-up\\"
-                     class=\\"svg-inline--fa fa-chevron-up fa-w-14 \\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 448 512\\"
-                >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z\\"
+  <div class=\\"components-grid-alertgrid-alertgroup-shared-silence rounded-0 border-0\\">
+    <div class=\\"card my-1 components-managed-silence components-animation-fade-appear components-animation-fade-appear-active\\">
+      <div class=\\"card-header border-bottom-0\\">
+        <div class=\\"d-flex flex-row justify-content-between mw-100\\">
+          <div class=\\"flex-grow-1 flex-shrink-1 mr-2\\">
+            <div class=\\"my-1\\">
+              <div class=\\"d-flex flex-row\\">
+                <div class=\\"flex-shrink-0 flex-grow-0  mr-2\\">
+                  <svg aria-hidden=\\"true\\"
+                       focusable=\\"false\\"
+                       data-prefix=\\"fas\\"
+                       data-icon=\\"bell-slash\\"
+                       class=\\"svg-inline--fa fa-bell-slash fa-w-20 text-muted\\"
+                       role=\\"img\\"
+                       xmlns=\\"http://www.w3.org/2000/svg\\"
+                       viewbox=\\"0 0 640 512\\"
                   >
-                  </path>
-                </svg>
+                    <path fill=\\"currentColor\\"
+                          d=\\"M633.82 458.1l-90.62-70.05c.19-1.38.8-2.66.8-4.06.05-7.55-2.61-15.27-8.61-21.71-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84c-40.33 8.38-74.66 31.07-97.59 62.57L45.47 3.37C38.49-2.05 28.43-.8 23.01 6.18L3.37 31.45C-2.05 38.42-.8 48.47 6.18 53.9l588.35 454.73c6.98 5.43 17.03 4.17 22.46-2.81l19.64-25.27c5.42-6.97 4.17-17.02-2.81-22.45zM157.23 251.54c-8.61 67.96-36.41 93.33-52.62 110.75-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h241.92L157.23 251.54zM320 512c35.32 0 63.97-28.65 63.97-64H256.03c0 35.35 28.65 64 63.97 64z\\"
+                    >
+                    </path>
+                  </svg>
+                </div>
+                <div class=\\"flex-shrink-1 flex-grow-1\\">
+                  <span class=\\"font-italic\\"
+                        width=\\"0\\"
+                  >
+                    <span>
+                    </span>
+                    <span>
+                      Mocked Silence
+                    </span>
+                    <span style=\\"position: fixed; visibility: hidden; top: 0px; left: 0px;\\">
+                      …
+                    </span>
+                  </span>
+                  <span class=\\"blockquote-footer pt-1\\">
+                    <cite class=\\"components-grid-alertgroup-silences mr-2\\">
+                      me@example.com
+                    </cite>
+                    <span class=\\"badge badge-danger align-text-bottom p-1\\">
+                      Expired
+                      <time datetime=\\"946688400000\\">
+                        14 hours ago
+                      </time>
+                    </span>
+                  </span>
+                </div>
               </div>
-            </span>
-            <cite class=\\"components-grid-alertgroup-silences mr-2\\">
-              me@example.com
-            </cite>
-            <span class=\\"badge badge-danger align-bottom\\">
-              Expired
-              <time datetime=\\"946688400000\\">
-                14 hours ago
-              </time>
-            </span>
-          </span>
-        </span>
+            </div>
+          </div>
+          <div class=\\"flex-grow-0 flex-shrink-0 mt-auto mb-0\\">
+            <svg aria-hidden=\\"true\\"
+                 focusable=\\"false\\"
+                 data-prefix=\\"fas\\"
+                 data-icon=\\"chevron-up\\"
+                 class=\\"svg-inline--fa fa-chevron-up fa-w-14 text-muted cursor-pointer\\"
+                 role=\\"img\\"
+                 xmlns=\\"http://www.w3.org/2000/svg\\"
+                 viewbox=\\"0 0 448 512\\"
+            >
+              <path fill=\\"currentColor\\"
+                    d=\\"M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z\\"
+              >
+              </path>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   </div>
