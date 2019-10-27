@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"sort"
 	"testing"
 	"time"
 
@@ -19,6 +20,7 @@ import (
 	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/go-cmp/cmp"
 	"github.com/jarcoal/httpmock"
 )
 
@@ -586,25 +588,125 @@ func TestValidateAuthorFromHeaders(t *testing.T) {
 }
 
 func TestSilences(t *testing.T) {
+	type silenceTestCase struct {
+		searchTerm  string
+		sortReverse string
+		showExpired string
+		results     []string
+	}
+
+	silenceServer7 := "Silenced server7"
+	silenceHostDown := "Silenced Host_Down alerts in the dev cluster"
+	silenceInstance := "Silenced instance"
+
+	silenceTestCases := []silenceTestCase{
+		{
+			searchTerm:  "",
+			sortReverse: "",
+			showExpired: "",
+			results:     []string{silenceHostDown, silenceInstance, silenceServer7},
+		},
+		{
+			searchTerm:  "",
+			sortReverse: "1",
+			showExpired: "1",
+			results:     []string{silenceHostDown, silenceInstance, silenceServer7},
+		},
+		{
+			searchTerm:  "john",
+			sortReverse: "",
+			showExpired: "",
+			results:     []string{silenceHostDown, silenceInstance, silenceServer7},
+		},
+		{
+			searchTerm:  "john@example.com",
+			sortReverse: "",
+			showExpired: "",
+			results:     []string{silenceHostDown, silenceInstance, silenceServer7},
+		},
+		{
+			searchTerm:  "instance=web",
+			sortReverse: "0",
+			showExpired: "0",
+			results:     []string{silenceInstance},
+		},
+		{
+			searchTerm:  "instance=web1",
+			sortReverse: "1",
+			showExpired: "0",
+			results:     []string{silenceInstance},
+		},
+		{
+			searchTerm:  "instance=\"web1\"",
+			sortReverse: "0",
+			showExpired: "0",
+			results:     []string{silenceInstance},
+		},
+		{
+			searchTerm:  "instance=\"web",
+			sortReverse: "0",
+			showExpired: "0",
+			results:     []string{},
+		},
+		{
+			searchTerm:  "instance=web123",
+			sortReverse: "0",
+			showExpired: "1",
+			results:     []string{},
+		},
+		{
+			searchTerm:  "alertname=Host_Down",
+			sortReverse: "0",
+			showExpired: "1",
+			results:     []string{silenceHostDown},
+		},
+		{
+			searchTerm:  "instance",
+			sortReverse: "0",
+			showExpired: "1",
+			results:     []string{silenceInstance, silenceServer7},
+		},
+		{
+			searchTerm:  "nstance",
+			sortReverse: "0",
+			showExpired: "1",
+			results:     []string{silenceInstance, silenceServer7},
+		},
+		{
+			searchTerm:  "alertname=~Host_Down",
+			sortReverse: "0",
+			showExpired: "1",
+			results:     []string{},
+		},
+	}
+
 	mockConfig()
-	for _, version := range mock.ListAllMocks() {
-		t.Logf("Validating silences.json response using mock files from Alertmanager %s", version)
-		mockAlerts(version)
-		r := ginTestEngine()
-		req := httptest.NewRequest("GET", "/silences.json?showExpired=1&sortReverse=1&searchTerm=a", nil)
-		resp := httptest.NewRecorder()
-		r.ServeHTTP(resp, req)
-		if resp.Code != http.StatusOK {
-			t.Errorf("GET /silences.json returned status %d", resp.Code)
-		}
-		ur := []models.ManagedSilence{}
-		body := resp.Body.Bytes()
-		err := json.Unmarshal(body, &ur)
-		if err != nil {
-			t.Errorf("Failed to unmarshal response: %s", err)
-		}
-		if len(ur) != 3 {
-			t.Errorf("Incorrect number of silences: got %d, wanted 3", len(ur))
+	for _, testCase := range silenceTestCases {
+		for _, version := range mock.ListAllMocks() {
+			t.Logf("Validating silences.json response using mock files from Alertmanager %s", version)
+			mockAlerts(version)
+			r := ginTestEngine()
+			uri := fmt.Sprintf("/silences.json?showExpired=%s&sortReverse=%s&searchTerm=%s", testCase.showExpired, testCase.sortReverse, testCase.searchTerm)
+			req := httptest.NewRequest("GET", uri, nil)
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != http.StatusOK {
+				t.Errorf("GET /silences.json returned status %d", resp.Code)
+			}
+			ur := []models.ManagedSilence{}
+			body := resp.Body.Bytes()
+			err := json.Unmarshal(body, &ur)
+			if err != nil {
+				t.Errorf("Failed to unmarshal response: %s", err)
+			}
+			results := []string{}
+			for _, silence := range ur {
+				results = append(results, silence.Silence.Comment)
+			}
+			sort.Strings(results) // can't rely on API order since it's sorted based on timestamps, resort
+			if diff := cmp.Diff(testCase.results, results); diff != "" {
+				t.Errorf("Wrong silences returned (-want +got):\n%s", diff)
+			}
 		}
 	}
 }
