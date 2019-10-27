@@ -203,6 +203,29 @@ describe("<Browser />", () => {
     expect(tree.find("ManagedSilence")).toHaveLength(1);
   });
 
+  it("resetes pagination to last page on truncation", async () => {
+    fetch.mockResponseOnce(JSON.stringify(MockSilenceList(11)));
+    const tree = MountedBrowser();
+    const instance = tree.instance();
+    await expect(instance.dataSource.fetch).resolves.toBeUndefined();
+    tree.update();
+
+    expect(instance.pagination.activePage).toBe(1);
+    const pageLink = tree.find(".page-link").at(3);
+    pageLink.simulate("click");
+    tree.update();
+    expect(tree.find("ManagedSilence")).toHaveLength(1);
+    expect(instance.pagination.activePage).toBe(3);
+
+    fetch.mockResponseOnce(JSON.stringify(MockSilenceList(7)));
+    instance.onFetch();
+    await expect(instance.dataSource.fetch).resolves.toBeUndefined();
+    tree.update();
+
+    expect(tree.find("ManagedSilence")).toHaveLength(2);
+    expect(instance.pagination.activePage).toBe(2);
+  });
+
   it("renders error after failed fetch", async () => {
     jest.spyOn(console, "trace").mockImplementation(() => {});
     fetch.mockReject("fake failure");

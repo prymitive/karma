@@ -110,6 +110,10 @@ const Browser = observer(
           this.dataSource.silences = result;
           this.dataSource.setDone();
           this.dataSource.setError(null);
+          this.pagination.resetIfNeeded(
+            this.dataSource.silences.length,
+            this.maxPerPage
+          );
         })
         .catch(err => {
           console.trace(err);
@@ -129,10 +133,17 @@ const Browser = observer(
         activePage: 1,
         onPageChange(pageNumber) {
           this.activePage = pageNumber;
+        },
+        resetIfNeeded(totalItemsCount, maxPerPage) {
+          const totalPages = Math.ceil(totalItemsCount / maxPerPage);
+          if (this.activePage > totalPages) {
+            this.activePage = totalPages;
+          }
         }
       },
       {
-        onPageChange: action.bound
+        onPageChange: action.bound,
+        resetIfNeeded: action.bound
       }
     );
 
