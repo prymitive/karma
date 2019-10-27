@@ -445,11 +445,7 @@ func silences(c *gin.Context) {
 					}
 					if searchTerm == fmt.Sprintf("%s%s\"%s\"", strings.ToLower(match.Name), eq, strings.ToLower(match.Value)) {
 						isMatch = true
-					} else if searchTerm == fmt.Sprintf("%s%s%s", match.Name, eq, match.Value) {
-						isMatch = true
-					} else if strings.Contains(strings.ToLower(match.Name), searchTerm) {
-						isMatch = true
-					} else if strings.Contains(strings.ToLower(match.Value), searchTerm) {
+					} else if strings.Contains(strings.ToLower(fmt.Sprintf("%s%s%s", match.Name, eq, match.Value)), searchTerm) {
 						isMatch = true
 					}
 				}
