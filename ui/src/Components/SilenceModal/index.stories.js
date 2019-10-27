@@ -97,6 +97,16 @@ storiesOf("SilenceModal", module)
       const silence = MockSilence();
       silence.startsAt = "2018-08-14T16:00:00Z";
       silence.endsAt = `2018-08-14T18:${index < 10 ? "0" + index : index}:00Z`;
+      silence.matchers.push({
+        name: "thisIsAveryLongNameToTestMatcherWrapping",
+        value: "valueIsAlsoAbitLong",
+        isRegex: false
+      });
+      silence.matchers.push({
+        name: "alertname",
+        value: "(foo1|foo2|foo3|foo4)",
+        isRegex: true
+      });
       silence.id = `silence${index}`;
       silences.push({
         cluster: "am",

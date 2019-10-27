@@ -150,7 +150,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
   </div>
   <div class=\\"card-body pt-0\\">
     <div class=\\"mt-1\\">
-      <div class=\\"d-flex flex-row justify-content-between\\">
+      <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
         <div class=\\"flex-shrink-1 flex-grow-1\\">
           <div>
             <span class=\\"badge px-1 mr-1 components-label\\">
@@ -266,9 +266,9 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
             </div>
           </div>
         </div>
-        <div class=\\"flex-shrink-0 flex-grow-0\\">
-          <div class=\\"d-flex flex-column\\">
-            <button class=\\"btn btn-outline-secondary btn-sm mb-2\\">
+        <div class=\\"flex-shrink-0 flex-grow-0 mt-lg-0 mt-2\\">
+          <div class=\\"d-flex flex-fill flex-lg-column flex-row justify-content-around\\">
+            <button class=\\"btn btn-outline-secondary btn-sm mb-lg-2 mb-0\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
