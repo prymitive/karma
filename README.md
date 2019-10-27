@@ -56,10 +56,15 @@ all current alerts.
 
 [Online demo](https://karma-demo.herokuapp.com/)
 
-To get notifications about new karma releases you can subscribe to the RSS feed
-that [GitHub provides](https://github.com/prymitive/karma/releases.atom)
-To get email notifications please use one of the free services providing
-_RSS to email_ notifications, like [Blogtrottr](https://blogtrottr.com/).
+To get notifications about new karma releases go to
+[GitHub karma page](https://github.com/prymitive/karma), click `Watch` and
+select `Releases only`. This requires GitHub user account.
+To subscribe to email notifications without GitHub account you can subscribe to
+the RSS feed that
+[GitHub provides](https://github.com/prymitive/karma/releases.atom).
+To get email notifications from those feeds use one of the free services
+providing _RSS to email_ notifications, like
+[Blogtrottr](https://blogtrottr.com/).
 
 ## History
 
