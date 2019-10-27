@@ -17,7 +17,7 @@ import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 import { APIGroup } from "Models/API";
 import { FormatAlertsQ } from "Stores/AlertStore";
 import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { SilenceFormStore, SilenceTabNames } from "Stores/SilenceFormStore";
 import { QueryOperators, StaticLabels, FormatQuery } from "Common/Query";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { FetchPauser } from "Components/FetchPauser";
@@ -28,6 +28,7 @@ const onSilenceClick = (alertStore, silenceFormStore, group) => {
     group,
     alertStore.settings.values.silenceForm.strip.labels
   );
+  silenceFormStore.tab.setTab(SilenceTabNames.Editor);
   silenceFormStore.toggle.show();
 };
 

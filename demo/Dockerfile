@@ -28,4 +28,5 @@ COPY demo/karma.yaml /etc/karma.yaml
 COPY demo/custom.js /custom.js
 RUN adduser -D karma
 USER karma
+ENV GOGC=20
 CMD supervisord --nodaemon --configuration /etc/supervisord.conf

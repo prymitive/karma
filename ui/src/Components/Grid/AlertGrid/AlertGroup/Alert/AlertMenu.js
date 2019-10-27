@@ -18,7 +18,7 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalL
 
 import { APIAlert, APIGroup } from "Models/API";
 import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { SilenceFormStore, SilenceTabNames } from "Stores/SilenceFormStore";
 import { FetchPauser } from "Components/FetchPauser";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 
@@ -29,6 +29,7 @@ const onSilenceClick = (alertStore, silenceFormStore, group, alert) => {
     alertStore.settings.values.silenceForm.strip.labels,
     [alert]
   );
+  silenceFormStore.tab.setTab(SilenceTabNames.Editor);
   silenceFormStore.toggle.show();
 };
 
