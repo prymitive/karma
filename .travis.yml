@@ -168,7 +168,7 @@ jobs:
       name: Build docker image
       # we build and push docker image on merge and tag, so this should only
       # run for new branches, to test that they don't break docker builds
-      if: (repo = prymitive/karma AND type != pull_request AND branch != master) OR (fork = true AND type = pull_request)
+      if: (repo = prymitive/karma AND type != pull_request AND branch != master AND tag IS NOT present) OR (fork = true AND type = pull_request)
       language: shell
       addons:
         apt:
