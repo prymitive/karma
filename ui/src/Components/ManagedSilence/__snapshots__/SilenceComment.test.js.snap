@@ -26,7 +26,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed 1`] = `
   </div>
 </div>
 <div class=\\"pt-1 d-flex flex-row justify-content-between\\">
-  <div class=\\"flex-shrink-1 flex-grow-1 components-managed-silence-cite\\">
+  <div class=\\"flex-shrink-1 flex-grow-1 mw-1p components-managed-silence-cite\\">
     <span class=\\"text-muted mr-2 font-italic\\">
       — me@example.com
     </span>
@@ -83,7 +83,7 @@ exports[`<SilenceComment /> Matches snapshot when expanded 1`] = `
   </div>
 </div>
 <div class=\\"pt-1 d-flex flex-row justify-content-between\\">
-  <div class=\\"flex-shrink-1 flex-grow-1 components-managed-silence-cite\\">
+  <div class=\\"flex-shrink-1 flex-grow-1 mw-1p components-managed-silence-cite\\">
     <span class=\\"text-muted mr-2 font-italic\\">
       — me@example.com
     </span>
