@@ -62,6 +62,20 @@ class App extends Component<AppProps, {}> {
     this.alertStore = new AlertStore(filters);
   }
 
+  onPopState = (event: PopStateEvent) => {
+    event.preventDefault();
+    const p = DecodeLocationSearch(window.location.search);
+    this.alertStore.filters.setWithoutLocation(p.params.q);
+  };
+
+  componentDidMount() {
+    window.onpopstate = this.onPopState;
+  }
+
+  componentWillUnmount() {
+    window.onpopstate = () => {};
+  }
+
   render() {
     return (
       <ErrorBoundary>

@@ -21,6 +21,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  localStorage.setItem("savedFilters", "");
   jest.restoreAllMocks();
   window.history.pushState({}, "App", "/");
 });
@@ -118,5 +119,39 @@ describe("<App />", () => {
     expect(instance.alertStore.filters.values[0]).toMatchObject(
       NewUnappliedFilter("use=query")
     );
+  });
+
+  it("popstate event updates alertStore filters", () => {
+    const tree = shallow(
+      <App defaultFilters={["foo"]} uiDefaults={uiDefaults} />
+    );
+    expect(tree.instance().alertStore.filters.values).toHaveLength(1);
+    expect(tree.instance().alertStore.filters.values[0]).toMatchObject(
+      NewUnappliedFilter("foo")
+    );
+
+    delete global.window.location;
+    global.window.location = {
+      href: "http://localhost/?q=bar",
+      search: "?q=bar"
+    };
+
+    let event = new PopStateEvent("popstate");
+    window.onpopstate(event);
+
+    expect(tree.instance().alertStore.filters.values).toHaveLength(1);
+    expect(tree.instance().alertStore.filters.values[0]).toMatchObject(
+      NewUnappliedFilter("bar")
+    );
+  });
+
+  it("unmounts without crashing", () => {
+    const tree = shallow(
+      <App defaultFilters={["foo=bar"]} uiDefaults={uiDefaults} />
+    );
+    tree.instance().componentWillUnmount();
+
+    let event = new PopStateEvent("popstate");
+    window.onpopstate(event);
   });
 });
