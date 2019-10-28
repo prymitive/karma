@@ -154,4 +154,16 @@ describe("<App />", () => {
     let event = new PopStateEvent("popstate");
     window.onpopstate(event);
   });
+
+  it("appends 'dark-theme' class to #root if dark mode is enabled", () => {
+    const tree = shallow(
+      <App
+        defaultFilters={["foo=bar"]}
+        uiDefaults={Object.assign({}, uiDefaults, { DarkMode: true })}
+      />
+    );
+    tree.instance().componentWillUnmount();
+
+    expect(document.body.className.split(" ")).toContain("dark-theme");
+  });
 });

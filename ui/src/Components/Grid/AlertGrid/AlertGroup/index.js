@@ -224,7 +224,7 @@ const AlertGroup = observer(
                 setIsMenuOpen={this.renderConfig.setIsMenuOpen}
               />
               {this.collapse.value ? null : (
-                <div className="card-body bg-white px-2 py-1">
+                <div className="card-body px-2 py-1 bg-white components-grid-alertgrid-card">
                   <ul className="list-group">
                     {group.alerts
                       .slice(0, this.renderConfig.alertsToRender)

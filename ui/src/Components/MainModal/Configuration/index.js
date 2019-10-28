@@ -10,6 +10,7 @@ import { AlertGroupWidthConfiguration } from "./AlertGroupWidthConfiguration";
 import { AlertGroupSortConfiguration } from "./AlertGroupSortConfiguration";
 import { AlertGroupCollapseConfiguration } from "./AlertGroupCollapseConfiguration";
 import { AlertGroupTitleBarColor } from "./AlertGroupTitleBarColor";
+import { ThemeConfiguration } from "./ThemeConfiguration";
 
 const Configuration = ({ settingsStore }) => (
   <form className="px-3 accordion">
@@ -23,8 +24,13 @@ const Configuration = ({ settingsStore }) => (
       content={<FilterBarConfiguration settingsStore={settingsStore} />}
     />
     <Accordion
-      text="Alert group titlebar configuration"
-      content={<AlertGroupTitleBarColor settingsStore={settingsStore} />}
+      text="Theme"
+      content={
+        <React.Fragment>
+          <AlertGroupTitleBarColor settingsStore={settingsStore} />
+          <ThemeConfiguration settingsStore={settingsStore} />
+        </React.Fragment>
+      }
     />
     <Accordion
       text="Minimal alert group width"

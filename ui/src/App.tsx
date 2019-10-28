@@ -12,11 +12,13 @@ import { FaviconBadge } from "Components/FaviconBadge";
 import { ErrorBoundary } from "./ErrorBoundary";
 
 import "./App.scss";
+import "./DarkTheme.scss";
 
 interface UIDefaults {
   Refresh: number;
   HideFiltersWhenIdle: boolean;
   ColorTitlebar: boolean;
+  DarkTheme: boolean;
   MinimalGroupWidth: number;
   AlertsPerGroup: number;
   CollapseGroups: "expanded" | "collapsed" | "collapsedOnMobile";
@@ -70,6 +72,11 @@ class App extends Component<AppProps, {}> {
 
   componentDidMount() {
     window.onpopstate = this.onPopState;
+
+    document.body.classList.toggle(
+      "dark-theme",
+      this.settingsStore.themeConfig.config.darkTheme
+    );
   }
 
   componentWillUnmount() {

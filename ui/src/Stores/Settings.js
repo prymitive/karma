@@ -110,6 +110,20 @@ class FilterBarConfig {
   }
 }
 
+class ThemeConfig {
+  constructor(darkTheme) {
+    this.config = localStored(
+      "themeConfig",
+      {
+        darkTheme: darkTheme
+      },
+      {
+        delay: 100
+      }
+    );
+  }
+}
+
 class Settings {
   constructor(defaults) {
     let defaultSettings;
@@ -118,6 +132,7 @@ class Settings {
         Refresh: 30 * 1000 * 1000 * 1000,
         HideFiltersWhenIdle: true,
         ColorTitlebar: false,
+        DarkTheme: false,
         MinimalGroupWidth: 420,
         AlertsPerGroup: 5,
         CollapseGroups: "collapsedOnMobile"
@@ -140,6 +155,7 @@ class Settings {
     this.filterBarConfig = new FilterBarConfig(
       defaultSettings.HideFiltersWhenIdle
     );
+    this.themeConfig = new ThemeConfig(defaultSettings.DarkTheme);
   }
 }
 
