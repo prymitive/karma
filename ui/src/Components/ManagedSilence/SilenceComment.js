@@ -42,7 +42,7 @@ const SilenceComment = ({
         </div>
       </div>
       <div className="pt-1 d-flex flex-row justify-content-between">
-        <div className="flex-shrink-1 flex-grow-1 components-managed-silence-cite">
+        <div className="flex-shrink-1 flex-grow-1 mw-1p components-managed-silence-cite">
           <span className="text-muted mr-2 font-italic">
             &mdash; {silence.createdBy}
           </span>

@@ -42,7 +42,7 @@ const SilenceDetails = ({
   return (
     <div className="mt-1">
       <div className="d-flex flex-fill flex-lg-row flex-column justify-content-between">
-        <div className="flex-shrink-1 flex-grow-1">
+        <div className="flex-shrink-1 flex-grow-1 mw-1p">
           <div>
             <span className="badge px-1 mr-1 components-label">
               <FontAwesomeIcon
@@ -91,7 +91,7 @@ const SilenceDetails = ({
               </span>
             </div>
             <div
-              className="flex-shrink-1 flex-grow-1"
+              className="flex-shrink-1 flex-grow-1 mw-1p"
               style={{ minWidth: "0px" }}
             >
               {silence.matchers.map(matcher => (
@@ -109,7 +109,7 @@ const SilenceDetails = ({
             </div>
           </div>
         </div>
-        <div className="flex-shrink-0 flex-grow-0 mt-lg-0 mt-2">
+        <div className="flex-shrink-0 flex-grow-0 mt-lg-0 mt-2 ml-lg-2 ml-0">
           <div className="d-flex flex-fill flex-lg-column flex-row justify-content-around">
             <button
               className="btn btn-outline-secondary btn-sm mb-lg-2 mb-0"

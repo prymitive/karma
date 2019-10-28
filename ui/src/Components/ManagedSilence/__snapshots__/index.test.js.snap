@@ -28,7 +28,7 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
       </div>
     </div>
     <div class=\\"pt-1 d-flex flex-row justify-content-between\\">
-      <div class=\\"flex-shrink-1 flex-grow-1 components-managed-silence-cite\\">
+      <div class=\\"flex-shrink-1 flex-grow-1 mw-1p components-managed-silence-cite\\">
         <span class=\\"text-muted mr-2 font-italic\\">
           — me@example.com
         </span>
@@ -99,7 +99,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
       </div>
     </div>
     <div class=\\"pt-1 d-flex flex-row justify-content-between\\">
-      <div class=\\"flex-shrink-1 flex-grow-1 components-managed-silence-cite\\">
+      <div class=\\"flex-shrink-1 flex-grow-1 mw-1p components-managed-silence-cite\\">
         <span class=\\"text-muted mr-2 font-italic\\">
           — me@example.com
         </span>
@@ -125,7 +125,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
   <div class=\\"card-body pt-0\\">
     <div class=\\"mt-1\\">
       <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
-        <div class=\\"flex-shrink-1 flex-grow-1\\">
+        <div class=\\"flex-shrink-1 flex-grow-1 mw-1p\\">
           <div>
             <span class=\\"badge px-1 mr-1 components-label\\">
               <svg aria-hidden=\\"true\\"
@@ -228,7 +228,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
                 Matchers:
               </span>
             </div>
-            <div class=\\"flex-shrink-1 flex-grow-1\\"
+            <div class=\\"flex-shrink-1 flex-grow-1 mw-1p\\"
                  style=\\"min-width: 0px;\\"
             >
               <span class=\\"badge badge-light px-1 mr-1 components-label\\">
@@ -240,7 +240,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
             </div>
           </div>
         </div>
-        <div class=\\"flex-shrink-0 flex-grow-0 mt-lg-0 mt-2\\">
+        <div class=\\"flex-shrink-0 flex-grow-0 mt-lg-0 mt-2 ml-lg-2 ml-0\\">
           <div class=\\"d-flex flex-fill flex-lg-column flex-row justify-content-around\\">
             <button class=\\"btn btn-outline-secondary btn-sm mb-lg-2 mb-0\\">
               <svg aria-hidden=\\"true\\"
