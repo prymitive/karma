@@ -1,4 +1,4 @@
-import { observable, action } from "mobx";
+import { observable, action, toJS } from "mobx";
 
 import { throttle } from "lodash";
 
@@ -128,6 +128,15 @@ class AlertStore {
       setFilters(raws) {
         this.values = raws.map(raw => NewUnappliedFilter(raw));
         UpdateLocationSearch({ q: this.values.map(f => f.raw) });
+      },
+      setWithoutLocation(raws) {
+        const filtersByRaw = this.values.reduce(function(map, obj) {
+          map[toJS(obj.raw)] = toJS(obj);
+          return map;
+        }, {});
+        this.values = raws.map(raw =>
+          filtersByRaw[raw] ? filtersByRaw[raw] : NewUnappliedFilter(raw)
+        );
       }
     },
     {

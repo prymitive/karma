@@ -132,6 +132,81 @@ describe("AlertStore.filters", () => {
     expect(store.filters.values).toHaveLength(1);
     expect(store.filters.values[0]).toMatchObject(NewUnappliedFilter("bar"));
   });
+
+  it("addFilter() updates window.history", () => {
+    const store = new AlertStore([]);
+    const historyMock = jest.spyOn(global.window.history, "pushState");
+    store.filters.addFilter("foo");
+    expect(historyMock).toHaveBeenLastCalledWith(
+      null,
+      null,
+      "http://localhost/?q=foo"
+    );
+  });
+
+  it("replaceFilter() updates window.history", () => {
+    const store = new AlertStore(["foo"]);
+    const historyMock = jest.spyOn(global.window.history, "pushState");
+    store.filters.replaceFilter("foo", "bar");
+    expect(historyMock).toHaveBeenLastCalledWith(
+      null,
+      null,
+      "http://localhost/?q=bar"
+    );
+  });
+
+  it("addFilter() updates window.history", () => {
+    const store = new AlertStore([]);
+    const historyMock = jest.spyOn(global.window.history, "pushState");
+    store.filters.addFilter("foo");
+    expect(historyMock).toHaveBeenLastCalledWith(
+      null,
+      null,
+      "http://localhost/?q=foo"
+    );
+  });
+
+  it("setFilters() updates window.history", () => {
+    const store = new AlertStore([]);
+    store.filters.addFilter("foo");
+    store.filters.addFilter("bar");
+
+    const historyMock = jest.spyOn(global.window.history, "pushState");
+    store.filters.setFilters(["baz", "far"]);
+    expect(store.filters.values).toHaveLength(2);
+    expect(store.filters.values[0]).toMatchObject(NewUnappliedFilter("baz"));
+    expect(store.filters.values[1]).toMatchObject(NewUnappliedFilter("far"));
+    expect(historyMock).toHaveBeenLastCalledWith(
+      null,
+      null,
+      "http://localhost/?q=baz&q=far"
+    );
+  });
+
+  it("setWithoutLocation() doesn't update window.history", () => {
+    const store = new AlertStore(["far", "foo"]);
+
+    const historyMock = jest.spyOn(global.window.history, "pushState");
+    store.filters.setWithoutLocation(["baz", "far"]);
+    expect(store.filters.values).toHaveLength(2);
+    expect(store.filters.values[0]).toMatchObject(NewUnappliedFilter("baz"));
+    expect(store.filters.values[1]).toMatchObject(NewUnappliedFilter("far"));
+    expect(historyMock).not.toHaveBeenCalled();
+  });
+
+  it("setWithoutLocation() adds missing filters", () => {
+    const store = new AlertStore([]);
+    store.filters.setWithoutLocation(["foo", "bar"]);
+    expect(store.filters.values).toHaveLength(2);
+    expect(store.filters.values[0]).toMatchObject(NewUnappliedFilter("foo"));
+    expect(store.filters.values[1]).toMatchObject(NewUnappliedFilter("bar"));
+  });
+
+  it("setWithoutLocation() removes orphaned filters", () => {
+    const store = new AlertStore(["far"]);
+    store.filters.setWithoutLocation([]);
+    expect(store.filters.values).toHaveLength(0);
+  });
 });
 
 describe("FormatBackendURI", () => {
