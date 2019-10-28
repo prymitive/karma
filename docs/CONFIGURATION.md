@@ -770,6 +770,7 @@ ui:
   refresh: duration
   hideFiltersWhenIdle: bool
   colorTitlebar: bool
+  darkTheme: bool
   minimalGroupWidth: integer
   alertsPerGroup: integer
   collapseGroups: string
@@ -781,6 +782,8 @@ ui:
   user inactivity
 - `colorTitlebar` - if enabled alert group title bar color will be set to follow
   alerts in that group
+- `darkTheme` - if enabled dark mode will be enabled.
+  Note: dark mode is *experimental* and might be buggy.
 - `minimalGroupWidth` - minimal width (in pixels) for each alert group rendered
   on the grid. This value is used to calculate the number of columns rendered on
   the grid.
@@ -799,6 +802,7 @@ ui:
   refresh: 30s
   hideFiltersWhenIdle: true
   colorTitlebar: false
+  darkTheme: false
   minimalGroupWidth: 420
   alertsPerGroup: 5
   collapseGroups: collapsedOnMobile
