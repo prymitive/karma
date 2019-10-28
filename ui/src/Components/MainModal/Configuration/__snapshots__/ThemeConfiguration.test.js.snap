@@ -1,20 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AlertGroupTitleBarColor /> matches snapshot with default values 1`] = `
+exports[`<ThemeConfiguration /> matches snapshot with default values 1`] = `
 "
-<div class=\\"form-group mb-2\\">
+<div class=\\"form-group mb-0\\">
   <div class=\\"form-check form-check-inline\\">
     <span class=\\"custom-control custom-switch\\">
-      <input id=\\"configuration-colortitlebar\\"
+      <input id=\\"configuration-theme\\"
              class=\\"custom-control-input\\"
              type=\\"checkbox\\"
              value
       >
       <label class=\\"custom-control-label cursor-pointer mr-3\\"
-             for=\\"configuration-colortitlebar\\"
+             for=\\"configuration-theme\\"
       >
-        Color group titlebar
+        Enable dark mode
       </label>
+      <span class=\\"ml-5 badge badge-danger align-text-bottom\\">
+        Experimental
+      </span>
     </span>
   </div>
 </div>

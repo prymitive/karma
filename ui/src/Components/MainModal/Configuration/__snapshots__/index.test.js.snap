@@ -126,7 +126,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
     <div class=\\"Collapsible__trigger is-closed  card-header cursor-pointer border-bottom-0\\">
       <div class=\\"d-flex flex-row justify-content-between\\">
         <div>
-          Alert group titlebar configuration
+          Theme
         </div>
         <div>
           <svg aria-hidden=\\"true\\"
@@ -150,7 +150,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
          style=\\"height:0;-webkit-transition:height 50ms linear;-ms-transition:height 50ms linear;transition:height 50ms linear;overflow:hidden\\"
     >
       <div class=\\"Collapsible__contentInner card-body my-2\\">
-        <div class=\\"form-group mb-0\\">
+        <div class=\\"form-group mb-2\\">
           <div class=\\"form-check form-check-inline\\">
             <span class=\\"custom-control custom-switch\\">
               <input type=\\"checkbox\\"
@@ -163,6 +163,25 @@ exports[`<Configuration /> matches snapshot 1`] = `
               >
                 Color group titlebar
               </label>
+            </span>
+          </div>
+        </div>
+        <div class=\\"form-group mb-0\\">
+          <div class=\\"form-check form-check-inline\\">
+            <span class=\\"custom-control custom-switch\\">
+              <input type=\\"checkbox\\"
+                     id=\\"configuration-theme\\"
+                     class=\\"custom-control-input\\"
+                     value
+              >
+              <label class=\\"custom-control-label cursor-pointer mr-3\\"
+                     for=\\"configuration-theme\\"
+              >
+                Enable dark mode
+              </label>
+              <span class=\\"ml-5 badge badge-danger align-text-bottom\\">
+                Experimental
+              </span>
             </span>
           </div>
         </div>

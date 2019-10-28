@@ -6,41 +6,46 @@ import { observer } from "mobx-react";
 
 import { Settings } from "Stores/Settings";
 
-const AlertGroupTitleBarColor = observer(
-  class AlertGroupTitleBarColor extends Component {
+const ThemeConfiguration = observer(
+  class ThemeConfiguration extends Component {
     static propTypes = {
       settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
 
     onChange = action(event => {
       const { settingsStore } = this.props;
-      settingsStore.alertGroupConfig.config.colorTitleBar =
-        event.target.checked;
+      settingsStore.themeConfig.config.darkTheme = event.target.checked;
+
+      document.body.classList.toggle(
+        "dark-theme",
+        settingsStore.themeConfig.config.darkTheme
+      );
     });
 
     render() {
       const { settingsStore } = this.props;
 
       return (
-        <div className="form-group mb-2">
+        <div className="form-group mb-0">
           <div className="form-check form-check-inline">
             <span className="custom-control custom-switch">
               <input
-                id="configuration-colortitlebar"
+                id="configuration-theme"
                 className="custom-control-input"
                 type="checkbox"
                 value=""
-                checked={
-                  settingsStore.alertGroupConfig.config.colorTitleBar || false
-                }
+                checked={settingsStore.themeConfig.config.darkTheme || false}
                 onChange={this.onChange}
               />
               <label
                 className="custom-control-label cursor-pointer mr-3"
-                htmlFor="configuration-colortitlebar"
+                htmlFor="configuration-theme"
               >
-                Color group titlebar
+                Enable dark mode
               </label>
+              <span className="ml-5 badge badge-danger align-text-bottom">
+                Experimental
+              </span>
             </span>
           </div>
         </div>
@@ -49,4 +54,4 @@ const AlertGroupTitleBarColor = observer(
   }
 );
 
-export { AlertGroupTitleBarColor };
+export { ThemeConfiguration };
