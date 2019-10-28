@@ -18,7 +18,6 @@ ARG VERSION
 RUN CGO_ENABLED=0 make -C /src VERSION="${VERSION:-dev}" karma
 
 FROM gcr.io/distroless/base
-COPY ./docs/dark.css /themes/dark.css
 COPY --from=go-builder /src/karma /karma
 EXPOSE 8080
 ENTRYPOINT ["/karma"]
