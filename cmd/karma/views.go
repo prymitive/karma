@@ -433,7 +433,9 @@ func silences(c *gin.Context) {
 		}
 		if searchTerm != "" {
 			isMatch := false
-			if strings.Contains(strings.ToLower(silence.Silence.Comment), searchTerm) {
+			if strings.ToLower(silence.Silence.ID) == searchTerm {
+				isMatch = true
+			} else if strings.Contains(strings.ToLower(silence.Silence.Comment), searchTerm) {
 				isMatch = true
 			} else if strings.Contains(strings.ToLower(silence.Silence.CreatedBy), searchTerm) {
 				isMatch = true
