@@ -58,6 +58,7 @@ const SilenceDetails = ({
               <FontAwesomeIcon
                 className="text-muted mr-1"
                 icon={faCalendarTimes}
+                fixedWidth
               />
               {expiresLabel} <Moment fromNow>{silence.endsAt}</Moment>
             </span>
