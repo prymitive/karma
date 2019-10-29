@@ -81,6 +81,10 @@ func (am *Alertmanager) probeVersion() string {
 		return fakeVersion
 	}
 
+	if version == "0.17.0" || version == "0.18.0" {
+		log.Warningf("Alertmanager %s might return incomplete list of alert groups in the API, please upgrade to >=0.19.0, see https://github.com/prymitive/karma/issues/812", version)
+	}
+
 	return version
 }
 
