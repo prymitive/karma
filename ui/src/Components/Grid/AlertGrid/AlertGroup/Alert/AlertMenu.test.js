@@ -1,7 +1,5 @@
 import React from "react";
 
-import { Provider } from "mobx-react";
-
 import { mount } from "enzyme";
 
 import { MockAlertGroup, MockAlert } from "__mocks__/Alerts.js";
@@ -26,16 +24,14 @@ const MockSetIsMenuOpen = jest.fn();
 
 const MountedAlertMenu = group => {
   return mount(
-    <Provider alertStore={alertStore}>
-      <AlertMenu
-        group={group}
-        alert={alert}
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-        setIsMenuOpen={MockSetIsMenuOpen}
-      />
-    </Provider>
-  ).find("AlertMenu");
+    <AlertMenu
+      group={group}
+      alert={alert}
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+      setIsMenuOpen={MockSetIsMenuOpen}
+    />
+  );
 };
 
 describe("<AlertMenu />", () => {
@@ -65,18 +61,16 @@ describe("<AlertMenu />", () => {
 
 const MountedMenuContent = group => {
   return mount(
-    <Provider alertStore={alertStore}>
-      <MenuContent
-        popperPlacement="top"
-        popperRef={null}
-        popperStyle={{}}
-        group={group}
-        alert={alert}
-        afterClick={MockAfterClick}
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-      />
-    </Provider>
+    <MenuContent
+      popperPlacement="top"
+      popperRef={null}
+      popperStyle={{}}
+      group={group}
+      alert={alert}
+      afterClick={MockAfterClick}
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+    />
   );
 };
 

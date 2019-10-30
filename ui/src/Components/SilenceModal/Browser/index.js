@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import { observable, action } from "mobx";
-import { observer, Provider } from "mobx-react";
+import { observer } from "mobx-react";
 
 import { debounce } from "lodash";
 
@@ -232,23 +232,21 @@ const Browser = observer(
               <Placeholder content="Nothing to show" />
             ) : (
               <React.Fragment>
-                <Provider alertStore={alertStore}>
-                  {this.dataSource.silences
-                    .slice(
-                      (this.pagination.activePage - 1) * this.maxPerPage,
-                      this.pagination.activePage * this.maxPerPage
-                    )
-                    .map(silence => (
-                      <ManagedSilence
-                        key={`${silence.cluster}/${silence.silence.id}`}
-                        cluster={silence.cluster}
-                        silence={silence.silence}
-                        alertStore={alertStore}
-                        silenceFormStore={silenceFormStore}
-                        onDeleteModalClose={onDeleteModalClose}
-                      />
-                    ))}
-                </Provider>
+                {this.dataSource.silences
+                  .slice(
+                    (this.pagination.activePage - 1) * this.maxPerPage,
+                    this.pagination.activePage * this.maxPerPage
+                  )
+                  .map(silence => (
+                    <ManagedSilence
+                      key={`${silence.cluster}/${silence.silence.id}`}
+                      cluster={silence.cluster}
+                      silence={silence.silence}
+                      alertStore={alertStore}
+                      silenceFormStore={silenceFormStore}
+                      onDeleteModalClose={onDeleteModalClose}
+                    />
+                  ))}
                 {this.dataSource.silences.length > this.maxPerPage ? (
                   <div className="mt-3">
                     <Pagination

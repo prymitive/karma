@@ -1,7 +1,5 @@
 import React from "react";
 
-import { Provider } from "mobx-react";
-
 import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
@@ -27,9 +25,7 @@ const MountedOverviewModalContent = () =>
   // https://github.com/airbnb/enzyme/issues/1213
   mount(
     <span>
-      <Provider alertStore={alertStore}>
-        <OverviewModalContent alertStore={alertStore} onHide={onHide} />
-      </Provider>
+      <OverviewModalContent alertStore={alertStore} onHide={onHide} />
     </span>
   );
 

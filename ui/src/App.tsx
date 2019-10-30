@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import { Provider } from "mobx-react";
-
 import { AlertStore, DecodeLocationSearch } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -92,13 +90,11 @@ class App extends Component<AppProps, {}> {
           settingsStore={this.settingsStore}
           silenceFormStore={this.silenceFormStore}
         />
-        <Provider alertStore={this.alertStore}>
-          <Grid
-            alertStore={this.alertStore}
-            settingsStore={this.settingsStore}
-            silenceFormStore={this.silenceFormStore}
-          />
-        </Provider>
+        <Grid
+          alertStore={this.alertStore}
+          settingsStore={this.settingsStore}
+          silenceFormStore={this.silenceFormStore}
+        />
         <Fetcher
           alertStore={this.alertStore}
           settingsStore={this.settingsStore}

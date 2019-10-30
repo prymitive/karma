@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { observer, Provider } from "mobx-react";
+import { observer } from "mobx-react";
 import { observable, action } from "mobx";
 
 import Flash from "react-reveal/Flash";
@@ -70,13 +70,11 @@ const OverviewModal = observer(
                 </h1>
               }
             >
-              <Provider alertStore={alertStore}>
-                <OverviewModalContent
-                  alertStore={alertStore}
-                  onHide={this.toggle.hide}
-                  isVisible={this.toggle.show}
-                />
-              </Provider>
+              <OverviewModalContent
+                alertStore={alertStore}
+                onHide={this.toggle.hide}
+                isVisible={this.toggle.show}
+              />
             </React.Suspense>
           </Modal>
         </React.Fragment>

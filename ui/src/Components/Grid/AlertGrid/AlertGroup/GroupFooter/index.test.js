@@ -1,7 +1,5 @@
 import React from "react";
 
-import { Provider } from "mobx-react";
-
 import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
@@ -59,15 +57,13 @@ afterEach(() => {
 
 const MountedGroupFooter = () => {
   return mount(
-    <Provider alertStore={alertStore}>
-      <GroupFooter
-        group={group}
-        alertmanagers={["default"]}
-        afterUpdate={MockAfterUpdate}
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-      />
-    </Provider>
+    <GroupFooter
+      group={group}
+      alertmanagers={["default"]}
+      afterUpdate={MockAfterUpdate}
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+    />
   );
 };
 
