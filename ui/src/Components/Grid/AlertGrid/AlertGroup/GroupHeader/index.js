@@ -69,18 +69,21 @@ const GroupHeader = observer(
               value="unprocessed"
               counter={group.stateCount.unprocessed}
               themed={themedCounters}
+              alertStore={alertStore}
             />
             <FilteringCounterBadge
               name="@state"
               value="suppressed"
               counter={group.stateCount.suppressed}
               themed={themedCounters}
+              alertStore={alertStore}
             />
             <FilteringCounterBadge
               name="@state"
               value="active"
               counter={group.stateCount.active}
               themed={themedCounters}
+              alertStore={alertStore}
             />
             <span
               className={`${
