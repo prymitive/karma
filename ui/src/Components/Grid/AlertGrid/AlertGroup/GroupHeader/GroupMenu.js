@@ -57,7 +57,7 @@ const MenuContent = onClickOutside(
     const groupLink = `${baseURL}?${FormatAlertsQ(groupFilters)}`;
 
     return (
-      <FetchPauser>
+      <FetchPauser alertStore={alertStore}>
         <div
           className="dropdown-menu d-block shadow"
           ref={popperRef}

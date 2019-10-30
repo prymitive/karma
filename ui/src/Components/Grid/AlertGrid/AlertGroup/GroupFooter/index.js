@@ -44,20 +44,31 @@ const GroupFooter = observer(
                   value={a.value}
                   visible={a.visible}
                   afterUpdate={afterUpdate}
+                  alertStore={alertStore}
                 />
               ))}
           </div>
           {Object.entries(group.shared.labels).map(([name, value]) => (
-            <FilteringLabel key={name} name={name} value={value} />
+            <FilteringLabel
+              key={name}
+              name={name}
+              value={value}
+              alertStore={alertStore}
+            />
           ))}
           {alertmanagers.map(am => (
             <FilteringLabel
               key={am}
               name={StaticLabels.AlertManager}
               value={am}
+              alertStore={alertStore}
             />
           ))}
-          <FilteringLabel name={StaticLabels.Receiver} value={group.receiver} />
+          <FilteringLabel
+            name={StaticLabels.Receiver}
+            value={group.receiver}
+            alertStore={alertStore}
+          />
           {group.shared.annotations
             .filter(a => a.isLink === true)
             .map(a => (

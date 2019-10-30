@@ -1,7 +1,5 @@
 import React from "react";
 
-import { Provider } from "mobx-react";
-
 import { mount } from "enzyme";
 
 import { advanceTo, clear } from "jest-date-mock";
@@ -53,18 +51,16 @@ const MockedAlert = () => {
 
 const MountedAlert = (alert, group, showAlertmanagers, showReceiver) => {
   return mount(
-    <Provider alertStore={alertStore}>
-      <Alert
-        alert={alert}
-        group={group}
-        showAlertmanagers={showAlertmanagers}
-        showReceiver={showReceiver}
-        afterUpdate={MockAfterUpdate}
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-        setIsMenuOpen={MockSetIsMenuOpen}
-      />
-    </Provider>
+    <Alert
+      alert={alert}
+      group={group}
+      showAlertmanagers={showAlertmanagers}
+      showReceiver={showReceiver}
+      afterUpdate={MockAfterUpdate}
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+      setIsMenuOpen={MockSetIsMenuOpen}
+    />
   );
 };
 

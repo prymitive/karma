@@ -2,8 +2,6 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 
-import { Provider } from "mobx-react";
-
 import moment from "moment";
 
 import { MockAlert, MockAlertGroup } from "__mocks__/Alerts.js";
@@ -173,12 +171,10 @@ storiesOf("Grid", module)
     alertStore.data.groups = groups;
 
     return (
-      <Provider alertStore={alertStore}>
-        <Grid
-          alertStore={alertStore}
-          settingsStore={settingsStore}
-          silenceFormStore={silenceFormStore}
-        />
-      </Provider>
+      <Grid
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        silenceFormStore={silenceFormStore}
+      />
     );
   });

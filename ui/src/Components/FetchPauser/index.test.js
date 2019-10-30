@@ -1,7 +1,5 @@
 import React from "react";
 
-import { Provider } from "mobx-react";
-
 import { mount } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
@@ -15,11 +13,9 @@ beforeEach(() => {
 
 const MountedFetchPauser = () => {
   return mount(
-    <Provider alertStore={alertStore}>
-      <FetchPauser>
-        <div />
-      </FetchPauser>
-    </Provider>
+    <FetchPauser alertStore={alertStore}>
+      <div />
+    </FetchPauser>
   );
 };
 

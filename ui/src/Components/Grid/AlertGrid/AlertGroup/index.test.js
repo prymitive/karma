@@ -1,7 +1,5 @@
 import React from "react";
 
-import { Provider } from "mobx-react";
-
 import { mount } from "enzyme";
 
 import moment from "moment";
@@ -58,16 +56,14 @@ const MockAlerts = alertCount => {
 
 const MountedAlertGroup = (afterUpdate, showAlertmanagers) => {
   return mount(
-    <Provider alertStore={alertStore}>
-      <AlertGroup
-        afterUpdate={afterUpdate}
-        group={group}
-        showAlertmanagers={showAlertmanagers}
-        settingsStore={settingsStore}
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-      />
-    </Provider>
+    <AlertGroup
+      afterUpdate={afterUpdate}
+      group={group}
+      showAlertmanagers={showAlertmanagers}
+      settingsStore={settingsStore}
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+    />
   );
 };
 
