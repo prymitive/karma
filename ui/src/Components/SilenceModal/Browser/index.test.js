@@ -63,6 +63,7 @@ const MockSilenceList = count => {
     silence.id = `silence${index}`;
     silences.push({
       cluster: cluster,
+      alertCount: 123,
       silence: silence
     });
   }
@@ -86,6 +87,7 @@ describe("<Browser />", () => {
       JSON.stringify([
         {
           cluster: cluster,
+          alertCount: 123,
           silence: silence
         }
       ])
@@ -102,6 +104,7 @@ describe("<Browser />", () => {
       JSON.stringify([
         {
           cluster: cluster,
+          alertCount: 123,
           silence: silence
         }
       ])
@@ -123,6 +126,7 @@ describe("<Browser />", () => {
       JSON.stringify([
         {
           cluster: cluster,
+          alertCount: 123,
           silence: silence
         }
       ])
@@ -172,6 +176,7 @@ describe("<Browser />", () => {
       JSON.stringify([
         {
           cluster: cluster,
+          alertCount: 123,
           silence: silence
         }
       ])

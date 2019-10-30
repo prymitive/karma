@@ -54,6 +54,8 @@ const MountedManagedSilence = onDidUpdate => {
   return mount(
     <ManagedSilence
       cluster={cluster}
+      alertCount={123}
+      alertCountAlwaysVisible={true}
       silence={silence}
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
