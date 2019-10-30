@@ -475,6 +475,25 @@ func silences(c *gin.Context) {
 		return dedupedSilences[i].Silence.EndsAt.Before(dedupedSilences[j].Silence.EndsAt) == recentFirst
 	})
 
+	silenceCounters := make(map[string]int, len(dedupedSilences))
+	for _, silence := range dedupedSilences {
+		silenceCounters[silence.Silence.ID] = 0
+	}
+	for _, alertGroup := range alertmanager.DedupAlerts() {
+		for _, alert := range alertGroup.Alerts {
+			for _, sID := range alert.SilencedBy {
+				if _, ok := silenceCounters[sID]; ok {
+					silenceCounters[sID]++
+				}
+			}
+		}
+	}
+	for i := range dedupedSilences {
+		if counter, ok := silenceCounters[dedupedSilences[i].Silence.ID]; ok {
+			dedupedSilences[i].AlertCount = counter
+		}
+	}
+
 	data, err := json.Marshal(dedupedSilences)
 	if err != nil {
 		log.Error(err.Error())
