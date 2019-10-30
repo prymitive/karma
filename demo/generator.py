@@ -266,7 +266,7 @@ class SilencedAlert(AlertGenerator):
                 [newMatcher("alertname", self.name, False)],
                 "{}Z".format(now.isoformat()),
                 "{}Z".format((now + datetime.timedelta(
-                    minutes=30)).isoformat()),
+                    minutes=random.randint(0, 60))).isoformat()),
                 "me@example.com",
                 "This alert is always silenced and the silence comment is very "
                 "long to test the UI. Lorem ipsum dolor sit amet, consectetur "
@@ -304,7 +304,7 @@ class MixedAlerts(AlertGenerator):
                  newMatcher("instance", "server(1|3|5|7)", True)],
                 "{}Z".format(now.isoformat()),
                 "{}Z".format((now + datetime.timedelta(
-                    minutes=20)).isoformat()),
+                    minutes=random.randint(0, 30))).isoformat()),
                 "me@example.com",
                 "Silence '{}''".format(self.name)
             )
@@ -421,7 +421,7 @@ class PaginationTest(AlertGenerator):
                 ],
                 "{}Z".format(now.isoformat()),
                 "{}Z".format((now + datetime.timedelta(
-                    minutes=10)).isoformat()),
+                    minutes=random.randint(0, 30))).isoformat()),
                 "me@example.com",
                 "DEVOPS-123 Pagination Test alert silenced with a long text "
                 "to see if it gets truncated properly. It only matches first "
