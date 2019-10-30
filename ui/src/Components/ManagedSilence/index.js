@@ -17,6 +17,8 @@ const ManagedSilence = observer(
   class ManagedSilence extends Component {
     static propTypes = {
       cluster: PropTypes.string.isRequired,
+      alertCount: PropTypes.number.isRequired,
+      alertCountAlwaysVisible: PropTypes.bool.isRequired,
       silence: APISilence.isRequired,
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
@@ -60,6 +62,8 @@ const ManagedSilence = observer(
     render() {
       const {
         cluster,
+        alertCount,
+        alertCountAlwaysVisible,
         silence,
         alertStore,
         silenceFormStore,
@@ -71,7 +75,10 @@ const ManagedSilence = observer(
           <div className="card my-1 components-managed-silence">
             <div className="card-header border-bottom-0 px-3">
               <SilenceComment
+                alertStore={alertStore}
                 silence={silence}
+                alertCount={alertCount}
+                alertCountAlwaysVisible={alertCountAlwaysVisible}
                 collapsed={this.collapse.value}
                 collapseToggle={this.collapse.toggle}
               />

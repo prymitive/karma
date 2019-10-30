@@ -241,6 +241,8 @@ const Browser = observer(
                     <ManagedSilence
                       key={`${silence.cluster}/${silence.silence.id}`}
                       cluster={silence.cluster}
+                      alertCount={silence.alertCount}
+                      alertCountAlwaysVisible={true}
                       silence={silence.silence}
                       alertStore={alertStore}
                       silenceFormStore={silenceFormStore}

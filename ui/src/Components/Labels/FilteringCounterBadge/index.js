@@ -19,13 +19,14 @@ const FilteringCounterBadge = observer(
       name: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired,
       counter: PropTypes.number.isRequired,
-      themed: PropTypes.bool.isRequired
+      themed: PropTypes.bool.isRequired,
+      alwaysVisible: PropTypes.bool
     };
 
     render() {
-      const { name, value, counter, themed } = this.props;
+      const { name, value, counter, themed, alwaysVisible } = this.props;
 
-      if (counter === 0) return null;
+      if (!alwaysVisible && counter === 0) return null;
 
       const cs = this.getClassAndStyle(
         name,
@@ -35,7 +36,7 @@ const FilteringCounterBadge = observer(
 
       return (
         <TooltipWrapper
-          title={`Click to only show ${value} alerts or Alt+Click to hide them`}
+          title={`Click to only show ${name}=${value} alerts or Alt+Click to hide them`}
         >
           <Flash spy={counter}>
             <span
@@ -43,7 +44,7 @@ const FilteringCounterBadge = observer(
                 themed
                   ? cs.className
                   : [
-                      "badge-light badge-pill components-label-with-hover",
+                      "badge-primary badge-pill components-label-with-hover",
                       ...cs.baseClassNames
                     ].join(" ")
               }

@@ -46,6 +46,8 @@ const RenderSilence = (
     <ManagedSilence
       key={silenceID}
       cluster={cluster}
+      alertCount={0}
+      alertCountAlwaysVisible={false}
       silence={silence}
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
