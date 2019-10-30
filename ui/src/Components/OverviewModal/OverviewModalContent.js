@@ -26,6 +26,7 @@ const TableRows = observer(({ alertStore, nameStats }) =>
       <td width="75%" className="mw-100 p-1">
         {nameStats.values.slice(0, 9).map((valueStats, i) => (
           <LabelWithPercent
+            alertStore={alertStore}
             key={valueStats.value}
             name={nameStats.name}
             value={valueStats.value}
