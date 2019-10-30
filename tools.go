@@ -2,7 +2,7 @@
 
 // https://github.com/golang/go/issues/25922#issuecomment-412992431
 // this file is to track dev dependencies for go modules that are needed
-// to build this project, but are only CLI tools and don't get imported
+// to build this project, but they are only CLI tools and don't get imported
 
 package tools
 
