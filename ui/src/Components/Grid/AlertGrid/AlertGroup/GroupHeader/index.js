@@ -60,6 +60,7 @@ const GroupHeader = observer(
                 key={name}
                 name={name}
                 value={group.labels[name]}
+                alertStore={alertStore}
               />
             ))}
           </span>

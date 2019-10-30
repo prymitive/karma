@@ -107,7 +107,12 @@ const Alert = observer(
             </TooltipWrapper>
           ) : null}
           {Object.entries(alert.labels).map(([name, value]) => (
-            <FilteringLabel key={name} name={name} value={value} />
+            <FilteringLabel
+              key={name}
+              name={name}
+              value={value}
+              alertStore={alertStore}
+            />
           ))}
           {showAlertmanagers
             ? alert.alertmanager.map(am => (
@@ -115,6 +120,7 @@ const Alert = observer(
                   key={am.name}
                   name={StaticLabels.AlertManager}
                   value={am.name}
+                  alertStore={alertStore}
                 />
               ))
             : null}
@@ -122,6 +128,7 @@ const Alert = observer(
             <FilteringLabel
               name={StaticLabels.Receiver}
               value={alert.receiver}
+              alertStore={alertStore}
             />
           ) : null}
           {alert.annotations
