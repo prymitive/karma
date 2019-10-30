@@ -323,12 +323,12 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
             </div>
           </div>
           <div class=\\"flex-shrink-0 flex-grow-0\\">
-            <div class=\\"d-flex flex-column justify-content-between align-items-center\\">
+            <div class=\\"d-flex flex-column flex-sm-row justify-content-between\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
                    data-icon=\\"chevron-up\\"
-                   class=\\"svg-inline--fa fa-chevron-up fa-w-14 mt-2 mr-1 text-muted cursor-pointer\\"
+                   class=\\"svg-inline--fa fa-chevron-up fa-w-14 my-sm-auto mt-2 mb-0 ml-sm-2 ml-auto mr-sm-0 mr-1 text-muted cursor-pointer\\"
                    role=\\"img\\"
                    xmlns=\\"http://www.w3.org/2000/svg\\"
                    viewbox=\\"0 0 448 512\\"

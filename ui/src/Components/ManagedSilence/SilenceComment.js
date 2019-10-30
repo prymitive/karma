@@ -52,7 +52,7 @@ const SilenceComment = ({
           </div>
         </div>
         <div className="flex-shrink-0 flex-grow-0">
-          <div className="d-flex flex-column justify-content-between align-items-center">
+          <div className="d-flex flex-column flex-sm-row justify-content-between">
             <FilteringCounterBadge
               alertStore={alertStore}
               name="@silence_id"
@@ -63,7 +63,7 @@ const SilenceComment = ({
             />
             <FontAwesomeIcon
               icon={collapsed ? faChevronUp : faChevronDown}
-              className="mt-2 mr-1 text-muted cursor-pointer"
+              className="my-sm-auto mt-2 mb-0 ml-sm-2 ml-auto mr-sm-0 mr-1 text-muted cursor-pointer"
               onClick={collapseToggle}
             />
           </div>
