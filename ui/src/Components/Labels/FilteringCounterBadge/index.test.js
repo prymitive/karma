@@ -66,8 +66,8 @@ describe("<FilteringCounterBadge />", () => {
   it("themed @state=suppressed counter badge should have className 'badge-secondary'", () => {
     validateClassName("suppressed", "badge-success", true);
   });
-  it("unthemed @state=suppressed counter badge should have className 'badge-light'", () => {
-    validateClassName("suppressed", "badge-light", false);
+  it("unthemed @state=suppressed counter badge should have className 'badge-primary'", () => {
+    validateClassName("suppressed", "badge-primary", false);
   });
 
   it("@state=unprocessed counter badge should have empty style", () => {

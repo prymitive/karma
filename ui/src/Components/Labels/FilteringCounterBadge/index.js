@@ -44,7 +44,7 @@ const FilteringCounterBadge = observer(
                 themed
                   ? cs.className
                   : [
-                      "badge-light badge-pill components-label-with-hover",
+                      "badge-primary badge-pill components-label-with-hover",
                       ...cs.baseClassNames
                     ].join(" ")
               }
