@@ -86,6 +86,7 @@ const Alert = observer(
                   value={a.value}
                   visible={a.visible}
                   afterUpdate={afterUpdate}
+                  alertStore={alertStore}
                 />
               ))}
           </div>
