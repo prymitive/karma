@@ -4,7 +4,7 @@ import { storiesOf } from "@storybook/react";
 
 import moment from "moment";
 
-import { MockAlert, MockAlertGroup } from "__mocks__/Alerts.js";
+import { MockAlert, MockAlertGroup, MockSilence } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -83,6 +83,12 @@ storiesOf("Grid", module)
     const settingsStore = new Settings();
     const silenceFormStore = new SilenceFormStore();
 
+    const silence = MockSilence();
+    silence.startsAt = "2018-08-14T12:00:00Z";
+    silence.endsAt = "2018-08-14T18:00:00Z";
+    alertStore.data.silences = { am: {} };
+    alertStore.data.silences["am"][silence.id] = silence;
+
     alertStore.data.colors = {
       group: {
         group1: {
@@ -127,6 +133,26 @@ storiesOf("Grid", module)
       const id = `id${i}`;
       const hash = `hash${i}`;
       const group = MockGroup(`group${i}`, i, active, suppressed, unprocessed);
+
+      for (let j = 0; j < group.alerts.length; j++) {
+        if (group.alerts[j].state === "suppressed") {
+          group.alerts[j].silencedBy = [silence.id];
+          group.alerts[j].alertmanager = [
+            {
+              name: "am1",
+              cluster: "am",
+              state: "suppressed",
+              startsAt: "2018-08-14T17:36:40.017867056Z",
+              source: "localhost/prometheus",
+              silencedBy: [
+                j < 2 ? "'Fake Silence ID / Should be fallback'" : silence.id
+              ],
+              inhibitedBy: []
+            }
+          ];
+        }
+      }
+
       group.id = id;
       group.hash = hash;
       group.stateCount.active = active;
