@@ -45,7 +45,7 @@ const MenuContent = onClickOutside(
     silenceFormStore
   }) => {
     return (
-      <FetchPauser>
+      <FetchPauser alertStore={alertStore}>
         <div
           className="dropdown-menu d-block shadow"
           ref={popperRef}
