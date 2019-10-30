@@ -125,7 +125,7 @@ storiesOf("SilenceModal", module)
       silence.id = `silence${index}`;
       silences.push({
         cluster: "am",
-        alertCount: index - 1,
+        alertCount: (index - 1) * 9,
         silence: silence
       });
     }
