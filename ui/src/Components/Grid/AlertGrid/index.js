@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 
 import FontFaceObserver from "fontfaceobserver";
 
-import { debounce } from "lodash";
+import { debounce, throttle } from "lodash";
 
 import ReactResizeDetector from "react-resize-detector";
 
@@ -94,28 +94,12 @@ const AlertGrid = observer(
       10
     );
 
-    initial = 50;
-    groupsToRender = observable(
-      {
-        value: this.initial,
-        setValue(value) {
-          this.value = value;
-        }
-      },
-      {
-        setValue: action.bound
-      },
-      { name: "Groups to render" }
-    );
-    // how many groups add to render count when user scrolls to the bottom
-    loadMoreStep = 30;
-
     loadMore = action(() => {
       const { alertStore } = this.props;
 
-      this.groupsToRender.value = Math.min(
-        this.groupsToRender.value + this.loadMoreStep,
-        alertStore.data.groups.length
+      alertStore.groupLimit.value = Math.min(
+        alertStore.groupLimit.value + alertStore.groupLimit.step,
+        alertStore.info.totalGroups
       );
     });
 
@@ -167,8 +151,9 @@ const AlertGrid = observer(
             position={false}
             pack={true}
             sizes={this.viewport.gridSizesConfig}
-            loadMore={this.loadMore}
-            hasMore={this.groupsToRender.value < alertStore.data.groups.length}
+            initialLoad={false}
+            loadMore={throttle(this.loadMore, 500)}
+            hasMore={alertStore.groupLimit.value < alertStore.info.totalGroups}
             threshold={50}
             loader={
               <div key="loader" className="text-center text-muted py-3">
@@ -176,24 +161,22 @@ const AlertGrid = observer(
               </div>
             }
           >
-            {alertStore.data.groups
-              .slice(0, this.groupsToRender.value)
-              .map(group => (
-                <AlertGroup
-                  key={group.id}
-                  group={group}
-                  showAlertmanagers={
-                    Object.keys(alertStore.data.upstreams.clusters).length > 1
-                  }
-                  afterUpdate={this.masonryRepack}
-                  alertStore={alertStore}
-                  settingsStore={settingsStore}
-                  silenceFormStore={silenceFormStore}
-                  style={{
-                    width: this.viewport.groupWidth
-                  }}
-                />
-              ))}
+            {alertStore.data.groups.map(group => (
+              <AlertGroup
+                key={group.id}
+                group={group}
+                showAlertmanagers={
+                  Object.keys(alertStore.data.upstreams.clusters).length > 1
+                }
+                afterUpdate={this.masonryRepack}
+                alertStore={alertStore}
+                settingsStore={settingsStore}
+                silenceFormStore={silenceFormStore}
+                style={{
+                  width: this.viewport.groupWidth
+                }}
+              />
+            ))}
           </MasonryInfiniteScroller>
         </React.Fragment>
       );

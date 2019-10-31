@@ -728,3 +728,73 @@ func TestSilences(t *testing.T) {
 		}
 	}
 }
+
+func TestGroupLimit(t *testing.T) {
+	type testCase struct {
+		groupLimit     string
+		expectedGroups int
+	}
+
+	testCases := []testCase{
+		{
+			groupLimit:     "",
+			expectedGroups: 10,
+		},
+		{
+			groupLimit:     "abc",
+			expectedGroups: 10,
+		},
+		{
+			groupLimit:     "1",
+			expectedGroups: 1,
+		},
+		{
+			groupLimit:     "5",
+			expectedGroups: 5,
+		},
+		{
+			groupLimit:     "10",
+			expectedGroups: 10,
+		},
+		{
+			groupLimit:     "11",
+			expectedGroups: 10,
+		},
+		{
+			groupLimit:     "123",
+			expectedGroups: 10,
+		},
+		{
+			groupLimit:     "0",
+			expectedGroups: 10,
+		},
+	}
+
+	mockConfig()
+	for _, test := range testCases {
+		for _, version := range mock.ListAllMocks() {
+			uri := fmt.Sprintf("/alerts.json?groupLimit=%s", test.groupLimit)
+			t.Logf("Validating %s response using mock files from Alertmanager %s", uri, version)
+			mockAlerts(version)
+			r := ginTestEngine()
+			req := httptest.NewRequest("GET", uri, nil)
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != http.StatusOK {
+				t.Errorf("GET /alerts.json returned status %d", resp.Code)
+			}
+			ur := models.AlertsResponse{}
+			body := resp.Body.Bytes()
+			err := json.Unmarshal(body, &ur)
+			if err != nil {
+				t.Errorf("Failed to unmarshal response: %s", err)
+			}
+			if ur.TotalGroups != 10 {
+				t.Errorf("Got %d total groups, expected 10", ur.TotalGroups)
+			}
+			if len(ur.AlertGroups) != test.expectedGroups {
+				t.Errorf("Got %d groups, expected %d", len(ur.AlertGroups), test.expectedGroups)
+			}
+		}
+	}
+}

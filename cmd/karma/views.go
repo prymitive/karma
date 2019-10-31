@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 	"time"
 
@@ -203,6 +204,16 @@ func alerts(c *gin.Context) {
 	// get filters
 	matchFilters, validFilters := getFiltersFromQuery(c.QueryArray("q"))
 
+	maxGroups := 0
+	groupLimit, found := c.GetQuery("groupLimit")
+	if found {
+		i, err := strconv.ParseInt(groupLimit, 10, 32)
+		if err == nil {
+			maxGroups = int(i)
+		}
+	}
+	log.Debugf("Will enforce group limit, groupLimit=%d", maxGroups)
+
 	// set pointers for data store objects, need a lock until end of view is reached
 	alerts := map[string]models.APIAlertGroup{}
 	colors := models.LabelsColorMap{}
@@ -328,6 +339,7 @@ func alerts(c *gin.Context) {
 			apiAG.DedupSharedMaps()
 			alerts[agCopy.ID] = apiAG
 			resp.TotalAlerts += len(agCopy.Alerts)
+			resp.TotalGroups++
 		}
 
 	}
@@ -338,11 +350,19 @@ func alerts(c *gin.Context) {
 		}
 	}
 
-	resp.AlertGroups = sortAlertGroups(c, alerts)
+	alertGroups := sortAlertGroups(c, alerts)
+	if resp.TotalGroups > 0 && maxGroups > 0 && resp.TotalGroups > maxGroups {
+		alertGroups = alertGroups[:maxGroups]
+	}
+
+	resp.GroupLimit = maxGroups
+	resp.AlertGroups = alertGroups
 	resp.Silences = silences
 	resp.Colors = colors
 	resp.Counters = countersToLabelStats(counters)
 	resp.Filters = populateAPIFilters(matchFilters)
+
+	log.Debugf("Returning %d of total %d group(s)", len(resp.AlertGroups), resp.TotalGroups)
 
 	data, err := json.Marshal(resp)
 	if err != nil {

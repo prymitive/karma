@@ -98,6 +98,8 @@ function NewUnappliedFilter(raw) {
 }
 
 class AlertStore {
+  groupLimit = observable({ value: 50, step: 20 });
+
   filters = observable(
     {
       values: [],
@@ -172,7 +174,9 @@ class AlertStore {
 
   info = observable(
     {
+      groupLimit: 0,
       totalAlerts: 0,
+      totalGroups: 0,
       version: "unknown",
       upgradeNeeded: false
     },
@@ -259,7 +263,7 @@ class AlertStore {
 
     const alertsURI =
       FormatBackendURI(
-        `alerts.json?sortOrder=${sortOrder}&sortLabel=${sortLabel}&sortReverse=${sortReverse}&`
+        `alerts.json?sortOrder=${sortOrder}&sortLabel=${sortLabel}&sortReverse=${sortReverse}&groupLimit=${this.groupLimit.value}&`
       ) + FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
 
     return FetchWithCredentials(alertsURI, {})
@@ -300,6 +304,13 @@ class AlertStore {
     if (JSON.stringify(queryFilters) !== JSON.stringify(responseFilters)) {
       console.info(
         `Got response with filters '${responseFilters}' while expecting results for '${queryFilters}', ignoring`
+      );
+      return;
+    }
+
+    if (result.groupLimit !== this.groupLimit.value) {
+      console.info(
+        `Got response for groupLimit=${result.groupLimit} while expecting results for groupLimit=${this.groupLimit.value}, ignoring`
       );
       return;
     }
@@ -346,7 +357,7 @@ class AlertStore {
       this.info.upgradeNeeded = true;
     }
     // update extra root level keys that are stored under 'info'
-    for (const key of ["totalAlerts", "version"]) {
+    for (const key of ["groupLimit", "totalAlerts", "totalGroups", "version"]) {
       if (this.info[key] !== result[key]) {
         this.info[key] = result[key];
       }
@@ -355,6 +366,10 @@ class AlertStore {
     // settings exported via API
     if (!equal(this.settings.values, result.settings)) {
       this.settings.values = result.settings;
+    }
+
+    if (this.groupLimit.value > this.info.totalGroups) {
+      this.groupLimit.value = Math.max(50, this.info.totalGroups);
     }
 
     this.status.setIdle();

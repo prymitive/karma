@@ -121,6 +121,7 @@ const Fetcher = observer(
           data-grid-sort-order={settingsStore.gridConfig.config.sortOrder}
           data-grid-sort-label={settingsStore.gridConfig.config.sortLabel}
           data-grid-sort-reverse={settingsStore.gridConfig.config.reverseSort}
+          data-group-limit={alertStore.groupLimit.value}
         />
       );
     }

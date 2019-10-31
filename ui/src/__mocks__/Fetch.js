@@ -11,6 +11,8 @@ const EmptyAPIResponse = () => ({
   silences: { default: {} },
   groups: {},
   totalAlerts: 0,
+  totalGroups: 0,
+  groupLimit: 50,
   colors: {},
   filters: [
     {

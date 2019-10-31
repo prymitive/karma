@@ -332,6 +332,19 @@ describe("AlertStore.fetch", () => {
     expect(consoleSpy).toHaveBeenCalledTimes(1);
   });
 
+  it("parseAPIResponse() rejects a response with mismatched groupLimit", () => {
+    const consoleSpy = jest.spyOn(console, "info").mockImplementation(() => {});
+
+    const response = EmptyAPIResponse();
+    const store = new AlertStore(["label=value"]);
+    store.groupLimit.value = 25;
+    store.parseAPIResponse(response);
+
+    expect(store.status.value).toEqual(AlertStoreStatuses.Idle);
+    // console.info should have been called since we emited a log line
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+  });
+
   it("parseAPIResponse() works for a single filter 'label=value'", () => {
     const response = EmptyAPIResponse();
 
@@ -486,5 +499,68 @@ describe("AlertStore.fetch", () => {
       { id: "foo", hash: "newFoo" },
       { id: "bar", hash: "newBar" }
     ]);
+  });
+
+  it("passes groupLimit=50 by default", async () => {
+    const response = EmptyAPIResponse();
+    fetch.mockResponse(JSON.stringify(response));
+
+    const store = new AlertStore(["label=value"]);
+    await expect(store.fetch()).resolves.toBeUndefined();
+    expect(fetch.mock.calls[0][0]).toMatch(/&groupLimit=50&/);
+  });
+
+  it("passes groupLimit using alertStore.groupLimit.value when it changes", async () => {
+    const response = EmptyAPIResponse();
+    fetch.mockResponse(JSON.stringify(response));
+
+    const store = new AlertStore(["label=value"]);
+    await expect(store.fetch()).resolves.toBeUndefined();
+    expect(fetch.mock.calls[0][0]).toMatch(/&groupLimit=50&/);
+
+    store.groupLimit.value = 123;
+    const response123 = EmptyAPIResponse();
+    response123.groupLimit = 123;
+    fetch.mockResponse(JSON.stringify(response123));
+    await expect(store.fetch()).resolves.toBeUndefined();
+    expect(fetch.mock.calls[1][0]).toMatch(/&groupLimit=123&/);
+  });
+
+  it("groupLimit is clamped to the response groupLimit if the response totalGroups < groupLimit", async () => {
+    const response = EmptyAPIResponse();
+    response.totalGroups = 500;
+    fetch.mockResponse(JSON.stringify(response));
+
+    const store = new AlertStore(["label=value"]);
+    store.groupLimit.value = 500;
+    response.groupLimit = 500;
+    fetch.mockResponse(JSON.stringify(response));
+    await expect(store.fetch()).resolves.toBeUndefined();
+    expect(fetch.mock.calls[0][0]).toMatch(/&groupLimit=500&/);
+    expect(store.groupLimit.value).toBe(500);
+
+    response.totalGroups = 123;
+    fetch.mockResponse(JSON.stringify(response));
+    await expect(store.fetch()).resolves.toBeUndefined();
+    expect(store.groupLimit.value).toBe(123);
+  });
+
+  it("groupLimit is reset to 50 if the response totalGroups < 50", async () => {
+    const response = EmptyAPIResponse();
+    response.totalGroups = 500;
+    fetch.mockResponse(JSON.stringify(response));
+
+    const store = new AlertStore(["label=value"]);
+    store.groupLimit.value = 500;
+    response.groupLimit = 500;
+    fetch.mockResponse(JSON.stringify(response));
+    await expect(store.fetch()).resolves.toBeUndefined();
+    expect(fetch.mock.calls[0][0]).toMatch(/&groupLimit=500&/);
+    expect(store.groupLimit.value).toBe(500);
+
+    response.totalGroups = 25;
+    fetch.mockResponse(JSON.stringify(response));
+    await expect(store.fetch()).resolves.toBeUndefined();
+    expect(store.groupLimit.value).toBe(50);
   });
 });

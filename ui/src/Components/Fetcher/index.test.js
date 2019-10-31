@@ -55,20 +55,20 @@ const MountedFetcher = () => {
   );
 };
 
-const FetcherSpan = (label, interval, sortOrder) =>
-  `<span data-filters="${label}" data-interval="${interval}" data-grid-sort-order="${sortOrder}"></span>`;
+const FetcherSpan = (label, interval, sortOrder, groupLimit) =>
+  `<span data-filters="${label}" data-interval="${interval}" data-grid-sort-order="${sortOrder}" data-group-limit="${groupLimit}"></span>`;
 
 describe("<Fetcher />", () => {
   it("renders correctly with 'label=value' filter", () => {
     const tree = MountedFetcher();
-    expect(tree.html()).toBe(FetcherSpan("label=value", 30, "default"));
+    expect(tree.html()).toBe(FetcherSpan("label=value", 30, "default", 50));
   });
 
   it("re-renders on fetch interval change", () => {
     const tree = MountedFetcher();
-    expect(tree.html()).toBe(FetcherSpan("label=value", 30, "default"));
+    expect(tree.html()).toBe(FetcherSpan("label=value", 30, "default", 50));
     settingsStore.fetchConfig.config.interval = 60;
-    expect(tree.html()).toBe(FetcherSpan("label=value", 60, "default"));
+    expect(tree.html()).toBe(FetcherSpan("label=value", 60, "default", 50));
   });
 
   it("changing interval changes how often fetch is called", () => {
@@ -98,9 +98,9 @@ describe("<Fetcher />", () => {
   it("re-renders on filters change", () => {
     MockEmptyAPIResponseWithoutFilters();
     const tree = MountedFetcher();
-    expect(tree.html()).toBe(FetcherSpan("label=value", 30, "default"));
+    expect(tree.html()).toBe(FetcherSpan("label=value", 30, "default", 50));
     alertStore.filters.values = [];
-    expect(tree.html()).toBe(FetcherSpan("", 30, "default"));
+    expect(tree.html()).toBe(FetcherSpan("", 30, "default", 50));
   });
 
   it("calls alertStore.fetchWithThrottle on mount", () => {
