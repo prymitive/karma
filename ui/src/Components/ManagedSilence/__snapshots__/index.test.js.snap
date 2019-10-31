@@ -22,7 +22,7 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
         </svg>
       </div>
       <div class=\\"mx-2 flex-shrink-1 flex-grow-1 mw-1p\\">
-        <div class=\\"font-italic text-truncate overflow-hidden\\">
+        <div class=\\"font-italic text-dark text-truncate overflow-hidden\\">
           Mocked Silence
         </div>
         <div class=\\"components-managed-silence-cite\\">
@@ -105,7 +105,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
         </svg>
       </div>
       <div class=\\"mx-2 flex-shrink-1 flex-grow-1 mw-1p\\">
-        <div class=\\"font-italic \\">
+        <div class=\\"font-italic text-dark \\">
           Mocked Silence
         </div>
         <div class=\\"components-managed-silence-cite\\">

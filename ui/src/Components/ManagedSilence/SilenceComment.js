@@ -22,7 +22,14 @@ const SilenceComment = ({
   alertStore
 }) => {
   const comment = silence.jiraURL ? (
-    <a href={silence.jiraURL} target="_blank" rel="noopener noreferrer">
+    <a
+      href={silence.jiraURL}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={
+        collapsed ? "text-dark mw-100 text-truncate d-block" : "text-dark"
+      }
+    >
       <FontAwesomeIcon className="mr-2" icon={faExternalLinkAlt} />
       {silence.comment}
     </a>
@@ -38,7 +45,7 @@ const SilenceComment = ({
         </div>
         <div className="mx-2 flex-shrink-1 flex-grow-1 mw-1p">
           <div
-            className={`font-italic ${
+            className={`font-italic text-dark ${
               collapsed ? "text-truncate overflow-hidden" : ""
             }`}
           >

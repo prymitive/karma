@@ -307,7 +307,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
             </svg>
           </div>
           <div class=\\"mx-2 flex-shrink-1 flex-grow-1 mw-1p\\">
-            <div class=\\"font-italic text-truncate overflow-hidden\\">
+            <div class=\\"font-italic text-dark text-truncate overflow-hidden\\">
               Mocked Silence
             </div>
             <div class=\\"components-managed-silence-cite\\">
