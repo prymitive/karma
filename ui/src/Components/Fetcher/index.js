@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
 import moment from "moment";
@@ -15,23 +14,6 @@ const Fetcher = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
-
-    lastTick = observable(
-      {
-        time: moment(0),
-        completedAt: moment(0),
-        update() {
-          this.time = moment();
-        },
-        markCompleted() {
-          this.completedAt = moment();
-        }
-      },
-      {
-        update: action,
-        markCompleted: action
-      }
-    );
 
     getSortSettings = () => {
       const { settingsStore } = this.props;
@@ -77,11 +59,7 @@ const Fetcher = observer(
     fetchIfIdle = () => {
       const { alertStore, settingsStore } = this.props;
 
-      // add 5s minimum interval between fetches
-      const idleAt = moment(this.lastTick.completedAt).add(5, "seconds");
-      const isIdle = moment().isSameOrAfter(idleAt);
-
-      const nextTick = moment(this.lastTick.time).add(
+      const nextTick = moment(alertStore.status.lastUpdateAt).add(
         settingsStore.fetchConfig.config.interval,
         "seconds"
       );
@@ -93,13 +71,7 @@ const Fetcher = observer(
         status === AlertStoreStatuses.Fetching.toString() ||
         status === AlertStoreStatuses.Processing.toString();
 
-      if (
-        isIdle &&
-        pastDeadline &&
-        !updateInProgress &&
-        !alertStore.status.paused
-      ) {
-        this.lastTick.update();
+      if (pastDeadline && !updateInProgress && !alertStore.status.paused) {
         this.callFetch();
       }
     };
@@ -117,7 +89,6 @@ const Fetcher = observer(
         sortSettings.sortLabel,
         sortSettings.sortReverse
       );
-      this.lastTick.markCompleted();
     };
 
     componentDidMount() {
@@ -130,7 +101,6 @@ const Fetcher = observer(
       const { alertStore } = this.props;
 
       if (!alertStore.status.paused) {
-        this.lastTick.update();
         this.callFetch();
       }
     }
