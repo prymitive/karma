@@ -96,64 +96,67 @@ func TestAlerts(t *testing.T) {
 		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := ginTestEngine()
-		req := httptest.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
-		resp := httptest.NewRecorder()
-		r.ServeHTTP(resp, req)
-		if resp.Code != http.StatusOK {
-			t.Errorf("GET /alerts.json returned status %d", resp.Code)
-		}
+		// re-run a few times to test the cache
+		for i := 1; i <= 3; i++ {
+			req := httptest.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != http.StatusOK {
+				t.Errorf("GET /alerts.json returned status %d", resp.Code)
+			}
 
-		ur := models.AlertsResponse{}
-		err := json.Unmarshal(resp.Body.Bytes(), &ur)
-		if err != nil {
-			t.Errorf("Failed to unmarshal response: %s", err)
-		}
-		if len(ur.Filters) != 3 {
-			t.Errorf("[%s] Got %d filter(s) in response, expected %d", version, len(ur.Filters), 3)
-		}
-		if len(ur.Colors) != 1 {
-			t.Errorf("[%s] Got %d color(s) in response, expected %d", version, len(ur.Colors), 1)
-		}
-		if len(ur.AlertGroups) != 1 {
-			t.Errorf("[%s] Got %d alert(s) in response, expected %d", version, len(ur.AlertGroups), 1)
-		}
-		if ur.Version == "" {
-			t.Errorf("[%s] Empty version in response", version)
-		}
-		if ur.Timestamp == "" {
-			t.Errorf("[%s] Empty timestamp in response", version)
-		}
-		if ur.Upstreams.Counters.Total == 0 {
-			t.Errorf("[%s] No instances in upstream counter: %v", version, ur.Upstreams.Counters)
-		}
-		if ur.Upstreams.Counters.Healthy == 0 {
-			t.Errorf("[%s] No healthy instances in upstream counter: %v", version, ur.Upstreams.Counters)
-		}
-		if ur.Upstreams.Counters.Failed > 0 {
-			t.Errorf("[%s] %d error(s) in upstream status: %v", version, ur.Upstreams.Counters.Failed, ur.Upstreams)
-		}
-		if len(ur.Upstreams.Instances) == 0 {
-			t.Errorf("[%s] No instances in upstream status: %v", version, ur.Upstreams.Instances)
-		}
-		if ur.Status != "success" {
-			t.Errorf("[%s] Invalid status in response: %s", version, ur.Status)
-		}
-		if len(ur.Counters) != 6 {
-			t.Errorf("[%s] Invalid number of counters in response (%d): %v", version, len(ur.Counters), ur.Counters)
-		}
-		for _, ag := range ur.AlertGroups {
-			for _, a := range ag.Alerts {
-				linkCount := 0
-				for _, annotation := range a.Annotations {
-					if annotation.IsLink {
-						linkCount++
+			ur := models.AlertsResponse{}
+			err := json.Unmarshal(resp.Body.Bytes(), &ur)
+			if err != nil {
+				t.Errorf("Failed to unmarshal response: %s", err)
+			}
+			if len(ur.Filters) != 3 {
+				t.Errorf("[%s] Got %d filter(s) in response, expected %d", version, len(ur.Filters), 3)
+			}
+			if len(ur.Colors) != 1 {
+				t.Errorf("[%s] Got %d color(s) in response, expected %d", version, len(ur.Colors), 1)
+			}
+			if len(ur.AlertGroups) != 1 {
+				t.Errorf("[%s] Got %d alert(s) in response, expected %d", version, len(ur.AlertGroups), 1)
+			}
+			if ur.Version == "" {
+				t.Errorf("[%s] Empty version in response", version)
+			}
+			if ur.Timestamp == "" {
+				t.Errorf("[%s] Empty timestamp in response", version)
+			}
+			if ur.Upstreams.Counters.Total == 0 {
+				t.Errorf("[%s] No instances in upstream counter: %v", version, ur.Upstreams.Counters)
+			}
+			if ur.Upstreams.Counters.Healthy == 0 {
+				t.Errorf("[%s] No healthy instances in upstream counter: %v", version, ur.Upstreams.Counters)
+			}
+			if ur.Upstreams.Counters.Failed > 0 {
+				t.Errorf("[%s] %d error(s) in upstream status: %v", version, ur.Upstreams.Counters.Failed, ur.Upstreams)
+			}
+			if len(ur.Upstreams.Instances) == 0 {
+				t.Errorf("[%s] No instances in upstream status: %v", version, ur.Upstreams.Instances)
+			}
+			if ur.Status != "success" {
+				t.Errorf("[%s] Invalid status in response: %s", version, ur.Status)
+			}
+			if len(ur.Counters) != 6 {
+				t.Errorf("[%s] Invalid number of counters in response (%d): %v", version, len(ur.Counters), ur.Counters)
+			}
+			for _, ag := range ur.AlertGroups {
+				for _, a := range ag.Alerts {
+					linkCount := 0
+					for _, annotation := range a.Annotations {
+						if annotation.IsLink {
+							linkCount++
+						}
 					}
-				}
-				if linkCount != 1 {
-					t.Errorf("Invalid number of links, got %d, expected 1, %v", linkCount, a)
-				}
-				if len(a.Alertmanager) == 0 {
-					t.Errorf("Alertmanager instance list is empty, %v", a)
+					if linkCount != 1 {
+						t.Errorf("Invalid number of links, got %d, expected 1, %v", linkCount, a)
+					}
+					if len(a.Alertmanager) == 0 {
+						t.Errorf("Alertmanager instance list is empty, %v", a)
+					}
 				}
 			}
 		}
@@ -166,25 +169,28 @@ func TestValidateAllAlerts(t *testing.T) {
 		t.Logf("Validating alerts.json response using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := ginTestEngine()
-		req := httptest.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
-		resp := httptest.NewRecorder()
-		r.ServeHTTP(resp, req)
-		if resp.Code != http.StatusOK {
-			t.Errorf("GET /alerts.json returned status %d", resp.Code)
-		}
-		ur := models.AlertsResponse{}
-		body := resp.Body.Bytes()
-		err := json.Unmarshal(body, &ur)
-		if err != nil {
-			t.Errorf("Failed to unmarshal response: %s", err)
-		}
-		for _, ag := range ur.AlertGroups {
-			for _, a := range ag.Alerts {
-				if !slices.StringInSlice(models.AlertStateList, a.State) {
-					t.Errorf("Invalid alert status '%s', not in %v", a.State, models.AlertStateList)
-				}
-				if len(a.Alertmanager) == 0 {
-					t.Errorf("Alertmanager instance list is empty, %v", a)
+		// re-run a few times to test the cache
+		for i := 1; i <= 3; i++ {
+			req := httptest.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != http.StatusOK {
+				t.Errorf("GET /alerts.json returned status %d", resp.Code)
+			}
+			ur := models.AlertsResponse{}
+			body := resp.Body.Bytes()
+			err := json.Unmarshal(body, &ur)
+			if err != nil {
+				t.Errorf("Failed to unmarshal response: %s", err)
+			}
+			for _, ag := range ur.AlertGroups {
+				for _, a := range ag.Alerts {
+					if !slices.StringInSlice(models.AlertStateList, a.State) {
+						t.Errorf("Invalid alert status '%s', not in %v", a.State, models.AlertStateList)
+					}
+					if len(a.Alertmanager) == 0 {
+						t.Errorf("Alertmanager instance list is empty, %v", a)
+					}
 				}
 			}
 		}
@@ -345,36 +351,39 @@ func TestAutocomplete(t *testing.T) {
 		mockAlerts(version)
 		r := ginTestEngine()
 
-		req := httptest.NewRequest("GET", "/autocomplete.json", nil)
-		resp := httptest.NewRecorder()
-		r.ServeHTTP(resp, req)
-		if resp.Code != http.StatusBadRequest {
-			t.Errorf("Invalid status code for request without any query: %d", resp.Code)
-		}
-
-		for _, acTest := range acTests {
-			url := fmt.Sprintf("/autocomplete.json?term=%s", acTest.Term)
-			req := httptest.NewRequest("GET", url, nil)
+		// re-run a few times to test the cache
+		for i := 1; i <= 3; i++ {
+			req := httptest.NewRequest("GET", "/autocomplete.json", nil)
 			resp := httptest.NewRecorder()
 			r.ServeHTTP(resp, req)
-
-			if resp.Code != http.StatusOK {
-				t.Errorf("GET %s returned status %d", url, resp.Code)
+			if resp.Code != http.StatusBadRequest {
+				t.Errorf("Invalid status code for request without any query: %d", resp.Code)
 			}
 
-			ur := []string{}
-			err := json.Unmarshal(resp.Body.Bytes(), &ur)
-			if err != nil {
-				t.Errorf("Failed to unmarshal response: %s", err)
-			}
+			for _, acTest := range acTests {
+				url := fmt.Sprintf("/autocomplete.json?term=%s", acTest.Term)
+				req := httptest.NewRequest("GET", url, nil)
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
 
-			if len(ur) != len(acTest.Results) {
-				t.Errorf("Invalid number of autocomplete hints for %s, got %d, expected %d", url, len(ur), len(acTest.Results))
-				t.Errorf("Results: %s", ur)
-			}
-			for i := range ur {
-				if ur[i] != acTest.Results[i] {
-					t.Errorf("Result mismatch for term='%s', got '%s' when '%s' was expected", acTest.Term, ur[i], acTest.Results[i])
+				if resp.Code != http.StatusOK {
+					t.Errorf("GET %s returned status %d", url, resp.Code)
+				}
+
+				ur := []string{}
+				err := json.Unmarshal(resp.Body.Bytes(), &ur)
+				if err != nil {
+					t.Errorf("Failed to unmarshal response: %s", err)
+				}
+
+				if len(ur) != len(acTest.Results) {
+					t.Errorf("Invalid number of autocomplete hints for %s, got %d, expected %d", url, len(ur), len(acTest.Results))
+					t.Errorf("Results: %s", ur)
+				}
+				for i := range ur {
+					if ur[i] != acTest.Results[i] {
+						t.Errorf("Result mismatch for term='%s', got '%s' when '%s' was expected", acTest.Term, ur[i], acTest.Results[i])
+					}
 				}
 			}
 		}
@@ -465,20 +474,23 @@ func TestGzipMiddleware(t *testing.T) {
 	r := ginTestEngine()
 	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
-		req := httptest.NewRequest("GET", path, nil)
-		req.Header.Set("Accept-Encoding", "gzip")
-		resp := httptest.NewRecorder()
-		r.ServeHTTP(resp, req)
-		h := resp.Header()
+		// re-run a few times to test the cache
+		for i := 1; i <= 3; i++ {
+			req := httptest.NewRequest("GET", path, nil)
+			req.Header.Set("Accept-Encoding", "gzip")
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			h := resp.Header()
 
-		ce := h.Get("Content-Encoding")
-		if ce != "gzip" {
-			t.Errorf("Inavlid 'Content-Encoding' in response for '%s', expected 'gzip', got '%s'", path, ce)
-		}
+			ce := h.Get("Content-Encoding")
+			if ce != "gzip" {
+				t.Errorf("Inavlid 'Content-Encoding' in response for '%s', expected 'gzip', got '%s'", path, ce)
+			}
 
-		bs := h.Get("Content-Length")
-		if fmt.Sprint(resp.Body.Len()) != bs {
-			t.Errorf("Invalid 'Content-Length' in response for '%s', body size was %d but header value was '%s'", path, resp.Body.Len(), bs)
+			bs := h.Get("Content-Length")
+			if fmt.Sprint(resp.Body.Len()) != bs {
+				t.Errorf("Invalid 'Content-Length' in response for '%s', body size was %d but header value was '%s'", path, resp.Body.Len(), bs)
+			}
 		}
 	}
 }
@@ -488,21 +500,24 @@ func TestGzipMiddlewareWithoutAcceptEncoding(t *testing.T) {
 	r := ginTestEngine()
 	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
-		req := httptest.NewRequest("GET", path, nil)
-		req.Header.Set("Accept-Encoding", "") // ensure that we don't pass anything up
-		resp := httptest.NewRecorder()
-		r.ServeHTTP(resp, req)
-		h := resp.Header()
+		// re-run a few times to test the cache
+		for i := 1; i <= 3; i++ {
+			req := httptest.NewRequest("GET", path, nil)
+			req.Header.Set("Accept-Encoding", "") // ensure that we don't pass anything up
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			h := resp.Header()
 
-		ce := h.Get("Content-Encoding")
-		if ce == "gzip" {
-			t.Errorf("Inavlid 'Content-Encoding' in response for '%s', expected '', got '%s'", path, ce)
-		}
+			ce := h.Get("Content-Encoding")
+			if ce == "gzip" {
+				t.Errorf("Inavlid 'Content-Encoding' in response for '%s', expected '', got '%s'", path, ce)
+			}
 
-		bs := h.Get("Content-Length")
-		// if we got Content-Length then compare it with body size
-		if bs != "" && fmt.Sprint(resp.Body.Len()) != bs {
-			t.Errorf("Invalid 'Content-Length' in response for '%s', body size was %d but header value was '%s'", path, resp.Body.Len(), bs)
+			bs := h.Get("Content-Length")
+			// if we got Content-Length then compare it with body size
+			if bs != "" && fmt.Sprint(resp.Body.Len()) != bs {
+				t.Errorf("Invalid 'Content-Length' in response for '%s', body size was %d but header value was '%s'", path, resp.Body.Len(), bs)
+			}
 		}
 	}
 }
@@ -686,26 +701,29 @@ func TestSilences(t *testing.T) {
 			t.Logf("Validating silences.json response using mock files from Alertmanager %s", version)
 			mockAlerts(version)
 			r := ginTestEngine()
-			uri := fmt.Sprintf("/silences.json?showExpired=%s&sortReverse=%s&searchTerm=%s", testCase.showExpired, testCase.sortReverse, testCase.searchTerm)
-			req := httptest.NewRequest("GET", uri, nil)
-			resp := httptest.NewRecorder()
-			r.ServeHTTP(resp, req)
-			if resp.Code != http.StatusOK {
-				t.Errorf("GET /silences.json returned status %d", resp.Code)
-			}
-			ur := []models.ManagedSilence{}
-			body := resp.Body.Bytes()
-			err := json.Unmarshal(body, &ur)
-			if err != nil {
-				t.Errorf("Failed to unmarshal response: %s", err)
-			}
-			results := []string{}
-			for _, silence := range ur {
-				results = append(results, silence.Silence.Comment)
-			}
-			sort.Strings(results) // can't rely on API order since it's sorted based on timestamps, resort
-			if diff := cmp.Diff(testCase.results, results); diff != "" {
-				t.Errorf("Wrong silences returned (-want +got):\n%s", diff)
+			// re-run a few times to test the cache
+			for i := 1; i <= 3; i++ {
+				uri := fmt.Sprintf("/silences.json?showExpired=%s&sortReverse=%s&searchTerm=%s", testCase.showExpired, testCase.sortReverse, testCase.searchTerm)
+				req := httptest.NewRequest("GET", uri, nil)
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != http.StatusOK {
+					t.Errorf("GET /silences.json returned status %d", resp.Code)
+				}
+				ur := []models.ManagedSilence{}
+				body := resp.Body.Bytes()
+				err := json.Unmarshal(body, &ur)
+				if err != nil {
+					t.Errorf("Failed to unmarshal response: %s", err)
+				}
+				results := []string{}
+				for _, silence := range ur {
+					results = append(results, silence.Silence.Comment)
+				}
+				sort.Strings(results) // can't rely on API order since it's sorted based on timestamps, resort
+				if diff := cmp.Diff(testCase.results, results); diff != "" {
+					t.Errorf("Wrong silences returned (-want +got):\n%s", diff)
+				}
 			}
 		}
 	}
