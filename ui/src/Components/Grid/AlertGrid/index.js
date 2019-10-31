@@ -94,19 +94,22 @@ const AlertGrid = observer(
       10
     );
 
-    // how many alert groups to render
-    // FIXME reset on filter change
     initial = 50;
     groupsToRender = observable(
       {
-        value: this.initial
+        value: this.initial,
+        setValue(value) {
+          this.value = value;
+        }
       },
-      {},
+      {
+        setValue: action.bound
+      },
       { name: "Groups to render" }
     );
     // how many groups add to render count when user scrolls to the bottom
     loadMoreStep = 30;
-    //
+
     loadMore = action(() => {
       const { alertStore } = this.props;
 
@@ -132,6 +135,16 @@ const AlertGrid = observer(
       }
 
       window.addEventListener("resize", this.handleResize);
+    }
+
+    componentDidUpdate() {
+      const { alertStore } = this.props;
+
+      if (this.groupsToRender.value > alertStore.data.groups.length) {
+        this.groupsToRender.setValue(
+          Math.max(this.initial, alertStore.data.groups.length)
+        );
+      }
     }
 
     componentWillUnmount() {
