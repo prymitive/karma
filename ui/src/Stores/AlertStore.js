@@ -6,6 +6,8 @@ import equal from "fast-deep-equal";
 
 import qs from "qs";
 
+import moment from "moment";
+
 import { FetchWithCredentials } from "Common/Fetch";
 
 const QueryStringEncodeOptions = {
@@ -210,11 +212,13 @@ class AlertStore {
   status = observable(
     {
       value: AlertStoreStatuses.Idle,
+      lastUpdateAt: 0,
       error: null,
       paused: false,
       setIdle() {
         this.value = AlertStoreStatuses.Idle;
         this.error = null;
+        this.lastUpdateAt = moment();
       },
       setFetching() {
         this.value = AlertStoreStatuses.Fetching;
@@ -226,6 +230,7 @@ class AlertStore {
       setFailure(err) {
         this.value = AlertStoreStatuses.Failure;
         this.error = err;
+        this.lastUpdateAt = moment();
       },
       pause() {
         this.paused = true;

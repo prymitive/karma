@@ -25,7 +25,9 @@ beforeEach(() => {
   alertStore = new AlertStore(["label=value"]);
   fetchSpy = jest
     .spyOn(alertStore, "fetchWithThrottle")
-    .mockImplementation(() => {});
+    .mockImplementation(() => {
+      alertStore.status.setIdle();
+    });
 
   settingsStore = new Settings();
   settingsStore.fetchConfig.config.interval = 30;
