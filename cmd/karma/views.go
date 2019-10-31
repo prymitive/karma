@@ -412,6 +412,16 @@ func autocomplete(c *gin.Context) {
 
 func silences(c *gin.Context) {
 	noCache(c)
+	start := time.Now()
+
+	cacheKey := c.Request.RequestURI
+
+	data, found := apiCache.Get(cacheKey)
+	if found {
+		c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
+		logAlertsView(c, "HIT", time.Since(start))
+		return
+	}
 
 	dedupedSilences := []models.ManagedSilence{}
 
@@ -500,5 +510,8 @@ func silences(c *gin.Context) {
 		panic(err)
 	}
 
-	c.Data(http.StatusOK, gin.MIMEJSON, data)
+	apiCache.Set(cacheKey, data, time.Second*15)
+
+	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
+	logAlertsView(c, "MIS", time.Since(start))
 }
