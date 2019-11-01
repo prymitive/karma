@@ -104,6 +104,27 @@ describe("<AlertGrid />", () => {
     expect(alertGroups).toHaveLength(80);
   });
 
+  it("resets groupsToRender.value back to 50 if current value is > alertStore.data.groups.length", () => {
+    MockGroupList(100, 5);
+    const tree = ShallowAlertGrid();
+    expect(tree.find("AlertGroup")).toHaveLength(50);
+    expect(tree.instance().groupsToRender.value).toBe(50);
+
+    tree.instance().loadMore();
+    expect(tree.find("AlertGroup")).toHaveLength(80);
+    expect(tree.instance().groupsToRender.value).toBe(80);
+
+    MockGroupList(10, 5);
+    tree.instance().componentDidUpdate();
+    expect(tree.find("AlertGroup")).toHaveLength(10);
+    expect(tree.instance().groupsToRender.value).toBe(50);
+
+    MockGroupList(100, 5);
+    tree.instance().componentDidUpdate();
+    expect(tree.find("AlertGroup")).toHaveLength(50);
+    expect(tree.instance().groupsToRender.value).toBe(50);
+  });
+
   it("calling masonryRepack() calls forcePack() on Masonry instance`", () => {
     const tree = ShallowAlertGrid();
     const instance = tree.instance();
