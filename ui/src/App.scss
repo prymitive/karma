@@ -28,6 +28,8 @@ $pagination-active-bg: $pagination-hover-bg;
 $pagination-disabled-color: #fff;
 $pagination-disabled-bg: #dee2e6; // gray-300
 
+$enable-shadows: true;
+
 @import "~bootswatch/dist/flatly/variables";
 @import "~bootstrap/scss/bootstrap";
 @import "~bootswatch/dist/flatly/bootswatch";
