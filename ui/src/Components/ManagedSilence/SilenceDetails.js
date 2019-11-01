@@ -98,7 +98,7 @@ const SilenceDetails = ({
               {silence.matchers.map(matcher => (
                 <span
                   key={hash(matcher)}
-                  className="badge badge-light px-1 mr-1 components-label"
+                  className="badge badge-primary px-1 mr-1 components-label"
                 >
                   {matcher.name}
                   {matcher.isRegex

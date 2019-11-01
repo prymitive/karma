@@ -41,17 +41,20 @@ const SilenceComment = ({
     <React.Fragment>
       <div className="d-flex flex-row">
         <div className="flex-shrink-0 flex-grow-0">
-          <FontAwesomeIcon icon={faBellSlash} className="text-muted" />
+          <FontAwesomeIcon
+            icon={faBellSlash}
+            className="components-managed-silence-icon text-muted"
+          />
         </div>
         <div className="mx-2 flex-shrink-1 flex-grow-1 mw-1p">
           <div
-            className={`font-italic text-dark ${
+            className={`font-italic text-dark components-managed-silence-comment ${
               collapsed ? "text-truncate overflow-hidden" : ""
             }`}
           >
             {comment}
           </div>
-          <div className="components-managed-silence-cite">
+          <div className="components-managed-silence-cite mt-1">
             <span className="text-muted mr-2 font-italic">
               &mdash; {silence.createdBy}
             </span>
@@ -59,7 +62,7 @@ const SilenceComment = ({
           </div>
         </div>
         <div className="flex-shrink-0 flex-grow-0">
-          <div className="d-flex flex-column flex-sm-row justify-content-between">
+          <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center">
             <FilteringCounterBadge
               alertStore={alertStore}
               name="@silence_id"
@@ -70,7 +73,9 @@ const SilenceComment = ({
             />
             <FontAwesomeIcon
               icon={collapsed ? faChevronUp : faChevronDown}
-              className="my-sm-auto mt-2 mb-0 ml-sm-2 ml-auto mr-sm-0 mr-1 text-muted cursor-pointer"
+              className={`components-managed-silence-icon ${alertCount &&
+                alertCountAlwaysVisible &&
+                "my-sm-auto mt-2 mb-0"} ml-sm-2 ml-auto mr-sm-0 mr-1 text-muted cursor-pointer`}
               onClick={collapseToggle}
             />
           </div>
