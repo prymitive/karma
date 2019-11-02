@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import hash from "object-hash";
@@ -6,18 +6,44 @@ import hash from "object-hash";
 import moment from "moment";
 import Moment from "react-moment";
 
+import copy from "copy-to-clipboard";
+
+import Flash from "react-reveal/Flash";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
 import { faCalendarCheck } from "@fortawesome/free-solid-svg-icons/faCalendarCheck";
 import { faCalendarTimes } from "@fortawesome/free-solid-svg-icons/faCalendarTimes";
 import { faFilter } from "@fortawesome/free-solid-svg-icons/faFilter";
 import { faHome } from "@fortawesome/free-solid-svg-icons/faHome";
+import { faFingerprint } from "@fortawesome/free-solid-svg-icons/faFingerprint";
+import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
 
 import { APISilence } from "Models/API";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { QueryOperators } from "Common/Query";
+import { TooltipWrapper } from "Components/TooltipWrapper";
 import { RenderLinkAnnotation } from "Components/Grid/AlertGrid/AlertGroup/Annotation";
 import { DeleteSilence } from "./DeleteSilence";
+
+const SilenceIDCopyButton = ({ id }) => {
+  const [clickCount, setClickCount] = useState(0);
+  return (
+    <TooltipWrapper title="Copy silence ID to the clipboard">
+      <Flash spy={clickCount} duration={500}>
+        <span
+          className="badge badge-secondary px-1 mr-1 components-label cursor-pointer"
+          onClick={() => {
+            copy(id);
+            setClickCount(clickCount + 1);
+          }}
+        >
+          <FontAwesomeIcon icon={faCopy} />
+        </span>
+      </Flash>
+    </TooltipWrapper>
+  );
+};
 
 const SilenceDetails = ({
   alertStore,
@@ -62,6 +88,20 @@ const SilenceDetails = ({
               />
               {expiresLabel} <Moment fromNow>{silence.endsAt}</Moment>
             </span>
+          </div>
+          <div className="my-1 d-flex flex-row">
+            <span className="badge px-1 mr-1 components-label flex-grow-0 flex-shrink-0">
+              <FontAwesomeIcon
+                className="text-muted mr-1"
+                icon={faFingerprint}
+                fixedWidth
+              />
+              ID:
+            </span>
+            <span className="badge badge-light px-1 mr-1 components-label">
+              {silence.id}
+            </span>
+            <SilenceIDCopyButton id={silence.id} />
           </div>
           <div className="my-1">
             <span className="badge px-1 mr-1 components-label">

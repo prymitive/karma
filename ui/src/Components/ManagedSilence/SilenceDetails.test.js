@@ -4,6 +4,8 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
+import copy from "copy-to-clipboard";
+
 import moment from "moment";
 import { advanceTo, clear } from "jest-date-mock";
 
@@ -83,5 +85,13 @@ describe("<SilenceDetails />", () => {
     expect(link.props().href).toBe(
       "http://example.com/#/silences/04d37636-2350-4878-b382-e0b50353230f"
     );
+  });
+
+  it("clicking on the copy button copies silence ID to the clipboard", () => {
+    const tree = MountedSilenceDetails();
+    const button = tree.find("span.badge.badge-secondary");
+    button.simulate("click");
+    expect(copy).toHaveBeenCalledTimes(1);
+    expect(copy).toHaveBeenCalledWith(silence.id);
   });
 });
