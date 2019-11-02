@@ -1,6 +1,6 @@
 __defaults_go: &DEFAULTS_GO
   language: go
-  go: "1.13.3"
+  go: "1.13.4"
   cache:
     directories:
       # https://restic.net/blog/2018-09-02/travis-build-cache
