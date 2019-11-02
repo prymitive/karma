@@ -54,11 +54,11 @@ def jsonPostRequest(uri, data):
 
 
 def addSilence(matchers, startsAt, endsAt, createdBy, comment):
-    uri = "{}/api/v1/silences".format(APIs[0])
+    uri = "{}/api/v2/silences".format(APIs[0])
 
     silences = jsonGetRequest(uri)
     found = False
-    for silence in silences["data"]:
+    for silence in silences:
         if silence["status"]["state"] != "active":
             continue
         if silence["createdBy"] == createdBy and silence["comment"] == comment:
@@ -79,7 +79,7 @@ def addSilence(matchers, startsAt, endsAt, createdBy, comment):
 
 def addAlerts(alerts):
     for api in APIs:
-        jsonPostRequest("{}/api/v1/alerts".format(api), alerts)
+        jsonPostRequest("{}/api/v2/alerts".format(api), alerts)
 
 
 def newMatcher(name, value, isRegex):
