@@ -164,6 +164,12 @@ func alerts(c *gin.Context) {
 				Labels: config.Config.SilenceForm.Strip.Labels,
 			},
 		},
+		AlertAcknowledgement: models.AlertAcknowledgementSettings{
+			Enabled:         config.Config.AlertAcknowledgement.Enabled,
+			DurationSeconds: int(config.Config.AlertAcknowledgement.Duration.Seconds()),
+			Author:          config.Config.AlertAcknowledgement.Author,
+			CommentPrefix:   config.Config.AlertAcknowledgement.CommentPrefix,
+		},
 	}
 
 	if config.Config.Grid.Sorting.CustomValues.Labels != nil {

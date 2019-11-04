@@ -39,6 +39,11 @@ func init() {
 
 	pflag.String("karma.name", "karma", "Name for the karma instance")
 
+	pflag.Bool("alertAcknowledgement.enabled", false, "Enable alert acknowledging")
+	pflag.Duration("alertAcknowledgement.duration", time.Minute*15, "Initial silence duration when acknowledging alerts with short lived silences")
+	pflag.String("alertAcknowledgement.author", "karma", "Default silence author when acknowledging alerts with short lived silences")
+	pflag.String("alertAcknowledgement.commentPrefix", "ACK!", "Comment prefix used when acknowledging alerts with short lived silences")
+
 	pflag.Bool(
 		"annotations.default.hidden", false,
 		"Hide all annotations by default unless explicitly listed in the 'visible' list")
@@ -153,6 +158,10 @@ func (config *configSchema) Read() {
 
 	config.Alertmanager.Servers = []alertmanagerConfig{}
 	config.Alertmanager.Interval = v.GetDuration("alertmanager.interval")
+	config.AlertAcknowledgement.Enabled = v.GetBool("alertAcknowledgement.enabled")
+	config.AlertAcknowledgement.Author = v.GetString("alertAcknowledgement.author")
+	config.AlertAcknowledgement.CommentPrefix = v.GetString("alertAcknowledgement.commentPrefix")
+	config.AlertAcknowledgement.Duration = v.GetDuration("alertAcknowledgement.duration")
 	config.Annotations.Default.Hidden = v.GetBool("annotations.default.hidden")
 	config.Annotations.Hidden = v.GetStringSlice("annotations.hidden")
 	config.Annotations.Visible = v.GetStringSlice("annotations.visible")
