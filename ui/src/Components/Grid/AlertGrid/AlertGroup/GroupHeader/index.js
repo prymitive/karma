@@ -13,6 +13,7 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";
+import { AlertAck } from "Components/AlertAck";
 import { GroupMenu } from "./GroupMenu";
 
 const GroupHeader = observer(
@@ -65,6 +66,13 @@ const GroupHeader = observer(
             ))}
           </span>
           <span className="flex-shrink-0 flex-grow-0 ml-auto pl-1">
+            {group.stateCount.active > 0 && (
+              <AlertAck
+                alertStore={alertStore}
+                silenceFormStore={silenceFormStore}
+                group={group}
+              />
+            )}
             <FilteringCounterBadge
               name="@state"
               value="unprocessed"

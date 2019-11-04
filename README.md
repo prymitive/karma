@@ -54,6 +54,13 @@ all current alerts.
 
 ![Overview](/docs/overview.png)
 
+Starting with `v0.50` karma can create short lived silences to acknowledge
+alerts with a single button click. To create silences that will resolve itself
+only after all alerts are resolved you can use
+[kthxbye](https://github.com/prymitive/kthxbye).
+See [configuration docs](/docs/CONFIGURATION.md#alert-acknowledgement) for
+details.
+
 [Online demo](https://karma-demo.herokuapp.com/)
 
 To get notifications about new karma releases go to

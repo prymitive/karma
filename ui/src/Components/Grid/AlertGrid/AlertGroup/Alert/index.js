@@ -75,7 +75,11 @@ const Alert = observer(
       }
 
       return (
-        <li className={classNames.join(" ")}>
+        <li
+          className={classNames.join(" ")}
+          onMouseEnter={this.toggleHover}
+          onMouseLeave={this.toggleHover}
+        >
           <div>
             {alert.annotations
               .filter(a => a.isLink === false)
