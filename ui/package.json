@@ -58,7 +58,7 @@
     "react-transition-group": "4.3.0",
     "semver": "6.3.0",
     "typeface-open-sans": "0.0.75",
-    "typescript": "3.6.4"
+    "typescript": "3.7.2"
   },
   "scripts": {
     "start": "NODE_ENV=dev REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
