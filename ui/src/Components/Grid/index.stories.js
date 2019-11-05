@@ -83,6 +83,8 @@ storiesOf("Grid", module)
     const settingsStore = new Settings();
     const silenceFormStore = new SilenceFormStore();
 
+    alertStore.settings.values.alertAcknowledgement.enabled = true;
+
     const silence = MockSilence();
     silence.startsAt = "2018-08-14T12:00:00Z";
     silence.endsAt = "2018-08-14T18:00:00Z";
