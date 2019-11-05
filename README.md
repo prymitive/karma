@@ -23,7 +23,7 @@ Alertmanager instances it was found at and can be filtered based on those tags
 (`@alertmanager`). Note that `@alertmanager` tags will be visible only if karma
 is configured with multiple Alertmanager instances.
 
-![Screenshot](/docs/screenshot.png)
+![Screenshot](/docs/img/screenshot.png)
 
 Alerts are displayed grouped preserving
 [group_by](https://prometheus.io/docs/alerting/configuration/#route)
@@ -36,23 +36,32 @@ icon.
 Each individual alert will show unique labels and annotations. Labels
 and annotations that are shared between all alerts are moved to the footer.
 
-![Example](/docs/alertGroup.png)
+![Example](/docs/img/alertGroup.png)
 
 If all alerts in a group were suppressed by the same silence then, to save
 screen space, the silence will also be moved to the footer.
 
-![Deduplicated silence](/docs/footerSilence.png)
+![Deduplicated silence](/docs/img/footerSilence.png)
 
 Silence modal allows to create new silences and manage all silences already
 present in Alertmanager.
 
-![Silence browser](/docs/silenceBrowser.png)
+![Silence browser](/docs/img/silenceBrowser.png)
 
 Clicking on the alert counter in the top left corner will open the overview
 modal, which allows to quickly get an overview of the top label values for
 all current alerts.
 
-![Overview](/docs/overview.png)
+![Overview](/docs/img/overview.png)
+
+Starting with `v0.50` karma can create short lived silences to acknowledge
+alerts with a single button click. To create silences that will resolve itself
+only after all alerts are resolved you can use
+[kthxbye](https://github.com/prymitive/kthxbye).
+See [configuration docs](/docs/CONFIGURATION.md#alert-acknowledgement) for
+details. Example:
+
+![Acknowledgement demo](/docs/img/ack.gif)
 
 [Online demo](https://karma-demo.herokuapp.com/)
 

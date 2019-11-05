@@ -48,6 +48,12 @@ const EmptyAPIResponse = () => ({
         labels: []
       }
     },
+    alertAcknowledgement: {
+      enabled: false,
+      durationSeconds: 900,
+      author: "karma / author missing",
+      commentPrefix: ""
+    },
     staticColorLabels: ["job"],
     annotationsDefaultHidden: false,
     annotationsHidden: [],

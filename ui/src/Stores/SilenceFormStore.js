@@ -36,6 +36,80 @@ const SilenceTabNames = Object.freeze({
   Browser: "browser"
 });
 
+const MatchersFromGroup = (group, stripLabels, alerts) => {
+  let matchers = [];
+
+  // add matchers for all shared labels in this group
+  for (const [key, value] of Object.entries(
+    Object.assign({}, group.labels, group.shared.labels)
+  )) {
+    if (!stripLabels.includes(key)) {
+      const matcher = NewEmptyMatcher();
+      matcher.name = key;
+      matcher.values = [MatcherValueToObject(value)];
+      matchers.push(matcher);
+    }
+  }
+
+  // add matchers for all unique labels in this group
+  let labels = {};
+  const allAlerts = alerts ? alerts : group.alerts;
+  for (const alert of allAlerts) {
+    for (const [key, value] of Object.entries(alert.labels)) {
+      if (!stripLabels.includes(key)) {
+        if (!labels[key]) {
+          labels[key] = new Set();
+        }
+        labels[key].add(value);
+      }
+    }
+  }
+  for (const [key, values] of Object.entries(labels)) {
+    matchers.push({
+      id: uniqueId(),
+      name: key,
+      values: [...values].sort().map(value => MatcherValueToObject(value)),
+      suggestions: {
+        names: [],
+        values: []
+      },
+      isRegex: values.size > 1
+    });
+  }
+
+  return matchers;
+};
+
+const GenerateAlertmanagerSilenceData = (
+  startsAt,
+  endsAt,
+  matchers,
+  author,
+  comment,
+  silenceID
+) => {
+  const payload = {
+    matchers: matchers.map(m => ({
+      name: m.name,
+      value:
+        m.values.length > 1
+          ? `(${m.values.map(v => v.value).join("|")})`
+          : m.values.length === 1
+          ? m.values[0].value
+          : "",
+      isRegex: m.isRegex
+    })),
+    startsAt: startsAt.toISOString(),
+    endsAt: endsAt.toISOString(),
+    createdBy: author,
+    comment: comment
+  };
+  if (silenceID !== null) {
+    payload.id = silenceID;
+  }
+  return payload;
+};
+
 class SilenceFormStore {
   // this is used to store modal visibility toggle
   toggle = observable(
@@ -141,49 +215,7 @@ class SilenceFormStore {
 
       // if alerts argument is not passed all group alerts will be used
       fillMatchersFromGroup(group, stripLabels, alerts) {
-        let matchers = [];
-
-        // add matchers for all shared labels in this group
-        for (const [key, value] of Object.entries(
-          Object.assign({}, group.labels, group.shared.labels)
-        )) {
-          if (!stripLabels.includes(key)) {
-            const matcher = NewEmptyMatcher();
-            matcher.name = key;
-            matcher.values = [MatcherValueToObject(value)];
-            matchers.push(matcher);
-          }
-        }
-
-        // add matchers for all unique labels in this group
-        let labels = {};
-        const allAlerts = alerts ? alerts : group.alerts;
-        for (const alert of allAlerts) {
-          for (const [key, value] of Object.entries(alert.labels)) {
-            if (!stripLabels.includes(key)) {
-              if (!labels[key]) {
-                labels[key] = new Set();
-              }
-              labels[key].add(value);
-            }
-          }
-        }
-        for (const [key, values] of Object.entries(labels)) {
-          matchers.push({
-            id: uniqueId(),
-            name: key,
-            values: [...values]
-              .sort()
-              .map(value => MatcherValueToObject(value)),
-            suggestions: {
-              names: [],
-              values: []
-            },
-            isRegex: values.size > 1
-          });
-        }
-
-        this.matchers = matchers;
+        this.matchers = MatchersFromGroup(group, stripLabels, alerts);
         // ensure that silenceID is nulled, since it's used to edit silences
         // and this is used to silence groups
         this.silenceID = null;
@@ -241,32 +273,14 @@ class SilenceFormStore {
       },
 
       get toAlertmanagerPayload() {
-        const payload = {
-          matchers: this.matchers.map(m => ({
-            name: m.name,
-            value:
-              m.values.length > 1
-                ? `(${m.values.map(v => v.value).join("|")})`
-                : m.values.length === 1
-                ? m.values[0].value
-                : "",
-            isRegex: m.isRegex
-          })),
-          startsAt: this.startsAt
-            .second(0)
-            .millisecond(0)
-            .toISOString(),
-          endsAt: this.endsAt
-            .second(0)
-            .millisecond(0)
-            .toISOString(),
-          createdBy: this.author,
-          comment: this.comment
-        };
-        if (this.silenceID !== null) {
-          payload.id = this.silenceID;
-        }
-        return payload;
+        return GenerateAlertmanagerSilenceData(
+          this.startsAt.second(0).millisecond(0),
+          this.endsAt.second(0).millisecond(0),
+          this.matchers,
+          this.author,
+          this.comment,
+          this.silenceID
+        );
       },
 
       get toDuration() {
@@ -306,5 +320,7 @@ export {
   NewEmptyMatcher,
   MatcherValueToObject,
   AlertmanagerClustersToOption,
-  SilenceTabNames
+  SilenceTabNames,
+  MatchersFromGroup,
+  GenerateAlertmanagerSilenceData
 };

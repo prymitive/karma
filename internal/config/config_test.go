@@ -69,6 +69,11 @@ func testReadConfig(t *testing.T) {
       key: ""
       insecureSkipVerify: false
     headers: {}
+alertAcknowledgement:
+  enabled: false
+  duration: 15m0s
+  author: karma
+  commentPrefix: ACK!
 annotations:
   default:
     hidden: true

@@ -9,6 +9,11 @@ alertmanager:
       uri: "http://localhost:9094"
       timeout: 10s
       proxy: true
+alertAcknowledgement:
+  enabled: true
+  duration: 15m0s
+  author: karma-ack
+  commentPrefix: ACK!
 annotations:
   hidden:
     - help

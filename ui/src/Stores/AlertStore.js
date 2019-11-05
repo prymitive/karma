@@ -200,6 +200,12 @@ class AlertStore {
           strip: {
             labels: []
           }
+        },
+        alertAcknowledgement: {
+          enabled: false,
+          durationSeconds: 900,
+          author: "karma / author missing",
+          commentPrefix: ""
         }
       }
     },

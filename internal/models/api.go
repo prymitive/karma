@@ -278,14 +278,22 @@ type SilenceFormSettings struct {
 	Author string                   `json:"author"`
 }
 
+type AlertAcknowledgementSettings struct {
+	Enabled         bool   `json:"enabled"`
+	DurationSeconds int    `json:"durationSeconds"`
+	Author          string `json:"author"`
+	CommentPrefix   string `json:"commentPrefix"`
+}
+
 // Settings is used to export karma configuration that is used by UI
 type Settings struct {
-	StaticColorLabels        []string            `json:"staticColorLabels"`
-	AnnotationsDefaultHidden bool                `json:"annotationsDefaultHidden"`
-	AnnotationsHidden        []string            `json:"annotationsHidden"`
-	AnnotationsVisible       []string            `json:"annotationsVisible"`
-	Sorting                  SortSettings        `json:"sorting"`
-	SilenceForm              SilenceFormSettings `json:"silenceForm"`
+	StaticColorLabels        []string                     `json:"staticColorLabels"`
+	AnnotationsDefaultHidden bool                         `json:"annotationsDefaultHidden"`
+	AnnotationsHidden        []string                     `json:"annotationsHidden"`
+	AnnotationsVisible       []string                     `json:"annotationsVisible"`
+	Sorting                  SortSettings                 `json:"sorting"`
+	SilenceForm              SilenceFormSettings          `json:"silenceForm"`
+	AlertAcknowledgement     AlertAcknowledgementSettings `json:"alertAcknowledgement"`
 }
 
 // AlertsResponse is the structure of JSON response UI will use to get alert data

@@ -39,6 +39,12 @@ type configSchema struct {
 		Interval time.Duration
 		Servers  []alertmanagerConfig
 	}
+	AlertAcknowledgement struct {
+		Enabled       bool
+		Duration      time.Duration
+		Author        string
+		CommentPrefix string `yaml:"commentPrefix"  mapstructure:"commentPrefix"`
+	} `yaml:"alertAcknowledgement"  mapstructure:"alertAcknowledgement"`
 	Annotations struct {
 		Default struct {
 			Hidden bool
