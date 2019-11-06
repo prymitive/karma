@@ -69,6 +69,144 @@ exports[`<SilenceComment /> Matches snapshot when collapsed 1`] = `
 "
 `;
 
+exports[`<SilenceComment /> Matches snapshot when collapsed and multiple clusters are present 1`] = `
+"
+<div class=\\"d-flex flex-row\\">
+  <div class=\\"flex-shrink-0 flex-grow-0\\">
+    <svg aria-hidden=\\"true\\"
+         focusable=\\"false\\"
+         data-prefix=\\"fas\\"
+         data-icon=\\"bell-slash\\"
+         class=\\"svg-inline--fa fa-bell-slash fa-w-20 components-managed-silence-icon text-muted\\"
+         role=\\"img\\"
+         xmlns=\\"http://www.w3.org/2000/svg\\"
+         viewbox=\\"0 0 640 512\\"
+    >
+      <path fill=\\"currentColor\\"
+            d=\\"M633.82 458.1l-90.62-70.05c.19-1.38.8-2.66.8-4.06.05-7.55-2.61-15.27-8.61-21.71-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84c-40.33 8.38-74.66 31.07-97.59 62.57L45.47 3.37C38.49-2.05 28.43-.8 23.01 6.18L3.37 31.45C-2.05 38.42-.8 48.47 6.18 53.9l588.35 454.73c6.98 5.43 17.03 4.17 22.46-2.81l19.64-25.27c5.42-6.97 4.17-17.02-2.81-22.45zM157.23 251.54c-8.61 67.96-36.41 93.33-52.62 110.75-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h241.92L157.23 251.54zM320 512c35.32 0 63.97-28.65 63.97-64H256.03c0 35.35 28.65 64 63.97 64z\\"
+      >
+      </path>
+    </svg>
+  </div>
+  <div class=\\"mx-2 flex-shrink-1 flex-grow-1 mw-1p\\">
+    <div class=\\"font-italic text-dark components-managed-silence-comment text-truncate overflow-hidden\\">
+      Mocked Silence
+    </div>
+    <div class=\\"components-managed-silence-cite mt-1\\">
+      <span class=\\"text-muted mr-2 font-italic\\">
+        — me@example.com
+      </span>
+      <span class=\\"badge badge-secondary mx-1 align-text-bottom p-1\\">
+        default
+      </span>
+      <span class=\\"badge badge-secondary mx-1 align-text-bottom p-1\\">
+        fallback
+      </span>
+      <span class=\\"badge badge-danger align-text-bottom p-1\\">
+        Expired
+        <time datetime=\\"946688400000\\">
+          20 years ago
+        </time>
+      </span>
+    </div>
+  </div>
+  <div class=\\"flex-shrink-0 flex-grow-0\\">
+    <div class=\\"d-flex flex-column flex-sm-row justify-content-between align-items-center\\">
+      <div class
+           style=\\"display: inline-block; max-width: 100%;\\"
+           data-tooltipped
+           aria-describedby=\\"tippy-tooltip-3\\"
+           data-original-title=\\"Click to only show @silence_id=04d37636-2350-4878-b382-e0b50353230f alerts or Alt+Click to hide them\\"
+      >
+        <span class=\\" badge-primary badge-pill components-label-with-hover components-label badge\\"
+              style=\\"opacity: 1;\\"
+        >
+          123
+        </span>
+      </div>
+      <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
+           data-prefix=\\"fas\\"
+           data-icon=\\"chevron-up\\"
+           class=\\"svg-inline--fa fa-chevron-up fa-w-14 components-managed-silence-icon undefined ml-sm-2 ml-auto mr-sm-0 mr-1 text-muted cursor-pointer\\"
+           role=\\"img\\"
+           xmlns=\\"http://www.w3.org/2000/svg\\"
+           viewbox=\\"0 0 448 512\\"
+      >
+        <path fill=\\"currentColor\\"
+              d=\\"M240.971 130.524l194.343 194.343c9.373 9.373 9.373 24.569 0 33.941l-22.667 22.667c-9.357 9.357-24.522 9.375-33.901.04L224 227.495 69.255 381.516c-9.379 9.335-24.544 9.317-33.901-.04l-22.667-22.667c-9.373-9.373-9.373-24.569 0-33.941L207.03 130.525c9.372-9.373 24.568-9.373 33.941-.001z\\"
+        >
+        </path>
+      </svg>
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`<SilenceComment /> Matches snapshot when collapsed and multiple clusters are present 2`] = `
+"
+<div class=\\"d-flex flex-row\\">
+  <div class=\\"flex-shrink-0 flex-grow-0\\">
+    <svg aria-hidden=\\"true\\"
+         focusable=\\"false\\"
+         data-prefix=\\"fas\\"
+         data-icon=\\"bell-slash\\"
+         class=\\"svg-inline--fa fa-bell-slash fa-w-20 components-managed-silence-icon text-muted\\"
+         role=\\"img\\"
+         xmlns=\\"http://www.w3.org/2000/svg\\"
+         viewbox=\\"0 0 640 512\\"
+    >
+      <path fill=\\"currentColor\\"
+            d=\\"M633.82 458.1l-90.62-70.05c.19-1.38.8-2.66.8-4.06.05-7.55-2.61-15.27-8.61-21.71-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84c-40.33 8.38-74.66 31.07-97.59 62.57L45.47 3.37C38.49-2.05 28.43-.8 23.01 6.18L3.37 31.45C-2.05 38.42-.8 48.47 6.18 53.9l588.35 454.73c6.98 5.43 17.03 4.17 22.46-2.81l19.64-25.27c5.42-6.97 4.17-17.02-2.81-22.45zM157.23 251.54c-8.61 67.96-36.41 93.33-52.62 110.75-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h241.92L157.23 251.54zM320 512c35.32 0 63.97-28.65 63.97-64H256.03c0 35.35 28.65 64 63.97 64z\\"
+      >
+      </path>
+    </svg>
+  </div>
+  <div class=\\"mx-2 flex-shrink-1 flex-grow-1 mw-1p\\">
+    <div class=\\"font-italic text-dark components-managed-silence-comment \\">
+      Mocked Silence
+    </div>
+    <div class=\\"components-managed-silence-cite mt-1\\">
+      <span class=\\"text-muted mr-2 font-italic\\">
+        — me@example.com
+      </span>
+    </div>
+  </div>
+  <div class=\\"flex-shrink-0 flex-grow-0\\">
+    <div class=\\"d-flex flex-column flex-sm-row justify-content-between align-items-center\\">
+      <div class
+           style=\\"display: inline-block; max-width: 100%;\\"
+           data-tooltipped
+           aria-describedby=\\"tippy-tooltip-4\\"
+           data-original-title=\\"Click to only show @silence_id=04d37636-2350-4878-b382-e0b50353230f alerts or Alt+Click to hide them\\"
+      >
+        <span class=\\" badge-primary badge-pill components-label-with-hover components-label badge\\"
+              style=\\"opacity: 1;\\"
+        >
+          123
+        </span>
+      </div>
+      <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
+           data-prefix=\\"fas\\"
+           data-icon=\\"chevron-down\\"
+           class=\\"svg-inline--fa fa-chevron-down fa-w-14 components-managed-silence-icon undefined ml-sm-2 ml-auto mr-sm-0 mr-1 text-muted cursor-pointer\\"
+           role=\\"img\\"
+           xmlns=\\"http://www.w3.org/2000/svg\\"
+           viewbox=\\"0 0 448 512\\"
+      >
+        <path fill=\\"currentColor\\"
+              d=\\"M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z\\"
+        >
+        </path>
+      </svg>
+    </div>
+  </div>
+</div>
+"
+`;
+
 exports[`<SilenceComment /> Matches snapshot when expanded 1`] = `
 "
 <div class=\\"d-flex flex-row\\">

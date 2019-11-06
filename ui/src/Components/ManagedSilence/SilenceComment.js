@@ -13,6 +13,7 @@ import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
 import { SilenceProgress } from "./SilenceProgress";
 
 const SilenceComment = ({
+  cluster,
   silence,
   alertCount,
   alertCountAlwaysVisible,
@@ -37,6 +38,10 @@ const SilenceComment = ({
     silence.comment
   );
 
+  const alertmanagers = alertStore.data.upstreams.instances.filter(
+    u => u.cluster === cluster
+  );
+
   return (
     <React.Fragment>
       <div className="d-flex flex-row">
@@ -58,6 +63,16 @@ const SilenceComment = ({
             <span className="text-muted mr-2 font-italic">
               &mdash; {silence.createdBy}
             </span>
+            {collapsed &&
+              Object.keys(alertStore.data.upstreams.clusters).length > 1 &&
+              alertmanagers.map(alertmanager => (
+                <span
+                  key={alertmanager.name}
+                  className="badge badge-secondary mx-1 align-text-bottom p-1"
+                >
+                  {alertmanager.name}
+                </span>
+              ))}
             {collapsed ? <SilenceProgress silence={silence} /> : null}
           </div>
         </div>
@@ -85,6 +100,7 @@ const SilenceComment = ({
   );
 };
 SilenceComment.propTypes = {
+  cluster: PropTypes.string.isRequired,
   silence: APISilence.isRequired,
   alertCount: PropTypes.number.isRequired,
   collapsed: PropTypes.bool.isRequired,

@@ -76,6 +76,7 @@ const ManagedSilence = observer(
             <div className="card-header border-bottom-0 px-3">
               <SilenceComment
                 alertStore={alertStore}
+                cluster={cluster}
                 silence={silence}
                 alertCount={alertCount}
                 alertCountAlwaysVisible={alertCountAlwaysVisible}
