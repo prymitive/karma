@@ -32,7 +32,7 @@
     "moment": "2.24.0",
     "object-hash": "2.0.0",
     "prop-types": "15.7.2",
-    "qs": "6.9.0",
+    "qs": "6.9.1",
     "react": "16.11.0",
     "react-app-polyfill": "1.0.4",
     "react-autosuggest": "9.4.3",
