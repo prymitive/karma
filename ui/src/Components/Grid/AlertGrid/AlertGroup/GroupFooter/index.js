@@ -80,17 +80,18 @@ const GroupFooter = observer(
             ))}
           {Object.keys(group.shared.silences).length === 0 ? null : (
             <div className="components-grid-alertgrid-alertgroup-shared-silence rounded-0 border-0">
-              {Object.entries(group.shared.silences).map(
-                ([cluster, silences]) =>
-                  silences.map(silenceID =>
-                    RenderSilence(
-                      alertStore,
-                      silenceFormStore,
-                      afterUpdate,
-                      cluster,
-                      silenceID
-                    )
+              {Object.entries(
+                group.shared.silences
+              ).map(([cluster, silences]) =>
+                silences.map(silenceID =>
+                  RenderSilence(
+                    alertStore,
+                    silenceFormStore,
+                    afterUpdate,
+                    cluster,
+                    silenceID
                   )
+                )
               )}
             </div>
           )}
