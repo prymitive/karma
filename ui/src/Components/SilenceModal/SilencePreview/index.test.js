@@ -85,7 +85,9 @@ describe("<SilencePreview />", () => {
 
     const tree = MountedSilencePreview();
     await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    expect(fetch).toHaveBeenCalledWith(
+    expect(
+      fetch
+    ).toHaveBeenCalledWith(
       "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28amValue%29%24",
       { credentials: "include" }
     );
@@ -99,7 +101,9 @@ describe("<SilencePreview />", () => {
 
     const tree = MountedSilencePreview();
     await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    expect(fetch).toHaveBeenCalledWith(
+    expect(
+      fetch
+    ).toHaveBeenCalledWith(
       "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24",
       { credentials: "include" }
     );
