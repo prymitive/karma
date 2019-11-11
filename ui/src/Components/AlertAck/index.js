@@ -207,7 +207,9 @@ const AlertAck = observer(
           toJS(group),
           toJS(clusterMembers),
           toJS(alertStore.settings.values.alertAcknowledgement.durationSeconds),
-          silenceFormStore.data.author !== ""
+          alertStore.settings.values.silenceForm.author !== ""
+            ? alertStore.settings.values.silenceForm.author
+            : silenceFormStore.data.author !== ""
             ? toJS(silenceFormStore.data.author)
             : toJS(alertStore.settings.values.alertAcknowledgement.author),
           toJS(alertStore.settings.values.alertAcknowledgement.commentPrefix)
