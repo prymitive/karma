@@ -22,9 +22,9 @@ const SilenceComment = ({
   afterUpdate,
   alertStore
 }) => {
-  const comment = silence.jiraURL ? (
+  const comment = silence.ticketURL ? (
     <a
-      href={silence.jiraURL}
+      href={silence.ticketURL}
       target="_blank"
       rel="noopener noreferrer"
       className={

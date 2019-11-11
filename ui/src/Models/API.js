@@ -61,8 +61,8 @@ const APISilence = PropTypes.exact({
   createdAt: PropTypes.string.isRequired,
   createdBy: PropTypes.string.isRequired,
   comment: PropTypes.string.isRequired,
-  jiraID: PropTypes.string.isRequired,
-  jiraURL: PropTypes.string.isRequired
+  ticketID: PropTypes.string.isRequired,
+  ticketURL: PropTypes.string.isRequired
 });
 
 const APIAlertmanagerUpstream = PropTypes.exact({

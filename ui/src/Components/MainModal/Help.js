@@ -237,21 +237,21 @@ const Help = () => (
           </QueryHelp>
 
           <QueryHelp
-            title="Match alerts based on the jira linked in the silence"
+            title="Match alerts based on the ticket IDs detected in the silence comment"
             operators={["=", "!=", "=~", "!~"]}
-            warning="This is supported only if JIRA regexp are enabled and able to
-            match JIRA ids in the silence comment body."
+            warning="This is supported only if ticket regexp are enabled and able to
+            match ticket IDs in the silence comment."
           >
-            <FilterExample example="@silence_jira=PROJECT-123">
-              Match silenced alerts where detected JIRA issue id is equal to{" "}
+            <FilterExample example="@silence_ticket=PROJECT-123">
+              Match silenced alerts where detected ticket ID is equal to{" "}
               <code>PROJECT-123</code>.
             </FilterExample>
-            <FilterExample example="@silence_jira!=PROJECT-123">
-              Match silenced alerts where detected JIRA issue id is different
-              than <code>PROJECT-123</code>.
+            <FilterExample example="@silence_ticket!=PROJECT-123">
+              Match silenced alerts where detected ticket ID is different than{" "}
+              <code>PROJECT-123</code>.
             </FilterExample>
-            <FilterExample example="@silence_jira=~PROJECT">
-              Match silenced alerts where detected JIRA issue id matches regular
+            <FilterExample example="@silence_ticket=~PROJECT">
+              Match silenced alerts where detected ticket ID matches regular
               expression <code>/.*PROJECT.*/</code>.
             </FilterExample>
           </QueryHelp>
