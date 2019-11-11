@@ -932,8 +932,8 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 						for _, gs := range gotAM.Silences {
 							if es.Comment == gs.Comment &&
 								es.CreatedBy == gs.CreatedBy &&
-								es.JiraID == gs.JiraID &&
-								es.JiraURL == gs.JiraURL {
+								es.TicketID == gs.TicketID &&
+								es.TicketURL == gs.TicketURL {
 								foundSilence = true
 							}
 						}

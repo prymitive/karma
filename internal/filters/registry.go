@@ -76,11 +76,11 @@ var AllFilters = []filterConfig{
 		Autocomplete:       silenceIDAutocomplete,
 	},
 	{
-		Label:              "@silence_jira",
-		LabelRe:            regexp.MustCompile("^@silence_jira$"),
+		Label:              "@silence_ticket",
+		LabelRe:            regexp.MustCompile("^@silence_ticket$"),
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},
-		Factory:            newSilenceJiraFilter,
-		Autocomplete:       silenceJiraIDAutocomplete,
+		Factory:            newSilenceTicketFilter,
+		Autocomplete:       silenceTicketIDAutocomplete,
 	},
 	{
 		Label:              "@silence_author",
