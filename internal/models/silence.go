@@ -21,8 +21,8 @@ type Silence struct {
 	CreatedBy string           `json:"createdBy"`
 	Comment   string           `json:"comment"`
 	// karma fields
-	JiraID  string `json:"jiraID"`
-	JiraURL string `json:"jiraURL"`
+	TicketID  string `json:"ticketID"`
+	TicketURL string `json:"ticketURL"`
 }
 
 // ManagedSilence is a standalone silence detached from any alert

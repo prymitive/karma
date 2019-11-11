@@ -123,13 +123,16 @@ log:
   config: true
   level: info
   format: text
-jira: []
 receivers:
   keep: []
   strip: []
 sentry:
   private: secret key
   public: public key
+silences:
+  comments:
+    linkDetect:
+      rules: []
 silenceForm:
   author:
     populate_from_header:

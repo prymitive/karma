@@ -667,7 +667,7 @@ exports[`<Help /> matches snapshot 1`] = `
             </ul>
           </dd>
           <dt>
-            Match alerts based on the jira linked in the silence
+            Match alerts based on the ticket IDs detected in the silence comment
           </dt>
           <dd class=\\"mb-5\\">
             <div>
@@ -700,7 +700,7 @@ exports[`<Help /> matches snapshot 1`] = `
                 >
                 </path>
               </svg>
-              This is supported only if JIRA regexp are enabled and able to match JIRA ids in the silence comment body.
+              This is supported only if ticket regexp are enabled and able to match ticket IDs in the silence comment.
             </div>
             <div>
               Examples:
@@ -709,11 +709,11 @@ exports[`<Help /> matches snapshot 1`] = `
               <li>
                 <div>
                   <span class=\\"badge badge-info\\">
-                    @silence_jira=PROJECT-123
+                    @silence_ticket=PROJECT-123
                   </span>
                 </div>
                 <div>
-                  Match silenced alerts where detected JIRA issue id is equal to
+                  Match silenced alerts where detected ticket ID is equal to
                   <code>
                     PROJECT-123
                   </code>
@@ -723,11 +723,11 @@ exports[`<Help /> matches snapshot 1`] = `
               <li>
                 <div>
                   <span class=\\"badge badge-info\\">
-                    @silence_jira!=PROJECT-123
+                    @silence_ticket!=PROJECT-123
                   </span>
                 </div>
                 <div>
-                  Match silenced alerts where detected JIRA issue id is different than
+                  Match silenced alerts where detected ticket ID is different than
                   <code>
                     PROJECT-123
                   </code>
@@ -737,11 +737,11 @@ exports[`<Help /> matches snapshot 1`] = `
               <li>
                 <div>
                   <span class=\\"badge badge-info\\">
-                    @silence_jira=~PROJECT
+                    @silence_ticket=~PROJECT
                   </span>
                 </div>
                 <div>
-                  Match silenced alerts where detected JIRA issue id matches regular expression
+                  Match silenced alerts where detected ticket ID matches regular expression
                   <code>
                     /.*PROJECT.*/
                   </code>

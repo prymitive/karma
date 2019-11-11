@@ -98,15 +98,15 @@ describe("<SilenceComment />", () => {
   });
 
   it("Renders a JIRA link if present", () => {
-    silence.jiraURL = "http://localhost/1234";
-    silence.jiraID = "1234";
+    silence.ticketURL = "http://localhost/1234";
+    silence.ticketID = "1234";
     const tree = MountedSilenceComment(true);
     expect(tree.find("a[href='http://localhost/1234']")).toHaveLength(1);
   });
 
   it("Renders a JIRA link if present and comment is expanded", () => {
-    silence.jiraURL = "http://localhost/1234";
-    silence.jiraID = "1234";
+    silence.ticketURL = "http://localhost/1234";
+    silence.ticketID = "1234";
     const tree = MountedSilenceComment(false);
     expect(tree.find("a[href='http://localhost/1234']")).toHaveLength(1);
   });

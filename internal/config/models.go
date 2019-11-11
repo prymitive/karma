@@ -20,9 +20,9 @@ type alertmanagerConfig struct {
 	Headers map[string]string
 }
 
-type jiraRule struct {
-	Regex string
-	URI   string
+type LinkDetectRules struct {
+	Regex       string `yaml:"regex" mapstructure:"regex"`
+	URITemplate string `yaml:"uriTemplate" mapstructure:"uriTemplate"`
 }
 
 type CustomLabelColor struct {
@@ -94,7 +94,6 @@ type configSchema struct {
 		Level  string
 		Format string
 	}
-	JIRA      []jiraRule
 	Receivers struct {
 		Keep  []string
 		Strip []string
@@ -103,6 +102,13 @@ type configSchema struct {
 		Private string
 		Public  string
 	}
+	Silences struct {
+		Comments struct {
+			LinkDetect struct {
+				Rules []LinkDetectRules `yaml:"rules"  mapstructure:"rules"`
+			} `yaml:"linkDetect"  mapstructure:"linkDetect"`
+		} `yaml:"comments"  mapstructure:"comments"`
+	} `yaml:"silences"  mapstructure:"silences"`
 	SilenceForm struct {
 		Author struct {
 			PopulateFromHeader struct {

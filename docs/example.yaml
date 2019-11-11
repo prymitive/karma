@@ -46,9 +46,12 @@ listen:
 log:
   config: false
   level: info
-jira:
-  - regex: DEVOPS-[0-9]+
-    uri: https://jira.example.com
+silences:
+  comments:
+    linkDetect:
+      rules:
+        - regex: "(DEVOPS-[0-9]+)"
+          uriTemplate: https://jira.example.com/browse/$1
 receivers:
   keep: []
   strip: []

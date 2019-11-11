@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/signal"
 	"path"
+	"regexp"
 	"strings"
 	"syscall"
 	"time"
@@ -197,11 +198,18 @@ func main() {
 		config.Config.LogValues()
 	}
 
-	jiraRules := []models.JiraRule{}
-	for _, rule := range config.Config.JIRA {
-		jiraRules = append(jiraRules, models.JiraRule{Regex: rule.Regex, URI: rule.URI})
+	linkDetectRules := []models.LinkDetectRule{}
+	for _, rule := range config.Config.Silences.Comments.LinkDetect.Rules {
+		if rule.Regex == "" || rule.URITemplate == "" {
+			log.Fatalf("Invalid link detect rule, regex '%s' uriTemplate '%s'", rule.Regex, rule.URITemplate)
+		}
+		re, err := regexp.Compile(rule.Regex)
+		if err != nil {
+			log.Fatalf("Invalid link detect rule '%s': %s", rule.Regex, err)
+		}
+		linkDetectRules = append(linkDetectRules, models.LinkDetectRule{Regex: re, URITemplate: rule.URITemplate})
 	}
-	transform.ParseRules(jiraRules)
+	transform.SetLinkRules(linkDetectRules)
 
 	apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 

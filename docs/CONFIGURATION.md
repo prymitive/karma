@@ -684,30 +684,38 @@ log:
   format: text
 ```
 
-### JIRA
+### Silences
 
-`jira` section allows specifying a list of regex rules for finding links to Jira
-issues in silence comments. If a string inside a comment matches one of the
-rules it will be rendered as a link.
+`silences` section allows specifying to configure silence post post-processing.
 Syntax:
 
 ```YAML
-jira:
-  - regex: string
-  - uri: string
+silences:
+  comments:
+    linkDetect:
+      rules: list of link detection rules
 ```
 
-- `regex` - regular expression for matching Jira issue ID.
-- `uri` - base URL for Jira instance, `/browse/FOO-1` will be appended to it
-  (where `FOO-1` is example issue ID).
+- `comments:linkDetect:rules` allows to specify a list of rules to detect links
+  inside silence comments. It's intended to find ticket system ID strings and
+  turn them into links.
+  Each rule must specify:
+  - `regex` - regular expression that matches ticket system IDs. Each regex must
+    contain at least one capture group `(regex)`.
+  - `uriTemplate` - template string that will be used to generate a link.
+    Each template must include `$1` which will be replaced with text matched
+    by the `regex`.
 
 Example where a string `DEVOPS-123` inside a comment would be rendered as a link
-to `https://jira.example.com/browse/DEVOPS-123`.
+to a JIRA ticket `https://jira.example.com/browse/DEVOPS-123`.
 
 ```YAML
-jira:
-  - regex: DEVOPS-[0-9]+
-    uri: https://jira.example.com
+silences:
+  comments:
+    linkDetect:
+      rules:
+        - regex: "(DEVOPS-[0-9]+)"
+          uriTemplate: https://jira.example.com/browse/$1
 ```
 
 Defaults:

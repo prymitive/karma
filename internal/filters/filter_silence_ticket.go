@@ -7,11 +7,11 @@ import (
 	"github.com/prymitive/karma/internal/models"
 )
 
-type silenceJiraFilter struct {
+type silenceTicketFilter struct {
 	alertFilter
 }
 
-func (filter *silenceJiraFilter) Match(alert *models.Alert, matches int) bool {
+func (filter *silenceTicketFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
 		var isMatch bool
 		if alert.IsSilenced() {
@@ -19,7 +19,7 @@ func (filter *silenceJiraFilter) Match(alert *models.Alert, matches int) bool {
 				for _, am := range alert.Alertmanager {
 					silence, found := am.Silences[silenceID]
 					if found {
-						m := filter.Matcher.Compare(silence.JiraID, filter.Value)
+						m := filter.Matcher.Compare(silence.TicketID, filter.Value)
 						if m {
 							isMatch = m
 						}
@@ -38,26 +38,26 @@ func (filter *silenceJiraFilter) Match(alert *models.Alert, matches int) bool {
 	panic(e)
 }
 
-func newSilenceJiraFilter() FilterT {
-	f := silenceJiraFilter{}
+func newSilenceTicketFilter() FilterT {
+	f := silenceTicketFilter{}
 	return &f
 }
 
-func silenceJiraIDAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+func silenceTicketIDAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
 	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
 		if alert.IsSilenced() {
 			for _, silenceID := range alert.SilencedBy {
 				for _, am := range alert.Alertmanager {
 					silence, found := am.Silences[silenceID]
-					if found && silence.JiraID != "" {
+					if found && silence.TicketID != "" {
 						for _, operator := range operators {
-							token := fmt.Sprintf("%s%s%s", name, operator, silence.JiraID)
+							token := fmt.Sprintf("%s%s%s", name, operator, silence.TicketID)
 							tokens[token] = makeAC(token, []string{
 								name,
 								strings.TrimPrefix(name, "@"),
 								fmt.Sprintf("%s%s", name, operator),
-								silence.JiraID,
+								silence.TicketID,
 							})
 						}
 					}

@@ -8,7 +8,7 @@ import (
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
 
-	"github.com/pmezard/go-difflib/difflib"
+	"github.com/google/go-cmp/cmp"
 )
 
 type acTest struct {
@@ -57,7 +57,7 @@ var acTests = []acTest{
 							"1234567890": {
 								ID:        "1234567890",
 								CreatedBy: "me@example.com",
-								JiraID:    "JIRA-1",
+								TicketID:  "JIRA-1",
 							},
 						}},
 				},
@@ -89,10 +89,10 @@ var acTests = []acTest{
 			"@silence_author=~me@example.com",
 			"@silence_id!=1234567890",
 			"@silence_id=1234567890",
-			"@silence_jira!=JIRA-1",
-			"@silence_jira!~JIRA-1",
-			"@silence_jira=JIRA-1",
-			"@silence_jira=~JIRA-1",
+			"@silence_ticket!=JIRA-1",
+			"@silence_ticket!~JIRA-1",
+			"@silence_ticket=JIRA-1",
+			"@silence_ticket=~JIRA-1",
 			"@state!=active",
 			"@state!=suppressed",
 			"@state=active",
@@ -131,18 +131,9 @@ func TestBuildAutocomplete(t *testing.T) {
 		expectedJSON, _ := json.Marshal(acTest.Expected)
 
 		if string(resultJSON) != string(expectedJSON) {
-			diff := difflib.UnifiedDiff{
-				A:        difflib.SplitLines(string(expectedJSON)),
-				B:        difflib.SplitLines(string(resultJSON)),
-				FromFile: "Expected",
-				ToFile:   "Returned",
-				Context:  3,
+			if diff := cmp.Diff(expectedJSON, resultJSON); diff != "" {
+				t.Errorf("Wrong autocomplete data returned (-want +got):\n%s", diff)
 			}
-			text, err := difflib.GetUnifiedDiffString(diff)
-			if err != nil {
-				t.Error(err)
-			}
-			t.Errorf("Autocomplete mismatch:\n%s", text)
 		}
 	}
 }

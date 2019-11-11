@@ -218,7 +218,7 @@ func (config *configSchema) Read() {
 		}
 	}
 
-	err = v.UnmarshalKey("jira", &config.JIRA)
+	err = v.UnmarshalKey("silences.comments.linkDetect.rules", &config.Silences.Comments.LinkDetect.Rules)
 	if err != nil {
 		log.Fatal(err)
 	}
