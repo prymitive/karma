@@ -200,6 +200,65 @@ describe("<AlertAck />", () => {
     });
   });
 
+  it("uses author from alertStore if present", () => {
+    alertStore.settings.values.silenceForm.author = "john@example.com";
+    alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
+    alertStore.settings.values.alertAcknowledgement.author = "me";
+    alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";
+    MountAndClick();
+    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual({
+      comment:
+        "FOO: This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
+      createdBy: "john@example.com",
+      endsAt: "2000-02-01T00:03:42.000Z",
+      matchers: [
+        { isRegex: false, name: "alertname", value: "Fake Alert" },
+        { isRegex: true, name: "foo", value: "(bar|baz)" }
+      ],
+      startsAt: "2000-02-01T00:00:00.000Z"
+    });
+  });
+
+  it("uses author from silenceFormStore if alertStore is empty", () => {
+    alertStore.settings.values.silenceForm.author = "";
+    alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
+    alertStore.settings.values.alertAcknowledgement.author = "me";
+    alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";
+    silenceFormStore.data.author = "bob@example.com";
+    MountAndClick();
+    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual({
+      comment:
+        "FOO: This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
+      createdBy: "bob@example.com",
+      endsAt: "2000-02-01T00:03:42.000Z",
+      matchers: [
+        { isRegex: false, name: "alertname", value: "Fake Alert" },
+        { isRegex: true, name: "foo", value: "(bar|baz)" }
+      ],
+      startsAt: "2000-02-01T00:00:00.000Z"
+    });
+  });
+
+  it("uses default author as fallback", () => {
+    alertStore.settings.values.silenceForm.author = "";
+    alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
+    alertStore.settings.values.alertAcknowledgement.author = "me";
+    alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";
+    silenceFormStore.data.author = "";
+    MountAndClick();
+    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual({
+      comment:
+        "FOO: This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
+      createdBy: "me",
+      endsAt: "2000-02-01T00:03:42.000Z",
+      matchers: [
+        { isRegex: false, name: "alertname", value: "Fake Alert" },
+        { isRegex: true, name: "foo", value: "(bar|baz)" }
+      ],
+      startsAt: "2000-02-01T00:00:00.000Z"
+    });
+  });
+
   it("[v1] sends POST request to /api/v1/silences", () => {
     MountAndClick();
     const uri = fetch.mock.calls[0][0];
