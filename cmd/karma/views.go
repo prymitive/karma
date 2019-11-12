@@ -443,6 +443,18 @@ func silences(c *gin.Context) {
 		searchTerm = strings.ToLower(searchTermValue)
 	}
 
+	clusters := []string{}
+	if searchTerm != "" {
+		upstreams := getUpstreams()
+		for _, u := range upstreams.Instances {
+			if strings.ToLower(u.Name) == searchTerm {
+				if !slices.StringInSlice(clusters, u.Cluster) {
+					clusters = append(clusters, u.Cluster)
+				}
+			}
+		}
+	}
+
 	for _, silence := range alertmanager.DedupSilences() {
 		if silence.IsExpired && !showExpired {
 			continue
@@ -450,6 +462,8 @@ func silences(c *gin.Context) {
 		if searchTerm != "" {
 			isMatch := false
 			if strings.ToLower(silence.Silence.ID) == searchTerm {
+				isMatch = true
+			} else if slices.StringInSlice(clusters, silence.Cluster) {
 				isMatch = true
 			} else if strings.Contains(strings.ToLower(silence.Silence.Comment), searchTerm) {
 				isMatch = true
