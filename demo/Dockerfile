@@ -26,7 +26,7 @@ COPY demo/generator.py /generator.py
 COPY --from=go-builder /src/karma /karma
 COPY demo/karma.yaml /etc/karma.yaml
 COPY demo/custom.js /custom.js
-COPY --from=lmierzwa/kthxbye:v0.4 /kthxbye /kthxbye
+COPY --from=lmierzwa/kthxbye:v0.5 /kthxbye /kthxbye
 RUN adduser -D karma
 USER karma
 ENV GOGC=20
