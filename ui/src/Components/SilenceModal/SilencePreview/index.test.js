@@ -89,7 +89,7 @@ describe("<SilencePreview />", () => {
       fetch
     ).toHaveBeenCalledWith(
       "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28amValue%29%24",
-      { credentials: "include" }
+      { credentials: "include", redirect: "follow" }
     );
   });
 
@@ -105,7 +105,7 @@ describe("<SilencePreview />", () => {
       fetch
     ).toHaveBeenCalledWith(
       "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24",
-      { credentials: "include" }
+      { credentials: "include", redirect: "follow" }
     );
   });
 
