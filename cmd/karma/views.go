@@ -33,6 +33,10 @@ func noCache(c *gin.Context) {
 	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
 }
 
+func pong(c *gin.Context) {
+	c.String(200, "Pong")
+}
+
 func compressResponse(data []byte) ([]byte, error) {
 	var b bytes.Buffer
 	gz, err := gzip.NewWriterLevel(&b, 3)
