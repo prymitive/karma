@@ -8,7 +8,7 @@ import qs from "qs";
 
 import moment from "moment";
 
-import { FetchWithCredentials } from "Common/Fetch";
+import { FetchGet } from "Common/Fetch";
 
 const QueryStringEncodeOptions = {
   encodeValuesOnly: true, // don't encode q[]
@@ -268,7 +268,7 @@ class AlertStore {
         `alerts.json?sortOrder=${sortOrder}&sortLabel=${sortLabel}&sortReverse=${sortReverse}&`
       ) + FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
 
-    return FetchWithCredentials(alertsURI, {})
+    return FetchGet(alertsURI, {})
       .then(result => {
         this.status.setProcessing();
         return result.json();

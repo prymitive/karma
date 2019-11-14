@@ -7,7 +7,7 @@ import { observer } from "mobx-react";
 import Creatable from "react-select/creatable";
 
 import { StaticLabels } from "Common/Query";
-import { FetchWithCredentials } from "Common/Fetch";
+import { FetchGet } from "Common/Fetch";
 import { FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { ReactSelectStyles } from "Components/MultiSelect";
@@ -34,7 +34,7 @@ const SortLabelName = observer(
     });
 
     populateNameSuggestions = action(() => {
-      this.nameSuggestionsFetch = FetchWithCredentials(
+      this.nameSuggestionsFetch = FetchGet(
         FormatBackendURI(`labelNames.json`),
         {}
       )

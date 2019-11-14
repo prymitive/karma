@@ -15,7 +15,7 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { IsMobile } from "Common/Device";
-import { FetchWithCredentials } from "Common/Fetch";
+import { FetchGet } from "Common/Fetch";
 import { FilterInputLabel } from "Components/Labels/FilterInputLabel";
 import { AutosuggestTheme } from "./Constants";
 import { History } from "./History";
@@ -73,7 +73,7 @@ const FilterInput = observer(
     onSuggestionsFetchRequested = debounce(
       action(({ value }) => {
         if (value !== "") {
-          this.inputStore.suggestionsFetch = FetchWithCredentials(
+          this.inputStore.suggestionsFetch = FetchGet(
             FormatBackendURI(`autocomplete.json?term=${value}`),
             {}
           )
