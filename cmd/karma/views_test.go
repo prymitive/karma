@@ -49,6 +49,30 @@ func ginTestEngine() *gin.Engine {
 	return r
 }
 
+func TestHealth(t *testing.T) {
+	mockConfig()
+	r := ginTestEngine()
+	req := httptest.NewRequest("GET", "/health", nil)
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Code != http.StatusOK {
+		t.Errorf("GET /health returned status %d", resp.Code)
+	}
+}
+
+func TestHealthPrefix(t *testing.T) {
+	os.Setenv("LISTEN_PREFIX", "/prefix")
+	defer os.Unsetenv("LISTEN_PREFIX")
+	mockConfig()
+	r := ginTestEngine()
+	req := httptest.NewRequest("GET", "/prefix/health", nil)
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Code != http.StatusOK {
+		t.Errorf("GET /prefix/health returned status %d", resp.Code)
+	}
+}
+
 func TestIndex(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()

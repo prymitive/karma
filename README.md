@@ -194,6 +194,11 @@ apply as with `make run`. Example:
 
     make PORT=5000 ALERTMANAGER_URI=https://alertmanager.example.com run-docker
 
+### Health checks
+
+`/health` endpoint can be used for health check probes, it always responds with
+`200 OK` code and `Pong` response body.
+
 ## Configuration
 
 Please see [CONFIGURATION](/docs/CONFIGURATION.md) for full list of available
