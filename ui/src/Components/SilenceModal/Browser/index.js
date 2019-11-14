@@ -21,7 +21,7 @@ import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons/faAngleDou
 import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
-import { FetchWithCredentials } from "Common/Fetch";
+import { FetchGet } from "Common/Fetch";
 import { MountFade } from "Components/Animations/MountFade";
 import { ManagedSilence } from "Components/ManagedSilence";
 
@@ -102,7 +102,7 @@ const Browser = observer(
         }`
       );
 
-      this.dataSource.fetch = FetchWithCredentials(uri, {})
+      this.dataSource.fetch = FetchGet(uri, {})
         .then(result => {
           return result.json();
         })

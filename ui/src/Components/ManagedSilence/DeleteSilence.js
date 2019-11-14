@@ -16,7 +16,7 @@ import { APISilence } from "Models/API";
 import { AlertStore, FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
-import { FetchWithCredentials } from "Common/Fetch";
+import { FetchGet, FetchDelete } from "Common/Fetch";
 import { Modal } from "Components/Modal";
 import {
   LabelSetList,
@@ -144,7 +144,7 @@ const DeleteSilenceModalContent = observer(
           FormatQuery(StaticLabels.SilenceID, QueryOperators.Equal, silence.id)
         ]);
 
-      this.previewState.fetch = FetchWithCredentials(alertsURI, {})
+      this.previewState.fetch = FetchGet(alertsURI, {})
         .then(result => result.json())
         .then(result => {
           this.previewState.groupsToUniqueLabels(Object.values(result.groups));
@@ -175,8 +175,7 @@ const DeleteSilenceModalContent = observer(
         ? `${alertmanager.uri}/api/v2/silence/${silence.id}`
         : `${alertmanager.uri}/api/v1/silence/${silence.id}`;
 
-      this.deleteState.fetch = FetchWithCredentials(uri, {
-        method: "DELETE",
+      this.deleteState.fetch = FetchDelete(uri, {
         headers: alertmanager.headers
       })
         .then(result => {

@@ -13,7 +13,7 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclama
 
 import { APISilenceMatcher } from "Models/API";
 import { AlertStore } from "Stores/AlertStore";
-import { FetchWithCredentials } from "Common/Fetch";
+import { FetchPost } from "Common/Fetch";
 
 const SubmitState = Object.freeze({
   InProgress: "InProgress",
@@ -109,8 +109,7 @@ const SilenceSubmitProgress = observer(
         ? `${am.uri}/api/v2/silences`
         : `${am.uri}/api/v1/silences`;
 
-      this.submitState.fetch = FetchWithCredentials(uri, {
-        method: "POST",
+      this.submitState.fetch = FetchPost(uri, {
         body: JSON.stringify(payload),
         headers: {
           "Content-Type": "application/json",

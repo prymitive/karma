@@ -21,7 +21,7 @@ import {
   MatchersFromGroup,
   GenerateAlertmanagerSilenceData
 } from "Stores/SilenceFormStore";
-import { FetchWithCredentials } from "Common/Fetch";
+import { FetchPost } from "Common/Fetch";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 
 const SubmitState = Object.freeze({
@@ -148,19 +148,15 @@ const AlertAck = observer(
         ? `${am.uri}/api/v2/silences`
         : `${am.uri}/api/v1/silences`;
 
-      this.submitState.silencesByCluster[cluster].fetch = FetchWithCredentials(
-        uri,
-        {
-          method: "POST",
-          body: JSON.stringify(
-            this.submitState.silencesByCluster[cluster].payload
-          ),
-          headers: {
-            "Content-Type": "application/json",
-            ...am.headers
-          }
+      this.submitState.silencesByCluster[cluster].fetch = FetchPost(uri, {
+        body: JSON.stringify(
+          this.submitState.silencesByCluster[cluster].payload
+        ),
+        headers: {
+          "Content-Type": "application/json",
+          ...am.headers
         }
-      )
+      })
         .then(result => {
           if (isOpenAPI) {
             if (result.ok) {
