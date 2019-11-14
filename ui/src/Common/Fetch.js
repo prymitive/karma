@@ -6,18 +6,7 @@ const CommonOptions = {
 };
 
 const FetchGet = async (uri, options) =>
-  await fetch(
-    uri,
-    merge(
-      {},
-      {
-        method: "GET",
-        mode: "no-cors"
-      },
-      CommonOptions,
-      options
-    )
-  );
+  await fetch(uri, merge({}, { method: "GET" }, CommonOptions, options));
 
 const FetchPost = async (uri, options) =>
   await fetch(uri, merge({}, { method: "POST" }, CommonOptions, options));

@@ -18,7 +18,7 @@ describe("Fetch", () => {
   };
 
   const methodOptions = {
-    FetchGet: { method: "GET", mode: "no-cors" },
+    FetchGet: { method: "GET" },
     FetchPost: { method: "POST" },
     FetchDelete: { method: "DELETE" }
   };
