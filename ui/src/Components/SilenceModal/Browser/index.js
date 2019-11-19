@@ -263,6 +263,8 @@ const Browser = observer(
                       innerClass="pagination justify-content-center"
                       itemClass="page-item"
                       linkClass="page-link"
+                      activeClass="active"
+                      activeLinkClass="font-weight-bold"
                       prevPageText={<FontAwesomeIcon icon={faAngleLeft} />}
                       nextPageText={<FontAwesomeIcon icon={faAngleRight} />}
                       firstPageText={
