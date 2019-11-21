@@ -1,0 +1,37 @@
+$lead-font-weight: 400;
+
+// custom "dark" color, little less dark than flatly
+$blue: #455a64;
+// body background color should be same as navbar, so it blends into one
+$body-bg: $blue;
+// default is ~0.97rem
+$font-size-base: 1rem;
+
+// make links light gray by default instead of green
+$link-color: #7b8a8b; // $gray-700
+
+// make dark darker, default it's $gray-700
+$dark: #3b4247;
+
+// fix active tab color, for some reason it ends up with $primary as bg color
+$nav-tabs-link-active-bg: #fff;
+
+// pagination tweaks
+$pagination-color: #fff;
+$pagination-bg: #b4bcc2; // gray-500
+$pagination-hover-color: #fff;
+$pagination-hover-bg: #7b8a8b; // gray-700
+$pagination-active-bg: $pagination-hover-bg;
+$pagination-disabled-color: #fff;
+$pagination-disabled-bg: #dee2e6; // gray-300
+
+$enable-shadows: true;
+
+$btn-box-shadow: 0;
+$btn-focus-box-shadow: 0;
+$btn-active-box-shadow: 0;
+
+@import "~bootswatch/dist/flatly/variables";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
