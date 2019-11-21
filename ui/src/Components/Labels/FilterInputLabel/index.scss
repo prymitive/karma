@@ -1,4 +1,4 @@
-@import "src/App.scss";
+@import "src/Theme.scss";
 
 .components-filteredinputlabel-text {
   font-size: 1rem;
@@ -62,7 +62,7 @@ button.components-label.btn {
     background-color: $light;
   }
   &.btn-dark:hover {
-    // same as in App.scss
+    // same as in Theme.scss
     background-color: #3b4247;
   }
 }
