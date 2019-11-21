@@ -3,6 +3,8 @@
   height: auto;
   min-height: 2.6rem;
 
+  box-shadow: none;
+
   padding-top: 1px;
   padding-bottom: 1px;
   padding-left: 0.25rem;

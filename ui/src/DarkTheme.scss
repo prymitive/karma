@@ -120,10 +120,6 @@ $badge-light-bg: #d2dae0;
 
   & .form-control {
     color: $gray-200 !important;
-    background-color: $alertgroup-body-bg !important;
-  }
-  & .input-group-text {
-    background-color: $silence-bg !important;
   }
 
   & .react-datepicker,
