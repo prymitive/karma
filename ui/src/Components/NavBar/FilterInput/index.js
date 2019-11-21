@@ -123,7 +123,7 @@ const FilterInput = observer(
       const { value } = inputProps;
       return (
         <input
-          className="components-filterinput-wrapper"
+          className="components-filterinput-wrapper text-white"
           placeholder=""
           size={value.length + 1}
           {...inputProps}
@@ -144,12 +144,12 @@ const FilterInput = observer(
         >
           <div className="input-group w-100 mr-2">
             <div className="input-group-prepend">
-              <span className="input-group-text px-2">
+              <span className="input-group-text px-2 border-left-0 border-right-0 border-top-0 rounded-0 bg-transparent text-white">
                 <FontAwesomeIcon icon={faSearch} />
               </span>
             </div>
             <div
-              className="form-control components-filterinput"
+              className="form-control components-filterinput border-left-0 border-right-0 border-top-0 rounded-0 bg-transparent"
               onClick={event => {
                 this.onInputClick(this.inputStore.ref, event);
               }}
