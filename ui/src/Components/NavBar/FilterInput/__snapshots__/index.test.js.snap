@@ -44,7 +44,7 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
       </div>
     </div>
   </div>
-  <div class=\\"input-group-append\\">
+  <div class=\\"input-group-append bg-transparent\\">
     <button class=\\"input-group-text border-left-0 border-right-0 border-top-0 rounded-0 bg-transparent text-white cursor-pointer components-navbar-history px-2\\"
             type=\\"button\\"
             data-toggle=\\"dropdown\\"
