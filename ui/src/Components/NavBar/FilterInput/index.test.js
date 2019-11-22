@@ -121,6 +121,20 @@ describe("<FilterInput />", () => {
     expect(inputSpy).not.toHaveBeenCalled();
   });
 
+  it("focusing input changes background color", () => {
+    const tree = MountedInput();
+    const formControl = tree.find(".form-control");
+    formControl.find("input").simulate("focus");
+    expect(toDiffableHtml(tree.html())).toMatch(/bg-focused/);
+  });
+
+  it("bluring input changes background color", () => {
+    const tree = MountedInput();
+    const formControl = tree.find(".form-control");
+    formControl.find("input").simulate("blur");
+    expect(toDiffableHtml(tree.html())).not.toMatch(/bg-focused/);
+  });
+
   it("componentDidMount executes even when inputStore.ref=null", () => {
     const tree = MountedInput();
     const instance = tree.instance();

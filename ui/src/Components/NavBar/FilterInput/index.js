@@ -20,7 +20,7 @@ import { FilterInputLabel } from "Components/Labels/FilterInputLabel";
 import { AutosuggestTheme } from "./Constants";
 import { History } from "./History";
 
-import "./index.css";
+import "./index.scss";
 
 const FilterInput = observer(
   class FilterInput extends Component {
@@ -35,6 +35,7 @@ const FilterInput = observer(
         suggestions: [],
         suggestionsFetch: null,
         value: "",
+        focused: false,
         storeInputReference(ref) {
           this.ref = ref;
         }
@@ -107,6 +108,14 @@ const FilterInput = observer(
       }
     };
 
+    onFocus = action(() => {
+      this.inputStore.focused = true;
+    });
+
+    onBlur = action(() => {
+      this.inputStore.focused = false;
+    });
+
     renderSuggestion = (suggestion, { query, isHighlighted }) => {
       return (
         <Highlight
@@ -144,15 +153,23 @@ const FilterInput = observer(
         >
           <div className="input-group w-100 mr-2">
             <div className="input-group-prepend">
-              <span className="input-group-text px-2 border-left-0 border-right-0 border-top-0 rounded-0 bg-transparent text-white">
+              <span
+                className={`input-group-text px-2 border-left-0 border-right-0 border-top-0 rounded-0 ${
+                  this.inputStore.focused ? "bg-focused" : "bg-transparent"
+                } text-white`}
+              >
                 <FontAwesomeIcon icon={faSearch} />
               </span>
             </div>
             <div
-              className="form-control components-filterinput border-left-0 border-right-0 border-top-0 rounded-0 bg-transparent"
+              className={`form-control components-filterinput border-left-0 border-right-0 border-top-0 rounded-0 ${
+                this.inputStore.focused ? "bg-focused" : "bg-transparent"
+              }`}
               onClick={event => {
                 this.onInputClick(this.inputStore.ref, event);
               }}
+              onFocus={this.onFocus}
+              onBlur={this.onBlur}
             >
               {alertStore.filters.values.map(filter => (
                 <FilterInputLabel
@@ -180,7 +197,11 @@ const FilterInput = observer(
                 theme={AutosuggestTheme}
               />
             </div>
-            <div className="input-group-append">
+            <div
+              className={`input-group-append ${
+                this.inputStore.focused ? "bg-focused" : "bg-transparent"
+              }`}
+            >
               <History alertStore={alertStore} settingsStore={settingsStore} />
             </div>
           </div>

@@ -1,9 +1,12 @@
+@import "src/Theme.scss";
+
 .form-control.components-filterinput {
   cursor: text;
   height: auto;
   min-height: 2.6rem;
 
   box-shadow: none;
+  background-clip: unset;
 
   padding-top: 1px;
   padding-bottom: 1px;
@@ -24,4 +27,10 @@ input.components-filterinput-wrapper {
   min-height: 2rem;
   margin-top: 2px;
   margin-bottom: 2px;
+}
+
+.form-control.bg-focused,
+.input-group-text.bg-focused,
+.input-group-append.bg-focused {
+  background-color: lighten($blue, 5%);
 }
