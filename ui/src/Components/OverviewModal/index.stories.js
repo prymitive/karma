@@ -6,7 +6,7 @@ import { MockGrid } from "__mocks__/Stories.js";
 import { AlertStore } from "Stores/AlertStore";
 import { OverviewModalContent } from "./OverviewModalContent";
 
-import "Percy.scss";
+import "Styles/Percy.scss";
 
 storiesOf("OverviewModal", module)
   .addDecorator(storyFn => (

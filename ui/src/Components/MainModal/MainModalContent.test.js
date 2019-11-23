@@ -6,6 +6,8 @@ import toDiffableHtml from "diffable-html";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { ThemeContext } from "Components/Theme";
+import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
 import { MainModalContent } from "./MainModalContent";
 
 let alertStore;
@@ -22,14 +24,26 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
+const Wrapped = component => (
+  <ThemeContext.Provider
+    value={{
+      reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+    }}
+  >
+    {component}
+  </ThemeContext.Provider>
+);
+
 const FakeModal = () => {
   return mount(
-    <MainModalContent
-      alertStore={alertStore}
-      settingsStore={settingsStore}
-      onHide={onHide}
-      expandAllOptions={true}
-    />
+    Wrapped(
+      <MainModalContent
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        onHide={onHide}
+        expandAllOptions={true}
+      />
+    )
   );
 };
 
@@ -51,12 +65,14 @@ describe("<MainModalContent />", () => {
     // https://github.com/airbnb/enzyme/issues/1213
     const tree = mount(
       <span>
-        <MainModalContent
-          alertStore={alertStore}
-          settingsStore={settingsStore}
-          onHide={onHide}
-          expandAllOptions={true}
-        />
+        {Wrapped(
+          <MainModalContent
+            alertStore={alertStore}
+            settingsStore={settingsStore}
+            onHide={onHide}
+            expandAllOptions={true}
+          />
+        )}
       </span>
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();

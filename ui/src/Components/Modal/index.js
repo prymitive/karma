@@ -14,8 +14,6 @@ import {
   MountModalBackdrop
 } from "Components/Animations/MountModal";
 
-import "./index.scss";
-
 const Modal = observer(
   class Modal extends Component {
     static propTypes = {
@@ -84,7 +82,12 @@ const Modal = observer(
 
       return ReactDOM.createPortal(
         <React.Fragment>
-          <MountModal in={isOpen} unmountOnExit {...props}>
+          <MountModal
+            in={isOpen}
+            unmountOnExit
+            className="modal-open"
+            {...props}
+          >
             <HotKeys
               innerRef={this.HotKeysRef}
               keyMap={{ CLOSE: "Escape" }}

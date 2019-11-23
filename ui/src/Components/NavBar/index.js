@@ -19,8 +19,6 @@ import { SilenceModal } from "Components/SilenceModal";
 import { FetchIndicator } from "./FetchIndicator";
 import { FilterInput } from "./FilterInput";
 
-import "./index.scss";
-
 const DesktopIdleTimeout = 1000 * 60 * 3;
 const MobileIdleTimeout = 1000 * 12;
 

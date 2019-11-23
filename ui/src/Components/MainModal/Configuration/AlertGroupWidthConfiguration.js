@@ -10,8 +10,6 @@ import InputRange from "react-input-range";
 
 import { Settings } from "Stores/Settings";
 
-import "./InputRange.scss";
-
 const AlertGroupWidthConfiguration = observer(
   class AlertGroupWidthConfiguration extends Component {
     static propTypes = {

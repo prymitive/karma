@@ -12,8 +12,6 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Duration } from "./Duration";
 import { HourMinute } from "./HourMinute";
 
-import "./index.scss";
-
 const OffsetBadge = ({ startDate, endDate, prefixLabel }) => {
   const days = endDate.diff(startDate, "days");
   const hours = endDate.diff(startDate, "hours") % 24;

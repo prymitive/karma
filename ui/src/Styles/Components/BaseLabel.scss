@@ -1,8 +1,5 @@
-@import "src/Theme.scss";
-
 .components-label-with-hover:hover {
   filter: brightness(0.85);
-  text-decoration: none;
   cursor: pointer;
 }
 

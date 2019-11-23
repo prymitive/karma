@@ -1,4 +1,10 @@
-import { configure, getStorybook, setAddon } from "@storybook/react";
+import React from "react";
+import {
+  configure,
+  getStorybook,
+  setAddon,
+  addDecorator
+} from "@storybook/react";
 
 import createPercyAddon from "@percy-io/percy-storybook";
 
@@ -9,6 +15,12 @@ setAddon(percyAddon);
 
 // mock date so the silence form always shows same preview
 advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 36, 40)));
+
+addDecorator(story => {
+  document.body.classList.add("theme-light");
+  document.body.style = "";
+  return story();
+});
 
 const req = require.context("../src/Components", true, /\.stories\.(js|tsx)$/);
 

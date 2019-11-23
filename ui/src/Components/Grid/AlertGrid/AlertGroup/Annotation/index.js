@@ -16,8 +16,6 @@ import { faSearchMinus } from "@fortawesome/free-solid-svg-icons/faSearchMinus";
 import { AlertStore } from "Stores/AlertStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 
-import "./index.css";
-
 const RenderNonLinkAnnotation = observer(
   class RenderNonLinkAnnotation extends Component {
     static propTypes = {

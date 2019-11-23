@@ -1,10 +1,12 @@
 import React from "react";
 
-import { shallow, mount } from "enzyme";
+import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
 import { NewEmptyMatcher, MatcherValueToObject } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
+import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
 import { LabelNameInput } from "./LabelNameInput";
 
 let matcher;
@@ -30,12 +32,16 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-const ShallowLabelNameInput = isValid => {
-  return shallow(<LabelNameInput matcher={matcher} isValid={isValid} />);
-};
-
 const MountedLabelNameInput = isValid => {
-  return mount(<LabelNameInput matcher={matcher} isValid={isValid} />);
+  return mount(
+    <ThemeContext.Provider
+      value={{
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+      }}
+    >
+      <LabelNameInput matcher={matcher} isValid={isValid} />
+    </ThemeContext.Provider>
+  );
 };
 
 const ValidateSuggestions = () => {
@@ -48,26 +54,26 @@ const ValidateSuggestions = () => {
 
 describe("<LabelNameInput />", () => {
   it("matches snapshot", () => {
-    const tree = ShallowLabelNameInput(true);
+    const tree = MountedLabelNameInput(true);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("doesn't renders ValidationError after passed validation", () => {
     // clear the name so placeholder is rendered
     matcher.name = "";
-    const tree = ShallowLabelNameInput(true);
-    expect(tree.html()).toMatch(/Label name/);
-    expect(tree.html()).not.toMatch(/fa-exclamation-circle/);
-    expect(tree.html()).not.toMatch(/Required/);
+    const tree = MountedLabelNameInput(true);
+    expect(toDiffableHtml(tree.html())).toMatch(/Label name/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/Required/);
   });
 
   it("renders ValidationError after failed validation", () => {
     // clear the name so placeholder is rendered
     matcher.name = "";
-    const tree = ShallowLabelNameInput(false);
-    expect(tree.html()).not.toMatch(/Label name/);
-    expect(tree.html()).toMatch(/fa-exclamation-circle/);
-    expect(tree.html()).toMatch(/Required/);
+    const tree = MountedLabelNameInput(false);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/Label name/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/Required/);
   });
 
   it("renders suggestions", () => {
@@ -89,7 +95,7 @@ describe("<LabelNameInput />", () => {
     fetch
       .once(JSON.stringify(["name1", "name2", "name3"]))
       .once(JSON.stringify(["value1", "value2", "value3"]));
-    const tree = ShallowLabelNameInput(true);
+    const tree = MountedLabelNameInput(true);
     const instance = tree.instance();
     await expect(instance.nameSuggestionsFetch).resolves.toBeUndefined();
     await expect(instance.valueSuggestionsFetch).resolves.toBeUndefined();
@@ -106,7 +112,7 @@ describe("<LabelNameInput />", () => {
 
   it("handles fetch errors when populating suggestions", async () => {
     fetch.mockReject("error");
-    const tree = ShallowLabelNameInput(true);
+    const tree = MountedLabelNameInput(true);
     const instance = tree.instance();
     await expect(instance.nameSuggestionsFetch).resolves.toBeUndefined();
     await expect(instance.valueSuggestionsFetch).resolves.toBeUndefined();
@@ -116,7 +122,7 @@ describe("<LabelNameInput />", () => {
   it("handles invalid JSON when populating suggestions", async () => {
     jest.spyOn(console, "error").mockImplementation(() => {});
     fetch.mockResponse("this is not JSON");
-    const tree = ShallowLabelNameInput(true);
+    const tree = MountedLabelNameInput(true);
     const instance = tree.instance();
     await expect(instance.nameSuggestionsFetch).resolves.toBeUndefined();
     await expect(instance.valueSuggestionsFetch).resolves.toBeUndefined();
@@ -126,7 +132,7 @@ describe("<LabelNameInput />", () => {
 
   it("suggestions are emptied on failed fetch", async () => {
     fetch.mockReject(new Error("fake error message"));
-    const tree = ShallowLabelNameInput(true);
+    const tree = MountedLabelNameInput(true);
     const instance = tree.instance();
     await expect(instance.nameSuggestionsFetch).resolves.toBeUndefined();
     await expect(instance.valueSuggestionsFetch).resolves.toBeUndefined();

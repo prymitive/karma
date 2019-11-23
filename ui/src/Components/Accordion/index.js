@@ -6,8 +6,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 
-import "./index.scss";
-
 const Trigger = ({ text, isOpen }) => (
   <div className="d-flex flex-row justify-content-between">
     <div>{text}</div>
@@ -28,7 +26,7 @@ const Accordion = ({ text, content, extraProps }) => (
     className="card"
     openedClassName="card"
     triggerClassName="card-header cursor-pointer border-bottom-0"
-    triggerOpenedClassName="card-header cursor-pointer bg-light"
+    triggerOpenedClassName="card-header cursor-pointer"
     contentOuterClassName="collapse show"
     contentInnerClassName="card-body my-2"
     {...extraProps}

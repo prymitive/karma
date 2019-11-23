@@ -3,46 +3,66 @@
 exports[`<PayloadPreview /> matches snapshot 1`] = `
 "
 <div>
-  <pre class=\\"__json-pretty__\\">
+  <pre class=\\"__json-pretty__\\"
+       style=\\"line-height:1.3;color:#66d9ef;background:#272822;overflow:auto;\\"
+  >
     {
   &quot;
-    <span class=\\"__json-key__\\">
+    <span class=\\"__json-key__\\"
+          style=\\"color:#f92672;\\"
+    >
       matchers
     </span>
     &quot;: [],
   &quot;
-    <span class=\\"__json-key__\\">
+    <span class=\\"__json-key__\\"
+          style=\\"color:#f92672;\\"
+    >
       startsAt
     </span>
     &quot;:
-    <span class=\\"__json-string__\\">
+    <span class=\\"__json-string__\\"
+          style=\\"color:#fd971f;\\"
+    >
       &quot;2000-02-01T00:00:00.000Z&quot;
     </span>
     ,
   &quot;
-    <span class=\\"__json-key__\\">
+    <span class=\\"__json-key__\\"
+          style=\\"color:#f92672;\\"
+    >
       endsAt
     </span>
     &quot;:
-    <span class=\\"__json-string__\\">
+    <span class=\\"__json-string__\\"
+          style=\\"color:#fd971f;\\"
+    >
       &quot;2000-02-01T01:00:00.000Z&quot;
     </span>
     ,
   &quot;
-    <span class=\\"__json-key__\\">
+    <span class=\\"__json-key__\\"
+          style=\\"color:#f92672;\\"
+    >
       createdBy
     </span>
     &quot;:
-    <span class=\\"__json-string__\\">
+    <span class=\\"__json-string__\\"
+          style=\\"color:#fd971f;\\"
+    >
       &quot;&quot;
     </span>
     ,
   &quot;
-    <span class=\\"__json-key__\\">
+    <span class=\\"__json-key__\\"
+          style=\\"color:#f92672;\\"
+    >
       comment
     </span>
     &quot;:
-    <span class=\\"__json-string__\\">
+    <span class=\\"__json-string__\\"
+          style=\\"color:#fd971f;\\"
+    >
       &quot;PayloadPreview test&quot;
     </span>
     }

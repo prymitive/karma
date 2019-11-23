@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 
 import { CSSTransition } from "react-transition-group";
 
-import "./index.scss";
-
 const MountModal = ({ children, duration, ...props }) => (
   <CSSTransition
     classNames="components-animation-modal"

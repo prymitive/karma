@@ -25,11 +25,7 @@ import { GroupFooter } from "./GroupFooter";
 const LoadButton = ({ icon, action, tooltip }) => {
   return (
     <TooltipWrapper title={tooltip}>
-      <button
-        type="button"
-        className="btn btn-sm py-0 bg-white"
-        onClick={action}
-      >
+      <button type="button" className="btn btn-sm py-0" onClick={action}>
         <FontAwesomeIcon className="text-muted" icon={icon} />
       </button>
     </TooltipWrapper>
@@ -224,7 +220,7 @@ const AlertGroup = observer(
                 setIsMenuOpen={this.renderConfig.setIsMenuOpen}
               />
               {this.collapse.value ? null : (
-                <div className="card-body px-2 py-1 bg-white components-grid-alertgrid-card">
+                <div className="card-body px-2 py-1 components-grid-alertgrid-card">
                   <ul className="list-group">
                     {group.alerts
                       .slice(0, this.renderConfig.alertsToRender)
@@ -244,7 +240,7 @@ const AlertGroup = observer(
                         />
                       ))}
                     {group.alerts.length > this.defaultRenderCount ? (
-                      <li className="list-group-item border-0 p-0 text-center">
+                      <li className="list-group-item border-0 p-0 text-center bg-transparent">
                         <LoadButton
                           icon={faMinus}
                           action={this.loadLess}

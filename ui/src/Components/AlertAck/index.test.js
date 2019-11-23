@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import toDiffableHtml from "diffable-html";
+
 import { advanceTo, clear } from "jest-date-mock";
 
 import { MockAlertGroup, MockAlert } from "__mocks__/Alerts.js";
@@ -85,7 +87,7 @@ describe("<AlertAck />", () => {
 
   it("uses faCheck icon when idle", () => {
     const tree = MountedAlertAck();
-    expect(tree.html()).toMatch(/fa-check/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-check/);
   });
 
   it("uses faExclamationCircle after failed fetch", async () => {
@@ -96,7 +98,7 @@ describe("<AlertAck />", () => {
     await expect(
       tree.instance().submitState.silencesByCluster["default"].fetch
     ).resolves.toBeUndefined();
-    expect(tree.html()).toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
   });
 
   it("[v1] uses faCheckCircle after successful fetch", async () => {
@@ -109,7 +111,7 @@ describe("<AlertAck />", () => {
     await expect(
       tree.instance().submitState.silencesByCluster["default"].fetch
     ).resolves.toBeUndefined();
-    expect(tree.html()).toMatch(/fa-check-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-check-circle/);
   });
 
   it("[v2] uses faCheckCircle after successful fetch", async () => {
@@ -121,7 +123,7 @@ describe("<AlertAck />", () => {
     await expect(
       tree.instance().submitState.silencesByCluster["default"].fetch
     ).resolves.toBeUndefined();
-    expect(tree.html()).toMatch(/fa-check-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-check-circle/);
   });
 
   it("sends a request on click", () => {

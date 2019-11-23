@@ -76,7 +76,7 @@ const SilenceProgress = observer(
       return (
         <span className="badge badge-light nmb-05 align-text-bottom p-1">
           Expires <Moment fromNow>{silence.endsAt}</Moment>
-          <div className="progress silence-progress bg-white">
+          <div className="progress silence-progress">
             <div
               className={progressClass}
               role="progressbar"

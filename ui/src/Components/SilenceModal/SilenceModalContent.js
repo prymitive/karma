@@ -16,8 +16,6 @@ import { SilencePreview } from "./SilencePreview";
 import { SilenceSubmitController } from "./SilenceSubmit/SilenceSubmitController";
 import { Browser } from "./Browser";
 
-import "./index.css";
-
 const SilenceModalContent = observer(
   class SilenceModalContent extends Component {
     static propTypes = {

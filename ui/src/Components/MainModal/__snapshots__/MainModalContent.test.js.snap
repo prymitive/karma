@@ -23,7 +23,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
   <div class=\\"modal-body\\">
     <form class=\\"px-3 accordion\\">
       <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer bg-light\\">
+        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Refresh interval
@@ -94,7 +94,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
         </div>
       </div>
       <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer bg-light\\">
+        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Filter bar configuration
@@ -142,7 +142,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
         </div>
       </div>
       <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer bg-light\\">
+        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Theme
@@ -208,7 +208,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
         </div>
       </div>
       <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer bg-light\\">
+        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Minimal alert group width
@@ -279,7 +279,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
         </div>
       </div>
       <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer bg-light\\">
+        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Default number of alerts to show per group
@@ -350,7 +350,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
         </div>
       </div>
       <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer bg-light\\">
+        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Default alert group display
@@ -379,9 +379,9 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
           <div class=\\"Collapsible__contentInner card-body my-2\\">
             <div class=\\"form-group mb-0\\">
               <div class=\\" css-2b097c-container\\">
-                <div class=\\"react-select__control css-au8pbo-control\\">
-                  <div class=\\"react-select__value-container react-select__value-container--has-value css-pb81dw\\">
-                    <div class=\\"react-select__single-value css-1uccc91-singleValue\\">
+                <div class=\\"react-select__control css-r5n82u-control\\">
+                  <div class=\\"react-select__value-container react-select__value-container--has-value css-97xgis\\">
+                    <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
                       Collapse on mobile
                     </div>
                     <div class=\\"css-b8ldur-Input\\">
@@ -429,7 +429,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
         </div>
       </div>
       <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer bg-light\\">
+        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Grid sort order
@@ -460,9 +460,9 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
               <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
                 <div class=\\"flex-shrink-0 flex-grow-1 flex-basis-auto\\">
                   <div class=\\" css-2b097c-container\\">
-                    <div class=\\"react-select__control css-au8pbo-control\\">
-                      <div class=\\"react-select__value-container react-select__value-container--has-value css-pb81dw\\">
-                        <div class=\\"react-select__single-value css-1uccc91-singleValue\\">
+                    <div class=\\"react-select__control css-r5n82u-control\\">
+                      <div class=\\"react-select__value-container react-select__value-container--has-value css-97xgis\\">
+                        <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
                           Use defaults from karma config file
                         </div>
                         <div class=\\"css-b8ldur-Input\\">

@@ -10,8 +10,6 @@ import {
 } from "Common/Colors";
 import { QueryOperators, FormatQuery, StaticLabels } from "Common/Query";
 
-import "./index.scss";
-
 const isBackgroundDark = brightness => brightness <= 125;
 
 // base class for shared code, not used directly

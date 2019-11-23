@@ -7,7 +7,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ManagedSilence } from ".";
 
-import "Percy.scss";
+import "Styles/Percy.scss";
 
 storiesOf("ManagedSilence", module)
   .addDecorator(storyFn => (

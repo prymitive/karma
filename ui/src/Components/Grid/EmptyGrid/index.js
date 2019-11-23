@@ -8,7 +8,7 @@ import { MountFade } from "Components/Animations/MountFade";
 import "./index.scss";
 
 const EmptyGrid = () => (
-  <h1 className="display-1 text-secondary screen-center">
+  <h1 className="display-1 text-placeholder screen-center">
     <MountFade in={true}>
       <FontAwesomeIcon icon={faMugHot} style={{ fontSize: "14rem" }} />
     </MountFade>

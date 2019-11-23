@@ -10,7 +10,7 @@ import { FatalError } from "./FatalError";
 import { UpgradeNeeded } from "./UpgradeNeeded";
 import { Grid } from ".";
 
-import "Percy.scss";
+import "Styles/Percy.scss";
 
 storiesOf("Grid", module)
   .add("FatalError", () => {

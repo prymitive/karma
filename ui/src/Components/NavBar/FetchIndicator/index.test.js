@@ -21,13 +21,13 @@ describe("<FetchIndicator />", () => {
   it("shows a pause icon when fetching is paused", () => {
     alertStore.status.pause();
     const tree = MountedFetchIndicator();
-    expect(tree.html()).toMatch(/fa-pause-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-pause-circle/);
   });
 
   it("shows a cirle notch icon when fetching is resumed", () => {
     alertStore.status.resume();
     const tree = MountedFetchIndicator();
-    expect(tree.html()).toMatch(/fa-circle-notch/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-circle-notch/);
   });
 
   it("opacity is 1 when fetch is in progress", () => {

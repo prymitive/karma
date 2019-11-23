@@ -32,8 +32,8 @@ FetchError.propTypes = {
 };
 
 const Placeholder = () => (
-  <div className="jumbotron bg-white">
-    <h1 className="display-5 text-secondary text-center">
+  <div className="jumbotron bg-transparent">
+    <h1 className="display-5 text-placeholder text-center">
       <FontAwesomeIcon icon={faSpinner} size="lg" spin />
     </h1>
   </div>
@@ -124,7 +124,7 @@ const SilencePreview = observer(
           <div className="d-flex flex-row-reverse">
             <button
               type="button"
-              className="btn btn-outline-primary"
+              className="btn btn-primary"
               onClick={silenceFormStore.data.setStageSubmit}
             >
               <FontAwesomeIcon icon={faCheckCircle} className="pr-1" />
@@ -132,7 +132,7 @@ const SilencePreview = observer(
             </button>
             <button
               type="button"
-              className="btn btn-outline-secondary mr-2"
+              className="btn btn-danger mr-2"
               onClick={silenceFormStore.data.resetProgress}
             >
               <FontAwesomeIcon icon={faArrowLeft} className="pr-1" />

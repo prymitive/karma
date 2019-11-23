@@ -10,7 +10,7 @@ import { StaticLabels } from "Common/Query";
 import { FetchGet } from "Common/Fetch";
 import { FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { ReactSelectStyles } from "Components/MultiSelect";
+import { ThemeContext } from "Components/Theme";
 
 const valueToOption = v => ({ label: v, value: v });
 
@@ -19,6 +19,7 @@ const SortLabelName = observer(
     static propTypes = {
       settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
+    static contextType = ThemeContext;
 
     constructor(props) {
       super(props);
@@ -71,7 +72,7 @@ const SortLabelName = observer(
 
       return (
         <Creatable
-          styles={ReactSelectStyles}
+          styles={this.context.reactSelectStyles}
           classNamePrefix="react-select"
           instanceId="configuration-sort-label"
           defaultValue={valueToOption(

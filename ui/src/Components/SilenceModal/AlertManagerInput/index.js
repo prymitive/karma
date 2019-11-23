@@ -11,7 +11,8 @@ import {
   SilenceFormStore,
   AlertmanagerClustersToOption
 } from "Stores/SilenceFormStore";
-import { MultiSelect, ReactSelectStyles } from "Components/MultiSelect";
+import { ThemeContext } from "Components/Theme";
+import { MultiSelect } from "Components/MultiSelect";
 import { ValidationError } from "Components/MultiSelect/ValidationError";
 
 const AlertManagerInput = observer(
@@ -20,6 +21,7 @@ const AlertManagerInput = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
     };
+    static contextType = ThemeContext;
 
     constructor(props) {
       super(props);
@@ -68,7 +70,7 @@ const AlertManagerInput = observer(
 
       return (
         <Select
-          styles={ReactSelectStyles}
+          styles={this.context.reactSelectStyles}
           classNamePrefix="react-select"
           instanceId="silence-input-alertmanagers"
           defaultValue={silenceFormStore.data.alertmanagers}

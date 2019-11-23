@@ -151,7 +151,7 @@ describe("<SilencePreview />", () => {
     fetch.mockResponse(JSON.stringify(MockAPIResponse()));
 
     const tree = MountedSilencePreview();
-    const button = tree.find(".btn-outline-primary");
+    const button = tree.find(".btn-primary");
     button.simulate("click");
     expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.Submit);
   });

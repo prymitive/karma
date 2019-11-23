@@ -11,8 +11,6 @@ import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
 import { RenderSilence } from "../Silences";
 
-import "./index.css";
-
 const GroupFooter = observer(
   class GroupFooter extends Component {
     static propTypes = {
@@ -33,7 +31,7 @@ const GroupFooter = observer(
       } = this.props;
 
       return (
-        <div className="card-footer bg-card-footer-default px-2 py-1">
+        <div className="card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1">
           <div className="mb-1">
             {group.shared.annotations
               .filter(a => a.isLink === false)

@@ -90,16 +90,16 @@ describe("<LabelWithPercent />", () => {
 
   it("uses bg-danger when percent is >66", () => {
     const tree = MountedLabelWithPercent("foo", "bar", 25, 67, 0, false);
-    expect(tree.html()).toMatch(/progress-bar bg-danger/);
+    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-danger/);
   });
 
   it("uses bg-warning when percent is >33", () => {
     const tree = MountedLabelWithPercent("foo", "bar", 25, 66, 0, false);
-    expect(tree.html()).toMatch(/progress-bar bg-warning/);
+    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-warning/);
   });
 
   it("uses bg-success when percent is <=33", () => {
     const tree = MountedLabelWithPercent("foo", "bar", 25, 33, 0, false);
-    expect(tree.html()).toMatch(/progress-bar bg-success/);
+    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-success/);
   });
 });

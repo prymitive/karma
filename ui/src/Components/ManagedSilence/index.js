@@ -11,8 +11,6 @@ import { MountFade } from "Components/Animations/MountFade";
 import { SilenceComment } from "./SilenceComment";
 import { SilenceDetails } from "./SilenceDetails";
 
-import "./index.scss";
-
 const ManagedSilence = observer(
   class ManagedSilence extends Component {
     static propTypes = {

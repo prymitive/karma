@@ -79,7 +79,7 @@ describe("<RenderNonLinkAnnotation />", () => {
 
   it("contains value when visible=true", () => {
     const tree = ShallowNonLinkAnnotation(true);
-    expect(tree.html()).toMatch(/some long text/);
+    expect(toDiffableHtml(tree.html())).toMatch(/some long text/);
   });
 
   it("matches snapshot when visible=false", () => {
@@ -89,7 +89,7 @@ describe("<RenderNonLinkAnnotation />", () => {
 
   it("doesn't contain value when visible=false", () => {
     const tree = ShallowNonLinkAnnotation(false);
-    expect(tree.html()).not.toMatch(/some long text/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/some long text/);
   });
 
   it("links inside annotation are rendered as a.href", () => {
@@ -100,19 +100,19 @@ describe("<RenderNonLinkAnnotation />", () => {
 
   it("clicking on - icon hides the value", () => {
     const tree = MountedNonLinkAnnotation(true);
-    expect(tree.html()).toMatch(/fa-search-minus/);
-    expect(tree.html()).toMatch(/some long text/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-search-minus/);
+    expect(toDiffableHtml(tree.html())).toMatch(/some long text/);
     tree.find(".fa-search-minus").simulate("click");
-    expect(tree.html()).toMatch(/fa-search-plus/);
-    expect(tree.html()).not.toMatch(/some long text/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-search-plus/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/some long text/);
   });
 
   it("clicking on + icon shows the value", () => {
     const tree = MountedNonLinkAnnotation(false);
-    expect(tree.html()).toMatch(/fa-search-plus/);
-    expect(tree.html()).not.toMatch(/some long text/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-search-plus/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/some long text/);
     tree.find(".components-grid-annotation").simulate("click");
-    expect(tree.html()).toMatch(/fa-search-minus/);
-    expect(tree.html()).toMatch(/some long text/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-search-minus/);
+    expect(toDiffableHtml(tree.html())).toMatch(/some long text/);
   });
 });

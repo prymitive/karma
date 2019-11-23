@@ -20,8 +20,6 @@ import { FilterInputLabel } from "Components/Labels/FilterInputLabel";
 import { AutosuggestTheme } from "./Constants";
 import { History } from "./History";
 
-import "./index.scss";
-
 const FilterInput = observer(
   class FilterInput extends Component {
     static propTypes = {
@@ -154,7 +152,7 @@ const FilterInput = observer(
           <div className="input-group w-100 mr-2">
             <div className="input-group-prepend">
               <span
-                className={`input-group-text px-2 border-left-0 border-right-0 border-top-0 rounded-0 ${
+                className={`input-group-text px-2 border-left-0 border-right-0 border-top-0 border-light rounded-0 ${
                   this.inputStore.focused ? "bg-focused" : "bg-transparent"
                 } text-white`}
               >
@@ -162,7 +160,7 @@ const FilterInput = observer(
               </span>
             </div>
             <div
-              className={`form-control components-filterinput border-left-0 border-right-0 border-top-0 rounded-0 ${
+              className={`form-control components-filterinput border-left-0 border-right-0 border-top-0 border-light rounded-0 ${
                 this.inputStore.focused ? "bg-focused" : "bg-transparent"
               }`}
               onClick={event => {

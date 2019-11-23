@@ -1,6 +1,57 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
+exports[`<MultiSelect /> matches snapshot without any extra props 1`] = `
+"
+<div class=\\" css-2b097c-container\\">
+  <div class=\\"react-select__control css-r5n82u-control\\">
+    <div class=\\"react-select__value-container css-97xgis\\">
+      <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
+        Select...
+      </div>
+      <div class=\\"css-b8ldur-Input\\">
+        <div class=\\"react-select__input\\"
+             style=\\"display: inline-block;\\"
+        >
+          <input autocapitalize=\\"none\\"
+                 autocomplete=\\"off\\"
+                 autocorrect=\\"off\\"
+                 id=\\"react-select-2-input\\"
+                 spellcheck=\\"false\\"
+                 tabindex=\\"0\\"
+                 type=\\"text\\"
+                 aria-autocomplete=\\"list\\"
+                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                 value
+          >
+          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
+      <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
+      </span>
+      <div aria-hidden=\\"true\\"
+           class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+      >
+        <svg height=\\"20\\"
+             width=\\"20\\"
+             viewbox=\\"0 0 20 20\\"
+             aria-hidden=\\"true\\"
+             focusable=\\"false\\"
+             class=\\"css-6q0nyr-Svg\\"
+        >
+          <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
+          </path>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
   <span aria-live=\\"polite\\"
@@ -13,8 +64,8 @@ exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
       &nbsp;  0 results available. Select is focused ,type to refine list, press Down to open the menu,
     </p>
   </span>
-  <div class=\\"react-select__control react-select__control--is-focused css-nmfa0p-control\\">
-    <div class=\\"react-select__value-container css-pb81dw\\">
+  <div class=\\"react-select__control react-select__control--is-focused css-11rrdhm-control\\">
+    <div class=\\"react-select__value-container css-97xgis\\">
       <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
@@ -25,7 +76,7 @@ exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
           <input autocapitalize=\\"none\\"
                  autocomplete=\\"off\\"
                  autocorrect=\\"off\\"
-                 id=\\"react-select-4-input\\"
+                 id=\\"react-select-5-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
                  type=\\"text\\"
@@ -61,30 +112,30 @@ exports[`<CustomMultiSelect /> matches snapshot when focused 1`] = `
 "
 `;
 
-exports[`<CustomMultiSelect /> matches snapshot with a value 1`] = `
+exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
-  <div class=\\"react-select__control css-au8pbo-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--has-value css-pb81dw\\">
-      <div class=\\"react-select__single-value css-1uccc91-singleValue\\">
+  <div class=\\"react-select__control css-r5n82u-control\\">
+    <div class=\\"react-select__value-container react-select__value-container--has-value css-97xgis\\">
+      <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
         foo
       </div>
       <div class=\\"css-b8ldur-Input\\">
         <div class=\\"react-select__input\\"
-             style=\\"display:inline-block\\"
+             style=\\"display: inline-block;\\"
         >
-          <input type=\\"text\\"
-                 autocapitalize=\\"none\\"
+          <input autocapitalize=\\"none\\"
                  autocomplete=\\"off\\"
                  autocorrect=\\"off\\"
-                 id=\\"react-select-5-input\\"
+                 id=\\"react-select-6-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 value
+                 type=\\"text\\"
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                 value
           >
-          <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
+          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
         </div>
       </div>
@@ -112,30 +163,30 @@ exports[`<CustomMultiSelect /> matches snapshot with a value 1`] = `
 "
 `;
 
-exports[`<CustomMultiSelect /> matches snapshot with defaults 1`] = `
+exports[`<WrappedCustomMultiSelect /> matches snapshot with defaults 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
-  <div class=\\"react-select__control css-au8pbo-control\\">
-    <div class=\\"react-select__value-container css-pb81dw\\">
+  <div class=\\"react-select__control css-r5n82u-control\\">
+    <div class=\\"react-select__value-container css-97xgis\\">
       <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
       <div class=\\"css-b8ldur-Input\\">
         <div class=\\"react-select__input\\"
-             style=\\"display:inline-block\\"
+             style=\\"display: inline-block;\\"
         >
-          <input type=\\"text\\"
-                 autocapitalize=\\"none\\"
+          <input autocapitalize=\\"none\\"
                  autocomplete=\\"off\\"
                  autocorrect=\\"off\\"
-                 id=\\"react-select-2-input\\"
+                 id=\\"react-select-3-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 value
+                 type=\\"text\\"
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                 value
           >
-          <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
+          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
         </div>
       </div>
@@ -163,36 +214,36 @@ exports[`<CustomMultiSelect /> matches snapshot with defaults 1`] = `
 "
 `;
 
-exports[`<CustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
+exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
 "
 <div class=\\"react-select--is-disabled css-14jk2my-container\\">
-  <div class=\\"react-select__control react-select__control--is-disabled css-jk9kg2-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--has-value css-57r8lk\\">
-      <div class=\\"react-select__single-value react-select__single-value--is-disabled css-107lb6w-singleValue\\">
+  <div class=\\"react-select__control react-select__control--is-disabled css-r5n82u-control\\">
+    <div class=\\"react-select__value-container react-select__value-container--has-value css-97xgis\\">
+      <div class=\\"react-select__single-value react-select__single-value--is-disabled css-1wh03ml-singleValue\\">
         foo
       </div>
       <div class=\\"css-b8ldur-Input\\">
         <div class=\\"react-select__input\\"
-             style=\\"display:inline-block\\"
+             style=\\"display: inline-block;\\"
         >
-          <input type=\\"text\\"
-                 disabled
+          <input disabled
                  autocapitalize=\\"none\\"
                  autocomplete=\\"off\\"
                  autocorrect=\\"off\\"
-                 id=\\"react-select-7-input\\"
+                 id=\\"react-select-8-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 value
+                 type=\\"text\\"
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                 value
           >
-          <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
+          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
         </div>
       </div>
     </div>
-    <div class=\\"react-select__indicators css-15bdmde-IndicatorsContainer\\">
+    <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
       <span class=\\"react-select__indicator-separator css-109onse-indicatorSeparator\\">
       </span>
       <div aria-hidden=\\"true\\"
@@ -215,30 +266,30 @@ exports[`<CustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
 "
 `;
 
-exports[`<CustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
+exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
-  <div class=\\"react-select__control css-au8pbo-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--is-multi css-10war8y\\">
+  <div class=\\"react-select__control css-r5n82u-control\\">
+    <div class=\\"react-select__value-container react-select__value-container--is-multi css-nj4yyx\\">
       <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
       <div class=\\"css-b8ldur-Input\\">
         <div class=\\"react-select__input\\"
-             style=\\"display:inline-block\\"
+             style=\\"display: inline-block;\\"
         >
-          <input type=\\"text\\"
-                 autocapitalize=\\"none\\"
+          <input autocapitalize=\\"none\\"
                  autocomplete=\\"off\\"
                  autocorrect=\\"off\\"
-                 id=\\"react-select-3-input\\"
+                 id=\\"react-select-4-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 value
+                 type=\\"text\\"
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                 value
           >
-          <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
+          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
         </div>
       </div>
@@ -266,11 +317,11 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 "
 `;
 
-exports[`<CustomMultiSelect /> matches snapshot with isMulti=true and a value 1`] = `
+exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a value 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
-  <div class=\\"react-select__control css-au8pbo-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-10war8y\\">
+  <div class=\\"react-select__control css-r5n82u-control\\">
+    <div class=\\"react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-nj4yyx\\">
       <div class=\\"css-owt1hd-multiValue react-select__multi-value\\">
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           foo
@@ -290,20 +341,20 @@ exports[`<CustomMultiSelect /> matches snapshot with isMulti=true and a value 1`
       </div>
       <div class=\\"css-b8ldur-Input\\">
         <div class=\\"react-select__input\\"
-             style=\\"display:inline-block\\"
+             style=\\"display: inline-block;\\"
         >
-          <input type=\\"text\\"
-                 autocapitalize=\\"none\\"
+          <input autocapitalize=\\"none\\"
                  autocomplete=\\"off\\"
                  autocorrect=\\"off\\"
-                 id=\\"react-select-6-input\\"
+                 id=\\"react-select-7-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 value
+                 type=\\"text\\"
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                 value
           >
-          <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
+          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
         </div>
       </div>

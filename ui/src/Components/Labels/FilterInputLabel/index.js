@@ -15,8 +15,6 @@ import { QueryOperators } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { BaseLabel } from "Components/Labels/BaseLabel";
 
-import "./index.scss";
-
 const FilterInputLabel = observer(
   class FilterInputLabel extends BaseLabel {
     static propTypes = {
@@ -98,7 +96,7 @@ const FilterInputLabel = observer(
               value={filter.raw}
               propName="raw"
               change={this.onChange}
-              classEditing="py-0 border-0 bg-light text-black rounded"
+              classEditing="py-0 border-0 editing rounded"
               afterStart={alertStore.status.pause}
               afterFinish={alertStore.status.resume}
             />

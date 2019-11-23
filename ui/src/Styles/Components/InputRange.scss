@@ -1,10 +1,7 @@
-// customize colors and fonts using bootstrap variables
-@import "src/Theme.scss";
-
 $input-range-font-family: $font-family-sans-serif;
 $input-range-primary-color: $primary;
 $input-range-neutral-color: $dark;
-$input-range-neutral-light-color: $light;
+$input-range-neutral-light-color: $secondary;
 $input-range-disabled-color: $secondary;
 
 @import "~react-input-range/src/scss/input-range/input-range";

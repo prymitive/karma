@@ -4,9 +4,11 @@ import { storiesOf } from "@storybook/react";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { ThemeContext } from "Components/Theme";
+import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
 import { MainModalContent, TabNames } from "./MainModalContent";
 
-import "Percy.scss";
+import "Styles/Percy.scss";
 
 storiesOf("MainModal", module)
   .addDecorator(storyFn => (
@@ -20,13 +22,19 @@ storiesOf("MainModal", module)
     const alertStore = new AlertStore([]);
     const settingsStore = new Settings();
     return (
-      <MainModalContent
-        alertStore={alertStore}
-        settingsStore={settingsStore}
-        onHide={() => {}}
-        isVisible={true}
-        expandAllOptions={true}
-      />
+      <ThemeContext.Provider
+        value={{
+          reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+        }}
+      >
+        <MainModalContent
+          alertStore={alertStore}
+          settingsStore={settingsStore}
+          onHide={() => {}}
+          isVisible={true}
+          expandAllOptions={true}
+        />
+      </ThemeContext.Provider>
     );
   })
   .add("Help", () => {

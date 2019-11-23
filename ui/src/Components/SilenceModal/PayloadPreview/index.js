@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 
 import JSONPretty from "react-json-pretty";
-import "react-json-pretty/themes/monikai.css";
+import * as theme from "react-json-pretty/dist/monikai";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 
@@ -19,7 +19,10 @@ const PayloadPreview = observer(
 
       return (
         <div className="mt-3">
-          <JSONPretty json={silenceFormStore.data.toAlertmanagerPayload} />
+          <JSONPretty
+            json={silenceFormStore.data.toAlertmanagerPayload}
+            theme={theme}
+          />
         </div>
       );
     }

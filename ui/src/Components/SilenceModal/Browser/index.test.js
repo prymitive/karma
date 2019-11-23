@@ -111,7 +111,7 @@ describe("<Browser />", () => {
     );
     const tree = MountedBrowser();
 
-    const sortOrder = tree.find("button.btn-outline-secondary").at(0);
+    const sortOrder = tree.find("button.btn-primary").at(0);
     expect(sortOrder.text()).toBe("Sort order");
     sortOrder.simulate("click");
 

@@ -2,7 +2,7 @@
 
 exports[`<EmptyGrid /> matches snapshot 1`] = `
 "
-<h1 class=\\"display-1 text-secondary screen-center\\">
+<h1 class=\\"display-1 text-placeholder screen-center\\">
   <svg aria-hidden=\\"true\\"
        focusable=\\"false\\"
        data-prefix=\\"fas\\"

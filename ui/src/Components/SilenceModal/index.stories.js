@@ -13,10 +13,12 @@ import {
   MatcherValueToObject,
   SilenceTabNames
 } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
+import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
 import { DateTimeSelect, TabNames } from "./DateTimeSelect";
 import { SilenceModalContent } from "./SilenceModalContent";
 
-import "Percy.scss";
+import "Styles/Percy.scss";
 
 const MockMatcher = (name, values, isRegex) => {
   const matcher = NewEmptyMatcher();
@@ -77,32 +79,38 @@ storiesOf("SilenceModal", module)
 
     return (
       <React.Fragment>
-        <Modal>
-          <SilenceModalContent
-            alertStore={alertStore}
-            silenceFormStore={silenceFormStore}
-            settingsStore={settingsStore}
-            onHide={() => {}}
-            previewOpen={true}
-            onDeleteModalClose={() => {}}
-          />
-        </Modal>
-        <Modal>
-          <div className="pt-2">
-            <DateTimeSelect
+        <ThemeContext.Provider
+          value={{
+            reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+          }}
+        >
+          <Modal>
+            <SilenceModalContent
+              alertStore={alertStore}
               silenceFormStore={silenceFormStore}
-              openTab={TabNames.Start}
+              settingsStore={settingsStore}
+              onHide={() => {}}
+              previewOpen={true}
+              onDeleteModalClose={() => {}}
             />
-          </div>
-        </Modal>
-        <Modal>
-          <div className="pt-2">
-            <DateTimeSelect
-              silenceFormStore={silenceFormStore}
-              openTab={TabNames.End}
-            />
-          </div>
-        </Modal>
+          </Modal>
+          <Modal>
+            <div className="pt-2">
+              <DateTimeSelect
+                silenceFormStore={silenceFormStore}
+                openTab={TabNames.Start}
+              />
+            </div>
+          </Modal>
+          <Modal>
+            <div className="pt-2">
+              <DateTimeSelect
+                silenceFormStore={silenceFormStore}
+                openTab={TabNames.End}
+              />
+            </div>
+          </Modal>
+        </ThemeContext.Provider>
       </React.Fragment>
     );
   })
