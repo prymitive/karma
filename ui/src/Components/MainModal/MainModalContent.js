@@ -21,7 +21,8 @@ const MainModalContent = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
       onHide: PropTypes.func.isRequired,
-      openTab: PropTypes.oneOf(Object.values(TabNames))
+      openTab: PropTypes.oneOf(Object.values(TabNames)),
+      expandAllOptions: PropTypes.bool.isRequired
     };
     static defaultProps = {
       openTab: TabNames.Configuration
@@ -42,7 +43,12 @@ const MainModalContent = observer(
     }
 
     render() {
-      const { alertStore, settingsStore, onHide } = this.props;
+      const {
+        alertStore,
+        settingsStore,
+        onHide,
+        expandAllOptions
+      } = this.props;
 
       return (
         <React.Fragment>
@@ -64,9 +70,14 @@ const MainModalContent = observer(
             </nav>
           </div>
           <div className="modal-body">
-            {this.tab.current === TabNames.Help ? <Help /> : null}
+            {this.tab.current === TabNames.Help ? (
+              <Help defaultIsOpen={expandAllOptions} />
+            ) : null}
             {this.tab.current === TabNames.Configuration ? (
-              <Configuration settingsStore={settingsStore} />
+              <Configuration
+                settingsStore={settingsStore}
+                defaultIsOpen={expandAllOptions}
+              />
             ) : null}
           </div>
           <div className="modal-footer">

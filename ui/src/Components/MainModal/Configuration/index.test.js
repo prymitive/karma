@@ -10,7 +10,9 @@ import { Configuration } from ".";
 describe("<Configuration />", () => {
   it("matches snapshot", () => {
     const settingsStore = new Settings();
-    const tree = shallow(<Configuration settingsStore={settingsStore} />);
+    const tree = shallow(
+      <Configuration settingsStore={settingsStore} defaultIsOpen={true} />
+    );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 });

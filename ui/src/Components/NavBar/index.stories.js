@@ -5,6 +5,7 @@ import { storiesOf } from "@storybook/react";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { HistoryMenuContent } from "./FilterInput/History";
 import { NavBar } from ".";
 
 import "Percy.scss";
@@ -49,11 +50,60 @@ storiesOf("NavBar", module).add("NavBar", () => {
     NewFilter("foo", "", "", "", true, true, 2)
   ];
 
+  const history = [
+    [NewFilter("alertname=Foo", "alertname", "=", "foo", true, true, 15)],
+    [NewFilter("cluster=staging", "cluster", "=", "staging", true, true, 15)],
+    [
+      NewFilter("cluster=staging", "cluster", "=", "staging", true, true, 15),
+      NewFilter("region=AF", "region", "=", "AF", true, true, 180)
+    ],
+    [
+      NewFilter("cluster=staging", "cluster", "=", "staging", true, true, 15),
+      NewFilter("region=AF", "region", "=", "AF", true, true, 180),
+      NewFilter(
+        "instance!=server1",
+        "instance",
+        "!=",
+        "server1",
+        false,
+        true,
+        0
+      )
+    ],
+    [
+      NewFilter(
+        "alertname=VeryVeryVeryVeryVeryLoooooooooooooooongAlertnameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "alertname",
+        "=",
+        "VeryVeryVeryVeryVeryLoooooooooooooooongAlertnameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        true,
+        true,
+        15
+      )
+    ]
+  ];
+
   return (
-    <NavBar
-      alertStore={alertStore}
-      settingsStore={settingsStore}
-      silenceFormStore={silenceFormStore}
-    />
+    <React.Fragment>
+      <NavBar
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        silenceFormStore={silenceFormStore}
+      />
+      <div style={{ position: "absolute", top: "150px", left: "5%" }}>
+        <HistoryMenuContent
+          popperPlacement="top"
+          popperRef={() => {}}
+          popperStyle={{}}
+          filters={history}
+          onClear={() => {}}
+          alertStore={alertStore}
+          settingsStore={settingsStore}
+          afterClick={() => {}}
+          handleClickOutside={() => {}}
+          outsideClickIgnoreClass="components-navbar-history"
+        />
+      </div>
+    </React.Fragment>
   );
 });

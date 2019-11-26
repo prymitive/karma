@@ -12,7 +12,7 @@ import { AlertGroupCollapseConfiguration } from "./AlertGroupCollapseConfigurati
 import { AlertGroupTitleBarColor } from "./AlertGroupTitleBarColor";
 import { ThemeConfiguration } from "./ThemeConfiguration";
 
-const Configuration = ({ settingsStore }) => (
+const Configuration = ({ settingsStore, defaultIsOpen }) => (
   <form className="px-3 accordion">
     <Accordion
       text="Refresh interval"
@@ -22,6 +22,7 @@ const Configuration = ({ settingsStore }) => (
     <Accordion
       text="Filter bar configuration"
       content={<FilterBarConfiguration settingsStore={settingsStore} />}
+      extraProps={{ open: defaultIsOpen }}
     />
     <Accordion
       text="Theme"
@@ -31,29 +32,35 @@ const Configuration = ({ settingsStore }) => (
           <ThemeConfiguration settingsStore={settingsStore} />
         </React.Fragment>
       }
+      extraProps={{ open: defaultIsOpen }}
     />
     <Accordion
       text="Minimal alert group width"
       content={<AlertGroupWidthConfiguration settingsStore={settingsStore} />}
+      extraProps={{ open: defaultIsOpen }}
     />
     <Accordion
       text="Default number of alerts to show per group"
       content={<AlertGroupConfiguration settingsStore={settingsStore} />}
+      extraProps={{ open: defaultIsOpen }}
     />
     <Accordion
       text="Default alert group display"
       content={
         <AlertGroupCollapseConfiguration settingsStore={settingsStore} />
       }
+      extraProps={{ open: defaultIsOpen }}
     />
     <Accordion
       text="Grid sort order"
       content={<AlertGroupSortConfiguration settingsStore={settingsStore} />}
+      extraProps={{ open: defaultIsOpen }}
     />
   </form>
 );
 Configuration.propTypes = {
-  settingsStore: PropTypes.instanceOf(Settings).isRequired
+  settingsStore: PropTypes.instanceOf(Settings).isRequired,
+  defaultIsOpen: PropTypes.bool.isRequired
 };
 
 export { Configuration };

@@ -13,6 +13,7 @@ import {
   MatcherValueToObject,
   SilenceTabNames
 } from "Stores/SilenceFormStore";
+import { DateTimeSelect, TabNames } from "./DateTimeSelect";
 import { SilenceModalContent } from "./SilenceModalContent";
 
 import "Percy.scss";
@@ -25,14 +26,15 @@ const MockMatcher = (name, values, isRegex) => {
   return matcher;
 };
 
-storiesOf("SilenceModal", module)
-  .addDecorator(storyFn => (
-    <div>
-      <div className="modal-dialog modal-lg" role="document">
-        <div className="modal-content">{storyFn()}</div>
-      </div>
+const Modal = ({ children }) => (
+  <div>
+    <div className="modal-dialog modal-lg" role="document">
+      <div className="modal-content">{children}</div>
     </div>
-  ))
+  </div>
+);
+
+storiesOf("SilenceModal", module)
   .add("Editor", () => {
     const alertStore = new AlertStore([]);
     const settingsStore = new Settings();
@@ -74,14 +76,34 @@ storiesOf("SilenceModal", module)
     );
 
     return (
-      <SilenceModalContent
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-        settingsStore={settingsStore}
-        onHide={() => {}}
-        previewOpen={true}
-        onDeleteModalClose={() => {}}
-      />
+      <React.Fragment>
+        <Modal>
+          <SilenceModalContent
+            alertStore={alertStore}
+            silenceFormStore={silenceFormStore}
+            settingsStore={settingsStore}
+            onHide={() => {}}
+            previewOpen={true}
+            onDeleteModalClose={() => {}}
+          />
+        </Modal>
+        <Modal>
+          <div className="pt-2">
+            <DateTimeSelect
+              silenceFormStore={silenceFormStore}
+              openTab={TabNames.Start}
+            />
+          </div>
+        </Modal>
+        <Modal>
+          <div className="pt-2">
+            <DateTimeSelect
+              silenceFormStore={silenceFormStore}
+              openTab={TabNames.End}
+            />
+          </div>
+        </Modal>
+      </React.Fragment>
     );
   })
   .add("Browser", () => {
@@ -135,12 +157,14 @@ storiesOf("SilenceModal", module)
     });
 
     return (
-      <SilenceModalContent
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-        settingsStore={settingsStore}
-        onHide={() => {}}
-        onDeleteModalClose={() => {}}
-      />
+      <Modal>
+        <SilenceModalContent
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          settingsStore={settingsStore}
+          onHide={() => {}}
+          onDeleteModalClose={() => {}}
+        />
+      </Modal>
     );
   });

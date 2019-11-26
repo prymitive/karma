@@ -23,20 +23,28 @@ const ManagedSilence = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       onDidUpdate: PropTypes.func,
-      onDeleteModalClose: PropTypes.func
+      onDeleteModalClose: PropTypes.func,
+      isOpen: PropTypes.bool
+    };
+    static defaultProps = {
+      isOpen: false
     };
 
-    // store collapse state, by default only silence comment is visible
-    // the rest of the silence is hidden until expanded by a click
-    collapse = observable(
-      {
-        value: true,
-        toggle() {
-          this.value = !this.value;
-        }
-      },
-      { toggle: action.bound }
-    );
+    constructor(props) {
+      super(props);
+
+      // store collapse state, by default only silence comment is visible
+      // the rest of the silence is hidden until expanded by a click
+      this.collapse = observable(
+        {
+          value: !props.isOpen,
+          toggle() {
+            this.value = !this.value;
+          }
+        },
+        { toggle: action.bound }
+      );
+    }
 
     getAlertmanager = () =>
       this.props.alertStore.data.upstreams.instances
