@@ -1,0 +1,91 @@
+import React from "react";
+
+import { storiesOf } from "@storybook/react";
+
+import { MockSilence } from "__mocks__/Alerts";
+import { AlertStore } from "Stores/AlertStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ManagedSilence } from ".";
+
+import "Percy.scss";
+
+storiesOf("ManagedSilence", module)
+  .addDecorator(storyFn => (
+    <div>
+      <div className="modal-dialog modal-lg" role="document">
+        <div className="modal-content p-2">{storyFn()}</div>
+      </div>
+    </div>
+  ))
+  .add("Silence", () => {
+    const alertStore = new AlertStore([]);
+    const silenceFormStore = new SilenceFormStore();
+    const cluster = "am";
+
+    alertStore.data.upstreams = {
+      instances: [
+        {
+          name: "am1",
+          cluster: cluster,
+          clusterMembers: ["am1"],
+          uri: "http://localhost:9093",
+          publicURI: "http://example.com",
+          error: "",
+          version: "0.15.3",
+          headers: {}
+        }
+      ],
+      clusters: { am: ["am1"] }
+    };
+
+    const silence = MockSilence();
+    silence.startsAt = "2018-08-14T16:00:00Z";
+    silence.endsAt = "2018-08-14T18:00:00Z";
+
+    const expiredSilence = MockSilence();
+    expiredSilence.startsAt = "2018-08-14T10:00:00Z";
+    expiredSilence.endsAt = "2018-08-14T11:00:00Z";
+
+    return (
+      <React.Fragment>
+        <ManagedSilence
+          cluster={cluster}
+          alertCount={123}
+          alertCountAlwaysVisible={true}
+          silence={silence}
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          onDidUpdate={() => {}}
+        />
+        <ManagedSilence
+          cluster={cluster}
+          alertCount={123}
+          alertCountAlwaysVisible={true}
+          silence={silence}
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          onDidUpdate={() => {}}
+          isOpen={true}
+        />
+        <ManagedSilence
+          cluster={cluster}
+          alertCount={123}
+          alertCountAlwaysVisible={true}
+          silence={expiredSilence}
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          onDidUpdate={() => {}}
+        />
+        <ManagedSilence
+          cluster={cluster}
+          alertCount={123}
+          alertCountAlwaysVisible={true}
+          silence={expiredSilence}
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          onDidUpdate={() => {}}
+          isOpen={true}
+        />
+      </React.Fragment>
+    );
+  });

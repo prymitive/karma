@@ -171,33 +171,41 @@ TabContentDuration.propTypes = {
 const DateTimeSelect = observer(
   class DateTimeSelect extends Component {
     static propTypes = {
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+      openTab: PropTypes.oneOf(Object.values(TabNames))
+    };
+    static defaultProps = {
+      openTab: TabNames.Duration
     };
 
-    tab = observable(
-      {
-        current: TabNames.Duration,
-        setStart() {
-          this.current = TabNames.Start;
+    constructor(props) {
+      super(props);
+
+      this.tab = observable(
+        {
+          current: props.openTab,
+          setStart() {
+            this.current = TabNames.Start;
+          },
+          setEnd() {
+            this.current = TabNames.End;
+          },
+          setDuration() {
+            this.current = TabNames.Duration;
+          },
+          timeNow: moment().seconds(0),
+          updateTimeNow() {
+            this.timeNow = moment().seconds(0);
+          }
         },
-        setEnd() {
-          this.current = TabNames.End;
-        },
-        setDuration() {
-          this.current = TabNames.Duration;
-        },
-        timeNow: moment().seconds(0),
-        updateTimeNow() {
-          this.timeNow = moment().seconds(0);
+        {
+          setStart: action.bound,
+          setEnd: action.bound,
+          setDuration: action.bound,
+          updateTimeNow: action.bound
         }
-      },
-      {
-        setStart: action.bound,
-        setEnd: action.bound,
-        setDuration: action.bound,
-        updateTimeNow: action.bound
-      }
-    );
+      );
+    }
 
     componentDidMount() {
       this.tab.updateTimeNow();
@@ -274,4 +282,10 @@ const DateTimeSelect = observer(
   }
 );
 
-export { DateTimeSelect, TabContentStart, TabContentEnd, TabContentDuration };
+export {
+  DateTimeSelect,
+  TabContentStart,
+  TabContentEnd,
+  TabContentDuration,
+  TabNames
+};

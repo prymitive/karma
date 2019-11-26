@@ -28,6 +28,7 @@ const FakeModal = () => {
       alertStore={alertStore}
       settingsStore={settingsStore}
       onHide={onHide}
+      expandAllOptions={true}
     />
   );
 };
@@ -54,6 +55,7 @@ describe("<MainModalContent />", () => {
           alertStore={alertStore}
           settingsStore={settingsStore}
           onHide={onHide}
+          expandAllOptions={true}
         />
       </span>
     );

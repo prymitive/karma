@@ -71,7 +71,7 @@ FilterExample.propTypes = {
   children: PropTypes.node
 };
 
-const Help = () => (
+const Help = ({ defaultIsOpen }) => (
   <div className="accordion">
     <Accordion
       text="Fiter operators"
@@ -147,6 +147,7 @@ const Help = () => (
           </QueryHelp>
         </dl>
       }
+      extraProps={{ open: defaultIsOpen }}
     />
     <Accordion
       text="Filtering alerts using special filters"
@@ -282,8 +283,12 @@ const Help = () => (
           </QueryHelp>
         </dl>
       }
+      extraProps={{ open: defaultIsOpen }}
     />
   </div>
 );
+Help.propTypes = {
+  defaultIsOpen: PropTypes.bool.isRequired
+};
 
 export { Help };

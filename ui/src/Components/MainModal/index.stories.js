@@ -25,6 +25,7 @@ storiesOf("MainModal", module)
         settingsStore={settingsStore}
         onHide={() => {}}
         isVisible={true}
+        expandAllOptions={true}
       />
     );
   })
@@ -38,6 +39,7 @@ storiesOf("MainModal", module)
         onHide={() => {}}
         isVisible={true}
         openTab={TabNames.Help}
+        expandAllOptions={true}
       />
     );
   });

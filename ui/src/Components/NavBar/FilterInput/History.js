@@ -59,87 +59,85 @@ ActionButton.propTypes = {
   afterClick: PropTypes.func.isRequired
 };
 
-const HistoryMenu = onClickOutside(
-  ({
-    popperPlacement,
-    popperRef,
-    popperStyle,
-    filters,
-    alertStore,
-    settingsStore,
-    afterClick,
-    onClear
-  }) => {
-    return (
-      <div
-        className="dropdown-menu d-block shadow components-navbar-historymenu"
-        ref={popperRef}
-        style={popperStyle}
-        data-placement={popperPlacement}
-      >
-        <h6 className="dropdown-header text-center">
-          <FontAwesomeIcon icon={faHistory} className="mr-1" />
-          Last used filters
-        </h6>
-        {filters.length === 0 ? (
-          <h6 className="dropdown-header text-muted text-center">Empty</h6>
-        ) : (
-          filters.map(historyFilters => (
-            <button
-              className="dropdown-item cursor-pointer px-3"
-              key={hash(historyFilters)}
-              onClick={() => {
-                alertStore.filters.setFilters(historyFilters.map(f => f.raw));
-                afterClick();
-              }}
-            >
-              <div className="components-navbar-historymenu-labels pl-2">
-                {historyFilters.map(f => (
-                  <HistoryLabel
-                    key={f.raw}
-                    alertStore={alertStore}
-                    name={f.name}
-                    matcher={f.matcher}
-                    value={f.value}
-                  />
-                ))}
-              </div>
-            </button>
-          ))
-        )}
-        <div className="dropdown-divider" />
-        <div className="container text-center">
-          <ActionButton
-            color="success"
-            icon={faSave}
-            title="Save filters"
-            action={() => {
-              settingsStore.savedFilters.save(
-                alertStore.filters.values.map(f => f.raw)
-              );
+const HistoryMenuContent = ({
+  popperPlacement,
+  popperRef,
+  popperStyle,
+  filters,
+  alertStore,
+  settingsStore,
+  afterClick,
+  onClear
+}) => {
+  return (
+    <div
+      className="dropdown-menu d-block shadow components-navbar-historymenu"
+      ref={popperRef}
+      style={popperStyle}
+      data-placement={popperPlacement}
+    >
+      <h6 className="dropdown-header text-center">
+        <FontAwesomeIcon icon={faHistory} className="mr-1" />
+        Last used filters
+      </h6>
+      {filters.length === 0 ? (
+        <h6 className="dropdown-header text-muted text-center">Empty</h6>
+      ) : (
+        filters.map(historyFilters => (
+          <button
+            className="dropdown-item cursor-pointer px-3"
+            key={hash(historyFilters)}
+            onClick={() => {
+              alertStore.filters.setFilters(historyFilters.map(f => f.raw));
+              afterClick();
             }}
-            afterClick={afterClick}
-          />
-          <ActionButton
-            color="danger"
-            icon={faUndoAlt}
-            title="Reset filters"
-            action={settingsStore.savedFilters.clear}
-            afterClick={afterClick}
-          />
-          <ActionButton
-            color="dark"
-            icon={faTrash}
-            title="Clear history"
-            action={onClear}
-            afterClick={afterClick}
-          />
-        </div>
+          >
+            <div className="components-navbar-historymenu-labels pl-2">
+              {historyFilters.map(f => (
+                <HistoryLabel
+                  key={f.raw}
+                  alertStore={alertStore}
+                  name={f.name}
+                  matcher={f.matcher}
+                  value={f.value}
+                />
+              ))}
+            </div>
+          </button>
+        ))
+      )}
+      <div className="dropdown-divider" />
+      <div className="container text-center">
+        <ActionButton
+          color="success"
+          icon={faSave}
+          title="Save filters"
+          action={() => {
+            settingsStore.savedFilters.save(
+              alertStore.filters.values.map(f => f.raw)
+            );
+          }}
+          afterClick={afterClick}
+        />
+        <ActionButton
+          color="danger"
+          icon={faUndoAlt}
+          title="Reset filters"
+          action={settingsStore.savedFilters.clear}
+          afterClick={afterClick}
+        />
+        <ActionButton
+          color="dark"
+          icon={faTrash}
+          title="Clear history"
+          action={onClear}
+          afterClick={afterClick}
+        />
       </div>
-    );
-  }
-);
-HistoryMenu.propTypes = {
+    </div>
+  );
+};
+HistoryMenuContent.propTypes = {
   popperPlacement: PropTypes.string,
   popperRef: PropTypes.func,
   popperStyle: PropTypes.object,
@@ -149,6 +147,8 @@ HistoryMenu.propTypes = {
   afterClick: PropTypes.func.isRequired,
   onClear: PropTypes.func.isRequired
 };
+
+const HistoryMenu = onClickOutside(HistoryMenuContent);
 
 const History = observer(
   class History extends Component {
@@ -278,4 +278,4 @@ const History = observer(
   }
 );
 
-export { History, HistoryMenu, ReduceFilter };
+export { History, HistoryMenu, HistoryMenuContent, ReduceFilter };

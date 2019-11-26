@@ -72,6 +72,7 @@ const MainModal = observer(
                 settingsStore={settingsStore}
                 onHide={this.toggle.hide}
                 isVisible={this.toggle.show}
+                expandAllOptions={false}
               />
             </React.Suspense>
           </Modal>
