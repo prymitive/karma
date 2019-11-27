@@ -10,6 +10,9 @@ import createPercyAddon from "@percy-io/percy-storybook";
 
 import { advanceTo } from "jest-date-mock";
 
+import { ThemeContext } from "Components/Theme";
+import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
+
 const { percyAddon, serializeStories } = createPercyAddon();
 setAddon(percyAddon);
 
@@ -17,9 +20,41 @@ setAddon(percyAddon);
 advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 36, 40)));
 
 addDecorator(story => {
-  document.body.classList.add("theme-light");
   document.body.style = "";
   return story();
+});
+addDecorator(story => {
+  return (
+    <div>
+      <div class="theme-light">
+        <ThemeContext.Provider
+          value={{
+            reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+          }}
+        >
+          {story()}
+        </ThemeContext.Provider>
+      </div>
+      <div
+        style={{
+          height: "16px",
+          width: "100%",
+          backgroundColor: "#eee",
+          marginTop: "4px",
+          marginBottom: "4px"
+        }}
+      ></div>
+      <div class="theme-dark">
+        <ThemeContext.Provider
+          value={{
+            reactSelectStyles: ReactSelectStyles(ReactSelectColors.Dark)
+          }}
+        >
+          {story()}
+        </ThemeContext.Provider>
+      </div>
+    </div>
+  );
 });
 
 const req = require.context("../src/Components", true, /\.stories\.(js|tsx)$/);

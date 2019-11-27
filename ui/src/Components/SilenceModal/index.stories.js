@@ -13,8 +13,6 @@ import {
   MatcherValueToObject,
   SilenceTabNames
 } from "Stores/SilenceFormStore";
-import { ThemeContext } from "Components/Theme";
-import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
 import { DateTimeSelect, TabNames } from "./DateTimeSelect";
 import { SilenceModalContent } from "./SilenceModalContent";
 
@@ -79,38 +77,32 @@ storiesOf("SilenceModal", module)
 
     return (
       <React.Fragment>
-        <ThemeContext.Provider
-          value={{
-            reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
-          }}
-        >
-          <Modal>
-            <SilenceModalContent
-              alertStore={alertStore}
+        <Modal>
+          <SilenceModalContent
+            alertStore={alertStore}
+            silenceFormStore={silenceFormStore}
+            settingsStore={settingsStore}
+            onHide={() => {}}
+            previewOpen={true}
+            onDeleteModalClose={() => {}}
+          />
+        </Modal>
+        <Modal>
+          <div className="pt-2">
+            <DateTimeSelect
               silenceFormStore={silenceFormStore}
-              settingsStore={settingsStore}
-              onHide={() => {}}
-              previewOpen={true}
-              onDeleteModalClose={() => {}}
+              openTab={TabNames.Start}
             />
-          </Modal>
-          <Modal>
-            <div className="pt-2">
-              <DateTimeSelect
-                silenceFormStore={silenceFormStore}
-                openTab={TabNames.Start}
-              />
-            </div>
-          </Modal>
-          <Modal>
-            <div className="pt-2">
-              <DateTimeSelect
-                silenceFormStore={silenceFormStore}
-                openTab={TabNames.End}
-              />
-            </div>
-          </Modal>
-        </ThemeContext.Provider>
+          </div>
+        </Modal>
+        <Modal>
+          <div className="pt-2">
+            <DateTimeSelect
+              silenceFormStore={silenceFormStore}
+              openTab={TabNames.End}
+            />
+          </div>
+        </Modal>
       </React.Fragment>
     );
   })
