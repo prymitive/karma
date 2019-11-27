@@ -16,6 +16,9 @@ $btn-active-box-shadow: 0;
 @import "Styles/Fonts";
 @import "~bootswatch/dist/darkly/variables";
 
+// revert to bootswatch 4.3.1 colors
+$light: $gray-800;
+
 // make links light gray by default instead of green
 $link-color: $gray-400;
 
