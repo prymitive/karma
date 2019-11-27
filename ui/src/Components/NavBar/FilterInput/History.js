@@ -22,8 +22,6 @@ import { Settings } from "Stores/Settings";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { HistoryLabel } from "Components/Labels/HistoryLabel";
 
-import "./History.css";
-
 const defaultHistory = {
   filters: []
 };
@@ -41,7 +39,7 @@ function ReduceFilter(filter) {
 
 const ActionButton = ({ color, icon, title, action, afterClick }) => (
   <button
-    className={`component-history-button btn btn-sm btn-outline-${color}`}
+    className={`component-history-button btn btn-sm btn-${color}`}
     onClick={() => {
       action();
       afterClick();
@@ -240,7 +238,7 @@ const History = observer(
               <button
                 ref={ref}
                 onClick={this.collapse.toggle}
-                className="input-group-text border-left-0 border-right-0 border-top-0 rounded-0 bg-transparent text-white cursor-pointer components-navbar-history px-2"
+                className="input-group-text border-left-0 border-right-0 border-top-0 border-light rounded-0 bg-transparent text-white cursor-pointer components-navbar-history px-2"
                 type="button"
                 data-toggle="dropdown"
                 aria-haspopup="true"

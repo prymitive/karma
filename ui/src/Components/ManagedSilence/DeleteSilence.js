@@ -245,7 +245,7 @@ const DeleteSilenceModalContent = observer(
               <div className="d-flex flex-row-reverse">
                 <button
                   type="button"
-                  className="btn btn-outline-danger mr-2"
+                  className="btn btn-danger mr-2"
                   onClick={this.onDelete}
                   disabled={
                     this.deleteState.fetch !== null &&
@@ -299,7 +299,7 @@ const DeleteSilence = observer(
       return (
         <React.Fragment>
           <button
-            className="btn btn-outline-danger btn-sm"
+            className="btn btn-danger btn-sm"
             onClick={this.toggle.toggle}
           >
             <FontAwesomeIcon

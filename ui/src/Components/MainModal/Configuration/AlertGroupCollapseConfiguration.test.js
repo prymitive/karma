@@ -5,6 +5,8 @@ import { mount } from "enzyme";
 import toDiffableHtml from "diffable-html";
 
 import { Settings } from "Stores/Settings";
+import { ThemeContext } from "Components/Theme";
+import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
 import { AlertGroupCollapseConfiguration } from "./AlertGroupCollapseConfiguration";
 
 let settingsStore;
@@ -14,7 +16,13 @@ beforeEach(() => {
 
 const FakeConfiguration = () => {
   return mount(
-    <AlertGroupCollapseConfiguration settingsStore={settingsStore} />
+    <ThemeContext.Provider
+      value={{
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+      }}
+    >
+      <AlertGroupCollapseConfiguration settingsStore={settingsStore} />
+    </ThemeContext.Provider>
   );
 };
 

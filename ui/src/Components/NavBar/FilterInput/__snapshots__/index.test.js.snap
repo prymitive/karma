@@ -4,7 +4,7 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
 "
 <div class=\\"input-group w-100 mr-2\\">
   <div class=\\"input-group-prepend\\">
-    <span class=\\"input-group-text px-2 border-left-0 border-right-0 border-top-0 rounded-0 bg-transparent text-white\\">
+    <span class=\\"input-group-text px-2 border-left-0 border-right-0 border-top-0 border-light rounded-0 bg-transparent text-white\\">
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
@@ -21,7 +21,7 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
       </svg>
     </span>
   </div>
-  <div class=\\"form-control components-filterinput border-left-0 border-right-0 border-top-0 rounded-0 bg-transparent\\">
+  <div class=\\"form-control components-filterinput border-left-0 border-right-0 border-top-0 border-light rounded-0 bg-transparent\\">
     <div role=\\"combobox\\"
          aria-haspopup=\\"listbox\\"
          aria-owns=\\"react-autowhatever-1\\"
@@ -45,7 +45,7 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
     </div>
   </div>
   <div class=\\"input-group-append bg-transparent\\">
-    <button class=\\"input-group-text border-left-0 border-right-0 border-top-0 rounded-0 bg-transparent text-white cursor-pointer components-navbar-history px-2\\"
+    <button class=\\"input-group-text border-left-0 border-right-0 border-top-0 border-light rounded-0 bg-transparent text-white cursor-pointer components-navbar-history px-2\\"
             type=\\"button\\"
             data-toggle=\\"dropdown\\"
             aria-haspopup=\\"true\\"

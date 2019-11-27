@@ -8,8 +8,6 @@ import InputRange from "react-input-range";
 
 import { Settings } from "Stores/Settings";
 
-import "./InputRange.scss";
-
 const FetchConfiguration = observer(
   class FetchConfiguration extends Component {
     static propTypes = {

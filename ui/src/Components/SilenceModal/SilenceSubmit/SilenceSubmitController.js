@@ -33,7 +33,7 @@ class SilenceSubmitController extends Component {
         <div className="d-flex flex-row-reverse">
           <button
             type="button"
-            className="btn btn-outline-primary"
+            className="btn btn-primary"
             onClick={silenceFormStore.data.resetProgress}
           >
             <FontAwesomeIcon icon={faArrowLeft} className="pr-1" />

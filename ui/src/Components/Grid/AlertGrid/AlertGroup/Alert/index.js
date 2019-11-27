@@ -17,8 +17,6 @@ import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
 import { AlertMenu } from "./AlertMenu";
 import { RenderSilence } from "../Silences";
 
-import "./index.scss";
-
 const Alert = observer(
   class Alert extends Component {
     static propTypes = {
@@ -46,7 +44,7 @@ const Alert = observer(
 
       let classNames = [
         "components-grid-alertgrid-alertgroup-alert",
-        "list-group-item",
+        "list-group-item bg-transparent",
         "pl-1 pr-0 py-0",
         "my-1",
         "rounded-0",

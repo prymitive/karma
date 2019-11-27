@@ -3,8 +3,8 @@
 exports[`<AlertManagerInput /> matches snapshot 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
-  <div class=\\"react-select__control css-au8pbo-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-10war8y\\">
+  <div class=\\"react-select__control css-r5n82u-control\\">
+    <div class=\\"react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-nj4yyx\\">
       <div class=\\"css-owt1hd-multiValue react-select__multi-value\\">
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           am1 | am2
@@ -41,20 +41,20 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
       </div>
       <div class=\\"css-b8ldur-Input\\">
         <div class=\\"react-select__input\\"
-             style=\\"display:inline-block\\"
+             style=\\"display: inline-block;\\"
         >
-          <input type=\\"text\\"
-                 autocapitalize=\\"none\\"
+          <input autocapitalize=\\"none\\"
                  autocomplete=\\"off\\"
                  autocorrect=\\"off\\"
                  id=\\"react-select-silence-input-alertmanagers-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 value
+                 type=\\"text\\"
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                 value
           >
-          <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
+          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
         </div>
       </div>

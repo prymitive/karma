@@ -86,7 +86,7 @@ const VerifyResponse = async response => {
   await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
 
   fetch.mockResponseOnce(JSON.stringify(response));
-  tree.find(".btn-outline-danger").simulate("click");
+  tree.find(".btn-danger").simulate("click");
   await expect(tree.instance().deleteState.fetch).resolves.toBeUndefined();
 
   return tree;
@@ -211,7 +211,7 @@ describe("<DeleteSilenceModalContent />", () => {
     expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
 
     expect(fetch.mock.calls).toHaveLength(2);
-    tree.find(".btn-outline-danger").simulate("click");
+    tree.find(".btn-danger").simulate("click");
     expect(fetch.mock.calls).toHaveLength(2);
     tree.instance().onDelete();
     expect(fetch.mock.calls).toHaveLength(2);
@@ -249,7 +249,7 @@ describe("<DeleteSilenceModalContent />", () => {
     fetch.resetMocks();
     fetch.mockReject("Fetch error");
 
-    tree.find(".btn-outline-danger").simulate("click");
+    tree.find(".btn-danger").simulate("click");
     await expect(tree.instance().deleteState.fetch).resolves.toBeUndefined();
 
     tree.update();
@@ -265,7 +265,7 @@ describe("<DeleteSilenceModalContent />", () => {
     fetch.resetMocks();
     fetch.mockResponseOnce("500 Internal Server Error", { status: 500 });
 
-    tree.find(".btn-outline-danger").simulate("click");
+    tree.find(".btn-danger").simulate("click");
     await expect(tree.instance().deleteState.fetch).resolves.toBeUndefined();
 
     tree.update();

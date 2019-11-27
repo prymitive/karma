@@ -2,7 +2,7 @@
 
 exports[`<GroupFooter /> matches snapshot 1`] = `
 "
-<div class=\\"card-footer bg-card-footer-default px-2 py-1\\">
+<div class=\\"card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1\\">
   <div class=\\"mb-1\\">
     <div class
          style=\\"display: inline-block; max-width: 100%;\\"
@@ -147,7 +147,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
 
 exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
 "
-<div class=\\"card-footer bg-card-footer-default px-2 py-1\\">
+<div class=\\"card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1\\">
   <div class=\\"mb-1\\">
     <div class
          style=\\"display: inline-block; max-width: 100%;\\"

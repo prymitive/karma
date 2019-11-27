@@ -4,6 +4,8 @@ import { mount } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { ThemeContext } from "Components/Theme";
+import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
 import { MainModal } from ".";
 
 let alertStore;
@@ -20,7 +22,13 @@ beforeEach(() => {
 
 const MountedMainModal = () => {
   return mount(
-    <MainModal alertStore={alertStore} settingsStore={settingsStore} />
+    <ThemeContext.Provider
+      value={{
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+      }}
+    >
+      <MainModal alertStore={alertStore} settingsStore={settingsStore} />
+    </ThemeContext.Provider>
   );
 };
 

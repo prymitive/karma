@@ -1,6 +1,6 @@
 import React from "react";
 
-import { shallow, mount } from "enzyme";
+import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
@@ -9,6 +9,8 @@ import {
   NewEmptyMatcher,
   MatcherValueToObject
 } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
+import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
 import { LabelValueInput } from "./LabelValueInput";
 
 let silenceFormStore;
@@ -36,23 +38,19 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-const ShallowLabelValueInput = isValid => {
-  return shallow(
-    <LabelValueInput
-      silenceFormStore={silenceFormStore}
-      matcher={matcher}
-      isValid={isValid}
-    />
-  );
-};
-
 const MountedLabelValueInput = isValid => {
   return mount(
-    <LabelValueInput
-      silenceFormStore={silenceFormStore}
-      matcher={matcher}
-      isValid={isValid}
-    />
+    <ThemeContext.Provider
+      value={{
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+      }}
+    >
+      <LabelValueInput
+        silenceFormStore={silenceFormStore}
+        matcher={matcher}
+        isValid={isValid}
+      />
+    </ThemeContext.Provider>
   );
 };
 
@@ -66,20 +64,20 @@ const ValidateSuggestions = () => {
 
 describe("<LabelValueInput />", () => {
   it("matches snapshot", () => {
-    const tree = ShallowLabelValueInput(true);
+    const tree = MountedLabelValueInput(true);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("doesn't renders ValidationError after passed validation", () => {
-    const tree = ShallowLabelValueInput(true);
-    expect(tree.html()).not.toMatch(/fa-exclamation-circle/);
-    expect(tree.html()).not.toMatch(/Required/);
+    const tree = MountedLabelValueInput(true);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/Required/);
   });
 
   it("renders ValidationError after failed validation", () => {
-    const tree = ShallowLabelValueInput(false);
-    expect(tree.html()).toMatch(/fa-exclamation-circle/);
-    expect(tree.html()).toMatch(/Required/);
+    const tree = MountedLabelValueInput(false);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/Required/);
   });
 
   it("renders suggestions", () => {

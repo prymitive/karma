@@ -39,8 +39,8 @@ FetchError.propTypes = {
 
 const Placeholder = ({ content }) => (
   <MountFade in={true}>
-    <div className="jumbotron bg-white">
-      <h1 className="display-5 text-secondary text-center">{content}</h1>
+    <div className="jumbotron bg-transparent">
+      <h1 className="display-5 text-placeholder text-center">{content}</h1>
     </div>
   </MountFade>
 );
@@ -208,7 +208,7 @@ const Browser = observer(
             />
             <button
               type="button"
-              className="btn btn-outline-secondary flex-grow-0 flex-shrink-0"
+              className="btn btn-primary flex-grow-0 flex-shrink-0"
               onClick={() => {
                 this.dataSource.toggleSortReverse();
                 this.onDebouncedFetch();

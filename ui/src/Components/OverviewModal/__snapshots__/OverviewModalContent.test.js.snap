@@ -499,8 +499,8 @@ exports[`<OverviewModalContent /> matches snapshot with no labels to show 1`] = 
     </button>
   </div>
   <div class=\\"modal-body\\">
-    <div class=\\"jumbotron bg-white\\">
-      <h1 class=\\"display-5 text-secondary text-center\\">
+    <div class=\\"jumbotron bg-transparent\\">
+      <h1 class=\\"display-5 text-placeholder text-center\\">
         No labels to display
       </h1>
     </div>

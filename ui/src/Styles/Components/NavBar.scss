@@ -1,7 +1,10 @@
-@import "src/Theme.scss";
-
 .navbar-brand {
   min-width: 2.5rem;
+
+  &:hover,
+  &:focus {
+    color: $green !important;
+  }
 }
 
 .components-navbar-button:hover {

@@ -16,7 +16,7 @@ import {
 import { DateTimeSelect, TabNames } from "./DateTimeSelect";
 import { SilenceModalContent } from "./SilenceModalContent";
 
-import "Percy.scss";
+import "Styles/Percy.scss";
 
 const MockMatcher = (name, values, isRegex) => {
   const matcher = NewEmptyMatcher();

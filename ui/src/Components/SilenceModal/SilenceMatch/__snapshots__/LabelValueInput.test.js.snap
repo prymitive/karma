@@ -3,29 +3,18 @@
 exports[`<LabelValueInput /> matches snapshot 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
-  <div class=\\"react-select__control css-au8pbo-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--is-multi css-10war8y\\">
-      <div title=\\"Number of alerts matching this label\\"
-           class
-           style=\\"display:inline-block;max-width:100%\\"
+  <div class=\\"react-select__control css-r5n82u-control\\">
+    <div class=\\"react-select__value-container react-select__value-container--is-multi css-nj4yyx\\">
+      <div class
+           style=\\"display: inline-block; max-width: 100%;\\"
+           data-tooltipped
+           aria-describedby=\\"tippy-tooltip-1\\"
+           data-original-title=\\"Number of alerts matching this label\\"
       >
         <span class=\\"badge badge-light badge-pill d-block\\"
-              style=\\"font-size:85%;line-height:1rem\\"
+              style=\\"font-size: 85%; line-height: 1rem;\\"
         >
-          <svg aria-hidden=\\"true\\"
-               focusable=\\"false\\"
-               data-prefix=\\"fas\\"
-               data-icon=\\"spinner\\"
-               class=\\"svg-inline--fa fa-spinner fa-w-16 fa-spin \\"
-               role=\\"img\\"
-               xmlns=\\"http://www.w3.org/2000/svg\\"
-               viewbox=\\"0 0 512 512\\"
-          >
-            <path fill=\\"currentColor\\"
-                  d=\\"M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z\\"
-            >
-            </path>
-          </svg>
+          0
         </span>
       </div>
       <div>
@@ -35,20 +24,20 @@ exports[`<LabelValueInput /> matches snapshot 1`] = `
       </div>
       <div class=\\"css-b8ldur-Input\\">
         <div class=\\"react-select__input\\"
-             style=\\"display:inline-block\\"
+             style=\\"display: inline-block;\\"
         >
-          <input type=\\"text\\"
-                 autocapitalize=\\"none\\"
+          <input autocapitalize=\\"none\\"
                  autocomplete=\\"off\\"
                  autocorrect=\\"off\\"
                  id=\\"react-select-silence-input-label-value-1-input\\"
                  spellcheck=\\"false\\"
                  tabindex=\\"0\\"
-                 value
+                 type=\\"text\\"
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing:content-box;width:1px;label:input;background:0;border:0;font-size:inherit;opacity:1;outline:0;padding:0;color:inherit\\"
+                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                 value
           >
-          <div style=\\"position:absolute;top:0;left:0;visibility:hidden;height:0;overflow:scroll;white-space:pre\\">
+          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
         </div>
       </div>

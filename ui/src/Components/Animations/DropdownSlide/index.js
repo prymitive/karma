@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 
 import { CSSTransition } from "react-transition-group";
 
-import "./index.css";
-
 const DropdownSlide = ({ children, duration, ...props }) => (
   <CSSTransition
     classNames="components-animation-slide"

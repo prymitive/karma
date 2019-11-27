@@ -170,7 +170,7 @@ const SilenceForm = observer(
           <TooltipWrapper title="Add a matcher">
             <button
               type="button"
-              className="btn btn-outline-secondary mb-3"
+              className="btn btn-primary mb-3"
               onClick={this.addMore}
             >
               <FontAwesomeIcon icon={faPlus} />
@@ -206,14 +206,14 @@ const SilenceForm = observer(
               {silenceFormStore.data.silenceID === null ? null : (
                 <button
                   type="button"
-                  className="btn btn-outline-danger mr-2"
+                  className="btn btn-danger mr-2"
                   onClick={silenceFormStore.data.resetSilenceID}
                 >
                   <FontAwesomeIcon icon={faUndoAlt} className="mr-1" />
                   Reset
                 </button>
               )}
-              <button type="submit" className="btn btn-outline-primary">
+              <button type="submit" className="btn btn-primary">
                 <FontAwesomeIcon icon={faSearch} className="mr-1" />
                 Preview
               </button>

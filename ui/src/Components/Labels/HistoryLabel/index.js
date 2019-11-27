@@ -7,8 +7,6 @@ import { QueryOperators } from "Common/Query";
 import { AlertStore } from "Stores/AlertStore";
 import { BaseLabel } from "Components/Labels/BaseLabel";
 
-import "./index.css";
-
 const HistoryLabel = observer(
   class HistoryLabel extends BaseLabel {
     static propTypes = {

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { mount, shallow } from "enzyme";
+import { mount } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -9,6 +9,8 @@ import {
   SilenceFormStage,
   NewEmptyMatcher
 } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
+import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
 import { SilenceForm } from "./SilenceForm";
 
 let alertStore;
@@ -25,38 +27,33 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
 });
 
-const ShallowSilenceForm = () => {
-  return shallow(
-    <SilenceForm
-      alertStore={alertStore}
-      silenceFormStore={silenceFormStore}
-      settingsStore={settingsStore}
-      previewOpen={false}
-    />
-  );
-};
-
 const MountedSilenceForm = () => {
   return mount(
-    <SilenceForm
-      alertStore={alertStore}
-      silenceFormStore={silenceFormStore}
-      settingsStore={settingsStore}
-      previewOpen={false}
-    />
+    <ThemeContext.Provider
+      value={{
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+      }}
+    >
+      <SilenceForm
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        settingsStore={settingsStore}
+        previewOpen={false}
+      />
+    </ThemeContext.Provider>
   );
 };
 
 describe("<SilenceForm /> matchers", () => {
   it("has an empty matcher selects on default render", () => {
-    const tree = ShallowSilenceForm();
+    const tree = MountedSilenceForm();
     const matchers = tree.find("SilenceMatch");
     expect(matchers).toHaveLength(1);
     expect(silenceFormStore.data.matchers).toHaveLength(1);
   });
 
   it("clicking 'Add more' button adds another matcher", () => {
-    const tree = ShallowSilenceForm();
+    const tree = MountedSilenceForm();
     const button = tree.find("button[type='button']");
     button.simulate("click", { preventDefault: jest.fn() });
     const matchers = tree.find("SilenceMatch");
@@ -101,21 +98,22 @@ describe("<SilenceForm /> matchers", () => {
 
 describe("<SilenceForm /> preview", () => {
   it("doesn't render PayloadPreview when previewCollapse.hidden is true", () => {
-    const tree = ShallowSilenceForm();
+    const tree = MountedSilenceForm();
     const instance = tree.instance();
     instance.previewCollapse.hidden = true;
     expect(tree.find("PayloadPreview")).toHaveLength(0);
   });
 
   it("renders PayloadPreview when previewCollapse.hidden is false", () => {
-    const tree = ShallowSilenceForm();
+    const tree = MountedSilenceForm();
     const instance = tree.instance();
     instance.previewCollapse.hidden = false;
+    tree.update();
     expect(tree.find("PayloadPreview")).toHaveLength(1);
   });
 
   it("clicking on the toggle icon toggles PayloadPreview", () => {
-    const tree = ShallowSilenceForm();
+    const tree = MountedSilenceForm();
     const button = tree.find(".btn.cursor-pointer.text-muted");
     expect(tree.find("PayloadPreview")).toHaveLength(0);
     button.simulate("click");
@@ -178,7 +176,7 @@ describe("<SilenceForm /> inputs", () => {
 
 describe("<SilenceForm />", () => {
   it("calling submit doesn't move the form to Preview stage when form is invalid", () => {
-    const tree = ShallowSilenceForm();
+    const tree = MountedSilenceForm();
     tree.simulate("submit", { preventDefault: jest.fn() });
     expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.UserInput);
   });
@@ -191,14 +189,14 @@ describe("<SilenceForm />", () => {
     silenceFormStore.data.alertmanagers = [{ label: "am1", value: ["am1"] }];
     silenceFormStore.data.author = "me@example.com";
     silenceFormStore.data.comment = "fake silence";
-    const tree = ShallowSilenceForm();
+    const tree = MountedSilenceForm();
     tree.simulate("submit", { preventDefault: jest.fn() });
     expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.Preview);
   });
 
   it("calling submit saves author value to the Settings store", () => {
     silenceFormStore.data.author = "user@example.com";
-    const tree = ShallowSilenceForm();
+    const tree = MountedSilenceForm();
     tree.simulate("submit", { preventDefault: jest.fn() });
     expect(settingsStore.silenceFormConfig.config.author).toBe(
       "user@example.com"
@@ -217,14 +215,14 @@ describe("<SilenceForm /> in edit mode", () => {
   it("opening form with silenceID shows reset button", () => {
     silenceFormStore.data.silenceID = "12345";
     const tree = MountedSilenceForm();
-    const button = tree.find("button.btn-outline-danger");
+    const button = tree.find("button.btn-danger");
     expect(button).toHaveLength(1);
   });
 
   it("clicking on Reset button unsets silenceFormStore.data.silenceID", () => {
     silenceFormStore.data.silenceID = "12345";
     const tree = MountedSilenceForm();
-    const button = tree.find("button.btn-outline-danger");
+    const button = tree.find("button.btn-danger");
     button.simulate("click");
     expect(silenceFormStore.data.silenceID).toBeNull();
   });
@@ -232,15 +230,15 @@ describe("<SilenceForm /> in edit mode", () => {
   it("clicking on Reset button hides it", () => {
     silenceFormStore.data.silenceID = "12345";
     const tree = MountedSilenceForm();
-    const button = tree.find("button.btn-outline-danger");
+    const button = tree.find("button.btn-danger");
     button.simulate("click");
-    expect(tree.find("button.btn-outline-danger")).toHaveLength(0);
+    expect(tree.find("button.btn-danger")).toHaveLength(0);
   });
 
   it("clicking on Reset button enables AlertManagerInput", () => {
     silenceFormStore.data.silenceID = "12345";
     const tree = MountedSilenceForm();
-    const button = tree.find("button.btn-outline-danger");
+    const button = tree.find("button.btn-danger");
     button.simulate("click");
     const select = tree.find("StateManager").at(0);
     expect(select.props().isDisabled).toBeFalsy();

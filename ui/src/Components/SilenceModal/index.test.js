@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import { ThemeContext } from "Components/Theme";
+import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore, SilenceFormStage } from "Stores/SilenceFormStore";
@@ -24,11 +26,17 @@ beforeEach(() => {
 
 const MountedSilenceModal = () => {
   return mount(
-    <SilenceModal
-      alertStore={alertStore}
-      silenceFormStore={silenceFormStore}
-      settingsStore={settingsStore}
-    />
+    <ThemeContext.Provider
+      value={{
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+      }}
+    >
+      <SilenceModal
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        settingsStore={settingsStore}
+      />
+    </ThemeContext.Provider>
   );
 };
 

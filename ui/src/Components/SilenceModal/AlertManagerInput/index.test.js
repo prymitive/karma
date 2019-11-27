@@ -1,11 +1,13 @@
 import React from "react";
 
-import { shallow, mount } from "enzyme";
+import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
+import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
 import { AlertManagerInput } from ".";
 
 let alertStore;
@@ -52,21 +54,18 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
 });
 
-const ShallowAlertManagerInput = () => {
-  return shallow(
-    <AlertManagerInput
-      alertStore={alertStore}
-      silenceFormStore={silenceFormStore}
-    />
-  );
-};
-
 const MountedAlertManagerInput = () => {
   return mount(
-    <AlertManagerInput
-      alertStore={alertStore}
-      silenceFormStore={silenceFormStore}
-    />
+    <ThemeContext.Provider
+      value={{
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+      }}
+    >
+      <AlertManagerInput
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+      />
+    </ThemeContext.Provider>
   );
 };
 
@@ -84,27 +83,35 @@ const ValidateSuggestions = () => {
 
 describe("<AlertManagerInput />", () => {
   it("matches snapshot", () => {
-    const tree = ShallowAlertManagerInput();
+    const tree = MountedAlertManagerInput();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("doesn't render ValidationError after passed validation", () => {
-    const tree = ShallowAlertManagerInput();
+    const tree = MountedAlertManagerInput();
     silenceFormStore.data.wasValidated = true;
-    expect(tree.html()).not.toMatch(/fa-exclamation-circle/);
-    expect(tree.html()).not.toMatch(/Required/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/Required/);
   });
 
   it("renders ValidationError after failed validation", () => {
-    const tree = ShallowAlertManagerInput();
+    const tree = MountedAlertManagerInput();
+    tree
+      .find(".react-select__multi-value__remove")
+      .at(0)
+      .simulate("click");
+    tree
+      .find(".react-select__multi-value__remove")
+      .at(0)
+      .simulate("click");
     silenceFormStore.data.alertmanagers = [];
     silenceFormStore.data.wasValidated = true;
-    expect(tree.html()).toMatch(/fa-exclamation-circle/);
-    expect(tree.html()).toMatch(/Required/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/Required/);
   });
 
   it("all available Alertmanager instances are selected by default", () => {
-    ShallowAlertManagerInput();
+    MountedAlertManagerInput();
     expect(silenceFormStore.data.alertmanagers).toHaveLength(2);
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "am1 | am2",
@@ -118,7 +125,7 @@ describe("<AlertManagerInput />", () => {
 
   it("doesn't override last selected Alertmanager instances on mount", () => {
     silenceFormStore.data.alertmanagers = [{ label: "am3", value: ["am3"] }];
-    ShallowAlertManagerInput();
+    MountedAlertManagerInput();
     expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "am3",
@@ -152,7 +159,7 @@ describe("<AlertManagerInput />", () => {
   });
 
   it("silenceFormStore.data.alertmanagers gets updated from alertStore.data.upstreams.instances on mismatch", () => {
-    const tree = ShallowAlertManagerInput();
+    const tree = MountedAlertManagerInput();
     alertStore.data.upstreams.clusters = {
       amNew: ["amNew"]
     };

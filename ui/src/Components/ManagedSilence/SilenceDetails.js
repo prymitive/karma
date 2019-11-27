@@ -153,7 +153,7 @@ const SilenceDetails = ({
         <div className="flex-shrink-0 flex-grow-0 mt-lg-0 mt-2 ml-lg-2 ml-0">
           <div className="d-flex flex-fill flex-lg-column flex-row justify-content-around">
             <button
-              className="btn btn-outline-secondary btn-sm mb-lg-2 mb-0"
+              className="btn btn-primary btn-sm mb-lg-2 mb-0"
               onClick={onEditSilence}
             >
               <FontAwesomeIcon

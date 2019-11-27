@@ -96,8 +96,8 @@ const LabelsTable = observer(
 );
 
 const NothingToShow = () => (
-  <div className="jumbotron bg-white">
-    <h1 className="display-5 text-secondary text-center">
+  <div className="jumbotron bg-transparent">
+    <h1 className="display-5 text-placeholder text-center">
       No labels to display
     </h1>
   </div>

@@ -106,7 +106,7 @@ describe("<ManagedSilence />", () => {
     tree.instance().collapse.toggle();
     tree.update();
 
-    const button = tree.find(".btn-outline-secondary");
+    const button = tree.find(".btn-primary");
     expect(button.text()).toBe("Edit");
   });
 
@@ -115,7 +115,7 @@ describe("<ManagedSilence />", () => {
     tree.instance().collapse.toggle();
     tree.update();
 
-    const button = tree.find(".btn-outline-danger");
+    const button = tree.find(".btn-danger");
     expect(button.text()).toBe("Delete");
   });
 
@@ -125,7 +125,7 @@ describe("<ManagedSilence />", () => {
     tree.instance().collapse.toggle();
     tree.update();
 
-    const button = tree.find(".btn-outline-secondary");
+    const button = tree.find(".btn-primary");
     expect(button.text()).toBe("Recreate");
   });
 
@@ -136,7 +136,7 @@ describe("<ManagedSilence />", () => {
 
     expect(silenceFormStore.data.silenceID).toBeNull();
 
-    const button = tree.find(".btn-outline-secondary");
+    const button = tree.find(".btn-primary");
     expect(button.text()).toBe("Edit");
 
     const fillSpy = jest.spyOn(silenceFormStore.data, "fillFormFromSilence");

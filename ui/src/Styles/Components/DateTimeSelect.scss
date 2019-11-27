@@ -1,0 +1,28 @@
+@import "~react-datepicker/src/stylesheets/datepicker.scss";
+
+.react-datepicker {
+  background-color: $datepicker__background-color;
+}
+
+.react-datepicker__week {
+  & > .react-datepicker__day:hover:not(.react-datepicker__day--disabled) {
+    color: $datepicker__day-hover-color;
+    border-color: $datepicker__border-color;
+  }
+  & > .react-datepicker__day:not(.react-datepicker__day--disabled) {
+    border-width: 1px;
+    border-style: solid;
+    border-color: transparent;
+  }
+}
+
+.react-datepicker__day-names {
+  & > .react-datepicker__day-name {
+    color: $datepicker__day-name-color;
+  }
+}
+
+.react-datepicker__today-button {
+  border-bottom-left-radius: $datepicker__border-radius;
+  border-bottom-right-radius: $datepicker__border-radius;
+}

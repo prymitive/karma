@@ -75,7 +75,7 @@ const SilenceMatch = observer(
               <TooltipWrapper title="Remove this matcher">
                 <button
                   type="button"
-                  className="btn btn-outline-danger"
+                  className="btn btn-danger"
                   onClick={onDelete}
                 >
                   <FontAwesomeIcon icon={faTrash} />

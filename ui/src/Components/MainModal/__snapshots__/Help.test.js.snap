@@ -4,7 +4,7 @@ exports[`<Help /> matches snapshot 1`] = `
 "
 <div class=\\"accordion\\">
   <div class=\\"Collapsible card\\">
-    <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer bg-light\\">
+    <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
       <div class=\\"d-flex flex-row justify-content-between\\">
         <div>
           Fiter operators
@@ -163,7 +163,7 @@ exports[`<Help /> matches snapshot 1`] = `
     </div>
   </div>
   <div class=\\"Collapsible card\\">
-    <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer bg-light\\">
+    <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
       <div class=\\"d-flex flex-row justify-content-between\\">
         <div>
           Filtering using alert labels
@@ -339,7 +339,7 @@ exports[`<Help /> matches snapshot 1`] = `
     </div>
   </div>
   <div class=\\"Collapsible card\\">
-    <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer bg-light\\">
+    <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
       <div class=\\"d-flex flex-row justify-content-between\\">
         <div>
           Filtering alerts using special filters

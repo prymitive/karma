@@ -1,6 +1,6 @@
 import React from "react";
 
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 
 import { NewUnappliedFilter } from "Stores/AlertStore";
 import { App } from "./App";
@@ -18,12 +18,15 @@ beforeEach(() => {
   // createing App instance will push current filters into window.location
   // ensure it's wiped after each test
   window.history.pushState({}, "App", "/");
+
+  document.body.className = "";
 });
 
 afterEach(() => {
   localStorage.setItem("savedFilters", "");
   jest.restoreAllMocks();
   window.history.pushState({}, "App", "/");
+  document.body.className = "";
 });
 
 describe("<App />", () => {
@@ -155,7 +158,19 @@ describe("<App />", () => {
     window.onpopstate(event);
   });
 
-  it("appends 'dark-theme' class to #root if dark mode is enabled", () => {
+  it("appends correct theme class to #root if dark mode is disabled", () => {
+    const tree = shallow(
+      <App
+        defaultFilters={["foo=bar"]}
+        uiDefaults={Object.assign({}, uiDefaults, { DarkMode: false })}
+      />
+    );
+    tree.instance().componentWillUnmount();
+
+    expect(document.body.className.split(" ")).toContain("theme-light");
+  });
+
+  it("appends 'theme-dark' class to #root if dark mode is enabled", () => {
     const tree = shallow(
       <App
         defaultFilters={["foo=bar"]}
@@ -164,6 +179,22 @@ describe("<App />", () => {
     );
     tree.instance().componentWillUnmount();
 
-    expect(document.body.className.split(" ")).toContain("dark-theme");
+    expect(document.body.className.split(" ")).toContain("theme-dark");
+  });
+
+  it("toggling settingsStore.themeConfig.config.darkTheme modifies the theme", () => {
+    const tree = mount(
+      <App
+        defaultFilters={["foo=bar"]}
+        uiDefaults={Object.assign({}, uiDefaults, { DarkMode: false })}
+      />
+    );
+    tree.update();
+    expect(document.body.className.split(" ")).toContain("theme-light");
+
+    tree.instance().settingsStore.themeConfig.config.darkTheme = true;
+    tree.update();
+    expect(document.body.className.split(" ")).toContain("theme-dark");
+    tree.instance().componentWillUnmount();
   });
 });

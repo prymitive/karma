@@ -5,6 +5,8 @@ import { mount } from "enzyme";
 import toDiffableHtml from "diffable-html";
 
 import { Settings } from "Stores/Settings";
+import { ThemeContext } from "Components/Theme";
+import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
 import { AlertGroupSortConfiguration } from "./AlertGroupSortConfiguration";
 
 let settingsStore;
@@ -18,7 +20,15 @@ afterEach(() => {
 });
 
 const FakeConfiguration = () => {
-  return mount(<AlertGroupSortConfiguration settingsStore={settingsStore} />);
+  return mount(
+    <ThemeContext.Provider
+      value={{
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+      }}
+    >
+      <AlertGroupSortConfiguration settingsStore={settingsStore} />
+    </ThemeContext.Provider>
+  );
 };
 
 const ExpandSortLabelSuggestions = async () => {

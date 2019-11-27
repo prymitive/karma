@@ -10,8 +10,6 @@ import { AlertStore } from "Stores/AlertStore";
 import { QueryOperators, FormatQuery } from "Common/Query";
 import { BaseLabel } from "Components/Labels/BaseLabel";
 
-import "./index.scss";
-
 const LabelWithPercent = observer(
   class LabelWithPercent extends BaseLabel {
     static propTypes = {

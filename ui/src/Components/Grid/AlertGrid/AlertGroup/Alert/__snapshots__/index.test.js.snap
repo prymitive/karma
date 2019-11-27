@@ -2,7 +2,7 @@
 
 exports[`<Alert /> matches snapshot when inhibited 1`] = `
 "
-<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
+<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
   <div>
     <div class
          style=\\"display: inline-block; max-width: 100%;\\"
@@ -162,7 +162,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
 
 exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=false 1`] = `
 "
-<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
+<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
   <div>
     <div class
          style=\\"display: inline-block; max-width: 100%;\\"

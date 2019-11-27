@@ -13,8 +13,6 @@ import { AlertStore } from "Stores/AlertStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { Modal } from "Components/Modal";
 
-import "./index.scss";
-
 // https://github.com/facebook/react/issues/14603
 const OverviewModalContent = React.lazy(() =>
   import("./OverviewModalContent").then(module => ({
@@ -65,7 +63,7 @@ const OverviewModal = observer(
           >
             <React.Suspense
               fallback={
-                <h1 className="display-1 text-secondary p-5 m-auto">
+                <h1 className="display-1 text-placeholder p-5 m-auto">
                   <FontAwesomeIcon icon={faSpinner} size="lg" spin />
                 </h1>
               }

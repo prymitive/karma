@@ -65,7 +65,7 @@ const SilenceModal = observer(
           >
             <React.Suspense
               fallback={
-                <h1 className="display-1 text-secondary p-5 m-auto">
+                <h1 className="display-1 text-placeholder p-5 m-auto">
                   <FontAwesomeIcon icon={faSpinner} size="lg" spin />
                 </h1>
               }

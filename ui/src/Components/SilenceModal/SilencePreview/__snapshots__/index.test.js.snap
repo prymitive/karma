@@ -93,7 +93,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
 </div>
 <div class=\\"d-flex flex-row-reverse\\">
   <button type=\\"button\\"
-          class=\\"btn btn-outline-primary\\"
+          class=\\"btn btn-primary\\"
   >
     <svg aria-hidden=\\"true\\"
          focusable=\\"false\\"
@@ -112,7 +112,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
     Submit
   </button>
   <button type=\\"button\\"
-          class=\\"btn btn-outline-secondary mr-2\\"
+          class=\\"btn btn-danger mr-2\\"
   >
     <svg aria-hidden=\\"true\\"
          focusable=\\"false\\"

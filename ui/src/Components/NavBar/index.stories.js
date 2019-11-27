@@ -8,7 +8,7 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { HistoryMenuContent } from "./FilterInput/History";
 import { NavBar } from ".";
 
-import "Percy.scss";
+import "Styles/Percy.scss";
 
 const NewFilter = (raw, name, matcher, value, applied, isValid, hits) => {
   const filter = NewUnappliedFilter(raw);

@@ -17,8 +17,12 @@ const ThemeConfiguration = observer(
       settingsStore.themeConfig.config.darkTheme = event.target.checked;
 
       document.body.classList.toggle(
-        "dark-theme",
+        "theme-dark",
         settingsStore.themeConfig.config.darkTheme
+      );
+      document.body.classList.toggle(
+        "theme-light",
+        !settingsStore.themeConfig.config.darkTheme
       );
     });
 

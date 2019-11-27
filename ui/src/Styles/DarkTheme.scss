@@ -1,0 +1,104 @@
+$lead-font-weight: 400;
+
+// custom "dark" color, little less dark than flatly
+$blue: #455a64;
+// default is ~0.97rem
+$font-size-base: 1rem;
+
+$dark: #87949e;
+
+$enable-shadows: true;
+
+$btn-box-shadow: 0;
+$btn-focus-box-shadow: 0;
+$btn-active-box-shadow: 0;
+
+@import "Styles/Fonts";
+@import "~bootswatch/dist/darkly/variables";
+
+// make links light gray by default instead of green
+$link-color: $gray-400;
+
+// fix active tab color, for some reason it ends up with $primary as bg color
+$nav-tabs-link-active-bg: $gray-800;
+
+// pagination tweaks
+$pagination-color: $white;
+$pagination-bg: $gray-700;
+$pagination-hover-color: $white;
+$pagination-hover-bg: $blue;
+$pagination-active-bg: $pagination-hover-bg;
+$pagination-disabled-color: $white;
+$pagination-disabled-bg: darken($gray-800, 2%);
+
+$input-color: $white;
+$input-bg: $secondary;
+$input-group-addon-bg: $gray-800;
+$input-border-color: $secondary;
+
+$card-cap-bg: inherit;
+
+$progress-bg: $black;
+
+@import "Styles/RebootlessBootstrap";
+@import "~bootswatch/dist/darkly/bootswatch";
+
+// this is used for navbar, to make it transparent
+.bg-primary-transparent {
+  background-color: rgba($primary, 0.95);
+}
+// version for modals
+.bg-primary-transparent-80 {
+  background-color: rgba($dark, 0.8);
+}
+
+$alert-bg: $list-group-bg;
+$alertgroup-body-bg: lighten($gray-700, 5%);
+$alertgroup-footer-bg: lighten($gray-800, 5%);
+$silence-bg: $gray-900;
+$silence-border: $black;
+$accordion-active-bg: $gray-700;
+$filter-input-hoover-bg: $gray-700;
+$filter-input-hoover-color: $white;
+$placeholder-color: $gray-600;
+
+$datepicker__background-color: $gray-700;
+$datepicker__border-color: $gray-800;
+$datepicker__highlighted-color: $white;
+$datepicker__muted-color: $gray-600;
+$datepicker__selected-color: $primary;
+$datepicker__text-color: $gray-300;
+$datepicker__header-color: $white;
+$datepicker__navigation-disabled-color: $gray-500;
+$datepicker__font-size: $font-size-base;
+$datepicker__font-family: $font-family-sans-serif;
+$datepicker__border-radius: 0.25rem;
+$datepicker__day-name-color: $white;
+$datepicker__day-hover-color: $white;
+
+@import "Styles/Components/Accordion";
+@import "Styles/Components/Alert";
+@import "Styles/Components/AlertGroup";
+@import "Styles/Components/BaseLabel";
+@import "Styles/Components/FilterInputLabel";
+@import "Styles/Components/LabelWithPercent";
+@import "Styles/Components/InputRange";
+@import "Styles/Components/ManagedSilence";
+@import "Styles/Components/Modal";
+@import "Styles/Components/NavBar";
+@import "Styles/Components/FilterInput";
+@import "Styles/Components/DateTimeSelect";
+@import "Styles/Components/MountModal";
+@import "Styles/Components/Placeholder";
+@import "Styles/Components/AlertGrid";
+@import "Styles/Components/Annotation";
+@import "Styles/Components/DropdownSlide";
+@import "Styles/Components/History";
+@import "Styles/Components/HistoryLabel";
+@import "Styles/Components/MountFade";
+@import "Styles/Components/NavBarSlide";
+@import "Styles/Components/SilenceModal";
+
+.modal-content {
+  color: $white;
+}

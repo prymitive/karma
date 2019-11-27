@@ -7,13 +7,14 @@ import { observer } from "mobx-react";
 import Select from "react-select";
 
 import { Settings } from "Stores/Settings";
-import { ReactSelectStyles } from "Components/MultiSelect";
+import { ThemeContext } from "Components/Theme";
 
 const AlertGroupCollapseConfiguration = observer(
   class AlertGroupCollapseConfiguration extends Component {
     static propTypes = {
       settingsStore: PropTypes.instanceOf(Settings).isRequired
     };
+    static contextType = ThemeContext;
 
     constructor(props) {
       super(props);
@@ -56,7 +57,7 @@ const AlertGroupCollapseConfiguration = observer(
       return (
         <div className="form-group mb-0">
           <Select
-            styles={ReactSelectStyles}
+            styles={this.context.reactSelectStyles}
             classNamePrefix="react-select"
             instanceId="configuration-collapse"
             defaultValue={this.valueToOption(
