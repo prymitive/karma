@@ -140,10 +140,10 @@ class AlwaysOnAlert(AlertGenerator):
         def _gen(size, cluster):
             return [newAlert(
                 self._labels(instance="server{}".format(i), cluster=cluster,
-                             severity="info", job="node_exporter", region="US",
-                             repo="http://github.com/prymitive/karma"),
+                             severity="info", job="node_exporter", region="US"),
                 self._annotations(
-                    summary="Silence this alert, it's always firing")
+                    summary="Silence this alert, it's always firing",
+                    repo="Repo: https://github.com/prymitive/karma")
             ) for i in xrange(1, size)]
         return _gen(10, "dev") + _gen(5, "staging") + _gen(3, "prod")
 
@@ -158,10 +158,11 @@ class RandomInstances(AlertGenerator):
             newAlert(
                 self._labels(instance="server{}".format(i), cluster="staging",
                              severity="warning", job="node_exporter",
-                             region="US", repo="Link to github.com maybe"),
+                             region="US"),
                 self._annotations(
                     dashboard="https://www.google.com/search?q="
-                              "server{}".format(i))
+                              "server{}".format(i),
+                    repo="Link to github.com maybe")
             ) for i in xrange(0, instances)
         ]
 
