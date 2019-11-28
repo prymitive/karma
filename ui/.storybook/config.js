@@ -26,7 +26,7 @@ addDecorator(story => {
 addDecorator(story => {
   return (
     <div>
-      <div class="theme-light">
+      <div className="theme-light">
         <ThemeContext.Provider
           value={{
             reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
@@ -44,7 +44,7 @@ addDecorator(story => {
           marginBottom: "4px"
         }}
       ></div>
-      <div class="theme-dark">
+      <div className="theme-dark">
         <ThemeContext.Provider
           value={{
             reactSelectStyles: ReactSelectStyles(ReactSelectColors.Dark)
