@@ -183,7 +183,6 @@ const MockGrid = alertStore => {
 
     for (let j = 0; j < group.alerts.length; j++) {
       if (group.alerts[j].state === "suppressed") {
-        group.alerts[j].silencedBy = [silence.id];
         group.alerts[j].alertmanager = [
           {
             name: "am1",
