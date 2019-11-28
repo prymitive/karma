@@ -92,3 +92,7 @@ $datepicker__day-hover-color: $black;
 @import "Styles/Components/MountFade";
 @import "Styles/Components/NavBarSlide";
 @import "Styles/Components/SilenceModal";
+
+a {
+  color: $link-color;
+}
