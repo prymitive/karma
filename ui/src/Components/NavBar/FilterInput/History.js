@@ -105,7 +105,7 @@ const HistoryMenuContent = ({
         ))
       )}
       <div className="dropdown-divider" />
-      <div className="container text-center">
+      <div className="px-3 d-flex justify-content-center flex-wrap">
         <ActionButton
           color="success"
           icon={faSave}
