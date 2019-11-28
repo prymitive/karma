@@ -36,6 +36,13 @@ const MockGroup = (groupName, alertCount, active, suppressed, unprocessed) => {
               value: "this is hidden by default",
               visible: false,
               isLink: false
+            },
+            {
+              name: "linkify",
+              value:
+                "annotation with a link to github.com/prymitive/karma project page",
+              visible: true,
+              isLink: false
             }
           ]
         : [],
