@@ -27,8 +27,6 @@ input.components-filterinput-wrapper {
   margin-bottom: 2px;
 }
 
-.form-control.bg-focused,
-.input-group-text.bg-focused,
-.input-group-append.bg-focused {
+.bg-focused {
   background-color: lighten($blue, 5%);
 }
