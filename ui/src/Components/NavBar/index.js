@@ -27,7 +27,11 @@ const NavBar = observer(
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+      fixedTop: PropTypes.bool
+    };
+    static defaultProps = {
+      fixedTop: true
     };
 
     constructor(props) {
@@ -105,7 +109,12 @@ const NavBar = observer(
     };
 
     render() {
-      const { alertStore, settingsStore, silenceFormStore } = this.props;
+      const {
+        alertStore,
+        settingsStore,
+        silenceFormStore,
+        fixedTop
+      } = this.props;
 
       // if we have at least 1 filter then it's likely that filter input will
       // use 2 lines, so set right side icons on small screeens to column mode
@@ -130,13 +139,19 @@ const NavBar = observer(
           }}
           timeout={isMobile ? MobileIdleTimeout : DesktopIdleTimeout}
         >
-          <div className={`container ${this.activityStatus.className}`}>
+          <div
+            className={`container p-0 m-0 mw-100 ${this.activityStatus.className}`}
+          >
             <NavBarSlide
               in={!this.activityStatus.idle}
               onEntering={this.onShow}
               onExited={this.onHide}
             >
-              <nav className="navbar fixed-top navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block">
+              <nav
+                className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block ${
+                  fixedTop ? "fixed-top" : "w-100"
+                }`}
+              >
                 <ReactResizeDetector handleHeight onResize={this.onResize} />
                 <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block float-left">
                   <OverviewModal alertStore={alertStore} />

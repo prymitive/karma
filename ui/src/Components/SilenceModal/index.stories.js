@@ -74,6 +74,27 @@ storiesOf("SilenceModal", module)
         overwriteRoutes: true
       }
     );
+    fetchMock.mock(
+      "begin:/alerts.json?q=tooLong",
+      {
+        body: "error",
+        status: 503
+      },
+      {
+        overwriteRoutes: true
+      }
+    );
+    fetchMock.mock(
+      "begin:/label",
+      {
+        status: 200,
+        body: JSON.stringify([]),
+        headers: { "Content-Type": "application/json" }
+      },
+      {
+        overwriteRoutes: true
+      }
+    );
 
     return (
       <React.Fragment>

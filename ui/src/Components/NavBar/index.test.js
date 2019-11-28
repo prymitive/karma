@@ -75,6 +75,40 @@ describe("<NavBar />", () => {
     ValidateNavClass(3, "flex-column");
   });
 
+  it("navbar includes 'fixed-top' class by default", () => {
+    const tree = MountedNavbar();
+    const nav = tree.find(".navbar");
+    expect(nav.props().className.split(" ")).toContain("fixed-top");
+  });
+
+  it("navbar includes 'fixed-top' class with fixedTop=true", () => {
+    const tree = mount(
+      <NavBar
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        silenceFormStore={silenceFormStore}
+        fixedTop={true}
+      />
+    );
+    const nav = tree.find(".navbar");
+    expect(nav.props().className.split(" ")).toContain("fixed-top");
+    expect(nav.props().className.split(" ")).not.toContain("w-100");
+  });
+
+  it("navbar doesn't 'fixed-top' class with fixedTop=false", () => {
+    const tree = mount(
+      <NavBar
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        silenceFormStore={silenceFormStore}
+        fixedTop={false}
+      />
+    );
+    const nav = tree.find(".navbar");
+    expect(nav.props().className.split(" ")).not.toContain("fixed-top");
+    expect(nav.props().className.split(" ")).toContain("w-100");
+  });
+
   it("body 'padding-top' style is updated after calling NavbarOnResize()", () => {
     const tree = MountedNavbar();
     tree.instance().onResize(0, 10);

@@ -89,21 +89,20 @@ storiesOf("NavBar", module).add("NavBar", () => {
         alertStore={alertStore}
         settingsStore={settingsStore}
         silenceFormStore={silenceFormStore}
+        fixedTop={false}
       />
-      <div style={{ position: "absolute", top: "150px", left: "5%" }}>
-        <HistoryMenuContent
-          popperPlacement="top"
-          popperRef={() => {}}
-          popperStyle={{}}
-          filters={history}
-          onClear={() => {}}
-          alertStore={alertStore}
-          settingsStore={settingsStore}
-          afterClick={() => {}}
-          handleClickOutside={() => {}}
-          outsideClickIgnoreClass="components-navbar-history"
-        />
-      </div>
+      <HistoryMenuContent
+        popperPlacement="top"
+        popperRef={() => {}}
+        popperStyle={{}}
+        filters={history}
+        onClear={() => {}}
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        afterClick={() => {}}
+        handleClickOutside={() => {}}
+        outsideClickIgnoreClass="components-navbar-history"
+      />
     </React.Fragment>
   );
 });
