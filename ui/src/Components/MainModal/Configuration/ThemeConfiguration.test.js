@@ -5,6 +5,11 @@ import { mount } from "enzyme";
 import toDiffableHtml from "diffable-html";
 
 import { Settings } from "Stores/Settings";
+import { ThemeContext } from "Components/Theme";
+import {
+  ReactSelectColors,
+  ReactSelectStyles
+} from "Components/Theme/ReactSelect";
 import { ThemeConfiguration } from "./ThemeConfiguration";
 
 let settingsStore;
@@ -13,7 +18,15 @@ beforeEach(() => {
 });
 
 const FakeConfiguration = () => {
-  return mount(<ThemeConfiguration settingsStore={settingsStore} />);
+  return mount(
+    <ThemeContext.Provider
+      value={{
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+      }}
+    >
+      <ThemeConfiguration settingsStore={settingsStore} />
+    </ThemeContext.Provider>
+  );
 };
 
 describe("<ThemeConfiguration />", () => {
@@ -22,32 +35,41 @@ describe("<ThemeConfiguration />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("darkTheme is 'false' by default", () => {
-    expect(settingsStore.themeConfig.config.darkTheme).toBe(false);
-  });
-
-  it("unchecking the checkbox sets stored darkTheme value to 'false'", done => {
+  it("resets stored config to defaults if it is invalid", done => {
+    settingsStore.themeConfig.config.theme = "foo";
     const tree = FakeConfiguration();
-    const checkbox = tree.find("#configuration-theme");
-
-    settingsStore.themeConfig.config.darkTheme = true;
-    expect(settingsStore.themeConfig.config.darkTheme).toBe(true);
-    checkbox.simulate("change", { target: { checked: false } });
+    const select = tree.find("div.react-select__value-container");
+    expect(select.text()).toBe(settingsStore.themeConfig.options.auto.label);
     setTimeout(() => {
-      expect(settingsStore.themeConfig.config.darkTheme).toBe(false);
+      expect(settingsStore.themeConfig.config.theme).toBe(
+        settingsStore.themeConfig.options.auto.value
+      );
       done();
     }, 200);
   });
 
-  it("checking the checkbox sets stored darkTheme value to 'true'", done => {
+  it("rendered correct default value", done => {
+    settingsStore.themeConfig.config.theme =
+      settingsStore.themeConfig.options.auto.value;
     const tree = FakeConfiguration();
-    const checkbox = tree.find("#configuration-theme");
-
-    settingsStore.themeConfig.config.darkTheme = false;
-    expect(settingsStore.themeConfig.config.darkTheme).toBe(false);
-    checkbox.simulate("change", { target: { checked: true } });
+    const select = tree.find("div.react-select__value-container");
     setTimeout(() => {
-      expect(settingsStore.themeConfig.config.darkTheme).toBe(true);
+      expect(select.text()).toBe(settingsStore.themeConfig.options.auto.label);
+      done();
+    }, 200);
+  });
+
+  it("clicking on a label option updates settingsStore", done => {
+    const tree = FakeConfiguration();
+    tree
+      .find("input#react-select-configuration-theme-input")
+      .simulate("change", { target: { value: " " } });
+    const options = tree.find("div.react-select__option");
+    options.at(1).simulate("click");
+    setTimeout(() => {
+      expect(settingsStore.themeConfig.config.theme).toBe(
+        settingsStore.themeConfig.options.dark.value
+      );
       done();
     }, 200);
   });

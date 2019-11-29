@@ -1,5 +1,6 @@
 import { EmptyAPIResponse } from "__mocks__/Fetch";
 import { DefaultsBase64 } from "__mocks__/Defaults";
+import { mockMatchMedia } from "__mocks__/matchMedia";
 
 const settingsElement = {
   dataset: {
@@ -8,6 +9,14 @@ const settingsElement = {
     defaultFiltersBase64: "WyJmb289YmFyIiwiYmFyPX5iYXoiXQ=="
   }
 };
+
+beforeEach(() => {
+  window.matchMedia = mockMatchMedia({});
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
 
 it("renders without crashing with missing defaults div", () => {
   const root = document.createElement("div");

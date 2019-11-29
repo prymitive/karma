@@ -2,7 +2,7 @@
 
 exports[`<AlertGroupTitleBarColor /> matches snapshot with default values 1`] = `
 "
-<div class=\\"form-group mb-2\\">
+<div class=\\"form-group mb-0\\">
   <div class=\\"form-check form-check-inline\\">
     <span class=\\"custom-control custom-switch\\">
       <input id=\\"configuration-colortitlebar\\"

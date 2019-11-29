@@ -1,7 +1,5 @@
-import React from "react";
+import React, { Component } from "react";
 import ReactDOM from "react-dom";
-
-import { observer } from "mobx-react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun } from "@fortawesome/free-solid-svg-icons/faSun";
@@ -41,16 +39,30 @@ const Placeholder = () => {
   );
 };
 
-const Theme = observer(({ settingsStore }) => (
-  <React.Suspense fallback={<Placeholder />}>
-    {settingsStore.themeConfig.config.darkTheme ? (
-      <DarkTheme />
-    ) : (
-      <LightTheme />
-    )}
-  </React.Suspense>
-));
-
 const ThemeContext = React.createContext();
 
-export { Theme, ThemeContext };
+class BodyTheme extends Component {
+  onToggleBodyClass = isDark => {
+    document.body.classList.toggle("theme-dark", isDark);
+    document.body.classList.toggle("theme-light", !isDark);
+  };
+
+  componentDidMount() {
+    this.onToggleBodyClass(this.context.isDark);
+  }
+
+  componentDidUpdate() {
+    this.onToggleBodyClass(this.context.isDark);
+  }
+
+  render() {
+    return (
+      <React.Suspense fallback={<Placeholder />}>
+        {this.context.isDark ? <DarkTheme /> : <LightTheme />}
+      </React.Suspense>
+    );
+  }
+}
+BodyTheme.contextType = ThemeContext;
+
+export { BodyTheme, ThemeContext };

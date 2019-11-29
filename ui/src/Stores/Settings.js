@@ -111,11 +111,19 @@ class FilterBarConfig {
 }
 
 class ThemeConfig {
-  constructor(darkTheme) {
+  options = Object.freeze({
+    auto: {
+      label: "Automatic theme, follow browser preferences",
+      value: "auto"
+    },
+    light: { label: "Light theme", value: "light" },
+    dark: { label: "Dark theme", value: "dark" }
+  });
+  constructor(defaultTheme) {
     this.config = localStored(
       "themeConfig",
       {
-        darkTheme: darkTheme
+        theme: defaultTheme
       },
       {
         delay: 100
@@ -132,7 +140,7 @@ class Settings {
         Refresh: 30 * 1000 * 1000 * 1000,
         HideFiltersWhenIdle: true,
         ColorTitlebar: false,
-        DarkTheme: false,
+        Theme: "auto",
         MinimalGroupWidth: 420,
         AlertsPerGroup: 5,
         CollapseGroups: "collapsedOnMobile"
@@ -155,7 +163,7 @@ class Settings {
     this.filterBarConfig = new FilterBarConfig(
       defaultSettings.HideFiltersWhenIdle
     );
-    this.themeConfig = new ThemeConfig(defaultSettings.DarkTheme);
+    this.themeConfig = new ThemeConfig(defaultSettings.Theme);
   }
 }
 

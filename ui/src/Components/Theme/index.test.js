@@ -1,26 +1,44 @@
-import React from "react";
+import * as React from "react";
 
 import { mount } from "enzyme";
 
-import { Settings } from "Stores/Settings";
-import { Theme } from ".";
-
-let settingsStore;
+import { BodyTheme, ThemeContext } from ".";
 
 beforeEach(() => {
-  settingsStore = new Settings();
+  document.body.classList.remove("theme-light");
+  document.body.classList.remove("theme-dark");
 });
 
-describe("<Theme />", () => {
-  it("renders DarkTheme when settingsStore.themeConfig.config.darkTheme is true", () => {
-    settingsStore.themeConfig.config.darkTheme = true;
-    const tree = mount(<Theme settingsStore={settingsStore} />);
-    expect(tree.text()).toBe("");
+describe("<BodyTheme />", () => {
+  it("uses light theme when ThemeContext->isDark is false", () => {
+    mount(<BodyTheme />, {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: { isDark: false } }
+    });
+    expect(document.body.classList.contains("theme-light")).toEqual(true);
   });
 
-  it("renders LightTheme when settingsStore.themeConfig.config.darkTheme is false", () => {
-    settingsStore.themeConfig.config.darkTheme = false;
-    const tree = mount(<Theme settingsStore={settingsStore} />);
-    expect(tree.text()).toBe("");
+  it("uses dark theme when ThemeContext->isDark is true", () => {
+    mount(<BodyTheme />, {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: { isDark: true } }
+    });
+    expect(document.body.classList.contains("theme-dark")).toEqual(true);
+  });
+
+  it("updates theme when ThemeContext->isDark is updated", () => {
+    const tree = mount(<BodyTheme />, {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: { isDark: true } }
+    });
+    expect(document.body.classList.contains("theme-dark")).toEqual(true);
+
+    document.body.classList.remove("theme-light");
+    document.body.classList.remove("theme-dark");
+
+    const provider = tree.getWrappingComponent();
+    provider.setProps({ value: { isDark: false } });
+
+    expect(document.body.classList.contains("theme-light")).toEqual(true);
   });
 });
