@@ -1,6 +1,6 @@
 import { observable, action, toJS } from "mobx";
 
-import { throttle } from "lodash";
+import throttle from "lodash/throttle";
 
 import equal from "fast-deep-equal";
 

@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 
 import FontFaceObserver from "fontfaceobserver";
 
-import { debounce } from "lodash";
+import debounce from "lodash/debounce";
 
 import ReactResizeDetector from "react-resize-detector";
 

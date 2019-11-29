@@ -10,7 +10,10 @@ import {
   MatcherValueToObject
 } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
-import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
+import {
+  ReactSelectColors,
+  ReactSelectStyles
+} from "Components/Theme/ReactSelect";
 import { LabelValueInput } from "./LabelValueInput";
 
 let silenceFormStore;
