@@ -5,16 +5,29 @@ import { observer } from "mobx-react";
 import { AlertStore, DecodeLocationSearch } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { NavBar } from "Components/NavBar";
-import { Grid } from "Components/Grid";
 import { Fetcher } from "Components/Fetcher";
 import { FaviconBadge } from "Components/FaviconBadge";
-import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
+import {
+  ReactSelectColors,
+  ReactSelectStyles
+} from "Components/Theme/ReactSelect";
 import { Theme, ThemeContext } from "Components/Theme";
 import { ErrorBoundary } from "./ErrorBoundary";
 
 import "Styles/ResetCSS.scss";
 import "Styles/App.scss";
+
+// https://github.com/facebook/react/issues/14603
+const Grid = React.lazy(() =>
+  import("Components/Grid").then(module => ({
+    default: module.Grid
+  }))
+);
+const NavBar = React.lazy(() =>
+  import("Components/NavBar").then(module => ({
+    default: module.NavBar
+  }))
+);
 
 interface UIDefaults {
   Refresh: number;
@@ -103,16 +116,20 @@ const App = observer(
                 : ReactSelectStyles(ReactSelectColors.Light)
             }}
           >
-            <NavBar
-              alertStore={this.alertStore}
-              settingsStore={this.settingsStore}
-              silenceFormStore={this.silenceFormStore}
-            />
-            <Grid
-              alertStore={this.alertStore}
-              settingsStore={this.settingsStore}
-              silenceFormStore={this.silenceFormStore}
-            />
+            <React.Suspense fallback={null}>
+              <NavBar
+                alertStore={this.alertStore}
+                settingsStore={this.settingsStore}
+                silenceFormStore={this.silenceFormStore}
+              />
+            </React.Suspense>
+            <React.Suspense fallback={null}>
+              <Grid
+                alertStore={this.alertStore}
+                settingsStore={this.settingsStore}
+                silenceFormStore={this.silenceFormStore}
+              />
+            </React.Suspense>
           </ThemeContext.Provider>
           <FaviconBadge alertStore={this.alertStore} />
           <Fetcher

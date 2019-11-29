@@ -5,7 +5,10 @@ import { mount } from "enzyme";
 import toDiffableHtml from "diffable-html";
 
 import { ThemeContext } from "Components/Theme";
-import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
+import {
+  ReactSelectColors,
+  ReactSelectStyles
+} from "Components/Theme/ReactSelect";
 import { MultiSelect } from ".";
 
 const Option = value => ({ label: value, value: value });

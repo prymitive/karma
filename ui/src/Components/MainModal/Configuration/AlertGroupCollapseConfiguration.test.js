@@ -6,7 +6,10 @@ import toDiffableHtml from "diffable-html";
 
 import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
-import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
+import {
+  ReactSelectColors,
+  ReactSelectStyles
+} from "Components/Theme/ReactSelect";
 import { AlertGroupCollapseConfiguration } from "./AlertGroupCollapseConfiguration";
 
 let settingsStore;

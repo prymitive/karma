@@ -1,6 +1,6 @@
 import { CommonOptions, FetchGet, FetchPost, FetchDelete } from "./Fetch";
 
-import merge from "lodash.merge";
+import merge from "lodash/merge";
 
 beforeEach(() => {
   fetch.resetMocks();

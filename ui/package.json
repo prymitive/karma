@@ -22,10 +22,7 @@
     "fast-deep-equal": "2.0.1",
     "favico.js": "0.3.10",
     "fontfaceobserver": "2.1.0",
-    "lodash.debounce": "4.0.8",
-    "lodash.merge": "4.6.2",
-    "lodash.throttle": "4.1.1",
-    "lodash.uniqueid": "4.0.1",
+    "lodash": "4.17.15",
     "mobx": "5.15.0",
     "mobx-react": "6.1.4",
     "mobx-stored": "1.1.0",
@@ -65,7 +62,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "storybook": "start-storybook",
-    "snapshot": "build-storybook --quiet -s public && percy-storybook --widths=700,1280 --minimum_height=200"
+    "snapshot": "build-storybook --quiet -s public && percy-storybook --widths=700,1280 --minimum_height=200",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -87,7 +85,8 @@
     "jest-fetch-mock": "2.1.2",
     "markdownlint-cli": "0.19.0",
     "node-sass": "4.13.0",
-    "prettier": "1.19.1"
+    "prettier": "1.19.1",
+    "source-map-explorer": "2.1.1"
   },
   "browserslist": [
     ">= 1%",

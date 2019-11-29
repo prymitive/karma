@@ -3,7 +3,10 @@ import React from "react";
 import { mount } from "enzyme";
 
 import { ThemeContext } from "Components/Theme";
-import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
+import {
+  ReactSelectColors,
+  ReactSelectStyles
+} from "Components/Theme/ReactSelect";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore, SilenceFormStage } from "Stores/SilenceFormStore";

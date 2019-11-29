@@ -11,7 +11,10 @@ import createPercyAddon from "@percy-io/percy-storybook";
 import { advanceTo } from "jest-date-mock";
 
 import { ThemeContext } from "Components/Theme";
-import { ReactSelectColors, ReactSelectStyles } from "Components/MultiSelect";
+import {
+  ReactSelectColors,
+  ReactSelectStyles
+} from "Components/Theme/ReactSelect";
 
 const { percyAddon, serializeStories } = createPercyAddon();
 setAddon(percyAddon);
