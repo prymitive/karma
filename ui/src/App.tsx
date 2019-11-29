@@ -7,8 +7,6 @@ import Media from "react-media";
 import { AlertStore, DecodeLocationSearch } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { Fetcher } from "Components/Fetcher";
-import { FaviconBadge } from "Components/FaviconBadge";
 import {
   ReactSelectColors,
   ReactSelectStyles
@@ -28,6 +26,16 @@ const Grid = React.lazy(() =>
 const NavBar = React.lazy(() =>
   import("Components/NavBar").then(module => ({
     default: module.NavBar
+  }))
+);
+const Fetcher = React.lazy(() =>
+  import("Components/Fetcher").then(module => ({
+    default: module.Fetcher
+  }))
+);
+const FaviconBadge = React.lazy(() =>
+  import("Components/FaviconBadge").then(module => ({
+    default: module.FaviconBadge
   }))
 );
 
@@ -137,8 +145,6 @@ const App = observer(
                     settingsStore={this.settingsStore}
                     silenceFormStore={this.silenceFormStore}
                   />
-                </React.Suspense>
-                <React.Suspense fallback={null}>
                   <Grid
                     alertStore={this.alertStore}
                     settingsStore={this.settingsStore}
@@ -148,11 +154,13 @@ const App = observer(
               </ThemeContext.Provider>
             )}
           </Media>
-          <FaviconBadge alertStore={this.alertStore} />
-          <Fetcher
-            alertStore={this.alertStore}
-            settingsStore={this.settingsStore}
-          />
+          <React.Suspense fallback={null}>
+            <FaviconBadge alertStore={this.alertStore} />
+            <Fetcher
+              alertStore={this.alertStore}
+              settingsStore={this.settingsStore}
+            />
+          </React.Suspense>
         </ErrorBoundary>
       );
     }
