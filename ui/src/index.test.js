@@ -34,7 +34,7 @@ it("renders without crashing with missing defaults div", () => {
   fetch.mockResponse(JSON.stringify(response));
   const Index = require("./index.tsx");
   expect(Index).toBeTruthy();
-  expect(root.innerHTML).toMatch(/data-filters="foo=bar bar=~baz"/);
+  expect(root.innerHTML).toMatch(/data-theme="auto"/);
 });
 
 it("renders without crashing with defaults present", () => {
