@@ -124,7 +124,7 @@ type configSchema struct {
 		Refresh             time.Duration
 		HideFiltersWhenIdle bool   `yaml:"hideFiltersWhenIdle" mapstructure:"hideFiltersWhenIdle"`
 		ColorTitlebar       bool   `yaml:"colorTitlebar" mapstructure:"colorTitlebar"`
-		DarkTheme           bool   `yaml:"darkTheme" mapstructure:"darkTheme"`
+		Theme               string `yaml:"theme" mapstructure:"theme"`
 		MinimalGroupWidth   int    `yaml:"minimalGroupWidth" mapstructure:"minimalGroupWidth"`
 		AlertsPerGroup      int    `yaml:"alertsPerGroup" mapstructure:"alertsPerGroup"`
 		CollapseGroups      string `yaml:"collapseGroups" mapstructure:"collapseGroups"`
