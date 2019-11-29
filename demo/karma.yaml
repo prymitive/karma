@@ -84,6 +84,7 @@ ui:
   refresh: 10s
   hideFiltersWhenIdle: true
   colorTitlebar: false
+  theme: auto
   minimalGroupWidth: 420
   alertsPerGroup: 5
   collapseGroups: collapsedOnMobile

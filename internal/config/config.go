@@ -101,7 +101,7 @@ func init() {
 	pflag.Duration("ui.refresh", time.Second*30, "UI refresh interval")
 	pflag.Bool("ui.hideFiltersWhenIdle", true, "Hide the filters bar when idle")
 	pflag.Bool("ui.colorTitlebar", false, "Color alert group titlebar based on alert state")
-	pflag.Bool("ui.darkTheme", false, "Enable dark theme")
+	pflag.String("ui.theme", "auto", "Default theme, 'light', 'dark' or 'auto' (follow browser preference)")
 	pflag.Int("ui.minimalGroupWidth", 420, "Minimal width for each alert group on the grid")
 	pflag.Int("ui.alertsPerGroup", 5, "Default number of alerts to show for each alert group")
 	pflag.String("ui.collapseGroups", "collapsedOnMobile", "Default state for alert groups")
@@ -196,7 +196,7 @@ func (config *configSchema) Read() {
 	config.UI.Refresh = v.GetDuration("ui.refresh")
 	config.UI.HideFiltersWhenIdle = v.GetBool("ui.hideFiltersWhenIdle")
 	config.UI.ColorTitlebar = v.GetBool("ui.colorTitlebar")
-	config.UI.DarkTheme = v.GetBool("ui.darkTheme")
+	config.UI.Theme = v.GetString("ui.theme")
 	config.UI.MinimalGroupWidth = v.GetInt("ui.minimalGroupWidth")
 	config.UI.AlertsPerGroup = v.GetInt("ui.alertsPerGroup")
 	config.UI.CollapseGroups = v.GetString("ui.collapseGroups")
@@ -252,6 +252,10 @@ func (config *configSchema) Read() {
 
 	if !slices.StringInSlice([]string{"expanded", "collapsed", "collapsedOnMobile"}, config.UI.CollapseGroups) {
 		log.Fatalf("Invalid ui.collapseGroups value '%s', allowed options: expanded, collapsed, collapsedOnMobile", config.UI.CollapseGroups)
+	}
+
+	if !slices.StringInSlice([]string{"light", "dark", "auto"}, config.UI.Theme) {
+		log.Fatalf("Invalid ui.theme value '%s', allowed options: light, dark, auto", config.UI.Theme)
 	}
 
 	// FIXME workaround  for https://github.com/prymitive/karma/issues/507

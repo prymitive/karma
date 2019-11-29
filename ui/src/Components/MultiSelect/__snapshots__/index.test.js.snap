@@ -4,7 +4,7 @@ exports[`<MultiSelect /> matches snapshot without any extra props 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
   <div class=\\"react-select__control css-r5n82u-control\\">
-    <div class=\\"react-select__value-container css-97xgis\\">
+    <div class=\\"react-select__value-container css-ct477o\\">
       <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
@@ -65,7 +65,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
     </p>
   </span>
   <div class=\\"react-select__control react-select__control--is-focused css-11rrdhm-control\\">
-    <div class=\\"react-select__value-container css-97xgis\\">
+    <div class=\\"react-select__value-container css-ct477o\\">
       <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
@@ -116,7 +116,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
   <div class=\\"react-select__control css-r5n82u-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--has-value css-97xgis\\">
+    <div class=\\"react-select__value-container react-select__value-container--has-value css-ct477o\\">
       <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
         foo
       </div>
@@ -167,7 +167,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with defaults 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
   <div class=\\"react-select__control css-r5n82u-control\\">
-    <div class=\\"react-select__value-container css-97xgis\\">
+    <div class=\\"react-select__value-container css-ct477o\\">
       <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
@@ -218,7 +218,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
 "
 <div class=\\"react-select--is-disabled css-14jk2my-container\\">
   <div class=\\"react-select__control react-select__control--is-disabled css-r5n82u-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--has-value css-97xgis\\">
+    <div class=\\"react-select__value-container react-select__value-container--has-value css-ct477o\\">
       <div class=\\"react-select__single-value react-select__single-value--is-disabled css-1wh03ml-singleValue\\">
         foo
       </div>
@@ -270,7 +270,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
   <div class=\\"react-select__control css-r5n82u-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--is-multi css-nj4yyx\\">
+    <div class=\\"react-select__value-container react-select__value-container--is-multi css-puzefo\\">
       <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
@@ -321,7 +321,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
 "
 <div class=\\" css-2b097c-container\\">
   <div class=\\"react-select__control css-r5n82u-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-nj4yyx\\">
+    <div class=\\"react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-puzefo\\">
       <div class=\\"css-owt1hd-multiValue react-select__multi-value\\">
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           foo

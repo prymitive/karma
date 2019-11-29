@@ -28,8 +28,8 @@ const Configuration = ({ settingsStore, defaultIsOpen }) => (
       text="Theme"
       content={
         <React.Fragment>
-          <AlertGroupTitleBarColor settingsStore={settingsStore} />
           <ThemeConfiguration settingsStore={settingsStore} />
+          <AlertGroupTitleBarColor settingsStore={settingsStore} />
         </React.Fragment>
       }
       extraProps={{ open: defaultIsOpen }}

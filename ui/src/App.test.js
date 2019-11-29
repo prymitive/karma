@@ -2,6 +2,7 @@ import React from "react";
 
 import { shallow, mount } from "enzyme";
 
+import { mockMatchMedia } from "__mocks__/matchMedia";
 import { NewUnappliedFilter } from "Stores/AlertStore";
 import { App } from "./App";
 
@@ -19,14 +20,14 @@ beforeEach(() => {
   // ensure it's wiped after each test
   window.history.pushState({}, "App", "/");
 
-  document.body.className = "";
+  // matchMedia needs mocking
+  window.matchMedia = mockMatchMedia({});
 });
 
 afterEach(() => {
   localStorage.setItem("savedFilters", "");
   jest.restoreAllMocks();
   window.history.pushState({}, "App", "/");
-  document.body.className = "";
 });
 
 describe("<App />", () => {
@@ -157,44 +158,140 @@ describe("<App />", () => {
     let event = new PopStateEvent("popstate");
     window.onpopstate(event);
   });
+});
 
-  it("appends correct theme class to #root if dark mode is disabled", () => {
-    const tree = shallow(
+describe("<App /> theme", () => {
+  const getApp = theme =>
+    mount(
       <App
         defaultFilters={["foo=bar"]}
-        uiDefaults={Object.assign({}, uiDefaults, { DarkMode: false })}
+        uiDefaults={Object.assign({}, uiDefaults, { Theme: theme })}
       />
     );
-    tree.instance().componentWillUnmount();
 
-    expect(document.body.className.split(" ")).toContain("theme-light");
-  });
-
-  it("appends 'theme-dark' class to #root if dark mode is enabled", () => {
-    const tree = shallow(
-      <App
-        defaultFilters={["foo=bar"]}
-        uiDefaults={Object.assign({}, uiDefaults, { DarkMode: true })}
-      />
+  it("configures light theme when uiDefaults passes it", () => {
+    const tree = getApp("light");
+    expect(tree.instance().settingsStore.themeConfig.config.theme).toBe(
+      "light"
     );
     tree.instance().componentWillUnmount();
-
-    expect(document.body.className.split(" ")).toContain("theme-dark");
   });
 
-  it("toggling settingsStore.themeConfig.config.darkTheme modifies the theme", () => {
-    const tree = mount(
-      <App
-        defaultFilters={["foo=bar"]}
-        uiDefaults={Object.assign({}, uiDefaults, { DarkMode: false })}
-      />
-    );
-    tree.update();
-    expect(document.body.className.split(" ")).toContain("theme-light");
-
-    tree.instance().settingsStore.themeConfig.config.darkTheme = true;
-    tree.update();
-    expect(document.body.className.split(" ")).toContain("theme-dark");
+  it("configures dark theme when uiDefaults passes it", () => {
+    const tree = getApp("dark");
+    expect(tree.instance().settingsStore.themeConfig.config.theme).toBe("dark");
     tree.instance().componentWillUnmount();
   });
+
+  it("configures automatic theme when uiDefaults passes it", () => {
+    const tree = getApp("auto");
+    expect(tree.instance().settingsStore.themeConfig.config.theme).toBe("auto");
+    tree.instance().componentWillUnmount();
+  });
+
+  it("configures automatic theme when uiDefaults doesn't pass any value", () => {
+    const tree = mount(<App defaultFilters={["foo=bar"]} uiDefaults={null} />);
+    expect(tree.instance().settingsStore.themeConfig.config.theme).toBe("auto");
+    tree.instance().componentWillUnmount();
+  });
+
+  it("applies light theme when theme=auto and browser doesn't support prefers-color-scheme", () => {
+    window.matchMedia = mockMatchMedia({});
+    const tree = getApp("auto");
+    expect(tree.find("LightTheme")).toHaveLength(1);
+    tree.instance().componentWillUnmount();
+  });
+
+  const lightMatch = () => ({
+    "(prefers-color-scheme)": {
+      media: "(prefers-color-scheme)",
+      matches: true
+    },
+    "(prefers-color-scheme: light)": {
+      media: "(prefers-color-scheme: light)",
+      matches: true
+    },
+    "(prefers-color-scheme: dark)": {
+      media: "(prefers-color-scheme: dark)",
+      matches: false
+    }
+  });
+
+  const darkMatch = () => ({
+    "(prefers-color-scheme)": {
+      media: "(prefers-color-scheme)",
+      matches: true
+    },
+    "(prefers-color-scheme: light)": {
+      media: "(prefers-color-scheme: light)",
+      matches: false
+    },
+    "(prefers-color-scheme: dark)": {
+      media: "(prefers-color-scheme: dark)",
+      matches: true
+    }
+  });
+
+  const testCases = [
+    {
+      name:
+        "applies LightTheme when config=auto and browser doesn't support prefers-color-scheme",
+      settings: "auto",
+      matchMedia: {},
+      theme: "LightTheme"
+    },
+    {
+      name:
+        "applies LightTheme when config=auto and browser prefers-color-scheme:light matches",
+      settings: "auto",
+      matchMedia: lightMatch(),
+      theme: "LightTheme"
+    },
+    {
+      name:
+        "applies DarkTheme when config=auto and browser prefers-color-scheme:dark matches",
+      settings: "auto",
+      matchMedia: darkMatch(),
+      theme: "DarkTheme"
+    },
+
+    {
+      name:
+        "applies LightTheme when config=light and browser doesn't support prefers-color-scheme",
+      settings: "light",
+      matchMedia: {},
+      theme: "LightTheme"
+    },
+    {
+      name:
+        "applies LightTheme when config=light and browser prefers-color-scheme:light matches",
+      settings: "light",
+      matchMedia: lightMatch(),
+      theme: "LightTheme"
+    },
+
+    {
+      name:
+        "applies DarkTheme when config=dark and browser doesn't support prefers-color-scheme",
+      settings: "dark",
+      matchMedia: {},
+      theme: "DarkTheme"
+    },
+    {
+      name:
+        "applies DarkTheme when config=dark and browser prefers-color-scheme:dark matches",
+      settings: "dark",
+      matchMedia: darkMatch(),
+      theme: "DarkTheme"
+    }
+  ];
+  for (const testCase of testCases) {
+    it(testCase.name, () => {
+      window.matchMedia = mockMatchMedia(testCase.matchMedia);
+      const tree = getApp(testCase.settings);
+      expect(tree.find(testCase.theme)).toHaveLength(1);
+      tree.instance().componentWillUnmount();
+      window.matchMedia.mockRestore();
+    });
+  }
 });

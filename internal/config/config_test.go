@@ -144,7 +144,7 @@ ui:
   refresh: 30s
   hideFiltersWhenIdle: true
   colorTitlebar: false
-  darkTheme: false
+  theme: auto
   minimalGroupWidth: 420
   alertsPerGroup: 5
   collapseGroups: collapsedOnMobile
@@ -309,5 +309,21 @@ func TestInvalidUICollapseGroups(t *testing.T) {
 
 	if !wasFatal {
 		t.Error("Invalid ui.collapseGroups value didn't cause log.Fatal()")
+	}
+}
+
+func TestInvalidUITheme(t *testing.T) {
+	resetEnv()
+	os.Setenv("UI_THEME", "foo")
+
+	log.SetLevel(log.PanicLevel)
+	defer func() { log.StandardLogger().ExitFunc = nil }()
+	var wasFatal bool
+	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
+
+	Config.Read()
+
+	if !wasFatal {
+		t.Error("Invalid ui.theme value didn't cause log.Fatal()")
 	}
 }

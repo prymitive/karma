@@ -5,6 +5,11 @@ Alert dashboard for
 
 ---
 
+Release notes can be found on
+[GitHub Release Page](https://github.com/prymitive/karma/releases).
+
+---
+
 Alertmanager `0.16.x` is **NOT** supported by karma due to changes
 in the API, see [this issue](https://github.com/prymitive/karma/issues/115)
 for details.

@@ -51,7 +51,8 @@ const ReactSelectStyles = theme => ({
     state.isMulti
       ? {
           ...base,
-          borderRadius: 0,
+          borderTopLeftRadius: "0.25rem",
+          borderBottomLeftRadius: "0.25rem",
           backgroundColor: state.isDisabled
             ? theme.disabledValueContainerBackground
             : theme.valueContainerBackground,
@@ -65,7 +66,8 @@ const ReactSelectStyles = theme => ({
         }
       : {
           ...base,
-          borderRadius: 0,
+          borderTopLeftRadius: "0.25rem",
+          borderBottomLeftRadius: "0.25rem",
           backgroundColor: state.isDisabled
             ? theme.disabledValueContainerBackground
             : theme.valueContainerBackground
