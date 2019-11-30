@@ -17,7 +17,11 @@ const Placeholder = () => {
         top: 0,
         left: 0,
         width: "100vw",
-        height: "100vh"
+        height: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        flexDirection: "column"
       }}
     >
       <FontAwesomeIcon
@@ -26,12 +30,7 @@ const Placeholder = () => {
         spin
         style={{
           color: "#5e7a88",
-          fontSize: "8rem",
-          position: "fixed",
-          top: "50%",
-          left: "50%",
-          marginRight: "-50%",
-          transform: "translate(-50%, -50%)"
+          fontSize: "8rem"
         }}
       />
     </div>,
