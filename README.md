@@ -5,11 +5,6 @@ Alert dashboard for
 
 ---
 
-Release notes can be found on
-[GitHub Release Page](https://github.com/prymitive/karma/releases).
-
----
-
 Alertmanager `0.16.x` is **NOT** supported by karma due to changes
 in the API, see [this issue](https://github.com/prymitive/karma/issues/115)
 for details.
@@ -19,8 +14,13 @@ alertmanager `>=0.17.0` is supported.
 
 ---
 
+## Feature overview
+
 Alertmanager UI is useful for browsing alerts and managing silences, but it's
 lacking as a dashboard tool - karma aims to fill this gap.
+
+### Alert aggregation and deduplication
+
 Starting with the `0.7.0` release it can aggregate alerts from multiple
 Alertmanager instances, running either in HA mode or separate. Unique alerts are
 displayed by filtering duplicates. Each alert is tagged with the names of all
@@ -29,6 +29,8 @@ Alertmanager instances it was found at and can be filtered based on those tags
 is configured with multiple Alertmanager instances.
 
 ![Screenshot](/docs/img/screenshot.png)
+
+### Alert visualization
 
 Alerts are displayed grouped preserving
 [group_by](https://prometheus.io/docs/alerting/configuration/#route)
@@ -48,10 +50,14 @@ screen space, the silence will also be moved to the footer.
 
 ![Deduplicated silence](/docs/img/footerSilence.png)
 
+### Silence management
+
 Silence modal allows to create new silences and manage all silences already
 present in Alertmanager.
 
 ![Silence browser](/docs/img/silenceBrowser.png)
+
+### Alert overview
 
 Clicking on the alert counter in the top left corner will open the overview
 modal, which allows to quickly get an overview of the top label values for
@@ -59,16 +65,34 @@ all current alerts.
 
 ![Overview](/docs/img/overview.png)
 
+### Alert acknowledgement
+
 Starting with `v0.50` karma can create short lived silences to acknowledge
 alerts with a single button click. To create silences that will resolve itself
 only after all alerts are resolved you can use
 [kthxbye](https://github.com/prymitive/kthxbye).
 See [configuration docs](/docs/CONFIGURATION.md#alert-acknowledgement) for
-details. Example:
+details.
 
-![Acknowledgement demo](/docs/img/ack.gif)
+### Dark mode
 
-[Online demo](https://karma-demo.herokuapp.com/)
+Starting with `v0.51` release karma includes both light and dark themes.
+By default it will follow browser preference using
+[prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)
+media queries.
+
+![Dark mode](/docs/img/dark.png)
+
+## Demo
+
+[Online demo](https://karma-demo.herokuapp.com/) is running latest master branch
+or PR branch version. It might include features that are experimental and not
+yet ready to be included.
+
+## Release notes
+
+Release notes can be found on
+[GitHub Release Page](https://github.com/prymitive/karma/releases).
 
 To get notifications about new karma releases go to
 [GitHub karma page](https://github.com/prymitive/karma), click `Watch` and
