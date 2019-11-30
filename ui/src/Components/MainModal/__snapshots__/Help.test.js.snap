@@ -685,7 +685,7 @@ exports[`<Help /> matches snapshot 1`] = `
                 !~
               </kbd>
             </div>
-            <div class=\\"my-1 alert alert-light\\">
+            <div class=\\"my-1 alert alert-secondary\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
@@ -700,7 +700,7 @@ exports[`<Help /> matches snapshot 1`] = `
                 >
                 </path>
               </svg>
-              This is supported only if ticket regexp are enabled and able to match ticket IDs in the silence comment.
+              This is supported only if ticket regexp rules are enabled and able to match ticket IDs in the silence comment.
             </div>
             <div>
               Examples:
@@ -760,7 +760,7 @@ exports[`<Help /> matches snapshot 1`] = `
                 =
               </kbd>
             </div>
-            <div class=\\"my-1 alert alert-light\\">
+            <div class=\\"my-1 alert alert-secondary\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"

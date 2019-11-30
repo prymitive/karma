@@ -42,7 +42,7 @@ const QueryHelp = ({ title, operators, warning, children }) => (
         ))}
       </div>
       {warning ? (
-        <div className="my-1 alert alert-light">
+        <div className="my-1 alert alert-secondary">
           <FontAwesomeIcon icon={faInfoCircle} className="mr-1" />
           {warning}
         </div>
@@ -240,7 +240,7 @@ const Help = ({ defaultIsOpen }) => (
           <QueryHelp
             title="Match alerts based on the ticket IDs detected in the silence comment"
             operators={["=", "!=", "=~", "!~"]}
-            warning="This is supported only if ticket regexp are enabled and able to
+            warning="This is supported only if ticket regexp rules are enabled and able to
             match ticket IDs in the silence comment."
           >
             <FilterExample example="@silence_ticket=PROJECT-123">
