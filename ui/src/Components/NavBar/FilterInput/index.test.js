@@ -135,6 +135,12 @@ describe("<FilterInput />", () => {
     expect(toDiffableHtml(tree.html())).not.toMatch(/bg-focused/);
   });
 
+  it("calling handleClickOutside() changes background color", () => {
+    const tree = MountedInput();
+    tree.instance().handleClickOutside();
+    expect(toDiffableHtml(tree.html())).not.toMatch(/bg-focused/);
+  });
+
   it("componentDidMount executes even when inputStore.ref=null", () => {
     const tree = MountedInput();
     const instance = tree.instance();
