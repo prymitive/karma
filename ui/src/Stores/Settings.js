@@ -113,7 +113,7 @@ class FilterBarConfig {
 class ThemeConfig {
   options = Object.freeze({
     auto: {
-      label: "Automatic theme, follow browser preferences",
+      label: "Automatic theme, follow browser preference",
       value: "auto"
     },
     light: { label: "Light theme", value: "light" },
