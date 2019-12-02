@@ -76,7 +76,7 @@ details.
 
 ### Dark mode
 
-Starting with `v0.51` release karma includes both light and dark themes.
+Starting with `v0.52` release karma includes both light and dark themes.
 By default it will follow browser preference using
 [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme)
 media queries.
