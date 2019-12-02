@@ -1,11 +1,11 @@
-FROM node:12.13.1-alpine3.9 as nodejs-builder
-RUN apk update && apk upgrade && apk add --update make git
+FROM node:12.13.1-alpine as nodejs-builder
+RUN apk add make git
 COPY Makefile /src/Makefile
 COPY ui /src/ui
 RUN make -C /src ui
 
 FROM golang:1.13.4-alpine as go-builder
-RUN apk update && apk upgrade && apk add --update make git
+RUN apk add make git
 COPY Makefile /src/Makefile
 COPY go.mod /src/go.mod
 COPY go.sum /src/go.sum
@@ -18,15 +18,15 @@ ARG VERSION
 RUN CGO_ENABLED=0 make -C /src VERSION="${VERSION:-dev}" karma
 
 FROM alpine:3.10
-RUN apk update && apk upgrade && apk add --update supervisor python && rm  -rf /tmp/* /var/cache/apk/*
+RUN apk add supervisor python && rm  -rf /tmp/* /var/cache/apk/*
 COPY demo/supervisord.conf /etc/supervisord.conf
 COPY --from=prom/alertmanager:v0.19.0 /bin/alertmanager /alertmanager
+COPY --from=lmierzwa/kthxbye:v0.5 /kthxbye /kthxbye
 COPY demo/alertmanager.yaml /etc/alertmanager.yaml
 COPY demo/generator.py /generator.py
 COPY --from=go-builder /src/karma /karma
 COPY demo/karma.yaml /etc/karma.yaml
 COPY demo/custom.js /custom.js
-COPY --from=lmierzwa/kthxbye:v0.5 /kthxbye /kthxbye
 RUN adduser -D karma
 USER karma
 ENV GOGC=20

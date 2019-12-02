@@ -1,11 +1,11 @@
-FROM node:12.13.1-alpine3.9 as nodejs-builder
-RUN apk update && apk upgrade && apk add --update make git
+FROM node:12.13.1-alpine as nodejs-builder
+RUN apk add make git
 COPY Makefile /src/Makefile
 COPY ui /src/ui
 RUN make -C /src ui
 
 FROM golang:1.13.4-alpine as go-builder
-RUN apk update && apk upgrade && apk add --update make git
+RUN apk add make git
 COPY Makefile /src/Makefile
 COPY go.mod /src/go.mod
 COPY go.sum /src/go.sum
