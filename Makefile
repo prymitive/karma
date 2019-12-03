@@ -131,12 +131,16 @@ lint-go: .build/deps-lint-go.ok
 lint-js: .build/deps-build-node.ok
 	cd ui && ./node_modules/.bin/eslint --quiet src
 
+.PHONY: lint-licences-js
+lint-licences-js: .build/deps-build-node.ok
+	cd ui && npm run licenseCheck
+
 .PHONY: lint-docs
 lint-docs: .build/deps-build-node.ok
 	$(CURDIR)/ui/node_modules/.bin/markdownlint *.md docs
 
 .PHONY: lint
-lint: lint-go lint-js lint-docs
+lint: lint-go lint-js lint-docs lint-licences-js
 
 .PHONY: benchmark-go
 benchmark-go:

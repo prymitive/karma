@@ -64,7 +64,8 @@
     "test": "react-scripts test",
     "storybook": "start-storybook",
     "snapshot": "build-storybook --quiet -s public && percy-storybook --widths=700,1280 --minimum_height=200",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "licenseCheck": "npm-consider install --test"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -86,6 +87,7 @@
     "jest-fetch-mock": "2.1.2",
     "markdownlint-cli": "0.19.0",
     "node-sass": "4.13.0",
+    "npm-consider": "1.7.0",
     "prettier": "1.19.1",
     "source-map-explorer": "2.1.2"
   },
@@ -100,5 +102,12 @@
     "Safari >= 10",
     "Android >= 4.4",
     "Opera >= 36"
-  ]
+  ],
+  "config": {
+    "allowedLicenseTypes": [
+      "permissive",
+      "publicDomain",
+      "uncategorized"
+    ]
+  }
 }
