@@ -60,7 +60,7 @@ jobs:
       name: Verify npm licenses
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
-      script: make lint-licences-js
+      script: travis_retry make lint-licences-js
 
     - stage: Lint
       name: Lint git commit
