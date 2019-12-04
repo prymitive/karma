@@ -20,11 +20,22 @@ const FilteringCounterBadge = observer(
       value: PropTypes.string.isRequired,
       counter: PropTypes.number.isRequired,
       themed: PropTypes.bool.isRequired,
-      alwaysVisible: PropTypes.bool
+      alwaysVisible: PropTypes.bool,
+      defaultColor: PropTypes.oneOf(["light", "primary"])
+    };
+    static defaultProps = {
+      defaultColor: "light"
     };
 
     render() {
-      const { name, value, counter, themed, alwaysVisible } = this.props;
+      const {
+        name,
+        value,
+        counter,
+        themed,
+        alwaysVisible,
+        defaultColor
+      } = this.props;
 
       if (!alwaysVisible && counter === 0) return null;
 
@@ -44,7 +55,8 @@ const FilteringCounterBadge = observer(
                 themed
                   ? cs.className
                   : [
-                      "badge-primary badge-pill components-label-with-hover",
+                      `badge-${defaultColor}`,
+                      "badge-pill components-label-with-hover",
                       ...cs.baseClassNames
                     ].join(" ")
               }
