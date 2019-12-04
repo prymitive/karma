@@ -85,6 +85,7 @@ const SilenceComment = ({
               counter={alertCount}
               themed={false}
               alwaysVisible={alertCountAlwaysVisible}
+              defaultColor="primary"
             />
             <FontAwesomeIcon
               icon={collapsed ? faChevronUp : faChevronDown}
