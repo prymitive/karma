@@ -85,10 +85,11 @@ func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
 			// count all alerts per receiver & state
 			for _, alert := range group.Alerts {
 				if _, found := alertsByReceiverByState[alert.Receiver]; !found {
-					alertsByReceiverByState[alert.Receiver] = map[string]float64{}
-				}
-				if _, found := alertsByReceiverByState[alert.Receiver][alert.State]; !found {
-					alertsByReceiverByState[alert.Receiver][alert.State] = 0
+					alertsByReceiverByState[alert.Receiver] = map[string]float64{
+						"unprocessed": 0,
+						"active":      0,
+						"suppressed":  0,
+					}
 				}
 				alertsByReceiverByState[alert.Receiver][alert.State]++
 			}
