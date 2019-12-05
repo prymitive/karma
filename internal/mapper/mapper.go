@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/prymitive/karma/internal/models"
@@ -50,10 +51,15 @@ func RegisterAlertMapper(m AlertMapper) {
 	alertMappers = append(alertMappers, m)
 }
 
+func fixSemVersion(version string) string {
+	// https://github.com/Masterminds/semver/issues/135
+	return strings.SplitN(version, "-", 2)[0]
+}
+
 // GetAlertMapper returns mapper for given version
 func GetAlertMapper(version string) (AlertMapper, error) {
 	for _, m := range alertMappers {
-		if m.IsSupported(version) {
+		if m.IsSupported(fixSemVersion(version)) {
 			return m, nil
 		}
 	}
@@ -69,7 +75,7 @@ func RegisterSilenceMapper(m SilenceMapper) {
 // GetSilenceMapper returns mapper for given version
 func GetSilenceMapper(version string) (SilenceMapper, error) {
 	for _, m := range silenceMappers {
-		if m.IsSupported(version) {
+		if m.IsSupported(fixSemVersion(version)) {
 			return m, nil
 		}
 	}
@@ -85,7 +91,7 @@ func RegisterStatusMapper(m StatusMapper) {
 // GetStatusMapper returns mapper for given version
 func GetStatusMapper(version string) (StatusMapper, error) {
 	for _, m := range statusMappers {
-		if m.IsSupported(version) {
+		if m.IsSupported(fixSemVersion(version)) {
 			return m, nil
 		}
 	}
