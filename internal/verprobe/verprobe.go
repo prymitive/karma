@@ -4,8 +4,6 @@ import (
 	"io"
 
 	"github.com/prometheus/common/expfmt"
-
-	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -29,7 +27,6 @@ func Detect(r io.Reader) (string, error) {
 				for _, l := range v.Label {
 					if l.GetName() == versionLabel {
 						version = l.GetValue()
-						log.Infof("Upstream version: %s", version)
 						break
 					}
 				}
