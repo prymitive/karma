@@ -15,10 +15,10 @@ require (
 	github.com/gin-gonic/contrib v0.0.0-20191209060500-d6e26eeaa607
 	github.com/gin-gonic/gin v1.5.0
 	github.com/go-bindata/go-bindata v3.1.2+incompatible
-	github.com/go-openapi/errors v0.19.2
-	github.com/go-openapi/runtime v0.19.8
-	github.com/go-openapi/strfmt v0.19.3
-	github.com/go-openapi/swag v0.19.5
+	github.com/go-openapi/errors v0.19.3
+	github.com/go-openapi/runtime v0.19.9
+	github.com/go-openapi/strfmt v0.19.4
+	github.com/go-openapi/swag v0.19.6
 	github.com/go-openapi/validate v0.19.5
 	github.com/golangci/golangci-lint v1.21.0
 	github.com/google/go-cmp v0.3.1
