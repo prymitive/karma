@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRocket } from "@fortawesome/free-solid-svg-icons/faRocket";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
+import { CenteredMessage } from "Components/CenteredMessage";
+
 import "csshake/scss/csshake-slow.scss";
 
 class UpgradeNeeded extends Component {
@@ -30,17 +32,20 @@ class UpgradeNeeded extends Component {
   render() {
     const { newVersion } = this.props;
     return (
-      <div className="jumbotron text-center bg-primary my-4">
-        <div className="container-fluid">
-          <h1 className="display-1 my-5 text-success shake-slow shake-constant">
-            <FontAwesomeIcon icon={faRocket} />
-          </h1>
+      <CenteredMessage>
+        <div className="container-fluid text-center">
+          <div className="shake-slow shake-constant mb-4">
+            <FontAwesomeIcon
+              icon={faRocket}
+              className="screen-center-icon-big text-success"
+            />
+          </div>
           <p className="lead text-muted">
             <FontAwesomeIcon className="mr-1" icon={faSpinner} spin />
             Upgrading to a new version: {newVersion}
           </p>
         </div>
-      </div>
+      </CenteredMessage>
     );
   }
 }

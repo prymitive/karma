@@ -7,7 +7,10 @@ import { CenteredMessage } from "Components/CenteredMessage";
 
 const EmptyGrid = () => (
   <CenteredMessage>
-    <FontAwesomeIcon icon={faMugHot} style={{ fontSize: "14rem" }} />
+    <FontAwesomeIcon
+      icon={faMugHot}
+      className="screen-center-icon-big text-placeholder"
+    />
   </CenteredMessage>
 );
 

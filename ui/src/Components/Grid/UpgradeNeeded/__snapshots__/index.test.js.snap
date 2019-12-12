@@ -2,14 +2,14 @@
 
 exports[`<UpgradeNeeded /> matches snapshot 1`] = `
 "
-<div class=\\"jumbotron text-center bg-primary my-4\\">
-  <div class=\\"container-fluid\\">
-    <h1 class=\\"display-1 my-5 text-success shake-slow shake-constant\\">
+<h1 class=\\"display-1 text-placeholder screen-center\\">
+  <div class=\\"container-fluid text-center\\">
+    <div class=\\"shake-slow shake-constant mb-4\\">
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
            data-icon=\\"rocket\\"
-           class=\\"svg-inline--fa fa-rocket fa-w-16 \\"
+           class=\\"svg-inline--fa fa-rocket fa-w-16 screen-center-icon-big text-success\\"
            role=\\"img\\"
            xmlns=\\"http://www.w3.org/2000/svg\\"
            viewbox=\\"0 0 512 512\\"
@@ -19,7 +19,7 @@ exports[`<UpgradeNeeded /> matches snapshot 1`] = `
         >
         </path>
       </svg>
-    </h1>
+    </div>
     <p class=\\"lead text-muted\\">
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
@@ -38,6 +38,6 @@ exports[`<UpgradeNeeded /> matches snapshot 1`] = `
       Upgrading to a new version: 1.2.3
     </p>
   </div>
-</div>
+</h1>
 "
 `;
