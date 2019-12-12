@@ -188,4 +188,43 @@ storiesOf("SilenceModal", module)
         />
       </Modal>
     );
+  })
+  .add("Empty Browser", () => {
+    const alertStore = new AlertStore([]);
+    const settingsStore = new Settings();
+    const silenceFormStore = new SilenceFormStore();
+
+    silenceFormStore.tab.current = SilenceTabNames.Browser;
+
+    alertStore.data.upstreams = {
+      instances: [
+        {
+          name: "am1",
+          cluster: "am",
+          clusterMembers: ["am1"],
+          uri: "http://localhost:9093",
+          publicURI: "http://example.com",
+          error: "",
+          version: "0.15.3",
+          headers: {}
+        }
+      ],
+      clusters: { am: ["am1"] }
+    };
+
+    fetchMock.mock("begin:/silences.json?", [], {
+      overwriteRoutes: true
+    });
+
+    return (
+      <Modal>
+        <SilenceModalContent
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          settingsStore={settingsStore}
+          onHide={() => {}}
+          onDeleteModalClose={() => {}}
+        />
+      </Modal>
+    );
   });

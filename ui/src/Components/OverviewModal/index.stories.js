@@ -8,18 +8,28 @@ import { OverviewModalContent } from "./OverviewModalContent";
 
 import "Styles/Percy.scss";
 
-storiesOf("OverviewModal", module)
-  .addDecorator(storyFn => (
+storiesOf("OverviewModal", module).add("OverviewModal", () => {
+  const Modal = ({ children }) => (
     <div>
       <div className="modal-dialog modal-lg" role="document">
-        <div className="modal-content">{storyFn()}</div>
+        <div className="modal-content">{children}</div>
       </div>
     </div>
-  ))
-  .add("OverviewModal", () => {
-    const alertStore = new AlertStore([]);
+  );
 
-    MockGrid(alertStore);
+  const alertStore = new AlertStore([]);
+  MockGrid(alertStore);
 
-    return <OverviewModalContent alertStore={alertStore} onHide={() => {}} />;
-  });
+  const emptyAlertStore = new AlertStore([]);
+
+  return (
+    <div>
+      <Modal>
+        <OverviewModalContent alertStore={alertStore} onHide={() => {}} />
+      </Modal>
+      <Modal>
+        <OverviewModalContent alertStore={emptyAlertStore} onHide={() => {}} />
+      </Modal>
+    </div>
+  );
+});
