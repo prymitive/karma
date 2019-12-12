@@ -5,6 +5,7 @@
   "private": true,
   "dependencies": {
     "@attently/riek": "2.0.1",
+    "@fortawesome/fontawesome-common-types": "0.2.26",
     "@fortawesome/fontawesome-svg-core": "1.2.26",
     "@fortawesome/free-regular-svg-icons": "5.11.2",
     "@fortawesome/free-solid-svg-icons": "5.11.2",
