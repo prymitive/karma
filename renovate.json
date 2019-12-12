@@ -5,10 +5,5 @@
   "travis": { "enabled": true },
   "masterIssue": true,
   "postUpdateOptions": ["gomodTidy"],
-  "patch": {
-    "automerge": true
-  },
-  "devDependencies": {
-    "automerge": true
-  }
+  "automerge": true
 }
