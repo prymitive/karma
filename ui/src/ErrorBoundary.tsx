@@ -20,7 +20,7 @@ const InternalError: StatelessComponent<InternalErrorProps> = props => (
   <div className="jumbotron text-center bg-primary my-4">
     <div className="container-fluid">
       <h1 className="display-1 my-5">
-        <FontAwesomeIcon className="text-danger mr-2" icon={faBomb} />
+        <FontAwesomeIcon className="text-danger mr-4" icon={faBomb} />
         <span className="text-muted">Internal error</span>
       </h1>
       <p className="lead text-white bg-secondary px-1 py-3 rounded">
@@ -102,4 +102,4 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 }
 
-export { ErrorBoundary };
+export { ErrorBoundary, InternalError };

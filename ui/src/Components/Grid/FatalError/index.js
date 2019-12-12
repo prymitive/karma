@@ -4,6 +4,8 @@ import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 
+import { CenteredMessage } from "Components/CenteredMessage";
+
 class FatalError extends Component {
   static propTypes = {
     message: PropTypes.string.isRequired
@@ -12,16 +14,17 @@ class FatalError extends Component {
   render() {
     const { message } = this.props;
     return (
-      <div className="jumbotron text-center bg-primary my-4">
-        <div className="container-fluid">
-          <h1 className="display-1 my-5 text-danger">
-            <FontAwesomeIcon icon={faExclamationCircle} />
-          </h1>
+      <CenteredMessage>
+        <div className="container-fluid text-center">
+          <FontAwesomeIcon
+            icon={faExclamationCircle}
+            className="screen-center-icon-big text-danger mb-4"
+          />
           <p className="lead text-white bg-secondary px-1 py-3 rounded text-wrap text-break">
             {message}
           </p>
         </div>
-      </div>
+      </CenteredMessage>
     );
   }
 }

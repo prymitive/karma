@@ -7,3 +7,14 @@
   position: relative !important;
   float: none !important;
 }
+
+.screen-center {
+  position: unset !important;
+  top: unset !important;
+  left: unset !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+  transform: unset !important;
+}
