@@ -2,7 +2,7 @@
 
 exports[`<FilterInput /> matches snapshot on default render 1`] = `
 "
-<div class=\\"input-group w-100 mr-2 border-left-0 border-right-0 border-top-0 border border-light bg-transparent\\">
+<div class=\\"input-group w-100 mr-2 components-filterinput-outer bg-transparent\\">
   <div class=\\"input-group-prepend\\">
     <span class=\\"input-group-text px-2 border-0 rounded-0 bg-transparent text-white\\">
       <svg aria-hidden=\\"true\\"
