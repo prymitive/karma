@@ -20,6 +20,11 @@ $btn-active-box-shadow: 0;
 // make links light gray by default instead of green
 $link-color: $gray-700;
 
+$navbar-dark-brand-color: $navbar-dark-color;
+$navbar-dark-brand-hover-color: $gray-500;
+$navbar-dark-hover-color: $gray-500;
+$navbar-dark-active-color: $gray-500;
+
 // fix active tab color, for some reason it ends up with $primary as bg color
 $nav-tabs-link-active-bg: #fff;
 

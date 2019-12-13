@@ -22,6 +22,11 @@ $light: $gray-800;
 // make links light gray by default instead of green
 $link-color: $gray-400;
 
+$navbar-dark-brand-color: $navbar-dark-color;
+$navbar-dark-brand-hover-color: $white;
+$navbar-dark-hover-color: $white;
+$navbar-dark-active-color: $white;
+
 // fix active tab color, for some reason it ends up with $primary as bg color
 $nav-tabs-link-active-bg: $gray-800;
 

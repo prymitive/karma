@@ -4,7 +4,7 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
 "
 <div class=\\"input-group w-100 mr-2 components-filterinput-outer bg-transparent\\">
   <div class=\\"input-group-prepend\\">
-    <span class=\\"input-group-text px-2 border-0 rounded-0 bg-transparent text-white\\">
+    <span class=\\"input-group-text px-2 border-0 rounded-0 bg-transparent components-navbar-icon\\">
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
@@ -45,7 +45,7 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
     </div>
   </div>
   <div class=\\"input-group-append bg-transparent\\">
-    <button class=\\"input-group-text border-0 rounded-0 bg-transparent text-white cursor-pointer components-navbar-history px-2\\"
+    <button class=\\"input-group-text border-0 rounded-0 bg-transparent cursor-pointer components-navbar-history px-2 components-navbar-icon\\"
             type=\\"button\\"
             data-toggle=\\"dropdown\\"
             aria-haspopup=\\"true\\"

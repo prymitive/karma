@@ -162,7 +162,7 @@ const FilterInput = onClickOutside(
               }`}
             >
               <div className="input-group-prepend">
-                <span className="input-group-text px-2 border-0 rounded-0 bg-transparent text-white">
+                <span className="input-group-text px-2 border-0 rounded-0 bg-transparent components-navbar-icon">
                   <FontAwesomeIcon icon={faSearch} />
                 </span>
               </div>
