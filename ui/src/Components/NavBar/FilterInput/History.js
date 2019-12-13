@@ -238,7 +238,7 @@ const History = observer(
               <button
                 ref={ref}
                 onClick={this.collapse.toggle}
-                className="input-group-text border-0 rounded-0 bg-transparent text-white cursor-pointer components-navbar-history px-2"
+                className="input-group-text border-0 rounded-0 bg-transparent cursor-pointer components-navbar-history px-2 components-navbar-icon"
                 type="button"
                 data-toggle="dropdown"
                 aria-haspopup="true"

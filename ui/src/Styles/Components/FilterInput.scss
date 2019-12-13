@@ -1,3 +1,10 @@
+.input-group.components-filterinput-outer {
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: $border-width solid $filterinput-border;
+}
+
 .form-control.components-filterinput {
   cursor: text;
   height: auto;

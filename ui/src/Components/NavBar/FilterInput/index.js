@@ -157,12 +157,12 @@ const FilterInput = onClickOutside(
             data-filters={alertStore.filters.values.map(f => f.raw).join(" ")}
           >
             <div
-              className={`input-group w-100 mr-2 border-left-0 border-right-0 border-top-0 border border-light ${
+              className={`input-group w-100 mr-2 components-filterinput-outer ${
                 this.inputStore.focused ? "bg-focused" : "bg-transparent"
               }`}
             >
               <div className="input-group-prepend">
-                <span className="input-group-text px-2 border-0 rounded-0 bg-transparent text-white">
+                <span className="input-group-text px-2 border-0 rounded-0 bg-transparent components-navbar-icon">
                   <FontAwesomeIcon icon={faSearch} />
                 </span>
               </div>
