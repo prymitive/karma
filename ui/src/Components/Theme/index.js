@@ -30,7 +30,7 @@ const Placeholder = () => {
         spin
         style={{
           color: "#5e7a88",
-          fontSize: "8rem"
+          fontSize: "14rem"
         }}
       />
     </div>,
