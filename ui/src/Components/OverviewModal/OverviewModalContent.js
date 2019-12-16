@@ -16,7 +16,7 @@ const TableRows = observer(({ alertStore, nameStats }) =>
   nameStats.map(nameStats => (
     <tr key={nameStats.name}>
       <td width="25%" className="text-nowrap mw-100 p-1">
-        <span className="badge badge-light components-label mx-0 mt-0 mb-auto pl-0 text-left">
+        <span className="badge badge-secondary components-label mx-0 mt-0 mb-auto pl-0 text-left">
           <span className="bg-primary text-white mr-1 px-1 components-labelWithPercent-percent">
             {nameStats.hits}
           </span>
