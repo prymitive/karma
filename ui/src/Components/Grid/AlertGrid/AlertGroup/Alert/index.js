@@ -49,7 +49,7 @@ const Alert = observer(
         "my-1",
         "rounded-0",
         "border-left-1 border-right-0 border-top-0 border-bottom-0",
-        BorderClassMap[alert.state] || "border-warning"
+        BorderClassMap[alert.state] || "border-default"
       ];
 
       const silences = {};

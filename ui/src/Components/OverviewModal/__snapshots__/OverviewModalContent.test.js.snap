@@ -35,7 +35,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               class=\\"mw-100 p-1\\"
           >
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   8
                 </span>
@@ -60,7 +60,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   4
                 </span>
@@ -93,7 +93,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   4
                 </span>
@@ -142,7 +142,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               class=\\"mw-100 p-1\\"
           >
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
@@ -167,7 +167,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
@@ -200,7 +200,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
@@ -233,7 +233,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
@@ -266,7 +266,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
@@ -299,7 +299,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
@@ -332,7 +332,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
@@ -365,7 +365,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
@@ -398,7 +398,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
                 <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>

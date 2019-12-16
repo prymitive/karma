@@ -43,6 +43,10 @@ button.btn.components-filteredinputlabel {
 }
 
 button.components-label.btn {
+  &.btn-default:hover {
+    background-color: $color-default;
+  }
+
   &.btn-primary:hover {
     background-color: $primary;
   }
@@ -66,6 +70,6 @@ button.components-label.btn {
   }
   &.btn-dark:hover {
     // same as in Theme.scss
-    background-color: #3b4247;
+    background-color: $dark;
   }
 }

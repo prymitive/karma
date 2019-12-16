@@ -18,7 +18,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
               foo
             </span>
           </span>
-          <span class=\\"components-label badge badge-warning components-label-dark \\">
+          <span class=\\"components-label badge badge-default components-label-dark \\">
             <span class=\\"components-label-name\\">
               job:
             </span>
@@ -26,7 +26,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
               foo
             </span>
           </span>
-          <span class=\\"components-label badge badge-warning components-label-dark \\">
+          <span class=\\"components-label badge badge-default components-label-dark \\">
             <span class=\\"components-label-name\\">
               instance:
             </span>
@@ -44,7 +44,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
               bar
             </span>
           </span>
-          <span class=\\"components-label badge badge-warning components-label-dark \\">
+          <span class=\\"components-label badge badge-default components-label-dark \\">
             <span class=\\"components-label-name\\">
               job:
             </span>
@@ -52,7 +52,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
               bar
             </span>
           </span>
-          <span class=\\"components-label badge badge-warning components-label-dark \\">
+          <span class=\\"components-label badge badge-default components-label-dark \\">
             <span class=\\"components-label-name\\">
               instance:
             </span>
@@ -70,7 +70,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
               bar
             </span>
           </span>
-          <span class=\\"components-label badge badge-warning components-label-dark \\">
+          <span class=\\"components-label badge badge-default components-label-dark \\">
             <span class=\\"components-label-name\\">
               job:
             </span>
@@ -78,7 +78,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
               bar
             </span>
           </span>
-          <span class=\\"components-label badge badge-warning components-label-dark \\">
+          <span class=\\"components-label badge badge-default components-label-dark \\">
             <span class=\\"components-label-name\\">
               instance:
             </span>
