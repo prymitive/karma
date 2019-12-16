@@ -12,7 +12,7 @@
     "@fortawesome/react-fontawesome": "0.1.8",
     "@sentry/browser": "5.10.2",
     "@types/jest": "24.0.23",
-    "@types/node": "12.12.17",
+    "@types/node": "12.12.18",
     "@types/react": "16.9.16",
     "@types/react-dom": "16.9.4",
     "body-scroll-lock": "2.6.4",
