@@ -3,7 +3,7 @@
 exports[`<LabelWithPercent /> matches snapshot with isActive=true 1`] = `
 "
 <div class=\\"d-inline-block mw-100\\">
-  <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+  <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
     <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
       25
     </span>
@@ -48,7 +48,7 @@ exports[`<LabelWithPercent /> matches snapshot with isActive=true 1`] = `
 exports[`<LabelWithPercent /> matches snapshot with offset=0 1`] = `
 "
 <div class=\\"d-inline-block mw-100\\">
-  <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+  <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
     <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
       25
     </span>
@@ -78,7 +78,7 @@ exports[`<LabelWithPercent /> matches snapshot with offset=0 1`] = `
 exports[`<LabelWithPercent /> matches snapshot with offset=25 1`] = `
 "
 <div class=\\"d-inline-block mw-100\\">
-  <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
+  <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
     <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
       25
     </span>

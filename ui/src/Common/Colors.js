@@ -1,7 +1,7 @@
 // fallback class for labels
 const DefaultLabelClassMap = Object.freeze({
-  badge: "badge-warning components-label-dark",
-  btn: "btn-warning components-label-dark"
+  badge: "badge-default components-label-dark",
+  btn: "btn-default components-label-dark"
 });
 
 // same but for borders

@@ -111,7 +111,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
        aria-describedby=\\"tippy-tooltip-8\\"
        data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
   >
-    <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         job:
       </span>
@@ -126,7 +126,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
        aria-describedby=\\"tippy-tooltip-9\\"
        data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
   >
-    <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         cluster:
       </span>
@@ -248,7 +248,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
        aria-describedby=\\"tippy-tooltip-3\\"
        data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
   >
-    <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         job:
       </span>
@@ -263,7 +263,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
        aria-describedby=\\"tippy-tooltip-4\\"
        data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
   >
-    <span class=\\"components-label badge badge-warning components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         cluster:
       </span>

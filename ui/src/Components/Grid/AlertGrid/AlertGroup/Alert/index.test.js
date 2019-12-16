@@ -238,7 +238,7 @@ describe("<Alert />", () => {
     ).toBe(true);
   });
 
-  it("uses 'border-warning' with unknown @state", () => {
+  it("uses 'border-default' with unknown @state", () => {
     jest.spyOn(console, "error").mockImplementation(() => {});
 
     const alert = MockedAlert();
@@ -248,7 +248,7 @@ describe("<Alert />", () => {
     expect(
       tree
         .find(".components-grid-alertgrid-alertgroup-alert")
-        .hasClass("border-warning")
+        .hasClass("border-default")
     ).toBe(true);
   });
 

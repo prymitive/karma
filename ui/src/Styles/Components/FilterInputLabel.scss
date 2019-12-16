@@ -43,6 +43,10 @@ button.btn.components-filteredinputlabel {
 }
 
 button.components-label.btn {
+  &.btn-default:hover {
+    background-color: $color-default;
+  }
+
   &.btn-primary:hover {
     background-color: $primary;
   }
