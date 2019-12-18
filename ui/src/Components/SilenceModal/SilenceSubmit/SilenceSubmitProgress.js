@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 
-import semver from "semver";
+import satisfies from "semver/functions/satisfies";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
@@ -103,7 +103,7 @@ const SilenceSubmitProgress = observer(
         return;
       }
 
-      const isOpenAPI = semver.satisfies(am.version, ">=0.16.0");
+      const isOpenAPI = satisfies(am.version, ">=0.16.0");
 
       const uri = isOpenAPI
         ? `${am.uri}/api/v2/silences`

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
-import semver from "semver";
+import satisfies from "semver/functions/satisfies";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -169,7 +169,7 @@ const DeleteSilenceModalContent = observer(
 
       const alertmanager = this.getAlertmanager();
 
-      const isOpenAPI = semver.satisfies(alertmanager.version, ">=0.16.0");
+      const isOpenAPI = satisfies(alertmanager.version, ">=0.16.0");
 
       const uri = isOpenAPI
         ? `${alertmanager.uri}/api/v2/silence/${silence.id}`
