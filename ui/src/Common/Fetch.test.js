@@ -26,7 +26,7 @@ describe("Fetch", () => {
   for (const [name, func] of Object.entries(tests)) {
     it(`${name}: passes '{credentials: include}' to all requests`, async () => {
       const request = func("http://example.com", {});
-      await expect(request).resolves.toBeUndefined();
+      await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetch).toHaveBeenCalledWith(
         "http://example.com",
         merge({}, CommonOptions, methodOptions[name])
@@ -37,7 +37,7 @@ describe("Fetch", () => {
       const request = func("http://example.com", {
         foo: "bar"
       });
-      await expect(request).resolves.toBeUndefined();
+      await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetch).toHaveBeenCalledWith(
         "http://example.com",
         merge({}, CommonOptions, methodOptions[name], { foo: "bar" })
@@ -49,7 +49,7 @@ describe("Fetch", () => {
         credentials: "none",
         redirect: "follow"
       });
-      await expect(request).resolves.toBeUndefined();
+      await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetch).toHaveBeenCalledWith(
         "http://example.com",
         merge({}, CommonOptions, methodOptions[name], {
