@@ -6,7 +6,7 @@ import { observer } from "mobx-react";
 
 import moment from "moment";
 
-import semver from "semver";
+import satisfies from "semver/functions/satisfies";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
@@ -142,7 +142,7 @@ const AlertAck = observer(
         return;
       }
 
-      const isOpenAPI = semver.satisfies(am.version, ">=0.16.0");
+      const isOpenAPI = satisfies(am.version, ">=0.16.0");
 
       const uri = isOpenAPI
         ? `${am.uri}/api/v2/silences`
