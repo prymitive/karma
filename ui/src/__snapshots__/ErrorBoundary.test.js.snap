@@ -2,9 +2,9 @@
 
 exports[`<ErrorBoundary /> matches snapshot 1`] = `
 "
-<div class=\\"jumbotron text-center bg-primary my-4\\">
-  <div class=\\"container-fluid\\">
-    <h1 class=\\"display-1 my-5\\">
+<div class=\\"text-placeholder screen-center\\">
+  <div class=\\"container-fluid text-center\\">
+    <h1 class=\\"display-1\\">
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
@@ -23,7 +23,7 @@ exports[`<ErrorBoundary /> matches snapshot 1`] = `
         Internal error
       </span>
     </h1>
-    <p class=\\"lead text-white bg-secondary px-1 py-3 rounded\\">
+    <p class=\\"lead text-white bg-secondary p-3 rounded text-wrap text-break\\">
       Error: Error thrown from problem child
     </p>
     <p class=\\"text-muted d-inline-block\\">

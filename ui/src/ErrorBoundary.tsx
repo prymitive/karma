@@ -17,13 +17,13 @@ interface InternalErrorProps {
 }
 
 const InternalError: StatelessComponent<InternalErrorProps> = props => (
-  <div className="jumbotron text-center bg-primary my-4">
-    <div className="container-fluid">
-      <h1 className="display-1 my-5">
+  <div className="text-placeholder screen-center">
+    <div className="container-fluid text-center">
+      <h1 className="display-1">
         <FontAwesomeIcon className="text-danger mr-4" icon={faBomb} />
         <span className="text-muted">Internal error</span>
       </h1>
-      <p className="lead text-white bg-secondary px-1 py-3 rounded">
+      <p className="lead text-white bg-secondary p-3 rounded text-wrap text-break">
         {props.message}
       </p>
       <p className="text-muted d-inline-block">
