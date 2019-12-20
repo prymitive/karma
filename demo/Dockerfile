@@ -17,7 +17,7 @@ COPY internal /src/internal
 ARG VERSION
 RUN CGO_ENABLED=0 make -C /src VERSION="${VERSION:-dev}" karma
 
-FROM alpine:3.10
+FROM alpine:3.11
 RUN apk add supervisor python && rm  -rf /tmp/* /var/cache/apk/*
 COPY demo/supervisord.conf /etc/supervisord.conf
 COPY --from=prom/alertmanager:v0.20.0 /bin/alertmanager /alertmanager
