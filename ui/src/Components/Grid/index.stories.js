@@ -18,7 +18,7 @@ storiesOf("Grid", module)
   .add("InternalError", () => {
     return (
       <InternalError
-        message="React error boundary message"
+        message="React error boundary message with a veryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrapping"
         secondsLeft={45}
         progressLeft={66}
       />
