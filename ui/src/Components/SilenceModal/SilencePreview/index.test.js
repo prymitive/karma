@@ -125,7 +125,7 @@ describe("<SilencePreview />", () => {
     const consoleSpy = jest
       .spyOn(console, "trace")
       .mockImplementation(() => {});
-    fetch.mockReject("Fetch error");
+    fetch.mockReject(new Error("Fetch error"));
 
     const tree = MountedSilencePreview();
     await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();

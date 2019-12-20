@@ -370,14 +370,9 @@ describe("AlertStore.fetch", () => {
     const consoleSpy = jest
       .spyOn(console, "trace")
       .mockImplementation(() => {});
-    fetch.mockReject("Fetch error");
+    fetch.mockReject(new Error("Fetch error"));
 
     const store = new AlertStore([]);
-    store.retryConfig = {
-      retries: 5,
-      minTimeout: 10,
-      maxTimeout: 10
-    };
     await expect(store.fetch()).resolves.toHaveProperty("error");
 
     expect(global.fetch).toHaveBeenCalledTimes(6);
@@ -388,28 +383,20 @@ describe("AlertStore.fetch", () => {
   });
 
   it("fetch() retries on failure", async () => {
+    jest.spyOn(console, "trace").mockImplementation(() => {});
     const store = new AlertStore([]);
-    store.retryConfig = {
-      retries: 5,
-      minTimeout: 10,
-      maxTimeout: 10
-    };
 
-    fetch.mockReject("Fetch error");
-    await expect(store.fetch()).rejects.toBeTruthy();
+    fetch.mockReject(new Error("Fetch error"));
+    await expect(store.fetch()).resolves.toHaveProperty("error");
     expect(global.fetch).toHaveBeenCalledTimes(6);
   });
 
   it("fetch() retry counter is reset after successful fetch", async () => {
+    jest.spyOn(console, "trace").mockImplementation(() => {});
     const store = new AlertStore(["label=value"]);
-    store.retryConfig = {
-      retries: 5,
-      minTimeout: 10,
-      maxTimeout: 10
-    };
 
-    fetch.mockReject("Fetch error");
-    await expect(store.fetch()).rejects.toBeTruthy();
+    fetch.mockReject(new Error("Fetch error"));
+    await expect(store.fetch()).resolves.toHaveProperty("error");
     expect(global.fetch).toHaveBeenCalledTimes(6);
 
     const response = EmptyAPIResponse();
@@ -417,22 +404,17 @@ describe("AlertStore.fetch", () => {
     await expect(store.fetch()).resolves.toBeUndefined();
     expect(global.fetch).toHaveBeenCalledTimes(7);
 
-    fetch.mockReject("Fetch error");
-    await expect(store.fetch()).rejects.toBeTruthy();
+    fetch.mockReject(new Error("Fetch error"));
+    await expect(store.fetch()).resolves.toHaveProperty("error");
     expect(global.fetch).toHaveBeenCalledTimes(13);
   });
 
   it("unapplied filters are marked as applied on fetch error", async () => {
     const store = new AlertStore([NewUnappliedFilter("foo")]);
-    store.retryConfig = {
-      retries: 5,
-      minTimeout: 10,
-      maxTimeout: 10
-    };
     store.filters.values[0].applied = false;
 
     jest.spyOn(console, "trace").mockImplementation(() => {});
-    fetch.mockReject("Fetch error");
+    fetch.mockReject(new Error("Fetch error"));
     await expect(store.fetch()).resolves.toHaveProperty("error");
     expect(store.filters.values[0].applied).toBe(true);
   });

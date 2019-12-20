@@ -114,7 +114,7 @@ describe("<LabelNameInput />", () => {
   });
 
   it("handles fetch errors when populating suggestions", async () => {
-    fetch.mockReject("error");
+    fetch.mockReject(new Error("Fetch error"));
     const tree = MountedLabelNameInput(true);
     const instance = tree.instance();
     await expect(instance.nameSuggestionsFetch).resolves.toBeUndefined();
