@@ -42,7 +42,7 @@ describe("<MatchCounter />", () => {
     const consoleSpy = jest
       .spyOn(console, "trace")
       .mockImplementation(() => {});
-    fetch.mockReject("Fetch error");
+    fetch.mockReject(new Error("Fetch error"));
 
     // we need to set name & value to trigger fetch
     matcher.name = "foo";
@@ -55,7 +55,7 @@ describe("<MatchCounter />", () => {
 
   it("renders error icon on failed fetch", async () => {
     jest.spyOn(console, "trace").mockImplementation(() => {});
-    fetch.mockReject("Fetch error");
+    fetch.mockReject(new Error("Fetch error"));
 
     // we need to set name & value to trigger fetch
     matcher.name = "foo";

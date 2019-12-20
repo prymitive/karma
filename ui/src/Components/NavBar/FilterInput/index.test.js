@@ -196,7 +196,7 @@ describe("<FilterInput Autosuggest />", () => {
   });
 
   it("handles failed suggestion fetches", async () => {
-    fetch.mockReject("Fetch error");
+    fetch.mockReject(new Error("Fetch error"));
 
     const tree = MountedInput();
     const instance = tree.instance();

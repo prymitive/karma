@@ -136,7 +136,7 @@ describe("<DeleteSilenceModalContent />", () => {
   it("renders ErrorMessage on failed fetch", async () => {
     jest.spyOn(console, "trace").mockImplementation(() => {});
     fetch.resetMocks();
-    fetch.mockReject("Fetch error");
+    fetch.mockReject(new Error("Fetch error"));
 
     const tree = MountedDeleteSilenceModalContent();
     await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
@@ -148,7 +148,7 @@ describe("<DeleteSilenceModalContent />", () => {
     fetch.mockResponseOnce("not json");
     jest.spyOn(console, "trace").mockImplementation(() => {});
     fetch.resetMocks();
-    fetch.mockReject("Fetch error");
+    fetch.mockReject(new Error("Fetch error"));
 
     const tree = MountedDeleteSilenceModalContent();
     await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
@@ -248,7 +248,7 @@ describe("<DeleteSilenceModalContent />", () => {
 
     jest.spyOn(console, "trace").mockImplementation(() => {});
     fetch.resetMocks();
-    fetch.mockReject("Fetch error");
+    fetch.mockReject(new Error("Fetch error"));
 
     tree.find(".btn-danger").simulate("click");
     await expect(tree.instance().deleteState.fetch).resolves.toBeUndefined();

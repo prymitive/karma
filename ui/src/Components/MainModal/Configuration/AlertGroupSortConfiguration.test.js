@@ -146,7 +146,7 @@ describe("<AlertGroupSortConfiguration />", () => {
   });
 
   it("label select handles fetch errors", async () => {
-    fetch.mockReject("error");
+    fetch.mockReject(new Error("Fetch error"));
     const tree = await ExpandSortLabelSuggestions();
     const options = tree.find("div.react-select__option");
     expect(options).toHaveLength(0);
