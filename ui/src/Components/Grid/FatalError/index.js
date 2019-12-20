@@ -20,7 +20,7 @@ class FatalError extends Component {
             icon={faExclamationCircle}
             className="screen-center-icon-big text-danger mb-4"
           />
-          <p className="lead text-white bg-secondary px-1 py-3 rounded text-wrap text-break">
+          <p className="lead text-white bg-secondary p-3 rounded text-wrap text-break">
             {message}
           </p>
         </div>
