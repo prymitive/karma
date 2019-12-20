@@ -196,14 +196,14 @@ describe("<FilterInput Autosuggest />", () => {
   });
 
   it("handles failed suggestion fetches", async () => {
-    fetch.mockRejectOnce("Fetch error");
+    fetch.mockReject("Fetch error");
 
     const tree = MountedInput();
     const instance = tree.instance();
     tree.find("input").simulate("change", { target: { value: "bar" } });
     await WaitForFetch(tree);
 
-    expect(fetch.mock.calls).toHaveLength(1);
+    expect(fetch.mock.calls).toHaveLength(6);
     expect(fetch.mock.calls[0]).toContain("./autocomplete.json?term=bar");
     expect(instance.inputStore.suggestions).toHaveLength(0);
   });

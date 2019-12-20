@@ -1,6 +1,8 @@
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
+import { FetchRetryConfig } from "Common/Fetch";
+
 // https://github.com/airbnb/enzyme
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -27,3 +29,6 @@ for (const level of ["error", "warn", "info", "log", "trace"]) {
     }
   };
 }
+
+FetchRetryConfig.minTimeout = 2;
+FetchRetryConfig.maxTimeout = 10;
