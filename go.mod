@@ -26,7 +26,7 @@ require (
 	github.com/jarcoal/httpmock v1.0.4
 	github.com/patrickmn/go-cache v2.1.1-0.20180815053127-5633e0862627+incompatible
 	github.com/pmezard/go-difflib v1.0.0
-	github.com/prometheus/client_golang v1.2.1
+	github.com/prometheus/client_golang v1.3.0
 	github.com/prometheus/common v0.7.0
 	github.com/sirupsen/logrus v1.4.2
 	github.com/spf13/pflag v1.0.5
