@@ -18,7 +18,7 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
   cluster = "am";
   silence = MockSilence();
-  fetch.mockResponseOnce(JSON.stringify(MockAPIResponse()));
+  fetch.mockResponse(JSON.stringify(MockAPIResponse()));
 
   alertStore.data.upstreams = {
     instances: [
@@ -127,8 +127,9 @@ describe("<DeleteSilenceModalContent />", () => {
     expect(tree.find("LabelSetList")).toHaveLength(1);
   });
 
-  it("fetches affected alerts on mount", () => {
-    MountedDeleteSilenceModalContent();
+  it("fetches affected alerts on mount", async () => {
+    const tree = MountedDeleteSilenceModalContent();
+    await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
     expect(fetch).toHaveBeenCalled();
   });
 

@@ -8,8 +8,6 @@ import qs from "qs";
 
 import moment from "moment";
 
-import promiseRetry from "promise-retry";
-
 import { FetchGet } from "Common/Fetch";
 
 const QueryStringEncodeOptions = {
@@ -260,11 +258,6 @@ class AlertStore {
 
   constructor(initialFilters) {
     this.filters.setFilters(initialFilters);
-    this.retryConfig = {
-      retries: 5,
-      minTimeout: 1000,
-      maxTimeout: 5000
-    };
   }
 
   fetch = action((sortOrder, sortLabel, sortReverse) => {
@@ -275,9 +268,7 @@ class AlertStore {
         `alerts.json?sortOrder=${sortOrder}&sortLabel=${sortLabel}&sortReverse=${sortReverse}&`
       ) + FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
 
-    return promiseRetry((retry, number) => {
-      return FetchGet(alertsURI, {}).catch(retry);
-    }, this.retryConfig)
+    return FetchGet(alertsURI, {})
       .then(result => {
         this.status.setProcessing();
         return result.json();
