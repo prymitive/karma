@@ -375,7 +375,7 @@ describe("AlertStore.fetch", () => {
     const store = new AlertStore([]);
     await expect(store.fetch()).resolves.toHaveProperty("error");
 
-    expect(global.fetch).toHaveBeenCalledTimes(6);
+    expect(global.fetch).toHaveBeenCalledTimes(11);
     expect(store.status.value).toEqual(AlertStoreStatuses.Failure);
     expect(store.info.version).toBe("unknown");
     // there should be a trace of the error
@@ -388,7 +388,7 @@ describe("AlertStore.fetch", () => {
 
     fetch.mockReject(new Error("Fetch error"));
     await expect(store.fetch()).resolves.toHaveProperty("error");
-    expect(global.fetch).toHaveBeenCalledTimes(6);
+    expect(global.fetch).toHaveBeenCalledTimes(11);
   });
 
   it("fetch() retry counter is reset after successful fetch", async () => {
@@ -397,16 +397,34 @@ describe("AlertStore.fetch", () => {
 
     fetch.mockReject(new Error("Fetch error"));
     await expect(store.fetch()).resolves.toHaveProperty("error");
-    expect(global.fetch).toHaveBeenCalledTimes(6);
+    expect(global.fetch).toHaveBeenCalledTimes(11);
 
     const response = EmptyAPIResponse();
     fetch.mockResponse(JSON.stringify(response));
     await expect(store.fetch()).resolves.toBeUndefined();
-    expect(global.fetch).toHaveBeenCalledTimes(7);
+    expect(global.fetch).toHaveBeenCalledTimes(12);
 
     fetch.mockReject(new Error("Fetch error"));
     await expect(store.fetch()).resolves.toHaveProperty("error");
-    expect(global.fetch).toHaveBeenCalledTimes(13);
+    expect(global.fetch).toHaveBeenCalledTimes(23);
+  });
+
+  it("fetch() reloads the page after if auth middleware is detected", async () => {
+    jest.spyOn(console, "trace").mockImplementation(() => {});
+
+    const store = new AlertStore(["label=value"]);
+
+    jest.spyOn(global, "fetch").mockImplementation(async () =>
+      Promise.resolve({
+        type: "opaque",
+        body: "auth needed",
+        json: jest.fn(() => EmptyAPIResponse())
+      })
+    );
+
+    await expect(store.fetch()).resolves.toBeUndefined();
+
+    expect(store.info.reloadNeeded).toBe(true);
   });
 
   it("unapplied filters are marked as applied on fetch error", async () => {
