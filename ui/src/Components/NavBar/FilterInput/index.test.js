@@ -203,7 +203,7 @@ describe("<FilterInput Autosuggest />", () => {
     tree.find("input").simulate("change", { target: { value: "bar" } });
     await WaitForFetch(tree);
 
-    expect(fetch.mock.calls).toHaveLength(6);
+    expect(fetch.mock.calls).toHaveLength(11);
     expect(fetch.mock.calls[0]).toContain("./autocomplete.json?term=bar");
     expect(instance.inputStore.suggestions).toHaveLength(0);
   });

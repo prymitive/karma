@@ -10,6 +10,7 @@ import { AlertGrid } from "./AlertGrid";
 import { FatalError } from "./FatalError";
 import { UpstreamError } from "./UpstreamError";
 import { UpgradeNeeded } from "./UpgradeNeeded";
+import { ReloadNeeded } from "./ReloadNeeded";
 import { EmptyGrid } from "./EmptyGrid";
 
 const Grid = observer(
@@ -23,10 +24,6 @@ const Grid = observer(
     render() {
       const { alertStore, settingsStore, silenceFormStore } = this.props;
 
-      if (alertStore.status.error) {
-        return <FatalError message={alertStore.status.error} />;
-      }
-
       if (alertStore.info.upgradeNeeded) {
         return (
           <UpgradeNeeded
@@ -34,6 +31,14 @@ const Grid = observer(
             reloadAfter={3000}
           />
         );
+      }
+
+      if (alertStore.info.reloadNeeded) {
+        return <ReloadNeeded reloadAfter={4000} />;
+      }
+
+      if (alertStore.status.error) {
+        return <FatalError message={alertStore.status.error} />;
       }
 
       if (
