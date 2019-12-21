@@ -18,7 +18,7 @@ describe("Fetch", () => {
   };
 
   const methodOptions = {
-    FetchGet: { method: "GET" },
+    FetchGet: { method: "GET", mode: "cors" },
     FetchPost: { method: "POST" },
     FetchDelete: { method: "DELETE" }
   };
@@ -59,4 +59,24 @@ describe("Fetch", () => {
       );
     });
   }
+
+  it("FetchGet switches to no-cors after 80% failures", async () => {
+    fetch.mockReject(new Error("Fetch error"));
+
+    const request = FetchGet("http://example.com", {});
+    await expect(request).rejects.toThrow("Fetch error");
+
+    expect(fetch).toHaveBeenCalledTimes(11);
+    expect(fetch).toHaveBeenCalledWith("http://example.com", {
+      method: "GET",
+      credentials: "include",
+      mode: "no-cors",
+      redirect: "follow"
+    });
+    for (let i = 0; i <= 10; i++) {
+      expect(fetch.mock.calls[i][1]).toMatchObject({
+        mode: i < 8 ? "cors" : "no-cors"
+      });
+    }
+  });
 });

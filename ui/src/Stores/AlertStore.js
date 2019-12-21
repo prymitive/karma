@@ -174,9 +174,15 @@ class AlertStore {
     {
       totalAlerts: 0,
       version: "unknown",
-      upgradeNeeded: false
+      upgradeNeeded: false,
+      reloadNeeded: false,
+      setReloadNeeded() {
+        this.reloadNeeded = true;
+      }
     },
-    {},
+    {
+      setReloadNeeded: action
+    },
     { name: "API response info" }
   );
 
@@ -270,6 +276,13 @@ class AlertStore {
 
     return FetchGet(alertsURI, {})
       .then(result => {
+        // we're sending requests with mode=cors so the response should also be type=cors
+        // after a few failures in the retry loop we will switch to no-cors
+        // if that request comes back as type=opaque then we might be getting
+        // redirected by an auth proxy
+        if (result.type === "opaque") {
+          this.info.setReloadNeeded();
+        }
         this.status.setProcessing();
         return result.json();
       })

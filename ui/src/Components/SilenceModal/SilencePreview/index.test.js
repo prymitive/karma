@@ -90,6 +90,7 @@ describe("<SilencePreview />", () => {
       {
         method: "GET",
         credentials: "include",
+        mode: "cors",
         redirect: "follow"
       }
     );
@@ -108,6 +109,7 @@ describe("<SilencePreview />", () => {
       {
         method: "GET",
         credentials: "include",
+        mode: "cors",
         redirect: "follow"
       }
     );

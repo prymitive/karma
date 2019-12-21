@@ -8,17 +8,29 @@ const CommonOptions = {
 };
 
 const FetchRetryConfig = {
-  retries: 5,
-  minTimeout: 1000,
+  retries: 10,
+  minTimeout: 2000,
   maxTimeout: 5000
 };
 
 const FetchGet = async (uri, options, retryOptions) =>
   await promiseRetry(
     (retry, number) =>
-      fetch(uri, merge({}, { method: "GET" }, CommonOptions, options)).catch(
-        retry
-      ),
+      fetch(
+        uri,
+        merge(
+          {},
+          {
+            method: "GET",
+            mode:
+              number <= Math.round(FetchRetryConfig.retries * 0.8)
+                ? "cors"
+                : "no-cors"
+          },
+          CommonOptions,
+          options
+        )
+      ).catch(retry),
     FetchRetryConfig
   );
 

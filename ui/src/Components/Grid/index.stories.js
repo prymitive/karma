@@ -8,6 +8,7 @@ import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FatalError } from "./FatalError";
 import { UpgradeNeeded } from "./UpgradeNeeded";
+import { ReloadNeeded } from "./ReloadNeeded";
 import { EmptyGrid } from "./EmptyGrid";
 import { Grid } from ".";
 import { InternalError } from "../../ErrorBoundary";
@@ -31,6 +32,9 @@ storiesOf("Grid", module)
   })
   .add("UpgradeNeeded", () => {
     return <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />;
+  })
+  .add("ReloadNeeded", () => {
+    return <ReloadNeeded reloadAfter={100000000} />;
   })
   .add("EmptyGrid", () => {
     return (

@@ -94,6 +94,12 @@ describe("<Grid />", () => {
     expect(tree.text()).toBe("<UpgradeNeeded />");
   });
 
+  it("renders ReloadNeeded when alertStore.info.reloadNeeded=true", () => {
+    alertStore.info.reloadNeeded = true;
+    const tree = ShallowGrid();
+    expect(tree.text()).toBe("<ReloadNeeded />");
+  });
+
   it("renders AlertGrid before any fetch finished when totalAlerts is 0", () => {
     alertStore.info.version = "unknown";
     alertStore.info.totalAlerts = 0;

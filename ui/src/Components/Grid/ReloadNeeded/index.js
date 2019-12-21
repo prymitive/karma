@@ -2,16 +2,13 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRocket } from "@fortawesome/free-solid-svg-icons/faRocket";
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
 import { CenteredMessage } from "Components/CenteredMessage";
 
-import "csshake/scss/csshake-slow.scss";
-
-class UpgradeNeeded extends Component {
+class ReloadNeeded extends Component {
   static propTypes = {
-    newVersion: PropTypes.string.isRequired,
     reloadAfter: PropTypes.number.isRequired
   };
 
@@ -30,19 +27,17 @@ class UpgradeNeeded extends Component {
   }
 
   render() {
-    const { newVersion } = this.props;
     return (
       <CenteredMessage>
         <div className="container-fluid text-center">
-          <div className="shake-slow shake-constant mb-4">
-            <FontAwesomeIcon
-              icon={faRocket}
-              className="screen-center-icon-big text-success"
-            />
-          </div>
-          <p className="lead text-muted">
+          <FontAwesomeIcon
+            icon={faExclamationCircle}
+            className="screen-center-icon-big text-danger mb-4"
+          />
+          <p className="lead text-white bg-secondary p-3 rounded text-wrap text-break">
             <FontAwesomeIcon className="mr-2" icon={faSpinner} spin />
-            Upgrading to a new version: {newVersion}
+            All API connection attempts failed. This migth be caused by
+            authentication middleware, will try to reload.
           </p>
         </div>
       </CenteredMessage>
@@ -50,4 +45,4 @@ class UpgradeNeeded extends Component {
   }
 }
 
-export { UpgradeNeeded };
+export { ReloadNeeded };
