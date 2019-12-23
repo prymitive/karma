@@ -299,7 +299,7 @@ class AlertStore {
       .catch(err => {
         console.trace(err);
         return this.handleFetchError(
-          `Request for ${alertsURI} failed with "${err.message}"`
+          `Can't connect to the API, last error was "${err.message}"`
         );
       });
   });
