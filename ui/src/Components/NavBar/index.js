@@ -126,6 +126,9 @@ const NavBar = observer(
 
       const isMobile = IsMobile();
 
+      const isLoading =
+        alertStore.filters.values.filter(f => f.applied === false).length > 0;
+
       return (
         <IdleTimer
           ref={ref => {
@@ -143,7 +146,7 @@ const NavBar = observer(
             className={`container p-0 m-0 mw-100 ${this.activityStatus.className}`}
           >
             <NavBarSlide
-              in={!this.activityStatus.idle}
+              in={!this.activityStatus.idle || isLoading}
               onEntering={this.onShow}
               onExited={this.onHide}
             >
