@@ -125,7 +125,7 @@ const AlertGrid = observer(
       // For our grid this resize might leave gaps since everything uses fixed
       // position, so we use font observer and trigger repack when fonts are loaded
       for (const fontWeight of [300, 400, 600]) {
-        const font = new FontFaceObserver("Open Sans", {
+        const font = new FontFaceObserver("Muli", {
           weight: fontWeight
         });
         // wait up to 30s, run no-op function on timeout
