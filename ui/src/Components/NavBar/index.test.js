@@ -150,6 +150,58 @@ describe("<IdleTimer />", () => {
     expect(tree.find(".container").hasClass("invisible")).toBe(true);
   });
 
+  it("doesn't hide on mobile if there are unapplied filters", () => {
+    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
+    global.window.innerWidth = 500;
+    const tree = MountedNavbar();
+    jest.runTimersToTime(1000 * 13);
+    tree.update();
+    expect(tree.find(".container").hasClass("visible")).toBe(true);
+    expect(tree.find(".container").hasClass("invisible")).toBe(false);
+  });
+
+  it("doesn't hide on desktop if there are unapplied filters", () => {
+    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
+    global.window.innerWidth = 769;
+    const tree = MountedNavbar();
+    jest.runTimersToTime(1000 * 60 * 3 + 1000);
+    tree.update();
+    expect(tree.find(".container").hasClass("visible")).toBe(true);
+    expect(tree.find(".container").hasClass("invisible")).toBe(false);
+  });
+
+  it("hides on mobile if all unapplied filters finish applying", () => {
+    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
+    global.window.innerWidth = 500;
+    const tree = MountedNavbar();
+    jest.runTimersToTime(1000 * 13);
+    tree.update();
+    expect(tree.find(".container").hasClass("visible")).toBe(true);
+    expect(tree.find(".container").hasClass("invisible")).toBe(false);
+
+    alertStore.filters.applyAllFilters();
+    jest.runTimersToTime(1000);
+    tree.update();
+    expect(tree.find(".container").hasClass("visible")).toBe(false);
+    expect(tree.find(".container").hasClass("invisible")).toBe(true);
+  });
+
+  it("hides on desktop if all unapplied filters finish applying", () => {
+    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
+    global.window.innerWidth = 769;
+    const tree = MountedNavbar();
+    jest.runTimersToTime(1000 * 60 * 3 + 1000);
+    tree.update();
+    expect(tree.find(".container").hasClass("visible")).toBe(true);
+    expect(tree.find(".container").hasClass("invisible")).toBe(false);
+
+    alertStore.filters.applyAllFilters();
+    jest.runTimersToTime(1000);
+    tree.update();
+    expect(tree.find(".container").hasClass("visible")).toBe(false);
+    expect(tree.find(".container").hasClass("invisible")).toBe(true);
+  });
+
   it("hidden navbar shows up again after activity", () => {
     const tree = MountedNavbar();
     const instance = tree.instance();

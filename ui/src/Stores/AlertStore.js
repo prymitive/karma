@@ -139,13 +139,20 @@ class AlertStore {
         this.values = raws.map(raw =>
           filtersByRaw[raw] ? filtersByRaw[raw] : NewUnappliedFilter(raw)
         );
+      },
+      applyAllFilters() {
+        for (let i = 0; i < this.values.length; i++) {
+          this.values[i].applied = true;
+        }
       }
     },
     {
       addFilter: action.bound,
       removeFilter: action.bound,
       replaceFilter: action.bound,
-      setFilters: action.bound
+      setFilters: action.bound,
+      setWithoutLocation: action.bound,
+      applyAllFilters: action.bound
     },
     { name: "API Filters" }
   );
@@ -386,9 +393,7 @@ class AlertStore {
     this.info.totalAlerts = 0;
 
     // all unapplied filters should be marked applied to reset progress indicator
-    for (let i = 0; i < this.filters.values.length; i++) {
-      this.filters.values[i].applied = true;
-    }
+    this.filters.applyAllFilters();
 
     return { error: err };
   });
