@@ -15,6 +15,7 @@ import { BodyTheme, ThemeContext } from "Components/Theme";
 import { ErrorBoundary } from "./ErrorBoundary";
 
 import "Styles/ResetCSS.scss";
+import "Styles/FontBundle.scss";
 import "Styles/App.scss";
 
 // https://github.com/facebook/react/issues/14603
