@@ -260,7 +260,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
             <a href=\\"http://example.com/#/silences/04d37636-2350-4878-b382-e0b50353230f\\"
                target=\\"_blank\\"
                rel=\\"noopener noreferrer\\"
-               class=\\"components-label components-label-with-hover badge mr-1 components-grid-annotation-link\\"
+               class=\\"components-label components-label-with-hover badge components-grid-annotation-link\\"
             >
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
