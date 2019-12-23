@@ -1,3 +1,6 @@
+// uses font-face { display: block } to block rendering until fonts are loaded
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i&display=block");
+
 @import "Styles/App";
 @import "Styles/LightThemeLoader";
 @import "Styles/DarkThemeLoader";
