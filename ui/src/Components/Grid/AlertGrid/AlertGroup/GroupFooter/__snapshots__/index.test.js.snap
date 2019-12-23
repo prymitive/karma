@@ -10,7 +10,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
          aria-describedby=\\"tippy-tooltip-1\\"
          data-original-title=\\"Click the icon to hide annotation value\\"
     >
-      <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
+      <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -41,7 +41,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
          aria-describedby=\\"tippy-tooltip-2\\"
          data-original-title=\\"Click to show annotation value\\"
     >
-      <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
+      <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -123,7 +123,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
   <a href=\\"http://link.example.com\\"
      target=\\"_blank\\"
      rel=\\"noopener noreferrer\\"
-     class=\\"components-label components-label-with-hover badge mr-1 components-grid-annotation-link\\"
+     class=\\"components-label components-label-with-hover badge components-grid-annotation-link\\"
   >
     <svg aria-hidden=\\"true\\"
          focusable=\\"false\\"
@@ -155,7 +155,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
          aria-describedby=\\"tippy-tooltip-25\\"
          data-original-title=\\"Click the icon to hide annotation value\\"
     >
-      <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
+      <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -186,7 +186,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
          aria-describedby=\\"tippy-tooltip-26\\"
          data-original-title=\\"Click to show annotation value\\"
     >
-      <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
+      <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -268,7 +268,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
   <a href=\\"http://link.example.com\\"
      target=\\"_blank\\"
      rel=\\"noopener noreferrer\\"
-     class=\\"components-label components-label-with-hover badge mr-1 components-grid-annotation-link\\"
+     class=\\"components-label components-label-with-hover badge components-grid-annotation-link\\"
   >
     <svg aria-hidden=\\"true\\"
          focusable=\\"false\\"

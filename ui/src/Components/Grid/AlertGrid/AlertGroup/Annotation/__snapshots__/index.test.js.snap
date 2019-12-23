@@ -5,7 +5,7 @@ exports[`<RenderLinkAnnotation /> matches snapshot 1`] = `
 <a href=\\"http://localhost/foo\\"
    target=\\"_blank\\"
    rel=\\"noopener noreferrer\\"
-   class=\\"components-label components-label-with-hover badge mr-1 components-grid-annotation-link\\"
+   class=\\"components-label components-label-with-hover badge components-grid-annotation-link\\"
 >
   <svg aria-hidden=\\"true\\"
        focusable=\\"false\\"
@@ -32,7 +32,7 @@ exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=false 1`] = `
      class
      style=\\"display:inline-block;max-width:100%\\"
 >
-  <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
+  <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
     <svg aria-hidden=\\"true\\"
          focusable=\\"false\\"
          data-prefix=\\"fas\\"
@@ -59,7 +59,7 @@ exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=true 1`] = `
      class
      style=\\"display:inline-block;max-width:100%\\"
 >
-  <div class=\\"mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
+  <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
     <svg aria-hidden=\\"true\\"
          focusable=\\"false\\"
          data-prefix=\\"fas\\"

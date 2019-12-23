@@ -14,3 +14,10 @@
 .card-body.components-grid-alertgrid-card {
   background-color: $alertgroup-body-bg !important;
 }
+
+.components-label:not(:last-child),
+div[data-tooltipped]:not(:last-child) > .components-label,
+.components-grid-annotation:not(:last-child),
+div[data-tooltipped]:not(:last-child) > .components-grid-annotation {
+  margin-right: 0.25rem;
+}

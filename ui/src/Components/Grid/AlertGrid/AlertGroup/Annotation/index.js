@@ -61,7 +61,7 @@ const RenderNonLinkAnnotation = observer(
       const { name, value } = this.props;
 
       const className =
-        "mr-1 mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100";
+        "mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100";
 
       if (!this.toggle.visible) {
         return (
@@ -110,7 +110,7 @@ const RenderLinkAnnotation = ({ name, value }) => {
       href={value}
       target="_blank"
       rel="noopener noreferrer"
-      className="components-label components-label-with-hover badge mr-1 components-grid-annotation-link"
+      className="components-label components-label-with-hover badge components-grid-annotation-link"
     >
       <FontAwesomeIcon icon={faExternalLinkAlt} /> {name}
     </a>
