@@ -22,6 +22,10 @@ $light: $gray-800;
 // make links light gray by default instead of green
 $link-color: $gray-400;
 
+$custom-control-indicator-bg: $gray-100;
+$custom-control-indicator-disabled-bg: $gray-700;
+$custom-control-indicator-checked-disabled-bg: $blue;
+
 $navbar-dark-brand-color: $navbar-dark-color;
 $navbar-dark-brand-hover-color: $white;
 $navbar-dark-hover-color: $white;
