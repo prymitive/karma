@@ -288,7 +288,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
   </a>
   <div class=\\"components-grid-alertgrid-alertgroup-shared-silence rounded-0 border-0\\">
     <div class=\\"card my-1 components-managed-silence components-animation-fade-appear components-animation-fade-appear-active\\">
-      <div class=\\"card-header border-bottom-0 px-3\\">
+      <div class=\\"card-header rounded-0 border-bottom-0 px-3\\">
         <div class=\\"d-flex flex-row\\">
           <div class=\\"flex-shrink-0 flex-grow-0\\">
             <svg aria-hidden=\\"true\\"

@@ -79,7 +79,7 @@ const ManagedSilence = observer(
       return (
         <MountFade in={true}>
           <div className="card my-1 components-managed-silence">
-            <div className="card-header border-bottom-0 px-3">
+            <div className="card-header rounded-0 border-bottom-0 px-3">
               <SilenceComment
                 alertStore={alertStore}
                 cluster={cluster}

@@ -207,7 +207,7 @@ const AlertGroup = observer(
       return (
         <MountFade in={true}>
           <div
-            className="components-grid-alertgrid-alertgroup p-1"
+            className="components-grid-alertgrid-alertgroup"
             style={{ ...style, ...extraStyle }}
           >
             <div className={`card ${cardBackgroundClass}`}>

@@ -1,7 +1,7 @@
 .components-managed-silence {
-  .card,
-  .card-header,
-  .card-body {
+  &.card,
+  & > .card-header,
+  & > .card-body {
     background-color: $silence-bg;
   }
 

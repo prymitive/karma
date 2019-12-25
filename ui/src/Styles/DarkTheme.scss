@@ -71,7 +71,7 @@ $dropdown-bg: darken($gray-800, 2%);
 $alert-bg: $list-group-bg;
 $alertgroup-body-bg: lighten($gray-700, 5%);
 $alertgroup-footer-bg: lighten($gray-700, 2%);
-$silence-bg: $gray-900;
+$silence-bg: lighten($gray-900, 2%);
 $silence-border: $black;
 $silence-comment-color: $gray-400;
 $accordion-active-bg: $gray-700;
