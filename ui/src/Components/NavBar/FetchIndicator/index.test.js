@@ -42,6 +42,13 @@ describe("<FetchIndicator />", () => {
     expect(tree.find("FontAwesomeIcon").hasClass("text-muted")).toBe(true);
   });
 
+  it("uses text-danger when we need to retry fetch", () => {
+    alertStore.info.setIsRetrying();
+    alertStore.status.setFetching();
+    const tree = MountedFetchIndicator();
+    expect(tree.find("FontAwesomeIcon").hasClass("text-danger")).toBe(true);
+  });
+
   it("opacity is 1 when response is processed", () => {
     alertStore.status.setProcessing();
     const tree = MountedFetchIndicator();
