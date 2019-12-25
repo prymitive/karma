@@ -20,7 +20,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed 1`] = `
     </svg>
   </div>
   <div class=\\"mx-2 flex-shrink-1 flex-grow-1 mw-1p\\">
-    <div class=\\"font-italic text-dark components-managed-silence-comment text-truncate overflow-hidden\\">
+    <div class=\\"font-italic components-managed-silence-comment text-truncate overflow-hidden\\">
       Mocked Silence
     </div>
     <div class=\\"components-managed-silence-cite mt-1\\">
@@ -89,7 +89,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
     </svg>
   </div>
   <div class=\\"mx-2 flex-shrink-1 flex-grow-1 mw-1p\\">
-    <div class=\\"font-italic text-dark components-managed-silence-comment text-truncate overflow-hidden\\">
+    <div class=\\"font-italic components-managed-silence-comment text-truncate overflow-hidden\\">
       Mocked Silence
     </div>
     <div class=\\"components-managed-silence-cite mt-1\\">
@@ -164,7 +164,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
     </svg>
   </div>
   <div class=\\"mx-2 flex-shrink-1 flex-grow-1 mw-1p\\">
-    <div class=\\"font-italic text-dark components-managed-silence-comment \\">
+    <div class=\\"font-italic components-managed-silence-comment \\">
       Mocked Silence
     </div>
     <div class=\\"components-managed-silence-cite mt-1\\">
@@ -227,7 +227,7 @@ exports[`<SilenceComment /> Matches snapshot when expanded 1`] = `
     </svg>
   </div>
   <div class=\\"mx-2 flex-shrink-1 flex-grow-1 mw-1p\\">
-    <div class=\\"font-italic text-dark components-managed-silence-comment \\">
+    <div class=\\"font-italic components-managed-silence-comment \\">
       Mocked Silence
     </div>
     <div class=\\"components-managed-silence-cite mt-1\\">

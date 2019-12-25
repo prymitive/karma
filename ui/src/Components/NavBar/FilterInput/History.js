@@ -125,7 +125,7 @@ const HistoryMenuContent = ({
           afterClick={afterClick}
         />
         <ActionButton
-          color="dark"
+          color="secondary"
           icon={faTrash}
           title="Clear history"
           action={onClear}

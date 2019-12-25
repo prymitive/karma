@@ -208,7 +208,7 @@ const Browser = observer(
             />
             <button
               type="button"
-              className="btn btn-primary flex-grow-0 flex-shrink-0"
+              className="btn btn-secondary flex-grow-0 flex-shrink-0"
               onClick={() => {
                 this.dataSource.toggleSortReverse();
                 this.onDebouncedFetch();

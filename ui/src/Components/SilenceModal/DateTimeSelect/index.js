@@ -18,7 +18,7 @@ const OffsetBadge = ({ startDate, endDate, prefixLabel }) => {
   const minutes = endDate.diff(startDate, "minutes") % 60;
 
   return (
-    <span className="badge badge-primary">
+    <span className="badge badge-light">
       {days <= 0 && hours <= 0 && minutes <= 0 ? "now" : prefixLabel}
       {days > 0 ? `${days}d ` : null}
       {hours > 0 ? `${hours}h ` : null}

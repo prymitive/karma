@@ -18,7 +18,7 @@ const ReactSelectColors = {
     borderColor: "#444",
     focusedBoxShadow: "rgba(69, 90, 100, 0.25)",
     focusedBorderColor: "#819ba8",
-    menuBackground: "#222",
+    menuBackground: "#2b2b2b",
     optionHoverBackground: "#455a64",
     valueContainerBackground: "#444",
     disabledValueContainerBackground: "#fff"

@@ -56,6 +56,7 @@ $alertgroup-body-bg: $white;
 $alertgroup-footer-bg: $gray-100;
 $silence-bg: $gray-100;
 $silence-border: $gray-700;
+$silence-comment-color: $gray-800;
 $accordion-active-bg: $gray-200;
 $filter-input-hoover-bg: $white;
 $filter-input-hoover-color: $black;
@@ -75,6 +76,9 @@ $datepicker__font-family: $font-family-sans-serif;
 $datepicker__border-radius: 0.25rem;
 $datepicker__day-name-color: $black;
 $datepicker__day-hover-color: $black;
+
+$input-range-neutral-color: $dark;
+$input-range-neutral-light-color: $gray-400;
 
 $color-default: #708090;
 
