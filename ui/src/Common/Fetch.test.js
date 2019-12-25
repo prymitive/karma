@@ -79,4 +79,19 @@ describe("Fetch", () => {
       });
     }
   });
+
+  it("FetchGet calls beforeRetry before each retry", async () => {
+    fetch.mockReject(new Error("Fetch error"));
+
+    const beforeRetrySpy = jest.fn();
+
+    const request = FetchGet("http://example.com", {}, beforeRetrySpy);
+    await expect(request).rejects.toThrow("Fetch error");
+
+    expect(beforeRetrySpy).toHaveBeenCalledTimes(11);
+
+    for (let i = 0; i < 10; i++) {
+      expect(beforeRetrySpy.mock.calls[i][0]).toBe(i + 1);
+    }
+  });
 });

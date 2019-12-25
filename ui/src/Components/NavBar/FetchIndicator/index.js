@@ -44,7 +44,13 @@ const FetchIndicator = observer(
       const status = alertStore.status.value.toString();
 
       if (status === AlertStoreStatuses.Fetching.toString())
-        return <FetchIcon icon={faCircleNotch} spin />;
+        return (
+          <FetchIcon
+            icon={faCircleNotch}
+            color={alertStore.info.isRetrying ? "danger" : "muted"}
+            spin
+          />
+        );
 
       if (status === AlertStoreStatuses.Processing.toString())
         return <FetchIcon icon={faCircleNotch} color="success" spin />;

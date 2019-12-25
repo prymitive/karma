@@ -13,7 +13,7 @@ const FetchRetryConfig = {
   maxTimeout: 5000
 };
 
-const FetchGet = async (uri, options, retryOptions) =>
+const FetchGet = async (uri, options, beforeRetry) =>
   await promiseRetry(
     (retry, number) =>
       fetch(
@@ -30,7 +30,10 @@ const FetchGet = async (uri, options, retryOptions) =>
           CommonOptions,
           options
         )
-      ).catch(retry),
+      ).catch(err => {
+        beforeRetry && beforeRetry(number);
+        return retry(err);
+      }),
     FetchRetryConfig
   );
 

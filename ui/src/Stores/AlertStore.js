@@ -182,12 +182,21 @@ class AlertStore {
       totalAlerts: 0,
       version: "unknown",
       upgradeNeeded: false,
+      isRetrying: false,
       reloadNeeded: false,
+      setIsRetrying() {
+        this.isRetrying = true;
+      },
+      clearIsRetrying() {
+        this.isRetrying = false;
+      },
       setReloadNeeded() {
         this.reloadNeeded = true;
       }
     },
     {
+      setIsRetrying: action.bound,
+      clearIsRetrying: action.bound,
       setReloadNeeded: action
     },
     { name: "API response info" }
@@ -281,7 +290,7 @@ class AlertStore {
         `alerts.json?sortOrder=${sortOrder}&sortLabel=${sortLabel}&sortReverse=${sortReverse}&`
       ) + FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
 
-    return FetchGet(alertsURI, {})
+    return FetchGet(alertsURI, {}, this.info.setIsRetrying)
       .then(result => {
         // we're sending requests with mode=cors so the response should also be type=cors
         // after a few failures in the retry loop we will switch to no-cors
@@ -290,6 +299,7 @@ class AlertStore {
         if (result.type === "opaque") {
           this.info.setReloadNeeded();
         }
+        this.info.clearIsRetrying();
         this.status.setProcessing();
         return result.json();
       })
