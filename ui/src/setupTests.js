@@ -7,10 +7,10 @@ import { FetchRetryConfig } from "Common/Fetch";
 Enzyme.configure({ adapter: new Adapter() });
 
 // favico.js needs canvas
-import("jest-canvas-mock");
+require("jest-canvas-mock");
 
 // used to mock current time since we render moment.fromNow() in some places
-import("jest-date-mock");
+require("jest-date-mock");
 
 // fetch is used in multiple places to interact with Go backend
 // or upstream Alertmanager API
