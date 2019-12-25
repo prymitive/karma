@@ -3,7 +3,7 @@
 exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
 "
 <div class=\\"card my-1 components-managed-silence components-animation-fade-appear components-animation-fade-appear-active\\">
-  <div class=\\"card-header border-bottom-0 px-3\\">
+  <div class=\\"card-header rounded-0 border-bottom-0 px-3\\">
     <div class=\\"d-flex flex-row\\">
       <div class=\\"flex-shrink-0 flex-grow-0\\">
         <svg aria-hidden=\\"true\\"
@@ -86,7 +86,7 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
 exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
 "
 <div class=\\"card my-1 components-managed-silence components-animation-fade-appear components-animation-fade-appear-active\\">
-  <div class=\\"card-header border-bottom-0 px-3\\">
+  <div class=\\"card-header rounded-0 border-bottom-0 px-3\\">
     <div class=\\"d-flex flex-row\\">
       <div class=\\"flex-shrink-0 flex-grow-0\\">
         <svg aria-hidden=\\"true\\"
