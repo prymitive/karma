@@ -28,7 +28,9 @@ const SilenceComment = ({
       target="_blank"
       rel="noopener noreferrer"
       className={
-        collapsed ? "text-dark mw-100 text-truncate d-block" : "text-dark"
+        collapsed
+          ? "components-managed-silence-comment mw-100 text-truncate d-block"
+          : "components-managed-silence-comment"
       }
     >
       <FontAwesomeIcon className="mr-2" icon={faExternalLinkAlt} />
@@ -53,7 +55,7 @@ const SilenceComment = ({
         </div>
         <div className="mx-2 flex-shrink-1 flex-grow-1 mw-1p">
           <div
-            className={`font-italic text-dark components-managed-silence-comment ${
+            className={`font-italic components-managed-silence-comment ${
               collapsed ? "text-truncate overflow-hidden" : ""
             }`}
           >

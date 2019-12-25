@@ -1,7 +1,5 @@
 $input-range-font-family: $font-family-sans-serif;
 $input-range-primary-color: $primary;
-$input-range-neutral-color: $dark;
-$input-range-neutral-light-color: $secondary;
-$input-range-disabled-color: $secondary;
+$input-range-disabled-color: $text-muted;
 
 @import "~react-input-range/src/scss/input-range/input-range";

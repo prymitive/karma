@@ -170,7 +170,7 @@ const SilenceForm = observer(
           <TooltipWrapper title="Add a matcher">
             <button
               type="button"
-              className="btn btn-primary mb-3"
+              className="btn btn-secondary mb-3"
               onClick={this.addMore}
             >
               <FontAwesomeIcon icon={faPlus} />

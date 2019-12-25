@@ -57,7 +57,7 @@
   }
   &.badge-dark,
   &.btn-dark {
-    border: 1px solid lighten($dark, 2%);
+    border: 1px solid darken($dark, 2%);
   }
 }
 

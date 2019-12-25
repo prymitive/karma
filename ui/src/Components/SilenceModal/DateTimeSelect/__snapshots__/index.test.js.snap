@@ -8,7 +8,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
       <span class=\\"mr-1\\">
         Starts
       </span>
-      <span class=\\"badge badge-primary\\">
+      <span class=\\"badge badge-light\\">
         now
       </span>
     </span>
@@ -18,7 +18,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
       <span class=\\"mr-1\\">
         Ends
       </span>
-      <span class=\\"badge badge-primary\\">
+      <span class=\\"badge badge-light\\">
         in 366d
       </span>
     </span>
@@ -28,7 +28,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
       <span class=\\"mr-1\\">
         Duration
       </span>
-      <span class=\\"badge badge-primary\\">
+      <span class=\\"badge badge-light\\">
         366d
       </span>
     </span>
@@ -235,7 +235,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
       <span class=\\"mr-1\\">
         Starts
       </span>
-      <span class=\\"badge badge-primary\\">
+      <span class=\\"badge badge-light\\">
         now
       </span>
     </span>
@@ -245,7 +245,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
       <span class=\\"mr-1\\">
         Ends
       </span>
-      <span class=\\"badge badge-primary\\">
+      <span class=\\"badge badge-light\\">
         in 366d
       </span>
     </span>
@@ -255,7 +255,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
       <span class=\\"mr-1\\">
         Duration
       </span>
-      <span class=\\"badge badge-primary\\">
+      <span class=\\"badge badge-light\\">
         366d
       </span>
     </span>
@@ -688,7 +688,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
       <span class=\\"mr-1\\">
         Starts
       </span>
-      <span class=\\"badge badge-primary\\">
+      <span class=\\"badge badge-light\\">
         now
       </span>
     </span>
@@ -698,7 +698,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
       <span class=\\"mr-1\\">
         Ends
       </span>
-      <span class=\\"badge badge-primary\\">
+      <span class=\\"badge badge-light\\">
         in 366d
       </span>
     </span>
@@ -708,7 +708,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
       <span class=\\"mr-1\\">
         Duration
       </span>
-      <span class=\\"badge badge-primary\\">
+      <span class=\\"badge badge-light\\">
         366d
       </span>
     </span>
