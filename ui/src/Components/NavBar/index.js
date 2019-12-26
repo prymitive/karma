@@ -121,7 +121,7 @@ const NavBar = observer(
       // for more compact layout
       const flexClass =
         alertStore.filters.values.length >= 1
-          ? "flex-column flex-sm-column flex-md-row flex-lg-row flex-xl-row"
+          ? "flex-column flex-sm-row flex-md-row flex-lg-row flex-xl-row"
           : "flex-row";
 
       const isMobile = IsMobile();
