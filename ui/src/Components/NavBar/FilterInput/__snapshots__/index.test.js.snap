@@ -26,10 +26,10 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
          aria-haspopup=\\"listbox\\"
          aria-owns=\\"react-autowhatever-1\\"
          aria-expanded=\\"false\\"
-         class=\\"autosuggest d-inline-block\\"
+         class=\\"autosuggest d-inline-block mw-100\\"
     >
       <input type=\\"text\\"
-             class=\\"components-filterinput-wrapper text-white\\"
+             class=\\"components-filterinput-wrapper text-white mw-100\\"
              placeholder
              size=\\"1\\"
              value
