@@ -1,9 +1,24 @@
+.navbar {
+  & .navbar-brand,
+  & .nav-link,
+  & .form-control.components-filterinput {
+    min-height: 2.6rem;
+  }
+}
+
 .navbar-brand {
   min-width: 2.5rem;
 }
 
-.components-navbar-button:hover {
-  border-bottom: $border-width solid $info;
+.components-navbar-button {
+  &.navbar-brand {
+    padding-top: 0.36rem;
+    padding-bottom: 0.36rem;
+  }
+
+  &:hover {
+    border-bottom: $border-width solid $info;
+  }
 }
 
 .components-navbar-icon {
