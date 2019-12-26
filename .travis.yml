@@ -28,6 +28,8 @@ os: linux
 language: shell
 
 jobs:
+  allow_failures:
+    - name: Percy UI snapshots
   include:
     - stage: Test
       name: Test Go code
