@@ -47,7 +47,7 @@ const MainModal = observer(
         <React.Fragment>
           <li
             className={`nav-item components-navbar-button ${
-              this.toggle.show ? "border-bottom border-info" : ""
+              this.toggle.show ? "border-info" : ""
             }`}
           >
             <TooltipWrapper title="Settings">

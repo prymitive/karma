@@ -45,7 +45,7 @@ const SilenceModal = observer(
         <React.Fragment>
           <li
             className={`nav-item components-navbar-button ${
-              silenceFormStore.toggle.visible ? "border-bottom border-info" : ""
+              silenceFormStore.toggle.visible ? "border-info" : ""
             }`}
           >
             <TooltipWrapper title="New silence">
