@@ -4,27 +4,29 @@
   & .form-control.components-filterinput {
     min-height: 2.6rem;
   }
-}
 
-.navbar-brand {
-  min-width: 2.5rem;
-}
-
-.components-navbar-button {
-  &.navbar-brand {
-    padding-top: 0.36rem;
-    padding-bottom: 0.36rem;
+  & .navbar-brand {
+    min-width: 2.5rem;
   }
 
-  &:hover {
-    border-bottom: $border-width solid $info;
+  & .components-navbar-button {
+    border-bottom: $border-width solid transparent;
+
+    &.navbar-brand {
+      padding-top: 0.362rem;
+      padding-bottom: 0.362rem;
+    }
+
+    &:hover {
+      border-bottom: $border-width solid $info;
+    }
   }
-}
 
-.components-navbar-icon {
-  color: $navbar-dark-color;
+  & .components-navbar-icon {
+    color: $navbar-dark-color;
 
-  &.cursor-pointer:hover {
-    color: $navbar-dark-hover-color;
+    &.cursor-pointer:hover {
+      color: $navbar-dark-hover-color;
+    }
   }
 }

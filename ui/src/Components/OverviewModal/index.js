@@ -47,8 +47,8 @@ const OverviewModal = observer(
           <TooltipWrapper title="Show alert overview">
             <Flash spy={alertStore.info.totalAlerts}>
               <div
-                className={`text-center d-inline-block cursor-pointer navbar-brand m-0 components-navbar-button ${
-                  this.toggle.show ? "border-bottom border-info" : ""
+                className={`text-center d-inline-block cursor-pointer navbar-brand m-0 components-navbar-button  ${
+                  this.toggle.show ? "border-info" : ""
                 }`}
                 onClick={this.toggle.toggle}
               >
