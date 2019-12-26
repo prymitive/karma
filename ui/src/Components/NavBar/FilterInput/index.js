@@ -137,7 +137,7 @@ const FilterInput = onClickOutside(
         const { value } = inputProps;
         return (
           <input
-            className="components-filterinput-wrapper text-white"
+            className="components-filterinput-wrapper text-white mw-100"
             placeholder=""
             size={value.length + 1}
             {...inputProps}
