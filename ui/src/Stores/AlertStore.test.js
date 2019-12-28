@@ -375,7 +375,7 @@ describe("AlertStore.fetch", () => {
     const store = new AlertStore([]);
     await expect(store.fetch()).resolves.toHaveProperty("error");
 
-    expect(global.fetch).toHaveBeenCalledTimes(11);
+    expect(global.fetch).toHaveBeenCalledTimes(10);
     expect(store.status.value).toEqual(AlertStoreStatuses.Failure);
     expect(store.info.version).toBe("unknown");
     // there should be a trace of the error
@@ -388,7 +388,7 @@ describe("AlertStore.fetch", () => {
 
     fetch.mockReject(new Error("Fetch error"));
     await expect(store.fetch()).resolves.toHaveProperty("error");
-    expect(global.fetch).toHaveBeenCalledTimes(11);
+    expect(global.fetch).toHaveBeenCalledTimes(10);
   });
 
   it("fetch() retry counter is reset after successful fetch", async () => {
@@ -397,16 +397,16 @@ describe("AlertStore.fetch", () => {
 
     fetch.mockReject(new Error("Fetch error"));
     await expect(store.fetch()).resolves.toHaveProperty("error");
-    expect(global.fetch).toHaveBeenCalledTimes(11);
+    expect(global.fetch).toHaveBeenCalledTimes(10);
 
     const response = EmptyAPIResponse();
     fetch.mockResponse(JSON.stringify(response));
     await expect(store.fetch()).resolves.toBeUndefined();
-    expect(global.fetch).toHaveBeenCalledTimes(12);
+    expect(global.fetch).toHaveBeenCalledTimes(11);
 
     fetch.mockReject(new Error("Fetch error"));
     await expect(store.fetch()).resolves.toHaveProperty("error");
-    expect(global.fetch).toHaveBeenCalledTimes(23);
+    expect(global.fetch).toHaveBeenCalledTimes(21);
   });
 
   it("fetch() reloads the page after if auth middleware is detected", async () => {

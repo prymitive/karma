@@ -3,12 +3,13 @@ import merge from "lodash/merge";
 import promiseRetry from "promise-retry";
 
 const CommonOptions = {
+  mode: "cors",
   credentials: "include",
   redirect: "follow"
 };
 
 const FetchRetryConfig = {
-  retries: 10,
+  retries: 9,
   minTimeout: 2000,
   maxTimeout: 5000
 };
@@ -21,13 +22,12 @@ const FetchGet = async (uri, options, beforeRetry) =>
         merge(
           {},
           {
-            method: "GET",
-            mode:
-              number <= Math.round(FetchRetryConfig.retries * 0.8)
-                ? "cors"
-                : "no-cors"
+            method: "GET"
           },
           CommonOptions,
+          {
+            mode: number <= FetchRetryConfig.retries ? "cors" : "no-cors"
+          },
           options
         )
       ).catch(err => {

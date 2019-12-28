@@ -1,4 +1,10 @@
-import { CommonOptions, FetchGet, FetchPost, FetchDelete } from "./Fetch";
+import {
+  CommonOptions,
+  FetchGet,
+  FetchPost,
+  FetchDelete,
+  FetchRetryConfig
+} from "./Fetch";
 
 import merge from "lodash/merge";
 
@@ -60,24 +66,29 @@ describe("Fetch", () => {
     });
   }
 
-  it("FetchGet switches to no-cors after 80% failures", async () => {
+  it("FetchGet switches to no-cors for the last retry", async () => {
     fetch.mockReject(new Error("Fetch error"));
 
     const request = FetchGet("http://example.com", {});
     await expect(request).rejects.toThrow("Fetch error");
 
-    expect(fetch).toHaveBeenCalledTimes(11);
-    expect(fetch).toHaveBeenCalledWith("http://example.com", {
-      method: "GET",
-      credentials: "include",
-      mode: "no-cors",
-      redirect: "follow"
+    expect(fetch).toHaveBeenCalledTimes(FetchRetryConfig.retries + 1);
+    expect(fetch.mock.calls.map(r => r[1])).toMatchObject(
+      Array.from(Array(FetchRetryConfig.retries + 1).keys(), i => ({
+        mode: i < FetchRetryConfig.retries ? "cors" : "no-cors",
+        credentials: "include"
+      }))
+    );
+    // ensure that the the second to last call was with cors
+    expect(fetch.mock.calls[fetch.mock.calls.length - 2][1]).toMatchObject({
+      mode: "cors",
+      credentials: "include"
     });
-    for (let i = 0; i <= 10; i++) {
-      expect(fetch.mock.calls[i][1]).toMatchObject({
-        mode: i < 8 ? "cors" : "no-cors"
-      });
-    }
+    // ensure that the last call was with no-cors
+    expect(fetch.mock.calls[fetch.mock.calls.length - 1][1]).toMatchObject({
+      mode: "no-cors",
+      credentials: "include"
+    });
   });
 
   it("FetchGet calls beforeRetry before each retry", async () => {
@@ -88,9 +99,9 @@ describe("Fetch", () => {
     const request = FetchGet("http://example.com", {}, beforeRetrySpy);
     await expect(request).rejects.toThrow("Fetch error");
 
-    expect(beforeRetrySpy).toHaveBeenCalledTimes(11);
+    expect(beforeRetrySpy).toHaveBeenCalledTimes(FetchRetryConfig.retries + 1);
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < FetchRetryConfig.retries + 1; i++) {
       expect(beforeRetrySpy.mock.calls[i][0]).toBe(i + 1);
     }
   });
