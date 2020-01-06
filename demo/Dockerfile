@@ -18,10 +18,10 @@ ARG VERSION
 RUN CGO_ENABLED=0 make -C /src VERSION="${VERSION:-dev}" karma
 
 FROM alpine:3.11
+COPY --from=lmierzwa/kthxbye:v0.5 /kthxbye /kthxbye
+COPY --from=prom/alertmanager:v0.20.0 /bin/alertmanager /alertmanager
 RUN apk add supervisor python && rm  -rf /tmp/* /var/cache/apk/*
 COPY demo/supervisord.conf /etc/supervisord.conf
-COPY --from=prom/alertmanager:v0.20.0 /bin/alertmanager /alertmanager
-COPY --from=lmierzwa/kthxbye:v0.5 /kthxbye /kthxbye
 COPY demo/alertmanager.yaml /etc/alertmanager.yaml
 COPY demo/generator.py /generator.py
 COPY --from=go-builder /src/karma /karma
