@@ -41,7 +41,7 @@ type AlertGroup struct {
 	Labels            map[string]string `json:"labels"`
 	Alerts            AlertList         `json:"alerts"`
 	ID                string            `json:"id"`
-	Hash              string            `json:"hash"`
+	Hash              string            `json:"-"`
 	AlertmanagerCount map[string]int    `json:"alertmanagerCount"`
 	StateCount        map[string]int    `json:"stateCount"`
 	LatestStartsAt    time.Time         `json:"-"`

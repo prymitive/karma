@@ -35,7 +35,6 @@ const MockAlertGroup = (
   labels: rootLabels,
   alerts: alerts,
   id: "099c5ca6d1c92f615b13056b935d0c8dee70f18c",
-  hash: "53a4bb3d7e916450b3bda550976f9578db5b2ad3",
   alertmanagerCount: {
     default: 1
   },

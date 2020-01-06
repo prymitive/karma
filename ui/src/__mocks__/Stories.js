@@ -185,7 +185,6 @@ const MockGrid = alertStore => {
     const unprocessed = Math.max(0, i - active - suppressed);
 
     const id = `id${i}`;
-    const hash = `hash${i}`;
     const group = MockGroup(`group${i}`, i, active, suppressed, unprocessed);
 
     for (let j = 0; j < group.alerts.length; j++) {
@@ -207,7 +206,6 @@ const MockGrid = alertStore => {
     }
 
     group.id = id;
-    group.hash = hash;
     group.stateCount.active = active;
     group.stateCount.suppressed = suppressed;
     group.stateCount.unprocessed = unprocessed;
