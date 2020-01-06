@@ -198,7 +198,6 @@ func TestDedupSharedMaps(t *testing.T) {
     }
   ],
   "id": "",
-  "hash": "",
   "alertmanagerCount": null,
   "stateCount": null,
   "shared": {

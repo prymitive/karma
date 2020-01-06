@@ -954,9 +954,6 @@ func testAlert(version string, t *testing.T, expectedAlert, gotAlert models.Aler
 }
 
 func testAlertGroup(version string, t *testing.T, testCase groupTest, group models.APIAlertGroup) {
-	if group.Hash == "" {
-		t.Errorf("Empty hash for group %v", group.Labels)
-	}
 	if testCase.id != group.ID {
 		t.Errorf("[%s] Alert group.ID mismatch, expected '%s' but got '%s' for group %v",
 			version, testCase.id, group.ID, group.Labels)
