@@ -33,7 +33,6 @@ const APIGroup = PropTypes.exact({
   labels: PropTypes.object.isRequired,
   alerts: PropTypes.arrayOf(APIAlert),
   id: PropTypes.string.isRequired,
-  hash: PropTypes.string.isRequired,
   alertmanagerCount: PropTypes.objectOf(PropTypes.number).isRequired,
   stateCount: PropTypes.exact({
     active: PropTypes.number.isRequired,

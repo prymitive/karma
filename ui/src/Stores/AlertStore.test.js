@@ -485,21 +485,6 @@ describe("AlertStore.fetch", () => {
     expect(store.data.groups).toMatchObject({ foo: "foo", bar: "bar" });
   });
 
-  it("is no-op for groups that didn't change", () => {
-    const store = new AlertStore(["label=value"]);
-    store.data.groups = { foo: { hash: "foo" }, bar: { hash: "bar" } };
-
-    const response = EmptyAPIResponse();
-    response.groups = { foo: { hash: "foo" }, bar: { hash: "bar" } };
-
-    store.parseAPIResponse(response);
-    expect(Object.keys(store.data.groups)).toHaveLength(2);
-    expect(store.data.groups).toMatchObject({
-      foo: { hash: "foo" },
-      bar: { hash: "bar" }
-    });
-  });
-
   it("removes old groups from the store after fetch", () => {
     const store = new AlertStore(["label=value"]);
     store.data.groups = { foo: "foo", delete: "me", bar: "bar" };
@@ -511,26 +496,5 @@ describe("AlertStore.fetch", () => {
     store.parseAPIResponse(response);
     expect(Object.keys(store.data.groups)).toHaveLength(2);
     expect(store.data.groups).toMatchObject({ foo: "foo", bar: "bar" });
-  });
-
-  it("updates groups with new hash after fetch", () => {
-    const store = new AlertStore(["label=value"]);
-    store.data.groups = [
-      { id: "foo", hash: "foo" },
-      { id: "bar", hash: "bar" }
-    ];
-
-    const response = EmptyAPIResponse();
-    response.groups = [
-      { id: "foo", hash: "newFoo" },
-      { id: "bar", hash: "newBar" }
-    ];
-
-    store.parseAPIResponse(response);
-    expect(store.data.groups).toHaveLength(2);
-    expect(store.data.groups).toMatchObject([
-      { id: "foo", hash: "newFoo" },
-      { id: "bar", hash: "newBar" }
-    ]);
   });
 });

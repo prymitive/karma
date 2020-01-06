@@ -61,10 +61,8 @@ const MockGroupList = (count, alertPerGroup) => {
   let groups = [];
   for (let i = 1; i <= count; i++) {
     let id = `id${i}`;
-    let hash = `hash${i}`;
     let group = MockGroup(`group${i}`, alertPerGroup);
     group.id = id;
-    group.hash = hash;
     groups.push(group);
   }
   alertStore.data.upstreams = {
