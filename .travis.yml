@@ -126,7 +126,7 @@ jobs:
 
     - stage: Snapshots
       name: Percy UI snapshots
-      if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
+      if: (repo = prymitive/karma AND type != pull_request AND type != cron) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
       env:
         - NODE_ENV=test
