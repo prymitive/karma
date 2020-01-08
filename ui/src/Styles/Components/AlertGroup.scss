@@ -21,3 +21,8 @@ div[data-tooltipped]:not(:last-child) > .components-label,
 div[data-tooltipped]:not(:last-child) > .components-grid-annotation {
   margin-right: 0.25rem;
 }
+
+// larger margin for buttons in the filter input bar
+.components-filterinput > button.components-label:not(:last-child) {
+  margin-right: 0.35rem;
+}
