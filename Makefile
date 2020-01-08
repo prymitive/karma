@@ -125,7 +125,7 @@ lint-git-ci: .build/deps-build-node.ok
 
 .PHONY: lint-go
 lint-go: .build/deps-lint-go.ok
-	GO111MODULE=on golangci-lint run
+	GO111MODULE=on golangci-lint run -v
 
 .PHONY: lint-js
 lint-js: .build/deps-build-node.ok
