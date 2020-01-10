@@ -135,8 +135,31 @@ lint-js: .build/deps-build-node.ok
 lint-docs: .build/deps-build-node.ok
 	$(CURDIR)/ui/node_modules/.bin/markdownlint *.md docs
 
+.PHONY: lint-golang-version
+lint-golang-version:
+	$(eval CI_VERSION := $(shell grep -E '^(\ +)go:' .travis.yml | awk '{print $$2}' | tr -d "'\""))
+	$(eval BUILD_VERSION := $(shell grep -E '^FROM golang:' Dockerfile | cut -d : -f 2 | awk '{print $1}' | cut -d '-' -f 1))
+	$(eval DEMO_VERSION := $(shell grep -E '^FROM golang:' demo/Dockerfile | cut -d : -f 2 | awk '{print $1}' | cut -d '-' -f 1))
+	@if [ "$(CI_VERSION)" != "$(BUILD_VERSION)" ] || [ "$(CI_VERSION)" != "$(DEMO_VERSION)" ] || [ "$(BUILD_VERSION)" != "$(DEMO_VERSION)" ]; then \
+		echo "Golang version mismatch: CI_VERSION=$(CI_VERSION) BUILD_VERSION=$(BUILD_VERSION) DEMO_VERSION=$(DEMO_VERSION)"; \
+		exit 1; \
+	fi
+
+.PHONY: lint-nodejs-version
+lint-nodejs-version:
+	$(eval CI_VERSION := $(shell cat .nvmrc))
+	$(eval BUILD_VERSION := $(shell grep -E '^FROM node:' Dockerfile | cut -d : -f 2 | awk '{print $1}' | cut -d '-' -f 1))
+	$(eval DEMO_VERSION := $(shell grep -E '^FROM node:' demo/Dockerfile | cut -d : -f 2 | awk '{print $1}' | cut -d '-' -f 1))
+	@if [ "$(CI_VERSION)" != "$(BUILD_VERSION)" ] || [ "$(CI_VERSION)" != "$(DEMO_VERSION)" ] || [ "$(BUILD_VERSION)" != "$(DEMO_VERSION)" ]; then \
+		echo "Node version mismatch: CI_VERSION=$(CI_VERSION) BUILD_VERSION=$(BUILD_VERSION) DEMO_VERSION=$(DEMO_VERSION)"; \
+		exit 1; \
+	fi
+
+.PHONY: lint-versions
+lint-versions: lint-golang-version lint-nodejs-version
+
 .PHONY: lint
-lint: lint-go lint-js lint-docs
+lint: lint-go lint-js lint-docs lint-versions
 
 .PHONY: benchmark-go
 benchmark-go:
