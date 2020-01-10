@@ -124,6 +124,18 @@ jobs:
         - travis_retry make openapi-client
         - git diff --exit-code
 
+    - stage: Lint
+      name: Lint Golang Version
+      if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
+      language: shell
+      script: make lint-golang-version
+
+    - stage: Lint
+      name: Lint Node Version
+      if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
+      language: shell
+      script: make lint-nodejs-version
+
     - stage: Snapshots
       name: Percy UI snapshots
       if: (repo = prymitive/karma AND type != pull_request AND type != cron) OR (fork = true AND type = pull_request)
