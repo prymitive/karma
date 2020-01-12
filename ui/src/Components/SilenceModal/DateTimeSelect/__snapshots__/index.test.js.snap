@@ -269,11 +269,13 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
         </div>
         <button type=\\"button\\"
                 class=\\"react-datepicker__navigation react-datepicker__navigation--previous\\"
+                aria-label=\\"Previous Month\\"
         >
           Previous Month
         </button>
         <button type=\\"button\\"
                 class=\\"react-datepicker__navigation react-datepicker__navigation--next react-datepicker__navigation--next--with-today-button\\"
+                aria-label=\\"Next Month\\"
         >
           Next Month
         </button>
@@ -722,6 +724,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
         </div>
         <button type=\\"button\\"
                 class=\\"react-datepicker__navigation react-datepicker__navigation--next react-datepicker__navigation--next--with-today-button\\"
+                aria-label=\\"Next Month\\"
         >
           Next Month
         </button>
