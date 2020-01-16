@@ -88,7 +88,7 @@
     "jest-date-mock": "1.0.8",
     "jest-fetch-mock": "3.0.1",
     "markdownlint-cli": "0.21.0",
-    "node-sass": "4.13.0",
+    "node-sass": "4.13.1",
     "prettier": "1.19.1",
     "source-map-explorer": "2.2.2"
   },
