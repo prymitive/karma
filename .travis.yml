@@ -70,7 +70,7 @@ jobs:
       <<: *DEFAULTS_GO
       before_script:
         - travis_retry make mock-assets
-      script: make lint-go
+      script: travis_retry make lint-go
 
     - stage: Lint
       name: Check Go code formatting
