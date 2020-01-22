@@ -17,6 +17,7 @@ import (
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/transform"
+	"github.com/prymitive/karma/internal/uri"
 
 	"github.com/DeanThompson/ginpprof"
 	"github.com/gin-contrib/cors"
@@ -125,7 +126,7 @@ func setupUpstreams() {
 		if s.TLS.CA != "" || s.TLS.Cert != "" || s.TLS.InsecureSkipVerify {
 			httpTransport, err = alertmanager.NewHTTPTransport(s.TLS.CA, s.TLS.Cert, s.TLS.Key, s.TLS.InsecureSkipVerify)
 			if err != nil {
-				log.Fatalf("Failed to create HTTP transport for Alertmanager '%s' with URI '%s': %s", s.Name, s.URI, err)
+				log.Fatalf("Failed to create HTTP transport for Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
 			}
 		}
 
@@ -139,11 +140,11 @@ func setupUpstreams() {
 			alertmanager.WithHTTPHeaders(s.Headers),
 		)
 		if err != nil {
-			log.Fatalf("Failed to create Alertmanager '%s' with URI '%s': %s", s.Name, s.URI, err)
+			log.Fatalf("Failed to create Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
 		}
 		err = alertmanager.RegisterAlertmanager(am)
 		if err != nil {
-			log.Fatalf("Failed to register Alertmanager '%s' with URI '%s': %s", s.Name, s.URI, err)
+			log.Fatalf("Failed to register Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
 		}
 	}
 }
