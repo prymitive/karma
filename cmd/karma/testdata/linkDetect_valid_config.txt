@@ -1,0 +1,17 @@
+# Config is valid with correct linkDetect rules
+karma.bin-should-work --log.format=text --log.config=false --config.file=karma.yaml --check-config
+! stdout .
+stderr 'msg="Configuration is valid"'
+! stderr 'level=error'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: default
+      uri: https://localhost:9093
+silences:
+  comments:
+    linkDetect:
+      rules:
+        - regex: "(DEVOPS-[0-9]+)"
+          uriTemplate: https://jira.example.com/browse/$1

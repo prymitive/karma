@@ -23,7 +23,10 @@ func TestLogConfig(t *testing.T) {
 
 	for val, level := range logLevels {
 		config.Config.Log.Level = val
-		setupLogger()
+		err := setupLogger()
+		if err != nil {
+			t.Error(err)
+		}
 		if log.GetLevel() != level {
 			t.Errorf("Config.Log.Level=%s resulted in invalid log level %s", val, log.GetLevel())
 		}
