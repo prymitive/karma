@@ -1,0 +1,11 @@
+# Raises an error if proxy config is invalid
+karma.bin-should-fail --log.format=text --log.config=false --log.level=error --config.file=karma.yaml
+! stdout .
+stderr 'msg="Failed to create Alertmanager ''proxied'' with URI ''httpz://localhost'': unsupported URI scheme ''httpz'' in ''httpz://localhost''"'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: proxied
+      uri: httpz://localhost
+      proxy: true
