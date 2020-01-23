@@ -1,0 +1,15 @@
+# Raises an error if linkDetect config is missing uriTemplate
+karma.bin-should-fail --log.format=text --log.config=false --log.level=error --config.file=karma.yaml
+! stdout .
+stderr 'msg="Invalid link detect rule, regex ''DEVOPS-\[0-9\]\+'' uriTemplate ''''"'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: default
+      uri: https://localhost:9093
+silences:
+  comments:
+    linkDetect:
+      rules:
+        - regex: "DEVOPS-[0-9]+"

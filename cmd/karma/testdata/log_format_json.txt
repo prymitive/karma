@@ -1,0 +1,4 @@
+# Logs messages as JSON when log.format=json is passed
+karma.bin-should-fail --log.format=json --log.level=error
+! stdout .
+stderr '^{"level":"error","msg":"No valid Alertmanager URIs defined"'

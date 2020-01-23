@@ -1,0 +1,4 @@
+# Raises an error if invalid log level is passed
+karma.bin-should-fail --log.format=text --log.config=false --log.level=foobar
+! stdout .
+stderr 'msg="Unknown log level ''foobar''"'

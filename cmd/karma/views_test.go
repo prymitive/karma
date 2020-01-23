@@ -33,7 +33,10 @@ func mockConfig() {
 	config.Config.Read()
 	if !upstreamSetup {
 		upstreamSetup = true
-		setupUpstreams()
+		err := setupUpstreams()
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 

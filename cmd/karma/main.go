@@ -117,7 +117,7 @@ func setupMetrics(router *gin.Engine) {
 	router.GET(getViewURL("/metrics"), promHandler(promhttp.Handler()))
 }
 
-func setupUpstreams() {
+func setupUpstreams() error {
 	for _, s := range config.Config.Alertmanager.Servers {
 
 		var httpTransport http.RoundTripper
@@ -126,7 +126,7 @@ func setupUpstreams() {
 		if s.TLS.CA != "" || s.TLS.Cert != "" || s.TLS.InsecureSkipVerify {
 			httpTransport, err = alertmanager.NewHTTPTransport(s.TLS.CA, s.TLS.Cert, s.TLS.Key, s.TLS.InsecureSkipVerify)
 			if err != nil {
-				log.Fatalf("Failed to create HTTP transport for Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
+				return fmt.Errorf("Failed to create HTTP transport for Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
 			}
 		}
 
@@ -140,16 +140,18 @@ func setupUpstreams() {
 			alertmanager.WithHTTPHeaders(s.Headers),
 		)
 		if err != nil {
-			log.Fatalf("Failed to create Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
+			return fmt.Errorf("Failed to create Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
 		}
 		err = alertmanager.RegisterAlertmanager(am)
 		if err != nil {
-			log.Fatalf("Failed to register Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
+			return fmt.Errorf("Failed to register Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
 		}
 	}
+
+	return nil
 }
 
-func setupLogger() {
+func setupLogger() error {
 	switch config.Config.Log.Level {
 	case "debug":
 		log.SetLevel(log.DebugLevel)
@@ -164,7 +166,7 @@ func setupLogger() {
 	case "panic":
 		log.SetLevel(log.PanicLevel)
 	default:
-		log.Fatalf("Unknown log level '%s'", config.Config.Log.Level)
+		return fmt.Errorf("Unknown log level '%s'", config.Config.Log.Level)
 	}
 
 	switch config.Config.Log.Format {
@@ -173,26 +175,31 @@ func setupLogger() {
 	case "json":
 		log.SetFormatter(&log.JSONFormatter{})
 	default:
-		log.Fatalf("Unknown log format '%s'", config.Config.Log.Format)
+		return fmt.Errorf("Unknown log format '%s'", config.Config.Log.Format)
 	}
+
+	return nil
 }
 
-func main() {
+func mainSetup() (*gin.Engine, error) {
 	printVersion := pflag.Bool("version", false, "Print version and exit")
 	validateConfig := pflag.Bool("check-config", false, "Validate configuration and exit")
 	pflag.Parse()
 
 	if *printVersion {
 		fmt.Println(version)
-		return
+		return nil, nil
 	}
 
 	config.Config.Read()
-	setupLogger()
+	err := setupLogger()
+	if err != nil {
+		return nil, err
+	}
 
 	// timer duration cannot be zero second or a negative one
 	if config.Config.Alertmanager.Interval <= time.Second*0 {
-		log.Fatalf("Invalid AlertmanagerTTL value '%v'", config.Config.Alertmanager.Interval)
+		return nil, fmt.Errorf("Invalid AlertmanagerTTL value '%v'", config.Config.Alertmanager.Interval)
 	}
 
 	log.Infof("Version: %s", version)
@@ -203,11 +210,11 @@ func main() {
 	linkDetectRules := []models.LinkDetectRule{}
 	for _, rule := range config.Config.Silences.Comments.LinkDetect.Rules {
 		if rule.Regex == "" || rule.URITemplate == "" {
-			log.Fatalf("Invalid link detect rule, regex '%s' uriTemplate '%s'", rule.Regex, rule.URITemplate)
+			return nil, fmt.Errorf("Invalid link detect rule, regex '%s' uriTemplate '%s'", rule.Regex, rule.URITemplate)
 		}
 		re, err := regexp.Compile(rule.Regex)
 		if err != nil {
-			log.Fatalf("Invalid link detect rule '%s': %s", rule.Regex, err)
+			return nil, fmt.Errorf("Invalid link detect rule '%s': %s", rule.Regex, err)
 		}
 		linkDetectRules = append(linkDetectRules, models.LinkDetectRule{Regex: re, URITemplate: rule.URITemplate})
 	}
@@ -215,25 +222,19 @@ func main() {
 
 	apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 
-	setupUpstreams()
+	err = setupUpstreams()
+	if err != nil {
+		return nil, err
+	}
 
 	if len(alertmanager.GetAlertmanagers()) == 0 {
-		log.Fatal("No valid Alertmanager URIs defined")
+		return nil, fmt.Errorf("No valid Alertmanager URIs defined")
 	}
 
 	if *validateConfig {
 		log.Info("Configuration is valid")
-		return
+		return nil, nil
 	}
-
-	// before we start try to fetch data from Alertmanager
-	log.Info("Initial Alertmanager query")
-	pullFromAlertmanager()
-	log.Info("Done, starting HTTP server")
-
-	// background loop that will fetch updates from Alertmanager
-	ticker = time.NewTicker(config.Config.Alertmanager.Interval)
-	go Tick()
 
 	switch config.Config.Debug {
 	case true:
@@ -263,9 +264,30 @@ func main() {
 	for _, am := range alertmanager.GetAlertmanagers() {
 		err := setupRouterProxyHandlers(router, am)
 		if err != nil {
-			log.Fatalf("Failed to setup proxy handlers for Alertmanager '%s': %s", am.Name, err)
+			return nil, fmt.Errorf("Failed to setup proxy handlers for Alertmanager '%s': %s", am.Name, err)
 		}
 	}
+
+	return router, nil
+}
+
+func main() {
+	router, err := mainSetup()
+	if err != nil {
+		log.Fatal(err)
+	}
+	if router == nil {
+		return
+	}
+
+	// before we start try to fetch data from Alertmanager
+	log.Info("Initial Alertmanager query")
+	pullFromAlertmanager()
+	log.Info("Done, starting HTTP server")
+
+	// background loop that will fetch updates from Alertmanager
+	ticker = time.NewTicker(config.Config.Alertmanager.Interval)
+	go Tick()
 
 	listen := fmt.Sprintf("%s:%d", config.Config.Listen.Address, config.Config.Listen.Port)
 	httpServer := &http.Server{

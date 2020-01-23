@@ -1,0 +1,5 @@
+# Validates config when --check-config is passed
+karma.bin-should-work --log.format=text --log.config=false --check-config --alertmanager.uri=http://localhost
+! stdout .
+stderr 'msg="Configuration is valid"'
+! stderr 'level=error'

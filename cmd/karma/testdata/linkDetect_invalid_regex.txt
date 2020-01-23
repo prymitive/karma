@@ -1,0 +1,16 @@
+# Raises an error if linkDetect config is missing regex rule
+karma.bin-should-fail --log.format=text --log.config=false --log.level=error --config.file=karma.yaml
+! stdout .
+stderr 'msg="Invalid link detect rule ''foo\+\+\+\+\+\+'': error parsing regexp: invalid nested repetition operator: `\+\+`"'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: default
+      uri: https://localhost:9093
+silences:
+  comments:
+    linkDetect:
+      rules:
+        - regex: "foo++++++"
+          uriTemplate: https://jira.example.com/
