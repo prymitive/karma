@@ -34,6 +34,6 @@ require (
 	github.com/spf13/viper v1.6.2
 	github.com/xlab/handysort v0.0.0-20150421192137-fb3537ed64a1 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
-	gopkg.in/yaml.v2 v2.2.7
+	gopkg.in/yaml.v2 v2.2.8
 	vbom.ml/util v0.0.0-20180919145318-efcd4e0f9787
 )
