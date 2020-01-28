@@ -30,7 +30,7 @@ const AlertManagerInput = observer(
 
       if (silenceFormStore.data.alertmanagers.length === 0) {
         silenceFormStore.data.alertmanagers = AlertmanagerClustersToOption(
-          alertStore.data.upstreams.clusters
+          alertStore.data.clustersWithoutReadOnly
         );
       }
     }
@@ -46,7 +46,7 @@ const AlertManagerInput = observer(
 
       // get the list of last known alertmanagers
       const currentAlertmanagers = AlertmanagerClustersToOption(
-        alertStore.data.upstreams.clusters
+        alertStore.data.clustersWithoutReadOnly
       );
 
       // now iterate what's set as silence form values and reset it if any
@@ -75,7 +75,7 @@ const AlertManagerInput = observer(
           instanceId="silence-input-alertmanagers"
           defaultValue={silenceFormStore.data.alertmanagers}
           options={AlertmanagerClustersToOption(
-            alertStore.data.upstreams.clusters
+            alertStore.data.clustersWithoutReadOnly
           )}
           getOptionValue={JSON.stringify}
           placeholder={

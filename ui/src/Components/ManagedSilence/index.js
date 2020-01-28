@@ -47,6 +47,7 @@ const ManagedSilence = observer(
     getAlertmanager = () =>
       this.props.alertStore.data.upstreams.instances
         .filter(u => u.cluster === this.props.cluster)
+        .filter(u => u.readonly === false)
         .slice(0, 1)[0];
 
     onEditSilence = () => {

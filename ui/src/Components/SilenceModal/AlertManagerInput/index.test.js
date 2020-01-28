@@ -27,6 +27,7 @@ beforeEach(() => {
       name: "am1",
       uri: "http://am1.example.com",
       publicURI: "http://am1.example.com",
+      readonly: false,
       headers: {},
       error: "",
       version: "0.15.0",
@@ -37,6 +38,7 @@ beforeEach(() => {
       name: "am2",
       uri: "http://am2.example.com",
       publicURI: "http://am2.example.com",
+      readonly: false,
       headers: {},
       error: "",
       version: "0.15.0",
@@ -47,6 +49,7 @@ beforeEach(() => {
       name: "am3",
       uri: "http://am3.example.com",
       publicURI: "http://am3.example.com",
+      readonly: false,
       headers: {},
       error: "",
       version: "0.15.0",
@@ -201,5 +204,16 @@ describe("<AlertManagerInput />", () => {
     tree.find(".react-select__multi-value__remove").simulate("click");
     expect(silenceFormStore.data.alertmanagers).toHaveLength(0);
     expect(silenceFormStore.data.alertmanagers).toEqual([]);
+  });
+
+  it("doesn't include readonly instances", () => {
+    alertStore.data.upstreams.instances[0].readonly = true;
+    alertStore.data.upstreams.instances[2].readonly = true;
+    MountedAlertManagerInput();
+    expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
+    expect(silenceFormStore.data.alertmanagers).toContainEqual({
+      label: "am2",
+      value: ["am2"]
+    });
   });
 });

@@ -65,6 +65,10 @@ const SilenceDetails = ({
     u => u.cluster === cluster
   );
 
+  const isReadOnly =
+    alertStore.data.getClusterAlertmanagersWithoutReadOnly(cluster).length ===
+    0;
+
   return (
     <div className="mt-1">
       <div className="d-flex flex-fill flex-lg-row flex-column justify-content-between">
@@ -154,7 +158,8 @@ const SilenceDetails = ({
           <div className="d-flex flex-fill flex-lg-column flex-row justify-content-around">
             <button
               className="btn btn-primary btn-sm mb-lg-2 mb-0"
-              onClick={onEditSilence}
+              disabled={isReadOnly}
+              onClick={!isReadOnly && onEditSilence}
             >
               <FontAwesomeIcon
                 className="mr-1 d-none d-sm-inline-block"

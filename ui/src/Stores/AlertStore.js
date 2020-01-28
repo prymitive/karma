@@ -1,4 +1,4 @@
-import { observable, action, toJS } from "mobx";
+import { observable, action, computed, toJS } from "mobx";
 
 import throttle from "lodash/throttle";
 
@@ -167,13 +167,37 @@ class AlertStore {
       getAlertmanagerByName(name) {
         return this.upstreams.instances.find(am => am.name === name);
       },
+      isReadOnlyAlertmanager(name) {
+        return this.readOnlyAlertmanagers.map(am => am.name).includes(name);
+      },
+      getClusterAlertmanagersWithoutReadOnly(clusterID) {
+        return this.clustersWithoutReadOnly[clusterID] || [];
+      },
+      get readOnlyAlertmanagers() {
+        return this.upstreams.instances.filter(am => am.readonly === true);
+      },
+      get clustersWithoutReadOnly() {
+        const clusters = {};
+        for (const clusterID of Object.keys(this.upstreams.clusters)) {
+          const members = this.upstreams.clusters[clusterID].filter(
+            member => this.isReadOnlyAlertmanager(member) === false
+          );
+          if (members.length > 0) {
+            clusters[clusterID] = members;
+          }
+        }
+        return clusters;
+      },
       getColorData(name, value) {
         if (this.colors[name] !== undefined) {
           return this.colors[name][value];
         }
       }
     },
-    {},
+    {
+      readOnlyAlertmanagers: computed,
+      clustersWithoutReadOnly: computed
+    },
     { name: "API Response data" }
   );
 

@@ -15,6 +15,7 @@ beforeEach(() => {
         name: "mockAlertmanager",
         uri: "http://localhost",
         publicURI: "http://example.com",
+        readonly: false,
         headers: { foo: "bar" },
         error: "",
         version: "0.15.0",
@@ -23,6 +24,10 @@ beforeEach(() => {
       }
     ]
   };
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
 const MountedSilenceSubmitProgress = () => {
@@ -94,6 +99,7 @@ describe("<SilenceSubmitProgress />", () => {
           name: "am1",
           uri: "http://am1.example.com",
           publicURI: "http://am1.example.com",
+          readonly: false,
           headers: {},
           error: "",
           version: "0.15.0",
@@ -104,6 +110,7 @@ describe("<SilenceSubmitProgress />", () => {
           name: "am2",
           uri: "http://am2.example.com",
           publicURI: "http://am2.example.com",
+          readonly: false,
           headers: {},
           error: "",
           version: "0.15.0",
@@ -150,6 +157,7 @@ describe("<SilenceSubmitProgress />", () => {
           name: "am1",
           uri: "http://am1.example.com",
           publicURI: "http://am1.example.com",
+          readonly: false,
           headers: {},
           error: "",
           version: "0.15.0",
@@ -177,6 +185,66 @@ describe("<SilenceSubmitProgress />", () => {
     expect(fetch.mock.calls[0][0]).toBe(
       "http://am1.example.com/api/v1/silences"
     );
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("will refuse to send requests to an alertmanager instance that is readonly", async () => {
+    fetch.resetMocks();
+    const logs = [];
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation((message, ...args) => {
+        logs.push(message);
+      });
+
+    alertStore.data.upstreams = {
+      clusters: { ha: ["am1", "am2"] },
+      instances: [
+        {
+          name: "am1",
+          uri: "http://am1.example.com",
+          publicURI: "http://am1.example.com",
+          readonly: false,
+          headers: {},
+          error: "",
+          version: "0.15.0",
+          cluster: "ha",
+          clusterMembers: ["am1", "am2"]
+        },
+        {
+          name: "am2",
+          uri: "http://am2.example.com",
+          publicURI: "http://am2.example.com",
+          readonly: true,
+          headers: {},
+          error: "",
+          version: "0.15.0",
+          cluster: "ha",
+          clusterMembers: ["am1", "am2"]
+        }
+      ]
+    };
+
+    const tree = mount(
+      <SilenceSubmitProgress
+        cluster="ha"
+        members={["am1", "am2"]}
+        payload={{
+          matchers: [],
+          startsAt: "now",
+          endsAt: "later",
+          createdBy: "me@example.com",
+          comment: "fake payload"
+        }}
+        alertStore={alertStore}
+      />
+    );
+    await expect(tree.instance().submitState.fetch).resolves.toBeUndefined();
+    expect(fetch.mock.calls).toHaveLength(1);
+    expect(fetch.mock.calls[0][0]).toBe(
+      "http://am1.example.com/api/v1/silences"
+    );
+    expect(logs).toEqual(['Alertmanager instance "am2" is read-only']);
     expect(consoleSpy).toHaveBeenCalledTimes(1);
   });
 
