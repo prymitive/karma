@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type alertmanagerConfig struct {
+type AlertmanagerConfig struct {
 	Name        string
 	URI         string
 	ExternalURI string `yaml:"external_uri" mapstructure:"external_uri"`
@@ -38,7 +38,7 @@ type CustomLabelColors map[string][]CustomLabelColor
 type configSchema struct {
 	Alertmanager struct {
 		Interval time.Duration
-		Servers  []alertmanagerConfig
+		Servers  []AlertmanagerConfig
 	}
 	AlertAcknowledgement struct {
 		Enabled       bool

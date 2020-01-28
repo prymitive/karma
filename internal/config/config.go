@@ -158,7 +158,7 @@ func (config *configSchema) Read() {
 		log.Fatal(err)
 	}
 
-	config.Alertmanager.Servers = []alertmanagerConfig{}
+	config.Alertmanager.Servers = []AlertmanagerConfig{}
 	config.Alertmanager.Interval = v.GetDuration("alertmanager.interval")
 	config.AlertAcknowledgement.Enabled = v.GetBool("alertAcknowledgement.enabled")
 	config.AlertAcknowledgement.Author = v.GetString("alertAcknowledgement.author")
@@ -284,7 +284,7 @@ func (config *configSchema) Read() {
 	// accept single Alertmanager server from flag/env if nothing is set yet
 	if len(config.Alertmanager.Servers) == 0 && v.GetString("alertmanager.uri") != "" {
 		log.Info("Using simple config with a single Alertmanager server")
-		config.Alertmanager.Servers = []alertmanagerConfig{
+		config.Alertmanager.Servers = []AlertmanagerConfig{
 			{
 				Name:        v.GetString("alertmanager.name"),
 				URI:         v.GetString("alertmanager.uri"),
@@ -304,9 +304,9 @@ func (config *configSchema) LogValues() {
 	cfg := configSchema(*config)
 
 	// replace passwords in Alertmanager URIs with 'xxx'
-	servers := []alertmanagerConfig{}
+	servers := []AlertmanagerConfig{}
 	for _, s := range cfg.Alertmanager.Servers {
-		server := alertmanagerConfig{
+		server := AlertmanagerConfig{
 			Name:        s.Name,
 			URI:         uri.SanitizeURI(s.URI),
 			ExternalURI: uri.SanitizeURI(s.ExternalURI),
