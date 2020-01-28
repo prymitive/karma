@@ -24,7 +24,7 @@
     "favico.js": "0.3.10",
     "fontfaceobserver": "2.1.0",
     "lodash": "4.17.15",
-    "mobx": "5.15.3",
+    "mobx": "5.15.4",
     "mobx-react": "6.1.5",
     "mobx-stored": "1.1.0",
     "moment": "2.24.0",
