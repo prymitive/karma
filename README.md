@@ -126,14 +126,23 @@ Alertmanager version.
 
 ## Security
 
-The karma process doesn't send any API request to the Alertmanager that could
-modify alerts or silence state, but it does provide a web interface that allows
-a user to send such requests directly to the Alertmanager API.
-If you wish to deploy karma as a read-only tool please ensure that:
+karma doesn't in any way alter alerts in any Alertmanager instance it collects
+data from. This is true for both the backend and the web UI.
+The web UI allows to manage silences by sending requests to Alertmanager
+instances, this can be done directly (browser to Alertmanager API) or by
+proxying such requests via karma backend (browser to karma backend to
+Alertmanager API) if `proxy` mode is enabled in karma config.
+
+If you wish to deploy karma as a read-only tool without giving users any ability
+to modify data in Alertmanager instance, then please ensure that:
 
 - the karma process is able to connect to the Alertmanager API
 - read-only users are able to connect to the karma web interface
 - read-only users are NOT able to connect to the Alertmanager API
+- `readonly` is set to `true` in
+  [alertmanager:servers](/docs/CONFIGURATION.md#alertmanagers) config section
+  for all alertmanager instances, this options will disable any UI elements that
+  could trigger updates (like silence management)
 
 ## Metrics
 

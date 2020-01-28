@@ -30,12 +30,31 @@ storiesOf("ManagedSilence", module)
           clusterMembers: ["am1"],
           uri: "http://localhost:9093",
           publicURI: "http://example.com",
+          readonly: false,
           error: "",
           version: "0.15.3",
           headers: {}
         }
       ],
       clusters: { am: ["am1"] }
+    };
+
+    const alertStoreReadOnly = new AlertStore([]);
+    alertStoreReadOnly.data.upstreams = {
+      clusters: { ro: ["readonly"] },
+      instances: [
+        {
+          name: "readonly",
+          uri: "http://localhost:8080",
+          publicURI: "http://example.com",
+          readonly: true,
+          headers: {},
+          error: "",
+          version: "0.15.0",
+          cluster: "ro",
+          clusterMembers: ["readonly"]
+        }
+      ]
     };
 
     const silence = MockSilence();
@@ -68,6 +87,16 @@ storiesOf("ManagedSilence", module)
           isOpen={true}
         />
         <ManagedSilence
+          cluster={"ro"}
+          alertCount={123}
+          alertCountAlwaysVisible={true}
+          silence={silence}
+          alertStore={alertStoreReadOnly}
+          silenceFormStore={silenceFormStore}
+          onDidUpdate={() => {}}
+          isOpen={true}
+        />
+        <ManagedSilence
           cluster={cluster}
           alertCount={123}
           alertCountAlwaysVisible={true}
@@ -82,6 +111,16 @@ storiesOf("ManagedSilence", module)
           alertCountAlwaysVisible={true}
           silence={expiredSilence}
           alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          onDidUpdate={() => {}}
+          isOpen={true}
+        />
+        <ManagedSilence
+          cluster={"ro"}
+          alertCount={123}
+          alertCountAlwaysVisible={true}
+          silence={expiredSilence}
+          alertStore={alertStoreReadOnly}
           silenceFormStore={silenceFormStore}
           onDidUpdate={() => {}}
           isOpen={true}

@@ -95,9 +95,16 @@ const SilenceSubmitProgress = observer(
 
       const member = this.submitState.membersToTry.pop();
 
+      if (alertStore.data.isReadOnlyAlertmanager(member)) {
+        const err = `Alertmanager instance "${member}" is read-only`;
+        console.error(err);
+        this.maybeTryAgainAfterError(err);
+        return;
+      }
+
       const am = alertStore.data.getAlertmanagerByName(member);
       if (am === undefined) {
-        const err = `Alertmanager instance "${member} not found`;
+        const err = `Alertmanager instance "${member}" not found`;
         console.error(err);
         this.maybeTryAgainAfterError(err);
         return;

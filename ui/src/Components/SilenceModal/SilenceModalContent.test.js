@@ -20,7 +20,26 @@ beforeEach(() => {
   settingsStore = new Settings();
   silenceFormStore = new SilenceFormStore();
 
+  alertStore.data.upstreams = {
+    instances: [
+      {
+        name: "am1",
+        cluster: "am",
+        uri: "http://localhost:9093",
+        readonly: false,
+        error: "",
+        version: "0.15.3",
+        headers: {}
+      }
+    ],
+    clusters: { am: ["am1"] }
+  };
+
   silenceFormStore.tab.current = SilenceTabNames.Editor;
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
 const MockOnHide = jest.fn();
@@ -38,6 +57,13 @@ const ShallowSilenceModalContent = () => {
 };
 
 describe("<SilenceModalContent />", () => {
+  it("Renders ReadOnlyPlaceholder when there are no writable Alertmanager upstreams", () => {
+    alertStore.data.upstreams.instances[0].readonly = true;
+    const tree = ShallowSilenceModalContent();
+    const placeholder = tree.find("ReadOnlyPlaceholder");
+    expect(placeholder).toHaveLength(1);
+  });
+
   it("Clicking on the Browser tab changes content", () => {
     const tree = ShallowSilenceModalContent();
     const tabs = tree.find("Tab");

@@ -20,6 +20,78 @@ afterEach(() => {
   delete process.env.REACT_APP_BACKEND_URI;
 });
 
+describe("AlertStore.data", () => {
+  it("getClusterAlertmanagersWithoutReadOnly filters out readonly instances", () => {
+    const store = new AlertStore([]);
+    store.data.upstreams = {
+      clusters: { default: ["default", "readonly"] },
+      instances: [
+        {
+          name: "default",
+          uri: "http://localhost",
+          publicURI: "http://example.com:8080",
+          readonly: false,
+          headers: { foo: "bar" },
+          error: "",
+          version: "0.15.0",
+          cluster: "default",
+          clusterMembers: ["default", "readonly"]
+        },
+        {
+          name: "readonly",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com",
+          readonly: true,
+          headers: {},
+          error: "",
+          version: "0.15.0",
+          cluster: "default",
+          clusterMembers: ["default", "readonly"]
+        }
+      ]
+    };
+    expect(
+      store.data.getClusterAlertmanagersWithoutReadOnly("default")
+    ).toEqual(["default"]);
+  });
+});
+
+describe("AlertStore.data", () => {
+  it("getClusterAlertmanagersWithoutReadOnly handles clusters with no writable instances", () => {
+    const store = new AlertStore([]);
+    store.data.upstreams = {
+      clusters: { default: ["ro1", "ro2"] },
+      instances: [
+        {
+          name: "ro1",
+          uri: "http://localhost",
+          publicURI: "http://example.com:8080",
+          readonly: true,
+          headers: {},
+          error: "",
+          version: "0.15.0",
+          cluster: "default",
+          clusterMembers: ["ro1", "ro2"]
+        },
+        {
+          name: "ro2",
+          uri: "http://localhost:8081",
+          publicURI: "http://example.com",
+          readonly: true,
+          headers: {},
+          error: "",
+          version: "0.15.0",
+          cluster: "default",
+          clusterMembers: ["ro1", "ro2"]
+        }
+      ]
+    };
+    expect(
+      store.data.getClusterAlertmanagersWithoutReadOnly("default")
+    ).toEqual([]);
+  });
+});
+
 describe("AlertStore.status", () => {
   it("status is initially idle with no error", () => {
     const store = new AlertStore([]);

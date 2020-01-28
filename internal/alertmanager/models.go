@@ -39,6 +39,7 @@ type Alertmanager struct {
 	Name           string        `json:"name"`
 	// whenever this instance should be proxied
 	ProxyRequests bool `json:"proxyRequests"`
+	ReadOnly      bool `json:"readonly"`
 	// reader instances are specific to URI scheme we collect from
 	reader uri.Reader
 	// implements how we fetch requests from the Alertmanager, we don't set it

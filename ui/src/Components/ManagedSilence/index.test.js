@@ -33,6 +33,7 @@ beforeEach(() => {
         clusterMembers: ["am1"],
         uri: "http://localhost:9093",
         publicURI: "http://example.com",
+        readonly: false,
         error: "",
         version: "0.15.3",
         headers: {}
@@ -95,6 +96,7 @@ describe("<ManagedSilence />", () => {
       clusterMembers: ["am1"],
       uri: "http://localhost:9093",
       publicURI: "http://example.com",
+      readonly: false,
       error: "",
       version: "0.15.3",
       headers: {}

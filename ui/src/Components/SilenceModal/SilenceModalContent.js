@@ -3,6 +3,9 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
+
 import { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
@@ -15,6 +18,15 @@ import { SilenceForm } from "./SilenceForm";
 import { SilencePreview } from "./SilencePreview";
 import { SilenceSubmitController } from "./SilenceSubmit/SilenceSubmitController";
 import { Browser } from "./Browser";
+
+const ReadOnlyPlaceholder = () => (
+  <div className="jumbotron bg-transparent">
+    <h1 className="display-5 text-placeholder text-center">
+      <FontAwesomeIcon icon={faLock} className="mr-3" />
+      Read only mode
+    </h1>
+  </div>
+);
 
 const SilenceModalContent = observer(
   class SilenceModalContent extends Component {
@@ -82,12 +94,17 @@ const SilenceModalContent = observer(
             {silenceFormStore.tab.current === SilenceTabNames.Editor ? (
               silenceFormStore.data.currentStage ===
               SilenceFormStage.UserInput ? (
-                <SilenceForm
-                  alertStore={alertStore}
-                  silenceFormStore={silenceFormStore}
-                  settingsStore={settingsStore}
-                  previewOpen={previewOpen}
-                />
+                Object.keys(alertStore.data.clustersWithoutReadOnly).length >
+                0 ? (
+                  <SilenceForm
+                    alertStore={alertStore}
+                    silenceFormStore={silenceFormStore}
+                    settingsStore={settingsStore}
+                    previewOpen={previewOpen}
+                  />
+                ) : (
+                  <ReadOnlyPlaceholder />
+                )
               ) : silenceFormStore.data.currentStage ===
                 SilenceFormStage.Preview ? (
                 <SilencePreview

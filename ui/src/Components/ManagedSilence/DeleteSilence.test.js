@@ -26,6 +26,7 @@ beforeEach(() => {
         name: "am1",
         cluster: "am",
         uri: "http://localhost:9093",
+        readonly: false,
         error: "",
         version: "0.15.3",
         headers: {}

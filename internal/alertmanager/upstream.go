@@ -73,7 +73,7 @@ func RegisterAlertmanager(am *Alertmanager) error {
 		}
 	}
 	upstreams[am.Name] = am
-	log.Infof("[%s] Configured Alertmanager source at %s (proxied: %v)", am.Name, uri.SanitizeURI(am.URI), am.ProxyRequests)
+	log.Infof("[%s] Configured Alertmanager source at %s (proxied: %v, readonly: %v)", am.Name, uri.SanitizeURI(am.URI), am.ProxyRequests, am.ReadOnly)
 	return nil
 }
 
@@ -113,6 +113,15 @@ func WithProxy(proxied bool) Option {
 func WithRequestTimeout(timeout time.Duration) Option {
 	return func(am *Alertmanager) error {
 		am.RequestTimeout = timeout
+		return nil
+	}
+}
+
+// WithReadOnly option can be passed to NewAlertmanager in order to configure
+// it as read-only, in that mode it doesn't allow creating silences via Proxy
+func WithReadOnly(readonly bool) Option {
+	return func(am *Alertmanager) error {
+		am.ReadOnly = readonly
 		return nil
 	}
 }

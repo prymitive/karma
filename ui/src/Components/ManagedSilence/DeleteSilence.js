@@ -113,6 +113,7 @@ const DeleteSilenceModalContent = observer(
     getAlertmanager = () =>
       this.props.alertStore.data.upstreams.instances
         .filter(u => u.cluster === this.props.cluster)
+        .filter(u => u.readonly === false)
         .slice(0, 1)[0];
 
     parseAlertmanagerResponse = response => {
@@ -296,11 +297,16 @@ const DeleteSilence = observer(
         onModalExit
       } = this.props;
 
+      const members = alertStore.data.getClusterAlertmanagersWithoutReadOnly(
+        cluster
+      );
+
       return (
         <React.Fragment>
           <button
             className="btn btn-danger btn-sm"
-            onClick={this.toggle.toggle}
+            disabled={members.length === 0}
+            onClick={members.length && this.toggle.toggle}
           >
             <FontAwesomeIcon
               className="mr-1 d-none d-sm-inline-block"

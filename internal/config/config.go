@@ -36,6 +36,8 @@ func init() {
 		"Timeout for requests sent to the Alertmanager server (only used with simplified config)")
 	pflag.Bool("alertmanager.proxy", false,
 		"Proxy all client requests to Alertmanager via karma (only used with simplified config)")
+	pflag.Bool("alertmanager.readonly", false,
+		"Enable read-only mode that disable silence management (only used with simplified config)")
 
 	pflag.String("karma.name", "karma", "Name for the karma instance")
 
@@ -156,7 +158,7 @@ func (config *configSchema) Read() {
 		log.Fatal(err)
 	}
 
-	config.Alertmanager.Servers = []alertmanagerConfig{}
+	config.Alertmanager.Servers = []AlertmanagerConfig{}
 	config.Alertmanager.Interval = v.GetDuration("alertmanager.interval")
 	config.AlertAcknowledgement.Enabled = v.GetBool("alertAcknowledgement.enabled")
 	config.AlertAcknowledgement.Author = v.GetString("alertAcknowledgement.author")
@@ -282,13 +284,14 @@ func (config *configSchema) Read() {
 	// accept single Alertmanager server from flag/env if nothing is set yet
 	if len(config.Alertmanager.Servers) == 0 && v.GetString("alertmanager.uri") != "" {
 		log.Info("Using simple config with a single Alertmanager server")
-		config.Alertmanager.Servers = []alertmanagerConfig{
+		config.Alertmanager.Servers = []AlertmanagerConfig{
 			{
 				Name:        v.GetString("alertmanager.name"),
 				URI:         v.GetString("alertmanager.uri"),
 				ExternalURI: v.GetString("alertmanager.external_uri"),
 				Timeout:     v.GetDuration("alertmanager.timeout"),
 				Proxy:       v.GetBool("alertmanager.proxy"),
+				ReadOnly:    v.GetBool("alertmanager.readonly"),
 				Headers:     make(map[string]string),
 			},
 		}
@@ -301,15 +304,16 @@ func (config *configSchema) LogValues() {
 	cfg := configSchema(*config)
 
 	// replace passwords in Alertmanager URIs with 'xxx'
-	servers := []alertmanagerConfig{}
+	servers := []AlertmanagerConfig{}
 	for _, s := range cfg.Alertmanager.Servers {
-		server := alertmanagerConfig{
+		server := AlertmanagerConfig{
 			Name:        s.Name,
 			URI:         uri.SanitizeURI(s.URI),
 			ExternalURI: uri.SanitizeURI(s.ExternalURI),
 			Timeout:     s.Timeout,
 			TLS:         s.TLS,
 			Proxy:       s.Proxy,
+			ReadOnly:    s.ReadOnly,
 			Headers:     s.Headers,
 		}
 		servers = append(servers, server)

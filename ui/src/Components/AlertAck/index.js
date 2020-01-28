@@ -192,7 +192,7 @@ const AlertAck = observer(
         .filter(([amName, alertCount]) => alertCount > 0)
         .map(([amName, _]) => amName);
       const clusters = Object.entries(
-        alertStore.data.upstreams.clusters
+        alertStore.data.clustersWithoutReadOnly
       ).filter(([clusterName, clusterMembers]) =>
         alertmanagers.some(m => clusterMembers.includes(m))
       );

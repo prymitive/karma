@@ -1,0 +1,12 @@
+# Check if proxy mode is set correctly
+karma.bin-should-fail --log.format=text --log.config=true --config.file=karma.yaml --check-config
+! stdout .
+stderr 'msg="Failed to create Alertmanager ''failed'' with URI ''http://localhost'': cannot use proxy and readonly mode at the same time"'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: failed
+      uri: http://localhost
+      proxy: true
+      readonly: true

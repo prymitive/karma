@@ -40,6 +40,23 @@ storiesOf("SilenceModal", module)
     const settingsStore = new Settings();
     const silenceFormStore = new SilenceFormStore();
 
+    alertStore.data.upstreams = {
+      clusters: { default: ["default"] },
+      instances: [
+        {
+          name: "default",
+          uri: "http://localhost:8080",
+          publicURI: "http://example.com",
+          readonly: false,
+          headers: {},
+          error: "",
+          version: "0.15.0",
+          cluster: "default",
+          clusterMembers: ["default"]
+        }
+      ]
+    };
+
     silenceFormStore.toggle.visible = true;
     silenceFormStore.data.matchers = [
       MockMatcher("cluster", ["prod"], false),
@@ -96,8 +113,36 @@ storiesOf("SilenceModal", module)
       }
     );
 
+    const alertStoreReadOnly = new AlertStore([]);
+    alertStoreReadOnly.data.upstreams = {
+      clusters: { default: ["readonly"] },
+      instances: [
+        {
+          name: "readonly",
+          uri: "http://localhost:8080",
+          publicURI: "http://example.com",
+          readonly: true,
+          headers: {},
+          error: "",
+          version: "0.15.0",
+          cluster: "default",
+          clusterMembers: ["readonly"]
+        }
+      ]
+    };
+
     return (
       <React.Fragment>
+        <Modal>
+          <SilenceModalContent
+            alertStore={alertStoreReadOnly}
+            silenceFormStore={silenceFormStore}
+            settingsStore={settingsStore}
+            onHide={() => {}}
+            previewOpen={true}
+            onDeleteModalClose={() => {}}
+          />
+        </Modal>
         <Modal>
           <SilenceModalContent
             alertStore={alertStore}
@@ -142,6 +187,7 @@ storiesOf("SilenceModal", module)
           clusterMembers: ["am1"],
           uri: "http://localhost:9093",
           publicURI: "http://example.com",
+          readonly: false,
           error: "",
           version: "0.15.3",
           headers: {}
@@ -204,6 +250,7 @@ storiesOf("SilenceModal", module)
           clusterMembers: ["am1"],
           uri: "http://localhost:9093",
           publicURI: "http://example.com",
+          readonly: false,
           error: "",
           version: "0.15.3",
           headers: {}
