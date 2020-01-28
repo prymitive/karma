@@ -29,6 +29,7 @@ type AlertmanagerAPIStatus struct {
 	URI string `json:"uri"`
 	// this is the Alertmanager URI used for links in the browser
 	PublicURI      string            `json:"publicURI"`
+	ReadOnly       bool              `json:"readonly"`
 	Headers        map[string]string `json:"headers"`
 	Error          string            `json:"error"`
 	Version        string            `json:"version"`

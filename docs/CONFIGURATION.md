@@ -42,6 +42,7 @@ alertmanager:
       external_uri: string
       timeout: duration
       proxy: bool
+      readonly: bool
       tls:
         ca: string
         cert: string
@@ -81,7 +82,10 @@ alertmanager:
 - `proxy` - if enabled requests from user browsers to this Alertmanager will be
   proxied via karma. This applies to requests made when managing silences via
   karma (creating or expiring silences).
-  THis option cannot be used when `external_uri` is set.
+  This option cannot be used when `readonly` is enabled.
+- `readonly` - set this Alertmanager upstream to a read only mode. This will
+  disallow silence creation or editing.
+  This option cannot be used when `proxy` is enabled.
 - `tls:ca` - path to CA certificate used to establish TLS connection to this
   Alertmanager instance (for URIs using `https://` scheme). If unset or empty
   string is set then Go will try to find system CA certificates using well known
@@ -180,6 +184,19 @@ Breakdown of all combination of settings:
    | Backend | Silence management | Silence links |
    |-|-|-|
    | `http://localhost:123` | Karma internal URI | `http://example.com` |
+
+1. ReadOnly mode is enabled:
+
+  ```YAML
+  uri: http://localhost:123
+  readonly: true
+  ```
+
+  Karma would use those URIs for:
+
+  | Backend | Silence management | Silence links |
+  |-|-|-|
+  | `http://localhost:123` | Disabled | `http://localhost:123` |
 
 Example with two production Alertmanager instances running in HA mode and a
 staging instance that is also proxied and requires a custom auth header:

@@ -36,6 +36,8 @@ func init() {
 		"Timeout for requests sent to the Alertmanager server (only used with simplified config)")
 	pflag.Bool("alertmanager.proxy", false,
 		"Proxy all client requests to Alertmanager via karma (only used with simplified config)")
+	pflag.Bool("alertmanager.readonly", false,
+		"Enable read-only mode that disable silence management (only used with simplified config)")
 
 	pflag.String("karma.name", "karma", "Name for the karma instance")
 
@@ -289,6 +291,7 @@ func (config *configSchema) Read() {
 				ExternalURI: v.GetString("alertmanager.external_uri"),
 				Timeout:     v.GetDuration("alertmanager.timeout"),
 				Proxy:       v.GetBool("alertmanager.proxy"),
+				ReadOnly:    v.GetBool("alertmanager.readonly"),
 				Headers:     make(map[string]string),
 			},
 		}
@@ -310,6 +313,7 @@ func (config *configSchema) LogValues() {
 			Timeout:     s.Timeout,
 			TLS:         s.TLS,
 			Proxy:       s.Proxy,
+			ReadOnly:    s.ReadOnly,
 			Headers:     s.Headers,
 		}
 		servers = append(servers, server)

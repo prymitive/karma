@@ -11,6 +11,7 @@ type alertmanagerConfig struct {
 	ExternalURI string `yaml:"external_uri" mapstructure:"external_uri"`
 	Timeout     time.Duration
 	Proxy       bool
+	ReadOnly    bool `yaml:"readonly" mapstructure:"readonly"`
 	TLS         struct {
 		CA                 string
 		Cert               string

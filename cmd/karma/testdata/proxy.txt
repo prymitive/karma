@@ -1,0 +1,13 @@
+# Check if proxy mode is set correctly
+karma.bin-should-work --log.format=text --log.config=true --config.file=karma.yaml --check-config
+! stdout .
+stderr 'msg="    proxy: true"'
+stderr 'msg="\[proxied\] Configured Alertmanager source at http://localhost \(proxied: true\, readonly: false\)"'
+! stderr 'level=error'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: proxied
+      uri: http://localhost
+      proxy: true

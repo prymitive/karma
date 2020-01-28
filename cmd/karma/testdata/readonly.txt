@@ -1,0 +1,11 @@
+# Check if readonly mode is set correctly
+karma.bin-should-work --log.format=text --log.config=true --config.file=karma.yaml --check-config
+! stdout .
+stderr 'msg="\[readonly\] Configured Alertmanager source at http://localhost \(proxied: false\, readonly: true\)"'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: readonly
+      uri: http://localhost
+      readonly: true

@@ -63,6 +63,7 @@ func testReadConfig(t *testing.T) {
     external_uri: http://example.com
     timeout: 40s
     proxy: false
+    readonly: false
     tls:
       ca: ""
       cert: ""

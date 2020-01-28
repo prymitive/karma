@@ -112,6 +112,7 @@ func getUpstreams() models.AlertmanagerAPISummary {
 			Name:           upstream.Name,
 			URI:            upstream.InternalURI(),
 			PublicURI:      upstream.PublicURI(),
+			ReadOnly:       upstream.ReadOnly,
 			Headers:        map[string]string{},
 			Error:          upstream.Error(),
 			Version:        upstream.Version(),

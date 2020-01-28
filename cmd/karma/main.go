@@ -120,6 +120,10 @@ func setupMetrics(router *gin.Engine) {
 func setupUpstreams() error {
 	for _, s := range config.Config.Alertmanager.Servers {
 
+		if s.Proxy && s.ReadOnly {
+			return fmt.Errorf("Failed to create Alertmanager '%s' with URI '%s': cannot use proxy and readonly mode at the same time", s.Name, uri.SanitizeURI(s.URI))
+		}
+
 		var httpTransport http.RoundTripper
 		var err error
 		// if either TLS root CA or client cert is configured then initialize custom transport where we have this setup
@@ -136,6 +140,7 @@ func setupUpstreams() error {
 			alertmanager.WithExternalURI(s.ExternalURI),
 			alertmanager.WithRequestTimeout(s.Timeout),
 			alertmanager.WithProxy(s.Proxy),
+			alertmanager.WithReadOnly(s.ReadOnly),
 			alertmanager.WithHTTPTransport(httpTransport), // we will pass a nil unless TLS.CA or TLS.Cert is set
 			alertmanager.WithHTTPHeaders(s.Headers),
 		)
