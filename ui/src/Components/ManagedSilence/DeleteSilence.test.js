@@ -107,6 +107,18 @@ describe("<DeleteSilence />", () => {
       .simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(1);
   });
+
+  it("button is disabled when all alertmanager instances are read-only", () => {
+    alertStore.data.upstreams.instances[0].readonly = true;
+    const tree = MountedDeleteSilence();
+    expect(tree.find("button").prop("disabled")).toBe(true);
+
+    tree
+      .find("button")
+      .at(0)
+      .simulate("click");
+    expect(tree.find(".modal-body")).toHaveLength(0);
+  });
 });
 
 describe("<DeleteSilenceModalContent />", () => {

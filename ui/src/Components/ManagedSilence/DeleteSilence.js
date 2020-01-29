@@ -306,7 +306,9 @@ const DeleteSilence = observer(
           <button
             className="btn btn-danger btn-sm"
             disabled={members.length === 0}
-            onClick={members.length && this.toggle.toggle}
+            onClick={() => {
+              members.length > 0 && this.toggle.toggle();
+            }}
           >
             <FontAwesomeIcon
               className="mr-1 d-none d-sm-inline-block"

@@ -95,4 +95,16 @@ describe("<SilenceDetails />", () => {
     expect(copy).toHaveBeenCalledTimes(1);
     expect(copy).toHaveBeenCalledWith(silence.id);
   });
+
+  it("Edit silence button is disabled when all alertmanager instances are read-only", () => {
+    alertStore.data.upstreams.instances[0].readonly = true;
+    const tree = MountedSilenceDetails();
+    expect(tree.find("button").prop("disabled")).toBe(true);
+
+    tree
+      .find("button")
+      .at(0)
+      .simulate("click");
+    expect(tree.find(".modal-body")).toHaveLength(0);
+  });
 });
