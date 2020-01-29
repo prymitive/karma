@@ -159,7 +159,9 @@ const SilenceDetails = ({
             <button
               className="btn btn-primary btn-sm mb-lg-2 mb-0"
               disabled={isReadOnly}
-              onClick={!isReadOnly && onEditSilence}
+              onClick={() => {
+                !isReadOnly && onEditSilence();
+              }}
             >
               <FontAwesomeIcon
                 className="mr-1 d-none d-sm-inline-block"

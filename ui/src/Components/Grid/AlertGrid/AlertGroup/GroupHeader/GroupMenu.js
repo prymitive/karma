@@ -56,6 +56,9 @@ const MenuContent = onClickOutside(
     ].join("");
     const groupLink = `${baseURL}?${FormatAlertsQ(groupFilters)}`;
 
+    const isReadOnly =
+      Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0;
+
     return (
       <FetchPauser alertStore={alertStore}>
         <div
@@ -74,8 +77,11 @@ const MenuContent = onClickOutside(
             <FontAwesomeIcon icon={faShareSquare} /> Copy link to this group
           </div>
           <div
-            className="dropdown-item cursor-pointer"
-            onClick={() => onSilenceClick(alertStore, silenceFormStore, group)}
+            className={`dropdown-item cursor-pointer ${isReadOnly &&
+              "disabled"}`}
+            onClick={() =>
+              isReadOnly || onSilenceClick(alertStore, silenceFormStore, group)
+            }
           >
             <FontAwesomeIcon icon={faBellSlash} /> Silence this group
           </div>

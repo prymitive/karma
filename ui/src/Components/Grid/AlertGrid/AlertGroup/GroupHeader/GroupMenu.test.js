@@ -15,6 +15,23 @@ let silenceFormStore;
 beforeEach(() => {
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
+
+  alertStore.data.upstreams = {
+    clusters: { default: ["am1"] },
+    instances: [
+      {
+        name: "am1",
+        uri: "http://localhost:8080",
+        publicURI: "http://example.com",
+        readonly: false,
+        headers: {},
+        error: "",
+        version: "0.15.0",
+        cluster: "default",
+        clusterMembers: ["am1"]
+      }
+    ]
+  };
 });
 
 const MockAfterClick = jest.fn();
@@ -90,5 +107,16 @@ describe("<MenuContent />", () => {
     const button = tree.find(".dropdown-item").at(1);
     button.simulate("click");
     expect(silenceFormStore.toggle.visible).toBe(true);
+  });
+
+  it("'Silence' menu entry is disabled when all Alertmanager instances are read-only", () => {
+    alertStore.data.upstreams.instances[0].readonly = true;
+
+    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
+    const tree = MountedMenuContent(group);
+    const button = tree.find(".dropdown-item").at(1);
+    expect(button.hasClass("disabled")).toBe(true);
+    button.simulate("click");
+    expect(silenceFormStore.toggle.visible).toBe(false);
   });
 });
