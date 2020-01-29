@@ -44,6 +44,9 @@ const MenuContent = onClickOutside(
     alertStore,
     silenceFormStore
   }) => {
+    const isReadOnly =
+      Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0;
+
     return (
       <FetchPauser alertStore={alertStore}>
         <div
@@ -68,8 +71,10 @@ const MenuContent = onClickOutside(
           ))}
           <div className="dropdown-divider" />
           <div
-            className="dropdown-item cursor-pointer"
+            className={`dropdown-item cursor-pointer ${isReadOnly &&
+              "disabled"}`}
             onClick={() =>
+              isReadOnly ||
               onSilenceClick(alertStore, silenceFormStore, group, alert)
             }
           >
