@@ -103,6 +103,51 @@ describe("<ManagedSilence />", () => {
     });
   });
 
+  it("getAlertmanager() returns only writable instances", () => {
+    alertStore.data.upstreams = {
+      instances: [
+        {
+          name: "am1",
+          cluster: "am",
+          clusterMembers: ["am1", "am2"],
+          uri: "http://localhost:9093",
+          publicURI: "http://example.com",
+          readonly: false,
+          error: "",
+          version: "0.15.3",
+          headers: {}
+        },
+        {
+          name: "am2",
+          cluster: "am",
+          clusterMembers: ["am1", "am2"],
+          uri: "http://localhost:9094",
+          publicURI: "http://example.com",
+          readonly: true,
+          error: "",
+          version: "0.15.3",
+          headers: {}
+        }
+      ],
+      clusters: { am: ["am1", "am2"] }
+    };
+
+    const tree = MountedManagedSilence();
+    const instance = tree.instance();
+    const am = instance.getAlertmanager();
+    expect(am).toEqual({
+      name: "am1",
+      cluster: "am",
+      clusterMembers: ["am1"],
+      uri: "http://localhost:9093",
+      publicURI: "http://example.com",
+      readonly: false,
+      error: "",
+      version: "0.15.3",
+      headers: {}
+    });
+  });
+
   it("shows Edit button on unexpired silence", () => {
     const tree = MountedManagedSilence();
     tree.instance().collapse.toggle();

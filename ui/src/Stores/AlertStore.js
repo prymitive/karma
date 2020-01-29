@@ -176,6 +176,17 @@ class AlertStore {
       get readOnlyAlertmanagers() {
         return this.upstreams.instances.filter(am => am.readonly === true);
       },
+      get readWriteAlertmanagers() {
+        return this.upstreams.instances
+          .filter(am => am.readonly === false)
+          .map(am =>
+            Object.assign({}, am, {
+              clusterMembers: am.clusterMembers.filter(
+                m => this.isReadOnlyAlertmanager(m) === false
+              )
+            })
+          );
+      },
       get clustersWithoutReadOnly() {
         const clusters = {};
         for (const clusterID of Object.keys(this.upstreams.clusters)) {
@@ -196,6 +207,7 @@ class AlertStore {
     },
     {
       readOnlyAlertmanagers: computed,
+      readWriteAlertmanagers: computed,
       clustersWithoutReadOnly: computed
     },
     { name: "API Response data" }
