@@ -1,0 +1,364 @@
+# Print out and compare full logged config
+karma.bin-should-work --config.file=karma.yaml --check-config
+! stdout .
+cmp stderr expected.stderr
+
+-- karma.yaml --
+alertmanager:
+  interval: 10s
+  servers:
+    - name: ha1
+      uri: "http://localhost:9093"
+      timeout: 10s
+      proxy: true
+    - name: ha2
+      uri: "http://localhost:9094"
+      timeout: 10s
+      readonly: true
+    - name: local
+      uri: http://localhost:9095
+      timeout: 10s
+      proxy: true
+      readonly: false
+      headers:
+        X-Auth-Test: some-token-or-other-string
+    - name: client-auth
+      uri: https://localhost:9096
+      timeout: 10s
+      tls:
+        ca: ca.pem
+        cert: cert.pem
+        key: key.pem
+alertAcknowledgement:
+  enabled: true
+  duration: 15m0s
+  author: karma-ack
+  commentPrefix: ACK!
+annotations:
+  hidden:
+    - help
+custom:
+  js: /custom.js
+  css: /custom.css
+filters:
+  default:
+    - "@receiver=by-cluster-service"
+grid:
+  sorting:
+    order: label
+    reverse: false
+    label: severity
+    customValues:
+      labels:
+        cluster:
+          prod: 1
+          staging: 2
+          dev: 3
+        severity:
+          critical: 1
+          warning: 2
+          info: 3
+karma:
+  name: karma-demo
+labels:
+  color:
+    static:
+      - job
+    unique:
+      - cluster
+      - instance
+      - "@receiver"
+    custom:
+      region:
+        - value_re: ".*"
+          color: "#736598"
+      severity:
+        - value: info
+          color: "#87c4e0"
+        - value: warning
+          color: "#ffae42"
+        - value: critical
+          color: "#ff220c"
+log:
+  config: true
+  level: info
+  format: text
+  timestamp: false
+sentry:
+  private: abcdef1234567890
+  public: 1234567890abcdef
+silences:
+  comments:
+    linkDetect:
+      rules:
+        - regex: "(DEVOPS-[0-9]+)"
+          uriTemplate: https://jira.example.com/browse/$1
+silenceForm:
+  author:
+    populate_from_header:
+      header: "CF-RAY"
+      value_re: "^(.+)$"
+  strip:
+    labels:
+      - job
+      - severity
+      - region
+ui:
+  refresh: 10s
+  hideFiltersWhenIdle: true
+  colorTitlebar: false
+  theme: auto
+  minimalGroupWidth: 420
+  alertsPerGroup: 5
+  collapseGroups: collapsedOnMobile
+
+-- ca.pem --
+-----BEGIN CERTIFICATE-----
+MIIFZTCCA02gAwIBAgIUJPfJu8APxLYyqivnHQfBjjlJRAgwDQYJKoZIhvcNAQEL
+BQAwQjELMAkGA1UEBhMCWFgxFTATBgNVBAcMDERlZmF1bHQgQ2l0eTEcMBoGA1UE
+CgwTRGVmYXVsdCBDb21wYW55IEx0ZDAeFw0yMDAxMzExNDM2MTlaFw0yMjExMjAx
+NDM2MTlaMEIxCzAJBgNVBAYTAlhYMRUwEwYDVQQHDAxEZWZhdWx0IENpdHkxHDAa
+BgNVBAoME0RlZmF1bHQgQ29tcGFueSBMdGQwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDROLZzva3bTjFDtjZ/271qqg31I4lD8Ww5I9D1WXqUprvj/5AD
+3f4mm9Q8GzxOwU9vg3gUfNKdaOzAILC48QIvYpODWrq9AFuGdSubletMeP0wYz86
+aKMAHnevX9PzeyJUKLP5cNk4rrjMlhjQ7h1C6i24WYQ2C6vefwD2xggCGWQeAFWK
+slk0a4/Et4WODIcz3JR/mSgY92V1qVqd64zNlINuQS0RUpo4Haro8BG40hYQ91vy
+AcB4ot6XvAPscDDJqWRmMvS8ffT02LxPjkC4acNcb3UWQ4MmHqYzlnKzFFOZXgrN
+Rgql4scIChLnQ6cMeagl57WdcHVMBMPQrVAUUhY8QAk9oCqSv9nbAyvGeDQPd2os
+MA79HbXRuMvyQkGhg4aE76+jGVuzFthrTTnsgB2wmfs+CYKshcmK2Dkc3ikleCuQ
+0BI0lEwPvbmca4O5ihLExxy3yEEEkUDXYT37eNDM1DXl8ZNt26qnqxfhRqkGcS3J
+n4kh8mJt3zNfrkN4fcio3Mmj96mXmAt3Q1ezdFwoCEMdF+OPdqha4ZXn58usphe9
+GL81SfZE5vD8K7qX/RT5U2xZWDRpgfcvC7+uKxUsfxRTYoGcm7qyasBW/z+c+6M2
+Dw9dgL7Oa4jb9T3ZGTjRUMnJsQRENejRrCVfmsjxuU47NAvmVsVlxE+kbwIDAQAB
+o1MwUTAdBgNVHQ4EFgQUnvADDbWWde6ms1yI1MZVWGUA29swHwYDVR0jBBgwFoAU
+nvADDbWWde6ms1yI1MZVWGUA29swDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0B
+AQsFAAOCAgEAvp0YoXsV1B11k20rqEGqHu7gso1qvRs4RXZhcdcPEZBgDSdUnpRV
+8cL65kdji35C8w2ftZ/Hk7jGVdxhiWObf9297Og/GrBxPMnGlUTugz9UrEf4kMEV
+Yf+hYA0J2Yo1hAqsDRhawJM4ugKqz8BLtLKUEwE5KsSacOQklRanfbPtA3LqOCOE
+q5r+oAcXZ+CMSrIKG5nvHRENqvPcdQg9MS5hltlgpGZyCEZYFR/1Dzt07UShAELF
+Gr/F89pBedN7OjwPSrtG93aiuxiLAi/SKXoLiZQuTyj/9dwqjFLCtGYnf3zV1C2B
+uc2K+OixaX9pdKIsfxBzAXRS5DvPALv7bTU/ZHLsSCP4duz0MCfa13Ff5o25uehg
+0xrQxqrOO8eMexMHtamk+D6JV5vcL4Kbr7RnGbSO/VZS6Ac1ho9Ky8QX6hPm3wF9
+8GErph2uVQx6MGgP4w8UcHi3SNFAj53QC1lyFjpUV+mCrdChRF+aAVKL7ps96ec0
+2l7X/ETIV06DIMKgzyW72FwwMh613Ekj3jxSUjj/QC2qJA4AUNsYEcTwBPEohF4Y
+oln/flQHe6wVQfXUYxXdvPPz/TLiMX/qDgn7YerSddi7Q3rbziF9yc3eKRIwjpDe
+X58sTdO6oKBkKL9A1vXjhoduIUFnjMKjE7sGcM22oVqvAkXmOK9fir4=
+-----END CERTIFICATE-----
+
+-- cert.pem --
+-----BEGIN CERTIFICATE-----
+MIIEETCCAfkCFAnhQKlnnNaDPDMmEEWYifjRISlEMA0GCSqGSIb3DQEBCwUAMEIx
+CzAJBgNVBAYTAlhYMRUwEwYDVQQHDAxEZWZhdWx0IENpdHkxHDAaBgNVBAoME0Rl
+ZmF1bHQgQ29tcGFueSBMdGQwIBcNMjAwMTMxMTQzNzM5WhgPNDc1NzEyMjcxNDM3
+MzlaMEYxCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJDQTEUMBIGA1UECgwLTXlPcmcs
+IEluYy4xFDASBgNVBAMMC2V4YW1wbGUuY29tMIIBIjANBgkqhkiG9w0BAQEFAAOC
+AQ8AMIIBCgKCAQEA1/qxK9baIMl/M4bpBIQqVVcnqoNVoFsGbxPKv8iQV1z0k7e4
+RQgkjkDnI0kSd0xev0xB2KRP9voWk1c0lKeICaWVxJkubF8TozKPdkhKK9KlB/2V
+D6DdqZUEtKCPy22Mk391pNONtPgiNHoUkkaU2xo4/W08EfSrbEHhR94gIiix2+i+
+fhOE7wrmb1a1zymOiNxY/w4i0iy6jNXrBvezf0sTc6nY20n3+CP5tzeIcW16GGDI
+EBE7Af43a2+d3Sq2kLtbpZtRblCXGIeJoDlnupumypyg0suR97UMZAnUsmOx9IB/
+7ozYe0Q4foJYchq95KSbTvgI/jpURwE3sWJ4BwIDAQABMA0GCSqGSIb3DQEBCwUA
+A4ICAQCfzpCdLc2xZxbgd9uYxZTd9gvSP2/D8Aw83AEj4UfdhBF8zcKh6gDoZ9p6
+qmzzfa5S/AJ2gYV8Jcx35PPKL/+dMSBb3JgrWNoaVfyn/1nFdqc3ZYkuiuU89TwE
+SIlt0QJZsjsV2UhucMcw8TIMsj7LzOoyhMx/3cjfsuIcushpJQizyN7XfcsRZkE2
+hKKtVijfSngzfoi8GGgIFhV3Wy/HkSWDLNI4zigaHsUGikYjtT2fnBh5CHoSltUG
+t5RHZ0wyK/aK6uwkdVu2pPcecuKg2wR7TWiNzQJ/nNb0GPI4VCgSTlyTkJHqmHfi
+rqlONQglQgvYfJyGO45yhcW7+fhbJ138d+ekxAlPOfgQefeBs3Gqs39O57UOuexP
+qkLqMEV1N5urYGvVetLpwO2PrVXi9MH8Q/aGCM6Rn+BQiDqVd3A1PtXXdr7JiGBA
+wfVzT/hJZIgZOnwJTuJAgVcgI/iVDdYodPQEf9YdfEHrBLB6+v8X8yhyojw9JPe0
+5GY/gO4TgqIsRAsSTA9l7GM0IyscmN9rdibe9tqRqJd29iCpmWrKHwlofAwk2zLl
+aNbh7jryyHO+nav7mFRU2CQpNhspyuLv346K8hJjV7uf71gnTLT1dKPohW9s4wHj
+9eXVnMa0QHblHbJxAyBnHzczXpa56o9Eq6oueXt3vcjkeb26Hg==
+-----END CERTIFICATE-----
+
+-- key.pem --
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEA1/qxK9baIMl/M4bpBIQqVVcnqoNVoFsGbxPKv8iQV1z0k7e4
+RQgkjkDnI0kSd0xev0xB2KRP9voWk1c0lKeICaWVxJkubF8TozKPdkhKK9KlB/2V
+D6DdqZUEtKCPy22Mk391pNONtPgiNHoUkkaU2xo4/W08EfSrbEHhR94gIiix2+i+
+fhOE7wrmb1a1zymOiNxY/w4i0iy6jNXrBvezf0sTc6nY20n3+CP5tzeIcW16GGDI
+EBE7Af43a2+d3Sq2kLtbpZtRblCXGIeJoDlnupumypyg0suR97UMZAnUsmOx9IB/
+7ozYe0Q4foJYchq95KSbTvgI/jpURwE3sWJ4BwIDAQABAoIBAFcjHKIMT/sUcI6Q
+aqjYzd+ahzVjQYOt1d2wxYc02w90QHTslZq8W0tNYjO5QosBM+TIVnSabmy9n6gY
+ce1b3iXOOauVBcbRYTHhr0HQjqQ5mz2rEJ26kFPf/IMHmJxBeYr0zLkQZUbTKbG0
+Y2JUua/gV4ffr3GrHhJSThrZwmsk9BkJ72HY9DV+F96Pp6I4V7h93JTEIs4dns89
+eAefTXezasu18Zq0Xg81ltqWWAz/LAsawQxHoygVQCGd3u4p9ubmAlU56dW9xHUG
+l5bz6GouwHvMTBE5icyScydUyhtoO96y1l4fp1dHCxxqa+Kb47WZDA8m7jOFRXmv
+4BVunoECgYEA9cARBfUryI4LSmg/kecy9VPFG0z6Gb/pIQxTREs5n/kGknwWnScX
++lBk6/7/bueBCeAuCMZ75uEU1ru1s2vfS394Ab/3UibkekrPzmkLWAuWhZ6SPKx+
+q/1fh5quPgy0X3DbUE3t1GDGnPtbeTcHX1LAUokqgGpdavrUz44LmcECgYEA4PzA
+72eHQT1gLupoTVEjaq14ZgPJbjxFFOjFvBw1xex7GuYfAhwGTG57J1EiONtE32xs
+rrOzSjyATqjy6HUZwksVnwOak3lYoWtFdYx7jUlZM3cvJ6Hp155Ve41XCxv5tLf/
+kPXU5rM6pzQh5vncP0D49WFX3ZSiBp1myAjcs8cCgYB/ZytsI0anmrxPvuv2AB5z
+ARLWrHmcj9mUwIcKiNU/EiNOHfa7UmEj7Dnl/zT9khdbv1UeR4hEkbvz9yyj7/C7
+e0ID5jmZ5X/dxpslL2AqLRfD/gliWyrwj1LPQmnC0WNRd3i7kSsTR3iwOb+af+Ta
+jlQWdfYKzRnRNGjPkZyCAQKBgQC9moQFvZuwkUbDguwPbHeKaVJztnFEoyocquYo
+1yVB/T7ptlEfd/qe4uSKh8dtXuw11avptqs7vqzqnVrIKBdjM9+uuFzGN5dHwZ0x
+qQheUxgHVUO6BKuK+HZVvxFB3XucnwuTYHjhSt39FuQTQTIpZFnqgPSJWb8KEBAU
+N9O29QKBgAcCMRtAXokOSbtqdddbAXWfkbqfH5fy6vwu5UM4QbECjPuF7A9cfj7j
+A/n4tG7NU941X0nZ0+AkGdtevfp52L1ZKRTrlNPELlT4GHDRjyAEKoEQ1Nvjp4xF
+FLR1flnW2lx5o5csDzTpi+jgC6nu1zE0DWo1c5ZdpVO289POIpqh
+-----END RSA PRIVATE KEY-----
+
+-- expected.stderr --
+level=info msg="Reading configuration file karma.yaml"
+level=info msg="Version: dev"
+level=info msg="Parsed configuration:"
+level=info msg="alertmanager:"
+level=info msg="  interval: 10s"
+level=info msg="  servers:"
+level=info msg="  - name: ha1"
+level=info msg="    uri: http://localhost:9093"
+level=info msg="    external_uri: \"\""
+level=info msg="    timeout: 10s"
+level=info msg="    proxy: true"
+level=info msg="    readonly: false"
+level=info msg="    tls:"
+level=info msg="      ca: \"\""
+level=info msg="      cert: \"\""
+level=info msg="      key: \"\""
+level=info msg="      insecureSkipVerify: false"
+level=info msg="    headers: {}"
+level=info msg="  - name: ha2"
+level=info msg="    uri: http://localhost:9094"
+level=info msg="    external_uri: \"\""
+level=info msg="    timeout: 10s"
+level=info msg="    proxy: false"
+level=info msg="    readonly: true"
+level=info msg="    tls:"
+level=info msg="      ca: \"\""
+level=info msg="      cert: \"\""
+level=info msg="      key: \"\""
+level=info msg="      insecureSkipVerify: false"
+level=info msg="    headers: {}"
+level=info msg="  - name: local"
+level=info msg="    uri: http://localhost:9095"
+level=info msg="    external_uri: \"\""
+level=info msg="    timeout: 10s"
+level=info msg="    proxy: true"
+level=info msg="    readonly: false"
+level=info msg="    tls:"
+level=info msg="      ca: \"\""
+level=info msg="      cert: \"\""
+level=info msg="      key: \"\""
+level=info msg="      insecureSkipVerify: false"
+level=info msg="    headers:"
+level=info msg="      X-Auth-Test: some-token-or-other-string"
+level=info msg="  - name: client-auth"
+level=info msg="    uri: https://localhost:9096"
+level=info msg="    external_uri: \"\""
+level=info msg="    timeout: 10s"
+level=info msg="    proxy: false"
+level=info msg="    readonly: false"
+level=info msg="    tls:"
+level=info msg="      ca: ca.pem"
+level=info msg="      cert: cert.pem"
+level=info msg="      key: key.pem"
+level=info msg="      insecureSkipVerify: false"
+level=info msg="    headers: {}"
+level=info msg="alertAcknowledgement:"
+level=info msg="  enabled: true"
+level=info msg="  duration: 15m0s"
+level=info msg="  author: karma-ack"
+level=info msg="  commentPrefix: ACK!"
+level=info msg="annotations:"
+level=info msg="  default:"
+level=info msg="    hidden: false"
+level=info msg="  hidden:"
+level=info msg="  - help"
+level=info msg="  visible: []"
+level=info msg="  keep: []"
+level=info msg="  strip: []"
+level=info msg="custom:"
+level=info msg="  css: /custom.css"
+level=info msg="  js: /custom.js"
+level=info msg="debug: false"
+level=info msg="filters:"
+level=info msg="  default:"
+level=info msg="  - '@receiver=by-cluster-service'"
+level=info msg="grid:"
+level=info msg="  sorting:"
+level=info msg="    order: label"
+level=info msg="    reverse: false"
+level=info msg="    label: severity"
+level=info msg="    customValues:"
+level=info msg="      labels:"
+level=info msg="        cluster:"
+level=info msg="          dev: \"3\""
+level=info msg="          prod: \"1\""
+level=info msg="          staging: \"2\""
+level=info msg="        severity:"
+level=info msg="          critical: \"1\""
+level=info msg="          info: \"3\""
+level=info msg="          warning: \"2\""
+level=info msg="karma:"
+level=info msg="  name: karma-demo"
+level=info msg="labels:"
+level=info msg="  keep: []"
+level=info msg="  strip: []"
+level=info msg="  color:"
+level=info msg="    custom:"
+level=info msg="      region:"
+level=info msg="      - value: \"\""
+level=info msg="        value_re: .*"
+level=info msg="        color: '#736598'"
+level=info msg="      severity:"
+level=info msg="      - value: info"
+level=info msg="        value_re: \"\""
+level=info msg="        color: '#87c4e0'"
+level=info msg="      - value: warning"
+level=info msg="        value_re: \"\""
+level=info msg="        color: '#ffae42'"
+level=info msg="      - value: critical"
+level=info msg="        value_re: \"\""
+level=info msg="        color: '#ff220c'"
+level=info msg="    static:"
+level=info msg="    - job"
+level=info msg="    unique:"
+level=info msg="    - cluster"
+level=info msg="    - instance"
+level=info msg="    - '@receiver'"
+level=info msg="listen:"
+level=info msg="  address: \"\""
+level=info msg="  port: 8080"
+level=info msg="  prefix: /"
+level=info msg="log:"
+level=info msg="  config: true"
+level=info msg="  level: info"
+level=info msg="  format: text"
+level=info msg="  timestamp: false"
+level=info msg="receivers:"
+level=info msg="  keep: []"
+level=info msg="  strip: []"
+level=info msg="sentry:"
+level=info msg="  private: abcdef1234567890"
+level=info msg="  public: 1234567890abcdef"
+level=info msg="silences:"
+level=info msg="  comments:"
+level=info msg="    linkDetect:"
+level=info msg="      rules:"
+level=info msg="      - regex: (DEVOPS-[0-9]+)"
+level=info msg="        uriTemplate: https://jira.example.com/browse/$1"
+level=info msg="silenceForm:"
+level=info msg="  author:"
+level=info msg="    populate_from_header:"
+level=info msg="      header: CF-RAY"
+level=info msg="      value_re: ^(.+)$"
+level=info msg="  strip:"
+level=info msg="    labels:"
+level=info msg="    - job"
+level=info msg="    - severity"
+level=info msg="    - region"
+level=info msg="ui:"
+level=info msg="  refresh: 10s"
+level=info msg="  hideFiltersWhenIdle: true"
+level=info msg="  colorTitlebar: false"
+level=info msg="  theme: auto"
+level=info msg="  minimalGroupWidth: 420"
+level=info msg="  alertsPerGroup: 5"
+level=info msg="  collapseGroups: collapsedOnMobile"
+level=info msg="[ha1] Configured Alertmanager source at http://localhost:9093 (proxied: true, readonly: false)"
+level=info msg="[ha2] Configured Alertmanager source at http://localhost:9094 (proxied: false, readonly: true)"
+level=info msg="[local] Configured Alertmanager source at http://localhost:9095 (proxied: true, readonly: false)"
+level=info msg="[client-auth] Configured Alertmanager source at https://localhost:9096 (proxied: false, readonly: false)"
+level=info msg="Configuration is valid"

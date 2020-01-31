@@ -124,6 +124,7 @@ log:
   config: true
   level: info
   format: text
+  timestamp: true
 receivers:
   keep: []
   strip: []

@@ -91,9 +91,10 @@ type configSchema struct {
 		Prefix  string
 	}
 	Log struct {
-		Config bool
-		Level  string
-		Format string
+		Config    bool
+		Level     string
+		Format    string
+		Timestamp bool
 	}
 	Receivers struct {
 		Keep  []string

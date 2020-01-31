@@ -1,4 +1,4 @@
-# Validates config when --check-config is passed
+# Validates that case sensitive keys are read correctly from config file
 karma.bin-should-work --log.format=text --log.config=true --config.file=karma.yaml --check-config
 ! stdout .
 stderr 'msg="labels:"'

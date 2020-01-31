@@ -83,6 +83,7 @@ func init() {
 		"Log level, one of: debug, info, warning, error, fatal and panic")
 	pflag.String("log.format", "text",
 		"Log format, one of: text, json")
+	pflag.Bool("log.timestamp", true, "Add timestamps to all log messages")
 
 	pflag.StringSlice("receivers.keep", []string{},
 		"List of receivers to keep, all alerts with different receivers will be ignored")
@@ -111,7 +112,7 @@ func init() {
 
 // ReadConfig will read all sources of configuration, merge all keys and
 // populate global Config variable, it should be only called on startup
-func (config *configSchema) Read() {
+func (config *configSchema) Read() string {
 	v := viper.New()
 
 	err := v.BindPFlags(pflag.CommandLine)
@@ -149,7 +150,6 @@ func (config *configSchema) Read() {
 		}
 	}
 	if configFile != "" {
-		log.Infof("Reading configuration file %s", configFile)
 		v.SetConfigFile(configFile)
 	}
 
@@ -188,6 +188,7 @@ func (config *configSchema) Read() {
 	config.Log.Config = v.GetBool("log.config")
 	config.Log.Level = v.GetString("log.level")
 	config.Log.Format = v.GetString("log.format")
+	config.Log.Timestamp = v.GetBool("log.timestamp")
 	config.Receivers.Keep = v.GetStringSlice("receivers.keep")
 	config.Receivers.Strip = v.GetStringSlice("receivers.strip")
 	config.Sentry.Private = v.GetString("sentry.private")
@@ -296,6 +297,8 @@ func (config *configSchema) Read() {
 			},
 		}
 	}
+
+	return v.ConfigFileUsed()
 }
 
 // LogValues will dump runtime config to logs
