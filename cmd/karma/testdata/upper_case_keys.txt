@@ -1,0 +1,42 @@
+# Validates config when --check-config is passed
+karma.bin-should-work --log.format=text --log.config=true --config.file=karma.yaml --check-config
+! stdout .
+stderr 'msg="labels:"'
+stderr 'msg="  keep: \[\]"'
+stderr 'msg="  strip: \[\]"'
+stderr 'msg="  color:"'
+stderr 'msg="    custom:"'
+stderr 'msg="      region:"'
+stderr 'msg="      - value: \\"\\""'
+stderr 'msg="        value_re: .*"'
+stderr 'msg="        color: ''#736598''"'
+stderr 'msg="      severity:"'
+stderr 'msg="      - value: P3"'
+stderr 'msg="        value_re: \\"\\""'
+stderr 'msg="        color: ''#87c4e0''"'
+stderr 'msg="      - value: P2"'
+stderr 'msg="        value_re: \\"\\""'
+stderr 'msg="        color: ''#ffae42''"'
+stderr 'msg="      - value: P1"'
+stderr 'msg="        value_re: \\"\\""'
+stderr 'msg="        color: ''#ff220c''"'
+! stderr 'level=error'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: am
+      uri: https://localhost:9093
+labels:
+  color:
+    custom:
+      region:
+        - value_re: ".*"
+          color: "#736598"
+      severity:
+        - value: P3
+          color: "#87c4e0"
+        - value: P2
+          color: "#ffae42"
+        - value: P1
+          color: "#ff220c"
