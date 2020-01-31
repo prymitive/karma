@@ -33,7 +33,7 @@
     "prop-types": "15.7.2",
     "qs": "6.9.1",
     "react": "16.12.0",
-    "react-app-polyfill": "1.0.5",
+    "react-app-polyfill": "1.0.6",
     "react-autosuggest": "9.4.3",
     "react-collapsible": "2.6.2",
     "react-datepicker": "2.11.0",
