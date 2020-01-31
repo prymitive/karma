@@ -176,9 +176,13 @@ func setupLogger() error {
 
 	switch config.Config.Log.Format {
 	case "text":
-		log.SetFormatter(&log.TextFormatter{})
+		log.SetFormatter(&log.TextFormatter{
+			DisableTimestamp: !config.Config.Log.Timestamp,
+		})
 	case "json":
-		log.SetFormatter(&log.JSONFormatter{})
+		log.SetFormatter(&log.JSONFormatter{
+			DisableTimestamp: !config.Config.Log.Timestamp,
+		})
 	default:
 		return fmt.Errorf("Unknown log format '%s'", config.Config.Log.Format)
 	}
@@ -196,10 +200,14 @@ func mainSetup() (*gin.Engine, error) {
 		return nil, nil
 	}
 
-	config.Config.Read()
+	configFile := config.Config.Read()
 	err := setupLogger()
 	if err != nil {
 		return nil, err
+	}
+
+	if configFile != "" {
+		log.Infof("Reading configuration file %s", configFile)
 	}
 
 	// timer duration cannot be zero second or a negative one
