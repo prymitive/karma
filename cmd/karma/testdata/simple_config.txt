@@ -1,5 +1,4 @@
 # Works in simple mode when single --alertmanager.uri flag is passed
 karma.bin-should-work --log.format=text --log.config=false --alertmanager.uri=http://localhost
 ! stdout .
-stderr 'msg="Using simple config with a single Alertmanager server"'
 stderr 'msg="\[default\] Configured Alertmanager source at http://localhost \(proxied: false\, readonly: false\)"'
