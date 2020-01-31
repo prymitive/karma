@@ -1,4 +1,4 @@
-# Print out and compare full logged config
+# Print out and compare logged config set via config file
 karma.bin-should-work --config.file=karma.yaml --check-config
 ! stdout .
 cmp stderr expected.stderr
@@ -31,12 +31,23 @@ alertmanager:
         key: key.pem
 alertAcknowledgement:
   enabled: true
-  duration: 15m0s
-  author: karma-ack
+  duration: 7m0s
+  author: karma
   commentPrefix: ACK!
 annotations:
+  default:
+    hidden: true
   hidden:
     - help
+    - summary
+  visible:
+    - visible
+  keep:
+    - keep
+  strip:
+    - strip1
+    - strip2
+    - strip3
 custom:
   js: /custom.js
   css: /custom.css
@@ -61,6 +72,12 @@ grid:
 karma:
   name: karma-demo
 labels:
+  keep:
+    - keep1
+    - keep2
+  strip:
+    - strip1
+    - strip2
   color:
     static:
       - job
@@ -84,6 +101,13 @@ log:
   level: info
   format: text
   timestamp: false
+receivers:
+  keep:
+    - keep1
+    - keep2
+  strip:
+    - strip1
+    - strip2
 sentry:
   private: abcdef1234567890
   public: 1234567890abcdef
@@ -258,17 +282,23 @@ level=info msg="      insecureSkipVerify: false"
 level=info msg="    headers: {}"
 level=info msg="alertAcknowledgement:"
 level=info msg="  enabled: true"
-level=info msg="  duration: 15m0s"
-level=info msg="  author: karma-ack"
+level=info msg="  duration: 7m0s"
+level=info msg="  author: karma"
 level=info msg="  commentPrefix: ACK!"
 level=info msg="annotations:"
 level=info msg="  default:"
-level=info msg="    hidden: false"
+level=info msg="    hidden: true"
 level=info msg="  hidden:"
 level=info msg="  - help"
-level=info msg="  visible: []"
-level=info msg="  keep: []"
-level=info msg="  strip: []"
+level=info msg="  - summary"
+level=info msg="  visible:"
+level=info msg="  - visible"
+level=info msg="  keep:"
+level=info msg="  - keep"
+level=info msg="  strip:"
+level=info msg="  - strip1"
+level=info msg="  - strip2"
+level=info msg="  - strip3"
 level=info msg="custom:"
 level=info msg="  css: /custom.css"
 level=info msg="  js: /custom.js"
@@ -294,8 +324,12 @@ level=info msg="          warning: \"2\""
 level=info msg="karma:"
 level=info msg="  name: karma-demo"
 level=info msg="labels:"
-level=info msg="  keep: []"
-level=info msg="  strip: []"
+level=info msg="  keep:"
+level=info msg="  - keep1"
+level=info msg="  - keep2"
+level=info msg="  strip:"
+level=info msg="  - strip1"
+level=info msg="  - strip2"
 level=info msg="  color:"
 level=info msg="    custom:"
 level=info msg="      region:"
@@ -328,8 +362,12 @@ level=info msg="  level: info"
 level=info msg="  format: text"
 level=info msg="  timestamp: false"
 level=info msg="receivers:"
-level=info msg="  keep: []"
-level=info msg="  strip: []"
+level=info msg="  keep:"
+level=info msg="  - keep1"
+level=info msg="  - keep2"
+level=info msg="  strip:"
+level=info msg="  - strip1"
+level=info msg="  - strip2"
 level=info msg="sentry:"
 level=info msg="  private: abcdef1234567890"
 level=info msg="  public: 1234567890abcdef"

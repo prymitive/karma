@@ -284,7 +284,6 @@ func (config *configSchema) Read() string {
 
 	// accept single Alertmanager server from flag/env if nothing is set yet
 	if len(config.Alertmanager.Servers) == 0 && v.GetString("alertmanager.uri") != "" {
-		log.Info("Using simple config with a single Alertmanager server")
 		config.Alertmanager.Servers = []AlertmanagerConfig{
 			{
 				Name:        v.GetString("alertmanager.name"),

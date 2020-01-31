@@ -1,0 +1,180 @@
+# Print out and compare logged config set via env variables
+env ALERTMANAGER_INTERVAL=10s
+env ALERTMANAGER_NAME=ro
+env ALERTMANAGER_URI=http://localhost:9093
+env ALERTMANAGER_EXTERNAL_URI=http://localhost:9093
+env ALERTMANAGER_READONLY=true
+env ALERTMANAGER_TIMEOUT=10s
+
+env ALERTACKNOWLEDGEMENT_ENABLED=true
+env ALERTACKNOWLEDGEMENT_DURATION=5m
+env ALERTACKNOWLEDGEMENT_AUTHOR=karma
+env ALERTACKNOWLEDGEMENT_COMMENTPREFIX=ACK
+
+env ANNOTATIONS_DEFAULT_HIDDEN=true
+env ANNOTATIONS_HIDDEN='help summary'
+env ANNOTATIONS_VISIBLE='visible'
+env ANNOTATIONS_KEEP='keep'
+env ANNOTATIONS_STRIP='strip1 strip2 strip3'
+
+env CUSTOM_CSS='/custom.css'
+env CUSTOM_JS='/custom.js'
+
+env DEBUG=true
+
+env FILTERS_DEFAULT='@receiver=by-cluster-service @state=active'
+
+env GRID_SORTING_ORDER=label
+env GRID_SORTING_REVERSE=false
+env GRID_SORTING_LABEL=severity
+
+env KARMA_NAME=karma-demo
+
+env LABELS_COLOR_STATIC=job
+env LABELS_COLOR_UNIQUE='@receiver instance cluster'
+env LABELS_KEEP='keep1 keep2'
+env LABELS_STRIP='strip1 strip2'
+
+env LISTEN_ADDRESS=localhost
+env LISTEN_PORT=1234
+env LISTEN_PREFIX='/prefix/'
+
+env LOG_CONFIG=true
+env LOG_LEVEL=info
+env LOG_FORMAT=text
+env LOG_TIMESTAMP=false
+
+env RECEIVERS_KEEP='keep1 keep2'
+env RECEIVERS_STRIP='strip1 strip2'
+
+env SENTRY_DSN=abcdef1234567890
+env SENTRY_PUBLIC=1234567890abcdef
+
+env SILENCEFORM_AUTHOR_POPULATE_FROM_HEADER_HEADER=CF-RAY
+env SILENCEFORM_AUTHOR_POPULATE_FROM_HEADER_VALUE_RE='^(.+)$'
+env SILENCEFORM_STRIP_LABELS='job severity region'
+
+env UI_REFRESH=10s
+env UI_HIDEFILTERSWHENIDLE=false
+env UI_COLORTITLEBAR=true
+env UI_THEME=dark
+env UI_MINIMALGROUPWIDTH=300
+env UI_ALERTSPERGROUP=2
+env UI_COLLAPSEGROUPS=expanded
+
+karma.bin-should-work --check-config
+! stdout .
+cmp stderr expected.stderr
+
+-- expected.stderr --
+level=info msg="Version: dev"
+level=info msg="Parsed configuration:"
+level=info msg="alertmanager:"
+level=info msg="  interval: 10s"
+level=info msg="  servers:"
+level=info msg="  - name: ro"
+level=info msg="    uri: http://localhost:9093"
+level=info msg="    external_uri: http://localhost:9093"
+level=info msg="    timeout: 10s"
+level=info msg="    proxy: false"
+level=info msg="    readonly: true"
+level=info msg="    tls:"
+level=info msg="      ca: \"\""
+level=info msg="      cert: \"\""
+level=info msg="      key: \"\""
+level=info msg="      insecureSkipVerify: false"
+level=info msg="    headers: {}"
+level=info msg="alertAcknowledgement:"
+level=info msg="  enabled: true"
+level=info msg="  duration: 5m0s"
+level=info msg="  author: karma"
+level=info msg="  commentPrefix: ACK"
+level=info msg="annotations:"
+level=info msg="  default:"
+level=info msg="    hidden: true"
+level=info msg="  hidden:"
+level=info msg="  - help"
+level=info msg="  - summary"
+level=info msg="  visible:"
+level=info msg="  - visible"
+level=info msg="  keep:"
+level=info msg="  - keep"
+level=info msg="  strip:"
+level=info msg="  - strip1"
+level=info msg="  - strip2"
+level=info msg="  - strip3"
+level=info msg="custom:"
+level=info msg="  css: /custom.css"
+level=info msg="  js: /custom.js"
+level=info msg="debug: true"
+level=info msg="filters:"
+level=info msg="  default:"
+level=info msg="  - '@receiver=by-cluster-service'"
+level=info msg="  - '@state=active'"
+level=info msg="grid:"
+level=info msg="  sorting:"
+level=info msg="    order: label"
+level=info msg="    reverse: false"
+level=info msg="    label: severity"
+level=info msg="    customValues:"
+level=info msg="      labels: {}"
+level=info msg="karma:"
+level=info msg="  name: karma-demo"
+level=info msg="labels:"
+level=info msg="  keep:"
+level=info msg="  - keep1"
+level=info msg="  - keep2"
+level=info msg="  strip:"
+level=info msg="  - strip1"
+level=info msg="  - strip2"
+level=info msg="  color:"
+level=info msg="    custom: {}"
+level=info msg="    static:"
+level=info msg="    - job"
+level=info msg="    unique:"
+level=info msg="    - '@receiver'"
+level=info msg="    - instance"
+level=info msg="    - cluster"
+level=info msg="listen:"
+level=info msg="  address: localhost"
+level=info msg="  port: 1234"
+level=info msg="  prefix: /prefix/"
+level=info msg="log:"
+level=info msg="  config: true"
+level=info msg="  level: info"
+level=info msg="  format: text"
+level=info msg="  timestamp: false"
+level=info msg="receivers:"
+level=info msg="  keep:"
+level=info msg="  - keep1"
+level=info msg="  - keep2"
+level=info msg="  strip:"
+level=info msg="  - strip1"
+level=info msg="  - strip2"
+level=info msg="sentry:"
+level=info msg="  private: abcdef1234567890"
+level=info msg="  public: 1234567890abcdef"
+level=info msg="silences:"
+level=info msg="  comments:"
+level=info msg="    linkDetect:"
+level=info msg="      rules: []"
+level=info msg="silenceForm:"
+level=info msg="  author:"
+level=info msg="    populate_from_header:"
+level=info msg="      header: CF-RAY"
+level=info msg="      value_re: ^(.+)$"
+level=info msg="  strip:"
+level=info msg="    labels:"
+level=info msg="    - job"
+level=info msg="    - severity"
+level=info msg="    - region"
+level=info msg="ui:"
+level=info msg="  refresh: 10s"
+level=info msg="  hideFiltersWhenIdle: false"
+level=info msg="  colorTitlebar: true"
+level=info msg="  theme: dark"
+level=info msg="  minimalGroupWidth: 300"
+level=info msg="  alertsPerGroup: 2"
+level=info msg="  collapseGroups: expanded"
+level=info msg="[ro] Configured Alertmanager source at http://localhost:9093 (proxied: false, readonly: true)"
+level=info msg="Configuration is valid"

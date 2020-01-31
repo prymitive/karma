@@ -167,7 +167,7 @@ benchmark-go:
 
 .PHONY: test-go
 test-go:
-	GO111MODULE=on go test -v \
+	GO111MODULE=on go test \
 		-cover -coverprofile=coverage.txt -covermode=atomic \
 		./...
 
