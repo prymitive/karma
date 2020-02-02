@@ -78,7 +78,7 @@
     "@commitlint/travis-cli": "8.3.5",
     "@percy-io/percy-storybook": "2.1.0",
     "@storybook/preset-create-react-app": "1.5.2",
-    "@storybook/react": "5.3.9",
+    "@storybook/react": "5.3.10",
     "diffable-html": "4.0.0",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.2",
