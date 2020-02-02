@@ -13,7 +13,7 @@ import (
 
 	strfmt "github.com/go-openapi/strfmt"
 
-	models "github.com/prymitive/karma/internal/mapper/v017/models"
+	"github.com/prymitive/karma/internal/mapper/v017/models"
 )
 
 // GetStatusReader is a Reader for the GetStatus structure.
