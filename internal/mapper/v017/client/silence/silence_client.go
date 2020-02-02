@@ -9,12 +9,11 @@ import (
 	"fmt"
 
 	"github.com/go-openapi/runtime"
-
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 )
 
 // New creates a new silence API client.
-func New(transport runtime.ClientTransport, formats strfmt.Registry) *Client {
+func New(transport runtime.ClientTransport, formats strfmt.Registry) ClientService {
 	return &Client{transport: transport, formats: formats}
 }
 
@@ -26,8 +25,21 @@ type Client struct {
 	formats   strfmt.Registry
 }
 
+// ClientService is the interface for Client methods
+type ClientService interface {
+	DeleteSilence(params *DeleteSilenceParams) (*DeleteSilenceOK, error)
+
+	GetSilence(params *GetSilenceParams) (*GetSilenceOK, error)
+
+	GetSilences(params *GetSilencesParams) (*GetSilencesOK, error)
+
+	PostSilences(params *PostSilencesParams) (*PostSilencesOK, error)
+
+	SetTransport(transport runtime.ClientTransport)
+}
+
 /*
-DeleteSilence Delete a silence by its ID
+  DeleteSilence Delete a silence by its ID
 */
 func (a *Client) DeleteSilence(params *DeleteSilenceParams) (*DeleteSilenceOK, error) {
 	// TODO: Validate the params before sending
@@ -61,7 +73,7 @@ func (a *Client) DeleteSilence(params *DeleteSilenceParams) (*DeleteSilenceOK, e
 }
 
 /*
-GetSilence Get a silence by its ID
+  GetSilence Get a silence by its ID
 */
 func (a *Client) GetSilence(params *GetSilenceParams) (*GetSilenceOK, error) {
 	// TODO: Validate the params before sending
@@ -95,7 +107,7 @@ func (a *Client) GetSilence(params *GetSilenceParams) (*GetSilenceOK, error) {
 }
 
 /*
-GetSilences Get a list of silences
+  GetSilences Get a list of silences
 */
 func (a *Client) GetSilences(params *GetSilencesParams) (*GetSilencesOK, error) {
 	// TODO: Validate the params before sending
@@ -129,7 +141,7 @@ func (a *Client) GetSilences(params *GetSilencesParams) (*GetSilencesOK, error) 
 }
 
 /*
-PostSilences Post a new silence or update an existing one
+  PostSilences Post a new silence or update an existing one
 */
 func (a *Client) PostSilences(params *PostSilencesParams) (*PostSilencesOK, error) {
 	// TODO: Validate the params before sending

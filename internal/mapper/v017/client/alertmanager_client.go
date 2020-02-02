@@ -6,10 +6,10 @@ package client
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
-	"github.com/go-openapi/runtime"
 	httptransport "github.com/go-openapi/runtime/client"
 
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/strfmt"
 
 	"github.com/prymitive/karma/internal/mapper/v017/client/alert"
 	"github.com/prymitive/karma/internal/mapper/v017/client/alertgroup"
@@ -60,17 +60,11 @@ func New(transport runtime.ClientTransport, formats strfmt.Registry) *Alertmanag
 
 	cli := new(Alertmanager)
 	cli.Transport = transport
-
 	cli.Alert = alert.New(transport, formats)
-
 	cli.Alertgroup = alertgroup.New(transport, formats)
-
 	cli.General = general.New(transport, formats)
-
 	cli.Receiver = receiver.New(transport, formats)
-
 	cli.Silence = silence.New(transport, formats)
-
 	return cli
 }
 
@@ -115,15 +109,15 @@ func (cfg *TransportConfig) WithSchemes(schemes []string) *TransportConfig {
 
 // Alertmanager is a client for alertmanager
 type Alertmanager struct {
-	Alert *alert.Client
+	Alert alert.ClientService
 
-	Alertgroup *alertgroup.Client
+	Alertgroup alertgroup.ClientService
 
-	General *general.Client
+	General general.ClientService
 
-	Receiver *receiver.Client
+	Receiver receiver.ClientService
 
-	Silence *silence.Client
+	Silence silence.ClientService
 
 	Transport runtime.ClientTransport
 }
@@ -131,15 +125,9 @@ type Alertmanager struct {
 // SetTransport changes the transport on the client and all its subresources
 func (c *Alertmanager) SetTransport(transport runtime.ClientTransport) {
 	c.Transport = transport
-
 	c.Alert.SetTransport(transport)
-
 	c.Alertgroup.SetTransport(transport)
-
 	c.General.SetTransport(transport)
-
 	c.Receiver.SetTransport(transport)
-
 	c.Silence.SetTransport(transport)
-
 }
