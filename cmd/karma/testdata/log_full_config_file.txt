@@ -1,9 +1,9 @@
 # Print out and compare logged config set via config file
-karma.bin-should-work --config.file=karma.yaml --check-config
+karma.bin-should-work --config.file=custom.yaml --check-config
 ! stdout .
 cmp stderr expected.stderr
 
--- karma.yaml --
+-- custom.yaml --
 alertmanager:
   interval: 10s
   servers:
@@ -224,7 +224,7 @@ FLR1flnW2lx5o5csDzTpi+jgC6nu1zE0DWo1c5ZdpVO289POIpqh
 -----END RSA PRIVATE KEY-----
 
 -- expected.stderr --
-level=info msg="Reading configuration file karma.yaml"
+level=info msg="Reading configuration file custom.yaml"
 level=info msg="Version: dev"
 level=info msg="Parsed configuration:"
 level=info msg="alertmanager:"

@@ -1,0 +1,14 @@
+# Raises an error if silence form populate from header config is missing header name
+karma.bin-should-fail --log.format=text --log.config=false --log.level=error --config.file=karma.yaml
+! stdout .
+stderr 'msg="silenceform.author.populate_from_header.header is required when silenceform.author.populate_from_header.value_re is set"'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: default
+      uri: https://localhost:9093
+silenceForm:
+  author:
+    populate_from_header:
+      value_re: "^(.+)$"
