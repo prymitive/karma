@@ -1,0 +1,11 @@
+# Raises an error if we pass alertmanager.interval value that doesn't parse
+karma.bin-should-fail-no-timestamp --log.format=text --log.config=false --log.level=error --config.file karma.yaml
+! stdout .
+stderr 'level=fatal msg="yaml: unmarshal errors:\\n  line 2: cannot unmarshal !!str `abc123` into time.Duration"'
+
+-- karma.yaml --
+alertmanager:
+  interval: abc123
+  servers:
+    - name: am
+      uri: https://localhost:9093

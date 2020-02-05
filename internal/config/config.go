@@ -23,99 +23,100 @@ var (
 	Config configSchema
 )
 
-func init() {
-	pflag.Duration("alertmanager.interval", time.Minute,
+// SetupFlags is used to attach configuration flags to the main flag set
+func SetupFlags(f *pflag.FlagSet) {
+	f.Duration("alertmanager.interval", time.Minute,
 		"Interval for fetching data from Alertmanager servers")
-	pflag.String("alertmanager.name", "default",
+	f.String("alertmanager.name", "default",
 		"Name for the Alertmanager server (only used with simplified config)")
-	pflag.String("alertmanager.uri", "",
+	f.String("alertmanager.uri", "",
 		"Alertmanager server URI (only used with simplified config)")
-	pflag.String("alertmanager.external_uri", "",
+	f.String("alertmanager.external_uri", "",
 		"Alertmanager server URI used for web UI links (only used with simplified config)")
-	pflag.Duration("alertmanager.timeout", time.Second*40,
+	f.Duration("alertmanager.timeout", time.Second*40,
 		"Timeout for requests sent to the Alertmanager server (only used with simplified config)")
-	pflag.Bool("alertmanager.proxy", false,
+	f.Bool("alertmanager.proxy", false,
 		"Proxy all client requests to Alertmanager via karma (only used with simplified config)")
-	pflag.Bool("alertmanager.readonly", false,
+	f.Bool("alertmanager.readonly", false,
 		"Enable read-only mode that disable silence management (only used with simplified config)")
 
-	pflag.String("karma.name", "karma", "Name for the karma instance")
+	f.String("karma.name", "karma", "Name for the karma instance")
 
-	pflag.Bool("alertAcknowledgement.enabled", false, "Enable alert acknowledging")
-	pflag.Duration("alertAcknowledgement.duration", time.Minute*15, "Initial silence duration when acknowledging alerts with short lived silences")
-	pflag.String("alertAcknowledgement.author", "karma", "Default silence author when acknowledging alerts with short lived silences")
-	pflag.String("alertAcknowledgement.commentPrefix", "ACK!", "Comment prefix used when acknowledging alerts with short lived silences")
+	f.Bool("alertAcknowledgement.enabled", false, "Enable alert acknowledging")
+	f.Duration("alertAcknowledgement.duration", time.Minute*15, "Initial silence duration when acknowledging alerts with short lived silences")
+	f.String("alertAcknowledgement.author", "karma", "Default silence author when acknowledging alerts with short lived silences")
+	f.String("alertAcknowledgement.commentPrefix", "ACK!", "Comment prefix used when acknowledging alerts with short lived silences")
 
-	pflag.Bool(
+	f.Bool(
 		"annotations.default.hidden", false,
 		"Hide all annotations by default unless explicitly listed in the 'visible' list")
-	pflag.StringSlice("annotations.hidden", []string{},
+	f.StringSlice("annotations.hidden", []string{},
 		"List of annotations that are hidden by default")
-	pflag.StringSlice("annotations.visible", []string{},
+	f.StringSlice("annotations.visible", []string{},
 		"List of annotations that are visible by default")
-	pflag.StringSlice("annotations.keep", []string{},
+	f.StringSlice("annotations.keep", []string{},
 		"List of annotations to keep, all other annotations will be stripped")
-	pflag.StringSlice("annotations.strip", []string{}, "List of annotations to ignore")
+	f.StringSlice("annotations.strip", []string{}, "List of annotations to ignore")
 
-	pflag.String("config.file", "", "Full path to the configuration file")
+	f.String("config.file", "", "Full path to the configuration file")
 
-	pflag.String("custom.css", "", "Path to a file with custom CSS to load")
-	pflag.String("custom.js", "", "Path to a file with custom JavaScript to load")
+	f.String("custom.css", "", "Path to a file with custom CSS to load")
+	f.String("custom.js", "", "Path to a file with custom JavaScript to load")
 
-	pflag.Bool("debug", false, "Enable debug mode")
+	f.Bool("debug", false, "Enable debug mode")
 
-	pflag.StringSlice("filters.default", []string{}, "List of default filters")
+	f.StringSlice("filters.default", []string{}, "List of default filters")
 
-	pflag.StringSlice("labels.color.static", []string{},
+	f.StringSlice("labels.color.static", []string{},
 		"List of label names that should have the same (but distinct) color")
-	pflag.StringSlice("labels.color.unique", []string{},
+	f.StringSlice("labels.color.unique", []string{},
 		"List of label names that should have unique color")
-	pflag.StringSlice("labels.keep", []string{},
+	f.StringSlice("labels.keep", []string{},
 		"List of labels to keep, all other labels will be stripped")
-	pflag.StringSlice("labels.strip", []string{}, "List of labels to ignore")
+	f.StringSlice("labels.strip", []string{}, "List of labels to ignore")
 
-	pflag.String("grid.sorting.order", "startsAt", "Default sort order for alert grid")
-	pflag.Bool("grid.sorting.reverse", true, "Reverse sort order")
-	pflag.String("grid.sorting.label", "alertname", "Label name to use when sorting alert grid by label")
+	f.String("grid.sorting.order", "startsAt", "Default sort order for alert grid")
+	f.Bool("grid.sorting.reverse", true, "Reverse sort order")
+	f.String("grid.sorting.label", "alertname", "Label name to use when sorting alert grid by label")
 
-	pflag.Bool("log.config", true, "Log used configuration to log on startup")
-	pflag.String("log.level", "info",
+	f.Bool("log.config", true, "Log used configuration to log on startup")
+	f.String("log.level", "info",
 		"Log level, one of: debug, info, warning, error, fatal and panic")
-	pflag.String("log.format", "text",
+	f.String("log.format", "text",
 		"Log format, one of: text, json")
-	pflag.Bool("log.timestamp", true, "Add timestamps to all log messages")
+	f.Bool("log.timestamp", true, "Add timestamps to all log messages")
 
-	pflag.StringSlice("receivers.keep", []string{},
+	f.StringSlice("receivers.keep", []string{},
 		"List of receivers to keep, all alerts with different receivers will be ignored")
-	pflag.StringSlice("receivers.strip", []string{},
+	f.StringSlice("receivers.strip", []string{},
 		"List of receivers to not display alerts for")
 
-	pflag.StringSlice("silenceform.strip.labels", []string{}, "List of labels to ignore when auto-filling silence form from alerts")
-	pflag.String("silenceform.author.populate_from_header.header", "", "Header to read the default silence author from")
-	pflag.String("silenceform.author.populate_from_header.value_re", "", "Header value regex to read the default silence author")
+	f.StringSlice("silenceform.strip.labels", []string{}, "List of labels to ignore when auto-filling silence form from alerts")
+	f.String("silenceform.author.populate_from_header.header", "", "Header to read the default silence author from")
+	f.String("silenceform.author.populate_from_header.value_re", "", "Header value regex to read the default silence author")
 
-	pflag.String("listen.address", "", "IP/Hostname to listen on")
-	pflag.Int("listen.port", 8080, "HTTP port to listen on")
-	pflag.String("listen.prefix", "/", "URL prefix")
+	f.String("listen.address", "", "IP/Hostname to listen on")
+	f.Int("listen.port", 8080, "HTTP port to listen on")
+	f.String("listen.prefix", "/", "URL prefix")
 
-	pflag.String("sentry.public", "", "Sentry DSN for Go exceptions")
-	pflag.String("sentry.private", "", "Sentry DSN for JavaScript exceptions")
+	f.String("sentry.public", "", "Sentry DSN for Go exceptions")
+	f.String("sentry.private", "", "Sentry DSN for JavaScript exceptions")
 
-	pflag.Duration("ui.refresh", time.Second*30, "UI refresh interval")
-	pflag.Bool("ui.hideFiltersWhenIdle", true, "Hide the filters bar when idle")
-	pflag.Bool("ui.colorTitlebar", false, "Color alert group titlebar based on alert state")
-	pflag.String("ui.theme", "auto", "Default theme, 'light', 'dark' or 'auto' (follow browser preference)")
-	pflag.Int("ui.minimalGroupWidth", 420, "Minimal width for each alert group on the grid")
-	pflag.Int("ui.alertsPerGroup", 5, "Default number of alerts to show for each alert group")
-	pflag.String("ui.collapseGroups", "collapsedOnMobile", "Default state for alert groups")
+	f.Duration("ui.refresh", time.Second*30, "UI refresh interval")
+	f.Bool("ui.hideFiltersWhenIdle", true, "Hide the filters bar when idle")
+	f.Bool("ui.colorTitlebar", false, "Color alert group titlebar based on alert state")
+	f.String("ui.theme", "auto", "Default theme, 'light', 'dark' or 'auto' (follow browser preference)")
+	f.Int("ui.minimalGroupWidth", 420, "Minimal width for each alert group on the grid")
+	f.Int("ui.alertsPerGroup", 5, "Default number of alerts to show for each alert group")
+	f.String("ui.collapseGroups", "collapsedOnMobile", "Default state for alert groups")
 }
 
 // ReadConfig will read all sources of configuration, merge all keys and
 // populate global Config variable, it should be only called on startup
-func (config *configSchema) Read() string {
+func (config *configSchema) Read(flags *pflag.FlagSet) string {
 	v := viper.New()
 
-	err := v.BindPFlags(pflag.CommandLine)
+	err := v.BindPFlags(flags)
 	if err != nil {
 		log.Errorf("Failed to bind flag set to the configuration: %s", err)
 	}

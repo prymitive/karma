@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/jarcoal/httpmock"
+	"github.com/spf13/pflag"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
@@ -48,6 +49,12 @@ func pullAlerts() error {
 		}
 	}
 	return nil
+}
+
+func mockConfigRead() {
+	f := pflag.NewFlagSet(".", pflag.ExitOnError)
+	config.SetupFlags(f)
+	config.Config.Read(f)
 }
 
 func TestDedupAlerts(t *testing.T) {
@@ -92,7 +99,7 @@ func TestDedupAlertsWithoutLabels(t *testing.T) {
 
 func TestDedupSilences(t *testing.T) {
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
-	config.Config.Read()
+	mockConfigRead()
 	if err := pullAlerts(); err != nil {
 		t.Error(err)
 	}
@@ -123,7 +130,7 @@ func TestDedupAutocomplete(t *testing.T) {
 func TestDedupColors(t *testing.T) {
 	os.Setenv("LABELS_COLOR_UNIQUE", "cluster instance @receiver")
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
-	config.Config.Read()
+	mockConfigRead()
 	if err := pullAlerts(); err != nil {
 		t.Error(err)
 	}
@@ -136,7 +143,7 @@ func TestDedupColors(t *testing.T) {
 
 func TestDedupKnownLabels(t *testing.T) {
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
-	config.Config.Read()
+	mockConfigRead()
 	if err := pullAlerts(); err != nil {
 		t.Error(err)
 	}
@@ -149,7 +156,7 @@ func TestDedupKnownLabels(t *testing.T) {
 
 func TestDedupKnownLabelValues(t *testing.T) {
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
-	config.Config.Read()
+	mockConfigRead()
 	if err := pullAlerts(); err != nil {
 		t.Error(err)
 	}
@@ -163,7 +170,7 @@ func TestDedupKnownLabelValues(t *testing.T) {
 func TestStripReceivers(t *testing.T) {
 	os.Setenv("RECEIVERS_STRIP", "by-name by-cluster-service")
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
-	config.Config.Read()
+	mockConfigRead()
 	if err := pullAlerts(); err != nil {
 		t.Error(err)
 	}

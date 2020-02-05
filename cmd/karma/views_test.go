@@ -15,6 +15,7 @@ import (
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
+	"github.com/spf13/pflag"
 
 	cache "github.com/patrickmn/go-cache"
 	log "github.com/sirupsen/logrus"
@@ -30,7 +31,11 @@ func mockConfig() {
 	log.SetLevel(log.ErrorLevel)
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
 	os.Setenv("LABELS_COLOR_UNIQUE", "alertname")
-	config.Config.Read()
+
+	f := pflag.NewFlagSet(".", pflag.ExitOnError)
+	config.SetupFlags(f)
+	config.Config.Read(f)
+
 	if !upstreamSetup {
 		upstreamSetup = true
 		err := setupUpstreams()
