@@ -1,0 +1,4 @@
+# Raises an error if we pass alertmanager.timeout value that doesn't parse
+karma.bin-should-fail --log.format=text --log.config=false --log.level=error --alertmanager.timeout=abc123 --alertmanager.uri=http://localhost
+! stdout .
+stderr 'level=error msg="invalid argument \\"abc123\\" for \\"--alertmanager.timeout\\" flag: time: invalid duration abc123"'

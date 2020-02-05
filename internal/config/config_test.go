@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/prymitive/karma/internal/uri"
+	"github.com/spf13/pflag"
 
 	"github.com/pmezard/go-difflib/difflib"
 
@@ -173,6 +174,12 @@ ui:
 	}
 }
 
+func mockConfigRead() {
+	f := pflag.NewFlagSet(".", pflag.ExitOnError)
+	SetupFlags(f)
+	Config.Read(f)
+}
+
 func TestReadConfig(t *testing.T) {
 	resetEnv()
 	log.SetLevel(log.ErrorLevel)
@@ -194,7 +201,7 @@ func TestReadConfig(t *testing.T) {
 	os.Setenv("LISTEN_PORT", "80")
 	os.Setenv("SENTRY_PRIVATE", "secret key")
 	os.Setenv("SENTRY_PUBLIC", "public key")
-	Config.Read()
+	mockConfigRead()
 	testReadConfig(t)
 }
 
@@ -206,7 +213,7 @@ func TestReadSimpleConfig(t *testing.T) {
 	os.Setenv("ALERTMANAGER_TIMEOUT", "15s")
 	os.Setenv("ALERTMANAGER_PROXY", "true")
 	os.Setenv("ALERTMANAGER_INTERVAL", "3m")
-	Config.Read()
+	mockConfigRead()
 	if len(Config.Alertmanager.Servers) != 1 {
 		t.Errorf("Expected 1 Alertmanager server, got %d", len(Config.Alertmanager.Servers))
 	} else {
@@ -262,7 +269,7 @@ func TestUrlSecretTest(t *testing.T) {
 
 // FIXME check logged values
 func TestLogValues(t *testing.T) {
-	Config.Read()
+	mockConfigRead()
 	Config.LogValues()
 }
 
@@ -275,7 +282,7 @@ func TestInvalidSilenceFormRegex(t *testing.T) {
 	var wasFatal bool
 	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
 
-	Config.Read()
+	mockConfigRead()
 
 	if !wasFatal {
 		t.Error("Invalid silence form regex didn't cause log.Fatal()")
@@ -291,7 +298,7 @@ func TestInvalidGridSortingOrder(t *testing.T) {
 	var wasFatal bool
 	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
 
-	Config.Read()
+	mockConfigRead()
 
 	if !wasFatal {
 		t.Error("Invalid grid.sorting.order value didn't cause log.Fatal()")
@@ -307,7 +314,7 @@ func TestInvalidUICollapseGroups(t *testing.T) {
 	var wasFatal bool
 	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
 
-	Config.Read()
+	mockConfigRead()
 
 	if !wasFatal {
 		t.Error("Invalid ui.collapseGroups value didn't cause log.Fatal()")
@@ -323,7 +330,7 @@ func TestInvalidUITheme(t *testing.T) {
 	var wasFatal bool
 	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
 
-	Config.Read()
+	mockConfigRead()
 
 	if !wasFatal {
 		t.Error("Invalid ui.theme value didn't cause log.Fatal()")

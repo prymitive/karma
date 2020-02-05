@@ -5,14 +5,21 @@ import (
 	"testing"
 
 	"github.com/rogpeppe/go-internal/testscript"
+	"github.com/spf13/pflag"
 
 	log "github.com/sirupsen/logrus"
 )
 
 func mainShoulFail() int {
-	_, err := mainSetup()
+	defer func() { log.StandardLogger().ExitFunc = nil }()
+	var wasFatal bool
+	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
+
+	_, err := mainSetup(pflag.ContinueOnError)
 	if err != nil {
 		log.Error(err)
+	} else if wasFatal {
+		return 100
 	} else {
 		log.Error("No error logged")
 		return 100
@@ -20,8 +27,15 @@ func mainShoulFail() int {
 	return 0
 }
 
+func mainShoulFailNoTimestamp() int {
+	log.SetFormatter(&log.TextFormatter{
+		DisableTimestamp: true,
+	})
+	return mainShoulFail()
+}
+
 func mainShouldWork() int {
-	_, err := mainSetup()
+	_, err := mainSetup(pflag.ContinueOnError)
 	if err != nil {
 		log.Error(err)
 		return 100
@@ -31,8 +45,9 @@ func mainShouldWork() int {
 
 func TestMain(m *testing.M) {
 	os.Exit(testscript.RunMain(m, map[string]func() int{
-		"karma.bin-should-fail": mainShoulFail,
-		"karma.bin-should-work": mainShouldWork,
+		"karma.bin-should-fail":              mainShoulFail,
+		"karma.bin-should-fail-no-timestamp": mainShoulFailNoTimestamp,
+		"karma.bin-should-work":              mainShouldWork,
 	}))
 }
 

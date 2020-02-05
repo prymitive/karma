@@ -1,0 +1,64 @@
+# Print out and compare logged config set via config file that includes invalid values
+karma.bin-should-fail-no-timestamp --config.file=karma.yaml --check-config
+! stdout .
+cmp stderr expected.stderr
+
+-- karma.yaml --
+alertmanager:
+  interval: jjs88
+  servers:
+    - name: ha1
+      uri: "http://localhost:9093"
+      timeout: bbb
+      proxy: YEs
+    - name: ha2
+      uri: "http://localhost:9094"
+      timeout: 11
+      readonly: 1
+    - name: local
+      uri: http://localhost:9095
+      timeout: z
+      proxy: true
+      readonly: 0
+      headers:
+        - X-Auth-Test=some-token-or-other-string
+    - name: client-auth
+      uri: https://localhost:9096
+      timeout: 10s
+      tls:
+        ca: ca.pem
+        cert: cert.pem
+        key: key.pem
+alertAcknowledgement:
+  enabled: zzz
+  duration: 7m0s
+  author: karma
+  commentPrefix: ACK!
+annotations:
+  default:
+    hidden: z
+  hidden: {}
+  visible:
+    - visible
+filters:
+  default: []
+karma:
+  name: karma-demo
+log:
+  level: 123
+  format: foo
+ui:
+  refresh: 10sm
+  hideFiltersWhenIdle: z
+  colorTitlebar: yum
+  theme: x
+  minimalGroupWidth: abc4
+  alertsPerGroup: 5a
+  collapseGroups: collapsedOanMobile
+
+-- expected.stderr --
+level=fatal msg="4 error(s) decoding:\n\n* '[2].Headers[0]' expected a map, got 'string'\n* cannot parse '[0].Proxy' as bool: strconv.ParseBool: parsing \"YEs\": invalid syntax\n* error decoding '[0].Timeout': time: invalid duration bbb\n* error decoding '[2].Timeout': time: invalid duration z"
+level=fatal msg="Invalid ui.collapseGroups value 'collapsedOanMobile', allowed options: expanded, collapsed, collapsedOnMobile"
+level=fatal msg="Invalid ui.theme value 'x', allowed options: light, dark, auto"
+level=fatal msg="yaml: unmarshal errors:\n  line 2: cannot unmarshal !!str `jjs88` into time.Duration\n  line 6: cannot unmarshal !!str `bbb` into time.Duration\n  line 7: cannot unmarshal !!str `YEs` into bool\n  line 11: cannot unmarshal !!int `1` into bool\n  line 14: cannot unmarshal !!str `z` into time.Duration\n  line 16: cannot unmarshal !!int `0` into bool\n  line 18: cannot unmarshal !!seq into map[string]string\n  line 27: cannot unmarshal !!str `zzz` into bool\n  line 33: cannot unmarshal !!str `z` into bool\n  line 34: cannot unmarshal !!map into []string\n  line 45: cannot unmarshal !!str `10sm` into time.Duration\n  line 46: cannot unmarshal !!str `z` into bool\n  line 47: cannot unmarshal !!str `yum` into bool\n  line 49: cannot unmarshal !!str `abc4` into int\n  line 50: cannot unmarshal !!str `5a` into int"
+level=error msg="Unknown log level '123'"

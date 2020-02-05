@@ -1,4 +1,4 @@
 # Raises an error if negative refresh interval is passed
 karma.bin-should-fail --log.format=text --log.config=false --log.level=error --alertmanager.interval=-4s
 ! stdout .
-stderr 'msg="Invalid AlertmanagerTTL value ''-4s''"'
+stderr 'msg="Invalid alertmanager.interval value ''-4s''"'

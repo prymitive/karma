@@ -190,18 +190,24 @@ func setupLogger() error {
 	return nil
 }
 
-func mainSetup() (*gin.Engine, error) {
-	printVersion := pflag.Bool("version", false, "Print version and exit")
-	validateConfig := pflag.Bool("check-config", false, "Validate configuration and exit")
-	pflag.Parse()
+func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
+	f := pflag.NewFlagSet("karma", errorHandling)
+	printVersion := f.Bool("version", false, "Print version and exit")
+	validateConfig := f.Bool("check-config", false, "Validate configuration and exit")
+	config.SetupFlags(f)
+
+	err := f.Parse(os.Args[1:])
+	if err != nil {
+		return nil, err
+	}
 
 	if *printVersion {
 		fmt.Println(version)
 		return nil, nil
 	}
 
-	configFile := config.Config.Read()
-	err := setupLogger()
+	configFile := config.Config.Read(f)
+	err = setupLogger()
 	if err != nil {
 		return nil, err
 	}
@@ -212,7 +218,7 @@ func mainSetup() (*gin.Engine, error) {
 
 	// timer duration cannot be zero second or a negative one
 	if config.Config.Alertmanager.Interval <= time.Second*0 {
-		return nil, fmt.Errorf("Invalid AlertmanagerTTL value '%v'", config.Config.Alertmanager.Interval)
+		return nil, fmt.Errorf("Invalid alertmanager.interval value '%v'", config.Config.Alertmanager.Interval)
 	}
 
 	log.Infof("Version: %s", version)
@@ -285,7 +291,7 @@ func mainSetup() (*gin.Engine, error) {
 }
 
 func main() {
-	router, err := mainSetup()
+	router, err := mainSetup(pflag.ExitOnError)
 	if err != nil {
 		log.Fatal(err)
 	}
