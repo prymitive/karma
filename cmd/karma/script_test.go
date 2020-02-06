@@ -19,7 +19,7 @@ func mainShoulFail() int {
 	if err != nil {
 		log.Error(err)
 	} else if wasFatal {
-		return 100
+		return 0
 	} else {
 		log.Error("No error logged")
 		return 100

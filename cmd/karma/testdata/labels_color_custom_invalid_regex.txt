@@ -1,0 +1,16 @@
+# Raises an error if label custom color config is using invalid regex rule
+karma.bin-should-fail --log.format=text --log.config=false --log.level=error --config.file=karma.yaml
+! stdout .
+stderr 'msg="Failed to parse custom color regex rule ''\.\+\+\+\+'' for ''region'' label: error parsing regexp: invalid nested repetition operator: `\+\+`"'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: default
+      uri: https://localhost:9093
+labels:
+  color:
+    custom:
+      region:
+        - value_re: ".++++"
+          color: "#736598"

@@ -760,3 +760,15 @@ func TestSilences(t *testing.T) {
 		}
 	}
 }
+
+func TestCORS(t *testing.T) {
+	mockConfig()
+	r := ginTestEngine()
+	req := httptest.NewRequest("OPTIONS", "/alerts.json", nil)
+	req.Header.Set("Origin", "foo.example.com")
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Header().Get("Access-Control-Allow-Origin") != "foo.example.com" {
+		t.Errorf("Invalid Access-Control-Allow-Origin value %q, expected 'foo.example.com'", resp.Header().Get("Access-Control-Allow-Origin"))
+	}
+}

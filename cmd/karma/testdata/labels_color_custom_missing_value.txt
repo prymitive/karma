@@ -1,0 +1,15 @@
+# Raises an error if label custom color config is missing a value
+karma.bin-should-fail --log.format=text --log.config=false --log.level=error --config.file=karma.yaml
+! stdout .
+stderr 'msg="Custom label color for ''region'' is missing ''value'' or ''value_re''"'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: default
+      uri: https://localhost:9093
+labels:
+  color:
+    custom:
+      region:
+        - color: "#736598"
