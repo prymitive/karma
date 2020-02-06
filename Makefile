@@ -167,9 +167,7 @@ benchmark-go:
 
 .PHONY: test-go
 test-go:
-	GO111MODULE=on go test \
-		-cover -coverprofile=coverage.txt -covermode=atomic \
-		./...
+	GO111MODULE=on scripts/gocover.sh
 
 .PHONY: test-js
 test-js: .build/deps-build-node.ok
