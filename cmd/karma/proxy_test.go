@@ -52,6 +52,20 @@ var proxyTests = []proxyTest{
 		code:        200,
 		response:    "{\"status\":\"success\"}",
 	},
+	{
+		method:      "POST",
+		localPath:   "/proxy/alertmanager/dummy/api/v2/silences",
+		upstreamURI: "http://localhost:9093/api/v2/silences",
+		code:        200,
+		response:    "{\"status\":\"success\",\"data\":{\"silenceId\":\"d8a61ca8-ee2e-4076-999f-276f1e986bf3\"}}",
+	},
+	{
+		method:      "DELETE",
+		localPath:   "/proxy/alertmanager/dummy/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
+		upstreamURI: "http://localhost:9093/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
+		code:        200,
+		response:    "{\"status\":\"success\"}",
+	},
 	// invalid alertmanager name
 	{
 		method:      "POST",
@@ -67,6 +81,20 @@ var proxyTests = []proxyTest{
 		code:        404,
 		response:    "404 page not found",
 	},
+	{
+		method:      "POST",
+		localPath:   "/proxy/alertmanager/INVALID/api/v2/silences",
+		upstreamURI: "",
+		code:        404,
+		response:    "404 page not found",
+	},
+	{
+		method:      "DELETE",
+		localPath:   "/proxy/alertmanager/INVALID/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
+		upstreamURI: "http://localhost:9093/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
+		code:        404,
+		response:    "404 page not found",
+	},
 	// valid alertmanager name, but invalid method
 	{
 		method:      "GET",
@@ -79,6 +107,20 @@ var proxyTests = []proxyTest{
 		method:      "GET",
 		localPath:   "/proxy/alertmanager/dummy/api/v1/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
 		upstreamURI: "http://localhost:9093/api/v1/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
+		code:        404,
+		response:    "404 page not found",
+	},
+	{
+		method:      "GET",
+		localPath:   "/proxy/alertmanager/dummy/api/v2/silences",
+		upstreamURI: "",
+		code:        404,
+		response:    "404 page not found",
+	},
+	{
+		method:      "GET",
+		localPath:   "/proxy/alertmanager/dummy/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
+		upstreamURI: "http://localhost:9093/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
 		code:        404,
 		response:    "404 page not found",
 	},
@@ -135,6 +177,7 @@ type proxyHeaderTest struct {
 }
 
 var proxyHeaderTests = []proxyHeaderTest{
+	// API v1
 	{
 		method:           "POST",
 		localPath:        "/proxy/alertmanager/dummy/api/v1/silences",
@@ -165,6 +208,43 @@ var proxyHeaderTests = []proxyHeaderTest{
 		method:           "POST",
 		localPath:        "/proxy/alertmanager/dummy/api/v1/silences",
 		upstreamURI:      "http://alertmanager.example.com/api/v1/silences",
+		code:             200,
+		alertmanagerURI:  "http://foo@alertmanager.example.com",
+		alertmanagerHost: "alertmanager.example.com",
+		authUser:         "foo",
+		authPass:         "",
+	},
+	// API v2
+	{
+		method:           "POST",
+		localPath:        "/proxy/alertmanager/dummy/api/v2/silences",
+		upstreamURI:      "http://localhost:9093/api/v2/silences",
+		code:             200,
+		alertmanagerURI:  "http://localhost:9093",
+		alertmanagerHost: "localhost:9093",
+	},
+	{
+		method:           "POST",
+		localPath:        "/proxy/alertmanager/dummy/api/v2/silences",
+		upstreamURI:      "http://alertmanager.example.com/api/v2/silences",
+		code:             200,
+		alertmanagerURI:  "http://alertmanager.example.com",
+		alertmanagerHost: "alertmanager.example.com",
+	},
+	{
+		method:           "POST",
+		localPath:        "/proxy/alertmanager/dummy/api/v2/silences",
+		upstreamURI:      "http://alertmanager.example.com/api/v2/silences",
+		code:             200,
+		alertmanagerURI:  "http://foo:bar@alertmanager.example.com",
+		alertmanagerHost: "alertmanager.example.com",
+		authUser:         "foo",
+		authPass:         "bar",
+	},
+	{
+		method:           "POST",
+		localPath:        "/proxy/alertmanager/dummy/api/v2/silences",
+		upstreamURI:      "http://alertmanager.example.com/api/v2/silences",
 		code:             200,
 		alertmanagerURI:  "http://foo@alertmanager.example.com",
 		alertmanagerHost: "alertmanager.example.com",
