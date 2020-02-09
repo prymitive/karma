@@ -1,0 +1,14 @@
+# Load 'karma.yaml' from cwd by default
+karma.bin-should-work --check-config
+! stdout .
+stderr 'msg="Reading configuration file karma.yaml"'
+stderr 'msg="Configuration is valid"'
+stderr 'msg="\[cwd\] Configured Alertmanager source at http://localhost:8080 \(proxied: true\, readonly: false\)"'
+! stderr 'level=error'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: cwd
+      uri: "http://localhost:8080"
+      proxy: true

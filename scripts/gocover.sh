@@ -8,7 +8,7 @@ for d in $(go list ./... | grep -vE 'prymitive/karma/internal/mapper/v017/(clien
     go test \
         -coverprofile=profile.out \
         -coverpkg=$(go list ./... | grep -vE 'prymitive/karma/internal/mapper/v017/(client|models)' | tr '\n' ',') \
-        $d 2>&1 | grep -v 'warning: no packages being tested depend on matches for pattern'
+        $d 2>&1 | grep -v 'warning: no packages being tested depend on matches for pattern' | sed s/'of statements in .*'/''/g
     if [ -f profile.out ]; then
         cat profile.out >> coverage.txt
         rm profile.out

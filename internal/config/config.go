@@ -3,7 +3,6 @@ package config
 import (
 	"bufio"
 	"bytes"
-	"io/ioutil"
 	"os"
 	"regexp"
 	"strings"
@@ -11,8 +10,15 @@ import (
 
 	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/uri"
+
+	"github.com/knadh/koanf"
+	yamlParser "github.com/knadh/koanf/parsers/yaml"
+	"github.com/knadh/koanf/providers/confmap"
+	"github.com/knadh/koanf/providers/env"
+	"github.com/knadh/koanf/providers/file"
+	"github.com/knadh/koanf/providers/posflag"
+	"github.com/mitchellh/mapstructure"
 	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 
 	log "github.com/sirupsen/logrus"
 	yaml "gopkg.in/yaml.v2"
@@ -58,7 +64,7 @@ func SetupFlags(f *pflag.FlagSet) {
 		"List of annotations to keep, all other annotations will be stripped")
 	f.StringSlice("annotations.strip", []string{}, "List of annotations to ignore")
 
-	f.String("config.file", "", "Full path to the configuration file")
+	f.String("config.file", "", "Full path to the configuration file, 'karma.yaml' will be used if found in the current working directory")
 
 	f.String("custom.css", "", "Path to a file with custom CSS to load")
 	f.String("custom.js", "", "Path to a file with custom JavaScript to load")
@@ -111,126 +117,132 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.String("ui.collapseGroups", "collapsedOnMobile", "Default state for alert groups")
 }
 
-// ReadConfig will read all sources of configuration, merge all keys and
-// populate global Config variable, it should be only called on startup
-func (config *configSchema) Read(flags *pflag.FlagSet) string {
-	v := viper.New()
-
-	err := v.BindPFlags(flags)
-	if err != nil {
-		log.Errorf("Failed to bind flag set to the configuration: %s", err)
-	}
-
-	v.AutomaticEnv()
-	v.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
-
-	// special envs
-	// HOST and PORT is used by gin
-	err = v.BindEnv("listen.address", "HOST")
-	if err != nil {
-		log.Errorf("Failed to bind listen.address config key to the HOST env variable: %s", err)
-	}
-
-	err = v.BindEnv("listen.port", "PORT")
-	if err != nil {
-		log.Errorf("Failed to bind listen.port config key to the PORT env variable: %s", err)
-	}
-
-	// raven-go expects this
-	err = v.BindEnv("sentry.private", "SENTRY_DSN")
-	if err != nil {
-		log.Errorf("Failed to bind sentry.private config key to the SENTRY_DSN env variable: %s", err)
-	}
-
-	v.SetConfigType("yaml")
-	configFile := v.GetString("config.file")
-	// if config file is not set then try loading karma.yaml from current directory
+func readConfigFile(k *koanf.Koanf, flags *pflag.FlagSet) string {
+	configFile, _ := flags.GetString("config.file")
+	// if config.file is not passed via flags then see if there's karma.yaml in
+	// current working directory
 	if configFile == "" {
-		if _, err = os.Stat("karma.yaml"); !os.IsNotExist(err) {
+		if _, err := os.Stat("karma.yaml"); !os.IsNotExist(err) {
 			configFile = "karma.yaml"
 		}
 	}
 	if configFile != "" {
-		v.SetConfigFile(configFile)
+		if err := k.Load(file.Provider(configFile), yamlParser.Parser()); err != nil {
+			log.Fatalf("Failed to load configuration file %q: %v", configFile, err)
+		}
+		return configFile
+	}
+	return configFile
+}
+
+func readEnvVariables(k *koanf.Koanf) {
+	customEnvs := map[string]string{
+		"HOST":       "listen.address",
+		"PORT":       "listen.port",
+		"SENTRY_DSN": "sentry.private",
+	}
+	for env, key := range customEnvs {
+		if _, found := os.LookupEnv(env); found {
+			_ = k.Load(confmap.Provider(map[string]interface{}{
+				key: os.Getenv(env),
+			}, "."), nil)
+		}
 	}
 
-	err = v.ReadInConfig()
-	if v.ConfigFileUsed() != "" && err != nil {
-		log.Fatal(err)
-	}
+	_ = k.Load(env.Provider("", ".", func(s string) string {
+		switch s {
+		case "ALERTMANAGER_EXTERNAL_URI":
+			return "alertmanager.external_uri"
+		case "ALERTACKNOWLEDGEMENT_ENABLED":
+			return "alertAcknowledgement.enabled"
+		case "ALERTACKNOWLEDGEMENT_DURATION":
+			return "alertAcknowledgement.duration"
+		case "ALERTACKNOWLEDGEMENT_AUTHOR":
+			return "alertAcknowledgement.author"
+		case "ALERTACKNOWLEDGEMENT_COMMENTPREFIX":
+			return "alertAcknowledgement.commentPrefix"
+		case "SILENCEFORM_AUTHOR_POPULATE_FROM_HEADER_HEADER":
+			return "silenceForm.author.populate_from_header.header"
+		case "SILENCEFORM_AUTHOR_POPULATE_FROM_HEADER_VALUE_RE":
+			return "silenceForm.author.populate_from_header.value_re"
+		case "SILENCEFORM_STRIP_LABELS":
+			return "silenceForm.strip.labels"
+		case "UI_HIDEFILTERSWHENIDLE":
+			return "ui.hideFiltersWhenIdle"
+		case "UI_COLORTITLEBAR":
+			return "ui.colorTitlebar"
+		case "UI_MINIMALGROUPWIDTH":
+			return "ui.minimalGroupWidth"
+		case "UI_ALERTSPERGROUP":
+			return "ui.alertsPerGroup"
+		case "UI_COLLAPSEGROUPS":
+			return "ui.collapseGroups"
+		default:
+			return strings.Replace(strings.ToLower(s), "_", ".", -1)
+		}
+	}), nil)
+}
 
-	config.Alertmanager.Servers = []AlertmanagerConfig{}
-	config.Alertmanager.Interval = v.GetDuration("alertmanager.interval")
-	config.AlertAcknowledgement.Enabled = v.GetBool("alertAcknowledgement.enabled")
-	config.AlertAcknowledgement.Author = v.GetString("alertAcknowledgement.author")
-	config.AlertAcknowledgement.CommentPrefix = v.GetString("alertAcknowledgement.commentPrefix")
-	config.AlertAcknowledgement.Duration = v.GetDuration("alertAcknowledgement.duration")
-	config.Annotations.Default.Hidden = v.GetBool("annotations.default.hidden")
-	config.Annotations.Hidden = v.GetStringSlice("annotations.hidden")
-	config.Annotations.Visible = v.GetStringSlice("annotations.visible")
-	config.Annotations.Keep = v.GetStringSlice("annotations.keep")
-	config.Annotations.Strip = v.GetStringSlice("annotations.strip")
-	config.Custom.CSS = v.GetString("custom.css")
-	config.Custom.JS = v.GetString("custom.js")
-	config.Debug = v.GetBool("debug")
-	config.Filters.Default = v.GetStringSlice("filters.default")
-	config.Grid.Sorting.Order = v.GetString("grid.sorting.order")
-	config.Grid.Sorting.Reverse = v.GetBool("grid.sorting.reverse")
-	config.Grid.Sorting.Label = v.GetString("grid.sorting.label")
-	config.Karma.Name = v.GetString("karma.name")
-	config.Labels.Color.Custom = CustomLabelColors{}
-	config.Labels.Color.Static = v.GetStringSlice("labels.color.static")
-	config.Labels.Color.Unique = v.GetStringSlice("labels.color.unique")
-	config.Labels.Keep = v.GetStringSlice("labels.keep")
-	config.Labels.Strip = v.GetStringSlice("labels.strip")
-	config.Listen.Address = v.GetString("listen.address")
-	config.Listen.Port = v.GetInt("listen.port")
-	config.Listen.Prefix = v.GetString("listen.prefix")
-	config.Log.Config = v.GetBool("log.config")
-	config.Log.Level = v.GetString("log.level")
-	config.Log.Format = v.GetString("log.format")
-	config.Log.Timestamp = v.GetBool("log.timestamp")
-	config.Receivers.Keep = v.GetStringSlice("receivers.keep")
-	config.Receivers.Strip = v.GetStringSlice("receivers.strip")
-	config.Sentry.Private = v.GetString("sentry.private")
-	config.Sentry.Public = v.GetString("sentry.public")
-	config.SilenceForm.Strip.Labels = v.GetStringSlice("silenceform.strip.labels")
-	config.SilenceForm.Author.PopulateFromHeader.Header = v.GetString("silenceform.author.populate_from_header.header")
-	config.SilenceForm.Author.PopulateFromHeader.ValueRegex = v.GetString("silenceform.author.populate_from_header.value_re")
-	config.UI.Refresh = v.GetDuration("ui.refresh")
-	config.UI.HideFiltersWhenIdle = v.GetBool("ui.hideFiltersWhenIdle")
-	config.UI.ColorTitlebar = v.GetBool("ui.colorTitlebar")
-	config.UI.Theme = v.GetString("ui.theme")
-	config.UI.MinimalGroupWidth = v.GetInt("ui.minimalGroupWidth")
-	config.UI.AlertsPerGroup = v.GetInt("ui.alertsPerGroup")
-	config.UI.CollapseGroups = v.GetString("ui.collapseGroups")
+func readFlags(k *koanf.Koanf, flags *pflag.FlagSet) {
+	_ = k.Load(posflag.Provider(flags, ".", k), nil)
+}
+
+// ReadConfig will read all sources of configuration, merge all keys and
+// populate global Config variable, it should be only called on startup
+// Order in which we read configuration:
+// 1. CLI flags
+// 2. Config file
+// 3. Environment variables
+func (config *configSchema) Read(flags *pflag.FlagSet) string {
+	k := koanf.New(".")
+	var configFileUsed string
+
+	// 3. read all environemnt variables
+	readEnvVariables(k)
+	// 2. read config file
+	if cf := readConfigFile(k, flags); cf != "" {
+		configFileUsed = cf
+	}
+	// 1. read flags
+	readFlags(k, flags)
+
+	dConf := mapstructure.DecoderConfig{
+		Result:           &config,
+		WeaklyTypedInput: true,
+		DecodeHook: mapstructure.ComposeDecodeHookFunc(
+			mapstructure.StringToSliceHookFunc(" "),
+			mapstructure.StringToTimeDurationHookFunc(),
+		),
+		ZeroFields: true,
+	}
+	kConf := koanf.UnmarshalConf{
+		Tag:           "koanf",
+		FlatPaths:     false,
+		DecoderConfig: &dConf,
+	}
+	err := k.UnmarshalWithConf("", &config, kConf)
+	if err != nil {
+		log.Fatalf("Failed to unmarshal configuration: %v", err)
+	}
 
 	if config.SilenceForm.Author.PopulateFromHeader.ValueRegex != "" {
 		_, err = regexp.Compile(config.SilenceForm.Author.PopulateFromHeader.ValueRegex)
 		if err != nil {
 			log.Fatalf("Invalid regex for silenceform.author.populate_from_header.value_re: %s", err.Error())
 		}
+		if config.SilenceForm.Author.PopulateFromHeader.Header == "" {
+			log.Fatalf("silenceform.author.populate_from_header.header is required when silenceform.author.populate_from_header.value_re is set")
+		}
+	} else if config.SilenceForm.Author.PopulateFromHeader.Header != "" {
+		log.Fatalf("silenceform.author.populate_from_header.value_re is required when silenceform.author.populate_from_header.header is set")
 	}
 
-	err = v.UnmarshalKey("alertmanager.servers", &config.Alertmanager.Servers)
-	if err != nil {
-		log.Fatal(err)
-	}
 	for i, s := range config.Alertmanager.Servers {
 		if s.Timeout.Seconds() == 0 {
-			config.Alertmanager.Servers[i].Timeout = v.GetDuration("alertmanager.timeout")
+			config.Alertmanager.Servers[i].Timeout = config.Alertmanager.Timeout
 		}
 	}
 
-	err = v.UnmarshalKey("silences.comments.linkDetect.rules", &config.Silences.Comments.LinkDetect.Rules)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	err = v.UnmarshalKey("labels.color.custom", &config.Labels.Color.Custom)
-	if err != nil {
-		log.Fatal(err)
-	}
 	for labelName, customColors := range config.Labels.Color.Custom {
 		for i, customColor := range customColors {
 			if customColor.Value == "" && customColor.ValueRegex == "" {
@@ -245,11 +257,6 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 		}
 	}
 
-	err = v.UnmarshalKey("grid.sorting.customValues.labels", &config.Grid.Sorting.CustomValues.Labels)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 	if !slices.StringInSlice([]string{"disabled", "startsAt", "label"}, config.Grid.Sorting.Order) {
 		log.Fatalf("Invalid grid.sorting.order value '%s', allowed options: disabled, startsAt, label", config.Grid.Sorting.Order)
 	}
@@ -262,43 +269,24 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 		log.Fatalf("Invalid ui.theme value '%s', allowed options: light, dark, auto", config.UI.Theme)
 	}
 
-	// FIXME workaround  for https://github.com/prymitive/karma/issues/507
-	// until https://github.com/spf13/viper/pull/635 is merged
-	// read in raw config file if it's used and override maps where keys are label
-	// names so we can't enforce parsed config key names
-	if v.ConfigFileUsed() != "" {
-		raw := configSchema{}
-
-		var rawConfigFile []byte
-		rawConfigFile, err = ioutil.ReadFile(v.ConfigFileUsed())
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		err = yaml.Unmarshal(rawConfigFile, &raw)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		config.Grid.Sorting.CustomValues.Labels = raw.Grid.Sorting.CustomValues.Labels
-	}
-
 	// accept single Alertmanager server from flag/env if nothing is set yet
-	if len(config.Alertmanager.Servers) == 0 && v.GetString("alertmanager.uri") != "" {
+	if len(config.Alertmanager.Servers) == 0 && config.Alertmanager.URI != "" {
 		config.Alertmanager.Servers = []AlertmanagerConfig{
 			{
-				Name:        v.GetString("alertmanager.name"),
-				URI:         v.GetString("alertmanager.uri"),
-				ExternalURI: v.GetString("alertmanager.external_uri"),
-				Timeout:     v.GetDuration("alertmanager.timeout"),
-				Proxy:       v.GetBool("alertmanager.proxy"),
-				ReadOnly:    v.GetBool("alertmanager.readonly"),
+				Name:        config.Alertmanager.Name,
+				URI:         config.Alertmanager.URI,
+				ExternalURI: config.Alertmanager.ExternalURI,
+				Timeout:     config.Alertmanager.Timeout,
+				Proxy:       config.Alertmanager.Proxy,
+				ReadOnly:    config.Alertmanager.ReadOnly,
 				Headers:     make(map[string]string),
 			},
 		}
 	}
 
-	return v.ConfigFileUsed()
+	Config = *config
+
+	return configFileUsed
 }
 
 // LogValues will dump runtime config to logs
@@ -328,11 +316,7 @@ func (config *configSchema) LogValues() {
 		config.Sentry.Private = uri.SanitizeURI(config.Sentry.Private)
 	}
 
-	out, err := yaml.Marshal(cfg)
-	if err != nil {
-		log.Error(err)
-	}
-
+	out, _ := yaml.Marshal(cfg)
 	log.Info("Parsed configuration:")
 	scanner := bufio.NewScanner(bytes.NewReader(out))
 	for scanner.Scan() {

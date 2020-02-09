@@ -209,6 +209,7 @@ func TestReadSimpleConfig(t *testing.T) {
 	resetEnv()
 	log.SetLevel(log.ErrorLevel)
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	os.Setenv("ALERTMANAGER_EXTERNAL_URI", "http://localhost:9090")
 	os.Setenv("ALERTMANAGER_NAME", "single")
 	os.Setenv("ALERTMANAGER_TIMEOUT", "15s")
 	os.Setenv("ALERTMANAGER_PROXY", "true")
@@ -218,6 +219,12 @@ func TestReadSimpleConfig(t *testing.T) {
 		t.Errorf("Expected 1 Alertmanager server, got %d", len(Config.Alertmanager.Servers))
 	} else {
 		am := Config.Alertmanager.Servers[0]
+		if am.URI != "http://localhost" {
+			t.Errorf("Expect Alertmanager URI 'http://localhost' got '%s'", am.URI)
+		}
+		if am.ExternalURI != "http://localhost:9090" {
+			t.Errorf("Expect Alertmanager external_uri 'http://localhost:9090' got '%s'", am.ExternalURI)
+		}
 		if am.Name != "single" {
 			t.Errorf("Expect Alertmanager name 'single' got '%s'", am.Name)
 		}
@@ -226,6 +233,9 @@ func TestReadSimpleConfig(t *testing.T) {
 		}
 		if Config.Alertmanager.Interval != time.Minute*3 {
 			t.Errorf("Expect Alertmanager timeout '%v' got '%v'", time.Minute*3, Config.Alertmanager.Interval)
+		}
+		if am.Proxy != true {
+			t.Errorf("Expect Alertmanager proxy 'true' got '%v'", am.Proxy)
 		}
 	}
 }
@@ -284,6 +294,9 @@ func TestInvalidSilenceFormRegex(t *testing.T) {
 
 	mockConfigRead()
 
+	if Config.SilenceForm.Author.PopulateFromHeader.ValueRegex != ".****" {
+		t.Errorf("Config.SilenceForm.Author.PopulateFromHeader.ValueRegex value is %q", Config.SilenceForm.Author.PopulateFromHeader.ValueRegex)
+	}
 	if !wasFatal {
 		t.Error("Invalid silence form regex didn't cause log.Fatal()")
 	}

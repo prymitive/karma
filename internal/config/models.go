@@ -8,44 +8,50 @@ import (
 type AlertmanagerConfig struct {
 	Name        string
 	URI         string
-	ExternalURI string `yaml:"external_uri" mapstructure:"external_uri"`
+	ExternalURI string `yaml:"external_uri" koanf:"external_uri"`
 	Timeout     time.Duration
 	Proxy       bool
-	ReadOnly    bool `yaml:"readonly" mapstructure:"readonly"`
+	ReadOnly    bool `yaml:"readonly"`
 	TLS         struct {
 		CA                 string
 		Cert               string
 		Key                string
-		InsecureSkipVerify bool `yaml:"insecureSkipVerify"  mapstructure:"insecureSkipVerify"`
+		InsecureSkipVerify bool `yaml:"insecureSkipVerify" koanf:"insecureSkipVerify"`
 	}
 	Headers map[string]string
 }
 
 type LinkDetectRules struct {
-	Regex       string `yaml:"regex" mapstructure:"regex"`
-	URITemplate string `yaml:"uriTemplate" mapstructure:"uriTemplate"`
+	Regex       string `yaml:"regex"`
+	URITemplate string `yaml:"uriTemplate" koanf:"uriTemplate"`
 }
 
 type CustomLabelColor struct {
-	Value         string         `yaml:"value" mapstructure:"value"`
-	ValueRegex    string         `yaml:"value_re" mapstructure:"value_re"`
-	CompiledRegex *regexp.Regexp `yaml:"-" mapstructure:"-"`
-	Color         string         `yaml:"color" mapstructure:"color"`
+	Value         string         `yaml:"value"`
+	ValueRegex    string         `yaml:"value_re" koanf:"value_re"`
+	CompiledRegex *regexp.Regexp `yaml:"-"`
+	Color         string         `yaml:"color"`
 }
 
 type CustomLabelColors map[string][]CustomLabelColor
 
 type configSchema struct {
 	Alertmanager struct {
-		Interval time.Duration
-		Servers  []AlertmanagerConfig
+		Interval    time.Duration
+		Servers     []AlertmanagerConfig
+		Name        string        `yaml:"-" koanf:"name"`
+		Timeout     time.Duration `yaml:"-" koanf:"timeout"`
+		URI         string        `yaml:"-" koanf:"uri"`
+		ExternalURI string        `yaml:"-" koanf:"external_uri"`
+		Proxy       bool          `yaml:"-" koanf:"proxy"`
+		ReadOnly    bool          `yaml:"-" koanf:"readonly"`
 	}
 	AlertAcknowledgement struct {
 		Enabled       bool
 		Duration      time.Duration
 		Author        string
-		CommentPrefix string `yaml:"commentPrefix"  mapstructure:"commentPrefix"`
-	} `yaml:"alertAcknowledgement"  mapstructure:"alertAcknowledgement"`
+		CommentPrefix string `yaml:"commentPrefix" koanf:"commentPrefix"`
+	} `yaml:"alertAcknowledgement" koanf:"alertAcknowledgement"`
 	Annotations struct {
 		Default struct {
 			Hidden bool
@@ -70,9 +76,9 @@ type configSchema struct {
 			Label        string
 			CustomValues struct {
 				Labels map[string]map[string]string
-			} `yaml:"customValues" mapstructure:"customValues"`
+			} `yaml:"customValues" koanf:"customValues"`
 		}
-	}
+	} `yaml:"grid"`
 	Karma struct {
 		Name string
 	}
@@ -107,28 +113,28 @@ type configSchema struct {
 	Silences struct {
 		Comments struct {
 			LinkDetect struct {
-				Rules []LinkDetectRules `yaml:"rules"  mapstructure:"rules"`
-			} `yaml:"linkDetect"  mapstructure:"linkDetect"`
-		} `yaml:"comments"  mapstructure:"comments"`
-	} `yaml:"silences"  mapstructure:"silences"`
+				Rules []LinkDetectRules `yaml:"rules"`
+			} `yaml:"linkDetect" koanf:"linkDetect"`
+		} `yaml:"comments"`
+	} `yaml:"silences"`
 	SilenceForm struct {
 		Author struct {
 			PopulateFromHeader struct {
-				Header     string `yaml:"header"  mapstructure:"header"`
-				ValueRegex string `yaml:"value_re"  mapstructure:"value_re"`
-			} `yaml:"populate_from_header"  mapstructure:"populate_from_header"`
-		} `yaml:"author"  mapstructure:"author"`
+				Header     string `yaml:"header" koanf:"header"`
+				ValueRegex string `yaml:"value_re" koanf:"value_re"`
+			} `yaml:"populate_from_header" koanf:"populate_from_header"`
+		} `yaml:"author"`
 		Strip struct {
 			Labels []string
 		}
-	} `yaml:"silenceForm"  mapstructure:"silenceForm"`
+	} `yaml:"silenceForm" koanf:"silenceForm"`
 	UI struct {
 		Refresh             time.Duration
-		HideFiltersWhenIdle bool   `yaml:"hideFiltersWhenIdle" mapstructure:"hideFiltersWhenIdle"`
-		ColorTitlebar       bool   `yaml:"colorTitlebar" mapstructure:"colorTitlebar"`
-		Theme               string `yaml:"theme" mapstructure:"theme"`
-		MinimalGroupWidth   int    `yaml:"minimalGroupWidth" mapstructure:"minimalGroupWidth"`
-		AlertsPerGroup      int    `yaml:"alertsPerGroup" mapstructure:"alertsPerGroup"`
-		CollapseGroups      string `yaml:"collapseGroups" mapstructure:"collapseGroups"`
+		HideFiltersWhenIdle bool   `yaml:"hideFiltersWhenIdle" koanf:"hideFiltersWhenIdle"`
+		ColorTitlebar       bool   `yaml:"colorTitlebar" koanf:"colorTitlebar"`
+		Theme               string `yaml:"theme" koanf:"theme"`
+		MinimalGroupWidth   int    `yaml:"minimalGroupWidth" koanf:"minimalGroupWidth"`
+		AlertsPerGroup      int    `yaml:"alertsPerGroup" koanf:"alertsPerGroup"`
+		CollapseGroups      string `yaml:"collapseGroups" koanf:"collapseGroups"`
 	}
 }
