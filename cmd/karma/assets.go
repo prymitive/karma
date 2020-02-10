@@ -9,8 +9,9 @@ import (
 	"strings"
 	"time"
 
-	assetfs "github.com/elazarl/go-bindata-assetfs"
 	"github.com/gin-gonic/gin"
+
+	assetfs "github.com/elazarl/go-bindata-assetfs"
 	log "github.com/sirupsen/logrus"
 )
 
