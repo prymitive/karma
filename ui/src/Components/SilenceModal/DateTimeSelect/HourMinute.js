@@ -48,31 +48,33 @@ const HourMinute = observer(
       const minute = dateValue.minute();
 
       return (
-        <table className="text-center border-0 my-auto">
-          <tbody>
-            <tr>
-              <IconTd icon={faAngleUp} onClick={onHourInc} />
-              <td />
-              <IconTd icon={faAngleUp} onClick={onMinuteInc} />
-            </tr>
-            <tr>
-              <td>
-                <h2>{hour > 9 ? hour : `0${hour}`}</h2>
-              </td>
-              <td>
-                <h2 className="mx-2">:</h2>
-              </td>
-              <td>
-                <h2>{minute > 9 ? minute : `0${minute}`}</h2>
-              </td>
-            </tr>
-            <tr>
-              <IconTd icon={faAngleDown} onClick={onHourDec} />
-              <td />
-              <IconTd icon={faAngleDown} onClick={onMinuteDec} />
-            </tr>
-          </tbody>
-        </table>
+        <div className="d-flex justify-content-center align-items-center">
+          <table className="text-center border-0">
+            <tbody>
+              <tr>
+                <IconTd icon={faAngleUp} onClick={onHourInc} />
+                <td />
+                <IconTd icon={faAngleUp} onClick={onMinuteInc} />
+              </tr>
+              <tr>
+                <td>
+                  <h2>{hour > 9 ? hour : `0${hour}`}</h2>
+                </td>
+                <td>
+                  <h2 className="mx-2">:</h2>
+                </td>
+                <td>
+                  <h2>{minute > 9 ? minute : `0${minute}`}</h2>
+                </td>
+              </tr>
+              <tr>
+                <IconTd icon={faAngleDown} onClick={onHourDec} />
+                <td />
+                <IconTd icon={faAngleDown} onClick={onMinuteDec} />
+              </tr>
+            </tbody>
+          </table>
+        </div>
       );
     }
   }
