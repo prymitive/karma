@@ -56,19 +56,21 @@ const TabNames = Object.freeze({
 
 const TabContentStart = observer(({ silenceFormStore }) => {
   return (
-    <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2 ">
-      <DatePicker
-        inline
-        todayButton={"Today"}
-        minDate={moment()
-          .second(0)
-          .toDate()}
-        selected={silenceFormStore.data.startsAt.toDate()}
-        onChange={val => {
-          silenceFormStore.data.startsAt = moment(val);
-          silenceFormStore.data.verifyStarEnd();
-        }}
-      />
+    <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2">
+      <div className="d-flex justify-content-center align-items-center">
+        <DatePicker
+          inline
+          todayButton={"Today"}
+          minDate={moment()
+            .second(0)
+            .toDate()}
+          selected={silenceFormStore.data.startsAt.toDate()}
+          onChange={val => {
+            silenceFormStore.data.startsAt = moment(val);
+            silenceFormStore.data.verifyStarEnd();
+          }}
+        />
+      </div>
       <HourMinute
         dateValue={silenceFormStore.data.startsAt}
         onHourInc={() => silenceFormStore.data.incStart(60)}
@@ -82,20 +84,22 @@ const TabContentStart = observer(({ silenceFormStore }) => {
 
 const TabContentEnd = observer(({ silenceFormStore }) => {
   return (
-    <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2 ">
-      <DatePicker
-        inline
-        todayButton={"Today"}
-        minDate={moment()
-          .second(0)
-          .add(1, "minutes")
-          .toDate()}
-        selected={silenceFormStore.data.endsAt.toDate()}
-        onChange={val => {
-          silenceFormStore.data.endsAt = moment(val);
-          silenceFormStore.data.verifyStarEnd();
-        }}
-      />
+    <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2">
+      <div className="d-flex justify-content-center align-items-center">
+        <DatePicker
+          inline
+          todayButton={"Today"}
+          minDate={moment()
+            .second(0)
+            .add(1, "minutes")
+            .toDate()}
+          selected={silenceFormStore.data.endsAt.toDate()}
+          onChange={val => {
+            silenceFormStore.data.endsAt = moment(val);
+            silenceFormStore.data.verifyStarEnd();
+          }}
+        />
+      </div>
       <HourMinute
         dateValue={silenceFormStore.data.endsAt}
         onHourInc={() => silenceFormStore.data.incEnd(60)}
