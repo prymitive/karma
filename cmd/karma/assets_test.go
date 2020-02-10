@@ -1,10 +1,13 @@
 package main
 
 import (
+	"html/template"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/prymitive/karma/internal/config"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type customizationAssetsTest struct {
@@ -90,5 +93,48 @@ func TestStaticExpires404(t *testing.T) {
 	r.ServeHTTP(resp, req)
 	if resp.Result().Header.Get("Expires") != "" {
 		t.Errorf("Got Expires: '%s' header on a 404 /static/ response", resp.Result().Header.Get("Expires"))
+	}
+}
+
+func TestLoadTemplateChained(t *testing.T) {
+	var tmpl *template.Template
+	tmpl = loadTemplate(tmpl, "ui/build/index.html")
+	if tmpl == nil {
+		t.Errorf("loadTemplate returned nil")
+	}
+
+	tmpl = loadTemplate(tmpl, "ui/build/favicon.ico")
+	if tmpl == nil {
+		t.Errorf("loadTemplate returned nil")
+	}
+
+	if tmpl.Name() != "ui/build/index.html" {
+		t.Errorf("tmpl.Name() returned %q", tmpl.Name())
+	}
+}
+
+func TestLoadTemplateMissing(t *testing.T) {
+	log.SetLevel(log.PanicLevel)
+	defer func() { log.StandardLogger().ExitFunc = nil }()
+	var wasFatal bool
+	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
+
+	loadTemplate(nil, "/this/file/does/not/exist")
+
+	if !wasFatal {
+		t.Error("loadTemplate() with invalid path didn't cause log.Fatal()")
+	}
+}
+
+func TestLoadTemplateUnparsable(t *testing.T) {
+	log.SetLevel(log.PanicLevel)
+	defer func() { log.StandardLogger().ExitFunc = nil }()
+	var wasFatal bool
+	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
+
+	loadTemplate(nil, "ui/build/go-test-invalid.html")
+
+	if !wasFatal {
+		t.Error("loadTemplate() with unparsable file didn't cause log.Fatal()")
 	}
 }
