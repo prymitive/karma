@@ -132,7 +132,7 @@ func TestLoadTemplateUnparsable(t *testing.T) {
 	var wasFatal bool
 	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
 
-	loadTemplate(nil, "ui/build/go-test-invalid.html")
+	loadTemplate(nil, "cmd/karma/tests/bindata/go-test-invalid.html")
 
 	if !wasFatal {
 		t.Error("loadTemplate() with unparsable file didn't cause log.Fatal()")
