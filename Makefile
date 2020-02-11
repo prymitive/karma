@@ -49,7 +49,7 @@ endif
 	touch $@
 
 cmd/karma/bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.$(GO_BINDATA_MODE) .build/artifacts-ui.ok
-	go-bindata-assetfs -o cmd/karma/bindata_assetfs.go ui/build/... ui/src/...
+	go-bindata-assetfs -o cmd/karma/bindata_assetfs.go ui/build/... ui/src/... cmd/karma/tests/bindata/...
 
 $(NAME): .build/deps-build-go.ok go.mod cmd/karma/bindata_assetfs.go $(SOURCES)
 	GO111MODULE=on go build -ldflags "-X main.version=$(VERSION)" ./cmd/karma
@@ -202,7 +202,7 @@ mock-assets: .build/deps-build-go.ok
 	rm -fr ui/build
 	mkdir ui/build
 	cp ui/public/* ui/build/
-	go-bindata-assetfs -o cmd/karma/bindata_assetfs.go -nometadata ui/build/...
+	go-bindata-assetfs -o cmd/karma/bindata_assetfs.go -nometadata ui/build/... cmd/karma/tests/bindata/...
 	# force assets rebuild on next make run
 	rm -f .build/bindata_assetfs.*
 
