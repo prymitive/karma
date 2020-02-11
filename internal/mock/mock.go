@@ -18,24 +18,29 @@ func GetAbsoluteMockPath(filename string, version string) string {
 	return path.Join(cwd, version, filename)
 }
 
-// RegisterURL for given url and return 200 status register mock http responder
-func RegisterURL(url string, version string, filename string) {
+// GetMockResponder returns a httpmock.Responder for given file/version
+func GetMockResponder(url string, version string, filename string) httpmock.Responder {
 	fullPath := GetAbsoluteMockPath(filename, version)
 
 	if _, err := os.Stat(fullPath); err != nil {
 		if os.IsNotExist(err) {
-			return
+			return nil
 		}
 	}
 
 	mockJSON, err := ioutil.ReadFile(fullPath)
 	if err != nil {
-		panic(err)
+		panic(fmt.Errorf("failed to read %s: %s", fullPath, err))
 	}
 	if len(mockJSON) == 0 {
 		panic(fmt.Errorf("empty mock file '%s'", fullPath))
 	}
-	httpmock.RegisterResponder("GET", url, httpmock.NewBytesResponder(200, mockJSON))
+	return httpmock.NewBytesResponder(200, mockJSON)
+}
+
+// RegisterURL for given url and return 200 status register mock http responder
+func RegisterURL(url string, version string, filename string) {
+	httpmock.RegisterResponder("GET", url, GetMockResponder(url, version, filename))
 }
 
 // ListAllMocks will return a list of all mock versions we have files for
