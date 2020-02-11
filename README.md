@@ -5,12 +5,8 @@ Alert dashboard for
 
 ---
 
-Alertmanager `0.16.x` is **NOT** supported by karma due to changes
-in the API, see [this issue](https://github.com/prymitive/karma/issues/115)
-for details.
-A new API endpoint
-[was added for 0.17.0](https://github.com/prometheus/alertmanager/pull/1791) and
-alertmanager `>=0.17.0` is supported.
+Starting with karma v0.56 only Alertmanager V2 API is supported, which
+requires Alertmanager `>=0.17.0`.
 
 ---
 
@@ -179,15 +175,11 @@ Alertmanager URI as argument, example:
     ALERTMANAGER_URI=https://alertmanager.example.com karma
     karma --alertmanager.uri https://alertmanager.example.com
 
-There is a make target which will compile and run karma:
+There is a make target which will compile and run a demo karma docker image:
 
-    make run
+    make run-demo
 
-By default it will listen on port `8080` and Alertmanager mock data will be
-used, to override Alertmanager URI set `ALERTMANAGER_URI` and/or `PORT` make
-variables. Example:
-
-    make PORT=5000 ALERTMANAGER_URI=https://alertmanager.example.com run
+By default it will listen on port `8080` and will have mock alerts.
 
 ## Docker
 
@@ -221,16 +213,7 @@ release images is strongly recommended for any production use.
 
     make docker-image
 
-This will build a Docker image from sources.
-
-### Running the Docker image
-
-    make run-docker
-
-Will run locally built Docker image. Same defaults and override variables
-apply as with `make run`. Example:
-
-    make PORT=5000 ALERTMANAGER_URI=https://alertmanager.example.com run-docker
+This will build a Docker image locally from sources.
 
 ### Health checks
 

@@ -66,8 +66,8 @@ type fileTransportTest struct {
 
 var fileTransportTests = []fileTransportTest{
 	{
-		uri:  fmt.Sprintf("file://%s", mock.GetAbsoluteMockPath("api/v1/status", mock.ListAllMocks()[0])),
-		size: getFileSize(mock.GetAbsoluteMockPath("api/v1/status", mock.ListAllMocks()[0])),
+		uri:  fmt.Sprintf("file://%s", mock.GetAbsoluteMockPath("api/v2/status", mock.ListAllMocks()[0])),
+		size: getFileSize(mock.GetAbsoluteMockPath("api/v2/status", mock.ListAllMocks()[0])),
 	},
 	{
 		uri:    "file:///non-existing-file.abcdef",

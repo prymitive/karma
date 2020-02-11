@@ -1,12 +1,6 @@
 NAME    := karma
 VERSION ?= $(shell git describe --tags --always --dirty='-dev')
 
-# Alertmanager instance used when running locally, points to mock data
-MOCK_PATH         := $(CURDIR)/internal/mock/0.15.3
-ALERTMANAGER_URI := "file://$(MOCK_PATH)"
-# Listen port when running locally
-PORT := 8080
-
 # define a recursive wildcard function, we'll need it to find deeply nested
 # sources in the ui directory
 # based on http://blog.jgc.org/2011/07/gnu-make-recursive-wildcard-function.html
@@ -79,45 +73,15 @@ crosscompile: $(PLATFORMS)
 clean:
 	rm -fr .build cmd/karma/bindata_assetfs.go $(NAME) $(NAME)-* ui/build ui/node_modules coverage.txt
 
-.PHONY: run
-run: $(NAME)
-	ALERTMANAGER_INTERVAL=36000h \
-	ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
-	ANNOTATIONS_HIDDEN="help" \
-	LABELS_COLOR_UNIQUE="@receiver instance cluster" \
-	LABELS_COLOR_STATIC="job" \
-	FILTERS_DEFAULT="@state=active @receiver=by-cluster-service" \
-	SILENCEFORM_STRIP_LABELS="job" \
-	PORT=$(PORT) \
-	./$(NAME)
-
 .PHONY: docker-image
 docker-image:
 	docker build --build-arg VERSION=$(VERSION) -t $(NAME):$(VERSION) .
-
-.PHONY: run-docker
-run-docker: docker-image
-	@docker rm -f $(NAME) || true
-	docker run \
-		--rm \
-		--name $(NAME) \
-		-v $(MOCK_PATH):$(MOCK_PATH) \
-		-e ALERTMANAGER_INTERVAL=36000h \
-		-e ALERTMANAGER_URI=$(ALERTMANAGER_URI) \
-		-e ANNOTATIONS_HIDDEN="help" \
-		-e LABELS_COLOR_UNIQUE="instance cluster" \
-		-e LABELS_COLOR_STATIC="job" \
-		-e FILTERS_DEFAULT="@state=active @receiver=by-cluster-service" \
-		-e SILENCEFORM_STRIP_LABELS="job" \
-		-e PORT=$(PORT) \
-		-p $(PORT):$(PORT) \
-		$(NAME):$(VERSION)
 
 .PHONY: run-demo
 run-demo:
 	docker build --build-arg VERSION=$(VERSION) -t $(NAME):demo -f demo/Dockerfile .
 	@docker rm -f $(NAME)-demo || true
-	docker run --rm --name $(NAME)-demo -p $(PORT):$(PORT) -p 9093:9093 -p 9094:9094 $(NAME):demo
+	docker run --rm --name $(NAME)-demo -p 8080:8080 -p 9093:9093 -p 9094:9094 $(NAME):demo
 
 .PHONY: lint-git-ci
 lint-git-ci: .build/deps-build-node.ok

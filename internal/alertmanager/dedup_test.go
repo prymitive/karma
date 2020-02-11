@@ -32,11 +32,8 @@ func init() {
 		}
 
 		mock.RegisterURL(fmt.Sprintf("%s/metrics", uri), version, "metrics")
-		mock.RegisterURL(fmt.Sprintf("%s/api/v1/status", uri), version, "api/v1/status")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/status", uri), version, "api/v2/status")
-		mock.RegisterURL(fmt.Sprintf("%s/api/v1/silences", uri), version, "api/v1/silences")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/silences", uri), version, "api/v2/silences")
-		mock.RegisterURL(fmt.Sprintf("%s/api/v1/alerts/groups", uri), version, "api/v1/alerts/groups")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/alerts/groups", uri), version, "api/v2/alerts/groups")
 	}
 }
@@ -104,7 +101,9 @@ func TestDedupSilences(t *testing.T) {
 		t.Error(err)
 	}
 	silences := alertmanager.DedupSilences()
-	expected := 72
+
+	mockCount := len(mock.ListAllMockURIs())
+	expected := mockCount * 3
 	if len(silences) != expected {
 		t.Errorf("Expected %d silences keys, got %d", expected, len(silences))
 	}
@@ -116,12 +115,12 @@ func TestDedupAutocomplete(t *testing.T) {
 	}
 	ac := alertmanager.DedupAutocomplete()
 	mockCount := len(mock.ListAllMockURIs())
-	// 56 hints for everything except @alertmanager and @silence_id
+	// 74 hints for everything except @alertmanager and @silence_id
 	// 4 hints for @silence_id 1 and 2
 	// 2 hints per @alertmanager
 	// 6 hints for silences in for each alertmanager
 	// silence id might get duplicated so this check isn't very strict
-	expected := 56 + 4 + mockCount*2 + mockCount*6
+	expected := 74 + 4 + mockCount*2 + mockCount*6
 	if len(ac) <= int(float64(expected)*0.8) || len(ac) > expected {
 		t.Errorf("Expected %d autocomplete hints, got %d", expected, len(ac))
 	}
@@ -206,9 +205,7 @@ func TestClearData(t *testing.T) {
 			t.Errorf("[%s] Get %d known labels", am.Name, len(am.KnownLabels()))
 		}
 
-		mock.RegisterURL(fmt.Sprintf("%s/api/v1/status", uri), version, "api/v1/status")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/status", uri), version, "api/v2/status")
-		mock.RegisterURL(fmt.Sprintf("%s/api/v1/silences", uri), version, "api/v1/silences")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/silences", uri), version, "api/v2/silences")
 		_ = am.Pull()
 		if am.Version() != "" {
@@ -227,7 +224,6 @@ func TestClearData(t *testing.T) {
 			t.Errorf("[%s] Get %d known labels", am.Name, len(am.KnownLabels()))
 		}
 
-		mock.RegisterURL(fmt.Sprintf("%s/api/v1/alerts/groups", uri), version, "api/v1/alerts/groups")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/alerts/groups", uri), version, "api/v2/alerts/groups")
 		_ = am.Pull()
 		if am.Version() == "" {

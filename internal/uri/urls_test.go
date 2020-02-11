@@ -28,8 +28,8 @@ var joinURLTests = []joinURLTest{
 	},
 	{
 		base:    "http://am.example.com",
-		sub:     "/api/v1/alerts",
-		url:     "http://am.example.com/api/v1/alerts",
+		sub:     "/api/v2/alerts",
+		url:     "http://am.example.com/api/v2/alerts",
 		isValid: true,
 	},
 	{
