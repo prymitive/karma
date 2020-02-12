@@ -7,27 +7,13 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
-	"os"
 	"testing"
 	"time"
 
-	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/uri"
 
 	log "github.com/sirupsen/logrus"
 )
-
-func getFileSize(path string) int64 {
-	file, err := os.Open(path)
-	if err != nil {
-		log.Fatal(err)
-	}
-	fi, err := file.Stat()
-	if err != nil {
-		log.Fatal(err)
-	}
-	return fi.Size()
-}
 
 type httpTransportTest struct {
 	timeout   time.Duration
@@ -53,35 +39,6 @@ var httpTransportTests = []httpTransportTest{
 	},
 	{
 		headers: map[string]string{"X-Auth-Test": "tokenValue"},
-	},
-}
-
-type fileTransportTest struct {
-	uri     string
-	failed  bool
-	timeout time.Duration
-	size    int64
-	headers map[string]string
-}
-
-var fileTransportTests = []fileTransportTest{
-	{
-		uri:  fmt.Sprintf("file://%s", mock.GetAbsoluteMockPath("api/v2/status", mock.ListAllMocks()[0])),
-		size: getFileSize(mock.GetAbsoluteMockPath("api/v2/status", mock.ListAllMocks()[0])),
-	},
-	{
-		uri:    "file:///non-existing-file.abcdef",
-		failed: true,
-	},
-	{
-		uri:    "file://uri.go",
-		size:   getFileSize("uri.go"),
-		failed: true,
-	},
-	{
-		uri:    "file://../uri/uri.go",
-		size:   getFileSize("uri.go"),
-		failed: true,
 	},
 }
 
@@ -150,34 +107,6 @@ func TestHTTPReader(t *testing.T) {
 
 		if got != int64(len(responseBody)+1) {
 			t.Errorf("[%v] Wrong response size, got %d, expected %d", testCase, got, len(responseBody))
-		}
-	}
-}
-
-func TestFileReader(t *testing.T) {
-	//log.SetLevel(log.FatalLevel)
-	for _, testCase := range fileTransportTests {
-		transp, err := uri.NewReader(testCase.uri, testCase.timeout, &http.Transport{}, testCase.headers)
-		if err != nil {
-			t.Errorf("[%v] failed to create new transport: %s", testCase, err)
-		}
-
-		source, err := transp.Read(testCase.uri, testCase.headers)
-		if err != nil {
-			if !testCase.failed {
-				t.Errorf("[%v] unexpected failure while creating reader: %s", testCase, err)
-			}
-			continue
-		}
-		got, err := readAll(source)
-		source.Close()
-
-		if err != nil {
-			t.Errorf("[%v] Read() failed: %s", testCase, err)
-		}
-
-		if got != testCase.size {
-			t.Errorf("[%v] Wrong response size, got %d, expected %d", testCase, got, testCase.size)
 		}
 	}
 }
