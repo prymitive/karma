@@ -38,7 +38,7 @@ beforeEach(() => {
         readonly: false,
         headers: { foo: "bar" },
         error: "",
-        version: "0.15.0",
+        version: "0.17.0",
         cluster: "default",
         clusterMembers: ["default"]
       }
@@ -102,22 +102,8 @@ describe("<AlertAck />", () => {
     expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
   });
 
-  it("[v1] uses faCheckCircle after successful fetch", async () => {
-    fetch.mockResponse(
-      JSON.stringify({ status: "success", data: { silenceId: "123456789" } })
-    );
-    const tree = MountedAlertAck();
-    const button = tree.find("span.badge");
-    button.simulate("click");
-    await expect(
-      tree.instance().submitState.silencesByCluster["default"].fetch
-    ).resolves.toBeUndefined();
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-check-circle/);
-  });
-
-  it("[v2] uses faCheckCircle after successful fetch", async () => {
+  it("uses faCheckCircle after successful fetch", async () => {
     fetch.mockResponse(JSON.stringify({ silenceID: "123" }));
-    alertStore.data.upstreams.instances[0].version = "0.16.2";
     const tree = MountedAlertAck();
     const button = tree.find("span.badge");
     button.simulate("click");
@@ -166,9 +152,7 @@ describe("<AlertAck />", () => {
   });
 
   it("sends correct payload", () => {
-    fetch.mockResponse(
-      JSON.stringify({ status: "success", data: { silenceId: "123456789" } })
-    );
+    fetch.mockResponse(JSON.stringify({ silenceID: "123456789" }));
 
     silenceFormStore.data.author = "karma/ui";
     MountAndClick();
@@ -262,71 +246,13 @@ describe("<AlertAck />", () => {
     });
   });
 
-  it("[v1] sends POST request to /api/v1/silences", () => {
-    MountAndClick();
-    const uri = fetch.mock.calls[0][0];
-    expect(uri).toBe("http://localhost/api/v1/silences");
-  });
-
-  it("[v2] sends POST request to /api/v2/silences", () => {
-    alertStore.data.upstreams.instances[0].version = "0.16.2";
+  it("sends POST request to /api/v2/silences", () => {
     MountAndClick();
     const uri = fetch.mock.calls[0][0];
     expect(uri).toBe("http://localhost/api/v2/silences");
   });
 
-  it("[v1] will retry on another cluster member after fetch failure", async () => {
-    fetch
-      .mockResponseOnce(JSON.stringify({ status: "error" }))
-      .mockResponseOnce(
-        JSON.stringify({ status: "success", data: { silenceId: "123456789" } })
-      );
-    alertStore.data.upstreams = {
-      clusters: { default: ["default", "fallback"] },
-      instances: [
-        {
-          name: "default",
-          uri: "http://am1.example.com",
-          publicURI: "http://am1.example.com",
-          readonly: false,
-          headers: {},
-          error: "",
-          version: "0.15.0",
-          cluster: "default",
-          clusterMembers: ["default", "fallback"]
-        },
-        {
-          name: "fallback",
-          uri: "http://am2.example.com",
-          publicURI: "http://am2.example.com",
-          readonly: false,
-          headers: {},
-          error: "",
-          version: "0.15.0",
-          cluster: "default",
-          clusterMembers: ["default", "fallback"]
-        }
-      ]
-    };
-
-    const tree = MountedAlertAck();
-    const button = tree.find("span.badge");
-    button.simulate("click");
-    await expect(
-      tree.instance().submitState.silencesByCluster["default"].fetch
-    ).resolves.toBeUndefined();
-    expect(fetch.mock.calls[0][0]).toBe(
-      "http://am2.example.com/api/v1/silences"
-    );
-    await expect(
-      tree.instance().submitState.silencesByCluster["default"].fetch
-    ).resolves.toBeUndefined();
-    expect(fetch.mock.calls[1][0]).toBe(
-      "http://am1.example.com/api/v1/silences"
-    );
-  });
-
-  it("[v2] will retry on another cluster member after fetch failure", async () => {
+  it("will retry on another cluster member after fetch failure", async () => {
     fetch
       .mockResponseOnce("error message", { status: 500 })
       .mockResponseOnce(JSON.stringify({ silenceID: "123" }));
@@ -340,7 +266,7 @@ describe("<AlertAck />", () => {
           readonly: false,
           headers: {},
           error: "",
-          version: "0.16.2",
+          version: "0.17.0",
           cluster: "default",
           clusterMembers: ["default", "fallback"]
         },
@@ -351,7 +277,7 @@ describe("<AlertAck />", () => {
           readonly: false,
           headers: {},
           error: "",
-          version: "0.16.2",
+          version: "0.17.0",
           cluster: "default",
           clusterMembers: ["default", "fallback"]
         }
@@ -389,7 +315,7 @@ describe("<AlertAck />", () => {
           readonly: false,
           headers: {},
           error: "",
-          version: "0.15.0",
+          version: "0.17.0",
           cluster: "default",
           clusterMembers: ["default", "fallback"]
         }
@@ -403,7 +329,7 @@ describe("<AlertAck />", () => {
       tree.instance().submitState.silencesByCluster["default"].fetch
     ).resolves.toBeUndefined();
     expect(fetch.mock.calls[0][0]).toBe(
-      "http://am1.example.com/api/v1/silences"
+      "http://am1.example.com/api/v2/silences"
     );
     expect(consoleSpy).toHaveBeenCalledTimes(1);
   });

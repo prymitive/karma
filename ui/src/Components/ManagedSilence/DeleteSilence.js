@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
-import satisfies from "semver/functions/satisfies";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
@@ -115,26 +113,6 @@ const DeleteSilenceModalContent = observer(
         .filter(u => u.cluster === this.props.cluster)
         .slice(0, 1)[0];
 
-    parseAlertmanagerResponse = response => {
-      /*
-      {"status": "success"}
-      or
-      {
-        "status": "error",
-        "errorType": "bad_data",
-        "error": "silence 706959fd-4590-4e21-b983-859ba6ec0e1a already expired"
-      }
-      */
-      if (response.status === "success") {
-        this.deleteState.setError(null);
-      } else if (response.status === "error" && response.error) {
-        this.deleteState.setError(response.error);
-      } else {
-        this.deleteState.setError(JSON.stringify(response));
-      }
-      this.deleteState.setDone();
-    };
-
     onFetchPreview = () => {
       const { silence } = this.props;
 
@@ -169,32 +147,25 @@ const DeleteSilenceModalContent = observer(
 
       const alertmanager = this.getAlertmanager();
 
-      const isOpenAPI = satisfies(alertmanager.version, ">=0.16.0");
-
-      const uri = isOpenAPI
-        ? `${alertmanager.uri}/api/v2/silence/${silence.id}`
-        : `${alertmanager.uri}/api/v1/silence/${silence.id}`;
-
-      this.deleteState.fetch = FetchDelete(uri, {
-        headers: alertmanager.headers
-      })
+      this.deleteState.fetch = FetchDelete(
+        `${alertmanager.uri}/api/v2/silence/${silence.id}`,
+        {
+          headers: alertmanager.headers
+        }
+      )
         .then(result => {
-          if (isOpenAPI) {
-            if (result.ok) {
-              this.deleteState.setError(null);
-              this.deleteState.setDone();
-            } else {
-              result.text().then(this.deleteState.setError);
-              this.deleteState.setDone();
-            }
+          if (result.ok) {
+            this.deleteState.setError(null);
+            this.deleteState.setDone();
           } else {
-            result.json().then(this.parseAlertmanagerResponse);
+            result.text().then(this.deleteState.setError);
+            this.deleteState.setDone();
           }
         })
         .catch(err => {
           console.trace(err);
           this.deleteState.setDone();
-          this.deleteState.setError(
+          return this.deleteState.setError(
             `Delete request failed with: ${err.message}`
           );
         });

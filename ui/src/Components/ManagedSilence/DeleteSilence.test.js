@@ -18,7 +18,7 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
   cluster = "am";
   silence = MockSilence();
-  fetch.mockResponse(JSON.stringify(MockAPIResponse()));
+  fetch.mockResponseOnce(JSON.stringify(MockAPIResponse()));
 
   alertStore.data.upstreams = {
     instances: [
@@ -28,7 +28,7 @@ beforeEach(() => {
         uri: "http://localhost:9093",
         readonly: false,
         error: "",
-        version: "0.15.3",
+        version: "0.17.0",
         headers: {},
         clusterMembers: ["am1"]
       }
@@ -94,6 +94,17 @@ const VerifyResponse = async response => {
   return tree;
 };
 
+const VerifyError = async error => {
+  const tree = MountedDeleteSilenceModalContent();
+  await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
+
+  fetch.mockResponseOnce(error, { status: 500 });
+  tree.find(".btn-danger").simulate("click");
+  await expect(tree.instance().deleteState.fetch).resolves.toBeUndefined();
+
+  return tree;
+};
+
 describe("<DeleteSilence />", () => {
   it("label is 'Delete' by default", () => {
     const tree = MountedDeleteSilence();
@@ -147,8 +158,10 @@ describe("<DeleteSilenceModalContent />", () => {
     expect(fetch).toHaveBeenCalled();
   });
 
-  it("renders ErrorMessage on failed fetch", async () => {
-    jest.spyOn(console, "trace").mockImplementation(() => {});
+  it("renders ErrorMessage on failed preview fetch", async () => {
+    const consoleSpy = jest
+      .spyOn(console, "trace")
+      .mockImplementation(() => {});
     fetch.resetMocks();
     fetch.mockReject(new Error("Fetch error"));
 
@@ -156,9 +169,10 @@ describe("<DeleteSilenceModalContent />", () => {
     await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
     tree.update();
     expect(tree.find("ErrorMessage")).toHaveLength(1);
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
   });
 
-  it("renders ErrorMessage on fetch with non-JSON response", async () => {
+  it("renders ErrorMessage on preview fetch with non-JSON response", async () => {
     fetch.mockResponseOnce("not json");
     jest.spyOn(console, "trace").mockImplementation(() => {});
     fetch.resetMocks();
@@ -170,16 +184,7 @@ describe("<DeleteSilenceModalContent />", () => {
     expect(tree.find("ErrorMessage")).toHaveLength(1);
   });
 
-  it("[v1] sends a DELETE request after clicking 'Confirm' button", async () => {
-    await VerifyResponse({ status: "success" });
-    expect(fetch.mock.calls[1][0]).toBe(
-      "http://localhost:9093/api/v1/silence/04d37636-2350-4878-b382-e0b50353230f"
-    );
-    expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
-  });
-
-  it("[v2] sends a DELETE request after clicking 'Confirm' button", async () => {
-    alertStore.data.upstreams.instances[0].version = "0.16.2";
+  it("sends a DELETE request after clicking 'Confirm' button", async () => {
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
       "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f"
@@ -187,26 +192,10 @@ describe("<DeleteSilenceModalContent />", () => {
     expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
   });
 
-  it("[v1] sends headers from alertmanager config", async () => {
+  it("sends headers from alertmanager config", async () => {
     alertStore.data.upstreams.instances[0].headers = {
       Authorization: "Basic ***"
     };
-    await VerifyResponse({ status: "success" });
-    expect(fetch.mock.calls[1][0]).toBe(
-      "http://localhost:9093/api/v1/silence/04d37636-2350-4878-b382-e0b50353230f"
-    );
-    expect(fetch.mock.calls[1][1]).toMatchObject({
-      credentials: "include",
-      method: "DELETE",
-      headers: { Authorization: "Basic ***" }
-    });
-  });
-
-  it("[v1] sends headers from alertmanager config", async () => {
-    alertStore.data.upstreams.instances[0].headers = {
-      Authorization: "Basic ***"
-    };
-    alertStore.data.upstreams.instances[0].version = "0.16.2";
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
       "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f"
@@ -221,7 +210,7 @@ describe("<DeleteSilenceModalContent />", () => {
   it("'Confirm' button is no-op after successful DELETE", async () => {
     const tree = await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
-      "http://localhost:9093/api/v1/silence/04d37636-2350-4878-b382-e0b50353230f"
+      "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f"
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({ method: "DELETE" });
 
@@ -232,58 +221,37 @@ describe("<DeleteSilenceModalContent />", () => {
     expect(fetch.mock.calls).toHaveLength(2);
   });
 
-  it("renders SuccessMessage on 'success' response status", async () => {
+  it("renders SuccessMessage on successful response status", async () => {
     const tree = await VerifyResponse({ status: "success" });
     tree.update();
     expect(tree.find("SuccessMessage")).toHaveLength(1);
   });
 
-  it("renders ErrorMessage on 'error' response status", async () => {
-    const tree = await VerifyResponse({ status: "error", error: "fake error" });
+  it("renders ErrorMessage on failed delete fetch request", async () => {
+    const tree = await VerifyError("mock error");
+
+    tree.find(".btn-danger").simulate("click");
+    await expect(tree.instance().deleteState.fetch).resolves.toBeUndefined();
+
     tree.update();
     expect(tree.find("ErrorMessage")).toHaveLength(1);
   });
 
-  it("renders ErrorMessage on unhandled response status", async () => {
-    const tree = await VerifyResponse({ status: "foo bar" });
-    tree.update();
-    expect(tree.find("ErrorMessage")).toHaveLength(1);
-  });
-
-  it("renders ErrorMessage on unhandled response body", async () => {
-    const tree = await VerifyResponse({ foo: "bar" });
-    tree.update();
-    expect(tree.find("ErrorMessage")).toHaveLength(1);
-  });
-
-  it("[v1] renders ErrorMessage on failed fetch request", async () => {
-    const tree = MountedDeleteSilenceModalContent();
-    await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
-
-    jest.spyOn(console, "trace").mockImplementation(() => {});
+  it("renders ErrorMessage on failed delete fetch", async () => {
+    const consoleSpy = jest
+      .spyOn(console, "trace")
+      .mockImplementation(() => {});
     fetch.resetMocks();
+    fetch.mockResponseOnce(JSON.stringify(MockAPIResponse()));
     fetch.mockReject(new Error("Fetch error"));
 
-    tree.find(".btn-danger").simulate("click");
-    await expect(tree.instance().deleteState.fetch).resolves.toBeUndefined();
-
-    tree.update();
-    expect(tree.find("ErrorMessage")).toHaveLength(1);
-  });
-
-  it("[v2] renders ErrorMessage on failed fetch request", async () => {
-    alertStore.data.upstreams.instances[0].version = "0.16.2";
     const tree = MountedDeleteSilenceModalContent();
     await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
 
-    jest.spyOn(console, "trace").mockImplementation(() => {});
-    fetch.resetMocks();
-    fetch.mockResponseOnce("500 Internal Server Error", { status: 500 });
-
     tree.find(".btn-danger").simulate("click");
     await expect(tree.instance().deleteState.fetch).resolves.toBeUndefined();
-
     tree.update();
     expect(tree.find("ErrorMessage")).toHaveLength(1);
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
   });
 });

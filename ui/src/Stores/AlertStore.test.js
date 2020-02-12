@@ -33,7 +33,7 @@ describe("AlertStore.data", () => {
           readonly: false,
           headers: { foo: "bar" },
           error: "",
-          version: "0.15.0",
+          version: "0.17.0",
           cluster: "default",
           clusterMembers: ["default", "readonly"]
         },
@@ -44,7 +44,7 @@ describe("AlertStore.data", () => {
           readonly: true,
           headers: {},
           error: "",
-          version: "0.15.0",
+          version: "0.17.0",
           cluster: "default",
           clusterMembers: ["default", "readonly"]
         }
@@ -69,7 +69,7 @@ describe("AlertStore.data", () => {
           readonly: true,
           headers: {},
           error: "",
-          version: "0.15.0",
+          version: "0.17.0",
           cluster: "default",
           clusterMembers: ["ro1", "ro2"]
         },
@@ -80,7 +80,7 @@ describe("AlertStore.data", () => {
           readonly: true,
           headers: {},
           error: "",
-          version: "0.15.0",
+          version: "0.17.0",
           cluster: "default",
           clusterMembers: ["ro1", "ro2"]
         }

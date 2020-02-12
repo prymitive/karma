@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { action, observable } from "mobx";
 import { observer } from "mobx-react";
 
-import satisfies from "semver/functions/satisfies";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 import { faCheckCircle } from "@fortawesome/free-regular-svg-icons/faCheckCircle";
@@ -33,18 +31,18 @@ const SubmitIcon = observer(({ stateValue }) => {
   return <FontAwesomeIcon icon={faCircleNotch} spin />;
 });
 
-const SilenceLink = ({ uri, silenceId }) => (
+const SilenceLink = ({ uri, silenceID }) => (
   <a
-    href={`${uri}/#/silences/${silenceId}`}
+    href={`${uri}/#/silences/${silenceID}`}
     target="_blank"
     rel="noopener noreferrer"
   >
-    {silenceId}
+    {silenceID}
   </a>
 );
 SilenceLink.propTypes = {
   uri: PropTypes.string.isRequired,
-  silenceId: PropTypes.string.isRequired
+  silenceID: PropTypes.string.isRequired
 };
 
 const SilenceSubmitProgress = observer(
@@ -84,7 +82,7 @@ const SilenceSubmitProgress = observer(
 
     maybeTryAgainAfterError = err => {
       if (this.submitState.membersToTry.length) {
-        this.handleAlertmanagerRequest();
+        return this.handleAlertmanagerRequest();
       } else {
         this.submitState.markFailed(err.message);
       }
@@ -106,17 +104,10 @@ const SilenceSubmitProgress = observer(
       if (am === undefined) {
         const err = `Alertmanager instance "${member}" not found`;
         console.error(err);
-        this.maybeTryAgainAfterError(err);
-        return;
+        return this.maybeTryAgainAfterError(err);
       }
 
-      const isOpenAPI = satisfies(am.version, ">=0.16.0");
-
-      const uri = isOpenAPI
-        ? `${am.uri}/api/v2/silences`
-        : `${am.uri}/api/v1/silences`;
-
-      this.submitState.fetch = FetchPost(uri, {
+      this.submitState.fetch = FetchPost(`${am.uri}/api/v2/silences`, {
         body: JSON.stringify(payload),
         headers: {
           "Content-Type": "application/json",
@@ -124,49 +115,25 @@ const SilenceSubmitProgress = observer(
         }
       })
         .then(result => {
-          if (isOpenAPI) {
-            if (result.ok) {
-              return result
-                .json()
-                .then(r => this.parseOpenAPIResponse(am.publicURI, r));
-            } else {
-              return result.text().then(text => {
-                this.submitState.markFailed(text);
-                return text;
-              });
-            }
-          } else {
+          if (result.ok) {
             return result
               .json()
-              .then(r => this.parseAlertmanagerResponse(am.publicURI, r));
+              .then(r => this.parseOpenAPIResponse(am.publicURI, r));
+          } else {
+            return result.text().then(text => {
+              this.submitState.markFailed(text);
+              return text;
+            });
           }
         })
-        .catch(err => {
-          this.maybeTryAgainAfterError(err);
-        });
+        .catch(this.maybeTryAgainAfterError);
     };
 
     parseOpenAPIResponse = (uri, response) => {
-      const link = <SilenceLink uri={uri} silenceId={response.silenceID} />;
+      const link = <SilenceLink uri={uri} silenceID={response.silenceID} />;
       this.submitState.markDone(link);
-      // return silenceId so we can assert it in tests
+      // return silenceID so we can assert it in tests
       return response.silenceID;
-    };
-
-    parseAlertmanagerResponse = (uri, response) => {
-      if (response.status === "success") {
-        const link = (
-          <SilenceLink uri={uri} silenceId={response.data.silenceId} />
-        );
-        this.submitState.markDone(link);
-      } else if (response.status === "error") {
-        this.submitState.markFailed(response.error);
-      } else {
-        this.submitState.markFailed(JSON.stringify(response));
-      }
-
-      // return status so we can assert it in tests
-      return response.status;
     };
 
     componentDidMount() {

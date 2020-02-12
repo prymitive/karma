@@ -30,7 +30,7 @@ beforeEach(() => {
       readonly: false,
       headers: {},
       error: "",
-      version: "0.15.0",
+      version: "0.17.0",
       cluster: "ha",
       clusterMembers: ["am1", "am2"]
     },
@@ -41,7 +41,7 @@ beforeEach(() => {
       readonly: false,
       headers: {},
       error: "",
-      version: "0.15.0",
+      version: "0.17.0",
       cluster: "ha",
       clusterMembers: ["am1", "am2"]
     },
@@ -52,7 +52,7 @@ beforeEach(() => {
       readonly: false,
       headers: {},
       error: "",
-      version: "0.15.0",
+      version: "0.17.0",
       cluster: "am3",
       clusterMembers: ["am3"]
     }

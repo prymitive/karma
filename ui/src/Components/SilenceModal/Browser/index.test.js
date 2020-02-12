@@ -38,7 +38,7 @@ beforeEach(() => {
         publicURI: "http://example.com",
         readonly: false,
         error: "",
-        version: "0.15.3",
+        version: "0.17.0",
         headers: {}
       }
     ],

@@ -50,7 +50,7 @@ storiesOf("SilenceModal", module)
           readonly: false,
           headers: {},
           error: "",
-          version: "0.15.0",
+          version: "0.17.0",
           cluster: "default",
           clusterMembers: ["default"]
         }
@@ -124,7 +124,7 @@ storiesOf("SilenceModal", module)
           readonly: true,
           headers: {},
           error: "",
-          version: "0.15.0",
+          version: "0.17.0",
           cluster: "default",
           clusterMembers: ["readonly"]
         }
@@ -189,7 +189,7 @@ storiesOf("SilenceModal", module)
           publicURI: "http://example.com",
           readonly: false,
           error: "",
-          version: "0.15.3",
+          version: "0.17.0",
           headers: {}
         }
       ],
@@ -252,7 +252,7 @@ storiesOf("SilenceModal", module)
           publicURI: "http://example.com",
           readonly: false,
           error: "",
-          version: "0.15.3",
+          version: "0.17.0",
           headers: {}
         }
       ],
