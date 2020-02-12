@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/prymitive/karma/internal/alertmanager"
+	"github.com/prymitive/karma/internal/config"
 
 	"github.com/jarcoal/httpmock"
 )
@@ -230,29 +231,76 @@ func TestProxyToSubURIAlertmanager(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	r := ginTestEngine()
-	am, err := alertmanager.NewAlertmanager(
-		"suburi",
-		"http://alertmanager.example.com/suburi",
-		alertmanager.WithRequestTimeout(time.Second*5),
-		alertmanager.WithProxy(true),
-	)
-	if err != nil {
-		t.Error(err)
-	}
-	err = setupRouterProxyHandlers(r, am)
-	if err != nil {
-		t.Errorf("Failed to setup proxy for Alertmanager %s: %s", am.Name, err)
+	type proxyTest struct {
+		alertmanagerURI string
+		requestURI      string
+		listenPrefix    string
 	}
 
-	httpmock.RegisterResponder("POST", "http://alertmanager.example.com/suburi/api/v2/silences", func(req *http.Request) (*http.Response, error) {
-		return httpmock.NewStringResponse(200, "ok"), nil
-	})
+	proxyTests := []proxyTest{
+		{
+			alertmanagerURI: "http://alertmanager.example.com/suburi",
+			requestURI:      "/proxy/alertmanager/suburi/api/v2/silences",
+			listenPrefix:    "/",
+		},
+		{
+			alertmanagerURI: "http://alertmanager.example.com/suburi/",
+			requestURI:      "/proxy/alertmanager/suburi/api/v2/silences",
+			listenPrefix:    "/",
+		},
+		{
+			alertmanagerURI: "http://alertmanager.example.com/suburi",
+			requestURI:      "/suburi/proxy/alertmanager/suburi/api/v2/silences",
+			listenPrefix:    "/suburi",
+		},
+		{
+			alertmanagerURI: "http://alertmanager.example.com/suburi/",
+			requestURI:      "/suburi/proxy/alertmanager/suburi/api/v2/silences",
+			listenPrefix:    "/suburi",
+		},
+		{
+			alertmanagerURI: "http://alertmanager.example.com/suburi",
+			requestURI:      "/suburi/proxy/alertmanager/suburi/api/v2/silences",
+			listenPrefix:    "/suburi/",
+		},
+		{
+			alertmanagerURI: "http://alertmanager.example.com/suburi/",
+			requestURI:      "/suburi/proxy/alertmanager/suburi/api/v2/silences",
+			listenPrefix:    "/suburi/",
+		},
+	}
 
-	req := httptest.NewRequest("POST", "/proxy/alertmanager/suburi/api/v2/silences", nil)
-	resp := newCloseNotifyingRecorder()
-	r.ServeHTTP(resp, req)
-	if resp.Code != 200 {
-		t.Errorf("Got response code %d instead of 200", resp.Code)
+	for _, testCase := range proxyTests {
+		t.Run(testCase.alertmanagerURI, func(t *testing.T) {
+			httpmock.Reset()
+			r := ginTestEngine()
+
+			config.Config.Listen.Prefix = testCase.listenPrefix
+
+			am, err := alertmanager.NewAlertmanager(
+				"suburi",
+				testCase.alertmanagerURI,
+				alertmanager.WithRequestTimeout(time.Second*5),
+				alertmanager.WithProxy(true),
+			)
+			if err != nil {
+				t.Error(err)
+			}
+			err = setupRouterProxyHandlers(r, am)
+			if err != nil {
+				t.Errorf("Failed to setup proxy for Alertmanager %s: %s", am.Name, err)
+			}
+
+			httpmock.RegisterResponder("POST", "http://alertmanager.example.com/suburi/api/v2/silences", func(req *http.Request) (*http.Response, error) {
+				return httpmock.NewStringResponse(200, "ok"), nil
+			})
+
+			req := httptest.NewRequest("POST", testCase.requestURI, nil)
+			resp := newCloseNotifyingRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != 200 {
+				t.Errorf("Got response code %d instead of 200", resp.Code)
+			}
+		})
 	}
 }
