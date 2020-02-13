@@ -28,8 +28,6 @@ func NewReader(uri string, timeout time.Duration, clientTransport http.RoundTrip
 			Transport: clientTransport,
 		}
 		return &HTTPURIReader{client: client}, nil
-	case "file":
-		return &FileURIReader{}, nil
 	default:
 		return nil, fmt.Errorf("unsupported URI scheme '%s' in '%s'", u.Scheme, SanitizeURI(u.String()))
 	}

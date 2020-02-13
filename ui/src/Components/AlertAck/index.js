@@ -6,8 +6,6 @@ import { observer } from "mobx-react";
 
 import moment from "moment";
 
-import satisfies from "semver/functions/satisfies";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
@@ -142,38 +140,23 @@ const AlertAck = observer(
         return;
       }
 
-      const isOpenAPI = satisfies(am.version, ">=0.16.0");
-
-      const uri = isOpenAPI
-        ? `${am.uri}/api/v2/silences`
-        : `${am.uri}/api/v1/silences`;
-
-      this.submitState.silencesByCluster[cluster].fetch = FetchPost(uri, {
-        body: JSON.stringify(
-          this.submitState.silencesByCluster[cluster].payload
-        ),
-        headers: {
-          "Content-Type": "application/json",
-          ...am.headers
+      this.submitState.silencesByCluster[cluster].fetch = FetchPost(
+        `${am.uri}/api/v2/silences`,
+        {
+          body: JSON.stringify(
+            this.submitState.silencesByCluster[cluster].payload
+          ),
+          headers: {
+            "Content-Type": "application/json",
+            ...am.headers
+          }
         }
-      })
+      )
         .then(result => {
-          if (isOpenAPI) {
-            if (result.ok) {
-              return result
-                .json()
-                .then(r => this.submitState.markDone(cluster));
-            } else {
-              this.maybeTryAgainAfterError(cluster);
-            }
+          if (result.ok) {
+            return result.json().then(r => this.submitState.markDone(cluster));
           } else {
-            return result
-              .json()
-              .then(r =>
-                r.status === "success"
-                  ? this.submitState.markDone(cluster)
-                  : this.maybeTryAgainAfterError(cluster)
-              );
+            this.maybeTryAgainAfterError(cluster);
           }
         })
         .catch(() => {

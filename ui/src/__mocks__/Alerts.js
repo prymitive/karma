@@ -75,7 +75,7 @@ const MockAlertmanager = () => ({
     Authorization: "Basic foo bar"
   },
   error: "",
-  version: "0.15.0",
+  version: "0.17.0",
   clusterMembers: ["default"]
 });
 

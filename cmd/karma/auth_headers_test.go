@@ -21,28 +21,6 @@ type authHeaderTest struct {
 }
 
 var authHeaderTests = []authHeaderTest{
-	// API v1
-	{
-		alertmanagerURI:  "http://localhost:9093",
-		alertmanagerHost: "localhost:9093",
-	},
-	{
-		alertmanagerURI:  "http://alertmanager.example.com",
-		alertmanagerHost: "alertmanager.example.com",
-	},
-	{
-		alertmanagerURI:  "http://foo:bar@alertmanager.example.com",
-		alertmanagerHost: "alertmanager.example.com",
-		authUser:         "foo",
-		authPass:         "bar",
-	},
-	{
-		alertmanagerURI:  "http://foo@alertmanager.example.com",
-		alertmanagerHost: "alertmanager.example.com",
-		authUser:         "foo",
-		authPass:         "",
-	},
-	// API v2
 	{
 		alertmanagerURI:  "http://localhost:9093",
 		alertmanagerHost: "localhost:9093",
@@ -103,9 +81,9 @@ func TestAuthHeader(t *testing.T) {
 
 			for _, m := range []string{
 				"metrics",
-				"api/v1/status", "api/v2/status",
-				"api/v1/silences", "api/v2/silences",
-				"api/v1/alerts/groups", "api/v2/alerts/groups"} {
+				"api/v2/status",
+				"api/v2/silences",
+				"api/v2/alerts/groups"} {
 
 				uri := fmt.Sprintf("http://%s/%s", testCase.alertmanagerHost, m)
 

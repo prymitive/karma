@@ -281,9 +281,12 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 
 	setupRouter(router)
 	for _, am := range alertmanager.GetAlertmanagers() {
-		err := setupRouterProxyHandlers(router, am)
-		if err != nil {
-			return nil, fmt.Errorf("Failed to setup proxy handlers for Alertmanager '%s': %s", am.Name, err)
+		if am.ProxyRequests {
+			log.Infof("[%s] Setting up proxy endpoints", am.Name)
+			err := setupRouterProxyHandlers(router, am)
+			if err != nil {
+				return nil, fmt.Errorf("Failed to setup proxy handlers for Alertmanager '%s': %s", am.Name, err)
+			}
 		}
 	}
 

@@ -32,7 +32,7 @@ storiesOf("ManagedSilence", module)
           publicURI: "http://example.com",
           readonly: false,
           error: "",
-          version: "0.15.3",
+          version: "0.17.0",
           headers: {}
         }
       ],
@@ -50,7 +50,7 @@ storiesOf("ManagedSilence", module)
           readonly: true,
           headers: {},
           error: "",
-          version: "0.15.0",
+          version: "0.17.0",
           cluster: "ro",
           clusterMembers: ["readonly"]
         }

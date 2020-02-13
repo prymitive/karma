@@ -98,31 +98,9 @@ func (am *Alertmanager) fetchStatus(version string) (*models.AlertmanagerStatus,
 
 	var status models.AlertmanagerStatus
 
-	if mapper.IsOpenAPI() {
-		status, err = mapper.Collect(am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		// generate full URL to collect silences from
-		url, err := mapper.AbsoluteURL(am.URI)
-		if err != nil {
-			log.Errorf("[%s] Failed to generate status endpoint URL: %s", am.Name, err)
-			return nil, err
-		}
-		// read raw body from the source
-		source, err := am.reader.Read(url, am.HTTPHeaders)
-		if err != nil {
-			log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
-			return nil, err
-		}
-		defer source.Close()
-
-		// decode body text
-		status, err = mapper.Decode(source)
-		if err != nil {
-			return nil, err
-		}
+	status, err = mapper.Collect(am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
+	if err != nil {
+		return nil, err
 	}
 
 	return &status, nil
@@ -152,37 +130,9 @@ func (am *Alertmanager) pullSilences(version string) error {
 	var silences []models.Silence
 
 	start := time.Now()
-	if mapper.IsOpenAPI() {
-		silences, err = mapper.Collect(am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
-		if err != nil {
-			return err
-		}
-	} else {
-		// generate full URL to collect silences from
-		url, err := mapper.AbsoluteURL(am.URI)
-		if err != nil {
-			log.Errorf("[%s] Failed to generate silences endpoint URL: %s", am.Name, err)
-			return err
-		}
-		// append query args if mapper needs those
-		queryArgs := mapper.QueryArgs()
-		if queryArgs != "" {
-			url = fmt.Sprintf("%s?%s", url, queryArgs)
-		}
-
-		// read raw body from the source
-		source, err := am.reader.Read(url, am.HTTPHeaders)
-		if err != nil {
-			log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
-			return err
-		}
-		defer source.Close()
-
-		// decode body text
-		silences, err = mapper.Decode(source)
-		if err != nil {
-			return err
-		}
+	silences, err = mapper.Collect(am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
+	if err != nil {
+		return err
 	}
 	log.Infof("[%s] Got %d silences(s) in %s", am.Name, len(silences), time.Since(start))
 
@@ -238,40 +188,12 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	var groups []models.AlertGroup
 
 	start := time.Now()
-	if mapper.IsOpenAPI() {
-		groups, err = mapper.Collect(am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
-		if err != nil {
-			return err
-		}
-	} else {
 
-		// generate full URL to collect alerts from
-		url, err := mapper.AbsoluteURL(am.URI)
-		if err != nil {
-			log.Errorf("[%s] Failed to generate alerts endpoint URL: %s", am.Name, err)
-			return err
-		}
-
-		// append query args if mapper needs those
-		queryArgs := mapper.QueryArgs()
-		if queryArgs != "" {
-			url = fmt.Sprintf("%s?%s", url, queryArgs)
-		}
-
-		// read raw body from the source
-		source, err := am.reader.Read(url, am.HTTPHeaders)
-		if err != nil {
-			log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
-			return err
-		}
-		defer source.Close()
-
-		// decode body text
-		groups, err = mapper.Decode(source)
-		if err != nil {
-			return err
-		}
+	groups, err = mapper.Collect(am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
+	if err != nil {
+		return err
 	}
+
 	log.Infof("[%s] Got %d alert group(s) in %s", am.Name, len(groups), time.Since(start))
 
 	log.Infof("[%s] Deduplicating alert groups (%d)", am.Name, len(groups))

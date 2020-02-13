@@ -21,13 +21,6 @@ func GetAbsoluteMockPath(filename string, version string) string {
 // GetMockResponder returns a httpmock.Responder for given file/version
 func GetMockResponder(url string, version string, filename string) httpmock.Responder {
 	fullPath := GetAbsoluteMockPath(filename, version)
-
-	if _, err := os.Stat(fullPath); err != nil {
-		if os.IsNotExist(err) {
-			return nil
-		}
-	}
-
 	mockJSON, err := ioutil.ReadFile(fullPath)
 	if err != nil {
 		panic(fmt.Errorf("failed to read %s: %s", fullPath, err))

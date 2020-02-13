@@ -28,7 +28,7 @@ beforeEach(() => {
         uri: "http://localhost:9093",
         readonly: false,
         error: "",
-        version: "0.15.3",
+        version: "0.17.0",
         headers: {}
       }
     ],

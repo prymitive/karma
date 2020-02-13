@@ -2,7 +2,6 @@ package mapper
 
 import (
 	"fmt"
-	"io"
 	"net/http"
 	"strings"
 	"time"
@@ -19,29 +18,23 @@ var (
 // Mapper converts Alertmanager response body and maps to karma data structures
 type Mapper interface {
 	IsSupported(version string) bool
-	AbsoluteURL(baseURI string) (string, error)
-	QueryArgs() string
-	IsOpenAPI() bool
 }
 
 // AlertMapper handles mapping of Alertmanager alert information to karma AlertGroup models
 type AlertMapper interface {
 	Mapper
-	Decode(io.ReadCloser) ([]models.AlertGroup, error)
 	Collect(string, map[string]string, time.Duration, http.RoundTripper) ([]models.AlertGroup, error)
 }
 
 // SilenceMapper handles mapping of Alertmanager silence information to karma Silence models
 type SilenceMapper interface {
 	Mapper
-	Decode(io.ReadCloser) ([]models.Silence, error)
 	Collect(string, map[string]string, time.Duration, http.RoundTripper) ([]models.Silence, error)
 }
 
 // StatusMapper handles mapping Alertmanager status information containing cluster config
 type StatusMapper interface {
 	Mapper
-	Decode(io.ReadCloser) (models.AlertmanagerStatus, error)
 	Collect(string, map[string]string, time.Duration, http.RoundTripper) (models.AlertmanagerStatus, error)
 }
 
