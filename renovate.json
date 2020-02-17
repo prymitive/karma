@@ -5,5 +5,17 @@
   "travis": { "enabled": true },
   "masterIssue": true,
   "postUpdateOptions": ["gomodTidy"],
-  "automerge": true
+  "automerge": true,
+  "packageRules": [
+    {
+      "packageNames": ["node"],
+      "updateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "packageNames": ["node"],
+      "updateTypes": ["minor", "patch"],
+      "automerge": true
+    }
+  ]
 }
