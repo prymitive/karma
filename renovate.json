@@ -5,12 +5,10 @@
   "travis": { "enabled": true },
   "masterIssue": true,
   "postUpdateOptions": ["gomodTidy"],
-  "automerge": true,
   "packageRules": [
     {
-      "packageNames": ["node"],
-      "updateTypes": ["major"],
-      "automerge": false
+      "excludePackageNames": ["node"],
+      "automerge": true
     },
     {
       "packageNames": ["node"],
