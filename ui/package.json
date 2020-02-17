@@ -28,7 +28,7 @@
     "mobx-react": "6.1.8",
     "mobx-stored": "1.1.0",
     "moment": "2.24.0",
-    "object-hash": "2.0.2",
+    "object-hash": "2.0.3",
     "promise-retry": "1.1.1",
     "prop-types": "15.7.2",
     "qs": "6.9.1",
