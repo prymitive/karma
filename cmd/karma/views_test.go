@@ -769,3 +769,52 @@ func TestCORS(t *testing.T) {
 		t.Errorf("Invalid Access-Control-Allow-Origin value %q, expected 'foo.example.com'", resp.Header().Get("Access-Control-Allow-Origin"))
 	}
 }
+
+func TestEmptySettings(t *testing.T) {
+	mockConfig()
+	r := ginTestEngine()
+	req := httptest.NewRequest("GET", "/alerts.json", nil)
+
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Code != http.StatusOK {
+		t.Errorf("GET /alerts.json returned status %d", resp.Code)
+	}
+	ur := models.AlertsResponse{}
+	body := resp.Body.Bytes()
+	err := json.Unmarshal(body, &ur)
+	if err != nil {
+		t.Errorf("Failed to unmarshal response: %s", err)
+	}
+
+	expectedSettings := models.Settings{
+		StaticColorLabels:        []string{},
+		AnnotationsDefaultHidden: false,
+		AnnotationsHidden:        []string{},
+		AnnotationsVisible:       []string{},
+		Sorting: models.SortSettings{
+			Grid: models.GridSettings{
+				Order:   "startsAt",
+				Reverse: true,
+				Label:   "alertname",
+			},
+			ValueMapping: map[string]map[string]string{},
+		},
+		SilenceForm: models.SilenceFormSettings{
+			Strip: models.SilenceFormStripSettings{
+				Labels: []string{},
+			},
+			Author: "",
+		},
+		AlertAcknowledgement: models.AlertAcknowledgementSettings{
+			Enabled:         false,
+			DurationSeconds: 900,
+			Author:          "karma",
+			CommentPrefix:   "ACK!",
+		},
+	}
+
+	if diff := cmp.Diff(expectedSettings, ur.Settings); diff != "" {
+		t.Errorf("Wrong settings returned (-want +got):\n%s", diff)
+	}
+}

@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/prymitive/karma/internal/uri"
 	"github.com/spf13/pflag"
 
@@ -14,45 +15,8 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-// unset all karma supported env variables before tests so we start with no
-// config from previous test run
 func resetEnv() {
-	karmaEnvVariables := []string{
-		"ALERTMANAGER_INTERVAL",
-		"ALERTMANAGER_URI",
-		"ALERTMANAGER_EXTERNAL_URI",
-		"ALERTMANAGER_NAME",
-		"ALERTMANAGET_TIMEOUT",
-		"ANNOTATIONS_DEFAULT_HIDDEN",
-		"ANNOTATIONS_HIDDEN",
-		"ANNOTATIONS_VISIBLE",
-		"CONFIG_FILE",
-		"CUSTOM_CSS",
-		"CUSTOM_JS",
-		"DEBUG",
-		"FILTERS_DEFAULT",
-		"KARMA_NAME",
-		"LABELS_COLOR_STATIC",
-		"LABELS_COLOR_UNIQUE",
-		"LABELS_KEEP",
-		"LABELS_STRIP",
-		"LISTEN_ADDRESS",
-		"LISTEN_PORT",
-		"LISTEN_PREFIX",
-		"LOG_CONFIG",
-		"LOG_LEVEL",
-		"RECEIVERS_KEEP",
-		"RECEIVERS_STRIP",
-		"SENTRY_PRIVATE",
-		"SENTRY_PUBLIC",
-
-		"HOST",
-		"PORT",
-		"SENTRY_DSN",
-	}
-	for _, env := range karmaEnvVariables {
-		os.Unsetenv(env)
-	}
+	os.Clearenv()
 }
 
 func testReadConfig(t *testing.T) {
@@ -347,5 +311,37 @@ func TestInvalidUITheme(t *testing.T) {
 
 	if !wasFatal {
 		t.Error("Invalid ui.theme value didn't cause log.Fatal()")
+	}
+}
+
+func TestDefaultConfig(t *testing.T) {
+	resetEnv()
+	log.SetLevel(log.ErrorLevel)
+	mockConfigRead()
+
+	expectedConfig := configSchema{}
+	expectedConfig.Annotations.Hidden = []string{}
+	expectedConfig.Annotations.Visible = []string{}
+	expectedConfig.Annotations.Keep = []string{}
+	expectedConfig.Annotations.Strip = []string{}
+	expectedConfig.Labels.Keep = []string{}
+	expectedConfig.Labels.Strip = []string{}
+	expectedConfig.Labels.Color.Static = []string{}
+	expectedConfig.Labels.Color.Unique = []string{}
+	expectedConfig.Receivers.Keep = []string{}
+	expectedConfig.Receivers.Strip = []string{}
+	expectedConfig.SilenceForm.Strip.Labels = []string{}
+
+	if diff := cmp.Diff(expectedConfig.Annotations, Config.Annotations); diff != "" {
+		t.Errorf("Wrong annotations config returned (-want +got):\n%s", diff)
+	}
+	if diff := cmp.Diff(expectedConfig.Labels, Config.Labels); diff != "" {
+		t.Errorf("Wrong labels config returned (-want +got):\n%s", diff)
+	}
+	if diff := cmp.Diff(expectedConfig.Receivers, Config.Receivers); diff != "" {
+		t.Errorf("Wrong receivers config returned (-want +got):\n%s", diff)
+	}
+	if diff := cmp.Diff(expectedConfig.SilenceForm.Strip, Config.SilenceForm.Strip); diff != "" {
+		t.Errorf("Wrong silence form config returned (-want +got):\n%s", diff)
 	}
 }
