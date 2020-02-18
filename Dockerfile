@@ -1,4 +1,7 @@
 FROM node:12.16.0-alpine as nodejs-builder
+RUN mkdir -p /src/ui
+COPY ui/package.json ui/package-lock.json /src/ui/
+RUN cd /src/ui && npm install
 RUN apk add make git
 COPY Makefile /src/Makefile
 COPY ui /src/ui
