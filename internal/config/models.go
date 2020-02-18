@@ -5,6 +5,10 @@ import (
 	"time"
 )
 
+type AlertmanagerCORS struct {
+	Credentials string
+}
+
 type AlertmanagerConfig struct {
 	Name        string
 	URI         string
@@ -19,6 +23,7 @@ type AlertmanagerConfig struct {
 		InsecureSkipVerify bool `yaml:"insecureSkipVerify" koanf:"insecureSkipVerify"`
 	}
 	Headers map[string]string
+	CORS    AlertmanagerCORS `yaml:"cors" koanf:"cors"`
 }
 
 type LinkDetectRules struct {
@@ -39,12 +44,13 @@ type configSchema struct {
 	Alertmanager struct {
 		Interval    time.Duration
 		Servers     []AlertmanagerConfig
-		Name        string        `yaml:"-" koanf:"name"`
-		Timeout     time.Duration `yaml:"-" koanf:"timeout"`
-		URI         string        `yaml:"-" koanf:"uri"`
-		ExternalURI string        `yaml:"-" koanf:"external_uri"`
-		Proxy       bool          `yaml:"-" koanf:"proxy"`
-		ReadOnly    bool          `yaml:"-" koanf:"readonly"`
+		Name        string           `yaml:"-" koanf:"name"`
+		Timeout     time.Duration    `yaml:"-" koanf:"timeout"`
+		URI         string           `yaml:"-" koanf:"uri"`
+		ExternalURI string           `yaml:"-" koanf:"external_uri"`
+		Proxy       bool             `yaml:"-" koanf:"proxy"`
+		ReadOnly    bool             `yaml:"-" koanf:"readonly"`
+		CORS        AlertmanagerCORS `yaml:"-" koanf:"cors"`
 	}
 	AlertAcknowledgement struct {
 		Enabled       bool

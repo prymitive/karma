@@ -49,6 +49,7 @@ func SetupFlags(f *pflag.FlagSet) {
 		"Proxy all client requests to Alertmanager via karma (only used with simplified config)")
 	f.Bool("alertmanager.readonly", false,
 		"Enable read-only mode that disable silence management (only used with simplified config)")
+	f.String("alertmanager.cors.credentials", "include", "CORS credentials policy for browser fetch requests")
 
 	f.String("karma.name", "karma", "Name for the karma instance")
 
@@ -280,6 +281,9 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 		if s.Timeout.Seconds() == 0 {
 			config.Alertmanager.Servers[i].Timeout = config.Alertmanager.Timeout
 		}
+		if s.CORS.Credentials == "" {
+			config.Alertmanager.Servers[i].CORS.Credentials = config.Alertmanager.CORS.Credentials
+		}
 	}
 
 	for labelName, customColors := range config.Labels.Color.Custom {
@@ -319,6 +323,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 				Proxy:       config.Alertmanager.Proxy,
 				ReadOnly:    config.Alertmanager.ReadOnly,
 				Headers:     make(map[string]string),
+				CORS:        config.Alertmanager.CORS,
 			},
 		}
 	}
@@ -345,6 +350,7 @@ func (config *configSchema) LogValues() {
 			Proxy:       s.Proxy,
 			ReadOnly:    s.ReadOnly,
 			Headers:     s.Headers,
+			CORS:        s.CORS,
 		}
 		servers = append(servers, server)
 	}

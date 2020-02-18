@@ -109,15 +109,16 @@ func getUpstreams() models.AlertmanagerAPISummary {
 		}
 
 		u := models.AlertmanagerAPIStatus{
-			Name:           upstream.Name,
-			URI:            upstream.InternalURI(),
-			PublicURI:      upstream.PublicURI(),
-			ReadOnly:       upstream.ReadOnly,
-			Headers:        map[string]string{},
-			Error:          upstream.Error(),
-			Version:        upstream.Version(),
-			Cluster:        upstream.ClusterID(),
-			ClusterMembers: members,
+			Name:            upstream.Name,
+			URI:             upstream.InternalURI(),
+			PublicURI:       upstream.PublicURI(),
+			ReadOnly:        upstream.ReadOnly,
+			Headers:         map[string]string{},
+			CORSCredentials: upstream.CORSCredentials,
+			Error:           upstream.Error(),
+			Version:         upstream.Version(),
+			Cluster:         upstream.ClusterID(),
+			ClusterMembers:  members,
 		}
 		if !upstream.ProxyRequests {
 			for k, v := range uri.HeadersForBasicAuth(upstream.URI) {

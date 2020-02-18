@@ -59,6 +59,8 @@ type Alertmanager struct {
 	Metrics alertmanagerMetrics
 	// headers to send with each AlertManager request
 	HTTPHeaders map[string]string
+	// CORS credentials
+	CORSCredentials string `json:"corsCredentials"`
 }
 
 func (am *Alertmanager) probeVersion() string {

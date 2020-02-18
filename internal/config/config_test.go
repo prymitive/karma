@@ -35,6 +35,8 @@ func testReadConfig(t *testing.T) {
       key: ""
       insecureSkipVerify: false
     headers: {}
+    cors:
+      credentials: include
 alertAcknowledgement:
   enabled: false
   duration: 15m0s
