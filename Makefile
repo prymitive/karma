@@ -27,9 +27,9 @@ endif
 	GO111MODULE=on go install github.com/golangci/golangci-lint/cmd/golangci-lint
 	touch $@
 
-.build/deps-build-node.ok: ui/package.json ui/package-lock.json
+.build/deps-build-node.ok: ui/package.json ui/yarn.lock
 	@mkdir -p .build
-	cd ui && npm install
+	cd ui && yarn --production
 	touch $@
 
 .build/artifacts-bindata_assetfs.%:
@@ -39,7 +39,7 @@ endif
 
 .build/artifacts-ui.ok: .build/deps-build-node.ok $(ASSET_SOURCES)
 	@mkdir -p .build
-	cd ui && npm run build
+	cd ui && yarn run build
 	touch $@
 
 cmd/karma/bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.$(GO_BINDATA_MODE) .build/artifacts-ui.ok
@@ -135,11 +135,11 @@ test-go:
 
 .PHONY: test-js
 test-js: .build/deps-build-node.ok
-	cd ui && CI=true npm test -- --coverage
+	cd ui && CI=true yarn test -- --coverage
 
 .PHONY: test-percy
 test-percy: .build/deps-build-node.ok
-	cd ui && CI=true npm run snapshot
+	cd ui && CI=true yarn run snapshot
 
 .PHONY: test
 test: lint test-go test-js

@@ -40,7 +40,7 @@ Some UI tests are using [snapshots](https://jestjs.io/docs/en/snapshot-testing).
 After making changes that affect how existing components are rendered please
 run:
 
-    cd ui && npm test -- -u
+    cd ui && yarn test -- -u
 
 to update all snapshots. Remember to commit those changes when making a pull
 request.

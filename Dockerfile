@@ -1,7 +1,10 @@
 FROM node:12.16.0-alpine as nodejs-builder
 RUN apk add make git
 COPY Makefile /src/Makefile
-COPY ui /src/ui
+RUN mkdir /src/ui
+COPY ui/package.json ui/yarn.lock /src/ui/
+RUN yarn --cwd /src/ui
+COPY ui/ /src/ui/
 RUN make -C /src ui
 
 FROM golang:1.13.8-alpine as go-builder
