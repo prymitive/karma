@@ -1,0 +1,53 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: karma
+spec:
+  ports:
+    - name: http
+      port: 80
+      targetPort: 8080
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: karma
+spec:
+  template:
+    spec:
+      containers:
+      - name: karma
+        image: lmierzwa/karma
+        securityContext:
+          readOnlyRootFilesystem: true
+        ports:
+        - name: http
+          containerPort: 8080
+        livenessProbe:
+          initialDelaySeconds: 30
+          timeoutSeconds: 10
+          httpGet:
+            path: /
+            port: 8080
+        readinessProbe:
+          timeoutSeconds: 5
+          httpGet:
+            path: /
+            port: 8080
+        resources:
+          requests:
+            memory: 20Mi
+            cpu: 5m
+          limits:
+            memory: 100Mi
+            cpu: 50m
+        volumeMounts:
+        - name: config
+          mountPath: /karma.yaml
+          subPath: karma.yaml
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: karma
