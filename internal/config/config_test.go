@@ -35,6 +35,8 @@ func testReadConfig(t *testing.T) {
       key: ""
       insecureSkipVerify: false
     headers: {}
+    cors:
+      credentials: include
 alertAcknowledgement:
   enabled: false
   duration: 15m0s
@@ -311,6 +313,22 @@ func TestInvalidUITheme(t *testing.T) {
 
 	if !wasFatal {
 		t.Error("Invalid ui.theme value didn't cause log.Fatal()")
+	}
+}
+
+func TestInvalidCORSCredentials(t *testing.T) {
+	resetEnv()
+	os.Setenv("ALERTMANAGER_CORS_CREDENTIALS", "foo")
+
+	log.SetLevel(log.PanicLevel)
+	defer func() { log.StandardLogger().ExitFunc = nil }()
+	var wasFatal bool
+	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
+
+	mockConfigRead()
+
+	if !wasFatal {
+		t.Error("Invalid alertmanager.cors.credentials value didn't cause log.Fatal()")
 	}
 }
 

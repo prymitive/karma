@@ -156,3 +156,11 @@ func WithExternalURI(uri string) Option {
 		return nil
 	}
 }
+
+// WithCORSCredentials option sets fetch CORS credentials policy
+func WithCORSCredentials(val string) Option {
+	return func(am *Alertmanager) error {
+		am.CORSCredentials = val
+		return nil
+	}
+}

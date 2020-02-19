@@ -49,6 +49,7 @@ func SetupFlags(f *pflag.FlagSet) {
 		"Proxy all client requests to Alertmanager via karma (only used with simplified config)")
 	f.Bool("alertmanager.readonly", false,
 		"Enable read-only mode that disable silence management (only used with simplified config)")
+	f.String("alertmanager.cors.credentials", "include", "CORS credentials policy for browser fetch requests")
 
 	f.String("karma.name", "karma", "Name for the karma instance")
 
@@ -276,9 +277,19 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 		log.Fatalf("silenceform.author.populate_from_header.value_re is required when silenceform.author.populate_from_header.header is set")
 	}
 
+	if !slices.StringInSlice([]string{"omit", "include", "same-origin"}, config.Alertmanager.CORS.Credentials) {
+		log.Fatalf("Invalid alertmanager.cors.credentials value '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.CORS.Credentials)
+	}
+
 	for i, s := range config.Alertmanager.Servers {
 		if s.Timeout.Seconds() == 0 {
 			config.Alertmanager.Servers[i].Timeout = config.Alertmanager.Timeout
+		}
+		if s.CORS.Credentials == "" {
+			config.Alertmanager.Servers[i].CORS.Credentials = config.Alertmanager.CORS.Credentials
+		}
+		if !slices.StringInSlice([]string{"omit", "include", "same-origin"}, config.Alertmanager.Servers[i].CORS.Credentials) {
+			log.Fatalf("Invalid cors.credentials value '%s' for alertmanager '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.Servers[i].CORS.Credentials, s.Name)
 		}
 	}
 
@@ -319,6 +330,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 				Proxy:       config.Alertmanager.Proxy,
 				ReadOnly:    config.Alertmanager.ReadOnly,
 				Headers:     make(map[string]string),
+				CORS:        config.Alertmanager.CORS,
 			},
 		}
 	}
@@ -345,6 +357,7 @@ func (config *configSchema) LogValues() {
 			Proxy:       s.Proxy,
 			ReadOnly:    s.ReadOnly,
 			Headers:     s.Headers,
+			CORS:        s.CORS,
 		}
 		servers = append(servers, server)
 	}

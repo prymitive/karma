@@ -27,6 +27,7 @@ beforeEach(() => {
         publicURI: "http://example.com",
         readonly: false,
         headers: {},
+        corsCredentials: "include",
         error: "",
         version: "0.17.0",
         cluster: "default",

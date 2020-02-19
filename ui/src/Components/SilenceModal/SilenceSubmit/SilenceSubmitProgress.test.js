@@ -17,6 +17,7 @@ beforeEach(() => {
         publicURI: "http://example.com",
         readonly: false,
         headers: { foo: "bar" },
+        corsCredentials: "include",
         error: "",
         version: "0.17.0",
         cluster: "mockAlertmanager",
@@ -80,6 +81,16 @@ describe("<SilenceSubmitProgress />", () => {
     });
   });
 
+  it("uses CORS credentials from alertmanager config", async () => {
+    alertStore.data.upstreams.instances[0].corsCredentials = "same-origin";
+    MountedSilenceSubmitProgress();
+    expect(fetch.mock.calls[0][0]).toBe("http://localhost/api/v2/silences");
+    expect(fetch.mock.calls[0][1]).toMatchObject({
+      credentials: "same-origin",
+      method: "POST"
+    });
+  });
+
   it("will retry on another cluster member after fetch failure", async () => {
     fetch
       .mockRejectOnce(new Error("mock error message"))
@@ -93,6 +104,7 @@ describe("<SilenceSubmitProgress />", () => {
           publicURI: "http://am1.example.com",
           readonly: false,
           headers: {},
+          corsCredentials: "include",
           error: "",
           version: "0.17.0",
           cluster: "ha",
@@ -104,6 +116,7 @@ describe("<SilenceSubmitProgress />", () => {
           publicURI: "http://am2.example.com",
           readonly: false,
           headers: {},
+          corsCredentials: "include",
           error: "",
           version: "0.17.0",
           cluster: "ha",
@@ -151,6 +164,7 @@ describe("<SilenceSubmitProgress />", () => {
           publicURI: "http://am1.example.com",
           readonly: false,
           headers: {},
+          corsCredentials: "include",
           error: "",
           version: "0.17.0",
           cluster: "ha",
@@ -198,6 +212,7 @@ describe("<SilenceSubmitProgress />", () => {
           publicURI: "http://am1.example.com",
           readonly: false,
           headers: {},
+          corsCredentials: "include",
           error: "",
           version: "0.17.0",
           cluster: "ha",
@@ -209,6 +224,7 @@ describe("<SilenceSubmitProgress />", () => {
           publicURI: "http://am2.example.com",
           readonly: true,
           headers: {},
+          corsCredentials: "include",
           error: "",
           version: "0.17.0",
           cluster: "ha",

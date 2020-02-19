@@ -28,13 +28,14 @@ type AlertmanagerAPIStatus struct {
 	// this is the Alertmanager URI used for all requests made by the UI
 	URI string `json:"uri"`
 	// this is the Alertmanager URI used for links in the browser
-	PublicURI      string            `json:"publicURI"`
-	ReadOnly       bool              `json:"readonly"`
-	Headers        map[string]string `json:"headers"`
-	Error          string            `json:"error"`
-	Version        string            `json:"version"`
-	Cluster        string            `json:"cluster"`
-	ClusterMembers []string          `json:"clusterMembers"`
+	PublicURI       string            `json:"publicURI"`
+	ReadOnly        bool              `json:"readonly"`
+	Headers         map[string]string `json:"headers"`
+	CORSCredentials string            `json:"corsCredentials"`
+	Error           string            `json:"error"`
+	Version         string            `json:"version"`
+	Cluster         string            `json:"cluster"`
+	ClusterMembers  []string          `json:"clusterMembers"`
 }
 
 // AlertmanagerAPICounters returns number of Alertmanager instances in each

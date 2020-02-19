@@ -143,6 +143,7 @@ func setupUpstreams() error {
 			alertmanager.WithReadOnly(s.ReadOnly),
 			alertmanager.WithHTTPTransport(httpTransport), // we will pass a nil unless TLS.CA or TLS.Cert is set
 			alertmanager.WithHTTPHeaders(s.Headers),
+			alertmanager.WithCORSCredentials(s.CORS.Credentials),
 		)
 		if err != nil {
 			return fmt.Errorf("Failed to create Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)

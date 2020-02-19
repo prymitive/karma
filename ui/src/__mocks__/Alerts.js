@@ -74,6 +74,7 @@ const MockAlertmanager = () => ({
   headers: {
     Authorization: "Basic foo bar"
   },
+  corsCredentials: "include",
   error: "",
   version: "0.17.0",
   clusterMembers: ["default"]

@@ -50,6 +50,8 @@ alertmanager:
         insecureSkipVerify: bool
       headers:
         any: string
+      cors:
+        credentials: string
 ```
 
 - `interval` - how often alerts should be refreshed, a string in
@@ -103,6 +105,15 @@ alertmanager:
 - `headers` - a map with a list of key: values which are header: value.
   These custom headers will be sent with every request to the alert manager
   instance.
+- `cors:credentials` - sets the
+  [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) credentials
+  settings for browser requests,
+  [see docs](https://developer.mozilla.org/en-US/docs/Web/API/Request/credentials)
+  for the list of possible values.
+  By default credentials are included in all requests (`include`), set it to
+  `omit` or `same-origin` if Alertmanager is configured to respond with
+  `Access-Control-Allow-Origin: *`,
+  [see docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSNotSupportingCredentials).
 
 Note: there are multiple supported combination of URI settings which result in
 a slightly different behavior. Settings that control it are:

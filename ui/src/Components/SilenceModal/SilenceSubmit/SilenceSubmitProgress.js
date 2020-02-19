@@ -109,6 +109,7 @@ const SilenceSubmitProgress = observer(
 
       this.submitState.fetch = FetchPost(`${am.uri}/api/v2/silences`, {
         body: JSON.stringify(payload),
+        credentials: am.corsCredentials,
         headers: {
           "Content-Type": "application/json",
           ...am.headers

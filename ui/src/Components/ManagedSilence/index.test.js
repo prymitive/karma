@@ -36,7 +36,8 @@ beforeEach(() => {
         readonly: false,
         error: "",
         version: "0.17.0",
-        headers: {}
+        headers: {},
+        corsCredentials: "include"
       }
     ],
     clusters: { am: ["am1"] }
@@ -99,7 +100,8 @@ describe("<ManagedSilence />", () => {
       readonly: false,
       error: "",
       version: "0.17.0",
-      headers: {}
+      headers: {},
+      corsCredentials: "include"
     });
   });
 
@@ -115,7 +117,8 @@ describe("<ManagedSilence />", () => {
           readonly: false,
           error: "",
           version: "0.17.0",
-          headers: {}
+          headers: {},
+          corsCredentials: "include"
         },
         {
           name: "am2",
@@ -126,7 +129,8 @@ describe("<ManagedSilence />", () => {
           readonly: true,
           error: "",
           version: "0.17.0",
-          headers: {}
+          headers: {},
+          corsCredentials: "include"
         }
       ],
       clusters: { am: ["am1", "am2"] }
@@ -144,7 +148,8 @@ describe("<ManagedSilence />", () => {
       readonly: false,
       error: "",
       version: "0.17.0",
-      headers: {}
+      headers: {},
+      corsCredentials: "include"
     });
   });
 

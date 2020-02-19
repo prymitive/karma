@@ -71,6 +71,8 @@ const APIAlertmanagerUpstream = PropTypes.exact({
   publicURI: PropTypes.string.isRequired,
   readonly: PropTypes.bool.isRequired,
   headers: PropTypes.object.isRequired,
+  corsCredentials: PropTypes.oneOf(["omit", "same-origin", "include"])
+    .isRequired,
   error: PropTypes.string.isRequired,
   version: PropTypes.string.isRequired,
   clusterMembers: PropTypes.arrayOf(PropTypes.string).isRequired

@@ -15,12 +15,16 @@ alertmanager:
       uri: "http://localhost:9094"
       timeout: 10s
       readonly: true
+      cors:
+        credentials: omit
     - name: local
       uri: http://localhost:9095
       proxy: true
       readonly: false
       headers:
         X-Auth-Test: some-token-or-other-string
+      cors:
+        credentials: same-origin
     - name: client-auth
       uri: https://localhost:9096
       timeout: 10s
@@ -242,6 +246,8 @@ level=info msg="      cert: \"\""
 level=info msg="      key: \"\""
 level=info msg="      insecureSkipVerify: false"
 level=info msg="    headers: {}"
+level=info msg="    cors:"
+level=info msg="      credentials: include"
 level=info msg="  - name: ha2"
 level=info msg="    uri: http://localhost:9094"
 level=info msg="    external_uri: \"\""
@@ -254,6 +260,8 @@ level=info msg="      cert: \"\""
 level=info msg="      key: \"\""
 level=info msg="      insecureSkipVerify: false"
 level=info msg="    headers: {}"
+level=info msg="    cors:"
+level=info msg="      credentials: omit"
 level=info msg="  - name: local"
 level=info msg="    uri: http://localhost:9095"
 level=info msg="    external_uri: \"\""
@@ -267,6 +275,8 @@ level=info msg="      key: \"\""
 level=info msg="      insecureSkipVerify: false"
 level=info msg="    headers:"
 level=info msg="      X-Auth-Test: some-token-or-other-string"
+level=info msg="    cors:"
+level=info msg="      credentials: same-origin"
 level=info msg="  - name: client-auth"
 level=info msg="    uri: https://localhost:9096"
 level=info msg="    external_uri: \"\""
@@ -279,6 +289,8 @@ level=info msg="      cert: cert.pem"
 level=info msg="      key: key.pem"
 level=info msg="      insecureSkipVerify: false"
 level=info msg="    headers: {}"
+level=info msg="    cors:"
+level=info msg="      credentials: include"
 level=info msg="alertAcknowledgement:"
 level=info msg="  enabled: true"
 level=info msg="  duration: 7m0s"
