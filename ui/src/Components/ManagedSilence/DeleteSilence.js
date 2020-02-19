@@ -150,7 +150,8 @@ const DeleteSilenceModalContent = observer(
       this.deleteState.fetch = FetchDelete(
         `${alertmanager.uri}/api/v2/silence/${silence.id}`,
         {
-          headers: alertmanager.headers
+          headers: alertmanager.headers,
+          credentials: alertmanager.corsCredentials
         }
       )
         .then(result => {

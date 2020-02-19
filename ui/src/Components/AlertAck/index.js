@@ -146,6 +146,7 @@ const AlertAck = observer(
           body: JSON.stringify(
             this.submitState.silencesByCluster[cluster].payload
           ),
+          credentials: am.corsCredentials,
           headers: {
             "Content-Type": "application/json",
             ...am.headers

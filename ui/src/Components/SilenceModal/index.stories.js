@@ -49,6 +49,7 @@ storiesOf("SilenceModal", module)
           publicURI: "http://example.com",
           readonly: false,
           headers: {},
+          corsCredentials: "include",
           error: "",
           version: "0.17.0",
           cluster: "default",
@@ -123,6 +124,7 @@ storiesOf("SilenceModal", module)
           publicURI: "http://example.com",
           readonly: true,
           headers: {},
+          corsCredentials: "include",
           error: "",
           version: "0.17.0",
           cluster: "default",
@@ -190,7 +192,8 @@ storiesOf("SilenceModal", module)
           readonly: false,
           error: "",
           version: "0.17.0",
-          headers: {}
+          headers: {},
+          corsCredentials: "include"
         }
       ],
       clusters: { am: ["am1"] }
@@ -253,7 +256,8 @@ storiesOf("SilenceModal", module)
           readonly: false,
           error: "",
           version: "0.17.0",
-          headers: {}
+          headers: {},
+          corsCredentials: "include"
         }
       ],
       clusters: { am: ["am1"] }

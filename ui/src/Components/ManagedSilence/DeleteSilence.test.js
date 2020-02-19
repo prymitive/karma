@@ -207,6 +207,18 @@ describe("<DeleteSilenceModalContent />", () => {
     });
   });
 
+  it("uses CORS credentials from alertmanager config", async () => {
+    alertStore.data.upstreams.instances[0].corsCredentials = "omit";
+    await VerifyResponse({ status: "success" });
+    expect(fetch.mock.calls[1][0]).toBe(
+      "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f"
+    );
+    expect(fetch.mock.calls[1][1]).toMatchObject({
+      credentials: "omit",
+      method: "DELETE"
+    });
+  });
+
   it("'Confirm' button is no-op after successful DELETE", async () => {
     const tree = await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
