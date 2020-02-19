@@ -82,11 +82,11 @@ describe("<SilenceSubmitProgress />", () => {
   });
 
   it("uses CORS credentials from alertmanager config", async () => {
-    alertStore.data.upstreams.instances[0].corsCredentials = "same-site";
+    alertStore.data.upstreams.instances[0].corsCredentials = "same-origin";
     MountedSilenceSubmitProgress();
     expect(fetch.mock.calls[0][0]).toBe("http://localhost/api/v2/silences");
     expect(fetch.mock.calls[0][1]).toMatchObject({
-      credentials: "same-site",
+      credentials: "same-origin",
       method: "POST"
     });
   });
