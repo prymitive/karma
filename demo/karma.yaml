@@ -5,10 +5,14 @@ alertmanager:
       uri: "http://localhost:9093"
       timeout: 10s
       proxy: true
+      cors:
+        credentials: same-origin
     - name: ha2
       uri: "http://localhost:9094"
       timeout: 10s
       proxy: true
+      cors:
+        credentials: same-origin
 alertAcknowledgement:
   enabled: true
   duration: 15m0s
