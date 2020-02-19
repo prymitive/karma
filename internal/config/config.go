@@ -277,12 +277,19 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 		log.Fatalf("silenceform.author.populate_from_header.value_re is required when silenceform.author.populate_from_header.header is set")
 	}
 
+	if !slices.StringInSlice([]string{"omit", "include", "same-origin"}, config.Alertmanager.CORS.Credentials) {
+		log.Fatalf("Invalid alertmanager.cors.credentials value '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.CORS.Credentials)
+	}
+
 	for i, s := range config.Alertmanager.Servers {
 		if s.Timeout.Seconds() == 0 {
 			config.Alertmanager.Servers[i].Timeout = config.Alertmanager.Timeout
 		}
 		if s.CORS.Credentials == "" {
 			config.Alertmanager.Servers[i].CORS.Credentials = config.Alertmanager.CORS.Credentials
+		}
+		if !slices.StringInSlice([]string{"omit", "include", "same-origin"}, config.Alertmanager.Servers[i].CORS.Credentials) {
+			log.Fatalf("Invalid cors.credentials value '%s' for alertmanager '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.Servers[i].CORS.Credentials, s.Name)
 		}
 	}
 
