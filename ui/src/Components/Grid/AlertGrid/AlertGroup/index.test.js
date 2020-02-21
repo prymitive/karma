@@ -84,6 +84,12 @@ const ValidateCollapse = (
 };
 
 describe("<AlertGroup />", () => {
+  it("doesn't crash on unmount", () => {
+    MockAlerts(5);
+    const tree = MountedAlertGroup(jest.fn(), true);
+    tree.unmount();
+  });
+
   it("renders Alertmanager labels in footer if showAlertmanagersInFooter=true", () => {
     MockAlerts(2);
     const tree = MountedAlertGroup(jest.fn(), true).find("AlertGroup");

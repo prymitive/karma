@@ -101,10 +101,14 @@ const AlertGroup = observer(
           value: defaultCollapseState,
           toggle() {
             this.value = !this.value;
+          },
+          set(value) {
+            this.value = value;
           }
         },
         {
-          toggle: action.bound
+          toggle: action.bound,
+          set: action
         },
         { name: "Collpase toggle" }
       );
@@ -152,10 +156,28 @@ const AlertGroup = observer(
       return val;
     }
 
+    onAlertGroupCollapseEvent = event => {
+      this.collapse.set(event.detail);
+    };
+
+    componentDidMount() {
+      window.addEventListener(
+        "alertGroupCollapse",
+        this.onAlertGroupCollapseEvent
+      );
+    }
+
     componentDidUpdate() {
       // whenever grid component re-renders we need to ensure that grid elements
       // are packed correctly
       this.props.afterUpdate();
+    }
+
+    componentWillUnmount() {
+      window.removeEventListener(
+        "alertGroupCollapse",
+        this.onAlertGroupCollapseEvent
+      );
     }
 
     render() {

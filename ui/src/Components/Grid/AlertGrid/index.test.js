@@ -1,10 +1,11 @@
 import React from "react";
 
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 
 import { advanceBy, clear } from "jest-date-mock";
 
 import { MockAlert, MockAlertGroup } from "__mocks__/Alerts.js";
+import { mockMatchMedia } from "__mocks__/matchMedia";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -23,6 +24,8 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings();
   silenceFormStore = new SilenceFormStore();
+
+  window.matchMedia = mockMatchMedia({});
 });
 
 afterEach(() => {
@@ -34,6 +37,16 @@ afterEach(() => {
 
 const ShallowAlertGrid = () => {
   return shallow(
+    <AlertGrid
+      alertStore={alertStore}
+      settingsStore={settingsStore}
+      silenceFormStore={silenceFormStore}
+    />
+  );
+};
+
+const MountedAlertGroup = () => {
+  return mount(
     <AlertGrid
       alertStore={alertStore}
       settingsStore={settingsStore}
@@ -339,6 +352,68 @@ describe("<AlertGrid />", () => {
       400,
       396
     ]);
+  });
+
+  it("left click on a group collapse toggle only toggles clicked group", () => {
+    MockGroupList(10, 3);
+    const tree = MountedAlertGroup();
+
+    for (let i = 0; i <= 9; i++) {
+      expect(
+        tree
+          .find("AlertGroup")
+          .at(i)
+          .find("Alert")
+      ).toHaveLength(3);
+    }
+
+    tree
+      .find("AlertGroup")
+      .at(2)
+      .find("GroupHeader")
+      .find("span.cursor-pointer")
+      .at(1)
+      .simulate("click");
+
+    for (let i = 0; i <= 9; i++) {
+      expect(
+        tree
+          .find("AlertGroup")
+          .at(i)
+          .find("Alert")
+      ).toHaveLength(i === 2 ? 0 : 3);
+    }
+  });
+
+  it("left click + alt on a group collapse toggle toggles all groups", () => {
+    MockGroupList(10, 3);
+    const tree = MountedAlertGroup();
+
+    for (let i = 0; i <= 9; i++) {
+      expect(
+        tree
+          .find("AlertGroup")
+          .at(i)
+          .find("Alert")
+      ).toHaveLength(3);
+    }
+
+    tree
+      .find("AlertGroup")
+      .at(2)
+      .find("GroupHeader")
+      .find("span.cursor-pointer")
+      .at(1)
+      .simulate("click", { altKey: true });
+
+    for (let i = 0; i <= 9; i++) {
+      expect(
+        tree
+          .find("AlertGroup")
+          .at(i)
+          .find("Alert")
+      ).toHaveLength(0);
+    }
   });
 
   it("doesn't crash on unmount", () => {
