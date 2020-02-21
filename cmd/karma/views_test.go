@@ -819,17 +819,149 @@ func TestEmptySettings(t *testing.T) {
 	}
 }
 
-func TestBasicAuth(t *testing.T) {
-	config.Config.Authentication.Users = []config.AuthenticationUser{
-		{Username: "john", Password: "foobar"},
+func TestAuthentication(t *testing.T) {
+	type authTest struct {
+		name                     string
+		headerName               string
+		headerRe                 string
+		basicAuthUsers           []config.AuthenticationUser
+		requestHeaders           map[string]string
+		requestBasicAuthUser     string
+		requestBasicAuthPassword string
+		responseCode             int
+		responseUsername         string
 	}
-	r := ginTestEngine()
-	for _, path := range []string{"/", "/alerts.json", "/autocomplete.json"} {
-		req := httptest.NewRequest("GET", path, nil)
-		resp := httptest.NewRecorder()
-		r.ServeHTTP(resp, req)
-		if resp.Code != 401 {
-			t.Errorf("Expected 401 from %s, got %d", path, resp.Code)
-		}
+
+	authTests := []authTest{
+		{
+			name: "basic auth, request without credentials, 401",
+			basicAuthUsers: []config.AuthenticationUser{
+				{Username: "john", Password: "foobar"},
+			},
+			responseCode: 401,
+		},
+		{
+			name: "basic auth, missing password, 401",
+			basicAuthUsers: []config.AuthenticationUser{
+				{Username: "john", Password: "foobar"},
+			},
+			requestBasicAuthUser: "john",
+			responseCode:         401,
+		},
+		{
+			name: "basic auth, missing username, 401",
+			basicAuthUsers: []config.AuthenticationUser{
+				{Username: "john", Password: "foobar"},
+			},
+			requestBasicAuthPassword: "foobar",
+			responseCode:             401,
+		},
+		{
+			name: "basic auth, wrong password, 401",
+			basicAuthUsers: []config.AuthenticationUser{
+				{Username: "john", Password: "foobar"},
+			},
+			requestBasicAuthUser:     "john",
+			requestBasicAuthPassword: "foobarx",
+			responseCode:             401,
+		},
+		{
+			name: "basic auth, correct credentials, 200",
+			basicAuthUsers: []config.AuthenticationUser{
+				{Username: "john", Password: "foobar"},
+			},
+			requestBasicAuthUser:     "john",
+			requestBasicAuthPassword: "foobar",
+			responseCode:             200,
+			responseUsername:         "john",
+		},
+		{
+			name:         "header auth, missing header, 401",
+			headerName:   "X-Auth",
+			headerRe:     "(.+)",
+			responseCode: 401,
+		},
+		{
+			name:       "header auth, header value doesn't match, 401",
+			headerName: "X-Auth",
+			headerRe:   "Username (.+)",
+			requestHeaders: map[string]string{
+				"X-Auth": "xxx",
+			},
+			responseCode: 401,
+		},
+		{
+			name:       "header auth, header value doesn't match #2, 401",
+			headerName: "X-Auth",
+			headerRe:   "Username (.+)",
+			requestHeaders: map[string]string{
+				"X-Auth": "xxx Username xxx",
+			},
+			responseCode: 401,
+		},
+		{
+			name:       "header auth, header correct, 200",
+			headerName: "X-Auth",
+			headerRe:   "(.+)",
+			requestHeaders: map[string]string{
+				"X-Auth": "john",
+			},
+			responseCode:     200,
+			responseUsername: "john",
+		},
+		{
+			name:       "header auth, header correct #2, 200",
+			headerName: "X-Auth",
+			headerRe:   "Username (.+)",
+			requestHeaders: map[string]string{
+				"X-Auth": "Username john",
+			},
+			responseCode:     200,
+			responseUsername: "john",
+		},
+	}
+
+	for _, testCase := range authTests {
+		t.Run(testCase.name, func(t *testing.T) {
+			config.Config.Authentication.Header.Name = testCase.headerName
+			config.Config.Authentication.Header.ValueRegex = testCase.headerRe
+			config.Config.Authentication.BasicAuth.Users = testCase.basicAuthUsers
+			r := ginTestEngine()
+			for _, path := range []string{
+				"/",
+				"/alerts.json",
+				"/autocomplete.json?term=foo",
+				"/labelNames.json",
+				"/labelValues.json?name=foo",
+				"/silences.json",
+				"/custom.css",
+				"/custom.js",
+			} {
+				req := httptest.NewRequest("GET", path, nil)
+				for k, v := range testCase.requestHeaders {
+					req.Header.Set(k, v)
+				}
+				req.SetBasicAuth(testCase.requestBasicAuthUser, testCase.requestBasicAuthPassword)
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != testCase.responseCode {
+					t.Errorf("Expected %d from %s, got %d", testCase.responseCode, path, resp.Code)
+				}
+
+				if resp.Code == 200 && path == "/alerts.json" {
+					ur := models.AlertsResponse{}
+					err := json.Unmarshal(resp.Body.Bytes(), &ur)
+					if err != nil {
+						t.Errorf("Failed to unmarshal response: %s", err)
+					}
+					if ur.Authentication.Enabled != true {
+						t.Errorf("Got Authentication.Enabled=%v", ur.Authentication.Enabled)
+					}
+					if ur.Authentication.Username != testCase.responseUsername {
+						t.Errorf("Got Authentication.Username=%s, expected %s", ur.Authentication.Username, testCase.responseUsername)
+					}
+				}
+			}
+		})
 	}
 }

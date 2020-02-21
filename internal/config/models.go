@@ -47,7 +47,14 @@ type AuthenticationUser struct {
 
 type configSchema struct {
 	Authentication struct {
-		Users []AuthenticationUser
+		Enabled bool `yaml:"-" koanf:"-"`
+		Header  struct {
+			Name       string
+			ValueRegex string `yaml:"value_re" koanf:"value_re"`
+		}
+		BasicAuth struct {
+			Users []AuthenticationUser
+		} `yaml:"basicAuth" koanf:"basicAuth"`
 	}
 	Alertmanager struct {
 		Interval    time.Duration

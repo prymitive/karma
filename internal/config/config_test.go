@@ -21,7 +21,11 @@ func resetEnv() {
 
 func testReadConfig(t *testing.T) {
 	expectedConfig := `authentication:
-  users: []
+  header:
+    name: ""
+    value_re: ""
+  basicAuth:
+    users: []
 alertmanager:
   interval: 1s
   servers:

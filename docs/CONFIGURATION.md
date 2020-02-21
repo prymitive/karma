@@ -25,18 +25,77 @@ CONFIG_FILE="docs/example.yaml"
 ### Authentication
 
 `authentication` sections allows enabling authentication support in karma.
-When set users will be require to authenticate to access karma.
+When set users will be required to authenticate when trying to access karma.
+There are currently two supported authentication methods:
+
+- [Basic HTTP Authentication](https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#Basic_authentication_scheme).
+  Karma will be performing authentication using configured list of username &
+  password pairs. This method is only recommended for testing.
+- External authentication via headers. Karma doesn't perform any authentication
+  itself, it is done by a frontend service (SSO or nginx reverse proxy) that
+  sets a header with username on every request.
+
+Only one method can be enabled in the config.
 Enabling authentication will also force silences to be created with usernames
 passed from credentials.
 
 ```YAML
 authentication:
-  users:
-    - username: string
-      password: string
+  header:
+    name: string
+    value_re: string
+  basicAuth:
+    users:
+      - username: string
+        password: string
 ```
 
+- `authentication:users:header:name` - name of the header that will contain the
+  username. If this header is missing from a request access will be forbidden.
+  When set header authentication is used.
+- `authentication:users:header:value_re` -
+  [regex](https://golang.org/s/re2syntax) used to extract the username from the
+  request header value (when `authentication:users:header:name` is set).
+  It must include one numbered capturing group, whatever is matched by that
+  group will be used as the silence form author field.
+  This option must be set when `authentication:users:header:name` is set.
 - `authentication:users` - list of users (username & password) allowed to login.
+  Passwords are stored plain without any encryption.
+  When set HTTP basic authentication will be used.
+
+Defaults:
+
+```YAML
+authentication:
+  header:
+    name: ""
+    value_re: ""
+  basicAuth:
+    users: []
+```
+
+Example where HTTP Basic Authentication will be used with a list of username
+and password pairs set in karma config file.
+
+```YAML
+authentication:
+  basicAuth:
+    users:
+      - username: alice
+        password: secret
+      - username: bob
+        password: moreSecret
+```
+
+Example where the `X-Auth` header will be used for authentication, raw header
+value will be used as username.
+
+```YAML
+authentication:
+  header:
+    name: X-Auth
+    value_re: ^(.+)$
+```
 
 ### Alertmanagers
 

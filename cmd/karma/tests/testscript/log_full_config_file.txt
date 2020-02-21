@@ -5,11 +5,12 @@ cmp stderr expected.stderr
 
 -- custom.yaml --
 authentication:
-  users:
-    - username: number
-      password: 1234
-    - username: string
-      password: '1234'
+  basicAuth:
+    users:
+      - username: number
+        password: 1234
+      - username: string
+        password: '1234'
 alertmanager:
   interval: 10s
   servers:
@@ -238,11 +239,15 @@ level=info msg="Reading configuration file custom.yaml"
 level=info msg="Version: dev"
 level=info msg="Parsed configuration:"
 level=info msg="authentication:"
-level=info msg="  users:"
-level=info msg="  - username: number"
-level=info msg="    password: '***'"
-level=info msg="  - username: string"
-level=info msg="    password: '***'"
+level=info msg="  header:"
+level=info msg="    name: \"\""
+level=info msg="    value_re: \"\""
+level=info msg="  basicAuth:"
+level=info msg="    users:"
+level=info msg="    - username: number"
+level=info msg="      password: '***'"
+level=info msg="    - username: string"
+level=info msg="      password: '***'"
 level=info msg="alertmanager:"
 level=info msg="  interval: 10s"
 level=info msg="  servers:"

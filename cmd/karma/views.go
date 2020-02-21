@@ -144,7 +144,7 @@ func alerts(c *gin.Context) {
 	ts, _ := start.UTC().MarshalText()
 
 	var username string
-	if len(config.Config.Authentication.Users) > 0 {
+	if config.Config.Authentication.Enabled {
 		username = c.MustGet(gin.AuthUserKey).(string)
 	}
 
@@ -181,7 +181,7 @@ func alerts(c *gin.Context) {
 		},
 	}
 	resp.Authentication = models.AuthenticationInfo{
-		Enabled:  len(config.Config.Authentication.Users) > 0,
+		Enabled:  config.Config.Authentication.Enabled,
 		Username: username,
 	}
 
@@ -209,6 +209,7 @@ func alerts(c *gin.Context) {
 		}
 		newResp.Settings = resp.Settings
 		newResp.Timestamp = string(ts)
+		newResp.Authentication = resp.Authentication
 		newData, err := json.Marshal(&newResp)
 		if err != nil {
 			log.Error(err.Error())

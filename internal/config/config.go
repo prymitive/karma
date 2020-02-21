@@ -265,10 +265,30 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 		config.SilenceForm.Strip.Labels = []string{}
 	}
 
-	for _, u := range config.Authentication.Users {
-		if u.Username == "" || u.Password == "" {
-			log.Fatalf("authentication.users require both username and password to be set")
+	if config.Authentication.Header.Name != "" && len(config.Authentication.BasicAuth.Users) > 0 {
+		log.Fatalf("Both authentication.basicAuth.users and authentication.header.name is set, only one can be enabled")
+	}
+
+	if config.Authentication.Header.ValueRegex != "" {
+		_, err = regexp.Compile(config.Authentication.Header.ValueRegex)
+		if err != nil {
+			log.Fatalf("Invalid regex for authentication.header.value_re: %s", err.Error())
 		}
+		if config.Authentication.Header.Name == "" {
+			log.Fatalf("authentication.header.name is required when authentication.header.value_re is set")
+		}
+	} else if config.Authentication.Header.Name != "" {
+		log.Fatalf("authentication.header.value_re is required when authentication.header.name is set")
+	}
+
+	for _, u := range config.Authentication.BasicAuth.Users {
+		if u.Username == "" || u.Password == "" {
+			log.Fatalf("authentication.basicAuth.users require both username and password to be set")
+		}
+	}
+
+	if config.Authentication.Header.Name != "" || len(config.Authentication.BasicAuth.Users) > 0 {
+		config.Authentication.Enabled = true
 	}
 
 	if config.SilenceForm.Author.PopulateFromHeader.ValueRegex != "" {
@@ -352,14 +372,14 @@ func (config *configSchema) LogValues() {
 	cfg := configSchema(*config)
 
 	auth := []AuthenticationUser{}
-	for _, u := range cfg.Authentication.Users {
+	for _, u := range cfg.Authentication.BasicAuth.Users {
 		uu := AuthenticationUser{
 			Username: u.Username,
 			Password: "***",
 		}
 		auth = append(auth, uu)
 	}
-	cfg.Authentication.Users = auth
+	cfg.Authentication.BasicAuth.Users = auth
 
 	// replace passwords in Alertmanager URIs with 'xxx'
 	servers := []AlertmanagerConfig{}
