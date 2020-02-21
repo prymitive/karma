@@ -127,6 +127,16 @@ describe("<SilenceForm /> preview", () => {
 });
 
 describe("<SilenceForm /> inputs", () => {
+  it("author is read-only when info.authentication.enabled is true", () => {
+    alertStore.info.authentication.enabled = true;
+    alertStore.info.authentication.username = "auth@example.com";
+    const tree = MountedSilenceForm();
+    const input = tree.find("input[placeholder='Author']");
+    expect(input.props().readOnly).toBe(true);
+    expect(input.props().value).toBe("auth@example.com");
+    expect(silenceFormStore.data.author).toBe("auth@example.com");
+  });
+
   it("default author value comes from Settings store", () => {
     settingsStore.silenceFormConfig.config.author = "foo@example.com";
     const tree = MountedSilenceForm();

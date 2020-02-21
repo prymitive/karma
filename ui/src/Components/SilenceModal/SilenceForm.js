@@ -21,40 +21,7 @@ import { AlertManagerInput } from "./AlertManagerInput";
 import { SilenceMatch } from "./SilenceMatch";
 import { DateTimeSelect } from "./DateTimeSelect";
 import { PayloadPreview } from "./PayloadPreview";
-
-const IconInput = ({
-  type,
-  autoComplete,
-  icon,
-  placeholder,
-  value,
-  onChange
-}) => (
-  <div className="input-group mb-3">
-    <div className="input-group-prepend">
-      <span className="input-group-text">
-        <FontAwesomeIcon icon={icon} />
-      </span>
-    </div>
-    <input
-      type={type}
-      className="form-control"
-      placeholder={placeholder}
-      value={value}
-      required
-      autoComplete={autoComplete}
-      onChange={onChange}
-    />
-  </div>
-);
-IconInput.propTypes = {
-  type: PropTypes.string.isRequired,
-  autoComplete: PropTypes.string.isRequired,
-  icon: FontAwesomeIcon.propTypes.icon.isRequired,
-  placeholder: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired
-};
+import { IconInput, AuthenticatedAuthorInput } from "./AuthorInput";
 
 const SilenceForm = observer(
   class SilenceForm extends Component {
@@ -110,6 +77,10 @@ const SilenceForm = observer(
       if (silenceFormStore.data.author === "") {
         silenceFormStore.data.author =
           settingsStore.silenceFormConfig.config.author;
+      }
+
+      if (alertStore.info.authentication.enabled) {
+        silenceFormStore.data.author = alertStore.info.authentication.username;
       }
     });
 
@@ -177,14 +148,19 @@ const SilenceForm = observer(
             </button>
           </TooltipWrapper>
           <DateTimeSelect silenceFormStore={silenceFormStore} />
-          <IconInput
-            type="text"
-            autoComplete="email"
-            placeholder="Author"
-            icon={faUser}
-            value={silenceFormStore.data.author}
-            onChange={this.onAuthorChange}
-          />
+          {alertStore.info.authentication.enabled ? (
+            <AuthenticatedAuthorInput alertStore={alertStore} />
+          ) : (
+            <IconInput
+              type="text"
+              autoComplete="email"
+              placeholder="Author"
+              icon={faUser}
+              value={silenceFormStore.data.author}
+              onChange={this.onAuthorChange}
+            />
+          )}
+
           <IconInput
             type="text"
             autoComplete="on"
