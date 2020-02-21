@@ -160,7 +160,7 @@ describe("SilenceFormStore.data", () => {
     );
   });
 
-  it("fillMatchersFromGroup() creates correct matcher object for a group with only a subset of alets passed", () => {
+  it("fillMatchersFromGroup() creates correct matcher object for a group with only a subset of alerts passed", () => {
     const group = MockGroup();
     store.data.fillMatchersFromGroup(group, [], [group.alerts[0]]);
     expect(store.data.matchers).toHaveLength(4);

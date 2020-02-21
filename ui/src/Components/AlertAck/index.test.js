@@ -48,7 +48,8 @@ beforeEach(() => {
 
   alerts = [
     MockAlert([], { foo: "bar" }, "active"),
-    MockAlert([], { foo: "baz" }, "suppressed")
+    MockAlert([], { foo: "baz" }, "active"),
+    MockAlert([], { foo: "ignore" }, "suppressed")
   ];
   group = MockAlertGroup({ alertname: "Fake Alert" }, alerts, [], {}, {});
 });
