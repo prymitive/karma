@@ -296,19 +296,25 @@ type Settings struct {
 	AlertAcknowledgement     AlertAcknowledgementSettings `json:"alertAcknowledgement"`
 }
 
+type AuthenticationInfo struct {
+	Enabled  bool   `json:"enabled"`
+	Username string `json:"username"`
+}
+
 // AlertsResponse is the structure of JSON response UI will use to get alert data
 type AlertsResponse struct {
-	Status      string                        `json:"status"`
-	Timestamp   string                        `json:"timestamp"`
-	Version     string                        `json:"version"`
-	Upstreams   AlertmanagerAPISummary        `json:"upstreams"`
-	Silences    map[string]map[string]Silence `json:"silences"`
-	AlertGroups []APIAlertGroup               `json:"groups"`
-	TotalAlerts int                           `json:"totalAlerts"`
-	Colors      LabelsColorMap                `json:"colors"`
-	Filters     []Filter                      `json:"filters"`
-	Counters    LabelNameStatsList            `json:"counters"`
-	Settings    Settings                      `json:"settings"`
+	Status         string                        `json:"status"`
+	Timestamp      string                        `json:"timestamp"`
+	Version        string                        `json:"version"`
+	Upstreams      AlertmanagerAPISummary        `json:"upstreams"`
+	Silences       map[string]map[string]Silence `json:"silences"`
+	AlertGroups    []APIAlertGroup               `json:"groups"`
+	TotalAlerts    int                           `json:"totalAlerts"`
+	Colors         LabelsColorMap                `json:"colors"`
+	Filters        []Filter                      `json:"filters"`
+	Counters       LabelNameStatsList            `json:"counters"`
+	Settings       Settings                      `json:"settings"`
+	Authentication AuthenticationInfo            `json:"authentication"`
 }
 
 // Autocomplete is the structure of autocomplete object for filter hints

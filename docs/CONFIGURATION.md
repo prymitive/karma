@@ -22,6 +22,22 @@ Example with environment variables:
 CONFIG_FILE="docs/example.yaml"
 ```
 
+### Authentication
+
+`authentication` sections allows enabling authentication support in karma.
+When set users will be require to authenticate to access karma.
+Enabling authentication will also force silences to be created with usernames
+passed from credentials.
+
+```YAML
+authentication:
+  users:
+    - username: string
+      password: string
+```
+
+- `authentication:users` - list of users (username & password) allowed to login.
+
 ### Alertmanagers
 
 `alertmanager` section allows setting Alertmanager servers that should be

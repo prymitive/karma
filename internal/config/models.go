@@ -40,7 +40,15 @@ type CustomLabelColor struct {
 
 type CustomLabelColors map[string][]CustomLabelColor
 
+type AuthenticationUser struct {
+	Username string
+	Password string
+}
+
 type configSchema struct {
+	Authentication struct {
+		Users []AuthenticationUser
+	}
 	Alertmanager struct {
 		Interval    time.Duration
 		Servers     []AlertmanagerConfig

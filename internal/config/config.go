@@ -265,6 +265,12 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 		config.SilenceForm.Strip.Labels = []string{}
 	}
 
+	for _, u := range config.Authentication.Users {
+		if u.Username == "" || u.Password == "" {
+			log.Fatalf("authentication.users require both username and password to be set")
+		}
+	}
+
 	if config.SilenceForm.Author.PopulateFromHeader.ValueRegex != "" {
 		_, err = regexp.Compile(config.SilenceForm.Author.PopulateFromHeader.ValueRegex)
 		if err != nil {
@@ -344,6 +350,16 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 func (config *configSchema) LogValues() {
 	// make a copy of our config so we can edit it
 	cfg := configSchema(*config)
+
+	auth := []AuthenticationUser{}
+	for _, u := range cfg.Authentication.Users {
+		uu := AuthenticationUser{
+			Username: u.Username,
+			Password: "***",
+		}
+		auth = append(auth, uu)
+	}
+	cfg.Authentication.Users = auth
 
 	// replace passwords in Alertmanager URIs with 'xxx'
 	servers := []AlertmanagerConfig{}

@@ -143,6 +143,11 @@ func alerts(c *gin.Context) {
 	start := time.Now()
 	ts, _ := start.UTC().MarshalText()
 
+	var username string
+	if len(config.Config.Authentication.Users) > 0 {
+		username = c.MustGet(gin.AuthUserKey).(string)
+	}
+
 	// initialize response object, set fields that don't require any locking
 	resp := models.AlertsResponse{}
 	resp.Status = "success"
@@ -174,6 +179,10 @@ func alerts(c *gin.Context) {
 			Author:          config.Config.AlertAcknowledgement.Author,
 			CommentPrefix:   config.Config.AlertAcknowledgement.CommentPrefix,
 		},
+	}
+	resp.Authentication = models.AuthenticationInfo{
+		Enabled:  len(config.Config.Authentication.Users) > 0,
+		Username: username,
 	}
 
 	if config.Config.Grid.Sorting.CustomValues.Labels != nil {

@@ -20,7 +20,9 @@ func resetEnv() {
 }
 
 func testReadConfig(t *testing.T) {
-	expectedConfig := `alertmanager:
+	expectedConfig := `authentication:
+  users: []
+alertmanager:
   interval: 1s
   servers:
   - name: default

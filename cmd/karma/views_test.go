@@ -818,3 +818,18 @@ func TestEmptySettings(t *testing.T) {
 		t.Errorf("Wrong settings returned (-want +got):\n%s", diff)
 	}
 }
+
+func TestBasicAuth(t *testing.T) {
+	config.Config.Authentication.Users = []config.AuthenticationUser{
+		{Username: "john", Password: "foobar"},
+	}
+	r := ginTestEngine()
+	for _, path := range []string{"/", "/alerts.json", "/autocomplete.json"} {
+		req := httptest.NewRequest("GET", path, nil)
+		resp := httptest.NewRecorder()
+		r.ServeHTTP(resp, req)
+		if resp.Code != 401 {
+			t.Errorf("Expected 401 from %s, got %d", path, resp.Code)
+		}
+	}
+}

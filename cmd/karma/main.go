@@ -98,16 +98,28 @@ func setupRouter(router *gin.Engine) {
 		ExposeHeaders:    []string{"Content-Length"},
 	}))
 
-	router.GET(getViewURL("/"), index)
-	router.GET(getViewURL("/health"), pong)
-	router.GET(getViewURL("/alerts.json"), alerts)
-	router.GET(getViewURL("/autocomplete.json"), autocomplete)
-	router.GET(getViewURL("/labelNames.json"), knownLabelNames)
-	router.GET(getViewURL("/labelValues.json"), knownLabelValues)
-	router.GET(getViewURL("/silences.json"), silences)
+	var protected *gin.RouterGroup
+	if len(config.Config.Authentication.Users) > 0 {
+		users := map[string]string{}
+		for _, u := range config.Config.Authentication.Users {
+			users[u.Username] = u.Password
+		}
+		protected = router.Group(getViewURL("/"), gin.BasicAuth(users))
+	} else {
+		protected = router.Group(getViewURL("/"))
+	}
 
-	router.GET(getViewURL("/custom.css"), customCSS)
-	router.GET(getViewURL("/custom.js"), customJS)
+	router.GET(getViewURL("/health"), pong)
+
+	protected.GET("/", index)
+	protected.GET("/alerts.json", alerts)
+	protected.GET("/autocomplete.json", autocomplete)
+	protected.GET("/labelNames.json", knownLabelNames)
+	protected.GET("/labelValues.json", knownLabelValues)
+	protected.GET("/silences.json", silences)
+
+	protected.GET("/custom.css", customCSS)
+	protected.GET("/custom.js", customJS)
 
 	router.NoRoute(notFound)
 }
