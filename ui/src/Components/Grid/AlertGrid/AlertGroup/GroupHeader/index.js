@@ -30,6 +30,22 @@ const GroupHeader = observer(
       setIsMenuOpen: PropTypes.func.isRequired
     };
 
+    onCollapseClick = event => {
+      const { collapseStore } = this.props;
+
+      // left click       => toggle current group
+      // left click + alt => toggle all groups
+
+      collapseStore.toggle();
+
+      if (event.altKey === true) {
+        const toggleEvent = new CustomEvent("alertGroupCollapse", {
+          detail: collapseStore.value
+        });
+        window.dispatchEvent(toggleEvent);
+      }
+    };
+
     render() {
       const {
         collapseStore,
@@ -98,9 +114,9 @@ const GroupHeader = observer(
               className={`${
                 themedCounters ? "text-muted" : "text-white"
               } cursor-pointer badge px-0 components-label mr-0`}
-              onClick={collapseStore.toggle}
+              onClick={this.onCollapseClick}
             >
-              <TooltipWrapper title="Toggle group details">
+              <TooltipWrapper title="Click to toggle this group details or Alt+Click to toggle all groups">
                 <FontAwesomeIcon
                   icon={collapseStore.value ? faChevronUp : faChevronDown}
                 />
