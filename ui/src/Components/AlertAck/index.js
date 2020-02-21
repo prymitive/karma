@@ -39,7 +39,7 @@ const newPendingSilence = (
   payload: GenerateAlertmanagerSilenceData(
     moment.utc(),
     moment.utc().add(durationSeconds, "seconds"),
-    MatchersFromGroup(group, []),
+    MatchersFromGroup(group, [], group.alerts, true),
     author,
     `${
       commentPrefix ? commentPrefix + " " : ""

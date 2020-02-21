@@ -36,7 +36,7 @@ const SilenceTabNames = Object.freeze({
   Browser: "browser"
 });
 
-const MatchersFromGroup = (group, stripLabels, alerts) => {
+const MatchersFromGroup = (group, stripLabels, alerts, onlyActive) => {
   let matchers = [];
 
   // add matchers for all shared labels in this group
@@ -55,12 +55,14 @@ const MatchersFromGroup = (group, stripLabels, alerts) => {
   let labels = {};
   const allAlerts = alerts ? alerts : group.alerts;
   for (const alert of allAlerts) {
-    for (const [key, value] of Object.entries(alert.labels)) {
-      if (!stripLabels.includes(key)) {
-        if (!labels[key]) {
-          labels[key] = new Set();
+    if (!onlyActive || alert.state === "active") {
+      for (const [key, value] of Object.entries(alert.labels)) {
+        if (!stripLabels.includes(key)) {
+          if (!labels[key]) {
+            labels[key] = new Set();
+          }
+          labels[key].add(value);
         }
-        labels[key].add(value);
       }
     }
   }
