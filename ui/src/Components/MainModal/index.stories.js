@@ -19,6 +19,9 @@ storiesOf("MainModal", module)
   .add("Configuration", () => {
     const alertStore = new AlertStore([]);
     const settingsStore = new Settings();
+
+    alertStore.info.authentication.enabled = true;
+    alertStore.info.authentication.username = "me@example.com";
     return (
       <MainModalContent
         alertStore={alertStore}
