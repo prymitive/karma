@@ -11,8 +11,13 @@ import (
 )
 
 func mainShoulFail() int {
-	defer func() { log.StandardLogger().ExitFunc = nil }()
 	var wasFatal bool
+	defer func() {
+		if r := recover(); r != nil {
+			wasFatal = true
+		}
+	}()
+	defer func() { log.StandardLogger().ExitFunc = nil }()
 	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
 
 	_, err := mainSetup(pflag.ContinueOnError)

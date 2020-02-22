@@ -67,6 +67,25 @@ func customJS(c *gin.Context) {
 	serveFileOr404(config.Config.Custom.JS, "application/javascript", c)
 }
 
+func headerAuth(name, valueRegex string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		user := c.Request.Header.Get(name)
+		if user == "" {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+
+		r := regexp.MustCompile("^" + valueRegex + "$")
+		matches := r.FindAllStringSubmatch(user, 1)
+		if len(matches) > 0 && len(matches[0]) > 1 {
+			c.Set(gin.AuthUserKey, matches[0][1])
+		} else {
+			c.AbortWithStatus(http.StatusUnauthorized)
+			return
+		}
+	}
+}
+
 func setupRouter(router *gin.Engine) {
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
 
@@ -98,16 +117,33 @@ func setupRouter(router *gin.Engine) {
 		ExposeHeaders:    []string{"Content-Length"},
 	}))
 
-	router.GET(getViewURL("/"), index)
-	router.GET(getViewURL("/health"), pong)
-	router.GET(getViewURL("/alerts.json"), alerts)
-	router.GET(getViewURL("/autocomplete.json"), autocomplete)
-	router.GET(getViewURL("/labelNames.json"), knownLabelNames)
-	router.GET(getViewURL("/labelValues.json"), knownLabelValues)
-	router.GET(getViewURL("/silences.json"), silences)
+	var protected *gin.RouterGroup
+	if config.Config.Authentication.Header.Name != "" {
+		config.Config.Authentication.Enabled = true
+		protected = router.Group(getViewURL("/"),
+			headerAuth(config.Config.Authentication.Header.Name, config.Config.Authentication.Header.ValueRegex))
+	} else if len(config.Config.Authentication.BasicAuth.Users) > 0 {
+		config.Config.Authentication.Enabled = true
+		users := map[string]string{}
+		for _, u := range config.Config.Authentication.BasicAuth.Users {
+			users[u.Username] = u.Password
+		}
+		protected = router.Group(getViewURL("/"), gin.BasicAuth(users))
+	} else {
+		protected = router.Group(getViewURL("/"))
+	}
 
-	router.GET(getViewURL("/custom.css"), customCSS)
-	router.GET(getViewURL("/custom.js"), customJS)
+	router.GET(getViewURL("/health"), pong)
+
+	protected.GET("/", index)
+	protected.GET("/alerts.json", alerts)
+	protected.GET("/autocomplete.json", autocomplete)
+	protected.GET("/labelNames.json", knownLabelNames)
+	protected.GET("/labelValues.json", knownLabelValues)
+	protected.GET("/silences.json", silences)
+
+	protected.GET("/custom.css", customCSS)
+	protected.GET("/custom.js", customJS)
 
 	router.NoRoute(notFound)
 }

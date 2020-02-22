@@ -103,8 +103,6 @@ func SetupFlags(f *pflag.FlagSet) {
 		"List of receivers to not display alerts for")
 
 	f.StringSlice("silenceform.strip.labels", []string{}, "List of labels to ignore when auto-filling silence form from alerts")
-	f.String("silenceform.author.populate_from_header.header", "", "Header to read the default silence author from")
-	f.String("silenceform.author.populate_from_header.value_re", "", "Header value regex to read the default silence author")
 
 	f.String("listen.address", "", "IP/Hostname to listen on")
 	f.Int("listen.port", 8080, "HTTP port to listen on")
@@ -265,16 +263,30 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 		config.SilenceForm.Strip.Labels = []string{}
 	}
 
-	if config.SilenceForm.Author.PopulateFromHeader.ValueRegex != "" {
-		_, err = regexp.Compile(config.SilenceForm.Author.PopulateFromHeader.ValueRegex)
+	if config.Authentication.Header.Name != "" && len(config.Authentication.BasicAuth.Users) > 0 {
+		log.Fatalf("Both authentication.basicAuth.users and authentication.header.name is set, only one can be enabled")
+	}
+
+	if config.Authentication.Header.ValueRegex != "" {
+		_, err = regexp.Compile(config.Authentication.Header.ValueRegex)
 		if err != nil {
-			log.Fatalf("Invalid regex for silenceform.author.populate_from_header.value_re: %s", err.Error())
+			log.Fatalf("Invalid regex for authentication.header.value_re: %s", err.Error())
 		}
-		if config.SilenceForm.Author.PopulateFromHeader.Header == "" {
-			log.Fatalf("silenceform.author.populate_from_header.header is required when silenceform.author.populate_from_header.value_re is set")
+		if config.Authentication.Header.Name == "" {
+			log.Fatalf("authentication.header.name is required when authentication.header.value_re is set")
 		}
-	} else if config.SilenceForm.Author.PopulateFromHeader.Header != "" {
-		log.Fatalf("silenceform.author.populate_from_header.value_re is required when silenceform.author.populate_from_header.header is set")
+	} else if config.Authentication.Header.Name != "" {
+		log.Fatalf("authentication.header.value_re is required when authentication.header.name is set")
+	}
+
+	for _, u := range config.Authentication.BasicAuth.Users {
+		if u.Username == "" || u.Password == "" {
+			log.Fatalf("authentication.basicAuth.users require both username and password to be set")
+		}
+	}
+
+	if config.Authentication.Header.Name != "" || len(config.Authentication.BasicAuth.Users) > 0 {
+		config.Authentication.Enabled = true
 	}
 
 	if !slices.StringInSlice([]string{"omit", "include", "same-origin"}, config.Alertmanager.CORS.Credentials) {
@@ -344,6 +356,16 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 func (config *configSchema) LogValues() {
 	// make a copy of our config so we can edit it
 	cfg := configSchema(*config)
+
+	auth := []AuthenticationUser{}
+	for _, u := range cfg.Authentication.BasicAuth.Users {
+		uu := AuthenticationUser{
+			Username: u.Username,
+			Password: "***",
+		}
+		auth = append(auth, uu)
+	}
+	cfg.Authentication.BasicAuth.Users = auth
 
 	// replace passwords in Alertmanager URIs with 'xxx'
 	servers := []AlertmanagerConfig{}

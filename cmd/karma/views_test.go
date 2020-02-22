@@ -551,86 +551,6 @@ func TestGzipMiddlewareWithoutAcceptEncoding(t *testing.T) {
 	}
 }
 
-func TestValidateAuthorFromHeaders(t *testing.T) {
-	type testValidateAuthorFromHeaders struct {
-		configHeader       string
-		configRegex        string
-		requestHeaderName  string
-		requestHeaderValue string
-		expectedAuthor     string
-	}
-
-	testCases := []testValidateAuthorFromHeaders{
-		{
-			configHeader:       "X-Auth",
-			configRegex:        "^(.*)$",
-			requestHeaderName:  "X-Auth",
-			requestHeaderValue: "foo",
-			expectedAuthor:     "foo",
-		},
-		{
-			configHeader:       "X-Auth",
-			configRegex:        "^foo(.*)bar$",
-			requestHeaderName:  "X-Auth",
-			requestHeaderValue: "foo123bar",
-			expectedAuthor:     "123",
-		},
-		{
-			configHeader:       "X-Auth",
-			configRegex:        "^(.*)$",
-			requestHeaderName:  "X-Auth-Not",
-			requestHeaderValue: "foo",
-			expectedAuthor:     "",
-		},
-		{
-			configHeader:       "",
-			configRegex:        "^(.*)$",
-			requestHeaderName:  "X-Auth",
-			requestHeaderValue: "foo",
-			expectedAuthor:     "",
-		},
-		{
-			configHeader:       "X-Auth",
-			configRegex:        "",
-			requestHeaderName:  "X-Auth",
-			requestHeaderValue: "foo",
-			expectedAuthor:     "",
-		},
-		{
-			configHeader:       "X-Auth",
-			configRegex:        "^.*$",
-			requestHeaderName:  "X-Auth",
-			requestHeaderValue: "foo",
-			expectedAuthor:     "",
-		},
-	}
-
-	mockConfig()
-	for _, testCase := range testCases {
-		config.Config.SilenceForm.Author.PopulateFromHeader.Header = testCase.configHeader
-		config.Config.SilenceForm.Author.PopulateFromHeader.ValueRegex = testCase.configRegex
-
-		r := ginTestEngine()
-		req := httptest.NewRequest("GET", "/alerts.json", nil)
-		req.Header.Set(testCase.requestHeaderName, testCase.requestHeaderValue)
-
-		resp := httptest.NewRecorder()
-		r.ServeHTTP(resp, req)
-		if resp.Code != http.StatusOK {
-			t.Errorf("GET /alerts.json returned status %d", resp.Code)
-		}
-		ur := models.AlertsResponse{}
-		body := resp.Body.Bytes()
-		err := json.Unmarshal(body, &ur)
-		if err != nil {
-			t.Errorf("Failed to unmarshal response: %s", err)
-		}
-		if ur.Settings.SilenceForm.Author != testCase.expectedAuthor {
-			t.Errorf("Expected author '%s', got '%s', test case: %+v", testCase.expectedAuthor, ur.Settings.SilenceForm.Author, testCase)
-		}
-	}
-}
-
 func TestSilences(t *testing.T) {
 	type silenceTestCase struct {
 		searchTerm  string
@@ -804,7 +724,6 @@ func TestEmptySettings(t *testing.T) {
 			Strip: models.SilenceFormStripSettings{
 				Labels: []string{},
 			},
-			Author: "",
 		},
 		AlertAcknowledgement: models.AlertAcknowledgementSettings{
 			Enabled:         false,
@@ -816,5 +735,152 @@ func TestEmptySettings(t *testing.T) {
 
 	if diff := cmp.Diff(expectedSettings, ur.Settings); diff != "" {
 		t.Errorf("Wrong settings returned (-want +got):\n%s", diff)
+	}
+}
+
+func TestAuthentication(t *testing.T) {
+	type authTest struct {
+		name                     string
+		headerName               string
+		headerRe                 string
+		basicAuthUsers           []config.AuthenticationUser
+		requestHeaders           map[string]string
+		requestBasicAuthUser     string
+		requestBasicAuthPassword string
+		responseCode             int
+		responseUsername         string
+	}
+
+	authTests := []authTest{
+		{
+			name: "basic auth, request without credentials, 401",
+			basicAuthUsers: []config.AuthenticationUser{
+				{Username: "john", Password: "foobar"},
+			},
+			responseCode: 401,
+		},
+		{
+			name: "basic auth, missing password, 401",
+			basicAuthUsers: []config.AuthenticationUser{
+				{Username: "john", Password: "foobar"},
+			},
+			requestBasicAuthUser: "john",
+			responseCode:         401,
+		},
+		{
+			name: "basic auth, missing username, 401",
+			basicAuthUsers: []config.AuthenticationUser{
+				{Username: "john", Password: "foobar"},
+			},
+			requestBasicAuthPassword: "foobar",
+			responseCode:             401,
+		},
+		{
+			name: "basic auth, wrong password, 401",
+			basicAuthUsers: []config.AuthenticationUser{
+				{Username: "john", Password: "foobar"},
+			},
+			requestBasicAuthUser:     "john",
+			requestBasicAuthPassword: "foobarx",
+			responseCode:             401,
+		},
+		{
+			name: "basic auth, correct credentials, 200",
+			basicAuthUsers: []config.AuthenticationUser{
+				{Username: "john", Password: "foobar"},
+			},
+			requestBasicAuthUser:     "john",
+			requestBasicAuthPassword: "foobar",
+			responseCode:             200,
+			responseUsername:         "john",
+		},
+		{
+			name:         "header auth, missing header, 401",
+			headerName:   "X-Auth",
+			headerRe:     "(.+)",
+			responseCode: 401,
+		},
+		{
+			name:       "header auth, header value doesn't match, 401",
+			headerName: "X-Auth",
+			headerRe:   "Username (.+)",
+			requestHeaders: map[string]string{
+				"X-Auth": "xxx",
+			},
+			responseCode: 401,
+		},
+		{
+			name:       "header auth, header value doesn't match #2, 401",
+			headerName: "X-Auth",
+			headerRe:   "Username (.+)",
+			requestHeaders: map[string]string{
+				"X-Auth": "xxx Username xxx",
+			},
+			responseCode: 401,
+		},
+		{
+			name:       "header auth, header correct, 200",
+			headerName: "X-Auth",
+			headerRe:   "(.+)",
+			requestHeaders: map[string]string{
+				"X-Auth": "john",
+			},
+			responseCode:     200,
+			responseUsername: "john",
+		},
+		{
+			name:       "header auth, header correct #2, 200",
+			headerName: "X-Auth",
+			headerRe:   "Username (.+)",
+			requestHeaders: map[string]string{
+				"X-Auth": "Username john",
+			},
+			responseCode:     200,
+			responseUsername: "john",
+		},
+	}
+
+	for _, testCase := range authTests {
+		t.Run(testCase.name, func(t *testing.T) {
+			config.Config.Authentication.Header.Name = testCase.headerName
+			config.Config.Authentication.Header.ValueRegex = testCase.headerRe
+			config.Config.Authentication.BasicAuth.Users = testCase.basicAuthUsers
+			r := ginTestEngine()
+			for _, path := range []string{
+				"/",
+				"/alerts.json",
+				"/autocomplete.json?term=foo",
+				"/labelNames.json",
+				"/labelValues.json?name=foo",
+				"/silences.json",
+				"/custom.css",
+				"/custom.js",
+			} {
+				req := httptest.NewRequest("GET", path, nil)
+				for k, v := range testCase.requestHeaders {
+					req.Header.Set(k, v)
+				}
+				req.SetBasicAuth(testCase.requestBasicAuthUser, testCase.requestBasicAuthPassword)
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != testCase.responseCode {
+					t.Errorf("Expected %d from %s, got %d", testCase.responseCode, path, resp.Code)
+				}
+
+				if resp.Code == 200 && path == "/alerts.json" {
+					ur := models.AlertsResponse{}
+					err := json.Unmarshal(resp.Body.Bytes(), &ur)
+					if err != nil {
+						t.Errorf("Failed to unmarshal response: %s", err)
+					}
+					if ur.Authentication.Enabled != true {
+						t.Errorf("Got Authentication.Enabled=%v", ur.Authentication.Enabled)
+					}
+					if ur.Authentication.Username != testCase.responseUsername {
+						t.Errorf("Got Authentication.Username=%s, expected %s", ur.Authentication.Username, testCase.responseUsername)
+					}
+				}
+			}
+		})
 	}
 }

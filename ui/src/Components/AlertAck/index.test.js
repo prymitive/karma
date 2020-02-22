@@ -189,8 +189,9 @@ describe("<AlertAck />", () => {
     });
   });
 
-  it("uses author from alertStore if present", () => {
-    alertStore.settings.values.silenceForm.author = "john@example.com";
+  it("uses author from authentication info when auth is enabled", () => {
+    alertStore.info.authentication.enabled = true;
+    alertStore.info.authentication.username = "auth@example.com";
     alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
     alertStore.settings.values.alertAcknowledgement.author = "me";
     alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";
@@ -198,7 +199,7 @@ describe("<AlertAck />", () => {
     expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual({
       comment:
         "FOO: This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
-      createdBy: "john@example.com",
+      createdBy: "auth@example.com",
       endsAt: "2000-02-01T00:03:42.000Z",
       matchers: [
         { isRegex: false, name: "alertname", value: "Fake Alert" },
@@ -208,8 +209,9 @@ describe("<AlertAck />", () => {
     });
   });
 
-  it("uses author from silenceFormStore if alertStore is empty", () => {
-    alertStore.settings.values.silenceForm.author = "";
+  it("uses author from silenceFormStore if authentication is disabled", () => {
+    alertStore.info.authentication.enabled = false;
+    alertStore.info.authentication.username = "wrong";
     alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
     alertStore.settings.values.alertAcknowledgement.author = "me";
     alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";
@@ -229,7 +231,6 @@ describe("<AlertAck />", () => {
   });
 
   it("uses default author as fallback", () => {
-    alertStore.settings.values.silenceForm.author = "";
     alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
     alertStore.settings.values.alertAcknowledgement.author = "me";
     alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";

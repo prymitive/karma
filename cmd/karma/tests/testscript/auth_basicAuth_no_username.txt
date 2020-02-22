@@ -1,0 +1,14 @@
+# Raises an error if basic auth username is missing
+karma.bin-should-fail --log.format=text --log.config=false --log.level=error --config.file=karma.yaml
+! stdout .
+stderr 'msg="authentication.basicAuth.users require both username and password to be set"'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: default
+      uri: https://localhost:9093
+authentication:
+  basicAuth:
+    users:
+      - password: foo

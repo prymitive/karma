@@ -172,6 +172,18 @@ const AlertAck = observer(
         return;
       }
 
+      let author =
+        silenceFormStore.data.author !== ""
+          ? toJS(silenceFormStore.data.author)
+          : toJS(alertStore.settings.values.alertAcknowledgement.author);
+
+      if (alertStore.info.authentication.enabled) {
+        silenceFormStore.data.author = toJS(
+          alertStore.info.authentication.username
+        );
+        author = alertStore.info.authentication.username;
+      }
+
       const alertmanagers = Object.entries(group.alertmanagerCount)
         .filter(([amName, alertCount]) => alertCount > 0)
         .map(([amName, _]) => amName);
@@ -187,11 +199,7 @@ const AlertAck = observer(
           toJS(group),
           toJS(clusterMembers),
           toJS(alertStore.settings.values.alertAcknowledgement.durationSeconds),
-          alertStore.settings.values.silenceForm.author !== ""
-            ? alertStore.settings.values.silenceForm.author
-            : silenceFormStore.data.author !== ""
-            ? toJS(silenceFormStore.data.author)
-            : toJS(alertStore.settings.values.alertAcknowledgement.author),
+          author,
           toJS(alertStore.settings.values.alertAcknowledgement.commentPrefix)
         );
         this.submitState.pushSilence(clusterName, pendingSilence);

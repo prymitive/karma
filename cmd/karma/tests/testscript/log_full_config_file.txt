@@ -4,6 +4,13 @@ karma.bin-should-work --config.file=custom.yaml --check-config
 cmp stderr expected.stderr
 
 -- custom.yaml --
+authentication:
+  basicAuth:
+    users:
+      - username: number
+        password: 1234
+      - username: string
+        password: '1234'
 alertmanager:
   interval: 10s
   servers:
@@ -121,10 +128,6 @@ silences:
         - regex: "(DEVOPS-[0-9]+)"
           uriTemplate: https://jira.example.com/browse/$1
 silenceForm:
-  author:
-    populate_from_header:
-      header: "CF-RAY"
-      value_re: "^(.+)$"
   strip:
     labels:
       - job
@@ -231,6 +234,16 @@ FLR1flnW2lx5o5csDzTpi+jgC6nu1zE0DWo1c5ZdpVO289POIpqh
 level=info msg="Reading configuration file custom.yaml"
 level=info msg="Version: dev"
 level=info msg="Parsed configuration:"
+level=info msg="authentication:"
+level=info msg="  header:"
+level=info msg="    name: \"\""
+level=info msg="    value_re: \"\""
+level=info msg="  basicAuth:"
+level=info msg="    users:"
+level=info msg="    - username: number"
+level=info msg="      password: '***'"
+level=info msg="    - username: string"
+level=info msg="      password: '***'"
 level=info msg="alertmanager:"
 level=info msg="  interval: 10s"
 level=info msg="  servers:"
@@ -389,10 +402,6 @@ level=info msg="      rules:"
 level=info msg="      - regex: (DEVOPS-[0-9]+)"
 level=info msg="        uriTemplate: https://jira.example.com/browse/$1"
 level=info msg="silenceForm:"
-level=info msg="  author:"
-level=info msg="    populate_from_header:"
-level=info msg="      header: CF-RAY"
-level=info msg="      value_re: ^(.+)$"
 level=info msg="  strip:"
 level=info msg="    labels:"
 level=info msg="    - job"

@@ -40,7 +40,22 @@ type CustomLabelColor struct {
 
 type CustomLabelColors map[string][]CustomLabelColor
 
+type AuthenticationUser struct {
+	Username string
+	Password string
+}
+
 type configSchema struct {
+	Authentication struct {
+		Enabled bool `yaml:"-" koanf:"-"`
+		Header  struct {
+			Name       string
+			ValueRegex string `yaml:"value_re" koanf:"value_re"`
+		}
+		BasicAuth struct {
+			Users []AuthenticationUser
+		} `yaml:"basicAuth" koanf:"basicAuth"`
+	}
 	Alertmanager struct {
 		Interval    time.Duration
 		Servers     []AlertmanagerConfig
@@ -124,12 +139,6 @@ type configSchema struct {
 		} `yaml:"comments"`
 	} `yaml:"silences"`
 	SilenceForm struct {
-		Author struct {
-			PopulateFromHeader struct {
-				Header     string `yaml:"header" koanf:"header"`
-				ValueRegex string `yaml:"value_re" koanf:"value_re"`
-			} `yaml:"populate_from_header" koanf:"populate_from_header"`
-		} `yaml:"author"`
 		Strip struct {
 			Labels []string
 		}

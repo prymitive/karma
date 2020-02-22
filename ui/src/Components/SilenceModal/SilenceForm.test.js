@@ -127,31 +127,22 @@ describe("<SilenceForm /> preview", () => {
 });
 
 describe("<SilenceForm /> inputs", () => {
+  it("author is read-only when info.authentication.enabled is true", () => {
+    alertStore.info.authentication.enabled = true;
+    alertStore.info.authentication.username = "auth@example.com";
+    const tree = MountedSilenceForm();
+    const input = tree.find("input[placeholder='Author']");
+    expect(input.props().readOnly).toBe(true);
+    expect(input.props().value).toBe("auth@example.com");
+    expect(silenceFormStore.data.author).toBe("auth@example.com");
+  });
+
   it("default author value comes from Settings store", () => {
     settingsStore.silenceFormConfig.config.author = "foo@example.com";
     const tree = MountedSilenceForm();
     const input = tree.find("input[placeholder='Author']");
     expect(input.props().value).toBe("foo@example.com");
     expect(silenceFormStore.data.author).toBe("foo@example.com");
-  });
-
-  it("default author value comes from the API response if present", () => {
-    alertStore.settings.values.silenceForm.author = "bar@example.com";
-    settingsStore.silenceFormConfig.config.author = "foo@example.com";
-    const tree = MountedSilenceForm();
-    const input = tree.find("input[placeholder='Author']");
-    expect(input.props().value).toBe("bar@example.com");
-  });
-
-  it("author value from the API response is saved to the Settings store", () => {
-    alertStore.settings.values.silenceForm.author = "bar@example.com";
-    settingsStore.silenceFormConfig.config.author = "";
-    const tree = MountedSilenceForm();
-    const input = tree.find("input[placeholder='Author']");
-    expect(input.props().value).toBe("bar@example.com");
-    expect(settingsStore.silenceFormConfig.config.author).toBe(
-      "bar@example.com"
-    );
   });
 
   it("default author value is empty if nothing is stored in Settings", () => {

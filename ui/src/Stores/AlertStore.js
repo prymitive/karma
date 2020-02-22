@@ -215,6 +215,10 @@ class AlertStore {
 
   info = observable(
     {
+      authentication: {
+        enabled: false,
+        username: ""
+      },
       totalAlerts: 0,
       version: "unknown",
       upgradeNeeded: false,
@@ -254,7 +258,6 @@ class AlertStore {
           valueMapping: {}
         },
         silenceForm: {
-          author: "",
           strip: {
             labels: []
           }
@@ -418,7 +421,7 @@ class AlertStore {
       this.info.upgradeNeeded = true;
     }
     // update extra root level keys that are stored under 'info'
-    for (const key of ["totalAlerts", "version"]) {
+    for (const key of ["totalAlerts", "version", "authentication"]) {
       if (this.info[key] !== result[key]) {
         this.info[key] = result[key];
       }
