@@ -103,8 +103,6 @@ func SetupFlags(f *pflag.FlagSet) {
 		"List of receivers to not display alerts for")
 
 	f.StringSlice("silenceform.strip.labels", []string{}, "List of labels to ignore when auto-filling silence form from alerts")
-	f.String("silenceform.author.populate_from_header.header", "", "Header to read the default silence author from")
-	f.String("silenceform.author.populate_from_header.value_re", "", "Header value regex to read the default silence author")
 
 	f.String("listen.address", "", "IP/Hostname to listen on")
 	f.Int("listen.port", 8080, "HTTP port to listen on")
@@ -289,18 +287,6 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 
 	if config.Authentication.Header.Name != "" || len(config.Authentication.BasicAuth.Users) > 0 {
 		config.Authentication.Enabled = true
-	}
-
-	if config.SilenceForm.Author.PopulateFromHeader.ValueRegex != "" {
-		_, err = regexp.Compile(config.SilenceForm.Author.PopulateFromHeader.ValueRegex)
-		if err != nil {
-			log.Fatalf("Invalid regex for silenceform.author.populate_from_header.value_re: %s", err.Error())
-		}
-		if config.SilenceForm.Author.PopulateFromHeader.Header == "" {
-			log.Fatalf("silenceform.author.populate_from_header.header is required when silenceform.author.populate_from_header.value_re is set")
-		}
-	} else if config.SilenceForm.Author.PopulateFromHeader.Header != "" {
-		log.Fatalf("silenceform.author.populate_from_header.value_re is required when silenceform.author.populate_from_header.header is set")
 	}
 
 	if !slices.StringInSlice([]string{"omit", "include", "same-origin"}, config.Alertmanager.CORS.Credentials) {

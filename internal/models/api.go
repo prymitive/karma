@@ -274,8 +274,7 @@ type SilenceFormStripSettings struct {
 }
 
 type SilenceFormSettings struct {
-	Strip  SilenceFormStripSettings `json:"strip"`
-	Author string                   `json:"author"`
+	Strip SilenceFormStripSettings `json:"strip"`
 }
 
 type AlertAcknowledgementSettings struct {

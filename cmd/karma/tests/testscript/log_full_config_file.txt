@@ -128,10 +128,6 @@ silences:
         - regex: "(DEVOPS-[0-9]+)"
           uriTemplate: https://jira.example.com/browse/$1
 silenceForm:
-  author:
-    populate_from_header:
-      header: "CF-RAY"
-      value_re: "^(.+)$"
   strip:
     labels:
       - job
@@ -406,10 +402,6 @@ level=info msg="      rules:"
 level=info msg="      - regex: (DEVOPS-[0-9]+)"
 level=info msg="        uriTemplate: https://jira.example.com/browse/$1"
 level=info msg="silenceForm:"
-level=info msg="  author:"
-level=info msg="    populate_from_header:"
-level=info msg="      header: CF-RAY"
-level=info msg="      value_re: ^(.+)$"
 level=info msg="  strip:"
 level=info msg="    labels:"
 level=info msg="    - job"

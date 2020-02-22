@@ -75,10 +75,6 @@ silences:
         - regex: "(DEVOPS-[0-9]+)"
           uriTemplate: https://jira.example.com/browse/$1
 silenceForm:
-  author:
-    populate_from_header:
-      header: "CF-RAY"
-      value_re: "^(.+)$"
   strip:
     labels:
       - job

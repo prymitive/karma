@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"regexp"
 	"sort"
 	"strings"
 	"time"
@@ -122,21 +121,6 @@ func populateAPIFilters(matchFilters []filters.FilterT) []models.Filter {
 	return apiFilters
 }
 
-func authorFromHeader(c *gin.Context, header string, valueRe string) string {
-	if header == "" || valueRe == "" {
-		return ""
-	}
-	v := c.GetHeader(header)
-	if v != "" {
-		r := regexp.MustCompile(valueRe)
-		matches := r.FindAllStringSubmatch(v, 1)
-		if len(matches) > 0 && len(matches[0]) > 1 {
-			return matches[0][1]
-		}
-	}
-	return ""
-}
-
 // alerts endpoint, json, JS will query this via AJAX call
 func alerts(c *gin.Context) {
 	noCache(c)
@@ -168,7 +152,6 @@ func alerts(c *gin.Context) {
 		AnnotationsHidden:        config.Config.Annotations.Hidden,
 		AnnotationsVisible:       config.Config.Annotations.Visible,
 		SilenceForm: models.SilenceFormSettings{
-			Author: authorFromHeader(c, config.Config.SilenceForm.Author.PopulateFromHeader.Header, config.Config.SilenceForm.Author.PopulateFromHeader.ValueRegex),
 			Strip: models.SilenceFormStripSettings{
 				Labels: config.Config.SilenceForm.Strip.Labels,
 			},

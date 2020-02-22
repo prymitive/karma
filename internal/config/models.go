@@ -139,12 +139,6 @@ type configSchema struct {
 		} `yaml:"comments"`
 	} `yaml:"silences"`
 	SilenceForm struct {
-		Author struct {
-			PopulateFromHeader struct {
-				Header     string `yaml:"header" koanf:"header"`
-				ValueRegex string `yaml:"value_re" koanf:"value_re"`
-			} `yaml:"populate_from_header" koanf:"populate_from_header"`
-		} `yaml:"author"`
 		Strip struct {
 			Labels []string
 		}
