@@ -81,6 +81,11 @@ const MainModalContent = observer(
             ) : null}
           </div>
           <div className="modal-footer">
+            {alertStore.info.authentication.enabled && (
+              <span className="text-muted mr-2">
+                Username: {alertStore.info.authentication.username}
+              </span>
+            )}
             <span className="text-muted">
               Version: {alertStore.info.version}
             </span>

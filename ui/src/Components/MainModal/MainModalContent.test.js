@@ -96,4 +96,22 @@ describe("<MainModalContent />", () => {
   it("calls setTab('help') after clicking on the 'Help' tab", () => {
     ValidateSetTab("Help", "help");
   });
+
+  it("shows username when alertStore.info.authentication.enabled=true", () => {
+    alertStore.info.authentication.enabled = true;
+    alertStore.info.authentication.username = "me@example.com";
+    const tree = mount(
+      <span>
+        {Wrapped(
+          <MainModalContent
+            alertStore={alertStore}
+            settingsStore={settingsStore}
+            onHide={onHide}
+            expandAllOptions={true}
+          />
+        )}
+      </span>
+    );
+    expect(tree.text()).toMatch(/Username: me@example.com/);
+  });
 });
