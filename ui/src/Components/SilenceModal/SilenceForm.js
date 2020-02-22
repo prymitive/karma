@@ -69,11 +69,6 @@ const SilenceForm = observer(
     populateAuthor = action(() => {
       const { alertStore, silenceFormStore, settingsStore } = this.props;
 
-      if (alertStore.settings.values.silenceForm.author !== "") {
-        settingsStore.silenceFormConfig.config.author =
-          alertStore.settings.values.silenceForm.author;
-      }
-
       if (silenceFormStore.data.author === "") {
         silenceFormStore.data.author =
           settingsStore.silenceFormConfig.config.author;

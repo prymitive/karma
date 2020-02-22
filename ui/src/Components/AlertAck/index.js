@@ -173,9 +173,7 @@ const AlertAck = observer(
       }
 
       let author =
-        alertStore.settings.values.silenceForm.author !== ""
-          ? alertStore.settings.values.silenceForm.author
-          : silenceFormStore.data.author !== ""
+        silenceFormStore.data.author !== ""
           ? toJS(silenceFormStore.data.author)
           : toJS(alertStore.settings.values.alertAcknowledgement.author);
 
