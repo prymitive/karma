@@ -14,6 +14,7 @@ import (
 	"github.com/prymitive/karma/internal/mapper/v017/client/alertgroup"
 	"github.com/prymitive/karma/internal/mapper/v017/client/general"
 	"github.com/prymitive/karma/internal/mapper/v017/client/silence"
+	ammodels "github.com/prymitive/karma/internal/mapper/v017/models"
 	"github.com/prymitive/karma/internal/models"
 )
 
@@ -118,4 +119,14 @@ func status(c *client.Alertmanager, timeout time.Duration) (models.AlertmanagerS
 	}
 
 	return ret, nil
+}
+
+func rewriteSilenceUsername(body []byte, username string) ([]byte, error) {
+	s := ammodels.PostableSilence{}
+	err := s.UnmarshalBinary(body)
+	if err != nil {
+		return nil, err
+	}
+	s.CreatedBy = &username
+	return s.MarshalBinary()
 }

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -10,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/mapper"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -23,7 +26,7 @@ func proxyPathPrefix(name string) string {
 }
 
 func proxyPath(name, path string) string {
-	return fmt.Sprintf("%s%s", proxyPathPrefix(name), path)
+	return fmt.Sprintf("/proxy/alertmanager/%s%s", name, path)
 }
 
 // NewAlertmanagerProxy creates a proxy instance for given alertmanager instance
@@ -56,7 +59,7 @@ func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) (*httputil.Re
 				req.URL.Path = strings.TrimSuffix(upstreamURL.Path, "/") + req.URL.Path
 			}
 
-			log.Debugf("[%s] Proxy request for %s", alertmanager.Name, req.URL.Path)
+			log.Debugf("[%s] Forwarding request for %s to %s", alertmanager.Name, req.RequestURI, req.URL.String())
 		},
 		Transport: alertmanager.HTTPTransport,
 		ModifyResponse: func(resp *http.Response) error {
@@ -69,15 +72,57 @@ func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) (*httputil.Re
 	return &proxy, nil
 }
 
+func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		log.Debugf("[%s] Proxy request %s", alertmanager.Name, c.Request.RequestURI)
+		if config.Config.Authentication.Enabled {
+			body, err := ioutil.ReadAll(c.Request.Body)
+			c.Request.Body.Close()
+			if err != nil {
+				log.Errorf("[%s] proxy request '%s %s' body close failed: %s", alertmanager.Name, c.Request.Method, c.Request.RequestURI, err)
+				c.AbortWithStatus(http.StatusInternalServerError)
+				return
+			}
+
+			ver := alertmanager.Version()
+			if ver == "" {
+				ver = "999.0"
+			}
+
+			username := c.MustGet(gin.AuthUserKey).(string)
+			m, err := mapper.GetSilenceMapper(ver)
+			if err != nil {
+				log.Errorf("[%s] proxy request '%s %s' error: %s", alertmanager.Name, c.Request.Method, c.Request.RequestURI, err)
+				c.AbortWithStatus(http.StatusInternalServerError)
+				return
+			}
+
+			newBody, err := m.RewriteUsername(body, username)
+			if err != nil {
+				log.Errorf("[%s] proxy request '%s %s' silence body rewrite error: %s", alertmanager.Name, c.Request.Method, c.Request.RequestURI, err)
+				c.AbortWithStatus(http.StatusInternalServerError)
+				return
+			}
+
+			c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(newBody))
+			c.Request.ContentLength = int64(len(newBody))
+			c.Request.Header.Set("Content-Length", fmt.Sprintf("%d", c.Request.ContentLength))
+		}
+
+		h.ServeHTTP(c.Writer, c.Request)
+	}
+}
+
 func setupRouterProxyHandlers(router *gin.Engine, alertmanager *alertmanager.Alertmanager) error {
 	proxy, err := NewAlertmanagerProxy(alertmanager)
 	if err != nil {
 		return err
 	}
-	router.POST(
+
+	protectedEndpoints.POST(
 		proxyPath(alertmanager.Name, "/api/v2/silences"),
-		gin.WrapH(http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)))
-	router.DELETE(
+		handlePostRequest(alertmanager, http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)))
+	protectedEndpoints.DELETE(
 		proxyPath(alertmanager.Name, "/api/v2/silence/*id"),
 		gin.WrapH(http.StripPrefix(proxyPathPrefix(alertmanager.Name), proxy)))
 	return nil

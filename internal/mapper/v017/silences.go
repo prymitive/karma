@@ -27,3 +27,7 @@ func (m SilenceMapper) Collect(uri string, headers map[string]string, timeout ti
 	c := newClient(uri, headers, httpTransport)
 	return silences(c, timeout)
 }
+
+func (m SilenceMapper) RewriteUsername(body []byte, username string) ([]byte, error) {
+	return rewriteSilenceUsername(body, username)
+}
