@@ -1,0 +1,15 @@
+# Loads config file from --config.file flag
+env CONFIG_FILE=foo.yaml
+karma.bin-should-work --check-config --config.file foo.yaml
+! stdout .
+stderr 'msg="Reading configuration file foo.yaml"'
+stderr 'msg="Configuration is valid"'
+stderr 'msg="\[cwd\] Configured Alertmanager source at http://localhost:8080 \(proxied: true\, readonly: false\)"'
+! stderr 'level=error'
+
+-- foo.yaml --
+alertmanager:
+  servers:
+    - name: cwd
+      uri: "http://localhost:8080"
+      proxy: true

@@ -1,0 +1,28 @@
+# Loads config file from flags when CONFIG_FILE env is also set
+env CONFIG_FILE=env.yaml
+karma.bin-should-work --check-config --config.file=flag.yaml
+! stdout .
+stderr 'msg="Reading configuration file flag.yaml"'
+stderr 'msg="Configuration is valid"'
+stderr 'msg="\[flag\] Configured Alertmanager source at http://localhost:8080 \(proxied: false\, readonly: false\)"'
+! stderr 'level=error'
+! stderr 'msg="Reading configuration file karma.yaml"'
+! stderr 'msg="Reading configuration file env.yaml"'
+
+-- flag.yaml --
+alertmanager:
+  servers:
+    - name: flag
+      uri: "http://localhost:8080"
+
+-- env.yaml --
+alertmanager:
+  servers:
+    - name: env
+      uri: "http://localhost:8080"
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: karma
+      uri: "http://localhost:8080"

@@ -1,0 +1,6 @@
+# Fails on invalid flag usage
+env CONFIG_FILE=foo.yaml
+karma.bin-should-fail --check-config --invalid.flag
+! stdout .
+! stderr 'msg="Configuration is valid"'
+stderr 'level=error msg="unknown flag: --invalid.flag"'
