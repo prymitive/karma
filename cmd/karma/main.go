@@ -47,6 +47,8 @@ var (
 
 	staticBuildFileSystem = newBinaryFileSystem("ui/build")
 	staticSrcFileSystem   = newBinaryFileSystem("ui/src")
+
+	protectedEndpoints *gin.RouterGroup
 )
 
 func getViewURL(sub string) string {
@@ -117,10 +119,9 @@ func setupRouter(router *gin.Engine) {
 		ExposeHeaders:    []string{"Content-Length"},
 	}))
 
-	var protected *gin.RouterGroup
 	if config.Config.Authentication.Header.Name != "" {
 		config.Config.Authentication.Enabled = true
-		protected = router.Group(getViewURL("/"),
+		protectedEndpoints = router.Group(getViewURL("/"),
 			headerAuth(config.Config.Authentication.Header.Name, config.Config.Authentication.Header.ValueRegex))
 	} else if len(config.Config.Authentication.BasicAuth.Users) > 0 {
 		config.Config.Authentication.Enabled = true
@@ -128,22 +129,22 @@ func setupRouter(router *gin.Engine) {
 		for _, u := range config.Config.Authentication.BasicAuth.Users {
 			users[u.Username] = u.Password
 		}
-		protected = router.Group(getViewURL("/"), gin.BasicAuth(users))
+		protectedEndpoints = router.Group(getViewURL("/"), gin.BasicAuth(users))
 	} else {
-		protected = router.Group(getViewURL("/"))
+		protectedEndpoints = router.Group(getViewURL("/"))
 	}
 
 	router.GET(getViewURL("/health"), pong)
 
-	protected.GET("/", index)
-	protected.GET("/alerts.json", alerts)
-	protected.GET("/autocomplete.json", autocomplete)
-	protected.GET("/labelNames.json", knownLabelNames)
-	protected.GET("/labelValues.json", knownLabelValues)
-	protected.GET("/silences.json", silences)
+	protectedEndpoints.GET("/", index)
+	protectedEndpoints.GET("/alerts.json", alerts)
+	protectedEndpoints.GET("/autocomplete.json", autocomplete)
+	protectedEndpoints.GET("/labelNames.json", knownLabelNames)
+	protectedEndpoints.GET("/labelValues.json", knownLabelValues)
+	protectedEndpoints.GET("/silences.json", silences)
 
-	protected.GET("/custom.css", customCSS)
-	protected.GET("/custom.js", customJS)
+	protectedEndpoints.GET("/custom.css", customCSS)
+	protectedEndpoints.GET("/custom.js", customJS)
 
 	router.NoRoute(notFound)
 }
