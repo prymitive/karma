@@ -29,7 +29,6 @@ func configureTLSClientCert(tlsConfig *tls.Config, certPath, keyPath string) err
 		return err
 	}
 	tlsConfig.Certificates = []tls.Certificate{cert}
-	tlsConfig.BuildNameToCertificate()
 	return nil
 }
 
