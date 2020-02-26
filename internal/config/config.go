@@ -121,9 +121,17 @@ func SetupFlags(f *pflag.FlagSet) {
 }
 
 func readConfigFile(k *koanf.Koanf, flags *pflag.FlagSet) string {
-	configFile, _ := flags.GetString("config.file")
-	// if config.file is not passed via flags then see if there's karma.yaml in
-	// current working directory
+	var configFile string
+
+	// 1. Load file from flags is set
+	configFile, _ = flags.GetString("config.file")
+	// 2. Fallback to CONFIG_FILE env if there's no flag value
+	if configFile == "" {
+		if v, found := os.LookupEnv("CONFIG_FILE"); found {
+			configFile = v
+		}
+	}
+	// 3 see if there's karma.yaml in current working directory
 	if configFile == "" {
 		if _, err := os.Stat("karma.yaml"); !os.IsNotExist(err) {
 			configFile = "karma.yaml"
