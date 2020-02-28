@@ -6,17 +6,11 @@ import { observer } from "mobx-react";
 
 import debounce from "lodash/debounce";
 
-import Pagination from "react-js-pagination";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faSortAmountDownAlt } from "@fortawesome/free-solid-svg-icons/faSortAmountDownAlt";
 import { faSortAmountUp } from "@fortawesome/free-solid-svg-icons/faSortAmountUp";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
-import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
-import { faAngleDoubleLeft } from "@fortawesome/free-solid-svg-icons/faAngleDoubleLeft";
-import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons/faAngleDoubleRight";
 
 import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -24,6 +18,7 @@ import { Settings } from "Stores/Settings";
 import { FetchGet } from "Common/Fetch";
 import { MountFade } from "Components/Animations/MountFade";
 import { ManagedSilence } from "Components/ManagedSilence";
+import { PageSelect } from "Components/Pagination";
 
 const FetchError = ({ message }) => (
   <div className="text-center">
@@ -57,7 +52,10 @@ const Browser = observer(
       onDeleteModalClose: PropTypes.func.isRequired
     };
 
-    fetchTimer = null;
+    constructor(props) {
+      super(props);
+      this.fetchTimer = null;
+    }
 
     dataSource = observable(
       {
@@ -249,33 +247,6 @@ const Browser = observer(
                       onDeleteModalClose={onDeleteModalClose}
                     />
                   ))}
-                {this.dataSource.silences.length > this.maxPerPage ? (
-                  <div className="mt-3">
-                    <Pagination
-                      activePage={this.pagination.activePage}
-                      itemsCountPerPage={this.maxPerPage}
-                      totalItemsCount={this.dataSource.silences.length}
-                      pageRangeDisplayed={5}
-                      onChange={this.pagination.onPageChange}
-                      hideFirstLastPages={
-                        this.dataSource.silences.length / this.maxPerPage < 20
-                      }
-                      innerClass="pagination justify-content-center"
-                      itemClass="page-item"
-                      linkClass="page-link"
-                      activeClass="active"
-                      activeLinkClass="font-weight-bold"
-                      prevPageText={<FontAwesomeIcon icon={faAngleLeft} />}
-                      nextPageText={<FontAwesomeIcon icon={faAngleRight} />}
-                      firstPageText={
-                        <FontAwesomeIcon icon={faAngleDoubleLeft} />
-                      }
-                      lastPageText={
-                        <FontAwesomeIcon icon={faAngleDoubleRight} />
-                      }
-                    />
-                  </div>
-                ) : null}
               </React.Fragment>
             )
           ) : (
@@ -283,6 +254,15 @@ const Browser = observer(
               content={<FontAwesomeIcon icon={faSpinner} size="lg" spin />}
             />
           )}
+          <PageSelect
+            totalPages={Math.ceil(
+              this.dataSource.silences.length / this.maxPerPage
+            )}
+            activePage={this.pagination.activePage}
+            maxPerPage={this.maxPerPage}
+            totalItemsCount={this.dataSource.silences.length}
+            setPageCallback={this.pagination.onPageChange}
+          />
         </React.Fragment>
       );
     }
