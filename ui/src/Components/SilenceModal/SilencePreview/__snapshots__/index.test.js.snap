@@ -89,6 +89,10 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
         </li>
       </ul>
     </div>
+    <div tabindex=\\"-1\\"
+         class=\\"components-pagination\\"
+    >
+    </div>
   </div>
 </div>
 <div class=\\"d-flex flex-row-reverse\\">

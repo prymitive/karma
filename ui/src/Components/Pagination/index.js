@@ -42,6 +42,7 @@ class PageSelect extends Component {
   render() {
     const {
       totalItemsCount,
+      totalPages,
       maxPerPage,
       activePage,
       setPageCallback
@@ -68,7 +69,7 @@ class PageSelect extends Component {
               totalItemsCount={totalItemsCount}
               pageRangeDisplayed={5}
               onChange={setPageCallback}
-              hideFirstLastPages={totalItemsCount / maxPerPage < 20}
+              hideFirstLastPages={totalPages < 10}
               innerClass="pagination justify-content-center"
               itemClass="page-item"
               linkClass="page-link"
