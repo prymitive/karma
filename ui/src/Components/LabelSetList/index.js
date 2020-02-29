@@ -6,16 +6,9 @@ import { observable, action } from "mobx";
 
 import hash from "object-hash";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
-import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
-import { faAngleDoubleLeft } from "@fortawesome/free-solid-svg-icons/faAngleDoubleLeft";
-import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons/faAngleDoubleRight";
-
-import Pagination from "react-js-pagination";
-
 import { AlertStore } from "Stores/AlertStore";
 import { StaticLabel } from "Components/Labels/StaticLabel";
+import { PageSelect } from "Components/Pagination";
 
 // take a list of groups and outputs a list of label sets, this ignores
 // the receiver, so we'll end up with only unique alerts
@@ -87,27 +80,13 @@ const LabelSetList = observer(
                 ))}
             </ul>
           </div>
-          {labelsList.length > this.maxPerPage ? (
-            <div className="mt-3">
-              <Pagination
-                activePage={this.pagination.activePage}
-                itemsCountPerPage={this.maxPerPage}
-                totalItemsCount={labelsList.length}
-                pageRangeDisplayed={5}
-                onChange={this.pagination.onPageChange}
-                hideFirstLastPages={labelsList.length / this.maxPerPage < 10}
-                innerClass="pagination justify-content-center"
-                itemClass="page-item"
-                linkClass="page-link"
-                activeClass="active"
-                activeLinkClass="font-weight-bold"
-                prevPageText={<FontAwesomeIcon icon={faAngleLeft} />}
-                nextPageText={<FontAwesomeIcon icon={faAngleRight} />}
-                firstPageText={<FontAwesomeIcon icon={faAngleDoubleLeft} />}
-                lastPageText={<FontAwesomeIcon icon={faAngleDoubleRight} />}
-              />
-            </div>
-          ) : null}
+          <PageSelect
+            totalPages={Math.ceil(labelsList.length / this.maxPerPage)}
+            activePage={this.pagination.activePage}
+            maxPerPage={this.maxPerPage}
+            totalItemsCount={labelsList.length}
+            setPageCallback={this.pagination.onPageChange}
+          />
         </div>
       ) : (
         <p className="text-muted text-center">No alerts matched</p>
