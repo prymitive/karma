@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/gin-contrib/static"
+	"github.com/gobuffalo/packr/v2"
 	"github.com/prymitive/karma/internal/config"
 
 	log "github.com/sirupsen/logrus"
@@ -100,17 +100,17 @@ func TestStaticExpires404(t *testing.T) {
 
 func TestLoadTemplateChained(t *testing.T) {
 	var tmpl *template.Template
-	tmpl = loadTemplate(tmpl, "ui/build/index.html")
+	tmpl = loadTemplate(tmpl, "index.html", staticBuildFileSystem)
 	if tmpl == nil {
 		t.Errorf("loadTemplate returned nil")
 	}
 
-	tmpl = loadTemplate(tmpl, "ui/build/favicon.ico")
+	tmpl = loadTemplate(tmpl, "favicon.ico", staticBuildFileSystem)
 	if tmpl == nil {
 		t.Errorf("loadTemplate returned nil")
 	}
 
-	if tmpl.Name() != "ui/build/index.html" {
+	if tmpl.Name() != "index.html" {
 		t.Errorf("tmpl.Name() returned %q", tmpl.Name())
 	}
 }
@@ -121,7 +121,7 @@ func TestLoadTemplateMissing(t *testing.T) {
 	var wasFatal bool
 	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
 
-	loadTemplate(nil, "/this/file/does/not/exist")
+	loadTemplate(nil, "/this/file/does/not/exist", staticBuildFileSystem)
 
 	if !wasFatal {
 		t.Error("loadTemplate() with invalid path didn't cause log.Fatal()")
@@ -134,7 +134,8 @@ func TestLoadTemplateUnparsable(t *testing.T) {
 	var wasFatal bool
 	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
 
-	loadTemplate(nil, "cmd/karma/tests/bindata/go-test-invalid.html")
+	staticTestFileSystem := packr.New("tests/bindata", "./tests/bindata")
+	loadTemplate(nil, "go-test-invalid.html", staticTestFileSystem)
 
 	if !wasFatal {
 		t.Error("loadTemplate() with unparsable file didn't cause log.Fatal()")
@@ -144,7 +145,7 @@ func TestLoadTemplateUnparsable(t *testing.T) {
 func TestAssetFallbackMIME(t *testing.T) {
 	mockConfig()
 	r := ginTestEngine()
-	r.Use(static.Serve(getViewURL("/"), newBinaryFileSystem("cmd/karma/tests/bindata")))
+	r.Use(tryBoxFile("", packr.New("tests/bindata", "./tests/bindata")))
 	req := httptest.NewRequest("GET", "/bin.data", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)

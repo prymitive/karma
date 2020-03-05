@@ -51,7 +51,7 @@ func ginTestEngine() *gin.Engine {
 	setupRouter(r)
 
 	var t *template.Template
-	t = loadTemplate(t, "ui/build/index.html")
+	t = loadTemplate(t, "index.html", staticBuildFileSystem)
 	r.SetHTMLTemplate(t)
 
 	return r

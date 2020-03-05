@@ -9,17 +9,11 @@ rwildcard = $(foreach d, $(wildcard $1*), $(call rwildcard,$d/,$2) $(filter $(su
 SOURCES       := $(call rwildcard, cmd internal, *)
 ASSET_SOURCES := $(call rwildcard, ui/public ui/src, *)
 
-GO_BINDATA_MODE := prod
-ifdef DEBUG
-	GO_BINDATA_MODE  = debug
-endif
-
 .DEFAULT_GOAL := $(NAME)
 
 .build/deps-build-go.ok:
 	@mkdir -p .build
-	GO111MODULE=on go install github.com/go-bindata/go-bindata/...
-	GO111MODULE=on go install github.com/elazarl/go-bindata-assetfs/...
+	GO111MODULE=on go install github.com/gobuffalo/packr/v2/packr2
 	touch $@
 
 .build/deps-lint-go.ok:
@@ -32,9 +26,9 @@ endif
 	cd ui && npm install
 	touch $@
 
-.build/artifacts-bindata_assetfs.%:
+.build/artifacts-bindata_assetfs.ok:
 	@mkdir -p .build
-	rm -f .build/artifacts-bindata_assetfs.*
+	rm -f .build/artifacts-bindata_assetfs.ok
 	touch $@
 
 .build/artifacts-ui.ok: .build/deps-build-node.ok $(ASSET_SOURCES)
@@ -42,10 +36,10 @@ endif
 	cd ui && (npm run build || (test -n "$$CI" && rm -fr node_modules && npm install && npm run build))
 	touch $@
 
-cmd/karma/bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.$(GO_BINDATA_MODE) .build/artifacts-ui.ok
-	go-bindata-assetfs -o cmd/karma/bindata_assetfs.go ui/build/... ui/src/... cmd/karma/tests/bindata/...
+cmd/karma/packrd/packed-packr.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.ok .build/artifacts-ui.ok
+	cd cmd/karma && packr2 build && rm -f karma
 
-$(NAME): .build/deps-build-go.ok go.mod cmd/karma/bindata_assetfs.go $(SOURCES)
+$(NAME): .build/deps-build-go.ok go.mod cmd/karma/packrd/packed-packr.go $(SOURCES)
 	GO111MODULE=on go build -ldflags "-X main.version=$(VERSION)" ./cmd/karma
 
 .PHONY: download-deps
@@ -53,7 +47,7 @@ download-deps:
 	GO111MODULE=on go mod download
 
 word-split = $(word $2,$(subst -, ,$1))
-cc-%: .build/deps-build-go.ok go.mod cmd/karma/bindata_assetfs.go $(SOURCES)
+cc-%: .build/deps-build-go.ok go.mod cmd/karma/packrd/packed-packr.go $(SOURCES)
 	$(eval GOOS := $(call word-split,$*,1))
 	$(eval GOARCH := $(call word-split,$*,2))
 	$(eval GOARM := $(call word-split,$*,3))
@@ -71,7 +65,7 @@ crosscompile: $(PLATFORMS)
 
 .PHONY: clean
 clean:
-	rm -fr .build cmd/karma/bindata_assetfs.go $(NAME) $(NAME)-* ui/build ui/node_modules coverage.txt
+	rm -fr .build cmd/karma/packrd/packed-packr.go $(NAME) $(NAME)-* ui/build ui/node_modules coverage.txt
 
 .PHONY: docker-image
 docker-image:
@@ -160,15 +154,15 @@ openapi-client:
 show-version:
 	@echo $(VERSION)
 
-# Creates mock bindata_assetfs.go with source assets
+# Creates mock cmd/karma/packrd/packed-packr.go with source assets
 .PHONY: mock-assets
 mock-assets: .build/deps-build-go.ok
 	rm -fr ui/build
 	mkdir ui/build
 	cp ui/public/* ui/build/
-	go-bindata-assetfs -o cmd/karma/bindata_assetfs.go -nometadata ui/build/... cmd/karma/tests/bindata/...
+	cd cmd/karma && packr2 build && rm -f karma
 	# force assets rebuild on next make run
-	rm -f .build/bindata_assetfs.*
+	rm -f .build/bindata_assetfs.ok
 
 .PHONY: ui
 ui: .build/artifacts-ui.ok

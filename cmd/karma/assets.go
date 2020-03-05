@@ -1,56 +1,24 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"html/template"
+	"mime"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gobuffalo/packr/v2"
 
-	assetfs "github.com/elazarl/go-bindata-assetfs"
 	log "github.com/sirupsen/logrus"
 )
 
-type binaryFileSystem struct {
-	fs http.FileSystem
-}
-
-func (b *binaryFileSystem) Open(name string) (http.File, error) {
-	return b.fs.Open(name)
-}
-
-func (b *binaryFileSystem) Exists(prefix string, filepath string) bool {
-	if p := strings.TrimPrefix(filepath, prefix); len(p) < len(filepath) {
-		if _, err := b.fs.Open(p); err != nil {
-			// file does not exist
-			return false
-		}
-		// file exist
-		return true
-	}
-	// file path doesn't start with fs prefix, so this file isn't stored here
-	return false
-}
-
-func newBinaryFileSystem(root string) *binaryFileSystem {
-	fs := &assetfs.AssetFS{
-		Asset: Asset,
-		// Don't render directory index, return 404 for /static/ requests)
-		AssetDir: func(path string) ([]string, error) {
-			return nil, errors.New("not found")
-		},
-		Prefix: root,
-	}
-	return &binaryFileSystem{fs}
-}
-
 // load a template from binary asset resource
-func loadTemplate(t *template.Template, path string) *template.Template {
-	templateContent, err := Asset(path)
+func loadTemplate(t *template.Template, path string, box *packr.Box) *template.Template {
+	templateContent, err := box.Find(path)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -109,5 +77,30 @@ func clearStaticHeaders(prefix string) gin.HandlerFunc {
 			c.Header("Expires", "")
 			c.Next()
 		}
+	}
+}
+
+func tryBoxFile(prefix string, box *packr.Box) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		if !strings.HasPrefix(c.Request.URL.Path, prefix) {
+			log.Debugf("Looking up asset file for %q under prefix %q: prefix mismatch", c.Request.URL.Path, prefix)
+			c.Next()
+			return
+		}
+
+		filePath := strings.TrimPrefix(c.Request.URL.Path, prefix)
+		data, err := box.Find(filePath)
+		if err != nil {
+			log.Debugf("Looking up asset file for %q under prefix %q as %q raised 404", c.Request.URL.Path, prefix, filePath)
+			c.Next()
+			return
+		}
+		contentType := mime.TypeByExtension(filepath.Ext(c.Request.URL.Path))
+		if contentType == "" {
+			contentType = "text/plain; charset=utf-8"
+		}
+		log.Debugf("Looking up asset file for %q under prefix %q as %q raised 200 as %q", c.Request.URL.Path, prefix, filePath, contentType)
+		c.Data(200, contentType, data)
+		c.Abort()
 	}
 }

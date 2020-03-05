@@ -13,6 +13,7 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/gobuffalo/packr/v2"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
@@ -23,7 +24,6 @@ import (
 	"github.com/DeanThompson/ginpprof"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/gzip"
-	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/contrib/sentry"
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -46,8 +46,8 @@ var (
 	// rather than do all the filtering every time
 	apiCache *cache.Cache
 
-	staticBuildFileSystem = newBinaryFileSystem("ui/build")
-	staticSrcFileSystem   = newBinaryFileSystem("ui/src")
+	staticBuildFileSystem = packr.New("ui/build", "../../ui/build")
+	staticSrcFileSystem   = packr.New("ui/src", "../../ui/src")
 
 	protectedEndpoints *gin.RouterGroup
 
@@ -97,13 +97,8 @@ func setupRouter(router *gin.Engine) {
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	router.Use(setStaticHeaders(getViewURL("/static/")))
-	router.Use(static.Serve(getViewURL("/"), staticBuildFileSystem))
-	// next 2 lines are to allow service raw sources so sentry can fetch source maps
-	router.Use(static.Serve(getViewURL("/static/js/"), staticSrcFileSystem))
-	// FIXME
-	// compressed sources are under /static/js/main.js and reference ../static/js/main.js
-	// so we end up with /static/static/js
-	router.Use(static.Serve(getViewURL("/static/static/js/"), staticSrcFileSystem))
+	router.Use(tryBoxFile(getViewURL("/"), staticBuildFileSystem))
+	router.Use(tryBoxFile(getViewURL("/static/js/"), staticSrcFileSystem))
 	router.Use(clearStaticHeaders(getViewURL("/static/")))
 
 	router.Use(cors.New(cors.Config{
@@ -320,7 +315,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 	router := gin.New()
 
 	var t *template.Template
-	t = loadTemplate(t, "ui/build/index.html")
+	t = loadTemplate(t, "index.html", staticBuildFileSystem)
 	router.SetHTMLTemplate(t)
 
 	setupMetrics(router)
