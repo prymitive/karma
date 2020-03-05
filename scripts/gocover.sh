@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-set -e
+set -o errexit
+set -o pipefail
 
 trap cleanup INT
 
@@ -11,11 +12,12 @@ function cleanup() {
 
 echo "" > coverage.txt
 
-for d in $(go list ./... | grep -vE 'prymitive/karma/internal/mapper/v017/(client|models)'); do
-    go test \
-        -coverprofile=profile.out \
-        -coverpkg=$(go list ./... | grep -vE 'prymitive/karma/internal/mapper/v017/(client|models)' | tr '\n' ',') \
-        $d 2>&1 | grep -v 'warning: no packages being tested depend on matches for pattern' | sed s/'of statements in .*'/''/g
+PKGS=$(go list ./... | grep -vE 'prymitive/karma/internal/mapper/v017/(client|models)')
+COVERPKG=$(echo "$PKGS" | tr '\n' ',')
+for d in $PKGS; do
+    (go test -coverprofile=profile.out -coverpkg="$COVERPKG" $d 2>&1 || exit 2) \
+        | grep -v 'warning: no packages being tested depend on matches for pattern' \
+        | sed s/'of statements in .*'/''/g
     if [ -f profile.out ]; then
         cat profile.out >> coverage.txt
         rm profile.out
