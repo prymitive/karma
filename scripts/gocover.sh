@@ -2,6 +2,13 @@
 
 set -e
 
+trap cleanup INT
+
+function cleanup() {
+    rm -f coverage.txt coverage.out profile.out
+    exit
+}
+
 echo "" > coverage.txt
 
 for d in $(go list ./... | grep -vE 'prymitive/karma/internal/mapper/v017/(client|models)'); do
@@ -14,3 +21,8 @@ for d in $(go list ./... | grep -vE 'prymitive/karma/internal/mapper/v017/(clien
         rm profile.out
     fi
 done
+
+echo "mode: set" > coverage.out
+cat coverage.txt | grep -v "mode: set" | grep -vE '^$' | grep -vE '^github.com/prymitive/karma/cmd/karma/bindata_assetfs.go:' >> coverage.out
+mv coverage.out coverage.txt
+go tool cover -func coverage.txt | tail -n 1 | awk '{print $3}'
