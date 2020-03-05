@@ -3,8 +3,10 @@ package main
 import (
 	"html/template"
 	"net/http/httptest"
+	"os"
 	"testing"
 
+	"github.com/gin-contrib/static"
 	"github.com/prymitive/karma/internal/config"
 
 	log "github.com/sirupsen/logrus"
@@ -136,5 +138,132 @@ func TestLoadTemplateUnparsable(t *testing.T) {
 
 	if !wasFatal {
 		t.Error("loadTemplate() with unparsable file didn't cause log.Fatal()")
+	}
+}
+
+func TestAssetFallbackMIME(t *testing.T) {
+	mockConfig()
+	r := ginTestEngine()
+	r.Use(static.Serve(getViewURL("/"), newBinaryFileSystem("cmd/karma/tests/bindata")))
+	req := httptest.NewRequest("GET", "/bin.data", nil)
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Code != 200 {
+		t.Errorf("Invalid status code for GET %s: %d", "/bin.data", resp.Code)
+	}
+	if resp.Result().Header.Get("Content-Type") != "text/plain; charset=utf-8" {
+		t.Errorf("Invalid Content-Type for GET /bin.data: %s, expected 'text/plain; charset=utf-8'", resp.Result().Header.Get("Content-Type"))
+	}
+}
+
+func TestStaticFiles(t *testing.T) {
+	type staticFileTestCase struct {
+		path string
+		code int
+		mime string
+	}
+
+	var staticFileTests = []staticFileTestCase{
+		{
+			path: "/favicon.ico",
+			code: 200,
+			mime: "image/x-icon",
+		},
+		{
+			path: "/manifest.json",
+			code: 200,
+			mime: "application/json",
+		},
+		{
+			path: "/index.xml",
+			code: 404,
+			mime: "text/plain; charset=utf-8",
+		},
+		{
+			path: "/xxx",
+			code: 404,
+			mime: "text/plain; charset=utf-8",
+		},
+		{
+			path: "/static/abcd",
+			code: 404,
+			mime: "text/plain; charset=utf-8",
+		},
+	}
+
+	mockConfig()
+	r := ginTestEngine()
+	for _, staticFileTest := range staticFileTests {
+		req := httptest.NewRequest("GET", staticFileTest.path, nil)
+		resp := httptest.NewRecorder()
+		r.ServeHTTP(resp, req)
+		if resp.Code != staticFileTest.code {
+			t.Errorf("Invalid status code for GET %s: %d", staticFileTest.path, resp.Code)
+		}
+		if resp.Result().Header.Get("Content-Type") != staticFileTest.mime {
+			t.Errorf("Invalid Content-Type for GET %s: %s, expected %s", staticFileTest.path, resp.Result().Header.Get("Content-Type"), staticFileTest.mime)
+		}
+	}
+}
+
+func TestStaticFilesPrefix(t *testing.T) {
+	type staticFileTestCase struct {
+		path string
+		code int
+		mime string
+	}
+
+	var staticFilePrefixTests = []staticFileTestCase{
+		{
+			path: "/sub/favicon.ico",
+			code: 200,
+			mime: "image/x-icon",
+		},
+		{
+			path: "/favicon.ico",
+			code: 404,
+			mime: "text/plain; charset=utf-8",
+		},
+		{
+			path: "/sub/sub/favicon.ico",
+			code: 404,
+			mime: "text/plain; charset=utf-8",
+		},
+		{
+			path: "/sub/manifest.json",
+			code: 200,
+			mime: "application/json",
+		},
+		{
+			path: "/sub/index.xml",
+			code: 404,
+			mime: "text/plain; charset=utf-8",
+		},
+		{
+			path: "/sub/xxx",
+			code: 404,
+			mime: "text/plain; charset=utf-8",
+		},
+		{
+			path: "/sub/static/abcd",
+			code: 404,
+			mime: "text/plain; charset=utf-8",
+		},
+	}
+
+	os.Setenv("LISTEN_PREFIX", "/sub")
+	defer os.Unsetenv("LISTEN_PREFIX")
+	mockConfig()
+	r := ginTestEngine()
+	for _, staticFileTest := range staticFilePrefixTests {
+		req := httptest.NewRequest("GET", staticFileTest.path, nil)
+		resp := httptest.NewRecorder()
+		r.ServeHTTP(resp, req)
+		if resp.Code != staticFileTest.code {
+			t.Errorf("Invalid status code for GET %s: %d", staticFileTest.path, resp.Code)
+		}
+		if resp.Result().Header.Get("Content-Type") != staticFileTest.mime {
+			t.Errorf("Invalid Content-Type for GET %s: %q, expected %q", staticFileTest.path, resp.Result().Header.Get("Content-Type"), staticFileTest.mime)
+		}
 	}
 }

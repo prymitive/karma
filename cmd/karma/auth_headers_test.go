@@ -68,7 +68,7 @@ func TestAuthHeader(t *testing.T) {
 			apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 
 			am, err := alertmanager.NewAlertmanager(
-				"dummy",
+				fmt.Sprintf("testAuthHeader/%s", version),
 				testCase.alertmanagerURI,
 				alertmanager.WithRequestTimeout(time.Second*5),
 				alertmanager.WithHTTPHeaders(testCase.headers),
@@ -85,12 +85,9 @@ func TestAuthHeader(t *testing.T) {
 				"api/v2/silences",
 				"api/v2/alerts/groups"} {
 
-				uri := fmt.Sprintf("http://%s/%s", testCase.alertmanagerHost, m)
+				uri := fmt.Sprintf("%s/%s", testCase.alertmanagerURI, m)
 
 				responder := mock.GetMockResponder(uri, version, m)
-				if responder == nil {
-					continue
-				}
 				httpmock.RegisterResponder("GET", uri,
 					func(req *http.Request) (*http.Response, error) {
 						if req.Host != testCase.alertmanagerHost {
