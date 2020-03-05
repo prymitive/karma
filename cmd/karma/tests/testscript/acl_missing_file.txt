@@ -1,0 +1,27 @@
+# Raises an error if --authorization.acl points to a missing file
+karma.bin-should-fail --log.format=text --log.config=false --check-config
+! stdout .
+! stderr 'msg="Configuration is valid"'
+stderr 'msg="Reading silence ACL config file acl.yaml"'
+stderr 'msg="Failed to load silence ACL configuration file \\"acl.yaml\\": open acl.yaml: no such file or directory"'
+
+-- karma.yaml --
+authentication:
+  header:
+    name: "X-User"
+    value_re: "(.+)"
+authorization:
+  groups:
+    - name: admins
+      members:
+        - alice
+        - bob
+    - name: users
+      members:
+        - john
+  acl:
+    silences: acl.yaml
+alertmanager:
+  servers:
+    - name: default
+      uri: https://localhost:9093

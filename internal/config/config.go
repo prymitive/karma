@@ -58,6 +58,8 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.String("alertAcknowledgement.author", "karma", "Default silence author when acknowledging alerts with short lived silences")
 	f.String("alertAcknowledgement.commentPrefix", "ACK!", "Comment prefix used when acknowledging alerts with short lived silences")
 
+	f.String("authorization.acl.silences", "", "Path to silence ACL config file")
+
 	f.Bool(
 		"annotations.default.hidden", false,
 		"Hide all annotations by default unless explicitly listed in the 'visible' list")
@@ -310,6 +312,15 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 		}
 		if !slices.StringInSlice([]string{"omit", "include", "same-origin"}, config.Alertmanager.Servers[i].CORS.Credentials) {
 			log.Fatalf("Invalid cors.credentials value '%s' for alertmanager '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.Servers[i].CORS.Credentials, s.Name)
+		}
+	}
+
+	for _, authGroup := range config.Authorization.Groups {
+		if authGroup.Name == "" {
+			log.Fatalf("'name' is required for every authorization group")
+		}
+		if len(authGroup.Members) == 0 {
+			log.Fatalf("'members' is required for every authorization group")
 		}
 	}
 

@@ -6,6 +6,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"regexp"
+	"strings"
 	"testing"
 	"time"
 
@@ -93,6 +95,14 @@ var proxyTests = []proxyTest{
 }
 
 func TestProxy(t *testing.T) {
+	dummySilence := `{
+	"comment": "comment",
+	"createdBy": "username",
+	"startsAt": "2000-02-01T00:00:00.000Z",
+	"endsAt": "2000-02-01T00:02:03.000Z",
+	"matchers": [{ "isRegex": false, "name": "alertname", "value": "Fake Alert" }]
+}`
+
 	r := ginTestEngine()
 	am, err := alertmanager.NewAlertmanager(
 		"dummy",
@@ -116,7 +126,7 @@ func TestProxy(t *testing.T) {
 		if testCase.upstreamURI != "" {
 			httpmock.RegisterResponder(testCase.method, testCase.upstreamURI, httpmock.NewStringResponder(testCase.code, testCase.response))
 		}
-		req := httptest.NewRequest(testCase.method, testCase.localPath, nil)
+		req := httptest.NewRequest(testCase.method, testCase.localPath, strings.NewReader(dummySilence))
 		resp := newCloseNotifyingRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != testCase.code {
@@ -182,6 +192,14 @@ var proxyHeaderTests = []proxyHeaderTest{
 }
 
 func TestProxyHeaders(t *testing.T) {
+	dummySilence := `{
+	"comment": "comment",
+	"createdBy": "username",
+	"startsAt": "2000-02-01T00:00:00.000Z",
+	"endsAt": "2000-02-01T00:02:03.000Z",
+	"matchers": [{ "isRegex": false, "name": "alertname", "value": "Fake Alert" }]
+	}`
+
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
@@ -224,7 +242,7 @@ func TestProxyHeaders(t *testing.T) {
 			return httpmock.NewStringResponse(testCase.code, "ok"), nil
 		})
 
-		req := httptest.NewRequest(testCase.method, testCase.localPath, nil)
+		req := httptest.NewRequest(testCase.method, testCase.localPath, strings.NewReader(dummySilence))
 		resp := newCloseNotifyingRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != testCase.code {
@@ -277,6 +295,14 @@ func TestProxyToSubURIAlertmanager(t *testing.T) {
 		},
 	}
 
+	dummySilence := `{
+	"comment": "comment",
+	"createdBy": "username",
+	"startsAt": "2000-02-01T00:00:00.000Z",
+	"endsAt": "2000-02-01T00:02:03.000Z",
+	"matchers": [{ "isRegex": false, "name": "alertname", "value": "Fake Alert" }]
+}`
+
 	for _, testCase := range proxyTests {
 		t.Run(fmt.Sprintf("prefix=%s|uri=%s", testCase.listenPrefix, testCase.alertmanagerURI), func(t *testing.T) {
 			httpmock.Reset()
@@ -301,7 +327,7 @@ func TestProxyToSubURIAlertmanager(t *testing.T) {
 				return httpmock.NewStringResponse(200, "ok"), nil
 			})
 
-			req := httptest.NewRequest("POST", testCase.requestURI, nil)
+			req := httptest.NewRequest("POST", testCase.requestURI, strings.NewReader(dummySilence))
 			resp := newCloseNotifyingRecorder()
 			r.ServeHTTP(resp, req)
 			if resp.Code != 200 {
@@ -531,6 +557,479 @@ func TestProxyUserRewrite(t *testing.T) {
 						t.Error(err)
 					}
 					t.Errorf("Body mismatch:\n%s", text)
+				}
+			}
+		})
+	}
+}
+
+func TestProxySilenceACL(t *testing.T) {
+	type proxyTest struct {
+		name string
+
+		authGroups  map[string][]string
+		silenceACLs []*silenceACL
+
+		requestUsername string
+
+		frontednRequestBody string
+		responseCode        int
+	}
+
+	defaultBody := `{
+"comment": "comment",
+"createdBy": "alice",
+"startsAt": "2000-02-01T00:00:00.000Z",
+"endsAt": "2000-02-01T00:02:03.000Z",
+"matchers": [
+{ "isRegex": false, "name": "alertname", "value": "Fake Alert" },
+{ "isRegex": true, "name": "foo", "value": "(bar|baz)" }
+]}`
+
+	proxyTests := []proxyTest{
+		{
+			name:                "no config, allowed",
+			authGroups:          map[string][]string{},
+			silenceACLs:         []*silenceACL{},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        200,
+		},
+		{
+			name: "matcher required, no match, allowed",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require cluster=dev",
+					Scope: silenceACLScope{
+						Groups:        []string{"foo"},
+						Alertmanagers: []string{"proxyACL"},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:  "cluster",
+								Value: "dev",
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        200,
+		},
+		{
+			name: "matcher required, alertmanager mismatch, allowed",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require cluster=dev",
+					Scope: silenceACLScope{
+						Groups:        []string{"admins"},
+						Alertmanagers: []string{"proxyFoo"},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:  "cluster",
+								Value: "dev",
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        200,
+		},
+		{
+			name: "matcher required, filter mismatch, allowed",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require cluster=dev",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{Name: "foo", Value: "bar"},
+						},
+						Groups:        []string{"admins"},
+						Alertmanagers: []string{"proxyACL"},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:  "cluster",
+								Value: "dev",
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        200,
+		},
+		{
+			name: "matcher required, match, blocked",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require cluster=dev",
+					Scope: silenceACLScope{
+						Groups:        []string{"admins"},
+						Alertmanagers: []string{"proxyACL"},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:  "cluster",
+								Value: "dev",
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        400,
+		},
+		{
+			name: "matcher required, all groups, match, blocked",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require cluster=dev",
+					Scope: silenceACLScope{
+						Groups:        []string{},
+						Alertmanagers: []string{"foo", "proxyACL"},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:  "cluster",
+								Value: "dev",
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        400,
+		},
+		{
+			name: "matcher required, filter match, blocked",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require cluster=dev",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{Name: "alertname", Value: "Fake Alert"},
+						},
+						Groups:        []string{"admins"},
+						Alertmanagers: []string{"proxyACL"},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:  "cluster",
+								Value: "dev",
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        400,
+		},
+		{
+			name: "matcher required, filter name regex match, blocked",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require foo=bar",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{NameRegex: regexp.MustCompile(".*"), ValueRegex: regexp.MustCompile(".*")},
+						},
+						Groups:        []string{},
+						Alertmanagers: []string{"proxyACL"},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:  "foo",
+								Value: "bar",
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        400,
+		},
+		{
+			name: "matcher required, filter value regex match, blocked",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require foo=bar",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{Name: "alertname", ValueRegex: regexp.MustCompile(".*")},
+						},
+						Groups:        []string{},
+						Alertmanagers: []string{"proxyACL"},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:  "foo",
+								Value: "bar",
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        400,
+		},
+		{
+			name: "matcher required, match, allowed",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require foo=~(bar|baz)",
+					Scope: silenceACLScope{
+						Groups:        []string{"admins"},
+						Alertmanagers: []string{"proxyACL"},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:  "alertname",
+								Value: "Fake Alert",
+							},
+							{
+								Name:    "foo",
+								Value:   "(bar|baz)",
+								IsRegex: true,
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        200,
+		},
+		{
+			name: "block all regex silences",
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block all regex silences",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{NameRegex: regexp.MustCompile(".*"), ValueRegex: regexp.MustCompile(".*"), IsRegex: true},
+						},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        400,
+		},
+		{
+			name: "block all regex silences except for admins, admin user, allowed",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+				"users":  {"alice"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "allow",
+					Reason: "block all regex silences",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{NameRegex: regexp.MustCompile(".*"), ValueRegex: regexp.MustCompile(".*"), IsRegex: true},
+						},
+						Groups:        []string{"admins"},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{},
+				},
+				{
+					Action: "block",
+					Reason: "block all regex silences",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{NameRegex: regexp.MustCompile(".*"), ValueRegex: regexp.MustCompile(".*"), IsRegex: true},
+						},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        200,
+		},
+		{
+			name: "block all regex silences on alertname=Block, allowed",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+				"users":  {"alice"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block alertname=Block",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{Name: "alertname", Value: "Block"},
+						},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: defaultBody,
+			responseCode:        200,
+		},
+		{
+			name: "block all regex silences except for admins, non-admin user, blocked",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+				"users":  {"alice"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "allow",
+					Reason: "block all regex silences",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{NameRegex: regexp.MustCompile(".*"), ValueRegex: regexp.MustCompile(".*"), IsRegex: true},
+						},
+						Groups:        []string{"admins"},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{},
+				},
+				{
+					Action: "block",
+					Reason: "block all regex silences",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{NameRegex: regexp.MustCompile(".*"), ValueRegex: regexp.MustCompile(".*"), IsRegex: true},
+						},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername:     "alice",
+			frontednRequestBody: defaultBody,
+			responseCode:        400,
+		},
+	}
+
+	for _, testCase := range proxyTests {
+		httpmock.Activate()
+		defer httpmock.DeactivateAndReset()
+
+		log.SetLevel(log.FatalLevel)
+		t.Run(testCase.name, func(t *testing.T) {
+			for _, version := range mock.ListAllMocks() {
+				t.Logf("Testing alerts using mock files from Alertmanager %s", version)
+
+				config.Config.Listen.Prefix = "/"
+				config.Config.Authentication.Header.Name = "X-User"
+				config.Config.Authentication.Header.ValueRegex = "(.+)"
+
+				config.Config.Authorization.Groups = []config.AuthorizationGroup{}
+				for groupName, members := range testCase.authGroups {
+					g := config.AuthorizationGroup{Name: groupName, Members: members}
+					config.Config.Authorization.Groups = append(config.Config.Authorization.Groups, g)
+				}
+
+				silenceACLs = testCase.silenceACLs
+
+				r := ginTestEngine()
+
+				am, err := alertmanager.NewAlertmanager(
+					"proxyACL",
+					"http://localhost",
+					alertmanager.WithRequestTimeout(time.Second*5),
+					alertmanager.WithProxy(true),
+				)
+				if err != nil {
+					t.Error(err)
+				}
+				err = setupRouterProxyHandlers(r, am)
+				if err != nil {
+					t.Errorf("Failed to setup proxy for Alertmanager %s: %s", am.Name, err)
+				}
+
+				apiCache = cache.New(cache.NoExpiration, 10*time.Second)
+				httpmock.Reset()
+				mock.RegisterURL("http://localhost/metrics", version, "metrics")
+				mock.RegisterURL("http://localhost/api/v2/status", version, "api/v2/status")
+				mock.RegisterURL("http://localhost/api/v2/silences", version, "api/v2/silences")
+				mock.RegisterURL("http://localhost/api/v2/alerts/groups", version, "api/v2/alerts/groups")
+				_ = am.Pull()
+
+				httpmock.RegisterResponder("POST", "http://localhost/api/v2/silences", func(req *http.Request) (*http.Response, error) {
+					body, _ := ioutil.ReadAll(req.Body)
+					return httpmock.NewBytesResponse(200, body), nil
+				})
+
+				req := httptest.NewRequest("POST", "/proxy/alertmanager/proxyACL/api/v2/silences", ioutil.NopCloser(bytes.NewBufferString(testCase.frontednRequestBody)))
+				req.Header.Set("X-User", testCase.requestUsername)
+
+				resp := newCloseNotifyingRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != testCase.responseCode {
+					t.Errorf("Got response code %d instead of %d", resp.Code, testCase.responseCode)
 				}
 			}
 		})

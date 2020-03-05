@@ -26,6 +26,10 @@ func testReadConfig(t *testing.T) {
     value_re: ""
   basicAuth:
     users: []
+authorization:
+  groups: []
+  acl:
+    silences: ""
 alertmanager:
   interval: 1s
   servers:

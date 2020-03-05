@@ -31,3 +31,7 @@ func (m SilenceMapper) Collect(uri string, headers map[string]string, timeout ti
 func (m SilenceMapper) RewriteUsername(body []byte, username string) ([]byte, error) {
 	return rewriteSilenceUsername(body, username)
 }
+
+func (m SilenceMapper) Unmarshal(body []byte) (*models.Silence, error) {
+	return unmarshal(body)
+}

@@ -11,6 +11,12 @@ authentication:
         password: 1234
       - username: string
         password: '1234'
+authorization:
+  groups:
+    - name: admins
+      members:
+        - alice
+        - bob
 alertmanager:
   interval: 10s
   servers:
@@ -244,6 +250,14 @@ level=info msg="    - username: number"
 level=info msg="      password: '***'"
 level=info msg="    - username: string"
 level=info msg="      password: '***'"
+level=info msg="authorization:"
+level=info msg="  groups:"
+level=info msg="  - name: admins"
+level=info msg="    members:"
+level=info msg="    - alice"
+level=info msg="    - bob"
+level=info msg="  acl:"
+level=info msg="    silences: \"\""
 level=info msg="alertmanager:"
 level=info msg="  interval: 10s"
 level=info msg="  servers:"
@@ -357,18 +371,14 @@ level=info msg="  - strip2"
 level=info msg="  color:"
 level=info msg="    custom:"
 level=info msg="      region:"
-level=info msg="      - value: \"\""
-level=info msg="        value_re: .*"
+level=info msg="      - value_re: .*"
 level=info msg="        color: '#736598'"
 level=info msg="      severity:"
 level=info msg="      - value: info"
-level=info msg="        value_re: \"\""
 level=info msg="        color: '#87c4e0'"
 level=info msg="      - value: warning"
-level=info msg="        value_re: \"\""
 level=info msg="        color: '#ffae42'"
 level=info msg="      - value: critical"
-level=info msg="        value_re: \"\""
 level=info msg="        color: '#ff220c'"
 level=info msg="    static:"
 level=info msg="    - job"

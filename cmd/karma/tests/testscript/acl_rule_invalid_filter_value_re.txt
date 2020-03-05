@@ -1,0 +1,36 @@
+# Raises an error if silence ACL rule uses filter with invalid value_re
+karma.bin-should-fail --log.format=text --log.config=false --check-config
+! stdout .
+! stderr 'msg="Configuration is valid"'
+stderr 'msg="Reading silence ACL config file acl.yaml"'
+stderr 'msg="Invalid silence ACL rule at position 0: invalid ACL rule, failed to parse value_re \\"prod\*\*\*\\": error parsing regexp: invalid nested repetition operator: `\*\*`"'
+
+-- karma.yaml --
+authentication:
+  header:
+    name: "X-User"
+    value_re: "(.+)"
+authorization:
+  groups:
+    - name: admins
+      members:
+        - alice
+        - bob
+    - name: users
+      members:
+        - john
+  acl:
+    silences: acl.yaml
+alertmanager:
+  servers:
+    - name: default
+      uri: https://localhost:9093
+
+-- acl.yaml --
+rules:
+  - action: block
+    reason: missing name
+    scope:
+      filters:
+        - name_re: cluster[0-9]*
+          value_re: prod***
