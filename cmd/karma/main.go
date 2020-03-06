@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"html/template"
+	"mime"
 	"net/http"
 	"os"
 	"os/signal"
@@ -89,6 +90,8 @@ func headerAuth(name, valueRegex string) gin.HandlerFunc {
 }
 
 func setupRouter(router *gin.Engine) {
+	_ = mime.AddExtensionType(".ico", "image/x-icon")
+
 	router.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	router.Use(setStaticHeaders(getViewURL("/static/")))
