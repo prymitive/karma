@@ -313,7 +313,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             </div>
             <div class=\\"react-datepicker__month\\"
                  role=\\"listbox\\"
-                 aria-label=\\"month-2061-02\\"
+                 aria-label=\\"month  2061-02\\"
             >
               <div class=\\"react-datepicker__week\\">
                 <div class=\\"react-datepicker__day react-datepicker__day--030 react-datepicker__day--weekend react-datepicker__day--outside-month\\"
@@ -801,7 +801,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             </div>
             <div class=\\"react-datepicker__month\\"
                  role=\\"listbox\\"
-                 aria-label=\\"month-2060-02\\"
+                 aria-label=\\"month  2060-02\\"
             >
               <div class=\\"react-datepicker__week\\">
                 <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--selected react-datepicker__day--today react-datepicker__day--weekend\\"
