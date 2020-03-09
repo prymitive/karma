@@ -40,6 +40,9 @@ storiesOf("SilenceModal", module)
     const settingsStore = new Settings();
     const silenceFormStore = new SilenceFormStore();
 
+    alertStore.info.authentication.enabled = true;
+    alertStore.info.authentication.username = "me@example.com";
+
     alertStore.data.upstreams = {
       clusters: { default: ["default"] },
       instances: [
@@ -72,7 +75,7 @@ storiesOf("SilenceModal", module)
       )
     ];
     silenceFormStore.data.addEmptyMatcher();
-    silenceFormStore.data.author = "me@example.com";
+    silenceFormStore.data.author = "john@example.com";
     silenceFormStore.data.comment = "fake silence";
     silenceFormStore.data.resetStartEnd();
 
