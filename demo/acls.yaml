@@ -1,0 +1,7 @@
+rules:
+  - action: block
+    reason: dev cluster cannot be silenced
+    scope:
+      filters:
+        - name: cluster
+          value: dev

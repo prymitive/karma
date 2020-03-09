@@ -10,6 +10,9 @@ requires Alertmanager `>=0.17.0`.
 
 ---
 
+See [GitHub Releases](https://github.com/prymitive/karma/releases) for release
+changelog.
+
 ## Feature overview
 
 Alertmanager UI is useful for browsing alerts and managing silences, but it's
@@ -50,6 +53,8 @@ screen space, the silence will also be moved to the footer.
 
 Silence modal allows to create new silences and manage all silences already
 present in Alertmanager.
+Silence ACL rules can be used to control silence creation and editing, see
+ [ACLs](/docs/ACLs.md) docs for more details.
 
 ![Silence browser](/docs/img/silenceBrowser.png)
 
@@ -139,6 +144,9 @@ to modify data in Alertmanager instance, then please ensure that:
   [alertmanager:servers](/docs/CONFIGURATION.md#alertmanagers) config section
   for all alertmanager instances, this options will disable any UI elements that
   could trigger updates (like silence management)
+
+To restrict some users from creating silences or enforce some matcher rules use
+[silence ACL rules](/docs/ACLs.md). This feature requires `proxy` to be enabled.
 
 ## Metrics
 

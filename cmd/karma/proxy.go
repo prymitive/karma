@@ -75,38 +75,62 @@ func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) (*httputil.Re
 func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		log.Debugf("[%s] Proxy request %s", alertmanager.Name, c.Request.RequestURI)
+
+		body, err := ioutil.ReadAll(c.Request.Body)
+		c.Request.Body.Close()
+		if err != nil {
+			log.Errorf("[%s] proxy request '%s %s' body close failed: %s", alertmanager.Name, c.Request.Method, c.Request.RequestURI, err)
+			c.AbortWithStatus(http.StatusInternalServerError)
+			return
+		}
+
+		ver := alertmanager.Version()
+		if ver == "" {
+			ver = "999.0"
+		}
+
+		m, err := mapper.GetSilenceMapper(ver)
+		if err != nil {
+			log.Errorf("[%s] proxy request '%s %s' error: %s", alertmanager.Name, c.Request.Method, c.Request.RequestURI, err)
+			c.AbortWithStatus(http.StatusInternalServerError)
+			return
+		}
+
+		silence, err := m.Unmarshal(body)
+		if err != nil {
+			log.Errorf("[%s] proxy request '%s %s' failed to unmarshal silence body: %s", alertmanager.Name, c.Request.Method, c.Request.RequestURI, err)
+			c.AbortWithStatus(http.StatusInternalServerError)
+			return
+		}
+
+		for i, acl := range silenceACLs {
+			username := c.GetString(gin.AuthUserKey)
+			isAllowed, err := acl.isAllowed(alertmanager.Name, silence, username)
+			log.Debugf("ACL %d: isAllowed=%v err=%v", i, isAllowed, err)
+			if err != nil {
+				log.Warningf("[%s] proxy request '%s %s' was blocked by ACL rule: %s", alertmanager.Name, c.Request.Method, c.Request.RequestURI, err)
+				c.String(http.StatusBadRequest, err.Error())
+				return
+			}
+			if isAllowed {
+				break
+			}
+		}
+
 		if config.Config.Authentication.Enabled {
-			body, err := ioutil.ReadAll(c.Request.Body)
-			c.Request.Body.Close()
-			if err != nil {
-				log.Errorf("[%s] proxy request '%s %s' body close failed: %s", alertmanager.Name, c.Request.Method, c.Request.RequestURI, err)
-				c.AbortWithStatus(http.StatusInternalServerError)
-				return
-			}
-
-			ver := alertmanager.Version()
-			if ver == "" {
-				ver = "999.0"
-			}
-
 			username := c.MustGet(gin.AuthUserKey).(string)
-			m, err := mapper.GetSilenceMapper(ver)
-			if err != nil {
-				log.Errorf("[%s] proxy request '%s %s' error: %s", alertmanager.Name, c.Request.Method, c.Request.RequestURI, err)
-				c.AbortWithStatus(http.StatusInternalServerError)
-				return
-			}
-
 			newBody, err := m.RewriteUsername(body, username)
 			if err != nil {
 				log.Errorf("[%s] proxy request '%s %s' silence body rewrite error: %s", alertmanager.Name, c.Request.Method, c.Request.RequestURI, err)
-				c.AbortWithStatus(http.StatusInternalServerError)
+				c.String(http.StatusInternalServerError, err.Error())
 				return
 			}
 
 			c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(newBody))
 			c.Request.ContentLength = int64(len(newBody))
 			c.Request.Header.Set("Content-Length", fmt.Sprintf("%d", c.Request.ContentLength))
+		} else {
+			c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 		}
 
 		h.ServeHTTP(c.Writer, c.Request)

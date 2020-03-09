@@ -38,6 +38,7 @@ There are currently two supported authentication methods:
 Only one method can be enabled in the config.
 Enabling authentication will also force silences to be created with usernames
 passed from credentials.
+Syntax:
 
 ```YAML
 authentication:
@@ -95,6 +96,52 @@ authentication:
   header:
     name: X-Auth
     value_re: ^(.+)$
+```
+
+### Authorization
+
+`authorization` section allows to configure authorization groups used in
+silence ACL rules.
+Syntax:
+
+```YAML
+authorization:
+  acl:
+    silences: string
+  groups:
+    - name: string
+      members: list of strings
+```
+
+- `acl:silences` - path to silence ACL configuration file, see
+  [ACLs](/docs/ACLs.md) for details
+- `groups` - list of group definitons, each group must have a `name` and
+  `members` list. `name` will be used in silence ACL rules, `members` list
+  should contain list of user names as passed from authentication layer.
+
+Example with two groups using basic auth users and silences ACL config:
+
+```YAML
+authentication:
+  basicAuth:
+    users:
+      - username: alice
+        password: secret
+      - username: bob
+        password: secret
+      - username: john
+        password: secret
+authorization:
+  acls:
+    silences: /etc/karma/acls.yaml
+  groups:
+    - name: admins
+      members:
+        - alice
+        - bob
+    - name: users
+      members:
+        - john
 ```
 
 ### Alertmanagers
@@ -822,12 +869,6 @@ silences:
       rules:
         - regex: "(DEVOPS-[0-9]+)"
           uriTemplate: https://jira.example.com/browse/$1
-```
-
-Defaults:
-
-```YAML
-jira: []
 ```
 
 ### Receivers

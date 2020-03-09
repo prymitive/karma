@@ -130,3 +130,30 @@ func rewriteSilenceUsername(body []byte, username string) ([]byte, error) {
 	s.CreatedBy = &username
 	return s.MarshalBinary()
 }
+
+func unmarshal(body []byte) (*models.Silence, error) {
+	s := ammodels.PostableSilence{}
+
+	err := s.UnmarshalBinary(body)
+	if err != nil {
+		return nil, err
+	}
+
+	us := models.Silence{
+		ID:        s.ID,
+		StartsAt:  time.Time(*s.StartsAt),
+		EndsAt:    time.Time(*s.EndsAt),
+		CreatedBy: *s.CreatedBy,
+		Comment:   *s.Comment,
+	}
+	for _, m := range s.Matchers {
+		sm := models.SilenceMatcher{
+			Name:    *m.Name,
+			Value:   *m.Value,
+			IsRegex: *m.IsRegex,
+		}
+		us.Matchers = append(us.Matchers, sm)
+	}
+
+	return &us, nil
+}

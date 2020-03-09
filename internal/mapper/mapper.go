@@ -31,6 +31,7 @@ type SilenceMapper interface {
 	Mapper
 	Collect(string, map[string]string, time.Duration, http.RoundTripper) ([]models.Silence, error)
 	RewriteUsername([]byte, string) ([]byte, error)
+	Unmarshal([]byte) (*models.Silence, error)
 }
 
 // StatusMapper handles mapping Alertmanager status information containing cluster config

@@ -50,6 +50,8 @@ var (
 	staticSrcFileSystem   = newBinaryFileSystem("ui/src")
 
 	protectedEndpoints *gin.RouterGroup
+
+	silenceACLs = []*silenceACL{}
 )
 
 func getViewURL(sub string) string {
@@ -289,6 +291,23 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 
 	if len(alertmanager.GetAlertmanagers()) == 0 {
 		return nil, fmt.Errorf("No valid Alertmanager URIs defined")
+	}
+
+	if config.Config.Authorization.ACL.Silences != "" {
+		log.Infof("Reading silence ACL config file %s", config.Config.Authorization.ACL.Silences)
+		aclConfig, err := config.ReadSilenceACLConfig(config.Config.Authorization.ACL.Silences)
+		if err != nil {
+			return nil, err
+		}
+
+		for i, cfg := range aclConfig.Rules {
+			acl, err := newSilenceACLFromConfig(cfg)
+			if err != nil {
+				return nil, fmt.Errorf("Invalid silence ACL rule at position %d: %s", i, err)
+			}
+			silenceACLs = append(silenceACLs, acl)
+		}
+		log.Infof("Parsed %d ACL rule(s)", len(silenceACLs))
 	}
 
 	if *validateConfig {

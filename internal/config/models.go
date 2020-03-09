@@ -32,8 +32,8 @@ type LinkDetectRules struct {
 }
 
 type CustomLabelColor struct {
-	Value         string         `yaml:"value"`
-	ValueRegex    string         `yaml:"value_re" koanf:"value_re"`
+	Value         string         `yaml:"value,omitempty"`
+	ValueRegex    string         `yaml:"value_re,omitempty" koanf:"value_re"`
 	CompiledRegex *regexp.Regexp `yaml:"-"`
 	Color         string         `yaml:"color"`
 }
@@ -43,6 +43,11 @@ type CustomLabelColors map[string][]CustomLabelColor
 type AuthenticationUser struct {
 	Username string
 	Password string
+}
+
+type AuthorizationGroup struct {
+	Name    string
+	Members []string
 }
 
 type configSchema struct {
@@ -55,6 +60,12 @@ type configSchema struct {
 		BasicAuth struct {
 			Users []AuthenticationUser
 		} `yaml:"basicAuth" koanf:"basicAuth"`
+	}
+	Authorization struct {
+		Groups []AuthorizationGroup
+		ACL    struct {
+			Silences string
+		} `yaml:"acl" koanf:"acl"`
 	}
 	Alertmanager struct {
 		Interval    time.Duration

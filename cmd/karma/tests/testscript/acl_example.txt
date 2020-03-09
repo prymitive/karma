@@ -1,0 +1,54 @@
+# Config is valid with example silence ACL rules
+karma.bin-should-work --log.format=text --log.config=false --check-config
+! stdout .
+stderr 'msg="Configuration is valid"'
+stderr 'msg="Reading silence ACL config file acl.yaml"'
+! stderr 'level=error'
+
+-- karma.yaml --
+authentication:
+  header:
+    name: "X-User"
+    value_re: "(.+)"
+authorization:
+  groups:
+    - name: admins
+      members:
+        - alice
+        - bob
+    - name: users
+      members:
+        - john
+  acl:
+    silences: acl.yaml
+alertmanager:
+  servers:
+    - name: default
+      uri: https://localhost:9093
+
+
+-- acl.yaml --
+rules:
+  - action: requireMatcher
+    reason: require cluster=~dev|prod for admins
+    scope:
+      filters:
+        - name: cluster
+          value_re: .+
+      alertmanagers:
+        - default
+      groups:
+        - admins
+    matchers:
+      required:
+        - name: cluster
+          value: dev|prod
+          isRegex: true
+  - action: block
+    reason: block cluster=prod for users
+    scope:
+      filters:
+        - name: cluster
+          value: prod
+      groups:
+        - users

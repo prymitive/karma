@@ -1,0 +1,35 @@
+# Raises an error if silence ACL rule uses filter with missing name or name_re
+karma.bin-should-fail --log.format=text --log.config=false --check-config
+! stdout .
+! stderr 'msg="Configuration is valid"'
+stderr 'msg="Reading silence ACL config file acl.yaml"'
+stderr 'msg="Invalid silence ACL rule at position 0: silence ACL rule filter requires ''name'' or ''name_re'' to be set"'
+
+-- karma.yaml --
+authentication:
+  header:
+    name: "X-User"
+    value_re: "(.+)"
+authorization:
+  groups:
+    - name: admins
+      members:
+        - alice
+        - bob
+    - name: users
+      members:
+        - john
+  acl:
+    silences: acl.yaml
+alertmanager:
+  servers:
+    - name: default
+      uri: https://localhost:9093
+
+-- acl.yaml --
+rules:
+  - action: block
+    reason: missing name
+    scope:
+      filters:
+        - value: prod
