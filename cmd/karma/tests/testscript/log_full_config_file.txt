@@ -429,4 +429,6 @@ level=info msg="[ha1] Configured Alertmanager source at http://localhost:9093 (p
 level=info msg="[ha2] Configured Alertmanager source at http://localhost:9094 (proxied: false, readonly: true)"
 level=info msg="[local] Configured Alertmanager source at http://localhost:9095 (proxied: true, readonly: false)"
 level=info msg="[client-auth] Configured Alertmanager source at https://localhost:9096 (proxied: false, readonly: false)"
+level=info msg="[ha1] Setting up proxy endpoints"
+level=info msg="[local] Setting up proxy endpoints"
 level=info msg="Configuration is valid"

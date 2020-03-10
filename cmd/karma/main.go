@@ -310,11 +310,6 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 		log.Infof("Parsed %d ACL rule(s)", len(silenceACLs))
 	}
 
-	if *validateConfig {
-		log.Info("Configuration is valid")
-		return nil, nil
-	}
-
 	switch config.Config.Debug {
 	case true:
 		gin.SetMode(gin.DebugMode)
@@ -348,6 +343,11 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 				return nil, fmt.Errorf("Failed to setup proxy handlers for Alertmanager '%s': %s", am.Name, err)
 			}
 		}
+	}
+
+	if *validateConfig {
+		log.Info("Configuration is valid")
+		return nil, nil
 	}
 
 	return router, nil

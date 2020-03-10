@@ -3,6 +3,7 @@ karma.bin-should-work --log.format=text --log.config=true --config.file=karma.ya
 ! stdout .
 stderr 'msg="    proxy: true"'
 stderr 'msg="\[proxied\] Configured Alertmanager source at http://localhost \(proxied: true\, readonly: false\)"'
+stderr 'msg="\[proxied\] Setting up proxy endpoints"'
 ! stderr 'level=error'
 
 -- karma.yaml --
