@@ -20,7 +20,7 @@ env ANNOTATIONS_STRIP='strip1 strip2 strip3'
 env CUSTOM_CSS='/custom.css'
 env CUSTOM_JS='/custom.js'
 
-env DEBUG=true
+env DEBUG=false
 
 env FILTERS_DEFAULT='@receiver=by-cluster-service @state=active'
 
@@ -118,7 +118,7 @@ level=info msg="  - strip3"
 level=info msg="custom:"
 level=info msg="  css: /custom.css"
 level=info msg="  js: /custom.js"
-level=info msg="debug: true"
+level=info msg="debug: false"
 level=info msg="filters:"
 level=info msg="  default:"
 level=info msg="  - '@receiver=by-cluster-service'"
