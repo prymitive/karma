@@ -15,7 +15,7 @@
     "@types/node": "12.12.21",
     "@types/react": "16.9.23",
     "@types/react-dom": "16.9.5",
-    "body-scroll-lock": "2.7.0",
+    "body-scroll-lock": "3.0.1",
     "bootstrap": "4.4.1",
     "bootswatch": "4.4.1",
     "copy-to-clipboard": "3.3.1",
