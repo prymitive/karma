@@ -16,7 +16,7 @@ require (
 	github.com/gin-gonic/gin v1.5.0
 	github.com/go-bindata/go-bindata/v3 v3.1.3
 	github.com/go-openapi/errors v0.19.4
-	github.com/go-openapi/runtime v0.19.13
+	github.com/go-openapi/runtime v0.19.14
 	github.com/go-openapi/strfmt v0.19.5
 	github.com/go-openapi/swag v0.19.8
 	github.com/go-openapi/validate v0.19.7
