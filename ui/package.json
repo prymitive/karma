@@ -10,7 +10,7 @@
     "@fortawesome/free-regular-svg-icons": "5.12.1",
     "@fortawesome/free-solid-svg-icons": "5.12.1",
     "@fortawesome/react-fontawesome": "0.1.9",
-    "@sentry/browser": "5.14.2",
+    "@sentry/browser": "5.15.0",
     "@types/jest": "25.1.4",
     "@types/node": "12.12.21",
     "@types/react": "16.9.23",
