@@ -13,7 +13,7 @@
     "@sentry/browser": "5.15.0",
     "@types/jest": "25.1.4",
     "@types/node": "12.12.21",
-    "@types/react": "16.9.23",
+    "@types/react": "16.9.25",
     "@types/react-dom": "16.9.5",
     "body-scroll-lock": "3.0.1",
     "bootstrap": "4.4.1",
