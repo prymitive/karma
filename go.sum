@@ -284,8 +284,8 @@ github.com/klauspost/compress v1.4.0/go.mod h1:RyIbtBH6LamlWaDj8nUwkbUhJ87Yi3uG0
 github.com/klauspost/compress v1.4.1/go.mod h1:RyIbtBH6LamlWaDj8nUwkbUhJ87Yi3uG0guNDohfE1A=
 github.com/klauspost/cpuid v0.0.0-20180405133222-e7e905edc00e/go.mod h1:Pj4uuM528wm8OyEC2QMXAi2YiTZ96dNQPGgoMS4s3ek=
 github.com/klauspost/cpuid v1.2.0/go.mod h1:Pj4uuM528wm8OyEC2QMXAi2YiTZ96dNQPGgoMS4s3ek=
-github.com/knadh/koanf v0.8.1 h1:4VLACWqrkWRQIup3ooq6lOnaSbOJSNO+YVXnJn/NPZ8=
-github.com/knadh/koanf v0.8.1/go.mod h1:kVvmDbXnBtW49Czi4c1M+nnOWF0YSNZ8BaKvE/bCO1w=
+github.com/knadh/koanf v0.8.2 h1:/r/OHqjeAK/E7G5feF7NsXGONlBm3uGPYsl7X74eMD4=
+github.com/knadh/koanf v0.8.2/go.mod h1:kVvmDbXnBtW49Czi4c1M+nnOWF0YSNZ8BaKvE/bCO1w=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1 h1:mweAR1A6xJ3oS2pRaGiHgQ4OO8tzTaLawm8vnODuwDk=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
 github.com/kr/logfmt v0.0.0-20140226030751-b84e30acd515/go.mod h1:+0opPa2QZZtGFBFZlji/RkVcI2GknAs/DXo4wKdlNEc=
