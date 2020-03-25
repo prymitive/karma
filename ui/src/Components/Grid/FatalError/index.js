@@ -8,7 +8,7 @@ import { CenteredMessage } from "Components/CenteredMessage";
 
 class FatalError extends Component {
   static propTypes = {
-    message: PropTypes.string.isRequired
+    message: PropTypes.string.isRequired,
   };
 
   render() {

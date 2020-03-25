@@ -23,7 +23,7 @@ afterEach(() => {
 
 const CollapseMock = jest.fn();
 
-const MountedSilenceComment = collapsed => {
+const MountedSilenceComment = (collapsed) => {
   return mount(
     <SilenceComment
       alertStore={alertStore}
@@ -50,7 +50,7 @@ const MockMultipleClusters = () => {
         error: "",
         version: "0.17.0",
         cluster: "default",
-        clusterMembers: ["default", "fallback"]
+        clusterMembers: ["default", "fallback"],
       },
       {
         name: "fallback",
@@ -62,7 +62,7 @@ const MockMultipleClusters = () => {
         error: "",
         version: "0.17.0",
         cluster: "default",
-        clusterMembers: ["default", "fallback"]
+        clusterMembers: ["default", "fallback"],
       },
       {
         name: "second",
@@ -74,9 +74,9 @@ const MockMultipleClusters = () => {
         error: "",
         version: "0.17.0",
         cluster: "second",
-        clusterMembers: ["second"]
-      }
-    ]
+        clusterMembers: ["second"],
+      },
+    ],
   };
 };
 

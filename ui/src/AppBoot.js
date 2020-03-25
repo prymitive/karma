@@ -4,7 +4,7 @@ import * as Sentry from "@sentry/browser";
 
 const SettingsElement = () => document.getElementById("settings");
 
-const SetupSentry = settingsElement => {
+const SetupSentry = (settingsElement) => {
   if (
     settingsElement !== null &&
     settingsElement.dataset.sentryDsn &&
@@ -21,7 +21,7 @@ const SetupSentry = settingsElement => {
     try {
       Sentry.init({
         dsn: settingsElement.dataset.sentryDsn,
-        release: version
+        release: version,
       });
     } catch (err) {
       console.error("Sentry config failed: " + err);
@@ -29,7 +29,7 @@ const SetupSentry = settingsElement => {
   }
 };
 
-const ParseDefaultFilters = settingsElement => {
+const ParseDefaultFilters = (settingsElement) => {
   let defaultFilters = [];
   if (
     settingsElement !== null &&
@@ -51,7 +51,7 @@ const ParseDefaultFilters = settingsElement => {
   return defaultFilters;
 };
 
-const ParseUIDefaults = defaultsElement => {
+const ParseUIDefaults = (defaultsElement) => {
   if (defaultsElement === null) {
     return null;
   }

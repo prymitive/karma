@@ -1,7 +1,7 @@
 const QueryOperators = Object.freeze({
   Equal: "=",
   NotEqual: "!=",
-  Regex: "=~"
+  Regex: "=~",
 });
 
 const StaticLabels = Object.freeze({
@@ -9,7 +9,7 @@ const StaticLabels = Object.freeze({
   AlertManager: "@alertmanager",
   Receiver: "@receiver",
   State: "@state",
-  SilenceID: "@silence_id"
+  SilenceID: "@silence_id",
 });
 
 function FormatQuery(name, operator, value) {

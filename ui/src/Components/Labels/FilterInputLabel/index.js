@@ -26,11 +26,11 @@ const FilterInputLabel = observer(
         hits: PropTypes.number,
         name: PropTypes.string,
         matcher: PropTypes.string,
-        value: PropTypes.string
-      })
+        value: PropTypes.string,
+      }),
     };
 
-    onChange = update => {
+    onChange = (update) => {
       const { alertStore, filter } = this.props;
 
       // if filter is empty string then remove it
@@ -54,14 +54,14 @@ const FilterInputLabel = observer(
 
       const showCounter =
         alertStore.filters.values.filter(
-          f => f.hits !== alertStore.info.totalAlerts
+          (f) => f.hits !== alertStore.info.totalAlerts
         ).length > 0;
 
       const rootClasses = filter.applied
         ? cs.className
         : [
             "btn-secondary btn-sm components-filteredinputlabel",
-            ...cs.baseClassNames
+            ...cs.baseClassNames,
           ].join(" ");
 
       return (

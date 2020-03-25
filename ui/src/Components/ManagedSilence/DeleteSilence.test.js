@@ -30,10 +30,10 @@ beforeEach(() => {
         error: "",
         version: "0.17.0",
         headers: {},
-        clusterMembers: ["am1"]
-      }
+        clusterMembers: ["am1"],
+      },
     ],
-    clusters: { am: ["am1"] }
+    clusters: { am: ["am1"] },
   };
 
   jest.restoreAllMocks();
@@ -55,7 +55,7 @@ const MockAPIResponse = () => {
       [],
       { job: "foo" },
       {}
-    )
+    ),
   };
   return response;
 };
@@ -83,7 +83,7 @@ const MountedDeleteSilenceModalContent = () => {
   );
 };
 
-const VerifyResponse = async response => {
+const VerifyResponse = async (response) => {
   const tree = MountedDeleteSilenceModalContent();
   await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
 
@@ -94,7 +94,7 @@ const VerifyResponse = async response => {
   return tree;
 };
 
-const VerifyError = async error => {
+const VerifyError = async (error) => {
   const tree = MountedDeleteSilenceModalContent();
   await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
 
@@ -113,10 +113,7 @@ describe("<DeleteSilence />", () => {
 
   it("opens modal on click", () => {
     const tree = MountedDeleteSilence();
-    tree
-      .find("button")
-      .at(0)
-      .simulate("click");
+    tree.find("button").at(0).simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(1);
   });
 
@@ -125,10 +122,7 @@ describe("<DeleteSilence />", () => {
     const tree = MountedDeleteSilence();
     expect(tree.find("button").prop("disabled")).toBe(true);
 
-    tree
-      .find("button")
-      .at(0)
-      .simulate("click");
+    tree.find("button").at(0).simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(0);
   });
 });
@@ -194,7 +188,7 @@ describe("<DeleteSilenceModalContent />", () => {
 
   it("sends headers from alertmanager config", async () => {
     alertStore.data.upstreams.instances[0].headers = {
-      Authorization: "Basic ***"
+      Authorization: "Basic ***",
     };
     await VerifyResponse({ status: "success" });
     expect(fetch.mock.calls[1][0]).toBe(
@@ -203,7 +197,7 @@ describe("<DeleteSilenceModalContent />", () => {
     expect(fetch.mock.calls[1][1]).toMatchObject({
       credentials: "include",
       method: "DELETE",
-      headers: { Authorization: "Basic ***" }
+      headers: { Authorization: "Basic ***" },
     });
   });
 
@@ -215,7 +209,7 @@ describe("<DeleteSilenceModalContent />", () => {
     );
     expect(fetch.mock.calls[1][1]).toMatchObject({
       credentials: "omit",
-      method: "DELETE"
+      method: "DELETE",
     });
   });
 

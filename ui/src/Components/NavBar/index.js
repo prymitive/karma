@@ -28,10 +28,10 @@ const NavBar = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      fixedTop: PropTypes.bool
+      fixedTop: PropTypes.bool,
     };
     static defaultProps = {
-      fixedTop: true
+      fixedTop: true,
     };
 
     constructor(props) {
@@ -54,19 +54,19 @@ const NavBar = observer(
           },
           show() {
             this.className = "visible";
-          }
+          },
         },
         {
           setIdle: action.bound,
           setActive: action.bound,
           hide: action.bound,
-          show: action.bound
+          show: action.bound,
         }
       );
 
       this.activityStatusReaction = reaction(
         () => props.alertStore.status.paused,
-        paused =>
+        (paused) =>
           paused
             ? this.idleTimer && this.idleTimer.pause()
             : this.idleTimer && this.idleTimer.reset(),
@@ -81,7 +81,7 @@ const NavBar = observer(
         setSize(width, height) {
           this.width = width;
           this.height = height;
-        }
+        },
       },
       { setSize: action }
     );
@@ -113,7 +113,7 @@ const NavBar = observer(
         alertStore,
         settingsStore,
         silenceFormStore,
-        fixedTop
+        fixedTop,
       } = this.props;
 
       // if we have at least 1 filter then it's likely that filter input will
@@ -127,11 +127,11 @@ const NavBar = observer(
       const isMobile = IsMobile();
 
       const isLoading =
-        alertStore.filters.values.filter(f => f.applied === false).length > 0;
+        alertStore.filters.values.filter((f) => f.applied === false).length > 0;
 
       return (
         <IdleTimer
-          ref={ref => {
+          ref={(ref) => {
             this.idleTimer = ref;
           }}
           onActive={this.activityStatus.setActive}

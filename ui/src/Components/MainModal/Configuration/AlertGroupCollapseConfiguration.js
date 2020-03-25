@@ -12,7 +12,7 @@ import { ThemeContext } from "Components/Theme";
 const AlertGroupCollapseConfiguration = observer(
   class AlertGroupCollapseConfiguration extends Component {
     static propTypes = {
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
     };
     static contextType = ThemeContext;
 
@@ -22,12 +22,12 @@ const AlertGroupCollapseConfiguration = observer(
       this.validateConfig();
     }
 
-    valueToOption = val => {
+    valueToOption = (val) => {
       const { settingsStore } = this.props;
 
       return {
         label: settingsStore.alertGroupConfig.options[val].label,
-        value: val
+        value: val,
       };
     };
 
@@ -36,7 +36,7 @@ const AlertGroupCollapseConfiguration = observer(
 
       if (
         !Object.values(settingsStore.alertGroupConfig.options)
-          .map(o => o.value)
+          .map((o) => o.value)
           .includes(settingsStore.alertGroupConfig.config.defaultCollapseState)
       ) {
         settingsStore.alertGroupConfig.config.defaultCollapseState =

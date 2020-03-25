@@ -11,7 +11,7 @@ import {
   SilenceFormStore,
   NewEmptyMatcher,
   MatcherValueToObject,
-  SilenceTabNames
+  SilenceTabNames,
 } from "Stores/SilenceFormStore";
 import { DateTimeSelect, TabNames } from "./DateTimeSelect";
 import { SilenceModalContent } from "./SilenceModalContent";
@@ -21,7 +21,7 @@ import "Styles/Percy.scss";
 const MockMatcher = (name, values, isRegex) => {
   const matcher = NewEmptyMatcher();
   matcher.name = name;
-  matcher.values = values.map(v => MatcherValueToObject(v));
+  matcher.values = values.map((v) => MatcherValueToObject(v));
   matcher.isRegex = isRegex;
   return matcher;
 };
@@ -56,9 +56,9 @@ storiesOf("SilenceModal", module)
           error: "",
           version: "0.17.0",
           cluster: "default",
-          clusterMembers: ["default"]
-        }
-      ]
+          clusterMembers: ["default"],
+        },
+      ],
     };
 
     silenceFormStore.toggle.visible = true;
@@ -69,10 +69,10 @@ storiesOf("SilenceModal", module)
         "tooLong",
         [
           "12345",
-          "Some Alerts With A Ridiculously Long Name To Test Label Truncation In All The Places We Render Those Alerts"
+          "Some Alerts With A Ridiculously Long Name To Test Label Truncation In All The Places We Render Those Alerts",
         ],
         true
-      )
+      ),
     ];
     silenceFormStore.data.addEmptyMatcher();
     silenceFormStore.data.author = "john@example.com";
@@ -85,24 +85,24 @@ storiesOf("SilenceModal", module)
       "begin:/alerts.json?q=cluster",
       { totalAlerts: 0 },
       {
-        overwriteRoutes: true
+        overwriteRoutes: true,
       }
     );
     fetchMock.mock(
       "begin:/alerts.json?q=instance",
       { totalAlerts: 23 },
       {
-        overwriteRoutes: true
+        overwriteRoutes: true,
       }
     );
     fetchMock.mock(
       "begin:/alerts.json?q=tooLong",
       {
         body: "error",
-        status: 503
+        status: 503,
       },
       {
-        overwriteRoutes: true
+        overwriteRoutes: true,
       }
     );
     fetchMock.mock(
@@ -110,10 +110,10 @@ storiesOf("SilenceModal", module)
       {
         status: 200,
         body: JSON.stringify([]),
-        headers: { "Content-Type": "application/json" }
+        headers: { "Content-Type": "application/json" },
       },
       {
-        overwriteRoutes: true
+        overwriteRoutes: true,
       }
     );
 
@@ -131,9 +131,9 @@ storiesOf("SilenceModal", module)
           error: "",
           version: "0.17.0",
           cluster: "default",
-          clusterMembers: ["readonly"]
-        }
-      ]
+          clusterMembers: ["readonly"],
+        },
+      ],
     };
 
     return (
@@ -196,10 +196,10 @@ storiesOf("SilenceModal", module)
           error: "",
           version: "0.17.0",
           headers: {},
-          corsCredentials: "include"
-        }
+          corsCredentials: "include",
+        },
       ],
-      clusters: { am: ["am1"] }
+      clusters: { am: ["am1"] },
     };
 
     let silences = [];
@@ -210,23 +210,23 @@ storiesOf("SilenceModal", module)
       silence.matchers.push({
         name: "thisIsAveryLongNameToTestMatcherWrapping",
         value: "valueIsAlsoAbitLong",
-        isRegex: false
+        isRegex: false,
       });
       silence.matchers.push({
         name: "alertname",
         value: "(foo1|foo2|foo3|foo4)",
-        isRegex: true
+        isRegex: true,
       });
       silence.id = `silence${index}`;
       silences.push({
         cluster: "am",
         alertCount: (index - 1) * 9,
-        silence: silence
+        silence: silence,
       });
     }
 
     fetchMock.mock("begin:/silences.json?", silences, {
-      overwriteRoutes: true
+      overwriteRoutes: true,
     });
 
     return (
@@ -260,14 +260,14 @@ storiesOf("SilenceModal", module)
           error: "",
           version: "0.17.0",
           headers: {},
-          corsCredentials: "include"
-        }
+          corsCredentials: "include",
+        },
       ],
-      clusters: { am: ["am1"] }
+      clusters: { am: ["am1"] },
     };
 
     fetchMock.mock("begin:/silences.json?", [], {
-      overwriteRoutes: true
+      overwriteRoutes: true,
     });
 
     return (

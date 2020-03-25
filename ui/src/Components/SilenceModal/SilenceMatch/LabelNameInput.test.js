@@ -8,7 +8,7 @@ import { NewEmptyMatcher, MatcherValueToObject } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
 import {
   ReactSelectColors,
-  ReactSelectStyles
+  ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { LabelNameInput } from "./LabelNameInput";
 
@@ -23,11 +23,11 @@ beforeEach(() => {
   matcher.name = "name";
   matcher.suggestions.names = [
     MatcherValueToObject("job"),
-    MatcherValueToObject("cluster")
+    MatcherValueToObject("cluster"),
   ];
   matcher.suggestions.values = [
     MatcherValueToObject("foo"),
-    MatcherValueToObject("bar")
+    MatcherValueToObject("bar"),
   ];
 });
 
@@ -35,11 +35,11 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-const MountedLabelNameInput = isValid => {
+const MountedLabelNameInput = (isValid) => {
   return mount(
     <ThemeContext.Provider
       value={{
-        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
       }}
     >
       <LabelNameInput matcher={matcher} isValid={isValid} />

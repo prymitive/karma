@@ -13,7 +13,7 @@ const Duration = observer(
       value: PropTypes.number.isRequired,
       label: PropTypes.string.isRequired,
       onInc: PropTypes.func.isRequired,
-      onDec: PropTypes.func.isRequired
+      onDec: PropTypes.func.isRequired,
     };
 
     render() {

@@ -6,7 +6,7 @@ const Annotation = PropTypes.exact({
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   visible: PropTypes.bool.isRequired,
-  isLink: PropTypes.bool.isRequired
+  isLink: PropTypes.bool.isRequired,
 });
 
 const APIAlertAlertmanagerState = PropTypes.exact({
@@ -16,7 +16,7 @@ const APIAlertAlertmanagerState = PropTypes.exact({
   startsAt: PropTypes.string.isRequired,
   source: PropTypes.string.isRequired,
   silencedBy: PropTypes.arrayOf(PropTypes.string).isRequired,
-  inhibitedBy: PropTypes.arrayOf(PropTypes.string).isRequired
+  inhibitedBy: PropTypes.arrayOf(PropTypes.string).isRequired,
 });
 
 const APIAlert = PropTypes.exact({
@@ -25,7 +25,7 @@ const APIAlert = PropTypes.exact({
   startsAt: PropTypes.string.isRequired,
   state: AlertState.isRequired,
   alertmanager: PropTypes.arrayOf(APIAlertAlertmanagerState).isRequired,
-  receiver: PropTypes.string.isRequired
+  receiver: PropTypes.string.isRequired,
 });
 
 const APIGroup = PropTypes.exact({
@@ -37,19 +37,20 @@ const APIGroup = PropTypes.exact({
   stateCount: PropTypes.exact({
     active: PropTypes.number.isRequired,
     suppressed: PropTypes.number.isRequired,
-    unprocessed: PropTypes.number.isRequired
+    unprocessed: PropTypes.number.isRequired,
   }),
   shared: PropTypes.exact({
     annotations: PropTypes.arrayOf(Annotation).isRequired,
     labels: PropTypes.object.isRequired,
-    silences: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string)).isRequired
-  }).isRequired
+    silences: PropTypes.objectOf(PropTypes.arrayOf(PropTypes.string))
+      .isRequired,
+  }).isRequired,
 });
 
 const APISilenceMatcher = PropTypes.exact({
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
-  isRegex: PropTypes.bool.isRequired
+  isRegex: PropTypes.bool.isRequired,
 });
 
 const APISilence = PropTypes.exact({
@@ -61,7 +62,7 @@ const APISilence = PropTypes.exact({
   createdBy: PropTypes.string.isRequired,
   comment: PropTypes.string.isRequired,
   ticketID: PropTypes.string.isRequired,
-  ticketURL: PropTypes.string.isRequired
+  ticketURL: PropTypes.string.isRequired,
 });
 
 const APIAlertmanagerUpstream = PropTypes.exact({
@@ -75,7 +76,7 @@ const APIAlertmanagerUpstream = PropTypes.exact({
     .isRequired,
   error: PropTypes.string.isRequired,
   version: PropTypes.string.isRequired,
-  clusterMembers: PropTypes.arrayOf(PropTypes.string).isRequired
+  clusterMembers: PropTypes.arrayOf(PropTypes.string).isRequired,
 });
 
 export {
@@ -84,5 +85,5 @@ export {
   APISilence,
   APISilenceMatcher,
   APIAlertAlertmanagerState,
-  APIAlertmanagerUpstream
+  APIAlertmanagerUpstream,
 };

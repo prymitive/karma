@@ -21,9 +21,9 @@ beforeEach(() => {
         error: "",
         version: "0.17.0",
         cluster: "mockAlertmanager",
-        clusterMembers: ["mockAlertmanager"]
-      }
-    ]
+        clusterMembers: ["mockAlertmanager"],
+      },
+    ],
   };
 
   fetch.resetMocks();
@@ -44,7 +44,7 @@ const MountedSilenceSubmitProgress = () => {
         startsAt: "now",
         endsAt: "later",
         createdBy: "me@example.com",
-        comment: "fake payload"
+        comment: "fake payload",
       }}
       alertStore={alertStore}
     />
@@ -76,8 +76,8 @@ describe("<SilenceSubmitProgress />", () => {
         startsAt: "now",
         endsAt: "later",
         createdBy: "me@example.com",
-        comment: "fake payload"
-      })
+        comment: "fake payload",
+      }),
     });
   });
 
@@ -87,7 +87,7 @@ describe("<SilenceSubmitProgress />", () => {
     expect(fetch.mock.calls[0][0]).toBe("http://localhost/api/v2/silences");
     expect(fetch.mock.calls[0][1]).toMatchObject({
       credentials: "same-origin",
-      method: "POST"
+      method: "POST",
     });
   });
 
@@ -108,7 +108,7 @@ describe("<SilenceSubmitProgress />", () => {
           error: "",
           version: "0.17.0",
           cluster: "ha",
-          clusterMembers: ["am1", "am2"]
+          clusterMembers: ["am1", "am2"],
         },
         {
           name: "am2",
@@ -120,9 +120,9 @@ describe("<SilenceSubmitProgress />", () => {
           error: "",
           version: "0.17.0",
           cluster: "ha",
-          clusterMembers: ["am1", "am2"]
-        }
-      ]
+          clusterMembers: ["am1", "am2"],
+        },
+      ],
     };
 
     const tree = mount(
@@ -134,7 +134,7 @@ describe("<SilenceSubmitProgress />", () => {
           startsAt: "now",
           endsAt: "later",
           createdBy: "me@example.com",
-          comment: "fake payload"
+          comment: "fake payload",
         }}
         alertStore={alertStore}
       />
@@ -168,9 +168,9 @@ describe("<SilenceSubmitProgress />", () => {
           error: "",
           version: "0.17.0",
           cluster: "ha",
-          clusterMembers: ["am1", "am2"]
-        }
-      ]
+          clusterMembers: ["am1", "am2"],
+        },
+      ],
     };
 
     const tree = mount(
@@ -182,7 +182,7 @@ describe("<SilenceSubmitProgress />", () => {
           startsAt: "now",
           endsAt: "later",
           createdBy: "me@example.com",
-          comment: "fake payload"
+          comment: "fake payload",
         }}
         alertStore={alertStore}
       />
@@ -216,7 +216,7 @@ describe("<SilenceSubmitProgress />", () => {
           error: "",
           version: "0.17.0",
           cluster: "ha",
-          clusterMembers: ["am1", "am2"]
+          clusterMembers: ["am1", "am2"],
         },
         {
           name: "am2",
@@ -228,9 +228,9 @@ describe("<SilenceSubmitProgress />", () => {
           error: "",
           version: "0.17.0",
           cluster: "ha",
-          clusterMembers: ["am1", "am2"]
-        }
-      ]
+          clusterMembers: ["am1", "am2"],
+        },
+      ],
     };
 
     const tree = mount(
@@ -242,7 +242,7 @@ describe("<SilenceSubmitProgress />", () => {
           startsAt: "now",
           endsAt: "later",
           createdBy: "me@example.com",
-          comment: "fake payload"
+          comment: "fake payload",
         }}
         alertStore={alertStore}
       />
@@ -290,12 +290,9 @@ describe("<SilenceSubmitProgress />", () => {
     const tree = MountedSilenceSubmitProgress();
     await expect(tree.instance().submitState.fetch).resolves.toBe("123");
     tree.update();
-    expect(
-      tree
-        .find("a")
-        .getDOMNode()
-        .getAttribute("href")
-    ).toBe("http://example.com/#/silences/123");
+    expect(tree.find("a").getDOMNode().getAttribute("href")).toBe(
+      "http://example.com/#/silences/123"
+    );
   });
 
   it("renders error icon on failed fetch", async () => {

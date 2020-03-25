@@ -5,7 +5,7 @@ import { shallow } from "enzyme";
 import {
   SilenceFormStore,
   NewEmptyMatcher,
-  MatcherValueToObject
+  MatcherValueToObject,
 } from "Stores/SilenceFormStore";
 import { SilenceMatch } from ".";
 

@@ -7,16 +7,16 @@ import toDiffableHtml from "diffable-html";
 import { ThemeContext } from "Components/Theme";
 import {
   ReactSelectColors,
-  ReactSelectStyles
+  ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { MultiSelect } from ".";
 
-const Option = value => ({ label: value, value: value });
+const Option = (value) => ({ label: value, value: value });
 
-const Wrapped = component => (
+const Wrapped = (component) => (
   <ThemeContext.Provider
     value={{
-      reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+      reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
     }}
   >
     {component}
@@ -39,7 +39,7 @@ class CustomMultiSelect extends MultiSelect {
   renderProps = () => this.extraProps;
 }
 
-const WrappedCustomMultiSelect = props =>
+const WrappedCustomMultiSelect = (props) =>
   Wrapped(<CustomMultiSelect {...props} />);
 
 describe("<WrappedCustomMultiSelect />", () => {

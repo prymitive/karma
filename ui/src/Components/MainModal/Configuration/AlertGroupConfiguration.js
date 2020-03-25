@@ -11,7 +11,7 @@ import { Settings } from "Stores/Settings";
 const AlertGroupConfiguration = observer(
   class AlertGroupConfiguration extends Component {
     static propTypes = {
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
     };
 
     constructor(props) {
@@ -20,15 +20,15 @@ const AlertGroupConfiguration = observer(
       this.config = observable({
         defaultRenderCount: toJS(
           props.settingsStore.alertGroupConfig.config.defaultRenderCount
-        )
+        ),
       });
     }
 
-    onChange = action(value => {
+    onChange = action((value) => {
       this.config.defaultRenderCount = value;
     });
 
-    onChangeComplete = action(value => {
+    onChangeComplete = action((value) => {
       const { settingsStore } = this.props;
 
       settingsStore.alertGroupConfig.update({ defaultRenderCount: value });

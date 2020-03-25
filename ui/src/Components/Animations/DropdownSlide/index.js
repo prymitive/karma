@@ -15,7 +15,7 @@ const DropdownSlide = ({ children, duration, ...props }) => (
   </CSSTransition>
 );
 DropdownSlide.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export { DropdownSlide };

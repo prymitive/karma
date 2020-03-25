@@ -14,7 +14,7 @@ import { AlertStore, FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import {
   LabelSetList,
-  GroupListToUniqueLabelsList
+  GroupListToUniqueLabelsList,
 } from "Components/LabelSetList";
 import { FetchGet } from "Common/Fetch";
 import { MatcherToFilter, AlertManagersToFilter } from "../Matchers";
@@ -28,7 +28,7 @@ const FetchError = ({ message }) => (
   </div>
 );
 FetchError.propTypes = {
-  message: PropTypes.node.isRequired
+  message: PropTypes.node.isRequired,
 };
 
 const Placeholder = () => (
@@ -43,7 +43,7 @@ const SilencePreview = observer(
   class SilencePreview extends Component {
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
     };
 
     matchedAlerts = observable(
@@ -62,12 +62,12 @@ const SilencePreview = observer(
         },
         setDone() {
           this.done = true;
-        }
+        },
       },
       {
         groupsToUniqueLabels: action.bound,
         setError: action.bound,
-        setDone: action.bound
+        setDone: action.bound,
       }
     );
 
@@ -75,23 +75,23 @@ const SilencePreview = observer(
       const { silenceFormStore } = this.props;
 
       const filters = [
-        ...silenceFormStore.data.matchers.map(m => MatcherToFilter(m)),
-        AlertManagersToFilter(silenceFormStore.data.alertmanagers)
+        ...silenceFormStore.data.matchers.map((m) => MatcherToFilter(m)),
+        AlertManagersToFilter(silenceFormStore.data.alertmanagers),
       ];
 
       const alertsURI =
         FormatBackendURI("alerts.json?") + FormatAlertsQ(filters);
 
       this.matchedAlerts.fetch = FetchGet(alertsURI, {})
-        .then(result => {
+        .then((result) => {
           return result.json();
         })
-        .then(result => {
+        .then((result) => {
           this.matchedAlerts.groupsToUniqueLabels(Object.values(result.groups));
           this.matchedAlerts.setError(null);
           this.matchedAlerts.setDone();
         })
-        .catch(err => {
+        .catch((err) => {
           console.trace(err);
           this.matchedAlerts.setDone();
           return this.matchedAlerts.setError(

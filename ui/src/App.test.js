@@ -12,7 +12,7 @@ const uiDefaults = {
   ColorTitlebar: false,
   MinimalGroupWidth: 420,
   AlertsPerGroup: 5,
-  CollapseGroups: "collapsedOnMobile"
+  CollapseGroups: "collapsedOnMobile",
 };
 
 beforeEach(() => {
@@ -49,7 +49,7 @@ describe("<App />", () => {
       "savedFilters",
       JSON.stringify({
         filters: ["bar=baz", "abc!=cba"],
-        present: true
+        present: true,
       })
     );
 
@@ -80,7 +80,7 @@ describe("<App />", () => {
       "savedFilters",
       JSON.stringify({
         filters: ["ignore=saved"],
-        present: false
+        present: false,
       })
     );
 
@@ -108,7 +108,7 @@ describe("<App />", () => {
       "savedFilters",
       JSON.stringify({
         filters: ["ignore=saved"],
-        present: true
+        present: true,
       })
     );
 
@@ -137,7 +137,7 @@ describe("<App />", () => {
     delete global.window.location;
     global.window.location = {
       href: "http://localhost/?q=bar",
-      search: "?q=bar"
+      search: "?q=bar",
     };
 
     let event = new PopStateEvent("popstate");
@@ -161,7 +161,7 @@ describe("<App />", () => {
 });
 
 describe("<App /> theme", () => {
-  const getApp = theme =>
+  const getApp = (theme) =>
     mount(
       <App
         defaultFilters={["foo=bar"]}
@@ -205,31 +205,31 @@ describe("<App /> theme", () => {
   const lightMatch = () => ({
     "(prefers-color-scheme)": {
       media: "(prefers-color-scheme)",
-      matches: true
+      matches: true,
     },
     "(prefers-color-scheme: light)": {
       media: "(prefers-color-scheme: light)",
-      matches: true
+      matches: true,
     },
     "(prefers-color-scheme: dark)": {
       media: "(prefers-color-scheme: dark)",
-      matches: false
-    }
+      matches: false,
+    },
   });
 
   const darkMatch = () => ({
     "(prefers-color-scheme)": {
       media: "(prefers-color-scheme)",
-      matches: true
+      matches: true,
     },
     "(prefers-color-scheme: light)": {
       media: "(prefers-color-scheme: light)",
-      matches: false
+      matches: false,
     },
     "(prefers-color-scheme: dark)": {
       media: "(prefers-color-scheme: dark)",
-      matches: true
-    }
+      matches: true,
+    },
   });
 
   const testCases = [
@@ -238,21 +238,21 @@ describe("<App /> theme", () => {
         "applies LightTheme when config=auto and browser doesn't support prefers-color-scheme",
       settings: "auto",
       matchMedia: {},
-      theme: "LightTheme"
+      theme: "LightTheme",
     },
     {
       name:
         "applies LightTheme when config=auto and browser prefers-color-scheme:light matches",
       settings: "auto",
       matchMedia: lightMatch(),
-      theme: "LightTheme"
+      theme: "LightTheme",
     },
     {
       name:
         "applies DarkTheme when config=auto and browser prefers-color-scheme:dark matches",
       settings: "auto",
       matchMedia: darkMatch(),
-      theme: "DarkTheme"
+      theme: "DarkTheme",
     },
 
     {
@@ -260,14 +260,14 @@ describe("<App /> theme", () => {
         "applies LightTheme when config=light and browser doesn't support prefers-color-scheme",
       settings: "light",
       matchMedia: {},
-      theme: "LightTheme"
+      theme: "LightTheme",
     },
     {
       name:
         "applies LightTheme when config=light and browser prefers-color-scheme:light matches",
       settings: "light",
       matchMedia: lightMatch(),
-      theme: "LightTheme"
+      theme: "LightTheme",
     },
 
     {
@@ -275,15 +275,15 @@ describe("<App /> theme", () => {
         "applies DarkTheme when config=dark and browser doesn't support prefers-color-scheme",
       settings: "dark",
       matchMedia: {},
-      theme: "DarkTheme"
+      theme: "DarkTheme",
     },
     {
       name:
         "applies DarkTheme when config=dark and browser prefers-color-scheme:dark matches",
       settings: "dark",
       matchMedia: darkMatch(),
-      theme: "DarkTheme"
-    }
+      theme: "DarkTheme",
+    },
   ];
   for (const testCase of testCases) {
     it(testCase.name, () => {

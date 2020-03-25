@@ -6,7 +6,7 @@ import { AlertStore } from "Stores/AlertStore";
 class FetchPauser extends Component {
   static propTypes = {
     children: PropTypes.any,
-    alertStore: PropTypes.instanceOf(AlertStore).isRequired
+    alertStore: PropTypes.instanceOf(AlertStore).isRequired,
   };
 
   componentDidMount() {

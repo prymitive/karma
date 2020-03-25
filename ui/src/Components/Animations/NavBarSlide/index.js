@@ -16,7 +16,7 @@ const NavBarSlide = ({ children, duration, ...props }) => (
   </CSSTransition>
 );
 NavBarSlide.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export { NavBarSlide };

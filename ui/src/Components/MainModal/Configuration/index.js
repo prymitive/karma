@@ -60,7 +60,7 @@ const Configuration = ({ settingsStore, defaultIsOpen }) => (
 );
 Configuration.propTypes = {
   settingsStore: PropTypes.instanceOf(Settings).isRequired,
-  defaultIsOpen: PropTypes.bool.isRequired
+  defaultIsOpen: PropTypes.bool.isRequired,
 };
 
 export { Configuration };

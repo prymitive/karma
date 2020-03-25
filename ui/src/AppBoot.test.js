@@ -5,14 +5,14 @@ import {
   SettingsElement,
   SetupSentry,
   ParseDefaultFilters,
-  ParseUIDefaults
+  ParseUIDefaults,
 } from "./AppBoot";
 
 beforeAll(() => {
   // https://github.com/jamesmfriedman/rmwc/issues/103#issuecomment-360007979
   Object.defineProperty(window.HTMLElement.prototype, "dataset", {
     writable: true,
-    value: {}
+    value: {},
   });
 });
 
@@ -33,7 +33,7 @@ const MockSettings = (version, SentryDsn, defaultFilters) => {
     settings.dataset = {
       version: version,
       SentryDsn: SentryDsn,
-      defaultFiltersBase64: filtersBase64
+      defaultFiltersBase64: filtersBase64,
     };
     return settings;
   });
@@ -45,7 +45,7 @@ const SentryClient = (SentryDsn, version) => {
   SetupSentry(settings);
 };
 
-const FiltersSetting = filters => {
+const FiltersSetting = (filters) => {
   const settings = document.createElement("span");
   settings.dataset = { defaultFiltersBase64: btoa(JSON.stringify(filters)) };
   return ParseDefaultFilters(settings);
@@ -80,7 +80,7 @@ describe("SetupSentry()", () => {
     expect(sentrySpy).toHaveBeenCalledWith(
       expect.objectContaining({
         dsn: FakeDSN,
-        release: "unknown" // default version
+        release: "unknown", // default version
       })
     );
   });
@@ -91,7 +91,7 @@ describe("SetupSentry()", () => {
     expect(sentrySpy).toHaveBeenCalledWith(
       expect.objectContaining({
         dsn: FakeDSN,
-        release: "ver1"
+        release: "ver1",
       })
     );
   });

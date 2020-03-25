@@ -10,7 +10,7 @@ import { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
   SilenceFormStage,
-  SilenceTabNames
+  SilenceTabNames,
 } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
 import { Tab } from "Components/Modal/Tab";
@@ -36,10 +36,10 @@ const SilenceModalContent = observer(
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
       onHide: PropTypes.func.isRequired,
       previewOpen: PropTypes.bool,
-      onDeleteModalClose: PropTypes.func.isRequired
+      onDeleteModalClose: PropTypes.func.isRequired,
     };
     static defaultProps = {
-      previewOpen: false
+      previewOpen: false,
     };
 
     render() {
@@ -49,7 +49,7 @@ const SilenceModalContent = observer(
         settingsStore,
         onHide,
         previewOpen,
-        onDeleteModalClose
+        onDeleteModalClose,
       } = this.props;
 
       return (
@@ -88,8 +88,9 @@ const SilenceModalContent = observer(
             </nav>
           </div>
           <div
-            className={`modal-body ${silenceFormStore.toggle.blurred &&
-              "modal-content-blur"}`}
+            className={`modal-body ${
+              silenceFormStore.toggle.blurred && "modal-content-blur"
+            }`}
           >
             {silenceFormStore.tab.current === SilenceTabNames.Editor ? (
               silenceFormStore.data.currentStage ===

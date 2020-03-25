@@ -27,7 +27,7 @@ const FilterInput = onClickOutside(
     class FilterInput extends Component {
       static propTypes = {
         alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-        settingsStore: PropTypes.instanceOf(Settings).isRequired
+        settingsStore: PropTypes.instanceOf(Settings).isRequired,
       };
 
       inputStore = observable(
@@ -39,10 +39,10 @@ const FilterInput = onClickOutside(
           focused: false,
           storeInputReference(ref) {
             this.ref = ref;
-          }
+          },
         },
         {
-          storeInputReference: action.bound
+          storeInputReference: action.bound,
         },
         { name: "Filter input state" }
       );
@@ -60,7 +60,7 @@ const FilterInput = onClickOutside(
         this.inputStore.value = newValue;
       });
 
-      onSubmit = action(event => {
+      onSubmit = action((event) => {
         event.preventDefault();
         if (this.inputStore.value !== "") {
           this.props.alertStore.filters.addFilter(this.inputStore.value);
@@ -80,16 +80,16 @@ const FilterInput = onClickOutside(
               {}
             )
               .then(
-                result => result.json(),
-                err => {
+                (result) => result.json(),
+                (err) => {
                   return [];
                 }
               )
-              .then(result => result.slice(0, 20))
-              .then(result => {
+              .then((result) => result.slice(0, 20))
+              .then((result) => {
                 this.inputStore.suggestions = result;
               })
-              .catch(err => console.error(err.message));
+              .catch((err) => console.error(err.message));
           }
         }),
         300
@@ -117,7 +117,7 @@ const FilterInput = onClickOutside(
         this.inputStore.focused = false;
       });
 
-      handleClickOutside = action(event => {
+      handleClickOutside = action((event) => {
         this.inputStore.focused = false;
       });
 
@@ -133,7 +133,7 @@ const FilterInput = onClickOutside(
         );
       };
 
-      renderInputComponent = inputProps => {
+      renderInputComponent = (inputProps) => {
         const { value } = inputProps;
         return (
           <input
@@ -154,7 +154,7 @@ const FilterInput = onClickOutside(
           <form
             className="form-inline mw-100"
             onSubmit={this.onSubmit}
-            data-filters={alertStore.filters.values.map(f => f.raw).join(" ")}
+            data-filters={alertStore.filters.values.map((f) => f.raw).join(" ")}
           >
             <div
               className={`input-group w-100 mr-2 components-filterinput-outer ${
@@ -168,13 +168,13 @@ const FilterInput = onClickOutside(
               </div>
               <div
                 className="form-control components-filterinput border-0 rounded-0 bg-transparent"
-                onClick={event => {
+                onClick={(event) => {
                   this.onInputClick(this.inputStore.ref, event);
                 }}
                 onFocus={this.onFocus}
                 onBlur={this.onBlur}
               >
-                {alertStore.filters.values.map(filter => (
+                {alertStore.filters.values.map((filter) => (
                   <FilterInputLabel
                     key={filter.raw}
                     alertStore={alertStore}
@@ -187,15 +187,15 @@ const FilterInput = onClickOutside(
                   onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                   onSuggestionsClearRequested={this.onSuggestionsClearRequested}
                   onSuggestionSelected={this.onSuggestionSelected}
-                  shouldRenderSuggestions={value =>
+                  shouldRenderSuggestions={(value) =>
                     value && value.trim().length > 1
                   }
-                  getSuggestionValue={suggestion => suggestion}
+                  getSuggestionValue={(suggestion) => suggestion}
                   renderSuggestion={this.renderSuggestion}
                   renderInputComponent={this.renderInputComponent}
                   inputProps={{
                     value: this.inputStore.value,
-                    onChange: this.onChange
+                    onChange: this.onChange,
                   }}
                   theme={AutosuggestTheme}
                 />

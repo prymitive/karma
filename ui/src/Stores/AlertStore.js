@@ -12,7 +12,7 @@ import { FetchGet } from "Common/Fetch";
 
 const QueryStringEncodeOptions = {
   encodeValuesOnly: true, // don't encode q[]
-  indices: false // go-gin doesn't support parsing q[0]=foo&q[1]=bar
+  indices: false, // go-gin doesn't support parsing q[0]=foo&q[1]=bar
 };
 
 function FormatAlertsQ(filters) {
@@ -23,7 +23,7 @@ function FormatAlertsQ(filters) {
 function FormatAPIFilterQuery(filters) {
   return qs.stringify(
     Object.assign(DecodeLocationSearch(window.location.search).params, {
-      q: filters
+      q: filters,
     }),
     QueryStringEncodeOptions
   );
@@ -54,7 +54,7 @@ function DecodeLocationSearch(searchString) {
         // then filter out empty strings, so 'q=' doesn't end up [""] but rather []
         params.q = parsed.q
           .filter((v, i) => parsed.q.indexOf(v) === i)
-          .filter(v => v !== "");
+          .filter((v) => v !== "");
       } else {
         params.q = [parsed.q];
       }
@@ -82,7 +82,7 @@ const AlertStoreStatuses = Object.freeze({
   Idle: Symbol("idle"),
   Fetching: Symbol("fetching"),
   Processing: Symbol("processing"),
-  Failure: Symbol("failure")
+  Failure: Symbol("failure"),
 });
 
 function NewUnappliedFilter(raw) {
@@ -93,7 +93,7 @@ function NewUnappliedFilter(raw) {
     hits: 0,
     name: "",
     matcher: "",
-    value: ""
+    value: "",
   };
 }
 
@@ -102,41 +102,41 @@ class AlertStore {
     {
       values: [],
       addFilter(raw) {
-        if (this.values.filter(f => f.raw === raw).length === 0) {
+        if (this.values.filter((f) => f.raw === raw).length === 0) {
           this.values.push(NewUnappliedFilter(raw));
-          UpdateLocationSearch({ q: this.values.map(f => f.raw) });
+          UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
         }
       },
       removeFilter(raw) {
-        if (this.values.filter(f => f.raw === raw).length > 0) {
-          this.values = this.values.filter(f => f.raw !== raw);
-          UpdateLocationSearch({ q: this.values.map(f => f.raw) });
+        if (this.values.filter((f) => f.raw === raw).length > 0) {
+          this.values = this.values.filter((f) => f.raw !== raw);
+          UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
         }
       },
       replaceFilter(oldRaw, newRaw) {
-        const index = this.values.findIndex(e => e.raw === oldRaw);
+        const index = this.values.findIndex((e) => e.raw === oldRaw);
         if (index >= 0) {
           // first check if we would create a duplicated filter
-          if (this.values.findIndex(e => e.raw === newRaw) >= 0) {
+          if (this.values.findIndex((e) => e.raw === newRaw) >= 0) {
             // we already have newRaw, simply drop oldRaw
             this.removeFilter(oldRaw);
           } else {
             // no dups, continue with a swap
             this.values[index] = NewUnappliedFilter(newRaw);
-            UpdateLocationSearch({ q: this.values.map(f => f.raw) });
+            UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
           }
         }
       },
       setFilters(raws) {
-        this.values = raws.map(raw => NewUnappliedFilter(raw));
-        UpdateLocationSearch({ q: this.values.map(f => f.raw) });
+        this.values = raws.map((raw) => NewUnappliedFilter(raw));
+        UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
       },
       setWithoutLocation(raws) {
-        const filtersByRaw = this.values.reduce(function(map, obj) {
+        const filtersByRaw = this.values.reduce(function (map, obj) {
           map[toJS(obj.raw)] = toJS(obj);
           return map;
         }, {});
-        this.values = raws.map(raw =>
+        this.values = raws.map((raw) =>
           filtersByRaw[raw] ? filtersByRaw[raw] : NewUnappliedFilter(raw)
         );
       },
@@ -144,7 +144,7 @@ class AlertStore {
         for (let i = 0; i < this.values.length; i++) {
           this.values[i].applied = true;
         }
-      }
+      },
     },
     {
       addFilter: action.bound,
@@ -152,7 +152,7 @@ class AlertStore {
       replaceFilter: action.bound,
       setFilters: action.bound,
       setWithoutLocation: action.bound,
-      applyAllFilters: action.bound
+      applyAllFilters: action.bound,
     },
     { name: "API Filters" }
   );
@@ -165,25 +165,25 @@ class AlertStore {
       silences: {},
       upstreams: { instances: [], clusters: {} },
       getAlertmanagerByName(name) {
-        return this.upstreams.instances.find(am => am.name === name);
+        return this.upstreams.instances.find((am) => am.name === name);
       },
       isReadOnlyAlertmanager(name) {
-        return this.readOnlyAlertmanagers.map(am => am.name).includes(name);
+        return this.readOnlyAlertmanagers.map((am) => am.name).includes(name);
       },
       getClusterAlertmanagersWithoutReadOnly(clusterID) {
         return this.clustersWithoutReadOnly[clusterID] || [];
       },
       get readOnlyAlertmanagers() {
-        return this.upstreams.instances.filter(am => am.readonly === true);
+        return this.upstreams.instances.filter((am) => am.readonly === true);
       },
       get readWriteAlertmanagers() {
         return this.upstreams.instances
-          .filter(am => am.readonly === false)
-          .map(am =>
+          .filter((am) => am.readonly === false)
+          .map((am) =>
             Object.assign({}, am, {
               clusterMembers: am.clusterMembers.filter(
-                m => this.isReadOnlyAlertmanager(m) === false
-              )
+                (m) => this.isReadOnlyAlertmanager(m) === false
+              ),
             })
           );
       },
@@ -191,7 +191,7 @@ class AlertStore {
         const clusters = {};
         for (const clusterID of Object.keys(this.upstreams.clusters)) {
           const members = this.upstreams.clusters[clusterID].filter(
-            member => this.isReadOnlyAlertmanager(member) === false
+            (member) => this.isReadOnlyAlertmanager(member) === false
           );
           if (members.length > 0) {
             clusters[clusterID] = members;
@@ -203,12 +203,12 @@ class AlertStore {
         if (this.colors[name] !== undefined) {
           return this.colors[name][value];
         }
-      }
+      },
     },
     {
       readOnlyAlertmanagers: computed,
       readWriteAlertmanagers: computed,
-      clustersWithoutReadOnly: computed
+      clustersWithoutReadOnly: computed,
     },
     { name: "API Response data" }
   );
@@ -217,7 +217,7 @@ class AlertStore {
     {
       authentication: {
         enabled: false,
-        username: ""
+        username: "",
       },
       totalAlerts: 0,
       version: "unknown",
@@ -232,12 +232,12 @@ class AlertStore {
       },
       setReloadNeeded() {
         this.reloadNeeded = true;
-      }
+      },
     },
     {
       setIsRetrying: action.bound,
       clearIsRetrying: action.bound,
-      setReloadNeeded: action
+      setReloadNeeded: action,
     },
     { name: "API response info" }
   );
@@ -253,26 +253,26 @@ class AlertStore {
           grid: {
             order: "startsAt",
             reverse: false,
-            label: "alertname"
+            label: "alertname",
           },
-          valueMapping: {}
+          valueMapping: {},
         },
         silenceForm: {
           strip: {
-            labels: []
-          }
+            labels: [],
+          },
         },
         alertAcknowledgement: {
           enabled: false,
           durationSeconds: 900,
           author: "karma / author missing",
-          commentPrefix: ""
-        }
-      }
+          commentPrefix: "",
+        },
+      },
     },
     {},
     {
-      name: "Global settings"
+      name: "Global settings",
     }
   );
 
@@ -304,7 +304,7 @@ class AlertStore {
       },
       resume() {
         this.paused = false;
-      }
+      },
     },
     {
       setIdle: action,
@@ -312,7 +312,7 @@ class AlertStore {
       setProcessing: action,
       setFailure: action,
       pause: action.bound,
-      resume: action.bound
+      resume: action.bound,
     },
     { name: "Store status" }
   );
@@ -327,10 +327,10 @@ class AlertStore {
     const alertsURI =
       FormatBackendURI(
         `alerts.json?sortOrder=${sortOrder}&sortLabel=${sortLabel}&sortReverse=${sortReverse}&`
-      ) + FormatAPIFilterQuery(this.filters.values.map(f => f.raw));
+      ) + FormatAPIFilterQuery(this.filters.values.map((f) => f.raw));
 
     return FetchGet(alertsURI, {}, this.info.setIsRetrying)
-      .then(result => {
+      .then((result) => {
         // we're sending requests with mode=cors so the response should also be type=cors
         // after a few failures in the retry loop we will switch to no-cors
         // if that request comes back as type=opaque then we might be getting
@@ -342,10 +342,10 @@ class AlertStore {
         this.status.setProcessing();
         return result.json();
       })
-      .then(result => {
+      .then((result) => {
         return this.parseAPIResponse(result);
       })
-      .catch(err => {
+      .catch((err) => {
         console.trace(err);
         return this.handleFetchError(
           `Can't connect to the API, last error was "${err.message}"`
@@ -355,7 +355,7 @@ class AlertStore {
 
   fetchWithThrottle = throttle(this.fetch, 300);
 
-  parseAPIResponse = action(result => {
+  parseAPIResponse = action((result) => {
     if (result.error) {
       this.handleFetchError(result.error);
       return;
@@ -364,13 +364,13 @@ class AlertStore {
     const queryFilters = [
       ...new Set(
         this.filters.values
-          .map(f => f.raw)
+          .map((f) => f.raw)
           .slice()
           .sort()
-      )
+      ),
     ];
     const responseFilters = [
-      ...new Set(result.filters.map(m => m.text).sort())
+      ...new Set(result.filters.map((m) => m.text).sort()),
     ];
     if (JSON.stringify(queryFilters) !== JSON.stringify(responseFilters)) {
       console.info(
@@ -381,7 +381,7 @@ class AlertStore {
 
     for (const filter of result.filters) {
       const storedIndex = this.filters.values.findIndex(
-        f => f.raw === filter.text
+        (f) => f.raw === filter.text
       );
       this.filters.values[storedIndex] = Object.assign(
         this.filters.values[storedIndex],
@@ -391,7 +391,7 @@ class AlertStore {
           hits: filter.hits,
           name: filter.name,
           matcher: filter.matcher,
-          value: filter.value
+          value: filter.value,
         }
       );
     }
@@ -403,7 +403,7 @@ class AlertStore {
       "counters",
       "groups",
       "silences",
-      "upstreams"
+      "upstreams",
     ]) {
       if (!equal(this.data[key], result[key])) {
         updates[key] = result[key];
@@ -435,7 +435,7 @@ class AlertStore {
     this.status.setIdle();
   });
 
-  handleFetchError = action(err => {
+  handleFetchError = action((err) => {
     this.status.setFailure(err);
 
     // reset alert counter since we won't be rendering any alerts
@@ -456,5 +456,5 @@ export {
   FormatAlertsQ,
   DecodeLocationSearch,
   UpdateLocationSearch,
-  NewUnappliedFilter
+  NewUnappliedFilter,
 };

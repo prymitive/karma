@@ -12,7 +12,7 @@ import { PageSelect } from "Components/Pagination";
 
 // take a list of groups and outputs a list of label sets, this ignores
 // the receiver, so we'll end up with only unique alerts
-const GroupListToUniqueLabelsList = groups => {
+const GroupListToUniqueLabelsList = (groups) => {
   const alerts = {};
   for (const group of groups) {
     for (const alert of group.alerts) {
@@ -33,7 +33,7 @@ const LabelSetList = observer(
   class LabelSetList extends Component {
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      labelsList: PropTypes.arrayOf(PropTypes.object).isRequired
+      labelsList: PropTypes.arrayOf(PropTypes.object).isRequired,
     };
 
     maxPerPage = 10;
@@ -43,10 +43,10 @@ const LabelSetList = observer(
         activePage: 1,
         onPageChange(pageNumber) {
           this.activePage = pageNumber;
-        }
+        },
       },
       {
-        onPageChange: action.bound
+        onPageChange: action.bound,
       }
     );
 
@@ -63,7 +63,7 @@ const LabelSetList = observer(
                   (this.pagination.activePage - 1) * this.maxPerPage,
                   this.pagination.activePage * this.maxPerPage
                 )
-                .map(labels => (
+                .map((labels) => (
                   <li
                     key={hash(labels)}
                     className="list-group-item px-0 pt-2 pb-1"

@@ -4,7 +4,7 @@ const AutosuggestTheme = {
   suggestionsList: "dropdown-menu show shadow",
   suggestion: "dropdown-item cursor-pointer",
   suggestionFocused: "active",
-  suggestionHighlighted: "active"
+  suggestionHighlighted: "active",
 };
 
 export { AutosuggestTheme };

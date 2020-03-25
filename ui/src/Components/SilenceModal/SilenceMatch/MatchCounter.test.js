@@ -7,7 +7,7 @@ import toDiffableHtml from "diffable-html";
 import {
   SilenceFormStore,
   NewEmptyMatcher,
-  MatcherValueToObject
+  MatcherValueToObject,
 } from "Stores/SilenceFormStore";
 import { MatchCounter } from "./MatchCounter";
 
@@ -143,7 +143,7 @@ describe("<MatchCounter />", () => {
 
     silenceFormStore.data.alertmanagers = [
       MatcherValueToObject("am1"),
-      MatcherValueToObject("am1")
+      MatcherValueToObject("am1"),
     ];
     matcher.name = "foo";
     matcher.values = [MatcherValueToObject("bar")];

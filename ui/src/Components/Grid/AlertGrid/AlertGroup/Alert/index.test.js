@@ -12,7 +12,7 @@ import {
   MockAlert,
   MockAnnotation,
   MockAlertGroup,
-  MockSilence
+  MockSilence,
 } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -42,7 +42,7 @@ const MockedAlert = () => {
     [
       MockAnnotation("help", "some long text", true, false),
       MockAnnotation("hidden", "some hidden text", false, false),
-      MockAnnotation("link", "http://localhost", true, true)
+      MockAnnotation("link", "http://localhost", true, true),
     ],
     { job: "node_exporter", cluster: "dev" },
     "active"
@@ -94,7 +94,7 @@ describe("<Alert />", () => {
     const tree = MountedAlert(alert, group, true, false);
     const label = tree
       .find("FilteringLabel")
-      .filterWhere(elem => elem.props().name === "@alertmanager");
+      .filterWhere((elem) => elem.props().name === "@alertmanager");
     expect(label.text()).toBe("@alertmanager: default");
   });
 
@@ -104,7 +104,7 @@ describe("<Alert />", () => {
     const tree = MountedAlert(alert, group, false, true);
     const label = tree
       .find("FilteringLabel")
-      .filterWhere(elem => elem.props().name === "@receiver");
+      .filterWhere((elem) => elem.props().name === "@receiver");
     expect(label.text()).toBe("@receiver: by-name");
   });
 
@@ -113,8 +113,8 @@ describe("<Alert />", () => {
     alert.alertmanager[0].silencedBy = ["silence123456789"];
     alertStore.data.silences = {
       default: {
-        silence123456789: MockSilence()
-      }
+        silence123456789: MockSilence(),
+      },
     };
     const group = MockAlertGroup({}, [alert], [], {}, { default: [] });
     const tree = MountedAlert(alert, group, false, false);
@@ -128,8 +128,8 @@ describe("<Alert />", () => {
     alert.alertmanager[0].silencedBy = ["silence123456789"];
     alertStore.data.silences = {
       default: {
-        "123": MockSilence()
-      }
+        "123": MockSilence(),
+      },
     };
     const group = MockAlertGroup({}, [alert], [], {}, { default: [] });
     const tree = MountedAlert(alert, group, false, false);
@@ -143,8 +143,8 @@ describe("<Alert />", () => {
     alert.alertmanager[0].silencedBy = ["silence123456789"];
     alertStore.data.silences = {
       foo: {
-        "123": MockSilence()
-      }
+        "123": MockSilence(),
+      },
     };
     const group = MockAlertGroup({}, [alert], [], {}, { default: [] });
     const tree = MountedAlert(alert, group, false, false);
@@ -163,7 +163,7 @@ describe("<Alert />", () => {
         startsAt: "2018-08-14T17:36:40.017867056Z",
         source: "localhost/am1",
         silencedBy: ["silence123456789"],
-        inhibitedBy: []
+        inhibitedBy: [],
       },
       {
         name: "am2",
@@ -172,13 +172,13 @@ describe("<Alert />", () => {
         startsAt: "2018-08-14T17:36:40.017867056Z",
         source: "localhost/am2",
         silencedBy: ["silence123456789"],
-        inhibitedBy: []
-      }
+        inhibitedBy: [],
+      },
     ];
     alertStore.data.silences = {
       ha: {
-        silence123456789: MockSilence()
-      }
+        silence123456789: MockSilence(),
+      },
     };
     const group = MockAlertGroup({}, [alert], [], {}, {});
     const tree = MountedAlert(alert, group, false, false);

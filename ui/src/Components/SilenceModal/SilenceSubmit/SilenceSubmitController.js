@@ -11,7 +11,7 @@ import { SilenceSubmitProgress } from "./SilenceSubmitProgress";
 class SilenceSubmitController extends Component {
   static propTypes = {
     alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-    silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+    silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
   };
 
   render() {
@@ -20,7 +20,7 @@ class SilenceSubmitController extends Component {
     return (
       <React.Fragment>
         <div>
-          {silenceFormStore.data.alertmanagers.map(am => (
+          {silenceFormStore.data.alertmanagers.map((am) => (
             <SilenceSubmitProgress
               key={am.label}
               cluster={am.label}

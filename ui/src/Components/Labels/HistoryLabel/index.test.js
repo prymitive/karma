@@ -40,8 +40,8 @@ describe("<HistoryLabel />", () => {
     alertStore.data.colors["foo"] = {
       bar: {
         brightness: 125,
-        background: { red: 4, green: 5, blue: 6, alpha: 200 }
-      }
+        background: { red: 4, green: 5, blue: 6, alpha: 200 },
+      },
     };
     const tree = ShallowHistoryLabel("foo", "=", "bar").find(
       ".components-label"
@@ -53,8 +53,8 @@ describe("<HistoryLabel />", () => {
     alertStore.data.colors["foo"] = {
       bar: {
         brightness: 200,
-        background: { red: 4, green: 5, blue: 6, alpha: 200 }
-      }
+        background: { red: 4, green: 5, blue: 6, alpha: 200 },
+      },
     };
     const tree = ShallowHistoryLabel("foo", "=", "bar").find(
       ".components-label"

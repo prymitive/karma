@@ -9,7 +9,7 @@ import { CenteredMessage } from "Components/CenteredMessage";
 
 class ReloadNeeded extends Component {
   static propTypes = {
-    reloadAfter: PropTypes.number.isRequired
+    reloadAfter: PropTypes.number.isRequired,
   };
 
   reloadApp = () => {

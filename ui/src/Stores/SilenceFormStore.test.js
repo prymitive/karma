@@ -4,13 +4,13 @@ import {
   MockAlert,
   MockAlertGroup,
   MockSilence,
-  MockAlertmanager
+  MockAlertmanager,
 } from "__mocks__/Alerts.js";
 import {
   SilenceFormStore,
   SilenceFormStage,
   NewEmptyMatcher,
-  SilenceTabNames
+  SilenceTabNames,
 } from "./SilenceFormStore";
 
 let store;
@@ -22,14 +22,14 @@ const MockGroup = () => {
   const alerts = [
     MockAlert([], { instance: "prod1", cluster: "prod" }),
     MockAlert([], { instance: "prod2", cluster: "prod" }),
-    MockAlert([], { instance: "dev1", cluster: "dev" })
+    MockAlert([], { instance: "dev1", cluster: "dev" }),
   ];
   const group = MockAlertGroup(
     { alertname: "FakeAlert" },
     alerts,
     [],
     {
-      job: "mock"
+      job: "mock",
     },
     {}
   );
@@ -38,7 +38,7 @@ const MockGroup = () => {
 
 const MockAlertmanagerOption = () => ({
   label: "default",
-  value: ["default"]
+  value: ["default"],
 });
 
 const MockMatcher = (name, values) => {
@@ -127,14 +127,14 @@ describe("SilenceFormStore.data", () => {
       expect.objectContaining({
         name: "alertname",
         values: [{ label: "FakeAlert", value: "FakeAlert" }],
-        isRegex: false
+        isRegex: false,
       })
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "job",
         values: [{ label: "mock", value: "mock" }],
-        isRegex: false
+        isRegex: false,
       })
     );
     expect(store.data.matchers).toContainEqual(
@@ -143,9 +143,9 @@ describe("SilenceFormStore.data", () => {
         values: [
           { label: "dev1", value: "dev1" },
           { label: "prod1", value: "prod1" },
-          { label: "prod2", value: "prod2" }
+          { label: "prod2", value: "prod2" },
         ],
-        isRegex: true
+        isRegex: true,
       })
     );
     expect(store.data.matchers).toContainEqual(
@@ -153,9 +153,9 @@ describe("SilenceFormStore.data", () => {
         name: "cluster",
         values: [
           { label: "dev", value: "dev" },
-          { label: "prod", value: "prod" }
+          { label: "prod", value: "prod" },
         ],
-        isRegex: true
+        isRegex: true,
       })
     );
   });
@@ -168,28 +168,28 @@ describe("SilenceFormStore.data", () => {
       expect.objectContaining({
         name: "alertname",
         values: [{ label: "FakeAlert", value: "FakeAlert" }],
-        isRegex: false
+        isRegex: false,
       })
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "job",
         values: [{ label: "mock", value: "mock" }],
-        isRegex: false
+        isRegex: false,
       })
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "instance",
         values: [{ label: "prod1", value: "prod1" }],
-        isRegex: false
+        isRegex: false,
       })
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "cluster",
         values: [{ label: "prod", value: "prod" }],
-        isRegex: false
+        isRegex: false,
       })
     );
   });
@@ -206,7 +206,7 @@ describe("SilenceFormStore.data", () => {
       expect.objectContaining({
         name: "alertname",
         values: [{ label: "FakeAlert", value: "FakeAlert" }],
-        isRegex: false
+        isRegex: false,
       })
     );
   });
@@ -233,7 +233,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.alertmanagers).toHaveLength(1);
     expect(store.data.alertmanagers[0]).toMatchObject({
       label: alertmanager.name,
-      value: [alertmanager.name]
+      value: [alertmanager.name],
     });
 
     expect(store.data.matchers).toHaveLength(2);
@@ -241,14 +241,14 @@ describe("SilenceFormStore.data", () => {
       expect.objectContaining({
         name: "foo",
         values: [{ label: "bar", value: "bar" }],
-        isRegex: false
+        isRegex: false,
       })
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "baz",
         values: [{ label: "regex", value: "regex" }],
-        isRegex: true
+        isRegex: true,
       })
     );
 
@@ -266,7 +266,7 @@ describe("SilenceFormStore.data", () => {
   it("toAlertmanagerPayload constains id when store.data.silenceID is set", () => {
     store.data.silenceID = "12345";
     expect(store.data.toAlertmanagerPayload).toMatchObject({
-      id: "12345"
+      id: "12345",
     });
   });
 
@@ -360,7 +360,7 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
     expect(store.data.toDuration).toMatchObject({
       days: 5,
       hours: 0,
-      minutes: 1
+      minutes: 1,
     });
   });
 
@@ -370,7 +370,7 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
     expect(store.data.toDuration).toMatchObject({
       days: 0,
       hours: 2,
-      minutes: 15
+      minutes: 15,
     });
   });
 
@@ -380,7 +380,7 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
     expect(store.data.toDuration).toMatchObject({
       days: 0,
       hours: 0,
-      minutes: 59
+      minutes: 59,
     });
   });
 

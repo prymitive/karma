@@ -40,9 +40,9 @@ const MenuContent = onClickOutside(
     group,
     afterClick,
     alertStore,
-    silenceFormStore
+    silenceFormStore,
   }) => {
-    let groupFilters = Object.keys(group.labels).map(name =>
+    let groupFilters = Object.keys(group.labels).map((name) =>
       FormatQuery(name, QueryOperators.Equal, group.labels[name])
     );
     groupFilters.push(
@@ -52,7 +52,7 @@ const MenuContent = onClickOutside(
       window.location.protocol,
       "//",
       window.location.host,
-      window.location.pathname
+      window.location.pathname,
     ].join("");
     const groupLink = `${baseURL}?${FormatAlertsQ(groupFilters)}`;
 
@@ -77,8 +77,9 @@ const MenuContent = onClickOutside(
             <FontAwesomeIcon icon={faShareSquare} /> Copy link to this group
           </div>
           <div
-            className={`dropdown-item cursor-pointer ${isReadOnly &&
-              "disabled"}`}
+            className={`dropdown-item cursor-pointer ${
+              isReadOnly && "disabled"
+            }`}
             onClick={() =>
               isReadOnly || onSilenceClick(alertStore, silenceFormStore, group)
             }
@@ -95,7 +96,7 @@ MenuContent.propTypes = {
   popperRef: PropTypes.func,
   popperStyle: PropTypes.object,
   group: APIGroup.isRequired,
-  afterClick: PropTypes.func.isRequired
+  afterClick: PropTypes.func.isRequired,
 };
 
 const GroupMenu = observer(
@@ -105,7 +106,7 @@ const GroupMenu = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       themed: PropTypes.bool.isRequired,
-      setIsMenuOpen: PropTypes.func.isRequired
+      setIsMenuOpen: PropTypes.func.isRequired,
     };
 
     constructor(props) {
@@ -121,14 +122,14 @@ const GroupMenu = observer(
           hide() {
             this.value = true;
             props.setIsMenuOpen(!this.value);
-          }
+          },
         },
         { toggle: action.bound, hide: action.bound },
         { name: "Alert group menu toggle" }
       );
     }
 
-    handleClickOutside = action(event => {
+    handleClickOutside = action((event) => {
       this.collapse.hide();
     });
 
@@ -158,7 +159,7 @@ const GroupMenu = observer(
               placement="bottom-start"
               modifiers={{
                 arrow: { enabled: false },
-                offset: { offset: "-5px, 0px" }
+                offset: { offset: "-5px, 0px" },
               }}
             >
               {({ placement, ref, style }) => (

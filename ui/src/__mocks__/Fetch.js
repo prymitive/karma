@@ -6,7 +6,7 @@ const EmptyAPIResponse = () => ({
   version: "fakeVersion",
   upstreams: {
     counters: { total: 1, healthy: 1, failed: 0 },
-    instances: [{ name: "default", uri: "file:///mock", error: "" }]
+    instances: [{ name: "default", uri: "file:///mock", error: "" }],
   },
   silences: { default: {} },
   groups: {},
@@ -19,8 +19,8 @@ const EmptyAPIResponse = () => ({
       matcher: "=",
       value: "value",
       hits: 0,
-      isValid: true
-    }
+      isValid: true,
+    },
   ],
   counters: {},
   settings: {
@@ -28,37 +28,37 @@ const EmptyAPIResponse = () => ({
       grid: {
         order: "startsAt",
         reverse: false,
-        label: "alertname"
+        label: "alertname",
       },
       valueMapping: {
         cluster: {
           dev: 3,
           prod: 1,
-          staging: 2
+          staging: 2,
         },
         severity: {
           critical: 1,
           info: 3,
-          warning: 2
-        }
-      }
+          warning: 2,
+        },
+      },
     },
     silenceForm: {
       strip: {
-        labels: []
-      }
+        labels: [],
+      },
     },
     alertAcknowledgement: {
       enabled: false,
       durationSeconds: 900,
       author: "karma / author missing",
-      commentPrefix: ""
+      commentPrefix: "",
     },
     staticColorLabels: ["job"],
     annotationsDefaultHidden: false,
     annotationsHidden: [],
-    annotationsVisible: []
-  }
+    annotationsVisible: [],
+  },
 });
 
 export { EmptyAPIResponse };

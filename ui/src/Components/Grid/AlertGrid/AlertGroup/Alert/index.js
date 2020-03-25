@@ -27,7 +27,7 @@ const Alert = observer(
       afterUpdate: PropTypes.func.isRequired,
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      setIsMenuOpen: PropTypes.func.isRequired
+      setIsMenuOpen: PropTypes.func.isRequired,
     };
 
     render() {
@@ -39,7 +39,7 @@ const Alert = observer(
         afterUpdate,
         alertStore,
         silenceFormStore,
-        setIsMenuOpen
+        setIsMenuOpen,
       } = this.props;
 
       let classNames = [
@@ -49,7 +49,7 @@ const Alert = observer(
         "my-1",
         "rounded-0",
         "border-left-1 border-right-0 border-top-0 border-bottom-0",
-        BorderClassMap[alert.state] || "border-default"
+        BorderClassMap[alert.state] || "border-default",
       ];
 
       const silences = {};
@@ -60,14 +60,14 @@ const Alert = observer(
             silences: [
               ...new Set(
                 am.silencedBy.filter(
-                  silenceID =>
+                  (silenceID) =>
                     !(
                       group.shared.silences[am.cluster] &&
                       group.shared.silences[am.cluster].includes(silenceID)
                     )
                 )
-              )
-            ]
+              ),
+            ],
           };
         }
       }
@@ -80,8 +80,8 @@ const Alert = observer(
         >
           <div>
             {alert.annotations
-              .filter(a => a.isLink === false)
-              .map(a => (
+              .filter((a) => a.isLink === false)
+              .map((a) => (
                 <RenderNonLinkAnnotation
                   key={a.name}
                   name={a.name}
@@ -100,7 +100,7 @@ const Alert = observer(
             setIsMenuOpen={setIsMenuOpen}
           />
           {alert.alertmanager
-            .map(am => am.inhibitedBy.length)
+            .map((am) => am.inhibitedBy.length)
             .reduce((sum, x) => sum + x) > 0 ? (
             <TooltipWrapper title="This alert is inhibited by other alerts">
               <span className="badge badge-light components-label">
@@ -117,7 +117,7 @@ const Alert = observer(
             />
           ))}
           {showAlertmanagers
-            ? alert.alertmanager.map(am => (
+            ? alert.alertmanager.map((am) => (
                 <FilteringLabel
                   key={am.name}
                   name={StaticLabels.AlertManager}
@@ -134,8 +134,8 @@ const Alert = observer(
             />
           ) : null}
           {alert.annotations
-            .filter(a => a.isLink === true)
-            .map(a => (
+            .filter((a) => a.isLink === true)
+            .map((a) => (
               <RenderLinkAnnotation
                 key={a.name}
                 name={a.name}
@@ -143,7 +143,7 @@ const Alert = observer(
               />
             ))}
           {Object.entries(silences).map(([cluster, clusterSilences]) =>
-            clusterSilences.silences.map(silenceID =>
+            clusterSilences.silences.map((silenceID) =>
               RenderSilence(
                 alertStore,
                 silenceFormStore,

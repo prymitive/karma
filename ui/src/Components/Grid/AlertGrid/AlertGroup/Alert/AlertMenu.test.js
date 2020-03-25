@@ -31,16 +31,16 @@ beforeEach(() => {
         error: "",
         version: "0.17.0",
         cluster: "default",
-        clusterMembers: ["am1"]
-      }
-    ]
+        clusterMembers: ["am1"],
+      },
+    ],
   };
 });
 
 const MockAfterClick = jest.fn();
 const MockSetIsMenuOpen = jest.fn();
 
-const MountedAlertMenu = group => {
+const MountedAlertMenu = (group) => {
   return mount(
     <AlertMenu
       group={group}
@@ -77,7 +77,7 @@ describe("<AlertMenu />", () => {
   });
 });
 
-const MountedMenuContent = group => {
+const MountedMenuContent = (group) => {
   return mount(
     <MenuContent
       popperPlacement="top"

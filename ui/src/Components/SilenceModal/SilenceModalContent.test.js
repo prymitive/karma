@@ -7,7 +7,7 @@ import { Settings } from "Stores/Settings";
 import {
   SilenceFormStore,
   SilenceFormStage,
-  SilenceTabNames
+  SilenceTabNames,
 } from "Stores/SilenceFormStore";
 import { SilenceModalContent } from "./SilenceModalContent";
 
@@ -29,10 +29,10 @@ beforeEach(() => {
         readonly: false,
         error: "",
         version: "0.17.0",
-        headers: {}
-      }
+        headers: {},
+      },
     ],
-    clusters: { am: ["am1"] }
+    clusters: { am: ["am1"] },
   };
 
   silenceFormStore.tab.current = SilenceTabNames.Editor;

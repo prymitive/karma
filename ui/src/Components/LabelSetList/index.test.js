@@ -13,7 +13,7 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
 });
 
-const MountedLabelSetList = labelsList => {
+const MountedLabelSetList = (labelsList) => {
   return mount(
     <LabelSetList alertStore={alertStore} labelsList={labelsList} />
   );
@@ -36,7 +36,7 @@ describe("<LabelSetList />", () => {
       { foo: "bar" },
       { job: "node_exporter" },
       { instance: "server1" },
-      { cluster: "prod" }
+      { cluster: "prod" },
     ]);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });

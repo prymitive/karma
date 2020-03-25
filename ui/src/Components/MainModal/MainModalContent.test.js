@@ -9,7 +9,7 @@ import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 import {
   ReactSelectColors,
-  ReactSelectStyles
+  ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { MainModalContent } from "./MainModalContent";
 
@@ -27,10 +27,10 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-const Wrapped = component => (
+const Wrapped = (component) => (
   <ThemeContext.Provider
     value={{
-      reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+      reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
     }}
   >
     {component}

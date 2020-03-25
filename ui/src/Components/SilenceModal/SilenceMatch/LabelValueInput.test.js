@@ -7,12 +7,12 @@ import toDiffableHtml from "diffable-html";
 import {
   SilenceFormStore,
   NewEmptyMatcher,
-  MatcherValueToObject
+  MatcherValueToObject,
 } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
 import {
   ReactSelectColors,
-  ReactSelectStyles
+  ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { LabelValueInput } from "./LabelValueInput";
 
@@ -29,11 +29,11 @@ beforeEach(() => {
   matcher.name = "name";
   matcher.suggestions.names = [
     MatcherValueToObject("job"),
-    MatcherValueToObject("cluster")
+    MatcherValueToObject("cluster"),
   ];
   matcher.suggestions.values = [
     MatcherValueToObject("foo"),
-    MatcherValueToObject("bar")
+    MatcherValueToObject("bar"),
   ];
 });
 
@@ -41,11 +41,11 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-const MountedLabelValueInput = isValid => {
+const MountedLabelValueInput = (isValid) => {
   return mount(
     <ThemeContext.Provider
       value={{
-        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
       }}
     >
       <LabelValueInput
@@ -131,10 +131,7 @@ describe("<LabelValueInput />", () => {
     matcher.values = [MatcherValueToObject("foo"), MatcherValueToObject("bar")];
     const tree = MountedLabelValueInput(true);
 
-    tree
-      .find(".react-select__multi-value__remove")
-      .at(0)
-      .simulate("click");
+    tree.find(".react-select__multi-value__remove").at(0).simulate("click");
     expect(matcher.values).toHaveLength(1);
 
     tree.find(".react-select__multi-value__remove").simulate("click");

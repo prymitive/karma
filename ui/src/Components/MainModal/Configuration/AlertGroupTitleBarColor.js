@@ -9,10 +9,10 @@ import { Settings } from "Stores/Settings";
 const AlertGroupTitleBarColor = observer(
   class AlertGroupTitleBarColor extends Component {
     static propTypes = {
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
     };
 
-    onChange = action(event => {
+    onChange = action((event) => {
       const { settingsStore } = this.props;
       settingsStore.alertGroupConfig.config.colorTitleBar =
         event.target.checked;

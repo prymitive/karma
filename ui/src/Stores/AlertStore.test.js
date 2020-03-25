@@ -7,7 +7,7 @@ import {
   FormatAlertsQ,
   DecodeLocationSearch,
   UpdateLocationSearch,
-  NewUnappliedFilter
+  NewUnappliedFilter,
 } from "Stores/AlertStore";
 
 beforeEach(() => {
@@ -36,7 +36,7 @@ describe("AlertStore.data", () => {
           error: "",
           version: "0.17.0",
           cluster: "default",
-          clusterMembers: ["default", "readonly"]
+          clusterMembers: ["default", "readonly"],
         },
         {
           name: "readonly",
@@ -48,9 +48,9 @@ describe("AlertStore.data", () => {
           error: "",
           version: "0.17.0",
           cluster: "default",
-          clusterMembers: ["default", "readonly"]
-        }
-      ]
+          clusterMembers: ["default", "readonly"],
+        },
+      ],
     };
     expect(
       store.data.getClusterAlertmanagersWithoutReadOnly("default")
@@ -74,7 +74,7 @@ describe("AlertStore.data", () => {
           error: "",
           version: "0.17.0",
           cluster: "default",
-          clusterMembers: ["ro1", "ro2"]
+          clusterMembers: ["ro1", "ro2"],
         },
         {
           name: "ro2",
@@ -86,9 +86,9 @@ describe("AlertStore.data", () => {
           error: "",
           version: "0.17.0",
           cluster: "default",
-          clusterMembers: ["ro1", "ro2"]
-        }
-      ]
+          clusterMembers: ["ro1", "ro2"],
+        },
+      ],
     };
     expect(
       store.data.getClusterAlertmanagersWithoutReadOnly("default")
@@ -307,7 +307,7 @@ describe("FormatAlertsQ", () => {
 describe("DecodeLocationSearch", () => {
   const defaultParams = {
     defaultsUsed: true,
-    params: { q: [] }
+    params: { q: [] },
   };
 
   it("empty ('') search param is decoded correctly", () => {
@@ -321,56 +321,56 @@ describe("DecodeLocationSearch", () => {
   it("no value q[]= search param is decoded correctly", () => {
     expect(DecodeLocationSearch("?q[]=")).toMatchObject({
       defaultsUsed: false,
-      params: { q: [] }
+      params: { q: [] },
     });
   });
 
   it("no value q= search param is decoded correctly", () => {
     expect(DecodeLocationSearch("?q=")).toMatchObject({
       defaultsUsed: false,
-      params: { q: [] }
+      params: { q: [] },
     });
   });
 
   it("no value q[]=&q[]= search param is decoded correctly", () => {
     expect(DecodeLocationSearch("?q=")).toMatchObject({
       defaultsUsed: false,
-      params: { q: [] }
+      params: { q: [] },
     });
   });
 
   it("single value q=foo search param is decoded correctly", () => {
     expect(DecodeLocationSearch("?q=foo")).toMatchObject({
       defaultsUsed: false,
-      params: { q: ["foo"] }
+      params: { q: ["foo"] },
     });
   });
 
   it("single value q[]=foo search param is decoded correctly", () => {
     expect(DecodeLocationSearch("?q[]=foo")).toMatchObject({
       defaultsUsed: false,
-      params: { q: ["foo"] }
+      params: { q: ["foo"] },
     });
   });
 
   it("multi value q[]=foo&q[]=bar search param is decoded correctly", () => {
     expect(DecodeLocationSearch("?q[]=foo&q[]=bar")).toMatchObject({
       defaultsUsed: false,
-      params: { q: ["foo", "bar"] }
+      params: { q: ["foo", "bar"] },
     });
   });
 
   it("multi value q[]=foo&q[]=bar&q[]=foo search param is decoded correctly", () => {
     expect(DecodeLocationSearch("?q[]=foo&q[]=bar&q[]=foo")).toMatchObject({
       defaultsUsed: false,
-      params: { q: ["foo", "bar"] }
+      params: { q: ["foo", "bar"] },
     });
   });
 
   it("multi value q[]=foo&q[]=&q[]=foo search param is decoded correctly", () => {
     expect(DecodeLocationSearch("?q[]=foo&q[]=&q[]=foo")).toMatchObject({
       defaultsUsed: false,
-      params: { q: ["foo"] }
+      params: { q: ["foo"] },
     });
   });
 });
@@ -494,7 +494,7 @@ describe("AlertStore.fetch", () => {
       Promise.resolve({
         type: "opaque",
         body: "auth needed",
-        json: jest.fn(() => EmptyAPIResponse())
+        json: jest.fn(() => EmptyAPIResponse()),
       })
     );
 
@@ -526,7 +526,7 @@ describe("AlertStore.fetch", () => {
       staticColorLabels: ["job"],
       annotationsDefaultHidden: false,
       annotationsHidden: [],
-      annotationsVisible: []
+      annotationsVisible: [],
     });
 
     // second fetch, should keep same settings
@@ -535,7 +535,7 @@ describe("AlertStore.fetch", () => {
       staticColorLabels: ["job"],
       annotationsDefaultHidden: false,
       annotationsHidden: [],
-      annotationsVisible: []
+      annotationsVisible: [],
     });
   });
 

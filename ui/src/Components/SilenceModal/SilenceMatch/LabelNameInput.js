@@ -14,7 +14,7 @@ const LabelNameInput = observer(
   class LabelNameInput extends MultiSelect {
     static propTypes = {
       matcher: SilenceFormMatcher.isRequired,
-      isValid: PropTypes.bool.isRequired
+      isValid: PropTypes.bool.isRequired,
     };
 
     populateNameSuggestions = action(() => {
@@ -25,18 +25,18 @@ const LabelNameInput = observer(
         {}
       )
         .then(
-          result => result.json(),
-          err => {
+          (result) => result.json(),
+          (err) => {
             return [];
           }
         )
-        .then(result => {
-          matcher.suggestions.names = result.map(value => ({
+        .then((result) => {
+          matcher.suggestions.names = result.map((value) => ({
             label: value,
-            value: value
+            value: value,
           }));
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err.message);
           matcher.suggestions.names = [];
         });
@@ -50,18 +50,18 @@ const LabelNameInput = observer(
         {}
       )
         .then(
-          result => result.json(),
-          err => {
+          (result) => result.json(),
+          (err) => {
             return [];
           }
         )
-        .then(result => {
-          matcher.suggestions.values = result.map(value => ({
+        .then((result) => {
+          matcher.suggestions.values = result.map((value) => ({
             label: value,
-            value: value
+            value: value,
           }));
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err.message);
           matcher.suggestions.values = [];
         });
@@ -99,7 +99,7 @@ const LabelNameInput = observer(
         options: matcher.suggestions.names,
         placeholder: isValid ? "Label name" : <ValidationError />,
         onChange: this.onChange,
-        hideSelectedOptions: true
+        hideSelectedOptions: true,
       };
     };
   }

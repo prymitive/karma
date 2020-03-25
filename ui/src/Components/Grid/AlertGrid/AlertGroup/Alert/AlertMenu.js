@@ -42,7 +42,7 @@ const MenuContent = onClickOutside(
     alert,
     afterClick,
     alertStore,
-    silenceFormStore
+    silenceFormStore,
   }) => {
     const isReadOnly =
       Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0;
@@ -56,7 +56,7 @@ const MenuContent = onClickOutside(
           data-placement={popperPlacement}
         >
           <h6 className="dropdown-header">Alert source links:</h6>
-          {alert.alertmanager.map(am => (
+          {alert.alertmanager.map((am) => (
             <a
               key={am.name}
               className="dropdown-item"
@@ -71,8 +71,9 @@ const MenuContent = onClickOutside(
           ))}
           <div className="dropdown-divider" />
           <div
-            className={`dropdown-item cursor-pointer ${isReadOnly &&
-              "disabled"}`}
+            className={`dropdown-item cursor-pointer ${
+              isReadOnly && "disabled"
+            }`}
             onClick={() =>
               isReadOnly ||
               onSilenceClick(alertStore, silenceFormStore, group, alert)
@@ -92,7 +93,7 @@ MenuContent.propTypes = {
   popperStyle: PropTypes.object,
   group: APIGroup.isRequired,
   alert: APIAlert.isRequired,
-  afterClick: PropTypes.func.isRequired
+  afterClick: PropTypes.func.isRequired,
 };
 
 const AlertMenu = observer(
@@ -102,7 +103,7 @@ const AlertMenu = observer(
       alert: APIAlert.isRequired,
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      setIsMenuOpen: PropTypes.func.isRequired
+      setIsMenuOpen: PropTypes.func.isRequired,
     };
 
     constructor(props) {
@@ -118,14 +119,14 @@ const AlertMenu = observer(
           hide() {
             this.value = true;
             props.setIsMenuOpen(!this.value);
-          }
+          },
         },
         { toggle: action.bound, hide: action.bound },
         { name: "Alert menu toggle" }
       );
     }
 
-    handleClickOutside = action(event => {
+    handleClickOutside = action((event) => {
       this.collapse.hide();
     });
 
@@ -160,7 +161,7 @@ const AlertMenu = observer(
               placement="bottom-start"
               modifiers={{
                 arrow: { enabled: false },
-                offset: { offset: "-5px, 0px" }
+                offset: { offset: "-5px, 0px" },
               }}
             >
               {({ placement, ref, style }) => (

@@ -11,7 +11,7 @@ import { HotKeys } from "react-hotkeys";
 
 import {
   MountModal,
-  MountModalBackdrop
+  MountModalBackdrop,
 } from "Components/Animations/MountModal";
 
 const Modal = observer(
@@ -21,11 +21,11 @@ const Modal = observer(
       isOpen: PropTypes.bool.isRequired,
       isUpper: PropTypes.bool,
       toggleOpen: PropTypes.func.isRequired,
-      children: PropTypes.node.isRequired
+      children: PropTypes.node.isRequired,
     };
     static defaultProps = {
       size: "lg",
-      isUpper: false
+      isUpper: false,
     };
 
     constructor(props) {
@@ -35,7 +35,7 @@ const Modal = observer(
       this.lastIsOpen = observable.box(false);
     }
 
-    toggleBodyClass = isOpen => {
+    toggleBodyClass = (isOpen) => {
       document.body.classList.toggle("modal-open", isOpen);
       if (isOpen) {
         this.HotKeysRef.current.focus();
@@ -95,8 +95,9 @@ const Modal = observer(
             >
               <div ref={this.modalRef} className="modal d-block" role="dialog">
                 <div
-                  className={`modal-dialog modal-${size} ${isUpper &&
-                    "modal-upper shadow"}`}
+                  className={`modal-dialog modal-${size} ${
+                    isUpper && "modal-upper shadow"
+                  }`}
                   role="document"
                 >
                   <div className="modal-content">{children}</div>

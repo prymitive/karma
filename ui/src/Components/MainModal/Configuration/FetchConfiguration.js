@@ -11,22 +11,22 @@ import { Settings } from "Stores/Settings";
 const FetchConfiguration = observer(
   class FetchConfiguration extends Component {
     static propTypes = {
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
     };
 
     constructor(props) {
       super(props);
 
       this.config = observable({
-        fetchInterval: toJS(props.settingsStore.fetchConfig.config.interval)
+        fetchInterval: toJS(props.settingsStore.fetchConfig.config.interval),
       });
     }
 
-    onChange = action(value => {
+    onChange = action((value) => {
       this.config.fetchInterval = value;
     });
 
-    onChangeComplete = action(value => {
+    onChangeComplete = action((value) => {
       const { settingsStore } = this.props;
 
       settingsStore.fetchConfig.setInterval(value);

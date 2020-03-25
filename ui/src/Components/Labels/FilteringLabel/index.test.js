@@ -65,8 +65,8 @@ describe("<FilteringLabel />", () => {
     alertStore.data.colors["foo"] = {
       bar: {
         brightness: 125,
-        background: { red: 4, green: 5, blue: 6, alpha: 200 }
-      }
+        background: { red: 4, green: 5, blue: 6, alpha: 200 },
+      },
     };
     const tree = MountedFilteringLabel("foo", "bar");
     expect(tree.hasClass("components-label-dark")).toBe(true);
@@ -76,8 +76,8 @@ describe("<FilteringLabel />", () => {
     alertStore.data.colors["foo"] = {
       bar: {
         brightness: 200,
-        background: { red: 4, green: 5, blue: 6, alpha: 200 }
-      }
+        background: { red: 4, green: 5, blue: 6, alpha: 200 },
+      },
     };
     const tree = MountedFilteringLabel("foo", "bar");
     expect(tree.hasClass("components-label-bright")).toBe(true);

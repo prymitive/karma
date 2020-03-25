@@ -20,10 +20,10 @@ const SilenceMatch = observer(
       matcher: SilenceFormMatcher.isRequired,
       showDelete: PropTypes.bool.isRequired,
       onDelete: PropTypes.func.isRequired,
-      isValid: PropTypes.bool.isRequired
+      isValid: PropTypes.bool.isRequired,
     };
 
-    onIsRegexChange = action(event => {
+    onIsRegexChange = action((event) => {
       const { matcher } = this.props;
 
       // only allow to change value if we don't have multiple values
@@ -38,7 +38,7 @@ const SilenceMatch = observer(
         matcher,
         showDelete,
         onDelete,
-        isValid
+        isValid,
       } = this.props;
 
       return (

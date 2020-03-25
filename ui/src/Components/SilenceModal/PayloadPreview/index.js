@@ -11,7 +11,7 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 const PayloadPreview = observer(
   class PayloadPreview extends Component {
     static propTypes = {
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
     };
 
     render() {

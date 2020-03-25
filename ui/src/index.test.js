@@ -6,8 +6,8 @@ const settingsElement = {
   dataset: {
     sentryDsn: "",
     version: "1.2.3",
-    defaultFiltersBase64: "WyJmb289YmFyIiwiYmFyPX5iYXoiXQ=="
-  }
+    defaultFiltersBase64: "WyJmb289YmFyIiwiYmFyPX5iYXoiXQ==",
+  },
 };
 
 beforeEach(() => {
@@ -20,7 +20,7 @@ afterEach(() => {
 
 it("renders without crashing with missing defaults div", () => {
   const root = document.createElement("div");
-  jest.spyOn(global.document, "getElementById").mockImplementation(name => {
+  jest.spyOn(global.document, "getElementById").mockImplementation((name) => {
     return name === "settings"
       ? settingsElement
       : name === "defaults"
@@ -39,12 +39,12 @@ it("renders without crashing with missing defaults div", () => {
 
 it("renders without crashing with defaults present", () => {
   const root = document.createElement("div");
-  jest.spyOn(global.document, "getElementById").mockImplementation(name => {
+  jest.spyOn(global.document, "getElementById").mockImplementation((name) => {
     return name === "settings"
       ? settingsElement
       : name === "defaults"
       ? {
-          innerHTML: DefaultsBase64
+          innerHTML: DefaultsBase64,
         }
       : name === "root"
       ? root
@@ -94,7 +94,7 @@ describe("console", () => {
       "Warning: componentWillMount has been renamed, and is not recommended for use. See https://fb.me/react-async-component-lifecycle-hooks for details.",
       "* Move code with side effects to componentDidMount, and set initial state in the constructor.",
       "* Rename componentWillMount to UNSAFE_componentWillMount to suppress this warning in non-strict mode. In React 17.x, only the UNSAFE_ name will work. To rename all deprecated lifecycles to their new names, you can run `npx react-codemod rename-unsafe-lifecycles` in your project source folder.",
-      "Please update the following components: foo"
+      "Please update the following components: foo",
     ].join("\n");
     expect(() => {
       console.warn(msg);

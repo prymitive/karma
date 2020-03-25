@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 class UpstreamError extends Component {
   static propTypes = {
     name: PropTypes.string.isRequired,
-    message: PropTypes.string.isRequired
+    message: PropTypes.string.isRequired,
   };
 
   render() {

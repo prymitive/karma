@@ -12,12 +12,12 @@ import { FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 
-const valueToOption = v => ({ label: v, value: v });
+const valueToOption = (v) => ({ label: v, value: v });
 
 const SortLabelName = observer(
   class SortLabelName extends Creatable {
     static propTypes = {
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
     };
     static contextType = ThemeContext;
 
@@ -31,7 +31,7 @@ const SortLabelName = observer(
     }
 
     suggestions = observable({
-      names: []
+      names: [],
     });
 
     populateNameSuggestions = action(() => {
@@ -40,18 +40,18 @@ const SortLabelName = observer(
         {}
       )
         .then(
-          result => result.json(),
-          err => {
+          (result) => result.json(),
+          (err) => {
             return [];
           }
         )
-        .then(result => {
-          this.suggestions.names = result.map(value => ({
+        .then((result) => {
+          this.suggestions.names = result.map((value) => ({
             label: value,
-            value: value
+            value: value,
           }));
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err.message);
           this.suggestions.names = [];
         });

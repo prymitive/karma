@@ -9,10 +9,10 @@ import { Settings } from "Stores/Settings";
 const FilterBarConfiguration = observer(
   class FilterBarConfiguration extends Component {
     static propTypes = {
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
     };
 
-    onAutohideChange = action(event => {
+    onAutohideChange = action((event) => {
       const { settingsStore } = this.props;
       settingsStore.filterBarConfig.config.autohide = event.target.checked;
     });

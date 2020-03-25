@@ -33,7 +33,7 @@ describe("<OverviewModalContent />", () => {
   it("matches snapshot with labels to show", () => {
     alertStore.filters.values = [
       NewUnappliedFilter("abc=xyz"),
-      NewUnappliedFilter("foo=bar")
+      NewUnappliedFilter("foo=bar"),
     ];
     alertStore.data.counters = [
       {
@@ -42,19 +42,19 @@ describe("<OverviewModalContent />", () => {
         values: [
           { value: "bar1", raw: "foo=bar1", hits: 8, percent: 50, offset: 0 },
           { value: "bar2", raw: "foo=bar2", hits: 4, percent: 25, offset: 50 },
-          { value: "bar3", raw: "foo=bar3", hits: 4, percent: 25, offset: 75 }
-        ]
+          { value: "bar3", raw: "foo=bar3", hits: 4, percent: 25, offset: 75 },
+        ],
       },
       {
         name: "bar",
         hits: 20,
-        values: Array.from(Array(20).keys()).map(i => ({
+        values: Array.from(Array(20).keys()).map((i) => ({
           value: `baz${i + 1}`,
           raw: `bar=baz${i + 1}`,
           hits: 1,
           percent: 5,
-          offset: i * 5
-        }))
+          offset: i * 5,
+        })),
       },
       {
         name: "alertname",
@@ -65,10 +65,10 @@ describe("<OverviewModalContent />", () => {
             raw: "alertname=Host_Down",
             hits: 5,
             percent: 100,
-            offset: 0
-          }
-        ]
-      }
+            offset: 0,
+          },
+        ],
+      },
     ];
 
     const tree = MountedOverviewModalContent();
@@ -88,8 +88,8 @@ describe("<OverviewModalContent />", () => {
         name: "foo",
         hits: 5,
         values: [
-          { value: "bar", raw: "foo=bar", hits: 5, percent: 100, offset: 0 }
-        ]
+          { value: "bar", raw: "foo=bar", hits: 5, percent: 100, offset: 0 },
+        ],
       },
       {
         name: "bar",
@@ -100,41 +100,21 @@ describe("<OverviewModalContent />", () => {
             raw: "bar=foo",
             hits: 3,
             percent: 100,
-            offset: 0
-          }
-        ]
-      }
+            offset: 0,
+          },
+        ],
+      },
     ];
     const tree = MountedOverviewModalContent();
 
     expect(tree.find("span.components-label")).toHaveLength(2);
-    expect(
-      tree
-        .find("span.components-label")
-        .at(0)
-        .text()
-    ).toBe("5foo");
-    expect(
-      tree
-        .find("span.components-label")
-        .at(1)
-        .text()
-    ).toBe("5foo: bar");
+    expect(tree.find("span.components-label").at(0).text()).toBe("5foo");
+    expect(tree.find("span.components-label").at(1).text()).toBe("5foo: bar");
 
     tree.find("svg.cursor-pointer").simulate("click");
 
     expect(tree.find("span.components-label")).toHaveLength(4);
-    expect(
-      tree
-        .find("span.components-label")
-        .at(2)
-        .text()
-    ).toBe("3bar");
-    expect(
-      tree
-        .find("span.components-label")
-        .at(3)
-        .text()
-    ).toBe("3bar: foo");
+    expect(tree.find("span.components-label").at(2).text()).toBe("3bar");
+    expect(tree.find("span.components-label").at(3).text()).toBe("3bar: foo");
   });
 });

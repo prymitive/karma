@@ -12,7 +12,7 @@ import "csshake/scss/csshake-slow.scss";
 class UpgradeNeeded extends Component {
   static propTypes = {
     newVersion: PropTypes.string.isRequired,
-    reloadAfter: PropTypes.number.isRequired
+    reloadAfter: PropTypes.number.isRequired,
   };
 
   reloadApp = () => {

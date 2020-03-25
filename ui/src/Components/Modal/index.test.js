@@ -6,7 +6,7 @@ import { Modal } from ".";
 
 const fakeToggle = jest.fn();
 
-const MountedModal = isOpen => {
+const MountedModal = (isOpen) => {
   return mount(
     <Modal isOpen={isOpen} toggleOpen={fakeToggle}>
       <div />

@@ -23,7 +23,7 @@ import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { HistoryLabel } from "Components/Labels/HistoryLabel";
 
 const defaultHistory = {
-  filters: []
+  filters: [],
 };
 
 // takes a filter object out of alertStore.history.values and creates a new
@@ -33,7 +33,7 @@ function ReduceFilter(filter) {
     raw: filter.raw,
     name: filter.name,
     matcher: filter.matcher,
-    value: filter.value
+    value: filter.value,
   };
 }
 
@@ -54,7 +54,7 @@ ActionButton.propTypes = {
   title: PropTypes.node.isRequired,
   icon: FontAwesomeIcon.propTypes.icon.isRequired,
   action: PropTypes.func.isRequired,
-  afterClick: PropTypes.func.isRequired
+  afterClick: PropTypes.func.isRequired,
 };
 
 const HistoryMenuContent = ({
@@ -65,7 +65,7 @@ const HistoryMenuContent = ({
   alertStore,
   settingsStore,
   afterClick,
-  onClear
+  onClear,
 }) => {
   return (
     <div
@@ -81,17 +81,17 @@ const HistoryMenuContent = ({
       {filters.length === 0 ? (
         <h6 className="dropdown-header text-muted text-center">Empty</h6>
       ) : (
-        filters.map(historyFilters => (
+        filters.map((historyFilters) => (
           <button
             className="dropdown-item cursor-pointer px-3"
             key={hash(historyFilters)}
             onClick={() => {
-              alertStore.filters.setFilters(historyFilters.map(f => f.raw));
+              alertStore.filters.setFilters(historyFilters.map((f) => f.raw));
               afterClick();
             }}
           >
             <div className="components-navbar-historymenu-labels pl-2">
-              {historyFilters.map(f => (
+              {historyFilters.map((f) => (
                 <HistoryLabel
                   key={f.raw}
                   alertStore={alertStore}
@@ -112,7 +112,7 @@ const HistoryMenuContent = ({
           title="Save filters"
           action={() => {
             settingsStore.savedFilters.save(
-              alertStore.filters.values.map(f => f.raw)
+              alertStore.filters.values.map((f) => f.raw)
             );
           }}
           afterClick={afterClick}
@@ -143,7 +143,7 @@ HistoryMenuContent.propTypes = {
   alertStore: PropTypes.instanceOf(AlertStore).isRequired,
   settingsStore: PropTypes.instanceOf(Settings).isRequired,
   afterClick: PropTypes.func.isRequired,
-  onClear: PropTypes.func.isRequired
+  onClear: PropTypes.func.isRequired,
 };
 
 const HistoryMenu = onClickOutside(HistoryMenuContent);
@@ -152,7 +152,7 @@ const History = observer(
   class History extends Component {
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
     };
 
     // how many filter sets do we store in local storage and render in the
@@ -169,7 +169,7 @@ const History = observer(
         },
         hide() {
           this.value = true;
-        }
+        },
       },
       { toggle: action.bound, hide: action.bound },
       { name: "History menu toggle" }
@@ -183,8 +183,8 @@ const History = observer(
       // also check for value, name might be missing for fuzzy filters, but
       // the value should always be set
       const validAppliedFilters = alertStore.filters.values
-        .filter(f => f.applied && f.isValid && f.value)
-        .map(f => ReduceFilter(f));
+        .filter((f) => f.applied && f.isValid && f.value)
+        .map((f) => ReduceFilter(f));
 
       // don't store empty filters in history
       if (validAppliedFilters.length === 0) return;
@@ -200,7 +200,7 @@ const History = observer(
       // it up if user selects a filter set that was already in history
       let newHistory = [
         ...[validAppliedFilters],
-        ...storedFilters.filter(f => JSON.stringify(f) !== filtersJSON)
+        ...storedFilters.filter((f) => JSON.stringify(f) !== filtersJSON),
       ].slice(0, this.maxSize);
       this.history.filters = newHistory;
     });
@@ -215,7 +215,7 @@ const History = observer(
       this.appendToHistory();
     }
 
-    handleClickOutside = action(event => {
+    handleClickOutside = action((event) => {
       this.collapse.hide();
     });
 
@@ -230,7 +230,7 @@ const History = observer(
         // needed to keep track of all filter changes
         <Manager
           data-filters={alertStore.filters.values
-            .map(f => ReduceFilter(f))
+            .map((f) => ReduceFilter(f))
             .join(" ")}
         >
           <Reference>
@@ -251,7 +251,7 @@ const History = observer(
           <DropdownSlide in={!this.collapse.value} unmountOnExit>
             <Popper
               modifiers={{
-                arrow: { enabled: false }
+                arrow: { enabled: false },
               }}
             >
               {({ placement, ref, style }) => (

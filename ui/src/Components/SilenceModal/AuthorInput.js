@@ -39,7 +39,7 @@ IconInput.propTypes = {
   icon: FontAwesomeIcon.propTypes.icon.isRequired,
   placeholder: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
-  onChange: PropTypes.func
+  onChange: PropTypes.func,
 };
 
 const AuthenticatedAuthorInput = ({ alertStore }) => (
@@ -53,7 +53,7 @@ const AuthenticatedAuthorInput = ({ alertStore }) => (
   />
 );
 AuthenticatedAuthorInput.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
 };
 
 export { IconInput, AuthenticatedAuthorInput };

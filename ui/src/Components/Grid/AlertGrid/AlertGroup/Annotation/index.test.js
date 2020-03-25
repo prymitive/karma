@@ -35,7 +35,7 @@ describe("<RenderLinkAnnotation />", () => {
 
 const MockAfterUpdate = jest.fn();
 
-const ShallowNonLinkAnnotation = visible => {
+const ShallowNonLinkAnnotation = (visible) => {
   return shallow(
     <RenderNonLinkAnnotation
       alertStore={alertStore}
@@ -47,7 +47,7 @@ const ShallowNonLinkAnnotation = visible => {
   );
 };
 
-const MountedNonLinkAnnotation = visible => {
+const MountedNonLinkAnnotation = (visible) => {
   return mount(
     <RenderNonLinkAnnotation
       alertStore={alertStore}
@@ -59,7 +59,7 @@ const MountedNonLinkAnnotation = visible => {
   );
 };
 
-const MountedNonLinkAnnotationContainingLink = visible => {
+const MountedNonLinkAnnotationContainingLink = (visible) => {
   return mount(
     <RenderNonLinkAnnotation
       alertStore={alertStore}
