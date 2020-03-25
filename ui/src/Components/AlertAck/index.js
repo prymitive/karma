@@ -215,7 +215,7 @@ const AlertAck = observer(
       }
 
       return (
-        <TooltipWrapper title="Acknowlage this alert with a short lived silence">
+        <TooltipWrapper title="Acknowledge this alert with a short lived silence">
           <span
             className={`badge badge-pill components-label components-label-with-hover px-2 ${
               this.submitState.isFailed
