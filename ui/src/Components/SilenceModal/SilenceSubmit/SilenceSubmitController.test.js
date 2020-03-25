@@ -28,7 +28,7 @@ describe("<SilenceSubmitController />", () => {
     silenceFormStore.data.alertmanagers.push({ label: "am1", value: ["am1"] });
     silenceFormStore.data.alertmanagers.push({
       label: "ha",
-      value: ["am2", "am3"]
+      value: ["am2", "am3"],
     });
     const tree = ShallowSilenceSubmitController();
     const alertmanagers = tree.find("SilenceSubmitProgress");

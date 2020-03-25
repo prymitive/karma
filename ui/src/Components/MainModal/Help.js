@@ -26,7 +26,7 @@ const FilterOperatorHelp = ({ operator, description, children }) => (
 );
 FilterOperatorHelp.propTypes = {
   operator: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired
+  description: PropTypes.string.isRequired,
 };
 
 const QueryHelp = ({ title, operators, warning, children }) => (
@@ -35,7 +35,7 @@ const QueryHelp = ({ title, operators, warning, children }) => (
     <dd className="mb-5">
       <div>
         Supported operators:{" "}
-        {operators.map(op => (
+        {operators.map((op) => (
           <kbd key={op} className="mr-1">
             {op}
           </kbd>
@@ -55,7 +55,7 @@ const QueryHelp = ({ title, operators, warning, children }) => (
 QueryHelp.propTypes = {
   title: PropTypes.string.isRequired,
   operators: PropTypes.arrayOf(PropTypes.string).isRequired,
-  warning: PropTypes.node
+  warning: PropTypes.node,
 };
 
 const FilterExample = ({ example, children }) => (
@@ -68,7 +68,7 @@ const FilterExample = ({ example, children }) => (
 );
 FilterExample.propTypes = {
   example: PropTypes.string.isRequired,
-  children: PropTypes.node
+  children: PropTypes.node,
 };
 
 const Help = ({ defaultIsOpen }) => (
@@ -288,7 +288,7 @@ const Help = ({ defaultIsOpen }) => (
   </div>
 );
 Help.propTypes = {
-  defaultIsOpen: PropTypes.bool.isRequired
+  defaultIsOpen: PropTypes.bool.isRequired,
 };
 
 export { Help };

@@ -11,7 +11,7 @@ import {
   MockAlertGroup,
   MockAnnotation,
   MockAlert,
-  MockSilence
+  MockSilence,
 } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -27,12 +27,12 @@ const MockGroup = () => {
     [
       MockAlert([], {}, "suppressed"),
       MockAlert([], {}, "suppressed"),
-      MockAlert([], {}, "suppressed")
+      MockAlert([], {}, "suppressed"),
     ],
     [
       MockAnnotation("summary", "This is summary", true, false),
       MockAnnotation("hidden", "This is hidden annotation", false, false),
-      MockAnnotation("link", "http://link.example.com", true, true)
+      MockAnnotation("link", "http://link.example.com", true, true),
     ],
     { label1: "foo", label2: "bar" },
     {}
@@ -80,8 +80,8 @@ describe("<GroupFooter />", () => {
     group.shared.silences = { default: ["123456789"] };
     alertStore.data.silences = {
       default: {
-        "123456789": MockSilence()
-      }
+        "123456789": MockSilence(),
+      },
     };
 
     const tree = MountedGroupFooter().find("GroupFooter");
@@ -94,7 +94,7 @@ describe("<GroupFooter />", () => {
     }
     group.shared.silences = { default: ["123456789"] };
     alertStore.data.silences = {
-      default: {}
+      default: {},
     };
 
     const tree = MountedGroupFooter().find("GroupFooter");
@@ -107,7 +107,7 @@ describe("<GroupFooter />", () => {
     }
     group.shared.silences = { default: ["123456789"] };
     alertStore.data.silences = {
-      foo: {}
+      foo: {},
     };
 
     const tree = MountedGroupFooter().find("GroupFooter");
@@ -122,8 +122,8 @@ describe("<GroupFooter />", () => {
 
     alertStore.data.silences = {
       default: {
-        "123456789": MockSilence()
-      }
+        "123456789": MockSilence(),
+      },
     };
     alertStore.data.silences["default"]["123456789"].id = "123456789";
 

@@ -29,9 +29,9 @@ beforeEach(() => {
         error: "",
         version: "0.17.0",
         cluster: "default",
-        clusterMembers: ["am1"]
-      }
-    ]
+        clusterMembers: ["am1"],
+      },
+    ],
   };
 });
 
@@ -79,7 +79,7 @@ describe("<GroupMenu />", () => {
   });
 });
 
-const MountedMenuContent = group => {
+const MountedMenuContent = (group) => {
   return mount(
     <MenuContent
       popperPlacement="top"

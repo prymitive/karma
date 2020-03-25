@@ -8,7 +8,7 @@ import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 import {
   ReactSelectColors,
-  ReactSelectStyles
+  ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { AlertGroupCollapseConfiguration } from "./AlertGroupCollapseConfiguration";
 
@@ -21,7 +21,7 @@ const FakeConfiguration = () => {
   return mount(
     <ThemeContext.Provider
       value={{
-        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
       }}
     >
       <AlertGroupCollapseConfiguration settingsStore={settingsStore} />
@@ -35,7 +35,7 @@ describe("<AlertGroupCollapseConfiguration />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("resets stored config to defaults if it is invalid", done => {
+  it("resets stored config to defaults if it is invalid", (done) => {
     settingsStore.alertGroupConfig.config.defaultCollapseState = "foo";
     const tree = FakeConfiguration();
     const select = tree.find("div.react-select__value-container");
@@ -50,7 +50,7 @@ describe("<AlertGroupCollapseConfiguration />", () => {
     }, 200);
   });
 
-  it("rendered correct default value", done => {
+  it("rendered correct default value", (done) => {
     settingsStore.alertGroupConfig.config.defaultCollapseState =
       settingsStore.alertGroupConfig.options.expanded.value;
     const tree = FakeConfiguration();
@@ -63,7 +63,7 @@ describe("<AlertGroupCollapseConfiguration />", () => {
     }, 200);
   });
 
-  it("clicking on a label option updates settingsStore", done => {
+  it("clicking on a label option updates settingsStore", (done) => {
     const tree = FakeConfiguration();
     tree
       .find("input#react-select-configuration-collapse-input")

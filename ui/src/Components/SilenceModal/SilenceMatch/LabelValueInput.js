@@ -20,11 +20,11 @@ const GenerateHashFromMatchers = (silenceFormStore, matcher) =>
     matcher: {
       name: matcher.name,
       values: matcher.values,
-      isRegex: matcher.isRegex
-    }
+      isRegex: matcher.isRegex,
+    },
   });
 
-const Placeholder = props => {
+const Placeholder = (props) => {
   return (
     <div>
       <components.Placeholder {...props} />
@@ -51,7 +51,7 @@ const LabelValueInput = observer(
     static propTypes = {
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       matcher: SilenceFormMatcher.isRequired,
-      isValid: PropTypes.bool.isRequired
+      isValid: PropTypes.bool.isRequired,
     };
 
     onChange = action((newValue, actionMeta) => {
@@ -82,7 +82,7 @@ const LabelValueInput = observer(
         onChange: this.onChange,
         components: { ValueContainer, Placeholder },
         silenceFormStore: silenceFormStore,
-        matcher: matcher
+        matcher: matcher,
       };
     };
   }

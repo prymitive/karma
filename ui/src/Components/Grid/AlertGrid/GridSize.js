@@ -6,7 +6,7 @@ const GridSizesConfig = (canvasWidth, baseWidth) => {
     generatedSizes.push({
       mq: `${i * baseWidth}px`,
       columns: i,
-      gutter: 0
+      gutter: 0,
     });
   }
   return [...[{ columns: 1, gutter: 0 }], ...generatedSizes];
@@ -14,9 +14,9 @@ const GridSizesConfig = (canvasWidth, baseWidth) => {
 
 const GetColumnsCount = (canvasWidth, baseWidth) =>
   [{ mq: "0px", columns: 1 }, ...GridSizesConfig(canvasWidth, baseWidth)]
-    .filter(gs => gs.mq !== undefined)
-    .filter(gs => canvasWidth >= Number.parseInt(gs.mq))
-    .map(gs => gs.columns)
+    .filter((gs) => gs.mq !== undefined)
+    .filter((gs) => canvasWidth >= Number.parseInt(gs.mq))
+    .map((gs) => gs.columns)
     .pop();
 
 const GetGridElementWidth = (innerWidth, outerWidth, baseWidth) =>

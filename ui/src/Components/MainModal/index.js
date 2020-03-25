@@ -15,8 +15,8 @@ import { Modal } from "Components/Modal";
 
 // https://github.com/facebook/react/issues/14603
 const MainModalContent = React.lazy(() =>
-  import("./MainModalContent").then(module => ({
-    default: module.MainModalContent
+  import("./MainModalContent").then((module) => ({
+    default: module.MainModalContent,
   }))
 );
 
@@ -24,7 +24,7 @@ const MainModal = observer(
   class MainModal extends Component {
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
     };
 
     toggle = observable(
@@ -35,7 +35,7 @@ const MainModal = observer(
         },
         hide() {
           this.show = false;
-        }
+        },
       },
       { toggle: action.bound, hide: action.bound }
     );

@@ -7,7 +7,7 @@ const DefaultsObject = {
   Theme: "light",
   MinimalGroupWidth: 555,
   AlertsPerGroup: 15,
-  CollapseGroups: "expanded"
+  CollapseGroups: "expanded",
 };
 
 export { DefaultsBase64, DefaultsObject };

@@ -28,8 +28,8 @@ describe("<StaticLabel />", () => {
     alertStore.data.colors["foo"] = {
       bar: {
         brightness: 125,
-        background: { red: 4, green: 5, blue: 6, alpha: 200 }
-      }
+        background: { red: 4, green: 5, blue: 6, alpha: 200 },
+      },
     };
     const tree = MountedStaticLabel();
     expect(
@@ -41,8 +41,8 @@ describe("<StaticLabel />", () => {
     alertStore.data.colors["foo"] = {
       bar: {
         brightness: 200,
-        background: { red: 4, green: 5, blue: 6, alpha: 200 }
-      }
+        background: { red: 4, green: 5, blue: 6, alpha: 200 },
+      },
     };
     const tree = MountedStaticLabel();
     expect(

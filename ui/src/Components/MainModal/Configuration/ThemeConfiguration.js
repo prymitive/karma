@@ -12,7 +12,7 @@ import { ThemeContext } from "Components/Theme";
 const ThemeConfiguration = observer(
   class ThemeConfiguration extends Component {
     static propTypes = {
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
     };
     static contextType = ThemeContext;
 
@@ -22,12 +22,12 @@ const ThemeConfiguration = observer(
       this.validateConfig();
     }
 
-    valueToOption = val => {
+    valueToOption = (val) => {
       const { settingsStore } = this.props;
 
       return {
         label: settingsStore.themeConfig.options[val].label,
-        value: val
+        value: val,
       };
     };
 
@@ -36,7 +36,7 @@ const ThemeConfiguration = observer(
 
       if (
         !Object.values(settingsStore.themeConfig.options)
-          .map(o => o.value)
+          .map((o) => o.value)
           .includes(settingsStore.themeConfig.config.theme)
       ) {
         settingsStore.themeConfig.config.theme =

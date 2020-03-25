@@ -10,7 +10,7 @@ import { AlertStore } from "Stores/AlertStore";
 const FaviconBadge = observer(
   class FaviconBadge extends Component {
     static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
     };
 
     constructor(props) {
@@ -21,7 +21,7 @@ const FaviconBadge = observer(
         position: "down",
         bgColor: "#e74c3c",
         textColor: "#fff",
-        fontStyle: "lighter"
+        fontStyle: "lighter",
       });
     }
 

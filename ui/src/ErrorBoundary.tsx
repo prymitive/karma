@@ -2,7 +2,7 @@ import React, {
   Component,
   StatelessComponent,
   ReactNode,
-  ErrorInfo
+  ErrorInfo,
 } from "react";
 
 import * as Sentry from "@sentry/browser";
@@ -16,7 +16,7 @@ interface InternalErrorProps {
   progressLeft: number;
 }
 
-const InternalError: StatelessComponent<InternalErrorProps> = props => (
+const InternalError: StatelessComponent<InternalErrorProps> = (props) => (
   <div className="text-placeholder screen-center">
     <div className="container-fluid text-center">
       <h1 className="display-1">
@@ -59,7 +59,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   timer: ReturnType<typeof setInterval> | null;
   state: Readonly<ErrorBoundaryState> = {
     cachedError: null,
-    reloadSeconds: 60
+    reloadSeconds: 60,
   };
 
   constructor(props: ErrorBoundaryProps) {
@@ -77,7 +77,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
   componentDidCatch(error: Error | null, errorInfo: ErrorInfo) {
     this.setState({ cachedError: error });
-    Sentry.withScope(scope => {
+    Sentry.withScope((scope) => {
       scope.setExtras(errorInfo);
       Sentry.captureException(error);
     });

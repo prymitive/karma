@@ -7,7 +7,7 @@ import {
   StaticColorLabelClassMap,
   DefaultLabelClassMap,
   AlertNameLabelClassMap,
-  StateLabelClassMap
+  StateLabelClassMap,
 } from "Common/Colors";
 import { BaseLabel } from ".";
 

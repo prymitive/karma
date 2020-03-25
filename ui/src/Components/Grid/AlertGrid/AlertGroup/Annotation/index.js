@@ -23,7 +23,7 @@ const RenderNonLinkAnnotation = observer(
       name: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired,
       visible: PropTypes.bool.isRequired,
-      afterUpdate: PropTypes.func.isRequired
+      afterUpdate: PropTypes.func.isRequired,
     };
 
     // keep state of this annotation visibility, this is controlled by user
@@ -37,11 +37,11 @@ const RenderNonLinkAnnotation = observer(
         },
         hide(e) {
           this.visible = false;
-        }
+        },
       },
       {
         show: action.bound,
-        hide: action.bound
+        hide: action.bound,
       }
     );
 
@@ -89,7 +89,7 @@ const RenderNonLinkAnnotation = observer(
             <Linkify
               properties={{
                 target: "_blank",
-                rel: "noopener noreferrer"
+                rel: "noopener noreferrer",
               }}
             >
               <Flash spy={value}>
@@ -118,7 +118,7 @@ const RenderLinkAnnotation = ({ name, value }) => {
 };
 RenderLinkAnnotation.propTypes = {
   name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired
+  value: PropTypes.string.isRequired,
 };
 
 export { RenderNonLinkAnnotation, RenderLinkAnnotation };

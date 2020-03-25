@@ -13,7 +13,7 @@ describe("<BodyTheme />", () => {
   it("uses light theme when ThemeContext->isDark is false", () => {
     mount(<BodyTheme />, {
       wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: { isDark: false } }
+      wrappingComponentProps: { value: { isDark: false } },
     });
     expect(document.body.classList.contains("theme-light")).toEqual(true);
   });
@@ -21,7 +21,7 @@ describe("<BodyTheme />", () => {
   it("uses dark theme when ThemeContext->isDark is true", () => {
     mount(<BodyTheme />, {
       wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: { isDark: true } }
+      wrappingComponentProps: { value: { isDark: true } },
     });
     expect(document.body.classList.contains("theme-dark")).toEqual(true);
   });
@@ -29,7 +29,7 @@ describe("<BodyTheme />", () => {
   it("updates theme when ThemeContext->isDark is updated", () => {
     const tree = mount(<BodyTheme />, {
       wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: { isDark: true } }
+      wrappingComponentProps: { value: { isDark: true } },
     });
     expect(document.body.classList.contains("theme-dark")).toEqual(true);
 

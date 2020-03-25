@@ -6,18 +6,18 @@ import {
   StaticColorLabelClassMap,
   DefaultLabelClassMap,
   AlertNameLabelClassMap,
-  StateLabelClassMap
+  StateLabelClassMap,
 } from "Common/Colors";
 import { QueryOperators, FormatQuery, StaticLabels } from "Common/Query";
 
-const isBackgroundDark = brightness => brightness <= 125;
+const isBackgroundDark = (brightness) => brightness <= 125;
 
 // base class for shared code, not used directly
 class BaseLabel extends Component {
   static propTypes = {
     alertStore: PropTypes.instanceOf(AlertStore).isRequired,
     name: PropTypes.string.isRequired,
-    value: PropTypes.string.isRequired
+    value: PropTypes.string.isRequired,
   };
 
   getClassAndStyle(name, value, extraClass, baseClass) {
@@ -29,7 +29,7 @@ class BaseLabel extends Component {
       style: {},
       className: "",
       baseClassNames: ["components-label", elementType],
-      colorClassNames: []
+      colorClassNames: [],
     };
 
     if (name === StaticLabels.AlertName) {
@@ -50,7 +50,7 @@ class BaseLabel extends Component {
           c.background.red,
           c.background.green,
           c.background.blue,
-          c.background.alpha
+          c.background.alpha,
         ].join(", ")})`;
 
         data.colorClassNames.push(
@@ -74,7 +74,7 @@ class BaseLabel extends Component {
     return data;
   }
 
-  handleClick = event => {
+  handleClick = (event) => {
     // left click       => apply foo=bar filter
     // left click + alt => apply foo!=bar filter
     const operator =

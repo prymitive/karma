@@ -17,7 +17,7 @@ import { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
   MatchersFromGroup,
-  GenerateAlertmanagerSilenceData
+  GenerateAlertmanagerSilenceData,
 } from "Stores/SilenceFormStore";
 import { FetchPost } from "Common/Fetch";
 import { TooltipWrapper } from "Components/TooltipWrapper";
@@ -26,7 +26,7 @@ const SubmitState = Object.freeze({
   Idle: "Idle",
   InProgress: "InProgress",
   Done: "Done",
-  Failed: "Failed"
+  Failed: "Failed",
 });
 
 const newPendingSilence = (
@@ -50,7 +50,7 @@ const newPendingSilence = (
   submitResult: null,
   isDone: false,
   isFailed: false,
-  fetch: null
+  fetch: null,
 });
 
 const AlertAck = observer(
@@ -58,7 +58,7 @@ const AlertAck = observer(
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      group: APIGroup.isRequired
+      group: APIGroup.isRequired,
     };
 
     constructor(props) {
@@ -85,24 +85,24 @@ const AlertAck = observer(
           get isInprogress() {
             return (
               Object.values(this.silencesByCluster).filter(
-                pendingSilence => pendingSilence.isDone === false
+                (pendingSilence) => pendingSilence.isDone === false
               ).length > 0
             );
           },
           get isDone() {
             return (
               Object.values(this.silencesByCluster).filter(
-                pendingSilence => pendingSilence.isDone === true
+                (pendingSilence) => pendingSilence.isDone === true
               ).length > 0
             );
           },
           get isFailed() {
             return (
               Object.values(this.silencesByCluster).filter(
-                pendingSilence => pendingSilence.isFailed === true
+                (pendingSilence) => pendingSilence.isFailed === true
               ).length > 0
             );
-          }
+          },
         },
         {
           reset: action.bound,
@@ -112,12 +112,12 @@ const AlertAck = observer(
           isIdle: computed,
           isInprogress: computed,
           isDone: computed,
-          isFailed: computed
+          isFailed: computed,
         }
       );
     }
 
-    maybeTryAgainAfterError = cluster => {
+    maybeTryAgainAfterError = (cluster) => {
       if (this.submitState.silencesByCluster[cluster].membersToTry.length) {
         this.handleAlertmanagerRequest(cluster);
       } else {
@@ -125,7 +125,7 @@ const AlertAck = observer(
       }
     };
 
-    handleAlertmanagerRequest = cluster => {
+    handleAlertmanagerRequest = (cluster) => {
       const { alertStore } = this.props;
 
       const member = this.submitState.silencesByCluster[
@@ -149,13 +149,15 @@ const AlertAck = observer(
           credentials: am.corsCredentials,
           headers: {
             "Content-Type": "application/json",
-            ...am.headers
-          }
+            ...am.headers,
+          },
         }
       )
-        .then(result => {
+        .then((result) => {
           if (result.ok) {
-            return result.json().then(r => this.submitState.markDone(cluster));
+            return result
+              .json()
+              .then((r) => this.submitState.markDone(cluster));
           } else {
             this.maybeTryAgainAfterError(cluster);
           }
@@ -190,7 +192,7 @@ const AlertAck = observer(
       const clusters = Object.entries(
         alertStore.data.clustersWithoutReadOnly
       ).filter(([clusterName, clusterMembers]) =>
-        alertmanagers.some(m => clusterMembers.includes(m))
+        alertmanagers.some((m) => clusterMembers.includes(m))
       );
 
       this.submitState.reset();

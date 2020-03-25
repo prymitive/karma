@@ -18,8 +18,8 @@ const MockColors = () => {
   alertStore.data.colors["foo"] = {
     bar: {
       brightness: 200,
-      background: { red: 4, green: 5, blue: 6, alpha: 200 }
-    }
+      background: { red: 4, green: 5, blue: 6, alpha: 200 },
+    },
   };
 };
 
@@ -41,7 +41,7 @@ const ValidateClass = (matcher, applied, expectedClass) => {
   expect(tree.props().className.split(" ")).toContain(expectedClass);
 };
 
-const ValidateOnChange = newRaw => {
+const ValidateOnChange = (newRaw) => {
   const tree = shallow(
     <FilterInputLabel
       alertStore={alertStore}
@@ -110,7 +110,7 @@ describe("<FilterInputLabel /> style", () => {
     MockColors();
     const tree = ShallowLabel("=", true, true, 1);
     expect(tree.props().style).toMatchObject({
-      backgroundColor: "rgba(4, 5, 6, 200)"
+      backgroundColor: "rgba(4, 5, 6, 200)",
     });
   });
 
@@ -146,7 +146,7 @@ describe("<FilterInputLabel /> onChange", () => {
   it("onChange doesn't allow duplicates", () => {
     alertStore.filters.values = [
       NewUnappliedFilter("foo=bar"),
-      NewUnappliedFilter("bar=baz")
+      NewUnappliedFilter("bar=baz"),
     ];
     ValidateOnChange("bar=baz");
     expect(alertStore.filters.values).toHaveLength(1);
@@ -163,7 +163,7 @@ describe("<FilterInputLabel /> onChange", () => {
   it("clicking on the X button removes filters from alertStore", () => {
     alertStore.filters.values = [
       NewUnappliedFilter("foo=bar"),
-      NewUnappliedFilter("bar=baz")
+      NewUnappliedFilter("bar=baz"),
     ];
     const tree = mount(
       <FilterInputLabel

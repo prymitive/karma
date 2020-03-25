@@ -38,10 +38,10 @@ beforeEach(() => {
         error: "",
         version: "0.17.0",
         headers: {},
-        corsCredentials: "include"
-      }
+        corsCredentials: "include",
+      },
     ],
-    clusters: { am: ["am1"] }
+    clusters: { am: ["am1"] },
   };
 
   jest.restoreAllMocks();
@@ -102,10 +102,7 @@ describe("<SilenceDetails />", () => {
     const tree = MountedSilenceDetails();
     expect(tree.find("button").prop("disabled")).toBe(true);
 
-    tree
-      .find("button")
-      .at(0)
-      .simulate("click");
+    tree.find("button").at(0).simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(0);
   });
 });

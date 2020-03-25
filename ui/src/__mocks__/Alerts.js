@@ -2,7 +2,7 @@ const MockAnnotation = (name, value, visible, isLink) => ({
   name: name,
   value: value,
   visible: visible,
-  isLink: isLink
+  isLink: isLink,
 });
 
 const MockAlert = (annotations, labels, state) => ({
@@ -18,10 +18,10 @@ const MockAlert = (annotations, labels, state) => ({
       startsAt: "2018-08-14T17:36:40.017867056Z",
       source: "localhost/prometheus",
       silencedBy: [],
-      inhibitedBy: []
-    }
+      inhibitedBy: [],
+    },
   ],
-  receiver: "by-name"
+  receiver: "by-name",
 });
 
 const MockAlertGroup = (
@@ -36,18 +36,18 @@ const MockAlertGroup = (
   alerts: alerts,
   id: "099c5ca6d1c92f615b13056b935d0c8dee70f18c",
   alertmanagerCount: {
-    default: 1
+    default: 1,
   },
   stateCount: {
     active: 1,
     suppressed: 0,
-    unprocessed: 0
+    unprocessed: 0,
   },
   shared: {
     annotations: sharedAnnotations,
     labels: sharedLabels,
-    silences: sharedSilences
-  }
+    silences: sharedSilences,
+  },
 });
 
 const MockSilence = () => ({
@@ -61,8 +61,8 @@ const MockSilence = () => ({
   ticketURL: "",
   matchers: [
     { name: "foo", value: "bar", isRegex: false },
-    { name: "baz", value: "regex", isRegex: true }
-  ]
+    { name: "baz", value: "regex", isRegex: true },
+  ],
 });
 
 const MockAlertmanager = () => ({
@@ -72,12 +72,12 @@ const MockAlertmanager = () => ({
   publicURI: "http://am.example.com",
   readonly: false,
   headers: {
-    Authorization: "Basic foo bar"
+    Authorization: "Basic foo bar",
   },
   corsCredentials: "include",
   error: "",
   version: "0.17.0",
-  clusterMembers: ["default"]
+  clusterMembers: ["default"],
 });
 
 export {
@@ -85,5 +85,5 @@ export {
   MockAlert,
   MockAlertGroup,
   MockSilence,
-  MockAlertmanager
+  MockAlertmanager,
 };

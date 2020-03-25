@@ -13,7 +13,7 @@ import {
   SettingsElement,
   SetupSentry,
   ParseDefaultFilters,
-  ParseUIDefaults
+  ParseUIDefaults,
 } from "./AppBoot";
 import { App } from "./App";
 

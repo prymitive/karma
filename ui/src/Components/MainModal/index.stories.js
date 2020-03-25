@@ -9,7 +9,7 @@ import { MainModalContent, TabNames } from "./MainModalContent";
 import "Styles/Percy.scss";
 
 storiesOf("MainModal", module)
-  .addDecorator(storyFn => (
+  .addDecorator((storyFn) => (
     <div>
       <div className="modal-dialog modal-lg" role="document">
         <div className="modal-content">{storyFn()}</div>

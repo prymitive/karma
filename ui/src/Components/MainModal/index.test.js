@@ -7,7 +7,7 @@ import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 import {
   ReactSelectColors,
-  ReactSelectStyles
+  ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { MainModal } from ".";
 
@@ -27,7 +27,7 @@ const MountedMainModal = () => {
   return mount(
     <ThemeContext.Provider
       value={{
-        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
       }}
     >
       <MainModal alertStore={alertStore} settingsStore={settingsStore} />

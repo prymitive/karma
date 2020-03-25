@@ -37,10 +37,10 @@ beforeEach(() => {
         error: "",
         version: "0.17.0",
         headers: {},
-        corsCredentials: "include"
-      }
+        corsCredentials: "include",
+      },
     ],
-    clusters: { am: ["am1"] }
+    clusters: { am: ["am1"] },
   };
 
   jest.restoreAllMocks();
@@ -52,7 +52,7 @@ afterEach(() => {
   clear();
 });
 
-const MountedManagedSilence = onDidUpdate => {
+const MountedManagedSilence = (onDidUpdate) => {
   return mount(
     <ManagedSilence
       cluster={cluster}
@@ -101,7 +101,7 @@ describe("<ManagedSilence />", () => {
       error: "",
       version: "0.17.0",
       headers: {},
-      corsCredentials: "include"
+      corsCredentials: "include",
     });
   });
 
@@ -118,7 +118,7 @@ describe("<ManagedSilence />", () => {
           error: "",
           version: "0.17.0",
           headers: {},
-          corsCredentials: "include"
+          corsCredentials: "include",
         },
         {
           name: "am2",
@@ -130,10 +130,10 @@ describe("<ManagedSilence />", () => {
           error: "",
           version: "0.17.0",
           headers: {},
-          corsCredentials: "include"
-        }
+          corsCredentials: "include",
+        },
       ],
-      clusters: { am: ["am1", "am2"] }
+      clusters: { am: ["am1", "am2"] },
     };
 
     const tree = MountedManagedSilence();
@@ -149,7 +149,7 @@ describe("<ManagedSilence />", () => {
       error: "",
       version: "0.17.0",
       headers: {},
-      corsCredentials: "include"
+      corsCredentials: "include",
     });
   });
 

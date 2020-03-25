@@ -5,13 +5,13 @@ import promiseRetry from "promise-retry";
 const CommonOptions = {
   mode: "cors",
   credentials: "include",
-  redirect: "follow"
+  redirect: "follow",
 };
 
 const FetchRetryConfig = {
   retries: 9,
   minTimeout: 2000,
-  maxTimeout: 5000
+  maxTimeout: 5000,
 };
 
 const FetchGet = async (uri, options, beforeRetry) =>
@@ -22,15 +22,15 @@ const FetchGet = async (uri, options, beforeRetry) =>
         merge(
           {},
           {
-            method: "GET"
+            method: "GET",
           },
           CommonOptions,
           {
-            mode: number <= FetchRetryConfig.retries ? "cors" : "no-cors"
+            mode: number <= FetchRetryConfig.retries ? "cors" : "no-cors",
           },
           options
         )
-      ).catch(err => {
+      ).catch((err) => {
         beforeRetry && beforeRetry(number);
         return retry(err);
       }),

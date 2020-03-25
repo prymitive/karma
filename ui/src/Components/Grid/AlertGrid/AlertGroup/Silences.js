@@ -10,7 +10,7 @@ const FallbackSilenceDesciption = ({ silenceID }) => {
   );
 };
 FallbackSilenceDesciption.propTypes = {
-  silenceID: PropTypes.string.isRequired
+  silenceID: PropTypes.string.isRequired,
 };
 
 const GetSilenceFromStore = (alertStore, cluster, silenceID) => {

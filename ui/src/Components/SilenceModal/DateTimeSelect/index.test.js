@@ -13,7 +13,7 @@ import {
   DateTimeSelect,
   TabContentStart,
   TabContentEnd,
-  TabContentDuration
+  TabContentDuration,
 } from ".";
 
 let silenceFormStore;
@@ -70,10 +70,7 @@ describe("<DateTimeSelect />", () => {
   it("'Starts' tab matches snapshot", () => {
     advanceTo(new Date(2060, 1, 1, 0, 0, 0));
     const tree = MountedDateTimeSelect();
-    tree
-      .find(".nav-link")
-      .at(0)
-      .simulate("click");
+    tree.find(".nav-link").at(0).simulate("click");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
@@ -88,20 +85,14 @@ describe("<DateTimeSelect />", () => {
   it("'Ends' tab matches snapshot", () => {
     advanceTo(new Date(2060, 1, 1, 0, 0, 0));
     const tree = MountedDateTimeSelect();
-    tree
-      .find(".nav-link")
-      .at(1)
-      .simulate("click");
+    tree.find(".nav-link").at(1).simulate("click");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("clicking on the 'Duration' tabs switches content to duration selection", () => {
     const tree = MountedDateTimeSelect();
     // first switch to 'Starts'
-    tree
-      .find(".nav-link")
-      .at(0)
-      .simulate("click");
+    tree.find(".nav-link").at(0).simulate("click");
     // then switch back to 'Duration'
     const tab = tree.find(".nav-link").at(2);
     expect(tab.text()).toMatch(/Duration/);
@@ -116,22 +107,12 @@ describe("<DateTimeSelect />", () => {
     silenceFormStore.data.endsAt = moment([2060, 1, 1, 13, 0, 0]);
 
     const tree = MountedDateTimeSelect();
-    expect(
-      tree
-        .find(".nav-link")
-        .at(1)
-        .text()
-    ).toBe("Endsin 1h ");
+    expect(tree.find(".nav-link").at(1).text()).toBe("Endsin 1h ");
 
     advanceTo(new Date(2060, 1, 1, 12, 1, 0));
     jest.runOnlyPendingTimers();
 
-    expect(
-      tree
-        .find(".nav-link")
-        .at(1)
-        .text()
-    ).toBe("Endsin 59m ");
+    expect(tree.find(".nav-link").at(1).text()).toBe("Endsin 59m ");
   });
 
   it("nowUpdateTimer is destroyed before unmount", () => {
@@ -280,9 +261,7 @@ describe("<TabContentDuration />", () => {
 
 const SetDurationTo = (hours, minutes) => {
   const startsAt = moment([2060, 1, 1, 0, 0, 0]);
-  const endsAt = moment(startsAt)
-    .add(hours, "hours")
-    .add(minutes, "minutes");
+  const endsAt = moment(startsAt).add(hours, "hours").add(minutes, "minutes");
   silenceFormStore.data.startsAt = startsAt;
   silenceFormStore.data.endsAt = endsAt;
 };

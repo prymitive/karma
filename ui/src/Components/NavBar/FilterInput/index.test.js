@@ -35,7 +35,7 @@ const MountedInput = () => {
   );
 };
 
-const WaitForFetch = tree => {
+const WaitForFetch = (tree) => {
   return expect(
     tree.instance().inputStore.suggestionsFetch
   ).resolves.toBeUndefined();

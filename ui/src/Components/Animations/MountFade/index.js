@@ -14,7 +14,7 @@ const MountFade = ({ children, duration, ...props }) => (
   </CSSTransition>
 );
 MountFade.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export { MountFade };

@@ -13,7 +13,7 @@ import { SortLabelName } from "./SortLabelName";
 const AlertGroupSortConfiguration = observer(
   class AlertGroupSortConfiguration extends Component {
     static propTypes = {
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
     };
     static contextType = ThemeContext;
 
@@ -29,13 +29,13 @@ const AlertGroupSortConfiguration = observer(
       settingsStore.gridConfig.config.sortOrder = newValue.value;
     });
 
-    onSortReverseChange = action(event => {
+    onSortReverseChange = action((event) => {
       const { settingsStore } = this.props;
 
       settingsStore.gridConfig.config.reverseSort = event.target.checked;
     });
 
-    valueToOption = val => {
+    valueToOption = (val) => {
       const { settingsStore } = this.props;
 
       return { label: settingsStore.gridConfig.options[val].label, value: val };
@@ -46,7 +46,7 @@ const AlertGroupSortConfiguration = observer(
 
       if (
         !Object.values(settingsStore.gridConfig.options)
-          .map(o => o.value)
+          .map((o) => o.value)
           .includes(settingsStore.gridConfig.config.sortOrder)
       ) {
         settingsStore.gridConfig.config.sortOrder =

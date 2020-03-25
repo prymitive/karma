@@ -18,7 +18,7 @@ const Grid = observer(
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
     };
 
     render() {
@@ -63,8 +63,8 @@ const Grid = observer(
       return (
         <React.Fragment>
           {alertStore.data.upstreams.instances
-            .filter(upstream => upstream.error !== "")
-            .map(upstream => (
+            .filter((upstream) => upstream.error !== "")
+            .map((upstream) => (
               <UpstreamError
                 key={upstream.name}
                 name={upstream.name}

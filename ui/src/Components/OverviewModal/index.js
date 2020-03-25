@@ -15,15 +15,15 @@ import { Modal } from "Components/Modal";
 
 // https://github.com/facebook/react/issues/14603
 const OverviewModalContent = React.lazy(() =>
-  import("./OverviewModalContent").then(module => ({
-    default: module.OverviewModalContent
+  import("./OverviewModalContent").then((module) => ({
+    default: module.OverviewModalContent,
   }))
 );
 
 const OverviewModal = observer(
   class OverviewModal extends Component {
     static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
     };
 
     toggle = observable(
@@ -34,7 +34,7 @@ const OverviewModal = observer(
         },
         hide() {
           this.show = false;
-        }
+        },
       },
       { toggle: action.bound, hide: action.bound }
     );

@@ -3,7 +3,7 @@ import {
   FetchGet,
   FetchPost,
   FetchDelete,
-  FetchRetryConfig
+  FetchRetryConfig,
 } from "./Fetch";
 
 import merge from "lodash/merge";
@@ -20,13 +20,13 @@ describe("Fetch", () => {
   const tests = {
     FetchGet: FetchGet,
     FetchPost: FetchPost,
-    FetchDelete: FetchDelete
+    FetchDelete: FetchDelete,
   };
 
   const methodOptions = {
     FetchGet: { method: "GET", mode: "cors" },
     FetchPost: { method: "POST" },
-    FetchDelete: { method: "DELETE" }
+    FetchDelete: { method: "DELETE" },
   };
 
   for (const [name, func] of Object.entries(tests)) {
@@ -41,7 +41,7 @@ describe("Fetch", () => {
 
     it(`${name}: custom keys are merged with defaults`, async () => {
       const request = func("http://example.com", {
-        foo: "bar"
+        foo: "bar",
       });
       await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetch).toHaveBeenCalledWith(
@@ -53,14 +53,14 @@ describe("Fetch", () => {
     it(`${name}: custom credentials are used when passed`, async () => {
       const request = func("http://example.com", {
         credentials: "none",
-        redirect: "follow"
+        redirect: "follow",
       });
       await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetch).toHaveBeenCalledWith(
         "http://example.com",
         merge({}, CommonOptions, methodOptions[name], {
           credentials: "none",
-          redirect: "follow"
+          redirect: "follow",
         })
       );
     });
@@ -73,21 +73,21 @@ describe("Fetch", () => {
     await expect(request).rejects.toThrow("Fetch error");
 
     expect(fetch).toHaveBeenCalledTimes(FetchRetryConfig.retries + 1);
-    expect(fetch.mock.calls.map(r => r[1])).toMatchObject(
-      Array.from(Array(FetchRetryConfig.retries + 1).keys(), i => ({
+    expect(fetch.mock.calls.map((r) => r[1])).toMatchObject(
+      Array.from(Array(FetchRetryConfig.retries + 1).keys(), (i) => ({
         mode: i < FetchRetryConfig.retries ? "cors" : "no-cors",
-        credentials: "include"
+        credentials: "include",
       }))
     );
     // ensure that the the second to last call was with cors
     expect(fetch.mock.calls[fetch.mock.calls.length - 2][1]).toMatchObject({
       mode: "cors",
-      credentials: "include"
+      credentials: "include",
     });
     // ensure that the last call was with no-cors
     expect(fetch.mock.calls[fetch.mock.calls.length - 1][1]).toMatchObject({
       mode: "no-cors",
-      credentials: "include"
+      credentials: "include",
     });
   });
 

@@ -20,7 +20,7 @@ const SilenceComment = ({
   collapsed,
   collapseToggle,
   afterUpdate,
-  alertStore
+  alertStore,
 }) => {
   const comment = silence.ticketURL ? (
     <a
@@ -41,7 +41,7 @@ const SilenceComment = ({
   );
 
   const alertmanagers = alertStore.data.upstreams.instances.filter(
-    u => u.cluster === cluster
+    (u) => u.cluster === cluster
   );
 
   return (
@@ -67,7 +67,7 @@ const SilenceComment = ({
             </span>
             {collapsed &&
               Object.keys(alertStore.data.upstreams.clusters).length > 1 &&
-              alertmanagers.map(alertmanager => (
+              alertmanagers.map((alertmanager) => (
                 <span
                   key={alertmanager.name}
                   className="badge badge-secondary mx-1 align-text-bottom p-1"
@@ -91,9 +91,9 @@ const SilenceComment = ({
             />
             <FontAwesomeIcon
               icon={collapsed ? faChevronUp : faChevronDown}
-              className={`components-managed-silence-icon ${alertCount &&
-                alertCountAlwaysVisible &&
-                "my-sm-auto mt-2 mb-0"} ml-sm-2 ml-auto mr-sm-0 mr-1 text-muted cursor-pointer`}
+              className={`components-managed-silence-icon ${
+                alertCount && alertCountAlwaysVisible && "my-sm-auto mt-2 mb-0"
+              } ml-sm-2 ml-auto mr-sm-0 mr-1 text-muted cursor-pointer`}
               onClick={collapseToggle}
             />
           </div>
@@ -108,7 +108,7 @@ SilenceComment.propTypes = {
   alertCount: PropTypes.number.isRequired,
   collapsed: PropTypes.bool.isRequired,
   collapseToggle: PropTypes.func.isRequired,
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
 };
 
 export { SilenceComment };

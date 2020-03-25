@@ -29,7 +29,7 @@ const OffsetBadge = ({ startDate, endDate, prefixLabel }) => {
 OffsetBadge.propTypes = {
   startDate: PropTypes.instanceOf(moment).isRequired,
   endDate: PropTypes.instanceOf(moment).isRequired,
-  prefixLabel: PropTypes.string.isRequired
+  prefixLabel: PropTypes.string.isRequired,
 };
 
 const Tab = ({ title, active, onClick }) => (
@@ -45,13 +45,13 @@ const Tab = ({ title, active, onClick }) => (
 Tab.propTypes = {
   title: PropTypes.node.isRequired,
   active: PropTypes.bool,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
 };
 
 const TabNames = Object.freeze({
   Start: "start",
   End: "end",
-  Duration: "duration"
+  Duration: "duration",
 });
 
 const TabContentStart = observer(({ silenceFormStore }) => {
@@ -61,11 +61,9 @@ const TabContentStart = observer(({ silenceFormStore }) => {
         <DatePicker
           inline
           todayButton={"Today"}
-          minDate={moment()
-            .second(0)
-            .toDate()}
+          minDate={moment().second(0).toDate()}
           selected={silenceFormStore.data.startsAt.toDate()}
-          onChange={val => {
+          onChange={(val) => {
             silenceFormStore.data.startsAt = moment(val);
             silenceFormStore.data.verifyStarEnd();
           }}
@@ -89,12 +87,9 @@ const TabContentEnd = observer(({ silenceFormStore }) => {
         <DatePicker
           inline
           todayButton={"Today"}
-          minDate={moment()
-            .second(0)
-            .add(1, "minutes")
-            .toDate()}
+          minDate={moment().second(0).add(1, "minutes").toDate()}
           selected={silenceFormStore.data.endsAt.toDate()}
-          onChange={val => {
+          onChange={(val) => {
             silenceFormStore.data.endsAt = moment(val);
             silenceFormStore.data.verifyStarEnd();
           }}
@@ -167,17 +162,17 @@ const TabContentDuration = observer(({ silenceFormStore }) => {
   );
 });
 TabContentDuration.propTypes = {
-  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
 };
 
 const DateTimeSelect = observer(
   class DateTimeSelect extends Component {
     static propTypes = {
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      openTab: PropTypes.oneOf(Object.values(TabNames))
+      openTab: PropTypes.oneOf(Object.values(TabNames)),
     };
     static defaultProps = {
-      openTab: TabNames.Duration
+      openTab: TabNames.Duration,
     };
 
     constructor(props) {
@@ -198,13 +193,13 @@ const DateTimeSelect = observer(
           timeNow: moment().seconds(0),
           updateTimeNow() {
             this.timeNow = moment().seconds(0);
-          }
+          },
         },
         {
           setStart: action.bound,
           setEnd: action.bound,
           setDuration: action.bound,
-          updateTimeNow: action.bound
+          updateTimeNow: action.bound,
         }
       );
     }
@@ -289,5 +284,5 @@ export {
   TabContentStart,
   TabContentEnd,
   TabContentDuration,
-  TabNames
+  TabNames,
 };

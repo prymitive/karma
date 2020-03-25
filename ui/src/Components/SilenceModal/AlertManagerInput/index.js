@@ -9,7 +9,7 @@ import Select from "react-select";
 import { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
-  AlertmanagerClustersToOption
+  AlertmanagerClustersToOption,
 } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
 import { MultiSelect } from "Components/MultiSelect";
@@ -19,7 +19,7 @@ const AlertManagerInput = observer(
   class AlertManagerInput extends MultiSelect {
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
     };
     static contextType = ThemeContext;
 
@@ -53,7 +53,7 @@ const AlertManagerInput = observer(
       // mismatch is detected
       for (const silenceAM of silenceFormStore.data.alertmanagers) {
         if (
-          !currentAlertmanagers.map(am => am.label).includes(silenceAM.label)
+          !currentAlertmanagers.map((am) => am.label).includes(silenceAM.label)
         ) {
           silenceFormStore.data.alertmanagers = currentAlertmanagers;
         }

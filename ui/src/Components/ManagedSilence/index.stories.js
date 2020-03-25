@@ -10,7 +10,7 @@ import { ManagedSilence } from ".";
 import "Styles/Percy.scss";
 
 storiesOf("ManagedSilence", module)
-  .addDecorator(storyFn => (
+  .addDecorator((storyFn) => (
     <div>
       <div className="modal-dialog modal-lg" role="document">
         <div className="modal-content p-2">{storyFn()}</div>
@@ -34,10 +34,10 @@ storiesOf("ManagedSilence", module)
           error: "",
           version: "0.17.0",
           headers: {},
-          corsCredentials: "include"
-        }
+          corsCredentials: "include",
+        },
       ],
-      clusters: { am: ["am1"] }
+      clusters: { am: ["am1"] },
     };
 
     const alertStoreReadOnly = new AlertStore([]);
@@ -54,9 +54,9 @@ storiesOf("ManagedSilence", module)
           error: "",
           version: "0.17.0",
           cluster: "ro",
-          clusterMembers: ["readonly"]
-        }
-      ]
+          clusterMembers: ["readonly"],
+        },
+      ],
     };
 
     const silence = MockSilence();

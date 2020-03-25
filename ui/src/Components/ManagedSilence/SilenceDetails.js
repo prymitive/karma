@@ -51,7 +51,7 @@ const SilenceDetails = ({
   silence,
   cluster,
   onEditSilence,
-  onDeleteModalClose
+  onDeleteModalClose,
 }) => {
   let isExpired = moment(silence.endsAt) < moment();
   let expiresClass = "";
@@ -62,7 +62,7 @@ const SilenceDetails = ({
   }
 
   const alertmanagers = alertStore.data.upstreams.instances.filter(
-    u => u.cluster === cluster
+    (u) => u.cluster === cluster
   );
 
   const isReadOnly =
@@ -116,7 +116,7 @@ const SilenceDetails = ({
               />
               View in Alertmanager:
             </span>
-            {alertmanagers.map(alertmanager => (
+            {alertmanagers.map((alertmanager) => (
               <RenderLinkAnnotation
                 key={alertmanager.name}
                 name={alertmanager.name}
@@ -139,7 +139,7 @@ const SilenceDetails = ({
               className="flex-shrink-1 flex-grow-1 mw-1p"
               style={{ minWidth: "0px" }}
             >
-              {silence.matchers.map(matcher => (
+              {silence.matchers.map((matcher) => (
                 <span
                   key={hash(matcher)}
                   className="badge badge-primary px-1 mr-1 components-label"
@@ -189,7 +189,7 @@ SilenceDetails.propTypes = {
   cluster: PropTypes.string.isRequired,
   silence: APISilence.isRequired,
   onEditSilence: PropTypes.func.isRequired,
-  onDeleteModalClose: PropTypes.func
+  onDeleteModalClose: PropTypes.func,
 };
 
 export { SilenceDetails };

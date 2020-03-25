@@ -17,7 +17,7 @@ class PageSelect extends Component {
     activePage: PropTypes.number.isRequired,
     maxPerPage: PropTypes.number.isRequired,
     totalItemsCount: PropTypes.number.isRequired,
-    setPageCallback: PropTypes.func.isRequired
+    setPageCallback: PropTypes.func.isRequired,
   };
 
   constructor(props) {
@@ -45,7 +45,7 @@ class PageSelect extends Component {
       totalPages,
       maxPerPage,
       activePage,
-      setPageCallback
+      setPageCallback,
     } = this.props;
 
     return (
@@ -54,11 +54,11 @@ class PageSelect extends Component {
         innerRef={this.HotKeysRef}
         keyMap={{
           onArrowLeft: "ArrowLeft",
-          onArrowRight: "ArrowRight"
+          onArrowRight: "ArrowRight",
         }}
         handlers={{
           onArrowLeft: this.onPageDown,
-          onArrowRight: this.onPageUp
+          onArrowRight: this.onPageUp,
         }}
       >
         {totalItemsCount > maxPerPage ? (

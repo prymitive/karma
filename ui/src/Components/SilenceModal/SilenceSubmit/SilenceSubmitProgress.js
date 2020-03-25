@@ -16,7 +16,7 @@ import { FetchPost } from "Common/Fetch";
 const SubmitState = Object.freeze({
   InProgress: "InProgress",
   Done: "Done",
-  Failed: "Failed"
+  Failed: "Failed",
 });
 
 const SubmitIcon = observer(({ stateValue }) => {
@@ -42,7 +42,7 @@ const SilenceLink = ({ uri, silenceID }) => (
 );
 SilenceLink.propTypes = {
   uri: PropTypes.string.isRequired,
-  silenceID: PropTypes.string.isRequired
+  silenceID: PropTypes.string.isRequired,
 };
 
 const SilenceSubmitProgress = observer(
@@ -56,9 +56,9 @@ const SilenceSubmitProgress = observer(
         endsAt: PropTypes.string.isRequired,
         createdBy: PropTypes.string.isRequired,
         comment: PropTypes.string.isRequired,
-        id: PropTypes.string
+        id: PropTypes.string,
       }).isRequired,
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
     };
 
     submitState = observable(
@@ -75,12 +75,12 @@ const SilenceSubmitProgress = observer(
         markFailed(result) {
           this.result = result;
           this.value = SubmitState.Failed;
-        }
+        },
       },
       { markDone: action.bound, markFailed: action.bound }
     );
 
-    maybeTryAgainAfterError = err => {
+    maybeTryAgainAfterError = (err) => {
       if (this.submitState.membersToTry.length) {
         return this.handleAlertmanagerRequest();
       } else {
@@ -112,16 +112,16 @@ const SilenceSubmitProgress = observer(
         credentials: am.corsCredentials,
         headers: {
           "Content-Type": "application/json",
-          ...am.headers
-        }
+          ...am.headers,
+        },
       })
-        .then(result => {
+        .then((result) => {
           if (result.ok) {
             return result
               .json()
-              .then(r => this.parseOpenAPIResponse(am.publicURI, r));
+              .then((r) => this.parseOpenAPIResponse(am.publicURI, r));
           } else {
-            return result.text().then(text => {
+            return result.text().then((text) => {
               this.submitState.markFailed(text);
               return text;
             });

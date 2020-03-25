@@ -26,7 +26,7 @@ const AlertGrid = observer(
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
     };
 
     constructor(props) {
@@ -55,12 +55,12 @@ const AlertGrid = observer(
               this.windowWidth,
               props.settingsStore.gridConfig.config.groupWidth
             );
-          }
+          },
         },
         {
           updateWidths: action.bound,
           gridSizesConfig: computed,
-          groupWidth: computed
+          groupWidth: computed,
         }
       );
     }
@@ -78,7 +78,7 @@ const AlertGrid = observer(
       { name: "Masonry reference" }
     );
     // store it for later
-    storeMasonryRef = action(ref => {
+    storeMasonryRef = action((ref) => {
       this.masonryComponentReference.ref = ref;
     });
     // used to call forcePack() which will repack all grid elements
@@ -98,10 +98,10 @@ const AlertGrid = observer(
         value: this.initial,
         setValue(value) {
           this.value = value;
-        }
+        },
       },
       {
-        setValue: action.bound
+        setValue: action.bound,
       },
       { name: "Groups to render" }
     );
@@ -126,7 +126,7 @@ const AlertGrid = observer(
       // position, so we use font observer and trigger repack when fonts are loaded
       for (const fontWeight of [300, 400, 600]) {
         const font = new FontFaceObserver("Open Sans", {
-          weight: fontWeight
+          weight: fontWeight,
         });
         // wait up to 30s, run no-op function on timeout
         font.load(null, 30000).then(this.masonryRepack, () => {});
@@ -176,7 +176,7 @@ const AlertGrid = observer(
           >
             {alertStore.data.groups
               .slice(0, this.groupsToRender.value)
-              .map(group => (
+              .map((group) => (
                 <AlertGroup
                   key={group.id}
                   group={group}
@@ -188,7 +188,7 @@ const AlertGrid = observer(
                   settingsStore={settingsStore}
                   silenceFormStore={silenceFormStore}
                   style={{
-                    width: this.viewport.groupWidth
+                    width: this.viewport.groupWidth,
                   }}
                 />
               ))}

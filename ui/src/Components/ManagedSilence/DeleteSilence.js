@@ -18,7 +18,7 @@ import { FetchGet, FetchDelete } from "Common/Fetch";
 import { Modal } from "Components/Modal";
 import {
   LabelSetList,
-  GroupListToUniqueLabelsList
+  GroupListToUniqueLabelsList,
 } from "Components/LabelSetList";
 
 const ProgressMessage = () => (
@@ -41,7 +41,7 @@ const ErrorMessage = ({ message }) => (
   </div>
 );
 ErrorMessage.propTypes = {
-  message: PropTypes.node.isRequired
+  message: PropTypes.node.isRequired,
 };
 
 const SuccessMessage = () => (
@@ -64,7 +64,7 @@ const DeleteSilenceModalContent = observer(
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       cluster: PropTypes.string.isRequired,
       silence: APISilence.isRequired,
-      onHide: PropTypes.func
+      onHide: PropTypes.func,
     };
 
     previewState = observable(
@@ -77,11 +77,11 @@ const DeleteSilenceModalContent = observer(
         },
         groupsToUniqueLabels(groups) {
           this.alertLabels = GroupListToUniqueLabelsList(groups);
-        }
+        },
       },
       {
         setError: action.bound,
-        groupsToUniqueLabels: action.bound
+        groupsToUniqueLabels: action.bound,
       }
     );
 
@@ -99,18 +99,18 @@ const DeleteSilenceModalContent = observer(
         reset() {
           this.done = false;
           this.error = null;
-        }
+        },
       },
       {
         setDone: action.bound,
         setError: action.bound,
-        reset: action.bound
+        reset: action.bound,
       }
     );
 
     getAlertmanager = () =>
       this.props.alertStore.data.readWriteAlertmanagers
-        .filter(u => u.cluster === this.props.cluster)
+        .filter((u) => u.cluster === this.props.cluster)
         .slice(0, 1)[0];
 
     onFetchPreview = () => {
@@ -119,16 +119,16 @@ const DeleteSilenceModalContent = observer(
       const alertsURI =
         FormatBackendURI("alerts.json?") +
         FormatAlertsQ([
-          FormatQuery(StaticLabels.SilenceID, QueryOperators.Equal, silence.id)
+          FormatQuery(StaticLabels.SilenceID, QueryOperators.Equal, silence.id),
         ]);
 
       this.previewState.fetch = FetchGet(alertsURI, {})
-        .then(result => result.json())
-        .then(result => {
+        .then((result) => result.json())
+        .then((result) => {
           this.previewState.groupsToUniqueLabels(Object.values(result.groups));
           this.previewState.setError(null);
         })
-        .catch(err => {
+        .catch((err) => {
           console.trace(err);
           return this.previewState.setError(
             `Request fetching affected alerts failed with: ${err.message}`
@@ -151,10 +151,10 @@ const DeleteSilenceModalContent = observer(
         `${alertmanager.uri}/api/v2/silence/${silence.id}`,
         {
           headers: alertmanager.headers,
-          credentials: alertmanager.corsCredentials
+          credentials: alertmanager.corsCredentials,
         }
       )
-        .then(result => {
+        .then((result) => {
           if (result.ok) {
             this.deleteState.setError(null);
             this.deleteState.setDone();
@@ -163,7 +163,7 @@ const DeleteSilenceModalContent = observer(
             this.deleteState.setDone();
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.trace(err);
           this.deleteState.setDone();
           return this.deleteState.setError(
@@ -246,7 +246,7 @@ const DeleteSilence = observer(
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       cluster: PropTypes.string.isRequired,
       silence: APISilence.isRequired,
-      onModalExit: PropTypes.func
+      onModalExit: PropTypes.func,
     };
 
     toggle = observable(
@@ -254,7 +254,7 @@ const DeleteSilence = observer(
         visible: false,
         toggle() {
           this.visible = !this.visible;
-        }
+        },
       },
       { toggle: action.bound }
     );
@@ -265,7 +265,7 @@ const DeleteSilence = observer(
         silenceFormStore,
         cluster,
         silence,
-        onModalExit
+        onModalExit,
       } = this.props;
 
       const members = alertStore.data.getClusterAlertmanagersWithoutReadOnly(

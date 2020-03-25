@@ -29,7 +29,7 @@ const FetchError = ({ message }) => (
   </div>
 );
 FetchError.propTypes = {
-  message: PropTypes.node.isRequired
+  message: PropTypes.node.isRequired,
 };
 
 const Placeholder = ({ content }) => (
@@ -40,7 +40,7 @@ const Placeholder = ({ content }) => (
   </MountFade>
 );
 Placeholder.propTypes = {
-  content: PropTypes.node.isRequired
+  content: PropTypes.node.isRequired,
 };
 
 const Browser = observer(
@@ -49,7 +49,7 @@ const Browser = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
-      onDeleteModalClose: PropTypes.func.isRequired
+      onDeleteModalClose: PropTypes.func.isRequired,
     };
 
     constructor(props) {
@@ -80,14 +80,14 @@ const Browser = observer(
         },
         setSearchTerm(value) {
           this.searchTerm = value;
-        }
+        },
       },
       {
         setDone: action.bound,
         setError: action.bound,
         toggleSortReverse: action.bound,
         toggleShowExpired: action.bound,
-        setSearchTerm: action.bound
+        setSearchTerm: action.bound,
       }
     );
 
@@ -101,10 +101,10 @@ const Browser = observer(
       );
 
       this.dataSource.fetch = FetchGet(uri, {})
-        .then(result => {
+        .then((result) => {
           return result.json();
         })
-        .then(result => {
+        .then((result) => {
           this.dataSource.silences = result;
           this.dataSource.setDone();
           this.dataSource.setError(null);
@@ -113,7 +113,7 @@ const Browser = observer(
             this.maxPerPage
           );
         })
-        .catch(err => {
+        .catch((err) => {
           console.trace(err);
           this.dataSource.setDone();
           return this.dataSource.setError(
@@ -137,11 +137,11 @@ const Browser = observer(
           if (this.activePage > totalPages) {
             this.activePage = Math.max(1, totalPages);
           }
-        }
+        },
       },
       {
         onPageChange: action.bound,
-        resetIfNeeded: action.bound
+        resetIfNeeded: action.bound,
       }
     );
 
@@ -165,7 +165,7 @@ const Browser = observer(
         alertStore,
         silenceFormStore,
         settingsStore,
-        onDeleteModalClose
+        onDeleteModalClose,
       } = this.props;
 
       return (
@@ -199,7 +199,7 @@ const Browser = observer(
               placeholder="Search query"
               value={this.dataSource.searchTerm}
               autoComplete="off"
-              onChange={e => {
+              onChange={(e) => {
                 this.dataSource.setSearchTerm(e.target.value);
                 this.onDebouncedFetch();
               }}
@@ -235,7 +235,7 @@ const Browser = observer(
                     (this.pagination.activePage - 1) * this.maxPerPage,
                     this.pagination.activePage * this.maxPerPage
                   )
-                  .map(silence => (
+                  .map((silence) => (
                     <ManagedSilence
                       key={`${silence.cluster}/${silence.silence.id}`}
                       cluster={silence.cluster}

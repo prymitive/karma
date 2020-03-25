@@ -70,10 +70,7 @@ describe("<LabelWithPercent />", () => {
 
   it("clicking the X buttom removes label from filters", () => {
     const tree = MountedLabelWithPercent("foo", "bar", 25, 50, 0, true);
-    tree
-      .find(".components-label")
-      .find("svg")
-      .simulate("click");
+    tree.find(".components-label").find("svg").simulate("click");
     expect(alertStore.filters.values).toHaveLength(0);
     expect(alertStore.filters.values).not.toContainEqual(
       NewUnappliedFilter("foo=bar")

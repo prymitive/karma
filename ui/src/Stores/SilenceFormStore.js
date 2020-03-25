@@ -11,29 +11,29 @@ const NewEmptyMatcher = () => {
     values: [],
     suggestions: {
       names: [],
-      values: []
+      values: [],
     },
-    isRegex: false
+    isRegex: false,
   };
 };
 
-const MatcherValueToObject = value => ({ label: value, value: value });
+const MatcherValueToObject = (value) => ({ label: value, value: value });
 
-const AlertmanagerClustersToOption = clusterDict =>
+const AlertmanagerClustersToOption = (clusterDict) =>
   Object.entries(clusterDict).map(([clusterID, clusterMembers]) => ({
     label: clusterMembers.join(" | "),
-    value: clusterMembers
+    value: clusterMembers,
   }));
 
 const SilenceFormStage = Object.freeze({
   UserInput: "form",
   Preview: "preview",
-  Submit: "submit"
+  Submit: "submit",
 });
 
 const SilenceTabNames = Object.freeze({
   Editor: "editor",
-  Browser: "browser"
+  Browser: "browser",
 });
 
 const MatchersFromGroup = (group, stripLabels, alerts, onlyActive) => {
@@ -70,12 +70,12 @@ const MatchersFromGroup = (group, stripLabels, alerts, onlyActive) => {
     matchers.push({
       id: uniqueId(),
       name: key,
-      values: [...values].sort().map(value => MatcherValueToObject(value)),
+      values: [...values].sort().map((value) => MatcherValueToObject(value)),
       suggestions: {
         names: [],
-        values: []
+        values: [],
       },
-      isRegex: values.size > 1
+      isRegex: values.size > 1,
     });
   }
 
@@ -91,20 +91,20 @@ const GenerateAlertmanagerSilenceData = (
   silenceID
 ) => {
   const payload = {
-    matchers: matchers.map(m => ({
+    matchers: matchers.map((m) => ({
       name: m.name,
       value:
         m.values.length > 1
-          ? `(${m.values.map(v => v.value).join("|")})`
+          ? `(${m.values.map((v) => v.value).join("|")})`
           : m.values.length === 1
           ? m.values[0].value
           : "",
-      isRegex: m.isRegex
+      isRegex: m.isRegex,
     })),
     startsAt: startsAt.toISOString(),
     endsAt: endsAt.toISOString(),
     createdBy: author,
-    comment: comment
+    comment: comment,
   };
   if (silenceID !== null) {
     payload.id = silenceID;
@@ -129,13 +129,13 @@ class SilenceFormStore {
       },
       setBlur(val) {
         this.blurred = val;
-      }
+      },
     },
     {
       toggle: action.bound,
       hide: action.bound,
       show: action.bound,
-      setBlur: action.bound
+      setBlur: action.bound,
     }
   );
 
@@ -144,10 +144,10 @@ class SilenceFormStore {
       current: SilenceTabNames.Editor,
       setTab(value) {
         this.current = value;
-      }
+      },
     },
     {
-      setTab: action.bound
+      setTab: action.bound,
     }
   );
 
@@ -172,10 +172,10 @@ class SilenceFormStore {
         if (this.matchers.length === 0) return false;
         if (
           this.matchers.filter(
-            m =>
+            (m) =>
               m.name === "" ||
               m.values.length === 0 ||
-              m.values.filter(v => v === "").length > 0
+              m.values.filter((v) => v === "").length > 0
           ).length > 0
         )
           return false;
@@ -211,7 +211,7 @@ class SilenceFormStore {
       deleteMatcher(id) {
         // only delete matchers if we have more than 1
         if (this.matchers.length > 1) {
-          this.matchers = this.matchers.filter(m => m.id !== id);
+          this.matchers = this.matchers.filter((m) => m.id !== id);
         }
       },
 
@@ -227,7 +227,7 @@ class SilenceFormStore {
         this.silenceID = silence.id;
 
         this.alertmanagers = AlertmanagerClustersToOption({
-          [alertmanager.cluster]: alertmanager.clusterMembers
+          [alertmanager.cluster]: alertmanager.clusterMembers,
         });
 
         const matchers = [];
@@ -289,10 +289,10 @@ class SilenceFormStore {
         const data = {
           days: this.endsAt.diff(this.startsAt, "days"),
           hours: this.endsAt.diff(this.startsAt, "hours") % 24,
-          minutes: this.endsAt.diff(this.startsAt, "minutes") % 60
+          minutes: this.endsAt.diff(this.startsAt, "minutes") % 60,
         };
         return data;
-      }
+      },
     },
     {
       resetStartEnd: action.bound,
@@ -310,7 +310,7 @@ class SilenceFormStore {
       decEnd: action.bound,
       isValid: computed,
       toAlertmanagerPayload: computed,
-      toDuration: computed
+      toDuration: computed,
     },
     { name: "Silence form store" }
   );
@@ -324,5 +324,5 @@ export {
   AlertmanagerClustersToOption,
   SilenceTabNames,
   MatchersFromGroup,
-  GenerateAlertmanagerSilenceData
+  GenerateAlertmanagerSilenceData,
 };

@@ -12,7 +12,7 @@ const Fetcher = observer(
   class Fetcher extends Component {
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
     };
 
     getSortSettings = () => {
@@ -22,7 +22,7 @@ const Fetcher = observer(
         useDefaults: false,
         sortOrder: "",
         sortLabel: "",
-        sortReverse: ""
+        sortReverse: "",
       };
 
       sortSettings.useDefaults =
@@ -116,7 +116,7 @@ const Fetcher = observer(
       return (
         // data-filters is there to register filters for observation in mobx
         <span
-          data-filters={alertStore.filters.values.map(f => f.raw).join(" ")}
+          data-filters={alertStore.filters.values.map((f) => f.raw).join(" ")}
           data-interval={settingsStore.fetchConfig.config.interval}
           data-grid-sort-order={settingsStore.gridConfig.config.sortOrder}
           data-grid-sort-label={settingsStore.gridConfig.config.sortLabel}

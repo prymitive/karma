@@ -9,7 +9,7 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
 import {
   ReactSelectColors,
-  ReactSelectStyles
+  ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { AlertManagerInput } from ".";
 
@@ -20,7 +20,7 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   alertStore.data.upstreams.clusters = {
     ha: ["am1", "am2"],
-    am3: ["am3"]
+    am3: ["am3"],
   };
   alertStore.data.upstreams.instances = [
     {
@@ -33,7 +33,7 @@ beforeEach(() => {
       error: "",
       version: "0.17.0",
       cluster: "ha",
-      clusterMembers: ["am1", "am2"]
+      clusterMembers: ["am1", "am2"],
     },
     {
       name: "am2",
@@ -45,7 +45,7 @@ beforeEach(() => {
       error: "",
       version: "0.17.0",
       cluster: "ha",
-      clusterMembers: ["am1", "am2"]
+      clusterMembers: ["am1", "am2"],
     },
     {
       name: "am3",
@@ -57,8 +57,8 @@ beforeEach(() => {
       error: "",
       version: "0.17.0",
       cluster: "am3",
-      clusterMembers: ["am3"]
-    }
+      clusterMembers: ["am3"],
+    },
   ];
   silenceFormStore = new SilenceFormStore();
 });
@@ -67,7 +67,7 @@ const MountedAlertManagerInput = () => {
   return mount(
     <ThemeContext.Provider
       value={{
-        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
       }}
     >
       <AlertManagerInput
@@ -105,14 +105,8 @@ describe("<AlertManagerInput />", () => {
 
   it("renders ValidationError after failed validation", () => {
     const tree = MountedAlertManagerInput();
-    tree
-      .find(".react-select__multi-value__remove")
-      .at(0)
-      .simulate("click");
-    tree
-      .find(".react-select__multi-value__remove")
-      .at(0)
-      .simulate("click");
+    tree.find(".react-select__multi-value__remove").at(0).simulate("click");
+    tree.find(".react-select__multi-value__remove").at(0).simulate("click");
     silenceFormStore.data.alertmanagers = [];
     silenceFormStore.data.wasValidated = true;
     expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
@@ -124,11 +118,11 @@ describe("<AlertManagerInput />", () => {
     expect(silenceFormStore.data.alertmanagers).toHaveLength(2);
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "am1 | am2",
-      value: ["am1", "am2"]
+      value: ["am1", "am2"],
     });
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "am3",
-      value: ["am3"]
+      value: ["am3"],
     });
   });
 
@@ -138,7 +132,7 @@ describe("<AlertManagerInput />", () => {
     expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "am3",
-      value: ["am3"]
+      value: ["am3"],
     });
   });
 
@@ -159,24 +153,24 @@ describe("<AlertManagerInput />", () => {
     expect(silenceFormStore.data.alertmanagers).toHaveLength(2);
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "am1 | am2",
-      value: ["am1", "am2"]
+      value: ["am1", "am2"],
     });
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "am3",
-      value: ["am3"]
+      value: ["am3"],
     });
   });
 
   it("silenceFormStore.data.alertmanagers gets updated from alertStore.data.upstreams.instances on mismatch", () => {
     const tree = MountedAlertManagerInput();
     alertStore.data.upstreams.clusters = {
-      amNew: ["amNew"]
+      amNew: ["amNew"],
     };
     // force update since this is where the mismatch check lives
     tree.instance().componentDidUpdate();
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "amNew",
-      value: ["amNew"]
+      value: ["amNew"],
     });
   });
 
@@ -198,10 +192,7 @@ describe("<AlertManagerInput />", () => {
     const tree = MountedAlertManagerInput();
     expect(silenceFormStore.data.alertmanagers).toHaveLength(2);
 
-    tree
-      .find(".react-select__multi-value__remove")
-      .at(0)
-      .simulate("click");
+    tree.find(".react-select__multi-value__remove").at(0).simulate("click");
     expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
 
     tree.find(".react-select__multi-value__remove").simulate("click");
@@ -216,7 +207,7 @@ describe("<AlertManagerInput />", () => {
     expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "am2",
-      value: ["am2"]
+      value: ["am2"],
     });
   });
 });

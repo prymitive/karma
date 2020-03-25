@@ -22,7 +22,7 @@ const IconTd = ({ icon, onClick }) => (
 );
 IconTd.propTypes = {
   icon: FontAwesomeIcon.propTypes.icon.isRequired,
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
 };
 
 const HourMinute = observer(
@@ -32,7 +32,7 @@ const HourMinute = observer(
       onHourInc: PropTypes.func.isRequired,
       onHourDec: PropTypes.func.isRequired,
       onMinuteInc: PropTypes.func.isRequired,
-      onMinuteDec: PropTypes.func.isRequired
+      onMinuteDec: PropTypes.func.isRequired,
     };
 
     render() {
@@ -41,7 +41,7 @@ const HourMinute = observer(
         onHourInc,
         onHourDec,
         onMinuteInc,
-        onMinuteDec
+        onMinuteDec,
       } = this.props;
 
       const hour = dateValue.hour();

@@ -12,7 +12,7 @@ import { Help } from "./Help";
 
 const TabNames = Object.freeze({
   Configuration: "configuration",
-  Help: "help"
+  Help: "help",
 });
 
 const MainModalContent = observer(
@@ -22,10 +22,10 @@ const MainModalContent = observer(
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
       onHide: PropTypes.func.isRequired,
       openTab: PropTypes.oneOf(Object.values(TabNames)),
-      expandAllOptions: PropTypes.bool.isRequired
+      expandAllOptions: PropTypes.bool.isRequired,
     };
     static defaultProps = {
-      openTab: TabNames.Configuration
+      openTab: TabNames.Configuration,
     };
 
     constructor(props) {
@@ -36,7 +36,7 @@ const MainModalContent = observer(
           current: props.openTab,
           setTab(newTab) {
             this.current = newTab;
-          }
+          },
         },
         { setTab: action.bound }
       );
@@ -47,7 +47,7 @@ const MainModalContent = observer(
         alertStore,
         settingsStore,
         onHide,
-        expandAllOptions
+        expandAllOptions,
       } = this.props;
 
       return (

@@ -15,7 +15,7 @@ let settingsStore;
 let silenceFormStore;
 let group;
 
-const MockGroup = groupName => {
+const MockGroup = (groupName) => {
   const group = MockAlertGroup(
     { alertname: "Fake Alert", groupName: groupName },
     [],
@@ -44,7 +44,7 @@ afterEach(() => {
   global.innerWidth = originalInnerWidth;
 });
 
-const MockAlerts = alertCount => {
+const MockAlerts = (alertCount) => {
   for (let i = 1; i <= alertCount; i++) {
     let alert = MockAlert([], { instance: `instance${i}` }, "active");
     const startsAt = moment().toISOString();
@@ -106,7 +106,7 @@ describe("<AlertGroup />", () => {
       fakeAlertmanager1: 1,
       fakeAlertmanager2: 1,
       fakeAlertmanager3: 1,
-      fakeAlertmanager4: 1
+      fakeAlertmanager4: 1,
     };
     const tree = MountedAlertGroup(jest.fn(), true);
 
@@ -284,18 +284,12 @@ describe("<AlertGroup /> renderConfig", () => {
 
     expect(instance.renderConfig.isMenuOpen).toBe(false);
 
-    tree
-      .find("Alert")
-      .at(0)
-      .props()
-      .setIsMenuOpen(true);
+    tree.find("Alert").at(0).props().setIsMenuOpen(true);
     expect(instance.renderConfig.isMenuOpen).toBe(true);
     tree.update();
     expect(
-      tree
-        .find(".components-grid-alertgrid-alertgroup")
-        .at(0)
-        .props().style.zIndex
+      tree.find(".components-grid-alertgrid-alertgroup").at(0).props().style
+        .zIndex
     ).toEqual(100);
   });
 
@@ -306,18 +300,12 @@ describe("<AlertGroup /> renderConfig", () => {
 
     expect(instance.renderConfig.isMenuOpen).toBe(false);
 
-    tree
-      .find("GroupHeader")
-      .at(0)
-      .props()
-      .setIsMenuOpen(true);
+    tree.find("GroupHeader").at(0).props().setIsMenuOpen(true);
     expect(instance.renderConfig.isMenuOpen).toBe(true);
     tree.update();
     expect(
-      tree
-        .find(".components-grid-alertgrid-alertgroup")
-        .at(0)
-        .props().style.zIndex
+      tree.find(".components-grid-alertgrid-alertgroup").at(0).props().style
+        .zIndex
     ).toEqual(100);
   });
 });

@@ -22,10 +22,10 @@ const ManagedSilence = observer(
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       onDidUpdate: PropTypes.func,
       onDeleteModalClose: PropTypes.func,
-      isOpen: PropTypes.bool
+      isOpen: PropTypes.bool,
     };
     static defaultProps = {
-      isOpen: false
+      isOpen: false,
     };
 
     constructor(props) {
@@ -38,7 +38,7 @@ const ManagedSilence = observer(
           value: !props.isOpen,
           toggle() {
             this.value = !this.value;
-          }
+          },
         },
         { toggle: action.bound }
       );
@@ -46,7 +46,7 @@ const ManagedSilence = observer(
 
     getAlertmanager = () =>
       this.props.alertStore.data.readWriteAlertmanagers
-        .filter(u => u.cluster === this.props.cluster)
+        .filter((u) => u.cluster === this.props.cluster)
         .slice(0, 1)[0];
 
     onEditSilence = () => {
@@ -73,7 +73,7 @@ const ManagedSilence = observer(
         silence,
         alertStore,
         silenceFormStore,
-        onDeleteModalClose
+        onDeleteModalClose,
       } = this.props;
 
       return (

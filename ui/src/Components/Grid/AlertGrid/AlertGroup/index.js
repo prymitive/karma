@@ -34,15 +34,15 @@ const LoadButton = ({ icon, action, tooltip }) => {
 LoadButton.propTypes = {
   icon: FontAwesomeIcon.propTypes.icon.isRequired,
   action: PropTypes.func.isRequired,
-  tooltip: PropTypes.node.isRequired
+  tooltip: PropTypes.node.isRequired,
 };
 
-const AllAlertsAreUsingSameAlertmanagers = alerts => {
-  const usedAMs = alerts.map(alert =>
-    alert.alertmanager.map(am => am.name).sort()
+const AllAlertsAreUsingSameAlertmanagers = (alerts) => {
+  const usedAMs = alerts.map((alert) =>
+    alert.alertmanager.map((am) => am.name).sort()
   );
   return usedAMs.every(
-    listOfAMs => JSON.stringify(listOfAMs) === JSON.stringify(usedAMs[0])
+    (listOfAMs) => JSON.stringify(listOfAMs) === JSON.stringify(usedAMs[0])
   );
 };
 
@@ -55,7 +55,7 @@ const AlertGroup = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      style: PropTypes.object
+      style: PropTypes.object,
     };
 
     constructor(props) {
@@ -73,10 +73,10 @@ const AlertGroup = observer(
           isMenuOpen: false,
           setIsMenuOpen(val) {
             this.isMenuOpen = val;
-          }
+          },
         },
         {
-          setIsMenuOpen: action.bound
+          setIsMenuOpen: action.bound,
         }
       );
 
@@ -104,11 +104,11 @@ const AlertGroup = observer(
           },
           set(value) {
             this.value = value;
-          }
+          },
         },
         {
           toggle: action.bound,
-          set: action
+          set: action,
         },
         { name: "Collpase toggle" }
       );
@@ -156,7 +156,7 @@ const AlertGroup = observer(
       return val;
     }
 
-    onAlertGroupCollapseEvent = event => {
+    onAlertGroupCollapseEvent = (event) => {
       this.collapse.set(event.detail);
     };
 
@@ -188,7 +188,7 @@ const AlertGroup = observer(
         silenceFormStore,
         alertStore,
         settingsStore,
-        style
+        style,
       } = this.props;
 
       let footerAlertmanagers = [];
@@ -204,7 +204,9 @@ const AlertGroup = observer(
           group.alerts.length > 1 &&
           AllAlertsAreUsingSameAlertmanagers(group.alerts);
         if (showAlertmanagersInFooter) {
-          footerAlertmanagers = group.alerts[0].alertmanager.map(am => am.name);
+          footerAlertmanagers = group.alerts[0].alertmanager.map(
+            (am) => am.name
+          );
         }
       }
 
@@ -246,7 +248,7 @@ const AlertGroup = observer(
                   <ul className="list-group">
                     {group.alerts
                       .slice(0, this.renderConfig.alertsToRender)
-                      .map(alert => (
+                      .map((alert) => (
                         <Alert
                           key={hash(alert.labels)}
                           group={group}

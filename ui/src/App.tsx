@@ -9,7 +9,7 @@ import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import {
   ReactSelectColors,
-  ReactSelectStyles
+  ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { BodyTheme, ThemeContext } from "Components/Theme";
 import { ErrorBoundary } from "./ErrorBoundary";
@@ -20,23 +20,23 @@ import "Styles/App.scss";
 
 // https://github.com/facebook/react/issues/14603
 const Grid = React.lazy(() =>
-  import("Components/Grid").then(module => ({
-    default: module.Grid
+  import("Components/Grid").then((module) => ({
+    default: module.Grid,
   }))
 );
 const NavBar = React.lazy(() =>
-  import("Components/NavBar").then(module => ({
-    default: module.NavBar
+  import("Components/NavBar").then((module) => ({
+    default: module.NavBar,
   }))
 );
 const Fetcher = React.lazy(() =>
-  import("Components/Fetcher").then(module => ({
-    default: module.Fetcher
+  import("Components/Fetcher").then((module) => ({
+    default: module.Fetcher,
   }))
 );
 const FaviconBadge = React.lazy(() =>
-  import("Components/FaviconBadge").then(module => ({
-    default: module.FaviconBadge
+  import("Components/FaviconBadge").then((module) => ({
+    default: module.FaviconBadge,
   }))
 );
 
@@ -113,10 +113,10 @@ const App = observer(
             queries={{
               isSupported: "(prefers-color-scheme)",
               light: "(prefers-color-scheme: light)",
-              dark: "(prefers-color-scheme: dark)"
+              dark: "(prefers-color-scheme: dark)",
             }}
           >
-            {matches => (
+            {(matches) => (
               <ThemeContext.Provider
                 value={{
                   isDark:
@@ -136,7 +136,7 @@ const App = observer(
                       : this.settingsStore.themeConfig.config.theme ===
                         this.settingsStore.themeConfig.options.dark.value
                       ? ReactSelectStyles(ReactSelectColors.Dark)
-                      : ReactSelectStyles(ReactSelectColors.Light)
+                      : ReactSelectStyles(ReactSelectColors.Light),
                 }}
               >
                 <BodyTheme />

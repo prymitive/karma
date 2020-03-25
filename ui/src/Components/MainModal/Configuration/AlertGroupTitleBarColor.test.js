@@ -26,7 +26,7 @@ describe("<AlertGroupTitleBarColor />", () => {
     expect(settingsStore.alertGroupConfig.config.colorTitleBar).toBe(false);
   });
 
-  it("unchecking the checkbox sets stored colorTitleBar value to 'false'", done => {
+  it("unchecking the checkbox sets stored colorTitleBar value to 'false'", (done) => {
     const tree = FakeConfiguration();
     const checkbox = tree.find("#configuration-colortitlebar");
 
@@ -39,7 +39,7 @@ describe("<AlertGroupTitleBarColor />", () => {
     }, 200);
   });
 
-  it("checking the checkbox sets stored colorTitleBar value to 'true'", done => {
+  it("checking the checkbox sets stored colorTitleBar value to 'true'", (done) => {
     const tree = FakeConfiguration();
     const checkbox = tree.find("#configuration-colortitlebar");
 

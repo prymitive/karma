@@ -26,7 +26,7 @@ beforeEach(() => {
     enabled: true,
     durationSeconds: 123,
     author: "default author",
-    commentPrefix: "PREFIX"
+    commentPrefix: "PREFIX",
   };
   alertStore.data.upstreams = {
     clusters: { default: ["default"] },
@@ -41,15 +41,15 @@ beforeEach(() => {
         error: "",
         version: "0.17.0",
         cluster: "default",
-        clusterMembers: ["default"]
-      }
-    ]
+        clusterMembers: ["default"],
+      },
+    ],
   };
 
   alerts = [
     MockAlert([], { foo: "bar" }, "active"),
     MockAlert([], { foo: "baz" }, "active"),
-    MockAlert([], { foo: "ignore" }, "suppressed")
+    MockAlert([], { foo: "ignore" }, "suppressed"),
   ];
   group = MockAlertGroup({ alertname: "Fake Alert" }, alerts, [], {}, {});
 });
@@ -165,9 +165,9 @@ describe("<AlertAck />", () => {
       endsAt: "2000-02-01T00:02:03.000Z",
       matchers: [
         { isRegex: false, name: "alertname", value: "Fake Alert" },
-        { isRegex: true, name: "foo", value: "(bar|baz)" }
+        { isRegex: true, name: "foo", value: "(bar|baz)" },
       ],
-      startsAt: "2000-02-01T00:00:00.000Z"
+      startsAt: "2000-02-01T00:00:00.000Z",
     });
   });
 
@@ -183,9 +183,9 @@ describe("<AlertAck />", () => {
       endsAt: "2000-02-01T00:03:57.000Z",
       matchers: [
         { isRegex: false, name: "alertname", value: "Fake Alert" },
-        { isRegex: true, name: "foo", value: "(bar|baz)" }
+        { isRegex: true, name: "foo", value: "(bar|baz)" },
       ],
-      startsAt: "2000-02-01T00:00:00.000Z"
+      startsAt: "2000-02-01T00:00:00.000Z",
     });
   });
 
@@ -203,9 +203,9 @@ describe("<AlertAck />", () => {
       endsAt: "2000-02-01T00:03:42.000Z",
       matchers: [
         { isRegex: false, name: "alertname", value: "Fake Alert" },
-        { isRegex: true, name: "foo", value: "(bar|baz)" }
+        { isRegex: true, name: "foo", value: "(bar|baz)" },
       ],
-      startsAt: "2000-02-01T00:00:00.000Z"
+      startsAt: "2000-02-01T00:00:00.000Z",
     });
   });
 
@@ -224,9 +224,9 @@ describe("<AlertAck />", () => {
       endsAt: "2000-02-01T00:03:42.000Z",
       matchers: [
         { isRegex: false, name: "alertname", value: "Fake Alert" },
-        { isRegex: true, name: "foo", value: "(bar|baz)" }
+        { isRegex: true, name: "foo", value: "(bar|baz)" },
       ],
-      startsAt: "2000-02-01T00:00:00.000Z"
+      startsAt: "2000-02-01T00:00:00.000Z",
     });
   });
 
@@ -243,9 +243,9 @@ describe("<AlertAck />", () => {
       endsAt: "2000-02-01T00:03:42.000Z",
       matchers: [
         { isRegex: false, name: "alertname", value: "Fake Alert" },
-        { isRegex: true, name: "foo", value: "(bar|baz)" }
+        { isRegex: true, name: "foo", value: "(bar|baz)" },
       ],
-      startsAt: "2000-02-01T00:00:00.000Z"
+      startsAt: "2000-02-01T00:00:00.000Z",
     });
   });
 
@@ -272,7 +272,7 @@ describe("<AlertAck />", () => {
           error: "",
           version: "0.17.0",
           cluster: "default",
-          clusterMembers: ["default", "fallback"]
+          clusterMembers: ["default", "fallback"],
         },
         {
           name: "fallback",
@@ -284,9 +284,9 @@ describe("<AlertAck />", () => {
           error: "",
           version: "0.17.0",
           cluster: "default",
-          clusterMembers: ["default", "fallback"]
-        }
-      ]
+          clusterMembers: ["default", "fallback"],
+        },
+      ],
     };
 
     const tree = MountedAlertAck();
@@ -323,9 +323,9 @@ describe("<AlertAck />", () => {
           error: "",
           version: "0.17.0",
           cluster: "default",
-          clusterMembers: ["default", "fallback"]
-        }
-      ]
+          clusterMembers: ["default", "fallback"],
+        },
+      ],
     };
 
     const tree = MountedAlertAck();

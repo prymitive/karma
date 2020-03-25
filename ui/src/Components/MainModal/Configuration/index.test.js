@@ -8,7 +8,7 @@ import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 import {
   ReactSelectColors,
-  ReactSelectStyles
+  ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { Configuration } from ".";
 
@@ -18,7 +18,7 @@ describe("<Configuration />", () => {
     const tree = mount(
       <ThemeContext.Provider
         value={{
-          reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+          reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
         }}
       >
         <Configuration settingsStore={settingsStore} defaultIsOpen={true} />

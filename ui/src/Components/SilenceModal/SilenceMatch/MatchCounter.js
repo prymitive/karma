@@ -21,7 +21,7 @@ const MatchCounter = observer(
   class MatchCounter extends Component {
     static propTypes = {
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      matcher: SilenceFormMatcher.isRequired
+      matcher: SilenceFormMatcher.isRequired,
     };
 
     matchedAlerts = observable(
@@ -34,11 +34,11 @@ const MatchCounter = observer(
         },
         setError(value) {
           this.error = value;
-        }
+        },
       },
       {
         setTotal: action,
-        setError: action
+        setError: action,
       }
     );
 
@@ -56,14 +56,14 @@ const MatchCounter = observer(
         FormatBackendURI("alerts.json?") + FormatAlertsQ(filters);
 
       this.matchedAlerts.fetch = FetchGet(alertsURI, {})
-        .then(result => {
+        .then((result) => {
           return result.json();
         })
-        .then(result => {
+        .then((result) => {
           this.matchedAlerts.setTotal(result.totalAlerts);
           this.matchedAlerts.setError(null);
         })
-        .catch(err => {
+        .catch((err) => {
           console.trace(err);
           return this.matchedAlerts.setError(err.message);
         });

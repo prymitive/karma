@@ -41,10 +41,10 @@ beforeEach(() => {
         error: "",
         version: "0.17.0",
         headers: {},
-        corsCredentials: "include"
-      }
+        corsCredentials: "include",
+      },
     ],
-    clusters: { am: ["am1"] }
+    clusters: { am: ["am1"] },
   };
 
   fetch.resetMocks();
@@ -59,7 +59,7 @@ afterEach(() => {
 
 const MockOnDeleteModalClose = jest.fn();
 
-const MockSilenceList = count => {
+const MockSilenceList = (count) => {
   let silences = [];
   for (var index = 1; index <= count; index++) {
     const silence = MockSilence();
@@ -67,7 +67,7 @@ const MockSilenceList = count => {
     silences.push({
       cluster: cluster,
       alertCount: 123,
-      silence: silence
+      silence: silence,
     });
   }
   return silences;
@@ -91,8 +91,8 @@ describe("<Browser />", () => {
         {
           cluster: cluster,
           alertCount: 123,
-          silence: silence
-        }
+          silence: silence,
+        },
       ])
     );
     const tree = MountedBrowser();
@@ -108,8 +108,8 @@ describe("<Browser />", () => {
         {
           cluster: cluster,
           alertCount: 123,
-          silence: silence
-        }
+          silence: silence,
+        },
       ])
     );
     const tree = MountedBrowser();
@@ -130,8 +130,8 @@ describe("<Browser />", () => {
         {
           cluster: cluster,
           alertCount: 123,
-          silence: silence
-        }
+          silence: silence,
+        },
       ])
     );
     const tree = MountedBrowser();
@@ -180,8 +180,8 @@ describe("<Browser />", () => {
         {
           cluster: cluster,
           alertCount: 123,
-          silence: silence
-        }
+          silence: silence,
+        },
       ])
     );
     const tree = MountedBrowser();

@@ -20,7 +20,7 @@ describe("<PageSelect />", () => {
     );
     tree.simulate("focus");
 
-    setPageCallback.mockImplementation(val =>
+    setPageCallback.mockImplementation((val) =>
       tree.setProps({ activePage: val })
     );
 

@@ -7,12 +7,12 @@ import { Settings } from "Stores/Settings";
 import {
   SilenceFormStore,
   SilenceFormStage,
-  NewEmptyMatcher
+  NewEmptyMatcher,
 } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
 import {
   ReactSelectColors,
-  ReactSelectStyles
+  ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { SilenceForm } from "./SilenceForm";
 
@@ -34,7 +34,7 @@ const MountedSilenceForm = () => {
   return mount(
     <ThemeContext.Provider
       value={{
-        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
       }}
     >
       <SilenceForm

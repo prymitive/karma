@@ -15,8 +15,8 @@ import { TooltipWrapper } from "Components/TooltipWrapper";
 
 // https://github.com/facebook/react/issues/14603
 const SilenceModalContent = React.lazy(() =>
-  import("./SilenceModalContent").then(module => ({
-    default: module.SilenceModalContent
+  import("./SilenceModalContent").then((module) => ({
+    default: module.SilenceModalContent,
   }))
 );
 
@@ -25,7 +25,7 @@ const SilenceModal = observer(
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
     };
 
     constructor(props) {

@@ -18,7 +18,7 @@ const GroupFooter = observer(
       alertmanagers: PropTypes.arrayOf(PropTypes.string).isRequired,
       afterUpdate: PropTypes.func.isRequired,
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired
+      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
     };
 
     render() {
@@ -27,15 +27,15 @@ const GroupFooter = observer(
         alertmanagers,
         afterUpdate,
         alertStore,
-        silenceFormStore
+        silenceFormStore,
       } = this.props;
 
       return (
         <div className="card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1">
           <div className="mb-1">
             {group.shared.annotations
-              .filter(a => a.isLink === false)
-              .map(a => (
+              .filter((a) => a.isLink === false)
+              .map((a) => (
                 <RenderNonLinkAnnotation
                   key={a.name}
                   name={a.name}
@@ -54,7 +54,7 @@ const GroupFooter = observer(
               alertStore={alertStore}
             />
           ))}
-          {alertmanagers.map(am => (
+          {alertmanagers.map((am) => (
             <FilteringLabel
               key={am}
               name={StaticLabels.AlertManager}
@@ -68,8 +68,8 @@ const GroupFooter = observer(
             alertStore={alertStore}
           />
           {group.shared.annotations
-            .filter(a => a.isLink === true)
-            .map(a => (
+            .filter((a) => a.isLink === true)
+            .map((a) => (
               <RenderLinkAnnotation
                 key={a.name}
                 name={a.name}
@@ -81,7 +81,7 @@ const GroupFooter = observer(
               {Object.entries(
                 group.shared.silences
               ).map(([cluster, silences]) =>
-                silences.map(silenceID =>
+                silences.map((silenceID) =>
                   RenderSilence(
                     alertStore,
                     silenceFormStore,

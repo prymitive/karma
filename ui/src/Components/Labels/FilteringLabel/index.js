@@ -22,7 +22,7 @@ const FilteringLabel = observer(
           <span
             className={cs.className}
             style={cs.style}
-            onClick={e => this.handleClick(e)}
+            onClick={(e) => this.handleClick(e)}
           >
             <span className="components-label-name">{name}:</span>{" "}
             <span className="components-label-value">{value}</span>

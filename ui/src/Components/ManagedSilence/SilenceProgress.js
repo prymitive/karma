@@ -13,7 +13,7 @@ import "./SilenceProgress.scss";
 const SilenceProgress = observer(
   class SilenceProgress extends Component {
     static propTypes = {
-      silence: APISilence.isRequired
+      silence: APISilence.isRequired,
     };
 
     progress = observable(
@@ -28,10 +28,10 @@ const SilenceProgress = observer(
           if (this.value !== durationPercent) {
             this.value = durationPercent;
           }
-        }
+        },
       },
       {
-        calculate: action.bound
+        calculate: action.bound,
       }
     );
 

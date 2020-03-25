@@ -22,7 +22,7 @@ describe("<FilterBarConfiguration />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("unchecking the checkbox sets stored autohide value to 'false'", done => {
+  it("unchecking the checkbox sets stored autohide value to 'false'", (done) => {
     const tree = FakeConfiguration();
     const checkbox = tree.find("#configuration-autohide");
 
@@ -34,7 +34,7 @@ describe("<FilterBarConfiguration />", () => {
     }, 200);
   });
 
-  it("checking the checkbox sets stored autohide value to 'true'", done => {
+  it("checking the checkbox sets stored autohide value to 'true'", (done) => {
     const tree = FakeConfiguration();
     const checkbox = tree.find("#configuration-autohide");
 

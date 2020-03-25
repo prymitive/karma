@@ -22,18 +22,18 @@ FetchIcon.propTypes = {
   icon: FontAwesomeIcon.propTypes.icon.isRequired,
   color: PropTypes.string,
   visible: PropTypes.bool,
-  spin: PropTypes.bool
+  spin: PropTypes.bool,
 };
 FetchIcon.defaultProps = {
   color: "muted",
   visible: true,
-  spin: false
+  spin: false,
 };
 
 const FetchIndicator = observer(
   class FetchIndicator extends Component {
     static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired
+      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
     };
 
     render() {

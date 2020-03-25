@@ -13,7 +13,7 @@ const HistoryLabel = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       name: PropTypes.string.isRequired,
       value: PropTypes.string.isRequired,
-      matcher: PropTypes.string.isRequired
+      matcher: PropTypes.string.isRequired,
     };
 
     render() {

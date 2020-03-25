@@ -13,23 +13,23 @@ import { Settings } from "Stores/Settings";
 const AlertGroupWidthConfiguration = observer(
   class AlertGroupWidthConfiguration extends Component {
     static propTypes = {
-      settingsStore: PropTypes.instanceOf(Settings).isRequired
+      settingsStore: PropTypes.instanceOf(Settings).isRequired,
     };
 
     constructor(props) {
       super(props);
 
       this.config = observable({
-        groupWidth: toJS(props.settingsStore.gridConfig.config.groupWidth)
+        groupWidth: toJS(props.settingsStore.gridConfig.config.groupWidth),
       });
     }
 
-    onChange = action(value => {
+    onChange = action((value) => {
       this.config.groupWidth = value;
     });
 
     onChangeComplete = debounce(
-      action(value => {
+      action((value) => {
         const { settingsStore } = this.props;
 
         settingsStore.gridConfig.config.groupWidth = value;

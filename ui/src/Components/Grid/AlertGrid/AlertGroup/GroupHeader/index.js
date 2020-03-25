@@ -21,16 +21,16 @@ const GroupHeader = observer(
     static propTypes = {
       collapseStore: PropTypes.shape({
         value: PropTypes.bool.isRequired,
-        toggle: PropTypes.func.isRequired
+        toggle: PropTypes.func.isRequired,
       }).isRequired,
       group: APIGroup.isRequired,
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       themedCounters: PropTypes.bool.isRequired,
-      setIsMenuOpen: PropTypes.func.isRequired
+      setIsMenuOpen: PropTypes.func.isRequired,
     };
 
-    onCollapseClick = event => {
+    onCollapseClick = (event) => {
       const { collapseStore } = this.props;
 
       // left click       => toggle current group
@@ -40,7 +40,7 @@ const GroupHeader = observer(
 
       if (event.altKey === true) {
         const toggleEvent = new CustomEvent("alertGroupCollapse", {
-          detail: collapseStore.value
+          detail: collapseStore.value,
         });
         window.dispatchEvent(toggleEvent);
       }
@@ -53,7 +53,7 @@ const GroupHeader = observer(
         alertStore,
         silenceFormStore,
         themedCounters,
-        setIsMenuOpen
+        setIsMenuOpen,
       } = this.props;
 
       return (
@@ -72,7 +72,7 @@ const GroupHeader = observer(
             />
           </span>
           <span className="flex-shrink-1 flex-grow-1" style={{ minWidth: 0 }}>
-            {Object.keys(group.labels).map(name => (
+            {Object.keys(group.labels).map((name) => (
               <FilteringLabel
                 key={name}
                 name={name}

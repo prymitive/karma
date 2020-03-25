@@ -1,3 +1,3 @@
-export default function(wrapped) {
+export default function (wrapped) {
   return wrapped;
 }

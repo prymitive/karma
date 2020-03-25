@@ -81,7 +81,7 @@ const MockGroupList = (count, alertPerGroup) => {
   alertStore.data.upstreams = {
     counters: { total: 0, healthy: 1, failed: 0 },
     instances: [{ name: "am", uri: "http://am", error: "" }],
-    clusters: { am: ["am"] }
+    clusters: { am: ["am"] },
   };
   alertStore.data.groups = groups;
 };
@@ -90,12 +90,9 @@ const VerifyColumnCount = (innerWidth, outerWidth, columns) => {
   MockGroupList(60, 5);
   const tree = ShallowAlertGrid();
   tree.instance().viewport.updateWidths(innerWidth, outerWidth);
-  expect(
-    tree
-      .find("AlertGroup")
-      .at(0)
-      .props().style.width
-  ).toBe(Math.floor(innerWidth / columns));
+  expect(tree.find("AlertGroup").at(0).props().style.width).toBe(
+    Math.floor(innerWidth / columns)
+  );
 };
 
 describe("<AlertGrid />", () => {
@@ -141,7 +138,7 @@ describe("<AlertGrid />", () => {
     const instance = tree.instance();
     // it's a shallow render so we don't really have masonry mounted, fake it
     instance.masonryComponentReference.ref = {
-      forcePack: jest.fn()
+      forcePack: jest.fn(),
     };
     instance.masonryRepack();
     expect(instance.masonryComponentReference.ref.forcePack).toHaveBeenCalled();
@@ -182,10 +179,10 @@ describe("<AlertGrid />", () => {
     MockGroupList(3, 1);
     const tree = ShallowAlertGrid();
     const alertGroups = tree.find("AlertGroup");
-    expect(alertGroups.map(g => g.props().group.id)).toEqual([
+    expect(alertGroups.map((g) => g.props().group.id)).toEqual([
       "id1",
       "id2",
-      "id3"
+      "id3",
     ]);
   });
 
@@ -208,8 +205,8 @@ describe("<AlertGrid />", () => {
     { canvas: 2800, columns: 7 },
     { canvas: 3200, columns: 8 },
     { canvas: 3600, columns: 9 },
-    { canvas: 4000, columns: 10 }
-  ].map(t =>
+    { canvas: 4000, columns: 10 },
+  ].map((t) =>
     it(`renders ${t.columns} column(s) on ${t.canvas} breakpoint`, () => {
       settingsStore.gridConfig.config.groupWidth = 400;
       VerifyColumnCount(t.canvas - 1, t.canvas - 1, Math.max(1, t.columns - 1));
@@ -230,8 +227,8 @@ describe("<AlertGrid />", () => {
     { canvas: 1920, columns: 4 },
     { canvas: 2048, columns: 5 },
     { canvas: 2560, columns: 6 },
-    { canvas: 3840, columns: 9 }
-  ].map(t =>
+    { canvas: 3840, columns: 9 },
+  ].map((t) =>
     it(`renders ${t.columns} column(s) with ${t.canvas} resolution`, () => {
       settingsStore.gridConfig.config.groupWidth = 400;
       VerifyColumnCount(t.canvas, t.canvas, t.columns);
@@ -248,11 +245,11 @@ describe("<AlertGrid />", () => {
       expect({
         resolution: i,
         minWidth: minWidth,
-        columns: columns
+        columns: columns,
       }).toEqual({
         resolution: i,
         minWidth: minWidth,
-        columns: expectedColumns
+        columns: expectedColumns,
       });
       expect(columns).toBeGreaterThanOrEqual(lastColumns);
 
@@ -267,21 +264,11 @@ describe("<AlertGrid />", () => {
     const tree = ShallowAlertGrid();
     // set initial width
     tree.instance().viewport.updateWidths(1980, 1980);
-    expect(
-      tree
-        .find("AlertGroup")
-        .at(0)
-        .props().style.width
-    ).toBe(1980 / 4);
+    expect(tree.find("AlertGroup").at(0).props().style.width).toBe(1980 / 4);
 
     // then resize and verify if column count was changed
     tree.instance().viewport.updateWidths(1000, 1000);
-    expect(
-      tree
-        .find("AlertGroup")
-        .at(0)
-        .props().style.width
-    ).toBe(1000 / 2);
+    expect(tree.find("AlertGroup").at(0).props().style.width).toBe(1000 / 2);
   });
 
   it("scrollbar render doesn't resize alert groups", () => {
@@ -291,21 +278,11 @@ describe("<AlertGrid />", () => {
     const tree = ShallowAlertGrid();
     // set initial width
     tree.instance().viewport.updateWidths(1600, 1600);
-    expect(
-      tree
-        .find("AlertGroup")
-        .at(0)
-        .props().style.width
-    ).toBe(400);
+    expect(tree.find("AlertGroup").at(0).props().style.width).toBe(400);
 
     // then resize and verify if column count was changed
     tree.instance().viewport.updateWidths(1584, 1600);
-    expect(
-      tree
-        .find("AlertGroup")
-        .at(0)
-        .props().style.width
-    ).toBe(396);
+    expect(tree.find("AlertGroup").at(0).props().style.width).toBe(396);
   });
 
   it("window resize event calls updateWidths", () => {
@@ -328,12 +305,7 @@ describe("<AlertGrid />", () => {
       tree
         .instance()
         .viewport.updateWidths(index % 2 === 0 ? 1600 : 1584, 1600);
-      results.push(
-        tree
-          .find("AlertGroup")
-          .at(0)
-          .props().style.width
-      );
+      results.push(tree.find("AlertGroup").at(0).props().style.width);
     }
 
     expect(results).toStrictEqual([
@@ -350,7 +322,7 @@ describe("<AlertGrid />", () => {
       400,
       396,
       400,
-      396
+      396,
     ]);
   });
 
@@ -359,12 +331,7 @@ describe("<AlertGrid />", () => {
     const tree = MountedAlertGroup();
 
     for (let i = 0; i <= 9; i++) {
-      expect(
-        tree
-          .find("AlertGroup")
-          .at(i)
-          .find("Alert")
-      ).toHaveLength(3);
+      expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(3);
     }
 
     tree
@@ -376,12 +343,9 @@ describe("<AlertGrid />", () => {
       .simulate("click");
 
     for (let i = 0; i <= 9; i++) {
-      expect(
-        tree
-          .find("AlertGroup")
-          .at(i)
-          .find("Alert")
-      ).toHaveLength(i === 2 ? 0 : 3);
+      expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(
+        i === 2 ? 0 : 3
+      );
     }
   });
 
@@ -390,12 +354,7 @@ describe("<AlertGrid />", () => {
     const tree = MountedAlertGroup();
 
     for (let i = 0; i <= 9; i++) {
-      expect(
-        tree
-          .find("AlertGroup")
-          .at(i)
-          .find("Alert")
-      ).toHaveLength(3);
+      expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(3);
     }
 
     tree
@@ -407,12 +366,7 @@ describe("<AlertGrid />", () => {
       .simulate("click", { altKey: true });
 
     for (let i = 0; i <= 9; i++) {
-      expect(
-        tree
-          .find("AlertGroup")
-          .at(i)
-          .find("Alert")
-      ).toHaveLength(0);
+      expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(0);
     }
   });
 

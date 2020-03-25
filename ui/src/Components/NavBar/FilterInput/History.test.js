@@ -20,7 +20,7 @@ const MountedHistory = () => {
   );
 };
 
-const ShallowHistoryMenu = historyTree => {
+const ShallowHistoryMenu = (historyTree) => {
   const tree = shallow(
     <HistoryMenu
       popperPlacement={null}
@@ -36,7 +36,7 @@ const ShallowHistoryMenu = historyTree => {
   return tree;
 };
 
-const MountedHistoryMenu = historyTree => {
+const MountedHistoryMenu = (historyTree) => {
   const tree = mount(
     <HistoryMenu
       popperPlacement={null}
@@ -65,7 +65,7 @@ const PopulateHistory = (instance, count) => {
   for (let i = 1; i <= count; i++) {
     alertStore.filters.values = [
       AppliedFilter("foo", "=", `bar${i}`),
-      AppliedFilter("baz", "=~", `bar${i}`)
+      AppliedFilter("baz", "=~", `bar${i}`),
     ];
     instance.appendToHistory();
   }
@@ -103,7 +103,7 @@ describe("<History />", () => {
     alertStore.filters.values = [
       AppliedFilter("foo", "=", "bar"),
       NewUnappliedFilter("foo=unapplied"),
-      AppliedFilter("baz", "!=", "bar")
+      AppliedFilter("baz", "!=", "bar"),
     ];
     const tree = MountedHistory();
     tree.instance().appendToHistory();
@@ -111,7 +111,7 @@ describe("<History />", () => {
     expect(JSON.stringify(tree.instance().history.filters[0])).toBe(
       JSON.stringify([
         ReduceFilter(AppliedFilter("foo", "=", "bar")),
-        ReduceFilter(AppliedFilter("baz", "!=", "bar"))
+        ReduceFilter(AppliedFilter("baz", "!=", "bar")),
       ])
     );
   });
@@ -191,7 +191,7 @@ describe("<HistoryMenu />", () => {
   it("clicking on 'Save filters' saves current filter set to Settings", () => {
     alertStore.filters.values = [
       AppliedFilter("foo", "=", "bar"),
-      AppliedFilter("bar", "=~", "baz")
+      AppliedFilter("bar", "=~", "baz"),
     ];
 
     const historyTree = MountedHistory();

@@ -31,15 +31,15 @@ storiesOf("NavBar", module).add("NavBar", () => {
     cluster: {
       staging: {
         brightness: 205,
-        background: { red: 246, green: 176, blue: 247, alpha: 255 }
-      }
+        background: { red: 246, green: 176, blue: 247, alpha: 255 },
+      },
     },
     region: {
       AF: {
         brightness: 111,
-        background: { red: 115, green: 101, blue: 152, alpha: 255 }
-      }
-    }
+        background: { red: 115, green: 101, blue: 152, alpha: 255 },
+      },
+    },
   };
 
   alertStore.filters.values = [
@@ -47,7 +47,7 @@ storiesOf("NavBar", module).add("NavBar", () => {
     NewFilter("region=AF", "region", "=", "AF", true, true, 180),
     NewFilter("instance!=server1", "instance", "!=", "server1", false, true, 0),
     NewFilter("server!!!=", "", "", "", true, false, 0),
-    NewFilter("foo", "", "", "", true, true, 2)
+    NewFilter("foo", "", "", "", true, true, 2),
   ];
 
   const history = [
@@ -55,7 +55,7 @@ storiesOf("NavBar", module).add("NavBar", () => {
     [NewFilter("cluster=staging", "cluster", "=", "staging", true, true, 15)],
     [
       NewFilter("cluster=staging", "cluster", "=", "staging", true, true, 15),
-      NewFilter("region=AF", "region", "=", "AF", true, true, 180)
+      NewFilter("region=AF", "region", "=", "AF", true, true, 180),
     ],
     [
       NewFilter("cluster=staging", "cluster", "=", "staging", true, true, 15),
@@ -68,7 +68,7 @@ storiesOf("NavBar", module).add("NavBar", () => {
         false,
         true,
         0
-      )
+      ),
     ],
     [
       NewFilter(
@@ -79,8 +79,8 @@ storiesOf("NavBar", module).add("NavBar", () => {
         true,
         true,
         15
-      )
-    ]
+      ),
+    ],
   ];
 
   return (

@@ -9,7 +9,7 @@ const ReactSelectColors = {
     menuBackground: "#fff",
     optionHoverBackground: "#455a64",
     valueContainerBackground: "#fff",
-    disabledValueContainerBackground: "#fff"
+    disabledValueContainerBackground: "#fff",
   },
   Dark: {
     color: "#fff",
@@ -21,11 +21,11 @@ const ReactSelectColors = {
     menuBackground: "#2b2b2b",
     optionHoverBackground: "#455a64",
     valueContainerBackground: "#444",
-    disabledValueContainerBackground: "#fff"
-  }
+    disabledValueContainerBackground: "#fff",
+  },
 };
 
-const ReactSelectStyles = theme => ({
+const ReactSelectStyles = (theme) => ({
   control: (base, state) =>
     state.isFocused
       ? {
@@ -37,15 +37,15 @@ const ReactSelectStyles = theme => ({
           borderRadius: "0.25rem",
           borderColor: theme.focusedBorderColor,
           "&:hover": {
-            borderColor: theme.focusedBorderColor
-          }
+            borderColor: theme.focusedBorderColor,
+          },
         }
       : {
           ...base,
           backgroundColor: "inherit",
           borderRadius: "0.25rem",
           borderColor: theme.borderColor,
-          "&:hover": { borderColor: theme.borderColor }
+          "&:hover": { borderColor: theme.borderColor },
         },
   valueContainer: (base, state) =>
     state.isMulti
@@ -62,7 +62,7 @@ const ReactSelectStyles = theme => ({
           flexDirection: "row",
           flexWrap: "wrap",
           maxWidth: "100%",
-          overflow: "hidden"
+          overflow: "hidden",
         }
       : {
           ...base,
@@ -70,19 +70,19 @@ const ReactSelectStyles = theme => ({
           borderBottomLeftRadius: "0.25rem",
           backgroundColor: state.isDisabled
             ? theme.disabledValueContainerBackground
-            : theme.valueContainerBackground
+            : theme.valueContainerBackground,
         },
   singleValue: (base, state) => ({
     ...base,
-    color: theme.singleValueColor
+    color: theme.singleValueColor,
   }),
   multiValue: (base, state) => ({
     ...base,
     borderRadius: "4px",
     backgroundColor: theme.optionHoverBackground,
     "&:hover": {
-      backgroundColor: theme.optionHoverBackground
-    }
+      backgroundColor: theme.optionHoverBackground,
+    },
   }),
   multiValueLabel: (base, state) => ({
     ...base,
@@ -91,8 +91,8 @@ const ReactSelectStyles = theme => ({
     wordWrap: "break-word",
     wordBreak: "break-word",
     "&:hover": {
-      color: theme.color
-    }
+      color: theme.color,
+    },
   }),
   multiValueRemove: (base, state) => ({
     ...base,
@@ -104,8 +104,8 @@ const ReactSelectStyles = theme => ({
     "&:hover": {
       color: theme.color,
       backgroundColor: "inherit",
-      opacity: "0.75"
-    }
+      opacity: "0.75",
+    },
   }),
   indicatorsContainer: (base, state) => ({
     ...base,
@@ -113,12 +113,12 @@ const ReactSelectStyles = theme => ({
       ? theme.disabledValueContainerBackground
       : theme.valueContainerBackground,
     borderTopRightRadius: "0.25rem",
-    borderBottomRightRadius: "0.25rem"
+    borderBottomRightRadius: "0.25rem",
   }),
   menu: (base, state) => ({
     ...base,
     zIndex: 1500,
-    backgroundColor: theme.menuBackground
+    backgroundColor: theme.menuBackground,
   }),
   option: (base, state) => ({
     ...base,
@@ -127,9 +127,9 @@ const ReactSelectStyles = theme => ({
     "&:hover": {
       color: theme.color,
       backgroundColor: theme.optionHoverBackground,
-      cursor: "pointer"
-    }
-  })
+      cursor: "pointer",
+    },
+  }),
 });
 
 export { ReactSelectStyles, ReactSelectColors };

@@ -6,14 +6,14 @@ class SavedFilters {
     "savedFilters",
     {
       filters: [],
-      present: false
+      present: false,
     },
     {
-      delay: 100
+      delay: 100,
     }
   );
 
-  save = action(newFilters => {
+  save = action((newFilters) => {
     this.config.filters = newFilters;
     this.config.present = true;
   });
@@ -32,7 +32,7 @@ class FetchConfig {
       { delay: 100 }
     );
 
-    this.setInterval = action(newInterval => {
+    this.setInterval = action((newInterval) => {
       this.config.interval = newInterval;
     });
   }
@@ -43,9 +43,9 @@ class AlertGroupConfig {
     expanded: { label: "Always expanded", value: "expanded" },
     collapsedOnMobile: {
       label: "Collapse on mobile",
-      value: "collapsedOnMobile"
+      value: "collapsedOnMobile",
     },
-    collapsed: { label: "Always collapsed", value: "collapsed" }
+    collapsed: { label: "Always collapsed", value: "collapsed" },
   });
 
   constructor(renderCount, collapseState, colorTitleBar) {
@@ -54,13 +54,13 @@ class AlertGroupConfig {
       {
         defaultRenderCount: renderCount,
         defaultCollapseState: collapseState,
-        colorTitleBar: colorTitleBar
+        colorTitleBar: colorTitleBar,
       },
       { delay: 100 }
     );
   }
 
-  update = action(data => {
+  update = action((data) => {
     for (const [key, val] of Object.entries(data)) {
       this.config[key] = val;
     }
@@ -70,7 +70,7 @@ class AlertGroupConfig {
 class SilenceFormConfig {
   config = localStored("silenceFormConfig", { author: "" }, { delay: 100 });
 
-  saveAuthor = action(newAuthor => {
+  saveAuthor = action((newAuthor) => {
     this.config.author = newAuthor;
   });
 }
@@ -80,7 +80,7 @@ class GridConfig {
     default: { label: "Use defaults from karma config file", value: "default" },
     disabled: { label: "No sorting", value: "disabled" },
     startsAt: { label: "Sort by alert timestamp", value: "startsAt" },
-    label: { label: "Sort by alert label", value: "label" }
+    label: { label: "Sort by alert label", value: "label" },
   });
   constructor(groupWidth) {
     this.config = localStored(
@@ -89,7 +89,7 @@ class GridConfig {
         sortOrder: this.options.default.value,
         sortLabel: null,
         reverseSort: null,
-        groupWidth: groupWidth
+        groupWidth: groupWidth,
       },
       { delay: 100 }
     );
@@ -101,10 +101,10 @@ class FilterBarConfig {
     this.config = localStored(
       "filterBarConfig",
       {
-        autohide: autohide
+        autohide: autohide,
       },
       {
-        delay: 100
+        delay: 100,
       }
     );
   }
@@ -114,19 +114,19 @@ class ThemeConfig {
   options = Object.freeze({
     auto: {
       label: "Automatic theme, follow browser preference",
-      value: "auto"
+      value: "auto",
     },
     light: { label: "Light theme", value: "light" },
-    dark: { label: "Dark theme", value: "dark" }
+    dark: { label: "Dark theme", value: "dark" },
   });
   constructor(defaultTheme) {
     this.config = localStored(
       "themeConfig",
       {
-        theme: defaultTheme
+        theme: defaultTheme,
       },
       {
-        delay: 100
+        delay: 100,
       }
     );
   }
@@ -143,7 +143,7 @@ class Settings {
         Theme: "auto",
         MinimalGroupWidth: 420,
         AlertsPerGroup: 5,
-        CollapseGroups: "collapsedOnMobile"
+        CollapseGroups: "collapsedOnMobile",
       };
     } else {
       defaultSettings = defaults;

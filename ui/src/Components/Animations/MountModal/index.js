@@ -16,7 +16,7 @@ const MountModal = ({ children, duration, ...props }) => (
   </CSSTransition>
 );
 MountModal.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 const MountModalBackdrop = ({ children, duration, ...props }) => (
@@ -33,7 +33,7 @@ const MountModalBackdrop = ({ children, duration, ...props }) => (
   </CSSTransition>
 );
 MountModalBackdrop.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export { MountModal, MountModalBackdrop };

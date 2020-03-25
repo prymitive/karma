@@ -29,7 +29,7 @@ const SilenceForm = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
-      previewOpen: PropTypes.bool.isRequired
+      previewOpen: PropTypes.bool.isRequired,
     };
 
     constructor(props) {
@@ -42,7 +42,7 @@ const SilenceForm = observer(
           hidden: !props.previewOpen,
           toggle() {
             this.hidden = !this.hidden;
-          }
+          },
         },
         { toggle: action.bound },
         { name: "Silence preview collpase toggle" }
@@ -79,7 +79,7 @@ const SilenceForm = observer(
       }
     });
 
-    addMore = action(event => {
+    addMore = action((event) => {
       const { silenceFormStore } = this.props;
 
       event.preventDefault();
@@ -87,17 +87,17 @@ const SilenceForm = observer(
       silenceFormStore.data.addEmptyMatcher();
     });
 
-    onAuthorChange = action(event => {
+    onAuthorChange = action((event) => {
       const { silenceFormStore } = this.props;
       silenceFormStore.data.author = event.target.value;
     });
 
-    onCommentChange = action(event => {
+    onCommentChange = action((event) => {
       const { silenceFormStore } = this.props;
       silenceFormStore.data.comment = event.target.value;
     });
 
-    handleSubmit = action(event => {
+    handleSubmit = action((event) => {
       const { silenceFormStore, settingsStore } = this.props;
 
       event.preventDefault();
@@ -121,7 +121,7 @@ const SilenceForm = observer(
               silenceFormStore={silenceFormStore}
             />
           </div>
-          {silenceFormStore.data.matchers.map(matcher => (
+          {silenceFormStore.data.matchers.map((matcher) => (
             <SilenceMatch
               key={matcher.id}
               silenceFormStore={silenceFormStore}

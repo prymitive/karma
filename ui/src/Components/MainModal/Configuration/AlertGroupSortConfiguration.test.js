@@ -8,7 +8,7 @@ import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 import {
   ReactSelectColors,
-  ReactSelectStyles
+  ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { AlertGroupSortConfiguration } from "./AlertGroupSortConfiguration";
 
@@ -26,7 +26,7 @@ const FakeConfiguration = () => {
   return mount(
     <ThemeContext.Provider
       value={{
-        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
       }}
     >
       <AlertGroupSortConfiguration settingsStore={settingsStore} />
@@ -57,7 +57,7 @@ describe("<AlertGroupSortConfiguration />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("invalid sortOrder value is reset on mount", done => {
+  it("invalid sortOrder value is reset on mount", (done) => {
     settingsStore.gridConfig.config.sortOrder = "badValue";
     FakeConfiguration();
     setTimeout(() => {
@@ -68,7 +68,7 @@ describe("<AlertGroupSortConfiguration />", () => {
     }, 200);
   });
 
-  it("changing sort order value update settingsStore", async done => {
+  it("changing sort order value update settingsStore", async (done) => {
     settingsStore.gridConfig.config.sortOrder =
       settingsStore.gridConfig.options.label.value;
     expect(settingsStore.gridConfig.config.sortOrder).toBe(
@@ -77,7 +77,7 @@ describe("<AlertGroupSortConfiguration />", () => {
     const tree = FakeConfiguration();
     tree.instance().onSortOrderChange({
       label: settingsStore.gridConfig.options.startsAt.label,
-      value: settingsStore.gridConfig.options.startsAt.value
+      value: settingsStore.gridConfig.options.startsAt.value,
     });
     setTimeout(() => {
       expect(settingsStore.gridConfig.config.sortOrder).toBe(
@@ -160,7 +160,7 @@ describe("<AlertGroupSortConfiguration />", () => {
     expect(options).toHaveLength(0);
   });
 
-  it("clicking on a label option updates settingsStore", async done => {
+  it("clicking on a label option updates settingsStore", async (done) => {
     fetch.mockResponse(JSON.stringify(["alertname", "cluster", "fakeLabel"]));
     const tree = await ExpandSortLabelSuggestions();
     const options = tree.find("div.react-select__option");
@@ -171,7 +171,7 @@ describe("<AlertGroupSortConfiguration />", () => {
     }, 200);
   });
 
-  it("clicking on the 'reverse' checkbox updates settingsStore", done => {
+  it("clicking on the 'reverse' checkbox updates settingsStore", (done) => {
     settingsStore.gridConfig.config.reverseSort = false;
     const tree = FakeConfiguration();
     const checkbox = tree.find("#configuration-sort-reverse");

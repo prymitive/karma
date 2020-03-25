@@ -21,7 +21,7 @@ const Placeholder = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        flexDirection: "column"
+        flexDirection: "column",
       }}
     >
       <FontAwesomeIcon
@@ -30,7 +30,7 @@ const Placeholder = () => {
         spin
         style={{
           color: "#5e7a88",
-          fontSize: "14rem"
+          fontSize: "14rem",
         }}
       />
     </div>,
@@ -41,7 +41,7 @@ const Placeholder = () => {
 const ThemeContext = React.createContext();
 
 class BodyTheme extends Component {
-  onToggleBodyClass = isDark => {
+  onToggleBodyClass = (isDark) => {
     document.body.classList.toggle("theme-dark", isDark);
     document.body.classList.toggle("theme-light", !isDark);
   };

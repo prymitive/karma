@@ -19,7 +19,7 @@ const LabelWithPercent = observer(
       hits: PropTypes.number.isRequired,
       percent: PropTypes.number.isRequired,
       offset: PropTypes.number.isRequired,
-      isActive: PropTypes.bool.isRequired
+      isActive: PropTypes.bool.isRequired,
     };
 
     removeFromFilters = () => {
@@ -47,7 +47,7 @@ const LabelWithPercent = observer(
             <span className="mr-1 px-1 bg-primary text-white components-labelWithPercent-percent">
               {hits}
             </span>
-            <span onClick={e => this.handleClick(e)}>
+            <span onClick={(e) => this.handleClick(e)}>
               <span className="components-label-name">{name}:</span>{" "}
               <span className="components-label-value">{value}</span>
             </span>

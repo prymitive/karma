@@ -11,7 +11,7 @@ import {
   SilenceFormStore,
   SilenceFormStage,
   NewEmptyMatcher,
-  MatcherValueToObject
+  MatcherValueToObject,
 } from "Stores/SilenceFormStore";
 import { SilencePreview } from ".";
 
@@ -49,12 +49,12 @@ const MockAPIResponse = () => {
       { alertname: "bar" },
       [
         MockAlert([], { instance: "bar1" }, "active"),
-        MockAlert([], { instance: "bar2" }, "active")
+        MockAlert([], { instance: "bar2" }, "active"),
       ],
       [],
       { job: "bar" },
       {}
-    )
+    ),
   };
   return response;
 };
@@ -80,7 +80,7 @@ describe("<SilencePreview />", () => {
   it("fetch uses correct filters with single Alertmanager instance", async () => {
     fetch.mockResponse(JSON.stringify(MockAPIResponse()));
     silenceFormStore.data.alertmanagers = [
-      { label: "amName", value: ["amValue"] }
+      { label: "amName", value: ["amValue"] },
     ];
 
     const tree = MountedSilencePreview();
@@ -91,7 +91,7 @@ describe("<SilencePreview />", () => {
         method: "GET",
         credentials: "include",
         mode: "cors",
-        redirect: "follow"
+        redirect: "follow",
       }
     );
   });
@@ -99,7 +99,7 @@ describe("<SilencePreview />", () => {
   it("fetch uses correct filters with multiple Alertmanager instances", async () => {
     fetch.mockResponse(JSON.stringify(MockAPIResponse()));
     silenceFormStore.data.alertmanagers = [
-      { label: "cluster", value: ["am1", "am2"] }
+      { label: "cluster", value: ["am1", "am2"] },
     ];
 
     const tree = MountedSilencePreview();
@@ -110,7 +110,7 @@ describe("<SilencePreview />", () => {
         method: "GET",
         credentials: "include",
         mode: "cors",
-        redirect: "follow"
+        redirect: "follow",
       }
     );
   });

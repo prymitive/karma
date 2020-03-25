@@ -8,7 +8,7 @@ import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 import {
   ReactSelectColors,
-  ReactSelectStyles
+  ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { ThemeConfiguration } from "./ThemeConfiguration";
 
@@ -21,7 +21,7 @@ const FakeConfiguration = () => {
   return mount(
     <ThemeContext.Provider
       value={{
-        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light)
+        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
       }}
     >
       <ThemeConfiguration settingsStore={settingsStore} />
@@ -35,7 +35,7 @@ describe("<ThemeConfiguration />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("resets stored config to defaults if it is invalid", done => {
+  it("resets stored config to defaults if it is invalid", (done) => {
     settingsStore.themeConfig.config.theme = "foo";
     const tree = FakeConfiguration();
     const select = tree.find("div.react-select__value-container");
@@ -48,7 +48,7 @@ describe("<ThemeConfiguration />", () => {
     }, 200);
   });
 
-  it("rendered correct default value", done => {
+  it("rendered correct default value", (done) => {
     settingsStore.themeConfig.config.theme =
       settingsStore.themeConfig.options.auto.value;
     const tree = FakeConfiguration();
@@ -59,7 +59,7 @@ describe("<ThemeConfiguration />", () => {
     }, 200);
   });
 
-  it("clicking on a label option updates settingsStore", done => {
+  it("clicking on a label option updates settingsStore", (done) => {
     const tree = FakeConfiguration();
     tree
       .find("input#react-select-configuration-theme-input")

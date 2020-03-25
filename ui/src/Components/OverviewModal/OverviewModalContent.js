@@ -13,7 +13,7 @@ import { TooltipWrapper } from "Components/TooltipWrapper";
 import { LabelWithPercent } from "Components/Labels/LabelWithPercent";
 
 const TableRows = observer(({ alertStore, nameStats }) =>
-  nameStats.map(nameStats => (
+  nameStats.map((nameStats) => (
     <tr key={nameStats.name}>
       <td width="25%" className="text-nowrap mw-100 p-1">
         <span className="badge badge-light components-label mx-0 mt-0 mb-auto pl-0 text-left">
@@ -34,7 +34,7 @@ const TableRows = observer(({ alertStore, nameStats }) =>
             percent={valueStats.percent}
             offset={valueStats.offset}
             isActive={
-              alertStore.filters.values.filter(f => f.raw === valueStats.raw)
+              alertStore.filters.values.filter((f) => f.raw === valueStats.raw)
                 .length > 0
             }
           />
@@ -60,11 +60,11 @@ const LabelsTable = observer(
           <TableRows
             alertStore={alertStore}
             nameStats={alertStore.data.counters.filter(
-              nameStats => nameStats.hits >= alertStore.info.totalAlerts
+              (nameStats) => nameStats.hits >= alertStore.info.totalAlerts
             )}
           ></TableRows>
           {alertStore.data.counters.filter(
-            nameStats => nameStats.hits < alertStore.info.totalAlerts
+            (nameStats) => nameStats.hits < alertStore.info.totalAlerts
           ).length > 0 ? (
             <tr>
               <td colSpan="2" className="px-1 py-0">
@@ -85,7 +85,7 @@ const LabelsTable = observer(
             <TableRows
               alertStore={alertStore}
               nameStats={alertStore.data.counters.filter(
-                nameStats => nameStats.hits < alertStore.info.totalAlerts
+                (nameStats) => nameStats.hits < alertStore.info.totalAlerts
               )}
             ></TableRows>
           ) : null}
@@ -107,7 +107,7 @@ const OverviewModalContent = observer(
   class OverviewModalContent extends Component {
     static propTypes = {
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      onHide: PropTypes.func.isRequired
+      onHide: PropTypes.func.isRequired,
     };
 
     allLabels = observable(
@@ -115,10 +115,10 @@ const OverviewModalContent = observer(
         show: false,
         toggle() {
           this.show = !this.show;
-        }
+        },
       },
       {
-        toggle: action.bound
+        toggle: action.bound,
       }
     );
 
