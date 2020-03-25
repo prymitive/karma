@@ -9,12 +9,13 @@ import (
 	"encoding/json"
 
 	"github.com/go-openapi/errors"
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 	"github.com/go-openapi/validate"
 )
 
 // SilenceStatus silence status
+//
 // swagger:model silenceStatus
 type SilenceStatus struct {
 

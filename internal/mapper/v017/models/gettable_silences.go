@@ -9,11 +9,12 @@ import (
 	"strconv"
 
 	"github.com/go-openapi/errors"
-	strfmt "github.com/go-openapi/strfmt"
+	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 )
 
 // GettableSilences gettable silences
+//
 // swagger:model gettableSilences
 type GettableSilences []*GettableSilence
 
