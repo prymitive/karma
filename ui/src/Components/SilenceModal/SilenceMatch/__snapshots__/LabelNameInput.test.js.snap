@@ -4,7 +4,7 @@ exports[`<LabelNameInput /> matches snapshot 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
   <div class=\\"react-select__control css-r5n82u-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--has-value css-ct477o\\">
+    <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
       <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
         name
       </div>
