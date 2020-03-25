@@ -31,7 +31,7 @@
     "object-hash": "2.0.3",
     "promise-retry": "1.1.1",
     "prop-types": "15.7.2",
-    "qs": "6.9.2",
+    "qs": "6.9.3",
     "react": "16.13.1",
     "react-app-polyfill": "1.0.6",
     "react-autosuggest": "9.4.3",
