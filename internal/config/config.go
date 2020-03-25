@@ -238,41 +238,6 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 		log.Fatalf("Failed to unmarshal configuration: %v", err)
 	}
 
-	// FIXME workaround for https://github.com/mitchellh/mapstructure/issues/146
-	if config.Annotations.Hidden == nil {
-		config.Annotations.Hidden = []string{}
-	}
-	if config.Annotations.Visible == nil {
-		config.Annotations.Visible = []string{}
-	}
-	if config.Annotations.Keep == nil {
-		config.Annotations.Keep = []string{}
-	}
-	if config.Annotations.Strip == nil {
-		config.Annotations.Strip = []string{}
-	}
-	if config.Labels.Keep == nil {
-		config.Labels.Keep = []string{}
-	}
-	if config.Labels.Strip == nil {
-		config.Labels.Strip = []string{}
-	}
-	if config.Labels.Color.Static == nil {
-		config.Labels.Color.Static = []string{}
-	}
-	if config.Labels.Color.Unique == nil {
-		config.Labels.Color.Unique = []string{}
-	}
-	if config.Receivers.Keep == nil {
-		config.Receivers.Keep = []string{}
-	}
-	if config.Receivers.Strip == nil {
-		config.Receivers.Strip = []string{}
-	}
-	if config.SilenceForm.Strip.Labels == nil {
-		config.SilenceForm.Strip.Labels = []string{}
-	}
-
 	if config.Authentication.Header.Name != "" && len(config.Authentication.BasicAuth.Users) > 0 {
 		log.Fatalf("Both authentication.basicAuth.users and authentication.header.name is set, only one can be enabled")
 	}
