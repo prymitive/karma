@@ -4,7 +4,7 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
   <div class=\\"react-select__control css-r5n82u-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-puzefo\\">
+    <div class=\\"react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-1pfcrl6-ValueContainer\\">
       <div class=\\"css-owt1hd-multiValue react-select__multi-value\\">
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           am1 | am2

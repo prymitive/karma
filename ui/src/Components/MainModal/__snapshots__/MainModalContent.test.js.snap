@@ -172,7 +172,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
             <div class=\\"form-group mb-2\\">
               <div class=\\" css-2b097c-container\\">
                 <div class=\\"react-select__control css-r5n82u-control\\">
-                  <div class=\\"react-select__value-container react-select__value-container--has-value css-ct477o\\">
+                  <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
                     <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
                       Automatic theme, follow browser preference
                     </div>
@@ -409,7 +409,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
             <div class=\\"form-group mb-0\\">
               <div class=\\" css-2b097c-container\\">
                 <div class=\\"react-select__control css-r5n82u-control\\">
-                  <div class=\\"react-select__value-container react-select__value-container--has-value css-ct477o\\">
+                  <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
                     <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
                       Collapse on mobile
                     </div>
@@ -490,7 +490,7 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
                 <div class=\\"flex-shrink-0 flex-grow-1 flex-basis-auto\\">
                   <div class=\\" css-2b097c-container\\">
                     <div class=\\"react-select__control css-r5n82u-control\\">
-                      <div class=\\"react-select__value-container react-select__value-container--has-value css-ct477o\\">
+                      <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
                         <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
                           Use defaults from karma config file
                         </div>
