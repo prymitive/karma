@@ -35,11 +35,7 @@ func countLabel(countStore map[string]map[string]int, key string, val string) {
 	if _, found := countStore[key]; !found {
 		countStore[key] = make(map[string]int)
 	}
-	if _, found := countStore[key][val]; found {
-		countStore[key][val]++
-	} else {
-		countStore[key][val] = 1
-	}
+	countStore[key][val]++
 }
 
 func countersToLabelStats(counters map[string]map[string]int) models.LabelNameStatsList {
