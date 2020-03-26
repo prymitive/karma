@@ -3,6 +3,7 @@ __defaults_go: &DEFAULTS_GO
   go: "1.14.1"
   cache:
     directories:
+      - ui/node_modules
       # https://restic.net/blog/2018-09-02/travis-build-cache
       - $HOME/.cache/go-build
       - $HOME/gopath/pkg/mod
@@ -160,7 +161,7 @@ jobs:
         - travis_retry nvm install $(< .nvmrc)
       script:
         - export SOURCE_DATE_EPOCH=$(git show -s --format=%ci ${TRAVIS_TAG:-${TRAVIS_COMMIT}}^{commit})
-        - make crosscompile -j 2
+        - travis_retry make crosscompile -j 2
         - for i in karma-*; do tar --mtime="${SOURCE_DATE_EPOCH}" --owner=0 --group=0 --numeric-owner -c $i | gzip -n - > $i.tar.gz; done
         - shasum -a 512 karma-*.tar.gz | tee sha512sum.txt
         # verify that there are no uncommited changes
