@@ -7,6 +7,7 @@ import (
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/regex"
 	"github.com/prymitive/karma/internal/slices"
 )
 
@@ -188,7 +189,7 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 		}
 
 		if filter.NameRegex != "" {
-			re, err := regexp.Compile(filter.NameRegex)
+			re, err := regex.CompileAnchored(filter.NameRegex)
 			if err != nil {
 				return nil, fmt.Errorf("invalid ACL rule, failed to parse name_re %q: %s", filter.NameRegex, err)
 			}
@@ -196,7 +197,7 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 		}
 
 		if filter.ValueRegex != "" {
-			re, err := regexp.Compile(filter.ValueRegex)
+			re, err := regex.CompileAnchored(filter.ValueRegex)
 			if err != nil {
 				return nil, fmt.Errorf("invalid ACL rule, failed to parse value_re %q: %s", filter.ValueRegex, err)
 			}

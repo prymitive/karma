@@ -203,9 +203,11 @@ matchers:
   Filter works by comparing `name` and `name_re` with silence matcher `name`,
   `value` and `value_re` with silence matcher `value` and `isRegex` on the
   filter with `isRegex` on silence matcher. See examples below.
+  All regexes will be automatically anchored.
 - `matchers:required` - list of additional matchers that must be part of the
   silence if it matches groups, alertmanagers and filters. This is only used
   if `action` is set to `requireMatcher`.
+  All regexes will be automatically anchored.
   Syntax for each matcher:
 
   ```YAML
