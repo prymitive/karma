@@ -44,7 +44,7 @@ Syntax:
 authentication:
   header:
     name: string
-    value_re: string
+    value_re: regex
   basicAuth:
     users:
       - username: string
@@ -59,6 +59,7 @@ authentication:
   request header value (when `authentication:users:header:name` is set).
   It must include one numbered capturing group, whatever is matched by that
   group will be used as the silence form author field.
+  All regexes are anchored.
   This option must be set when `authentication:users:header:name` is set.
 - `authentication:users` - list of users (username & password) allowed to login.
   Passwords are stored plain without any encryption.
@@ -654,7 +655,7 @@ labels:
     custom:
       foo:
         - value: string
-          value_re: string
+          value_re: regex
           color: string
   keep: list of strings
   strip: list of strings
@@ -674,7 +675,8 @@ labels:
 
   - `value` - the exact value of the label to match against
   - `value_re` - Go compatible
-    [regular expression](https://golang.org/pkg/regexp/) to match against
+    [regular expression](https://golang.org/pkg/regexp/) to match against.
+    All regexes will be automatically anchored.
   - `color`: color to apply if either `value` or `value_re` matches
 
   Either `value` or `value_re` is required, both can be set in which case
@@ -854,7 +856,8 @@ silences:
   turn them into links.
   Each rule must specify:
   - `regex` - regular expression that matches ticket system IDs. Each regex must
-    contain at least one capture group `(regex)`.
+    contain at least one capture group `(regex)`. All regexes will be
+    automatically anchored.
   - `uriTemplate` - template string that will be used to generate a link.
     Each template must include `$1` which will be replaced with text matched
     by the `regex`.

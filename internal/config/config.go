@@ -4,10 +4,10 @@ import (
 	"bufio"
 	"bytes"
 	"os"
-	"regexp"
 	"strings"
 	"time"
 
+	"github.com/prymitive/karma/internal/regex"
 	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/uri"
 
@@ -243,7 +243,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 	}
 
 	if config.Authentication.Header.ValueRegex != "" {
-		_, err = regexp.Compile(config.Authentication.Header.ValueRegex)
+		_, err = regex.CompileAnchored(config.Authentication.Header.ValueRegex)
 		if err != nil {
 			log.Fatalf("Invalid regex for authentication.header.value_re: %s", err.Error())
 		}
@@ -295,7 +295,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 				log.Fatalf("Custom label color for '%s' is missing 'value' or 'value_re'", labelName)
 			}
 			if customColor.ValueRegex != "" {
-				config.Labels.Color.Custom[labelName][i].CompiledRegex, err = regexp.Compile(customColor.ValueRegex)
+				config.Labels.Color.Custom[labelName][i].CompiledRegex, err = regex.CompileAnchored(customColor.ValueRegex)
 				if err != nil {
 					log.Fatalf("Failed to parse custom color regex rule '%s' for '%s' label: %s", customColor.ValueRegex, labelName, err)
 				}

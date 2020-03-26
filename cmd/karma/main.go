@@ -9,7 +9,6 @@ import (
 	"os"
 	"os/signal"
 	"path"
-	"regexp"
 	"strings"
 	"syscall"
 	"time"
@@ -17,6 +16,7 @@ import (
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/regex"
 	"github.com/prymitive/karma/internal/transform"
 	"github.com/prymitive/karma/internal/uri"
 
@@ -80,7 +80,7 @@ func headerAuth(name, valueRegex string) gin.HandlerFunc {
 			return
 		}
 
-		r := regexp.MustCompile("^" + valueRegex + "$")
+		r := regex.MustCompileAnchored(valueRegex)
 		matches := r.FindAllStringSubmatch(user, 1)
 		if len(matches) > 0 && len(matches[0]) > 1 {
 			c.Set(gin.AuthUserKey, matches[0][1])
@@ -274,7 +274,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 		if rule.Regex == "" || rule.URITemplate == "" {
 			return nil, fmt.Errorf("Invalid link detect rule, regex '%s' uriTemplate '%s'", rule.Regex, rule.URITemplate)
 		}
-		re, err := regexp.Compile(rule.Regex)
+		re, err := regex.CompileAnchored(rule.Regex)
 		if err != nil {
 			return nil, fmt.Errorf("Invalid link detect rule '%s': %s", rule.Regex, err)
 		}
