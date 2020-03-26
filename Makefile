@@ -29,7 +29,7 @@ endif
 
 .build/deps-build-node.ok: ui/package.json ui/package-lock.json
 	@mkdir -p .build
-	cd ui && (npm install || (rm -fr $@ node_modules && npm install))
+	cd ui && npm install
 	touch $@
 
 .build/artifacts-bindata_assetfs.%:
@@ -39,7 +39,7 @@ endif
 
 .build/artifacts-ui.ok: .build/deps-build-node.ok $(ASSET_SOURCES)
 	@mkdir -p .build
-	cd ui && npm run build
+	cd ui && (npm run build || (test -n "$$CI" && rm -fr node_modules && npm install && npm run build))
 	touch $@
 
 cmd/karma/bindata_assetfs.go: .build/deps-build-go.ok .build/artifacts-bindata_assetfs.$(GO_BINDATA_MODE) .build/artifacts-ui.ok
