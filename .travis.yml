@@ -18,9 +18,7 @@ __defaults_js: &DEFAULTS_JS
   language: node_js
   # we run make to install everything
   install: []
-  cache:
-    directories:
-      - ui/node_modules
+  cache: npm
   env:
     - NODE_ENV=test
 
