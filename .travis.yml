@@ -7,11 +7,6 @@ __defaults_go: &DEFAULTS_GO
       # https://restic.net/blog/2018-09-02/travis-build-cache
       - $HOME/.cache/go-build
       - $HOME/gopath/pkg/mod
-  before_cache:
-    # this log file is updated on every get/set operation
-    # so it forces new cache archive on every build
-    # remove it before creating cache archive
-    - rm -vf $HOME/.cache/go-build/log.txt
   env:
     - GO111MODULE=on
 
@@ -37,8 +32,11 @@ jobs:
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
       before_script:
+        - ./scripts/ci-go-cache-copy.sh
         - travis_retry make mock-assets
-      script: make test-go
+      script:
+        - make test-go
+        - ./scripts/ci-go-cache-restore.sh
       after_success:
         - travis_retry curl -s --connect-timeout 30 --fail https://codecov.io/bash | bash -s -- -F backend
 
@@ -70,28 +68,35 @@ jobs:
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
       before_script:
+        - ./scripts/ci-go-cache-copy.sh
         - travis_retry make mock-assets
-      script: travis_retry make lint-go
+      script:
+        - travis_retry make lint-go
+        - ./scripts/ci-go-cache-restore.sh
 
     - stage: Lint
       name: Check Go code formatting
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
       before_script:
+        - ./scripts/ci-go-cache-copy.sh
         - travis_retry make mock-assets
       script:
         - make format-go
         - git diff --exit-code
+        - ./scripts/ci-go-cache-restore.sh
 
     - stage: Lint
       name: Verify go.sum
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
       script:
+        - ./scripts/ci-go-cache-copy.sh
         - travis_retry make mock-assets
         - travis_retry go get -d -v ./cmd/karma
         - travis_retry go mod tidy
         - git diff --exit-code
+        - ./scripts/ci-go-cache-restore.sh
 
     - stage: Lint
       name: Lint JavaScript code
@@ -160,12 +165,14 @@ jobs:
         # requires running webpack, so we need nodejs here
         - travis_retry nvm install $(< .nvmrc)
       script:
+        - ./scripts/ci-go-cache-copy.sh
         - export SOURCE_DATE_EPOCH=$(git show -s --format=%ci ${TRAVIS_TAG:-${TRAVIS_COMMIT}}^{commit})
         - travis_retry make crosscompile -j 2
         - for i in karma-*; do tar --mtime="${SOURCE_DATE_EPOCH}" --owner=0 --group=0 --numeric-owner -c $i | gzip -n - > $i.tar.gz; done
         - shasum -a 512 karma-*.tar.gz | tee sha512sum.txt
         # verify that there are no uncommited changes
         - git diff --exit-code
+        - ./scripts/ci-go-cache-restore.sh
       deploy:
         provider: releases
         api_key:
