@@ -59,6 +59,11 @@ describe("<DateTimeSelect />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
+  it("'Duration' tab unmounts without crashing", () => {
+    const tree = MountedDateTimeSelect();
+    tree.unmount();
+  });
+
   it("clicking on the 'Starts' tab switches content to 'startsAt' selection", () => {
     const tree = MountedDateTimeSelect();
     const tab = tree.find(".nav-link").at(0);
@@ -74,6 +79,12 @@ describe("<DateTimeSelect />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
+  it("'Starts' tab unmounts without crashing", () => {
+    const tree = MountedDateTimeSelect();
+    tree.find(".nav-link").at(0).simulate("click");
+    tree.unmount();
+  });
+
   it("clicking on the 'Ends' tab switches content to 'endsAt' selection", () => {
     const tree = MountedDateTimeSelect();
     const tab = tree.find(".nav-link").at(1);
@@ -87,6 +98,12 @@ describe("<DateTimeSelect />", () => {
     const tree = MountedDateTimeSelect();
     tree.find(".nav-link").at(1).simulate("click");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
+  it("'Ends' tab unmounts without crashing", () => {
+    const tree = MountedDateTimeSelect();
+    tree.find(".nav-link").at(1).simulate("click");
+    tree.unmount();
   });
 
   it("clicking on the 'Duration' tabs switches content to duration selection", () => {
@@ -143,6 +160,27 @@ const ValidateTimeButton = (
   expect(diffMS).toBe(expectedDiff);
 };
 
+const ValidateTimeWheel = (tab, storeKey, className, deltaY, expectedDiff) => {
+  const elem = tab.find(className);
+
+  const oldTimeValue = moment(silenceFormStore.data[storeKey]);
+
+  elem.simulate("wheel", { deltaY: deltaY });
+  // fire real event so cancel listener will trigger
+  const event = new Event("wheel", { deltaY: deltaY });
+  tab
+    .find("div.components-hour-minute")
+    .at(0)
+    .getDOMNode()
+    .dispatchEvent(event);
+
+  expect(silenceFormStore.data[storeKey].toISOString()).not.toBe(
+    oldTimeValue.toISOString()
+  );
+  const diffMS = silenceFormStore.data[storeKey].diff(oldTimeValue);
+  expect(diffMS).toBe(expectedDiff);
+};
+
 const MountedTabContentStart = () => {
   return mount(<TabContentStart silenceFormStore={silenceFormStore} />);
 };
@@ -164,9 +202,31 @@ describe("<TabContentStart />", () => {
     ValidateTimeButton(tree, "startsAt", 0, /angle-up/, 3600 * 1000);
   });
 
+  it("scrolling up on the hour button adds 1h to startsAt", () => {
+    const tree = MountedTabContentStart();
+    ValidateTimeWheel(
+      tree,
+      "startsAt",
+      "td.components-hour-up",
+      -1,
+      3600 * 1000
+    );
+  });
+
   it("clicking on the minute inc button adds 1m to startsAt", () => {
     const tree = MountedTabContentStart();
     ValidateTimeButton(tree, "startsAt", 1, /angle-up/, 60 * 1000);
+  });
+
+  it("scrolling up on the minute button adds 1m to startsAt", () => {
+    const tree = MountedTabContentStart();
+    ValidateTimeWheel(
+      tree,
+      "startsAt",
+      "td.components-minute-up",
+      -2,
+      60 * 1000
+    );
   });
 
   it("clicking on the hour dec button subtracts 1h from startsAt", () => {
@@ -174,9 +234,63 @@ describe("<TabContentStart />", () => {
     ValidateTimeButton(tree, "startsAt", 2, /angle-down/, -1 * 3600 * 1000);
   });
 
+  it("scrolling down on the hour button subtracts 1h from startsAt", () => {
+    const tree = MountedTabContentStart();
+    ValidateTimeWheel(
+      tree,
+      "startsAt",
+      "td.components-hour-down",
+      1,
+      -1 * 3600 * 1000
+    );
+  });
+
+  it("scrolling up on the minute adds 1m to startsAt", () => {
+    const tree = MountedTabContentStart();
+    ValidateTimeWheel(tree, "startsAt", "td.components-minute", -2, 60 * 1000);
+  });
+
+  it("scrolling down on the minute subtracts 1m from startsAt", () => {
+    const tree = MountedTabContentStart();
+    ValidateTimeWheel(
+      tree,
+      "startsAt",
+      "td.components-minute",
+      1,
+      -1 * 60 * 1000
+    );
+  });
+
   it("clicking on the minute dec button subtracts 1m from startsAt", () => {
     const tree = MountedTabContentStart();
     ValidateTimeButton(tree, "startsAt", 3, /angle-down/, -1 * 60 * 1000);
+  });
+
+  it("scrolling down on the minute button subtracts 1m from startsAt", () => {
+    const tree = MountedTabContentStart();
+    ValidateTimeWheel(
+      tree,
+      "startsAt",
+      "td.components-minute-down",
+      2,
+      -1 * 60 * 1000
+    );
+  });
+
+  it("scrolling up on the minute subtracts 1m from startsAt", () => {
+    const tree = MountedTabContentStart();
+    ValidateTimeWheel(tree, "startsAt", "td.components-minute", -50, 60 * 1000);
+  });
+
+  it("scrolling down on the minute subtracts 1m from startsAt", () => {
+    const tree = MountedTabContentStart();
+    ValidateTimeWheel(
+      tree,
+      "startsAt",
+      "td.components-minute",
+      1,
+      -1 * 60 * 1000
+    );
   });
 });
 
@@ -201,9 +315,41 @@ describe("<TabContentEnd />", () => {
     ValidateTimeButton(tree, "endsAt", 0, /angle-up/, 3600 * 1000);
   });
 
+  it("scrolling up on the hour button adds 1h to endsAt", () => {
+    const tree = MountedTabContentEnd();
+    ValidateTimeWheel(tree, "endsAt", "td.components-hour-up", -1, 3600 * 1000);
+  });
+
+  it("scrolling up on the hour adds 1h to endsAt", () => {
+    const tree = MountedTabContentEnd();
+    ValidateTimeWheel(tree, "endsAt", "td.components-hour", -1, 3600 * 1000);
+  });
+
+  it("scrolling down on the hour subtracts 1h from endsAt", () => {
+    const tree = MountedTabContentEnd();
+    ValidateTimeWheel(
+      tree,
+      "endsAt",
+      "td.components-hour",
+      1,
+      -1 * 3600 * 1000
+    );
+  });
+
   it("clicking on the minute inc button adds 1m to endsAt", () => {
     const tree = MountedTabContentEnd();
     ValidateTimeButton(tree, "endsAt", 1, /angle-up/, 60 * 1000);
+  });
+
+  it("scrolling up on the minute button adds 1m to endsAt", () => {
+    const tree = MountedTabContentEnd();
+    ValidateTimeWheel(
+      tree,
+      "endsAt",
+      "td.components-minute-up",
+      -10,
+      60 * 1000
+    );
   });
 
   it("clicking on the hour dec button subtracts 1h from endsAt", () => {
@@ -211,9 +357,47 @@ describe("<TabContentEnd />", () => {
     ValidateTimeButton(tree, "endsAt", 2, /angle-down/, -1 * 3600 * 1000);
   });
 
+  it("scrolling down on the hour button subtracts 1h from endsAt", () => {
+    const tree = MountedTabContentEnd();
+    ValidateTimeWheel(
+      tree,
+      "endsAt",
+      "td.components-hour-down",
+      1,
+      -1 * 3600 * 1000
+    );
+  });
+
   it("clicking on the minute dec button subtracts 1m from endsAt", () => {
     const tree = MountedTabContentEnd();
     ValidateTimeButton(tree, "endsAt", 3, /angle-down/, -1 * 60 * 1000);
+  });
+
+  it("scrolling down on the minute button subtracts 1m from endsAt", () => {
+    const tree = MountedTabContentEnd();
+    ValidateTimeWheel(
+      tree,
+      "endsAt",
+      "td.components-minute-down",
+      50,
+      -1 * 60 * 1000
+    );
+  });
+
+  it("scrolling up on the minute adds 1m to endsAt", () => {
+    const tree = MountedTabContentEnd();
+    ValidateTimeWheel(tree, "endsAt", "td.components-minute", -10, 60 * 1000);
+  });
+
+  it("scrolling down on the minute subtracts 1m from endsAt", () => {
+    const tree = MountedTabContentEnd();
+    ValidateTimeWheel(
+      tree,
+      "endsAt",
+      "td.components-minute",
+      15,
+      -1 * 60 * 1000
+    );
   });
 });
 
@@ -233,29 +417,73 @@ const ValidateDurationButton = (elemIndex, iconMatch, expectedDiff) => {
   expect(diffMS).toBe(expectedDiff);
 };
 
+const ValidateDurationWheel = (elemIndex, deltaY, expectedDiff) => {
+  const tree = mount(
+    <TabContentDuration silenceFormStore={silenceFormStore} />
+  );
+  const elem = tree.find(".components-duration").at(elemIndex);
+
+  const oldEndsAt = moment(silenceFormStore.data.endsAt);
+
+  elem.simulate("wheel", { deltaY: deltaY });
+  // fire real event so cancel listener will trigger
+  const event = new Event("wheel", { deltaY: deltaY });
+  elem.getDOMNode().dispatchEvent(event);
+
+  expect(silenceFormStore.data.endsAt.toISOString()).not.toBe(
+    oldEndsAt.toISOString()
+  );
+  const diffMS = silenceFormStore.data.endsAt.diff(oldEndsAt);
+  expect(diffMS).toBe(expectedDiff);
+};
+
 describe("<TabContentDuration />", () => {
   it("clicking on the day inc button adds 1d to endsAt", () => {
     ValidateDurationButton(0, /angle-up/, 24 * 3600 * 1000);
+  });
+
+  it("scrolling up on the day button adds 1d to endsAt", () => {
+    ValidateDurationWheel(0, -1, 24 * 3600 * 1000);
   });
 
   it("clicking on the day dec button subtracts 1d from endsAt", () => {
     ValidateDurationButton(2, /angle-down/, -1 * 24 * 3600 * 1000);
   });
 
+  it("scrolling down on the day button subtracts 1d from endsAt", () => {
+    ValidateDurationWheel(0, 1, -1 * 24 * 3600 * 1000);
+  });
+
   it("clicking on the hour inc button adds 1h to endsAt", () => {
     ValidateDurationButton(3, /angle-up/, 3600 * 1000);
+  });
+
+  it("scrolling up on the hour inc button adds 1h to endsAt", () => {
+    ValidateDurationWheel(1, -2, 3600 * 1000);
   });
 
   it("clicking on the hour dec button subtracts 1h from endsAt", () => {
     ValidateDurationButton(5, /angle-down/, -1 * 3600 * 1000);
   });
 
+  it("scrolling down on the hour dec button subtracts 1h from endsAt", () => {
+    ValidateDurationWheel(1, 2, -1 * 3600 * 1000);
+  });
+
   it("clicking on the minute inc button adds 5m to endsAt", () => {
     ValidateDurationButton(6, /angle-up/, 5 * 60 * 1000);
   });
 
+  it("scrolling up on the minute inc button adds 5m to endsAt", () => {
+    ValidateDurationWheel(2, -1, 5 * 60 * 1000);
+  });
+
   it("clicking on the minute dec button subtracts 5m from endsAt", () => {
     ValidateDurationButton(8, /angle-down/, -1 * 5 * 60 * 1000);
+  });
+
+  it("scrolling down on the minute dec button subtracts 5m from endsAt", () => {
+    ValidateDurationWheel(2, 1, -1 * 5 * 60 * 1000);
   });
 });
 
