@@ -51,6 +51,7 @@ const newPendingSilence = (
   isDone: false,
   isFailed: false,
   fetch: null,
+  error: null,
 });
 
 const AlertAck = observer(
@@ -75,9 +76,10 @@ const AlertAck = observer(
           markDone(cluster) {
             this.silencesByCluster[cluster].isDone = true;
           },
-          markFailed(cluster) {
+          markFailed(cluster, err) {
             this.silencesByCluster[cluster].isDone = true;
             this.silencesByCluster[cluster].isFailed = true;
+            this.silencesByCluster[cluster].error = err;
           },
           get isIdle() {
             return Object.keys(this.silencesByCluster).length === 0;
@@ -103,6 +105,11 @@ const AlertAck = observer(
               ).length > 0
             );
           },
+          get errorMessages() {
+            return Object.values(this.silencesByCluster)
+              .filter((pendingSilence) => pendingSilence.error !== null)
+              .map((s) => s.error);
+          },
         },
         {
           reset: action.bound,
@@ -113,15 +120,16 @@ const AlertAck = observer(
           isInprogress: computed,
           isDone: computed,
           isFailed: computed,
+          errorMessages: computed,
         }
       );
     }
 
-    maybeTryAgainAfterError = (cluster) => {
+    maybeTryAgainAfterError = (cluster, err) => {
       if (this.submitState.silencesByCluster[cluster].membersToTry.length) {
         this.handleAlertmanagerRequest(cluster);
       } else {
-        this.submitState.markFailed(cluster);
+        this.submitState.markFailed(cluster, err);
       }
     };
 
@@ -136,7 +144,7 @@ const AlertAck = observer(
       if (am === undefined) {
         const err = `Alertmanager instance "${member} not found`;
         console.error(err);
-        this.maybeTryAgainAfterError(cluster);
+        this.maybeTryAgainAfterError(cluster, err);
         return;
       }
 
@@ -159,11 +167,13 @@ const AlertAck = observer(
               .json()
               .then((r) => this.submitState.markDone(cluster));
           } else {
-            this.maybeTryAgainAfterError(cluster);
+            result
+              .text()
+              .then((text) => this.maybeTryAgainAfterError(cluster, text));
           }
         })
-        .catch(() => {
-          this.maybeTryAgainAfterError(cluster);
+        .catch((err) => {
+          this.maybeTryAgainAfterError(cluster, err);
         });
     };
 
@@ -216,8 +226,16 @@ const AlertAck = observer(
         return null;
       }
 
+      const tooltipProps = {};
+      if (this.submitState.isFailed) {
+        tooltipProps.html = this.submitState.errorMessages[0];
+      } else {
+        tooltipProps.title =
+          "Acknowledge this alert with a short lived silence";
+      }
+
       return (
-        <TooltipWrapper title="Acknowledge this alert with a short lived silence">
+        <TooltipWrapper {...tooltipProps}>
           <span
             className={`badge badge-pill components-label components-label-with-hover px-2 ${
               this.submitState.isFailed
