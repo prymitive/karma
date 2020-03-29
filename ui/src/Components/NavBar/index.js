@@ -89,7 +89,7 @@ const NavBar = observer(
     updateBodyPaddingTop = () => {
       const paddingTop = this.activityStatus.idle
         ? 0
-        : this.elementSize.height + 4;
+        : this.elementSize.height + 8;
       document.body.style.paddingTop = `${paddingTop}px`;
     };
 

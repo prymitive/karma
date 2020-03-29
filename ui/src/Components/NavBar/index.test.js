@@ -116,14 +116,14 @@ describe("<NavBar />", () => {
       window
         .getComputedStyle(document.body, null)
         .getPropertyValue("padding-top")
-    ).toBe("14px");
+    ).toBe("18px");
 
     tree.instance().onResize(0, 36);
     expect(
       window
         .getComputedStyle(document.body, null)
         .getPropertyValue("padding-top")
-    ).toBe("40px");
+    ).toBe("44px");
   });
 });
 
