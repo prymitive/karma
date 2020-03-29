@@ -9,7 +9,7 @@ const EmptyAPIResponse = () => ({
     instances: [{ name: "default", uri: "file:///mock", error: "" }],
   },
   silences: { default: {} },
-  groups: {},
+  grids: [],
   totalAlerts: 0,
   colors: {},
   filters: [
