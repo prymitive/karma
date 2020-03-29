@@ -1005,13 +1005,13 @@ func TestVerifyAllGroups(t *testing.T) {
 			t.Errorf("Failed to unmarshal response: %s", err)
 		}
 
-		if len(ur.AlertGroups) != len(groupTests) {
+		if len(ur.Grids[0].AlertGroups) != len(groupTests) {
 			t.Errorf("[%s] Got %d alert(s) in response, expected %d",
-				version, len(ur.AlertGroups), len(groupTests))
+				version, len(ur.Grids[0].AlertGroups), len(groupTests))
 		}
 		for _, testCase := range groupTests {
 			groupFound := false
-			for _, group := range ur.AlertGroups {
+			for _, group := range ur.Grids[0].AlertGroups {
 				if compareAlertGroups(testCase, group) {
 					groupFound = true
 					testAlertGroup(version, t, testCase, group)
@@ -1221,7 +1221,7 @@ func TestSortOrder(t *testing.T) {
 			}
 
 			values := []string{}
-			for _, ag := range ur.AlertGroups {
+			for _, ag := range ur.Grids[0].AlertGroups {
 				v := ag.Labels[testCase.expectedLabel]
 				if v == "" {
 					v = ag.Shared.Labels[testCase.expectedLabel]

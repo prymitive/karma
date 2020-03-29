@@ -300,6 +300,12 @@ type AuthenticationInfo struct {
 	Username string `json:"username"`
 }
 
+type APIGrid struct {
+	LabelName   string          `json:"labelName"`
+	LabelValue  string          `json:"labelValue"`
+	AlertGroups []APIAlertGroup `json:"alertGroups"`
+}
+
 // AlertsResponse is the structure of JSON response UI will use to get alert data
 type AlertsResponse struct {
 	Status         string                        `json:"status"`
@@ -307,7 +313,7 @@ type AlertsResponse struct {
 	Version        string                        `json:"version"`
 	Upstreams      AlertmanagerAPISummary        `json:"upstreams"`
 	Silences       map[string]map[string]Silence `json:"silences"`
-	AlertGroups    []APIAlertGroup               `json:"groups"`
+	Grids          []APIGrid                     `json:"grids"`
 	TotalAlerts    int                           `json:"totalAlerts"`
 	Colors         LabelsColorMap                `json:"colors"`
 	Filters        []Filter                      `json:"filters"`
