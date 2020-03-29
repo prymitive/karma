@@ -243,7 +243,13 @@ const MockGrid = (alertStore) => {
     ],
     clusters: { am: ["am1", "am2"], failed: ["failed"] },
   };
-  alertStore.data.groups = groups;
+  alertStore.data.grids = [
+    {
+      labelName: "",
+      labelValue: "",
+      alertGroups: groups,
+    },
+  ];
 };
 
 export { MockGrid };
