@@ -554,23 +554,49 @@ describe("AlertStore.fetch", () => {
 
   it("adds new groups to the store after fetch", () => {
     const response = EmptyAPIResponse();
-    response.groups = { foo: "foo", bar: "bar" };
+    response.grids = [
+      {
+        labelName: "",
+        labelValue: "",
+        alertGroups: { foo: "foo", bar: "bar" },
+      },
+    ];
     const store = new AlertStore(["label=value"]);
     store.parseAPIResponse(response);
-    expect(Object.keys(store.data.groups)).toHaveLength(2);
-    expect(store.data.groups).toMatchObject({ foo: "foo", bar: "bar" });
+    expect(store.data.grids).toHaveLength(1);
+    expect(Object.keys(store.data.grids[0].alertGroups)).toHaveLength(2);
+    expect(store.data.grids[0].alertGroups).toMatchObject({
+      foo: "foo",
+      bar: "bar",
+    });
   });
 
   it("removes old groups from the store after fetch", () => {
     const store = new AlertStore(["label=value"]);
-    store.data.groups = { foo: "foo", delete: "me", bar: "bar" };
-    expect(Object.keys(store.data.groups)).toHaveLength(3);
+    store.data.grids = [
+      {
+        labelName: "",
+        labelValue: "",
+        alertGroups: { foo: "foo", delete: "me", bar: "bar" },
+      },
+    ];
+    expect(store.data.grids).toHaveLength(1);
+    expect(Object.keys(store.data.grids[0].alertGroups)).toHaveLength(3);
 
     const response = EmptyAPIResponse();
-    response.groups = { foo: "foo", bar: "bar" };
+    response.grids = [
+      {
+        labelName: "",
+        labelValue: "",
+        alertGroups: { foo: "foo", bar: "bar" },
+      },
+    ];
 
     store.parseAPIResponse(response);
-    expect(Object.keys(store.data.groups)).toHaveLength(2);
-    expect(store.data.groups).toMatchObject({ foo: "foo", bar: "bar" });
+    expect(Object.keys(store.data.grids[0].alertGroups)).toHaveLength(2);
+    expect(store.data.grids[0].alertGroups).toMatchObject({
+      foo: "foo",
+      bar: "bar",
+    });
   });
 });

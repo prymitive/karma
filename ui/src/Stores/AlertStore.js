@@ -161,7 +161,7 @@ class AlertStore {
     {
       colors: {},
       counters: [],
-      groups: [],
+      grids: [],
       silences: {},
       upstreams: { instances: [], clusters: {} },
       getAlertmanagerByName(name) {
@@ -326,7 +326,7 @@ class AlertStore {
 
     const alertsURI =
       FormatBackendURI(
-        `alerts.json?sortOrder=${sortOrder}&sortLabel=${sortLabel}&sortReverse=${sortReverse}&`
+        `alerts.json?sortOrder=${sortOrder}&sortLabel=${sortLabel}&sortReverse=${sortReverse}&gridLabel=severity&`
       ) + FormatAPIFilterQuery(this.filters.values.map((f) => f.raw));
 
     return FetchGet(alertsURI, {}, this.info.setIsRetrying)
@@ -401,7 +401,7 @@ class AlertStore {
     for (const key of [
       "colors",
       "counters",
-      "groups",
+      "grids",
       "silences",
       "upstreams",
     ]) {
