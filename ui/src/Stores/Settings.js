@@ -159,8 +159,8 @@ class Settings {
         MinimalGroupWidth: 420,
         AlertsPerGroup: 5,
         CollapseGroups: "collapsedOnMobile",
-        GridLabel: "",
-        GridSortReverse: false,
+        MultiGridLabel: "",
+        MultiGridSortReverse: false,
       };
     } else {
       defaultSettings = defaults;
@@ -182,8 +182,8 @@ class Settings {
     );
     this.themeConfig = new ThemeConfig(defaultSettings.Theme);
     this.multiGridConfig = new MultiGridConfig(
-      defaultSettings.GridLabel,
-      defaultSettings.GridSortReverse
+      defaultSettings.MultiGridLabel,
+      defaultSettings.MultiGridSortReverse
     );
   }
 }
