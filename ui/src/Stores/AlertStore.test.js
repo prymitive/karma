@@ -599,4 +599,30 @@ describe("AlertStore.fetch", () => {
       bar: "bar",
     });
   });
+
+  it("uses correct query args with gridSortReverse=false", async () => {
+    const response = EmptyAPIResponse();
+    fetch.mockResponse(JSON.stringify(response));
+    const store = new AlertStore(["label=value"]);
+    await expect(
+      store.fetch("", false, "sortOrder", "sortLabel", "sortReverse")
+    ).resolves.toBeUndefined();
+    expect(fetch.mock.calls.length).toEqual(1);
+    expect(fetch.mock.calls[0][0]).toBe(
+      "./alerts.json?&gridLabel=&gridSortReverse=0&sortOrder=sortOrder&sortLabel=sortLabel&sortReverse=sortReverse&q=label%3Dvalue"
+    );
+  });
+
+  it("uses correct query args with gridSortReverse=true", async () => {
+    const response = EmptyAPIResponse();
+    fetch.mockResponse(JSON.stringify(response));
+    const store = new AlertStore(["label=value"]);
+    await expect(
+      store.fetch("cluster", true, "sortOrder", "sortLabel", "sortReverse")
+    ).resolves.toBeUndefined();
+    expect(fetch.mock.calls.length).toEqual(1);
+    expect(fetch.mock.calls[0][0]).toBe(
+      "./alerts.json?&gridLabel=cluster&gridSortReverse=1&sortOrder=sortOrder&sortLabel=sortLabel&sortReverse=sortReverse&q=label%3Dvalue"
+    );
+  });
 });

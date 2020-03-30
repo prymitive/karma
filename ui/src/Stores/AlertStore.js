@@ -321,37 +321,46 @@ class AlertStore {
     this.filters.setFilters(initialFilters);
   }
 
-  fetch = action((sortOrder, sortLabel, sortReverse) => {
-    this.status.setFetching();
+  fetch = action(
+    (gridLabel, gridSortReverse, sortOrder, sortLabel, sortReverse) => {
+      this.status.setFetching();
 
-    const alertsURI =
-      FormatBackendURI(
-        `alerts.json?sortOrder=${sortOrder}&sortLabel=${sortLabel}&sortReverse=${sortReverse}&gridLabel=severity&`
-      ) + FormatAPIFilterQuery(this.filters.values.map((f) => f.raw));
+      const args = [
+        `gridLabel=${gridLabel}`,
+        `gridSortReverse=${gridSortReverse ? "1" : "0"}`,
+        `sortOrder=${sortOrder}`,
+        `sortLabel=${sortLabel}`,
+        `sortReverse=${sortReverse}`,
+      ];
 
-    return FetchGet(alertsURI, {}, this.info.setIsRetrying)
-      .then((result) => {
-        // we're sending requests with mode=cors so the response should also be type=cors
-        // after a few failures in the retry loop we will switch to no-cors
-        // if that request comes back as type=opaque then we might be getting
-        // redirected by an auth proxy
-        if (result.type === "opaque") {
-          this.info.setReloadNeeded();
-        }
-        this.info.clearIsRetrying();
-        this.status.setProcessing();
-        return result.json();
-      })
-      .then((result) => {
-        return this.parseAPIResponse(result);
-      })
-      .catch((err) => {
-        console.trace(err);
-        return this.handleFetchError(
-          `Can't connect to the API, last error was "${err.message}"`
-        );
-      });
-  });
+      const alertsURI =
+        FormatBackendURI(`alerts.json?&${args.join("&")}&`) +
+        FormatAPIFilterQuery(this.filters.values.map((f) => f.raw));
+
+      return FetchGet(alertsURI, {}, this.info.setIsRetrying)
+        .then((result) => {
+          // we're sending requests with mode=cors so the response should also be type=cors
+          // after a few failures in the retry loop we will switch to no-cors
+          // if that request comes back as type=opaque then we might be getting
+          // redirected by an auth proxy
+          if (result.type === "opaque") {
+            this.info.setReloadNeeded();
+          }
+          this.info.clearIsRetrying();
+          this.status.setProcessing();
+          return result.json();
+        })
+        .then((result) => {
+          return this.parseAPIResponse(result);
+        })
+        .catch((err) => {
+          console.trace(err);
+          return this.handleFetchError(
+            `Can't connect to the API, last error was "${err.message}"`
+          );
+        });
+    }
+  );
 
   fetchWithThrottle = throttle(this.fetch, 300);
 
