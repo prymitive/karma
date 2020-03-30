@@ -123,6 +123,8 @@ ui:
   minimalGroupWidth: 420
   alertsPerGroup: 5
   collapseGroups: collapsedOnMobile
+  multiGridLabel: ""
+  multiGridSortReverse: false
 `
 
 	configDump, err := yaml.Marshal(Config)

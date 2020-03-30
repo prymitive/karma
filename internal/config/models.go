@@ -155,12 +155,14 @@ type configSchema struct {
 		}
 	} `yaml:"silenceForm" koanf:"silenceForm"`
 	UI struct {
-		Refresh             time.Duration
-		HideFiltersWhenIdle bool   `yaml:"hideFiltersWhenIdle" koanf:"hideFiltersWhenIdle"`
-		ColorTitlebar       bool   `yaml:"colorTitlebar" koanf:"colorTitlebar"`
-		Theme               string `yaml:"theme" koanf:"theme"`
-		MinimalGroupWidth   int    `yaml:"minimalGroupWidth" koanf:"minimalGroupWidth"`
-		AlertsPerGroup      int    `yaml:"alertsPerGroup" koanf:"alertsPerGroup"`
-		CollapseGroups      string `yaml:"collapseGroups" koanf:"collapseGroups"`
+		Refresh              time.Duration
+		HideFiltersWhenIdle  bool   `yaml:"hideFiltersWhenIdle" koanf:"hideFiltersWhenIdle"`
+		ColorTitlebar        bool   `yaml:"colorTitlebar" koanf:"colorTitlebar"`
+		Theme                string `yaml:"theme" koanf:"theme"`
+		MinimalGroupWidth    int    `yaml:"minimalGroupWidth" koanf:"minimalGroupWidth"`
+		AlertsPerGroup       int    `yaml:"alertsPerGroup" koanf:"alertsPerGroup"`
+		CollapseGroups       string `yaml:"collapseGroups" koanf:"collapseGroups"`
+		MultiGridLabel       string `yaml:"multiGridLabel" koanf:"multiGridLabel"`
+		MultiGridSortReverse bool   `yaml:"multiGridSortReverse" koanf:"multiGridSortReverse"`
 	}
 }

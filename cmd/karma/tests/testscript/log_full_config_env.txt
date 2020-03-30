@@ -61,6 +61,8 @@ env UI_THEME=dark
 env UI_MINIMALGROUPWIDTH=300
 env UI_ALERTSPERGROUP=2
 env UI_COLLAPSEGROUPS=expanded
+env UI_MULTIGRIDLABEL=cluster
+env UI_MULTIGRIDSORTREVERSE=true
 
 karma.bin-should-work --check-config
 ! stdout .
@@ -184,5 +186,7 @@ level=info msg="  theme: dark"
 level=info msg="  minimalGroupWidth: 300"
 level=info msg="  alertsPerGroup: 2"
 level=info msg="  collapseGroups: expanded"
+level=info msg="  multiGridLabel: cluster"
+level=info msg="  multiGridSortReverse: true"
 level=info msg="[ro] Configured Alertmanager source at http://localhost:9093 (proxied: false, readonly: true)"
 level=info msg="Configuration is valid"

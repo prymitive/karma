@@ -147,6 +147,8 @@ ui:
   minimalGroupWidth: 420
   alertsPerGroup: 5
   collapseGroups: collapsedOnMobile
+  multiGridLabel: severity
+  multiGridSortReverse: true
 
 -- ca.pem --
 -----BEGIN CERTIFICATE-----
@@ -425,6 +427,8 @@ level=info msg="  theme: auto"
 level=info msg="  minimalGroupWidth: 420"
 level=info msg="  alertsPerGroup: 5"
 level=info msg="  collapseGroups: collapsedOnMobile"
+level=info msg="  multiGridLabel: severity"
+level=info msg="  multiGridSortReverse: true"
 level=info msg="[ha1] Configured Alertmanager source at http://localhost:9093 (proxied: true, readonly: false)"
 level=info msg="[ha2] Configured Alertmanager source at http://localhost:9094 (proxied: false, readonly: true)"
 level=info msg="[local] Configured Alertmanager source at http://localhost:9095 (proxied: true, readonly: false)"
