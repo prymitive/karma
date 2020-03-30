@@ -118,32 +118,30 @@ const Grid = observer(
       return (
         <React.Fragment>
           {alertStore.data.grids.length > 1 && (
-            <h5 className="d-flex flex-row justify-content-between px-2 py-1 mx-0 mt-2 mb-0 bg-light">
-              {grid.alertGroups.length > 1 && (
-                <span className="flex-shrink-0 flex-grow-0 ml-0 mr-2">
-                  <FilteringCounterBadge
-                    name="@state"
-                    value="unprocessed"
-                    counter={grid.stateCount.unprocessed}
-                    themed={true}
-                    alertStore={alertStore}
-                  />
-                  <FilteringCounterBadge
-                    name="@state"
-                    value="suppressed"
-                    counter={grid.stateCount.suppressed}
-                    themed={true}
-                    alertStore={alertStore}
-                  />
-                  <FilteringCounterBadge
-                    name="@state"
-                    value="active"
-                    counter={grid.stateCount.active}
-                    themed={true}
-                    alertStore={alertStore}
-                  />
-                </span>
-              )}
+            <h5 className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 mx-1 mt-2 mb-0">
+              <span className="flex-shrink-0 flex-grow-0 ml-0 mr-2">
+                <FilteringCounterBadge
+                  name="@state"
+                  value="unprocessed"
+                  counter={grid.stateCount.unprocessed}
+                  themed={true}
+                  alertStore={alertStore}
+                />
+                <FilteringCounterBadge
+                  name="@state"
+                  value="suppressed"
+                  counter={grid.stateCount.suppressed}
+                  themed={true}
+                  alertStore={alertStore}
+                />
+                <FilteringCounterBadge
+                  name="@state"
+                  value="active"
+                  counter={grid.stateCount.active}
+                  themed={true}
+                  alertStore={alertStore}
+                />
+              </span>
               <span
                 className="flex-shrink-1 flex-grow-1 text-center"
                 style={{ minWidth: "0px" }}
@@ -158,7 +156,7 @@ const Grid = observer(
                 )}
               </span>
               <span
-                className="flex-shrink-0 flex-grow-0 text-white cursor-pointer badge px-0 components-label ml-2 mr-0"
+                className="flex-shrink-0 flex-grow-0 text-muted cursor-pointer badge px-0 components-label ml-2 mr-0"
                 onClick={this.gridToggle.toggle}
               >
                 <TooltipWrapper title="Click to toggle this grid details">
