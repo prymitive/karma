@@ -304,6 +304,7 @@ type APIGrid struct {
 	LabelName   string          `json:"labelName"`
 	LabelValue  string          `json:"labelValue"`
 	AlertGroups []APIAlertGroup `json:"alertGroups"`
+	StateCount  map[string]int  `json:"stateCount"`
 }
 
 // AlertsResponse is the structure of JSON response UI will use to get alert data

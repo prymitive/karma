@@ -346,10 +346,17 @@ func alerts(c *gin.Context) {
 						LabelName:   gridLabel,
 						LabelValue:  gridLabelValue,
 						AlertGroups: []models.APIAlertGroup{},
+						StateCount:  map[string]int{},
+					}
+					for _, s := range models.AlertStateList {
+						grid.StateCount[s] = 0
 					}
 					grids[gridLabelValue] = grid
 				}
 				grid.AlertGroups = append(grid.AlertGroups, apiAG)
+				for k, v := range apiAG.StateCount {
+					grid.StateCount[k] += v
+				}
 				grids[gridLabelValue] = grid
 			}
 		}
