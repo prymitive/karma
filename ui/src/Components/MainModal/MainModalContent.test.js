@@ -21,6 +21,7 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings();
   onHide.mockClear();
+  fetch.mockResponse(JSON.stringify([]));
 });
 
 afterEach(() => {

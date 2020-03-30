@@ -12,6 +12,14 @@ import {
 } from "Components/Theme/ReactSelect";
 import { Configuration } from ".";
 
+beforeEach(() => {
+  fetch.mockResponse(JSON.stringify([]));
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 describe("<Configuration />", () => {
   it("matches snapshot", () => {
     const settingsStore = new Settings();
