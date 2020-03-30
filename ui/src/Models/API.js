@@ -28,17 +28,19 @@ const APIAlert = PropTypes.exact({
   receiver: PropTypes.string.isRequired,
 });
 
+const APIStateCount = PropTypes.exact({
+  active: PropTypes.number.isRequired,
+  suppressed: PropTypes.number.isRequired,
+  unprocessed: PropTypes.number.isRequired,
+});
+
 const APIGroup = PropTypes.exact({
   receiver: PropTypes.string.isRequired,
   labels: PropTypes.object.isRequired,
   alerts: PropTypes.arrayOf(APIAlert),
   id: PropTypes.string.isRequired,
   alertmanagerCount: PropTypes.objectOf(PropTypes.number).isRequired,
-  stateCount: PropTypes.exact({
-    active: PropTypes.number.isRequired,
-    suppressed: PropTypes.number.isRequired,
-    unprocessed: PropTypes.number.isRequired,
-  }),
+  stateCount: APIStateCount.isRequired,
   shared: PropTypes.exact({
     annotations: PropTypes.arrayOf(Annotation).isRequired,
     labels: PropTypes.object.isRequired,
@@ -79,6 +81,13 @@ const APIAlertmanagerUpstream = PropTypes.exact({
   clusterMembers: PropTypes.arrayOf(PropTypes.string).isRequired,
 });
 
+const APIGrid = PropTypes.exact({
+  labelName: PropTypes.string.isRequired,
+  labelValue: PropTypes.string.isRequired,
+  alertGroups: PropTypes.arrayOf(APIGroup).isRequired,
+  stateCount: APIStateCount.isRequired,
+});
+
 export {
   APIAlert,
   APIGroup,
@@ -86,4 +95,5 @@ export {
   APISilenceMatcher,
   APIAlertAlertmanagerState,
   APIAlertmanagerUpstream,
+  APIGrid,
 };

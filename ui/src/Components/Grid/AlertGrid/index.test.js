@@ -46,6 +46,19 @@ const ShallowAlertGrid = () => {
   );
 };
 
+const MockGrid = () => ({
+  labelName: "",
+  labelValue: "",
+  alertGroups: alertStore.data.grids.length
+    ? alertStore.data.grids[0].alertGroups
+    : [],
+  stateCount: {
+    unprocessed: 1,
+    suppressed: 2,
+    active: 3,
+  },
+});
+
 const ShallowGrid = () => {
   return shallow(
     <Grid
@@ -54,11 +67,7 @@ const ShallowGrid = () => {
       settingsStore={settingsStore}
       gridSizesConfig={GridSizesConfig(1024, 420)}
       groupWidth={420}
-      gridLabelName=""
-      gridLabelValue=""
-      gridAlertGroups={
-        alertStore.data.grids.length ? alertStore.data.grids[0].alertGroups : []
-      }
+      grid={MockGrid()}
     />
   );
 };
@@ -71,11 +80,7 @@ const MountedGrid = () => {
       settingsStore={settingsStore}
       gridSizesConfig={GridSizesConfig(1024, 420)}
       groupWidth={420}
-      gridLabelName=""
-      gridLabelValue=""
-      gridAlertGroups={
-        alertStore.data.grids.length ? alertStore.data.grids[0].alertGroups : []
-      }
+      grid={MockGrid()}
     />
   );
 };
@@ -113,6 +118,11 @@ const MockGroupList = (count, alertPerGroup) => {
       labelName: "",
       labelValue: "",
       alertGroups: groups,
+      stateCount: {
+        unprocessed: 1,
+        suppressed: 2,
+        active: 3,
+      },
     },
   ];
 };
@@ -144,12 +154,12 @@ describe("<Grid />", () => {
     expect(tree.instance().groupsToRender.value).toBe(80);
 
     MockGroupList(10, 5);
-    tree.setProps({ gridAlertGroups: alertStore.data.grids[0].alertGroups });
+    tree.setProps({ grid: MockGrid() });
     expect(tree.find("AlertGroup")).toHaveLength(10);
     expect(tree.instance().groupsToRender.value).toBe(50);
 
     MockGroupList(100, 5);
-    tree.setProps({ gridAlertGroups: alertStore.data.grids[0].alertGroups });
+    tree.setProps({ grid: MockGrid() });
     expect(tree.find("AlertGroup")).toHaveLength(50);
     expect(tree.instance().groupsToRender.value).toBe(50);
   });
@@ -209,11 +219,20 @@ describe("<Grid />", () => {
 
   it("click on the grid toggle toggles all groups", () => {
     MockGroupList(10, 3);
+    const groups = alertStore.data.grids[0].alertGroups;
+    alertStore.data.grids = [
+      {
+        labelName: "foo",
+        labelValue: "bar",
+        alertGroups: groups,
+      },
+      {
+        labelName: "foo",
+        labelValue: "",
+        alertGroups: [],
+      },
+    ];
     const tree = MountedGrid();
-    tree.setProps({
-      gridLabelName: "foo",
-      gridLabelValue: "bar",
-    });
     expect(tree.find("AlertGroup")).toHaveLength(10);
 
     tree.find("span.cursor-pointer").at(0).simulate("click");
@@ -221,6 +240,41 @@ describe("<Grid />", () => {
 
     tree.find("span.cursor-pointer").at(0).simulate("click");
     expect(tree.find("AlertGroup")).toHaveLength(10);
+  });
+
+  it("renders filter badge for grids with a value", () => {
+    MockGroupList(1, 1);
+    const tree = MountedGrid();
+    const grid = MockGrid();
+    grid.labelName = "foo";
+    grid.labelValue = "bar";
+    grid.stateCount = {
+      unprocessed: 0,
+      suppressed: 0,
+      active: 0,
+    };
+    alertStore.data.grids = [MockGrid(), MockGrid()];
+    tree.setProps({ grid: grid });
+    expect(tree.find("h5").at(0).find("FilteringLabel")).toHaveLength(1);
+    expect(tree.find("h5").at(0).find("FilteringLabel").text()).toBe(
+      "foo: bar"
+    );
+  });
+
+  it("doesn't render filter badge for grids with no value", () => {
+    MockGroupList(1, 1);
+    const tree = MountedGrid();
+    const grid = MockGrid();
+    grid.labelName = "foo";
+    grid.labelValue = "";
+    grid.stateCount = {
+      unprocessed: 0,
+      suppressed: 0,
+      active: 0,
+    };
+    alertStore.data.grids = [MockGrid(), MockGrid()];
+    tree.setProps({ grid: grid });
+    expect(tree.find("h5").at(0).find("FilteringLabel")).toHaveLength(0);
   });
 
   it("left click on a group collapse toggle only toggles clicked group", () => {

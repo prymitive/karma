@@ -16,8 +16,9 @@ import { faAngleDoubleDown } from "@fortawesome/free-solid-svg-icons/faAngleDoub
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { APIGroup } from "Models/API";
+import { APIGrid } from "Models/API";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
+import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { AlertGroup } from "./AlertGroup";
 
@@ -29,9 +30,7 @@ const Grid = observer(
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       gridSizesConfig: PropTypes.array.isRequired,
       groupWidth: PropTypes.number.isRequired,
-      gridLabelName: PropTypes.string.isRequired,
-      gridLabelValue: PropTypes.string.isRequired,
-      gridAlertGroups: PropTypes.arrayOf(APIGroup).isRequired,
+      grid: APIGrid.isRequired,
     };
 
     // store reference to generated masonry component so we can call it
@@ -74,11 +73,11 @@ const Grid = observer(
     loadMoreStep = 30;
 
     loadMore = action(() => {
-      const { gridAlertGroups } = this.props;
+      const { grid } = this.props;
 
       this.groupsToRender.value = Math.min(
         this.groupsToRender.value + this.loadMoreStep,
-        gridAlertGroups.length
+        grid.alertGroups.length
       );
     });
 
@@ -95,13 +94,13 @@ const Grid = observer(
     );
 
     componentDidUpdate() {
-      const { gridAlertGroups } = this.props;
+      const { grid } = this.props;
 
       this.masonryRepack();
 
-      if (this.groupsToRender.value > gridAlertGroups.length) {
+      if (this.groupsToRender.value > grid.alertGroups.length) {
         this.groupsToRender.setValue(
-          Math.max(this.initial, gridAlertGroups.length)
+          Math.max(this.initial, grid.alertGroups.length)
         );
       }
     }
@@ -113,28 +112,50 @@ const Grid = observer(
         silenceFormStore,
         gridSizesConfig,
         groupWidth,
-        gridLabelName,
-        gridLabelValue,
-        gridAlertGroups,
+        grid,
       } = this.props;
 
       return (
         <React.Fragment>
-          {gridLabelName !== "" && gridLabelValue !== "" && (
-            <h5 className="d-flex flex-row justify-content-between px-2 mx-0 mt-2 mb-0 bg-secondary">
-              <span className="flex-shrink-0 flex-grow-0 text-white badge px-0 components-label ml-0 mr-2">
-                {gridAlertGroups.length}
-              </span>
+          {alertStore.data.grids.length > 1 && (
+            <h5 className="d-flex flex-row justify-content-between px-2 py-1 mx-0 mt-2 mb-0 bg-light">
+              {grid.alertGroups.length > 1 && (
+                <span className="flex-shrink-0 flex-grow-0 ml-0 mr-2">
+                  <FilteringCounterBadge
+                    name="@state"
+                    value="unprocessed"
+                    counter={grid.stateCount.unprocessed}
+                    themed={true}
+                    alertStore={alertStore}
+                  />
+                  <FilteringCounterBadge
+                    name="@state"
+                    value="suppressed"
+                    counter={grid.stateCount.suppressed}
+                    themed={true}
+                    alertStore={alertStore}
+                  />
+                  <FilteringCounterBadge
+                    name="@state"
+                    value="active"
+                    counter={grid.stateCount.active}
+                    themed={true}
+                    alertStore={alertStore}
+                  />
+                </span>
+              )}
               <span
                 className="flex-shrink-1 flex-grow-1 text-center"
                 style={{ minWidth: "0px" }}
               >
-                <FilteringLabel
-                  key={gridLabelValue}
-                  name={gridLabelName}
-                  value={gridLabelValue}
-                  alertStore={alertStore}
-                />
+                {grid.labelName !== "" && grid.labelValue !== "" && (
+                  <FilteringLabel
+                    key={grid.labelValue}
+                    name={grid.labelName}
+                    value={grid.labelValue}
+                    alertStore={alertStore}
+                  />
+                )}
               </span>
               <span
                 className="flex-shrink-0 flex-grow-0 text-white cursor-pointer badge px-0 components-label ml-2 mr-0"
@@ -158,7 +179,7 @@ const Grid = observer(
             hasMore={false}
           >
             {this.gridToggle.show
-              ? gridAlertGroups
+              ? grid.alertGroups
                   .slice(0, this.groupsToRender.value)
                   .map((group) => (
                     <AlertGroup
@@ -179,7 +200,7 @@ const Grid = observer(
                   ))
               : []}
           </MasonryInfiniteScroller>
-          {gridAlertGroups.length > this.groupsToRender.value && (
+          {grid.alertGroups.length > this.groupsToRender.value && (
             <div className="d-flex flex-row justify-content-between">
               <span className="flex-shrink-1 flex-grow-1 text-center">
                 <button
