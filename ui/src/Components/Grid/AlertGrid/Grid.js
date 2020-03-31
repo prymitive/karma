@@ -20,6 +20,7 @@ import { APIGrid } from "Models/API";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";
+import { DefaultDetailsCollapseValue } from "./AlertGroup/DetailsToggle";
 import { AlertGroup } from "./AlertGroup";
 
 const Grid = observer(
@@ -81,17 +82,23 @@ const Grid = observer(
       );
     });
 
-    gridToggle = observable(
-      {
-        show: true,
-        toggle() {
-          this.show = !this.show;
+    constructor(props) {
+      super(props);
+
+      const { settingsStore } = props;
+
+      this.gridToggle = observable(
+        {
+          show: !DefaultDetailsCollapseValue(settingsStore),
+          toggle() {
+            this.show = !this.show;
+          },
         },
-      },
-      {
-        toggle: action.bound,
-      }
-    );
+        {
+          toggle: action.bound,
+        }
+      );
+    }
 
     componentDidUpdate() {
       const { grid } = this.props;
