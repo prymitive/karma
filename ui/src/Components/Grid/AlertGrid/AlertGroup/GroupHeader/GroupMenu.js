@@ -157,10 +157,10 @@ const GroupMenu = observer(
           <DropdownSlide in={!this.collapse.value} unmountOnExit>
             <Popper
               placement="bottom-start"
-              modifiers={{
-                arrow: { enabled: false },
-                offset: { offset: "-5px, 0px" },
-              }}
+              modifiers={[
+                { name: "arrow", enabled: false },
+                { name: "offset", options: { offset: "-5px, 0px" } },
+              ]}
             >
               {({ placement, ref, style }) => (
                 <MenuContent

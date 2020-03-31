@@ -249,11 +249,7 @@ const History = observer(
             )}
           </Reference>
           <DropdownSlide in={!this.collapse.value} unmountOnExit>
-            <Popper
-              modifiers={{
-                arrow: { enabled: false },
-              }}
-            >
+            <Popper modifiers={[{ name: "arrow", enabled: false }]}>
               {({ placement, ref, style }) => (
                 <HistoryMenu
                   popperPlacement={placement}
