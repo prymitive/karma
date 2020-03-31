@@ -21,6 +21,12 @@ beforeAll(() => {
 beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings();
+
+  fetch.mockResponse(JSON.stringify([]));
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
 const MountedMainModal = () => {

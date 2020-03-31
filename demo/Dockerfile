@@ -13,6 +13,7 @@ COPY Makefile /src/Makefile
 COPY go.mod /src/go.mod
 COPY go.sum /src/go.sum
 RUN make -C /src download-deps
+RUN make -C /src install-deps-build-go
 COPY --from=nodejs-builder /src/ui /src/ui
 COPY --from=nodejs-builder /src/.build /src/.build
 COPY cmd /src/cmd

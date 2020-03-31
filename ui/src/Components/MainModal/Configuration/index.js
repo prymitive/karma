@@ -11,6 +11,7 @@ import { AlertGroupSortConfiguration } from "./AlertGroupSortConfiguration";
 import { AlertGroupCollapseConfiguration } from "./AlertGroupCollapseConfiguration";
 import { AlertGroupTitleBarColor } from "./AlertGroupTitleBarColor";
 import { ThemeConfiguration } from "./ThemeConfiguration";
+import { MultiGridConfiguration } from "./MultiGridConfiguration";
 
 const Configuration = ({ settingsStore, defaultIsOpen }) => (
   <form className="px-3 accordion">
@@ -54,6 +55,11 @@ const Configuration = ({ settingsStore, defaultIsOpen }) => (
     <Accordion
       text="Grid sort order"
       content={<AlertGroupSortConfiguration settingsStore={settingsStore} />}
+      extraProps={{ open: defaultIsOpen }}
+    />
+    <Accordion
+      text="Multi-grid source label"
+      content={<MultiGridConfiguration settingsStore={settingsStore} />}
       extraProps={{ open: defaultIsOpen }}
     />
   </form>

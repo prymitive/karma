@@ -132,6 +132,21 @@ class ThemeConfig {
   }
 }
 
+class MultiGridConfig {
+  constructor(gridLabel, gridSortReverse) {
+    this.config = localStored(
+      "multiGridConfig",
+      {
+        gridLabel: gridLabel,
+        gridSortReverse: gridSortReverse,
+      },
+      {
+        delay: 100,
+      }
+    );
+  }
+}
+
 class Settings {
   constructor(defaults) {
     let defaultSettings;
@@ -144,6 +159,8 @@ class Settings {
         MinimalGroupWidth: 420,
         AlertsPerGroup: 5,
         CollapseGroups: "collapsedOnMobile",
+        MultiGridLabel: "",
+        MultiGridSortReverse: false,
       };
     } else {
       defaultSettings = defaults;
@@ -164,6 +181,10 @@ class Settings {
       defaultSettings.HideFiltersWhenIdle
     );
     this.themeConfig = new ThemeConfig(defaultSettings.Theme);
+    this.multiGridConfig = new MultiGridConfig(
+      defaultSettings.MultiGridLabel,
+      defaultSettings.MultiGridSortReverse
+    );
   }
 }
 

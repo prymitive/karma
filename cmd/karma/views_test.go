@@ -145,8 +145,8 @@ func TestAlerts(t *testing.T) {
 			if len(ur.Colors) != 1 {
 				t.Errorf("[%s] Got %d color(s) in response, expected %d", version, len(ur.Colors), 1)
 			}
-			if len(ur.AlertGroups) != 1 {
-				t.Errorf("[%s] Got %d alert(s) in response, expected %d", version, len(ur.AlertGroups), 1)
+			if len(ur.Grids[0].AlertGroups) != 1 {
+				t.Errorf("[%s] Got %d alert group(s) in response, expected %d", version, len(ur.Grids[0].AlertGroups), 1)
 			}
 			if ur.Version == "" {
 				t.Errorf("[%s] Empty version in response", version)
@@ -172,7 +172,7 @@ func TestAlerts(t *testing.T) {
 			if len(ur.Counters) != 6 {
 				t.Errorf("[%s] Invalid number of counters in response (%d): %v", version, len(ur.Counters), ur.Counters)
 			}
-			for _, ag := range ur.AlertGroups {
+			for _, ag := range ur.Grids[0].AlertGroups {
 				for _, a := range ag.Alerts {
 					linkCount := 0
 					for _, annotation := range a.Annotations {
@@ -188,6 +188,122 @@ func TestAlerts(t *testing.T) {
 					}
 				}
 			}
+		}
+	}
+}
+
+func TestGrids(t *testing.T) {
+	type testCaseGridT struct {
+		labelValue      string
+		alertGroupCount int
+	}
+	type testCaseT struct {
+		gridLabel    string
+		requestQuery string
+		grids        []testCaseGridT
+	}
+	testCases := []testCaseT{
+		{
+			gridLabel:    "cluster",
+			requestQuery: "",
+			grids: []testCaseGridT{
+				{labelValue: "dev", alertGroupCount: 4},
+				{labelValue: "prod", alertGroupCount: 4},
+				{labelValue: "staging", alertGroupCount: 4},
+			},
+		},
+		{
+			gridLabel:    "cluster",
+			requestQuery: "&gridSortReverse=1",
+			grids: []testCaseGridT{
+				{labelValue: "staging", alertGroupCount: 4},
+				{labelValue: "prod", alertGroupCount: 4},
+				{labelValue: "dev", alertGroupCount: 4},
+			},
+		},
+		{
+			gridLabel:    "foo",
+			requestQuery: "",
+			grids: []testCaseGridT{
+				{labelValue: "", alertGroupCount: 10},
+			},
+		},
+		{
+			gridLabel:    "",
+			requestQuery: "",
+			grids: []testCaseGridT{
+				{labelValue: "", alertGroupCount: 10},
+			},
+		},
+		{
+			gridLabel:    "",
+			requestQuery: "&q=foo=bar",
+			grids:        []testCaseGridT{},
+		},
+		{
+			gridLabel:    "disk",
+			requestQuery: "",
+			grids: []testCaseGridT{
+				{labelValue: "sda", alertGroupCount: 2},
+				{labelValue: "", alertGroupCount: 8},
+			},
+		},
+		{
+			gridLabel:    "disk",
+			requestQuery: "&gridSortReverse=1",
+			grids: []testCaseGridT{
+				{labelValue: "", alertGroupCount: 8},
+				{labelValue: "sda", alertGroupCount: 2},
+			},
+		},
+		{
+			gridLabel:    "disk",
+			requestQuery: "&q=alertname=Free_Disk_Space_Too_Low",
+			grids: []testCaseGridT{
+				{labelValue: "sda", alertGroupCount: 2},
+			},
+		},
+	}
+
+	mockConfig()
+	for _, version := range mock.ListAllMocks() {
+		for _, testCase := range testCases {
+			t.Run(fmt.Sprintf("version=%q gridLabel=%q query=%q", version, testCase.gridLabel, testCase.requestQuery), func(t *testing.T) {
+				mockAlerts(version)
+				r := ginTestEngine()
+				// re-run a few times to test the cache
+				for i := 1; i <= 3; i++ {
+					req := httptest.NewRequest("GET", "/alerts.json?gridLabel="+testCase.gridLabel+testCase.requestQuery, nil)
+					resp := httptest.NewRecorder()
+					r.ServeHTTP(resp, req)
+					if resp.Code != http.StatusOK {
+						t.Errorf("GET /alerts.json returned status %d", resp.Code)
+					}
+
+					ur := models.AlertsResponse{}
+					err := json.Unmarshal(resp.Body.Bytes(), &ur)
+					if err != nil {
+						t.Errorf("Failed to unmarshal response: %s", err)
+					}
+
+					if len(ur.Grids) != len(testCase.grids) {
+						t.Errorf("Expected %d grids, got %d", len(testCase.grids), len(ur.Grids))
+					} else {
+						for index, expectedGrid := range testCase.grids {
+							grid := ur.Grids[index]
+							if grid.LabelName != testCase.gridLabel {
+								t.Errorf("Got wrong labelName for grid %d: %q, expected %q", index, grid.LabelName, testCase.gridLabel)
+							}
+							if grid.LabelValue != expectedGrid.labelValue {
+								t.Errorf("Got wrong labelValue for grid %d: %q, expected %q", index, grid.LabelValue, expectedGrid.labelValue)
+							}
+							if len(grid.AlertGroups) != expectedGrid.alertGroupCount {
+								t.Errorf("Got wrong alert group count for grid %d: %d, expected %d", index, len(grid.AlertGroups), expectedGrid.alertGroupCount)
+							}
+						}
+					}
+				}
+			})
 		}
 	}
 }
@@ -212,7 +328,7 @@ func TestValidateAllAlerts(t *testing.T) {
 			if err != nil {
 				t.Errorf("Failed to unmarshal response: %s", err)
 			}
-			for _, ag := range ur.AlertGroups {
+			for _, ag := range ur.Grids[0].AlertGroups {
 				for _, a := range ag.Alerts {
 					if !slices.StringInSlice(models.AlertStateList, a.State) {
 						t.Errorf("Invalid alert status '%s', not in %v", a.State, models.AlertStateList)

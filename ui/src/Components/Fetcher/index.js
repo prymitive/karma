@@ -81,10 +81,12 @@ const Fetcher = observer(
     };
 
     callFetch = () => {
-      const { alertStore } = this.props;
+      const { alertStore, settingsStore } = this.props;
 
       const sortSettings = this.getSortSettings();
       alertStore.fetchWithThrottle(
+        settingsStore.multiGridConfig.config.gridLabel,
+        settingsStore.multiGridConfig.config.gridSortReverse,
         sortSettings.sortOrder,
         sortSettings.sortLabel,
         sortSettings.sortReverse
@@ -118,6 +120,10 @@ const Fetcher = observer(
         <span
           data-filters={alertStore.filters.values.map((f) => f.raw).join(" ")}
           data-interval={settingsStore.fetchConfig.config.interval}
+          data-multigrid-label={settingsStore.multiGridConfig.config.gridLabel}
+          data-multigrid-sort-reverse={
+            settingsStore.multiGridConfig.config.gridSortReverse
+          }
           data-grid-sort-order={settingsStore.gridConfig.config.sortOrder}
           data-grid-sort-label={settingsStore.gridConfig.config.sortLabel}
           data-grid-sort-reverse={settingsStore.gridConfig.config.reverseSort}

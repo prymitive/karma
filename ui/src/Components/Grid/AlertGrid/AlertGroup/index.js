@@ -14,13 +14,13 @@ import { APIGroup } from "Models/API";
 import { Settings } from "Stores/Settings";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { IsMobile } from "Common/Device";
 import { BackgroundClassMap } from "Common/Colors";
 import { MountFade } from "Components/Animations/MountFade";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GroupHeader } from "./GroupHeader";
 import { Alert } from "./Alert";
 import { GroupFooter } from "./GroupFooter";
+import { DefaultDetailsCollapseValue } from "./DetailsToggle";
 
 const LoadButton = ({ icon, action, tooltip }) => {
   return (
@@ -61,10 +61,10 @@ const AlertGroup = observer(
     constructor(props) {
       super(props);
 
-      const { alertGroupConfig } = props.settingsStore;
+      const { settingsStore } = props;
 
       this.defaultRenderCount = toJS(
-        alertGroupConfig.config.defaultRenderCount
+        settingsStore.alertGroupConfig.config.defaultRenderCount
       );
 
       this.renderConfig = observable(
@@ -80,25 +80,12 @@ const AlertGroup = observer(
         }
       );
 
-      let defaultCollapseState;
-      switch (alertGroupConfig.config.defaultCollapseState) {
-        case alertGroupConfig.options.collapsed.value:
-          defaultCollapseState = true;
-          break;
-        case alertGroupConfig.options.collapsedOnMobile.value:
-          defaultCollapseState = IsMobile();
-          break;
-        default:
-          defaultCollapseState = false;
-          break;
-      }
-
       // store collapse state, alert groups can be collapsed to only show
       // the header, this is controlled by UI element on the header itself, so
       // this observable needs to be passed down to it
       this.collapse = observable(
         {
-          value: defaultCollapseState,
+          value: DefaultDetailsCollapseValue(settingsStore),
           toggle() {
             this.value = !this.value;
           },

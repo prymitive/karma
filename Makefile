@@ -16,13 +16,13 @@ endif
 
 .DEFAULT_GOAL := $(NAME)
 
-.build/deps-build-go.ok:
+.build/deps-build-go.ok: go.mod go.sum
 	@mkdir -p .build
 	GO111MODULE=on go install github.com/go-bindata/go-bindata/...
 	GO111MODULE=on go install github.com/elazarl/go-bindata-assetfs/...
 	touch $@
 
-.build/deps-lint-go.ok:
+.build/deps-lint-go.ok: go.mod go.sum
 	@mkdir -p .build
 	GO111MODULE=on go install github.com/golangci/golangci-lint/cmd/golangci-lint
 	touch $@
@@ -51,6 +51,9 @@ $(NAME): .build/deps-build-go.ok go.mod cmd/karma/bindata_assetfs.go $(SOURCES)
 .PHONY: download-deps
 download-deps:
 	GO111MODULE=on go mod download
+
+.PHONY: install-deps-build-go
+install-deps-build-go: .build/deps-build-go.ok
 
 word-split = $(word $2,$(subst -, ,$1))
 cc-%: .build/deps-build-go.ok go.mod cmd/karma/bindata_assetfs.go $(SOURCES)

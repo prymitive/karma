@@ -243,7 +243,28 @@ const MockGrid = (alertStore) => {
     ],
     clusters: { am: ["am1", "am2"], failed: ["failed"] },
   };
-  alertStore.data.groups = groups;
+  alertStore.data.grids = [
+    {
+      labelName: "cluster",
+      labelValue: "prod",
+      alertGroups: groups.slice(0, 7),
+      stateCount: {
+        unprocessed: 1,
+        suppressed: 2,
+        active: 3,
+      },
+    },
+    {
+      labelName: "cluster",
+      labelValue: "",
+      alertGroups: groups.slice(7, 11),
+      stateCount: {
+        unprocessed: 0,
+        suppressed: 10,
+        active: 99,
+      },
+    },
+  ];
 };
 
 export { MockGrid };

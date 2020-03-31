@@ -10,15 +10,10 @@ import debounce from "lodash/debounce";
 
 import ReactResizeDetector from "react-resize-detector";
 
-import MasonryInfiniteScroller from "react-masonry-infinite";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
-
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { AlertGroup } from "./AlertGroup";
+import { Grid } from "./Grid";
 import { GridSizesConfig, GetGridElementWidth } from "./GridSize";
 
 const AlertGrid = observer(
@@ -69,54 +64,6 @@ const AlertGrid = observer(
       this.viewport.updateWidths(document.body.clientWidth, window.innerWidth);
     }, 100);
 
-    // store reference to generated masonry component so we can call it
-    // to repack the grid after any component was re-rendered, which could
-    // alter its size breaking grid layout
-    masonryComponentReference = observable(
-      { ref: false },
-      {},
-      { name: "Masonry reference" }
-    );
-    // store it for later
-    storeMasonryRef = action((ref) => {
-      this.masonryComponentReference.ref = ref;
-    });
-    // used to call forcePack() which will repack all grid elements
-    // (alert groups), this needs to be called if any group size changes
-    masonryRepack = debounce(
-      action(() => {
-        if (this.masonryComponentReference.ref) {
-          this.masonryComponentReference.ref.forcePack();
-        }
-      }),
-      10
-    );
-
-    initial = 50;
-    groupsToRender = observable(
-      {
-        value: this.initial,
-        setValue(value) {
-          this.value = value;
-        },
-      },
-      {
-        setValue: action.bound,
-      },
-      { name: "Groups to render" }
-    );
-    // how many groups add to render count when user scrolls to the bottom
-    loadMoreStep = 30;
-
-    loadMore = action(() => {
-      const { alertStore } = this.props;
-
-      this.groupsToRender.value = Math.min(
-        this.groupsToRender.value + this.loadMoreStep,
-        alertStore.data.groups.length
-      );
-    });
-
     componentDidMount() {
       // We have font-display:swap set for font assets, this means that on initial
       // render a fallback font might be used and later swapped for the final one
@@ -135,16 +82,6 @@ const AlertGrid = observer(
       window.addEventListener("resize", this.handleResize);
     }
 
-    componentDidUpdate() {
-      const { alertStore } = this.props;
-
-      if (this.groupsToRender.value > alertStore.data.groups.length) {
-        this.groupsToRender.setValue(
-          Math.max(this.initial, alertStore.data.groups.length)
-        );
-      }
-    }
-
     componentWillUnmount() {
       window.removeEventListener("resize", this.handleResize);
     }
@@ -159,40 +96,17 @@ const AlertGrid = observer(
             handleHeight
             onResize={debounce(this.handleResize, 100)}
           />
-          <MasonryInfiniteScroller
-            key={settingsStore.gridConfig.config.groupWidth}
-            ref={this.storeMasonryRef}
-            position={false}
-            pack={true}
-            sizes={this.viewport.gridSizesConfig}
-            loadMore={this.loadMore}
-            hasMore={this.groupsToRender.value < alertStore.data.groups.length}
-            threshold={50}
-            loader={
-              <div key="loader" className="text-center text-muted py-3">
-                <FontAwesomeIcon icon={faCircleNotch} size="lg" spin />
-              </div>
-            }
-          >
-            {alertStore.data.groups
-              .slice(0, this.groupsToRender.value)
-              .map((group) => (
-                <AlertGroup
-                  key={group.id}
-                  group={group}
-                  showAlertmanagers={
-                    Object.keys(alertStore.data.upstreams.clusters).length > 1
-                  }
-                  afterUpdate={this.masonryRepack}
-                  alertStore={alertStore}
-                  settingsStore={settingsStore}
-                  silenceFormStore={silenceFormStore}
-                  style={{
-                    width: this.viewport.groupWidth,
-                  }}
-                />
-              ))}
-          </MasonryInfiniteScroller>
+          {alertStore.data.grids.map((grid) => (
+            <Grid
+              key={`${grid.labelName}/${grid.labelValue}`}
+              alertStore={alertStore}
+              silenceFormStore={silenceFormStore}
+              settingsStore={settingsStore}
+              gridSizesConfig={this.viewport.gridSizesConfig}
+              groupWidth={this.viewport.groupWidth}
+              grid={grid}
+            />
+          ))}
         </React.Fragment>
       );
     }

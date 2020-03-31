@@ -203,11 +203,11 @@ func alerts(c *gin.Context) {
 		return
 	}
 
-	// get filters
+	gridLabel, _ := c.GetQuery("gridLabel")
+
 	matchFilters, validFilters := getFiltersFromQuery(c.QueryArray("q"))
 
-	// set pointers for data store objects, need a lock until end of view is reached
-	alerts := map[string]models.APIAlertGroup{}
+	grids := map[string]models.APIGrid{}
 	colors := models.LabelsColorMap{}
 	counters := map[string]map[string]int{}
 
@@ -227,18 +227,7 @@ func alerts(c *gin.Context) {
 
 	var matches int
 	for _, ag := range dedupedAlerts {
-		agCopy := models.AlertGroup{
-			ID:                ag.ID,
-			Receiver:          ag.Receiver,
-			Labels:            ag.Labels,
-			LatestStartsAt:    ag.LatestStartsAt,
-			Alerts:            []models.Alert{},
-			AlertmanagerCount: map[string]int{},
-			StateCount:        map[string]int{},
-		}
-		for _, s := range models.AlertStateList {
-			agCopy.StateCount[s] = 0
-		}
+		perGridAlertGroup := map[string]*models.AlertGroup{}
 
 		for _, alert := range ag.Alerts {
 			alert := alert // scopelint pin
@@ -258,6 +247,25 @@ func alerts(c *gin.Context) {
 				// we update it here rather than in dedup since here we can apply it
 				// only for alerts left after filtering
 				alert.UpdateFingerprints()
+
+				alertGridLabelValue := alert.Labels[gridLabel]
+				agCopy, found := perGridAlertGroup[alertGridLabelValue]
+				if !found {
+					agCopy = &models.AlertGroup{
+						ID:                ag.ID,
+						Receiver:          ag.Receiver,
+						Labels:            ag.Labels,
+						LatestStartsAt:    ag.LatestStartsAt,
+						Alerts:            []models.Alert{},
+						AlertmanagerCount: map[string]int{},
+						StateCount:        map[string]int{},
+					}
+					for _, s := range models.AlertStateList {
+						agCopy.StateCount[s] = 0
+					}
+					perGridAlertGroup[alertGridLabelValue] = agCopy
+				}
+
 				agCopy.Alerts = append(agCopy.Alerts, alert)
 
 				countLabel(counters, "@state", alert.State)
@@ -307,32 +315,51 @@ func alerts(c *gin.Context) {
 			}
 		}
 
-		if len(agCopy.Alerts) > 0 {
-			for i, alert := range agCopy.Alerts {
-				if alert.IsSilenced() {
-					for j, am := range alert.Alertmanager {
-						key := amNameToCluster[am.Name]
-						// cluster might be wrong when collecting (races between fetches)
-						// update is with current cluster discovery state
-						agCopy.Alerts[i].Alertmanager[j].Cluster = key
-						for _, silence := range am.Silences {
-							_, found := silences[key][silence.ID]
-							if !found {
-								silences[key][silence.ID] = *silence
+		for gridLabelValue, ag := range perGridAlertGroup {
+			if len(ag.Alerts) > 0 {
+				for i, alert := range ag.Alerts {
+					if alert.IsSilenced() {
+						for j, am := range alert.Alertmanager {
+							key := amNameToCluster[am.Name]
+							// cluster might be wrong when collecting (races between fetches)
+							// update is with current cluster discovery state
+							ag.Alerts[i].Alertmanager[j].Cluster = key
+							for _, silence := range am.Silences {
+								_, found := silences[key][silence.ID]
+								if !found {
+									silences[key][silence.ID] = *silence
+								}
 							}
 						}
 					}
 				}
-			}
-			sort.Sort(agCopy.Alerts)
-			agCopy.LatestStartsAt = agCopy.FindLatestStartsAt()
-			agCopy.Hash = agCopy.ContentFingerprint()
-			apiAG := models.APIAlertGroup{AlertGroup: agCopy}
-			apiAG.DedupSharedMaps()
-			alerts[agCopy.ID] = apiAG
-			resp.TotalAlerts += len(agCopy.Alerts)
-		}
+				sort.Sort(ag.Alerts)
+				ag.LatestStartsAt = ag.FindLatestStartsAt()
+				ag.Hash = ag.ContentFingerprint()
+				apiAG := models.APIAlertGroup{AlertGroup: *ag}
+				apiAG.DedupSharedMaps()
+				resp.TotalAlerts += len(ag.Alerts)
 
+				grid, found := grids[gridLabelValue]
+				if !found {
+					grid = models.APIGrid{
+						LabelName:   gridLabel,
+						LabelValue:  gridLabelValue,
+						AlertGroups: []models.APIAlertGroup{},
+						StateCount:  map[string]int{},
+					}
+					for _, s := range models.AlertStateList {
+						grid.StateCount[s] = 0
+					}
+					grids[gridLabelValue] = grid
+				}
+				grid.AlertGroups = append(grid.AlertGroups, apiAG)
+				for k, v := range apiAG.StateCount {
+					grid.StateCount[k] += v
+				}
+				grids[gridLabelValue] = grid
+			}
+		}
 	}
 
 	for _, filter := range matchFilters {
@@ -341,7 +368,11 @@ func alerts(c *gin.Context) {
 		}
 	}
 
-	resp.AlertGroups = sortAlertGroups(c, alerts)
+	//resp.AlertGroups = sortAlertGroups(c, alerts)
+	v, _ := c.GetQuery("gridSortReverse")
+	gridSortReverse := v == "1"
+
+	resp.Grids = sortGrids(c, gridLabel, grids, gridSortReverse)
 	resp.Silences = silences
 	resp.Colors = colors
 	resp.Counters = countersToLabelStats(counters)

@@ -6,3 +6,9 @@
   transition-duration: 0.4s;
   transition-timing-function: ease;
 }
+
+.components-grid-swimlane {
+  background-color: $grid-swimlane-bg;
+  margin-left: 0.3rem;
+  margin-right: 0.3rem;
+}

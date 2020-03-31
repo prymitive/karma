@@ -9,7 +9,8 @@ import { mockMatchMedia } from "__mocks__/matchMedia";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { GetGridElementWidth } from "./GridSize";
+import { GetGridElementWidth, GridSizesConfig } from "./GridSize";
+import { Grid } from "./Grid";
 import { AlertGrid } from ".";
 
 let alertStore;
@@ -35,6 +36,16 @@ afterEach(() => {
   clear();
 });
 
+const MountedAlertGrid = () => {
+  return mount(
+    <AlertGrid
+      alertStore={alertStore}
+      settingsStore={settingsStore}
+      silenceFormStore={silenceFormStore}
+    />
+  );
+};
+
 const ShallowAlertGrid = () => {
   return shallow(
     <AlertGrid
@@ -45,12 +56,41 @@ const ShallowAlertGrid = () => {
   );
 };
 
-const MountedAlertGroup = () => {
-  return mount(
-    <AlertGrid
+const MockGrid = () => ({
+  labelName: "",
+  labelValue: "",
+  alertGroups: alertStore.data.grids.length
+    ? alertStore.data.grids[0].alertGroups
+    : [],
+  stateCount: {
+    unprocessed: 1,
+    suppressed: 2,
+    active: 3,
+  },
+});
+
+const ShallowGrid = () => {
+  return shallow(
+    <Grid
       alertStore={alertStore}
-      settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
+      settingsStore={settingsStore}
+      gridSizesConfig={GridSizesConfig(1024, 420)}
+      groupWidth={420}
+      grid={MockGrid()}
+    />
+  );
+};
+
+const MountedGrid = () => {
+  return mount(
+    <Grid
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+      settingsStore={settingsStore}
+      gridSizesConfig={GridSizesConfig(1024, 420)}
+      groupWidth={420}
+      grid={MockGrid()}
     />
   );
 };
@@ -83,58 +123,59 @@ const MockGroupList = (count, alertPerGroup) => {
     instances: [{ name: "am", uri: "http://am", error: "" }],
     clusters: { am: ["am"] },
   };
-  alertStore.data.groups = groups;
+  alertStore.data.grids = [
+    {
+      labelName: "",
+      labelValue: "",
+      alertGroups: groups,
+      stateCount: {
+        unprocessed: 1,
+        suppressed: 2,
+        active: 3,
+      },
+    },
+  ];
 };
 
-const VerifyColumnCount = (innerWidth, outerWidth, columns) => {
-  MockGroupList(60, 5);
-  const tree = ShallowAlertGrid();
-  tree.instance().viewport.updateWidths(innerWidth, outerWidth);
-  expect(tree.find("AlertGroup").at(0).props().style.width).toBe(
-    Math.floor(innerWidth / columns)
-  );
-};
-
-describe("<AlertGrid />", () => {
+describe("<Grid />", () => {
   it("renders only first 50 alert groups", () => {
     MockGroupList(60, 5);
-    const tree = ShallowAlertGrid();
+    const tree = ShallowGrid();
     const alertGroups = tree.find("AlertGroup");
     expect(alertGroups).toHaveLength(50);
   });
 
-  it("appends 30 groups after loadMore() call", () => {
+  it("appends 30 groups after clicking 'Load More' button", () => {
     MockGroupList(100, 5);
-    const tree = ShallowAlertGrid();
-    // call it directly, it should happen on scroll to the bottom of the page
-    tree.instance().loadMore();
+    const tree = ShallowGrid();
+    tree.find("button").simulate("click");
     const alertGroups = tree.find("AlertGroup");
     expect(alertGroups).toHaveLength(80);
   });
 
-  it("resets groupsToRender.value back to 50 if current value is > alertStore.data.groups.length", () => {
+  it("resets groupsToRender.value back to 50 if current value is more than group alerts", () => {
     MockGroupList(100, 5);
-    const tree = ShallowAlertGrid();
+    const tree = ShallowGrid();
     expect(tree.find("AlertGroup")).toHaveLength(50);
     expect(tree.instance().groupsToRender.value).toBe(50);
 
-    tree.instance().loadMore();
+    tree.find("button").simulate("click");
     expect(tree.find("AlertGroup")).toHaveLength(80);
     expect(tree.instance().groupsToRender.value).toBe(80);
 
     MockGroupList(10, 5);
-    tree.instance().componentDidUpdate();
+    tree.setProps({ grid: MockGrid() });
     expect(tree.find("AlertGroup")).toHaveLength(10);
     expect(tree.instance().groupsToRender.value).toBe(50);
 
     MockGroupList(100, 5);
-    tree.instance().componentDidUpdate();
+    tree.setProps({ grid: MockGrid() });
     expect(tree.find("AlertGroup")).toHaveLength(50);
     expect(tree.instance().groupsToRender.value).toBe(50);
   });
 
   it("calling masonryRepack() calls forcePack() on Masonry instance`", () => {
-    const tree = ShallowAlertGrid();
+    const tree = ShallowGrid();
     const instance = tree.instance();
     // it's a shallow render so we don't really have masonry mounted, fake it
     instance.masonryComponentReference.ref = {
@@ -145,28 +186,28 @@ describe("<AlertGrid />", () => {
   });
 
   it("masonryRepack() doesn't crash when masonryComponentReference.ref=false`", () => {
-    const tree = ShallowAlertGrid();
+    const tree = ShallowGrid();
     const instance = tree.instance();
     instance.masonryComponentReference.ref = false;
     instance.masonryRepack();
   });
 
   it("masonryRepack() doesn't crash when masonryComponentReference.ref=null`", () => {
-    const tree = ShallowAlertGrid();
+    const tree = ShallowGrid();
     const instance = tree.instance();
     instance.masonryComponentReference.ref = null;
     instance.masonryRepack();
   });
 
   it("masonryRepack() doesn't crash when masonryComponentReference.ref=undefined`", () => {
-    const tree = ShallowAlertGrid();
+    const tree = ShallowGrid();
     const instance = tree.instance();
     instance.masonryComponentReference.ref = undefined;
     instance.masonryRepack();
   });
 
   it("calling storeMasonryRef() saves the ref in local store", () => {
-    const tree = ShallowAlertGrid();
+    const tree = ShallowGrid();
     const instance = tree.instance();
     instance.storeMasonryRef("foo");
     expect(instance.masonryComponentReference.ref).toEqual("foo");
@@ -177,7 +218,7 @@ describe("<AlertGrid />", () => {
       settingsStore.gridConfig.options.disabled.value;
     settingsStore.gridConfig.config.reverseSort = false;
     MockGroupList(3, 1);
-    const tree = ShallowAlertGrid();
+    const tree = ShallowGrid();
     const alertGroups = tree.find("AlertGroup");
     expect(alertGroups.map((g) => g.props().group.id)).toEqual([
       "id1",
@@ -185,6 +226,145 @@ describe("<AlertGrid />", () => {
       "id3",
     ]);
   });
+
+  it("click on the grid toggle toggles all groups", () => {
+    MockGroupList(10, 3);
+    const groups = alertStore.data.grids[0].alertGroups;
+    alertStore.data.grids = [
+      {
+        labelName: "foo",
+        labelValue: "bar",
+        alertGroups: groups,
+        stateCount: {
+          unprocessed: 1,
+          suppressed: 2,
+          active: 3,
+        },
+      },
+      {
+        labelName: "foo",
+        labelValue: "",
+        alertGroups: [],
+        stateCount: {
+          unprocessed: 1,
+          suppressed: 2,
+          active: 3,
+        },
+      },
+    ];
+    const tree = MountedGrid();
+    expect(tree.find("AlertGroup")).toHaveLength(10);
+
+    tree.find("span.cursor-pointer").at(0).simulate("click");
+    expect(tree.find("AlertGroup")).toHaveLength(0);
+
+    tree.find("span.cursor-pointer").at(0).simulate("click");
+    expect(tree.find("AlertGroup")).toHaveLength(10);
+  });
+
+  it("renders filter badge for grids with a value", () => {
+    MockGroupList(1, 1);
+    const tree = MountedGrid();
+    const grid = MockGrid();
+    grid.labelName = "foo";
+    grid.labelValue = "bar";
+    grid.stateCount = {
+      unprocessed: 0,
+      suppressed: 0,
+      active: 0,
+    };
+    alertStore.data.grids = [MockGrid(), MockGrid()];
+    tree.setProps({ grid: grid });
+    expect(tree.find("h5").at(0).find("FilteringLabel")).toHaveLength(1);
+    expect(tree.find("h5").at(0).find("FilteringLabel").text()).toBe(
+      "foo: bar"
+    );
+  });
+
+  it("doesn't render filter badge for grids with no value", () => {
+    MockGroupList(1, 1);
+    const tree = MountedGrid();
+    const grid = MockGrid();
+    grid.labelName = "foo";
+    grid.labelValue = "";
+    grid.stateCount = {
+      unprocessed: 0,
+      suppressed: 0,
+      active: 0,
+    };
+    alertStore.data.grids = [MockGrid(), MockGrid()];
+    tree.setProps({ grid: grid });
+    expect(tree.find("h5").at(0).find("FilteringLabel")).toHaveLength(0);
+  });
+
+  it("left click on a group collapse toggle only toggles clicked group", () => {
+    MockGroupList(10, 3);
+    const tree = MountedGrid();
+
+    for (let i = 0; i <= 9; i++) {
+      expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(3);
+    }
+
+    tree
+      .find("AlertGroup")
+      .at(2)
+      .find("GroupHeader")
+      .find("span.cursor-pointer")
+      .at(1)
+      .simulate("click");
+
+    for (let i = 0; i <= 9; i++) {
+      expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(
+        i === 2 ? 0 : 3
+      );
+    }
+  });
+
+  it("left click + alt on a group collapse toggle toggles all groups", () => {
+    MockGroupList(10, 3);
+    const tree = MountedGrid();
+
+    for (let i = 0; i <= 9; i++) {
+      expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(3);
+    }
+
+    tree
+      .find("AlertGroup")
+      .at(2)
+      .find("GroupHeader")
+      .find("span.cursor-pointer")
+      .at(1)
+      .simulate("click", { altKey: true });
+
+    for (let i = 0; i <= 9; i++) {
+      expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(0);
+    }
+  });
+
+  it("doesn't crash on unmount", () => {
+    MockGroupList(5, 3);
+    const tree = MountedGrid();
+    tree.unmount();
+  });
+});
+
+describe("<AlertGrid />", () => {
+  const VerifyColumnCount = (innerWidth, outerWidth, columns) => {
+    MockGroupList(60, 5);
+
+    const wrapper = ShallowAlertGrid();
+    wrapper.instance().viewport.updateWidths(innerWidth, outerWidth);
+
+    const tree = ShallowGrid();
+    tree.setProps({
+      gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
+      groupWidth: wrapper.instance().viewport.groupWidth,
+    });
+
+    expect(tree.find("AlertGroup").at(0).props().style.width).toBe(
+      Math.floor(innerWidth / columns)
+    );
+  };
 
   it("doesn't throw errors after FontFaceObserver timeout", () => {
     MockGroupList(60, 5);
@@ -261,13 +441,24 @@ describe("<AlertGrid />", () => {
 
   it("viewport resize also resizes alert groups", () => {
     MockGroupList(60, 5);
-    const tree = ShallowAlertGrid();
+
+    const wrapper = ShallowAlertGrid();
+    const tree = ShallowGrid();
+
     // set initial width
-    tree.instance().viewport.updateWidths(1980, 1980);
+    wrapper.instance().viewport.updateWidths(1980, 1980);
+    tree.setProps({
+      gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
+      groupWidth: wrapper.instance().viewport.groupWidth,
+    });
     expect(tree.find("AlertGroup").at(0).props().style.width).toBe(1980 / 4);
 
     // then resize and verify if column count was changed
-    tree.instance().viewport.updateWidths(1000, 1000);
+    wrapper.instance().viewport.updateWidths(1000, 1000);
+    tree.setProps({
+      gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
+      groupWidth: wrapper.instance().viewport.groupWidth,
+    });
     expect(tree.find("AlertGroup").at(0).props().style.width).toBe(1000 / 2);
   });
 
@@ -275,13 +466,23 @@ describe("<AlertGrid />", () => {
     settingsStore.gridConfig.config.groupWidth = 400;
 
     MockGroupList(60, 5);
-    const tree = ShallowAlertGrid();
+    const wrapper = ShallowAlertGrid();
+    const tree = ShallowGrid();
+
     // set initial width
-    tree.instance().viewport.updateWidths(1600, 1600);
+    wrapper.instance().viewport.updateWidths(1600, 1600);
+    tree.setProps({
+      gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
+      groupWidth: wrapper.instance().viewport.groupWidth,
+    });
     expect(tree.find("AlertGroup").at(0).props().style.width).toBe(400);
 
     // then resize and verify if column count was changed
-    tree.instance().viewport.updateWidths(1584, 1600);
+    wrapper.instance().viewport.updateWidths(1584, 1600);
+    tree.setProps({
+      gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
+      groupWidth: wrapper.instance().viewport.groupWidth,
+    });
     expect(tree.find("AlertGroup").at(0).props().style.width).toBe(396);
   });
 
@@ -297,14 +498,20 @@ describe("<AlertGrid />", () => {
 
   it("viewport resize doesn't allow loops", () => {
     settingsStore.gridConfig.config.groupWidth = 400;
-    const tree = ShallowAlertGrid();
+
+    MockGroupList(60, 5);
+    const wrapper = ShallowAlertGrid();
+    const tree = ShallowGrid();
 
     let results = [];
     for (var index = 0; index < 14; index++) {
-      MockGroupList(60, 5);
-      tree
+      wrapper
         .instance()
         .viewport.updateWidths(index % 2 === 0 ? 1600 : 1584, 1600);
+      tree.setProps({
+        gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
+        groupWidth: wrapper.instance().viewport.groupWidth,
+      });
       results.push(tree.find("AlertGroup").at(0).props().style.width);
     }
 
@@ -326,48 +533,79 @@ describe("<AlertGrid />", () => {
     ]);
   });
 
-  it("left click on a group collapse toggle only toggles clicked group", () => {
+  it("alt+click on a grid toggle toggles all grid groups", () => {
     MockGroupList(10, 3);
-    const tree = MountedAlertGroup();
+    const groups = alertStore.data.grids[0].alertGroups;
+    alertStore.data.grids = [
+      {
+        labelName: "foo",
+        labelValue: "bar",
+        alertGroups: groups,
+        stateCount: {
+          unprocessed: 1,
+          suppressed: 2,
+          active: 3,
+        },
+      },
+      {
+        labelName: "foo",
+        labelValue: "",
+        alertGroups: groups,
+        stateCount: {
+          unprocessed: 1,
+          suppressed: 2,
+          active: 3,
+        },
+      },
+    ];
+    const tree = MountedAlertGrid();
+    expect(tree.find("Grid")).toHaveLength(2);
+    expect(tree.find("AlertGroup")).toHaveLength(20);
 
-    for (let i = 0; i <= 9; i++) {
-      expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(3);
-    }
-
+    // toggle all grids to hide all groups
     tree
-      .find("AlertGroup")
-      .at(2)
-      .find("GroupHeader")
+      .find("Grid")
+      .at(0)
       .find("span.cursor-pointer")
-      .at(1)
-      .simulate("click");
-
-    for (let i = 0; i <= 9; i++) {
-      expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(
-        i === 2 ? 0 : 3
-      );
-    }
-  });
-
-  it("left click + alt on a group collapse toggle toggles all groups", () => {
-    MockGroupList(10, 3);
-    const tree = MountedAlertGroup();
-
-    for (let i = 0; i <= 9; i++) {
-      expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(3);
-    }
-
-    tree
-      .find("AlertGroup")
-      .at(2)
-      .find("GroupHeader")
-      .find("span.cursor-pointer")
-      .at(1)
+      .at(0)
       .simulate("click", { altKey: true });
+    expect(tree.find("AlertGroup")).toHaveLength(0);
 
-    for (let i = 0; i <= 9; i++) {
-      expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(0);
-    }
+    // show first grid
+    tree
+      .find("Grid")
+      .at(0)
+      .find("span.cursor-pointer")
+      .at(0)
+      .simulate("click", { altKey: false });
+    expect(tree.find("AlertGroup")).toHaveLength(10);
+
+    // show all grids
+    tree
+      .find("Grid")
+      .at(1)
+      .find("span.cursor-pointer")
+      .at(0)
+      .simulate("click", { altKey: true });
+    expect(tree.find("AlertGroup")).toHaveLength(20);
+
+    // hide all grids
+    tree
+      .find("Grid")
+      .at(0)
+      .find("span.cursor-pointer")
+      .at(0)
+      .simulate("click", { altKey: true });
+    expect(tree.find("AlertGroup")).toHaveLength(0);
+
+    // show all grids
+    tree
+      .find("Grid")
+      .at(1)
+      .find("span.cursor-pointer")
+      .at(0)
+      .simulate("click", { altKey: true });
+    expect(tree.find("AlertGroup")).toHaveLength(20);
   });
 
   it("doesn't crash on unmount", () => {

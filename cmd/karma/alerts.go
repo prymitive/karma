@@ -168,9 +168,7 @@ func sortByStartsAt(i, j int, groups []models.APIAlertGroup, sortReverse bool) b
 	return groups[i].LatestStartsAt.Before(groups[j].LatestStartsAt)
 }
 
-func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) []models.APIAlertGroup {
-	groups := make([]models.APIAlertGroup, 0, len(groupsMap))
-
+func getSortOptions(c *gin.Context) (string, string, string) {
 	sortOrder, found := c.GetQuery("sortOrder")
 	if !found || sortOrder == "" {
 		sortOrder = config.Config.Grid.Sorting.Order
@@ -190,9 +188,11 @@ func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) 
 		sortLabel = config.Config.Grid.Sorting.Label
 	}
 
-	for _, g := range groupsMap {
-		groups = append(groups, g)
-	}
+	return sortOrder, sortReverse, sortLabel
+}
+
+func sortAlertGroups(c *gin.Context, groups []models.APIAlertGroup) []models.APIAlertGroup {
+	sortOrder, sortReverse, sortLabel := getSortOptions(c)
 
 	switch sortOrder {
 	case "startsAt":
@@ -238,4 +238,34 @@ func sortAlertGroups(c *gin.Context, groupsMap map[string]models.APIAlertGroup) 
 	}
 
 	return groups
+}
+
+func sortGrids(c *gin.Context, gridLabel string, gridsMap map[string]models.APIGrid, gridSortReverse bool) []models.APIGrid {
+	grids := make([]models.APIGrid, 0, len(gridsMap))
+
+	for _, g := range gridsMap {
+		g.AlertGroups = sortAlertGroups(c, g.AlertGroups)
+		grids = append(grids, g)
+	}
+
+	sort.Slice(grids, func(i, j int) bool {
+		vi := resolveLabelValue(gridLabel, grids[i].LabelValue)
+		vj := resolveLabelValue(gridLabel, grids[j].LabelValue)
+
+		if vi == "" {
+			// first label is missing
+			return gridSortReverse
+		}
+		if vj == "" {
+			// second label is missing
+			return !gridSortReverse
+		}
+		// finnally return groups sorted by label
+		if gridSortReverse {
+			return !sortorder.NaturalLess(vi, vj)
+		}
+		return sortorder.NaturalLess(vi, vj)
+	})
+
+	return grids
 }

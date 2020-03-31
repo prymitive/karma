@@ -975,6 +975,8 @@ ui:
   minimalGroupWidth: integer
   alertsPerGroup: integer
   collapseGroups: string
+  multiGridLabel: string
+  multiGridSortReverse: bool
 ```
 
 - `refresh` - default refresh interval, this tells the UI how often karma API
@@ -1001,6 +1003,13 @@ ui:
   - collapsed - groups are always collapsed
   - collapsedOnMobile - groups are expanded on desktop and collapsed on mobile
     browsers
+- `multiGridLabel` - when set to a label name it enables multi-grid support.
+  With multi-grid karma will have a dedicated grid for each value of this label,
+  all alerts sharing that value will be placed on the same grid. There will be
+  extra grid for alerts without that label. Grid sorting options will be used
+  to sort the list of grids.
+- `multiGridSortReverse` - when multi-grid is enabled  set to `true` the order
+  in which grids are displayed.
 
 Defaults:
 
@@ -1013,6 +1022,8 @@ ui:
   minimalGroupWidth: 420
   alertsPerGroup: 5
   collapseGroups: collapsedOnMobile
+  multiGridLabel: ""
+  multiGridSortReverse: false
 ```
 
 ## Customizing karma
