@@ -105,6 +105,7 @@ const AlertGrid = observer(
               gridSizesConfig={this.viewport.gridSizesConfig}
               groupWidth={this.viewport.groupWidth}
               grid={grid}
+              isOnlyGrid={alertStore.data.grids.length < 2}
             />
           ))}
         </React.Fragment>
