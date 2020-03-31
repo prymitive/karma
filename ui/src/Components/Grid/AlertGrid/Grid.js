@@ -161,7 +161,7 @@ const Grid = observer(
       return (
         <React.Fragment>
           {alertStore.data.grids.length > 1 && (
-            <h5 className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 mx-1 mt-2 mb-0">
+            <h5 className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 mt-2 mb-0 border border-dark">
               <span className="flex-shrink-0 flex-grow-0 ml-0 mr-2">
                 <FilteringCounterBadge
                   name="@state"
