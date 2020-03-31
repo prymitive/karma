@@ -525,7 +525,7 @@ exports[`<Configuration /> matches snapshot 1`] = `
     <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
       <div class=\\"d-flex flex-row justify-content-between\\">
         <div>
-          Multi-grid
+          Multi-grid source label
         </div>
         <div>
           <svg aria-hidden=\\"true\\"

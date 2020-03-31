@@ -58,7 +58,7 @@ const Configuration = ({ settingsStore, defaultIsOpen }) => (
       extraProps={{ open: defaultIsOpen }}
     />
     <Accordion
-      text="Multi-grid"
+      text="Multi-grid source label"
       content={<MultiGridConfiguration settingsStore={settingsStore} />}
       extraProps={{ open: defaultIsOpen }}
     />
