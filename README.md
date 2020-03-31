@@ -49,6 +49,17 @@ screen space, the silence will also be moved to the footer.
 
 ![Deduplicated silence](/docs/img/footerSilence.png)
 
+### Label based multi-grid
+
+To help separate alerts from different environments or with different level of
+severity multi-grid mode can be enabled, which adds another layer of visually
+grouping alert groups.
+To enable this mode go to the configuration modal and select a label name, all
+alerts will be grouped by that label, each label value will have a dedicated
+grid, including an extra grid for alerts without that label present.
+
+![Example](/docs/img/multiGrid.png)
+
 ### Silence management
 
 Silence modal allows to create new silences and manage all silences already
