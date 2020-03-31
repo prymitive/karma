@@ -36,6 +36,16 @@ afterEach(() => {
   clear();
 });
 
+const MountedAlertGrid = () => {
+  return mount(
+    <AlertGrid
+      alertStore={alertStore}
+      settingsStore={settingsStore}
+      silenceFormStore={silenceFormStore}
+    />
+  );
+};
+
 const ShallowAlertGrid = () => {
   return shallow(
     <AlertGrid
@@ -225,11 +235,21 @@ describe("<Grid />", () => {
         labelName: "foo",
         labelValue: "bar",
         alertGroups: groups,
+        stateCount: {
+          unprocessed: 1,
+          suppressed: 2,
+          active: 3,
+        },
       },
       {
         labelName: "foo",
         labelValue: "",
         alertGroups: [],
+        stateCount: {
+          unprocessed: 1,
+          suppressed: 2,
+          active: 3,
+        },
       },
     ];
     const tree = MountedGrid();
@@ -319,6 +339,12 @@ describe("<Grid />", () => {
     for (let i = 0; i <= 9; i++) {
       expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(0);
     }
+  });
+
+  it("doesn't crash on unmount", () => {
+    MockGroupList(5, 3);
+    const tree = MountedGrid();
+    tree.unmount();
   });
 });
 
@@ -505,6 +531,81 @@ describe("<AlertGrid />", () => {
       400,
       396,
     ]);
+  });
+
+  it("alt+click on a grid toggle toggles all grid groups", () => {
+    MockGroupList(10, 3);
+    const groups = alertStore.data.grids[0].alertGroups;
+    alertStore.data.grids = [
+      {
+        labelName: "foo",
+        labelValue: "bar",
+        alertGroups: groups,
+        stateCount: {
+          unprocessed: 1,
+          suppressed: 2,
+          active: 3,
+        },
+      },
+      {
+        labelName: "foo",
+        labelValue: "",
+        alertGroups: groups,
+        stateCount: {
+          unprocessed: 1,
+          suppressed: 2,
+          active: 3,
+        },
+      },
+    ];
+    const tree = MountedAlertGrid();
+    expect(tree.find("Grid")).toHaveLength(2);
+    expect(tree.find("AlertGroup")).toHaveLength(20);
+
+    // toggle all grids to hide all groups
+    tree
+      .find("Grid")
+      .at(0)
+      .find("span.cursor-pointer")
+      .at(0)
+      .simulate("click", { altKey: true });
+    expect(tree.find("AlertGroup")).toHaveLength(0);
+
+    // show first grid
+    tree
+      .find("Grid")
+      .at(0)
+      .find("span.cursor-pointer")
+      .at(0)
+      .simulate("click", { altKey: false });
+    expect(tree.find("AlertGroup")).toHaveLength(10);
+
+    // show all grids
+    tree
+      .find("Grid")
+      .at(1)
+      .find("span.cursor-pointer")
+      .at(0)
+      .simulate("click", { altKey: true });
+    expect(tree.find("AlertGroup")).toHaveLength(20);
+
+    // hide all grids
+    tree
+      .find("Grid")
+      .at(0)
+      .find("span.cursor-pointer")
+      .at(0)
+      .simulate("click", { altKey: true });
+    expect(tree.find("AlertGroup")).toHaveLength(0);
+
+    // show all grids
+    tree
+      .find("Grid")
+      .at(1)
+      .find("span.cursor-pointer")
+      .at(0)
+      .simulate("click", { altKey: true });
+    expect(tree.find("AlertGroup")).toHaveLength(20);
   });
 
   it("doesn't crash on unmount", () => {

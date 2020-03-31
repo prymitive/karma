@@ -93,10 +93,39 @@ const Grid = observer(
           toggle() {
             this.show = !this.show;
           },
+          set(value) {
+            this.show = value;
+          },
         },
         {
           toggle: action.bound,
+          set: action.bound,
         }
+      );
+    }
+
+    onCollapseClick = (event) => {
+      // left click       => toggle current grid
+      // left click + alt => toggle all grids
+
+      this.gridToggle.toggle();
+
+      if (event.altKey === true) {
+        const toggleEvent = new CustomEvent("alertGridCollapse", {
+          detail: this.gridToggle.show,
+        });
+        window.dispatchEvent(toggleEvent);
+      }
+    };
+
+    onAlertGridCollapseEvent = (event) => {
+      this.gridToggle.set(event.detail);
+    };
+
+    componentDidMount() {
+      window.addEventListener(
+        "alertGridCollapse",
+        this.onAlertGridCollapseEvent
       );
     }
 
@@ -110,6 +139,13 @@ const Grid = observer(
           Math.max(this.initial, grid.alertGroups.length)
         );
       }
+    }
+
+    componentWillUnmount() {
+      window.removeEventListener(
+        "alertGridCollapse",
+        this.onAlertGridCollapseEvent
+      );
     }
 
     render() {
@@ -164,9 +200,9 @@ const Grid = observer(
               </span>
               <span
                 className="flex-shrink-0 flex-grow-0 text-muted cursor-pointer badge px-0 components-label ml-2 mr-0"
-                onClick={this.gridToggle.toggle}
+                onClick={this.onCollapseClick}
               >
-                <TooltipWrapper title="Click to toggle this grid details">
+                <TooltipWrapper title="Click to toggle this grid details or Alt+Click to toggle all grids">
                   <FontAwesomeIcon
                     icon={this.gridToggle.show ? faChevronDown : faChevronUp}
                   />
