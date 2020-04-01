@@ -87,7 +87,9 @@ const SilencePreview = observer(
           return result.json();
         })
         .then((result) => {
-          this.matchedAlerts.groupsToUniqueLabels(Object.values(result.groups));
+          this.matchedAlerts.groupsToUniqueLabels(
+            result.grids.length ? result.grids[0].alertGroups : []
+          );
           this.matchedAlerts.setError(null);
           this.matchedAlerts.setDone();
         })

@@ -35,8 +35,6 @@ beforeEach(() => {
     ],
     clusters: { am: ["am1"] },
   };
-
-  jest.restoreAllMocks();
 });
 
 afterEach(() => {
@@ -48,15 +46,26 @@ const MockOnHide = jest.fn();
 
 const MockAPIResponse = () => {
   const response = EmptyAPIResponse();
-  response.groups = {
-    "1": MockAlertGroup(
-      { alertname: "foo" },
-      [MockAlert([], { instance: "foo" }, "suppressed")],
-      [],
-      { job: "foo" },
-      {}
-    ),
-  };
+  response.grids = [
+    {
+      labelName: "",
+      labelValue: "",
+      alertGroups: [
+        MockAlertGroup(
+          { alertname: "foo" },
+          [MockAlert([], { instance: "foo" }, "suppressed")],
+          [],
+          { job: "foo" },
+          {}
+        ),
+      ],
+      stateCount: {
+        unprocessed: 1,
+        suppressed: 2,
+        active: 3,
+      },
+    },
+  ];
   return response;
 };
 
@@ -150,6 +159,23 @@ describe("<DeleteSilenceModalContent />", () => {
     const tree = MountedDeleteSilenceModalContent();
     await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
     expect(fetch).toHaveBeenCalled();
+  });
+
+  it("renders StaticLabel after fetch", async () => {
+    const tree = MountedDeleteSilenceModalContent();
+    await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
+    tree.update();
+    expect(tree.text()).toMatch(/Affected alerts/);
+    expect(tree.find("StaticLabel")).toHaveLength(3);
+  });
+
+  it("handles empty grid response correctly", async () => {
+    fetch.resetMocks();
+    fetch.mockResponseOnce(JSON.stringify(EmptyAPIResponse()));
+    const tree = MountedDeleteSilenceModalContent();
+    await expect(tree.instance().previewState.fetch).resolves.toBeUndefined();
+    tree.update();
+    expect(tree.text()).toMatch(/No alerts matched/);
   });
 
   it("renders ErrorMessage on failed preview fetch", async () => {

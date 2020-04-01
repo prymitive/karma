@@ -125,7 +125,9 @@ const DeleteSilenceModalContent = observer(
       this.previewState.fetch = FetchGet(alertsURI, {})
         .then((result) => result.json())
         .then((result) => {
-          this.previewState.groupsToUniqueLabels(Object.values(result.groups));
+          this.previewState.groupsToUniqueLabels(
+            result.grids.length ? result.grids[0].alertGroups : []
+          );
           this.previewState.setError(null);
         })
         .catch((err) => {

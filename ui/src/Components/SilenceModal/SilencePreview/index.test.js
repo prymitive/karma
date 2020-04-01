@@ -37,25 +37,37 @@ afterEach(() => {
 
 const MockAPIResponse = () => {
   const response = EmptyAPIResponse();
-  response.groups = {
-    "1": MockAlertGroup(
-      { alertname: "foo" },
-      [MockAlert([], { instance: "foo1" }, "active")],
-      [],
-      { job: "foo" },
-      {}
-    ),
-    "2": MockAlertGroup(
-      { alertname: "bar" },
-      [
-        MockAlert([], { instance: "bar1" }, "active"),
-        MockAlert([], { instance: "bar2" }, "active"),
+
+  response.grids = [
+    {
+      labelName: "",
+      labelValue: "",
+      alertGroups: [
+        MockAlertGroup(
+          { alertname: "foo" },
+          [MockAlert([], { instance: "foo1" }, "active")],
+          [],
+          { job: "foo" },
+          {}
+        ),
+        MockAlertGroup(
+          { alertname: "bar" },
+          [
+            MockAlert([], { instance: "bar1" }, "active"),
+            MockAlert([], { instance: "bar2" }, "active"),
+          ],
+          [],
+          { job: "bar" },
+          {}
+        ),
       ],
-      [],
-      { job: "bar" },
-      {}
-    ),
-  };
+      stateCount: {
+        unprocessed: 1,
+        suppressed: 2,
+        active: 3,
+      },
+    },
+  ];
   return response;
 };
 
@@ -121,6 +133,25 @@ describe("<SilencePreview />", () => {
     const tree = MountedSilencePreview();
     await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
+  it("renders StaticLabel after fetch", async () => {
+    fetch.mockResponse(JSON.stringify(MockAPIResponse()));
+
+    const tree = MountedSilencePreview();
+    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
+    tree.update();
+    expect(tree.text()).toMatch(/Affected alerts/);
+    expect(tree.find("StaticLabel")).toHaveLength(9);
+  });
+
+  it("handles empty grid response correctly", async () => {
+    fetch.mockResponseOnce(JSON.stringify(EmptyAPIResponse()));
+
+    const tree = MountedSilencePreview();
+    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
+    tree.update();
+    expect(tree.text()).toMatch(/No alerts matched/);
   });
 
   it("renders FetchError on failed fetch", async () => {
