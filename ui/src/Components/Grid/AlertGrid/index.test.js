@@ -78,7 +78,6 @@ const ShallowGrid = () => {
       gridSizesConfig={GridSizesConfig(1024, 420)}
       groupWidth={420}
       grid={MockGrid()}
-      isOnlyGrid={alertStore.data.grids.length === 1}
     />
   );
 };
@@ -231,72 +230,23 @@ describe("<Grid />", () => {
 
   it("click on the grid toggle toggles all groups", () => {
     MockGroupList(10, 3);
-    const groups = alertStore.data.grids[0].alertGroups;
-    alertStore.data.grids = [
-      {
-        labelName: "foo",
-        labelValue: "bar",
-        alertGroups: groups,
-        stateCount: {
-          unprocessed: 1,
-          suppressed: 2,
-          active: 3,
-        },
-      },
-      {
-        labelName: "foo",
-        labelValue: "",
-        alertGroups: [],
-        stateCount: {
-          unprocessed: 1,
-          suppressed: 2,
-          active: 3,
-        },
-      },
-    ];
     const tree = MountedGrid();
+    const grid = MockGrid();
+    grid.labelName = "foo";
+    grid.labelValue = "bar";
+    grid.stateCount = {
+      unprocessed: 1,
+      suppressed: 2,
+      active: 3,
+    };
+    alertStore.data.grids = [grid];
+    tree.setProps({ grid: grid });
     expect(tree.find("AlertGroup")).toHaveLength(10);
 
     tree.find("span.cursor-pointer").at(0).simulate("click");
     expect(tree.find("AlertGroup")).toHaveLength(0);
 
     tree.find("span.cursor-pointer").at(0).simulate("click");
-    expect(tree.find("AlertGroup")).toHaveLength(10);
-  });
-
-  it("show all groups if grid is hidden but there are no other grids", () => {
-    MockGroupList(10, 3);
-    const groups = alertStore.data.grids[0].alertGroups;
-    alertStore.data.grids = [
-      {
-        labelName: "foo",
-        labelValue: "bar",
-        alertGroups: groups,
-        stateCount: {
-          unprocessed: 1,
-          suppressed: 2,
-          active: 3,
-        },
-      },
-      {
-        labelName: "foo",
-        labelValue: "",
-        alertGroups: [],
-        stateCount: {
-          unprocessed: 1,
-          suppressed: 2,
-          active: 3,
-        },
-      },
-    ];
-    const tree = MountedGrid();
-    expect(tree.find("AlertGroup")).toHaveLength(10);
-
-    tree.find("span.cursor-pointer").at(0).simulate("click");
-    expect(tree.find("AlertGroup")).toHaveLength(0);
-
-    tree.setProps({ isOnlyGrid: true });
-    tree.update();
     expect(tree.find("AlertGroup")).toHaveLength(10);
   });
 
@@ -312,7 +262,7 @@ describe("<Grid />", () => {
       active: 0,
     };
     alertStore.data.grids = [MockGrid(), MockGrid()];
-    tree.setProps({ grid: grid, isOnlyGrid: false });
+    tree.setProps({ grid: grid });
     expect(tree.find("h5").at(0).find("FilteringLabel")).toHaveLength(1);
     expect(tree.find("h5").at(0).find("FilteringLabel").text()).toBe(
       "foo: bar"
@@ -331,7 +281,7 @@ describe("<Grid />", () => {
       active: 0,
     };
     alertStore.data.grids = [MockGrid(), MockGrid()];
-    tree.setProps({ grid: grid, isOnlyGrid: false });
+    tree.setProps({ grid: grid });
     expect(tree.find("h5").at(0).find("FilteringLabel")).toHaveLength(0);
   });
 
