@@ -107,6 +107,10 @@ const ReactSelectStyles = (theme) => ({
       opacity: "0.75",
     },
   }),
+  input: (base, state) => ({
+    ...base,
+    color: "inherit",
+  }),
   indicatorsContainer: (base, state) => ({
     ...base,
     backgroundColor: state.isDisabled
@@ -115,6 +119,13 @@ const ReactSelectStyles = (theme) => ({
     borderTopRightRadius: "0.25rem",
     borderBottomRightRadius: "0.25rem",
   }),
+  dropdownIndicator: (base, state) =>
+    state.isFocused
+      ? {
+          ...base,
+          "&:hover": { color: "inherit" },
+        }
+      : { ...base },
   menu: (base, state) => ({
     ...base,
     zIndex: 1500,

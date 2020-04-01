@@ -22,7 +22,7 @@ exports[`<LabelValueInput /> matches snapshot 1`] = `
           Label value
         </div>
       </div>
-      <div class=\\"css-b8ldur-Input\\">
+      <div class=\\"css-ps6ina-Input\\">
         <div class=\\"react-select__input\\"
              style=\\"display: inline-block;\\"
         >
