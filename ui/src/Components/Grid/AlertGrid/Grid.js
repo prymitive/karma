@@ -32,7 +32,6 @@ const Grid = observer(
       gridSizesConfig: PropTypes.array.isRequired,
       groupWidth: PropTypes.number.isRequired,
       grid: APIGrid.isRequired,
-      isOnlyGrid: PropTypes.bool.isRequired,
     };
 
     // store reference to generated masonry component so we can call it
@@ -131,7 +130,7 @@ const Grid = observer(
     }
 
     componentDidUpdate() {
-      const { grid, isOnlyGrid } = this.props;
+      const { grid } = this.props;
 
       this.masonryRepack();
 
@@ -139,10 +138,6 @@ const Grid = observer(
         this.groupsToRender.setValue(
           Math.max(this.initial, grid.alertGroups.length)
         );
-      }
-
-      if (isOnlyGrid === true) {
-        this.gridToggle.set(true);
       }
     }
 
@@ -161,12 +156,11 @@ const Grid = observer(
         gridSizesConfig,
         groupWidth,
         grid,
-        isOnlyGrid,
       } = this.props;
 
       return (
         <React.Fragment>
-          {!isOnlyGrid && (
+          {grid.labelName !== "" && (
             <h5 className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 mt-2 mb-0 border border-dark">
               <span className="flex-shrink-0 flex-grow-0 ml-0 mr-2">
                 <FilteringCounterBadge
