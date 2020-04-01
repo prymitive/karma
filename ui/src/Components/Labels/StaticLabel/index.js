@@ -6,7 +6,7 @@ import { BaseLabel } from "Components/Labels/BaseLabel";
 
 // Renders a static label element, no click actions, no hover
 const StaticLabel = observer(
-  class FilteringLabel extends BaseLabel {
+  class StaticLabel extends BaseLabel {
     render() {
       const { name, value } = this.props;
 
