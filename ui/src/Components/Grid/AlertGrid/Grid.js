@@ -219,7 +219,7 @@ const Grid = observer(
             loadMore={this.loadMore}
             hasMore={false}
           >
-            {this.gridToggle.show
+            {this.gridToggle.show || grid.labelName === ""
               ? grid.alertGroups
                   .slice(0, this.groupsToRender.value)
                   .map((group) => (
