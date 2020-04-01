@@ -8,7 +8,7 @@ exports[`<MultiSelect /> matches snapshot without any extra props 1`] = `
       <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
-      <div class=\\"css-b8ldur-Input\\">
+      <div class=\\"css-ps6ina-Input\\">
         <div class=\\"react-select__input\\"
              style=\\"display: inline-block;\\"
         >
@@ -69,7 +69,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
       <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
-      <div class=\\"css-b8ldur-Input\\">
+      <div class=\\"css-ps6ina-Input\\">
         <div class=\\"react-select__input\\"
              style=\\"display: inline-block;\\"
         >
@@ -93,7 +93,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
       <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
       </span>
       <div aria-hidden=\\"true\\"
-           class=\\"react-select__indicator react-select__dropdown-indicator css-1gtu0rj-indicatorContainer\\"
+           class=\\"react-select__indicator react-select__dropdown-indicator css-1ij327q-indicatorContainer\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -120,7 +120,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
       <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
         foo
       </div>
-      <div class=\\"css-b8ldur-Input\\">
+      <div class=\\"css-ps6ina-Input\\">
         <div class=\\"react-select__input\\"
              style=\\"display: inline-block;\\"
         >
@@ -171,7 +171,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with defaults 1`] = `
       <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
-      <div class=\\"css-b8ldur-Input\\">
+      <div class=\\"css-ps6ina-Input\\">
         <div class=\\"react-select__input\\"
              style=\\"display: inline-block;\\"
         >
@@ -222,7 +222,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
       <div class=\\"react-select__single-value react-select__single-value--is-disabled css-1wh03ml-singleValue\\">
         foo
       </div>
-      <div class=\\"css-b8ldur-Input\\">
+      <div class=\\"css-ps6ina-Input\\">
         <div class=\\"react-select__input\\"
              style=\\"display: inline-block;\\"
         >
@@ -274,7 +274,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
       <div class=\\"react-select__placeholder css-1wa3eu0-placeholder\\">
         Select...
       </div>
-      <div class=\\"css-b8ldur-Input\\">
+      <div class=\\"css-ps6ina-Input\\">
         <div class=\\"react-select__input\\"
              style=\\"display: inline-block;\\"
         >
@@ -339,7 +339,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
           </svg>
         </div>
       </div>
-      <div class=\\"css-b8ldur-Input\\">
+      <div class=\\"css-ps6ina-Input\\">
         <div class=\\"react-select__input\\"
              style=\\"display: inline-block;\\"
         >

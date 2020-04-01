@@ -9,7 +9,7 @@ exports[`<ThemeConfiguration /> matches snapshot with default values 1`] = `
         <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
           Automatic theme, follow browser preference
         </div>
-        <div class=\\"css-b8ldur-Input\\">
+        <div class=\\"css-ps6ina-Input\\">
           <div class=\\"react-select__input\\"
                style=\\"display: inline-block;\\"
           >
