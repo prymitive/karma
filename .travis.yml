@@ -25,6 +25,9 @@ __defaults_js: &DEFAULTS_JS
   env:
     - NODE_ENV=test
 
+git:
+  depth: 100
+
 os: linux
 language: shell
 
