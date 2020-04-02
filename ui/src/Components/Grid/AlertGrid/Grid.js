@@ -9,6 +9,7 @@ import debounce from "lodash/debounce";
 import MasonryInfiniteScroller from "react-masonry-infinite";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTh } from "@fortawesome/free-solid-svg-icons/faTh";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faAngleDoubleDown } from "@fortawesome/free-solid-svg-icons/faAngleDoubleDown";
@@ -162,7 +163,23 @@ const Grid = observer(
         <React.Fragment>
           {grid.labelName !== "" && (
             <h5 className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 mt-2 mb-0 border border-dark">
-              <span className="flex-shrink-0 flex-grow-0 ml-0 mr-2">
+              <span
+                className="flex-shrink-1 flex-grow-1"
+                style={{ minWidth: "0px" }}
+              >
+                <span className="badge components-label px-0 ml-0 mr-3">
+                  <FontAwesomeIcon icon={faTh} className="text-muted" />
+                </span>
+                {grid.labelName !== "" && grid.labelValue !== "" && (
+                  <FilteringLabel
+                    key={grid.labelValue}
+                    name={grid.labelName}
+                    value={grid.labelValue}
+                    alertStore={alertStore}
+                  />
+                )}
+              </span>
+              <span className="flex-shrink-0 flex-grow-0 ml-2 mr-0">
                 <FilteringCounterBadge
                   name="@state"
                   value="unprocessed"
@@ -184,29 +201,16 @@ const Grid = observer(
                   themed={true}
                   alertStore={alertStore}
                 />
-              </span>
-              <span
-                className="flex-shrink-1 flex-grow-1 text-center"
-                style={{ minWidth: "0px" }}
-              >
-                {grid.labelName !== "" && grid.labelValue !== "" && (
-                  <FilteringLabel
-                    key={grid.labelValue}
-                    name={grid.labelName}
-                    value={grid.labelValue}
-                    alertStore={alertStore}
-                  />
-                )}
-              </span>
-              <span
-                className="flex-shrink-0 flex-grow-0 text-muted cursor-pointer badge px-0 components-label ml-2 mr-0"
-                onClick={this.onCollapseClick}
-              >
-                <TooltipWrapper title="Click to toggle this grid details or Alt+Click to toggle all grids">
-                  <FontAwesomeIcon
-                    icon={this.gridToggle.show ? faChevronDown : faChevronUp}
-                  />
-                </TooltipWrapper>
+                <span
+                  className="text-muted cursor-pointer badge px-0 components-label ml-2 mr-0"
+                  onClick={this.onCollapseClick}
+                >
+                  <TooltipWrapper title="Click to toggle this grid details or Alt+Click to toggle all grids">
+                    <FontAwesomeIcon
+                      icon={this.gridToggle.show ? faChevronDown : faChevronUp}
+                    />
+                  </TooltipWrapper>
+                </span>
               </span>
             </h5>
           )}
