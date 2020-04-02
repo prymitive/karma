@@ -3,6 +3,7 @@
 set -o errexit
 set -o pipefail
 
+env | grep TRAVIS | sort
 
 git log --no-merges --name-only --pretty=format: ${1}..${2} | grep -Ev '^$' | sort | uniq | while read FILE ; do
   if [[ "${FILE}" =~ ^ui/src/.+ ]]; then
