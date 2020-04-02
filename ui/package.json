@@ -14,7 +14,7 @@
     "@sentry/browser": "5.15.4",
     "@types/jest": "25.1.5",
     "@types/node": "12.12.31",
-    "@types/react": "16.9.31",
+    "@types/react": "16.9.32",
     "@types/react-dom": "16.9.6",
     "body-scroll-lock": "3.0.1",
     "bootstrap": "4.4.1",
