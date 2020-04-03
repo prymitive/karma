@@ -78,6 +78,7 @@ const ShallowGrid = () => {
       gridSizesConfig={GridSizesConfig(1024, 420)}
       groupWidth={420}
       grid={MockGrid()}
+      outerPadding={0}
     />
   );
 };
@@ -91,7 +92,7 @@ const MountedGrid = () => {
       gridSizesConfig={GridSizesConfig(1024, 420)}
       groupWidth={420}
       grid={MockGrid()}
-      isOnlyGrid={alertStore.data.grids.length === 1}
+      outerPadding={0}
     />
   );
 };
@@ -408,7 +409,7 @@ describe("<AlertGrid />", () => {
     let lastColumns = 1;
     for (let i = 100; i <= 4096; i++) {
       const expectedColumns = Math.max(Math.floor(i / minWidth), 1);
-      const columns = Math.floor(i / GetGridElementWidth(i, i, minWidth));
+      const columns = Math.floor(i / GetGridElementWidth(i, i, 0, minWidth));
 
       expect({
         resolution: i,
@@ -594,6 +595,86 @@ describe("<AlertGrid />", () => {
       .at(0)
       .simulate("click", { altKey: true });
     expect(tree.find("AlertGroup")).toHaveLength(20);
+  });
+
+  it("adds extra padding to alert groups when multi-grid is enabled", () => {
+    MockGroupList(10, 3);
+    const groups = alertStore.data.grids[0].alertGroups;
+    alertStore.data.grids = [
+      {
+        labelName: "foo",
+        labelValue: "bar",
+        alertGroups: groups,
+        stateCount: {
+          unprocessed: 0,
+          suppressed: 0,
+          active: 0,
+        },
+      },
+      {
+        labelName: "foo",
+        labelValue: "",
+        alertGroups: groups,
+        stateCount: {
+          unprocessed: 0,
+          suppressed: 0,
+          active: 0,
+        },
+      },
+    ];
+    const tree = MountedAlertGrid();
+    tree.instance().viewport.updateWidths(1200, 1000);
+    tree.update();
+    expect(tree.find("Grid")).toHaveLength(2);
+    expect(tree.find("AlertGroup")).toHaveLength(20);
+
+    expect(tree.find("Grid").at(0).prop("outerPadding")).toBe(5);
+    expect(tree.find("Grid").at(1).prop("outerPadding")).toBe(5);
+    expect(
+      tree.find("Grid").at(0).find("div").at(3).prop("style")
+    ).toMatchObject({
+      paddingLeft: "5px",
+      paddingRight: "5px",
+    });
+
+    tree.find("div.components-grid-alertgrid-alertgroup").forEach((node) => {
+      expect(node.prop("style")).toMatchObject({
+        width: 595,
+      });
+    });
+  });
+
+  it("doesn't add extra padding to alert groups when multi-grid is disabled", () => {
+    MockGroupList(10, 3);
+    const groups = alertStore.data.grids[0].alertGroups;
+    alertStore.data.grids = [
+      {
+        labelName: "",
+        labelValue: "",
+        alertGroups: groups,
+        stateCount: {
+          unprocessed: 0,
+          suppressed: 0,
+          active: 0,
+        },
+      },
+    ];
+    const tree = MountedAlertGrid();
+    tree.instance().viewport.updateWidths(1200, 1000);
+    tree.update();
+    expect(tree.find("Grid")).toHaveLength(1);
+    expect(tree.find("AlertGroup")).toHaveLength(10);
+
+    expect(tree.find("Grid").at(0).prop("outerPadding")).toBe(0);
+    expect(
+      tree.find("Grid").at(0).find("div").at(1).prop("style")
+    ).toMatchObject({ paddingLeft: "0px", paddingRight: "0px" });
+
+    tree.find("div.components-grid-alertgrid-alertgroup").forEach((node) => {
+      expect(node.prop("style")).toMatchObject({
+        width: 600,
+      });
+    });
   });
 
   it("doesn't crash on unmount", () => {
