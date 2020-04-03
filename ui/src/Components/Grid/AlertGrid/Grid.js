@@ -21,6 +21,7 @@ import { APIGrid } from "Models/API";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";
+import { MountFade } from "Components/Animations/MountFade";
 import { DefaultDetailsCollapseValue } from "./AlertGroup/DetailsToggle";
 import { AlertGroup } from "./AlertGroup";
 
@@ -163,7 +164,7 @@ const Grid = observer(
 
       return (
         <React.Fragment>
-          {grid.labelName !== "" && (
+          <MountFade in={grid.labelName !== ""} unmountOnExit>
             <h5 className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 mt-2 mb-0 border border-dark">
               <span
                 className="flex-shrink-1 flex-grow-1"
@@ -215,7 +216,7 @@ const Grid = observer(
                 </span>
               </span>
             </h5>
-          )}
+          </MountFade>
           <MasonryInfiniteScroller
             key={settingsStore.gridConfig.config.groupWidth}
             ref={this.storeMasonryRef}
