@@ -33,6 +33,7 @@ const Grid = observer(
       gridSizesConfig: PropTypes.array.isRequired,
       groupWidth: PropTypes.number.isRequired,
       grid: APIGrid.isRequired,
+      outerPadding: PropTypes.number.isRequired,
     };
 
     // store reference to generated masonry component so we can call it
@@ -157,6 +158,7 @@ const Grid = observer(
         gridSizesConfig,
         groupWidth,
         grid,
+        outerPadding,
       } = this.props;
 
       return (
@@ -222,6 +224,10 @@ const Grid = observer(
             sizes={gridSizesConfig}
             loadMore={this.loadMore}
             hasMore={false}
+            style={{
+              paddingLeft: `${outerPadding}px`,
+              paddingRight: `${outerPadding}px`,
+            }}
           >
             {this.gridToggle.show || grid.labelName === ""
               ? grid.alertGroups

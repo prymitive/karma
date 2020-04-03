@@ -16,6 +16,8 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Grid } from "./Grid";
 import { GridSizesConfig, GetGridElementWidth } from "./GridSize";
 
+const GridPadding = 5;
+
 const AlertGrid = observer(
   class AlertGrid extends Component {
     static propTypes = {
@@ -48,6 +50,10 @@ const AlertGrid = observer(
             return GetGridElementWidth(
               this.canvasWidth,
               this.windowWidth,
+              props.alertStore.data.grids.filter((g) => g.labelName !== "")
+                .length > 0
+                ? GridPadding * 2
+                : 0,
               props.settingsStore.gridConfig.config.groupWidth
             );
           },
@@ -105,6 +111,7 @@ const AlertGrid = observer(
               gridSizesConfig={this.viewport.gridSizesConfig}
               groupWidth={this.viewport.groupWidth}
               grid={grid}
+              outerPadding={grid.labelName !== "" ? GridPadding : 0}
             />
           ))}
         </React.Fragment>

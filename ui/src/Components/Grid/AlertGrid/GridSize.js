@@ -19,7 +19,9 @@ const GetColumnsCount = (canvasWidth, baseWidth) =>
     .map((gs) => gs.columns)
     .pop();
 
-const GetGridElementWidth = (innerWidth, outerWidth, baseWidth) =>
-  Math.floor(innerWidth / GetColumnsCount(outerWidth, baseWidth));
+const GetGridElementWidth = (innerWidth, outerWidth, outerPadding, baseWidth) =>
+  Math.floor(
+    (innerWidth - outerPadding) / GetColumnsCount(outerWidth, baseWidth)
+  );
 
 export { GridSizesConfig, GetColumnsCount, GetGridElementWidth };
