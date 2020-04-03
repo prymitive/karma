@@ -248,6 +248,7 @@ const Grid = observer(
                       style={{
                         width: groupWidth,
                       }}
+                      gridLabelValue={grid.labelValue}
                     />
                   ))
               : []}

@@ -63,6 +63,7 @@ const MountedAlertGroup = (afterUpdate, showAlertmanagers) => {
       settingsStore={settingsStore}
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
+      gridLabelValue=""
     />
   );
 };

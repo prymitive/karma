@@ -309,11 +309,34 @@ describe("<Grid />", () => {
     }
   });
 
-  it("left click + alt on a group collapse toggle toggles all groups", () => {
-    MockGroupList(10, 3);
-    const tree = MountedGrid();
+  it("left click + alt on a group collapse toggle toggles all groups in current grid", () => {
+    MockGroupList(20, 3);
+    const groups = alertStore.data.grids[0].alertGroups;
+    alertStore.data.grids = [
+      {
+        labelName: "foo",
+        labelValue: "bar",
+        alertGroups: groups.slice(0, 10),
+        stateCount: {
+          unprocessed: 1,
+          suppressed: 2,
+          active: 3,
+        },
+      },
+      {
+        labelName: "foo",
+        labelValue: "",
+        alertGroups: groups.slice(10, 20),
+        stateCount: {
+          unprocessed: 1,
+          suppressed: 2,
+          active: 3,
+        },
+      },
+    ];
+    const tree = MountedAlertGrid();
 
-    for (let i = 0; i <= 9; i++) {
+    for (let i = 0; i <= 19; i++) {
       expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(3);
     }
 
@@ -327,6 +350,9 @@ describe("<Grid />", () => {
 
     for (let i = 0; i <= 9; i++) {
       expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(0);
+    }
+    for (let i = 10; i <= 19; i++) {
+      expect(tree.find("AlertGroup").at(i).find("Alert")).toHaveLength(3);
     }
   });
 

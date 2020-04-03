@@ -28,10 +28,11 @@ const GroupHeader = observer(
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       themedCounters: PropTypes.bool.isRequired,
       setIsMenuOpen: PropTypes.func.isRequired,
+      gridLabelValue: PropTypes.string.isRequired,
     };
 
     onCollapseClick = (event) => {
-      const { collapseStore } = this.props;
+      const { collapseStore, gridLabelValue } = this.props;
 
       // left click       => toggle current group
       // left click + alt => toggle all groups
@@ -40,7 +41,10 @@ const GroupHeader = observer(
 
       if (event.altKey === true) {
         const toggleEvent = new CustomEvent("alertGroupCollapse", {
-          detail: collapseStore.value,
+          detail: {
+            gridLabelValue: gridLabelValue,
+            value: collapseStore.value,
+          },
         });
         window.dispatchEvent(toggleEvent);
       }
