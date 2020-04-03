@@ -56,6 +56,7 @@ const AlertGroup = observer(
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
       style: PropTypes.object,
+      gridLabelValue: PropTypes.string.isRequired,
     };
 
     constructor(props) {
@@ -144,7 +145,11 @@ const AlertGroup = observer(
     }
 
     onAlertGroupCollapseEvent = (event) => {
-      this.collapse.set(event.detail);
+      const { gridLabelValue } = this.props;
+
+      if (event.detail.gridLabelValue === gridLabelValue) {
+        this.collapse.set(event.detail.value);
+      }
     };
 
     componentDidMount() {
@@ -176,6 +181,7 @@ const AlertGroup = observer(
         alertStore,
         settingsStore,
         style,
+        gridLabelValue,
       } = this.props;
 
       let footerAlertmanagers = [];
@@ -229,6 +235,7 @@ const AlertGroup = observer(
                 silenceFormStore={silenceFormStore}
                 themedCounters={themedCounters}
                 setIsMenuOpen={this.renderConfig.setIsMenuOpen}
+                gridLabelValue={gridLabelValue}
               />
               {this.collapse.value ? null : (
                 <div className="card-body px-2 py-1 components-grid-alertgrid-card">
