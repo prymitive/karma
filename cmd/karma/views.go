@@ -38,12 +38,10 @@ func pong(c *gin.Context) {
 
 func compressResponse(data []byte) ([]byte, error) {
 	var b bytes.Buffer
-	gz, err := gzip.NewWriterLevel(&b, 3)
-	if err != nil {
-		return nil, fmt.Errorf("failed to create new compression writer: %s", err.Error())
-	}
+	// this only fails if we pass unsupported level (3 is valid)
+	gz, _ := gzip.NewWriterLevel(&b, 3)
 
-	_, err = gz.Write(data)
+	_, err := gz.Write(data)
 	if err != nil {
 		return nil, fmt.Errorf("failed to compress data: %s", err.Error())
 	}
