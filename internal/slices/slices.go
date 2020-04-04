@@ -29,14 +29,8 @@ func StringInSlice(stringArray []string, value string) bool {
 func StringSliceToSHA1(stringArray []string) (string, error) {
 	h := sha1.New()
 	for _, s := range stringArray {
-		_, err := h.Write([]byte(s))
-		if err != nil {
-			return "", err
-		}
-		_, err = h.Write([]byte("\n"))
-		if err != nil {
-			return "", err
-		}
+		_, _ = h.Write([]byte(s))
+		_, _ = h.Write([]byte("\n"))
 	}
 	return fmt.Sprintf("%x", h.Sum(nil)), nil
 }

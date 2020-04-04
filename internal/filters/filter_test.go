@@ -615,6 +615,20 @@ func TestFilters(t *testing.T) {
 				t.Errorf("[%s] GetRawText() returned %#v != %s passed as the expression", ft.Expression, f.GetRawText(), ft.Expression)
 			}
 		}
+		if !f.GetIsValid() {
+			func() {
+				didPanic := false
+				defer func() {
+					if r := recover(); r != nil {
+						didPanic = true
+					}
+				}()
+				f.Match(&alert, 0)
+				if !didPanic {
+					t.Errorf("[%s] Match() on invalid filter didn't cause panic", ft.Expression)
+				}
+			}()
+		}
 	}
 }
 
