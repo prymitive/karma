@@ -151,5 +151,15 @@ func TestNewMatcher(t *testing.T) {
 			t.Errorf("Got wrong matcher for %s: %s", operator, m.GetOperator())
 		}
 	}
+}
 
+func TestInvalidMatcher(t *testing.T) {
+	operator := "<>"
+	m, err := newMatcher(operator)
+	if err == nil {
+		t.Errorf("NewMatcher(%s) didn't return any error: %s", operator, m)
+	}
+	if m != nil {
+		t.Errorf("NewMatcher(%s) returned non-nil value: %s", operator, m)
+	}
 }

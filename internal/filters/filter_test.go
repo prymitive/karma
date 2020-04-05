@@ -83,6 +83,30 @@ var tests = []filterTest{
 		Alert:      models.Alert{State: "suppressed", InhibitedBy: []string{"999"}},
 		IsMatch:    false,
 	},
+	{
+		Expression: "@state==active",
+		IsValid:    false,
+	},
+	{
+		Expression: "@state!!active",
+		IsValid:    false,
+	},
+	{
+		Expression: "@state!!",
+		IsValid:    false,
+	},
+	{
+		Expression: "@state=",
+		IsValid:    false,
+	},
+	{
+		Expression: "@state==",
+		IsValid:    false,
+	},
+	{
+		Expression: "@state<=active",
+		IsValid:    false,
+	},
 
 	{
 		Expression: "@silence_id=abcdef",
@@ -151,6 +175,13 @@ var tests = []filterTest{
 		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
 		Silence:    models.Silence{ID: "1", TicketID: "1"},
 		IsMatch:    true,
+	},
+	{
+		Expression: "@silence_ticket=1",
+		IsValid:    true,
+		Alert:      models.Alert{State: "active", SilencedBy: []string{}},
+		Silence:    models.Silence{ID: "1", TicketID: "1"},
+		IsMatch:    false,
 	},
 	{
 		Expression: "@silence_ticket=2",
@@ -222,6 +253,13 @@ var tests = []filterTest{
 		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
 		Silence:    models.Silence{ID: "1", CreatedBy: "john"},
 		IsMatch:    true,
+	},
+	{
+		Expression: "@silence_author=john",
+		IsValid:    true,
+		Alert:      models.Alert{State: "active", SilencedBy: []string{}},
+		Silence:    models.Silence{ID: "1", CreatedBy: "john"},
+		IsMatch:    false,
 	},
 	{
 		Expression: "@silence_author=john",
@@ -708,6 +746,20 @@ func TestLimitFilter(t *testing.T) {
 			if f.GetHits() != ft.Hits {
 				t.Errorf("[%s] GetHits() returned %#v hits, expected %d", ft.Expression, f.GetHits(), ft.Hits)
 			}
+		} else {
+			func() {
+				didPanic := false
+				defer func() {
+					if r := recover(); r != nil {
+						didPanic = true
+					}
+				}()
+				alert := models.Alert{}
+				f.Match(&alert, 0)
+				if !didPanic {
+					t.Errorf("[%s] Match() on invalid filter didn't cause panic", ft.Expression)
+				}
+			}()
 		}
 	}
 }

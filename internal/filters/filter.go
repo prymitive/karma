@@ -93,22 +93,13 @@ func NewFilter(expression string) FilterT {
 	if matched == "" && operator == "" && value == "" {
 		// no "filter=" part, just the value, use fuzzy filter
 		f := newFuzzyFilter()
-		matcher, err := newMatcher(regexpOperator)
-		if err != nil {
-			f.init("", nil, expression, false, expression)
-		} else {
-			f.init("", &matcher, expression, true, expression)
-		}
+		matcher, _ := newMatcher(regexpOperator)
+		f.init("", &matcher, expression, true, expression)
 		return f
 	}
 
 	if value == "" {
 		// there's no value, so it's always invalid
-		return &invalid
-	}
-
-	if operator == "" {
-		// no operator, no valid filter here
 		return &invalid
 	}
 
@@ -122,16 +113,10 @@ func NewFilter(expression string) FilterT {
 		if !slices.StringInSlice(fc.SupportedOperators, operator) {
 			return &invalid
 		}
-		matcher, err := newMatcher(operator)
-		if err != nil {
-			f.init(matched, nil, expression, false, "")
-		} else {
-			if value != "" {
-				f.init(matched, &matcher, expression, true, value)
-				return f
-			}
-			f.init(matched, &matcher, expression, false, "")
-		}
+		// we validate operator above, no need to re-check
+		matcher, _ := newMatcher(operator)
+		f.init(matched, &matcher, expression, true, value)
+		return f
 	}
 
 	return &invalid
