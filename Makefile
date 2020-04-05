@@ -22,6 +22,11 @@ endif
 	GO111MODULE=on go install github.com/elazarl/go-bindata-assetfs/...
 	touch $@
 
+.build/deps-test-go.ok: go.mod go.sum
+	@mkdir -p .build
+	GO111MODULE=on go install github.com/wadey/gocovmerge
+	touch $@
+
 .build/deps-lint-go.ok: go.mod go.sum
 	@mkdir -p .build
 	GO111MODULE=on go install github.com/golangci/golangci-lint/cmd/golangci-lint
@@ -133,8 +138,11 @@ benchmark-go:
 	GO111MODULE=on go test -run=NONE -bench=. -benchmem ./...
 
 .PHONY: test-go
-test-go:
-	GO111MODULE=on scripts/gocover.sh
+test-go: .build/deps-test-go.ok
+	@rm -f profile.*
+	GO111MODULE=on ./scripts/test-unit.sh
+	GO111MODULE=on ./scripts/test-main.sh
+	GO111MODULE=on ./scripts/gocovmerge.sh
 
 .PHONY: test-js
 test-js: .build/deps-build-node.ok
