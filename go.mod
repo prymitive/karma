@@ -22,6 +22,7 @@ require (
 	github.com/go-openapi/validate v0.19.7
 	github.com/golangci/golangci-lint v1.24.0
 	github.com/google/go-cmp v0.4.0
+	github.com/hansboder/gocovmerge v0.0.0-20190813150856-3552c2006da5
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.5
 	github.com/knadh/koanf v0.9.1
@@ -34,7 +35,6 @@ require (
 	github.com/sirupsen/logrus v1.5.0
 	github.com/spf13/pflag v1.0.5
 	github.com/spf13/viper v1.6.2 // indirect
-	github.com/wadey/gocovmerge v0.0.0-20160331181800-b5bfa59ec0ad
 	github.com/xlab/handysort v0.0.0-20150421192137-fb3537ed64a1 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v2 v2.2.8
