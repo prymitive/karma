@@ -101,10 +101,12 @@ lint-go: .build/deps-lint-go.ok
 
 .PHONY: lint-js
 lint-js: .build/deps-build-node.ok
+	@test -x ./ui/node_modules/.bin/eslint || (rm -fr .build/deps-build-node.ok ui/node_modules && $(MAKE) .build/deps-build-node.ok)
 	cd ui && ./node_modules/.bin/eslint --quiet src
 
 .PHONY: lint-docs
 lint-docs: .build/deps-build-node.ok
+	@test -x ./ui/node_modules/.bin/markdownlint || (rm -fr .build/deps-build-node.ok ui/node_modules && $(MAKE) .build/deps-build-node.ok)
 	$(CURDIR)/ui/node_modules/.bin/markdownlint *.md docs
 
 .PHONY: lint-golang-version
