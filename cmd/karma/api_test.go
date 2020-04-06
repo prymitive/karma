@@ -1194,50 +1194,52 @@ func TestSortOrder(t *testing.T) {
 		"node_ping":     "2",
 	}
 	for _, version := range mock.ListAllMocks() {
-		t.Logf("Testing API using mock files from Alertmanager %s", version)
-		mockAlerts(version)
-		r := ginTestEngine()
+		for i := 1; i <= 3; i++ {
+			t.Logf("Testing API using mock files from Alertmanager %s [try %d]", version, i)
+			mockAlerts(version)
+			r := ginTestEngine()
 
-		for _, testCase := range sortTests {
-			uri := fmt.Sprintf(
-				"/alerts.json?sortOrder=%s&sortLabel=%s&sortReverse=%s&%s",
-				testCase.sortOrder,
-				testCase.sortLabel,
-				testCase.sortReverse,
-				testCase.filter,
-			)
-			t.Logf("Request URI: %s", uri)
-			req := httptest.NewRequest("GET", uri, nil)
-			resp := httptest.NewRecorder()
-			r.ServeHTTP(resp, req)
-			if resp.Code != http.StatusOK {
-				t.Errorf("GET /alerts.json returned status %d", resp.Code)
-			}
-
-			ur := models.AlertsResponse{}
-			err := json.Unmarshal(resp.Body.Bytes(), &ur)
-			if err != nil {
-				t.Errorf("Failed to unmarshal response: %s", err)
-			}
-
-			values := []string{}
-			for _, ag := range ur.Grids[0].AlertGroups {
-				v := ag.Labels[testCase.expectedLabel]
-				if v == "" {
-					v = ag.Shared.Labels[testCase.expectedLabel]
+			for _, testCase := range sortTests {
+				uri := fmt.Sprintf(
+					"/alerts.json?sortOrder=%s&sortLabel=%s&sortReverse=%s&%s",
+					testCase.sortOrder,
+					testCase.sortLabel,
+					testCase.sortReverse,
+					testCase.filter,
+				)
+				t.Logf("Request URI: %s", uri)
+				req := httptest.NewRequest("GET", uri, nil)
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != http.StatusOK {
+					t.Errorf("GET /alerts.json returned status %d", resp.Code)
 				}
-				if v != "" {
-					values = append(values, v)
-				} else {
-					for _, alert := range ag.Alerts {
-						v = alert.Labels[testCase.expectedLabel]
+
+				ur := models.AlertsResponse{}
+				err := json.Unmarshal(resp.Body.Bytes(), &ur)
+				if err != nil {
+					t.Errorf("Failed to unmarshal response: %s", err)
+				}
+
+				values := []string{}
+				for _, ag := range ur.Grids[0].AlertGroups {
+					v := ag.Labels[testCase.expectedLabel]
+					if v == "" {
+						v = ag.Shared.Labels[testCase.expectedLabel]
+					}
+					if v != "" {
 						values = append(values, v)
+					} else {
+						for _, alert := range ag.Alerts {
+							v = alert.Labels[testCase.expectedLabel]
+							values = append(values, v)
+						}
 					}
 				}
-			}
 
-			if diff := cmp.Diff(testCase.expectedValues, values); diff != "" {
-				t.Errorf("Incorrectly sorted values (-want +got):\n%s", diff)
+				if diff := cmp.Diff(testCase.expectedValues, values); diff != "" {
+					t.Errorf("Incorrectly sorted values (-want +got):\n%s", diff)
+				}
 			}
 		}
 	}
