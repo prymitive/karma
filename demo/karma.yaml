@@ -33,7 +33,7 @@ grid:
   sorting:
     order: label
     reverse: false
-    label: severity
+    label: cluster
     customValues:
       labels:
         cluster:
