@@ -9,6 +9,8 @@ import ReactDOM from "react-dom";
 
 import Moment from "react-moment";
 
+import "mobx-react-lite/batchingForReactDom";
+
 import {
   SettingsElement,
   SetupSentry,
