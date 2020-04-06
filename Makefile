@@ -24,7 +24,7 @@ endif
 
 .build/deps-test-go.ok: go.mod go.sum
 	@mkdir -p .build
-	GO111MODULE=on go install github.com/wadey/gocovmerge
+	GO111MODULE=on go install github.com/hansboder/gocovmerge
 	touch $@
 
 .build/deps-lint-go.ok: go.mod go.sum
