@@ -3,19 +3,18 @@ RUN mkdir -p /src/ui
 COPY ui/package.json ui/package-lock.json /src/ui/
 RUN cd /src/ui && npm install
 RUN apk add make git
-COPY Makefile /src/Makefile
 COPY ui /src/ui
-RUN make -C /src ui
+RUN make -C /src/ui build
 
 FROM golang:1.14.1-alpine3.11 as go-builder
 RUN apk add make git
 COPY Makefile /src/Makefile
+COPY make /src/make
 COPY go.mod /src/go.mod
 COPY go.sum /src/go.sum
-RUN make -C /src download-deps
+RUN make -C /src download-deps-go
 RUN make -C /src install-deps-build-go
 COPY --from=nodejs-builder /src/ui /src/ui
-COPY --from=nodejs-builder /src/.build /src/.build
 COPY cmd /src/cmd
 COPY internal /src/internal
 ARG VERSION
