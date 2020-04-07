@@ -169,6 +169,8 @@ jobs:
         - shasum -a 512 karma-*.tar.gz | tee sha512sum.txt
         # verify that there are no uncommited changes
         - git diff --exit-code
+        # prune GOCACHE if it gets too big
+        - ./scripts/prune-go-cache.sh
       deploy:
         provider: releases
         api_key:
