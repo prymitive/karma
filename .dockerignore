@@ -1,9 +1,5 @@
-.build
-.coverage
-bindata_assetfs.go
 karma
 ui/build
 ui/coverage
 ui/node_modules
-vendor
 Dockerfile

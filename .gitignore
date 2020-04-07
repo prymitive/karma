@@ -1,4 +1,3 @@
-/.build
 /coverage.txt
 /cmd/karma/bindata_assetfs.go
 /karma
