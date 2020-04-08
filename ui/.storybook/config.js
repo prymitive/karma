@@ -8,6 +8,8 @@ import {
 
 import createPercyAddon from "@percy-io/percy-storybook";
 
+import "mobx-react-lite/batchingForReactDom";
+
 import { advanceTo } from "jest-date-mock";
 
 import { ThemeContext } from "Components/Theme";
