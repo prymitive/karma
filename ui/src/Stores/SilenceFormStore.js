@@ -51,18 +51,41 @@ const MatchersFromGroup = (group, stripLabels, alerts, onlyActive) => {
     }
   }
 
+  // this is the list of alerts we'll use to generate matchers
+  const filteredAlerts = (alerts ? alerts : group.alerts).filter(
+    (alert) => !onlyActive || alert.state === "active"
+  );
+
+  // array of arrays with label keys for each alert
+  const allLabelKeys = filteredAlerts
+    .map((alert) => Object.keys(alert.labels))
+    .filter((a) => a.length > 0);
+
+  // this is the list of label key that are shared across all alerts in the group
+  // https://stackoverflow.com/a/34498210/1154047
+  const sharedLabelKeys = allLabelKeys.length
+    ? allLabelKeys.reduce(function (r, a) {
+        var last = {};
+        return r.filter(function (b) {
+          var p = a.indexOf(b, last[b] || 0);
+          if (~p) {
+            last[b] = p + 1;
+            return true;
+          }
+          return false;
+        });
+      })
+    : [];
+
   // add matchers for all unique labels in this group
   let labels = {};
-  const allAlerts = alerts ? alerts : group.alerts;
-  for (const alert of allAlerts) {
-    if (!onlyActive || alert.state === "active") {
-      for (const [key, value] of Object.entries(alert.labels)) {
-        if (!stripLabels.includes(key)) {
-          if (!labels[key]) {
-            labels[key] = new Set();
-          }
-          labels[key].add(value);
+  for (const alert of filteredAlerts) {
+    for (const [key, value] of Object.entries(alert.labels)) {
+      if (sharedLabelKeys.includes(key) && !stripLabels.includes(key)) {
+        if (!labels[key]) {
+          labels[key] = new Set();
         }
+        labels[key].add(value);
       }
     }
   }

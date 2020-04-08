@@ -211,6 +211,57 @@ describe("SilenceFormStore.data", () => {
     );
   });
 
+  it("fillMatchersFromGroup() handles alerts with different label sets", () => {
+    const group = MockAlertGroup(
+      { region: "AF" },
+      [
+        MockAlert([], {
+          alertname: "Alert1",
+          cluster: "prod",
+          foo: "bar",
+        }),
+        MockAlert([], {
+          alertname: "Alert2",
+          instance: "prod2",
+          cluster: "prod",
+        }),
+        MockAlert([], { alertname: "Alert3", instance: "dev1" }),
+      ],
+      [],
+      {
+        job: "mock",
+      },
+      {}
+    );
+    store.data.fillMatchersFromGroup(group, []);
+    expect(store.data.matchers).toHaveLength(3);
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "region",
+        values: [{ label: "AF", value: "AF" }],
+        isRegex: false,
+      })
+    );
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "alertname",
+        values: [
+          { label: "Alert1", value: "Alert1" },
+          { label: "Alert2", value: "Alert2" },
+          { label: "Alert3", value: "Alert3" },
+        ],
+        isRegex: true,
+      })
+    );
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "job",
+        values: [{ label: "mock", value: "mock" }],
+        isRegex: false,
+      })
+    );
+  });
+
   it("fillMatchersFromGroup() resets silenceID if set", () => {
     store.data.silenceID = "12345";
     const group = MockGroup();
