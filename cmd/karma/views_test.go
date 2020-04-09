@@ -273,6 +273,7 @@ func TestGrids(t *testing.T) {
 				r := ginTestEngine()
 				// re-run a few times to test the cache
 				for i := 1; i <= 3; i++ {
+					apiCache.Flush()
 					req := httptest.NewRequest("GET", "/alerts.json?gridLabel="+testCase.gridLabel+testCase.requestQuery, nil)
 					resp := httptest.NewRecorder()
 					r.ServeHTTP(resp, req)

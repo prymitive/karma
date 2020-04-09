@@ -10,5 +10,4 @@ import (
 	_ "github.com/elazarl/go-bindata-assetfs"
 	_ "github.com/go-bindata/go-bindata/v3"
 	_ "github.com/golangci/golangci-lint/pkg/commands"
-	_ "github.com/hansboder/gocovmerge"
 )

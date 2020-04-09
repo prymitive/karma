@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"mime"
+	"net"
 	"net/http"
 	"os"
 	"os/signal"
@@ -372,15 +373,18 @@ func main() {
 	go Tick()
 
 	listen := fmt.Sprintf("%s:%d", config.Config.Listen.Address, config.Config.Listen.Port)
+	listener, err := net.Listen("tcp", listen)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Infof("Listening on %s", listener.Addr())
+
 	httpServer := &http.Server{
 		Addr:    listen,
 		Handler: router,
 	}
-
 	go func() {
-		if err := httpServer.ListenAndServe(); err != nil {
-			log.Infof("Listening on %s", listen)
-		}
+		_ = httpServer.Serve(listener)
 	}()
 
 	quit := make(chan os.Signal, 1)

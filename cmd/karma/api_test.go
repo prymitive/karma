@@ -991,6 +991,7 @@ func TestVerifyAllGroups(t *testing.T) {
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing API using mock files from Alertmanager %s", version)
 		mockAlerts(version)
+		apiCache.Flush()
 		r := ginTestEngine()
 		req := httptest.NewRequest("GET", "/alerts.json", nil)
 		resp := httptest.NewRecorder()
@@ -1085,12 +1086,13 @@ func TestVerifyAllGroups(t *testing.T) {
 }
 
 type sortTest struct {
-	filter         string
-	sortOrder      string
-	sortLabel      string
-	sortReverse    string
-	expectedLabel  string
-	expectedValues []string
+	defaultSortReverse bool
+	filter             string
+	sortOrder          string
+	sortLabel          string
+	sortReverse        string
+	expectedLabel      string
+	expectedValues     []string
 }
 
 var sortTests = []sortTest{
@@ -1182,6 +1184,24 @@ var sortTests = []sortTest{
 		expectedLabel:  "job",
 		expectedValues: []string{"node_ping", "node_ping", "node_ping", "node_exporter", "node_exporter", "node_exporter"},
 	},
+	{
+		defaultSortReverse: true,
+		filter:             "q=@receiver=by-cluster-service",
+		sortOrder:          "label",
+		sortLabel:          "job",
+		sortReverse:        "a",
+		expectedLabel:      "job",
+		expectedValues:     []string{"node_ping", "node_ping", "node_ping", "node_exporter", "node_exporter", "node_exporter"},
+	},
+	{
+		defaultSortReverse: false,
+		filter:             "q=@receiver=by-cluster-service",
+		sortOrder:          "label",
+		sortLabel:          "job",
+		sortReverse:        "2",
+		expectedLabel:      "job",
+		expectedValues:     []string{"node_exporter", "node_exporter", "node_exporter", "node_ping", "node_ping", "node_ping"},
+	},
 }
 
 func TestSortOrder(t *testing.T) {
@@ -1200,6 +1220,8 @@ func TestSortOrder(t *testing.T) {
 			r := ginTestEngine()
 
 			for _, testCase := range sortTests {
+				apiCache.Flush()
+				config.Config.Grid.Sorting.Reverse = testCase.defaultSortReverse
 				uri := fmt.Sprintf(
 					"/alerts.json?sortOrder=%s&sortLabel=%s&sortReverse=%s&%s",
 					testCase.sortOrder,
