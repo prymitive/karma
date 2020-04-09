@@ -21,10 +21,8 @@ cmd/karma/bindata_assetfs.go: $(GOBIN)/go-bindata-assetfs $(SOURCES_JS) ui/build
 $(NAME): go.mod go.sum cmd/karma/bindata_assetfs.go $(SOURCES_GO)
 	$(GO) build -ldflags "-X main.version=$(VERSION)" ./cmd/karma
 
-$(GOBIN)/gocovmerge: go.mod go.sum
-	$(GO) install github.com/hansboder/gocovmerge
 .PHONY: test-go
-test-go: $(GOBIN)/gocovmerge
+test-go:
 	@rm -f profile.*
 	$(ENV) ./scripts/test-unit.sh
 	$(ENV) ./scripts/test-main.sh

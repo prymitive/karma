@@ -263,8 +263,6 @@ github.com/gostaticanalysis/analysisutil v0.0.0-20190318220348-4088753ea4d3/go.m
 github.com/grpc-ecosystem/go-grpc-middleware v1.0.0/go.mod h1:FiyG127CGDf3tlThmgyCl78X/SZQqEOJBCDaAfeWzPs=
 github.com/grpc-ecosystem/go-grpc-prometheus v1.2.0/go.mod h1:8NvIoxWQoOIhqOTXgfV/d3M/q6VIi02HzZEHgUlZvzk=
 github.com/grpc-ecosystem/grpc-gateway v1.9.0/go.mod h1:vNeuVxBJEsws4ogUvrchl83t/GYV9WGTSLVdBhOQFDY=
-github.com/hansboder/gocovmerge v0.0.0-20190813150856-3552c2006da5 h1:PKFOvrFdBuYn8F0GD0itonb8M/DFiSrDYfF54DUIE3M=
-github.com/hansboder/gocovmerge v0.0.0-20190813150856-3552c2006da5/go.mod h1:YuynvyiaysiM6eitHFN8mL+lRHEbZFTHG+hVXX1xZf8=
 github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5 h1:9WT/rQ2tZI0TBZhBsA/dYU1bdI2QKaUzQ3X6YDwaLUY=
 github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5/go.mod h1:XvzgNvkcPBKMxeywFlPioejZ5ulXi/GMLZDoBw915FA=
 github.com/hashicorp/hcl v1.0.0 h1:0Anlzjpi4vEasTeNFn2mLJgTSwt0+6sfsiTG8qcWGx4=
