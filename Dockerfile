@@ -6,7 +6,7 @@ RUN apk add make git
 COPY ui /src/ui
 RUN make -C /src/ui build
 
-FROM golang:1.14.1-alpine3.11 as go-builder
+FROM golang:1.14.2-alpine3.11 as go-builder
 RUN apk add make git
 COPY Makefile /src/Makefile
 COPY make /src/make
