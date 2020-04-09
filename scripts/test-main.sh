@@ -24,6 +24,7 @@ go test \
   ALERTMANAGER_URI=http://localhost \
   ALERTMANAGER_INTERVAL=1s \
   LISTEN_ADDRESS=127.0.0.1 \
+  LISTEN_PORT=0 \
   LOG_LEVEL=fatal \
   LOG_CONFIG=false \
   ./karma.test \
