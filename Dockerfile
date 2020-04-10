@@ -1,4 +1,4 @@
-FROM node:12.16.1-alpine3.11 as nodejs-builder
+FROM node:12.16.2-alpine3.11 as nodejs-builder
 RUN mkdir -p /src/ui
 COPY ui/package.json ui/package-lock.json /src/ui/
 RUN cd /src/ui && npm install
