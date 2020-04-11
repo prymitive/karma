@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
@@ -58,14 +59,17 @@ describe("<AlertMenu />", () => {
     expect(tree.instance().collapse.value).toBe(true);
   });
 
-  it("clicking toggle sets collapse value to 'false'", () => {
+  it("clicking toggle sets collapse value to 'false'", async () => {
+    const promise = Promise.resolve();
     const tree = MountedAlertMenu(group);
     const toggle = tree.find(".cursor-pointer");
     toggle.simulate("click");
     expect(tree.instance().collapse.value).toBe(false);
+    await act(() => promise);
   });
 
-  it("handleClickOutside() call sets collapse value to 'true'", () => {
+  it("handleClickOutside() call sets collapse value to 'true'", async () => {
+    const promise = Promise.resolve();
     const tree = MountedAlertMenu(group);
     const toggle = tree.find(".cursor-pointer");
     toggle.simulate("click");
@@ -74,6 +78,7 @@ describe("<AlertMenu />", () => {
     tree.instance().handleClickOutside();
 
     expect(tree.instance().collapse.value).toBe(true);
+    await act(() => promise);
   });
 });
 

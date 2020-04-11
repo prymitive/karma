@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
@@ -57,25 +58,29 @@ describe("<GroupMenu />", () => {
     expect(tree.instance().collapse.value).toBe(true);
   });
 
-  it("clicking toggle sets collapse value to 'false'", () => {
+  it("clicking toggle sets collapse value to 'false'", async () => {
+    const promise = Promise.resolve();
     const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
     const tree = MountedGroupMenu(group, true);
     const toggle = tree.find(".cursor-pointer");
     toggle.simulate("click");
     expect(tree.instance().collapse.value).toBe(false);
+    await act(() => promise);
   });
 
-  it("handleClickOutside() call sets collapse value to 'true'", () => {
+  it("handleClickOutside() call sets collapse value to 'true'", async () => {
+    const promise = Promise.resolve();
     const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
     const tree = MountedGroupMenu(group, true);
-
     const toggle = tree.find(".cursor-pointer");
+
     toggle.simulate("click");
     expect(tree.instance().collapse.value).toBe(false);
 
     tree.instance().handleClickOutside();
 
     expect(tree.instance().collapse.value).toBe(true);
+    await act(() => promise);
   });
 });
 

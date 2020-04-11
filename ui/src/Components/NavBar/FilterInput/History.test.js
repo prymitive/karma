@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount, shallow } from "enzyme";
 
@@ -82,24 +83,29 @@ describe("<History />", () => {
 
   // Due to https://github.com/FezVrasta/popper.js/issues/478 we can't test
   // rendered dropdown content, only the fact that toggle value is updated
-  it("renders dropdown button when menu is visible", () => {
+  it("renders dropdown button when menu is visible", async () => {
+    const promise = Promise.resolve();
     const tree = MountedHistory();
     const toggle = tree.find("button");
 
     expect(tree.instance().collapse.value).toBe(true);
     toggle.simulate("click");
     expect(tree.instance().collapse.value).toBe(false);
+    await act(() => promise);
   });
 
-  it("hides when handleClickOutside() is called", () => {
+  it("hides when handleClickOutside() is called", async () => {
+    const promise = Promise.resolve();
     const tree = MountedHistory();
     const instance = tree.instance();
     instance.collapse.value = false;
     instance.handleClickOutside();
     expect(tree.instance().collapse.value).toBe(true);
+    await act(() => promise);
   });
 
-  it("saves only applied filters to history", () => {
+  it("saves only applied filters to history", async () => {
+    const promise = Promise.resolve();
     alertStore.filters.values = [
       AppliedFilter("foo", "=", "bar"),
       NewUnappliedFilter("foo=unapplied"),
@@ -114,6 +120,7 @@ describe("<History />", () => {
         ReduceFilter(AppliedFilter("baz", "!=", "bar")),
       ])
     );
+    await act(() => promise);
   });
 });
 
