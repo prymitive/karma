@@ -15,7 +15,7 @@ build: build/index.html
 
 .PHONY: test-js
 test-js: node_modules/jest/bin/jest.js
-	CI=true npm test -- --coverage
+	CI=true NODE_OPTIONS="--unhandled-rejections=strict" npm test -- --coverage
 
 .PHONY: test-percy
 test-percy: node_modules/@storybook/react/bin/build.js
