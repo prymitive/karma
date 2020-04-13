@@ -6,6 +6,8 @@ import { observer } from "mobx-react";
 
 import debounce from "lodash/debounce";
 
+import FontFaceObserver from "fontfaceobserver";
+
 import MasonryInfiniteScroller from "react-masonry-infinite";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -126,6 +128,20 @@ const Grid = observer(
     };
 
     componentDidMount() {
+      // We have font-display:swap set for font assets, this means that on initial
+      // render a fallback font might be used and later swapped for the final one
+      // (once the final font is loaded). This means that fallback font might
+      // render to a different size and the swap can result in component resize.
+      // For our grid this resize might leave gaps since everything uses fixed
+      // position, so we use font observer and trigger repack when fonts are loaded
+      for (const fontWeight of [300, 400, 600]) {
+        const font = new FontFaceObserver("Open Sans", {
+          weight: fontWeight,
+        });
+        // wait up to 30s, run no-op function on timeout
+        font.load(null, 30000).then(this.masonryRepack, () => {});
+      }
+
       window.addEventListener(
         "alertGridCollapse",
         this.onAlertGridCollapseEvent

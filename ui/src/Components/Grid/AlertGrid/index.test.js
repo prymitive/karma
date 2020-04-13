@@ -356,6 +356,14 @@ describe("<Grid />", () => {
     }
   });
 
+  it("doesn't throw errors after FontFaceObserver timeout", () => {
+    MockGroupList(60, 5);
+    MountedGrid();
+    // skip a minute to trigger FontFaceObserver timeout handler
+    advanceBy(60 * 1000);
+    jest.runOnlyPendingTimers();
+  });
+
   it("doesn't crash on unmount", () => {
     MockGroupList(5, 3);
     const tree = MountedGrid();
@@ -380,14 +388,6 @@ describe("<AlertGrid />", () => {
       Math.floor(innerWidth / columns)
     );
   };
-
-  it("doesn't throw errors after FontFaceObserver timeout", () => {
-    MockGroupList(60, 5);
-    ShallowAlertGrid();
-    // skip a minute to trigger FontFaceObserver timeout handler
-    advanceBy(60 * 1000);
-    jest.runOnlyPendingTimers();
-  });
 
   // known breakpoints calculated from GridSize logic
   [
