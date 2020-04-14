@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FunctionComponent, ReactNode } from "react";
 
 import Collapsible from "react-collapsible";
 
@@ -6,7 +6,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 
-const Trigger = ({ text, isOpen }) => (
+const Trigger: FunctionComponent<{ text: string; isOpen: boolean }> = ({
+  text,
+  isOpen,
+}) => (
   <div className="d-flex flex-row justify-content-between">
     <div>{text}</div>
     <div>
@@ -18,7 +21,11 @@ const Trigger = ({ text, isOpen }) => (
   </div>
 );
 
-const Accordion = ({ text, content, extraProps }) => (
+const Accordion: FunctionComponent<{
+  text: string;
+  content: ReactNode;
+  extraProps?: object;
+}> = ({ text, content, extraProps }) => (
   <Collapsible
     triggerTagName="div"
     transitionTime={50}
