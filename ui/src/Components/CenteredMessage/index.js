@@ -1,6 +1,6 @@
 import React from "react";
 
-import { MountFade } from "Components/Animations/MountFade";
+import { Fade } from "react-reveal";
 
 const CenteredMessage = ({ children, className }) => (
   <h1
@@ -8,7 +8,9 @@ const CenteredMessage = ({ children, className }) => (
       className ? className : "display-1 text-placeholder"
     } screen-center`}
   >
-    <MountFade in={true}>{children}</MountFade>
+    <Fade in={true} duration={500}>
+      {children}
+    </Fade>
   </h1>
 );
 

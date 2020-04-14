@@ -6,6 +6,8 @@ import { observer } from "mobx-react";
 
 import debounce from "lodash/debounce";
 
+import { Fade } from "react-reveal";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
@@ -16,7 +18,6 @@ import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
 import { FetchGet } from "Common/Fetch";
-import { MountFade } from "Components/Animations/MountFade";
 import { ManagedSilence } from "Components/ManagedSilence";
 import { PageSelect } from "Components/Pagination";
 
@@ -33,11 +34,11 @@ FetchError.propTypes = {
 };
 
 const Placeholder = ({ content }) => (
-  <MountFade in={true}>
+  <Fade in={true} duration={500}>
     <div className="jumbotron bg-transparent">
       <h1 className="display-5 text-placeholder text-center">{content}</h1>
     </div>
-  </MountFade>
+  </Fade>
 );
 Placeholder.propTypes = {
   content: PropTypes.node.isRequired,
