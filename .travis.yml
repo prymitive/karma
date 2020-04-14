@@ -163,14 +163,16 @@ jobs:
         # requires running webpack, so we need nodejs here
         - travis_retry nvm install $(< .nvmrc)
       script:
+        # prune GOCACHE if it gets too big
+        - ./scripts/prune-go-cache.sh
         - export SOURCE_DATE_EPOCH=$(git show -s --format=%ci ${TRAVIS_TAG:-${TRAVIS_COMMIT}}^{commit})
         - travis_retry make crosscompile -j 2
         - for i in karma-*; do tar --mtime="${SOURCE_DATE_EPOCH}" --owner=0 --group=0 --numeric-owner -c $i | gzip -n - > $i.tar.gz; done
         - shasum -a 512 karma-*.tar.gz | tee sha512sum.txt
         # verify that there are no uncommited changes
         - git diff --exit-code
-        # prune GOCACHE if it gets too big
-        - ./scripts/prune-go-cache.sh
+        # print GOCACHE size
+        - ./scripts/prune-go-cache.sh --dry-run
       deploy:
         provider: releases
         api_key:
