@@ -89,7 +89,7 @@
     "jest-fetch-mock": "3.0.3",
     "markdownlint-cli": "0.22.0",
     "node-sass": "4.13.1",
-    "prettier": "2.0.4",
+    "prettier": "2.0.2",
     "source-map-explorer": "2.4.2"
   },
   "browserslist": [
