@@ -19,7 +19,7 @@ require (
 	github.com/go-openapi/runtime v0.19.15
 	github.com/go-openapi/strfmt v0.19.5
 	github.com/go-openapi/swag v0.19.9
-	github.com/go-openapi/validate v0.19.7
+	github.com/go-openapi/validate v0.19.8
 	github.com/golangci/golangci-lint v1.24.0
 	github.com/google/go-cmp v0.4.0
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
