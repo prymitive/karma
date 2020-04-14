@@ -6,6 +6,8 @@ import { observable, action, toJS } from "mobx";
 
 import hash from "object-hash";
 
+import { Fade } from "react-reveal";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
@@ -15,7 +17,6 @@ import { Settings } from "Stores/Settings";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BackgroundClassMap } from "Common/Colors";
-import { MountFade } from "Components/Animations/MountFade";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GroupHeader } from "./GroupHeader";
 import { Alert } from "./Alert";
@@ -72,12 +73,17 @@ const AlertGroup = observer(
         {
           alertsToRender: this.defaultRenderCount,
           isMenuOpen: false,
+          animationDone: false,
           setIsMenuOpen(val) {
             this.isMenuOpen = val;
+          },
+          setAnimationDone() {
+            this.animationDone = true;
           },
         },
         {
           setIsMenuOpen: action.bound,
+          setAnimationDone: action.bound,
         }
       );
 
@@ -222,10 +228,19 @@ const AlertGroup = observer(
       }
 
       return (
-        <MountFade in={true}>
-          <div
-            className="components-grid-alertgrid-alertgroup"
-            style={{ ...style, ...extraStyle }}
+        <div
+          className={`components-grid-alertgrid-alertgroup ${
+            this.renderConfig.animationDone
+              ? "components-animation-fade-appear-done"
+              : ""
+          }`}
+          style={{ ...style, ...extraStyle }}
+        >
+          <Fade
+            in={true}
+            duration={500}
+            wait={500}
+            onReveal={this.renderConfig.setAnimationDone}
           >
             <div className={`card ${cardBackgroundClass}`}>
               <GroupHeader
@@ -292,8 +307,8 @@ const AlertGroup = observer(
                 />
               ) : null}
             </div>
-          </div>
-        </MountFade>
+          </Fade>
+        </div>
       );
     }
   }

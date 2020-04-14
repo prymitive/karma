@@ -4,10 +4,11 @@ import PropTypes from "prop-types";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
+import { Fade } from "react-reveal";
+
 import { APISilence } from "Models/API";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, SilenceTabNames } from "Stores/SilenceFormStore";
-import { MountFade } from "Components/Animations/MountFade";
 import { SilenceComment } from "./SilenceComment";
 import { SilenceDetails } from "./SilenceDetails";
 
@@ -77,7 +78,7 @@ const ManagedSilence = observer(
       } = this.props;
 
       return (
-        <MountFade in={true}>
+        <Fade in={true} duration={500}>
           <div className="card my-1 components-managed-silence">
             <div className="card-header rounded-0 border-bottom-0 px-3">
               <SilenceComment
@@ -104,7 +105,7 @@ const ManagedSilence = observer(
               </div>
             )}
           </div>
-        </MountFade>
+        </Fade>
       );
     }
   }

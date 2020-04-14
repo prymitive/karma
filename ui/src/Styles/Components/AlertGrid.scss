@@ -1,12 +1,3 @@
-.components-grid-alertgrid-alertgroup.components-animation-fade-appear-done {
-  will-change: transform;
-  transform: translateZ(0);
-
-  transition-property: transform;
-  transition-duration: 0.4s;
-  transition-timing-function: ease;
-}
-
 .components-grid-swimlane {
   font-size: 1.4rem;
   background-color: $grid-swimlane-bg;

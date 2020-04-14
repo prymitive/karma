@@ -29,6 +29,8 @@ const MockGroup = (groupName) => {
 let originalInnerWidth;
 
 beforeAll(() => {
+  jest.useFakeTimers();
+
   originalInnerWidth = global.innerWidth;
 });
 
@@ -89,6 +91,24 @@ describe("<AlertGroup />", () => {
     MockAlerts(5);
     const tree = MountedAlertGroup(jest.fn(), true);
     tree.unmount();
+  });
+
+  it("appends components-animation-fade-appear-done class after 1s", () => {
+    MockAlerts(5);
+    const tree = MountedAlertGroup(jest.fn(), true);
+    expect(
+      tree
+        .find("div.components-grid-alertgrid-alertgroup")
+        .hasClass("components-animation-fade-appear-done")
+    ).toBe(false);
+
+    tree.instance().renderConfig.setAnimationDone();
+    tree.update();
+    expect(
+      tree
+        .find("div.components-grid-alertgrid-alertgroup")
+        .hasClass("components-animation-fade-appear-done")
+    ).toBe(true);
   });
 
   it("renders Alertmanager labels in footer if showAlertmanagersInFooter=true", () => {

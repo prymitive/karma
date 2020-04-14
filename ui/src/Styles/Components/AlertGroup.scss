@@ -1,3 +1,12 @@
+.components-grid-alertgrid-alertgroup.components-animation-fade-appear-done {
+  will-change: transform;
+  transform: translateZ(0);
+
+  transition-property: transform;
+  transition-duration: 0.4s;
+  transition-timing-function: ease;
+}
+
 .components-grid-alertgrid-alertgroup {
   padding: 0.3rem;
 }
