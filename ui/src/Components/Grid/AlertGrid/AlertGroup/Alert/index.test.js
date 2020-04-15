@@ -13,10 +13,12 @@ import {
   MockAnnotation,
   MockAlertGroup,
   MockSilence,
-} from "__mocks__/Alerts.js";
+} from "__mocks__/Alerts";
+import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BorderClassMap } from "Common/Colors";
+import { ThemeContext } from "Components/Theme";
 import { Alert } from ".";
 
 let alertStore;
@@ -60,7 +62,11 @@ const MountedAlert = (alert, group, showAlertmanagers, showReceiver) => {
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
       setIsMenuOpen={MockSetIsMenuOpen}
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
 };
 

@@ -4,7 +4,12 @@ import { shallow } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
+import { MockThemeContext } from "__mocks__/Theme";
 import { FatalError } from ".";
+
+beforeAll(() => {
+  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
+});
 
 describe("<FatalError />", () => {
   it("matches snapshot", () => {

@@ -4,11 +4,13 @@ import { mount, shallow } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
+import { MockThemeContext } from "__mocks__/Theme";
 import { ReloadNeeded } from ".";
 
 beforeEach(() => {
   jest.useFakeTimers();
   jest.clearAllTimers();
+  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
 });
 
 afterEach(() => {

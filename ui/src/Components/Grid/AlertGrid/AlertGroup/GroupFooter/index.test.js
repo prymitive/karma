@@ -12,9 +12,11 @@ import {
   MockAnnotation,
   MockAlert,
   MockSilence,
-} from "__mocks__/Alerts.js";
+} from "__mocks__/Alerts";
+import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
 import { GroupFooter } from ".";
 
 let group;
@@ -63,7 +65,11 @@ const MountedGroupFooter = () => {
       afterUpdate={MockAfterUpdate}
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
 };
 

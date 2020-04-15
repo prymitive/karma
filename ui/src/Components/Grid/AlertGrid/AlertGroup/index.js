@@ -18,6 +18,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BackgroundClassMap } from "Common/Colors";
 import { TooltipWrapper } from "Components/TooltipWrapper";
+import { ThemeContext } from "Components/Theme";
 import { GroupHeader } from "./GroupHeader";
 import { Alert } from "./Alert";
 import { GroupFooter } from "./GroupFooter";
@@ -237,9 +238,9 @@ const AlertGroup = observer(
           style={{ ...style, ...extraStyle }}
         >
           <Fade
-            in={true}
-            duration={500}
-            wait={500}
+            in={this.context.animations.in}
+            duration={this.context.animations.duration}
+            wait={this.context.animations.duration}
             onReveal={this.renderConfig.setAnimationDone}
           >
             <div className={`card ${cardBackgroundClass}`}>
@@ -313,5 +314,6 @@ const AlertGroup = observer(
     }
   }
 );
+AlertGroup.contextType = ThemeContext;
 
 export { AlertGroup };
