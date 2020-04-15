@@ -4,11 +4,13 @@ import { shallow, mount } from "enzyme";
 
 import { advanceBy, clear } from "jest-date-mock";
 
-import { MockAlert, MockAlertGroup } from "__mocks__/Alerts.js";
+import { MockAlert, MockAlertGroup } from "__mocks__/Alerts";
+import { MockThemeContext } from "__mocks__/Theme";
 import { mockMatchMedia } from "__mocks__/matchMedia";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
 import { GetGridElementWidth, GridSizesConfig } from "./GridSize";
 import { Grid } from "./Grid";
 import { AlertGrid } from ".";
@@ -42,7 +44,11 @@ const MountedAlertGrid = () => {
       alertStore={alertStore}
       settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
 };
 
@@ -93,7 +99,11 @@ const MountedGrid = () => {
       groupWidth={420}
       grid={MockGrid()}
       outerPadding={0}
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
 };
 

@@ -25,6 +25,7 @@ import { APIGrid } from "Models/API";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";
+import { ThemeContext } from "Components/Theme";
 import { DefaultDetailsCollapseValue } from "./AlertGroup/DetailsToggle";
 import { AlertGroup } from "./AlertGroup";
 
@@ -182,7 +183,10 @@ const Grid = observer(
       return (
         <React.Fragment>
           {grid.labelName !== "" && (
-            <Fade in={true} duration={500}>
+            <Fade
+              in={this.context.animations.in}
+              duration={this.context.animations.duration}
+            >
               <h5 className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 mt-2 mb-0 border border-dark">
                 <span
                   className="flex-shrink-1 flex-grow-1"
@@ -297,5 +301,6 @@ const Grid = observer(
     }
   }
 );
+Grid.contextType = ThemeContext;
 
 export { Grid };

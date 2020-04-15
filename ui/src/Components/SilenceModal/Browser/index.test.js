@@ -8,10 +8,12 @@ import moment from "moment";
 import { advanceTo, clear } from "jest-date-mock";
 
 import { MockSilence } from "__mocks__/Alerts";
+import { MockThemeContext } from "__mocks__/Theme";
 import { PressKey } from "__mocks__/KeyPress";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
 import { Browser } from ".";
 
 let alertStore;
@@ -80,7 +82,11 @@ const MountedBrowser = () => {
       silenceFormStore={silenceFormStore}
       settingsStore={settingsStore}
       onDeleteModalClose={MockOnDeleteModalClose}
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
 };
 

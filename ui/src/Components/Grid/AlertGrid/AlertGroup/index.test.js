@@ -4,10 +4,12 @@ import { mount } from "enzyme";
 
 import moment from "moment";
 
-import { MockAlert, MockAlertGroup } from "__mocks__/Alerts.js";
+import { MockAlert, MockAlertGroup } from "__mocks__/Alerts";
+import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
 import { AlertGroup } from ".";
 
 let alertStore;
@@ -66,7 +68,11 @@ const MountedAlertGroup = (afterUpdate, showAlertmanagers) => {
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
       gridLabelValue=""
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
 };
 

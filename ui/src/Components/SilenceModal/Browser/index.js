@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useContext } from "react";
 import PropTypes from "prop-types";
 
 import { observable, action } from "mobx";
@@ -20,6 +20,7 @@ import { Settings } from "Stores/Settings";
 import { FetchGet } from "Common/Fetch";
 import { ManagedSilence } from "Components/ManagedSilence";
 import { PageSelect } from "Components/Pagination";
+import { ThemeContext } from "Components/Theme";
 
 const FetchError = ({ message }) => (
   <div className="text-center">
@@ -33,13 +34,17 @@ FetchError.propTypes = {
   message: PropTypes.node.isRequired,
 };
 
-const Placeholder = ({ content }) => (
-  <Fade in={true} duration={500}>
-    <div className="jumbotron bg-transparent">
-      <h1 className="display-5 text-placeholder text-center">{content}</h1>
-    </div>
-  </Fade>
-);
+const Placeholder = ({ content }) => {
+  const theme = useContext(ThemeContext);
+
+  return (
+    <Fade in={theme.animations.in} duration={theme.animations.duration}>
+      <div className="jumbotron bg-transparent">
+        <h1 className="display-5 text-placeholder text-center">{content}</h1>
+      </div>
+    </Fade>
+  );
+};
 Placeholder.propTypes = {
   content: PropTypes.node.isRequired,
 };

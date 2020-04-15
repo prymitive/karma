@@ -9,6 +9,7 @@ import { Fade } from "react-reveal";
 import { APISilence } from "Models/API";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, SilenceTabNames } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
 import { SilenceComment } from "./SilenceComment";
 import { SilenceDetails } from "./SilenceDetails";
 
@@ -78,7 +79,10 @@ const ManagedSilence = observer(
       } = this.props;
 
       return (
-        <Fade in={true} duration={500}>
+        <Fade
+          in={this.context.animations.in}
+          duration={this.context.animations.duration}
+        >
           <div className="card my-1 components-managed-silence">
             <div className="card-header rounded-0 border-bottom-0 px-3">
               <SilenceComment
@@ -110,5 +114,6 @@ const ManagedSilence = observer(
     }
   }
 );
+ManagedSilence.contextType = ThemeContext;
 
 export { ManagedSilence };

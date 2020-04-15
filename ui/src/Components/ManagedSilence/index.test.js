@@ -8,8 +8,10 @@ import moment from "moment";
 import { advanceTo, clear } from "jest-date-mock";
 
 import { MockSilence } from "__mocks__/Alerts";
+import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
 import { ManagedSilence } from ".";
 
 let alertStore;
@@ -62,7 +64,11 @@ const MountedManagedSilence = (onDidUpdate) => {
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
       onDidUpdate={onDidUpdate}
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
 };
 
