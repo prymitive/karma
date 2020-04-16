@@ -1,43 +1,49 @@
-import * as React from "react";
+import React from "react";
 
 import { mount } from "enzyme";
 
-import { BodyTheme, ThemeContext } from ".";
+import { BodyTheme } from ".";
+
+const context = {
+  isDark: true,
+};
 
 beforeEach(() => {
   document.body.classList.remove("theme-light");
   document.body.classList.remove("theme-dark");
+
+  jest.spyOn(React, "useContext").mockImplementation(() => {
+    return context;
+  });
+});
+
+afterEach(() => {
+  jest.resetAllMocks();
 });
 
 describe("<BodyTheme />", () => {
   it("uses light theme when ThemeContext->isDark is false", () => {
-    mount(<BodyTheme />, {
-      wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: { isDark: false } },
-    });
+    context.isDark = false;
+    mount(<BodyTheme />);
     expect(document.body.classList.contains("theme-light")).toEqual(true);
   });
 
   it("uses dark theme when ThemeContext->isDark is true", () => {
-    mount(<BodyTheme />, {
-      wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: { isDark: true } },
-    });
+    context.isDark = true;
+    mount(<BodyTheme />);
     expect(document.body.classList.contains("theme-dark")).toEqual(true);
   });
 
   it("updates theme when ThemeContext->isDark is updated", () => {
-    const tree = mount(<BodyTheme />, {
-      wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: { isDark: true } },
-    });
+    context.isDark = true;
+    const tree = mount(<BodyTheme />);
     expect(document.body.classList.contains("theme-dark")).toEqual(true);
 
     document.body.classList.remove("theme-light");
     document.body.classList.remove("theme-dark");
 
-    const provider = tree.getWrappingComponent();
-    provider.setProps({ value: { isDark: false } });
+    context.isDark = false;
+    tree.setProps({});
 
     expect(document.body.classList.contains("theme-light")).toEqual(true);
   });
