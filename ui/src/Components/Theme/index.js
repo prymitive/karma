@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -40,28 +40,19 @@ const Placeholder = () => {
 
 const ThemeContext = React.createContext();
 
-class BodyTheme extends Component {
-  onToggleBodyClass = (isDark) => {
-    document.body.classList.toggle("theme-dark", isDark);
-    document.body.classList.toggle("theme-light", !isDark);
-  };
+const BodyTheme = () => {
+  const context = React.useContext(ThemeContext);
 
-  componentDidMount() {
-    this.onToggleBodyClass(this.context.isDark);
-  }
+  useEffect(() => {
+    document.body.classList.toggle("theme-dark", context.isDark);
+    document.body.classList.toggle("theme-light", !context.isDark);
+  }, [context.isDark]);
 
-  componentDidUpdate() {
-    this.onToggleBodyClass(this.context.isDark);
-  }
-
-  render() {
-    return (
-      <React.Suspense fallback={<Placeholder />}>
-        {this.context.isDark ? <DarkTheme /> : <LightTheme />}
-      </React.Suspense>
-    );
-  }
-}
-BodyTheme.contextType = ThemeContext;
+  return (
+    <React.Suspense fallback={<Placeholder />}>
+      {context.isDark ? <DarkTheme /> : <LightTheme />}
+    </React.Suspense>
+  );
+};
 
 export { BodyTheme, ThemeContext };
