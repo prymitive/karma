@@ -8,14 +8,16 @@ import ReactResizeDetector from "react-resize-detector";
 
 import IdleTimer from "react-idle-timer";
 
+import { Fade } from "react-reveal";
+
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { IsMobile } from "Common/Device";
-import { NavBarSlide } from "Components/Animations/NavBarSlide";
 import { OverviewModal } from "Components/OverviewModal";
 import { MainModal } from "Components/MainModal";
 import { SilenceModal } from "Components/SilenceModal";
+import { ThemeContext } from "Components/Theme";
 import { FetchIndicator } from "./FetchIndicator";
 import { FilterInput } from "./FilterInput";
 
@@ -38,6 +40,7 @@ const NavBar = observer(
       super(props);
 
       this.idleTimer = null;
+      this.animationTimer = null;
 
       this.activityStatus = observable(
         {
@@ -65,7 +68,10 @@ const NavBar = observer(
       );
 
       this.activityStatusReaction = reaction(
-        () => props.alertStore.status.paused,
+        () =>
+          props.alertStore.status.paused ||
+          props.alertStore.filters.values.filter((f) => f.applied === false)
+            .length > 0,
         (paused) =>
           paused
             ? this.idleTimer && this.idleTimer.pause()
@@ -93,14 +99,32 @@ const NavBar = observer(
       document.body.style.paddingTop = `${paddingTop}px`;
     };
 
-    onHide = () => {
-      this.activityStatus.hide();
-      this.updateBodyPaddingTop();
+    onToggle = () => {
+      if (this.activityStatus.idle) {
+        this.activityStatus.hide();
+        this.updateBodyPaddingTop();
+      } else {
+        this.updateBodyPaddingTop();
+        this.activityStatus.show();
+      }
     };
 
-    onShow = () => {
-      this.updateBodyPaddingTop();
-      this.activityStatus.show();
+    onIdleTimerActive = () => {
+      clearTimeout(this.animationTimer);
+      this.activityStatus.setActive();
+      this.onToggle();
+    };
+
+    onIdleTimerIdle = () => {
+      const { settingsStore } = this.props;
+
+      if (settingsStore.filterBarConfig.config.autohide) {
+        this.activityStatus.setIdle();
+        this.animationTimer = setTimeout(
+          this.onToggle,
+          this.context.animations.duration
+        );
+      }
     };
 
     onResize = (width, height) => {
@@ -126,30 +150,19 @@ const NavBar = observer(
 
       const isMobile = IsMobile();
 
-      const isLoading =
-        alertStore.filters.values.filter((f) => f.applied === false).length > 0;
-
       return (
         <IdleTimer
           ref={(ref) => {
             this.idleTimer = ref;
           }}
-          onActive={this.activityStatus.setActive}
-          onIdle={() => {
-            if (settingsStore.filterBarConfig.config.autohide) {
-              this.activityStatus.setIdle();
-            }
-          }}
+          onActive={this.onIdleTimerActive}
+          onIdle={this.onIdleTimerIdle}
           timeout={isMobile ? MobileIdleTimeout : DesktopIdleTimeout}
         >
           <div
             className={`container p-0 m-0 mw-100 ${this.activityStatus.className}`}
           >
-            <NavBarSlide
-              in={!this.activityStatus.idle || isLoading}
-              onEntering={this.onShow}
-              onExited={this.onHide}
-            >
+            <Fade top when={!this.activityStatus.idle}>
               <nav
                 className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block ${
                   fixedTop ? "fixed-top" : "w-100"
@@ -176,12 +189,13 @@ const NavBar = observer(
                   settingsStore={settingsStore}
                 />
               </nav>
-            </NavBarSlide>
+            </Fade>
           </div>
         </IdleTimer>
       );
     }
   }
 );
+NavBar.contextType = ThemeContext;
 
 export { NavBar };

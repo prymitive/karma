@@ -4,9 +4,12 @@ import { shallow, mount } from "enzyme";
 
 import moment from "moment";
 
+import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
+
 import { NavBar } from ".";
 
 let alertStore;
@@ -17,9 +20,12 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings();
   silenceFormStore = new SilenceFormStore();
+  settingsStore.filterBarConfig.config.autohide = true;
   // fix startsAt & endsAt dates so they don't change between tests
   silenceFormStore.data.startsAt = moment([2018, 1, 30, 10, 25, 50]).utc();
   silenceFormStore.data.endsAt = moment([2018, 1, 30, 11, 25, 50]).utc();
+
+  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
 });
 
 const RenderNavbar = () => {
@@ -38,7 +44,11 @@ const MountedNavbar = () => {
       alertStore={alertStore}
       settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
 };
 
@@ -151,9 +161,9 @@ describe("<IdleTimer />", () => {
   });
 
   it("doesn't hide on mobile if there are unapplied filters", () => {
-    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
     global.window.innerWidth = 500;
     const tree = MountedNavbar();
+    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
     jest.runTimersToTime(1000 * 13);
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
@@ -161,9 +171,9 @@ describe("<IdleTimer />", () => {
   });
 
   it("doesn't hide on desktop if there are unapplied filters", () => {
-    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
     global.window.innerWidth = 769;
     const tree = MountedNavbar();
+    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
     jest.runTimersToTime(1000 * 60 * 3 + 1000);
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
@@ -171,32 +181,32 @@ describe("<IdleTimer />", () => {
   });
 
   it("hides on mobile if all unapplied filters finish applying", () => {
-    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
     global.window.innerWidth = 500;
     const tree = MountedNavbar();
+    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
     jest.runTimersToTime(1000 * 13);
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
     expect(tree.find(".container").hasClass("invisible")).toBe(false);
 
     alertStore.filters.applyAllFilters();
-    jest.runTimersToTime(1000);
+    jest.runTimersToTime(1000 * 13);
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(false);
     expect(tree.find(".container").hasClass("invisible")).toBe(true);
   });
 
   it("hides on desktop if all unapplied filters finish applying", () => {
-    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
     global.window.innerWidth = 769;
     const tree = MountedNavbar();
+    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
     jest.runTimersToTime(1000 * 60 * 3 + 1000);
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
     expect(tree.find(".container").hasClass("invisible")).toBe(false);
 
     alertStore.filters.applyAllFilters();
-    jest.runTimersToTime(1000);
+    jest.runTimersToTime(1000 * 60 * 3 + 1000);
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(false);
     expect(tree.find(".container").hasClass("invisible")).toBe(true);
@@ -206,13 +216,13 @@ describe("<IdleTimer />", () => {
     const tree = MountedNavbar();
     const instance = tree.instance();
 
-    instance.activityStatus.setIdle();
+    instance.onIdleTimerIdle();
     jest.runOnlyPendingTimers();
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(false);
     expect(tree.find(".container").hasClass("invisible")).toBe(true);
 
-    instance.activityStatus.setActive();
+    instance.onIdleTimerActive();
     jest.runOnlyPendingTimers();
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
@@ -223,7 +233,7 @@ describe("<IdleTimer />", () => {
     const tree = MountedNavbar();
     const instance = tree.instance();
 
-    instance.activityStatus.setIdle();
+    instance.onIdleTimerIdle();
     jest.runOnlyPendingTimers();
     tree.update();
     expect(
