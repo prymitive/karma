@@ -1,59 +1,40 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import { observer } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import Favico from "favico.js";
 
 import { AlertStore } from "Stores/AlertStore";
 
-const FaviconBadge = observer(
-  class FaviconBadge extends Component {
-    static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-    };
+const FaviconBadge = ({ alertStore }) => {
+  const [favico] = useState(
+    new Favico({
+      animation: "none",
+      position: "down",
+      bgColor: "#e74c3c",
+      textColor: "#fff",
+      fontStyle: "lighter",
+    })
+  );
 
-    constructor(props) {
-      super(props);
-
-      this.favicon = new Favico({
-        animation: "none",
-        position: "down",
-        bgColor: "#e74c3c",
-        textColor: "#fff",
-        fontStyle: "lighter",
-      });
+  useEffect(() => {
+    if (alertStore.status.error !== null) {
+      favico.badge("?");
+    } else {
+      favico.badge(alertStore.info.totalAlerts);
     }
+  });
 
-    updateBadge = () => {
-      const { alertStore } = this.props;
-
-      if (alertStore.status.error !== null) {
-        this.favicon.badge("?");
-      } else {
-        this.favicon.badge(alertStore.info.totalAlerts);
-      }
-    };
-
-    componentDidMount() {
-      this.updateBadge();
-    }
-
-    componentDidUpdate() {
-      this.updateBadge();
-    }
-
-    render() {
-      const { alertStore } = this.props;
-
-      return (
-        <span
-          data-total-alerts={alertStore.info.totalAlerts}
-          data-status-error={alertStore.status.error}
-        />
-      );
-    }
-  }
-);
+  return useObserver(() => (
+    <span
+      data-total-alerts={alertStore.info.totalAlerts}
+      data-status-error={alertStore.status.error}
+    />
+  ));
+};
+FaviconBadge.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+};
 
 export { FaviconBadge };
