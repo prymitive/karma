@@ -1,27 +1,19 @@
-import { Component } from "react";
+import { useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { AlertStore } from "Stores/AlertStore";
 
-class FetchPauser extends Component {
-  static propTypes = {
-    children: PropTypes.any,
-    alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  };
-
-  componentDidMount() {
-    const { alertStore } = this.props;
+const FetchPauser = ({ children, alertStore }) => {
+  useEffect(() => {
     alertStore.status.pause();
-  }
+    return alertStore.status.resume;
+  }, [alertStore.status]);
 
-  componentWillUnmount() {
-    const { alertStore } = this.props;
-    alertStore.status.resume();
-  }
-
-  render() {
-    return this.props.children;
-  }
-}
+  return children;
+};
+FetchPauser.propTypes = {
+  children: PropTypes.any,
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+};
 
 export { FetchPauser };
