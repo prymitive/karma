@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import Favico from "favico.js";
+
 import { AlertStore } from "Stores/AlertStore";
 import { FaviconBadge } from ".";
 
@@ -9,6 +11,7 @@ let alertStore;
 
 beforeEach(() => {
   alertStore = new AlertStore([]);
+  Favico.badge.mockClear();
 });
 
 afterEach(() => {
@@ -20,25 +23,17 @@ const MountedFaviconBadge = () => {
 };
 
 describe("<FaviconBadge />", () => {
-  it("creates Favico instance on mount", () => {
-    const tree = MountedFaviconBadge();
-    const instance = tree.instance();
-    expect(instance.favicon).toBeInstanceOf(Object);
-  });
-
-  it("updateBadge is called when alertStore.info.totalAlerts changes", () => {
-    const tree = MountedFaviconBadge();
-    const instance = tree.instance();
-    const updateSpy = jest.spyOn(instance, "updateBadge");
+  it("badge is updated when alertStore.info.totalAlerts changes", () => {
     alertStore.info.totalAlerts = 99;
-    expect(updateSpy).toHaveBeenCalledTimes(1);
+    const tree = MountedFaviconBadge();
+    expect(Favico.badge).toHaveBeenCalledTimes(1);
+    expect(Favico.badge).toHaveBeenCalledWith(99);
   });
 
-  it("updateBadge is called when alertStore.status.error changes", () => {
-    const tree = MountedFaviconBadge();
-    const instance = tree.instance();
-    const updateSpy = jest.spyOn(instance, "updateBadge");
+  it("badge is updated when alertStore.status.error changes", () => {
     alertStore.status.error = "foo";
-    expect(updateSpy).toHaveBeenCalledTimes(1);
+    MountedFaviconBadge();
+    expect(Favico.badge).toHaveBeenCalledTimes(1);
+    expect(Favico.badge).toHaveBeenCalledWith("?");
   });
 });
