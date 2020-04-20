@@ -73,6 +73,19 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 			},
 		},
 	},
+	{
+		annotationMap: map[string]string{
+			"notLink": "https://some-links.domain.com/healthcheck in dev (job: blackbox) is not successfully probing via the blackbox prober. this could be due to the endpoint being offline, returning an invalid status code, taking too long to respond, etc.",
+		},
+		annotations: models.Annotations{
+			models.Annotation{
+				Name:    "notLink",
+				Value:   "https://some-links.domain.com/healthcheck in dev (job: blackbox) is not successfully probing via the blackbox prober. this could be due to the endpoint being offline, returning an invalid status code, taking too long to respond, etc.",
+				Visible: true,
+				IsLink:  false,
+			},
+		},
+	},
 }
 
 func TestAnnotationsFromMap(t *testing.T) {
