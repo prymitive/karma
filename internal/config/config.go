@@ -269,6 +269,9 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 	}
 
 	for i, s := range config.Alertmanager.Servers {
+		if s.Name == "" {
+			config.Alertmanager.Servers[i].Name = "default"
+		}
 		if s.Timeout.Seconds() == 0 {
 			config.Alertmanager.Servers[i].Timeout = config.Alertmanager.Timeout
 		}

@@ -1,0 +1,10 @@
+# Uses 'default' as the default alertmanager name
+karma.bin-should-work --log.format=text --log.config=false --config.file=karma.yaml --check-config
+! stdout .
+stderr 'msg="\[default\] Configured Alertmanager source at http://localhost:9093 \(proxied: false\, readonly: false\)"'
+! stderr 'level=error'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - uri: http://localhost:9093
