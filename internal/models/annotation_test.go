@@ -5,12 +5,16 @@ import (
 	"sort"
 	"testing"
 
+	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
 )
 
 type annotationMapsTestCase struct {
+	defaultHidden bool
 	annotationMap map[string]string
 	annotations   models.Annotations
+	visible       []string
+	hidden        []string
 }
 
 var annotationMapsTestCases = []annotationMapsTestCase{
@@ -86,10 +90,71 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 			},
 		},
 	},
+	{
+		annotationMap: map[string]string{
+			"notLink": "mailto:me@example.com",
+		},
+		annotations: models.Annotations{
+			models.Annotation{
+				Name:    "notLink",
+				Value:   "mailto:me@example.com",
+				Visible: true,
+				IsLink:  false,
+			},
+		},
+	},
+	{
+		defaultHidden: true,
+		visible:       []string{"visible"},
+		annotationMap: map[string]string{
+			"hidden": "value",
+		},
+		annotations: models.Annotations{
+			models.Annotation{
+				Name:    "hidden",
+				Value:   "value",
+				Visible: false,
+				IsLink:  false,
+			},
+		},
+	},
+	{
+		defaultHidden: true,
+		visible:       []string{"visible"},
+		hidden:        []string{"hidden"},
+		annotationMap: map[string]string{
+			"visible": "value",
+			"hidden":  "value",
+			"default": "value",
+		},
+		annotations: models.Annotations{
+			models.Annotation{
+				Name:    "default",
+				Value:   "value",
+				Visible: false,
+				IsLink:  false,
+			},
+			models.Annotation{
+				Name:    "hidden",
+				Value:   "value",
+				Visible: false,
+				IsLink:  false,
+			},
+			models.Annotation{
+				Name:    "visible",
+				Value:   "value",
+				Visible: true,
+				IsLink:  false,
+			},
+		},
+	},
 }
 
 func TestAnnotationsFromMap(t *testing.T) {
 	for _, testCase := range annotationMapsTestCases {
+		config.Config.Annotations.Default.Hidden = testCase.defaultHidden
+		config.Config.Annotations.Hidden = testCase.hidden
+		config.Config.Annotations.Visible = testCase.visible
 		result := models.AnnotationsFromMap(testCase.annotationMap)
 		if !reflect.DeepEqual(testCase.annotations, result) {
 			t.Errorf("AnnotationsFromMap result mismatch for map %v, expected %v got %v",
