@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-import { observer } from "mobx-react";
-import { observable, action } from "mobx";
+import { useLocalStore, useObserver } from "mobx-react";
 
 import hash from "object-hash";
 
@@ -29,70 +28,60 @@ const GroupListToUniqueLabelsList = (groups) => {
   return Object.values(alerts);
 };
 
-const LabelSetList = observer(
-  class LabelSetList extends Component {
-    static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      labelsList: PropTypes.arrayOf(PropTypes.object).isRequired,
-    };
+const LabelSetList = ({ alertStore, labelsList }) => {
+  const pagination = useLocalStore(() => ({
+    activePage: 1,
+    onPageChange(pageNumber) {
+      pagination.activePage = pageNumber;
+    },
+  }));
 
-    maxPerPage = 10;
+  const maxPerPage = 10;
 
-    pagination = observable(
-      {
-        activePage: 1,
-        onPageChange(pageNumber) {
-          this.activePage = pageNumber;
-        },
-      },
-      {
-        onPageChange: action.bound,
-      }
-    );
-
-    render() {
-      const { alertStore, labelsList } = this.props;
-
-      return labelsList.length > 0 ? (
+  return useObserver(() =>
+    labelsList.length > 0 ? (
+      <div>
+        <p className="lead text-center">Affected alerts</p>
         <div>
-          <p className="lead text-center">Affected alerts</p>
-          <div>
-            <ul className="list-group list-group-flush mb-3">
-              {labelsList
-                .slice(
-                  (this.pagination.activePage - 1) * this.maxPerPage,
-                  this.pagination.activePage * this.maxPerPage
-                )
-                .map((labels) => (
-                  <li
-                    key={hash(labels)}
-                    className="list-group-item px-0 pt-2 pb-1"
-                  >
-                    {Object.entries(labels).map(([name, value]) => (
-                      <StaticLabel
-                        key={name}
-                        alertStore={alertStore}
-                        name={name}
-                        value={value}
-                      />
-                    ))}
-                  </li>
-                ))}
-            </ul>
-          </div>
-          <PageSelect
-            totalPages={Math.ceil(labelsList.length / this.maxPerPage)}
-            activePage={this.pagination.activePage}
-            maxPerPage={this.maxPerPage}
-            totalItemsCount={labelsList.length}
-            setPageCallback={this.pagination.onPageChange}
-          />
+          <ul className="list-group list-group-flush mb-3">
+            {labelsList
+              .slice(
+                (pagination.activePage - 1) * maxPerPage,
+                pagination.activePage * maxPerPage
+              )
+              .map((labels) => (
+                <li
+                  key={hash(labels)}
+                  className="list-group-item px-0 pt-2 pb-1"
+                >
+                  {Object.entries(labels).map(([name, value]) => (
+                    <StaticLabel
+                      key={name}
+                      alertStore={alertStore}
+                      name={name}
+                      value={value}
+                    />
+                  ))}
+                </li>
+              ))}
+          </ul>
         </div>
-      ) : (
-        <p className="text-muted text-center">No alerts matched</p>
-      );
-    }
-  }
-);
+        <PageSelect
+          totalPages={Math.ceil(labelsList.length / maxPerPage)}
+          activePage={pagination.activePage}
+          maxPerPage={maxPerPage}
+          totalItemsCount={labelsList.length}
+          setPageCallback={pagination.onPageChange}
+        />
+      </div>
+    ) : (
+      <p className="text-muted text-center">No alerts matched</p>
+    )
+  );
+};
+LabelSetList.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  labelsList: PropTypes.arrayOf(PropTypes.object).isRequired,
+};
 
 export { LabelSetList, GroupListToUniqueLabelsList };
