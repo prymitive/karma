@@ -3,6 +3,7 @@ package models
 import (
 	"net/url"
 	"sort"
+	"strings"
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/slices"
@@ -55,7 +56,10 @@ var linkSchemes = []string{
 }
 
 func isLink(s string) bool {
-	u, err := url.Parse(s)
+	if strings.Contains(s, " ") {
+		return false
+	}
+	u, err := url.ParseRequestURI(s)
 	if err != nil {
 		return false
 	}
