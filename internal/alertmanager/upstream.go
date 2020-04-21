@@ -60,6 +60,11 @@ func NewAlertmanager(name, upstreamURI string, opts ...Option) (*Alertmanager, e
 	return am, nil
 }
 
+// UnregisterAll will remove all registered alertmanager instances
+func UnregisterAll() {
+	upstreams = map[string]*Alertmanager{}
+}
+
 // RegisterAlertmanager will add an Alertmanager instance to the list of
 // instances used when pulling alerts from upstreams
 func RegisterAlertmanager(am *Alertmanager) error {
