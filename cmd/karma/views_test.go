@@ -7,10 +7,13 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"os"
+	"regexp"
 	"sort"
+	"strings"
 	"testing"
 	"time"
 
+	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
@@ -918,6 +921,133 @@ func TestAuthentication(t *testing.T) {
 						t.Errorf("Got Authentication.Username=%s, expected %s", ur.Authentication.Username, testCase.responseUsername)
 					}
 				}
+			}
+		})
+	}
+}
+
+func TestUpstreamStatus(t *testing.T) {
+	log.SetLevel(log.FatalLevel)
+
+	type mockT struct {
+		uri  string
+		code int
+		body string
+	}
+
+	type testCaseT struct {
+		Name      string
+		mocks     []mockT
+		upstreams []config.AlertmanagerConfig
+		status    models.AlertmanagerAPISummary
+	}
+
+	testCases := []testCaseT{
+		{
+			Name: "404 from upstream",
+			mocks: []mockT{
+				{
+					uri:  "http://localhost:9093/metrics",
+					code: 404,
+					body: "not found",
+				},
+				{
+					uri:  "http://localhost:9093/api/v2/status",
+					code: 404,
+					body: "not found",
+				},
+			},
+			upstreams: []config.AlertmanagerConfig{
+				{
+					Name:        "default",
+					URI:         "http://localhost:9093",
+					ExternalURI: "http://example.com",
+					ReadOnly:    true,
+					Headers: map[string]string{
+						"X-Foo": "Bar",
+						"X-Bar": "Foo",
+					},
+					CORS: config.AlertmanagerCORS{
+						Credentials: "include",
+					},
+				},
+			},
+			status: models.AlertmanagerAPISummary{
+				Counters: models.AlertmanagerAPICounters{
+					Total:   1,
+					Healthy: 0,
+					Failed:  1,
+				},
+				Instances: []models.AlertmanagerAPIStatus{
+					{
+						Name:      "default",
+						URI:       "http://example.com",
+						PublicURI: "http://example.com",
+						ReadOnly:  true,
+						Headers: map[string]string{
+							"X-Foo": "Bar",
+							"X-Bar": "Foo",
+						},
+						CORSCredentials: "include",
+						Error:           `^unknown error \(status 404\): .+`,
+						Version:         "",
+						Cluster:         "843c4a11660fe38ea61e6960a29d4f4796da6488",
+						ClusterMembers:  []string{"default"},
+					},
+				},
+				Clusters: map[string][]string{
+					"843c4a11660fe38ea61e6960a29d4f4796da6488": {"default"},
+				},
+			},
+		},
+	}
+
+	for _, testCase := range testCases {
+		t.Run(testCase.Name, func(t *testing.T) {
+			httpmock.Activate()
+			defer httpmock.DeactivateAndReset()
+			for _, m := range testCase.mocks {
+				httpmock.RegisterResponder("GET", m.uri, httpmock.NewStringResponder(m.code, m.body))
+			}
+
+			alertmanager.UnregisterAll()
+			mockConfig()
+			config.Config.Alertmanager.Servers = testCase.upstreams
+			_ = setupUpstreams()
+			log.SetLevel(log.FatalLevel)
+			pullFromAlertmanager()
+			r := ginTestEngine()
+
+			req := httptest.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != http.StatusOK {
+				t.Errorf("GET /alerts.json returned status %d", resp.Code)
+			}
+
+			ur := models.AlertsResponse{}
+			err := json.Unmarshal(resp.Body.Bytes(), &ur)
+			if err != nil {
+				t.Errorf("Failed to unmarshal response: %s", err)
+			}
+			if diff := cmp.Diff(testCase.status, ur.Upstreams, cmp.Comparer(
+				func(x, y string) bool {
+					if strings.HasPrefix(x, "^") {
+						reX, err := regexp.Compile(x)
+						if err == nil {
+							return reX.MatchString(y)
+						}
+					}
+					if strings.HasPrefix(y, "^") {
+						reY, err := regexp.Compile(y)
+						if err == nil {
+							return reY.MatchString(x)
+						}
+					}
+					return x == y
+				}),
+			); diff != "" {
+				t.Errorf("Wrong upstream summary returned (-want +got):\n%s", diff)
 			}
 		})
 	}
