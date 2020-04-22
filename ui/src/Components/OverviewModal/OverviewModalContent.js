@@ -4,13 +4,10 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 import { observable, action } from "mobx";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
-
 import { AlertStore } from "Stores/AlertStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { LabelWithPercent } from "Components/Labels/LabelWithPercent";
+import { ToggleIcon } from "Components/ToggleIcon";
 
 const TableRows = observer(({ alertStore, nameStats }) =>
   nameStats.map((nameStats) => (
@@ -72,8 +69,8 @@ const LabelsTable = observer(
                   title="Toggle all / only common labels"
                   delay={[3000, 100]}
                 >
-                  <FontAwesomeIcon
-                    icon={showAllLabels ? faChevronDown : faChevronUp}
+                  <ToggleIcon
+                    isOpen={showAllLabels}
                     className="cursor-pointer text-muted"
                     onClick={toggleAllLabels}
                   />

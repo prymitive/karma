@@ -2,9 +2,7 @@ import React, { FunctionComponent, ReactNode } from "react";
 
 import Collapsible from "react-collapsible";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
+import { ToggleIcon } from "Components/ToggleIcon";
 
 const Trigger: FunctionComponent<{ text: string; isOpen: boolean }> = ({
   text,
@@ -13,10 +11,7 @@ const Trigger: FunctionComponent<{ text: string; isOpen: boolean }> = ({
   <div className="d-flex flex-row justify-content-between">
     <div>{text}</div>
     <div>
-      <FontAwesomeIcon
-        icon={isOpen ? faChevronDown : faChevronUp}
-        className="text-muted"
-      />
+      <ToggleIcon isOpen={isOpen} className="text-muted" />
     </div>
   </div>
 );
