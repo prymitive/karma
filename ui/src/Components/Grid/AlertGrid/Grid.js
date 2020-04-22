@@ -14,8 +14,6 @@ import MasonryInfiniteScroller from "react-masonry-infinite";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTh } from "@fortawesome/free-solid-svg-icons/faTh";
-import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 import { faAngleDoubleDown } from "@fortawesome/free-solid-svg-icons/faAngleDoubleDown";
 
 import { AlertStore } from "Stores/AlertStore";
@@ -26,6 +24,7 @@ import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { ThemeContext } from "Components/Theme";
+import { ToggleIcon } from "Components/ToggleIcon";
 import { DefaultDetailsCollapseValue } from "./AlertGroup/DetailsToggle";
 import { AlertGroup } from "./AlertGroup";
 
@@ -231,11 +230,7 @@ const Grid = observer(
                     onClick={this.onCollapseClick}
                   >
                     <TooltipWrapper title="Click to toggle this grid details or Alt+Click to toggle all grids">
-                      <FontAwesomeIcon
-                        icon={
-                          this.gridToggle.show ? faChevronDown : faChevronUp
-                        }
-                      />
+                      <ToggleIcon isOpen={this.gridToggle.show} />
                     </TooltipWrapper>
                   </span>
                 </span>

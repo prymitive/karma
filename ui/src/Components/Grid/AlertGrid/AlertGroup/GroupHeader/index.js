@@ -3,10 +3,6 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
-
 import { APIGroup } from "Models/API";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -14,6 +10,7 @@ import { FilteringLabel } from "Components/Labels/FilteringLabel";
 import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { AlertAck } from "Components/AlertAck";
+import { ToggleIcon } from "Components/ToggleIcon";
 import { GroupMenu } from "./GroupMenu";
 
 const GroupHeader = observer(
@@ -121,9 +118,7 @@ const GroupHeader = observer(
               onClick={this.onCollapseClick}
             >
               <TooltipWrapper title="Click to toggle this group details or Alt+Click to toggle all groups">
-                <FontAwesomeIcon
-                  icon={collapseStore.value ? faChevronUp : faChevronDown}
-                />
+                <ToggleIcon isOpen={!collapseStore.value} />
               </TooltipWrapper>
             </span>
           </span>

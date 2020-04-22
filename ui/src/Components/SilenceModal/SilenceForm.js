@@ -10,13 +10,12 @@ import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons/faCommentDots";
 import { faUndoAlt } from "@fortawesome/free-solid-svg-icons/faUndoAlt";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
-import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, SilenceFormStage } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
 import { TooltipWrapper } from "Components/TooltipWrapper";
+import { ToggleIcon } from "Components/ToggleIcon";
 import { AlertManagerInput } from "./AlertManagerInput";
 import { SilenceMatch } from "./SilenceMatch";
 import { DateTimeSelect } from "./DateTimeSelect";
@@ -169,9 +168,7 @@ const SilenceForm = observer(
               className="btn px-0 cursor-pointer text-muted"
               onClick={this.previewCollapse.toggle}
             >
-              <FontAwesomeIcon
-                icon={this.previewCollapse.hidden ? faChevronUp : faChevronDown}
-              />
+              <ToggleIcon isOpen={!this.previewCollapse.hidden} />
             </span>
             <span>
               {silenceFormStore.data.silenceID === null ? null : (

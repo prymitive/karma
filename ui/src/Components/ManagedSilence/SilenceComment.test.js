@@ -119,7 +119,7 @@ describe("<SilenceComment />", () => {
 
   it("collapseToggle is called when collapse icon is clicked", () => {
     const tree = MountedSilenceComment(true);
-    const collapse = tree.find("svg.fa-chevron-up");
+    const collapse = tree.find("svg.fa-chevron-down");
     collapse.simulate("click");
     expect(CollapseMock).toHaveBeenCalled();
   });
