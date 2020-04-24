@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
@@ -140,9 +141,19 @@ describe("<SilenceModal />", () => {
   });
 
   it("'modal-open' class is preserved on body node after remountModal is called", () => {
+    let callbacks = [];
+    jest.spyOn(React, "useCallback").mockImplementation((fn) => {
+      callbacks.push(fn);
+      return fn;
+    });
+
     silenceFormStore.toggle.visible = true;
-    const tree = MountedSilenceModal();
-    tree.instance().remountModal();
+    MountedSilenceModal();
+
+    expect(callbacks).toHaveLength(2);
+    act(() => {
+      callbacks.forEach((f) => f());
+    });
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 });

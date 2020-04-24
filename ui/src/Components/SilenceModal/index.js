@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
@@ -21,68 +21,59 @@ const SilenceModalContent = React.lazy(() =>
 );
 
 const SilenceModal = observer(
-  class SilenceModal extends Component {
-    static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired,
-    };
+  ({ alertStore, silenceFormStore, settingsStore }) => {
+    const modalRef = useRef();
 
-    constructor(props) {
-      super(props);
+    const onDeleteModalClose = React.useCallback(() => {
+      modalRef.current.toggleBodyClass(true);
+    }, []);
 
-      this.modalRef = React.createRef();
-    }
-
-    remountModal = () => {
-      this.modalRef.current.toggleBodyClass(true);
-    };
-
-    render() {
-      const { alertStore, silenceFormStore, settingsStore } = this.props;
-
-      return (
-        <React.Fragment>
-          <li
-            className={`nav-item components-navbar-button ${
-              silenceFormStore.toggle.visible ? "border-info" : ""
-            }`}
-          >
-            <TooltipWrapper title="New silence">
-              <span
-                className="nav-link cursor-pointer"
-                onClick={silenceFormStore.toggle.toggle}
-              >
-                <FontAwesomeIcon icon={faBellSlash} />
-              </span>
-            </TooltipWrapper>
-          </li>
-          <Modal
-            ref={this.modalRef}
-            isOpen={silenceFormStore.toggle.visible}
-            toggleOpen={silenceFormStore.toggle.toggle}
-            onExited={silenceFormStore.data.resetProgress}
-          >
-            <React.Suspense
-              fallback={
-                <h1 className="display-1 text-placeholder p-5 m-auto">
-                  <FontAwesomeIcon icon={faSpinner} size="lg" spin />
-                </h1>
-              }
+    return (
+      <React.Fragment>
+        <li
+          className={`nav-item components-navbar-button ${
+            silenceFormStore.toggle.visible ? "border-info" : ""
+          }`}
+        >
+          <TooltipWrapper title="New silence">
+            <span
+              className="nav-link cursor-pointer"
+              onClick={silenceFormStore.toggle.toggle}
             >
-              <SilenceModalContent
-                alertStore={alertStore}
-                silenceFormStore={silenceFormStore}
-                settingsStore={settingsStore}
-                onHide={silenceFormStore.toggle.hide}
-                onDeleteModalClose={this.remountModal}
-              />
-            </React.Suspense>
-          </Modal>
-        </React.Fragment>
-      );
-    }
+              <FontAwesomeIcon icon={faBellSlash} />
+            </span>
+          </TooltipWrapper>
+        </li>
+        <Modal
+          ref={modalRef}
+          isOpen={silenceFormStore.toggle.visible}
+          toggleOpen={silenceFormStore.toggle.toggle}
+          onExited={silenceFormStore.data.resetProgress}
+        >
+          <React.Suspense
+            fallback={
+              <h1 className="display-1 text-placeholder p-5 m-auto">
+                <FontAwesomeIcon icon={faSpinner} size="lg" spin />
+              </h1>
+            }
+          >
+            <SilenceModalContent
+              alertStore={alertStore}
+              silenceFormStore={silenceFormStore}
+              settingsStore={settingsStore}
+              onHide={silenceFormStore.toggle.hide}
+              onDeleteModalClose={onDeleteModalClose}
+            />
+          </React.Suspense>
+        </Modal>
+      </React.Fragment>
+    );
   }
 );
+SilenceModal.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+  settingsStore: PropTypes.instanceOf(Settings).isRequired,
+};
 
 export { SilenceModal };
