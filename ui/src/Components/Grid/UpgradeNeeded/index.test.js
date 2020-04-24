@@ -34,14 +34,4 @@ describe("<UpgradeNeeded />", () => {
     jest.runOnlyPendingTimers();
     expect(reloadSpy).toBeCalled();
   });
-
-  it("timer is cleared on unmount", () => {
-    const tree = mount(
-      <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />
-    );
-    const instance = tree.instance();
-
-    instance.componentWillUnmount();
-    expect(instance.timer).toBeNull();
-  });
 });
