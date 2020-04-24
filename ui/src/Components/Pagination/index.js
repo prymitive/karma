@@ -11,6 +11,8 @@ import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
 import { faAngleDoubleLeft } from "@fortawesome/free-solid-svg-icons/faAngleDoubleLeft";
 import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons/faAngleDoubleRight";
 
+import { IsMobile } from "Common/Device";
+
 class PageSelect extends Component {
   static propTypes = {
     totalPages: PropTypes.number.isRequired,
@@ -48,6 +50,8 @@ class PageSelect extends Component {
       setPageCallback,
     } = this.props;
 
+    const isMobile = IsMobile();
+
     return (
       <HotKeys
         className="components-pagination"
@@ -67,7 +71,7 @@ class PageSelect extends Component {
               activePage={activePage}
               itemsCountPerPage={maxPerPage}
               totalItemsCount={totalItemsCount}
-              pageRangeDisplayed={5}
+              pageRangeDisplayed={isMobile ? 3 : 5}
               onChange={setPageCallback}
               hideFirstLastPages={totalPages < 10}
               innerClass="pagination justify-content-center"
