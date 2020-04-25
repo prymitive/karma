@@ -57,15 +57,14 @@ describe("<OverviewModal />", () => {
     expect(tree.find(".modal-title")).toHaveLength(0);
   });
 
-  it("hides the modal when hide() is called", () => {
+  it("hides the modal when button.close is clicked", () => {
     const tree = MountedOverviewModal();
     const toggle = tree.find("div.navbar-brand");
 
     toggle.simulate("click");
     expect(tree.find(".modal-title").text()).toBe("Overview");
 
-    const instance = tree.instance();
-    instance.toggle.hide();
+    tree.find("button.close").simulate("click");
     jest.runOnlyPendingTimers();
     tree.update();
     expect(tree.find("OverviewModalContent")).toHaveLength(0);
