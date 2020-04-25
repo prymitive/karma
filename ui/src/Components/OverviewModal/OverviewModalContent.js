@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-import { observer } from "mobx-react";
-import { observable, action } from "mobx";
+import { observer, useLocalStore } from "mobx-react";
 
 import { AlertStore } from "Stores/AlertStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
@@ -100,51 +99,38 @@ const NothingToShow = () => (
   </div>
 );
 
-const OverviewModalContent = observer(
-  class OverviewModalContent extends Component {
-    static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      onHide: PropTypes.func.isRequired,
-    };
-
-    allLabels = observable(
-      {
-        show: false,
-        toggle() {
-          this.show = !this.show;
-        },
-      },
-      {
-        toggle: action.bound,
-      }
-    );
-
-    render() {
-      const { alertStore, onHide } = this.props;
-
-      return (
-        <React.Fragment>
-          <div className="modal-header">
-            <h5 className="modal-title">Overview</h5>
-            <button type="button" className="close" onClick={onHide}>
-              <span className="align-middle">&times;</span>
-            </button>
-          </div>
-          <div className="modal-body">
-            {alertStore.data.counters.length === 0 ? (
-              <NothingToShow />
-            ) : (
-              <LabelsTable
-                alertStore={alertStore}
-                showAllLabels={this.allLabels.show}
-                toggleAllLabels={this.allLabels.toggle}
-              />
-            )}
-          </div>
-        </React.Fragment>
-      );
-    }
-  }
-);
+const OverviewModalContent = observer(({ alertStore, onHide }) => {
+  const allLabels = useLocalStore(() => ({
+    show: false,
+    toggle() {
+      this.show = !this.show;
+    },
+  }));
+  return (
+    <React.Fragment>
+      <div className="modal-header">
+        <h5 className="modal-title">Overview</h5>
+        <button type="button" className="close" onClick={onHide}>
+          <span className="align-middle">&times;</span>
+        </button>
+      </div>
+      <div className="modal-body">
+        {alertStore.data.counters.length === 0 ? (
+          <NothingToShow />
+        ) : (
+          <LabelsTable
+            alertStore={alertStore}
+            showAllLabels={allLabels.show}
+            toggleAllLabels={allLabels.toggle}
+          />
+        )}
+      </div>
+    </React.Fragment>
+  );
+});
+OverviewModalContent.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  onHide: PropTypes.func.isRequired,
+};
 
 export { OverviewModalContent };

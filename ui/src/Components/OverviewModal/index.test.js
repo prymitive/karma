@@ -38,7 +38,7 @@ describe("<OverviewModal />", () => {
     const tree = MountedOverviewModal();
     const toggle = tree.find("div.navbar-brand");
     toggle.simulate("click");
-    expect(tree.find("OverviewModalContent")).toHaveLength(1);
+    expect(tree.find(".modal-title").text()).toBe("Overview");
     expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(0);
   });
 
@@ -49,12 +49,12 @@ describe("<OverviewModal />", () => {
     toggle.simulate("click");
     jest.runOnlyPendingTimers();
     tree.update();
-    expect(tree.find("OverviewModalContent")).toHaveLength(1);
+    expect(tree.find(".modal-title").text()).toBe("Overview");
 
     toggle.simulate("click");
     jest.runOnlyPendingTimers();
     tree.update();
-    expect(tree.find("OverviewModalContent")).toHaveLength(0);
+    expect(tree.find(".modal-title")).toHaveLength(0);
   });
 
   it("hides the modal when hide() is called", () => {
@@ -62,7 +62,7 @@ describe("<OverviewModal />", () => {
     const toggle = tree.find("div.navbar-brand");
 
     toggle.simulate("click");
-    expect(tree.find("OverviewModalContent")).toHaveLength(1);
+    expect(tree.find(".modal-title").text()).toBe("Overview");
 
     const instance = tree.instance();
     instance.toggle.hide();
