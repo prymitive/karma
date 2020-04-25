@@ -51,14 +51,11 @@ const FakeModal = () => {
   );
 };
 
-const ValidateSetTab = (title, callArg) => {
+const ValidateSetTab = (title) => {
   const component = FakeModal();
-  const instance = component.instance();
-  const setTabSpy = jest.spyOn(instance.tab, "setTab");
 
   const tab = component.find({ title: title });
   tab.simulate("click");
-  expect(setTabSpy).toHaveBeenCalledWith(callArg);
   expect(component.find(".nav-link.active").text()).toBe(title);
 };
 
@@ -91,11 +88,11 @@ describe("<MainModalContent />", () => {
   // modal makes it tricky to verify re-rendered content, so only check if we
   // update the store for now
   it("calls setTab('configuration') after clicking on the 'Configuration' tab", () => {
-    ValidateSetTab("Configuration", "configuration");
+    ValidateSetTab("Configuration");
   });
 
   it("calls setTab('help') after clicking on the 'Help' tab", () => {
-    ValidateSetTab("Help", "help");
+    ValidateSetTab("Help");
   });
 
   it("shows username when alertStore.info.authentication.enabled=true", () => {
