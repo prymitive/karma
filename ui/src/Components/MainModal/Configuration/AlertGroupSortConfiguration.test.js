@@ -75,10 +75,12 @@ describe("<AlertGroupSortConfiguration />", () => {
       settingsStore.gridConfig.options.label.value
     );
     const tree = FakeConfiguration();
-    tree.instance().onSortOrderChange({
-      label: settingsStore.gridConfig.options.startsAt.label,
-      value: settingsStore.gridConfig.options.startsAt.value,
-    });
+
+    tree
+      .find("input#react-select-configuration-sort-order-input")
+      .simulate("change", { target: { value: " " } });
+    tree.find("div.react-select__option").at(2).simulate("click");
+
     setTimeout(() => {
       expect(settingsStore.gridConfig.config.sortOrder).toBe(
         settingsStore.gridConfig.options.startsAt.value

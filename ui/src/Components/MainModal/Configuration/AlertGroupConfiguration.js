@@ -1,56 +1,41 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-import { observable, action, toJS } from "mobx";
-import { observer } from "mobx-react";
+import { useObserver, useLocalStore } from "mobx-react";
 
 import InputRange from "react-input-range";
 
 import { Settings } from "Stores/Settings";
 
-const AlertGroupConfiguration = observer(
-  class AlertGroupConfiguration extends Component {
-    static propTypes = {
-      settingsStore: PropTypes.instanceOf(Settings).isRequired,
-    };
+const AlertGroupConfiguration = ({ settingsStore }) => {
+  const config = useLocalStore(() => ({
+    defaultRenderCount:
+      settingsStore.alertGroupConfig.config.defaultRenderCount,
+    setDefaultRenderCount(val) {
+      this.defaultRenderCount = val;
+    },
+  }));
 
-    constructor(props) {
-      super(props);
+  const onChangeComplete = (value) => {
+    settingsStore.alertGroupConfig.update({ defaultRenderCount: value });
+  };
 
-      this.config = observable({
-        defaultRenderCount: toJS(
-          props.settingsStore.alertGroupConfig.config.defaultRenderCount
-        ),
-      });
-    }
-
-    onChange = action((value) => {
-      this.config.defaultRenderCount = value;
-    });
-
-    onChangeComplete = action((value) => {
-      const { settingsStore } = this.props;
-
-      settingsStore.alertGroupConfig.update({ defaultRenderCount: value });
-    });
-
-    render() {
-      return (
-        <div className="form-group mb-0 text-center">
-          <InputRange
-            minValue={1}
-            maxValue={10}
-            step={1}
-            value={this.config.defaultRenderCount}
-            id="formControlRange"
-            formatLabel={this.formatLabel}
-            onChange={this.onChange}
-            onChangeComplete={this.onChangeComplete}
-          />
-        </div>
-      );
-    }
-  }
-);
+  return useObserver(() => (
+    <div className="form-group mb-0 text-center">
+      <InputRange
+        minValue={1}
+        maxValue={10}
+        step={1}
+        value={config.defaultRenderCount}
+        id="formControlRange"
+        onChange={config.setDefaultRenderCount}
+        onChangeComplete={onChangeComplete}
+      />
+    </div>
+  ));
+};
+AlertGroupConfiguration.propTypes = {
+  settingsStore: PropTypes.instanceOf(Settings).isRequired,
+};
 
 export { AlertGroupConfiguration };

@@ -1,76 +1,54 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-import { action } from "mobx";
-import { observer } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import Select from "react-select";
 
 import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 
-const AlertGroupCollapseConfiguration = observer(
-  class AlertGroupCollapseConfiguration extends Component {
-    static propTypes = {
-      settingsStore: PropTypes.instanceOf(Settings).isRequired,
-    };
-    static contextType = ThemeContext;
-
-    constructor(props) {
-      super(props);
-
-      this.validateConfig();
-    }
-
-    valueToOption = (val) => {
-      const { settingsStore } = this.props;
-
-      return {
-        label: settingsStore.alertGroupConfig.options[val].label,
-        value: val,
-      };
-    };
-
-    validateConfig = action(() => {
-      const { settingsStore } = this.props;
-
-      if (
-        !Object.values(settingsStore.alertGroupConfig.options)
-          .map((o) => o.value)
-          .includes(settingsStore.alertGroupConfig.config.defaultCollapseState)
-      ) {
-        settingsStore.alertGroupConfig.config.defaultCollapseState =
-          settingsStore.alertGroupConfig.options.collapsedOnMobile.value;
-      }
-    });
-
-    onCollapseChange = action((newValue, actionMeta) => {
-      const { settingsStore } = this.props;
-
-      settingsStore.alertGroupConfig.config.defaultCollapseState =
-        newValue.value;
-    });
-
-    render() {
-      const { settingsStore } = this.props;
-
-      return (
-        <div className="form-group mb-0">
-          <Select
-            styles={this.context.reactSelectStyles}
-            classNamePrefix="react-select"
-            instanceId="configuration-collapse"
-            defaultValue={this.valueToOption(
-              settingsStore.alertGroupConfig.config.defaultCollapseState
-            )}
-            options={Object.values(settingsStore.alertGroupConfig.options)}
-            onChange={this.onCollapseChange}
-            hideSelectedOptions
-          />
-        </div>
-      );
-    }
+const AlertGroupCollapseConfiguration = ({ settingsStore }) => {
+  if (
+    !Object.values(settingsStore.alertGroupConfig.options)
+      .map((o) => o.value)
+      .includes(settingsStore.alertGroupConfig.config.defaultCollapseState)
+  ) {
+    settingsStore.alertGroupConfig.config.defaultCollapseState =
+      settingsStore.alertGroupConfig.options.collapsedOnMobile.value;
   }
-);
+
+  const valueToOption = (val) => {
+    return {
+      label: settingsStore.alertGroupConfig.options[val].label,
+      value: val,
+    };
+  };
+
+  const onCollapseChange = (newValue, actionMeta) => {
+    settingsStore.alertGroupConfig.config.defaultCollapseState = newValue.value;
+  };
+
+  const context = React.useContext(ThemeContext);
+
+  return useObserver(() => (
+    <div className="form-group mb-0">
+      <Select
+        styles={context.reactSelectStyles}
+        classNamePrefix="react-select"
+        instanceId="configuration-collapse"
+        defaultValue={valueToOption(
+          settingsStore.alertGroupConfig.config.defaultCollapseState
+        )}
+        options={Object.values(settingsStore.alertGroupConfig.options)}
+        onChange={onCollapseChange}
+        hideSelectedOptions
+      />
+    </div>
+  ));
+};
+AlertGroupCollapseConfiguration.propTypes = {
+  settingsStore: PropTypes.instanceOf(Settings).isRequired,
+};
 
 export { AlertGroupCollapseConfiguration };
