@@ -22,16 +22,23 @@ describe("<AlertGroupWidthConfiguration />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("call to onChange() updates internal state", () => {
-    const tree = FakeConfiguration();
-    tree.instance().onChange(500);
-    expect(tree.instance().config.groupWidth).toBe(500);
-  });
-
   it("settings are updated on completed change", () => {
     const tree = FakeConfiguration();
-    tree.instance().onChangeComplete(555);
-    expect(settingsStore.gridConfig.config.groupWidth).toBe(555);
+    expect(settingsStore.gridConfig.config.groupWidth).toBe(420);
+
+    const slider = tree.find(`Slider [onKeyDown]`).first();
+
+    slider.simulate("keyDown", { keyCode: 37 });
+    slider.simulate("keyUp", { keyCode: 37 });
+
+    expect(settingsStore.gridConfig.config.groupWidth).toBe(400);
+
+    slider.simulate("keyDown", { keyCode: 39 });
+    slider.simulate("keyUp", { keyCode: 39 });
+    slider.simulate("keyDown", { keyCode: 39 });
+    slider.simulate("keyUp", { keyCode: 39 });
+
+    expect(settingsStore.gridConfig.config.groupWidth).toBe(440);
   });
 
   it("custom interval value is rendered correctly", () => {

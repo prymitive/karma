@@ -4,28 +4,23 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
+import { MockThemeContext } from "__mocks__/Theme";
 import { Settings } from "Stores/Settings";
-import { ThemeContext } from "Components/Theme";
-import {
-  ReactSelectColors,
-  ReactSelectStyles,
-} from "Components/Theme/ReactSelect";
 import { AlertGroupCollapseConfiguration } from "./AlertGroupCollapseConfiguration";
 
 let settingsStore;
+
+beforeAll(() => {
+  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
+});
+
 beforeEach(() => {
   settingsStore = new Settings();
 });
 
 const FakeConfiguration = () => {
   return mount(
-    <ThemeContext.Provider
-      value={{
-        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
-      }}
-    >
-      <AlertGroupCollapseConfiguration settingsStore={settingsStore} />
-    </ThemeContext.Provider>
+    <AlertGroupCollapseConfiguration settingsStore={settingsStore} />
   );
 };
 

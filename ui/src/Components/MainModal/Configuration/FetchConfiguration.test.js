@@ -22,16 +22,23 @@ describe("<FetchConfiguration />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("call to onChange() updates internal state", () => {
-    const tree = FakeConfiguration();
-    tree.instance().onChange(55);
-    expect(tree.instance().config.fetchInterval).toBe(55);
-  });
-
   it("settings are updated on completed change", () => {
     const tree = FakeConfiguration();
-    tree.instance().onChangeComplete(123);
-    expect(settingsStore.fetchConfig.config.interval).toBe(123);
+    expect(settingsStore.fetchConfig.config.interval).toBe(30);
+
+    const slider = tree.find(`Slider [onKeyDown]`).first();
+
+    slider.simulate("keyDown", { keyCode: 37 });
+    slider.simulate("keyUp", { keyCode: 37 });
+
+    expect(settingsStore.fetchConfig.config.interval).toBe(20);
+
+    slider.simulate("keyDown", { keyCode: 39 });
+    slider.simulate("keyUp", { keyCode: 39 });
+    slider.simulate("keyDown", { keyCode: 39 });
+    slider.simulate("keyUp", { keyCode: 39 });
+
+    expect(settingsStore.fetchConfig.config.interval).toBe(40);
   });
 
   it("custom interval value is rendered correctly", () => {
