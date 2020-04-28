@@ -35,11 +35,9 @@ describe("<ReloadNeeded />", () => {
     expect(reloadSpy).toBeCalled();
   });
 
-  it("timer is cleared on unmount", () => {
+  it("unmounts cleanly", () => {
     const tree = mount(<ReloadNeeded reloadAfter={100000000} />);
-    const instance = tree.instance();
-
-    instance.componentWillUnmount();
-    expect(instance.timer).toBeNull();
+    tree.unmount();
+    jest.runOnlyPendingTimers();
   });
 });

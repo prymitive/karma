@@ -260,17 +260,18 @@ describe("<Fetcher />", () => {
     expect(fetchSpy).toHaveBeenCalledWith("", true, "", "", "");
   });
 
-  it("internal timer is armed after render", () => {
-    const tree = MountedFetcher();
-    const instance = tree.instance();
-    expect(instance.timer).toBeGreaterThanOrEqual(0);
-  });
-
   it("internal timer is null after unmount", () => {
     const tree = MountedFetcher();
-    const instance = tree.instance();
-    instance.componentWillUnmount();
-    expect(instance.timer).toBeNull();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+
+    tree.unmount();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+
+    settingsStore.gridConfig.config.reverseSort = !settingsStore.gridConfig
+      .config.reverseSort;
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+    jest.runOnlyPendingTimers();
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
   it("doesn't fetch on mount when paused", () => {
@@ -281,16 +282,18 @@ describe("<Fetcher />", () => {
 
   it("doesn't fetch on update when paused", () => {
     alertStore.status.pause();
-    const tree = MountedFetcher();
-    tree.instance().componentDidUpdate();
+    MountedFetcher();
+    settingsStore.gridConfig.config.reverseSort = !settingsStore.gridConfig
+      .config.reverseSort;
     expect(fetchSpy).toHaveBeenCalledTimes(0);
   });
 
   it("fetches on update when resumed", () => {
     alertStore.status.pause();
-    const tree = MountedFetcher();
+    MountedFetcher();
     alertStore.status.resume();
-    tree.instance().componentDidUpdate();
+    settingsStore.gridConfig.config.reverseSort = !settingsStore.gridConfig
+      .config.reverseSort;
     expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
