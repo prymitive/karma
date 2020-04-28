@@ -40,7 +40,8 @@ describe("<Modal />", () => {
     document.body.classList.toggle("modal-open", true);
     const tree = MountedModal(false);
     expect(document.body.className.split(" ")).toContain("modal-open");
-    tree.instance().componentDidUpdate();
+    // force update
+    tree.setProps({ style: {} });
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
@@ -51,7 +52,8 @@ describe("<Modal />", () => {
     expect(document.body.className.split(" ")).toContain("modal-open");
 
     isOpen = false;
-    tree.instance().componentDidUpdate();
+    // force update
+    tree.setProps({ style: {} });
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
