@@ -1,36 +1,41 @@
-import React from "react";
+import React, { useCallback } from "react";
 
-import { observer } from "mobx-react";
+import { useObserver } from "mobx-react";
 
+import { QueryOperators, FormatQuery } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
-import { BaseLabel } from "Components/Labels/BaseLabel";
+import { GetClassAndStyle } from "Components/Labels/Utils";
 
-// Renders a label element that after clicking adds current label as a filter
-const FilteringLabel = observer(
-  class FilteringLabel extends BaseLabel {
-    render() {
-      const { name, value } = this.props;
+const FilteringLabel = ({ alertStore, name, value }) => {
+  const handleClick = useCallback(
+    (event) => {
+      // left click       => apply foo=bar filter
+      // left click + alt => apply foo!=bar filter
+      const operator =
+        event.altKey === true ? QueryOperators.NotEqual : QueryOperators.Equal;
 
-      let cs = this.getClassAndStyle(
-        name,
-        value,
-        "components-label-with-hover"
-      );
+      event.preventDefault();
 
-      return (
-        <TooltipWrapper title="Click to only show alerts with this label or Alt+Click to hide them">
-          <span
-            className={cs.className}
-            style={cs.style}
-            onClick={(e) => this.handleClick(e)}
-          >
-            <span className="components-label-name">{name}:</span>{" "}
-            <span className="components-label-value">{value}</span>
-          </span>
-        </TooltipWrapper>
-      );
-    }
-  }
-);
+      alertStore.filters.addFilter(FormatQuery(name, operator, value));
+    },
+    [alertStore.filters, name, value]
+  );
+
+  const cs = GetClassAndStyle(
+    alertStore,
+    name,
+    value,
+    "components-label-with-hover"
+  );
+
+  return useObserver(() => (
+    <TooltipWrapper title="Click to only show alerts with this label or Alt+Click to hide them">
+      <span className={cs.className} style={cs.style} onClick={handleClick}>
+        <span className="components-label-name">{name}:</span>{" "}
+        <span className="components-label-value">{value}</span>
+      </span>
+    </TooltipWrapper>
+  ));
+};
 
 export { FilteringLabel };

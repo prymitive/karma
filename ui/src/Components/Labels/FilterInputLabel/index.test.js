@@ -48,7 +48,9 @@ const ValidateOnChange = (newRaw) => {
       filter={alertStore.filters.values[0]}
     />
   );
-  tree.instance().onChange({ raw: newRaw });
+
+  const input = tree.find("RIEInput");
+  input.props().change({ raw: newRaw });
 
   return tree;
 };

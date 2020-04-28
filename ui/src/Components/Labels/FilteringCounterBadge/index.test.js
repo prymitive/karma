@@ -3,7 +3,7 @@ import React from "react";
 import { mount, render } from "enzyme";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
-
+import { QueryOperators } from "Common/Query";
 import { FilteringCounterBadge } from ".";
 
 let alertStore;
@@ -39,7 +39,7 @@ const validateStyle = (value, themed) => {
   expect(tree.find("span").prop("style")).toEqual({ opacity: 1 });
 };
 
-const validateOnClick = (value, themed) => {
+const validateOnClick = (value, themed, isNegative) => {
   const tree = mount(
     <FilteringCounterBadge
       alertStore={alertStore}
@@ -49,10 +49,16 @@ const validateOnClick = (value, themed) => {
       themed={themed}
     />
   );
-  tree.find(".components-label").simulate("click");
+  tree
+    .find(".components-label")
+    .simulate("click", { altKey: isNegative ? true : false });
   expect(alertStore.filters.values).toHaveLength(1);
   expect(alertStore.filters.values).toContainEqual(
-    NewUnappliedFilter(`@state=${value}`)
+    NewUnappliedFilter(
+      `@state${
+        isNegative ? QueryOperators.NotEqual : QueryOperators.Equal
+      }${value}`
+    )
   );
 };
 
@@ -93,13 +99,12 @@ describe("<FilteringCounterBadge />", () => {
     expect(tree.text()).toBe("123");
   });
 
-  it("onClick method on @state=unprocessed counter badge should add a new filter", () => {
-    validateOnClick("unprocessed", true);
-  });
-  it("onClick method on @state=active counter badge should add a new filter", () => {
-    validateOnClick("active", true);
-  });
-  it("onClick method on @state=suppressed counter badge should add a new filter", () => {
-    validateOnClick("suppressed", true);
-  });
+  for (let state of ["unprocessed", "active", "suppressed"]) {
+    it(`click on @state=${state} counter badge should add a new filter`, () => {
+      validateOnClick(state, true, false);
+    });
+    it(`alt+click method on @state=${state} counter badge should add a new negative filter`, () => {
+      validateOnClick(state, true, true);
+    });
+  }
 });
