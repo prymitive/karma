@@ -34,4 +34,16 @@ describe("<UpgradeNeeded />", () => {
     jest.runOnlyPendingTimers();
     expect(reloadSpy).toBeCalled();
   });
+
+  it("stops calling window.location.reload after unmount", () => {
+    const reloadSpy = jest
+      .spyOn(global.window.location, "reload")
+      .mockImplementation(() => {});
+    const tree = mount(
+      <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />
+    );
+    tree.unmount();
+    jest.runOnlyPendingTimers();
+    expect(reloadSpy).not.toBeCalled();
+  });
 });
