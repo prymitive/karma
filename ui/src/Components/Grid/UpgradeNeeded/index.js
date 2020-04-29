@@ -11,7 +11,8 @@ import "csshake/scss/csshake-slow.scss";
 
 const UpgradeNeeded = ({ newVersion, reloadAfter }) => {
   useEffect(() => {
-    setTimeout(window.location.reload, reloadAfter);
+    const timer = setTimeout(() => window.location.reload(), reloadAfter);
+    return () => clearTimeout(timer);
   }, [reloadAfter]);
 
   return (
