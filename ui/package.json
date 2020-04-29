@@ -91,7 +91,8 @@
     "markdownlint-cli": "0.22.0",
     "node-sass": "4.14.0",
     "prettier": "2.0.5",
-    "source-map-explorer": "2.4.2"
+    "source-map-explorer": "2.4.2",
+    "storybook-addon-performance": "0.10.0"
   },
   "browserslist": [
     ">= 1%",

@@ -8,6 +8,8 @@ import {
 
 import createPercyAddon from "@percy-io/percy-storybook";
 
+import { withPerformance } from "storybook-addon-performance";
+
 import "mobx-react-lite/batchingForReactDom";
 
 import { advanceTo } from "jest-date-mock";
@@ -69,6 +71,7 @@ addDecorator((story) => {
     </div>
   );
 });
+addDecorator(withPerformance);
 
 const req = require.context("../src/Components", true, /\.stories\.(js|tsx)$/);
 
