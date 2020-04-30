@@ -35,9 +35,13 @@ describe("<ReloadNeeded />", () => {
     expect(reloadSpy).toBeCalled();
   });
 
-  it("unmounts cleanly", () => {
+  it("stops calling window.location.reload after unmount", () => {
+    const reloadSpy = jest
+      .spyOn(global.window.location, "reload")
+      .mockImplementation(() => {});
     const tree = mount(<ReloadNeeded reloadAfter={100000000} />);
     tree.unmount();
     jest.runOnlyPendingTimers();
+    expect(reloadSpy).not.toBeCalled();
   });
 });
