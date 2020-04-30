@@ -2,8 +2,6 @@ import React from "react";
 
 import { mount } from "enzyme";
 
-import { toJS } from "mobx";
-
 import toDiffableHtml from "diffable-html";
 
 import moment from "moment";
@@ -13,6 +11,10 @@ import { MockSilence } from "__mocks__/Alerts";
 import { SilenceProgress } from "./SilenceProgress";
 
 let silence;
+
+beforeAll(() => {
+  jest.useFakeTimers();
+});
 
 beforeEach(() => {
   silence = MockSilence();
@@ -57,24 +59,22 @@ describe("<SilenceProgress />", () => {
     expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-success/);
   });
 
-  it("calling calculate() on progress multiple times in a row doesn't change the value", () => {
-    const startsAt = moment.utc([2000, 0, 1, 0, 0, 0]);
-    const endsAt = moment.utc([2000, 0, 1, 1, 0, 0]);
-
+  it("progressbar is updated every 30 seconds", () => {
+    advanceTo(moment.utc([2000, 0, 1, 0, 30, 0]));
     const tree = MountedSilenceProgress();
-    const instance = tree.instance();
+    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-success/);
 
-    const value = toJS(instance.progress.value);
-    instance.progress.calculate(startsAt, endsAt);
-    instance.progress.calculate(startsAt, endsAt);
-    instance.progress.calculate(startsAt, endsAt);
-    expect(toJS(instance.progress.value)).toBe(value);
+    advanceTo(moment.utc([2000, 0, 1, 0, 50, 0]));
+    jest.runOnlyPendingTimers();
+    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-warning/);
+
+    advanceTo(moment.utc([2000, 0, 1, 0, 55, 0]));
+    jest.runOnlyPendingTimers();
+    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-danger/);
   });
 
-  it("resets the timer on unmount", () => {
+  it("unmounts cleanly", () => {
     const tree = MountedSilenceProgress();
-    expect(tree.instance().progressTimer).not.toBeNull();
-    tree.instance().componentWillUnmount();
-    expect(tree.instance().progressTimer).toBeNull();
+    tree.unmount();
   });
 });
