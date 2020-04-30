@@ -132,12 +132,9 @@ describe("<DateTimeSelect />", () => {
     expect(tree.find(".nav-link").at(1).text()).toBe("Endsin 59m ");
   });
 
-  it("nowUpdateTimer is destroyed before unmount", () => {
+  it("unmounts cleanly", () => {
     const tree = MountedDateTimeSelect();
-    const instance = tree.instance();
-    expect(instance.nowUpdateTimer).toBeDefined();
-    instance.componentWillUnmount();
-    expect(instance.nowUpdateTimer).toBeNull();
+    tree.unmount();
   });
 });
 

@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
-import { observable, action } from "mobx";
-import { observer } from "mobx-react";
+import { useObserver, useLocalStore } from "mobx-react";
 
 import moment from "moment";
 
@@ -54,8 +53,8 @@ const TabNames = Object.freeze({
   Duration: "duration",
 });
 
-const TabContentStart = observer(({ silenceFormStore }) => {
-  return (
+const TabContentStart = ({ silenceFormStore }) => {
+  return useObserver(() => (
     <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2">
       <div className="d-flex justify-content-center align-items-center">
         <DatePicker
@@ -77,11 +76,11 @@ const TabContentStart = observer(({ silenceFormStore }) => {
         onMinuteDec={() => silenceFormStore.data.decStart(1)}
       />
     </div>
-  );
-});
+  ));
+};
 
-const TabContentEnd = observer(({ silenceFormStore }) => {
-  return (
+const TabContentEnd = ({ silenceFormStore }) => {
+  return useObserver(() => (
     <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2">
       <div className="d-flex justify-content-center align-items-center">
         <DatePicker
@@ -103,8 +102,8 @@ const TabContentEnd = observer(({ silenceFormStore }) => {
         onMinuteDec={() => silenceFormStore.data.decEnd(1)}
       />
     </div>
-  );
-});
+  ));
+};
 
 // calculate value for duration increase button using a goal step
 const CalculateChangeValueUp = (currentValue, step) => {
@@ -126,8 +125,8 @@ const CalculateChangeValueDown = (currentValue, step) => {
   return currentValue % step || step;
 };
 
-const TabContentDuration = observer(({ silenceFormStore }) => {
-  return (
+const TabContentDuration = ({ silenceFormStore }) => {
+  return useObserver(() => (
     <div className="d-flex flex-sm-row flex-column justify-content-around mt-2 mx-3">
       <Duration
         label="days"
@@ -159,125 +158,105 @@ const TabContentDuration = observer(({ silenceFormStore }) => {
         }
       />
     </div>
-  );
-});
+  ));
+};
 TabContentDuration.propTypes = {
   silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
 };
 
-const DateTimeSelect = observer(
-  class DateTimeSelect extends Component {
-    static propTypes = {
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      openTab: PropTypes.oneOf(Object.values(TabNames)),
+const DateTimeSelect = ({ silenceFormStore, openTab }) => {
+  const tab = useLocalStore(() => ({
+    current: openTab,
+    setStart() {
+      this.current = TabNames.Start;
+    },
+    setEnd() {
+      this.current = TabNames.End;
+    },
+    setDuration() {
+      this.current = TabNames.Duration;
+    },
+    timeNow: moment().seconds(0),
+    updateTimeNow() {
+      this.timeNow = moment().seconds(0);
+    },
+  }));
+
+  useEffect(() => {
+    tab.updateTimeNow();
+    const nowUpdateTimer = setInterval(tab.updateTimeNow, 30 * 1000);
+    return () => {
+      clearInterval(nowUpdateTimer);
     };
-    static defaultProps = {
-      openTab: TabNames.Duration,
-    };
+  }, [tab]);
 
-    constructor(props) {
-      super(props);
-
-      this.tab = observable(
-        {
-          current: props.openTab,
-          setStart() {
-            this.current = TabNames.Start;
-          },
-          setEnd() {
-            this.current = TabNames.End;
-          },
-          setDuration() {
-            this.current = TabNames.Duration;
-          },
-          timeNow: moment().seconds(0),
-          updateTimeNow() {
-            this.timeNow = moment().seconds(0);
-          },
-        },
-        {
-          setStart: action.bound,
-          setEnd: action.bound,
-          setDuration: action.bound,
-          updateTimeNow: action.bound,
-        }
-      );
-    }
-
-    componentDidMount() {
-      this.tab.updateTimeNow();
-      this.nowUpdateTimer = setInterval(this.tab.updateTimeNow, 30 * 1000);
-    }
-    componentWillUnmount() {
-      clearInterval(this.nowUpdateTimer);
-      this.nowUpdateTimer = null;
-    }
-
-    render() {
-      const { silenceFormStore } = this.props;
-
-      return (
-        <React.Fragment>
-          <ul className="nav nav-tabs nav-fill">
-            <Tab
-              title={
-                <React.Fragment>
-                  <span className="mr-1">Starts</span>
-                  <OffsetBadge
-                    prefixLabel="in "
-                    startDate={this.tab.timeNow}
-                    endDate={silenceFormStore.data.startsAt}
-                  />
-                </React.Fragment>
-              }
-              active={this.tab.current === TabNames.Start}
-              onClick={this.tab.setStart}
-            />
-            <Tab
-              title={
-                <React.Fragment>
-                  <span className="mr-1">Ends</span>
-                  <OffsetBadge
-                    prefixLabel="in "
-                    startDate={this.tab.timeNow}
-                    endDate={silenceFormStore.data.endsAt}
-                  />
-                </React.Fragment>
-              }
-              active={this.tab.current === TabNames.End}
-              onClick={this.tab.setEnd}
-            />
-            <Tab
-              title={
-                <React.Fragment>
-                  <span className="mr-1">Duration</span>
-                  <OffsetBadge
-                    prefixLabel=""
-                    startDate={silenceFormStore.data.startsAt}
-                    endDate={silenceFormStore.data.endsAt}
-                  />
-                </React.Fragment>
-              }
-              active={this.tab.current === TabNames.Duration}
-              onClick={this.tab.setDuration}
-            />
-          </ul>
-          <div className="tab-content mb-3">
-            {this.tab.current === TabNames.Duration ? (
-              <TabContentDuration silenceFormStore={silenceFormStore} />
-            ) : null}
-            {this.tab.current === TabNames.Start ? (
-              <TabContentStart silenceFormStore={silenceFormStore} />
-            ) : null}
-            {this.tab.current === TabNames.End ? (
-              <TabContentEnd silenceFormStore={silenceFormStore} />
-            ) : null}
-          </div>
-        </React.Fragment>
-      );
-    }
-  }
-);
+  return useObserver(() => (
+    <React.Fragment>
+      <ul className="nav nav-tabs nav-fill">
+        <Tab
+          title={
+            <React.Fragment>
+              <span className="mr-1">Starts</span>
+              <OffsetBadge
+                prefixLabel="in "
+                startDate={tab.timeNow}
+                endDate={silenceFormStore.data.startsAt}
+              />
+            </React.Fragment>
+          }
+          active={tab.current === TabNames.Start}
+          onClick={tab.setStart}
+        />
+        <Tab
+          title={
+            <React.Fragment>
+              <span className="mr-1">Ends</span>
+              <OffsetBadge
+                prefixLabel="in "
+                startDate={tab.timeNow}
+                endDate={silenceFormStore.data.endsAt}
+              />
+            </React.Fragment>
+          }
+          active={tab.current === TabNames.End}
+          onClick={tab.setEnd}
+        />
+        <Tab
+          title={
+            <React.Fragment>
+              <span className="mr-1">Duration</span>
+              <OffsetBadge
+                prefixLabel=""
+                startDate={silenceFormStore.data.startsAt}
+                endDate={silenceFormStore.data.endsAt}
+              />
+            </React.Fragment>
+          }
+          active={tab.current === TabNames.Duration}
+          onClick={tab.setDuration}
+        />
+      </ul>
+      <div className="tab-content mb-3">
+        {tab.current === TabNames.Duration ? (
+          <TabContentDuration silenceFormStore={silenceFormStore} />
+        ) : null}
+        {tab.current === TabNames.Start ? (
+          <TabContentStart silenceFormStore={silenceFormStore} />
+        ) : null}
+        {tab.current === TabNames.End ? (
+          <TabContentEnd silenceFormStore={silenceFormStore} />
+        ) : null}
+      </div>
+    </React.Fragment>
+  ));
+};
+DateTimeSelect.propTypes = {
+  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+  openTab: PropTypes.oneOf(Object.values(TabNames)),
+};
+DateTimeSelect.defaultProps = {
+  openTab: TabNames.Duration,
+};
 
 export {
   DateTimeSelect,
