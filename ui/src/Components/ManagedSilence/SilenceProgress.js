@@ -9,24 +9,23 @@ import { APISilence } from "Models/API";
 
 import "./SilenceProgress.scss";
 
+const calculatePercent = (startsAt, endsAt) => {
+  const durationDone = moment().unix() - moment(startsAt).unix();
+  const durationTotal = moment(endsAt).unix() - moment(startsAt).unix();
+  return Math.floor((durationDone / durationTotal) * 100);
+};
+
 const SilenceProgress = ({ silence }) => {
   const progress = useLocalStore(() => ({
-    value: 0,
-    calculate(startsAt, endsAt) {
-      const durationDone = moment().unix() - moment(startsAt).unix();
-      const durationTotal = moment(endsAt).unix() - moment(startsAt).unix();
-      const durationPercent = Math.floor((durationDone / durationTotal) * 100);
-      if (this.value !== durationPercent) {
-        this.value = durationPercent;
-      }
+    value: calculatePercent(silence.startsAt, silence.endsAt),
+    setValue(val) {
+      this.value = val;
     },
   }));
 
   useEffect(() => {
-    progress.calculate(silence.startsAt, silence.endsAt);
-
     const timer = setInterval(() => {
-      progress.calculate(silence.startsAt, silence.endsAt);
+      progress.setValue(calculatePercent(silence.startsAt, silence.endsAt));
     }, 30 * 1000);
     return () => clearInterval(timer);
   }, [progress, silence.startsAt, silence.endsAt]);
