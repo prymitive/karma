@@ -1,7 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-import { observer } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
@@ -30,34 +30,27 @@ FetchIcon.defaultProps = {
   spin: false,
 };
 
-const FetchIndicator = observer(
-  class FetchIndicator extends Component {
-    static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-    };
-
-    render() {
-      const { alertStore } = this.props;
-
-      if (alertStore.status.paused) return <FetchIcon icon={faPauseCircle} />;
-
-      const status = alertStore.status.value.toString();
-
-      if (status === AlertStoreStatuses.Fetching.toString())
-        return (
-          <FetchIcon
-            icon={faCircleNotch}
-            color={alertStore.info.isRetrying ? "danger" : "muted"}
-            spin
-          />
-        );
-
-      if (status === AlertStoreStatuses.Processing.toString())
-        return <FetchIcon icon={faCircleNotch} color="success" spin />;
-
-      return <FetchIcon icon={faCircleNotch} visible={false} />;
-    }
-  }
-);
+const FetchIndicator = ({ alertStore }) => {
+  return useObserver(() =>
+    alertStore.status.paused ? (
+      <FetchIcon icon={faPauseCircle} />
+    ) : alertStore.status.value.toString() ===
+      AlertStoreStatuses.Fetching.toString() ? (
+      <FetchIcon
+        icon={faCircleNotch}
+        color={alertStore.info.isRetrying ? "danger" : "muted"}
+        spin
+      />
+    ) : alertStore.status.value.toString() ===
+      AlertStoreStatuses.Processing.toString() ? (
+      <FetchIcon icon={faCircleNotch} color="success" spin />
+    ) : (
+      <FetchIcon icon={faCircleNotch} visible={false} />
+    )
+  );
+};
+FetchIndicator.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+};
 
 export { FetchIndicator };
