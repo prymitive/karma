@@ -13,9 +13,20 @@ import { GroupMenu, MenuContent } from "./GroupMenu";
 let alertStore;
 let silenceFormStore;
 
+let MockAfterClick;
+let MockSetIsMenuOpen;
+
+beforeAll(() => {
+  jest.useFakeTimers();
+});
+
 beforeEach(() => {
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
+
+  jest.clearAllMocks();
+  MockAfterClick = jest.fn();
+  MockSetIsMenuOpen = jest.fn();
 
   alertStore.data.upstreams = {
     clusters: { default: ["am1"] },
@@ -36,9 +47,6 @@ beforeEach(() => {
   };
 });
 
-const MockAfterClick = jest.fn();
-const MockSetIsMenuOpen = jest.fn();
-
 const MountedGroupMenu = (group, themed) => {
   return mount(
     <GroupMenu
@@ -48,38 +56,62 @@ const MountedGroupMenu = (group, themed) => {
       themed={themed}
       setIsMenuOpen={MockSetIsMenuOpen}
     />
-  ).find("GroupMenu");
+  );
 };
 
 describe("<GroupMenu />", () => {
-  it("is collapsed by default", () => {
+  it("menu content is hidden by default", () => {
     const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
     const tree = MountedGroupMenu(group, true);
-    expect(tree.instance().collapse.value).toBe(true);
+    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
+    expect(MockSetIsMenuOpen).not.toHaveBeenCalled();
   });
 
-  it("clicking toggle sets collapse value to 'false'", async () => {
+  it("clicking toggle renders menu content", async () => {
     const promise = Promise.resolve();
     const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
     const tree = MountedGroupMenu(group, true);
-    const toggle = tree.find(".cursor-pointer");
+    const toggle = tree.find("span.cursor-pointer");
     toggle.simulate("click");
-    expect(tree.instance().collapse.value).toBe(false);
+    expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
+    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
     await act(() => promise);
   });
 
-  it("handleClickOutside() call sets collapse value to 'true'", async () => {
+  it("clicking toggle twice hides menu content", async () => {
     const promise = Promise.resolve();
     const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
     const tree = MountedGroupMenu(group, true);
-    const toggle = tree.find(".cursor-pointer");
+    const toggle = tree.find("span.cursor-pointer");
 
     toggle.simulate("click");
-    expect(tree.instance().collapse.value).toBe(false);
+    jest.runOnlyPendingTimers();
+    expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
+    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
 
-    tree.instance().handleClickOutside();
+    toggle.simulate("click");
+    jest.runOnlyPendingTimers();
+    tree.update();
+    expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(2);
+    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
+    await act(() => promise);
+  });
 
-    expect(tree.instance().collapse.value).toBe(true);
+  it("clicking menu item hides menu content", async () => {
+    const promise = Promise.resolve();
+    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
+    const tree = MountedGroupMenu(group, true);
+    const toggle = tree.find("span.cursor-pointer");
+
+    toggle.simulate("click");
+    expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
+    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
+
+    tree.find("div.dropdown-item").at(0).simulate("click");
+    jest.runOnlyPendingTimers();
+    tree.update();
+    expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(2);
+    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
     await act(() => promise);
   });
 });

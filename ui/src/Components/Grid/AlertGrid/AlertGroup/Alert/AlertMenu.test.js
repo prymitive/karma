@@ -13,9 +13,20 @@ let silenceFormStore;
 let alert;
 let group;
 
+let MockAfterClick;
+let MockSetIsMenuOpen;
+
+beforeAll(() => {
+  jest.useFakeTimers();
+});
+
 beforeEach(() => {
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
+
+  MockAfterClick = jest.fn();
+  MockSetIsMenuOpen = jest.fn();
+
   alert = MockAlert([], { foo: "bar" }, "active");
   group = MockAlertGroup({ alertname: "Fake Alert" }, [alert], [], {}, {});
 
@@ -38,9 +49,6 @@ beforeEach(() => {
   };
 });
 
-const MockAfterClick = jest.fn();
-const MockSetIsMenuOpen = jest.fn();
-
 const MountedAlertMenu = (group) => {
   return mount(
     <AlertMenu
@@ -54,30 +62,54 @@ const MountedAlertMenu = (group) => {
 };
 
 describe("<AlertMenu />", () => {
-  it("is collapsed by default", () => {
+  it("menu content is hidden by default", () => {
     const tree = MountedAlertMenu(group);
-    expect(tree.instance().collapse.value).toBe(true);
+    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
+    expect(MockSetIsMenuOpen).not.toHaveBeenCalled();
   });
 
-  it("clicking toggle sets collapse value to 'false'", async () => {
+  it("clicking toggle renders menu content", async () => {
     const promise = Promise.resolve();
     const tree = MountedAlertMenu(group);
-    const toggle = tree.find(".cursor-pointer");
+    const toggle = tree.find("span.cursor-pointer");
     toggle.simulate("click");
-    expect(tree.instance().collapse.value).toBe(false);
+    expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
+    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
     await act(() => promise);
   });
 
-  it("handleClickOutside() call sets collapse value to 'true'", async () => {
+  it("clicking toggle twice hides menu content", async () => {
     const promise = Promise.resolve();
     const tree = MountedAlertMenu(group);
-    const toggle = tree.find(".cursor-pointer");
+    const toggle = tree.find("span.cursor-pointer");
+
     toggle.simulate("click");
-    expect(tree.instance().collapse.value).toBe(false);
+    jest.runOnlyPendingTimers();
+    expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
+    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
 
-    tree.instance().handleClickOutside();
+    toggle.simulate("click");
+    jest.runOnlyPendingTimers();
+    tree.update();
+    expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(2);
+    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
+    await act(() => promise);
+  });
 
-    expect(tree.instance().collapse.value).toBe(true);
+  it("clicking menu item hides menu content", async () => {
+    const promise = Promise.resolve();
+    const tree = MountedAlertMenu(group);
+    const toggle = tree.find("span.cursor-pointer");
+
+    toggle.simulate("click");
+    expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
+    expect(tree.find("div.dropdown-menu")).toHaveLength(1);
+
+    tree.find("a.dropdown-item").at(0).simulate("click");
+    jest.runOnlyPendingTimers();
+    tree.update();
+    expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(2);
+    expect(tree.find("div.dropdown-menu")).toHaveLength(0);
     await act(() => promise);
   });
 });

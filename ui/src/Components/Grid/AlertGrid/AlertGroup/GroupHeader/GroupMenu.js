@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
-import { action, observable } from "mobx";
-import { observer } from "mobx-react";
+import { useObserver, useLocalStore } from "mobx-react";
 
 import copy from "copy-to-clipboard";
 
@@ -99,88 +98,75 @@ MenuContent.propTypes = {
   afterClick: PropTypes.func.isRequired,
 };
 
-const GroupMenu = observer(
-  class GroupMenu extends Component {
-    static propTypes = {
-      group: APIGroup.isRequired,
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      themed: PropTypes.bool.isRequired,
-      setIsMenuOpen: PropTypes.func.isRequired,
-    };
+const GroupMenu = ({
+  group,
+  alertStore,
+  silenceFormStore,
+  themed,
+  setIsMenuOpen,
+}) => {
+  const collapse = useLocalStore(() => ({
+    isHidden: true,
+    toggle() {
+      this.isHidden = !this.isHidden;
+      setIsMenuOpen(!this.isHidden);
+    },
+    hide() {
+      this.isHidden = true;
+      setIsMenuOpen(!this.isHidden);
+    },
+  }));
 
-    constructor(props) {
-      super(props);
-
-      this.collapse = observable(
-        {
-          value: true,
-          toggle() {
-            this.value = !this.value;
-            props.setIsMenuOpen(!this.value);
-          },
-          hide() {
-            this.value = true;
-            props.setIsMenuOpen(!this.value);
-          },
-        },
-        { toggle: action.bound, hide: action.bound },
-        { name: "Alert group menu toggle" }
-      );
-    }
-
-    handleClickOutside = action((event) => {
-      this.collapse.hide();
-    });
-
-    render() {
-      const { group, alertStore, silenceFormStore, themed } = this.props;
-
-      return (
-        <Manager>
-          <Reference>
-            {({ ref }) => (
-              <span
-                ref={ref}
-                onClick={this.collapse.toggle}
-                className={`${
-                  themed ? "text-white" : "text-muted"
-                } cursor-pointer badge pl-0 pr-3 pr-sm-2 components-label mr-0 components-grid-alertgroup-${
-                  group.id
-                }`}
-                data-toggle="dropdown"
-              >
-                <FontAwesomeIcon icon={faEllipsisV} />
-              </span>
-            )}
-          </Reference>
-          <DropdownSlide in={!this.collapse.value} unmountOnExit>
-            <Popper
-              placement="bottom-start"
-              modifiers={[
-                { name: "arrow", enabled: false },
-                { name: "offset", options: { offset: "-5px, 0px" } },
-              ]}
-            >
-              {({ placement, ref, style }) => (
-                <MenuContent
-                  popperPlacement={placement}
-                  popperRef={ref}
-                  popperStyle={style}
-                  group={group}
-                  alertStore={alertStore}
-                  silenceFormStore={silenceFormStore}
-                  afterClick={this.collapse.hide}
-                  handleClickOutside={this.collapse.hide}
-                  outsideClickIgnoreClass={`components-grid-alertgroup-${group.id}`}
-                />
-              )}
-            </Popper>
-          </DropdownSlide>
-        </Manager>
-      );
-    }
-  }
-);
+  return useObserver(() => (
+    <Manager>
+      <Reference>
+        {({ ref }) => (
+          <span
+            ref={ref}
+            onClick={collapse.toggle}
+            className={`${
+              themed ? "text-white" : "text-muted"
+            } cursor-pointer badge pl-0 pr-3 pr-sm-2 components-label mr-0 components-grid-alertgroup-${
+              group.id
+            }`}
+            data-toggle="dropdown"
+          >
+            <FontAwesomeIcon icon={faEllipsisV} />
+          </span>
+        )}
+      </Reference>
+      <DropdownSlide in={!collapse.isHidden} unmountOnExit>
+        <Popper
+          placement="bottom-start"
+          modifiers={[
+            { name: "arrow", enabled: false },
+            { name: "offset", options: { offset: "-5px, 0px" } },
+          ]}
+        >
+          {({ placement, ref, style }) => (
+            <MenuContent
+              popperPlacement={placement}
+              popperRef={ref}
+              popperStyle={style}
+              group={group}
+              alertStore={alertStore}
+              silenceFormStore={silenceFormStore}
+              afterClick={collapse.hide}
+              handleClickOutside={collapse.hide}
+              outsideClickIgnoreClass={`components-grid-alertgroup-${group.id}`}
+            />
+          )}
+        </Popper>
+      </DropdownSlide>
+    </Manager>
+  ));
+};
+GroupMenu.propTypes = {
+  group: APIGroup.isRequired,
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+  themed: PropTypes.bool.isRequired,
+  setIsMenuOpen: PropTypes.func.isRequired,
+};
 
 export { GroupMenu, MenuContent };
