@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
-import { action, observable, toJS } from "mobx";
-import { observer } from "mobx-react";
+import { useObserver, useLocalStore } from "mobx-react";
 import { localStored } from "mobx-stored";
 
 import hash from "object-hash";
@@ -21,10 +20,6 @@ import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { HistoryLabel } from "Components/Labels/HistoryLabel";
-
-const defaultHistory = {
-  filters: [],
-};
 
 // takes a filter object out of alertStore.history.values and creates a new
 // object with only those keys that will be stored in history
@@ -148,36 +143,34 @@ HistoryMenuContent.propTypes = {
 
 const HistoryMenu = onClickOutside(HistoryMenuContent);
 
-const History = observer(
-  class History extends Component {
-    static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired,
-    };
+const History = ({ alertStore, settingsStore }) => {
+  // this will be dumped to local storage via mobx-stored
+  const history = localStored(
+    "history.filters",
+    {
+      filters: [],
+    },
+    {
+      delay: 100,
+    }
+  );
 
-    // how many filter sets do we store in local storage and render in the
-    // dropdown menu
-    maxSize = 8;
-    // this will be dumped to local storage via mobx-stored
-    history = localStored("history.filters", defaultHistory, { delay: 100 });
+  const collapse = useLocalStore(() => ({
+    isHidden: true,
+    toggle() {
+      this.isHidden = !this.isHidden;
+    },
+    hide() {
+      this.isHidden = true;
+    },
+  }));
 
-    collapse = observable(
-      {
-        value: true,
-        toggle() {
-          this.value = !this.value;
-        },
-        hide() {
-          this.value = true;
-        },
-      },
-      { toggle: action.bound, hide: action.bound },
-      { name: "History menu toggle" }
-    );
+  const mountRef = useRef(false);
 
-    appendToHistory = action(() => {
-      const { alertStore } = this.props;
-
+  // every time this component updates we will rewrite history
+  // (if there are changes)
+  useEffect(() => {
+    if (mountRef.current) {
       // we don't store unapplied (we only have raw text for those, we need
       // name & value for coloring) or invalid filters
       // also check for value, name might be missing for fuzzy filters, but
@@ -191,85 +184,70 @@ const History = observer(
       // make a JSON dump for comparing later with what's already stored
       const filtersJSON = JSON.stringify(validAppliedFilters);
 
-      // dump observable array with stored filters to JS objects, without this
-      // we'll be passing around and comparing proxy objects that might mutate
-      // while we do so
-      const storedFilters = toJS(this.history.filters);
-
       // rewrite history putting current filter set on top, this will move
       // it up if user selects a filter set that was already in history
       let newHistory = [
         ...[validAppliedFilters],
-        ...storedFilters.filter((f) => JSON.stringify(f) !== filtersJSON),
-      ].slice(0, this.maxSize);
-      this.history.filters = newHistory;
-    });
-
-    clearHistory = action(() => {
-      this.history.filters = [];
-    });
-
-    componentDidUpdate() {
-      // every time this component updates we will rewrite history
-      // (if there are changes)
-      this.appendToHistory();
+        ...history.filters.filter((f) => JSON.stringify(f) !== filtersJSON),
+      ].slice(0, 8);
+      history.filters = newHistory;
+    } else {
+      mountRef.current = true;
     }
+  });
 
-    handleClickOutside = action((event) => {
-      this.collapse.hide();
-    });
-
-    render() {
-      const { alertStore, settingsStore } = this.props;
-
-      return (
-        // data-filters is there to register filters for observation in mobx
-        // it needs to be using full filter object to notice changes to
-        // name & value but ignore hits
-        // using it this way will force re-render on every change, which is
-        // needed to keep track of all filter changes
-        <Manager
-          data-filters={alertStore.filters.values
-            .map((f) => ReduceFilter(f))
-            .join(" ")}
-        >
-          <Reference>
-            {({ ref }) => (
-              <button
-                ref={ref}
-                onClick={this.collapse.toggle}
-                className="input-group-text border-0 rounded-0 bg-transparent cursor-pointer components-navbar-history px-2 components-navbar-icon"
-                type="button"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="true"
-              >
-                <FontAwesomeIcon icon={faCaretDown} />
-              </button>
-            )}
-          </Reference>
-          <DropdownSlide in={!this.collapse.value} unmountOnExit>
-            <Popper modifiers={[{ name: "arrow", enabled: false }]}>
-              {({ placement, ref, style }) => (
-                <HistoryMenu
-                  popperPlacement={placement}
-                  popperRef={ref}
-                  popperStyle={style}
-                  filters={this.history.filters}
-                  onClear={this.clearHistory}
-                  alertStore={alertStore}
-                  settingsStore={settingsStore}
-                  afterClick={this.collapse.hide}
-                  handleClickOutside={this.collapse.hide}
-                  outsideClickIgnoreClass="components-navbar-history"
-                />
-              )}
-            </Popper>
-          </DropdownSlide>
-        </Manager>
-      );
-    }
-  }
-);
+  return useObserver(() => (
+    // data-filters is there to register filters for observation in mobx
+    // it needs to be using full filter object to notice changes to
+    // name & value but ignore hits
+    // using it this way will force re-render on every change, which is
+    // needed to keep track of all filter changes
+    <Manager
+      data-filters={alertStore.filters.values
+        .map((f) => ReduceFilter(f))
+        .join(" ")}
+    >
+      <Reference>
+        {({ ref }) => (
+          <button
+            ref={ref}
+            onClick={collapse.toggle}
+            className="input-group-text border-0 rounded-0 bg-transparent cursor-pointer components-navbar-history px-2 components-navbar-icon"
+            type="button"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="true"
+          >
+            <FontAwesomeIcon icon={faCaretDown} />
+          </button>
+        )}
+      </Reference>
+      <DropdownSlide in={!collapse.isHidden} unmountOnExit>
+        <Popper modifiers={[{ name: "arrow", enabled: false }]}>
+          {({ placement, ref, style }) => (
+            <HistoryMenu
+              popperPlacement={placement}
+              popperRef={ref}
+              popperStyle={style}
+              filters={history.filters}
+              onClear={() => {
+                history.filters = [];
+              }}
+              alertStore={alertStore}
+              settingsStore={settingsStore}
+              afterClick={collapse.hide}
+              handleClickOutside={collapse.hide}
+              outsideClickIgnoreClass="components-navbar-history"
+            />
+          )}
+        </Popper>
+      </DropdownSlide>
+    </Manager>
+  ));
+};
+History.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  settingsStore: PropTypes.instanceOf(Settings).isRequired,
+};
 
 export { History, HistoryMenu, HistoryMenuContent, ReduceFilter };
