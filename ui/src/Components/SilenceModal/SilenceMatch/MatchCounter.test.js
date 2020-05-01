@@ -38,7 +38,7 @@ describe("<MatchCounter />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("logs a trace on failed fetch", async () => {
+  it("logs a trace on failed fetch", (done) => {
     const consoleSpy = jest
       .spyOn(console, "trace")
       .mockImplementation(() => {});
@@ -48,12 +48,14 @@ describe("<MatchCounter />", () => {
     matcher.name = "foo";
     matcher.values = [MatcherValueToObject("bar")];
 
-    const tree = MountedMatchCounter();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    expect(consoleSpy).toHaveBeenCalled();
+    MountedMatchCounter();
+    setTimeout(() => {
+      expect(consoleSpy).toHaveBeenCalled();
+      done();
+    }, 200);
   });
 
-  it("renders error icon on failed fetch", async () => {
+  it("renders error icon on failed fetch", (done) => {
     jest.spyOn(console, "trace").mockImplementation(() => {});
     fetch.mockReject(new Error("Fetch error"));
 
@@ -62,8 +64,10 @@ describe("<MatchCounter />", () => {
     matcher.values = [MatcherValueToObject("bar")];
 
     const tree = MountedMatchCounter();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    expect(toDiffableHtml(tree.html())).toMatch(/exclamation-circle/);
+    setTimeout(() => {
+      expect(toDiffableHtml(tree.html())).toMatch(/exclamation-circle/);
+      done();
+    }, 200);
   });
 
   it("totalAlerts is 0 after mount", async () => {
@@ -72,7 +76,7 @@ describe("<MatchCounter />", () => {
     expect(tree.text()).toBe("0");
   });
 
-  it("updates totalAlerts after successful fetch", async () => {
+  it("updates totalAlerts after successful fetch", (done) => {
     fetch.mockResponse(JSON.stringify({ totalAlerts: 123 }));
 
     // we need to set name & value to trigger fetch
@@ -81,49 +85,57 @@ describe("<MatchCounter />", () => {
 
     const tree = MountedMatchCounter();
     expect(tree.text()).toBe("");
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    expect(tree.text()).toBe("123");
+    setTimeout(() => {
+      expect(tree.text()).toBe("123");
+      done();
+    }, 200);
   });
 
-  it("sends correct query string for a 'foo=bar' matcher", async () => {
+  it("sends correct query string for a 'foo=bar' matcher", (done) => {
     fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
 
     matcher.name = "foo";
     matcher.values = [MatcherValueToObject("bar")];
     matcher.isRegex = false;
 
-    const tree = MountedMatchCounter();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    expect(fetch.mock.calls[0][0]).toBe("./alerts.json?q=foo%3Dbar");
+    MountedMatchCounter();
+    setTimeout(() => {
+      expect(fetch.mock.calls[0][0]).toBe("./alerts.json?q=foo%3Dbar");
+      done();
+    }, 200);
   });
 
-  it("sends correct query string for a 'foo=~bar' matcher", async () => {
+  it("sends correct query string for a 'foo=~bar' matcher", (done) => {
     fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
 
     matcher.name = "foo";
     matcher.values = [MatcherValueToObject("bar")];
     matcher.isRegex = true;
 
-    const tree = MountedMatchCounter();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    expect(fetch.mock.calls[0][0]).toBe("./alerts.json?q=foo%3D~%5Ebar%24");
+    MountedMatchCounter();
+    setTimeout(() => {
+      expect(fetch.mock.calls[0][0]).toBe("./alerts.json?q=foo%3D~%5Ebar%24");
+      done();
+    }, 200);
   });
 
-  it("sends correct query string for a 'foo=~(bar|baz)' matcher", async () => {
+  it("sends correct query string for a 'foo=~(bar|baz)' matcher", (done) => {
     fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
 
     matcher.name = "foo";
     matcher.values = [MatcherValueToObject("bar"), MatcherValueToObject("baz")];
     matcher.isRegex = true;
 
-    const tree = MountedMatchCounter();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    expect(fetch.mock.calls[0][0]).toBe(
-      "./alerts.json?q=foo%3D~%5E%28bar%7Cbaz%29%24"
-    );
+    MountedMatchCounter();
+    setTimeout(() => {
+      expect(fetch.mock.calls[0][0]).toBe(
+        "./alerts.json?q=foo%3D~%5E%28bar%7Cbaz%29%24"
+      );
+      done();
+    }, 200);
   });
 
-  it("selecting one Alertmanager instance appends it to the filters", async () => {
+  it("selecting one Alertmanager instance appends it to the filters", (done) => {
     fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
 
     silenceFormStore.data.alertmanagers = [MatcherValueToObject("am1")];
@@ -131,14 +143,16 @@ describe("<MatchCounter />", () => {
     matcher.values = [MatcherValueToObject("bar")];
     matcher.isRegex = false;
 
-    const tree = MountedMatchCounter();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    expect(fetch.mock.calls[0][0]).toBe(
-      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%29%24"
-    );
+    MountedMatchCounter();
+    setTimeout(() => {
+      expect(fetch.mock.calls[0][0]).toBe(
+        "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%29%24"
+      );
+      done();
+    }, 200);
   });
 
-  it("selecting two Alertmanager instances appends it correctly to the filters", async () => {
+  it("selecting two Alertmanager instances appends it correctly to the filters", (done) => {
     fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
 
     silenceFormStore.data.alertmanagers = [
@@ -149,10 +163,12 @@ describe("<MatchCounter />", () => {
     matcher.values = [MatcherValueToObject("bar")];
     matcher.isRegex = false;
 
-    const tree = MountedMatchCounter();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    expect(fetch.mock.calls[0][0]).toBe(
-      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam1%29%24"
-    );
+    MountedMatchCounter();
+    setTimeout(() => {
+      expect(fetch.mock.calls[0][0]).toBe(
+        "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam1%29%24"
+      );
+      done();
+    }, 200);
   });
 });
