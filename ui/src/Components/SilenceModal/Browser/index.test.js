@@ -31,6 +31,8 @@ beforeEach(() => {
   cluster = "am";
   silence = MockSilence();
 
+  settingsStore.fetchConfig.config.interval = 30;
+
   alertStore.data.upstreams = {
     instances: [
       {
@@ -48,15 +50,14 @@ beforeEach(() => {
     ],
     clusters: { am: ["am1"] },
   };
-
-  fetch.resetMocks();
-  jest.restoreAllMocks();
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
   fetch.resetMocks();
   clear();
+
+  localStorage.setItem("fetchConfig.interval", "");
 });
 
 const MockOnDeleteModalClose = jest.fn();
@@ -91,7 +92,7 @@ const MountedBrowser = () => {
 };
 
 describe("<Browser />", () => {
-  it("fetches /silences.json on mount", async () => {
+  it("fetches /silences.json on mount", (done) => {
     fetch.mockResponse(
       JSON.stringify([
         {
@@ -101,14 +102,26 @@ describe("<Browser />", () => {
         },
       ])
     );
-    const tree = MountedBrowser();
-    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
-    expect(fetch.mock.calls[0][0]).toBe(
-      "./silences.json?sortReverse=0&showExpired=0&searchTerm="
-    );
+    MountedBrowser();
+    setTimeout(() => {
+      expect(fetch.mock.calls[0][0]).toBe(
+        "./silences.json?sortReverse=0&showExpired=0&searchTerm="
+      );
+      done();
+    }, 200);
   });
 
-  it("enabling reverse sort passes sortReverse=1 to the API", async () => {
+  it("fetches /silences.json in a loop", (done) => {
+    settingsStore.fetchConfig.config.interval = 1;
+    fetch.mockResponse(JSON.stringify([]));
+    MountedBrowser();
+    setTimeout(() => {
+      expect(fetch.mock.calls).toHaveLength(4);
+      done();
+    }, 1100 * 3);
+  });
+
+  it("enabling reverse sort passes sortReverse=1 to the API", (done) => {
     fetch.mockResponse(
       JSON.stringify([
         {
@@ -124,13 +137,15 @@ describe("<Browser />", () => {
     expect(sortOrder.text()).toBe("Sort order");
     sortOrder.simulate("click");
 
-    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
-    expect(fetch.mock.calls[1][0]).toBe(
-      "./silences.json?sortReverse=1&showExpired=0&searchTerm="
-    );
+    setTimeout(() => {
+      expect(fetch.mock.calls[1][0]).toBe(
+        "./silences.json?sortReverse=1&showExpired=0&searchTerm="
+      );
+      done();
+    }, 200);
   });
 
-  it("enabling expired silences passes showExpired=1 to the API", async () => {
+  it("enabling expired silences passes showExpired=1 to the API", (done) => {
     fetch.mockResponse(
       JSON.stringify([
         {
@@ -145,42 +160,50 @@ describe("<Browser />", () => {
     const expiredCheckbox = tree.find("input[type='checkbox']");
     expiredCheckbox.simulate("change", { target: { checked: true } });
 
-    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
-    expect(fetch.mock.calls[1][0]).toBe(
-      "./silences.json?sortReverse=0&showExpired=1&searchTerm="
-    );
+    setTimeout(() => {
+      expect(fetch.mock.calls[1][0]).toBe(
+        "./silences.json?sortReverse=0&showExpired=1&searchTerm="
+      );
+      done();
+    }, 200);
   });
 
-  it("entering a search phrase passes searchTerm=foo to the API", async () => {
+  it("entering a search phrase passes searchTerm=foo to the API", (done) => {
     fetch.mockResponse(JSON.stringify([]));
     const tree = MountedBrowser();
 
     const input = tree.find("input[type='text']").at(0);
     input.simulate("change", { target: { value: "foo" } });
 
-    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
-    expect(fetch.mock.calls[1][0]).toBe(
-      "./silences.json?sortReverse=0&showExpired=0&searchTerm=foo"
-    );
+    setTimeout(() => {
+      expect(fetch.mock.calls[1][0]).toBe(
+        "./silences.json?sortReverse=0&showExpired=0&searchTerm=foo"
+      );
+      done();
+    }, 200);
   });
 
-  it("renders loading placeholder before fetch finishes", async () => {
+  it("renders loading placeholder before fetch finishes", (done) => {
     fetch.mockResponse(JSON.stringify([]));
     const tree = MountedBrowser();
     expect(tree.find("Placeholder")).toHaveLength(1);
     expect(toDiffableHtml(tree.html())).toMatch(/fa-spinner/);
-    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
+    setTimeout(() => {
+      done();
+    }, 200);
   });
 
-  it("renders empty placeholder after fetch with zero results", async () => {
+  it("renders empty placeholder after fetch with zero results", (done) => {
     fetch.mockResponse(JSON.stringify([]));
     const tree = MountedBrowser();
-    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
-    expect(tree.find("Placeholder")).toHaveLength(1);
-    expect(toDiffableHtml(tree.html())).toMatch(/Nothing to show/);
+    setTimeout(() => {
+      expect(tree.find("Placeholder")).toHaveLength(1);
+      expect(toDiffableHtml(tree.html())).toMatch(/Nothing to show/);
+      done();
+    }, 200);
   });
 
-  it("renders silences after successful fetch", async () => {
+  it("renders silences after successful fetch", (done) => {
     fetch.mockResponse(
       JSON.stringify([
         {
@@ -191,118 +214,138 @@ describe("<Browser />", () => {
       ])
     );
     const tree = MountedBrowser();
-    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
-    tree.update();
-    expect(tree.find("ManagedSilence")).toHaveLength(1);
+    setTimeout(() => {
+      tree.update();
+      expect(tree.find("ManagedSilence")).toHaveLength(1);
+      done();
+    }, 200);
   });
 
-  it("renders only first 5 silences", async () => {
+  it("renders only first 5 silences", (done) => {
     fetch.mockResponse(JSON.stringify(MockSilenceList(6)));
     const tree = MountedBrowser();
-    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
-    tree.update();
-    expect(tree.find("ManagedSilence")).toHaveLength(5);
+    setTimeout(() => {
+      tree.update();
+      expect(tree.find("ManagedSilence")).toHaveLength(5);
+      done();
+    }, 200);
   });
 
-  it("renders last silence after page change", async () => {
+  it("renders last silence after page change", (done) => {
     fetch.mockResponse(JSON.stringify(MockSilenceList(6)));
     const tree = MountedBrowser();
-    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
-    tree.update();
-    expect(tree.instance().pagination.activePage).toBe(1);
-    expect(tree.find("ManagedSilence")).toHaveLength(5);
 
-    const pageLink = tree.find(".page-link").at(3);
-    pageLink.simulate("click");
-    tree.update();
-    expect(tree.instance().pagination.activePage).toBe(2);
-    expect(tree.find("ManagedSilence")).toHaveLength(1);
+    setTimeout(() => {
+      tree.update();
+      expect(tree.find("li.page-item").at(1).hasClass("active")).toBe(true);
+      expect(tree.find("ManagedSilence")).toHaveLength(5);
+
+      const pageLink = tree.find(".page-link").at(3);
+      pageLink.simulate("click");
+      tree.update();
+      expect(tree.find("li.page-item").at(2).hasClass("active")).toBe(true);
+      expect(tree.find("ManagedSilence")).toHaveLength(1);
+      done();
+    }, 200);
   });
 
-  it("renders next/previous page after arrow key press", async () => {
+  it("renders next/previous page after arrow key press", (done) => {
     fetch.mockResponse(JSON.stringify(MockSilenceList(11)));
     const tree = MountedBrowser();
-    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
-    tree.update();
-    expect(tree.instance().pagination.activePage).toBe(1);
-    expect(tree.find("ManagedSilence")).toHaveLength(5);
 
-    const paginator = tree.find(".components-pagination").at(0);
-    paginator.simulate("focus");
+    setTimeout(() => {
+      tree.update();
+      expect(tree.find("li.page-item").at(1).hasClass("active")).toBe(true);
+      expect(tree.find("ManagedSilence")).toHaveLength(5);
 
-    PressKey(paginator, "ArrowRight", 39);
-    expect(tree.instance().pagination.activePage).toBe(2);
-    expect(tree.find("ManagedSilence")).toHaveLength(5);
+      const paginator = tree.find(".components-pagination").at(0);
+      paginator.simulate("focus");
 
-    PressKey(paginator, "ArrowRight", 39);
-    expect(tree.instance().pagination.activePage).toBe(3);
-    expect(tree.find("ManagedSilence")).toHaveLength(1);
+      PressKey(paginator, "ArrowRight", 39);
+      expect(tree.find("li.page-item").at(2).hasClass("active")).toBe(true);
+      expect(tree.find("ManagedSilence")).toHaveLength(5);
 
-    PressKey(paginator, "ArrowRight", 39);
-    expect(tree.instance().pagination.activePage).toBe(3);
-    expect(tree.find("ManagedSilence")).toHaveLength(1);
+      PressKey(paginator, "ArrowRight", 39);
+      expect(tree.find("li.page-item").at(3).hasClass("active")).toBe(true);
+      expect(tree.find("ManagedSilence")).toHaveLength(1);
 
-    PressKey(paginator, "ArrowLeft", 37);
-    expect(tree.instance().pagination.activePage).toBe(2);
-    expect(tree.find("ManagedSilence")).toHaveLength(5);
+      PressKey(paginator, "ArrowRight", 39);
+      expect(tree.find("li.page-item").at(3).hasClass("active")).toBe(true);
+      expect(tree.find("ManagedSilence")).toHaveLength(1);
 
-    PressKey(paginator, "ArrowLeft", 37);
-    expect(tree.instance().pagination.activePage).toBe(1);
-    expect(tree.find("ManagedSilence")).toHaveLength(5);
+      PressKey(paginator, "ArrowLeft", 37);
+      expect(tree.find("li.page-item").at(2).hasClass("active")).toBe(true);
+      expect(tree.find("ManagedSilence")).toHaveLength(5);
 
-    PressKey(paginator, "ArrowLeft", 37);
-    expect(tree.instance().pagination.activePage).toBe(1);
-    expect(tree.find("ManagedSilence")).toHaveLength(5);
+      PressKey(paginator, "ArrowLeft", 37);
+      expect(tree.find("li.page-item").at(1).hasClass("active")).toBe(true);
+      expect(tree.find("ManagedSilence")).toHaveLength(5);
+
+      PressKey(paginator, "ArrowLeft", 37);
+      expect(tree.find("li.page-item").at(1).hasClass("active")).toBe(true);
+      expect(tree.find("ManagedSilence")).toHaveLength(5);
+      done();
+    }, 200);
   });
 
-  it("resets pagination to last page on truncation", async () => {
-    fetch.mockResponseOnce(JSON.stringify(MockSilenceList(11)));
+  it("resets pagination to last page on truncation", (done) => {
+    fetch.mockResponse(JSON.stringify(MockSilenceList(11)));
     const tree = MountedBrowser();
-    const instance = tree.instance();
-    await expect(instance.dataSource.fetch).resolves.toBeUndefined();
-    tree.update();
+    setTimeout(() => {
+      tree.update();
+      expect(tree.find("li.page-item").at(1).hasClass("active")).toBe(true);
+      const pageLink = tree.find(".page-link").at(3);
+      pageLink.simulate("click");
+      tree.update();
+      expect(tree.find("ManagedSilence")).toHaveLength(1);
+      expect(tree.find("li.page-item").at(3).hasClass("active")).toBe(true);
 
-    expect(instance.pagination.activePage).toBe(1);
-    const pageLink = tree.find(".page-link").at(3);
-    pageLink.simulate("click");
-    tree.update();
-    expect(tree.find("ManagedSilence")).toHaveLength(1);
-    expect(instance.pagination.activePage).toBe(3);
+      fetch.mockResponse(JSON.stringify(MockSilenceList(7)));
+      tree.find("button.btn-secondary").simulate("click");
 
-    fetch.mockResponseOnce(JSON.stringify(MockSilenceList(7)));
-    instance.onFetch();
-    await expect(instance.dataSource.fetch).resolves.toBeUndefined();
-    tree.update();
+      setTimeout(() => {
+        tree.update();
 
-    expect(tree.find("ManagedSilence")).toHaveLength(2);
-    expect(instance.pagination.activePage).toBe(2);
+        expect(tree.find("ManagedSilence")).toHaveLength(2);
+        expect(tree.find("li.page-item").at(2).hasClass("active")).toBe(true);
 
-    fetch.mockResponseOnce(JSON.stringify([]));
-    instance.onFetch();
-    await expect(instance.dataSource.fetch).resolves.toBeUndefined();
-    tree.update();
+        fetch.mockResponse(JSON.stringify([]));
+        tree.find("button.btn-secondary").simulate("click");
 
-    expect(tree.find("ManagedSilence")).toHaveLength(0);
-    expect(instance.pagination.activePage).toBe(1);
+        setTimeout(() => {
+          tree.update();
+
+          expect(tree.find("ManagedSilence")).toHaveLength(0);
+          expect(tree.find("Placeholder")).toHaveLength(1);
+          done();
+        }, 200);
+      }, 200);
+    }, 200);
   });
 
-  it("renders error after failed fetch", async () => {
+  it("renders error after failed fetch", (done) => {
     jest.spyOn(console, "trace").mockImplementation(() => {});
     fetch.mockReject("fake failure");
     const tree = MountedBrowser();
-    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
-    tree.update();
-    expect(tree.find("FetchError")).toHaveLength(1);
-    expect(toDiffableHtml(tree.html())).toMatch(/exclamation-circle/);
+    setTimeout(() => {
+      tree.update();
+      expect(tree.find("FetchError")).toHaveLength(1);
+      expect(toDiffableHtml(tree.html())).toMatch(/exclamation-circle/);
+      done();
+    }, 200);
   });
 
-  it("resets the timer on unmount", async () => {
+  it("resets the timer on unmount", (done) => {
     fetch.mockResponse(JSON.stringify([]));
     const tree = MountedBrowser();
-    await expect(tree.instance().dataSource.fetch).resolves.toBeUndefined();
+    setTimeout(() => {
+      expect(fetch.mock.calls).toHaveLength(1);
 
-    expect(tree.instance().fetchTimer).not.toBeNull();
-    tree.instance().componentWillUnmount();
-    expect(tree.instance().fetchTimer).toBeNull();
+      setTimeout(() => {
+        tree.unmount();
+        expect(fetch.mock.calls).toHaveLength(1);
+        done();
+      });
+    }, 200);
   });
 });
