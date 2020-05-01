@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 
 import { observable, action } from "mobx";
-import { observer } from "mobx-react";
+import { observer, useObserver, useLocalStore } from "mobx-react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -241,72 +241,62 @@ const DeleteSilenceModalContent = observer(
   }
 );
 
-const DeleteSilence = observer(
-  class DeleteSilence extends Component {
-    static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      cluster: PropTypes.string.isRequired,
-      silence: APISilence.isRequired,
-      onModalExit: PropTypes.func,
-    };
+const DeleteSilence = ({
+  alertStore,
+  silenceFormStore,
+  cluster,
+  silence,
+  onModalExit,
+}) => {
+  const toggle = useLocalStore(() => ({
+    visible: false,
+    toggle() {
+      this.visible = !this.visible;
+    },
+  }));
 
-    toggle = observable(
-      {
-        visible: false,
-        toggle() {
-          this.visible = !this.visible;
-        },
-      },
-      { toggle: action.bound }
-    );
+  const members = alertStore.data.getClusterAlertmanagersWithoutReadOnly(
+    cluster
+  );
 
-    render() {
-      const {
-        alertStore,
-        silenceFormStore,
-        cluster,
-        silence,
-        onModalExit,
-      } = this.props;
-
-      const members = alertStore.data.getClusterAlertmanagersWithoutReadOnly(
-        cluster
-      );
-
-      return (
-        <React.Fragment>
-          <button
-            className="btn btn-danger btn-sm"
-            disabled={members.length === 0}
-            onClick={() => {
-              members.length > 0 && this.toggle.toggle();
-            }}
-          >
-            <FontAwesomeIcon
-              className="mr-1 d-none d-sm-inline-block"
-              icon={faTrash}
-            />
-            Delete
-          </button>
-          <Modal
-            isOpen={this.toggle.visible}
-            isUpper={true}
-            toggleOpen={this.toggle.toggle}
-            onExited={onModalExit}
-          >
-            <DeleteSilenceModalContent
-              alertStore={alertStore}
-              silenceFormStore={silenceFormStore}
-              cluster={cluster}
-              silence={silence}
-              onHide={this.toggle.toggle}
-            />
-          </Modal>
-        </React.Fragment>
-      );
-    }
-  }
-);
+  return useObserver(() => (
+    <React.Fragment>
+      <button
+        className="btn btn-danger btn-sm"
+        disabled={members.length === 0}
+        onClick={() => {
+          members.length > 0 && toggle.toggle();
+        }}
+      >
+        <FontAwesomeIcon
+          className="mr-1 d-none d-sm-inline-block"
+          icon={faTrash}
+        />
+        Delete
+      </button>
+      <Modal
+        isOpen={toggle.visible}
+        isUpper={true}
+        toggleOpen={toggle.toggle}
+        onExited={onModalExit}
+      >
+        <DeleteSilenceModalContent
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          cluster={cluster}
+          silence={silence}
+          onHide={toggle.toggle}
+        />
+      </Modal>
+    </React.Fragment>
+  ));
+};
+DeleteSilence.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+  cluster: PropTypes.string.isRequired,
+  silence: APISilence.isRequired,
+  onModalExit: PropTypes.func,
+};
 
 export { DeleteSilence, DeleteSilenceModalContent };
