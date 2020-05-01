@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React, { useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 
-import { observable, action } from "mobx";
-import { observer } from "mobx-react";
+import { useObserver, useLocalStore } from "mobx-react";
 
 import throttle from "lodash/throttle";
 
@@ -17,34 +16,20 @@ import { TooltipWrapper } from "Components/TooltipWrapper";
 import { FetchGet } from "Common/Fetch";
 import { MatcherToFilter, AlertManagersToFilter } from "../Matchers";
 
-const MatchCounter = observer(
-  class MatchCounter extends Component {
-    static propTypes = {
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      matcher: SilenceFormMatcher.isRequired,
-    };
+const MatchCounter = ({ silenceFormStore, matcher }) => {
+  const matchedAlerts = useLocalStore(() => ({
+    total: null,
+    error: null,
+    setTotal(value) {
+      this.total = value;
+    },
+    setError(value) {
+      this.error = value;
+    },
+  }));
 
-    matchedAlerts = observable(
-      {
-        total: null,
-        error: null,
-        fetch: null,
-        setTotal(value) {
-          this.total = value;
-        },
-        setError(value) {
-          this.error = value;
-        },
-      },
-      {
-        setTotal: action,
-        setError: action,
-      }
-    );
-
-    onFetch = throttle(() => {
-      const { silenceFormStore, matcher } = this.props;
-
+  const onFetch = useCallback(
+    throttle(() => {
       const filters = [MatcherToFilter(matcher)];
       if (silenceFormStore.data.alertmanagers.length) {
         filters.push(
@@ -55,66 +40,57 @@ const MatchCounter = observer(
       const alertsURI =
         FormatBackendURI("alerts.json?") + FormatAlertsQ(filters);
 
-      this.matchedAlerts.fetch = FetchGet(alertsURI, {})
+      FetchGet(alertsURI, {})
         .then((result) => {
           return result.json();
         })
         .then((result) => {
-          this.matchedAlerts.setTotal(result.totalAlerts);
-          this.matchedAlerts.setError(null);
+          matchedAlerts.setTotal(result.totalAlerts);
+          matchedAlerts.setError(null);
         })
         .catch((err) => {
           console.trace(err);
-          return this.matchedAlerts.setError(err.message);
+          return matchedAlerts.setError(err.message);
         });
-    }, 300);
+    }, 300),
+    [matcher.name]
+  );
 
-    onUpdateCounter = () => {
-      const { matcher } = this.props;
-
-      if (matcher.name === "" || matcher.values.length === 0) {
-        this.matchedAlerts.setTotal(0);
-        this.matchedAlerts.setError(null);
-        return;
-      }
-
-      this.onFetch();
-    };
-
-    componentDidMount() {
-      this.onUpdateCounter();
+  useEffect(() => {
+    if (matcher.name === "" || matcher.values.length === 0) {
+      matchedAlerts.setTotal(0);
+      matchedAlerts.setError(null);
+    } else {
+      onFetch();
     }
+  }, [matchedAlerts, matcher.name, matcher.values.length, onFetch]);
 
-    render() {
-      if (this.matchedAlerts.error !== null) {
-        return (
-          <TooltipWrapper
-            title={`Failed to fetch alerts matching this label: ${this.matchedAlerts.error}`}
-          >
-            <FontAwesomeIcon
-              className="text-danger"
-              icon={faExclamationCircle}
-            />
-          </TooltipWrapper>
-        );
-      }
-
-      return (
-        <TooltipWrapper title="Number of alerts matching this label">
-          <span
-            className="badge badge-light badge-pill d-block"
-            style={{ fontSize: "85%", lineHeight: "1rem" }}
-          >
-            {this.matchedAlerts.total === null ? (
-              <FontAwesomeIcon icon={faSpinner} spin />
-            ) : (
-              this.matchedAlerts.total
-            )}
-          </span>
-        </TooltipWrapper>
-      );
-    }
-  }
-);
+  return useObserver(() =>
+    matchedAlerts.error !== null ? (
+      <TooltipWrapper
+        title={`Failed to fetch alerts matching this label: ${matchedAlerts.error}`}
+      >
+        <FontAwesomeIcon className="text-danger" icon={faExclamationCircle} />
+      </TooltipWrapper>
+    ) : (
+      <TooltipWrapper title="Number of alerts matching this label">
+        <span
+          className="badge badge-light badge-pill d-block"
+          style={{ fontSize: "85%", lineHeight: "1rem" }}
+        >
+          {matchedAlerts.total === null ? (
+            <FontAwesomeIcon icon={faSpinner} spin />
+          ) : (
+            matchedAlerts.total
+          )}
+        </span>
+      </TooltipWrapper>
+    )
+  );
+};
+MatchCounter.propTypes = {
+  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+  matcher: SilenceFormMatcher.isRequired,
+};
 
 export { MatchCounter };
