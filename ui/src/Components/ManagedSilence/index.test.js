@@ -12,7 +12,7 @@ import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
-import { ManagedSilence } from ".";
+import { ManagedSilence, GetAlertmanager } from ".";
 
 let alertStore;
 let silenceFormStore;
@@ -80,23 +80,19 @@ describe("<ManagedSilence />", () => {
 
   it("clicking on expand toggle shows silence details", () => {
     const tree = MountedManagedSilence();
-    const toggle = tree.find("svg.text-muted.cursor-pointer");
-    toggle.simulate("click");
+    tree.find("svg.text-muted.cursor-pointer").simulate("click");
     const details = tree.find("SilenceDetails");
     expect(details).toHaveLength(1);
   });
 
   it("matches snapshot with expaned details", () => {
     const tree = MountedManagedSilence();
-    tree.instance().collapse.toggle();
-    tree.update();
+    tree.find("svg.text-muted.cursor-pointer").simulate("click");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("getAlertmanager() returns alertmanager object from alertStore.data.upstreams.instances", () => {
-    const tree = MountedManagedSilence();
-    const instance = tree.instance();
-    const am = instance.getAlertmanager();
+  it("GetAlertmanager() returns alertmanager object from alertStore.data.upstreams.instances", () => {
+    const am = GetAlertmanager(alertStore, cluster);
     expect(am).toEqual({
       name: "am1",
       cluster: "am",
@@ -111,7 +107,7 @@ describe("<ManagedSilence />", () => {
     });
   });
 
-  it("getAlertmanager() returns only writable instances", () => {
+  it("GetAlertmanager() returns only writable instances", () => {
     alertStore.data.upstreams = {
       instances: [
         {
@@ -142,9 +138,7 @@ describe("<ManagedSilence />", () => {
       clusters: { am: ["am1", "am2"] },
     };
 
-    const tree = MountedManagedSilence();
-    const instance = tree.instance();
-    const am = instance.getAlertmanager();
+    const am = GetAlertmanager(alertStore, cluster);
     expect(am).toEqual({
       name: "am1",
       cluster: "am",
@@ -161,8 +155,7 @@ describe("<ManagedSilence />", () => {
 
   it("shows Edit button on unexpired silence", () => {
     const tree = MountedManagedSilence();
-    tree.instance().collapse.toggle();
-    tree.update();
+    tree.find("svg.text-muted.cursor-pointer").simulate("click");
 
     const button = tree.find(".btn-primary");
     expect(button.text()).toBe("Edit");
@@ -170,8 +163,7 @@ describe("<ManagedSilence />", () => {
 
   it("shows Delete button on unexpired silence", () => {
     const tree = MountedManagedSilence();
-    tree.instance().collapse.toggle();
-    tree.update();
+    tree.find("svg.text-muted.cursor-pointer").simulate("click");
 
     const button = tree.find(".btn-danger");
     expect(button.text()).toBe("Delete");
@@ -180,8 +172,7 @@ describe("<ManagedSilence />", () => {
   it("shows Recreate button on expired silence", () => {
     advanceTo(moment.utc([2000, 0, 1, 23, 30, 0]));
     const tree = MountedManagedSilence();
-    tree.instance().collapse.toggle();
-    tree.update();
+    tree.find("svg.text-muted.cursor-pointer").simulate("click");
 
     const button = tree.find(".btn-primary");
     expect(button.text()).toBe("Recreate");
@@ -189,8 +180,7 @@ describe("<ManagedSilence />", () => {
 
   it("clicking on Edit calls ", () => {
     const tree = MountedManagedSilence();
-    tree.instance().collapse.toggle();
-    tree.update();
+    tree.find("svg.text-muted.cursor-pointer").simulate("click");
 
     expect(silenceFormStore.data.silenceID).toBeNull();
 
@@ -206,8 +196,7 @@ describe("<ManagedSilence />", () => {
   it("call onDidUpdate if passed", () => {
     const fakeUpdate = jest.fn();
     const tree = MountedManagedSilence(fakeUpdate);
-    tree.instance().collapse.toggle();
-    tree.update();
+    tree.find("svg.text-muted.cursor-pointer").simulate("click");
     expect(fakeUpdate).toHaveBeenCalled();
   });
 });
