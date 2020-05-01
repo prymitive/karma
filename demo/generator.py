@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 """
 Generates alerts and sends to Alertmanager API.
 
@@ -435,6 +436,23 @@ class PaginationTest(AlertGenerator):
             ) for i in xrange(0, 20)
         ]
 
+class RichAnnotations(AlertGenerator):
+    name = "Rich Annotations"
+    comment = "This alert will have rich annotation"
+
+    def alerts(self):
+        return [
+            newAlert(self._labels(instance="server7", cluster="staging",
+                                  severity="warning", job="textfile_exporter",
+                                  region="SA"),
+                     self._annotations(
+                        html="<a href='http://localhost'>this is link</a>",
+                        moreHTML="<div>this is a div</div>",
+                        emoji="🤔🔥",
+                     )
+            )
+        ]
+
 
 if __name__ == "__main__":
     generators = [
@@ -451,6 +469,7 @@ if __name__ == "__main__":
         InhibitingAlert(MAX_INTERVAL),
         SilencedAlertWithJiraLink(MAX_INTERVAL),
         PaginationTest(MAX_INTERVAL),
+        RichAnnotations(MAX_INTERVAL),
     ]
     while True:
         for g in generators:
