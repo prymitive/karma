@@ -255,3 +255,10 @@ jobs:
         # bundled heroku cli doesn't know anything about containers, update it
         - travis_retry curl -s --connect-timeout 30 --fail https://cli-assets.heroku.com/install.sh | sh
         - travis_retry /usr/local/bin/heroku container:release web --app karma-demo
+
+    - stage: E2E
+      name: Test demo site
+      if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
+      <<: *DEFAULTS_JS
+      script:
+        - make -C ui test-demo
