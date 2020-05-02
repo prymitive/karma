@@ -191,7 +191,7 @@ const Grid = observer(
                   className="flex-shrink-1 flex-grow-1"
                   style={{ minWidth: "0px" }}
                 >
-                  <span className="badge components-label px-0 ml-0 mr-3">
+                  <span className="badge components-label px-0 ml-1 mr-3">
                     <FontAwesomeIcon icon={faTh} className="text-muted" />
                   </span>
                   {grid.labelName !== "" && grid.labelValue !== "" && (
@@ -226,7 +226,7 @@ const Grid = observer(
                     alertStore={alertStore}
                   />
                   <span
-                    className="text-muted cursor-pointer badge px-0 components-label ml-2 mr-0"
+                    className="text-muted cursor-pointer badge px-0 components-label ml-2 mr-1"
                     onClick={this.onCollapseClick}
                   >
                     <TooltipWrapper title="Click to toggle this grid details or Alt+Click to toggle all grids">
