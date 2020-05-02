@@ -17,6 +17,10 @@ build: build/index.html
 test-js: node_modules/jest/bin/jest.js
 	CI=true NODE_OPTIONS="--unhandled-rejections=strict" npm test -- --coverage
 
+.PHONY: test-demo
+test-demo: node_modules/jest/bin/jest.js
+	CI=true ./node_modules/.bin/jest --config e2e/jest.config.js --runInBand e2e/demo.test.js
+
 .PHONY: test-percy
 test-percy: node_modules/@storybook/react/bin/build.js
 	CI=true npm run snapshot
