@@ -36,7 +36,7 @@
     "qs": "6.9.3",
     "react": "16.13.1",
     "react-app-polyfill": "1.0.6",
-    "react-autosuggest": "10.0.0",
+    "react-autosuggest": "10.0.2",
     "react-collapsible": "2.7.0",
     "react-datepicker": "2.14.1",
     "react-dom": "16.13.1",
