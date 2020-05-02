@@ -89,7 +89,7 @@ const SilenceModalContent = observer(
           </div>
           <div
             className={`modal-body ${
-              silenceFormStore.toggle.blurred && "modal-content-blur"
+              silenceFormStore.toggle.blurred ? "modal-content-blur" : ""
             }`}
           >
             {silenceFormStore.tab.current === SilenceTabNames.Editor ? (
