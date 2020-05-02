@@ -76,6 +76,7 @@ span.badge.components-label {
 }
 
 button.components-label-bright,
+span.components-label-bright,
 .components-label-bright {
   color: $black;
   &:hover {
@@ -105,6 +106,7 @@ button.components-label-bright,
 }
 
 button.components-label-dark,
+span.components-label-dark,
 .components-label-dark {
   color: $white;
   &:hover {
