@@ -40,7 +40,4 @@ const FetchGet = async (uri, options, beforeRetry) =>
 const FetchPost = async (uri, options) =>
   await fetch(uri, merge({}, { method: "POST" }, CommonOptions, options));
 
-const FetchDelete = async (uri, options) =>
-  await fetch(uri, merge({}, { method: "DELETE" }, CommonOptions, options));
-
-export { CommonOptions, FetchGet, FetchPost, FetchDelete, FetchRetryConfig };
+export { CommonOptions, FetchGet, FetchPost, FetchRetryConfig };

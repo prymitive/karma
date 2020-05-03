@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { shallow, mount } from "enzyme";
 
@@ -163,8 +164,10 @@ describe("<IdleTimer />", () => {
   it("doesn't hide on mobile if there are unapplied filters", () => {
     global.window.innerWidth = 500;
     const tree = MountedNavbar();
-    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
-    jest.runTimersToTime(1000 * 13);
+    act(() => {
+      alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
+      jest.runTimersToTime(1000 * 13);
+    });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
     expect(tree.find(".container").hasClass("invisible")).toBe(false);
@@ -173,8 +176,10 @@ describe("<IdleTimer />", () => {
   it("doesn't hide on desktop if there are unapplied filters", () => {
     global.window.innerWidth = 769;
     const tree = MountedNavbar();
-    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
-    jest.runTimersToTime(1000 * 60 * 3 + 1000);
+    act(() => {
+      alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
+      jest.runTimersToTime(1000 * 60 * 3 + 1000);
+    });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
     expect(tree.find(".container").hasClass("invisible")).toBe(false);
@@ -183,8 +188,10 @@ describe("<IdleTimer />", () => {
   it("hides on mobile if all unapplied filters finish applying", () => {
     global.window.innerWidth = 500;
     const tree = MountedNavbar();
-    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
-    jest.runTimersToTime(1000 * 13);
+    act(() => {
+      alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
+      jest.runTimersToTime(1000 * 13);
+    });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
     expect(tree.find(".container").hasClass("invisible")).toBe(false);
@@ -199,8 +206,10 @@ describe("<IdleTimer />", () => {
   it("hides on desktop if all unapplied filters finish applying", () => {
     global.window.innerWidth = 769;
     const tree = MountedNavbar();
-    alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
-    jest.runTimersToTime(1000 * 60 * 3 + 1000);
+    act(() => {
+      alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
+      jest.runTimersToTime(1000 * 60 * 3 + 1000);
+    });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
     expect(tree.find(".container").hasClass("invisible")).toBe(false);
@@ -266,14 +275,22 @@ describe("<IdleTimer />", () => {
     settingsStore.filterBarConfig.config.autohide = true;
     const tree = MountedNavbar();
 
-    alertStore.status.pause();
-    jest.runTimersToTime(1000 * 3600);
+    act(() => {
+      alertStore.status.pause();
+      jest.runTimersToTime(1000 * 3600);
+    });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
     expect(tree.find(".container").hasClass("invisible")).toBe(false);
 
-    alertStore.status.resume();
-    jest.runTimersToTime(1000 * 60 * 3 + 1000);
+    act(() => {
+      alertStore.status.resume();
+      jest.runTimersToTime(1000 * 60 * 3 + 1000);
+    });
+    tree.update();
+    act(() => {
+      jest.runTimersToTime(1000);
+    });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(false);
     expect(tree.find(".container").hasClass("invisible")).toBe(true);

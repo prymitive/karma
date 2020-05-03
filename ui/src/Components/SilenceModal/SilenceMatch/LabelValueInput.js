@@ -1,17 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
-import { action } from "mobx";
 import { observer } from "mobx-react";
 
 import hash from "object-hash";
 
 import { components } from "react-select";
 
+import Creatable from "react-select/creatable";
+
+import { FormatBackendURI } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceFormMatcher } from "Models/SilenceForm";
-import { MultiSelect } from "Components/MultiSelect";
+import { useFetchGet } from "Hooks/useFetchGet";
 import { ValidationError } from "Components/MultiSelect/ValidationError";
+import { ThemeContext } from "Components/Theme";
 import { MatchCounter } from "./MatchCounter";
 
 const GenerateHashFromMatchers = (silenceFormStore, matcher) =>
@@ -32,60 +35,73 @@ const Placeholder = (props) => {
   );
 };
 
-const ValueContainer = observer(({ children, ...props }) => (
+const ValueContainer = ({ children, ...props }) => (
   <components.ValueContainer {...props}>
-    <MatchCounter
-      key={GenerateHashFromMatchers(
-        props.selectProps.silenceFormStore,
-        props.selectProps.matcher
-      )}
-      silenceFormStore={props.selectProps.silenceFormStore}
-      matcher={props.selectProps.matcher}
-    />
+    {props.selectProps.matcher.values.length > 0 ? (
+      <MatchCounter
+        key={GenerateHashFromMatchers(
+          props.selectProps.silenceFormStore,
+          props.selectProps.matcher
+        )}
+        silenceFormStore={props.selectProps.silenceFormStore}
+        matcher={props.selectProps.matcher}
+      />
+    ) : null}
     {children}
   </components.ValueContainer>
-));
-
-const LabelValueInput = observer(
-  class LabelValueInput extends MultiSelect {
-    static propTypes = {
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      matcher: SilenceFormMatcher.isRequired,
-      isValid: PropTypes.bool.isRequired,
-    };
-
-    onChange = action((newValue, actionMeta) => {
-      const { matcher } = this.props;
-
-      // we might get null if there's nothing selected
-      const value = newValue || [];
-
-      matcher.values = value;
-
-      // force regex if we have multiple values
-      if (value.length > 1 && matcher.isRegex === false) {
-        matcher.isRegex = true;
-      } else if (value.length === 1 && matcher.isRegex === true) {
-        matcher.isRegex = false;
-      }
-    });
-
-    renderProps = () => {
-      const { silenceFormStore, matcher, isValid } = this.props;
-
-      return {
-        instanceId: `silence-input-label-value-${matcher.id}`,
-        defaultValue: matcher.values,
-        options: matcher.suggestions.values,
-        placeholder: isValid ? "Label value" : <ValidationError />,
-        isMulti: true,
-        onChange: this.onChange,
-        components: { ValueContainer, Placeholder },
-        silenceFormStore: silenceFormStore,
-        matcher: matcher,
-      };
-    };
-  }
 );
+
+const LabelValueInput = observer(({ silenceFormStore, matcher, isValid }) => {
+  const { response, get } = useFetchGet(
+    FormatBackendURI(`labelValues.json?name=${matcher.name}`),
+    { autorun: false }
+  );
+
+  useEffect(() => {
+    if (matcher.name) {
+      get();
+    }
+  }, [matcher.name, get]);
+
+  const context = React.useContext(ThemeContext);
+
+  return (
+    <Creatable
+      styles={context.reactSelectStyles}
+      classNamePrefix="react-select"
+      instanceId={`silence-input-label-value-${matcher.id}`}
+      defaultValue={matcher.values}
+      options={
+        response
+          ? response.map((value) => ({
+              label: value,
+              value: value,
+            }))
+          : []
+      }
+      placeholder={isValid ? "Label value" : <ValidationError />}
+      onChange={(newValue) => {
+        const value = newValue || [];
+        matcher.values = value;
+        // force regex if we have multiple values
+        if (value.length > 1 && matcher.isRegex === false) {
+          matcher.isRegex = true;
+        } else if (value.length === 1 && matcher.isRegex === true) {
+          matcher.isRegex = false;
+        }
+      }}
+      hideSelectedOptions
+      isMulti
+      components={{ ValueContainer, Placeholder }}
+      silenceFormStore={silenceFormStore}
+      matcher={matcher}
+    />
+  );
+});
+LabelValueInput.propTypes = {
+  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+  matcher: SilenceFormMatcher.isRequired,
+  isValid: PropTypes.bool.isRequired,
+};
 
 export { LabelValueInput };

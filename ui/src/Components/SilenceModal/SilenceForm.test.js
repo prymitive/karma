@@ -100,18 +100,14 @@ describe("<SilenceForm /> matchers", () => {
 });
 
 describe("<SilenceForm /> preview", () => {
-  it("doesn't render PayloadPreview when previewCollapse.hidden is true", () => {
+  it("doesn't render PayloadPreview by default", () => {
     const tree = MountedSilenceForm();
-    const instance = tree.instance();
-    instance.previewCollapse.hidden = true;
     expect(tree.find("PayloadPreview")).toHaveLength(0);
   });
 
-  it("renders PayloadPreview when previewCollapse.hidden is false", () => {
+  it("renders PayloadPreview after clicking the toggle", () => {
     const tree = MountedSilenceForm();
-    const instance = tree.instance();
-    instance.previewCollapse.hidden = false;
-    tree.update();
+    tree.find("span.btn.cursor-pointer.text-muted").simulate("click");
     expect(tree.find("PayloadPreview")).toHaveLength(1);
   });
 

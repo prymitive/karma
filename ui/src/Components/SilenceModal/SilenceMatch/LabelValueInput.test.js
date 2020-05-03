@@ -4,71 +4,58 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
+import { MockThemeContext } from "__mocks__/Theme";
 import {
   SilenceFormStore,
   NewEmptyMatcher,
   MatcherValueToObject,
 } from "Stores/SilenceFormStore";
-import { ThemeContext } from "Components/Theme";
-import {
-  ReactSelectColors,
-  ReactSelectStyles,
-} from "Components/Theme/ReactSelect";
+import { useFetchGet } from "Hooks/useFetchGet";
 import { LabelValueInput } from "./LabelValueInput";
 
 let silenceFormStore;
 let matcher;
 
-beforeAll(() => {
-  fetch.mockResponse(JSON.stringify([]));
-});
-
 beforeEach(() => {
+  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
+
   silenceFormStore = new SilenceFormStore();
   matcher = NewEmptyMatcher();
-  matcher.name = "name";
-  matcher.suggestions.names = [
-    MatcherValueToObject("job"),
-    MatcherValueToObject("cluster"),
-  ];
-  matcher.suggestions.values = [
-    MatcherValueToObject("foo"),
-    MatcherValueToObject("bar"),
-  ];
+  matcher.name = "cluster";
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
+  useFetchGet.mockReset();
 });
 
 const MountedLabelValueInput = (isValid) => {
   return mount(
-    <ThemeContext.Provider
-      value={{
-        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
-      }}
-    >
-      <LabelValueInput
-        silenceFormStore={silenceFormStore}
-        matcher={matcher}
-        isValid={isValid}
-      />
-    </ThemeContext.Provider>
+    <LabelValueInput
+      silenceFormStore={silenceFormStore}
+      matcher={matcher}
+      isValid={isValid}
+    />
   );
-};
-
-const ValidateSuggestions = () => {
-  const tree = MountedLabelValueInput(true);
-  // click on the react-select component doesn't seem to trigger options
-  // rendering in tests, so change the input instead
-  tree.find("input").simulate("change", { target: { value: "f" } });
-  return tree;
 };
 
 describe("<LabelValueInput />", () => {
   it("matches snapshot", () => {
     const tree = MountedLabelValueInput(true);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
+  it("fetches suggestions on mount", () => {
+    const tree = MountedLabelValueInput(true);
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(useFetchGet.fetch.calls).toHaveLength(1);
+    expect(useFetchGet.fetch.calls[0]).toBe("./labelValues.json?name=cluster");
+  });
+
+  it("doesn't fetch suggestions if name is not set", () => {
+    matcher.name = "";
+    MountedLabelValueInput(true);
+    expect(useFetchGet.fetch.calls).toHaveLength(0);
   });
 
   it("doesn't renders ValidationError after passed validation", () => {
@@ -84,25 +71,29 @@ describe("<LabelValueInput />", () => {
   });
 
   it("renders suggestions", () => {
-    const tree = ValidateSuggestions();
+    const tree = MountedLabelValueInput(true);
+    tree.find("input").simulate("change", { target: { value: "f" } });
     const options = tree.find("div.react-select__option");
-    expect(options).toHaveLength(2);
-    expect(options.at(0).text()).toBe("foo");
-    expect(options.at(1).text()).toBe("bar");
+    expect(options).toHaveLength(3);
+    expect(options.at(0).text()).toBe("dev");
+    expect(options.at(1).text()).toBe("staging");
+    expect(options.at(2).text()).toBe("prod");
   });
 
   it("clicking on options appends them to matcher.values", () => {
-    const tree = ValidateSuggestions();
+    const tree = MountedLabelValueInput(true);
+    tree.find("input").simulate("change", { target: { value: "f" } });
     const options = tree.find("div.react-select__option");
     options.at(0).simulate("click");
     options.at(1).simulate("click");
     expect(matcher.values).toHaveLength(2);
-    expect(matcher.values).toContainEqual(MatcherValueToObject("foo"));
-    expect(matcher.values).toContainEqual(MatcherValueToObject("bar"));
+    expect(matcher.values).toContainEqual(MatcherValueToObject("dev"));
+    expect(matcher.values).toContainEqual(MatcherValueToObject("staging"));
   });
 
   it("selecting one option doesn't force matcher.isRegex=true", () => {
-    const tree = ValidateSuggestions();
+    const tree = MountedLabelValueInput(true);
+    tree.find("input").simulate("change", { target: { value: "f" } });
     expect(matcher.isRegex).toBe(false);
     const options = tree.find("div.react-select__option");
     options.at(0).simulate("click");
@@ -111,7 +102,8 @@ describe("<LabelValueInput />", () => {
 
   it("selecting one option when matcher.isRegex=true changes it back to false", () => {
     matcher.isRegex = true;
-    const tree = ValidateSuggestions();
+    const tree = MountedLabelValueInput(true);
+    tree.find("input").simulate("change", { target: { value: "f" } });
     expect(matcher.isRegex).toBe(true);
     const options = tree.find("div.react-select__option");
     options.at(0).simulate("click");
@@ -119,7 +111,8 @@ describe("<LabelValueInput />", () => {
   });
 
   it("selecting multiple options forces matcher.isRegex=true", () => {
-    const tree = ValidateSuggestions();
+    const tree = MountedLabelValueInput(true);
+    tree.find("input").simulate("change", { target: { value: "f" } });
     expect(matcher.isRegex).toBe(false);
     const options = tree.find("div.react-select__option");
     options.at(0).simulate("click");
@@ -128,7 +121,10 @@ describe("<LabelValueInput />", () => {
   });
 
   it("removing last value sets matcher.values to []", () => {
-    matcher.values = [MatcherValueToObject("foo"), MatcherValueToObject("bar")];
+    matcher.values = [
+      MatcherValueToObject("dev"),
+      MatcherValueToObject("staging"),
+    ];
     const tree = MountedLabelValueInput(true);
 
     tree.find(".react-select__multi-value__remove").at(0).simulate("click");

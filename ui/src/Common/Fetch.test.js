@@ -1,10 +1,4 @@
-import {
-  CommonOptions,
-  FetchGet,
-  FetchPost,
-  FetchDelete,
-  FetchRetryConfig,
-} from "./Fetch";
+import { CommonOptions, FetchGet, FetchPost, FetchRetryConfig } from "./Fetch";
 
 import merge from "lodash/merge";
 
@@ -20,13 +14,11 @@ describe("Fetch", () => {
   const tests = {
     FetchGet: FetchGet,
     FetchPost: FetchPost,
-    FetchDelete: FetchDelete,
   };
 
   const methodOptions = {
     FetchGet: { method: "GET", mode: "cors" },
     FetchPost: { method: "POST" },
-    FetchDelete: { method: "DELETE" },
   };
 
   for (const [name, func] of Object.entries(tests)) {

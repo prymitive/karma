@@ -33,11 +33,6 @@ const FilterInputLabel = ({ alertStore, filter }) => {
     "btn"
   );
 
-  const showCounter =
-    alertStore.filters.values.filter(
-      (f) => f.hits !== alertStore.info.totalAlerts
-    ).length > 0;
-
   const rootClasses = filter.applied
     ? cs.className
     : [
@@ -53,7 +48,9 @@ const FilterInputLabel = ({ alertStore, filter }) => {
     >
       {filter.isValid ? (
         filter.applied ? (
-          showCounter ? (
+          alertStore.filters.values.filter(
+            (f) => f.hits !== alertStore.info.totalAlerts
+          ).length > 0 ? (
             <span className="badge badge-light badge-pill">{filter.hits}</span>
           ) : null
         ) : (

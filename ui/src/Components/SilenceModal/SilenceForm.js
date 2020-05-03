@@ -1,8 +1,7 @@
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
-import { action, observable } from "mobx";
-import { observer } from "mobx-react";
+import { useObserver, useLocalStore } from "mobx-react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
@@ -22,178 +21,157 @@ import { DateTimeSelect } from "./DateTimeSelect";
 import { PayloadPreview } from "./PayloadPreview";
 import { IconInput, AuthenticatedAuthorInput } from "./AuthorInput";
 
-const SilenceForm = observer(
-  class SilenceForm extends Component {
-    static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired,
-      previewOpen: PropTypes.bool.isRequired,
-    };
+const SilenceForm = ({
+  alertStore,
+  silenceFormStore,
+  settingsStore,
+  previewOpen,
+}) => {
+  const previewCollapse = useLocalStore(() => ({
+    hidden: !previewOpen,
+    toggle() {
+      this.hidden = !this.hidden;
+    },
+  }));
 
-    constructor(props) {
-      super(props);
-
-      // store preview visibility state here, by default preview is collapsed
-      // and user needs to expand it
-      this.previewCollapse = observable(
-        {
-          hidden: !props.previewOpen,
-          toggle() {
-            this.hidden = !this.hidden;
-          },
-        },
-        { toggle: action.bound },
-        { name: "Silence preview collpase toggle" }
-      );
+  useEffect(() => {
+    // reset startsAt & endsAt on every mount, unless we're editing a silence
+    if (silenceFormStore.data.silenceID === null) {
+      silenceFormStore.data.resetStartEnd();
+    } else {
+      silenceFormStore.data.verifyStarEnd();
     }
 
-    componentDidMount() {
-      const { silenceFormStore } = this.props;
-
-      // reset startsAt & endsAt on every mount, unless we're editing a silence
-      if (silenceFormStore.data.silenceID === null) {
-        silenceFormStore.data.resetStartEnd();
-      } else {
-        silenceFormStore.data.verifyStarEnd();
-      }
-
-      if (silenceFormStore.data.matchers.length === 0) {
-        silenceFormStore.data.addEmptyMatcher();
-      }
-
-      this.populateAuthor();
-    }
-
-    populateAuthor = action(() => {
-      const { alertStore, silenceFormStore, settingsStore } = this.props;
-
-      if (silenceFormStore.data.author === "") {
-        silenceFormStore.data.author =
-          settingsStore.silenceFormConfig.config.author;
-      }
-
-      if (alertStore.info.authentication.enabled) {
-        silenceFormStore.data.author = alertStore.info.authentication.username;
-      }
-    });
-
-    addMore = action((event) => {
-      const { silenceFormStore } = this.props;
-
-      event.preventDefault();
-
+    if (silenceFormStore.data.matchers.length === 0) {
       silenceFormStore.data.addEmptyMatcher();
-    });
+    }
 
-    onAuthorChange = action((event) => {
-      const { silenceFormStore } = this.props;
-      silenceFormStore.data.author = event.target.value;
-    });
+    // populate author
+    if (silenceFormStore.data.author === "") {
+      silenceFormStore.data.author =
+        settingsStore.silenceFormConfig.config.author;
+    }
 
-    onCommentChange = action((event) => {
-      const { silenceFormStore } = this.props;
-      silenceFormStore.data.comment = event.target.value;
-    });
+    if (alertStore.info.authentication.enabled) {
+      silenceFormStore.data.author = alertStore.info.authentication.username;
+    }
+  }, [
+    silenceFormStore.data,
+    alertStore.info.authentication.enabled,
+    alertStore.info.authentication.username,
+    settingsStore.silenceFormConfig.config.author,
+  ]);
 
-    handleSubmit = action((event) => {
-      const { silenceFormStore, settingsStore } = this.props;
+  const addMore = (event) => {
+    event.preventDefault();
+    silenceFormStore.data.addEmptyMatcher();
+  };
 
-      event.preventDefault();
+  const onAuthorChange = (event) => {
+    silenceFormStore.data.author = event.target.value;
+  };
 
-      settingsStore.silenceFormConfig.saveAuthor(silenceFormStore.data.author);
+  const onCommentChange = (event) => {
+    silenceFormStore.data.comment = event.target.value;
+  };
 
-      if (silenceFormStore.data.isValid)
-        silenceFormStore.data.currentStage = SilenceFormStage.Preview;
+  const handleSubmit = (event) => {
+    event.preventDefault();
 
-      silenceFormStore.data.wasValidated = true;
-    });
+    settingsStore.silenceFormConfig.saveAuthor(silenceFormStore.data.author);
 
-    render() {
-      const { alertStore, silenceFormStore } = this.props;
+    if (silenceFormStore.data.isValid)
+      silenceFormStore.data.currentStage = SilenceFormStage.Preview;
 
-      return (
-        <form onSubmit={this.handleSubmit} autoComplete="on">
-          <div className="mb-3">
-            <AlertManagerInput
-              alertStore={alertStore}
-              silenceFormStore={silenceFormStore}
-            />
-          </div>
-          {silenceFormStore.data.matchers.map((matcher) => (
-            <SilenceMatch
-              key={matcher.id}
-              silenceFormStore={silenceFormStore}
-              matcher={matcher}
-              onDelete={() => {
-                silenceFormStore.data.deleteMatcher(matcher.id);
-              }}
-              showDelete={silenceFormStore.data.matchers.length > 1}
-              isValid={!silenceFormStore.data.wasValidated}
-            />
-          ))}
-          <TooltipWrapper title="Add a matcher">
+    silenceFormStore.data.wasValidated = true;
+  };
+
+  return useObserver(() => (
+    <form onSubmit={handleSubmit} autoComplete="on">
+      <div className="mb-3">
+        <AlertManagerInput
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+        />
+      </div>
+      {silenceFormStore.data.matchers.map((matcher) => (
+        <SilenceMatch
+          key={matcher.id}
+          silenceFormStore={silenceFormStore}
+          matcher={matcher}
+          onDelete={() => {
+            silenceFormStore.data.deleteMatcher(matcher.id);
+          }}
+          showDelete={silenceFormStore.data.matchers.length > 1}
+          isValid={!silenceFormStore.data.wasValidated}
+        />
+      ))}
+      <TooltipWrapper title="Add a matcher">
+        <button
+          type="button"
+          className="btn btn-secondary mb-3"
+          onClick={addMore}
+        >
+          <FontAwesomeIcon icon={faPlus} />
+        </button>
+      </TooltipWrapper>
+      <DateTimeSelect silenceFormStore={silenceFormStore} />
+      {alertStore.info.authentication.enabled ? (
+        <AuthenticatedAuthorInput alertStore={alertStore} />
+      ) : (
+        <IconInput
+          type="text"
+          autoComplete="email"
+          placeholder="Author"
+          icon={faUser}
+          value={silenceFormStore.data.author}
+          onChange={onAuthorChange}
+        />
+      )}
+
+      <IconInput
+        type="text"
+        autoComplete="on"
+        placeholder="Comment"
+        icon={faCommentDots}
+        value={silenceFormStore.data.comment}
+        onChange={onCommentChange}
+      />
+      <div className="d-flex flex-row justify-content-between">
+        <span
+          className="btn px-0 cursor-pointer text-muted"
+          onClick={previewCollapse.toggle}
+        >
+          <ToggleIcon isOpen={!previewCollapse.hidden} />
+        </span>
+        <span>
+          {silenceFormStore.data.silenceID === null ? null : (
             <button
               type="button"
-              className="btn btn-secondary mb-3"
-              onClick={this.addMore}
+              className="btn btn-danger mr-2"
+              onClick={silenceFormStore.data.resetSilenceID}
             >
-              <FontAwesomeIcon icon={faPlus} />
+              <FontAwesomeIcon icon={faUndoAlt} className="mr-1" />
+              Reset
             </button>
-          </TooltipWrapper>
-          <DateTimeSelect silenceFormStore={silenceFormStore} />
-          {alertStore.info.authentication.enabled ? (
-            <AuthenticatedAuthorInput alertStore={alertStore} />
-          ) : (
-            <IconInput
-              type="text"
-              autoComplete="email"
-              placeholder="Author"
-              icon={faUser}
-              value={silenceFormStore.data.author}
-              onChange={this.onAuthorChange}
-            />
           )}
-
-          <IconInput
-            type="text"
-            autoComplete="on"
-            placeholder="Comment"
-            icon={faCommentDots}
-            value={silenceFormStore.data.comment}
-            onChange={this.onCommentChange}
-          />
-          <div className="d-flex flex-row justify-content-between">
-            <span
-              className="btn px-0 cursor-pointer text-muted"
-              onClick={this.previewCollapse.toggle}
-            >
-              <ToggleIcon isOpen={!this.previewCollapse.hidden} />
-            </span>
-            <span>
-              {silenceFormStore.data.silenceID === null ? null : (
-                <button
-                  type="button"
-                  className="btn btn-danger mr-2"
-                  onClick={silenceFormStore.data.resetSilenceID}
-                >
-                  <FontAwesomeIcon icon={faUndoAlt} className="mr-1" />
-                  Reset
-                </button>
-              )}
-              <button type="submit" className="btn btn-primary">
-                <FontAwesomeIcon icon={faSearch} className="mr-1" />
-                Preview
-              </button>
-            </span>
-          </div>
-          {this.previewCollapse.hidden ? null : (
-            <PayloadPreview silenceFormStore={silenceFormStore} />
-          )}
-        </form>
-      );
-    }
-  }
-);
+          <button type="submit" className="btn btn-primary">
+            <FontAwesomeIcon icon={faSearch} className="mr-1" />
+            Preview
+          </button>
+        </span>
+      </div>
+      {previewCollapse.hidden ? null : (
+        <PayloadPreview silenceFormStore={silenceFormStore} />
+      )}
+    </form>
+  ));
+};
+SilenceForm.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+  settingsStore: PropTypes.instanceOf(Settings).isRequired,
+  previewOpen: PropTypes.bool.isRequired,
+};
 
 export { SilenceForm };

@@ -13,14 +13,13 @@ import {
   NewEmptyMatcher,
   MatcherValueToObject,
 } from "Stores/SilenceFormStore";
+import { useFetchGet } from "Hooks/useFetchGet";
 import { SilencePreview } from ".";
 
 let alertStore;
 let silenceFormStore;
 
 beforeEach(() => {
-  fetch.resetMocks();
-
   alertStore = new AlertStore([]);
 
   const matcher = NewEmptyMatcher();
@@ -33,6 +32,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
+  useFetchGet.mockReset();
 });
 
 const MockAPIResponse = () => {
@@ -81,108 +81,92 @@ const MountedSilencePreview = () => {
 };
 
 describe("<SilencePreview />", () => {
-  it("fetches matching alerts on mount", async () => {
-    fetch.mockResponse(JSON.stringify(MockAPIResponse()));
-
-    const tree = MountedSilencePreview();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    expect(fetch).toHaveBeenCalled();
+  it("fetches matching alerts on mount", () => {
+    MountedSilencePreview();
+    expect(useFetchGet).toHaveBeenCalled();
   });
 
-  it("fetch uses correct filters with single Alertmanager instance", async () => {
-    fetch.mockResponse(JSON.stringify(MockAPIResponse()));
+  it("fetch uses correct filters with single Alertmanager instance", () => {
     silenceFormStore.data.alertmanagers = [
       { label: "amName", value: ["amValue"] },
     ];
-
-    const tree = MountedSilencePreview();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    expect(fetch).toHaveBeenCalledWith(
-      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28amValue%29%24",
-      {
-        method: "GET",
-        credentials: "include",
-        mode: "cors",
-        redirect: "follow",
-      }
+    MountedSilencePreview();
+    expect(useFetchGet).toHaveBeenCalledWith(
+      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28amValue%29%24"
     );
   });
 
-  it("fetch uses correct filters with multiple Alertmanager instances", async () => {
-    fetch.mockResponse(JSON.stringify(MockAPIResponse()));
+  it("fetch uses correct filters with multiple Alertmanager instances", () => {
     silenceFormStore.data.alertmanagers = [
       { label: "cluster", value: ["am1", "am2"] },
     ];
-
-    const tree = MountedSilencePreview();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    expect(fetch).toHaveBeenCalledWith(
-      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24",
-      {
-        method: "GET",
-        credentials: "include",
-        mode: "cors",
-        redirect: "follow",
-      }
+    MountedSilencePreview();
+    expect(useFetchGet).toHaveBeenCalledWith(
+      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24"
     );
   });
 
-  it("matches snapshot", async () => {
-    fetch.mockResponse(JSON.stringify(MockAPIResponse()));
+  it("matches snapshot", () => {
+    useFetchGet.mockReturnValueOnce({
+      response: MockAPIResponse(),
+      error: false,
+      isLoading: false,
+      isRetrying: false,
+    });
 
     const tree = MountedSilencePreview();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("renders StaticLabel after fetch", async () => {
-    fetch.mockResponse(JSON.stringify(MockAPIResponse()));
-
+  it("renders Placeholder while loading preview", () => {
+    useFetchGet.mockReturnValue({
+      response: null,
+      error: false,
+      isLoading: true,
+      isRetrying: false,
+    });
     const tree = MountedSilencePreview();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    tree.update();
-    expect(tree.text()).toMatch(/Affected alerts/);
-    expect(tree.find("StaticLabel")).toHaveLength(9);
+    expect(tree.find("Placeholder")).toHaveLength(1);
   });
 
-  it("handles empty grid response correctly", async () => {
-    fetch.mockResponseOnce(JSON.stringify(EmptyAPIResponse()));
+  it("renders StaticLabel after fetch", () => {
+    const tree = MountedSilencePreview();
+    expect(tree.text()).toMatch(/Affected alerts/);
+    expect(tree.find("StaticLabel")).toHaveLength(3);
+  });
+
+  it("handles empty grid response correctly", () => {
+    useFetchGet.mockReturnValueOnce({
+      response: EmptyAPIResponse(),
+      error: false,
+      isLoading: false,
+      isRetrying: false,
+    });
 
     const tree = MountedSilencePreview();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-    tree.update();
     expect(tree.text()).toMatch(/No alerts matched/);
   });
 
-  it("renders FetchError on failed fetch", async () => {
-    const consoleSpy = jest
-      .spyOn(console, "trace")
-      .mockImplementation(() => {});
-    fetch.mockReject(new Error("Fetch error"));
+  it("renders FetchError on failed fetch", () => {
+    useFetchGet.mockReturnValueOnce({
+      response: null,
+      error: "Fetch error",
+      isLoading: false,
+      isRetrying: false,
+    });
 
     const tree = MountedSilencePreview();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-
-    tree.update();
     expect(tree.find("FetchError")).toHaveLength(1);
-    expect(consoleSpy).toHaveBeenCalled();
     expect(tree.find("LabelSetList")).toHaveLength(0);
   });
 
-  it("renders LabelSetList on successful fetch", async () => {
-    fetch.mockResponse(JSON.stringify(MockAPIResponse()));
-
+  it("renders LabelSetList on successful fetch", () => {
     const tree = MountedSilencePreview();
-    await expect(tree.instance().matchedAlerts.fetch).resolves.toBeUndefined();
-
-    tree.update();
     expect(tree.find("FetchError")).toHaveLength(0);
     expect(tree.find("LabelSetList")).toHaveLength(1);
   });
 
   it("clicking on the submit button moves form to the 'Submit' stage", () => {
-    fetch.mockResponse(JSON.stringify(MockAPIResponse()));
-
     const tree = MountedSilencePreview();
     const button = tree.find(".btn-primary");
     button.simulate("click");
