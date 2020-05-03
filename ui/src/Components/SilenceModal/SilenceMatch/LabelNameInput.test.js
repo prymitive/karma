@@ -4,55 +4,27 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { NewEmptyMatcher, MatcherValueToObject } from "Stores/SilenceFormStore";
-import { ThemeContext } from "Components/Theme";
-import {
-  ReactSelectColors,
-  ReactSelectStyles,
-} from "Components/Theme/ReactSelect";
+import { MockThemeContext } from "__mocks__/Theme";
+import { NewEmptyMatcher } from "Stores/SilenceFormStore";
+import { useFetchGet } from "Hooks/useFetchGet";
 import { LabelNameInput } from "./LabelNameInput";
 
 let matcher;
 
-beforeAll(() => {
-  fetch.mockResponse(JSON.stringify([]));
-});
-
 beforeEach(() => {
+  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
+
   matcher = NewEmptyMatcher();
-  matcher.name = "name";
-  matcher.suggestions.names = [
-    MatcherValueToObject("job"),
-    MatcherValueToObject("cluster"),
-  ];
-  matcher.suggestions.values = [
-    MatcherValueToObject("foo"),
-    MatcherValueToObject("bar"),
-  ];
+  matcher.name = "cluster";
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
+  useFetchGet.mockReset();
 });
 
 const MountedLabelNameInput = (isValid) => {
-  return mount(
-    <ThemeContext.Provider
-      value={{
-        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
-      }}
-    >
-      <LabelNameInput matcher={matcher} isValid={isValid} />
-    </ThemeContext.Provider>
-  );
-};
-
-const ValidateSuggestions = () => {
-  const tree = MountedLabelNameInput(true);
-  // click on the react-select component doesn't seem to trigger options
-  // rendering in tests, so change the input instead
-  tree.find("input").simulate("change", { target: { value: "f" } });
-  return tree;
+  return mount(<LabelNameInput matcher={matcher} isValid={isValid} />);
 };
 
 describe("<LabelNameInput />", () => {
@@ -80,73 +52,37 @@ describe("<LabelNameInput />", () => {
   });
 
   it("renders suggestions", () => {
-    const tree = ValidateSuggestions();
+    const tree = MountedLabelNameInput(true);
+    tree.find("input").simulate("change", { target: { value: "f" } });
     const options = tree.find("div.react-select__option");
     expect(options).toHaveLength(2);
     expect(options.at(0).text()).toBe("job");
-    expect(options.at(1).text()).toBe("cluster");
+    expect(options.at(1).text()).toBe("instance");
   });
 
   it("clicking on options updates the matcher", () => {
-    const tree = ValidateSuggestions();
+    const tree = MountedLabelNameInput(true);
+    tree.find("input").simulate("change", { target: { value: "f" } });
     const option = tree.find("div.react-select__option").at(0);
     option.simulate("click");
     expect(matcher.name).toBe("job");
   });
 
-  it("populates suggestions on mount", async () => {
-    fetch
-      .once(JSON.stringify(["name1", "name2", "name3"]))
-      .once(JSON.stringify(["value1", "value2", "value3"]));
-    const tree = MountedLabelNameInput(true);
-    const instance = tree.instance();
-    await expect(instance.nameSuggestionsFetch).resolves.toBeUndefined();
-    await expect(instance.valueSuggestionsFetch).resolves.toBeUndefined();
-    expect(matcher.suggestions.names).toHaveLength(3);
-    for (let i = 0; i < 3; i++) {
-      expect(matcher.suggestions.names[i]).toMatchObject(
-        MatcherValueToObject(`name${i + 1}`)
-      );
-      expect(matcher.suggestions.values[i]).toMatchObject(
-        MatcherValueToObject(`value${i + 1}`)
-      );
-    }
+  it("populates suggestions on mount", () => {
+    MountedLabelNameInput(true);
+    expect(useFetchGet.mock.calls[0][0]).toBe("./labelNames.json");
   });
 
-  it("handles fetch errors when populating suggestions", async () => {
-    fetch.mockReject(new Error("Fetch error"));
+  it("handles fetch errors when populating suggestions", () => {
+    useFetchGet.mockReturnValue({
+      response: null,
+      error: "fake error",
+      isLoading: false,
+      isRetrying: false,
+    });
     const tree = MountedLabelNameInput(true);
-    const instance = tree.instance();
-    await expect(instance.nameSuggestionsFetch).resolves.toBeUndefined();
-    await expect(instance.valueSuggestionsFetch).resolves.toBeUndefined();
-    expect(matcher.suggestions.names).toHaveLength(0);
-  });
-
-  it("handles invalid JSON when populating suggestions", async () => {
-    jest.spyOn(console, "error").mockImplementation(() => {});
-    fetch.mockResponse("this is not JSON");
-    const tree = MountedLabelNameInput(true);
-    const instance = tree.instance();
-    await expect(instance.nameSuggestionsFetch).resolves.toBeUndefined();
-    await expect(instance.valueSuggestionsFetch).resolves.toBeUndefined();
-    expect(matcher.suggestions.names).toHaveLength(0);
-    expect(matcher.suggestions.values).toHaveLength(0);
-  });
-
-  it("suggestions are emptied on failed fetch", async () => {
-    fetch.mockReject(new Error("fake error message"));
-    const tree = MountedLabelNameInput(true);
-    const instance = tree.instance();
-    await expect(instance.nameSuggestionsFetch).resolves.toBeUndefined();
-    await expect(instance.valueSuggestionsFetch).resolves.toBeUndefined();
-    expect(matcher.suggestions.names).toHaveLength(0);
-  });
-
-  it("doesn't fetch suggestions if value is changed to empty string", () => {
-    const tree = MountedLabelNameInput(true);
-    const instance = tree.instance();
-    const fetchSpy = jest.spyOn(instance, "populateValueSuggestions");
-    instance.onChange("");
-    expect(fetchSpy).not.toHaveBeenCalled();
+    tree.find("input").simulate("change", { target: { value: "f" } });
+    const options = tree.find("div.react-select__option");
+    expect(options).toHaveLength(0);
   });
 });

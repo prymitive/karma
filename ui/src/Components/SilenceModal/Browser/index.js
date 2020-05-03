@@ -1,9 +1,7 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import { useObserver, useLocalStore } from "mobx-react";
-
-import debounce from "lodash/debounce";
+import { useObserver } from "mobx-react";
 
 import { Fade } from "react-reveal";
 
@@ -16,7 +14,8 @@ import { faSortAmountUp } from "@fortawesome/free-solid-svg-icons/faSortAmountUp
 import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
-import { FetchGet } from "Common/Fetch";
+import { useFetchGet } from "Hooks/useFetchGet";
+import { useDebounce } from "Hooks/useDebounce";
 import { IsMobile } from "Common/Device";
 import { ManagedSilence } from "Components/ManagedSilence";
 import { PageSelect } from "Components/Pagination";
@@ -55,81 +54,39 @@ const Browser = ({
   settingsStore,
   onDeleteModalClose,
 }) => {
-  const dataSource = useLocalStore(() => ({
-    silences: [],
-    sortReverse: false,
-    showExpired: false,
-    searchTerm: "",
-    error: null,
-    fetch: null,
-    done: false,
-    setDone() {
-      this.done = true;
-    },
-    setError(value) {
-      this.error = value;
-    },
-    toggleSortReverse() {
-      this.sortReverse = !this.sortReverse;
-    },
-    toggleShowExpired() {
-      this.showExpired = !this.showExpired;
-    },
-    setSearchTerm(value) {
-      this.searchTerm = value;
-    },
-  }));
-
   const maxPerPage = IsMobile() ? 4 : 6;
+  const [sortReverse, setSortReverse] = useState(false);
+  const [showExpired, setShowExpired] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [activePage, setActivePage] = useState(1);
+  const [currentTime, setCurrentTime] = useState(Math.floor(Date.now() / 1000));
 
-  const pagination = useLocalStore(() => ({
-    activePage: 1,
-    onPageChange(pageNumber) {
-      this.activePage = pageNumber;
-    },
-    resetIfNeeded(totalItemsCount, maxPerPage) {
-      const totalPages = Math.ceil(totalItemsCount / maxPerPage);
-      if (this.activePage > totalPages) {
-        this.activePage = Math.max(1, totalPages);
-      }
-    },
-  }));
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const onFetch = useCallback(() => {
-    const uri = FormatBackendURI(
-      `silences.json?sortReverse=${
-        dataSource.sortReverse ? "1" : "0"
-      }&showExpired=${dataSource.showExpired ? "1" : "0"}&searchTerm=${
-        dataSource.searchTerm
-      }`
-    );
-
-    dataSource.fetch = FetchGet(uri, {})
-      .then((result) => {
-        return result.json();
-      })
-      .then((result) => {
-        dataSource.silences = result;
-        dataSource.setDone();
-        dataSource.setError(null);
-        pagination.resetIfNeeded(dataSource.silences.length, maxPerPage);
-      })
-      .catch((err) => {
-        console.trace(err);
-        dataSource.setDone();
-        return dataSource.setError(`Request failed with: ${err.message}`);
-      });
-  }, [dataSource, maxPerPage, pagination]);
-
-  const onDebouncedFetch = debounce(onFetch, 500);
+  const { response, error, isLoading } = useFetchGet(
+    FormatBackendURI(
+      `silences.json?sortReverse=${sortReverse ? "1" : "0"}&showExpired=${
+        showExpired ? "1" : "0"
+      }&searchTerm=${debouncedSearchTerm}`
+    ),
+    { deps: [currentTime] }
+  );
 
   useEffect(() => {
-    onFetch();
+    if (response) {
+      const totalPages = Math.ceil(response.length / maxPerPage);
+      if (activePage > totalPages) {
+        setActivePage(Math.max(1, totalPages));
+      }
+    }
+  }, [activePage, maxPerPage, response]);
+
+  useEffect(() => {
     const timer = setInterval(() => {
-      onFetch();
+      setCurrentTime(Math.floor(Date.now() / 1000));
     }, settingsStore.fetchConfig.config.interval * 1000);
     return () => clearInterval(timer);
-  }, [onFetch, settingsStore.fetchConfig.config.interval]);
+  }, [settingsStore.fetchConfig.config.interval]);
 
   return useObserver(() => (
     <React.Fragment>
@@ -143,11 +100,8 @@ const Browser = ({
             className="custom-control-input"
             type="checkbox"
             value=""
-            checked={dataSource.showExpired}
-            onChange={() => {
-              dataSource.toggleShowExpired();
-              onDebouncedFetch();
-            }}
+            checked={showExpired}
+            onChange={() => setShowExpired(!showExpired)}
           />
           <label
             className="custom-control-label cursor-pointer"
@@ -160,66 +114,55 @@ const Browser = ({
           type="text"
           className="form-control flex-grow-1 flex-shrink-1 mx-lg-3 mx-0 my-lg-0 my-2"
           placeholder="Search query"
-          value={dataSource.searchTerm}
+          value={searchTerm}
           autoComplete="off"
-          onChange={(e) => {
-            dataSource.setSearchTerm(e.target.value);
-            onDebouncedFetch();
-          }}
+          onChange={(e) => setSearchTerm(e.target.value)}
         />
         <button
           type="button"
           className="btn btn-secondary flex-grow-0 flex-shrink-0"
-          onClick={() => {
-            dataSource.toggleSortReverse();
-            onDebouncedFetch();
-          }}
+          onClick={() => setSortReverse(!sortReverse)}
         >
           <FontAwesomeIcon
             className="mr-1"
-            icon={dataSource.sortReverse ? faSortAmountUp : faSortAmountDownAlt}
+            icon={sortReverse ? faSortAmountUp : faSortAmountDownAlt}
           />
           Sort order
         </button>
       </div>
-      {dataSource.error !== null ? (
-        <FetchError message={dataSource.error} />
-      ) : dataSource.done ? (
-        dataSource.silences.length === 0 ? (
-          <Placeholder content="Nothing to show" />
-        ) : (
-          <React.Fragment>
-            {dataSource.silences
-              .slice(
-                (pagination.activePage - 1) * maxPerPage,
-                pagination.activePage * maxPerPage
-              )
-              .map((silence) => (
-                <ManagedSilence
-                  key={`${silence.cluster}/${silence.silence.id}`}
-                  cluster={silence.cluster}
-                  alertCount={silence.alertCount}
-                  alertCountAlwaysVisible={true}
-                  silence={silence.silence}
-                  alertStore={alertStore}
-                  silenceFormStore={silenceFormStore}
-                  onDeleteModalClose={onDeleteModalClose}
-                />
-              ))}
-          </React.Fragment>
-        )
-      ) : (
+      {error ? (
+        <FetchError message={error} />
+      ) : response === null && isLoading ? (
         <Placeholder
           content={<FontAwesomeIcon icon={faSpinner} size="lg" spin />}
         />
+      ) : response.length === 0 ? (
+        <Placeholder content="Nothing to show" />
+      ) : (
+        <React.Fragment>
+          {response
+            .slice((activePage - 1) * maxPerPage, activePage * maxPerPage)
+            .map((silence) => (
+              <ManagedSilence
+                key={`${silence.cluster}/${silence.silence.id}`}
+                cluster={silence.cluster}
+                alertCount={silence.alertCount}
+                alertCountAlwaysVisible={true}
+                silence={silence.silence}
+                alertStore={alertStore}
+                silenceFormStore={silenceFormStore}
+                onDeleteModalClose={onDeleteModalClose}
+              />
+            ))}
+          <PageSelect
+            totalPages={Math.ceil(response.length / maxPerPage)}
+            activePage={activePage}
+            maxPerPage={maxPerPage}
+            totalItemsCount={response.length}
+            setPageCallback={setActivePage}
+          />
+        </React.Fragment>
       )}
-      <PageSelect
-        totalPages={Math.ceil(dataSource.silences.length / maxPerPage)}
-        activePage={pagination.activePage}
-        maxPerPage={maxPerPage}
-        totalItemsCount={dataSource.silences.length}
-        setPageCallback={pagination.onPageChange}
-      />
     </React.Fragment>
   ));
 };

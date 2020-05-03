@@ -1,108 +1,46 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { action } from "mobx";
-import { observer } from "mobx-react";
+import Creatable from "react-select/creatable";
 
 import { SilenceFormMatcher } from "Models/SilenceForm";
-import { MultiSelect } from "Components/MultiSelect";
-import { ValidationError } from "Components/MultiSelect/ValidationError";
 import { FormatBackendURI } from "Stores/AlertStore";
-import { FetchGet } from "Common/Fetch";
+import { useFetchGet } from "Hooks/useFetchGet";
+import { ValidationError } from "Components/MultiSelect/ValidationError";
+import { ThemeContext } from "Components/Theme";
 
-const LabelNameInput = observer(
-  class LabelNameInput extends MultiSelect {
-    static propTypes = {
-      matcher: SilenceFormMatcher.isRequired,
-      isValid: PropTypes.bool.isRequired,
-    };
+const LabelNameInput = ({ matcher, isValid }) => {
+  const { response } = useFetchGet(FormatBackendURI(`labelNames.json`));
 
-    populateNameSuggestions = action(() => {
-      const { matcher } = this.props;
+  const context = React.useContext(ThemeContext);
 
-      this.nameSuggestionsFetch = FetchGet(
-        FormatBackendURI(`labelNames.json`),
-        {}
-      )
-        .then(
-          (result) => result.json(),
-          (err) => {
-            return [];
-          }
-        )
-        .then((result) => {
-          matcher.suggestions.names = result.map((value) => ({
-            label: value,
-            value: value,
-          }));
-        })
-        .catch((err) => {
-          console.error(err.message);
-          matcher.suggestions.names = [];
-        });
-    });
-
-    populateValueSuggestions = action(() => {
-      const { matcher } = this.props;
-
-      this.valueSuggestionsFetch = FetchGet(
-        FormatBackendURI(`labelValues.json?name=${matcher.name}`),
-        {}
-      )
-        .then(
-          (result) => result.json(),
-          (err) => {
-            return [];
-          }
-        )
-        .then((result) => {
-          matcher.suggestions.values = result.map((value) => ({
-            label: value,
-            value: value,
-          }));
-        })
-        .catch((err) => {
-          console.error(err.message);
-          matcher.suggestions.values = [];
-        });
-    });
-
-    onChange = action((newValue, actionMeta) => {
-      const { matcher } = this.props;
-
-      matcher.name = newValue.value;
-
-      if (newValue) {
-        this.populateValueSuggestions();
+  return (
+    <Creatable
+      styles={context.reactSelectStyles}
+      classNamePrefix="react-select"
+      instanceId={`silence-input-label-name-${matcher.id}`}
+      defaultValue={
+        matcher.name ? { label: matcher.name, value: matcher.name } : null
       }
-    });
-
-    componentDidMount() {
-      const { matcher } = this.props;
-
-      this.populateNameSuggestions();
-      if (matcher.name) {
-        this.populateValueSuggestions();
+      options={
+        response
+          ? response.map((value) => ({
+              label: value,
+              value: value,
+            }))
+          : []
       }
-    }
-
-    renderProps = () => {
-      const { matcher, isValid } = this.props;
-
-      const value = matcher.name
-        ? { label: matcher.name, value: matcher.name }
-        : null;
-
-      return {
-        instanceId: `silence-input-label-name-${matcher.id}`,
-        defaultValue: value,
-        options: matcher.suggestions.names,
-        placeholder: isValid ? "Label name" : <ValidationError />,
-        onChange: this.onChange,
-        hideSelectedOptions: true,
-      };
-    };
-  }
-);
+      placeholder={isValid ? "Label name" : <ValidationError />}
+      onChange={({ value }) => {
+        matcher.name = value;
+      }}
+      hideSelectedOptions
+    />
+  );
+};
+LabelNameInput.propTypes = {
+  matcher: SilenceFormMatcher.isRequired,
+  isValid: PropTypes.bool.isRequired,
+};
 
 export { LabelNameInput };

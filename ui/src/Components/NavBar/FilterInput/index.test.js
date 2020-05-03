@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount, render } from "enzyme";
 
@@ -6,6 +7,7 @@ import toDiffableHtml from "diffable-html";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { useFetchGet } from "Hooks/useFetchGet";
 import { FilterInput } from ".";
 
 let alertStore;
@@ -13,6 +15,7 @@ let settingsStore;
 let originalInnerWidth;
 
 beforeAll(() => {
+  jest.useFakeTimers();
   originalInnerWidth = global.window.innerWidth;
 });
 
@@ -20,12 +23,11 @@ beforeEach(() => {
   global.window.innerWidth = originalInnerWidth;
   alertStore = new AlertStore([]);
   settingsStore = new Settings();
-
-  fetch.resetMocks();
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
+  useFetchGet.mockReset();
   global.window.innerWidth = originalInnerWidth;
 });
 
@@ -33,12 +35,6 @@ const MountedInput = () => {
   return mount(
     <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
   );
-};
-
-const WaitForFetch = (tree) => {
-  return expect(
-    tree.instance().inputStore.suggestionsFetch
-  ).resolves.toBeUndefined();
 };
 
 describe("<FilterInput />", () => {
@@ -49,43 +45,34 @@ describe("<FilterInput />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("inputStore.ref should be  != null after mount", () => {
-    const tree = MountedInput();
-    const instance = tree.instance();
-    expect(instance.inputStore.ref).not.toBeNull();
-  });
-
   it("input gets focus by default on desktop", () => {
     global.window.innerWidth = 768;
     const tree = MountedInput();
-    const instance = tree.instance();
-    const inputSpy = jest.spyOn(instance.inputStore.ref.input, "focus");
-    instance.componentDidMount();
-    expect(inputSpy).toHaveBeenCalledTimes(1);
+    expect(tree.find("input:focus")).toHaveLength(1);
   });
 
   it("input doesn't get focus by default on mobile", () => {
     global.window.innerWidth = 767;
     const tree = MountedInput();
-    const instance = tree.instance();
-    const inputSpy = jest.spyOn(instance.inputStore.ref.input, "focus");
-    instance.componentDidMount();
-    expect(inputSpy).not.toHaveBeenCalled();
+    expect(tree.find("input:focus")).toHaveLength(0);
   });
 
   it("onChange should modify inputStore.value", () => {
-    fetch.mockResponseOnce(JSON.stringify([]));
-
     const tree = MountedInput();
     tree.find("input").simulate("change", { target: { value: "foo=bar" } });
-    const instance = tree.instance();
-    expect(instance.inputStore.value).toBe("foo=bar");
+    act(() => jest.runOnlyPendingTimers());
+
+    expect(
+      tree.find("input.components-filterinput-wrapper").props().value
+    ).toBe("foo=bar");
   });
 
   it("submit should modify alertStore.filters", () => {
     const tree = MountedInput();
-    const instance = tree.instance();
-    instance.inputStore.value = "foo=bar";
+
+    tree.find("input").simulate("change", { target: { value: "foo=bar" } });
+    act(() => jest.runOnlyPendingTimers());
+
     expect(alertStore.filters.values).toHaveLength(0);
     tree.find("form").simulate("submit");
     expect(alertStore.filters.values).toHaveLength(1);
@@ -96,8 +83,9 @@ describe("<FilterInput />", () => {
 
   it("submit should be no-op if input value is empty", () => {
     const tree = MountedInput();
-    const instance = tree.instance();
-    instance.inputStore.value = "";
+    tree.find("input").simulate("change", { target: { value: "" } });
+    act(() => jest.runOnlyPendingTimers());
+
     expect(alertStore.filters.values).toHaveLength(0);
     tree.find("form").simulate("submit");
     expect(alertStore.filters.values).toHaveLength(0);
@@ -105,20 +93,9 @@ describe("<FilterInput />", () => {
 
   it("clicking on form-control div focuses input", () => {
     const tree = MountedInput();
-    const instance = tree.instance();
-    const inputSpy = jest.spyOn(instance.inputStore.ref.input, "focus");
     const formControl = tree.find(".form-control");
     formControl.simulate("click");
-    expect(inputSpy).toHaveBeenCalledTimes(1);
-  });
-
-  it("clicking on a label doesn't trigger input focus", () => {
-    alertStore.filters.values = [NewUnappliedFilter("foo=bar")];
-    const tree = MountedInput();
-    const instance = tree.instance();
-    const inputSpy = jest.spyOn(instance.inputStore.ref.input, "focus");
-    tree.find("FilterInputLabel").simulate("click");
-    expect(inputSpy).not.toHaveBeenCalled();
+    expect(tree.find("input:focus")).toHaveLength(1);
   });
 
   it("focusing input changes background color", () => {
@@ -134,54 +111,34 @@ describe("<FilterInput />", () => {
     formControl.find("input").simulate("blur");
     expect(toDiffableHtml(tree.html())).not.toMatch(/bg-focused/);
   });
-
-  it("calling handleClickOutside() changes background color", () => {
-    const tree = MountedInput();
-    tree.instance().handleClickOutside();
-    expect(toDiffableHtml(tree.html())).not.toMatch(/bg-focused/);
-  });
-
-  it("componentDidMount executes even when inputStore.ref=null", () => {
-    const tree = MountedInput();
-    const instance = tree.instance();
-    instance.inputStore.ref = null;
-    instance.componentDidMount();
-  });
 });
 
 describe("<FilterInput Autosuggest />", () => {
   it("fetches suggestions on input change", async () => {
-    fetch.mockResponseOnce(JSON.stringify(["foo=bar", "foo=~bar"]));
-
     const tree = MountedInput();
-    const instance = tree.instance();
-    tree.find("input").simulate("change", { target: { value: "foo" } });
-    await WaitForFetch(tree);
+    tree.find("input").simulate("change", { target: { value: "cluster" } });
+    act(() => jest.runOnlyPendingTimers());
 
-    expect(fetch.mock.calls).toHaveLength(1);
-    expect(fetch.mock.calls[0]).toContain("./autocomplete.json?term=foo");
-    expect(instance.inputStore.suggestions).toHaveLength(2);
-    expect(instance.inputStore.suggestions).toContain("foo=bar");
-    expect(instance.inputStore.suggestions).toContain("foo=~bar");
+    expect(useFetchGet.fetch.calls).toHaveLength(1);
+    expect(useFetchGet.fetch.calls[0]).toContain(
+      "./autocomplete.json?term=cluster"
+    );
   });
 
   it("doesn't fetch any suggestion if the input value is empty", () => {
-    fetch.mockResponseOnce(JSON.stringify(["foo=bar", "foo=~bar"]));
-
     const tree = MountedInput();
-    const instance = tree.instance();
-    instance.onSuggestionsFetchRequested({ value: "" });
-    expect(fetch.mock.calls).toHaveLength(0);
+    tree.find("input").simulate("change", { target: { value: "" } });
+    act(() => jest.runOnlyPendingTimers());
+    expect(useFetchGet.fetch.calls).toHaveLength(0);
   });
 
   it("clicking on a suggestion adds it to filters", async () => {
-    fetch.mockResponse(JSON.stringify(["foo=bar", "foo=~bar"]));
-
     const tree = MountedInput();
-    tree.find("input").simulate("change", { target: { value: "foo" } });
+    tree.find("input").simulate("change", { target: { value: "cluster" } });
+    act(() => jest.runOnlyPendingTimers());
+
     // suggestions are rendered only when input is focused
     tree.find("input").simulate("focus");
-    await WaitForFetch(tree);
 
     // find() doesn't pick up suggestions even when tree.html() shows them
     // forcing update seems to solve it
@@ -189,44 +146,25 @@ describe("<FilterInput Autosuggest />", () => {
     tree.update();
     // not sure why but suggestions are being found twice
     const suggestion = tree.find(".dropdown-item").at(2);
-    expect(suggestion.text()).toBe("foo=~bar");
+    expect(suggestion.text()).toBe("cluster=prod");
     suggestion.simulate("click");
     expect(alertStore.filters.values).toHaveLength(1);
-    expect(alertStore.filters.values[0]).toMatchObject({ raw: "foo=~bar" });
+    expect(alertStore.filters.values[0]).toMatchObject({
+      raw: "cluster=prod",
+    });
   });
 
   it("handles failed suggestion fetches", async () => {
-    fetch.mockReject(new Error("Fetch error"));
+    useFetchGet.mockReturnValue({
+      response: null,
+      error: "fake error",
+      isLoading: false,
+      isRetrying: false,
+      get: jest.fn(),
+    });
 
     const tree = MountedInput();
-    const instance = tree.instance();
-    tree.find("input").simulate("change", { target: { value: "bar" } });
-    await WaitForFetch(tree);
-
-    expect(fetch).toHaveBeenCalledTimes(10);
-    expect(fetch.mock.calls[0]).toContain("./autocomplete.json?term=bar");
-    expect(instance.inputStore.suggestions).toHaveLength(0);
-  });
-
-  it("handles invalid JSON in suggestion fetches", async () => {
-    jest.spyOn(console, "error").mockImplementation(() => {});
-    fetch.mockResponseOnce("this is not JSON");
-
-    const tree = MountedInput();
-    const instance = tree.instance();
-    tree.find("input").simulate("change", { target: { value: "bar" } });
-    await WaitForFetch(tree);
-
-    expect(fetch.mock.calls).toHaveLength(1);
-    expect(fetch.mock.calls[0]).toContain("./autocomplete.json?term=bar");
-    expect(instance.inputStore.suggestions).toHaveLength(0);
-  });
-
-  it("clearing input clears suggestions", () => {
-    const tree = MountedInput();
-    const instance = tree.instance();
-    instance.inputStore.suggestions = ["foo", "bar"];
-    tree.find("input").simulate("change", { target: { value: "" } });
-    expect(instance.inputStore.suggestions).toHaveLength(0);
+    tree.find("input").simulate("change", { target: { value: "cluster" } });
+    act(() => jest.runOnlyPendingTimers());
   });
 });

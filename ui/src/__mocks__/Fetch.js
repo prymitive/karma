@@ -1,5 +1,7 @@
 import moment from "moment";
 
+import { MockAlert, MockAlertGroup, MockSilence } from "./Alerts";
+
 const EmptyAPIResponse = () => ({
   status: "success",
   timestamp: moment().toISOString(),
@@ -61,4 +63,45 @@ const EmptyAPIResponse = () => ({
   },
 });
 
-export { EmptyAPIResponse };
+const MockAPIResponse = () => {
+  const response = EmptyAPIResponse();
+  response.grids = [
+    {
+      labelName: "",
+      labelValue: "",
+      alertGroups: [
+        MockAlertGroup(
+          { alertname: "foo" },
+          [MockAlert([], { instance: "foo" }, "suppressed")],
+          [],
+          { cluster: "dev" },
+          {}
+        ),
+      ],
+      stateCount: {
+        unprocessed: 1,
+        suppressed: 2,
+        active: 3,
+      },
+    },
+  ];
+  response.totalAlerts = 25;
+  return response;
+};
+
+const MockSilenceResponse = (cluster, count) => {
+  let silences = [];
+  for (var index = 1; index <= count; index++) {
+    const silence = MockSilence();
+    silence.id = `silence${index}`;
+    silences.push({
+      cluster: cluster,
+      alertCount: 123,
+      isExpired: index < 3,
+      silence: silence,
+    });
+  }
+  return silences;
+};
+
+export { EmptyAPIResponse, MockAPIResponse, MockSilenceResponse };

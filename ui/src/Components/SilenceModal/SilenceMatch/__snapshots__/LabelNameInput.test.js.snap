@@ -3,12 +3,12 @@
 exports[`<LabelNameInput /> matches snapshot 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
-  <div class=\\"react-select__control css-r5n82u-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
-      <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
-        name
+  <div class=\\"react-select__control css-yk16xz-control\\">
+    <div class=\\"react-select__value-container react-select__value-container--has-value css-g1d714-ValueContainer\\">
+      <div class=\\"react-select__single-value css-1uccc91-singleValue\\">
+        cluster
       </div>
-      <div class=\\"css-ps6ina-Input\\">
+      <div class=\\"css-b8ldur-Input\\">
         <div class=\\"react-select__input\\"
              style=\\"display: inline-block;\\"
         >
@@ -28,7 +28,7 @@ exports[`<LabelNameInput /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
+    <div class=\\"react-select__indicators css-1hb7zxy-IndicatorsContainer\\">
       <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
       </span>
       <div aria-hidden=\\"true\\"

@@ -9,10 +9,6 @@ const NewEmptyMatcher = () => {
     id: uniqueId(),
     name: "",
     values: [],
-    suggestions: {
-      names: [],
-      values: [],
-    },
     isRegex: false,
   };
 };
@@ -94,10 +90,6 @@ const MatchersFromGroup = (group, stripLabels, alerts, onlyActive) => {
       id: uniqueId(),
       name: key,
       values: [...values].sort().map((value) => MatcherValueToObject(value)),
-      suggestions: {
-        names: [],
-        values: [],
-      },
       isRegex: values.size > 1,
     });
   }

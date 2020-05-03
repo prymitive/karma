@@ -19,13 +19,6 @@ const SilenceMatch = ({
   onDelete,
   isValid,
 }) => {
-  const onIsRegexChange = (event) => {
-    // only allow to change value if we don't have multiple values
-    if (matcher.values.length <= 1) {
-      matcher.isRegex = event.target.checked;
-    }
-  };
-
   return useObserver(() => (
     <div className="d-flex flex-fill flex-lg-row flex-column mb-3">
       <div className="flex-shrink-0 flex-grow-0 flex-basis-25 pr-lg-2 pb-2 pb-lg-0">
@@ -46,7 +39,11 @@ const SilenceMatch = ({
             type="checkbox"
             value=""
             checked={matcher.isRegex}
-            onChange={onIsRegexChange}
+            onChange={(event) => {
+              if (matcher.values.length <= 1) {
+                matcher.isRegex = event.target.checked;
+              }
+            }}
             disabled={matcher.values.length > 1}
           />
           <label

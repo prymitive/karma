@@ -13,6 +13,10 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
 });
 
+afterEach(() => {
+  global.window.innerWidth = 1024;
+});
+
 const MountedLabelSetList = (labelsList) => {
   return mount(
     <LabelSetList alertStore={alertStore} labelsList={labelsList} />
@@ -41,16 +45,34 @@ describe("<LabelSetList />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("doesn't render pagination when list has 9 elements", () => {
+  it("doesn't render pagination when list has 10 elements on  desktop", () => {
+    global.window.innerWidth = 1024;
     const tree = MountedLabelSetList(
-      Array.from(Array(9), (_, i) => ({ instance: `server${i}` }))
+      Array.from(Array(10), (_, i) => ({ instance: `server${i}` }))
     );
     expect(tree.find(".pagination")).toHaveLength(0);
   });
 
-  it("renders pagination when list has 11 elements", () => {
+  it("doesn't render pagination when list has 5 elements on  desktop", () => {
+    global.window.innerWidth = 500;
+    const tree = MountedLabelSetList(
+      Array.from(Array(5), (_, i) => ({ instance: `server${i}` }))
+    );
+    expect(tree.find(".pagination")).toHaveLength(0);
+  });
+
+  it("renders pagination when list has 11 elements on desktop", () => {
+    global.window.innerWidth = 1024;
     const tree = MountedLabelSetList(
       Array.from(Array(11), (_, i) => ({ instance: `server${i}` }))
+    );
+    expect(tree.find(".pagination")).toHaveLength(1);
+  });
+
+  it("renders pagination when list has 6 elements on mobile", () => {
+    global.window.innerWidth = 500;
+    const tree = MountedLabelSetList(
+      Array.from(Array(6), (_, i) => ({ instance: `server${i}` }))
     );
     expect(tree.find(".pagination")).toHaveLength(1);
   });

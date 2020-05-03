@@ -9,20 +9,22 @@ import {
   NewEmptyMatcher,
   MatcherValueToObject,
 } from "Stores/SilenceFormStore";
+import { useFetchGet } from "Hooks/useFetchGet";
 import { MatchCounter } from "./MatchCounter";
 
 let matcher;
 let silenceFormStore;
 
 beforeEach(() => {
-  fetch.resetMocks();
-
   silenceFormStore = new SilenceFormStore();
   matcher = NewEmptyMatcher();
+  matcher.name = "foo";
+  matcher.values = [MatcherValueToObject("bar")];
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
+  useFetchGet.mockReset();
 });
 
 const MountedMatchCounter = () => {
@@ -32,143 +34,104 @@ const MountedMatchCounter = () => {
 };
 
 describe("<MatchCounter />", () => {
-  it("matches snapshot with empty matcher", () => {
-    fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
+  it("matches snapshot", () => {
     const tree = MountedMatchCounter();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("logs a trace on failed fetch", (done) => {
-    const consoleSpy = jest
-      .spyOn(console, "trace")
-      .mockImplementation(() => {});
-    fetch.mockReject(new Error("Fetch error"));
-
-    // we need to set name & value to trigger fetch
-    matcher.name = "foo";
-    matcher.values = [MatcherValueToObject("bar")];
-
-    MountedMatchCounter();
-    setTimeout(() => {
-      expect(consoleSpy).toHaveBeenCalled();
-      done();
-    }, 200);
-  });
-
-  it("renders error icon on failed fetch", (done) => {
-    jest.spyOn(console, "trace").mockImplementation(() => {});
-    fetch.mockReject(new Error("Fetch error"));
-
-    // we need to set name & value to trigger fetch
-    matcher.name = "foo";
-    matcher.values = [MatcherValueToObject("bar")];
+  it("renders spinner icon while fetching", () => {
+    useFetchGet.mockReturnValueOnce({
+      response: null,
+      error: false,
+      isLoading: true,
+      isRetrying: false,
+    });
 
     const tree = MountedMatchCounter();
-    setTimeout(() => {
-      expect(toDiffableHtml(tree.html())).toMatch(/exclamation-circle/);
-      done();
-    }, 200);
+    expect(tree.find("svg.fa-spinner")).toHaveLength(1);
+    expect(tree.find("svg.fa-spinner.text-danger")).toHaveLength(0);
   });
 
-  it("totalAlerts is 0 after mount", async () => {
-    fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
+  it("renders spinner icon with text-danger while retrying fetching", () => {
+    useFetchGet.mockReturnValueOnce({
+      response: null,
+      error: false,
+      isLoading: true,
+      isRetrying: true,
+    });
+
+    const tree = MountedMatchCounter();
+    expect(tree.find("svg.fa-spinner.text-danger")).toHaveLength(1);
+  });
+
+  it("renders error icon on failed fetch", () => {
+    useFetchGet.mockReturnValueOnce({
+      response: null,
+      error: "failed",
+      isLoading: false,
+      isRetrying: false,
+    });
+
+    const tree = MountedMatchCounter();
+    expect(tree.find("svg.fa-exclamation-circle.text-danger")).toHaveLength(1);
+  });
+
+  it("totalAlerts is 0 after mount", () => {
+    useFetchGet.mockReturnValueOnce({
+      response: { totalAlerts: 0 },
+      error: false,
+      isLoading: false,
+      isRetrying: false,
+    });
+
     const tree = MountedMatchCounter();
     expect(tree.text()).toBe("0");
   });
 
-  it("updates totalAlerts after successful fetch", (done) => {
-    fetch.mockResponse(JSON.stringify({ totalAlerts: 123 }));
-
-    // we need to set name & value to trigger fetch
-    matcher.name = "foo";
-    matcher.values = [MatcherValueToObject("bar")];
-
+  it("updates totalAlerts after successful fetch", () => {
     const tree = MountedMatchCounter();
-    expect(tree.text()).toBe("");
-    setTimeout(() => {
-      expect(tree.text()).toBe("123");
-      done();
-    }, 200);
+    expect(tree.text()).toBe("25");
   });
 
-  it("sends correct query string for a 'foo=bar' matcher", (done) => {
-    fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
-
-    matcher.name = "foo";
-    matcher.values = [MatcherValueToObject("bar")];
-    matcher.isRegex = false;
-
+  it("sends correct query string for a 'foo=bar' matcher", () => {
     MountedMatchCounter();
-    setTimeout(() => {
-      expect(fetch.mock.calls[0][0]).toBe("./alerts.json?q=foo%3Dbar");
-      done();
-    }, 200);
+    expect(useFetchGet.mock.calls[0][0]).toBe("./alerts.json?q=foo%3Dbar");
   });
 
-  it("sends correct query string for a 'foo=~bar' matcher", (done) => {
-    fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
-
-    matcher.name = "foo";
-    matcher.values = [MatcherValueToObject("bar")];
+  it("sends correct query string for a 'foo=~bar' matcher", () => {
     matcher.isRegex = true;
-
     MountedMatchCounter();
-    setTimeout(() => {
-      expect(fetch.mock.calls[0][0]).toBe("./alerts.json?q=foo%3D~%5Ebar%24");
-      done();
-    }, 200);
+    expect(useFetchGet.mock.calls[0][0]).toBe(
+      "./alerts.json?q=foo%3D~%5Ebar%24"
+    );
   });
 
-  it("sends correct query string for a 'foo=~(bar|baz)' matcher", (done) => {
-    fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
-
-    matcher.name = "foo";
+  it("sends correct query string for a 'foo=~(bar|baz)' matcher", () => {
     matcher.values = [MatcherValueToObject("bar"), MatcherValueToObject("baz")];
     matcher.isRegex = true;
-
+    silenceFormStore.data.alertmanagers = [];
     MountedMatchCounter();
-    setTimeout(() => {
-      expect(fetch.mock.calls[0][0]).toBe(
-        "./alerts.json?q=foo%3D~%5E%28bar%7Cbaz%29%24"
-      );
-      done();
-    }, 200);
+    expect(useFetchGet.mock.calls[0][0]).toBe(
+      "./alerts.json?q=foo%3D~%5E%28bar%7Cbaz%29%24"
+    );
   });
 
-  it("selecting one Alertmanager instance appends it to the filters", (done) => {
-    fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
-
+  it("selecting one Alertmanager instance appends it to the filters", () => {
     silenceFormStore.data.alertmanagers = [MatcherValueToObject("am1")];
-    matcher.name = "foo";
-    matcher.values = [MatcherValueToObject("bar")];
-    matcher.isRegex = false;
-
     MountedMatchCounter();
-    setTimeout(() => {
-      expect(fetch.mock.calls[0][0]).toBe(
-        "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%29%24"
-      );
-      done();
-    }, 200);
+    expect(useFetchGet.mock.calls[0][0]).toBe(
+      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%29%24"
+    );
   });
 
-  it("selecting two Alertmanager instances appends it correctly to the filters", (done) => {
-    fetch.mockResponse(JSON.stringify({ totalAlerts: 0 }));
-
+  it("selecting two Alertmanager instances appends it correctly to the filters", () => {
     silenceFormStore.data.alertmanagers = [
       MatcherValueToObject("am1"),
       MatcherValueToObject("am1"),
     ];
-    matcher.name = "foo";
-    matcher.values = [MatcherValueToObject("bar")];
-    matcher.isRegex = false;
-
     MountedMatchCounter();
-    setTimeout(() => {
-      expect(fetch.mock.calls[0][0]).toBe(
-        "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam1%29%24"
-      );
-      done();
-    }, 200);
+    expect(useFetchGet.mock.calls[0][0]).toBe(
+      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam1%29%24"
+    );
   });
 });

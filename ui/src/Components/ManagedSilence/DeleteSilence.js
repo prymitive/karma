@@ -1,8 +1,5 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
-import { observable, action } from "mobx";
-import { observer, useObserver, useLocalStore } from "mobx-react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -14,7 +11,8 @@ import { APISilence } from "Models/API";
 import { AlertStore, FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
-import { FetchGet, FetchDelete } from "Common/Fetch";
+import { useFetchGet } from "Hooks/useFetchGet";
+import { useFetchDelete } from "Hooks/useFetchDelete";
 import { Modal } from "Components/Modal";
 import {
   LabelSetList,
@@ -57,189 +55,140 @@ const SuccessMessage = () => (
   </div>
 );
 
-const DeleteSilenceModalContent = observer(
-  class DeleteSilenceModalContent extends Component {
-    static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      cluster: PropTypes.string.isRequired,
-      silence: APISilence.isRequired,
-      onHide: PropTypes.func,
-    };
+const DeletePreview = ({ alertStore, silence }) => {
+  const { response, error, isLoading } = useFetchGet(
+    FormatBackendURI("alerts.json?") +
+      FormatAlertsQ([
+        FormatQuery(StaticLabels.SilenceID, QueryOperators.Equal, silence.id),
+      ])
+  );
 
-    previewState = observable(
-      {
-        fetch: null,
-        error: null,
-        alertLabels: [],
-        setError(err) {
-          this.error = err;
-        },
-        groupsToUniqueLabels(groups) {
-          this.alertLabels = GroupListToUniqueLabelsList(groups);
-        },
-      },
-      {
-        setError: action.bound,
-        groupsToUniqueLabels: action.bound,
-      }
-    );
+  return isLoading ? (
+    <ProgressMessage />
+  ) : error ? (
+    <ErrorMessage message={error} />
+  ) : (
+    <LabelSetList
+      alertStore={alertStore}
+      labelsList={GroupListToUniqueLabelsList(
+        response.grids.length ? response.grids[0].alertGroups : []
+      )}
+    />
+  );
+};
+DeletePreview.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  silence: APISilence.isRequired,
+};
 
-    deleteState = observable(
-      {
-        fetch: null,
-        done: false,
-        error: null,
-        setDone() {
-          this.done = true;
-        },
-        setError(err) {
-          this.error = err;
-        },
-        reset() {
-          this.done = false;
-          this.error = null;
-        },
-      },
-      {
-        setDone: action.bound,
-        setError: action.bound,
-        reset: action.bound,
-      }
-    );
+const DeleteResult = ({ alertStore, cluster, silence }) => {
+  const [currentTime, setCurrentTime] = useState(Math.floor(Date.now()));
 
-    getAlertmanager = () =>
-      this.props.alertStore.data.readWriteAlertmanagers
-        .filter((u) => u.cluster === this.props.cluster)
-        .slice(0, 1)[0];
+  const am = alertStore.data.readWriteAlertmanagers
+    .filter((u) => u.cluster === cluster)
+    .slice(0, 1)[0];
 
-    onFetchPreview = () => {
-      const { silence } = this.props;
+  const [deleteFetchOptions] = useState({
+    headers: am.headers,
+    credentials: am.corsCredentials,
+  });
 
-      const alertsURI =
-        FormatBackendURI("alerts.json?") +
-        FormatAlertsQ([
-          FormatQuery(StaticLabels.SilenceID, QueryOperators.Equal, silence.id),
-        ]);
+  const {
+    error,
+    isDeleting,
+  } = useFetchDelete(
+    `${am.uri}/api/v2/silence/${silence.id}`,
+    deleteFetchOptions,
+    [currentTime]
+  );
 
-      this.previewState.fetch = FetchGet(alertsURI, {})
-        .then((result) => result.json())
-        .then((result) => {
-          this.previewState.groupsToUniqueLabels(
-            result.grids.length ? result.grids[0].alertGroups : []
-          );
-          this.previewState.setError(null);
-        })
-        .catch((err) => {
-          console.trace(err);
-          return this.previewState.setError(
-            `Request fetching affected alerts failed with: ${err.message}`
-          );
-        });
-    };
+  return (
+    <React.Fragment>
+      {isDeleting ? (
+        <ProgressMessage />
+      ) : error ? (
+        <ErrorMessage message={error} />
+      ) : (
+        <SuccessMessage />
+      )}
+      {error || isDeleting ? (
+        <div className="d-flex flex-row-reverse">
+          <button
+            type="button"
+            className="btn btn-danger mr-2"
+            onClick={() => setCurrentTime(Math.floor(Date.now()))}
+            disabled={isDeleting}
+          >
+            <FontAwesomeIcon icon={faCheckCircle} className="mr-1" />
+            {isDeleting ? "Confirm" : "Retry"}
+          </button>
+        </div>
+      ) : null}
+    </React.Fragment>
+  );
+};
+DeleteResult.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  cluster: PropTypes.string.isRequired,
+  silence: APISilence.isRequired,
+};
 
-    onDelete = () => {
-      const { silence } = this.props;
+const DeleteSilenceModalContent = ({
+  alertStore,
+  silenceFormStore,
+  cluster,
+  silence,
+  onHide,
+}) => {
+  const [confirm, setConfirm] = useState(false);
 
-      // if it's already deleted then do nothing
-      if (this.deleteState.done && this.deleteState.error === null) return;
+  useEffect(() => {
+    silenceFormStore.toggle.setBlur(true);
+    return () => silenceFormStore.toggle.setBlur(false);
+  }, [silenceFormStore.toggle]);
 
-      // reset state so we get a spinner
-      this.deleteState.reset();
-
-      const alertmanager = this.getAlertmanager();
-
-      this.deleteState.fetch = FetchDelete(
-        `${alertmanager.uri}/api/v2/silence/${silence.id}`,
-        {
-          headers: alertmanager.headers,
-          credentials: alertmanager.corsCredentials,
-        }
-      )
-        .then((result) => {
-          if (result.ok) {
-            this.deleteState.setError(null);
-            this.deleteState.setDone();
-          } else {
-            result.text().then(this.deleteState.setError);
-            this.deleteState.setDone();
-          }
-        })
-        .catch((err) => {
-          console.trace(err);
-          this.deleteState.setDone();
-          return this.deleteState.setError(
-            `Delete request failed with: ${err.message}`
-          );
-        });
-    };
-
-    componentDidMount() {
-      const { silenceFormStore } = this.props;
-      silenceFormStore.toggle.setBlur(true);
-      this.onFetchPreview();
-    }
-
-    componentWillUnmount() {
-      const { silenceFormStore } = this.props;
-      silenceFormStore.toggle.setBlur(false);
-    }
-
-    render() {
-      const { alertStore, onHide } = this.props;
-
-      const isDone = this.deleteState.done && this.deleteState.error === null;
-
-      return (
-        <React.Fragment>
-          <div className="modal-header">
-            <h5 className="modal-title">Delete silence</h5>
-            <button type="button" className="close" onClick={onHide}>
-              <span>&times;</span>
-            </button>
-          </div>
-          <div className="modal-body">
-            {this.deleteState.done ? (
-              this.deleteState.error !== null ? (
-                <ErrorMessage message={this.deleteState.error} />
-              ) : (
-                <SuccessMessage />
-              )
-            ) : this.deleteState.fetch !== null ? (
-              <ProgressMessage />
-            ) : this.previewState.error === null ? (
-              <LabelSetList
-                alertStore={alertStore}
-                labelsList={this.previewState.alertLabels}
-              />
-            ) : (
-              <ErrorMessage message={this.previewState.error} />
-            )}
-            {isDone ? null : (
-              <div className="d-flex flex-row-reverse">
-                <button
-                  type="button"
-                  className="btn btn-danger mr-2"
-                  onClick={this.onDelete}
-                  disabled={
-                    this.deleteState.fetch !== null &&
-                    this.deleteState.done === false
-                  }
-                >
-                  <FontAwesomeIcon icon={faCheckCircle} className="mr-1" />
-                  {this.deleteState.fetch !== null &&
-                  this.deleteState.error !== null
-                    ? "Retry"
-                    : "Confirm"}
-                </button>
-              </div>
-            )}
-          </div>
-        </React.Fragment>
-      );
-    }
-  }
-);
+  return (
+    <React.Fragment>
+      <div className="modal-header">
+        <h5 className="modal-title">Delete silence</h5>
+        <button type="button" className="close" onClick={onHide}>
+          <span>&times;</span>
+        </button>
+      </div>
+      <div className="modal-body">
+        {confirm ? (
+          <DeleteResult
+            alertStore={alertStore}
+            cluster={cluster}
+            silence={silence}
+          />
+        ) : (
+          <React.Fragment>
+            <DeletePreview alertStore={alertStore} silence={silence} />
+            <div className="d-flex flex-row-reverse">
+              <button
+                type="button"
+                className="btn btn-danger mr-2"
+                onClick={setConfirm}
+                disabled={confirm}
+              >
+                <FontAwesomeIcon icon={faCheckCircle} className="mr-1" />
+                Confirm
+              </button>
+            </div>
+          </React.Fragment>
+        )}
+      </div>
+    </React.Fragment>
+  );
+};
+DeleteSilenceModalContent.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+  cluster: PropTypes.string.isRequired,
+  silence: APISilence.isRequired,
+  onHide: PropTypes.func,
+};
 
 const DeleteSilence = ({
   alertStore,
@@ -248,24 +197,19 @@ const DeleteSilence = ({
   silence,
   onModalExit,
 }) => {
-  const toggle = useLocalStore(() => ({
-    visible: false,
-    toggle() {
-      this.visible = !this.visible;
-    },
-  }));
+  const [visible, setVisible] = useState(false);
 
   const members = alertStore.data.getClusterAlertmanagersWithoutReadOnly(
     cluster
   );
 
-  return useObserver(() => (
+  return (
     <React.Fragment>
       <button
         className="btn btn-danger btn-sm"
         disabled={members.length === 0}
         onClick={() => {
-          members.length > 0 && toggle.toggle();
+          members.length > 0 && setVisible(true);
         }}
       >
         <FontAwesomeIcon
@@ -275,9 +219,9 @@ const DeleteSilence = ({
         Delete
       </button>
       <Modal
-        isOpen={toggle.visible}
+        isOpen={visible}
         isUpper={true}
-        toggleOpen={toggle.toggle}
+        toggleOpen={() => setVisible(false)}
         onExited={onModalExit}
       >
         <DeleteSilenceModalContent
@@ -285,11 +229,11 @@ const DeleteSilence = ({
           silenceFormStore={silenceFormStore}
           cluster={cluster}
           silence={silence}
-          onHide={toggle.toggle}
+          onHide={() => setVisible(false)}
         />
       </Modal>
     </React.Fragment>
-  ));
+  );
 };
 DeleteSilence.propTypes = {
   alertStore: PropTypes.instanceOf(AlertStore).isRequired,
@@ -299,4 +243,9 @@ DeleteSilence.propTypes = {
   onModalExit: PropTypes.func,
 };
 
-export { DeleteSilence, DeleteSilenceModalContent };
+export {
+  DeleteSilence,
+  DeleteSilenceModalContent,
+  DeletePreview,
+  DeleteResult,
+};

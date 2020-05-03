@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<MatchCounter /> matches snapshot with empty matcher 1`] = `
+exports[`<MatchCounter /> matches snapshot 1`] = `
 "
 <div class
      style=\\"display: inline-block; max-width: 100%;\\"
@@ -10,8 +10,9 @@ exports[`<MatchCounter /> matches snapshot with empty matcher 1`] = `
 >
   <span class=\\"badge badge-light badge-pill d-block\\"
         style=\\"font-size: 85%; line-height: 1rem;\\"
+        data-am=\\"0\\"
   >
-    0
+    25
   </span>
 </div>
 "
