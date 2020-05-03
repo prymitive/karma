@@ -277,17 +277,22 @@ const Grid = observer(
             grid.alertGroups.length > this.groupsToRender.value && (
               <div className="d-flex flex-row justify-content-between">
                 <span className="flex-shrink-1 flex-grow-1 text-center">
-                  <button
-                    type="button"
-                    className="btn btn-secondary mb-3"
-                    onClick={this.loadMore}
+                  <Fade
+                    in={this.context.animations.in}
+                    duration={this.context.animations.duration}
                   >
-                    <FontAwesomeIcon
-                      className="mr-2"
-                      icon={faAngleDoubleDown}
-                    />
-                    Load more
-                  </button>
+                    <button
+                      type="button"
+                      className="btn btn-secondary mb-3"
+                      onClick={this.loadMore}
+                    >
+                      <FontAwesomeIcon
+                        className="mr-2"
+                        icon={faAngleDoubleDown}
+                      />
+                      Load more
+                    </button>
+                  </Fade>
                 </span>
               </div>
             )}
