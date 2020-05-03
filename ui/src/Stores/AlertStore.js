@@ -66,16 +66,12 @@ function DecodeLocationSearch(searchString) {
 
 function UpdateLocationSearch(newParams) {
   const baseURLWithoutSearch = window.location.href.split("?")[0];
-  const newSearch = FormatAPIFilterQuery(newParams.q || []);
-  if (newSearch !== "") {
-    window.history.pushState(
-      null,
-      null,
-      `${baseURLWithoutSearch}?${newSearch}`
-    );
-  } else {
-    window.history.pushState(null, null, baseURLWithoutSearch);
-  }
+  const newSearch = FormatAPIFilterQuery(newParams.q);
+  window.history.pushState(
+    null,
+    null,
+    `${baseURLWithoutSearch}?${newSearch || "q="}`
+  );
 }
 
 const AlertStoreStatuses = Object.freeze({

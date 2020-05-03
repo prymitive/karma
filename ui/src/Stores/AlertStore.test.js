@@ -383,12 +383,17 @@ describe("UpdateLocationSearch", () => {
 
   it("{a: foo} is not pushed to location.search", () => {
     UpdateLocationSearch({ a: "foo" });
-    expect(window.location.search).toBe("");
+    expect(window.location.search).toBe("?q=");
   });
 
   it("{a: foo, q: bar} is pushed to location.search", () => {
     UpdateLocationSearch({ a: "foo", q: "bar" });
     expect(window.location.search).toBe("?q=bar");
+  });
+
+  it("{q: [1, 2]} is pushed to location.search", () => {
+    UpdateLocationSearch({ q: ["1", "2"] });
+    expect(window.location.search).toBe("?q=1&q=2");
   });
 });
 
