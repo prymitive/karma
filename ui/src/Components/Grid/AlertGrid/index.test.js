@@ -152,14 +152,14 @@ const MockGroupList = (count, alertPerGroup) => {
 describe("<Grid />", () => {
   it("renders only first 50 alert groups", () => {
     MockGroupList(60, 5);
-    const tree = ShallowGrid();
+    const tree = MountedGrid();
     const alertGroups = tree.find("AlertGroup");
     expect(alertGroups).toHaveLength(50);
   });
 
   it("appends 30 groups after clicking 'Load More' button", () => {
     MockGroupList(100, 5);
-    const tree = ShallowGrid();
+    const tree = MountedGrid();
     tree.find("button").simulate("click");
     const alertGroups = tree.find("AlertGroup");
     expect(alertGroups).toHaveLength(80);
@@ -167,7 +167,7 @@ describe("<Grid />", () => {
 
   it("resets groupsToRender.value back to 50 if current value is more than group alerts", () => {
     MockGroupList(100, 5);
-    const tree = ShallowGrid();
+    const tree = MountedGrid();
     expect(tree.find("AlertGroup")).toHaveLength(50);
     expect(tree.instance().groupsToRender.value).toBe(50);
 
@@ -383,7 +383,7 @@ describe("<Grid />", () => {
 
 describe("<AlertGrid />", () => {
   const VerifyColumnCount = (innerWidth, outerWidth, columns) => {
-    MockGroupList(60, 5);
+    MockGroupList(40, 5);
 
     const wrapper = ShallowAlertGrid();
     wrapper.instance().viewport.updateWidths(innerWidth, outerWidth);
@@ -465,7 +465,7 @@ describe("<AlertGrid />", () => {
   });
 
   it("viewport resize also resizes alert groups", () => {
-    MockGroupList(60, 5);
+    MockGroupList(40, 5);
 
     const wrapper = ShallowAlertGrid();
     const tree = ShallowGrid();
@@ -490,7 +490,7 @@ describe("<AlertGrid />", () => {
   it("scrollbar render doesn't resize alert groups", () => {
     settingsStore.gridConfig.config.groupWidth = 400;
 
-    MockGroupList(60, 5);
+    MockGroupList(40, 5);
     const wrapper = ShallowAlertGrid();
     const tree = ShallowGrid();
 
@@ -512,7 +512,7 @@ describe("<AlertGrid />", () => {
   });
 
   it("window resize event calls updateWidths", () => {
-    MockGroupList(60, 5);
+    MockGroupList(40, 5);
     const tree = ShallowAlertGrid();
     const instance = tree.instance();
 
@@ -524,7 +524,7 @@ describe("<AlertGrid />", () => {
   it("viewport resize doesn't allow loops", () => {
     settingsStore.gridConfig.config.groupWidth = 400;
 
-    MockGroupList(60, 5);
+    MockGroupList(40, 5);
     const wrapper = ShallowAlertGrid();
     const tree = ShallowGrid();
 
