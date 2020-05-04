@@ -92,6 +92,7 @@ type configSchema struct {
 		Visible []string
 		Keep    []string
 		Strip   []string
+		Order   []string
 	}
 	Custom struct {
 		CSS string

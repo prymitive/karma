@@ -29,6 +29,26 @@ func (a Annotations) Swap(i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
 func (a Annotations) Less(i, j int) bool {
+	// Sort the anotations listed in config.Config.Annotations.Order first, in
+	// the order they appear in that list; remaining annotations are sorted alphabetically.
+	ai, aj := -1, -1
+	for index, name := range config.Config.Annotations.Order {
+		if a[i].Name == name {
+			ai = index
+		} else if a[j].Name == name {
+			aj = index
+		}
+		// If both annotations are in c.C.A.Order, sort them according to the
+		// order in that list.
+		if ai >= 0 && aj >= 0 {
+			return ai < aj
+		}
+	}
+	// If only one of the annotations was in c.C.A.Order, that one goes first.
+	if ai != aj {
+		return aj < ai
+	}
+	// If neither annotation was in c.C.A.Order, sort alphabetically.
 	return a[i].Name < a[j].Name
 }
 
