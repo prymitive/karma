@@ -261,4 +261,4 @@ jobs:
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
       script:
-        - make -C ui test-demo
+        - travis_retry make -C ui test-demo
