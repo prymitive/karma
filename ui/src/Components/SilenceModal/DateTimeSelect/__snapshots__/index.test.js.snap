@@ -312,14 +312,13 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
               </div>
             </div>
             <div class=\\"react-datepicker__month\\"
-                 role=\\"listbox\\"
                  aria-label=\\"month  2061-02\\"
             >
               <div class=\\"react-datepicker__week\\">
                 <div class=\\"react-datepicker__day react-datepicker__day--030 react-datepicker__day--weekend react-datepicker__day--outside-month\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Sunday, January 30th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   30
@@ -327,7 +326,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--031 react-datepicker__day--outside-month\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Monday, January 31st, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   31
@@ -335,7 +334,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--selected\\"
                      tabindex=\\"0\\"
                      aria-label=\\"Choose Tuesday, February 1st, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   1
@@ -343,7 +342,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--002\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Wednesday, February 2nd, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   2
@@ -351,7 +350,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--003\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Thursday, February 3rd, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   3
@@ -359,7 +358,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--004\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Friday, February 4th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   4
@@ -367,7 +366,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--005 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Saturday, February 5th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   5
@@ -377,7 +376,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--006 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Sunday, February 6th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   6
@@ -385,7 +384,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--007\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Monday, February 7th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   7
@@ -393,7 +392,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--008\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Tuesday, February 8th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   8
@@ -401,7 +400,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--009\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Wednesday, February 9th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   9
@@ -409,7 +408,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--010\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Thursday, February 10th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   10
@@ -417,7 +416,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--011\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Friday, February 11th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   11
@@ -425,7 +424,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--012 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Saturday, February 12th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   12
@@ -435,7 +434,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--013 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Sunday, February 13th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   13
@@ -443,7 +442,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--014\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Monday, February 14th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   14
@@ -451,7 +450,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--015\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Tuesday, February 15th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   15
@@ -459,7 +458,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--016\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Wednesday, February 16th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   16
@@ -467,7 +466,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--017\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Thursday, February 17th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   17
@@ -475,7 +474,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--018\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Friday, February 18th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   18
@@ -483,7 +482,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--019 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Saturday, February 19th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   19
@@ -493,7 +492,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--020 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Sunday, February 20th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   20
@@ -501,7 +500,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--021\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Monday, February 21st, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   21
@@ -509,7 +508,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--022\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Tuesday, February 22nd, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   22
@@ -517,7 +516,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--023\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Wednesday, February 23rd, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   23
@@ -525,7 +524,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--024\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Thursday, February 24th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   24
@@ -533,7 +532,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--025\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Friday, February 25th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   25
@@ -541,7 +540,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--026 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Saturday, February 26th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   26
@@ -551,7 +550,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--027 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Sunday, February 27th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   27
@@ -559,7 +558,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--028\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Monday, February 28th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   28
@@ -567,7 +566,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--outside-month\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Tuesday, March 1st, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   1
@@ -575,7 +574,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--002 react-datepicker__day--outside-month\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Wednesday, March 2nd, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   2
@@ -583,7 +582,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--003 react-datepicker__day--outside-month\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Thursday, March 3rd, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   3
@@ -591,7 +590,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--004 react-datepicker__day--outside-month\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Friday, March 4th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   4
@@ -599,7 +598,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--005 react-datepicker__day--weekend react-datepicker__day--outside-month\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Saturday, March 5th, 2061\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   5
@@ -800,14 +799,13 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
               </div>
             </div>
             <div class=\\"react-datepicker__month\\"
-                 role=\\"listbox\\"
                  aria-label=\\"month  2060-02\\"
             >
               <div class=\\"react-datepicker__week\\">
                 <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--selected react-datepicker__day--today react-datepicker__day--weekend\\"
                      tabindex=\\"0\\"
                      aria-label=\\"Choose Sunday, February 1st, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   1
@@ -815,7 +813,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--002\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Monday, February 2nd, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   2
@@ -823,7 +821,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--003\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Tuesday, February 3rd, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   3
@@ -831,7 +829,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--004\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Wednesday, February 4th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   4
@@ -839,7 +837,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--005\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Thursday, February 5th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   5
@@ -847,7 +845,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--006\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Friday, February 6th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   6
@@ -855,7 +853,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--007 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Saturday, February 7th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   7
@@ -865,7 +863,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--008 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Sunday, February 8th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   8
@@ -873,7 +871,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--009\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Monday, February 9th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   9
@@ -881,7 +879,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--010\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Tuesday, February 10th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   10
@@ -889,7 +887,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--011\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Wednesday, February 11th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   11
@@ -897,7 +895,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--012\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Thursday, February 12th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   12
@@ -905,7 +903,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--013\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Friday, February 13th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   13
@@ -913,7 +911,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--014 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Saturday, February 14th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   14
@@ -923,7 +921,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--015 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Sunday, February 15th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   15
@@ -931,7 +929,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--016\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Monday, February 16th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   16
@@ -939,7 +937,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--017\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Tuesday, February 17th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   17
@@ -947,7 +945,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--018\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Wednesday, February 18th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   18
@@ -955,7 +953,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--019\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Thursday, February 19th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   19
@@ -963,7 +961,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--020\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Friday, February 20th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   20
@@ -971,7 +969,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--021 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Saturday, February 21st, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   21
@@ -981,7 +979,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--022 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Sunday, February 22nd, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   22
@@ -989,7 +987,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--023\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Monday, February 23rd, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   23
@@ -997,7 +995,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--024\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Tuesday, February 24th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   24
@@ -1005,7 +1003,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--025\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Wednesday, February 25th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   25
@@ -1013,7 +1011,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--026\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Thursday, February 26th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   26
@@ -1021,7 +1019,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--027\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Friday, February 27th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   27
@@ -1029,7 +1027,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--028 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Saturday, February 28th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   28
@@ -1039,7 +1037,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--029 react-datepicker__day--weekend\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Sunday, February 29th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   29
@@ -1047,7 +1045,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--001 react-datepicker__day--outside-month\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Monday, March 1st, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   1
@@ -1055,7 +1053,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--002 react-datepicker__day--outside-month\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Tuesday, March 2nd, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   2
@@ -1063,7 +1061,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--003 react-datepicker__day--outside-month\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Wednesday, March 3rd, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   3
@@ -1071,7 +1069,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--004 react-datepicker__day--outside-month\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Thursday, March 4th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   4
@@ -1079,7 +1077,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--005 react-datepicker__day--outside-month\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Friday, March 5th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   5
@@ -1087,7 +1085,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <div class=\\"react-datepicker__day react-datepicker__day--006 react-datepicker__day--weekend react-datepicker__day--outside-month\\"
                      tabindex=\\"-1\\"
                      aria-label=\\"Choose Saturday, March 6th, 2060\\"
-                     role=\\"option\\"
+                     role=\\"button\\"
                      aria-disabled=\\"false\\"
                 >
                   6
