@@ -38,7 +38,7 @@
     "react-app-polyfill": "1.0.6",
     "react-autosuggest": "10.0.2",
     "react-collapsible": "2.7.0",
-    "react-datepicker": "2.14.1",
+    "react-datepicker": "2.15.0",
     "react-dom": "16.13.1",
     "react-highlighter": "0.4.3",
     "react-hotkeys": "2.0.0",
