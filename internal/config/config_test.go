@@ -60,6 +60,7 @@ annotations:
   - summary
   keep: []
   strip: []
+  order: []
 custom:
   css: /custom.css
   js: /custom.js

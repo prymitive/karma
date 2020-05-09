@@ -16,6 +16,7 @@ env ANNOTATIONS_HIDDEN='help summary'
 env ANNOTATIONS_VISIBLE='visible'
 env ANNOTATIONS_KEEP='keep'
 env ANNOTATIONS_STRIP='strip1 strip2 strip3'
+env ANNOTATIONS_ORDER='summary help'
 
 env CUSTOM_CSS='/custom.css'
 env CUSTOM_JS='/custom.js'
@@ -117,6 +118,9 @@ level=info msg="  strip:"
 level=info msg="  - strip1"
 level=info msg="  - strip2"
 level=info msg="  - strip3"
+level=info msg="  order:"
+level=info msg="  - summary"
+level=info msg="  - help"
 level=info msg="custom:"
 level=info msg="  css: /custom.css"
 level=info msg="  js: /custom.js"
