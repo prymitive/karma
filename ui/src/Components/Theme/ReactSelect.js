@@ -9,7 +9,7 @@ const ReactSelectColors = {
     menuBackground: "#fff",
     optionHoverBackground: "#455a64",
     valueContainerBackground: "#fff",
-    disabledValueContainerBackground: "#fff",
+    disabledValueContainerBackground: "#ecf0f1",
   },
   Dark: {
     color: "#fff",
@@ -21,7 +21,7 @@ const ReactSelectColors = {
     menuBackground: "#2b2b2b",
     optionHoverBackground: "#455a64",
     valueContainerBackground: "#444",
-    disabledValueContainerBackground: "#fff",
+    disabledValueContainerBackground: "#303030",
   },
 };
 

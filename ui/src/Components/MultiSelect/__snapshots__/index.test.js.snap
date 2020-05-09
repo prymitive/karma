@@ -218,7 +218,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
 "
 <div class=\\"react-select--is-disabled css-14jk2my-container\\">
   <div class=\\"react-select__control react-select__control--is-disabled css-r5n82u-control\\">
-    <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
+    <div class=\\"react-select__value-container react-select__value-container--has-value css-8r64vq-ValueContainer\\">
       <div class=\\"react-select__single-value react-select__single-value--is-disabled css-1wh03ml-singleValue\\">
         foo
       </div>
@@ -243,7 +243,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
         </div>
       </div>
     </div>
-    <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
+    <div class=\\"react-select__indicators css-15bdmde-IndicatorsContainer\\">
       <span class=\\"react-select__indicator-separator css-109onse-indicatorSeparator\\">
       </span>
       <div aria-hidden=\\"true\\"
