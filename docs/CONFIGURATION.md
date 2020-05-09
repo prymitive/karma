@@ -458,6 +458,7 @@ annotations:
   visible: list of strings
   keep: list of strings
   strip: list of strings
+  order: list of strings
 ```
 
 - `default:hidden` - bool, true if all annotations should be hidden by default.
@@ -466,6 +467,9 @@ annotations:
   `default:hidden` is set to `true`.
 - `keep` - list of allowed annotations, if empty all annotations are allowed.
 - `strip` - list of ignored annotations.
+- `order` - custom order of annotation names. All annotations listed here will
+  appear first in the order specified here. Remaining annotations will be sorted
+  alphabetically and appended at the end.
 
 The difference between `hidden`/`visible` and `keep`/`strip` is that hidden
 annotations are still accessible, but they are shown in the UI collapsed by
@@ -474,7 +478,8 @@ annotations are removed entirely and never presented to the user.
 
 Example where all annotations except `summary` are hidden by default. If there
 are additional annotation keys user will need to click on the `+` icon to see
-them.
+them. `summary` annotation will always appear first in the UI, followed by
+`help` and all other annotations (sorted alphabetically).
 
 ```YAML
 annotations:
@@ -487,6 +492,9 @@ annotations:
   strip:
     - help
     - verylong
+  order:
+    - summary
+    - help
 ```
 
 Example where all annotations except `details` are visible by default. If
@@ -986,6 +994,7 @@ ui:
 - `colorTitlebar` - if enabled alert group title bar color will be set to follow
   alerts in that group
 - `theme` - default theme, possible values:
+
   - `light` - bright theme
   - `dark` - dark theme
   - `auto` - follows browser preferences using
@@ -993,6 +1002,7 @@ ui:
     media queries
 
   Default value is `auto`.
+
 - `minimalGroupWidth` - minimal width (in pixels) for each alert group rendered
   on the grid. This value is used to calculate the number of columns rendered on
   the grid.
@@ -1008,7 +1018,7 @@ ui:
   all alerts sharing that value will be placed on the same grid. There will be
   extra grid for alerts without that label. Grid sorting options will be used
   to sort the list of grids.
-- `multiGridSortReverse` - when multi-grid is enabled  set to `true` the order
+- `multiGridSortReverse` - when multi-grid is enabled set to `true` the order
   in which grids are displayed.
 
 Defaults:
