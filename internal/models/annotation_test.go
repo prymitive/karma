@@ -192,3 +192,46 @@ func TestAnnotationsSort(t *testing.T) {
 		t.Errorf("Expected 'xyz' to be last, got '%s'", annotations[2].Name)
 	}
 }
+
+func TestAnnotationsCustomOrderSort(t *testing.T) {
+	annotations := models.Annotations{
+		models.Annotation{
+			Name:    "bar",
+			Value:   "abc",
+			Visible: true,
+			IsLink:  false,
+		},
+		models.Annotation{
+			Name:    "xyz",
+			Value:   "xyz",
+			Visible: true,
+			IsLink:  true,
+		},
+		models.Annotation{
+			Name:    "yyz",
+			Value:   "yyz",
+			Visible: true,
+			IsLink:  true,
+		},
+		models.Annotation{
+			Name:    "abc",
+			Value:   "bar",
+			Visible: true,
+			IsLink:  true,
+		},
+	}
+	config.Config.Annotations.Order = []string{"xyz", "yyz"}
+	sort.Stable(annotations)
+	if annotations[0].Name != "xyz" {
+		t.Errorf("Expected 'xyz' to be first, got '%s'", annotations[0].Name)
+	}
+	if annotations[1].Name != "yyz" {
+		t.Errorf("Expected 'yyz' to be second, got '%s'", annotations[1].Name)
+	}
+	if annotations[2].Name != "abc" {
+		t.Errorf("Expected 'abc' to be third, got '%s'", annotations[2].Name)
+	}
+	if annotations[3].Name != "bar" {
+		t.Errorf("Expected 'bar' to be last, got '%s'", annotations[3].Name)
+	}
+}
