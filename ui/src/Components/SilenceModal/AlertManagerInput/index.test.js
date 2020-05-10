@@ -4,19 +4,17 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
+import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { ThemeContext } from "Components/Theme";
-import {
-  ReactSelectColors,
-  ReactSelectStyles,
-} from "Components/Theme/ReactSelect";
 import { AlertManagerInput } from ".";
 
 let alertStore;
 let silenceFormStore;
 
 beforeEach(() => {
+  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
+
   alertStore = new AlertStore([]);
   alertStore.data.upstreams.clusters = {
     ha: ["am1", "am2"],
@@ -65,16 +63,10 @@ beforeEach(() => {
 
 const MountedAlertManagerInput = () => {
   return mount(
-    <ThemeContext.Provider
-      value={{
-        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
-      }}
-    >
-      <AlertManagerInput
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-      />
-    </ThemeContext.Provider>
+    <AlertManagerInput
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+    />
   );
 };
 
@@ -162,12 +154,10 @@ describe("<AlertManagerInput />", () => {
   });
 
   it("silenceFormStore.data.alertmanagers gets updated from alertStore.data.upstreams.instances on mismatch", () => {
-    const tree = MountedAlertManagerInput();
+    MountedAlertManagerInput();
     alertStore.data.upstreams.clusters = {
       amNew: ["amNew"],
     };
-    // force update since this is where the mismatch check lives
-    tree.instance().componentDidUpdate();
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "amNew",
       value: ["amNew"],

@@ -213,6 +213,10 @@ class SilenceFormStore {
         this.silenceID = null;
       },
 
+      setAlertmanagers(val) {
+        this.alertmanagers = val;
+      },
+
       setStageSubmit() {
         this.currentStage = SilenceFormStage.Submit;
       },
@@ -313,6 +317,7 @@ class SilenceFormStore {
       resetStartEnd: action.bound,
       resetProgress: action.bound,
       resetSilenceID: action.bound,
+      setAlertmanagers: action.bound,
       setStageSubmit: action.bound,
       addEmptyMatcher: action.bound,
       deleteMatcher: action.bound,

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
-import { action } from "mobx";
-import { observer } from "mobx-react";
+import { autorun } from "mobx";
+import { useObserver } from "mobx-react";
 
 import Select from "react-select";
 
@@ -12,86 +12,71 @@ import {
   AlertmanagerClustersToOption,
 } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
-import { MultiSelect } from "Components/MultiSelect";
 import { ValidationError } from "Components/MultiSelect/ValidationError";
 
-const AlertManagerInput = observer(
-  class AlertManagerInput extends MultiSelect {
-    static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-    };
-    static contextType = ThemeContext;
+const AlertManagerInput = ({ alertStore, silenceFormStore }) => {
+  useEffect(() => {
+    if (silenceFormStore.data.alertmanagers.length === 0) {
+      silenceFormStore.data.setAlertmanagers(
+        AlertmanagerClustersToOption(alertStore.data.clustersWithoutReadOnly)
+      );
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    constructor(props) {
-      super(props);
-
-      const { alertStore, silenceFormStore } = props;
-
-      if (silenceFormStore.data.alertmanagers.length === 0) {
-        silenceFormStore.data.alertmanagers = AlertmanagerClustersToOption(
+  useEffect(
+    // https://mobx-react.netlify.app/recipes-effects
+    () =>
+      autorun(() => {
+        // get the list of last known alertmanagers
+        const currentAlertmanagers = AlertmanagerClustersToOption(
           alertStore.data.clustersWithoutReadOnly
         );
-      }
-    }
 
-    onChange = action((newValue, actionMeta) => {
-      const { silenceFormStore } = this.props;
-
-      silenceFormStore.data.alertmanagers = newValue || [];
-    });
-
-    componentDidUpdate() {
-      const { alertStore, silenceFormStore } = this.props;
-
-      // get the list of last known alertmanagers
-      const currentAlertmanagers = AlertmanagerClustersToOption(
-        alertStore.data.clustersWithoutReadOnly
-      );
-
-      // now iterate what's set as silence form values and reset it if any
-      // mismatch is detected
-      for (const silenceAM of silenceFormStore.data.alertmanagers) {
-        if (
-          !currentAlertmanagers.map((am) => am.label).includes(silenceAM.label)
-        ) {
-          silenceFormStore.data.alertmanagers = currentAlertmanagers;
-        }
-      }
-    }
-
-    render() {
-      const { alertStore, silenceFormStore } = this.props;
-
-      const extraProps = {};
-      if (silenceFormStore.data.silenceID !== null) {
-        extraProps.isDisabled = true;
-      }
-
-      return (
-        <Select
-          styles={this.context.reactSelectStyles}
-          classNamePrefix="react-select"
-          instanceId="silence-input-alertmanagers"
-          defaultValue={silenceFormStore.data.alertmanagers}
-          options={AlertmanagerClustersToOption(
-            alertStore.data.clustersWithoutReadOnly
-          )}
-          getOptionValue={JSON.stringify}
-          placeholder={
-            silenceFormStore.data.wasValidated ? (
-              <ValidationError />
-            ) : (
-              "Alertmanager"
-            )
+        // now iterate what's set as silence form values and reset it if any
+        // mismatch is detected
+        for (const silenceAM of silenceFormStore.data.alertmanagers) {
+          if (
+            !currentAlertmanagers
+              .map((am) => am.label)
+              .includes(silenceAM.label)
+          ) {
+            silenceFormStore.data.alertmanagers = currentAlertmanagers;
           }
-          isMulti
-          onChange={this.onChange}
-          {...extraProps}
-        />
-      );
-    }
-  }
-);
+        }
+      }),
+    [] // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
+  const context = React.useContext(ThemeContext);
+
+  return useObserver(() => (
+    <Select
+      styles={context.reactSelectStyles}
+      classNamePrefix="react-select"
+      instanceId="silence-input-alertmanagers"
+      value={silenceFormStore.data.alertmanagers}
+      options={AlertmanagerClustersToOption(
+        alertStore.data.clustersWithoutReadOnly
+      )}
+      getOptionValue={JSON.stringify}
+      placeholder={
+        silenceFormStore.data.wasValidated ? (
+          <ValidationError />
+        ) : (
+          "Alertmanager"
+        )
+      }
+      isMulti
+      onChange={(newValue) => {
+        silenceFormStore.data.setAlertmanagers(newValue || []);
+      }}
+      isDisabled={silenceFormStore.data.silenceID !== null}
+    />
+  ));
+};
+AlertManagerInput.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+};
 
 export { AlertManagerInput };
