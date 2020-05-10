@@ -65,10 +65,7 @@ const useFetchGet = (uri, { autorun = true, deps = [] } = {}) => {
     return () => {
       isCanceled.current = true;
     };
-
-    // eslint doesn't like ...deps
-    // eslint-disable-next-line
-  }, [uri, get, autorun, ...deps]);
+  }, [uri, get, autorun, ...deps]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return { response, error, isLoading, isRetrying, retryCount, get };
 };

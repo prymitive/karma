@@ -2,6 +2,7 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import {
@@ -9,41 +10,46 @@ import {
   SilenceFormStage,
   NewEmptyMatcher,
 } from "Stores/SilenceFormStore";
-import { ThemeContext } from "Components/Theme";
-import {
-  ReactSelectColors,
-  ReactSelectStyles,
-} from "Components/Theme/ReactSelect";
 import { SilenceForm } from "./SilenceForm";
 
 let alertStore;
 let settingsStore;
 let silenceFormStore;
 
-beforeAll(() => {
-  fetch.mockResponse(JSON.stringify([]));
-});
-
 beforeEach(() => {
+  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
+
   alertStore = new AlertStore([]);
   settingsStore = new Settings();
   silenceFormStore = new SilenceFormStore();
+
+  alertStore.data.upstreams.clusters = {
+    am1: ["am1"],
+  };
+  alertStore.data.upstreams.instances = [
+    {
+      name: "am1",
+      uri: "http://am1.example.com",
+      publicURI: "http://am1.example.com",
+      readonly: false,
+      headers: {},
+      corsCredentials: "include",
+      error: "",
+      version: "0.17.0",
+      cluster: "am1",
+      clusterMembers: ["am1"],
+    },
+  ];
 });
 
 const MountedSilenceForm = () => {
   return mount(
-    <ThemeContext.Provider
-      value={{
-        reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
-      }}
-    >
-      <SilenceForm
-        alertStore={alertStore}
-        silenceFormStore={silenceFormStore}
-        settingsStore={settingsStore}
-        previewOpen={false}
-      />
-    </ThemeContext.Provider>
+    <SilenceForm
+      alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
+      settingsStore={settingsStore}
+      previewOpen={false}
+    />
   );
 };
 
@@ -176,7 +182,7 @@ describe("<SilenceForm />", () => {
     matcher.name = "job";
     matcher.values = [{ label: "node_exporter", value: "node_exporter" }];
     silenceFormStore.data.matchers = [matcher];
-    silenceFormStore.data.alertmanagers = [{ label: "am1", value: ["am1"] }];
+    silenceFormStore.data.setAlertmanagers([{ label: "am1", value: ["am1"] }]);
     silenceFormStore.data.author = "me@example.com";
     silenceFormStore.data.comment = "fake silence";
     const tree = MountedSilenceForm();
