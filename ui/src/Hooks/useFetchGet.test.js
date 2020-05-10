@@ -146,6 +146,64 @@ describe("useFetchGet", () => {
     expect(result.current.isRetrying).toBe(false);
   });
 
+  it("error is updated after 500 response with JSON body", async () => {
+    fetchMock.mock("http://localhost/500/json", {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "error" }),
+    });
+
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useFetchGet("http://localhost/500/json")
+    );
+
+    await waitForNextUpdate();
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toMatchObject({ status: "error" });
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isRetrying).toBe(false);
+  });
+
+  it("error is updated after 500 response with plain body", async () => {
+    fetchMock.mock("http://localhost/500/text", {
+      status: 500,
+      body: "error",
+    });
+
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useFetchGet("http://localhost/500/text")
+    );
+
+    await waitForNextUpdate();
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe("error");
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isRetrying).toBe(false);
+  });
+
+  it("error is updated after failed fetch", async () => {
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useFetchGet("http://localhost/error")
+    );
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe(null);
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.isRetrying).toBe(false);
+
+    for (let i = 0; i <= FetchRetryConfig.retries; i++) {
+      jest.runOnlyPendingTimers();
+      await waitForNextUpdate();
+    }
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe("failed to fetch");
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isRetrying).toBe(false);
+  });
+
   it("doesn't update response on 200 response after cleanup", async () => {
     fetchMock.mock("http://localhost/slow/ok", {
       delay: 1000,

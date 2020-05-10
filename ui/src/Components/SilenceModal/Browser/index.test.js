@@ -174,6 +174,18 @@ describe("<Browser />", () => {
     expect(toDiffableHtml(tree.html())).toMatch(/fa-spinner/);
   });
 
+  it("renders loading placeholder before fetch finishes", () => {
+    useFetchGet.mockReturnValue({
+      response: null,
+      error: false,
+      isLoading: true,
+      isRetrying: true,
+    });
+    const tree = MountedBrowser();
+    expect(tree.find("Placeholder")).toHaveLength(1);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-spinner .+ text-danger/);
+  });
+
   it("renders empty placeholder after fetch with zero results", () => {
     useFetchGet.mockReturnValue({
       response: [],

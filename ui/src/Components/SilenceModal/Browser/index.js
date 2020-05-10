@@ -63,7 +63,12 @@ const Browser = ({
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const { response, error, isLoading } = useFetchGet(
+  const {
+    response,
+    error,
+    isLoading,
+    isRetrying,
+  } = useFetchGet(
     FormatBackendURI(
       `silences.json?sortReverse=${sortReverse ? "1" : "0"}&showExpired=${
         showExpired ? "1" : "0"
@@ -130,12 +135,19 @@ const Browser = ({
           Sort order
         </button>
       </div>
-      {error ? (
-        <FetchError message={error} />
-      ) : response === null && isLoading ? (
+      {response === null && isLoading ? (
         <Placeholder
-          content={<FontAwesomeIcon icon={faSpinner} size="lg" spin />}
+          content={
+            <FontAwesomeIcon
+              icon={faSpinner}
+              size="lg"
+              spin
+              className={isRetrying ? "text-danger" : ""}
+            />
+          }
         />
+      ) : error ? (
+        <FetchError message={error} />
       ) : response.length === 0 ? (
         <Placeholder content="Nothing to show" />
       ) : (
