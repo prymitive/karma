@@ -2,6 +2,8 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 
+import fetchMock from "fetch-mock";
+
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { MainModalContent, TabNames } from "./MainModalContent";
@@ -19,6 +21,18 @@ storiesOf("MainModal", module)
   .add("Configuration", () => {
     const alertStore = new AlertStore([]);
     const settingsStore = new Settings();
+
+    fetchMock.mock(
+      "begin:/label",
+      {
+        status: 200,
+        body: JSON.stringify([]),
+        headers: { "Content-Type": "application/json" },
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
 
     alertStore.info.authentication.enabled = true;
     alertStore.info.authentication.username = "me@example.com";

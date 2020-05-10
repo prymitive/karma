@@ -266,9 +266,17 @@ storiesOf("SilenceModal", module)
       clusters: { am: ["am1"] },
     };
 
-    fetchMock.mock("begin:/silences.json?", [], {
-      overwriteRoutes: true,
-    });
+    fetchMock.mock(
+      "begin:/silences.json?",
+      {
+        status: 200,
+        body: JSON.stringify([]),
+        headers: { "Content-Type": "application/json" },
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
 
     return (
       <Modal>
