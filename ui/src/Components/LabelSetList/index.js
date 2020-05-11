@@ -6,6 +6,7 @@ import { useLocalStore, useObserver } from "mobx-react";
 import hash from "object-hash";
 
 import { AlertStore } from "Stores/AlertStore";
+import { IsMobile } from "Common/Device";
 import { StaticLabel } from "Components/Labels/StaticLabel";
 import { PageSelect } from "Components/Pagination";
 
@@ -36,7 +37,7 @@ const LabelSetList = ({ alertStore, labelsList }) => {
     },
   }));
 
-  const maxPerPage = 10;
+  const maxPerPage = IsMobile() ? 5 : 10;
 
   return useObserver(() =>
     labelsList.length > 0 ? (

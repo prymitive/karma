@@ -221,24 +221,24 @@ describe("<Browser />", () => {
     }, 200);
   });
 
-  it("renders only first 5 silences", (done) => {
+  it("renders only first 6 silences", (done) => {
     fetch.mockResponse(JSON.stringify(MockSilenceList(6)));
     const tree = MountedBrowser();
     setTimeout(() => {
       tree.update();
-      expect(tree.find("ManagedSilence")).toHaveLength(5);
+      expect(tree.find("ManagedSilence")).toHaveLength(6);
       done();
     }, 200);
   });
 
   it("renders last silence after page change", (done) => {
-    fetch.mockResponse(JSON.stringify(MockSilenceList(6)));
+    fetch.mockResponse(JSON.stringify(MockSilenceList(7)));
     const tree = MountedBrowser();
 
     setTimeout(() => {
       tree.update();
       expect(tree.find("li.page-item").at(1).hasClass("active")).toBe(true);
-      expect(tree.find("ManagedSilence")).toHaveLength(5);
+      expect(tree.find("ManagedSilence")).toHaveLength(6);
 
       const pageLink = tree.find(".page-link").at(3);
       pageLink.simulate("click");
@@ -250,20 +250,20 @@ describe("<Browser />", () => {
   });
 
   it("renders next/previous page after arrow key press", (done) => {
-    fetch.mockResponse(JSON.stringify(MockSilenceList(11)));
+    fetch.mockResponse(JSON.stringify(MockSilenceList(13)));
     const tree = MountedBrowser();
 
     setTimeout(() => {
       tree.update();
       expect(tree.find("li.page-item").at(1).hasClass("active")).toBe(true);
-      expect(tree.find("ManagedSilence")).toHaveLength(5);
+      expect(tree.find("ManagedSilence")).toHaveLength(6);
 
       const paginator = tree.find(".components-pagination").at(0);
       paginator.simulate("focus");
 
       PressKey(paginator, "ArrowRight", 39);
       expect(tree.find("li.page-item").at(2).hasClass("active")).toBe(true);
-      expect(tree.find("ManagedSilence")).toHaveLength(5);
+      expect(tree.find("ManagedSilence")).toHaveLength(6);
 
       PressKey(paginator, "ArrowRight", 39);
       expect(tree.find("li.page-item").at(3).hasClass("active")).toBe(true);
@@ -275,21 +275,21 @@ describe("<Browser />", () => {
 
       PressKey(paginator, "ArrowLeft", 37);
       expect(tree.find("li.page-item").at(2).hasClass("active")).toBe(true);
-      expect(tree.find("ManagedSilence")).toHaveLength(5);
+      expect(tree.find("ManagedSilence")).toHaveLength(6);
 
       PressKey(paginator, "ArrowLeft", 37);
       expect(tree.find("li.page-item").at(1).hasClass("active")).toBe(true);
-      expect(tree.find("ManagedSilence")).toHaveLength(5);
+      expect(tree.find("ManagedSilence")).toHaveLength(6);
 
       PressKey(paginator, "ArrowLeft", 37);
       expect(tree.find("li.page-item").at(1).hasClass("active")).toBe(true);
-      expect(tree.find("ManagedSilence")).toHaveLength(5);
+      expect(tree.find("ManagedSilence")).toHaveLength(6);
       done();
     }, 200);
   });
 
   it("resets pagination to last page on truncation", (done) => {
-    fetch.mockResponse(JSON.stringify(MockSilenceList(11)));
+    fetch.mockResponse(JSON.stringify(MockSilenceList(13)));
     const tree = MountedBrowser();
     setTimeout(() => {
       tree.update();
@@ -300,7 +300,7 @@ describe("<Browser />", () => {
       expect(tree.find("ManagedSilence")).toHaveLength(1);
       expect(tree.find("li.page-item").at(3).hasClass("active")).toBe(true);
 
-      fetch.mockResponse(JSON.stringify(MockSilenceList(7)));
+      fetch.mockResponse(JSON.stringify(MockSilenceList(8)));
       tree.find("button.btn-secondary").simulate("click");
 
       setTimeout(() => {

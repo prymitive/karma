@@ -17,6 +17,7 @@ import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
 import { FetchGet } from "Common/Fetch";
+import { IsMobile } from "Common/Device";
 import { ManagedSilence } from "Components/ManagedSilence";
 import { PageSelect } from "Components/Pagination";
 import { ThemeContext } from "Components/Theme";
@@ -79,7 +80,7 @@ const Browser = ({
     },
   }));
 
-  const maxPerPage = 5;
+  const maxPerPage = IsMobile() ? 4 : 6;
 
   const pagination = useLocalStore(() => ({
     activePage: 1,
@@ -118,7 +119,7 @@ const Browser = ({
         dataSource.setDone();
         return dataSource.setError(`Request failed with: ${err.message}`);
       });
-  }, [dataSource, pagination]);
+  }, [dataSource, maxPerPage, pagination]);
 
   const onDebouncedFetch = debounce(onFetch, 500);
 
