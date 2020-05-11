@@ -6,6 +6,8 @@ import toDiffableHtml from "diffable-html";
 
 import { advanceTo, clear } from "jest-date-mock";
 
+import fetchMock from "fetch-mock";
+
 import { MockAlertGroup, MockAlert } from "__mocks__/Alerts.js";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -52,10 +54,21 @@ beforeEach(() => {
     MockAlert([], { foo: "ignore" }, "suppressed"),
   ];
   group = MockAlertGroup({ alertname: "Fake Alert" }, alerts, [], {}, {});
+
+  fetchMock.resetHistory();
+  fetchMock.any(
+    {
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ silenceID: "123" }),
+    },
+    {
+      overwriteRoutes: true,
+    }
+  );
 });
 
 afterEach(() => {
-  fetch.resetMocks();
+  fetchMock.resetHistory();
   jest.clearAllTimers();
   jest.clearAllMocks();
   jest.restoreAllMocks();
@@ -76,9 +89,7 @@ const MountAndClick = async () => {
   const tree = MountedAlertAck();
   const button = tree.find("span.badge");
   button.simulate("click");
-  await expect(
-    tree.instance().submitState.silencesByCluster["default"].fetch
-  ).resolves.toBeUndefined();
+  await fetchMock.flush(true);
 };
 
 describe("<AlertAck />", () => {
@@ -94,30 +105,33 @@ describe("<AlertAck />", () => {
   });
 
   it("uses faExclamationCircle after failed fetch", async () => {
-    fetch.mockResponse("error message", { status: 500 });
+    fetchMock.any(
+      {
+        status: 500,
+        body: "error message",
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
     const tree = MountedAlertAck();
     const button = tree.find("span.badge");
     button.simulate("click");
-    await expect(
-      tree.instance().submitState.silencesByCluster["default"].fetch
-    ).resolves.toBeUndefined();
+    await fetchMock.flush(true);
     expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
   });
 
   it("uses faCheckCircle after successful fetch", async () => {
-    fetch.mockResponse(JSON.stringify({ silenceID: "123" }));
     const tree = MountedAlertAck();
     const button = tree.find("span.badge");
     button.simulate("click");
-    await expect(
-      tree.instance().submitState.silencesByCluster["default"].fetch
-    ).resolves.toBeUndefined();
+    await fetchMock.flush(true);
     expect(toDiffableHtml(tree.html())).toMatch(/fa-check-circle/);
   });
 
   it("sends a request on click", () => {
     MountAndClick();
-    expect(fetch.mock.calls).toHaveLength(1);
+    expect(fetchMock.calls()).toHaveLength(1);
   });
 
   it("doesn't send any request on click when already in progress", async () => {
@@ -125,10 +139,8 @@ describe("<AlertAck />", () => {
     const button = tree.find("span.badge");
     button.simulate("click");
     button.simulate("click");
-    await expect(
-      tree.instance().submitState.silencesByCluster["default"].fetch
-    ).resolves.toBeUndefined();
-    expect(fetch.mock.calls).toHaveLength(1);
+    await fetchMock.flush(true);
+    expect(fetchMock.calls()).toHaveLength(1);
   });
 
   it("doesn't send any request on click when already done", async () => {
@@ -136,29 +148,32 @@ describe("<AlertAck />", () => {
     const button = tree.find("span.badge");
 
     button.simulate("click");
-    await expect(
-      tree.instance().submitState.silencesByCluster["default"].fetch
-    ).resolves.toBeUndefined();
-    expect(fetch.mock.calls).toHaveLength(1);
+    await fetchMock.flush(true);
+    expect(fetchMock.calls()).toHaveLength(1);
 
     button.simulate("click");
-    await expect(
-      tree.instance().submitState.silencesByCluster["default"].fetch
-    ).resolves.toBeUndefined();
-    expect(fetch.mock.calls).toHaveLength(1);
+    expect(fetchMock.calls()).toHaveLength(1);
   });
 
   it("sends POST requests", () => {
     MountAndClick();
-    expect(fetch.mock.calls[0][1].method).toBe("POST");
+    expect(fetchMock.calls()[0][1].method).toBe("POST");
   });
 
   it("sends correct payload", () => {
-    fetch.mockResponse(JSON.stringify({ silenceID: "123456789" }));
+    fetchMock.any(
+      {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ silenceID: "123456789" }),
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
 
     silenceFormStore.data.author = "karma/ui";
     MountAndClick();
-    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual({
+    expect(JSON.parse(fetchMock.calls()[0][1].body)).toEqual({
       comment:
         "PREFIX This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
       createdBy: "karma/ui",
@@ -176,7 +191,7 @@ describe("<AlertAck />", () => {
     alertStore.settings.values.alertAcknowledgement.author = "me";
     alertStore.settings.values.alertAcknowledgement.commentPrefix = "";
     MountAndClick();
-    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual({
+    expect(JSON.parse(fetchMock.calls()[0][1].body)).toEqual({
       comment:
         "This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
       createdBy: "me",
@@ -196,7 +211,7 @@ describe("<AlertAck />", () => {
     alertStore.settings.values.alertAcknowledgement.author = "me";
     alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";
     MountAndClick();
-    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual({
+    expect(JSON.parse(fetchMock.calls()[0][1].body)).toEqual({
       comment:
         "FOO: This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
       createdBy: "auth@example.com",
@@ -217,7 +232,7 @@ describe("<AlertAck />", () => {
     alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";
     silenceFormStore.data.author = "bob@example.com";
     MountAndClick();
-    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual({
+    expect(JSON.parse(fetchMock.calls()[0][1].body)).toEqual({
       comment:
         "FOO: This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
       createdBy: "bob@example.com",
@@ -236,7 +251,7 @@ describe("<AlertAck />", () => {
     alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";
     silenceFormStore.data.author = "";
     MountAndClick();
-    expect(JSON.parse(fetch.mock.calls[0][1].body)).toEqual({
+    expect(JSON.parse(fetchMock.calls()[0][1].body)).toEqual({
       comment:
         "FOO: This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
       createdBy: "me",
@@ -251,14 +266,20 @@ describe("<AlertAck />", () => {
 
   it("sends POST request to /api/v2/silences", () => {
     MountAndClick();
-    const uri = fetch.mock.calls[0][0];
+    const uri = fetchMock.calls()[0][0];
     expect(uri).toBe("http://localhost/api/v2/silences");
   });
 
-  it("will retry on another cluster member after fetch failure", async () => {
-    fetch
-      .mockResponseOnce("error message", { status: 500 })
-      .mockResponseOnce(JSON.stringify({ silenceID: "123" }));
+  it("will retry on another cluster member after 500 response", async () => {
+    fetchMock.reset();
+    fetchMock.mock("http://am2.example.com/api/v2/silences", {
+      status: 500,
+      body: "error message",
+    });
+    fetchMock.mock("http://am1.example.com/api/v2/silences", {
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ silenceID: "123" }),
+    });
     alertStore.data.upstreams = {
       clusters: { default: ["default", "fallback"] },
       instances: [
@@ -292,21 +313,69 @@ describe("<AlertAck />", () => {
     const tree = MountedAlertAck();
     const button = tree.find("span.badge");
     button.simulate("click");
-    await expect(
-      tree.instance().submitState.silencesByCluster["default"].fetch
-    ).resolves.toBeUndefined();
-    expect(fetch.mock.calls[0][0]).toBe(
+    await fetchMock.flush(true);
+    await fetchMock.flush(true);
+    expect(fetchMock.calls()[0][0]).toBe(
       "http://am2.example.com/api/v2/silences"
     );
-    await expect(
-      tree.instance().submitState.silencesByCluster["default"].fetch
-    ).resolves.toBeUndefined();
-    expect(fetch.mock.calls[1][0]).toBe(
+    expect(fetchMock.calls()[1][0]).toBe(
       "http://am1.example.com/api/v2/silences"
     );
   });
 
-  it("will log an error if Alertmanager instance is missing from instances and try the next one", async () => {
+  it("will retry on another cluster member after fetch failure", async () => {
+    fetchMock.reset();
+    fetchMock.mock("http://am2.example.com/api/v2/silences", {
+      throws: new TypeError("failed to fetch"),
+    });
+    fetchMock.mock("http://am1.example.com/api/v2/silences", {
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ silenceID: "123" }),
+    });
+    alertStore.data.upstreams = {
+      clusters: { default: ["default", "fallback"] },
+      instances: [
+        {
+          name: "default",
+          uri: "http://am1.example.com",
+          publicURI: "http://am1.example.com",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.17.0",
+          cluster: "default",
+          clusterMembers: ["default", "fallback"],
+        },
+        {
+          name: "fallback",
+          uri: "http://am2.example.com",
+          publicURI: "http://am2.example.com",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.17.0",
+          cluster: "default",
+          clusterMembers: ["default", "fallback"],
+        },
+      ],
+    };
+
+    const tree = MountedAlertAck();
+    const button = tree.find("span.badge");
+    button.simulate("click");
+    await fetchMock.flush(true);
+    await fetchMock.flush(true);
+    expect(fetchMock.calls()[0][0]).toBe(
+      "http://am2.example.com/api/v2/silences"
+    );
+    expect(fetchMock.calls()[1][0]).toBe(
+      "http://am1.example.com/api/v2/silences"
+    );
+  });
+
+  it("will log an error if Alertmanager instance is missing from instances and try the next one", () => {
     const consoleSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
@@ -331,10 +400,7 @@ describe("<AlertAck />", () => {
     const tree = MountedAlertAck();
     const button = tree.find("span.badge");
     button.simulate("click");
-    await expect(
-      tree.instance().submitState.silencesByCluster["default"].fetch
-    ).resolves.toBeUndefined();
-    expect(fetch.mock.calls[0][0]).toBe(
+    expect(fetchMock.calls()[0][0]).toBe(
       "http://am1.example.com/api/v2/silences"
     );
     expect(consoleSpy).toHaveBeenCalledTimes(1);
