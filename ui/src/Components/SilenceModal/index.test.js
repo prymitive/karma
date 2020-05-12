@@ -3,6 +3,8 @@ import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
+import fetchMock from "fetch-mock";
+
 import { ThemeContext } from "Components/Theme";
 import {
   ReactSelectColors,
@@ -19,7 +21,9 @@ let silenceFormStore;
 
 beforeAll(() => {
   jest.useFakeTimers();
-  fetch.mockResponse(JSON.stringify([]));
+  fetchMock.any({
+    body: JSON.stringify([]),
+  });
 });
 
 beforeEach(() => {

@@ -18,7 +18,6 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  fetch.resetMocks();
 });
 
 const CollapseMock = jest.fn();

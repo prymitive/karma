@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import fetchMock from "fetch-mock";
+
 import { advanceTo, advanceBy, clear } from "jest-date-mock";
 
 import { EmptyAPIResponse } from "__mocks__/Fetch";
@@ -41,12 +43,17 @@ afterEach(() => {
   jest.clearAllMocks();
   jest.restoreAllMocks();
   clear();
+  fetchMock.reset();
 });
 
 const MockEmptyAPIResponseWithoutFilters = () => {
   const response = EmptyAPIResponse();
   response.filters = [];
-  fetch.mockResponse(JSON.stringify(response));
+  fetchMock.reset();
+  fetchMock.any({
+    status: 200,
+    body: JSON.stringify(response),
+  });
 };
 
 const MountedFetcher = () => {

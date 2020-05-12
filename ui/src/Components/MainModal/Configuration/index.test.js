@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import fetchMock from "fetch-mock";
+
 import toDiffableHtml from "diffable-html";
 
 import { Settings } from "Stores/Settings";
@@ -13,11 +15,16 @@ import {
 import { Configuration } from ".";
 
 beforeEach(() => {
-  fetch.mockResponse(JSON.stringify([]));
+  fetchMock.reset();
+  fetchMock.any({
+    status: 200,
+    body: JSON.stringify([]),
+  });
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
+  fetchMock.reset();
 });
 
 describe("<Configuration />", () => {

@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import fetchMock from "fetch-mock";
+
 import toDiffableHtml from "diffable-html";
 
 import { AlertStore } from "Stores/AlertStore";
@@ -21,11 +23,15 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings();
   onHide.mockClear();
-  fetch.mockResponse(JSON.stringify([]));
+  fetchMock.reset();
+  fetchMock.any({
+    body: JSON.stringify([]),
+  });
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
+  fetchMock.reset();
 });
 
 const Wrapped = (component) => (
