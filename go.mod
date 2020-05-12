@@ -5,6 +5,7 @@ go 1.14
 require (
 	github.com/DeanThompson/ginpprof v0.0.0-20190408063150-3be636683586
 	github.com/Masterminds/semver/v3 v3.1.0
+	github.com/buchanae/github-release-notes v0.0.0-20180827045457-200e1dacadbb
 	github.com/certifi/gocertifi v0.0.0-20190905060710-a5e0173ced67 // indirect
 	github.com/cnf/structhash v0.0.0-20180104161610-62a607eb0224
 	github.com/elazarl/go-bindata-assetfs v1.0.1-0.20180223160309-38087fe4dafb
@@ -22,6 +23,8 @@ require (
 	github.com/go-openapi/validate v0.19.8
 	github.com/golangci/golangci-lint v1.26.0
 	github.com/google/go-cmp v0.4.0
+	github.com/google/go-github v17.0.0+incompatible // indirect
+	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.5
 	github.com/knadh/koanf v0.10.0

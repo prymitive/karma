@@ -140,6 +140,13 @@ jobs:
       language: shell
       script: make lint-nodejs-version
 
+    - stage: Lint
+      name: Generate Changelog
+      if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
+      <<: *DEFAULTS_GO
+      script:
+        - travis_retry make changelog
+
     - stage: Snapshots
       name: Percy UI snapshots
       if: (repo = prymitive/karma AND type != pull_request AND type != cron) OR (fork = true AND type = pull_request)

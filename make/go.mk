@@ -61,3 +61,17 @@ mock-assets: $(GOBIN)/go-bindata-assetfs
 	cp ui/public/* ui/build/
 	go-bindata-assetfs -o cmd/karma/bindata_assetfs.go -nometadata ui/build/... cmd/karma/tests/bindata/...
 	rm -fr ui/build
+
+$(GOBIN)/github-release-notes: go.mod go.sum
+	$(GO) install github.com/buchanae/github-release-notes
+.PHONY: changelog
+changelog: $(GOBIN)/github-release-notes
+	@echo "Full changelog:"
+	@github-release-notes \
+		-org prymitive \
+		-repo karma \
+		-since-latest-release \
+		-include-author \
+		| egrep -v '@renovate' \
+		| sed s/' PR '/' '/g \
+		| sed s/'- @prymitive -'/'-'/g
