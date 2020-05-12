@@ -141,6 +141,12 @@ jobs:
       script: make lint-nodejs-version
 
     - stage: Lint
+      name: Lint Bootstrap Version
+      if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
+      language: shell
+      script: make lint-bootstrap-version
+
+    - stage: Lint
       name: Generate Changelog
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
