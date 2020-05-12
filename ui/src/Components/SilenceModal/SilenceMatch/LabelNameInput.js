@@ -6,7 +6,7 @@ import Creatable from "react-select/creatable";
 import { SilenceFormMatcher } from "Models/SilenceForm";
 import { FormatBackendURI } from "Stores/AlertStore";
 import { useFetchGet } from "Hooks/useFetchGet";
-import { ValidationError } from "Components/MultiSelect/ValidationError";
+import { ValidationError } from "Components/ValidationError";
 import { ThemeContext } from "Components/Theme";
 
 const LabelNameInput = ({ matcher, isValid }) => {

@@ -13,7 +13,7 @@ import { FormatBackendURI } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceFormMatcher } from "Models/SilenceForm";
 import { useFetchGet } from "Hooks/useFetchGet";
-import { ValidationError } from "Components/MultiSelect/ValidationError";
+import { ValidationError } from "Components/ValidationError";
 import { ThemeContext } from "Components/Theme";
 import { MatchCounter } from "./MatchCounter";
 

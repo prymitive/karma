@@ -4,65 +4,35 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { ThemeContext } from "Components/Theme";
+import Select from "react-select";
+
 import {
   ReactSelectColors,
   ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
-import { MultiSelect } from ".";
 
 const Option = (value) => ({ label: value, value: value });
 
-const Wrapped = (component) => (
-  <ThemeContext.Provider
-    value={{
-      reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
-    }}
-  >
-    {component}
-  </ThemeContext.Provider>
+const ThemedSelect = (props) => (
+  <Select styles={ReactSelectStyles(ReactSelectColors.Light)} {...props} />
 );
 
-describe("<MultiSelect />", () => {
-  it("matches snapshot without any extra props", () => {
-    const tree = mount(Wrapped(<MultiSelect />));
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
-  });
-});
-
-class CustomMultiSelect extends MultiSelect {
-  constructor(props) {
-    super(props);
-    this.extraProps = props;
-  }
-
-  renderProps = () => this.extraProps;
-}
-
-const WrappedCustomMultiSelect = (props) =>
-  Wrapped(<CustomMultiSelect {...props} />);
-
 describe("<WrappedCustomMultiSelect />", () => {
-  it("matches snapshot with defaults", () => {
-    const tree = mount(<WrappedCustomMultiSelect />);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
-  });
-
   it("matches snapshot with isMulti=true", () => {
-    const tree = mount(<WrappedCustomMultiSelect isMulti />);
+    const tree = mount(<ThemedSelect isMulti />);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("matches snapshot when focused", () => {
     // this test is to cover styles state.isFocused conditions
-    const tree = mount(<WrappedCustomMultiSelect autoFocus />);
+    const tree = mount(<ThemedSelect autoFocus />);
     tree.find("input").simulate("focus");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("matches snapshot with a value", () => {
     const tree = mount(
-      <WrappedCustomMultiSelect
+      <ThemedSelect
         defaultValue={Option("foo")}
         options={[Option("foo"), Option("bar")]}
       />
@@ -72,7 +42,7 @@ describe("<WrappedCustomMultiSelect />", () => {
 
   it("matches snapshot with isMulti=true and a value", () => {
     const tree = mount(
-      <WrappedCustomMultiSelect
+      <ThemedSelect
         isMulti
         defaultValue={Option("foo")}
         options={[Option("foo"), Option("bar")]}
@@ -83,7 +53,7 @@ describe("<WrappedCustomMultiSelect />", () => {
 
   it("matches snapshot with isDisabled=true", () => {
     const tree = mount(
-      <WrappedCustomMultiSelect
+      <ThemedSelect
         isDisabled
         defaultValue={Option("foo")}
         options={[Option("foo"), Option("bar")]}
