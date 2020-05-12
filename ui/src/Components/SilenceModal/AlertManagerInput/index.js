@@ -12,7 +12,7 @@ import {
   AlertmanagerClustersToOption,
 } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
-import { ValidationError } from "Components/MultiSelect/ValidationError";
+import { ValidationError } from "Components/ValidationError";
 
 const AlertManagerInput = ({ alertStore, silenceFormStore }) => {
   useEffect(() => {

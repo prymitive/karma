@@ -4,7 +4,7 @@ import { shallow } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { ValidationError } from "./ValidationError";
+import { ValidationError } from ".";
 
 describe("<ValidationError />", () => {
   it("matches snapshot", () => {
