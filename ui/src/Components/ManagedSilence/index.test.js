@@ -50,7 +50,6 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  fetch.resetMocks();
   clear();
 });
 

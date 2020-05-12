@@ -14,10 +14,6 @@ require("jest-canvas-mock");
 // used to mock current time since we render moment.fromNow() in some places
 require("jest-date-mock");
 
-// fetch is used in multiple places to interact with Go backend
-// or upstream Alertmanager API
-global.fetch = require("jest-fetch-mock");
-
 // ensure that all console messages throw errors
 for (const level of ["error", "warn", "info", "log", "trace"]) {
   // https://reactjs.org/blog/2019/08/08/react-v16.9.0.html#new-deprecations

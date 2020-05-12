@@ -49,7 +49,6 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  fetch.resetMocks();
   // reset Date() to current time
   clear();
 });

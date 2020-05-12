@@ -1,3 +1,5 @@
+import fetchMock from "fetch-mock";
+
 import { EmptyAPIResponse } from "__mocks__/Fetch";
 import { DefaultsBase64 } from "__mocks__/Defaults";
 import { mockMatchMedia } from "__mocks__/matchMedia";
@@ -31,7 +33,12 @@ it("renders without crashing with missing defaults div", () => {
   });
   const response = EmptyAPIResponse();
   response.filters = [];
-  fetch.mockResponse(JSON.stringify(response));
+
+  fetchMock.reset();
+  fetchMock.any({
+    body: JSON.stringify(response),
+  });
+
   const Index = require("./index.tsx");
   expect(Index).toBeTruthy();
   expect(root.innerHTML).toMatch(/data-theme="auto"/);
@@ -52,7 +59,12 @@ it("renders without crashing with defaults present", () => {
   });
   const response = EmptyAPIResponse();
   response.filters = [];
-  fetch.mockResponse(JSON.stringify(response));
+
+  fetchMock.reset();
+  fetchMock.any({
+    body: JSON.stringify(response),
+  });
+
   const Index = require("./index.tsx");
   expect(Index).toBeTruthy();
 });

@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import fetchMock from "fetch-mock";
+
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
@@ -22,11 +24,15 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings();
 
-  fetch.mockResponse(JSON.stringify([]));
+  fetchMock.reset();
+  fetchMock.any({
+    body: JSON.stringify([]),
+  });
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
+  fetchMock.reset();
 });
 
 const MountedMainModal = () => {

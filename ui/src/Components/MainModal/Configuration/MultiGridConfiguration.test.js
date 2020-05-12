@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import fetchMock from "fetch-mock";
+
 import toDiffableHtml from "diffable-html";
 
 import { MockThemeContext } from "__mocks__/Theme";
@@ -11,7 +13,11 @@ import { MultiGridConfiguration } from "./MultiGridConfiguration";
 
 let settingsStore;
 beforeEach(() => {
-  fetch.mockResponse(JSON.stringify([]));
+  fetchMock.reset();
+  fetchMock.any({
+    body: JSON.stringify([]),
+  });
+
   settingsStore = new Settings();
 
   jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
@@ -20,6 +26,7 @@ beforeEach(() => {
 afterEach(() => {
   jest.restoreAllMocks();
   useFetchGet.mockReset();
+  fetchMock.reset();
 });
 
 const FakeConfiguration = () => {
@@ -35,7 +42,6 @@ const ExpandSortLabelSuggestions = () => {
     .find("input#react-select-configuration-grid-label-input")
     .simulate("change", { target: { value: "a" } });
 
-  fetch.resetMocks();
   return tree;
 };
 
