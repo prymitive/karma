@@ -1,12 +1,9 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { useObserver, useLocalStore } from "mobx-react";
 
-import hash from "object-hash";
-
 import { Manager, Reference, Popper } from "react-popper";
-import onClickOutside from "react-onclickoutside";
 
 import Moment from "react-moment";
 
@@ -20,6 +17,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, SilenceTabNames } from "Stores/SilenceFormStore";
 import { FetchPauser } from "Components/FetchPauser";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
+import { useOnClickOutside } from "Hooks/useOnClickOutside";
 
 const onSilenceClick = (alertStore, silenceFormStore, group, alert) => {
   silenceFormStore.data.resetProgress();
@@ -32,60 +30,65 @@ const onSilenceClick = (alertStore, silenceFormStore, group, alert) => {
   silenceFormStore.toggle.show();
 };
 
-const MenuContent = onClickOutside(
-  ({
-    popperPlacement,
-    popperRef,
-    popperStyle,
-    group,
-    alert,
-    afterClick,
-    alertStore,
-    silenceFormStore,
-  }) => {
-    const isReadOnly =
-      Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0;
+const MenuContent = ({
+  popperPlacement,
+  popperRef,
+  popperStyle,
+  group,
+  alert,
+  afterClick,
+  alertStore,
+  silenceFormStore,
+}) => {
+  const ref = useRef(null);
+  useOnClickOutside(ref, afterClick);
 
-    return (
-      <FetchPauser alertStore={alertStore}>
-        <div
-          className="dropdown-menu d-block shadow"
-          ref={popperRef}
-          style={popperStyle}
-          data-placement={popperPlacement}
-        >
-          <h6 className="dropdown-header">Alert source links:</h6>
-          {alert.alertmanager.map((am) => (
-            <a
-              key={am.name}
-              className="dropdown-item"
-              href={am.source}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={afterClick}
-            >
-              <FontAwesomeIcon className="mr-1" icon={faExternalLinkAlt} />
-              {am.name}
-            </a>
-          ))}
-          <div className="dropdown-divider" />
-          <div
-            className={`dropdown-item cursor-pointer ${
-              isReadOnly && "disabled"
-            }`}
-            onClick={() =>
-              isReadOnly ||
-              onSilenceClick(alertStore, silenceFormStore, group, alert)
-            }
+  useEffect(() => {
+    popperRef(ref.current);
+  }, [popperRef]);
+
+  return (
+    <FetchPauser alertStore={alertStore}>
+      <div
+        className="dropdown-menu d-block shadow"
+        ref={ref}
+        style={popperStyle}
+        data-placement={popperPlacement}
+      >
+        <h6 className="dropdown-header">Alert source links:</h6>
+        {alert.alertmanager.map((am) => (
+          <a
+            key={am.name}
+            className="dropdown-item"
+            href={am.source}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={afterClick}
           >
-            <FontAwesomeIcon className="mr-1" icon={faBellSlash} />
-            Silence this alert
-          </div>
+            <FontAwesomeIcon className="mr-1" icon={faExternalLinkAlt} />
+            {am.name}
+          </a>
+        ))}
+        <div className="dropdown-divider" />
+        <div
+          className={`dropdown-item cursor-pointer ${
+            Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0 &&
+            "disabled"
+          }`}
+          onClick={() => {
+            if (Object.keys(alertStore.data.clustersWithoutReadOnly).length) {
+              onSilenceClick(alertStore, silenceFormStore, group, alert);
+              afterClick();
+            }
+          }}
+        >
+          <FontAwesomeIcon className="mr-1" icon={faBellSlash} />
+          Silence this alert
         </div>
-      </FetchPauser>
-    );
-  }
-);
+      </div>
+    </FetchPauser>
+  );
+};
 MenuContent.propTypes = {
   popperPlacement: PropTypes.string,
   popperRef: PropTypes.func,
@@ -114,14 +117,12 @@ const AlertMenu = ({
     },
   }));
 
-  const uniqueClass = `components-grid-alert-${group.id}-${hash(alert.labels)}`;
-
   return useObserver(() => (
     <Manager>
       <Reference>
         {({ ref }) => (
           <span
-            className={`components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer ${uniqueClass}`}
+            className="components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer"
             ref={ref}
             onClick={collapse.toggle}
             data-toggle="dropdown"
@@ -153,8 +154,6 @@ const AlertMenu = ({
               alertStore={alertStore}
               silenceFormStore={silenceFormStore}
               afterClick={collapse.hide}
-              handleClickOutside={collapse.hide}
-              outsideClickIgnoreClass={uniqueClass}
             />
           )}
         </Popper>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 import { useObserver, useLocalStore } from "mobx-react";
@@ -6,7 +6,6 @@ import { useObserver, useLocalStore } from "mobx-react";
 import copy from "copy-to-clipboard";
 
 import { Manager, Reference, Popper } from "react-popper";
-import onClickOutside from "react-onclickoutside";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV } from "@fortawesome/free-solid-svg-icons/faEllipsisV";
@@ -20,6 +19,7 @@ import { SilenceFormStore, SilenceTabNames } from "Stores/SilenceFormStore";
 import { QueryOperators, StaticLabels, FormatQuery } from "Common/Query";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { FetchPauser } from "Components/FetchPauser";
+import { useOnClickOutside } from "Hooks/useOnClickOutside";
 
 const onSilenceClick = (alertStore, silenceFormStore, group) => {
   silenceFormStore.data.resetProgress();
@@ -31,65 +31,71 @@ const onSilenceClick = (alertStore, silenceFormStore, group) => {
   silenceFormStore.toggle.show();
 };
 
-const MenuContent = onClickOutside(
-  ({
-    popperPlacement,
-    popperRef,
-    popperStyle,
-    group,
-    afterClick,
-    alertStore,
-    silenceFormStore,
-  }) => {
-    let groupFilters = Object.keys(group.labels).map((name) =>
-      FormatQuery(name, QueryOperators.Equal, group.labels[name])
-    );
-    groupFilters.push(
-      FormatQuery(StaticLabels.Receiver, QueryOperators.Equal, group.receiver)
-    );
-    const baseURL = [
-      window.location.protocol,
-      "//",
-      window.location.host,
-      window.location.pathname,
-    ].join("");
-    const groupLink = `${baseURL}?${FormatAlertsQ(groupFilters)}`;
+const MenuContent = ({
+  popperPlacement,
+  popperRef,
+  popperStyle,
+  group,
+  afterClick,
+  alertStore,
+  silenceFormStore,
+}) => {
+  const ref = useRef(null);
+  useOnClickOutside(ref, afterClick);
 
-    const isReadOnly =
-      Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0;
+  useEffect(() => {
+    popperRef(ref.current);
+  }, [popperRef]);
 
-    return (
-      <FetchPauser alertStore={alertStore}>
+  let groupFilters = Object.keys(group.labels).map((name) =>
+    FormatQuery(name, QueryOperators.Equal, group.labels[name])
+  );
+  groupFilters.push(
+    FormatQuery(StaticLabels.Receiver, QueryOperators.Equal, group.receiver)
+  );
+  const baseURL = [
+    window.location.protocol,
+    "//",
+    window.location.host,
+    window.location.pathname,
+  ].join("");
+  const groupLink = `${baseURL}?${FormatAlertsQ(groupFilters)}`;
+
+  return (
+    <FetchPauser alertStore={alertStore}>
+      <div
+        className="dropdown-menu d-block shadow"
+        ref={ref}
+        style={popperStyle}
+        data-placement={popperPlacement}
+      >
         <div
-          className="dropdown-menu d-block shadow"
-          ref={popperRef}
-          style={popperStyle}
-          data-placement={popperPlacement}
+          className="dropdown-item cursor-pointer"
+          onClick={() => {
+            copy(groupLink);
+            afterClick();
+          }}
         >
-          <div
-            className="dropdown-item cursor-pointer"
-            onClick={() => {
-              copy(groupLink);
-              afterClick();
-            }}
-          >
-            <FontAwesomeIcon icon={faShareSquare} /> Copy link to this group
-          </div>
-          <div
-            className={`dropdown-item cursor-pointer ${
-              isReadOnly && "disabled"
-            }`}
-            onClick={() =>
-              isReadOnly || onSilenceClick(alertStore, silenceFormStore, group)
-            }
-          >
-            <FontAwesomeIcon icon={faBellSlash} /> Silence this group
-          </div>
+          <FontAwesomeIcon icon={faShareSquare} /> Copy link to this group
         </div>
-      </FetchPauser>
-    );
-  }
-);
+        <div
+          className={`dropdown-item cursor-pointer ${
+            Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0 &&
+            "disabled"
+          }`}
+          onClick={() => {
+            if (Object.keys(alertStore.data.clustersWithoutReadOnly).length) {
+              onSilenceClick(alertStore, silenceFormStore, group);
+              afterClick();
+            }
+          }}
+        >
+          <FontAwesomeIcon icon={faBellSlash} /> Silence this group
+        </div>
+      </div>
+    </FetchPauser>
+  );
+};
 MenuContent.propTypes = {
   popperPlacement: PropTypes.string,
   popperRef: PropTypes.func,
@@ -152,8 +158,6 @@ const GroupMenu = ({
               alertStore={alertStore}
               silenceFormStore={silenceFormStore}
               afterClick={collapse.hide}
-              handleClickOutside={collapse.hide}
-              outsideClickIgnoreClass={`components-grid-alertgroup-${group.id}`}
             />
           )}
         </Popper>
