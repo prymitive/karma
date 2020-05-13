@@ -7,7 +7,6 @@ import { localStored } from "mobx-stored";
 import hash from "object-hash";
 
 import { Manager, Reference, Popper } from "react-popper";
-import onClickOutside from "react-onclickoutside";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHistory } from "@fortawesome/free-solid-svg-icons/faHistory";
@@ -20,6 +19,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { HistoryLabel } from "Components/Labels/HistoryLabel";
+import { useOnClickOutside } from "Hooks/useOnClickOutside";
 
 // takes a filter object out of alertStore.history.values and creates a new
 // object with only those keys that will be stored in history
@@ -52,7 +52,7 @@ ActionButton.propTypes = {
   afterClick: PropTypes.func.isRequired,
 };
 
-const HistoryMenuContent = ({
+const HistoryMenu = ({
   popperPlacement,
   popperRef,
   popperStyle,
@@ -62,10 +62,17 @@ const HistoryMenuContent = ({
   afterClick,
   onClear,
 }) => {
+  const ref = useRef(null);
+  useOnClickOutside(ref, afterClick);
+
+  useEffect(() => {
+    popperRef(ref.current);
+  }, [popperRef]);
+
   return (
     <div
       className="dropdown-menu d-block shadow components-navbar-historymenu"
-      ref={popperRef}
+      ref={ref}
       style={popperStyle}
       data-placement={popperPlacement}
     >
@@ -130,7 +137,7 @@ const HistoryMenuContent = ({
     </div>
   );
 };
-HistoryMenuContent.propTypes = {
+HistoryMenu.propTypes = {
   popperPlacement: PropTypes.string,
   popperRef: PropTypes.func,
   popperStyle: PropTypes.object,
@@ -140,8 +147,6 @@ HistoryMenuContent.propTypes = {
   afterClick: PropTypes.func.isRequired,
   onClear: PropTypes.func.isRequired,
 };
-
-const HistoryMenu = onClickOutside(HistoryMenuContent);
 
 const History = ({ alertStore, settingsStore }) => {
   // this will be dumped to local storage via mobx-stored
@@ -236,8 +241,6 @@ const History = ({ alertStore, settingsStore }) => {
               alertStore={alertStore}
               settingsStore={settingsStore}
               afterClick={collapse.hide}
-              handleClickOutside={collapse.hide}
-              outsideClickIgnoreClass="components-navbar-history"
             />
           )}
         </Popper>
@@ -250,4 +253,4 @@ History.propTypes = {
   settingsStore: PropTypes.instanceOf(Settings).isRequired,
 };
 
-export { History, HistoryMenu, HistoryMenuContent, ReduceFilter };
+export { History, HistoryMenu, ReduceFilter };

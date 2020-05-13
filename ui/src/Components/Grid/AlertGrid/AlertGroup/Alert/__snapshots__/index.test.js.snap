@@ -62,7 +62,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
       </div>
     </div>
   </div>
-  <span class=\\"components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer components-grid-alert-099c5ca6d1c92f615b13056b935d0c8dee70f18c-0988cb349635341c67d91bfe3454d2b3178c443c\\"
+  <span class=\\"components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer\\"
         data-toggle=\\"dropdown\\"
   >
     <svg aria-hidden=\\"true\\"
@@ -224,7 +224,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
       </div>
     </div>
   </div>
-  <span class=\\"components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer components-grid-alert-099c5ca6d1c92f615b13056b935d0c8dee70f18c-0988cb349635341c67d91bfe3454d2b3178c443c\\"
+  <span class=\\"components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer\\"
         data-toggle=\\"dropdown\\"
   >
     <svg aria-hidden=\\"true\\"

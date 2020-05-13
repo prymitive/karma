@@ -120,7 +120,7 @@ const MountedMenuContent = (group) => {
   return mount(
     <MenuContent
       popperPlacement="top"
-      popperRef={null}
+      popperRef={jest.fn()}
       popperStyle={{}}
       group={group}
       afterClick={MockAfterClick}

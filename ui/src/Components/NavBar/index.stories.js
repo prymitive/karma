@@ -5,7 +5,7 @@ import { storiesOf } from "@storybook/react";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { HistoryMenuContent } from "./FilterInput/History";
+import { HistoryMenu } from "./FilterInput/History";
 import { NavBar } from ".";
 
 import "Styles/Percy.scss";
@@ -91,7 +91,7 @@ storiesOf("NavBar", module).add("NavBar", () => {
         silenceFormStore={silenceFormStore}
         fixedTop={false}
       />
-      <HistoryMenuContent
+      <HistoryMenu
         popperPlacement="top"
         popperRef={() => {}}
         popperStyle={{}}
