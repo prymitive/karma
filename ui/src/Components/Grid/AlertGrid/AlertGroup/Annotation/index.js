@@ -54,12 +54,10 @@ const RenderNonLinkAnnotation = observer(
     return (
       <TooltipWrapper title="Click the icon to hide annotation value">
         <div key={name} className={className}>
-          <FontAwesomeIcon
-            icon={faSearchMinus}
-            className="mr-1 cursor-pointer"
-            onClick={toggle.hide}
-          />
-          <span className="text-muted">{name}: </span>
+          <span onClick={toggle.hide} className="cursor-pointer">
+            <FontAwesomeIcon icon={faSearchMinus} className="mr-1" />
+            <span className="text-muted">{name}: </span>
+          </span>
           <Linkify
             properties={{
               target: "_blank",
