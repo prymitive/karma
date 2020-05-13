@@ -12,7 +12,7 @@
     "@fortawesome/react-fontawesome": "0.1.9",
     "@popperjs/core": "2.4.0",
     "@sentry/browser": "5.15.5",
-    "@types/jest": "25.2.1",
+    "@types/jest": "25.2.2",
     "@types/node": "12.12.31",
     "@types/react": "16.9.35",
     "@types/react-dom": "16.9.8",
