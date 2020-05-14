@@ -150,6 +150,10 @@ jobs:
       name: Generate Changelog
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
+      env:
+        - GO111MODULE=on
+        # GITHUB_TOKEN
+        - secure: "QsPAMhX52+jx8OZXmeZ0eDekHGdRmDbrWp48L4CbaTjgyZX+TSYIqsg6gTVDaHXW6b/AOFFdr8xvInelO2I0M1LV6mmbnzLslxfOxGo87qf9gVZk3VJry+qp2yJAd6s8CiO2GOUYzjOxk8Vd5R76ZpL1or10++tFojvCgYBzmIBFWpeVLyz6iJEgcqPowI/7cicITkEh67vx2DrVjiYptq42+f4fI2oeOf1U7nxd3YQFDtl00VyzacQJ7rVqONPWlagZPdn0w/qWTRkw4ynglVF4FufzCE5L6Bbe7xqbp9wxWhssmNCgC2xwIOu23ODLxSpYFqrYkdu6nLzBsPMxEBcc4O4oqx6IzUc1NMDhXwRmoFY4PQjmC8Rf0Q7oK0HIq+ZsYL0GxztOy0dWSXwoGwQvDLJyuoBtaN2lOKSGhAEeJqqpQaVIPbn3/cORAWXVJjuaFrIsU1Z2lSb60ENIcEHxTpBkbjAfPkk5u5jN4fck8tJMga4argi00fV14gHp4VGpq6o5UvoB+YdEJnPlypUW/8VY+EQhSoW98+b9QXBksL8g8/iezHAjIpwDfMTimSzTy7wd8wV/HR7pqpd9pNlKAhbCWNRa0YGrIoPff1YETRAZsI39lDMvrWjoMJWEDxoR/JAeYXX8V1JyCeX0uiLNisehfCfybc0kDM6Yv6Y="
       script:
         - travis_retry make changelog
 
