@@ -62,17 +62,10 @@ const HistoryMenu = ({
   afterClick,
   onClear,
 }) => {
-  const ref = useRef(null);
-  useOnClickOutside(ref, afterClick);
-
-  useEffect(() => {
-    popperRef(ref.current);
-  }, [popperRef]);
-
   return (
     <div
       className="dropdown-menu d-block shadow components-navbar-historymenu"
-      ref={ref}
+      ref={popperRef}
       style={popperStyle}
       data-placement={popperPlacement}
     >
@@ -201,51 +194,59 @@ const History = ({ alertStore, settingsStore }) => {
     }
   });
 
+  const ref = useRef(null);
+  useOnClickOutside(ref, collapse.hide);
+
   return useObserver(() => (
     // data-filters is there to register filters for observation in mobx
     // it needs to be using full filter object to notice changes to
     // name & value but ignore hits
     // using it this way will force re-render on every change, which is
     // needed to keep track of all filter changes
-    <Manager
-      data-filters={alertStore.filters.values
-        .map((f) => ReduceFilter(f))
-        .join(" ")}
+    <span
+      ref={ref}
+      className="input-group-text border-0 rounded-0 bg-transparent px-0"
     >
-      <Reference>
-        {({ ref }) => (
-          <button
-            ref={ref}
-            onClick={collapse.toggle}
-            className="input-group-text border-0 rounded-0 bg-transparent cursor-pointer components-navbar-history px-2 components-navbar-icon"
-            type="button"
-            data-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="true"
-          >
-            <FontAwesomeIcon icon={faCaretDown} />
-          </button>
-        )}
-      </Reference>
-      <DropdownSlide in={!collapse.isHidden} unmountOnExit>
-        <Popper modifiers={[{ name: "arrow", enabled: false }]}>
-          {({ placement, ref, style }) => (
-            <HistoryMenu
-              popperPlacement={placement}
-              popperRef={ref}
-              popperStyle={style}
-              filters={history.filters}
-              onClear={() => {
-                history.filters = [];
-              }}
-              alertStore={alertStore}
-              settingsStore={settingsStore}
-              afterClick={collapse.hide}
-            />
+      <Manager
+        data-filters={alertStore.filters.values
+          .map((f) => ReduceFilter(f))
+          .join(" ")}
+      >
+        <Reference>
+          {({ ref }) => (
+            <button
+              ref={ref}
+              onClick={collapse.toggle}
+              className="border-0 rounded-0 bg-transparent cursor-pointer components-navbar-history px-2 components-navbar-icon"
+              type="button"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="true"
+            >
+              <FontAwesomeIcon icon={faCaretDown} />
+            </button>
           )}
-        </Popper>
-      </DropdownSlide>
-    </Manager>
+        </Reference>
+        <DropdownSlide in={!collapse.isHidden} unmountOnExit>
+          <Popper modifiers={[{ name: "arrow", enabled: false }]}>
+            {({ placement, ref, style }) => (
+              <HistoryMenu
+                popperPlacement={placement}
+                popperRef={ref}
+                popperStyle={style}
+                filters={history.filters}
+                onClear={() => {
+                  history.filters = [];
+                }}
+                alertStore={alertStore}
+                settingsStore={settingsStore}
+                afterClick={collapse.hide}
+              />
+            )}
+          </Popper>
+        </DropdownSlide>
+      </Manager>
+    </span>
   ));
 };
 History.propTypes = {

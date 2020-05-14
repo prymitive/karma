@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 
 import { useObserver, useLocalStore } from "mobx-react";
@@ -40,13 +40,6 @@ const MenuContent = ({
   alertStore,
   silenceFormStore,
 }) => {
-  const ref = useRef(null);
-  useOnClickOutside(ref, afterClick);
-
-  useEffect(() => {
-    popperRef(ref.current);
-  }, [popperRef]);
-
   let groupFilters = Object.keys(group.labels).map((name) =>
     FormatQuery(name, QueryOperators.Equal, group.labels[name])
   );
@@ -65,7 +58,7 @@ const MenuContent = ({
     <FetchPauser alertStore={alertStore}>
       <div
         className="dropdown-menu d-block shadow"
-        ref={ref}
+        ref={popperRef}
         style={popperStyle}
         data-placement={popperPlacement}
       >
@@ -123,46 +116,51 @@ const GroupMenu = ({
     },
   }));
 
+  const ref = useRef(null);
+  useOnClickOutside(ref, collapse.hide);
+
   return useObserver(() => (
-    <Manager>
-      <Reference>
-        {({ ref }) => (
-          <span
-            ref={ref}
-            onClick={collapse.toggle}
-            className={`${
-              themed ? "text-white" : "text-muted"
-            } cursor-pointer badge pl-0 pr-3 pr-sm-2 components-label mr-0 components-grid-alertgroup-${
-              group.id
-            }`}
-            data-toggle="dropdown"
-          >
-            <FontAwesomeIcon icon={faEllipsisV} />
-          </span>
-        )}
-      </Reference>
-      <DropdownSlide in={!collapse.isHidden} unmountOnExit>
-        <Popper
-          placement="bottom-start"
-          modifiers={[
-            { name: "arrow", enabled: false },
-            { name: "offset", options: { offset: "-5px, 0px" } },
-          ]}
-        >
-          {({ placement, ref, style }) => (
-            <MenuContent
-              popperPlacement={placement}
-              popperRef={ref}
-              popperStyle={style}
-              group={group}
-              alertStore={alertStore}
-              silenceFormStore={silenceFormStore}
-              afterClick={collapse.hide}
-            />
+    <span ref={ref}>
+      <Manager>
+        <Reference>
+          {({ ref }) => (
+            <span
+              ref={ref}
+              onClick={collapse.toggle}
+              className={`${
+                themed ? "text-white" : "text-muted"
+              } cursor-pointer badge pl-0 pr-3 pr-sm-2 components-label mr-0 components-grid-alertgroup-${
+                group.id
+              }`}
+              data-toggle="dropdown"
+            >
+              <FontAwesomeIcon icon={faEllipsisV} />
+            </span>
           )}
-        </Popper>
-      </DropdownSlide>
-    </Manager>
+        </Reference>
+        <DropdownSlide in={!collapse.isHidden} unmountOnExit>
+          <Popper
+            placement="bottom-start"
+            modifiers={[
+              { name: "arrow", enabled: false },
+              { name: "offset", options: { offset: "-5px, 0px" } },
+            ]}
+          >
+            {({ placement, ref, style }) => (
+              <MenuContent
+                popperPlacement={placement}
+                popperRef={ref}
+                popperStyle={style}
+                group={group}
+                alertStore={alertStore}
+                silenceFormStore={silenceFormStore}
+                afterClick={collapse.hide}
+              />
+            )}
+          </Popper>
+        </DropdownSlide>
+      </Manager>
+    </span>
   ));
 };
 GroupMenu.propTypes = {

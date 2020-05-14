@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef } from "react";
 import PropTypes from "prop-types";
 
 import { useObserver, useLocalStore } from "mobx-react";
@@ -40,18 +40,11 @@ const MenuContent = ({
   alertStore,
   silenceFormStore,
 }) => {
-  const ref = useRef(null);
-  useOnClickOutside(ref, afterClick);
-
-  useEffect(() => {
-    popperRef(ref.current);
-  }, [popperRef]);
-
   return (
     <FetchPauser alertStore={alertStore}>
       <div
         className="dropdown-menu d-block shadow"
-        ref={ref}
+        ref={popperRef}
         style={popperStyle}
         data-placement={popperPlacement}
       >
@@ -117,48 +110,53 @@ const AlertMenu = ({
     },
   }));
 
+  const ref = useRef(null);
+  useOnClickOutside(ref, collapse.hide);
+
   return useObserver(() => (
-    <Manager>
-      <Reference>
-        {({ ref }) => (
-          <span
-            className="components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer"
-            ref={ref}
-            onClick={collapse.toggle}
-            data-toggle="dropdown"
-          >
-            <FontAwesomeIcon
-              className="pr-1"
-              style={{ width: "0.8rem" }}
-              icon={faCaretDown}
-            />
-            <Moment fromNow>{alert.startsAt}</Moment>
-          </span>
-        )}
-      </Reference>
-      <DropdownSlide in={!collapse.value} unmountOnExit>
-        <Popper
-          placement="bottom-start"
-          modifiers={[
-            { name: "arrow", enabled: false },
-            { name: "offset", options: { offset: "-5px, 0px" } },
-          ]}
-        >
-          {({ placement, ref, style }) => (
-            <MenuContent
-              popperPlacement={placement}
-              popperRef={ref}
-              popperStyle={style}
-              group={group}
-              alert={alert}
-              alertStore={alertStore}
-              silenceFormStore={silenceFormStore}
-              afterClick={collapse.hide}
-            />
+    <span ref={ref}>
+      <Manager>
+        <Reference>
+          {({ ref }) => (
+            <span
+              className="components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer"
+              ref={ref}
+              onClick={collapse.toggle}
+              data-toggle="dropdown"
+            >
+              <FontAwesomeIcon
+                className="pr-1"
+                style={{ width: "0.8rem" }}
+                icon={faCaretDown}
+              />
+              <Moment fromNow>{alert.startsAt}</Moment>
+            </span>
           )}
-        </Popper>
-      </DropdownSlide>
-    </Manager>
+        </Reference>
+        <DropdownSlide in={!collapse.value} unmountOnExit>
+          <Popper
+            placement="bottom-start"
+            modifiers={[
+              { name: "arrow", enabled: false },
+              { name: "offset", options: { offset: "-5px, 0px" } },
+            ]}
+          >
+            {({ placement, ref, style }) => (
+              <MenuContent
+                popperPlacement={placement}
+                popperRef={ref}
+                popperStyle={style}
+                group={group}
+                alert={alert}
+                alertStore={alertStore}
+                silenceFormStore={silenceFormStore}
+                afterClick={collapse.hide}
+              />
+            )}
+          </Popper>
+        </DropdownSlide>
+      </Manager>
+    </span>
   ));
 };
 AlertMenu.propTypes = {
