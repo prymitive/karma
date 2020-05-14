@@ -321,6 +321,7 @@ type AlertsResponse struct {
 	Counters       LabelNameStatsList            `json:"counters"`
 	Settings       Settings                      `json:"settings"`
 	Authentication AuthenticationInfo            `json:"authentication"`
+	Receivers      []string                      `json:"receivers"`
 }
 
 // Autocomplete is the structure of autocomplete object for filter hints

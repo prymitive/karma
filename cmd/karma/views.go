@@ -223,12 +223,17 @@ func alerts(c *gin.Context) {
 		}
 	}
 
+	allReceivers := map[string]bool{}
+
 	var matches int
 	for _, ag := range dedupedAlerts {
 		perGridAlertGroup := map[string]*models.AlertGroup{}
 
 		for _, alert := range ag.Alerts {
 			alert := alert // scopelint pin
+
+			allReceivers[alert.Receiver] = true
+
 			results := []bool{}
 			if validFilters {
 				for _, filter := range matchFilters {
@@ -370,11 +375,19 @@ func alerts(c *gin.Context) {
 	v, _ := c.GetQuery("gridSortReverse")
 	gridSortReverse := v == "1"
 
+	receivers := []string{}
+	for k := range allReceivers {
+		k := k
+		receivers = append(receivers, k)
+	}
+	sort.Strings(receivers)
+
 	resp.Grids = sortGrids(c, gridLabel, grids, gridSortReverse)
 	resp.Silences = silences
 	resp.Colors = colors
 	resp.Counters = countersToLabelStats(counters)
 	resp.Filters = populateAPIFilters(matchFilters)
+	resp.Receivers = receivers
 
 	data, err := json.Marshal(resp)
 	if err != nil {

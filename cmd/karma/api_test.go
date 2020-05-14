@@ -1082,6 +1082,11 @@ func TestVerifyAllGroups(t *testing.T) {
 		if !reflect.DeepEqual(ur.Filters, filtersExpected) {
 			t.Errorf("[%s] Filters mismatch, expected %v but got %v", version, filtersExpected, ur.Filters)
 		}
+
+		expectedReceivers := []string{"by-cluster-service", "by-name"}
+		if diff := cmp.Diff(expectedReceivers, ur.Receivers); diff != "" {
+			t.Errorf("Incorrect receivers list (-want +got):\n%s", diff)
+		}
 	}
 }
 
