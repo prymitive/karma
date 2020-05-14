@@ -4,11 +4,8 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
 "
 <div class=\\"card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1\\">
   <div class=\\"mb-1\\">
-    <div class
-         style=\\"display: inline-block; max-width: 100%;\\"
-         data-tooltipped
-         aria-describedby=\\"tippy-tooltip-1\\"
-         data-original-title=\\"Click the icon to hide annotation value\\"
+    <div style=\\"display: inline-block; max-width: 100%;\\"
+         class=\\" tooltip-trigger\\"
     >
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
         <span class=\\"cursor-pointer\\">
@@ -37,11 +34,8 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
         </span>
       </div>
     </div>
-    <div class
-         style=\\"display: inline-block; max-width: 100%;\\"
-         data-tooltipped
-         aria-describedby=\\"tippy-tooltip-2\\"
-         data-original-title=\\"Click to show annotation value\\"
+    <div style=\\"display: inline-block; max-width: 100%;\\"
+         class=\\" tooltip-trigger\\"
     >
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
         <svg aria-hidden=\\"true\\"
@@ -62,11 +56,8 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
       </div>
     </div>
   </div>
-  <div class
-       style=\\"display: inline-block; max-width: 100%;\\"
-       data-tooltipped
-       aria-describedby=\\"tippy-tooltip-3\\"
-       data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
+  <div style=\\"display: inline-block; max-width: 100%;\\"
+       class=\\" tooltip-trigger\\"
   >
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
@@ -77,11 +68,8 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
       </span>
     </span>
   </div>
-  <div class
-       style=\\"display: inline-block; max-width: 100%;\\"
-       data-tooltipped
-       aria-describedby=\\"tippy-tooltip-4\\"
-       data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
+  <div style=\\"display: inline-block; max-width: 100%;\\"
+       class=\\" tooltip-trigger\\"
   >
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
@@ -92,11 +80,8 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
       </span>
     </span>
   </div>
-  <div class
-       style=\\"display: inline-block; max-width: 100%;\\"
-       data-tooltipped
-       aria-describedby=\\"tippy-tooltip-5\\"
-       data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
+  <div style=\\"display: inline-block; max-width: 100%;\\"
+       class=\\" tooltip-trigger\\"
   >
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
@@ -107,11 +92,8 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
       </span>
     </span>
   </div>
-  <div class
-       style=\\"display: inline-block; max-width: 100%;\\"
-       data-tooltipped
-       aria-describedby=\\"tippy-tooltip-6\\"
-       data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
+  <div style=\\"display: inline-block; max-width: 100%;\\"
+       class=\\" tooltip-trigger\\"
   >
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
@@ -151,11 +133,8 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
 "
 <div class=\\"card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1\\">
   <div class=\\"mb-1\\">
-    <div class
-         style=\\"display: inline-block; max-width: 100%;\\"
-         data-tooltipped
-         aria-describedby=\\"tippy-tooltip-25\\"
-         data-original-title=\\"Click the icon to hide annotation value\\"
+    <div style=\\"display: inline-block; max-width: 100%;\\"
+         class=\\" tooltip-trigger\\"
     >
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
         <span class=\\"cursor-pointer\\">
@@ -184,11 +163,8 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
         </span>
       </div>
     </div>
-    <div class
-         style=\\"display: inline-block; max-width: 100%;\\"
-         data-tooltipped
-         aria-describedby=\\"tippy-tooltip-26\\"
-         data-original-title=\\"Click to show annotation value\\"
+    <div style=\\"display: inline-block; max-width: 100%;\\"
+         class=\\" tooltip-trigger\\"
     >
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
         <svg aria-hidden=\\"true\\"
@@ -209,11 +185,8 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
       </div>
     </div>
   </div>
-  <div class
-       style=\\"display: inline-block; max-width: 100%;\\"
-       data-tooltipped
-       aria-describedby=\\"tippy-tooltip-27\\"
-       data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
+  <div style=\\"display: inline-block; max-width: 100%;\\"
+       class=\\" tooltip-trigger\\"
   >
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
@@ -224,11 +197,8 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
       </span>
     </span>
   </div>
-  <div class
-       style=\\"display: inline-block; max-width: 100%;\\"
-       data-tooltipped
-       aria-describedby=\\"tippy-tooltip-28\\"
-       data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
+  <div style=\\"display: inline-block; max-width: 100%;\\"
+       class=\\" tooltip-trigger\\"
   >
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
@@ -239,11 +209,8 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
       </span>
     </span>
   </div>
-  <div class
-       style=\\"display: inline-block; max-width: 100%;\\"
-       data-tooltipped
-       aria-describedby=\\"tippy-tooltip-29\\"
-       data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
+  <div style=\\"display: inline-block; max-width: 100%;\\"
+       class=\\" tooltip-trigger\\"
   >
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
@@ -254,11 +221,8 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
       </span>
     </span>
   </div>
-  <div class
-       style=\\"display: inline-block; max-width: 100%;\\"
-       data-tooltipped
-       aria-describedby=\\"tippy-tooltip-30\\"
-       data-original-title=\\"Click to only show alerts with this label or Alt+Click to hide them\\"
+  <div style=\\"display: inline-block; max-width: 100%;\\"
+       class=\\" tooltip-trigger\\"
   >
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">

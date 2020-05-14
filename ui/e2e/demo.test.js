@@ -47,13 +47,9 @@ describe("Demo", () => {
   });
 
   it("opens silence modal on click", async () => {
-    await page.waitForSelector(
-      '[data-original-title="New silence"] > span.nav-link.cursor-pointer'
-    );
+    await page.waitForSelector("#components-new-silence");
 
-    await expect(page).toClick(
-      '[data-original-title="New silence"] > span.nav-link.cursor-pointer'
-    );
+    await expect(page).toClick("#components-new-silence");
 
     await page.waitForSelector("div.modal-content");
     await page.waitForSelector(".modal-body > form");
@@ -62,13 +58,9 @@ describe("Demo", () => {
   });
 
   it("opens settings modal on click", async () => {
-    await page.waitForSelector(
-      '[data-original-title="Settings"] > span.nav-link.cursor-pointer'
-    );
+    await page.waitForSelector("#components-settings");
 
-    await expect(page).toClick(
-      '[data-original-title="Settings"] > span.nav-link.cursor-pointer'
-    );
+    await expect(page).toClick("#components-settings");
 
     await page.waitForSelector("div.modal-content");
     await page.waitForSelector(".modal-body > form.accordion");

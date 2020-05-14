@@ -37,11 +37,8 @@ exports[`<SilenceComment /> Matches snapshot when collapsed 1`] = `
   </div>
   <div class=\\"flex-shrink-0 flex-grow-0\\">
     <div class=\\"d-flex flex-column flex-sm-row justify-content-between align-items-center\\">
-      <div class
-           style=\\"display: inline-block; max-width: 100%;\\"
-           data-tooltipped
-           aria-describedby=\\"tippy-tooltip-1\\"
-           data-original-title=\\"Click to only show @silence_id=04d37636-2350-4878-b382-e0b50353230f alerts or Alt+Click to hide them\\"
+      <div style=\\"display: inline-block; max-width: 100%;\\"
+           class=\\" tooltip-trigger\\"
       >
         <span class=\\" badge-primary badge-pill components-label-with-hover components-label badge\\"
               style=\\"opacity: 1;\\"
@@ -113,11 +110,8 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
   </div>
   <div class=\\"flex-shrink-0 flex-grow-0\\">
     <div class=\\"d-flex flex-column flex-sm-row justify-content-between align-items-center\\">
-      <div class
-           style=\\"display: inline-block; max-width: 100%;\\"
-           data-tooltipped
-           aria-describedby=\\"tippy-tooltip-3\\"
-           data-original-title=\\"Click to only show @silence_id=04d37636-2350-4878-b382-e0b50353230f alerts or Alt+Click to hide them\\"
+      <div style=\\"display: inline-block; max-width: 100%;\\"
+           class=\\" tooltip-trigger\\"
       >
         <span class=\\" badge-primary badge-pill components-label-with-hover components-label badge\\"
               style=\\"opacity: 1;\\"
@@ -177,11 +171,8 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
   </div>
   <div class=\\"flex-shrink-0 flex-grow-0\\">
     <div class=\\"d-flex flex-column flex-sm-row justify-content-between align-items-center\\">
-      <div class
-           style=\\"display: inline-block; max-width: 100%;\\"
-           data-tooltipped
-           aria-describedby=\\"tippy-tooltip-4\\"
-           data-original-title=\\"Click to only show @silence_id=04d37636-2350-4878-b382-e0b50353230f alerts or Alt+Click to hide them\\"
+      <div style=\\"display: inline-block; max-width: 100%;\\"
+           class=\\" tooltip-trigger\\"
       >
         <span class=\\" badge-primary badge-pill components-label-with-hover components-label badge\\"
               style=\\"opacity: 1;\\"
@@ -241,11 +232,8 @@ exports[`<SilenceComment /> Matches snapshot when expanded 1`] = `
   </div>
   <div class=\\"flex-shrink-0 flex-grow-0\\">
     <div class=\\"d-flex flex-column flex-sm-row justify-content-between align-items-center\\">
-      <div class
-           style=\\"display: inline-block; max-width: 100%;\\"
-           data-tooltipped
-           aria-describedby=\\"tippy-tooltip-2\\"
-           data-original-title=\\"Click to only show @silence_id=04d37636-2350-4878-b382-e0b50353230f alerts or Alt+Click to hide them\\"
+      <div style=\\"display: inline-block; max-width: 100%;\\"
+           class=\\" tooltip-trigger\\"
       >
         <span class=\\" badge-primary badge-pill components-label-with-hover components-label badge\\"
               style=\\"opacity: 1;\\"

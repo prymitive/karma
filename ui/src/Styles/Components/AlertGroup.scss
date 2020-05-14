@@ -25,9 +25,9 @@
 }
 
 .components-label:not(:last-child),
-div[data-tooltipped]:not(:last-child) > .components-label,
+div.tooltip-trigger:not(:last-child) > .components-label,
 .components-grid-annotation:not(:last-child),
-div[data-tooltipped]:not(:last-child) > .components-grid-annotation {
+div.tooltip-trigger:not(:last-child) > .components-grid-annotation {
   margin-right: 0.25rem;
 }
 

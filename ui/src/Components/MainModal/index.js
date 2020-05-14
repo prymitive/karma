@@ -38,7 +38,11 @@ const MainModal = observer(({ alertStore, settingsStore }) => {
         }`}
       >
         <TooltipWrapper title="Settings">
-          <span className="nav-link cursor-pointer" onClick={toggle.toggle}>
+          <span
+            id="components-settings"
+            className="nav-link cursor-pointer"
+            onClick={toggle.toggle}
+          >
             <FontAwesomeIcon icon={faCog} />
           </span>
         </TooltipWrapper>
