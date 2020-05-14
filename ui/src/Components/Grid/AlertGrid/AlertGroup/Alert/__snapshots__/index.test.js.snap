@@ -56,27 +56,29 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
       </div>
     </div>
   </div>
-  <span class=\\"components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer\\"
-        data-toggle=\\"dropdown\\"
-  >
-    <svg aria-hidden=\\"true\\"
-         focusable=\\"false\\"
-         data-prefix=\\"fas\\"
-         data-icon=\\"caret-down\\"
-         class=\\"svg-inline--fa fa-caret-down fa-w-10 pr-1\\"
-         role=\\"img\\"
-         xmlns=\\"http://www.w3.org/2000/svg\\"
-         viewbox=\\"0 0 320 512\\"
-         style=\\"width: 0.8rem;\\"
+  <span>
+    <span class=\\"components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer\\"
+          data-toggle=\\"dropdown\\"
     >
-      <path fill=\\"currentColor\\"
-            d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
+      <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
+           data-prefix=\\"fas\\"
+           data-icon=\\"caret-down\\"
+           class=\\"svg-inline--fa fa-caret-down fa-w-10 pr-1\\"
+           role=\\"img\\"
+           xmlns=\\"http://www.w3.org/2000/svg\\"
+           viewbox=\\"0 0 320 512\\"
+           style=\\"width: 0.8rem;\\"
       >
-      </path>
-    </svg>
-    <time datetime=\\"1534268200017\\">
-      a day ago
-    </time>
+        <path fill=\\"currentColor\\"
+              d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
+        >
+        </path>
+      </svg>
+      <time datetime=\\"1534268200017\\">
+        a day ago
+      </time>
+    </span>
   </span>
   <div style=\\"display: inline-block; max-width: 100%;\\"
        class=\\" tooltip-trigger\\"
@@ -203,27 +205,29 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
       </div>
     </div>
   </div>
-  <span class=\\"components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer\\"
-        data-toggle=\\"dropdown\\"
-  >
-    <svg aria-hidden=\\"true\\"
-         focusable=\\"false\\"
-         data-prefix=\\"fas\\"
-         data-icon=\\"caret-down\\"
-         class=\\"svg-inline--fa fa-caret-down fa-w-10 pr-1\\"
-         role=\\"img\\"
-         xmlns=\\"http://www.w3.org/2000/svg\\"
-         viewbox=\\"0 0 320 512\\"
-         style=\\"width: 0.8rem;\\"
+  <span>
+    <span class=\\"components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer\\"
+          data-toggle=\\"dropdown\\"
     >
-      <path fill=\\"currentColor\\"
-            d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
+      <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
+           data-prefix=\\"fas\\"
+           data-icon=\\"caret-down\\"
+           class=\\"svg-inline--fa fa-caret-down fa-w-10 pr-1\\"
+           role=\\"img\\"
+           xmlns=\\"http://www.w3.org/2000/svg\\"
+           viewbox=\\"0 0 320 512\\"
+           style=\\"width: 0.8rem;\\"
       >
-      </path>
-    </svg>
-    <time datetime=\\"1534268200017\\">
-      a day ago
-    </time>
+        <path fill=\\"currentColor\\"
+              d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
+        >
+        </path>
+      </svg>
+      <time datetime=\\"1534268200017\\">
+        a day ago
+      </time>
+    </span>
   </span>
   <div style=\\"display: inline-block; max-width: 100%;\\"
        class=\\" tooltip-trigger\\"
