@@ -17,6 +17,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { IsMobile } from "Common/Device";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { HistoryLabel } from "Components/Labels/HistoryLabel";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
@@ -62,6 +63,8 @@ const HistoryMenu = ({
   afterClick,
   onClear,
 }) => {
+  const maxItems = IsMobile() ? 4 : 8;
+
   return (
     <div
       className="dropdown-menu d-block shadow components-navbar-historymenu"
@@ -76,7 +79,7 @@ const HistoryMenu = ({
       {filters.length === 0 ? (
         <h6 className="dropdown-header text-muted text-center">Empty</h6>
       ) : (
-        filters.map((historyFilters) => (
+        filters.slice(0, maxItems).map((historyFilters) => (
           <button
             className="dropdown-item cursor-pointer px-3"
             key={hash(historyFilters)}
