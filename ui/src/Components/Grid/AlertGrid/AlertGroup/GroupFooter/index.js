@@ -50,11 +50,13 @@ const GroupFooter = ({
           alertStore={alertStore}
         />
       ))}
-      <FilteringLabel
-        name={StaticLabels.Receiver}
-        value={group.receiver}
-        alertStore={alertStore}
-      />
+      {alertStore.data.receivers.length > 1 ? (
+        <FilteringLabel
+          name={StaticLabels.Receiver}
+          value={group.receiver}
+          alertStore={alertStore}
+        />
+      ) : null}
       {group.shared.annotations
         .filter((a) => a.isLink === true)
         .map((a) => (

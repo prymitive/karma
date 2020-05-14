@@ -49,6 +49,8 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
   group = MockGroup();
   advanceTo(moment.utc([2000, 0, 1, 15, 0, 0]));
+
+  alertStore.data.receivers = ["by-cluster-service", "by-name"];
 });
 
 afterEach(() => {
@@ -135,5 +137,17 @@ describe("<GroupFooter />", () => {
 
     const tree = MountedGroupFooter().find("GroupFooter");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
+  it("renders @receiver label when alertStore.data.receivers.length > 1", () => {
+    alertStore.data.receivers = ["foo", "bar"];
+    const tree = MountedGroupFooter();
+    expect(toDiffableHtml(tree.html())).toMatch(/@receiver:/);
+  });
+
+  it("doesn't render @receiver label when alertStore.data.receivers.length == 0", () => {
+    alertStore.data.receivers = [];
+    const tree = MountedGroupFooter();
+    expect(toDiffableHtml(tree.html())).not.toMatch(/@receiver:/);
   });
 });

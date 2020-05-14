@@ -160,6 +160,7 @@ class AlertStore {
       grids: [],
       silences: {},
       upstreams: { instances: [], clusters: {} },
+      receivers: [],
       getAlertmanagerByName(name) {
         return this.upstreams.instances.find((am) => am.name === name);
       },
@@ -409,6 +410,7 @@ class AlertStore {
       "grids",
       "silences",
       "upstreams",
+      "receivers",
     ]) {
       if (!equal(this.data[key], result[key])) {
         updates[key] = result[key];
