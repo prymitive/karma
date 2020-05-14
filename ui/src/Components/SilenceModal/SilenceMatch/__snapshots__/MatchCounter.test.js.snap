@@ -2,11 +2,8 @@
 
 exports[`<MatchCounter /> matches snapshot 1`] = `
 "
-<div class
-     style=\\"display: inline-block; max-width: 100%;\\"
-     data-tooltipped
-     aria-describedby=\\"tippy-tooltip-1\\"
-     data-original-title=\\"Number of alerts matching this label\\"
+<div style=\\"display: inline-block; max-width: 100%;\\"
+     class=\\" tooltip-trigger\\"
 >
   <span class=\\"badge badge-light badge-pill d-block\\"
         style=\\"font-size: 85%; line-height: 1rem;\\"

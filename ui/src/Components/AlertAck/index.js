@@ -183,10 +183,9 @@ const AlertAck = ({ alertStore, silenceFormStore, group }) => {
   return useObserver(() =>
     alertStore.settings.values.alertAcknowledgement.enabled === false ? null : (
       <TooltipWrapper
-        html={submitState.isFailed ? submitState.errorMessages[0] : null}
         title={
           submitState.isFailed
-            ? null
+            ? submitState.errorMessages[0]
             : "Acknowledge this alert with a short lived silence"
         }
       >

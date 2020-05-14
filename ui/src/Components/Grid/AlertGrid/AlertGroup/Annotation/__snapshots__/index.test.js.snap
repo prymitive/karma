@@ -28,9 +28,8 @@ exports[`<RenderLinkAnnotation /> matches snapshot 1`] = `
 
 exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=false 1`] = `
 "
-<div title=\\"Click to show annotation value\\"
-     class
-     style=\\"display:inline-block;max-width:100%\\"
+<div style=\\"display:inline-block;max-width:100%\\"
+     class=\\" tooltip-trigger\\"
 >
   <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
     <svg aria-hidden=\\"true\\"
@@ -55,9 +54,8 @@ exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=false 1`] = `
 
 exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=true 1`] = `
 "
-<div title=\\"Click the icon to hide annotation value\\"
-     class
-     style=\\"display:inline-block;max-width:100%\\"
+<div style=\\"display:inline-block;max-width:100%\\"
+     class=\\" tooltip-trigger\\"
 >
   <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
     <span class=\\"cursor-pointer\\">

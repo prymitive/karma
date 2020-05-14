@@ -37,6 +37,7 @@ const SilenceModal = observer(
         >
           <TooltipWrapper title="New silence">
             <span
+              id="components-new-silence"
               className="nav-link cursor-pointer"
               onClick={silenceFormStore.toggle.toggle}
             >
