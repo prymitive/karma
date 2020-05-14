@@ -17,6 +17,8 @@ beforeAll(() => {
 beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings();
+
+  global.window.innerWidth = 1024;
 });
 
 afterEach(() => {
@@ -164,7 +166,9 @@ describe("<HistoryMenu />", () => {
     await act(() => promise);
   });
 
-  it("renders only up to maxSize last filter sets in history", async () => {
+  it("renders only up to 8 last filter sets in history on desktop", async () => {
+    global.window.innerWidth = 1024;
+
     const promise = Promise.resolve();
     const tree = MountedHistory();
     PopulateHistory(tree, 16);
@@ -179,6 +183,32 @@ describe("<HistoryMenu />", () => {
     expect(labelsLast).toHaveLength(2);
     expect(labelsLast.at(0).html()).toMatch(/>foo=bar9</);
     expect(labelsLast.at(1).html()).toMatch(/>baz=~bar9</);
+
+    // most recently pushed label should be rendered fist
+    const labelsFist = labelSets.first().find("HistoryLabel");
+    expect(labelsFist).toHaveLength(2);
+    expect(labelsFist.at(0).html()).toMatch(/>foo=bar16</);
+    expect(labelsFist.at(1).html()).toMatch(/>baz=~bar16</);
+    await act(() => promise);
+  });
+
+  it("renders only up to 4 last filter sets in history on mobile", async () => {
+    global.window.innerWidth = 500;
+
+    const promise = Promise.resolve();
+    const tree = MountedHistory();
+    PopulateHistory(tree, 16);
+    tree.find("button.cursor-pointer").simulate("click");
+    expect(tree.find("button.dropdown-item")).toHaveLength(4);
+
+    const labelSets = tree.find(".components-navbar-historymenu-labels");
+    expect(labelSets).toHaveLength(4);
+
+    // oldest pushed label should be rendered last
+    const labelsLast = labelSets.last().find("HistoryLabel");
+    expect(labelsLast).toHaveLength(2);
+    expect(labelsLast.at(0).html()).toMatch(/>foo=bar13</);
+    expect(labelsLast.at(1).html()).toMatch(/>baz=~bar13</);
 
     // most recently pushed label should be rendered fist
     const labelsFist = labelSets.first().find("HistoryLabel");

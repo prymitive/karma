@@ -52,7 +52,6 @@ storiesOf("NavBar", module).add("NavBar", () => {
 
   const history = [
     [NewFilter("alertname=Foo", "alertname", "=", "foo", true, true, 15)],
-    [NewFilter("cluster=staging", "cluster", "=", "staging", true, true, 15)],
     [
       NewFilter("cluster=staging", "cluster", "=", "staging", true, true, 15),
       NewFilter("region=AF", "region", "=", "AF", true, true, 180),
@@ -81,6 +80,20 @@ storiesOf("NavBar", module).add("NavBar", () => {
         15
       ),
     ],
+    [NewFilter("cluster=staging", "cluster", "=", "staging", true, true, 15)],
+    [
+      NewFilter(
+        "alertname=VeryVeryVeryVeryVeryLoooooooooooooooongAlertnameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "alertname",
+        "=",
+        "VeryVeryVeryVeryVeryLoooooooooooooooongAlertnameeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        true,
+        true,
+        15
+      ),
+      NewFilter("@state=active", "@state", "=", "active", true, true, 1),
+    ],
+    [NewFilter("cluster=staging", "cluster", "=", "staging", true, true, 15)],
   ];
 
   return (
