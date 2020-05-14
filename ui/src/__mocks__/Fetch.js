@@ -12,6 +12,7 @@ const EmptyAPIResponse = () => ({
   },
   silences: { default: {} },
   grids: [],
+  receivers: ["by-cluster-service", "by-name"],
   totalAlerts: 0,
   colors: {},
   filters: [

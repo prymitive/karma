@@ -1,6 +1,6 @@
 import moment from "moment";
 
-import { MockAlert, MockAlertGroup, MockSilence } from "./Alerts.js";
+import { MockAlert, MockAlertGroup, MockSilence } from "./Alerts";
 
 const MockGroup = (groupName, alertCount, active, suppressed, unprocessed) => {
   let alerts = [];
@@ -64,6 +64,7 @@ const MockGroup = (groupName, alertCount, active, suppressed, unprocessed) => {
 
 const MockGrid = (alertStore) => {
   alertStore.settings.values.alertAcknowledgement.enabled = true;
+  alertStore.data.receivers = ["by-cluster-service", "by-name"];
 
   const silence = MockSilence();
   silence.startsAt = "2018-08-14T12:00:00Z";

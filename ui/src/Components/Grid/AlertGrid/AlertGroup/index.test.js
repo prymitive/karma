@@ -42,6 +42,8 @@ beforeEach(() => {
   settingsStore = new Settings();
   silenceFormStore = new SilenceFormStore();
   group = MockGroup("fakeGroup");
+
+  alertStore.data.receivers = ["by-cluster-service", "by-name"];
 });
 
 afterEach(() => {
@@ -207,6 +209,20 @@ describe("<AlertGroup />", () => {
       settingsStore.alertGroupConfig.options.expanded.value,
       false
     );
+  });
+
+  it("renders @receiver label when alertStore.data.receivers.length > 1", () => {
+    alertStore.data.receivers = ["foo", "bar"];
+    MockAlerts(10);
+    const tree = MountedAlertGroup(jest.fn(), false);
+    expect(tree.html()).toMatch(/@receiver:/);
+  });
+
+  it("doesn't render @receiver label when alertStore.data.receivers.length == 0", () => {
+    alertStore.data.receivers = [];
+    MockAlerts(10);
+    const tree = MountedAlertGroup(jest.fn(), false);
+    expect(tree.html()).not.toMatch(/@receiver:/);
   });
 });
 

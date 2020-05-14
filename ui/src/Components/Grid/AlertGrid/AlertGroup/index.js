@@ -266,7 +266,10 @@ const AlertGroup = observer(
                           showAlertmanagers={
                             showAlertmanagers && !showAlertmanagersInFooter
                           }
-                          showReceiver={group.alerts.length === 1}
+                          showReceiver={
+                            alertStore.data.receivers.length > 1 &&
+                            group.alerts.length === 1
+                          }
                           afterUpdate={afterUpdate}
                           alertStore={alertStore}
                           silenceFormStore={silenceFormStore}
