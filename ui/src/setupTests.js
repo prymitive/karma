@@ -1,3 +1,4 @@
+import React from "react";
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
 
@@ -30,3 +31,6 @@ for (const level of ["error", "warn", "info", "log", "trace"]) {
 
 FetchRetryConfig.minTimeout = 2;
 FetchRetryConfig.maxTimeout = 10;
+
+// usePopper uses useLayoutEffect but that fails in enzyme
+React.useLayoutEffect = React.useEffect;

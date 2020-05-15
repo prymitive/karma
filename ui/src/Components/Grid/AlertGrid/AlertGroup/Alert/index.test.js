@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
@@ -270,7 +271,7 @@ describe("<Alert />", () => {
     expect(tree.find("time").text()).toBe("a few seconds ago");
 
     advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 37, 41)));
-    jest.advanceTimersByTime(61 * 1000);
+    act(() => jest.advanceTimersByTime(61 * 1000));
     expect(tree.find("time").text()).toBe("a minute ago");
 
     advanceTo(new Date(Date.UTC(2018, 7, 14, 18, 36, 41)));

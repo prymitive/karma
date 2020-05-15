@@ -78,12 +78,12 @@ describe("<SilenceModal />", () => {
     const toggle = tree.find(".nav-link");
 
     toggle.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => jest.runOnlyPendingTimers());
     tree.update();
     expect(tree.find("SilenceModalContent")).toHaveLength(1);
 
     toggle.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => jest.runOnlyPendingTimers());
     tree.update();
     expect(tree.find("SilenceModalContent")).toHaveLength(0);
   });
@@ -93,12 +93,12 @@ describe("<SilenceModal />", () => {
     const toggle = tree.find(".nav-link");
 
     toggle.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => jest.runOnlyPendingTimers());
     tree.update();
     expect(tree.find("SilenceModalContent")).toHaveLength(1);
 
     silenceFormStore.toggle.hide();
-    jest.runOnlyPendingTimers();
+    act(() => jest.runOnlyPendingTimers());
     tree.update();
     expect(tree.find("SilenceModalContent")).toHaveLength(0);
   });
@@ -114,7 +114,7 @@ describe("<SilenceModal />", () => {
     // click to hide
     toggle.simulate("click");
     // wait for animation to finish
-    jest.runOnlyPendingTimers();
+    act(() => jest.runOnlyPendingTimers());
     tree.update();
     // form should be reset
     expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.UserInput);
@@ -154,7 +154,7 @@ describe("<SilenceModal />", () => {
     silenceFormStore.toggle.visible = true;
     MountedSilenceModal();
 
-    expect(callbacks).toHaveLength(2);
+    expect(callbacks).toHaveLength(4);
     act(() => {
       callbacks.forEach((f) => f());
     });

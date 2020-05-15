@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
@@ -47,12 +48,12 @@ describe("<OverviewModal />", () => {
     const toggle = tree.find("div.navbar-brand");
 
     toggle.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => jest.runOnlyPendingTimers());
     tree.update();
     expect(tree.find(".modal-title").text()).toBe("Overview");
 
     toggle.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => jest.runOnlyPendingTimers());
     tree.update();
     expect(tree.find(".modal-title")).toHaveLength(0);
   });
@@ -65,7 +66,7 @@ describe("<OverviewModal />", () => {
     expect(tree.find(".modal-title").text()).toBe("Overview");
 
     tree.find("button.close").simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => jest.runOnlyPendingTimers());
     tree.update();
     expect(tree.find("OverviewModalContent")).toHaveLength(0);
   });
