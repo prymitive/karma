@@ -62,6 +62,18 @@ jobs:
       after_success:
         - travis_retry curl -s --connect-timeout 30 --fail https://codecov.io/bash | bash -s -- -F ui
 
+    - stage: Test
+      name: Webpack bundle size diff
+      if: (repo = prymitive/karma AND type = pull_request)
+      <<: *DEFAULTS_JS
+      env:
+        # GITHUB_TOKEN for CI Bundle size diff comments and gist uploads
+        - secure: "Or5fiXZfgIsXvzoOdEprRwJ0uwUjMvxGHE3LG+h3OsIBO6WA8vgOqVOjqVHV2dgC9cSjm5A7MX52S7cDqfkQDkgnVHpVxRwDC9n9O4vnaFdCZ4nC+d18z8dikbiwgdeWQ+Wi6RhZENye1Lu5sBaAJ09wYgx9lNdEVpRaTUvUw6grSlESJZSXoxfxWWpmTyx+yPH4sxuWjZ7gCspDX9s9k4fjpY4LkhQQwLlk8wPc2hfDg48e+K1OR6sYB8uRS33Xc4fQtzElzazmaZ0fn77h5ysDgC1g/ko+E2j8HHMbZvFpzYpm1bCpIv1G/0A2ItH7gT3HsuwkDvfH/it56JTCbBWJJ+hTDeswCQNu0h797QM6jv0o5wgKpHR1t+AeM9vDe4Ds0pAXouJz0LJewNOdNvi5O1BZA9OooKc34hwTJs/zj5NwiZuOyPSMhDBGa++Vhsr9K3rPD9+97M2hac6NO6TBVWZjvqJilmkjJs+bKrl//ClBvdhDGkJNDbB+2emdD1/wzpPVJPp3IRhzeEF89IVE58qE+OQnIwtbEZ2W1ct6Ep7ZJdrXWc/VBdJB1ELfUtNmkvWFZD5IJfnb/Z5MS6iespXlV5alPQ7eZ2jNl3tn7uDaCStuQN1tO2wthNnsSU/OkfFRch/Ks3gYC5+v7n8aJMkTYFmHr4Y/xlXBsrA="
+      script:
+        - ./scripts/gist-get.py 6a1f1aa15a7a308dac7ea2726021836c ui
+        - make -C ui build/stats.json
+        - ./scripts/cra-bundle-stats-diff.py ui/stats.json ui/build/stats.json
+
     - stage: Lint
       name: Lint git commit
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
@@ -272,6 +284,17 @@ jobs:
         # bundled heroku cli doesn't know anything about containers, update it
         - travis_retry curl -s --connect-timeout 30 --fail https://cli-assets.heroku.com/install.sh | sh
         - travis_retry /usr/local/bin/heroku container:release web --app karma-demo
+
+    - stage: Build and Deploy
+      name: Webpack bundle size snapshot
+      if: repo = prymitive/karma AND type = push AND branch = master
+      <<: *DEFAULTS_JS
+      env:
+        # GITHUB_TOKEN for CI Bundle size diff comments and gist uploads
+        - secure: "Or5fiXZfgIsXvzoOdEprRwJ0uwUjMvxGHE3LG+h3OsIBO6WA8vgOqVOjqVHV2dgC9cSjm5A7MX52S7cDqfkQDkgnVHpVxRwDC9n9O4vnaFdCZ4nC+d18z8dikbiwgdeWQ+Wi6RhZENye1Lu5sBaAJ09wYgx9lNdEVpRaTUvUw6grSlESJZSXoxfxWWpmTyx+yPH4sxuWjZ7gCspDX9s9k4fjpY4LkhQQwLlk8wPc2hfDg48e+K1OR6sYB8uRS33Xc4fQtzElzazmaZ0fn77h5ysDgC1g/ko+E2j8HHMbZvFpzYpm1bCpIv1G/0A2ItH7gT3HsuwkDvfH/it56JTCbBWJJ+hTDeswCQNu0h797QM6jv0o5wgKpHR1t+AeM9vDe4Ds0pAXouJz0LJewNOdNvi5O1BZA9OooKc34hwTJs/zj5NwiZuOyPSMhDBGa++Vhsr9K3rPD9+97M2hac6NO6TBVWZjvqJilmkjJs+bKrl//ClBvdhDGkJNDbB+2emdD1/wzpPVJPp3IRhzeEF89IVE58qE+OQnIwtbEZ2W1ct6Ep7ZJdrXWc/VBdJB1ELfUtNmkvWFZD5IJfnb/Z5MS6iespXlV5alPQ7eZ2jNl3tn7uDaCStuQN1tO2wthNnsSU/OkfFRch/Ks3gYC5+v7n8aJMkTYFmHr4Y/xlXBsrA="
+      script:
+        - make -C ui build/stats.json
+        - ./scripts/gist-upload.py 6a1f1aa15a7a308dac7ea2726021836c ui/build/stats.json
 
     - stage: E2E
       name: Test demo site
