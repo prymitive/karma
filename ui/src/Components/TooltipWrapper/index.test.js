@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
@@ -7,17 +8,6 @@ import { TooltipWrapper } from ".";
 describe("TooltipWrapper", () => {
   beforeAll(() => {
     jest.useFakeTimers();
-
-    // https://stackoverflow.com/a/60974039/1154047
-    const mutationObserverMock = jest.fn(function MutationObserver(callback) {
-      this.observe = jest.fn();
-      this.disconnect = jest.fn();
-      // Optionally add a trigger() method to manually trigger a change
-      this.trigger = (mockedMutationsList) => {
-        callback(mockedMutationsList, this);
-      };
-    });
-    global.MutationObserver = mutationObserverMock;
   });
 
   it("renders only children", () => {
@@ -30,21 +20,86 @@ describe("TooltipWrapper", () => {
     expect(tree.find("div.tooltip")).toHaveLength(0);
   });
 
-  it("renders tooltip on hover and hides on blur", () => {
+  it("uses passed className", () => {
+    const tree = mount(
+      <TooltipWrapper title="my title" className="foo">
+        <span>Hover me</span>
+      </TooltipWrapper>
+    );
+    expect(tree.find("div.foo")).toHaveLength(1);
+    expect(tree.find("div.foo").text()).toBe("Hover me");
+  });
+
+  it("on non-touch devices it renders tooltip on mouseOver and hides on mouseLeave", () => {
     const tree = mount(
       <TooltipWrapper title="my title">
         <span>Hover me</span>
       </TooltipWrapper>
     );
 
-    tree.simulate("mouseEnter");
-    jest.runAllTimers();
+    tree.simulate("mouseOver");
+    act(() => jest.runAllTimers());
     tree.update();
     expect(tree.find("div.tooltip")).toHaveLength(1);
 
     tree.simulate("mouseLeave");
-    jest.runAllTimers();
+    act(() => jest.runAllTimers());
     tree.update();
     expect(tree.find("div.tooltip")).toHaveLength(0);
+  });
+
+  it("on touch devices it renders tooltip on touchStart and hides on touchEnd", () => {
+    const tree = mount(
+      <TooltipWrapper title="my title">
+        <span>Hover me</span>
+      </TooltipWrapper>
+    );
+
+    act(() => {
+      const event = new Event("touchstart");
+      global.window.dispatchEvent(event);
+    });
+    tree.update();
+
+    tree.simulate("touchStart");
+    act(() => jest.runAllTimers());
+    tree.update();
+    expect(tree.find("div.tooltip")).toHaveLength(1);
+
+    tree.simulate("touchEnd");
+    act(() => jest.runAllTimers());
+    tree.update();
+    expect(tree.find("div.tooltip")).toHaveLength(0);
+  });
+
+  it("hides the tooltip after click and show again on mouseOver", () => {
+    const tree = mount(
+      <TooltipWrapper title="my title">
+        <span>Hover me</span>
+      </TooltipWrapper>
+    );
+
+    tree.simulate("mouseOver");
+    act(() => jest.runAllTimers());
+    tree.update();
+    expect(tree.find("div.tooltip")).toHaveLength(1);
+
+    tree.simulate("click");
+    act(() => jest.runAllTimers());
+    tree.update();
+    expect(tree.find("div.tooltip")).toHaveLength(0);
+
+    tree.simulate("mouseLeave");
+    act(() => jest.runAllTimers());
+    tree.update();
+    expect(tree.find("div.tooltip")).toHaveLength(0);
+
+    tree.simulate("mouseOver");
+    act(() => jest.runAllTimers());
+    tree.update();
+    expect(tree.find("div.tooltip")).toHaveLength(1);
+
+    tree.unmount();
+    act(() => jest.runAllTimers());
   });
 });

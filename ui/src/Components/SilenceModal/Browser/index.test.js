@@ -357,8 +357,10 @@ describe("<Browser />", () => {
 
     tree.unmount();
 
-    advanceTo(moment.utc([2000, 0, 1, 0, 30, 59]));
-    act(() => jest.runOnlyPendingTimers());
+    act(() => {
+      advanceTo(moment.utc([2000, 0, 1, 0, 30, 59]));
+      jest.runOnlyPendingTimers();
+    });
 
     expect(useFetchGet.fetch.calls).toHaveLength(1);
   });

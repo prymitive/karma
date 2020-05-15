@@ -198,4 +198,4 @@ const NavBar = observer(
 );
 NavBar.contextType = ThemeContext;
 
-export { NavBar };
+export { NavBar, MobileIdleTimeout, DesktopIdleTimeout };

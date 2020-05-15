@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { shallow, mount } from "enzyme";
 
@@ -371,7 +372,7 @@ describe("<Grid />", () => {
     MountedGrid();
     // skip a minute to trigger FontFaceObserver timeout handler
     advanceBy(60 * 1000);
-    jest.runOnlyPendingTimers();
+    act(() => jest.runOnlyPendingTimers());
   });
 
   it("doesn't crash on unmount", () => {
