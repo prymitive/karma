@@ -8,7 +8,7 @@ import sys
 import urllib2
 
 
-Bundle = namedtuple('Bundle' , 'seq bundleName totalBytes files')
+Bundle = namedtuple('Bundle' , 'seq ext bundleName totalBytes files')
 
 Diff = namedtuple('Diff', 'status path oldBytes newBytes isBigger diff')
 BundleDiff = namedtuple('BundleDiff', 'total files')
@@ -39,9 +39,12 @@ def readBundle(path):
     with open(path) as f:
         data = json.load(f)
         for result in data['results']:
-            seq = os.path.basename(result['bundleName']).split('.')[0]
+            filename = os.path.basename(result['bundleName'])
+            seq = filename.split('.')[0]
+            _, ext = os.path.splitext(filename)
             bundle = Bundle(
                 seq=seq,
+                ext=ext,
                 bundleName=result['bundleName'],
                 totalBytes=result['totalBytes'],
                 files=result['files'])
@@ -112,7 +115,8 @@ def makeDiff(path, oldBytes, newBytes):
 
 def diffBundle(ba, bb):
     filesDiffs = []
-    if ba.totalBytes != bb.totalBytes:
+    diff = bb.totalBytes - ba.totalBytes
+    if abs(diff) > 100:
         totalDiff = makeDiff(ba.bundleName, ba.totalBytes, bb.totalBytes)
 
         for aFile in ba.files:
@@ -168,7 +172,7 @@ def diffBundles(a, b):
     for ba in a:
         found = False
         for bb in b:
-            if ba.seq == bb.seq:
+            if ba.seq == bb.seq and ba.ext == bb.ext:
                 found = True
                 d = diffBundle(ba, bb)
                 if d:
@@ -177,6 +181,7 @@ def diffBundles(a, b):
         if not found:
             bb = Bundle(
                     seq=ba.seq,
+                    ext=ba.ext,
                     bundleName=ba.bundleName,
                     totalBytes=0,
                     files={}
@@ -188,11 +193,12 @@ def diffBundles(a, b):
     for bb in b:
         found = False
         for ba in a:
-            if bb.seq == ba.seq:
+            if bb.seq == ba.seq and ba.ext == bb.ext:
                 found = True
         if not found:
             ba = Bundle(
                     seq=bb.seq,
+                    ext=bb.ext,
                     bundleName=bb.bundleName,
                     totalBytes=0,
                     files={}
