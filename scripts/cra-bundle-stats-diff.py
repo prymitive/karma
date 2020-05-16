@@ -20,18 +20,14 @@ class Status:
     deleted  = 'deleted'
 
 
-def humanize(value):
-    abbrevs = (
-        (1<<20, 'MB'),
-        (1<<10, 'kB'),
-        (1, 'bytes')
-    )
-    if value == 1:
-        return '1 byte'
-    for factor, suffix in abbrevs:
-        if value >= factor:
-            break
-    return '%d %s' % (value / factor, suffix)
+def humanize(nbytes):
+    suffixes = ['B', 'KB', 'MB']
+    i = 0
+    while abs(nbytes) >= 1024 and i < len(suffixes)-1:
+        nbytes /= 1024.
+        i += 1
+    f = ('%.1f' % nbytes).rstrip('0').rstrip('.')
+    return '%s %s' % (f, suffixes[i])
 
 
 def readBundle(path):
@@ -116,7 +112,7 @@ def makeDiff(path, oldBytes, newBytes):
 def diffBundle(ba, bb):
     filesDiffs = []
     diff = bb.totalBytes - ba.totalBytes
-    if abs(diff) > 100:
+    if abs(diff) > 500:
         totalDiff = makeDiff(ba.bundleName, ba.totalBytes, bb.totalBytes)
 
         for aFile in ba.files:
