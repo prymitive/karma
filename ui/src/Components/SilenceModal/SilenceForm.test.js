@@ -87,8 +87,8 @@ describe("<SilenceForm /> matchers", () => {
     ];
     const tree = MountedSilenceForm();
     const matchers = tree.find("SilenceMatch");
-    expect(matchers).toHaveLength(3);
-    expect(silenceFormStore.data.matchers).toHaveLength(3);
+    expect(matchers).toHaveLength(6);
+    expect(silenceFormStore.data.matchers).toHaveLength(6);
     expect(silenceFormStore.data.matchers[0]).toMatchObject({
       isRegex: false,
       name: "alertname",
@@ -100,6 +100,16 @@ describe("<SilenceForm /> matchers", () => {
       ],
     });
     expect(silenceFormStore.data.matchers[1]).toMatchObject({
+      isRegex: true,
+      name: "alertname",
+      values: [
+        {
+          label: ".*alertnameRegex.*",
+          value: ".*alertnameRegex.*",
+        },
+      ],
+    });
+    expect(silenceFormStore.data.matchers[2]).toMatchObject({
       isRegex: false,
       name: "cluster",
       values: [
@@ -109,13 +119,33 @@ describe("<SilenceForm /> matchers", () => {
         },
       ],
     });
-    expect(silenceFormStore.data.matchers[2]).toMatchObject({
+    expect(silenceFormStore.data.matchers[3]).toMatchObject({
+      isRegex: true,
+      name: "cluster",
+      values: [
+        {
+          label: ".*clusterRegex.*",
+          value: ".*clusterRegex.*",
+        },
+      ],
+    });
+    expect(silenceFormStore.data.matchers[4]).toMatchObject({
       isRegex: false,
       name: "foo",
       values: [
         {
           label: "fooEqual",
           value: "fooEqual",
+        },
+      ],
+    });
+    expect(silenceFormStore.data.matchers[5]).toMatchObject({
+      isRegex: true,
+      name: "foo",
+      values: [
+        {
+          label: ".*fooRegex.*",
+          value: ".*fooRegex.*",
         },
       ],
     });
