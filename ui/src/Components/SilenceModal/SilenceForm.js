@@ -11,8 +11,14 @@ import { faUndoAlt } from "@fortawesome/free-solid-svg-icons/faUndoAlt";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 
 import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore, SilenceFormStage } from "Stores/SilenceFormStore";
+import {
+  SilenceFormStore,
+  SilenceFormStage,
+  NewEmptyMatcher,
+  MatcherValueToObject,
+} from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
+import { QueryOperators } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { ToggleIcon } from "Components/ToggleIcon";
 import { AlertManagerInput } from "./AlertManagerInput";
@@ -43,6 +49,20 @@ const SilenceForm = ({
     }
 
     if (silenceFormStore.data.matchers.length === 0) {
+      if (alertStore.filters.values.length > 0) {
+        alertStore.filters.values
+          .filter(
+            (f) => f.name[0] !== "@" && f.matcher === QueryOperators.Equal
+          )
+          .forEach((f) => {
+            const matcher = NewEmptyMatcher();
+            matcher.name = f.name;
+            matcher.values = [MatcherValueToObject(f.value)];
+            silenceFormStore.data.matchers.push(matcher);
+          });
+      }
+    }
+    if (silenceFormStore.data.matchers.length === 0) {
       silenceFormStore.data.addEmptyMatcher();
     }
 
@@ -55,12 +75,7 @@ const SilenceForm = ({
     if (alertStore.info.authentication.enabled) {
       silenceFormStore.data.author = alertStore.info.authentication.username;
     }
-  }, [
-    silenceFormStore.data,
-    alertStore.info.authentication.enabled,
-    alertStore.info.authentication.username,
-    settingsStore.silenceFormConfig.config.author,
-  ]);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addMore = (event) => {
     event.preventDefault();
