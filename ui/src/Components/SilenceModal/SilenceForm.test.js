@@ -3,13 +3,14 @@ import React from "react";
 import { mount } from "enzyme";
 
 import { MockThemeContext } from "__mocks__/Theme";
-import { AlertStore } from "Stores/AlertStore";
+import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import {
   SilenceFormStore,
   SilenceFormStage,
   NewEmptyMatcher,
 } from "Stores/SilenceFormStore";
+import { QueryOperators, StaticLabels } from "Common/Query";
 import { SilenceForm } from "./SilenceForm";
 
 let alertStore;
@@ -59,6 +60,65 @@ describe("<SilenceForm /> matchers", () => {
     const matchers = tree.find("SilenceMatch");
     expect(matchers).toHaveLength(1);
     expect(silenceFormStore.data.matchers).toHaveLength(1);
+  });
+
+  it("uses filters to populate default matchers", () => {
+    const filter = (name, matcher, value) => {
+      const f = NewUnappliedFilter(`${name}${matcher}${value}`);
+      f.name = name;
+      f.matcher = matcher;
+      f.value = value;
+      return f;
+    };
+
+    const filterCombos = (name) =>
+      Object.entries(QueryOperators).map(([k, v]) =>
+        filter(name, v, `${name}${k}`)
+      );
+
+    alertStore.filters.values = [
+      ...filterCombos(StaticLabels.AlertName),
+      ...filterCombos(StaticLabels.AlertManager),
+      ...filterCombos(StaticLabels.Receiver),
+      ...filterCombos(StaticLabels.State),
+      ...filterCombos(StaticLabels.SilenceID),
+      ...filterCombos("cluster"),
+      ...filterCombos("foo"),
+    ];
+    const tree = MountedSilenceForm();
+    const matchers = tree.find("SilenceMatch");
+    expect(matchers).toHaveLength(3);
+    expect(silenceFormStore.data.matchers).toHaveLength(3);
+    expect(silenceFormStore.data.matchers[0]).toMatchObject({
+      isRegex: false,
+      name: "alertname",
+      values: [
+        {
+          label: "alertnameEqual",
+          value: "alertnameEqual",
+        },
+      ],
+    });
+    expect(silenceFormStore.data.matchers[1]).toMatchObject({
+      isRegex: false,
+      name: "cluster",
+      values: [
+        {
+          label: "clusterEqual",
+          value: "clusterEqual",
+        },
+      ],
+    });
+    expect(silenceFormStore.data.matchers[2]).toMatchObject({
+      isRegex: false,
+      name: "foo",
+      values: [
+        {
+          label: "fooEqual",
+          value: "fooEqual",
+        },
+      ],
+    });
   });
 
   it("clicking 'Add more' button adds another matcher", () => {
