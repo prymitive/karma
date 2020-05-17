@@ -48,16 +48,28 @@ const SilenceForm = ({
       silenceFormStore.data.verifyStarEnd();
     }
 
-    if (silenceFormStore.data.matchers.length === 0) {
+    if (
+      silenceFormStore.data.matchers.filter(
+        (m) => m.name !== "" || m.values.length
+      ).length === 0
+    ) {
       if (alertStore.filters.values.length > 0) {
         alertStore.filters.values
           .filter(
-            (f) => f.name[0] !== "@" && f.matcher === QueryOperators.Equal
+            (f) =>
+              f.name[0] !== "@" &&
+              (f.matcher === QueryOperators.Equal ||
+                f.matcher === QueryOperators.Regex)
           )
           .forEach((f) => {
             const matcher = NewEmptyMatcher();
             matcher.name = f.name;
-            matcher.values = [MatcherValueToObject(f.value)];
+            if (f.matcher === QueryOperators.Regex) {
+              matcher.values = [MatcherValueToObject(`.*${f.value}.*`)];
+              matcher.isRegex = f.matcher === QueryOperators.Regex;
+            } else {
+              matcher.values = [MatcherValueToObject(f.value)];
+            }
             silenceFormStore.data.matchers.push(matcher);
           });
       }
