@@ -30,6 +30,25 @@ def humanize(nbytes):
     return '%s %s' % (f, suffixes[i])
 
 
+def normalizePath(path):
+    if path.startswith('node_modules/') or '/node_modules/' in path:
+        mod = path.partition('/node_modules/')[2].split('/')
+        if mod[0].startswith('@'):
+            return '/'.join(mod[0:2])
+        return mod[0]
+    return path
+
+
+def mergeFiles(allFiles):
+    files = {}
+    for path, meta in allFiles.items():
+        p = normalizePath(path)
+        if p not in files:
+            files[p] = 0
+        files[p] += meta['size']
+    return files
+
+
 def readBundle(path):
     bundles = []
     with open(path) as f:
@@ -43,7 +62,7 @@ def readBundle(path):
                 ext=ext,
                 bundleName=result['bundleName'],
                 totalBytes=result['totalBytes'],
-                files=result['files'])
+                files=mergeFiles(result['files']))
             bundles.append(bundle)
     return bundles
 
@@ -116,16 +135,16 @@ def diffBundle(ba, bb):
         totalDiff = makeDiff(ba.bundleName, ba.totalBytes, bb.totalBytes)
 
         for aFile in ba.files:
-            aSize = ba.files[aFile]['size']
+            aSize = ba.files[aFile]
             if aFile in bb.files:
-                bSize = bb.files[aFile]['size']
+                bSize = bb.files[aFile]
                 if aSize != bSize:
                     filesDiffs.append(makeDiff(aFile, aSize, bSize))
             else:
                 filesDiffs.append(makeDiff(aFile, aSize, 0))
 
         for bFile in bb.files:
-            bSize = bb.files[bFile]['size']
+            bSize = bb.files[bFile]
             if bFile not in ba.files:
                 filesDiffs.append(makeDiff(bFile, 0, bSize))
 
