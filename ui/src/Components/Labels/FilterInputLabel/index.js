@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 
 import { useObserver } from "mobx-react";
 
-import { RIEInput } from "@attently/riek";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
@@ -14,15 +12,16 @@ import { AlertStore } from "Stores/AlertStore";
 import { QueryOperators } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GetClassAndStyle } from "Components/Labels/Utils";
+import { InlineEdit } from "Components/InlineEdit";
 
 const FilterInputLabel = ({ alertStore, filter }) => {
-  const onChange = ({ raw }) => {
+  const onChange = (val) => {
     // if filter is empty string then remove it
-    if (raw === "") {
+    if (val === "") {
       alertStore.filters.removeFilter(filter.raw);
     }
     // if not empty replace it
-    alertStore.filters.replaceFilter(filter.raw, raw);
+    alertStore.filters.replaceFilter(filter.raw, val);
   };
 
   const cs = GetClassAndStyle(
@@ -63,15 +62,13 @@ const FilterInputLabel = ({ alertStore, filter }) => {
         title="Click to edit this filter"
         className="components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ml-1"
       >
-        <RIEInput
+        <InlineEdit
           className="cursor-text px-1"
-          defaultValue=""
+          classNameEditing="px-1 py-0 border-0 editing rounded"
           value={filter.raw}
-          propName="raw"
-          change={onChange}
-          classEditing="py-0 border-0 editing rounded"
-          afterStart={alertStore.status.pause}
-          afterFinish={alertStore.status.resume}
+          onChange={onChange}
+          onEnterEditing={alertStore.status.pause}
+          onExitEditing={alertStore.status.resume}
         />
       </TooltipWrapper>
       <FontAwesomeIcon
