@@ -49,8 +49,8 @@ const ValidateOnChange = (newRaw) => {
     />
   );
 
-  const input = tree.find("RIEInput");
-  input.props().change({ raw: newRaw });
+  const input = tree.find("InlineEdit");
+  input.props().onChange(newRaw);
 
   return tree;
 };
