@@ -6,10 +6,10 @@ import { mount } from "enzyme";
 import { useOnClickOutside } from "./useOnClickOutside";
 
 describe("useOnClickOutside", () => {
-  const Component = () => {
+  const Component = ({ enabled }) => {
     const ref = useRef();
     const [isModalOpen, setModalOpen] = useState(true);
-    useOnClickOutside(ref, () => setModalOpen(false));
+    useOnClickOutside(ref, () => setModalOpen(false), enabled);
 
     return (
       <div>
@@ -25,7 +25,7 @@ describe("useOnClickOutside", () => {
   };
 
   it("closes modal on click outside", () => {
-    const tree = mount(<Component />);
+    const tree = mount(<Component enabled />);
     expect(tree.text()).toBe("Open");
 
     const clickEvent = document.createEvent("MouseEvents");
@@ -38,7 +38,7 @@ describe("useOnClickOutside", () => {
   });
 
   it("ignores events when hidden", () => {
-    const tree = mount(<Component />);
+    const tree = mount(<Component enabled />);
     expect(tree.text()).toBe("Open");
 
     const clickEvent = document.createEvent("MouseEvents");
@@ -54,9 +54,34 @@ describe("useOnClickOutside", () => {
   });
 
   it("modal stays open on click inside", () => {
-    const tree = mount(<Component />);
+    const tree = mount(<Component enabled />);
     expect(tree.text()).toBe("Open");
     tree.find("span").simulate("click");
     expect(tree.text()).toBe("Open");
+  });
+
+  it("only runs when enabled", () => {
+    const tree = mount(<Component enabled={false} />);
+    expect(tree.text()).toBe("Open");
+
+    const clickEvent = document.createEvent("MouseEvents");
+    clickEvent.initEvent("mousedown", true, true);
+    act(() => {
+      document.dispatchEvent(clickEvent);
+    });
+
+    expect(tree.text()).toBe("Open");
+
+    tree.setProps({ enabled: true });
+    act(() => {
+      document.dispatchEvent(clickEvent);
+    });
+    expect(tree.text()).toBe("Hidden");
+  });
+
+  it("unmounts cleanly", () => {
+    const tree = mount(<Component enabled />);
+    expect(tree.text()).toBe("Open");
+    tree.unmount();
   });
 });

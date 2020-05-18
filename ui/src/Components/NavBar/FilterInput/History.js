@@ -198,7 +198,7 @@ const History = ({ alertStore, settingsStore }) => {
   });
 
   const ref = useRef(null);
-  useOnClickOutside(ref, collapse.hide);
+  useOnClickOutside(ref, collapse.hide, !collapse.isHidden);
 
   return useObserver(() => (
     // data-filters is there to register filters for observation in mobx

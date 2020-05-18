@@ -45,7 +45,7 @@ const InlineEdit = ({
     }
   };
 
-  useOnClickOutside(ref, doneEditing);
+  useOnClickOutside(ref, doneEditing, isEditing);
 
   useEffect(() => {
     if (isEditing && ref.current) {
