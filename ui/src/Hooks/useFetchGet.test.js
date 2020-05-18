@@ -204,6 +204,32 @@ describe("useFetchGet", () => {
     expect(result.current.isRetrying).toBe(false);
   });
 
+  it("error is updated on uparsable JSON", async () => {
+    fetchMock.mock("http://localhost/json/invalid", {
+      headers: { "Content-Type": "application/json" },
+      body: "this is not a valid JSON body",
+    });
+
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useFetchGet("http://localhost/json/invalid")
+    );
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe(null);
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.isRetrying).toBe(false);
+
+    jest.runOnlyPendingTimers();
+    await waitForNextUpdate();
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe(
+      "invalid json response body at http://localhost/json/invalid reason: Unexpected token h in JSON at position 1"
+    );
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isRetrying).toBe(false);
+  });
+
   it("doesn't update response on 200 response after cleanup", async () => {
     fetchMock.mock("http://localhost/slow/ok", {
       delay: 1000,
@@ -287,5 +313,58 @@ describe("useFetchGet", () => {
       jest.runOnlyPendingTimers();
       await fetchMock.flush(true);
     }
+  });
+
+  it("doesn't update error on unparsable JSON after cleanup", async () => {
+    fetchMock.mock("http://localhost/slow/json/invalid", {
+      delay: 1000,
+      headers: { "Content-Type": "application/json" },
+      body: "this is not a valid JSON body",
+    });
+
+    const Component = () => {
+      const { response, error, isLoading } = useFetchGet(
+        "http://localhost/slow/json/invalid"
+      );
+      return (
+        <span>
+          <span>{response}</span>
+          <span>{error}</span>
+          <span>{isLoading}</span>
+        </span>
+      );
+    };
+
+    const tree = mount(<Component />);
+    tree.unmount();
+
+    jest.runOnlyPendingTimers();
+    await fetchMock.flush(true);
+  });
+
+  it("doesn't update response after cleanup", async () => {
+    fetchMock.mock("http://localhost/slow/text", {
+      delay: 1000,
+      body: "ok",
+    });
+
+    const Component = () => {
+      const { response, error, isLoading } = useFetchGet(
+        "http://localhost/slow/text"
+      );
+      return (
+        <span>
+          <span>{response}</span>
+          <span>{error}</span>
+          <span>{isLoading}</span>
+        </span>
+      );
+    };
+
+    const tree = mount(<Component />);
+    tree.unmount();
+
+    jest.runOnlyPendingTimers();
+    await fetchMock.flush(true);
   });
 });
