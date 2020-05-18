@@ -45,27 +45,27 @@ const useFetchGet = (uri, { autorun = true, deps = [] } = {}) => {
         FetchRetryConfig
       );
 
-      let body;
-      const contentType = res.headers.get("content-type");
-      if (contentType && contentType.indexOf("application/json") !== -1) {
-        body = await res.json();
-      } else {
-        body = await res.text();
-      }
-
-      if (res.ok) {
-        setResponse(body);
-      } else {
-        setError(body);
-      }
-      setIsLoading(false);
-      setIsRetrying(false);
-    } catch (error) {
       if (!isCanceled.current) {
-        setError(error.message);
+        let body;
+        const contentType = res.headers.get("content-type");
+        if (contentType && contentType.indexOf("application/json") !== -1) {
+          body = await res.json();
+        } else {
+          body = await res.text();
+        }
+
+        if (res.ok) {
+          setResponse(body);
+        } else {
+          setError(body);
+        }
         setIsLoading(false);
         setIsRetrying(false);
       }
+    } catch (error) {
+      setError(error.message);
+      setIsLoading(false);
+      setIsRetrying(false);
     }
   }, [uri]);
 
