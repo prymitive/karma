@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { observable, action } from "mobx";
 import { observer } from "mobx-react";
 
-import debounce from "lodash/debounce";
+import debounce from "lodash.debounce";
 
 import { Fade } from "react-reveal";
 

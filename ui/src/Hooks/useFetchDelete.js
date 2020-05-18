@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-import merge from "lodash/merge";
+import merge from "lodash.merge";
 
 import { CommonOptions } from "Common/Fetch";
 

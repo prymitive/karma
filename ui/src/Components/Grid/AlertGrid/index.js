@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { observable, action, computed } from "mobx";
 import { observer } from "mobx-react";
 
-import debounce from "lodash/debounce";
+import debounce from "lodash.debounce";
 
 import ReactResizeDetector from "react-resize-detector";
 

@@ -1,6 +1,6 @@
 import { observable, action, computed } from "mobx";
 
-import uniqueId from "lodash/uniqueId";
+import uniqueId from "lodash.uniqueid";
 
 import moment from "moment";
 
