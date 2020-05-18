@@ -17,21 +17,17 @@ go test \
   -coverpkg="$COVERPKG" \
   -c \
   -tags testrunmain \
-  ./cmd/karma 2>&1 \
-    | (grep -v 'warning: no packages being tested depend on matches for pattern' || true)
+  ./cmd/karma
 
-(
-  ALERTMANAGER_URI=http://localhost \
-  ALERTMANAGER_INTERVAL=1s \
-  LISTEN_ADDRESS=127.0.0.1 \
-  LISTEN_PORT=0 \
-  LOG_LEVEL=fatal \
-  LOG_CONFIG=false \
+ALERTMANAGER_URI=http://localhost \
+ALERTMANAGER_INTERVAL=1s \
+LISTEN_ADDRESS=127.0.0.1 \
+LISTEN_PORT=0 \
+LOG_LEVEL=fatal \
+LOG_CONFIG=false \
   ./karma.test \
-  -test.run "^TestRunMain$" \
-  -test.coverprofile=profile.main.1 2>&1 \
-    | grep -v 'warning: no packages being tested depend on matches for pattern' \
-    | sed s/'of statements in .*'/''/g &)
+  -test.run '^TestRunMain$' \
+  -test.coverprofile=profile.main.1 &
 
 sleep 5
 killall karma.test
