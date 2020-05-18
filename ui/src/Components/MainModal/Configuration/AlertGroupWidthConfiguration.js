@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { useObserver, useLocalStore } from "mobx-react";
 
-import debounce from "lodash/debounce";
+import debounce from "lodash.debounce";
 
 import InputRange from "react-input-range";
 

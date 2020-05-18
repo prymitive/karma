@@ -1,4 +1,4 @@
-import merge from "lodash/merge";
+import merge from "lodash.merge";
 
 import promiseRetry from "promise-retry";
 

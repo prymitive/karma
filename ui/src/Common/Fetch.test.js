@@ -1,6 +1,6 @@
 import { CommonOptions, FetchGet, FetchPost, FetchRetryConfig } from "./Fetch";
 
-import merge from "lodash/merge";
+import merge from "lodash.merge";
 
 import fetchMock from "fetch-mock";
 
