@@ -72,9 +72,10 @@ const MenuContent = ({
           <FontAwesomeIcon icon={faShareSquare} /> Copy link to this group
         </div>
         <div
-          className={`dropdown-item cursor-pointer ${
-            Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0 &&
-            "disabled"
+          className={`dropdown-item ${
+            Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0
+              ? "disabled"
+              : "cursor-pointer"
           }`}
           onClick={() => {
             if (Object.keys(alertStore.data.clustersWithoutReadOnly).length) {
@@ -116,11 +117,11 @@ const GroupMenu = ({
     },
   }));
 
-  const ref = useRef(null);
-  useOnClickOutside(ref, collapse.hide);
+  const rootRef = useRef(null);
+  useOnClickOutside(rootRef, collapse.hide, !collapse.isHidden);
 
   return useObserver(() => (
-    <span ref={ref}>
+    <span ref={rootRef}>
       <Manager>
         <Reference>
           {({ ref }) => (

@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
 
@@ -26,9 +26,8 @@ const TooltipWrapper = ({ title, children, className }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [wasClicked, setWasClicked] = useState(false);
 
-  const showTooltip = useCallback(() => setIsHovering(true), []);
-  const hideTooltip = useCallback(() => setIsHovering(false), []);
-  const handleClick = useCallback(() => setWasClicked(true), []);
+  const showTooltip = () => setIsHovering(true);
+  const hideTooltip = () => setIsHovering(false);
 
   useEffect(() => {
     let timerShow;
@@ -57,7 +56,7 @@ const TooltipWrapper = ({ title, children, className }) => {
   return (
     <React.Fragment>
       <div
-        onClick={handleClick}
+        onClick={() => setWasClicked(true)}
         onMouseOver={supportsTouch ? null : showTooltip}
         onMouseLeave={supportsTouch ? null : hideTooltip}
         onTouchStart={supportsTouch ? showTooltip : null}

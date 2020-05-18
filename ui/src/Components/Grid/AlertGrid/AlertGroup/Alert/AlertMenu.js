@@ -64,9 +64,10 @@ const MenuContent = ({
         ))}
         <div className="dropdown-divider" />
         <div
-          className={`dropdown-item cursor-pointer ${
-            Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0 &&
-            "disabled"
+          className={`dropdown-item ${
+            Object.keys(alertStore.data.clustersWithoutReadOnly).length === 0
+              ? "disabled"
+              : "cursor-pointer"
           }`}
           onClick={() => {
             if (Object.keys(alertStore.data.clustersWithoutReadOnly).length) {
@@ -99,22 +100,22 @@ const AlertMenu = ({
   setIsMenuOpen,
 }) => {
   const collapse = useLocalStore(() => ({
-    value: true,
+    isHidden: true,
     toggle() {
-      this.value = !this.value;
-      setIsMenuOpen(!this.value);
+      this.isHidden = !this.isHidden;
+      setIsMenuOpen(!this.isHidden);
     },
     hide() {
-      this.value = true;
-      setIsMenuOpen(!this.value);
+      this.isHidden = true;
+      setIsMenuOpen(!this.isHidden);
     },
   }));
 
-  const ref = useRef(null);
-  useOnClickOutside(ref, collapse.hide);
+  const rootRef = useRef(null);
+  useOnClickOutside(rootRef, collapse.hide, !collapse.isHidden);
 
   return useObserver(() => (
-    <span ref={ref}>
+    <span ref={rootRef}>
       <Manager>
         <Reference>
           {({ ref }) => (
@@ -133,7 +134,7 @@ const AlertMenu = ({
             </span>
           )}
         </Reference>
-        <DropdownSlide in={!collapse.value} unmountOnExit>
+        <DropdownSlide in={!collapse.isHidden} unmountOnExit>
           <Popper
             placement="bottom-start"
             modifiers={[
