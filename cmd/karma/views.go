@@ -68,6 +68,7 @@ func decompressCachedResponse(data []byte) ([]byte, error) {
 		return nil, fmt.Errorf("failed to created new compression reader: %s", err.Error())
 	}
 
+	defer r.Close()
 	p, err := ioutil.ReadAll(r)
 	if err != nil {
 		return nil, fmt.Errorf("failed to decompress data: %s", err.Error())
