@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
+import { autorun } from "mobx";
 import { useObserver } from "mobx-react";
 
 import Favico from "favico.js";
@@ -18,13 +19,17 @@ const FaviconBadge = ({ alertStore }) => {
     })
   );
 
-  useEffect(() => {
-    if (alertStore.status.error !== null) {
-      favico.badge("?");
-    } else {
-      favico.badge(alertStore.info.totalAlerts);
-    }
-  });
+  useEffect(
+    () =>
+      autorun(() => {
+        if (alertStore.status.error !== null) {
+          favico.badge("?");
+        } else {
+          favico.badge(alertStore.info.totalAlerts);
+        }
+      }),
+    [] // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
   return useObserver(() => (
     <span
