@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
@@ -12,7 +13,7 @@ import { advanceTo, clear } from "jest-date-mock";
 import { MockSilence } from "__mocks__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { SilenceDetails } from "./SilenceDetails";
+import { SilenceDetails, SilenceIDCopyButton } from "./SilenceDetails";
 
 let alertStore;
 let silenceFormStore;
@@ -103,5 +104,20 @@ describe("<SilenceDetails />", () => {
 
     tree.find("button").at(0).simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(0);
+  });
+});
+
+describe("SilenceIDCopyButton", () => {
+  it("flashes on click", async () => {
+    function sleep(period) {
+      return new Promise((resolve) => setTimeout(resolve, period));
+    }
+
+    const tree = mount(<SilenceIDCopyButton id="123"></SilenceIDCopyButton>);
+    tree.find("span.badge.badge-secondary").simulate("click");
+
+    await act(async () => {
+      await sleep(1100);
+    });
   });
 });

@@ -216,7 +216,7 @@ describe("<Alert />", () => {
     const tree = MountedAlert(alert, group, false, false);
     expect(
       tree
-        .find(".components-grid-alertgrid-alertgroup-alert")
+        .find("li.components-grid-alertgrid-alertgroup-alert")
         .hasClass(BorderClassMap.active)
     ).toBe(true);
   });
@@ -228,7 +228,7 @@ describe("<Alert />", () => {
     const tree = MountedAlert(alert, group, false, false);
     expect(
       tree
-        .find(".components-grid-alertgrid-alertgroup-alert")
+        .find("li.components-grid-alertgrid-alertgroup-alert")
         .hasClass(BorderClassMap.suppressed)
     ).toBe(true);
   });
@@ -240,7 +240,7 @@ describe("<Alert />", () => {
     const tree = MountedAlert(alert, group, false, false);
     expect(
       tree
-        .find(".components-grid-alertgrid-alertgroup-alert")
+        .find("li.components-grid-alertgrid-alertgroup-alert")
         .hasClass(BorderClassMap.unprocessed)
     ).toBe(true);
   });
@@ -254,7 +254,7 @@ describe("<Alert />", () => {
     const tree = MountedAlert(alert, group, false, false);
     expect(
       tree
-        .find(".components-grid-alertgrid-alertgroup-alert")
+        .find("li.components-grid-alertgrid-alertgroup-alert")
         .hasClass("border-default")
     ).toBe(true);
   });

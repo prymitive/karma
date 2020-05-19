@@ -28,7 +28,9 @@ exports[`<Configuration /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"card-body my-2\\">
+    <div class=\\"card-body my-2\\"
+         style=\\"opacity: 0; height: 0px;\\"
+    >
       <div class=\\"form-group mb-0 text-center\\">
         <div aria-disabled=\\"false\\"
              class=\\"input-range\\"
@@ -96,7 +98,9 @@ exports[`<Configuration /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"card-body my-2\\">
+    <div class=\\"card-body my-2\\"
+         style=\\"opacity: 0; height: 0px;\\"
+    >
       <div class=\\"form-group mb-0\\">
         <div class=\\"form-check form-check-inline\\">
           <span class=\\"custom-control custom-switch\\">
@@ -141,7 +145,9 @@ exports[`<Configuration /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"card-body my-2\\">
+    <div class=\\"card-body my-2\\"
+         style=\\"opacity: 0; height: 0px;\\"
+    >
       <div class=\\"form-group mb-2\\">
         <div class=\\" css-2b097c-container\\">
           <div class=\\"react-select__control css-r5n82u-control\\">
@@ -233,7 +239,9 @@ exports[`<Configuration /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"card-body my-2\\">
+    <div class=\\"card-body my-2\\"
+         style=\\"opacity: 0; height: 0px;\\"
+    >
       <div class=\\"form-group mb-0 text-center\\">
         <div aria-disabled=\\"false\\"
              class=\\"input-range\\"
@@ -301,7 +309,9 @@ exports[`<Configuration /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"card-body my-2\\">
+    <div class=\\"card-body my-2\\"
+         style=\\"opacity: 0; height: 0px;\\"
+    >
       <div class=\\"form-group mb-0 text-center\\">
         <div aria-disabled=\\"false\\"
              class=\\"input-range\\"
@@ -369,7 +379,9 @@ exports[`<Configuration /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"card-body my-2\\">
+    <div class=\\"card-body my-2\\"
+         style=\\"opacity: 0; height: 0px;\\"
+    >
       <div class=\\"form-group mb-0\\">
         <div class=\\" css-2b097c-container\\">
           <div class=\\"react-select__control css-r5n82u-control\\">
@@ -445,7 +457,9 @@ exports[`<Configuration /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"card-body my-2\\">
+    <div class=\\"card-body my-2\\"
+         style=\\"opacity: 0; height: 0px;\\"
+    >
       <div class=\\"form-group mb-0\\">
         <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
           <div class=\\"flex-shrink-0 flex-grow-1 flex-basis-auto\\">
@@ -525,7 +539,9 @@ exports[`<Configuration /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"card-body my-2\\">
+    <div class=\\"card-body my-2\\"
+         style=\\"opacity: 0; height: 0px;\\"
+    >
       <div class=\\"form-group mb-0\\">
         <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
           <div class=\\"flex-shrink-0 flex-grow-1 flex-basis-auto mx-0 mx-lg-1 mt-1 mt-lg-0\\">

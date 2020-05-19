@@ -5,6 +5,8 @@ import { mount } from "enzyme";
 
 import moment from "moment";
 
+import { useInView } from "react-intersection-observer";
+
 import { MockAlert, MockAlertGroup } from "__mocks__/Alerts";
 import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
@@ -47,6 +49,7 @@ beforeEach(() => {
 
 afterEach(() => {
   global.innerWidth = originalInnerWidth;
+  useInView.setInView(true);
 });
 
 const MockAlerts = (alertCount) => {
@@ -102,6 +105,24 @@ describe("<AlertGroup />", () => {
     MockAlerts(5);
     const tree = MountedAlertGroup(jest.fn(), true);
     tree.unmount();
+  });
+
+  it("has initial opacity 0 when not in view", () => {
+    useInView.setInView(false);
+    MockAlerts(1);
+    const tree = MountedAlertGroup(jest.fn(), true);
+    expect(tree.html()).toMatch(
+      /<div class="components-grid-alertgrid-alertgroup " style="width: 420px; opacity: 0;">/
+    );
+  });
+
+  it("has initial opacity 0 when in view", () => {
+    useInView.setInView(true);
+    MockAlerts(1);
+    const tree = MountedAlertGroup(jest.fn(), true);
+    expect(tree.html()).toMatch(
+      /<div class="components-grid-alertgrid-alertgroup " style="width: 420px; opacity: 0;">/
+    );
   });
 
   it("appends components-animation-fade-appear-done class after first mount", () => {
@@ -231,18 +252,25 @@ const ValidateLoadButtonPresent = (totalAlerts, isPresent) => {
   expect(buttons).toHaveLength(isPresent ? 2 : 0);
 };
 
-const ValidateLoadButtonAction = (
+const ValidateLoadButtonAction = async (
   totalAlerts,
   buttonIndex,
   iconMatch,
   loadedAlerts,
   alertsToRenderBeforeClick
 ) => {
+  function sleep(period) {
+    return new Promise((resolve) => setTimeout(resolve, period));
+  }
+
   MockAlerts(totalAlerts);
   const tree = MountedAlertGroup(jest.fn(), false, alertsToRenderBeforeClick);
   const loadMore = tree.find("button").at(buttonIndex);
   expect(loadMore.html()).toMatch(iconMatch);
   loadMore.simulate("click");
+  await act(async () => {
+    await sleep(1100);
+  });
   tree.update();
   expect(tree.find("Alert")).toHaveLength(loadedAlerts);
 };
@@ -348,10 +376,10 @@ describe("<AlertGroup /> card theme", () => {
     settingsStore.alertGroupConfig.config.colorTitleBar = false;
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn(), false);
-    expect(tree.find(".card").hasClass("bg-light")).toBe(true);
-    expect(tree.find(".card").hasClass("bg-danger")).toBe(false);
-    expect(tree.find(".card").hasClass("bg-success")).toBe(false);
-    expect(tree.find(".card").hasClass("bg-secondary")).toBe(false);
+    expect(tree.find("div.card").hasClass("bg-light")).toBe(true);
+    expect(tree.find("div.card").hasClass("bg-danger")).toBe(false);
+    expect(tree.find("div.card").hasClass("bg-success")).toBe(false);
+    expect(tree.find("div.card").hasClass("bg-secondary")).toBe(false);
   });
 
   it("renders themed titlebar when colorTitleBar=false", () => {
@@ -365,10 +393,10 @@ describe("<AlertGroup /> card theme", () => {
     settingsStore.alertGroupConfig.config.colorTitleBar = false;
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn(), false);
-    expect(tree.find(".card").hasClass("bg-light")).toBe(true);
-    expect(tree.find(".card").hasClass("bg-danger")).toBe(false);
-    expect(tree.find(".card").hasClass("bg-success")).toBe(false);
-    expect(tree.find(".card").hasClass("bg-secondary")).toBe(false);
+    expect(tree.find("div.card").hasClass("bg-light")).toBe(true);
+    expect(tree.find("div.card").hasClass("bg-danger")).toBe(false);
+    expect(tree.find("div.card").hasClass("bg-success")).toBe(false);
+    expect(tree.find("div.card").hasClass("bg-secondary")).toBe(false);
   });
 
   it("renders themed titlebar when colorTitleBar=true and there are multiple alert states", () => {
@@ -382,10 +410,10 @@ describe("<AlertGroup /> card theme", () => {
     settingsStore.alertGroupConfig.config.colorTitleBar = true;
     group.stateCount = { active: 0, suppressed: 5, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn(), false);
-    expect(tree.find(".card").hasClass("bg-light")).toBe(false);
-    expect(tree.find(".card").hasClass("bg-danger")).toBe(false);
-    expect(tree.find(".card").hasClass("bg-success")).toBe(true);
-    expect(tree.find(".card").hasClass("bg-secondary")).toBe(false);
+    expect(tree.find("div.card").hasClass("bg-light")).toBe(false);
+    expect(tree.find("div.card").hasClass("bg-danger")).toBe(false);
+    expect(tree.find("div.card").hasClass("bg-success")).toBe(true);
+    expect(tree.find("div.card").hasClass("bg-secondary")).toBe(false);
   });
 
   it("renders unthemed titlebar when colorTitleBar=true and there's only one alert state", () => {

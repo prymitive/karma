@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { useObserver } from "mobx-react";
 
-import { Fade } from "react-reveal";
+import { motion } from "framer-motion";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
@@ -19,7 +19,6 @@ import { useDebounce } from "Hooks/useDebounce";
 import { IsMobile } from "Common/Device";
 import { ManagedSilence } from "Components/ManagedSilence";
 import { PageSelect } from "Components/Pagination";
-import { ThemeContext } from "Components/Theme";
 
 const FetchError = ({ message }) => (
   <div className="text-center">
@@ -34,14 +33,13 @@ FetchError.propTypes = {
 };
 
 const Placeholder = ({ content }) => {
-  const theme = React.useContext(ThemeContext);
-
   return (
-    <Fade in={theme.animations.in} duration={theme.animations.duration}>
-      <div className="jumbotron bg-transparent">
-        <h1 className="display-5 text-placeholder text-center">{content}</h1>
-      </div>
-    </Fade>
+    <motion.div
+      animate={{ opacity: [0, 1] }}
+      className="jumbotron bg-transparent"
+    >
+      <h1 className="display-5 text-placeholder text-center">{content}</h1>
+    </motion.div>
   );
 };
 Placeholder.propTypes = {

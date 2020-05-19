@@ -40,9 +40,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed 1`] = `
       <div style=\\"display: inline-block; max-width: 100%;\\"
            class=\\" tooltip-trigger\\"
       >
-        <span class=\\" badge-primary badge-pill components-label-with-hover components-label badge\\"
-              style=\\"opacity: 1;\\"
-        >
+        <span class=\\"badge-primary badge-pill components-label-with-hover components-label badge\\">
           123
         </span>
       </div>
@@ -113,9 +111,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
       <div style=\\"display: inline-block; max-width: 100%;\\"
            class=\\" tooltip-trigger\\"
       >
-        <span class=\\" badge-primary badge-pill components-label-with-hover components-label badge\\"
-              style=\\"opacity: 1;\\"
-        >
+        <span class=\\"badge-primary badge-pill components-label-with-hover components-label badge\\">
           123
         </span>
       </div>
@@ -174,9 +170,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
       <div style=\\"display: inline-block; max-width: 100%;\\"
            class=\\" tooltip-trigger\\"
       >
-        <span class=\\" badge-primary badge-pill components-label-with-hover components-label badge\\"
-              style=\\"opacity: 1;\\"
-        >
+        <span class=\\"badge-primary badge-pill components-label-with-hover components-label badge\\">
           123
         </span>
       </div>
@@ -235,9 +229,7 @@ exports[`<SilenceComment /> Matches snapshot when expanded 1`] = `
       <div style=\\"display: inline-block; max-width: 100%;\\"
            class=\\" tooltip-trigger\\"
       >
-        <span class=\\" badge-primary badge-pill components-label-with-hover components-label badge\\"
-              style=\\"opacity: 1;\\"
-        >
+        <span class=\\"badge-primary badge-pill components-label-with-hover components-label badge\\">
           123
         </span>
       </div>

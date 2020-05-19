@@ -111,7 +111,7 @@ describe("<OverviewModalContent />", () => {
     expect(tree.find("span.components-label").at(0).text()).toBe("5foo");
     expect(tree.find("span.components-label").at(1).text()).toBe("5foo: bar");
 
-    tree.find("svg.cursor-pointer").simulate("click");
+    tree.find("ToggleIcon").simulate("click");
 
     expect(tree.find("span.components-label")).toHaveLength(4);
     expect(tree.find("span.components-label").at(2).text()).toBe("3bar");

@@ -37,10 +37,6 @@ addDecorator((story) => {
         <ThemeContext.Provider
           value={{
             reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
-            animations: {
-              in: true,
-              duration: 0,
-            },
           }}
         >
           {story()}
@@ -59,10 +55,6 @@ addDecorator((story) => {
         <ThemeContext.Provider
           value={{
             reactSelectStyles: ReactSelectStyles(ReactSelectColors.Dark),
-            animations: {
-              in: true,
-              duration: 0,
-            },
           }}
         >
           {story()}

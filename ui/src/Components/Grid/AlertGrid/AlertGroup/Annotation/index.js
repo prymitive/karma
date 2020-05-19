@@ -5,7 +5,7 @@ import { useLocalStore, observer } from "mobx-react";
 
 import Linkify from "react-linkify";
 
-import Flash from "react-reveal/Flash";
+import { motion } from "framer-motion";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
@@ -13,6 +13,7 @@ import { faSearchPlus } from "@fortawesome/free-solid-svg-icons/faSearchPlus";
 import { faSearchMinus } from "@fortawesome/free-solid-svg-icons/faSearchMinus";
 
 import { TooltipWrapper } from "Components/TooltipWrapper";
+import { useFlashAnimation } from "Hooks/useFlashAnimation";
 
 const RenderNonLinkAnnotation = observer(
   ({ name, value, visible, afterUpdate }) => {
@@ -39,6 +40,8 @@ const RenderNonLinkAnnotation = observer(
     const className =
       "mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100";
 
+    const [ref, animate] = useFlashAnimation(value);
+
     if (!toggle.visible) {
       return (
         <TooltipWrapper title="Click to show annotation value">
@@ -63,9 +66,9 @@ const RenderNonLinkAnnotation = observer(
               rel: "noopener noreferrer",
             }}
           >
-            <Flash spy={value}>
-              <span>{value}</span>
-            </Flash>
+            <motion.span ref={ref} animate={animate}>
+              {value}
+            </motion.span>
           </Linkify>
         </div>
       </TooltipWrapper>

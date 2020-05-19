@@ -7,6 +7,8 @@ import debounce from "lodash.debounce";
 
 import ReactResizeDetector from "react-resize-detector";
 
+import { AnimatePresence } from "framer-motion";
+
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -61,18 +63,20 @@ const AlertGrid = ({ alertStore, settingsStore, silenceFormStore }) => {
   return useObserver(() => (
     <React.Fragment>
       <ReactResizeDetector handleWidth handleHeight onResize={handleResize} />
-      {alertStore.data.grids.map((grid) => (
-        <Grid
-          key={`${grid.labelName}/${grid.labelValue}`}
-          alertStore={alertStore}
-          silenceFormStore={silenceFormStore}
-          settingsStore={settingsStore}
-          gridSizesConfig={viewport.gridSizesConfig}
-          groupWidth={viewport.groupWidth}
-          grid={grid}
-          outerPadding={grid.labelName !== "" ? GridPadding : 0}
-        />
-      ))}
+      <AnimatePresence>
+        {alertStore.data.grids.map((grid) => (
+          <Grid
+            key={`${grid.labelName}/${grid.labelValue}`}
+            alertStore={alertStore}
+            silenceFormStore={silenceFormStore}
+            settingsStore={settingsStore}
+            gridSizesConfig={viewport.gridSizesConfig}
+            groupWidth={viewport.groupWidth}
+            grid={grid}
+            outerPadding={grid.labelName !== "" ? GridPadding : 0}
+          />
+        ))}
+      </AnimatePresence>
     </React.Fragment>
   ));
 };

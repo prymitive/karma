@@ -137,10 +137,6 @@ const App = observer(
                         this.settingsStore.themeConfig.options.dark.value
                       ? ReactSelectStyles(ReactSelectColors.Dark)
                       : ReactSelectStyles(ReactSelectColors.Light),
-                  animations: {
-                    enabled: true,
-                    duration: 1000,
-                  },
                 }}
               >
                 <BodyTheme />

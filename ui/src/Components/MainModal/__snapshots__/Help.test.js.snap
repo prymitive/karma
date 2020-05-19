@@ -28,7 +28,9 @@ exports[`<Help /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"card-body my-2\\">
+    <div class=\\"card-body my-2\\"
+         style=\\"opacity:0;height:0px\\"
+    >
       <dl>
         <dt>
           <kbd>
@@ -184,7 +186,9 @@ exports[`<Help /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"card-body my-2\\">
+    <div class=\\"card-body my-2\\"
+         style=\\"opacity:0;height:0px\\"
+    >
       <dl>
         <dt>
           Match alerts based on any label
@@ -357,7 +361,9 @@ exports[`<Help /> matches snapshot 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"card-body my-2\\">
+    <div class=\\"card-body my-2\\"
+         style=\\"opacity:0;height:0px\\"
+    >
       <dl>
         <dt>
           Match alerts based on the Alertmanager instance name they were collected from

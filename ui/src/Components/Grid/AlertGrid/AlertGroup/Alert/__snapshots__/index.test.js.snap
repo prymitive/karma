@@ -2,7 +2,9 @@
 
 exports[`<Alert /> matches snapshot when inhibited 1`] = `
 "
-<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
+<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\"
+    style=\\"opacity: 0;\\"
+>
   <div>
     <div style=\\"display: inline-block; max-width: 100%;\\"
          class=\\" tooltip-trigger\\"
@@ -28,7 +30,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
           </span>
         </span>
         <span class=\\"Linkify\\">
-          <span style=\\"opacity: 1;\\">
+          <span>
             some long text
           </span>
         </span>
@@ -151,7 +153,9 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
 
 exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=false 1`] = `
 "
-<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
+<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\"
+    style=\\"opacity: 0;\\"
+>
   <div>
     <div style=\\"display: inline-block; max-width: 100%;\\"
          class=\\" tooltip-trigger\\"
@@ -177,7 +181,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
           </span>
         </span>
         <span class=\\"Linkify\\">
-          <span style=\\"opacity: 1;\\">
+          <span>
             some long text
           </span>
         </span>

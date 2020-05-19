@@ -6,7 +6,7 @@ import Moment from "react-moment";
 
 import copy from "copy-to-clipboard";
 
-import Flash from "react-reveal/Flash";
+import { motion } from "framer-motion";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
@@ -24,21 +24,34 @@ import { TooltipWrapper } from "Components/TooltipWrapper";
 import { RenderLinkAnnotation } from "Components/Grid/AlertGrid/AlertGroup/Annotation";
 import { DeleteSilence } from "./DeleteSilence";
 
+const SilenceIDCopyButtonFlashVariants = {
+  flashing: {
+    opacity: [1, 0, 1, 0, 1],
+  },
+  static: {
+    opacity: 1,
+  },
+};
+
 const SilenceIDCopyButton = ({ id }) => {
-  const [clickCount, setClickCount] = useState(0);
+  const [isFlashing, setIsFlashing] = useState(false);
+
   return (
     <TooltipWrapper title="Copy silence ID to the clipboard">
-      <Flash spy={clickCount} duration={500}>
-        <span
-          className="badge badge-secondary px-1 mr-1 components-label cursor-pointer"
-          onClick={() => {
-            copy(id);
-            setClickCount(clickCount + 1);
-          }}
-        >
-          <FontAwesomeIcon icon={faCopy} />
-        </span>
-      </Flash>
+      <motion.span
+        animate={isFlashing ? "flashing" : "static"}
+        variants={SilenceIDCopyButtonFlashVariants}
+        onAnimationComplete={() => {
+          setIsFlashing(false);
+        }}
+        className="badge badge-secondary px-1 mr-1 components-label cursor-pointer"
+        onClick={() => {
+          copy(id);
+          setIsFlashing(true);
+        }}
+      >
+        <FontAwesomeIcon icon={faCopy} />
+      </motion.span>
     </TooltipWrapper>
   );
 };
@@ -190,4 +203,4 @@ SilenceDetails.propTypes = {
   onDeleteModalClose: PropTypes.func,
 };
 
-export { SilenceDetails };
+export { SilenceDetails, SilenceIDCopyButton };

@@ -8,7 +8,7 @@ import ReactResizeDetector from "react-resize-detector";
 
 import IdleTimer from "react-idle-timer";
 
-import { Fade } from "react-reveal";
+import { motion } from "framer-motion";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -120,10 +120,7 @@ const NavBar = observer(
 
       if (settingsStore.filterBarConfig.config.autohide) {
         this.activityStatus.setIdle();
-        this.animationTimer = setTimeout(
-          this.onToggle,
-          this.context.animations.duration
-        );
+        this.animationTimer = setTimeout(this.onToggle, 1000);
       }
     };
 
@@ -162,34 +159,38 @@ const NavBar = observer(
           <div
             className={`container p-0 m-0 mw-100 ${this.activityStatus.className}`}
           >
-            <Fade top when={!this.activityStatus.idle}>
-              <nav
-                className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block ${
-                  fixedTop ? "fixed-top" : "w-100"
-                }`}
-              >
-                <ReactResizeDetector handleHeight onResize={this.onResize} />
-                <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block float-left">
-                  <OverviewModal alertStore={alertStore} />
-                  <FetchIndicator alertStore={alertStore} />
-                </span>
-                <ul className={`navbar-nav float-right d-flex ${flexClass}`}>
-                  <SilenceModal
-                    alertStore={alertStore}
-                    silenceFormStore={silenceFormStore}
-                    settingsStore={settingsStore}
-                  />
-                  <MainModal
-                    alertStore={alertStore}
-                    settingsStore={settingsStore}
-                  />
-                </ul>
-                <FilterInput
+            <motion.nav
+              initial="visible"
+              animate={this.activityStatus.idle ? "hidden" : "visible"}
+              variants={{
+                visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+                hidden: { opacity: 0, y: "-100%", transition: { duration: 1 } },
+              }}
+              className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block ${
+                fixedTop ? "fixed-top" : "w-100"
+              }`}
+            >
+              <ReactResizeDetector handleHeight onResize={this.onResize} />
+              <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block float-left">
+                <OverviewModal alertStore={alertStore} />
+                <FetchIndicator alertStore={alertStore} />
+              </span>
+              <ul className={`navbar-nav float-right d-flex ${flexClass}`}>
+                <SilenceModal
+                  alertStore={alertStore}
+                  silenceFormStore={silenceFormStore}
+                  settingsStore={settingsStore}
+                />
+                <MainModal
                   alertStore={alertStore}
                   settingsStore={settingsStore}
                 />
-              </nav>
-            </Fade>
+              </ul>
+              <FilterInput
+                alertStore={alertStore}
+                settingsStore={settingsStore}
+              />
+            </motion.nav>
           </div>
         </IdleTimer>
       );

@@ -5,13 +5,13 @@ import { shallow, mount } from "enzyme";
 
 import { advanceBy, clear } from "jest-date-mock";
 
+import { AnimatePresence } from "framer-motion";
+
 import { MockAlert, MockAlertGroup } from "__mocks__/Alerts";
-import { MockThemeContext } from "__mocks__/Theme";
 import { mockMatchMedia } from "__mocks__/matchMedia";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { ThemeContext } from "Components/Theme";
 import { GetGridElementWidth, GridSizesConfig } from "./GridSize";
 import { Grid } from "./Grid";
 import { AlertGrid } from ".";
@@ -33,8 +33,6 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
 
   window.matchMedia = mockMatchMedia({});
-
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
 });
 
 afterEach(() => {
@@ -50,11 +48,7 @@ const MountedAlertGrid = () => {
       alertStore={alertStore}
       settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
-    />,
-    {
-      wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: MockThemeContext },
-    }
+    />
   );
 };
 
@@ -107,8 +101,7 @@ const MountedGrid = () => {
       outerPadding={0}
     />,
     {
-      wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: MockThemeContext },
+      wrappingComponent: AnimatePresence,
     }
   );
 };
@@ -185,7 +178,11 @@ describe("<Grid />", () => {
     ]);
   });
 
-  it("click on the grid toggle toggles all groups", () => {
+  it("click on the grid toggle toggles all groups", async () => {
+    function sleep(period) {
+      return new Promise((resolve) => setTimeout(resolve, period));
+    }
+
     MockGroupList(10, 3);
     const tree = MountedGrid();
     const grid = MockGrid();
@@ -201,10 +198,16 @@ describe("<Grid />", () => {
     expect(tree.find("AlertGroup")).toHaveLength(10);
 
     tree.find("span.cursor-pointer").at(0).simulate("click");
+    await act(async () => {
+      await sleep(1100);
+    });
     tree.update();
     expect(tree.find("AlertGroup")).toHaveLength(0);
 
     tree.find("span.cursor-pointer").at(0).simulate("click");
+    await act(async () => {
+      await sleep(1100);
+    });
     tree.update();
     expect(tree.find("AlertGroup")).toHaveLength(10);
   });
@@ -596,7 +599,7 @@ describe("<AlertGrid />", () => {
 
     tree.find("div.components-grid-alertgrid-alertgroup").forEach((node) => {
       expect(node.prop("style")).toMatchObject({
-        width: 595,
+        width: "595px",
       });
     });
   });
@@ -630,7 +633,7 @@ describe("<AlertGrid />", () => {
 
     tree.find("div.components-grid-alertgrid-alertgroup").forEach((node) => {
       expect(node.prop("style")).toMatchObject({
-        width: 600,
+        width: "600px",
       });
     });
   });

@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
 
-import Flash from "react-reveal/Flash";
+import { motion } from "framer-motion";
 
 import { AlertStore } from "Stores/AlertStore";
 import { QueryOperators, FormatQuery } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GetClassAndStyle } from "Components/Labels/Utils";
+import { useFlashAnimation } from "Hooks/useFlashAnimation";
 
 // Same as FilteringLabel but for labels that are counters (usually @state)
 // and only renders a pill badge with the counter, it doesn't render anything
@@ -39,6 +40,8 @@ const FilteringCounterBadge = observer(
       [alertStore.filters, name, value]
     );
 
+    const [ref, animate] = useFlashAnimation(counter);
+
     if (!alwaysVisible && counter === 0) return null;
 
     const cs = GetClassAndStyle(
@@ -52,23 +55,23 @@ const FilteringCounterBadge = observer(
       <TooltipWrapper
         title={`Click to only show ${name}=${value} alerts or Alt+Click to hide them`}
       >
-        <Flash spy={counter}>
-          <span
-            className={
-              themed
-                ? cs.className
-                : [
-                    `badge-${defaultColor}`,
-                    "badge-pill components-label-with-hover",
-                    ...cs.baseClassNames,
-                  ].join(" ")
-            }
-            style={themed ? {} : cs.style}
-            onClick={handleClick}
-          >
-            {counter}
-          </span>
-        </Flash>
+        <motion.span
+          ref={ref}
+          animate={animate}
+          className={
+            themed
+              ? cs.className
+              : [
+                  `badge-${defaultColor}`,
+                  "badge-pill components-label-with-hover",
+                  ...cs.baseClassNames,
+                ].join(" ")
+          }
+          style={themed ? {} : cs.style}
+          onClick={handleClick}
+        >
+          {counter}
+        </motion.span>
       </TooltipWrapper>
     );
   }

@@ -85,20 +85,20 @@ describe("<NavBar />", () => {
 
   it("navbar includes 'fixed-top' class by default", () => {
     const tree = MountedNavbar();
-    const nav = tree.find(".navbar");
+    const nav = tree.find("nav.navbar");
     expect(nav.props().className.split(" ")).toContain("fixed-top");
   });
 
   it("navbar includes 'fixed-top' class with fixedTop=true", () => {
     const tree = MountedNavbar(true);
-    const nav = tree.find(".navbar");
+    const nav = tree.find("nav.navbar");
     expect(nav.props().className.split(" ")).toContain("fixed-top");
     expect(nav.props().className.split(" ")).not.toContain("w-100");
   });
 
   it("navbar doesn't 'fixed-top' class with fixedTop=false", () => {
     const tree = MountedNavbar(false);
-    const nav = tree.find(".navbar");
+    const nav = tree.find("nav.navbar");
     expect(nav.props().className.split(" ")).not.toContain("fixed-top");
     expect(nav.props().className.split(" ")).toContain("w-100");
   });

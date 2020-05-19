@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 
 import { useObserver } from "mobx-react";
 
+import { motion } from "framer-motion";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faVolumeMute } from "@fortawesome/free-solid-svg-icons/faVolumeMute";
 
@@ -58,7 +60,13 @@ const Alert = ({
   }
 
   return useObserver(() => (
-    <li className={classNames.join(" ")}>
+    <motion.li
+      className={classNames.join(" ")}
+      positionTransition="tween"
+      animate={{ opacity: 1 }}
+      initial={{ opacity: 0 }}
+      exit={{ opacity: 0 }}
+    >
       <div>
         {alert.annotations
           .filter((a) => a.isLink === false)
@@ -129,7 +137,7 @@ const Alert = ({
           )
         )
       )}
-    </li>
+    </motion.li>
   ));
 };
 Alert.propTypes = {

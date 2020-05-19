@@ -1,5 +1,7 @@
 import React, { FunctionComponent, ReactNode, useState } from "react";
 
+import { motion } from "framer-motion";
+
 import { ToggleIcon } from "Components/ToggleIcon";
 
 const Trigger: FunctionComponent<{ text: string; isOpen: boolean }> = ({
@@ -29,7 +31,17 @@ const Accordion: FunctionComponent<{
       >
         <Trigger text={text} isOpen={isOpen} />
       </div>
-      <div className={isOpen ? "card-body my-2" : ""}>{isOpen && content}</div>
+      <motion.div
+        initial="collapsed"
+        animate={isOpen ? "open" : "collapsed"}
+        variants={{
+          open: { opacity: 1, height: "auto" },
+          collapsed: { opacity: 0, height: 0 },
+        }}
+        className={isOpen ? "card-body my-2" : ""}
+      >
+        {isOpen && content}
+      </motion.div>
     </div>
   );
 };
