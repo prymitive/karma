@@ -30,6 +30,8 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
 
   window.matchMedia = mockMatchMedia({});
+
+  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
 });
 
 afterEach(() => {
@@ -164,66 +166,6 @@ describe("<Grid />", () => {
     tree.find("button").simulate("click");
     const alertGroups = tree.find("AlertGroup");
     expect(alertGroups).toHaveLength(80);
-  });
-
-  it("resets groupsToRender.value back to 50 if current value is more than group alerts", () => {
-    MockGroupList(100, 5);
-    const tree = MountedGrid();
-    expect(tree.find("AlertGroup")).toHaveLength(50);
-    expect(tree.instance().groupsToRender.value).toBe(50);
-
-    tree.find("button").simulate("click");
-    expect(tree.find("AlertGroup")).toHaveLength(80);
-    expect(tree.instance().groupsToRender.value).toBe(80);
-
-    MockGroupList(10, 5);
-    tree.setProps({ grid: MockGrid() });
-    expect(tree.find("AlertGroup")).toHaveLength(10);
-    expect(tree.instance().groupsToRender.value).toBe(50);
-
-    MockGroupList(100, 5);
-    tree.setProps({ grid: MockGrid() });
-    expect(tree.find("AlertGroup")).toHaveLength(50);
-    expect(tree.instance().groupsToRender.value).toBe(50);
-  });
-
-  it("calling masonryRepack() calls forcePack() on Masonry instance`", () => {
-    const tree = ShallowGrid();
-    const instance = tree.instance();
-    // it's a shallow render so we don't really have masonry mounted, fake it
-    instance.masonryComponentReference.ref = {
-      forcePack: jest.fn(),
-    };
-    instance.masonryRepack();
-    expect(instance.masonryComponentReference.ref.forcePack).toHaveBeenCalled();
-  });
-
-  it("masonryRepack() doesn't crash when masonryComponentReference.ref=false`", () => {
-    const tree = ShallowGrid();
-    const instance = tree.instance();
-    instance.masonryComponentReference.ref = false;
-    instance.masonryRepack();
-  });
-
-  it("masonryRepack() doesn't crash when masonryComponentReference.ref=null`", () => {
-    const tree = ShallowGrid();
-    const instance = tree.instance();
-    instance.masonryComponentReference.ref = null;
-    instance.masonryRepack();
-  });
-
-  it("masonryRepack() doesn't crash when masonryComponentReference.ref=undefined`", () => {
-    const tree = ShallowGrid();
-    const instance = tree.instance();
-    instance.masonryComponentReference.ref = undefined;
-    instance.masonryRepack();
-  });
-
-  it("calling storeMasonryRef() saves the ref in local store", () => {
-    const tree = ShallowGrid();
-    const instance = tree.instance();
-    instance.storeMasonryRef("foo");
-    expect(instance.masonryComponentReference.ref).toEqual("foo");
   });
 
   it("doesn't sort groups when sorting is set to 'disabled'", () => {
@@ -662,14 +604,10 @@ describe("<AlertGrid />", () => {
     const tree = MountedAlertGrid();
     tree.instance().viewport.updateWidths(1200, 1000);
     tree.update();
-    expect(tree.find("Grid")).toHaveLength(2);
+    expect(tree.find("div.components-grid")).toHaveLength(2);
     expect(tree.find("AlertGroup")).toHaveLength(20);
 
-    expect(tree.find("Grid").at(0).prop("outerPadding")).toBe(5);
-    expect(tree.find("Grid").at(1).prop("outerPadding")).toBe(5);
-    expect(
-      tree.find("Grid").at(0).find("div").at(3).prop("style")
-    ).toMatchObject({
+    expect(tree.find("div.components-grid").at(0).prop("style")).toMatchObject({
       paddingLeft: "5px",
       paddingRight: "5px",
     });
@@ -702,10 +640,10 @@ describe("<AlertGrid />", () => {
     expect(tree.find("Grid")).toHaveLength(1);
     expect(tree.find("AlertGroup")).toHaveLength(10);
 
-    expect(tree.find("Grid").at(0).prop("outerPadding")).toBe(0);
-    expect(
-      tree.find("Grid").at(0).find("div").at(1).prop("style")
-    ).toMatchObject({ paddingLeft: "0px", paddingRight: "0px" });
+    expect(tree.find("div.components-grid").at(0).prop("style")).toMatchObject({
+      paddingLeft: "0px",
+      paddingRight: "0px",
+    });
 
     tree.find("div.components-grid-alertgrid-alertgroup").forEach((node) => {
       expect(node.prop("style")).toMatchObject({
