@@ -121,12 +121,3 @@ func TestStringSliceToSHA1(t *testing.T) {
 		t.Errorf("StringSliceToSHA1() returned empty string")
 	}
 }
-
-func BenchmarkStringSliceToSHA1(b *testing.B) {
-	for _, stringSliceTest := range stringSliceTests {
-		_, err := slices.StringSliceToSHA1(stringSliceTest.array)
-		if err != nil {
-			b.Errorf("StringSliceToSHA1() returned error: %s", err)
-		}
-	}
-}

@@ -5,7 +5,6 @@ from collections import namedtuple
 import json
 import os
 import sys
-import urllib2
 
 
 Bundle = namedtuple('Bundle' , 'seq ext bundleName totalBytes files')
@@ -160,26 +159,12 @@ def summarize(diffs):
         sign=sign, totalDiff=humanize(totalDiff))
 
 
-def postComment(diffs, pr, token, owner='prymitive', repo='karma'):
-    api = 'api.github.com'
-    uri = 'https://{api}/repos/{owner}/{repo}/issues/{pr}/comments'.format(
-        api=api, owner=owner, repo=repo, pr=pr)
-
+def printDiff(diffs):
     rows = []
     for diff in diffs:
         rows.append(printBundleDiff(diff))
     summary = summarize(diffs)
-    data = '*Webpack bundle size diff*\n{summary}\n{rows}'.format(
-        summary=summary, rows='\n'.join(rows))
-    encoded = json.dumps({'body': data})
-
-    req = urllib2.Request(uri)
-    req.add_header('Authorization', 'token %s' % token)
-    req.add_header("Content-Type", "application/json")
-    try:
-        response = urllib2.urlopen(req, encoded)
-    except Exception as e:
-        print("Request to '%s' failed: %s" % (uri, e))
+    print('{summary}\n{rows}'.format(summary=summary, rows='\n'.join(rows)))
 
 
 def diffBundles(a, b):
@@ -231,24 +216,12 @@ if __name__ == '__main__':
         print('Usage: PATH1 PATH2')
         sys.exit(1)
 
-    token = os.getenv('GITHUB_TOKEN')
-    pr = os.getenv('TRAVIS_PULL_REQUEST')
     bundleA = readBundle(sys.argv[1])
     bundleB = readBundle(sys.argv[2])
 
-    if not token:
-        print('GITHUB_TOKEN env variable is missing')
-        sys.exit(1)
-    if not pr:
-        print('TRAVIS_PULL_REQUEST env variable is missing')
-        sys.exit(1)
     if not bundleA or not bundleB:
         print('Usage: PATH1 PATH2')
         sys.exit(1)
 
     diffs = diffBundles(bundleA, bundleB)
-    if diffs:
-        print('Found diffs, posting to GitHub')
-        postComment(diffs, pr, token)
-    else:
-        print('No diff found')
+    printDiff(diffs)

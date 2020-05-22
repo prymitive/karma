@@ -2,7 +2,6 @@ package models_test
 
 import (
 	"testing"
-	"time"
 
 	"github.com/prymitive/karma/internal/models"
 )
@@ -51,58 +50,5 @@ func TestAlertState(t *testing.T) {
 			t.Errorf("alert.IsSilenced() returned %t while %t was expected for alert %v",
 				testCase.alert.IsSilenced(), testCase.isSilenced, testCase.alert)
 		}
-	}
-}
-
-func BenchmarkLabelsFingerprint(b *testing.B) {
-	alert := models.Alert{
-		Labels: map[string]string{
-			"foo1":        "bar1",
-			"foo1bar1":    "545jjjssd",
-			"foo1xxxx":    "bdjjs88ff",
-			"agdfdfd":     "bar1",
-			"fossdsf3o1":  "bar11111",
-			"fdfdgfdgoo1": "bar1",
-		},
-	}
-	for n := 0; n < b.N; n++ {
-		alert.LabelsFingerprint()
-	}
-}
-
-func BenchmarkLabelsContent(b *testing.B) {
-	alert := models.Alert{
-		Annotations: models.Annotations{
-			models.Annotation{
-				Name:    "foo",
-				Value:   "bar",
-				Visible: true,
-			},
-			models.Annotation{
-				Name:    "abc",
-				Value:   "Neque porro quisquam est qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit...",
-				Visible: true,
-			},
-		},
-		Labels: map[string]string{
-			"foo1":        "bar1",
-			"foo1bar1":    "545jjjssd",
-			"foo1xxxx":    "bdjjs88ff",
-			"agdfdfd":     "bar1",
-			"fossdsf3o1":  "bar11111",
-			"fdfdgfdgoo1": "bar1",
-		},
-		State:    models.AlertStateActive,
-		StartsAt: time.Date(2015, time.March, 10, 0, 0, 0, 0, time.UTC),
-		Alertmanager: []models.AlertmanagerInstance{
-			{
-				Name:  "default",
-				State: models.AlertStateActive,
-			},
-		},
-	}
-	alert.UpdateFingerprints()
-	for n := 0; n < b.N; n++ {
-		alert.LabelsFingerprint()
 	}
 }
