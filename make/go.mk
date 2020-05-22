@@ -1,7 +1,7 @@
 include make/vars.mk
 
-ENV    := GO111MODULE=on
-GO     := $(ENV) go
+ENV   := GO111MODULE=on
+GO    := $(ENV) go
 GOBIN := $(shell go env GOBIN)
 ifeq ($(GOBIN),)
 GOBIN = $(shell go env GOPATH)/bin
@@ -28,9 +28,15 @@ test-go:
 	$(ENV) ./scripts/test-main.sh
 	$(ENV) ./scripts/gocovmerge.sh
 
+GOBENCHMARKCOUNT := 20
 .PHONY: benchmark-go
 benchmark-go:
-	$(GO) test -run=NONE -bench=. -benchmem ./...
+	@env GOMAXPROCS=2 $(GO) test -count=$(GOBENCHMARKCOUNT) -run=NONE -bench=. -benchmem ./...
+
+$(GOBIN)/benchstat: go.mod go.sum
+	@$(GO) install golang.org/x/perf/cmd/benchstat
+benchmark-compare-go: $(GOBIN)/benchstat
+	@$(GOBIN)/benchstat benchmark.txt new.txt
 
 $(GOBIN)/golangci-lint: go.mod go.sum
 	$(GO) install github.com/golangci/golangci-lint/cmd/golangci-lint

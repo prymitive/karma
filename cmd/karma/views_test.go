@@ -112,7 +112,11 @@ func mockAlerts(version string) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	apiCache = cache.New(cache.NoExpiration, 10*time.Second)
+	if apiCache == nil {
+		apiCache = cache.New(cache.NoExpiration, time.Hour)
+	} else {
+		apiCache.Flush()
+	}
 
 	mock.RegisterURL("http://localhost/metrics", version, "metrics")
 	mock.RegisterURL("http://localhost/api/v2/status", version, "api/v2/status")

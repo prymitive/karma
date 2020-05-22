@@ -13,18 +13,24 @@ func BenchmarkDedupAlerts(b *testing.B) {
 	if err := pullAlerts(); err != nil {
 		b.Error(err)
 	}
-	for n := 0; n < b.N; n++ {
-		alertmanager.DedupAlerts()
-	}
+
+	b.Run("Run", func(b *testing.B) {
+		for n := 0; n < b.N; n++ {
+			alertmanager.DedupAlerts()
+		}
+	})
 }
 
 func BenchmarkDedupAutocomplete(b *testing.B) {
 	if err := pullAlerts(); err != nil {
 		b.Error(err)
 	}
-	for n := 0; n < b.N; n++ {
-		alertmanager.DedupAutocomplete()
-	}
+
+	b.Run("Run", func(b *testing.B) {
+		for n := 0; n < b.N; n++ {
+			alertmanager.DedupAutocomplete()
+		}
+	})
 }
 
 func BenchmarkDedupColors(b *testing.B) {
@@ -38,7 +44,10 @@ func BenchmarkDedupColors(b *testing.B) {
 	if err := pullAlerts(); err != nil {
 		b.Error(err)
 	}
-	for n := 0; n < b.N; n++ {
-		alertmanager.DedupColors()
-	}
+
+	b.Run("Run", func(b *testing.B) {
+		for n := 0; n < b.N; n++ {
+			alertmanager.DedupColors()
+		}
+	})
 }
