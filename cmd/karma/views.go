@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"compress/gzip"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -19,7 +20,6 @@ import (
 	"github.com/prymitive/karma/internal/transform"
 
 	"github.com/gin-gonic/gin"
-	"github.com/klauspost/compress/zstd"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -38,19 +38,15 @@ func pong(c *gin.Context) {
 
 func compressResponse(data []byte) ([]byte, error) {
 	var b bytes.Buffer
+	// this only fails if we pass unsupported level (3 is valid)
+	gz, _ := gzip.NewWriterLevel(&b, 3)
 
-	w, err := zstd.NewWriter(&b)
+	_, err := gz.Write(data)
 	if err != nil {
-		return nil, fmt.Errorf("failed to create a compressor: %s", err.Error())
-	}
-
-	_, err = w.Write(data)
-	if err != nil {
-		w.Close()
 		return nil, fmt.Errorf("failed to compress data: %s", err.Error())
 	}
 
-	if err = w.Close(); err != nil {
+	if err = gz.Close(); err != nil {
 		return nil, fmt.Errorf("failed to close compression writer: %s", err.Error())
 	}
 
@@ -62,14 +58,11 @@ func compressResponse(data []byte) ([]byte, error) {
 
 func decompressCachedResponse(data []byte) ([]byte, error) {
 	b := bytes.NewReader(data)
-
-	r, err := zstd.NewReader(b)
+	z, err := gzip.NewReader(b)
 	if err != nil {
 		return nil, fmt.Errorf("failed to created new compression reader: %s", err.Error())
 	}
-
-	defer r.Close()
-	p, err := ioutil.ReadAll(r)
+	p, err := ioutil.ReadAll(z)
 	if err != nil {
 		return nil, fmt.Errorf("failed to decompress data: %s", err.Error())
 	}
