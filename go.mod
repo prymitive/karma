@@ -27,6 +27,7 @@ require (
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.5
+	github.com/klauspost/compress v1.10.6
 	github.com/knadh/koanf v0.10.0
 	github.com/mitchellh/mapstructure v1.3.1
 	github.com/patrickmn/go-cache v2.1.1-0.20180815053127-5633e0862627+incompatible
