@@ -36,7 +36,7 @@ benchmark-go:
 $(GOBIN)/benchstat: go.mod go.sum
 	@$(GO) install golang.org/x/perf/cmd/benchstat
 benchmark-compare-go: $(GOBIN)/benchstat
-	@$(GOBIN)/benchstat benchmark.txt new.txt
+	@$(GOBIN)/benchstat master.txt new.txt
 
 $(GOBIN)/golangci-lint: go.mod go.sum
 	$(GO) install github.com/golangci/golangci-lint/cmd/golangci-lint
