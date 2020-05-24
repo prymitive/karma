@@ -5,10 +5,13 @@ set -o pipefail
 
 git fetch origin master
 git reset --hard FETCH_HEAD
+
 make -C ui build/stats.json
 mv ui/build/stats.json master.json
+
 make clean
-git checkout -f ${TRAVIS_COMMIT}
+git reset --hard origin ${TRAVIS_PULL_REQUEST_BRANCH}
 make -C ui build/stats.json
+
 ./scripts/cra-bundle-stats-diff.py master.json ui/build/stats.json | tee diff.html
 ./scripts/pr-comment.py "Webpack bundle size diff" diff.html html
