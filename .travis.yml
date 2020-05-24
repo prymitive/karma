@@ -49,15 +49,7 @@ jobs:
         # GITHUB_TOKEN for CI Bundle size diff comments and gist uploads
         - secure: "Or5fiXZfgIsXvzoOdEprRwJ0uwUjMvxGHE3LG+h3OsIBO6WA8vgOqVOjqVHV2dgC9cSjm5A7MX52S7cDqfkQDkgnVHpVxRwDC9n9O4vnaFdCZ4nC+d18z8dikbiwgdeWQ+Wi6RhZENye1Lu5sBaAJ09wYgx9lNdEVpRaTUvUw6grSlESJZSXoxfxWWpmTyx+yPH4sxuWjZ7gCspDX9s9k4fjpY4LkhQQwLlk8wPc2hfDg48e+K1OR6sYB8uRS33Xc4fQtzElzazmaZ0fn77h5ysDgC1g/ko+E2j8HHMbZvFpzYpm1bCpIv1G/0A2ItH7gT3HsuwkDvfH/it56JTCbBWJJ+hTDeswCQNu0h797QM6jv0o5wgKpHR1t+AeM9vDe4Ds0pAXouJz0LJewNOdNvi5O1BZA9OooKc34hwTJs/zj5NwiZuOyPSMhDBGa++Vhsr9K3rPD9+97M2hac6NO6TBVWZjvqJilmkjJs+bKrl//ClBvdhDGkJNDbB+2emdD1/wzpPVJPp3IRhzeEF89IVE58qE+OQnIwtbEZ2W1ct6Ep7ZJdrXWc/VBdJB1ELfUtNmkvWFZD5IJfnb/Z5MS6iespXlV5alPQ7eZ2jNl3tn7uDaCStuQN1tO2wthNnsSU/OkfFRch/Ks3gYC5+v7n8aJMkTYFmHr4Y/xlXBsrA="
       script:
-        - git fetch origin master
-        - git reset --hard FETCH_HEAD
-        - make -C ui build/stats.json
-        - mv ui/build/stats.json master.json
-        - make clean
-        - git checkout -f ${TRAVIS_COMMIT}
-        - make -C ui build/stats.json
-        - ./scripts/cra-bundle-stats-diff.py master.json ui/build/stats.json | tee diff.html
-        - ./scripts/pr-comment.py "Webpack bundle size diff" diff.html html
+        - ./scripts/ci-diff-webpack.sh
 
     - stage: Stats
       name: Benchmark Go code compare
@@ -69,13 +61,7 @@ jobs:
       before_script:
         - travis_retry make mock-assets
       script:
-        - git fetch origin master
-        - git reset --hard FETCH_HEAD
-        - make benchmark-go | tee master.txt
-        - git checkout -f ${TRAVIS_COMMIT}
-        - make benchmark-go | tee new.txt
-        - make benchmark-compare-go | tee benchstat.txt
-        - ./scripts/pr-comment.py "Go benchmark diff" benchstat.txt noformat
+        - ./scripts/have-backend-changes.sh || ./scripts/ci-diff-benchmark-go.sh
 
     - stage: Test
       name: Test Go code
