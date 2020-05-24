@@ -224,4 +224,5 @@ if __name__ == '__main__':
         sys.exit(1)
 
     diffs = diffBundles(bundleA, bundleB)
-    printDiff(diffs)
+    if diffs:
+        printDiff(diffs)

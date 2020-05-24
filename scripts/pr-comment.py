@@ -82,6 +82,10 @@ if __name__ == '__main__':
     with open(commentFile) as f:
         comment = f.read()
 
+    if not comment:
+        print('{path} is empty, exiting'.format(path=commentFile))
+        sys.exit(0)
+
     if format == 'noformat':
         comment = '```\n{body}\n```'.format(body=comment)
 
