@@ -10,7 +10,7 @@ make -C ui build/stats.json
 mv ui/build/stats.json master.json
 
 make clean
-git reset --hard origin ${TRAVIS_PULL_REQUEST_BRANCH}
+git reset --hard ${TRAVIS_PULL_REQUEST_SHA}
 make -C ui build/stats.json
 
 ./scripts/cra-bundle-stats-diff.py master.json ui/build/stats.json | tee diff.html
