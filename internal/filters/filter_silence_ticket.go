@@ -65,7 +65,7 @@ func silenceTicketIDAutocomplete(name string, operators []string, alerts []model
 			}
 		}
 	}
-	acData := []models.Autocomplete{}
+	acData := make([]models.Autocomplete, 0, len(tokens))
 	for _, token := range tokens {
 		acData = append(acData, token)
 	}

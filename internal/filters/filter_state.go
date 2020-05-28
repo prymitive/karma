@@ -43,7 +43,7 @@ func newStateFilter() FilterT {
 }
 
 func stateAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
-	tokens := []models.Autocomplete{}
+	tokens := make([]models.Autocomplete, 0, len(operators))
 	for _, operator := range operators {
 		for _, alert := range alerts {
 			tokens = append(tokens, makeAC(

@@ -139,7 +139,7 @@ func (am *Alertmanager) pullSilences(version string) error {
 	log.Infof("[%s] Got %d silences(s) in %s", am.Name, len(silences), time.Since(start))
 
 	log.Infof("[%s] Detecting ticket links in silences (%d)", am.Name, len(silences))
-	silenceMap := map[string]models.Silence{}
+	silenceMap := make(map[string]models.Silence, len(silences))
 	for _, silence := range silences {
 		silence := silence // scopelint pin
 		silence.TicketID, silence.TicketURL = transform.DetectLinks(&silence)
@@ -226,13 +226,13 @@ func (am *Alertmanager) pullAlerts(version string) error {
 
 	}
 
-	dedupedGroups := []models.AlertGroup{}
+	dedupedGroups := make([]models.AlertGroup, 0, len(uniqueGroups))
 	colors := models.LabelsColorMap{}
 	autocompleteMap := map[string]models.Autocomplete{}
 
 	log.Infof("[%s] Processing unique alert groups (%d)", am.Name, len(uniqueGroups))
 	for _, ag := range uniqueGroups {
-		alerts := models.AlertList{}
+		alerts := make(models.AlertList, 0, len(uniqueAlerts[ag.ID]))
 		for _, alert := range uniqueAlerts[ag.ID] {
 
 			silences := map[string]*models.Silence{}
@@ -282,12 +282,12 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	}
 
 	log.Infof("[%s] Merging autocomplete data (%d)", am.Name, len(autocompleteMap))
-	autocomplete := []models.Autocomplete{}
+	autocomplete := make([]models.Autocomplete, 0, len(autocompleteMap))
 	for _, hint := range autocompleteMap {
 		autocomplete = append(autocomplete, hint)
 	}
 
-	knownLabels := []string{}
+	knownLabels := make([]string, 0, len(knownLabelsMap))
 	for key := range knownLabelsMap {
 		knownLabels = append(knownLabels, key)
 	}
@@ -355,7 +355,7 @@ func (am *Alertmanager) Silences() map[string]models.Silence {
 	am.lock.RLock()
 	defer am.lock.RUnlock()
 
-	silences := map[string]models.Silence{}
+	silences := make(map[string]models.Silence, len(am.silences))
 	for id, silence := range am.silences {
 		silences[id] = silence
 	}
@@ -379,9 +379,9 @@ func (am *Alertmanager) Colors() models.LabelsColorMap {
 	am.lock.RLock()
 	defer am.lock.RUnlock()
 
-	colors := models.LabelsColorMap{}
+	colors := make(models.LabelsColorMap, len(am.colors))
 	for k, v := range am.colors {
-		colors[k] = map[string]models.LabelColors{}
+		colors[k] = make(map[string]models.LabelColors, len(v))
 		for nk, nv := range v {
 			colors[k][nk] = nv
 		}

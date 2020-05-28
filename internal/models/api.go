@@ -104,7 +104,7 @@ type APIAlertGroup struct {
 func (ag *APIAlertGroup) dedupLabels() {
 	totalAlerts := len(ag.Alerts)
 
-	labelCounts := map[string]int{}
+	labelCounts := make(map[string]int, len(ag.Alerts))
 
 	for _, alert := range ag.Alerts {
 		for name, val := range alert.Labels {

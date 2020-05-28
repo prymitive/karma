@@ -41,16 +41,18 @@ func newClient(uri string, headers map[string]string, httpTransport http.RoundTr
 
 // Alerts will fetch all alert groups from the API
 func groups(c *client.Alertmanager, timeout time.Duration) ([]models.AlertGroup, error) {
-	ret := []models.AlertGroup{}
-
 	groups, err := c.Alertgroup.GetAlertGroups(alertgroup.NewGetAlertGroupsParamsWithTimeout(timeout))
 	if err != nil {
 		return []models.AlertGroup{}, err
 	}
+
+	ret := make([]models.AlertGroup, 0, len(groups.Payload))
+
 	for _, group := range groups.Payload {
 		g := models.AlertGroup{
 			Receiver: *group.Receiver.Name,
 			Labels:   group.Labels,
+			Alerts:   make(models.AlertList, 0, len(group.Alerts)),
 		}
 		for _, alert := range group.Alerts {
 			a := models.Alert{
@@ -75,12 +77,12 @@ func groups(c *client.Alertmanager, timeout time.Duration) ([]models.AlertGroup,
 }
 
 func silences(c *client.Alertmanager, timeout time.Duration) ([]models.Silence, error) {
-	ret := []models.Silence{}
-
 	silences, err := c.Silence.GetSilences(silence.NewGetSilencesParamsWithTimeout(timeout))
 	if err != nil {
-		return ret, err
+		return []models.Silence{}, err
 	}
+
+	ret := make([]models.Silence, 0, len(silences.Payload))
 
 	for _, s := range silences.Payload {
 		us := models.Silence{

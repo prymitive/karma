@@ -55,7 +55,7 @@ func (a Annotations) Less(i, j int) bool {
 // AnnotationsFromMap will convert a map[string]string to a list of Annotation
 // instances, it takes care of setting proper value for Visible attribute
 func AnnotationsFromMap(m map[string]string) Annotations {
-	annotations := Annotations{}
+	annotations := make(Annotations, 0, len(m))
 	for name, value := range m {
 		a := Annotation{
 			Name:    name,
