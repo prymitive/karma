@@ -53,7 +53,7 @@ func alertmanagerInstanceAutocomplete(name string, operators []string, alerts []
 			}
 		}
 	}
-	acData := []models.Autocomplete{}
+	acData := make([]models.Autocomplete, 0, len(tokens))
 	for _, token := range tokens {
 		acData = append(acData, token)
 	}

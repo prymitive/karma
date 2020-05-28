@@ -65,7 +65,7 @@ func silenceAuthorAutocomplete(name string, operators []string, alerts []models.
 			}
 		}
 	}
-	acData := []models.Autocomplete{}
+	acData := make([]models.Autocomplete, 0, len(tokens))
 	for _, token := range tokens {
 		acData = append(acData, token)
 	}

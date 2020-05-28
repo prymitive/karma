@@ -20,7 +20,7 @@ func DedupAlerts() []models.AlertGroup {
 		groups := am.Alerts()
 		for _, ag := range groups {
 			if _, found := uniqueGroups[ag.ID]; !found {
-				uniqueGroups[ag.ID] = []models.AlertGroup{}
+				uniqueGroups[ag.ID] = make([]models.AlertGroup, 0, len(groups))
 			}
 			uniqueGroups[ag.ID] = append(uniqueGroups[ag.ID], ag)
 		}
@@ -66,7 +66,7 @@ func DedupAlerts() []models.AlertGroup {
 			continue
 		}
 		ag := models.AlertGroup(agList[0])
-		ag.Alerts = models.AlertList{}
+		ag.Alerts = make(models.AlertList, 0, len(alerts))
 		for _, alert := range alerts {
 			alert := alert // scopelint pin
 			// strip labels and annotations user doesn't want to see in the UI
@@ -117,14 +117,16 @@ func DedupSilences() []models.ManagedSilence {
 	now := time.Now()
 	dedupedSilences := []models.ManagedSilence{}
 	for cluster, silenceMap := range silenceByCluster {
+		s := make([]models.ManagedSilence, 0, len(silenceMap))
 		for _, silence := range silenceMap {
 			managedSilence := models.ManagedSilence{
 				Cluster:   cluster,
 				IsExpired: silence.EndsAt.Before(now),
 				Silence:   silence,
 			}
-			dedupedSilences = append(dedupedSilences, managedSilence)
+			s = append(s, managedSilence)
 		}
+		dedupedSilences = append(dedupedSilences, s...)
 	}
 	return dedupedSilences
 }
@@ -141,7 +143,7 @@ func DedupColors() models.LabelsColorMap {
 		// map[string]map[string]LabelColors
 		for labelName, valueMap := range colors {
 			if _, found := dedupedColors[labelName]; !found {
-				dedupedColors[labelName] = map[string]models.LabelColors{}
+				dedupedColors[labelName] = make(map[string]models.LabelColors, len(valueMap))
 			}
 			for labelVal, labelColors := range valueMap {
 				if _, found := dedupedColors[labelName][labelVal]; !found {
@@ -157,7 +159,6 @@ func DedupColors() models.LabelsColorMap {
 // DedupAutocomplete returns a list of autocomplete hints merged from all
 // Alertmanager upstreams
 func DedupAutocomplete() []models.Autocomplete {
-	dedupedAutocomplete := []models.Autocomplete{}
 	uniqueAutocomplete := map[string]*models.Autocomplete{}
 
 	upstreams := GetAlertmanagers()
@@ -181,6 +182,7 @@ func DedupAutocomplete() []models.Autocomplete {
 		}
 	}
 
+	dedupedAutocomplete := make([]models.Autocomplete, 0, len(uniqueAutocomplete))
 	for _, hint := range uniqueAutocomplete {
 		dedupedAutocomplete = append(dedupedAutocomplete, *hint)
 	}
@@ -199,7 +201,7 @@ func DedupKnownLabels() []string {
 		}
 	}
 
-	flatLabels := []string{}
+	flatLabels := make([]string, 0, len(dedupedLabels))
 	for key := range dedupedLabels {
 		flatLabels = append(flatLabels, key)
 	}
@@ -221,7 +223,7 @@ func DedupKnownLabelValues(name string) []string {
 		}
 	}
 
-	flatValues := []string{}
+	flatValues := make([]string, 0, len(dedupedValues))
 	for key := range dedupedValues {
 		flatValues = append(flatValues, key)
 	}

@@ -26,7 +26,7 @@ func BuildAutocomplete(alerts []models.Alert) []models.Autocomplete {
 			}
 		}
 	}
-	acHintsSlice := []models.Autocomplete{}
+	acHintsSlice := make([]models.Autocomplete, 0, len(acHints))
 	for _, hint := range acHints {
 		acHintsSlice = append(acHintsSlice, hint)
 	}

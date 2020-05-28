@@ -39,12 +39,13 @@ func countLabel(countStore map[string]map[string]int, key string, val string) {
 }
 
 func countersToLabelStats(counters map[string]map[string]int) models.LabelNameStatsList {
-	data := models.LabelNameStatsList{}
+	data := make(models.LabelNameStatsList, 0, len(counters))
 
 	for name, valueMap := range counters {
+		values := make(models.LabelValueStatsList, 0, len(valueMap))
 		nameStats := models.LabelNameStats{
 			Name:   name,
-			Values: models.LabelValueStatsList{},
+			Values: values,
 		}
 
 		for value, hits := range valueMap {

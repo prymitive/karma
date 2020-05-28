@@ -84,7 +84,7 @@ func RegisterAlertmanager(am *Alertmanager) error {
 
 // GetAlertmanagers returns a list of all defined Alertmanager instances
 func GetAlertmanagers() []*Alertmanager {
-	ams := []*Alertmanager{}
+	ams := make([]*Alertmanager, 0, len(upstreams))
 	for _, am := range upstreams {
 		ams = append(ams, am)
 	}
