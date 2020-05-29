@@ -1,5 +1,21 @@
+const puppeteer = require("puppeteer");
+
+let browser;
+let page;
+
 describe("Demo", () => {
+  beforeAll(async () => {
+    jest.setTimeout(10000);
+
+    browser = await puppeteer.launch();
+  });
+
+  afterAll(async () => {
+    await browser.close();
+  });
+
   beforeEach(async () => {
+    page = await browser.newPage();
     await page.goto("http://karma-demo.herokuapp.com/");
     await page.waitForSelector("div.components-grid-alertgrid-alertgroup");
   });
@@ -30,7 +46,7 @@ describe("Demo", () => {
   it("opens overview modal on click", async () => {
     await page.waitForSelector("div.cursor-pointer.navbar-brand");
 
-    await expect(page).toClick("div.cursor-pointer.navbar-brand");
+    await page.click("div.cursor-pointer.navbar-brand");
 
     await page.waitForSelector("div.modal-content");
     await page.waitForSelector(".components-labelWithPercent-percent");
@@ -43,28 +59,28 @@ describe("Demo", () => {
     });
     await expect(labels.length).toBeGreaterThan(10);
 
-    await expect(page).toClick(".modal-header > button.close");
+    await page.click(".modal-header > button.close");
   });
 
   it("opens silence modal on click", async () => {
     await page.waitForSelector("#components-new-silence");
 
-    await expect(page).toClick("#components-new-silence");
+    await page.click("#components-new-silence");
 
     await page.waitForSelector("div.modal-content");
     await page.waitForSelector(".modal-body > form");
 
-    await expect(page).toClick(".modal-header > nav > button.close");
+    await page.click(".modal-header > nav > button.close");
   });
 
   it("opens settings modal on click", async () => {
     await page.waitForSelector("#components-settings");
 
-    await expect(page).toClick("#components-settings");
+    await page.click("#components-settings");
 
     await page.waitForSelector("div.modal-content");
     await page.waitForSelector(".modal-body > form.accordion");
 
-    await expect(page).toClick(".modal-header > nav > button.close");
+    await page.click(".modal-header > nav > button.close");
   });
 });
