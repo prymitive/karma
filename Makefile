@@ -6,13 +6,12 @@ include make/lint-versions.mk
 
 .PHONY: lint
 lint: lint-versions
-	make -f go.mk test
 	make -C ui lint-js
 	make -C ui lint-docs
 
 .PHONY: test
 test: lint
-	make -f go.mk test-go
+	make test-go
 	make -C ui test-js
 
 .PHONY: clean
