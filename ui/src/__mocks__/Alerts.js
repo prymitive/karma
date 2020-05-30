@@ -6,6 +6,7 @@ const MockAnnotation = (name, value, visible, isLink) => ({
 });
 
 const MockAlert = (annotations, labels, state) => ({
+  id: Math.random().toString(36),
   annotations: annotations,
   labels: labels,
   startsAt: "2018-08-14T17:36:40.017867056Z",

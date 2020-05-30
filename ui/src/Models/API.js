@@ -20,6 +20,7 @@ const APIAlertAlertmanagerState = PropTypes.exact({
 });
 
 const APIAlert = PropTypes.exact({
+  id: PropTypes.string.isRequired,
   annotations: PropTypes.arrayOf(Annotation).isRequired,
   labels: PropTypes.object.isRequired,
   startsAt: PropTypes.string.isRequired,
