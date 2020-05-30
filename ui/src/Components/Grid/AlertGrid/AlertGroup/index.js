@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { observer } from "mobx-react";
 import { observable, action, toJS } from "mobx";
 
-import hash from "object-hash";
-
 import { Fade } from "react-reveal";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -260,7 +258,7 @@ const AlertGroup = observer(
                       .slice(0, this.renderConfig.alertsToRender)
                       .map((alert) => (
                         <Alert
-                          key={hash(alert.labels)}
+                          key={alert.id}
                           group={group}
                           alert={alert}
                           showAlertmanagers={
