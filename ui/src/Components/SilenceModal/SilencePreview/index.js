@@ -1,8 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { useObserver } from "mobx-react";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
@@ -48,7 +46,7 @@ const SilencePreview = ({ alertStore, silenceFormStore }) => {
     FormatBackendURI("alerts.json?") + FormatAlertsQ(filters)
   );
 
-  return useObserver(() => (
+  return (
     <React.Fragment>
       <div className="mb-3">
         {isLoading ? (
@@ -83,7 +81,7 @@ const SilencePreview = ({ alertStore, silenceFormStore }) => {
         </button>
       </div>
     </React.Fragment>
-  ));
+  );
 };
 SilencePreview.propTypes = {
   alertStore: PropTypes.instanceOf(AlertStore).isRequired,
