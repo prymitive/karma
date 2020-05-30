@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import hash from "object-hash";
-
 import moment from "moment";
 import Moment from "react-moment";
 
@@ -139,9 +137,9 @@ const SilenceDetails = ({
               className="flex-shrink-1 flex-grow-1 mw-1p"
               style={{ minWidth: "0px" }}
             >
-              {silence.matchers.map((matcher) => (
+              {silence.matchers.map((matcher, index) => (
                 <span
-                  key={hash(matcher)}
+                  key={`${index}/${matcher.name}/${matcher.isRegex}/${matcher.value}`}
                   className="badge badge-primary px-1 mr-1 components-label"
                 >
                   {matcher.name}

@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
 
-import hash from "object-hash";
-
 import { components } from "react-select";
 
 import Creatable from "react-select/creatable";
@@ -13,12 +11,13 @@ import { FormatBackendURI } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceFormMatcher } from "Models/SilenceForm";
 import { useFetchGet } from "Hooks/useFetchGet";
+import { hashObject } from "Common/Hash";
 import { ValidationError } from "Components/ValidationError";
 import { ThemeContext } from "Components/Theme";
 import { MatchCounter } from "./MatchCounter";
 
 const GenerateHashFromMatchers = (silenceFormStore, matcher) =>
-  hash({
+  hashObject({
     alertmanagers: silenceFormStore.data.alertmanagers,
     matcher: {
       name: matcher.name,

@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 
 import { useLocalStore, useObserver } from "mobx-react";
 
-import hash from "object-hash";
-
 import { AlertStore } from "Stores/AlertStore";
 import { IsMobile } from "Common/Device";
+import { hashObject } from "Common/Hash";
 import { StaticLabel } from "Components/Labels/StaticLabel";
 import { PageSelect } from "Components/Pagination";
 
@@ -22,7 +21,7 @@ const GroupListToUniqueLabelsList = (groups) => {
         group.shared.labels,
         alert.labels
       );
-      const alertHash = hash(alertLabels);
+      const alertHash = hashObject(alertLabels);
       alerts[alertHash] = alertLabels;
     }
   }
@@ -50,9 +49,9 @@ const LabelSetList = ({ alertStore, labelsList }) => {
                 (pagination.activePage - 1) * maxPerPage,
                 pagination.activePage * maxPerPage
               )
-              .map((labels) => (
+              .map((labels, index) => (
                 <li
-                  key={hash(labels)}
+                  key={`${index}/${labels.length}`}
                   className="list-group-item px-0 pt-2 pb-1"
                 >
                   {Object.entries(labels).map(([name, value]) => (

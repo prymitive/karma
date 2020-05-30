@@ -4,8 +4,6 @@ import PropTypes from "prop-types";
 import { useObserver, useLocalStore } from "mobx-react";
 import { localStored } from "mobx-stored";
 
-import hash from "object-hash";
-
 import { Manager, Reference, Popper } from "react-popper";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -79,10 +77,10 @@ const HistoryMenu = ({
       {filters.length === 0 ? (
         <h6 className="dropdown-header text-muted text-center">Empty</h6>
       ) : (
-        filters.slice(0, maxItems).map((historyFilters) => (
+        filters.slice(0, maxItems).map((historyFilters, index) => (
           <button
             className="dropdown-item cursor-pointer px-3"
-            key={hash(historyFilters)}
+            key={`${index}/${historyFilters.length}`}
             onClick={() => {
               alertStore.filters.setFilters(historyFilters.map((f) => f.raw));
               afterClick();
