@@ -122,7 +122,8 @@ func TestDedupSharedMaps(t *testing.T) {
           "inhibitedBy": null
         }
       ],
-      "receiver": ""
+      "receiver": "",
+      "id": ""
     },
     {
       "annotations": [],
@@ -158,7 +159,8 @@ func TestDedupSharedMaps(t *testing.T) {
           "inhibitedBy": null
         }
       ],
-      "receiver": ""
+      "receiver": "",
+      "id": ""
     },
     {
       "annotations": [],
@@ -194,7 +196,8 @@ func TestDedupSharedMaps(t *testing.T) {
           "inhibitedBy": null
         }
       ],
-      "receiver": ""
+      "receiver": "",
+      "id": ""
     }
   ],
   "id": "",
