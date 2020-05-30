@@ -2,8 +2,6 @@ import { observable, action, computed, toJS } from "mobx";
 
 import throttle from "lodash.throttle";
 
-import equal from "fast-deep-equal";
-
 import qs from "qs";
 
 import moment from "moment";
@@ -403,7 +401,6 @@ class AlertStore {
     }
 
     let updates = {};
-    // update data dicts if they changed
     for (const key of [
       "colors",
       "counters",
@@ -412,13 +409,9 @@ class AlertStore {
       "upstreams",
       "receivers",
     ]) {
-      if (!equal(this.data[key], result[key])) {
-        updates[key] = result[key];
-      }
+      updates[key] = result[key];
     }
-    if (Object.keys(updates).length > 0) {
-      this.data = Object.assign(this.data, updates);
-    }
+    this.data = Object.assign(this.data, updates);
 
     // before storing new version check if we need to reload
     if (
@@ -435,9 +428,7 @@ class AlertStore {
     }
 
     // settings exported via API
-    if (!equal(this.settings.values, result.settings)) {
-      this.settings.values = result.settings;
-    }
+    this.settings.values = result.settings;
 
     this.status.setIdle();
   });
