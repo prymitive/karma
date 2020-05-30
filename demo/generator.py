@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: UTF-8 -*-
 """
 Generates alerts and sends to Alertmanager API.
@@ -32,7 +32,7 @@ import datetime
 import json
 import random
 import time
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 
 
 APIs = ["http://localhost:9093", "http://localhost:9094"]
@@ -41,15 +41,15 @@ MIN_INTERVAL = 5
 
 
 def jsonGetRequest(uri):
-    req = urllib2.Request(uri)
-    response = urllib2.urlopen(req)
+    req = urllib.request.Request(uri)
+    response = urllib.request.urlopen(req)
     return json.load(response)
 
 def jsonPostRequest(uri, data):
-    req = urllib2.Request(uri)
+    req = urllib.request.Request(uri)
     req.add_header("Content-Type", "application/json")
     try:
-        response = urllib2.urlopen(req, json.dumps(data))
+        response = urllib.request.urlopen(req, json.dumps(data).encode('utf8'))
     except Exception as e:
         print("Request to '%s' failed: %s" % (uri, e))
 
@@ -145,7 +145,7 @@ class AlwaysOnAlert(AlertGenerator):
                 self._annotations(
                     summary="Silence this alert, it's always firing",
                     repo="Repo: https://github.com/prymitive/karma")
-            ) for i in xrange(1, size)]
+            ) for i in range(1, size)]
         return _gen(10, "dev") + _gen(5, "staging") + _gen(3, "prod")
 
 
@@ -164,7 +164,7 @@ class RandomInstances(AlertGenerator):
                     dashboard="https://www.google.com/search?q="
                               "server{}".format(i),
                     repo="Link to github.com maybe")
-            ) for i in xrange(0, instances)
+            ) for i in range(0, instances)
         ]
 
 
@@ -174,7 +174,7 @@ class RandomName(AlertGenerator):
 
     def alerts(self):
         alerts = []
-        for i in xrange(0, 1):
+        for i in range(0, 1):
             throw = random.randint(0, 1000)
             alerts.append(
                 newAlert(
@@ -205,7 +205,7 @@ class LowChance(AlertGenerator):
                              severity="critical", job="random_exporter",
                              region="EU"),
                 self._annotations()
-            ) for i in xrange(0, 3)
+            ) for i in range(0, 3)
         ]
 
 
@@ -230,7 +230,7 @@ class DiskFreeLowAlert(AlertGenerator):
 
     def alerts(self):
         alerts = []
-        for i in xrange(0, 10):
+        for i in range(0, 10):
             spaceFree = throw = random.randint(0, 10)
             alerts.append(
                 newAlert(self._labels(instance="server{}".format(i),
@@ -296,7 +296,7 @@ class MixedAlerts(AlertGenerator):
                      self._annotations(
                         alertReference="https://www."
                                        "youtube.com/watch?v=dQw4w9WgXcQ")
-            ) for i in xrange(1, 9)
+            ) for i in range(1, 9)
         ]
 
     def silences(self):
@@ -340,7 +340,7 @@ class LongNameAlerts(AlertGenerator):
                              "errrrrrrrrrrrrrrrrrryyyyyyyyyyyyylllllllllooooooo"
                              "nnnnnnngggggggggggggggwwwwwwwwwwwwooooooooooooooo"
                              "rrrrrrrrrrrrrrddddddddddddddddddd")
-            ) for i in xrange(1, size)]
+            ) for i in range(1, size)]
         return _gen(5, "dev") + _gen(1, "staging") + _gen(11, "prod")
 
 
@@ -383,7 +383,7 @@ class SilencedAlertWithJiraLink(AlertGenerator):
                                   region="AF"),
                      self._annotations(
                         dashboard="https://www.atlassian.com/software/jira")
-            )  for i in xrange(1, 9)
+            )  for i in range(1, 9)
         ]
 
     def silences(self):
@@ -411,7 +411,7 @@ class PaginationTest(AlertGenerator):
                              severity="warning", job="node_exporter",
                              region="US"),
                 self._annotations(dashboard="https://example.com")
-            ) for i in xrange(0, 1000)
+            ) for i in range(0, 1000)
         ]
 
     def silences(self):
@@ -433,7 +433,7 @@ class PaginationTest(AlertGenerator):
                 "do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 " Ut enim ad minim veniam, quis nostrud exercitation ullamco "
                 "laboris nisi ut aliquip ex ea commodo consequat. "
-            ) for i in xrange(0, 20)
+            ) for i in range(0, 20)
         ]
 
 class RichAnnotations(AlertGenerator):
