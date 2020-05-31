@@ -4,14 +4,7 @@ import { shallow, mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { AlertStore } from "Stores/AlertStore";
 import { RenderNonLinkAnnotation, RenderLinkAnnotation } from ".";
-
-let alertStore;
-
-beforeEach(() => {
-  alertStore = new AlertStore([]);
-});
 
 const ShallowLinkAnnotation = () => {
   return shallow(
@@ -38,7 +31,6 @@ const MockAfterUpdate = jest.fn();
 const ShallowNonLinkAnnotation = (visible) => {
   return shallow(
     <RenderNonLinkAnnotation
-      alertStore={alertStore}
       name="foo"
       value="some long text"
       visible={visible}
@@ -50,7 +42,6 @@ const ShallowNonLinkAnnotation = (visible) => {
 const MountedNonLinkAnnotation = (visible) => {
   return mount(
     <RenderNonLinkAnnotation
-      alertStore={alertStore}
       name="foo"
       value="some long text"
       visible={visible}
@@ -62,7 +53,6 @@ const MountedNonLinkAnnotation = (visible) => {
 const MountedNonLinkAnnotationContainingLink = (visible) => {
   return mount(
     <RenderNonLinkAnnotation
-      alertStore={alertStore}
       name="foo"
       value="some long text with http://example.com link"
       visible={visible}
