@@ -30,7 +30,6 @@ const GroupFooter = ({
               value={a.value}
               visible={a.visible}
               afterUpdate={afterUpdate}
-              alertStore={alertStore}
             />
           ))}
       </div>

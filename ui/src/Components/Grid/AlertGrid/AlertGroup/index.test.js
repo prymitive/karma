@@ -70,6 +70,7 @@ const MountedAlertGroup = (afterUpdate, showAlertmanagers) => {
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
       gridLabelValue=""
+      groupWidth={420}
     />,
     {
       wrappingComponent: ThemeContext.Provider,

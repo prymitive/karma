@@ -69,7 +69,6 @@ const Alert = ({
               value={a.value}
               visible={a.visible}
               afterUpdate={afterUpdate}
-              alertStore={alertStore}
             />
           ))}
       </div>

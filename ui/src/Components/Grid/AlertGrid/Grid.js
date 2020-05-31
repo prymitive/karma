@@ -32,7 +32,7 @@ const Grid = ({
   outerPadding,
 }) => {
   const { ref, repack } = useGrid(gridSizesConfig);
-  const debouncedRepack = debounce(repack, 10);
+  const debouncedRepack = useCallback(debounce(repack, 10), [repack]);
 
   const [groupsToRender, setGroupsToRender] = useState(50);
 
@@ -115,23 +115,23 @@ const Grid = ({
         }}
       >
         {isExpanded || grid.labelName === ""
-          ? grid.alertGroups.slice(0, groupsToRender).map((group) => (
-              <AlertGroup
-                key={group.id}
-                group={group}
-                showAlertmanagers={
-                  Object.keys(alertStore.data.upstreams.clusters).length > 1
-                }
-                afterUpdate={debouncedRepack}
-                alertStore={alertStore}
-                settingsStore={settingsStore}
-                silenceFormStore={silenceFormStore}
-                style={{
-                  width: groupWidth,
-                }}
-                gridLabelValue={grid.labelValue}
-              />
-            ))
+          ? grid.alertGroups
+              .slice(0, groupsToRender)
+              .map((group) => (
+                <AlertGroup
+                  key={group.id}
+                  group={group}
+                  showAlertmanagers={
+                    Object.keys(alertStore.data.upstreams.clusters).length > 1
+                  }
+                  afterUpdate={debouncedRepack}
+                  alertStore={alertStore}
+                  settingsStore={settingsStore}
+                  silenceFormStore={silenceFormStore}
+                  groupWidth={groupWidth}
+                  gridLabelValue={grid.labelValue}
+                />
+              ))
           : []}
       </div>
       {isExpanded && grid.alertGroups.length > groupsToRender && (

@@ -337,7 +337,7 @@ describe("<AlertGrid />", () => {
       groupWidth: wrapper.instance().viewport.groupWidth,
     });
 
-    expect(tree.find("AlertGroup").at(0).props().style.width).toBe(
+    expect(tree.find("AlertGroup").at(0).props().groupWidth).toBe(
       Math.floor(innerWidth / columns)
     );
   };
@@ -419,7 +419,7 @@ describe("<AlertGrid />", () => {
       gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
       groupWidth: wrapper.instance().viewport.groupWidth,
     });
-    expect(tree.find("AlertGroup").at(0).props().style.width).toBe(1980 / 4);
+    expect(tree.find("AlertGroup").at(0).props().groupWidth).toBe(1980 / 4);
 
     // then resize and verify if column count was changed
     wrapper.instance().viewport.updateWidths(1000, 1000);
@@ -427,7 +427,7 @@ describe("<AlertGrid />", () => {
       gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
       groupWidth: wrapper.instance().viewport.groupWidth,
     });
-    expect(tree.find("AlertGroup").at(0).props().style.width).toBe(1000 / 2);
+    expect(tree.find("AlertGroup").at(0).props().groupWidth).toBe(1000 / 2);
   });
 
   it("scrollbar render doesn't resize alert groups", () => {
@@ -443,7 +443,7 @@ describe("<AlertGrid />", () => {
       gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
       groupWidth: wrapper.instance().viewport.groupWidth,
     });
-    expect(tree.find("AlertGroup").at(0).props().style.width).toBe(400);
+    expect(tree.find("AlertGroup").at(0).props().groupWidth).toBe(400);
 
     // then resize and verify if column count was changed
     wrapper.instance().viewport.updateWidths(1584, 1600);
@@ -451,7 +451,7 @@ describe("<AlertGrid />", () => {
       gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
       groupWidth: wrapper.instance().viewport.groupWidth,
     });
-    expect(tree.find("AlertGroup").at(0).props().style.width).toBe(396);
+    expect(tree.find("AlertGroup").at(0).props().groupWidth).toBe(396);
   });
 
   it("window resize event calls updateWidths", () => {
@@ -480,7 +480,7 @@ describe("<AlertGrid />", () => {
         gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
         groupWidth: wrapper.instance().viewport.groupWidth,
       });
-      results.push(tree.find("AlertGroup").at(0).props().style.width);
+      results.push(tree.find("AlertGroup").at(0).props().groupWidth);
     }
 
     expect(results).toStrictEqual([

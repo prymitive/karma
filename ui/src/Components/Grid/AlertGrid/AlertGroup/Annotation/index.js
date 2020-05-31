@@ -12,11 +12,10 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalL
 import { faSearchPlus } from "@fortawesome/free-solid-svg-icons/faSearchPlus";
 import { faSearchMinus } from "@fortawesome/free-solid-svg-icons/faSearchMinus";
 
-import { AlertStore } from "Stores/AlertStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 
 const RenderNonLinkAnnotation = observer(
-  ({ alertStore, name, value, visible, afterUpdate }) => {
+  ({ name, value, visible, afterUpdate }) => {
     const mountRef = useRef(false);
 
     useEffect(() => {
@@ -74,7 +73,6 @@ const RenderNonLinkAnnotation = observer(
   }
 );
 RenderNonLinkAnnotation.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
   name: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   visible: PropTypes.bool.isRequired,

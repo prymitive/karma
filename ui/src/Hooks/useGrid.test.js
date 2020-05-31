@@ -1,6 +1,6 @@
 import React from "react";
 
-import { renderHook, act } from "@testing-library/react-hooks";
+import { renderHook } from "@testing-library/react-hooks";
 
 import { mount } from "enzyme";
 
@@ -56,5 +56,12 @@ describe("useGrid", () => {
   it("unmounts cleanly", () => {
     const tree = mount(<Component count={4} />);
     tree.unmount();
+  });
+
+  it("repack after unmount does nothing", () => {
+    const tree = mount(<Component count={4} />);
+    const repack = tree.find("#root").props().onClick;
+    tree.unmount();
+    repack();
   });
 });

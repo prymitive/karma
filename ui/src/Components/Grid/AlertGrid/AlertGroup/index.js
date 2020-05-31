@@ -55,7 +55,7 @@ const AlertGroup = observer(
       alertStore: PropTypes.instanceOf(AlertStore).isRequired,
       settingsStore: PropTypes.instanceOf(Settings).isRequired,
       silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      style: PropTypes.object,
+      groupWidth: PropTypes.number.isRequired,
       gridLabelValue: PropTypes.string.isRequired,
     };
 
@@ -185,7 +185,7 @@ const AlertGroup = observer(
         silenceFormStore,
         alertStore,
         settingsStore,
-        style,
+        groupWidth,
         gridLabelValue,
       } = this.props;
 
@@ -221,11 +221,6 @@ const AlertGroup = observer(
         }
       }
 
-      let extraStyle = {};
-      if (this.renderConfig.isMenuOpen) {
-        extraStyle.zIndex = 100;
-      }
-
       return (
         <div
           className={`components-grid-alertgrid-alertgroup ${
@@ -233,7 +228,10 @@ const AlertGroup = observer(
               ? "components-animation-fade-appear-done"
               : ""
           }`}
-          style={{ ...style, ...extraStyle }}
+          style={{
+            width: groupWidth,
+            zIndex: this.renderConfig.isMenuOpen ? 100 : null,
+          }}
         >
           <Fade
             in={this.context.animations.in}
