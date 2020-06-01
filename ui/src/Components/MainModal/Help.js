@@ -109,7 +109,7 @@ const Help = ({ defaultIsOpen }) => (
           </FilterOperatorHelp>
         </dl>
       }
-      extraProps={{ open: true }}
+      defaultIsOpen={true}
     />
     <Accordion
       text="Filtering using alert labels"
@@ -147,7 +147,7 @@ const Help = ({ defaultIsOpen }) => (
           </QueryHelp>
         </dl>
       }
-      extraProps={{ open: defaultIsOpen }}
+      defaultIsOpen={defaultIsOpen}
     />
     <Accordion
       text="Filtering alerts using special filters"
@@ -283,7 +283,7 @@ const Help = ({ defaultIsOpen }) => (
           </QueryHelp>
         </dl>
       }
-      extraProps={{ open: defaultIsOpen }}
+      defaultIsOpen={defaultIsOpen}
     />
   </div>
 );
