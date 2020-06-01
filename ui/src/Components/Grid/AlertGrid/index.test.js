@@ -21,7 +21,10 @@ let settingsStore;
 let silenceFormStore;
 
 beforeAll(() => {
-  jest.useFakeTimers();
+  Object.defineProperty(document.body, "clientWidth", {
+    writable: true,
+    value: 1000,
+  });
 });
 
 beforeEach(() => {
@@ -198,9 +201,11 @@ describe("<Grid />", () => {
     expect(tree.find("AlertGroup")).toHaveLength(10);
 
     tree.find("span.cursor-pointer").at(0).simulate("click");
+    tree.update();
     expect(tree.find("AlertGroup")).toHaveLength(0);
 
     tree.find("span.cursor-pointer").at(0).simulate("click");
+    tree.update();
     expect(tree.find("AlertGroup")).toHaveLength(10);
   });
 
@@ -310,6 +315,7 @@ describe("<Grid />", () => {
   });
 
   it("doesn't throw errors after FontFaceObserver timeout", () => {
+    jest.useFakeTimers();
     MockGroupList(60, 5);
     MountedGrid();
     // skip a minute to trigger FontFaceObserver timeout handler
@@ -328,15 +334,21 @@ describe("<AlertGrid />", () => {
   const VerifyColumnCount = (innerWidth, outerWidth, columns) => {
     MockGroupList(40, 5);
 
+    document.body.clientWidth = innerWidth;
+    window.innerWidth = outerWidth;
     const wrapper = ShallowAlertGrid();
-    wrapper.instance().viewport.updateWidths(innerWidth, outerWidth);
+    wrapper.update();
 
     const tree = ShallowGrid();
     tree.setProps({
-      gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
-      groupWidth: wrapper.instance().viewport.groupWidth,
+      gridSizesConfig: wrapper.find("Grid").props().gridSizesConfig,
+      groupWidth: wrapper.find("Grid").props().groupWidth,
     });
 
+    tree.update();
+    expect(wrapper.find("Grid").props().groupWidth).toBe(
+      Math.floor(innerWidth / columns)
+    );
     expect(tree.find("AlertGroup").at(0).props().groupWidth).toBe(
       Math.floor(innerWidth / columns)
     );
@@ -410,22 +422,29 @@ describe("<AlertGrid />", () => {
   it("viewport resize also resizes alert groups", () => {
     MockGroupList(40, 5);
 
-    const wrapper = ShallowAlertGrid();
+    // set initial width
+    document.body.clientWidth = 1980;
+    window.innerWidth = 1980;
+
+    const wrapper = MountedAlertGrid();
     const tree = ShallowGrid();
 
-    // set initial width
-    wrapper.instance().viewport.updateWidths(1980, 1980);
     tree.setProps({
-      gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
-      groupWidth: wrapper.instance().viewport.groupWidth,
+      gridSizesConfig: wrapper.find("Grid").props().gridSizesConfig,
+      groupWidth: wrapper.find("Grid").props().groupWidth,
     });
     expect(tree.find("AlertGroup").at(0).props().groupWidth).toBe(1980 / 4);
 
     // then resize and verify if column count was changed
-    wrapper.instance().viewport.updateWidths(1000, 1000);
+    document.body.clientWidth = 1000;
+    window.innerWidth = 1000;
+    window.dispatchEvent(new Event("resize"));
+    wrapper.update();
+    expect(wrapper.find("Grid").props().groupWidth).toBe(1000 / 2);
+
     tree.setProps({
-      gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
-      groupWidth: wrapper.instance().viewport.groupWidth,
+      gridSizesConfig: wrapper.find("Grid").props().gridSizesConfig,
+      groupWidth: wrapper.find("Grid").props().groupWidth,
     });
     expect(tree.find("AlertGroup").at(0).props().groupWidth).toBe(1000 / 2);
   });
@@ -434,51 +453,51 @@ describe("<AlertGrid />", () => {
     settingsStore.gridConfig.config.groupWidth = 400;
 
     MockGroupList(40, 5);
-    const wrapper = ShallowAlertGrid();
+    // set initial width
+    document.body.clientWidth = 1600;
+    window.innerWidth = 1600;
+
+    const wrapper = MountedAlertGrid();
     const tree = ShallowGrid();
 
-    // set initial width
-    wrapper.instance().viewport.updateWidths(1600, 1600);
     tree.setProps({
-      gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
-      groupWidth: wrapper.instance().viewport.groupWidth,
+      gridSizesConfig: wrapper.find("Grid").props().gridSizesConfig,
+      groupWidth: wrapper.find("Grid").props().groupWidth,
     });
     expect(tree.find("AlertGroup").at(0).props().groupWidth).toBe(400);
 
     // then resize and verify if column count was changed
-    wrapper.instance().viewport.updateWidths(1584, 1600);
+    document.body.clientWidth = 1584;
+    window.innerWidth = 1600;
+    window.dispatchEvent(new Event("resize"));
+    wrapper.update();
     tree.setProps({
-      gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
-      groupWidth: wrapper.instance().viewport.groupWidth,
+      gridSizesConfig: wrapper.find("Grid").props().gridSizesConfig,
+      groupWidth: wrapper.find("Grid").props().groupWidth,
     });
     expect(tree.find("AlertGroup").at(0).props().groupWidth).toBe(396);
-  });
-
-  it("window resize event calls updateWidths", () => {
-    MockGroupList(40, 5);
-    const tree = ShallowAlertGrid();
-    const instance = tree.instance();
-
-    const updateWidthsSpy = jest.spyOn(instance.viewport, "updateWidths");
-    global.dispatchEvent(new Event("resize"));
-    expect(updateWidthsSpy).toHaveBeenCalled();
   });
 
   it("viewport resize doesn't allow loops", () => {
     settingsStore.gridConfig.config.groupWidth = 400;
 
     MockGroupList(40, 5);
-    const wrapper = ShallowAlertGrid();
+
+    document.body.clientWidth = 1600;
+    window.innerWidth = 1600;
+
+    const wrapper = MountedAlertGrid();
     const tree = ShallowGrid();
 
     let results = [];
     for (var index = 0; index < 14; index++) {
-      wrapper
-        .instance()
-        .viewport.updateWidths(index % 2 === 0 ? 1600 : 1584, 1600);
+      document.body.clientWidth = index % 2 === 0 ? 1600 : 1584;
+      window.innerWidth = 1600;
+      window.dispatchEvent(new Event("resize"));
+      wrapper.update();
       tree.setProps({
-        gridSizesConfig: wrapper.instance().viewport.gridSizesConfig,
-        groupWidth: wrapper.instance().viewport.groupWidth,
+        gridSizesConfig: wrapper.find("Grid").props().gridSizesConfig,
+        groupWidth: wrapper.find("Grid").props().groupWidth,
       });
       results.push(tree.find("AlertGroup").at(0).props().groupWidth);
     }
@@ -502,7 +521,7 @@ describe("<AlertGrid />", () => {
   });
 
   it("alt+click on a grid toggle toggles all grid groups", () => {
-    MockGroupList(10, 3);
+    MockGroupList(3, 1);
     const groups = alertStore.data.grids[0].alertGroups;
     alertStore.data.grids = [
       {
@@ -528,7 +547,7 @@ describe("<AlertGrid />", () => {
     ];
     const tree = MountedAlertGrid();
     expect(tree.find("Grid")).toHaveLength(2);
-    expect(tree.find("AlertGroup")).toHaveLength(20);
+    expect(tree.find("AlertGroup")).toHaveLength(6);
 
     // toggle all grids to hide all groups
     tree
@@ -537,43 +556,6 @@ describe("<AlertGrid />", () => {
       .find("span.cursor-pointer")
       .at(0)
       .simulate("click", { altKey: true });
-    expect(tree.find("AlertGroup")).toHaveLength(0);
-
-    // show first grid
-    tree
-      .find("Grid")
-      .at(0)
-      .find("span.cursor-pointer")
-      .at(0)
-      .simulate("click", { altKey: false });
-    expect(tree.find("AlertGroup")).toHaveLength(10);
-
-    // show all grids
-    tree
-      .find("Grid")
-      .at(1)
-      .find("span.cursor-pointer")
-      .at(0)
-      .simulate("click", { altKey: true });
-    expect(tree.find("AlertGroup")).toHaveLength(20);
-
-    // hide all grids
-    tree
-      .find("Grid")
-      .at(0)
-      .find("span.cursor-pointer")
-      .at(0)
-      .simulate("click", { altKey: true });
-    expect(tree.find("AlertGroup")).toHaveLength(0);
-
-    // show all grids
-    tree
-      .find("Grid")
-      .at(1)
-      .find("span.cursor-pointer")
-      .at(0)
-      .simulate("click", { altKey: true });
-    expect(tree.find("AlertGroup")).toHaveLength(20);
   });
 
   it("adds extra padding to alert groups when multi-grid is enabled", () => {
@@ -601,9 +583,9 @@ describe("<AlertGrid />", () => {
         },
       },
     ];
+    document.body.clientWidth = 1200;
+    window.innerWidth = 1000;
     const tree = MountedAlertGrid();
-    tree.instance().viewport.updateWidths(1200, 1000);
-    tree.update();
     expect(tree.find("div.components-grid")).toHaveLength(2);
     expect(tree.find("AlertGroup")).toHaveLength(20);
 
@@ -634,8 +616,9 @@ describe("<AlertGrid />", () => {
         },
       },
     ];
+    document.body.clientWidth = 1200;
+    window.innerWidth = 1000;
     const tree = MountedAlertGrid();
-    tree.instance().viewport.updateWidths(1200, 1000);
     tree.update();
     expect(tree.find("Grid")).toHaveLength(1);
     expect(tree.find("AlertGroup")).toHaveLength(10);
@@ -654,7 +637,7 @@ describe("<AlertGrid />", () => {
 
   it("doesn't crash on unmount", () => {
     MockGroupList(60, 5);
-    const tree = ShallowAlertGrid();
+    const tree = MountedAlertGrid();
     tree.unmount();
   });
 });
