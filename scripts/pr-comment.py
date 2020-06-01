@@ -41,10 +41,11 @@ def editComment(pr, token, commentID, commentName, comment):
     print('Editing a comment on {uri}'.format(uri=req.get_full_url()))
 
     try:
-        response = urllib2.urlopen(
+        urllib2.urlopen(
             req, json.dumps({"body": formatComment(commentName, comment)}))
     except Exception as e:
         print("Failed to updated comment '%s': %s" % (req.get_full_url(), e))
+        sys.exit(1)
 
 
 def postComment(pr, token, commentName, comment):
@@ -52,10 +53,23 @@ def postComment(pr, token, commentName, comment):
     print('Posting new comment to {uri}'.format(uri=req.get_full_url()))
 
     try:
-        response = urllib2.urlopen(
+        urllib2.urlopen(
             req, json.dumps({"body": formatComment(commentName, comment)}))
     except Exception as e:
         print("Failed to create a comment '%s': %s" % (req.get_full_url(), e))
+        sys.exit(1)
+
+
+def deleteComment(pr, token, commentID):
+    req = apiRequest(token, "/issues/comments/{id}".format(id=commentID))
+    req.get_method = lambda: 'DELETE'
+    print('Deleting comment on {uri}'.format(uri=req.get_full_url()))
+
+    try:
+        urllib2.urlopen(req)
+    except Exception as e:
+        print("Failed to updated comment '%s': %s" % (req.get_full_url(), e))
+        sys.exit(1)
 
 
 if __name__ == '__main__':
@@ -82,15 +96,17 @@ if __name__ == '__main__':
     with open(commentFile) as f:
         comment = f.read()
 
-    if not comment:
-        print('{path} is empty, exiting'.format(path=commentFile))
-        sys.exit(0)
-
-    if format == 'noformat':
-        comment = '```\n{body}\n```'.format(body=comment)
-
     commentID = findComment(pr, token, commentName)
-    if commentID is None:
-        postComment(pr, token, commentName, comment)
+
+    if not comment:
+        print('{path} is empty'.format(path=commentFile))
+        if commentID:
+            deleteComment(pr, token, commentID)
     else:
-        editComment(pr, token, commentID, commentName, comment)
+        if format == 'noformat':
+            comment = '```\n{body}\n```'.format(body=comment)
+
+        if commentID is None:
+            postComment(pr, token, commentName, comment)
+        else:
+            editComment(pr, token, commentID, commentName, comment)
