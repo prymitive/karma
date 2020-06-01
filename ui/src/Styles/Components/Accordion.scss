@@ -1,8 +1,8 @@
 .accordion {
-  .Collapsible.card {
+  .card {
     overflow: unset;
 
-    .Collapsible__trigger.is-open.card-header {
+    .card-header.active {
       color: $body-color;
       background-color: $accordion-active-bg;
     }
