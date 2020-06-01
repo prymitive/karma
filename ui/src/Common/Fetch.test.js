@@ -32,10 +32,10 @@ describe("Fetch", () => {
     it(`${name}: passes '{credentials: include}' to all requests`, async () => {
       const request = func("http://example.com/", {});
       await expect(request).resolves.toMatchObject({ status: 200 });
-      expect(fetchMock.lastCall()).toEqual([
-        "http://example.com/",
-        merge({}, CommonOptions, methodOptions[name]),
-      ]);
+      expect(fetchMock.lastCall()[0]).toBe("http://example.com/");
+      expect(fetchMock.lastCall()[1]).toEqual(
+        merge({}, CommonOptions, methodOptions[name])
+      );
     });
 
     it(`${name}: custom keys are merged with defaults`, async () => {
@@ -43,10 +43,10 @@ describe("Fetch", () => {
         foo: "bar",
       });
       await expect(request).resolves.toMatchObject({ status: 200 });
-      expect(fetchMock.lastCall()).toEqual([
-        "http://example.com/",
-        merge({}, CommonOptions, methodOptions[name], { foo: "bar" }),
-      ]);
+      expect(fetchMock.lastCall()[0]).toBe("http://example.com/");
+      expect(fetchMock.lastCall()[1]).toEqual(
+        merge({}, CommonOptions, methodOptions[name], { foo: "bar" })
+      );
     });
 
     it(`${name}: custom credentials are used when passed`, async () => {
@@ -55,13 +55,13 @@ describe("Fetch", () => {
         redirect: "follow",
       });
       await expect(request).resolves.toMatchObject({ status: 200 });
-      expect(fetchMock.lastCall()).toEqual([
-        "http://example.com/",
+      expect(fetchMock.lastCall()[0]).toBe("http://example.com/");
+      expect(fetchMock.lastCall()[1]).toEqual(
         merge({}, CommonOptions, methodOptions[name], {
           credentials: "none",
           redirect: "follow",
-        }),
-      ]);
+        })
+      );
     });
   }
 
