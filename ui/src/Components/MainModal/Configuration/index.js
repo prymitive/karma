@@ -18,12 +18,12 @@ const Configuration = ({ settingsStore, defaultIsOpen }) => (
     <Accordion
       text="Refresh interval"
       content={<FetchConfiguration settingsStore={settingsStore} />}
-      extraProps={{ open: true }}
+      defaultIsOpen={true}
     />
     <Accordion
       text="Filter bar configuration"
       content={<FilterBarConfiguration settingsStore={settingsStore} />}
-      extraProps={{ open: defaultIsOpen }}
+      defaultIsOpen={defaultIsOpen}
     />
     <Accordion
       text="Theme"
@@ -33,34 +33,34 @@ const Configuration = ({ settingsStore, defaultIsOpen }) => (
           <AlertGroupTitleBarColor settingsStore={settingsStore} />
         </React.Fragment>
       }
-      extraProps={{ open: defaultIsOpen }}
+      defaultIsOpen={defaultIsOpen}
     />
     <Accordion
       text="Minimal alert group width"
       content={<AlertGroupWidthConfiguration settingsStore={settingsStore} />}
-      extraProps={{ open: defaultIsOpen }}
+      defaultIsOpen={defaultIsOpen}
     />
     <Accordion
       text="Default number of alerts to show per group"
       content={<AlertGroupConfiguration settingsStore={settingsStore} />}
-      extraProps={{ open: defaultIsOpen }}
+      defaultIsOpen={defaultIsOpen}
     />
     <Accordion
       text="Default alert group display"
       content={
         <AlertGroupCollapseConfiguration settingsStore={settingsStore} />
       }
-      extraProps={{ open: defaultIsOpen }}
+      defaultIsOpen={defaultIsOpen}
     />
     <Accordion
       text="Grid sort order"
       content={<AlertGroupSortConfiguration settingsStore={settingsStore} />}
-      extraProps={{ open: defaultIsOpen }}
+      defaultIsOpen={defaultIsOpen}
     />
     <Accordion
       text="Multi-grid source label"
       content={<MultiGridConfiguration settingsStore={settingsStore} />}
-      extraProps={{ open: defaultIsOpen }}
+      defaultIsOpen={defaultIsOpen}
     />
   </form>
 );

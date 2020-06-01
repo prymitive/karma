@@ -22,8 +22,8 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
   </div>
   <div class=\\"modal-body\\">
     <form class=\\"px-3 accordion\\">
-      <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
+      <div class=\\"accordion card\\">
+        <div class=\\"card-header cursor-pointer active\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Refresh interval
@@ -47,55 +47,51 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
             </div>
           </div>
         </div>
-        <div class=\\"Collapsible__contentOuter collapse show\\"
-             style=\\"height: auto; transition: none; overflow: visible;\\"
-        >
-          <div class=\\"Collapsible__contentInner card-body my-2\\">
-            <div class=\\"form-group mb-0 text-center\\">
-              <div aria-disabled=\\"false\\"
-                   class=\\"input-range\\"
-              >
-                <span class=\\"input-range__label input-range__label--min\\">
-                  <span class=\\"input-range__label-container\\">
-                    10s
-                  </span>
+        <div class=\\"card-body my-2\\">
+          <div class=\\"form-group mb-0 text-center\\">
+            <div aria-disabled=\\"false\\"
+                 class=\\"input-range\\"
+            >
+              <span class=\\"input-range__label input-range__label--min\\">
+                <span class=\\"input-range__label-container\\">
+                  10s
                 </span>
-                <div class=\\"input-range__track input-range__track--background\\">
-                  <div style=\\"left: 0%; width: 18.181818181818183%;\\"
-                       class=\\"input-range__track input-range__track--active\\"
+              </span>
+              <div class=\\"input-range__track input-range__track--background\\">
+                <div style=\\"left: 0%; width: 18.181818181818183%;\\"
+                     class=\\"input-range__track input-range__track--active\\"
+                >
+                </div>
+                <span class=\\"input-range__slider-container\\"
+                      style=\\"position: absolute; left: 18.181818181818183%;\\"
+                >
+                  <span class=\\"input-range__label input-range__label--value\\">
+                    <span class=\\"input-range__label-container\\">
+                      30s
+                    </span>
+                  </span>
+                  <div aria-valuemax=\\"120\\"
+                       aria-valuemin=\\"10\\"
+                       aria-valuenow=\\"30\\"
+                       class=\\"input-range__slider\\"
+                       draggable=\\"false\\"
+                       role=\\"slider\\"
+                       tabindex=\\"0\\"
                   >
                   </div>
-                  <span class=\\"input-range__slider-container\\"
-                        style=\\"position: absolute; left: 18.181818181818183%;\\"
-                  >
-                    <span class=\\"input-range__label input-range__label--value\\">
-                      <span class=\\"input-range__label-container\\">
-                        30s
-                      </span>
-                    </span>
-                    <div aria-valuemax=\\"120\\"
-                         aria-valuemin=\\"10\\"
-                         aria-valuenow=\\"30\\"
-                         class=\\"input-range__slider\\"
-                         draggable=\\"false\\"
-                         role=\\"slider\\"
-                         tabindex=\\"0\\"
-                    >
-                    </div>
-                  </span>
-                </div>
-                <span class=\\"input-range__label input-range__label--max\\">
-                  <span class=\\"input-range__label-container\\">
-                    120s
-                  </span>
                 </span>
               </div>
+              <span class=\\"input-range__label input-range__label--max\\">
+                <span class=\\"input-range__label-container\\">
+                  120s
+                </span>
+              </span>
             </div>
           </div>
         </div>
       </div>
-      <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
+      <div class=\\"accordion card\\">
+        <div class=\\"card-header cursor-pointer active\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Filter bar configuration
@@ -119,32 +115,28 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
             </div>
           </div>
         </div>
-        <div class=\\"Collapsible__contentOuter collapse show\\"
-             style=\\"height: auto; transition: none; overflow: visible;\\"
-        >
-          <div class=\\"Collapsible__contentInner card-body my-2\\">
-            <div class=\\"form-group mb-0\\">
-              <div class=\\"form-check form-check-inline\\">
-                <span class=\\"custom-control custom-switch\\">
-                  <input id=\\"configuration-autohide\\"
-                         class=\\"custom-control-input\\"
-                         type=\\"checkbox\\"
-                         value
-                         checked
-                  >
-                  <label class=\\"custom-control-label cursor-pointer mr-3\\"
-                         for=\\"configuration-autohide\\"
-                  >
-                    Hide filter bar when idle
-                  </label>
-                </span>
-              </div>
+        <div class=\\"card-body my-2\\">
+          <div class=\\"form-group mb-0\\">
+            <div class=\\"form-check form-check-inline\\">
+              <span class=\\"custom-control custom-switch\\">
+                <input id=\\"configuration-autohide\\"
+                       class=\\"custom-control-input\\"
+                       type=\\"checkbox\\"
+                       value
+                       checked
+                >
+                <label class=\\"custom-control-label cursor-pointer mr-3\\"
+                       for=\\"configuration-autohide\\"
+                >
+                  Hide filter bar when idle
+                </label>
+              </span>
             </div>
           </div>
         </div>
       </div>
-      <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
+      <div class=\\"accordion card\\">
+        <div class=\\"card-header cursor-pointer active\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Theme
@@ -168,79 +160,75 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
             </div>
           </div>
         </div>
-        <div class=\\"Collapsible__contentOuter collapse show\\"
-             style=\\"height: auto; transition: none; overflow: visible;\\"
-        >
-          <div class=\\"Collapsible__contentInner card-body my-2\\">
-            <div class=\\"form-group mb-2\\">
-              <div class=\\" css-2b097c-container\\">
-                <div class=\\"react-select__control css-r5n82u-control\\">
-                  <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
-                    <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
-                      Automatic theme, follow browser preference
-                    </div>
-                    <div class=\\"css-ps6ina-Input\\">
-                      <div class=\\"react-select__input\\"
-                           style=\\"display: inline-block;\\"
+        <div class=\\"card-body my-2\\">
+          <div class=\\"form-group mb-2\\">
+            <div class=\\" css-2b097c-container\\">
+              <div class=\\"react-select__control css-r5n82u-control\\">
+                <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
+                  <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
+                    Automatic theme, follow browser preference
+                  </div>
+                  <div class=\\"css-ps6ina-Input\\">
+                    <div class=\\"react-select__input\\"
+                         style=\\"display: inline-block;\\"
+                    >
+                      <input autocapitalize=\\"none\\"
+                             autocomplete=\\"off\\"
+                             autocorrect=\\"off\\"
+                             id=\\"react-select-configuration-theme-input\\"
+                             spellcheck=\\"false\\"
+                             tabindex=\\"0\\"
+                             type=\\"text\\"
+                             aria-autocomplete=\\"list\\"
+                             style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                             value
                       >
-                        <input autocapitalize=\\"none\\"
-                               autocomplete=\\"off\\"
-                               autocorrect=\\"off\\"
-                               id=\\"react-select-configuration-theme-input\\"
-                               spellcheck=\\"false\\"
-                               tabindex=\\"0\\"
-                               type=\\"text\\"
-                               aria-autocomplete=\\"list\\"
-                               style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
-                               value
-                        >
-                        <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
-                        </div>
+                      <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
                       </div>
                     </div>
                   </div>
-                  <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
-                    <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
-                    </span>
-                    <div aria-hidden=\\"true\\"
-                         class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                </div>
+                <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
+                  <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
+                  </span>
+                  <div aria-hidden=\\"true\\"
+                       class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                  >
+                    <svg height=\\"20\\"
+                         width=\\"20\\"
+                         viewbox=\\"0 0 20 20\\"
+                         aria-hidden=\\"true\\"
+                         focusable=\\"false\\"
+                         class=\\"css-6q0nyr-Svg\\"
                     >
-                      <svg height=\\"20\\"
-                           width=\\"20\\"
-                           viewbox=\\"0 0 20 20\\"
-                           aria-hidden=\\"true\\"
-                           focusable=\\"false\\"
-                           class=\\"css-6q0nyr-Svg\\"
-                      >
-                        <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
-                        </path>
-                      </svg>
-                    </div>
+                      <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
+                      </path>
+                    </svg>
                   </div>
                 </div>
               </div>
             </div>
-            <div class=\\"form-group mb-0\\">
-              <div class=\\"form-check form-check-inline\\">
-                <span class=\\"custom-control custom-switch\\">
-                  <input id=\\"configuration-colortitlebar\\"
-                         class=\\"custom-control-input\\"
-                         type=\\"checkbox\\"
-                         value
-                  >
-                  <label class=\\"custom-control-label cursor-pointer mr-3\\"
-                         for=\\"configuration-colortitlebar\\"
-                  >
-                    Color group titlebar
-                  </label>
-                </span>
-              </div>
+          </div>
+          <div class=\\"form-group mb-0\\">
+            <div class=\\"form-check form-check-inline\\">
+              <span class=\\"custom-control custom-switch\\">
+                <input id=\\"configuration-colortitlebar\\"
+                       class=\\"custom-control-input\\"
+                       type=\\"checkbox\\"
+                       value
+                >
+                <label class=\\"custom-control-label cursor-pointer mr-3\\"
+                       for=\\"configuration-colortitlebar\\"
+                >
+                  Color group titlebar
+                </label>
+              </span>
             </div>
           </div>
         </div>
       </div>
-      <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
+      <div class=\\"accordion card\\">
+        <div class=\\"card-header cursor-pointer active\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Minimal alert group width
@@ -264,55 +252,51 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
             </div>
           </div>
         </div>
-        <div class=\\"Collapsible__contentOuter collapse show\\"
-             style=\\"height: auto; transition: none; overflow: visible;\\"
-        >
-          <div class=\\"Collapsible__contentInner card-body my-2\\">
-            <div class=\\"form-group mb-0 text-center\\">
-              <div aria-disabled=\\"false\\"
-                   class=\\"input-range\\"
-              >
-                <span class=\\"input-range__label input-range__label--min\\">
-                  <span class=\\"input-range__label-container\\">
-                    300
-                  </span>
+        <div class=\\"card-body my-2\\">
+          <div class=\\"form-group mb-0 text-center\\">
+            <div aria-disabled=\\"false\\"
+                 class=\\"input-range\\"
+            >
+              <span class=\\"input-range__label input-range__label--min\\">
+                <span class=\\"input-range__label-container\\">
+                  300
                 </span>
-                <div class=\\"input-range__track input-range__track--background\\">
-                  <div style=\\"left: 0%; width: 24%;\\"
-                       class=\\"input-range__track input-range__track--active\\"
+              </span>
+              <div class=\\"input-range__track input-range__track--background\\">
+                <div style=\\"left: 0%; width: 24%;\\"
+                     class=\\"input-range__track input-range__track--active\\"
+                >
+                </div>
+                <span class=\\"input-range__slider-container\\"
+                      style=\\"position: absolute; left: 24%;\\"
+                >
+                  <span class=\\"input-range__label input-range__label--value\\">
+                    <span class=\\"input-range__label-container\\">
+                      420
+                    </span>
+                  </span>
+                  <div aria-valuemax=\\"800\\"
+                       aria-valuemin=\\"300\\"
+                       aria-valuenow=\\"420\\"
+                       class=\\"input-range__slider\\"
+                       draggable=\\"false\\"
+                       role=\\"slider\\"
+                       tabindex=\\"0\\"
                   >
                   </div>
-                  <span class=\\"input-range__slider-container\\"
-                        style=\\"position: absolute; left: 24%;\\"
-                  >
-                    <span class=\\"input-range__label input-range__label--value\\">
-                      <span class=\\"input-range__label-container\\">
-                        420
-                      </span>
-                    </span>
-                    <div aria-valuemax=\\"800\\"
-                         aria-valuemin=\\"300\\"
-                         aria-valuenow=\\"420\\"
-                         class=\\"input-range__slider\\"
-                         draggable=\\"false\\"
-                         role=\\"slider\\"
-                         tabindex=\\"0\\"
-                    >
-                    </div>
-                  </span>
-                </div>
-                <span class=\\"input-range__label input-range__label--max\\">
-                  <span class=\\"input-range__label-container\\">
-                    800
-                  </span>
                 </span>
               </div>
+              <span class=\\"input-range__label input-range__label--max\\">
+                <span class=\\"input-range__label-container\\">
+                  800
+                </span>
+              </span>
             </div>
           </div>
         </div>
       </div>
-      <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
+      <div class=\\"accordion card\\">
+        <div class=\\"card-header cursor-pointer active\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Default number of alerts to show per group
@@ -336,55 +320,51 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
             </div>
           </div>
         </div>
-        <div class=\\"Collapsible__contentOuter collapse show\\"
-             style=\\"height: auto; transition: none; overflow: visible;\\"
-        >
-          <div class=\\"Collapsible__contentInner card-body my-2\\">
-            <div class=\\"form-group mb-0 text-center\\">
-              <div aria-disabled=\\"false\\"
-                   class=\\"input-range\\"
-              >
-                <span class=\\"input-range__label input-range__label--min\\">
-                  <span class=\\"input-range__label-container\\">
-                    1
-                  </span>
+        <div class=\\"card-body my-2\\">
+          <div class=\\"form-group mb-0 text-center\\">
+            <div aria-disabled=\\"false\\"
+                 class=\\"input-range\\"
+            >
+              <span class=\\"input-range__label input-range__label--min\\">
+                <span class=\\"input-range__label-container\\">
+                  1
                 </span>
-                <div class=\\"input-range__track input-range__track--background\\">
-                  <div style=\\"left: 0%; width: 44.44444444444444%;\\"
-                       class=\\"input-range__track input-range__track--active\\"
+              </span>
+              <div class=\\"input-range__track input-range__track--background\\">
+                <div style=\\"left: 0%; width: 44.44444444444444%;\\"
+                     class=\\"input-range__track input-range__track--active\\"
+                >
+                </div>
+                <span class=\\"input-range__slider-container\\"
+                      style=\\"position: absolute; left: 44.44444444444444%;\\"
+                >
+                  <span class=\\"input-range__label input-range__label--value\\">
+                    <span class=\\"input-range__label-container\\">
+                      5
+                    </span>
+                  </span>
+                  <div aria-valuemax=\\"10\\"
+                       aria-valuemin=\\"1\\"
+                       aria-valuenow=\\"5\\"
+                       class=\\"input-range__slider\\"
+                       draggable=\\"false\\"
+                       role=\\"slider\\"
+                       tabindex=\\"0\\"
                   >
                   </div>
-                  <span class=\\"input-range__slider-container\\"
-                        style=\\"position: absolute; left: 44.44444444444444%;\\"
-                  >
-                    <span class=\\"input-range__label input-range__label--value\\">
-                      <span class=\\"input-range__label-container\\">
-                        5
-                      </span>
-                    </span>
-                    <div aria-valuemax=\\"10\\"
-                         aria-valuemin=\\"1\\"
-                         aria-valuenow=\\"5\\"
-                         class=\\"input-range__slider\\"
-                         draggable=\\"false\\"
-                         role=\\"slider\\"
-                         tabindex=\\"0\\"
-                    >
-                    </div>
-                  </span>
-                </div>
-                <span class=\\"input-range__label input-range__label--max\\">
-                  <span class=\\"input-range__label-container\\">
-                    10
-                  </span>
                 </span>
               </div>
+              <span class=\\"input-range__label input-range__label--max\\">
+                <span class=\\"input-range__label-container\\">
+                  10
+                </span>
+              </span>
             </div>
           </div>
         </div>
       </div>
-      <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
+      <div class=\\"accordion card\\">
+        <div class=\\"card-header cursor-pointer active\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Default alert group display
@@ -408,54 +388,50 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
             </div>
           </div>
         </div>
-        <div class=\\"Collapsible__contentOuter collapse show\\"
-             style=\\"height: auto; transition: none; overflow: visible;\\"
-        >
-          <div class=\\"Collapsible__contentInner card-body my-2\\">
-            <div class=\\"form-group mb-0\\">
-              <div class=\\" css-2b097c-container\\">
-                <div class=\\"react-select__control css-r5n82u-control\\">
-                  <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
-                    <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
-                      Collapse on mobile
-                    </div>
-                    <div class=\\"css-ps6ina-Input\\">
-                      <div class=\\"react-select__input\\"
-                           style=\\"display: inline-block;\\"
+        <div class=\\"card-body my-2\\">
+          <div class=\\"form-group mb-0\\">
+            <div class=\\" css-2b097c-container\\">
+              <div class=\\"react-select__control css-r5n82u-control\\">
+                <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
+                  <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
+                    Collapse on mobile
+                  </div>
+                  <div class=\\"css-ps6ina-Input\\">
+                    <div class=\\"react-select__input\\"
+                         style=\\"display: inline-block;\\"
+                    >
+                      <input autocapitalize=\\"none\\"
+                             autocomplete=\\"off\\"
+                             autocorrect=\\"off\\"
+                             id=\\"react-select-configuration-collapse-input\\"
+                             spellcheck=\\"false\\"
+                             tabindex=\\"0\\"
+                             type=\\"text\\"
+                             aria-autocomplete=\\"list\\"
+                             style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                             value
                       >
-                        <input autocapitalize=\\"none\\"
-                               autocomplete=\\"off\\"
-                               autocorrect=\\"off\\"
-                               id=\\"react-select-configuration-collapse-input\\"
-                               spellcheck=\\"false\\"
-                               tabindex=\\"0\\"
-                               type=\\"text\\"
-                               aria-autocomplete=\\"list\\"
-                               style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
-                               value
-                        >
-                        <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
-                        </div>
+                      <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
                       </div>
                     </div>
                   </div>
-                  <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
-                    <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
-                    </span>
-                    <div aria-hidden=\\"true\\"
-                         class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                </div>
+                <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
+                  <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
+                  </span>
+                  <div aria-hidden=\\"true\\"
+                       class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                  >
+                    <svg height=\\"20\\"
+                         width=\\"20\\"
+                         viewbox=\\"0 0 20 20\\"
+                         aria-hidden=\\"true\\"
+                         focusable=\\"false\\"
+                         class=\\"css-6q0nyr-Svg\\"
                     >
-                      <svg height=\\"20\\"
-                           width=\\"20\\"
-                           viewbox=\\"0 0 20 20\\"
-                           aria-hidden=\\"true\\"
-                           focusable=\\"false\\"
-                           class=\\"css-6q0nyr-Svg\\"
-                      >
-                        <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
-                        </path>
-                      </svg>
-                    </div>
+                      <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
+                      </path>
+                    </svg>
                   </div>
                 </div>
               </div>
@@ -463,8 +439,8 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
           </div>
         </div>
       </div>
-      <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
+      <div class=\\"accordion card\\">
+        <div class=\\"card-header cursor-pointer active\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Grid sort order
@@ -488,56 +464,52 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
             </div>
           </div>
         </div>
-        <div class=\\"Collapsible__contentOuter collapse show\\"
-             style=\\"height: auto; transition: none; overflow: visible;\\"
-        >
-          <div class=\\"Collapsible__contentInner card-body my-2\\">
-            <div class=\\"form-group mb-0\\">
-              <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
-                <div class=\\"flex-shrink-0 flex-grow-1 flex-basis-auto\\">
-                  <div class=\\" css-2b097c-container\\">
-                    <div class=\\"react-select__control css-r5n82u-control\\">
-                      <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
-                        <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
-                          Use defaults from karma config file
-                        </div>
-                        <div class=\\"css-ps6ina-Input\\">
-                          <div class=\\"react-select__input\\"
-                               style=\\"display: inline-block;\\"
+        <div class=\\"card-body my-2\\">
+          <div class=\\"form-group mb-0\\">
+            <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
+              <div class=\\"flex-shrink-0 flex-grow-1 flex-basis-auto\\">
+                <div class=\\" css-2b097c-container\\">
+                  <div class=\\"react-select__control css-r5n82u-control\\">
+                    <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
+                      <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
+                        Use defaults from karma config file
+                      </div>
+                      <div class=\\"css-ps6ina-Input\\">
+                        <div class=\\"react-select__input\\"
+                             style=\\"display: inline-block;\\"
+                        >
+                          <input autocapitalize=\\"none\\"
+                                 autocomplete=\\"off\\"
+                                 autocorrect=\\"off\\"
+                                 id=\\"react-select-configuration-sort-order-input\\"
+                                 spellcheck=\\"false\\"
+                                 tabindex=\\"0\\"
+                                 type=\\"text\\"
+                                 aria-autocomplete=\\"list\\"
+                                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                                 value
                           >
-                            <input autocapitalize=\\"none\\"
-                                   autocomplete=\\"off\\"
-                                   autocorrect=\\"off\\"
-                                   id=\\"react-select-configuration-sort-order-input\\"
-                                   spellcheck=\\"false\\"
-                                   tabindex=\\"0\\"
-                                   type=\\"text\\"
-                                   aria-autocomplete=\\"list\\"
-                                   style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
-                                   value
-                            >
-                            <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
-                            </div>
+                          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
                           </div>
                         </div>
                       </div>
-                      <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
-                        <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
-                        </span>
-                        <div aria-hidden=\\"true\\"
-                             class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                    </div>
+                    <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
+                      <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
+                      </span>
+                      <div aria-hidden=\\"true\\"
+                           class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                      >
+                        <svg height=\\"20\\"
+                             width=\\"20\\"
+                             viewbox=\\"0 0 20 20\\"
+                             aria-hidden=\\"true\\"
+                             focusable=\\"false\\"
+                             class=\\"css-6q0nyr-Svg\\"
                         >
-                          <svg height=\\"20\\"
-                               width=\\"20\\"
-                               viewbox=\\"0 0 20 20\\"
-                               aria-hidden=\\"true\\"
-                               focusable=\\"false\\"
-                               class=\\"css-6q0nyr-Svg\\"
-                          >
-                            <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
-                            </path>
-                          </svg>
-                        </div>
+                          <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
+                          </path>
+                        </svg>
                       </div>
                     </div>
                   </div>
@@ -547,8 +519,8 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
           </div>
         </div>
       </div>
-      <div class=\\"Collapsible card\\">
-        <div class=\\"Collapsible__trigger is-open  card-header cursor-pointer\\">
+      <div class=\\"accordion card\\">
+        <div class=\\"card-header cursor-pointer active\\">
           <div class=\\"d-flex flex-row justify-content-between\\">
             <div>
               Multi-grid source label
@@ -572,74 +544,70 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
             </div>
           </div>
         </div>
-        <div class=\\"Collapsible__contentOuter collapse show\\"
-             style=\\"height: auto; transition: none; overflow: visible;\\"
-        >
-          <div class=\\"Collapsible__contentInner card-body my-2\\">
-            <div class=\\"form-group mb-0\\">
-              <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
-                <div class=\\"flex-shrink-0 flex-grow-1 flex-basis-auto mx-0 mx-lg-1 mt-1 mt-lg-0\\">
-                  <div class=\\" css-2b097c-container\\">
-                    <div class=\\"react-select__control css-r5n82u-control\\">
-                      <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
-                        <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
-                          Disable multi-grid
-                        </div>
-                        <div class=\\"css-ps6ina-Input\\">
-                          <div class=\\"react-select__input\\"
-                               style=\\"display: inline-block;\\"
+        <div class=\\"card-body my-2\\">
+          <div class=\\"form-group mb-0\\">
+            <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
+              <div class=\\"flex-shrink-0 flex-grow-1 flex-basis-auto mx-0 mx-lg-1 mt-1 mt-lg-0\\">
+                <div class=\\" css-2b097c-container\\">
+                  <div class=\\"react-select__control css-r5n82u-control\\">
+                    <div class=\\"react-select__value-container react-select__value-container--has-value css-1ne8613-ValueContainer\\">
+                      <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
+                        Disable multi-grid
+                      </div>
+                      <div class=\\"css-ps6ina-Input\\">
+                        <div class=\\"react-select__input\\"
+                             style=\\"display: inline-block;\\"
+                        >
+                          <input autocapitalize=\\"none\\"
+                                 autocomplete=\\"off\\"
+                                 autocorrect=\\"off\\"
+                                 id=\\"react-select-configuration-grid-label-input\\"
+                                 spellcheck=\\"false\\"
+                                 tabindex=\\"0\\"
+                                 type=\\"text\\"
+                                 aria-autocomplete=\\"list\\"
+                                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                                 value
                           >
-                            <input autocapitalize=\\"none\\"
-                                   autocomplete=\\"off\\"
-                                   autocorrect=\\"off\\"
-                                   id=\\"react-select-configuration-grid-label-input\\"
-                                   spellcheck=\\"false\\"
-                                   tabindex=\\"0\\"
-                                   type=\\"text\\"
-                                   aria-autocomplete=\\"list\\"
-                                   style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
-                                   value
-                            >
-                            <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
-                            </div>
+                          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
                           </div>
                         </div>
                       </div>
-                      <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
-                        <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
-                        </span>
-                        <div aria-hidden=\\"true\\"
-                             class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                    </div>
+                    <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
+                      <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
+                      </span>
+                      <div aria-hidden=\\"true\\"
+                           class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                      >
+                        <svg height=\\"20\\"
+                             width=\\"20\\"
+                             viewbox=\\"0 0 20 20\\"
+                             aria-hidden=\\"true\\"
+                             focusable=\\"false\\"
+                             class=\\"css-6q0nyr-Svg\\"
                         >
-                          <svg height=\\"20\\"
-                               width=\\"20\\"
-                               viewbox=\\"0 0 20 20\\"
-                               aria-hidden=\\"true\\"
-                               focusable=\\"false\\"
-                               class=\\"css-6q0nyr-Svg\\"
-                          >
-                            <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
-                            </path>
-                          </svg>
-                        </div>
+                          <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
+                          </path>
+                        </svg>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class=\\"flex-shrink-1 flex-grow-0 form-check form-check-inline flex-basis-auto mt-1 mt-lg-0 ml-0 ml-lg-1 mr-0\\">
-                  <span class=\\"custom-control custom-switch\\">
-                    <input id=\\"configuration-multigrid-sort-reverse\\"
-                           class=\\"custom-control-input\\"
-                           type=\\"checkbox\\"
-                           value
-                    >
-                    <label class=\\"custom-control-label cursor-pointer mr-3\\"
-                           for=\\"configuration-multigrid-sort-reverse\\"
-                    >
-                      Reverse order
-                    </label>
-                  </span>
-                </div>
+              </div>
+              <div class=\\"flex-shrink-1 flex-grow-0 form-check form-check-inline flex-basis-auto mt-1 mt-lg-0 ml-0 ml-lg-1 mr-0\\">
+                <span class=\\"custom-control custom-switch\\">
+                  <input id=\\"configuration-multigrid-sort-reverse\\"
+                         class=\\"custom-control-input\\"
+                         type=\\"checkbox\\"
+                         value
+                  >
+                  <label class=\\"custom-control-label cursor-pointer mr-3\\"
+                         for=\\"configuration-multigrid-sort-reverse\\"
+                  >
+                    Reverse order
+                  </label>
+                </span>
               </div>
             </div>
           </div>
