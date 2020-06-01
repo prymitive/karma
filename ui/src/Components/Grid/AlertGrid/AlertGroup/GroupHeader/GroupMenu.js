@@ -130,9 +130,7 @@ const GroupMenu = ({
               onClick={collapse.toggle}
               className={`${
                 themed ? "text-white" : "text-muted"
-              } cursor-pointer badge pl-0 pr-3 pr-sm-2 components-label mr-0 components-grid-alertgroup-${
-                group.id
-              }`}
+              } cursor-pointer badge pl-0 pr-3 pr-sm-2 components-label mr-0`}
               data-toggle="dropdown"
             >
               <FontAwesomeIcon icon={faEllipsisV} />

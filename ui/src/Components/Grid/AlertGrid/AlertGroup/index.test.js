@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
@@ -31,8 +32,6 @@ const MockGroup = (groupName) => {
 let originalInnerWidth;
 
 beforeAll(() => {
-  jest.useFakeTimers();
-
   originalInnerWidth = global.innerWidth;
 });
 
@@ -60,12 +59,17 @@ const MockAlerts = (alertCount) => {
   }
 };
 
-const MountedAlertGroup = (afterUpdate, showAlertmanagers) => {
+const MountedAlertGroup = (
+  afterUpdate,
+  showAlertmanagers,
+  initialAlertsToRender
+) => {
   return mount(
     <AlertGroup
       afterUpdate={afterUpdate}
       group={group}
       showAlertmanagers={showAlertmanagers}
+      initialAlertsToRender={initialAlertsToRender}
       settingsStore={settingsStore}
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
@@ -90,8 +94,6 @@ const ValidateCollapse = (
 
   MockAlerts(3);
   const tree = MountedAlertGroup(jest.fn(), false);
-  const alertGroup = tree.find("AlertGroup");
-  expect(alertGroup.instance().collapse.value).toBe(shouldBeCollapsed);
   expect(tree.find("Alert")).toHaveLength(shouldBeCollapsed ? 0 : 3);
 };
 
@@ -102,7 +104,7 @@ describe("<AlertGroup />", () => {
     tree.unmount();
   });
 
-  it("appends components-animation-fade-appear-done class after 1s", () => {
+  it("appends components-animation-fade-appear-done class after first mount", () => {
     MockAlerts(5);
     const tree = MountedAlertGroup(jest.fn(), true);
     expect(
@@ -110,9 +112,7 @@ describe("<AlertGroup />", () => {
         .find("div.components-grid-alertgrid-alertgroup")
         .hasClass("components-animation-fade-appear-done")
     ).toBe(false);
-
-    tree.instance().renderConfig.setAnimationDone();
-    tree.update();
+    tree.setProps({});
     expect(
       tree
         .find("div.components-grid-alertgrid-alertgroup")
@@ -150,10 +150,7 @@ describe("<AlertGroup />", () => {
   it("only renders titlebar when collapsed", () => {
     MockAlerts(10);
     const tree = MountedAlertGroup(jest.fn(), false);
-    const alertGroup = tree.find("AlertGroup");
-    alertGroup.instance().collapse.toggle();
-    expect(alertGroup.instance().collapse.value).toBe(true);
-    tree.update();
+    tree.find("span.badge.cursor-pointer").at(1).simulate("click");
     expect(tree.find("Alert")).toHaveLength(0);
     expect(tree.find("ul.list-group")).toHaveLength(0);
   });
@@ -242,13 +239,7 @@ const ValidateLoadButtonAction = (
   alertsToRenderBeforeClick
 ) => {
   MockAlerts(totalAlerts);
-  const tree = MountedAlertGroup(jest.fn(), false);
-  if (alertsToRenderBeforeClick !== undefined) {
-    tree
-      .find("AlertGroup")
-      .instance().renderConfig.alertsToRender = alertsToRenderBeforeClick;
-    tree.update();
-  }
+  const tree = MountedAlertGroup(jest.fn(), false, alertsToRenderBeforeClick);
   const loadMore = tree.find("button").at(buttonIndex);
   expect(loadMore.html()).toMatch(iconMatch);
   loadMore.simulate("click");
@@ -261,16 +252,13 @@ describe("<AlertGroup /> renderConfig", () => {
     expect(settingsStore.alertGroupConfig.config.defaultRenderCount).toBe(5);
   });
 
-  it("renderConfig.alertsToRender should be 5 by default", () => {
-    const tree = MountedAlertGroup(jest.fn(), false).find("AlertGroup");
-    expect(tree.instance().renderConfig.alertsToRender).toBe(5);
-  });
-
-  it("renders only up to renderConfig.alertsToRender alerts", () => {
+  it("renders only up to settingsStore.alertGroupConfig.config.defaultRenderCount alerts", () => {
     MockAlerts(50);
     const tree = MountedAlertGroup(jest.fn(), false).find("AlertGroup");
     const alerts = tree.find("Alert");
-    expect(alerts).toHaveLength(tree.instance().renderConfig.alertsToRender);
+    expect(alerts).toHaveLength(
+      settingsStore.alertGroupConfig.config.defaultRenderCount
+    );
   });
 
   it("load buttons are not rendered for 1 alert", () => {
@@ -321,15 +309,18 @@ describe("<AlertGroup /> renderConfig", () => {
     ValidateLoadButtonAction(25, 1, /fa-plus/, 22, 17);
   });
 
-  it("uses 'z-index: 100' style after setIsMenuOpen() is called on any Alert", () => {
+  it("uses 'z-index: 100' style after setIsMenuOpen() is called on any Alert", async () => {
+    const promise = Promise.resolve();
     MockAlerts(5);
     const tree = MountedAlertGroup(jest.fn(), false);
-    const instance = tree.find("AlertGroup").instance();
 
-    expect(instance.renderConfig.isMenuOpen).toBe(false);
-
-    tree.find("Alert").at(0).props().setIsMenuOpen(true);
-    expect(instance.renderConfig.isMenuOpen).toBe(true);
+    tree
+      .find("Alert")
+      .at(0)
+      .find("span.badge-secondary.cursor-pointer")
+      .at(0)
+      .simulate("click");
+    await act(() => promise);
     tree.update();
     expect(
       tree.find(".components-grid-alertgrid-alertgroup").at(0).props().style
@@ -337,15 +328,13 @@ describe("<AlertGroup /> renderConfig", () => {
     ).toEqual(100);
   });
 
-  it("uses 'z-index: 100' style after setIsMenuOpen() is called on AlertGroup header menu", () => {
+  it("uses 'z-index: 100' style after setIsMenuOpen() is called on AlertGroup header menu", async () => {
+    const promise = Promise.resolve();
     MockAlerts(5);
     const tree = MountedAlertGroup(jest.fn(), false);
-    const instance = tree.find("AlertGroup").instance();
 
-    expect(instance.renderConfig.isMenuOpen).toBe(false);
-
-    tree.find("GroupHeader").at(0).props().setIsMenuOpen(true);
-    expect(instance.renderConfig.isMenuOpen).toBe(true);
+    tree.find("span.cursor-pointer").at(0).simulate("click");
+    await act(() => promise);
     tree.update();
     expect(
       tree.find(".components-grid-alertgrid-alertgroup").at(0).props().style

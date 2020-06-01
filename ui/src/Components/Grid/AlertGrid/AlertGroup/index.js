@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import PropTypes from "prop-types";
 
-import { observer } from "mobx-react";
-import { observable, action, toJS } from "mobx";
+import { toJS } from "mobx";
+import { useObserver, useLocalStore } from "mobx-react";
 
 import { Fade } from "react-reveal";
 
@@ -46,273 +46,232 @@ const AllAlertsAreUsingSameAlertmanagers = (alerts) => {
   );
 };
 
-const AlertGroup = observer(
-  class AlertGroup extends Component {
-    static propTypes = {
-      afterUpdate: PropTypes.func.isRequired,
-      group: APIGroup.isRequired,
-      showAlertmanagers: PropTypes.bool.isRequired,
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      groupWidth: PropTypes.number.isRequired,
-      gridLabelValue: PropTypes.string.isRequired,
-    };
+const AlertGroup = ({
+  group,
+  showAlertmanagers,
+  afterUpdate,
+  silenceFormStore,
+  alertStore,
+  settingsStore,
+  groupWidth,
+  gridLabelValue,
+  initialAlertsToRender,
+}) => {
+  const defaultRenderCount = toJS(
+    settingsStore.alertGroupConfig.config.defaultRenderCount
+  );
 
-    constructor(props) {
-      super(props);
+  const renderConfig = useLocalStore(() => ({
+    alertsToRender: initialAlertsToRender || defaultRenderCount,
+    isMenuOpen: false,
+    setIsMenuOpen(val) {
+      this.isMenuOpen = val;
+    },
+  }));
 
-      const { settingsStore } = props;
+  const collapse = useLocalStore(() => ({
+    value: DefaultDetailsCollapseValue(settingsStore),
+    toggle() {
+      this.value = !this.value;
+    },
+    set(value) {
+      this.value = value;
+    },
+  }));
 
-      this.defaultRenderCount = toJS(
-        settingsStore.alertGroupConfig.config.defaultRenderCount
-      );
+  // Used to calculate step size when loading more alerts.
+  // Step is calculated from the excesive alert count
+  // (what's > defaultRenderCount) by dividing it into 5 clicks.
+  // Don't use step lower than 5, too much clicking if we have a group of 9:
+  // * we'll show initially 5
+  // * step would be 1
+  // * 4 extra clicks to see the entire group
+  // but ensure that step wouldn't push us above totalSize
+  // With 9 alerts and rendering 5 initially we want to show extra 9 after one
+  // click, and when user clicks showLess we want to go back to 5.
+  const getStepSize = (totalSize) => {
+    const val = Math.min(
+      Math.max(Math.round((totalSize - defaultRenderCount) / 5), 5),
+      totalSize - defaultRenderCount
+    );
+    return val;
+  };
 
-      this.renderConfig = observable(
-        {
-          alertsToRender: this.defaultRenderCount,
-          isMenuOpen: false,
-          animationDone: false,
-          setIsMenuOpen(val) {
-            this.isMenuOpen = val;
-          },
-          setAnimationDone() {
-            this.animationDone = true;
-          },
-        },
-        {
-          setIsMenuOpen: action.bound,
-          setAnimationDone: action.bound,
-        }
-      );
+  const loadMore = () => {
+    const step = getStepSize(group.alerts.length);
 
-      // store collapse state, alert groups can be collapsed to only show
-      // the header, this is controlled by UI element on the header itself, so
-      // this observable needs to be passed down to it
-      this.collapse = observable(
-        {
-          value: DefaultDetailsCollapseValue(settingsStore),
-          toggle() {
-            this.value = !this.value;
-          },
-          set(value) {
-            this.value = value;
-          },
-        },
-        {
-          toggle: action.bound,
-          set: action,
-        },
-        { name: "Collpase toggle" }
-      );
-    }
+    // show cur+step, but not more that total alert count
+    renderConfig.alertsToRender = Math.min(
+      renderConfig.alertsToRender + step,
+      group.alerts.length
+    );
+  };
 
-    loadMore = action(() => {
-      const { group } = this.props;
+  const loadLess = () => {
+    const step = getStepSize(group.alerts.length);
 
-      const step = this.getStepSize(group.alerts.length);
+    // show cur-step, but not less than 1
+    renderConfig.alertsToRender = Math.max(
+      renderConfig.alertsToRender - step,
+      1
+    );
+  };
 
-      // show cur+step, but not more that total alert count
-      this.renderConfig.alertsToRender = Math.min(
-        this.renderConfig.alertsToRender + step,
-        group.alerts.length
-      );
-    });
-
-    loadLess = action(() => {
-      const { group } = this.props;
-
-      const step = this.getStepSize(group.alerts.length);
-
-      // show cur-step, but not less than 1
-      this.renderConfig.alertsToRender = Math.max(
-        this.renderConfig.alertsToRender - step,
-        1
-      );
-    });
-
-    // Used to calculate step size when loading more alerts.
-    // Step is calculated from the excesive alert count
-    // (what's > defaultRenderCount) by dividing it into 5 clicks.
-    // Don't use step lower than 5, too much clicking if we have a group of 9:
-    // * we'll show initially 5
-    // * step would be 1
-    // * 4 extra clicks to see the entire group
-    // but ensure that step wouldn't push us above totalSize
-    // With 9 alerts and rendering 5 initially we want to show extra 9 after one
-    // click, and when user clicks showLess we want to go back to 5.
-    getStepSize(totalSize) {
-      const val = Math.min(
-        Math.max(Math.round((totalSize - this.defaultRenderCount) / 5), 5),
-        totalSize - this.defaultRenderCount
-      );
-      return val;
-    }
-
-    onAlertGroupCollapseEvent = (event) => {
-      const { gridLabelValue } = this.props;
-
+  const onAlertGroupCollapseEvent = useCallback(
+    (event) => {
       if (event.detail.gridLabelValue === gridLabelValue) {
-        this.collapse.set(event.detail.value);
+        collapse.set(event.detail.value);
       }
-    };
+    },
+    [collapse, gridLabelValue]
+  );
 
-    componentDidMount() {
-      window.addEventListener(
-        "alertGroupCollapse",
-        this.onAlertGroupCollapseEvent
-      );
-    }
-
-    componentDidUpdate() {
-      // whenever grid component re-renders we need to ensure that grid elements
-      // are packed correctly
-      this.props.afterUpdate();
-    }
-
-    componentWillUnmount() {
+  useEffect(() => {
+    window.addEventListener("alertGroupCollapse", onAlertGroupCollapseEvent);
+    return () => {
       window.removeEventListener(
         "alertGroupCollapse",
-        this.onAlertGroupCollapseEvent
+        onAlertGroupCollapseEvent
       );
-    }
+    };
+  }, [onAlertGroupCollapseEvent]);
 
-    render() {
-      const {
-        group,
-        showAlertmanagers,
-        afterUpdate,
-        silenceFormStore,
-        alertStore,
-        settingsStore,
-        groupWidth,
-        gridLabelValue,
-      } = this.props;
+  useEffect(() => {
+    afterUpdate();
+  });
 
-      let footerAlertmanagers = [];
-      let showAlertmanagersInFooter = false;
+  let footerAlertmanagers = [];
+  let showAlertmanagersInFooter = false;
 
-      // There's no need to render @alertmanager labels if there's only 1
-      // alertmanager upstream
-      if (showAlertmanagers) {
-        // Decide if we show @alertmanager label in footer or for every alert
-        // we show it in the footer only if every alert has the same set of
-        // alertmanagers (and there's > 1 alert to show, there's no footer for 1)
-        showAlertmanagersInFooter =
-          group.alerts.length > 1 &&
-          AllAlertsAreUsingSameAlertmanagers(group.alerts);
-        if (showAlertmanagersInFooter) {
-          footerAlertmanagers = group.alerts[0].alertmanager.map(
-            (am) => am.name
-          );
-        }
-      }
-
-      let themedCounters = true;
-      let cardBackgroundClass = "bg-light";
-      if (settingsStore.alertGroupConfig.config.colorTitleBar) {
-        const stateList = Object.entries(group.stateCount)
-          .filter(([k, v]) => v !== 0)
-          .map(([k, _]) => k);
-        if (stateList.length === 1) {
-          const state = stateList.pop();
-          cardBackgroundClass = BackgroundClassMap[state];
-          themedCounters = false;
-        }
-      }
-
-      return (
-        <div
-          className={`components-grid-alertgrid-alertgroup ${
-            this.renderConfig.animationDone
-              ? "components-animation-fade-appear-done"
-              : ""
-          }`}
-          style={{
-            width: groupWidth,
-            zIndex: this.renderConfig.isMenuOpen ? 100 : null,
-          }}
-        >
-          <Fade
-            in={this.context.animations.in}
-            duration={this.context.animations.duration}
-            wait={this.context.animations.duration}
-            onReveal={this.renderConfig.setAnimationDone}
-          >
-            <div className={`card ${cardBackgroundClass}`}>
-              <GroupHeader
-                collapseStore={this.collapse}
-                group={group}
-                alertStore={alertStore}
-                silenceFormStore={silenceFormStore}
-                themedCounters={themedCounters}
-                setIsMenuOpen={this.renderConfig.setIsMenuOpen}
-                gridLabelValue={gridLabelValue}
-              />
-              {this.collapse.value ? null : (
-                <div className="card-body px-2 py-1 components-grid-alertgrid-card">
-                  <ul className="list-group">
-                    {group.alerts
-                      .slice(0, this.renderConfig.alertsToRender)
-                      .map((alert) => (
-                        <Alert
-                          key={alert.id}
-                          group={group}
-                          alert={alert}
-                          showAlertmanagers={
-                            showAlertmanagers && !showAlertmanagersInFooter
-                          }
-                          showReceiver={
-                            alertStore.data.receivers.length > 1 &&
-                            group.alerts.length === 1
-                          }
-                          afterUpdate={afterUpdate}
-                          alertStore={alertStore}
-                          silenceFormStore={silenceFormStore}
-                          setIsMenuOpen={this.renderConfig.setIsMenuOpen}
-                        />
-                      ))}
-                    {group.alerts.length > this.defaultRenderCount ? (
-                      <li className="list-group-item border-0 p-0 text-center bg-transparent">
-                        <LoadButton
-                          icon={faMinus}
-                          action={this.loadLess}
-                          tooltip="Show fewer alerts in this group"
-                        />
-                        <small className="text-muted mx-2">
-                          {Math.min(
-                            this.renderConfig.alertsToRender,
-                            group.alerts.length
-                          )}
-                          {" of "}
-                          {group.alerts.length}
-                        </small>
-                        <LoadButton
-                          icon={faPlus}
-                          action={this.loadMore}
-                          tooltip="Show more alerts in this group"
-                        />
-                      </li>
-                    ) : null}
-                  </ul>
-                </div>
-              )}
-              {this.collapse.value === false && group.alerts.length > 1 ? (
-                <GroupFooter
-                  group={group}
-                  alertmanagers={footerAlertmanagers}
-                  afterUpdate={afterUpdate}
-                  alertStore={alertStore}
-                  silenceFormStore={silenceFormStore}
-                />
-              ) : null}
-            </div>
-          </Fade>
-        </div>
-      );
+  // There's no need to render @alertmanager labels if there's only 1
+  // alertmanager upstream
+  if (showAlertmanagers) {
+    // Decide if we show @alertmanager label in footer or for every alert
+    // we show it in the footer only if every alert has the same set of
+    // alertmanagers (and there's > 1 alert to show, there's no footer for 1)
+    showAlertmanagersInFooter =
+      group.alerts.length > 1 &&
+      AllAlertsAreUsingSameAlertmanagers(group.alerts);
+    if (showAlertmanagersInFooter) {
+      footerAlertmanagers = group.alerts[0].alertmanager.map((am) => am.name);
     }
   }
-);
-AlertGroup.contextType = ThemeContext;
+
+  let themedCounters = true;
+  let cardBackgroundClass = "bg-light";
+  if (settingsStore.alertGroupConfig.config.colorTitleBar) {
+    const stateList = Object.entries(group.stateCount)
+      .filter(([k, v]) => v !== 0)
+      .map(([k, _]) => k);
+    if (stateList.length === 1) {
+      const state = stateList.pop();
+      cardBackgroundClass = BackgroundClassMap[state];
+      themedCounters = false;
+    }
+  }
+
+  const context = React.useContext(ThemeContext);
+
+  const mountRef = useRef(null);
+
+  return useObserver(() => (
+    <div
+      ref={mountRef}
+      className={`components-grid-alertgrid-alertgroup ${
+        mountRef.current ? "components-animation-fade-appear-done" : ""
+      }`}
+      style={{
+        width: groupWidth,
+        zIndex: renderConfig.isMenuOpen ? 100 : null,
+      }}
+    >
+      <Fade
+        in={context.animations.in}
+        duration={context.animations.duration}
+        wait={context.animations.duration}
+      >
+        <div className={`card ${cardBackgroundClass}`}>
+          <GroupHeader
+            collapseStore={collapse}
+            group={group}
+            alertStore={alertStore}
+            silenceFormStore={silenceFormStore}
+            themedCounters={themedCounters}
+            setIsMenuOpen={renderConfig.setIsMenuOpen}
+            gridLabelValue={gridLabelValue}
+          />
+          {collapse.value ? null : (
+            <div className="card-body px-2 py-1 components-grid-alertgrid-card">
+              <ul className="list-group">
+                {group.alerts
+                  .slice(0, renderConfig.alertsToRender)
+                  .map((alert) => (
+                    <Alert
+                      key={alert.id}
+                      group={group}
+                      alert={alert}
+                      showAlertmanagers={
+                        showAlertmanagers && !showAlertmanagersInFooter
+                      }
+                      showReceiver={
+                        alertStore.data.receivers.length > 1 &&
+                        group.alerts.length === 1
+                      }
+                      afterUpdate={afterUpdate}
+                      alertStore={alertStore}
+                      silenceFormStore={silenceFormStore}
+                      setIsMenuOpen={renderConfig.setIsMenuOpen}
+                    />
+                  ))}
+                {group.alerts.length > defaultRenderCount ? (
+                  <li className="list-group-item border-0 p-0 text-center bg-transparent">
+                    <LoadButton
+                      icon={faMinus}
+                      action={loadLess}
+                      tooltip="Show fewer alerts in this group"
+                    />
+                    <small className="text-muted mx-2">
+                      {Math.min(
+                        renderConfig.alertsToRender,
+                        group.alerts.length
+                      )}
+                      {" of "}
+                      {group.alerts.length}
+                    </small>
+                    <LoadButton
+                      icon={faPlus}
+                      action={loadMore}
+                      tooltip="Show more alerts in this group"
+                    />
+                  </li>
+                ) : null}
+              </ul>
+            </div>
+          )}
+          {collapse.value === false && group.alerts.length > 1 ? (
+            <GroupFooter
+              group={group}
+              alertmanagers={footerAlertmanagers}
+              afterUpdate={afterUpdate}
+              alertStore={alertStore}
+              silenceFormStore={silenceFormStore}
+            />
+          ) : null}
+        </div>
+      </Fade>
+    </div>
+  ));
+};
+AlertGroup.propTypes = {
+  afterUpdate: PropTypes.func.isRequired,
+  group: APIGroup.isRequired,
+  showAlertmanagers: PropTypes.bool.isRequired,
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  settingsStore: PropTypes.instanceOf(Settings).isRequired,
+  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+  groupWidth: PropTypes.number.isRequired,
+  gridLabelValue: PropTypes.string.isRequired,
+  initialAlertsToRender: PropTypes.number,
+};
 
 export { AlertGroup };
