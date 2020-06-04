@@ -34,5 +34,5 @@ COPY demo/acls.yaml /etc/acls.yaml
 COPY demo/custom.js /custom.js
 RUN adduser -D karma
 USER karma
-ENV GOGC=20
+ENV GOGC=50
 CMD supervisord --nodaemon --configuration /etc/supervisord.conf
