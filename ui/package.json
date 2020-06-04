@@ -78,7 +78,7 @@
     "@percy-io/percy-storybook": "2.1.0",
     "@storybook/preset-create-react-app": "3.0.0",
     "@storybook/react": "5.3.19",
-    "@testing-library/react-hooks": "3.2.1",
+    "@testing-library/react-hooks": "3.3.0",
     "diffable-html": "4.0.0",
     "enzyme": "3.11.0",
     "enzyme-adapter-react-16": "1.15.2",
