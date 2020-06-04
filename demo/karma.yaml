@@ -26,6 +26,7 @@ annotations:
     - help
 custom:
   js: /custom.js
+debug: true
 filters:
   default:
     - "@receiver=by-cluster-service"
