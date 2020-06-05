@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import { useObserver, useLocalStore } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -21,12 +21,7 @@ const MainModalContent = ({
   openTab,
   expandAllOptions,
 }) => {
-  const tab = useLocalStore(() => ({
-    current: openTab,
-    setTab(newTab) {
-      this.current = newTab;
-    },
-  }));
+  const [tab, setTab] = useState(openTab);
 
   return useObserver(() => (
     <React.Fragment>
@@ -34,13 +29,13 @@ const MainModalContent = ({
         <nav className="nav nav-pills nav-justified w-100">
           <Tab
             title="Configuration"
-            active={tab.current === TabNames.Configuration}
-            onClick={() => tab.setTab(TabNames.Configuration)}
+            active={tab === TabNames.Configuration}
+            onClick={() => setTab(TabNames.Configuration)}
           />
           <Tab
             title="Help"
-            active={tab.current === TabNames.Help}
-            onClick={() => tab.setTab(TabNames.Help)}
+            active={tab === TabNames.Help}
+            onClick={() => setTab(TabNames.Help)}
           />
           <button type="button" className="close" onClick={onHide}>
             <span>&times;</span>
@@ -48,10 +43,10 @@ const MainModalContent = ({
         </nav>
       </div>
       <div className="modal-body">
-        {tab.current === TabNames.Help ? (
+        {tab === TabNames.Help ? (
           <Help defaultIsOpen={expandAllOptions} />
         ) : null}
-        {tab.current === TabNames.Configuration ? (
+        {tab === TabNames.Configuration ? (
           <Configuration
             settingsStore={settingsStore}
             defaultIsOpen={expandAllOptions}

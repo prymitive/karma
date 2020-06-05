@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import { useObserver, useLocalStore } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
@@ -33,12 +33,7 @@ const SilenceForm = ({
   settingsStore,
   previewOpen,
 }) => {
-  const previewCollapse = useLocalStore(() => ({
-    hidden: !previewOpen,
-    toggle() {
-      this.hidden = !this.hidden;
-    },
-  }));
+  const [showPreview, setShowPreview] = useState(previewOpen);
 
   useEffect(() => {
     // reset startsAt & endsAt on every mount, unless we're editing a silence
@@ -167,9 +162,9 @@ const SilenceForm = ({
       <div className="d-flex flex-row justify-content-between">
         <span
           className="btn px-0 cursor-pointer text-muted"
-          onClick={previewCollapse.toggle}
+          onClick={() => setShowPreview(!showPreview)}
         >
-          <ToggleIcon isOpen={!previewCollapse.hidden} />
+          <ToggleIcon isOpen={showPreview} />
         </span>
         <span>
           {silenceFormStore.data.silenceID === null ? null : (
@@ -188,9 +183,9 @@ const SilenceForm = ({
           </button>
         </span>
       </div>
-      {previewCollapse.hidden ? null : (
+      {showPreview ? (
         <PayloadPreview silenceFormStore={silenceFormStore} />
-      )}
+      ) : null}
     </form>
   ));
 };
