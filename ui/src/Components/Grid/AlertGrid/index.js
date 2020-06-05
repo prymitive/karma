@@ -1,7 +1,7 @@
-import React, { useEffect, useCallback } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 
-import { useLocalStore, useObserver } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import debounce from "lodash.debounce";
 
@@ -16,39 +16,34 @@ import { GridSizesConfig, GetGridElementWidth } from "./GridSize";
 const GridPadding = 5;
 
 const AlertGrid = ({ alertStore, settingsStore, silenceFormStore }) => {
-  // this is used to track viewport width, when browser window is resized
-  // we need to recreate the entire grid object to apply new column count
-  // and group size
-  const viewport = useLocalStore(() => ({
-    canvasWidth: document.body.clientWidth,
-    windowWidth: window.innerWidth,
-    updateWidths(canvasWidth, windowWidth) {
-      this.canvasWidth = canvasWidth;
-      this.windowWidth = windowWidth;
-    },
-    get gridSizesConfig() {
-      return GridSizesConfig(
-        this.windowWidth,
-        settingsStore.gridConfig.config.groupWidth
-      );
-    },
-    get groupWidth() {
-      return GetGridElementWidth(
-        this.canvasWidth,
-        this.windowWidth,
-        alertStore.data.grids.filter((g) => g.labelName !== "").length > 0
-          ? GridPadding * 2
-          : 0,
-        settingsStore.gridConfig.config.groupWidth
-      );
-    },
-  }));
+  const getGridSizesConfig = (windowWidth) =>
+    GridSizesConfig(windowWidth, settingsStore.gridConfig.config.groupWidth);
+
+  const getGroupWidth = (canvasWidth, windowWidth) =>
+    GetGridElementWidth(
+      canvasWidth,
+      windowWidth,
+      alertStore.data.grids.filter((g) => g.labelName !== "").length > 0
+        ? GridPadding * 2
+        : 0,
+      settingsStore.gridConfig.config.groupWidth
+    );
+
+  const [gridSizesConfig, setGridSizesConfig] = useState(
+    getGridSizesConfig(window.innerWidth)
+  );
+  const [groupWidth, setGroupWidth] = useState(
+    getGroupWidth(document.body.clientWidth, window.innerWidth)
+  );
 
   const handleResize = useCallback(
     debounce(() => {
-      viewport.updateWidths(document.body.clientWidth, window.innerWidth);
+      setGridSizesConfig(getGridSizesConfig(window.innerWidth));
+      setGroupWidth(
+        getGroupWidth(document.body.clientWidth, window.innerWidth)
+      );
     }, 100),
-    [viewport]
+    []
   );
 
   useEffect(() => {
@@ -67,8 +62,8 @@ const AlertGrid = ({ alertStore, settingsStore, silenceFormStore }) => {
           alertStore={alertStore}
           silenceFormStore={silenceFormStore}
           settingsStore={settingsStore}
-          gridSizesConfig={viewport.gridSizesConfig}
-          groupWidth={viewport.groupWidth}
+          gridSizesConfig={gridSizesConfig}
+          groupWidth={groupWidth}
           grid={grid}
           outerPadding={grid.labelName !== "" ? GridPadding : 0}
         />

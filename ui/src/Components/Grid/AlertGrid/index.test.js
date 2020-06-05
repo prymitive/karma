@@ -438,7 +438,9 @@ describe("<AlertGrid />", () => {
     // then resize and verify if column count was changed
     document.body.clientWidth = 1000;
     window.innerWidth = 1000;
-    window.dispatchEvent(new Event("resize"));
+    act(() => {
+      window.dispatchEvent(new Event("resize"));
+    });
     wrapper.update();
     expect(wrapper.find("Grid").props().groupWidth).toBe(1000 / 2);
 
@@ -469,7 +471,9 @@ describe("<AlertGrid />", () => {
     // then resize and verify if column count was changed
     document.body.clientWidth = 1584;
     window.innerWidth = 1600;
-    window.dispatchEvent(new Event("resize"));
+    act(() => {
+      window.dispatchEvent(new Event("resize"));
+    });
     wrapper.update();
     tree.setProps({
       gridSizesConfig: wrapper.find("Grid").props().gridSizesConfig,
@@ -493,7 +497,9 @@ describe("<AlertGrid />", () => {
     for (var index = 0; index < 14; index++) {
       document.body.clientWidth = index % 2 === 0 ? 1600 : 1584;
       window.innerWidth = 1600;
-      window.dispatchEvent(new Event("resize"));
+      act(() => {
+        window.dispatchEvent(new Event("resize"));
+      });
       wrapper.update();
       tree.setProps({
         gridSizesConfig: wrapper.find("Grid").props().gridSizesConfig,
