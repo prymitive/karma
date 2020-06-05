@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
@@ -64,11 +65,11 @@ describe("<SilenceProgress />", () => {
     expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-success/);
 
     advanceTo(moment.utc([2000, 0, 1, 0, 50, 0]));
-    jest.runOnlyPendingTimers();
+    act(() => jest.runOnlyPendingTimers());
     expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-warning/);
 
     advanceTo(moment.utc([2000, 0, 1, 0, 55, 0]));
-    jest.runOnlyPendingTimers();
+    act(() => jest.runOnlyPendingTimers());
     expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-danger/);
   });
 

@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-import { useObserver, useLocalStore } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import moment from "moment";
 import Moment from "react-moment";
@@ -16,19 +16,16 @@ const calculatePercent = (startsAt, endsAt) => {
 };
 
 const SilenceProgress = ({ silence }) => {
-  const progress = useLocalStore(() => ({
-    value: calculatePercent(silence.startsAt, silence.endsAt),
-    setValue(val) {
-      this.value = val;
-    },
-  }));
+  const [progress, setProgress] = useState(
+    calculatePercent(silence.startsAt, silence.endsAt)
+  );
 
   useEffect(() => {
     const timer = setInterval(() => {
-      progress.setValue(calculatePercent(silence.startsAt, silence.endsAt));
+      setProgress(calculatePercent(silence.startsAt, silence.endsAt));
     }, 30 * 1000);
     return () => clearInterval(timer);
-  }, [progress, silence.startsAt, silence.endsAt]);
+  }, [silence.startsAt, silence.endsAt]);
 
   return useObserver(() =>
     moment(silence.endsAt) < moment() ? (
@@ -41,15 +38,15 @@ const SilenceProgress = ({ silence }) => {
         <div className="progress silence-progress">
           <div
             className={
-              progress.value > 90
+              progress > 90
                 ? "progress-bar bg-danger"
-                : progress.value > 75
+                : progress > 75
                 ? "progress-bar bg-warning"
                 : "progress-bar bg-success"
             }
             role="progressbar"
-            style={{ width: progress.value + "%" }}
-            aria-valuenow={progress.value}
+            style={{ width: progress + "%" }}
+            aria-valuenow={progress}
             aria-valuemin="0"
             aria-valuemax="100"
           />
