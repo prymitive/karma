@@ -1,7 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 
-import { useObserver, useLocalStore } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import { Manager, Reference, Popper } from "react-popper";
 
@@ -99,20 +99,20 @@ const AlertMenu = ({
   silenceFormStore,
   setIsMenuOpen,
 }) => {
-  const collapse = useLocalStore(() => ({
-    isHidden: true,
-    toggle() {
-      this.isHidden = !this.isHidden;
-      setIsMenuOpen(!this.isHidden);
-    },
-    hide() {
-      this.isHidden = true;
-      setIsMenuOpen(!this.isHidden);
-    },
-  }));
+  const [isHidden, setIsHidden] = useState(true);
+
+  const toggle = useCallback(() => {
+    setIsMenuOpen(isHidden);
+    setIsHidden(!isHidden);
+  }, [isHidden, setIsMenuOpen]);
+
+  const hide = useCallback(() => {
+    setIsHidden(true);
+    setIsMenuOpen(false);
+  }, [setIsMenuOpen]);
 
   const rootRef = useRef(null);
-  useOnClickOutside(rootRef, collapse.hide, !collapse.isHidden);
+  useOnClickOutside(rootRef, hide, !isHidden);
 
   return useObserver(() => (
     <span ref={rootRef}>
@@ -122,7 +122,7 @@ const AlertMenu = ({
             <span
               className="components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer"
               ref={ref}
-              onClick={collapse.toggle}
+              onClick={toggle}
               data-toggle="dropdown"
             >
               <FontAwesomeIcon
@@ -134,7 +134,7 @@ const AlertMenu = ({
             </span>
           )}
         </Reference>
-        <DropdownSlide in={!collapse.isHidden} unmountOnExit>
+        <DropdownSlide in={!isHidden} unmountOnExit>
           <Popper
             placement="bottom-start"
             modifiers={[
@@ -151,7 +151,7 @@ const AlertMenu = ({
                 alert={alert}
                 alertStore={alertStore}
                 silenceFormStore={silenceFormStore}
-                afterClick={collapse.hide}
+                afterClick={hide}
               />
             )}
           </Popper>

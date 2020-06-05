@@ -1,7 +1,5 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import PropTypes from "prop-types";
-
-import { useObserver, useLocalStore } from "mobx-react";
 
 import copy from "copy-to-clipboard";
 
@@ -105,29 +103,29 @@ const GroupMenu = ({
   themed,
   setIsMenuOpen,
 }) => {
-  const collapse = useLocalStore(() => ({
-    isHidden: true,
-    toggle() {
-      this.isHidden = !this.isHidden;
-      setIsMenuOpen(!this.isHidden);
-    },
-    hide() {
-      this.isHidden = true;
-      setIsMenuOpen(!this.isHidden);
-    },
-  }));
+  const [isHidden, setIsHidden] = useState(true);
+
+  const toggle = useCallback(() => {
+    setIsMenuOpen(isHidden);
+    setIsHidden(!isHidden);
+  }, [isHidden, setIsMenuOpen]);
+
+  const hide = useCallback(() => {
+    setIsHidden(true);
+    setIsMenuOpen(false);
+  }, [setIsMenuOpen]);
 
   const rootRef = useRef(null);
-  useOnClickOutside(rootRef, collapse.hide, !collapse.isHidden);
+  useOnClickOutside(rootRef, hide, !isHidden);
 
-  return useObserver(() => (
+  return (
     <span ref={rootRef}>
       <Manager>
         <Reference>
           {({ ref }) => (
             <span
               ref={ref}
-              onClick={collapse.toggle}
+              onClick={toggle}
               className={`${
                 themed ? "text-white" : "text-muted"
               } cursor-pointer badge pl-0 pr-3 pr-sm-2 components-label mr-0`}
@@ -137,7 +135,7 @@ const GroupMenu = ({
             </span>
           )}
         </Reference>
-        <DropdownSlide in={!collapse.isHidden} unmountOnExit>
+        <DropdownSlide in={!isHidden} unmountOnExit>
           <Popper
             placement="bottom-start"
             modifiers={[
@@ -153,14 +151,14 @@ const GroupMenu = ({
                 group={group}
                 alertStore={alertStore}
                 silenceFormStore={silenceFormStore}
-                afterClick={collapse.hide}
+                afterClick={hide}
               />
             )}
           </Popper>
         </DropdownSlide>
       </Manager>
     </span>
-  ));
+  );
 };
 GroupMenu.propTypes = {
   group: APIGroup.isRequired,
