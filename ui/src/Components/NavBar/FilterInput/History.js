@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 
-import { useObserver, useLocalStore } from "mobx-react";
+import { useObserver } from "mobx-react";
 import { localStored } from "mobx-stored";
 
 import { Manager, Reference, Popper } from "react-popper";
@@ -154,15 +154,9 @@ const History = ({ alertStore, settingsStore }) => {
     }
   );
 
-  const collapse = useLocalStore(() => ({
-    isHidden: true,
-    toggle() {
-      this.isHidden = !this.isHidden;
-    },
-    hide() {
-      this.isHidden = true;
-    },
-  }));
+  const [isVisible, setIsVisible] = useState(false);
+  const hide = useCallback(() => setIsVisible(false), []);
+  const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 
   const mountRef = useRef(false);
 
@@ -196,7 +190,7 @@ const History = ({ alertStore, settingsStore }) => {
   });
 
   const ref = useRef(null);
-  useOnClickOutside(ref, collapse.hide, !collapse.isHidden);
+  useOnClickOutside(ref, hide, isVisible);
 
   return useObserver(() => (
     // data-filters is there to register filters for observation in mobx
@@ -217,7 +211,7 @@ const History = ({ alertStore, settingsStore }) => {
           {({ ref }) => (
             <button
               ref={ref}
-              onClick={collapse.toggle}
+              onClick={toggle}
               className="border-0 rounded-0 bg-transparent cursor-pointer components-navbar-history px-2 components-navbar-icon"
               type="button"
               data-toggle="dropdown"
@@ -228,7 +222,7 @@ const History = ({ alertStore, settingsStore }) => {
             </button>
           )}
         </Reference>
-        <DropdownSlide in={!collapse.isHidden} unmountOnExit>
+        <DropdownSlide in={isVisible} unmountOnExit>
           <Popper modifiers={[{ name: "arrow", enabled: false }]}>
             {({ placement, ref, style }) => (
               <HistoryMenu
@@ -241,7 +235,7 @@ const History = ({ alertStore, settingsStore }) => {
                 }}
                 alertStore={alertStore}
                 settingsStore={settingsStore}
-                afterClick={collapse.hide}
+                afterClick={hide}
               />
             )}
           </Popper>
