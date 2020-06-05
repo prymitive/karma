@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
-
-import { observer, useLocalStore } from "mobx-react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
@@ -19,35 +17,29 @@ const MainModalContent = React.lazy(() =>
   }))
 );
 
-const MainModal = observer(({ alertStore, settingsStore }) => {
-  const toggle = useLocalStore(() => ({
-    show: false,
-    toggle() {
-      this.show = !this.show;
-    },
-    hide() {
-      this.show = false;
-    },
-  }));
+const MainModal = ({ alertStore, settingsStore }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 
   return (
     <React.Fragment>
       <li
         className={`nav-item components-navbar-button ${
-          toggle.show ? "border-info" : ""
+          isVisible ? "border-info" : ""
         }`}
       >
         <TooltipWrapper title="Settings">
           <span
             id="components-settings"
             className="nav-link cursor-pointer"
-            onClick={toggle.toggle}
+            onClick={toggle}
           >
             <FontAwesomeIcon icon={faCog} />
           </span>
         </TooltipWrapper>
       </li>
-      <Modal isOpen={toggle.show} toggleOpen={toggle.toggle}>
+      <Modal isOpen={isVisible} toggleOpen={toggle}>
         <React.Suspense
           fallback={
             <h1 className="display-1 text-placeholder p-5 m-auto">
@@ -58,15 +50,15 @@ const MainModal = observer(({ alertStore, settingsStore }) => {
           <MainModalContent
             alertStore={alertStore}
             settingsStore={settingsStore}
-            onHide={toggle.hide}
-            isVisible={toggle.show}
+            onHide={() => setIsVisible(false)}
+            isVisible={isVisible}
             expandAllOptions={false}
           />
         </React.Suspense>
       </Modal>
     </React.Fragment>
   );
-});
+};
 MainModal.propTypes = {
   alertStore: PropTypes.instanceOf(AlertStore).isRequired,
   settingsStore: PropTypes.instanceOf(Settings).isRequired,

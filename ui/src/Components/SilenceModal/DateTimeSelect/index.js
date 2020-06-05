@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 
-import { useObserver, useLocalStore } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import moment from "moment";
 
@@ -165,32 +165,21 @@ TabContentDuration.propTypes = {
 };
 
 const DateTimeSelect = ({ silenceFormStore, openTab }) => {
-  const tab = useLocalStore(() => ({
-    current: openTab,
-    setStart() {
-      this.current = TabNames.Start;
-    },
-    setEnd() {
-      this.current = TabNames.End;
-    },
-    setDuration() {
-      this.current = TabNames.Duration;
-    },
-    timeNow: moment().seconds(0),
-    updateTimeNow() {
-      this.timeNow = moment().seconds(0);
-    },
-  }));
+  const [currentTab, setCurrentTab] = useState(openTab);
+  const [timeNow, setTimeNow] = useState(moment().seconds(0));
+
+  const updateTimeNow = useCallback(() => {
+    setTimeNow(moment().seconds(0));
+  }, []);
 
   useEffect(() => {
-    tab.updateTimeNow();
-    const nowUpdateTimer = setInterval(tab.updateTimeNow, 30 * 1000);
+    const nowUpdateTimer = setInterval(updateTimeNow, 30 * 1000);
     return () => {
       clearInterval(nowUpdateTimer);
     };
-  }, [tab]);
+  }, [updateTimeNow]);
 
-  return useObserver(() => (
+  return (
     <React.Fragment>
       <ul className="nav nav-tabs nav-fill">
         <Tab
@@ -199,13 +188,13 @@ const DateTimeSelect = ({ silenceFormStore, openTab }) => {
               <span className="mr-1">Starts</span>
               <OffsetBadge
                 prefixLabel="in "
-                startDate={tab.timeNow}
+                startDate={timeNow}
                 endDate={silenceFormStore.data.startsAt}
               />
             </React.Fragment>
           }
-          active={tab.current === TabNames.Start}
-          onClick={tab.setStart}
+          active={currentTab === TabNames.Start}
+          onClick={() => setCurrentTab(TabNames.Start)}
         />
         <Tab
           title={
@@ -213,13 +202,13 @@ const DateTimeSelect = ({ silenceFormStore, openTab }) => {
               <span className="mr-1">Ends</span>
               <OffsetBadge
                 prefixLabel="in "
-                startDate={tab.timeNow}
+                startDate={timeNow}
                 endDate={silenceFormStore.data.endsAt}
               />
             </React.Fragment>
           }
-          active={tab.current === TabNames.End}
-          onClick={tab.setEnd}
+          active={currentTab === TabNames.End}
+          onClick={() => setCurrentTab(TabNames.End)}
         />
         <Tab
           title={
@@ -232,23 +221,23 @@ const DateTimeSelect = ({ silenceFormStore, openTab }) => {
               />
             </React.Fragment>
           }
-          active={tab.current === TabNames.Duration}
-          onClick={tab.setDuration}
+          active={currentTab === TabNames.Duration}
+          onClick={() => setCurrentTab(TabNames.Duration)}
         />
       </ul>
       <div className="tab-content mb-3">
-        {tab.current === TabNames.Duration ? (
+        {currentTab === TabNames.Duration ? (
           <TabContentDuration silenceFormStore={silenceFormStore} />
         ) : null}
-        {tab.current === TabNames.Start ? (
+        {currentTab === TabNames.Start ? (
           <TabContentStart silenceFormStore={silenceFormStore} />
         ) : null}
-        {tab.current === TabNames.End ? (
+        {currentTab === TabNames.End ? (
           <TabContentEnd silenceFormStore={silenceFormStore} />
         ) : null}
       </div>
     </React.Fragment>
-  ));
+  );
 };
 DateTimeSelect.propTypes = {
   silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,

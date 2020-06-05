@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import { observer, useLocalStore } from "mobx-react";
+import { observer } from "mobx-react";
 
 import { AlertStore } from "Stores/AlertStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
@@ -100,12 +100,7 @@ const NothingToShow = () => (
 );
 
 const OverviewModalContent = observer(({ alertStore, onHide }) => {
-  const allLabels = useLocalStore(() => ({
-    show: false,
-    toggle() {
-      this.show = !this.show;
-    },
-  }));
+  const [showAllLabels, setShowAllLabels] = useState(false);
   return (
     <React.Fragment>
       <div className="modal-header">
@@ -120,8 +115,8 @@ const OverviewModalContent = observer(({ alertStore, onHide }) => {
         ) : (
           <LabelsTable
             alertStore={alertStore}
-            showAllLabels={allLabels.show}
-            toggleAllLabels={allLabels.toggle}
+            showAllLabels={showAllLabels}
+            toggleAllLabels={() => setShowAllLabels(!showAllLabels)}
           />
         )}
       </div>

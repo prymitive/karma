@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import PropTypes from "prop-types";
 
-import { observer, useLocalStore } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import Flash from "react-reveal/Flash";
 
@@ -19,32 +19,26 @@ const OverviewModalContent = React.lazy(() =>
   }))
 );
 
-const OverviewModal = observer(({ alertStore }) => {
-  const toggle = useLocalStore(() => ({
-    show: false,
-    toggle() {
-      this.show = !this.show;
-    },
-    hide() {
-      this.show = false;
-    },
-  }));
+const OverviewModal = ({ alertStore }) => {
+  const [isVisible, setIsVisible] = useState(false);
 
-  return (
+  const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
+
+  return useObserver(() => (
     <React.Fragment>
       <TooltipWrapper title="Show alert overview">
         <Flash spy={alertStore.info.totalAlerts}>
           <div
             className={`text-center d-inline-block cursor-pointer navbar-brand m-0 components-navbar-button  ${
-              toggle.show ? "border-info" : ""
+              isVisible ? "border-info" : ""
             }`}
-            onClick={toggle.toggle}
+            onClick={toggle}
           >
             {alertStore.info.totalAlerts}
           </div>
         </Flash>
       </TooltipWrapper>
-      <Modal size="xl" isOpen={toggle.show} toggleOpen={toggle.toggle}>
+      <Modal size="xl" isOpen={isVisible} toggleOpen={toggle}>
         <React.Suspense
           fallback={
             <h1 className="display-1 text-placeholder p-5 m-auto">
@@ -54,14 +48,14 @@ const OverviewModal = observer(({ alertStore }) => {
         >
           <OverviewModalContent
             alertStore={alertStore}
-            onHide={toggle.hide}
-            isVisible={toggle.show}
+            onHide={() => setIsVisible(false)}
+            isVisible={isVisible}
           />
         </React.Suspense>
       </Modal>
     </React.Fragment>
-  );
-});
+  ));
+};
 OverviewModal.propTypes = {
   alertStore: PropTypes.instanceOf(AlertStore).isRequired,
 };

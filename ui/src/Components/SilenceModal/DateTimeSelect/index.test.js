@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount, shallow } from "enzyme";
 
@@ -127,7 +128,7 @@ describe("<DateTimeSelect />", () => {
     expect(tree.find(".nav-link").at(1).text()).toBe("Endsin 1h ");
 
     advanceTo(new Date(2060, 1, 1, 12, 1, 0));
-    jest.runOnlyPendingTimers();
+    act(() => jest.runOnlyPendingTimers());
 
     expect(tree.find(".nav-link").at(1).text()).toBe("Endsin 59m ");
   });
