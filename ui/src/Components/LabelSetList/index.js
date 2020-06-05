@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
-
-import { useLocalStore, useObserver } from "mobx-react";
 
 import { AlertStore } from "Stores/AlertStore";
 import { IsMobile } from "Common/Device";
@@ -29,54 +27,44 @@ const GroupListToUniqueLabelsList = (groups) => {
 };
 
 const LabelSetList = ({ alertStore, labelsList }) => {
-  const pagination = useLocalStore(() => ({
-    activePage: 1,
-    onPageChange(pageNumber) {
-      pagination.activePage = pageNumber;
-    },
-  }));
+  const [activePage, setActivePage] = useState(1);
 
   const maxPerPage = IsMobile() ? 5 : 10;
 
-  return useObserver(() =>
-    labelsList.length > 0 ? (
+  return labelsList.length > 0 ? (
+    <div>
+      <p className="lead text-center">Affected alerts</p>
       <div>
-        <p className="lead text-center">Affected alerts</p>
-        <div>
-          <ul className="list-group list-group-flush mb-3">
-            {labelsList
-              .slice(
-                (pagination.activePage - 1) * maxPerPage,
-                pagination.activePage * maxPerPage
-              )
-              .map((labels, index) => (
-                <li
-                  key={`${index}/${labels.length}`}
-                  className="list-group-item px-0 pt-2 pb-1"
-                >
-                  {Object.entries(labels).map(([name, value]) => (
-                    <StaticLabel
-                      key={name}
-                      alertStore={alertStore}
-                      name={name}
-                      value={value}
-                    />
-                  ))}
-                </li>
-              ))}
-          </ul>
-        </div>
-        <PageSelect
-          totalPages={Math.ceil(labelsList.length / maxPerPage)}
-          activePage={pagination.activePage}
-          maxPerPage={maxPerPage}
-          totalItemsCount={labelsList.length}
-          setPageCallback={pagination.onPageChange}
-        />
+        <ul className="list-group list-group-flush mb-3">
+          {labelsList
+            .slice((activePage - 1) * maxPerPage, activePage * maxPerPage)
+            .map((labels, index) => (
+              <li
+                key={`${index}/${labels.length}`}
+                className="list-group-item px-0 pt-2 pb-1"
+              >
+                {Object.entries(labels).map(([name, value]) => (
+                  <StaticLabel
+                    key={name}
+                    alertStore={alertStore}
+                    name={name}
+                    value={value}
+                  />
+                ))}
+              </li>
+            ))}
+        </ul>
       </div>
-    ) : (
-      <p className="text-muted text-center">No alerts matched</p>
-    )
+      <PageSelect
+        totalPages={Math.ceil(labelsList.length / maxPerPage)}
+        activePage={activePage}
+        maxPerPage={maxPerPage}
+        totalItemsCount={labelsList.length}
+        setPageCallback={setActivePage}
+      />
+    </div>
+  ) : (
+    <p className="text-muted text-center">No alerts matched</p>
   );
 };
 LabelSetList.propTypes = {
