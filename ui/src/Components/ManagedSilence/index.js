@@ -1,7 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-
-import { useObserver, useLocalStore } from "mobx-react";
 
 import { Fade } from "react-reveal";
 
@@ -32,12 +30,7 @@ const ManagedSilence = ({
     if (onDidUpdate) onDidUpdate();
   });
 
-  const collapse = useLocalStore(() => ({
-    value: !isOpen,
-    toggle() {
-      this.value = !this.value;
-    },
-  }));
+  const [showDetails, setShowDetails] = useState(isOpen);
 
   const onEditSilence = () => {
     const alertmanager = GetAlertmanager(alertStore, cluster);
@@ -50,7 +43,7 @@ const ManagedSilence = ({
 
   const context = React.useContext(ThemeContext);
 
-  return useObserver(() => (
+  return (
     <Fade in={context.animations.in} duration={context.animations.duration}>
       <div className="card my-1 components-managed-silence">
         <div className="card-header rounded-0 border-bottom-0 px-3">
@@ -60,12 +53,12 @@ const ManagedSilence = ({
             silence={silence}
             alertCount={alertCount}
             alertCountAlwaysVisible={alertCountAlwaysVisible}
-            collapsed={collapse.value}
-            collapseToggle={collapse.toggle}
+            collapsed={!showDetails}
+            collapseToggle={() => setShowDetails(!showDetails)}
           />
         </div>
 
-        {collapse.value ? null : (
+        {showDetails ? (
           <div className="card-body pt-0">
             <SilenceDetails
               cluster={cluster}
@@ -76,10 +69,10 @@ const ManagedSilence = ({
               onDeleteModalClose={onDeleteModalClose}
             />
           </div>
-        )}
+        ) : null}
       </div>
     </Fade>
-  ));
+  );
 };
 ManagedSilence.propTypes = {
   cluster: PropTypes.string.isRequired,
