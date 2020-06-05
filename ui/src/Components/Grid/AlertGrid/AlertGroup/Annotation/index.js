@@ -1,7 +1,5 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState, memo } from "react";
 import PropTypes from "prop-types";
-
-import { useLocalStore, observer } from "mobx-react";
 
 import Linkify from "react-linkify";
 
@@ -14,9 +12,11 @@ import { faSearchMinus } from "@fortawesome/free-solid-svg-icons/faSearchMinus";
 
 import { TooltipWrapper } from "Components/TooltipWrapper";
 
-const RenderNonLinkAnnotation = observer(
+const RenderNonLinkAnnotation = memo(
   ({ name, value, visible, afterUpdate }) => {
     const mountRef = useRef(false);
+
+    const [isVisible, setIsVisible] = useState(visible);
 
     useEffect(() => {
       if (mountRef.current) {
@@ -26,23 +26,16 @@ const RenderNonLinkAnnotation = observer(
       }
     });
 
-    const toggle = useLocalStore(() => ({
-      visible: visible,
-      show(e) {
-        this.visible = true;
-      },
-      hide(e) {
-        this.visible = false;
-      },
-    }));
-
     const className =
       "mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100";
 
-    if (!toggle.visible) {
+    if (!isVisible) {
       return (
         <TooltipWrapper title="Click to show annotation value">
-          <div className={`${className} cursor-pointer`} onClick={toggle.show}>
+          <div
+            className={`${className} cursor-pointer`}
+            onClick={() => setIsVisible(!isVisible)}
+          >
             <FontAwesomeIcon icon={faSearchPlus} className="mr-1" />
             {name}
           </div>
@@ -53,7 +46,7 @@ const RenderNonLinkAnnotation = observer(
     return (
       <TooltipWrapper title="Click the icon to hide annotation value">
         <div key={name} className={className}>
-          <span onClick={toggle.hide} className="cursor-pointer">
+          <span onClick={() => setIsVisible(false)} className="cursor-pointer">
             <FontAwesomeIcon icon={faSearchMinus} className="mr-1" />
             <span className="text-muted">{name}: </span>
           </span>
