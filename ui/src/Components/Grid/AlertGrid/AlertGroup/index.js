@@ -1,8 +1,8 @@
-import React, { useEffect, useCallback, useRef } from "react";
+import React, { useEffect, useCallback, useRef, useState } from "react";
 import PropTypes from "prop-types";
 
 import { toJS } from "mobx";
-import { useObserver, useLocalStore } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import { Fade } from "react-reveal";
 
@@ -61,23 +61,15 @@ const AlertGroup = ({
     settingsStore.alertGroupConfig.config.defaultRenderCount
   );
 
-  const renderConfig = useLocalStore(() => ({
-    alertsToRender: initialAlertsToRender || defaultRenderCount,
-    isMenuOpen: false,
-    setIsMenuOpen(val) {
-      this.isMenuOpen = val;
-    },
-  }));
+  const [alertsToRender, setAlertsToRender] = useState(
+    initialAlertsToRender || defaultRenderCount
+  );
 
-  const collapse = useLocalStore(() => ({
-    value: DefaultDetailsCollapseValue(settingsStore),
-    toggle() {
-      this.value = !this.value;
-    },
-    set(value) {
-      this.value = value;
-    },
-  }));
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const [isCollapsed, setIsCollapsed] = useState(
+    DefaultDetailsCollapseValue(settingsStore)
+  );
 
   // Used to calculate step size when loading more alerts.
   // Step is calculated from the excesive alert count
@@ -99,31 +91,23 @@ const AlertGroup = ({
 
   const loadMore = () => {
     const step = getStepSize(group.alerts.length);
-
     // show cur+step, but not more that total alert count
-    renderConfig.alertsToRender = Math.min(
-      renderConfig.alertsToRender + step,
-      group.alerts.length
-    );
+    setAlertsToRender(Math.min(alertsToRender + step, group.alerts.length));
   };
 
   const loadLess = () => {
     const step = getStepSize(group.alerts.length);
-
     // show cur-step, but not less than 1
-    renderConfig.alertsToRender = Math.max(
-      renderConfig.alertsToRender - step,
-      1
-    );
+    setAlertsToRender(Math.max(alertsToRender - step, 1));
   };
 
   const onAlertGroupCollapseEvent = useCallback(
     (event) => {
       if (event.detail.gridLabelValue === gridLabelValue) {
-        collapse.set(event.detail.value);
+        setIsCollapsed(event.detail.value);
       }
     },
-    [collapse, gridLabelValue]
+    [gridLabelValue]
   );
 
   useEffect(() => {
@@ -182,7 +166,7 @@ const AlertGroup = ({
       }`}
       style={{
         width: groupWidth,
-        zIndex: renderConfig.isMenuOpen ? 100 : null,
+        zIndex: isMenuOpen ? 100 : null,
       }}
     >
       <Fade
@@ -192,37 +176,36 @@ const AlertGroup = ({
       >
         <div className={`card ${cardBackgroundClass}`}>
           <GroupHeader
-            collapseStore={collapse}
+            isCollapsed={isCollapsed}
+            setIsCollapsed={setIsCollapsed}
             group={group}
             alertStore={alertStore}
             silenceFormStore={silenceFormStore}
             themedCounters={themedCounters}
-            setIsMenuOpen={renderConfig.setIsMenuOpen}
+            setIsMenuOpen={setIsMenuOpen}
             gridLabelValue={gridLabelValue}
           />
-          {collapse.value ? null : (
+          {isCollapsed ? null : (
             <div className="card-body px-2 py-1 components-grid-alertgrid-card">
               <ul className="list-group">
-                {group.alerts
-                  .slice(0, renderConfig.alertsToRender)
-                  .map((alert) => (
-                    <Alert
-                      key={alert.id}
-                      group={group}
-                      alert={alert}
-                      showAlertmanagers={
-                        showAlertmanagers && !showAlertmanagersInFooter
-                      }
-                      showReceiver={
-                        alertStore.data.receivers.length > 1 &&
-                        group.alerts.length === 1
-                      }
-                      afterUpdate={afterUpdate}
-                      alertStore={alertStore}
-                      silenceFormStore={silenceFormStore}
-                      setIsMenuOpen={renderConfig.setIsMenuOpen}
-                    />
-                  ))}
+                {group.alerts.slice(0, alertsToRender).map((alert) => (
+                  <Alert
+                    key={alert.id}
+                    group={group}
+                    alert={alert}
+                    showAlertmanagers={
+                      showAlertmanagers && !showAlertmanagersInFooter
+                    }
+                    showReceiver={
+                      alertStore.data.receivers.length > 1 &&
+                      group.alerts.length === 1
+                    }
+                    afterUpdate={afterUpdate}
+                    alertStore={alertStore}
+                    silenceFormStore={silenceFormStore}
+                    setIsMenuOpen={setIsMenuOpen}
+                  />
+                ))}
                 {group.alerts.length > defaultRenderCount ? (
                   <li className="list-group-item border-0 p-0 text-center bg-transparent">
                     <LoadButton
@@ -231,10 +214,7 @@ const AlertGroup = ({
                       tooltip="Show fewer alerts in this group"
                     />
                     <small className="text-muted mx-2">
-                      {Math.min(
-                        renderConfig.alertsToRender,
-                        group.alerts.length
-                      )}
+                      {Math.min(alertsToRender, group.alerts.length)}
                       {" of "}
                       {group.alerts.length}
                     </small>
@@ -248,7 +228,7 @@ const AlertGroup = ({
               </ul>
             </div>
           )}
-          {collapse.value === false && group.alerts.length > 1 ? (
+          {isCollapsed === false && group.alerts.length > 1 ? (
             <GroupFooter
               group={group}
               alertmanagers={footerAlertmanagers}

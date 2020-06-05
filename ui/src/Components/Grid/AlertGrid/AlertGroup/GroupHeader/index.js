@@ -14,7 +14,8 @@ import { ToggleIcon } from "Components/ToggleIcon";
 import { GroupMenu } from "./GroupMenu";
 
 const GroupHeader = ({
-  collapseStore,
+  isCollapsed,
+  setIsCollapsed,
   group,
   alertStore,
   silenceFormStore,
@@ -25,13 +26,13 @@ const GroupHeader = ({
   const onCollapseClick = (event) => {
     // left click       => toggle current group
     // left click + alt => toggle all groups
-    collapseStore.toggle();
+    setIsCollapsed(!isCollapsed);
 
     if (event.altKey === true) {
       const toggleEvent = new CustomEvent("alertGroupCollapse", {
         detail: {
           gridLabelValue: gridLabelValue,
-          value: collapseStore.value,
+          value: !isCollapsed,
         },
       });
       window.dispatchEvent(toggleEvent);
@@ -41,7 +42,7 @@ const GroupHeader = ({
   return useObserver(() => (
     <h5
       className={`card-header mb-0 d-flex flex-row px-2 py-1 ${
-        collapseStore.value ? "border-bottom-0" : ""
+        isCollapsed ? "border-bottom-0" : ""
       }`}
     >
       <span className="flex-shrink-0 flex-grow-0">
@@ -99,7 +100,7 @@ const GroupHeader = ({
           onClick={onCollapseClick}
         >
           <TooltipWrapper title="Click to toggle this group details or Alt+Click to toggle all groups">
-            <ToggleIcon isOpen={!collapseStore.value} />
+            <ToggleIcon isOpen={!isCollapsed} />
           </TooltipWrapper>
         </span>
       </span>
@@ -107,10 +108,8 @@ const GroupHeader = ({
   ));
 };
 GroupHeader.propTypes = {
-  collapseStore: PropTypes.shape({
-    value: PropTypes.bool.isRequired,
-    toggle: PropTypes.func.isRequired,
-  }).isRequired,
+  isCollapsed: PropTypes.bool.isRequired,
+  setIsCollapsed: PropTypes.func.isRequired,
   group: APIGroup.isRequired,
   alertStore: PropTypes.instanceOf(AlertStore).isRequired,
   silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
