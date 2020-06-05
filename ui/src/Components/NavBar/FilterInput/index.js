@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import PropTypes from "prop-types";
 
-import { useObserver, useLocalStore } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import Autosuggest from "react-autosuggest";
 import Highlight from "react-highlighter";
@@ -22,36 +22,32 @@ const FilterInput = ({ alertStore, settingsStore }) => {
   const autosuggestRef = useRef();
   const inputRef = useRef();
 
-  const inputStore = useLocalStore(() => ({
-    suggestions: [],
-    value: "",
-    focused: false,
-    onChange(event, { newValue }) {
-      // onChange here handles change for the user input in the filter bar
-      // we need to update inputStore.value every time user types in something
-      this.value = newValue;
-    },
-    onSubmit(event) {
-      event.preventDefault();
-      if (this.value !== "") {
-        alertStore.filters.addFilter(this.value);
-        this.value = "";
-      }
-    },
-    onSuggestionsClearRequested() {
-      this.suggestions = [];
-    },
-    onSuggestionSelected(event, { suggestion }) {
-      this.value = "";
+  const [suggestions, setSuggestions] = useState([]);
+  const [value, setValue] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+
+  const onSuggestionsClearRequested = useCallback(() => setSuggestions([]), []);
+
+  const onSuggestionSelected = useCallback(
+    (event, { suggestion }) => {
+      setValue("");
       alertStore.filters.addFilter(suggestion);
     },
-    onFocus() {
-      this.focused = true;
+    [alertStore.filters]
+  );
+
+  const onChange = useCallback((event, { newValue }) => setValue(newValue), []);
+
+  const onSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
+      if (value !== "") {
+        alertStore.filters.addFilter(value);
+        setValue("");
+      }
     },
-    onBlur() {
-      this.focused = false;
-    },
-  }));
+    [alertStore.filters, value]
+  );
 
   useEffect(() => {
     inputRef.current = autosuggestRef.current.input.parentElement;
@@ -76,11 +72,11 @@ const FilterInput = ({ alertStore, settingsStore }) => {
 
   useEffect(() => {
     if (error) {
-      inputStore.onSuggestionsClearRequested();
+      onSuggestionsClearRequested();
     } else if (!isLoading) {
-      inputStore.suggestions = response;
+      setSuggestions(response);
     }
-  }, [response, error, isLoading, inputStore]);
+  }, [response, error, isLoading, onSuggestionsClearRequested]);
 
   const onInputClick = (event) => {
     if (
@@ -118,10 +114,10 @@ const FilterInput = ({ alertStore, settingsStore }) => {
   return useObserver(() => (
     // data-filters is there to register filters for observation in mobx
     // in order to re-render input component
-    <form className="form-inline mw-100" onSubmit={inputStore.onSubmit}>
+    <form className="form-inline mw-100" onSubmit={onSubmit}>
       <div
         className={`input-group w-100 mr-2 components-filterinput-outer ${
-          inputStore.focused ? "bg-focused" : "bg-transparent"
+          isFocused ? "bg-focused" : "bg-transparent"
         }`}
       >
         <div className="input-group-prepend">
@@ -132,8 +128,8 @@ const FilterInput = ({ alertStore, settingsStore }) => {
         <div
           className="form-control components-filterinput border-0 rounded-0 bg-transparent"
           onClick={onInputClick}
-          onFocus={inputStore.onFocus}
-          onBlur={inputStore.onBlur}
+          onFocus={() => setIsFocused(true)}
+          onBlur={() => setIsFocused(false)}
         >
           {alertStore.filters.values.map((filter) => (
             <FilterInputLabel
@@ -144,10 +140,10 @@ const FilterInput = ({ alertStore, settingsStore }) => {
           ))}
           <Autosuggest
             ref={autosuggestRef}
-            suggestions={inputStore.suggestions}
+            suggestions={suggestions}
             onSuggestionsFetchRequested={({ value }) => setTerm(value)}
-            onSuggestionsClearRequested={inputStore.onSuggestionsClearRequested}
-            onSuggestionSelected={inputStore.onSuggestionSelected}
+            onSuggestionsClearRequested={onSuggestionsClearRequested}
+            onSuggestionSelected={onSuggestionSelected}
             shouldRenderSuggestions={(value) =>
               value && value.trim().length > 1
             }
@@ -155,15 +151,15 @@ const FilterInput = ({ alertStore, settingsStore }) => {
             renderSuggestion={renderSuggestion}
             renderInputComponent={renderInputComponent}
             inputProps={{
-              value: inputStore.value,
-              onChange: inputStore.onChange,
+              value: value,
+              onChange: onChange,
             }}
             theme={AutosuggestTheme}
           />
         </div>
         <div
           className={`input-group-append ${
-            inputStore.focused ? "bg-focused" : "bg-transparent"
+            isFocused ? "bg-focused" : "bg-transparent"
           }`}
         >
           <History alertStore={alertStore} settingsStore={settingsStore} />
