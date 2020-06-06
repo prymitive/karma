@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
@@ -65,20 +66,26 @@ const MountedSilenceSubmitProgress = () => {
 describe("<SilenceSubmitProgress />", () => {
   it("sends a request on mount", async () => {
     MountedSilenceSubmitProgress();
-    await fetchMock.flush(true);
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
     expect(fetchMock.calls()).toHaveLength(1);
   });
 
   it("appends /api/v2/silences to the passed URI", async () => {
     MountedSilenceSubmitProgress();
-    await fetchMock.flush(true);
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
     const uri = fetchMock.calls()[0][0];
     expect(uri).toBe("http://localhost/api/v2/silences");
   });
 
   it("sends correct JSON payload", async () => {
     MountedSilenceSubmitProgress();
-    await fetchMock.flush(true);
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
     const payload = fetchMock.calls()[0][1];
     expect(payload).toMatchObject({
       method: "POST",
@@ -96,7 +103,9 @@ describe("<SilenceSubmitProgress />", () => {
   it("uses CORS credentials from alertmanager config", async () => {
     alertStore.data.upstreams.instances[0].corsCredentials = "same-origin";
     MountedSilenceSubmitProgress();
-    await fetchMock.flush(true);
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
     expect(fetchMock.calls()[0][0]).toBe("http://localhost/api/v2/silences");
     expect(fetchMock.calls()[0][1]).toMatchObject({
       credentials: "same-origin",
@@ -146,7 +155,7 @@ describe("<SilenceSubmitProgress />", () => {
     mount(
       <SilenceSubmitProgress
         cluster="ha"
-        members={["am1", "am2"]}
+        members={["am2", "am1"]}
         payload={{
           matchers: [],
           startsAt: "now",
@@ -157,7 +166,9 @@ describe("<SilenceSubmitProgress />", () => {
         alertStore={alertStore}
       />
     );
-    await fetchMock.flush(true);
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
     expect(fetchMock.calls()[0][0]).toBe(
       "http://am2.example.com/api/v2/silences"
     );
@@ -208,7 +219,7 @@ describe("<SilenceSubmitProgress />", () => {
     const tree = mount(
       <SilenceSubmitProgress
         cluster="ha"
-        members={["am1", "am2"]}
+        members={["am2", "am1"]}
         payload={{
           matchers: [],
           startsAt: "now",
@@ -219,7 +230,11 @@ describe("<SilenceSubmitProgress />", () => {
         alertStore={alertStore}
       />
     );
-    await fetchMock.flush(true);
+    await act(async () => {
+      await act(async () => {
+        await fetchMock.flush(true);
+      });
+    });
     expect(fetchMock.calls()).toHaveLength(2);
     expect(tree.text()).toBe("hafailed to fetch from am1");
   });
@@ -249,7 +264,7 @@ describe("<SilenceSubmitProgress />", () => {
     mount(
       <SilenceSubmitProgress
         cluster="ha"
-        members={["am1", "am2"]}
+        members={["am2", "am1"]}
         payload={{
           matchers: [],
           startsAt: "now",
@@ -260,7 +275,11 @@ describe("<SilenceSubmitProgress />", () => {
         alertStore={alertStore}
       />
     );
-    await fetchMock.flush(true);
+    await act(async () => {
+      await act(async () => {
+        await fetchMock.flush(true);
+      });
+    });
     expect(fetchMock.calls()[0][0]).toBe(
       "http://am1.example.com/api/v2/silences"
     );
@@ -279,7 +298,7 @@ describe("<SilenceSubmitProgress />", () => {
     mount(
       <SilenceSubmitProgress
         cluster="ha"
-        members={["am1", "am2"]}
+        members={["am2", "am1"]}
         payload={{
           matchers: [],
           startsAt: "now",
@@ -290,7 +309,11 @@ describe("<SilenceSubmitProgress />", () => {
         alertStore={alertStore}
       />
     );
-    await fetchMock.flush(true);
+    await act(async () => {
+      await act(async () => {
+        await fetchMock.flush(true);
+      });
+    });
     expect(fetchMock.calls()).toHaveLength(0);
     expect(consoleSpy).toHaveBeenCalledTimes(2);
   });
@@ -336,7 +359,7 @@ describe("<SilenceSubmitProgress />", () => {
     mount(
       <SilenceSubmitProgress
         cluster="ha"
-        members={["am1", "am2"]}
+        members={["am2", "am1"]}
         payload={{
           matchers: [],
           startsAt: "now",
@@ -347,7 +370,11 @@ describe("<SilenceSubmitProgress />", () => {
         alertStore={alertStore}
       />
     );
-    await fetchMock.flush(true);
+    await act(async () => {
+      await act(async () => {
+        await fetchMock.flush(true);
+      });
+    });
     expect(fetchMock.calls()).toHaveLength(1);
     expect(fetchMock.calls()[0][0]).toBe(
       "http://am1.example.com/api/v2/silences"
@@ -397,7 +424,7 @@ describe("<SilenceSubmitProgress />", () => {
     mount(
       <SilenceSubmitProgress
         cluster="ha"
-        members={["am1", "am2"]}
+        members={["am2", "am1"]}
         payload={{
           matchers: [],
           startsAt: "now",
@@ -418,7 +445,11 @@ describe("<SilenceSubmitProgress />", () => {
 
   it("renders returned silence ID on successful fetch", async () => {
     const tree = MountedSilenceSubmitProgress();
-    await fetchMock.flush(true);
+    await act(async () => {
+      await act(async () => {
+        await fetchMock.flush(true);
+      });
+    });
     // force re-render
     tree.update();
     const silenceLink = tree.find("a");
@@ -433,13 +464,21 @@ describe("<SilenceSubmitProgress />", () => {
       body: "mock error message",
     });
     const tree = MountedSilenceSubmitProgress();
-    await fetchMock.flush(true);
+    await act(async () => {
+      await act(async () => {
+        await fetchMock.flush(true);
+      });
+    });
     expect(tree.text()).toBe("mockAlertmanagermock error message");
   });
 
   it("renders success icon on successful fetch", async () => {
     const tree = MountedSilenceSubmitProgress();
-    await fetchMock.flush(true);
+    await act(async () => {
+      await act(async () => {
+        await fetchMock.flush(true);
+      });
+    });
     tree.update();
     expect(tree.find("FontAwesomeIcon.text-success")).toHaveLength(1);
     expect(tree.find("FontAwesomeIcon.text-danger")).toHaveLength(0);
@@ -447,7 +486,11 @@ describe("<SilenceSubmitProgress />", () => {
 
   it("renders silence link on successful fetch", async () => {
     const tree = MountedSilenceSubmitProgress();
-    await fetchMock.flush(true);
+    await act(async () => {
+      await act(async () => {
+        await fetchMock.flush(true);
+      });
+    });
     tree.update();
     expect(tree.find("a").getDOMNode().getAttribute("href")).toBe(
       "http://example.com/#/silences/123456789"
@@ -461,7 +504,11 @@ describe("<SilenceSubmitProgress />", () => {
       body: "error message",
     });
     const tree = MountedSilenceSubmitProgress();
-    await fetchMock.flush(true);
+    await act(async () => {
+      await act(async () => {
+        await fetchMock.flush(true);
+      });
+    });
     tree.update();
     expect(tree.find("FontAwesomeIcon.text-success")).toHaveLength(0);
     expect(tree.find("FontAwesomeIcon.text-danger")).toHaveLength(1);
