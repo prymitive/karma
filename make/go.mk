@@ -78,6 +78,6 @@ changelog: $(GOBIN)/github-release-notes
 		-repo karma \
 		-since-latest-release \
 		-include-author \
-		| egrep -v '@renovate' \
+		| grep -vE '@renovate|@dependabot' \
 		| sed s/' PR '/' '/g \
 		| sed s/'- @prymitive -'/'-'/g
