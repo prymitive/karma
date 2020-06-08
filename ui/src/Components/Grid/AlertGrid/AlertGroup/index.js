@@ -1,7 +1,6 @@
 import React, { useEffect, useCallback, useRef, useState } from "react";
 import PropTypes from "prop-types";
 
-import { toJS } from "mobx";
 import { useObserver } from "mobx-react";
 
 import { Fade } from "react-reveal";
@@ -57,13 +56,14 @@ const AlertGroup = ({
   gridLabelValue,
   initialAlertsToRender,
 }) => {
-  const defaultRenderCount = toJS(
-    settingsStore.alertGroupConfig.config.defaultRenderCount
+  const defaultRenderCount =
+    settingsStore.alertGroupConfig.config.defaultRenderCount;
+
+  const [alertsToRenderInternal, setAlertsToRender] = useState(
+    initialAlertsToRender || null
   );
 
-  const [alertsToRender, setAlertsToRender] = useState(
-    initialAlertsToRender || defaultRenderCount
-  );
+  const alertsToRender = alertsToRenderInternal || defaultRenderCount;
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -168,6 +168,9 @@ const AlertGroup = ({
         width: groupWidth,
         zIndex: isMenuOpen ? 100 : null,
       }}
+      data-defaultrendercount={
+        settingsStore.alertGroupConfig.config.defaultRenderCount
+      }
     >
       <Fade
         in={context.animations.in}
