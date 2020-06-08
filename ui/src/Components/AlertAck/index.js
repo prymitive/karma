@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import { toJS } from "mobx";
-import { useObserver, useLocalStore } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import moment from "moment";
 
@@ -19,131 +19,19 @@ import {
   MatchersFromGroup,
   GenerateAlertmanagerSilenceData,
 } from "Stores/SilenceFormStore";
-import { FetchPost } from "Common/Fetch";
+import { useFetchAny } from "Hooks/useFetchAny";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 
-const SubmitState = Object.freeze({
-  Idle: "Idle",
-  InProgress: "InProgress",
-  Done: "Done",
-  Failed: "Failed",
-});
-
-const newPendingSilence = (
-  group,
-  members,
-  durationSeconds,
-  author,
-  commentPrefix
-) => ({
-  payload: GenerateAlertmanagerSilenceData(
-    moment.utc(),
-    moment.utc().add(durationSeconds, "seconds"),
-    MatchersFromGroup(group, [], group.alerts, true),
-    author,
-    `${
-      commentPrefix ? commentPrefix + " " : ""
-    }This alert was acknowledged using karma on ${moment.utc().toString()}`
-  ),
-  membersToTry: members,
-  submitState: SubmitState.Idle,
-  submitResult: null,
-  isDone: false,
-  isFailed: false,
-  error: null,
-});
-
 const AlertAck = ({ alertStore, silenceFormStore, group }) => {
-  const submitState = useLocalStore(() => ({
-    silencesByCluster: {},
-    reset() {
-      this.silencesByCluster = {};
-    },
-    pushSilence(cluster, silence) {
-      this.silencesByCluster[cluster] = silence;
-    },
-    markDone(cluster) {
-      this.silencesByCluster[cluster].isDone = true;
-    },
-    markFailed(cluster, err) {
-      this.silencesByCluster[cluster].isDone = true;
-      this.silencesByCluster[cluster].isFailed = true;
-      this.silencesByCluster[cluster].error = err;
-    },
-    get isIdle() {
-      return Object.keys(this.silencesByCluster).length === 0;
-    },
-    get isInprogress() {
-      return (
-        Object.values(this.silencesByCluster).filter(
-          (pendingSilence) => pendingSilence.isDone === false
-        ).length > 0
-      );
-    },
-    get isDone() {
-      return (
-        Object.values(this.silencesByCluster).filter(
-          (pendingSilence) => pendingSilence.isDone === true
-        ).length > 0
-      );
-    },
-    get isFailed() {
-      return (
-        Object.values(this.silencesByCluster).filter(
-          (pendingSilence) => pendingSilence.isFailed === true
-        ).length > 0
-      );
-    },
-    get errorMessages() {
-      return Object.values(this.silencesByCluster)
-        .filter((pendingSilence) => pendingSilence.error !== null)
-        .map((s) => s.error);
-    },
-  }));
+  const [clusters, setClusters] = useState([]);
+  const [upstreams, setUpstreams] = useState([]);
+  const [currentCluster, setCurrentCluster] = useState(0);
+  const [isAcking, setIsAcking] = useState(false);
 
-  const maybeTryAgainAfterError = (cluster, err) => {
-    if (submitState.silencesByCluster[cluster].membersToTry.length) {
-      handleAlertmanagerRequest(cluster);
-    } else {
-      submitState.markFailed(cluster, err);
-    }
-  };
-
-  const handleAlertmanagerRequest = (cluster) => {
-    const member = submitState.silencesByCluster[cluster].membersToTry.pop();
-
-    const am = alertStore.data.getAlertmanagerByName(member);
-    if (am === undefined) {
-      const err = `Alertmanager instance "${member} not found`;
-      console.error(err);
-      maybeTryAgainAfterError(cluster, err);
-      return;
-    }
-
-    FetchPost(`${am.uri}/api/v2/silences`, {
-      body: JSON.stringify(submitState.silencesByCluster[cluster].payload),
-      credentials: am.corsCredentials,
-      headers: {
-        "Content-Type": "application/json",
-        ...am.headers,
-      },
-    })
-      .then((result) => {
-        if (result.ok) {
-          return result.json().then((r) => submitState.markDone(cluster));
-        } else {
-          result.text().then((text) => maybeTryAgainAfterError(cluster, text));
-        }
-      })
-      .catch((err) => {
-        maybeTryAgainAfterError(cluster, err);
-      });
-  };
+  const { response, error, inProgress, reset } = useFetchAny(upstreams);
 
   const onACK = () => {
-    if (submitState.isInprogress || submitState.isDone) {
-      return;
-    }
+    setIsAcking(true);
 
     let author =
       silenceFormStore.data.author !== ""
@@ -166,47 +54,103 @@ const AlertAck = ({ alertStore, silenceFormStore, group }) => {
       alertmanagers.some((m) => clusterMembers.includes(m))
     );
 
-    submitState.reset();
+    let c = [];
     for (const [clusterName, clusterMembers] of clusters) {
-      const pendingSilence = newPendingSilence(
-        toJS(group),
-        toJS(clusterMembers),
-        toJS(alertStore.settings.values.alertAcknowledgement.durationSeconds),
-        author,
-        toJS(alertStore.settings.values.alertAcknowledgement.commentPrefix)
+      const durationSeconds = toJS(
+        alertStore.settings.values.alertAcknowledgement.durationSeconds
       );
-      submitState.pushSilence(clusterName, pendingSilence);
-      handleAlertmanagerRequest(clusterName);
+      const commentPrefix = toJS(
+        alertStore.settings.values.alertAcknowledgement.commentPrefix
+      );
+      c.push({
+        payload: GenerateAlertmanagerSilenceData(
+          moment.utc(),
+          moment.utc().add(durationSeconds, "seconds"),
+          MatchersFromGroup(group, [], group.alerts, true),
+          author,
+          `${
+            commentPrefix ? commentPrefix + " " : ""
+          }This alert was acknowledged using karma on ${moment
+            .utc()
+            .toString()}`
+        ),
+        clusterName: clusterName,
+        members: clusterMembers,
+      });
     }
+    setClusters(c);
   };
+
+  useEffect(() => {
+    if (upstreams.length && !inProgress && (error || response)) {
+      if (clusters.length > currentCluster + 1) {
+        setCurrentCluster(currentCluster + 1);
+      } else {
+        setIsAcking(false);
+      }
+    }
+  }, [clusters, upstreams, currentCluster, inProgress, error, response]);
+
+  useEffect(() => {
+    if (clusters.length) {
+      reset();
+      const cluster = clusters[currentCluster];
+      let u = [];
+      cluster.members.forEach((amName) => {
+        const am = alertStore.data.getAlertmanagerByName(amName);
+        if (am !== undefined) {
+          u.push({
+            uri: `${am.uri}/api/v2/silences`,
+            options: {
+              method: "POST",
+              body: JSON.stringify(cluster.payload),
+              credentials: am.corsCredentials,
+              headers: {
+                "Content-Type": "application/json",
+                ...am.headers,
+              },
+            },
+          });
+        } else {
+          console.error(`Alertmanager "${amName}" not found`);
+        }
+      });
+      setUpstreams(u);
+    }
+  }, [alertStore.data, clusters, currentCluster, reset]);
 
   return useObserver(() =>
     alertStore.settings.values.alertAcknowledgement.enabled === false ? null : (
       <TooltipWrapper
         title={
-          submitState.isFailed
-            ? submitState.errorMessages[0]
+          !isAcking && error
+            ? error
             : "Acknowledge this alert with a short lived silence"
         }
       >
         <span
           className={`badge badge-pill components-label components-label-with-hover px-2 ${
-            submitState.isFailed
+            !isAcking && error
               ? "badge-warning"
-              : submitState.isDone
+              : !isAcking && response
               ? "badge-success"
               : "badge-secondary"
           }`}
-          onClick={onACK}
+          onClick={() => {
+            if (!isAcking && !(response || error)) {
+              setIsAcking(true);
+              onACK();
+            }
+          }}
         >
-          {submitState.isIdle ? (
-            <FontAwesomeIcon icon={faCheck} fixedWidth />
-          ) : submitState.isInprogress ? (
-            <FontAwesomeIcon icon={faSpinner} fixedWidth spin />
-          ) : submitState.isFailed ? (
+          {!isAcking && error ? (
             <FontAwesomeIcon icon={faExclamationCircle} fixedWidth />
-          ) : (
+          ) : !isAcking && response ? (
             <FontAwesomeIcon icon={faCheckCircle} fixedWidth />
+          ) : isAcking ? (
+            <FontAwesomeIcon icon={faSpinner} fixedWidth spin />
+          ) : (
+            <FontAwesomeIcon icon={faCheck} fixedWidth />
           )}
         </span>
       </TooltipWrapper>
