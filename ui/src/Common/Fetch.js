@@ -37,7 +37,4 @@ const FetchGet = async (uri, options, beforeRetry) =>
     FetchRetryConfig
   );
 
-const FetchPost = async (uri, options) =>
-  await fetch(uri, merge({}, { method: "POST" }, CommonOptions, options));
-
-export { CommonOptions, FetchGet, FetchPost, FetchRetryConfig };
+export { CommonOptions, FetchGet, FetchRetryConfig };
