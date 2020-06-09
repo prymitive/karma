@@ -16,6 +16,10 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
 });
 
+afterEach(() => {
+  document.body.className = "";
+});
+
 const MountedOverviewModal = () => {
   return mount(<OverviewModal alertStore={alertStore} />);
 };
@@ -80,9 +84,12 @@ describe("<OverviewModal />", () => {
 
   it("'modal-open' class is removed from body node after modal is hidden", () => {
     const tree = MountedOverviewModal();
-    const toggle = tree.find("div.navbar-brand");
-    toggle.simulate("click");
-    toggle.simulate("click");
+
+    tree.find("div.navbar-brand").simulate("click");
+    expect(document.body.className.split(" ")).toContain("modal-open");
+
+    tree.find("div.navbar-brand").simulate("click");
+    act(() => jest.runOnlyPendingTimers());
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
 

@@ -32,6 +32,10 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
 });
 
+afterEach(() => {
+  document.body.className = "";
+});
+
 const MountedSilenceModal = () => {
   return mount(
     <ThemeContext.Provider
@@ -131,8 +135,12 @@ describe("<SilenceModal />", () => {
   it("'modal-open' class is removed from body node after modal is hidden", () => {
     const tree = MountedSilenceModal();
     const toggle = tree.find(".nav-link");
+
     toggle.simulate("click");
+    expect(document.body.className.split(" ")).toContain("modal-open");
+
     toggle.simulate("click");
+    act(() => jest.runOnlyPendingTimers());
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
 

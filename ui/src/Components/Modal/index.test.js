@@ -16,15 +16,22 @@ const MountedModal = (isOpen) => {
 
 afterEach(() => {
   jest.resetAllMocks();
+  document.body.className = "";
 });
 
 describe("<Modal />", () => {
+  it("'modal-open' class is appended to MountModal container", () => {
+    const tree = MountedModal(true);
+    expect(tree.find("div").at(0).hasClass("modal-open")).toBe(true);
+  });
+
   it("'modal-open' class is appended to body node when modal is visible", () => {
     MountedModal(true);
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
   it("'modal-open' class is not removed from body node after hidden modal is unmounted", () => {
+    document.body.classList.add("modal-open");
     const tree = MountedModal(false);
     tree.unmount();
     expect(document.body.className.split(" ")).toContain("modal-open");
@@ -51,9 +58,7 @@ describe("<Modal />", () => {
     const tree = MountedModal(isOpen);
     expect(document.body.className.split(" ")).toContain("modal-open");
 
-    isOpen = false;
-    // force update
-    tree.setProps({ style: {} });
+    tree.setProps({ isOpen: false });
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
@@ -70,7 +75,10 @@ describe("<Modal />", () => {
 
   it("toggleOpen is called after pressing 'esc'", () => {
     const tree = MountedModal(true);
-    tree.simulate("keyDown", { key: "Escape", keyCode: 27, which: 27 });
+    tree
+      .find("div")
+      .at(0)
+      .simulate("keyDown", { key: "Escape", keyCode: 27, which: 27 });
     expect(fakeToggle).toHaveBeenCalled();
   });
 });
