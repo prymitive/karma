@@ -52,6 +52,7 @@ afterEach(() => {
   useFetchGet.mockReset();
   useFetchDelete.mockReset();
   clear();
+  document.body.className = "";
 });
 
 const MockOnHide = jest.fn();

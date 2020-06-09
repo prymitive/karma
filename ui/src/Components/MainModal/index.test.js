@@ -34,6 +34,7 @@ beforeEach(() => {
 afterEach(() => {
   jest.restoreAllMocks();
   fetchMock.reset();
+  document.body.className = "";
 });
 
 const MountedMainModal = () => {
@@ -111,8 +112,12 @@ describe("<MainModal />", () => {
   it("'modal-open' class is removed from body node after modal is hidden", () => {
     const tree = MountedMainModal();
     const toggle = tree.find(".nav-link");
+
     toggle.simulate("click");
+    expect(document.body.className.split(" ")).toContain("modal-open");
+
     toggle.simulate("click");
+    act(() => jest.runOnlyPendingTimers());
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
 

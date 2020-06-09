@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 
 import { observer } from "mobx-react";
@@ -22,10 +22,9 @@ const SilenceModalContent = React.lazy(() =>
 
 const SilenceModal = observer(
   ({ alertStore, silenceFormStore, settingsStore }) => {
-    const modalRef = useRef();
-
     const onDeleteModalClose = React.useCallback(() => {
-      modalRef.current.toggleBodyClass(true);
+      const event = new CustomEvent("remountModal");
+      window.dispatchEvent(event);
     }, []);
 
     return (
@@ -46,7 +45,6 @@ const SilenceModal = observer(
           </TooltipWrapper>
         </li>
         <Modal
-          ref={modalRef}
           isOpen={silenceFormStore.toggle.visible}
           toggleOpen={silenceFormStore.toggle.toggle}
           onExited={silenceFormStore.data.resetProgress}
