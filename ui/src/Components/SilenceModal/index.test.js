@@ -162,7 +162,7 @@ describe("<SilenceModal />", () => {
     silenceFormStore.toggle.visible = true;
     MountedSilenceModal();
 
-    expect(callbacks).toHaveLength(4);
+    expect(callbacks.length).toBeGreaterThan(0);
     act(() => {
       callbacks.forEach((f) => f());
     });
