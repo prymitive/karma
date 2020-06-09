@@ -49,7 +49,7 @@ const SilenceDetails = ({
   silence,
   cluster,
   onEditSilence,
-  onDeleteModalClose,
+  isUpper,
 }) => {
   let isExpired = moment(silence.endsAt) < moment();
   let expiresClass = "";
@@ -173,7 +173,7 @@ const SilenceDetails = ({
                 silenceFormStore={silenceFormStore}
                 cluster={cluster}
                 silence={silence}
-                onModalExit={onDeleteModalClose}
+                isUpper={isUpper}
               />
             )}
           </div>
@@ -187,7 +187,10 @@ SilenceDetails.propTypes = {
   cluster: PropTypes.string.isRequired,
   silence: APISilence.isRequired,
   onEditSilence: PropTypes.func.isRequired,
-  onDeleteModalClose: PropTypes.func,
+  isUpper: PropTypes.bool,
+};
+SilenceDetails.defaultProps = {
+  isUpper: false,
 };
 
 export { SilenceDetails };

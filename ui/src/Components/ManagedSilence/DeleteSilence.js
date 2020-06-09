@@ -195,7 +195,7 @@ const DeleteSilence = ({
   silenceFormStore,
   cluster,
   silence,
-  onModalExit,
+  isUpper,
 }) => {
   const [visible, setVisible] = useState(false);
 
@@ -220,9 +220,8 @@ const DeleteSilence = ({
       </button>
       <Modal
         isOpen={visible}
-        isUpper={true}
+        isUpper={isUpper}
         toggleOpen={() => setVisible(false)}
-        onExited={onModalExit}
       >
         <DeleteSilenceModalContent
           alertStore={alertStore}
@@ -240,7 +239,10 @@ DeleteSilence.propTypes = {
   silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
   cluster: PropTypes.string.isRequired,
   silence: APISilence.isRequired,
-  onModalExit: PropTypes.func,
+  isUpper: PropTypes.bool,
+};
+DeleteSilence.defaultProps = {
+  isUpper: false,
 };
 
 export {

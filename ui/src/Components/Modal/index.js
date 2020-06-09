@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
 import PropTypes from "prop-types";
 
-import { disableBodyScroll, clearAllBodyScrollLocks } from "body-scroll-lock";
+import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
 import { HotKeys } from "react-hotkeys";
 
@@ -17,23 +17,13 @@ const ModalInner = ({ size, isUpper, toggleOpen, children }) => {
   useEffect(() => {
     document.body.classList.add("modal-open");
     disableBodyScroll(ref.current);
-    return () => {
-      document.body.classList.remove("modal-open");
-      clearAllBodyScrollLocks();
-    };
-  }, []);
 
-  const onRemount = useCallback(() => {
-    document.body.classList.add("modal-open");
-    disableBodyScroll(ref.current);
-  }, []);
-
-  useEffect(() => {
-    window.addEventListener("remountModal", onRemount);
+    let modal = ref.current;
     return () => {
-      window.removeEventListener("remountModal", onRemount);
+      if (!isUpper) document.body.classList.remove("modal-open");
+      enableBodyScroll(modal);
     };
-  }, [onRemount]);
+  }, [isUpper]);
 
   return (
     <HotKeys

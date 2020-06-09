@@ -163,7 +163,7 @@ const Browser = ({
                 silence={silence.silence}
                 alertStore={alertStore}
                 silenceFormStore={silenceFormStore}
-                onDeleteModalClose={onDeleteModalClose}
+                isNested={true}
               />
             ))}
           <PageSelect

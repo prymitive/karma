@@ -6,9 +6,9 @@ import { Modal } from ".";
 
 const fakeToggle = jest.fn();
 
-const MountedModal = (isOpen) => {
+const MountedModal = (isOpen, isUpper) => {
   return mount(
-    <Modal isOpen={isOpen} toggleOpen={fakeToggle}>
+    <Modal isOpen={isOpen} isUpper={isUpper || false} toggleOpen={fakeToggle}>
       <div />
     </Modal>
   );
@@ -56,6 +56,22 @@ describe("<Modal />", () => {
     document.body.classList.toggle("modal-open", true);
     let isOpen = true;
     const tree = MountedModal(isOpen);
+    expect(document.body.className.split(" ")).toContain("modal-open");
+
+    tree.setProps({ isOpen: false });
+    expect(document.body.className.split(" ")).toContain("modal-open");
+  });
+
+  it("'modal-open' class is not removed if Modal isUpper=true and is unmounted", () => {
+    const tree = MountedModal(true, true);
+    expect(document.body.className.split(" ")).toContain("modal-open");
+
+    tree.unmount();
+    expect(document.body.className.split(" ")).toContain("modal-open");
+  });
+
+  it("'modal-open' class is not removed if Modal isUpper=true and is updated to be hidden", () => {
+    const tree = MountedModal(true, true);
     expect(document.body.className.split(" ")).toContain("modal-open");
 
     tree.setProps({ isOpen: false });

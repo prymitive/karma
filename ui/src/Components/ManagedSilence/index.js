@@ -24,7 +24,7 @@ const ManagedSilence = ({
   silenceFormStore,
   isOpen,
   onDidUpdate,
-  onDeleteModalClose,
+  isNested,
 }) => {
   useEffect(() => {
     if (onDidUpdate) onDidUpdate();
@@ -66,7 +66,7 @@ const ManagedSilence = ({
               alertStore={alertStore}
               silenceFormStore={silenceFormStore}
               onEditSilence={onEditSilence}
-              onDeleteModalClose={onDeleteModalClose}
+              isUpper={isNested}
             />
           </div>
         ) : null}
@@ -84,9 +84,11 @@ ManagedSilence.propTypes = {
   onDidUpdate: PropTypes.func,
   onDeleteModalClose: PropTypes.func,
   isOpen: PropTypes.bool,
+  isNested: PropTypes.bool,
 };
 ManagedSilence.defaultProps = {
   isOpen: false,
+  isNested: false,
 };
 
 export { ManagedSilence, GetAlertmanager };
