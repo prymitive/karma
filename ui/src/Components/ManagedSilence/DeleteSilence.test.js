@@ -56,7 +56,6 @@ afterEach(() => {
 });
 
 const MockOnHide = jest.fn();
-const MockOnModalExit = jest.fn();
 
 const MountedDeleteSilence = () => {
   return mount(
@@ -65,7 +64,6 @@ const MountedDeleteSilence = () => {
       silenceFormStore={silenceFormStore}
       cluster={cluster}
       silence={silence}
-      onModalExit={MockOnModalExit}
     />
   );
 };
@@ -101,7 +99,8 @@ describe("<DeleteSilence />", () => {
 
     tree.find("button.close").simulate("click");
     act(() => jest.runOnlyPendingTimers());
-    expect(MockOnModalExit).toHaveBeenCalled();
+    tree.update();
+    expect(tree.find(".modal-body")).toHaveLength(0);
   });
 
   it("closes modal on esc button press", () => {
@@ -113,7 +112,8 @@ describe("<DeleteSilence />", () => {
       .find("div.modal")
       .simulate("keyDown", { key: "Escape", keyCode: 27, which: 27 });
     act(() => jest.runOnlyPendingTimers());
-    expect(MockOnModalExit).toHaveBeenCalled();
+    tree.update();
+    expect(tree.find(".modal-body")).toHaveLength(0);
   });
 
   it("button is disabled when all alertmanager instances are read-only", () => {
