@@ -87,6 +87,10 @@ describe("<Fetcher />", () => {
     MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
+    advanceBy(3 * 1000);
+    jest.runOnlyPendingTimers();
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+
     settingsStore.fetchConfig.config.interval = 600;
 
     advanceBy(3 * 1000);
@@ -120,18 +124,12 @@ describe("<Fetcher />", () => {
     expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
-  it("calls alertStore.fetchWithThrottle again after interval change", () => {
-    const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    MountedFetcher();
-    settingsStore.fetchConfig.config.interval = 60;
-    expect(fetchSpy).toHaveBeenCalledTimes(2);
-  });
-
   it("calls alertStore.fetchWithThrottle again after filter change", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    MountedFetcher();
+    const tree = MountedFetcher();
     alertStore.filters.values = [];
+    tree.setProps({});
     expect(fetchSpy).toHaveBeenCalledTimes(2);
   });
 
@@ -301,6 +299,7 @@ describe("<Fetcher />", () => {
     alertStore.status.resume();
     settingsStore.gridConfig.config.reverseSort = !settingsStore.gridConfig
       .config.reverseSort;
+    jest.runOnlyPendingTimers();
     expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
