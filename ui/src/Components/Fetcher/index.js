@@ -1,136 +1,140 @@
-import React, { Component } from "react";
+import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
-import { observer } from "mobx-react";
+import { reaction } from "mobx";
+import { useObserver } from "mobx-react";
 
 import moment from "moment";
 
 import { AlertStore, AlertStoreStatuses } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 
-const Fetcher = observer(
-  class Fetcher extends Component {
-    static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired,
+const Fetcher = ({ alertStore, settingsStore }) => {
+  const timer = useRef(null);
+
+  const getSortSettings = () => {
+    let sortSettings = {
+      useDefaults: false,
+      sortOrder: "",
+      sortLabel: "",
+      sortReverse: "",
     };
 
-    getSortSettings = () => {
-      const { settingsStore } = this.props;
+    sortSettings.useDefaults =
+      settingsStore.gridConfig.config.sortOrder ===
+      settingsStore.gridConfig.options.default.value;
 
-      let sortSettings = {
-        useDefaults: false,
-        sortOrder: "",
-        sortLabel: "",
-        sortReverse: "",
-      };
-
-      sortSettings.useDefaults =
-        settingsStore.gridConfig.config.sortOrder ===
-        settingsStore.gridConfig.options.default.value;
-
-      if (sortSettings.useDefaults === true) {
-        return sortSettings;
-      }
-
-      sortSettings.sortOrder = settingsStore.gridConfig.config.sortOrder;
-
-      // don't sort if sorting is disabled
-      if (
-        sortSettings.sortOrder ===
-        settingsStore.gridConfig.options.disabled.value
-      )
-        return sortSettings;
-
-      sortSettings.sortReverse =
-        settingsStore.gridConfig.config.reverseSort !== null
-          ? settingsStore.gridConfig.config.reverseSort === true
-            ? "1"
-            : "0"
-          : "";
-
-      if (settingsStore.gridConfig.config.sortLabel !== null) {
-        sortSettings.sortLabel = settingsStore.gridConfig.config.sortLabel;
-      }
-
+    if (sortSettings.useDefaults === true) {
       return sortSettings;
-    };
-
-    fetchIfIdle = () => {
-      const { alertStore, settingsStore } = this.props;
-
-      const nextTick = moment(alertStore.status.lastUpdateAt).add(
-        settingsStore.fetchConfig.config.interval,
-        "seconds"
-      );
-
-      const pastDeadline = moment().isSameOrAfter(nextTick);
-
-      const status = alertStore.status.value.toString();
-      const updateInProgress =
-        status === AlertStoreStatuses.Fetching.toString() ||
-        status === AlertStoreStatuses.Processing.toString();
-
-      if (pastDeadline && !updateInProgress && !alertStore.status.paused) {
-        this.callFetch();
-      }
-    };
-
-    timerTick = () => {
-      window.requestAnimationFrame(this.fetchIfIdle);
-    };
-
-    callFetch = () => {
-      const { alertStore, settingsStore } = this.props;
-
-      const sortSettings = this.getSortSettings();
-      alertStore.fetchWithThrottle(
-        settingsStore.multiGridConfig.config.gridLabel,
-        settingsStore.multiGridConfig.config.gridSortReverse,
-        sortSettings.sortOrder,
-        sortSettings.sortLabel,
-        sortSettings.sortReverse
-      );
-    };
-
-    componentDidMount() {
-      // start first fetch once the browser is done doing busy loading
-      window.requestAnimationFrame(this.fetchIfIdle);
-      this.timer = setInterval(this.timerTick, 1000);
     }
 
-    componentDidUpdate() {
-      const { alertStore } = this.props;
+    sortSettings.sortOrder = settingsStore.gridConfig.config.sortOrder;
 
-      if (!alertStore.status.paused) {
-        this.callFetch();
-      }
+    // don't sort if sorting is disabled
+    if (
+      sortSettings.sortOrder === settingsStore.gridConfig.options.disabled.value
+    )
+      return sortSettings;
+
+    sortSettings.sortReverse =
+      settingsStore.gridConfig.config.reverseSort !== null
+        ? settingsStore.gridConfig.config.reverseSort === true
+          ? "1"
+          : "0"
+        : "";
+
+    if (settingsStore.gridConfig.config.sortLabel !== null) {
+      sortSettings.sortLabel = settingsStore.gridConfig.config.sortLabel;
     }
 
-    componentWillUnmount() {
-      clearInterval(this.timer);
-      this.timer = null;
+    return sortSettings;
+  };
+
+  const fetchIfIdle = () => {
+    const nextTick = moment(alertStore.status.lastUpdateAt).add(
+      settingsStore.fetchConfig.config.interval,
+      "seconds"
+    );
+
+    const pastDeadline = moment().isSameOrAfter(nextTick);
+
+    const status = alertStore.status.value.toString();
+    const updateInProgress =
+      status === AlertStoreStatuses.Fetching.toString() ||
+      status === AlertStoreStatuses.Processing.toString();
+
+    if (pastDeadline && !updateInProgress && !alertStore.status.paused) {
+      callFetch();
     }
+  };
 
-    render() {
-      const { alertStore, settingsStore } = this.props;
+  const callFetch = () => {
+    if (alertStore.status.paused) return;
 
-      return (
-        // data-filters is there to register filters for observation in mobx
-        <span
-          data-filters={alertStore.filters.values.map((f) => f.raw).join(" ")}
-          data-interval={settingsStore.fetchConfig.config.interval}
-          data-multigrid-label={settingsStore.multiGridConfig.config.gridLabel}
-          data-multigrid-sort-reverse={
-            settingsStore.multiGridConfig.config.gridSortReverse
+    const sortSettings = getSortSettings();
+    alertStore.fetchWithThrottle(
+      settingsStore.multiGridConfig.config.gridLabel,
+      settingsStore.multiGridConfig.config.gridSortReverse,
+      sortSettings.sortOrder,
+      sortSettings.sortLabel,
+      sortSettings.sortReverse
+    );
+  };
+
+  useEffect(() => {
+    return () => clearInterval(timer.current);
+  }, []);
+
+  useEffect(
+    () =>
+      reaction(
+        () => alertStore.filters.values.map((f) => f.raw).join(" "),
+        () => {
+          callFetch();
+        },
+        { fireImmediately: true }
+      ),
+    [] // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
+  useEffect(
+    () =>
+      reaction(
+        () => alertStore.status.paused,
+        (paused) => {
+          if (paused) {
+            clearInterval(timer.current);
+            timer.current = null;
+          } else {
+            timer.current = setInterval(
+              () => window.requestAnimationFrame(fetchIfIdle),
+              1000
+            );
           }
-          data-grid-sort-order={settingsStore.gridConfig.config.sortOrder}
-          data-grid-sort-label={settingsStore.gridConfig.config.sortLabel}
-          data-grid-sort-reverse={settingsStore.gridConfig.config.reverseSort}
-        />
-      );
-    }
-  }
-);
+        },
+        { fireImmediately: true }
+      ),
+    [] // eslint-disable-line react-hooks/exhaustive-deps
+  );
+
+  return useObserver(() => (
+    // data-filters is there to register filters for observation in mobx
+    <span
+      data-filters={alertStore.filters.values.map((f) => f.raw).join(" ")}
+      data-interval={settingsStore.fetchConfig.config.interval}
+      data-multigrid-label={settingsStore.multiGridConfig.config.gridLabel}
+      data-multigrid-sort-reverse={
+        settingsStore.multiGridConfig.config.gridSortReverse
+      }
+      data-grid-sort-order={settingsStore.gridConfig.config.sortOrder}
+      data-grid-sort-label={settingsStore.gridConfig.config.sortLabel}
+      data-grid-sort-reverse={settingsStore.gridConfig.config.reverseSort}
+    />
+  ));
+};
+Fetcher.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  settingsStore: PropTypes.instanceOf(Settings).isRequired,
+};
 
 export { Fetcher };
