@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { HotKeys } from "react-hotkeys";
@@ -13,82 +13,90 @@ import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons/faAngleDou
 
 import { IsMobile } from "Common/Device";
 
-class PageSelect extends Component {
-  static propTypes = {
-    totalPages: PropTypes.number.isRequired,
-    activePage: PropTypes.number.isRequired,
-    maxPerPage: PropTypes.number.isRequired,
-    totalItemsCount: PropTypes.number.isRequired,
-    setPageCallback: PropTypes.func.isRequired,
-  };
+const PageSelect = ({
+  totalItemsCount,
+  totalPages,
+  maxPerPage,
+  initialPage,
+  setPageCallback,
+}) => {
+  const [activePage, setActivePage] = useState(initialPage);
 
-  constructor(props) {
-    super(props);
-    this.HotKeysRef = React.createRef();
-  }
+  useEffect(() => {
+    if (activePage > totalPages) {
+      const page = Math.max(1, totalPages);
+      setActivePage(page);
+      setPageCallback(page);
+    }
+  }, [activePage, maxPerPage, totalPages, setPageCallback]);
 
-  onPageUp = () => {
-    const { setPageCallback, activePage, totalPages } = this.props;
-    setPageCallback(Math.min(activePage + 1, totalPages));
-  };
+  const onChange = useCallback(
+    (page) => {
+      setActivePage(page);
+      setPageCallback(page);
+    },
+    [setPageCallback]
+  );
 
-  onPageDown = () => {
-    const { setPageCallback, activePage } = this.props;
-    setPageCallback(Math.max(activePage - 1, 1));
-  };
+  const onPageUp = useCallback(() => {
+    const page = Math.min(activePage + 1, totalPages);
+    setActivePage(page);
+    setPageCallback(page);
+  }, [activePage, setPageCallback, totalPages]);
 
-  componentDidMount() {
-    this.HotKeysRef.current.focus();
-  }
+  const onPageDown = useCallback(() => {
+    const page = Math.max(activePage - 1, 1);
+    setActivePage(page);
+    setPageCallback(page);
+  }, [activePage, setPageCallback]);
 
-  render() {
-    const {
-      totalItemsCount,
-      totalPages,
-      maxPerPage,
-      activePage,
-      setPageCallback,
-    } = this.props;
-
-    const isMobile = IsMobile();
-
-    return (
-      <HotKeys
-        className="components-pagination"
-        innerRef={this.HotKeysRef}
-        keyMap={{
-          onArrowLeft: "ArrowLeft",
-          onArrowRight: "ArrowRight",
-        }}
-        handlers={{
-          onArrowLeft: this.onPageDown,
-          onArrowRight: this.onPageUp,
-        }}
-      >
-        {totalItemsCount > maxPerPage ? (
-          <div className="mt-3">
-            <Pagination
-              activePage={activePage}
-              itemsCountPerPage={maxPerPage}
-              totalItemsCount={totalItemsCount}
-              pageRangeDisplayed={isMobile ? 3 : 5}
-              onChange={setPageCallback}
-              hideFirstLastPages={totalPages < 10}
-              innerClass="pagination justify-content-center"
-              itemClass="page-item"
-              linkClass="page-link"
-              activeClass="active"
-              activeLinkClass="font-weight-bold"
-              prevPageText={<FontAwesomeIcon icon={faAngleLeft} />}
-              nextPageText={<FontAwesomeIcon icon={faAngleRight} />}
-              firstPageText={<FontAwesomeIcon icon={faAngleDoubleLeft} />}
-              lastPageText={<FontAwesomeIcon icon={faAngleDoubleRight} />}
-            />
-          </div>
-        ) : null}
-      </HotKeys>
-    );
-  }
-}
+  return (
+    <HotKeys
+      className="components-pagination"
+      innerRef={(r) => r && r.focus()}
+      keyMap={{
+        onArrowLeft: "ArrowLeft",
+        onArrowRight: "ArrowRight",
+      }}
+      handlers={{
+        onArrowLeft: onPageDown,
+        onArrowRight: onPageUp,
+      }}
+      allowChanges
+    >
+      {totalItemsCount > maxPerPage ? (
+        <div className="mt-3">
+          <Pagination
+            activePage={activePage}
+            itemsCountPerPage={maxPerPage}
+            totalItemsCount={totalItemsCount}
+            pageRangeDisplayed={IsMobile() ? 3 : 5}
+            onChange={onChange}
+            hideFirstLastPages={totalPages < 10}
+            innerClass="pagination justify-content-center"
+            itemClass="page-item"
+            linkClass="page-link"
+            activeClass="active"
+            activeLinkClass="font-weight-bold"
+            prevPageText={<FontAwesomeIcon icon={faAngleLeft} />}
+            nextPageText={<FontAwesomeIcon icon={faAngleRight} />}
+            firstPageText={<FontAwesomeIcon icon={faAngleDoubleLeft} />}
+            lastPageText={<FontAwesomeIcon icon={faAngleDoubleRight} />}
+          />
+        </div>
+      ) : null}
+    </HotKeys>
+  );
+};
+PageSelect.propTypes = {
+  totalPages: PropTypes.number.isRequired,
+  initialPage: PropTypes.number,
+  maxPerPage: PropTypes.number.isRequired,
+  totalItemsCount: PropTypes.number.isRequired,
+  setPageCallback: PropTypes.func.isRequired,
+};
+PageSelect.defaultProps = {
+  initialPage: 1,
+};
 
 export { PageSelect };

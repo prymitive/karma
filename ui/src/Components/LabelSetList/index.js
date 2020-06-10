@@ -57,7 +57,6 @@ const LabelSetList = ({ alertStore, labelsList }) => {
       </div>
       <PageSelect
         totalPages={Math.ceil(labelsList.length / maxPerPage)}
-        activePage={activePage}
         maxPerPage={maxPerPage}
         totalItemsCount={labelsList.length}
         setPageCallback={setActivePage}

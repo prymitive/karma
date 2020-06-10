@@ -78,15 +78,6 @@ const Browser = ({
   );
 
   useEffect(() => {
-    if (response) {
-      const totalPages = Math.ceil(response.length / maxPerPage);
-      if (activePage > totalPages) {
-        setActivePage(Math.max(1, totalPages));
-      }
-    }
-  }, [activePage, maxPerPage, response]);
-
-  useEffect(() => {
     const timer = setInterval(() => {
       setCurrentTime(Math.floor(Date.now() / 1000));
     }, settingsStore.fetchConfig.config.interval * 1000);
@@ -168,7 +159,6 @@ const Browser = ({
             ))}
           <PageSelect
             totalPages={Math.ceil(response.length / maxPerPage)}
-            activePage={activePage}
             maxPerPage={maxPerPage}
             totalItemsCount={response.length}
             setPageCallback={setActivePage}
