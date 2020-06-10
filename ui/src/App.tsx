@@ -5,7 +5,7 @@ import React, {
   useCallback,
 } from "react";
 
-import { useObserver } from "mobx-react";
+import { useObserver } from "mobx-react-lite";
 
 import Media from "react-media";
 

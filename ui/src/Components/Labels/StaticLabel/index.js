@@ -1,6 +1,6 @@
 import React from "react";
 
-import { useObserver } from "mobx-react";
+import { useObserver } from "mobx-react-lite";
 
 import { GetClassAndStyle } from "Components/Labels/Utils";
 

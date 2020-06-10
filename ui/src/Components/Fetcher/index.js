@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 import { reaction } from "mobx";
-import { useObserver } from "mobx-react";
+import { useObserver } from "mobx-react-lite";
 
 import moment from "moment";
 

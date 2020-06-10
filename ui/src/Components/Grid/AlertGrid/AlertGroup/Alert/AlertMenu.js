@@ -1,7 +1,7 @@
 import React, { useRef, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 
-import { useObserver } from "mobx-react";
+import { useObserver } from "mobx-react-lite";
 
 import { Manager, Reference, Popper } from "react-popper";
 
