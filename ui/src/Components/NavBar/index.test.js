@@ -9,7 +9,6 @@ import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { ThemeContext } from "Components/Theme";
 import { NavBar, MobileIdleTimeout, DesktopIdleTimeout } from ".";
 
 let alertStore;
@@ -42,11 +41,7 @@ const MountedNavbar = (fixedTop) => {
       settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
       fixedTop={fixedTop}
-    />,
-    {
-      wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: MockThemeContext },
-    }
+    />
   );
 };
 
@@ -105,14 +100,14 @@ describe("<NavBar />", () => {
 
   it("body 'padding-top' style is updated after calling NavbarOnResize()", () => {
     const tree = MountedNavbar();
-    tree.instance().onResize(0, 10);
+    act(() => tree.find("ResizeDetector").props().onResize(0, 10));
     expect(
       window
         .getComputedStyle(document.body, null)
         .getPropertyValue("padding-top")
     ).toBe("18px");
 
-    tree.instance().onResize(0, 36);
+    act(() => tree.find("ResizeDetector").props().onResize(0, 36));
     expect(
       window
         .getComputedStyle(document.body, null)
@@ -202,15 +197,15 @@ describe("<IdleTimer />", () => {
 
   it("hidden navbar shows up again after activity", () => {
     const tree = MountedNavbar();
-    const instance = tree.instance();
 
-    instance.onIdleTimerIdle();
-    act(() => jest.runOnlyPendingTimers());
+    act(() => jest.runTimersToTime(DesktopIdleTimeout + 1000));
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(false);
     expect(tree.find(".container").hasClass("invisible")).toBe(true);
 
-    instance.onIdleTimerActive();
+    act(() => {
+      document.dispatchEvent(new MouseEvent("mousedown"));
+    });
     act(() => jest.runOnlyPendingTimers());
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
@@ -219,10 +214,7 @@ describe("<IdleTimer />", () => {
 
   it("body padding-top is 0px when navbar is hidden", () => {
     const tree = MountedNavbar();
-    const instance = tree.instance();
-
-    instance.onIdleTimerIdle();
-    act(() => jest.runOnlyPendingTimers());
+    act(() => jest.runTimersToTime(DesktopIdleTimeout + 1000));
     tree.update();
     expect(
       window
