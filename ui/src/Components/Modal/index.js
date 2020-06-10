@@ -13,6 +13,11 @@ import {
 
 const ModalInner = ({ size, isUpper, toggleOpen, children }) => {
   const ref = useRef(null);
+  const hotKeysRef = useRef(null);
+
+  useEffect(() => {
+    hotKeysRef.current && hotKeysRef.current.focus();
+  }, []);
 
   useEffect(() => {
     document.body.classList.add("modal-open");
@@ -27,7 +32,7 @@ const ModalInner = ({ size, isUpper, toggleOpen, children }) => {
 
   return (
     <HotKeys
-      innerRef={(r) => r && r.focus()}
+      innerRef={hotKeysRef}
       keyMap={{ CLOSE: "Escape" }}
       handlers={{ CLOSE: toggleOpen }}
       className="modal-open"
