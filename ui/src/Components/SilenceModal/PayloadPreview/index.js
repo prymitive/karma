@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { useObserver } from "mobx-react";
+import { useObserver } from "mobx-react-lite";
 
 import JSONPretty from "react-json-pretty";
 import * as theme from "react-json-pretty/dist/monikai";

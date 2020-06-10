@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import PropTypes from "prop-types";
 
-import { useObserver } from "mobx-react";
+import { useObserver } from "mobx-react-lite";
 
 import moment from "moment";
 

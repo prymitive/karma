@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 
-import { useObserver } from "mobx-react";
+import { useObserver } from "mobx-react-lite";
 
 import { QueryOperators, FormatQuery } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";

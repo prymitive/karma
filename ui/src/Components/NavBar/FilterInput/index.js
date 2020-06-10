@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import PropTypes from "prop-types";
 
-import { useObserver } from "mobx-react";
+import { useObserver } from "mobx-react-lite";
 
 import Autosuggest from "react-autosuggest";
 import Highlight from "react-highlighter";

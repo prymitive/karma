@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { useObserver } from "mobx-react";
+import { useObserver } from "mobx-react-lite";
 
 import Select from "react-select";
 

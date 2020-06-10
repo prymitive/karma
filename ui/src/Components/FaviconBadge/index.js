@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { autorun } from "mobx";
-import { useObserver } from "mobx-react";
+import { useObserver } from "mobx-react-lite";
 
 import Favico from "favico.js";
 

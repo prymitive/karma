@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 
 import { reaction } from "mobx";
-import { useObserver } from "mobx-react";
+import { useObserver } from "mobx-react-lite";
 
 import ReactResizeDetector from "react-resize-detector";
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-import { useObserver } from "mobx-react";
+import { useObserver } from "mobx-react-lite";
 
 import moment from "moment";
 import Moment from "react-moment";
