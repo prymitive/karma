@@ -26,17 +26,12 @@ describe("<PageSelect />", () => {
     const tree = mount(
       <PageSelect
         totalPages={4}
-        activePage={1}
         maxPerPage={5}
         totalItemsCount={17}
         setPageCallback={setPageCallback}
       />
     );
     tree.simulate("focus");
-
-    setPageCallback.mockImplementation((val) =>
-      tree.setProps({ activePage: val })
-    );
 
     PressKey(tree, "ArrowRight", 39);
     expect(setPageCallback).toHaveBeenLastCalledWith(2);
@@ -68,7 +63,6 @@ describe("<PageSelect />", () => {
     const tree = mount(
       <PageSelect
         totalPages={7}
-        activePage={1}
         maxPerPage={5}
         totalItemsCount={35}
         setPageCallback={jest.fn()}
@@ -82,12 +76,34 @@ describe("<PageSelect />", () => {
     const tree = mount(
       <PageSelect
         totalPages={7}
-        activePage={1}
         maxPerPage={5}
         totalItemsCount={35}
         setPageCallback={jest.fn()}
       />
     );
     expect(tree.find(".page-link")).toHaveLength(5);
+  });
+
+  it("resets page if activePage >= totalPages", () => {
+    const setPageCallback = jest.fn();
+    const tree = mount(
+      <PageSelect
+        initialPage={3}
+        totalPages={7}
+        maxPerPage={5}
+        totalItemsCount={35}
+        setPageCallback={setPageCallback}
+      />
+    );
+    expect(tree.find(".page-item").at(3).hasClass("active")).toBe(true);
+
+    tree.setProps({ totalPages: 2 });
+    tree.update();
+    expect(tree.find(".page-item").at(2).hasClass("active")).toBe(true);
+    expect(setPageCallback).toHaveBeenLastCalledWith(2);
+
+    tree.setProps({ totalPages: 5 });
+    tree.update();
+    expect(tree.find(".page-item").at(2).hasClass("active")).toBe(true);
   });
 });
