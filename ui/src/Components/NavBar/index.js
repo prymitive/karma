@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 
-import { observable, action, reaction } from "mobx";
-import { observer } from "mobx-react";
+import { reaction } from "mobx";
+import { useObserver } from "mobx-react";
 
 import ReactResizeDetector from "react-resize-detector";
 
@@ -24,178 +24,124 @@ import { FilterInput } from "./FilterInput";
 const DesktopIdleTimeout = 1000 * 60 * 3;
 const MobileIdleTimeout = 1000 * 12;
 
-const NavBar = observer(
-  class NavBar extends Component {
-    static propTypes = {
-      alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-      settingsStore: PropTypes.instanceOf(Settings).isRequired,
-      silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-      fixedTop: PropTypes.bool,
-    };
-    static defaultProps = {
-      fixedTop: true,
-    };
+const NavBar = ({ alertStore, settingsStore, silenceFormStore, fixedTop }) => {
+  const idleTimer = useRef(null);
+  const [isIdle, setIsIdle] = useState(false);
+  const [containerClass, setContainerClass] = useState("visible");
+  const [elementSize, setElementSize] = useState({ width: 0, height: 0 });
 
-    constructor(props) {
-      super(props);
+  const context = React.useContext(ThemeContext);
 
-      this.idleTimer = null;
-      this.animationTimer = null;
+  const updateBodyPaddingTop = useCallback(
+    (idle) => {
+      const paddingTop = idle ? 0 : elementSize.height + 8;
+      document.body.style.paddingTop = `${paddingTop}px`;
+      setContainerClass(idle ? "invisible" : "visible");
+    },
+    [elementSize.height]
+  );
 
-      this.activityStatus = observable(
-        {
-          idle: false,
-          className: "visible",
-          setIdle() {
-            this.idle = true;
-          },
-          setActive() {
-            this.idle = false;
-          },
-          hide() {
-            this.className = "invisible";
-          },
-          show() {
-            this.className = "visible";
-          },
-        },
-        {
-          setIdle: action.bound,
-          setActive: action.bound,
-          hide: action.bound,
-          show: action.bound,
-        }
+  const onResize = useCallback((width, height) => {
+    setElementSize({ width: width, height: height });
+  }, []);
+
+  const onActive = useCallback(() => {
+    setIsIdle(false);
+  }, []);
+
+  const onIdle = useCallback(() => {
+    setIsIdle(true);
+  }, []);
+
+  useEffect(() => {
+    let timer;
+    if (isIdle) {
+      timer = setTimeout(
+        () => updateBodyPaddingTop(true),
+        context.animations.duration
       );
+    } else {
+      updateBodyPaddingTop(false);
+    }
+    return () => clearTimeout(timer);
+  }, [
+    elementSize.height,
+    updateBodyPaddingTop,
+    isIdle,
+    context.animations.duration,
+  ]);
 
-      this.activityStatusReaction = reaction(
+  useEffect(
+    () =>
+      reaction(
         () =>
-          props.alertStore.status.paused ||
-          props.alertStore.filters.values.filter((f) => f.applied === false)
-            .length > 0,
+          !settingsStore.filterBarConfig.config.autohide ||
+          alertStore.status.paused ||
+          alertStore.filters.values.filter((f) => f.applied === false).length >
+            0,
         (paused) =>
           paused
-            ? this.idleTimer && this.idleTimer.pause()
-            : this.idleTimer && this.idleTimer.reset(),
+            ? idleTimer.current && idleTimer.current.pause()
+            : idleTimer.current && idleTimer.current.reset(),
         { fireImmediately: true }
-      );
-    }
+      ),
+    [] // eslint-disable-line react-hooks/exhaustive-deps
+  );
 
-    elementSize = observable(
-      {
-        width: 0,
-        height: 0,
-        setSize(width, height) {
-          this.width = width;
-          this.height = height;
-        },
-      },
-      { setSize: action }
-    );
-
-    updateBodyPaddingTop = () => {
-      const paddingTop = this.activityStatus.idle
-        ? 0
-        : this.elementSize.height + 8;
-      document.body.style.paddingTop = `${paddingTop}px`;
-    };
-
-    onToggle = () => {
-      if (this.activityStatus.idle) {
-        this.activityStatus.hide();
-        this.updateBodyPaddingTop();
-      } else {
-        this.updateBodyPaddingTop();
-        this.activityStatus.show();
-      }
-    };
-
-    onIdleTimerActive = () => {
-      clearTimeout(this.animationTimer);
-      this.activityStatus.setActive();
-      this.onToggle();
-    };
-
-    onIdleTimerIdle = () => {
-      const { settingsStore } = this.props;
-
-      if (settingsStore.filterBarConfig.config.autohide) {
-        this.activityStatus.setIdle();
-        this.animationTimer = setTimeout(
-          this.onToggle,
-          this.context.animations.duration
-        );
-      }
-    };
-
-    onResize = (width, height) => {
-      this.elementSize.setSize(width, height);
-      this.updateBodyPaddingTop();
-    };
-
-    render() {
-      const {
-        alertStore,
-        settingsStore,
-        silenceFormStore,
-        fixedTop,
-      } = this.props;
-
-      // if we have at least 1 filter then it's likely that filter input will
-      // use 2 lines, so set right side icons on small screeens to column mode
-      // for more compact layout
-      const flexClass =
-        alertStore.filters.values.length >= 1
-          ? "flex-column flex-sm-row flex-md-row flex-lg-row flex-xl-row"
-          : "flex-row";
-
-      const isMobile = IsMobile();
-
-      return (
-        <IdleTimer
-          ref={(ref) => {
-            this.idleTimer = ref;
-          }}
-          onActive={this.onIdleTimerActive}
-          onIdle={this.onIdleTimerIdle}
-          timeout={isMobile ? MobileIdleTimeout : DesktopIdleTimeout}
-        >
-          <div
-            className={`container p-0 m-0 mw-100 ${this.activityStatus.className}`}
+  return useObserver(() => (
+    <IdleTimer
+      ref={idleTimer}
+      onActive={onActive}
+      onIdle={onIdle}
+      timeout={IsMobile() ? MobileIdleTimeout : DesktopIdleTimeout}
+    >
+      <div className={`container p-0 m-0 mw-100 ${containerClass}`}>
+        <Fade top when={!isIdle}>
+          <nav
+            className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block ${
+              fixedTop ? "fixed-top" : "w-100"
+            }`}
           >
-            <Fade top when={!this.activityStatus.idle}>
-              <nav
-                className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block ${
-                  fixedTop ? "fixed-top" : "w-100"
-                }`}
-              >
-                <ReactResizeDetector handleHeight onResize={this.onResize} />
-                <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block float-left">
-                  <OverviewModal alertStore={alertStore} />
-                  <FetchIndicator alertStore={alertStore} />
-                </span>
-                <ul className={`navbar-nav float-right d-flex ${flexClass}`}>
-                  <SilenceModal
-                    alertStore={alertStore}
-                    silenceFormStore={silenceFormStore}
-                    settingsStore={settingsStore}
-                  />
-                  <MainModal
-                    alertStore={alertStore}
-                    settingsStore={settingsStore}
-                  />
-                </ul>
-                <FilterInput
-                  alertStore={alertStore}
-                  settingsStore={settingsStore}
-                />
-              </nav>
-            </Fade>
-          </div>
-        </IdleTimer>
-      );
-    }
-  }
-);
-NavBar.contextType = ThemeContext;
+            <ReactResizeDetector handleHeight onResize={onResize} />
+            <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block float-left">
+              <OverviewModal alertStore={alertStore} />
+              <FetchIndicator alertStore={alertStore} />
+            </span>
+            <ul
+              className={`navbar-nav float-right d-flex ${
+                alertStore.filters.values.length >= 1
+                  ? "flex-column flex-sm-row flex-md-row flex-lg-row flex-xl-row"
+                  : "flex-row"
+              }`}
+            >
+              <SilenceModal
+                alertStore={alertStore}
+                silenceFormStore={silenceFormStore}
+                settingsStore={settingsStore}
+              />
+              <MainModal
+                alertStore={alertStore}
+                settingsStore={settingsStore}
+              />
+            </ul>
+            <FilterInput
+              alertStore={alertStore}
+              settingsStore={settingsStore}
+            />
+          </nav>
+        </Fade>
+      </div>
+    </IdleTimer>
+  ));
+};
+NavBar.propTypes = {
+  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
+  settingsStore: PropTypes.instanceOf(Settings).isRequired,
+  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
+  fixedTop: PropTypes.bool,
+};
+NavBar.defaultProps = {
+  fixedTop: true,
+};
 
 export { NavBar, MobileIdleTimeout, DesktopIdleTimeout };
