@@ -1,6 +1,11 @@
-import React, { Component } from "react";
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
 
-import { observer } from "mobx-react";
+import { useObserver } from "mobx-react";
 
 import Media from "react-media";
 
@@ -55,121 +60,105 @@ interface AppProps {
   uiDefaults: UIDefaults;
 }
 
-const App = observer(
-  class App extends Component<AppProps, {}> {
-    alertStore: AlertStore;
-    silenceFormStore: SilenceFormStore;
-    settingsStore: Settings;
-    filters: Array<string> = [];
+const App: FunctionComponent<AppProps> = ({ defaultFilters, uiDefaults }) => {
+  const [alertStore] = useState(new AlertStore(null));
+  const [silenceFormStore] = useState(new SilenceFormStore());
+  const [settingsStore] = useState(new Settings(uiDefaults));
 
-    constructor(props: AppProps) {
-      super(props);
-
-      const { defaultFilters, uiDefaults } = this.props;
-
-      this.silenceFormStore = new SilenceFormStore();
-      this.settingsStore = new Settings(uiDefaults);
-
-      let filters;
-
-      // parse and decode request query args
-      const p = DecodeLocationSearch(window.location.search);
-
-      // p.defaultsUsed means that karma URI didn't have ?q=foo query args
-      if (p.defaultsUsed) {
-        // no ?q=foo set, use defaults saved by the user or from backend config
-        if (this.settingsStore.savedFilters.config.present) {
-          filters = this.settingsStore.savedFilters.config.filters;
-        } else {
-          filters = defaultFilters;
-        }
+  useEffect(() => {
+    let filters;
+    // parse and decode request query args
+    const p = DecodeLocationSearch(window.location.search);
+    // p.defaultsUsed means that karma URI didn't have ?q=foo query args
+    if (p.defaultsUsed) {
+      // no ?q=foo set, use defaults saved by the user or from backend config
+      if (settingsStore.savedFilters.config.present) {
+        filters = settingsStore.savedFilters.config.filters;
       } else {
-        // user passed ?q=foo, use it as initial filters
-        filters = p.params.q;
+        filters = defaultFilters;
       }
-
-      this.alertStore = new AlertStore(filters);
+    } else {
+      // user passed ?q=foo, use it as initial filters
+      filters = p.params.q;
     }
+    alertStore.filters.setFilters(filters);
+  }, [alertStore, defaultFilters, settingsStore]);
 
-    onPopState = (event: PopStateEvent) => {
+  const onPopState = useCallback(
+    (event: PopStateEvent) => {
       event.preventDefault();
       const p = DecodeLocationSearch(window.location.search);
-      this.alertStore.filters.setWithoutLocation(p.params.q);
-    };
+      alertStore.filters.setWithoutLocation(p.params.q);
+    },
+    [alertStore]
+  );
 
-    componentDidMount() {
-      window.onpopstate = this.onPopState;
-    }
-
-    componentWillUnmount() {
+  useEffect(() => {
+    window.onpopstate = onPopState;
+    return () => {
       window.onpopstate = () => {};
-    }
+    };
+  }, [onPopState]);
 
-    render() {
-      return (
-        <ErrorBoundary>
-          <span data-theme={`${this.settingsStore.themeConfig.config.theme}`} />
-          <Media
-            queries={{
-              isSupported: "(prefers-color-scheme)",
-              light: "(prefers-color-scheme: light)",
-              dark: "(prefers-color-scheme: dark)",
+  return useObserver(() => (
+    <ErrorBoundary>
+      <span data-theme={`${settingsStore.themeConfig.config.theme}`} />
+      <Media
+        queries={{
+          isSupported: "(prefers-color-scheme)",
+          light: "(prefers-color-scheme: light)",
+          dark: "(prefers-color-scheme: dark)",
+        }}
+      >
+        {(matches) => (
+          <ThemeContext.Provider
+            value={{
+              isDark:
+                settingsStore.themeConfig.config.theme ===
+                  settingsStore.themeConfig.options.auto.value &&
+                matches.isSupported
+                  ? matches.dark
+                  : settingsStore.themeConfig.config.theme ===
+                    settingsStore.themeConfig.options.dark.value,
+              reactSelectStyles:
+                settingsStore.themeConfig.config.theme ===
+                  settingsStore.themeConfig.options.auto.value &&
+                matches.isSupported
+                  ? matches.dark
+                    ? ReactSelectStyles(ReactSelectColors.Dark)
+                    : ReactSelectStyles(ReactSelectColors.Light)
+                  : settingsStore.themeConfig.config.theme ===
+                    settingsStore.themeConfig.options.dark.value
+                  ? ReactSelectStyles(ReactSelectColors.Dark)
+                  : ReactSelectStyles(ReactSelectColors.Light),
+              animations: {
+                enabled: true,
+                duration: 1000,
+              },
             }}
           >
-            {(matches) => (
-              <ThemeContext.Provider
-                value={{
-                  isDark:
-                    this.settingsStore.themeConfig.config.theme ===
-                      this.settingsStore.themeConfig.options.auto.value &&
-                    matches.isSupported
-                      ? matches.dark
-                      : this.settingsStore.themeConfig.config.theme ===
-                        this.settingsStore.themeConfig.options.dark.value,
-                  reactSelectStyles:
-                    this.settingsStore.themeConfig.config.theme ===
-                      this.settingsStore.themeConfig.options.auto.value &&
-                    matches.isSupported
-                      ? matches.dark
-                        ? ReactSelectStyles(ReactSelectColors.Dark)
-                        : ReactSelectStyles(ReactSelectColors.Light)
-                      : this.settingsStore.themeConfig.config.theme ===
-                        this.settingsStore.themeConfig.options.dark.value
-                      ? ReactSelectStyles(ReactSelectColors.Dark)
-                      : ReactSelectStyles(ReactSelectColors.Light),
-                  animations: {
-                    enabled: true,
-                    duration: 1000,
-                  },
-                }}
-              >
-                <BodyTheme />
-                <React.Suspense fallback={null}>
-                  <NavBar
-                    alertStore={this.alertStore}
-                    settingsStore={this.settingsStore}
-                    silenceFormStore={this.silenceFormStore}
-                  />
-                  <Grid
-                    alertStore={this.alertStore}
-                    settingsStore={this.settingsStore}
-                    silenceFormStore={this.silenceFormStore}
-                  />
-                </React.Suspense>
-              </ThemeContext.Provider>
-            )}
-          </Media>
-          <React.Suspense fallback={null}>
-            <FaviconBadge alertStore={this.alertStore} />
-            <Fetcher
-              alertStore={this.alertStore}
-              settingsStore={this.settingsStore}
-            />
-          </React.Suspense>
-        </ErrorBoundary>
-      );
-    }
-  }
-);
+            <BodyTheme />
+            <React.Suspense fallback={null}>
+              <NavBar
+                alertStore={alertStore}
+                settingsStore={settingsStore}
+                silenceFormStore={silenceFormStore}
+              />
+              <Grid
+                alertStore={alertStore}
+                settingsStore={settingsStore}
+                silenceFormStore={silenceFormStore}
+              />
+            </React.Suspense>
+          </ThemeContext.Provider>
+        )}
+      </Media>
+      <React.Suspense fallback={null}>
+        <FaviconBadge alertStore={alertStore} />
+        <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+      </React.Suspense>
+    </ErrorBoundary>
+  ));
+};
 
 export { App };

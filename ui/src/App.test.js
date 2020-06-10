@@ -1,9 +1,8 @@
 import React from "react";
 
-import { shallow, mount } from "enzyme";
+import { mount } from "enzyme";
 
 import { mockMatchMedia } from "__mocks__/matchMedia";
-import { NewUnappliedFilter } from "Stores/AlertStore";
 import { App } from "./App";
 
 const uiDefaults = {
@@ -33,14 +32,8 @@ afterEach(() => {
 describe("<App />", () => {
   it("uses passed default filters if there's no query args or saved filters", () => {
     expect(window.location.search).toBe("");
-    const tree = shallow(
-      <App defaultFilters={["foo=bar"]} uiDefaults={uiDefaults} />
-    );
-    const instance = tree.instance();
-    expect(instance.alertStore.filters.values).toHaveLength(1);
-    expect(instance.alertStore.filters.values[0]).toMatchObject(
-      NewUnappliedFilter("foo=bar")
-    );
+    mount(<App defaultFilters={["foo=bar"]} uiDefaults={uiDefaults} />);
+    expect(window.location.search).toBe("?q=foo%3Dbar");
   });
 
   it("uses saved filters if there's no query args (ignoring passed defaults)", () => {
@@ -56,20 +49,10 @@ describe("<App />", () => {
     // https://github.com/facebook/jest/issues/6798#issuecomment-412871616
     const getItemSpy = jest.spyOn(Storage.prototype, "getItem");
 
-    const tree = shallow(
-      <App defaultFilters={["ignore=defaults"]} uiDefaults={uiDefaults} />
-    );
-    const instance = tree.instance();
+    mount(<App defaultFilters={["ignore=defaults"]} uiDefaults={uiDefaults} />);
 
     expect(getItemSpy).toHaveBeenCalledWith("savedFilters");
-
-    expect(instance.alertStore.filters.values).toHaveLength(2);
-    expect(instance.alertStore.filters.values[0]).toMatchObject(
-      NewUnappliedFilter("bar=baz")
-    );
-    expect(instance.alertStore.filters.values[1]).toMatchObject(
-      NewUnappliedFilter("abc!=cba")
-    );
+    expect(window.location.search).toBe("?q=bar%3Dbaz&q=abc%21%3Dcba");
 
     getItemSpy.mockRestore();
   });
@@ -87,17 +70,10 @@ describe("<App />", () => {
     // https://github.com/facebook/jest/issues/6798#issuecomment-412871616
     const getItemSpy = jest.spyOn(Storage.prototype, "getItem");
 
-    const tree = shallow(
-      <App defaultFilters={["use=defaults"]} uiDefaults={uiDefaults} />
-    );
-    const instance = tree.instance();
+    mount(<App defaultFilters={["use=defaults"]} uiDefaults={uiDefaults} />);
 
     expect(getItemSpy).toHaveBeenCalledWith("savedFilters");
-
-    expect(instance.alertStore.filters.values).toHaveLength(1);
-    expect(instance.alertStore.filters.values[0]).toMatchObject(
-      NewUnappliedFilter("use=defaults")
-    );
+    expect(window.location.search).toBe("?q=use%3Ddefaults");
 
     getItemSpy.mockRestore();
   });
@@ -114,25 +90,14 @@ describe("<App />", () => {
 
     window.history.pushState({}, "App", "/?q=use%3Dquery");
 
-    const tree = shallow(
-      <App defaultFilters={["ignore=defaults"]} uiDefaults={uiDefaults} />
-    );
-    const instance = tree.instance();
+    mount(<App defaultFilters={["ignore=defaults"]} uiDefaults={uiDefaults} />);
 
-    expect(instance.alertStore.filters.values).toHaveLength(1);
-    expect(instance.alertStore.filters.values[0]).toMatchObject(
-      NewUnappliedFilter("use=query")
-    );
+    expect(window.location.search).toBe("?q=use%3Dquery");
   });
 
   it("popstate event updates alertStore filters", () => {
-    const tree = shallow(
-      <App defaultFilters={["foo"]} uiDefaults={uiDefaults} />
-    );
-    expect(tree.instance().alertStore.filters.values).toHaveLength(1);
-    expect(tree.instance().alertStore.filters.values[0]).toMatchObject(
-      NewUnappliedFilter("foo")
-    );
+    mount(<App defaultFilters={["foo"]} uiDefaults={uiDefaults} />);
+    expect(window.location.search).toBe("?q=foo");
 
     delete global.window.location;
     global.window.location = {
@@ -143,17 +108,14 @@ describe("<App />", () => {
     let event = new PopStateEvent("popstate");
     window.onpopstate(event);
 
-    expect(tree.instance().alertStore.filters.values).toHaveLength(1);
-    expect(tree.instance().alertStore.filters.values[0]).toMatchObject(
-      NewUnappliedFilter("bar")
-    );
+    expect(window.location.search).toBe("?q=bar");
   });
 
   it("unmounts without crashing", () => {
-    const tree = shallow(
+    const tree = mount(
       <App defaultFilters={["foo=bar"]} uiDefaults={uiDefaults} />
     );
-    tree.instance().componentWillUnmount();
+    tree.unmount();
 
     let event = new PopStateEvent("popstate");
     window.onpopstate(event);
@@ -171,35 +133,41 @@ describe("<App /> theme", () => {
 
   it("configures light theme when uiDefaults passes it", () => {
     const tree = getApp("light");
-    expect(tree.instance().settingsStore.themeConfig.config.theme).toBe(
-      "light"
+    expect(tree.find("span").at(0).html()).toBe(
+      '<span data-theme="light"></span>'
     );
-    tree.instance().componentWillUnmount();
+    tree.unmount();
   });
 
   it("configures dark theme when uiDefaults passes it", () => {
     const tree = getApp("dark");
-    expect(tree.instance().settingsStore.themeConfig.config.theme).toBe("dark");
-    tree.instance().componentWillUnmount();
+    expect(tree.find("span").at(0).html()).toBe(
+      '<span data-theme="dark"></span>'
+    );
+    tree.unmount();
   });
 
   it("configures automatic theme when uiDefaults passes it", () => {
     const tree = getApp("auto");
-    expect(tree.instance().settingsStore.themeConfig.config.theme).toBe("auto");
-    tree.instance().componentWillUnmount();
+    expect(tree.find("span").at(0).html()).toBe(
+      '<span data-theme="auto"></span>'
+    );
+    tree.unmount();
   });
 
   it("configures automatic theme when uiDefaults doesn't pass any value", () => {
     const tree = mount(<App defaultFilters={["foo=bar"]} uiDefaults={null} />);
-    expect(tree.instance().settingsStore.themeConfig.config.theme).toBe("auto");
-    tree.instance().componentWillUnmount();
+    expect(tree.find("span").at(0).html()).toBe(
+      '<span data-theme="auto"></span>'
+    );
+    tree.unmount();
   });
 
   it("applies light theme when theme=auto and browser doesn't support prefers-color-scheme", () => {
     window.matchMedia = mockMatchMedia({});
     const tree = getApp("auto");
     expect(tree.find("LightTheme")).toHaveLength(1);
-    tree.instance().componentWillUnmount();
+    tree.unmount();
   });
 
   const lightMatch = () => ({
@@ -290,7 +258,7 @@ describe("<App /> theme", () => {
       window.matchMedia = mockMatchMedia(testCase.matchMedia);
       const tree = getApp(testCase.settings);
       expect(tree.find(testCase.theme)).toHaveLength(1);
-      tree.instance().componentWillUnmount();
+      tree.unmount();
       window.matchMedia.mockRestore();
     });
   }

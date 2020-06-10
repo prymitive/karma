@@ -313,7 +313,7 @@ class AlertStore {
   );
 
   constructor(initialFilters) {
-    this.filters.setFilters(initialFilters);
+    if (initialFilters !== null) this.filters.setFilters(initialFilters);
   }
 
   fetch = action(
