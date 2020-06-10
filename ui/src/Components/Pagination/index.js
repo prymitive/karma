@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 import { HotKeys } from "react-hotkeys";
@@ -21,6 +21,11 @@ const PageSelect = ({
   setPageCallback,
 }) => {
   const [activePage, setActivePage] = useState(initialPage);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    ref.current && ref.current.focus();
+  }, []);
 
   useEffect(() => {
     if (activePage > totalPages) {
@@ -53,7 +58,7 @@ const PageSelect = ({
   return (
     <HotKeys
       className="components-pagination"
-      innerRef={(r) => r && r.focus()}
+      innerRef={ref}
       keyMap={{
         onArrowLeft: "ArrowLeft",
         onArrowRight: "ArrowRight",
