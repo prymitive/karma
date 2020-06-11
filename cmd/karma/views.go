@@ -251,69 +251,83 @@ func alerts(c *gin.Context) {
 				// only for alerts left after filtering
 				alert.UpdateFingerprints()
 
-				alertGridLabelValue := alert.Labels[gridLabel]
-				agCopy, found := perGridAlertGroup[alertGridLabelValue]
-				if !found {
-					agCopy = &models.AlertGroup{
-						ID:                ag.ID,
-						Receiver:          ag.Receiver,
-						Labels:            ag.Labels,
-						LatestStartsAt:    ag.LatestStartsAt,
-						Alerts:            []models.Alert{},
-						AlertmanagerCount: map[string]int{},
-						StateCount:        map[string]int{},
-					}
-					for _, s := range models.AlertStateList {
-						agCopy.StateCount[s] = 0
-					}
-					perGridAlertGroup[alertGridLabelValue] = agCopy
-				}
-
-				agCopy.Alerts = append(agCopy.Alerts, alert)
-
-				countLabel(counters, "@state", alert.State)
-
-				countLabel(counters, "@receiver", alert.Receiver)
-				if ck, foundKey := dedupedColors["@receiver"]; foundKey {
-					if cv, foundVal := ck[alert.Receiver]; foundVal {
-						if _, found := colors["@receiver"]; !found {
-							colors["@receiver"] = map[string]models.LabelColors{}
-						}
-						colors["@receiver"][alert.Receiver] = cv
-					}
-				}
-
-				if ck, foundKey := dedupedColors["@alertmanager"]; foundKey {
+				var alertGridLabelValues []string
+				switch gridLabel {
+				case "@receiver":
+					alertGridLabelValues = []string{alert.Receiver}
+				case "@alertmanager":
+					alertGridLabelValues = make([]string, 0, len(alert.Alertmanager))
 					for _, am := range alert.Alertmanager {
-						if cv, foundVal := ck[am.Name]; foundVal {
-							if _, found := colors["@alertmanager"]; !found {
-								colors["@alertmanager"] = map[string]models.LabelColors{}
-							}
-							colors["@alertmanager"][am.Name] = cv
-						}
+						alertGridLabelValues = append(alertGridLabelValues, am.Name)
 					}
+				default:
+					alertGridLabelValues = []string{alert.Labels[gridLabel]}
 				}
 
-				agCopy.StateCount[alert.State]++
-
-				for _, am := range alert.Alertmanager {
-					if _, found := agCopy.AlertmanagerCount[am.Name]; !found {
-						agCopy.AlertmanagerCount[am.Name] = 1
-					} else {
-						agCopy.AlertmanagerCount[am.Name]++
+				for _, alertGridLabelValue := range alertGridLabelValues {
+					agCopy, found := perGridAlertGroup[alertGridLabelValue]
+					if !found {
+						agCopy = &models.AlertGroup{
+							ID:                ag.ID,
+							Receiver:          ag.Receiver,
+							Labels:            ag.Labels,
+							LatestStartsAt:    ag.LatestStartsAt,
+							Alerts:            []models.Alert{},
+							AlertmanagerCount: map[string]int{},
+							StateCount:        map[string]int{},
+						}
+						for _, s := range models.AlertStateList {
+							agCopy.StateCount[s] = 0
+						}
+						perGridAlertGroup[alertGridLabelValue] = agCopy
 					}
-				}
 
-				for key, value := range alert.Labels {
-					if keyMap, foundKey := dedupedColors[key]; foundKey {
-						if color, foundColor := keyMap[value]; foundColor {
-							if _, found := colors[key]; !found {
-								colors[key] = map[string]models.LabelColors{}
+					agCopy.Alerts = append(agCopy.Alerts, alert)
+
+					countLabel(counters, "@state", alert.State)
+
+					countLabel(counters, "@receiver", alert.Receiver)
+					if ck, foundKey := dedupedColors["@receiver"]; foundKey {
+						if cv, foundVal := ck[alert.Receiver]; foundVal {
+							if _, found := colors["@receiver"]; !found {
+								colors["@receiver"] = map[string]models.LabelColors{}
 							}
-							colors[key][value] = color
+							colors["@receiver"][alert.Receiver] = cv
 						}
 					}
-					countLabel(counters, key, value)
+
+					if ck, foundKey := dedupedColors["@alertmanager"]; foundKey {
+						for _, am := range alert.Alertmanager {
+							if cv, foundVal := ck[am.Name]; foundVal {
+								if _, found := colors["@alertmanager"]; !found {
+									colors["@alertmanager"] = map[string]models.LabelColors{}
+								}
+								colors["@alertmanager"][am.Name] = cv
+							}
+						}
+					}
+
+					agCopy.StateCount[alert.State]++
+
+					for _, am := range alert.Alertmanager {
+						if _, found := agCopy.AlertmanagerCount[am.Name]; !found {
+							agCopy.AlertmanagerCount[am.Name] = 1
+						} else {
+							agCopy.AlertmanagerCount[am.Name]++
+						}
+					}
+
+					for key, value := range alert.Labels {
+						if keyMap, foundKey := dedupedColors[key]; foundKey {
+							if color, foundColor := keyMap[value]; foundColor {
+								if _, found := colors[key]; !found {
+									colors[key] = map[string]models.LabelColors{}
+								}
+								colors[key][value] = color
+							}
+						}
+						countLabel(counters, key, value)
+					}
 				}
 			}
 		}
