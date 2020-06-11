@@ -12,6 +12,7 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceFormMatcher } from "Models/SilenceForm";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { hashObject } from "Common/Hash";
+import { NewLabelValue } from "Common/Select";
 import { ValidationError } from "Components/ValidationError";
 import { ThemeContext } from "Components/Theme";
 import { MatchCounter } from "./MatchCounter";
@@ -69,6 +70,7 @@ const LabelValueInput = observer(({ silenceFormStore, matcher, isValid }) => {
       styles={context.reactSelectStyles}
       classNamePrefix="react-select"
       instanceId={`silence-input-label-value-${matcher.id}`}
+      formatCreateLabel={NewLabelValue}
       defaultValue={matcher.values}
       options={
         response

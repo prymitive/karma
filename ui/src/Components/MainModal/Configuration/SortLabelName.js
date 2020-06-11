@@ -8,6 +8,7 @@ import { FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { ThemeContext } from "Components/Theme";
+import { NewLabelName } from "Common/Select";
 
 const valueToOption = (v) => ({ label: v, value: v });
 
@@ -25,6 +26,7 @@ const SortLabelName = ({ settingsStore }) => {
       styles={context.reactSelectStyles}
       classNamePrefix="react-select"
       instanceId="configuration-sort-label"
+      formatCreateLabel={NewLabelName}
       defaultValue={valueToOption(settingsStore.gridConfig.config.sortLabel)}
       options={
         response
