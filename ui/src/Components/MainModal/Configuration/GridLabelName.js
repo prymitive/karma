@@ -7,6 +7,7 @@ import { useFetchGet } from "Hooks/useFetchGet";
 import { FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
+import { NewLabelName } from "Common/Select";
 
 const disabledLabel = "Disable multi-grid";
 
@@ -28,6 +29,7 @@ const GridLabelName = ({ settingsStore }) => {
       styles={context.reactSelectStyles}
       classNamePrefix="react-select"
       instanceId="configuration-grid-label"
+      formatCreateLabel={NewLabelName}
       defaultValue={valueToOption(
         settingsStore.multiGridConfig.config.gridLabel
       )}

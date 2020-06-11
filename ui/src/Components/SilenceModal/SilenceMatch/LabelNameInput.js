@@ -8,6 +8,7 @@ import { FormatBackendURI } from "Stores/AlertStore";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { ValidationError } from "Components/ValidationError";
 import { ThemeContext } from "Components/Theme";
+import { NewLabelName } from "Common/Select";
 
 const LabelNameInput = ({ matcher, isValid }) => {
   const { response } = useFetchGet(FormatBackendURI(`labelNames.json`));
@@ -19,6 +20,7 @@ const LabelNameInput = ({ matcher, isValid }) => {
       styles={context.reactSelectStyles}
       classNamePrefix="react-select"
       instanceId={`silence-input-label-name-${matcher.id}`}
+      formatCreateLabel={NewLabelName}
       defaultValue={
         matcher.name ? { label: matcher.name, value: matcher.name } : null
       }
