@@ -68,6 +68,7 @@ func TestAuthHeader(t *testing.T) {
 			apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 
 			am, err := alertmanager.NewAlertmanager(
+				"cluster",
 				fmt.Sprintf("testAuthHeader/%s", version),
 				testCase.alertmanagerURI,
 				alertmanager.WithRequestTimeout(time.Second*5),

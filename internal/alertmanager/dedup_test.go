@@ -22,7 +22,7 @@ func init() {
 	for _, version := range mock.ListAllMocks() {
 		name := fmt.Sprintf("dedup-mock-%s", version)
 		uri := fmt.Sprintf("http://%s.localhost", version)
-		am, err := alertmanager.NewAlertmanager(name, uri, alertmanager.WithRequestTimeout(time.Second))
+		am, err := alertmanager.NewAlertmanager("cluster", name, uri, alertmanager.WithRequestTimeout(time.Second))
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -185,7 +185,7 @@ func TestClearData(t *testing.T) {
 	for _, version := range mock.ListAllMocks() {
 		name := fmt.Sprintf("clear-data-mock-%s", version)
 		uri := fmt.Sprintf("http://localhost/clear/%s", version)
-		am, _ := alertmanager.NewAlertmanager(name, uri, alertmanager.WithRequestTimeout(time.Second))
+		am, _ := alertmanager.NewAlertmanager("cluster", name, uri, alertmanager.WithRequestTimeout(time.Second))
 
 		mock.RegisterURL(fmt.Sprintf("%s/metrics", uri), version, "metrics")
 		_ = am.Pull()

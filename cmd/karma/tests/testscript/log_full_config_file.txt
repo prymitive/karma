@@ -20,11 +20,13 @@ authorization:
 alertmanager:
   interval: 10s
   servers:
-    - name: ha1
+    - cluster: HA
+      name: ha1
       uri: "http://localhost:9093"
       timeout: 10s
       proxy: true
-    - name: ha2
+    - cluster: HA
+      name: ha2
       uri: "http://localhost:9094"
       timeout: 10s
       readonly: true
@@ -266,7 +268,8 @@ level=info msg="    silences: \"\""
 level=info msg="alertmanager:"
 level=info msg="  interval: 10s"
 level=info msg="  servers:"
-level=info msg="  - name: ha1"
+level=info msg="  - cluster: HA"
+level=info msg="    name: ha1"
 level=info msg="    uri: http://localhost:9093"
 level=info msg="    external_uri: \"\""
 level=info msg="    timeout: 10s"
@@ -280,7 +283,8 @@ level=info msg="      insecureSkipVerify: false"
 level=info msg="    headers: {}"
 level=info msg="    cors:"
 level=info msg="      credentials: include"
-level=info msg="  - name: ha2"
+level=info msg="  - cluster: HA"
+level=info msg="    name: ha2"
 level=info msg="    uri: http://localhost:9094"
 level=info msg="    external_uri: \"\""
 level=info msg="    timeout: 10s"
@@ -294,7 +298,8 @@ level=info msg="      insecureSkipVerify: false"
 level=info msg="    headers: {}"
 level=info msg="    cors:"
 level=info msg="      credentials: omit"
-level=info msg="  - name: local"
+level=info msg="  - cluster: \"\""
+level=info msg="    name: local"
 level=info msg="    uri: http://localhost:9095"
 level=info msg="    external_uri: \"\""
 level=info msg="    timeout: 40s"
@@ -309,7 +314,8 @@ level=info msg="    headers:"
 level=info msg="      X-Auth-Test: some-token-or-other-string"
 level=info msg="    cors:"
 level=info msg="      credentials: same-origin"
-level=info msg="  - name: client-auth"
+level=info msg="  - cluster: \"\""
+level=info msg="    name: client-auth"
 level=info msg="    uri: https://localhost:9096"
 level=info msg="    external_uri: \"\""
 level=info msg="    timeout: 10s"

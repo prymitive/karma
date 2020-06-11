@@ -87,7 +87,7 @@ var uriTests = []uriTest{
 
 func TestAlertmanagerURI(t *testing.T) {
 	for i, test := range uriTests {
-		am, err := NewAlertmanager("test", test.rawURI, WithExternalURI(test.extURI), WithProxy(test.proxy))
+		am, err := NewAlertmanager("cluster", "test", test.rawURI, WithExternalURI(test.extURI), WithProxy(test.proxy))
 		if err != nil {
 			t.Error(err)
 		}
