@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"sort"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"vbom.ml/util/sortorder"
@@ -14,8 +15,6 @@ import (
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/uri"
-
-	log "github.com/sirupsen/logrus"
 )
 
 func getFiltersFromQuery(filterStrings []string) ([]filters.FilterT, bool) {
@@ -89,6 +88,23 @@ func countersToLabelStats(counters map[string]map[string]int) models.LabelNameSt
 	return data
 }
 
+func clusterMembersFromConfig(am *alertmanager.Alertmanager) []string {
+	members := []string{}
+
+	upstreams := alertmanager.GetAlertmanagers()
+	for _, upstream := range upstreams {
+		if upstream.Cluster == am.Cluster {
+			members = append(members, upstream.Name)
+		}
+	}
+
+	return members
+}
+
+func clusterMembersFromAPI(am *alertmanager.Alertmanager) []string {
+	return am.ClusterMemberNames()
+}
+
 func getUpstreams() models.AlertmanagerAPISummary {
 	summary := models.AlertmanagerAPISummary{}
 
@@ -96,13 +112,24 @@ func getUpstreams() models.AlertmanagerAPISummary {
 	upstreams := alertmanager.GetAlertmanagers()
 	for _, upstream := range upstreams {
 		members := upstream.ClusterMemberNames()
-		key, err := slices.StringSliceToSHA1(members)
-		if err != nil {
-			log.Errorf("slices.StringSliceToSHA1 error: %s", err)
-			continue
+
+		var clusterName string
+		if upstream.Cluster != "" {
+			configPeers := clusterMembersFromConfig(upstream)
+			apiPeers := clusterMembersFromAPI(upstream)
+			missing, extra := slices.StringSliceDiff(configPeers, apiPeers)
+
+			if len(missing) == 0 && len(extra) == 0 {
+				clusterName = upstream.Cluster
+			} else {
+				clusterName = fmt.Sprintf("%s @ %s", strings.Join(members, " | "), upstream.Cluster)
+			}
+		} else {
+			clusterName = strings.Join(members, " | ")
 		}
-		if _, found := clusters[key]; !found {
-			clusters[key] = members
+
+		if _, found := clusters[clusterName]; !found {
+			clusters[clusterName] = members
 		}
 
 		u := models.AlertmanagerAPIStatus{
@@ -114,7 +141,7 @@ func getUpstreams() models.AlertmanagerAPISummary {
 			CORSCredentials: upstream.CORSCredentials,
 			Error:           upstream.Error(),
 			Version:         upstream.Version(),
-			Cluster:         upstream.ClusterID(),
+			Cluster:         clusterName,
 			ClusterMembers:  members,
 		}
 		if !upstream.ProxyRequests {

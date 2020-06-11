@@ -178,6 +178,7 @@ func setupUpstreams() error {
 		}
 
 		am, err := alertmanager.NewAlertmanager(
+			s.Cluster,
 			s.Name,
 			s.URI,
 			alertmanager.WithExternalURI(s.ExternalURI),

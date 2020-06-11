@@ -15,6 +15,7 @@ type testCase struct {
 var testCases = []testCase{
 	{
 		config: config.AlertmanagerConfig{
+			Cluster:     "cluster",
 			Name:        "name",
 			URI:         "http://localhost:9093",
 			ExternalURI: "http://localhost:9093",
@@ -26,6 +27,7 @@ var testCases = []testCase{
 	},
 	{
 		config: config.AlertmanagerConfig{
+			Cluster:     "cluster",
 			Name:        "proxy",
 			URI:         "http://localhost:9094",
 			ExternalURI: "http://localhost:9094",
@@ -37,6 +39,7 @@ var testCases = []testCase{
 	},
 	{
 		config: config.AlertmanagerConfig{
+			Cluster:     "cluster",
 			Name:        "name",
 			URI:         "http://localhost:9095",
 			ExternalURI: "http://localhost:9095",
@@ -60,6 +63,7 @@ func TestOptions(t *testing.T) {
 		}
 
 		am, err := NewAlertmanager(
+			tc.config.Cluster,
 			tc.config.Name,
 			tc.config.URI,
 			WithExternalURI(tc.config.ExternalURI),

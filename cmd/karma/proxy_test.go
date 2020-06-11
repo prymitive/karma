@@ -105,6 +105,7 @@ func TestProxy(t *testing.T) {
 
 	r := ginTestEngine()
 	am, err := alertmanager.NewAlertmanager(
+		"cluster",
 		"dummy",
 		"http://localhost:9093",
 		alertmanager.WithRequestTimeout(time.Second*5),
@@ -207,6 +208,7 @@ func TestProxyHeaders(t *testing.T) {
 		testCase := testCase //scopelint pin
 		r := ginTestEngine()
 		am, err := alertmanager.NewAlertmanager(
+			"cluster",
 			"dummy",
 			testCase.alertmanagerURI,
 			alertmanager.WithRequestTimeout(time.Second*5),
@@ -310,6 +312,7 @@ func TestProxyToSubURIAlertmanager(t *testing.T) {
 			r := ginTestEngine()
 
 			am, err := alertmanager.NewAlertmanager(
+				"cluster",
 				"suburi",
 				testCase.alertmanagerURI,
 				alertmanager.WithRequestTimeout(time.Second*5),
@@ -505,6 +508,7 @@ func TestProxyUserRewrite(t *testing.T) {
 				r := ginTestEngine()
 
 				am, err := alertmanager.NewAlertmanager(
+					"cluster",
 					"proxyAuth",
 					"http://localhost",
 					alertmanager.WithRequestTimeout(time.Second*5),
@@ -997,6 +1001,7 @@ func TestProxySilenceACL(t *testing.T) {
 				r := ginTestEngine()
 
 				am, err := alertmanager.NewAlertmanager(
+					"cluster",
 					"proxyACL",
 					"http://localhost",
 					alertmanager.WithRequestTimeout(time.Second*5),

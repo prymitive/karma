@@ -36,6 +36,7 @@ type Alertmanager struct {
 	URI            string        `json:"uri"`
 	ExternalURI    string        `json:"-"`
 	RequestTimeout time.Duration `json:"timeout"`
+	Cluster        string        `json:"cluster"`
 	Name           string        `json:"name"`
 	// whenever this instance should be proxied
 	ProxyRequests bool `json:"proxyRequests"`

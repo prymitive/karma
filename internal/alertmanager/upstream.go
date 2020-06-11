@@ -22,11 +22,12 @@ var (
 )
 
 // NewAlertmanager creates a new Alertmanager instance
-func NewAlertmanager(name, upstreamURI string, opts ...Option) (*Alertmanager, error) {
+func NewAlertmanager(cluster, name, upstreamURI string, opts ...Option) (*Alertmanager, error) {
 	am := &Alertmanager{
 		URI:            upstreamURI,
 		ExternalURI:    "",
 		RequestTimeout: time.Second * 10,
+		Cluster:        cluster,
 		Name:           name,
 		lock:           sync.RWMutex{},
 		alertGroups:    []models.AlertGroup{},
