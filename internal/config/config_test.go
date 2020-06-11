@@ -33,7 +33,8 @@ authorization:
 alertmanager:
   interval: 1s
   servers:
-  - name: default
+  - cluster: ""
+    name: default
     uri: http://localhost
     external_uri: http://example.com
     timeout: 40s

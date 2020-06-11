@@ -358,6 +358,7 @@ func (config *configSchema) LogValues() {
 	servers := []AlertmanagerConfig{}
 	for _, s := range cfg.Alertmanager.Servers {
 		server := AlertmanagerConfig{
+			Cluster:     s.Cluster,
 			Name:        s.Name,
 			URI:         uri.SanitizeURI(s.URI),
 			ExternalURI: uri.SanitizeURI(s.ExternalURI),

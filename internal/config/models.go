@@ -10,6 +10,7 @@ type AlertmanagerCORS struct {
 }
 
 type AlertmanagerConfig struct {
+	Cluster     string
 	Name        string
 	URI         string
 	ExternalURI string `yaml:"external_uri" koanf:"external_uri"`
@@ -70,6 +71,7 @@ type configSchema struct {
 	Alertmanager struct {
 		Interval    time.Duration
 		Servers     []AlertmanagerConfig
+		Cluster     string           `yaml:"-" koanf:"cluster"`
 		Name        string           `yaml:"-" koanf:"name"`
 		Timeout     time.Duration    `yaml:"-" koanf:"timeout"`
 		URI         string           `yaml:"-" koanf:"uri"`
