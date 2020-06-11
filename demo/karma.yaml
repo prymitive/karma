@@ -4,13 +4,15 @@ authorization:
 alertmanager:
   interval: 10s
   servers:
-    - name: ha1
+    - cluster: HA
+      name: ha1
       uri: "http://localhost:9093"
       timeout: 10s
       proxy: true
       cors:
         credentials: same-origin
-    - name: ha2
+    - cluster: HA
+      name: ha2
       uri: "http://localhost:9094"
       timeout: 10s
       proxy: true
