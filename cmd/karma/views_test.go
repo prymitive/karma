@@ -270,6 +270,36 @@ func TestGrids(t *testing.T) {
 				{labelValue: "sda", alertGroupCount: 2},
 			},
 		},
+		{
+			gridLabel:    "@alertmanager",
+			requestQuery: "",
+			grids: []testCaseGridT{
+				{labelValue: "default", alertGroupCount: 10},
+			},
+		},
+		{
+			gridLabel:    "@receiver",
+			requestQuery: "",
+			grids: []testCaseGridT{
+				{labelValue: "by-cluster-service", alertGroupCount: 6},
+				{labelValue: "by-name", alertGroupCount: 4},
+			},
+		},
+		{
+			gridLabel:    "@receiver",
+			requestQuery: "&gridSortReverse=1",
+			grids: []testCaseGridT{
+				{labelValue: "by-name", alertGroupCount: 4},
+				{labelValue: "by-cluster-service", alertGroupCount: 6},
+			},
+		},
+		{
+			gridLabel:    "@receiver",
+			requestQuery: "&q=@receiver=by-name",
+			grids: []testCaseGridT{
+				{labelValue: "by-name", alertGroupCount: 4},
+			},
+		},
 	}
 
 	mockConfig()
