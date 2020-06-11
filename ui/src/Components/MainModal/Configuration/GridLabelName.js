@@ -9,8 +9,14 @@ import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 
 const disabledLabel = "Disable multi-grid";
-const emptyValue = { label: disabledLabel, value: "" };
+
 const valueToOption = (v) => ({ label: v ? v : disabledLabel, value: v });
+
+const staticValues = [
+  { label: disabledLabel, value: "" },
+  { label: "@alertmanager", value: "@alertmanager" },
+  { label: "@receiver", value: "@receiver" },
+];
 
 const GridLabelName = ({ settingsStore }) => {
   const { response } = useFetchGet(FormatBackendURI(`labelNames.json`));
@@ -28,13 +34,13 @@ const GridLabelName = ({ settingsStore }) => {
       options={
         response
           ? [
-              ...[emptyValue],
+              ...staticValues,
               ...response.map((value) => ({
                 label: value,
                 value: value,
               })),
             ]
-          : [emptyValue]
+          : staticValues
       }
       onChange={({ value }) => {
         settingsStore.multiGridConfig.config.gridLabel = value;

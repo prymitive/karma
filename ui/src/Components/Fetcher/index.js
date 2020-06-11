@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import PropTypes from "prop-types";
 
 import { reaction } from "mobx";
-import { useObserver } from "mobx-react-lite";
 
 import moment from "moment";
 
@@ -88,7 +87,20 @@ const Fetcher = ({ alertStore, settingsStore }) => {
   useEffect(
     () =>
       reaction(
-        () => alertStore.filters.values.map((f) => f.raw).join(" "),
+        () =>
+          JSON.stringify({
+            filters: alertStore.filters.values.map((f) => f.raw).join(" "),
+            grid: {
+              sortOrder: settingsStore.gridConfig.config.sortOrder,
+              sortLabel: settingsStore.gridConfig.config.sortLabel,
+            },
+            multigrid: {
+              gridLabel: settingsStore.multiGridConfig.config.gridLabel,
+              gridSortReverse:
+                settingsStore.multiGridConfig.config.gridSortReverse,
+              reverseSort: settingsStore.gridConfig.config.reverseSort,
+            },
+          }),
         () => {
           callFetch();
         },
@@ -117,20 +129,7 @@ const Fetcher = ({ alertStore, settingsStore }) => {
     [] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  return useObserver(() => (
-    // data-filters is there to register filters for observation in mobx
-    <span
-      data-filters={alertStore.filters.values.map((f) => f.raw).join(" ")}
-      data-interval={settingsStore.fetchConfig.config.interval}
-      data-multigrid-label={settingsStore.multiGridConfig.config.gridLabel}
-      data-multigrid-sort-reverse={
-        settingsStore.multiGridConfig.config.gridSortReverse
-      }
-      data-grid-sort-order={settingsStore.gridConfig.config.sortOrder}
-      data-grid-sort-label={settingsStore.gridConfig.config.sortLabel}
-      data-grid-sort-reverse={settingsStore.gridConfig.config.reverseSort}
-    />
-  ));
+  return <span />;
 };
 Fetcher.propTypes = {
   alertStore: PropTypes.instanceOf(AlertStore).isRequired,
