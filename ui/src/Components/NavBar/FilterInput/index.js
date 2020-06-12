@@ -14,6 +14,7 @@ import { Settings } from "Stores/Settings";
 import { IsMobile } from "Common/Device";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { useDebounce } from "Hooks/useDebounce";
+import { useOnClickOutside } from "Hooks/useOnClickOutside";
 import { FilterInputLabel } from "Components/Labels/FilterInputLabel";
 import { AutosuggestTheme } from "./Constants";
 import { History } from "./History";
@@ -21,6 +22,7 @@ import { History } from "./History";
 const FilterInput = ({ alertStore, settingsStore }) => {
   const autosuggestRef = useRef();
   const inputRef = useRef();
+  const formRef = useRef(null);
 
   const [suggestions, setSuggestions] = useState([]);
   const [value, setValue] = useState("");
@@ -55,6 +57,9 @@ const FilterInput = ({ alertStore, settingsStore }) => {
       autosuggestRef.current.input.focus();
     }
   }, []);
+
+  const onBlur = useCallback(() => setIsFocused(false), []);
+  useOnClickOutside(formRef, onBlur, true);
 
   const [term, setTerm] = useState("");
   const debouncedSearchTerm = useDebounce(term, 300);
@@ -116,6 +121,7 @@ const FilterInput = ({ alertStore, settingsStore }) => {
     // in order to re-render input component
     <form className="form-inline mw-100" onSubmit={onSubmit}>
       <div
+        ref={formRef}
         className={`input-group w-100 mr-2 components-filterinput-outer ${
           isFocused ? "bg-focused" : "bg-transparent"
         }`}
@@ -129,7 +135,7 @@ const FilterInput = ({ alertStore, settingsStore }) => {
           className="form-control components-filterinput border-0 rounded-0 bg-transparent"
           onClick={onInputClick}
           onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
+          onBlur={onBlur}
         >
           {alertStore.filters.values.map((filter) => (
             <FilterInputLabel
