@@ -280,7 +280,7 @@ func alerts(c *gin.Context) {
 					alertGridLabelValues[alert.Labels[gridLabel]] = true
 				}
 
-				for alertGridLabelValue, _ := range alertGridLabelValues {
+				for alertGridLabelValue := range alertGridLabelValues {
 					alert := models.Alert(alert)
 
 					// we need to update fingerprints since we've modified some fields in dedup
