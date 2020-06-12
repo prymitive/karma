@@ -33,7 +33,7 @@ var upstreamSetup = false
 func mockConfig() {
 	log.SetLevel(log.ErrorLevel)
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
-	os.Setenv("LABELS_COLOR_UNIQUE", "alertname @receiver @alertmanager")
+	os.Setenv("LABELS_COLOR_UNIQUE", "alertname @receiver @alertmanager @cluster")
 
 	f := pflag.NewFlagSet(".", pflag.ExitOnError)
 	config.SetupFlags(f)
@@ -149,8 +149,8 @@ func TestAlerts(t *testing.T) {
 			if len(ur.Filters) != 3 {
 				t.Errorf("[%s] Got %d filter(s) in response, expected %d", version, len(ur.Filters), 3)
 			}
-			if len(ur.Colors) != 3 {
-				t.Errorf("[%s] Got %d color(s) in response, expected %d", version, len(ur.Colors), 1)
+			if len(ur.Colors) != 4 {
+				t.Errorf("[%s] Got %d color(s) in response, expected %d", version, len(ur.Colors), 4)
 			}
 			if len(ur.Grids[0].AlertGroups) != 1 {
 				t.Errorf("[%s] Got %d alert group(s) in response, expected %d", version, len(ur.Grids[0].AlertGroups), 1)
