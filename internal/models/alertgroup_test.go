@@ -111,7 +111,6 @@ var agFPTests = []agFPTest{
 			Alerts: models.AlertList{
 				models.Alert{
 					Labels: map[string]string{"foo1": "bar"},
-					State:  models.AlertStateActive,
 				},
 			},
 			StateCount: map[string]int{"default": 0},
@@ -126,7 +125,6 @@ var agFPTests = []agFPTest{
 			Alerts: models.AlertList{
 				models.Alert{
 					Labels: map[string]string{"bar": "foo"},
-					State:  models.AlertStateActive,
 				},
 			},
 			StateCount: map[string]int{"default": 0},
@@ -141,7 +139,6 @@ var agFPTests = []agFPTest{
 			Alerts: models.AlertList{
 				models.Alert{
 					Labels: map[string]string{"bar": "foo"},
-					State:  models.AlertStateActive,
 				},
 			},
 			StateCount: map[string]int{"default": 0},

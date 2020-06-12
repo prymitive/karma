@@ -1,7 +1,6 @@
 package filters_test
 
 import (
-	"encoding/json"
 	"sort"
 	"testing"
 
@@ -52,8 +51,9 @@ var acTests = []acTest{
 				Alertmanager: []models.AlertmanagerInstance{
 					{Cluster: "cluster", Name: "am1"},
 					{
-						Cluster: "cluster",
-						Name:    "am2",
+						Cluster:    "cluster",
+						Name:       "am2",
+						SilencedBy: []string{"1234567890"},
 						Silences: map[string]*models.Silence{
 							"1234567890": {
 								ID:        "1234567890",
@@ -130,13 +130,8 @@ func TestBuildAutocomplete(t *testing.T) {
 		sort.Strings(result)
 		sort.Strings(acTest.Expected)
 
-		resultJSON, _ := json.Marshal(result)
-		expectedJSON, _ := json.Marshal(acTest.Expected)
-
-		if string(resultJSON) != string(expectedJSON) {
-			if diff := cmp.Diff(expectedJSON, resultJSON); diff != "" {
-				t.Errorf("Wrong autocomplete data returned (-want +got):\n%s", diff)
-			}
+		if diff := cmp.Diff(acTest.Expected, result); diff != "" {
+			t.Errorf("Wrong autocomplete data returned (-want +got):\n%s", diff)
 		}
 	}
 }

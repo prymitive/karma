@@ -196,10 +196,6 @@ func (ag *APIAlertGroup) dedupSilences() {
 	silencesByCluster := map[string]map[string]int{}
 
 	for _, alert := range ag.Alerts {
-		if alert.State != AlertStateSuppressed {
-			// if we find any alert that's not silenced then we can break early
-			return
-		}
 		// process each cluster only once, rather than each alertmanager instance
 		clusters := []string{}
 		for _, am := range alert.Alertmanager {

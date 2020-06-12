@@ -51,8 +51,8 @@ func newsilenceIDFilter() FilterT {
 func silenceIDAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
 	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
-		if alert.IsSilenced() {
-			for _, silenceID := range alert.SilencedBy {
+		for _, am := range alert.Alertmanager {
+			for _, silenceID := range am.SilencedBy {
 				for _, operator := range operators {
 					token := fmt.Sprintf("%s%s%s", name, operator, silenceID)
 					tokens[token] = makeAC(token, []string{
