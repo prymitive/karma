@@ -243,7 +243,6 @@ func alerts(c *gin.Context) {
 				}
 			}
 			if !validFilters || (slices.BoolInSlice(results, true) && !slices.BoolInSlice(results, false)) {
-				matches++
 
 				blockedAMs := map[string]bool{}
 				for _, am := range alert.Alertmanager {
@@ -263,6 +262,11 @@ func alerts(c *gin.Context) {
 					}
 					alert.Alertmanager = ams
 				}
+				if len(alert.Alertmanager) == 0 {
+					continue
+				}
+
+				matches++
 
 				alertGridLabelValues := map[string]bool{}
 				switch gridLabel {
