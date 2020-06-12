@@ -72,16 +72,17 @@ describe("<MultiGridConfiguration />", () => {
     });
     const tree = ExpandSortLabelSuggestions();
     const options = tree.find("div.react-select__option");
-    expect(options).toHaveLength(3);
+    expect(options).toHaveLength(4);
     expect(options.at(0).text()).toBe("Disable multi-grid");
     expect(options.at(1).text()).toBe("@alertmanager");
-    expect(options.at(2).text()).toBe("@receiver");
+    expect(options.at(2).text()).toBe("@cluster");
+    expect(options.at(3).text()).toBe("@receiver");
   });
 
   it("clicking on a label option updates settingsStore", () => {
     const tree = ExpandSortLabelSuggestions();
     const options = tree.find("div.react-select__option");
-    options.at(4).simulate("click");
+    options.at(5).simulate("click");
     expect(settingsStore.multiGridConfig.config.gridLabel).toBe("job");
   });
 
