@@ -261,6 +261,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			transform.ColorLabel(colors, "@receiver", alert.Receiver)
 			for _, am := range alert.Alertmanager {
 				transform.ColorLabel(colors, "@alertmanager", am.Name)
+				transform.ColorLabel(colors, "@cluster", am.Cluster)
 			}
 			for k, v := range alert.Labels {
 				transform.ColorLabel(colors, k, v)
