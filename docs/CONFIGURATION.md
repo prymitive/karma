@@ -161,6 +161,7 @@ alertmanager:
   interval: duration
   servers:
     - name: string
+      cluster: string
       uri: string
       external_uri: string
       timeout: duration
@@ -189,6 +190,12 @@ alertmanager:
 - `name` - name of this Alertmanager server, will be used as a label added to
   every alert in the UI and for filtering alerts using `@alertmanager=NAME`
   filter
+- `cluster` - this option can be set to give
+  [Alertmanager clusters](https://prometheus.io/docs/alerting/latest/alertmanager/#high-availability)
+  custom names in the UI. If there are multiple alertmanager servers configured
+  in karma config that are part of the same HA cluster then this option should
+  be set to the same value for all of them. If `cluster` option isn't set a name
+  will be generated for each detected cluster.
 - `uri` - base URI of this Alertmanager server. Supported URI schemes are
   `http://` and `https://`.
   If URI contains basic auth info
@@ -260,7 +267,7 @@ a slightly different behavior. Settings that control it are:
   - silence management requests will use karma backend URI
   - silence links to Alertmanager web UI will use `external_uri` value as base
     URI
-  When proxy mode is disabled:
+    When proxy mode is disabled:
   - silence management requests will use `external_uri` value as base URI
   - silence links to Alertmanager web UI will use `external_uri` value as base
     URI
@@ -275,8 +282,8 @@ Breakdown of all combination of settings:
 
    Karma would use those URIs for:
 
-   | Backend | Silence management | Silence links |
-   |-|-|-|
+   | Backend                | Silence management     | Silence links          |
+   | ---------------------- | ---------------------- | ---------------------- |
    | `http://localhost:123` | `http://localhost:123` | `http://localhost:123` |
 
 1. Proxy mode is enabled:
@@ -288,8 +295,8 @@ Breakdown of all combination of settings:
 
    Karma would use those URIs for:
 
-   | Backend | Silence management | Silence links |
-   |-|-|-|
+   | Backend                | Silence management | Silence links          |
+   | ---------------------- | ------------------ | ---------------------- |
    | `http://localhost:123` | Karma internal URI | `http://localhost:123` |
 
 1. `external_uri` is set, but proxy mode is disabled:
@@ -301,8 +308,8 @@ Breakdown of all combination of settings:
 
    Karma would use those URIs for:
 
-   | Backend | Silence management | Silence links |
-   |-|-|-|
+   | Backend                | Silence management   | Silence links        |
+   | ---------------------- | -------------------- | -------------------- |
    | `http://localhost:123` | `http://example.com` | `http://example.com` |
 
 1. Proxy mode is enabled and `external_uri` is set:
@@ -315,22 +322,22 @@ Breakdown of all combination of settings:
 
    Karma would use those URIs for:
 
-   | Backend | Silence management | Silence links |
-   |-|-|-|
+   | Backend                | Silence management | Silence links        |
+   | ---------------------- | ------------------ | -------------------- |
    | `http://localhost:123` | Karma internal URI | `http://example.com` |
 
 1. ReadOnly mode is enabled:
 
-  ```YAML
-  uri: http://localhost:123
-  readonly: true
-  ```
+```YAML
+uri: http://localhost:123
+readonly: true
+```
 
-  Karma would use those URIs for:
+Karma would use those URIs for:
 
-  | Backend | Silence management | Silence links |
-  |-|-|-|
-  | `http://localhost:123` | Disabled | `http://localhost:123` |
+| Backend                | Silence management | Silence links          |
+| ---------------------- | ------------------ | ---------------------- |
+| `http://localhost:123` | Disabled           | `http://localhost:123` |
 
 Example with two production Alertmanager instances running in HA mode and a
 staging instance that is also proxied and requires a custom auth header:

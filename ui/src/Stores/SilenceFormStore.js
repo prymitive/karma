@@ -17,7 +17,8 @@ const MatcherValueToObject = (value) => ({ label: value, value: value });
 
 const AlertmanagerClustersToOption = (clusterDict) =>
   Object.entries(clusterDict).map(([clusterID, clusterMembers]) => ({
-    label: clusterMembers.join(" | "),
+    label:
+      clusterMembers.length > 1 ? `Cluster: ${clusterID}` : clusterMembers[0],
     value: clusterMembers,
   }));
 
