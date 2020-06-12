@@ -37,8 +37,13 @@ func (filter *stateFilter) Match(alert *models.Alert, matches int) bool {
 	panic(e)
 }
 
+func (filter *stateFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
+	return filter.Matcher.Compare(am.State, filter.Value)
+}
+
 func newStateFilter() FilterT {
 	f := stateFilter{}
+	f.IsAlertmanagerFilter = true
 	return &f
 }
 

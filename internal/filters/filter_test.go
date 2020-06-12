@@ -8,18 +8,19 @@ import (
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/slices"
 
 	log "github.com/sirupsen/logrus"
 )
 
 type filterTest struct {
-	Expression           string
-	IsValid              bool
-	IsMatch              bool
-	IsAlertmanagerFilter bool
-	IsAlertmanagerMatch  bool
-	Alert                models.Alert
-	Silence              models.Silence
+	Expression          string
+	IsValid             bool
+	IsMatch             bool
+	IsAlertmanagerMatch bool
+	Alert               models.Alert
+	Silence             models.Silence
+	Alertmanagers       []models.AlertmanagerInstance
 }
 
 var tests = []filterTest{
@@ -30,16 +31,18 @@ var tests = []filterTest{
 		IsMatch:    false,
 	},
 	{
-		Expression: "@state!=active",
-		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    true,
+		Expression:          "@state!=active",
+		IsValid:             true,
+		Alert:               models.Alert{},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression: "@state=suppressed",
-		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		IsMatch:    true,
+		Expression:          "@state=suppressed",
+		IsValid:             true,
+		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@state!=suppressed",
@@ -68,10 +71,11 @@ var tests = []filterTest{
 		IsValid:    false,
 	},
 	{
-		Expression: "@state=suppressed",
-		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", InhibitedBy: []string{"999"}},
-		IsMatch:    true,
+		Expression:          "@state=suppressed",
+		IsValid:             true,
+		Alert:               models.Alert{State: "suppressed", InhibitedBy: []string{"999"}},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@state=suppressed",
@@ -141,10 +145,12 @@ var tests = []filterTest{
 		IsMatch:    false,
 	},
 	{
-		Expression: "@silence_id=abcdef",
-		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"abcdef"}},
-		IsMatch:    true,
+		Expression:          "@silence_id=abcdef",
+		IsValid:             true,
+		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"abcdef"}},
+		Silence:             models.Silence{ID: "abcdef"},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@silence_id!=abcdef",
@@ -172,18 +178,20 @@ var tests = []filterTest{
 	},
 
 	{
-		Expression: "@silence_ticket=1",
-		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", TicketID: "1"},
-		IsMatch:    true,
+		Expression:          "@silence_ticket=1",
+		IsValid:             true,
+		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Silence:             models.Silence{ID: "1", TicketID: "1"},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression: "@silence_ticket=1",
-		IsValid:    true,
-		Alert:      models.Alert{State: "active", SilencedBy: []string{}},
-		Silence:    models.Silence{ID: "1", TicketID: "1"},
-		IsMatch:    false,
+		Expression:          "@silence_ticket=1",
+		IsValid:             true,
+		Alert:               models.Alert{State: "active", SilencedBy: []string{}},
+		Silence:             models.Silence{ID: "1", TicketID: "1"},
+		IsMatch:             false,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@silence_ticket=2",
@@ -193,11 +201,12 @@ var tests = []filterTest{
 		IsMatch:    false,
 	},
 	{
-		Expression: "@silence_ticket!=3",
-		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", TicketID: "x"},
-		IsMatch:    true,
+		Expression:          "@silence_ticket!=3",
+		IsValid:             true,
+		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Silence:             models.Silence{ID: "1", TicketID: "x"},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@silence_ticket!=4",
@@ -207,18 +216,20 @@ var tests = []filterTest{
 		IsMatch:    false,
 	},
 	{
-		Expression: "@silence_ticket!=5",
-		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1"},
-		IsMatch:    true,
+		Expression:          "@silence_ticket!=5",
+		IsValid:             true,
+		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Silence:             models.Silence{ID: "1"},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression: "@silence_ticket=~abc",
-		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", TicketID: "xxabcxx"},
-		IsMatch:    true,
+		Expression:          "@silence_ticket=~abc",
+		IsValid:             true,
+		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Silence:             models.Silence{ID: "1", TicketID: "xxabcxx"},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@silence_ticket=~abc",
@@ -250,11 +261,12 @@ var tests = []filterTest{
 	},
 
 	{
-		Expression: "@silence_author=john",
-		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", CreatedBy: "john"},
-		IsMatch:    true,
+		Expression:          "@silence_author=john",
+		IsValid:             true,
+		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Silence:             models.Silence{ID: "1", CreatedBy: "john"},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@silence_author=john",
@@ -271,11 +283,12 @@ var tests = []filterTest{
 		IsMatch:    false,
 	},
 	{
-		Expression: "@silence_author!=john",
-		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1", CreatedBy: "bob"},
-		IsMatch:    true,
+		Expression:          "@silence_author!=john",
+		IsValid:             true,
+		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Silence:             models.Silence{ID: "1", CreatedBy: "bob"},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@silence_author!=john",
@@ -285,11 +298,12 @@ var tests = []filterTest{
 		IsMatch:    false,
 	},
 	{
-		Expression: "@silence_author!=john",
-		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		Silence:    models.Silence{ID: "1"},
-		IsMatch:    true,
+		Expression:          "@silence_author!=john",
+		IsValid:             true,
+		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Silence:             models.Silence{ID: "1"},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@silence_author=~",
@@ -320,10 +334,11 @@ var tests = []filterTest{
 		IsMatch:    true,
 	},
 	{
-		Expression: "@age>1h",
-		IsValid:    true,
-		Alert:      models.Alert{StartsAt: time.Now().Add(time.Hour * -2)},
-		IsMatch:    true,
+		Expression:          "@age>1h",
+		IsValid:             true,
+		Alert:               models.Alert{StartsAt: time.Now().Add(time.Hour * -2)},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@age<-1h",
@@ -332,10 +347,11 @@ var tests = []filterTest{
 		IsMatch:    true,
 	},
 	{
-		Expression: "@age>-1h",
-		IsValid:    true,
-		Alert:      models.Alert{StartsAt: time.Now().Add(time.Hour * -2)},
-		IsMatch:    true,
+		Expression:          "@age>-1h",
+		IsValid:             true,
+		Alert:               models.Alert{StartsAt: time.Now().Add(time.Hour * -2)},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@age=1h",
@@ -550,50 +566,44 @@ var tests = []filterTest{
 		IsValid:    false,
 	},
 	{
-		Expression:           "@alertmanager=test",
-		IsAlertmanagerFilter: true,
-		IsValid:              true,
-		Alert:                models.Alert{},
-		IsMatch:              true,
-		IsAlertmanagerMatch:  true,
+		Expression:          "@alertmanager=test",
+		IsValid:             true,
+		Alert:               models.Alert{},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression:           "@alertmanager=abc",
-		IsAlertmanagerFilter: true,
-		IsValid:              true,
-		Alert:                models.Alert{},
-		IsMatch:              false,
+		Expression: "@alertmanager=abc",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		IsMatch:    false,
 	},
 	{
-		Expression:           "@alertmanager=~tes",
-		IsAlertmanagerFilter: true,
-		IsValid:              true,
-		Alert:                models.Alert{},
-		IsMatch:              true,
-		IsAlertmanagerMatch:  true,
+		Expression:          "@alertmanager=~tes",
+		IsValid:             true,
+		Alert:               models.Alert{},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression:           "@alertmanager=~000",
-		IsAlertmanagerFilter: true,
-		IsValid:              true,
-		Alert:                models.Alert{},
-		IsMatch:              false,
+		Expression: "@alertmanager=~000",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		IsMatch:    false,
 	},
 	{
-		Expression:           "@alertmanager!=tes",
-		IsAlertmanagerFilter: true,
-		IsValid:              true,
-		Alert:                models.Alert{},
-		IsMatch:              true,
-		IsAlertmanagerMatch:  true,
+		Expression:          "@alertmanager!=tes",
+		IsValid:             true,
+		Alert:               models.Alert{},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression:           "@alertmanager!~abc",
-		IsAlertmanagerFilter: true,
-		IsValid:              true,
-		Alert:                models.Alert{},
-		IsMatch:              true,
-		IsAlertmanagerMatch:  true,
+		Expression:          "@alertmanager!~abc",
+		IsValid:             true,
+		Alert:               models.Alert{},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@receiver=by-name",
@@ -604,16 +614,14 @@ var tests = []filterTest{
 		IsMatch: true,
 	},
 	{
-		Expression:           "@cluster=foo",
-		IsAlertmanagerFilter: true,
-		IsValid:              true,
-		Alert:                models.Alert{},
-		IsMatch:              false,
+		Expression: "@cluster=foo",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		IsMatch:    false,
 	},
 	{
-		Expression:           "@cluster=HA",
-		IsAlertmanagerFilter: true,
-		IsValid:              true,
+		Expression: "@cluster=HA",
+		IsValid:    true,
 		Alert: models.Alert{
 			Receiver: "by-name",
 		},
@@ -621,9 +629,8 @@ var tests = []filterTest{
 		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression:           "@cluster!=foo",
-		IsAlertmanagerFilter: true,
-		IsValid:              true,
+		Expression: "@cluster!=foo",
+		IsValid:    true,
 		Alert: models.Alert{
 			Receiver: "by-name",
 		},
@@ -661,13 +668,18 @@ func TestFilters(t *testing.T) {
 	}
 	for _, ft := range tests {
 		alert := models.Alert(ft.Alert)
-		alert.Alertmanager = []models.AlertmanagerInstance{
-			{
-				Cluster:    "HA",
-				Name:       am.Name,
-				Silences:   map[string]*models.Silence{},
-				SilencedBy: []string{},
-			},
+		if len(ft.Alertmanagers) > 0 {
+			alert.Alertmanager = ft.Alertmanagers
+		} else {
+			alert.Alertmanager = []models.AlertmanagerInstance{
+				{
+					Cluster:    "HA",
+					Name:       am.Name,
+					Silences:   map[string]*models.Silence{},
+					SilencedBy: []string{},
+					State:      ft.Alert.State,
+				},
+			}
 		}
 		if ft.Silence.ID != "" {
 			alert.Alertmanager[0].Silences[ft.Silence.ID] = &ft.Silence
@@ -684,10 +696,14 @@ func TestFilters(t *testing.T) {
 		if f.GetIsValid() != ft.IsValid {
 			t.Errorf("[%s] GetIsValid() returned %#v while %#v was expected", ft.Expression, f.GetIsValid(), ft.IsValid)
 		}
-		if f.GetIsAlertmanagerFilter() != ft.IsAlertmanagerFilter {
-			t.Errorf("[%s] GetIsAlertmanagerFilter() returned %#v while %#v was expected", ft.Expression, f.GetIsAlertmanagerFilter(), ft.IsAlertmanagerFilter)
-		}
 		if f.GetIsValid() {
+			isAlertmanagerFilter := slices.StringInSlice(
+				[]string{"@age", "@alertmanager", "@cluster", "@state", "@silence_id", "@silence_ticket", "@silence_author"},
+				f.GetName())
+			if isAlertmanagerFilter != f.GetIsAlertmanagerFilter() {
+				t.Errorf("[%s] GetIsAlertmanagerFilter() returned %#v while %#v was expected", ft.Expression, f.GetIsAlertmanagerFilter(), isAlertmanagerFilter)
+			}
+
 			m := f.Match(&alert, 0)
 			if m != ft.IsMatch {
 				j, _ := json.Marshal(ft.Alert)
@@ -704,7 +720,7 @@ func TestFilters(t *testing.T) {
 				t.Errorf("[%s] GetRawText() returned %#v != %s passed as the expression", ft.Expression, f.GetRawText(), ft.Expression)
 			}
 
-			if f.GetIsAlertmanagerFilter() {
+			if m && f.GetIsAlertmanagerFilter() {
 				for _, am := range alert.Alertmanager {
 					m := f.MatchAlertmanager(&am)
 					if m != ft.IsAlertmanagerMatch {

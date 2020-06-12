@@ -33,8 +33,20 @@ func (filter *silenceIDFilter) Match(alert *models.Alert, matches int) bool {
 	panic(e)
 }
 
+func (filter *silenceIDFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
+	var isMatch bool
+	for _, silenceID := range am.SilencedBy {
+		m := filter.Matcher.Compare(silenceID, filter.Value)
+		if m {
+			isMatch = m
+		}
+	}
+	return isMatch
+}
+
 func newsilenceIDFilter() FilterT {
 	f := silenceIDFilter{}
+	f.IsAlertmanagerFilter = true
 	return &f
 }
 
