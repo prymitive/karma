@@ -35,7 +35,7 @@ import time
 import urllib.request, urllib.error, urllib.parse
 
 
-APIs = ["http://localhost:9093", "http://localhost:9094"]
+APIs = ["http://localhost:9093", "http://localhost:9094", "http://localhost:9095"]
 MAX_INTERVAL = 10
 MIN_INTERVAL = 5
 
@@ -411,7 +411,7 @@ class PaginationTest(AlertGenerator):
                              severity="warning", job="node_exporter",
                              region="US"),
                 self._annotations(dashboard="https://example.com")
-            ) for i in range(0, 1000)
+            ) for i in range(0, 500)
         ]
 
     def silences(self):
