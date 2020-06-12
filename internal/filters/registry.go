@@ -48,6 +48,13 @@ var AllFilters = []filterConfig{
 		Autocomplete:       alertmanagerInstanceAutocomplete,
 	},
 	{
+		Label:              "@cluster",
+		LabelRe:            regexp.MustCompile("^@cluster$"),
+		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},
+		Factory:            newAlertmanagerClusterFilter,
+		Autocomplete:       alertmanagerClusterAutocomplete,
+	},
+	{
 		Label:              "@state",
 		LabelRe:            regexp.MustCompile("^@state$"),
 		SupportedOperators: []string{equalOperator, notEqualOperator},
