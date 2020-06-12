@@ -56,7 +56,8 @@ labels:
     unique:
       - cluster
       - instance
-      - "@receiver"
+      - @receiver
+      - @cluster
     custom:
       region:
         - value_re: ".*"
