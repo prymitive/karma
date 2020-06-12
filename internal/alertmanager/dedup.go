@@ -102,7 +102,7 @@ func DedupSilences() []models.ManagedSilence {
 
 	for _, am := range upstreams {
 		for id, silence := range am.Silences() {
-			cluster := am.ClusterID()
+			cluster := am.ClusterName()
 
 			if _, found := silenceByCluster[cluster]; !found {
 				silenceByCluster[cluster] = map[string]models.Silence{}
