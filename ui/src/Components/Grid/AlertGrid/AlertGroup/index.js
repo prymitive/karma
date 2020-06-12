@@ -137,7 +137,13 @@ const AlertGroup = ({
       group.alerts.length > 1 &&
       AllAlertsAreUsingSameAlertmanagers(group.alerts);
     if (showAlertmanagersInFooter) {
-      footerAlertmanagers = group.alerts[0].alertmanager.map((am) => am.name);
+      footerAlertmanagers = group.alerts[0].alertmanager
+        .map((am) => am.cluster)
+        .reduce(
+          (unique, item) =>
+            unique.includes(item) ? unique : [...unique, item],
+          []
+        );
     }
   }
 

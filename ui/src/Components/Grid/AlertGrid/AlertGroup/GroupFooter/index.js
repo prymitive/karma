@@ -41,11 +41,11 @@ const GroupFooter = ({
           alertStore={alertStore}
         />
       ))}
-      {alertmanagers.map((am) => (
+      {alertmanagers.map((cluster) => (
         <FilteringLabel
-          key={am}
-          name={StaticLabels.AlertManager}
-          value={am}
+          key={cluster}
+          name={StaticLabels.AlertmanagerCluster}
+          value={cluster}
           alertStore={alertStore}
         />
       ))}

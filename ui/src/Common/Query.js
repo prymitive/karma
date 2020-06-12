@@ -7,6 +7,7 @@ const QueryOperators = Object.freeze({
 const StaticLabels = Object.freeze({
   AlertName: "alertname",
   AlertManager: "@alertmanager",
+  AlertmanagerCluster: "@cluster",
   Receiver: "@receiver",
   State: "@state",
   SilenceID: "@silence_id",

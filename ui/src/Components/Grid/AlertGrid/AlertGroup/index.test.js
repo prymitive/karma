@@ -120,10 +120,40 @@ describe("<AlertGroup />", () => {
     ).toBe(true);
   });
 
-  it("renders Alertmanager labels in footer if showAlertmanagersInFooter=true", () => {
+  it("renders Alertmanager cluster labels in footer if showAlertmanagersInFooter=true", () => {
     MockAlerts(2);
     const tree = MountedAlertGroup(jest.fn(), true).find("AlertGroup");
-    expect(tree.find("GroupFooter").html()).toMatch(/@alertmanager/);
+    expect(tree.find("GroupFooter").html()).toMatch(/@cluster/);
+  });
+
+  it("only renders one @cluster label per cluster in the footer", () => {
+    MockAlerts(2);
+    for (let i = 0; i < group.alerts.length; i++) {
+      group.alerts[i].alertmanager.push({
+        name: "ha1",
+        cluster: "HA",
+        state: "active",
+        startsAt: "2018-08-14T17:36:40.017867056Z",
+        source: "localhost/prometheus",
+        silencedBy: [],
+        inhibitedBy: [],
+      });
+      group.alerts[i].alertmanager.push({
+        name: "ha2",
+        cluster: "HA",
+        state: "active",
+        startsAt: "2018-08-14T17:36:40.017867056Z",
+        source: "localhost/prometheus",
+        silencedBy: [],
+        inhibitedBy: [],
+      });
+    }
+    const tree = MountedAlertGroup(jest.fn(), true).find("AlertGroup");
+    const labels = tree.find("GroupFooter").find("FilteringLabel");
+    expect(labels).toHaveLength(3);
+    expect(labels.at(0).text()).toBe("@cluster: default");
+    expect(labels.at(1).text()).toBe("@cluster: HA");
+    expect(labels.at(2).text()).toBe("@receiver: by-name");
   });
 
   it("doesn't render alertmanager labels in footer when they are unique", () => {
@@ -141,10 +171,10 @@ describe("<AlertGroup />", () => {
     const tree = MountedAlertGroup(jest.fn(), true);
 
     const alerts = tree.find("ul.list-group");
-    expect(alerts.html()).toMatch(/@alertmanager/);
+    expect(alerts.html()).toMatch(/@cluster/);
 
     const footer = tree.find("GroupFooter");
-    expect(footer.html()).not.toMatch(/@alertmanager/);
+    expect(footer.html()).not.toMatch(/@cluster/);
   });
 
   it("only renders titlebar when collapsed", () => {

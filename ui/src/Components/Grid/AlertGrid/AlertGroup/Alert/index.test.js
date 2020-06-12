@@ -95,14 +95,44 @@ describe("<Alert />", () => {
     expect(tree.find(".fa-volume-mute")).toHaveLength(1);
   });
 
-  it("renders @alertmanager label with showAlertmanagers=true", () => {
+  it("renders @cluster label with showAlertmanagers=true", () => {
     const alert = MockedAlert();
     const group = MockAlertGroup({}, [alert], [], {}, {});
     const tree = MountedAlert(alert, group, true, false);
     const label = tree
       .find("FilteringLabel")
-      .filterWhere((elem) => elem.props().name === "@alertmanager");
-    expect(label.text()).toBe("@alertmanager: default");
+      .filterWhere((elem) => elem.props().name === "@cluster");
+    expect(label.text()).toBe("@cluster: default");
+  });
+
+  it("only renders one @cluster label per alertmanager cluster", () => {
+    const alert = MockedAlert();
+    alert.alertmanager.push({
+      name: "ha1",
+      cluster: "HA",
+      state: "active",
+      startsAt: "2018-08-14T17:36:40.017867056Z",
+      source: "localhost/prometheus",
+      silencedBy: [],
+      inhibitedBy: [],
+    });
+    alert.alertmanager.push({
+      name: "ha2",
+      cluster: "HA",
+      state: "active",
+      startsAt: "2018-08-14T17:36:40.017867056Z",
+      source: "localhost/prometheus",
+      silencedBy: [],
+      inhibitedBy: [],
+    });
+    const group = MockAlertGroup({}, [alert], [], {}, {});
+    const tree = MountedAlert(alert, group, true, false);
+    const labels = tree
+      .find("FilteringLabel")
+      .filterWhere((elem) => elem.props().name === "@cluster");
+    expect(labels).toHaveLength(2);
+    expect(labels.at(0).text()).toBe("@cluster: default");
+    expect(labels.at(1).text()).toBe("@cluster: HA");
   });
 
   it("renders @receiver label with showReceiver=true", () => {
