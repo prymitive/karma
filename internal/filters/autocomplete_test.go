@@ -38,8 +38,8 @@ var acTests = []acTest{
 				},
 				Receiver: "default",
 				Alertmanager: []models.AlertmanagerInstance{
-					{Name: "am1"},
-					{Name: "am2"},
+					{Cluster: "cluster", Name: "am1"},
+					{Cluster: "cluster", Name: "am2"},
 				},
 			},
 			{
@@ -50,9 +50,10 @@ var acTests = []acTest{
 				},
 				Receiver: "not default",
 				Alertmanager: []models.AlertmanagerInstance{
-					{Name: "am1"},
+					{Cluster: "cluster", Name: "am1"},
 					{
-						Name: "am2",
+						Cluster: "cluster",
+						Name:    "am2",
 						Silences: map[string]*models.Silence{
 							"1234567890": {
 								ID:        "1234567890",
@@ -73,6 +74,8 @@ var acTests = []acTest{
 			"@alertmanager!=am2",
 			"@alertmanager=am1",
 			"@alertmanager=am2",
+			"@cluster!=cluster",
+			"@cluster=cluster",
 			"@limit=10",
 			"@limit=50",
 			"@receiver!=default",

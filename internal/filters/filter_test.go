@@ -588,6 +588,28 @@ var tests = []filterTest{
 		IsMatch: true,
 	},
 	{
+		Expression: "@cluster=foo",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		IsMatch:    false,
+	},
+	{
+		Expression: "@cluster=HA",
+		IsValid:    true,
+		Alert: models.Alert{
+			Receiver: "by-name",
+		},
+		IsMatch: true,
+	},
+	{
+		Expression: "@cluster!=foo",
+		IsValid:    true,
+		Alert: models.Alert{
+			Receiver: "by-name",
+		},
+		IsMatch: true,
+	},
+	{
 		Expression: "@receiver=by-name",
 		IsValid:    true,
 		Alert: models.Alert{
@@ -608,7 +630,7 @@ var tests = []filterTest{
 func TestFilters(t *testing.T) {
 	log.SetLevel(log.ErrorLevel)
 
-	am, err := alertmanager.NewAlertmanager("test", "http://localhost", alertmanager.WithRequestTimeout(time.Second))
+	am, err := alertmanager.NewAlertmanager("HA", "test", "http://localhost", alertmanager.WithRequestTimeout(time.Second))
 	if err != nil {
 		t.Error(err)
 	}
@@ -616,6 +638,7 @@ func TestFilters(t *testing.T) {
 		alert := models.Alert(ft.Alert)
 		alert.Alertmanager = []models.AlertmanagerInstance{
 			{
+				Cluster:    "HA",
 				Name:       am.Name,
 				Silences:   map[string]*models.Silence{},
 				SilencedBy: []string{},
