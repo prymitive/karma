@@ -17,7 +17,7 @@ beforeEach(() => {
 
   alertStore = new AlertStore([]);
   alertStore.data.upstreams.clusters = {
-    ha: ["am1", "am2"],
+    HA: ["am1", "am2"],
     am3: ["am3"],
   };
   alertStore.data.upstreams.instances = [
@@ -30,7 +30,7 @@ beforeEach(() => {
       corsCredentials: "include",
       error: "",
       version: "0.17.0",
-      cluster: "ha",
+      cluster: "HA",
       clusterMembers: ["am1", "am2"],
     },
     {
@@ -42,7 +42,7 @@ beforeEach(() => {
       corsCredentials: "include",
       error: "",
       version: "0.17.0",
-      cluster: "ha",
+      cluster: "HA",
       clusterMembers: ["am1", "am2"],
     },
     {
@@ -109,7 +109,7 @@ describe("<AlertManagerInput />", () => {
     MountedAlertManagerInput();
     expect(silenceFormStore.data.alertmanagers).toHaveLength(2);
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
-      label: "am1 | am2",
+      label: "Cluster: HA",
       value: ["am1", "am2"],
     });
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
@@ -132,7 +132,7 @@ describe("<AlertManagerInput />", () => {
     const tree = ValidateSuggestions();
     const options = tree.find("div.react-select__option");
     expect(options).toHaveLength(2);
-    expect(options.at(0).text()).toBe("am1 | am2");
+    expect(options.at(0).text()).toBe("Cluster: HA");
     expect(options.at(1).text()).toBe("am3");
   });
 
@@ -144,7 +144,7 @@ describe("<AlertManagerInput />", () => {
     options.at(1).simulate("click");
     expect(silenceFormStore.data.alertmanagers).toHaveLength(2);
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
-      label: "am1 | am2",
+      label: "Cluster: HA",
       value: ["am1", "am2"],
     });
     expect(silenceFormStore.data.alertmanagers).toContainEqual({

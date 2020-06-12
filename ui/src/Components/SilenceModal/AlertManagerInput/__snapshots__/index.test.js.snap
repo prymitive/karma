@@ -7,7 +7,7 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
     <div class=\\"react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-1pfcrl6-ValueContainer\\">
       <div class=\\"css-owt1hd-multiValue react-select__multi-value\\">
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
-          am1 | am2
+          Cluster: HA
         </div>
         <div class=\\"css-1ucqin4 react-select__multi-value__remove\\">
           <svg height=\\"14\\"
