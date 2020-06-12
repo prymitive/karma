@@ -130,12 +130,14 @@ func alerts(c *gin.Context) {
 		username = c.MustGet(gin.AuthUserKey).(string)
 	}
 
+	upstreams := getUpstreams()
+
 	// initialize response object, set fields that don't require any locking
 	resp := models.AlertsResponse{}
 	resp.Status = "success"
 	resp.Timestamp = string(ts)
 	resp.Version = version
-	resp.Upstreams = getUpstreams()
+	resp.Upstreams = upstreams
 	resp.Settings = models.Settings{
 		Sorting: models.SortSettings{
 			Grid: models.GridSettings{
@@ -259,6 +261,16 @@ func alerts(c *gin.Context) {
 					alertGridLabelValues = make([]string, 0, len(alert.Alertmanager))
 					for _, am := range alert.Alertmanager {
 						alertGridLabelValues = append(alertGridLabelValues, am.Name)
+					}
+				case "@cluster":
+					alertGridLabelValues = make([]string, 0, len(alert.Alertmanager))
+					for _, am := range alert.Alertmanager {
+						for _, upstream := range upstreams.Instances {
+							if am.Name == upstream.Name {
+								alertGridLabelValues = append(alertGridLabelValues, upstream.Cluster)
+							}
+							break
+						}
 					}
 				default:
 					alertGridLabelValues = []string{alert.Labels[gridLabel]}

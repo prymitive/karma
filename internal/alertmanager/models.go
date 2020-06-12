@@ -56,6 +56,7 @@ type Alertmanager struct {
 	knownLabels  []string
 	lastError    string
 	status       models.AlertmanagerStatus
+	clusterName  string
 	// metrics tracked per alertmanager instance
 	Metrics alertmanagerMetrics
 	// headers to send with each AlertManager request
@@ -247,7 +248,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			alert.Alertmanager = []models.AlertmanagerInstance{
 				{
 					Name:        am.Name,
-					Cluster:     am.ClusterID(),
+					Cluster:     am.ClusterName(),
 					State:       alert.State,
 					StartsAt:    alert.StartsAt,
 					Source:      alert.GeneratorURL,
@@ -336,6 +337,7 @@ func (am *Alertmanager) Pull() error {
 	am.lock.Lock()
 	am.status = *status
 	am.lastError = ""
+	am.clusterName = ""
 	am.lock.Unlock()
 
 	return nil
@@ -486,4 +488,30 @@ func (am *Alertmanager) ClusterID() string {
 		return am.Name
 	}
 	return id
+}
+
+func (am *Alertmanager) ClusterName() string {
+	am.lock.RLock()
+	if am.clusterName != "" {
+		am.lock.RUnlock()
+		return am.clusterName
+	}
+	am.lock.RUnlock()
+
+	var clusterName string
+	if am.Cluster != "" {
+		configPeers := clusterMembersFromConfig(am)
+		apiPeers := clusterMembersFromAPI(am)
+		missing, extra := slices.StringSliceDiff(configPeers, apiPeers)
+
+		if len(missing) == 0 && len(extra) == 0 {
+			clusterName = am.Cluster
+		} else {
+			clusterName = strings.Join(am.ClusterMemberNames(), " | ")
+		}
+	} else {
+		clusterName = strings.Join(am.ClusterMemberNames(), " | ")
+	}
+	am.clusterName = clusterName
+	return clusterName
 }

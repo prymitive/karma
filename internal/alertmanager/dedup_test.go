@@ -118,9 +118,10 @@ func TestDedupAutocomplete(t *testing.T) {
 	// 74 hints for everything except @alertmanager and @silence_id
 	// 4 hints for @silence_id 1 and 2
 	// 2 hints per @alertmanager
+	// 2 hits per @cluster
 	// 6 hints for silences in for each alertmanager
 	// silence id might get duplicated so this check isn't very strict
-	expected := 74 + 4 + mockCount*2 + mockCount*6
+	expected := 74 + 4 + mockCount*2 + mockCount*2 + mockCount*6
 	if len(ac) <= int(float64(expected)*0.8) || len(ac) > expected {
 		t.Errorf("Expected %d autocomplete hints, got %d", expected, len(ac))
 	}
