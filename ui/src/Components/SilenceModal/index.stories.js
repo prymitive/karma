@@ -44,7 +44,7 @@ storiesOf("SilenceModal", module)
     alertStore.info.authentication.username = "me@example.com";
 
     alertStore.data.upstreams = {
-      clusters: { default: ["default"] },
+      clusters: { default: ["default"], HA: ["ha1", "ha2"] },
       instances: [
         {
           name: "default",
@@ -57,6 +57,30 @@ storiesOf("SilenceModal", module)
           version: "0.17.0",
           cluster: "default",
           clusterMembers: ["default"],
+        },
+        {
+          name: "ha1",
+          uri: "http://localhost:8081",
+          publicURI: "http://ha1.example.com",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.20.0",
+          cluster: "HA",
+          clusterMembers: ["ha1", "ha2"],
+        },
+        {
+          name: "ha2",
+          uri: "http://localhost:8082",
+          publicURI: "http://ha2.example.com",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          error: "",
+          version: "0.20.0",
+          cluster: "HA",
+          clusterMembers: ["ha1", "ha2"],
         },
       ],
     };
