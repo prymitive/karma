@@ -245,6 +245,25 @@ func alerts(c *gin.Context) {
 			if !validFilters || (slices.BoolInSlice(results, true) && !slices.BoolInSlice(results, false)) {
 				matches++
 
+				blockedAMs := map[string]bool{}
+				for _, am := range alert.Alertmanager {
+					for _, filter := range matchFilters {
+						if filter.GetIsValid() && filter.GetIsAlertmanagerFilter() && !filter.MatchAlertmanager(&am) {
+							blockedAMs[am.Name] = true
+						}
+					}
+				}
+				if len(blockedAMs) > 0 {
+					ams := []models.AlertmanagerInstance{}
+					for _, am := range alert.Alertmanager {
+						_, found := blockedAMs[am.Name]
+						if !found {
+							ams = append(ams, am)
+						}
+					}
+					alert.Alertmanager = ams
+				}
+
 				alertGridLabelValues := map[string]bool{}
 				switch gridLabel {
 				case "@receiver":

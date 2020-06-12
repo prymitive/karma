@@ -28,8 +28,17 @@ func (filter *alertmanagerInstanceFilter) Match(alert *models.Alert, matches int
 	panic(e)
 }
 
+func (filter *alertmanagerInstanceFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
+	if filter.IsValid {
+		return filter.Matcher.Compare(am.Name, filter.Value)
+	}
+	e := fmt.Sprintf("MatchAlertmanager() called on invalid filter %#v", filter)
+	panic(e)
+}
+
 func newAlertmanagerInstanceFilter() FilterT {
 	f := alertmanagerInstanceFilter{}
+	f.IsAlertmanagerFilter = true
 	return &f
 }
 

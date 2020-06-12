@@ -12,22 +12,25 @@ import (
 type FilterT interface {
 	init(name string, matcher *matcherT, rawText string, isValid bool, value string)
 	Match(alert *models.Alert, matches int) bool
+	MatchAlertmanager(am *models.AlertmanagerInstance) bool
 	GetRawText() string
 	GetHits() int
 	GetIsValid() bool
 	GetName() string
 	GetMatcher() string
 	GetValue() string
+	GetIsAlertmanagerFilter() bool
 }
 
 type alertFilter struct {
 	FilterT
-	Matched string
-	Matcher matcherT
-	RawText string
-	Value   interface{}
-	IsValid bool
-	Hits    int
+	Matched              string
+	Matcher              matcherT
+	RawText              string
+	Value                interface{}
+	IsValid              bool
+	Hits                 int
+	IsAlertmanagerFilter bool
 }
 
 func (filter *alertFilter) init(name string, matcher *matcherT, rawText string, isValid bool, value string) {
@@ -65,6 +68,10 @@ func (filter *alertFilter) GetMatcher() string {
 
 func (filter *alertFilter) GetValue() string {
 	return fmt.Sprintf("%s", filter.Value)
+}
+
+func (filter *alertFilter) GetIsAlertmanagerFilter() bool {
+	return filter.IsAlertmanagerFilter
 }
 
 type newFilterFactory func() FilterT
