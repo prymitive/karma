@@ -38,7 +38,15 @@ const Alert = ({
   ];
 
   const silences = {};
+  let clusters = [];
+  let isInhibited = false;
   for (const am of alert.alertmanager) {
+    if (!clusters.includes(am.cluster)) {
+      clusters.push(am.cluster);
+    }
+    if (am.inhibitedBy.length > 0) {
+      isInhibited = true;
+    }
     if (!silences[am.cluster]) {
       silences[am.cluster] = {
         alertmanager: am,
@@ -79,9 +87,7 @@ const Alert = ({
         silenceFormStore={silenceFormStore}
         setIsMenuOpen={setIsMenuOpen}
       />
-      {alert.alertmanager
-        .map((am) => am.inhibitedBy.length)
-        .reduce((sum, x) => sum + x) > 0 ? (
+      {isInhibited ? (
         <TooltipWrapper title="This alert is inhibited by other alerts">
           <span className="badge badge-light components-label">
             <FontAwesomeIcon className="text-success" icon={faVolumeMute} />
@@ -97,21 +103,14 @@ const Alert = ({
         />
       ))}
       {showAlertmanagers
-        ? alert.alertmanager
-            .map((am) => am.cluster)
-            .reduce(
-              (unique, item) =>
-                unique.includes(item) ? unique : [...unique, item],
-              []
-            )
-            .map((cluster) => (
-              <FilteringLabel
-                key={cluster}
-                name={StaticLabels.AlertmanagerCluster}
-                value={cluster}
-                alertStore={alertStore}
-              />
-            ))
+        ? clusters.map((cluster) => (
+            <FilteringLabel
+              key={cluster}
+              name={StaticLabels.AlertmanagerCluster}
+              value={cluster}
+              alertStore={alertStore}
+            />
+          ))
         : null}
       {showReceiver ? (
         <FilteringLabel
