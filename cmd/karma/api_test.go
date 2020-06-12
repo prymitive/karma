@@ -1024,9 +1024,9 @@ func TestVerifyAllGroups(t *testing.T) {
 			}
 		}
 
-		am, foundAM := ur.Silences["843c4a11660fe38ea61e6960a29d4f4796da6488"]
+		am, foundAM := ur.Silences["default"]
 		if !foundAM {
-			t.Errorf("[%s] Alertmanager cluster '843c4a11660fe38ea61e6960a29d4f4796da6488' (default) missing from silences", version)
+			t.Errorf("[%s] Alertmanager cluster 'default' (default) missing from silences", version)
 		} else if len(am) == 0 {
 			t.Errorf("[%s] Silences mismatch, expected >0 but got %d", version, len(am))
 		}

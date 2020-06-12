@@ -478,18 +478,6 @@ func (am *Alertmanager) ClusterMemberNames() []string {
 	return members
 }
 
-// ClusterID returns the ID (sha1) of the cluster this Alertmanager instance
-// belongs to
-func (am *Alertmanager) ClusterID() string {
-	members := am.ClusterMemberNames()
-	id, err := slices.StringSliceToSHA1(members)
-	if err != nil {
-		log.Errorf("slices.StringSliceToSHA1 error: %s", err)
-		return am.Name
-	}
-	return id
-}
-
 func (am *Alertmanager) ClusterName() string {
 	am.lock.RLock()
 	if am.clusterName != "" {

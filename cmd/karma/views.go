@@ -217,7 +217,7 @@ func alerts(c *gin.Context) {
 	amNameToCluster := map[string]string{}
 	silences := map[string]map[string]models.Silence{}
 	for _, am := range alertmanager.GetAlertmanagers() {
-		key := am.ClusterID()
+		key := am.ClusterName()
 		amNameToCluster[am.Name] = key
 		_, found := silences[key]
 		if !found {
@@ -253,30 +253,23 @@ func alerts(c *gin.Context) {
 				// only for alerts left after filtering
 				alert.UpdateFingerprints()
 
-				var alertGridLabelValues []string
+				alertGridLabelValues := map[string]bool{}
 				switch gridLabel {
 				case "@receiver":
-					alertGridLabelValues = []string{alert.Receiver}
+					alertGridLabelValues[alert.Receiver] = true
 				case "@alertmanager":
-					alertGridLabelValues = make([]string, 0, len(alert.Alertmanager))
 					for _, am := range alert.Alertmanager {
-						alertGridLabelValues = append(alertGridLabelValues, am.Name)
+						alertGridLabelValues[am.Name] = true
 					}
 				case "@cluster":
-					alertGridLabelValues = make([]string, 0, len(alert.Alertmanager))
 					for _, am := range alert.Alertmanager {
-						for _, upstream := range upstreams.Instances {
-							if am.Name == upstream.Name {
-								alertGridLabelValues = append(alertGridLabelValues, upstream.Cluster)
-							}
-							break
-						}
+						alertGridLabelValues[am.Cluster] = true
 					}
 				default:
-					alertGridLabelValues = []string{alert.Labels[gridLabel]}
+					alertGridLabelValues[alert.Labels[gridLabel]] = true
 				}
 
-				for _, alertGridLabelValue := range alertGridLabelValues {
+				for alertGridLabelValue, _ := range alertGridLabelValues {
 					agCopy, found := perGridAlertGroup[alertGridLabelValue]
 					if !found {
 						agCopy = &models.AlertGroup{
