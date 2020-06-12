@@ -57,8 +57,8 @@ func newSilenceAuthorFilter() FilterT {
 func silenceAuthorAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
 	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
-		if alert.IsSilenced() {
-			for _, silenceID := range alert.SilencedBy {
+		for _, am := range alert.Alertmanager {
+			for _, silenceID := range am.SilencedBy {
 				for _, am := range alert.Alertmanager {
 					silence, found := am.Silences[silenceID]
 					if found {

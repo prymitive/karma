@@ -66,18 +66,3 @@ func (a *Alert) LabelsFingerprint() string {
 func (a *Alert) ContentFingerprint() string {
 	return a.contentFP
 }
-
-// IsSilenced will return true if alert should be considered silenced
-func (a *Alert) IsSilenced() bool {
-	return (a.State == AlertStateSuppressed && len(a.SilencedBy) > 0)
-}
-
-// IsInhibited will return true if alert should be considered silenced
-func (a *Alert) IsInhibited() bool {
-	return (a.State == AlertStateSuppressed && len(a.InhibitedBy) > 0)
-}
-
-// IsActive will return true if alert is not suppressed in any way
-func (a *Alert) IsActive() bool {
-	return (a.State == AlertStateActive)
-}
