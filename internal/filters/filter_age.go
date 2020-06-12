@@ -44,8 +44,14 @@ func (filter *ageFilter) Match(alert *models.Alert, matches int) bool {
 	panic(e)
 }
 
+func (filter *ageFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
+	ts := time.Now().Add(filter.Value.(time.Duration))
+	return filter.Matcher.Compare(int(ts.Unix()), int(am.StartsAt.Unix()))
+}
+
 func newAgeFilter() FilterT {
 	f := ageFilter{}
+	f.IsAlertmanagerFilter = true
 	return &f
 }
 
