@@ -27,7 +27,12 @@ func (filter *stateFilter) init(name string, matcher *matcherT, rawText string, 
 
 func (filter *stateFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
-		isMatch := filter.Matcher.Compare(alert.State, filter.Value)
+		var isMatch bool
+		for _, am := range alert.Alertmanager {
+			if filter.Matcher.Compare(am.State, filter.Value) {
+				isMatch = true
+			}
+		}
 		if isMatch {
 			filter.Hits++
 		}

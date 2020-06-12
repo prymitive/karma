@@ -159,10 +159,12 @@ var tests = []filterTest{
 		IsMatch:    false,
 	},
 	{
-		Expression: "@silence_id!=abcdef",
-		IsValid:    true,
-		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
-		IsMatch:    true,
+		Expression:          "@silence_id!=abcdef",
+		IsValid:             true,
+		Alert:               models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
+		Silence:             models.Silence{ID: "1"},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression: "@silence_id=~cde",
@@ -189,7 +191,6 @@ var tests = []filterTest{
 		Expression:          "@silence_ticket=1",
 		IsValid:             true,
 		Alert:               models.Alert{State: "active", SilencedBy: []string{}},
-		Silence:             models.Silence{ID: "1", TicketID: "1"},
 		IsMatch:             false,
 		IsAlertmanagerMatch: true,
 	},
@@ -272,7 +273,6 @@ var tests = []filterTest{
 		Expression: "@silence_author=john",
 		IsValid:    true,
 		Alert:      models.Alert{State: "active", SilencedBy: []string{}},
-		Silence:    models.Silence{ID: "1", CreatedBy: "john"},
 		IsMatch:    false,
 	},
 	{

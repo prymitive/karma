@@ -14,20 +14,16 @@ type silenceTicketFilter struct {
 func (filter *silenceTicketFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
 		var isMatch bool
-		if alert.IsSilenced() {
-			for _, silenceID := range alert.SilencedBy {
-				for _, am := range alert.Alertmanager {
-					silence, found := am.Silences[silenceID]
-					if found {
-						m := filter.Matcher.Compare(silence.TicketID, filter.Value)
-						if m {
-							isMatch = m
-						}
+		for _, am := range alert.Alertmanager {
+			for _, silenceID := range am.SilencedBy {
+				silence, found := am.Silences[silenceID]
+				if found {
+					m := filter.Matcher.Compare(silence.TicketID, filter.Value)
+					if m {
+						isMatch = m
 					}
 				}
 			}
-		} else {
-			isMatch = filter.Matcher.Compare("", filter.Value)
 		}
 		if isMatch {
 			filter.Hits++
