@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"math"
 	"sort"
-	"strings"
 
 	"github.com/gin-gonic/gin"
 	"vbom.ml/util/sortorder"
@@ -13,7 +12,6 @@ import (
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
-	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/uri"
 )
 
@@ -88,23 +86,6 @@ func countersToLabelStats(counters map[string]map[string]int) models.LabelNameSt
 	return data
 }
 
-func clusterMembersFromConfig(am *alertmanager.Alertmanager) []string {
-	members := []string{}
-
-	upstreams := alertmanager.GetAlertmanagers()
-	for _, upstream := range upstreams {
-		if upstream.Cluster == am.Cluster {
-			members = append(members, upstream.Name)
-		}
-	}
-
-	return members
-}
-
-func clusterMembersFromAPI(am *alertmanager.Alertmanager) []string {
-	return am.ClusterMemberNames()
-}
-
 func getUpstreams() models.AlertmanagerAPISummary {
 	summary := models.AlertmanagerAPISummary{}
 
@@ -112,21 +93,7 @@ func getUpstreams() models.AlertmanagerAPISummary {
 	upstreams := alertmanager.GetAlertmanagers()
 	for _, upstream := range upstreams {
 		members := upstream.ClusterMemberNames()
-
-		var clusterName string
-		if upstream.Cluster != "" {
-			configPeers := clusterMembersFromConfig(upstream)
-			apiPeers := clusterMembersFromAPI(upstream)
-			missing, extra := slices.StringSliceDiff(configPeers, apiPeers)
-
-			if len(missing) == 0 && len(extra) == 0 {
-				clusterName = upstream.Cluster
-			} else {
-				clusterName = fmt.Sprintf("%s @ %s", strings.Join(members, " | "), upstream.Cluster)
-			}
-		} else {
-			clusterName = strings.Join(members, " | ")
-		}
+		clusterName := upstream.ClusterName()
 
 		if _, found := clusters[clusterName]; !found {
 			clusters[clusterName] = members

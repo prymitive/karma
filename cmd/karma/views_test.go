@@ -278,6 +278,13 @@ func TestGrids(t *testing.T) {
 			},
 		},
 		{
+			gridLabel:    "@cluster",
+			requestQuery: "",
+			grids: []testCaseGridT{
+				{labelValue: "default", alertGroupCount: 10},
+			},
+		},
+		{
 			gridLabel:    "@receiver",
 			requestQuery: "",
 			grids: []testCaseGridT{
@@ -1426,7 +1433,7 @@ func TestUpstreamStatus(t *testing.T) {
 						CORSCredentials: "omit",
 						Error:           "",
 						Version:         "0.20.0",
-						Cluster:         "ha1 @ Broken HA",
+						Cluster:         "ha1",
 						ClusterMembers:  []string{"ha1"},
 					},
 					{
@@ -1438,13 +1445,13 @@ func TestUpstreamStatus(t *testing.T) {
 						CORSCredentials: "omit",
 						Error:           "",
 						Version:         "0.19.0",
-						Cluster:         "ha2 @ Broken HA",
+						Cluster:         "ha2",
 						ClusterMembers:  []string{"ha2"},
 					},
 				},
 				Clusters: map[string][]string{
-					"ha1 @ Broken HA": {"ha1"},
-					"ha2 @ Broken HA": {"ha2"},
+					"ha1": {"ha1"},
+					"ha2": {"ha2"},
 				},
 			},
 		},
