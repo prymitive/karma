@@ -244,11 +244,6 @@ func alerts(c *gin.Context) {
 			}
 			if !validFilters || (slices.BoolInSlice(results, true) && !slices.BoolInSlice(results, false)) {
 				matches++
-				// we need to update fingerprints since we've modified some fields in dedup
-				// and agCopy.ContentFingerprint() depends on per alert fingerprint
-				// we update it here rather than in dedup since here we can apply it
-				// only for alerts left after filtering
-				alert.UpdateFingerprints()
 
 				alertGridLabelValues := map[string]bool{}
 				switch gridLabel {
@@ -267,6 +262,14 @@ func alerts(c *gin.Context) {
 				}
 
 				for alertGridLabelValue, _ := range alertGridLabelValues {
+					alert := models.Alert(alert)
+
+					// we need to update fingerprints since we've modified some fields in dedup
+					// and agCopy.ContentFingerprint() depends on per alert fingerprint
+					// we update it here rather than in dedup since here we can apply it
+					// only for alerts left after filtering
+					alert.UpdateFingerprints()
+
 					agCopy, found := perGridAlertGroup[alertGridLabelValue]
 					if !found {
 						agCopy = &models.AlertGroup{
@@ -282,6 +285,43 @@ func alerts(c *gin.Context) {
 							agCopy.StateCount[s] = 0
 						}
 						perGridAlertGroup[alertGridLabelValue] = agCopy
+					}
+
+					stateCount := map[string]int{}
+					for _, s := range models.AlertStateList {
+						stateCount[s] = 0
+					}
+					switch gridLabel {
+					case "@alertmanager":
+						ams := []models.AlertmanagerInstance{}
+						for _, am := range alert.Alertmanager {
+							if am.Name == alertGridLabelValue {
+								ams = append(ams, am)
+								stateCount[am.State]++
+							}
+						}
+						alert.Alertmanager = ams
+					case "@cluster":
+						ams := []models.AlertmanagerInstance{}
+						for _, am := range alert.Alertmanager {
+							if am.Cluster == alertGridLabelValue {
+								ams = append(ams, am)
+								stateCount[am.State]++
+							}
+						}
+						alert.Alertmanager = ams
+					default:
+						for _, am := range alert.Alertmanager {
+							stateCount[am.State]++
+						}
+					}
+
+					if stateCount[models.AlertStateActive] > 0 {
+						alert.State = models.AlertStateActive
+					} else if stateCount[models.AlertStateSuppressed] > 0 {
+						alert.State = models.AlertStateSuppressed
+					} else {
+						alert.State = models.AlertStateUnprocessed
 					}
 
 					agCopy.Alerts = append(agCopy.Alerts, alert)
