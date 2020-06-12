@@ -173,6 +173,25 @@ const Help = ({ defaultIsOpen }) => (
           </QueryHelp>
 
           <QueryHelp
+            title="Match alerts based on the Alertmanager cluster name"
+            operators={["=", "!=", "=~", "!~"]}
+          >
+            <FilterExample example="@cluster=production">
+              Match alerts collected from Alertmanager instances that are
+              members of the <code>prod</code> cluster.
+            </FilterExample>
+            <FilterExample example="@cluster!=staging">
+              Match alerts collected from Alertmanager instances that are not
+              members of the <code>staging</code> cluster.
+            </FilterExample>
+            <FilterExample example="@cluster=~prod">
+              Match alerts collected from Alertmanager instances that are
+              members of any cluster with name matching regular expression{" "}
+              <code>/.*prod.*/</code>.
+            </FilterExample>
+          </QueryHelp>
+
+          <QueryHelp
             title="Match alerts based on the receiver name"
             operators={["=", "!=", "=~", "!~"]}
           >
