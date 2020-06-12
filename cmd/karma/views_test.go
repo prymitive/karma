@@ -1011,6 +1011,7 @@ func TestUpstreamStatus(t *testing.T) {
 					CORS: config.AlertmanagerCORS{
 						Credentials: "include",
 					},
+					Timeout: time.Second * 10,
 				},
 			},
 			status: models.AlertmanagerAPISummary{
@@ -1132,6 +1133,7 @@ func TestUpstreamStatus(t *testing.T) {
 					CORS: config.AlertmanagerCORS{
 						Credentials: "omit",
 					},
+					Timeout: time.Second * 10,
 				},
 				{
 					Cluster:  "HA",
@@ -1143,6 +1145,7 @@ func TestUpstreamStatus(t *testing.T) {
 					CORS: config.AlertmanagerCORS{
 						Credentials: "omit",
 					},
+					Timeout: time.Second * 10,
 				},
 			},
 			status: models.AlertmanagerAPISummary{
@@ -1272,6 +1275,7 @@ func TestUpstreamStatus(t *testing.T) {
 					CORS: config.AlertmanagerCORS{
 						Credentials: "same-site",
 					},
+					Timeout: time.Second * 10,
 				},
 				{
 					Name:     "ha2",
@@ -1282,6 +1286,7 @@ func TestUpstreamStatus(t *testing.T) {
 					CORS: config.AlertmanagerCORS{
 						Credentials: "same-site",
 					},
+					Timeout: time.Second * 10,
 				},
 			},
 			status: models.AlertmanagerAPISummary{
@@ -1404,6 +1409,7 @@ func TestUpstreamStatus(t *testing.T) {
 					CORS: config.AlertmanagerCORS{
 						Credentials: "omit",
 					},
+					Timeout: time.Second * 10,
 				},
 				{
 					Cluster:  "Broken HA",
@@ -1415,6 +1421,7 @@ func TestUpstreamStatus(t *testing.T) {
 					CORS: config.AlertmanagerCORS{
 						Credentials: "omit",
 					},
+					Timeout: time.Second * 10,
 				},
 			},
 			status: models.AlertmanagerAPISummary{
@@ -1537,6 +1544,7 @@ func TestUpstreamStatus(t *testing.T) {
 					CORS: config.AlertmanagerCORS{
 						Credentials: "omit",
 					},
+					Timeout: time.Second * 10,
 				},
 				{
 					Name:     "ha2",
@@ -1547,6 +1555,7 @@ func TestUpstreamStatus(t *testing.T) {
 					CORS: config.AlertmanagerCORS{
 						Credentials: "omit",
 					},
+					Timeout: time.Second * 10,
 				},
 			},
 			status: models.AlertmanagerAPISummary{
