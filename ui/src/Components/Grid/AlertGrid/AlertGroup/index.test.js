@@ -156,7 +156,18 @@ describe("<AlertGroup />", () => {
     expect(labels.at(2).text()).toBe("@receiver: by-name");
   });
 
-  it("doesn't render alertmanager labels in footer when they are unique", () => {
+  it("doesn't render @cluster labels with empty alertmanager array", () => {
+    MockAlerts(2);
+    for (let i = 0; i < group.alerts.length; i++) {
+      group.alerts[i].alertmanager = [];
+    }
+    const tree = MountedAlertGroup(jest.fn(), true).find("AlertGroup");
+    const labels = tree.find("GroupFooter").find("FilteringLabel");
+    expect(labels).toHaveLength(1);
+    expect(labels.at(0).text()).toBe("@receiver: by-name");
+  });
+
+  it("doesn't render @cluster labels in footer when they are unique", () => {
     MockAlerts(5);
     for (let i = 0; i < group.alerts.length; i++) {
       group.alerts[i].alertmanager[0].name = `fakeAlertmanager${i}`;
