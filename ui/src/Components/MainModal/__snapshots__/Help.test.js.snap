@@ -427,6 +427,73 @@ exports[`<Help /> matches snapshot 1`] = `
           </ul>
         </dd>
         <dt>
+          Match alerts based on the Alertmanager cluster name
+        </dt>
+        <dd class=\\"mb-5\\">
+          <div>
+            Supported operators:
+            <kbd class=\\"mr-1\\">
+              =
+            </kbd>
+            <kbd class=\\"mr-1\\">
+              !=
+            </kbd>
+            <kbd class=\\"mr-1\\">
+              =~
+            </kbd>
+            <kbd class=\\"mr-1\\">
+              !~
+            </kbd>
+          </div>
+          <div>
+            Examples:
+          </div>
+          <ul>
+            <li>
+              <div>
+                <span class=\\"badge badge-info\\">
+                  @cluster=production
+                </span>
+              </div>
+              <div>
+                Match alerts collected from Alertmanager instances that are members of the
+                <code>
+                  prod
+                </code>
+                cluster.
+              </div>
+            </li>
+            <li>
+              <div>
+                <span class=\\"badge badge-info\\">
+                  @cluster!=staging
+                </span>
+              </div>
+              <div>
+                Match alerts collected from Alertmanager instances that are not members of the
+                <code>
+                  staging
+                </code>
+                cluster.
+              </div>
+            </li>
+            <li>
+              <div>
+                <span class=\\"badge badge-info\\">
+                  @cluster=~prod
+                </span>
+              </div>
+              <div>
+                Match alerts collected from Alertmanager instances that are members of any cluster with name matching regular expression
+                <code>
+                  /.*prod.*/
+                </code>
+                .
+              </div>
+            </li>
+          </ul>
+        </dd>
+        <dt>
           Match alerts based on the receiver name
         </dt>
         <dd class=\\"mb-5\\">
