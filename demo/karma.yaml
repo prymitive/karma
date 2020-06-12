@@ -18,6 +18,12 @@ alertmanager:
       proxy: true
       cors:
         credentials: same-origin
+    - name: single
+      uri: "http://localhost:9095"
+      timeout: 10s
+      proxy: true
+      cors:
+        credentials: same-origin
 alertAcknowledgement:
   enabled: true
   duration: 15m0s
@@ -31,6 +37,7 @@ custom:
 debug: true
 filters:
   default:
+    - "@cluster=HA"
     - "@receiver=by-cluster-service"
 grid:
   sorting:
@@ -56,9 +63,14 @@ labels:
     unique:
       - cluster
       - instance
-      - @receiver
-      - @cluster
+      - "@receiver"
+      - "@cluster"
     custom:
+      "@cluster":
+        - value: HA
+          color: "#70e1e1"
+        - value: single
+          color: "#ff6347"
       region:
         - value_re: ".*"
           color: "#736598"
