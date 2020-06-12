@@ -1207,6 +1207,15 @@ var sortTests = []sortTest{
 		expectedLabel:      "job",
 		expectedValues:     []string{"node_exporter", "node_exporter", "node_exporter", "node_ping", "node_ping", "node_ping"},
 	},
+	{
+		defaultSortReverse: false,
+		filter:             "q=@alertmanager!=default",
+		sortOrder:          "label",
+		sortLabel:          "job",
+		sortReverse:        "2",
+		expectedLabel:      "job",
+		expectedValues:     []string{},
+	},
 }
 
 func TestSortOrder(t *testing.T) {
@@ -1248,24 +1257,30 @@ func TestSortOrder(t *testing.T) {
 					t.Errorf("Failed to unmarshal response: %s", err)
 				}
 
-				values := []string{}
-				for _, ag := range ur.Grids[0].AlertGroups {
-					v := ag.Labels[testCase.expectedLabel]
-					if v == "" {
-						v = ag.Shared.Labels[testCase.expectedLabel]
+				if len(ur.Grids) == 0 {
+					if len(testCase.expectedValues) > 0 {
+						t.Errorf("Got empty grids but expected %d groups", len(testCase.expectedValues))
 					}
-					if v != "" {
-						values = append(values, v)
-					} else {
-						for _, alert := range ag.Alerts {
-							v = alert.Labels[testCase.expectedLabel]
+				} else {
+					values := []string{}
+					for _, ag := range ur.Grids[0].AlertGroups {
+						v := ag.Labels[testCase.expectedLabel]
+						if v == "" {
+							v = ag.Shared.Labels[testCase.expectedLabel]
+						}
+						if v != "" {
 							values = append(values, v)
+						} else {
+							for _, alert := range ag.Alerts {
+								v = alert.Labels[testCase.expectedLabel]
+								values = append(values, v)
+							}
 						}
 					}
-				}
 
-				if diff := cmp.Diff(testCase.expectedValues, values); diff != "" {
-					t.Errorf("Incorrectly sorted values (-want +got):\n%s", diff)
+					if diff := cmp.Diff(testCase.expectedValues, values); diff != "" {
+						t.Errorf("Incorrectly sorted values (-want +got):\n%s", diff)
+					}
 				}
 			}
 		}

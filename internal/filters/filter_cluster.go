@@ -29,11 +29,8 @@ func (filter *alertmanagerClusterFilter) Match(alert *models.Alert, matches int)
 }
 
 func (filter *alertmanagerClusterFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
-	if filter.IsValid {
-		return filter.Matcher.Compare(am.Cluster, filter.Value)
-	}
-	e := fmt.Sprintf("MatchAlertmanager() called on invalid filter %#v", filter)
-	panic(e)
+	return filter.Matcher.Compare(am.Cluster, filter.Value)
+
 }
 
 func newAlertmanagerClusterFilter() FilterT {

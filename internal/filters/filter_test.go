@@ -13,11 +13,13 @@ import (
 )
 
 type filterTest struct {
-	Expression string
-	IsValid    bool
-	IsMatch    bool
-	Alert      models.Alert
-	Silence    models.Silence
+	Expression           string
+	IsValid              bool
+	IsMatch              bool
+	IsAlertmanagerFilter bool
+	IsAlertmanagerMatch  bool
+	Alert                models.Alert
+	Silence              models.Silence
 }
 
 var tests = []filterTest{
@@ -544,40 +546,54 @@ var tests = []filterTest{
 		IsValid:    false,
 	},
 	{
-		Expression: "@alertmanager=test",
-		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    true,
+		Expression: "@alertmanager!!",
+		IsValid:    false,
 	},
 	{
-		Expression: "@alertmanager=abc",
-		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    false,
+		Expression:           "@alertmanager=test",
+		IsAlertmanagerFilter: true,
+		IsValid:              true,
+		Alert:                models.Alert{},
+		IsMatch:              true,
+		IsAlertmanagerMatch:  true,
 	},
 	{
-		Expression: "@alertmanager=~tes",
-		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    true,
+		Expression:           "@alertmanager=abc",
+		IsAlertmanagerFilter: true,
+		IsValid:              true,
+		Alert:                models.Alert{},
+		IsMatch:              false,
 	},
 	{
-		Expression: "@alertmanager=~000",
-		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    false,
+		Expression:           "@alertmanager=~tes",
+		IsAlertmanagerFilter: true,
+		IsValid:              true,
+		Alert:                models.Alert{},
+		IsMatch:              true,
+		IsAlertmanagerMatch:  true,
 	},
 	{
-		Expression: "@alertmanager!=tes",
-		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    true,
+		Expression:           "@alertmanager=~000",
+		IsAlertmanagerFilter: true,
+		IsValid:              true,
+		Alert:                models.Alert{},
+		IsMatch:              false,
 	},
 	{
-		Expression: "@alertmanager!~abc",
-		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    true,
+		Expression:           "@alertmanager!=tes",
+		IsAlertmanagerFilter: true,
+		IsValid:              true,
+		Alert:                models.Alert{},
+		IsMatch:              true,
+		IsAlertmanagerMatch:  true,
+	},
+	{
+		Expression:           "@alertmanager!~abc",
+		IsAlertmanagerFilter: true,
+		IsValid:              true,
+		Alert:                models.Alert{},
+		IsMatch:              true,
+		IsAlertmanagerMatch:  true,
 	},
 	{
 		Expression: "@receiver=by-name",
@@ -588,26 +604,35 @@ var tests = []filterTest{
 		IsMatch: true,
 	},
 	{
-		Expression: "@cluster=foo",
-		IsValid:    true,
-		Alert:      models.Alert{},
-		IsMatch:    false,
+		Expression:           "@cluster=foo",
+		IsAlertmanagerFilter: true,
+		IsValid:              true,
+		Alert:                models.Alert{},
+		IsMatch:              false,
 	},
 	{
-		Expression: "@cluster=HA",
-		IsValid:    true,
+		Expression:           "@cluster=HA",
+		IsAlertmanagerFilter: true,
+		IsValid:              true,
 		Alert: models.Alert{
 			Receiver: "by-name",
 		},
-		IsMatch: true,
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
-		Expression: "@cluster!=foo",
-		IsValid:    true,
+		Expression:           "@cluster!=foo",
+		IsAlertmanagerFilter: true,
+		IsValid:              true,
 		Alert: models.Alert{
 			Receiver: "by-name",
 		},
-		IsMatch: true,
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
+	},
+	{
+		Expression: "@cluster=",
+		IsValid:    false,
 	},
 	{
 		Expression: "@receiver=by-name",
@@ -659,6 +684,9 @@ func TestFilters(t *testing.T) {
 		if f.GetIsValid() != ft.IsValid {
 			t.Errorf("[%s] GetIsValid() returned %#v while %#v was expected", ft.Expression, f.GetIsValid(), ft.IsValid)
 		}
+		if f.GetIsAlertmanagerFilter() != ft.IsAlertmanagerFilter {
+			t.Errorf("[%s] GetIsAlertmanagerFilter() returned %#v while %#v was expected", ft.Expression, f.GetIsAlertmanagerFilter(), ft.IsAlertmanagerFilter)
+		}
 		if f.GetIsValid() {
 			m := f.Match(&alert, 0)
 			if m != ft.IsMatch {
@@ -674,6 +702,18 @@ func TestFilters(t *testing.T) {
 			}
 			if f.GetRawText() != ft.Expression {
 				t.Errorf("[%s] GetRawText() returned %#v != %s passed as the expression", ft.Expression, f.GetRawText(), ft.Expression)
+			}
+
+			if f.GetIsAlertmanagerFilter() {
+				for _, am := range alert.Alertmanager {
+					m := f.MatchAlertmanager(&am)
+					if m != ft.IsAlertmanagerMatch {
+						j, _ := json.Marshal(ft.Alert)
+						s, _ := json.Marshal(ft.Silence)
+						t.Errorf("[%s] MatchAlertmanager() returned %#v while %#v was expected\nalert used: %s\nsilence used: %s", ft.Expression, m, ft.IsAlertmanagerMatch, j, s)
+
+					}
+				}
 			}
 		}
 		if !f.GetIsValid() {
