@@ -16,6 +16,7 @@ const valueToOption = (v) => ({ label: v ? v : disabledLabel, value: v });
 const staticValues = [
   { label: disabledLabel, value: "" },
   { label: "@alertmanager", value: "@alertmanager" },
+  { label: "@cluster", value: "@cluster" },
   { label: "@receiver", value: "@receiver" },
 ];
 
