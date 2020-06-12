@@ -97,14 +97,21 @@ const Alert = ({
         />
       ))}
       {showAlertmanagers
-        ? alert.alertmanager.map((am) => (
-            <FilteringLabel
-              key={am.name}
-              name={StaticLabels.AlertManager}
-              value={am.name}
-              alertStore={alertStore}
-            />
-          ))
+        ? alert.alertmanager
+            .map((am) => am.cluster)
+            .reduce(
+              (unique, item) =>
+                unique.includes(item) ? unique : [...unique, item],
+              []
+            )
+            .map((cluster) => (
+              <FilteringLabel
+                key={cluster}
+                name={StaticLabels.AlertmanagerCluster}
+                value={cluster}
+                alertStore={alertStore}
+              />
+            ))
         : null}
       {showReceiver ? (
         <FilteringLabel

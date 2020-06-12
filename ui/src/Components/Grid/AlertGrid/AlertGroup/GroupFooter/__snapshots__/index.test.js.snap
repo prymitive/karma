@@ -85,7 +85,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
   >
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
-        @alertmanager:
+        @cluster:
       </span>
       <span class=\\"components-label-value\\">
         default
@@ -214,7 +214,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
   >
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
-        @alertmanager:
+        @cluster:
       </span>
       <span class=\\"components-label-value\\">
         default
