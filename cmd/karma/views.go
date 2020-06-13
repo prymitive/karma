@@ -579,9 +579,9 @@ func silences(c *gin.Context) {
 	if searchTerm != "" {
 		upstreams := getUpstreams()
 		for _, u := range upstreams.Instances {
-			if strings.ToLower(u.Name) == searchTerm {
+			if strings.ToLower(u.Name) == searchTerm || strings.ToLower(u.Cluster) == searchTerm {
 				if !slices.StringInSlice(clusters, u.Cluster) {
-					clusters = append(clusters, u.Cluster)
+					clusters = append(clusters, strings.ToLower(u.Cluster))
 				}
 			}
 		}
@@ -595,9 +595,9 @@ func silences(c *gin.Context) {
 			isMatch := false
 			if strings.ToLower(silence.Silence.ID) == searchTerm {
 				isMatch = true
-			} else if fmt.Sprintf("@cluster=%s", silence.Cluster) == searchTerm {
+			} else if fmt.Sprintf("@cluster=%s", strings.ToLower(silence.Cluster)) == searchTerm {
 				isMatch = true
-			} else if slices.StringInSlice(clusters, silence.Cluster) {
+			} else if slices.StringInSlice(clusters, strings.ToLower(silence.Cluster)) {
 				isMatch = true
 			} else if strings.Contains(strings.ToLower(silence.Silence.Comment), searchTerm) {
 				isMatch = true
