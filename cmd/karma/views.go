@@ -349,6 +349,16 @@ func alerts(c *gin.Context) {
 
 					agCopy.Alerts = append(agCopy.Alerts, alert)
 
+					if len(upstreams.Clusters) > 1 {
+						clusters := map[string]bool{}
+						for _, am := range alert.Alertmanager {
+							clusters[am.Cluster] = true
+						}
+						for cluster := range clusters {
+							countLabel(counters, "@cluster", cluster)
+						}
+					}
+
 					countLabel(counters, "@state", alert.State)
 
 					countLabel(counters, "@receiver", alert.Receiver)
