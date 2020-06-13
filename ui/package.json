@@ -89,8 +89,7 @@
     "node-sass": "4.14.1",
     "prettier": "2.0.5",
     "puppeteer": "3.3.0",
-    "source-map-explorer": "2.4.2",
-    "storybook-addon-performance": "0.11.0"
+    "source-map-explorer": "2.4.2"
   },
   "browserslist": [
     ">= 1%",
