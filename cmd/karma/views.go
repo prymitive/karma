@@ -633,9 +633,11 @@ func silences(c *gin.Context) {
 	}
 	for _, alertGroup := range alertmanager.DedupAlerts() {
 		for _, alert := range alertGroup.Alerts {
-			for _, sID := range alert.SilencedBy {
-				if _, ok := silenceCounters[sID]; ok {
-					silenceCounters[sID]++
+			for _, am := range alert.Alertmanager {
+				for _, sID := range am.SilencedBy {
+					if _, ok := silenceCounters[sID]; ok {
+						silenceCounters[sID]++
+					}
 				}
 			}
 		}
