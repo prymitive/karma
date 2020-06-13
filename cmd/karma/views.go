@@ -585,6 +585,8 @@ func silences(c *gin.Context) {
 			isMatch := false
 			if strings.ToLower(silence.Silence.ID) == searchTerm {
 				isMatch = true
+			} else if fmt.Sprintf("@cluster=%s", silence.Cluster) == searchTerm {
+				isMatch = true
 			} else if slices.StringInSlice(clusters, silence.Cluster) {
 				isMatch = true
 			} else if strings.Contains(strings.ToLower(silence.Silence.Comment), searchTerm) {

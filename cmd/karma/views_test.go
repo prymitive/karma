@@ -724,6 +724,30 @@ func TestSilences(t *testing.T) {
 			showExpired: "1",
 			results:     []string{},
 		},
+		{
+			searchTerm:  "@cluster=foo",
+			sortReverse: "0",
+			showExpired: "0",
+			results:     []string{},
+		},
+		{
+			searchTerm:  "@cluster=default",
+			sortReverse: "0",
+			showExpired: "0",
+			results:     []string{silenceHostDown, silenceInstance, silenceServer7},
+		},
+		{
+			searchTerm:  "@cluster=default",
+			sortReverse: "0",
+			showExpired: "1",
+			results:     []string{silenceHostDown, silenceInstance, silenceServer7},
+		},
+		{
+			searchTerm:  "@cluster=default",
+			sortReverse: "1",
+			showExpired: "1",
+			results:     []string{silenceHostDown, silenceInstance, silenceServer7},
+		},
 	}
 
 	mockConfig()
@@ -753,7 +777,7 @@ func TestSilences(t *testing.T) {
 				}
 				sort.Strings(results) // can't rely on API order since it's sorted based on timestamps, resort
 				if diff := cmp.Diff(testCase.results, results); diff != "" {
-					t.Errorf("Wrong silences returned (-want +got):\n%s", diff)
+					t.Errorf("Wrong silences returned for '%s' (-want +got):\n%s", uri, diff)
 				}
 			}
 		}
