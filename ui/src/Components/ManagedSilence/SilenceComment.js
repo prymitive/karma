@@ -39,10 +39,6 @@ const SilenceComment = ({
     silence.comment
   );
 
-  const alertmanagers = alertStore.data.upstreams.instances.filter(
-    (u) => u.cluster === cluster
-  );
-
   return (
     <React.Fragment>
       <div className="d-flex flex-row">
@@ -65,15 +61,11 @@ const SilenceComment = ({
               &mdash; {silence.createdBy}
             </span>
             {collapsed &&
-              Object.keys(alertStore.data.upstreams.clusters).length > 1 &&
-              alertmanagers.map((alertmanager) => (
-                <span
-                  key={alertmanager.name}
-                  className="badge badge-secondary mx-1 align-text-bottom p-1"
-                >
-                  {alertmanager.name}
-                </span>
-              ))}
+            Object.keys(alertStore.data.upstreams.clusters).length > 1 ? (
+              <span className="badge badge-secondary mx-1 align-text-bottom p-1">
+                {cluster}
+              </span>
+            ) : null}
             {collapsed ? <SilenceProgress silence={silence} /> : null}
           </div>
         </div>

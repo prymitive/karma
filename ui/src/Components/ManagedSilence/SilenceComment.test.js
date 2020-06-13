@@ -22,12 +22,12 @@ afterEach(() => {
 
 const CollapseMock = jest.fn();
 
-const MountedSilenceComment = (collapsed) => {
+const MountedSilenceComment = (collapsed, cluster) => {
   return mount(
     <SilenceComment
       alertStore={alertStore}
       alertCount={123}
-      cluster="default"
+      cluster={cluster || "default"}
       silence={silence}
       collapsed={collapsed}
       collapseToggle={CollapseMock}
@@ -37,43 +37,43 @@ const MountedSilenceComment = (collapsed) => {
 
 const MockMultipleClusters = () => {
   alertStore.data.upstreams = {
-    clusters: { default: ["default", "fallback"], second: ["second"] },
+    clusters: { ha: ["ha1", "ha2"], single: ["single"] },
     instances: [
       {
-        name: "default",
-        uri: "http://am1.example.com",
-        publicURI: "http://am1.example.com",
+        name: "ha1",
+        uri: "http://ha1.example.com",
+        publicURI: "http://ha1.example.com",
         readonly: false,
         headers: {},
         corsCredentials: "include",
         error: "",
         version: "0.17.0",
-        cluster: "default",
-        clusterMembers: ["default", "fallback"],
+        cluster: "ha",
+        clusterMembers: ["ha1", "ha2"],
       },
       {
-        name: "fallback",
-        uri: "http://am2.example.com",
-        publicURI: "http://am2.example.com",
+        name: "ha2",
+        uri: "http://ha2.example.com",
+        publicURI: "http://ha2.example.com",
         readonly: false,
         headers: {},
         corsCredentials: "include",
         error: "",
         version: "0.17.0",
-        cluster: "default",
-        clusterMembers: ["default", "fallback"],
+        cluster: "ha",
+        clusterMembers: ["ha1", "ha2"],
       },
       {
-        name: "second",
-        uri: "http://am3.example.com",
-        publicURI: "http://am3.example.com",
+        name: "single",
+        uri: "http://single.example.com",
+        publicURI: "http://single.example.com",
         readonly: false,
         headers: {},
         corsCredentials: "include",
         error: "",
         version: "0.17.0",
-        cluster: "second",
-        clusterMembers: ["second"],
+        cluster: "single",
+        clusterMembers: ["single"],
       },
     ],
   };
@@ -92,13 +92,13 @@ describe("<SilenceComment />", () => {
 
   it("Matches snapshot when collapsed and multiple clusters are present", () => {
     MockMultipleClusters();
-    const tree = MountedSilenceComment(true);
+    const tree = MountedSilenceComment(true, "ha");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("Matches snapshot when collapsed and multiple clusters are present", () => {
     MockMultipleClusters();
-    const tree = MountedSilenceComment(false);
+    const tree = MountedSilenceComment(false, "ha");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
@@ -123,30 +123,29 @@ describe("<SilenceComment />", () => {
     expect(CollapseMock).toHaveBeenCalled();
   });
 
-  it("Doesn't render alertmanager badges when collapsed and only a single cluster is present", () => {
+  it("Doesn't render cluster badges when collapsed and only a single cluster is present", () => {
     const tree = MountedSilenceComment(true);
     const ams = tree.find("span.badge.badge-secondary");
     expect(ams).toHaveLength(0);
   });
 
-  it("Doesn't render alertmanager badges when expanded and only a single cluster is present", () => {
+  it("Doesn't render cluster badges when expanded and only a single cluster is present", () => {
     const tree = MountedSilenceComment(false);
     const ams = tree.find("span.badge.badge-secondary");
     expect(ams).toHaveLength(0);
   });
 
-  it("Renders alertmanager badges when collapsed and multiple clusters are present", () => {
+  it("Renders cluster badge when collapsed and multiple clusters are present", () => {
     MockMultipleClusters();
-    const tree = MountedSilenceComment(true);
+    const tree = MountedSilenceComment(true, "single");
     const ams = tree.find("span.badge.badge-secondary");
-    expect(ams).toHaveLength(2);
-    expect(toDiffableHtml(ams.at(0).html())).toMatch(/default/);
-    expect(toDiffableHtml(ams.at(1).html())).toMatch(/fallback/);
+    expect(ams).toHaveLength(1);
+    expect(toDiffableHtml(ams.at(0).html())).toMatch(/single/);
   });
 
-  it("Doesn't render alertmanager badges when expanded and multiple clusters are present", () => {
+  it("Doesn't render cluster badge when expanded and multiple clusters are present", () => {
     MockMultipleClusters();
-    const tree = MountedSilenceComment(false);
+    const tree = MountedSilenceComment(false, "single");
     const ams = tree.find("span.badge.badge-secondary");
     expect(ams).toHaveLength(0);
   });
