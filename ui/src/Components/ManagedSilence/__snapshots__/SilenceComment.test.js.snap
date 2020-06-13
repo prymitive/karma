@@ -95,10 +95,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
         — me@example.com
       </span>
       <span class=\\"badge badge-secondary mx-1 align-text-bottom p-1\\">
-        default
-      </span>
-      <span class=\\"badge badge-secondary mx-1 align-text-bottom p-1\\">
-        fallback
+        ha
       </span>
       <span class=\\"badge badge-danger align-text-bottom p-1\\">
         Expired
