@@ -69,8 +69,8 @@ const MockGrid = (alertStore) => {
   const silence = MockSilence();
   silence.startsAt = "2018-08-14T12:00:00Z";
   silence.endsAt = "2018-08-14T18:00:00Z";
-  alertStore.data.silences = { am: {} };
-  alertStore.data.silences["am"][silence.id] = silence;
+  alertStore.data.silences = { prod: {} };
+  alertStore.data.silences["prod"][silence.id] = silence;
 
   alertStore.data.colors = {
     group: {
@@ -190,8 +190,8 @@ const MockGrid = (alertStore) => {
       if (group.alerts[j].state === "suppressed") {
         group.alerts[j].alertmanager = [
           {
-            name: "am1",
-            cluster: "am",
+            name: "prod1",
+            cluster: "prod",
             state: "suppressed",
             startsAt: "2018-08-14T17:36:40.017867056Z",
             source: "localhost/prometheus",
@@ -229,20 +229,26 @@ const MockGrid = (alertStore) => {
   alertStore.data.upstreams = {
     counters: { total: 3, healthy: 1, failed: 2 },
     instances: [
-      { name: "am1", uri: "http://localhost:9093", error: "" },
       {
-        name: "am2",
+        name: "prod1",
+        cluster: "prod",
+        uri: "http://localhost:9093",
+        error: "",
+      },
+      {
+        name: "prod2",
+        cluster: "prod",
         uri: "http://localhost:9094",
         error: "Failed to connect to http://localhost:9094",
       },
       {
-        name: "failed",
+        name: "dev",
         uri: "https://am.example.com",
         error:
           "Failed to connect to https://am.example.com veryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrappingveryLongStringToTestTextWrapping",
       },
     ],
-    clusters: { am: ["am1", "am2"], failed: ["failed"] },
+    clusters: { prod: ["prod1", "prod2"], dev: ["dev"] },
   };
   alertStore.data.grids = [
     {
