@@ -181,7 +181,12 @@ const AlertGroup = ({
         duration={context.animations.duration}
         wait={context.animations.duration}
       >
-        <div className={`card ${cardBackgroundClass}`}>
+        <div
+          className={`card ${cardBackgroundClass}`}
+          data-colortitlebar={
+            settingsStore.alertGroupConfig.config.colorTitleBar
+          }
+        >
           <GroupHeader
             isCollapsed={isCollapsed}
             setIsCollapsed={setIsCollapsed}
