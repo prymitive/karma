@@ -30,6 +30,10 @@ displayed by filtering duplicates. Each alert is tagged with the names of all
 Alertmanager instances it was found at and can be filtered based on those tags
 (`@alertmanager`). Note that `@alertmanager` tags will be visible only if karma
 is configured with multiple Alertmanager instances.
+If alertmanger is configured to use
+[HA clusters](https://prometheus.io/docs/alerting/latest/alertmanager/#high-availability)
+then `@cluster` will be available as well, to set a custom name for each cluster
+see [CONFIGURATION.md](docs/CONFIGURATION.md#alertmanagers).
 
 ![Screenshot](/docs/img/screenshot.png)
 
@@ -37,7 +41,10 @@ is configured with multiple Alertmanager instances.
 
 Alerts are displayed grouped preserving
 [group_by](https://prometheus.io/docs/alerting/configuration/#route)
-configuration option in Alertmanager. If a group contains multiple alerts only
+configuration option in Alertmanager.
+Note that a unique alert group will be created for each receiver it uses in
+alertmanager as they can have different `group_by` settings.
+If a group contains multiple alerts only
 the first few alerts will be presented. Alerts are expanded or hidden
 using - / + buttons. The default number of alerts can be configured in the UI
 settings module.
