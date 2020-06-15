@@ -88,7 +88,7 @@
     "markdownlint-cli": "0.23.1",
     "node-sass": "4.14.1",
     "prettier": "2.0.5",
-    "puppeteer": "3.3.0",
+    "puppeteer": "4.0.0",
     "source-map-explorer": "2.4.2"
   },
   "browserslist": [
