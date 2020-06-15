@@ -74,7 +74,7 @@ describe("<LabelNameInput />", () => {
   });
 
   it("handles fetch errors when populating suggestions", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: null,
       error: "fake error",
       isLoading: false,

@@ -10,7 +10,7 @@ import { advanceTo, clear } from "jest-date-mock";
 
 import { MockSilence } from "__mocks__/Alerts";
 import { MockThemeContext } from "__mocks__/Theme";
-import { PressKey } from "__mocks__/KeyPress";
+import { PressKey } from "__mocks__/PressKey";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -163,7 +163,7 @@ describe("<Browser />", () => {
   });
 
   it("renders loading placeholder before fetch finishes", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: null,
       error: false,
       isLoading: true,
@@ -175,7 +175,7 @@ describe("<Browser />", () => {
   });
 
   it("renders loading placeholder before fetch finishes", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: null,
       error: false,
       isLoading: true,
@@ -187,7 +187,7 @@ describe("<Browser />", () => {
   });
 
   it("renders empty placeholder after fetch with zero results", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: [],
       error: false,
       isLoading: false,
@@ -199,7 +199,7 @@ describe("<Browser />", () => {
   });
 
   it("renders silences after successful fetch", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: [
         {
           cluster: cluster,
@@ -217,7 +217,7 @@ describe("<Browser />", () => {
 
   it("renders only first 6 silences on desktop", () => {
     global.window.innerWidth = 1024;
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: MockSilenceList(7),
       error: false,
       isLoading: false,
@@ -229,7 +229,7 @@ describe("<Browser />", () => {
 
   it("renders only first 6 silences on mobile", () => {
     global.window.innerWidth = 500;
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: MockSilenceList(7),
       error: false,
       isLoading: false,
@@ -240,7 +240,7 @@ describe("<Browser />", () => {
   });
 
   it("renders last silence after page change", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: MockSilenceList(7),
       error: false,
       isLoading: false,
@@ -260,7 +260,7 @@ describe("<Browser />", () => {
   });
 
   it("renders next/previous page after arrow key press", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: MockSilenceList(13),
       error: false,
       isLoading: false,
@@ -274,33 +274,39 @@ describe("<Browser />", () => {
     const paginator = tree.find(".components-pagination").at(0);
     paginator.simulate("focus");
 
-    PressKey(paginator, "ArrowRight", 39);
+    PressKey("ArrowRight", 39);
+    tree.update();
     expect(tree.find("li.page-item").at(2).hasClass("active")).toBe(true);
     expect(tree.find("ManagedSilence")).toHaveLength(6);
 
-    PressKey(paginator, "ArrowRight", 39);
+    PressKey("ArrowRight", 39);
+    tree.update();
     expect(tree.find("li.page-item").at(3).hasClass("active")).toBe(true);
     expect(tree.find("ManagedSilence")).toHaveLength(1);
 
-    PressKey(paginator, "ArrowRight", 39);
+    PressKey("ArrowRight", 39);
+    tree.update();
     expect(tree.find("li.page-item").at(3).hasClass("active")).toBe(true);
     expect(tree.find("ManagedSilence")).toHaveLength(1);
 
-    PressKey(paginator, "ArrowLeft", 37);
+    PressKey("ArrowLeft", 37);
+    tree.update();
     expect(tree.find("li.page-item").at(2).hasClass("active")).toBe(true);
     expect(tree.find("ManagedSilence")).toHaveLength(6);
 
-    PressKey(paginator, "ArrowLeft", 37);
+    PressKey("ArrowLeft", 37);
+    tree.update();
     expect(tree.find("li.page-item").at(1).hasClass("active")).toBe(true);
     expect(tree.find("ManagedSilence")).toHaveLength(6);
 
-    PressKey(paginator, "ArrowLeft", 37);
+    PressKey("ArrowLeft", 37);
+    tree.update();
     expect(tree.find("li.page-item").at(1).hasClass("active")).toBe(true);
     expect(tree.find("ManagedSilence")).toHaveLength(6);
   });
 
   it("resets pagination to last page on truncation", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: MockSilenceList(13),
       error: false,
       isLoading: false,
@@ -315,7 +321,7 @@ describe("<Browser />", () => {
     expect(tree.find("ManagedSilence")).toHaveLength(1);
     expect(tree.find("li.page-item").at(3).hasClass("active")).toBe(true);
 
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: MockSilenceList(8),
       error: false,
       isLoading: false,
@@ -326,7 +332,7 @@ describe("<Browser />", () => {
     expect(tree.find("ManagedSilence")).toHaveLength(2);
     expect(tree.find("li.page-item").at(2).hasClass("active")).toBe(true);
 
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: [],
       error: false,
       isLoading: false,
@@ -339,7 +345,7 @@ describe("<Browser />", () => {
   });
 
   it("renders error after failed fetch", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: null,
       error: "fake failure",
       isLoading: false,

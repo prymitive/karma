@@ -12,6 +12,21 @@ const MockFetchStats = {
   },
   reset() {
     this.getCalls = [];
+    this.mockedData = {
+      response: undefined,
+      error: undefined,
+      isLoading: undefined,
+      isRetrying: undefined,
+    };
+  },
+  mockedData: {
+    response: undefined,
+    error: undefined,
+    isLoading: undefined,
+    isRetrying: undefined,
+  },
+  setMockedData(data) {
+    this.mockedData = data;
   },
 };
 
@@ -82,7 +97,25 @@ const Mock = (uri, { autorun = true, deps = [] } = {}) => {
     // eslint-disable-next-line
   }, [uri, get, autorun, ...deps]);
 
-  return { response, error, isLoading, isRetrying, get };
+  return {
+    response:
+      MockFetchStats.mockedData.response !== undefined
+        ? MockFetchStats.mockedData.response
+        : response,
+    error:
+      MockFetchStats.mockedData.error !== undefined
+        ? MockFetchStats.mockedData.error
+        : error,
+    isLoading:
+      MockFetchStats.mockedData.isLoading !== undefined
+        ? MockFetchStats.mockedData.isLoading
+        : isLoading,
+    isRetrying:
+      MockFetchStats.mockedData.isRetrying !== undefined
+        ? MockFetchStats.mockedData.isRetrying
+        : isRetrying,
+    get,
+  };
 };
 
 const useFetchGet = jest.fn(Mock);

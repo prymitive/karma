@@ -127,7 +127,7 @@ describe("<AlertGroupSortConfiguration />", () => {
   });
 
   it("label select handles fetch errors", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: null,
       error: "fake error",
       isLoading: false,

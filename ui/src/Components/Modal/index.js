@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
-import { HotKeys } from "react-hotkeys";
+import { useHotkeys } from "react-hotkeys-hook";
 
 import {
   MountModal,
@@ -13,11 +13,6 @@ import {
 
 const ModalInner = ({ size, isUpper, toggleOpen, children }) => {
   const ref = useRef(null);
-  const hotKeysRef = useRef(null);
-
-  useEffect(() => {
-    hotKeysRef.current && hotKeysRef.current.focus();
-  }, []);
 
   useEffect(() => {
     document.body.classList.add("modal-open");
@@ -30,13 +25,10 @@ const ModalInner = ({ size, isUpper, toggleOpen, children }) => {
     };
   }, [isUpper]);
 
+  useHotkeys("esc", toggleOpen);
+
   return (
-    <HotKeys
-      innerRef={hotKeysRef}
-      keyMap={{ CLOSE: "Escape" }}
-      handlers={{ CLOSE: toggleOpen }}
-      className="modal-open"
-    >
+    <div className="modal-open">
       <div ref={ref} className="modal d-block" role="dialog">
         <div
           className={`modal-dialog modal-${size} ${
@@ -47,7 +39,7 @@ const ModalInner = ({ size, isUpper, toggleOpen, children }) => {
           <div className="modal-content">{children}</div>
         </div>
       </div>
-    </HotKeys>
+    </div>
   );
 };
 

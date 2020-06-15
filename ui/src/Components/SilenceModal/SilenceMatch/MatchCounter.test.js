@@ -40,7 +40,7 @@ describe("<MatchCounter />", () => {
   });
 
   it("renders spinner icon while fetching", () => {
-    useFetchGet.mockReturnValueOnce({
+    useFetchGet.fetch.setMockedData({
       response: null,
       error: false,
       isLoading: true,
@@ -53,7 +53,7 @@ describe("<MatchCounter />", () => {
   });
 
   it("renders spinner icon with text-danger while retrying fetching", () => {
-    useFetchGet.mockReturnValueOnce({
+    useFetchGet.fetch.setMockedData({
       response: null,
       error: false,
       isLoading: true,
@@ -65,7 +65,7 @@ describe("<MatchCounter />", () => {
   });
 
   it("renders error icon on failed fetch", () => {
-    useFetchGet.mockReturnValueOnce({
+    useFetchGet.fetch.setMockedData({
       response: null,
       error: "failed",
       isLoading: false,
@@ -77,7 +77,7 @@ describe("<MatchCounter />", () => {
   });
 
   it("totalAlerts is 0 after mount", () => {
-    useFetchGet.mockReturnValueOnce({
+    useFetchGet.fetch.setMockedData({
       response: { totalAlerts: 0 },
       error: false,
       isLoading: false,
