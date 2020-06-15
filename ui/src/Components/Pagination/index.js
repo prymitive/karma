@@ -1,7 +1,7 @@
-import React, { useState, useCallback, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import { HotKeys } from "react-hotkeys";
+import { useHotkeys } from "react-hotkeys-hook";
 
 import Pagination from "react-js-pagination";
 
@@ -21,11 +21,11 @@ const PageSelect = ({
   setPageCallback,
 }) => {
   const [activePage, setActivePage] = useState(initialPage);
-  const ref = useRef(null);
 
-  useEffect(() => {
-    ref.current && ref.current.focus();
-  }, []);
+  const onChange = (page) => {
+    setActivePage(page);
+    setPageCallback(page);
+  };
 
   useEffect(() => {
     if (activePage > totalPages) {
@@ -35,40 +35,30 @@ const PageSelect = ({
     }
   }, [activePage, maxPerPage, totalPages, setPageCallback]);
 
-  const onChange = useCallback(
-    (page) => {
+  useHotkeys(
+    "left",
+    () => {
+      const page = Math.max(activePage - 1, 1);
       setActivePage(page);
       setPageCallback(page);
     },
-    [setPageCallback]
+    {},
+    [activePage, setActivePage, setPageCallback]
   );
 
-  const onPageUp = useCallback(() => {
-    const page = Math.min(activePage + 1, totalPages);
-    setActivePage(page);
-    setPageCallback(page);
-  }, [activePage, setPageCallback, totalPages]);
-
-  const onPageDown = useCallback(() => {
-    const page = Math.max(activePage - 1, 1);
-    setActivePage(page);
-    setPageCallback(page);
-  }, [activePage, setPageCallback]);
+  useHotkeys(
+    "right",
+    () => {
+      const page = Math.min(activePage + 1, totalPages);
+      setActivePage(page);
+      setPageCallback(page);
+    },
+    {},
+    [activePage, totalPages, setActivePage, setPageCallback]
+  );
 
   return (
-    <HotKeys
-      className="components-pagination"
-      innerRef={ref}
-      keyMap={{
-        onArrowLeft: "ArrowLeft",
-        onArrowRight: "ArrowRight",
-      }}
-      handlers={{
-        onArrowLeft: onPageDown,
-        onArrowRight: onPageUp,
-      }}
-      allowChanges
-    >
+    <div className="components-pagination">
       {totalItemsCount > maxPerPage ? (
         <div className="mt-3">
           <Pagination
@@ -90,7 +80,7 @@ const PageSelect = ({
           />
         </div>
       ) : null}
-    </HotKeys>
+    </div>
   );
 };
 PageSelect.propTypes = {

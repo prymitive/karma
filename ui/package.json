@@ -41,7 +41,7 @@
     "react-day-picker": "7.4.8",
     "react-dom": "16.13.1",
     "react-highlighter": "0.4.3",
-    "react-hotkeys": "2.0.0",
+    "react-hotkeys-hook": "2.1.3",
     "react-idle-timer": "4.2.12",
     "react-input-range": "1.3.0",
     "react-js-pagination": "3.0.3",

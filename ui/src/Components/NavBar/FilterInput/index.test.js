@@ -155,7 +155,7 @@ describe("<FilterInput Autosuggest />", () => {
   });
 
   it("handles failed suggestion fetches", async () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: null,
       error: "fake error",
       isLoading: false,

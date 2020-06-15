@@ -107,7 +107,7 @@ describe("<SilencePreview />", () => {
   });
 
   it("matches snapshot", () => {
-    useFetchGet.mockReturnValueOnce({
+    useFetchGet.fetch.setMockedData({
       response: MockAPIResponse(),
       error: false,
       isLoading: false,
@@ -119,7 +119,7 @@ describe("<SilencePreview />", () => {
   });
 
   it("renders Placeholder while loading preview", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: null,
       error: false,
       isLoading: true,
@@ -136,7 +136,7 @@ describe("<SilencePreview />", () => {
   });
 
   it("handles empty grid response correctly", () => {
-    useFetchGet.mockReturnValueOnce({
+    useFetchGet.fetch.setMockedData({
       response: EmptyAPIResponse(),
       error: false,
       isLoading: false,
@@ -148,7 +148,7 @@ describe("<SilencePreview />", () => {
   });
 
   it("renders FetchError on failed fetch", () => {
-    useFetchGet.mockReturnValueOnce({
+    useFetchGet.fetch.setMockedData({
       response: null,
       error: "Fetch error",
       isLoading: false,

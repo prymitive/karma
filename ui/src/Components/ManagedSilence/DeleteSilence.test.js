@@ -9,6 +9,7 @@ import moment from "moment";
 
 import { EmptyAPIResponse } from "__mocks__/Fetch";
 import { MockSilence } from "__mocks__/Alerts";
+import { PressKey } from "__mocks__/PressKey";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { useFetchGet } from "Hooks/useFetchGet";
@@ -108,9 +109,7 @@ describe("<DeleteSilence />", () => {
     tree.find("button.btn-danger").simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(1);
 
-    tree
-      .find("div.modal")
-      .simulate("keyDown", { key: "Escape", keyCode: 27, which: 27 });
+    PressKey("Escape", 27);
     act(() => jest.runOnlyPendingTimers());
     tree.update();
     expect(tree.find(".modal-body")).toHaveLength(0);
@@ -141,7 +140,7 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("renders ProgressMessage while loading preview", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: null,
       error: false,
       isLoading: true,
@@ -158,7 +157,7 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("renders empty LabelSetList with empty response", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: EmptyAPIResponse(),
       error: false,
       isLoading: false,
@@ -181,7 +180,7 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("handles empty grid response correctly", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: EmptyAPIResponse(),
       error: false,
       isLoading: false,
@@ -192,7 +191,7 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("renders ErrorMessage on failed preview fetch", () => {
-    useFetchGet.mockReturnValue({
+    useFetchGet.fetch.setMockedData({
       response: null,
       error: "fake error",
       isLoading: false,

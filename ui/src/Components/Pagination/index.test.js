@@ -2,7 +2,7 @@ import React from "react";
 
 import { mount } from "enzyme";
 
-import { PressKey } from "__mocks__/KeyPress";
+import { PressKey } from "__mocks__/PressKey";
 import { PageSelect } from ".";
 
 let originalInnerWidth;
@@ -33,28 +33,28 @@ describe("<PageSelect />", () => {
     );
     tree.simulate("focus");
 
-    PressKey(tree, "ArrowRight", 39);
+    PressKey("ArrowRight", 39);
     expect(setPageCallback).toHaveBeenLastCalledWith(2);
 
-    PressKey(tree, "ArrowRight", 39);
+    PressKey("ArrowRight", 39);
     expect(setPageCallback).toHaveBeenLastCalledWith(3);
 
-    PressKey(tree, "ArrowRight", 39);
+    PressKey("ArrowRight", 39);
     expect(setPageCallback).toHaveBeenLastCalledWith(4);
 
-    PressKey(tree, "ArrowRight", 39);
+    PressKey("ArrowRight", 39);
     expect(setPageCallback).toHaveBeenLastCalledWith(4);
 
-    PressKey(tree, "ArrowLeft", 37);
+    PressKey("ArrowLeft", 37);
     expect(setPageCallback).toHaveBeenLastCalledWith(3);
 
-    PressKey(tree, "ArrowLeft", 37);
+    PressKey("ArrowLeft", 37);
     expect(setPageCallback).toHaveBeenLastCalledWith(2);
 
-    PressKey(tree, "ArrowLeft", 37);
+    PressKey("ArrowLeft", 37);
     expect(setPageCallback).toHaveBeenLastCalledWith(1);
 
-    PressKey(tree, "ArrowLeft", 37);
+    PressKey("ArrowLeft", 37);
     expect(setPageCallback).toHaveBeenLastCalledWith(1);
   });
 

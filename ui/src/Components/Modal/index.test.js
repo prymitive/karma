@@ -2,6 +2,7 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import { PressKey } from "__mocks__/PressKey";
 import { Modal } from ".";
 
 const fakeToggle = jest.fn();
@@ -90,11 +91,8 @@ describe("<Modal />", () => {
   });
 
   it("toggleOpen is called after pressing 'esc'", () => {
-    const tree = MountedModal(true);
-    tree
-      .find("div")
-      .at(0)
-      .simulate("keyDown", { key: "Escape", keyCode: 27, which: 27 });
+    MountedModal(true);
+    PressKey("Escape", 27);
     expect(fakeToggle).toHaveBeenCalled();
   });
 });
