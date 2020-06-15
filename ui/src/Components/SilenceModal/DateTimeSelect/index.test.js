@@ -184,12 +184,12 @@ const MountedTabContentStart = () => {
 };
 
 describe("<TabContentStart />", () => {
-  it("selecting date on DatePicker updates startsAt", () => {
+  it("selecting date on DayPicker updates startsAt", () => {
     const tree = MountedTabContentStart();
     expect(silenceFormStore.data.startsAt.toISOString()).toBe(
       moment([2060, 1, 1, 0, 0, 0]).toISOString()
     );
-    tree.find("div.react-datepicker__day--018").simulate("click");
+    tree.find('div[aria-label="Wed Feb 18 2060"]').simulate("click");
     expect(silenceFormStore.data.startsAt.toISOString()).toBe(
       moment([2060, 1, 18, 0, 0, 0]).toISOString()
     );
@@ -297,12 +297,12 @@ const MountedTabContentEnd = () => {
 };
 
 describe("<TabContentEnd />", () => {
-  it("Selecting date on DatePicker updates endsAt", () => {
+  it("Selecting date on DayPicker updates endsAt", () => {
     const tree = MountedTabContentEnd();
     expect(silenceFormStore.data.endsAt.toISOString()).toBe(
       moment([2061, 1, 1, 0, 0, 0]).toISOString()
     );
-    tree.find("div.react-datepicker__day--024").simulate("click");
+    tree.find('div[aria-label="Thu Feb 24 2061"]').simulate("click");
     expect(silenceFormStore.data.endsAt.toISOString()).toBe(
       moment([2061, 1, 24, 0, 0, 0]).toISOString()
     );

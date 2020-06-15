@@ -1,28 +1,65 @@
-@import "~react-datepicker/src/stylesheets/datepicker.scss";
-
-.react-datepicker {
-  background-color: $datepicker__background-color;
-}
-
-.react-datepicker__week {
-  & > .react-datepicker__day:hover:not(.react-datepicker__day--disabled) {
-    color: $datepicker__day-hover-color;
-    border-color: $datepicker__border-color;
+.components-date-range.DayPicker {
+  .DayPicker-wrapper {
+    outline: none;
   }
-  & > .react-datepicker__day:not(.react-datepicker__day--disabled) {
-    border-width: 1px;
-    border-style: solid;
-    border-color: transparent;
-  }
-}
 
-.react-datepicker__day-names {
-  & > .react-datepicker__day-name {
-    color: $datepicker__day-name-color;
+  .DayPicker-Weekday {
+    font-weight: 600;
   }
-}
 
-.react-datepicker__today-button {
-  border-bottom-left-radius: $datepicker__border-radius;
-  border-bottom-right-radius: $datepicker__border-radius;
+  .DayPicker-Month {
+    border-collapse: inherit;
+    border-spacing: 0 1px;
+  }
+
+  .DayPicker-Day {
+    &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):not(.DayPicker-Day--selected):hover {
+      background-color: $light;
+      border-radius: 50%;
+    }
+
+    &.DayPicker-Day--today {
+      color: $dark;
+    }
+
+    &.DayPicker-Day--disabled {
+      color: $secondary;
+    }
+
+    &.DayPicker-Day--selected {
+      border-radius: 0;
+
+      &.DayPicker-Day--start {
+        border-top-left-radius: 50%;
+        border-bottom-left-radius: 50%;
+        font-weight: 600;
+      }
+
+      &.DayPicker-Day--end {
+        border-top-right-radius: 50%;
+        border-bottom-right-radius: 50%;
+        font-weight: 600;
+      }
+
+      &.DayPicker-Day--start:not(.DayPicker-Day--outside),
+      &.DayPicker-Day--end:not(.DayPicker-Day--outside) {
+        background-color: $primary;
+        color: $white;
+      }
+      &:not(.DayPicker-Day--start):not(.DayPicker-Day--end):not(.DayPicker-Day--outside) {
+        background-color: $light;
+        color: $components-date-range-sub-color;
+      }
+    }
+  }
+
+  .DayPicker-TodayButton {
+    color: $components-date-range-today-color;
+    font-weight: 600;
+  }
+
+  .DayPicker-Footer {
+    display: flex;
+    justify-content: space-around;
+  }
 }
