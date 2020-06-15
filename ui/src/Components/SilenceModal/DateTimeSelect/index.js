@@ -5,7 +5,8 @@ import { useObserver } from "mobx-react-lite";
 
 import moment from "moment";
 
-import DatePicker from "react-datepicker";
+import DayPicker from "react-day-picker";
+import "react-day-picker/lib/style.css";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Duration } from "./Duration";
@@ -57,14 +58,30 @@ const TabContentStart = ({ silenceFormStore }) => {
   return useObserver(() => (
     <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2">
       <div className="d-flex justify-content-center align-items-center">
-        <DatePicker
-          inline
-          todayButton={"Today"}
-          minDate={moment().second(0).toDate()}
-          selected={silenceFormStore.data.startsAt.toDate()}
-          onChange={(val) => {
-            silenceFormStore.data.startsAt = moment(val);
+        <DayPicker
+          className="components-date-range"
+          month={silenceFormStore.data.startsAt.toDate()}
+          disabledDays={{
+            before: moment().second(0).toDate(),
+          }}
+          todayButton="Today"
+          onDayClick={(val, ...mod) => {
+            const startsAt = moment(val);
+            startsAt.set({
+              hour: silenceFormStore.data.startsAt.hour(),
+              minute: silenceFormStore.data.startsAt.minute(),
+              second: 0,
+            });
+            silenceFormStore.data.startsAt = startsAt;
             silenceFormStore.data.verifyStarEnd();
+          }}
+          selectedDays={{
+            from: silenceFormStore.data.startsAt.toDate(),
+            to: silenceFormStore.data.endsAt.toDate(),
+          }}
+          modifiers={{
+            start: silenceFormStore.data.startsAt.toDate(),
+            end: silenceFormStore.data.endsAt.toDate(),
           }}
         />
       </div>
@@ -83,14 +100,30 @@ const TabContentEnd = ({ silenceFormStore }) => {
   return useObserver(() => (
     <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2">
       <div className="d-flex justify-content-center align-items-center">
-        <DatePicker
-          inline
-          todayButton={"Today"}
-          minDate={moment().second(0).add(1, "minutes").toDate()}
-          selected={silenceFormStore.data.endsAt.toDate()}
-          onChange={(val) => {
-            silenceFormStore.data.endsAt = moment(val);
+        <DayPicker
+          className="components-date-range"
+          month={silenceFormStore.data.endsAt.toDate()}
+          disabledDays={{
+            before: moment().second(0).add(1, "minutes").toDate(),
+          }}
+          todayButton="Today"
+          onDayClick={(val) => {
+            const endsAt = moment(val);
+            endsAt.set({
+              hour: silenceFormStore.data.endsAt.hour(),
+              minute: silenceFormStore.data.endsAt.minute(),
+              second: 0,
+            });
+            silenceFormStore.data.endsAt = endsAt;
             silenceFormStore.data.verifyStarEnd();
+          }}
+          selectedDays={{
+            from: silenceFormStore.data.startsAt.toDate(),
+            to: silenceFormStore.data.endsAt.toDate(),
+          }}
+          modifiers={{
+            start: silenceFormStore.data.startsAt.toDate(),
+            end: silenceFormStore.data.endsAt.toDate(),
           }}
         />
       </div>
@@ -179,7 +212,7 @@ const DateTimeSelect = ({ silenceFormStore, openTab }) => {
     };
   }, [updateTimeNow]);
 
-  return (
+  return useObserver(() => (
     <React.Fragment>
       <ul className="nav nav-tabs nav-fill">
         <Tab
@@ -237,7 +270,7 @@ const DateTimeSelect = ({ silenceFormStore, openTab }) => {
         ) : null}
       </div>
     </React.Fragment>
-  );
+  ));
 };
 DateTimeSelect.propTypes = {
   silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,

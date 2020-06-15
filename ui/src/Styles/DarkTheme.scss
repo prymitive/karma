@@ -85,19 +85,8 @@ $filterinput-border: $navbar-dark-color;
 $grid-swimlane-bg: lighten($dark, 2%);
 $bg-focused: darken($blue, 5%);
 
-$datepicker__background-color: $gray-700;
-$datepicker__border-color: $gray-800;
-$datepicker__highlighted-color: $white;
-$datepicker__muted-color: $gray-600;
-$datepicker__selected-color: $primary;
-$datepicker__text-color: $gray-300;
-$datepicker__header-color: $white;
-$datepicker__navigation-disabled-color: $gray-500;
-$datepicker__font-size: $font-size-base;
-$datepicker__font-family: $font-family-sans-serif;
-$datepicker__border-radius: 0.25rem;
-$datepicker__day-name-color: $white;
-$datepicker__day-hover-color: $white;
+$components-date-range-today-color: $white;
+$components-date-range-sub-color: $white;
 
 $input-range-neutral-color: $gray-300;
 $input-range-neutral-light-color: $secondary;
