@@ -104,7 +104,7 @@ const TabContentEnd = ({ silenceFormStore }) => {
           className="components-date-range"
           month={silenceFormStore.data.endsAt.toDate()}
           disabledDays={{
-            before: moment().second(0).add(1, "minutes").toDate(),
+            before: silenceFormStore.data.startsAt.second(0).toDate(),
           }}
           todayButton="Today"
           onDayClick={(val) => {

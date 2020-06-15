@@ -1,5 +1,6 @@
 .components-date-range.DayPicker {
-  .DayPicker-wrapper {
+  .DayPicker-wrapper:focus,
+  .DayPicker-NavButton:focus {
     outline: none;
   }
 
@@ -13,9 +14,13 @@
   }
 
   .DayPicker-Day {
+    &:focus {
+      outline: none;
+    }
+
     &:not(.DayPicker-Day--disabled):not(.DayPicker-Day--outside):not(.DayPicker-Day--selected):hover {
       background-color: $light;
-      border-radius: 50%;
+      border-radius: 0.5rem;
     }
 
     &.DayPicker-Day--today {
@@ -30,14 +35,14 @@
       border-radius: 0;
 
       &.DayPicker-Day--start {
-        border-top-left-radius: 50%;
-        border-bottom-left-radius: 50%;
+        border-top-left-radius: 0.5rem;
+        border-bottom-left-radius: 0.5rem;
         font-weight: 600;
       }
 
       &.DayPicker-Day--end {
-        border-top-right-radius: 50%;
-        border-bottom-right-radius: 50%;
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
         font-weight: 600;
       }
 
