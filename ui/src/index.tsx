@@ -7,8 +7,6 @@ import "react-app-polyfill/stable";
 import React from "react";
 import ReactDOM from "react-dom";
 
-import Moment from "react-moment";
-
 import "mobx-react-lite/batchingForReactDom";
 
 import {
@@ -20,11 +18,6 @@ import {
 import { App } from "./App";
 
 SetupSentry(SettingsElement());
-
-// global timer for updating timestamps to human readable offsets
-// this needs to be run before any <Moment/> instance
-// https://www.npmjs.com/package/react-moment#pooled-timer
-Moment.startPooledTimer();
 
 // https://wetainment.com/testing-indexjs/
 export default ReactDOM.render(
