@@ -4,8 +4,6 @@ import throttle from "lodash.throttle";
 
 import qs from "qs";
 
-import moment from "moment";
-
 import { FetchGet } from "Common/Fetch";
 
 const QueryStringEncodeOptions = {
@@ -280,7 +278,7 @@ class AlertStore {
       setIdle() {
         this.value = AlertStoreStatuses.Idle;
         this.error = null;
-        this.lastUpdateAt = moment();
+        this.lastUpdateAt = new Date();
       },
       setFetching() {
         this.value = AlertStoreStatuses.Fetching;
@@ -292,7 +290,7 @@ class AlertStore {
       setFailure(err) {
         this.value = AlertStoreStatuses.Failure;
         this.error = err;
-        this.lastUpdateAt = moment();
+        this.lastUpdateAt = new Date();
       },
       pause() {
         this.paused = true;
