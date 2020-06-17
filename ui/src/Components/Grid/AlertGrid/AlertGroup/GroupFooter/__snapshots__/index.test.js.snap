@@ -285,10 +285,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
                 — me@example.com
               </span>
               <span class=\\"badge badge-danger align-text-bottom p-1\\">
-                Expired
-                <time datetime=\\"946688400000\\">
-                  14 hours ago
-                </time>
+                Expired 14 hours ago
               </span>
             </div>
           </div>

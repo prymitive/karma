@@ -7,8 +7,6 @@ import { advanceTo, clear } from "jest-date-mock";
 
 import toDiffableHtml from "diffable-html";
 
-import Moment from "react-moment";
-
 import {
   MockAlert,
   MockAnnotation,
@@ -291,25 +289,62 @@ describe("<Alert />", () => {
 
   it("alert timestamp is updated every minute", () => {
     jest.useFakeTimers();
-    Moment.startPooledTimer();
 
     advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 36, 41)));
 
     const alert = MockedAlert();
     const group = MockAlertGroup({}, [alert], [], {}, {});
     const tree = MountedAlert(alert, group, false, false);
-    expect(tree.find("time").text()).toBe("a few seconds ago");
+    expect(
+      tree
+        .find("span.components-label.badge.badge-secondary.cursor-pointer")
+        .at(0)
+        .text()
+    ).toBe("just now");
+
+    advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 36, 42)));
+    act(() => jest.advanceTimersByTime(31 * 1000));
+    expect(
+      tree
+        .find("span.components-label.badge.badge-secondary.cursor-pointer")
+        .at(0)
+        .text()
+    ).toBe("a few seconds ago");
 
     advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 37, 41)));
-    act(() => jest.advanceTimersByTime(61 * 1000));
-    expect(tree.find("time").text()).toBe("a minute ago");
+    act(() => jest.advanceTimersByTime(31 * 1000));
+    expect(
+      tree
+        .find("span.components-label.badge.badge-secondary.cursor-pointer")
+        .at(0)
+        .text()
+    ).toBe("1 minute ago");
 
     advanceTo(new Date(Date.UTC(2018, 7, 14, 18, 36, 41)));
-    jest.advanceTimersByTime(61 * 1000);
-    expect(tree.find("time").text()).toBe("an hour ago");
+    act(() => jest.advanceTimersByTime(31 * 1000));
+    expect(
+      tree
+        .find("span.components-label.badge.badge-secondary.cursor-pointer")
+        .at(0)
+        .text()
+    ).toBe("1 hour ago");
 
     advanceTo(new Date(Date.UTC(2018, 7, 14, 19, 36, 41)));
-    jest.advanceTimersByTime(61 * 1000);
-    expect(tree.find("time").text()).toBe("2 hours ago");
+    act(() => jest.advanceTimersByTime(31 * 1000));
+    expect(
+      tree
+        .find("span.components-label.badge.badge-secondary.cursor-pointer")
+        .at(0)
+        .text()
+    ).toBe("2 hours ago");
+
+    advanceTo(new Date(Date.UTC(2018, 7, 16, 19, 36, 41)));
+    act(() => jest.advanceTimersByTime(31 * 1000));
+    expect(
+      tree
+        .find("span.components-label.badge.badge-secondary.cursor-pointer")
+        .at(0)
+        .text()
+    ).toBe("2 days ago");
   });
 });

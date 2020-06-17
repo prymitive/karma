@@ -5,8 +5,6 @@ import { mount } from "enzyme";
 
 import { advanceTo, clear } from "jest-date-mock";
 
-import moment from "moment";
-
 import { EmptyAPIResponse } from "__mocks__/Fetch";
 import { MockSilence } from "__mocks__/Alerts";
 import { PressKey } from "__mocks__/PressKey";
@@ -22,7 +20,7 @@ let cluster;
 let silence;
 
 beforeEach(() => {
-  advanceTo(moment.utc([2000, 0, 1, 0, 30, 0]));
+  advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
   jest.useFakeTimers();
 
   alertStore = new AlertStore([]);
@@ -297,7 +295,7 @@ describe("<DeleteSilenceModalContent />", () => {
     tree.find(".btn-danger").simulate("click");
     expect(useFetchDelete).toHaveBeenCalledTimes(1);
 
-    advanceTo(moment.utc([2000, 0, 1, 0, 30, 1]));
+    advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 1)));
     tree.find(".btn-danger").simulate("click");
     expect(useFetchDelete).toHaveBeenCalledTimes(2);
   });

@@ -3,7 +3,10 @@ import PropTypes from "prop-types";
 
 import { useObserver } from "mobx-react-lite";
 
-import moment from "moment";
+import differenceInMinutes from "date-fns/differenceInMinutes";
+import differenceInHours from "date-fns/differenceInHours";
+import differenceInDays from "date-fns/differenceInDays";
+import setSeconds from "date-fns/setSeconds";
 
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
@@ -12,10 +15,16 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Duration } from "./Duration";
 import { HourMinute } from "./HourMinute";
 
+const nowZeroSeconds = () => {
+  const now = new Date();
+  now.setSeconds(0);
+  return now;
+};
+
 const OffsetBadge = ({ startDate, endDate, prefixLabel }) => {
-  const days = endDate.diff(startDate, "days");
-  const hours = endDate.diff(startDate, "hours") % 24;
-  const minutes = endDate.diff(startDate, "minutes") % 60;
+  const days = differenceInDays(endDate, startDate);
+  const hours = differenceInHours(endDate, startDate) % 24;
+  const minutes = differenceInMinutes(endDate, startDate) % 60;
 
   return (
     <span className="badge badge-light">
@@ -27,8 +36,8 @@ const OffsetBadge = ({ startDate, endDate, prefixLabel }) => {
   );
 };
 OffsetBadge.propTypes = {
-  startDate: PropTypes.instanceOf(moment).isRequired,
-  endDate: PropTypes.instanceOf(moment).isRequired,
+  startDate: PropTypes.instanceOf(Date).isRequired,
+  endDate: PropTypes.instanceOf(Date).isRequired,
   prefixLabel: PropTypes.string.isRequired,
 };
 
@@ -60,28 +69,26 @@ const TabContentStart = ({ silenceFormStore }) => {
       <div className="d-flex justify-content-center align-items-center">
         <DayPicker
           className="components-date-range"
-          month={silenceFormStore.data.startsAt.toDate()}
+          month={silenceFormStore.data.startsAt}
           disabledDays={{
-            before: moment().second(0).toDate(),
+            before: nowZeroSeconds(),
           }}
           todayButton="Today"
           onDayClick={(val, ...mod) => {
-            const startsAt = moment(val);
-            startsAt.set({
-              hour: silenceFormStore.data.startsAt.hour(),
-              minute: silenceFormStore.data.startsAt.minute(),
-              second: 0,
-            });
+            const startsAt = new Date(val);
+            startsAt.setHours(silenceFormStore.data.startsAt.getHours());
+            startsAt.setMinutes(silenceFormStore.data.startsAt.getMinutes());
+            startsAt.setSeconds(0);
             silenceFormStore.data.startsAt = startsAt;
             silenceFormStore.data.verifyStarEnd();
           }}
           selectedDays={{
-            from: silenceFormStore.data.startsAt.toDate(),
-            to: silenceFormStore.data.endsAt.toDate(),
+            from: silenceFormStore.data.startsAt,
+            to: silenceFormStore.data.endsAt,
           }}
           modifiers={{
-            start: silenceFormStore.data.startsAt.toDate(),
-            end: silenceFormStore.data.endsAt.toDate(),
+            start: silenceFormStore.data.startsAt,
+            end: silenceFormStore.data.endsAt,
           }}
         />
       </div>
@@ -102,28 +109,26 @@ const TabContentEnd = ({ silenceFormStore }) => {
       <div className="d-flex justify-content-center align-items-center">
         <DayPicker
           className="components-date-range"
-          month={silenceFormStore.data.endsAt.toDate()}
+          month={silenceFormStore.data.endsAt}
           disabledDays={{
-            before: silenceFormStore.data.startsAt.second(0).toDate(),
+            before: setSeconds(silenceFormStore.data.startsAt, 0),
           }}
           todayButton="Today"
           onDayClick={(val) => {
-            const endsAt = moment(val);
-            endsAt.set({
-              hour: silenceFormStore.data.endsAt.hour(),
-              minute: silenceFormStore.data.endsAt.minute(),
-              second: 0,
-            });
+            const endsAt = new Date(val);
+            endsAt.setHours(silenceFormStore.data.endsAt.getHours());
+            endsAt.setMinutes(silenceFormStore.data.endsAt.getMinutes());
+            endsAt.setSeconds(0);
             silenceFormStore.data.endsAt = endsAt;
             silenceFormStore.data.verifyStarEnd();
           }}
           selectedDays={{
-            from: silenceFormStore.data.startsAt.toDate(),
-            to: silenceFormStore.data.endsAt.toDate(),
+            from: silenceFormStore.data.startsAt,
+            to: silenceFormStore.data.endsAt,
           }}
           modifiers={{
-            start: silenceFormStore.data.startsAt.toDate(),
-            end: silenceFormStore.data.endsAt.toDate(),
+            start: silenceFormStore.data.startsAt,
+            end: silenceFormStore.data.endsAt,
           }}
         />
       </div>
@@ -199,10 +204,10 @@ TabContentDuration.propTypes = {
 
 const DateTimeSelect = ({ silenceFormStore, openTab }) => {
   const [currentTab, setCurrentTab] = useState(openTab);
-  const [timeNow, setTimeNow] = useState(moment().seconds(0));
+  const [timeNow, setTimeNow] = useState(nowZeroSeconds());
 
   const updateTimeNow = useCallback(() => {
-    setTimeNow(moment().seconds(0));
+    setTimeNow(nowZeroSeconds());
   }, []);
 
   useEffect(() => {

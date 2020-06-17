@@ -6,7 +6,6 @@ import toDiffableHtml from "diffable-html";
 
 import copy from "copy-to-clipboard";
 
-import moment from "moment";
 import { advanceTo, clear } from "jest-date-mock";
 
 import { MockSilence } from "__mocks__/Alerts";
@@ -67,14 +66,14 @@ const MountedSilenceDetails = () => {
 
 describe("<SilenceDetails />", () => {
   it("unexpired silence endsAt label doesn't use 'danger' class", () => {
-    advanceTo(moment.utc([2000, 0, 1, 0, 30, 0]));
+    advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
     const tree = MountedSilenceDetails();
     const endsAt = tree.find("span.badge").at(1);
     expect(toDiffableHtml(endsAt.html())).not.toMatch(/text-danger/);
   });
 
   it("expired silence endsAt label uses 'danger' class", () => {
-    advanceTo(moment.utc([2000, 0, 1, 23, 0, 0]));
+    advanceTo(new Date(Date.UTC(2000, 0, 1, 23, 0, 0)));
     const tree = MountedSilenceDetails();
     const endsAt = tree.find("span.badge").at(1);
     expect(toDiffableHtml(endsAt.html())).toMatch(/text-danger/);

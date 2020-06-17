@@ -4,7 +4,6 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import moment from "moment";
 import { advanceTo, clear } from "jest-date-mock";
 
 import {
@@ -48,7 +47,7 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
   group = MockGroup();
-  advanceTo(moment.utc([2000, 0, 1, 15, 0, 0]));
+  advanceTo(new Date(Date.UTC(2000, 0, 1, 15, 0, 0)));
 
   alertStore.data.receivers = ["by-cluster-service", "by-name"];
 });

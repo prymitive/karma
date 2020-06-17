@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 
 import { useObserver } from "mobx-react-lite";
 
-import moment from "moment";
-import Moment from "react-moment";
+import parseISO from "date-fns/parseISO";
+import getUnixTime from "date-fns/getUnixTime";
 
 import { APISilence } from "Models/API";
+import { DateFromNow } from "Components/DateFromNow";
 
 import "./SilenceProgress.scss";
 
 const calculatePercent = (startsAt, endsAt) => {
-  const durationDone = moment().unix() - moment(startsAt).unix();
-  const durationTotal = moment(endsAt).unix() - moment(startsAt).unix();
+  const durationDone =
+    getUnixTime(new Date()) - getUnixTime(parseISO(startsAt));
+  const durationTotal =
+    getUnixTime(parseISO(endsAt)) - getUnixTime(parseISO(startsAt));
   return Math.floor((durationDone / durationTotal) * 100);
 };
 
@@ -28,13 +31,13 @@ const SilenceProgress = ({ silence }) => {
   }, [silence.startsAt, silence.endsAt]);
 
   return useObserver(() =>
-    moment(silence.endsAt) < moment() ? (
+    parseISO(silence.endsAt) < new Date() ? (
       <span className="badge badge-danger align-text-bottom p-1">
-        Expired <Moment fromNow>{silence.endsAt}</Moment>
+        Expired <DateFromNow timestamp={silence.endsAt} />
       </span>
     ) : (
       <span className="badge badge-light nmb-05 align-text-bottom p-1">
-        Expires <Moment fromNow>{silence.endsAt}</Moment>
+        Expires <DateFromNow timestamp={silence.endsAt} />
         <div className="progress silence-progress">
           <div
             className={

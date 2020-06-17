@@ -7,7 +7,9 @@ import { advanceTo, clear } from "jest-date-mock";
 
 import toDiffableHtml from "diffable-html";
 
-import moment from "moment";
+import addMinutes from "date-fns/addMinutes";
+import addHours from "date-fns/addHours";
+import differenceInMilliseconds from "date-fns/differenceInMilliseconds";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import {
@@ -21,8 +23,8 @@ let silenceFormStore;
 
 beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
-  silenceFormStore.data.startsAt = moment([2060, 1, 1, 0, 0, 0]);
-  silenceFormStore.data.endsAt = moment([2061, 1, 1, 0, 0, 0]);
+  silenceFormStore.data.startsAt = new Date(2060, 1, 1, 0, 0, 0);
+  silenceFormStore.data.endsAt = new Date(2061, 1, 1, 0, 0, 0);
 });
 
 afterEach(() => {
@@ -121,8 +123,8 @@ describe("<DateTimeSelect />", () => {
   it("'Ends' tab offset badge is updated after 1 minute", () => {
     jest.useFakeTimers();
     advanceTo(new Date(2060, 1, 1, 12, 0, 0));
-    silenceFormStore.data.startsAt = moment([2060, 1, 1, 12, 0, 0]);
-    silenceFormStore.data.endsAt = moment([2060, 1, 1, 13, 0, 0]);
+    silenceFormStore.data.startsAt = new Date(2060, 1, 1, 12, 0, 0);
+    silenceFormStore.data.endsAt = new Date(2060, 1, 1, 13, 0, 0);
 
     const tree = MountedDateTimeSelect();
     expect(tree.find(".nav-link").at(1).text()).toBe("Endsin 1h ");
@@ -149,19 +151,22 @@ const ValidateTimeButton = (
   const button = tab.find("td > span").at(elemIndex);
   expect(button.html()).toMatch(iconMatch);
 
-  const oldTimeValue = moment(silenceFormStore.data[storeKey]);
+  const oldTimeValue = new Date(silenceFormStore.data[storeKey]);
   button.simulate("click");
   expect(silenceFormStore.data[storeKey].toISOString()).not.toBe(
     oldTimeValue.toISOString()
   );
-  const diffMS = silenceFormStore.data[storeKey].diff(oldTimeValue);
+  const diffMS = differenceInMilliseconds(
+    silenceFormStore.data[storeKey],
+    oldTimeValue
+  );
   expect(diffMS).toBe(expectedDiff);
 };
 
 const ValidateTimeWheel = (tab, storeKey, className, deltaY, expectedDiff) => {
   const elem = tab.find(className);
 
-  const oldTimeValue = moment(silenceFormStore.data[storeKey]);
+  const oldTimeValue = new Date(silenceFormStore.data[storeKey]);
 
   elem.simulate("wheel", { deltaY: deltaY });
   // fire real event so cancel listener will trigger
@@ -175,7 +180,10 @@ const ValidateTimeWheel = (tab, storeKey, className, deltaY, expectedDiff) => {
   expect(silenceFormStore.data[storeKey].toISOString()).not.toBe(
     oldTimeValue.toISOString()
   );
-  const diffMS = silenceFormStore.data[storeKey].diff(oldTimeValue);
+  const diffMS = differenceInMilliseconds(
+    silenceFormStore.data[storeKey],
+    oldTimeValue
+  );
   expect(diffMS).toBe(expectedDiff);
 };
 
@@ -187,11 +195,11 @@ describe("<TabContentStart />", () => {
   it("selecting date on DayPicker updates startsAt", () => {
     const tree = MountedTabContentStart();
     expect(silenceFormStore.data.startsAt.toISOString()).toBe(
-      moment([2060, 1, 1, 0, 0, 0]).toISOString()
+      new Date(2060, 1, 1, 0, 0, 0).toISOString()
     );
     tree.find('div[aria-label="Wed Feb 18 2060"]').simulate("click");
     expect(silenceFormStore.data.startsAt.toISOString()).toBe(
-      moment([2060, 1, 18, 0, 0, 0]).toISOString()
+      new Date(2060, 1, 18, 0, 0, 0).toISOString()
     );
   });
 
@@ -300,11 +308,11 @@ describe("<TabContentEnd />", () => {
   it("Selecting date on DayPicker updates endsAt", () => {
     const tree = MountedTabContentEnd();
     expect(silenceFormStore.data.endsAt.toISOString()).toBe(
-      moment([2061, 1, 1, 0, 0, 0]).toISOString()
+      new Date(2061, 1, 1, 0, 0, 0).toISOString()
     );
     tree.find('div[aria-label="Thu Feb 24 2061"]').simulate("click");
     expect(silenceFormStore.data.endsAt.toISOString()).toBe(
-      moment([2061, 1, 24, 0, 0, 0]).toISOString()
+      new Date(2061, 1, 24, 0, 0, 0).toISOString()
     );
   });
 
@@ -406,12 +414,15 @@ const ValidateDurationButton = (elemIndex, iconMatch, expectedDiff) => {
   const button = tree.find("td > span").at(elemIndex);
   expect(button.html()).toMatch(iconMatch);
 
-  const oldEndsAt = moment(silenceFormStore.data.endsAt);
+  const oldEndsAt = new Date(silenceFormStore.data.endsAt);
   button.simulate("click");
   expect(silenceFormStore.data.endsAt.toISOString()).not.toBe(
     oldEndsAt.toISOString()
   );
-  const diffMS = silenceFormStore.data.endsAt.diff(oldEndsAt);
+  const diffMS = differenceInMilliseconds(
+    silenceFormStore.data.endsAt,
+    oldEndsAt
+  );
   expect(diffMS).toBe(expectedDiff);
 };
 
@@ -421,7 +432,7 @@ const ValidateDurationWheel = (elemIndex, deltaY, expectedDiff) => {
   );
   const elem = tree.find(".components-duration").at(elemIndex);
 
-  const oldEndsAt = moment(silenceFormStore.data.endsAt);
+  const oldEndsAt = new Date(silenceFormStore.data.endsAt);
 
   elem.simulate("wheel", { deltaY: deltaY });
   // fire real event so cancel listener will trigger
@@ -431,7 +442,10 @@ const ValidateDurationWheel = (elemIndex, deltaY, expectedDiff) => {
   expect(silenceFormStore.data.endsAt.toISOString()).not.toBe(
     oldEndsAt.toISOString()
   );
-  const diffMS = silenceFormStore.data.endsAt.diff(oldEndsAt);
+  const diffMS = differenceInMilliseconds(
+    silenceFormStore.data.endsAt,
+    oldEndsAt
+  );
   expect(diffMS).toBe(expectedDiff);
 };
 
@@ -486,8 +500,8 @@ describe("<TabContentDuration />", () => {
 });
 
 const SetDurationTo = (hours, minutes) => {
-  const startsAt = moment([2060, 1, 1, 0, 0, 0]);
-  const endsAt = moment(startsAt).add(hours, "hours").add(minutes, "minutes");
+  const startsAt = new Date(2060, 1, 1, 0, 0, 0);
+  const endsAt = addMinutes(addHours(startsAt, hours), minutes);
   silenceFormStore.data.startsAt = startsAt;
   silenceFormStore.data.endsAt = endsAt;
 };

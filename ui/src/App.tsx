@@ -45,12 +45,6 @@ const FaviconBadge = React.lazy(() =>
   }))
 );
 
-const MomentPolledTimer = React.lazy(() =>
-  import("Components/MomentPolledTimer").then((module) => ({
-    default: module.MomentPolledTimer,
-  }))
-);
-
 interface UIDefaults {
   Refresh: number;
   HideFiltersWhenIdle: boolean;
@@ -162,7 +156,6 @@ const App: FunctionComponent<AppProps> = ({ defaultFilters, uiDefaults }) => {
       <React.Suspense fallback={null}>
         <FaviconBadge alertStore={alertStore} />
         <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
-        <MomentPolledTimer />
       </React.Suspense>
     </ErrorBoundary>
   ));

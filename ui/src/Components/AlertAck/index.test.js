@@ -250,7 +250,7 @@ describe("<AlertAck />", () => {
     await MountAndClick();
     expect(JSON.parse(fetchMock.calls()[0][1].body)).toEqual({
       comment:
-        "PREFIX This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
+        "PREFIX This alert was acknowledged using karma on Tue, 01 Feb 2000 00:00:00 GMT",
       createdBy: "karma/ui",
       endsAt: "2000-02-01T00:02:03.000Z",
       matchers: [
@@ -268,7 +268,7 @@ describe("<AlertAck />", () => {
     await MountAndClick();
     expect(JSON.parse(fetchMock.calls()[0][1].body)).toEqual({
       comment:
-        "This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
+        "This alert was acknowledged using karma on Tue, 01 Feb 2000 00:00:00 GMT",
       createdBy: "me",
       endsAt: "2000-02-01T00:03:57.000Z",
       matchers: [
@@ -288,7 +288,7 @@ describe("<AlertAck />", () => {
     await MountAndClick();
     expect(JSON.parse(fetchMock.calls()[0][1].body)).toEqual({
       comment:
-        "FOO: This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
+        "FOO: This alert was acknowledged using karma on Tue, 01 Feb 2000 00:00:00 GMT",
       createdBy: "auth@example.com",
       endsAt: "2000-02-01T00:03:42.000Z",
       matchers: [
@@ -309,7 +309,7 @@ describe("<AlertAck />", () => {
     await MountAndClick();
     expect(JSON.parse(fetchMock.calls()[0][1].body)).toEqual({
       comment:
-        "FOO: This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
+        "FOO: This alert was acknowledged using karma on Tue, 01 Feb 2000 00:00:00 GMT",
       createdBy: "bob@example.com",
       endsAt: "2000-02-01T00:03:42.000Z",
       matchers: [
@@ -328,7 +328,7 @@ describe("<AlertAck />", () => {
     await MountAndClick();
     expect(JSON.parse(fetchMock.calls()[0][1].body)).toEqual({
       comment:
-        "FOO: This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT+0000",
+        "FOO: This alert was acknowledged using karma on Tue, 01 Feb 2000 00:00:00 GMT",
       createdBy: "me",
       endsAt: "2000-02-01T00:03:42.000Z",
       matchers: [

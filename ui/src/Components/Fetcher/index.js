@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { reaction } from "mobx";
 
-import moment from "moment";
+import addSeconds from "date-fns/addSeconds";
 
 import { AlertStore, AlertStoreStatuses } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -50,12 +50,12 @@ const Fetcher = ({ alertStore, settingsStore }) => {
   };
 
   const fetchIfIdle = () => {
-    const nextTick = moment(alertStore.status.lastUpdateAt).add(
-      settingsStore.fetchConfig.config.interval,
-      "seconds"
+    const nextTick = addSeconds(
+      alertStore.status.lastUpdateAt,
+      settingsStore.fetchConfig.config.interval
     );
 
-    const pastDeadline = moment().isSameOrAfter(nextTick);
+    const pastDeadline = new Date() >= nextTick;
 
     const status = alertStore.status.value.toString();
     const updateInProgress =

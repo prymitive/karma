@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { toJS } from "mobx";
 import { useObserver } from "mobx-react-lite";
 
-import moment from "moment";
+import addSeconds from "date-fns/addSeconds";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
@@ -62,17 +62,16 @@ const AlertAck = ({ alertStore, silenceFormStore, group }) => {
       const commentPrefix = toJS(
         alertStore.settings.values.alertAcknowledgement.commentPrefix
       );
+      const now = new Date();
       c.push({
         payload: GenerateAlertmanagerSilenceData(
-          moment.utc(),
-          moment.utc().add(durationSeconds, "seconds"),
+          now,
+          addSeconds(now, durationSeconds),
           MatchersFromGroup(group, [], group.alerts, true),
           author,
           `${
             commentPrefix ? commentPrefix + " " : ""
-          }This alert was acknowledged using karma on ${moment
-            .utc()
-            .toString()}`
+          }This alert was acknowledged using karma on ${now.toUTCString()}`
         ),
         clusterName: clusterName,
         members: clusterMembers,
