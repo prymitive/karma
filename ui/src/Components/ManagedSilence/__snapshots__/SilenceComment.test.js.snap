@@ -28,10 +28,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed 1`] = `
         — me@example.com
       </span>
       <span class=\\"badge badge-danger align-text-bottom p-1\\">
-        Expired
-        <time datetime=\\"946688400000\\">
-          20 years ago
-        </time>
+        Expired 20 years ago
       </span>
     </div>
   </div>
@@ -98,10 +95,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
         ha
       </span>
       <span class=\\"badge badge-danger align-text-bottom p-1\\">
-        Expired
-        <time datetime=\\"946688400000\\">
-          20 years ago
-        </time>
+        Expired 20 years ago
       </span>
     </div>
   </div>

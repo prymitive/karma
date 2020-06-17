@@ -1,10 +1,8 @@
-import moment from "moment";
-
 import { MockAlert, MockAlertGroup, MockSilence } from "./Alerts";
 
 const EmptyAPIResponse = () => ({
   status: "success",
-  timestamp: moment().toISOString(),
+  timestamp: new Date().toISOString(),
   version: "fakeVersion",
   upstreams: {
     counters: { total: 1, healthy: 1, failed: 0 },

@@ -4,7 +4,6 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import moment from "moment";
 import { advanceTo, clear } from "jest-date-mock";
 
 import { MockSilence } from "__mocks__/Alerts";
@@ -20,7 +19,7 @@ let cluster;
 let silence;
 
 beforeEach(() => {
-  advanceTo(moment.utc([2000, 0, 1, 0, 30, 0]));
+  advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
 
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
@@ -169,7 +168,7 @@ describe("<ManagedSilence />", () => {
   });
 
   it("shows Recreate button on expired silence", () => {
-    advanceTo(moment.utc([2000, 0, 1, 23, 30, 0]));
+    advanceTo(new Date(Date.UTC(2000, 0, 1, 23, 30, 0)));
     const tree = MountedManagedSilence();
     tree.find("svg.text-muted.cursor-pointer").simulate("click");
 

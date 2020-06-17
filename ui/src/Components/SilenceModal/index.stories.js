@@ -4,7 +4,8 @@ import fetchMock from "fetch-mock";
 
 import { storiesOf } from "@storybook/react";
 
-import moment from "moment";
+import addHours from "date-fns/addHours";
+import addDays from "date-fns/addDays";
 
 import { MockSilence } from "__mocks__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
@@ -105,8 +106,8 @@ storiesOf("SilenceModal", module)
     silenceFormStore.data.comment = "fake silence";
 
     silenceFormStore.data.silenceID = "1234567890";
-    silenceFormStore.data.startsAt = moment();
-    silenceFormStore.data.endsAt = moment().add(2, "hour").add(10, "day");
+    silenceFormStore.data.startsAt = new Date();
+    silenceFormStore.data.endsAt = addDays(addHours(new Date(), 2), 10);
 
     silenceFormStore.tab.current = SilenceTabNames.Editor;
 

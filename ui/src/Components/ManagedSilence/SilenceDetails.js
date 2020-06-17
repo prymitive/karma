@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-import moment from "moment";
-import Moment from "react-moment";
+import parseISO from "date-fns/parseISO";
 
 import copy from "copy-to-clipboard";
 
@@ -22,6 +21,7 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { QueryOperators } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { RenderLinkAnnotation } from "Components/Grid/AlertGrid/AlertGroup/Annotation";
+import { DateFromNow } from "Components/DateFromNow";
 import { DeleteSilence } from "./DeleteSilence";
 
 const SilenceIDCopyButton = ({ id }) => {
@@ -51,7 +51,7 @@ const SilenceDetails = ({
   onEditSilence,
   isUpper,
 }) => {
-  let isExpired = moment(silence.endsAt) < moment();
+  const isExpired = parseISO(silence.endsAt) < new Date();
   let expiresClass = "";
   let expiresLabel = "Expires";
   if (isExpired) {
@@ -78,7 +78,7 @@ const SilenceDetails = ({
                 icon={faCalendarCheck}
                 fixedWidth
               />
-              Started <Moment fromNow>{silence.startsAt}</Moment>
+              Started <DateFromNow timestamp={silence.startsAt} />
             </span>
             <span
               className={`badge ${expiresClass} px-1 mr-1 components-label`}
@@ -88,7 +88,7 @@ const SilenceDetails = ({
                 icon={faCalendarTimes}
                 fixedWidth
               />
-              {expiresLabel} <Moment fromNow>{silence.endsAt}</Moment>
+              {expiresLabel} <DateFromNow timestamp={silence.endsAt} />
             </span>
           </div>
           <div className="my-1 d-flex flex-row">

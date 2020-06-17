@@ -1,4 +1,4 @@
-import moment from "moment";
+import subMinutes from "date-fns/subMinutes";
 
 import { MockAlert, MockAlertGroup, MockSilence } from "./Alerts";
 
@@ -49,7 +49,7 @@ const MockGroup = (groupName, alertCount, active, suppressed, unprocessed) => {
       { instance: `instance${i}` },
       state
     );
-    alert.startsAt = moment().subtract(alertCount, "minutes").toISOString();
+    alert.startsAt = subMinutes(new Date(), alertCount).toISOString();
     alerts.push(alert);
   }
   const group = MockAlertGroup(

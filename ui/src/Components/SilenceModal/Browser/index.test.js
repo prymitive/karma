@@ -5,7 +5,6 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import moment from "moment";
 import { advanceTo, clear } from "jest-date-mock";
 
 import { MockSilence } from "__mocks__/Alerts";
@@ -25,7 +24,7 @@ let cluster;
 let silence;
 
 beforeEach(() => {
-  advanceTo(moment.utc([2000, 0, 1, 0, 30, 0]));
+  advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
   jest.useFakeTimers();
 
   alertStore = new AlertStore([]);
@@ -108,13 +107,13 @@ describe("<Browser />", () => {
     settingsStore.fetchConfig.config.interval = 1;
     MountedBrowser();
 
-    advanceTo(moment.utc([2000, 0, 1, 0, 30, 2]));
+    advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 2)));
     act(() => jest.runOnlyPendingTimers());
 
-    advanceTo(moment.utc([2000, 0, 1, 0, 30, 4]));
+    advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 4)));
     act(() => jest.runOnlyPendingTimers());
 
-    advanceTo(moment.utc([2000, 0, 1, 0, 30, 6]));
+    advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 6)));
     act(() => jest.runOnlyPendingTimers());
 
     expect(useFetchGet.fetch.calls).toHaveLength(4);
@@ -364,7 +363,7 @@ describe("<Browser />", () => {
     tree.unmount();
 
     act(() => {
-      advanceTo(moment.utc([2000, 0, 1, 0, 30, 59]));
+      advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 59)));
       jest.runOnlyPendingTimers();
     });
 

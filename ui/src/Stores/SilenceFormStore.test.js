@@ -1,4 +1,5 @@
-import moment from "moment";
+import differenceInMilliseconds from "date-fns/differenceInMilliseconds";
+import isSameDay from "date-fns/isSameDay";
 
 import {
   MockAlert,
@@ -74,13 +75,13 @@ describe("SilenceFormStore.toggle", () => {
 
 describe("SilenceFormStore.data", () => {
   it("resetStartEnd() sets startsAt and endsAt to defaults", () => {
-    store.data.startsAt = moment([2000, 1, 1, 0, 1, 0]);
-    store.data.endsAt = moment([2000, 1, 1, 1, 2, 0]);
-    expect(store.data.startsAt.isSame([2000, 1, 1], "day")).toBe(true);
-    expect(store.data.endsAt.isSame([2000, 1, 1], "day")).toBe(true);
+    store.data.startsAt = new Date(2000, 1, 1, 0, 1, 0);
+    store.data.endsAt = new Date(2000, 1, 1, 1, 2, 0);
+    expect(isSameDay(store.data.startsAt, new Date(2000, 1, 1))).toBe(true);
+    expect(isSameDay(store.data.endsAt, new Date(2000, 1, 1))).toBe(true);
     store.data.resetStartEnd();
-    expect(store.data.startsAt.isSame([2000, 1, 1], "day")).toBe(false);
-    expect(store.data.endsAt.isSame([2000, 1, 1], "day")).toBe(false);
+    expect(isSameDay(store.data.startsAt, new Date(2000, 1, 1))).toBe(false);
+    expect(isSameDay(store.data.endsAt, new Date(2000, 1, 1))).toBe(false);
   });
 
   it("resetProgress() sets currentStage to UserInput", () => {
@@ -303,11 +304,11 @@ describe("SilenceFormStore.data", () => {
       })
     );
 
-    expect(store.data.startsAt.utc().toISOString()).toBe(
-      moment.utc([2000, 0, 1, 0, 0, 0]).toISOString()
+    expect(store.data.startsAt.toISOString()).toBe(
+      new Date(Date.UTC(2000, 0, 1, 0, 0, 0)).toISOString()
     );
-    expect(store.data.endsAt.utc().toISOString()).toBe(
-      moment.utc([2000, 0, 1, 1, 0, 0]).toISOString()
+    expect(store.data.endsAt.toISOString()).toBe(
+      new Date(Date.UTC(2000, 0, 1, 1, 0, 0)).toISOString()
     );
 
     expect(store.data.author).toBe("me@example.com");
@@ -331,8 +332,8 @@ describe("SilenceFormStore.data", () => {
     store.data.fillMatchersFromGroup(group, []);
     // add empty matcher so we test empty string rendering
     store.data.addEmptyMatcher();
-    store.data.startsAt = moment.utc([2000, 1, 1, 0, 0, 0]);
-    store.data.endsAt = moment.utc([2000, 1, 1, 1, 0, 0]);
+    store.data.startsAt = new Date(Date.UTC(2000, 1, 1, 0, 0, 0));
+    store.data.endsAt = new Date(Date.UTC(2000, 1, 1, 1, 0, 0));
     store.data.author = "me@example.com";
     store.data.comment = "toAlertmanagerPayload test";
     expect(store.data.toAlertmanagerPayload).toMatchSnapshot();
@@ -406,8 +407,8 @@ describe("SilenceFormStore.data.isValid", () => {
 
 describe("SilenceFormStore.data startsAt & endsAt validation", () => {
   it("toDuration returns correct duration for 5d 0h 1m", () => {
-    store.data.startsAt = moment([2000, 1, 1, 0, 0, 0]);
-    store.data.endsAt = moment([2000, 1, 6, 0, 1, 15]);
+    store.data.startsAt = new Date(2000, 1, 1, 0, 0, 0);
+    store.data.endsAt = new Date(2000, 1, 6, 0, 1, 15);
     expect(store.data.toDuration).toMatchObject({
       days: 5,
       hours: 0,
@@ -416,8 +417,8 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
   });
 
   it("toDuration returns correct duration for 2h 15m", () => {
-    store.data.startsAt = moment([2000, 1, 1, 0, 0, 0]);
-    store.data.endsAt = moment([2000, 1, 1, 2, 15, 0]);
+    store.data.startsAt = new Date(2000, 1, 1, 0, 0, 0);
+    store.data.endsAt = new Date(2000, 1, 1, 2, 15, 0);
     expect(store.data.toDuration).toMatchObject({
       days: 0,
       hours: 2,
@@ -426,8 +427,8 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
   });
 
   it("toDuration returns correct duration for 59m", () => {
-    store.data.startsAt = moment([2000, 1, 1, 0, 10, 0]);
-    store.data.endsAt = moment([2000, 1, 1, 1, 9, 0]);
+    store.data.startsAt = new Date(2000, 1, 1, 0, 10, 0);
+    store.data.endsAt = new Date(2000, 1, 1, 1, 9, 0);
     expect(store.data.toDuration).toMatchObject({
       days: 0,
       hours: 0,
@@ -436,8 +437,8 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
   });
 
   it("verifyStarEnd() doesn't do anything if endsAt if after startsAt", () => {
-    const startsAt = moment([2063, 1, 1, 0, 0, 0]);
-    const endsAt = moment([2063, 1, 1, 1, 1, 0]);
+    const startsAt = new Date(2063, 1, 1, 0, 0, 0);
+    const endsAt = new Date(2063, 1, 1, 1, 1, 0);
     store.data.startsAt = startsAt;
     store.data.endsAt = endsAt;
     store.data.verifyStarEnd();
@@ -446,57 +447,58 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
   });
 
   it("verifyStarEnd() updates startsAt if it's before now()", () => {
-    const now = moment().second(0);
-    const startsAt = moment([2000, 1, 1, 0, 0, 1]);
-    const endsAt = moment([2063, 1, 1, 0, 0, 0]);
+    const now = new Date();
+    now.setSeconds(0);
+    const startsAt = new Date(2000, 1, 1, 0, 0, 1);
+    const endsAt = new Date(2063, 1, 1, 0, 0, 0);
     store.data.startsAt = startsAt;
     store.data.endsAt = endsAt;
     store.data.verifyStarEnd();
-    expect(store.data.startsAt.isSameOrAfter(now)).toBeTruthy();
+    expect(store.data.startsAt >= now).toBeTruthy();
     expect(store.data.endsAt.toISOString()).toBe(endsAt.toISOString());
   });
 
   it("verifyStarEnd() updates endsAt if it's before startsAt", () => {
-    const startsAt = moment([2063, 1, 1, 0, 0, 1]);
-    const endsAt = moment([2063, 1, 1, 0, 0, 0]);
+    const startsAt = new Date(2063, 1, 1, 0, 0, 1);
+    const endsAt = new Date(2063, 1, 1, 0, 0, 0);
     store.data.startsAt = startsAt;
     store.data.endsAt = endsAt;
     store.data.verifyStarEnd();
     expect(store.data.startsAt.toISOString()).toBe(startsAt.toISOString());
     expect(store.data.endsAt.toISOString()).toBe(
-      moment([2063, 1, 1, 0, 1, 1]).toISOString()
+      new Date(2063, 1, 1, 0, 1, 1).toISOString()
     );
   });
 
   it("incStart(7) adds 7 minutes to startsAt", () => {
-    const startsAt = moment([2063, 1, 1, 0, 0, 1]);
+    const startsAt = new Date(2063, 1, 1, 0, 0, 1);
     store.data.startsAt = startsAt;
     store.data.incStart(7);
-    const diffMS = store.data.startsAt.diff(startsAt);
+    const diffMS = differenceInMilliseconds(store.data.startsAt, startsAt);
     expect(diffMS).toBe(7 * 60 * 1000);
   });
 
   it("decStart(14) subtracts 14 minutes from startsAt", () => {
-    const startsAt = moment([2063, 1, 1, 0, 0, 1]);
+    const startsAt = new Date(2063, 1, 1, 0, 0, 1);
     store.data.startsAt = startsAt;
     store.data.decStart(14);
-    const diffMS = store.data.startsAt.diff(startsAt);
+    const diffMS = differenceInMilliseconds(store.data.startsAt, startsAt);
     expect(diffMS).toBe(-14 * 60 * 1000);
   });
 
   it("incEnd(120) adds 120 minutes to endsAt", () => {
-    const endsAt = moment([2063, 1, 1, 0, 0, 1]);
+    const endsAt = new Date(2063, 1, 1, 0, 0, 1);
     store.data.endsAt = endsAt;
     store.data.incEnd(120);
-    const diffMS = store.data.endsAt.diff(endsAt);
+    const diffMS = differenceInMilliseconds(store.data.endsAt, endsAt);
     expect(diffMS).toBe(120 * 60 * 1000);
   });
 
   it("decEnd(1) subtracts 1 minute from endsAt", () => {
-    const endsAt = moment([2063, 1, 1, 0, 0, 1]);
+    const endsAt = new Date(2063, 1, 1, 0, 0, 1);
     store.data.endsAt = endsAt;
     store.data.decEnd(1);
-    const diffMS = store.data.endsAt.diff(endsAt);
+    const diffMS = differenceInMilliseconds(store.data.endsAt, endsAt);
     expect(diffMS).toBe(-1 * 60 * 1000);
   });
 });

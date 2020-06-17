@@ -32,10 +32,7 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
             — me@example.com
           </span>
           <span class=\\"badge badge-light nmb-05 align-text-bottom p-1\\">
-            Expires
-            <time datetime=\\"946688400000\\">
-              in 30 minutes
-            </time>
+            Expires in 30 minutes
             <div class=\\"progress silence-progress\\">
               <div class=\\"progress-bar bg-success\\"
                    role=\\"progressbar\\"
@@ -166,10 +163,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
                 >
                 </path>
               </svg>
-              Started
-              <time datetime=\\"946684800000\\">
-                30 minutes ago
-              </time>
+              Started 30 minutes ago
             </span>
             <span class=\\"badge  px-1 mr-1 components-label\\">
               <svg aria-hidden=\\"true\\"
@@ -186,10 +180,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
                 >
                 </path>
               </svg>
-              Expires
-              <time datetime=\\"946688400000\\">
-                in 30 minutes
-              </time>
+              Expires in 30 minutes
             </span>
           </div>
           <div class=\\"my-1 d-flex flex-row\\">

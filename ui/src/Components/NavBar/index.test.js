@@ -3,8 +3,6 @@ import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
-import moment from "moment";
-
 import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -26,8 +24,8 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
   settingsStore.filterBarConfig.config.autohide = true;
   // fix startsAt & endsAt dates so they don't change between tests
-  silenceFormStore.data.startsAt = moment([2018, 1, 30, 10, 25, 50]).utc();
-  silenceFormStore.data.endsAt = moment([2018, 1, 30, 11, 25, 50]).utc();
+  silenceFormStore.data.startsAt = new Date(Date.UTC(2018, 1, 30, 10, 25, 50));
+  silenceFormStore.data.endsAt = new Date(Date.UTC(2018, 1, 30, 11, 25, 50));
 });
 
 afterEach(() => {

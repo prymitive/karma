@@ -5,8 +5,6 @@ import { useObserver } from "mobx-react-lite";
 
 import { Manager, Reference, Popper } from "react-popper";
 
-import Moment from "react-moment";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
@@ -17,6 +15,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, SilenceTabNames } from "Stores/SilenceFormStore";
 import { FetchPauser } from "Components/FetchPauser";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
+import { DateFromNow } from "Components/DateFromNow";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
 
 const onSilenceClick = (alertStore, silenceFormStore, group, alert) => {
@@ -130,7 +129,7 @@ const AlertMenu = ({
                 style={{ width: "0.8rem" }}
                 icon={faCaretDown}
               />
-              <Moment fromNow>{alert.startsAt}</Moment>
+              <DateFromNow timestamp={alert.startsAt} />
             </span>
           )}
         </Reference>

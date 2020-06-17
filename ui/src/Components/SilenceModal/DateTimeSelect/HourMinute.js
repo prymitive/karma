@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react-lite";
 
-import moment from "moment";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp } from "@fortawesome/free-solid-svg-icons/faAngleUp";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons/faAngleDown";
@@ -59,8 +57,8 @@ const HourMinute = observer(
       }
     };
 
-    const hour = dateValue.hour();
-    const minute = dateValue.minute();
+    const hour = dateValue.getHours();
+    const minute = dateValue.getMinutes();
 
     return (
       <div
@@ -117,7 +115,7 @@ const HourMinute = observer(
   }
 );
 HourMinute.propTypes = {
-  dateValue: PropTypes.instanceOf(moment).isRequired,
+  dateValue: PropTypes.instanceOf(Date).isRequired,
   onHourInc: PropTypes.func.isRequired,
   onHourDec: PropTypes.func.isRequired,
   onMinuteInc: PropTypes.func.isRequired,

@@ -3,8 +3,6 @@ import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
-import moment from "moment";
-
 import { MockAlert, MockAlertGroup } from "__mocks__/Alerts";
 import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
@@ -52,9 +50,9 @@ afterEach(() => {
 const MockAlerts = (alertCount) => {
   for (let i = 1; i <= alertCount; i++) {
     let alert = MockAlert([], { instance: `instance${i}` }, "active");
-    const startsAt = moment().toISOString();
-    alert.startsAt = startsAt;
-    alert.alertmanager[0].startsAt = startsAt;
+    const startsAt = new Date();
+    alert.startsAt = startsAt.toISOString();
+    alert.alertmanager[0].startsAt = startsAt.toISOString();
     group.alerts.push(alert);
   }
 };

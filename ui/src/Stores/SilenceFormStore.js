@@ -2,7 +2,13 @@ import { observable, action, computed } from "mobx";
 
 import uniqueId from "lodash.uniqueid";
 
-import moment from "moment";
+import parseISO from "date-fns/parseISO";
+import addHours from "date-fns/addHours";
+import addMinutes from "date-fns/addMinutes";
+import subMinutes from "date-fns/subMinutes";
+import differenceInDays from "date-fns/differenceInDays";
+import differenceInHours from "date-fns/differenceInHours";
+import differenceInMinutes from "date-fns/differenceInMinutes";
 
 const NewEmptyMatcher = () => {
   return {
@@ -178,8 +184,8 @@ class SilenceFormStore {
       silenceID: null,
       alertmanagers: [],
       matchers: [],
-      startsAt: moment(),
-      endsAt: moment().add(1, "hour"),
+      startsAt: new Date(),
+      endsAt: addHours(new Date(), 1),
       comment: "",
       author: "",
 
@@ -201,8 +207,8 @@ class SilenceFormStore {
       },
 
       resetStartEnd() {
-        this.startsAt = moment();
-        this.endsAt = moment().add(1, "hour");
+        this.startsAt = new Date();
+        this.endsAt = addHours(new Date(), 1);
       },
 
       resetProgress() {
@@ -260,44 +266,51 @@ class SilenceFormStore {
         }
         this.matchers = matchers;
 
-        this.startsAt = moment(silence.startsAt);
-        this.endsAt = moment(silence.endsAt);
+        this.startsAt = parseISO(silence.startsAt);
+        this.endsAt = parseISO(silence.endsAt);
         this.comment = silence.comment;
         this.author = silence.createdBy;
       },
 
       verifyStarEnd() {
-        const now = moment().second(0);
-        if (this.startsAt.isBefore(now)) {
+        const now = new Date();
+        now.setSeconds(0);
+        if (this.startsAt < now) {
           this.startsAt = now;
         }
 
-        if (this.endsAt.isSameOrBefore(this.startsAt)) {
-          this.endsAt = moment(this.startsAt).add(1, "minutes");
+        if (this.endsAt <= this.startsAt) {
+          this.endsAt = addMinutes(this.startsAt, 1);
         }
       },
       incStart(minutes) {
-        this.startsAt = moment(this.startsAt).add(minutes, "minutes");
+        this.startsAt = addMinutes(this.startsAt, minutes);
         this.verifyStarEnd();
       },
       decStart(minutes) {
-        this.startsAt = moment(this.startsAt).subtract(minutes, "minutes");
+        this.startsAt = subMinutes(this.startsAt, minutes);
         this.verifyStarEnd();
       },
 
       incEnd(minutes) {
-        this.endsAt = moment(this.endsAt).add(minutes, "minutes");
+        this.endsAt = addMinutes(this.endsAt, minutes);
         this.verifyStarEnd();
       },
       decEnd(minutes) {
-        this.endsAt = moment(this.endsAt).subtract(minutes, "minutes");
+        this.endsAt = subMinutes(this.endsAt, minutes);
         this.verifyStarEnd();
       },
 
       get toAlertmanagerPayload() {
+        const startsAt = new Date(this.startsAt);
+        startsAt.setSeconds(0);
+        startsAt.setMilliseconds(0);
+        const endsAt = new Date(this.endsAt);
+        endsAt.setSeconds(0);
+        endsAt.setMilliseconds(0);
         return GenerateAlertmanagerSilenceData(
-          this.startsAt.second(0).millisecond(0),
-          this.endsAt.second(0).millisecond(0),
+          startsAt,
+          endsAt,
           this.matchers,
           this.author,
           this.comment,
@@ -307,9 +320,9 @@ class SilenceFormStore {
 
       get toDuration() {
         const data = {
-          days: this.endsAt.diff(this.startsAt, "days"),
-          hours: this.endsAt.diff(this.startsAt, "hours") % 24,
-          minutes: this.endsAt.diff(this.startsAt, "minutes") % 60,
+          days: differenceInDays(this.endsAt, this.startsAt),
+          hours: differenceInHours(this.endsAt, this.startsAt) % 24,
+          minutes: differenceInMinutes(this.endsAt, this.startsAt) % 60,
         };
         return data;
       },
