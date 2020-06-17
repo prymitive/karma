@@ -41,7 +41,8 @@ def normalizePath(path):
 def mergeFiles(allFiles):
     files = {}
     for path, meta in allFiles.items():
-        p = normalizePath(path)
+        np = normalizePath(path)
+        p = os.path.dirname(np) or np
         if p not in files:
             files[p] = 0
         files[p] += meta['size']
