@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import { useObserver } from "mobx-react-lite";
 
-import { Fade } from "react-reveal";
+import { CSSTransition } from "react-transition-group";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
@@ -34,14 +34,19 @@ FetchError.propTypes = {
 };
 
 const Placeholder = ({ content }) => {
-  const theme = React.useContext(ThemeContext);
+  const context = React.useContext(ThemeContext);
 
   return (
-    <Fade in={theme.animations.in} duration={theme.animations.duration}>
+    <CSSTransition
+      in={true}
+      appear={true}
+      classNames="components-animation-fade"
+      timeout={context.animations.duration}
+    >
       <div className="jumbotron bg-transparent">
         <h1 className="display-5 text-placeholder text-center">{content}</h1>
       </div>
-    </Fade>
+    </CSSTransition>
   );
 };
 Placeholder.propTypes = {

@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 
 import { observer } from "mobx-react-lite";
 
-import Flash from "react-reveal/Flash";
+import { CSSTransition } from "react-transition-group";
 
 import { AlertStore } from "Stores/AlertStore";
 import { QueryOperators, FormatQuery } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GetClassAndStyle } from "Components/Labels/Utils";
+import { useFlashTransition } from "Hooks/useFlashTransition";
 
 // Same as FilteringLabel but for labels that are counters (usually @state)
 // and only renders a pill badge with the counter, it doesn't render anything
@@ -23,6 +24,8 @@ const FilteringCounterBadge = observer(
     alwaysVisible,
     defaultColor,
   }) => {
+    const { ref, props } = useFlashTransition(counter);
+
     const handleClick = useCallback(
       (event) => {
         // left click       => apply foo=bar filter
@@ -52,8 +55,9 @@ const FilteringCounterBadge = observer(
       <TooltipWrapper
         title={`Click to only show ${name}=${value} alerts or Alt+Click to hide them`}
       >
-        <Flash spy={counter}>
+        <CSSTransition {...props}>
           <span
+            ref={ref}
             className={
               themed
                 ? cs.className
@@ -68,7 +72,7 @@ const FilteringCounterBadge = observer(
           >
             {counter}
           </span>
-        </Flash>
+        </CSSTransition>
       </TooltipWrapper>
     );
   }

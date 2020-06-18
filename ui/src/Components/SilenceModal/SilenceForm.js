@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import { useObserver } from "mobx-react-lite";
 
-import Flash from "react-reveal/Flash";
-
 import copy from "copy-to-clipboard";
+
+import { CSSTransition } from "react-transition-group";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
@@ -26,6 +26,7 @@ import {
 } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
 import { QueryOperators } from "Common/Query";
+import { useFlashTransition } from "Hooks/useFlashTransition";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { ToggleIcon } from "Components/ToggleIcon";
 import { AlertManagerInput } from "./AlertManagerInput";
@@ -44,6 +45,8 @@ const ShareButton = ({ silenceFormStore }) => {
     window.location.pathname,
   ].join("");
 
+  const { ref, props } = useFlashTransition(clickCount);
+
   return useObserver(() => (
     <div className="input-group mb-3">
       <div className="input-group-prepend">
@@ -59,7 +62,7 @@ const ShareButton = ({ silenceFormStore }) => {
         value={`${baseURL}?m=${silenceFormStore.data.toBase64}`}
         onChange={() => {}}
       />
-      <div className="input-group-append">
+      <div ref={ref} className="input-group-append">
         <span
           className="input-group-text cursor-pointer"
           onClick={() => {
@@ -68,9 +71,9 @@ const ShareButton = ({ silenceFormStore }) => {
           }}
         >
           <TooltipWrapper title="Copy to clipboard">
-            <Flash spy={clickCount} duration={500}>
+            <CSSTransition {...props}>
               <FontAwesomeIcon icon={faCopy} />
-            </Flash>
+            </CSSTransition>
           </TooltipWrapper>
         </span>
       </div>

@@ -18,6 +18,10 @@ import {
   ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 
+import { config } from "react-transition-group";
+
+config.disabled = true;
+
 const { percyAddon, serializeStories } = createPercyAddon();
 setAddon(percyAddon);
 
@@ -36,7 +40,6 @@ addDecorator((story) => {
           value={{
             reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
             animations: {
-              in: true,
               duration: 0,
             },
           }}
@@ -58,7 +61,6 @@ addDecorator((story) => {
           value={{
             reactSelectStyles: ReactSelectStyles(ReactSelectColors.Dark),
             animations: {
-              in: true,
               duration: 0,
             },
           }}

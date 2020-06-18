@@ -8,7 +8,7 @@ import ReactResizeDetector from "react-resize-detector";
 
 import IdleTimer from "react-idle-timer";
 
-import { Fade } from "react-reveal";
+import { CSSTransition } from "react-transition-group";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -96,7 +96,15 @@ const NavBar = ({ alertStore, settingsStore, silenceFormStore, fixedTop }) => {
       timeout={IsMobile() ? MobileIdleTimeout : DesktopIdleTimeout}
     >
       <div className={`container p-0 m-0 mw-100 ${containerClass}`}>
-        <Fade top when={!isIdle}>
+        <CSSTransition
+          classNames="components-animation-navbar"
+          in={!isIdle}
+          timeout={context.animations.duration}
+          onEntering={() => {}}
+          onExited={() => {}}
+          enter
+          exit
+        >
           <nav
             className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block ${
               fixedTop ? "fixed-top" : "w-100"
@@ -129,7 +137,7 @@ const NavBar = ({ alertStore, settingsStore, silenceFormStore, fixedTop }) => {
               settingsStore={settingsStore}
             />
           </nav>
-        </Fade>
+        </CSSTransition>
       </div>
     </IdleTimer>
   ));

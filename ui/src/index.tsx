@@ -4,6 +4,9 @@
 import "react-app-polyfill/ie11";
 import "react-app-polyfill/stable";
 
+// https://www.npmjs.com/package/react-intersection-observer#polyfill
+import "intersection-observer";
+
 import React from "react";
 import ReactDOM from "react-dom";
 

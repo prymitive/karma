@@ -136,8 +136,7 @@ const App: FunctionComponent<AppProps> = ({ defaultFilters, uiDefaults }) => {
               ? ReactSelectStyles(ReactSelectColors.Dark)
               : ReactSelectStyles(ReactSelectColors.Light),
           animations: {
-            enabled: true,
-            duration: 1000,
+            duration: 500,
           },
         }}
       >

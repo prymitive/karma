@@ -3,12 +3,13 @@ import PropTypes from "prop-types";
 
 import { useObserver } from "mobx-react-lite";
 
-import Flash from "react-reveal/Flash";
+import { CSSTransition } from "react-transition-group";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
 import { AlertStore } from "Stores/AlertStore";
+import { useFlashTransition } from "Hooks/useFlashTransition";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { Modal } from "Components/Modal";
 
@@ -24,11 +25,14 @@ const OverviewModal = ({ alertStore }) => {
 
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 
+  const { ref, props } = useFlashTransition(alertStore.info.totalAlerts);
+
   return useObserver(() => (
     <React.Fragment>
       <TooltipWrapper title="Show alert overview">
-        <Flash spy={alertStore.info.totalAlerts}>
+        <CSSTransition {...props}>
           <div
+            ref={ref}
             className={`text-center d-inline-block cursor-pointer navbar-brand m-0 components-navbar-button  ${
               isVisible ? "border-info" : ""
             }`}
@@ -36,7 +40,7 @@ const OverviewModal = ({ alertStore }) => {
           >
             {alertStore.info.totalAlerts}
           </div>
-        </Flash>
+        </CSSTransition>
       </TooltipWrapper>
       <Modal size="xl" isOpen={isVisible} toggleOpen={toggle}>
         <React.Suspense

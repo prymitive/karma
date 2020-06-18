@@ -157,14 +157,14 @@ const MockGroupList = (count, alertPerGroup) => {
 
 describe("<Grid />", () => {
   it("renders only first 50 alert groups", () => {
-    MockGroupList(60, 5);
+    MockGroupList(55, 5);
     const tree = MountedGrid();
     const alertGroups = tree.find("AlertGroup");
     expect(alertGroups).toHaveLength(50);
   });
 
   it("appends 30 groups after clicking 'Load More' button", () => {
-    MockGroupList(100, 5);
+    MockGroupList(85, 5);
     const tree = MountedGrid();
     tree.find("button").simulate("click");
     const alertGroups = tree.find("AlertGroup");
@@ -186,6 +186,8 @@ describe("<Grid />", () => {
   });
 
   it("click on the grid toggle toggles all groups", () => {
+    jest.useFakeTimers();
+
     MockGroupList(10, 3);
     const tree = MountedGrid();
     const grid = MockGrid();
@@ -201,12 +203,18 @@ describe("<Grid />", () => {
     expect(tree.find("AlertGroup")).toHaveLength(10);
 
     tree.find("span.cursor-pointer").at(0).simulate("click");
+    act(() => jest.runOnlyPendingTimers());
     tree.update();
-    expect(tree.find("AlertGroup")).toHaveLength(0);
+    expect(tree.find("div.components-grid-alertgrid-alertgroup")).toHaveLength(
+      0
+    );
 
     tree.find("span.cursor-pointer").at(0).simulate("click");
+    act(() => jest.runOnlyPendingTimers());
     tree.update();
-    expect(tree.find("AlertGroup")).toHaveLength(10);
+    expect(tree.find("div.components-grid-alertgrid-alertgroup")).toHaveLength(
+      10
+    );
   });
 
   it("renders filter badge for grids with a value", () => {
