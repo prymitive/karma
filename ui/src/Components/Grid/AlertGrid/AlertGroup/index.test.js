@@ -111,6 +111,8 @@ describe("<AlertGroup />", () => {
         .hasClass("components-animation-fade-appear-done")
     ).toBe(false);
     tree.setProps({});
+    act(() => tree.find("RevealBase").at(0).props().onReveal());
+    tree.update();
     expect(
       tree
         .find("div.components-grid-alertgrid-alertgroup")
