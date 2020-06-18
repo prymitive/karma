@@ -31,7 +31,7 @@ require (
 	github.com/mitchellh/mapstructure v1.3.2
 	github.com/patrickmn/go-cache v2.1.1-0.20180815053127-5633e0862627+incompatible
 	github.com/pmezard/go-difflib v1.0.0
-	github.com/prometheus/client_golang v1.6.0
+	github.com/prometheus/client_golang v1.7.0
 	github.com/prometheus/common v0.10.0
 	github.com/rogpeppe/go-internal v1.6.0
 	github.com/sirupsen/logrus v1.6.0
