@@ -315,6 +315,63 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.comment).toBe("Mocked Silence");
   });
 
+  const tests = [
+    {
+      matcher: { name: "foo", value: "(bar1|bar2|bar3)", isRegex: true },
+      result: { name: "foo", values: ["bar1", "bar2", "bar3"] },
+    },
+    {
+      matcher: { name: "foo", value: "(bar1|bar2|bar3)", isRegex: false },
+      result: { name: "foo", values: ["(bar1|bar2|bar3)"] },
+    },
+    {
+      matcher: { name: "foo", value: "bar1|bar2|bar3)", isRegex: false },
+      result: { name: "foo", values: ["bar1|bar2|bar3)"] },
+    },
+    {
+      matcher: { name: "foo", value: "(bar1|bar2|bar3", isRegex: false },
+      result: { name: "foo", values: ["(bar1|bar2|bar3"] },
+    },
+    {
+      matcher: { name: "foo", value: "bar1|bar2|bar3", isRegex: true },
+      result: { name: "foo", values: ["bar1", "bar2", "bar3"] },
+    },
+    {
+      matcher: { name: "foo", value: "bar1|bar2|bar3", isRegex: false },
+      result: { name: "foo", values: ["bar1|bar2|bar3"] },
+    },
+    {
+      matcher: { name: "foo", value: "(.+|bar2|bar3)", isRegex: true },
+      result: { name: "foo", values: ["(.+|bar2|bar3)"] },
+    },
+    {
+      matcher: { name: "foo", value: "bar1|bar?|bar3)", isRegex: true },
+      result: { name: "foo", values: ["bar1|bar?|bar3)"] },
+    },
+    {
+      matcher: { name: "foo", value: "server(0|1)", isRegex: true },
+      result: { name: "foo", values: ["server(0|1)"] },
+    },
+  ];
+  for (const t of tests) {
+    it(`fillFormFromSilence() unpacks ${t.matcher.name}=${t.matcher.value} isRegex=${t.matcher.isRegex} into ${t.result.name}=${t.result.values}`, () => {
+      const silenceFormStorestore = new SilenceFormStore();
+      const alertmanager = MockAlertmanager();
+      const silence = MockSilence();
+      silence.matchers = [t.matcher];
+      silenceFormStorestore.data.fillFormFromSilence(alertmanager, silence);
+
+      expect(silenceFormStorestore.data.matchers).toHaveLength(1);
+      expect(silenceFormStorestore.data.matchers).toContainEqual(
+        expect.objectContaining({
+          name: t.result.name,
+          values: t.result.values.map((v) => ({ label: v, value: v })),
+          isRegex: t.matcher.isRegex,
+        })
+      );
+    });
+  }
+
   it("toAlertmanagerPayload constains id when store.data.silenceID is set", () => {
     store.data.silenceID = "12345";
     expect(store.data.toAlertmanagerPayload).toMatchObject({

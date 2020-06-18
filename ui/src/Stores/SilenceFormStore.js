@@ -260,7 +260,19 @@ class SilenceFormStore {
         for (const m of silence.matchers) {
           const matcher = NewEmptyMatcher();
           matcher.name = m.name;
-          matcher.values = [MatcherValueToObject(m.value)];
+
+          if (m.isRegex && m.value.match(/^\((\w+\|)+\w+\)$/)) {
+            matcher.values = m.value
+              .slice(1, -1)
+              .split("|")
+              .map((v) => MatcherValueToObject(v));
+          } else if (m.isRegex && m.value.match(/^(\w+\|)+\w+$/)) {
+            matcher.values = m.value
+              .split("|")
+              .map((v) => MatcherValueToObject(v));
+          } else {
+            matcher.values = [MatcherValueToObject(m.value)];
+          }
           matcher.isRegex = m.isRegex;
           matchers.push(matcher);
         }
