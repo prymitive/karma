@@ -1620,6 +1620,150 @@ func TestUpstreamStatus(t *testing.T) {
 				},
 			},
 		},
+		{
+			Name: "Cluster with name and errors",
+			mocks: []mockT{
+				{
+					uri:  "http://ha1.example.com/metrics",
+					code: 500,
+					body: `Error`,
+				},
+				{
+					uri:  "http://ha2.example.com/metrics",
+					code: 200,
+					body: `alertmanager_build_info{version="0.21.0"} 1`,
+				},
+				{
+					uri:  "http://ha1.example.com/api/v2/status",
+					code: 200,
+					body: `{
+	"cluster": {
+		"name": "AAAAAAAAAAAAAAAAAAAAAAAAAA",
+		"peers": [
+			{
+				"address": "10.16.0.1:9094",
+				"name": "AAAAAAAAAAAAAAAAAAAAAAAAAA"
+			},
+			{
+				"address": "10.16.0.1:9095",
+				"name": "BBBBBBBBBBBBBBBBBBBBBBBBBB"
+			}
+		],
+		"status": "ready"
+	},
+	"versionInfo": {
+		"version":"0.20.0"
+	}
+}`,
+				},
+				{
+					uri:  "http://ha2.example.com/api/v2/status",
+					code: 200,
+					body: `{
+	"cluster": {
+		"name": "BBBBBBBBBBBBBBBBBBBBBBBBBB",
+		"peers": [
+			{
+				"address": "10.16.0.1:9094",
+				"name": "AAAAAAAAAAAAAAAAAAAAAAAAAA"
+			},
+			{
+				"address": "10.16.0.2:9095",
+				"name": "BBBBBBBBBBBBBBBBBBBBBBBBBB"
+			}
+		],
+		"status": "ready"
+	},
+	"versionInfo": {
+		"version":"0.19.0"
+	}
+}`,
+				},
+				{
+					uri:  "http://ha1.example.com/api/v2/alerts/groups",
+					code: 200,
+					body: "[]",
+				},
+				{
+					uri:  "http://ha1.example.com/api/v2/silences",
+					code: 200,
+					body: "[]",
+				},
+				{
+					uri:  "http://ha2.example.com/api/v2/alerts/groups",
+					code: 200,
+					body: "[]",
+				},
+				{
+					uri:  "http://ha2.example.com/api/v2/silences",
+					code: 500,
+					body: "[]",
+				},
+			},
+			upstreams: []config.AlertmanagerConfig{
+				{
+					Cluster:  "Errors",
+					Name:     "ha1",
+					URI:      "http://ha1.example.com",
+					Proxy:    false,
+					ReadOnly: false,
+					Headers:  map[string]string{},
+					CORS: config.AlertmanagerCORS{
+						Credentials: "omit",
+					},
+					Timeout: time.Second * 10,
+				},
+				{
+					Cluster:  "Errors",
+					Name:     "ha2",
+					URI:      "http://ha2.example.com",
+					Proxy:    false,
+					ReadOnly: true,
+					Headers:  map[string]string{},
+					CORS: config.AlertmanagerCORS{
+						Credentials: "omit",
+					},
+					Timeout: time.Second * 10,
+				},
+			},
+			status: models.AlertmanagerAPISummary{
+				Counters: models.AlertmanagerAPICounters{
+					Total:   2,
+					Healthy: 1,
+					Failed:  1,
+				},
+				Instances: []models.AlertmanagerAPIStatus{
+					{
+						Name:            "ha1",
+						URI:             "http://ha1.example.com",
+						PublicURI:       "http://ha1.example.com",
+						ReadOnly:        false,
+						Headers:         map[string]string{},
+						CORSCredentials: "omit",
+						Error:           "",
+						Version:         "0.20.0",
+						Cluster:         "ha1",
+						ClusterMembers:  []string{"ha1"},
+					},
+					{
+						Name:            "ha2",
+						URI:             "http://ha2.example.com",
+						PublicURI:       "http://ha2.example.com",
+						ReadOnly:        true,
+						Headers:         map[string]string{},
+						CORSCredentials: "omit",
+						Error:           "json: cannot unmarshal array into Go value of type string",
+						Version:         "",
+						Cluster:         "ha2",
+						ClusterMembers:  []string{"ha2"},
+					},
+				},
+				Clusters: map[string][]string{
+					"ha1": {"ha1"},
+					"ha2": {"ha2"},
+				},
+			},
+		},
 	}
 
 	for _, testCase := range testCases {

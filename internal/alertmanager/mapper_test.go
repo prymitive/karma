@@ -30,3 +30,27 @@ func TestGetAlertMapper(t *testing.T) {
 		}
 	}
 }
+
+func TestGetInvalidAlertMapper(t *testing.T) {
+	versions := []string{
+		"0.16.0",
+		"0.10.0-rc.0",
+	}
+
+	for _, version := range versions {
+		_, err := mapper.GetAlertMapper(version)
+		if err == nil {
+			t.Errorf("mapper.GetAlertMapper(%s) didn't return an error", version)
+		}
+
+		_, err = mapper.GetSilenceMapper(version)
+		if err == nil {
+			t.Errorf("mapper.GetSilenceMapper(%s) didn't return an error", version)
+		}
+
+		_, err = mapper.GetStatusMapper(version)
+		if err == nil {
+			t.Errorf("mapper.GetStatusMapper(%s) didn't return an error", version)
+		}
+	}
+}
