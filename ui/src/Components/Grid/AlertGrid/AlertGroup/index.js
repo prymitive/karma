@@ -1,9 +1,7 @@
-import React, { useEffect, useCallback, useRef, useState } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import PropTypes from "prop-types";
 
 import { useObserver } from "mobx-react-lite";
-
-import { Fade } from "react-reveal";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
@@ -15,7 +13,6 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BackgroundClassMap } from "Common/Colors";
 import { TooltipWrapper } from "Components/TooltipWrapper";
-import { ThemeContext } from "Components/Theme";
 import { GroupHeader } from "./GroupHeader";
 import { Alert } from "./Alert";
 import { GroupFooter } from "./GroupFooter";
@@ -158,20 +155,9 @@ const AlertGroup = ({
     }
   }
 
-  const context = React.useContext(ThemeContext);
-
-  const mountRef = useRef(null);
-
-  const [fadeDone, setFadeDone] = useState(false);
-
   return useObserver(() => (
     <div
-      ref={mountRef}
-      className={`components-grid-alertgrid-alertgroup ${
-        mountRef.current && fadeDone
-          ? "components-animation-fade-appear-done"
-          : ""
-      }`}
+      className="components-grid-alertgrid-alertgroup"
       style={{
         width: groupWidth,
         zIndex: isMenuOpen ? 100 : null,
@@ -180,82 +166,73 @@ const AlertGroup = ({
         settingsStore.alertGroupConfig.config.defaultRenderCount
       }
     >
-      <Fade
-        in={context.animations.in}
-        duration={context.animations.duration}
-        wait={context.animations.duration}
-        onReveal={() => setFadeDone(true)}
+      <div
+        className={`card ${cardBackgroundClass}`}
+        data-colortitlebar={settingsStore.alertGroupConfig.config.colorTitleBar}
       >
-        <div
-          className={`card ${cardBackgroundClass}`}
-          data-colortitlebar={
-            settingsStore.alertGroupConfig.config.colorTitleBar
-          }
-        >
-          <GroupHeader
-            isCollapsed={isCollapsed}
-            setIsCollapsed={setIsCollapsed}
+        <GroupHeader
+          isCollapsed={isCollapsed}
+          setIsCollapsed={setIsCollapsed}
+          group={group}
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          themedCounters={themedCounters}
+          setIsMenuOpen={setIsMenuOpen}
+          gridLabelValue={gridLabelValue}
+        />
+        {isCollapsed ? null : (
+          <div className="card-body px-2 py-1 components-grid-alertgrid-card">
+            <ul className="list-group">
+              {group.alerts.slice(0, alertsToRender).map((alert) => (
+                <Alert
+                  key={alert.id}
+                  group={group}
+                  alert={alert}
+                  showAlertmanagers={
+                    showAlertmanagers && !showAlertmanagersInFooter
+                  }
+                  showReceiver={
+                    alertStore.data.receivers.length > 1 &&
+                    group.alerts.length === 1
+                  }
+                  afterUpdate={afterUpdate}
+                  alertStore={alertStore}
+                  silenceFormStore={silenceFormStore}
+                  setIsMenuOpen={setIsMenuOpen}
+                />
+              ))}
+              {group.alerts.length > defaultRenderCount ? (
+                <li className="list-group-item border-0 p-0 text-center bg-transparent">
+                  <LoadButton
+                    icon={faMinus}
+                    action={loadLess}
+                    tooltip="Show fewer alerts in this group"
+                  />
+                  <small className="text-muted mx-2">
+                    {Math.min(alertsToRender, group.alerts.length)}
+                    {" of "}
+                    {group.alerts.length}
+                  </small>
+                  <LoadButton
+                    icon={faPlus}
+                    action={loadMore}
+                    tooltip="Show more alerts in this group"
+                  />
+                </li>
+              ) : null}
+            </ul>
+          </div>
+        )}
+        {isCollapsed === false && group.alerts.length > 1 ? (
+          <GroupFooter
             group={group}
+            alertmanagers={footerAlertmanagers}
+            afterUpdate={afterUpdate}
             alertStore={alertStore}
             silenceFormStore={silenceFormStore}
-            themedCounters={themedCounters}
-            setIsMenuOpen={setIsMenuOpen}
-            gridLabelValue={gridLabelValue}
           />
-          {isCollapsed ? null : (
-            <div className="card-body px-2 py-1 components-grid-alertgrid-card">
-              <ul className="list-group">
-                {group.alerts.slice(0, alertsToRender).map((alert) => (
-                  <Alert
-                    key={alert.id}
-                    group={group}
-                    alert={alert}
-                    showAlertmanagers={
-                      showAlertmanagers && !showAlertmanagersInFooter
-                    }
-                    showReceiver={
-                      alertStore.data.receivers.length > 1 &&
-                      group.alerts.length === 1
-                    }
-                    afterUpdate={afterUpdate}
-                    alertStore={alertStore}
-                    silenceFormStore={silenceFormStore}
-                    setIsMenuOpen={setIsMenuOpen}
-                  />
-                ))}
-                {group.alerts.length > defaultRenderCount ? (
-                  <li className="list-group-item border-0 p-0 text-center bg-transparent">
-                    <LoadButton
-                      icon={faMinus}
-                      action={loadLess}
-                      tooltip="Show fewer alerts in this group"
-                    />
-                    <small className="text-muted mx-2">
-                      {Math.min(alertsToRender, group.alerts.length)}
-                      {" of "}
-                      {group.alerts.length}
-                    </small>
-                    <LoadButton
-                      icon={faPlus}
-                      action={loadMore}
-                      tooltip="Show more alerts in this group"
-                    />
-                  </li>
-                ) : null}
-              </ul>
-            </div>
-          )}
-          {isCollapsed === false && group.alerts.length > 1 ? (
-            <GroupFooter
-              group={group}
-              alertmanagers={footerAlertmanagers}
-              afterUpdate={afterUpdate}
-              alertStore={alertStore}
-              silenceFormStore={silenceFormStore}
-            />
-          ) : null}
-        </div>
-      </Fade>
+        ) : null}
+      </div>
     </div>
   ));
 };

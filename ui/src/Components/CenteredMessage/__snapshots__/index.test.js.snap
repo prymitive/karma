@@ -3,10 +3,8 @@
 exports[`<CenteredMessage /> matches snapshot 1`] = `
 "
 <h1 class=\\"display-1 text-placeholder screen-center\\">
-  <div class=\\"react-reveal\\">
-    <div>
-      Foo
-    </div>
+  <div>
+    Foo
   </div>
 </h1>
 "

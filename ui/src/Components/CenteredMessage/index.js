@@ -1,21 +1,26 @@
 import React from "react";
 
-import { Fade } from "react-reveal";
+import { CSSTransition } from "react-transition-group";
 
 import { ThemeContext } from "Components/Theme";
 
 const CenteredMessage = ({ children, className }) => {
-  const theme = React.useContext(ThemeContext);
+  const context = React.useContext(ThemeContext);
   return (
-    <h1
-      className={`${
-        className ? className : "display-1 text-placeholder"
-      } screen-center`}
+    <CSSTransition
+      in={true}
+      appear={true}
+      classNames="components-animation-fade"
+      timeout={context.animations.duration}
     >
-      <Fade in={theme.animations.in} duration={theme.animations.duration}>
+      <h1
+        className={`${
+          className ? className : "display-1 text-placeholder"
+        } screen-center`}
+      >
         {children}
-      </Fade>
-    </h1>
+      </h1>
+    </CSSTransition>
   );
 };
 

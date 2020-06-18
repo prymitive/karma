@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
-import { Fade } from "react-reveal";
-
 import { APISilence } from "Models/API";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, SilenceTabNames } from "Stores/SilenceFormStore";
-import { ThemeContext } from "Components/Theme";
 import { SilenceComment } from "./SilenceComment";
 import { SilenceDetails } from "./SilenceDetails";
 
@@ -41,37 +38,32 @@ const ManagedSilence = ({
     silenceFormStore.toggle.show();
   };
 
-  const context = React.useContext(ThemeContext);
-
   return (
-    <Fade in={context.animations.in} duration={context.animations.duration}>
-      <div className="card my-1 components-managed-silence">
-        <div className="card-header rounded-0 border-bottom-0 px-3">
-          <SilenceComment
-            alertStore={alertStore}
+    <div className="card my-1 components-managed-silence">
+      <div className="card-header rounded-0 border-bottom-0 px-3">
+        <SilenceComment
+          alertStore={alertStore}
+          cluster={cluster}
+          silence={silence}
+          alertCount={alertCount}
+          alertCountAlwaysVisible={alertCountAlwaysVisible}
+          collapsed={!showDetails}
+          collapseToggle={() => setShowDetails(!showDetails)}
+        />
+      </div>
+      {showDetails ? (
+        <div className="card-body pt-0">
+          <SilenceDetails
             cluster={cluster}
             silence={silence}
-            alertCount={alertCount}
-            alertCountAlwaysVisible={alertCountAlwaysVisible}
-            collapsed={!showDetails}
-            collapseToggle={() => setShowDetails(!showDetails)}
+            alertStore={alertStore}
+            silenceFormStore={silenceFormStore}
+            onEditSilence={onEditSilence}
+            isUpper={isNested}
           />
         </div>
-
-        {showDetails ? (
-          <div className="card-body pt-0">
-            <SilenceDetails
-              cluster={cluster}
-              silence={silence}
-              alertStore={alertStore}
-              silenceFormStore={silenceFormStore}
-              onEditSilence={onEditSilence}
-              isUpper={isNested}
-            />
-          </div>
-        ) : null}
-      </div>
-    </Fade>
+      ) : null}
+    </div>
   );
 };
 ManagedSilence.propTypes = {

@@ -1,0 +1,19 @@
+$duration: 0.5s;
+
+.components-animation-fade-appear,
+.components-animation-fade-enter {
+  opacity: 0;
+}
+.components-animation-fade-appear-active,
+.components-animation-fade-enter-active {
+  opacity: 1;
+  transition: opacity $duration ease-in;
+}
+
+.components-animation-fade-exit {
+  opacity: 1;
+}
+.components-animation-fade-exit-active {
+  opacity: 0.01;
+  transition: opacity $duration ease-out;
+}

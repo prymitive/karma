@@ -20,10 +20,7 @@ for (const level of ["error", "warn", "info", "log", "trace"]) {
   // https://reactjs.org/blog/2019/08/08/react-v16.9.0.html#new-deprecations
   const reactDeprecationWarning = /.*has been renamed, and is not recommended for use.*/;
   global.console[level] = (message, ...args) => {
-    if (
-      reactDeprecationWarning.test(message) === false &&
-      message !== "react-reveal - animation failed"
-    ) {
+    if (reactDeprecationWarning.test(message) === false) {
       throw new Error(`message=${message} args=${args}`);
     }
   };

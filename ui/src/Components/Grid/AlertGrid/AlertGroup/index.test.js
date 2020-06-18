@@ -102,24 +102,6 @@ describe("<AlertGroup />", () => {
     tree.unmount();
   });
 
-  it("appends components-animation-fade-appear-done class after first mount", () => {
-    MockAlerts(5);
-    const tree = MountedAlertGroup(jest.fn(), true);
-    expect(
-      tree
-        .find("div.components-grid-alertgrid-alertgroup")
-        .hasClass("components-animation-fade-appear-done")
-    ).toBe(false);
-    tree.setProps({});
-    act(() => tree.find("RevealBase").at(0).props().onReveal());
-    tree.update();
-    expect(
-      tree
-        .find("div.components-grid-alertgrid-alertgroup")
-        .hasClass("components-animation-fade-appear-done")
-    ).toBe(true);
-  });
-
   it("renders Alertmanager cluster labels in footer if showAlertmanagersInFooter=true", () => {
     MockAlerts(2);
     const tree = MountedAlertGroup(jest.fn(), true).find("AlertGroup");

@@ -3,7 +3,7 @@
 exports[`<ReloadNeeded /> matches snapshot 1`] = `
 "
 <h1 class=\\"display-1 text-placeholder screen-center\\">
-  <div class=\\"react-reveal container-fluid text-center\\">
+  <div class=\\"container-fluid text-center\\">
     <svg aria-hidden=\\"true\\"
          focusable=\\"false\\"
          data-prefix=\\"fas\\"

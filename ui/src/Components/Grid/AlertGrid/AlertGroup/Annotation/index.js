@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import Linkify from "react-linkify";
 
-import Flash from "react-reveal/Flash";
+import { CSSTransition } from "react-transition-group";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
@@ -11,6 +11,7 @@ import { faSearchPlus } from "@fortawesome/free-solid-svg-icons/faSearchPlus";
 import { faSearchMinus } from "@fortawesome/free-solid-svg-icons/faSearchMinus";
 
 import { TooltipWrapper } from "Components/TooltipWrapper";
+import { useFlashTransition } from "Hooks/useFlashTransition";
 
 const RenderNonLinkAnnotation = memo(
   ({ name, value, visible, afterUpdate }) => {
@@ -26,40 +27,43 @@ const RenderNonLinkAnnotation = memo(
       }
     });
 
+    const { ref, props } = useFlashTransition(value);
+
     const className =
       "mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100";
 
-    if (!isVisible) {
-      return (
-        <TooltipWrapper title="Click to show annotation value">
-          <div
-            className={`${className} cursor-pointer`}
-            onClick={() => setIsVisible(!isVisible)}
-          >
-            <FontAwesomeIcon icon={faSearchPlus} className="mr-1" />
-            {name}
-          </div>
-        </TooltipWrapper>
-      );
-    }
-
     return (
-      <TooltipWrapper title="Click the icon to hide annotation value">
-        <div key={name} className={className}>
-          <span onClick={() => setIsVisible(false)} className="cursor-pointer">
-            <FontAwesomeIcon icon={faSearchMinus} className="mr-1" />
-            <span className="text-muted">{name}: </span>
-          </span>
-          <Linkify
-            properties={{
-              target: "_blank",
-              rel: "noopener noreferrer",
-            }}
-          >
-            <Flash spy={value}>
-              <span>{value}</span>
-            </Flash>
-          </Linkify>
+      <TooltipWrapper title="Toggle annotation value">
+        <div
+          className={`${className}${isVisible ? "" : " cursor-pointer"}`}
+          onClick={isVisible ? undefined : () => setIsVisible(!isVisible)}
+        >
+          {isVisible ? (
+            <React.Fragment>
+              <span
+                onClick={() => setIsVisible(false)}
+                className="cursor-pointer"
+              >
+                <FontAwesomeIcon icon={faSearchMinus} className="mr-1" />
+                <span className="text-muted">{name}: </span>
+              </span>
+              <Linkify
+                properties={{
+                  target: "_blank",
+                  rel: "noopener noreferrer",
+                }}
+              >
+                <CSSTransition {...props}>
+                  <span ref={ref}>{value}</span>
+                </CSSTransition>
+              </Linkify>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <FontAwesomeIcon icon={faSearchPlus} className="mr-1" />
+              {name}
+            </React.Fragment>
+          )}
         </div>
       </TooltipWrapper>
     );

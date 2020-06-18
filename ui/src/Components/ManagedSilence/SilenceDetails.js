@@ -5,7 +5,7 @@ import parseISO from "date-fns/parseISO";
 
 import copy from "copy-to-clipboard";
 
-import Flash from "react-reveal/Flash";
+import { CSSTransition } from "react-transition-group";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit } from "@fortawesome/free-solid-svg-icons/faEdit";
@@ -22,14 +22,18 @@ import { QueryOperators } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { RenderLinkAnnotation } from "Components/Grid/AlertGrid/AlertGroup/Annotation";
 import { DateFromNow } from "Components/DateFromNow";
+import { useFlashTransition } from "Hooks/useFlashTransition";
 import { DeleteSilence } from "./DeleteSilence";
 
 const SilenceIDCopyButton = ({ id }) => {
   const [clickCount, setClickCount] = useState(0);
+  const { ref, props } = useFlashTransition(clickCount);
+
   return (
     <TooltipWrapper title="Copy silence ID to the clipboard">
-      <Flash spy={clickCount} duration={500}>
+      <CSSTransition {...props}>
         <span
+          ref={ref}
           className="badge badge-secondary px-1 mr-1 components-label cursor-pointer"
           onClick={() => {
             copy(id);
@@ -38,7 +42,7 @@ const SilenceIDCopyButton = ({ id }) => {
         >
           <FontAwesomeIcon icon={faCopy} />
         </span>
-      </Flash>
+      </CSSTransition>
     </TooltipWrapper>
   );
 };

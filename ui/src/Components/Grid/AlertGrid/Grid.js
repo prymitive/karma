@@ -5,7 +5,8 @@ import { useObserver } from "mobx-react-lite";
 
 import debounce from "lodash.debounce";
 
-import { Fade } from "react-reveal";
+import TransitionGroup from "react-transition-group/TransitionGroup";
+import { CSSTransition } from "react-transition-group";
 
 import FontFaceObserver from "fontfaceobserver";
 
@@ -31,6 +32,7 @@ const Grid = ({
   grid,
   outerPadding,
 }) => {
+  const context = React.useContext(ThemeContext);
   const { ref, repack } = useGrid(gridSizesConfig);
   const debouncedRepack = useCallback(debounce(repack, 10), [repack]);
 
@@ -93,18 +95,22 @@ const Grid = ({
     }
   }, [grid.alertGroups.length, groupsToRender]);
 
-  const context = React.useContext(ThemeContext);
-
   return useObserver(() => (
     <React.Fragment>
-      {grid.labelName !== "" && (
+      <CSSTransition
+        key={grid.labelValue}
+        in={grid.labelName !== ""}
+        classNames="components-animation-fade"
+        timeout={context.animations.duration}
+        unmountOnExit
+      >
         <Swimlane
           alertStore={alertStore}
           grid={grid}
           isExpanded={isExpanded}
           onToggle={onCollapseClick}
         />
-      )}
+      </CSSTransition>
       <div
         className="components-grid"
         ref={ref}
@@ -114,49 +120,60 @@ const Grid = ({
           paddingRight: outerPadding + "px",
         }}
       >
-        {isExpanded || grid.labelName === ""
-          ? grid.alertGroups
-              .slice(0, groupsToRender)
-              .map((group) => (
-                <AlertGroup
+        <TransitionGroup component={null} appear enter exit>
+          {isExpanded || grid.labelName === ""
+            ? grid.alertGroups.slice(0, groupsToRender).map((group) => (
+                <CSSTransition
                   key={group.id}
-                  group={group}
-                  showAlertmanagers={
-                    Object.keys(alertStore.data.upstreams.clusters).length > 1
-                  }
-                  afterUpdate={debouncedRepack}
-                  alertStore={alertStore}
-                  settingsStore={settingsStore}
-                  silenceFormStore={silenceFormStore}
-                  groupWidth={groupWidth}
-                  gridLabelValue={grid.labelValue}
-                />
+                  classNames="components-animation-fade"
+                  timeout={context.animations.duration}
+                  onEntering={repack}
+                  onExited={debouncedRepack}
+                  unmountOnExit
+                >
+                  <AlertGroup
+                    group={group}
+                    showAlertmanagers={
+                      Object.keys(alertStore.data.upstreams.clusters).length > 1
+                    }
+                    afterUpdate={debouncedRepack}
+                    alertStore={alertStore}
+                    settingsStore={settingsStore}
+                    silenceFormStore={silenceFormStore}
+                    groupWidth={groupWidth}
+                    gridLabelValue={grid.labelValue}
+                  />
+                </CSSTransition>
               ))
-          : []}
+            : []}
+        </TransitionGroup>
       </div>
-      {isExpanded && grid.alertGroups.length > groupsToRender && (
-        <div className="d-flex flex-row justify-content-between">
-          <div className="flex-shrink-1 flex-grow-1 text-center">
-            <Fade
-              in={context.animations.in}
-              duration={context.animations.duration}
-            >
-              <button
-                type="button"
-                className="btn btn-secondary mb-3"
-                onClick={() =>
-                  setGroupsToRender(
-                    Math.min(groupsToRender + 30, grid.alertGroups.length)
-                  )
-                }
-              >
-                <FontAwesomeIcon className="mr-2" icon={faAngleDoubleDown} />
-                Load more
-              </button>
-            </Fade>
-          </div>
-        </div>
-      )}
+      <TransitionGroup component={null} enter exit>
+        {isExpanded && grid.alertGroups.length > groupsToRender && (
+          <CSSTransition
+            classNames="components-animation-fade"
+            timeout={context.animations.duration}
+            unmountOnExit
+          >
+            <div className="d-flex flex-row justify-content-between">
+              <div className="flex-shrink-1 flex-grow-1 text-center">
+                <button
+                  type="button"
+                  className="btn btn-secondary mb-3"
+                  onClick={() =>
+                    setGroupsToRender(
+                      Math.min(groupsToRender + 30, grid.alertGroups.length)
+                    )
+                  }
+                >
+                  <FontAwesomeIcon className="mr-2" icon={faAngleDoubleDown} />
+                  Load more
+                </button>
+              </div>
+            </div>
+          </CSSTransition>
+        )}
+      </TransitionGroup>
     </React.Fragment>
   ));
 };
