@@ -162,11 +162,15 @@ const AlertGroup = ({
 
   const mountRef = useRef(null);
 
+  const [fadeDone, setFadeDone] = useState(false);
+
   return useObserver(() => (
     <div
       ref={mountRef}
       className={`components-grid-alertgrid-alertgroup ${
-        mountRef.current ? "components-animation-fade-appear-done" : ""
+        mountRef.current && fadeDone
+          ? "components-animation-fade-appear-done"
+          : ""
       }`}
       style={{
         width: groupWidth,
@@ -180,6 +184,7 @@ const AlertGroup = ({
         in={context.animations.in}
         duration={context.animations.duration}
         wait={context.animations.duration}
+        onReveal={() => setFadeDone(true)}
       >
         <div
           className={`card ${cardBackgroundClass}`}
