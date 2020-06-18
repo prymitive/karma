@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -46,12 +47,76 @@ func TestMetrics(t *testing.T) {
 	body := resp.Body.String()
 	for _, s := range []string{
 		"karma_collected_alerts_count",
-		"karma_collected_alerts_count",
 		"karma_collect_cycles_total",
 		"karma_alertmanager_errors_total",
 	} {
 		if !strings.Contains(body, s) {
 			t.Errorf("Metric '%s' missing from /metrics response", s)
 		}
+	}
+}
+
+func TestGetViewURL(t *testing.T) {
+	type testCaseT struct {
+		prefix string
+		view   string
+		result string
+	}
+	tests := []testCaseT{
+		{
+			prefix: "",
+			view:   "/",
+			result: "/",
+		},
+		{
+			prefix: "",
+			view:   "foo",
+			result: "/foo",
+		},
+		{
+			prefix: "root",
+			view:   "foo",
+			result: "/root/foo",
+		},
+		{
+			prefix: "root",
+			view:   "foo/",
+			result: "/root/foo/",
+		},
+		{
+			prefix: "/root",
+			view:   "foo",
+			result: "/root/foo",
+		},
+		{
+			prefix: "root/",
+			view:   "foo",
+			result: "/root/foo",
+		},
+		{
+			prefix: "root/",
+			view:   "foo/",
+			result: "/root/foo/",
+		},
+		{
+			prefix: "/root/",
+			view:   "foo",
+			result: "/root/foo",
+		},
+		{
+			prefix: "/root/",
+			view:   "/foo/",
+			result: "/root/foo/",
+		},
+	}
+
+	for _, testCase := range tests {
+		t.Run(fmt.Sprintf("prefix=%q view=%v result=%q", testCase.prefix, testCase.view, testCase.result), func(t *testing.T) {
+			config.Config.Listen.Prefix = testCase.prefix
+			result := getViewURL(testCase.view)
+			if result != testCase.result {
+				t.Errorf("getViewURL(%s) returned %q, expected %q", testCase.view, result, testCase.result)
+			}
+		})
 	}
 }

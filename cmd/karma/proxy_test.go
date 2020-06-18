@@ -103,6 +103,8 @@ func TestProxy(t *testing.T) {
 	"matchers": [{ "isRegex": false, "name": "alertname", "value": "Fake Alert" }]
 }`
 
+	config.Config.Listen.Prefix = ""
+
 	r := ginTestEngine()
 	am, err := alertmanager.NewAlertmanager(
 		"cluster",
