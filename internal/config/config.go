@@ -318,6 +318,10 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 		log.Fatalf("Invalid ui.theme value '%s', allowed options: light, dark, auto", config.UI.Theme)
 	}
 
+	if config.Listen.Prefix != "" && !strings.HasPrefix(config.Listen.Prefix, "/") {
+		log.Fatalf("listen.prefix must start with '/', got %q", config.Listen.Prefix)
+	}
+
 	// accept single Alertmanager server from flag/env if nothing is set yet
 	if len(config.Alertmanager.Servers) == 0 && config.Alertmanager.URI != "" {
 		config.Alertmanager.Servers = []AlertmanagerConfig{
