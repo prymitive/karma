@@ -3,6 +3,7 @@ package alertmanager
 import (
 	"fmt"
 	"net/http"
+	"net/url"
 	"path"
 	"sort"
 	"strings"
@@ -159,14 +160,10 @@ func (am *Alertmanager) pullSilences(version string) error {
 func (am *Alertmanager) InternalURI() string {
 	if am.ProxyRequests {
 		sub := fmt.Sprintf("/proxy/alertmanager/%s", am.Name)
-		uri := path.Join(config.Config.Listen.Prefix, sub)
-		if strings.HasSuffix(sub, "/") {
-			// if sub path had trailing slash then add it here, since path.Join will
-			// skip it
-			return uri + "/"
+		if strings.HasPrefix(config.Config.Listen.Prefix, "/") {
+			return path.Join(config.Config.Listen.Prefix, sub)
 		}
-
-		return uri
+		return path.Join("/"+config.Config.Listen.Prefix, sub)
 	}
 
 	// strip all user/pass information, fetch() doesn't support it anyway
@@ -310,6 +307,12 @@ func (am *Alertmanager) Pull() error {
 	am.Metrics.Cycles++
 
 	version := am.probeVersion()
+
+	// verify that URI is correct
+	_, err := url.Parse(am.URI)
+	if err != nil {
+		return err
+	}
 
 	status, err := am.fetchStatus(version)
 	if err != nil {

@@ -56,8 +56,13 @@ var (
 )
 
 func getViewURL(sub string) string {
-	u := path.Join(config.Config.Listen.Prefix, sub)
-	if strings.HasSuffix(sub, "/") && !strings.HasSuffix(u, "/") {
+	var fixedSub string
+	fixedSub = sub
+	if !strings.HasPrefix(sub, "/") {
+		fixedSub = "/" + sub
+	}
+	u := path.Join(config.Config.Listen.Prefix, fixedSub)
+	if strings.HasSuffix(fixedSub, "/") && !strings.HasSuffix(u, "/") {
 		// if sub path had trailing slash then add it here, since path.Join will
 		// skip it
 		return u + "/"
