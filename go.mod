@@ -22,7 +22,7 @@ require (
 	github.com/go-openapi/swag v0.19.9
 	github.com/go-openapi/validate v0.19.10
 	github.com/golangci/golangci-lint v1.27.0
-	github.com/google/go-cmp v0.4.1
+	github.com/google/go-cmp v0.5.0
 	github.com/google/go-github v17.0.0+incompatible // indirect
 	github.com/google/go-querystring v1.0.0 // indirect
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
