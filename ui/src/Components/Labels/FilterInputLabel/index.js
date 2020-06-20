@@ -22,6 +22,7 @@ const FilterInputLabel = ({ alertStore, filter }) => {
     }
     // if not empty replace it
     alertStore.filters.replaceFilter(filter.raw, val);
+    alertStore.fetchWithThrottle();
   };
 
   const cs = GetClassAndStyle(
