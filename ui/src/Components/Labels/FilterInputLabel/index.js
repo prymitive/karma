@@ -16,6 +16,7 @@ import { InlineEdit } from "Components/InlineEdit";
 
 const FilterInputLabel = ({ alertStore, filter }) => {
   const onChange = (val) => {
+    alertStore.status.resume();
     // if filter is empty string then remove it
     if (val === "") {
       alertStore.filters.removeFilter(filter.raw);
