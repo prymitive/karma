@@ -34,6 +34,8 @@ language: shell
 jobs:
   allow_failures:
     - name: Percy UI snapshots
+    - name: Webpack bundle size compare
+    - name: Benchmark Go code compare
   include:
     - stage: Stats
       name: Webpack bundle size compare
