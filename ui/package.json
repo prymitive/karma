@@ -71,7 +71,7 @@
     ]
   },
   "devDependencies": {
-    "@commitlint/travis-cli": "8.3.5",
+    "@commitlint/travis-cli": "9.0.1",
     "@percy-io/percy-storybook": "2.1.0",
     "@storybook/preset-create-react-app": "3.1.2",
     "@storybook/react": "5.3.19",
