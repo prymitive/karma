@@ -7,7 +7,8 @@ import React, {
 
 import { useObserver } from "mobx-react-lite";
 
-import Media from "react-media";
+// no types, see react-app-env.d.ts
+import { useMediaPredicate } from "react-media-hook";
 
 import { AlertStore, DecodeLocationSearch } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -100,59 +101,50 @@ const App: FunctionComponent<AppProps> = ({ defaultFilters, uiDefaults }) => {
     };
   }, [onPopState]);
 
+  const prefersColorScheme = useMediaPredicate("(prefers-color-scheme)");
+  const prefersDark = useMediaPredicate("(prefers-color-scheme: dark)");
+
   return useObserver(() => (
     <ErrorBoundary>
       <span data-theme={`${settingsStore.themeConfig.config.theme}`} />
-      <Media
-        queries={{
-          isSupported: "(prefers-color-scheme)",
-          light: "(prefers-color-scheme: light)",
-          dark: "(prefers-color-scheme: dark)",
+      <ThemeContext.Provider
+        value={{
+          isDark:
+            settingsStore.themeConfig.config.theme ===
+              settingsStore.themeConfig.options.auto.value && prefersColorScheme
+              ? prefersDark
+              : settingsStore.themeConfig.config.theme ===
+                settingsStore.themeConfig.options.dark.value,
+          reactSelectStyles:
+            settingsStore.themeConfig.config.theme ===
+              settingsStore.themeConfig.options.auto.value && prefersColorScheme
+              ? prefersDark
+                ? ReactSelectStyles(ReactSelectColors.Dark)
+                : ReactSelectStyles(ReactSelectColors.Light)
+              : settingsStore.themeConfig.config.theme ===
+                settingsStore.themeConfig.options.dark.value
+              ? ReactSelectStyles(ReactSelectColors.Dark)
+              : ReactSelectStyles(ReactSelectColors.Light),
+          animations: {
+            enabled: true,
+            duration: 1000,
+          },
         }}
       >
-        {(matches) => (
-          <ThemeContext.Provider
-            value={{
-              isDark:
-                settingsStore.themeConfig.config.theme ===
-                  settingsStore.themeConfig.options.auto.value &&
-                matches.isSupported
-                  ? matches.dark
-                  : settingsStore.themeConfig.config.theme ===
-                    settingsStore.themeConfig.options.dark.value,
-              reactSelectStyles:
-                settingsStore.themeConfig.config.theme ===
-                  settingsStore.themeConfig.options.auto.value &&
-                matches.isSupported
-                  ? matches.dark
-                    ? ReactSelectStyles(ReactSelectColors.Dark)
-                    : ReactSelectStyles(ReactSelectColors.Light)
-                  : settingsStore.themeConfig.config.theme ===
-                    settingsStore.themeConfig.options.dark.value
-                  ? ReactSelectStyles(ReactSelectColors.Dark)
-                  : ReactSelectStyles(ReactSelectColors.Light),
-              animations: {
-                enabled: true,
-                duration: 1000,
-              },
-            }}
-          >
-            <BodyTheme />
-            <React.Suspense fallback={null}>
-              <NavBar
-                alertStore={alertStore}
-                settingsStore={settingsStore}
-                silenceFormStore={silenceFormStore}
-              />
-              <Grid
-                alertStore={alertStore}
-                settingsStore={settingsStore}
-                silenceFormStore={silenceFormStore}
-              />
-            </React.Suspense>
-          </ThemeContext.Provider>
-        )}
-      </Media>
+        <BodyTheme />
+        <React.Suspense fallback={null}>
+          <NavBar
+            alertStore={alertStore}
+            settingsStore={settingsStore}
+            silenceFormStore={silenceFormStore}
+          />
+          <Grid
+            alertStore={alertStore}
+            settingsStore={settingsStore}
+            silenceFormStore={silenceFormStore}
+          />
+        </React.Suspense>
+      </ThemeContext.Provider>
       <React.Suspense fallback={null}>
         <FaviconBadge alertStore={alertStore} />
         <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
