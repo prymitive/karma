@@ -46,7 +46,7 @@
     "react-js-pagination": "3.0.3",
     "react-json-pretty": "2.2.0",
     "react-linkify": "0.2.2",
-    "react-media": "1.10.0",
+    "react-media-hook": "0.4.7",
     "react-popper": "2.2.3",
     "react-resize-detector": "5.0.6",
     "react-reveal": "1.2.2",
