@@ -31,8 +31,7 @@ describe("<SilenceSubmitController />", () => {
       value: ["am2", "am3"],
     });
     const tree = ShallowSilenceSubmitController();
-    const alertmanagers = tree.find("SilenceSubmitProgress");
-    expect(alertmanagers).toHaveLength(2);
+    expect(tree.find("div").at(0).children()).toHaveLength(2);
   });
 
   it("resets the form on 'Back' button click", () => {

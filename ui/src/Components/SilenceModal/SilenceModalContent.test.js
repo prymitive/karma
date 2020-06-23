@@ -145,8 +145,7 @@ describe("<SilenceModalContent /> Editor", () => {
   it("renders SilenceSubmitController when silenceFormStore.data.currentStage is 'Submit'", () => {
     silenceFormStore.data.currentStage = SilenceFormStage.Submit;
     const tree = MountedSilenceModalContent();
-    const ctrl = tree.find("SilenceSubmitController");
-    expect(ctrl).toHaveLength(1);
+    expect(tree.html()).toMatchSnapshot();
   });
 });
 
