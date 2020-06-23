@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { observer } from "mobx-react-lite";
+import { useObserver } from "mobx-react-lite";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
@@ -20,55 +20,53 @@ const SilenceModalContent = React.lazy(() =>
   }))
 );
 
-const SilenceModal = observer(
-  ({ alertStore, silenceFormStore, settingsStore }) => {
-    const onDeleteModalClose = React.useCallback(() => {
-      const event = new CustomEvent("remountModal");
-      window.dispatchEvent(event);
-    }, []);
+const SilenceModal = ({ alertStore, silenceFormStore, settingsStore }) => {
+  const onDeleteModalClose = React.useCallback(() => {
+    const event = new CustomEvent("remountModal");
+    window.dispatchEvent(event);
+  }, []);
 
-    return (
-      <React.Fragment>
-        <li
-          className={`nav-item components-navbar-button ${
-            silenceFormStore.toggle.visible ? "border-info" : ""
-          }`}
-        >
-          <TooltipWrapper title="New silence">
-            <span
-              id="components-new-silence"
-              className="nav-link cursor-pointer"
-              onClick={silenceFormStore.toggle.toggle}
-            >
-              <FontAwesomeIcon icon={faBellSlash} />
-            </span>
-          </TooltipWrapper>
-        </li>
-        <Modal
-          isOpen={silenceFormStore.toggle.visible}
-          toggleOpen={silenceFormStore.toggle.toggle}
-          onExited={silenceFormStore.data.resetProgress}
-        >
-          <React.Suspense
-            fallback={
-              <h1 className="display-1 text-placeholder p-5 m-auto">
-                <FontAwesomeIcon icon={faSpinner} size="lg" spin />
-              </h1>
-            }
+  return useObserver(() => (
+    <React.Fragment>
+      <li
+        className={`nav-item components-navbar-button ${
+          silenceFormStore.toggle.visible ? "border-info" : ""
+        }`}
+      >
+        <TooltipWrapper title="New silence">
+          <span
+            id="components-new-silence"
+            className="nav-link cursor-pointer"
+            onClick={silenceFormStore.toggle.toggle}
           >
-            <SilenceModalContent
-              alertStore={alertStore}
-              silenceFormStore={silenceFormStore}
-              settingsStore={settingsStore}
-              onHide={silenceFormStore.toggle.hide}
-              onDeleteModalClose={onDeleteModalClose}
-            />
-          </React.Suspense>
-        </Modal>
-      </React.Fragment>
-    );
-  }
-);
+            <FontAwesomeIcon icon={faBellSlash} />
+          </span>
+        </TooltipWrapper>
+      </li>
+      <Modal
+        isOpen={silenceFormStore.toggle.visible}
+        toggleOpen={silenceFormStore.toggle.toggle}
+        onExited={silenceFormStore.data.resetProgress}
+      >
+        <React.Suspense
+          fallback={
+            <h1 className="display-1 text-placeholder p-5 m-auto">
+              <FontAwesomeIcon icon={faSpinner} size="lg" spin />
+            </h1>
+          }
+        >
+          <SilenceModalContent
+            alertStore={alertStore}
+            silenceFormStore={silenceFormStore}
+            settingsStore={settingsStore}
+            onHide={silenceFormStore.toggle.hide}
+            onDeleteModalClose={onDeleteModalClose}
+          />
+        </React.Suspense>
+      </Modal>
+    </React.Fragment>
+  ));
+};
 SilenceModal.propTypes = {
   alertStore: PropTypes.instanceOf(AlertStore).isRequired,
   silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,

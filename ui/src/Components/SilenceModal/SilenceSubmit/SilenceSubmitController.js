@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import PropTypes from "prop-types";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -8,7 +8,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceSubmitProgress } from "./SilenceSubmitProgress";
 
-const SilenceSubmitController = ({ silenceFormStore, alertStore }) => {
+const SilenceSubmitController = memo(({ silenceFormStore, alertStore }) => {
   return (
     <React.Fragment>
       <div>
@@ -34,7 +34,7 @@ const SilenceSubmitController = ({ silenceFormStore, alertStore }) => {
       </div>
     </React.Fragment>
   );
-};
+});
 SilenceSubmitController.propTypes = {
   alertStore: PropTypes.instanceOf(AlertStore).isRequired,
   silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
