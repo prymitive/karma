@@ -41,8 +41,14 @@ benchmark-compare-go: $(GOBIN)/benchstat
 $(GOBIN)/golangci-lint: go.mod go.sum
 	$(GO) install github.com/golangci/golangci-lint/cmd/golangci-lint
 .PHONY: lint-go
-lint-go: $(GOBIN)/golangci-lint
+lint-go: $(GOBIN)/golangci-lint lint-go-looppointer
 	$(ENV) golangci-lint run -v
+
+$(GOBIN)/looppointer: go.mod go.sum
+	$(GO) install github.com/kyoh86/looppointer/cmd/looppointer
+.PHONY: lint-go-looppointer
+lint-go-looppointer: $(GOBIN)/looppointer
+	$(ENV) looppointer -c 2 ./...
 
 .PHONY: format-go
 format-go:

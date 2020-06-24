@@ -311,7 +311,9 @@ func TestGrids(t *testing.T) {
 
 	mockConfig()
 	for _, version := range mock.ListAllMocks() {
+		version := version
 		for _, testCase := range testCases {
+			testCase := testCase
 			t.Run(fmt.Sprintf("version=%q gridLabel=%q query=%q", version, testCase.gridLabel, testCase.requestQuery), func(t *testing.T) {
 				mockAlerts(version)
 				r := ginTestEngine()

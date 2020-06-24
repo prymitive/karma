@@ -233,7 +233,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	for _, ag := range uniqueGroups {
 		alerts := make(models.AlertList, 0, len(uniqueAlerts[ag.ID]))
 		for _, alert := range uniqueAlerts[ag.ID] {
-
+			alert := alert
 			silences := map[string]*models.Silence{}
 			for _, silenceID := range alert.SilencedBy {
 				silence, err := am.SilenceByID(silenceID)

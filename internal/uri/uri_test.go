@@ -111,6 +111,7 @@ func readAll(source io.ReadCloser) (int64, error) {
 func TestHTTPReader(t *testing.T) {
 	log.SetLevel(log.FatalLevel)
 	for _, testCase := range httpTransportTests {
+		testCase := testCase
 		t.Run(testCase.name, func(t *testing.T) {
 			handler := func(w http.ResponseWriter, r *http.Request) {
 				for k, v := range testCase.responseHeaders {
