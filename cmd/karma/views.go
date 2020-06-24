@@ -246,6 +246,7 @@ func alerts(c *gin.Context) {
 
 				blockedAMs := map[string]bool{}
 				for _, am := range alert.Alertmanager {
+					am := am
 					for _, filter := range matchFilters {
 						if filter.GetIsValid() && filter.GetIsAlertmanagerFilter() && !filter.MatchAlertmanager(&am) {
 							blockedAMs[am.Name] = true

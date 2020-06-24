@@ -667,6 +667,7 @@ func TestFilters(t *testing.T) {
 		t.Error(err)
 	}
 	for _, ft := range tests {
+		ft := ft
 		alert := models.Alert(ft.Alert)
 		if len(ft.Alertmanagers) > 0 {
 			alert.Alertmanager = ft.Alertmanagers
@@ -722,6 +723,7 @@ func TestFilters(t *testing.T) {
 
 			if m && f.GetIsAlertmanagerFilter() {
 				for _, am := range alert.Alertmanager {
+					am := am
 					m := f.MatchAlertmanager(&am)
 					if m != ft.IsAlertmanagerMatch {
 						j, _ := json.Marshal(ft.Alert)
