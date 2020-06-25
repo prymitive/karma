@@ -16,6 +16,7 @@ import {
   SilenceFormStage,
   NewEmptyMatcher,
   MatcherValueToObject,
+  NewClusterRequest,
 } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
 import { QueryOperators } from "Common/Query";
@@ -42,6 +43,9 @@ const SilenceForm = ({
     } else {
       silenceFormStore.data.verifyStarEnd();
     }
+
+    // reset cluster request state
+    silenceFormStore.data.requestsByCluster = {};
 
     if (
       silenceFormStore.data.matchers.filter(
@@ -99,6 +103,12 @@ const SilenceForm = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
+    let rbc = {};
+    silenceFormStore.data.alertmanagers.forEach((am) => {
+      rbc[am.label] = NewClusterRequest(am.label, am.value);
+    });
+    silenceFormStore.data.requestsByCluster = rbc;
 
     settingsStore.silenceFormConfig.saveAuthor(silenceFormStore.data.author);
 

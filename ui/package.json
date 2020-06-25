@@ -67,7 +67,8 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,ts,tsx}",
-      "!src/**/*.stories.{js,ts,tsx}"
+      "!src/**/*.stories.{js,ts,tsx}",
+      "!src/react-app-env.d.ts"
     ]
   },
   "devDependencies": {

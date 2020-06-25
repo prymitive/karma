@@ -104,6 +104,15 @@ const MatchersFromGroup = (group, stripLabels, alerts, onlyActive) => {
   return matchers;
 };
 
+const NewClusterRequest = (cluster, members) => ({
+  cluster: cluster,
+  members: members,
+  isDone: false,
+  silenceID: null,
+  silenceLink: null,
+  error: null,
+});
+
 const GenerateAlertmanagerSilenceData = (
   startsAt,
   endsAt,
@@ -188,6 +197,7 @@ class SilenceFormStore {
       endsAt: addHours(new Date(), 1),
       comment: "",
       author: "",
+      requestsByCluster: {},
 
       get isValid() {
         if (this.alertmanagers.length === 0) return false;
@@ -371,4 +381,5 @@ export {
   SilenceTabNames,
   MatchersFromGroup,
   GenerateAlertmanagerSilenceData,
+  NewClusterRequest,
 };

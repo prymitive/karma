@@ -6,12 +6,16 @@ import { mount } from "enzyme";
 import fetchMock from "fetch-mock";
 
 import { AlertStore } from "Stores/AlertStore";
+import { SilenceFormStore, NewClusterRequest } from "Stores/SilenceFormStore";
 import { SilenceSubmitProgress } from "./SilenceSubmitProgress";
 
 let alertStore;
+let silenceFormStore;
 
 beforeEach(() => {
   alertStore = new AlertStore([]);
+  silenceFormStore = new SilenceFormStore();
+
   alertStore.data.upstreams = {
     instances: [
       {
@@ -27,6 +31,12 @@ beforeEach(() => {
         clusterMembers: ["mockAlertmanager"],
       },
     ],
+  };
+
+  silenceFormStore.data.requestsByCluster = {
+    mockAlertmanager: NewClusterRequest("mockAlertmanager", [
+      "mockAlertmanager",
+    ]),
   };
 
   fetchMock.resetHistory();
@@ -59,6 +69,7 @@ const MountedSilenceSubmitProgress = () => {
         comment: "fake payload",
       }}
       alertStore={alertStore}
+      silenceFormStore={silenceFormStore}
     />
   );
 };
@@ -151,6 +162,9 @@ describe("<SilenceSubmitProgress />", () => {
         },
       ],
     };
+    silenceFormStore.data.requestsByCluster = {
+      ha: NewClusterRequest("ha", ["am1", "am2"]),
+    };
 
     mount(
       <SilenceSubmitProgress
@@ -164,6 +178,7 @@ describe("<SilenceSubmitProgress />", () => {
           comment: "fake payload",
         }}
         alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
       />
     );
     await act(async () => {
@@ -178,7 +193,7 @@ describe("<SilenceSubmitProgress />", () => {
     );
   });
 
-  it("will render error message from last failed cluster member", async () => {
+  it("will use error message from last failed cluster member", async () => {
     fetchMock.reset();
     fetchMock.mock("http://am2.example.com/api/v2/silences", {
       throws: new TypeError("failed to fetch from am2"),
@@ -215,6 +230,9 @@ describe("<SilenceSubmitProgress />", () => {
         },
       ],
     };
+    silenceFormStore.data.requestsByCluster = {
+      ha: NewClusterRequest("ha", ["am1", "am2"]),
+    };
 
     const tree = mount(
       <SilenceSubmitProgress
@@ -228,6 +246,7 @@ describe("<SilenceSubmitProgress />", () => {
           comment: "fake payload",
         }}
         alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
       />
     );
     await act(async () => {
@@ -235,8 +254,12 @@ describe("<SilenceSubmitProgress />", () => {
         await fetchMock.flush(true);
       });
     });
+    tree.update();
     expect(fetchMock.calls()).toHaveLength(2);
-    expect(tree.text()).toBe("hafailed to fetch from am1");
+    expect(silenceFormStore.data.requestsByCluster.ha).toMatchObject({
+      isDone: true,
+      error: "failed to fetch from am1",
+    });
   });
 
   it("will log an error if Alertmanager instance is missing from instances and try the next one", async () => {
@@ -260,6 +283,9 @@ describe("<SilenceSubmitProgress />", () => {
         },
       ],
     };
+    silenceFormStore.data.requestsByCluster = {
+      ha: NewClusterRequest("ha", ["am1", "am2"]),
+    };
 
     mount(
       <SilenceSubmitProgress
@@ -273,6 +299,7 @@ describe("<SilenceSubmitProgress />", () => {
           comment: "fake payload",
         }}
         alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
       />
     );
     await act(async () => {
@@ -294,6 +321,9 @@ describe("<SilenceSubmitProgress />", () => {
       clusters: { ha: ["am1", "am2"] },
       instances: [],
     };
+    silenceFormStore.data.requestsByCluster = {
+      ha: NewClusterRequest("ha", ["am1", "am2"]),
+    };
 
     mount(
       <SilenceSubmitProgress
@@ -307,6 +337,7 @@ describe("<SilenceSubmitProgress />", () => {
           comment: "fake payload",
         }}
         alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
       />
     );
     await act(async () => {
@@ -355,6 +386,9 @@ describe("<SilenceSubmitProgress />", () => {
         },
       ],
     };
+    silenceFormStore.data.requestsByCluster = {
+      ha: NewClusterRequest("ha", ["am1", "am2"]),
+    };
 
     mount(
       <SilenceSubmitProgress
@@ -368,6 +402,7 @@ describe("<SilenceSubmitProgress />", () => {
           comment: "fake payload",
         }}
         alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
       />
     );
     await act(async () => {
@@ -420,6 +455,9 @@ describe("<SilenceSubmitProgress />", () => {
         },
       ],
     };
+    silenceFormStore.data.requestsByCluster = {
+      ha: NewClusterRequest("ha", ["am1", "am2"]),
+    };
 
     mount(
       <SilenceSubmitProgress
@@ -433,6 +471,7 @@ describe("<SilenceSubmitProgress />", () => {
           comment: "fake payload",
         }}
         alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
       />
     );
     expect(fetchMock.calls()).toHaveLength(0);
@@ -443,47 +482,6 @@ describe("<SilenceSubmitProgress />", () => {
     expect(consoleSpy).toHaveBeenCalledTimes(2);
   });
 
-  it("renders returned silence ID on successful fetch", async () => {
-    const tree = MountedSilenceSubmitProgress();
-    await act(async () => {
-      await act(async () => {
-        await fetchMock.flush(true);
-      });
-    });
-    // force re-render
-    tree.update();
-    const silenceLink = tree.find("a");
-    expect(silenceLink).toHaveLength(1);
-    expect(silenceLink.text()).toBe("123456789");
-  });
-
-  it("renders returned error message on failed fetch", async () => {
-    fetchMock.reset();
-    fetchMock.any({
-      status: 500,
-      body: "mock error message",
-    });
-    const tree = MountedSilenceSubmitProgress();
-    await act(async () => {
-      await act(async () => {
-        await fetchMock.flush(true);
-      });
-    });
-    expect(tree.text()).toBe("mockAlertmanagermock error message");
-  });
-
-  it("renders success icon on successful fetch", async () => {
-    const tree = MountedSilenceSubmitProgress();
-    await act(async () => {
-      await act(async () => {
-        await fetchMock.flush(true);
-      });
-    });
-    tree.update();
-    expect(tree.find("FontAwesomeIcon.text-success")).toHaveLength(1);
-    expect(tree.find("FontAwesomeIcon.text-danger")).toHaveLength(0);
-  });
-
   it("renders silence link on successful fetch", async () => {
     const tree = MountedSilenceSubmitProgress();
     await act(async () => {
@@ -492,12 +490,17 @@ describe("<SilenceSubmitProgress />", () => {
       });
     });
     tree.update();
-    expect(tree.find("a").getDOMNode().getAttribute("href")).toBe(
-      "http://example.com/#/silences/123456789"
-    );
+    expect(
+      silenceFormStore.data.requestsByCluster.mockAlertmanager
+    ).toMatchObject({
+      isDone: true,
+      error: null,
+      silenceID: "123456789",
+      silenceLink: "http://example.com/#/silences/123456789",
+    });
   });
 
-  it("renders error icon on failed fetch", async () => {
+  it("sets error icon on failed fetch", async () => {
     fetchMock.reset();
     fetchMock.any({
       status: 500,
@@ -510,7 +513,11 @@ describe("<SilenceSubmitProgress />", () => {
       });
     });
     tree.update();
-    expect(tree.find("FontAwesomeIcon.text-success")).toHaveLength(0);
-    expect(tree.find("FontAwesomeIcon.text-danger")).toHaveLength(1);
+    expect(
+      silenceFormStore.data.requestsByCluster.mockAlertmanager
+    ).toMatchObject({
+      isDone: true,
+      error: "error message",
+    });
   });
 });
