@@ -27,11 +27,15 @@ type Color struct {
 	Alpha uint8 `json:"alpha"`
 }
 
+func (c *Color) ToString() string {
+	return fmt.Sprintf("rgba(%d,%d,%d,%d)", c.Red, c.Green, c.Blue, c.Alpha)
+}
+
 // LabelColors holds color information for labels that should be colored in the UI
 // every configured label will have a distinct coloring for each value
 type LabelColors struct {
-	Brightness int32 `json:"brightness"`
-	Background Color `json:"background"`
+	Brightness int32  `json:"brightness"`
+	Background string `json:"background"`
 }
 
 // LabelsColorMap is a map of "Label Key" -> "Label Value" -> karmaLabelColors
