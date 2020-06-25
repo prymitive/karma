@@ -68,7 +68,7 @@ const SilenceSubmitProgress = ({
     }
   }, [cluster, error, inProgress, publicURIs, response, responseURI]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return <FontAwesomeIcon icon={faCircleNotch} spin />;
+  return <FontAwesomeIcon className="text-muted" icon={faCircleNotch} spin />;
 };
 SilenceSubmitProgress.propTypes = {
   cluster: PropTypes.string.isRequired,
