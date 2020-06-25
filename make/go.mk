@@ -28,7 +28,7 @@ test-go:
 	$(ENV) ./scripts/test-main.sh
 	$(ENV) ./scripts/gocovmerge.sh
 
-GOBENCHMARKCOUNT := 20
+GOBENCHMARKCOUNT := 10
 .PHONY: benchmark-go
 benchmark-go:
 	@env GOMAXPROCS=2 $(GO) test -count=$(GOBENCHMARKCOUNT) -run=NONE -bench=. -benchmem ./...
