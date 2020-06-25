@@ -8,7 +8,11 @@ import {
   SilenceFormStage,
   NewClusterRequest,
 } from "Stores/SilenceFormStore";
-import { SilenceSubmitController } from "./SilenceSubmitController";
+import {
+  SilenceSubmitController,
+  MultiClusterStatus,
+  SingleClusterStatus,
+} from "./SilenceSubmitController";
 
 let alertStore;
 let silenceFormStore;
@@ -61,13 +65,59 @@ beforeEach(() => {
 });
 
 describe("<SilenceSubmitController />", () => {
+  it("renders MultiClusterStatus when multiple clusters are used", () => {
+    silenceFormStore.data.requestsByCluster = {
+      ha: NewClusterRequest("ha", ["am1", "am2"]),
+      single: NewClusterRequest("single", ["single"]),
+    };
+
+    const tree = shallow(
+      <SilenceSubmitController
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+      />
+    );
+    expect(tree.find("MultiClusterStatus")).toHaveLength(1);
+    expect(tree.find("SingleClusterStatus")).toHaveLength(0);
+  });
+
+  it("renders SingleClusterStatus when multiple clusters are used", () => {
+    silenceFormStore.data.requestsByCluster = {
+      ha: NewClusterRequest("ha", ["am1", "am2"]),
+    };
+
+    const tree = shallow(
+      <SilenceSubmitController
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+      />
+    );
+    expect(tree.find("MultiClusterStatus")).toHaveLength(0);
+    expect(tree.find("SingleClusterStatus")).toHaveLength(1);
+  });
+
+  it("resets the form on 'Back' button click", () => {
+    silenceFormStore.data.currentStage = SilenceFormStage.Submit;
+    const tree = shallow(
+      <SilenceSubmitController
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+      />
+    );
+    const button = tree.find("button");
+    button.simulate("click");
+    expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.UserInput);
+  });
+});
+
+describe("<MultiClusterStatus />", () => {
   it("renders all passed SilenceSubmitProgress", () => {
     silenceFormStore.data.requestsByCluster = {
       ha: NewClusterRequest("ha", ["am1", "am2"]),
       single: NewClusterRequest("single", ["single"]),
     };
     const tree = shallow(
-      <SilenceSubmitController
+      <MultiClusterStatus
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
       />
@@ -79,7 +129,7 @@ describe("<SilenceSubmitController />", () => {
     const single = NewClusterRequest("single", ["single"]);
     silenceFormStore.data.requestsByCluster = { single: single };
     const tree = shallow(
-      <SilenceSubmitController
+      <MultiClusterStatus
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
       />
@@ -96,7 +146,7 @@ describe("<SilenceSubmitController />", () => {
     single.error = "fake error";
     silenceFormStore.data.requestsByCluster = { single: single };
     const tree = shallow(
-      <SilenceSubmitController
+      <MultiClusterStatus
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
       />
@@ -114,7 +164,7 @@ describe("<SilenceSubmitController />", () => {
     single.silenceLink = "http://localhost";
     silenceFormStore.data.requestsByCluster = { single: single };
     const tree = shallow(
-      <SilenceSubmitController
+      <MultiClusterStatus
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
       />
@@ -127,17 +177,57 @@ describe("<SilenceSubmitController />", () => {
       tree.find("td").at(2).find('a[href="http://localhost"]')
     ).toHaveLength(1);
   });
+});
 
-  it("resets the form on 'Back' button click", () => {
-    silenceFormStore.data.currentStage = SilenceFormStage.Submit;
+describe("<SingleClusterStatus />", () => {
+  it("renders spinner for pending requests", () => {
+    const single = NewClusterRequest("single", ["single"]);
+    silenceFormStore.data.requestsByCluster = { single: single };
     const tree = shallow(
-      <SilenceSubmitController
+      <SingleClusterStatus
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
       />
     );
-    const button = tree.find("button");
-    button.simulate("click");
-    expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.UserInput);
+    expect(tree.find("div.display-1").at(0).html()).toMatch(/fa-circle-notch/);
+    expect(tree.find("div.badge.badge-primary").text()).toBe("single");
+    expect(tree.find("p")).toHaveLength(0);
+  });
+
+  it("renders error for failed requests", () => {
+    const single = NewClusterRequest("single", ["single"]);
+    single.isDone = true;
+    single.error = "fake error";
+    silenceFormStore.data.requestsByCluster = { single: single };
+    const tree = shallow(
+      <SingleClusterStatus
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+      />
+    );
+    expect(tree.find("div.display-1").at(0).html()).toMatch(
+      /fa-exclamation-circle/
+    );
+    expect(tree.find("div.badge.badge-primary").text()).toBe("single");
+    expect(tree.find("p").text()).toBe("fake error");
+  });
+
+  it("renders silence link for completed requests", () => {
+    const single = NewClusterRequest("single", ["single"]);
+    single.isDone = true;
+    single.silenceID = "123456789";
+    single.silenceLink = "http://localhost";
+    silenceFormStore.data.requestsByCluster = { single: single };
+    const tree = shallow(
+      <SingleClusterStatus
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+      />
+    );
+
+    expect(tree.find("div.display-1").at(0).html()).toMatch(/fa-check-circle/);
+    expect(tree.find("div.badge.badge-primary").text()).toBe("single");
+    expect(tree.find("p").text()).toBe("123456789");
+    expect(tree.find("p").find('a[href="http://localhost"]')).toHaveLength(1);
   });
 });
