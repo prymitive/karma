@@ -20,6 +20,7 @@ let alerts;
 let group;
 
 beforeEach(() => {
+  jest.useFakeTimers();
   advanceTo(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
 
   alertStore = new AlertStore([]);
@@ -124,6 +125,30 @@ describe("<AlertAck />", () => {
       await fetchMock.flush(true);
     });
     expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
+  });
+
+  it("resets faExclamationCircle after 20s", async () => {
+    fetchMock.any(
+      {
+        status: 500,
+        body: "error message",
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
+    const tree = MountedAlertAck();
+    const button = tree.find("span.badge");
+    button.simulate("click");
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
+
+    act(() => jest.advanceTimersByTime(21 * 1000));
+    tree.update();
+    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-check/);
   });
 
   it("uses faCheckCircle after successful fetch", async () => {

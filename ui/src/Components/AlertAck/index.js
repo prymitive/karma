@@ -118,6 +118,18 @@ const AlertAck = ({ alertStore, silenceFormStore, group }) => {
     }
   }, [alertStore.data, clusters, currentCluster, reset]);
 
+  useEffect(() => {
+    let timer;
+    if (!isAcking && error) {
+      timer = setTimeout(() => {
+        setUpstreams([]);
+        setIsAcking(false);
+        reset();
+      }, 20 * 1000);
+    }
+    return () => clearTimeout(timer);
+  }, [isAcking, error, reset]);
+
   return useObserver(() =>
     alertStore.settings.values.alertAcknowledgement.enabled === false ? null : (
       <TooltipWrapper
