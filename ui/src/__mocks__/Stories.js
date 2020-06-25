@@ -76,33 +76,33 @@ const MockGrid = (alertStore) => {
     group: {
       group1: {
         brightness: 50,
-        background: { red: 178, green: 55, blue: 247, alpha: 255 },
+        background: "rgba(178,55,247,255)",
       },
       group2: {
         brightness: 50,
-        background: { red: 200, green: 100, blue: 66, alpha: 255 },
+        background: "rgba(200,100,66,255)",
       },
       group3: {
         brightness: 205,
-        background: { red: 246, green: 176, blue: 247, alpha: 255 },
+        background: "rgba(246,176,247,255)",
       },
       group4: {
         brightness: 111,
-        background: { red: 115, green: 101, blue: 152, alpha: 255 },
+        background: "rgba(115,101,152,255)",
       },
     },
     instance: {
       instance1: {
         brightness: 50,
-        background: { red: 111, green: 65, blue: 40, alpha: 255 },
+        background: "rgba(111,65,40,255)",
       },
       instance2: {
         brightness: 50,
-        background: { red: 66, green: 99, blue: 66, alpha: 255 },
+        background: "rgba(66,99,66,255)",
       },
       instance3: {
         brightness: 150,
-        background: { red: 66, green: 250, blue: 123, alpha: 255 },
+        background: "rgba(66,250,123,255)",
       },
     },
   };

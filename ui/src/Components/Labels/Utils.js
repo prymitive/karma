@@ -31,14 +31,7 @@ const GetClassAndStyle = (alertStore, name, value, extraClass, baseClass) => {
   } else {
     const c = alertStore.data.getColorData(name, value);
     if (c) {
-      // if there's color information use it
-      data.style["backgroundColor"] = `rgba(${[
-        c.background.red,
-        c.background.green,
-        c.background.blue,
-        c.background.alpha,
-      ].join(", ")})`;
-
+      data.style["backgroundColor"] = c.background;
       data.colorClassNames.push(
         isBackgroundDark(c.brightness)
           ? "components-label-dark"

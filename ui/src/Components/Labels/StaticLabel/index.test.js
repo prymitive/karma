@@ -28,7 +28,7 @@ describe("<StaticLabel />", () => {
     alertStore.data.colors["foo"] = {
       bar: {
         brightness: 125,
-        background: { red: 4, green: 5, blue: 6, alpha: 200 },
+        background: "rgba(4,5,6,200)",
       },
     };
     const tree = MountedStaticLabel();
@@ -41,7 +41,7 @@ describe("<StaticLabel />", () => {
     alertStore.data.colors["foo"] = {
       bar: {
         brightness: 200,
-        background: { red: 4, green: 5, blue: 6, alpha: 200 },
+        background: "rgba(4,5,6,200)",
       },
     };
     const tree = MountedStaticLabel();
