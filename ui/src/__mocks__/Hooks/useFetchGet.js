@@ -36,6 +36,8 @@ const Mock = (uri, { autorun = true, deps = [] } = {}) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isRetrying] = useState(false);
 
+  const cancelGet = useCallback(() => {}, []);
+
   const get = useCallback(() => {
     MockFetchStats.wasCalled(uri);
 
@@ -95,7 +97,7 @@ const Mock = (uri, { autorun = true, deps = [] } = {}) => {
     if (autorun) get();
     // eslint doesn't like ...deps
     // eslint-disable-next-line
-  }, [uri, get, autorun, ...deps]);
+  }, [uri, get, cancelGet, autorun, ...deps]);
 
   return {
     response:
@@ -115,6 +117,7 @@ const Mock = (uri, { autorun = true, deps = [] } = {}) => {
         ? MockFetchStats.mockedData.isRetrying
         : isRetrying,
     get,
+    cancelGet,
   };
 };
 

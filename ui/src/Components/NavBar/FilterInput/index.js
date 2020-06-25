@@ -64,7 +64,13 @@ const FilterInput = ({ alertStore, settingsStore }) => {
   const [term, setTerm] = useState("");
   const debouncedSearchTerm = useDebounce(term, 300);
 
-  const { response, error, isLoading, get } = useFetchGet(
+  const {
+    response,
+    error,
+    isLoading,
+    get,
+    cancelGet,
+  } = useFetchGet(
     FormatBackendURI(`autocomplete.json?term=${debouncedSearchTerm}`),
     { autorun: false }
   );
@@ -73,7 +79,8 @@ const FilterInput = ({ alertStore, settingsStore }) => {
     if (debouncedSearchTerm) {
       get();
     }
-  }, [get, debouncedSearchTerm]);
+    return () => cancelGet();
+  }, [get, cancelGet, debouncedSearchTerm]);
 
   useEffect(() => {
     if (error) {

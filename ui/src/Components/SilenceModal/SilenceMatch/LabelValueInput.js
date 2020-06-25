@@ -52,7 +52,7 @@ const ValueContainer = ({ children, ...props }) => (
 );
 
 const LabelValueInput = observer(({ silenceFormStore, matcher, isValid }) => {
-  const { response, get } = useFetchGet(
+  const { response, get, cancelGet } = useFetchGet(
     FormatBackendURI(`labelValues.json?name=${matcher.name}`),
     { autorun: false }
   );
@@ -61,7 +61,8 @@ const LabelValueInput = observer(({ silenceFormStore, matcher, isValid }) => {
     if (matcher.name) {
       get();
     }
-  }, [matcher.name, get]);
+    return () => cancelGet();
+  }, [matcher.name, get, cancelGet]);
 
   const context = React.useContext(ThemeContext);
 
