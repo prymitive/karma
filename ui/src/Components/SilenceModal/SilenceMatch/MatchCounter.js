@@ -45,7 +45,7 @@ const MatchCounter = ({ silenceFormStore, matcher }) => {
               className={isRetrying ? "text-danger" : ""}
             />
           ) : (
-            response.totalAlerts
+            Math.max(response.totalAlerts, 0)
           )}
         </span>
       </TooltipWrapper>

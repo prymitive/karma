@@ -14,6 +14,10 @@ const useFetchGet = (uri, { autorun = true, deps = [] } = {}) => {
   const [retryCount, setRetryCount] = useState(0);
   const isCanceled = useRef(false);
 
+  const cancelGet = useCallback(() => {
+    isCanceled.current = true;
+  }, []);
+
   const get = useCallback(async () => {
     isCanceled.current = false;
 
@@ -72,12 +76,10 @@ const useFetchGet = (uri, { autorun = true, deps = [] } = {}) => {
   useEffect(() => {
     if (autorun) get();
 
-    return () => {
-      isCanceled.current = true;
-    };
-  }, [uri, get, autorun, ...deps]); // eslint-disable-line react-hooks/exhaustive-deps
+    return () => cancelGet();
+  }, [uri, get, cancelGet, autorun, ...deps]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return { response, error, isLoading, isRetrying, retryCount, get };
+  return { response, error, isLoading, isRetrying, retryCount, get, cancelGet };
 };
 
 export { useFetchGet };
