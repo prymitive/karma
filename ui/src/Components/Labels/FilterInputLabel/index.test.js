@@ -18,7 +18,7 @@ const MockColors = () => {
   alertStore.data.colors["foo"] = {
     bar: {
       brightness: 200,
-      background: { red: 4, green: 5, blue: 6, alpha: 200 },
+      background: "rgba(4,5,6,200)",
     },
   };
 };
@@ -112,7 +112,7 @@ describe("<FilterInputLabel /> style", () => {
     MockColors();
     const tree = ShallowLabel("=", true, true, 1);
     expect(tree.props().style).toMatchObject({
-      backgroundColor: "rgba(4, 5, 6, 200)",
+      backgroundColor: "rgba(4,5,6,200)",
     });
   });
 

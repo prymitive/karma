@@ -31,13 +31,13 @@ storiesOf("NavBar", module).add("NavBar", () => {
     cluster: {
       staging: {
         brightness: 205,
-        background: { red: 246, green: 176, blue: 247, alpha: 255 },
+        background: "rgba(246,176,247,255)",
       },
     },
     region: {
       AF: {
         brightness: 111,
-        background: { red: 115, green: 101, blue: 152, alpha: 255 },
+        background: "rgba(115,101,152,255)",
       },
     },
   };
