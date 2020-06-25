@@ -1,6 +1,7 @@
 FROM node:12.18.1-alpine3.12 as nodejs-builder
 RUN mkdir -p /src/ui
 COPY ui/package.json ui/package-lock.json /src/ui/
+ENV NODE_ENV=production
 RUN cd /src/ui && npm install
 RUN apk add make git
 COPY ui /src/ui
@@ -13,6 +14,7 @@ COPY make /src/make
 COPY go.mod /src/go.mod
 COPY go.sum /src/go.sum
 RUN make -C /src download-deps-go
+COPY tools/go-bindata /src/tools/go-bindata
 RUN make -C /src install-deps-build-go
 COPY --from=nodejs-builder /src/ui/src /src/ui/src
 COPY --from=nodejs-builder /src/ui/build /src/ui/build

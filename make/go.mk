@@ -10,10 +10,10 @@ endif
 ui/build/index.html: $(call rwildcard, ui/src ui/package.json ui/package-lock.json, *)
 	@$(MAKE) -C ui build
 
-$(GOBIN)/go-bindata: go.mod go.sum
-	$(GO) install github.com/go-bindata/go-bindata/...
-$(GOBIN)/go-bindata-assetfs: $(GOBIN)/go-bindata go.mod go.sum
-	$(GO) install github.com/elazarl/go-bindata-assetfs/...
+$(GOBIN)/go-bindata: tools/go-bindata/go.mod tools/go-bindata/go.sum
+	$(GO) install -modfile=tools/go-bindata/go.mod github.com/go-bindata/go-bindata/...
+$(GOBIN)/go-bindata-assetfs: $(GOBIN)/go-bindata tools/go-bindata/go.mod tools/go-bindata/go.sum
+	$(GO) install -modfile=tools/go-bindata/go.mod github.com/elazarl/go-bindata-assetfs/...
 cmd/karma/bindata_assetfs.go: $(GOBIN)/go-bindata-assetfs $(SOURCES_JS) ui/build/index.html
 	go-bindata-assetfs -o cmd/karma/bindata_assetfs.go ui/build/... ui/src/... cmd/karma/tests/bindata/...
 
@@ -33,19 +33,19 @@ GOBENCHMARKCOUNT := 20
 benchmark-go:
 	@env GOMAXPROCS=2 $(GO) test -count=$(GOBENCHMARKCOUNT) -run=NONE -bench=. -benchmem ./...
 
-$(GOBIN)/benchstat: go.mod go.sum
-	@$(GO) install golang.org/x/perf/cmd/benchstat
+$(GOBIN)/benchstat: tools/benchstat/go.mod tools/benchstat/go.sum
+	@$(GO) install -modfile=tools/benchstat/go.mod golang.org/x/perf/cmd/benchstat
 benchmark-compare-go: $(GOBIN)/benchstat
 	@$(GOBIN)/benchstat master.txt new.txt
 
-$(GOBIN)/golangci-lint: go.mod go.sum
-	$(GO) install github.com/golangci/golangci-lint/cmd/golangci-lint
+$(GOBIN)/golangci-lint: tools/golangci-lint/go.mod tools/golangci-lint/go.sum
+	$(GO) install -modfile=tools/golangci-lint/go.mod github.com/golangci/golangci-lint/cmd/golangci-lint
 .PHONY: lint-go
 lint-go: $(GOBIN)/golangci-lint lint-go-looppointer
 	$(ENV) golangci-lint run -v
 
-$(GOBIN)/looppointer: go.mod go.sum
-	$(GO) install github.com/kyoh86/looppointer/cmd/looppointer
+$(GOBIN)/looppointer: tools/looppointer/go.mod tools/looppointer/go.sum
+	$(GO) install -modfile=tools/looppointer/go.mod github.com/kyoh86/looppointer/cmd/looppointer
 .PHONY: lint-go-looppointer
 lint-go-looppointer: $(GOBIN)/looppointer
 	$(ENV) looppointer -c 2 ./...
@@ -74,8 +74,8 @@ mock-assets: $(GOBIN)/go-bindata-assetfs
 	go-bindata-assetfs -o cmd/karma/bindata_assetfs.go -nometadata ui/build/... cmd/karma/tests/bindata/...
 	rm -fr ui/build
 
-$(GOBIN)/github-release-notes: go.mod go.sum
-	$(GO) install github.com/buchanae/github-release-notes
+$(GOBIN)/github-release-notes: tools/github-release-notes/go.mod tools/github-release-notes/go.sum
+	$(GO) install -modfile=tools/github-release-notes/go.mod github.com/buchanae/github-release-notes
 .PHONY: changelog
 changelog: $(GOBIN)/github-release-notes
 	@echo "Full changelog:"
@@ -87,3 +87,7 @@ changelog: $(GOBIN)/github-release-notes
 		| grep -vE '@renovate|@dependabot' \
 		| sed s/' PR '/' '/g \
 		| sed s/'- @prymitive -'/'-'/g
+
+.PHONY: tools-go-mod-tidy
+tools-go-mod-tidy:
+	@for f in $(wildcard tools/*/go.mod) ; do echo ">>> $$f" && cd $(CURDIR)/`dirname "$$f"` && go mod tidy && cd $(CURDIR) ; done

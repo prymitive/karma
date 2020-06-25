@@ -118,6 +118,7 @@ jobs:
         - travis_retry make mock-assets
         - travis_retry go get -d -v ./cmd/karma
         - travis_retry go mod tidy
+        - make tools-go-mod-tidy
         - git diff --exit-code
 
     - stage: Lint
@@ -199,6 +200,7 @@ jobs:
         # as it slows down other jobs
         - JOB=cc
         - GO111MODULE=on
+        - NODE_ENV=production
       before_script:
         # this stage needs to build everything including assets file and that
         # requires running webpack, so we need nodejs here

@@ -31,6 +31,7 @@
     "mobx": "5.15.4",
     "mobx-react-lite": "2.0.7",
     "mobx-stored": "1.1.0",
+    "node-sass": "4.14.1",
     "promise-retry": "2.0.1",
     "prop-types": "15.7.2",
     "qs": "6.9.4",
@@ -85,7 +86,6 @@
     "jest-canvas-mock": "2.2.0",
     "jest-date-mock": "1.0.8",
     "markdownlint-cli": "0.23.1",
-    "node-sass": "4.14.1",
     "prettier": "2.0.5",
     "puppeteer": "4.0.1",
     "source-map-explorer": "2.4.2"
