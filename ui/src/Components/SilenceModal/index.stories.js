@@ -89,6 +89,7 @@ storiesOf("SilenceModal", module)
     };
 
     silenceFormStore.toggle.visible = true;
+    silenceFormStore.data.autofillMatchers = false;
     silenceFormStore.data.matchers = [
       MockMatcher("cluster", ["prod"], false),
       MockMatcher("instance", ["server1", "server3"], true),

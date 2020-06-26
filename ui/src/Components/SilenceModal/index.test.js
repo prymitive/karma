@@ -114,6 +114,8 @@ describe("<SilenceModal />", () => {
 
     // mark form as dirty, resetProgress() should change this value to false
     silenceFormStore.data.wasValidated = true;
+    // disable autofill, closing modal should re-enable it
+    silenceFormStore.data.autofillMatchers = false;
 
     // click to hide
     toggle.simulate("click");
@@ -123,6 +125,7 @@ describe("<SilenceModal />", () => {
     // form should be reset
     expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.UserInput);
     expect(silenceFormStore.data.wasValidated).toBe(false);
+    expect(silenceFormStore.data.autofillMatchers).toBe(true);
   });
 
   it("'modal-open' class is appended to body node when modal is visible", () => {
