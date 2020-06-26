@@ -62,7 +62,7 @@ describe("<SilenceForm /> matchers", () => {
     expect(silenceFormStore.data.matchers).toHaveLength(1);
   });
 
-  it("uses filters to populate default matchers", () => {
+  it("uses filters to populate default matchers when silenceFormStore.data.autofillMatchers=true", () => {
     const filter = (name, matcher, value) => {
       const f = NewUnappliedFilter(`${name}${matcher}${value}`);
       f.name = name;
@@ -85,6 +85,7 @@ describe("<SilenceForm /> matchers", () => {
       ...filterCombos("cluster"),
       ...filterCombos("foo"),
     ];
+    silenceFormStore.data.autofillMatchers = true;
     const tree = MountedSilenceForm();
     const matchers = tree.find("SilenceMatch");
     expect(matchers).toHaveLength(6);
@@ -151,6 +152,40 @@ describe("<SilenceForm /> matchers", () => {
     });
   });
 
+  it("doesn't use filters to populate default matchers when silenceFormStore.data.autofillMatchers=false", () => {
+    const filter = (name, matcher, value) => {
+      const f = NewUnappliedFilter(`${name}${matcher}${value}`);
+      f.name = name;
+      f.matcher = matcher;
+      f.value = value;
+      return f;
+    };
+
+    const filterCombos = (name) =>
+      Object.entries(QueryOperators).map(([k, v]) =>
+        filter(name, v, `${name}${k}`)
+      );
+
+    alertStore.filters.values = [
+      ...filterCombos(StaticLabels.AlertName),
+      ...filterCombos(StaticLabels.AlertManager),
+      ...filterCombos(StaticLabels.Receiver),
+      ...filterCombos(StaticLabels.State),
+      ...filterCombos(StaticLabels.SilenceID),
+      ...filterCombos("cluster"),
+      ...filterCombos("foo"),
+    ];
+    silenceFormStore.data.autofillMatchers = false;
+    const tree = MountedSilenceForm();
+    const matchers = tree.find("SilenceMatch");
+    expect(matchers).toHaveLength(1);
+    expect(silenceFormStore.data.matchers[0]).toMatchObject({
+      isRegex: false,
+      name: "",
+      values: [],
+    });
+  });
+
   it("clicking 'Add more' button adds another matcher", () => {
     const tree = MountedSilenceForm();
     const button = tree.find("button[type='button']");
@@ -170,6 +205,7 @@ describe("<SilenceForm /> matchers", () => {
   });
 
   it("trash icon is visible when there are two matchers", () => {
+    silenceFormStore.data.autofillMatchers = false;
     silenceFormStore.data.addEmptyMatcher();
     silenceFormStore.data.addEmptyMatcher();
     const tree = MountedSilenceForm();
@@ -181,6 +217,7 @@ describe("<SilenceForm /> matchers", () => {
   });
 
   it("clicking trash icon on a matcher select removes it", () => {
+    silenceFormStore.data.autofillMatchers = false;
     silenceFormStore.data.addEmptyMatcher();
     silenceFormStore.data.addEmptyMatcher();
     silenceFormStore.data.addEmptyMatcher();
@@ -275,6 +312,7 @@ describe("<SilenceForm />", () => {
     silenceFormStore.data.setAlertmanagers([{ label: "am1", value: ["am1"] }]);
     silenceFormStore.data.author = "me@example.com";
     silenceFormStore.data.comment = "fake silence";
+    silenceFormStore.data.autofillMatchers = false;
     const tree = MountedSilenceForm();
     tree.simulate("submit", { preventDefault: jest.fn() });
     expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.Preview);

@@ -198,6 +198,7 @@ class SilenceFormStore {
       comment: "",
       author: "",
       requestsByCluster: {},
+      autofillMatchers: true,
 
       get isValid() {
         if (this.alertmanagers.length === 0) return false;
@@ -257,6 +258,8 @@ class SilenceFormStore {
         // ensure that silenceID is nulled, since it's used to edit silences
         // and this is used to silence groups
         this.silenceID = null;
+        // disable matcher autofill
+        this.autofillMatchers = false;
       },
 
       fillFormFromSilence(alertmanager, silence) {
@@ -292,6 +295,9 @@ class SilenceFormStore {
         this.endsAt = parseISO(silence.endsAt);
         this.comment = silence.comment;
         this.author = silence.createdBy;
+
+        // disable matcher autofill
+        this.autofillMatchers = false;
       },
 
       verifyStarEnd() {

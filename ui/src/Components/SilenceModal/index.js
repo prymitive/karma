@@ -21,6 +21,7 @@ const SilenceModalContent = React.lazy(() =>
 );
 
 const SilenceModal = ({ alertStore, silenceFormStore, settingsStore }) => {
+  // uses React.useCallback instead of useCallback for tests
   const onDeleteModalClose = React.useCallback(() => {
     const event = new CustomEvent("remountModal");
     window.dispatchEvent(event);
@@ -46,7 +47,10 @@ const SilenceModal = ({ alertStore, silenceFormStore, settingsStore }) => {
       <Modal
         isOpen={silenceFormStore.toggle.visible}
         toggleOpen={silenceFormStore.toggle.toggle}
-        onExited={silenceFormStore.data.resetProgress}
+        onExited={() => {
+          silenceFormStore.data.resetProgress();
+          silenceFormStore.data.autofillMatchers = true;
+        }}
       >
         <React.Suspense
           fallback={

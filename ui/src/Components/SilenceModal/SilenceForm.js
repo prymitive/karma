@@ -47,11 +47,9 @@ const SilenceForm = ({
     // reset cluster request state
     silenceFormStore.data.requestsByCluster = {};
 
-    if (
-      silenceFormStore.data.matchers.filter(
-        (m) => m.name !== "" || m.values.length
-      ).length === 0
-    ) {
+    if (silenceFormStore.data.autofillMatchers) {
+      silenceFormStore.data.matchers = [];
+
       if (alertStore.filters.values.length > 0) {
         alertStore.filters.values
           .filter(
@@ -73,9 +71,12 @@ const SilenceForm = ({
           });
       }
     }
+
     if (silenceFormStore.data.matchers.length === 0) {
       silenceFormStore.data.addEmptyMatcher();
     }
+
+    silenceFormStore.data.autofillMatchers = false;
 
     // populate author
     if (silenceFormStore.data.author === "") {
