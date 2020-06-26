@@ -46,7 +46,7 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
   </div>
   <div class=\\"input-group-append bg-transparent\\">
     <span class=\\"input-group-text border-0 rounded-0 bg-transparent px-0\\">
-      <button class=\\"border-0 rounded-0 bg-transparent cursor-pointer components-navbar-history px-2 components-navbar-icon\\"
+      <button class=\\"btn border-0 rounded-0 bg-transparent cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon\\"
               type=\\"button\\"
               data-toggle=\\"dropdown\\"
               aria-haspopup=\\"true\\"

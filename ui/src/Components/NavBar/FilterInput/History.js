@@ -212,7 +212,7 @@ const History = ({ alertStore, settingsStore }) => {
             <button
               ref={ref}
               onClick={toggle}
-              className="border-0 rounded-0 bg-transparent cursor-pointer components-navbar-history px-2 components-navbar-icon"
+              className="btn border-0 rounded-0 bg-transparent cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon"
               type="button"
               data-toggle="dropdown"
               aria-haspopup="true"
