@@ -68,7 +68,28 @@ describe("<SilenceModal />", () => {
     expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(1);
   });
 
+  it("renders a spinner placeholder after modal content load but no upstreams", () => {
+    const tree = MountedSilenceModal();
+    const toggle = tree.find(".nav-link");
+    toggle.simulate("click");
+    expect(tree.find("FontAwesomeIcon")).not.toHaveLength(0);
+    expect(tree.find("SilenceModalContent")).toHaveLength(1);
+    expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(1);
+  });
+
   it("renders modal content if fallback is not used", () => {
+    alertStore.data.upstreams = {
+      counters: { total: 1, healthy: 0, failed: 0 },
+      instances: [
+        {
+          name: "dev",
+          cluster: "dev",
+          uri: "http://localhost:9093",
+          error: "",
+        },
+      ],
+      clusters: { dev: ["dev"] },
+    };
     const tree = MountedSilenceModal();
     const toggle = tree.find(".nav-link");
     toggle.simulate("click");

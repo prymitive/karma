@@ -37,10 +37,7 @@ const ParseDefaultFilters = (settingsElement) => {
     settingsElement.dataset.defaultFiltersBase64 !== "{{ .DefaultFilter }}"
   ) {
     // decode from base64 to a string
-    const decoded = Buffer.from(
-      settingsElement.dataset.defaultFiltersBase64,
-      "base64"
-    ).toString("ascii");
+    const decoded = window.atob(settingsElement.dataset.defaultFiltersBase64);
     // parse decoded string as JSON
     const json = JSON.parse(decoded);
     // if we got an array then use it as default filters
@@ -55,10 +52,8 @@ const ParseUIDefaults = (defaultsElement) => {
   if (defaultsElement === null) {
     return null;
   }
-  const decoded = Buffer.from(defaultsElement.innerHTML, "base64").toString(
-    "ascii"
-  );
   try {
+    const decoded = window.atob(defaultsElement.innerHTML);
     return JSON.parse(decoded);
   } catch {
     return null;

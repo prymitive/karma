@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import { useObserver } from "mobx-react-lite";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
 
 import { AlertStore } from "Stores/AlertStore";
@@ -71,15 +72,22 @@ const SilenceModalContent = ({
       >
         {silenceFormStore.tab.current === SilenceTabNames.Editor ? (
           silenceFormStore.data.currentStage === SilenceFormStage.UserInput ? (
-            Object.keys(alertStore.data.clustersWithoutReadOnly).length > 0 ? (
-              <SilenceForm
-                alertStore={alertStore}
-                silenceFormStore={silenceFormStore}
-                settingsStore={settingsStore}
-                previewOpen={previewOpen}
-              />
+            alertStore.data.upstreams.instances.length > 0 ? (
+              Object.keys(alertStore.data.clustersWithoutReadOnly).length >
+              0 ? (
+                <SilenceForm
+                  alertStore={alertStore}
+                  silenceFormStore={silenceFormStore}
+                  settingsStore={settingsStore}
+                  previewOpen={previewOpen}
+                />
+              ) : (
+                <ReadOnlyPlaceholder />
+              )
             ) : (
-              <ReadOnlyPlaceholder />
+              <h1 className="text-center display-1 text-placeholder p-5 m-auto">
+                <FontAwesomeIcon icon={faSpinner} size="lg" spin />
+              </h1>
             )
           ) : silenceFormStore.data.currentStage ===
             SilenceFormStage.Preview ? (

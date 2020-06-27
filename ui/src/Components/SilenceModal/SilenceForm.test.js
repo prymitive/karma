@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import copy from "copy-to-clipboard";
+
 import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -252,6 +254,46 @@ describe("<SilenceForm /> preview", () => {
     expect(tree.find("PayloadPreview")).toHaveLength(1);
     button.simulate("click");
     expect(tree.find("PayloadPreview")).toHaveLength(0);
+  });
+
+  it("clicking on the copy button copies form link to the clipboard", () => {
+    const matcher = NewEmptyMatcher();
+    matcher.name = "job";
+    matcher.values = [{ label: "node_exporter", value: "node_exporter" }];
+    silenceFormStore.data.matchers = [matcher];
+    silenceFormStore.data.setAlertmanagers([{ label: "am1", value: ["am1"] }]);
+    silenceFormStore.data.author = "me@example.com";
+    silenceFormStore.data.comment = "fake silence";
+    silenceFormStore.data.autofillMatchers = false;
+
+    const tree = MountedSilenceForm();
+    tree.find(".btn.cursor-pointer.text-muted").simulate("click");
+
+    const button = tree.find("span.input-group-text.cursor-pointer");
+    expect(button.html()).toMatch(/fa-copy/);
+    button.simulate("click");
+    expect(copy).toHaveBeenCalledTimes(1);
+  });
+
+  it("silence form share link doesn't change on new input", () => {
+    const matcher = NewEmptyMatcher();
+    matcher.name = "job";
+    matcher.values = [{ label: "node_exporter", value: "node_exporter" }];
+    silenceFormStore.data.matchers = [matcher];
+    silenceFormStore.data.setAlertmanagers([{ label: "am1", value: ["am1"] }]);
+    silenceFormStore.data.author = "me@example.com";
+    silenceFormStore.data.comment = "fake silence";
+    silenceFormStore.data.autofillMatchers = false;
+
+    const tree = MountedSilenceForm();
+    tree.find(".btn.cursor-pointer.text-muted").simulate("click");
+
+    const input = tree.find("input.form-control").at(2);
+    expect(input.props().value).toMatch(/http:\/\/localhost\/\?m=/);
+    const link = input.props().value;
+
+    input.simulate("change", { target: { value: "a" } });
+    expect(input.props().value).toBe(link);
   });
 });
 

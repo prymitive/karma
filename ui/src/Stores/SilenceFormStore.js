@@ -143,6 +143,19 @@ const GenerateAlertmanagerSilenceData = (
   return payload;
 };
 
+const UnpackRegexMatcherValues = (isRegex, value) => {
+  if (isRegex && value.match(/^\((\w+\|)+\w+\)$/)) {
+    return value
+      .slice(1, -1)
+      .split("|")
+      .map((v) => MatcherValueToObject(v));
+  } else if (isRegex && value.match(/^(\w+\|)+\w+$/)) {
+    return value.split("|").map((v) => MatcherValueToObject(v));
+  } else {
+    return [MatcherValueToObject(value)];
+  }
+};
+
 class SilenceFormStore {
   // this is used to store modal visibility toggle
   toggle = observable(
@@ -199,6 +212,56 @@ class SilenceFormStore {
       author: "",
       requestsByCluster: {},
       autofillMatchers: true,
+      resetInputs: true,
+
+      get toBase64() {
+        const json = JSON.stringify({
+          am: this.alertmanagers,
+          m: this.matchers.map((m) => ({
+            n: m.name,
+            r: m.isRegex,
+            v: m.values.map((v) => v.value),
+          })),
+          d: differenceInMinutes(this.endsAt, this.startsAt),
+          c: this.comment,
+        });
+        return window.btoa(json);
+      },
+
+      fromBase64(s) {
+        let parsed;
+        try {
+          parsed = JSON.parse(window.atob(s));
+        } catch (error) {
+          console.error(`Failed to parse JSON: ${error}`);
+          return false;
+        }
+
+        let matchers = [];
+        parsed.m.forEach((m) => {
+          const matcher = NewEmptyMatcher();
+          matcher.name = m.n;
+          matcher.isRegex = m.r;
+          matcher.values = m.v.map((v) => MatcherValueToObject(v));
+          matchers.push(matcher);
+        });
+
+        if (matchers.length > 0) {
+          this.alertmanagers = parsed.am;
+          this.matchers = matchers;
+
+          this.startsAt = new Date();
+          this.endsAt = addMinutes(this.startsAt, parsed.d);
+          this.comment = parsed.c;
+
+          this.silenceID = null;
+          this.autofillMatchers = false;
+          this.resetInputs = false;
+          return true;
+        }
+
+        return false;
+      },
 
       get isValid() {
         if (this.alertmanagers.length === 0) return false;
@@ -273,19 +336,7 @@ class SilenceFormStore {
         for (const m of silence.matchers) {
           const matcher = NewEmptyMatcher();
           matcher.name = m.name;
-
-          if (m.isRegex && m.value.match(/^\((\w+\|)+\w+\)$/)) {
-            matcher.values = m.value
-              .slice(1, -1)
-              .split("|")
-              .map((v) => MatcherValueToObject(v));
-          } else if (m.isRegex && m.value.match(/^(\w+\|)+\w+$/)) {
-            matcher.values = m.value
-              .split("|")
-              .map((v) => MatcherValueToObject(v));
-          } else {
-            matcher.values = [MatcherValueToObject(m.value)];
-          }
+          matcher.values = UnpackRegexMatcherValues(m.isRegex, m.value);
           matcher.isRegex = m.isRegex;
           matchers.push(matcher);
         }
@@ -356,6 +407,8 @@ class SilenceFormStore {
       },
     },
     {
+      toBase64: computed,
+      fromBase64: action.bound,
       resetStartEnd: action.bound,
       resetProgress: action.bound,
       resetSilenceID: action.bound,

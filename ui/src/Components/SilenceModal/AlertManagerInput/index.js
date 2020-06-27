@@ -37,8 +37,8 @@ const AlertManagerInput = ({ alertStore, silenceFormStore }) => {
         for (const silenceAM of silenceFormStore.data.alertmanagers) {
           if (
             !currentAlertmanagers
-              .map((am) => am.label)
-              .includes(silenceAM.label)
+              .map((am) => JSON.stringify(am))
+              .includes(JSON.stringify(silenceAM))
           ) {
             silenceFormStore.data.alertmanagers = currentAlertmanagers;
           }
