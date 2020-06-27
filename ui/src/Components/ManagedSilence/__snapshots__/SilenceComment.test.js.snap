@@ -27,8 +27,18 @@ exports[`<SilenceComment /> Matches snapshot when collapsed 1`] = `
       <span class=\\"text-muted mr-2 font-italic\\">
         — me@example.com
       </span>
-      <span class=\\"badge badge-danger align-text-bottom p-1\\">
-        Expired 20 years ago
+      <span class=\\"badge badge-light nmb-05 align-text-bottom p-1\\">
+        Expires in 30 minutes
+        <div class=\\"progress silence-progress\\">
+          <div class=\\"progress-bar bg-success\\"
+               role=\\"progressbar\\"
+               style=\\"width: 50%;\\"
+               aria-valuenow=\\"50\\"
+               aria-valuemin=\\"0\\"
+               aria-valuemax=\\"100\\"
+          >
+          </div>
+        </div>
       </span>
     </div>
   </div>
@@ -94,8 +104,18 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
       <span class=\\"badge badge-secondary mx-1 align-text-bottom p-1\\">
         ha
       </span>
-      <span class=\\"badge badge-danger align-text-bottom p-1\\">
-        Expired 20 years ago
+      <span class=\\"badge badge-light nmb-05 align-text-bottom p-1\\">
+        Expires in 30 minutes
+        <div class=\\"progress silence-progress\\">
+          <div class=\\"progress-bar bg-success\\"
+               role=\\"progressbar\\"
+               style=\\"width: 50%;\\"
+               aria-valuenow=\\"50\\"
+               aria-valuemin=\\"0\\"
+               aria-valuemax=\\"100\\"
+          >
+          </div>
+        </div>
       </span>
     </div>
   </div>

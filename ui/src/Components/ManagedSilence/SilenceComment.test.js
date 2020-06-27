@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import { advanceTo, clear } from "jest-date-mock";
+
 import toDiffableHtml from "diffable-html";
 
 import { MockSilence } from "__mocks__/Alerts";
@@ -12,12 +14,15 @@ let silence;
 let alertStore;
 
 beforeEach(() => {
+  advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
+
   silence = MockSilence();
   alertStore = new AlertStore([]);
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
+  clear();
 });
 
 const CollapseMock = jest.fn();
