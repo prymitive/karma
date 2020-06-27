@@ -11,8 +11,6 @@ import { useFetchGet } from "./useFetchGet";
 
 describe("useFetchGet", () => {
   beforeAll(() => {
-    jest.useFakeTimers();
-
     fetchMock.mock("http://localhost/ok", {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: "ok" }),
@@ -23,6 +21,7 @@ describe("useFetchGet", () => {
   });
 
   beforeEach(() => {
+    jest.useFakeTimers();
     fetchMock.resetHistory();
   });
 
@@ -116,7 +115,7 @@ describe("useFetchGet", () => {
     expect(result.current.retryCount).toBe(FetchRetryConfig.retries + 1);
 
     expect(fetchMock.calls()).toHaveLength(FetchRetryConfig.retries + 1);
-    expect(fetchMock.lastCall()[0]).toBe("http://localhost/error");
+    expect(fetchMock.lastUrl()).toBe("http://localhost/error");
 
     //verify headers for each request
     for (let i = 0; i <= FetchRetryConfig.retries; i++) {
@@ -366,5 +365,40 @@ describe("useFetchGet", () => {
 
     jest.runOnlyPendingTimers();
     await fetchMock.flush(true);
+  });
+
+  it("doesn't update response after cleanup on slow body read", async () => {
+    FetchRetryConfig.retries = 0;
+
+    let tree;
+    const fetcher = jest.fn(() =>
+      Promise.resolve({
+        headers: {
+          get: () => "text/plain",
+        },
+        text: async () => {
+          tree.unmount();
+          return "ok";
+        },
+      })
+    );
+    jest.useRealTimers();
+
+    const Component = () => {
+      const {
+        response,
+        error,
+        isLoading,
+      } = useFetchGet("http://localhost/slow/body", { fetcher: fetcher });
+      return (
+        <span>
+          <span>{response}</span>
+          <span>{error}</span>
+          <span>{isLoading}</span>
+        </span>
+      );
+    };
+
+    tree = mount(<Component />);
   });
 });

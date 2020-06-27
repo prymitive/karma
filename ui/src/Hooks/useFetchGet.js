@@ -6,7 +6,10 @@ import promiseRetry from "promise-retry";
 
 import { CommonOptions, FetchRetryConfig } from "Common/Fetch";
 
-const useFetchGet = (uri, { autorun = true, deps = [] } = {}) => {
+const useFetchGet = (
+  uri,
+  { autorun = true, deps = [], fetcher = null } = {}
+) => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -27,7 +30,7 @@ const useFetchGet = (uri, { autorun = true, deps = [] } = {}) => {
       setError(null);
       const res = await promiseRetry(
         (retry, number) =>
-          fetch(
+          (fetcher || fetch)(
             uri,
             merge(
               {},
@@ -58,20 +61,22 @@ const useFetchGet = (uri, { autorun = true, deps = [] } = {}) => {
           body = await res.text();
         }
 
-        if (res.ok) {
-          setResponse(body);
-        } else {
-          setError(body);
+        if (!isCanceled.current) {
+          if (res.ok) {
+            setResponse(body);
+          } else {
+            setError(body);
+          }
+          setIsLoading(false);
+          setIsRetrying(false);
         }
-        setIsLoading(false);
-        setIsRetrying(false);
       }
     } catch (error) {
       setError(error.message);
       setIsLoading(false);
       setIsRetrying(false);
     }
-  }, [uri]);
+  }, [uri, fetcher]);
 
   useEffect(() => {
     if (autorun) get();

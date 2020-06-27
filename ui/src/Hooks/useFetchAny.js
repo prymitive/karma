@@ -4,7 +4,7 @@ import merge from "lodash.merge";
 
 import { CommonOptions } from "Common/Fetch";
 
-const useFetchAny = (upstreams) => {
+const useFetchAny = (upstreams, { fetcher = null } = {}) => {
   const [index, setIndex] = useState(0);
   const [response, setResponse] = useState({
     response: null,
@@ -37,7 +37,7 @@ const useFetchAny = (upstreams) => {
         inProgress: true,
       });
       try {
-        const res = await fetch(
+        const res = await (fetcher || fetch)(
           uri,
           merge({}, { method: "GET" }, CommonOptions, options)
         );
@@ -51,23 +51,25 @@ const useFetchAny = (upstreams) => {
             body = await res.text();
           }
 
-          if (res.ok) {
-            setResponse({
-              response: body,
-              error: null,
-              responseURI: uri,
-              inProgress: false,
-            });
-          } else {
-            if (upstreams.length > index + 1) {
-              setIndex(index + 1);
-            } else {
+          if (!isCancelled) {
+            if (res.ok) {
               setResponse({
-                response: null,
-                error: body,
-                responseURI: null,
+                response: body,
+                error: null,
+                responseURI: uri,
                 inProgress: false,
               });
+            } else {
+              if (upstreams.length > index + 1) {
+                setIndex(index + 1);
+              } else {
+                setResponse({
+                  response: null,
+                  error: body,
+                  responseURI: null,
+                  inProgress: false,
+                });
+              }
             }
           }
         }
@@ -96,7 +98,7 @@ const useFetchAny = (upstreams) => {
     return () => {
       isCancelled = true;
     };
-  }, [upstreams, index, reset]);
+  }, [upstreams, index, reset, fetcher]);
 
   return { ...response, reset };
 };
