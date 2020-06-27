@@ -323,4 +323,35 @@ describe("useFetchAny", () => {
     expect(result.current.inProgress).toBe(false);
     expect(result.current.responseURI).toBe(null);
   });
+
+  it("doesn't update response after cleanup on slow body read", async () => {
+    let tree;
+    const fetcher = jest.fn(() =>
+      Promise.resolve({
+        headers: {
+          get: () => "text/plain",
+        },
+        text: async () => {
+          tree.unmount();
+          return "ok";
+        },
+      })
+    );
+
+    const upstreams = [{ uri: "http://localhost/slow/body", options: {} }];
+    const Component = () => {
+      const { response, error, inProgress } = useFetchAny(upstreams, {
+        fetcher: fetcher,
+      });
+      return (
+        <span>
+          <span>{response}</span>
+          <span>{error}</span>
+          <span>{inProgress}</span>
+        </span>
+      );
+    };
+
+    tree = mount(<Component />);
+  });
 });
