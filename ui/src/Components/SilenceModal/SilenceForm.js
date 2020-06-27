@@ -3,12 +3,18 @@ import PropTypes from "prop-types";
 
 import { useObserver } from "mobx-react-lite";
 
+import Flash from "react-reveal/Flash";
+
+import copy from "copy-to-clipboard";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 import { faCommentDots } from "@fortawesome/free-solid-svg-icons/faCommentDots";
 import { faUndoAlt } from "@fortawesome/free-solid-svg-icons/faUndoAlt";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
+import { faShareAlt } from "@fortawesome/free-solid-svg-icons/faShareAlt";
+import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
 
 import { AlertStore } from "Stores/AlertStore";
 import {
@@ -28,6 +34,50 @@ import { DateTimeSelect } from "./DateTimeSelect";
 import { PayloadPreview } from "./PayloadPreview";
 import { IconInput, AuthenticatedAuthorInput } from "./AuthorInput";
 
+const ShareButton = ({ silenceFormStore }) => {
+  const [clickCount, setClickCount] = useState(0);
+
+  const baseURL = [
+    window.location.protocol,
+    "//",
+    window.location.host,
+    window.location.pathname,
+  ].join("");
+
+  return useObserver(() => (
+    <div className="input-group mb-3">
+      <div className="input-group-prepend">
+        <span className="input-group-text">
+          <TooltipWrapper title="Link to this form">
+            <FontAwesomeIcon icon={faShareAlt} />
+          </TooltipWrapper>
+        </span>
+      </div>
+      <input
+        type="text"
+        className="form-control"
+        value={`${baseURL}?m=${silenceFormStore.data.toBase64}`}
+        onChange={() => {}}
+      />
+      <div className="input-group-append">
+        <span
+          className="input-group-text cursor-pointer"
+          onClick={() => {
+            copy(`${baseURL}?m=${silenceFormStore.data.toBase64}`);
+            setClickCount(clickCount + 1);
+          }}
+        >
+          <TooltipWrapper title="Copy to clipboard">
+            <Flash spy={clickCount} duration={500}>
+              <FontAwesomeIcon icon={faCopy} />
+            </Flash>
+          </TooltipWrapper>
+        </span>
+      </div>
+    </div>
+  ));
+};
+
 const SilenceForm = ({
   alertStore,
   silenceFormStore,
@@ -38,7 +88,10 @@ const SilenceForm = ({
 
   useEffect(() => {
     // reset startsAt & endsAt on every mount, unless we're editing a silence
-    if (silenceFormStore.data.silenceID === null) {
+    if (
+      silenceFormStore.data.silenceID === null &&
+      silenceFormStore.data.resetInputs === true
+    ) {
       silenceFormStore.data.resetStartEnd();
     } else {
       silenceFormStore.data.verifyStarEnd();
@@ -77,6 +130,7 @@ const SilenceForm = ({
     }
 
     silenceFormStore.data.autofillMatchers = false;
+    silenceFormStore.data.resetInputs = true;
 
     // populate author
     if (silenceFormStore.data.author === "") {
@@ -139,15 +193,17 @@ const SilenceForm = ({
           isValid={!silenceFormStore.data.wasValidated}
         />
       ))}
-      <TooltipWrapper title="Add a matcher">
-        <button
-          type="button"
-          className="btn btn-secondary mb-3"
-          onClick={addMore}
-        >
-          <FontAwesomeIcon icon={faPlus} />
-        </button>
-      </TooltipWrapper>
+      <div className="d-flex flex-row justify-content-between mb-3">
+        <TooltipWrapper title="Add a matcher">
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
+            onClick={addMore}
+          >
+            <FontAwesomeIcon icon={faPlus} fixedWidth />
+          </button>
+        </TooltipWrapper>
+      </div>
       <DateTimeSelect silenceFormStore={silenceFormStore} />
       {alertStore.info.authentication.enabled ? (
         <AuthenticatedAuthorInput alertStore={alertStore} />
@@ -195,7 +251,10 @@ const SilenceForm = ({
         </span>
       </div>
       {showPreview ? (
-        <PayloadPreview silenceFormStore={silenceFormStore} />
+        <div className="mt-3">
+          <ShareButton silenceFormStore={silenceFormStore} />
+          <PayloadPreview silenceFormStore={silenceFormStore} />
+        </div>
       ) : null}
     </form>
   ));

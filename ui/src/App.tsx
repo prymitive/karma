@@ -69,7 +69,13 @@ const App: FunctionComponent<AppProps> = ({ defaultFilters, uiDefaults }) => {
   useEffect(() => {
     let filters;
     // parse and decode request query args
-    const p = DecodeLocationSearch(window.location.search);
+    const p: {
+      params: {
+        q: string[];
+        m?: string;
+      };
+      defaultsUsed: boolean;
+    } = DecodeLocationSearch(window.location.search);
     // p.defaultsUsed means that karma URI didn't have ?q=foo query args
     if (p.defaultsUsed) {
       // no ?q=foo set, use defaults saved by the user or from backend config
@@ -83,7 +89,11 @@ const App: FunctionComponent<AppProps> = ({ defaultFilters, uiDefaults }) => {
       filters = p.params.q;
     }
     alertStore.filters.setFilters(filters);
-  }, [alertStore, defaultFilters, settingsStore]);
+
+    if (p.params.m && silenceFormStore.data.fromBase64(p.params.m)) {
+      silenceFormStore.toggle.show();
+    }
+  }, [alertStore, defaultFilters, settingsStore]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const onPopState = useCallback(
     (event: PopStateEvent) => {

@@ -55,8 +55,12 @@ const SilenceMatch = ({
         </span>
         {showDelete ? (
           <TooltipWrapper title="Remove this matcher">
-            <button type="button" className="btn btn-danger" onClick={onDelete}>
-              <FontAwesomeIcon icon={faTrash} />
+            <button
+              type="button"
+              className="btn btn-outline-danger"
+              onClick={onDelete}
+            >
+              <FontAwesomeIcon icon={faTrash} fixedWidth />
             </button>
           </TooltipWrapper>
         ) : null}

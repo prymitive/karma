@@ -3,6 +3,7 @@ import React from "react";
 import { mount } from "enzyme";
 
 import { mockMatchMedia } from "__mocks__/matchMedia";
+import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { App } from "./App";
 
 const uiDefaults = {
@@ -27,6 +28,10 @@ afterEach(() => {
   localStorage.setItem("savedFilters", "");
   jest.restoreAllMocks();
   window.history.pushState({}, "App", "/");
+  global.window.location = {
+    href: "http://localhost/",
+    search: "",
+  };
 });
 
 describe("<App />", () => {
@@ -119,6 +124,69 @@ describe("<App />", () => {
 
     let event = new PopStateEvent("popstate");
     window.onpopstate(event);
+  });
+
+  it("populates silence from from 'm' query arg", () => {
+    const m1 = NewEmptyMatcher();
+    m1.name = "foo";
+    m1.isRegex = true;
+    m1.values = ["bar"];
+    const m2 = NewEmptyMatcher();
+    m2.name = "bar";
+    m2.isRegex = false;
+    m2.values = ["foo", "baz"];
+    const store = new SilenceFormStore();
+    store.data.matchers = [m1, m2];
+    store.data.comment = "base64";
+    const m = store.data.toBase64;
+
+    global.window.location = {
+      href: `http://localhost/?q=bar&m=${m}`,
+      search: `?q=bar&m=${m}`,
+    };
+
+    mount(<App defaultFilters={[]} uiDefaults={uiDefaults} />);
+  });
+
+  it("doesn't crash on invalid 'm' value", () => {
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(jest.fn());
+
+    global.window.location = {
+      href: "http://localhost/?q=bar&m=foo",
+      search: "?q=bar&m=foo",
+    };
+
+    mount(<App defaultFilters={[]} uiDefaults={uiDefaults} />);
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it("doesn't crash on truncated 'm' value", () => {
+    const consoleSpy = jest
+      .spyOn(console, "error")
+      .mockImplementation(jest.fn());
+
+    const m1 = NewEmptyMatcher();
+    m1.name = "foo";
+    m1.isRegex = true;
+    m1.values = ["bar"];
+    const m2 = NewEmptyMatcher();
+    m2.name = "bar";
+    m2.isRegex = false;
+    m2.values = ["foo", "baz"];
+    const store = new SilenceFormStore();
+    store.data.matchers = [m1, m2];
+    store.data.comment = "base64";
+    const m = store.data.toBase64;
+
+    global.window.location = {
+      href: `http://localhost/?q=bar&m=${m}`,
+      search: `?q=bar&m=${m.slice(0, m.length - 2)}`,
+    };
+
+    mount(<App defaultFilters={[]} uiDefaults={uiDefaults} />);
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
   });
 });
 

@@ -1,5 +1,8 @@
+import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInMilliseconds from "date-fns/differenceInMilliseconds";
 import isSameDay from "date-fns/isSameDay";
+import addHours from "date-fns/addHours";
+import addMinutes from "date-fns/addMinutes";
 
 import {
   MockAlert,
@@ -12,6 +15,7 @@ import {
   SilenceFormStage,
   NewEmptyMatcher,
   SilenceTabNames,
+  MatcherValueToObject,
 } from "./SilenceFormStore";
 
 let store;
@@ -394,6 +398,66 @@ describe("SilenceFormStore.data", () => {
     store.data.author = "me@example.com";
     store.data.comment = "toAlertmanagerPayload test";
     expect(store.data.toAlertmanagerPayload).toMatchSnapshot();
+  });
+
+  it("dumps to base64 and back", () => {
+    store.data.matchers = [
+      MockMatcher("foo", [MatcherValueToObject("bar")]),
+      MockMatcher("instance", [MatcherValueToObject("server0|server1")]),
+      MockMatcher("cluster", [
+        MatcherValueToObject("prod"),
+        MatcherValueToObject("dev"),
+      ]),
+      MockMatcher("job", [MatcherValueToObject("abc.+")]),
+    ];
+    store.data.startsAt = new Date();
+    store.data.endsAt = addMinutes(addHours(store.data.startsAt, 7), 45);
+    store.data.comment = "base64";
+    const b64 = store.data.toBase64;
+
+    store.data.matchers = [];
+    store.data.comment = "";
+
+    store.data.fromBase64(b64);
+    expect(store.data.matchers).toMatchObject([
+      {
+        isRegex: false,
+        name: "foo",
+        values: [MatcherValueToObject("bar")],
+      },
+      {
+        isRegex: false,
+        name: "instance",
+        values: [MatcherValueToObject("server0|server1")],
+      },
+      {
+        isRegex: false,
+        name: "cluster",
+        values: [MatcherValueToObject("prod"), MatcherValueToObject("dev")],
+      },
+      {
+        isRegex: false,
+        name: "job",
+        values: [MatcherValueToObject("abc.+")],
+      },
+    ]);
+    expect(store.data.comment).toBe("base64");
+    expect(differenceInMinutes(store.data.endsAt, store.data.startsAt)).toBe(
+      7 * 60 + 45
+    );
+  });
+
+  it("base64 restore ignores empty matchers", () => {
+    store.data.matchers = [];
+    store.data.comment = "base64";
+    const b64 = store.data.toBase64;
+
+    store.data.matchers = [];
+    store.data.comment = "foo";
+
+    store.data.fromBase64(b64);
+    expect(store.data.matchers).toMatchObject([]);
+    expect(store.data.comment).toBe("foo");
   });
 });
 
