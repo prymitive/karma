@@ -4,14 +4,26 @@ import merge from "lodash.merge";
 
 import { CommonOptions } from "Common/Fetch";
 
-const useFetchAny = (upstreams, { fetcher = null } = {}) => {
+interface Upstream {
+  uri: string;
+  options: RequestInit;
+}
+
+interface ResponseState {
+  response: string | null;
+  error: string | null;
+  responseURI: string | null;
+  inProgress: boolean;
+}
+
+const useFetchAny = (upstreams: Upstream[], { fetcher = null } = {}) => {
   const [index, setIndex] = useState(0);
   const [response, setResponse] = useState({
     response: null,
     error: null,
     responseURI: null,
     inProgress: false,
-  });
+  } as ResponseState);
 
   const reset = useCallback(() => {
     setIndex(0);
@@ -39,7 +51,7 @@ const useFetchAny = (upstreams, { fetcher = null } = {}) => {
       try {
         const res = await (fetcher || fetch)(
           uri,
-          merge({}, { method: "GET" }, CommonOptions, options)
+          merge({}, { method: "GET" }, CommonOptions, options) as RequestInit
         );
 
         if (!isCancelled) {

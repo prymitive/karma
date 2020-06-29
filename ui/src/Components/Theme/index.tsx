@@ -38,7 +38,19 @@ const Placeholder = () => {
   );
 };
 
-const ThemeContext = React.createContext();
+interface ThemeCtx {
+  isDark: boolean;
+  reactSelectStyles: any;
+  animations: {
+    duration: number;
+  };
+}
+
+const ThemeContext = React.createContext({
+  isDark: false,
+  reactSelectStyles: {},
+  animations: { duration: 1000 },
+} as ThemeCtx);
 
 const BodyTheme = () => {
   const context = React.useContext(ThemeContext);

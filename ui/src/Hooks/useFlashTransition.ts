@@ -1,8 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 
+import { TransitionProps } from "react-transition-group/Transition";
+
 import { useInView } from "react-intersection-observer";
 
-const defaultProps = {
+const defaultProps: TransitionProps = {
   in: false,
   classNames: "components-animation-flash",
   timeout: 800,
@@ -11,7 +13,7 @@ const defaultProps = {
   exit: false,
 };
 
-const useFlashTransition = (flashOn) => {
+const useFlashTransition = (flashOn: any) => {
   const mountRef = useRef(false);
   const [ref, inView] = useInView();
   const [isPending, setIsPending] = useState(false);

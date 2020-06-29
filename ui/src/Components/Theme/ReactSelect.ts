@@ -1,4 +1,25 @@
-const ReactSelectColors = {
+import { CSSProperties } from "react";
+import { Styles } from "react-select";
+
+interface ReactSelectTheme {
+  color: string;
+  singleValueColor: string;
+  backgroundColor: string;
+  borderColor: string;
+  focusedBoxShadow: string;
+  focusedBorderColor: string;
+  menuBackground: string;
+  optionHoverBackground: string;
+  valueContainerBackground: string;
+  disabledValueContainerBackground: string;
+}
+
+interface ReactSelectThemes {
+  Light: ReactSelectTheme;
+  Dark: ReactSelectTheme;
+}
+
+const ReactSelectColors: ReactSelectThemes = {
   Light: {
     color: "#fff",
     singleValueColor: "#000",
@@ -25,8 +46,8 @@ const ReactSelectColors = {
   },
 };
 
-const ReactSelectStyles = (theme) => ({
-  control: (base, state) =>
+const ReactSelectStyles = (theme: ReactSelectTheme): Styles => ({
+  control: (base: CSSProperties, state: any) =>
     state.isFocused
       ? {
           ...base,
@@ -47,7 +68,7 @@ const ReactSelectStyles = (theme) => ({
           borderColor: theme.borderColor,
           "&:hover": { borderColor: theme.borderColor },
         },
-  valueContainer: (base, state) =>
+  valueContainer: (base: CSSProperties, state: any) =>
     state.isMulti
       ? {
           ...base,
@@ -72,11 +93,11 @@ const ReactSelectStyles = (theme) => ({
             ? theme.disabledValueContainerBackground
             : theme.valueContainerBackground,
         },
-  singleValue: (base, state) => ({
+  singleValue: (base: CSSProperties) => ({
     ...base,
     color: theme.singleValueColor,
   }),
-  multiValue: (base, state) => ({
+  multiValue: (base: CSSProperties) => ({
     ...base,
     borderRadius: "4px",
     backgroundColor: theme.optionHoverBackground,
@@ -84,7 +105,7 @@ const ReactSelectStyles = (theme) => ({
       backgroundColor: theme.optionHoverBackground,
     },
   }),
-  multiValueLabel: (base, state) => ({
+  multiValueLabel: (base: CSSProperties) => ({
     ...base,
     color: theme.color,
     whiteSpace: "normal",
@@ -94,7 +115,7 @@ const ReactSelectStyles = (theme) => ({
       color: theme.color,
     },
   }),
-  multiValueRemove: (base, state) => ({
+  multiValueRemove: (base: CSSProperties) => ({
     ...base,
     cursor: "pointer",
     color: theme.color,
@@ -107,11 +128,11 @@ const ReactSelectStyles = (theme) => ({
       opacity: "0.75",
     },
   }),
-  input: (base, state) => ({
+  input: (base: CSSProperties) => ({
     ...base,
     color: "inherit",
   }),
-  indicatorsContainer: (base, state) => ({
+  indicatorsContainer: (base: CSSProperties, state: any) => ({
     ...base,
     backgroundColor: state.isDisabled
       ? theme.disabledValueContainerBackground
@@ -119,19 +140,19 @@ const ReactSelectStyles = (theme) => ({
     borderTopRightRadius: "0.25rem",
     borderBottomRightRadius: "0.25rem",
   }),
-  dropdownIndicator: (base, state) =>
+  dropdownIndicator: (base: CSSProperties, state: any) =>
     state.isFocused
       ? {
           ...base,
           "&:hover": { color: "inherit" },
         }
       : { ...base },
-  menu: (base, state) => ({
+  menu: (base: CSSProperties) => ({
     ...base,
     zIndex: 1500,
     backgroundColor: theme.menuBackground,
   }),
-  option: (base, state) => ({
+  option: (base: CSSProperties) => ({
     ...base,
     color: "inherit",
     backgroundColor: "inherit",

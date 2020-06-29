@@ -1,6 +1,5 @@
-import React, { useRef, useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
 
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
@@ -11,18 +10,25 @@ import {
   MountModalBackdrop,
 } from "Components/Animations/MountModal";
 
-const ModalInner = ({ size, isUpper, toggleOpen, children }) => {
-  const ref = useRef(null);
+const ModalInner: FC<{
+  size: "lg" | "xl";
+  isUpper: boolean;
+  toggleOpen: () => void;
+}> = ({ size, isUpper, toggleOpen, children }) => {
+  // needed for tests to spy on useRef
+  const ref = React.useRef(null as HTMLDivElement | null);
 
   useEffect(() => {
-    document.body.classList.add("modal-open");
-    disableBodyScroll(ref.current, { reserveScrollBarGap: true });
+    if (ref.current !== null) {
+      document.body.classList.add("modal-open");
+      disableBodyScroll(ref.current, { reserveScrollBarGap: true });
 
-    let modal = ref.current;
-    return () => {
-      if (!isUpper) document.body.classList.remove("modal-open");
-      enableBodyScroll(modal);
-    };
+      let modal = ref.current;
+      return () => {
+        if (!isUpper) document.body.classList.remove("modal-open");
+        enableBodyScroll(modal);
+      };
+    }
   }, [isUpper]);
 
   useHotkeys("esc", toggleOpen);
@@ -43,7 +49,19 @@ const ModalInner = ({ size, isUpper, toggleOpen, children }) => {
   );
 };
 
-const Modal = ({ size, isOpen, isUpper, toggleOpen, children, ...props }) => {
+const Modal: FC<{
+  size?: "lg" | "xl";
+  isOpen: boolean;
+  isUpper?: boolean;
+  toggleOpen: () => void;
+}> = ({
+  size = "lg",
+  isOpen,
+  isUpper = false,
+  toggleOpen,
+  children,
+  ...props
+}) => {
   return ReactDOM.createPortal(
     <React.Fragment>
       <MountModal in={isOpen} unmountOnExit {...props}>
@@ -58,16 +76,5 @@ const Modal = ({ size, isOpen, isUpper, toggleOpen, children, ...props }) => {
     document.body
   );
 };
-Modal.propTypes = {
-  size: PropTypes.oneOf(["lg", "xl"]),
-  isOpen: PropTypes.bool.isRequired,
-  isUpper: PropTypes.bool,
-  toggleOpen: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired,
-};
-Modal.defaultProps = {
-  size: "lg",
-  isUpper: false,
-};
 
-export { Modal };
+export { Modal, ModalInner };

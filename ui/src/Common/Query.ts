@@ -14,7 +14,7 @@ const StaticLabels = Object.freeze({
   SilenceID: "@silence_id",
 });
 
-function FormatQuery(name, operator, value) {
+function FormatQuery(name: string, operator: string, value: string) {
   return `${name}${operator}${value}`;
 }
 

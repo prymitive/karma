@@ -1,5 +1,4 @@
-import React, { useEffect, useRef } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useRef, FC } from "react";
 
 import { reaction } from "mobx";
 
@@ -8,8 +7,11 @@ import addSeconds from "date-fns/addSeconds";
 import { AlertStore, AlertStoreStatuses } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 
-const Fetcher = ({ alertStore, settingsStore }) => {
-  const timer = useRef(null);
+const Fetcher: FC<{
+  alertStore: AlertStore;
+  settingsStore: Settings;
+}> = ({ alertStore, settingsStore }) => {
+  const timer = useRef(undefined as number | undefined);
 
   const getSortSettings = () => {
     let sortSettings = {
@@ -81,7 +83,7 @@ const Fetcher = ({ alertStore, settingsStore }) => {
   };
 
   useEffect(() => {
-    return () => clearInterval(timer.current);
+    return () => window.clearInterval(timer.current);
   }, []);
 
   useEffect(
@@ -89,7 +91,9 @@ const Fetcher = ({ alertStore, settingsStore }) => {
       reaction(
         () =>
           JSON.stringify({
-            filters: alertStore.filters.values.map((f) => f.raw).join(" "),
+            filters: alertStore.filters.values
+              .map((f: { raw: string }) => f.raw)
+              .join(" "),
             grid: {
               sortOrder: settingsStore.gridConfig.config.sortOrder,
               sortLabel: settingsStore.gridConfig.config.sortLabel,
@@ -115,10 +119,10 @@ const Fetcher = ({ alertStore, settingsStore }) => {
         () => alertStore.status.paused,
         (paused) => {
           if (paused) {
-            clearInterval(timer.current);
-            timer.current = null;
+            window.clearInterval(timer.current);
+            timer.current = undefined;
           } else {
-            timer.current = setInterval(
+            timer.current = window.setInterval(
               () => window.requestAnimationFrame(fetchIfIdle),
               1000
             );
@@ -130,10 +134,6 @@ const Fetcher = ({ alertStore, settingsStore }) => {
   );
 
   return <span />;
-};
-Fetcher.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  settingsStore: PropTypes.instanceOf(Settings).isRequired,
 };
 
 export { Fetcher };

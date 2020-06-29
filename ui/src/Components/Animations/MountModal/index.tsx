@@ -1,9 +1,13 @@
-import React from "react";
+import React, { FC, ReactNode } from "react";
 import PropTypes from "prop-types";
 
 import { CSSTransition } from "react-transition-group";
 
-const MountModal = ({ children, duration, ...props }) => (
+const MountModal: FC<{
+  children: ReactNode;
+  in: boolean;
+  unmountOnExit?: boolean;
+}> = ({ children, ...props }) => (
   <CSSTransition
     classNames="components-animation-modal"
     timeout={200}
@@ -19,9 +23,12 @@ MountModal.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-const MountModalBackdrop = ({ children, duration, ...props }) => (
+const MountModalBackdrop: FC<{
+  children: ReactNode;
+  in?: boolean;
+  unmountOnExit?: boolean;
+}> = ({ children, ...props }) => (
   <CSSTransition
-    in={true}
     classNames="components-animation-backdrop"
     timeout={200}
     appear={true}

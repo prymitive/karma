@@ -1,9 +1,12 @@
-import React from "react";
+import React, { FC, ReactNode } from "react";
 import PropTypes from "prop-types";
 
 import { CSSTransition } from "react-transition-group";
 
-const DropdownSlide = ({ children, duration, ...props }) => (
+const DropdownSlide: FC<{
+  children: ReactNode;
+  duration: number;
+}> = ({ children, duration, ...props }) => (
   <CSSTransition
     classNames="components-animation-slide"
     timeout={150}

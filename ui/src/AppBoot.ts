@@ -2,9 +2,19 @@
 
 import { init } from "@sentry/browser";
 
+export interface UIDefaults {
+  Refresh: number;
+  HideFiltersWhenIdle: boolean;
+  ColorTitlebar: boolean;
+  Theme: "light" | "dark" | "auto";
+  MinimalGroupWidth: number;
+  AlertsPerGroup: number;
+  CollapseGroups: "expanded" | "collapsed" | "collapsedOnMobile";
+}
+
 const SettingsElement = () => document.getElementById("settings");
 
-const SetupSentry = (settingsElement) => {
+const SetupSentry = (settingsElement: HTMLElement | null) => {
   if (
     settingsElement !== null &&
     settingsElement.dataset.sentryDsn &&
@@ -29,7 +39,7 @@ const SetupSentry = (settingsElement) => {
   }
 };
 
-const ParseDefaultFilters = (settingsElement) => {
+const ParseDefaultFilters = (settingsElement: HTMLElement | null): string[] => {
   let defaultFilters = [];
   if (
     settingsElement !== null &&
@@ -48,7 +58,9 @@ const ParseDefaultFilters = (settingsElement) => {
   return defaultFilters;
 };
 
-const ParseUIDefaults = (defaultsElement) => {
+const ParseUIDefaults = (
+  defaultsElement: HTMLElement | null
+): UIDefaults | null => {
   if (defaultsElement === null) {
     return null;
   }
