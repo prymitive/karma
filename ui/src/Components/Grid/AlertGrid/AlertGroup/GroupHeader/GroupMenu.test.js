@@ -29,7 +29,7 @@ beforeEach(() => {
   MockSetIsMenuOpen = jest.fn();
 
   alertStore.data.upstreams = {
-    clusters: { default: ["am1"] },
+    clusters: { default: ["am1"], ro: ["ro"], am2: ["am2"] },
     instances: [
       {
         name: "am1",
@@ -42,6 +42,30 @@ beforeEach(() => {
         version: "0.17.0",
         cluster: "default",
         clusterMembers: ["am1"],
+      },
+      {
+        name: "ro",
+        uri: "http://localhost:8080",
+        publicURI: "http://example.com",
+        readonly: true,
+        headers: {},
+        corsCredentials: "include",
+        error: "",
+        version: "0.17.0",
+        cluster: "ro",
+        clusterMembers: ["ro"],
+      },
+      {
+        name: "am2",
+        uri: "http://localhost:8080",
+        publicURI: "http://example.com",
+        readonly: false,
+        headers: {},
+        corsCredentials: "include",
+        error: "",
+        version: "0.17.0",
+        cluster: "am2",
+        clusterMembers: ["am2"],
       },
     ],
   };
@@ -141,14 +165,19 @@ describe("<MenuContent />", () => {
 
   it("clicking on 'Silence' icon opens the silence form modal", () => {
     const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
+    group.alertmanagerCount = { am1: 1, ro: 1 };
     const tree = MountedMenuContent(group);
     const button = tree.find(".dropdown-item").at(1);
     button.simulate("click");
     expect(silenceFormStore.toggle.visible).toBe(true);
+    expect(silenceFormStore.data.alertmanagers).toMatchObject([
+      { label: "am1", value: ["am1"] },
+    ]);
   });
 
   it("'Silence' menu entry is disabled when all Alertmanager instances are read-only", () => {
     alertStore.data.upstreams.instances[0].readonly = true;
+    alertStore.data.upstreams.instances[2].readonly = true;
 
     const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
     const tree = MountedMenuContent(group);

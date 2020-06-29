@@ -316,13 +316,17 @@ class SilenceFormStore {
       },
 
       // if alerts argument is not passed all group alerts will be used
-      fillMatchersFromGroup(group, stripLabels, alerts) {
+      fillMatchersFromGroup(group, stripLabels, alertmanagers, alerts) {
+        this.alertmanagers = alertmanagers;
+
         this.matchers = MatchersFromGroup(group, stripLabels, alerts);
         // ensure that silenceID is nulled, since it's used to edit silences
         // and this is used to silence groups
         this.silenceID = null;
         // disable matcher autofill
         this.autofillMatchers = false;
+        // disable alertmanager input reset
+        this.resetInputs = false;
       },
 
       fillFormFromSilence(alertmanager, silence) {

@@ -12,17 +12,31 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalL
 
 import { APIAlert, APIGroup } from "Models/API";
 import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore, SilenceTabNames } from "Stores/SilenceFormStore";
+import {
+  SilenceFormStore,
+  SilenceTabNames,
+  AlertmanagerClustersToOption,
+} from "Stores/SilenceFormStore";
 import { FetchPauser } from "Components/FetchPauser";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { DateFromNow } from "Components/DateFromNow";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
 
 const onSilenceClick = (alertStore, silenceFormStore, group, alert) => {
+  let clusters = {};
+  Object.entries(alertStore.data.clustersWithoutReadOnly).forEach(
+    ([cluster, members]) => {
+      if (alert.alertmanager.map((am) => am.cluster).includes(cluster)) {
+        clusters[cluster] = members;
+      }
+    }
+  );
+
   silenceFormStore.data.resetProgress();
   silenceFormStore.data.fillMatchersFromGroup(
     group,
     alertStore.settings.values.silenceForm.strip.labels,
+    AlertmanagerClustersToOption(clusters),
     [alert]
   );
   silenceFormStore.tab.setTab(SilenceTabNames.Editor);
