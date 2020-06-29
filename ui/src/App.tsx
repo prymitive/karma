@@ -18,6 +18,7 @@ import {
   ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { BodyTheme, ThemeContext } from "Components/Theme";
+import { UIDefaults } from "./AppBoot";
 import { ErrorBoundary } from "./ErrorBoundary";
 
 import "Styles/ResetCSS.scss";
@@ -46,19 +47,9 @@ const FaviconBadge = React.lazy(() =>
   }))
 );
 
-interface UIDefaults {
-  Refresh: number;
-  HideFiltersWhenIdle: boolean;
-  ColorTitlebar: boolean;
-  Theme: "light" | "dark" | "auto";
-  MinimalGroupWidth: number;
-  AlertsPerGroup: number;
-  CollapseGroups: "expanded" | "collapsed" | "collapsedOnMobile";
-}
-
 interface AppProps {
   defaultFilters: Array<string>;
-  uiDefaults: UIDefaults;
+  uiDefaults: UIDefaults | null;
 }
 
 const App: FunctionComponent<AppProps> = ({ defaultFilters, uiDefaults }) => {

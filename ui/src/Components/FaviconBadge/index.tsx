@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect, FC } from "react";
 
 import { autorun } from "mobx";
 import { useObserver } from "mobx-react-lite";
@@ -8,7 +7,9 @@ import Favico from "favico.js";
 
 import { AlertStore } from "Stores/AlertStore";
 
-const FaviconBadge = ({ alertStore }) => {
+const FaviconBadge: FC<{
+  alertStore: AlertStore;
+}> = ({ alertStore }) => {
   const [favico] = useState(
     new Favico({
       animation: "none",
@@ -37,9 +38,6 @@ const FaviconBadge = ({ alertStore }) => {
       data-status-error={alertStore.status.error}
     />
   ));
-};
-FaviconBadge.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
 };
 
 export { FaviconBadge };

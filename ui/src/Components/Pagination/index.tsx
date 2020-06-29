@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, { useState, useEffect, FC } from "react";
 
 import { useHotkeys } from "react-hotkeys-hook";
 
@@ -13,16 +12,24 @@ import { faAngleDoubleRight } from "@fortawesome/free-solid-svg-icons/faAngleDou
 
 import { IsMobile } from "Common/Device";
 
-const PageSelect = ({
+type PageCallback = (page: number) => void;
+
+const PageSelect: FC<{
+  totalItemsCount: number;
+  totalPages: number;
+  maxPerPage: number;
+  initialPage: number;
+  setPageCallback: PageCallback;
+}> = ({
   totalItemsCount,
   totalPages,
   maxPerPage,
-  initialPage,
+  initialPage = 1,
   setPageCallback,
 }) => {
   const [activePage, setActivePage] = useState(initialPage);
 
-  const onChange = (page) => {
+  const onChange = (page: number) => {
     setActivePage(page);
     setPageCallback(page);
   };
@@ -82,16 +89,6 @@ const PageSelect = ({
       ) : null}
     </div>
   );
-};
-PageSelect.propTypes = {
-  totalPages: PropTypes.number.isRequired,
-  initialPage: PropTypes.number,
-  maxPerPage: PropTypes.number.isRequired,
-  totalItemsCount: PropTypes.number.isRequired,
-  setPageCallback: PropTypes.func.isRequired,
-};
-PageSelect.defaultProps = {
-  initialPage: 1,
 };
 
 export { PageSelect };

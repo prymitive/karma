@@ -3,7 +3,16 @@ import React from "react";
 import { mount } from "enzyme";
 
 import { PressKey } from "__mocks__/PressKey";
-import { Modal } from ".";
+import { Modal, ModalInner } from ".";
+
+beforeEach(() => {
+  jest.restoreAllMocks();
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+  document.body.className = "";
+});
 
 const fakeToggle = jest.fn();
 
@@ -15,12 +24,21 @@ const MountedModal = (isOpen, isUpper) => {
   );
 };
 
-afterEach(() => {
-  jest.resetAllMocks();
-  document.body.className = "";
-});
+describe("<ModalInner />", () => {
+  it("scroll isn't enabled if ref is null", () => {
+    const useRefSpy = jest.spyOn(React, "useRef").mockImplementation(() =>
+      Object.defineProperty({}, "current", {
+        get: () => null,
+        set: () => {},
+      })
+    );
+    const tree = mount(<ModalInner isUpper toggleOpen={fakeToggle} />);
+    tree.setProps({ isUpper: false });
+    tree.setProps({ isUpper: true });
+    tree.setProps({ isUpper: false });
+    expect(useRefSpy).toHaveBeenCalledTimes(4);
+  });
 
-describe("<Modal />", () => {
   it("'modal-open' class is appended to MountModal container", () => {
     const tree = MountedModal(true);
     expect(tree.find("div").at(0).hasClass("modal-open")).toBe(true);

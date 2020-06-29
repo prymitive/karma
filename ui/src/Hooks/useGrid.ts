@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 
-import Bricks from "bricks.js";
+import Bricks, { SizeDetail, Instance } from "bricks.js";
 
-const useGrid = (sizes) => {
-  const ref = useRef(null);
-  const grid = useRef(null);
+const useGrid = (sizes: SizeDetail[]) => {
+  const ref = useRef(null as Node | null);
+  const grid = useRef(null as Instance | null);
   const [repack, setRepack] = useState(() => () => {});
 
   useEffect(() => {
     if (!grid.current && ref.current) {
-      grid.current = new Bricks({
+      grid.current = Bricks({
         container: ref.current,
         sizes: sizes,
         packed: "packed",

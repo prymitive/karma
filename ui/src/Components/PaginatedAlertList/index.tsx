@@ -1,5 +1,4 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC, ReactNode } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
@@ -12,7 +11,7 @@ import {
 } from "Components/LabelSetList";
 import { useFetchGet } from "Hooks/useFetchGet";
 
-const FetchError = ({ message }) => (
+const FetchError: FC<{ message: ReactNode }> = ({ message }) => (
   <div className="text-center">
     <h2 className="display-2 text-danger">
       <FontAwesomeIcon icon={faExclamationCircle} />
@@ -20,9 +19,6 @@ const FetchError = ({ message }) => (
     <p className="lead text-muted">{message}</p>
   </div>
 );
-FetchError.propTypes = {
-  message: PropTypes.node.isRequired,
-};
 
 const Placeholder = () => (
   <div className="jumbotron bg-transparent">
@@ -32,7 +28,11 @@ const Placeholder = () => (
   </div>
 );
 
-const PaginatedAlertList = ({ alertStore, filters, title }) => {
+const PaginatedAlertList: FC<{
+  alertStore: AlertStore;
+  filters: string[];
+  title: string;
+}> = ({ alertStore, filters, title }) => {
   const { response, error, isLoading } = useFetchGet(
     FormatBackendURI("alerts.json?") + FormatAlertsQ(filters)
   );
@@ -50,11 +50,6 @@ const PaginatedAlertList = ({ alertStore, filters, title }) => {
       title={title}
     />
   );
-};
-PaginatedAlertList.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  filters: PropTypes.arrayOf(PropTypes.string).isRequired,
-  title: PropTypes.string,
 };
 
 export { PaginatedAlertList };

@@ -14,7 +14,13 @@ const FetchRetryConfig = {
   maxTimeout: 5000,
 };
 
-const FetchGet = async (uri, options, beforeRetry) =>
+type PreRetryCallback = (number: number) => void;
+
+const FetchGet = async (
+  uri: string,
+  options: RequestInit,
+  beforeRetry: PreRetryCallback
+) =>
   await promiseRetry(
     (retry, number) =>
       fetch(
