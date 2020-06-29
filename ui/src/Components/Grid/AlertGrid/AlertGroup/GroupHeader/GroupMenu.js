@@ -13,17 +13,33 @@ import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 import { APIGroup } from "Models/API";
 import { FormatAlertsQ } from "Stores/AlertStore";
 import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore, SilenceTabNames } from "Stores/SilenceFormStore";
+import {
+  SilenceFormStore,
+  SilenceTabNames,
+  AlertmanagerClustersToOption,
+} from "Stores/SilenceFormStore";
 import { QueryOperators, StaticLabels, FormatQuery } from "Common/Query";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { FetchPauser } from "Components/FetchPauser";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
 
 const onSilenceClick = (alertStore, silenceFormStore, group) => {
+  let clusters = {};
+  Object.entries(alertStore.data.clustersWithoutReadOnly).forEach(
+    ([cluster, members]) => {
+      members.forEach((member) => {
+        if (Object.keys(group.alertmanagerCount).includes(member)) {
+          clusters[cluster] = members;
+        }
+      });
+    }
+  );
+
   silenceFormStore.data.resetProgress();
   silenceFormStore.data.fillMatchersFromGroup(
     group,
-    alertStore.settings.values.silenceForm.strip.labels
+    alertStore.settings.values.silenceForm.strip.labels,
+    AlertmanagerClustersToOption(clusters)
   );
   silenceFormStore.tab.setTab(SilenceTabNames.Editor);
   silenceFormStore.toggle.show();

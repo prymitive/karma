@@ -16,6 +16,7 @@ import {
   NewEmptyMatcher,
   SilenceTabNames,
   MatcherValueToObject,
+  AlertmanagerClustersToOption,
 } from "./SilenceFormStore";
 
 let store;
@@ -126,7 +127,14 @@ describe("SilenceFormStore.data", () => {
 
   it("fillMatchersFromGroup() creates correct matcher object for a group", () => {
     const group = MockGroup();
-    store.data.fillMatchersFromGroup(group, []);
+    store.data.fillMatchersFromGroup(
+      group,
+      [],
+      AlertmanagerClustersToOption({ ha: ["am1", "am2"] })
+    );
+    expect(store.data.alertmanagers).toMatchObject([
+      { label: "Cluster: ha", value: ["am1", "am2"] },
+    ]);
     expect(store.data.matchers).toHaveLength(4);
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -167,7 +175,15 @@ describe("SilenceFormStore.data", () => {
 
   it("fillMatchersFromGroup() creates correct matcher object for a group with only a subset of alerts passed", () => {
     const group = MockGroup();
-    store.data.fillMatchersFromGroup(group, [], [group.alerts[0]]);
+    store.data.fillMatchersFromGroup(
+      group,
+      [],
+      AlertmanagerClustersToOption({ ha: ["am1", "am2"] }),
+      [group.alerts[0]]
+    );
+    expect(store.data.alertmanagers).toMatchObject([
+      { label: "Cluster: ha", value: ["am1", "am2"] },
+    ]);
     expect(store.data.matchers).toHaveLength(4);
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
