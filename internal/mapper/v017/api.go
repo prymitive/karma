@@ -56,6 +56,7 @@ func groups(c *client.Alertmanager, timeout time.Duration) ([]models.AlertGroup,
 		}
 		for _, alert := range group.Alerts {
 			a := models.Alert{
+				Fingerprint:  *alert.Fingerprint,
 				Receiver:     *group.Receiver.Name,
 				Annotations:  models.AnnotationsFromMap(alert.Annotations),
 				Labels:       alert.Labels,

@@ -37,6 +37,7 @@ type Alert struct {
 	// those are not exposed in JSON, Alertmanager specific value will be in kept
 	// in the Alertmanager slice
 	// skip those when generating alert fingerprint too
+	Fingerprint  string   `json:"-" hash:"-"`
 	GeneratorURL string   `json:"-" hash:"-"`
 	SilencedBy   []string `json:"-" hash:"-"`
 	InhibitedBy  []string `json:"-" hash:"-"`
