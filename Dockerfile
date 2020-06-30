@@ -1,4 +1,4 @@
-FROM node:12.18.1-alpine3.12 as nodejs-builder
+FROM node:12.18.2-alpine as nodejs-builder
 RUN mkdir -p /src/ui
 COPY ui/package.json ui/package-lock.json /src/ui/
 ENV NODE_ENV=production
@@ -7,7 +7,7 @@ RUN apk add make git
 COPY ui /src/ui
 RUN make -C /src/ui build
 
-FROM golang:1.14.4-alpine3.12 as go-builder
+FROM golang:1.14.4-alpine as go-builder
 RUN apk add make git
 COPY Makefile /src/Makefile
 COPY make /src/make
