@@ -227,6 +227,19 @@ const Help = ({ defaultIsOpen }) => (
           </QueryHelp>
 
           <QueryHelp
+            title="Match alerts based on the Alertmanager alert fingerprint"
+            operators={["=", "!="]}
+          >
+            <FilterExample example="@fingerprint=123456789">
+              Match only alert with fingerprint <code>123456789</code>.
+            </FilterExample>
+            <FilterExample example="@fingerprint!=123456789">
+              Match all alerts except the one with fingerprint{" "}
+              <code>123456789</code>.
+            </FilterExample>
+          </QueryHelp>
+
+          <QueryHelp
             title="Match suppressed alerts based on the silence ID"
             operators={["=", "!="]}
           >
