@@ -19,7 +19,11 @@ afterEach(() => {
 
 const MountedLabelSetList = (labelsList) => {
   return mount(
-    <LabelSetList alertStore={alertStore} labelsList={labelsList} />
+    <LabelSetList
+      alertStore={alertStore}
+      labelsList={labelsList}
+      title="Affected alerts"
+    />
   );
 };
 

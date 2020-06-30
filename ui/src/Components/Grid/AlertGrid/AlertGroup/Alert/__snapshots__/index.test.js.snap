@@ -81,7 +81,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
   <div style=\\"display: inline-block; max-width: 100%;\\"
        class=\\" tooltip-trigger\\"
   >
-    <span class=\\"badge badge-light components-label\\">
+    <span class=\\"badge badge-light components-label components-label-with-hover cursor-pointer\\">
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
