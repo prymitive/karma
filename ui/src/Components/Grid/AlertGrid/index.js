@@ -49,6 +49,7 @@ const AlertGrid = ({ alertStore, settingsStore, silenceFormStore }) => {
   useEffect(() => {
     window.addEventListener("resize", handleResize);
     return () => {
+      handleResize.cancel();
       window.removeEventListener("resize", handleResize);
     };
   }, [handleResize]);
