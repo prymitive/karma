@@ -39,6 +39,8 @@ see [CONFIGURATION.md](docs/CONFIGURATION.md#alertmanagers).
 
 ### Alert visualization
 
+#### Alert groups
+
 Alerts are displayed grouped preserving
 [group_by](https://prometheus.io/docs/alerting/configuration/#route)
 configuration option in Alertmanager.
@@ -54,6 +56,20 @@ Each individual alert will show unique labels and annotations. Labels
 and annotations that are shared between all alerts are moved to the footer.
 
 ![Example](/docs/img/alertGroup.png)
+
+#### Inhibited alerts
+
+Inhibited alerts (suppressed by other alerts,
+[see Alertmanager docs](https://prometheus.io/docs/alerting/latest/alertmanager/#inhibition))
+will have a "muted" button.
+
+![Inhibited alert](/docs/img/inhibited.png)
+
+Clicking on that button will bring a modal with a list of inhibiting alerts.
+
+![Inhibiting alerts](/docs/img/inhibitedByModal.png)
+
+#### Silence deduplication
 
 If all alerts in a group were suppressed by the same silence then, to save
 screen space, the silence will also be moved to the footer.
