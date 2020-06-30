@@ -251,7 +251,7 @@ const SilenceForm = ({
         </span>
       </div>
       {showPreview ? (
-        <div className="mt-3">
+        <div className="mt-4">
           <ShareButton silenceFormStore={silenceFormStore} />
           <PayloadPreview silenceFormStore={silenceFormStore} />
         </div>

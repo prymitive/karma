@@ -10,12 +10,11 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 
 const PayloadPreview = ({ silenceFormStore }) => {
   return useObserver(() => (
-    <div className="mt-3">
-      <JSONPretty
-        json={silenceFormStore.data.toAlertmanagerPayload}
-        theme={theme}
-      />
-    </div>
+    <JSONPretty
+      json={silenceFormStore.data.toAlertmanagerPayload}
+      theme={theme}
+      themeClassName="rounded p-1"
+    />
   ));
 };
 PayloadPreview.propTypes = {
