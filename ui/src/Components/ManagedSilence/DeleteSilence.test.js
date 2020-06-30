@@ -5,7 +5,6 @@ import { mount } from "enzyme";
 
 import { advanceTo, clear } from "jest-date-mock";
 
-import { EmptyAPIResponse } from "__mocks__/Fetch";
 import { MockSilence } from "__mocks__/Alerts";
 import { PressKey } from "__mocks__/PressKey";
 import { AlertStore } from "Stores/AlertStore";
@@ -135,68 +134,6 @@ describe("<DeleteSilenceModalContent />", () => {
     expect(silenceFormStore.toggle.blurred).toBe(true);
     tree.unmount();
     expect(silenceFormStore.toggle.blurred).toBe(false);
-  });
-
-  it("renders ProgressMessage while loading preview", () => {
-    useFetchGet.fetch.setMockedData({
-      response: null,
-      error: false,
-      isLoading: true,
-      isRetrying: false,
-    });
-    const tree = MountedDeleteSilenceModalContent();
-    expect(tree.find("ProgressMessage")).toHaveLength(1);
-  });
-
-  it("renders LabelSetList with StaticLabel on mount", () => {
-    const tree = MountedDeleteSilenceModalContent();
-    expect(tree.find("LabelSetList")).toHaveLength(1);
-    expect(tree.find("StaticLabel")).toHaveLength(3);
-  });
-
-  it("renders empty LabelSetList with empty response", () => {
-    useFetchGet.fetch.setMockedData({
-      response: EmptyAPIResponse(),
-      error: false,
-      isLoading: false,
-      isRetrying: false,
-    });
-    const tree = MountedDeleteSilenceModalContent();
-    expect(tree.find("LabelSetList")).toHaveLength(1);
-    expect(tree.find("StaticLabel")).toHaveLength(0);
-  });
-
-  it("fetches affected alerts on mount", () => {
-    MountedDeleteSilenceModalContent();
-    expect(useFetchGet).toHaveBeenCalled();
-  });
-
-  it("renders StaticLabel after fetch", () => {
-    const tree = MountedDeleteSilenceModalContent();
-    expect(tree.text()).toMatch(/Affected alerts/);
-    expect(tree.find("StaticLabel")).toHaveLength(3);
-  });
-
-  it("handles empty grid response correctly", () => {
-    useFetchGet.fetch.setMockedData({
-      response: EmptyAPIResponse(),
-      error: false,
-      isLoading: false,
-      isRetrying: false,
-    });
-    const tree = MountedDeleteSilenceModalContent();
-    expect(tree.text()).toMatch(/No alerts matched/);
-  });
-
-  it("renders ErrorMessage on failed preview fetch", () => {
-    useFetchGet.fetch.setMockedData({
-      response: null,
-      error: "fake error",
-      isLoading: false,
-      isRetrying: false,
-    });
-    const tree = MountedDeleteSilenceModalContent();
-    expect(tree.find("ErrorMessage")).toHaveLength(1);
   });
 
   it("sends a DELETE request after clicking 'Confirm' button", () => {

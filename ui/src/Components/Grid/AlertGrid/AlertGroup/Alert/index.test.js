@@ -88,6 +88,23 @@ describe("<Alert />", () => {
   it("renders inhibition icon when inhibited", () => {
     const alert = MockedAlert();
     alert.alertmanager[0].inhibitedBy = ["123456"];
+    alert.alertmanager.push({
+      name: "ha2",
+      cluster: "HA",
+      state: "active",
+      startsAt: "2018-08-14T17:36:40.017867056Z",
+      source: "localhost/prometheus",
+      silencedBy: [],
+      inhibitedBy: ["123456"],
+    });
+    const group = MockAlertGroup({}, [alert], [], {}, {});
+    const tree = MountedAlert(alert, group, false, false);
+    expect(tree.find(".fa-volume-mute")).toHaveLength(1);
+  });
+
+  it("inhibition icon passes only unique fingerprints", () => {
+    const alert = MockedAlert();
+    alert.alertmanager[0].inhibitedBy = ["123456"];
     const group = MockAlertGroup({}, [alert], [], {}, {});
     const tree = MountedAlert(alert, group, false, false);
     expect(tree.find(".fa-volume-mute")).toHaveLength(1);

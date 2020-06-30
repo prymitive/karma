@@ -8,16 +8,12 @@ import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 
 import { APISilence } from "Models/API";
-import { AlertStore, FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
+import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
-import { useFetchGet } from "Hooks/useFetchGet";
 import { useFetchDelete } from "Hooks/useFetchDelete";
 import { Modal } from "Components/Modal";
-import {
-  LabelSetList,
-  GroupListToUniqueLabelsList,
-} from "Components/LabelSetList";
+import { PaginatedAlertList } from "Components/PaginatedAlertList";
 
 const ProgressMessage = () => (
   <div className="text-center">
@@ -54,32 +50,6 @@ const SuccessMessage = () => (
     </p>
   </div>
 );
-
-const DeletePreview = ({ alertStore, silence }) => {
-  const { response, error, isLoading } = useFetchGet(
-    FormatBackendURI("alerts.json?") +
-      FormatAlertsQ([
-        FormatQuery(StaticLabels.SilenceID, QueryOperators.Equal, silence.id),
-      ])
-  );
-
-  return isLoading ? (
-    <ProgressMessage />
-  ) : error ? (
-    <ErrorMessage message={error} />
-  ) : (
-    <LabelSetList
-      alertStore={alertStore}
-      labelsList={GroupListToUniqueLabelsList(
-        response.grids.length ? response.grids[0].alertGroups : []
-      )}
-    />
-  );
-};
-DeletePreview.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  silence: APISilence.isRequired,
-};
 
 const DeleteResult = ({ alertStore, cluster, silence }) => {
   const [currentTime, setCurrentTime] = useState(Math.floor(Date.now()));
@@ -164,7 +134,17 @@ const DeleteSilenceModalContent = ({
           />
         ) : (
           <React.Fragment>
-            <DeletePreview alertStore={alertStore} silence={silence} />
+            <PaginatedAlertList
+              alertStore={alertStore}
+              filters={[
+                FormatQuery(
+                  StaticLabels.SilenceID,
+                  QueryOperators.Equal,
+                  silence.id
+                ),
+              ]}
+              title="Affected alerts"
+            />
             <div className="d-flex flex-row-reverse">
               <button
                 type="button"
@@ -245,9 +225,4 @@ DeleteSilence.defaultProps = {
   isUpper: false,
 };
 
-export {
-  DeleteSilence,
-  DeleteSilenceModalContent,
-  DeletePreview,
-  DeleteResult,
-};
+export { DeleteSilence, DeleteSilenceModalContent, DeleteResult };

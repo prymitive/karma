@@ -26,14 +26,14 @@ const GroupListToUniqueLabelsList = (groups) => {
   return Object.values(alerts);
 };
 
-const LabelSetList = ({ alertStore, labelsList }) => {
+const LabelSetList = ({ alertStore, labelsList, title }) => {
   const [activePage, setActivePage] = useState(1);
 
   const maxPerPage = IsMobile() ? 5 : 10;
 
   return labelsList.length > 0 ? (
     <div>
-      <p className="lead text-center">Affected alerts</p>
+      {title ? <p className="lead text-center">{title}</p> : null}
       <div>
         <ul className="list-group list-group-flush mb-3">
           {labelsList
@@ -63,12 +63,17 @@ const LabelSetList = ({ alertStore, labelsList }) => {
       />
     </div>
   ) : (
-    <p className="text-muted text-center">No alerts matched</p>
+    <div className="jumbotron bg-transparent">
+      <h1 className="display-5 text-placeholder text-center">
+        No alerts matched
+      </h1>
+    </div>
   );
 };
 LabelSetList.propTypes = {
   alertStore: PropTypes.instanceOf(AlertStore).isRequired,
   labelsList: PropTypes.arrayOf(PropTypes.object).isRequired,
+  title: PropTypes.string,
 };
 
 export { LabelSetList, GroupListToUniqueLabelsList };

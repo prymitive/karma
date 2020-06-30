@@ -3,16 +3,13 @@ import PropTypes from "prop-types";
 
 import { useObserver } from "mobx-react-lite";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faVolumeMute } from "@fortawesome/free-solid-svg-icons/faVolumeMute";
-
 import { APIAlert, APIGroup } from "Models/API";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BorderClassMap } from "Common/Colors";
 import { StaticLabels } from "Common/Query";
 import { FilteringLabel } from "Components/Labels/FilteringLabel";
-import { TooltipWrapper } from "Components/TooltipWrapper";
+import { InhibitedByModal } from "Components/InhibitedByModal";
 import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
 import { AlertMenu } from "./AlertMenu";
 import { RenderSilence } from "../Silences";
@@ -39,13 +36,15 @@ const Alert = ({
 
   const silences = {};
   let clusters = [];
-  let isInhibited = false;
+  let inhibitedBy = [];
   for (const am of alert.alertmanager) {
     if (!clusters.includes(am.cluster)) {
       clusters.push(am.cluster);
     }
-    if (am.inhibitedBy.length > 0) {
-      isInhibited = true;
+    for (const fingerprint of am.inhibitedBy) {
+      if (!inhibitedBy.includes(fingerprint)) {
+        inhibitedBy.push(fingerprint);
+      }
     }
     if (!silences[am.cluster]) {
       silences[am.cluster] = {
@@ -87,12 +86,8 @@ const Alert = ({
         silenceFormStore={silenceFormStore}
         setIsMenuOpen={setIsMenuOpen}
       />
-      {isInhibited ? (
-        <TooltipWrapper title="This alert is inhibited by other alerts">
-          <span className="badge badge-light components-label">
-            <FontAwesomeIcon className="text-success" icon={faVolumeMute} />
-          </span>
-        </TooltipWrapper>
+      {inhibitedBy.length > 0 ? (
+        <InhibitedByModal alertStore={alertStore} fingerprints={inhibitedBy} />
       ) : null}
       {Object.entries(alert.labels).map(([name, value]) => (
         <FilteringLabel
