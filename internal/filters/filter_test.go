@@ -115,6 +115,83 @@ var tests = []filterTest{
 	},
 
 	{
+		Expression: "@fingerprint=",
+		IsValid:    false,
+	},
+	{
+		Expression: "@fingerprint==",
+		IsValid:    false,
+	},
+	{
+		Expression: "@fingerprint<=active",
+		IsValid:    false,
+	},
+	{
+		Expression:          "@fingerprint=123",
+		IsValid:             true,
+		Alert:               models.Alert{},
+		IsMatch:             false,
+		IsAlertmanagerMatch: true,
+	},
+	{
+		Expression:          "@fingerprint!=123",
+		IsValid:             true,
+		Alert:               models.Alert{},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
+	},
+	{
+		Expression: "@fingerprint=1234",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		Alertmanagers: []models.AlertmanagerInstance{
+			{Fingerprint: "1234"},
+		},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
+	},
+	{
+		Expression: "@fingerprint=~123",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		Alertmanagers: []models.AlertmanagerInstance{
+			{Fingerprint: "01234"},
+		},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
+	},
+	{
+		Expression: "@fingerprint=abc",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		Alertmanagers: []models.AlertmanagerInstance{
+			{Fingerprint: "12345"},
+		},
+		IsMatch:             false,
+		IsAlertmanagerMatch: false,
+	},
+	{
+		Expression: "@fingerprint!=1a1",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		Alertmanagers: []models.AlertmanagerInstance{
+			{Fingerprint: "1a1"},
+		},
+		IsMatch:             false,
+		IsAlertmanagerMatch: false,
+	},
+	{
+		Expression: "@fingerprint!=cde",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		Alertmanagers: []models.AlertmanagerInstance{
+			{Fingerprint: "abc"},
+		},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
+	},
+
+	{
 		Expression: "@silence_id=abcdef",
 		IsValid:    true,
 		Alert:      models.Alert{State: "suppressed", SilencedBy: []string{"1"}},
@@ -699,7 +776,7 @@ func TestFilters(t *testing.T) {
 		}
 		if f.GetIsValid() {
 			isAlertmanagerFilter := slices.StringInSlice(
-				[]string{"@age", "@alertmanager", "@cluster", "@state", "@silence_id", "@silence_ticket", "@silence_author"},
+				[]string{"@age", "@alertmanager", "@cluster", "@state", "@silence_id", "@silence_ticket", "@silence_author", "@fingerprint"},
 				f.GetName())
 			if isAlertmanagerFilter != f.GetIsAlertmanagerFilter() {
 				t.Errorf("[%s] GetIsAlertmanagerFilter() returned %#v while %#v was expected", ft.Expression, f.GetIsAlertmanagerFilter(), isAlertmanagerFilter)

@@ -62,6 +62,12 @@ var AllFilters = []filterConfig{
 		Autocomplete:       stateAutocomplete,
 	},
 	{
+		Label:              "@fingerprint",
+		LabelRe:            regexp.MustCompile("^@fingerprint$"),
+		SupportedOperators: []string{regexpOperator, equalOperator, notEqualOperator},
+		Factory:            newFingerprintFilter,
+	},
+	{
 		Label:              "@receiver",
 		LabelRe:            regexp.MustCompile("^@receiver$"),
 		SupportedOperators: []string{regexpOperator, negativeRegexOperator, equalOperator, notEqualOperator},

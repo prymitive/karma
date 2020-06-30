@@ -244,6 +244,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 
 			alert.Alertmanager = []models.AlertmanagerInstance{
 				{
+					Fingerprint: alert.Fingerprint,
 					Name:        am.Name,
 					Cluster:     am.ClusterName(),
 					State:       alert.State,

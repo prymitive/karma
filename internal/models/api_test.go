@@ -12,8 +12,10 @@ import (
 
 func TestDedupSharedMaps(t *testing.T) {
 	am := models.AlertmanagerInstance{
-		Cluster:    "fakeCluster",
-		SilencedBy: []string{"fakeSilence1", "fakeSilence2"},
+		Fingerprint: "1",
+		Name:        "am",
+		Cluster:     "fakeCluster",
+		SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
 	}
 	ag := models.APIAlertGroup{
 		AlertGroup: models.AlertGroup{
@@ -98,7 +100,8 @@ func TestDedupSharedMaps(t *testing.T) {
       "state": "suppressed",
       "alertmanager": [
         {
-          "name": "",
+          "fingerprint": "1",
+          "name": "am",
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
@@ -110,7 +113,8 @@ func TestDedupSharedMaps(t *testing.T) {
           "inhibitedBy": null
         },
         {
-          "name": "",
+          "fingerprint": "1",
+          "name": "am",
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
@@ -135,7 +139,8 @@ func TestDedupSharedMaps(t *testing.T) {
       "state": "suppressed",
       "alertmanager": [
         {
-          "name": "",
+          "fingerprint": "1",
+          "name": "am",
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
@@ -147,7 +152,8 @@ func TestDedupSharedMaps(t *testing.T) {
           "inhibitedBy": null
         },
         {
-          "name": "",
+          "fingerprint": "1",
+          "name": "am",
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
@@ -172,7 +178,8 @@ func TestDedupSharedMaps(t *testing.T) {
       "state": "suppressed",
       "alertmanager": [
         {
-          "name": "",
+          "fingerprint": "1",
+          "name": "am",
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
@@ -184,7 +191,8 @@ func TestDedupSharedMaps(t *testing.T) {
           "inhibitedBy": null
         },
         {
-          "name": "",
+          "fingerprint": "1",
+          "name": "am",
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",

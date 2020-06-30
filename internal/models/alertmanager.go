@@ -5,8 +5,9 @@ import "time"
 // AlertmanagerInstance describes the Alertmanager instance alert was collected
 // from
 type AlertmanagerInstance struct {
-	Name    string `json:"name"`
-	Cluster string `json:"cluster"`
+	Fingerprint string `json:"fingerprint"`
+	Name        string `json:"name"`
+	Cluster     string `json:"cluster"`
 	// per instance alert state
 	State string `json:"state"`
 	// timestamp collected from this instance, those on the alert itself
