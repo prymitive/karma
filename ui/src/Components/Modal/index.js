@@ -16,7 +16,7 @@ const ModalInner = ({ size, isUpper, toggleOpen, children }) => {
 
   useEffect(() => {
     document.body.classList.add("modal-open");
-    disableBodyScroll(ref.current);
+    disableBodyScroll(ref.current, { reserveScrollBarGap: true });
 
     let modal = ref.current;
     return () => {
