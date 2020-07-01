@@ -55,7 +55,7 @@
     "react-select": "3.1.0",
     "react-transition-group": "4.4.1",
     "typeface-open-sans": "0.0.75",
-    "typescript": "3.9.5"
+    "typescript": "3.9.6"
   },
   "scripts": {
     "start": "NODE_ENV=dev REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
