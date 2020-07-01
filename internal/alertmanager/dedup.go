@@ -20,7 +20,7 @@ func DedupAlerts() []models.AlertGroup {
 		groups := am.Alerts()
 		for _, ag := range groups {
 			if _, found := uniqueGroups[ag.ID]; !found {
-				uniqueGroups[ag.ID] = make([]models.AlertGroup, 0, len(groups))
+				uniqueGroups[ag.ID] = []models.AlertGroup{}
 			}
 			uniqueGroups[ag.ID] = append(uniqueGroups[ag.ID], ag)
 		}
