@@ -13,6 +13,7 @@ const MockAlert = (annotations, labels, state) => ({
   state: state,
   alertmanager: [
     {
+      fingerprint: "1234567",
       name: "default",
       cluster: "default",
       state: "active",
@@ -67,6 +68,7 @@ const MockSilence = () => ({
 });
 
 const MockAlertmanager = () => ({
+  fingerprint: "1234567",
   name: "default",
   cluster: "default",
   uri: "http://localhost",

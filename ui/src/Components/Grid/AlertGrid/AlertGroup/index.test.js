@@ -130,6 +130,7 @@ describe("<AlertGroup />", () => {
     MockAlerts(2);
     for (let i = 0; i < group.alerts.length; i++) {
       group.alerts[i].alertmanager.push({
+        fingerprint: "123",
         name: "ha1",
         cluster: "HA",
         state: "active",
@@ -139,6 +140,7 @@ describe("<AlertGroup />", () => {
         inhibitedBy: [],
       });
       group.alerts[i].alertmanager.push({
+        fingerprint: "123",
         name: "ha2",
         cluster: "HA",
         state: "active",

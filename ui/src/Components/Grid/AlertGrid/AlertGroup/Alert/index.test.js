@@ -89,6 +89,7 @@ describe("<Alert />", () => {
     const alert = MockedAlert();
     alert.alertmanager[0].inhibitedBy = ["123456"];
     alert.alertmanager.push({
+      fingerprint: "abc",
       name: "ha2",
       cluster: "HA",
       state: "active",
@@ -123,6 +124,7 @@ describe("<Alert />", () => {
   it("only renders one @cluster label per alertmanager cluster", () => {
     const alert = MockedAlert();
     alert.alertmanager.push({
+      fingerprint: "123",
       name: "ha1",
       cluster: "HA",
       state: "active",
@@ -132,6 +134,7 @@ describe("<Alert />", () => {
       inhibitedBy: [],
     });
     alert.alertmanager.push({
+      fingerprint: "123",
       name: "ha2",
       cluster: "HA",
       state: "active",
@@ -209,6 +212,7 @@ describe("<Alert />", () => {
     const alert = MockedAlert();
     alert.alertmanager = [
       {
+        fingerprint: "123",
         name: "am1",
         cluster: "ha",
         state: "suppressed",
@@ -218,6 +222,7 @@ describe("<Alert />", () => {
         inhibitedBy: [],
       },
       {
+        fingerprint: "123",
         name: "am2",
         cluster: "ha",
         state: "suppressed",
