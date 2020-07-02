@@ -10,6 +10,7 @@ const Annotation = PropTypes.exact({
 });
 
 const APIAlertAlertmanagerState = PropTypes.exact({
+  fingerprint: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   cluster: PropTypes.string.isRequired,
   state: AlertState.isRequired,
