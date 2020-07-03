@@ -37,6 +37,10 @@ lint-git-ci: node_modules/@commitlint/travis-cli/lib/cli.js
 lint-docs: node_modules/markdownlint-cli/markdownlint.js
 	node_modules/markdownlint-cli/markdownlint.js ../*.md ../docs
 
+.PHONY: lint-deps
+lint-deps: node_modules/depcheck/bin/depcheck.js
+	node_modules/depcheck/bin/depcheck.js $(CURDIR)
+
 .PHONY: format
 format: node_modules/prettier/bin-prettier.js
 	node_modules/prettier/bin-prettier.js --write 'src/**/*.js' 'src/**/*.ts' 'src/**/*.tsx'

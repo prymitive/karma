@@ -1,0 +1,12 @@
+skip-missing: true
+ignores:
+  # deps
+  - bootstrap
+  - bootswatch
+  - node-sass
+  - typeface-open-sans
+  # devDeps
+  - "@commitlint/travis-cli"
+  - "@storybook/preset-create-react-app"
+  - depcheck
+  - markdownlint-cli
