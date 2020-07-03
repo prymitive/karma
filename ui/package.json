@@ -9,7 +9,7 @@
     "@fortawesome/free-regular-svg-icons": "5.13.1",
     "@fortawesome/free-solid-svg-icons": "5.13.1",
     "@fortawesome/react-fontawesome": "0.1.11",
-    "@popperjs/core": "2.4.3",
+    "@popperjs/core": "2.4.4",
     "@sentry/browser": "5.19.0",
     "@types/jest": "26.0.3",
     "@types/node": "12.12.31",
