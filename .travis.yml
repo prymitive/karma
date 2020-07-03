@@ -136,6 +136,13 @@ jobs:
         - git diff --exit-code
 
     - stage: Lint
+      name: Check JavaScript dependencies
+      if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
+      <<: *DEFAULTS_JS
+      script:
+        - make -C ui lint-deps
+
+    - stage: Lint
       name: Lint documentation
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
