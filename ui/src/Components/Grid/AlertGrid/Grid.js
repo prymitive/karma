@@ -102,6 +102,7 @@ const Grid = ({
         in={grid.labelName !== ""}
         classNames="components-animation-fade"
         timeout={context.animations.duration}
+        appear
         unmountOnExit
       >
         <Swimlane
