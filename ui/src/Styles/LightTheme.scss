@@ -75,32 +75,7 @@ $input-range-neutral-light-color: $gray-400;
 
 $color-default: #708090;
 
-@import "Styles/Components/Accordion";
-@import "Styles/Components/Alert";
-@import "Styles/Components/AlertGroup";
-@import "Styles/Components/BaseLabel";
-@import "Styles/Components/CenteredMessage";
-@import "Styles/Components/Fade";
-@import "Styles/Components/FilterInputLabel";
-@import "Styles/Components/LabelWithPercent";
-@import "Styles/Components/InputRange";
-@import "Styles/Components/ManagedSilence";
-@import "Styles/Components/Modal";
-@import "Styles/Components/NavBar";
-@import "Styles/Components/FilterInput";
-@import "Styles/Components/Flash";
-@import "Styles/Components/DateTimeSelect";
-@import "Styles/Components/MountModal";
-@import "Styles/Components/Placeholder";
-@import "Styles/Components/AlertGrid";
-@import "Styles/Components/Annotation";
-@import "Styles/Components/DropdownSlide";
-@import "Styles/Components/History";
-@import "Styles/Components/HistoryLabel";
-@import "Styles/Components/NavBarSlide";
-@import "Styles/Components/SilenceModal";
-@import "Styles/Components/Pagination";
-@import "Styles/Components/Tooltip";
+@import "Styles/Components";
 
 a {
   color: $link-color;
