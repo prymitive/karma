@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/signal"
 	"path"
+	"regexp"
 	"strings"
 	"syscall"
 	"time"
@@ -288,7 +289,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 		if rule.Regex == "" || rule.URITemplate == "" {
 			return nil, fmt.Errorf("Invalid link detect rule, regex '%s' uriTemplate '%s'", rule.Regex, rule.URITemplate)
 		}
-		re, err := regex.CompileAnchored(rule.Regex)
+		re, err := regexp.Compile(rule.Regex)
 		if err != nil {
 			return nil, fmt.Errorf("Invalid link detect rule '%s': %s", rule.Regex, err)
 		}
