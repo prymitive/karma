@@ -2,6 +2,8 @@ import React from "react";
 
 import { mount } from "enzyme";
 
+import toDiffableHtml from "diffable-html";
+
 import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -145,7 +147,7 @@ describe("<SilenceModalContent /> Editor", () => {
   it("renders SilenceSubmitController when silenceFormStore.data.currentStage is 'Submit'", () => {
     silenceFormStore.data.currentStage = SilenceFormStage.Submit;
     const tree = MountedSilenceModalContent();
-    expect(tree.html()).toMatchSnapshot();
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 });
 
