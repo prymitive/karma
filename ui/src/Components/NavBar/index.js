@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { reaction } from "mobx";
 import { useObserver } from "mobx-react-lite";
 
-import ReactResizeDetector from "react-resize-detector";
+import useDimensions from "react-cool-dimensions";
 
 import IdleTimer from "react-idle-timer";
 
@@ -28,22 +28,19 @@ const NavBar = ({ alertStore, settingsStore, silenceFormStore, fixedTop }) => {
   const idleTimer = useRef(null);
   const [isIdle, setIsIdle] = useState(false);
   const [containerClass, setContainerClass] = useState("visible");
-  const [elementSize, setElementSize] = useState({ width: 0, height: 0 });
 
   const context = React.useContext(ThemeContext);
 
+  const { ref, height } = useDimensions({});
+
   const updateBodyPaddingTop = useCallback(
     (idle) => {
-      const paddingTop = idle ? 0 : elementSize.height + 8;
+      const paddingTop = idle ? 0 : height + 8;
       document.body.style.paddingTop = `${paddingTop}px`;
       setContainerClass(idle ? "invisible" : "visible");
     },
-    [elementSize.height]
+    [height]
   );
-
-  const onResize = useCallback((width, height) => {
-    setElementSize({ width: width, height: height });
-  }, []);
 
   const onActive = useCallback(() => {
     setIsIdle(false);
@@ -64,12 +61,7 @@ const NavBar = ({ alertStore, settingsStore, silenceFormStore, fixedTop }) => {
       updateBodyPaddingTop(false);
     }
     return () => clearTimeout(timer);
-  }, [
-    elementSize.height,
-    updateBodyPaddingTop,
-    isIdle,
-    context.animations.duration,
-  ]);
+  }, [height, updateBodyPaddingTop, isIdle, context.animations.duration]);
 
   useEffect(
     () =>
@@ -106,11 +98,11 @@ const NavBar = ({ alertStore, settingsStore, silenceFormStore, fixedTop }) => {
           exit
         >
           <nav
+            ref={ref}
             className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block ${
               fixedTop ? "fixed-top" : "w-100"
             }`}
           >
-            <ReactResizeDetector handleHeight onResize={onResize} />
             <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block float-left">
               <OverviewModal alertStore={alertStore} />
               <FetchIndicator alertStore={alertStore} />

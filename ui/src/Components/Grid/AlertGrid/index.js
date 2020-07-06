@@ -1,19 +1,15 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 
 import { useObserver } from "mobx-react-lite";
 
-import debounce from "lodash.debounce";
-
-import ReactResizeDetector from "react-resize-detector";
+import useDimensions from "react-cool-dimensions";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Grid } from "./Grid";
 import { GridSizesConfig, GetGridElementWidth } from "./GridSize";
-
-const GridPadding = 5;
 
 const AlertGrid = ({ alertStore, settingsStore, silenceFormStore }) => {
   const getGridSizesConfig = (windowWidth) =>
@@ -23,9 +19,7 @@ const AlertGrid = ({ alertStore, settingsStore, silenceFormStore }) => {
     GetGridElementWidth(
       canvasWidth,
       windowWidth,
-      alertStore.data.grids.filter((g) => g.labelName !== "").length > 0
-        ? GridPadding * 2
-        : 0,
+      alertStore.data.gridPadding * 2,
       settingsStore.gridConfig.config.groupWidth
     );
 
@@ -36,27 +30,18 @@ const AlertGrid = ({ alertStore, settingsStore, silenceFormStore }) => {
     getGroupWidth(document.body.clientWidth, window.innerWidth)
   );
 
-  const handleResize = useCallback(
-    debounce(() => {
-      setGridSizesConfig(getGridSizesConfig(window.innerWidth));
-      setGroupWidth(
-        getGroupWidth(document.body.clientWidth, window.innerWidth)
-      );
-    }, 100),
-    []
-  );
+  const handleResize = ({ width }) => {
+    setGridSizesConfig(getGridSizesConfig(window.innerWidth));
+    setGroupWidth(getGroupWidth(width, window.innerWidth));
+  };
 
-  useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    return () => {
-      handleResize.cancel();
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [handleResize]);
+  const { ref } = useDimensions({
+    onResize: handleResize,
+  });
 
   return useObserver(() => (
     <React.Fragment>
-      <ReactResizeDetector handleWidth handleHeight onResize={handleResize} />
+      <div ref={ref}></div>
       {alertStore.data.grids.map((grid) => (
         <Grid
           key={`${grid.labelName}/${grid.labelValue}`}
@@ -66,7 +51,7 @@ const AlertGrid = ({ alertStore, settingsStore, silenceFormStore }) => {
           gridSizesConfig={gridSizesConfig}
           groupWidth={groupWidth}
           grid={grid}
-          outerPadding={grid.labelName !== "" ? GridPadding : 0}
+          outerPadding={alertStore.data.gridPadding}
         />
       ))}
     </React.Fragment>

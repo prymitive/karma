@@ -95,6 +95,10 @@ const Grid = ({
     }
   }, [grid.alertGroups.length, groupsToRender]);
 
+  useEffect(() => {
+    repack();
+  });
+
   return useObserver(() => (
     <React.Fragment>
       <CSSTransition

@@ -19,12 +19,22 @@ import { AlertGrid } from ".";
 let alertStore;
 let settingsStore;
 let silenceFormStore;
+let resizeCallback;
 
 beforeAll(() => {
   Object.defineProperty(document.body, "clientWidth", {
     writable: true,
     value: 1000,
   });
+
+  global.ResizeObserver = jest.fn((cb) => {
+    resizeCallback = cb;
+    return {
+      observe: jest.fn(),
+      disconnect: jest.fn(),
+    };
+  });
+  global.ResizeObserverEntry = jest.fn();
 });
 
 beforeEach(() => {
@@ -324,7 +334,7 @@ describe("<Grid />", () => {
 
   it("doesn't throw errors after FontFaceObserver timeout", () => {
     jest.useFakeTimers();
-    MockGroupList(60, 5);
+    MockGroupList(1, 1);
     MountedGrid();
     // skip a minute to trigger FontFaceObserver timeout handler
     advanceBy(60 * 1000);
@@ -340,7 +350,7 @@ describe("<Grid />", () => {
 
 describe("<AlertGrid />", () => {
   const VerifyColumnCount = (innerWidth, outerWidth, columns) => {
-    MockGroupList(40, 5);
+    MockGroupList(20, 1);
 
     document.body.clientWidth = innerWidth;
     window.innerWidth = outerWidth;
@@ -428,7 +438,7 @@ describe("<AlertGrid />", () => {
   });
 
   it("viewport resize also resizes alert groups", () => {
-    MockGroupList(40, 5);
+    MockGroupList(20, 1);
 
     // set initial width
     document.body.clientWidth = 1980;
@@ -447,7 +457,7 @@ describe("<AlertGrid />", () => {
     document.body.clientWidth = 1000;
     window.innerWidth = 1000;
     act(() => {
-      window.dispatchEvent(new Event("resize"));
+      resizeCallback([{ contentRect: { width: 1000, height: 1000 } }]);
     });
     wrapper.update();
     expect(wrapper.find("Grid").props().groupWidth).toBe(1000 / 2);
@@ -462,7 +472,7 @@ describe("<AlertGrid />", () => {
   it("scrollbar render doesn't resize alert groups", () => {
     settingsStore.gridConfig.config.groupWidth = 400;
 
-    MockGroupList(40, 5);
+    MockGroupList(20, 1);
     // set initial width
     document.body.clientWidth = 1600;
     window.innerWidth = 1600;
@@ -477,10 +487,8 @@ describe("<AlertGrid />", () => {
     expect(tree.find("AlertGroup").at(0).props().groupWidth).toBe(400);
 
     // then resize and verify if column count was changed
-    document.body.clientWidth = 1584;
-    window.innerWidth = 1600;
     act(() => {
-      window.dispatchEvent(new Event("resize"));
+      resizeCallback([{ contentRect: { width: 1584, height: 1000 } }]);
     });
     wrapper.update();
     tree.setProps({
@@ -493,7 +501,7 @@ describe("<AlertGrid />", () => {
   it("viewport resize doesn't allow loops", () => {
     settingsStore.gridConfig.config.groupWidth = 400;
 
-    MockGroupList(40, 5);
+    MockGroupList(10, 1);
 
     document.body.clientWidth = 1600;
     window.innerWidth = 1600;
@@ -502,11 +510,13 @@ describe("<AlertGrid />", () => {
     const tree = ShallowGrid();
 
     let results = [];
+    const cb = () =>
+      resizeCallback([
+        { contentRect: { width: index % 2 === 0 ? 1600 : 1584, height: 10 } },
+      ]);
     for (var index = 0; index < 14; index++) {
-      document.body.clientWidth = index % 2 === 0 ? 1600 : 1584;
-      window.innerWidth = 1600;
       act(() => {
-        window.dispatchEvent(new Event("resize"));
+        cb();
       });
       wrapper.update();
       tree.setProps({
@@ -650,7 +660,7 @@ describe("<AlertGrid />", () => {
   });
 
   it("doesn't crash on unmount", () => {
-    MockGroupList(60, 5);
+    MockGroupList(5, 1);
     const tree = MountedAlertGrid();
     tree.unmount();
   });
