@@ -95,11 +95,10 @@
     "last 1 major version",
     "not dead",
     "Chrome >= 49",
-    "Firefox >= 38",
+    "Firefox >= 52",
     "Edge >= 12",
     "iOS >= 9",
     "Safari >= 10",
-    "Android >= 4.4",
-    "Opera >= 36"
+    "Android >= 4.4"
   ]
 }
