@@ -190,6 +190,7 @@ const MockGrid = (alertStore) => {
       if (group.alerts[j].state === "suppressed") {
         group.alerts[j].alertmanager = [
           {
+            fingerprint: `fp-${i}-${j}`,
             name: "prod1",
             cluster: "prod",
             state: "suppressed",

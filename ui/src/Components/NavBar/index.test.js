@@ -12,10 +12,20 @@ import { NavBar, MobileIdleTimeout, DesktopIdleTimeout } from ".";
 let alertStore;
 let settingsStore;
 let silenceFormStore;
+let resizeCallback;
 
 beforeAll(() => {
   jest.useFakeTimers();
   jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
+
+  global.ResizeObserver = jest.fn((cb) => {
+    resizeCallback = cb;
+    return {
+      observe: jest.fn(),
+      disconnect: jest.fn(),
+    };
+  });
+  global.ResizeObserverEntry = jest.fn();
 });
 
 beforeEach(() => {
@@ -96,16 +106,22 @@ describe("<NavBar />", () => {
     expect(nav.props().className.split(" ")).toContain("w-100");
   });
 
-  it("body 'padding-top' style is updated after calling NavbarOnResize()", () => {
+  it("body 'padding-top' style is updated after resize", () => {
     const tree = MountedNavbar();
-    act(() => tree.find("ResizeDetector").props().onResize(0, 10));
+    act(() => {
+      resizeCallback([{ contentRect: { width: 100, height: 10 } }]);
+    });
+    tree.setProps({});
     expect(
       window
         .getComputedStyle(document.body, null)
         .getPropertyValue("padding-top")
     ).toBe("18px");
 
-    act(() => tree.find("ResizeDetector").props().onResize(0, 36));
+    act(() => {
+      resizeCallback([{ contentRect: { width: 100, height: 36 } }]);
+    });
+    tree.setProps({});
     expect(
       window
         .getComputedStyle(document.body, null)

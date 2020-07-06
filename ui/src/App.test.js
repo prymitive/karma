@@ -22,6 +22,12 @@ beforeEach(() => {
 
   // matchMedia needs mocking
   window.matchMedia = mockMatchMedia({});
+
+  global.ResizeObserver = jest.fn((cb) => ({
+    observe: jest.fn(),
+    disconnect: jest.fn(),
+  }));
+  global.ResizeObserverEntry = jest.fn();
 });
 
 afterEach(() => {

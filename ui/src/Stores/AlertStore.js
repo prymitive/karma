@@ -157,6 +157,9 @@ class AlertStore {
       silences: {},
       upstreams: { instances: [], clusters: {} },
       receivers: [],
+      get gridPadding() {
+        return this.grids.filter((g) => g.labelName !== "").length > 0 ? 5 : 0;
+      },
       getAlertmanagerByName(name) {
         return this.upstreams.instances.find((am) => am.name === name);
       },
@@ -199,6 +202,7 @@ class AlertStore {
       },
     },
     {
+      gridPadding: computed,
       readOnlyAlertmanagers: computed,
       readWriteAlertmanagers: computed,
       clustersWithoutReadOnly: computed,
