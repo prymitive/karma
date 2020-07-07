@@ -2,8 +2,10 @@ package transform
 
 import (
 	"crypto/sha1"
+	"image/color"
 	"io"
 	"math/rand"
+	"sync"
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
@@ -14,6 +16,8 @@ import (
 
 	log "github.com/sirupsen/logrus"
 )
+
+var lock sync.RWMutex
 
 func labelToSeed(key string, val string) int64 {
 	h := sha1.New()
@@ -33,6 +37,13 @@ func labelToSeed(key string, val string) int64 {
 		seed += int64(i)
 	}
 	return seed
+}
+
+func colorFromKeyVal(key, val string) color.Color {
+	lock.Lock()
+	defer lock.Unlock()
+	rand.Seed(labelToSeed(key, val))
+	return randomcolor.New(randomcolor.Random, randomcolor.LIGHT)
 }
 
 func rgbToBrightness(r, g, b uint8) int32 {
@@ -88,8 +99,7 @@ func ColorLabel(colorStore models.LabelsColorMap, key string, val string) {
 			colorStore[key] = make(map[string]models.LabelColors)
 		}
 		if _, found := colorStore[key][val]; !found {
-			rand.Seed(labelToSeed(key, val))
-			color := randomcolor.New(randomcolor.Random, randomcolor.LIGHT)
+			color := colorFromKeyVal(key, val)
 			red, green, blue, alpha := color.RGBA()
 			bc := models.Color{
 				Red:   uint8(red >> 8),
