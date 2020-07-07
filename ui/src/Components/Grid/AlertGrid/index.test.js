@@ -457,6 +457,7 @@ describe("<AlertGrid />", () => {
     document.body.clientWidth = 1000;
     window.innerWidth = 1000;
     act(() => {
+      window.dispatchEvent(new Event("resize"));
       resizeCallback([{ contentRect: { width: 1000, height: 1000 } }]);
     });
     wrapper.update();
