@@ -38,7 +38,7 @@ func newAlertmanagerInstanceFilter() FilterT {
 	return &f
 }
 
-func alertmanagerInstanceAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+func alertmanagerInstanceAutocomplete(name string, operators []string, alerts models.AlertList) []models.Autocomplete {
 	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
 		for _, am := range alert.Alertmanager {

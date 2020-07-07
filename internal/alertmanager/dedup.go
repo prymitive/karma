@@ -12,21 +12,21 @@ import (
 
 // DedupAlerts will collect alert groups from all defined Alertmanager
 // upstreams and deduplicate them, so we only return unique alerts
-func DedupAlerts() []models.AlertGroup {
-	uniqueGroups := map[string][]models.AlertGroup{}
+func DedupAlerts() []*models.AlertGroup {
+	uniqueGroups := map[string][]*models.AlertGroup{}
 
 	upstreams := GetAlertmanagers()
 	for _, am := range upstreams {
 		groups := am.Alerts()
 		for _, ag := range groups {
 			if _, found := uniqueGroups[ag.ID]; !found {
-				uniqueGroups[ag.ID] = []models.AlertGroup{}
+				uniqueGroups[ag.ID] = []*models.AlertGroup{}
 			}
 			uniqueGroups[ag.ID] = append(uniqueGroups[ag.ID], ag)
 		}
 	}
 
-	dedupedGroups := []models.AlertGroup{}
+	dedupedGroups := []*models.AlertGroup{}
 	alertStates := map[string][]string{}
 	for _, agList := range uniqueGroups {
 		alerts := map[string]models.Alert{}
@@ -55,7 +55,7 @@ func DedupAlerts() []models.AlertGroup {
 					// and append alert state to the slice
 					alertStates[alertLFP] = append(alertStates[alertLFP], alert.State)
 				} else {
-					alerts[alertLFP] = models.Alert(alert)
+					alerts[alertLFP] = models.Alert(*alert)
 					// seed alert state slice
 					alertStates[alertLFP] = []string{alert.State}
 				}
@@ -65,7 +65,7 @@ func DedupAlerts() []models.AlertGroup {
 		if len(alerts) == 0 {
 			continue
 		}
-		ag := models.AlertGroup(agList[0])
+		ag := models.AlertGroup(*agList[0])
 		ag.Alerts = make(models.AlertList, 0, len(alerts))
 		for _, alert := range alerts {
 			alert := alert // scopelint pin
@@ -86,10 +86,10 @@ func DedupAlerts() []models.AlertGroup {
 			sort.Slice(alert.Alertmanager, func(i, j int) bool {
 				return alert.Alertmanager[i].Name < alert.Alertmanager[j].Name
 			})
-			ag.Alerts = append(ag.Alerts, alert)
+			ag.Alerts = append(ag.Alerts, &alert)
 		}
 		ag.Hash = ag.ContentFingerprint()
-		dedupedGroups = append(dedupedGroups, ag)
+		dedupedGroups = append(dedupedGroups, &ag)
 	}
 
 	return dedupedGroups
@@ -97,7 +97,7 @@ func DedupAlerts() []models.AlertGroup {
 
 // DedupKnownLabels returns a deduplicated slice of all known label names
 func DedupSilences() []models.ManagedSilence {
-	silenceByCluster := map[string]map[string]models.Silence{}
+	silenceByCluster := map[string]map[string]*models.Silence{}
 	upstreams := GetAlertmanagers()
 
 	for _, am := range upstreams {
@@ -105,7 +105,7 @@ func DedupSilences() []models.ManagedSilence {
 			cluster := am.ClusterName()
 
 			if _, found := silenceByCluster[cluster]; !found {
-				silenceByCluster[cluster] = map[string]models.Silence{}
+				silenceByCluster[cluster] = map[string]*models.Silence{}
 			}
 
 			if _, ok := silenceByCluster[cluster][id]; !ok {

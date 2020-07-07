@@ -22,7 +22,7 @@ func (m AlertMapper) IsSupported(version string) bool {
 	return versionRange.Check(semver.MustParse(version))
 }
 
-func (m AlertMapper) Collect(uri string, headers map[string]string, timeout time.Duration, httpTransport http.RoundTripper) ([]models.AlertGroup, error) {
+func (m AlertMapper) Collect(uri string, headers map[string]string, timeout time.Duration, httpTransport http.RoundTripper) ([]*models.AlertGroup, error) {
 	c := newClient(uri, headers, httpTransport)
 	return groups(c, timeout)
 }

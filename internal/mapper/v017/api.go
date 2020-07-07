@@ -40,13 +40,13 @@ func newClient(uri string, headers map[string]string, httpTransport http.RoundTr
 }
 
 // Alerts will fetch all alert groups from the API
-func groups(c *client.Alertmanager, timeout time.Duration) ([]models.AlertGroup, error) {
+func groups(c *client.Alertmanager, timeout time.Duration) ([]*models.AlertGroup, error) {
 	groups, err := c.Alertgroup.GetAlertGroups(alertgroup.NewGetAlertGroupsParamsWithTimeout(timeout))
 	if err != nil {
-		return []models.AlertGroup{}, err
+		return nil, err
 	}
 
-	ret := make([]models.AlertGroup, 0, len(groups.Payload))
+	ret := make([]*models.AlertGroup, 0, len(groups.Payload))
 
 	for _, group := range groups.Payload {
 		g := models.AlertGroup{
@@ -69,21 +69,21 @@ func groups(c *client.Alertmanager, timeout time.Duration) ([]models.AlertGroup,
 			sort.Strings(a.InhibitedBy)
 			sort.Strings(a.SilencedBy)
 			a.UpdateFingerprints()
-			g.Alerts = append(g.Alerts, a)
+			g.Alerts = append(g.Alerts, &a)
 		}
-		ret = append(ret, g)
+		ret = append(ret, &g)
 	}
 
 	return ret, nil
 }
 
-func silences(c *client.Alertmanager, timeout time.Duration) ([]models.Silence, error) {
+func silences(c *client.Alertmanager, timeout time.Duration) ([]*models.Silence, error) {
 	silences, err := c.Silence.GetSilences(silence.NewGetSilencesParamsWithTimeout(timeout))
 	if err != nil {
-		return []models.Silence{}, err
+		return nil, err
 	}
 
-	ret := make([]models.Silence, 0, len(silences.Payload))
+	ret := make([]*models.Silence, 0, len(silences.Payload))
 
 	for _, s := range silences.Payload {
 		us := models.Silence{
@@ -101,7 +101,7 @@ func silences(c *client.Alertmanager, timeout time.Duration) ([]models.Silence, 
 			}
 			us.Matchers = append(us.Matchers, sm)
 		}
-		ret = append(ret, us)
+		ret = append(ret, &us)
 	}
 
 	return ret, nil

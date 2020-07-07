@@ -1,6 +1,7 @@
 package models_test
 
 import (
+	"fmt"
 	"sort"
 	"testing"
 	"time"
@@ -48,7 +49,7 @@ func TestAlertListSort(t *testing.T) {
 	al := models.AlertList{}
 	for _, testCase := range alertListSortTests {
 		testCase.alert.UpdateFingerprints()
-		al = append(al, testCase.alert)
+		al = append(al, &testCase.alert)
 	}
 
 	// repeat sort 100 times to ensure we're always sorting same way
@@ -59,6 +60,7 @@ func TestAlertListSort(t *testing.T) {
 		for _, testCase := range alertListSortTests {
 			testCase.alert.UpdateFingerprints()
 			if al[testCase.position].ContentFingerprint() != testCase.alert.ContentFingerprint() {
+				fmt.Printf("[%d] %s != %s\n", testCase.position, al[testCase.position].ContentFingerprint(), testCase.alert.ContentFingerprint())
 				failures++
 			}
 		}
@@ -109,7 +111,7 @@ var agFPTests = []agFPTest{
 			Receiver: "default",
 			Labels:   map[string]string{"foo": "bar"},
 			Alerts: models.AlertList{
-				models.Alert{
+				&models.Alert{
 					Labels: map[string]string{"foo1": "bar"},
 				},
 			},
@@ -123,7 +125,7 @@ var agFPTests = []agFPTest{
 			Receiver: "default",
 			Labels:   map[string]string{"bar": "foo"},
 			Alerts: models.AlertList{
-				models.Alert{
+				&models.Alert{
 					Labels: map[string]string{"bar": "foo"},
 				},
 			},
@@ -137,7 +139,7 @@ var agFPTests = []agFPTest{
 			Receiver: "default",
 			Labels:   map[string]string{"bar": "foo"},
 			Alerts: models.AlertList{
-				models.Alert{
+				&models.Alert{
 					Labels: map[string]string{"bar": "foo"},
 				},
 			},
@@ -188,13 +190,13 @@ func TestFingerprint(t *testing.T) {
 }
 
 type findLatestStartsAtTest struct {
-	alerts           []models.Alert
+	alerts           []*models.Alert
 	expectedStartsAt time.Time
 }
 
 var findLatestStartsAtTests = []findLatestStartsAtTest{
 	{
-		alerts: []models.Alert{
+		alerts: models.AlertList{
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 5, time.UTC)},
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC)},
@@ -202,7 +204,7 @@ var findLatestStartsAtTests = []findLatestStartsAtTest{
 		expectedStartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC),
 	},
 	{
-		alerts: []models.Alert{
+		alerts: models.AlertList{
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC)},
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 2, time.UTC)},
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
@@ -210,7 +212,7 @@ var findLatestStartsAtTests = []findLatestStartsAtTest{
 		expectedStartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC),
 	},
 	{
-		alerts: []models.Alert{
+		alerts: models.AlertList{
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},
@@ -218,7 +220,7 @@ var findLatestStartsAtTests = []findLatestStartsAtTest{
 		expectedStartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC),
 	},
 	{
-		alerts: []models.Alert{
+		alerts: models.AlertList{
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 5, time.UTC)},
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 8, time.UTC)},
 			{StartsAt: time.Date(2017, time.January, 10, 0, 0, 0, 1, time.UTC)},

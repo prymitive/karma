@@ -39,7 +39,7 @@ func newAlertmanagerClusterFilter() FilterT {
 	return &f
 }
 
-func alertmanagerClusterAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+func alertmanagerClusterAutocomplete(name string, operators []string, alerts models.AlertList) []models.Autocomplete {
 	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
 		for _, am := range alert.Alertmanager {

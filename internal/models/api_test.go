@@ -23,7 +23,7 @@ func TestDedupSharedMaps(t *testing.T) {
 				"alertname": "FakeAlert",
 			},
 			Alerts: models.AlertList{
-				models.Alert{
+				&models.Alert{
 					State: models.AlertStateSuppressed,
 					Annotations: models.Annotations{
 						models.Annotation{
@@ -42,7 +42,7 @@ func TestDedupSharedMaps(t *testing.T) {
 					},
 					Alertmanager: []models.AlertmanagerInstance{am, am},
 				},
-				models.Alert{
+				&models.Alert{
 					State: models.AlertStateSuppressed,
 					Annotations: models.Annotations{
 						models.Annotation{
@@ -57,7 +57,7 @@ func TestDedupSharedMaps(t *testing.T) {
 					},
 					Alertmanager: []models.AlertmanagerInstance{am, am},
 				},
-				models.Alert{
+				&models.Alert{
 					State: models.AlertStateSuppressed,
 					Annotations: models.Annotations{
 						models.Annotation{
@@ -251,7 +251,7 @@ func TestDedupSharedMapsWithSingleAlert(t *testing.T) {
 	ag := models.APIAlertGroup{
 		AlertGroup: models.AlertGroup{
 			Alerts: models.AlertList{
-				models.Alert{},
+				&models.Alert{},
 			},
 		},
 	}

@@ -973,10 +973,10 @@ func testAlertGroup(version string, t *testing.T, testCase groupTest, group mode
 	for _, expectedAlert := range testCase.alerts {
 		alertFound := false
 		for _, alert := range group.Alerts {
-			match := compareAlerts(expectedAlert, alert)
+			match := compareAlerts(expectedAlert, *alert)
 			if match {
 				alertFound = true
-				testAlert(version, t, expectedAlert, alert)
+				testAlert(version, t, expectedAlert, *alert)
 			}
 		}
 		if !alertFound {

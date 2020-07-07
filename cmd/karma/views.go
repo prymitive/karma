@@ -237,7 +237,7 @@ func alerts(c *gin.Context) {
 			if validFilters {
 				for _, filter := range matchFilters {
 					if filter.GetIsValid() {
-						match := filter.Match(&alert, matches)
+						match := filter.Match(alert, matches)
 						results = append(results, match)
 					}
 				}
@@ -286,7 +286,7 @@ func alerts(c *gin.Context) {
 				}
 
 				for alertGridLabelValue := range alertGridLabelValues {
-					alert := models.Alert(alert)
+					alert := models.Alert(*alert)
 
 					// we need to update fingerprints since we've modified some fields in dedup
 					// and agCopy.ContentFingerprint() depends on per alert fingerprint
@@ -301,7 +301,7 @@ func alerts(c *gin.Context) {
 							Receiver:          ag.Receiver,
 							Labels:            ag.Labels,
 							LatestStartsAt:    ag.LatestStartsAt,
-							Alerts:            []models.Alert{},
+							Alerts:            models.AlertList{},
 							AlertmanagerCount: map[string]int{},
 							StateCount:        map[string]int{},
 						}
@@ -348,7 +348,7 @@ func alerts(c *gin.Context) {
 						alert.State = models.AlertStateUnprocessed
 					}
 
-					agCopy.Alerts = append(agCopy.Alerts, alert)
+					agCopy.Alerts = append(agCopy.Alerts, &alert)
 
 					if len(upstreams.Clusters) > 1 {
 						clusters := map[string]bool{}

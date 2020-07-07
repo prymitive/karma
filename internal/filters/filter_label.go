@@ -29,7 +29,7 @@ func newLabelFilter() FilterT {
 	return &f
 }
 
-func labelAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+func labelAutocomplete(name string, operators []string, alerts models.AlertList) []models.Autocomplete {
 	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
 		for key, value := range alert.Labels {

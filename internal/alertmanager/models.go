@@ -50,8 +50,8 @@ type Alertmanager struct {
 	// lock protects data access while updating
 	lock sync.RWMutex
 	// fields for storing pulled data
-	alertGroups  []models.AlertGroup
-	silences     map[string]models.Silence
+	alertGroups  []*models.AlertGroup
+	silences     map[string]*models.Silence
 	colors       models.LabelsColorMap
 	autocomplete []models.Autocomplete
 	knownLabels  []string
@@ -113,8 +113,8 @@ func (am *Alertmanager) fetchStatus(version string) (*models.AlertmanagerStatus,
 
 func (am *Alertmanager) clearData() {
 	am.lock.Lock()
-	am.alertGroups = []models.AlertGroup{}
-	am.silences = map[string]models.Silence{}
+	am.alertGroups = []*models.AlertGroup{}
+	am.silences = map[string]*models.Silence{}
 	am.colors = models.LabelsColorMap{}
 	am.autocomplete = []models.Autocomplete{}
 	am.knownLabels = []string{}
@@ -132,7 +132,7 @@ func (am *Alertmanager) pullSilences(version string) error {
 		return err
 	}
 
-	var silences []models.Silence
+	var silences []*models.Silence
 
 	start := time.Now()
 	silences, err = mapper.Collect(am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
@@ -142,10 +142,10 @@ func (am *Alertmanager) pullSilences(version string) error {
 	log.Infof("[%s] Got %d silences(s) in %s", am.Name, len(silences), time.Since(start))
 
 	log.Infof("[%s] Detecting ticket links in silences (%d)", am.Name, len(silences))
-	silenceMap := make(map[string]models.Silence, len(silences))
+	silenceMap := make(map[string]*models.Silence, len(silences))
 	for _, silence := range silences {
 		silence := silence // scopelint pin
-		silence.TicketID, silence.TicketURL = transform.DetectLinks(&silence)
+		silence.TicketID, silence.TicketURL = transform.DetectLinks(silence)
 		silenceMap[silence.ID] = silence
 	}
 
@@ -186,7 +186,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		return err
 	}
 
-	var groups []models.AlertGroup
+	var groups []*models.AlertGroup
 
 	start := time.Now()
 
@@ -198,13 +198,13 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	log.Infof("[%s] Got %d alert group(s) in %s", am.Name, len(groups), time.Since(start))
 
 	log.Infof("[%s] Deduplicating alert groups (%d)", am.Name, len(groups))
-	uniqueGroups := map[string]models.AlertGroup{}
-	uniqueAlerts := map[string]map[string]models.Alert{}
+	uniqueGroups := map[string]*models.AlertGroup{}
+	uniqueAlerts := map[string]map[string]*models.Alert{}
 	knownLabelsMap := map[string]bool{}
 	for _, ag := range groups {
 		agID := ag.LabelsFingerprint()
 		if _, found := uniqueGroups[agID]; !found {
-			uniqueGroups[agID] = models.AlertGroup{
+			uniqueGroups[agID] = &models.AlertGroup{
 				Receiver: ag.Receiver,
 				Labels:   ag.Labels,
 				ID:       agID,
@@ -212,7 +212,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		}
 		for _, alert := range ag.Alerts {
 			if _, found := uniqueAlerts[agID]; !found {
-				uniqueAlerts[agID] = map[string]models.Alert{}
+				uniqueAlerts[agID] = map[string]*models.Alert{}
 			}
 			alertCFP := alert.ContentFingerprint()
 			if _, found := uniqueAlerts[agID][alertCFP]; !found {
@@ -225,7 +225,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 
 	}
 
-	dedupedGroups := make([]models.AlertGroup, 0, len(uniqueGroups))
+	dedupedGroups := make([]*models.AlertGroup, 0, len(uniqueGroups))
 	colors := models.LabelsColorMap{}
 	autocompleteMap := map[string]models.Autocomplete{}
 
@@ -238,7 +238,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			for _, silenceID := range alert.SilencedBy {
 				silence, err := am.SilenceByID(silenceID)
 				if err == nil {
-					silences[silenceID] = &silence
+					silences[silenceID] = silence
 				}
 			}
 
@@ -349,21 +349,21 @@ func (am *Alertmanager) Pull() error {
 }
 
 // Alerts returns a copy of all alert groups
-func (am *Alertmanager) Alerts() []models.AlertGroup {
+func (am *Alertmanager) Alerts() []*models.AlertGroup {
 	am.lock.RLock()
 	defer am.lock.RUnlock()
 
-	alerts := make([]models.AlertGroup, len(am.alertGroups))
+	alerts := make([]*models.AlertGroup, len(am.alertGroups))
 	copy(alerts, am.alertGroups)
 	return alerts
 }
 
 // Silences returns a copy of all silences
-func (am *Alertmanager) Silences() map[string]models.Silence {
+func (am *Alertmanager) Silences() map[string]*models.Silence {
 	am.lock.RLock()
 	defer am.lock.RUnlock()
 
-	silences := make(map[string]models.Silence, len(am.silences))
+	silences := make(map[string]*models.Silence, len(am.silences))
 	for id, silence := range am.silences {
 		silences[id] = silence
 	}
@@ -371,13 +371,13 @@ func (am *Alertmanager) Silences() map[string]models.Silence {
 }
 
 // SilenceByID allows to query for a silence by it's ID, returns error if not found
-func (am *Alertmanager) SilenceByID(id string) (models.Silence, error) {
+func (am *Alertmanager) SilenceByID(id string) (*models.Silence, error) {
 	am.lock.RLock()
 	defer am.lock.RUnlock()
 
 	s, found := am.silences[id]
 	if !found {
-		return models.Silence{}, fmt.Errorf("silence '%s' not found", id)
+		return nil, fmt.Errorf("silence '%s' not found", id)
 	}
 	return s, nil
 }

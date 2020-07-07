@@ -21,7 +21,7 @@ func (m SilenceMapper) IsSupported(version string) bool {
 	return versionRange.Check(semver.MustParse(version))
 }
 
-func (m SilenceMapper) Collect(uri string, headers map[string]string, timeout time.Duration, httpTransport http.RoundTripper) ([]models.Silence, error) {
+func (m SilenceMapper) Collect(uri string, headers map[string]string, timeout time.Duration, httpTransport http.RoundTripper) ([]*models.Silence, error) {
 	c := newClient(uri, headers, httpTransport)
 	return silences(c, timeout)
 }

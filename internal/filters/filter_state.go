@@ -52,7 +52,7 @@ func newStateFilter() FilterT {
 	return &f
 }
 
-func stateAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+func stateAutocomplete(name string, operators []string, alerts models.AlertList) []models.Autocomplete {
 	tokens := make([]models.Autocomplete, 0, len(operators))
 	for _, operator := range operators {
 		for _, alert := range alerts {

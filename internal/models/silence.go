@@ -27,8 +27,8 @@ type Silence struct {
 
 // ManagedSilence is a standalone silence detached from any alert
 type ManagedSilence struct {
-	Cluster    string  `json:"cluster"`
-	IsExpired  bool    `json:"isExpired"`
-	AlertCount int     `json:"alertCount"`
-	Silence    Silence `json:"silence"`
+	Cluster    string   `json:"cluster"`
+	IsExpired  bool     `json:"isExpired"`
+	AlertCount int      `json:"alertCount"`
+	Silence    *Silence `json:"silence"`
 }

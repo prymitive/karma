@@ -11,13 +11,13 @@ import (
 )
 
 type acTest struct {
-	Alerts   []models.Alert
+	Alerts   models.AlertList
 	Expected []string
 }
 
 var acTests = []acTest{
 	{
-		Alerts: []models.Alert{},
+		Alerts: models.AlertList{},
 		Expected: []string{
 			"@age\u003e1h",
 			"@age\u003c10m",
@@ -28,7 +28,7 @@ var acTests = []acTest{
 		},
 	},
 	{
-		Alerts: []models.Alert{
+		Alerts: models.AlertList{
 			{
 				State: models.AlertStateActive,
 				Labels: map[string]string{

@@ -55,7 +55,7 @@ func newAgeFilter() FilterT {
 	return &f
 }
 
-func ageAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+func ageAutocomplete(name string, operators []string, alerts models.AlertList) []models.Autocomplete {
 	tokens := make([]models.Autocomplete, 0, len(operators)*2)
 	for _, operator := range operators {
 		tokens = append(tokens, makeAC(

@@ -12,7 +12,7 @@ import (
 )
 
 // AlertList is flat list of karmaAlert objects
-type AlertList []Alert
+type AlertList []*Alert
 
 func (a AlertList) Len() int {
 	return len(a)

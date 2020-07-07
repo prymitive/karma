@@ -28,7 +28,7 @@ func newreceiverFilter() FilterT {
 	return &f
 }
 
-func receiverAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
+func receiverAutocomplete(name string, operators []string, alerts models.AlertList) []models.Autocomplete {
 	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
 		if alert.Receiver != "" {

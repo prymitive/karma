@@ -111,7 +111,7 @@ func TestDetectTickets(t *testing.T) {
 			t.Errorf("Invalid ticket ID detected in silence comment '%s', expected '%s', got '%s'",
 				testCase.silence.Comment, testCase.text, text)
 		}
-		if text != testCase.text {
+		if uri != testCase.uri {
 			t.Errorf("Invalid ticket link detected in silence comment '%s', expected '%s', got '%s'",
 				testCase.silence.Comment, testCase.uri, uri)
 		}
