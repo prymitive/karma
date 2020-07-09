@@ -60,9 +60,23 @@ describe("<ErrorBoundary />", () => {
         <div />
       </ErrorBoundary>
     );
-    const instance = tree.instance();
-    instance.componentDidCatch("foo", { foo: "bar" });
+    tree.instance().componentDidCatch("foo", { foo: "bar" });
     expect(sentrySpy).toHaveBeenCalled();
+  });
+
+  it("componentDidCatch is only called once", () => {
+    const sentrySpy = jest.spyOn(Sentry, "captureException");
+    Sentry.init({ dsn: "https://foobar@localhost/123456" });
+
+    const tree = mount(
+      <ErrorBoundary>
+        <div />
+      </ErrorBoundary>
+    );
+    tree.instance().componentDidCatch("foo", { foo: "bar" });
+    tree.instance().componentDidCatch("foo", { foo: "bar" });
+    tree.instance().componentDidCatch("foo", { foo: "bar" });
+    expect(sentrySpy).toHaveBeenCalledTimes(1);
   });
 
   it("calls window.location.reload after 60s", () => {
@@ -75,15 +89,14 @@ describe("<ErrorBoundary />", () => {
 
   it("reloadSeconds is 40 after 20s with multiple exceptions", () => {
     const tree = MountedFailingComponent();
-    const instance = tree.instance();
 
-    instance.componentDidCatch("foo", { foo: "bar" });
+    tree.instance().componentDidCatch("foo", { foo: "bar" });
     jest.runTimersToTime(1000 * 10);
-    instance.componentDidCatch("foo", { foo: "bar" });
+    tree.instance().componentDidCatch("foo", { foo: "bar" });
     jest.runTimersToTime(1000 * 5);
-    instance.componentDidCatch("foo", { foo: "bar" });
+    tree.instance().componentDidCatch("foo", { foo: "bar" });
     jest.runTimersToTime(1000 * 5);
-    instance.componentDidCatch("foo", { foo: "bar" });
+    tree.instance().componentDidCatch("foo", { foo: "bar" });
     expect(tree.instance().state.reloadSeconds).toBe(40);
   });
 });

@@ -1,6 +1,6 @@
 // helpers used to bootstrap App instance and environment for it
 
-import * as Sentry from "@sentry/browser";
+import { init } from "@sentry/browser";
 
 const SettingsElement = () => document.getElementById("settings");
 
@@ -19,7 +19,7 @@ const SetupSentry = (settingsElement) => {
     }
 
     try {
-      Sentry.init({
+      init({
         dsn: settingsElement.dataset.sentryDsn,
         release: version,
       });
