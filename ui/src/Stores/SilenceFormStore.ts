@@ -10,7 +10,47 @@ import differenceInDays from "date-fns/differenceInDays";
 import differenceInHours from "date-fns/differenceInHours";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 
-const NewEmptyMatcher = () => {
+import {
+  APIAlertT,
+  APIAlertGroupT,
+  APIAlertmanagerUpstreamT,
+  AlertmanagerSilencePayloadT,
+} from "Models/APITypes";
+
+interface OptionT {
+  label: string;
+  value: string;
+}
+
+interface MultiValueOptionT {
+  label: string;
+  value: string[];
+}
+
+interface MatcherT {
+  name: string;
+  values: OptionT[];
+  isRegex: boolean;
+}
+
+interface MatcherWithIDT extends MatcherT {
+  id: string;
+}
+
+interface SimplifiedMatcherT {
+  n: string;
+  v: string[];
+  r: boolean;
+}
+
+interface SilenceFormDataFromBase64 {
+  am: MultiValueOptionT[];
+  m: SimplifiedMatcherT[];
+  d: number;
+  c: string;
+}
+
+const NewEmptyMatcher = (): MatcherWithIDT => {
   return {
     id: uniqueId(),
     name: "",
@@ -19,28 +59,40 @@ const NewEmptyMatcher = () => {
   };
 };
 
-const MatcherValueToObject = (value) => ({ label: value, value: value });
+const MatcherValueToObject = (value: string): OptionT => ({
+  label: value,
+  value: value,
+});
 
-const AlertmanagerClustersToOption = (clusterDict) =>
+const AlertmanagerClustersToOption = (clusterDict: {
+  [key: string]: string[];
+}): MultiValueOptionT[] =>
   Object.entries(clusterDict).map(([clusterID, clusterMembers]) => ({
     label:
       clusterMembers.length > 1 ? `Cluster: ${clusterID}` : clusterMembers[0],
     value: clusterMembers,
   }));
 
+// FIXME delete
 const SilenceFormStage = Object.freeze({
   UserInput: "form",
   Preview: "preview",
   Submit: "submit",
 });
 
+// FIXME delete
 const SilenceTabNames = Object.freeze({
   Editor: "editor",
   Browser: "browser",
 });
 
-const MatchersFromGroup = (group, stripLabels, alerts, onlyActive) => {
-  let matchers = [];
+const MatchersFromGroup = (
+  group: APIAlertGroupT,
+  stripLabels: string[],
+  alerts: APIAlertT[],
+  onlyActive?: boolean
+): MatcherWithIDT[] => {
+  let matchers: MatcherWithIDT[] = [];
 
   // add matchers for all shared labels in this group
   for (const [key, value] of Object.entries(
@@ -68,7 +120,7 @@ const MatchersFromGroup = (group, stripLabels, alerts, onlyActive) => {
   // https://stackoverflow.com/a/34498210/1154047
   const sharedLabelKeys = allLabelKeys.length
     ? allLabelKeys.reduce(function (r, a) {
-        var last = {};
+        var last: { [key: string]: number } = {};
         return r.filter(function (b) {
           var p = a.indexOf(b, last[b] || 0);
           if (~p) {
@@ -81,7 +133,7 @@ const MatchersFromGroup = (group, stripLabels, alerts, onlyActive) => {
     : [];
 
   // add matchers for all unique labels in this group
-  let labels = {};
+  let labels: { [key: string]: Set<string> } = {};
   for (const alert of filteredAlerts) {
     for (const [key, value] of Object.entries(alert.labels)) {
       if (sharedLabelKeys.includes(key) && !stripLabels.includes(key)) {
@@ -96,7 +148,9 @@ const MatchersFromGroup = (group, stripLabels, alerts, onlyActive) => {
     matchers.push({
       id: uniqueId(),
       name: key,
-      values: [...values].sort().map((value) => MatcherValueToObject(value)),
+      values: Array.from(values)
+        .sort()
+        .map((value) => MatcherValueToObject(value)),
       isRegex: values.size > 1,
     });
   }
@@ -104,7 +158,7 @@ const MatchersFromGroup = (group, stripLabels, alerts, onlyActive) => {
   return matchers;
 };
 
-const NewClusterRequest = (cluster, members) => ({
+const NewClusterRequest = (cluster: string, members: string[]) => ({
   cluster: cluster,
   members: members,
   isDone: false,
@@ -114,14 +168,14 @@ const NewClusterRequest = (cluster, members) => ({
 });
 
 const GenerateAlertmanagerSilenceData = (
-  startsAt,
-  endsAt,
-  matchers,
-  author,
-  comment,
-  silenceID
-) => {
-  const payload = {
+  startsAt: Date,
+  endsAt: Date,
+  matchers: MatcherT[],
+  author: string,
+  comment: string,
+  silenceID: string | null
+): AlertmanagerSilencePayloadT => {
+  const payload: AlertmanagerSilencePayloadT = {
     matchers: matchers.map((m) => ({
       name: m.name,
       value:
@@ -143,7 +197,7 @@ const GenerateAlertmanagerSilenceData = (
   return payload;
 };
 
-const UnpackRegexMatcherValues = (isRegex, value) => {
+const UnpackRegexMatcherValues = (isRegex: boolean, value: string) => {
   if (isRegex && value.match(/^\((\w+\|)+\w+\)$/)) {
     return value
       .slice(1, -1)
@@ -156,8 +210,11 @@ const UnpackRegexMatcherValues = (isRegex, value) => {
   }
 };
 
+interface ClusterRequestT {
+  foo: boolean;
+  // FIXME
+}
 class SilenceFormStore {
-  // this is used to store modal visibility toggle
   toggle = observable(
     {
       visible: false,
@@ -171,7 +228,7 @@ class SilenceFormStore {
       show() {
         this.visible = true;
       },
-      setBlur(val) {
+      setBlur(val: boolean) {
         this.blurred = val;
       },
     },
@@ -186,7 +243,7 @@ class SilenceFormStore {
   tab = observable(
     {
       current: SilenceTabNames.Editor,
-      setTab(value) {
+      setTab(value: "editor" | "browser") {
         this.current = value;
       },
     },
@@ -202,22 +259,22 @@ class SilenceFormStore {
   data = observable(
     {
       currentStage: SilenceFormStage.UserInput,
-      wasValidated: false,
-      silenceID: null,
-      alertmanagers: [],
-      matchers: [],
+      wasValidated: false as boolean,
+      silenceID: null as null | undefined | string,
+      alertmanagers: [] as MultiValueOptionT[],
+      matchers: [] as MatcherWithIDT[],
       startsAt: new Date(),
       endsAt: addHours(new Date(), 1),
       comment: "",
       author: "",
-      requestsByCluster: {},
-      autofillMatchers: true,
-      resetInputs: true,
+      requestsByCluster: {} as { [key: string]: ClusterRequestT },
+      autofillMatchers: true as boolean,
+      resetInputs: true as boolean,
 
       get toBase64() {
         const json = JSON.stringify({
           am: this.alertmanagers,
-          m: this.matchers.map((m) => ({
+          m: this.matchers.map((m: MatcherWithIDT) => ({
             n: m.name,
             r: m.isRegex,
             v: m.values.map((v) => v.value),
@@ -228,8 +285,8 @@ class SilenceFormStore {
         return window.btoa(json);
       },
 
-      fromBase64(s) {
-        let parsed;
+      fromBase64(s: string) {
+        let parsed: SilenceFormDataFromBase64;
         try {
           parsed = JSON.parse(window.atob(s));
         } catch (error) {
@@ -237,8 +294,8 @@ class SilenceFormStore {
           return false;
         }
 
-        let matchers = [];
-        parsed.m.forEach((m) => {
+        let matchers: MatcherWithIDT[] = [];
+        parsed.m.forEach((m: SimplifiedMatcherT) => {
           const matcher = NewEmptyMatcher();
           matcher.name = m.n;
           matcher.isRegex = m.r;
@@ -271,7 +328,7 @@ class SilenceFormStore {
             (m) =>
               m.name === "" ||
               m.values.length === 0 ||
-              m.values.filter((v) => v === "").length > 0
+              m.values.filter((v) => v.value === "").length > 0
           ).length > 0
         )
           return false;
@@ -294,7 +351,7 @@ class SilenceFormStore {
         this.silenceID = null;
       },
 
-      setAlertmanagers(val) {
+      setAlertmanagers(val: MultiValueOptionT[]) {
         this.alertmanagers = val;
       },
 
@@ -304,11 +361,10 @@ class SilenceFormStore {
 
       // append a new empty matcher to the list
       addEmptyMatcher() {
-        let m = NewEmptyMatcher();
-        this.matchers.push(m);
+        this.matchers.push(NewEmptyMatcher());
       },
 
-      deleteMatcher(id) {
+      deleteMatcher(id: string) {
         // only delete matchers if we have more than 1
         if (this.matchers.length > 1) {
           this.matchers = this.matchers.filter((m) => m.id !== id);
@@ -316,7 +372,12 @@ class SilenceFormStore {
       },
 
       // if alerts argument is not passed all group alerts will be used
-      fillMatchersFromGroup(group, stripLabels, alertmanagers, alerts) {
+      fillMatchersFromGroup(
+        group: APIAlertGroupT,
+        stripLabels: string[],
+        alertmanagers: MultiValueOptionT[],
+        alerts: APIAlertT[]
+      ) {
         this.alertmanagers = alertmanagers;
 
         this.matchers = MatchersFromGroup(group, stripLabels, alerts);
@@ -329,14 +390,17 @@ class SilenceFormStore {
         this.resetInputs = false;
       },
 
-      fillFormFromSilence(alertmanager, silence) {
+      fillFormFromSilence(
+        alertmanager: APIAlertmanagerUpstreamT,
+        silence: AlertmanagerSilencePayloadT
+      ) {
         this.silenceID = silence.id;
 
         this.alertmanagers = AlertmanagerClustersToOption({
           [alertmanager.cluster]: alertmanager.clusterMembers,
         });
 
-        const matchers = [];
+        const matchers: MatcherWithIDT[] = [];
         for (const m of silence.matchers) {
           const matcher = NewEmptyMatcher();
           matcher.name = m.name;
@@ -366,20 +430,20 @@ class SilenceFormStore {
           this.endsAt = addMinutes(this.startsAt, 1);
         }
       },
-      incStart(minutes) {
+      incStart(minutes: number) {
         this.startsAt = addMinutes(this.startsAt, minutes);
         this.verifyStarEnd();
       },
-      decStart(minutes) {
+      decStart(minutes: number) {
         this.startsAt = subMinutes(this.startsAt, minutes);
         this.verifyStarEnd();
       },
 
-      incEnd(minutes) {
+      incEnd(minutes: number) {
         this.endsAt = addMinutes(this.endsAt, minutes);
         this.verifyStarEnd();
       },
-      decEnd(minutes) {
+      decEnd(minutes: number) {
         this.endsAt = subMinutes(this.endsAt, minutes);
         this.verifyStarEnd();
       },

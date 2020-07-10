@@ -2,15 +2,7 @@
 
 import { init } from "@sentry/browser";
 
-export interface UIDefaults {
-  Refresh: number;
-  HideFiltersWhenIdle: boolean;
-  ColorTitlebar: boolean;
-  Theme: "light" | "dark" | "auto";
-  MinimalGroupWidth: number;
-  AlertsPerGroup: number;
-  CollapseGroups: "expanded" | "collapsed" | "collapsedOnMobile";
-}
+import { UIDefaults } from "Models/UI";
 
 const SettingsElement = () => document.getElementById("settings");
 
