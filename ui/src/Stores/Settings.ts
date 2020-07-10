@@ -1,8 +1,19 @@
 import { action } from "mobx";
 import { localStored } from "mobx-stored";
 
+interface SavedFilter {
+  raw: string;
+  name: string;
+  matcher: string;
+  value: string;
+}
+
+interface SavedFiltersStorage {
+  filters: SavedFilter[];
+  present: boolean;
+}
 class SavedFilters {
-  config = localStored(
+  config: SavedFiltersStorage = localStored(
     "savedFilters",
     {
       filters: [],
@@ -13,7 +24,7 @@ class SavedFilters {
     }
   );
 
-  save = action((newFilters) => {
+  save = action((newFilters: SavedFilter[]) => {
     this.config.filters = newFilters;
     this.config.present = true;
   });
@@ -24,8 +35,14 @@ class SavedFilters {
   });
 }
 
+interface FetchConfigStorage {
+  interval: number;
+}
 class FetchConfig {
-  constructor(refresh) {
+  config: FetchConfigStorage;
+  setInterval: (newInterval: number) => void;
+
+  constructor(refresh: number) {
     this.config = localStored(
       "fetchConfig",
       { interval: refresh },
@@ -38,6 +55,12 @@ class FetchConfig {
   }
 }
 
+type collapseStateT = "expanded" | "collapsedOnMobile" | "collapsed";
+interface AlertGroupConfigStorage {
+  defaultRenderCount: number;
+  collapseState: collapseStateT;
+  colorTitleBar: boolean;
+}
 class AlertGroupConfig {
   options = Object.freeze({
     expanded: { label: "Always expanded", value: "expanded" },
@@ -48,7 +71,14 @@ class AlertGroupConfig {
     collapsed: { label: "Always collapsed", value: "collapsed" },
   });
 
-  constructor(renderCount, collapseState, colorTitleBar) {
+  config: AlertGroupConfigStorage;
+  setDefaultRenderCount: (val: number) => void;
+
+  constructor(
+    renderCount: number,
+    collapseState: collapseStateT,
+    colorTitleBar: boolean
+  ) {
     this.config = localStored(
       "alertGroupConfig",
       {
@@ -58,23 +88,35 @@ class AlertGroupConfig {
       },
       { delay: 100 }
     );
-  }
 
-  update = action((data) => {
-    for (const [key, val] of Object.entries(data)) {
-      this.config[key] = val;
-    }
-  });
+    this.setDefaultRenderCount = action((val: number) => {
+      this.config.defaultRenderCount = val;
+    });
+  }
 }
 
+interface SilenceFormConfigStorage {
+  author: string;
+}
 class SilenceFormConfig {
-  config = localStored("silenceFormConfig", { author: "" }, { delay: 100 });
+  config: SilenceFormConfigStorage = localStored(
+    "silenceFormConfig",
+    { author: "" },
+    { delay: 100 }
+  );
 
-  saveAuthor = action((newAuthor) => {
+  saveAuthor = action((newAuthor: string) => {
     this.config.author = newAuthor;
   });
 }
 
+type sortOrderT = "default" | "disabled" | "startsAt" | "label";
+interface GridConfigStorage {
+  sortOrder: sortOrderT;
+  sortLabel: string | null;
+  reverseSort: boolean | null;
+  groupWidth: number;
+}
 class GridConfig {
   options = Object.freeze({
     default: { label: "Use defaults from karma config file", value: "default" },
@@ -82,7 +124,9 @@ class GridConfig {
     startsAt: { label: "Sort by alert timestamp", value: "startsAt" },
     label: { label: "Sort by alert label", value: "label" },
   });
-  constructor(groupWidth) {
+
+  config: GridConfigStorage;
+  constructor(groupWidth: number) {
     this.config = localStored(
       "alertGridConfig",
       {
@@ -96,8 +140,12 @@ class GridConfig {
   }
 }
 
+interface FilterBarConfigStorage {
+  autohide: boolean;
+}
 class FilterBarConfig {
-  constructor(autohide) {
+  config: FilterBarConfigStorage;
+  constructor(autohide: boolean) {
     this.config = localStored(
       "filterBarConfig",
       {
@@ -110,6 +158,10 @@ class FilterBarConfig {
   }
 }
 
+type themeT = "auto" | "light" | "dark";
+interface ThemeConfigStorage {
+  theme: themeT;
+}
 class ThemeConfig {
   options = Object.freeze({
     auto: {
@@ -119,7 +171,8 @@ class ThemeConfig {
     light: { label: "Light theme", value: "light" },
     dark: { label: "Dark theme", value: "dark" },
   });
-  constructor(defaultTheme) {
+  config: ThemeConfigStorage;
+  constructor(defaultTheme: themeT) {
     this.config = localStored(
       "themeConfig",
       {
@@ -132,8 +185,13 @@ class ThemeConfig {
   }
 }
 
+interface MultiGridConfigStorage {
+  gridLabel: string;
+  gridSortReverse: boolean;
+}
 class MultiGridConfig {
-  constructor(gridLabel, gridSortReverse) {
+  config: MultiGridConfigStorage;
+  constructor(gridLabel: string, gridSortReverse: boolean) {
     this.config = localStored(
       "multiGridConfig",
       {
@@ -147,9 +205,29 @@ class MultiGridConfig {
   }
 }
 
+interface Defaults {
+  Refresh: number;
+  HideFiltersWhenIdle: boolean;
+  ColorTitlebar: boolean;
+  Theme: themeT;
+  MinimalGroupWidth: number;
+  AlertsPerGroup: number;
+  CollapseGroups: collapseStateT;
+  MultiGridLabel: string;
+  MultiGridSortReverse: boolean;
+}
 class Settings {
-  constructor(defaults) {
-    let defaultSettings;
+  savedFilters: SavedFilters;
+  fetchConfig: FetchConfig;
+  alertGroupConfig: AlertGroupConfig;
+  gridConfig: GridConfig;
+  silenceFormConfig: SilenceFormConfig;
+  filterBarConfig: FilterBarConfig;
+  themeConfig: ThemeConfig;
+  multiGridConfig: MultiGridConfig;
+
+  constructor(defaults: Defaults) {
+    let defaultSettings: Defaults;
     if (defaults === undefined || defaults === null) {
       defaultSettings = {
         Refresh: 30 * 1000 * 1000 * 1000,
