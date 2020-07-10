@@ -11,7 +11,7 @@ const AlertGroupConfiguration = ({ settingsStore }) => {
   );
 
   const onChangeComplete = (value) => {
-    settingsStore.alertGroupConfig.update({ defaultRenderCount: value });
+    settingsStore.alertGroupConfig.setDefaultRenderCount(value);
   };
 
   return (
