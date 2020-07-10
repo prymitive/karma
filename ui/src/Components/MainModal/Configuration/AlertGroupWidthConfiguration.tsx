@@ -1,19 +1,20 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { FC, useState } from "react";
 
 import debounce from "lodash.debounce";
 
-import InputRange from "react-input-range";
+import InputRange, { Range } from "react-input-range";
 
 import { Settings } from "Stores/Settings";
 
-const AlertGroupWidthConfiguration = ({ settingsStore }) => {
+const AlertGroupWidthConfiguration: FC<{
+  settingsStore: Settings;
+}> = ({ settingsStore }) => {
   const [groupWidth, setGroupWidth] = useState(
-    settingsStore.gridConfig.config.groupWidth
+    settingsStore.gridConfig.config.groupWidth as number | Range
   );
 
-  const onChangeComplete = debounce((value) => {
-    settingsStore.gridConfig.config.groupWidth = value;
+  const onChangeComplete = debounce((value: number | Range) => {
+    settingsStore.gridConfig.config.groupWidth = value as number;
   }, 200);
 
   return (
@@ -23,15 +24,11 @@ const AlertGroupWidthConfiguration = ({ settingsStore }) => {
         maxValue={800}
         step={20}
         value={groupWidth}
-        id="formControlRange"
         onChange={setGroupWidth}
         onChangeComplete={onChangeComplete}
       />
     </div>
   );
-};
-AlertGroupWidthConfiguration.propTypes = {
-  settingsStore: PropTypes.instanceOf(Settings).isRequired,
 };
 
 export { AlertGroupWidthConfiguration };
