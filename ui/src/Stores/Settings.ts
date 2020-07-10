@@ -1,6 +1,8 @@
 import { action } from "mobx";
 import { localStored } from "mobx-stored";
 
+import { UIDefaults } from "Models/UI";
+
 interface SavedFilter {
   raw: string;
   name: string;
@@ -205,17 +207,6 @@ class MultiGridConfig {
   }
 }
 
-interface Defaults {
-  Refresh: number;
-  HideFiltersWhenIdle: boolean;
-  ColorTitlebar: boolean;
-  Theme: themeT;
-  MinimalGroupWidth: number;
-  AlertsPerGroup: number;
-  CollapseGroups: collapseStateT;
-  MultiGridLabel: string;
-  MultiGridSortReverse: boolean;
-}
 class Settings {
   savedFilters: SavedFilters;
   fetchConfig: FetchConfig;
@@ -226,8 +217,8 @@ class Settings {
   themeConfig: ThemeConfig;
   multiGridConfig: MultiGridConfig;
 
-  constructor(defaults: Defaults) {
-    let defaultSettings: Defaults;
+  constructor(defaults: UIDefaults | null | undefined) {
+    let defaultSettings: UIDefaults;
     if (defaults === undefined || defaults === null) {
       defaultSettings = {
         Refresh: 30 * 1000 * 1000 * 1000,
