@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import PropTypes from "prop-types";
 
+import { CSSTransition } from "react-transition-group";
+
 import { usePopper } from "react-popper";
 
 import { useSupportsTouch } from "Hooks/useSupportsTouch";
@@ -63,25 +65,29 @@ const TooltipWrapper = ({ title, children, className }) => {
         onTouchCancel={supportsTouch ? hideTooltip : null}
         onTouchEnd={supportsTouch ? hideTooltip : null}
         ref={setReferenceElement}
-        style={{ display: "inline-block", maxWidth: "100%" }}
         className={`${className ? className : ""} tooltip-trigger`}
       >
         {children}
       </div>
       {isVisible
         ? createPortal(
-            <div
-              className="tooltip show tooltip-inner"
-              ref={setPopperElement}
-              style={{
-                willChange: "opacity",
-                transition: "opacity 0.2s",
-                ...styles.popper,
-              }}
-              {...attributes.popper}
+            <CSSTransition
+              classNames="components-animation-tooltip"
+              timeout={200}
+              appear
+              enter
+              in
+              unmountOnExit
             >
-              {title}
-            </div>,
+              <div
+                className="tooltip tooltip-inner"
+                ref={setPopperElement}
+                style={styles.popper}
+                {...attributes.popper}
+              >
+                {title}
+              </div>
+            </CSSTransition>,
             document.body
           )
         : null}

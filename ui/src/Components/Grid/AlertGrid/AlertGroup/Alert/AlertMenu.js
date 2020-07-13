@@ -17,10 +17,16 @@ import {
   SilenceTabNames,
   AlertmanagerClustersToOption,
 } from "Stores/SilenceFormStore";
+import { CommonPopperModifiers } from "Common/Popper";
 import { FetchPauser } from "Components/FetchPauser";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { DateFromNow } from "Components/DateFromNow";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
+
+const PopperModifiers = [
+  ...CommonPopperModifiers,
+  { name: "offset", options: { offset: "-5px, 0px" } },
+];
 
 const onSilenceClick = (alertStore, silenceFormStore, group, alert) => {
   let clusters = {};
@@ -148,13 +154,7 @@ const AlertMenu = ({
           )}
         </Reference>
         <DropdownSlide in={!isHidden} unmountOnExit>
-          <Popper
-            placement="bottom-start"
-            modifiers={[
-              { name: "arrow", enabled: false },
-              { name: "offset", options: { offset: "-5px, 0px" } },
-            ]}
-          >
+          <Popper placement="bottom-start" modifiers={PopperModifiers}>
             {({ placement, ref, style }) => (
               <MenuContent
                 popperPlacement={placement}

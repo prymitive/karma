@@ -2,3 +2,18 @@
   display: inline-block;
   max-width: 100%;
 }
+
+$duration: 0.2s;
+.components-animation-tooltip-appear,
+.components-animation-tooltip-enter {
+  opacity: 0;
+}
+.components-animation-tooltip-appear-active,
+.components-animation-tooltip-enter-active {
+  opacity: 1;
+  transition: opacity $duration ease-in;
+}
+.components-animation-tooltip-appear-done,
+.components-animation-tooltip-enter-done {
+  opacity: 1;
+}

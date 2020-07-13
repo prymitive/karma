@@ -1,32 +1,30 @@
-.components-animation-slide {
-  will-change: opacity, height;
-  transform: translateZ(0);
-}
+$duration: 0.15s;
 
 .components-animation-slide-enter,
 .components-animation-slide-appear {
-  opacity: 0.25;
-  overflow: hidden;
-  max-height: 0px;
+  opacity: 0.1;
+  transform: scaleY(0);
+  transform-origin: top;
 }
 .components-animation-slide-enter-active,
 .components-animation-slide-appear-active {
-  max-height: 2000px; /* can't use auto here */
   opacity: 1;
-  transition-property: max-height, opacity;
-  transition-duration: 0.15s;
-  transition-timing-function: ease-out;
+  transform: scaleY(1);
+  transform-origin: top;
+  transition-property: transform, opacity;
+  transition-duration: $duration;
+  transition-timing-function: ease-in-out;
 }
 
 .components-animation-slide-exit {
-  max-height: 2000px; /* can't use auto here */
+  transform: scaleY(1);
   opacity: 1;
 }
 .components-animation-slide-exit-active {
-  opacity: 0.25;
-  overflow: hidden;
-  max-height: 0px;
-  transition-property: max-height, opacity;
-  transition-duration: 0.15s;
-  transition-timing-function: ease-out;
+  opacity: 0.1;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition-property: transform, opacity;
+  transition-duration: $duration;
+  transition-timing-function: ease-in-out;
 }

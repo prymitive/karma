@@ -28,9 +28,7 @@ exports[`<RenderLinkAnnotation /> matches snapshot 1`] = `
 
 exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=false 1`] = `
 "
-<div style=\\"display:inline-block;max-width:100%\\"
-     class=\\" tooltip-trigger\\"
->
+<div class=\\" tooltip-trigger\\">
   <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
     <svg aria-hidden=\\"true\\"
          focusable=\\"false\\"
@@ -54,9 +52,7 @@ exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=false 1`] = `
 
 exports[`<RenderNonLinkAnnotation /> matches snapshot when visible=true 1`] = `
 "
-<div style=\\"display:inline-block;max-width:100%\\"
-     class=\\" tooltip-trigger\\"
->
+<div class=\\" tooltip-trigger\\">
   <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
     <span class=\\"cursor-pointer\\">
       <svg aria-hidden=\\"true\\"

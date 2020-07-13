@@ -2,9 +2,7 @@
 
 exports[`<FilteringLabel /> matches snapshot 1`] = `
 "
-<div style=\\"display: inline-block; max-width: 100%;\\"
-     class=\\" tooltip-trigger\\"
->
+<div class=\\" tooltip-trigger\\">
   <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
     <span class=\\"components-label-name\\">
       foo:
