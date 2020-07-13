@@ -3,9 +3,10 @@
 
   &.components-animation-fade-appear-done,
   &.components-animation-fade-enter-done {
+    z-index: 1;
     transition-property: transform;
     transition-duration: 0.4s;
-    transition-timing-function: ease;
+    transition-timing-function: ease-in-out;
   }
 }
 

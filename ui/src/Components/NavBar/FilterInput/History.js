@@ -16,6 +16,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { IsMobile } from "Common/Device";
+import { CommonPopperModifiers } from "Common/Popper";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { HistoryLabel } from "Components/Labels/HistoryLabel";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
@@ -223,7 +224,7 @@ const History = ({ alertStore, settingsStore }) => {
           )}
         </Reference>
         <DropdownSlide in={isVisible} unmountOnExit>
-          <Popper modifiers={[{ name: "arrow", enabled: false }]}>
+          <Popper modifiers={CommonPopperModifiers}>
             {({ placement, ref, style }) => (
               <HistoryMenu
                 popperPlacement={placement}

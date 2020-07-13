@@ -4,9 +4,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
 "
 <li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
   <div>
-    <div style=\\"display: inline-block; max-width: 100%;\\"
-         class=\\" tooltip-trigger\\"
-    >
+    <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
         <span class=\\"cursor-pointer\\">
           <svg aria-hidden=\\"true\\"
@@ -34,9 +32,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
         </span>
       </div>
     </div>
-    <div style=\\"display: inline-block; max-width: 100%;\\"
-         class=\\" tooltip-trigger\\"
-    >
+    <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
@@ -78,9 +74,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
       1 day ago
     </span>
   </span>
-  <div style=\\"display: inline-block; max-width: 100%;\\"
-       class=\\" tooltip-trigger\\"
-  >
+  <div class=\\" tooltip-trigger\\">
     <span class=\\"badge badge-light components-label components-label-with-hover cursor-pointer\\">
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
@@ -98,9 +92,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
       </svg>
     </span>
   </div>
-  <div style=\\"display: inline-block; max-width: 100%;\\"
-       class=\\" tooltip-trigger\\"
-  >
+  <div class=\\" tooltip-trigger\\">
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         job:
@@ -110,9 +102,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
       </span>
     </span>
   </div>
-  <div style=\\"display: inline-block; max-width: 100%;\\"
-       class=\\" tooltip-trigger\\"
-  >
+  <div class=\\" tooltip-trigger\\">
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         cluster:
@@ -151,9 +141,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
 "
 <li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
   <div>
-    <div style=\\"display: inline-block; max-width: 100%;\\"
-         class=\\" tooltip-trigger\\"
-    >
+    <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
         <span class=\\"cursor-pointer\\">
           <svg aria-hidden=\\"true\\"
@@ -181,9 +169,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
         </span>
       </div>
     </div>
-    <div style=\\"display: inline-block; max-width: 100%;\\"
-         class=\\" tooltip-trigger\\"
-    >
+    <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
@@ -225,9 +211,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
       1 day ago
     </span>
   </span>
-  <div style=\\"display: inline-block; max-width: 100%;\\"
-       class=\\" tooltip-trigger\\"
-  >
+  <div class=\\" tooltip-trigger\\">
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         job:
@@ -237,9 +221,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
       </span>
     </span>
   </div>
-  <div style=\\"display: inline-block; max-width: 100%;\\"
-       class=\\" tooltip-trigger\\"
-  >
+  <div class=\\" tooltip-trigger\\">
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         cluster:

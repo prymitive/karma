@@ -2,9 +2,7 @@
 
 exports[`<MatchCounter /> matches snapshot 1`] = `
 "
-<div style=\\"display: inline-block; max-width: 100%;\\"
-     class=\\" tooltip-trigger\\"
->
+<div class=\\" tooltip-trigger\\">
   <span class=\\"badge badge-light badge-pill d-block\\"
         style=\\"font-size: 85%; line-height: 1rem;\\"
         data-am=\\"0\\"

@@ -4,9 +4,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
 "
 <div class=\\"card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1\\">
   <div class=\\"mb-1\\">
-    <div style=\\"display: inline-block; max-width: 100%;\\"
-         class=\\" tooltip-trigger\\"
-    >
+    <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
         <span class=\\"cursor-pointer\\">
           <svg aria-hidden=\\"true\\"
@@ -34,9 +32,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
         </span>
       </div>
     </div>
-    <div style=\\"display: inline-block; max-width: 100%;\\"
-         class=\\" tooltip-trigger\\"
-    >
+    <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
@@ -56,9 +52,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
       </div>
     </div>
   </div>
-  <div style=\\"display: inline-block; max-width: 100%;\\"
-       class=\\" tooltip-trigger\\"
-  >
+  <div class=\\" tooltip-trigger\\">
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         label1:
@@ -68,9 +62,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
       </span>
     </span>
   </div>
-  <div style=\\"display: inline-block; max-width: 100%;\\"
-       class=\\" tooltip-trigger\\"
-  >
+  <div class=\\" tooltip-trigger\\">
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         label2:
@@ -80,9 +72,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
       </span>
     </span>
   </div>
-  <div style=\\"display: inline-block; max-width: 100%;\\"
-       class=\\" tooltip-trigger\\"
-  >
+  <div class=\\" tooltip-trigger\\">
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         @cluster:
@@ -92,9 +82,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
       </span>
     </span>
   </div>
-  <div style=\\"display: inline-block; max-width: 100%;\\"
-       class=\\" tooltip-trigger\\"
-  >
+  <div class=\\" tooltip-trigger\\">
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         @receiver:
@@ -133,9 +121,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
 "
 <div class=\\"card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1\\">
   <div class=\\"mb-1\\">
-    <div style=\\"display: inline-block; max-width: 100%;\\"
-         class=\\" tooltip-trigger\\"
-    >
+    <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
         <span class=\\"cursor-pointer\\">
           <svg aria-hidden=\\"true\\"
@@ -163,9 +149,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
         </span>
       </div>
     </div>
-    <div style=\\"display: inline-block; max-width: 100%;\\"
-         class=\\" tooltip-trigger\\"
-    >
+    <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
@@ -185,9 +169,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
       </div>
     </div>
   </div>
-  <div style=\\"display: inline-block; max-width: 100%;\\"
-       class=\\" tooltip-trigger\\"
-  >
+  <div class=\\" tooltip-trigger\\">
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         label1:
@@ -197,9 +179,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
       </span>
     </span>
   </div>
-  <div style=\\"display: inline-block; max-width: 100%;\\"
-       class=\\" tooltip-trigger\\"
-  >
+  <div class=\\" tooltip-trigger\\">
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         label2:
@@ -209,9 +189,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
       </span>
     </span>
   </div>
-  <div style=\\"display: inline-block; max-width: 100%;\\"
-       class=\\" tooltip-trigger\\"
-  >
+  <div class=\\" tooltip-trigger\\">
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         @cluster:
@@ -221,9 +199,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
       </span>
     </span>
   </div>
-  <div style=\\"display: inline-block; max-width: 100%;\\"
-       class=\\" tooltip-trigger\\"
-  >
+  <div class=\\" tooltip-trigger\\">
     <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         @receiver:
