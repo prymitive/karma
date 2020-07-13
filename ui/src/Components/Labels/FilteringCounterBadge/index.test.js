@@ -38,7 +38,8 @@ const validateStyle = (value, themed) => {
   expect(tree.find("span").prop("style")).toEqual({});
 };
 
-const validateOnClick = (value, themed, isNegative) => {
+const validateOnClick = (value, themed, isNegative, isAppend) => {
+  alertStore.filters.values = [NewUnappliedFilter("foo=bar")];
   const tree = mount(
     <FilteringCounterBadge
       alertStore={alertStore}
@@ -46,12 +47,18 @@ const validateOnClick = (value, themed, isNegative) => {
       value={value}
       counter={1}
       themed={themed}
+      isAppend={isAppend}
     />
   );
   tree
     .find(".components-label")
     .simulate("click", { altKey: isNegative ? true : false });
-  expect(alertStore.filters.values).toHaveLength(1);
+  expect(alertStore.filters.values).toHaveLength(isAppend ? 2 : 1);
+  if (isAppend) {
+    expect(alertStore.filters.values).toContainEqual(
+      NewUnappliedFilter("foo=bar")
+    );
+  }
   expect(alertStore.filters.values).toContainEqual(
     NewUnappliedFilter(
       `@state${
@@ -100,10 +107,17 @@ describe("<FilteringCounterBadge />", () => {
 
   for (let state of ["unprocessed", "active", "suppressed"]) {
     it(`click on @state=${state} counter badge should add a new filter`, () => {
-      validateOnClick(state, true, false);
+      validateOnClick(state, true, false, true);
     });
     it(`alt+click method on @state=${state} counter badge should add a new negative filter`, () => {
-      validateOnClick(state, true, true);
+      validateOnClick(state, true, true, true);
+    });
+
+    it(`click on @state=${state} counter badge when isAppend=false should replace filters`, () => {
+      validateOnClick(state, true, false, false);
+    });
+    it(`alt+click method on @state=${state} counter badge when isAppend=false should replace filters with a negative one`, () => {
+      validateOnClick(state, true, true, false);
     });
   }
 });

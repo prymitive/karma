@@ -79,6 +79,7 @@ const SilenceComment = ({
               themed={false}
               alwaysVisible={alertCountAlwaysVisible}
               defaultColor="primary"
+              isAppend={false}
             />
             <ToggleIcon
               isOpen={!collapsed}

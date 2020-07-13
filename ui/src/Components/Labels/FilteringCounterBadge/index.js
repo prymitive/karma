@@ -23,6 +23,7 @@ const FilteringCounterBadge = observer(
     themed,
     alwaysVisible,
     defaultColor,
+    isAppend,
   }) => {
     const { ref, props } = useFlashTransition(counter);
 
@@ -37,9 +38,13 @@ const FilteringCounterBadge = observer(
 
         event.preventDefault();
 
-        alertStore.filters.addFilter(FormatQuery(name, operator, value));
+        if (isAppend) {
+          alertStore.filters.addFilter(FormatQuery(name, operator, value));
+        } else {
+          alertStore.filters.setFilters([FormatQuery(name, operator, value)]);
+        }
       },
-      [alertStore.filters, name, value]
+      [alertStore.filters, name, value, isAppend]
     );
 
     if (!alwaysVisible && counter === 0) return null;
@@ -85,9 +90,11 @@ FilteringCounterBadge.propTypes = {
   themed: PropTypes.bool.isRequired,
   alwaysVisible: PropTypes.bool,
   defaultColor: PropTypes.oneOf(["light", "primary"]),
+  isAppend: PropTypes.bool,
 };
 FilteringCounterBadge.defaultProps = {
   defaultColor: "light",
+  isAppend: true,
 };
 
 export { FilteringCounterBadge };
