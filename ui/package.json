@@ -15,8 +15,10 @@
     "@types/bricks.js": "1.8.1",
     "@types/lodash.debounce": "4.0.6",
     "@types/lodash.merge": "4.6.6",
+    "@types/lodash.throttle": "4.1.6",
     "@types/lodash.uniqueid": "4.0.6",
     "@types/promise-retry": "1.1.3",
+    "@types/qs": "6.9.3",
     "@types/react": "16.9.43",
     "@types/react-dom": "16.9.8",
     "@types/react-js-pagination": "3.0.3",
@@ -76,7 +78,8 @@
     "collectCoverageFrom": [
       "src/**/*.{js,ts,tsx}",
       "!src/**/*.stories.{js,ts,tsx}",
-      "!src/react-app-env.d.ts"
+      "!src/react-app-env.d.ts",
+      "!src/Models/*.ts"
     ]
   },
   "devDependencies": {

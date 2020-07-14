@@ -3,15 +3,8 @@ import { localStored } from "mobx-stored";
 
 import { UIDefaults } from "Models/UI";
 
-interface SavedFilter {
-  raw: string;
-  name: string;
-  matcher: string;
-  value: string;
-}
-
 interface SavedFiltersStorage {
-  filters: SavedFilter[];
+  filters: string[];
   present: boolean;
 }
 class SavedFilters {
@@ -26,7 +19,7 @@ class SavedFilters {
     }
   );
 
-  save = action((newFilters: SavedFilter[]) => {
+  save = action((newFilters: string[]) => {
     this.config.filters = newFilters;
     this.config.present = true;
   });

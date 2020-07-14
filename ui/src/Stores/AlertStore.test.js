@@ -217,7 +217,7 @@ describe("AlertStore.filters", () => {
     store.filters.addFilter("foo");
     expect(historyMock).toHaveBeenLastCalledWith(
       null,
-      null,
+      "",
       "http://localhost/?q=foo"
     );
   });
@@ -228,7 +228,7 @@ describe("AlertStore.filters", () => {
     store.filters.replaceFilter("foo", "bar");
     expect(historyMock).toHaveBeenLastCalledWith(
       null,
-      null,
+      "",
       "http://localhost/?q=bar"
     );
   });
@@ -239,7 +239,7 @@ describe("AlertStore.filters", () => {
     store.filters.addFilter("foo");
     expect(historyMock).toHaveBeenLastCalledWith(
       null,
-      null,
+      "",
       "http://localhost/?q=foo"
     );
   });
@@ -256,7 +256,7 @@ describe("AlertStore.filters", () => {
     expect(store.filters.values[1]).toMatchObject(NewUnappliedFilter("far"));
     expect(historyMock).toHaveBeenLastCalledWith(
       null,
-      null,
+      "",
       "http://localhost/?q=baz&q=far"
     );
   });
