@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { FC, useState } from "react";
 
 import { useObserver } from "mobx-react-lite";
 
@@ -9,16 +8,19 @@ import { Tab } from "Components/Modal/Tab";
 import { Configuration } from "./Configuration";
 import { Help } from "./Help";
 
-const TabNames = Object.freeze({
-  Configuration: "configuration",
-  Help: "help",
-});
+export type OpenTabT = "configuration" | "help";
 
-const MainModalContent = ({
+const MainModalContent: FC<{
+  alertStore: AlertStore;
+  settingsStore: Settings;
+  onHide: () => void;
+  openTab?: OpenTabT;
+  expandAllOptions: boolean;
+}> = ({
   alertStore,
   settingsStore,
   onHide,
-  openTab,
+  openTab = "configuration",
   expandAllOptions,
 }) => {
   const [tab, setTab] = useState(openTab);
@@ -29,13 +31,13 @@ const MainModalContent = ({
         <nav className="nav nav-pills nav-justified w-100">
           <Tab
             title="Configuration"
-            active={tab === TabNames.Configuration}
-            onClick={() => setTab(TabNames.Configuration)}
+            active={tab === "configuration"}
+            onClick={() => setTab("configuration")}
           />
           <Tab
             title="Help"
-            active={tab === TabNames.Help}
-            onClick={() => setTab(TabNames.Help)}
+            active={tab === "help"}
+            onClick={() => setTab("help")}
           />
           <button type="button" className="close" onClick={onHide}>
             <span>&times;</span>
@@ -43,10 +45,8 @@ const MainModalContent = ({
         </nav>
       </div>
       <div className="modal-body">
-        {tab === TabNames.Help ? (
-          <Help defaultIsOpen={expandAllOptions} />
-        ) : null}
-        {tab === TabNames.Configuration ? (
+        {tab === "help" ? <Help defaultIsOpen={expandAllOptions} /> : null}
+        {tab === "configuration" ? (
           <Configuration
             settingsStore={settingsStore}
             defaultIsOpen={expandAllOptions}
@@ -64,15 +64,5 @@ const MainModalContent = ({
     </React.Fragment>
   ));
 };
-MainModalContent.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  settingsStore: PropTypes.instanceOf(Settings).isRequired,
-  onHide: PropTypes.func.isRequired,
-  openTab: PropTypes.oneOf(Object.values(TabNames)),
-  expandAllOptions: PropTypes.bool.isRequired,
-};
-MainModalContent.defaultProps = {
-  openTab: TabNames.Configuration,
-};
 
-export { MainModalContent, TabNames };
+export { MainModalContent };

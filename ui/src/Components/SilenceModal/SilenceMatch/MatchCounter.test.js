@@ -4,12 +4,9 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import {
-  SilenceFormStore,
-  NewEmptyMatcher,
-  MatcherValueToObject,
-} from "Stores/SilenceFormStore";
+import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { useFetchGet } from "Hooks/useFetchGet";
+import { StringToOption } from "Common/Select";
 import { MatchCounter } from "./MatchCounter";
 
 let matcher;
@@ -19,7 +16,7 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
   matcher = NewEmptyMatcher();
   matcher.name = "foo";
-  matcher.values = [MatcherValueToObject("bar")];
+  matcher.values = [StringToOption("bar")];
 });
 
 afterEach(() => {
@@ -107,7 +104,7 @@ describe("<MatchCounter />", () => {
   });
 
   it("sends correct query string for a 'foo=~(bar|baz)' matcher", () => {
-    matcher.values = [MatcherValueToObject("bar"), MatcherValueToObject("baz")];
+    matcher.values = [StringToOption("bar"), StringToOption("baz")];
     matcher.isRegex = true;
     silenceFormStore.data.alertmanagers = [];
     MountedMatchCounter();
@@ -117,7 +114,7 @@ describe("<MatchCounter />", () => {
   });
 
   it("selecting one Alertmanager instance appends it to the filters", () => {
-    silenceFormStore.data.alertmanagers = [MatcherValueToObject("am1")];
+    silenceFormStore.data.alertmanagers = [StringToOption("am1")];
     MountedMatchCounter();
     expect(useFetchGet.mock.calls[0][0]).toBe(
       "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%29%24"
@@ -126,8 +123,8 @@ describe("<MatchCounter />", () => {
 
   it("selecting two Alertmanager instances appends it correctly to the filters", () => {
     silenceFormStore.data.alertmanagers = [
-      MatcherValueToObject("am1"),
-      MatcherValueToObject("am1"),
+      StringToOption("am1"),
+      StringToOption("am1"),
     ];
     MountedMatchCounter();
     expect(useFetchGet.mock.calls[0][0]).toBe(

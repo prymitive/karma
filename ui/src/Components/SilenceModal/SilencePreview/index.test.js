@@ -11,8 +11,8 @@ import {
   SilenceFormStore,
   SilenceFormStage,
   NewEmptyMatcher,
-  MatcherValueToObject,
 } from "Stores/SilenceFormStore";
+import { StringToOption } from "Common/Select";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { SilencePreview } from ".";
 
@@ -24,7 +24,7 @@ beforeEach(() => {
 
   const matcher = NewEmptyMatcher();
   matcher.name = "foo";
-  matcher.values = [MatcherValueToObject("bar")];
+  matcher.values = [StringToOption("bar")];
 
   silenceFormStore = new SilenceFormStore();
   silenceFormStore.data.matchers = [matcher];

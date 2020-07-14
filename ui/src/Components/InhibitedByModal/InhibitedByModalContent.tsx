@@ -1,11 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 
 import { AlertStore } from "Stores/AlertStore";
 import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
 import { PaginatedAlertList } from "Components/PaginatedAlertList";
 
-const InhibitedByModalContent = ({ alertStore, fingerprints, onHide }) => {
+const InhibitedByModalContent: FC<{
+  alertStore: AlertStore;
+  fingerprints: string[];
+  onHide: () => void;
+}> = ({ alertStore, fingerprints, onHide }) => {
   return (
     <React.Fragment>
       <div className="modal-header">
@@ -28,11 +31,6 @@ const InhibitedByModalContent = ({ alertStore, fingerprints, onHide }) => {
       </div>
     </React.Fragment>
   );
-};
-InhibitedByModalContent.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  fingerprints: PropTypes.arrayOf(PropTypes.string).isRequired,
-  onHide: PropTypes.func.isRequired,
 };
 
 export { InhibitedByModalContent };

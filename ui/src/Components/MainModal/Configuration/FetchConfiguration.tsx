@@ -1,16 +1,17 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { FC, useState } from "react";
 
 import InputRange from "react-input-range";
 
 import { Settings } from "Stores/Settings";
 
-const FetchConfiguration = ({ settingsStore }) => {
+const FetchConfiguration: FC<{
+  settingsStore: Settings;
+}> = ({ settingsStore }) => {
   const [fetchInterval, setFetchInterval] = useState(
     settingsStore.fetchConfig.config.interval
   );
 
-  const onChangeComplete = (value) => {
+  const onChangeComplete = (value: number) => {
     settingsStore.fetchConfig.setInterval(value);
   };
 
@@ -21,16 +22,12 @@ const FetchConfiguration = ({ settingsStore }) => {
         maxValue={120}
         step={10}
         value={fetchInterval}
-        id="formControlRange"
         formatLabel={(value) => `${value}s`}
-        onChange={setFetchInterval}
-        onChangeComplete={onChangeComplete}
+        onChange={(value) => setFetchInterval(value as number)}
+        onChangeComplete={(value) => onChangeComplete(value as number)}
       />
     </div>
   );
-};
-FetchConfiguration.propTypes = {
-  settingsStore: PropTypes.instanceOf(Settings).isRequired,
 };
 
 export { FetchConfiguration };

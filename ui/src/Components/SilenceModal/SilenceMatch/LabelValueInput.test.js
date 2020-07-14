@@ -5,11 +5,8 @@ import { mount } from "enzyme";
 import toDiffableHtml from "diffable-html";
 
 import { MockThemeContext } from "__mocks__/Theme";
-import {
-  SilenceFormStore,
-  NewEmptyMatcher,
-  MatcherValueToObject,
-} from "Stores/SilenceFormStore";
+import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
+import { StringToOption } from "Common/Select";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { LabelValueInput } from "./LabelValueInput";
 
@@ -87,8 +84,8 @@ describe("<LabelValueInput />", () => {
     options.at(0).simulate("click");
     options.at(1).simulate("click");
     expect(matcher.values).toHaveLength(2);
-    expect(matcher.values).toContainEqual(MatcherValueToObject("dev"));
-    expect(matcher.values).toContainEqual(MatcherValueToObject("staging"));
+    expect(matcher.values).toContainEqual(StringToOption("dev"));
+    expect(matcher.values).toContainEqual(StringToOption("staging"));
   });
 
   it("selecting one option doesn't force matcher.isRegex=true", () => {
@@ -121,10 +118,7 @@ describe("<LabelValueInput />", () => {
   });
 
   it("removing last value sets matcher.values to []", () => {
-    matcher.values = [
-      MatcherValueToObject("dev"),
-      MatcherValueToObject("staging"),
-    ];
+    matcher.values = [StringToOption("dev"), StringToOption("staging")];
     const tree = MountedLabelValueInput(true);
 
     tree.find(".react-select__multi-value__remove").at(0).simulate("click");

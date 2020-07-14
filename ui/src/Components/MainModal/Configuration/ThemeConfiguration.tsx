@@ -1,32 +1,33 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 
 import { useObserver } from "mobx-react-lite";
 
 import Select from "react-select";
 
-import { Settings } from "Stores/Settings";
+import { OptionT } from "Common/Select";
+import { Settings, ThemeT } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 
-const ThemeConfiguration = ({ settingsStore }) => {
+const ThemeConfiguration: FC<{
+  settingsStore: Settings;
+}> = ({ settingsStore }) => {
   if (
     !Object.values(settingsStore.themeConfig.options)
       .map((o) => o.value)
       .includes(settingsStore.themeConfig.config.theme)
   ) {
-    settingsStore.themeConfig.config.theme =
-      settingsStore.themeConfig.options.auto.value;
+    settingsStore.themeConfig.config.theme = "auto";
   }
 
-  const valueToOption = (val) => {
+  const valueToOption = (val: ThemeT) => {
     return {
       label: settingsStore.themeConfig.options[val].label,
       value: val,
     };
   };
 
-  const onCollapseChange = (newValue, actionMeta) => {
-    settingsStore.themeConfig.config.theme = newValue.value;
+  const onCollapseChange = (newValue: ThemeT) => {
+    settingsStore.themeConfig.config.theme = newValue;
   };
 
   const context = React.useContext(ThemeContext);
@@ -39,14 +40,13 @@ const ThemeConfiguration = ({ settingsStore }) => {
         instanceId="configuration-theme"
         defaultValue={valueToOption(settingsStore.themeConfig.config.theme)}
         options={Object.values(settingsStore.themeConfig.options)}
-        onChange={onCollapseChange}
+        onChange={(option) =>
+          onCollapseChange((option as OptionT).value as ThemeT)
+        }
         hideSelectedOptions
       />
     </div>
   ));
-};
-ThemeConfiguration.propTypes = {
-  settingsStore: PropTypes.instanceOf(Settings).isRequired,
 };
 
 export { ThemeConfiguration };

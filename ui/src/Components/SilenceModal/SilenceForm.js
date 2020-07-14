@@ -21,10 +21,10 @@ import {
   SilenceFormStore,
   SilenceFormStage,
   NewEmptyMatcher,
-  MatcherValueToObject,
   NewClusterRequest,
 } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
+import { StringToOption } from "Common/Select";
 import { QueryOperators } from "Common/Query";
 import { useFlashTransition } from "Hooks/useFlashTransition";
 import { TooltipWrapper } from "Components/TooltipWrapper";
@@ -118,10 +118,10 @@ const SilenceForm = ({
             const matcher = NewEmptyMatcher();
             matcher.name = f.name;
             if (f.matcher === QueryOperators.Regex) {
-              matcher.values = [MatcherValueToObject(`.*${f.value}.*`)];
+              matcher.values = [StringToOption(`.*${f.value}.*`)];
               matcher.isRegex = f.matcher === QueryOperators.Regex;
             } else {
-              matcher.values = [MatcherValueToObject(f.value)];
+              matcher.values = [StringToOption(f.value)];
             }
             silenceFormStore.data.matchers.push(matcher);
           });

@@ -1,5 +1,4 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 
 import Creatable from "react-select/creatable";
 
@@ -7,11 +6,14 @@ import { useFetchGet } from "Hooks/useFetchGet";
 import { FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
-import { NewLabelName } from "Common/Select";
+import { NewLabelName, StringToOption } from "Common/Select";
 
 const disabledLabel = "Disable multi-grid";
 
-const valueToOption = (v) => ({ label: v ? v : disabledLabel, value: v });
+const valueToOption = (v: string) => ({
+  label: v ? v : disabledLabel,
+  value: v,
+});
 
 const staticValues = [
   { label: disabledLabel, value: "" },
@@ -20,7 +22,9 @@ const staticValues = [
   { label: "@receiver", value: "@receiver" },
 ];
 
-const GridLabelName = ({ settingsStore }) => {
+const GridLabelName: FC<{
+  settingsStore: Settings;
+}> = ({ settingsStore }) => {
   const { response } = useFetchGet(FormatBackendURI(`labelNames.json`));
 
   const context = React.useContext(ThemeContext);
@@ -38,10 +42,7 @@ const GridLabelName = ({ settingsStore }) => {
         response
           ? [
               ...staticValues,
-              ...response.map((value) => ({
-                label: value,
-                value: value,
-              })),
+              ...response.map((value: string) => StringToOption(value)),
             ]
           : staticValues
       }
@@ -50,9 +51,6 @@ const GridLabelName = ({ settingsStore }) => {
       }}
     />
   );
-};
-GridLabelName.propTypes = {
-  settingsStore: PropTypes.instanceOf(Settings).isRequired,
 };
 
 export { GridLabelName };

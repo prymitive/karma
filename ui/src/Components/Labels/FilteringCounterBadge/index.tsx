@@ -1,5 +1,4 @@
-import React, { useCallback } from "react";
-import PropTypes from "prop-types";
+import React, { FC, useCallback, MouseEvent } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -14,7 +13,16 @@ import { useFlashTransition } from "Hooks/useFlashTransition";
 // Same as FilteringLabel but for labels that are counters (usually @state)
 // and only renders a pill badge with the counter, it doesn't render anything
 // if the counter is 0
-const FilteringCounterBadge = observer(
+const FilteringCounterBadge: FC<{
+  alertStore: AlertStore;
+  name: string;
+  value: string;
+  counter: number;
+  themed: boolean;
+  alwaysVisible: boolean;
+  defaultColor: "light" | "primary";
+  isAppend: boolean;
+}> = observer(
   ({
     alertStore,
     name,
@@ -22,13 +30,13 @@ const FilteringCounterBadge = observer(
     counter,
     themed,
     alwaysVisible,
-    defaultColor,
-    isAppend,
+    defaultColor = "light",
+    isAppend = true,
   }) => {
     const { ref, props } = useFlashTransition(counter);
 
     const handleClick = useCallback(
-      (event) => {
+      (event: MouseEvent) => {
         // left click       => apply foo=bar filter
         // left click + alt => apply foo!=bar filter
         const operator =
@@ -82,19 +90,5 @@ const FilteringCounterBadge = observer(
     );
   }
 );
-FilteringCounterBadge.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  counter: PropTypes.number.isRequired,
-  themed: PropTypes.bool.isRequired,
-  alwaysVisible: PropTypes.bool,
-  defaultColor: PropTypes.oneOf(["light", "primary"]),
-  isAppend: PropTypes.bool,
-};
-FilteringCounterBadge.defaultProps = {
-  defaultColor: "light",
-  isAppend: true,
-};
 
 export { FilteringCounterBadge };

@@ -1,14 +1,19 @@
-import React, { useCallback } from "react";
+import React, { FC, useCallback, MouseEvent } from "react";
 
 import { useObserver } from "mobx-react-lite";
 
+import { AlertStore } from "Stores/AlertStore";
 import { QueryOperators, FormatQuery } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GetClassAndStyle } from "Components/Labels/Utils";
 
-const FilteringLabel = ({ alertStore, name, value }) => {
+const FilteringLabel: FC<{
+  alertStore: AlertStore;
+  name: string;
+  value: string;
+}> = ({ alertStore, name, value }) => {
   const handleClick = useCallback(
-    (event) => {
+    (event: MouseEvent) => {
       // left click       => apply foo=bar filter
       // left click + alt => apply foo!=bar filter
       const operator =

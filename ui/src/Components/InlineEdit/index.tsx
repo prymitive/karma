@@ -1,9 +1,22 @@
-import React, { useState, useRef, useEffect } from "react";
-import PropTypes from "prop-types";
+import React, {
+  FC,
+  useState,
+  useRef,
+  useEffect,
+  KeyboardEvent,
+  ChangeEvent,
+} from "react";
 
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
 
-const InlineEdit = ({
+const InlineEdit: FC<{
+  className: string;
+  classNameEditing: string;
+  value: string;
+  onChange: (value: string) => void;
+  onEnterEditing: () => void;
+  onExitEditing: () => void;
+}> = ({
   className,
   classNameEditing,
   value,
@@ -11,8 +24,8 @@ const InlineEdit = ({
   onEnterEditing,
   onExitEditing,
 }) => {
-  const ref = useRef(null);
-  const [editedValue, setEditedValue] = useState(null);
+  const ref = useRef(null as null | HTMLInputElement);
+  const [editedValue, setEditedValue] = useState(null as null | string);
   const [isEditing, setIsEditing] = useState(false);
 
   const startEditing = () => {
@@ -30,11 +43,11 @@ const InlineEdit = ({
     }
   };
 
-  const onInput = (event) => {
+  const onInput = (event: ChangeEvent<HTMLInputElement>) => {
     setEditedValue(event.target.value.trim());
   };
 
-  const onKeyDown = (event) => {
+  const onKeyDown = (event: KeyboardEvent) => {
     if (event.keyCode === 13) {
       if (editedValue) {
         onChange(editedValue);
@@ -74,14 +87,6 @@ const InlineEdit = ({
       {value}
     </span>
   );
-};
-InlineEdit.propTypes = {
-  className: PropTypes.string,
-  classNameEditing: PropTypes.string,
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-  onEnterEditing: PropTypes.func,
-  onExitEditing: PropTypes.func,
 };
 
 export { InlineEdit };

@@ -1,12 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC, ReactNode } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons/faInfoCircle";
 
 import { Accordion } from "Components/Accordion";
 
-const FilterOperatorHelp = ({ operator, description, children }) => (
+const FilterOperatorHelp: FC<{
+  operator: string;
+  description: string;
+}> = ({ operator, description, children }) => (
   <React.Fragment>
     <dt>
       <kbd>{operator}</kbd> {description}
@@ -24,12 +26,12 @@ const FilterOperatorHelp = ({ operator, description, children }) => (
     </dd>
   </React.Fragment>
 );
-FilterOperatorHelp.propTypes = {
-  operator: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-};
 
-const QueryHelp = ({ title, operators, warning, children }) => (
+const QueryHelp: FC<{
+  title: string;
+  operators: string[];
+  warning?: ReactNode;
+}> = ({ title, operators, warning, children }) => (
   <React.Fragment>
     <dt>{title}</dt>
     <dd className="mb-5">
@@ -52,13 +54,10 @@ const QueryHelp = ({ title, operators, warning, children }) => (
     </dd>
   </React.Fragment>
 );
-QueryHelp.propTypes = {
-  title: PropTypes.string.isRequired,
-  operators: PropTypes.arrayOf(PropTypes.string).isRequired,
-  warning: PropTypes.node,
-};
 
-const FilterExample = ({ example, children }) => (
+const FilterExample: FC<{
+  example: string;
+}> = ({ example, children }) => (
   <li>
     <div>
       <span className="badge badge-info">{example}</span>
@@ -66,12 +65,8 @@ const FilterExample = ({ example, children }) => (
     <div>{children}</div>
   </li>
 );
-FilterExample.propTypes = {
-  example: PropTypes.string.isRequired,
-  children: PropTypes.node,
-};
 
-const Help = ({ defaultIsOpen }) => (
+const Help: FC<{ defaultIsOpen: boolean }> = ({ defaultIsOpen }) => (
   <div className="accordion">
     <Accordion
       text="Fiter operators"
@@ -319,8 +314,5 @@ const Help = ({ defaultIsOpen }) => (
     />
   </div>
 );
-Help.propTypes = {
-  defaultIsOpen: PropTypes.bool.isRequired,
-};
 
 export { Help };

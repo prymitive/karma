@@ -16,24 +16,20 @@ import {
   APIAlertmanagerUpstreamT,
   AlertmanagerSilencePayloadT,
 } from "Models/APITypes";
+import { StringToOption, OptionT } from "Common/Select";
 
-interface OptionT {
-  label: string;
-  value: string;
-}
-
-interface MultiValueOptionT {
+export interface MultiValueOptionT {
   label: string;
   value: string[];
 }
 
-interface MatcherT {
+export interface MatcherT {
   name: string;
   values: OptionT[];
   isRegex: boolean;
 }
 
-interface MatcherWithIDT extends MatcherT {
+export interface MatcherWithIDT extends MatcherT {
   id: string;
 }
 
@@ -58,11 +54,6 @@ const NewEmptyMatcher = (): MatcherWithIDT => {
     isRegex: false,
   };
 };
-
-const MatcherValueToObject = (value: string): OptionT => ({
-  label: value,
-  value: value,
-});
 
 const AlertmanagerClustersToOption = (clusterDict: {
   [key: string]: string[];
@@ -101,7 +92,7 @@ const MatchersFromGroup = (
     if (!stripLabels.includes(key)) {
       const matcher = NewEmptyMatcher();
       matcher.name = key;
-      matcher.values = [MatcherValueToObject(value)];
+      matcher.values = [StringToOption(value)];
       matchers.push(matcher);
     }
   }
@@ -150,7 +141,7 @@ const MatchersFromGroup = (
       name: key,
       values: Array.from(values)
         .sort()
-        .map((value) => MatcherValueToObject(value)),
+        .map((value) => StringToOption(value)),
       isRegex: values.size > 1,
     });
   }
@@ -173,7 +164,7 @@ const GenerateAlertmanagerSilenceData = (
   matchers: MatcherT[],
   author: string,
   comment: string,
-  silenceID: string | null
+  silenceID: string | null = null
 ): AlertmanagerSilencePayloadT => {
   const payload: AlertmanagerSilencePayloadT = {
     matchers: matchers.map((m) => ({
@@ -202,11 +193,11 @@ const UnpackRegexMatcherValues = (isRegex: boolean, value: string) => {
     return value
       .slice(1, -1)
       .split("|")
-      .map((v) => MatcherValueToObject(v));
+      .map((v) => StringToOption(v));
   } else if (isRegex && value.match(/^(\w+\|)+\w+$/)) {
-    return value.split("|").map((v) => MatcherValueToObject(v));
+    return value.split("|").map((v) => StringToOption(v));
   } else {
-    return [MatcherValueToObject(value)];
+    return [StringToOption(value)];
   }
 };
 
@@ -299,7 +290,7 @@ class SilenceFormStore {
           const matcher = NewEmptyMatcher();
           matcher.name = m.n;
           matcher.isRegex = m.r;
-          matcher.values = m.v.map((v) => MatcherValueToObject(v));
+          matcher.values = m.v.map((v) => StringToOption(v));
           matchers.push(matcher);
         });
 
@@ -503,7 +494,6 @@ export {
   SilenceFormStore,
   SilenceFormStage,
   NewEmptyMatcher,
-  MatcherValueToObject,
   AlertmanagerClustersToOption,
   SilenceTabNames,
   MatchersFromGroup,

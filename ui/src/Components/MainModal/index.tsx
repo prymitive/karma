@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from "react";
-import PropTypes from "prop-types";
+import React, { FC, useState, useCallback } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
@@ -17,7 +16,10 @@ const MainModalContent = React.lazy(() =>
   }))
 );
 
-const MainModal = ({ alertStore, settingsStore }) => {
+const MainModal: FC<{
+  alertStore: AlertStore;
+  settingsStore: Settings;
+}> = ({ alertStore, settingsStore }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
@@ -51,17 +53,12 @@ const MainModal = ({ alertStore, settingsStore }) => {
             alertStore={alertStore}
             settingsStore={settingsStore}
             onHide={() => setIsVisible(false)}
-            isVisible={isVisible}
             expandAllOptions={false}
           />
         </React.Suspense>
       </Modal>
     </React.Fragment>
   );
-};
-MainModal.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  settingsStore: PropTypes.instanceOf(Settings).isRequired,
 };
 
 export { MainModal };

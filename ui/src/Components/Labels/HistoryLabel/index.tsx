@@ -1,5 +1,4 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 
 import { useObserver } from "mobx-react-lite";
 
@@ -7,7 +6,12 @@ import { QueryOperators } from "Common/Query";
 import { AlertStore } from "Stores/AlertStore";
 import { GetClassAndStyle } from "Components/Labels/Utils";
 
-const HistoryLabel = ({ alertStore, name, matcher, value }) => {
+const HistoryLabel: FC<{
+  alertStore: AlertStore;
+  name: string;
+  matcher: string;
+  value: string;
+}> = ({ alertStore, name, matcher, value }) => {
   const cs = GetClassAndStyle(
     alertStore,
     matcher === QueryOperators.Equal ? name : "",
@@ -21,12 +25,6 @@ const HistoryLabel = ({ alertStore, name, matcher, value }) => {
       {value}
     </span>
   ));
-};
-HistoryLabel.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  matcher: PropTypes.string.isRequired,
 };
 
 export { HistoryLabel };
