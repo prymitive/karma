@@ -96,3 +96,101 @@ export interface APIAlertmanagerUpstreamT {
   version: string;
   clusterMembers: string[];
 }
+
+export interface APIFilterT {
+  text: string;
+  name: string;
+  matcher: string;
+  value: string;
+  hits: number;
+  isValid: boolean;
+}
+
+export interface APIAlertsResponseUpstreamsCountersT {
+  total: number;
+  healthy: number;
+  failed: number;
+}
+
+export type APIAlertsResponseUpstreamsClusterMapT = {
+  [clusterName: string]: string[];
+};
+
+export type APIAlertsResponseSilenceMapT = {
+  [clusterName: string]: { [silenceID: string]: APISilenceT };
+};
+
+export interface APIAlertsResponseAuthenticationT {
+  enabled: boolean;
+  username: string;
+}
+
+export interface APILabelColorT {
+  brightness: number;
+  background: string;
+}
+export type APIAlertsResponseColorsT = {
+  [labelName: string]: { [labelValue: string]: APILabelColorT };
+};
+
+export interface APIAlertsResponseUpstreamsT {
+  counters: APIAlertsResponseUpstreamsCountersT;
+  instances: APIAlertmanagerUpstreamT[];
+  clusters: APIAlertsResponseUpstreamsClusterMapT;
+}
+
+export interface APILabelCounterValueT {
+  value: string;
+  raw: string;
+  hits: number;
+  precent: number;
+  offset: number;
+}
+
+export interface APILabelCounterT {
+  name: string;
+  values: APILabelCounterValueT[];
+}
+
+export interface APISettingsT {
+  staticColorLabels: string[];
+  annotationsDefaultHidden: boolean;
+  annotationsHidden: string[];
+  annotationsVisible: string[];
+  sorting: {
+    grid: {
+      order: string;
+      reverse: boolean;
+      label: string;
+    };
+    valueMapping: { [labelName: string]: { [labelValue: string]: number } };
+  };
+  silenceForm: {
+    strip: {
+      labels: string[];
+    };
+  };
+  alertAcknowledgement: {
+    enabled: boolean;
+    durationSeconds: number;
+    author: string;
+    commentPrefix: string;
+  };
+}
+
+export interface APIAlertsResponseT {
+  status: string;
+  error: string;
+  timestamp: string;
+  version: string;
+  upstreams: APIAlertsResponseUpstreamsT;
+  silences: APIAlertsResponseSilenceMapT;
+  grids: APIGridT[];
+  totalAlerts: number;
+  colors: APIAlertsResponseColorsT;
+  filters: APIFilterT[];
+  counters: APILabelCounterT[];
+  settings: APISettingsT;
+  authentication: APIAlertsResponseAuthenticationT;
+  receivers: string[];
+}
