@@ -1,33 +1,34 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 
 import { useObserver } from "mobx-react-lite";
 
 import Select from "react-select";
 
-import { Settings } from "Stores/Settings";
+import { Settings, SortOrderT } from "Stores/Settings";
+import { OptionT } from "Common/Select";
 import { ThemeContext } from "Components/Theme";
 import { SortLabelName } from "./SortLabelName";
 
-const AlertGroupSortConfiguration = ({ settingsStore }) => {
+const AlertGroupSortConfiguration: FC<{
+  settingsStore: Settings;
+}> = ({ settingsStore }) => {
   if (
     !Object.values(settingsStore.gridConfig.options)
       .map((o) => o.value)
       .includes(settingsStore.gridConfig.config.sortOrder)
   ) {
-    settingsStore.gridConfig.config.sortOrder =
-      settingsStore.gridConfig.options.default.value;
+    settingsStore.gridConfig.config.sortOrder = "default";
   }
 
-  const onSortOrderChange = (newValue, actionMeta) => {
-    settingsStore.gridConfig.config.sortOrder = newValue.value;
+  const onSortOrderChange = (value: SortOrderT) => {
+    settingsStore.gridConfig.config.sortOrder = value;
   };
 
-  const onSortReverseChange = (event) => {
-    settingsStore.gridConfig.config.reverseSort = event.target.checked;
+  const onSortReverseChange = (value: boolean) => {
+    settingsStore.gridConfig.config.reverseSort = value;
   };
 
-  const valueToOption = (val) => {
+  const valueToOption = (val: SortOrderT) => {
     return { label: settingsStore.gridConfig.options[val].label, value: val };
   };
 
@@ -51,7 +52,9 @@ const AlertGroupSortConfiguration = ({ settingsStore }) => {
               settingsStore.gridConfig.config.sortOrder
             )}
             options={Object.values(settingsStore.gridConfig.options)}
-            onChange={onSortOrderChange}
+            onChange={(option) =>
+              onSortOrderChange((option as OptionT).value as SortOrderT)
+            }
             hideSelectedOptions
           />
         </div>
@@ -70,7 +73,7 @@ const AlertGroupSortConfiguration = ({ settingsStore }) => {
                 type="checkbox"
                 value=""
                 checked={settingsStore.gridConfig.config.reverseSort || false}
-                onChange={onSortReverseChange}
+                onChange={(event) => onSortReverseChange(event.target.checked)}
               />
               <label
                 className="custom-control-label cursor-pointer mr-3"
@@ -84,9 +87,6 @@ const AlertGroupSortConfiguration = ({ settingsStore }) => {
       </div>
     </div>
   ));
-};
-AlertGroupSortConfiguration.propTypes = {
-  settingsStore: PropTypes.instanceOf(Settings).isRequired,
 };
 
 export { AlertGroupSortConfiguration };

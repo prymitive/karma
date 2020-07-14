@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from "react";
-import PropTypes from "prop-types";
+import React, { FC, useState, useCallback } from "react";
 
 import { useObserver } from "mobx-react-lite";
 
@@ -20,7 +19,9 @@ const OverviewModalContent = React.lazy(() =>
   }))
 );
 
-const OverviewModal = ({ alertStore }) => {
+const OverviewModal: FC<{
+  alertStore: AlertStore;
+}> = ({ alertStore }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
@@ -53,15 +54,11 @@ const OverviewModal = ({ alertStore }) => {
           <OverviewModalContent
             alertStore={alertStore}
             onHide={() => setIsVisible(false)}
-            isVisible={isVisible}
           />
         </React.Suspense>
       </Modal>
     </React.Fragment>
   ));
-};
-OverviewModal.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
 };
 
 export { OverviewModal };

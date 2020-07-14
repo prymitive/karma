@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { FC, useState } from "react";
 
 import { AlertStore } from "Stores/AlertStore";
+import { APIAlertGroupT } from "Models/APITypes";
 import { IsMobile } from "Common/Device";
 import { hashObject } from "Common/Hash";
 import { StaticLabel } from "Components/Labels/StaticLabel";
@@ -9,8 +9,8 @@ import { PageSelect } from "Components/Pagination";
 
 // take a list of groups and outputs a list of label sets, this ignores
 // the receiver, so we'll end up with only unique alerts
-const GroupListToUniqueLabelsList = (groups) => {
-  const alerts = {};
+const GroupListToUniqueLabelsList = (groups: APIAlertGroupT[]) => {
+  const alerts: { [alertHash: string]: { [labelName: string]: string } } = {};
   for (const group of groups) {
     for (const alert of group.alerts) {
       const alertLabels = Object.assign(
@@ -26,7 +26,11 @@ const GroupListToUniqueLabelsList = (groups) => {
   return Object.values(alerts);
 };
 
-const LabelSetList = ({ alertStore, labelsList, title }) => {
+const LabelSetList: FC<{
+  alertStore: AlertStore;
+  labelsList: { [labelName: string]: string }[];
+  title?: string;
+}> = ({ alertStore, labelsList, title }) => {
   const [activePage, setActivePage] = useState(1);
 
   const maxPerPage = IsMobile() ? 5 : 10;
@@ -69,11 +73,6 @@ const LabelSetList = ({ alertStore, labelsList, title }) => {
       </h1>
     </div>
   );
-};
-LabelSetList.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  labelsList: PropTypes.arrayOf(PropTypes.object).isRequired,
-  title: PropTypes.string,
 };
 
 export { LabelSetList, GroupListToUniqueLabelsList };

@@ -1,11 +1,16 @@
-import React from "react";
+import React, { FC } from "react";
 
 import { useObserver } from "mobx-react-lite";
 
+import { AlertStore } from "Stores/AlertStore";
 import { GetClassAndStyle } from "Components/Labels/Utils";
 
 // Renders a static label element, no click actions, no hover
-const StaticLabel = ({ alertStore, name, value }) => {
+const StaticLabel: FC<{
+  alertStore: AlertStore;
+  name: string;
+  value: string;
+}> = ({ alertStore, name, value }) => {
   const cs = GetClassAndStyle(alertStore, name, value);
 
   return useObserver(() => (

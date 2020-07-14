@@ -1,5 +1,4 @@
-import React, { useCallback } from "react";
-import PropTypes from "prop-types";
+import React, { FC, useCallback, MouseEvent } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -10,10 +9,18 @@ import { AlertStore } from "Stores/AlertStore";
 import { QueryOperators, FormatQuery } from "Common/Query";
 import { GetClassAndStyle } from "Components/Labels/Utils";
 
-const LabelWithPercent = observer(
+const LabelWithPercent: FC<{
+  alertStore: AlertStore;
+  name: string;
+  value: string;
+  hits: number;
+  percent: number;
+  offset: number;
+  isActive: boolean;
+}> = observer(
   ({ alertStore, name, value, hits, percent, offset, isActive }) => {
     const handleClick = useCallback(
-      (event) => {
+      (event: MouseEvent) => {
         // left click       => apply foo=bar filter
         // left click + alt => apply foo!=bar filter
         const operator =
@@ -70,8 +77,8 @@ const LabelWithPercent = observer(
               role="progressbar"
               style={{ width: offset + "%" }}
               aria-valuenow={offset}
-              aria-valuemin="0"
-              aria-valuemax="100"
+              aria-valuemin={0}
+              aria-valuemax={100}
             />
           )}
           <div
@@ -79,22 +86,13 @@ const LabelWithPercent = observer(
             role="progressbar"
             style={{ width: percent + "%" }}
             aria-valuenow={percent}
-            aria-valuemin="0"
-            aria-valuemax="100"
+            aria-valuemin={0}
+            aria-valuemax={100}
           />
         </div>
       </div>
     );
   }
 );
-LabelWithPercent.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  name: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-  hits: PropTypes.number.isRequired,
-  percent: PropTypes.number.isRequired,
-  offset: PropTypes.number.isRequired,
-  isActive: PropTypes.bool.isRequired,
-};
 
 export { LabelWithPercent };

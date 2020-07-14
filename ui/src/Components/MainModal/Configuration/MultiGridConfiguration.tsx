@@ -1,14 +1,15 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 
 import { useObserver } from "mobx-react-lite";
 
 import { Settings } from "Stores/Settings";
 import { GridLabelName } from "./GridLabelName";
 
-const MultiGridConfiguration = ({ settingsStore }) => {
-  const onSortReverseChange = (event) => {
-    settingsStore.multiGridConfig.config.gridSortReverse = event.target.checked;
+const MultiGridConfiguration: FC<{
+  settingsStore: Settings;
+}> = ({ settingsStore }) => {
+  const onSortReverseChange = (value: boolean) => {
+    settingsStore.multiGridConfig.config.gridSortReverse = value;
   };
 
   return useObserver(() => (
@@ -27,7 +28,7 @@ const MultiGridConfiguration = ({ settingsStore }) => {
               checked={
                 settingsStore.multiGridConfig.config.gridSortReverse || false
               }
-              onChange={onSortReverseChange}
+              onChange={(event) => onSortReverseChange(event.target.checked)}
             />
             <label
               className="custom-control-label cursor-pointer mr-3"
@@ -40,9 +41,6 @@ const MultiGridConfiguration = ({ settingsStore }) => {
       </div>
     </div>
   ));
-};
-MultiGridConfiguration.propTypes = {
-  settingsStore: PropTypes.instanceOf(Settings).isRequired,
 };
 
 export { MultiGridConfiguration };

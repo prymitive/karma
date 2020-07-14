@@ -10,12 +10,12 @@ import {
   MockSilence,
   MockAlertmanager,
 } from "__mocks__/Alerts.js";
+import { StringToOption } from "Common/Select";
 import {
   SilenceFormStore,
   SilenceFormStage,
   NewEmptyMatcher,
   SilenceTabNames,
-  MatcherValueToObject,
   AlertmanagerClustersToOption,
 } from "./SilenceFormStore";
 
@@ -418,13 +418,10 @@ describe("SilenceFormStore.data", () => {
 
   it("dumps to base64 and back", () => {
     store.data.matchers = [
-      MockMatcher("foo", [MatcherValueToObject("bar")]),
-      MockMatcher("instance", [MatcherValueToObject("server0|server1")]),
-      MockMatcher("cluster", [
-        MatcherValueToObject("prod"),
-        MatcherValueToObject("dev"),
-      ]),
-      MockMatcher("job", [MatcherValueToObject("abc.+")]),
+      MockMatcher("foo", [StringToOption("bar")]),
+      MockMatcher("instance", [StringToOption("server0|server1")]),
+      MockMatcher("cluster", [StringToOption("prod"), StringToOption("dev")]),
+      MockMatcher("job", [StringToOption("abc.+")]),
     ];
     store.data.startsAt = new Date();
     store.data.endsAt = addMinutes(addHours(store.data.startsAt, 7), 45);
@@ -439,22 +436,22 @@ describe("SilenceFormStore.data", () => {
       {
         isRegex: false,
         name: "foo",
-        values: [MatcherValueToObject("bar")],
+        values: [StringToOption("bar")],
       },
       {
         isRegex: false,
         name: "instance",
-        values: [MatcherValueToObject("server0|server1")],
+        values: [StringToOption("server0|server1")],
       },
       {
         isRegex: false,
         name: "cluster",
-        values: [MatcherValueToObject("prod"), MatcherValueToObject("dev")],
+        values: [StringToOption("prod"), StringToOption("dev")],
       },
       {
         isRegex: false,
         name: "job",
-        values: [MatcherValueToObject("abc.+")],
+        values: [StringToOption("abc.+")],
       },
     ]);
     expect(store.data.comment).toBe("base64");

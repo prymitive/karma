@@ -4,7 +4,7 @@ import merge from "lodash.merge";
 
 import { CommonOptions } from "Common/Fetch";
 
-interface Upstream {
+export interface UpstreamT {
   uri: string;
   options: RequestInit;
 }
@@ -16,7 +16,7 @@ interface ResponseState {
   inProgress: boolean;
 }
 
-const useFetchAny = (upstreams: Upstream[], { fetcher = null } = {}) => {
+const useFetchAny = (upstreams: UpstreamT[], { fetcher = null } = {}) => {
   const [index, setIndex] = useState(0);
   const [response, setResponse] = useState({
     response: null,

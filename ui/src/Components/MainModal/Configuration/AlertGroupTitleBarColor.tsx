@@ -1,13 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 
 import { useObserver } from "mobx-react-lite";
 
 import { Settings } from "Stores/Settings";
 
-const AlertGroupTitleBarColor = ({ settingsStore }) => {
-  const onChange = (event) => {
-    settingsStore.alertGroupConfig.config.colorTitleBar = event.target.checked;
+const AlertGroupTitleBarColor: FC<{
+  settingsStore: Settings;
+}> = ({ settingsStore }) => {
+  const onChange = (value: boolean) => {
+    settingsStore.alertGroupConfig.config.colorTitleBar = value;
   };
 
   return useObserver(() => (
@@ -22,7 +23,7 @@ const AlertGroupTitleBarColor = ({ settingsStore }) => {
             checked={
               settingsStore.alertGroupConfig.config.colorTitleBar || false
             }
-            onChange={onChange}
+            onChange={(event) => onChange(event.target.checked)}
           />
           <label
             className="custom-control-label cursor-pointer mr-3"
@@ -34,9 +35,6 @@ const AlertGroupTitleBarColor = ({ settingsStore }) => {
       </div>
     </div>
   ));
-};
-AlertGroupTitleBarColor.propTypes = {
-  settingsStore: PropTypes.instanceOf(Settings).isRequired,
 };
 
 export { AlertGroupTitleBarColor };

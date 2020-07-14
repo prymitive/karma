@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from "react";
-import PropTypes from "prop-types";
+import React, { FC, useState, useCallback } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
@@ -16,7 +15,10 @@ const InhibitedByModalContent = React.lazy(() =>
   }))
 );
 
-const InhibitedByModal = ({ alertStore, fingerprints }) => {
+const InhibitedByModal: FC<{
+  alertStore: AlertStore;
+  fingerprints: string[];
+}> = ({ alertStore, fingerprints }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
@@ -42,17 +44,12 @@ const InhibitedByModal = ({ alertStore, fingerprints }) => {
           <InhibitedByModalContent
             alertStore={alertStore}
             onHide={() => setIsVisible(false)}
-            isVisible={isVisible}
             fingerprints={fingerprints}
           />
         </React.Suspense>
       </Modal>
     </React.Fragment>
   );
-};
-InhibitedByModal.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  fingerprints: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export { InhibitedByModal };

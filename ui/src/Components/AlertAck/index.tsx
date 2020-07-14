@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import React, { FC, useEffect, useState } from "react";
 
 import { toJS } from "mobx";
 import { useObserver } from "mobx-react-lite";
@@ -12,19 +11,29 @@ import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 
-import { APIGroup } from "Models/API";
+import { APIAlertGroupT, AlertmanagerSilencePayloadT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
   MatchersFromGroup,
   GenerateAlertmanagerSilenceData,
 } from "Stores/SilenceFormStore";
-import { useFetchAny } from "Hooks/useFetchAny";
+import { useFetchAny, UpstreamT } from "Hooks/useFetchAny";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 
-const AlertAck = ({ alertStore, silenceFormStore, group }) => {
-  const [clusters, setClusters] = useState([]);
-  const [upstreams, setUpstreams] = useState([]);
+interface ClusterT {
+  payload: AlertmanagerSilencePayloadT;
+  clusterName: string;
+  members: string[];
+}
+
+const AlertAck: FC<{
+  alertStore: AlertStore;
+  silenceFormStore: SilenceFormStore;
+  group: APIAlertGroupT;
+}> = ({ alertStore, silenceFormStore, group }) => {
+  const [clusters, setClusters] = useState([] as ClusterT[]);
+  const [upstreams, setUpstreams] = useState([] as UpstreamT[]);
   const [currentCluster, setCurrentCluster] = useState(0);
   const [isAcking, setIsAcking] = useState(false);
 
@@ -46,15 +55,15 @@ const AlertAck = ({ alertStore, silenceFormStore, group }) => {
     }
 
     const alertmanagers = Object.entries(group.alertmanagerCount)
-      .filter(([amName, alertCount]) => alertCount > 0)
+      .filter(([_, alertCount]) => alertCount > 0)
       .map(([amName, _]) => amName);
     const clusters = Object.entries(
       alertStore.data.clustersWithoutReadOnly
-    ).filter(([clusterName, clusterMembers]) =>
+    ).filter(([_, clusterMembers]) =>
       alertmanagers.some((m) => clusterMembers.includes(m))
     );
 
-    let c = [];
+    let c: ClusterT[] = [];
     for (const [clusterName, clusterMembers] of clusters) {
       const durationSeconds = toJS(
         alertStore.settings.values.alertAcknowledgement.durationSeconds
@@ -94,7 +103,7 @@ const AlertAck = ({ alertStore, silenceFormStore, group }) => {
     if (clusters.length) {
       reset();
       const cluster = clusters[currentCluster];
-      let u = [];
+      let u: UpstreamT[] = [];
       cluster.members.forEach((amName) => {
         const am = alertStore.data.getAlertmanagerByName(amName);
         if (am !== undefined) {
@@ -119,9 +128,9 @@ const AlertAck = ({ alertStore, silenceFormStore, group }) => {
   }, [alertStore.data, clusters, currentCluster, reset]);
 
   useEffect(() => {
-    let timer;
+    let timer: number;
     if (!isAcking && error) {
-      timer = setTimeout(() => {
+      timer = window.setTimeout(() => {
         setUpstreams([]);
         setIsAcking(false);
         reset();
@@ -167,11 +176,6 @@ const AlertAck = ({ alertStore, silenceFormStore, group }) => {
       </TooltipWrapper>
     )
   );
-};
-AlertAck.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  silenceFormStore: PropTypes.instanceOf(SilenceFormStore).isRequired,
-  group: APIGroup.isRequired,
 };
 
 export { AlertAck };

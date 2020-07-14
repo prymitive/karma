@@ -1,5 +1,4 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 
 import { useObserver } from "mobx-react-lite";
 
@@ -8,14 +7,17 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclama
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 
-import { AlertStore } from "Stores/AlertStore";
+import { AlertStore, FilterT } from "Stores/AlertStore";
 import { QueryOperators } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GetClassAndStyle } from "Components/Labels/Utils";
 import { InlineEdit } from "Components/InlineEdit";
 
-const FilterInputLabel = ({ alertStore, filter }) => {
-  const onChange = (val) => {
+const FilterInputLabel: FC<{
+  alertStore: AlertStore;
+  filter: FilterT;
+}> = ({ alertStore, filter }) => {
+  const onChange = (val: string) => {
     alertStore.status.resume();
     // if filter is empty string then remove it
     if (val === "") {
@@ -79,18 +81,6 @@ const FilterInputLabel = ({ alertStore, filter }) => {
       />
     </button>
   ));
-};
-FilterInputLabel.propTypes = {
-  alertStore: PropTypes.instanceOf(AlertStore).isRequired,
-  filter: PropTypes.shape({
-    raw: PropTypes.string,
-    applied: PropTypes.bool,
-    isValid: PropTypes.bool,
-    hits: PropTypes.number,
-    name: PropTypes.string,
-    matcher: PropTypes.string,
-    value: PropTypes.string,
-  }),
 };
 
 export { FilterInputLabel };

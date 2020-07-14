@@ -1,5 +1,4 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 
 import { Settings } from "Stores/Settings";
 import { Accordion } from "Components/Accordion";
@@ -13,7 +12,10 @@ import { AlertGroupTitleBarColor } from "./AlertGroupTitleBarColor";
 import { ThemeConfiguration } from "./ThemeConfiguration";
 import { MultiGridConfiguration } from "./MultiGridConfiguration";
 
-const Configuration = ({ settingsStore, defaultIsOpen }) => (
+const Configuration: FC<{
+  settingsStore: Settings;
+  defaultIsOpen: boolean;
+}> = ({ settingsStore, defaultIsOpen }) => (
   <form className="px-3 accordion">
     <Accordion
       text="Refresh interval"
@@ -64,9 +66,5 @@ const Configuration = ({ settingsStore, defaultIsOpen }) => (
     />
   </form>
 );
-Configuration.propTypes = {
-  settingsStore: PropTypes.instanceOf(Settings).isRequired,
-  defaultIsOpen: PropTypes.bool.isRequired,
-};
 
 export { Configuration };

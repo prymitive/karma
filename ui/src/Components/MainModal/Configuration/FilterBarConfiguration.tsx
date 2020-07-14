@@ -1,13 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 
 import { useObserver } from "mobx-react-lite";
 
 import { Settings } from "Stores/Settings";
 
-const FilterBarConfiguration = ({ settingsStore }) => {
-  const onAutohideChange = (event) => {
-    settingsStore.filterBarConfig.config.autohide = event.target.checked;
+const FilterBarConfiguration: FC<{
+  settingsStore: Settings;
+}> = ({ settingsStore }) => {
+  const onAutohideChange = (value: boolean) => {
+    settingsStore.filterBarConfig.config.autohide = value;
   };
   return useObserver(() => (
     <div className="form-group mb-0">
@@ -19,7 +20,7 @@ const FilterBarConfiguration = ({ settingsStore }) => {
             type="checkbox"
             value=""
             checked={settingsStore.filterBarConfig.config.autohide || false}
-            onChange={onAutohideChange}
+            onChange={(event) => onAutohideChange(event.target.checked)}
           />
           <label
             className="custom-control-label cursor-pointer mr-3"
@@ -31,9 +32,6 @@ const FilterBarConfiguration = ({ settingsStore }) => {
       </div>
     </div>
   ));
-};
-FilterBarConfiguration.propTypes = {
-  settingsStore: PropTypes.instanceOf(Settings).isRequired,
 };
 
 export { FilterBarConfiguration };

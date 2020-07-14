@@ -143,13 +143,14 @@ export interface APILabelCounterValueT {
   value: string;
   raw: string;
   hits: number;
-  precent: number;
+  percent: number;
   offset: number;
 }
 
 export interface APILabelCounterT {
   name: string;
   values: APILabelCounterValueT[];
+  hits: number;
 }
 
 export interface APISettingsT {

@@ -50,10 +50,10 @@ class FetchConfig {
   }
 }
 
-type collapseStateT = "expanded" | "collapsedOnMobile" | "collapsed";
+export type CollapseStateT = "expanded" | "collapsedOnMobile" | "collapsed";
 interface AlertGroupConfigStorage {
   defaultRenderCount: number;
-  collapseState: collapseStateT;
+  defaultCollapseState: CollapseStateT;
   colorTitleBar: boolean;
 }
 class AlertGroupConfig {
@@ -71,7 +71,7 @@ class AlertGroupConfig {
 
   constructor(
     renderCount: number,
-    collapseState: collapseStateT,
+    collapseState: CollapseStateT,
     colorTitleBar: boolean
   ) {
     this.config = localStored(
@@ -105,9 +105,9 @@ class SilenceFormConfig {
   });
 }
 
-type sortOrderT = "default" | "disabled" | "startsAt" | "label";
+export type SortOrderT = "default" | "disabled" | "startsAt" | "label";
 interface GridConfigStorage {
-  sortOrder: sortOrderT;
+  sortOrder: SortOrderT;
   sortLabel: string | null;
   reverseSort: boolean | null;
   groupWidth: number;
@@ -153,9 +153,9 @@ class FilterBarConfig {
   }
 }
 
-type themeT = "auto" | "light" | "dark";
+export type ThemeT = "auto" | "light" | "dark";
 interface ThemeConfigStorage {
-  theme: themeT;
+  theme: ThemeT;
 }
 class ThemeConfig {
   options = Object.freeze({
@@ -167,7 +167,7 @@ class ThemeConfig {
     dark: { label: "Dark theme", value: "dark" },
   });
   config: ThemeConfigStorage;
-  constructor(defaultTheme: themeT) {
+  constructor(defaultTheme: ThemeT) {
     this.config = localStored(
       "themeConfig",
       {

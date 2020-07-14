@@ -1,18 +1,18 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React, { FC } from "react";
 
 import Creatable from "react-select/creatable";
 
 import { StaticLabels } from "Common/Query";
+import { OptionT } from "Common/Select";
 import { FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { ThemeContext } from "Components/Theme";
-import { NewLabelName } from "Common/Select";
+import { NewLabelName, StringToOption } from "Common/Select";
 
-const valueToOption = (v) => ({ label: v, value: v });
-
-const SortLabelName = ({ settingsStore }) => {
+const SortLabelName: FC<{
+  settingsStore: Settings;
+}> = ({ settingsStore }) => {
   const { response } = useFetchGet(FormatBackendURI(`labelNames.json`));
 
   if (!settingsStore.gridConfig.config.sortLabel) {
@@ -27,23 +27,16 @@ const SortLabelName = ({ settingsStore }) => {
       classNamePrefix="react-select"
       instanceId="configuration-sort-label"
       formatCreateLabel={NewLabelName}
-      defaultValue={valueToOption(settingsStore.gridConfig.config.sortLabel)}
+      defaultValue={StringToOption(settingsStore.gridConfig.config.sortLabel)}
       options={
-        response
-          ? response.map((value) => ({
-              label: value,
-              value: value,
-            }))
-          : []
+        response ? response.map((value: string) => StringToOption(value)) : []
       }
-      onChange={({ value }) => {
-        settingsStore.gridConfig.config.sortLabel = value;
+      onChange={(option) => {
+        settingsStore.gridConfig.config.sortLabel = (option as OptionT)
+          .value as string;
       }}
     />
   );
-};
-SortLabelName.propTypes = {
-  settingsStore: PropTypes.instanceOf(Settings).isRequired,
 };
 
 export { SortLabelName };

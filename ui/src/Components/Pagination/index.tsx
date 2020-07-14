@@ -18,7 +18,7 @@ const PageSelect: FC<{
   totalItemsCount: number;
   totalPages: number;
   maxPerPage: number;
-  initialPage: number;
+  initialPage?: number;
   setPageCallback: PageCallback;
 }> = ({
   totalItemsCount,

@@ -31,7 +31,7 @@ const Placeholder = () => (
 const PaginatedAlertList: FC<{
   alertStore: AlertStore;
   filters: string[];
-  title: string;
+  title?: string;
 }> = ({ alertStore, filters, title }) => {
   const { response, error, isLoading } = useFetchGet(
     FormatBackendURI("alerts.json?") + FormatAlertsQ(filters)

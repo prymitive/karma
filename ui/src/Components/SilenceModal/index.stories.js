@@ -13,9 +13,9 @@ import { Settings } from "Stores/Settings";
 import {
   SilenceFormStore,
   NewEmptyMatcher,
-  MatcherValueToObject,
   SilenceTabNames,
 } from "Stores/SilenceFormStore";
+import { StringToOption } from "Common/Select";
 import { DateTimeSelect, TabNames } from "./DateTimeSelect";
 import { SilenceModalContent } from "./SilenceModalContent";
 
@@ -24,7 +24,7 @@ import "Styles/Percy.scss";
 const MockMatcher = (name, values, isRegex) => {
   const matcher = NewEmptyMatcher();
   matcher.name = name;
-  matcher.values = values.map((v) => MatcherValueToObject(v));
+  matcher.values = values.map((v) => StringToOption(v));
   matcher.isRegex = isRegex;
   return matcher;
 };

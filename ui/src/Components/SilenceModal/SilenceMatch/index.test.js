@@ -2,11 +2,8 @@ import React from "react";
 
 import { shallow } from "enzyme";
 
-import {
-  SilenceFormStore,
-  NewEmptyMatcher,
-  MatcherValueToObject,
-} from "Stores/SilenceFormStore";
+import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
+import { StringToOption } from "Common/Select";
 import { SilenceMatch } from ".";
 
 let silenceFormStore;
@@ -33,7 +30,7 @@ const ShallowLabelValueInput = () => {
 
 describe("<SilenceMatch />", () => {
   it("allows changing matcher.isRegex value when matcher.values contains 1 element", () => {
-    matcher.values = [MatcherValueToObject("foo")];
+    matcher.values = [StringToOption("foo")];
     const tree = ShallowLabelValueInput();
     expect(matcher.isRegex).toBe(false);
     const regex = tree.find("input[type='checkbox']");
@@ -43,7 +40,7 @@ describe("<SilenceMatch />", () => {
 
   it("disallows changing matcher.isRegex value when matcher.values contains 2 elements", () => {
     matcher.isRegex = true;
-    matcher.values = [MatcherValueToObject("foo"), MatcherValueToObject("bar")];
+    matcher.values = [StringToOption("foo"), StringToOption("bar")];
     const tree = ShallowLabelValueInput();
     expect(matcher.isRegex).toBe(true);
     const regex = tree.find("input[type='checkbox']");
