@@ -6,7 +6,7 @@ import { ThemeContext } from "Components/Theme";
 
 const CenteredMessage: FC<{
   children: ReactNode;
-  className: string;
+  className?: string;
 }> = ({ children, className }) => {
   const context = React.useContext(ThemeContext);
   return (

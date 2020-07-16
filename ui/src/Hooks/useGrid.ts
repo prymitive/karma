@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import Bricks, { SizeDetail, Instance } from "bricks.js";
 
 const useGrid = (sizes: SizeDetail[]) => {
-  const ref = useRef(null as Node | null);
+  const ref = useRef(null as HTMLElement | null);
   const grid = useRef(null as Instance | null);
   const [repack, setRepack] = useState(() => () => {});
 

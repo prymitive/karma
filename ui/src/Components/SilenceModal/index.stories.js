@@ -176,7 +176,6 @@ storiesOf("SilenceModal", module)
             settingsStore={settingsStore}
             onHide={() => {}}
             previewOpen={true}
-            onDeleteModalClose={() => {}}
           />
         </Modal>
         <Modal>
@@ -186,7 +185,6 @@ storiesOf("SilenceModal", module)
             settingsStore={settingsStore}
             onHide={() => {}}
             previewOpen={true}
-            onDeleteModalClose={() => {}}
           />
         </Modal>
         <Modal>
@@ -267,7 +265,6 @@ storiesOf("SilenceModal", module)
           silenceFormStore={silenceFormStore}
           settingsStore={settingsStore}
           onHide={() => {}}
-          onDeleteModalClose={() => {}}
         />
       </Modal>
     );
@@ -316,7 +313,6 @@ storiesOf("SilenceModal", module)
           silenceFormStore={silenceFormStore}
           settingsStore={settingsStore}
           onHide={() => {}}
-          onDeleteModalClose={() => {}}
         />
       </Modal>
     );

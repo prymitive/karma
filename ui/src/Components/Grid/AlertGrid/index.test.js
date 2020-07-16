@@ -97,7 +97,7 @@ const ShallowGrid = () => {
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
       settingsStore={settingsStore}
-      gridSizesConfig={GridSizesConfig(1024, 420)}
+      gridSizesConfig={GridSizesConfig(420)}
       groupWidth={420}
       grid={MockGrid()}
       outerPadding={0}
@@ -111,7 +111,7 @@ const MountedGrid = () => {
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
       settingsStore={settingsStore}
-      gridSizesConfig={GridSizesConfig(1024, 420)}
+      gridSizesConfig={GridSizesConfig(420)}
       groupWidth={420}
       grid={MockGrid()}
       outerPadding={0}

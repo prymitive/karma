@@ -1,5 +1,4 @@
 import React, { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
 
 import { CSSTransition } from "react-transition-group";
 
@@ -19,9 +18,6 @@ const MountModal: FC<{
     {children}
   </CSSTransition>
 );
-MountModal.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 const MountModalBackdrop: FC<{
   children: ReactNode;
@@ -39,8 +35,5 @@ const MountModalBackdrop: FC<{
     {children}
   </CSSTransition>
 );
-MountModalBackdrop.propTypes = {
-  children: PropTypes.node.isRequired,
-};
 
 export { MountModal, MountModalBackdrop };
