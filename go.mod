@@ -7,7 +7,7 @@ require (
 	github.com/Masterminds/semver/v3 v3.1.0
 	github.com/certifi/gocertifi v0.0.0-20190905060710-a5e0173ced67 // indirect
 	github.com/cnf/structhash v0.0.0-20180104161610-62a607eb0224
-	github.com/elazarl/go-bindata-assetfs v1.0.1-0.20180223160309-38087fe4dafb
+	github.com/elazarl/go-bindata-assetfs v1.0.1
 	github.com/getsentry/raven-go v0.2.0
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/gzip v0.0.2
