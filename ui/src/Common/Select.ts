@@ -7,6 +7,11 @@ export interface OptionT {
   value: string;
 }
 
+export interface MultiValueOptionT {
+  label: string;
+  value: string[];
+}
+
 export const StringToOption = (value: string): OptionT => ({
   label: value,
   value: value,

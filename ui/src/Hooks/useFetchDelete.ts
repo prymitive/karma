@@ -4,7 +4,11 @@ import merge from "lodash.merge";
 
 import { CommonOptions } from "Common/Fetch";
 
-const useFetchDelete = (uri: string, options: RequestInit, deps = []) => {
+const useFetchDelete = (
+  uri: string,
+  options: RequestInit,
+  deps: any[] = []
+) => {
   const [response, setResponse] = useState(null as string | null);
   const [error, setError] = useState(null as string | null);
   const [isDeleting, setIsDeleting] = useState(true);

@@ -77,6 +77,13 @@ export interface APISilenceT {
   ticketURL: string;
 }
 
+export interface APIManagedSilenceT {
+  alertCount: number;
+  cluster: string;
+  isExpired: boolean;
+  silence: APISilenceT;
+}
+
 export interface APIGridT {
   labelName: string;
   labelValue: string;

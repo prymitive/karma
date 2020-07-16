@@ -10,7 +10,7 @@ export interface UpstreamT {
 }
 
 interface ResponseState {
-  response: string | null;
+  response: string | { [key: string]: any } | null;
   error: string | null;
   responseURI: string | null;
   inProgress: boolean;

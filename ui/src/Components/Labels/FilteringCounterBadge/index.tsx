@@ -19,9 +19,9 @@ const FilteringCounterBadge: FC<{
   value: string;
   counter: number;
   themed: boolean;
-  alwaysVisible: boolean;
-  defaultColor: "light" | "primary";
-  isAppend: boolean;
+  alwaysVisible?: boolean;
+  defaultColor?: "light" | "primary";
+  isAppend?: boolean;
 }> = observer(
   ({
     alertStore,
@@ -29,7 +29,7 @@ const FilteringCounterBadge: FC<{
     value,
     counter,
     themed,
-    alwaysVisible,
+    alwaysVisible = false,
     defaultColor = "light",
     isAppend = true,
   }) => {

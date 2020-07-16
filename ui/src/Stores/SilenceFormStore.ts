@@ -16,12 +16,7 @@ import {
   APIAlertmanagerUpstreamT,
   AlertmanagerSilencePayloadT,
 } from "Models/APITypes";
-import { StringToOption, OptionT } from "Common/Select";
-
-export interface MultiValueOptionT {
-  label: string;
-  value: string[];
-}
+import { StringToOption, OptionT, MultiValueOptionT } from "Common/Select";
 
 export interface MatcherT {
   name: string;
@@ -80,7 +75,7 @@ const SilenceTabNames = Object.freeze({
 const MatchersFromGroup = (
   group: APIAlertGroupT,
   stripLabels: string[],
-  alerts: APIAlertT[],
+  alerts?: APIAlertT[],
   onlyActive?: boolean
 ): MatcherWithIDT[] => {
   let matchers: MatcherWithIDT[] = [];
@@ -149,12 +144,24 @@ const MatchersFromGroup = (
   return matchers;
 };
 
-const NewClusterRequest = (cluster: string, members: string[]) => ({
+export interface ClusterRequestT {
+  cluster: string;
+  members: string[];
+  isDone: boolean;
+  silenceID: undefined | string;
+  silenceLink: undefined | string;
+  error: null | string;
+}
+
+const NewClusterRequest = (
+  cluster: string,
+  members: string[]
+): ClusterRequestT => ({
   cluster: cluster,
   members: members,
   isDone: false,
-  silenceID: null,
-  silenceLink: null,
+  silenceID: undefined,
+  silenceLink: undefined,
   error: null,
 });
 
@@ -201,10 +208,6 @@ const UnpackRegexMatcherValues = (isRegex: boolean, value: string) => {
   }
 };
 
-interface ClusterRequestT {
-  foo: boolean;
-  // FIXME
-}
 class SilenceFormStore {
   toggle = observable(
     {
@@ -367,7 +370,7 @@ class SilenceFormStore {
         group: APIAlertGroupT,
         stripLabels: string[],
         alertmanagers: MultiValueOptionT[],
-        alerts: APIAlertT[]
+        alerts?: APIAlertT[]
       ) {
         this.alertmanagers = alertmanagers;
 

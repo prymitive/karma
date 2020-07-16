@@ -54,6 +54,7 @@ const Modal: FC<{
   isOpen: boolean;
   isUpper?: boolean;
   toggleOpen: () => void;
+  onExited?: () => void;
 }> = ({
   size = "lg",
   isOpen,

@@ -175,21 +175,4 @@ describe("<SilenceModal />", () => {
     tree.unmount();
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
-
-  it("'modal-open' class is preserved on body node after remountModal is called", () => {
-    let callbacks = [];
-    jest.spyOn(React, "useCallback").mockImplementation((fn) => {
-      callbacks.push(fn);
-      return fn;
-    });
-
-    silenceFormStore.toggle.visible = true;
-    MountedSilenceModal();
-
-    expect(callbacks.length).toBeGreaterThan(0);
-    act(() => {
-      callbacks.forEach((f) => f());
-    });
-    expect(document.body.className.split(" ")).toContain("modal-open");
-  });
 });

@@ -6,9 +6,17 @@ import promiseRetry from "promise-retry";
 
 import { CommonOptions, FetchRetryConfig } from "Common/Fetch";
 
+type FetchFunctionT = (request: RequestInfo) => Promise<Response>;
+
+export interface FetchGetOptionsT {
+  autorun?: boolean;
+  deps?: any[];
+  fetcher?: null | FetchFunctionT;
+}
+
 const useFetchGet = (
   uri: string,
-  { autorun = true, deps = [], fetcher = null } = {}
+  { autorun = true, deps = [], fetcher = null }: FetchGetOptionsT = {}
 ) => {
   const [response, setResponse] = useState(null as any);
   const [error, setError] = useState(null as string | null);
@@ -28,7 +36,7 @@ const useFetchGet = (
       setIsLoading(true);
       setRetryCount(0);
       setError(null);
-      const res = await promiseRetry(
+      const res: Response = await promiseRetry(
         (retry: Function, number: number) =>
           (fetcher || fetch)(
             uri,
@@ -42,7 +50,7 @@ const useFetchGet = (
                 mode: number <= FetchRetryConfig.retries ? "cors" : "no-cors",
               }
             ) as RequestInit
-          ).catch((err) => {
+          ).catch((err: Error) => {
             if (!isCanceled.current) {
               setIsRetrying(true);
               setRetryCount(number);
