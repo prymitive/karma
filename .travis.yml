@@ -87,6 +87,11 @@ jobs:
         - travis_retry curl -s --connect-timeout 30 --fail https://codecov.io/bash | bash -s -- -F ui
 
     - stage: Lint
+      name: Check for non-typescript UI components
+      if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
+      script: make -C ui lint-typescript
+
+    - stage: Lint
       name: Lint git commit
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS

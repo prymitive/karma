@@ -41,6 +41,11 @@ lint-docs: node_modules/markdownlint-cli/markdownlint.js
 lint-deps: node_modules/depcheck/bin/depcheck.js
 	node_modules/depcheck/bin/depcheck.js $(CURDIR)
 
+.PHONY: lint-typescript
+lint-typescript:
+	@$(eval JSFILES := $(shell find $(CURDIR)/src/Components -name \*.js -not -name \*.test.js  -not -name \*.stories.js))
+	@if [ "$(JSFILES)" != "" ]; then echo "$(JSFILES)" | tr " " "\n"; exit 1 ; fi
+
 .PHONY: format
 format: node_modules/prettier/bin-prettier.js
 	node_modules/prettier/bin-prettier.js --write 'src/**/*.js' 'src/**/*.ts' 'src/**/*.tsx'
