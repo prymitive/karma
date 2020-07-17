@@ -17,7 +17,7 @@ const SilenceComment: FC<{
   collapsed: boolean;
   collapseToggle: () => void;
   alertStore: AlertStore;
-  alertCountAlwaysVisible: boolean;
+  alertCountAlwaysVisible?: boolean;
 }> = ({
   cluster,
   silence,

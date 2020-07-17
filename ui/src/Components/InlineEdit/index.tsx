@@ -10,12 +10,12 @@ import React, {
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
 
 const InlineEdit: FC<{
-  className: string;
-  classNameEditing: string;
+  className?: string;
+  classNameEditing?: string;
   value: string;
   onChange: (value: string) => void;
-  onEnterEditing: () => void;
-  onExitEditing: () => void;
+  onEnterEditing?: () => void;
+  onExitEditing?: () => void;
 }> = ({
   className,
   classNameEditing,
