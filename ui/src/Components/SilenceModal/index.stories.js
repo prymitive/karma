@@ -12,7 +12,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { StringToOption } from "Common/Select";
-import { DateTimeSelect, TabNames } from "./DateTimeSelect";
+import { DateTimeSelect } from "./DateTimeSelect";
 import { SilenceModalContent } from "./SilenceModalContent";
 
 import "Styles/Percy.scss";
@@ -187,7 +187,7 @@ storiesOf("SilenceModal", module)
           <div className="pt-2">
             <DateTimeSelect
               silenceFormStore={silenceFormStore}
-              openTab={TabNames.Start}
+              openTab={"start"}
             />
           </div>
         </Modal>
@@ -195,7 +195,7 @@ storiesOf("SilenceModal", module)
           <div className="pt-2">
             <DateTimeSelect
               silenceFormStore={silenceFormStore}
-              openTab={TabNames.End}
+              openTab={"end"}
             />
           </div>
         </Modal>
