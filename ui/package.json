@@ -25,7 +25,7 @@
     "@types/react-dom": "16.9.8",
     "@types/react-highlighter": "0.3.4",
     "@types/react-js-pagination": "3.0.3",
-    "@types/react-select": "3.0.13",
+    "@types/react-select": "3.0.14",
     "body-scroll-lock": "3.0.3",
     "bootstrap": "4.5.0",
     "bootswatch": "4.5.0",
