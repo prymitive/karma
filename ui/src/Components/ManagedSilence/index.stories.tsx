@@ -23,6 +23,7 @@ storiesOf("ManagedSilence", module)
     const cluster = "am";
 
     alertStore.data.upstreams = {
+      counters: { healthy: 1, failed: 0, total: 1 },
       instances: [
         {
           name: "am1",
@@ -42,6 +43,7 @@ storiesOf("ManagedSilence", module)
 
     const alertStoreReadOnly = new AlertStore([]);
     alertStoreReadOnly.data.upstreams = {
+      counters: { healthy: 1, failed: 0, total: 1 },
       clusters: { ro: ["readonly"] },
       instances: [
         {

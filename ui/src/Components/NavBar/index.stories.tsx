@@ -2,7 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 
-import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
+import { AlertStore, NewUnappliedFilter, FilterT } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { HistoryMenu } from "./FilterInput/History";
@@ -10,7 +10,15 @@ import { NavBar } from ".";
 
 import "Styles/Percy.scss";
 
-const NewFilter = (raw, name, matcher, value, applied, isValid, hits) => {
+const NewFilter = (
+  raw: string,
+  name: string,
+  matcher: string,
+  value: string,
+  applied: boolean,
+  isValid: boolean,
+  hits: number
+): FilterT => {
   const filter = NewUnappliedFilter(raw);
   filter.name = name;
   filter.matcher = matcher;
@@ -23,7 +31,7 @@ const NewFilter = (raw, name, matcher, value, applied, isValid, hits) => {
 
 storiesOf("NavBar", module).add("NavBar", () => {
   const alertStore = new AlertStore([]);
-  const settingsStore = new Settings();
+  const settingsStore = new Settings(null);
   const silenceFormStore = new SilenceFormStore();
 
   alertStore.info.totalAlerts = 197;
@@ -113,8 +121,6 @@ storiesOf("NavBar", module).add("NavBar", () => {
         alertStore={alertStore}
         settingsStore={settingsStore}
         afterClick={() => {}}
-        handleClickOutside={() => {}}
-        outsideClickIgnoreClass="components-navbar-history"
       />
     </React.Fragment>
   );

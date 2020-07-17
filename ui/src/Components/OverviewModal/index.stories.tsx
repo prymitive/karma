@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 
 import { storiesOf } from "@storybook/react";
 
@@ -9,7 +9,7 @@ import { OverviewModalContent } from "./OverviewModalContent";
 import "Styles/Percy.scss";
 
 storiesOf("OverviewModal", module).add("OverviewModal", () => {
-  const Modal = ({ children }) => (
+  const Modal: FC = ({ children }) => (
     <div>
       <div className="modal-dialog modal-lg" role="document">
         <div className="modal-content">{children}</div>

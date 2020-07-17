@@ -45,7 +45,7 @@ storiesOf("Grid", module)
   })
   .add("AlertGrid", () => {
     const alertStore = new AlertStore([]);
-    const settingsStore = new Settings();
+    const settingsStore = new Settings(null);
     const silenceFormStore = new SilenceFormStore();
 
     MockGrid(alertStore);
