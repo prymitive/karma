@@ -9,6 +9,12 @@ export interface UpstreamT {
   options: RequestInit;
 }
 
+type FetchFunctionT = (request: RequestInfo) => any;
+
+export interface FetchAnyOptionsT {
+  fetcher?: null | FetchFunctionT;
+}
+
 interface ResponseState {
   response: string | { [key: string]: any } | null;
   error: string | null;
@@ -16,7 +22,10 @@ interface ResponseState {
   inProgress: boolean;
 }
 
-const useFetchAny = (upstreams: UpstreamT[], { fetcher = null } = {}) => {
+const useFetchAny = (
+  upstreams: UpstreamT[],
+  { fetcher = null }: FetchAnyOptionsT = {}
+) => {
   const [index, setIndex] = useState(0);
   const [response, setResponse] = useState({
     response: null,
