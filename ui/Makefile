@@ -43,7 +43,7 @@ lint-deps: node_modules/depcheck/bin/depcheck.js
 
 .PHONY: lint-typescript
 lint-typescript:
-	@$(eval JSFILES := $(shell find $(CURDIR)/src/Components -name \*.js -not -name \*.test.js  -not -name \*.stories.js))
+	@$(eval JSFILES := $(shell find $(CURDIR)/src/Components -name \*.js -not -name \*.test.js))
 	@if [ "$(JSFILES)" != "" ]; then echo "$(JSFILES)" | tr " " "\n"; exit 1 ; fi
 
 .PHONY: format

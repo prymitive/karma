@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 
 import fetchMock from "fetch-mock";
 
@@ -10,14 +10,22 @@ import addDays from "date-fns/addDays";
 import { MockSilence } from "__mocks__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
+import {
+  SilenceFormStore,
+  NewEmptyMatcher,
+  MatcherWithIDT,
+} from "Stores/SilenceFormStore";
 import { StringToOption } from "Common/Select";
 import { DateTimeSelect } from "./DateTimeSelect";
 import { SilenceModalContent } from "./SilenceModalContent";
 
 import "Styles/Percy.scss";
 
-const MockMatcher = (name, values, isRegex) => {
+const MockMatcher = (
+  name: string,
+  values: string[],
+  isRegex: boolean
+): MatcherWithIDT => {
   const matcher = NewEmptyMatcher();
   matcher.name = name;
   matcher.values = values.map((v) => StringToOption(v));
@@ -25,7 +33,7 @@ const MockMatcher = (name, values, isRegex) => {
   return matcher;
 };
 
-const Modal = ({ children }) => (
+const Modal: FC = ({ children }) => (
   <div>
     <div className="modal-dialog modal-lg" role="document">
       <div className="modal-content">{children}</div>
@@ -36,13 +44,14 @@ const Modal = ({ children }) => (
 storiesOf("SilenceModal", module)
   .add("Editor", () => {
     const alertStore = new AlertStore([]);
-    const settingsStore = new Settings();
+    const settingsStore = new Settings(null);
     const silenceFormStore = new SilenceFormStore();
 
     alertStore.info.authentication.enabled = true;
     alertStore.info.authentication.username = "me@example.com";
 
     alertStore.data.upstreams = {
+      counters: { healthy: 3, failed: 0, total: 3 },
       clusters: { default: ["default"], HA: ["ha1", "ha2"] },
       instances: [
         {
@@ -146,6 +155,7 @@ storiesOf("SilenceModal", module)
 
     const alertStoreReadOnly = new AlertStore([]);
     alertStoreReadOnly.data.upstreams = {
+      counters: { healthy: 1, failed: 0, total: 1 },
       clusters: { default: ["readonly"] },
       instances: [
         {
@@ -204,12 +214,13 @@ storiesOf("SilenceModal", module)
   })
   .add("Browser", () => {
     const alertStore = new AlertStore([]);
-    const settingsStore = new Settings();
+    const settingsStore = new Settings(null);
     const silenceFormStore = new SilenceFormStore();
 
     silenceFormStore.tab.current = "browser";
 
     alertStore.data.upstreams = {
+      counters: { healthy: 1, failed: 0, total: 1 },
       instances: [
         {
           name: "am1",
@@ -267,12 +278,13 @@ storiesOf("SilenceModal", module)
   })
   .add("Empty Browser", () => {
     const alertStore = new AlertStore([]);
-    const settingsStore = new Settings();
+    const settingsStore = new Settings(null);
     const silenceFormStore = new SilenceFormStore();
 
     silenceFormStore.tab.current = "browser";
 
     alertStore.data.upstreams = {
+      counters: { healthy: 1, failed: 0, total: 1 },
       instances: [
         {
           name: "am1",

@@ -20,7 +20,7 @@ storiesOf("MainModal", module)
   ))
   .add("Configuration", () => {
     const alertStore = new AlertStore([]);
-    const settingsStore = new Settings();
+    const settingsStore = new Settings(null);
 
     fetchMock.mock(
       "begin:/label",
@@ -41,20 +41,18 @@ storiesOf("MainModal", module)
         alertStore={alertStore}
         settingsStore={settingsStore}
         onHide={() => {}}
-        isVisible={true}
         expandAllOptions={true}
       />
     );
   })
   .add("Help", () => {
     const alertStore = new AlertStore([]);
-    const settingsStore = new Settings();
+    const settingsStore = new Settings(null);
     return (
       <MainModalContent
         alertStore={alertStore}
         settingsStore={settingsStore}
         onHide={() => {}}
-        isVisible={true}
         openTab={"help"}
         expandAllOptions={true}
       />
