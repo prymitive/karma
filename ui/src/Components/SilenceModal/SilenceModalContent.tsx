@@ -7,11 +7,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
 
 import { AlertStore } from "Stores/AlertStore";
-import {
-  SilenceFormStore,
-  SilenceFormStage,
-  SilenceTabNames,
-} from "Stores/SilenceFormStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
 import { Tab } from "Components/Modal/Tab";
 import { SilenceForm } from "./SilenceForm";
@@ -47,21 +43,20 @@ const SilenceModalContent: FC<{
         <nav className="nav nav-pills nav-justified w-100">
           <Tab
             title={
-              silenceFormStore.data.currentStage === SilenceFormStage.UserInput
+              silenceFormStore.data.currentStage === "form"
                 ? silenceFormStore.data.silenceID === null
                   ? "New silence"
                   : "Editing silence"
-                : silenceFormStore.data.currentStage ===
-                  SilenceFormStage.Preview
+                : silenceFormStore.data.currentStage === "preview"
                 ? "Preview silenced alerts"
                 : "Silence submitted"
             }
-            active={silenceFormStore.tab.current === SilenceTabNames.Editor}
+            active={silenceFormStore.tab.current === "editor"}
             onClick={() => silenceFormStore.tab.setTab("editor")}
           />
           <Tab
             title="Browse"
-            active={silenceFormStore.tab.current === SilenceTabNames.Browser}
+            active={silenceFormStore.tab.current === "browser"}
             onClick={() => silenceFormStore.tab.setTab("browser")}
           />
           <button type="button" className="close" onClick={onHide}>
@@ -74,8 +69,8 @@ const SilenceModalContent: FC<{
           silenceFormStore.toggle.blurred ? "modal-content-blur" : ""
         }`}
       >
-        {silenceFormStore.tab.current === SilenceTabNames.Editor ? (
-          silenceFormStore.data.currentStage === SilenceFormStage.UserInput ? (
+        {silenceFormStore.tab.current === "editor" ? (
+          silenceFormStore.data.currentStage === "form" ? (
             alertStore.data.upstreams.instances.length > 0 ? (
               Object.keys(alertStore.data.clustersWithoutReadOnly).length >
               0 ? (
@@ -93,8 +88,7 @@ const SilenceModalContent: FC<{
                 <FontAwesomeIcon icon={faSpinner} size="lg" spin />
               </h1>
             )
-          ) : silenceFormStore.data.currentStage ===
-            SilenceFormStage.Preview ? (
+          ) : silenceFormStore.data.currentStage === "preview" ? (
             <SilencePreview
               alertStore={alertStore}
               silenceFormStore={silenceFormStore}
@@ -106,7 +100,7 @@ const SilenceModalContent: FC<{
             />
           )
         ) : null}
-        {silenceFormStore.tab.current === SilenceTabNames.Browser ? (
+        {silenceFormStore.tab.current === "browser" ? (
           <Browser
             alertStore={alertStore}
             silenceFormStore={silenceFormStore}

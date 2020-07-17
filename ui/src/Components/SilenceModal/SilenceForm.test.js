@@ -7,11 +7,7 @@ import copy from "copy-to-clipboard";
 import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import {
-  SilenceFormStore,
-  SilenceFormStage,
-  NewEmptyMatcher,
-} from "Stores/SilenceFormStore";
+import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { QueryOperators, StaticLabels } from "Common/Query";
 import { SilenceForm } from "./SilenceForm";
 
@@ -343,7 +339,7 @@ describe("<SilenceForm />", () => {
   it("calling submit doesn't move the form to Preview stage when form is invalid", () => {
     const tree = MountedSilenceForm();
     tree.simulate("submit", { preventDefault: jest.fn() });
-    expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.UserInput);
+    expect(silenceFormStore.data.currentStage).toBe("form");
   });
 
   it("calling submit move form to the 'Preview' stage when form is valid", () => {
@@ -357,7 +353,7 @@ describe("<SilenceForm />", () => {
     silenceFormStore.data.autofillMatchers = false;
     const tree = MountedSilenceForm();
     tree.simulate("submit", { preventDefault: jest.fn() });
-    expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.Preview);
+    expect(silenceFormStore.data.currentStage).toBe("preview");
   });
 
   it("calling submit saves author value to the Settings store", () => {

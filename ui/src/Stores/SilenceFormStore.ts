@@ -59,19 +59,6 @@ const AlertmanagerClustersToOption = (clusterDict: {
     value: clusterMembers,
   }));
 
-// FIXME delete
-const SilenceFormStage = Object.freeze({
-  UserInput: "form",
-  Preview: "preview",
-  Submit: "submit",
-});
-
-// FIXME delete
-const SilenceTabNames = Object.freeze({
-  Editor: "editor",
-  Browser: "browser",
-});
-
 const MatchersFromGroup = (
   group: APIAlertGroupT,
   stripLabels: string[],
@@ -208,6 +195,9 @@ const UnpackRegexMatcherValues = (isRegex: boolean, value: string) => {
   }
 };
 
+export type SilenceFormTabT = "editor" | "browser";
+export type SilenceFormStageT = "form" | "preview" | "submit";
+
 class SilenceFormStore {
   toggle = observable(
     {
@@ -236,8 +226,8 @@ class SilenceFormStore {
 
   tab = observable(
     {
-      current: SilenceTabNames.Editor,
-      setTab(value: "editor" | "browser") {
+      current: "editor" as SilenceFormTabT,
+      setTab(value: SilenceFormTabT) {
         this.current = value;
       },
     },
@@ -252,7 +242,7 @@ class SilenceFormStore {
   // this form from that alert so user can easily silence that alert
   data = observable(
     {
-      currentStage: SilenceFormStage.UserInput,
+      currentStage: "form" as SilenceFormStageT,
       wasValidated: false as boolean,
       silenceID: null as null | undefined | string,
       alertmanagers: [] as MultiValueOptionT[],
@@ -337,7 +327,7 @@ class SilenceFormStore {
       },
 
       resetProgress() {
-        this.currentStage = SilenceFormStage.UserInput;
+        this.currentStage = "form";
         this.wasValidated = false;
       },
 
@@ -350,7 +340,7 @@ class SilenceFormStore {
       },
 
       setStageSubmit() {
-        this.currentStage = SilenceFormStage.Submit;
+        this.currentStage = "submit";
       },
 
       // append a new empty matcher to the list
@@ -495,10 +485,8 @@ class SilenceFormStore {
 
 export {
   SilenceFormStore,
-  SilenceFormStage,
   NewEmptyMatcher,
   AlertmanagerClustersToOption,
-  SilenceTabNames,
   MatchersFromGroup,
   GenerateAlertmanagerSilenceData,
   NewClusterRequest,

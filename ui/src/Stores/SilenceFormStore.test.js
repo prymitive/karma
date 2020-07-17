@@ -13,9 +13,7 @@ import {
 import { StringToOption } from "Common/Select";
 import {
   SilenceFormStore,
-  SilenceFormStage,
   NewEmptyMatcher,
-  SilenceTabNames,
   AlertmanagerClustersToOption,
 } from "./SilenceFormStore";
 
@@ -90,9 +88,9 @@ describe("SilenceFormStore.data", () => {
   });
 
   it("resetProgress() sets currentStage to UserInput", () => {
-    store.data.currentStage = SilenceFormStage.Submit;
+    store.data.currentStage = "submit";
     store.data.resetProgress();
-    expect(store.data.currentStage).toBe(SilenceFormStage.UserInput);
+    expect(store.data.currentStage).toBe("form");
   });
 
   it("resetProgress() sets 'wasValidated' to false", () => {
@@ -639,12 +637,12 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
 
 describe("SilenceFormStore.tab", () => {
   it("current tab is Editor by default", () => {
-    expect(store.tab.current).toBe(SilenceTabNames.Editor);
+    expect(store.tab.current).toBe("editor");
   });
 
   it("setTab() sets the current tab", () => {
-    expect(store.tab.current).toBe(SilenceTabNames.Editor);
-    store.tab.setTab(SilenceTabNames.Browser);
-    expect(store.tab.current).toBe(SilenceTabNames.Browser);
+    expect(store.tab.current).toBe("editor");
+    store.tab.setTab("browser");
+    expect(store.tab.current).toBe("browser");
   });
 });
