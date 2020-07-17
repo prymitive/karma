@@ -10,11 +10,7 @@ import addDays from "date-fns/addDays";
 import { MockSilence } from "__mocks__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import {
-  SilenceFormStore,
-  NewEmptyMatcher,
-  SilenceTabNames,
-} from "Stores/SilenceFormStore";
+import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { StringToOption } from "Common/Select";
 import { DateTimeSelect, TabNames } from "./DateTimeSelect";
 import { SilenceModalContent } from "./SilenceModalContent";
@@ -110,7 +106,7 @@ storiesOf("SilenceModal", module)
     silenceFormStore.data.startsAt = new Date();
     silenceFormStore.data.endsAt = addDays(addHours(new Date(), 2), 10);
 
-    silenceFormStore.tab.current = SilenceTabNames.Editor;
+    silenceFormStore.tab.current = "editor";
 
     fetchMock.mock(
       "begin:/alerts.json?q=cluster",
@@ -211,7 +207,7 @@ storiesOf("SilenceModal", module)
     const settingsStore = new Settings();
     const silenceFormStore = new SilenceFormStore();
 
-    silenceFormStore.tab.current = SilenceTabNames.Browser;
+    silenceFormStore.tab.current = "browser";
 
     alertStore.data.upstreams = {
       instances: [
@@ -274,7 +270,7 @@ storiesOf("SilenceModal", module)
     const settingsStore = new Settings();
     const silenceFormStore = new SilenceFormStore();
 
-    silenceFormStore.tab.current = SilenceTabNames.Browser;
+    silenceFormStore.tab.current = "browser";
 
     alertStore.data.upstreams = {
       instances: [

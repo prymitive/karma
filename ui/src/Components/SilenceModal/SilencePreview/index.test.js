@@ -7,11 +7,7 @@ import toDiffableHtml from "diffable-html";
 import { EmptyAPIResponse } from "__mocks__/Fetch";
 import { MockAlertGroup, MockAlert } from "__mocks__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
-import {
-  SilenceFormStore,
-  SilenceFormStage,
-  NewEmptyMatcher,
-} from "Stores/SilenceFormStore";
+import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { StringToOption } from "Common/Select";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { SilencePreview } from ".";
@@ -170,6 +166,6 @@ describe("<SilencePreview />", () => {
     const tree = MountedSilencePreview();
     const button = tree.find(".btn-primary");
     button.simulate("click");
-    expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.Submit);
+    expect(silenceFormStore.data.currentStage).toBe("submit");
   });
 });

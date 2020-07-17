@@ -7,11 +7,7 @@ import toDiffableHtml from "diffable-html";
 import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import {
-  SilenceFormStore,
-  SilenceFormStage,
-  SilenceTabNames,
-} from "Stores/SilenceFormStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceModalContent } from "./SilenceModalContent";
 
 let alertStore;
@@ -40,7 +36,7 @@ beforeEach(() => {
     clusters: { am: ["am1"] },
   };
 
-  silenceFormStore.tab.current = SilenceTabNames.Editor;
+  silenceFormStore.tab.current = "editor";
 });
 
 afterEach(() => {
@@ -78,7 +74,7 @@ describe("<SilenceModalContent />", () => {
   });
 
   it("Clicking on the Editor tab changes content", () => {
-    silenceFormStore.tab.current = SilenceTabNames.Browser;
+    silenceFormStore.tab.current = "browser";
     const tree = MountedSilenceModalContent();
     const tabs = tree.find("Tab");
     tabs.at(0).simulate("click");
@@ -101,28 +97,28 @@ describe("<SilenceModalContent />", () => {
 
 describe("<SilenceModalContent /> Editor", () => {
   it("title is 'New silence' when creating new silence", () => {
-    silenceFormStore.data.currentStage = SilenceFormStage.UserInput;
+    silenceFormStore.data.currentStage = "form";
     silenceFormStore.data.silenceID = null;
     const tree = MountedSilenceModalContent();
     const tab = tree.find("Tab").at(0);
     expect(tab.props().title).toBe("New silence");
   });
   it("title is 'Editing silence' when editing exiting silence", () => {
-    silenceFormStore.data.currentStage = SilenceFormStage.UserInput;
+    silenceFormStore.data.currentStage = "form";
     silenceFormStore.data.silenceID = "1234";
     const tree = MountedSilenceModalContent();
     const tab = tree.find("Tab").at(0);
     expect(tab.props().title).toBe("Editing silence");
   });
   it("title is 'Preview silenced alerts' when previewing silenced alerts", () => {
-    silenceFormStore.data.currentStage = SilenceFormStage.Preview;
+    silenceFormStore.data.currentStage = "preview";
     silenceFormStore.data.silenceID = "1234";
     const tree = MountedSilenceModalContent();
     const tab = tree.find("Tab").at(0);
     expect(tab.props().title).toBe("Preview silenced alerts");
   });
   it("title is 'Silence submitted' after sending silence to Alertmanager", () => {
-    silenceFormStore.data.currentStage = SilenceFormStage.Submit;
+    silenceFormStore.data.currentStage = "submit";
     silenceFormStore.data.silenceID = "1234";
     const tree = MountedSilenceModalContent();
     const tab = tree.find("Tab").at(0);
@@ -130,21 +126,21 @@ describe("<SilenceModalContent /> Editor", () => {
   });
 
   it("renders SilenceForm when silenceFormStore.data.currentStage is 'UserInput'", () => {
-    silenceFormStore.data.currentStage = SilenceFormStage.UserInput;
+    silenceFormStore.data.currentStage = "form";
     const tree = MountedSilenceModalContent();
     const form = tree.find("SilenceForm");
     expect(form).toHaveLength(1);
   });
 
   it("renders SilencePreview when silenceFormStore.data.currentStage is 'Preview'", () => {
-    silenceFormStore.data.currentStage = SilenceFormStage.Preview;
+    silenceFormStore.data.currentStage = "preview";
     const tree = MountedSilenceModalContent();
     const ctrl = tree.find("SilencePreview");
     expect(ctrl).toHaveLength(1);
   });
 
   it("renders SilenceSubmitController when silenceFormStore.data.currentStage is 'Submit'", () => {
-    silenceFormStore.data.currentStage = SilenceFormStage.Submit;
+    silenceFormStore.data.currentStage = "submit";
     const tree = MountedSilenceModalContent();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
@@ -152,7 +148,7 @@ describe("<SilenceModalContent /> Editor", () => {
 
 describe("<SilenceModalContent /> Browser", () => {
   it("renders silence browser when tab is set to Browser", () => {
-    silenceFormStore.tab.current = SilenceTabNames.Browser;
+    silenceFormStore.tab.current = "browser";
     const tree = MountedSilenceModalContent();
     const form = tree.find("Browser");
     expect(form).toHaveLength(1);

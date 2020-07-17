@@ -3,11 +3,7 @@ import React from "react";
 import { shallow } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
-import {
-  SilenceFormStore,
-  SilenceFormStage,
-  NewClusterRequest,
-} from "Stores/SilenceFormStore";
+import { SilenceFormStore, NewClusterRequest } from "Stores/SilenceFormStore";
 import {
   SilenceSubmitController,
   MultiClusterStatus,
@@ -97,7 +93,7 @@ describe("<SilenceSubmitController />", () => {
   });
 
   it("resets the form on 'Back' button click", () => {
-    silenceFormStore.data.currentStage = SilenceFormStage.Submit;
+    silenceFormStore.data.currentStage = "submit";
     const tree = shallow(
       <SilenceSubmitController
         alertStore={alertStore}
@@ -106,7 +102,7 @@ describe("<SilenceSubmitController />", () => {
     );
     const button = tree.find("button");
     button.simulate("click");
-    expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.UserInput);
+    expect(silenceFormStore.data.currentStage).toBe("form");
   });
 });
 

@@ -12,7 +12,7 @@ import {
 } from "Components/Theme/ReactSelect";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { SilenceFormStore, SilenceFormStage } from "Stores/SilenceFormStore";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceModal } from ".";
 
 let alertStore;
@@ -144,7 +144,7 @@ describe("<SilenceModal />", () => {
     act(() => jest.runOnlyPendingTimers());
     tree.update();
     // form should be reset
-    expect(silenceFormStore.data.currentStage).toBe(SilenceFormStage.UserInput);
+    expect(silenceFormStore.data.currentStage).toBe("form");
     expect(silenceFormStore.data.wasValidated).toBe(false);
     expect(silenceFormStore.data.autofillMatchers).toBe(true);
   });

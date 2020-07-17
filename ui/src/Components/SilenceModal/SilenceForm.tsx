@@ -18,7 +18,6 @@ import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
 import { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
-  SilenceFormStage,
   NewEmptyMatcher,
   NewClusterRequest,
   ClusterRequestT,
@@ -173,7 +172,7 @@ const SilenceForm: FC<{
     settingsStore.silenceFormConfig.saveAuthor(silenceFormStore.data.author);
 
     if (silenceFormStore.data.isValid)
-      silenceFormStore.data.currentStage = SilenceFormStage.Preview;
+      silenceFormStore.data.currentStage = "preview";
 
     silenceFormStore.data.wasValidated = true;
   };
