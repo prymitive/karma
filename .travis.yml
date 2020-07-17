@@ -1,6 +1,6 @@
 __defaults_go: &DEFAULTS_GO
   language: go
-  go: "1.14.5"
+  go: "1.14.6"
   cache:
     directories:
       - ui/node_modules
