@@ -6,7 +6,7 @@ import fetchMock from "fetch-mock";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { MainModalContent, TabNames } from "./MainModalContent";
+import { MainModalContent } from "./MainModalContent";
 
 import "Styles/Percy.scss";
 
@@ -55,7 +55,7 @@ storiesOf("MainModal", module)
         settingsStore={settingsStore}
         onHide={() => {}}
         isVisible={true}
-        openTab={TabNames.Help}
+        openTab={"help"}
         expandAllOptions={true}
       />
     );
