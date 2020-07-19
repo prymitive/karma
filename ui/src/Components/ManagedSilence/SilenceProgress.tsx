@@ -8,8 +8,6 @@ import getUnixTime from "date-fns/getUnixTime";
 import { APISilenceT } from "Models/APITypes";
 import { DateFromNow } from "Components/DateFromNow";
 
-import "./SilenceProgress.scss";
-
 const calculatePercent = (startsAt: string, endsAt: string) => {
   const durationDone =
     getUnixTime(new Date()) - getUnixTime(parseISO(startsAt));
