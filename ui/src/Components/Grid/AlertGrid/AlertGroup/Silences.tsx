@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 
 import { APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
@@ -36,30 +36,47 @@ const RenderSilence: FC<{
   afterUpdate: () => void;
   cluster: string;
   silenceID: string;
-}> = ({ alertStore, silenceFormStore, afterUpdate, cluster, silenceID }) => {
-  const silence = GetSilenceFromStore(alertStore, cluster, silenceID);
+}> = memo(
+  ({ alertStore, silenceFormStore, afterUpdate, cluster, silenceID }) => {
+    const silence = GetSilenceFromStore(alertStore, cluster, silenceID);
 
-  if (silence === null) {
+    if (silence === null) {
+      return (
+        <FallbackSilenceDesciption
+          key={silenceID}
+          silenceID={silenceID}
+        ></FallbackSilenceDesciption>
+      );
+    }
+
     return (
-      <FallbackSilenceDesciption
+      <ManagedSilence
         key={silenceID}
-        silenceID={silenceID}
-      ></FallbackSilenceDesciption>
+        cluster={cluster}
+        alertCount={0}
+        alertCountAlwaysVisible={false}
+        silence={silence}
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        onDidUpdate={afterUpdate}
+      />
     );
+  },
+  (prevProps, nextProps) => {
+    if (
+      prevProps.cluster == nextProps.cluster &&
+      prevProps.silenceID === nextProps.silenceID
+    ) {
+      return (
+        GetSilenceFromStore(
+          nextProps.alertStore,
+          nextProps.cluster,
+          nextProps.silenceID
+        ) === null
+      );
+    }
+    return false;
   }
-
-  return (
-    <ManagedSilence
-      key={silenceID}
-      cluster={cluster}
-      alertCount={0}
-      alertCountAlwaysVisible={false}
-      silence={silence}
-      alertStore={alertStore}
-      silenceFormStore={silenceFormStore}
-      onDidUpdate={afterUpdate}
-    />
-  );
-};
+);
 
 export { RenderSilence };
