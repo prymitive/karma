@@ -72,7 +72,7 @@ addDecorator((story) => {
   );
 });
 
-const req = require.context("../src/Components", true, /\.stories\.(js|tsx)$/);
+const req = require.context("../src/Components", true, /\.stories\.tsx$/);
 
 function loadStories() {
   req.keys().forEach((filename) => req(filename));
