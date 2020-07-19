@@ -64,7 +64,7 @@ const RenderSilence: FC<{
   },
   (prevProps, nextProps) => {
     if (
-      prevProps.cluster == nextProps.cluster &&
+      prevProps.cluster === nextProps.cluster &&
       prevProps.silenceID === nextProps.silenceID
     ) {
       return (
