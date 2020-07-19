@@ -1,11 +1,11 @@
-import React, { FC, useState, useRef, useEffect, useCallback } from "react";
+import React, { FC, useState, useEffect, useCallback } from "react";
 
 import { reaction } from "mobx";
 import { useObserver } from "mobx-react-lite";
 
 import useDimensions from "react-cool-dimensions";
 
-import IdleTimer from "react-idle-timer";
+import { useIdleTimer } from "react-idle-timer";
 
 import { CSSTransition } from "react-transition-group";
 
@@ -29,7 +29,6 @@ const NavBar: FC<{
   silenceFormStore: SilenceFormStore;
   fixedTop?: boolean;
 }> = ({ alertStore, settingsStore, silenceFormStore, fixedTop = true }) => {
-  const idleTimer = useRef(null as null | IdleTimer);
   const [isIdle, setIsIdle] = useState(false);
   const [containerClass, setContainerClass] = useState("visible");
 
@@ -54,6 +53,13 @@ const NavBar: FC<{
     setIsIdle(true);
   }, []);
 
+  const { pause, reset } = useIdleTimer({
+    timeout: IsMobile() ? MobileIdleTimeout : DesktopIdleTimeout,
+    onIdle: onIdle,
+    onActive: onActive,
+    debounce: 500,
+  });
+
   useEffect(() => {
     let timer: number;
     if (isIdle) {
@@ -75,67 +81,51 @@ const NavBar: FC<{
           alertStore.status.paused ||
           alertStore.filters.values.filter((f) => f.applied === false).length >
             0,
-        (paused) =>
-          paused
-            ? idleTimer.current && idleTimer.current.pause()
-            : idleTimer.current && idleTimer.current.reset(),
+        (paused) => (paused ? pause() : reset()),
         { fireImmediately: true }
       ),
     [] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   return useObserver(() => (
-    <IdleTimer
-      ref={idleTimer}
-      onActive={onActive}
-      onIdle={onIdle}
-      timeout={IsMobile() ? MobileIdleTimeout : DesktopIdleTimeout}
-    >
-      <div className={`container p-0 m-0 mw-100 ${containerClass}`}>
-        <CSSTransition
-          classNames="components-animation-navbar"
-          in={!isIdle}
-          timeout={context.animations.duration}
-          onEntering={() => {}}
-          onExited={() => {}}
-          enter
-          exit
+    <div className={`container p-0 m-0 mw-100 ${containerClass}`}>
+      <CSSTransition
+        classNames="components-animation-navbar"
+        in={!isIdle}
+        timeout={context.animations.duration}
+        onEntering={() => {}}
+        onExited={() => {}}
+        enter
+        exit
+      >
+        <nav
+          ref={ref}
+          className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block ${
+            fixedTop ? "fixed-top" : "w-100"
+          }`}
         >
-          <nav
-            ref={ref}
-            className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block ${
-              fixedTop ? "fixed-top" : "w-100"
+          <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block float-left">
+            <OverviewModal alertStore={alertStore} />
+            <FetchIndicator alertStore={alertStore} />
+          </span>
+          <ul
+            className={`navbar-nav float-right d-flex ${
+              alertStore.filters.values.length >= 1
+                ? "flex-column flex-sm-row flex-md-row flex-lg-row flex-xl-row"
+                : "flex-row"
             }`}
           >
-            <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block float-left">
-              <OverviewModal alertStore={alertStore} />
-              <FetchIndicator alertStore={alertStore} />
-            </span>
-            <ul
-              className={`navbar-nav float-right d-flex ${
-                alertStore.filters.values.length >= 1
-                  ? "flex-column flex-sm-row flex-md-row flex-lg-row flex-xl-row"
-                  : "flex-row"
-              }`}
-            >
-              <SilenceModal
-                alertStore={alertStore}
-                silenceFormStore={silenceFormStore}
-                settingsStore={settingsStore}
-              />
-              <MainModal
-                alertStore={alertStore}
-                settingsStore={settingsStore}
-              />
-            </ul>
-            <FilterInput
+            <SilenceModal
               alertStore={alertStore}
+              silenceFormStore={silenceFormStore}
               settingsStore={settingsStore}
             />
-          </nav>
-        </CSSTransition>
-      </div>
-    </IdleTimer>
+            <MainModal alertStore={alertStore} settingsStore={settingsStore} />
+          </ul>
+          <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
+        </nav>
+      </CSSTransition>
+    </div>
   ));
 };
 
