@@ -59,7 +59,7 @@ jobs:
       script:
         - ./scripts/have-backend-changes.sh || ./scripts/ci-diff-benchmark-go.sh
 
-    - stage: Test
+    - stage: Test & Lint
       name: Test Go code
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
@@ -69,7 +69,7 @@ jobs:
       after_success:
         - travis_retry curl -s --connect-timeout 30 --fail https://codecov.io/bash | bash -s -- -F backend
 
-    - stage: Test
+    - stage: Test & Lint
       name: Test JavaScript code
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
@@ -78,7 +78,7 @@ jobs:
         - travis_retry curl -s --connect-timeout 30 --fail https://codecov.io/bash | bash -s -- -F ui
 
     # duplicate js test but with a different time zone, to ensure that tests/code work with non-UTC time zone
-    - stage: Test
+    - stage: Test & Lint
       name: Test JavaScript code with Pacific/Easter time zone
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
@@ -86,18 +86,18 @@ jobs:
       after_success:
         - travis_retry curl -s --connect-timeout 30 --fail https://codecov.io/bash | bash -s -- -F ui
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Check for non-typescript UI components
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       script: make -C ui lint-typescript
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Lint git commit
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
       script: make -C ui lint-git-ci
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Lint Go code
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
@@ -105,7 +105,7 @@ jobs:
         - travis_retry make mock-assets
       script: travis_retry make lint-go
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Check Go code formatting
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
@@ -115,7 +115,7 @@ jobs:
         - make format-go
         - git diff --exit-code
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Verify go.sum
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
@@ -126,13 +126,13 @@ jobs:
         - make tools-go-mod-tidy
         - git diff --exit-code
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Lint JavaScript code
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
       script: make -C ui lint-js
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Check JavaScript code formatting
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
@@ -140,20 +140,20 @@ jobs:
         - make -C ui format
         - git diff --exit-code
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Check JavaScript dependencies
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
       script:
         - make -C ui lint-deps
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Lint documentation
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
       script: make -C ui lint-docs
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Verify OpenAPI client code
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       language: shell
@@ -165,25 +165,25 @@ jobs:
         - travis_retry make openapi-client
         - git diff --exit-code
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Lint Golang Version
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       language: shell
       script: make lint-golang-version
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Lint Node Version
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       language: shell
       script: make lint-nodejs-version
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Lint Bootstrap Version
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       language: shell
       script: make lint-bootstrap-version
 
-    - stage: Lint
+    - stage: Test & Lint
       name: Generate Changelog
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
@@ -193,15 +193,6 @@ jobs:
         - secure: "QsPAMhX52+jx8OZXmeZ0eDekHGdRmDbrWp48L4CbaTjgyZX+TSYIqsg6gTVDaHXW6b/AOFFdr8xvInelO2I0M1LV6mmbnzLslxfOxGo87qf9gVZk3VJry+qp2yJAd6s8CiO2GOUYzjOxk8Vd5R76ZpL1or10++tFojvCgYBzmIBFWpeVLyz6iJEgcqPowI/7cicITkEh67vx2DrVjiYptq42+f4fI2oeOf1U7nxd3YQFDtl00VyzacQJ7rVqONPWlagZPdn0w/qWTRkw4ynglVF4FufzCE5L6Bbe7xqbp9wxWhssmNCgC2xwIOu23ODLxSpYFqrYkdu6nLzBsPMxEBcc4O4oqx6IzUc1NMDhXwRmoFY4PQjmC8Rf0Q7oK0HIq+ZsYL0GxztOy0dWSXwoGwQvDLJyuoBtaN2lOKSGhAEeJqqpQaVIPbn3/cORAWXVJjuaFrIsU1Z2lSb60ENIcEHxTpBkbjAfPkk5u5jN4fck8tJMga4argi00fV14gHp4VGpq6o5UvoB+YdEJnPlypUW/8VY+EQhSoW98+b9QXBksL8g8/iezHAjIpwDfMTimSzTy7wd8wV/HR7pqpd9pNlKAhbCWNRa0YGrIoPff1YETRAZsI39lDMvrWjoMJWEDxoR/JAeYXX8V1JyCeX0uiLNisehfCfybc0kDM6Yv6Y="
       script:
         - travis_retry make changelog
-
-    - stage: Snapshots
-      name: Percy UI snapshots
-      if: (repo = prymitive/karma AND type != pull_request AND type != cron) OR (fork = true AND type = pull_request)
-      <<: *DEFAULTS_JS
-      env:
-        - NODE_ENV=test
-        - secure: "Fx290FkiIG0iVV+gXG22g5kEQs+bM7RkPZvM7q3nUp+8CNW0H627YVX/9WmthFRMmR2gWOltjZLYBGFL1lUaF/Qbvs+xjWibyNGuBJN3ODDTs56ywYg5Ege4ewQFH1XToV1WEwJ6ET0mREo5LSW4o1TBmZtGNzNldeM+aRScOMW6T8sUh2cYY+nHF5sQXN2UM3BtXZVY2kRQbRy5CxLql7l4keGO6anmD+AI3jn8Wj9bbY/CJxSLnXvWbw66Uj37lv7wlEzO4GKqtBYMMbmGBwjgrwSfVH42tq6PxabzFzZLUmnIr62EyBwfTQG2JoPXLC6AIouH2erM2fd2Qg4WF8yIOqPAJki0vw6VQS0VRHGvwrq/OXmiTWgpqTCXrIvrs45b2FsXGec10G/rFrS3ayoutXMNOwjBGYIkyxPP8ngfa2jinOWG05OMuOHPRDqCsAYL5jTIqUwp0VkoDNvp8aibQeKTKl7y5xkJtOstWaa1uMirRVFpi4SUCWvylt1sTR2VF2bzmuRFkQQ1xX2LvMtPKk86CriLSch2jeke90f4Ygl4fJV5+H3CsMION5WiTWFvPf0ncxzZKPCQ/SFnNQUjoo87YHg0aI9UgvOfd3Ca1k9Fxw5qC919eHFPF4Qz8z85WN58VXJVCEb1w2opPWoeiqMtabq9fCusxR8Y43Q="
-      script: ./scripts/percy-skip-deps.sh || make -C ui test-percy
 
     - stage: Build and Deploy
       name: Cross compile binaries
@@ -310,6 +301,15 @@ jobs:
         # bundled heroku cli doesn't know anything about containers, update it
         - travis_retry curl -s --connect-timeout 30 --fail https://cli-assets.heroku.com/install.sh | sh
         - travis_retry /usr/local/bin/heroku container:release web --app karma-demo
+
+    - stage: Build and Deploy
+      name: Percy UI snapshots
+      if: (repo = prymitive/karma AND type != pull_request AND type != cron) OR (fork = true AND type = pull_request)
+      <<: *DEFAULTS_JS
+      env:
+        - NODE_ENV=test
+        - secure: "Fx290FkiIG0iVV+gXG22g5kEQs+bM7RkPZvM7q3nUp+8CNW0H627YVX/9WmthFRMmR2gWOltjZLYBGFL1lUaF/Qbvs+xjWibyNGuBJN3ODDTs56ywYg5Ege4ewQFH1XToV1WEwJ6ET0mREo5LSW4o1TBmZtGNzNldeM+aRScOMW6T8sUh2cYY+nHF5sQXN2UM3BtXZVY2kRQbRy5CxLql7l4keGO6anmD+AI3jn8Wj9bbY/CJxSLnXvWbw66Uj37lv7wlEzO4GKqtBYMMbmGBwjgrwSfVH42tq6PxabzFzZLUmnIr62EyBwfTQG2JoPXLC6AIouH2erM2fd2Qg4WF8yIOqPAJki0vw6VQS0VRHGvwrq/OXmiTWgpqTCXrIvrs45b2FsXGec10G/rFrS3ayoutXMNOwjBGYIkyxPP8ngfa2jinOWG05OMuOHPRDqCsAYL5jTIqUwp0VkoDNvp8aibQeKTKl7y5xkJtOstWaa1uMirRVFpi4SUCWvylt1sTR2VF2bzmuRFkQQ1xX2LvMtPKk86CriLSch2jeke90f4Ygl4fJV5+H3CsMION5WiTWFvPf0ncxzZKPCQ/SFnNQUjoo87YHg0aI9UgvOfd3Ca1k9Fxw5qC919eHFPF4Qz8z85WN58VXJVCEb1w2opPWoeiqMtabq9fCusxR8Y43Q="
+      script: ./scripts/percy-skip-deps.sh || make -C ui test-percy
 
     - stage: E2E
       name: Test demo site
