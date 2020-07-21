@@ -20,7 +20,9 @@ const SilenceSubmitProgress: FC<{
   payload: AlertmanagerSilencePayloadT;
 }> = ({ alertStore, silenceFormStore, cluster, members, payload }) => {
   const [upstreams, setUpstreams] = useState([] as UpstreamT[]);
-  const { response, error, inProgress, responseURI } = useFetchAny(upstreams);
+  const { response, error, inProgress, responseURI } = useFetchAny<
+    PostResponseT
+  >(upstreams);
   const [publicURIs, setPublicURIs] = useState({} as { [key: string]: string });
 
   useEffect(() => {
@@ -63,12 +65,11 @@ const SilenceSubmitProgress: FC<{
       silenceFormStore.data.requestsByCluster[cluster].error = error;
     } else if (!inProgress && response !== null) {
       silenceFormStore.data.requestsByCluster[cluster].isDone = true;
-      silenceFormStore.data.requestsByCluster[
-        cluster
-      ].silenceID = (response as PostResponseT).silenceID;
+      silenceFormStore.data.requestsByCluster[cluster].silenceID =
+        response.silenceID;
       silenceFormStore.data.requestsByCluster[cluster].silenceLink = `${
         publicURIs[responseURI as string]
-      }/#/silences/${(response as PostResponseT).silenceID}`;
+      }/#/silences/${response.silenceID}`;
     }
   }, [cluster, error, inProgress, publicURIs, response, responseURI]); // eslint-disable-line react-hooks/exhaustive-deps
 

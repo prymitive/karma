@@ -6,7 +6,7 @@ import { useFetchGet } from "Hooks/useFetchGet";
 import { FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
-import { NewLabelName, StringToOption } from "Common/Select";
+import { NewLabelName, StringToOption, OptionT } from "Common/Select";
 
 const disabledLabel = "Disable multi-grid";
 
@@ -25,7 +25,9 @@ const staticValues = [
 const GridLabelName: FC<{
   settingsStore: Settings;
 }> = ({ settingsStore }) => {
-  const { response } = useFetchGet(FormatBackendURI(`labelNames.json`));
+  const { response } = useFetchGet<string[]>(
+    FormatBackendURI(`labelNames.json`)
+  );
 
   const context = React.useContext(ThemeContext);
 
@@ -46,8 +48,8 @@ const GridLabelName: FC<{
             ]
           : staticValues
       }
-      onChange={({ value }) => {
-        settingsStore.multiGridConfig.config.gridLabel = value;
+      onChange={(option) => {
+        settingsStore.multiGridConfig.config.gridLabel = (option as OptionT).value;
       }}
     />
   );

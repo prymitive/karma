@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
+import { APIAlertsResponseT } from "Models/APITypes";
 import { AlertStore, FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import {
   LabelSetList,
@@ -33,13 +34,13 @@ const PaginatedAlertList: FC<{
   filters: string[];
   title?: string;
 }> = ({ alertStore, filters, title }) => {
-  const { response, error, isLoading } = useFetchGet(
+  const { response, error, isLoading } = useFetchGet<APIAlertsResponseT>(
     FormatBackendURI("alerts.json?") + FormatAlertsQ(filters)
   );
 
   return isLoading ? (
     <Placeholder />
-  ) : error ? (
+  ) : error || response === null ? (
     <FetchError message={error} />
   ) : (
     <LabelSetList

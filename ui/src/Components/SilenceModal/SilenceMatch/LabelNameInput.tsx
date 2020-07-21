@@ -13,7 +13,9 @@ const LabelNameInput: FC<{
   matcher: MatcherWithIDT;
   isValid: boolean;
 }> = ({ matcher, isValid }) => {
-  const { response } = useFetchGet(FormatBackendURI(`labelNames.json`));
+  const { response } = useFetchGet<string[]>(
+    FormatBackendURI(`labelNames.json`)
+  );
 
   const context = React.useContext(ThemeContext);
 

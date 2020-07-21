@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
+import { APIAlertsResponseT } from "Models/APITypes";
 import { FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import { SilenceFormStore, MatcherWithIDT } from "Stores/SilenceFormStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
@@ -21,9 +22,9 @@ const MatchCounter: FC<{
     filters.push(AlertManagersToFilter(silenceFormStore.data.alertmanagers));
   }
 
-  const { response, error, isLoading, isRetrying } = useFetchGet(
-    FormatBackendURI("alerts.json?") + FormatAlertsQ(filters)
-  );
+  const { response, error, isLoading, isRetrying } = useFetchGet<
+    APIAlertsResponseT
+  >(FormatBackendURI("alerts.json?") + FormatAlertsQ(filters));
 
   return useObserver(() =>
     error ? (
@@ -39,7 +40,7 @@ const MatchCounter: FC<{
           style={{ fontSize: "85%", lineHeight: "1rem" }}
           data-am={silenceFormStore.data.alertmanagers.length}
         >
-          {isLoading ? (
+          {isLoading || response === null ? (
             <FontAwesomeIcon
               icon={faSpinner}
               spin

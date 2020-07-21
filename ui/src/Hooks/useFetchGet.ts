@@ -14,11 +14,11 @@ export interface FetchGetOptionsT {
   fetcher?: null | FetchFunctionT;
 }
 
-const useFetchGet = (
+const useFetchGet = <T>(
   uri: string,
   { autorun = true, deps = [], fetcher = null }: FetchGetOptionsT = {}
 ): {
-  response: null | any;
+  response: null | T;
   error: null | string;
   isLoading: boolean;
   isRetrying: boolean;
@@ -26,7 +26,7 @@ const useFetchGet = (
   get: () => void;
   cancelGet: () => void;
 } => {
-  const [response, setResponse] = useState(null as any);
+  const [response, setResponse] = useState(null as null | T);
   const [error, setError] = useState(null as string | null);
   const [isLoading, setIsLoading] = useState(true);
   const [isRetrying, setIsRetrying] = useState(false);

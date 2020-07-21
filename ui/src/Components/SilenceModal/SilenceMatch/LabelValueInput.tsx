@@ -68,7 +68,7 @@ const LabelValueInput: FC<{
   matcher: MatcherWithIDT;
   isValid: boolean;
 }> = observer(({ silenceFormStore, matcher, isValid }) => {
-  const { response, get, cancelGet } = useFetchGet(
+  const { response, get, cancelGet } = useFetchGet<string[]>(
     FormatBackendURI(`labelValues.json?name=${matcher.name}`),
     { autorun: false }
   );

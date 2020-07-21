@@ -13,7 +13,9 @@ import { NewLabelName, StringToOption } from "Common/Select";
 const SortLabelName: FC<{
   settingsStore: Settings;
 }> = ({ settingsStore }) => {
-  const { response } = useFetchGet(FormatBackendURI(`labelNames.json`));
+  const { response } = useFetchGet<string[]>(
+    FormatBackendURI(`labelNames.json`)
+  );
 
   if (!settingsStore.gridConfig.config.sortLabel) {
     settingsStore.gridConfig.config.sortLabel = StaticLabels.AlertName;

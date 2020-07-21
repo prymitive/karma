@@ -65,12 +65,9 @@ const Browser: FC<{
 
   const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
-  const {
-    response,
-    error,
-    isLoading,
-    isRetrying,
-  } = useFetchGet(
+  const { response, error, isLoading, isRetrying } = useFetchGet<
+    APIManagedSilenceT[]
+  >(
     FormatBackendURI(
       `silences.json?sortReverse=${sortReverse ? "1" : "0"}&showExpired=${
         showExpired ? "1" : "0"
@@ -139,13 +136,13 @@ const Browser: FC<{
             />
           }
         />
-      ) : error ? (
+      ) : error || response === null ? (
         <FetchError message={error} />
       ) : response.length === 0 ? (
         <Placeholder content="Nothing to show" />
       ) : (
         <React.Fragment>
-          {(response as APIManagedSilenceT[])
+          {response
             .slice((activePage - 1) * maxPerPage, activePage * maxPerPage)
             .map((silence) => (
               <ManagedSilence

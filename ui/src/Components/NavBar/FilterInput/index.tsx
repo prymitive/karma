@@ -26,7 +26,7 @@ const FilterInput: FC<{
   const inputRef = useRef(null as null | HTMLElement);
   const formRef = useRef(null);
 
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState([] as string[]);
   const [value, setValue] = useState("");
   const [isFocused, setIsFocused] = useState(false);
 
@@ -68,13 +68,7 @@ const FilterInput: FC<{
   const [term, setTerm] = useState("");
   const debouncedSearchTerm = useDebounce(term, 300);
 
-  const {
-    response,
-    error,
-    isLoading,
-    get,
-    cancelGet,
-  } = useFetchGet(
+  const { response, error, isLoading, get, cancelGet } = useFetchGet<string[]>(
     FormatBackendURI(`autocomplete.json?term=${debouncedSearchTerm}`),
     { autorun: false }
   );
@@ -89,7 +83,7 @@ const FilterInput: FC<{
   useEffect(() => {
     if (error) {
       onSuggestionsClearRequested();
-    } else if (!isLoading) {
+    } else if (!isLoading && response !== null) {
       setSuggestions(response);
     }
   }, [response, error, isLoading, onSuggestionsClearRequested]);
