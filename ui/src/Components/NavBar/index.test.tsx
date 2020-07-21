@@ -14,7 +14,7 @@ let settingsStore: Settings;
 let silenceFormStore: SilenceFormStore;
 let resizeCallback: (val: any) => void;
 
-declare var global: any;
+declare let global: any;
 
 beforeAll(() => {
   jest.useFakeTimers();

@@ -325,7 +325,7 @@ describe("useFetchAny", () => {
   });
 
   it("doesn't update response after cleanup on slow body read", async () => {
-    let tree: any;
+    let tree: any = null;
     const fetcher = jest.fn((_: RequestInfo) =>
       Promise.resolve({
         headers: {

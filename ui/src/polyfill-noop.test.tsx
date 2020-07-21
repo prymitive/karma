@@ -3,8 +3,8 @@ import fetchMock from "fetch-mock";
 import { EmptyAPIResponse } from "__mocks__/Fetch";
 import { mockMatchMedia } from "__mocks__/matchMedia";
 
-declare var global: any;
-declare var window: any;
+declare let global: any;
+declare let window: any;
 
 const settingsElement = {
   dataset: {

@@ -22,12 +22,12 @@ const QueryStringEncodeOptions = {
   indices: false, // go-gin doesn't support parsing q[0]=foo&q[1]=bar
 };
 
-function FormatAlertsQ(filters: string[]) {
+function FormatAlertsQ(filters: string[]): string {
   return qs.stringify({ q: filters }, QueryStringEncodeOptions);
 }
 
 // generate URL for the UI with a set of filters
-function FormatAPIFilterQuery(filters: string[]) {
+function FormatAPIFilterQuery(filters: string[]): string {
   return qs.stringify(
     Object.assign(DecodeLocationSearch(window.location.search).params, {
       q: filters,
@@ -37,7 +37,7 @@ function FormatAPIFilterQuery(filters: string[]) {
 }
 
 // format URI for react UI -> Go backend requests
-function FormatBackendURI(path: string) {
+function FormatBackendURI(path: string): string {
   const uri = process.env.REACT_APP_BACKEND_URI || ".";
   return `${uri}/${path}`;
 }
@@ -82,7 +82,7 @@ function DecodeLocationSearch(
   return { params: params, defaultsUsed: defaultsUsed };
 }
 
-function UpdateLocationSearch(newParams: QueryParamsT) {
+function UpdateLocationSearch(newParams: QueryParamsT): void {
   const baseURLWithoutSearch = window.location.href.split("?")[0];
   const newSearch = FormatAPIFilterQuery(newParams.q);
   window.history.pushState(
@@ -449,7 +449,7 @@ class AlertStore {
       );
     }
 
-    let updates: Partial<APIAlertsResponseT> = {};
+    const updates: Partial<APIAlertsResponseT> = {};
     updates.colors = result.colors;
     updates.counters = result.counters;
     updates.grids = result.grids;

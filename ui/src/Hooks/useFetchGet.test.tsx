@@ -370,7 +370,7 @@ describe("useFetchGet", () => {
   it("doesn't update response after cleanup on slow body read", async () => {
     FetchRetryConfig.retries = 0;
 
-    let tree: any;
+    let tree: any = false;
     const fetcher = jest.fn(() =>
       Promise.resolve({
         headers: {

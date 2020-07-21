@@ -49,7 +49,7 @@ afterEach(() => {
 
 const MockAlerts = (alertCount: number) => {
   for (let i = 1; i <= alertCount; i++) {
-    let alert = MockAlert([], { instance: `instance${i}` }, "active");
+    const alert = MockAlert([], { instance: `instance${i}` }, "active");
     const startsAt = new Date();
     alert.startsAt = startsAt.toISOString();
     alert.alertmanager[0].startsAt = startsAt.toISOString();

@@ -10,7 +10,7 @@ import { LabelSetList } from ".";
 
 let alertStore: AlertStore;
 
-declare var global: any;
+declare let global: any;
 
 beforeEach(() => {
   alertStore = new AlertStore([]);

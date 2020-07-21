@@ -12,7 +12,7 @@ function getSize(): Dimentions {
   };
 }
 
-function useWindowSize() {
+function useWindowSize(): Dimentions {
   const [windowSize, setWindowSize] = useState(getSize());
 
   useEffect(() => {

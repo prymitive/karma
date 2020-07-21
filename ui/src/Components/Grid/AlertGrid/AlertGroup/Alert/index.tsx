@@ -52,8 +52,8 @@ const Alert: FC<{
       silences: string[];
     };
   } = {};
-  let clusters: string[] = [];
-  let inhibitedBy: string[] = [];
+  const clusters: string[] = [];
+  const inhibitedBy: string[] = [];
   for (const am of alert.alertmanager) {
     if (!clusters.includes(am.cluster)) {
       clusters.push(am.cluster);

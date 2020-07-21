@@ -24,8 +24,8 @@ const SilenceSubmitProgress: FC<{
   const [publicURIs, setPublicURIs] = useState({} as { [key: string]: string });
 
   useEffect(() => {
-    let uris: { [uri: string]: string } = {};
-    let membersToTry = [];
+    const uris: { [uri: string]: string } = {};
+    const membersToTry = [];
     for (const member of members) {
       if (alertStore.data.isReadOnlyAlertmanager(member)) {
         console.error(`Alertmanager instance "${member}" is read-only`);

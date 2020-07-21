@@ -63,7 +63,7 @@ const AlertAck: FC<{
       alertmanagers.some((m) => clusterMembers.includes(m))
     );
 
-    let c: ClusterT[] = [];
+    const c: ClusterT[] = [];
     for (const [clusterName, clusterMembers] of clusters) {
       const durationSeconds = toJS(
         alertStore.settings.values.alertAcknowledgement.durationSeconds
@@ -103,7 +103,7 @@ const AlertAck: FC<{
     if (clusters.length) {
       reset();
       const cluster = clusters[currentCluster];
-      let u: UpstreamT[] = [];
+      const u: UpstreamT[] = [];
       cluster.members.forEach((amName) => {
         const am = alertStore.data.getAlertmanagerByName(amName);
         if (am !== undefined) {

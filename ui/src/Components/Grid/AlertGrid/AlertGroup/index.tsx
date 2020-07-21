@@ -130,7 +130,7 @@ const AlertGroup: FC<{
     afterUpdate();
   });
 
-  let footerAlertmanagers: string[] = [];
+  const footerAlertmanagers: string[] = [];
   let showAlertmanagersInFooter = false;
 
   // There's no need to render @alertmanager labels if there's only 1

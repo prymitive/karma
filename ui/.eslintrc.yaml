@@ -1,0 +1,26 @@
+parser: "@typescript-eslint/parser"
+settings:
+  react:
+    version: detect
+extends:
+  - react-app
+  - plugin:react/recommended
+  - plugin:@typescript-eslint/recommended
+  - prettier/@typescript-eslint
+  - plugin:prettier/recommended
+rules:
+  "react/prop-types": off
+  "react/display-name": off
+  "@typescript-eslint/explicit-function-return-type": off
+  "@typescript-eslint/no-explicit-any": off
+  "@typescript-eslint/no-empty-function": off
+overrides:
+  - files:
+      - "**/__mocks__/*.ts"
+      - "**/__mocks__/**/*.ts"
+      - "**/*.test.ts"
+      - "**/*.test.tsx"
+    rules:
+      "@typescript-eslint/no-var-requires": off
+      "@typescript-eslint/no-empty-function": off
+      "@typescript-eslint/explicit-module-boundary-types": off

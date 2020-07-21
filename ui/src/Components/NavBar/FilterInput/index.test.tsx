@@ -14,7 +14,7 @@ let alertStore: AlertStore;
 let settingsStore: Settings;
 let originalInnerWidth: number;
 
-declare var global: any;
+declare let global: any;
 
 beforeAll(() => {
   jest.useFakeTimers();

@@ -163,7 +163,7 @@ const SilenceForm: FC<{
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
 
-    let rbc: { [label: string]: ClusterRequestT } = {};
+    const rbc: { [label: string]: ClusterRequestT } = {};
     silenceFormStore.data.alertmanagers.forEach((am) => {
       rbc[am.label] = NewClusterRequest(am.label, am.value);
     });

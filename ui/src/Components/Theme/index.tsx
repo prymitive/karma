@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import ReactDOM from "react-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -52,7 +52,7 @@ const ThemeContext = React.createContext({
   animations: { duration: 1000 },
 } as ThemeCtx);
 
-const BodyTheme = () => {
+const BodyTheme: FC = () => {
   const context = React.useContext(ThemeContext);
 
   useEffect(() => {

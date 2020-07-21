@@ -96,7 +96,7 @@ const LabelsTable: FC<{
   </React.Fragment>
 ));
 
-const NothingToShow: FC<{}> = () => (
+const NothingToShow: FC = () => (
   <div className="jumbotron bg-transparent">
     <h1 className="display-5 text-placeholder text-center">
       No labels to display

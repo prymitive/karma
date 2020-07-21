@@ -7,7 +7,7 @@ import { PageSelect } from ".";
 
 let originalInnerWidth: number;
 
-declare var global: any;
+declare let global: any;
 
 beforeAll(() => {
   originalInnerWidth = global.innerWidth;

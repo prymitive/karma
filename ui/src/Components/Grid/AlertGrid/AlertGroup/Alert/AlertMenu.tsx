@@ -39,7 +39,7 @@ const onSilenceClick = (
   group: APIAlertGroupT,
   alert: APIAlertT
 ) => {
-  let clusters: { [cluster: string]: string[] } = {};
+  const clusters: { [cluster: string]: string[] } = {};
   Object.entries(alertStore.data.clustersWithoutReadOnly).forEach(
     ([cluster, members]) => {
       if (alert.alertmanager.map((am) => am.cluster).includes(cluster)) {

@@ -114,7 +114,7 @@ describe("<FilteringCounterBadge />", () => {
     expect(tree.text()).toBe("123");
   });
 
-  for (let state of ["unprocessed", "active", "suppressed"]) {
+  for (const state of ["unprocessed", "active", "suppressed"]) {
     it(`click on @state=${state} counter badge should add a new filter`, () => {
       validateOnClick(state, true, false, true);
     });

@@ -17,7 +17,15 @@ export interface FetchGetOptionsT {
 const useFetchGet = (
   uri: string,
   { autorun = true, deps = [], fetcher = null }: FetchGetOptionsT = {}
-) => {
+): {
+  response: null | any;
+  error: null | string;
+  isLoading: boolean;
+  isRetrying: boolean;
+  retryCount: number;
+  get: () => void;
+  cancelGet: () => void;
+} => {
   const [response, setResponse] = useState(null as any);
   const [error, setError] = useState(null as string | null);
   const [isLoading, setIsLoading] = useState(true);
@@ -37,7 +45,7 @@ const useFetchGet = (
       setRetryCount(0);
       setError(null);
       const res: Response = await promiseRetry(
-        (retry: Function, number: number) =>
+        (retry: any, number: number) =>
           (fetcher || fetch)(
             uri,
             merge(

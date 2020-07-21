@@ -14,7 +14,7 @@ const Fetcher: FC<{
   const timer = useRef(undefined as number | undefined);
 
   const getSortSettings = () => {
-    let sortSettings = {
+    const sortSettings = {
       useDefaults: false,
       sortOrder: "",
       sortLabel: "",

@@ -8,7 +8,11 @@ const useFetchDelete = (
   uri: string,
   options: RequestInit,
   deps: any[] = []
-) => {
+): {
+  response: null | string;
+  error: null | string;
+  isDeleting: boolean;
+} => {
   const [response, setResponse] = useState(null as string | null);
   const [error, setError] = useState(null as string | null);
   const [isDeleting, setIsDeleting] = useState(true);

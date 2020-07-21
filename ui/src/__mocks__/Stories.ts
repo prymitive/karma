@@ -10,7 +10,7 @@ const MockGroup = (
   active: number,
   suppressed: number
 ) => {
-  let alerts = [];
+  const alerts = [];
   for (let i = 1; i <= alertCount; i++) {
     let state: AlertStateT;
     switch (true) {
@@ -184,7 +184,7 @@ const MockGrid = (alertStore: AlertStore) => {
     },
   ];
 
-  let groups = [];
+  const groups = [];
   for (let i = 1; i <= 10; i++) {
     const active = Math.max(1, Math.ceil(i / 3));
     const suppressed = Math.max(0, i - 2 * Math.ceil(i / 3));

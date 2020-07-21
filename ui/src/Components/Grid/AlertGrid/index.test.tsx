@@ -21,9 +21,9 @@ let settingsStore: Settings;
 let silenceFormStore: SilenceFormStore;
 let resizeCallback: any;
 
-declare var global: any;
-declare var document: any;
-declare var window: any;
+declare let global: any;
+declare let document: any;
+declare let window: any;
 
 beforeAll(() => {
   Object.defineProperty(document.body, "clientWidth", {
@@ -128,7 +128,7 @@ const MountedGrid = () => {
 };
 
 const MockGroup = (groupName: string, alertCount: number) => {
-  let alerts = [];
+  const alerts = [];
   for (let i = 1; i <= alertCount; i++) {
     alerts.push(MockAlert([], { instance: `instance${i}` }, "active"));
   }
@@ -143,10 +143,10 @@ const MockGroup = (groupName: string, alertCount: number) => {
 };
 
 const MockGroupList = (count: number, alertPerGroup: number) => {
-  let groups = [];
+  const groups = [];
   for (let i = 1; i <= count; i++) {
-    let id = `id${i}`;
-    let group = MockGroup(`group${i}`, alertPerGroup);
+    const id = `id${i}`;
+    const group = MockGroup(`group${i}`, alertPerGroup);
     group.id = id;
     groups.push(group);
   }
@@ -536,14 +536,14 @@ describe("<AlertGrid />", () => {
     const wrapper = MountedAlertGrid();
     const tree = ShallowGrid();
 
-    let results = [];
-    const cb = () =>
+    const results = [];
+    const cb = (index: number) =>
       resizeCallback([
         { contentRect: { width: index % 2 === 0 ? 1600 : 1584, height: 10 } },
       ]);
-    for (var index = 0; index < 14; index++) {
+    for (let index = 0; index < 14; index++) {
       act(() => {
-        cb();
+        cb(index);
       });
       wrapper.update();
       tree.setProps({

@@ -10,7 +10,7 @@ import { History } from "./History";
 let alertStore: AlertStore;
 let settingsStore: Settings;
 
-declare var global: any;
+declare let global: any;
 
 beforeAll(() => {
   jest.useFakeTimers();

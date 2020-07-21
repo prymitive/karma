@@ -9,7 +9,9 @@ import { PageSelect } from "Components/Pagination";
 
 // take a list of groups and outputs a list of label sets, this ignores
 // the receiver, so we'll end up with only unique alerts
-const GroupListToUniqueLabelsList = (groups: APIAlertGroupT[]) => {
+const GroupListToUniqueLabelsList = (
+  groups: APIAlertGroupT[]
+): { [labelName: string]: string }[] => {
   const alerts: { [alertHash: string]: { [labelName: string]: string } } = {};
   for (const group of groups) {
     for (const alert of group.alerts) {

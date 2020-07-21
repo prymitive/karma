@@ -82,7 +82,7 @@ describe("<GroupFooter />", () => {
   });
 
   it("render deduplicated silence if present", () => {
-    for (var index = 0; index < group.alerts.length; index++) {
+    for (let index = 0; index < group.alerts.length; index++) {
       group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
     }
     group.shared.silences = { default: ["123456789"] };
@@ -97,7 +97,7 @@ describe("<GroupFooter />", () => {
   });
 
   it("render fallback silence if not found in alertStore", () => {
-    for (var index = 0; index < group.alerts.length; index++) {
+    for (let index = 0; index < group.alerts.length; index++) {
       group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
     }
     group.shared.silences = { default: ["123456789"] };
@@ -110,7 +110,7 @@ describe("<GroupFooter />", () => {
   });
 
   it("render fallback silence if cluster not found in alertStore", () => {
-    for (var index = 0; index < group.alerts.length; index++) {
+    for (let index = 0; index < group.alerts.length; index++) {
       group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
     }
     group.shared.silences = { default: ["123456789"] };
@@ -123,7 +123,7 @@ describe("<GroupFooter />", () => {
   });
 
   it("mathes snapshot when silence is rendered", () => {
-    for (var index = 0; index < group.alerts.length; index++) {
+    for (let index = 0; index < group.alerts.length; index++) {
       group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
     }
     group.shared.silences = { default: ["123456789"] };
