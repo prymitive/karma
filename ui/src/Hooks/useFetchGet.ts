@@ -6,11 +6,11 @@ import promiseRetry from "promise-retry";
 
 import { CommonOptions, FetchRetryConfig } from "Common/Fetch";
 
-type FetchFunctionT = (request: RequestInfo) => any;
+type FetchFunctionT = (request: RequestInfo) => Promise<Response>;
 
 export interface FetchGetOptionsT {
   autorun?: boolean;
-  deps?: any[];
+  deps?: string[] | number[];
   fetcher?: null | FetchFunctionT;
 }
 
@@ -44,8 +44,8 @@ const useFetchGet = <T>(
       setIsLoading(true);
       setRetryCount(0);
       setError(null);
-      const res: Response = await promiseRetry(
-        (retry: any, number: number) =>
+      const res = await promiseRetry(
+        (retry: (err: Error) => Promise<Response>, number: number) =>
           (fetcher || fetch)(
             uri,
             merge(
@@ -68,7 +68,7 @@ const useFetchGet = <T>(
         FetchRetryConfig
       );
 
-      if (!isCanceled.current) {
+      if (res !== undefined && !isCanceled.current) {
         let body;
         const contentType = res.headers.get("content-type");
         if (contentType && contentType.indexOf("application/json") !== -1) {

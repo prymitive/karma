@@ -61,7 +61,7 @@ const onSilenceClick = (
 
 const MenuContent: FC<{
   popperPlacement?: string;
-  popperRef?: Ref<any>;
+  popperRef?: Ref<HTMLDivElement>;
   popperStyle?: CSSProperties;
   group: APIAlertGroupT;
   alert: APIAlertT;

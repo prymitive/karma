@@ -4,10 +4,12 @@ import merge from "lodash.merge";
 
 import { CommonOptions } from "Common/Fetch";
 
+type useFetchDeleteDepsT = string[] | number[];
+
 const useFetchDelete = (
   uri: string,
   options: RequestInit,
-  deps: any[] = []
+  deps: useFetchDeleteDepsT = []
 ): {
   response: null | string;
   error: null | string;

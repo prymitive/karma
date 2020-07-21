@@ -1,4 +1,4 @@
-import React, { FC, useEffect, ReactNode, ComponentType } from "react";
+import React, { FC, useEffect } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -7,7 +7,6 @@ import {
   PlaceholderProps,
   ValueContainerProps,
 } from "react-select";
-
 import Creatable from "react-select/creatable";
 
 import { FormatBackendURI } from "Stores/AlertStore";
@@ -32,23 +31,27 @@ const GenerateHashFromMatchers = (
     },
   });
 
-const Placeholder: FC = (props) => {
+const Placeholder: FC<PlaceholderProps<OptionT>> = (props) => {
   return (
     <div>
-      <components.Placeholder {...(props as PlaceholderProps<any>)} />
+      <components.Placeholder {...props} />
     </div>
   );
 };
 
-const ValueContainer: FC<{
+interface ValueContainerPropsT extends ValueContainerProps<OptionT> {
   selectProps: {
     silenceFormStore: SilenceFormStore;
     matcher: MatcherWithIDT;
   };
-  props: ValueContainerProps<any>;
-  children: ReactNode;
-}> = ({ children, selectProps, ...props }) => (
-  <components.ValueContainer {...(props as any)}>
+}
+
+const ValueContainer: FC<ValueContainerPropsT> = ({
+  children,
+  selectProps,
+  ...props
+}) => (
+  <components.ValueContainer {...(props as ValueContainerProps<OptionT>)}>
     {selectProps.matcher.values.length > 0 ? (
       <MatchCounter
         key={GenerateHashFromMatchers(
@@ -105,7 +108,7 @@ const LabelValueInput: FC<{
       hideSelectedOptions
       isMulti
       components={{
-        ValueContainer: ValueContainer as ComponentType<any>,
+        ValueContainer: ValueContainer as FC<ValueContainerProps<OptionT>>,
         Placeholder: Placeholder,
       }}
       silenceFormStore={silenceFormStore}

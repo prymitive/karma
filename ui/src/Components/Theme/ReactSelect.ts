@@ -46,8 +46,14 @@ const ReactSelectColors: ReactSelectThemes = {
   },
 };
 
+interface stateFnT {
+  isFocused: boolean;
+  isMulti: boolean;
+  isDisabled: boolean;
+}
+
 const ReactSelectStyles = (theme: ReactSelectTheme): Styles => ({
-  control: (base: CSSProperties, state: any) =>
+  control: (base: CSSProperties, state: stateFnT) =>
     state.isFocused
       ? {
           ...base,
@@ -68,7 +74,7 @@ const ReactSelectStyles = (theme: ReactSelectTheme): Styles => ({
           borderColor: theme.borderColor,
           "&:hover": { borderColor: theme.borderColor },
         },
-  valueContainer: (base: CSSProperties, state: any) =>
+  valueContainer: (base: CSSProperties, state: stateFnT) =>
     state.isMulti
       ? {
           ...base,
@@ -132,7 +138,7 @@ const ReactSelectStyles = (theme: ReactSelectTheme): Styles => ({
     ...base,
     color: "inherit",
   }),
-  indicatorsContainer: (base: CSSProperties, state: any) => ({
+  indicatorsContainer: (base: CSSProperties, state: stateFnT) => ({
     ...base,
     backgroundColor: state.isDisabled
       ? theme.disabledValueContainerBackground
@@ -140,7 +146,7 @@ const ReactSelectStyles = (theme: ReactSelectTheme): Styles => ({
     borderTopRightRadius: "0.25rem",
     borderBottomRightRadius: "0.25rem",
   }),
-  dropdownIndicator: (base: CSSProperties, state: any) =>
+  dropdownIndicator: (base: CSSProperties, state: stateFnT) =>
     state.isFocused
       ? {
           ...base,
