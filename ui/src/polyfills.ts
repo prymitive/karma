@@ -6,13 +6,18 @@ import "react-app-polyfill/stable";
 // https://www.npmjs.com/package/react-intersection-observer#polyfill
 import "intersection-observer";
 
+declare global {
+  interface Window {
+    ResizeObserver: () => void;
+  }
+}
+
 const pollyfillsLoaded: string[] = [];
 
 if ("ResizeObserver" in window === false) {
   pollyfillsLoaded.push("ResizeObserver");
   const module = require("@juggle/resize-observer"); // eslint-disable-line @typescript-eslint/no-var-requires
-  (window as any).ResizeObserver = module.ResizeObserver;
-  (window as any).ResizeObserverEntry = module.ResizeObserverEntry;
+  window.ResizeObserver = module.ResizeObserver;
 }
 
 export default pollyfillsLoaded;

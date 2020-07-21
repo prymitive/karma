@@ -15,7 +15,7 @@ const Duration: FC<{
   const rootRef = useRef(null as null | HTMLDivElement);
 
   useEffect(() => {
-    const cancelWheel = (event: any) => event.preventDefault();
+    const cancelWheel = (event: Event) => event.preventDefault();
 
     const elem = rootRef.current as HTMLDivElement;
 

@@ -69,7 +69,7 @@ const ActionButton: FC<{
 
 const HistoryMenu: FC<{
   popperPlacement?: string;
-  popperRef?: Ref<any>;
+  popperRef?: Ref<HTMLDivElement>;
   popperStyle?: CSSProperties;
   filters: ReduceFilterT[][];
   alertStore: AlertStore;

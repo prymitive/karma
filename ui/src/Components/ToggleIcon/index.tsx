@@ -6,7 +6,7 @@ import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 const ToggleIcon: FunctionComponent<{
   isOpen: boolean;
   className?: string;
-  onClick?: any;
+  onClick?: () => void;
 }> = ({ className, isOpen, onClick }) => {
   return (
     <FontAwesomeIcon

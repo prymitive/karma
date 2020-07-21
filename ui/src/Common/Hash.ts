@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 // https://stackoverflow.com/a/58208791/1154047
 const normalize = (): any => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return function (_: string, value: any) {
     if (typeof value === "object" && !Array.isArray(value)) {
       return Object.entries(value)

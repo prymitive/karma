@@ -22,7 +22,7 @@ const FilterInput: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
 }> = ({ alertStore, settingsStore }) => {
-  const autosuggestRef = useRef(null as null | Autosuggest<any, any>);
+  const autosuggestRef = useRef(null as null | Autosuggest);
   const inputRef = useRef(null as null | HTMLElement);
   const formRef = useRef(null);
 
