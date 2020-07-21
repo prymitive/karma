@@ -7,7 +7,7 @@ function useOnClickOutside(
   ref: RefObject<HTMLElement>,
   handler: Handler,
   enabled: boolean
-) {
+): void {
   useEffect(() => {
     const listener: { (event: MouseEvent | TouchEvent): void } = (
       event: MouseEvent | TouchEvent

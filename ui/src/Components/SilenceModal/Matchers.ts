@@ -18,7 +18,7 @@ const MatcherToFilter = (matcher: MatcherT): string => {
 };
 
 const AlertManagersToFilter = (alertmanagers: MultiValueOptionT[]): string => {
-  let amNames: string[] = ([] as string[]).concat(
+  const amNames: string[] = ([] as string[]).concat(
     ...alertmanagers.map((am) => am.value)
   );
   return FormatQuery(

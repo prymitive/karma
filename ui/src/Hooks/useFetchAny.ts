@@ -25,7 +25,13 @@ interface ResponseState {
 const useFetchAny = (
   upstreams: UpstreamT[],
   { fetcher = null }: FetchAnyOptionsT = {}
-) => {
+): {
+  response: string | { [key: string]: any } | null;
+  error: string | null;
+  responseURI: string | null;
+  inProgress: boolean;
+  reset: () => void;
+} => {
   const [index, setIndex] = useState(0);
   const [response, setResponse] = useState({
     response: null,

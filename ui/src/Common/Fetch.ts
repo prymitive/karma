@@ -20,7 +20,7 @@ const FetchGet = async (
   uri: string,
   options: RequestInit,
   beforeRetry: PreRetryCallback
-) =>
+): Promise<Response> =>
   await promiseRetry(
     (retry, number) =>
       fetch(

@@ -39,7 +39,7 @@ const onSilenceClick = (
   silenceFormStore: SilenceFormStore,
   group: APIAlertGroupT
 ) => {
-  let clusters: { [cluster: string]: string[] } = {};
+  const clusters: { [cluster: string]: string[] } = {};
   Object.entries(alertStore.data.clustersWithoutReadOnly).forEach(
     ([cluster, members]) => {
       members.forEach((member) => {
@@ -77,7 +77,7 @@ const MenuContent: FC<{
   alertStore,
   silenceFormStore,
 }) => {
-  let groupFilters = Object.keys(group.labels).map((name) =>
+  const groupFilters = Object.keys(group.labels).map((name) =>
     FormatQuery(name, QueryOperators.Equal, group.labels[name])
   );
   groupFilters.push(

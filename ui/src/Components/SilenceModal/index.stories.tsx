@@ -238,8 +238,8 @@ storiesOf("SilenceModal", module)
       clusters: { am: ["am1"] },
     };
 
-    let silences = [];
-    for (var index = 1; index <= 18; index++) {
+    const silences = [];
+    for (let index = 1; index <= 18; index++) {
       const silence = MockSilence();
       silence.startsAt = "2018-08-14T16:00:00Z";
       silence.endsAt = `2018-08-14T18:${index < 10 ? "0" + index : index}:00Z`;

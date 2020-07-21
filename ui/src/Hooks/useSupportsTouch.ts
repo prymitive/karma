@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
-function useSupportsTouch() {
+function useSupportsTouch(): boolean {
   const [supportsTouch, setSupportsTouch] = useState(false);
 
   const handler = useCallback(() => setSupportsTouch(true), []);

@@ -4,9 +4,10 @@ import { init } from "@sentry/browser";
 
 import { UIDefaults } from "Models/UI";
 
-const SettingsElement = () => document.getElementById("settings");
+const SettingsElement = (): HTMLElement | null =>
+  document.getElementById("settings");
 
-const SetupSentry = (settingsElement: HTMLElement | null) => {
+const SetupSentry = (settingsElement: HTMLElement | null): void => {
   if (
     settingsElement !== null &&
     settingsElement.dataset.sentryDsn &&

@@ -24,7 +24,7 @@ let settingsStore: Settings;
 let cluster: string;
 let silence: APISilenceT;
 
-declare var global: any;
+declare let global: any;
 
 beforeEach(() => {
   advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
@@ -69,8 +69,8 @@ afterEach(() => {
 });
 
 const MockSilenceList = (count: number) => {
-  let silences = [];
-  for (var index = 1; index <= count; index++) {
+  const silences = [];
+  for (let index = 1; index <= count; index++) {
     const silence = MockSilence();
     silence.id = `silence${index}`;
     silences.push({

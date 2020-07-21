@@ -67,7 +67,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     this.timer = null;
   }
 
-  reloadApp = () => {
+  reloadApp = (): void => {
     if (this.state.reloadSeconds <= 1) {
       window.location.reload();
     } else {
@@ -75,7 +75,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     }
   };
 
-  componentDidCatch(error: Error, { componentStack }: ErrorInfo) {
+  componentDidCatch(error: Error, { componentStack }: ErrorInfo): void {
     if (this.state.cachedError === null) {
       this.setState({ cachedError: error });
       captureException(error, { contexts: { react: { componentStack } } });
@@ -87,7 +87,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     }
   }
 
-  render() {
+  render(): ReactNode {
     if (this.state.cachedError !== null) {
       return (
         <InternalError

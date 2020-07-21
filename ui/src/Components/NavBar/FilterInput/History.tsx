@@ -201,7 +201,7 @@ const History: FC<{
 
       // rewrite history putting current filter set on top, this will move
       // it up if user selects a filter set that was already in history
-      let newHistory = [
+      const newHistory = [
         ...[validAppliedFilters],
         ...history.filters.filter((f) => JSON.stringify(f) !== filtersJSON),
       ].slice(0, 8);

@@ -109,8 +109,8 @@ const MockAPIResponse = () => {
 };
 
 const MockSilenceResponse = (cluster: string, count: number) => {
-  let silences = [];
-  for (var index = 1; index <= count; index++) {
+  const silences = [];
+  for (let index = 1; index <= count; index++) {
     const silence = MockSilence();
     silence.id = `silence${index}`;
     silences.push({

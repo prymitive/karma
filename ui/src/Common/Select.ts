@@ -1,6 +1,6 @@
-export const NewLabelName = (v: string) => `New label: ${v}`;
+export const NewLabelName = (v: string): string => `New label: ${v}`;
 
-export const NewLabelValue = (v: string) => `New value: ${v}`;
+export const NewLabelValue = (v: string): string => `New value: ${v}`;
 
 export interface OptionT {
   label: string;

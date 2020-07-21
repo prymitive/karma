@@ -22,7 +22,7 @@ import { MatchCounter } from "./MatchCounter";
 const GenerateHashFromMatchers = (
   silenceFormStore: SilenceFormStore,
   matcher: MatcherWithIDT
-): string =>
+): number =>
   hashObject({
     alertmanagers: silenceFormStore.data.alertmanagers,
     matcher: {
@@ -32,7 +32,7 @@ const GenerateHashFromMatchers = (
     },
   });
 
-const Placeholder: FC<{}> = (props) => {
+const Placeholder: FC = (props) => {
   return (
     <div>
       <components.Placeholder {...(props as PlaceholderProps<any>)} />

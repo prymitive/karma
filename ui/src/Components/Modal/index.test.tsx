@@ -75,7 +75,7 @@ describe("<ModalInner />", () => {
 
   it("'modal-open' class is removed from body when visible modal is updated to be hidden", () => {
     document.body.classList.toggle("modal-open", true);
-    let isOpen = true;
+    const isOpen = true;
     const tree = MountedModal(isOpen);
     expect(document.body.className.split(" ")).toContain("modal-open");
 

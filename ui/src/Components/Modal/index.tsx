@@ -23,7 +23,7 @@ const ModalInner: FC<{
       document.body.classList.add("modal-open");
       disableBodyScroll(ref.current, { reserveScrollBarGap: true });
 
-      let modal = ref.current;
+      const modal = ref.current;
       return () => {
         if (!isUpper) document.body.classList.remove("modal-open");
         enableBodyScroll(modal);

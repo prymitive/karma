@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, ReactNode } from "react";
 
 import { TransitionProps } from "react-transition-group/Transition";
 
@@ -13,7 +13,9 @@ const defaultProps: TransitionProps = {
   exit: false,
 };
 
-const useFlashTransition = (flashOn: any) => {
+const useFlashTransition = (
+  flashOn: ReactNode
+): { ref: (node?: Element | null) => void; props: TransitionProps } => {
   const mountRef = useRef(false);
   const [ref, inView] = useInView();
   const [isPending, setIsPending] = useState(false);

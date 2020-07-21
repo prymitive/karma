@@ -65,7 +65,7 @@ const MatchersFromGroup = (
   alerts?: APIAlertT[],
   onlyActive?: boolean
 ): MatcherWithIDT[] => {
-  let matchers: MatcherWithIDT[] = [];
+  const matchers: MatcherWithIDT[] = [];
 
   // add matchers for all shared labels in this group
   for (const [key, value] of Object.entries(
@@ -93,9 +93,9 @@ const MatchersFromGroup = (
   // https://stackoverflow.com/a/34498210/1154047
   const sharedLabelKeys = allLabelKeys.length
     ? allLabelKeys.reduce(function (r, a) {
-        var last: { [key: string]: number } = {};
+        const last: { [key: string]: number } = {};
         return r.filter(function (b) {
-          var p = a.indexOf(b, last[b] || 0);
+          const p = a.indexOf(b, last[b] || 0);
           if (~p) {
             last[b] = p + 1;
             return true;
@@ -106,7 +106,7 @@ const MatchersFromGroup = (
     : [];
 
   // add matchers for all unique labels in this group
-  let labels: { [key: string]: Set<string> } = {};
+  const labels: { [key: string]: Set<string> } = {};
   for (const alert of filteredAlerts) {
     for (const [key, value] of Object.entries(alert.labels)) {
       if (sharedLabelKeys.includes(key) && !stripLabels.includes(key)) {
@@ -278,7 +278,7 @@ class SilenceFormStore {
           return false;
         }
 
-        let matchers: MatcherWithIDT[] = [];
+        const matchers: MatcherWithIDT[] = [];
         parsed.m.forEach((m: SimplifiedMatcherT) => {
           const matcher = NewEmptyMatcher();
           matcher.name = m.n;

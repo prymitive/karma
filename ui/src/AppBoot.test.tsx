@@ -17,7 +17,7 @@ beforeAll(() => {
 });
 
 // https://github.com/getsentry/sentry-javascript/blob/8184a5472e4a18f8b11873123ee1d940b64317c3/packages/minimal/test/lib/minimal.test.ts#L20
-declare var global: any;
+declare let global: any;
 
 afterEach(() => {
   jest.restoreAllMocks();

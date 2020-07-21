@@ -8,8 +8,8 @@ import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { StringToOption } from "Common/Select";
 import { App } from "./App";
 
-declare var global: any;
-declare var window: any;
+declare let global: any;
+declare let window: any;
 
 const uiDefaults: UIDefaults = {
   Refresh: 30 * 1000 * 1000 * 1000,
@@ -124,7 +124,7 @@ describe("<App />", () => {
       search: "?q=bar",
     };
 
-    let event = new PopStateEvent("popstate");
+    const event = new PopStateEvent("popstate");
     window.onpopstate(event);
 
     expect(window.location.search).toBe("?q=bar");
@@ -136,7 +136,7 @@ describe("<App />", () => {
     );
     tree.unmount();
 
-    let event = new PopStateEvent("popstate");
+    const event = new PopStateEvent("popstate");
     window.onpopstate(event);
   });
 
