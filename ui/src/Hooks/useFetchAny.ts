@@ -15,18 +15,18 @@ export interface FetchAnyOptionsT {
   fetcher?: null | FetchFunctionT;
 }
 
-interface ResponseState {
-  response: string | { [key: string]: any } | null;
+interface ResponseState<T> {
+  response: T | null;
   error: string | null;
   responseURI: string | null;
   inProgress: boolean;
 }
 
-const useFetchAny = (
+const useFetchAny = <T>(
   upstreams: UpstreamT[],
   { fetcher = null }: FetchAnyOptionsT = {}
 ): {
-  response: string | { [key: string]: any } | null;
+  response: T | null;
   error: string | null;
   responseURI: string | null;
   inProgress: boolean;
@@ -38,7 +38,7 @@ const useFetchAny = (
     error: null,
     responseURI: null,
     inProgress: false,
-  } as ResponseState);
+  } as ResponseState<T>);
 
   const reset = useCallback(() => {
     setIndex(0);
