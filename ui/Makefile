@@ -27,7 +27,7 @@ test-percy: node_modules/@storybook/react/bin/build.js
 
 .PHONY: lint-js
 lint-js: node_modules/eslint/bin/eslint.js
-	node_modules/eslint/bin/eslint.js --quiet src
+	node_modules/eslint/bin/eslint.js --quiet 'src/**/*.{ts,tsx}'
 
 .PHONY: lint-git-ci
 lint-git-ci: node_modules/@commitlint/travis-cli/lib/cli.js
