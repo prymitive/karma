@@ -59,7 +59,7 @@ jobs:
       script:
         - ./scripts/have-backend-changes.sh || ./scripts/ci-diff-benchmark-go.sh
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Test Go code
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
@@ -69,7 +69,7 @@ jobs:
       after_success:
         - travis_retry curl -s --connect-timeout 30 --fail https://codecov.io/bash | bash -s -- -F backend
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Test JavaScript code
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
@@ -78,7 +78,7 @@ jobs:
         - travis_retry curl -s --connect-timeout 30 --fail https://codecov.io/bash | bash -s -- -F ui
 
     # duplicate js test but with a different time zone, to ensure that tests/code work with non-UTC time zone
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Test JavaScript code with Pacific/Easter time zone
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
@@ -86,18 +86,18 @@ jobs:
       after_success:
         - travis_retry curl -s --connect-timeout 30 --fail https://codecov.io/bash | bash -s -- -F ui
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Check for non-typescript UI components
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       script: make -C ui lint-typescript
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Lint git commit
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
       script: make -C ui lint-git-ci
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Lint Go code
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
@@ -105,7 +105,7 @@ jobs:
         - travis_retry make mock-assets
       script: travis_retry make lint-go
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Check Go code formatting
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
@@ -115,7 +115,7 @@ jobs:
         - make format-go
         - git diff --exit-code
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Verify go.sum
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
@@ -126,13 +126,13 @@ jobs:
         - make tools-go-mod-tidy
         - git diff --exit-code
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Lint JavaScript code
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
       script: make -C ui lint-js
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Check JavaScript code formatting
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
@@ -140,20 +140,20 @@ jobs:
         - make -C ui format
         - git diff --exit-code
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Check JavaScript dependencies
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
       script:
         - make -C ui lint-deps
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Lint documentation
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_JS
       script: make -C ui lint-docs
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Verify OpenAPI client code
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       language: shell
@@ -165,25 +165,25 @@ jobs:
         - travis_retry make openapi-client
         - git diff --exit-code
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Lint Golang Version
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       language: shell
       script: make lint-golang-version
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Lint Node Version
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       language: shell
       script: make lint-nodejs-version
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Lint Bootstrap Version
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       language: shell
       script: make lint-bootstrap-version
 
-    - stage: Test & Lint
+    - stage: Test and Lint
       name: Generate Changelog
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       <<: *DEFAULTS_GO
