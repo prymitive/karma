@@ -19,11 +19,11 @@ const SilenceSubmitProgress: FC<{
   members: string[];
   payload: AlertmanagerSilencePayloadT;
 }> = ({ alertStore, silenceFormStore, cluster, members, payload }) => {
-  const [upstreams, setUpstreams] = useState([] as UpstreamT[]);
+  const [upstreams, setUpstreams] = useState<UpstreamT[]>([]);
   const { response, error, inProgress, responseURI } = useFetchAny<
     PostResponseT
   >(upstreams);
-  const [publicURIs, setPublicURIs] = useState({} as { [key: string]: string });
+  const [publicURIs, setPublicURIs] = useState<{ [key: string]: string }>({});
 
   useEffect(() => {
     const uris: { [uri: string]: string } = {};

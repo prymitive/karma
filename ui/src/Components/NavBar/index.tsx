@@ -29,8 +29,8 @@ const NavBar: FC<{
   silenceFormStore: SilenceFormStore;
   fixedTop?: boolean;
 }> = ({ alertStore, settingsStore, silenceFormStore, fixedTop = true }) => {
-  const [isIdle, setIsIdle] = useState(false);
-  const [containerClass, setContainerClass] = useState("visible");
+  const [isIdle, setIsIdle] = useState<boolean>(false);
+  const [containerClass, setContainerClass] = useState<string>("visible");
 
   const context = React.useContext(ThemeContext);
 

@@ -176,11 +176,11 @@ const History: FC<{
     }
   );
 
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
   const hide = useCallback(() => setIsVisible(false), []);
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 
-  const mountRef = useRef(false);
+  const mountRef = useRef<boolean>(false);
 
   // every time this component updates we will rewrite history
   // (if there are changes)
@@ -211,7 +211,7 @@ const History: FC<{
     }
   });
 
-  const ref = useRef(null as null | HTMLElement);
+  const ref = useRef<HTMLSpanElement | null>(null);
   useOnClickOutside(ref, hide, isVisible);
 
   return useObserver(() => (

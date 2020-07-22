@@ -26,12 +26,12 @@ const useFetchGet = <T>(
   get: () => void;
   cancelGet: () => void;
 } => {
-  const [response, setResponse] = useState(null as null | T);
-  const [error, setError] = useState(null as string | null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isRetrying, setIsRetrying] = useState(false);
-  const [retryCount, setRetryCount] = useState(0);
-  const isCanceled = useRef(false);
+  const [response, setResponse] = useState<T | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isRetrying, setIsRetrying] = useState<boolean>(false);
+  const [retryCount, setRetryCount] = useState<number>(0);
+  const isCanceled = useRef<boolean>(false);
 
   const cancelGet = useCallback(() => {
     isCanceled.current = true;

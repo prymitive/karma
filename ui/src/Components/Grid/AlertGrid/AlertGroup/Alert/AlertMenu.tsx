@@ -129,7 +129,7 @@ const AlertMenu: FC<{
   silenceFormStore: SilenceFormStore;
   setIsMenuOpen: (isOpen: boolean) => void;
 }> = ({ group, alert, alertStore, silenceFormStore, setIsMenuOpen }) => {
-  const [isHidden, setIsHidden] = useState(true);
+  const [isHidden, setIsHidden] = useState<boolean>(true);
 
   const toggle = useCallback(() => {
     setIsMenuOpen(isHidden);
@@ -141,7 +141,7 @@ const AlertMenu: FC<{
     setIsMenuOpen(false);
   }, [setIsMenuOpen]);
 
-  const rootRef = useRef(null);
+  const rootRef = useRef<HTMLSpanElement | null>(null);
   useOnClickOutside(rootRef, hide, !isHidden);
 
   return useObserver(() => (

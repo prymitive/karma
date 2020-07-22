@@ -57,13 +57,15 @@ const Browser: FC<{
   settingsStore: Settings;
 }> = ({ alertStore, silenceFormStore, settingsStore }) => {
   const maxPerPage = IsMobile() ? 4 : 6;
-  const [sortReverse, setSortReverse] = useState(false);
-  const [showExpired, setShowExpired] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [activePage, setActivePage] = useState(1);
-  const [currentTime, setCurrentTime] = useState(Math.floor(Date.now() / 1000));
+  const [sortReverse, setSortReverse] = useState<boolean>(false);
+  const [showExpired, setShowExpired] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [activePage, setActivePage] = useState<number>(1);
+  const [currentTime, setCurrentTime] = useState<number>(
+    Math.floor(Date.now() / 1000)
+  );
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 500);
+  const debouncedSearchTerm = useDebounce<string>(searchTerm, 500);
 
   const { response, error, isLoading, isRetrying } = useFetchGet<
     APIManagedSilenceT[]

@@ -5,9 +5,9 @@ import Bricks, { SizeDetail, Instance } from "bricks.js";
 const useGrid = (
   sizes: SizeDetail[]
 ): { ref: Ref<HTMLElement>; repack: () => void } => {
-  const ref = useRef(null as HTMLElement | null);
-  const grid = useRef(null as Instance | null);
-  const [repack, setRepack] = useState(() => () => {});
+  const ref = useRef<HTMLElement | null>(null);
+  const grid = useRef<Instance | null>(null);
+  const [repack, setRepack] = useState<() => void>(() => () => {});
 
   useEffect(() => {
     if (!grid.current && ref.current) {

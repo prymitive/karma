@@ -7,8 +7,8 @@ import { Settings } from "Stores/Settings";
 const AlertGroupConfiguration: FC<{
   settingsStore: Settings;
 }> = ({ settingsStore }) => {
-  const [defaultRenderCount, setDefaultRenderCount] = useState(
-    settingsStore.alertGroupConfig.config.defaultRenderCount as number
+  const [defaultRenderCount, setDefaultRenderCount] = useState<number>(
+    settingsStore.alertGroupConfig.config.defaultRenderCount
   );
 
   const onChangeComplete = (value: number) => {

@@ -24,9 +24,9 @@ const InlineEdit: FC<{
   onEnterEditing,
   onExitEditing,
 }) => {
-  const ref = useRef(null as null | HTMLInputElement);
-  const [editedValue, setEditedValue] = useState(null as null | string);
-  const [isEditing, setIsEditing] = useState(false);
+  const ref = useRef<HTMLInputElement | null>(null);
+  const [editedValue, setEditedValue] = useState<string | null>(null);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
 
   const startEditing = () => {
     if (onEnterEditing) {

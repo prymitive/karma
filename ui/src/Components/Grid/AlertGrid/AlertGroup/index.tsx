@@ -65,15 +65,15 @@ const AlertGroup: FC<{
   const defaultRenderCount =
     settingsStore.alertGroupConfig.config.defaultRenderCount;
 
-  const [alertsToRenderInternal, setAlertsToRender] = useState(
+  const [alertsToRenderInternal, setAlertsToRender] = useState<number | null>(
     initialAlertsToRender || null
   );
 
   const alertsToRender = alertsToRenderInternal || defaultRenderCount;
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
-  const [isCollapsed, setIsCollapsed] = useState(
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(
     DefaultDetailsCollapseValue(settingsStore)
   );
 

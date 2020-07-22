@@ -53,9 +53,9 @@ interface AppProps {
 }
 
 const App: FunctionComponent<AppProps> = ({ defaultFilters, uiDefaults }) => {
-  const [alertStore] = useState(new AlertStore(null));
-  const [silenceFormStore] = useState(new SilenceFormStore());
-  const [settingsStore] = useState(new Settings(uiDefaults));
+  const [alertStore] = useState<AlertStore>(new AlertStore(null));
+  const [silenceFormStore] = useState<SilenceFormStore>(new SilenceFormStore());
+  const [settingsStore] = useState<Settings>(new Settings(uiDefaults));
 
   useEffect(() => {
     let filters;

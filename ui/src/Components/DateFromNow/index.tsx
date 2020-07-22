@@ -18,7 +18,7 @@ const formatLabel = (timestamp: string) => {
 export const DateFromNow: FunctionComponent<{ timestamp: string }> = ({
   timestamp,
 }) => {
-  const [label, setLabel] = useState(formatLabel(timestamp));
+  const [label, setLabel] = useState<string>(formatLabel(timestamp));
 
   useEffect(() => {
     const timer = setInterval(

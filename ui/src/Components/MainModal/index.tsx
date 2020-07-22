@@ -20,7 +20,7 @@ const MainModal: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
 }> = ({ alertStore, settingsStore }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 

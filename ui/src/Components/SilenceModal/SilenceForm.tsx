@@ -37,7 +37,7 @@ import { IconInput, AuthenticatedAuthorInput } from "./AuthorInput";
 const ShareButton: FC<{
   silenceFormStore: SilenceFormStore;
 }> = ({ silenceFormStore }) => {
-  const [clickCount, setClickCount] = useState(0);
+  const [clickCount, setClickCount] = useState<number>(0);
 
   const baseURL = [
     window.location.protocol,
@@ -88,7 +88,7 @@ const SilenceForm: FC<{
   settingsStore: Settings;
   previewOpen: boolean;
 }> = ({ alertStore, silenceFormStore, settingsStore, previewOpen }) => {
-  const [showPreview, setShowPreview] = useState(previewOpen);
+  const [showPreview, setShowPreview] = useState<boolean>(previewOpen);
 
   useEffect(() => {
     // reset startsAt & endsAt on every mount, unless we're editing a silence

@@ -19,7 +19,7 @@ const Accordion: FunctionComponent<{
   content: ReactNode;
   defaultIsOpen?: boolean;
 }> = ({ text, content, defaultIsOpen }) => {
-  const [isOpen, setIsOpen] = useState(defaultIsOpen || false);
+  const [isOpen, setIsOpen] = useState<boolean>(defaultIsOpen || false);
 
   return (
     <div className="accordion card">

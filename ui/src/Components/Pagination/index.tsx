@@ -27,7 +27,7 @@ const PageSelect: FC<{
   initialPage = 1,
   setPageCallback,
 }) => {
-  const [activePage, setActivePage] = useState(initialPage);
+  const [activePage, setActivePage] = useState<number>(initialPage);
 
   const onChange = (page: number) => {
     setActivePage(page);

@@ -23,7 +23,7 @@ const MainModalContent: FC<{
   openTab = "configuration",
   expandAllOptions,
 }) => {
-  const [tab, setTab] = useState(openTab);
+  const [tab, setTab] = useState<OpenTabT>(openTab);
 
   return useObserver(() => (
     <React.Fragment>

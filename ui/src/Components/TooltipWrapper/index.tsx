@@ -12,12 +12,10 @@ const TooltipWrapper: FC<{
   children: ReactNode;
   className?: string;
 }> = ({ title, children, className }) => {
-  const [referenceElement, setReferenceElement] = useState(
-    null as HTMLElement | null
+  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
+    null
   );
-  const [popperElement, setPopperElement] = useState(
-    null as HTMLElement | null
-  );
+  const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: "top",
     modifiers: [
@@ -31,9 +29,9 @@ const TooltipWrapper: FC<{
   });
 
   const supportsTouch = useSupportsTouch();
-  const [isHovering, setIsHovering] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const [wasClicked, setWasClicked] = useState(false);
+  const [isHovering, setIsHovering] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [wasClicked, setWasClicked] = useState<boolean>(false);
 
   const showTooltip = () => setIsHovering(true);
   const hideTooltip = () => setIsHovering(false);
