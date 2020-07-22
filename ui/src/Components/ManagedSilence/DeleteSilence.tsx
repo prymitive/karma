@@ -54,13 +54,15 @@ const DeleteResult: FC<{
   cluster: string;
   silence: APISilenceT;
 }> = ({ alertStore, cluster, silence }) => {
-  const [currentTime, setCurrentTime] = useState(Math.floor(Date.now()));
+  const [currentTime, setCurrentTime] = useState<number>(
+    Math.floor(Date.now())
+  );
 
   const am = alertStore.data.readWriteAlertmanagers
     .filter((u) => u.cluster === cluster)
     .slice(0, 1)[0];
 
-  const [deleteFetchOptions] = useState({
+  const [deleteFetchOptions] = useState<RequestInit>({
     headers: am.headers,
     credentials: am.corsCredentials,
   });
@@ -107,7 +109,7 @@ const DeleteSilenceModalContent: FC<{
   silence: APISilenceT;
   onHide: () => void;
 }> = ({ alertStore, silenceFormStore, cluster, silence, onHide }) => {
-  const [confirm, setConfirm] = useState(false);
+  const [confirm, setConfirm] = useState<boolean>(false);
 
   useEffect(() => {
     silenceFormStore.toggle.setBlur(true);
@@ -167,7 +169,7 @@ const DeleteSilence: FC<{
   silence: APISilenceT;
   isUpper?: boolean;
 }> = ({ alertStore, silenceFormStore, cluster, silence, isUpper = false }) => {
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState<boolean>(false);
 
   const members = alertStore.data.getClusterAlertmanagersWithoutReadOnly(
     cluster

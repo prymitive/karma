@@ -32,7 +32,7 @@ const HourMinute: FC<{
   onMinuteDec: () => void;
 }> = observer(
   ({ dateValue, onHourInc, onHourDec, onMinuteInc, onMinuteDec }) => {
-    const rootRef = useRef(null as null | HTMLDivElement);
+    const rootRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
       const cancelWheel = (event: Event) => event.preventDefault();

@@ -108,7 +108,7 @@ const OverviewModalContent: FC<{
   alertStore: AlertStore;
   onHide: () => void;
 }> = observer(({ alertStore, onHide }) => {
-  const [showAllLabels, setShowAllLabels] = useState(false);
+  const [showAllLabels, setShowAllLabels] = useState<boolean>(false);
   return (
     <React.Fragment>
       <div className="modal-header">

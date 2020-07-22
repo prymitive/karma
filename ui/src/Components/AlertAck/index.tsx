@@ -27,17 +27,23 @@ interface ClusterT {
   members: string[];
 }
 
+interface PostResponseT {
+  silenceID: string;
+}
+
 const AlertAck: FC<{
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
   group: APIAlertGroupT;
 }> = ({ alertStore, silenceFormStore, group }) => {
-  const [clusters, setClusters] = useState([] as ClusterT[]);
-  const [upstreams, setUpstreams] = useState([] as UpstreamT[]);
-  const [currentCluster, setCurrentCluster] = useState(0);
-  const [isAcking, setIsAcking] = useState(false);
+  const [clusters, setClusters] = useState<ClusterT[]>([]);
+  const [upstreams, setUpstreams] = useState<UpstreamT[]>([]);
+  const [currentCluster, setCurrentCluster] = useState<number>(0);
+  const [isAcking, setIsAcking] = useState<boolean>(false);
 
-  const { response, error, inProgress, reset } = useFetchAny(upstreams);
+  const { response, error, inProgress, reset } = useFetchAny<PostResponseT>(
+    upstreams
+  );
 
   const onACK = () => {
     setIsAcking(true);

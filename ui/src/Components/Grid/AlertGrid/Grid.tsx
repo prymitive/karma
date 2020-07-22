@@ -52,9 +52,9 @@ const Grid: FC<{
   const { ref, repack } = useGrid(gridSizesConfig);
   const debouncedRepack = useCallback(debounce(repack, 10), [repack]);
 
-  const [groupsToRender, setGroupsToRender] = useState(50);
+  const [groupsToRender, setGroupsToRender] = useState<number>(50);
 
-  const [isExpanded, setIsExpanded] = useState(
+  const [isExpanded, setIsExpanded] = useState<boolean>(
     !DefaultDetailsCollapseValue(settingsStore)
   );
   const toggleIsExpanded = useCallback(() => {

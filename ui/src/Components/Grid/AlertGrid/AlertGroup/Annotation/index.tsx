@@ -18,9 +18,9 @@ const RenderNonLinkAnnotation: FC<{
   visible: boolean;
   afterUpdate: () => void;
 }> = memo(({ name, value, visible, afterUpdate }) => {
-  const mountRef = useRef(false);
+  const mountRef = useRef<boolean>(false);
 
-  const [isVisible, setIsVisible] = useState(visible);
+  const [isVisible, setIsVisible] = useState<boolean>(visible);
 
   useEffect(() => {
     if (mountRef.current) {

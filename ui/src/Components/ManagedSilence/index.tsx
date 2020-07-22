@@ -39,7 +39,7 @@ const ManagedSilence: FC<{
     if (onDidUpdate) onDidUpdate();
   });
 
-  const [showDetails, setShowDetails] = useState(isOpen);
+  const [showDetails, setShowDetails] = useState<boolean>(isOpen);
 
   const onEditSilence = () => {
     const alertmanager = GetAlertmanager(alertStore, cluster);

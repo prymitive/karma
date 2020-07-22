@@ -22,13 +22,13 @@ const FilterInput: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
 }> = ({ alertStore, settingsStore }) => {
-  const autosuggestRef = useRef(null as null | Autosuggest);
-  const inputRef = useRef(null as null | HTMLElement);
-  const formRef = useRef(null);
+  const autosuggestRef = useRef<Autosuggest | null>(null);
+  const inputRef = useRef<HTMLElement | null>(null);
+  const formRef = useRef<HTMLDivElement | null>(null);
 
-  const [suggestions, setSuggestions] = useState([] as string[]);
-  const [value, setValue] = useState("");
-  const [isFocused, setIsFocused] = useState(false);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [value, setValue] = useState<string>("");
+  const [isFocused, setIsFocused] = useState<boolean>(false);
 
   const onSuggestionsClearRequested = useCallback(() => setSuggestions([]), []);
 
@@ -65,8 +65,8 @@ const FilterInput: FC<{
   const onBlur = useCallback(() => setIsFocused(false), []);
   useOnClickOutside(formRef, onBlur, true);
 
-  const [term, setTerm] = useState("");
-  const debouncedSearchTerm = useDebounce(term, 300);
+  const [term, setTerm] = useState<string>("");
+  const debouncedSearchTerm = useDebounce<string>(term, 300);
 
   const { response, error, isLoading, get, cancelGet } = useFetchGet<string[]>(
     FormatBackendURI(`autocomplete.json?term=${debouncedSearchTerm}`),

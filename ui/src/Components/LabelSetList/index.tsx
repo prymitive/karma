@@ -33,7 +33,7 @@ const LabelSetList: FC<{
   labelsList: { [labelName: string]: string }[];
   title?: string;
 }> = ({ alertStore, labelsList, title }) => {
-  const [activePage, setActivePage] = useState(1);
+  const [activePage, setActivePage] = useState<number>(1);
 
   const maxPerPage = IsMobile() ? 5 : 10;
 

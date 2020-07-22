@@ -19,7 +19,7 @@ const InhibitedByModal: FC<{
   alertStore: AlertStore;
   fingerprints: string[];
 }> = ({ alertStore, fingerprints }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 

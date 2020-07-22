@@ -22,7 +22,7 @@ const OverviewModalContent = React.lazy(() =>
 const OverviewModal: FC<{
   alertStore: AlertStore;
 }> = ({ alertStore }) => {
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 

@@ -7,7 +7,7 @@ import { Settings } from "Stores/Settings";
 const FetchConfiguration: FC<{
   settingsStore: Settings;
 }> = ({ settingsStore }) => {
-  const [fetchInterval, setFetchInterval] = useState(
+  const [fetchInterval, setFetchInterval] = useState<number>(
     settingsStore.fetchConfig.config.interval
   );
 

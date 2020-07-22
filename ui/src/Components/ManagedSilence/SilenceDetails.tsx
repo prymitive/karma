@@ -28,7 +28,7 @@ import { DeleteSilence } from "./DeleteSilence";
 const SilenceIDCopyButton: FC<{
   id: string;
 }> = ({ id }) => {
-  const [clickCount, setClickCount] = useState(0);
+  const [clickCount, setClickCount] = useState<number>(0);
   const { ref, props } = useFlashTransition(clickCount);
 
   return (

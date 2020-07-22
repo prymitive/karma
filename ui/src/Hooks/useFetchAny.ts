@@ -32,13 +32,13 @@ const useFetchAny = <T>(
   inProgress: boolean;
   reset: () => void;
 } => {
-  const [index, setIndex] = useState(0);
-  const [response, setResponse] = useState({
+  const [index, setIndex] = useState<number>(0);
+  const [response, setResponse] = useState<ResponseState<T>>({
     response: null,
     error: null,
     responseURI: null,
     inProgress: false,
-  } as ResponseState<T>);
+  });
 
   const reset = useCallback(() => {
     setIndex(0);

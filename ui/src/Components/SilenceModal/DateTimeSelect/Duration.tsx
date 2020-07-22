@@ -12,7 +12,7 @@ const Duration: FC<{
   onInc: () => void;
   onDec: () => void;
 }> = observer(({ value, label, onInc, onDec }) => {
-  const rootRef = useRef(null as null | HTMLDivElement);
+  const rootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const cancelWheel = (event: Event) => event.preventDefault();

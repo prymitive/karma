@@ -40,8 +40,8 @@ const MockFetchStats = {
 const Mock = (uri: string, { autorun = true, deps = [] } = {}) => {
   const [response, setResponse] = useState(null as null | any);
   const [error] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isRetrying] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [isRetrying] = useState<boolean>(false);
 
   const cancelGet = useCallback(() => {}, []);
 

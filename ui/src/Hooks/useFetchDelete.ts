@@ -15,9 +15,9 @@ const useFetchDelete = (
   error: null | string;
   isDeleting: boolean;
 } => {
-  const [response, setResponse] = useState(null as string | null);
-  const [error, setError] = useState(null as string | null);
-  const [isDeleting, setIsDeleting] = useState(true);
+  const [response, setResponse] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isDeleting, setIsDeleting] = useState<boolean>(true);
 
   useEffect(() => {
     // https://dev.to/pallymore/clean-up-async-requests-in-useeffect-hooks-90h

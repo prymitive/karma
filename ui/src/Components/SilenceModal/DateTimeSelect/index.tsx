@@ -199,12 +199,14 @@ const TabContentDuration: FC<{
   ));
 };
 
+type tabT = "start" | "end" | "duration";
+
 const DateTimeSelect: FC<{
   silenceFormStore: SilenceFormStore;
-  openTab?: "start" | "end" | "duration";
+  openTab?: tabT;
 }> = ({ silenceFormStore, openTab = "duration" }) => {
-  const [currentTab, setCurrentTab] = useState(openTab);
-  const [timeNow, setTimeNow] = useState(nowZeroSeconds());
+  const [currentTab, setCurrentTab] = useState<tabT>(openTab);
+  const [timeNow, setTimeNow] = useState<Date>(nowZeroSeconds());
 
   const updateTimeNow = useCallback(() => {
     setTimeNow(nowZeroSeconds());

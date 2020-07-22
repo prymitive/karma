@@ -135,7 +135,7 @@ const GroupMenu: FC<{
   themed: boolean;
   setIsMenuOpen: (isOpen: boolean) => void;
 }> = ({ group, alertStore, silenceFormStore, themed, setIsMenuOpen }) => {
-  const [isHidden, setIsHidden] = useState(true);
+  const [isHidden, setIsHidden] = useState<boolean>(true);
 
   const toggle = useCallback(() => {
     setIsMenuOpen(isHidden);
@@ -147,7 +147,7 @@ const GroupMenu: FC<{
     setIsMenuOpen(false);
   }, [setIsMenuOpen]);
 
-  const rootRef = useRef(null);
+  const rootRef = useRef<HTMLSpanElement | null>(null);
   useOnClickOutside(rootRef, hide, !isHidden);
 
   return (

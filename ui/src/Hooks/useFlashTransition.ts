@@ -16,10 +16,10 @@ const defaultProps: TransitionProps = {
 const useFlashTransition = (
   flashOn: ReactNode
 ): { ref: (node?: Element | null) => void; props: TransitionProps } => {
-  const mountRef = useRef(false);
+  const mountRef = useRef<boolean>(false);
   const [ref, inView] = useInView();
-  const [isPending, setIsPending] = useState(false);
-  const [props, setProps] = useState(defaultProps);
+  const [isPending, setIsPending] = useState<boolean>(false);
+  const [props, setProps] = useState<TransitionProps>(defaultProps);
 
   useEffect(() => {
     if (mountRef.current) {

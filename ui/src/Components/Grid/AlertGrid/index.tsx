@@ -5,6 +5,8 @@ import { useObserver } from "mobx-react-lite";
 
 import useDimensions from "react-cool-dimensions";
 
+import { SizeDetail } from "bricks.js";
+
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -20,10 +22,10 @@ const AlertGrid: FC<{
   const { width: windowWidth } = useWindowSize();
   const { ref, width: bodyWidth } = useDimensions();
 
-  const [gridSizesConfig, setGridSizesConfig] = useState(
+  const [gridSizesConfig, setGridSizesConfig] = useState<SizeDetail[]>(
     GridSizesConfig(settingsStore.gridConfig.config.groupWidth)
   );
-  const [groupWidth, setGroupWidth] = useState(
+  const [groupWidth, setGroupWidth] = useState<number>(
     GetGridElementWidth(
       bodyWidth || document.body.clientWidth,
       windowWidth,

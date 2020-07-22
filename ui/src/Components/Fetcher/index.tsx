@@ -11,7 +11,7 @@ const Fetcher: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
 }> = ({ alertStore, settingsStore }) => {
-  const timer = useRef(undefined as number | undefined);
+  const timer = useRef<number | undefined>(undefined);
 
   const getSortSettings = () => {
     const sortSettings = {

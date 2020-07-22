@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 const Mock = (uri: string, options: RequestInit, deps: any[] = []) => {
   const [response, setResponse] = useState(null as null | string);
   const [error] = useState(null as null | string);
-  const [isDeleting, setIsDeleting] = useState(true);
+  const [isDeleting, setIsDeleting] = useState<boolean>(true);
 
   useEffect(() => {
     setResponse("success");

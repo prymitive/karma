@@ -19,7 +19,7 @@ const calculatePercent = (startsAt: string, endsAt: string) => {
 const SilenceProgress: FC<{
   silence: APISilenceT;
 }> = ({ silence }) => {
-  const [progress, setProgress] = useState(
+  const [progress, setProgress] = useState<number>(
     calculatePercent(silence.startsAt, silence.endsAt)
   );
 

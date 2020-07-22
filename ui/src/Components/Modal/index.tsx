@@ -16,7 +16,7 @@ const ModalInner: FC<{
   toggleOpen: () => void;
 }> = ({ size, isUpper, toggleOpen, children }) => {
   // needed for tests to spy on useRef
-  const ref = React.useRef(null as HTMLDivElement | null);
+  const ref = React.useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (ref.current !== null) {
