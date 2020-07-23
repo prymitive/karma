@@ -48,7 +48,7 @@ lint-typescript:
 
 .PHONY: format
 format: node_modules/prettier/bin-prettier.js
-	node_modules/prettier/bin-prettier.js --write 'src/**/*.js' 'src/**/*.ts' 'src/**/*.tsx'
+	node_modules/prettier/bin-prettier.js --write 'src/**/*.ts' 'src/**/*.tsx'
 
 build/stats.json: build
 	node_modules/source-map-explorer/dist/cli.js build/static/*/*.{js,css} --json > build/stats.json
