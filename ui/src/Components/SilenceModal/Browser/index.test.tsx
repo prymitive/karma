@@ -173,7 +173,7 @@ describe("<Browser />", () => {
   it("renders loading placeholder before fetch finishes", () => {
     (useFetchGet as any).fetch.setMockedData({
       response: null,
-      error: false,
+      error: null,
       isLoading: true,
       isRetrying: false,
     });
@@ -185,7 +185,7 @@ describe("<Browser />", () => {
   it("renders loading placeholder before fetch finishes", () => {
     (useFetchGet as any).fetch.setMockedData({
       response: null,
-      error: false,
+      error: null,
       isLoading: true,
       isRetrying: true,
     });
@@ -197,7 +197,7 @@ describe("<Browser />", () => {
   it("renders empty placeholder after fetch with zero results", () => {
     (useFetchGet as any).fetch.setMockedData({
       response: [],
-      error: false,
+      error: null,
       isLoading: false,
       isRetrying: false,
     });
@@ -215,7 +215,7 @@ describe("<Browser />", () => {
           silence: silence,
         },
       ],
-      error: false,
+      error: null,
       isLoading: false,
       isRetrying: false,
     });
@@ -227,7 +227,7 @@ describe("<Browser />", () => {
     global.window.innerWidth = 1024;
     (useFetchGet as any).fetch.setMockedData({
       response: MockSilenceList(7),
-      error: false,
+      error: null,
       isLoading: false,
       isRetrying: false,
     });
@@ -239,7 +239,7 @@ describe("<Browser />", () => {
     global.window.innerWidth = 500;
     (useFetchGet as any).fetch.setMockedData({
       response: MockSilenceList(7),
-      error: false,
+      error: null,
       isLoading: false,
       isRetrying: false,
     });
@@ -250,7 +250,7 @@ describe("<Browser />", () => {
   it("renders last silence after page change", () => {
     (useFetchGet as any).fetch.setMockedData({
       response: MockSilenceList(7),
-      error: false,
+      error: null,
       isLoading: false,
       isRetrying: false,
     });
@@ -270,7 +270,7 @@ describe("<Browser />", () => {
   it("renders next/previous page after arrow key press", () => {
     (useFetchGet as any).fetch.setMockedData({
       response: MockSilenceList(13),
-      error: false,
+      error: null,
       isLoading: false,
       isRetrying: false,
     });
@@ -316,7 +316,7 @@ describe("<Browser />", () => {
   it("resets pagination to last page on truncation", () => {
     (useFetchGet as any).fetch.setMockedData({
       response: MockSilenceList(13),
-      error: false,
+      error: null,
       isLoading: false,
       isRetrying: false,
     });
@@ -331,7 +331,7 @@ describe("<Browser />", () => {
 
     (useFetchGet as any).fetch.setMockedData({
       response: MockSilenceList(8),
-      error: false,
+      error: null,
       isLoading: false,
       isRetrying: false,
     });
@@ -342,7 +342,7 @@ describe("<Browser />", () => {
 
     (useFetchGet as any).fetch.setMockedData({
       response: [],
-      error: false,
+      error: null,
       isLoading: false,
       isRetrying: false,
     });

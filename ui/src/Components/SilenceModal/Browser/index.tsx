@@ -127,7 +127,7 @@ const Browser: FC<{
           Sort order
         </button>
       </div>
-      {response === null && isLoading ? (
+      {isLoading ? (
         <Placeholder
           content={
             <FontAwesomeIcon
@@ -138,9 +138,9 @@ const Browser: FC<{
             />
           }
         />
-      ) : error || response === null ? (
+      ) : error !== null ? (
         <FetchError message={error} />
-      ) : response.length === 0 ? (
+      ) : response === null || response.length === 0 ? (
         <Placeholder content="Nothing to show" />
       ) : (
         <React.Fragment>
