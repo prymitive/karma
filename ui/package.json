@@ -73,7 +73,7 @@
     "@percy-io/percy-storybook": "2.1.0",
     "@storybook/preset-create-react-app": "3.1.4",
     "@storybook/react": "5.3.19",
-    "@testing-library/react-hooks": "3.3.0",
+    "@testing-library/react-hooks": "3.4.1",
     "@types/enzyme": "3.10.5",
     "@types/jest": "26.0.5",
     "@typescript-eslint/eslint-plugin": "3.7.0",
