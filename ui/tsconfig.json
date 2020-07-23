@@ -17,11 +17,5 @@
     "jsx": "react"
   },
   "include": ["src"],
-  "exclude": [
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "**/*.stories.tsx",
-    "src/__mocks__/*.ts",
-    "src/__mocks__/**/*.ts"
-  ]
+  "exclude": ["**/*.stories.tsx"]
 }
