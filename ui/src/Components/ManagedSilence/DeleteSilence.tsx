@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
+import { faRedo } from "@fortawesome/free-solid-svg-icons/faRedo";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 
 import { APISilenceT } from "Models/APITypes";
@@ -93,7 +94,10 @@ const DeleteResult: FC<{
             onClick={() => setCurrentTime(Math.floor(Date.now()))}
             disabled={isDeleting}
           >
-            <FontAwesomeIcon icon={faCheckCircle} className="mr-1" />
+            <FontAwesomeIcon
+              icon={isDeleting ? faCheckCircle : faRedo}
+              className="mr-1"
+            />
             {isDeleting ? "Confirm" : "Retry"}
           </button>
         </div>
