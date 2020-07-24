@@ -48,6 +48,9 @@ describe("Demo", () => {
 
     await page.click("div.cursor-pointer.navbar-brand");
 
+    await page.waitForSelector(
+      "div.modal-open.components-animation-modal-enter-done"
+    );
     await page.waitForSelector("div.modal-content");
     await page.waitForSelector(".components-labelWithPercent-percent");
 
@@ -67,6 +70,9 @@ describe("Demo", () => {
 
     await page.click("#components-new-silence");
 
+    await page.waitForSelector(
+      "div.modal-open.components-animation-modal-enter-done"
+    );
     await page.waitForSelector("div.modal-content");
     await page.waitForSelector(".modal-body > form");
 
@@ -78,6 +84,9 @@ describe("Demo", () => {
 
     await page.click("#components-settings");
 
+    await page.waitForSelector(
+      "div.modal-open.components-animation-modal-enter-done"
+    );
     await page.waitForSelector("div.modal-content");
     await page.waitForSelector(".modal-body > form.accordion");
 
