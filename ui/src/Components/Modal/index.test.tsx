@@ -99,14 +99,14 @@ describe("<ModalInner />", () => {
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 
-  it("passes extra props down to the MountModal animation component", () => {
+  it("passes extra props down to the CSSTransition animation component", () => {
     const onExited = jest.fn();
     const tree = mount(
       <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
         <div />
       </Modal>
     );
-    const mountModal = tree.find("MountModal");
+    const mountModal = tree.find("CSSTransition").at(0);
     expect((mountModal.props() as any).onExited).toBe(onExited);
   });
 
