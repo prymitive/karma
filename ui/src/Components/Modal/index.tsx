@@ -1,14 +1,11 @@
 import React, { FC, useEffect } from "react";
 import ReactDOM from "react-dom";
 
+import { CSSTransition } from "react-transition-group";
+
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
 import { useHotkeys } from "react-hotkeys-hook";
-
-import {
-  MountModal,
-  MountModalBackdrop,
-} from "Components/Animations/MountModal";
 
 const ModalInner: FC<{
   size: "lg" | "xl";
@@ -60,19 +57,34 @@ const Modal: FC<{
   isOpen,
   isUpper = false,
   toggleOpen,
+  onExited,
   children,
-  ...props
 }) => {
   return ReactDOM.createPortal(
     <React.Fragment>
-      <MountModal in={isOpen} unmountOnExit {...props}>
+      <CSSTransition
+        in={isOpen}
+        classNames="components-animation-modal"
+        timeout={300}
+        onExited={onExited}
+        enter
+        exit
+        unmountOnExit
+      >
         <ModalInner size={size} isUpper={isUpper} toggleOpen={toggleOpen}>
           {children}
         </ModalInner>
-      </MountModal>
-      <MountModalBackdrop in={isOpen} unmountOnExit>
+      </CSSTransition>
+      <CSSTransition
+        in={isOpen && !isUpper}
+        classNames="components-animation-backdrop"
+        timeout={300}
+        enter
+        exit
+        unmountOnExit
+      >
         <div className="modal-backdrop d-block" />
-      </MountModalBackdrop>
+      </CSSTransition>
     </React.Fragment>,
     document.body
   );

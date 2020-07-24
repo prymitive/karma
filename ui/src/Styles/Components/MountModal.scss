@@ -1,51 +1,52 @@
-$duration: 0.2s;
+$duration: 0.3s;
+$move: -33%;
+$opacity-modal: 0.5;
+$opacity-bg: 0.8;
+$easing: ease-in-out;
 
 .components-animation-modal {
   will-change: opacity, transform;
   transform: translateZ(0);
 }
 
-.components-animation-modal-appear,
-.components-animation-modal-enter {
-  opacity: 0.01;
-  transform: translate(0, -25%);
+.components-animation-modal-enter > .modal > .modal-dialog {
+  opacity: $opacity-modal;
+  transform: translate(0, $move);
 }
-.components-animation-modal-appear-active,
-.components-animation-modal-enter-active {
+
+.components-animation-modal-enter-active > .modal > .modal-dialog {
   opacity: 1;
-  transition: transform $duration ease-out, opacity $duration ease-in;
+  transition: transform $duration $easing, opacity $duration $easing;
   transform: translate(0, 0);
 }
 
-.components-animation-modal-exit {
+.components-animation-modal-exit > .modal > .modal-dialog {
   opacity: 1;
   transform: translate(0, 0);
 }
-.components-animation-modal-exit-active {
-  opacity: 0.01;
-  transform: translate(0, -25%);
-  transition: transform $duration ease-in, opacity $duration ease-out;
+.components-animation-modal-exit-active > .modal > .modal-dialog {
+  opacity: $opacity-modal;
+  transform: translate(0, $move);
+  transition: transform $duration $easing, opacity $duration $easing;
 }
 
-.components-animation-backdrop-appear,
 .components-animation-backdrop-enter {
-  opacity: 0.01;
+  opacity: $opacity-modal;
 }
-.components-animation-backdrop-appear-active,
 .components-animation-backdrop-enter-active {
-  opacity: $modal-backdrop-opacity;
-  transition: opacity $duration ease-in;
+  opacity: $opacity-bg;
+  transition: opacity $duration $easing;
 }
 
 .components-animation-backdrop-enter-done {
-  opacity: $modal-backdrop-opacity;
-  transition: opacity $duration ease-in;
+  opacity: $opacity-bg;
+  transition: opacity $duration $easing;
 }
 
 .components-animation-backdrop-exit {
-  opacity: $modal-backdrop-opacity;
+  opacity: $opacity-bg;
 }
 .components-animation-backdrop-exit-active {
   opacity: 0.01;
-  transition: opacity $duration ease-out;
+  transition: opacity $duration $easing;
 }
