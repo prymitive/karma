@@ -38,7 +38,8 @@ describe("<ModalInner />", () => {
     tree.setProps({ isUpper: false });
     tree.setProps({ isUpper: true });
     tree.setProps({ isUpper: false });
-    expect(useRefSpy).toHaveBeenCalledTimes(4);
+    expect(useRefSpy).toHaveBeenCalled();
+    expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
 
   it("'modal-open' class is appended to MountModal container", () => {
