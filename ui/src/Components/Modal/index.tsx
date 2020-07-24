@@ -65,7 +65,7 @@ const Modal: FC<{
       <CSSTransition
         in={isOpen}
         classNames="components-animation-modal"
-        timeout={300}
+        timeout={400}
         onExited={onExited}
         enter
         exit
@@ -78,7 +78,7 @@ const Modal: FC<{
       <CSSTransition
         in={isOpen && !isUpper}
         classNames="components-animation-backdrop"
-        timeout={300}
+        timeout={400}
         enter
         exit
         unmountOnExit
