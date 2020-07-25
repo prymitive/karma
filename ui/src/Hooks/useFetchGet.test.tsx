@@ -1,6 +1,6 @@
 import React from "react";
 
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook, act } from "@testing-library/react-hooks";
 
 import { mount } from "enzyme";
 
@@ -31,7 +31,7 @@ describe("useFetchGet", () => {
 
   it("sends a GET request", async () => {
     const { waitForNextUpdate } = renderHook(() =>
-      useFetchGet("http://localhost/ok")
+      useFetchGet<string>("http://localhost/ok")
     );
 
     await waitForNextUpdate();
@@ -45,7 +45,7 @@ describe("useFetchGet", () => {
 
   it("sends correct headers", async () => {
     const { waitForNextUpdate } = renderHook(() =>
-      useFetchGet("http://localhost/ok")
+      useFetchGet<string>("http://localhost/ok")
     );
 
     await waitForNextUpdate();
@@ -61,12 +61,14 @@ describe("useFetchGet", () => {
 
   it("doesn't send any request if autorun=false", async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchGet("http://localhost/ok", { autorun: false })
+      useFetchGet<string>("http://localhost/ok", { autorun: false })
     );
 
     expect(fetchMock.calls()).toHaveLength(0);
 
-    result.current.get();
+    act(() => {
+      result.current.get();
+    });
     await waitForNextUpdate();
 
     expect(fetchMock.calls()).toHaveLength(1);
@@ -75,7 +77,7 @@ describe("useFetchGet", () => {
 
   it("will retry failed requests", async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchGet("http://localhost/error")
+      useFetchGet<string>("http://localhost/error")
     );
 
     // initial state
@@ -129,7 +131,7 @@ describe("useFetchGet", () => {
 
   it("response is updated after successful fetch", async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchGet("http://localhost/ok")
+      useFetchGet<string>("http://localhost/ok")
     );
 
     expect(result.current.response).toBe(null);
@@ -153,7 +155,7 @@ describe("useFetchGet", () => {
     });
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchGet("http://localhost/500/json")
+      useFetchGet<string>("http://localhost/500/json")
     );
 
     await waitForNextUpdate();
@@ -171,7 +173,7 @@ describe("useFetchGet", () => {
     });
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchGet("http://localhost/500/text")
+      useFetchGet<string>("http://localhost/500/text")
     );
 
     await waitForNextUpdate();
@@ -184,7 +186,7 @@ describe("useFetchGet", () => {
 
   it("error is updated after failed fetch", async () => {
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchGet("http://localhost/error")
+      useFetchGet<string>("http://localhost/error")
     );
 
     expect(result.current.response).toBe(null);
@@ -210,7 +212,7 @@ describe("useFetchGet", () => {
     });
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetchGet("http://localhost/json/invalid")
+      useFetchGet<string>("http://localhost/json/invalid")
     );
 
     expect(result.current.response).toBe(null);
@@ -236,7 +238,7 @@ describe("useFetchGet", () => {
     });
 
     const Component = () => {
-      const { response, error, isLoading } = useFetchGet(
+      const { response, error, isLoading } = useFetchGet<string>(
         "http://localhost/slow/ok"
       );
       return (
@@ -265,7 +267,7 @@ describe("useFetchGet", () => {
     });
 
     const Component = () => {
-      const { response, error, isLoading } = useFetchGet(
+      const { response, error, isLoading } = useFetchGet<string>(
         "http://localhost/slow/500"
       );
       return (
@@ -293,7 +295,7 @@ describe("useFetchGet", () => {
     });
 
     const Component = () => {
-      const { response, error, isLoading } = useFetchGet(
+      const { response, error, isLoading } = useFetchGet<string>(
         "http://localhost/slow/error"
       );
       return (
@@ -322,7 +324,7 @@ describe("useFetchGet", () => {
     });
 
     const Component = () => {
-      const { response, error, isLoading } = useFetchGet(
+      const { response, error, isLoading } = useFetchGet<string>(
         "http://localhost/slow/json/invalid"
       );
       return (
@@ -348,7 +350,7 @@ describe("useFetchGet", () => {
     });
 
     const Component = () => {
-      const { response, error, isLoading } = useFetchGet(
+      const { response, error, isLoading } = useFetchGet<string>(
         "http://localhost/slow/text"
       );
       return (
@@ -385,11 +387,10 @@ describe("useFetchGet", () => {
     jest.useRealTimers();
 
     const Component = () => {
-      const {
-        response,
-        error,
-        isLoading,
-      } = useFetchGet("http://localhost/slow/body", { fetcher: fetcher });
+      const { response, error, isLoading } = useFetchGet<string>(
+        "http://localhost/slow/body",
+        { fetcher: fetcher }
+      );
       return (
         <span>
           <span>{response}</span>
