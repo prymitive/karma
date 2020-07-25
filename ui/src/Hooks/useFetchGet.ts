@@ -14,6 +14,14 @@ export interface FetchGetOptionsT {
   fetcher?: null | FetchFunctionT;
 }
 
+interface ResponseState<T> {
+  response: null | T;
+  error: null | string;
+  isLoading: boolean;
+  isRetrying: boolean;
+  retryCount: number;
+}
+
 const useFetchGet = <T>(
   uri: string,
   { autorun = true, deps = [], fetcher = null }: FetchGetOptionsT = {}
@@ -26,11 +34,13 @@ const useFetchGet = <T>(
   get: () => void;
   cancelGet: () => void;
 } => {
-  const [response, setResponse] = useState<T | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isRetrying, setIsRetrying] = useState<boolean>(false);
-  const [retryCount, setRetryCount] = useState<number>(0);
+  const [response, setResponse] = useState<ResponseState<T>>({
+    response: null,
+    error: null,
+    isLoading: autorun,
+    isRetrying: false,
+    retryCount: 0,
+  });
   const isCanceled = useRef<boolean>(false);
 
   const cancelGet = useCallback(() => {
@@ -41,11 +51,15 @@ const useFetchGet = <T>(
     isCanceled.current = false;
 
     try {
-      setIsLoading(true);
-      setRetryCount(0);
-      setError(null);
+      setResponse((r) => ({
+        ...r,
+        isLoading: true,
+        isRetrying: false,
+        retryCount: 0,
+      }));
+
       const res = await promiseRetry(
-        (retry: (err: Error) => Promise<Response>, number: number) =>
+        (retry: (err: Error) => Promise<Response>, n: number) =>
           (fetcher || fetch)(
             uri,
             merge(
@@ -55,13 +69,16 @@ const useFetchGet = <T>(
               },
               CommonOptions,
               {
-                mode: number <= FetchRetryConfig.retries ? "cors" : "no-cors",
+                mode: n <= FetchRetryConfig.retries ? "cors" : "no-cors",
               }
             ) as RequestInit
           ).catch((err: Error) => {
             if (!isCanceled.current) {
-              setIsRetrying(true);
-              setRetryCount(number);
+              setResponse((r) => ({
+                ...r,
+                isRetrying: true,
+                retryCount: n,
+              }));
               return retry(err);
             }
           }),
@@ -79,18 +96,31 @@ const useFetchGet = <T>(
 
         if (!isCanceled.current) {
           if (res.ok) {
-            setResponse(body);
+            setResponse({
+              response: body,
+              error: null,
+              isLoading: false,
+              isRetrying: false,
+              retryCount: 0,
+            });
           } else {
-            setError(body);
+            setResponse({
+              response: null,
+              error: body,
+              isLoading: false,
+              isRetrying: false,
+              retryCount: 0,
+            });
           }
-          setIsLoading(false);
-          setIsRetrying(false);
         }
       }
     } catch (error) {
-      setError(error.message);
-      setIsLoading(false);
-      setIsRetrying(false);
+      setResponse((r) => ({
+        ...r,
+        error: error.message,
+        isLoading: false,
+        isRetrying: false,
+      }));
     }
   }, [uri, fetcher]);
 
@@ -100,7 +130,7 @@ const useFetchGet = <T>(
     return () => cancelGet();
   }, [uri, get, cancelGet, autorun, ...deps]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  return { response, error, isLoading, isRetrying, retryCount, get, cancelGet };
+  return { get, cancelGet, ...response };
 };
 
 export { useFetchGet };
