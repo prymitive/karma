@@ -127,7 +127,7 @@ const Browser: FC<{
           Sort order
         </button>
       </div>
-      {isLoading ? (
+      {isLoading && response === null ? (
         <Placeholder
           content={
             <FontAwesomeIcon
