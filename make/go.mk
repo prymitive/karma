@@ -15,7 +15,7 @@ $(GOBIN)/go-bindata: tools/go-bindata/go.mod tools/go-bindata/go.sum
 $(GOBIN)/go-bindata-assetfs: $(GOBIN)/go-bindata tools/go-bindata/go.mod tools/go-bindata/go.sum
 	$(GO) install -modfile=tools/go-bindata/go.mod github.com/elazarl/go-bindata-assetfs/...
 cmd/karma/bindata_assetfs.go: $(GOBIN)/go-bindata-assetfs $(SOURCES_JS) ui/build/index.html
-	go-bindata-assetfs -o cmd/karma/bindata_assetfs.go ui/build/... ui/src/... cmd/karma/tests/bindata/...
+	$(GOBIN)/go-bindata-assetfs -o cmd/karma/bindata_assetfs.go ui/build/... ui/src/... cmd/karma/tests/bindata/...
 
 .DEFAULT_GOAL := $(NAME)
 $(NAME): go.mod go.sum cmd/karma/bindata_assetfs.go $(SOURCES_GO)
@@ -71,7 +71,7 @@ mock-assets: $(GOBIN)/go-bindata-assetfs
 	rm -fr ui/build
 	mkdir ui/build
 	cp ui/public/* ui/build/
-	go-bindata-assetfs -o cmd/karma/bindata_assetfs.go -nometadata ui/build/... cmd/karma/tests/bindata/...
+	$(GOBIN)/go-bindata-assetfs -o cmd/karma/bindata_assetfs.go -nometadata ui/build/... cmd/karma/tests/bindata/...
 	rm -fr ui/build
 
 $(GOBIN)/github-release-notes: tools/github-release-notes/go.mod tools/github-release-notes/go.sum
