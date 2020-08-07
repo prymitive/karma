@@ -398,7 +398,7 @@ Prometheus Alertmanager allows alerts to be in 3 states:
   [inhibition rules](https://prometheus.io/docs/alerting/alertmanager/#inhibition)
 - `unprocessed` - initial state for new alerts before they are checked against
   all silence rules so Alertmanager doesn't yet know if the alert should be
-  `active` or `supported`
+  `active` or `suppressed`
 
 A silence rule can be used to mark an alert as acknowledged and being worked on.
 To simplify creating of such silences karma provides a one click button that
