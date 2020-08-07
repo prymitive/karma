@@ -1,1 +1,14 @@
 comment: false
+
+coverage:
+  status:
+    project:
+      backend:
+        target: auto
+        flags:
+          - backend
+      ui:
+        target: 100
+        threshold: 0
+        flags:
+          - ui
