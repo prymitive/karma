@@ -60,6 +60,19 @@ describe("<PaginatedAlertList />", () => {
     expect(tree.find("Placeholder")).toHaveLength(1);
   });
 
+  it("renders Placeholder while response is empty", () => {
+    (useFetchGet as any).fetch.setMockedData({
+      response: null,
+      error: false,
+      isLoading: false,
+      isRetrying: false,
+    });
+    const tree = mount(
+      <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
+    );
+    expect(tree.find("Placeholder")).toHaveLength(1);
+  });
+
   it("renders LabelSetList with StaticLabel on mount", () => {
     const tree = mount(
       <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
