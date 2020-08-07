@@ -38,10 +38,10 @@ const PaginatedAlertList: FC<{
     FormatBackendURI("alerts.json?") + FormatAlertsQ(filters)
   );
 
-  return isLoading ? (
-    <Placeholder />
-  ) : error || response === null ? (
+  return error ? (
     <FetchError message={error} />
+  ) : isLoading || response === null ? (
+    <Placeholder />
   ) : (
     <LabelSetList
       alertStore={alertStore}
