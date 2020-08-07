@@ -4,8 +4,8 @@ import Bricks, { SizeDetail, Instance } from "bricks.js";
 
 const useGrid = (
   sizes: SizeDetail[]
-): { ref: Ref<HTMLElement>; repack: () => void } => {
-  const ref = useRef<HTMLElement | null>(null);
+): { ref: Ref<HTMLDivElement>; repack: () => void } => {
+  const ref = useRef<HTMLDivElement | null>(null);
   const grid = useRef<Instance | null>(null);
   const [repack, setRepack] = useState<() => void>(() => () => {});
 

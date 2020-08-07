@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  useEffect,
-  useState,
-  useCallback,
-  MouseEvent,
-  Ref,
-} from "react";
+import React, { FC, useEffect, useState, useCallback, MouseEvent } from "react";
 
 import { useObserver } from "mobx-react-lite";
 
@@ -134,7 +127,7 @@ const Grid: FC<{
       </CSSTransition>
       <div
         className="components-grid"
-        ref={ref as Ref<HTMLDivElement>}
+        ref={ref}
         key={settingsStore.gridConfig.config.groupWidth}
         style={{
           paddingLeft: outerPadding + "px",
