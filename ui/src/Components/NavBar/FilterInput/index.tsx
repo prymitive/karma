@@ -139,12 +139,12 @@ const FilterInput: FC<{
         }`}
       >
         <div className="input-group-prepend">
-          <span className="input-group-text px-2 border-0 rounded-0 bg-transparent components-navbar-icon">
+          <span className="input-group-text px-2 border-0 rounded-0 bg-inherit components-navbar-icon">
             <FontAwesomeIcon icon={faSearch} />
           </span>
         </div>
         <div
-          className="form-control components-filterinput border-0 rounded-0 bg-transparent"
+          className="form-control components-filterinput border-0 rounded-0 bg-inherit"
           onClick={(event) =>
             onInputClick((event.target as HTMLDivElement).className)
           }
@@ -177,11 +177,7 @@ const FilterInput: FC<{
             theme={AutosuggestTheme}
           />
         </div>
-        <div
-          className={`input-group-append ${
-            isFocused ? "bg-focused" : "bg-transparent"
-          }`}
-        >
+        <div className="input-group-append inherit">
           <History alertStore={alertStore} settingsStore={settingsStore} />
         </div>
       </div>

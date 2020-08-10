@@ -4,7 +4,7 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
 "
 <div class=\\"input-group w-100 mr-2 components-filterinput-outer bg-transparent\\">
   <div class=\\"input-group-prepend\\">
-    <span class=\\"input-group-text px-2 border-0 rounded-0 bg-transparent components-navbar-icon\\">
+    <span class=\\"input-group-text px-2 border-0 rounded-0 bg-inherit components-navbar-icon\\">
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
@@ -21,7 +21,7 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
       </svg>
     </span>
   </div>
-  <div class=\\"form-control components-filterinput border-0 rounded-0 bg-transparent\\">
+  <div class=\\"form-control components-filterinput border-0 rounded-0 bg-inherit\\">
     <div role=\\"combobox\\"
          aria-haspopup=\\"listbox\\"
          aria-owns=\\"react-autowhatever-1\\"
@@ -44,9 +44,9 @@ exports[`<FilterInput /> matches snapshot on default render 1`] = `
       </div>
     </div>
   </div>
-  <div class=\\"input-group-append bg-transparent\\">
-    <span class=\\"input-group-text border-0 rounded-0 bg-transparent px-0\\">
-      <button class=\\"btn border-0 rounded-0 bg-transparent cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon\\"
+  <div class=\\"input-group-append inherit\\">
+    <span class=\\"input-group-text border-0 rounded-0 bg-inherit px-0\\">
+      <button class=\\"btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon\\"
               type=\\"button\\"
               data-toggle=\\"dropdown\\"
               aria-haspopup=\\"true\\"
