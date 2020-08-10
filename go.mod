@@ -23,7 +23,7 @@ require (
 	github.com/go-playground/validator/v10 v10.3.0 // indirect
 	github.com/google/go-cmp v0.5.1
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
-	github.com/jarcoal/httpmock v1.0.5
+	github.com/jarcoal/httpmock v1.0.6
 	github.com/knadh/koanf v0.12.0
 	github.com/mitchellh/mapstructure v1.3.3
 	github.com/patrickmn/go-cache v2.1.1-0.20180815053127-5633e0862627+incompatible
