@@ -3,6 +3,10 @@
   border-left: 0;
   border-right: 0;
   border-bottom: $border-width solid $filterinput-border;
+
+  .bg-inherit {
+    background-color: inherit;
+  }
 }
 
 .form-control.components-filterinput {
@@ -35,4 +39,12 @@ input.components-filterinput-wrapper {
 
 .bg-focused {
   background-color: $bg-focused;
+}
+
+.input-group.components-filterinput-outer {
+  &,
+  & .btn,
+  & .btn > svg {
+    transition: background-color 0.2s linear;
+  }
 }
