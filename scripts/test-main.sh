@@ -28,8 +28,15 @@ LOG_CONFIG=false \
   ./karma.test \
   -test.run '^TestRunMain$' \
   -test.coverprofile=profile.main.1 &
+PID=$!
 
-sleep 5
-killall karma.test
+sleep 10
+kill $PID
+sleep 1
+
+while kill -0 "$PID"; do
+  echo "Waiting for $PID to finish"
+  sleep 1
+done
 
 rm karma.test
