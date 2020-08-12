@@ -3,6 +3,7 @@ __defaults_go: &DEFAULTS_GO
   go: "1.15"
   cache:
     directories:
+      - .cache
       - ui/node_modules
       # https://restic.net/blog/2018-09-02/travis-build-cache
       - $HOME/.cache/go-build
@@ -204,11 +205,12 @@ jobs:
         - JOB=cc
         - GO111MODULE=on
         - NODE_ENV=production
-      before_script:
+      script:
         # this stage needs to build everything including assets file and that
         # requires running webpack, so we need nodejs here
-        - travis_retry nvm install $(< .nvmrc)
-      script:
+        # we cache assests for PRs so it's not always installed
+        - if [ "${TRAVIS_BRANCH}" != "master" ] && [ -e .cache/bindata_assetfs.go ]; then mv .cache/bindata_assetfs.go cmd/karma/bindata_assetfs.go ; touch cmd/karma/bindata_assetfs.go ; ls -lh cmd/karma/bindata_assetfs.go ; fi
+        - if [ "${TRAVIS_BRANCH}" == "master" ] || [ ! -e cmd/karma/bindata_assetfs.go ]; then travis_retry nvm install $(< .nvmrc); make -C ui build; fi
         # prune GOCACHE if it gets too big
         - ./scripts/prune-go-cache.sh
         - export SOURCE_DATE_EPOCH=$(git show -s --format=%ci ${TRAVIS_TAG:-${TRAVIS_COMMIT}}^{commit})
@@ -217,6 +219,7 @@ jobs:
         - shasum -a 512 karma-*.tar.gz | tee sha512sum.txt
         # verify that there are no uncommited changes
         - git diff --exit-code
+        - mkdir -p .cache ; cp cmd/karma/bindata_assetfs.go .cache/bindata_assetfs.go
         # print GOCACHE size
         - ./scripts/prune-go-cache.sh --dry-run
       deploy:
