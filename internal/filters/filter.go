@@ -67,7 +67,7 @@ func (filter *alertFilter) GetMatcher() string {
 }
 
 func (filter *alertFilter) GetValue() string {
-	return fmt.Sprintf("%s", filter.Value)
+	return fmt.Sprintf("%v", filter.Value)
 }
 
 func (filter *alertFilter) GetIsAlertmanagerFilter() bool {

@@ -832,24 +832,28 @@ type limitFilterTest struct {
 	Expression string
 	IsValid    bool
 	IsMatch    []bool
+	Value      string
 	Hits       int
 }
 
 var limitTests = []limitFilterTest{
 	{
 		Expression: "@limit=3",
+		Value:      "3",
 		IsValid:    true,
 		IsMatch:    []bool{true, true, true},
 		Hits:       0,
 	},
 	{
 		Expression: "@limit=1",
+		Value:      "1",
 		IsValid:    true,
 		IsMatch:    []bool{true, false, false},
 		Hits:       2,
 	},
 	{
 		Expression: "@limit=5",
+		Value:      "5",
 		IsValid:    true,
 		IsMatch:    []bool{true, true, true, true, true, false, false, false},
 		Hits:       3,
@@ -903,6 +907,9 @@ func TestLimitFilter(t *testing.T) {
 			}
 			if f.GetHits() != ft.Hits {
 				t.Errorf("[%s] GetHits() returned %#v hits, expected %d", ft.Expression, f.GetHits(), ft.Hits)
+			}
+			if f.GetValue() != ft.Value {
+				t.Errorf("[%s] GetValue() returned %#v hits, expected %q", ft.Expression, f.GetValue(), ft.Value)
 			}
 		} else {
 			func() {
