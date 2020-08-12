@@ -210,7 +210,7 @@ jobs:
         # requires running webpack, so we need nodejs here
         # we cache assests for PRs so it's not always installed
         - mkdir -p .cache ui/build
-        - if [ "${TRAVIS_BRANCH}" != "master" ] && [ -e .cache/bindata_assetfs.go ]; then mv .cache/bindata_assetfs.go cmd/karma/bindata_assetfs.go ; export MAKE_OPTS="-o cmd/karma/bindata_assetfs.go" fi
+        - if [ "${TRAVIS_BRANCH}" != "master" ] && [ -e .cache/bindata_assetfs.go ]; then mv .cache/bindata_assetfs.go cmd/karma/bindata_assetfs.go ; export MAKE_OPTS="-o cmd/karma/bindata_assetfs.go"; fi
         - if [ "${TRAVIS_BRANCH}" == "master" ] || [ ! -e cmd/karma/bindata_assetfs.go ]; then travis_retry nvm install $(< .nvmrc); make -C ui build; fi
         # prune GOCACHE if it gets too big
         - ./scripts/prune-go-cache.sh
