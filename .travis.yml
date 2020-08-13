@@ -87,6 +87,19 @@ jobs:
         - travis_retry curl -s --connect-timeout 30 --fail https://codecov.io/bash | bash -s -- -F ui
 
     - stage: Test and Lint
+      name: Test Reproducible Webpack Builds
+      if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
+      <<: *DEFAULTS_JS
+      script:
+        - make -C ui build
+        - sed -i '/\/ui\/build/d' .gitignore
+        - cat .gitignore
+        - git add ui/build
+        - rm -fr ui/build/*
+        - make -C ui build
+        - git diff --exit-code
+
+    - stage: Test and Lint
       name: Check for non-typescript UI components
       if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
       script: make -C ui lint-typescript
