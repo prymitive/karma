@@ -14,6 +14,7 @@ PKGS=$(go list ./... | grep -vE 'prymitive/karma/internal/mapper/v017/(client|mo
 COVERPKG=$(echo "$PKGS" | tr '\n' ',')
 
 go test \
+  -count=1 \
   -coverpkg="$COVERPKG" \
   -c \
   -tags testrunmain \
