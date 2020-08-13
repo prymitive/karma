@@ -6,7 +6,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
 import { CenteredMessage } from "Components/CenteredMessage";
 
-import "csshake/scss/csshake-slow.scss";
+import "csshake/dist/csshake-slow.css";
 
 const UpgradeNeeded: FC<{
   newVersion: string;
