@@ -74,16 +74,14 @@ mock-assets: $(GOBIN)/go-bindata-assetfs
 	$(GOBIN)/go-bindata-assetfs -o cmd/karma/bindata_assetfs.go -nometadata ui/build/... cmd/karma/tests/bindata/...
 	rm -fr ui/build
 
-$(GOBIN)/github-release-notes: tools/github-release-notes/go.mod tools/github-release-notes/go.sum
-	$(GO) install -modfile=tools/github-release-notes/go.mod github.com/buchanae/github-release-notes
+$(GOBIN)/github-changelog-generator: tools/github-changelog-generator/go.mod tools/github-changelog-generator/go.sum
+	$(GO) install -modfile=tools/github-changelog-generator/go.mod github.com/digitalocean/github-changelog-generator
 .PHONY: changelog
-changelog: $(GOBIN)/github-release-notes
+changelog: $(GOBIN)/github-changelog-generator
 	@echo "Full changelog:"
-	@github-release-notes \
+	@github-changelog-generator\
 		-org prymitive \
 		-repo karma \
-		-since-latest-release \
-		-include-author \
 		| grep -vE '@renovate|@dependabot' \
 		| sed s/' PR '/' '/g \
 		| sed s/'- @prymitive -'/'-'/g
