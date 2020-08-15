@@ -95,8 +95,8 @@ github.com/gin-contrib/gzip v0.0.2 h1:VMBkd4ZB1Hl7e1lOA5gEZ/qdD3d9vLIq57xKWgPCCV
 github.com/gin-contrib/gzip v0.0.2/go.mod h1:YxxswVZIqOvcHEQpsSn+QF5guQtO1dCfy0shBPy4jFc=
 github.com/gin-contrib/sse v0.1.0 h1:Y/yl/+YNO8GZSjAhjMsSuLt29uWRFHdHYUb5lYOV9qE=
 github.com/gin-contrib/sse v0.1.0/go.mod h1:RHrZQHXnP2xjPF+u1gW/2HnVO7nvIa9PG3Gm+fLHvGI=
-github.com/gin-contrib/static v0.0.0-20191128031702-f81c604d8ac2 h1:xLG16iua01X7Gzms9045s2Y2niNpvSY/Zb1oBwgNYZY=
-github.com/gin-contrib/static v0.0.0-20191128031702-f81c604d8ac2/go.mod h1:VhW/Ch/3FhimwZb8Oj+qJmdMmoB8r7lmJ5auRjm50oQ=
+github.com/gin-contrib/static v0.0.0-20200815103939-31fb0c56a3d1 h1:plQYoJeO9lI8Ag0xZy7dDF8FMwIOHsQylKjcclknvIc=
+github.com/gin-contrib/static v0.0.0-20200815103939-31fb0c56a3d1/go.mod h1:VhW/Ch/3FhimwZb8Oj+qJmdMmoB8r7lmJ5auRjm50oQ=
 github.com/gin-gonic/contrib v0.0.0-20200810162008-6dee08bf958e h1:jV4//AYvgzLAXVNYX5a4/kZdPV2LV/PkgLsS6z+9cFs=
 github.com/gin-gonic/contrib v0.0.0-20200810162008-6dee08bf958e/go.mod h1:iqneQ2Df3omzIVTkIfn7c1acsVnMGiSLn4XF5Blh3Yg=
 github.com/gin-gonic/gin v1.5.0 h1:fi+bqFAx/oLK54somfCtEZs9HeH1LHVoEPUgARpTqyc=
