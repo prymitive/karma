@@ -8,19 +8,22 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 import { faPauseCircle } from "@fortawesome/free-regular-svg-icons/faPauseCircle";
 
 import { AlertStore, AlertStoreStatuses } from "Stores/AlertStore";
+import { TooltipWrapper } from "Components/TooltipWrapper";
 
 const FetchIcon: FC<{
   icon: IconDefinition;
   color?: string;
   visible?: boolean;
   spin?: boolean;
-}> = ({ icon, color = "muted", visible = true, spin = false }) => (
+  onClick?: () => void;
+}> = ({ icon, color = "muted", visible = true, spin = false, onClick }) => (
   <FontAwesomeIcon
     style={{ opacity: visible ? 1 : 0 }}
-    className={`mx-1 text-${color}`}
+    className={`mx-1 text-${color} ${onClick ? "cursor-pointer" : ""}`}
     size="lg"
     icon={icon}
     spin={spin}
+    onClick={onClick}
   />
 );
 
@@ -29,7 +32,9 @@ const FetchIndicator: FC<{
 }> = ({ alertStore }) => {
   return useObserver(() =>
     alertStore.status.paused ? (
-      <FetchIcon icon={faPauseCircle} />
+      <TooltipWrapper title="Updates are paused, click to resume">
+        <FetchIcon icon={faPauseCircle} onClick={alertStore.status.resume} />
+      </TooltipWrapper>
     ) : alertStore.status.value.toString() ===
       AlertStoreStatuses.Fetching.toString() ? (
       <FetchIcon

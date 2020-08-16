@@ -144,6 +144,15 @@ describe("AlertStore.status", () => {
     expect(store.status.value).toEqual(AlertStoreStatuses.Idle);
     expect(store.status.error).toBeNull();
   });
+
+  it("togglePause() toggles pause state", () => {
+    const store = new AlertStore([]);
+    expect(store.status.paused).toBe(false);
+    store.status.togglePause();
+    expect(store.status.paused).toBe(true);
+    store.status.togglePause();
+    expect(store.status.paused).toBe(false);
+  });
 });
 
 describe("AlertStore.filters", () => {
