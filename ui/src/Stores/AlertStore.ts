@@ -343,6 +343,9 @@ class AlertStore {
       resume() {
         this.paused = false;
       },
+      togglePause() {
+        this.paused = !this.paused;
+      },
     },
     {
       setIdle: action,
@@ -351,6 +354,7 @@ class AlertStore {
       setFailure: action,
       pause: action.bound,
       resume: action.bound,
+      togglePause: action.bound,
     },
     { name: "Store status" }
   );

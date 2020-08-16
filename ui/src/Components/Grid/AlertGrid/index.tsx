@@ -7,6 +7,8 @@ import useDimensions from "react-cool-dimensions";
 
 import { SizeDetail } from "bricks.js";
 
+import { useHotkeys } from "react-hotkeys-hook";
+
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -51,6 +53,8 @@ const AlertGrid: FC<{
       }),
     [windowWidth, bodyWidth] // eslint-disable-line react-hooks/exhaustive-deps
   );
+
+  useHotkeys("alt+space", alertStore.status.togglePause);
 
   return useObserver(() => (
     <React.Fragment>
