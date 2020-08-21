@@ -91,7 +91,7 @@
     "markdownlint-cli": "0.23.2",
     "prettier": "2.0.5",
     "puppeteer": "5.2.1",
-    "source-map-explorer": "2.4.2"
+    "source-map-explorer": "2.5.0"
   },
   "scripts": {
     "start": "NODE_ENV=dev REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
