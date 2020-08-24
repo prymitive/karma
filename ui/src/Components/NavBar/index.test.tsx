@@ -42,7 +42,7 @@ beforeEach(() => {
 
 afterEach(() => {
   act(() => {
-    jest.runAllTimers();
+    jest.runOnlyPendingTimers();
   });
 });
 
@@ -62,7 +62,7 @@ const ValidateNavClass = (totalFilters: number, expectedClass: string) => {
     alertStore.filters.values.push(NewUnappliedFilter(`foo=${i}`));
   }
   const tree = MountedNavbar();
-  const nav = tree.find(".navbar-nav");
+  const nav = tree.find("ul.navbar-nav");
   expect((nav.props().className as string).split(" ")).toContain(expectedClass);
 };
 

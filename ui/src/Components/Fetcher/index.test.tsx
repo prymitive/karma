@@ -1,8 +1,11 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
 import fetchMock from "fetch-mock";
+
+import toDiffableHtml from "diffable-html";
 
 import { advanceTo, advanceBy, clear } from "jest-date-mock";
 
@@ -11,7 +14,7 @@ import { EmptyAPIResponse } from "__mocks__/Fetch";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 
-import { Fetcher } from ".";
+import { Fetcher, Dots } from ".";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;
@@ -47,6 +50,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  alertStore.status.resume();
   requestAnimationFrameSpy.mockRestore();
   jest.clearAllTimers();
   jest.clearAllMocks();
@@ -78,25 +82,35 @@ describe("<Fetcher />", () => {
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
     advanceBy(3 * 1000);
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
     settingsStore.fetchConfig.config.interval = 600;
 
     advanceBy(3 * 1000);
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
     advanceBy(32 * 1000);
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
     advanceBy(62 * 1000);
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
     advanceBy(602 * 1000);
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(fetchSpy).toHaveBeenCalledTimes(3);
   });
 
@@ -120,15 +134,21 @@ describe("<Fetcher />", () => {
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
     advanceBy(62 * 1000);
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
     advanceBy(62 * 1000);
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(fetchSpy).toHaveBeenCalledTimes(3);
 
     advanceBy(62 * 1000);
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(fetchSpy).toHaveBeenCalledTimes(4);
   });
 
@@ -246,7 +266,9 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.config.reverseSort = !settingsStore.gridConfig
       .config.reverseSort;
     expect(fetchSpy).toHaveBeenCalledTimes(1);
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -270,7 +292,9 @@ describe("<Fetcher />", () => {
     alertStore.status.resume();
     settingsStore.gridConfig.config.reverseSort = !settingsStore.gridConfig
       .config.reverseSort;
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -279,7 +303,90 @@ describe("<Fetcher />", () => {
     MountedFetcher();
     alertStore.status.resume();
     advanceBy(2 * 1000);
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(fetchSpy).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("<Fetcher /> children", () => {
+  it("renders Dots when countdown is in progress", () => {
+    const tree = MountedFetcher();
+    expect(tree.find("div.components-fetcher")).toHaveLength(1);
+  });
+
+  it("doesn't render any children when upgrade is needed", () => {
+    act(() => {
+      alertStore.info.upgradeNeeded = true;
+    });
+    const tree = MountedFetcher();
+    expect(tree.find("div.navbar-brand").children()).toHaveLength(0);
+  });
+
+  it("renders PauseButton when paused", () => {
+    const tree = MountedFetcher();
+    act(() => {
+      alertStore.status.pause();
+    });
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-pause/);
+  });
+
+  it("renders PauseButton when paused and hovered", () => {
+    const tree = MountedFetcher();
+    act(() => {
+      alertStore.status.pause();
+    });
+    tree.find(".navbar-brand").simulate("mouseenter");
+    tree.update();
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-pause/);
+
+    tree.find(".navbar-brand").simulate("mouseleave");
+    tree.update();
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-pause/);
+  });
+
+  it("renders PlayButton when hovered", () => {
+    const tree = MountedFetcher();
+    tree.find(".navbar-brand").simulate("mouseenter");
+    tree.update();
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-play/);
+
+    tree.find(".navbar-brand").simulate("mouseleave");
+    tree.update();
+    expect(tree.find("div.components-fetcher")).toHaveLength(1);
+  });
+});
+
+describe("<Dots />", () => {
+  it("matches snapshot", () => {
+    const tree = mount(<Dots alertStore={alertStore} dots={8} />);
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
+  it("adds 'fetching' class when fetching data", () => {
+    act(() => {
+      alertStore.status.setFetching();
+    });
+    const tree = mount(<Dots alertStore={alertStore} dots={8} />);
+    expect(tree.find("div.components-fetcher").hasClass("fetching")).toBe(true);
+  });
+
+  it("adds 'processing' class when processing fetched data", () => {
+    act(() => {
+      alertStore.status.setProcessing();
+    });
+    const tree = mount(<Dots alertStore={alertStore} dots={8} />);
+    expect(tree.find("div.components-fetcher").hasClass("processing")).toBe(
+      true
+    );
+  });
+
+  it("adds 'retrying' class when fetch needs a retry", () => {
+    act(() => {
+      alertStore.info.setIsRetrying();
+    });
+    const tree = mount(<Dots alertStore={alertStore} dots={8} />);
+    expect(tree.find("div.components-fetcher").hasClass("retrying")).toBe(true);
   });
 });

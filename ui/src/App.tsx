@@ -36,11 +36,6 @@ const NavBar = React.lazy(() =>
     default: module.NavBar,
   }))
 );
-const Fetcher = React.lazy(() =>
-  import("Components/Fetcher").then((module) => ({
-    default: module.Fetcher,
-  }))
-);
 const FaviconBadge = React.lazy(() =>
   import("Components/FaviconBadge").then((module) => ({
     default: module.FaviconBadge,
@@ -147,7 +142,6 @@ const App: FunctionComponent<AppProps> = ({ defaultFilters, uiDefaults }) => {
       </ThemeContext.Provider>
       <React.Suspense fallback={null}>
         <FaviconBadge alertStore={alertStore} />
-        <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
       </React.Suspense>
     </ErrorBoundary>
   ));
