@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Dots /> matches snapshot 1`] = `
+"
+<div class=\\"cursor-pointer components-fetcher   \\">
+  <div class=\\"dot  visible\\">
+  </div>
+  <div class=\\"dot  visible\\">
+  </div>
+  <div class=\\"dot  visible\\">
+  </div>
+  <div class=\\"dot  visible\\">
+  </div>
+  <div class=\\"dot dot-middle visible\\">
+  </div>
+  <div class=\\"dot  visible\\">
+  </div>
+  <div class=\\"dot  visible\\">
+  </div>
+  <div class=\\"dot  visible\\">
+  </div>
+  <div class=\\"dot  hidden\\">
+  </div>
+</div>
+"
+`;

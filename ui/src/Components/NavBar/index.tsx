@@ -17,7 +17,7 @@ import { OverviewModal } from "Components/OverviewModal";
 import { MainModal } from "Components/MainModal";
 import { SilenceModal } from "Components/SilenceModal";
 import { ThemeContext } from "Components/Theme";
-import { FetchIndicator } from "./FetchIndicator";
+import { Fetcher } from "Components/Fetcher";
 import { FilterInput } from "./FilterInput";
 
 const DesktopIdleTimeout = 1000 * 60 * 3;
@@ -104,9 +104,11 @@ const NavBar: FC<{
             fixedTop ? "fixed-top" : "w-100"
           }`}
         >
-          <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block float-left">
-            <OverviewModal alertStore={alertStore} />
-            <FetchIndicator alertStore={alertStore} />
+          <span className="navbar-nav float-left d-flex flex-row">
+            <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block">
+              <OverviewModal alertStore={alertStore} />
+            </span>
+            <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
           </span>
           <ul
             className={`navbar-nav float-right d-flex ${
