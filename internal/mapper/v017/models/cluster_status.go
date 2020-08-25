@@ -24,7 +24,6 @@ type ClusterStatus struct {
 	Name string `json:"name,omitempty"`
 
 	// peers
-	// Minimum: 0
 	Peers []*PeerStatus `json:"peers"`
 
 	// status
