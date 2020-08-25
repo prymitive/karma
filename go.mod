@@ -21,7 +21,7 @@ require (
 	github.com/go-openapi/swag v0.19.9
 	github.com/go-openapi/validate v0.19.10
 	github.com/go-playground/validator/v10 v10.3.0 // indirect
-	github.com/google/go-cmp v0.5.1
+	github.com/google/go-cmp v0.5.2
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.6
 	github.com/knadh/koanf v0.12.0
