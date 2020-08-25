@@ -22,13 +22,13 @@ var testCases = []testCaseType{
 	{requestedVersion: "0.6.6", hadError: true},
 	{requestedVersion: "0.15.0", hadError: true},
 	{requestedVersion: "0.16.0", hadError: true},
-	{requestedVersion: "0.17.0"},
-	{requestedVersion: "0.17.0-rc-1"},
-	{requestedVersion: "0.17.0-beta.1"},
-	{requestedVersion: "0.17.99-beta.1"},
-	{requestedVersion: "0.18-beta.1"},
-	{requestedVersion: "0.18"},
-	{requestedVersion: "0.18.1"},
+	{requestedVersion: "0.19.0"},
+	{requestedVersion: "0.19.0-rc-1"},
+	{requestedVersion: "0.19.0-beta.1"},
+	{requestedVersion: "0.19.99-beta.1"},
+	{requestedVersion: "0.20-beta.1"},
+	{requestedVersion: "0.20"},
+	{requestedVersion: "0.20.1"},
 }
 
 func TestGetAlertMapper(t *testing.T) {

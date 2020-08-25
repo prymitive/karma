@@ -18,7 +18,7 @@ type AlertMapper struct {
 // IsSupported returns true if given version string is supported
 func (m AlertMapper) IsSupported(version string) bool {
 	// no need to check for errors as we pass static value
-	versionRange, _ := semver.NewConstraint(">=0.17.0")
+	versionRange, _ := semver.NewConstraint(">=0.19.0")
 	return versionRange.Check(semver.MustParse(version))
 }
 

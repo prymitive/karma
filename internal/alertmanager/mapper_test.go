@@ -8,7 +8,7 @@ import (
 
 func TestGetAlertMapper(t *testing.T) {
 	versions := []string{
-		"0.17.0",
+		"0.19.0",
 		"0.20.0-rc.0",
 		"0.20.0-rc.0-2",
 	}
