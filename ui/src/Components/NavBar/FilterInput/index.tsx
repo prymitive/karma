@@ -118,13 +118,20 @@ const FilterInput: FC<{
     ...inputProps
   }) => {
     return (
-      <input
-        className="components-filterinput-wrapper text-white mw-100"
-        placeholder=""
-        size={value.length + 1}
-        value={value}
-        {...inputProps}
-      />
+      <React.Fragment>
+        {alertStore.filters.values.length ? null : (
+          <span className="input-group-text d-inline-block mr-2 border-0 bg-inherit px-1">
+            <FontAwesomeIcon icon={faSearch} />
+          </span>
+        )}
+        <input
+          className="components-filterinput-wrapper text-white mw-100"
+          placeholder=""
+          size={value.length + 1}
+          value={value}
+          {...inputProps}
+        />
+      </React.Fragment>
     );
   };
 
@@ -138,11 +145,6 @@ const FilterInput: FC<{
           isFocused ? "bg-focused" : "bg-transparent"
         }`}
       >
-        <div className="input-group-prepend">
-          <span className="input-group-text px-2 border-0 rounded-0 bg-inherit components-navbar-icon">
-            <FontAwesomeIcon icon={faSearch} />
-          </span>
-        </div>
         <div
           className="form-control components-filterinput border-0 rounded-0 bg-inherit"
           onClick={(event) =>
@@ -177,7 +179,7 @@ const FilterInput: FC<{
             theme={AutosuggestTheme}
           />
         </div>
-        <div className="input-group-append inherit">
+        <div className="input-group-append">
           <History alertStore={alertStore} settingsStore={settingsStore} />
         </div>
       </div>
