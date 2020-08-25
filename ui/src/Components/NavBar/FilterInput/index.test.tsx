@@ -40,11 +40,24 @@ const MountedInput = () => {
 };
 
 describe("<FilterInput />", () => {
-  it("matches snapshot on default render", () => {
+  it("matches snapshot with no filters", () => {
     const tree = render(
       <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(alertStore.filters.values).toHaveLength(0);
+  });
+
+  it("matches snapshot with some filters", () => {
+    alertStore.filters.values = [
+      NewUnappliedFilter("foo=bar"),
+      NewUnappliedFilter("baz!=bar"),
+    ];
+    const tree = render(
+      <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
+    );
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(alertStore.filters.values).toHaveLength(2);
   });
 
   it("input gets focus by default on desktop", () => {
