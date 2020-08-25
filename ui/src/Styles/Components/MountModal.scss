@@ -1,11 +1,12 @@
-$duration-modal: 0.2s;
-$move: -110%;
-$opacity-modal: 0.85;
+$duration-modal: 0.3s;
+$move: -400px;
+$opacity-modal: 0;
 
 $duration-bg: 0.2s;
 $opacity-bg: 0.8;
 
-$easing: ease-in-out;
+$easing-enter: ease-out;
+$easing-exit: ease-in;
 
 .components-animation-modal {
   will-change: opacity, transform;
@@ -17,8 +18,8 @@ $easing: ease-in-out;
 }
 .components-animation-modal-enter-active > .modal > .modal-dialog {
   opacity: 1;
-  transition: transform $duration-modal $easing $duration-bg,
-    opacity $duration-modal $easing $duration-bg;
+  transition: transform $duration-modal $easing-enter,
+    opacity $duration-modal $easing-enter;
   transform: translate(0, 0);
 }
 .components-animation-modal-exit > .modal > .modal-dialog {
@@ -28,7 +29,8 @@ $easing: ease-in-out;
 .components-animation-modal-exit-active > .modal > .modal-dialog {
   opacity: $opacity-modal;
   transform: translate(0, $move);
-  transition: transform $duration-modal $easing, opacity $duration-modal $easing;
+  transition: transform $duration-modal $easing-enter,
+    opacity $duration-modal $easing-enter;
 }
 
 .components-animation-backdrop {
@@ -40,16 +42,16 @@ $easing: ease-in-out;
 }
 .components-animation-backdrop-enter-active {
   opacity: $opacity-bg;
-  transition: opacity $duration-bg $easing;
+  transition: opacity $duration-bg $easing-exit;
 }
 .components-animation-backdrop-enter-done {
   opacity: $opacity-bg;
-  transition: opacity $duration-bg $easing;
+  transition: opacity $duration-bg $easing-exit;
 }
 .components-animation-backdrop-exit {
   opacity: $opacity-bg;
 }
 .components-animation-backdrop-exit-active {
   opacity: 0.01;
-  transition: opacity $duration-bg $easing $duration-modal;
+  transition: opacity $duration-bg $easing-exit;
 }
