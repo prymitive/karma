@@ -5,10 +5,7 @@ Alert dashboard for
 
 ---
 
-Starting with karma v0.56 only Alertmanager V2 API is supported, which
-requires Alertmanager `>=0.17.0`.
-
-Alertmanager `>=0.19.0` is recommended as older versions might not show all
+Alertmanager `>=0.19.0` is required as older versions might not show all
 receivers in karma, see
 [issue #812](https://github.com/prymitive/karma/issues/812) for details.
 
