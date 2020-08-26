@@ -89,7 +89,7 @@
     "jest-canvas-mock": "2.2.0",
     "jest-date-mock": "1.0.8",
     "markdownlint-cli": "0.23.2",
-    "prettier": "2.1.0",
+    "prettier": "2.1.1",
     "puppeteer": "5.2.1",
     "source-map-explorer": "2.5.0"
   },
