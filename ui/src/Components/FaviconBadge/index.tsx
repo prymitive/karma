@@ -16,7 +16,6 @@ const FaviconBadge: FC<{
       position: "down",
       bgColor: "#e74c3c",
       textColor: "#fff",
-      fontStyle: "lighter",
     })
   );
 
