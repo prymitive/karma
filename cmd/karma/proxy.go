@@ -46,6 +46,10 @@ func NewAlertmanagerProxy(alertmanager *alertmanager.Alertmanager) (*httputil.Re
 				req.SetBasicAuth(username, password)
 			}
 
+			for key, val := range alertmanager.HTTPHeaders {
+				req.Header.Set(key, val)
+			}
+
 			// drop Accept-Encoding header so we always get uncompressed reponses from
 			// upstream, there's a gzip middleware that's global so we don't want it
 			// to gzip twice

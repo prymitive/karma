@@ -145,14 +145,15 @@ func TestProxy(t *testing.T) {
 }
 
 type proxyHeaderTest struct {
-	method           string
-	localPath        string
-	upstreamURI      string
-	code             int
-	alertmanagerURI  string
-	alertmanagerHost string
-	authUser         string
-	authPass         string
+	method              string
+	localPath           string
+	upstreamURI         string
+	code                int
+	alertmanagerURI     string
+	alertmanagerHost    string
+	alertmanagerHeaders map[string]string
+	authUser            string
+	authPass            string
 }
 
 var proxyHeaderTests = []proxyHeaderTest{
@@ -163,6 +164,9 @@ var proxyHeaderTests = []proxyHeaderTest{
 		code:             200,
 		alertmanagerURI:  "http://localhost:9093",
 		alertmanagerHost: "localhost:9093",
+		alertmanagerHeaders: map[string]string{
+			"X-Foo": "bar",
+		},
 	},
 	{
 		method:           "POST",
@@ -171,26 +175,31 @@ var proxyHeaderTests = []proxyHeaderTest{
 		code:             200,
 		alertmanagerURI:  "http://alertmanager.example.com",
 		alertmanagerHost: "alertmanager.example.com",
+		alertmanagerHeaders: map[string]string{
+			"Authorization": "Bearer xxxxx",
+		},
 	},
 	{
-		method:           "POST",
-		localPath:        "/proxy/alertmanager/dummy/api/v2/silences",
-		upstreamURI:      "http://alertmanager.example.com/api/v2/silences",
-		code:             200,
-		alertmanagerURI:  "http://foo:bar@alertmanager.example.com",
-		alertmanagerHost: "alertmanager.example.com",
-		authUser:         "foo",
-		authPass:         "bar",
+		method:              "POST",
+		localPath:           "/proxy/alertmanager/dummy/api/v2/silences",
+		upstreamURI:         "http://alertmanager.example.com/api/v2/silences",
+		code:                200,
+		alertmanagerURI:     "http://foo:bar@alertmanager.example.com",
+		alertmanagerHost:    "alertmanager.example.com",
+		alertmanagerHeaders: map[string]string{},
+		authUser:            "foo",
+		authPass:            "bar",
 	},
 	{
-		method:           "POST",
-		localPath:        "/proxy/alertmanager/dummy/api/v2/silences",
-		upstreamURI:      "http://alertmanager.example.com/api/v2/silences",
-		code:             200,
-		alertmanagerURI:  "http://foo@alertmanager.example.com",
-		alertmanagerHost: "alertmanager.example.com",
-		authUser:         "foo",
-		authPass:         "",
+		method:              "POST",
+		localPath:           "/proxy/alertmanager/dummy/api/v2/silences",
+		upstreamURI:         "http://alertmanager.example.com/api/v2/silences",
+		code:                200,
+		alertmanagerURI:     "http://foo@alertmanager.example.com",
+		alertmanagerHost:    "alertmanager.example.com",
+		alertmanagerHeaders: map[string]string{},
+		authUser:            "foo",
+		authPass:            "",
 	},
 }
 
@@ -215,6 +224,7 @@ func TestProxyHeaders(t *testing.T) {
 			testCase.alertmanagerURI,
 			alertmanager.WithRequestTimeout(time.Second*5),
 			alertmanager.WithProxy(true),
+			alertmanager.WithHTTPHeaders(testCase.alertmanagerHeaders),
 		)
 		if err != nil {
 			t.Error(err)
@@ -241,6 +251,13 @@ func TestProxyHeaders(t *testing.T) {
 				if testCase.authPass != "" && testCase.authPass != password {
 					t.Errorf("%s %s proxied to %s was expected to have Basic Auth password '%s', got '%s'",
 						testCase.method, testCase.localPath, testCase.upstreamURI, testCase.authPass, password)
+				}
+				for k, v := range testCase.alertmanagerHeaders {
+					got := req.Header.Get(k)
+					if got != v {
+						t.Errorf("%s %s proxied to %s was expected to have header %q=%q, got %v",
+							testCase.method, testCase.localPath, testCase.upstreamURI, k, v, got)
+					}
 				}
 			}
 			return httpmock.NewStringResponse(testCase.code, "ok"), nil
