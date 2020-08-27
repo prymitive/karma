@@ -39,7 +39,7 @@ jobs:
   include:
     - stage: Stats
       name: Webpack bundle size compare
-      if: (repo = prymitive/karma AND type = pull_request)
+      if: (repo = prymitive/karma AND type = pull_request AND fork = false)
       <<: *DEFAULTS_JS
       env:
         # GITHUB_TOKEN for CI Bundle size diff comments and gist uploads
@@ -49,7 +49,7 @@ jobs:
 
     - stage: Stats
       name: Benchmark Go code compare
-      if: (repo = prymitive/karma AND type = pull_request)
+      if: (repo = prymitive/karma AND type = pull_request AND fork = false)
       <<: *DEFAULTS_GO
       env:
         # GITHUB_TOKEN for CI Bundle size diff comments and gist uploads
