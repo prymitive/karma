@@ -5,7 +5,7 @@ rwildcard = $(foreach d, $(wildcard $1*), $(call rwildcard,$d/,$2) $(filter $(su
 
 node_modules/%: package.json package-lock.json
 	npm install
-	touch $@
+	touch -c $@
 
 build/index.html: node_modules/react-scripts/bin/react-scripts.js $(call rwildcard, public src, *)
 	npm run build
