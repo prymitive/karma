@@ -17,7 +17,7 @@
     "@types/enzyme": "3.10.5",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/fontfaceobserver": "0.0.6",
-    "@types/jest": "26.0.10",
+    "@types/jest": "26.0.11",
     "@types/lodash.debounce": "4.0.6",
     "@types/lodash.merge": "4.6.6",
     "@types/lodash.throttle": "4.1.6",
