@@ -38,7 +38,7 @@
     "bricks.js": "1.8.0",
     "copy-to-clipboard": "3.3.1",
     "csshake": "1.5.3",
-    "date-fns": "2.16.0",
+    "date-fns": "2.16.1",
     "eslint-config-prettier": "6.11.0",
     "eslint-plugin-prettier": "3.1.4",
     "favico.js": "0.3.10",
