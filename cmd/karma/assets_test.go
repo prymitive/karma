@@ -105,7 +105,7 @@ func TestLoadTemplateChained(t *testing.T) {
 		t.Errorf("loadTemplate returned nil")
 	}
 
-	tmpl = loadTemplate(tmpl, "ui/build/favicon.ico")
+	tmpl = loadTemplate(tmpl, "ui/build/manifest.json")
 	if tmpl == nil {
 		t.Errorf("loadTemplate returned nil")
 	}
