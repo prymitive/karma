@@ -4,8 +4,6 @@ import Adapter from "enzyme-adapter-react-16";
 
 import { FetchRetryConfig } from "Common/Fetch";
 
-import "mobx-react-lite/batchingForReactDom";
-
 // https://github.com/airbnb/enzyme
 Enzyme.configure({ adapter: new Adapter() });
 
