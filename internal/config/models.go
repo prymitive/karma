@@ -168,4 +168,5 @@ type configSchema struct {
 		MultiGridLabel       string `yaml:"multiGridLabel" koanf:"multiGridLabel"`
 		MultiGridSortReverse bool   `yaml:"multiGridSortReverse" koanf:"multiGridSortReverse"`
 	}
+	Invalid map[string]interface{} `yaml:"-" koanf:",remain"`
 }

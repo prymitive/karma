@@ -1,0 +1,12 @@
+# Raises an error if config file contains unknown keys
+karma.bin-should-fail --log.format=text --log.config=false --log.level=error --config.file=karma.yaml
+! stdout .
+stderr 'msg="Config file contains unsupported option\(s\): foo"'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: test
+      uri: https://localhost:9093
+foo:
+  bar: true

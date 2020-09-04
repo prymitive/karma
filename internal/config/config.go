@@ -191,7 +191,32 @@ func readEnvVariables(k *koanf.Koanf) {
 		case "UI_COLLAPSEGROUPS":
 			return "ui.collapseGroups"
 		default:
-			return strings.Replace(strings.ToLower(s), "_", ".", -1)
+			for _, prefix := range []string{
+				"ALERTMANAGER_",
+				"ALERTACKNOWLEDGEMENT_",
+				"ANNOTATIONS_",
+				"CONFIG_FILE",
+				"CUSTOM_",
+				"DEBUG",
+				"FILTERS_",
+				"GRID_",
+				"HOST",
+				"PORT",
+				"KARMA_",
+				"LABELS_",
+				"LISTEN_",
+				"LOG_",
+				"RECEIVERS_",
+				"SENTRY_",
+				"SILENCEFORM_",
+				"UI_",
+			} {
+				if strings.HasPrefix(s, prefix) {
+					return strings.Replace(strings.ToLower(s), "_", ".", -1)
+				}
+			}
+
+			return ""
 		}
 	}), nil)
 }
@@ -236,6 +261,18 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 	err := k.UnmarshalWithConf("", &config, kConf)
 	if err != nil {
 		log.Fatalf("Failed to unmarshal configuration: %v", err)
+	}
+
+	if configFileUsed != "" {
+		keys := []string{}
+		for key := range config.Invalid {
+			if !slices.StringInSlice([]string{"", "check-config", "config", "version", "silenceform"}, key) {
+				keys = append(keys, key)
+			}
+		}
+		if len(keys) > 0 {
+			log.Fatalf("Config file contains unsupported option(s): %s", strings.Join(keys, ", "))
+		}
 	}
 
 	if config.Authentication.Header.Name != "" && len(config.Authentication.BasicAuth.Users) > 0 {
