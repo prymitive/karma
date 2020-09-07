@@ -58,7 +58,7 @@ const UpgradeToastMessage: FC<{
           }`}
           onAnimationEnd={alertStore.info.setUpgradeNeeded}
           role="progressbar"
-          style={{ width: 0 }}
+          style={{ width: 100 }}
         ></div>
       </div>
     </div>
