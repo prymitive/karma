@@ -43,7 +43,7 @@ const Duration: FC<{
       <table className="w-100">
         <tbody>
           <tr>
-            <td className="w-50 text-center">
+            <td className="w-50 text-center with-click px-2">
               <span onClick={onInc}>
                 <FontAwesomeIcon
                   icon={faAngleUp}
@@ -63,7 +63,7 @@ const Duration: FC<{
             </td>
           </tr>
           <tr>
-            <td className="w-50 text-center">
+            <td className="w-50 text-center with-click px-2">
               <span onClick={onDec}>
                 <FontAwesomeIcon
                   icon={faAngleDown}

@@ -238,13 +238,13 @@ describe("<SilenceForm /> preview", () => {
 
   it("renders PayloadPreview after clicking the toggle", () => {
     const tree = MountedSilenceForm();
-    tree.find("span.btn.cursor-pointer.text-muted").simulate("click");
+    tree.find("span.badge.cursor-pointer.text-muted").simulate("click");
     expect(tree.find("PayloadPreview")).toHaveLength(1);
   });
 
   it("clicking on the toggle icon toggles PayloadPreview", () => {
     const tree = MountedSilenceForm();
-    const button = tree.find(".btn.cursor-pointer.text-muted");
+    const button = tree.find(".badge.cursor-pointer.text-muted");
     expect(tree.find("PayloadPreview")).toHaveLength(0);
     button.simulate("click");
     expect(tree.find("PayloadPreview")).toHaveLength(1);
@@ -263,7 +263,7 @@ describe("<SilenceForm /> preview", () => {
     silenceFormStore.data.autofillMatchers = false;
 
     const tree = MountedSilenceForm();
-    tree.find(".btn.cursor-pointer.text-muted").simulate("click");
+    tree.find(".badge.cursor-pointer.text-muted").simulate("click");
 
     const button = tree.find("span.input-group-text.cursor-pointer");
     expect(button.html()).toMatch(/fa-copy/);
@@ -282,7 +282,7 @@ describe("<SilenceForm /> preview", () => {
     silenceFormStore.data.autofillMatchers = false;
 
     const tree = MountedSilenceForm();
-    tree.find(".btn.cursor-pointer.text-muted").simulate("click");
+    tree.find(".badge.cursor-pointer.text-muted").simulate("click");
 
     const input = tree.find("input.form-control").at(2);
     expect(input.props().value).toMatch(/http:\/\/localhost\/\?m=/);

@@ -41,6 +41,9 @@ $pagination-disabled-bg: $gray-300;
 
 $progress-bg: darken($light, 10%);
 
+$with-click-default: $black;
+$with-click-dark: $white;
+
 @import "Styles/RebootlessBootstrap";
 @import "~bootswatch/dist/flatly/bootswatch";
 

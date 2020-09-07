@@ -25,7 +25,11 @@ const LoadButton: FC<{
 }> = ({ icon, action, tooltip }) => {
   return (
     <TooltipWrapper title={tooltip}>
-      <button type="button" className="btn btn-sm py-0" onClick={action}>
+      <button
+        type="button"
+        className="btn btn-sm py-0 with-click"
+        onClick={action}
+      >
         <FontAwesomeIcon className="text-muted" icon={icon} />
       </button>
     </TooltipWrapper>

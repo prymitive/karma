@@ -104,7 +104,7 @@ const GroupHeader: FC<{
         <span
           className={`${
             themedCounters ? "text-muted" : "text-white"
-          } cursor-pointer badge px-0 components-label mr-0 pl-2 pl-sm-1`}
+          } cursor-pointer badge components-label components-label-with-hover with-click`}
           onClick={onCollapseClick}
         >
           <TooltipWrapper title="Click to toggle this group details or Alt+Click to toggle all groups">

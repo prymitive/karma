@@ -12,7 +12,7 @@ import copy from "copy-to-clipboard";
 import { Manager, Reference, Popper } from "react-popper";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV } from "@fortawesome/free-solid-svg-icons/faEllipsisV";
+import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
 import { faShareSquare } from "@fortawesome/free-solid-svg-icons/faShareSquare";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
@@ -160,10 +160,10 @@ const GroupMenu: FC<{
               onClick={toggle}
               className={`${
                 themed ? "text-white" : "text-muted"
-              } cursor-pointer badge pl-0 pr-3 pr-sm-2 components-label mr-0`}
+              } cursor-pointer badge components-label components-label-with-hover with-click mr-1`}
               data-toggle="dropdown"
             >
-              <FontAwesomeIcon icon={faEllipsisV} />
+              <FontAwesomeIcon icon={faBars} />
             </span>
           )}
         </Reference>

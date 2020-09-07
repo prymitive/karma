@@ -56,7 +56,7 @@ const Swimlane: FC<{
           alertStore={alertStore}
         />
         <span
-          className="text-muted cursor-pointer badge px-0 components-label ml-2 mr-1"
+          className="text-muted cursor-pointer badge with-click with-click-dark components-label ml-2 mr-1"
           onClick={onToggle}
         >
           <TooltipWrapper title="Click to toggle this grid details or Alt+Click to toggle all grids">

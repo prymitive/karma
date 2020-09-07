@@ -74,11 +74,12 @@ const LabelsTable: FC<{
           <tr>
             <td colSpan={2} className="px-1 py-0">
               <TooltipWrapper title="Toggle all / only common labels">
-                <ToggleIcon
-                  isOpen={showAllLabels}
-                  className="cursor-pointer text-muted"
+                <span
+                  className="badge components-label cursor-pointer with-click"
                   onClick={toggleAllLabels}
-                />
+                >
+                  <ToggleIcon isOpen={showAllLabels} className="text-muted" />
+                </span>
               </TooltipWrapper>
             </td>
           </tr>
