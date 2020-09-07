@@ -1,7 +1,6 @@
-import React, { useState, useEffect, FC } from "react";
+import { useState, useEffect, FC } from "react";
 
 import { autorun } from "mobx";
-import { useObserver } from "mobx-react-lite";
 
 import Favico from "favico.js";
 
@@ -22,21 +21,14 @@ const FaviconBadge: FC<{
   useEffect(
     () =>
       autorun(() => {
-        if (alertStore.status.error !== null) {
-          favico.badge("?");
-        } else {
-          favico.badge(alertStore.info.totalAlerts);
-        }
+        favico.badge(
+          alertStore.status.error === null ? alertStore.info.totalAlerts : "?"
+        );
       }),
     [] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  return useObserver(() => (
-    <span
-      data-total-alerts={alertStore.info.totalAlerts}
-      data-status-error={alertStore.status.error}
-    />
-  ));
+  return null;
 };
 
 export { FaviconBadge };
