@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AppToasts /> renders UpgradeToastMessage when alertStore.info.upgradeReady=true 1`] = `
+"
+<div class=\\"toast-container d-flex flex-column\\">
+  <div class=\\"m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active\\">
+    <div class=\\"d-flex flex-row p-1\\">
+      <div class=\\"flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x\\">
+        <svg aria-hidden=\\"true\\"
+             focusable=\\"false\\"
+             data-prefix=\\"fas\\"
+             data-icon=\\"circle\\"
+             class=\\"svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-success\\"
+             role=\\"img\\"
+             xmlns=\\"http://www.w3.org/2000/svg\\"
+             viewbox=\\"0 0 512 512\\"
+        >
+          <path fill=\\"currentColor\\"
+                d=\\"M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z\\"
+          >
+          </path>
+        </svg>
+        <svg aria-hidden=\\"true\\"
+             focusable=\\"false\\"
+             data-prefix=\\"fas\\"
+             data-icon=\\"arrow-up\\"
+             class=\\"svg-inline--fa fa-arrow-up fa-w-14 fa-stack-1x text-white\\"
+             role=\\"img\\"
+             xmlns=\\"http://www.w3.org/2000/svg\\"
+             viewbox=\\"0 0 448 512\\"
+        >
+          <path fill=\\"currentColor\\"
+                d=\\"M34.9 289.5l-22.2-22.2c-9.4-9.4-9.4-24.6 0-33.9L207 39c9.4-9.4 24.6-9.4 33.9 0l194.3 194.3c9.4 9.4 9.4 24.6 0 33.9L413 289.4c-9.5 9.5-25 9.3-34.3-.4L264 168.6V456c0 13.3-10.7 24-24 24h-32c-13.3 0-24-10.7-24-24V168.6L69.2 289.1c-9.3 9.8-24.8 10-34.3.4z\\"
+          >
+          </path>
+        </svg>
+      </div>
+      <div class=\\"flex-shrink-1 flex-grow-1 align-self-center ml-1 mr-3 text-break text-wrap\\">
+        <div>
+          <div>
+            New version available, updates are paused until this page auto reloads
+          </div>
+          <div>
+            <code>
+              unknown
+            </code>
+          </div>
+          <div class=\\"d-flex flex-row-reverse\\">
+            <button type=\\"button\\"
+                    class=\\"btn btn-sm btn-light\\"
+            >
+              <svg aria-hidden=\\"true\\"
+                   focusable=\\"false\\"
+                   data-prefix=\\"fas\\"
+                   data-icon=\\"stop\\"
+                   class=\\"svg-inline--fa fa-stop fa-w-14 mr-2\\"
+                   role=\\"img\\"
+                   xmlns=\\"http://www.w3.org/2000/svg\\"
+                   viewbox=\\"0 0 448 512\\"
+              >
+                <path fill=\\"currentColor\\"
+                      d=\\"M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48z\\"
+                >
+                </path>
+              </svg>
+              Stop auto-reload
+            </button>
+          </div>
+          <div class=\\"mt-2 progress bg-dark\\"
+               style=\\"height: 2px;\\"
+          >
+            <div class=\\"progress-bar bg-white toast-upgrade-progressbar\\"
+                 role=\\"progressbar\\"
+                 style=\\"width: 0px;\\"
+            >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream 1`] = `
+"
+<div class=\\"toast-container d-flex flex-column\\">
+  <div class=\\"m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active\\">
+    <div class=\\"d-flex flex-row p-1\\">
+      <div class=\\"flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x\\">
+        <svg aria-hidden=\\"true\\"
+             focusable=\\"false\\"
+             data-prefix=\\"fas\\"
+             data-icon=\\"circle\\"
+             class=\\"svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-danger\\"
+             role=\\"img\\"
+             xmlns=\\"http://www.w3.org/2000/svg\\"
+             viewbox=\\"0 0 512 512\\"
+        >
+          <path fill=\\"currentColor\\"
+                d=\\"M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z\\"
+          >
+          </path>
+        </svg>
+        <svg aria-hidden=\\"true\\"
+             focusable=\\"false\\"
+             data-prefix=\\"fas\\"
+             data-icon=\\"exclamation\\"
+             class=\\"svg-inline--fa fa-exclamation fa-w-6 fa-stack-1x text-white\\"
+             role=\\"img\\"
+             xmlns=\\"http://www.w3.org/2000/svg\\"
+             viewbox=\\"0 0 192 512\\"
+        >
+          <path fill=\\"currentColor\\"
+                d=\\"M176 432c0 44.112-35.888 80-80 80s-80-35.888-80-80 35.888-80 80-80 80 35.888 80 80zM25.26 25.199l13.6 272C39.499 309.972 50.041 320 62.83 320h66.34c12.789 0 23.331-10.028 23.97-22.801l13.6-272C167.425 11.49 156.496 0 142.77 0H49.23C35.504 0 24.575 11.49 25.26 25.199z\\"
+          >
+          </path>
+        </svg>
+      </div>
+      <div class=\\"flex-shrink-1 flex-grow-1 align-self-center ml-1 mr-3 text-break text-wrap\\">
+        <div>
+          <div>
+            Alertmanager am1 raised an error
+          </div>
+          <div>
+            <code>
+              error 1
+            </code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class=\\"m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active\\">
+    <div class=\\"d-flex flex-row p-1\\">
+      <div class=\\"flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x\\">
+        <svg aria-hidden=\\"true\\"
+             focusable=\\"false\\"
+             data-prefix=\\"fas\\"
+             data-icon=\\"circle\\"
+             class=\\"svg-inline--fa fa-circle fa-w-16 fa-stack-2x text-danger\\"
+             role=\\"img\\"
+             xmlns=\\"http://www.w3.org/2000/svg\\"
+             viewbox=\\"0 0 512 512\\"
+        >
+          <path fill=\\"currentColor\\"
+                d=\\"M256 8C119 8 8 119 8 256s111 248 248 248 248-111 248-248S393 8 256 8z\\"
+          >
+          </path>
+        </svg>
+        <svg aria-hidden=\\"true\\"
+             focusable=\\"false\\"
+             data-prefix=\\"fas\\"
+             data-icon=\\"exclamation\\"
+             class=\\"svg-inline--fa fa-exclamation fa-w-6 fa-stack-1x text-white\\"
+             role=\\"img\\"
+             xmlns=\\"http://www.w3.org/2000/svg\\"
+             viewbox=\\"0 0 192 512\\"
+        >
+          <path fill=\\"currentColor\\"
+                d=\\"M176 432c0 44.112-35.888 80-80 80s-80-35.888-80-80 35.888-80 80-80 80 35.888 80 80zM25.26 25.199l13.6 272C39.499 309.972 50.041 320 62.83 320h66.34c12.789 0 23.331-10.028 23.97-22.801l13.6-272C167.425 11.49 156.496 0 142.77 0H49.23C35.504 0 24.575 11.49 25.26 25.199z\\"
+          >
+          </path>
+        </svg>
+      </div>
+      <div class=\\"flex-shrink-1 flex-grow-1 align-self-center ml-1 mr-3 text-break text-wrap\\">
+        <div>
+          <div>
+            Alertmanager am3 raised an error
+          </div>
+          <div>
+            <code>
+              error 2
+            </code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+"
+`;

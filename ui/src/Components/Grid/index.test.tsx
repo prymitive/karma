@@ -89,53 +89,6 @@ describe("<Grid />", () => {
     expect(tree.text()).toBe("<FatalError />");
   });
 
-  it("renders UpstreamError for each unhealthy upstream", () => {
-    alertStore.data.upstreams = {
-      counters: { total: 3, healthy: 1, failed: 2 },
-      instances: [
-        {
-          name: "am1",
-          cluster: "am",
-          clusterMembers: ["am1"],
-          uri: "http://am1",
-          publicURI: "http://am1",
-          error: "error 1",
-          version: "0.21.0",
-          readonly: false,
-          corsCredentials: "include",
-          headers: {},
-        },
-        {
-          name: "am2",
-          cluster: "am",
-          clusterMembers: ["am2"],
-          uri: "file:///mock",
-          publicURI: "file:///mock",
-          error: "",
-          version: "0.21.0",
-          readonly: false,
-          corsCredentials: "include",
-          headers: {},
-        },
-        {
-          name: "am3",
-          cluster: "am",
-          clusterMembers: ["am3"],
-          uri: "http://am3",
-          publicURI: "http://am3",
-          error: "error 2",
-          version: "0.21.0",
-          readonly: false,
-          corsCredentials: "include",
-          headers: {},
-        },
-      ],
-      clusters: { am1: ["am1"], am2: ["am2"], am3: ["am3"] },
-    };
-    const tree = ShallowGrid();
-    expect(tree.text()).toBe("<UpstreamError /><UpstreamError /><AlertGrid />");
-  });
-
   it("renders only FatalError on failed fetch", () => {
     alertStore.status.error = "error";
     alertStore.data.upstreams = {

@@ -153,6 +153,37 @@ describe("AlertStore.status", () => {
     store.status.togglePause();
     expect(store.status.paused).toBe(false);
   });
+
+  it("togglePause() always leaves store paused if it's stopped", () => {
+    const store = new AlertStore([]);
+    expect(store.status.paused).toBe(false);
+    store.status.stop();
+    expect(store.status.paused).toBe(true);
+    store.status.togglePause();
+    expect(store.status.paused).toBe(true);
+    store.status.togglePause();
+    expect(store.status.paused).toBe(true);
+  });
+
+  it("stop() enforces a pause", () => {
+    const store = new AlertStore([]);
+    expect(store.status.paused).toBe(false);
+    store.status.stop();
+    expect(store.status.paused).toBe(true);
+    store.status.resume();
+    expect(store.status.paused).toBe(true);
+  });
+});
+
+describe("AlertStore.info", () => {
+  it("setUpgradeNeeded() sets upgradeNeeded to true", () => {
+    const store = new AlertStore([]);
+    expect(store.info.upgradeNeeded).toBe(false);
+    store.info.setUpgradeNeeded();
+    expect(store.info.upgradeNeeded).toBe(true);
+    store.info.setUpgradeNeeded();
+    expect(store.info.upgradeNeeded).toBe(true);
+  });
 });
 
 describe("AlertStore.filters", () => {
@@ -609,7 +640,7 @@ describe("AlertStore.fetch", () => {
     });
     const store = new AlertStore(["label=value"]);
     await expect(store.fetch("", false, "", "", "")).resolves.toBeUndefined();
-    expect(store.info.upgradeNeeded).toBe(false);
+    expect(store.info.upgradeReady).toBe(false);
 
     response.version = "newFakeVersion";
     fetchMock.reset();
@@ -617,7 +648,7 @@ describe("AlertStore.fetch", () => {
       body: JSON.stringify(response),
     });
     await expect(store.fetch("", false, "", "", "")).resolves.toBeUndefined();
-    expect(store.info.upgradeNeeded).toBe(true);
+    expect(store.info.upgradeReady).toBe(true);
   });
 
   it("adds new groups to the store after fetch", () => {

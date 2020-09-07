@@ -7,7 +7,6 @@ import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { AlertGrid } from "./AlertGrid";
 import { FatalError } from "./FatalError";
-import { UpstreamError } from "./UpstreamError";
 import { UpgradeNeeded } from "./UpgradeNeeded";
 import { ReloadNeeded } from "./ReloadNeeded";
 import { EmptyGrid } from "./EmptyGrid";
@@ -34,22 +33,11 @@ const Grid: FC<{
       alertStore.info.totalAlerts === 0 ? (
       <EmptyGrid />
     ) : (
-      <React.Fragment>
-        {alertStore.data.upstreams.instances
-          .filter((upstream) => upstream.error !== "")
-          .map((upstream) => (
-            <UpstreamError
-              key={upstream.name}
-              name={upstream.name}
-              message={upstream.error}
-            />
-          ))}
-        <AlertGrid
-          alertStore={alertStore}
-          settingsStore={settingsStore}
-          silenceFormStore={silenceFormStore}
-        />
-      </React.Fragment>
+      <AlertGrid
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        silenceFormStore={silenceFormStore}
+      />
     )
   );
 };
