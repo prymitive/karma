@@ -54,7 +54,7 @@ exports[`<UpgradeToastMessage /> matches snapshot 1`] = `
   >
     <div class=\\"progress-bar bg-white toast-upgrade-progressbar\\"
          role=\\"progressbar\\"
-         style=\\"width: 0px;\\"
+         style=\\"width: 100px;\\"
     >
     </div>
   </div>
