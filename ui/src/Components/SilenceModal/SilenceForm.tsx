@@ -232,7 +232,7 @@ const SilenceForm: FC<{
       />
       <div className="d-flex flex-row justify-content-between">
         <span
-          className="btn px-0 cursor-pointer text-muted"
+          className="badge components-label cursor-pointer with-click text-muted my-auto"
           onClick={() => setShowPreview(!showPreview)}
         >
           <ToggleIcon isOpen={showPreview} />

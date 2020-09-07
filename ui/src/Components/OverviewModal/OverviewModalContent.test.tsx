@@ -107,14 +107,14 @@ describe("<OverviewModalContent />", () => {
     ];
     const tree = MountedOverviewModalContent();
 
-    expect(tree.find("span.components-label")).toHaveLength(2);
+    expect(tree.find("span.components-label")).toHaveLength(2 + 1); // +1 for toggle icon
     expect(tree.find("span.components-label").at(0).text()).toBe("5foo");
     expect(tree.find("span.components-label").at(1).text()).toBe("5foo: bar");
 
-    tree.find("svg.cursor-pointer").simulate("click");
+    tree.find("span.badge.cursor-pointer.with-click").simulate("click");
 
-    expect(tree.find("span.components-label")).toHaveLength(4);
-    expect(tree.find("span.components-label").at(2).text()).toBe("3bar");
-    expect(tree.find("span.components-label").at(3).text()).toBe("3bar: foo");
+    expect(tree.find("span.components-label")).toHaveLength(4 + 1); // +1 for toggle icon
+    expect(tree.find("span.components-label").at(3).text()).toBe("3bar");
+    expect(tree.find("span.components-label").at(4).text()).toBe("3bar: foo");
   });
 });

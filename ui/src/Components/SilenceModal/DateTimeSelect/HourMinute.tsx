@@ -77,14 +77,14 @@ const HourMinute: FC<{
                 icon={faAngleUp}
                 onClick={onHourInc}
                 onWheel={onHourWheel}
-                className="components-hour-up"
+                className="components-hour-up with-click"
               />
               <td />
               <IconTd
                 icon={faAngleUp}
                 onClick={onMinuteInc}
                 onWheel={onMinuteWheel}
-                className="components-minute-up"
+                className="components-minute-up with-click"
               />
             </tr>
             <tr>
@@ -103,14 +103,14 @@ const HourMinute: FC<{
                 icon={faAngleDown}
                 onClick={onHourDec}
                 onWheel={onHourWheel}
-                className="components-hour-down"
+                className="components-hour-down with-click"
               />
               <td />
               <IconTd
                 icon={faAngleDown}
                 onClick={onMinuteDec}
                 onWheel={onMinuteWheel}
-                className="components-minute-down"
+                className="components-minute-down with-click"
               />
             </tr>
           </tbody>

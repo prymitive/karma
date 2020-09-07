@@ -40,7 +40,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
       <table class=\\"w-100\\">
         <tbody>
           <tr>
-            <td class=\\"w-50 text-center\\">
+            <td class=\\"w-50 text-center with-click px-2\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
@@ -74,7 +74,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
             </td>
           </tr>
           <tr>
-            <td class=\\"w-50 text-center\\">
+            <td class=\\"w-50 text-center with-click px-2\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
@@ -102,7 +102,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
       <table class=\\"w-100\\">
         <tbody>
           <tr>
-            <td class=\\"w-50 text-center\\">
+            <td class=\\"w-50 text-center with-click px-2\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
@@ -136,7 +136,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
             </td>
           </tr>
           <tr>
-            <td class=\\"w-50 text-center\\">
+            <td class=\\"w-50 text-center with-click px-2\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
@@ -164,7 +164,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
       <table class=\\"w-100\\">
         <tbody>
           <tr>
-            <td class=\\"w-50 text-center\\">
+            <td class=\\"w-50 text-center with-click px-2\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
@@ -198,7 +198,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
             </td>
           </tr>
           <tr>
-            <td class=\\"w-50 text-center\\">
+            <td class=\\"w-50 text-center with-click px-2\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
@@ -674,7 +674,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
       <table class=\\"text-center border-0\\">
         <tbody>
           <tr>
-            <td class=\\"components-hour-up\\">
+            <td class=\\"components-hour-up with-click\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
@@ -694,7 +694,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             </td>
             <td>
             </td>
-            <td class=\\"components-minute-up\\">
+            <td class=\\"components-minute-up with-click\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
@@ -731,7 +731,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             </td>
           </tr>
           <tr>
-            <td class=\\"components-hour-down\\">
+            <td class=\\"components-hour-down with-click\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
@@ -751,7 +751,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             </td>
             <td>
             </td>
-            <td class=\\"components-minute-down\\">
+            <td class=\\"components-minute-down with-click\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
@@ -1230,7 +1230,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
       <table class=\\"text-center border-0\\">
         <tbody>
           <tr>
-            <td class=\\"components-hour-up\\">
+            <td class=\\"components-hour-up with-click\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
@@ -1250,7 +1250,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             </td>
             <td>
             </td>
-            <td class=\\"components-minute-up\\">
+            <td class=\\"components-minute-up with-click\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
@@ -1287,7 +1287,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             </td>
           </tr>
           <tr>
-            <td class=\\"components-hour-down\\">
+            <td class=\\"components-hour-down with-click\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
@@ -1307,7 +1307,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             </td>
             <td>
             </td>
-            <td class=\\"components-minute-down\\">
+            <td class=\\"components-minute-down with-click\\">
               <span>
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"

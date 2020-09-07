@@ -87,13 +87,13 @@ const SilenceComment: FC<{
               defaultColor="primary"
               isAppend={false}
             />
-            <ToggleIcon
-              isOpen={!collapsed}
-              className={`components-managed-silence-icon ${
-                alertCount && alertCountAlwaysVisible && "my-sm-auto mt-2 mb-0"
-              } ml-sm-2 ml-auto mr-sm-0 mr-1 text-muted cursor-pointer`}
-              onClick={collapseToggle}
-            />
+            <span className="badge components-label with-click">
+              <ToggleIcon
+                isOpen={!collapsed}
+                className="components-managed-silence-icon m-auto text-muted cursor-pointer"
+                onClick={collapseToggle}
+              />
+            </span>
           </div>
         </div>
       </div>
