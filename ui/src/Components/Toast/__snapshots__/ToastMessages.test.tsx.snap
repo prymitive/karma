@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ToastMessage /> matches snapshot 1`] = `
+"
+<div>
+  <div>
+    title string
+  </div>
+  <div>
+    <code>
+      <div>
+        Div Message
+      </div>
+    </code>
+  </div>
+</div>
+"
+`;
+
+exports[`<UpgradeToastMessage /> matches snapshot 1`] = `
+"
+<div>
+  <div>
+    New version available, updates are paused until this page auto reloads
+  </div>
+  <div>
+    <code>
+      1.2.3
+    </code>
+  </div>
+  <div class=\\"d-flex flex-row-reverse\\">
+    <button type=\\"button\\"
+            class=\\"btn btn-sm btn-light\\"
+    >
+      <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
+           data-prefix=\\"fas\\"
+           data-icon=\\"stop\\"
+           class=\\"svg-inline--fa fa-stop fa-w-14 mr-2\\"
+           role=\\"img\\"
+           xmlns=\\"http://www.w3.org/2000/svg\\"
+           viewbox=\\"0 0 448 512\\"
+      >
+        <path fill=\\"currentColor\\"
+              d=\\"M400 32H48C21.5 32 0 53.5 0 80v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48z\\"
+        >
+        </path>
+      </svg>
+      Stop auto-reload
+    </button>
+  </div>
+  <div class=\\"mt-2 progress bg-dark\\"
+       style=\\"height: 2px;\\"
+  >
+    <div class=\\"progress-bar bg-white toast-upgrade-progressbar\\"
+         role=\\"progressbar\\"
+         style=\\"width: 0px;\\"
+    >
+    </div>
+  </div>
+</div>
+"
+`;

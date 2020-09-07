@@ -259,6 +259,7 @@ class AlertStore {
       },
       totalAlerts: 0,
       version: "unknown",
+      upgradeReady: false as boolean,
       upgradeNeeded: false as boolean,
       isRetrying: false as boolean,
       reloadNeeded: false as boolean,
@@ -268,6 +269,9 @@ class AlertStore {
       clearIsRetrying() {
         this.isRetrying = false;
       },
+      setUpgradeNeeded() {
+        this.upgradeNeeded = true;
+      },
       setReloadNeeded() {
         this.reloadNeeded = true;
       },
@@ -275,7 +279,8 @@ class AlertStore {
     {
       setIsRetrying: action.bound,
       clearIsRetrying: action.bound,
-      setReloadNeeded: action,
+      setReloadNeeded: action.bound,
+      setUpgradeNeeded: action.bound,
     },
     { name: "API response info" }
   );
@@ -319,6 +324,7 @@ class AlertStore {
       value: AlertStoreStatuses.Idle,
       lastUpdateAt: 0 as number | Date,
       error: null as null | string,
+      stopped: false as boolean,
       paused: false as boolean,
       setIdle() {
         this.value = AlertStoreStatuses.Idle;
@@ -341,10 +347,14 @@ class AlertStore {
         this.paused = true;
       },
       resume() {
-        this.paused = false;
+        this.paused = this.stopped ? true : false;
       },
       togglePause() {
-        this.paused = !this.paused;
+        this.paused = this.stopped ? true : !this.paused;
+      },
+      stop() {
+        this.paused = true;
+        this.stopped = true;
       },
     },
     {
@@ -355,6 +365,7 @@ class AlertStore {
       pause: action.bound,
       resume: action.bound,
       togglePause: action.bound,
+      stop: action.bound,
     },
     { name: "Store status" }
   );
@@ -467,7 +478,8 @@ class AlertStore {
       this.info.version !== "unknown" &&
       this.info.version !== result.version
     ) {
-      this.info.upgradeNeeded = true;
+      this.info.upgradeReady = true;
+      this.status.stop();
     }
     // update extra root level keys that are stored under 'info'
     this.info.totalAlerts = result.totalAlerts;

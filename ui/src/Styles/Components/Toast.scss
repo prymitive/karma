@@ -1,0 +1,40 @@
+.toast-container {
+  position: fixed;
+  bottom: 0.5rem;
+  right: 0.6rem;
+
+  z-index: 500;
+
+  max-width: 500px;
+
+  code {
+    color: $warning;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .toast-container {
+    max-width: 100%;
+    bottom: 0;
+    right: 0;
+  }
+}
+
+.bg-toast {
+  background-color: darken($dark, 5%);
+}
+
+.toast-upgrade-progressbar {
+  animation-duration: 20s;
+  animation-name: upgradeProgress;
+  animation-timing-function: linear;
+}
+
+@keyframes upgradeProgress {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}

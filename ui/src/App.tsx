@@ -41,6 +41,11 @@ const FaviconBadge = React.lazy(() =>
     default: module.FaviconBadge,
   }))
 );
+const AppToasts = React.lazy(() =>
+  import("Components/Toast/AppToasts").then((module) => ({
+    default: module.AppToasts,
+  }))
+);
 
 interface AppProps {
   defaultFilters: Array<string>;
@@ -138,11 +143,10 @@ const App: FunctionComponent<AppProps> = ({ defaultFilters, uiDefaults }) => {
             settingsStore={settingsStore}
             silenceFormStore={silenceFormStore}
           />
+          <AppToasts alertStore={alertStore} />
+          <FaviconBadge alertStore={alertStore} />
         </React.Suspense>
       </ThemeContext.Provider>
-      <React.Suspense fallback={null}>
-        <FaviconBadge alertStore={alertStore} />
-      </React.Suspense>
     </ErrorBoundary>
   ));
 };
