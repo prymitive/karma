@@ -32,4 +32,4 @@ rules:
     reason: missing value
     matchers:
       required:
-        - name: cluster
+        - name_re: cluster

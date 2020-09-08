@@ -5,3 +5,9 @@ rules:
       filters:
         - name: cluster
           value: prod
+  - action: requireMatcher
+    reason: cluster label is required for all silences
+    matchers:
+      required:
+        - name: cluster
+          value_re: .+

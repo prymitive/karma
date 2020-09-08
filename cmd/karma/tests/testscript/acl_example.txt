@@ -52,3 +52,15 @@ rules:
           value: prod
       groups:
         - users
+  - action: requireMatcher
+    reason: cluster label is required for all silences
+    matchers:
+      required:
+        - name: cluster
+          value_re: .+
+  - action: requireMatcher
+    reason: at least one matcher is required for all silences
+    matchers:
+      required:
+        - name_re: .+
+          value_re: .+
