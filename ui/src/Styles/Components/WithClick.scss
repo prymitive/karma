@@ -33,6 +33,14 @@
     );
   }
 
+  &.with-click-light:after {
+    background-image: radial-gradient(
+      circle,
+      $with-click-light 10%,
+      transparent 10.01%
+    );
+  }
+
   &:active:after {
     transform: scale(0, 0);
     opacity: 0.2;

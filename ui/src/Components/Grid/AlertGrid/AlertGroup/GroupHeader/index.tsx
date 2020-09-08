@@ -103,7 +103,7 @@ const GroupHeader: FC<{
         />
         <span
           className={`${
-            themedCounters ? "text-muted" : "text-white"
+            themedCounters ? "text-muted" : "text-white with-click-light"
           } cursor-pointer badge components-label components-label-with-hover with-click`}
           onClick={onCollapseClick}
         >
