@@ -157,7 +157,7 @@ const HistoryMenu: FC<{
   );
 };
 
-interface historyStorageT {
+interface HistoryStorageT {
   filters: ReduceFilterT[][];
 }
 
@@ -166,7 +166,7 @@ const History: FC<{
   settingsStore: Settings;
 }> = ({ alertStore, settingsStore }) => {
   // this will be dumped to local storage via mobx-stored
-  const history: historyStorageT = localStored(
+  const history: HistoryStorageT = localStored(
     "history.filters",
     {
       filters: [],

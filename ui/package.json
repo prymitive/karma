@@ -22,6 +22,7 @@
     "@types/lodash.merge": "4.6.6",
     "@types/lodash.throttle": "4.1.6",
     "@types/lodash.uniqueid": "4.0.6",
+    "@types/node": "14.6.4",
     "@types/promise-retry": "1.1.3",
     "@types/qs": "6.9.4",
     "@types/react": "16.9.49",
@@ -53,6 +54,7 @@
     "mobx-react-lite": "2.2.1",
     "mobx-stored": "1.1.0",
     "node-sass": "4.14.1",
+    "prettier": "2.1.1",
     "promise-retry": "2.0.1",
     "qs": "6.9.4",
     "react": "16.13.1",
@@ -89,7 +91,6 @@
     "jest-canvas-mock": "2.2.0",
     "jest-date-mock": "1.0.8",
     "markdownlint-cli": "0.23.2",
-    "prettier": "2.1.1",
     "puppeteer": "5.2.1",
     "source-map-explorer": "2.5.0"
   },

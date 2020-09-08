@@ -53,14 +53,14 @@ func TestCustomizationAssets(t *testing.T) {
 			customJS: "../../ui/.env",
 			path:     "/custom.js",
 			code:     200,
-			body:     "PUBLIC_URL=.\n",
+			body:     "PUBLIC_URL=.\nEXTEND_ESLINT=true\n",
 			mime:     "text/plain; charset=utf-8",
 		},
 		{
 			customCSS: "../../ui/.env",
 			path:      "/custom.css",
 			code:      200,
-			body:      "PUBLIC_URL=.\n",
+			body:      "PUBLIC_URL=.\nEXTEND_ESLINT=true\n",
 			mime:      "text/plain; charset=utf-8",
 		},
 	}

@@ -7,6 +7,7 @@ ignores:
   - typeface-open-sans
   # devDeps
   - "@types/jest"
+  - "@types/node"
   - "@commitlint/travis-cli"
   - "@storybook/preset-create-react-app"
   - depcheck
