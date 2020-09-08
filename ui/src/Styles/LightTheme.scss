@@ -43,6 +43,7 @@ $progress-bg: darken($light, 10%);
 
 $with-click-default: $black;
 $with-click-dark: $white;
+$with-click-light: $black;
 
 @import "Styles/RebootlessBootstrap";
 @import "~bootswatch/dist/flatly/bootswatch";

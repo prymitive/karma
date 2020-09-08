@@ -61,6 +61,7 @@ $dropdown-bg: darken($gray-800, 2%);
 
 $with-click-default: $white;
 $with-click-dark: $white;
+$with-click-light: $dark;
 
 @import "Styles/RebootlessBootstrap";
 @import "~bootswatch/dist/darkly/bootswatch";

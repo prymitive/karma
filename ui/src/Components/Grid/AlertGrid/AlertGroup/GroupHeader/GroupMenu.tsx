@@ -159,7 +159,7 @@ const GroupMenu: FC<{
               ref={ref}
               onClick={toggle}
               className={`${
-                themed ? "text-white" : "text-muted"
+                themed ? "text-white with-click-light" : "text-muted"
               } cursor-pointer badge components-label components-label-with-hover with-click mr-1`}
               data-toggle="dropdown"
             >
