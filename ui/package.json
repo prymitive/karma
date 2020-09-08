@@ -14,7 +14,7 @@
     "@storybook/react": "6.0.21",
     "@types/body-scroll-lock": "2.6.1",
     "@types/bricks.js": "1.8.1",
-    "@types/enzyme": "3.10.5",
+    "@types/enzyme": "3.10.6",
     "@types/enzyme-adapter-react-16": "1.0.6",
     "@types/fontfaceobserver": "0.0.6",
     "@types/jest": "26.0.13",
