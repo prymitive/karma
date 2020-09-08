@@ -8,9 +8,11 @@ import (
 )
 
 type SilenceMatcher struct {
-	Name    string `yaml:"name"`
-	Value   string `yaml:"value"`
-	IsRegex bool   `yaml:"isRegex"`
+	Name       string `yaml:"name"`
+	NameRegex  string `yaml:"name_re"`
+	Value      string `yaml:"value"`
+	ValueRegex string `yaml:"value_re"`
+	IsRegex    bool   `yaml:"isRegex"`
 }
 
 type SilenceACLMatchersConfig struct {

@@ -145,7 +145,7 @@ then any user could bypass that with a regex matcher like:
 }
 ```
 
-Because of that it is *highly recommended* to block regex silences, which can
+Because of that it is _highly recommended_ to block regex silences, which can
 be done with an ACL rule. Since rules are evaluated in the order they are
 listed in the config file it is best to set this as the very first rule.
 See examples below to learn how to block regex silences.
@@ -204,17 +204,34 @@ matchers:
   `value` and `value_re` with silence matcher `value` and `isRegex` on the
   filter with `isRegex` on silence matcher. See examples below.
   All regexes will be automatically anchored.
+
 - `matchers:required` - list of additional matchers that must be part of the
   silence if it matches groups, alertmanagers and filters. This is only used
   if `action` is set to `requireMatcher`.
   All regexes will be automatically anchored.
-  Syntax for each matcher:
+  Syntax for each `requireMatcher` entry:
 
   ```YAML
   name: string
-  value: string or regex
+  name_re: regex
+  value: string
+  value_re: regex
   isRegex: bool
   ```
+
+  Fields:
+
+  - `name` - name to match, silence will be required to have a matcher with this
+    exact name.
+  - `name_re` - name regex to match against, silence will be required to have a
+    matcher with `name` field that matches this regex
+  - `value` - value to match, silence will be required to have a matcher with
+    this exact value
+  - `value_re` - value regex to match against, silence will be required to have
+    a matcher with `value` field that matches this regex
+
+  A single entry cannot have both `name` & `name_re` or `value` & `value_re` set
+  at the same time.
 
 ## Examples
 
@@ -292,4 +309,37 @@ rules:
       required:
         - name: db
           value: postgres
+```
+
+### Require devTeam group to specify instance=server1-3
+
+Block devTeam members from creating silences unless they target one of the
+servers they own.
+
+```YAML
+rules:
+  - action: requireMatcher
+    reason: devTeam can only silence owned servers
+    scope:
+      groups:
+        - devTeam
+    matchers:
+      required:
+        - name: instance
+          value_re: server[1-3]
+```
+
+### Require everyone to always specify `team` matcher in silences
+
+Block anyone from creating silences unless they add `team` matcher with some
+value.
+
+```YAML
+rules:
+  - action: requireMatcher
+    reason: team label is required for all silences
+    matchers:
+      required:
+        - name: team
+          value_re: .+
 ```

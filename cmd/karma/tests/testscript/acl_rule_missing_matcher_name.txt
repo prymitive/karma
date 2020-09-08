@@ -3,7 +3,7 @@ karma.bin-should-fail --log.format=text --log.config=false --check-config
 ! stdout .
 ! stderr 'msg="Configuration is valid"'
 stderr 'msg="Reading silence ACL config file acl.yaml"'
-stderr 'msg="Invalid silence ACL rule at position 0: silence ACL rule matcher requires ''name'' to be set"'
+stderr 'msg="Invalid silence ACL rule at position 0: silence ACL rule matcher requires ''name'' or ''name_re'' to be set"'
 
 -- karma.yaml --
 authentication:

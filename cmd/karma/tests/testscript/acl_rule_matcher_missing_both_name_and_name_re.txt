@@ -1,9 +1,9 @@
-# Raises an error if silence ACL rule uses matcher without value
+# Raises an error if silence ACL rule uses matcher with both name and name_re
 karma.bin-should-fail --log.format=text --log.config=false --check-config
 ! stdout .
 ! stderr 'msg="Configuration is valid"'
 stderr 'msg="Reading silence ACL config file acl.yaml"'
-stderr 'msg="Invalid silence ACL rule at position 0: silence ACL rule matcher requires ''value'' or ''value_re'' to be set"'
+stderr 'msg="Invalid silence ACL rule at position 0: silence ACL rule matcher can only have ''name'' or ''name_re'' set, not both"'
 
 -- karma.yaml --
 authentication:
@@ -29,7 +29,9 @@ alertmanager:
 -- acl.yaml --
 rules:
   - action: requireMatcher
-    reason: missing value
+    reason: cluster label is required for all silences
     matchers:
       required:
         - name: cluster
+          name_re: cluster
+          value: prod

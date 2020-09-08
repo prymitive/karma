@@ -994,6 +994,153 @@ func TestProxySilenceACL(t *testing.T) {
 			frontednRequestBody: defaultBody,
 			responseCode:        400,
 		},
+		{
+			name: "require everyone to set alert.+ label",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+				"users":  {"alice"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require everyone to set team label",
+					Scope: silenceACLScope{
+						Filters:       []silenceFilter{},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								NameRegex:  regexp.MustCompile("^alert.+$"),
+								ValueRegex: regexp.MustCompile("^.+$"),
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "unknown",
+			frontednRequestBody: defaultBody,
+			responseCode:        200,
+		},
+		{
+			name: "require everyone to set alertname label",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+				"users":  {"alice"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require everyone to set alertname label",
+					Scope: silenceACLScope{
+						Filters:       []silenceFilter{},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:       "alertname",
+								ValueRegex: regexp.MustCompile("^.+$"),
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "alice",
+			frontednRequestBody: defaultBody,
+			responseCode:        200,
+		},
+		{
+			name: "require everyone to set team label ",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+				"users":  {"alice"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require everyone to set team label",
+					Scope: silenceACLScope{
+						Filters:       []silenceFilter{},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:       "team",
+								ValueRegex: regexp.MustCompile("^.+$"),
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "alice",
+			frontednRequestBody: defaultBody,
+			responseCode:        400,
+		},
+		{
+			name: "require everyone to set foo regex label",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+				"users":  {"alice"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require everyone to set foo regex label",
+					Scope: silenceACLScope{
+						Filters:       []silenceFilter{},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:       "foo",
+								ValueRegex: regexp.MustCompile("^.+$"),
+								IsRegex:    true,
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "uncle",
+			frontednRequestBody: defaultBody,
+			responseCode:        200,
+		},
+		{
+			name: "require everyone to set alertname regex label",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+				"users":  {"alice"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require everyone to set alertname regex label",
+					Scope: silenceACLScope{
+						Filters:       []silenceFilter{},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:       "alertname",
+								ValueRegex: regexp.MustCompile("^Fake Alert$"),
+								IsRegex:    true,
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "uncle",
+			frontednRequestBody: defaultBody,
+			responseCode:        400,
+		},
 	}
 
 	for _, testCase := range proxyTests {
