@@ -1,13 +1,24 @@
+root: true
+parser: "@typescript-eslint/parser"
+plugins:
+  - "@typescript-eslint"
+  - "prettier"
 extends:
   - react-app
-  - plugin:react/recommended
-  - plugin:@typescript-eslint/recommended
-  - prettier/@typescript-eslint
-  - plugin:prettier/recommended
+  - "plugin:@typescript-eslint/recommended"
+  - "prettier/@typescript-eslint"
+  - "plugin:prettier/recommended"
+settings:
+  react:
+    version: detect
 rules:
   "react/prop-types": off
   "react/display-name": off
   "@typescript-eslint/no-empty-function": off
+  # noisy
+  "@typescript-eslint/explicit-function-return-type": off
+  #   # https://github.com/typescript-eslint/typescript-eslint/issues/2502
+  "@typescript-eslint/no-use-before-define": off
 overrides:
   - files:
       - "**/__mocks__/*.ts"

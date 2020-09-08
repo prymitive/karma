@@ -8,6 +8,7 @@ node_modules/%: package.json package-lock.json
 	touch -c $@
 
 build/index.html: node_modules/react-scripts/bin/react-scripts.js $(call rwildcard, public src, *)
+	@rm -fr node_modules/.cache/eslint-loader
 	npm run build
 
 .PHONY: build
@@ -27,6 +28,7 @@ test-percy: node_modules/@storybook/react/bin/build.js
 
 .PHONY: lint-js
 lint-js: node_modules/eslint/bin/eslint.js
+	@rm -fr node_modules/.cache/eslint-loader
 	node_modules/eslint/bin/eslint.js --ext .js,.jsx,.ts,.tsx src
 
 .PHONY: lint-git-ci
