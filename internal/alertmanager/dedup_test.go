@@ -3,6 +3,7 @@ package alertmanager_test
 import (
 	"fmt"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -230,7 +231,7 @@ func TestClearData(t *testing.T) {
 		if am.Version() == "" {
 			t.Errorf("[%s] Got empty version string", am.Name)
 		}
-		if am.Error() != "" {
+		if !strings.HasPrefix(am.Error(), "missing cluster peers:") {
 			t.Errorf("[%s] Got non-empty error string: %s", am.Name, am.Error())
 		}
 		if len(am.Silences()) == 0 {

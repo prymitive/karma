@@ -425,7 +425,19 @@ func (am *Alertmanager) Error() string {
 	am.lock.RLock()
 	defer am.lock.RUnlock()
 
-	return am.lastError
+	if am.lastError != "" {
+		return am.lastError
+	}
+
+	configPeers := clusterMembersFromConfig(am)
+	apiPeers := clusterMembersFromAPI(am)
+	missing, _ := slices.StringSliceDiff(configPeers, apiPeers)
+
+	if len(missing) > 0 {
+		return fmt.Sprintf("missing cluster peers: %s", strings.Join(missing, ", "))
+	}
+
+	return ""
 }
 
 // SanitizedURI returns a copy of Alertmanager.URI with password replaced by
@@ -489,18 +501,17 @@ func (am *Alertmanager) ClusterName() string {
 
 	var clusterName string
 	if am.Cluster != "" {
-		configPeers := clusterMembersFromConfig(am)
-		apiPeers := clusterMembersFromAPI(am)
-		missing, extra := slices.StringSliceDiff(configPeers, apiPeers)
-
-		if len(missing) == 0 && len(extra) == 0 {
-			clusterName = am.Cluster
-		} else {
-			clusterName = strings.Join(am.ClusterMemberNames(), " | ")
-		}
+		clusterName = am.Cluster
 	} else {
 		clusterName = strings.Join(am.ClusterMemberNames(), " | ")
 	}
 	am.clusterName = clusterName
 	return clusterName
+}
+
+func (am *Alertmanager) IsHealthy() bool {
+	am.lock.RLock()
+	defer am.lock.RUnlock()
+
+	return am.lastError == ""
 }
