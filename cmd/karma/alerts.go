@@ -122,7 +122,7 @@ func getUpstreams() models.AlertmanagerAPISummary {
 		summary.Instances = append(summary.Instances, u)
 
 		summary.Counters.Total++
-		if u.Error == "" {
+		if upstream.IsHealthy() {
 			summary.Counters.Healthy++
 		} else {
 			summary.Counters.Failed++
