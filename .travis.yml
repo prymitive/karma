@@ -212,7 +212,7 @@ jobs:
         # prune GOCACHE if it gets too big
         - ./scripts/prune-go-cache.sh
         - export SOURCE_DATE_EPOCH=$(git show -s --format=%ci ${TRAVIS_TAG:-${TRAVIS_COMMIT}}^{commit})
-        - travis_retry make crosscompile -j 2
+        - make crosscompile -j 2
         - for i in karma-*; do tar --mtime="${SOURCE_DATE_EPOCH}" --owner=0 --group=0 --numeric-owner -c $i | gzip -n - > $i.tar.gz; done
         - shasum -a 512 karma-*.tar.gz | tee sha512sum.txt
         # verify that there are no uncommited changes
