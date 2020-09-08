@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useState } from "react";
 import ReactDOM from "react-dom";
 
 import TransitionGroup from "react-transition-group/TransitionGroup";
@@ -9,12 +9,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons/faCircle";
 
 import { ThemeContext } from "Components/Theme";
+import { ToggleIcon } from "Components/ToggleIcon";
 
 const Toast: FC<{
   icon: IconDefinition;
   iconClass: string;
   message: ReactNode;
 }> = ({ icon, iconClass, message }) => {
+  const [isOpen, setIsOpen] = useState(true);
+
   return (
     <div className="m-1 bg-toast text-white rounded shadow">
       <div className="d-flex flex-row p-1">
@@ -26,7 +29,16 @@ const Toast: FC<{
           <FontAwesomeIcon icon={icon} className="fa-stack-1x text-white" />
         </div>
         <div className="flex-shrink-1 flex-grow-1 align-self-center ml-1 mr-3 text-break text-wrap">
-          {message}
+          {isOpen ? message : null}
+        </div>
+        <div className="flex-shrink-0 flex-grow-0 align-self-top">
+          <span className="badge components-label with-click with-click-dark">
+            <ToggleIcon
+              isOpen={isOpen}
+              className={`cursor-pointer ${isOpen ? "m-2" : "mr-2"}`}
+              onClick={() => setIsOpen((v) => !v)}
+            />
+          </span>
         </div>
       </div>
     </div>

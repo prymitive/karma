@@ -77,6 +77,25 @@ exports[`<AppToasts /> renders UpgradeToastMessage when alertStore.info.upgradeR
           </div>
         </div>
       </div>
+      <div class=\\"flex-shrink-0 flex-grow-0 align-self-top\\">
+        <span class=\\"badge components-label with-click with-click-dark\\">
+          <svg aria-hidden=\\"true\\"
+               focusable=\\"false\\"
+               data-prefix=\\"fas\\"
+               data-icon=\\"chevron-down\\"
+               class=\\"svg-inline--fa fa-chevron-down fa-w-14 cursor-pointer m-2\\"
+               role=\\"img\\"
+               xmlns=\\"http://www.w3.org/2000/svg\\"
+               viewbox=\\"0 0 448 512\\"
+               style=\\"transition: transform 0.25s ease-in-out;\\"
+          >
+            <path fill=\\"currentColor\\"
+                  d=\\"M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z\\"
+            >
+            </path>
+          </svg>
+        </span>
+      </div>
     </div>
   </div>
 </div>
@@ -130,6 +149,25 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
           </div>
         </div>
       </div>
+      <div class=\\"flex-shrink-0 flex-grow-0 align-self-top\\">
+        <span class=\\"badge components-label with-click with-click-dark\\">
+          <svg aria-hidden=\\"true\\"
+               focusable=\\"false\\"
+               data-prefix=\\"fas\\"
+               data-icon=\\"chevron-down\\"
+               class=\\"svg-inline--fa fa-chevron-down fa-w-14 cursor-pointer m-2\\"
+               role=\\"img\\"
+               xmlns=\\"http://www.w3.org/2000/svg\\"
+               viewbox=\\"0 0 448 512\\"
+               style=\\"transition: transform 0.25s ease-in-out;\\"
+          >
+            <path fill=\\"currentColor\\"
+                  d=\\"M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z\\"
+            >
+            </path>
+          </svg>
+        </span>
+      </div>
     </div>
   </div>
   <div class=\\"m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active\\">
@@ -175,6 +213,25 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
             </code>
           </div>
         </div>
+      </div>
+      <div class=\\"flex-shrink-0 flex-grow-0 align-self-top\\">
+        <span class=\\"badge components-label with-click with-click-dark\\">
+          <svg aria-hidden=\\"true\\"
+               focusable=\\"false\\"
+               data-prefix=\\"fas\\"
+               data-icon=\\"chevron-down\\"
+               class=\\"svg-inline--fa fa-chevron-down fa-w-14 cursor-pointer m-2\\"
+               role=\\"img\\"
+               xmlns=\\"http://www.w3.org/2000/svg\\"
+               viewbox=\\"0 0 448 512\\"
+               style=\\"transition: transform 0.25s ease-in-out;\\"
+          >
+            <path fill=\\"currentColor\\"
+                  d=\\"M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z\\"
+            >
+            </path>
+          </svg>
+        </span>
       </div>
     </div>
   </div>
