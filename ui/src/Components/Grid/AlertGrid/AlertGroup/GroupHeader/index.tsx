@@ -49,7 +49,7 @@ const GroupHeader: FC<{
 
   return useObserver(() => (
     <h5
-      className={`card-header mb-0 d-flex flex-row px-2 py-1 ${
+      className={`card-header mb-0 d-flex flex-row p-1 ${
         isCollapsed ? "border-bottom-0" : ""
       }`}
     >
