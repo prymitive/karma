@@ -5,7 +5,7 @@ func clusterMembersFromConfig(am *Alertmanager) []string {
 
 	upstreams := GetAlertmanagers()
 	for _, upstream := range upstreams {
-		if upstream.Cluster == am.Cluster {
+		if upstream.ClusterName() == am.ClusterName() {
 			members = append(members, upstream.Name)
 		}
 	}

@@ -114,6 +114,11 @@ func (am *Alertmanager) clearData() {
 	am.colors = models.LabelsColorMap{}
 	am.autocomplete = []models.Autocomplete{}
 	am.knownLabels = []string{}
+	am.lock.Unlock()
+}
+
+func (am *Alertmanager) clearStatus() {
+	am.lock.Lock()
 	am.status = models.AlertmanagerStatus{
 		Version: "",
 		ID:      "",
@@ -314,10 +319,14 @@ func (am *Alertmanager) Pull() error {
 	status, err := am.fetchStatus(version)
 	if err != nil {
 		am.clearData()
+		am.clearStatus()
 		am.setError(err.Error())
 		am.Metrics.Errors[labelValueErrorsSilences]++
 		return err
 	}
+	am.lock.Lock()
+	am.status = *status
+	am.lock.Unlock()
 
 	err = am.pullSilences(version)
 	if err != nil {
@@ -336,7 +345,6 @@ func (am *Alertmanager) Pull() error {
 	}
 
 	am.lock.Lock()
-	am.status = *status
 	am.lastError = ""
 	am.clusterName = ""
 	am.lock.Unlock()
@@ -434,6 +442,7 @@ func (am *Alertmanager) Error() string {
 	missing, _ := slices.StringSliceDiff(configPeers, apiPeers)
 
 	if len(missing) > 0 {
+		log.Debugf("[%s] cluster peers mismatch, configured: %v, api: %v, missing: %v\n", am.Name, configPeers, apiPeers, missing)
 		return fmt.Sprintf("missing cluster peers: %s", strings.Join(missing, ", "))
 	}
 
@@ -475,11 +484,12 @@ func (am *Alertmanager) ClusterMemberNames() []string {
 
 	upstreams := GetAlertmanagers()
 	for _, upstream := range upstreams {
-		if upstream.Name == am.Name {
-			continue
-		}
 		for _, peerID := range upstream.ClusterPeers() {
-			if slices.StringInSlice(am.status.PeerIDs, peerID) {
+			// IF
+			// other alertmanagers peerID is in this alertmanager cluster status
+			// OR
+			// this alertmanager peerID is in other alertmanagers cluster status
+			if slices.StringInSlice(am.status.PeerIDs, peerID) || peerID == am.status.ID {
 				if !slices.StringInSlice(members, upstream.Name) {
 					members = append(members, upstream.Name)
 				}

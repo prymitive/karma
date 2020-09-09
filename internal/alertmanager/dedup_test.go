@@ -210,8 +210,8 @@ func TestClearData(t *testing.T) {
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/status", uri), version, "api/v2/status")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/silences", uri), version, "api/v2/silences")
 		_ = am.Pull()
-		if am.Version() != "" {
-			t.Errorf("[%s] Got non-empty version string: %s", am.Name, am.Version())
+		if am.Version() == "" {
+			t.Errorf("[%s] Got empty version string: %s", am.Name, am.Version())
 		}
 		if am.Error() == "" {
 			t.Errorf("[%s] Got empty error string", am.Name)
