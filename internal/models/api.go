@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sort"
 
-	"vbom.ml/util/sortorder"
+	"github.com/fvbommel/sortorder"
 
 	"github.com/prymitive/karma/internal/slices"
 )

@@ -5,8 +5,8 @@ import (
 	"math"
 	"sort"
 
+	"github.com/fvbommel/sortorder"
 	"github.com/gin-gonic/gin"
-	"vbom.ml/util/sortorder"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
