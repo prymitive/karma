@@ -12,7 +12,7 @@ require (
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/gzip v0.0.2
 	github.com/gin-contrib/static v0.0.0-20200815103939-31fb0c56a3d1
-	github.com/gin-gonic/contrib v0.0.0-20200810162008-6dee08bf958e
+	github.com/gin-gonic/contrib v0.0.0-20200913005814-1c32036e7ea4
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-openapi/errors v0.19.6
 	github.com/go-openapi/runtime v0.19.21
