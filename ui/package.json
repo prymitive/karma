@@ -54,7 +54,7 @@
     "mobx-react-lite": "2.2.2",
     "mobx-stored": "1.1.0",
     "node-sass": "4.14.1",
-    "prettier": "2.1.1",
+    "prettier": "2.1.2",
     "promise-retry": "2.0.1",
     "qs": "6.9.4",
     "react": "16.13.1",
