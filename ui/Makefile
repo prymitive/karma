@@ -24,11 +24,11 @@ build/index.html: $(NODE_PATH)/react-scripts $(call rwildcard, public src, *)
 build: build/index.html
 
 .PHONY: test-js
-test-js: $(NODE_PATH)/jest
+test-js: $(NODE_PATH)/react-scripts $(NODE_PATH)/jest
 	CI=true NODE_OPTIONS="--unhandled-rejections=strict" npm test -- --coverage
 
 .PHONY: test-demo
-test-demo: $(NODE_PATH)/jest
+test-demo: $(NODE_PATH)/react-scripts $(NODE_PATH)/jest
 	CI=true jest --runInBand e2e/demo.test.js
 
 .PHONY: test-percy
