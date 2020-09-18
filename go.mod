@@ -25,7 +25,7 @@ require (
 	github.com/google/go-cmp v0.5.2
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.6
-	github.com/knadh/koanf v0.12.1
+	github.com/knadh/koanf v0.13.0
 	github.com/mitchellh/mapstructure v1.3.3
 	github.com/patrickmn/go-cache v2.1.1-0.20180815053127-5633e0862627+incompatible
 	github.com/pmezard/go-difflib v1.0.0
