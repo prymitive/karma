@@ -3,17 +3,21 @@
 # based on http://blog.jgc.org/2011/07/gnu-make-recursive-wildcard-function.html
 rwildcard = $(foreach d, $(wildcard $1*), $(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
-NODE_PATH := $(shell npm bin)
-PATH      := $(PATH):$(NODE_PATH)
-SHELL     := env PATH=$(PATH) /bin/sh
+NODE_PATH    := $(shell npm bin)
+NODE_MODULES := $(shell dirname `npm bin`)
+NODE_INSTALL := $(NODE_MODULES)/.install
 
-$(NODE_PATH)/%: package.json package-lock.json
-	@export D="$*"; \
-		if [ "$*" = "commitlint-travis" ]; then export D="@commitlint/travis-cli" ; fi; \
-		if [ "$*" = "build-storybook" ]; then export D="@storybook/react" ; fi; \
-		if [ "$*" = "percy-storybook" ]; then export D="@percy-io/percy-storybook" ; fi; \
-		if [ -d "$(CURDIR)/node_modules/$$D" ] && [ ! -x "$@" ]; then (echo "resetting node_modules" && npm ci); else npm install ; fi
-	@if [ -x $@ ]; then touch -c $@ ; else echo "missing script: $@" ; exit 1; fi
+PATH         := $(PATH):$(NODE_PATH)
+SHELL        := env PATH=$(PATH) /bin/sh
+
+.DEFAULT_GOAL := build/index.html
+
+$(NODE_INSTALL): package.json package-lock.json
+	@if [ -e $(NODE_INSTALL) ]; then npm install ; else npm ci; fi
+	touch $@
+
+$(NODE_PATH)/%: $(NODE_INSTALL)
+	@if [ ! -x $@ ]; then echo "missing script: $@" ; exit 1; fi
 
 build/index.html: $(NODE_PATH)/react-scripts $(call rwildcard, public src, *)
 	@rm -fr node_modules/.cache/eslint-loader
