@@ -3,7 +3,7 @@ __defaults_go: &DEFAULTS_GO
   go: "1.15.2"
   cache:
     directories:
-      - ui/node_modules
+      - "$HOME/.npm"
       # https://restic.net/blog/2018-09-02/travis-build-cache
       - $HOME/.cache/go-build
       - $HOME/gopath/pkg/mod
@@ -21,7 +21,7 @@ __defaults_js: &DEFAULTS_JS
   install: []
   cache:
     directories:
-      - ui/node_modules
+      - "$HOME/.npm"
   env:
     - NODE_ENV=test
 
