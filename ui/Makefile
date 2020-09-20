@@ -19,7 +19,7 @@ $(NODE_INSTALL): package.json package-lock.json
 $(NODE_PATH)/%: $(NODE_INSTALL)
 	@if [ ! -x $@ ]; then echo "missing script: $@" ; exit 1; fi
 
-build/index.html: $(NODE_PATH)/react-scripts $(call rwildcard, public src, *)
+build/index.html: $(NODE_INSTALL) $(NODE_PATH)/react-scripts $(call rwildcard, public src, *)
 	@rm -fr node_modules/.cache/eslint-loader
 	npm run build
 
