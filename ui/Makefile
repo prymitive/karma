@@ -3,7 +3,7 @@
 # based on http://blog.jgc.org/2011/07/gnu-make-recursive-wildcard-function.html
 rwildcard = $(foreach d, $(wildcard $1*), $(call rwildcard,$d/,$2) $(filter $(subst *,%,$2),$d))
 
-NODE_PATH := $(PWD)/node_modules/.bin
+NODE_PATH := $(shell npm bin)
 PATH      := $(PATH):$(NODE_PATH)
 SHELL     := env PATH=$(PATH) /bin/sh
 
@@ -12,9 +12,8 @@ $(NODE_PATH)/%: package.json package-lock.json
 		if [ "$*" = "commitlint-travis" ]; then export D="@commitlint/travis-cli" ; fi; \
 		if [ "$*" = "build-storybook" ]; then export D="@storybook/react" ; fi; \
 		if [ "$*" = "percy-storybook" ]; then export D="@percy-io/percy-storybook" ; fi; \
-		if [ -d "$(PWD)/node_modules/$$D" ] && [ ! -x "$@" ]; then (echo "resetting node_modules" && rm -fr node_modules); fi
-	npm install
-	touch -c $@
+		if [ -d "$(CURDIR)/node_modules/$$D" ] && [ ! -x "$@" ]; then (echo "resetting node_modules" && npm ci); else npm install ; fi
+	@if [ -x $@ ]; then touch -c $@ ; else echo "missing script: $@" ; exit 1; fi
 
 build/index.html: $(NODE_PATH)/react-scripts $(call rwildcard, public src, *)
 	@rm -fr node_modules/.cache/eslint-loader
