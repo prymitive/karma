@@ -30,7 +30,7 @@ require (
 	github.com/patrickmn/go-cache v2.1.1-0.20180815053127-5633e0862627+incompatible
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/prometheus/client_golang v1.7.1
-	github.com/prometheus/common v0.13.0
+	github.com/prometheus/common v0.14.0
 	github.com/rogpeppe/go-internal v1.6.2
 	github.com/sirupsen/logrus v1.6.0
 	github.com/spf13/pflag v1.0.5
