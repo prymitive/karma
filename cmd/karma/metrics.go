@@ -10,6 +10,7 @@ type karmaCollector struct {
 	collectedGroups *prometheus.Desc
 	cyclesTotal     *prometheus.Desc
 	errorsTotal     *prometheus.Desc
+	alertmanagerUp  *prometheus.Desc
 }
 
 func newKarmaCollector() *karmaCollector {
@@ -38,6 +39,12 @@ func newKarmaCollector() *karmaCollector {
 			[]string{"alertmanager", "endpoint"},
 			prometheus.Labels{},
 		),
+		alertmanagerUp: prometheus.NewDesc(
+			"karma_alertmanager_up",
+			"1 if last call to Alertmanager API succeeded",
+			[]string{"alertmanager"},
+			prometheus.Labels{},
+		),
 	}
 }
 
@@ -46,6 +53,7 @@ func (c *karmaCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.collectedGroups
 	ch <- c.cyclesTotal
 	ch <- c.errorsTotal
+	ch <- c.alertmanagerUp
 }
 
 func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
@@ -117,9 +125,23 @@ func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
 				)
 			}
 		}
+
+		ch <- prometheus.MustNewConstMetric(
+			c.alertmanagerUp,
+			prometheus.GaugeValue,
+			boolToFloat64(am.Error() == ""),
+			am.Name,
+		)
 	}
 }
 
 func init() {
 	prometheus.MustRegister(newKarmaCollector())
+}
+
+func boolToFloat64(b bool) float64 {
+	if b {
+		return 1
+	}
+	return 0
 }
