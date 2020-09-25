@@ -1,0 +1,5 @@
+# Fails is we cannot write a PID file
+
+karma.bin-should-fail --pid-file=/foo/bar/karma.pid --log.format=text --log.config=false --alertmanager.uri=http://localhost
+! stdout .
+stderr 'msg="Failed to write a PID file:'

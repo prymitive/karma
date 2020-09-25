@@ -3,6 +3,7 @@ package config
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"os"
 	"strings"
 	"time"
@@ -122,7 +123,7 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.String("ui.collapseGroups", "collapsedOnMobile", "Default state for alert groups")
 }
 
-func readConfigFile(k *koanf.Koanf, flags *pflag.FlagSet) string {
+func readConfigFile(k *koanf.Koanf, flags *pflag.FlagSet) (string, error) {
 	var configFile string
 
 	// 1. Load file from flags is set
@@ -141,11 +142,11 @@ func readConfigFile(k *koanf.Koanf, flags *pflag.FlagSet) string {
 	}
 	if configFile != "" {
 		if err := k.Load(file.Provider(configFile), yamlParser.Parser()); err != nil {
-			log.Fatalf("Failed to load configuration file %q: %v", configFile, err)
+			return "", fmt.Errorf("Failed to load configuration file %q: %v", configFile, err)
 		}
-		return configFile
+		return configFile, nil
 	}
-	return configFile
+	return configFile, nil
 }
 
 func readEnvVariables(k *koanf.Koanf) {
@@ -206,14 +207,18 @@ func readFlags(k *koanf.Koanf, flags *pflag.FlagSet) {
 // 1. CLI flags
 // 2. Config file
 // 3. Environment variables
-func (config *configSchema) Read(flags *pflag.FlagSet) string {
+func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	k := koanf.New(".")
 	var configFileUsed string
 
 	// 3. read all environemnt variables
 	readEnvVariables(k)
 	// 2. read config file
-	if cf := readConfigFile(k, flags); cf != "" {
+	cf, err := readConfigFile(k, flags)
+	if err != nil {
+		return "", err
+	}
+	if cf != "" {
 		configFileUsed = cf
 	}
 	// 1. read flags
@@ -233,30 +238,30 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 		FlatPaths:     false,
 		DecoderConfig: &dConf,
 	}
-	err := k.UnmarshalWithConf("", &config, kConf)
+	err = k.UnmarshalWithConf("", &config, kConf)
 	if err != nil {
-		log.Fatalf("Failed to unmarshal configuration: %v", err)
+		return "", fmt.Errorf("Failed to unmarshal configuration: %v", err)
 	}
 
 	if config.Authentication.Header.Name != "" && len(config.Authentication.BasicAuth.Users) > 0 {
-		log.Fatalf("Both authentication.basicAuth.users and authentication.header.name is set, only one can be enabled")
+		return "", fmt.Errorf("Both authentication.basicAuth.users and authentication.header.name is set, only one can be enabled")
 	}
 
 	if config.Authentication.Header.ValueRegex != "" {
 		_, err = regex.CompileAnchored(config.Authentication.Header.ValueRegex)
 		if err != nil {
-			log.Fatalf("Invalid regex for authentication.header.value_re: %s", err.Error())
+			return "", fmt.Errorf("Invalid regex for authentication.header.value_re: %s", err.Error())
 		}
 		if config.Authentication.Header.Name == "" {
-			log.Fatalf("authentication.header.name is required when authentication.header.value_re is set")
+			return "", fmt.Errorf("authentication.header.name is required when authentication.header.value_re is set")
 		}
 	} else if config.Authentication.Header.Name != "" {
-		log.Fatalf("authentication.header.value_re is required when authentication.header.name is set")
+		return "", fmt.Errorf("authentication.header.value_re is required when authentication.header.name is set")
 	}
 
 	for _, u := range config.Authentication.BasicAuth.Users {
 		if u.Username == "" || u.Password == "" {
-			log.Fatalf("authentication.basicAuth.users require both username and password to be set")
+			return "", fmt.Errorf("authentication.basicAuth.users require both username and password to be set")
 		}
 	}
 
@@ -265,7 +270,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 	}
 
 	if !slices.StringInSlice([]string{"omit", "include", "same-origin"}, config.Alertmanager.CORS.Credentials) {
-		log.Fatalf("Invalid alertmanager.cors.credentials value '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.CORS.Credentials)
+		return "", fmt.Errorf("Invalid alertmanager.cors.credentials value '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.CORS.Credentials)
 	}
 
 	for i, s := range config.Alertmanager.Servers {
@@ -279,47 +284,47 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 			config.Alertmanager.Servers[i].CORS.Credentials = config.Alertmanager.CORS.Credentials
 		}
 		if !slices.StringInSlice([]string{"omit", "include", "same-origin"}, config.Alertmanager.Servers[i].CORS.Credentials) {
-			log.Fatalf("Invalid cors.credentials value '%s' for alertmanager '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.Servers[i].CORS.Credentials, s.Name)
+			return "", fmt.Errorf("Invalid cors.credentials value '%s' for alertmanager '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.Servers[i].CORS.Credentials, s.Name)
 		}
 	}
 
 	for _, authGroup := range config.Authorization.Groups {
 		if authGroup.Name == "" {
-			log.Fatalf("'name' is required for every authorization group")
+			return "", fmt.Errorf("'name' is required for every authorization group")
 		}
 		if len(authGroup.Members) == 0 {
-			log.Fatalf("'members' is required for every authorization group")
+			return "", fmt.Errorf("'members' is required for every authorization group")
 		}
 	}
 
 	for labelName, customColors := range config.Labels.Color.Custom {
 		for i, customColor := range customColors {
 			if customColor.Value == "" && customColor.ValueRegex == "" {
-				log.Fatalf("Custom label color for '%s' is missing 'value' or 'value_re'", labelName)
+				return "", fmt.Errorf("Custom label color for '%s' is missing 'value' or 'value_re'", labelName)
 			}
 			if customColor.ValueRegex != "" {
 				config.Labels.Color.Custom[labelName][i].CompiledRegex, err = regex.CompileAnchored(customColor.ValueRegex)
 				if err != nil {
-					log.Fatalf("Failed to parse custom color regex rule '%s' for '%s' label: %s", customColor.ValueRegex, labelName, err)
+					return "", fmt.Errorf("Failed to parse custom color regex rule '%s' for '%s' label: %s", customColor.ValueRegex, labelName, err)
 				}
 			}
 		}
 	}
 
 	if !slices.StringInSlice([]string{"disabled", "startsAt", "label"}, config.Grid.Sorting.Order) {
-		log.Fatalf("Invalid grid.sorting.order value '%s', allowed options: disabled, startsAt, label", config.Grid.Sorting.Order)
+		return "", fmt.Errorf("Invalid grid.sorting.order value '%s', allowed options: disabled, startsAt, label", config.Grid.Sorting.Order)
 	}
 
 	if !slices.StringInSlice([]string{"expanded", "collapsed", "collapsedOnMobile"}, config.UI.CollapseGroups) {
-		log.Fatalf("Invalid ui.collapseGroups value '%s', allowed options: expanded, collapsed, collapsedOnMobile", config.UI.CollapseGroups)
+		return "", fmt.Errorf("Invalid ui.collapseGroups value '%s', allowed options: expanded, collapsed, collapsedOnMobile", config.UI.CollapseGroups)
 	}
 
 	if !slices.StringInSlice([]string{"light", "dark", "auto"}, config.UI.Theme) {
-		log.Fatalf("Invalid ui.theme value '%s', allowed options: light, dark, auto", config.UI.Theme)
+		return "", fmt.Errorf("Invalid ui.theme value '%s', allowed options: light, dark, auto", config.UI.Theme)
 	}
 
 	if config.Listen.Prefix != "" && !strings.HasPrefix(config.Listen.Prefix, "/") {
-		log.Fatalf("listen.prefix must start with '/', got %q", config.Listen.Prefix)
+		return "", fmt.Errorf("listen.prefix must start with '/', got %q", config.Listen.Prefix)
 	}
 
 	// accept single Alertmanager server from flag/env if nothing is set yet
@@ -340,7 +345,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) string {
 
 	Config = config
 
-	return configFileUsed
+	return configFileUsed, nil
 }
 
 // LogValues will dump runtime config to logs

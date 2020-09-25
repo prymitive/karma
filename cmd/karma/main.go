@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"mime"
 	"net"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 	"os/signal"
 	"path"
 	"regexp"
+	"strconv"
 	"strings"
 	"syscall"
 	"time"
@@ -54,6 +56,8 @@ var (
 	protectedEndpoints *gin.RouterGroup
 
 	silenceACLs = []*silenceACL{}
+
+	pidFile string
 )
 
 func getViewURL(sub string) string {
@@ -252,6 +256,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 	f := pflag.NewFlagSet("karma", errorHandling)
 	printVersion := f.Bool("version", false, "Print version and exit")
 	validateConfig := f.Bool("check-config", false, "Validate configuration and exit")
+	f.StringVar(&pidFile, "pid-file", "", "If set PID of karma process will be written to this file")
 	config.SetupFlags(f)
 
 	err := f.Parse(os.Args[1:])
@@ -264,7 +269,11 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 		return nil, nil
 	}
 
-	configFile := config.Config.Read(f)
+	configFile, err := config.Config.Read(f)
+	if err != nil {
+		return nil, err
+	}
+
 	err = setupLogger()
 	if err != nil {
 		return nil, err
@@ -368,13 +377,41 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 	return router, nil
 }
 
-func main() {
-	router, err := mainSetup(pflag.ExitOnError)
+func writePidFile() error {
+	if pidFile != "" {
+		log.Infof("Writing PID file to %q", pidFile)
+		pid := os.Getpid()
+		err := ioutil.WriteFile(pidFile, []byte(strconv.Itoa(pid)), 0644)
+		if err != nil {
+			return fmt.Errorf("Failed to write a PID file: %s", err)
+		}
+	}
+	return nil
+}
+
+func removePidFile() error {
+	if pidFile != "" {
+		log.Infof("Removing PID file %q", pidFile)
+		err := os.Remove(pidFile)
+		if err != nil {
+			return fmt.Errorf("Failed to remove PID file: %s", err)
+		}
+	}
+	return nil
+}
+
+func serve(errorHandling pflag.ErrorHandling) error {
+	router, err := mainSetup(errorHandling)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	if router == nil {
-		return
+		return nil
+	}
+
+	err = writePidFile()
+	if err != nil {
+		return err
 	}
 
 	// before we start try to fetch data from Alertmanager
@@ -389,7 +426,7 @@ func main() {
 	listen := fmt.Sprintf("%s:%d", config.Config.Listen.Address, config.Config.Listen.Port)
 	listener, err := net.Listen("tcp", listen)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	log.Infof("Listening on %s", listener.Addr())
 
@@ -409,7 +446,16 @@ func main() {
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	if err := httpServer.Shutdown(ctx); err != nil {
-		log.Fatalf("Shutdown failed: %s", err)
+		return fmt.Errorf("Shutdown failed: %s", err)
 	}
 	log.Info("HTTP server shut down")
+
+	return removePidFile()
+}
+
+func main() {
+	err := serve(pflag.ExitOnError)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

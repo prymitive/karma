@@ -1,0 +1,59 @@
+# Print out and compare logged config set via config file that includes invalid values
+karma.bin-should-fail-no-timestamp --config.file=karma.yaml --check-config
+! stdout .
+stderr 'Failed to unmarshal configuration: 12 error\(s\) decoding:'
+
+-- karma.yaml --
+alertmanager:
+  interval: jjs88
+  servers:
+    - name: ha1
+      uri: "http://localhost:9093"
+      timeout: bbb
+      proxy: YEs
+      cors:
+        credentials: foo
+    - name: ha2
+      uri: "http://localhost:9094"
+      timeout: 11
+      readonly: 1
+    - name: local
+      uri: http://localhost:9095
+      timeout: z
+      proxy: true
+      readonly: 0
+      headers:
+        - X-Auth-Test=some-token-or-other-string
+    - name: client-auth
+      uri: https://localhost:9096
+      timeout: 10s
+      tls:
+        ca: ca.pem
+        cert: cert.pem
+        key: key.pem
+alertAcknowledgement:
+  enabled: zzz
+  duration: 7m0s
+  author: karma
+  commentPrefix: ACK!
+annotations:
+  default:
+    hidden: z
+  hidden: {}
+  visible:
+    - visible
+filters:
+  default: []
+karma:
+  name: karma-demo
+log:
+  level: 123
+  format: foo
+ui:
+  refresh: 10sm
+  hideFiltersWhenIdle: z
+  colorTitlebar: yum
+  theme: x
+  minimalGroupWidth: abc4
+  alertsPerGroup: 5a
+  collapseGroups: collapsedOanMobile

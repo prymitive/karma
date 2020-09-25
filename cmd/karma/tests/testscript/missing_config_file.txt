@@ -1,4 +1,0 @@
-# Errors when config.file points to missing file
-karma.bin-should-fail --config.file=404.yaml
-! stdout .
-stderr 'level=fatal msg="Failed to load configuration file \\"404.yaml\\": open 404.yaml: no such file or directory'

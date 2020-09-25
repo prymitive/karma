@@ -1,3 +1,0 @@
-# Passing --debug enables Gin debug mode
-karma.bin-should-work --log.format=text --log.config=false --debug --alertmanager.uri=http://localhost
-stdout '\[GIN-debug\] \[WARNING\] Running in "debug" mode. Switch to "release" mode in production.'
