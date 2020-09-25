@@ -1,0 +1,23 @@
+# Configures sentry when enabled
+
+exec sh -ex ./test.sh &
+karma.bin-should-work --pid-file=karma.pid --log.format=text --log.config=true --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8068
+! stdout .
+stderr 'msg="  private: secret"'
+stderr 'msg="  public: \\"123456789\\""'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: default
+      uri: http://localhost:9093
+sentry:
+  private: secret
+  public: 123456789
+
+-- test.sh --
+#!/bin/sh
+
+while [ ! -f karma.pid ]; do sleep 1 ; done
+sleep 1
+cat karma.pid | xargs kill

@@ -150,10 +150,10 @@ ui:
 	}
 }
 
-func mockConfigRead() {
+func mockConfigRead() (string, error) {
 	f := pflag.NewFlagSet(".", pflag.ExitOnError)
 	SetupFlags(f)
-	Config.Read(f)
+	return Config.Read(f)
 }
 
 func TestReadConfig(t *testing.T) {
@@ -177,7 +177,7 @@ func TestReadConfig(t *testing.T) {
 	os.Setenv("LISTEN_PORT", "80")
 	os.Setenv("SENTRY_PRIVATE", "secret key")
 	os.Setenv("SENTRY_PUBLIC", "public key")
-	mockConfigRead()
+	_, _ = mockConfigRead()
 	testReadConfig(t)
 }
 
@@ -190,7 +190,7 @@ func TestReadSimpleConfig(t *testing.T) {
 	os.Setenv("ALERTMANAGER_TIMEOUT", "15s")
 	os.Setenv("ALERTMANAGER_PROXY", "true")
 	os.Setenv("ALERTMANAGER_INTERVAL", "3m")
-	mockConfigRead()
+	_, _ = mockConfigRead()
 	if len(Config.Alertmanager.Servers) != 1 {
 		t.Errorf("Expected 1 Alertmanager server, got %d", len(Config.Alertmanager.Servers))
 	} else {
@@ -255,7 +255,7 @@ func TestUrlSecretTest(t *testing.T) {
 
 // FIXME check logged values
 func TestLogValues(t *testing.T) {
-	mockConfigRead()
+	_, _ = mockConfigRead()
 	Config.LogValues()
 }
 
@@ -263,15 +263,9 @@ func TestInvalidGridSortingOrder(t *testing.T) {
 	resetEnv()
 	os.Setenv("GRID_SORTING_ORDER", "foo")
 
-	log.SetLevel(log.PanicLevel)
-	defer func() { log.StandardLogger().ExitFunc = nil }()
-	var wasFatal bool
-	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
-
-	mockConfigRead()
-
-	if !wasFatal {
-		t.Error("Invalid grid.sorting.order value didn't cause log.Fatal()")
+	_, err := mockConfigRead()
+	if err == nil {
+		t.Error("Invalid grid.sorting.order value didn't return any error")
 	}
 }
 
@@ -279,15 +273,9 @@ func TestInvalidUICollapseGroups(t *testing.T) {
 	resetEnv()
 	os.Setenv("UI_COLLAPSEGROUPS", "foo")
 
-	log.SetLevel(log.PanicLevel)
-	defer func() { log.StandardLogger().ExitFunc = nil }()
-	var wasFatal bool
-	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
-
-	mockConfigRead()
-
-	if !wasFatal {
-		t.Error("Invalid ui.collapseGroups value didn't cause log.Fatal()")
+	_, err := mockConfigRead()
+	if err == nil {
+		t.Error("Invalid ui.collapseGroups value didn't return any error")
 	}
 }
 
@@ -295,15 +283,9 @@ func TestInvalidUITheme(t *testing.T) {
 	resetEnv()
 	os.Setenv("UI_THEME", "foo")
 
-	log.SetLevel(log.PanicLevel)
-	defer func() { log.StandardLogger().ExitFunc = nil }()
-	var wasFatal bool
-	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
-
-	mockConfigRead()
-
-	if !wasFatal {
-		t.Error("Invalid ui.theme value didn't cause log.Fatal()")
+	_, err := mockConfigRead()
+	if err == nil {
+		t.Error("Invalid ui.theme value didn't return any error")
 	}
 }
 
@@ -311,22 +293,16 @@ func TestInvalidCORSCredentials(t *testing.T) {
 	resetEnv()
 	os.Setenv("ALERTMANAGER_CORS_CREDENTIALS", "foo")
 
-	log.SetLevel(log.PanicLevel)
-	defer func() { log.StandardLogger().ExitFunc = nil }()
-	var wasFatal bool
-	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
-
-	mockConfigRead()
-
-	if !wasFatal {
-		t.Error("Invalid alertmanager.cors.credentials value didn't cause log.Fatal()")
+	_, err := mockConfigRead()
+	if err == nil {
+		t.Error("Invalid alertmanager.cors.credentials value didn't return any error")
 	}
 }
 
 func TestDefaultConfig(t *testing.T) {
 	resetEnv()
 	log.SetLevel(log.ErrorLevel)
-	mockConfigRead()
+	_, _ = mockConfigRead()
 
 	expectedConfig := configSchema{}
 	expectedConfig.Annotations.Hidden = []string{}

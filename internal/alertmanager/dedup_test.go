@@ -52,7 +52,7 @@ func pullAlerts() error {
 func mockConfigRead() {
 	f := pflag.NewFlagSet(".", pflag.ExitOnError)
 	config.SetupFlags(f)
-	config.Config.Read(f)
+	_, _ = config.Config.Read(f)
 }
 
 func TestDedupAlerts(t *testing.T) {

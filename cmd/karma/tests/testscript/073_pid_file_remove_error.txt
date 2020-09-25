@@ -1,0 +1,15 @@
+# Fails is we cannot remove a PID file
+
+exec sh -ex ./test.sh &
+karma.bin-should-fail --pid-file=karma.pid --log.format=text --log.config=false --alertmanager.uri=http://localhost --listen.address=127.0.0.1 --listen.port=8073
+! stdout .
+stderr 'msg="Failed to remove PID file:'
+
+-- test.sh --
+#!/bin/sh
+
+while [ ! -f karma.pid ]; do sleep 1 ; done
+sleep 1
+PID=$(cat karma.pid)
+rm karma.pid
+kill $PID

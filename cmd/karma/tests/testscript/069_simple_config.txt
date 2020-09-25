@@ -1,0 +1,13 @@
+# Works in simple mode when single --alertmanager.uri flag is passed
+
+exec sh -ex ./test.sh &
+karma.bin-should-work --pid-file=karma.pid --log.format=text --log.config=false --alertmanager.uri=http://localhost --listen.address=127.0.0.1 --listen.port=8069
+! stdout .
+stderr 'msg="\[default\] Configured Alertmanager source at http://localhost \(proxied: false\, readonly: false\)"'
+
+-- test.sh --
+#!/bin/sh
+
+while [ ! -f karma.pid ]; do sleep 1 ; done
+sleep 1
+cat karma.pid | xargs kill

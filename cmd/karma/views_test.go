@@ -37,7 +37,10 @@ func mockConfig() {
 
 	f := pflag.NewFlagSet(".", pflag.ExitOnError)
 	config.SetupFlags(f)
-	config.Config.Read(f)
+	_, err := config.Config.Read(f)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	if !upstreamSetup {
 		upstreamSetup = true

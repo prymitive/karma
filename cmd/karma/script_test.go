@@ -11,25 +11,13 @@ import (
 )
 
 func mainShoulFail() int {
-	var wasFatal bool
-	defer func() {
-		if r := recover(); r != nil {
-			wasFatal = true
-		}
-	}()
-	defer func() { log.StandardLogger().ExitFunc = nil }()
-	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
-
-	_, err := mainSetup(pflag.ContinueOnError)
+	err := serve(pflag.ContinueOnError)
 	if err != nil {
 		log.Error(err)
-	} else if wasFatal {
 		return 0
-	} else {
-		log.Error("No error logged")
-		return 100
 	}
-	return 0
+	log.Error("No error logged")
+	return 100
 }
 
 func mainShoulFailNoTimestamp() int {
@@ -40,7 +28,7 @@ func mainShoulFailNoTimestamp() int {
 }
 
 func mainShouldWork() int {
-	_, err := mainSetup(pflag.ContinueOnError)
+	err := serve(pflag.ContinueOnError)
 	if err != nil {
 		log.Error(err)
 		return 100
