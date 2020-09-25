@@ -8,7 +8,7 @@ require (
 	github.com/certifi/gocertifi v0.0.0-20200211180108-c7c1fbc02894 // indirect
 	github.com/cnf/structhash v0.0.0-20180104161610-62a607eb0224
 	github.com/elazarl/go-bindata-assetfs v1.0.1
-	github.com/fvbommel/sortorder v1.0.1
+	github.com/fvbommel/sortorder v1.0.2
 	github.com/getsentry/raven-go v0.2.0
 	github.com/gin-contrib/cors v1.3.1
 	github.com/gin-contrib/gzip v0.0.3
