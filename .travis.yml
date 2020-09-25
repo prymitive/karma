@@ -304,7 +304,7 @@ jobs:
 
     - stage: Build and Deploy
       name: Percy UI snapshots
-      if: (repo = prymitive/karma AND type != pull_request AND type != cron) OR (fork = true AND type = pull_request)
+      if: (repo = prymitive/karma AND type != pull_request AND type != cron AND fork = false)
       <<: *DEFAULTS_JS
       env:
         - NODE_ENV=test
@@ -313,7 +313,7 @@ jobs:
 
     - stage: E2E
       name: Test demo site
-      if: (repo = prymitive/karma AND type != pull_request) OR (fork = true AND type = pull_request)
+      if: (repo = prymitive/karma AND type != pull_request AND fork = false)
       <<: *DEFAULTS_JS
       script:
         - travis_retry make -C ui test-demo
