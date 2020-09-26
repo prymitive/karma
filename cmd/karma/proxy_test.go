@@ -1206,3 +1206,22 @@ func TestProxySilenceACL(t *testing.T) {
 		})
 	}
 }
+
+func TestNewAlertmanagerProxyWithInvalidURL(t *testing.T) {
+	am := alertmanager.Alertmanager{URI: "%gh&%ij"}
+	proxy, err := NewAlertmanagerProxy(&am)
+	if err == nil {
+		t.Errorf("NewAlertmanagerProxy didn't return any error")
+	}
+	if proxy != nil {
+		t.Errorf("NewAlertmanagerProxy returned a proxy instance: %v", proxy)
+	}
+}
+
+func TestSetupRouterProxyHandlersWithInvalidURL(t *testing.T) {
+	am := alertmanager.Alertmanager{URI: "%gh&%ij"}
+	err := setupRouterProxyHandlers(nil, &am)
+	if err == nil {
+		t.Errorf("setupRouterProxyHandlers didn't return any error")
+	}
+}

@@ -45,11 +45,7 @@ func knownLabelNames(c *gin.Context) {
 		sort.Strings(acData)
 	}
 
-	data, err := json.Marshal(acData)
-	if err != nil {
-		log.Error(err.Error())
-		panic(err)
-	}
+	data, _ = json.Marshal(acData)
 
 	apiCache.Set(cacheKey, data, time.Second*15)
 
@@ -80,11 +76,7 @@ func knownLabelValues(c *gin.Context) {
 	values := alertmanager.DedupKnownLabelValues(name)
 	sort.Strings(values)
 
-	data, err := json.Marshal(values)
-	if err != nil {
-		log.Error(err.Error())
-		panic(err)
-	}
+	data, _ = json.Marshal(values)
 
 	apiCache.Set(cacheKey, data, time.Second*15)
 
