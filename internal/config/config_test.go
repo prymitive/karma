@@ -330,3 +330,10 @@ func TestDefaultConfig(t *testing.T) {
 		t.Errorf("Wrong silence form config returned (-want +got):\n%s", diff)
 	}
 }
+
+func TestValidateConfigMissingFile(t *testing.T) {
+	err := validateConfigFile(("/foo/bar/xxx/yyy.yaml"))
+	if err == nil {
+		t.Errorf("validateConfigFile didn't return any error")
+	}
+}
