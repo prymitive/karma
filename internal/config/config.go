@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 	"time"
@@ -121,6 +122,21 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.Int("ui.minimalGroupWidth", 420, "Minimal width for each alert group on the grid")
 	f.Int("ui.alertsPerGroup", 5, "Default number of alerts to show for each alert group")
 	f.String("ui.collapseGroups", "collapsedOnMobile", "Default state for alert groups")
+}
+
+func validateConfigFile(path string) error {
+	f, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
+
+	cfg := configSchema{}
+	err = yaml.UnmarshalStrict(f, &cfg)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func readConfigFile(k *koanf.Koanf, flags *pflag.FlagSet) (string, error) {
@@ -241,6 +257,12 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	err = k.UnmarshalWithConf("", &config, kConf)
 	if err != nil {
 		return "", fmt.Errorf("Failed to unmarshal configuration: %v", err)
+	}
+
+	if configFileUsed != "" {
+		if err := validateConfigFile(configFileUsed); err != nil {
+			return "", fmt.Errorf("Failed to parse configuration file %q: %v", configFileUsed, err)
+		}
 	}
 
 	if config.Authentication.Header.Name != "" && len(config.Authentication.BasicAuth.Users) > 0 {
