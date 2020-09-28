@@ -33,7 +33,7 @@ alertmanager:
       cors:
         credentials: omit
     - name: local
-      uri: http://localhost:9095
+      uri: http://foo:bar@localhost:9095
       proxy: true
       readonly: false
       headers:
@@ -300,7 +300,7 @@ level=info msg="    cors:"
 level=info msg="      credentials: omit"
 level=info msg="  - cluster: \"\""
 level=info msg="    name: local"
-level=info msg="    uri: http://localhost:9095"
+level=info msg="    uri: http://foo:xxx@localhost:9095"
 level=info msg="    external_uri: \"\""
 level=info msg="    timeout: 40s"
 level=info msg="    proxy: true"
@@ -443,7 +443,7 @@ level=info msg="  multiGridLabel: severity"
 level=info msg="  multiGridSortReverse: true"
 level=info msg="[ha1] Configured Alertmanager source at http://localhost:9093 (proxied: true, readonly: false)"
 level=info msg="[ha2] Configured Alertmanager source at http://localhost:9094 (proxied: false, readonly: true)"
-level=info msg="[local] Configured Alertmanager source at http://localhost:9095 (proxied: true, readonly: false)"
+level=info msg="[local] Configured Alertmanager source at http://foo:xxx@localhost:9095 (proxied: true, readonly: false)"
 level=info msg="[client-auth] Configured Alertmanager source at https://localhost:9096 (proxied: false, readonly: false)"
 level=info msg="[ha1] Setting up proxy endpoints"
 level=info msg="[local] Setting up proxy endpoints"
