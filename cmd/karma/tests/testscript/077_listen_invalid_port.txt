@@ -1,0 +1,5 @@
+# Fails to start when invalid port is set
+
+karma.bin-should-fail --pid-file=karma.pid --log.format=text --log.config=false --alertmanager.uri=http://foo:bar@localhost --listen.address=127.0.0.1 --listen.port=9999999
+! stdout .
+stderr 'msg="listen tcp: address 9999999: invalid port"'

@@ -1,0 +1,14 @@
+# Basic Auth headers are passed to the UI in the API response
+
+exec sh -ex ./test.sh &
+karma.bin-should-work --pid-file=karma.pid --log.format=text --log.config=false --alertmanager.uri=http://foo:bar@localhost --listen.address=127.0.0.1 --listen.port=8076
+wait
+stdout '"publicURI":"http://foo:bar@localhost"'
+
+-- test.sh --
+#!/bin/sh
+
+while [ ! -f karma.pid ]; do sleep 1 ; done
+sleep 1
+curl -s http://127.0.0.1:8076/alerts.json
+cat karma.pid | xargs kill
