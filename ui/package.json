@@ -9,7 +9,7 @@
     "@fortawesome/free-solid-svg-icons": "5.14.0",
     "@fortawesome/react-fontawesome": "0.1.11",
     "@juggle/resize-observer": "3.2.0",
-    "@popperjs/core": "2.5.2",
+    "@popperjs/core": "2.5.3",
     "@sentry/browser": "5.24.2",
     "@storybook/react": "6.0.22",
     "@types/body-scroll-lock": "2.6.1",
