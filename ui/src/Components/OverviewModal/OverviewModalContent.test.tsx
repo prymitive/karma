@@ -31,10 +31,10 @@ const MountedOverviewModalContent = () =>
 
 describe("<OverviewModalContent />", () => {
   it("matches snapshot with labels to show", () => {
-    alertStore.filters.values = [
+    alertStore.filters.setFilterValues([
       NewUnappliedFilter("abc=xyz"),
       NewUnappliedFilter("foo=bar"),
-    ];
+    ]);
     alertStore.data.counters = [
       {
         name: "foo",
@@ -82,7 +82,7 @@ describe("<OverviewModalContent />", () => {
   });
 
   it("renders all labels after expand button click", () => {
-    alertStore.info.totalAlerts = 5;
+    alertStore.info.setTotalAlerts(5);
     alertStore.data.counters = [
       {
         name: "foo",

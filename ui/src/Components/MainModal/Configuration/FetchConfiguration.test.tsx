@@ -42,7 +42,7 @@ describe("<FetchConfiguration />", () => {
   });
 
   it("custom interval value is rendered correctly", () => {
-    settingsStore.fetchConfig.config.interval = 66;
+    settingsStore.fetchConfig.setInterval(66);
     const component = FakeConfiguration();
     expect(component.find("InputRange").props().value).toBe(66);
   });

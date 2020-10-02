@@ -21,7 +21,7 @@ describe("<AppToasts />", () => {
   });
 
   it("renders upstream error toasts for each unhealthy upstream", () => {
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 3, healthy: 1, failed: 2 },
       instances: [
         {
@@ -62,7 +62,7 @@ describe("<AppToasts />", () => {
         },
       ],
       clusters: { am1: ["am1"], am2: ["am2"], am3: ["am3"] },
-    };
+    });
     const tree = mount(<AppToasts alertStore={alertStore} />);
     expect(tree.find("Toast")).toHaveLength(2);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();

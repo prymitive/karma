@@ -16,7 +16,7 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
 
-  alertStore.data.upstreams = {
+  alertStore.data.setUpstreams({
     counters: { total: 1, healthy: 1, failed: 0 },
     clusters: { mockAlertmanager: ["mockAlertmanager"] },
     instances: [
@@ -33,7 +33,7 @@ beforeEach(() => {
         clusterMembers: ["mockAlertmanager"],
       },
     ],
-  };
+  });
 
   silenceFormStore.data.requestsByCluster = {
     mockAlertmanager: NewClusterRequest("mockAlertmanager", [
@@ -136,7 +136,7 @@ describe("<SilenceSubmitProgress />", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ silenceID: "123456789" }),
     });
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 1, healthy: 1, failed: 0 },
       clusters: { ha: ["am1", "am2"] },
       instances: [
@@ -165,7 +165,7 @@ describe("<SilenceSubmitProgress />", () => {
           clusterMembers: ["am1", "am2"],
         },
       ],
-    };
+    });
     silenceFormStore.data.requestsByCluster = {
       ha: NewClusterRequest("ha", ["am1", "am2"]),
     };
@@ -205,7 +205,7 @@ describe("<SilenceSubmitProgress />", () => {
     fetchMock.mock("http://am1.example.com/api/v2/silences", {
       throws: new TypeError("failed to fetch from am1"),
     });
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 2, healthy: 0, failed: 2 },
       clusters: { ha: ["am1", "am2"] },
       instances: [
@@ -234,7 +234,7 @@ describe("<SilenceSubmitProgress />", () => {
           clusterMembers: ["am1", "am2"],
         },
       ],
-    };
+    });
     silenceFormStore.data.requestsByCluster = {
       ha: NewClusterRequest("ha", ["am1", "am2"]),
     };
@@ -271,7 +271,7 @@ describe("<SilenceSubmitProgress />", () => {
     const consoleSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 2, healthy: 2, failed: 0 },
       clusters: { ha: ["am1", "am2"] },
       instances: [
@@ -288,7 +288,7 @@ describe("<SilenceSubmitProgress />", () => {
           clusterMembers: ["am1", "am2"],
         },
       ],
-    };
+    });
     silenceFormStore.data.requestsByCluster = {
       ha: NewClusterRequest("ha", ["am1", "am2"]),
     };
@@ -323,11 +323,11 @@ describe("<SilenceSubmitProgress />", () => {
     const consoleSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 2, healthy: 2, failed: 0 },
       clusters: { ha: ["am1", "am2"] },
       instances: [],
-    };
+    });
     silenceFormStore.data.requestsByCluster = {
       ha: NewClusterRequest("ha", ["am1", "am2"]),
     };
@@ -364,7 +364,7 @@ describe("<SilenceSubmitProgress />", () => {
         logs.push(message);
       });
 
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 2, healthy: 2, failed: 0 },
       clusters: { ha: ["am1", "am2"] },
       instances: [
@@ -393,7 +393,7 @@ describe("<SilenceSubmitProgress />", () => {
           clusterMembers: ["am1", "am2"],
         },
       ],
-    };
+    });
     silenceFormStore.data.requestsByCluster = {
       ha: NewClusterRequest("ha", ["am1", "am2"]),
     };
@@ -434,7 +434,7 @@ describe("<SilenceSubmitProgress />", () => {
         logs.push(message);
       });
 
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 2, healthy: 2, failed: 0 },
       clusters: { ha: ["am1", "am2"] },
       instances: [
@@ -463,7 +463,7 @@ describe("<SilenceSubmitProgress />", () => {
           clusterMembers: ["am1", "am2"],
         },
       ],
-    };
+    });
     silenceFormStore.data.requestsByCluster = {
       ha: NewClusterRequest("ha", ["am1", "am2"]),
     };

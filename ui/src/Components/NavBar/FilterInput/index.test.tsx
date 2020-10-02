@@ -49,10 +49,10 @@ describe("<FilterInput />", () => {
   });
 
   it("matches snapshot with some filters", () => {
-    alertStore.filters.values = [
+    alertStore.filters.setFilterValues([
       NewUnappliedFilter("foo=bar"),
       NewUnappliedFilter("baz!=bar"),
-    ];
+    ]);
     const tree = render(
       <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
     );

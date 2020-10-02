@@ -20,7 +20,7 @@ beforeEach(() => {
     HA: ["am1", "am2"],
     am3: ["am3"],
   };
-  alertStore.data.upstreams.instances = [
+  alertStore.data.setInstances([
     {
       name: "am1",
       uri: "http://am1.example.com",
@@ -57,7 +57,7 @@ beforeEach(() => {
       cluster: "am3",
       clusterMembers: ["am3"],
     },
-  ];
+  ]);
   silenceFormStore = new SilenceFormStore();
 });
 
@@ -90,7 +90,7 @@ describe("<AlertManagerInput />", () => {
 
   it("doesn't render ValidationError after passed validation", () => {
     const tree = MountedAlertManagerInput();
-    silenceFormStore.data.wasValidated = true;
+    silenceFormStore.data.setWasValidated(true);
     expect(toDiffableHtml(tree.html())).not.toMatch(/fa-exclamation-circle/);
     expect(toDiffableHtml(tree.html())).not.toMatch(/Required/);
   });
@@ -99,8 +99,8 @@ describe("<AlertManagerInput />", () => {
     const tree = MountedAlertManagerInput();
     tree.find(".react-select__multi-value__remove").at(0).simulate("click");
     tree.find(".react-select__multi-value__remove").at(0).simulate("click");
-    silenceFormStore.data.alertmanagers = [];
-    silenceFormStore.data.wasValidated = true;
+    silenceFormStore.data.setAlertmanagers([]);
+    silenceFormStore.data.setWasValidated(true);
     expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
     expect(toDiffableHtml(tree.html())).toMatch(/Required/);
   });
@@ -119,7 +119,7 @@ describe("<AlertManagerInput />", () => {
   });
 
   it("doesn't override last selected Alertmanager instances on mount", () => {
-    silenceFormStore.data.alertmanagers = [{ label: "am3", value: ["am3"] }];
+    silenceFormStore.data.setAlertmanagers([{ label: "am3", value: ["am3"] }]);
     MountedAlertManagerInput();
     expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
@@ -137,7 +137,7 @@ describe("<AlertManagerInput />", () => {
   });
 
   it("clicking on options appends them to silenceFormStore.data.alertmanagers", () => {
-    silenceFormStore.data.alertmanagers = [];
+    silenceFormStore.data.setAlertmanagers([]);
     const tree = ValidateSuggestions();
     const options = tree.find("div.react-select__option");
     options.at(0).simulate("click");
@@ -155,9 +155,9 @@ describe("<AlertManagerInput />", () => {
 
   it("silenceFormStore.data.alertmanagers gets updated from alertStore.data.upstreams.instances on mismatch", () => {
     MountedAlertManagerInput();
-    alertStore.data.upstreams.clusters = {
+    alertStore.data.setClusters({
       amNew: ["amNew"],
-    };
+    });
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "amNew",
       value: ["amNew"],
@@ -172,7 +172,7 @@ describe("<AlertManagerInput />", () => {
   });
 
   it("is disabled when silenceFormStore.data.silenceID is not null", () => {
-    silenceFormStore.data.silenceID = "1234";
+    silenceFormStore.data.setSilenceID("1234");
     const tree = MountedAlertManagerInput();
     const select = tree.find("StateManager");
     expect((select.props() as any).isDisabled).toBe(true);

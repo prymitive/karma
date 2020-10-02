@@ -150,7 +150,7 @@ describe("<App />", () => {
     m2.isRegex = false;
     m2.values = [StringToOption("foo"), StringToOption("baz")];
     const store = new SilenceFormStore();
-    store.data.matchers = [m1, m2];
+    store.data.setMatchers([m1, m2]);
     store.data.comment = "base64";
     const m = store.data.toBase64;
 
@@ -190,8 +190,8 @@ describe("<App />", () => {
     m2.isRegex = false;
     m2.values = [StringToOption("foo"), StringToOption("baz")];
     const store = new SilenceFormStore();
-    store.data.matchers = [m1, m2];
-    store.data.comment = "base64";
+    store.data.setMatchers([m1, m2]);
+    store.data.setComment("base64");
     const m = store.data.toBase64;
 
     global.window.location = {

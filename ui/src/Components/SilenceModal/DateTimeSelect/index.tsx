@@ -72,7 +72,7 @@ const TabContentStart: FC<{
             startsAt.setHours(silenceFormStore.data.startsAt.getHours());
             startsAt.setMinutes(silenceFormStore.data.startsAt.getMinutes());
             startsAt.setSeconds(0);
-            silenceFormStore.data.startsAt = startsAt;
+            silenceFormStore.data.setStart(startsAt);
             silenceFormStore.data.verifyStarEnd();
           }}
           selectedDays={{
@@ -114,7 +114,7 @@ const TabContentEnd: FC<{ silenceFormStore: SilenceFormStore }> = ({
             endsAt.setHours(silenceFormStore.data.endsAt.getHours());
             endsAt.setMinutes(silenceFormStore.data.endsAt.getMinutes());
             endsAt.setSeconds(0);
-            silenceFormStore.data.endsAt = endsAt;
+            silenceFormStore.data.setEnd(endsAt);
             silenceFormStore.data.verifyStarEnd();
           }}
           selectedDays={{

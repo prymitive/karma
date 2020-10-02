@@ -22,7 +22,7 @@ storiesOf("ManagedSilence", module)
     const silenceFormStore = new SilenceFormStore();
     const cluster = "am";
 
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { healthy: 1, failed: 0, total: 1 },
       instances: [
         {
@@ -39,10 +39,10 @@ storiesOf("ManagedSilence", module)
         },
       ],
       clusters: { am: ["am1"] },
-    };
+    });
 
     const alertStoreReadOnly = new AlertStore([]);
-    alertStoreReadOnly.data.upstreams = {
+    alertStoreReadOnly.data.setUpstreams({
       counters: { healthy: 1, failed: 0, total: 1 },
       clusters: { ro: ["readonly"] },
       instances: [
@@ -59,7 +59,7 @@ storiesOf("ManagedSilence", module)
           clusterMembers: ["readonly"],
         },
       ],
-    };
+    });
 
     const silence = MockSilence();
     silence.startsAt = "2018-08-14T16:00:00Z";

@@ -17,15 +17,15 @@ const AlertGroupSortConfiguration: FC<{
       .map((o) => o.value)
       .includes(settingsStore.gridConfig.config.sortOrder)
   ) {
-    settingsStore.gridConfig.config.sortOrder = "default";
+    settingsStore.gridConfig.setSortOrder("default");
   }
 
   const onSortOrderChange = (value: SortOrderT) => {
-    settingsStore.gridConfig.config.sortOrder = value;
+    settingsStore.gridConfig.setSortOrder(value);
   };
 
   const onSortReverseChange = (value: boolean) => {
-    settingsStore.gridConfig.config.reverseSort = value;
+    settingsStore.gridConfig.setSortReverse(value);
   };
 
   const valueToOption = (val: SortOrderT) => {

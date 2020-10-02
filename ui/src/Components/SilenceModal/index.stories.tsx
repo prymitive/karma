@@ -50,7 +50,7 @@ storiesOf("SilenceModal", module)
     alertStore.info.authentication.enabled = true;
     alertStore.info.authentication.username = "me@example.com";
 
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { healthy: 3, failed: 0, total: 3 },
       clusters: { default: ["default"], HA: ["ha1", "ha2"] },
       instances: [
@@ -91,11 +91,11 @@ storiesOf("SilenceModal", module)
           clusterMembers: ["ha1", "ha2"],
         },
       ],
-    };
+    });
 
     silenceFormStore.toggle.visible = true;
     silenceFormStore.data.autofillMatchers = false;
-    silenceFormStore.data.matchers = [
+    silenceFormStore.data.setMatchers([
       MockMatcher("cluster", ["prod"], false),
       MockMatcher("instance", ["server1", "server3"], true),
       MockMatcher(
@@ -106,14 +106,14 @@ storiesOf("SilenceModal", module)
         ],
         true
       ),
-    ];
+    ]);
     silenceFormStore.data.addEmptyMatcher();
-    silenceFormStore.data.author = "john@example.com";
-    silenceFormStore.data.comment = "fake silence";
+    silenceFormStore.data.setAuthor("john@example.com");
+    silenceFormStore.data.setComment("fake silence");
 
-    silenceFormStore.data.silenceID = "1234567890";
-    silenceFormStore.data.startsAt = new Date();
-    silenceFormStore.data.endsAt = addDays(addHours(new Date(), 2), 10);
+    silenceFormStore.data.setSilenceID("1234567890");
+    silenceFormStore.data.setStart(new Date());
+    silenceFormStore.data.setEnd(addDays(addHours(new Date(), 2), 10));
 
     silenceFormStore.tab.current = "editor";
 
@@ -154,7 +154,7 @@ storiesOf("SilenceModal", module)
     );
 
     const alertStoreReadOnly = new AlertStore([]);
-    alertStoreReadOnly.data.upstreams = {
+    alertStoreReadOnly.data.setUpstreams({
       counters: { healthy: 1, failed: 0, total: 1 },
       clusters: { default: ["readonly"] },
       instances: [
@@ -171,7 +171,7 @@ storiesOf("SilenceModal", module)
           clusterMembers: ["readonly"],
         },
       ],
-    };
+    });
 
     return (
       <React.Fragment>
@@ -219,7 +219,7 @@ storiesOf("SilenceModal", module)
 
     silenceFormStore.tab.current = "browser";
 
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { healthy: 1, failed: 0, total: 1 },
       instances: [
         {
@@ -236,7 +236,7 @@ storiesOf("SilenceModal", module)
         },
       ],
       clusters: { am: ["am1"] },
-    };
+    });
 
     const silences = [];
     for (let index = 1; index <= 18; index++) {
@@ -283,7 +283,7 @@ storiesOf("SilenceModal", module)
 
     silenceFormStore.tab.current = "browser";
 
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { healthy: 1, failed: 0, total: 1 },
       instances: [
         {
@@ -300,7 +300,7 @@ storiesOf("SilenceModal", module)
         },
       ],
       clusters: { am: ["am1"] },
-    };
+    });
 
     fetchMock.mock(
       "begin:/silences.json?",

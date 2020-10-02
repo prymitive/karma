@@ -335,12 +335,27 @@ class SilenceFormStore {
         this.silenceID = null;
       },
 
+      setSilenceID(id: string) {
+        this.silenceID = id;
+      },
+
       setAlertmanagers(val: MultiValueOptionT[]) {
         this.alertmanagers = val;
       },
 
+      setAutofillMatchers(v: boolean) {
+        this.autofillMatchers = v;
+      },
+      setResetInputs(v: boolean) {
+        this.resetInputs = v;
+      },
+
       setStageSubmit() {
         this.currentStage = "submit";
+      },
+
+      setMatchers(m: MatcherWithIDT[]) {
+        this.matchers = m;
       },
 
       // append a new empty matcher to the list
@@ -403,6 +418,14 @@ class SilenceFormStore {
         this.autofillMatchers = false;
       },
 
+      setAuthor(a: string) {
+        this.author = a;
+      },
+
+      setComment(c: string) {
+        this.comment = c;
+      },
+
       verifyStarEnd() {
         const now = new Date();
         now.setSeconds(0);
@@ -413,6 +436,12 @@ class SilenceFormStore {
         if (this.endsAt <= this.startsAt) {
           this.endsAt = addMinutes(this.startsAt, 1);
         }
+      },
+      setStart(startsAt: Date) {
+        this.startsAt = startsAt;
+      },
+      setEnd(endsAt: Date) {
+        this.endsAt = endsAt;
       },
       incStart(minutes: number) {
         this.startsAt = addMinutes(this.startsAt, minutes);
@@ -430,6 +459,10 @@ class SilenceFormStore {
       decEnd(minutes: number) {
         this.endsAt = subMinutes(this.endsAt, minutes);
         this.verifyStarEnd();
+      },
+
+      setWasValidated(v: boolean) {
+        this.wasValidated = v;
       },
 
       get toAlertmanagerPayload() {
@@ -464,18 +497,27 @@ class SilenceFormStore {
       resetStartEnd: action.bound,
       resetProgress: action.bound,
       resetSilenceID: action.bound,
+      setSilenceID: action.bound,
       setAlertmanagers: action.bound,
+      setAutofillMatchers: action.bound,
+      setResetInputs: action.bound,
       setStageSubmit: action.bound,
+      setMatchers: action.bound,
       addEmptyMatcher: action.bound,
       deleteMatcher: action.bound,
       fillMatchersFromGroup: action.bound,
       fillFormFromSilence: action.bound,
+      setAuthor: action.bound,
+      setComment: action.bound,
       verifyStarEnd: action.bound,
+      setStart: action.bound,
+      setEnd: action.bound,
       incStart: action.bound,
       decStart: action.bound,
       incEnd: action.bound,
       decEnd: action.bound,
       isValid: computed,
+      setWasValidated: action.bound,
       toAlertmanagerPayload: computed,
       toDuration: computed,
     },

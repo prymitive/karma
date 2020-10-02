@@ -26,7 +26,7 @@ afterEach(() => {
 describe("AlertStore.data", () => {
   it("getClusterAlertmanagersWithoutReadOnly filters out readonly instances", () => {
     const store = new AlertStore([]);
-    store.data.upstreams = {
+    store.data.setUpstreams({
       counters: { total: 2, healthy: 2, failed: 0 },
       clusters: { default: ["default", "readonly"] },
       instances: [
@@ -55,7 +55,7 @@ describe("AlertStore.data", () => {
           clusterMembers: ["default", "readonly"],
         },
       ],
-    };
+    });
     expect(
       store.data.getClusterAlertmanagersWithoutReadOnly("default")
     ).toEqual(["default"]);
@@ -65,7 +65,7 @@ describe("AlertStore.data", () => {
 describe("AlertStore.data", () => {
   it("getClusterAlertmanagersWithoutReadOnly handles clusters with no writable instances", () => {
     const store = new AlertStore([]);
-    store.data.upstreams = {
+    store.data.setUpstreams({
       counters: { total: 2, healthy: 2, failed: 0 },
       clusters: { default: ["ro1", "ro2"] },
       instances: [
@@ -94,7 +94,7 @@ describe("AlertStore.data", () => {
           clusterMembers: ["ro1", "ro2"],
         },
       ],
-    };
+    });
     expect(
       store.data.getClusterAlertmanagersWithoutReadOnly("default")
     ).toEqual([]);

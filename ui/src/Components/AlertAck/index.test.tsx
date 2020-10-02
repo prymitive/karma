@@ -33,7 +33,7 @@ beforeEach(() => {
     author: "default author",
     commentPrefix: "PREFIX",
   };
-  alertStore.data.upstreams = {
+  alertStore.data.setUpstreams({
     counters: { total: 1, healthy: 1, failed: 0 },
     clusters: { default: ["default"] },
     instances: [
@@ -50,7 +50,7 @@ beforeEach(() => {
         clusterMembers: ["default"],
       },
     ],
-  };
+  });
 
   alerts = [
     MockAlert([], { foo: "bar" }, "active"),
@@ -178,7 +178,7 @@ describe("<AlertAck />", () => {
   });
 
   it("sends a POST request to every cluster", async () => {
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 4, healthy: 4, failed: 0 },
       clusters: { c1: ["m1", "m2"], c2: ["m3", "m4"] },
       instances: ["m1", "m2", "m3", "m4"].map((a) => ({
@@ -193,7 +193,7 @@ describe("<AlertAck />", () => {
         cluster: a === "m1" || a === "2" ? "c1" : "c2",
         clusterMembers: a === "m1" || a === "2" ? ["m1", "m2"] : ["m3", "m4"],
       })),
-    };
+    });
     group.alertmanagerCount = {
       m1: 1,
       m2: 1,
@@ -222,7 +222,7 @@ describe("<AlertAck />", () => {
   });
 
   it("skips readonly alertmanagers", async () => {
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 4, healthy: 4, failed: 0 },
       clusters: { c1: ["m1", "m2"], c2: ["m3", "m4"] },
       instances: ["m1", "m2", "m3", "m4"].map((a) => ({
@@ -237,7 +237,7 @@ describe("<AlertAck />", () => {
         cluster: a === "m1" || a === "2" ? "c1" : "c2",
         clusterMembers: a === "m1" || a === "2" ? ["m1", "m2"] : ["m3", "m4"],
       })),
-    };
+    });
     group.alertmanagerCount = {
       m1: 1,
       m2: 1,
@@ -281,7 +281,7 @@ describe("<AlertAck />", () => {
       }
     );
 
-    silenceFormStore.data.author = "karma/ui";
+    silenceFormStore.data.setAuthor("karma/ui");
     await MountAndClick();
     expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({
       comment:
@@ -340,7 +340,7 @@ describe("<AlertAck />", () => {
     alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
     alertStore.settings.values.alertAcknowledgement.author = "me";
     alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";
-    silenceFormStore.data.author = "bob@example.com";
+    silenceFormStore.data.setAuthor("bob@example.com");
     await MountAndClick();
     expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({
       comment:
@@ -359,7 +359,7 @@ describe("<AlertAck />", () => {
     alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
     alertStore.settings.values.alertAcknowledgement.author = "me";
     alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";
-    silenceFormStore.data.author = "";
+    silenceFormStore.data.setAuthor("");
     await MountAndClick();
     expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({
       comment:
@@ -398,7 +398,7 @@ describe("<AlertAck />", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ silenceID: "456" }),
     });
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 1, healthy: 1, failed: 0 },
       clusters: { c1: ["m1", "m2"], c2: ["m3", "m4"] },
       instances: ["m1", "m2", "m3", "m4"].map((a) => ({
@@ -413,7 +413,7 @@ describe("<AlertAck />", () => {
         cluster: a === "m1" || a === "2" ? "c1" : "c2",
         clusterMembers: a === "m1" || a === "2" ? ["m1", "m2"] : ["m3", "m4"],
       })),
-    };
+    });
     group.alertmanagerCount = {
       m1: 1,
       m2: 1,
@@ -458,7 +458,7 @@ describe("<AlertAck />", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ silenceID: "123" }),
     });
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 1, healthy: 1, failed: 0 },
       clusters: { c1: ["m1", "m2"], c2: ["m3", "m4"] },
       instances: ["m1", "m2", "m3", "m4"].map((a) => ({
@@ -473,7 +473,7 @@ describe("<AlertAck />", () => {
         cluster: a === "m1" || a === "2" ? "c1" : "c2",
         clusterMembers: a === "m1" || a === "2" ? ["m1", "m2"] : ["m3", "m4"],
       })),
-    };
+    });
     group.alertmanagerCount = {
       m1: 1,
       m2: 1,
@@ -509,7 +509,7 @@ describe("<AlertAck />", () => {
     const consoleSpy = jest
       .spyOn(console, "error")
       .mockImplementation(() => {});
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 1, healthy: 1, failed: 0 },
       clusters: { default: ["default", "fallback"] },
       instances: [
@@ -526,7 +526,7 @@ describe("<AlertAck />", () => {
           clusterMembers: ["default", "fallback"],
         },
       ],
-    };
+    });
 
     const tree = MountedAlertAck();
     const button = tree.find("span.badge");

@@ -344,7 +344,7 @@ describe("<AlertGroup /> renderConfig", () => {
 
 describe("<AlertGroup /> card theme", () => {
   it("renders bg-light background when colorTitleBar=false", () => {
-    settingsStore.alertGroupConfig.config.colorTitleBar = false;
+    settingsStore.alertGroupConfig.setColorTitleBar(false);
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.find(".card").hasClass("bg-light")).toBe(true);
@@ -354,14 +354,14 @@ describe("<AlertGroup /> card theme", () => {
   });
 
   it("renders themed titlebar when colorTitleBar=false", () => {
-    settingsStore.alertGroupConfig.config.colorTitleBar = false;
+    settingsStore.alertGroupConfig.setColorTitleBar(false);
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.find("GroupHeader").prop("themedCounters")).toBe(true);
   });
 
   it("renders bg-light border when colorTitleBar=true and there are multiple alert states", () => {
-    settingsStore.alertGroupConfig.config.colorTitleBar = false;
+    settingsStore.alertGroupConfig.setColorTitleBar(false);
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.find(".card").hasClass("bg-light")).toBe(true);
@@ -371,14 +371,14 @@ describe("<AlertGroup /> card theme", () => {
   });
 
   it("renders themed titlebar when colorTitleBar=true and there are multiple alert states", () => {
-    settingsStore.alertGroupConfig.config.colorTitleBar = true;
+    settingsStore.alertGroupConfig.setColorTitleBar(true);
     group.stateCount = { active: 5, suppressed: 6, unprocessed: 7 };
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.find("GroupHeader").prop("themedCounters")).toBe(true);
   });
 
   it("renders state based background when colorTitleBar=true and there's only one alert state", () => {
-    settingsStore.alertGroupConfig.config.colorTitleBar = true;
+    settingsStore.alertGroupConfig.setColorTitleBar(true);
     group.stateCount = { active: 0, suppressed: 5, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.find(".card").hasClass("bg-light")).toBe(false);
@@ -388,7 +388,7 @@ describe("<AlertGroup /> card theme", () => {
   });
 
   it("renders unthemed titlebar when colorTitleBar=true and there's only one alert state", () => {
-    settingsStore.alertGroupConfig.config.colorTitleBar = true;
+    settingsStore.alertGroupConfig.setColorTitleBar(true);
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.find("GroupHeader").prop("themedCounters")).toBe(false);

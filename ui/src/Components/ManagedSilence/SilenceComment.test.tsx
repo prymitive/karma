@@ -42,7 +42,7 @@ const MountedSilenceComment = (collapsed: boolean, cluster?: string) => {
 };
 
 const MockMultipleClusters = () => {
-  alertStore.data.upstreams = {
+  alertStore.data.setUpstreams({
     counters: { total: 2, healthy: 2, failed: 0 },
     clusters: { ha: ["ha1", "ha2"], single: ["single"] },
     instances: [
@@ -83,7 +83,7 @@ const MockMultipleClusters = () => {
         clusterMembers: ["single"],
       },
     ],
-  };
+  });
 };
 
 describe("<SilenceComment />", () => {

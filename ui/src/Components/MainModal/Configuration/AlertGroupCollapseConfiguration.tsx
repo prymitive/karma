@@ -16,8 +16,7 @@ const AlertGroupCollapseConfiguration: FC<{
       .map((o) => o.value)
       .includes(settingsStore.alertGroupConfig.config.defaultCollapseState)
   ) {
-    settingsStore.alertGroupConfig.config.defaultCollapseState =
-      "collapsedOnMobile";
+    settingsStore.alertGroupConfig.setDefaultCollapseState("collapsedOnMobile");
   }
 
   const valueToOption = (val: CollapseStateT): OptionT => {
@@ -28,7 +27,7 @@ const AlertGroupCollapseConfiguration: FC<{
   };
 
   const onCollapseChange = (newValue: CollapseStateT) => {
-    settingsStore.alertGroupConfig.config.defaultCollapseState = newValue;
+    settingsStore.alertGroupConfig.setDefaultCollapseState(newValue);
   };
 
   const context = React.useContext(ThemeContext);

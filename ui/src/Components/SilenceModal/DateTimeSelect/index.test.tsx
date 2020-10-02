@@ -23,8 +23,8 @@ let silenceFormStore: SilenceFormStore;
 
 beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
-  silenceFormStore.data.startsAt = new Date(2060, 1, 1, 0, 0, 0);
-  silenceFormStore.data.endsAt = new Date(2061, 1, 1, 0, 0, 0);
+  silenceFormStore.data.setStart(new Date(2060, 1, 1, 0, 0, 0));
+  silenceFormStore.data.setEnd(new Date(2061, 1, 1, 0, 0, 0));
 });
 
 afterEach(() => {
@@ -123,8 +123,8 @@ describe("<DateTimeSelect />", () => {
   it("'Ends' tab offset badge is updated after 1 minute", () => {
     jest.useFakeTimers();
     advanceTo(new Date(2060, 1, 1, 12, 0, 0));
-    silenceFormStore.data.startsAt = new Date(2060, 1, 1, 12, 0, 0);
-    silenceFormStore.data.endsAt = new Date(2060, 1, 1, 13, 0, 0);
+    silenceFormStore.data.setStart(new Date(2060, 1, 1, 12, 0, 0));
+    silenceFormStore.data.setEnd(new Date(2060, 1, 1, 13, 0, 0));
 
     const tree = MountedDateTimeSelect();
     expect(tree.find(".nav-link").at(1).text()).toBe("Endsin 1h ");
@@ -518,8 +518,8 @@ describe("<TabContentDuration />", () => {
 const SetDurationTo = (hours: number, minutes: number) => {
   const startsAt = new Date(2060, 1, 1, 0, 0, 0);
   const endsAt = addMinutes(addHours(startsAt, hours), minutes);
-  silenceFormStore.data.startsAt = startsAt;
-  silenceFormStore.data.endsAt = endsAt;
+  silenceFormStore.data.setStart(startsAt);
+  silenceFormStore.data.setEnd(endsAt);
 };
 
 describe("<TabContentDuration /> inc minute CalculateChangeValue", () => {

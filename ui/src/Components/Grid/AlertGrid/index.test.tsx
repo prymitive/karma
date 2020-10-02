@@ -150,7 +150,7 @@ const MockGroupList = (count: number, alertPerGroup: number) => {
     group.id = id;
     groups.push(group);
   }
-  alertStore.data.upstreams = {
+  alertStore.data.setUpstreams({
     counters: { total: 0, healthy: 1, failed: 0 },
     instances: [
       {
@@ -167,8 +167,8 @@ const MockGroupList = (count: number, alertPerGroup: number) => {
       },
     ],
     clusters: { am: ["am"] },
-  };
-  alertStore.data.grids = [
+  });
+  alertStore.data.setGrids([
     {
       labelName: "",
       labelValue: "",
@@ -179,7 +179,7 @@ const MockGroupList = (count: number, alertPerGroup: number) => {
         active: 3,
       },
     },
-  ];
+  ]);
 };
 
 describe("<Grid />", () => {
@@ -199,8 +199,8 @@ describe("<Grid />", () => {
   });
 
   it("doesn't sort groups when sorting is set to 'disabled'", () => {
-    settingsStore.gridConfig.config.sortOrder = "disabled";
-    settingsStore.gridConfig.config.reverseSort = false;
+    settingsStore.gridConfig.setSortOrder("disabled");
+    settingsStore.gridConfig.setSortReverse(false);
     MockGroupList(3, 1);
     const tree = ShallowGrid();
     const alertGroups = tree.find("AlertGroup");
@@ -224,7 +224,7 @@ describe("<Grid />", () => {
       suppressed: 2,
       active: 3,
     };
-    alertStore.data.grids = [grid];
+    alertStore.data.setGrids([grid]);
     tree.setProps({ grid: grid });
     expect(tree.find("AlertGroup")).toHaveLength(10);
 
@@ -258,7 +258,7 @@ describe("<Grid />", () => {
       suppressed: 0,
       active: 0,
     };
-    alertStore.data.grids = [MockGrid(), MockGrid()];
+    alertStore.data.setGrids([MockGrid(), MockGrid()]);
     tree.setProps({ grid: grid });
     expect(tree.find("h5").at(0).find("FilteringLabel")).toHaveLength(1);
     expect(tree.find("h5").at(0).find("FilteringLabel").text()).toBe(
@@ -277,7 +277,7 @@ describe("<Grid />", () => {
       suppressed: 0,
       active: 0,
     };
-    alertStore.data.grids = [MockGrid(), MockGrid()];
+    alertStore.data.setGrids([MockGrid(), MockGrid()]);
     tree.setProps({ grid: grid });
     expect(tree.find("h5").at(0).find("FilteringLabel")).toHaveLength(0);
   });
@@ -308,7 +308,7 @@ describe("<Grid />", () => {
   it("left click + alt on a group collapse toggle toggles all groups in current grid", () => {
     MockGroupList(20, 3);
     const groups = alertStore.data.grids[0].alertGroups;
-    alertStore.data.grids = [
+    alertStore.data.setGrids([
       {
         labelName: "foo",
         labelValue: "bar",
@@ -329,7 +329,7 @@ describe("<Grid />", () => {
           active: 3,
         },
       },
-    ];
+    ]);
     const tree = MountedAlertGrid();
 
     for (let i = 0; i <= 19; i++) {
@@ -574,7 +574,7 @@ describe("<AlertGrid />", () => {
   it("alt+click on a grid toggle toggles all grid groups", () => {
     MockGroupList(3, 1);
     const groups = alertStore.data.grids[0].alertGroups;
-    alertStore.data.grids = [
+    alertStore.data.setGrids([
       {
         labelName: "foo",
         labelValue: "bar",
@@ -595,7 +595,7 @@ describe("<AlertGrid />", () => {
           active: 3,
         },
       },
-    ];
+    ]);
     const tree = MountedAlertGrid();
     expect(tree.find("Grid")).toHaveLength(2);
     expect(tree.find("AlertGroup")).toHaveLength(6);
@@ -612,7 +612,7 @@ describe("<AlertGrid />", () => {
   it("adds extra padding to alert groups when multi-grid is enabled", () => {
     MockGroupList(10, 3);
     const groups = alertStore.data.grids[0].alertGroups;
-    alertStore.data.grids = [
+    alertStore.data.setGrids([
       {
         labelName: "foo",
         labelValue: "bar",
@@ -633,7 +633,7 @@ describe("<AlertGrid />", () => {
           active: 0,
         },
       },
-    ];
+    ]);
     document.body.clientWidth = 1200;
     window.innerWidth = 1000;
     const tree = MountedAlertGrid();
@@ -655,7 +655,7 @@ describe("<AlertGrid />", () => {
   it("doesn't add extra padding to alert groups when multi-grid is disabled", () => {
     MockGroupList(10, 3);
     const groups = alertStore.data.grids[0].alertGroups;
-    alertStore.data.grids = [
+    alertStore.data.setGrids([
       {
         labelName: "",
         labelValue: "",
@@ -666,7 +666,7 @@ describe("<AlertGrid />", () => {
           active: 0,
         },
       },
-    ];
+    ]);
     document.body.clientWidth = 1200;
     window.innerWidth = 1000;
     const tree = MountedAlertGrid();

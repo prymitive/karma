@@ -8,7 +8,7 @@ const FilterBarConfiguration: FC<{
   settingsStore: Settings;
 }> = ({ settingsStore }) => {
   const onAutohideChange = (value: boolean) => {
-    settingsStore.filterBarConfig.config.autohide = value;
+    settingsStore.filterBarConfig.setAutohide(value);
   };
   return useObserver(() => (
     <div className="form-group mb-0">

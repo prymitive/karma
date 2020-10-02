@@ -42,7 +42,7 @@ describe("<ThemeConfiguration />", () => {
   });
 
   it("rendered correct default value", (done) => {
-    settingsStore.themeConfig.config.theme = "auto";
+    settingsStore.themeConfig.setTheme("auto");
     const tree = FakeConfiguration();
     const select = tree.find("div.react-select__value-container");
     setTimeout(() => {

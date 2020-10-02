@@ -155,6 +155,9 @@ class AlertStore {
         this.values = raws.map((raw) => NewUnappliedFilter(raw));
         UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
       },
+      setFilterValues(v: FilterT[]) {
+        this.values = v;
+      },
       setWithoutLocation(raws: string[]) {
         const filtersByRaw: { [key: string]: FilterT } = this.values.reduce(
           function (map: { [key: string]: FilterT }, obj) {
@@ -178,6 +181,7 @@ class AlertStore {
       removeFilter: action.bound,
       replaceFilter: action.bound,
       setFilters: action.bound,
+      setFilterValues: action.bound,
       setWithoutLocation: action.bound,
       applyAllFilters: action.bound,
     },
@@ -241,12 +245,28 @@ class AlertStore {
           return this.colors[name][value];
         }
       },
+      setGrids(g: APIGridT[]) {
+        this.grids = g;
+      },
+      setUpstreams(u: APIAlertsResponseUpstreamsT) {
+        this.upstreams = u;
+      },
+      setInstances(i: APIAlertmanagerUpstreamT[]) {
+        this.upstreams.instances = i;
+      },
+      setClusters(c: APIAlertsResponseUpstreamsClusterMapT) {
+        this.upstreams.clusters = c;
+      },
     },
     {
       gridPadding: computed,
       readOnlyAlertmanagers: computed,
       readWriteAlertmanagers: computed,
       clustersWithoutReadOnly: computed,
+      setGrids: action.bound,
+      setUpstreams: action.bound,
+      setInstances: action.bound,
+      setClusters: action.bound,
     },
     { name: "API Response data" }
   );
@@ -275,12 +295,16 @@ class AlertStore {
       setReloadNeeded() {
         this.reloadNeeded = true;
       },
+      setTotalAlerts(n: number) {
+        this.totalAlerts = n;
+      },
     },
     {
       setIsRetrying: action.bound,
       clearIsRetrying: action.bound,
       setReloadNeeded: action.bound,
       setUpgradeNeeded: action.bound,
+      setTotalAlerts: action.bound,
     },
     { name: "API response info" }
   );

@@ -36,9 +36,9 @@ beforeEach(() => {
   cluster = "am";
   silence = MockSilence();
 
-  settingsStore.fetchConfig.config.interval = 30;
+  settingsStore.fetchConfig.setInterval(30);
 
-  alertStore.data.upstreams = {
+  alertStore.data.setUpstreams({
     counters: { total: 1, healthy: 1, failed: 1 },
     instances: [
       {
@@ -55,7 +55,7 @@ beforeEach(() => {
       },
     ],
     clusters: { am: ["am1"] },
-  };
+  });
 });
 
 afterEach(() => {
@@ -105,7 +105,7 @@ describe("<Browser />", () => {
   });
 
   it("fetches /silences.json in a loop", () => {
-    settingsStore.fetchConfig.config.interval = 1;
+    settingsStore.fetchConfig.setInterval(1);
     MountedBrowser();
 
     advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 2)));

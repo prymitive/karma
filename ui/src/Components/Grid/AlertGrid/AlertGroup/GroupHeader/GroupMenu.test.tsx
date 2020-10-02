@@ -29,7 +29,7 @@ beforeEach(() => {
   MockAfterClick = jest.fn();
   MockSetIsMenuOpen = jest.fn();
 
-  alertStore.data.upstreams = {
+  alertStore.data.setUpstreams({
     counters: { total: 3, healthy: 3, failed: 0 },
     clusters: { default: ["am1"], ro: ["ro"], am2: ["am2"] },
     instances: [
@@ -70,7 +70,7 @@ beforeEach(() => {
         clusterMembers: ["am2"],
       },
     ],
-  };
+  });
 });
 
 const MountedGroupMenu = (group: APIAlertGroupT, themed: boolean) => {

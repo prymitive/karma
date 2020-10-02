@@ -68,6 +68,8 @@ class AlertGroupConfig {
 
   config: AlertGroupConfigStorage;
   setDefaultRenderCount: (val: number) => void;
+  setDefaultCollapseState: (val: CollapseStateT) => void;
+  setColorTitleBar: (val: boolean) => void;
 
   constructor(
     renderCount: number,
@@ -86,6 +88,12 @@ class AlertGroupConfig {
 
     this.setDefaultRenderCount = action((val: number) => {
       this.config.defaultRenderCount = val;
+    });
+    this.setDefaultCollapseState = action((val: CollapseStateT) => {
+      this.config.defaultCollapseState = val;
+    });
+    this.setColorTitleBar = action((val: boolean) => {
+      this.config.colorTitleBar = val;
     });
   }
 }
@@ -133,6 +141,16 @@ class GridConfig {
       { delay: 100 }
     );
   }
+
+  setSortOrder = action((o: SortOrderT) => {
+    this.config.sortOrder = o;
+  });
+  setSortLabel = action((l: string) => {
+    this.config.sortLabel = l;
+  });
+  setSortReverse = action((v: boolean | null) => {
+    this.config.reverseSort = v;
+  });
 }
 
 interface FilterBarConfigStorage {
@@ -151,6 +169,10 @@ class FilterBarConfig {
       }
     );
   }
+
+  setAutohide = action((v: boolean) => {
+    this.config.autohide = v;
+  });
 }
 
 export type ThemeT = "auto" | "light" | "dark";
@@ -178,6 +200,10 @@ class ThemeConfig {
       }
     );
   }
+
+  setTheme = action((v: ThemeT) => {
+    this.config.theme = v;
+  });
 }
 
 interface MultiGridConfigStorage {
@@ -198,6 +224,13 @@ class MultiGridConfig {
       }
     );
   }
+
+  setGridLabel = action((l: string) => {
+    this.config.gridLabel = l;
+  });
+  setGridSortReverse = action((v: boolean) => {
+    this.config.gridSortReverse = v;
+  });
 }
 
 class Settings {

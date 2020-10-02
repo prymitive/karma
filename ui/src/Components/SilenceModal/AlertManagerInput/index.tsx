@@ -43,7 +43,7 @@ const AlertManagerInput: FC<{
               .map((am) => JSON.stringify(am))
               .includes(JSON.stringify(silenceAM))
           ) {
-            silenceFormStore.data.alertmanagers = currentAlertmanagers;
+            silenceFormStore.data.setAlertmanagers(currentAlertmanagers);
           }
         }
       }),
