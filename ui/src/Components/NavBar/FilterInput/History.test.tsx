@@ -45,10 +45,10 @@ const AppliedFilter = (name: string, matcher: string, value: string) => {
 
 const PopulateHistory = (tree: ReactWrapper, count: number) => {
   for (let i = 1; i <= count; i++) {
-    alertStore.filters.values = [
+    alertStore.filters.setFilterValues([
       AppliedFilter("foo", "=", `bar${i}`),
       AppliedFilter("baz", "=~", `bar${i}`),
-    ];
+    ]);
     tree.update();
     jest.runOnlyPendingTimers();
   }
@@ -104,11 +104,11 @@ describe("<History />", () => {
 
   it("saves only applied filters to history", async () => {
     const promise = Promise.resolve();
-    alertStore.filters.values = [
+    alertStore.filters.setFilterValues([
       AppliedFilter("foo", "=", "bar"),
       NewUnappliedFilter("foo=unapplied"),
       AppliedFilter("baz", "!=", "bar"),
-    ];
+    ]);
     const tree = MountedHistory();
     tree.find("button.cursor-pointer").simulate("click");
     expect(tree.find("button.dropdown-item")).toHaveLength(1);
@@ -157,7 +157,7 @@ describe("<HistoryMenu />", () => {
     const button = tree.find("button.dropdown-item").at(0);
     expect(button.text()).toBe("foo=bar1baz=~bar1");
 
-    alertStore.filters.values = [AppliedFilter("job", "=", "foo")];
+    alertStore.filters.setFilterValues([AppliedFilter("job", "=", "foo")]);
     expect(alertStore.filters.values).toHaveLength(1);
 
     button.simulate("click");
@@ -221,10 +221,10 @@ describe("<HistoryMenu />", () => {
   });
 
   it("clicking on 'Save filters' saves current filter set to Settings", () => {
-    alertStore.filters.values = [
+    alertStore.filters.setFilterValues([
       AppliedFilter("foo", "=", "bar"),
       AppliedFilter("bar", "=~", "baz"),
-    ];
+    ]);
 
     const tree = MountedHistory();
     tree.find("button.cursor-pointer").simulate("click");

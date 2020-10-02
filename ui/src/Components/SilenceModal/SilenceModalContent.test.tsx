@@ -21,7 +21,7 @@ beforeEach(() => {
   settingsStore = new Settings(null);
   silenceFormStore = new SilenceFormStore();
 
-  alertStore.data.upstreams = {
+  alertStore.data.setUpstreams({
     counters: { total: 1, healthy: 1, failed: 0 },
     instances: [
       {
@@ -38,7 +38,7 @@ beforeEach(() => {
       },
     ],
     clusters: { am: ["am1"] },
-  };
+  });
 
   silenceFormStore.tab.current = "editor";
 });
@@ -109,21 +109,21 @@ describe("<SilenceModalContent /> Editor", () => {
   });
   it("title is 'Editing silence' when editing exiting silence", () => {
     silenceFormStore.data.currentStage = "form";
-    silenceFormStore.data.silenceID = "1234";
+    silenceFormStore.data.setSilenceID("1234");
     const tree = MountedSilenceModalContent();
     const tab = tree.find("Tab").at(0);
     expect(tab.props().title).toBe("Editing silence");
   });
   it("title is 'Preview silenced alerts' when previewing silenced alerts", () => {
     silenceFormStore.data.currentStage = "preview";
-    silenceFormStore.data.silenceID = "1234";
+    silenceFormStore.data.setSilenceID("1234");
     const tree = MountedSilenceModalContent();
     const tab = tree.find("Tab").at(0);
     expect(tab.props().title).toBe("Preview silenced alerts");
   });
   it("title is 'Silence submitted' after sending silence to Alertmanager", () => {
     silenceFormStore.data.currentStage = "submit";
-    silenceFormStore.data.silenceID = "1234";
+    silenceFormStore.data.setSilenceID("1234");
     const tree = MountedSilenceModalContent();
     const tab = tree.find("Tab").at(0);
     expect(tab.props().title).toBe("Silence submitted");

@@ -28,7 +28,7 @@ beforeEach(() => {
   cluster = "am";
   silence = MockSilence();
 
-  alertStore.data.upstreams = {
+  alertStore.data.setUpstreams({
     counters: { total: 1, healthy: 1, failed: 0 },
     instances: [
       {
@@ -45,7 +45,7 @@ beforeEach(() => {
       },
     ],
     clusters: { am: ["am1"] },
-  };
+  });
 });
 
 afterEach(() => {

@@ -44,7 +44,7 @@ describe("<Grid />", () => {
   });
 
   it("renders FatalError if there's only one upstream and it's unhealthy", () => {
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 1, healthy: 0, failed: 1 },
       instances: [
         {
@@ -61,13 +61,13 @@ describe("<Grid />", () => {
         },
       ],
       clusters: { am1: ["am1"] },
-    };
+    });
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<FatalError />");
   });
 
   it("renders FatalError if there's only one upstream and it's unhealthy but without any error", () => {
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 1, healthy: 0, failed: 1 },
       instances: [
         {
@@ -84,14 +84,14 @@ describe("<Grid />", () => {
         },
       ],
       clusters: { am1: ["am1"] },
-    };
+    });
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<FatalError />");
   });
 
   it("renders only FatalError on failed fetch", () => {
     alertStore.status.error = "error";
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 0, healthy: 0, failed: 1 },
       instances: [
         {
@@ -108,7 +108,7 @@ describe("<Grid />", () => {
         },
       ],
       clusters: { am1: ["am1"] },
-    };
+    });
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<FatalError />");
   });
@@ -127,21 +127,21 @@ describe("<Grid />", () => {
 
   it("renders AlertGrid before any fetch finished when totalAlerts is 0", () => {
     alertStore.info.version = "unknown";
-    alertStore.info.totalAlerts = 0;
+    alertStore.info.setTotalAlerts(0);
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<AlertGrid />");
   });
 
   it("renders EmptyGrid after first fetch when totalAlerts is 0", () => {
     alertStore.info.version = "1.2.3";
-    alertStore.info.totalAlerts = 0;
+    alertStore.info.setTotalAlerts(0);
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<EmptyGrid />");
   });
 
   it("renders AlertGrid after first fetch finished when totalAlerts is >0", () => {
     alertStore.info.version = "unknown";
-    alertStore.info.totalAlerts = 1;
+    alertStore.info.setTotalAlerts(1);
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<AlertGrid />");
   });

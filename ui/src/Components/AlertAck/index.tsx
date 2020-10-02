@@ -54,8 +54,8 @@ const AlertAck: FC<{
         : toJS(alertStore.settings.values.alertAcknowledgement.author);
 
     if (alertStore.info.authentication.enabled) {
-      silenceFormStore.data.author = toJS(
-        alertStore.info.authentication.username
+      silenceFormStore.data.setAuthor(
+        toJS(alertStore.info.authentication.username)
       );
       author = alertStore.info.authentication.username;
     }

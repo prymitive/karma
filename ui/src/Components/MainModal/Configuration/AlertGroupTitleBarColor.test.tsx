@@ -30,7 +30,7 @@ describe("<AlertGroupTitleBarColor />", () => {
     const tree = FakeConfiguration();
     const checkbox = tree.find("#configuration-colortitlebar");
 
-    settingsStore.alertGroupConfig.config.colorTitleBar = true;
+    settingsStore.alertGroupConfig.setColorTitleBar(true);
     expect(settingsStore.alertGroupConfig.config.colorTitleBar).toBe(true);
     checkbox.simulate("change", { target: { checked: false } });
     setTimeout(() => {
@@ -43,7 +43,7 @@ describe("<AlertGroupTitleBarColor />", () => {
     const tree = FakeConfiguration();
     const checkbox = tree.find("#configuration-colortitlebar");
 
-    settingsStore.alertGroupConfig.config.colorTitleBar = false;
+    settingsStore.alertGroupConfig.setColorTitleBar(false);
     expect(settingsStore.alertGroupConfig.config.colorTitleBar).toBe(false);
     checkbox.simulate("change", { target: { checked: true } });
     setTimeout(() => {

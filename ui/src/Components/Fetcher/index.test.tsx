@@ -39,7 +39,7 @@ beforeEach(() => {
     });
 
   settingsStore = new Settings(null);
-  settingsStore.fetchConfig.config.interval = 30;
+  settingsStore.fetchConfig.setInterval(30);
 
   requestAnimationFrameSpy = jest
     .spyOn(window, "requestAnimationFrame")
@@ -77,7 +77,7 @@ const MountedFetcher = () => {
 
 describe("<Fetcher />", () => {
   it("changing interval changes how often fetch is called", () => {
-    settingsStore.fetchConfig.config.interval = 1;
+    settingsStore.fetchConfig.setInterval(1);
     MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
@@ -87,7 +87,7 @@ describe("<Fetcher />", () => {
     });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
-    settingsStore.fetchConfig.config.interval = 600;
+    settingsStore.fetchConfig.setInterval(600);
 
     advanceBy(3 * 1000);
     act(() => {
@@ -124,7 +124,7 @@ describe("<Fetcher />", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     const tree = MountedFetcher();
-    alertStore.filters.values = [];
+    alertStore.filters.setFilterValues([]);
     tree.setProps({});
     expect(fetchSpy).toHaveBeenCalledTimes(2);
   });
@@ -155,7 +155,7 @@ describe("<Fetcher />", () => {
   it("calls alertStore.fetchWithThrottle with empty sort arguments when sortOrder=default", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    settingsStore.gridConfig.config.sortOrder = "default";
+    settingsStore.gridConfig.setSortOrder("default");
     MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledWith("", false, "", "", "");
   });
@@ -163,8 +163,8 @@ describe("<Fetcher />", () => {
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=disabled reverseSort=false", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    settingsStore.gridConfig.config.sortOrder = "disabled";
-    settingsStore.gridConfig.config.reverseSort = false;
+    settingsStore.gridConfig.setSortOrder("disabled");
+    settingsStore.gridConfig.setSortReverse(false);
     MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledWith("", false, "disabled", "", "");
   });
@@ -172,8 +172,8 @@ describe("<Fetcher />", () => {
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=disabled reverseSort=true", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    settingsStore.gridConfig.config.sortOrder = "disabled";
-    settingsStore.gridConfig.config.reverseSort = true;
+    settingsStore.gridConfig.setSortOrder("disabled");
+    settingsStore.gridConfig.setSortReverse(true);
     MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledWith("", false, "disabled", "", "");
   });
@@ -181,8 +181,8 @@ describe("<Fetcher />", () => {
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=startsAt reverseSort=false", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    settingsStore.gridConfig.config.sortOrder = "startsAt";
-    settingsStore.gridConfig.config.reverseSort = false;
+    settingsStore.gridConfig.setSortOrder("startsAt");
+    settingsStore.gridConfig.setSortReverse(false);
     MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledWith("", false, "startsAt", "", "0");
   });
@@ -190,8 +190,8 @@ describe("<Fetcher />", () => {
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=startsAt reverseSort=true", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    settingsStore.gridConfig.config.sortOrder = "startsAt";
-    settingsStore.gridConfig.config.reverseSort = true;
+    settingsStore.gridConfig.setSortOrder("startsAt");
+    settingsStore.gridConfig.setSortReverse(true);
     MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledWith("", false, "startsAt", "", "1");
   });
@@ -199,9 +199,9 @@ describe("<Fetcher />", () => {
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=label sortLabel=cluster reverseSort=false", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    settingsStore.gridConfig.config.sortOrder = "label";
-    settingsStore.gridConfig.config.sortLabel = "cluster";
-    settingsStore.gridConfig.config.reverseSort = false;
+    settingsStore.gridConfig.setSortOrder("label");
+    settingsStore.gridConfig.setSortLabel("cluster");
+    settingsStore.gridConfig.setSortReverse(false);
     MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledWith("", false, "label", "cluster", "0");
   });
@@ -209,9 +209,9 @@ describe("<Fetcher />", () => {
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=label sortLabel=job reverseSort=true", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    settingsStore.gridConfig.config.sortOrder = "label";
-    settingsStore.gridConfig.config.sortLabel = "job";
-    settingsStore.gridConfig.config.reverseSort = true;
+    settingsStore.gridConfig.setSortOrder("label");
+    settingsStore.gridConfig.setSortLabel("job");
+    settingsStore.gridConfig.setSortReverse(true);
     MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledWith("", false, "label", "job", "1");
   });
@@ -219,9 +219,9 @@ describe("<Fetcher />", () => {
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=label sortLabel=instance reverseSort=null", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    settingsStore.gridConfig.config.sortOrder = "label";
-    settingsStore.gridConfig.config.sortLabel = "instance";
-    settingsStore.gridConfig.config.reverseSort = null;
+    settingsStore.gridConfig.setSortOrder("label");
+    settingsStore.gridConfig.setSortLabel("instance");
+    settingsStore.gridConfig.setSortReverse(null);
     MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledWith("", false, "label", "instance", "");
   });
@@ -229,9 +229,9 @@ describe("<Fetcher />", () => {
   it("calls alertStore.fetchWithThrottle with gridLabel=cluster gridSortReverse=false", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    settingsStore.gridConfig.config.sortOrder = "default";
-    settingsStore.multiGridConfig.config.gridLabel = "cluster";
-    settingsStore.multiGridConfig.config.gridSortReverse = false;
+    settingsStore.gridConfig.setSortOrder("default");
+    settingsStore.multiGridConfig.setGridLabel("cluster");
+    settingsStore.multiGridConfig.setGridSortReverse(false);
     MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledWith("cluster", false, "", "", "");
   });
@@ -239,9 +239,9 @@ describe("<Fetcher />", () => {
   it("calls alertStore.fetchWithThrottle with gridLabel=cluster gridSortReverse=true", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    settingsStore.gridConfig.config.sortOrder = "default";
-    settingsStore.multiGridConfig.config.gridLabel = "cluster";
-    settingsStore.multiGridConfig.config.gridSortReverse = true;
+    settingsStore.gridConfig.setSortOrder("default");
+    settingsStore.multiGridConfig.setGridLabel("cluster");
+    settingsStore.multiGridConfig.setGridSortReverse(true);
     MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledWith("cluster", true, "", "", "");
   });
@@ -249,9 +249,9 @@ describe("<Fetcher />", () => {
   it("calls alertStore.fetchWithThrottle with gridLabel= gridSortReverse=true", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    settingsStore.gridConfig.config.sortOrder = "default";
-    settingsStore.multiGridConfig.config.gridLabel = "";
-    settingsStore.multiGridConfig.config.gridSortReverse = true;
+    settingsStore.gridConfig.setSortOrder("default");
+    settingsStore.multiGridConfig.setGridLabel("");
+    settingsStore.multiGridConfig.setGridSortReverse(true);
     MountedFetcher();
     expect(fetchSpy).toHaveBeenCalledWith("", true, "", "", "");
   });
@@ -263,8 +263,9 @@ describe("<Fetcher />", () => {
     tree.unmount();
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
-    settingsStore.gridConfig.config.reverseSort = !settingsStore.gridConfig
-      .config.reverseSort;
+    settingsStore.gridConfig.setSortReverse(
+      !settingsStore.gridConfig.config.reverseSort
+    );
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     act(() => {
       jest.runOnlyPendingTimers();
@@ -281,8 +282,9 @@ describe("<Fetcher />", () => {
   it("doesn't fetch on update when paused", () => {
     alertStore.status.pause();
     MountedFetcher();
-    settingsStore.gridConfig.config.reverseSort = !settingsStore.gridConfig
-      .config.reverseSort;
+    settingsStore.gridConfig.setSortReverse(
+      !settingsStore.gridConfig.config.reverseSort
+    );
     expect(fetchSpy).toHaveBeenCalledTimes(0);
   });
 
@@ -290,8 +292,9 @@ describe("<Fetcher />", () => {
     alertStore.status.pause();
     MountedFetcher();
     alertStore.status.resume();
-    settingsStore.gridConfig.config.reverseSort = !settingsStore.gridConfig
-      .config.reverseSort;
+    settingsStore.gridConfig.setSortReverse(
+      !settingsStore.gridConfig.config.reverseSort
+    );
     act(() => {
       jest.runOnlyPendingTimers();
     });

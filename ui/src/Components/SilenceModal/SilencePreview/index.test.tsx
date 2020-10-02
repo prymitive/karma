@@ -23,7 +23,7 @@ beforeEach(() => {
   matcher.values = [StringToOption("bar")];
 
   silenceFormStore = new SilenceFormStore();
-  silenceFormStore.data.matchers = [matcher];
+  silenceFormStore.data.setMatchers([matcher]);
 });
 
 afterEach(() => {
@@ -83,9 +83,9 @@ describe("<SilencePreview />", () => {
   });
 
   it("fetch uses correct filters with single Alertmanager instance", () => {
-    silenceFormStore.data.alertmanagers = [
+    silenceFormStore.data.setAlertmanagers([
       { label: "amName", value: ["amValue"] },
-    ];
+    ]);
     MountedSilencePreview();
     expect(useFetchGet).toHaveBeenCalledWith(
       "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28amValue%29%24"
@@ -93,9 +93,9 @@ describe("<SilencePreview />", () => {
   });
 
   it("fetch uses correct filters with multiple Alertmanager instances", () => {
-    silenceFormStore.data.alertmanagers = [
+    silenceFormStore.data.setAlertmanagers([
       { label: "cluster", value: ["am1", "am2"] },
-    ];
+    ]);
     MountedSilencePreview();
     expect(useFetchGet).toHaveBeenCalledWith(
       "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24"

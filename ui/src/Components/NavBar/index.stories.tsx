@@ -34,7 +34,7 @@ storiesOf("NavBar", module).add("NavBar", () => {
   const settingsStore = new Settings(null);
   const silenceFormStore = new SilenceFormStore();
 
-  alertStore.info.totalAlerts = 197;
+  alertStore.info.setTotalAlerts(197);
   alertStore.data.colors = {
     cluster: {
       staging: {
@@ -50,13 +50,13 @@ storiesOf("NavBar", module).add("NavBar", () => {
     },
   };
 
-  alertStore.filters.values = [
+  alertStore.filters.setFilterValues([
     NewFilter("cluster=staging", "cluster", "=", "staging", true, true, 15),
     NewFilter("region=AF", "region", "=", "AF", true, true, 180),
     NewFilter("instance!=server1", "instance", "!=", "server1", false, true, 0),
     NewFilter("server!!!=", "", "", "", true, false, 0),
     NewFilter("foo", "", "", "", true, true, 2),
-  ];
+  ]);
 
   const history = [
     [NewFilter("alertname=Foo", "alertname", "=", "foo", true, true, 15)],

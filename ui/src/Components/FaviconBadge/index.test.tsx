@@ -20,19 +20,19 @@ const MountedFaviconBadge = () => {
 
 describe("<FaviconBadge />", () => {
   it("badge is updated on mount", () => {
-    alertStore.info.totalAlerts = 99;
+    alertStore.info.setTotalAlerts(99);
     MountedFaviconBadge();
     expect(Favico.badge).toHaveBeenCalledTimes(1);
     expect(Favico.badge).toHaveBeenCalledWith(99);
   });
 
   it("badge is updated when alertStore.info.totalAlerts changes", () => {
-    alertStore.info.totalAlerts = 99;
+    alertStore.info.setTotalAlerts(99);
     MountedFaviconBadge();
     expect(Favico.badge).toHaveBeenCalledTimes(1);
     expect(Favico.badge).toHaveBeenCalledWith(99);
 
-    alertStore.info.totalAlerts = 100;
+    alertStore.info.setTotalAlerts(100);
     expect(Favico.badge).toHaveBeenCalledTimes(2);
     expect(Favico.badge).toHaveBeenLastCalledWith(100);
   });

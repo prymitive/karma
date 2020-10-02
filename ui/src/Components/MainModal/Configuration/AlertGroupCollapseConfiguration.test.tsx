@@ -47,7 +47,7 @@ describe("<AlertGroupCollapseConfiguration />", () => {
   });
 
   it("rendered correct default value", (done) => {
-    settingsStore.alertGroupConfig.config.defaultCollapseState = "expanded";
+    settingsStore.alertGroupConfig.setDefaultCollapseState("expanded");
     const tree = FakeConfiguration();
     const select = tree.find("div.react-select__value-container");
     setTimeout(() => {

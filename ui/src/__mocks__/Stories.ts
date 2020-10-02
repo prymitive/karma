@@ -234,7 +234,7 @@ const MockGrid = (alertStore: AlertStore) => {
     }
     groups.push(group);
   }
-  alertStore.data.upstreams = {
+  alertStore.data.setUpstreams({
     counters: { total: 3, healthy: 1, failed: 2 },
     instances: [
       {
@@ -276,8 +276,8 @@ const MockGrid = (alertStore: AlertStore) => {
       },
     ],
     clusters: { prod: ["prod1", "prod2"], dev: ["dev"] },
-  };
-  alertStore.data.grids = [
+  });
+  alertStore.data.setGrids([
     {
       labelName: "cluster",
       labelValue: "prod",
@@ -298,7 +298,7 @@ const MockGrid = (alertStore: AlertStore) => {
         active: 99,
       },
     },
-  ];
+  ]);
 };
 
 export { MockGrid, MockGroup };

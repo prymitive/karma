@@ -4,7 +4,7 @@ import { act } from "react-dom/test-utils";
 import { mount } from "enzyme";
 
 import { MockThemeContext } from "__mocks__/Theme";
-import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
+import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { NavBar, MobileIdleTimeout, DesktopIdleTimeout } from ".";
@@ -34,10 +34,10 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
   silenceFormStore = new SilenceFormStore();
-  settingsStore.filterBarConfig.config.autohide = true;
+  settingsStore.filterBarConfig.setAutohide(true);
   // fix startsAt & endsAt dates so they don't change between tests
-  silenceFormStore.data.startsAt = new Date(Date.UTC(2018, 1, 30, 10, 25, 50));
-  silenceFormStore.data.endsAt = new Date(Date.UTC(2018, 1, 30, 11, 25, 50));
+  silenceFormStore.data.setStart(new Date(Date.UTC(2018, 1, 30, 10, 25, 50)));
+  silenceFormStore.data.setEnd(new Date(Date.UTC(2018, 1, 30, 11, 25, 50)));
 });
 
 afterEach(() => {
@@ -59,7 +59,7 @@ const MountedNavbar = (fixedTop?: boolean) => {
 
 const ValidateNavClass = (totalFilters: number, expectedClass: string) => {
   for (let i = 0; i < totalFilters; i++) {
-    alertStore.filters.values.push(NewUnappliedFilter(`foo=${i}`));
+    alertStore.filters.addFilter(`foo=${i}`);
   }
   const tree = MountedNavbar();
   const nav = tree.find("ul.navbar-nav");
@@ -68,7 +68,7 @@ const ValidateNavClass = (totalFilters: number, expectedClass: string) => {
 
 describe("<NavBar />", () => {
   it("navbar-brand shows 15 alerts with totalAlerts=15", () => {
-    alertStore.info.totalAlerts = 15;
+    alertStore.info.setTotalAlerts(15);
     const tree = MountedNavbar();
     const brand = tree.find("span.navbar-brand");
     expect(brand.text()).toBe("15");
@@ -163,7 +163,7 @@ describe("<IdleTimer />", () => {
     global.window.innerWidth = 500;
     const tree = MountedNavbar();
     act(() => {
-      alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
+      alertStore.filters.addFilter("cluster=dev");
       jest.runTimersToTime(MobileIdleTimeout + 1000);
     });
     tree.update();
@@ -175,7 +175,7 @@ describe("<IdleTimer />", () => {
     global.window.innerWidth = 769;
     const tree = MountedNavbar();
     act(() => {
-      alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
+      alertStore.filters.addFilter("cluster=dev");
       jest.runTimersToTime(DesktopIdleTimeout + 1000);
     });
     tree.update();
@@ -187,7 +187,7 @@ describe("<IdleTimer />", () => {
     global.window.innerWidth = 500;
     const tree = MountedNavbar();
     act(() => {
-      alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
+      alertStore.filters.addFilter("cluster=dev");
       jest.runTimersToTime(MobileIdleTimeout + 1000);
     });
     tree.update();
@@ -207,7 +207,7 @@ describe("<IdleTimer />", () => {
     global.window.innerWidth = 769;
     const tree = MountedNavbar();
     act(() => {
-      alertStore.filters.values.push(NewUnappliedFilter("cluster=dev"));
+      alertStore.filters.addFilter("cluster=dev");
       jest.runTimersToTime(DesktopIdleTimeout + 1000);
     });
     tree.update();
@@ -258,7 +258,7 @@ describe("<IdleTimer />", () => {
   });
 
   it("doesn't hide when autohide is disabled in settingsStore", () => {
-    settingsStore.filterBarConfig.config.autohide = false;
+    settingsStore.filterBarConfig.setAutohide(false);
     const tree = MountedNavbar();
     act(() => {
       jest.runTimersToTime(1000 * 3600);
@@ -269,7 +269,7 @@ describe("<IdleTimer />", () => {
   });
 
   it("doesn't hide when autohide is enabled in settingsStore but alertStore is paused", () => {
-    settingsStore.filterBarConfig.config.autohide = true;
+    settingsStore.filterBarConfig.setAutohide(true);
     const tree = MountedNavbar();
     alertStore.status.pause();
     act(() => {
@@ -281,7 +281,7 @@ describe("<IdleTimer />", () => {
   });
 
   it("hides navbar after alertStore is resumed", () => {
-    settingsStore.filterBarConfig.config.autohide = true;
+    settingsStore.filterBarConfig.setAutohide(true);
     const tree = MountedNavbar();
 
     act(() => {

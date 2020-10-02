@@ -105,7 +105,7 @@ const SilenceForm: FC<{
     silenceFormStore.data.requestsByCluster = {};
 
     if (silenceFormStore.data.autofillMatchers) {
-      silenceFormStore.data.matchers = [];
+      silenceFormStore.data.setMatchers([]);
 
       if (alertStore.filters.values.length > 0) {
         alertStore.filters.values
@@ -133,17 +133,18 @@ const SilenceForm: FC<{
       silenceFormStore.data.addEmptyMatcher();
     }
 
-    silenceFormStore.data.autofillMatchers = false;
-    silenceFormStore.data.resetInputs = true;
+    silenceFormStore.data.setAutofillMatchers(false);
+    silenceFormStore.data.setResetInputs(true);
 
     // populate author
     if (silenceFormStore.data.author === "") {
-      silenceFormStore.data.author =
-        settingsStore.silenceFormConfig.config.author;
+      silenceFormStore.data.setAuthor(
+        settingsStore.silenceFormConfig.config.author
+      );
     }
 
     if (alertStore.info.authentication.enabled) {
-      silenceFormStore.data.author = alertStore.info.authentication.username;
+      silenceFormStore.data.setAuthor(alertStore.info.authentication.username);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -153,11 +154,11 @@ const SilenceForm: FC<{
   };
 
   const onAuthorChange = (author: string) => {
-    silenceFormStore.data.author = author;
+    silenceFormStore.data.setAuthor(author);
   };
 
   const onCommentChange = (comment: string) => {
-    silenceFormStore.data.comment = comment;
+    silenceFormStore.data.setComment(comment);
   };
 
   const handleSubmit = (event: FormEvent) => {
@@ -174,7 +175,7 @@ const SilenceForm: FC<{
     if (silenceFormStore.data.isValid)
       silenceFormStore.data.currentStage = "preview";
 
-    silenceFormStore.data.wasValidated = true;
+    silenceFormStore.data.setWasValidated(true);
   };
 
   return useObserver(() => (

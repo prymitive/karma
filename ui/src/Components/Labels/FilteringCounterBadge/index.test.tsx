@@ -48,7 +48,7 @@ const validateOnClick = (
   isNegative: boolean,
   isAppend: boolean
 ) => {
-  alertStore.filters.values = [NewUnappliedFilter("foo=bar")];
+  alertStore.filters.setFilterValues([NewUnappliedFilter("foo=bar")]);
   const tree = mount(
     <FilteringCounterBadge
       alertStore={alertStore}

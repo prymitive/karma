@@ -140,7 +140,7 @@ describe("<FilterInputLabel /> style", () => {
 
 describe("<FilterInputLabel /> onChange", () => {
   it("filter raw value is updated after onChange call", () => {
-    alertStore.filters.values = [NewUnappliedFilter("foo=bar")];
+    alertStore.filters.setFilterValues([NewUnappliedFilter("foo=bar")]);
     ValidateOnChange("baz=abc");
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(
@@ -149,16 +149,16 @@ describe("<FilterInputLabel /> onChange", () => {
   });
 
   it("filter is removed after onChange call with empty value", () => {
-    alertStore.filters.values = [NewUnappliedFilter("foo=bar")];
+    alertStore.filters.setFilterValues([NewUnappliedFilter("foo=bar")]);
     ValidateOnChange("");
     expect(alertStore.filters.values).toHaveLength(0);
   });
 
   it("onChange doesn't allow duplicates", () => {
-    alertStore.filters.values = [
+    alertStore.filters.setFilterValues([
       NewUnappliedFilter("foo=bar"),
       NewUnappliedFilter("bar=baz"),
-    ];
+    ]);
     ValidateOnChange("bar=baz");
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).not.toContainEqual(
@@ -172,10 +172,10 @@ describe("<FilterInputLabel /> onChange", () => {
 
 describe("<FilterInputLabel /> onChange", () => {
   it("clicking on the X button removes filters from alertStore", () => {
-    alertStore.filters.values = [
+    alertStore.filters.setFilterValues([
       NewUnappliedFilter("foo=bar"),
       NewUnappliedFilter("bar=baz"),
-    ];
+    ]);
     const tree = mount(
       <FilterInputLabel
         alertStore={alertStore}
@@ -203,12 +203,12 @@ describe("<FilterInputLabel /> render", () => {
 });
 
 const PopulateFiltersFromHits = (totalAlerts: number, hitsList: number[]) => {
-  alertStore.info.totalAlerts = totalAlerts;
+  alertStore.info.setTotalAlerts(totalAlerts);
   hitsList.forEach((hits, index) => {
     const filter = NewUnappliedFilter(`foo=${index}`);
     filter.hits = hits;
     filter.applied = true;
-    alertStore.filters.values.push(filter);
+    alertStore.filters.setFilterValues([...alertStore.filters.values, filter]);
   });
 };
 

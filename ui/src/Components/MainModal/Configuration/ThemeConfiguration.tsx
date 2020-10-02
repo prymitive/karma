@@ -16,7 +16,7 @@ const ThemeConfiguration: FC<{
       .map((o) => o.value)
       .includes(settingsStore.themeConfig.config.theme)
   ) {
-    settingsStore.themeConfig.config.theme = "auto";
+    settingsStore.themeConfig.setTheme("auto");
   }
 
   const valueToOption = (val: ThemeT) => {
@@ -27,7 +27,7 @@ const ThemeConfiguration: FC<{
   };
 
   const onCollapseChange = (newValue: ThemeT) => {
-    settingsStore.themeConfig.config.theme = newValue;
+    settingsStore.themeConfig.setTheme(newValue);
   };
 
   const context = React.useContext(ThemeContext);

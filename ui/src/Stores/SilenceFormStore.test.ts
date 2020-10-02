@@ -10,7 +10,7 @@ import {
   MockSilence,
   MockAlertmanager,
 } from "__mocks__/Alerts";
-import { StringToOption, OptionT } from "Common/Select";
+import { StringToOption, OptionT, MultiValueOptionT } from "Common/Select";
 import {
   SilenceFormStore,
   NewEmptyMatcher,
@@ -41,7 +41,7 @@ const MockGroup = () => {
   return group;
 };
 
-const MockAlertmanagerOption = () => ({
+const MockAlertmanagerOption = (): MultiValueOptionT => ({
   label: "default",
   value: ["default"],
 });
@@ -79,8 +79,8 @@ describe("SilenceFormStore.toggle", () => {
 
 describe("SilenceFormStore.data", () => {
   it("resetStartEnd() sets startsAt and endsAt to defaults", () => {
-    store.data.startsAt = new Date(2000, 1, 1, 0, 1, 0);
-    store.data.endsAt = new Date(2000, 1, 1, 1, 2, 0);
+    store.data.setStart(new Date(2000, 1, 1, 0, 1, 0));
+    store.data.setEnd(new Date(2000, 1, 1, 1, 2, 0));
     expect(isSameDay(store.data.startsAt, new Date(2000, 1, 1))).toBe(true);
     expect(isSameDay(store.data.endsAt, new Date(2000, 1, 1))).toBe(true);
     store.data.resetStartEnd();
@@ -95,7 +95,7 @@ describe("SilenceFormStore.data", () => {
   });
 
   it("resetProgress() sets 'wasValidated' to false", () => {
-    store.data.wasValidated = true;
+    store.data.setWasValidated(true);
     expect(store.data.wasValidated).toBe(true);
     store.data.resetProgress();
     expect(store.data.wasValidated).toBe(false);
@@ -219,6 +219,7 @@ describe("SilenceFormStore.data", () => {
     store.data.fillMatchersFromGroup(
       group,
       ["job", "instance", "cluster"],
+      [],
       [group.alerts[0]]
     );
     expect(store.data.matchers).toHaveLength(1);
@@ -261,7 +262,7 @@ describe("SilenceFormStore.data", () => {
       },
       {}
     );
-    store.data.fillMatchersFromGroup(group, []);
+    store.data.fillMatchersFromGroup(group, [], []);
     expect(store.data.matchers).toHaveLength(3);
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
@@ -293,7 +294,7 @@ describe("SilenceFormStore.data", () => {
   it("fillMatchersFromGroup() resets silenceID if set", () => {
     store.data.silenceID = "12345";
     const group = MockGroup();
-    store.data.fillMatchersFromGroup(group, [], [group.alerts[0]]);
+    store.data.fillMatchersFromGroup(group, [], [], [group.alerts[0]]);
     expect(store.data.silenceID).toBeNull();
   });
 
@@ -413,29 +414,29 @@ describe("SilenceFormStore.data", () => {
 
   it("toAlertmanagerPayload creates payload that matches snapshot", () => {
     const group = MockGroup();
-    store.data.fillMatchersFromGroup(group, []);
+    store.data.fillMatchersFromGroup(group, [], []);
     // add empty matcher so we test empty string rendering
     store.data.addEmptyMatcher();
-    store.data.startsAt = new Date(Date.UTC(2000, 1, 1, 0, 0, 0));
-    store.data.endsAt = new Date(Date.UTC(2000, 1, 1, 1, 0, 0));
-    store.data.author = "me@example.com";
-    store.data.comment = "toAlertmanagerPayload test";
+    store.data.setStart(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
+    store.data.setEnd(new Date(Date.UTC(2000, 1, 1, 1, 0, 0)));
+    store.data.setAuthor("me@example.com");
+    store.data.setComment("toAlertmanagerPayload test");
     expect(store.data.toAlertmanagerPayload).toMatchSnapshot();
   });
 
   it("dumps to base64 and back", () => {
-    store.data.matchers = [
+    store.data.setMatchers([
       MockMatcher("foo", [StringToOption("bar")]),
       MockMatcher("instance", [StringToOption("server0|server1")]),
       MockMatcher("cluster", [StringToOption("prod"), StringToOption("dev")]),
       MockMatcher("job", [StringToOption("abc.+")]),
-    ];
-    store.data.startsAt = new Date();
-    store.data.endsAt = addMinutes(addHours(store.data.startsAt, 7), 45);
-    store.data.comment = "base64";
+    ]);
+    store.data.setStart(new Date());
+    store.data.setEnd(addMinutes(addHours(store.data.startsAt, 7), 45));
+    store.data.setComment("base64");
     const b64 = store.data.toBase64;
 
-    store.data.matchers = [];
+    store.data.setMatchers([]);
     store.data.comment = "";
 
     store.data.fromBase64(b64);
@@ -468,12 +469,12 @@ describe("SilenceFormStore.data", () => {
   });
 
   it("base64 restore ignores empty matchers", () => {
-    store.data.matchers = [];
-    store.data.comment = "base64";
+    store.data.setMatchers([]);
+    store.data.setComment("base64");
     const b64 = store.data.toBase64;
 
-    store.data.matchers = [];
-    store.data.comment = "foo";
+    store.data.setMatchers([]);
+    store.data.setComment("foo");
 
     store.data.fromBase64(b64);
     expect(store.data.matchers).toMatchObject([]);
@@ -483,64 +484,72 @@ describe("SilenceFormStore.data", () => {
 
 describe("SilenceFormStore.data.isValid", () => {
   it("isValid returns 'false' if alertmanagers list is empty", () => {
-    store.data.matchers = [MockMatcher("foo", ["bar"])];
-    store.data.author = "me@example.com";
-    store.data.comment = "fake silence";
+    store.data.setMatchers([
+      MockMatcher("foo", [{ label: "bar", value: "bar" }]),
+    ]);
+    store.data.setAuthor("me@example.com");
+    store.data.setComment("fake silence");
     expect(store.data.isValid).toBe(false);
   });
 
   it("isValid returns 'false' if matchers list is empty", () => {
-    store.data.alertmanagers = [MockAlertmanagerOption];
-    store.data.matchers = [];
-    store.data.author = "me@example.com";
-    store.data.comment = "fake silence";
+    store.data.setAlertmanagers([MockAlertmanagerOption()]);
+    store.data.setMatchers([]);
+    store.data.setAuthor("me@example.com");
+    store.data.setComment("fake silence");
     expect(store.data.isValid).toBe(false);
   });
 
   it("isValid returns 'false' if matchers list is pupulated when a matcher without any name", () => {
-    store.data.alertmanagers = [MockAlertmanagerOption];
-    store.data.matchers = [MockMatcher("", ["bar"])];
-    store.data.author = "me@example.com";
-    store.data.comment = "fake silence";
+    store.data.setAlertmanagers([MockAlertmanagerOption()]);
+    store.data.setMatchers([MockMatcher("", [{ label: "bar", value: "bar" }])]);
+    store.data.setAuthor("me@example.com");
+    store.data.setComment("fake silence");
     expect(store.data.isValid).toBe(false);
   });
 
   it("isValid returns 'false' if matchers list is pupulated when a matcher without any value ([])", () => {
-    store.data.alertmanagers = [MockAlertmanagerOption];
-    store.data.matchers = [MockMatcher("foo", [])];
-    store.data.author = "me@example.com";
-    store.data.comment = "fake silence";
+    store.data.setAlertmanagers([MockAlertmanagerOption()]);
+    store.data.setMatchers([MockMatcher("foo", [])]);
+    store.data.setAuthor("me@example.com");
+    store.data.setComment("fake silence");
     expect(store.data.isValid).toBe(false);
   });
 
   it("isValid returns 'false' if matchers list is pupulated when a matcher with empty value ([''])", () => {
-    store.data.alertmanagers = [MockAlertmanagerOption];
-    store.data.matchers = [MockMatcher("foo", [])];
-    store.data.author = "me@example.com";
-    store.data.comment = "fake silence";
+    store.data.setAlertmanagers([MockAlertmanagerOption()]);
+    store.data.setMatchers([MockMatcher("foo", [])]);
+    store.data.setAuthor("me@example.com");
+    store.data.setComment("fake silence");
     expect(store.data.isValid).toBe(false);
   });
 
   it("isValid returns 'false' if author is empty", () => {
-    store.data.alertmanagers = [MockAlertmanagerOption];
-    store.data.matchers = [MockMatcher("foo", ["bar"])];
-    store.data.author = "";
-    store.data.comment = "fake silence";
+    store.data.setAlertmanagers([MockAlertmanagerOption()]);
+    store.data.setMatchers([
+      MockMatcher("foo", [{ label: "bar", value: "bar" }]),
+    ]);
+    store.data.setAuthor("");
+    store.data.setComment("fake silence");
     expect(store.data.isValid).toBe(false);
   });
 
   it("isValid returns 'false' if comment is empty", () => {
-    store.data.alertmanagers = [MockAlertmanagerOption];
-    store.data.matchers = [MockMatcher("foo", ["bar"])];
-    store.data.author = "me@example.com";
-    store.data.comment = "";
+    store.data.setAlertmanagers([MockAlertmanagerOption()]);
+    store.data.setMatchers([
+      MockMatcher("foo", [{ label: "bar", value: "bar" }]),
+    ]);
+    store.data.setAuthor("me@example.com");
+    store.data.setComment("");
     expect(store.data.isValid).toBe(false);
   });
 
   it("isValid returns 'true' if all fileds are set", () => {
-    store.data.alertmanagers = [MockAlertmanagerOption];
-    store.data.matchers = [MockMatcher("foo", ["bar"])];
-    store.data.author = "me@example.com";
+    store.data.setAlertmanagers([MockAlertmanagerOption()]);
+    store.data.setMatchers([
+      MockMatcher("foo", [{ label: "bar", value: "bar" }]),
+    ]);
+    store.data.setAuthor("me@example.com");
     store.data.comment = "fake silence";
     expect(store.data.isValid).toBe(true);
   });
@@ -548,8 +557,8 @@ describe("SilenceFormStore.data.isValid", () => {
 
 describe("SilenceFormStore.data startsAt & endsAt validation", () => {
   it("toDuration returns correct duration for 5d 0h 1m", () => {
-    store.data.startsAt = new Date(2000, 1, 1, 0, 0, 0);
-    store.data.endsAt = new Date(2000, 1, 6, 0, 1, 15);
+    store.data.setStart(new Date(2000, 1, 1, 0, 0, 0));
+    store.data.setEnd(new Date(2000, 1, 6, 0, 1, 15));
     expect(store.data.toDuration).toMatchObject({
       days: 5,
       hours: 0,
@@ -558,8 +567,8 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
   });
 
   it("toDuration returns correct duration for 2h 15m", () => {
-    store.data.startsAt = new Date(2000, 1, 1, 0, 0, 0);
-    store.data.endsAt = new Date(2000, 1, 1, 2, 15, 0);
+    store.data.setStart(new Date(2000, 1, 1, 0, 0, 0));
+    store.data.setEnd(new Date(2000, 1, 1, 2, 15, 0));
     expect(store.data.toDuration).toMatchObject({
       days: 0,
       hours: 2,
@@ -568,8 +577,8 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
   });
 
   it("toDuration returns correct duration for 59m", () => {
-    store.data.startsAt = new Date(2000, 1, 1, 0, 10, 0);
-    store.data.endsAt = new Date(2000, 1, 1, 1, 9, 0);
+    store.data.setStart(new Date(2000, 1, 1, 0, 10, 0));
+    store.data.setEnd(new Date(2000, 1, 1, 1, 9, 0));
     expect(store.data.toDuration).toMatchObject({
       days: 0,
       hours: 0,
@@ -580,8 +589,8 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
   it("verifyStarEnd() doesn't do anything if endsAt if after startsAt", () => {
     const startsAt = new Date(2063, 1, 1, 0, 0, 0);
     const endsAt = new Date(2063, 1, 1, 1, 1, 0);
-    store.data.startsAt = startsAt;
-    store.data.endsAt = endsAt;
+    store.data.setStart(startsAt);
+    store.data.setEnd(endsAt);
     store.data.verifyStarEnd();
     expect(store.data.startsAt.toISOString()).toBe(startsAt.toISOString());
     expect(store.data.endsAt.toISOString()).toBe(endsAt.toISOString());
@@ -592,8 +601,8 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
     now.setSeconds(0);
     const startsAt = new Date(2000, 1, 1, 0, 0, 1);
     const endsAt = new Date(2063, 1, 1, 0, 0, 0);
-    store.data.startsAt = startsAt;
-    store.data.endsAt = endsAt;
+    store.data.setStart(startsAt);
+    store.data.setEnd(endsAt);
     store.data.verifyStarEnd();
     expect(store.data.startsAt >= now).toBeTruthy();
     expect(store.data.endsAt.toISOString()).toBe(endsAt.toISOString());
@@ -602,8 +611,8 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
   it("verifyStarEnd() updates endsAt if it's before startsAt", () => {
     const startsAt = new Date(2063, 1, 1, 0, 0, 1);
     const endsAt = new Date(2063, 1, 1, 0, 0, 0);
-    store.data.startsAt = startsAt;
-    store.data.endsAt = endsAt;
+    store.data.setStart(startsAt);
+    store.data.setEnd(endsAt);
     store.data.verifyStarEnd();
     expect(store.data.startsAt.toISOString()).toBe(startsAt.toISOString());
     expect(store.data.endsAt.toISOString()).toBe(
@@ -613,7 +622,7 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
 
   it("incStart(7) adds 7 minutes to startsAt", () => {
     const startsAt = new Date(2063, 1, 1, 0, 0, 1);
-    store.data.startsAt = startsAt;
+    store.data.setStart(startsAt);
     store.data.incStart(7);
     const diffMS = differenceInMilliseconds(store.data.startsAt, startsAt);
     expect(diffMS).toBe(7 * 60 * 1000);
@@ -621,7 +630,7 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
 
   it("decStart(14) subtracts 14 minutes from startsAt", () => {
     const startsAt = new Date(2063, 1, 1, 0, 0, 1);
-    store.data.startsAt = startsAt;
+    store.data.setStart(startsAt);
     store.data.decStart(14);
     const diffMS = differenceInMilliseconds(store.data.startsAt, startsAt);
     expect(diffMS).toBe(-14 * 60 * 1000);
@@ -629,7 +638,7 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
 
   it("incEnd(120) adds 120 minutes to endsAt", () => {
     const endsAt = new Date(2063, 1, 1, 0, 0, 1);
-    store.data.endsAt = endsAt;
+    store.data.setEnd(endsAt);
     store.data.incEnd(120);
     const diffMS = differenceInMilliseconds(store.data.endsAt, endsAt);
     expect(diffMS).toBe(120 * 60 * 1000);
@@ -637,7 +646,7 @@ describe("SilenceFormStore.data startsAt & endsAt validation", () => {
 
   it("decEnd(1) subtracts 1 minute from endsAt", () => {
     const endsAt = new Date(2063, 1, 1, 0, 0, 1);
-    store.data.endsAt = endsAt;
+    store.data.setEnd(endsAt);
     store.data.decEnd(1);
     const diffMS = differenceInMilliseconds(store.data.endsAt, endsAt);
     expect(diffMS).toBe(-1 * 60 * 1000);

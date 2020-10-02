@@ -27,7 +27,7 @@ beforeEach(() => {
   cluster = "am";
   silence = MockSilence();
 
-  alertStore.data.upstreams = {
+  alertStore.data.setUpstreams({
     counters: { total: 1, healthy: 1, failed: 0 },
     instances: [
       {
@@ -44,7 +44,7 @@ beforeEach(() => {
       },
     ],
     clusters: { am: ["am1"] },
-  };
+  });
 
   jest.restoreAllMocks();
 });
@@ -108,7 +108,7 @@ describe("<ManagedSilence />", () => {
   });
 
   it("GetAlertmanager() returns only writable instances", () => {
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 2, healthy: 2, failed: 0 },
       instances: [
         {
@@ -137,7 +137,7 @@ describe("<ManagedSilence />", () => {
         },
       ],
       clusters: { am: ["am1", "am2"] },
-    };
+    });
 
     const am = GetAlertmanager(alertStore, cluster);
     expect(am).toEqual({

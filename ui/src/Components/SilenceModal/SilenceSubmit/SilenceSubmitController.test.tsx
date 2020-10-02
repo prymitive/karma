@@ -17,7 +17,7 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
 
-  alertStore.data.upstreams = {
+  alertStore.data.setUpstreams({
     counters: { total: 3, healthy: 3, failed: 0 },
     clusters: { ha: ["am1", "am2"], single: ["single"] },
     instances: [
@@ -58,7 +58,7 @@ beforeEach(() => {
         clusterMembers: ["single"],
       },
     ],
-  };
+  });
 });
 
 describe("<SilenceSubmitController />", () => {

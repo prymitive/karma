@@ -9,7 +9,7 @@ const MultiGridConfiguration: FC<{
   settingsStore: Settings;
 }> = ({ settingsStore }) => {
   const onSortReverseChange = (value: boolean) => {
-    settingsStore.multiGridConfig.config.gridSortReverse = value;
+    settingsStore.multiGridConfig.setGridSortReverse(value);
   };
 
   return useObserver(() => (

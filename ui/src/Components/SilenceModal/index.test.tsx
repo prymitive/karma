@@ -71,7 +71,7 @@ describe("<SilenceModal />", () => {
   });
 
   it("renders modal content if fallback is not used", () => {
-    alertStore.data.upstreams = {
+    alertStore.data.setUpstreams({
       counters: { total: 1, healthy: 0, failed: 0 },
       instances: [
         {
@@ -88,7 +88,7 @@ describe("<SilenceModal />", () => {
         },
       ],
       clusters: { dev: ["dev"] },
-    };
+    });
     const tree = MountedSilenceModal();
     const toggle = tree.find(".nav-link");
     toggle.simulate("click");
@@ -141,7 +141,7 @@ describe("<SilenceModal />", () => {
     toggle.simulate("click");
 
     // mark form as dirty, resetProgress() should change this value to false
-    silenceFormStore.data.wasValidated = true;
+    silenceFormStore.data.setWasValidated(true);
     // disable autofill, closing modal should re-enable it
     silenceFormStore.data.autofillMatchers = false;
 

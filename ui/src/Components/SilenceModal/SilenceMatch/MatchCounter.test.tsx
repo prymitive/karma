@@ -110,7 +110,7 @@ describe("<MatchCounter />", () => {
   it("sends correct query string for a 'foo=~(bar|baz)' matcher", () => {
     matcher.values = [StringToOption("bar"), StringToOption("baz")];
     matcher.isRegex = true;
-    silenceFormStore.data.alertmanagers = [];
+    silenceFormStore.data.setAlertmanagers([]);
     MountedMatchCounter();
     expect(useFetchGet.mock.calls[0][0]).toBe(
       "./alerts.json?q=foo%3D~%5E%28bar%7Cbaz%29%24"
@@ -118,12 +118,12 @@ describe("<MatchCounter />", () => {
   });
 
   it("selecting one Alertmanager instance appends it to the filters", () => {
-    silenceFormStore.data.alertmanagers = [
+    silenceFormStore.data.setAlertmanagers([
       {
         label: "am1",
         value: ["am1"],
       },
-    ];
+    ]);
     MountedMatchCounter();
     expect(useFetchGet.mock.calls[0][0]).toBe(
       "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%29%24"
@@ -131,7 +131,7 @@ describe("<MatchCounter />", () => {
   });
 
   it("selecting two Alertmanager instances appends it correctly to the filters", () => {
-    silenceFormStore.data.alertmanagers = [
+    silenceFormStore.data.setAlertmanagers([
       {
         label: "am1",
         value: ["am1"],
@@ -140,7 +140,7 @@ describe("<MatchCounter />", () => {
         label: "am2",
         value: ["am2"],
       },
-    ];
+    ]);
     MountedMatchCounter();
     expect(useFetchGet.mock.calls[0][0]).toBe(
       "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24"

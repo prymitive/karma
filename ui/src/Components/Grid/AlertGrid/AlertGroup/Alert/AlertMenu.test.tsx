@@ -31,7 +31,7 @@ beforeEach(() => {
   alert = MockAlert([], { foo: "bar" }, "active");
   group = MockAlertGroup({ alertname: "Fake Alert" }, [alert], [], {}, {});
 
-  alertStore.data.upstreams = {
+  alertStore.data.setUpstreams({
     counters: { total: 1, healthy: 1, failed: 0 },
     clusters: { default: ["am1"], ro: ["ro"], am2: ["am2"] },
     instances: [
@@ -72,7 +72,7 @@ beforeEach(() => {
         clusterMembers: ["am2"],
       },
     ],
-  };
+  });
 });
 
 const MountedAlertMenu = (group: APIAlertGroupT) => {

@@ -34,7 +34,7 @@ const FakeConfiguration = () => {
 };
 
 const ExpandSortLabelSuggestions = () => {
-  settingsStore.gridConfig.config.sortOrder = "label";
+  settingsStore.gridConfig.setSortOrder("label");
   const tree = FakeConfiguration();
 
   tree
@@ -86,7 +86,7 @@ describe("<MultiGridConfiguration />", () => {
   });
 
   it("clicking on the 'reverse' checkbox updates settingsStore", () => {
-    settingsStore.gridConfig.config.reverseSort = false;
+    settingsStore.gridConfig.setSortReverse(false);
     const tree = FakeConfiguration();
     const checkbox = tree.find("#configuration-multigrid-sort-reverse");
 

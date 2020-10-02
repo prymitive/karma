@@ -25,7 +25,7 @@ beforeEach(() => {
   alertStore.data.upstreams.clusters = {
     am1: ["am1"],
   };
-  alertStore.data.upstreams.instances = [
+  alertStore.data.setInstances([
     {
       name: "am1",
       uri: "http://am1.example.com",
@@ -38,7 +38,7 @@ beforeEach(() => {
       cluster: "am1",
       clusterMembers: ["am1"],
     },
-  ];
+  ]);
 });
 
 const MountedSilenceForm = () => {
@@ -74,7 +74,7 @@ describe("<SilenceForm /> matchers", () => {
         filter(name, v, `${name}${k}`)
       );
 
-    alertStore.filters.values = [
+    alertStore.filters.setFilterValues([
       ...filterCombos(StaticLabels.AlertName),
       ...filterCombos(StaticLabels.AlertManager),
       ...filterCombos(StaticLabels.Receiver),
@@ -82,7 +82,7 @@ describe("<SilenceForm /> matchers", () => {
       ...filterCombos(StaticLabels.SilenceID),
       ...filterCombos("cluster"),
       ...filterCombos("foo"),
-    ];
+    ]);
     silenceFormStore.data.autofillMatchers = true;
     const tree = MountedSilenceForm();
     const matchers = tree.find("SilenceMatch");
@@ -164,7 +164,7 @@ describe("<SilenceForm /> matchers", () => {
         filter(name, v, `${name}${k}`)
       );
 
-    alertStore.filters.values = [
+    alertStore.filters.setFilterValues([
       ...filterCombos(StaticLabels.AlertName),
       ...filterCombos(StaticLabels.AlertManager),
       ...filterCombos(StaticLabels.Receiver),
@@ -172,7 +172,7 @@ describe("<SilenceForm /> matchers", () => {
       ...filterCombos(StaticLabels.SilenceID),
       ...filterCombos("cluster"),
       ...filterCombos("foo"),
-    ];
+    ]);
     silenceFormStore.data.autofillMatchers = false;
     const tree = MountedSilenceForm();
     const matchers = tree.find("SilenceMatch");
@@ -256,10 +256,10 @@ describe("<SilenceForm /> preview", () => {
     const matcher = NewEmptyMatcher();
     matcher.name = "job";
     matcher.values = [{ label: "node_exporter", value: "node_exporter" }];
-    silenceFormStore.data.matchers = [matcher];
+    silenceFormStore.data.setMatchers([matcher]);
     silenceFormStore.data.setAlertmanagers([{ label: "am1", value: ["am1"] }]);
-    silenceFormStore.data.author = "me@example.com";
-    silenceFormStore.data.comment = "fake silence";
+    silenceFormStore.data.setAuthor("me@example.com");
+    silenceFormStore.data.setComment("fake silence");
     silenceFormStore.data.autofillMatchers = false;
 
     const tree = MountedSilenceForm();
@@ -275,10 +275,10 @@ describe("<SilenceForm /> preview", () => {
     const matcher = NewEmptyMatcher();
     matcher.name = "job";
     matcher.values = [{ label: "node_exporter", value: "node_exporter" }];
-    silenceFormStore.data.matchers = [matcher];
+    silenceFormStore.data.setMatchers([matcher]);
     silenceFormStore.data.setAlertmanagers([{ label: "am1", value: ["am1"] }]);
-    silenceFormStore.data.author = "me@example.com";
-    silenceFormStore.data.comment = "fake silence";
+    silenceFormStore.data.setAuthor("me@example.com");
+    silenceFormStore.data.setComment("fake silence");
     silenceFormStore.data.autofillMatchers = false;
 
     const tree = MountedSilenceForm();
@@ -346,18 +346,18 @@ describe("<SilenceForm />", () => {
     const matcher = NewEmptyMatcher();
     matcher.name = "job";
     matcher.values = [{ label: "node_exporter", value: "node_exporter" }];
-    silenceFormStore.data.matchers = [matcher];
+    silenceFormStore.data.setMatchers([matcher]);
     silenceFormStore.data.setAlertmanagers([{ label: "am1", value: ["am1"] }]);
-    silenceFormStore.data.author = "me@example.com";
-    silenceFormStore.data.comment = "fake silence";
-    silenceFormStore.data.autofillMatchers = false;
+    silenceFormStore.data.setAuthor("me@example.com");
+    silenceFormStore.data.setComment("fake silence");
+    silenceFormStore.data.setAutofillMatchers(false);
     const tree = MountedSilenceForm();
     tree.simulate("submit", { preventDefault: jest.fn() });
     expect(silenceFormStore.data.currentStage).toBe("preview");
   });
 
   it("calling submit saves author value to the Settings store", () => {
-    silenceFormStore.data.author = "user@example.com";
+    silenceFormStore.data.setAuthor("user@example.com");
     const tree = MountedSilenceForm();
     tree.simulate("submit", { preventDefault: jest.fn() });
     expect(settingsStore.silenceFormConfig.config.author).toBe(
@@ -368,21 +368,21 @@ describe("<SilenceForm />", () => {
 
 describe("<SilenceForm /> in edit mode", () => {
   it("opening form with silenceID set disables AlertManagerInput", () => {
-    silenceFormStore.data.silenceID = "12345";
+    silenceFormStore.data.setSilenceID("12345");
     const tree = MountedSilenceForm();
     const select = tree.find("StateManager").at(0);
     expect((select.props() as any).isDisabled).toBe(true);
   });
 
   it("opening form with silenceID shows reset button", () => {
-    silenceFormStore.data.silenceID = "12345";
+    silenceFormStore.data.setSilenceID("12345");
     const tree = MountedSilenceForm();
     const button = tree.find("button.btn-danger");
     expect(button).toHaveLength(1);
   });
 
   it("clicking on Reset button unsets silenceFormStore.data.silenceID", () => {
-    silenceFormStore.data.silenceID = "12345";
+    silenceFormStore.data.setSilenceID("12345");
     const tree = MountedSilenceForm();
     const button = tree.find("button.btn-danger");
     button.simulate("click");
@@ -390,7 +390,7 @@ describe("<SilenceForm /> in edit mode", () => {
   });
 
   it("clicking on Reset button hides it", () => {
-    silenceFormStore.data.silenceID = "12345";
+    silenceFormStore.data.setSilenceID("12345");
     const tree = MountedSilenceForm();
     const button = tree.find("button.btn-danger");
     button.simulate("click");
@@ -398,7 +398,7 @@ describe("<SilenceForm /> in edit mode", () => {
   });
 
   it("clicking on Reset button enables AlertManagerInput", () => {
-    silenceFormStore.data.silenceID = "12345";
+    silenceFormStore.data.setSilenceID("12345");
     const tree = MountedSilenceForm();
     const button = tree.find("button.btn-danger");
     button.simulate("click");

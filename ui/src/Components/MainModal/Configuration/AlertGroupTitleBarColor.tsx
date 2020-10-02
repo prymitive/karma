@@ -8,7 +8,7 @@ const AlertGroupTitleBarColor: FC<{
   settingsStore: Settings;
 }> = ({ settingsStore }) => {
   const onChange = (value: boolean) => {
-    settingsStore.alertGroupConfig.config.colorTitleBar = value;
+    settingsStore.alertGroupConfig.setColorTitleBar(value);
   };
 
   return useObserver(() => (
