@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, useCallback, ReactNode } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInHours from "date-fns/differenceInHours";
@@ -56,8 +56,8 @@ const Tab: FC<{
 
 const TabContentStart: FC<{
   silenceFormStore: SilenceFormStore;
-}> = ({ silenceFormStore }) => {
-  return useObserver(() => (
+}> = observer(({ silenceFormStore }) => {
+  return (
     <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2">
       <div className="d-flex justify-content-center align-items-center">
         <DayPicker
@@ -93,50 +93,50 @@ const TabContentStart: FC<{
         onMinuteDec={() => silenceFormStore.data.decStart(1)}
       />
     </div>
-  ));
-};
+  );
+});
 
-const TabContentEnd: FC<{ silenceFormStore: SilenceFormStore }> = ({
-  silenceFormStore,
-}) => {
-  return useObserver(() => (
-    <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2">
-      <div className="d-flex justify-content-center align-items-center">
-        <DayPicker
-          className="components-date-range"
-          month={silenceFormStore.data.endsAt}
-          disabledDays={{
-            before: setSeconds(silenceFormStore.data.startsAt, 0),
-          }}
-          todayButton="Today"
-          onDayClick={(val) => {
-            const endsAt = new Date(val);
-            endsAt.setHours(silenceFormStore.data.endsAt.getHours());
-            endsAt.setMinutes(silenceFormStore.data.endsAt.getMinutes());
-            endsAt.setSeconds(0);
-            silenceFormStore.data.setEnd(endsAt);
-            silenceFormStore.data.verifyStarEnd();
-          }}
-          selectedDays={{
-            from: silenceFormStore.data.startsAt,
-            to: silenceFormStore.data.endsAt,
-          }}
-          modifiers={{
-            start: silenceFormStore.data.startsAt,
-            end: silenceFormStore.data.endsAt,
-          }}
+const TabContentEnd: FC<{ silenceFormStore: SilenceFormStore }> = observer(
+  ({ silenceFormStore }) => {
+    return (
+      <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2">
+        <div className="d-flex justify-content-center align-items-center">
+          <DayPicker
+            className="components-date-range"
+            month={silenceFormStore.data.endsAt}
+            disabledDays={{
+              before: setSeconds(silenceFormStore.data.startsAt, 0),
+            }}
+            todayButton="Today"
+            onDayClick={(val) => {
+              const endsAt = new Date(val);
+              endsAt.setHours(silenceFormStore.data.endsAt.getHours());
+              endsAt.setMinutes(silenceFormStore.data.endsAt.getMinutes());
+              endsAt.setSeconds(0);
+              silenceFormStore.data.setEnd(endsAt);
+              silenceFormStore.data.verifyStarEnd();
+            }}
+            selectedDays={{
+              from: silenceFormStore.data.startsAt,
+              to: silenceFormStore.data.endsAt,
+            }}
+            modifiers={{
+              start: silenceFormStore.data.startsAt,
+              end: silenceFormStore.data.endsAt,
+            }}
+          />
+        </div>
+        <HourMinute
+          dateValue={silenceFormStore.data.endsAt}
+          onHourInc={() => silenceFormStore.data.incEnd(60)}
+          onHourDec={() => silenceFormStore.data.decEnd(60)}
+          onMinuteInc={() => silenceFormStore.data.incEnd(1)}
+          onMinuteDec={() => silenceFormStore.data.decEnd(1)}
         />
       </div>
-      <HourMinute
-        dateValue={silenceFormStore.data.endsAt}
-        onHourInc={() => silenceFormStore.data.incEnd(60)}
-        onHourDec={() => silenceFormStore.data.decEnd(60)}
-        onMinuteInc={() => silenceFormStore.data.incEnd(1)}
-        onMinuteDec={() => silenceFormStore.data.decEnd(1)}
-      />
-    </div>
-  ));
-};
+    );
+  }
+);
 
 // calculate value for duration increase button using a goal step
 const CalculateChangeValueUp = (currentValue: number, step: number): number => {
@@ -163,8 +163,8 @@ const CalculateChangeValueDown = (
 
 const TabContentDuration: FC<{
   silenceFormStore: SilenceFormStore;
-}> = ({ silenceFormStore }) => {
-  return useObserver(() => (
+}> = observer(({ silenceFormStore }) => {
+  return (
     <div className="d-flex flex-sm-row flex-column justify-content-around mt-2 mx-3">
       <Duration
         label="days"
@@ -196,15 +196,15 @@ const TabContentDuration: FC<{
         }
       />
     </div>
-  ));
-};
+  );
+});
 
 type tabT = "start" | "end" | "duration";
 
 const DateTimeSelect: FC<{
   silenceFormStore: SilenceFormStore;
   openTab?: tabT;
-}> = ({ silenceFormStore, openTab = "duration" }) => {
+}> = observer(({ silenceFormStore, openTab = "duration" }) => {
   const [currentTab, setCurrentTab] = useState<tabT>(openTab);
   const [timeNow, setTimeNow] = useState<Date>(nowZeroSeconds());
 
@@ -219,7 +219,7 @@ const DateTimeSelect: FC<{
     };
   }, [updateTimeNow]);
 
-  return useObserver(() => (
+  return (
     <React.Fragment>
       <ul className="nav nav-tabs nav-fill">
         <Tab
@@ -277,7 +277,7 @@ const DateTimeSelect: FC<{
         ) : null}
       </div>
     </React.Fragment>
-  ));
-};
+  );
+});
 
 export { DateTimeSelect, TabContentStart, TabContentEnd, TabContentDuration };

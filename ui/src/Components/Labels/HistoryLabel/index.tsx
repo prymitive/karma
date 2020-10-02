@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { QueryOperators } from "Common/Query";
 import { AlertStore } from "Stores/AlertStore";
@@ -19,12 +19,12 @@ const HistoryLabel: FC<{
     "components-label-history components-label-value"
   );
 
-  return useObserver(() => (
+  return (
     <span className={cs.className} style={cs.style}>
       {name ? `${name}${matcher}` : null}
       {value}
     </span>
-  ));
+  );
 };
 
-export { HistoryLabel };
+export default observer(HistoryLabel);

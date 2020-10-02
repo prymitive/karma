@@ -5,7 +5,7 @@ import { shallow } from "enzyme";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { Grid } from ".";
+import Grid from ".";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;
@@ -40,7 +40,7 @@ const ShallowGrid = () => {
 describe("<Grid />", () => {
   it("renders only AlertGrid when all upstreams are healthy", () => {
     const tree = ShallowGrid();
-    expect(tree.text()).toBe("<AlertGrid />");
+    expect(tree.find("AlertGrid")).toHaveLength(1);
   });
 
   it("renders FatalError if there's only one upstream and it's unhealthy", () => {
@@ -129,7 +129,7 @@ describe("<Grid />", () => {
     alertStore.info.version = "unknown";
     alertStore.info.setTotalAlerts(0);
     const tree = ShallowGrid();
-    expect(tree.text()).toBe("<AlertGrid />");
+    expect(tree.find("AlertGrid")).toHaveLength(1);
   });
 
   it("renders EmptyGrid after first fetch when totalAlerts is 0", () => {
@@ -143,7 +143,7 @@ describe("<Grid />", () => {
     alertStore.info.version = "unknown";
     alertStore.info.setTotalAlerts(1);
     const tree = ShallowGrid();
-    expect(tree.text()).toBe("<AlertGrid />");
+    expect(tree.find("AlertGrid")).toHaveLength(1);
   });
 
   it("unmounts without crashes", () => {

@@ -1,12 +1,12 @@
 import React, { FC, MouseEvent } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { APIAlertGroupT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { FilteringLabel } from "Components/Labels/FilteringLabel";
-import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
+import FilteringLabel from "Components/Labels/FilteringLabel";
+import FilteringCounterBadge from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { AlertAck } from "Components/AlertAck";
 import { ToggleIcon } from "Components/ToggleIcon";
@@ -47,7 +47,7 @@ const GroupHeader: FC<{
     }
   };
 
-  return useObserver(() => (
+  return (
     <h5
       className={`card-header mb-0 d-flex flex-row p-1 ${
         isCollapsed ? "border-bottom-0" : ""
@@ -113,7 +113,7 @@ const GroupHeader: FC<{
         </span>
       </span>
     </h5>
-  ));
+  );
 };
 
-export { GroupHeader };
+export default observer(GroupHeader);

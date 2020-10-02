@@ -9,7 +9,7 @@ import React, {
   ReactNode,
 } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 import { localStored } from "mobx-stored";
 
 import { Manager, Reference, Popper } from "react-popper";
@@ -27,7 +27,7 @@ import { Settings } from "Stores/Settings";
 import { IsMobile } from "Common/Device";
 import { CommonPopperModifiers } from "Common/Popper";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
-import { HistoryLabel } from "Components/Labels/HistoryLabel";
+import HistoryLabel from "Components/Labels/HistoryLabel";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
 
 interface ReduceFilterT {
@@ -164,7 +164,7 @@ interface HistoryStorageT {
 const History: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
-}> = ({ alertStore, settingsStore }) => {
+}> = observer(({ alertStore, settingsStore }) => {
   // this will be dumped to local storage via mobx-stored
   const history: HistoryStorageT = localStored(
     "history.filters",
@@ -214,7 +214,7 @@ const History: FC<{
   const ref = useRef<HTMLSpanElement | null>(null);
   useOnClickOutside(ref, hide, isVisible);
 
-  return useObserver(() => (
+  return (
     // data-filters is there to register filters for observation in mobx
     // it needs to be using full filter object to notice changes to
     // name & value but ignore hits
@@ -264,7 +264,7 @@ const History: FC<{
         </DropdownSlide>
       </Manager>
     </span>
-  ));
-};
+  );
+});
 
 export { History, HistoryMenu, ReduceFilter };

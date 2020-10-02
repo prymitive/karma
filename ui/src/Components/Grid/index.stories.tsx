@@ -10,7 +10,7 @@ import { FatalError } from "./FatalError";
 import { UpgradeNeeded } from "./UpgradeNeeded";
 import { ReloadNeeded } from "./ReloadNeeded";
 import { EmptyGrid } from "./EmptyGrid";
-import { Grid } from ".";
+import Grid from ".";
 import { InternalError } from "../../ErrorBoundary";
 
 import "Styles/Percy.scss";

@@ -10,7 +10,7 @@ import { ThemeContext } from "Components/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { SilenceModal } from ".";
+import SilenceModal from ".";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;

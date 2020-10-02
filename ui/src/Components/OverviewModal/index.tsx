@@ -1,6 +1,6 @@
 import React, { FC, useState, useCallback } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { CSSTransition } from "react-transition-group";
 
@@ -21,14 +21,14 @@ const OverviewModalContent = React.lazy(() =>
 
 const OverviewModal: FC<{
   alertStore: AlertStore;
-}> = ({ alertStore }) => {
+}> = observer(({ alertStore }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 
   const { ref, props } = useFlashTransition(alertStore.info.totalAlerts);
 
-  return useObserver(() => (
+  return (
     <React.Fragment>
       <TooltipWrapper title="Show alert overview">
         <CSSTransition {...props}>
@@ -58,7 +58,7 @@ const OverviewModal: FC<{
         </React.Suspense>
       </Modal>
     </React.Fragment>
-  ));
-};
+  );
+});
 
 export { OverviewModal };

@@ -1,7 +1,7 @@
 import React, { FC, Ref, useEffect, useState } from "react";
 
 import { autorun } from "mobx";
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import useDimensions from "react-cool-dimensions";
 
@@ -13,7 +13,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { useWindowSize } from "Hooks/useWindowSize";
-import { Grid } from "./Grid";
+import Grid from "./Grid";
 import { GridSizesConfig, GetGridElementWidth } from "./GridSize";
 
 const AlertGrid: FC<{
@@ -56,7 +56,7 @@ const AlertGrid: FC<{
 
   useHotkeys("alt+space", alertStore.status.togglePause);
 
-  return useObserver(() => (
+  return (
     <React.Fragment>
       <div ref={ref as Ref<HTMLDivElement>} />
       {alertStore.data.grids.map((grid) => (
@@ -72,7 +72,7 @@ const AlertGrid: FC<{
         />
       ))}
     </React.Fragment>
-  ));
+  );
 };
 
-export { AlertGrid };
+export default observer(AlertGrid);

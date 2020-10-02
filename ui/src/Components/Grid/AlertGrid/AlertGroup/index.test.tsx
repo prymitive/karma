@@ -10,7 +10,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { Settings, CollapseStateT } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
-import { AlertGroup } from ".";
+import AlertGroup from ".";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;

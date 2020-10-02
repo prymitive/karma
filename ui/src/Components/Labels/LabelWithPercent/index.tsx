@@ -17,82 +17,78 @@ const LabelWithPercent: FC<{
   percent: number;
   offset: number;
   isActive: boolean;
-}> = observer(
-  ({ alertStore, name, value, hits, percent, offset, isActive }) => {
-    const handleClick = useCallback(
-      (event: MouseEvent) => {
-        // left click       => apply foo=bar filter
-        // left click + alt => apply foo!=bar filter
-        const operator =
-          event.altKey === true
-            ? QueryOperators.NotEqual
-            : QueryOperators.Equal;
+}> = ({ alertStore, name, value, hits, percent, offset, isActive }) => {
+  const handleClick = useCallback(
+    (event: MouseEvent) => {
+      // left click       => apply foo=bar filter
+      // left click + alt => apply foo!=bar filter
+      const operator =
+        event.altKey === true ? QueryOperators.NotEqual : QueryOperators.Equal;
 
-        event.preventDefault();
+      event.preventDefault();
 
-        alertStore.filters.addFilter(FormatQuery(name, operator, value));
-      },
-      [alertStore.filters, name, value]
+      alertStore.filters.addFilter(FormatQuery(name, operator, value));
+    },
+    [alertStore.filters, name, value]
+  );
+
+  const removeFromFilters = () => {
+    alertStore.filters.removeFilter(
+      FormatQuery(name, QueryOperators.Equal, value)
     );
+  };
 
-    const removeFromFilters = () => {
-      alertStore.filters.removeFilter(
-        FormatQuery(name, QueryOperators.Equal, value)
-      );
-    };
+  const cs = GetClassAndStyle(
+    alertStore,
+    name,
+    value,
+    "components-label-with-hover mb-0 pl-0 text-left"
+  );
 
-    const cs = GetClassAndStyle(
-      alertStore,
-      name,
-      value,
-      "components-label-with-hover mb-0 pl-0 text-left"
-    );
+  const progressBarBg =
+    percent > 66 ? "bg-danger" : percent > 33 ? "bg-warning" : "bg-success";
 
-    const progressBarBg =
-      percent > 66 ? "bg-danger" : percent > 33 ? "bg-warning" : "bg-success";
-
-    return (
-      <div className="d-inline-block mw-100">
-        <span className={cs.className} style={cs.style}>
-          <span className="mr-1 px-1 bg-primary text-white components-labelWithPercent-percent">
-            {hits}
-          </span>
-          <span onClick={handleClick}>
-            <span className="components-label-name">{name}:</span>{" "}
-            <span className="components-label-value">{value}</span>
-          </span>
-          {isActive ? (
-            <FontAwesomeIcon
-              className="cursor-pointer text-reset ml-1 close"
-              style={{ fontSize: "100%" }}
-              icon={faTimes}
-              onClick={removeFromFilters}
-            />
-          ) : null}
+  return (
+    <div className="d-inline-block mw-100">
+      <span className={cs.className} style={cs.style}>
+        <span className="mr-1 px-1 bg-primary text-white components-labelWithPercent-percent">
+          {hits}
         </span>
-        <div className="progress components-labelWithPercent-progress mr-1">
-          {offset === 0 ? null : (
-            <div
-              className="progress-bar bg-transparent"
-              role="progressbar"
-              style={{ width: offset + "%" }}
-              aria-valuenow={offset}
-              aria-valuemin={0}
-              aria-valuemax={100}
-            />
-          )}
+        <span onClick={handleClick}>
+          <span className="components-label-name">{name}:</span>{" "}
+          <span className="components-label-value">{value}</span>
+        </span>
+        {isActive ? (
+          <FontAwesomeIcon
+            className="cursor-pointer text-reset ml-1 close"
+            style={{ fontSize: "100%" }}
+            icon={faTimes}
+            onClick={removeFromFilters}
+          />
+        ) : null}
+      </span>
+      <div className="progress components-labelWithPercent-progress mr-1">
+        {offset === 0 ? null : (
           <div
-            className={`progress-bar ${progressBarBg}`}
+            className="progress-bar bg-transparent"
             role="progressbar"
-            style={{ width: percent + "%" }}
-            aria-valuenow={percent}
+            style={{ width: offset + "%" }}
+            aria-valuenow={offset}
             aria-valuemin={0}
             aria-valuemax={100}
           />
-        </div>
+        )}
+        <div
+          className={`progress-bar ${progressBarBg}`}
+          role="progressbar"
+          style={{ width: percent + "%" }}
+          aria-valuenow={percent}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        />
       </div>
-    );
-  }
-);
+    </div>
+  );
+};
 
-export { LabelWithPercent };
+export default observer(LabelWithPercent);

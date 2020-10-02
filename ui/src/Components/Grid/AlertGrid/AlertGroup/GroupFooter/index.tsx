@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { APIAlertGroupT } from "Models/APITypes";
 import { StaticLabels } from "Common/Query";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { FilteringLabel } from "Components/Labels/FilteringLabel";
+import FilteringLabel from "Components/Labels/FilteringLabel";
 import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
 import { RenderSilence } from "../Silences";
 
@@ -17,7 +17,7 @@ const GroupFooter: FC<{
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
 }> = ({ group, alertmanagers, afterUpdate, alertStore, silenceFormStore }) => {
-  return useObserver(() => (
+  return (
     <div className="card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1">
       <div className="mb-1">
         {group.shared.annotations
@@ -77,7 +77,7 @@ const GroupFooter: FC<{
         </div>
       )}
     </div>
-  ));
+  );
 };
 
-export { GroupFooter };
+export default observer(GroupFooter);

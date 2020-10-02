@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import parseISO from "date-fns/parseISO";
 import getUnixTime from "date-fns/getUnixTime";
@@ -18,7 +18,7 @@ const calculatePercent = (startsAt: string, endsAt: string) => {
 
 const SilenceProgress: FC<{
   silence: APISilenceT;
-}> = ({ silence }) => {
+}> = observer(({ silence }) => {
   const [progress, setProgress] = useState<number>(
     calculatePercent(silence.startsAt, silence.endsAt)
   );
@@ -30,33 +30,31 @@ const SilenceProgress: FC<{
     return () => clearInterval(timer);
   }, [silence.startsAt, silence.endsAt]);
 
-  return useObserver(() =>
-    parseISO(silence.endsAt) < new Date() ? (
-      <span className="badge badge-danger align-text-bottom p-1">
-        Expired <DateFromNow timestamp={silence.endsAt} />
-      </span>
-    ) : (
-      <span className="badge badge-light nmb-05 align-text-bottom p-1">
-        Expires <DateFromNow timestamp={silence.endsAt} />
-        <div className="progress silence-progress">
-          <div
-            className={
-              progress > 90
-                ? "progress-bar bg-danger"
-                : progress > 75
-                ? "progress-bar bg-warning"
-                : "progress-bar bg-success"
-            }
-            role="progressbar"
-            style={{ width: progress + "%" }}
-            aria-valuenow={progress}
-            aria-valuemin={0}
-            aria-valuemax={100}
-          />
-        </div>
-      </span>
-    )
+  return parseISO(silence.endsAt) < new Date() ? (
+    <span className="badge badge-danger align-text-bottom p-1">
+      Expired <DateFromNow timestamp={silence.endsAt} />
+    </span>
+  ) : (
+    <span className="badge badge-light nmb-05 align-text-bottom p-1">
+      Expires <DateFromNow timestamp={silence.endsAt} />
+      <div className="progress silence-progress">
+        <div
+          className={
+            progress > 90
+              ? "progress-bar bg-danger"
+              : progress > 75
+              ? "progress-bar bg-warning"
+              : "progress-bar bg-success"
+          }
+          role="progressbar"
+          style={{ width: progress + "%" }}
+          aria-valuenow={progress}
+          aria-valuemin={0}
+          aria-valuemax={100}
+        />
+      </div>
+    </span>
   );
-};
+});
 
 export { SilenceProgress };

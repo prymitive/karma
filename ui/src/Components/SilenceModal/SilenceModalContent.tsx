@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { Observer } from "mobx-react-lite";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
@@ -10,10 +10,10 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Settings } from "Stores/Settings";
 import { Tab } from "Components/Modal/Tab";
-import { SilenceForm } from "./SilenceForm";
+import SilenceForm from "./SilenceForm";
 import { SilencePreview } from "./SilencePreview";
-import { SilenceSubmitController } from "./SilenceSubmit/SilenceSubmitController";
-import { Browser } from "./Browser";
+import SilenceSubmitController from "./SilenceSubmit/SilenceSubmitController";
+import Browser from "./Browser";
 
 const ReadOnlyPlaceholder: FC = () => (
   <div className="jumbotron bg-transparent">
@@ -37,79 +37,83 @@ const SilenceModalContent: FC<{
   onHide,
   previewOpen = false,
 }) => {
-  return useObserver(() => (
-    <React.Fragment>
-      <div className="modal-header py-2">
-        <nav className="nav nav-pills nav-justified w-100">
-          <Tab
-            title={
-              silenceFormStore.data.currentStage === "form"
-                ? silenceFormStore.data.silenceID === null
-                  ? "New silence"
-                  : "Editing silence"
-                : silenceFormStore.data.currentStage === "preview"
-                ? "Preview silenced alerts"
-                : "Silence submitted"
-            }
-            active={silenceFormStore.tab.current === "editor"}
-            onClick={() => silenceFormStore.tab.setTab("editor")}
-          />
-          <Tab
-            title="Browse"
-            active={silenceFormStore.tab.current === "browser"}
-            onClick={() => silenceFormStore.tab.setTab("browser")}
-          />
-          <button type="button" className="close" onClick={onHide}>
-            <span>&times;</span>
-          </button>
-        </nav>
-      </div>
-      <div
-        className={`modal-body ${
-          silenceFormStore.toggle.blurred ? "modal-content-blur" : ""
-        }`}
-      >
-        {silenceFormStore.tab.current === "editor" ? (
-          silenceFormStore.data.currentStage === "form" ? (
-            alertStore.data.upstreams.instances.length > 0 ? (
-              Object.keys(alertStore.data.clustersWithoutReadOnly).length >
-              0 ? (
-                <SilenceForm
+  return (
+    <Observer>
+      {() => (
+        <React.Fragment>
+          <div className="modal-header py-2">
+            <nav className="nav nav-pills nav-justified w-100">
+              <Tab
+                title={
+                  silenceFormStore.data.currentStage === "form"
+                    ? silenceFormStore.data.silenceID === null
+                      ? "New silence"
+                      : "Editing silence"
+                    : silenceFormStore.data.currentStage === "preview"
+                    ? "Preview silenced alerts"
+                    : "Silence submitted"
+                }
+                active={silenceFormStore.tab.current === "editor"}
+                onClick={() => silenceFormStore.tab.setTab("editor")}
+              />
+              <Tab
+                title="Browse"
+                active={silenceFormStore.tab.current === "browser"}
+                onClick={() => silenceFormStore.tab.setTab("browser")}
+              />
+              <button type="button" className="close" onClick={onHide}>
+                <span>&times;</span>
+              </button>
+            </nav>
+          </div>
+          <div
+            className={`modal-body ${
+              silenceFormStore.toggle.blurred ? "modal-content-blur" : ""
+            }`}
+          >
+            {silenceFormStore.tab.current === "editor" ? (
+              silenceFormStore.data.currentStage === "form" ? (
+                alertStore.data.upstreams.instances.length > 0 ? (
+                  Object.keys(alertStore.data.clustersWithoutReadOnly).length >
+                  0 ? (
+                    <SilenceForm
+                      alertStore={alertStore}
+                      silenceFormStore={silenceFormStore}
+                      settingsStore={settingsStore}
+                      previewOpen={previewOpen}
+                    />
+                  ) : (
+                    <ReadOnlyPlaceholder />
+                  )
+                ) : (
+                  <h1 className="text-center display-1 text-placeholder p-5 m-auto">
+                    <FontAwesomeIcon icon={faSpinner} size="lg" spin />
+                  </h1>
+                )
+              ) : silenceFormStore.data.currentStage === "preview" ? (
+                <SilencePreview
                   alertStore={alertStore}
                   silenceFormStore={silenceFormStore}
-                  settingsStore={settingsStore}
-                  previewOpen={previewOpen}
                 />
               ) : (
-                <ReadOnlyPlaceholder />
+                <SilenceSubmitController
+                  alertStore={alertStore}
+                  silenceFormStore={silenceFormStore}
+                />
               )
-            ) : (
-              <h1 className="text-center display-1 text-placeholder p-5 m-auto">
-                <FontAwesomeIcon icon={faSpinner} size="lg" spin />
-              </h1>
-            )
-          ) : silenceFormStore.data.currentStage === "preview" ? (
-            <SilencePreview
-              alertStore={alertStore}
-              silenceFormStore={silenceFormStore}
-            />
-          ) : (
-            <SilenceSubmitController
-              alertStore={alertStore}
-              silenceFormStore={silenceFormStore}
-            />
-          )
-        ) : null}
-        {silenceFormStore.tab.current === "browser" ? (
-          <Browser
-            alertStore={alertStore}
-            silenceFormStore={silenceFormStore}
-            settingsStore={settingsStore}
-          />
-        ) : null}
-      </div>
-    </React.Fragment>
-  ));
+            ) : null}
+            {silenceFormStore.tab.current === "browser" ? (
+              <Browser
+                alertStore={alertStore}
+                silenceFormStore={silenceFormStore}
+                settingsStore={settingsStore}
+              />
+            ) : null}
+          </div>
+        </React.Fragment>
+      )}
+    </Observer>
+  );
 };
 
 export { SilenceModalContent };

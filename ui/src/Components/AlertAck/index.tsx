@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 
 import { toJS } from "mobx";
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import addSeconds from "date-fns/addSeconds";
 
@@ -35,7 +35,7 @@ const AlertAck: FC<{
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
   group: APIAlertGroupT;
-}> = ({ alertStore, silenceFormStore, group }) => {
+}> = observer(({ alertStore, silenceFormStore, group }) => {
   const [clusters, setClusters] = useState<ClusterT[]>([]);
   const [upstreams, setUpstreams] = useState<UpstreamT[]>([]);
   const [currentCluster, setCurrentCluster] = useState<number>(0);
@@ -145,43 +145,42 @@ const AlertAck: FC<{
     return () => clearTimeout(timer);
   }, [isAcking, error, reset]);
 
-  return useObserver(() =>
-    alertStore.settings.values.alertAcknowledgement.enabled === false ? null : (
-      <TooltipWrapper
-        title={
+  return alertStore.settings.values.alertAcknowledgement.enabled ===
+    false ? null : (
+    <TooltipWrapper
+      title={
+        !isAcking && error
+          ? error
+          : "Acknowledge this alert with a short lived silence"
+      }
+    >
+      <span
+        className={`badge badge-pill components-label components-label-with-hover px-2 ${
           !isAcking && error
-            ? error
-            : "Acknowledge this alert with a short lived silence"
-        }
+            ? "badge-warning"
+            : !isAcking && response
+            ? "badge-success"
+            : "badge-secondary"
+        }`}
+        onClick={() => {
+          if (!isAcking && !(response || error)) {
+            setIsAcking(true);
+            onACK();
+          }
+        }}
       >
-        <span
-          className={`badge badge-pill components-label components-label-with-hover px-2 ${
-            !isAcking && error
-              ? "badge-warning"
-              : !isAcking && response
-              ? "badge-success"
-              : "badge-secondary"
-          }`}
-          onClick={() => {
-            if (!isAcking && !(response || error)) {
-              setIsAcking(true);
-              onACK();
-            }
-          }}
-        >
-          {!isAcking && error ? (
-            <FontAwesomeIcon icon={faExclamationCircle} fixedWidth />
-          ) : !isAcking && response ? (
-            <FontAwesomeIcon icon={faCheckCircle} fixedWidth />
-          ) : isAcking ? (
-            <FontAwesomeIcon icon={faSpinner} fixedWidth spin />
-          ) : (
-            <FontAwesomeIcon icon={faCheck} fixedWidth />
-          )}
-        </span>
-      </TooltipWrapper>
-    )
+        {!isAcking && error ? (
+          <FontAwesomeIcon icon={faExclamationCircle} fixedWidth />
+        ) : !isAcking && response ? (
+          <FontAwesomeIcon icon={faCheckCircle} fixedWidth />
+        ) : isAcking ? (
+          <FontAwesomeIcon icon={faSpinner} fixedWidth spin />
+        ) : (
+          <FontAwesomeIcon icon={faCheck} fixedWidth />
+        )}
+      </span>
+    </TooltipWrapper>
   );
-};
+});
 
 export { AlertAck };

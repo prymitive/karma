@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import {
   APIAlertT,
@@ -11,7 +11,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BorderClassMap } from "Common/Colors";
 import { StaticLabels } from "Common/Query";
-import { FilteringLabel } from "Components/Labels/FilteringLabel";
+import FilteringLabel from "Components/Labels/FilteringLabel";
 import { InhibitedByModal } from "Components/InhibitedByModal";
 import { RenderNonLinkAnnotation, RenderLinkAnnotation } from "../Annotation";
 import { AlertMenu } from "./AlertMenu";
@@ -81,7 +81,7 @@ const Alert: FC<{
     }
   }
 
-  return useObserver(() => (
+  return (
     <li className={classNames.join(" ")}>
       <div>
         {alert.annotations
@@ -149,7 +149,7 @@ const Alert: FC<{
         ))
       )}
     </li>
-  ));
+  );
 };
 
-export { Alert };
+export default observer(Alert);

@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, useRef, useCallback } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import Autosuggest from "react-autosuggest";
 import Highlight from "react-highlighter";
@@ -21,7 +21,7 @@ import { History } from "./History";
 const FilterInput: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
-}> = ({ alertStore, settingsStore }) => {
+}> = observer(({ alertStore, settingsStore }) => {
   const autosuggestRef = useRef<Autosuggest | null>(null);
   const inputRef = useRef<HTMLElement | null>(null);
   const formRef = useRef<HTMLDivElement | null>(null);
@@ -135,7 +135,7 @@ const FilterInput: FC<{
     );
   };
 
-  return useObserver(() => (
+  return (
     // data-filters is there to register filters for observation in mobx
     // in order to re-render input component
     <form className="form-inline mw-100" onSubmit={onSubmit}>
@@ -184,7 +184,7 @@ const FilterInput: FC<{
         </div>
       </div>
     </form>
-  ));
-};
+  );
+});
 
 export { FilterInput };

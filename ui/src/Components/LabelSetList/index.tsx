@@ -4,7 +4,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { APIAlertGroupT } from "Models/APITypes";
 import { IsMobile } from "Common/Device";
 import { hashObject } from "Common/Hash";
-import { StaticLabel } from "Components/Labels/StaticLabel";
+import StaticLabel from "Components/Labels/StaticLabel";
 import { PageSelect } from "Components/Pagination";
 
 // take a list of groups and outputs a list of label sets, this ignores

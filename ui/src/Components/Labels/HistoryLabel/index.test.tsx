@@ -4,7 +4,7 @@ import { shallow } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
 
-import { HistoryLabel } from ".";
+import HistoryLabel from ".";
 
 let alertStore: AlertStore;
 

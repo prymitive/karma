@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, useCallback, MouseEvent } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import debounce from "lodash.debounce";
 
@@ -21,7 +21,7 @@ import { APIGridT } from "Models/APITypes";
 import { useGrid } from "Hooks/useGrid";
 import { ThemeContext } from "Components/Theme";
 import { DefaultDetailsCollapseValue } from "./AlertGroup/DetailsToggle";
-import { AlertGroup } from "./AlertGroup";
+import AlertGroup from "./AlertGroup";
 import { Swimlane } from "./Swimlane";
 
 const Grid: FC<{
@@ -108,7 +108,7 @@ const Grid: FC<{
     repack();
   });
 
-  return useObserver(() => (
+  return (
     <React.Fragment>
       <CSSTransition
         key={grid.labelValue}
@@ -189,7 +189,7 @@ const Grid: FC<{
         )}
       </TransitionGroup>
     </React.Fragment>
-  ));
+  );
 };
 
-export { Grid };
+export default observer(Grid);

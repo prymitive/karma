@@ -6,7 +6,7 @@ import { AlertStore, NewUnappliedFilter, FilterT } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { HistoryMenu } from "./FilterInput/History";
-import { NavBar } from ".";
+import NavBar from ".";
 
 import "Styles/Percy.scss";
 

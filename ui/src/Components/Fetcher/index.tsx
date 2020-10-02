@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, FC } from "react";
 
 import { reaction } from "mobx";
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import addSeconds from "date-fns/addSeconds";
 import differenceInSeconds from "date-fns/differenceInSeconds";
@@ -59,43 +59,42 @@ const PlayButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
   );
 };
 
-const Dots: FC<{ alertStore: AlertStore; dots: number }> = ({
-  alertStore,
-  dots,
-}) => {
-  return useObserver(() => (
-    <div
-      className={`cursor-pointer components-fetcher ${
-        alertStore.info.isRetrying ? "retrying" : ""
-      } ${
-        alertStore.status.value.toString() ===
-        AlertStoreStatuses.Processing.toString()
-          ? "processing"
-          : ""
-      } ${
-        dots === 0 ||
-        alertStore.status.value.toString() ===
-          AlertStoreStatuses.Fetching.toString()
-          ? "fetching"
-          : ""
-      }`}
-    >
-      {Array.from(Array(9).keys()).map((i) => (
-        <div
-          key={i}
-          className={`dot ${i === 4 ? "dot-middle" : ""} ${
-            i < dots ? "visible" : "hidden"
-          }`}
-        ></div>
-      ))}
-    </div>
-  ));
-};
+const Dots: FC<{ alertStore: AlertStore; dots: number }> = observer(
+  ({ alertStore, dots }) => {
+    return (
+      <div
+        className={`cursor-pointer components-fetcher ${
+          alertStore.info.isRetrying ? "retrying" : ""
+        } ${
+          alertStore.status.value.toString() ===
+          AlertStoreStatuses.Processing.toString()
+            ? "processing"
+            : ""
+        } ${
+          dots === 0 ||
+          alertStore.status.value.toString() ===
+            AlertStoreStatuses.Fetching.toString()
+            ? "fetching"
+            : ""
+        }`}
+      >
+        {Array.from(Array(9).keys()).map((i) => (
+          <div
+            key={i}
+            className={`dot ${i === 4 ? "dot-middle" : ""} ${
+              i < dots ? "visible" : "hidden"
+            }`}
+          ></div>
+        ))}
+      </div>
+    );
+  }
+);
 
 const Fetcher: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
-}> = ({ alertStore, settingsStore }) => {
+}> = observer(({ alertStore, settingsStore }) => {
   const timer = useRef<number | undefined>(undefined);
   const [percentLeft, setPercentLeft] = useState<number>(100);
   const [isHover, setIsHover] = useState(false);
@@ -233,7 +232,7 @@ const Fetcher: FC<{
 
   const dots = Math.max(0, Math.min(9, percentLeft / 10));
 
-  return useObserver(() => (
+  return (
     <div
       className="navbar-brand py-0 mr-2 d-none d-sm-block"
       onMouseEnter={() => setIsHover(true)}
@@ -247,7 +246,7 @@ const Fetcher: FC<{
         <Dots alertStore={alertStore} dots={dots} />
       )}
     </div>
-  ));
-};
+  );
+});
 
 export { Fetcher, Dots, PlayButton, PauseButton };

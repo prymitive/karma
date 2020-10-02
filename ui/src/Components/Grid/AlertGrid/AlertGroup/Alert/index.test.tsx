@@ -19,7 +19,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BorderClassMap } from "Common/Colors";
 import { ThemeContext } from "Components/Theme";
-import { Alert } from ".";
+import Alert from ".";
 
 let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;

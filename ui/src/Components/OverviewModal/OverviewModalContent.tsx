@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { APILabelCounterT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
-import { LabelWithPercent } from "Components/Labels/LabelWithPercent";
+import LabelWithPercent from "Components/Labels/LabelWithPercent";
 import { ToggleIcon } from "Components/ToggleIcon";
 
 const TableRows: FC<{

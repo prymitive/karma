@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect, useCallback } from "react";
 
 import { reaction } from "mobx";
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import useDimensions from "react-cool-dimensions";
 
@@ -15,13 +15,11 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { IsMobile } from "Common/Device";
 import { OverviewModal } from "Components/OverviewModal";
 import { MainModal } from "Components/MainModal";
-import { SilenceModal } from "Components/SilenceModal";
+import SilenceModal from "Components/SilenceModal";
 import { ThemeContext } from "Components/Theme";
 import { Fetcher } from "Components/Fetcher";
 import { FilterInput } from "./FilterInput";
-
-const DesktopIdleTimeout = 1000 * 60 * 3;
-const MobileIdleTimeout = 1000 * 12;
+import { MobileIdleTimeout, DesktopIdleTimeout } from "./timeouts";
 
 const NavBar: FC<{
   alertStore: AlertStore;
@@ -87,7 +85,7 @@ const NavBar: FC<{
     [] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
-  return useObserver(() => (
+  return (
     <div className={`container p-0 m-0 mw-100 ${containerClass}`}>
       <CSSTransition
         classNames="components-animation-navbar"
@@ -128,7 +126,7 @@ const NavBar: FC<{
         </nav>
       </CSSTransition>
     </div>
-  ));
+  );
 };
 
-export { NavBar, MobileIdleTimeout, DesktopIdleTimeout };
+export default observer(NavBar);
