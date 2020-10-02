@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -17,7 +17,7 @@ const SilenceMatch: FC<{
   onDelete: () => void;
   isValid: boolean;
 }> = ({ silenceFormStore, matcher, showDelete, onDelete, isValid }) => {
-  return useObserver(() => (
+  return (
     <div className="d-flex flex-fill flex-lg-row flex-column mb-3">
       <div className="flex-shrink-0 flex-grow-0 flex-basis-25 pr-lg-2 pb-2 pb-lg-0">
         <LabelNameInput matcher={matcher} isValid={isValid} />
@@ -64,7 +64,7 @@ const SilenceMatch: FC<{
         ) : null}
       </div>
     </div>
-  ));
+  );
 };
 
-export { SilenceMatch };
+export default observer(SilenceMatch);

@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { Observer } from "mobx-react-lite";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
@@ -25,7 +25,7 @@ const MainModalContent: FC<{
 }) => {
   const [tab, setTab] = useState<OpenTabT>(openTab);
 
-  return useObserver(() => (
+  return (
     <React.Fragment>
       <div className="modal-header py-2">
         <nav className="nav nav-pills nav-justified w-100">
@@ -54,15 +54,25 @@ const MainModalContent: FC<{
         ) : null}
       </div>
       <div className="modal-footer">
-        {alertStore.info.authentication.enabled && (
-          <span className="text-muted mr-2">
-            Username: {alertStore.info.authentication.username}
-          </span>
-        )}
-        <span className="text-muted">Version: {alertStore.info.version}</span>
+        <Observer>
+          {() =>
+            alertStore.info.authentication.enabled ? (
+              <span className="text-muted mr-2">
+                Username: {alertStore.info.authentication.username}
+              </span>
+            ) : null
+          }
+        </Observer>
+        <Observer>
+          {() => (
+            <span className="text-muted">
+              Version: {alertStore.info.version}
+            </span>
+          )}
+        </Observer>
       </div>
     </React.Fragment>
-  ));
+  );
 };
 
 export { MainModalContent };

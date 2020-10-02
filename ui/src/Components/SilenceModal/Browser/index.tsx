@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect, ReactNode } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import TransitionGroup from "react-transition-group/TransitionGroup";
 import { CSSTransition } from "react-transition-group";
@@ -88,7 +88,7 @@ const Browser: FC<{
 
   const context = React.useContext(ThemeContext);
 
-  return useObserver(() => (
+  return (
     <React.Fragment>
       <div
         className="d-flex flex-fill flex-lg-row flex-column justify-content-between mb-3"
@@ -178,7 +178,7 @@ const Browser: FC<{
         </React.Fragment>
       )}
     </React.Fragment>
-  ));
+  );
 };
 
-export { Browser };
+export default observer(Browser);

@@ -5,7 +5,7 @@ import { render } from "enzyme";
 import toDiffableHtml from "diffable-html";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { PayloadPreview } from ".";
+import PayloadPreview from ".";
 
 describe("<PayloadPreview />", () => {
   it("matches snapshot", () => {

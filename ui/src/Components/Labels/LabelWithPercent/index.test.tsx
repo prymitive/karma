@@ -6,7 +6,7 @@ import toDiffableHtml from "diffable-html";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 
-import { LabelWithPercent } from ".";
+import LabelWithPercent from ".";
 
 let alertStore: AlertStore;
 

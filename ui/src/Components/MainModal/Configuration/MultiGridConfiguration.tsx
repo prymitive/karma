@@ -1,18 +1,18 @@
 import React, { FC } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { Settings } from "Stores/Settings";
 import { GridLabelName } from "./GridLabelName";
 
 const MultiGridConfiguration: FC<{
   settingsStore: Settings;
-}> = ({ settingsStore }) => {
+}> = observer(({ settingsStore }) => {
   const onSortReverseChange = (value: boolean) => {
     settingsStore.multiGridConfig.setGridSortReverse(value);
   };
 
-  return useObserver(() => (
+  return (
     <div className="form-group mb-0">
       <div className="d-flex flex-fill flex-lg-row flex-column justify-content-between">
         <div className="flex-shrink-0 flex-grow-1 flex-basis-auto mx-0 mx-lg-1 mt-1 mt-lg-0">
@@ -40,7 +40,7 @@ const MultiGridConfiguration: FC<{
         </div>
       </div>
     </div>
-  ));
-};
+  );
+});
 
 export { MultiGridConfiguration };

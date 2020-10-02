@@ -8,7 +8,7 @@ import {
   MatcherWithIDT,
 } from "Stores/SilenceFormStore";
 import { StringToOption } from "Common/Select";
-import { SilenceMatch } from ".";
+import SilenceMatch from ".";
 
 let silenceFormStore: SilenceFormStore;
 let matcher: MatcherWithIDT;

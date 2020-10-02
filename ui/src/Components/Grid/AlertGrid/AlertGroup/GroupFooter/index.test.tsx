@@ -17,7 +17,7 @@ import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
-import { GroupFooter } from ".";
+import GroupFooter from ".";
 
 let group: APIAlertGroupT;
 let alertStore: AlertStore;

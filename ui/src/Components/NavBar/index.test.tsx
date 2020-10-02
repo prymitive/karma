@@ -7,7 +7,8 @@ import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { NavBar, MobileIdleTimeout, DesktopIdleTimeout } from ".";
+import NavBar from ".";
+import { MobileIdleTimeout, DesktopIdleTimeout } from "./timeouts";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;

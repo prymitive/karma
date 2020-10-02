@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useCallback, useState, ReactNode } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,9 +13,9 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BackgroundClassMap } from "Common/Colors";
 import { TooltipWrapper } from "Components/TooltipWrapper";
-import { GroupHeader } from "./GroupHeader";
-import { Alert } from "./Alert";
-import { GroupFooter } from "./GroupFooter";
+import GroupHeader from "./GroupHeader";
+import Alert from "./Alert";
+import GroupFooter from "./GroupFooter";
 import { DefaultDetailsCollapseValue } from "./DetailsToggle";
 
 const LoadButton: FC<{
@@ -168,7 +168,7 @@ const AlertGroup: FC<{
     }
   }
 
-  return useObserver(() => (
+  return (
     <div
       className="components-grid-alertgrid-alertgroup"
       style={{
@@ -247,7 +247,7 @@ const AlertGroup: FC<{
         ) : null}
       </div>
     </div>
-  ));
+  );
 };
 
-export { AlertGroup };
+export default observer(AlertGroup);

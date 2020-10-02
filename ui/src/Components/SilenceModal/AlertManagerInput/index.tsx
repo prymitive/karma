@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from "react";
 
 import { autorun } from "mobx";
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import Select from "react-select";
 
@@ -17,7 +17,7 @@ import { ValidationError } from "Components/ValidationError";
 const AlertManagerInput: FC<{
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
-}> = ({ alertStore, silenceFormStore }) => {
+}> = observer(({ alertStore, silenceFormStore }) => {
   useEffect(() => {
     if (silenceFormStore.data.alertmanagers.length === 0) {
       silenceFormStore.data.setAlertmanagers(
@@ -52,7 +52,7 @@ const AlertManagerInput: FC<{
 
   const context = React.useContext(ThemeContext);
 
-  return useObserver(() => (
+  return (
     <Select
       styles={context.reactSelectStyles}
       classNamePrefix="react-select"
@@ -77,7 +77,7 @@ const AlertManagerInput: FC<{
       }}
       isDisabled={silenceFormStore.data.silenceID !== null}
     />
-  ));
-};
+  );
+});
 
 export { AlertManagerInput };

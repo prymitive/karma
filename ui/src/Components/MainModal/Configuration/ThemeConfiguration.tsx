@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import Select from "react-select";
 
@@ -10,7 +10,7 @@ import { ThemeContext } from "Components/Theme";
 
 const ThemeConfiguration: FC<{
   settingsStore: Settings;
-}> = ({ settingsStore }) => {
+}> = observer(({ settingsStore }) => {
   if (
     !Object.values(settingsStore.themeConfig.options)
       .map((o) => o.value)
@@ -32,7 +32,7 @@ const ThemeConfiguration: FC<{
 
   const context = React.useContext(ThemeContext);
 
-  return useObserver(() => (
+  return (
     <div className="form-group mb-2">
       <Select
         styles={context.reactSelectStyles}
@@ -46,7 +46,7 @@ const ThemeConfiguration: FC<{
         hideSelectedOptions
       />
     </div>
-  ));
-};
+  );
+});
 
 export { ThemeConfiguration };

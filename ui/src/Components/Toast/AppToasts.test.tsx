@@ -5,7 +5,7 @@ import { mount } from "enzyme";
 import toDiffableHtml from "diffable-html";
 
 import { AlertStore } from "Stores/AlertStore";
-import { AppToasts } from "./AppToasts";
+import AppToasts from "./AppToasts";
 
 let alertStore: AlertStore;
 
@@ -17,7 +17,7 @@ describe("<AppToasts />", () => {
   it("doesn't render anything when alertStore.info.upgradeNeeded=true", () => {
     alertStore.info.upgradeNeeded = true;
     const tree = mount(<AppToasts alertStore={alertStore} />);
-    expect(tree.html()).toBeNull();
+    expect(tree.html()).toBe("");
   });
 
   it("renders upstream error toasts for each unhealthy upstream", () => {

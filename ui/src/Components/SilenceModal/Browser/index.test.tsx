@@ -16,7 +16,7 @@ import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
 import { useFetchGet } from "__mocks__/Hooks/useFetchGet";
-import { Browser } from ".";
+import Browser from ".";
 
 let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;

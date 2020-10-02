@@ -31,4 +31,4 @@ const FaviconBadge: FC<{
   return null;
 };
 
-export { FaviconBadge };
+export default FaviconBadge;

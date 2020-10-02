@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { AlertGrid } from "./AlertGrid";
+import AlertGrid from "./AlertGrid";
 import { FatalError } from "./FatalError";
 import { UpgradeNeeded } from "./UpgradeNeeded";
 import { ReloadNeeded } from "./ReloadNeeded";
@@ -16,30 +16,28 @@ const Grid: FC<{
   silenceFormStore: SilenceFormStore;
   settingsStore: Settings;
 }> = ({ alertStore, settingsStore, silenceFormStore }) => {
-  return useObserver(() =>
-    alertStore.info.upgradeNeeded ? (
-      <UpgradeNeeded newVersion={alertStore.info.version} reloadAfter={3000} />
-    ) : alertStore.info.reloadNeeded ? (
-      <ReloadNeeded reloadAfter={4000} />
-    ) : alertStore.status.error ? (
-      <FatalError message={alertStore.status.error} />
-    ) : alertStore.data.upstreams.counters &&
-      alertStore.data.upstreams.counters.total === 1 &&
-      alertStore.data.upstreams.counters.healthy === 0 &&
-      alertStore.data.upstreams.instances[0] &&
-      alertStore.data.upstreams.instances[0].error !== "" ? (
-      <FatalError message={alertStore.data.upstreams.instances[0].error} />
-    ) : alertStore.info.version !== "unknown" &&
-      alertStore.info.totalAlerts === 0 ? (
-      <EmptyGrid />
-    ) : (
-      <AlertGrid
-        alertStore={alertStore}
-        settingsStore={settingsStore}
-        silenceFormStore={silenceFormStore}
-      />
-    )
+  return alertStore.info.upgradeNeeded ? (
+    <UpgradeNeeded newVersion={alertStore.info.version} reloadAfter={3000} />
+  ) : alertStore.info.reloadNeeded ? (
+    <ReloadNeeded reloadAfter={4000} />
+  ) : alertStore.status.error ? (
+    <FatalError message={alertStore.status.error} />
+  ) : alertStore.data.upstreams.counters &&
+    alertStore.data.upstreams.counters.total === 1 &&
+    alertStore.data.upstreams.counters.healthy === 0 &&
+    alertStore.data.upstreams.instances[0] &&
+    alertStore.data.upstreams.instances[0].error !== "" ? (
+    <FatalError message={alertStore.data.upstreams.instances[0].error} />
+  ) : alertStore.info.version !== "unknown" &&
+    alertStore.info.totalAlerts === 0 ? (
+    <EmptyGrid />
+  ) : (
+    <AlertGrid
+      alertStore={alertStore}
+      settingsStore={settingsStore}
+      silenceFormStore={silenceFormStore}
+    />
   );
 };
 
-export { Grid };
+export default observer(Grid);

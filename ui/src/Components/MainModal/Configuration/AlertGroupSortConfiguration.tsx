@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import Select from "react-select";
 
@@ -11,7 +11,7 @@ import { SortLabelName } from "./SortLabelName";
 
 const AlertGroupSortConfiguration: FC<{
   settingsStore: Settings;
-}> = ({ settingsStore }) => {
+}> = observer(({ settingsStore }) => {
   if (
     !Object.values(settingsStore.gridConfig.options)
       .map((o) => o.value)
@@ -40,7 +40,7 @@ const AlertGroupSortConfiguration: FC<{
 
   const context = React.useContext(ThemeContext);
 
-  return useObserver(() => (
+  return (
     <div className="form-group mb-0">
       <div className="d-flex flex-fill flex-lg-row flex-column justify-content-between">
         <div className="flex-shrink-0 flex-grow-1 flex-basis-auto">
@@ -86,7 +86,7 @@ const AlertGroupSortConfiguration: FC<{
         )}
       </div>
     </div>
-  ));
-};
+  );
+});
 
 export { AlertGroupSortConfiguration };

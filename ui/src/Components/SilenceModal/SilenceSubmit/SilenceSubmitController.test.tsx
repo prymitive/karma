@@ -4,11 +4,9 @@ import { shallow } from "enzyme";
 
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, NewClusterRequest } from "Stores/SilenceFormStore";
-import {
-  SilenceSubmitController,
-  MultiClusterStatus,
-  SingleClusterStatus,
-} from "./SilenceSubmitController";
+import SilenceSubmitController from "./SilenceSubmitController";
+import SingleClusterStatus from "./SingleClusterStatus";
+import MultiClusterStatus from "./MultiClusterStatus";
 
 let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;

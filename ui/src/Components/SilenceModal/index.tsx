@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
@@ -24,7 +24,7 @@ const SilenceModal: FC<{
   silenceFormStore: SilenceFormStore;
   settingsStore: Settings;
 }> = ({ alertStore, silenceFormStore, settingsStore }) => {
-  return useObserver(() => (
+  return (
     <React.Fragment>
       <li
         className={`nav-item components-navbar-button ${
@@ -65,7 +65,7 @@ const SilenceModal: FC<{
         </React.Suspense>
       </Modal>
     </React.Fragment>
-  ));
+  );
 };
 
-export { SilenceModal };
+export default observer(SilenceModal);

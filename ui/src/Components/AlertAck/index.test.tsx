@@ -103,7 +103,7 @@ describe("<AlertAck />", () => {
   it("is null when acks are disabled", () => {
     alertStore.settings.values.alertAcknowledgement.enabled = false;
     const tree = MountedAlertAck();
-    expect(tree.html()).toBeNull();
+    expect(tree.html()).toBe("");
   });
 
   it("uses faCheck icon when idle", () => {

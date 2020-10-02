@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { AlertStore } from "Stores/AlertStore";
 import { GetClassAndStyle } from "Components/Labels/Utils";
@@ -13,12 +13,12 @@ const StaticLabel: FC<{
 }> = ({ alertStore, name, value }) => {
   const cs = GetClassAndStyle(alertStore, name, value);
 
-  return useObserver(() => (
+  return (
     <span className={cs.className} style={cs.style}>
       <span className="components-label-name">{name}:</span>{" "}
       <span className="components-label-value">{value}</span>
     </span>
-  ));
+  );
 };
 
-export { StaticLabel };
+export default observer(StaticLabel);

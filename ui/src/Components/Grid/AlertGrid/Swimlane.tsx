@@ -5,8 +5,8 @@ import { faTh } from "@fortawesome/free-solid-svg-icons/faTh";
 
 import { AlertStore } from "Stores/AlertStore";
 import { APIGridT } from "Models/APITypes";
-import { FilteringLabel } from "Components/Labels/FilteringLabel";
-import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
+import FilteringLabel from "Components/Labels/FilteringLabel";
+import FilteringCounterBadge from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { ToggleIcon } from "Components/ToggleIcon";
 

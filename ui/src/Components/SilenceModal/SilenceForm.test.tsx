@@ -9,7 +9,7 @@ import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { QueryOperators, StaticLabels } from "Common/Query";
-import { SilenceForm } from "./SilenceForm";
+import SilenceForm from "./SilenceForm";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;

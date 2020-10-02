@@ -6,7 +6,7 @@ import toDiffableHtml from "diffable-html";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 
-import { FilteringLabel } from ".";
+import FilteringLabel from ".";
 
 let alertStore: AlertStore;
 

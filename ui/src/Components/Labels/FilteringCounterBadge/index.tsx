@@ -22,73 +22,69 @@ const FilteringCounterBadge: FC<{
   alwaysVisible?: boolean;
   defaultColor?: "light" | "primary";
   isAppend?: boolean;
-}> = observer(
-  ({
+}> = ({
+  alertStore,
+  name,
+  value,
+  counter,
+  themed,
+  alwaysVisible = false,
+  defaultColor = "light",
+  isAppend = true,
+}) => {
+  const { ref, props } = useFlashTransition(counter);
+
+  const handleClick = useCallback(
+    (event: MouseEvent) => {
+      // left click       => apply foo=bar filter
+      // left click + alt => apply foo!=bar filter
+      const operator =
+        event.altKey === true ? QueryOperators.NotEqual : QueryOperators.Equal;
+
+      event.preventDefault();
+
+      if (isAppend) {
+        alertStore.filters.addFilter(FormatQuery(name, operator, value));
+      } else {
+        alertStore.filters.setFilters([FormatQuery(name, operator, value)]);
+      }
+    },
+    [alertStore.filters, name, value, isAppend]
+  );
+
+  if (!alwaysVisible && counter === 0) return null;
+
+  const cs = GetClassAndStyle(
     alertStore,
     name,
     value,
-    counter,
-    themed,
-    alwaysVisible = false,
-    defaultColor = "light",
-    isAppend = true,
-  }) => {
-    const { ref, props } = useFlashTransition(counter);
+    "badge-pill components-label-with-hover"
+  );
 
-    const handleClick = useCallback(
-      (event: MouseEvent) => {
-        // left click       => apply foo=bar filter
-        // left click + alt => apply foo!=bar filter
-        const operator =
-          event.altKey === true
-            ? QueryOperators.NotEqual
-            : QueryOperators.Equal;
+  return (
+    <TooltipWrapper
+      title={`Click to only show ${name}=${value} alerts or Alt+Click to hide them`}
+    >
+      <CSSTransition {...props}>
+        <span
+          ref={ref}
+          className={
+            themed
+              ? cs.className
+              : [
+                  `badge-${defaultColor}`,
+                  "badge-pill components-label-with-hover",
+                  ...cs.baseClassNames,
+                ].join(" ")
+          }
+          style={themed ? {} : cs.style}
+          onClick={handleClick}
+        >
+          {counter}
+        </span>
+      </CSSTransition>
+    </TooltipWrapper>
+  );
+};
 
-        event.preventDefault();
-
-        if (isAppend) {
-          alertStore.filters.addFilter(FormatQuery(name, operator, value));
-        } else {
-          alertStore.filters.setFilters([FormatQuery(name, operator, value)]);
-        }
-      },
-      [alertStore.filters, name, value, isAppend]
-    );
-
-    if (!alwaysVisible && counter === 0) return null;
-
-    const cs = GetClassAndStyle(
-      alertStore,
-      name,
-      value,
-      "badge-pill components-label-with-hover"
-    );
-
-    return (
-      <TooltipWrapper
-        title={`Click to only show ${name}=${value} alerts or Alt+Click to hide them`}
-      >
-        <CSSTransition {...props}>
-          <span
-            ref={ref}
-            className={
-              themed
-                ? cs.className
-                : [
-                    `badge-${defaultColor}`,
-                    "badge-pill components-label-with-hover",
-                    ...cs.baseClassNames,
-                  ].join(" ")
-            }
-            style={themed ? {} : cs.style}
-            onClick={handleClick}
-          >
-            {counter}
-          </span>
-        </CSSTransition>
-      </TooltipWrapper>
-    );
-  }
-);
-
-export { FilteringCounterBadge };
+export default observer(FilteringCounterBadge);

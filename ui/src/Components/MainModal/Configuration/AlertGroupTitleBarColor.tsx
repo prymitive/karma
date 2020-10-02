@@ -1,17 +1,17 @@
 import React, { FC } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { Settings } from "Stores/Settings";
 
 const AlertGroupTitleBarColor: FC<{
   settingsStore: Settings;
-}> = ({ settingsStore }) => {
+}> = observer(({ settingsStore }) => {
   const onChange = (value: boolean) => {
     settingsStore.alertGroupConfig.setColorTitleBar(value);
   };
 
-  return useObserver(() => (
+  return (
     <div className="form-group mb-0">
       <div className="form-check form-check-inline">
         <span className="custom-control custom-switch">
@@ -34,7 +34,7 @@ const AlertGroupTitleBarColor: FC<{
         </span>
       </div>
     </div>
-  ));
-};
+  );
+});
 
 export { AlertGroupTitleBarColor };

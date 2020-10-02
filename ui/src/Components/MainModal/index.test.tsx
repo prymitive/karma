@@ -54,8 +54,8 @@ describe("<MainModal />", () => {
     const toggle = tree.find(".nav-link");
     toggle.simulate("click");
     expect(tree.find("FontAwesomeIcon")).not.toHaveLength(0);
-    expect(tree.find("MainModalContent")).toHaveLength(0);
     expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(1);
+    expect(tree.find("MainModalContent")).toHaveLength(0);
   });
 
   it("renders modal content if fallback is not used", () => {
@@ -63,8 +63,8 @@ describe("<MainModal />", () => {
     const toggle = tree.find(".nav-link");
     toggle.simulate("click");
     expect(tree.find("FontAwesomeIcon")).not.toHaveLength(0);
-    expect(tree.find("MainModalContent")).toHaveLength(1);
     expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(0);
+    expect(tree.find("MainModalContent")).toHaveLength(1);
   });
 
   it("hides the modal when toggle() is called twice", () => {

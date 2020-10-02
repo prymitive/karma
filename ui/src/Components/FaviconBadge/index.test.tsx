@@ -5,7 +5,7 @@ import { mount } from "enzyme";
 import Favico from "favico.js";
 
 import { AlertStore } from "Stores/AlertStore";
-import { FaviconBadge } from ".";
+import FaviconBadge from ".";
 
 let alertStore: AlertStore;
 

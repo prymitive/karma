@@ -4,7 +4,7 @@ import { mount, render } from "enzyme";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { QueryOperators } from "Common/Query";
-import { FilteringCounterBadge } from ".";
+import FilteringCounterBadge from ".";
 
 let alertStore: AlertStore;
 

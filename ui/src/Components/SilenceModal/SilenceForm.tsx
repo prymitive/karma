@@ -1,6 +1,6 @@
 import React, { FC, useEffect, useState, MouseEvent, FormEvent } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import copy from "copy-to-clipboard";
 
@@ -29,14 +29,14 @@ import { useFlashTransition } from "Hooks/useFlashTransition";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { ToggleIcon } from "Components/ToggleIcon";
 import { AlertManagerInput } from "./AlertManagerInput";
-import { SilenceMatch } from "./SilenceMatch";
+import SilenceMatch from "./SilenceMatch";
 import { DateTimeSelect } from "./DateTimeSelect";
-import { PayloadPreview } from "./PayloadPreview";
+import PayloadPreview from "./PayloadPreview";
 import { IconInput, AuthenticatedAuthorInput } from "./AuthorInput";
 
 const ShareButton: FC<{
   silenceFormStore: SilenceFormStore;
-}> = ({ silenceFormStore }) => {
+}> = observer(({ silenceFormStore }) => {
   const [clickCount, setClickCount] = useState<number>(0);
 
   const baseURL = [
@@ -48,7 +48,7 @@ const ShareButton: FC<{
 
   const { ref, props } = useFlashTransition(clickCount);
 
-  return useObserver(() => (
+  return (
     <div className="input-group mb-3">
       <div className="input-group-prepend">
         <span className="input-group-text">
@@ -79,8 +79,8 @@ const ShareButton: FC<{
         </span>
       </div>
     </div>
-  ));
-};
+  );
+});
 
 const SilenceForm: FC<{
   alertStore: AlertStore;
@@ -178,7 +178,7 @@ const SilenceForm: FC<{
     silenceFormStore.data.setWasValidated(true);
   };
 
-  return useObserver(() => (
+  return (
     <form onSubmit={handleSubmit} autoComplete="on">
       <div className="mb-3">
         <AlertManagerInput
@@ -262,7 +262,7 @@ const SilenceForm: FC<{
         </div>
       ) : null}
     </form>
-  ));
+  );
 };
 
-export { SilenceForm };
+export default observer(SilenceForm);

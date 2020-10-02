@@ -6,7 +6,7 @@ import toDiffableHtml from "diffable-html";
 
 import { AlertStore } from "Stores/AlertStore";
 
-import { StaticLabel } from ".";
+import StaticLabel from ".";
 
 let alertStore: AlertStore;
 

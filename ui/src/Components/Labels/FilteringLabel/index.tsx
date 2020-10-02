@@ -1,6 +1,6 @@
 import React, { FC, useCallback, MouseEvent } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { AlertStore } from "Stores/AlertStore";
 import { QueryOperators, FormatQuery } from "Common/Query";
@@ -33,14 +33,14 @@ const FilteringLabel: FC<{
     "components-label-with-hover"
   );
 
-  return useObserver(() => (
+  return (
     <TooltipWrapper title="Click to only show alerts with this label or Alt+Click to hide them">
       <span className={cs.className} style={cs.style} onClick={handleClick}>
         <span className="components-label-name">{name}:</span>{" "}
         <span className="components-label-value">{value}</span>
       </span>
     </TooltipWrapper>
-  ));
+  );
 };
 
-export { FilteringLabel };
+export default observer(FilteringLabel);

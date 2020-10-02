@@ -7,7 +7,7 @@ import React, {
   useCallback,
 } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { Manager, Reference, Popper } from "react-popper";
 
@@ -128,61 +128,63 @@ const AlertMenu: FC<{
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
   setIsMenuOpen: (isOpen: boolean) => void;
-}> = ({ group, alert, alertStore, silenceFormStore, setIsMenuOpen }) => {
-  const [isHidden, setIsHidden] = useState<boolean>(true);
+}> = observer(
+  ({ group, alert, alertStore, silenceFormStore, setIsMenuOpen }) => {
+    const [isHidden, setIsHidden] = useState<boolean>(true);
 
-  const toggle = useCallback(() => {
-    setIsMenuOpen(isHidden);
-    setIsHidden(!isHidden);
-  }, [isHidden, setIsMenuOpen]);
+    const toggle = useCallback(() => {
+      setIsMenuOpen(isHidden);
+      setIsHidden(!isHidden);
+    }, [isHidden, setIsMenuOpen]);
 
-  const hide = useCallback(() => {
-    setIsHidden(true);
-    setIsMenuOpen(false);
-  }, [setIsMenuOpen]);
+    const hide = useCallback(() => {
+      setIsHidden(true);
+      setIsMenuOpen(false);
+    }, [setIsMenuOpen]);
 
-  const rootRef = useRef<HTMLSpanElement | null>(null);
-  useOnClickOutside(rootRef, hide, !isHidden);
+    const rootRef = useRef<HTMLSpanElement | null>(null);
+    useOnClickOutside(rootRef, hide, !isHidden);
 
-  return useObserver(() => (
-    <span ref={rootRef}>
-      <Manager>
-        <Reference>
-          {({ ref }) => (
-            <span
-              className="components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer"
-              ref={ref}
-              onClick={toggle}
-              data-toggle="dropdown"
-            >
-              <FontAwesomeIcon
-                className="pr-1"
-                style={{ width: "0.8rem" }}
-                icon={faCaretDown}
-              />
-              <DateFromNow timestamp={alert.startsAt} />
-            </span>
-          )}
-        </Reference>
-        <DropdownSlide in={!isHidden} unmountOnExit>
-          <Popper placement="bottom-start" modifiers={PopperModifiers}>
-            {({ placement, ref, style }) => (
-              <MenuContent
-                popperPlacement={placement}
-                popperRef={ref}
-                popperStyle={style}
-                group={group}
-                alert={alert}
-                alertStore={alertStore}
-                silenceFormStore={silenceFormStore}
-                afterClick={hide}
-              />
+    return (
+      <span ref={rootRef}>
+        <Manager>
+          <Reference>
+            {({ ref }) => (
+              <span
+                className="components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer"
+                ref={ref}
+                onClick={toggle}
+                data-toggle="dropdown"
+              >
+                <FontAwesomeIcon
+                  className="pr-1"
+                  style={{ width: "0.8rem" }}
+                  icon={faCaretDown}
+                />
+                <DateFromNow timestamp={alert.startsAt} />
+              </span>
             )}
-          </Popper>
-        </DropdownSlide>
-      </Manager>
-    </span>
-  ));
-};
+          </Reference>
+          <DropdownSlide in={!isHidden} unmountOnExit>
+            <Popper placement="bottom-start" modifiers={PopperModifiers}>
+              {({ placement, ref, style }) => (
+                <MenuContent
+                  popperPlacement={placement}
+                  popperRef={ref}
+                  popperStyle={style}
+                  group={group}
+                  alert={alert}
+                  alertStore={alertStore}
+                  silenceFormStore={silenceFormStore}
+                  afterClick={hide}
+                />
+              )}
+            </Popper>
+          </DropdownSlide>
+        </Manager>
+      </span>
+    );
+  }
+);
 
 export { AlertMenu, MenuContent };

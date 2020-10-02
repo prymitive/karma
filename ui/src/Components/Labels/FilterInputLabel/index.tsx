@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-import { useObserver } from "mobx-react-lite";
+import { observer } from "mobx-react-lite";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
@@ -16,7 +16,7 @@ import { InlineEdit } from "Components/InlineEdit";
 const FilterInputLabel: FC<{
   alertStore: AlertStore;
   filter: FilterT;
-}> = ({ alertStore, filter }) => {
+}> = observer(({ alertStore, filter }) => {
   const onChange = (val: string) => {
     alertStore.status.resume();
     // if filter is empty string then remove it
@@ -42,7 +42,7 @@ const FilterInputLabel: FC<{
         ...cs.baseClassNames,
       ].join(" ");
 
-  return useObserver(() => (
+  return (
     <button
       type="button"
       className={`${rootClasses} d-inline-flex flex-row align-items-center`}
@@ -80,7 +80,7 @@ const FilterInputLabel: FC<{
         onClick={() => alertStore.filters.removeFilter(filter.raw)}
       />
     </button>
-  ));
-};
+  );
+});
 
 export { FilterInputLabel };

@@ -6,7 +6,7 @@ import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
 import { APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
-import { FilteringCounterBadge } from "Components/Labels/FilteringCounterBadge";
+import FilteringCounterBadge from "Components/Labels/FilteringCounterBadge";
 import { ToggleIcon } from "Components/ToggleIcon";
 import { SilenceProgress } from "./SilenceProgress";
 

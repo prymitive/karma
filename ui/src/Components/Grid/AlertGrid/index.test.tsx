@@ -13,8 +13,8 @@ import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
 import { GetGridElementWidth, GridSizesConfig } from "./GridSize";
-import { Grid } from "./Grid";
-import { AlertGrid } from ".";
+import Grid from "./Grid";
+import AlertGrid from ".";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;
