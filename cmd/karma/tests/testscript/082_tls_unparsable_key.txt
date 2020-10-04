@@ -1,0 +1,37 @@
+# Raises an error if tls CA cert is missing
+
+karma.bin-should-fail --pid-file=karma.pid --log.format=text --log.config=true --log.level=info --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8078
+! stdout .
+stderr 'msg="Failed to create HTTP transport for Alertmanager ''client-auth'' with URI ''https:\/\/localhost:9093'': tls: failed to find any PEM data in key input"'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: client-auth
+      uri: https://localhost:9093
+      timeout: 10s
+      tls:
+        cert: client.pem
+        key: client.key
+
+-- client.pem --
+-----BEGIN CERTIFICATE-----
+MIICwzCCAaugAwIBAgIJAJSCPvgy3Fw5MA0GCSqGSIb3DQEBBQUAMBQxEjAQBgNV
+BAMTCWxvY2FsaG9zdDAeFw0yMDEwMDQxMTA4MDNaFw0zMDEwMDIxMTA4MDNaMBQx
+EjAQBgNVBAMTCWxvY2FsaG9zdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC
+ggEBAMdKdTkZTh8m1KetGiZPEk0kOoauARiVGIZ0cx+X7CvYpDjFs5e63sFcH57D
+G/xtFBk4Q6UcG5/fHti1rmn3mIzreYDh+oOaiSN+MswHW6Sit5HfjCgVOtrZdjcV
+VXJmYZerdoB0orMvud7kfbRgsQfJx9G0BpKRRmJo8beEkV2LCIp0Ns8bb7WlmW0R
+dFZWyPnWCIrTIONXzyFA7jAwZ8wVewmYNWH1LqvH4BnEkz39VgJoDDJp+WNHez9J
+v5fOiqKJwhKvV5Un63DOz+xuwd3ASJRwKqSWTNTIcZazPs9ihdYKOnmqaCfIwFBj
+ooh/9Q0ByrA2HH4VVKpHtld0mVcCAwEAAaMYMBYwFAYDVR0RBA0wC4IJbG9jYWxo
+b3N0MA0GCSqGSIb3DQEBBQUAA4IBAQB/cSeIdAHuWM9BENmdAlul1jrAegNRK57k
+KLcRiirq9dTtusTlzars+DZdPHewHajWsSil2191DyqV3n/zYq/1g9oWYX80jvX1
+wSlfM/0T6PWc9miRChVx8mGQc/C7vKE4j4oxRZ9EsZIyqKlrxqWA4UXuOZUSaLWx
+nECZRf/ofzcr6wNMdoZ8pQUqW05Jmnr+XiP09UoPHQsct9xfzOUGCB3PT47tVK7b
+Hu1PStj2VzTPeSDGv/R8X5bPcUcZIdK7as5MKVu9slmk9QLlUj3C6dmw7VudWisg
+CKglns9xWEOEA71DVeTS1ieLYychQdYIfNRMulgU+dC8djN2U/Sc
+-----END CERTIFICATE-----
+
+-- client.key --
+FOO

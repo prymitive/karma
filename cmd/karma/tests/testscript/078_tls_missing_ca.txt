@@ -1,0 +1,64 @@
+# Raises an error if tls CA cert is missing
+
+karma.bin-should-fail --pid-file=karma.pid --log.format=text --log.config=true --log.level=info --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8078
+! stdout .
+stderr 'msg="Failed to create HTTP transport for Alertmanager ''client-auth'' with URI ''https:\/\/localhost:9093'': open ca.crt: no such file or directory"'
+
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: client-auth
+      uri: https://localhost:9093
+      timeout: 10s
+      tls:
+        ca: ca.crt
+        cert: client.pem
+        key: client.key
+
+-- client.pem --
+-----BEGIN CERTIFICATE-----
+MIICwzCCAaugAwIBAgIJAJSCPvgy3Fw5MA0GCSqGSIb3DQEBBQUAMBQxEjAQBgNV
+BAMTCWxvY2FsaG9zdDAeFw0yMDEwMDQxMTA4MDNaFw0zMDEwMDIxMTA4MDNaMBQx
+EjAQBgNVBAMTCWxvY2FsaG9zdDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoC
+ggEBAMdKdTkZTh8m1KetGiZPEk0kOoauARiVGIZ0cx+X7CvYpDjFs5e63sFcH57D
+G/xtFBk4Q6UcG5/fHti1rmn3mIzreYDh+oOaiSN+MswHW6Sit5HfjCgVOtrZdjcV
+VXJmYZerdoB0orMvud7kfbRgsQfJx9G0BpKRRmJo8beEkV2LCIp0Ns8bb7WlmW0R
+dFZWyPnWCIrTIONXzyFA7jAwZ8wVewmYNWH1LqvH4BnEkz39VgJoDDJp+WNHez9J
+v5fOiqKJwhKvV5Un63DOz+xuwd3ASJRwKqSWTNTIcZazPs9ihdYKOnmqaCfIwFBj
+ooh/9Q0ByrA2HH4VVKpHtld0mVcCAwEAAaMYMBYwFAYDVR0RBA0wC4IJbG9jYWxo
+b3N0MA0GCSqGSIb3DQEBBQUAA4IBAQB/cSeIdAHuWM9BENmdAlul1jrAegNRK57k
+KLcRiirq9dTtusTlzars+DZdPHewHajWsSil2191DyqV3n/zYq/1g9oWYX80jvX1
+wSlfM/0T6PWc9miRChVx8mGQc/C7vKE4j4oxRZ9EsZIyqKlrxqWA4UXuOZUSaLWx
+nECZRf/ofzcr6wNMdoZ8pQUqW05Jmnr+XiP09UoPHQsct9xfzOUGCB3PT47tVK7b
+Hu1PStj2VzTPeSDGv/R8X5bPcUcZIdK7as5MKVu9slmk9QLlUj3C6dmw7VudWisg
+CKglns9xWEOEA71DVeTS1ieLYychQdYIfNRMulgU+dC8djN2U/Sc
+-----END CERTIFICATE-----
+
+-- client.key --
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAx0p1ORlOHybUp60aJk8STSQ6hq4BGJUYhnRzH5fsK9ikOMWz
+l7rewVwfnsMb/G0UGThDpRwbn98e2LWuafeYjOt5gOH6g5qJI34yzAdbpKK3kd+M
+KBU62tl2NxVVcmZhl6t2gHSisy+53uR9tGCxB8nH0bQGkpFGYmjxt4SRXYsIinQ2
+zxtvtaWZbRF0VlbI+dYIitMg41fPIUDuMDBnzBV7CZg1YfUuq8fgGcSTPf1WAmgM
+Mmn5Y0d7P0m/l86KoonCEq9XlSfrcM7P7G7B3cBIlHAqpJZM1MhxlrM+z2KF1go6
+eapoJ8jAUGOiiH/1DQHKsDYcfhVUqke2V3SZVwIDAQABAoIBAQCBg7sgy3hAuHyV
+J+MJqHONXJEIe8bMkgCpSL6UdqgOarF3D8zCO7iOUu9dvxDOAJmCNlWH1PeC837Z
+eWELDtS+KD4Da1jh9ClRvq8Gd3WwTescyvoMBpgEKDUyYRPxz+V2qwDNRH+EEe0q
+lLW45unF1PWeK+/lirICPI9yI55Q+mZkFIZHZwqobEsk/7yk0Z+6bQDgTDU4vHYF
+GEsWsSlv14DVRPVEUHuNzypvK88CFU2CaEiMRTOXWGVnd80mDA7A+VcuoY85264/
+tVU0sVbo/TE9bcVCChHT9HiAN90+MO5BzCT5uqRdtKX2sBjchI+v7EJKraU6FGiC
+u6w83LehAoGBAPcNmc4B36PggyAtTHgtOrpgQ/2FrcvmJXMQO3Gv5VqnHDTeiYxI
+r5smBDFztbLbnmrXeZXGAYraPSotV0/3Mck48OWA6RxLms6oGl3rP7clDUZBFOCJ
+Fjqol6IY1RHOHlbcid/TCspaAuW8wQF50ITl3bwa5v9L+mMXrijcNJ/nAoGBAM6C
+DxQhRc9DCKqc5jtrYCFmo0SNZRukRVrTMBnOY16kl6gsYYCSviICa8+Y2epeXaWV
+g4VtwwgCGd+vk0iZ4Q/VV/g2bpElpm2+yKXN6NiEuwB7jMDJ/mdhLD7lJZd4r2GD
+jUKmrIPFANON4fjgGy2NR8JNZdvkPUXiIbr3hs0RAoGAB704VTi/zb1pvidNHvKj
+xVTgrF90q0+BWtJmWlBdSfK0Mn/KJUfdoGmXdgke5wR0OPqZB3UVdUkS43BaLNoc
+iCYtfbMFGmrP5atkcA6/hzg06z98rO/+b0X6wgwvGIixcJ0mAIn265HYR2QbU7WC
+L7eXs53QIK07ocELJqKHT38CgYBOMULiXWLggsJST8yBbTveCc4CVAOXvtCf/l01
+OEe5+1qNTBizJV0m5YHK/lZs/sQ4wW8mY5Q4gQso/oMnN1TXuPFxQ7MD9Jya62Vw
+GpJzAXcJTL7T9OgGXu3w9rUQMJs/sh8XwKKL1llkwVFx+fFwgxFLyiCqbTaiMmiR
+Mc5x8QKBgQCVGACXeKvgbc7J6hMUQX/ZPK6rv2yQWkTRn84lMD8TxagJIj0wtWGO
+dshQeVDq07p2//410J1BVSQiAdwQ+HVmSO4Fqg0DHqmWn4fi1zBnxVvxW62iAV8+
+db9yajtsMsgPuw26UY9R33PZIUe+CKWKToipm2XbzPtlrbWblZ/g0Q==
+-----END RSA PRIVATE KEY-----
