@@ -193,3 +193,30 @@ func TestAlertmanagerPullWithInvalidURI(t *testing.T) {
 		t.Error("am.Pull(invalid uri) didn't return any error")
 	}
 }
+
+func TestAlertmanagerPullAlertsWithInvalidVersion(t *testing.T) {
+	log.SetLevel(log.PanicLevel)
+	am, _ := NewAlertmanager("cluster", "test", "http://localhost")
+	err := am.pullAlerts("0.0.1")
+	if err == nil {
+		t.Error("am.pullAlerts(invalid version) didn't return any error")
+	}
+}
+
+func TestAlertmanagerPullSilencesWithInvalidVersion(t *testing.T) {
+	log.SetLevel(log.PanicLevel)
+	am, _ := NewAlertmanager("cluster", "test", "http://localhost")
+	err := am.pullSilences("0.0.1")
+	if err == nil {
+		t.Error("am.pullSilences(invalid version) didn't return any error")
+	}
+}
+
+func TestAlertmanagerFetchStatusWithInvalidVersion(t *testing.T) {
+	log.SetLevel(log.PanicLevel)
+	am, _ := NewAlertmanager("cluster", "test", "http://localhost")
+	_, err := am.fetchStatus("0.0.1")
+	if err == nil {
+		t.Error("am.fetchStatus(invalid version) didn't return any error")
+	}
+}
