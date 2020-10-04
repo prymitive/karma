@@ -9,7 +9,8 @@ import (
 )
 
 type testCase struct {
-	config config.AlertmanagerConfig
+	config     config.AlertmanagerConfig
+	shouldFail bool
 }
 
 var testCases = []testCase{
@@ -49,6 +50,32 @@ var testCases = []testCase{
 			Headers:     map[string]string{},
 		},
 	},
+	{
+		config: config.AlertmanagerConfig{
+			Cluster:     "cluster",
+			Name:        "name",
+			URI:         "%gh&%ij",
+			ExternalURI: "http://localhost:9095",
+			Timeout:     time.Second * 30,
+			Proxy:       false,
+			ReadOnly:    true,
+			Headers:     map[string]string{},
+		},
+		shouldFail: true,
+	},
+	{
+		config: config.AlertmanagerConfig{
+			Cluster:     "cluster",
+			Name:        "name",
+			URI:         "http://localhost:9095",
+			ExternalURI: "%gh&%ij",
+			Timeout:     time.Second * 30,
+			Proxy:       false,
+			ReadOnly:    true,
+			Headers:     map[string]string{},
+		},
+		shouldFail: true,
+	},
 }
 
 func TestOptions(t *testing.T) {
@@ -72,9 +99,15 @@ func TestOptions(t *testing.T) {
 			WithReadOnly(tc.config.ReadOnly),
 			WithHTTPTransport(httpTransport), // we will pass a nil unless TLS.CA or TLS.Cert is set
 			WithHTTPHeaders(tc.config.Headers),
+			WithCORSCredentials(tc.config.CORS.Credentials),
 		)
+		didFail := err != nil
+		if didFail != tc.shouldFail {
+			t.Errorf("Alertmanager '%s' error mismatch, shouldFail=%v, err=%v", tc.config.Name, tc.shouldFail, err)
+		}
 		if err != nil {
-			t.Errorf("Failed to create Alertmanager '%s' with URI '%s': %s", tc.config.Name, tc.config.URI, err)
+			t.Logf("Alertmanager '%s' returned an error: %v", tc.config.Name, err)
+			continue
 		}
 		if am.Name != tc.config.Name {
 			t.Errorf("AlertmanagerConfig with name '%s' returned Alertmanager with name '%s'", tc.config.Name, am.Name)
@@ -87,6 +120,9 @@ func TestOptions(t *testing.T) {
 		}
 		if am.ReadOnly != tc.config.ReadOnly {
 			t.Errorf("AlertmanagerConfig with name '%s' and readonly '%v' returned Alertmanager with readonly '%v'", tc.config.Name, tc.config.ReadOnly, am.ReadOnly)
+		}
+		if am.CORSCredentials != tc.config.CORS.Credentials {
+			t.Errorf("AlertmanagerConfig with name '%s' and cors:credentials '%v' returned Alertmanager with cors:credentials '%v'", tc.config.Name, tc.config.CORS.Credentials, am.CORSCredentials)
 		}
 	}
 }
