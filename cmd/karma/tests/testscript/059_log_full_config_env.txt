@@ -1,4 +1,7 @@
 # Print out and compare logged config set via env variables
+env AUTHENTICATION_HEADER_NAME=X-Auth
+env AUTHENTICATION_HEADER_VALUE_RE='^(.+)$'
+
 env ALERTMANAGER_INTERVAL=10s
 env ALERTMANAGER_NAME=ro
 env ALERTMANAGER_URI=http://localhost:9093
@@ -51,8 +54,6 @@ env RECEIVERS_STRIP='strip1 strip2'
 env SENTRY_DSN=abcdef1234567890
 env SENTRY_PUBLIC=1234567890abcdef
 
-env SILENCEFORM_AUTHOR_POPULATE_FROM_HEADER_HEADER=CF-RAY
-env SILENCEFORM_AUTHOR_POPULATE_FROM_HEADER_VALUE_RE='^(.+)$'
 env SILENCEFORM_STRIP_LABELS='job severity region'
 
 env UI_REFRESH=10s
@@ -74,8 +75,8 @@ level=info msg="Version: dev"
 level=info msg="Parsed configuration:"
 level=info msg="authentication:"
 level=info msg="  header:"
-level=info msg="    name: \"\""
-level=info msg="    value_re: \"\""
+level=info msg="    name: X-Auth"
+level=info msg="    value_re: ^(.+)$"
 level=info msg="  basicAuth:"
 level=info msg="    users: []"
 level=info msg="authorization:"
