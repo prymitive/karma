@@ -76,7 +76,7 @@
     "react-scripts": "3.4.3",
     "react-select": "3.1.0",
     "react-transition-group": "4.4.1",
-    "typeface-open-sans": "0.0.75",
+    "typeface-open-sans": "1.1.13",
     "typescript": "4.0.3"
   },
   "devDependencies": {
