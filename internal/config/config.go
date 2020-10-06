@@ -191,10 +191,8 @@ func readEnvVariables(k *koanf.Koanf) {
 			return "alertAcknowledgement.author"
 		case "ALERTACKNOWLEDGEMENT_COMMENTPREFIX":
 			return "alertAcknowledgement.commentPrefix"
-		case "SILENCEFORM_AUTHOR_POPULATE_FROM_HEADER_HEADER":
-			return "silenceForm.author.populate_from_header.header"
-		case "SILENCEFORM_AUTHOR_POPULATE_FROM_HEADER_VALUE_RE":
-			return "silenceForm.author.populate_from_header.value_re"
+		case "AUTHENTICATION_HEADER_VALUE_RE":
+			return "authentication.header.value_re"
 		case "SILENCEFORM_STRIP_LABELS":
 			return "silenceForm.strip.labels"
 		case "UI_HIDEFILTERSWHENIDLE":
