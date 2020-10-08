@@ -198,331 +198,408 @@ const UnpackRegexMatcherValues = (isRegex: boolean, value: string) => {
 export type SilenceFormTabT = "editor" | "browser";
 export type SilenceFormStageT = "form" | "preview" | "submit";
 
+interface SilenceFormStoreToggleT {
+  visible: boolean;
+  blurred: boolean;
+  toggle: () => void;
+  hide: () => void;
+  show: () => void;
+  setBlur: (val: boolean) => void;
+}
+
+interface SilenceFormStoreTabT {
+  current: SilenceFormTabT;
+  setTab: (value: SilenceFormTabT) => void;
+}
+
+interface DurationT {
+  days: number;
+  hours: number;
+  minutes: number;
+}
+
+interface SilenceFormStoreDataT {
+  currentStage: SilenceFormStageT;
+  wasValidated: boolean;
+  silenceID: null | undefined | string;
+  alertmanagers: MultiValueOptionT[];
+  matchers: MatcherWithIDT[];
+  startsAt: Date;
+  endsAt: Date;
+  comment: string;
+  author: string;
+  requestsByCluster: { [key: string]: ClusterRequestT };
+  autofillMatchers: boolean;
+  resetInputs: boolean;
+  readonly toBase64: string;
+  fromBase64: (s: string) => void;
+  readonly isValid: boolean;
+  resetStartEnd: () => void;
+  resetProgress: () => void;
+  resetSilenceID: () => void;
+  setSilenceID: (id: string) => void;
+  setAlertmanagers: (val: MultiValueOptionT[]) => void;
+  setAutofillMatchers: (v: boolean) => void;
+  setResetInputs: (v: boolean) => void;
+  setStageSubmit: () => void;
+  setMatchers: (m: MatcherWithIDT[]) => void;
+  addEmptyMatcher: () => void;
+  deleteMatcher: (id: string) => void;
+  fillMatchersFromGroup: (
+    group: APIAlertGroupT,
+    stripLabels: string[],
+    alertmanagers: MultiValueOptionT[],
+    alerts?: APIAlertT[]
+  ) => void;
+  fillFormFromSilence: (
+    alertmanager: APIAlertmanagerUpstreamT,
+    silence: AlertmanagerSilencePayloadT
+  ) => void;
+  setAuthor: (a: string) => void;
+  setComment: (c: string) => void;
+  verifyStarEnd: () => void;
+  setStart: (startsAt: Date) => void;
+  setEnd: (endsAt: Date) => void;
+  incStart: (minutes: number) => void;
+  decStart: (minutes: number) => void;
+  incEnd: (minutes: number) => void;
+  decEnd: (minutes: number) => void;
+  setWasValidated: (v: boolean) => void;
+  readonly toAlertmanagerPayload: AlertmanagerSilencePayloadT;
+  readonly toDuration: DurationT;
+}
+
 class SilenceFormStore {
-  toggle = observable(
-    {
-      visible: false,
-      blurred: false,
-      toggle() {
-        this.visible = !this.visible;
-      },
-      hide() {
-        this.visible = false;
-      },
-      show() {
-        this.visible = true;
-      },
-      setBlur(val: boolean) {
-        this.blurred = val;
-      },
-    },
-    {
-      toggle: action.bound,
-      hide: action.bound,
-      show: action.bound,
-      setBlur: action.bound,
-    }
-  );
+  toggle: SilenceFormStoreToggleT;
+  tab: SilenceFormStoreTabT;
+  data: SilenceFormStoreDataT;
 
-  tab = observable(
-    {
-      current: "editor" as SilenceFormTabT,
-      setTab(value: SilenceFormTabT) {
-        this.current = value;
+  constructor() {
+    this.toggle = observable(
+      {
+        visible: false as boolean,
+        blurred: false as boolean,
+        toggle() {
+          this.visible = !this.visible;
+        },
+        hide() {
+          this.visible = false;
+        },
+        show() {
+          this.visible = true;
+        },
+        setBlur(val: boolean) {
+          this.blurred = val;
+        },
       },
-    },
-    {
-      setTab: action.bound,
-    }
-  );
+      {
+        toggle: action.bound,
+        hide: action.bound,
+        show: action.bound,
+        setBlur: action.bound,
+      }
+    );
 
-  // form data is stored here, it's global (rather than attached to the form)
-  // so it can be manipulated from other parts of the code
-  // example: when user clicks a silence button on alert we should populate
-  // this form from that alert so user can easily silence that alert
-  data = observable(
-    {
-      currentStage: "form" as SilenceFormStageT,
-      wasValidated: false as boolean,
-      silenceID: null as null | undefined | string,
-      alertmanagers: [] as MultiValueOptionT[],
-      matchers: [] as MatcherWithIDT[],
-      startsAt: new Date(),
-      endsAt: addHours(new Date(), 1),
-      comment: "",
-      author: "",
-      requestsByCluster: {} as { [key: string]: ClusterRequestT },
-      autofillMatchers: true as boolean,
-      resetInputs: true as boolean,
-
-      get toBase64() {
-        const json = JSON.stringify({
-          am: this.alertmanagers,
-          m: this.matchers.map((m: MatcherWithIDT) => ({
-            n: m.name,
-            r: m.isRegex,
-            v: m.values.map((v) => v.value),
-          })),
-          d: differenceInMinutes(this.endsAt, this.startsAt),
-          c: this.comment,
-        });
-        return window.btoa(json);
+    this.tab = observable(
+      {
+        current: "editor" as SilenceFormTabT,
+        setTab(value: SilenceFormTabT) {
+          this.current = value;
+        },
       },
+      {
+        setTab: action.bound,
+      }
+    );
 
-      fromBase64(s: string) {
-        let parsed: SilenceFormDataFromBase64;
-        try {
-          parsed = JSON.parse(window.atob(s));
-        } catch (error) {
-          console.error(`Failed to parse JSON: ${error}`);
+    // form data is stored here, it's global (rather than attached to the form)
+    // so it can be manipulated from other parts of the code
+    // example: when user clicks a silence button on alert we should populate
+    // this form from that alert so user can easily silence that alert
+    this.data = observable(
+      {
+        currentStage: "form" as SilenceFormStageT,
+        wasValidated: false as boolean,
+        silenceID: null as null | undefined | string,
+        alertmanagers: [] as MultiValueOptionT[],
+        matchers: [] as MatcherWithIDT[],
+        startsAt: new Date(),
+        endsAt: addHours(new Date(), 1),
+        comment: "",
+        author: "",
+        requestsByCluster: {} as { [key: string]: ClusterRequestT },
+        autofillMatchers: true as boolean,
+        resetInputs: true as boolean,
+
+        get toBase64() {
+          const json = JSON.stringify({
+            am: this.alertmanagers,
+            m: this.matchers.map((m: MatcherWithIDT) => ({
+              n: m.name,
+              r: m.isRegex,
+              v: m.values.map((v) => v.value),
+            })),
+            d: differenceInMinutes(this.endsAt, this.startsAt),
+            c: this.comment,
+          });
+          return window.btoa(json);
+        },
+
+        fromBase64(s: string) {
+          let parsed: SilenceFormDataFromBase64;
+          try {
+            parsed = JSON.parse(window.atob(s));
+          } catch (error) {
+            console.error(`Failed to parse JSON: ${error}`);
+            return false;
+          }
+
+          const matchers: MatcherWithIDT[] = [];
+          parsed.m.forEach((m: SimplifiedMatcherT) => {
+            const matcher = NewEmptyMatcher();
+            matcher.name = m.n;
+            matcher.isRegex = m.r;
+            matcher.values = m.v.map((v) => StringToOption(v));
+            matchers.push(matcher);
+          });
+
+          if (matchers.length > 0) {
+            this.alertmanagers = parsed.am;
+            this.matchers = matchers;
+
+            this.startsAt = new Date();
+            this.endsAt = addMinutes(this.startsAt, parsed.d);
+            this.comment = parsed.c;
+
+            this.silenceID = null;
+            this.autofillMatchers = false;
+            this.resetInputs = false;
+            return true;
+          }
+
           return false;
-        }
+        },
 
-        const matchers: MatcherWithIDT[] = [];
-        parsed.m.forEach((m: SimplifiedMatcherT) => {
-          const matcher = NewEmptyMatcher();
-          matcher.name = m.n;
-          matcher.isRegex = m.r;
-          matcher.values = m.v.map((v) => StringToOption(v));
-          matchers.push(matcher);
-        });
+        get isValid() {
+          if (this.alertmanagers.length === 0) return false;
+          if (this.matchers.length === 0) return false;
+          if (
+            this.matchers.filter(
+              (m) =>
+                m.name === "" ||
+                m.values.length === 0 ||
+                m.values.filter((v) => v.value === "").length > 0
+            ).length > 0
+          )
+            return false;
+          if (this.comment === "") return false;
+          if (this.author === "") return false;
+          return true;
+        },
 
-        if (matchers.length > 0) {
-          this.alertmanagers = parsed.am;
+        resetStartEnd() {
+          this.startsAt = new Date();
+          this.endsAt = addHours(new Date(), 1);
+        },
+
+        resetProgress() {
+          this.currentStage = "form";
+          this.wasValidated = false;
+        },
+
+        resetSilenceID() {
+          this.silenceID = null;
+        },
+
+        setSilenceID(id: string) {
+          this.silenceID = id;
+        },
+
+        setAlertmanagers(val: MultiValueOptionT[]) {
+          this.alertmanagers = val;
+        },
+
+        setAutofillMatchers(v: boolean) {
+          this.autofillMatchers = v;
+        },
+        setResetInputs(v: boolean) {
+          this.resetInputs = v;
+        },
+
+        setStageSubmit() {
+          this.currentStage = "submit";
+        },
+
+        setMatchers(m: MatcherWithIDT[]) {
+          this.matchers = m;
+        },
+
+        // append a new empty matcher to the list
+        addEmptyMatcher() {
+          this.matchers.push(NewEmptyMatcher());
+        },
+
+        deleteMatcher(id: string) {
+          // only delete matchers if we have more than 1
+          if (this.matchers.length > 1) {
+            this.matchers = this.matchers.filter((m) => m.id !== id);
+          }
+        },
+
+        // if alerts argument is not passed all group alerts will be used
+        fillMatchersFromGroup(
+          group: APIAlertGroupT,
+          stripLabels: string[],
+          alertmanagers: MultiValueOptionT[],
+          alerts?: APIAlertT[]
+        ) {
+          this.alertmanagers = alertmanagers;
+
+          this.matchers = MatchersFromGroup(group, stripLabels, alerts);
+          // ensure that silenceID is nulled, since it's used to edit silences
+          // and this is used to silence groups
+          this.silenceID = null;
+          // disable matcher autofill
+          this.autofillMatchers = false;
+          // disable alertmanager input reset
+          this.resetInputs = false;
+        },
+
+        fillFormFromSilence(
+          alertmanager: APIAlertmanagerUpstreamT,
+          silence: AlertmanagerSilencePayloadT
+        ) {
+          this.silenceID = silence.id;
+
+          this.alertmanagers = AlertmanagerClustersToOption({
+            [alertmanager.cluster]: alertmanager.clusterMembers,
+          });
+
+          const matchers: MatcherWithIDT[] = [];
+          for (const m of silence.matchers) {
+            const matcher = NewEmptyMatcher();
+            matcher.name = m.name;
+            matcher.values = UnpackRegexMatcherValues(m.isRegex, m.value);
+            matcher.isRegex = m.isRegex;
+            matchers.push(matcher);
+          }
           this.matchers = matchers;
 
-          this.startsAt = new Date();
-          this.endsAt = addMinutes(this.startsAt, parsed.d);
-          this.comment = parsed.c;
+          this.startsAt = parseISO(silence.startsAt);
+          this.endsAt = parseISO(silence.endsAt);
+          this.comment = silence.comment;
+          this.author = silence.createdBy;
 
-          this.silenceID = null;
+          // disable matcher autofill
           this.autofillMatchers = false;
-          this.resetInputs = false;
-          return true;
-        }
+        },
 
-        return false;
-      },
+        setAuthor(a: string) {
+          this.author = a;
+        },
 
-      get isValid() {
-        if (this.alertmanagers.length === 0) return false;
-        if (this.matchers.length === 0) return false;
-        if (
-          this.matchers.filter(
-            (m) =>
-              m.name === "" ||
-              m.values.length === 0 ||
-              m.values.filter((v) => v.value === "").length > 0
-          ).length > 0
-        )
-          return false;
-        if (this.comment === "") return false;
-        if (this.author === "") return false;
-        return true;
-      },
+        setComment(c: string) {
+          this.comment = c;
+        },
 
-      resetStartEnd() {
-        this.startsAt = new Date();
-        this.endsAt = addHours(new Date(), 1);
-      },
+        verifyStarEnd() {
+          const now = new Date();
+          now.setSeconds(0);
+          if (this.startsAt < now) {
+            this.startsAt = now;
+          }
 
-      resetProgress() {
-        this.currentStage = "form";
-        this.wasValidated = false;
-      },
+          if (this.endsAt <= this.startsAt) {
+            this.endsAt = addMinutes(this.startsAt, 1);
+          }
+        },
+        setStart(startsAt: Date) {
+          this.startsAt = startsAt;
+        },
+        setEnd(endsAt: Date) {
+          this.endsAt = endsAt;
+        },
+        incStart(minutes: number) {
+          this.startsAt = addMinutes(this.startsAt, minutes);
+          this.verifyStarEnd();
+        },
+        decStart(minutes: number) {
+          this.startsAt = subMinutes(this.startsAt, minutes);
+          this.verifyStarEnd();
+        },
 
-      resetSilenceID() {
-        this.silenceID = null;
-      },
+        incEnd(minutes: number) {
+          this.endsAt = addMinutes(this.endsAt, minutes);
+          this.verifyStarEnd();
+        },
+        decEnd(minutes: number) {
+          this.endsAt = subMinutes(this.endsAt, minutes);
+          this.verifyStarEnd();
+        },
 
-      setSilenceID(id: string) {
-        this.silenceID = id;
-      },
+        setWasValidated(v: boolean) {
+          this.wasValidated = v;
+        },
 
-      setAlertmanagers(val: MultiValueOptionT[]) {
-        this.alertmanagers = val;
-      },
+        get toAlertmanagerPayload() {
+          const startsAt = new Date(this.startsAt);
+          startsAt.setSeconds(0);
+          startsAt.setMilliseconds(0);
+          const endsAt = new Date(this.endsAt);
+          endsAt.setSeconds(0);
+          endsAt.setMilliseconds(0);
+          return GenerateAlertmanagerSilenceData(
+            startsAt,
+            endsAt,
+            this.matchers,
+            this.author,
+            this.comment,
+            this.silenceID
+          );
+        },
 
-      setAutofillMatchers(v: boolean) {
-        this.autofillMatchers = v;
+        get toDuration() {
+          const data: DurationT = {
+            days: differenceInDays(this.endsAt, this.startsAt),
+            hours: differenceInHours(this.endsAt, this.startsAt) % 24,
+            minutes: differenceInMinutes(this.endsAt, this.startsAt) % 60,
+          };
+          return data;
+        },
       },
-      setResetInputs(v: boolean) {
-        this.resetInputs = v;
+      {
+        toBase64: computed,
+        fromBase64: action.bound,
+        resetStartEnd: action.bound,
+        resetProgress: action.bound,
+        resetSilenceID: action.bound,
+        setSilenceID: action.bound,
+        setAlertmanagers: action.bound,
+        setAutofillMatchers: action.bound,
+        setResetInputs: action.bound,
+        setStageSubmit: action.bound,
+        setMatchers: action.bound,
+        addEmptyMatcher: action.bound,
+        deleteMatcher: action.bound,
+        fillMatchersFromGroup: action.bound,
+        fillFormFromSilence: action.bound,
+        setAuthor: action.bound,
+        setComment: action.bound,
+        verifyStarEnd: action.bound,
+        setStart: action.bound,
+        setEnd: action.bound,
+        incStart: action.bound,
+        decStart: action.bound,
+        incEnd: action.bound,
+        decEnd: action.bound,
+        isValid: computed,
+        setWasValidated: action.bound,
+        toAlertmanagerPayload: computed,
+        toDuration: computed,
       },
-
-      setStageSubmit() {
-        this.currentStage = "submit";
-      },
-
-      setMatchers(m: MatcherWithIDT[]) {
-        this.matchers = m;
-      },
-
-      // append a new empty matcher to the list
-      addEmptyMatcher() {
-        this.matchers.push(NewEmptyMatcher());
-      },
-
-      deleteMatcher(id: string) {
-        // only delete matchers if we have more than 1
-        if (this.matchers.length > 1) {
-          this.matchers = this.matchers.filter((m) => m.id !== id);
-        }
-      },
-
-      // if alerts argument is not passed all group alerts will be used
-      fillMatchersFromGroup(
-        group: APIAlertGroupT,
-        stripLabels: string[],
-        alertmanagers: MultiValueOptionT[],
-        alerts?: APIAlertT[]
-      ) {
-        this.alertmanagers = alertmanagers;
-
-        this.matchers = MatchersFromGroup(group, stripLabels, alerts);
-        // ensure that silenceID is nulled, since it's used to edit silences
-        // and this is used to silence groups
-        this.silenceID = null;
-        // disable matcher autofill
-        this.autofillMatchers = false;
-        // disable alertmanager input reset
-        this.resetInputs = false;
-      },
-
-      fillFormFromSilence(
-        alertmanager: APIAlertmanagerUpstreamT,
-        silence: AlertmanagerSilencePayloadT
-      ) {
-        this.silenceID = silence.id;
-
-        this.alertmanagers = AlertmanagerClustersToOption({
-          [alertmanager.cluster]: alertmanager.clusterMembers,
-        });
-
-        const matchers: MatcherWithIDT[] = [];
-        for (const m of silence.matchers) {
-          const matcher = NewEmptyMatcher();
-          matcher.name = m.name;
-          matcher.values = UnpackRegexMatcherValues(m.isRegex, m.value);
-          matcher.isRegex = m.isRegex;
-          matchers.push(matcher);
-        }
-        this.matchers = matchers;
-
-        this.startsAt = parseISO(silence.startsAt);
-        this.endsAt = parseISO(silence.endsAt);
-        this.comment = silence.comment;
-        this.author = silence.createdBy;
-
-        // disable matcher autofill
-        this.autofillMatchers = false;
-      },
-
-      setAuthor(a: string) {
-        this.author = a;
-      },
-
-      setComment(c: string) {
-        this.comment = c;
-      },
-
-      verifyStarEnd() {
-        const now = new Date();
-        now.setSeconds(0);
-        if (this.startsAt < now) {
-          this.startsAt = now;
-        }
-
-        if (this.endsAt <= this.startsAt) {
-          this.endsAt = addMinutes(this.startsAt, 1);
-        }
-      },
-      setStart(startsAt: Date) {
-        this.startsAt = startsAt;
-      },
-      setEnd(endsAt: Date) {
-        this.endsAt = endsAt;
-      },
-      incStart(minutes: number) {
-        this.startsAt = addMinutes(this.startsAt, minutes);
-        this.verifyStarEnd();
-      },
-      decStart(minutes: number) {
-        this.startsAt = subMinutes(this.startsAt, minutes);
-        this.verifyStarEnd();
-      },
-
-      incEnd(minutes: number) {
-        this.endsAt = addMinutes(this.endsAt, minutes);
-        this.verifyStarEnd();
-      },
-      decEnd(minutes: number) {
-        this.endsAt = subMinutes(this.endsAt, minutes);
-        this.verifyStarEnd();
-      },
-
-      setWasValidated(v: boolean) {
-        this.wasValidated = v;
-      },
-
-      get toAlertmanagerPayload() {
-        const startsAt = new Date(this.startsAt);
-        startsAt.setSeconds(0);
-        startsAt.setMilliseconds(0);
-        const endsAt = new Date(this.endsAt);
-        endsAt.setSeconds(0);
-        endsAt.setMilliseconds(0);
-        return GenerateAlertmanagerSilenceData(
-          startsAt,
-          endsAt,
-          this.matchers,
-          this.author,
-          this.comment,
-          this.silenceID
-        );
-      },
-
-      get toDuration() {
-        const data = {
-          days: differenceInDays(this.endsAt, this.startsAt),
-          hours: differenceInHours(this.endsAt, this.startsAt) % 24,
-          minutes: differenceInMinutes(this.endsAt, this.startsAt) % 60,
-        };
-        return data;
-      },
-    },
-    {
-      toBase64: computed,
-      fromBase64: action.bound,
-      resetStartEnd: action.bound,
-      resetProgress: action.bound,
-      resetSilenceID: action.bound,
-      setSilenceID: action.bound,
-      setAlertmanagers: action.bound,
-      setAutofillMatchers: action.bound,
-      setResetInputs: action.bound,
-      setStageSubmit: action.bound,
-      setMatchers: action.bound,
-      addEmptyMatcher: action.bound,
-      deleteMatcher: action.bound,
-      fillMatchersFromGroup: action.bound,
-      fillFormFromSilence: action.bound,
-      setAuthor: action.bound,
-      setComment: action.bound,
-      verifyStarEnd: action.bound,
-      setStart: action.bound,
-      setEnd: action.bound,
-      incStart: action.bound,
-      decStart: action.bound,
-      incEnd: action.bound,
-      decEnd: action.bound,
-      isValid: computed,
-      setWasValidated: action.bound,
-      toAlertmanagerPayload: computed,
-      toDuration: computed,
-    },
-    { name: "Silence form store" }
-  );
+      { name: "Silence form store" }
+    );
+  }
 }
 
 export {

@@ -15,6 +15,7 @@ import {
   APIAlertsResponseSilenceMapT,
   APIAlertsResponseUpstreamsT,
   APIAlertsResponseUpstreamsClusterMapT,
+  APISettingsT,
 } from "Models/APITypes";
 
 const QueryStringEncodeOptions = {
@@ -121,280 +122,358 @@ function NewUnappliedFilter(raw: string): FilterT {
   };
 }
 
+interface AlertStoreFiltersT {
+  values: FilterT[];
+  addFilter: (raw: string) => void;
+  removeFilter: (raw: string) => void;
+  replaceFilter: (oldRaw: string, newRaw: string) => void;
+  setFilters: (raws: string[]) => void;
+  setFilterValues: (v: FilterT[]) => void;
+  setWithoutLocation: (raws: string[]) => void;
+  applyAllFilters: () => void;
+}
+
+interface AlertStoreDataT {
+  colors: APIAlertsResponseColorsT;
+  counters: APILabelCounterT[];
+  grids: APIGridT[];
+  silences: APIAlertsResponseSilenceMapT;
+  upstreams: APIAlertsResponseUpstreamsT;
+  receivers: string[];
+  readonly gridPadding: number;
+  getAlertmanagerByName: (name: string) => APIAlertmanagerUpstreamT | undefined;
+  isReadOnlyAlertmanager: (name: string) => boolean;
+  getClusterAlertmanagersWithoutReadOnly: (clusterID: string) => string[];
+  readonly readOnlyAlertmanagers: APIAlertmanagerUpstreamT[];
+  readonly readWriteAlertmanagers: APIAlertmanagerUpstreamT[];
+  readonly clustersWithoutReadOnly: APIAlertsResponseUpstreamsClusterMapT;
+  getColorData: (name: string, value: string) => APILabelColorT | undefined;
+  setGrids: (g: APIGridT[]) => void;
+  setUpstreams: (u: APIAlertsResponseUpstreamsT) => void;
+  setInstances: (i: APIAlertmanagerUpstreamT[]) => void;
+  setClusters: (c: APIAlertsResponseUpstreamsClusterMapT) => void;
+}
+
+interface AlertStoreInfoT {
+  authentication: {
+    enabled: boolean;
+    username: string;
+  };
+  totalAlerts: number;
+  version: string;
+  upgradeReady: boolean;
+  upgradeNeeded: boolean;
+  isRetrying: boolean;
+  reloadNeeded: boolean;
+  setIsRetrying: () => void;
+  clearIsRetrying: () => void;
+  setUpgradeNeeded: () => void;
+  setReloadNeeded: () => void;
+  setTotalAlerts: (n: number) => void;
+}
+
+interface AlertStoreSettingsT {
+  values: APISettingsT;
+}
+
+interface AlertStoreStatusT {
+  value: symbol;
+  lastUpdateAt: number | Date;
+  error: null | string;
+  stopped: boolean;
+  paused: boolean;
+  setIdle: () => void;
+  setFetching: () => void;
+  setProcessing: () => void;
+  setFailure: (err: string) => void;
+  pause: () => void;
+  resume: () => void;
+  togglePause: () => void;
+  stop: () => void;
+}
+
 class AlertStore {
-  filters = observable(
-    {
-      values: [] as FilterT[],
-      addFilter(raw: string) {
-        if (this.values.filter((f) => f.raw === raw).length === 0) {
-          this.values.push(NewUnappliedFilter(raw));
-          UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
-        }
-      },
-      removeFilter(raw: string) {
-        if (this.values.filter((f) => f.raw === raw).length > 0) {
-          this.values = this.values.filter((f) => f.raw !== raw);
-          UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
-        }
-      },
-      replaceFilter(oldRaw: string, newRaw: string) {
-        const index = this.values.findIndex((e) => e.raw === oldRaw);
-        if (index >= 0) {
-          // first check if we would create a duplicated filter
-          if (this.values.findIndex((e) => e.raw === newRaw) >= 0) {
-            // we already have newRaw, simply drop oldRaw
-            this.removeFilter(oldRaw);
-          } else {
-            // no dups, continue with a swap
-            this.values[index] = NewUnappliedFilter(newRaw);
-            UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
-          }
-        }
-      },
-      setFilters(raws: string[]) {
-        this.values = raws.map((raw) => NewUnappliedFilter(raw));
-        UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
-      },
-      setFilterValues(v: FilterT[]) {
-        this.values = v;
-      },
-      setWithoutLocation(raws: string[]) {
-        const filtersByRaw: { [key: string]: FilterT } = this.values.reduce(
-          function (map: { [key: string]: FilterT }, obj) {
-            map[toJS(obj.raw)] = toJS(obj);
-            return map;
-          },
-          {}
-        );
-        this.values = raws.map((raw) =>
-          filtersByRaw[raw] ? filtersByRaw[raw] : NewUnappliedFilter(raw)
-        );
-      },
-      applyAllFilters() {
-        for (let i = 0; i < this.values.length; i++) {
-          this.values[i].applied = true;
-        }
-      },
-    },
-    {
-      addFilter: action.bound,
-      removeFilter: action.bound,
-      replaceFilter: action.bound,
-      setFilters: action.bound,
-      setFilterValues: action.bound,
-      setWithoutLocation: action.bound,
-      applyAllFilters: action.bound,
-    },
-    { name: "API Filters" }
-  );
-
-  data = observable(
-    {
-      colors: {} as APIAlertsResponseColorsT,
-      counters: [] as APILabelCounterT[],
-      grids: [] as APIGridT[],
-      silences: {} as APIAlertsResponseSilenceMapT,
-      upstreams: {
-        counters: { total: 0, healthy: 0, failed: 0 },
-        instances: [],
-        clusters: {},
-      } as APIAlertsResponseUpstreamsT,
-      receivers: [] as string[],
-      get gridPadding(): number {
-        return this.grids.filter((g) => g.labelName !== "").length > 0 ? 5 : 0;
-      },
-      getAlertmanagerByName(
-        name: string
-      ): APIAlertmanagerUpstreamT | undefined {
-        return this.upstreams.instances.find((am) => am.name === name);
-      },
-      isReadOnlyAlertmanager(name: string): boolean {
-        return this.readOnlyAlertmanagers.map((am) => am.name).includes(name);
-      },
-      getClusterAlertmanagersWithoutReadOnly(clusterID: string): string[] {
-        return this.clustersWithoutReadOnly[clusterID] || [];
-      },
-      get readOnlyAlertmanagers(): APIAlertmanagerUpstreamT[] {
-        return this.upstreams.instances.filter((am) => am.readonly === true);
-      },
-      get readWriteAlertmanagers(): APIAlertmanagerUpstreamT[] {
-        return this.upstreams.instances
-          .filter((am) => am.readonly === false)
-          .map((am) =>
-            Object.assign({}, am, {
-              clusterMembers: am.clusterMembers.filter(
-                (m) => this.isReadOnlyAlertmanager(m) === false
-              ),
-            })
-          );
-      },
-      get clustersWithoutReadOnly(): APIAlertsResponseUpstreamsClusterMapT {
-        const clusters: APIAlertsResponseUpstreamsClusterMapT = {};
-        for (const clusterID of Object.keys(this.upstreams.clusters)) {
-          const members = this.upstreams.clusters[clusterID].filter(
-            (member) => this.isReadOnlyAlertmanager(member) === false
-          );
-          if (members.length > 0) {
-            clusters[clusterID] = members;
-          }
-        }
-        return clusters;
-      },
-      getColorData(name: string, value: string): APILabelColorT | undefined {
-        if (this.colors[name] !== undefined) {
-          return this.colors[name][value];
-        }
-      },
-      setGrids(g: APIGridT[]) {
-        this.grids = g;
-      },
-      setUpstreams(u: APIAlertsResponseUpstreamsT) {
-        this.upstreams = u;
-      },
-      setInstances(i: APIAlertmanagerUpstreamT[]) {
-        this.upstreams.instances = i;
-      },
-      setClusters(c: APIAlertsResponseUpstreamsClusterMapT) {
-        this.upstreams.clusters = c;
-      },
-    },
-    {
-      gridPadding: computed,
-      readOnlyAlertmanagers: computed,
-      readWriteAlertmanagers: computed,
-      clustersWithoutReadOnly: computed,
-      setGrids: action.bound,
-      setUpstreams: action.bound,
-      setInstances: action.bound,
-      setClusters: action.bound,
-    },
-    { name: "API Response data" }
-  );
-
-  info = observable(
-    {
-      authentication: {
-        enabled: false as boolean,
-        username: "",
-      },
-      totalAlerts: 0,
-      version: "unknown",
-      upgradeReady: false as boolean,
-      upgradeNeeded: false as boolean,
-      isRetrying: false as boolean,
-      reloadNeeded: false as boolean,
-      setIsRetrying() {
-        this.isRetrying = true;
-      },
-      clearIsRetrying() {
-        this.isRetrying = false;
-      },
-      setUpgradeNeeded() {
-        this.upgradeNeeded = true;
-      },
-      setReloadNeeded() {
-        this.reloadNeeded = true;
-      },
-      setTotalAlerts(n: number) {
-        this.totalAlerts = n;
-      },
-    },
-    {
-      setIsRetrying: action.bound,
-      clearIsRetrying: action.bound,
-      setReloadNeeded: action.bound,
-      setUpgradeNeeded: action.bound,
-      setTotalAlerts: action.bound,
-    },
-    { name: "API response info" }
-  );
-
-  settings = observable(
-    {
-      values: {
-        staticColorLabels: [] as string[],
-        annotationsDefaultHidden: false as boolean,
-        annotationsHidden: [] as string[],
-        annotationsVisible: [] as string[],
-        sorting: {
-          grid: {
-            order: "startsAt",
-            reverse: false as boolean,
-            label: "alertname",
-          },
-          valueMapping: {},
-        },
-        silenceForm: {
-          strip: {
-            labels: [] as string[],
-          },
-        },
-        alertAcknowledgement: {
-          enabled: false as boolean,
-          durationSeconds: 900,
-          author: "karma / author missing",
-          commentPrefix: "",
-        },
-      },
-    },
-    {},
-    {
-      name: "Global settings",
-    }
-  );
-
-  status = observable(
-    {
-      value: AlertStoreStatuses.Idle,
-      lastUpdateAt: 0 as number | Date,
-      error: null as null | string,
-      stopped: false as boolean,
-      paused: false as boolean,
-      setIdle() {
-        this.value = AlertStoreStatuses.Idle;
-        this.error = null;
-        this.lastUpdateAt = new Date();
-      },
-      setFetching() {
-        this.value = AlertStoreStatuses.Fetching;
-      },
-      setProcessing() {
-        this.value = AlertStoreStatuses.Processing;
-        this.error = null;
-      },
-      setFailure(err: string) {
-        this.value = AlertStoreStatuses.Failure;
-        this.error = err;
-        this.lastUpdateAt = new Date();
-      },
-      pause() {
-        this.paused = true;
-      },
-      resume() {
-        this.paused = this.stopped ? true : false;
-      },
-      togglePause() {
-        this.paused = this.stopped ? true : !this.paused;
-      },
-      stop() {
-        this.paused = true;
-        this.stopped = true;
-      },
-    },
-    {
-      setIdle: action,
-      setFetching: action,
-      setProcessing: action,
-      setFailure: action,
-      pause: action.bound,
-      resume: action.bound,
-      togglePause: action.bound,
-      stop: action.bound,
-    },
-    { name: "Store status" }
-  );
+  filters: AlertStoreFiltersT;
+  data: AlertStoreDataT;
+  info: AlertStoreInfoT;
+  settings: AlertStoreSettingsT;
+  status: AlertStoreStatusT;
 
   constructor(initialFilters: null | string[]) {
+    this.filters = observable(
+      {
+        values: [] as FilterT[],
+        addFilter(raw: string) {
+          if (this.values.filter((f) => f.raw === raw).length === 0) {
+            this.values.push(NewUnappliedFilter(raw));
+            UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
+          }
+        },
+        removeFilter(raw: string) {
+          if (this.values.filter((f) => f.raw === raw).length > 0) {
+            this.values = this.values.filter((f) => f.raw !== raw);
+            UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
+          }
+        },
+        replaceFilter(oldRaw: string, newRaw: string) {
+          const index = this.values.findIndex((e) => e.raw === oldRaw);
+          if (index >= 0) {
+            // first check if we would create a duplicated filter
+            if (this.values.findIndex((e) => e.raw === newRaw) >= 0) {
+              // we already have newRaw, simply drop oldRaw
+              this.removeFilter(oldRaw);
+            } else {
+              // no dups, continue with a swap
+              this.values[index] = NewUnappliedFilter(newRaw);
+              UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
+            }
+          }
+        },
+        setFilters(raws: string[]) {
+          this.values = raws.map((raw) => NewUnappliedFilter(raw));
+          UpdateLocationSearch({ q: this.values.map((f) => f.raw) });
+        },
+        setFilterValues(v: FilterT[]) {
+          this.values = v;
+        },
+        setWithoutLocation(raws: string[]) {
+          const filtersByRaw: { [key: string]: FilterT } = this.values.reduce(
+            function (map: { [key: string]: FilterT }, obj) {
+              map[toJS(obj.raw)] = toJS(obj);
+              return map;
+            },
+            {}
+          );
+          this.values = raws.map((raw) =>
+            filtersByRaw[raw] ? filtersByRaw[raw] : NewUnappliedFilter(raw)
+          );
+        },
+        applyAllFilters() {
+          for (let i = 0; i < this.values.length; i++) {
+            this.values[i].applied = true;
+          }
+        },
+      },
+      {
+        addFilter: action.bound,
+        removeFilter: action.bound,
+        replaceFilter: action.bound,
+        setFilters: action.bound,
+        setFilterValues: action.bound,
+        setWithoutLocation: action.bound,
+        applyAllFilters: action.bound,
+      },
+      { name: "API Filters" }
+    );
+
+    this.data = observable(
+      {
+        colors: {} as APIAlertsResponseColorsT,
+        counters: [] as APILabelCounterT[],
+        grids: [] as APIGridT[],
+        silences: {} as APIAlertsResponseSilenceMapT,
+        upstreams: {
+          counters: { total: 0, healthy: 0, failed: 0 },
+          instances: [],
+          clusters: {},
+        } as APIAlertsResponseUpstreamsT,
+        receivers: [] as string[],
+        get gridPadding(): number {
+          return this.grids.filter((g) => g.labelName !== "").length > 0
+            ? 5
+            : 0;
+        },
+        getAlertmanagerByName(
+          name: string
+        ): APIAlertmanagerUpstreamT | undefined {
+          return this.upstreams.instances.find((am) => am.name === name);
+        },
+        isReadOnlyAlertmanager(name: string): boolean {
+          return this.readOnlyAlertmanagers.map((am) => am.name).includes(name);
+        },
+        getClusterAlertmanagersWithoutReadOnly(clusterID: string): string[] {
+          return this.clustersWithoutReadOnly[clusterID] || [];
+        },
+        get readOnlyAlertmanagers(): APIAlertmanagerUpstreamT[] {
+          return this.upstreams.instances.filter((am) => am.readonly === true);
+        },
+        get readWriteAlertmanagers(): APIAlertmanagerUpstreamT[] {
+          return this.upstreams.instances
+            .filter((am) => am.readonly === false)
+            .map((am) =>
+              Object.assign({}, am, {
+                clusterMembers: am.clusterMembers.filter(
+                  (m) => this.isReadOnlyAlertmanager(m) === false
+                ),
+              })
+            );
+        },
+        get clustersWithoutReadOnly(): APIAlertsResponseUpstreamsClusterMapT {
+          const clusters: APIAlertsResponseUpstreamsClusterMapT = {};
+          for (const clusterID of Object.keys(this.upstreams.clusters)) {
+            const members = this.upstreams.clusters[clusterID].filter(
+              (member) => this.isReadOnlyAlertmanager(member) === false
+            );
+            if (members.length > 0) {
+              clusters[clusterID] = members;
+            }
+          }
+          return clusters;
+        },
+        getColorData(name: string, value: string): APILabelColorT | undefined {
+          if (this.colors[name] !== undefined) {
+            return this.colors[name][value];
+          }
+        },
+        setGrids(g: APIGridT[]) {
+          this.grids = g;
+        },
+        setUpstreams(u: APIAlertsResponseUpstreamsT) {
+          this.upstreams = u;
+        },
+        setInstances(i: APIAlertmanagerUpstreamT[]) {
+          this.upstreams.instances = i;
+        },
+        setClusters(c: APIAlertsResponseUpstreamsClusterMapT) {
+          this.upstreams.clusters = c;
+        },
+      },
+      {
+        gridPadding: computed,
+        readOnlyAlertmanagers: computed,
+        readWriteAlertmanagers: computed,
+        clustersWithoutReadOnly: computed,
+        setGrids: action.bound,
+        setUpstreams: action.bound,
+        setInstances: action.bound,
+        setClusters: action.bound,
+      },
+      { name: "API Response data" }
+    );
+
+    this.info = observable(
+      {
+        authentication: {
+          enabled: false as boolean,
+          username: "",
+        },
+        totalAlerts: 0,
+        version: "unknown",
+        upgradeReady: false as boolean,
+        upgradeNeeded: false as boolean,
+        isRetrying: false as boolean,
+        reloadNeeded: false as boolean,
+        setIsRetrying() {
+          this.isRetrying = true;
+        },
+        clearIsRetrying() {
+          this.isRetrying = false;
+        },
+        setUpgradeNeeded() {
+          this.upgradeNeeded = true;
+        },
+        setReloadNeeded() {
+          this.reloadNeeded = true;
+        },
+        setTotalAlerts(n: number) {
+          this.totalAlerts = n;
+        },
+      },
+      {
+        setIsRetrying: action.bound,
+        clearIsRetrying: action.bound,
+        setReloadNeeded: action.bound,
+        setUpgradeNeeded: action.bound,
+        setTotalAlerts: action.bound,
+      },
+      { name: "API response info" }
+    );
+
+    this.settings = observable(
+      {
+        values: {
+          staticColorLabels: [] as string[],
+          annotationsDefaultHidden: false as boolean,
+          annotationsHidden: [] as string[],
+          annotationsVisible: [] as string[],
+          sorting: {
+            grid: {
+              order: "startsAt",
+              reverse: false as boolean,
+              label: "alertname",
+            },
+            valueMapping: {},
+          },
+          silenceForm: {
+            strip: {
+              labels: [] as string[],
+            },
+          },
+          alertAcknowledgement: {
+            enabled: false as boolean,
+            durationSeconds: 900,
+            author: "karma / author missing",
+            commentPrefix: "",
+          },
+        },
+      },
+      {},
+      {
+        name: "Global settings",
+      }
+    );
+
+    this.status = observable(
+      {
+        value: AlertStoreStatuses.Idle,
+        lastUpdateAt: 0 as number | Date,
+        error: null as null | string,
+        stopped: false as boolean,
+        paused: false as boolean,
+        setIdle() {
+          this.value = AlertStoreStatuses.Idle;
+          this.error = null;
+          this.lastUpdateAt = new Date();
+        },
+        setFetching() {
+          this.value = AlertStoreStatuses.Fetching;
+        },
+        setProcessing() {
+          this.value = AlertStoreStatuses.Processing;
+          this.error = null;
+        },
+        setFailure(err: string) {
+          this.value = AlertStoreStatuses.Failure;
+          this.error = err;
+          this.lastUpdateAt = new Date();
+        },
+        pause() {
+          this.paused = true;
+        },
+        resume() {
+          this.paused = this.stopped ? true : false;
+        },
+        togglePause() {
+          this.paused = this.stopped ? true : !this.paused;
+        },
+        stop() {
+          this.paused = true;
+          this.stopped = true;
+        },
+      },
+      {
+        setIdle: action,
+        setFetching: action,
+        setProcessing: action,
+        setFailure: action,
+        pause: action.bound,
+        resume: action.bound,
+        togglePause: action.bound,
+        stop: action.bound,
+      },
+      { name: "Store status" }
+    );
+
     if (initialFilters !== null) this.filters.setFilters(initialFilters);
   }
 
