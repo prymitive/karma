@@ -13,6 +13,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BackgroundClassMap } from "Common/Colors";
 import { TooltipWrapper } from "Components/TooltipWrapper";
+import { ThemeContext } from "Components/Theme";
 import GroupHeader from "./GroupHeader";
 import Alert from "./Alert";
 import GroupFooter from "./GroupFooter";
@@ -168,9 +169,13 @@ const AlertGroup: FC<{
     }
   }
 
+  const context = React.useContext(ThemeContext);
+
   return (
     <div
-      className="components-grid-alertgrid-alertgroup"
+      className={`components-grid-alertgrid-alertgroup ${
+        context.animations.duration ? "animate" : ""
+      }`}
       style={{
         width: groupWidth,
         zIndex: isMenuOpen ? 100 : undefined,

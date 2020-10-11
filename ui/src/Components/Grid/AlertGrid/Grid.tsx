@@ -139,7 +139,11 @@ const Grid: FC<{
             ? grid.alertGroups.slice(0, groupsToRender).map((group) => (
                 <CSSTransition
                   key={group.id}
-                  classNames="components-animation-fade"
+                  classNames={
+                    context.animations.duration
+                      ? "components-animation-fade"
+                      : ""
+                  }
                   timeout={context.animations.duration}
                   onEntering={repack}
                   onExited={debouncedRepack}

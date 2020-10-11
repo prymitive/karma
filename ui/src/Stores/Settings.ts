@@ -102,15 +102,20 @@ interface SilenceFormConfigStorage {
   author: string;
 }
 class SilenceFormConfig {
-  config: SilenceFormConfigStorage = localStored(
-    "silenceFormConfig",
-    { author: "" },
-    { delay: 100 }
-  );
+  config: SilenceFormConfigStorage;
+  saveAuthor: (newAuthor: string) => void;
 
-  saveAuthor = action((newAuthor: string) => {
-    this.config.author = newAuthor;
-  });
+  constructor() {
+    this.config = localStored(
+      "silenceFormConfig",
+      { author: "" },
+      { delay: 100 }
+    );
+
+    this.saveAuthor = action((newAuthor: string) => {
+      this.config.author = newAuthor;
+    });
+  }
 }
 
 export type SortOrderT = "default" | "disabled" | "startsAt" | "label";
@@ -129,6 +134,10 @@ class GridConfig {
   });
 
   config: GridConfigStorage;
+  setSortOrder: (o: SortOrderT) => void;
+  setSortLabel: (l: string) => void;
+  setSortReverse: (v: boolean | null) => void;
+
   constructor(groupWidth: number) {
     this.config = localStored(
       "alertGridConfig",
@@ -140,17 +149,17 @@ class GridConfig {
       },
       { delay: 100 }
     );
-  }
 
-  setSortOrder = action((o: SortOrderT) => {
-    this.config.sortOrder = o;
-  });
-  setSortLabel = action((l: string) => {
-    this.config.sortLabel = l;
-  });
-  setSortReverse = action((v: boolean | null) => {
-    this.config.reverseSort = v;
-  });
+    this.setSortOrder = action((o: SortOrderT) => {
+      this.config.sortOrder = o;
+    });
+    this.setSortLabel = action((l: string) => {
+      this.config.sortLabel = l;
+    });
+    this.setSortReverse = action((v: boolean | null) => {
+      this.config.reverseSort = v;
+    });
+  }
 }
 
 interface FilterBarConfigStorage {
@@ -158,6 +167,8 @@ interface FilterBarConfigStorage {
 }
 class FilterBarConfig {
   config: FilterBarConfigStorage;
+  setAutohide: (v: boolean) => void;
+
   constructor(autohide: boolean) {
     this.config = localStored(
       "filterBarConfig",
@@ -168,16 +179,16 @@ class FilterBarConfig {
         delay: 100,
       }
     );
+    this.setAutohide = action((v: boolean) => {
+      this.config.autohide = v;
+    });
   }
-
-  setAutohide = action((v: boolean) => {
-    this.config.autohide = v;
-  });
 }
 
 export type ThemeT = "auto" | "light" | "dark";
 interface ThemeConfigStorage {
   theme: ThemeT;
+  animations: boolean;
 }
 class ThemeConfig {
   options = Object.freeze({
@@ -188,22 +199,29 @@ class ThemeConfig {
     light: { label: "Light theme", value: "light" },
     dark: { label: "Dark theme", value: "dark" },
   });
+
   config: ThemeConfigStorage;
-  constructor(defaultTheme: ThemeT) {
+  setTheme: (v: ThemeT) => void;
+  setAnimations: (v: boolean) => void;
+
+  constructor(defaultTheme: ThemeT, animations: boolean) {
     this.config = localStored(
       "themeConfig",
       {
         theme: defaultTheme,
+        animations: animations,
       },
       {
         delay: 100,
       }
     );
+    this.setTheme = action((v: ThemeT) => {
+      this.config.theme = v;
+    });
+    this.setAnimations = action((v: boolean) => {
+      this.config.animations = v;
+    });
   }
-
-  setTheme = action((v: ThemeT) => {
-    this.config.theme = v;
-  });
 }
 
 interface MultiGridConfigStorage {
@@ -212,6 +230,9 @@ interface MultiGridConfigStorage {
 }
 class MultiGridConfig {
   config: MultiGridConfigStorage;
+  setGridLabel: (l: string) => void;
+  setGridSortReverse: (v: boolean) => void;
+
   constructor(gridLabel: string, gridSortReverse: boolean) {
     this.config = localStored(
       "multiGridConfig",
@@ -223,14 +244,14 @@ class MultiGridConfig {
         delay: 100,
       }
     );
-  }
 
-  setGridLabel = action((l: string) => {
-    this.config.gridLabel = l;
-  });
-  setGridSortReverse = action((v: boolean) => {
-    this.config.gridSortReverse = v;
-  });
+    this.setGridLabel = action((l: string) => {
+      this.config.gridLabel = l;
+    });
+    this.setGridSortReverse = action((v: boolean) => {
+      this.config.gridSortReverse = v;
+    });
+  }
 }
 
 class Settings {
@@ -251,6 +272,7 @@ class Settings {
         HideFiltersWhenIdle: true,
         ColorTitlebar: false,
         Theme: "auto",
+        Animations: true,
         MinimalGroupWidth: 420,
         AlertsPerGroup: 5,
         CollapseGroups: "collapsedOnMobile",
@@ -275,7 +297,10 @@ class Settings {
     this.filterBarConfig = new FilterBarConfig(
       defaultSettings.HideFiltersWhenIdle
     );
-    this.themeConfig = new ThemeConfig(defaultSettings.Theme);
+    this.themeConfig = new ThemeConfig(
+      defaultSettings.Theme,
+      defaultSettings.Animations
+    );
     this.multiGridConfig = new MultiGridConfig(
       defaultSettings.MultiGridLabel,
       defaultSettings.MultiGridSortReverse

@@ -4,12 +4,15 @@ import { act } from "react-dom/test-utils";
 import { mount } from "enzyme";
 
 import { MockAlert, MockAlertGroup } from "__mocks__/Alerts";
-import { MockThemeContext } from "__mocks__/Theme";
+import {
+  MockThemeContext,
+  MockThemeContextWithoutAnimations,
+} from "__mocks__/Theme";
 import { APIAlertGroupT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings, CollapseStateT } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { ThemeContext } from "Components/Theme";
+import { ThemeContext, ThemeCtx } from "Components/Theme";
 import AlertGroup from ".";
 
 let alertStore: AlertStore;
@@ -60,7 +63,8 @@ const MockAlerts = (alertCount: number) => {
 const MountedAlertGroup = (
   afterUpdate: () => void,
   showAlertmanagers: boolean,
-  initialAlertsToRender?: number
+  initialAlertsToRender?: number,
+  theme?: ThemeCtx
 ) => {
   return mount(
     <AlertGroup
@@ -76,7 +80,7 @@ const MountedAlertGroup = (
     />,
     {
       wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: MockThemeContext },
+      wrappingComponentProps: { value: theme || MockThemeContext },
     }
   );
 };
@@ -100,6 +104,27 @@ describe("<AlertGroup />", () => {
     MockAlerts(5);
     const tree = MountedAlertGroup(jest.fn(), true);
     tree.unmount();
+  });
+
+  it("uses 'animate' class when settingsStore.themeConfig.config.animations is true", () => {
+    MockAlerts(5);
+    const tree = MountedAlertGroup(jest.fn(), true, 5, MockThemeContext);
+    expect(
+      tree.find("div.components-grid-alertgrid-alertgroup").hasClass("animate")
+    ).toBe(true);
+  });
+
+  it("doesn't use 'animate' class when settingsStore.themeConfig.config.animations is false", () => {
+    MockAlerts(5);
+    const tree = MountedAlertGroup(
+      jest.fn(),
+      true,
+      5,
+      MockThemeContextWithoutAnimations
+    );
+    expect(
+      tree.find("div.components-grid-alertgrid-alertgroup").hasClass("animate")
+    ).toBe(false);
   });
 
   it("renders Alertmanager cluster labels in footer if showAlertmanagersInFooter=true", () => {

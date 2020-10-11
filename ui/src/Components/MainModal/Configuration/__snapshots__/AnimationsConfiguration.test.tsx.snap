@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AnimationsConfiguration /> matches snapshot with default values 1`] = `
+"
+<div class=\\"form-group mb-0\\">
+  <div class=\\"form-check form-check-inline\\">
+    <span class=\\"custom-control custom-switch\\">
+      <input id=\\"configuration-animations\\"
+             class=\\"custom-control-input\\"
+             type=\\"checkbox\\"
+             value
+             checked
+      >
+      <label class=\\"custom-control-label cursor-pointer mr-3\\"
+             for=\\"configuration-animations\\"
+      >
+        Enable animations
+      </label>
+    </span>
+  </div>
+</div>
+"
+`;

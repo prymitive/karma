@@ -115,7 +115,7 @@ const App: FunctionComponent<AppProps> = observer(
                 ? ReactSelectStyles(ReactSelectColors.Dark)
                 : ReactSelectStyles(ReactSelectColors.Light),
             animations: {
-              duration: 500,
+              duration: settingsStore.themeConfig.config.animations ? 500 : 0,
             },
           }}
         >

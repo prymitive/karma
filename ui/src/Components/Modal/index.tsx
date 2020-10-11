@@ -7,6 +7,8 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 
 import { useHotkeys } from "react-hotkeys-hook";
 
+import { ThemeContext } from "Components/Theme";
+
 const ModalInner: FC<{
   size: "lg" | "xl";
   isUpper: boolean;
@@ -60,12 +62,15 @@ const Modal: FC<{
   onExited,
   children,
 }) => {
+  const context = React.useContext(ThemeContext);
   return ReactDOM.createPortal(
     <React.Fragment>
       <CSSTransition
         in={isOpen}
-        classNames="components-animation-modal"
-        timeout={300}
+        classNames={
+          context.animations.duration ? "components-animation-modal" : ""
+        }
+        timeout={context.animations.duration ? 300 : 0}
         onExited={onExited}
         enter
         exit
@@ -78,7 +83,7 @@ const Modal: FC<{
       <CSSTransition
         in={isOpen && !isUpper}
         classNames="components-animation-backdrop"
-        timeout={300}
+        timeout={context.animations.duration ? 300 : 0}
         enter
         exit
         unmountOnExit
