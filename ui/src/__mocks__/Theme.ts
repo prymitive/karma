@@ -11,4 +11,12 @@ const MockThemeContext = {
   reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
 };
 
-export { MockThemeContext };
+const MockThemeContextWithoutAnimations = {
+  animations: {
+    duration: 0,
+  },
+  isDark: false,
+  reactSelectStyles: ReactSelectStyles(ReactSelectColors.Light),
+};
+
+export { MockThemeContext, MockThemeContextWithoutAnimations };

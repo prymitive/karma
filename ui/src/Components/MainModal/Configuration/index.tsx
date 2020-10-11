@@ -11,6 +11,7 @@ import { AlertGroupCollapseConfiguration } from "./AlertGroupCollapseConfigurati
 import { AlertGroupTitleBarColor } from "./AlertGroupTitleBarColor";
 import { ThemeConfiguration } from "./ThemeConfiguration";
 import { MultiGridConfiguration } from "./MultiGridConfiguration";
+import { AnimationsConfiguration } from "./AnimationsConfiguration";
 
 const Configuration: FC<{
   settingsStore: Settings;
@@ -33,6 +34,7 @@ const Configuration: FC<{
         <React.Fragment>
           <ThemeConfiguration settingsStore={settingsStore} />
           <AlertGroupTitleBarColor settingsStore={settingsStore} />
+          <AnimationsConfiguration settingsStore={settingsStore} />
         </React.Fragment>
       }
       defaultIsOpen={defaultIsOpen}

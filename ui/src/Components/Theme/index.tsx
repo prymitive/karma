@@ -40,7 +40,7 @@ const Placeholder = () => {
   );
 };
 
-interface ThemeCtx {
+export interface ThemeCtx {
   isDark: boolean;
   reactSelectStyles: Styles;
   animations: {

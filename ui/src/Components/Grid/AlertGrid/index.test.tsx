@@ -6,12 +6,15 @@ import { shallow, mount } from "enzyme";
 import { advanceBy, clear } from "jest-date-mock";
 
 import { MockAlert, MockAlertGroup } from "__mocks__/Alerts";
-import { MockThemeContext } from "__mocks__/Theme";
+import {
+  MockThemeContext,
+  MockThemeContextWithoutAnimations,
+} from "__mocks__/Theme";
 import { mockMatchMedia } from "__mocks__/matchMedia";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { ThemeContext } from "Components/Theme";
+import { ThemeContext, ThemeCtx } from "Components/Theme";
 import { GetGridElementWidth, GridSizesConfig } from "./GridSize";
 import Grid from "./Grid";
 import AlertGrid from ".";
@@ -109,7 +112,7 @@ const ShallowGrid = () => {
   );
 };
 
-const MountedGrid = () => {
+const MountedGrid = (theme?: ThemeCtx) => {
   return mount(
     <Grid
       alertStore={alertStore}
@@ -122,7 +125,7 @@ const MountedGrid = () => {
     />,
     {
       wrappingComponent: ThemeContext.Provider,
-      wrappingComponentProps: { value: MockThemeContext },
+      wrappingComponentProps: { value: theme || MockThemeContext },
     }
   );
 };
@@ -183,6 +186,25 @@ const MockGroupList = (count: number, alertPerGroup: number) => {
 };
 
 describe("<Grid />", () => {
+  it("uses animations when settingsStore.themeConfig.config.animations is true", () => {
+    MockGroupList(1, 1);
+    const tree = MountedGrid(MockThemeContext);
+    expect(
+      tree.find("div.components-grid-alertgrid-alertgroup").html()
+    ).toMatch(/animate components-animation-fade-appear/);
+  });
+
+  it("doesn't use animations when settingsStore.themeConfig.config.animations is false", () => {
+    jest
+      .spyOn(React, "useContext")
+      .mockImplementation(() => MockThemeContextWithoutAnimations);
+    MockGroupList(1, 1);
+    const tree = MountedGrid(MockThemeContextWithoutAnimations);
+    expect(
+      tree.find("div.components-grid-alertgrid-alertgroup").html()
+    ).not.toMatch(/animate components-animation-fade-appear/);
+  });
+
   it("renders only first 50 alert groups", () => {
     MockGroupList(55, 5);
     const tree = MountedGrid();
