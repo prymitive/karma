@@ -8,7 +8,6 @@ exports[`<FilterBarConfiguration /> matches snapshot with default values 1`] = `
       <input id=\\"configuration-autohide\\"
              class=\\"custom-control-input\\"
              type=\\"checkbox\\"
-             value
              checked
       >
       <label class=\\"custom-control-label cursor-pointer mr-3\\"

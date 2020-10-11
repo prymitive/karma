@@ -2,6 +2,7 @@ import { action } from "mobx";
 import { localStored } from "mobx-stored";
 
 import { UIDefaults } from "Models/UI";
+import { OptionT } from "Common/Select";
 
 interface SavedFiltersStorage {
   filters: string[];
@@ -191,20 +192,21 @@ interface ThemeConfigStorage {
   animations: boolean;
 }
 class ThemeConfig {
-  options = Object.freeze({
-    auto: {
-      label: "Automatic theme, follow browser preference",
-      value: "auto",
-    },
-    light: { label: "Light theme", value: "light" },
-    dark: { label: "Dark theme", value: "dark" },
-  });
-
+  options: { [key: string]: OptionT };
   config: ThemeConfigStorage;
   setTheme: (v: ThemeT) => void;
   setAnimations: (v: boolean) => void;
 
   constructor(defaultTheme: ThemeT, animations: boolean) {
+    this.options = Object.freeze({
+      auto: {
+        label: "Automatic theme, follow browser preference",
+        value: "auto",
+      },
+      light: { label: "Light theme", value: "light" },
+      dark: { label: "Dark theme", value: "dark" },
+    });
+
     this.config = localStored(
       "themeConfig",
       {
@@ -212,7 +214,7 @@ class ThemeConfig {
         animations: animations,
       },
       {
-        delay: 100,
+        delay: 0,
       }
     );
     this.setTheme = action((v: ThemeT) => {

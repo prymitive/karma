@@ -5,7 +5,7 @@ import { mount } from "enzyme";
 import toDiffableHtml from "diffable-html";
 
 import { MockThemeContext } from "__mocks__/Theme";
-import { Settings } from "Stores/Settings";
+import { Settings, ThemeT } from "Stores/Settings";
 import { ThemeConfiguration } from "./ThemeConfiguration";
 
 let settingsStore: Settings;
@@ -29,7 +29,7 @@ describe("<ThemeConfiguration />", () => {
   });
 
   it("resets stored config to defaults if it is invalid", (done) => {
-    (settingsStore.themeConfig.config.theme as string) = "foo";
+    settingsStore.themeConfig.setTheme("foo" as ThemeT);
     const tree = FakeConfiguration();
     const select = tree.find("div.react-select__value-container");
     expect(select.text()).toBe(settingsStore.themeConfig.options.auto.label);

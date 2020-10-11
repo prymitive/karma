@@ -57,7 +57,6 @@ exports[`<MultiGridConfiguration /> matches snapshot with default values 1`] = `
         <input id=\\"configuration-multigrid-sort-reverse\\"
                class=\\"custom-control-input\\"
                type=\\"checkbox\\"
-               value
         >
         <label class=\\"custom-control-label cursor-pointer mr-3\\"
                for=\\"configuration-multigrid-sort-reverse\\"
