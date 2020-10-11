@@ -19,7 +19,6 @@ const AlertGroupTitleBarColor: FC<{
             id="configuration-colortitlebar"
             className="custom-control-input"
             type="checkbox"
-            value=""
             checked={
               settingsStore.alertGroupConfig.config.colorTitleBar || false
             }

@@ -71,7 +71,6 @@ const AlertGroupSortConfiguration: FC<{
                 id="configuration-sort-reverse"
                 className="custom-control-input"
                 type="checkbox"
-                value=""
                 checked={settingsStore.gridConfig.config.reverseSort || false}
                 onChange={(event) => onSortReverseChange(event.target.checked)}
               />

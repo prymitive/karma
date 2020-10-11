@@ -26,7 +26,7 @@ const ThemeConfiguration: FC<{
     };
   };
 
-  const onCollapseChange = (newValue: ThemeT) => {
+  const onChange = (newValue: ThemeT) => {
     settingsStore.themeConfig.setTheme(newValue);
   };
 
@@ -40,9 +40,7 @@ const ThemeConfiguration: FC<{
         instanceId="configuration-theme"
         defaultValue={valueToOption(settingsStore.themeConfig.config.theme)}
         options={Object.values(settingsStore.themeConfig.options)}
-        onChange={(option) =>
-          onCollapseChange((option as OptionT).value as ThemeT)
-        }
+        onChange={(option) => onChange((option as OptionT).value as ThemeT)}
         hideSelectedOptions
       />
     </div>

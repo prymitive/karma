@@ -24,7 +24,6 @@ const MultiGridConfiguration: FC<{
               id="configuration-multigrid-sort-reverse"
               className="custom-control-input"
               type="checkbox"
-              value=""
               checked={
                 settingsStore.multiGridConfig.config.gridSortReverse || false
               }

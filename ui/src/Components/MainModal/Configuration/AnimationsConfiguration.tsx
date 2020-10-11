@@ -19,7 +19,6 @@ const AnimationsConfiguration: FC<{
             id="configuration-animations"
             className="custom-control-input"
             type="checkbox"
-            value=""
             checked={settingsStore.themeConfig.config.animations || false}
             onChange={(event) => onChange(event.target.checked)}
           />

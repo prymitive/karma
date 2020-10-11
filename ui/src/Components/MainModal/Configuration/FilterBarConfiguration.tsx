@@ -18,7 +18,6 @@ const FilterBarConfiguration: FC<{
             id="configuration-autohide"
             className="custom-control-input"
             type="checkbox"
-            value=""
             checked={settingsStore.filterBarConfig.config.autohide || false}
             onChange={(event) => onAutohideChange(event.target.checked)}
           />

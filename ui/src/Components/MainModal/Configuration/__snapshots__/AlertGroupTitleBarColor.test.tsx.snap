@@ -8,7 +8,6 @@ exports[`<AlertGroupTitleBarColor /> matches snapshot with default values 1`] = 
       <input id=\\"configuration-colortitlebar\\"
              class=\\"custom-control-input\\"
              type=\\"checkbox\\"
-             value
       >
       <label class=\\"custom-control-label cursor-pointer mr-3\\"
              for=\\"configuration-colortitlebar\\"

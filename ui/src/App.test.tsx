@@ -19,6 +19,7 @@ const uiDefaults: UIDefaults = {
   AlertsPerGroup: 5,
   CollapseGroups: "collapsedOnMobile",
   Theme: "auto",
+  Animations: true,
   MultiGridLabel: "cluster",
   MultiGridSortReverse: false,
 };
@@ -40,6 +41,7 @@ beforeEach(() => {
 
 afterEach(() => {
   localStorage.setItem("savedFilters", "");
+  localStorage.setItem("themeConfig", "");
   jest.restoreAllMocks();
   window.history.pushState({}, "App", "/");
   global.window.location = {
