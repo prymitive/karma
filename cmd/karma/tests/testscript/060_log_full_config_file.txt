@@ -149,6 +149,7 @@ ui:
   hideFiltersWhenIdle: true
   colorTitlebar: false
   theme: auto
+  animations: false
   minimalGroupWidth: 420
   alertsPerGroup: 5
   collapseGroups: collapsedOnMobile
@@ -436,6 +437,7 @@ level=info msg="  refresh: 10s"
 level=info msg="  hideFiltersWhenIdle: true"
 level=info msg="  colorTitlebar: false"
 level=info msg="  theme: auto"
+level=info msg="  animations: false"
 level=info msg="  minimalGroupWidth: 420"
 level=info msg="  alertsPerGroup: 5"
 level=info msg="  collapseGroups: collapsedOnMobile"

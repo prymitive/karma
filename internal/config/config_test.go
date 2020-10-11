@@ -122,6 +122,7 @@ ui:
   hideFiltersWhenIdle: true
   colorTitlebar: false
   theme: auto
+  animations: true
   minimalGroupWidth: 420
   alertsPerGroup: 5
   collapseGroups: collapsedOnMobile
