@@ -162,6 +162,7 @@ type configSchema struct {
 		HideFiltersWhenIdle  bool   `yaml:"hideFiltersWhenIdle" koanf:"hideFiltersWhenIdle"`
 		ColorTitlebar        bool   `yaml:"colorTitlebar" koanf:"colorTitlebar"`
 		Theme                string `yaml:"theme" koanf:"theme"`
+		Animations           bool   `yaml:"animations" koanf:"animations"`
 		MinimalGroupWidth    int    `yaml:"minimalGroupWidth" koanf:"minimalGroupWidth"`
 		AlertsPerGroup       int    `yaml:"alertsPerGroup" koanf:"alertsPerGroup"`
 		CollapseGroups       string `yaml:"collapseGroups" koanf:"collapseGroups"`

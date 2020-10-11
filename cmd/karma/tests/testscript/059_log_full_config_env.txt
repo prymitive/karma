@@ -60,6 +60,7 @@ env UI_REFRESH=10s
 env UI_HIDEFILTERSWHENIDLE=false
 env UI_COLORTITLEBAR=true
 env UI_THEME=dark
+env UI_ANIMATIONS=false
 env UI_MINIMALGROUPWIDTH=300
 env UI_ALERTSPERGROUP=2
 env UI_COLLAPSEGROUPS=expanded
@@ -189,6 +190,7 @@ level=info msg="  refresh: 10s"
 level=info msg="  hideFiltersWhenIdle: false"
 level=info msg="  colorTitlebar: true"
 level=info msg="  theme: dark"
+level=info msg="  animations: false"
 level=info msg="  minimalGroupWidth: 300"
 level=info msg="  alertsPerGroup: 2"
 level=info msg="  collapseGroups: expanded"

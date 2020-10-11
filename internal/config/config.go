@@ -119,6 +119,7 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.Bool("ui.hideFiltersWhenIdle", true, "Hide the filters bar when idle")
 	f.Bool("ui.colorTitlebar", false, "Color alert group titlebar based on alert state")
 	f.String("ui.theme", "auto", "Default theme, 'light', 'dark' or 'auto' (follow browser preference)")
+	f.Bool("ui.animations", true, "Enable UI animations")
 	f.Int("ui.minimalGroupWidth", 420, "Minimal width for each alert group on the grid")
 	f.Int("ui.alertsPerGroup", 5, "Default number of alerts to show for each alert group")
 	f.String("ui.collapseGroups", "collapsedOnMobile", "Default state for alert groups")

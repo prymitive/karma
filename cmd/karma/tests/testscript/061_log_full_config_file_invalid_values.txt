@@ -1,7 +1,7 @@
 # Print out and compare logged config set via config file that includes invalid values
 karma.bin-should-fail-no-timestamp --config.file=karma.yaml --check-config
 ! stdout .
-stderr 'Failed to unmarshal configuration: 12 error\(s\) decoding:'
+stderr 'Failed to unmarshal configuration: 13 error\(s\) decoding:'
 
 -- karma.yaml --
 alertmanager:
@@ -54,6 +54,7 @@ ui:
   hideFiltersWhenIdle: z
   colorTitlebar: yum
   theme: x
+  animations: 1a
   minimalGroupWidth: abc4
   alertsPerGroup: 5a
   collapseGroups: collapsedOanMobile
