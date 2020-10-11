@@ -987,6 +987,7 @@ ui:
   hideFiltersWhenIdle: bool
   colorTitlebar: bool
   theme: string
+  animations: bool
   minimalGroupWidth: integer
   alertsPerGroup: integer
   collapseGroups: string
@@ -1010,6 +1011,7 @@ ui:
 
   Default value is `auto`.
 
+- `animations` - enables UI animations
 - `minimalGroupWidth` - minimal width (in pixels) for each alert group rendered
   on the grid. This value is used to calculate the number of columns rendered on
   the grid.
@@ -1036,6 +1038,7 @@ ui:
   hideFiltersWhenIdle: true
   colorTitlebar: false
   theme: "auto"
+  animations: true
   minimalGroupWidth: 420
   alertsPerGroup: 5
   collapseGroups: collapsedOnMobile
