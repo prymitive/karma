@@ -1,16 +1,129 @@
 # Configures sentry when enabled
 
 exec sh -ex ./test.sh &
-karma.bin-should-work --pid-file=karma.pid --log.format=text --log.config=true --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8068
+karma.bin-should-work --pid-file=karma.pid --log.config=true --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8068
 ! stdout .
-stderr 'msg="  private: secret"'
-stderr 'msg="  public: \\"123456789\\""'
+cmp stderr stderr.txt
 
+-- stderr.txt --
+level=info msg="Reading configuration file" path=karma.yaml
+level=info msg="Version: dev"
+level=info msg="Parsed configuration:"
+level=info msg="authentication:"
+level=info msg="  header:"
+level=info msg="    name: \"\""
+level=info msg="    value_re: \"\""
+level=info msg="  basicAuth:"
+level=info msg="    users: []"
+level=info msg="authorization:"
+level=info msg="  groups: []"
+level=info msg="  acl:"
+level=info msg="    silences: \"\""
+level=info msg="alertmanager:"
+level=info msg="  interval: 1m0s"
+level=info msg="  servers:"
+level=info msg="  - cluster: \"\""
+level=info msg="    name: default"
+level=info msg="    uri: http://127.0.0.1:9093"
+level=info msg="    external_uri: \"\""
+level=info msg="    timeout: 40s"
+level=info msg="    proxy: false"
+level=info msg="    readonly: false"
+level=info msg="    tls:"
+level=info msg="      ca: \"\""
+level=info msg="      cert: \"\""
+level=info msg="      key: \"\""
+level=info msg="      insecureSkipVerify: false"
+level=info msg="    headers: {}"
+level=info msg="    cors:"
+level=info msg="      credentials: include"
+level=info msg="alertAcknowledgement:"
+level=info msg="  enabled: false"
+level=info msg="  duration: 15m0s"
+level=info msg="  author: karma"
+level=info msg="  commentPrefix: ACK!"
+level=info msg="annotations:"
+level=info msg="  default:"
+level=info msg="    hidden: false"
+level=info msg="  hidden: []"
+level=info msg="  visible: []"
+level=info msg="  keep: []"
+level=info msg="  strip: []"
+level=info msg="  order: []"
+level=info msg="custom:"
+level=info msg="  css: \"\""
+level=info msg="  js: \"\""
+level=info msg="debug: false"
+level=info msg="filters:"
+level=info msg="  default: []"
+level=info msg="grid:"
+level=info msg="  sorting:"
+level=info msg="    order: startsAt"
+level=info msg="    reverse: true"
+level=info msg="    label: alertname"
+level=info msg="    customValues:"
+level=info msg="      labels: {}"
+level=info msg="karma:"
+level=info msg="  name: karma"
+level=info msg="labels:"
+level=info msg="  keep: []"
+level=info msg="  strip: []"
+level=info msg="  color:"
+level=info msg="    custom: {}"
+level=info msg="    static: []"
+level=info msg="    unique: []"
+level=info msg="listen:"
+level=info msg="  address: 127.0.0.1"
+level=info msg="  port: 8068"
+level=info msg="  prefix: /"
+level=info msg="log:"
+level=info msg="  config: true"
+level=info msg="  level: info"
+level=info msg="  format: text"
+level=info msg="  timestamp: false"
+level=info msg="receivers:"
+level=info msg="  keep: []"
+level=info msg="  strip: []"
+level=info msg="sentry:"
+level=info msg="  private: secret"
+level=info msg="  public: \"123456789\""
+level=info msg="silences:"
+level=info msg="  comments:"
+level=info msg="    linkDetect:"
+level=info msg="      rules: []"
+level=info msg="silenceForm:"
+level=info msg="  strip:"
+level=info msg="    labels: []"
+level=info msg="ui:"
+level=info msg="  refresh: 30s"
+level=info msg="  hideFiltersWhenIdle: true"
+level=info msg="  colorTitlebar: false"
+level=info msg="  theme: auto"
+level=info msg="  animations: true"
+level=info msg="  minimalGroupWidth: 420"
+level=info msg="  alertsPerGroup: 5"
+level=info msg="  collapseGroups: collapsedOnMobile"
+level=info msg="  multiGridLabel: \"\""
+level=info msg="  multiGridSortReverse: false"
+level=info msg="Configured Alertmanager source" name=default proxy=false readonly=false uri=http://127.0.0.1:9093
+level=info msg="Writing PID file" path=karma.pid
+level=info msg="Initial Alertmanager collection"
+level=info msg="Pulling latest alerts and silences from Alertmanager"
+level=info msg="Collecting alerts and silences" alertmanager=default
+level=info msg="GET request" timeout=40 uri=http://127.0.0.1:9093/metrics
+level=error msg="Request failed" error="Get \"http://127.0.0.1:9093/metrics\": dial tcp 127.0.0.1:9093: connect: connection refused" alertmanager=default uri=http://127.0.0.1:9093
+level=error msg="Collection failed" error="Get \"http://127.0.0.1:9093/api/v2/status\": dial tcp 127.0.0.1:9093: connect: connection refused" alertmanager=default
+level=info msg="Collection completed"
+level=info msg="Done, starting HTTP server"
+level=info msg="Starting HTTP server" address=127.0.0.1:8068
+level=info msg="Shutting down HTTP server"
+level=info msg="HTTP server shut down"
+level=info msg="Removing PID file" path=karma.pid
 -- karma.yaml --
 alertmanager:
   servers:
     - name: default
-      uri: http://localhost:9093
+      uri: http://127.0.0.1:9093
 sentry:
   private: secret
   public: 123456789

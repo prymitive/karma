@@ -19,7 +19,7 @@ import (
 	"github.com/prymitive/karma/internal/uri"
 	"github.com/prymitive/karma/internal/verprobe"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 )
 
 const (
@@ -71,13 +71,13 @@ func (am *Alertmanager) probeVersion() string {
 
 	url, err := uri.JoinURL(am.URI, "metrics")
 	if err != nil {
-		log.Errorf("Failed to join url '%s' and path 'metrics': %s", am.SanitizedURI(), err)
+		log.Error().Err(err).Str("uri", am.SanitizedURI()).Msg("Failed to join url with /metrics path")
 		return fakeVersion
 	}
 
 	source, err := am.reader.Read(url, am.HTTPHeaders)
 	if err != nil {
-		log.Errorf("[%s] %s request failed: %s", am.Name, uri.SanitizeURI(url), err)
+		log.Error().Err(err).Str("alertmanager", am.Name).Str("uri", am.SanitizedURI()).Msg("Request failed")
 		return fakeVersion
 	}
 	defer source.Close()
@@ -86,7 +86,7 @@ func (am *Alertmanager) probeVersion() string {
 	if err != nil {
 		return fakeVersion
 	}
-	log.Infof("[%s] Upstream version: %s", am.Name, version)
+	log.Info().Str("version", version).Str("alertmanager", am.Name).Msg("Upstream version")
 
 	return version
 }
@@ -140,9 +140,9 @@ func (am *Alertmanager) pullSilences(version string) error {
 	if err != nil {
 		return err
 	}
-	log.Infof("[%s] Got %d silences(s) in %s", am.Name, len(silences), time.Since(start))
+	log.Info().Str("alertmanager", am.Name).Int("silences", len(silences)).Dur("duration", time.Since(start)).Msg("Got silences")
 
-	log.Infof("[%s] Detecting ticket links in silences (%d)", am.Name, len(silences))
+	log.Info().Str("alertmanager", am.Name).Int("silences", len(silences)).Msg("Detecting ticket links in silences")
 	silenceMap := make(map[string]models.Silence, len(silences))
 	for _, silence := range silences {
 		silence := silence // scopelint pin
@@ -190,15 +190,13 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	var groups []models.AlertGroup
 
 	start := time.Now()
-
 	groups, err = mapper.Collect(am.URI, am.HTTPHeaders, am.RequestTimeout, am.HTTPTransport)
 	if err != nil {
 		return err
 	}
+	log.Info().Str("alertmanager", am.Name).Int("groups", len(groups)).Dur("duration", time.Since((start))).Msg("Collected alert groups")
 
-	log.Infof("[%s] Got %d alert group(s) in %s", am.Name, len(groups), time.Since(start))
-
-	log.Infof("[%s] Deduplicating alert groups (%d)", am.Name, len(groups))
+	log.Info().Str("alertmanager", am.Name).Int("groups", len(groups)).Msg("Deduplicating alert groups")
 	uniqueGroups := map[string]models.AlertGroup{}
 	uniqueAlerts := map[string]map[string]models.Alert{}
 	knownLabelsMap := map[string]bool{}
@@ -230,7 +228,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	colors := models.LabelsColorMap{}
 	autocompleteMap := map[string]models.Autocomplete{}
 
-	log.Infof("[%s] Processing unique alert groups (%d)", am.Name, len(uniqueGroups))
+	log.Info().Str("alertmanager", am.Name).Int("groups", len(uniqueGroups)).Msg("Processing deduplicated alert groups")
 	for _, ag := range uniqueGroups {
 		alerts := make(models.AlertList, 0, len(uniqueAlerts[ag.ID]))
 		for _, alert := range uniqueAlerts[ag.ID] {
@@ -283,7 +281,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		dedupedGroups = append(dedupedGroups, ag)
 	}
 
-	log.Infof("[%s] Merging autocomplete data (%d)", am.Name, len(autocompleteMap))
+	log.Info().Str("alertmanager", am.Name).Int("hints", len(autocompleteMap)).Msg("Merging autocomplete hints")
 	autocomplete := make([]models.Autocomplete, 0, len(autocompleteMap))
 	for _, hint := range autocompleteMap {
 		autocomplete = append(autocomplete, hint)
@@ -442,7 +440,7 @@ func (am *Alertmanager) Error() string {
 	missing, _ := slices.StringSliceDiff(configPeers, apiPeers)
 
 	if len(missing) > 0 {
-		log.Debugf("[%s] cluster peers mismatch, configured: %v, api: %v, missing: %v\n", am.Name, configPeers, apiPeers, missing)
+		log.Debug().Str("alertmanager", am.Name).Strs("configured", configPeers).Strs("api", apiPeers).Strs("missing", missing).Msg("Cluster peers mismatch")
 		return fmt.Sprintf("missing cluster peers: %s", strings.Join(missing, ", "))
 	}
 

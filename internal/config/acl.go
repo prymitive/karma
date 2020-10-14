@@ -49,12 +49,12 @@ func ReadSilenceACLConfig(path string) (*silencesACLSchema, error) {
 
 	f, err := ioutil.ReadFile(path)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to load silence ACL configuration file %q: %v", path, err)
+		return nil, fmt.Errorf("failed to load silence ACL configuration file %q: %v", path, err)
 	}
 
 	err = yaml.UnmarshalStrict(f, &cfg)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to parse silence ACL configuration file %q: %v", path, err)
+		return nil, fmt.Errorf("failed to parse silence ACL configuration file %q: %v", path, err)
 	}
 
 	return &cfg, nil

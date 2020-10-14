@@ -6,7 +6,7 @@ import (
 	"io"
 	"net/http"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 )
 
 // HTTPURIReader can read data from http:// and https:// URIs
@@ -15,7 +15,8 @@ type HTTPURIReader struct {
 }
 
 func (r *HTTPURIReader) Read(uri string, headers map[string]string) (io.ReadCloser, error) {
-	log.Infof("GET %s timeout=%s", SanitizeURI(uri), r.client.Timeout)
+	suri := SanitizeURI(uri)
+	log.Info().Str("uri", suri).Dur("timeout", r.client.Timeout).Msg("GET request")
 
 	request, err := http.NewRequest("GET", uri, nil)
 	if err != nil {
@@ -33,7 +34,7 @@ func (r *HTTPURIReader) Read(uri string, headers map[string]string) (io.ReadClos
 	}
 
 	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("request to %s failed with %s", SanitizeURI(uri), resp.Status)
+		return nil, fmt.Errorf("request to %s failed with %s", suri, resp.Status)
 	}
 
 	var reader io.ReadCloser

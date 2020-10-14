@@ -12,25 +12,16 @@ import (
 	"github.com/prymitive/karma/internal/slices"
 
 	"github.com/hansrodtang/randomcolor"
+	"github.com/rs/zerolog/log"
 	plcolors "gopkg.in/go-playground/colors.v1"
-
-	log "github.com/sirupsen/logrus"
 )
 
 var lock sync.RWMutex
 
 func labelToSeed(key string, val string) int64 {
 	h := sha1.New()
-
-	_, err := io.WriteString(h, key)
-	if err != nil {
-		log.Errorf("Failed to write label key '%s' to the seed sha1: %s", key, err)
-	}
-
-	_, err = io.WriteString(h, val)
-	if err != nil {
-		log.Errorf("Failed to write label value '%s' to the seed sha1: %s", val, err)
-	}
+	_, _ = io.WriteString(h, key)
+	_, _ = io.WriteString(h, val)
 
 	var seed int64
 	for _, i := range h.Sum(nil) {
@@ -53,7 +44,7 @@ func rgbToBrightness(r, g, b uint8) int32 {
 func parseCustomColor(colorStore models.LabelsColorMap, key, val, customColor string) {
 	color, err := plcolors.Parse(customColor)
 	if err != nil {
-		log.Warningf("Failed to parse custom color for %s=%s: %s", key, val, err)
+		log.Warn().Str("key", key).Str("value", val).Err(err).Msg("Failed to parse custom color")
 		return
 	}
 	rgb := color.ToRGB()

@@ -1,4 +1,7 @@
 # Raises an error if invalid log format is passed
-karma.bin-should-fail --log.format=text --log.config=false --log.format=xml
+karma.bin-should-fail --log.format=xml
 ! stdout .
-stderr 'msg="Unknown log format ''xml''"'
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=error msg="Execution failed" error="unknown log format 'xml'"

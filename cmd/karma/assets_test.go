@@ -6,10 +6,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/gin-contrib/static"
 	"github.com/prymitive/karma/internal/config"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/gin-contrib/static"
 )
 
 type customizationAssetsTest struct {
@@ -100,14 +99,20 @@ func TestStaticExpires404(t *testing.T) {
 
 func TestLoadTemplateChained(t *testing.T) {
 	var tmpl *template.Template
-	tmpl = loadTemplate(tmpl, "ui/build/index.html")
+	tmpl, err := loadTemplate(tmpl, "ui/build/index.html")
 	if tmpl == nil {
 		t.Errorf("loadTemplate returned nil")
 	}
+	if err != nil {
+		t.Errorf("loadTemplate returned error: %s", err)
+	}
 
-	tmpl = loadTemplate(tmpl, "ui/build/manifest.json")
+	tmpl, err = loadTemplate(tmpl, "ui/build/manifest.json")
 	if tmpl == nil {
 		t.Errorf("loadTemplate returned nil")
+	}
+	if err != nil {
+		t.Errorf("loadTemplate returned error: %s", err)
 	}
 
 	if tmpl.Name() != "ui/build/index.html" {
@@ -116,28 +121,16 @@ func TestLoadTemplateChained(t *testing.T) {
 }
 
 func TestLoadTemplateMissing(t *testing.T) {
-	log.SetLevel(log.PanicLevel)
-	defer func() { log.StandardLogger().ExitFunc = nil }()
-	var wasFatal bool
-	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
-
-	loadTemplate(nil, "/this/file/does/not/exist")
-
-	if !wasFatal {
-		t.Error("loadTemplate() with invalid path didn't cause log.Fatal()")
+	_, err := loadTemplate(nil, "/this/file/does/not/exist")
+	if err == nil {
+		t.Error("loadTemplate() with invalid path didn't return any error")
 	}
 }
 
 func TestLoadTemplateUnparsable(t *testing.T) {
-	log.SetLevel(log.PanicLevel)
-	defer func() { log.StandardLogger().ExitFunc = nil }()
-	var wasFatal bool
-	log.StandardLogger().ExitFunc = func(int) { wasFatal = true }
-
-	loadTemplate(nil, "cmd/karma/tests/bindata/go-test-invalid.html")
-
-	if !wasFatal {
-		t.Error("loadTemplate() with unparsable file didn't cause log.Fatal()")
+	_, err := loadTemplate(nil, "cmd/karma/tests/bindata/go-test-invalid.html")
+	if err == nil {
+		t.Error("loadTemplate() with unparsable file didn't return any error")
 	}
 }
 

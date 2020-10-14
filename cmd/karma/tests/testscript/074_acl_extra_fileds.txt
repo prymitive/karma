@@ -1,10 +1,14 @@
 # Raises an error if --authorization.acl points to a file that contains unknown keys
-karma.bin-should-fail --log.format=text --log.config=false --check-config
+karma.bin-should-fail --check-config
 ! stdout .
-! stderr 'msg="Configuration is valid"'
-stderr 'msg="Reading silence ACL config file acl.yaml"'
-stderr 'msg="Failed to parse silence ACL configuration file \\"acl.yaml\\": yaml: unmarshal errors:\\n  line 6: field nameFoo not found in type config.SilenceFilters"'
+cmp stderr stderr.txt
 
+-- stderr.txt --
+level=info msg="Reading configuration file" path=karma.yaml
+level=info msg="Version: dev"
+level=info msg="Configured Alertmanager source" name=default proxy=false readonly=false uri=https://127.0.0.1:9093
+level=info msg="Reading silence ACL config file" path=acl.yaml
+level=error msg="Execution failed" error="failed to parse silence ACL configuration file \"acl.yaml\": yaml: unmarshal errors:\n  line 6: field nameFoo not found in type config.SilenceFilters"
 -- karma.yaml --
 authentication:
   header:
@@ -24,7 +28,7 @@ authorization:
 alertmanager:
   servers:
     - name: default
-      uri: https://localhost:9093
+      uri: https://127.0.0.1:9093
 
 -- acl.yaml --
 rules:

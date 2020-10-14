@@ -1,12 +1,17 @@
 # Raises an error if we have 2 instances with the same name
-karma.bin-should-fail --log.format=text --log.config=false --log.level=error --config.file=karma.yaml
+karma.bin-should-fail --config.file=karma.yaml
 ! stdout .
-stderr 'msg="Failed to register Alertmanager ''am1'' with URI ''https://localhost:9094'': alertmanager upstream ''am1'' already exist"'
+cmp stderr stderr.txt
 
+-- stderr.txt --
+level=info msg="Reading configuration file" path=karma.yaml
+level=info msg="Version: dev"
+level=info msg="Configured Alertmanager source" name=am1 proxy=false readonly=false uri=https://127.0.0.1:9093
+level=error msg="Execution failed" error="failed to register Alertmanager 'am1' with URI 'https://127.0.0.1:9094': alertmanager upstream 'am1' already exist"
 -- karma.yaml --
 alertmanager:
   servers:
     - name: am1
-      uri: https://localhost:9093
+      uri: https://127.0.0.1:9093
     - name: am1
-      uri: https://localhost:9094
+      uri: https://127.0.0.1:9094

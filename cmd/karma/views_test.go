@@ -18,9 +18,10 @@ import (
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 
 	cache "github.com/patrickmn/go-cache"
-	log "github.com/sirupsen/logrus"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/go-cmp/cmp"
@@ -31,7 +32,7 @@ import (
 var upstreamSetup = false
 
 func mockConfig() {
-	log.SetLevel(log.ErrorLevel)
+	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
 	os.Setenv("LABELS_COLOR_UNIQUE", "alertname @receiver @alertmanager @cluster")
 
@@ -39,14 +40,14 @@ func mockConfig() {
 	config.SetupFlags(f)
 	_, err := config.Config.Read(f)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err).Msg("Error")
 	}
 
 	if !upstreamSetup {
 		upstreamSetup = true
 		err := setupUpstreams()
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal().Err(err).Msg("Error")
 		}
 	}
 }
@@ -57,7 +58,10 @@ func ginTestEngine() *gin.Engine {
 	setupRouter(r)
 
 	var t *template.Template
-	t = loadTemplate(t, "ui/build/index.html")
+	t, err := loadTemplate(t, "ui/build/index.html")
+	if err != nil {
+		panic(err)
+	}
 	r.SetHTMLTemplate(t)
 
 	return r
@@ -997,7 +1001,7 @@ func TestAuthentication(t *testing.T) {
 }
 
 func TestUpstreamStatus(t *testing.T) {
-	log.SetLevel(log.FatalLevel)
+	zerolog.SetGlobalLevel(zerolog.FatalLevel)
 
 	type mockT struct {
 		uri  string
@@ -2101,7 +2105,7 @@ func TestUpstreamStatus(t *testing.T) {
 			if err != nil {
 				t.Error(err)
 			}
-			log.SetLevel(log.FatalLevel)
+			zerolog.SetGlobalLevel(zerolog.FatalLevel)
 			pullFromAlertmanager()
 			r := ginTestEngine()
 

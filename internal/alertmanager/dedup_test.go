@@ -7,25 +7,25 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jarcoal/httpmock"
-	"github.com/spf13/pflag"
-
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/jarcoal/httpmock"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
+	"github.com/spf13/pflag"
 )
 
 func init() {
-	log.SetLevel(log.ErrorLevel)
+	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	httpmock.Activate()
 	for _, version := range mock.ListAllMocks() {
 		name := fmt.Sprintf("dedup-mock-%s", version)
 		uri := fmt.Sprintf("http://%s.localhost", version)
 		am, err := alertmanager.NewAlertmanager("cluster", name, uri, alertmanager.WithRequestTimeout(time.Second))
 		if err != nil {
-			log.Fatal(err)
+			log.Fatal().Err(err).Msg("Error")
 		}
 		err = alertmanager.RegisterAlertmanager(am)
 		if err != nil {
@@ -182,7 +182,7 @@ func TestStripReceivers(t *testing.T) {
 }
 
 func TestClearData(t *testing.T) {
-	log.SetLevel(log.PanicLevel)
+	zerolog.SetGlobalLevel(zerolog.PanicLevel)
 	httpmock.Activate()
 	for _, version := range mock.ListAllMocks() {
 		name := fmt.Sprintf("clear-data-mock-%s", version)

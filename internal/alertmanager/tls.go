@@ -6,11 +6,11 @@ import (
 	"io/ioutil"
 	"net/http"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 )
 
 func configureTLSRootCAs(tlsConfig *tls.Config, caPath string) error {
-	log.Debugf("Loading TLS CA cert '%s'", caPath)
+	log.Debug().Str("path", caPath).Msg("Loading TLS CA cert")
 	caCert, err := ioutil.ReadFile(caPath)
 	if err != nil {
 		return err
@@ -22,10 +22,10 @@ func configureTLSRootCAs(tlsConfig *tls.Config, caPath string) error {
 }
 
 func configureTLSClientCert(tlsConfig *tls.Config, certPath, keyPath string) error {
-	log.Debugf("Loading TLS cert '%s' and key '%s'", certPath, keyPath)
+	log.Debug().Str("cert", certPath).Str("key", keyPath).Msg("Loading TLS cert and key")
 	cert, err := tls.LoadX509KeyPair(certPath, keyPath)
 	if err != nil {
-		log.Debugf("Failed to load TLS cert and key: %s", err)
+		log.Debug().Err(err).Msg("Failed to load TLS cert and key")
 		return err
 	}
 	tlsConfig.Certificates = []tls.Certificate{cert}

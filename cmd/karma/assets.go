@@ -12,7 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
-	log "github.com/sirupsen/logrus"
 )
 
 type binaryFileSystem struct {
@@ -49,10 +48,10 @@ func newBinaryFileSystem(root string) *binaryFileSystem {
 }
 
 // load a template from binary asset resource
-func loadTemplate(t *template.Template, path string) *template.Template {
+func loadTemplate(t *template.Template, path string) (*template.Template, error) {
 	templateContent, err := Asset(path)
 	if err != nil {
-		log.Fatal(err)
+		return nil, err
 	}
 
 	var tmpl *template.Template
@@ -71,11 +70,10 @@ func loadTemplate(t *template.Template, path string) *template.Template {
 
 	_, err = tmpl.Parse(string(templateContent))
 	if err != nil {
-		log.Fatal(err)
-		return nil
+		return nil, err
 	}
 
-	return t
+	return t, nil
 }
 
 func serveFileOr404(path string, contentType string, c *gin.Context) {
