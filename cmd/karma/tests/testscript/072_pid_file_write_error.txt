@@ -1,5 +1,11 @@
 # Fails is we cannot write a PID file
 
-karma.bin-should-fail --pid-file=/foo/bar/karma.pid --log.format=text --log.config=false --alertmanager.uri=http://localhost
+karma.bin-should-fail --pid-file=/foo/bar/karma.pid --alertmanager.uri=http://127.0.0.1
 ! stdout .
-stderr 'msg="Failed to write a PID file:'
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=info msg="Version: dev"
+level=info msg="Configured Alertmanager source" name=default proxy=false readonly=false uri=http://127.0.0.1
+level=info msg="Writing PID file" path=/foo/bar/karma.pid
+level=error msg="Execution failed" error="failed to write a PID file: open /foo/bar/karma.pid: no such file or directory"

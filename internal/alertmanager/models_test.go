@@ -5,7 +5,8 @@ import (
 	"testing"
 
 	"github.com/prymitive/karma/internal/config"
-	log "github.com/sirupsen/logrus"
+
+	"github.com/rs/zerolog"
 )
 
 type uriTest struct {
@@ -186,7 +187,7 @@ func TestAlertmanagerSanitizedURI(t *testing.T) {
 }
 
 func TestAlertmanagerPullWithInvalidURI(t *testing.T) {
-	log.SetLevel(log.PanicLevel)
+	zerolog.SetGlobalLevel(zerolog.PanicLevel)
 	am, _ := NewAlertmanager("cluster", "test", "%gh&%ij")
 	err := am.Pull()
 	if err == nil {
@@ -195,7 +196,7 @@ func TestAlertmanagerPullWithInvalidURI(t *testing.T) {
 }
 
 func TestAlertmanagerPullAlertsWithInvalidVersion(t *testing.T) {
-	log.SetLevel(log.PanicLevel)
+	zerolog.SetGlobalLevel(zerolog.PanicLevel)
 	am, _ := NewAlertmanager("cluster", "test", "http://localhost")
 	err := am.pullAlerts("0.0.1")
 	if err == nil {
@@ -204,7 +205,7 @@ func TestAlertmanagerPullAlertsWithInvalidVersion(t *testing.T) {
 }
 
 func TestAlertmanagerPullSilencesWithInvalidVersion(t *testing.T) {
-	log.SetLevel(log.PanicLevel)
+	zerolog.SetGlobalLevel(zerolog.PanicLevel)
 	am, _ := NewAlertmanager("cluster", "test", "http://localhost")
 	err := am.pullSilences("0.0.1")
 	if err == nil {
@@ -213,7 +214,7 @@ func TestAlertmanagerPullSilencesWithInvalidVersion(t *testing.T) {
 }
 
 func TestAlertmanagerFetchStatusWithInvalidVersion(t *testing.T) {
-	log.SetLevel(log.PanicLevel)
+	zerolog.SetGlobalLevel(zerolog.PanicLevel)
 	am, _ := NewAlertmanager("cluster", "test", "http://localhost")
 	_, err := am.fetchStatus("0.0.1")
 	if err == nil {

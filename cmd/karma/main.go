@@ -31,11 +31,12 @@ import (
 	"github.com/gin-gonic/contrib/sentry"
 	"github.com/gin-gonic/gin"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
 
 	raven "github.com/getsentry/raven-go"
 	cache "github.com/patrickmn/go-cache"
-	log "github.com/sirupsen/logrus"
 )
 
 var (
@@ -181,7 +182,7 @@ func setupUpstreams() error {
 	for _, s := range config.Config.Alertmanager.Servers {
 
 		if s.Proxy && s.ReadOnly {
-			return fmt.Errorf("Failed to create Alertmanager '%s' with URI '%s': cannot use proxy and readonly mode at the same time", s.Name, uri.SanitizeURI(s.URI))
+			return fmt.Errorf("failed to create Alertmanager '%s' with URI '%s': cannot use proxy and readonly mode at the same time", s.Name, uri.SanitizeURI(s.URI))
 		}
 
 		var httpTransport http.RoundTripper
@@ -190,7 +191,7 @@ func setupUpstreams() error {
 		if s.TLS.CA != "" || s.TLS.Cert != "" || s.TLS.InsecureSkipVerify {
 			httpTransport, err = alertmanager.NewHTTPTransport(s.TLS.CA, s.TLS.Cert, s.TLS.Key, s.TLS.InsecureSkipVerify)
 			if err != nil {
-				return fmt.Errorf("Failed to create HTTP transport for Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
+				return fmt.Errorf("failed to create HTTP transport for Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
 			}
 		}
 
@@ -207,46 +208,73 @@ func setupUpstreams() error {
 			alertmanager.WithCORSCredentials(s.CORS.Credentials),
 		)
 		if err != nil {
-			return fmt.Errorf("Failed to create Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
+			return fmt.Errorf("failed to create Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
 		}
 		err = alertmanager.RegisterAlertmanager(am)
 		if err != nil {
-			return fmt.Errorf("Failed to register Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
+			return fmt.Errorf("failed to register Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
 		}
 	}
 
 	return nil
 }
 
+func msgFormatter(msg interface{}) string {
+	return fmt.Sprintf("msg=%q", msg)
+}
+func lvlFormatter(level interface{}) string {
+	return fmt.Sprintf("level=%s", level)
+}
+
+func initLogger() {
+	log.Logger = log.Logger.Output(zerolog.ConsoleWriter{
+		Out:           os.Stderr,
+		NoColor:       true,
+		FormatLevel:   lvlFormatter,
+		FormatMessage: msgFormatter,
+		FormatTimestamp: func(interface{}) string {
+			return ""
+		},
+	})
+}
+
 func setupLogger() error {
-	switch config.Config.Log.Level {
-	case "debug":
-		log.SetLevel(log.DebugLevel)
-	case "info":
-		log.SetLevel(log.InfoLevel)
-	case "warning":
-		log.SetLevel(log.WarnLevel)
-	case "error":
-		log.SetLevel(log.ErrorLevel)
-	case "fatal":
-		log.SetLevel(log.FatalLevel)
-	case "panic":
-		log.SetLevel(log.PanicLevel)
-	default:
-		return fmt.Errorf("Unknown log level '%s'", config.Config.Log.Level)
-	}
+	zerolog.DurationFieldUnit = time.Second
 
 	switch config.Config.Log.Format {
 	case "text":
-		log.SetFormatter(&log.TextFormatter{
-			DisableTimestamp: !config.Config.Log.Timestamp,
-		})
+		if config.Config.Log.Timestamp {
+			log.Logger = log.Logger.Output(zerolog.ConsoleWriter{
+				Out:           os.Stderr,
+				NoColor:       true,
+				FormatLevel:   lvlFormatter,
+				FormatMessage: msgFormatter,
+				TimeFormat:    "15:04:05",
+			})
+		}
 	case "json":
-		log.SetFormatter(&log.JSONFormatter{
-			DisableTimestamp: !config.Config.Log.Timestamp,
-		})
+		if !config.Config.Log.Timestamp {
+			log.Logger = zerolog.New(os.Stderr).With().Logger()
+		}
 	default:
-		return fmt.Errorf("Unknown log format '%s'", config.Config.Log.Format)
+		return fmt.Errorf("unknown log format '%s'", config.Config.Log.Format)
+	}
+
+	switch config.Config.Log.Level {
+	case "debug":
+		zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	case "info":
+		zerolog.SetGlobalLevel(zerolog.InfoLevel)
+	case "warning":
+		zerolog.SetGlobalLevel(zerolog.WarnLevel)
+	case "error":
+		zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+	case "fatal":
+		zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	case "panic":
+		zerolog.SetGlobalLevel(zerolog.PanicLevel)
+	default:
+		return fmt.Errorf("unknown log level '%s'", config.Config.Log.Level)
 	}
 
 	return nil
@@ -271,6 +299,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 
 	configFile, err := config.Config.Read(f)
 	if err != nil {
+		_ = setupLogger()
 		return nil, err
 	}
 
@@ -280,15 +309,15 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 	}
 
 	if configFile != "" {
-		log.Infof("Reading configuration file %s", configFile)
+		log.Info().Str("path", configFile).Msg("Reading configuration file")
 	}
 
 	// timer duration cannot be zero second or a negative one
 	if config.Config.Alertmanager.Interval <= time.Second*0 {
-		return nil, fmt.Errorf("Invalid alertmanager.interval value '%v'", config.Config.Alertmanager.Interval)
+		return nil, fmt.Errorf("invalid alertmanager.interval value '%v'", config.Config.Alertmanager.Interval)
 	}
 
-	log.Infof("Version: %s", version)
+	log.Info().Msgf("Version: %s", version)
 	if config.Config.Log.Config {
 		config.Config.LogValues()
 	}
@@ -296,11 +325,11 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 	linkDetectRules := []models.LinkDetectRule{}
 	for _, rule := range config.Config.Silences.Comments.LinkDetect.Rules {
 		if rule.Regex == "" || rule.URITemplate == "" {
-			return nil, fmt.Errorf("Invalid link detect rule, regex '%s' uriTemplate '%s'", rule.Regex, rule.URITemplate)
+			return nil, fmt.Errorf("invalid link detect rule, regex '%s' uriTemplate '%s'", rule.Regex, rule.URITemplate)
 		}
 		re, err := regexp.Compile(rule.Regex)
 		if err != nil {
-			return nil, fmt.Errorf("Invalid link detect rule '%s': %s", rule.Regex, err)
+			return nil, fmt.Errorf("invalid link detect rule '%s': %s", rule.Regex, err)
 		}
 		linkDetectRules = append(linkDetectRules, models.LinkDetectRule{Regex: re, URITemplate: rule.URITemplate})
 	}
@@ -314,11 +343,11 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 	}
 
 	if len(alertmanager.GetAlertmanagers()) == 0 {
-		return nil, fmt.Errorf("No valid Alertmanager URIs defined")
+		return nil, fmt.Errorf("no valid Alertmanager URIs defined")
 	}
 
 	if config.Config.Authorization.ACL.Silences != "" {
-		log.Infof("Reading silence ACL config file %s", config.Config.Authorization.ACL.Silences)
+		log.Info().Str("path", config.Config.Authorization.ACL.Silences).Msg("Reading silence ACL config file")
 		aclConfig, err := config.ReadSilenceACLConfig(config.Config.Authorization.ACL.Silences)
 		if err != nil {
 			return nil, err
@@ -327,11 +356,11 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 		for i, cfg := range aclConfig.Rules {
 			acl, err := newSilenceACLFromConfig(cfg)
 			if err != nil {
-				return nil, fmt.Errorf("Invalid silence ACL rule at position %d: %s", i, err)
+				return nil, fmt.Errorf("invalid silence ACL rule at position %d: %s", i, err)
 			}
 			silenceACLs = append(silenceACLs, acl)
 		}
-		log.Infof("Parsed %d ACL rule(s)", len(silenceACLs))
+		log.Info().Int("rules", len(silenceACLs)).Msg("Parsed ACL rules")
 	}
 
 	switch config.Config.Debug {
@@ -344,7 +373,10 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 	router := gin.New()
 
 	var t *template.Template
-	t = loadTemplate(t, "ui/build/index.html")
+	t, err = loadTemplate(t, "ui/build/index.html")
+	if err != nil {
+		return nil, fmt.Errorf("failed to load template: %s", err)
+	}
 	router.SetHTMLTemplate(t)
 
 	setupMetrics(router)
@@ -361,16 +393,16 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 	setupRouter(router)
 	for _, am := range alertmanager.GetAlertmanagers() {
 		if am.ProxyRequests {
-			log.Infof("[%s] Setting up proxy endpoints", am.Name)
+			log.Info().Str("alertmanager", am.Name).Msg("Setting up proxy endpoints")
 			err := setupRouterProxyHandlers(router, am)
 			if err != nil {
-				return nil, fmt.Errorf("Failed to setup proxy handlers for Alertmanager '%s': %s", am.Name, err)
+				return nil, fmt.Errorf("failed to setup proxy handlers for Alertmanager '%s': %s", am.Name, err)
 			}
 		}
 	}
 
 	if *validateConfig {
-		log.Info("Configuration is valid")
+		log.Info().Msg("Configuration is valid")
 		return nil, nil
 	}
 
@@ -379,11 +411,11 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 
 func writePidFile() error {
 	if pidFile != "" {
-		log.Infof("Writing PID file to %q", pidFile)
+		log.Info().Str("path", pidFile).Msg("Writing PID file")
 		pid := os.Getpid()
 		err := ioutil.WriteFile(pidFile, []byte(strconv.Itoa(pid)), 0644)
 		if err != nil {
-			return fmt.Errorf("Failed to write a PID file: %s", err)
+			return fmt.Errorf("failed to write a PID file: %s", err)
 		}
 	}
 	return nil
@@ -391,10 +423,10 @@ func writePidFile() error {
 
 func removePidFile() error {
 	if pidFile != "" {
-		log.Infof("Removing PID file %q", pidFile)
+		log.Info().Str("path", pidFile).Msg("Removing PID file")
 		err := os.Remove(pidFile)
 		if err != nil {
-			return fmt.Errorf("Failed to remove PID file: %s", err)
+			return fmt.Errorf("failed to remove PID file: %s", err)
 		}
 	}
 	return nil
@@ -415,9 +447,9 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	}
 
 	// before we start try to fetch data from Alertmanager
-	log.Info("Initial Alertmanager query")
+	log.Info().Msg("Initial Alertmanager collection")
 	pullFromAlertmanager()
-	log.Info("Done, starting HTTP server")
+	log.Info().Msg("Done, starting HTTP server")
 
 	// background loop that will fetch updates from Alertmanager
 	ticker = time.NewTicker(config.Config.Alertmanager.Interval)
@@ -428,7 +460,7 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	if err != nil {
 		return err
 	}
-	log.Infof("Listening on %s", listener.Addr())
+	log.Info().Str("address", listener.Addr().String()).Msg("Starting HTTP server")
 
 	httpServer := &http.Server{
 		Addr:    listen,
@@ -441,21 +473,22 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
-	log.Infof("Shutting down HTTP server")
+	log.Info().Msg("Shutting down HTTP server")
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	if err := httpServer.Shutdown(ctx); err != nil {
-		return fmt.Errorf("Shutdown failed: %s", err)
+		return fmt.Errorf("shutdown error: %s", err)
 	}
-	log.Info("HTTP server shut down")
+	log.Info().Msg("HTTP server shut down")
 
 	return removePidFile()
 }
 
 func main() {
+	initLogger()
 	err := serve(pflag.ExitOnError)
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal().Err(err).Msg("Execution failed")
 	}
 }

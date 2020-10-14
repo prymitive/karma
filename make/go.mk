@@ -38,17 +38,23 @@ $(GOBIN)/benchstat: tools/benchstat/go.mod tools/benchstat/go.sum
 benchmark-compare-go: $(GOBIN)/benchstat
 	@$(GOBIN)/benchstat master.txt new.txt
 
-$(GOBIN)/golangci-lint: tools/golangci-lint/go.mod tools/golangci-lint/go.sum
-	$(GO) install -modfile=tools/golangci-lint/go.mod github.com/golangci/golangci-lint/cmd/golangci-lint
-.PHONY: lint-go
-lint-go: $(GOBIN)/golangci-lint lint-go-looppointer
-	$(ENV) golangci-lint run -v
-
 $(GOBIN)/looppointer: tools/looppointer/go.mod tools/looppointer/go.sum
 	$(GO) install -modfile=tools/looppointer/go.mod github.com/kyoh86/looppointer/cmd/looppointer
 .PHONY: lint-go-looppointer
 lint-go-looppointer: $(GOBIN)/looppointer
 	$(ENV) looppointer -c 2 ./...
+
+$(GOBIN)/staticcheck: tools/staticcheck/go.mod tools/staticcheck/go.sum
+	$(GO) install -modfile=tools/staticcheck/go.mod honnef.co/go/tools/cmd/staticcheck
+.PHONY: lint-go-staticcheck
+lint-go-staticcheck: $(GOBIN)/staticcheck
+	$(ENV) staticcheck ./...
+
+$(GOBIN)/golangci-lint: tools/golangci-lint/go.mod tools/golangci-lint/go.sum
+	$(GO) install -modfile=tools/golangci-lint/go.mod github.com/golangci/golangci-lint/cmd/golangci-lint
+.PHONY: lint-go
+lint-go: $(GOBIN)/golangci-lint lint-go-looppointer lint-go-staticcheck
+	$(ENV) golangci-lint run -v
 
 .PHONY: format-go
 format-go:

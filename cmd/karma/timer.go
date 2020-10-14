@@ -6,14 +6,14 @@ import (
 
 	"github.com/prymitive/karma/internal/alertmanager"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 )
 
 func pullFromAlertmanager() {
 	// always flush cache once we're done
 	defer apiCache.Flush()
 
-	log.Info("Pulling latest alerts and silences from Alertmanager")
+	log.Info().Msg("Pulling latest alerts and silences from Alertmanager")
 
 	upstreams := alertmanager.GetAlertmanagers()
 	wg := sync.WaitGroup{}
@@ -21,10 +21,10 @@ func pullFromAlertmanager() {
 
 	for _, upstream := range upstreams {
 		go func(am *alertmanager.Alertmanager) {
-			log.Infof("[%s] Collecting alerts and silences", am.Name)
+			log.Info().Str("alertmanager", am.Name).Msg("Collecting alerts and silences")
 			err := am.Pull()
 			if err != nil {
-				log.Errorf("[%s] %s", am.Name, err)
+				log.Error().Err(err).Str("alertmanager", am.Name).Msg("Collection failed")
 			}
 			wg.Done()
 		}(upstream)
@@ -32,7 +32,7 @@ func pullFromAlertmanager() {
 
 	wg.Wait()
 
-	log.Info("Pull completed")
+	log.Info().Msg("Collection completed")
 	runtime.GC()
 }
 

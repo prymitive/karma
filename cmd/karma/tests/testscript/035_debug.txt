@@ -1,7 +1,7 @@
 # Passing --debug enables Gin debug mode
 
 exec sh -ex ./test.sh &
-karma.bin-should-work --pid-file=karma.pid --log.format=text --log.config=false --debug --alertmanager.uri=http://localhost --listen.address=127.0.0.1 --listen.port=8035
+karma.bin-should-work --pid-file=karma.pid --debug --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8035
 stdout '\[GIN-debug\] \[WARNING\] Running in "debug" mode. Switch to "release" mode in production.'
 
 -- test.sh --

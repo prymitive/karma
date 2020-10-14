@@ -11,7 +11,7 @@ import (
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/uri"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 )
 
 // Option allows to pass functional options to NewAlertmanager()
@@ -79,7 +79,8 @@ func RegisterAlertmanager(am *Alertmanager) error {
 		}
 	}
 	upstreams[am.Name] = am
-	log.Infof("[%s] Configured Alertmanager source at %s (proxied: %v, readonly: %v)", am.Name, uri.SanitizeURI(am.URI), am.ProxyRequests, am.ReadOnly)
+	// am.Name, uri.SanitizeURI(am.URI), am.ProxyRequests, am.ReadOnly
+	log.Info().Str("name", am.Name).Str("uri", uri.SanitizeURI(am.URI)).Bool("proxy", am.ProxyRequests).Bool("readonly", am.ReadOnly).Msg("Configured Alertmanager source")
 	return nil
 }
 

@@ -9,17 +9,17 @@ import (
 
 	"github.com/prymitive/karma/internal/config"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog"
 )
 
 func TestLogConfig(t *testing.T) {
-	logLevels := map[string]log.Level{
-		"debug":   log.DebugLevel,
-		"info":    log.InfoLevel,
-		"warning": log.WarnLevel,
-		"error":   log.ErrorLevel,
-		"fatal":   log.FatalLevel,
-		"panic":   log.PanicLevel,
+	logLevels := map[string]zerolog.Level{
+		"debug":   zerolog.DebugLevel,
+		"info":    zerolog.InfoLevel,
+		"warning": zerolog.WarnLevel,
+		"error":   zerolog.ErrorLevel,
+		"fatal":   zerolog.FatalLevel,
+		"panic":   zerolog.PanicLevel,
 	}
 
 	for val, level := range logLevels {
@@ -28,8 +28,8 @@ func TestLogConfig(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		if log.GetLevel() != level {
-			t.Errorf("Config.Log.Level=%s resulted in invalid log level %s", val, log.GetLevel())
+		if zerolog.GlobalLevel() != level {
+			t.Errorf("Config.Log.Level=%s resulted in invalid log level %s", val, zerolog.GlobalLevel())
 		}
 	}
 }

@@ -10,7 +10,7 @@ import (
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog"
 )
 
 type filterTest struct {
@@ -737,7 +737,7 @@ var tests = []filterTest{
 }
 
 func TestFilters(t *testing.T) {
-	log.SetLevel(log.ErrorLevel)
+	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 
 	am, err := alertmanager.NewAlertmanager("HA", "test", "http://localhost", alertmanager.WithRequestTimeout(time.Second))
 	if err != nil {

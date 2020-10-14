@@ -21,7 +21,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog/log"
 )
 
 func notFound(c *gin.Context) {
@@ -51,7 +51,7 @@ func compressResponse(data []byte) ([]byte, error) {
 	}
 
 	compressed := b.Bytes()
-	log.Debugf("Compressed %d bytes to %d bytes (%.2f%%)", len(data), len(compressed), (float64(len(compressed))/float64(len(data)))*100)
+	log.Debug().Int("original", len(data)).Int("compressed", len(compressed)).Float64("ratio", (float64(len(compressed))/float64(len(data)))*100).Msg("Compressed response")
 
 	return compressed, nil
 }
@@ -70,20 +70,12 @@ func decompressCachedResponse(data []byte) ([]byte, error) {
 }
 
 func index(c *gin.Context) {
-	start := time.Now()
-
 	noCache(c)
 
-	filtersJSON, err := json.Marshal(config.Config.Filters.Default)
-	if err != nil {
-		panic(err)
-	}
+	filtersJSON, _ := json.Marshal(config.Config.Filters.Default)
 	filtersB64 := base64.StdEncoding.EncodeToString(filtersJSON)
 
-	defaults, err := json.Marshal(config.Config.UI)
-	if err != nil {
-		panic(err)
-	}
+	defaults, _ := json.Marshal(config.Config.UI)
 	defaultsB64 := base64.StdEncoding.EncodeToString(defaults)
 
 	c.HTML(http.StatusOK, "ui/build/index.html", gin.H{
@@ -93,12 +85,6 @@ func index(c *gin.Context) {
 		"DefaultFilter": filtersB64,
 		"Defaults":      defaultsB64,
 	})
-
-	log.Infof("[%s] %s %s took %s", c.ClientIP(), c.Request.Method, c.Request.RequestURI, time.Since(start))
-}
-
-func logAlertsView(c *gin.Context, cacheStatus string, duration time.Duration) {
-	log.Infof("[%s %s] <%d> %s %s took %s", c.ClientIP(), cacheStatus, http.StatusOK, c.Request.Method, c.Request.RequestURI, duration)
 }
 
 func populateAPIFilters(matchFilters []filters.FilterT) []models.Filter {
@@ -177,29 +163,15 @@ func alerts(c *gin.Context) {
 
 	data, found := apiCache.Get(cacheKey)
 	if found {
-		rawData, err := decompressCachedResponse(data.([]byte))
-		if err != nil {
-			log.Error(err.Error())
-			panic(err)
-		}
-
+		rawData, _ := decompressCachedResponse(data.([]byte))
 		// need to overwrite settings as they can have user specific data
 		newResp := models.AlertsResponse{}
-		err = json.Unmarshal(rawData, &newResp)
-		if err != nil {
-			log.Error(err.Error())
-			panic(err)
-		}
+		_ = json.Unmarshal(rawData, &newResp)
 		newResp.Settings = resp.Settings
 		newResp.Timestamp = string(ts)
 		newResp.Authentication = resp.Authentication
-		newData, err := json.Marshal(&newResp)
-		if err != nil {
-			log.Error(err.Error())
-			panic(err)
-		}
+		newData, _ := json.Marshal(&newResp)
 		c.Data(http.StatusOK, gin.MIMEJSON, newData)
-		logAlertsView(c, "HIT", time.Since(start))
 		return
 	}
 
@@ -483,40 +455,28 @@ func alerts(c *gin.Context) {
 	resp.Filters = populateAPIFilters(matchFilters)
 	resp.Receivers = receivers
 
-	data, err := json.Marshal(resp)
-	if err != nil {
-		log.Error(err.Error())
-		panic(err)
-	}
-	compressedData, err := compressResponse(data.([]byte))
-	if err != nil {
-		log.Error(err.Error())
-		panic(err)
-	}
+	data, _ = json.Marshal(resp)
+	compressedData, _ := compressResponse(data.([]byte))
 	apiCache.Set(cacheKey, compressedData, -1)
 
 	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
-	logAlertsView(c, "MIS", time.Since(start))
 }
 
 // autocomplete endpoint, json, used for filter autocomplete hints
 func autocomplete(c *gin.Context) {
 	noCache(c)
-	start := time.Now()
 
 	cacheKey := c.Request.RequestURI
 
 	data, found := apiCache.Get(cacheKey)
 	if found {
 		c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
-		logAlertsView(c, "HIT", time.Since(start))
 		return
 	}
 
 	term, found := c.GetQuery("term")
 	if !found || term == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "missing term=<token> parameter"})
-		log.Infof("[%s] <%d> %s %s took %s", c.ClientIP(), http.StatusBadRequest, c.Request.Method, c.Request.RequestURI, time.Since(start))
 		return
 	}
 
@@ -537,28 +497,21 @@ func autocomplete(c *gin.Context) {
 	}
 
 	sort.Sort(sort.Reverse(acData))
-	data, err := json.Marshal(acData)
-	if err != nil {
-		log.Error(err.Error())
-		panic(err)
-	}
+	data, _ = json.Marshal(acData)
 
 	apiCache.Set(cacheKey, data, time.Second*15)
 
 	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
-	logAlertsView(c, "MIS", time.Since(start))
 }
 
 func silences(c *gin.Context) {
 	noCache(c)
-	start := time.Now()
 
 	cacheKey := c.Request.RequestURI
 
 	data, found := apiCache.Get(cacheKey)
 	if found {
 		c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
-		logAlertsView(c, "HIT", time.Since(start))
 		return
 	}
 
@@ -665,14 +618,9 @@ func silences(c *gin.Context) {
 		}
 	}
 
-	data, err := json.Marshal(dedupedSilences)
-	if err != nil {
-		log.Error(err.Error())
-		panic(err)
-	}
+	data, _ = json.Marshal(dedupedSilences)
 
 	apiCache.Set(cacheKey, data, time.Second*15)
 
 	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
-	logAlertsView(c, "MIS", time.Since(start))
 }

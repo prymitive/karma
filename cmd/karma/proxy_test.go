@@ -15,7 +15,7 @@ import (
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"
-	log "github.com/sirupsen/logrus"
+	"github.com/rs/zerolog"
 
 	"github.com/jarcoal/httpmock"
 	"github.com/pmezard/go-difflib/difflib"
@@ -515,7 +515,7 @@ func TestProxyUserRewrite(t *testing.T) {
 		httpmock.Activate()
 		defer httpmock.DeactivateAndReset()
 
-		log.SetLevel(log.FatalLevel)
+		zerolog.SetGlobalLevel(zerolog.FatalLevel)
 		t.Run(testCase.name, func(t *testing.T) {
 			for _, version := range mock.ListAllMocks() {
 				t.Logf("Testing alerts using mock files from Alertmanager %s", version)
@@ -1147,7 +1147,7 @@ func TestProxySilenceACL(t *testing.T) {
 		httpmock.Activate()
 		defer httpmock.DeactivateAndReset()
 
-		log.SetLevel(log.FatalLevel)
+		zerolog.SetGlobalLevel(zerolog.FatalLevel)
 		t.Run(testCase.name, func(t *testing.T) {
 			for _, version := range mock.ListAllMocks() {
 				t.Logf("Testing alerts using mock files from Alertmanager %s", version)

@@ -1,8 +1,10 @@
 # Raises an error if authorization group is missing name
-karma.bin-should-fail --log.format=text --log.config=false --check-config
+karma.bin-should-fail --check-config
 ! stdout .
-stderr 'msg="''members'' is required for every authorization group"'
+cmp stderr stderr.txt
 
+-- stderr.txt --
+level=error msg="Execution failed" error="'members' is required for every authorization group"
 -- karma.yaml --
 authentication:
   header:
@@ -14,4 +16,4 @@ authorization:
 alertmanager:
   servers:
     - name: default
-      uri: https://localhost:9093
+      uri: https://127.0.0.1:9093

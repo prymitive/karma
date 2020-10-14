@@ -848,10 +848,10 @@ Defaults:
 
 ```YAML
 log:
-  config: true
+  config: false
   level: info
   format: text
-  timestamp: true
+  timestamp: false
 ```
 
 ### Silences

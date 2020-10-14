@@ -20,9 +20,9 @@ import (
 	"github.com/knadh/koanf/providers/file"
 	"github.com/knadh/koanf/providers/posflag"
 	"github.com/mitchellh/mapstructure"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
 
-	log "github.com/sirupsen/logrus"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -94,12 +94,12 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.Bool("grid.sorting.reverse", true, "Reverse sort order")
 	f.String("grid.sorting.label", "alertname", "Label name to use when sorting alert grid by label")
 
-	f.Bool("log.config", true, "Log used configuration to log on startup")
+	f.Bool("log.config", false, "Log used configuration to log on startup")
 	f.String("log.level", "info",
 		"Log level, one of: debug, info, warning, error, fatal and panic")
 	f.String("log.format", "text",
 		"Log format, one of: text, json")
-	f.Bool("log.timestamp", true, "Add timestamps to all log messages")
+	f.Bool("log.timestamp", false, "Add timestamps to all log messages")
 
 	f.StringSlice("receivers.keep", []string{},
 		"List of receivers to keep, all alerts with different receivers will be ignored")
@@ -159,7 +159,7 @@ func readConfigFile(k *koanf.Koanf, flags *pflag.FlagSet) (string, error) {
 	}
 	if configFile != "" {
 		if err := k.Load(file.Provider(configFile), yamlParser.Parser()); err != nil {
-			return "", fmt.Errorf("Failed to load configuration file %q: %v", configFile, err)
+			return "", fmt.Errorf("failed to load configuration file %q: %v", configFile, err)
 		}
 		return configFile, nil
 	}
@@ -255,23 +255,23 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	}
 	err = k.UnmarshalWithConf("", &config, kConf)
 	if err != nil {
-		return "", fmt.Errorf("Failed to unmarshal configuration: %v", err)
+		return "", fmt.Errorf("failed to unmarshal configuration: %v", err)
 	}
 
 	if configFileUsed != "" {
 		if err := validateConfigFile(configFileUsed); err != nil {
-			return "", fmt.Errorf("Failed to parse configuration file %q: %v", configFileUsed, err)
+			return "", fmt.Errorf("failed to parse configuration file %q: %v", configFileUsed, err)
 		}
 	}
 
 	if config.Authentication.Header.Name != "" && len(config.Authentication.BasicAuth.Users) > 0 {
-		return "", fmt.Errorf("Both authentication.basicAuth.users and authentication.header.name is set, only one can be enabled")
+		return "", fmt.Errorf("both authentication.basicAuth.users and authentication.header.name is set, only one can be enabled")
 	}
 
 	if config.Authentication.Header.ValueRegex != "" {
 		_, err = regex.CompileAnchored(config.Authentication.Header.ValueRegex)
 		if err != nil {
-			return "", fmt.Errorf("Invalid regex for authentication.header.value_re: %s", err.Error())
+			return "", fmt.Errorf("invalid regex for authentication.header.value_re: %s", err.Error())
 		}
 		if config.Authentication.Header.Name == "" {
 			return "", fmt.Errorf("authentication.header.name is required when authentication.header.value_re is set")
@@ -291,7 +291,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	}
 
 	if !slices.StringInSlice([]string{"omit", "include", "same-origin"}, config.Alertmanager.CORS.Credentials) {
-		return "", fmt.Errorf("Invalid alertmanager.cors.credentials value '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.CORS.Credentials)
+		return "", fmt.Errorf("invalid alertmanager.cors.credentials value '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.CORS.Credentials)
 	}
 
 	for i, s := range config.Alertmanager.Servers {
@@ -305,7 +305,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 			config.Alertmanager.Servers[i].CORS.Credentials = config.Alertmanager.CORS.Credentials
 		}
 		if !slices.StringInSlice([]string{"omit", "include", "same-origin"}, config.Alertmanager.Servers[i].CORS.Credentials) {
-			return "", fmt.Errorf("Invalid cors.credentials value '%s' for alertmanager '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.Servers[i].CORS.Credentials, s.Name)
+			return "", fmt.Errorf("invalid cors.credentials value '%s' for alertmanager '%s', allowed options: omit, inclue, same-origin", config.Alertmanager.Servers[i].CORS.Credentials, s.Name)
 		}
 	}
 
@@ -321,27 +321,27 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	for labelName, customColors := range config.Labels.Color.Custom {
 		for i, customColor := range customColors {
 			if customColor.Value == "" && customColor.ValueRegex == "" {
-				return "", fmt.Errorf("Custom label color for '%s' is missing 'value' or 'value_re'", labelName)
+				return "", fmt.Errorf("custom label color for '%s' is missing 'value' or 'value_re'", labelName)
 			}
 			if customColor.ValueRegex != "" {
 				config.Labels.Color.Custom[labelName][i].CompiledRegex, err = regex.CompileAnchored(customColor.ValueRegex)
 				if err != nil {
-					return "", fmt.Errorf("Failed to parse custom color regex rule '%s' for '%s' label: %s", customColor.ValueRegex, labelName, err)
+					return "", fmt.Errorf("failed to parse custom color regex rule '%s' for '%s' label: %s", customColor.ValueRegex, labelName, err)
 				}
 			}
 		}
 	}
 
 	if !slices.StringInSlice([]string{"disabled", "startsAt", "label"}, config.Grid.Sorting.Order) {
-		return "", fmt.Errorf("Invalid grid.sorting.order value '%s', allowed options: disabled, startsAt, label", config.Grid.Sorting.Order)
+		return "", fmt.Errorf("invalid grid.sorting.order value '%s', allowed options: disabled, startsAt, label", config.Grid.Sorting.Order)
 	}
 
 	if !slices.StringInSlice([]string{"expanded", "collapsed", "collapsedOnMobile"}, config.UI.CollapseGroups) {
-		return "", fmt.Errorf("Invalid ui.collapseGroups value '%s', allowed options: expanded, collapsed, collapsedOnMobile", config.UI.CollapseGroups)
+		return "", fmt.Errorf("invalid ui.collapseGroups value '%s', allowed options: expanded, collapsed, collapsedOnMobile", config.UI.CollapseGroups)
 	}
 
 	if !slices.StringInSlice([]string{"light", "dark", "auto"}, config.UI.Theme) {
-		return "", fmt.Errorf("Invalid ui.theme value '%s', allowed options: light, dark, auto", config.UI.Theme)
+		return "", fmt.Errorf("invalid ui.theme value '%s', allowed options: light, dark, auto", config.UI.Theme)
 	}
 
 	if config.Listen.Prefix != "" && !strings.HasPrefix(config.Listen.Prefix, "/") {
@@ -409,9 +409,9 @@ func (config *configSchema) LogValues() {
 	}
 
 	out, _ := yaml.Marshal(cfg)
-	log.Info("Parsed configuration:")
+	log.Info().Msg("Parsed configuration:")
 	scanner := bufio.NewScanner(bytes.NewReader(out))
 	for scanner.Scan() {
-		log.Info(scanner.Text())
+		log.Info().Msg(scanner.Text())
 	}
 }

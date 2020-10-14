@@ -2,5 +2,7 @@
 env CONFIG_FILE=foo.yaml
 karma.bin-should-fail --check-config --invalid.flag
 ! stdout .
-! stderr 'msg="Configuration is valid"'
-stderr 'level=error msg="unknown flag: --invalid.flag"'
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=error msg="Execution failed" error="unknown flag: --invalid.flag"

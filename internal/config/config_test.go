@@ -7,11 +7,11 @@ import (
 
 	"github.com/google/go-cmp/cmp"
 	"github.com/prymitive/karma/internal/uri"
+	"github.com/rs/zerolog"
 	"github.com/spf13/pflag"
 
 	"github.com/pmezard/go-difflib/difflib"
 
-	log "github.com/sirupsen/logrus"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -100,10 +100,10 @@ listen:
   port: 80
   prefix: /
 log:
-  config: true
+  config: false
   level: info
   format: text
-  timestamp: true
+  timestamp: false
 receivers:
   keep: []
   strip: []
@@ -159,7 +159,7 @@ func mockConfigRead() (string, error) {
 
 func TestReadConfig(t *testing.T) {
 	resetEnv()
-	log.SetLevel(log.ErrorLevel)
+	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	os.Setenv("ALERTMANAGER_INTERVAL", "1s")
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
 	os.Setenv("ALERTMANAGER_EXTERNAL_URI", "http://example.com")
@@ -184,7 +184,7 @@ func TestReadConfig(t *testing.T) {
 
 func TestReadSimpleConfig(t *testing.T) {
 	resetEnv()
-	log.SetLevel(log.ErrorLevel)
+	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	os.Setenv("ALERTMANAGER_URI", "http://localhost")
 	os.Setenv("ALERTMANAGER_EXTERNAL_URI", "http://localhost:9090")
 	os.Setenv("ALERTMANAGER_NAME", "single")
@@ -302,7 +302,7 @@ func TestInvalidCORSCredentials(t *testing.T) {
 
 func TestDefaultConfig(t *testing.T) {
 	resetEnv()
-	log.SetLevel(log.ErrorLevel)
+	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	_, _ = mockConfigRead()
 
 	expectedConfig := configSchema{}
