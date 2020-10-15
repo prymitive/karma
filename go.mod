@@ -29,14 +29,13 @@ require (
 	github.com/mitchellh/mapstructure v1.3.3
 	github.com/patrickmn/go-cache v2.1.1-0.20180815053127-5633e0862627+incompatible
 	github.com/pmezard/go-difflib v1.0.0
-	github.com/prometheus/client_golang v1.7.1
+	github.com/prometheus/client_golang v1.8.0
 	github.com/prometheus/common v0.14.0
 	github.com/rogpeppe/go-internal v1.6.2
 	github.com/rs/zerolog v1.20.0
 	github.com/spf13/pflag v1.0.5
 	go.mongodb.org/mongo-driver v1.3.5 // indirect
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
-	golang.org/x/sys v0.0.0-20200722175500-76b94024e4b6 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v2 v2.3.0
