@@ -1,6 +1,6 @@
 __defaults_go: &DEFAULTS_GO
   language: go
-  go: "1.15.2"
+  go: "1.15.3"
   cache:
     directories:
       - "$HOME/.npm"
