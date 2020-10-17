@@ -19,21 +19,26 @@ import (
 	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/transform"
 
-	"github.com/gin-gonic/gin"
-
 	"github.com/rs/zerolog/log"
 )
 
-func notFound(c *gin.Context) {
-	c.String(404, "404 page not found")
+func noCache(w http.ResponseWriter) {
+	w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
 }
 
-func noCache(c *gin.Context) {
-	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
+func mimeJSON(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "application/json")
 }
 
-func pong(c *gin.Context) {
-	c.String(200, "Pong")
+func badRequestJSON(w http.ResponseWriter, error string) {
+	mimeJSON(w)
+	w.WriteHeader(http.StatusBadRequest)
+	out, _ := json.Marshal(map[string]string{"error": error})
+	_, _ = w.Write(out)
+}
+
+func pong(w http.ResponseWriter, r *http.Request) {
+	_, _ = w.Write([]byte("Pong"))
 }
 
 func compressResponse(data []byte) ([]byte, error) {
@@ -51,7 +56,12 @@ func compressResponse(data []byte) ([]byte, error) {
 	}
 
 	compressed := b.Bytes()
-	log.Debug().Int("original", len(data)).Int("compressed", len(compressed)).Float64("ratio", (float64(len(compressed))/float64(len(data)))*100).Msg("Compressed response")
+	ratio := fmt.Sprintf("%.5f", float64(len(compressed))/float64(len(data)))
+	log.Debug().
+		Int("original", len(data)).
+		Int("compressed", len(compressed)).
+		Str("ratio", ratio).
+		Msg("Compressed response")
 
 	return compressed, nil
 }
@@ -69,8 +79,8 @@ func decompressCachedResponse(data []byte) ([]byte, error) {
 	return p, nil
 }
 
-func index(c *gin.Context) {
-	noCache(c)
+func index(w http.ResponseWriter, r *http.Request) {
+	noCache(w)
 
 	filtersJSON, _ := json.Marshal(config.Config.Filters.Default)
 	filtersB64 := base64.StdEncoding.EncodeToString(filtersJSON)
@@ -78,7 +88,8 @@ func index(c *gin.Context) {
 	defaults, _ := json.Marshal(config.Config.UI)
 	defaultsB64 := base64.StdEncoding.EncodeToString(defaults)
 
-	c.HTML(http.StatusOK, "ui/build/index.html", gin.H{
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	_ = indexTemplate.Execute(w, map[string]string{
 		"KarmaName":     config.Config.Karma.Name,
 		"Version":       version,
 		"SentryDSN":     config.Config.Sentry.Public,
@@ -106,14 +117,14 @@ func populateAPIFilters(matchFilters []filters.FilterT) []models.Filter {
 }
 
 // alerts endpoint, json, JS will query this via AJAX call
-func alerts(c *gin.Context) {
-	noCache(c)
+func alerts(w http.ResponseWriter, r *http.Request) {
+	noCache(w)
 	start := time.Now()
 	ts, _ := start.UTC().MarshalText()
 
 	var username string
 	if config.Config.Authentication.Enabled {
-		username = c.MustGet(gin.AuthUserKey).(string)
+		username = getUserFromContext(r)
 	}
 
 	upstreams := getUpstreams()
@@ -159,7 +170,7 @@ func alerts(c *gin.Context) {
 	}
 
 	// use full URI (including query args) as cache key
-	cacheKey := c.Request.RequestURI
+	cacheKey := r.RequestURI
 
 	data, found := apiCache.Get(cacheKey)
 	if found {
@@ -171,13 +182,15 @@ func alerts(c *gin.Context) {
 		newResp.Timestamp = string(ts)
 		newResp.Authentication = resp.Authentication
 		newData, _ := json.Marshal(&newResp)
-		c.Data(http.StatusOK, gin.MIMEJSON, newData)
+		mimeJSON(w)
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write(newData)
 		return
 	}
 
-	gridLabel, _ := c.GetQuery("gridLabel")
-
-	matchFilters, validFilters := getFiltersFromQuery(c.QueryArray("q"))
+	gridLabel, _ := lookupQueryString(r, "gridLabel")
+	q, _ := lookupQueryStringSlice(r, "q")
+	matchFilters, validFilters := getFiltersFromQuery(q)
 
 	grids := map[string]models.APIGrid{}
 	colors := models.LabelsColorMap{}
@@ -438,7 +451,7 @@ func alerts(c *gin.Context) {
 	}
 
 	//resp.AlertGroups = sortAlertGroups(c, alerts)
-	v, _ := c.GetQuery("gridSortReverse")
+	v, _ := lookupQueryString(r, "gridSortReverse")
 	gridSortReverse := v == "1"
 
 	receivers := []string{}
@@ -448,7 +461,7 @@ func alerts(c *gin.Context) {
 	}
 	sort.Strings(receivers)
 
-	resp.Grids = sortGrids(c, gridLabel, grids, gridSortReverse)
+	resp.Grids = sortGrids(r, gridLabel, grids, gridSortReverse)
 	resp.Silences = silences
 	resp.Colors = colors
 	resp.Counters = countersToLabelStats(counters)
@@ -459,24 +472,28 @@ func alerts(c *gin.Context) {
 	compressedData, _ := compressResponse(data.([]byte))
 	apiCache.Set(cacheKey, compressedData, -1)
 
-	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
+	mimeJSON(w)
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write(data.([]byte))
 }
 
 // autocomplete endpoint, json, used for filter autocomplete hints
-func autocomplete(c *gin.Context) {
-	noCache(c)
+func autocomplete(w http.ResponseWriter, r *http.Request) {
+	noCache(w)
 
-	cacheKey := c.Request.RequestURI
+	cacheKey := r.RequestURI
 
 	data, found := apiCache.Get(cacheKey)
 	if found {
-		c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
+		mimeJSON(w)
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write(data.([]byte))
 		return
 	}
 
-	term, found := c.GetQuery("term")
+	term, found := lookupQueryString(r, "term")
 	if !found || term == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "missing term=<token> parameter"})
+		badRequestJSON(w, "missing term=<token> parameter")
 		return
 	}
 
@@ -501,30 +518,34 @@ func autocomplete(c *gin.Context) {
 
 	apiCache.Set(cacheKey, data, time.Second*15)
 
-	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
+	mimeJSON(w)
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write(data.([]byte))
 }
 
-func silences(c *gin.Context) {
-	noCache(c)
+func silences(w http.ResponseWriter, r *http.Request) {
+	noCache(w)
 
-	cacheKey := c.Request.RequestURI
+	cacheKey := r.RequestURI
 
 	data, found := apiCache.Get(cacheKey)
 	if found {
-		c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
+		mimeJSON(w)
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write(data.([]byte))
 		return
 	}
 
 	dedupedSilences := []models.ManagedSilence{}
 
 	showExpired := false
-	showExpiredValue, found := c.GetQuery("showExpired")
+	showExpiredValue, found := lookupQueryString(r, "showExpired")
 	if found && showExpiredValue == "1" {
 		showExpired = true
 	}
 
 	searchTerm := ""
-	searchTermValue, found := c.GetQuery("searchTerm")
+	searchTermValue, found := lookupQueryString(r, "searchTerm")
 	if found && searchTermValue != "" {
 		searchTerm = strings.ToLower(searchTermValue)
 	}
@@ -578,7 +599,7 @@ func silences(c *gin.Context) {
 	}
 
 	recentFirst := true
-	sortReverse, found := c.GetQuery("sortReverse")
+	sortReverse, found := lookupQueryString(r, "sortReverse")
 	if found && sortReverse == "1" {
 		recentFirst = false
 	}
@@ -622,5 +643,7 @@ func silences(c *gin.Context) {
 
 	apiCache.Set(cacheKey, data, time.Second*15)
 
-	c.Data(http.StatusOK, gin.MIMEJSON, data.([]byte))
+	mimeJSON(w)
+	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write(data.([]byte))
 }

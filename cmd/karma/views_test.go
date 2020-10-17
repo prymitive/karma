@@ -1,9 +1,9 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -13,6 +13,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/go-chi/chi"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"
@@ -23,7 +24,6 @@ import (
 
 	cache "github.com/patrickmn/go-cache"
 
-	"github.com/gin-gonic/gin"
 	"github.com/google/go-cmp/cmp"
 	"github.com/jarcoal/httpmock"
 	"github.com/spf13/pflag"
@@ -52,24 +52,21 @@ func mockConfig() {
 	}
 }
 
-func ginTestEngine() *gin.Engine {
-	gin.SetMode(gin.TestMode)
-	r := gin.New()
-	setupRouter(r)
+func testRouter() *chi.Mux {
+	router := chi.NewRouter()
 
-	var t *template.Template
-	t, err := loadTemplate(t, "ui/build/index.html")
+	err := loadTemplates()
 	if err != nil {
 		panic(err)
 	}
-	r.SetHTMLTemplate(t)
 
-	return r
+	return router
 }
 
 func TestHealth(t *testing.T) {
 	mockConfig()
-	r := ginTestEngine()
+	r := testRouter()
+	setupRouter(r)
 	req := httptest.NewRequest("GET", "/health", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
@@ -82,7 +79,8 @@ func TestHealthPrefix(t *testing.T) {
 	os.Setenv("LISTEN_PREFIX", "/prefix")
 	defer os.Unsetenv("LISTEN_PREFIX")
 	mockConfig()
-	r := ginTestEngine()
+	r := testRouter()
+	setupRouter(r)
 	req := httptest.NewRequest("GET", "/prefix/health", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
@@ -93,7 +91,8 @@ func TestHealthPrefix(t *testing.T) {
 
 func TestIndex(t *testing.T) {
 	mockConfig()
-	r := ginTestEngine()
+	r := testRouter()
+	setupRouter(r)
 	req := httptest.NewRequest("GET", "/", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
@@ -106,7 +105,8 @@ func TestIndexPrefix(t *testing.T) {
 	os.Setenv("LISTEN_PREFIX", "/prefix")
 	defer os.Unsetenv("LISTEN_PREFIX")
 	mockConfig()
-	r := ginTestEngine()
+	r := testRouter()
+	setupRouter(r)
 	req := httptest.NewRequest("GET", "/prefix/", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
@@ -115,15 +115,19 @@ func TestIndexPrefix(t *testing.T) {
 	}
 }
 
-func mockAlerts(version string) {
-	httpmock.Activate()
-	defer httpmock.DeactivateAndReset()
-
+func mockCache() {
 	if apiCache == nil {
 		apiCache = cache.New(cache.NoExpiration, time.Hour)
 	} else {
 		apiCache.Flush()
 	}
+}
+
+func mockAlerts(version string) {
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	mockCache()
 
 	mock.RegisterURL("http://localhost/metrics", version, "metrics")
 	mock.RegisterURL("http://localhost/api/v2/status", version, "api/v2/status")
@@ -138,7 +142,8 @@ func TestAlerts(t *testing.T) {
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 		mockAlerts(version)
-		r := ginTestEngine()
+		r := testRouter()
+		setupRouter(r)
 		// re-run a few times to test the cache
 		for i := 1; i <= 3; i++ {
 			req := httptest.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
@@ -323,7 +328,8 @@ func TestGrids(t *testing.T) {
 			testCase := testCase
 			t.Run(fmt.Sprintf("version=%q gridLabel=%q query=%q", version, testCase.gridLabel, testCase.requestQuery), func(t *testing.T) {
 				mockAlerts(version)
-				r := ginTestEngine()
+				r := testRouter()
+				setupRouter(r)
 				// re-run a few times to test the cache
 				for i := 1; i <= 3; i++ {
 					apiCache.Flush()
@@ -367,7 +373,8 @@ func TestValidateAllAlerts(t *testing.T) {
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Validating alerts.json response using mock files from Alertmanager %s", version)
 		mockAlerts(version)
-		r := ginTestEngine()
+		r := testRouter()
+		setupRouter(r)
 		// re-run a few times to test the cache
 		for i := 1; i <= 3; i++ {
 			req := httptest.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
@@ -548,7 +555,8 @@ func TestAutocomplete(t *testing.T) {
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing autocomplete using mock files from Alertmanager %s", version)
 		mockAlerts(version)
-		r := ginTestEngine()
+		r := testRouter()
+		setupRouter(r)
 
 		// re-run a few times to test the cache
 		for i := 1; i <= 3; i++ {
@@ -591,7 +599,8 @@ func TestAutocomplete(t *testing.T) {
 
 func TestGzipMiddleware(t *testing.T) {
 	mockConfig()
-	r := ginTestEngine()
+	r := testRouter()
+	setupRouter(r)
 	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
 		// re-run a few times to test the cache
@@ -617,7 +626,8 @@ func TestGzipMiddleware(t *testing.T) {
 
 func TestGzipMiddlewareWithoutAcceptEncoding(t *testing.T) {
 	mockConfig()
-	r := ginTestEngine()
+	r := testRouter()
+	setupRouter(r)
 	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
 		// re-run a few times to test the cache
@@ -764,7 +774,8 @@ func TestSilences(t *testing.T) {
 		for _, version := range mock.ListAllMocks() {
 			t.Logf("Validating silences.json response using mock files from Alertmanager %s", version)
 			mockAlerts(version)
-			r := ginTestEngine()
+			r := testRouter()
+			setupRouter(r)
 			// re-run a few times to test the cache
 			for i := 1; i <= 3; i++ {
 				uri := fmt.Sprintf("/silences.json?showExpired=%s&sortReverse=%s&searchTerm=%s", testCase.showExpired, testCase.sortReverse, testCase.searchTerm)
@@ -795,7 +806,8 @@ func TestSilences(t *testing.T) {
 
 func TestCORS(t *testing.T) {
 	mockConfig()
-	r := ginTestEngine()
+	r := testRouter()
+	setupRouter(r)
 	req := httptest.NewRequest("OPTIONS", "/alerts.json", nil)
 	req.Header.Set("Origin", "foo.example.com")
 	resp := httptest.NewRecorder()
@@ -807,7 +819,8 @@ func TestCORS(t *testing.T) {
 
 func TestEmptySettings(t *testing.T) {
 	mockConfig()
-	r := ginTestEngine()
+	r := testRouter()
+	setupRouter(r)
 	req := httptest.NewRequest("GET", "/alerts.json", nil)
 
 	resp := httptest.NewRecorder()
@@ -875,6 +888,14 @@ func TestAuthentication(t *testing.T) {
 			responseCode: 401,
 		},
 		{
+			name: "basic auth, request with empty Authorization header, 401",
+			basicAuthUsers: []config.AuthenticationUser{
+				{Username: "john", Password: "foobar"},
+			},
+			requestHeaders: map[string]string{"Authorization": ""},
+			responseCode:   401,
+		},
+		{
 			name: "basic auth, missing password, 401",
 			basicAuthUsers: []config.AuthenticationUser{
 				{Username: "john", Password: "foobar"},
@@ -897,6 +918,15 @@ func TestAuthentication(t *testing.T) {
 			},
 			requestBasicAuthUser:     "john",
 			requestBasicAuthPassword: "foobarx",
+			responseCode:             401,
+		},
+		{
+			name: "basic auth, wrong user, 401",
+			basicAuthUsers: []config.AuthenticationUser{
+				{Username: "john", Password: "foobar"},
+			},
+			requestBasicAuthUser:     "johnx",
+			requestBasicAuthPassword: "foobar",
 			responseCode:             401,
 		},
 		{
@@ -960,7 +990,9 @@ func TestAuthentication(t *testing.T) {
 			config.Config.Authentication.Header.Name = testCase.headerName
 			config.Config.Authentication.Header.ValueRegex = testCase.headerRe
 			config.Config.Authentication.BasicAuth.Users = testCase.basicAuthUsers
-			r := ginTestEngine()
+			r := testRouter()
+			setupRouter(r)
+			mockCache()
 			for _, path := range []string{
 				"/",
 				"/alerts.json",
@@ -2107,7 +2139,8 @@ func TestUpstreamStatus(t *testing.T) {
 			}
 			zerolog.SetGlobalLevel(zerolog.FatalLevel)
 			pullFromAlertmanager()
-			r := ginTestEngine()
+			r := testRouter()
+			setupRouter(r)
 
 			req := httptest.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
 			resp := httptest.NewRecorder()
@@ -2141,5 +2174,22 @@ func TestUpstreamStatus(t *testing.T) {
 				t.Errorf("Wrong upstream summary returned (-want +got):\n%s", diff)
 			}
 		})
+	}
+}
+
+func TestGetUserFromContextMissing(t *testing.T) {
+	req := httptest.NewRequest("GET", "/alerts.json", nil)
+	user := getUserFromContext(req)
+	if user != "" {
+		t.Errorf("getUserFromContext() returned user=%q", user)
+	}
+}
+
+func TestGetUserFromContextPresent(t *testing.T) {
+	req := httptest.NewRequest("GET", "/alerts.json", nil)
+	ctx := context.WithValue(req.Context(), authUserKey("user"), "bob")
+	user := getUserFromContext(req.WithContext(ctx))
+	if user == "" {
+		t.Errorf("getUserFromContext() returned user=%q", user)
 	}
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"compress/flate"
 	"context"
 	"fmt"
 	"html/template"
@@ -17,25 +18,22 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/getsentry/sentry-go"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
-	"github.com/prymitive/karma/internal/regex"
 	"github.com/prymitive/karma/internal/transform"
 	"github.com/prymitive/karma/internal/uri"
 
-	"github.com/DeanThompson/ginpprof"
-	"github.com/gin-contrib/cors"
-	"github.com/gin-contrib/gzip"
-	"github.com/gin-contrib/static"
-	"github.com/gin-gonic/contrib/sentry"
-	"github.com/gin-gonic/gin"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/cors"
+	"github.com/loikg/ravenchi"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
 
-	raven "github.com/getsentry/raven-go"
 	cache "github.com/patrickmn/go-cache"
 )
 
@@ -54,7 +52,7 @@ var (
 	staticBuildFileSystem = newBinaryFileSystem("ui/build")
 	staticSrcFileSystem   = newBinaryFileSystem("ui/src")
 
-	protectedEndpoints *gin.RouterGroup
+	indexTemplate *template.Template
 
 	silenceACLs = []*silenceACL{}
 
@@ -83,99 +81,87 @@ func getViewURL(sub string) string {
 	return u
 }
 
-func customCSS(c *gin.Context) {
-	serveFileOr404(config.Config.Custom.CSS, "text/css", c)
-}
-
-func customJS(c *gin.Context) {
-	serveFileOr404(config.Config.Custom.JS, "application/javascript", c)
-}
-
-func headerAuth(name, valueRegex string) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		user := c.Request.Header.Get(name)
-		if user == "" {
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-
-		r := regex.MustCompileAnchored(valueRegex)
-		matches := r.FindAllStringSubmatch(user, 1)
-		if len(matches) > 0 && len(matches[0]) > 1 {
-			c.Set(gin.AuthUserKey, matches[0][1])
-		} else {
-			c.AbortWithStatus(http.StatusUnauthorized)
-			return
-		}
-	}
-}
-
-func setupRouter(router *gin.Engine) {
+func setupRouter(router *chi.Mux) {
 	_ = mime.AddExtensionType(".ico", "image/x-icon")
 
-	router.Use(gzip.Gzip(gzip.DefaultCompression))
+	router.Use(promMiddleware)
+	router.Use(ravenchi.SentryRecovery)
+	router.Use(middleware.RealIP)
+
+	compressor := middleware.NewCompressor(flate.DefaultCompression)
+	router.Use(compressor.Handler)
 
 	router.Use(setStaticHeaders(getViewURL("/static/")))
-	router.Use(static.Serve(getViewURL("/"), staticBuildFileSystem))
+	router.Use(serverStaticFiles(getViewURL("/"), staticBuildFileSystem))
 	// next 2 lines are to allow service raw sources so sentry can fetch source maps
-	router.Use(static.Serve(getViewURL("/static/js/"), staticSrcFileSystem))
+	router.Use(serverStaticFiles(getViewURL("/static/js/"), staticSrcFileSystem))
 	// FIXME
 	// compressed sources are under /static/js/main.js and reference ../static/js/main.js
 	// so we end up with /static/static/js
-	router.Use(static.Serve(getViewURL("/static/static/js/"), staticSrcFileSystem))
+	router.Use(serverStaticFiles(getViewURL("/static/static/js/"), staticSrcFileSystem))
+
 	router.Use(clearStaticHeaders(getViewURL("/static/")))
 
-	router.Use(cors.New(cors.Config{
-		// This works different than AllowAllOrigins=true
-		// 1. AllowAllOrigins will cause responses to include
-		//    'Access-Control-Allow-Origin: *' header in all responses
-		// 2. Setting AllowOriginFunc allows to validate origin URI and if it passes
-		//    the response will include 'Access-Control-Allow-Origin: $origin'
-		//    So the logic is the same, but implementation is different.
-		// We need second behavior since setting `credentials: include` on JS
-		// fetch() will fail with 'Access-Control-Allow-Origin: *' responses
-		AllowOriginFunc: func(origin string) bool {
+	router.Use(cors.Handler(cors.Options{
+		AllowOriginFunc: func(r *http.Request, origin string) bool {
 			return true
 		},
+		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
+		AllowedMethods:   []string{"GET", "POST", "DELETE"},
+		AllowedHeaders:   []string{"Origin"},
+		ExposedHeaders:   []string{"Content-Length"},
 		AllowCredentials: true,
-		AllowMethods:     []string{"GET", "POST", "DELETE"},
-		AllowHeaders:     []string{"Origin"},
-		ExposeHeaders:    []string{"Content-Length"},
+		MaxAge:           300,
 	}))
 
 	if config.Config.Authentication.Header.Name != "" {
 		config.Config.Authentication.Enabled = true
-		protectedEndpoints = router.Group(getViewURL("/"),
-			headerAuth(config.Config.Authentication.Header.Name, config.Config.Authentication.Header.ValueRegex))
+		router.Use(headerAuth(config.Config.Authentication.Header.Name, config.Config.Authentication.Header.ValueRegex))
 	} else if len(config.Config.Authentication.BasicAuth.Users) > 0 {
 		config.Config.Authentication.Enabled = true
 		users := map[string]string{}
 		for _, u := range config.Config.Authentication.BasicAuth.Users {
 			users[u.Username] = u.Password
 		}
-		protectedEndpoints = router.Group(getViewURL("/"), gin.BasicAuth(users))
-	} else {
-		protectedEndpoints = router.Group(getViewURL("/"))
+		router.Use(basicAuth(users))
 	}
 
-	router.GET(getViewURL("/health"), pong)
+	router.Get(getViewURL("/"), index)
+	router.Get(getViewURL("/health"), pong)
+	router.Get(getViewURL("/metrics"), http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		h := promhttp.Handler()
+		h.ServeHTTP(w, r)
+	}))
+	router.Get(getViewURL("/alerts.json"), alerts)
+	router.Get(getViewURL("/autocomplete.json"), autocomplete)
+	router.Get(getViewURL("/labelNames.json"), knownLabelNames)
+	router.Get(getViewURL("/labelValues.json"), knownLabelValues)
+	router.Get(getViewURL("/silences.json"), silences)
 
-	protectedEndpoints.GET("/", index)
-	protectedEndpoints.GET("/alerts.json", alerts)
-	protectedEndpoints.GET("/autocomplete.json", autocomplete)
-	protectedEndpoints.GET("/labelNames.json", knownLabelNames)
-	protectedEndpoints.GET("/labelValues.json", knownLabelValues)
-	protectedEndpoints.GET("/silences.json", silences)
+	router.Get(getViewURL("/custom.css"), serveFileOr404(config.Config.Custom.CSS, "text/css"))
+	router.Get(getViewURL("/custom.js"), serveFileOr404(config.Config.Custom.JS, "application/javascript"))
 
-	protectedEndpoints.GET("/custom.css", customCSS)
-	protectedEndpoints.GET("/custom.js", customJS)
+	if config.Config.Debug {
+		router.Mount(getViewURL("/debug"), middleware.Profiler())
+	}
 
-	router.NoRoute(notFound)
-}
+	for _, am := range alertmanager.GetAlertmanagers() {
+		if am.ProxyRequests {
+			log.Info().
+				Str("alertmanager", am.Name).
+				Msg("Setting up proxy endpoints")
+			setupRouterProxyHandlers(router, am)
+		}
+	}
 
-func setupMetrics(router *gin.Engine) {
-	router.Use(promMiddleware())
-	router.GET(getViewURL("/metrics"), promHandler(promhttp.Handler()))
+	walkFunc := func(method string, route string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) error {
+		log.Debug().
+			Str("method", method).
+			Str("route", route).
+			Msg("Registered handler")
+		return nil
+	}
+	_ = chi.Walk(router, walkFunc)
 }
 
 func setupUpstreams() error {
@@ -280,7 +266,17 @@ func setupLogger() error {
 	return nil
 }
 
-func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
+func loadTemplates() error {
+	var t *template.Template
+	t, err := loadTemplate(t, "ui/build/index.html")
+	if err != nil {
+		return fmt.Errorf("failed to load template: %s", err)
+	}
+	indexTemplate = t
+	return nil
+}
+
+func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, error) {
 	f := pflag.NewFlagSet("karma", errorHandling)
 	printVersion := f.Bool("version", false, "Print version and exit")
 	validateConfig := f.Bool("check-config", false, "Validate configuration and exit")
@@ -309,7 +305,9 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 	}
 
 	if configFile != "" {
-		log.Info().Str("path", configFile).Msg("Reading configuration file")
+		log.Info().
+			Str("path", configFile).
+			Msg("Reading configuration file")
 	}
 
 	// timer duration cannot be zero second or a negative one
@@ -347,7 +345,9 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 	}
 
 	if config.Config.Authorization.ACL.Silences != "" {
-		log.Info().Str("path", config.Config.Authorization.ACL.Silences).Msg("Reading silence ACL config file")
+		log.Info().
+			Str("path", config.Config.Authorization.ACL.Silences).
+			Msg("Reading silence ACL config file")
 		aclConfig, err := config.ReadSilenceACLConfig(config.Config.Authorization.ACL.Silences)
 		if err != nil {
 			return nil, err
@@ -363,43 +363,23 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*gin.Engine, error) {
 		log.Info().Int("rules", len(silenceACLs)).Msg("Parsed ACL rules")
 	}
 
-	switch config.Config.Debug {
-	case true:
-		gin.SetMode(gin.DebugMode)
-	case false:
-		gin.SetMode(gin.ReleaseMode)
-	}
-
-	router := gin.New()
-
-	var t *template.Template
-	t, err = loadTemplate(t, "ui/build/index.html")
+	err = loadTemplates()
 	if err != nil {
-		return nil, fmt.Errorf("failed to load template: %s", err)
+		return nil, err
 	}
-	router.SetHTMLTemplate(t)
 
-	setupMetrics(router)
-
-	if config.Config.Debug {
-		ginpprof.Wrapper(router)
-	}
+	router := chi.NewRouter()
 
 	if config.Config.Sentry.Public != "" {
-		raven.SetRelease(version)
-		router.Use(sentry.Recovery(raven.DefaultClient, false))
+		if err := sentry.Init(sentry.ClientOptions{
+			Dsn:     config.Config.Sentry.Public,
+			Release: version,
+		}); err != nil {
+			log.Error().Err(err).Msg("Sentry initialization failed")
+		}
 	}
 
 	setupRouter(router)
-	for _, am := range alertmanager.GetAlertmanagers() {
-		if am.ProxyRequests {
-			log.Info().Str("alertmanager", am.Name).Msg("Setting up proxy endpoints")
-			err := setupRouterProxyHandlers(router, am)
-			if err != nil {
-				return nil, fmt.Errorf("failed to setup proxy handlers for Alertmanager '%s': %s", am.Name, err)
-			}
-		}
-	}
 
 	if *validateConfig {
 		log.Info().Msg("Configuration is valid")

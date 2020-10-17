@@ -5,10 +5,14 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"strconv"
+	"strings"
 	"time"
 
-	"github.com/gin-gonic/gin"
+	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/rs/zerolog/log"
 )
 
 var (
@@ -41,25 +45,35 @@ func init() {
 	prometheus.MustRegister(reqCount, reqDuration, respSizeBytes)
 }
 
-func promMiddleware() gin.HandlerFunc {
-	return func(c *gin.Context) {
+func promMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		start := time.Now()
-		c.Next()
 
-		status := fmt.Sprintf("%d", c.Writer.Status())
-		handler := c.HandlerName()
-		method := c.Request.Method
+		ww := middleware.NewWrapResponseWriter(w, r.ProtoMajor)
+		next.ServeHTTP(ww, r)
 
-		lvs := []string{status, handler, method}
+		status := fmt.Sprintf("%d", ww.Status())
+		method := r.Method
+
+		rctx := chi.RouteContext(r.Context())
+		routePattern := strings.Join(rctx.RoutePatterns, "")
+		routePattern = strings.Replace(routePattern, "/*/", "/", -1)
+		if routePattern == "" {
+			routePattern = "middleware"
+		}
+
+		lvs := []string{status, routePattern, method}
 
 		reqCount.WithLabelValues(lvs...).Inc()
 		reqDuration.WithLabelValues(lvs...).Observe(time.Since(start).Seconds())
-		respSizeBytes.WithLabelValues(lvs...).Observe(float64(c.Writer.Size()))
-	}
-}
+		respSizeBytes.WithLabelValues(lvs...).Observe(float64(ww.BytesWritten()))
 
-func promHandler(handler http.Handler) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		handler.ServeHTTP(c.Writer, c.Request)
-	}
+		ww.Header().Set("Content-Length", strconv.Itoa(ww.BytesWritten()))
+		log.Info().
+			Str("path", r.URL.Path).
+			Str("duration", time.Since(start).String()).
+			Str("method", r.Method).Int("code", ww.Status()).
+			Int("bytes", ww.BytesWritten()).
+			Msg("Request completed")
+	})
 }

@@ -80,7 +80,12 @@ func RegisterAlertmanager(am *Alertmanager) error {
 	}
 	upstreams[am.Name] = am
 	// am.Name, uri.SanitizeURI(am.URI), am.ProxyRequests, am.ReadOnly
-	log.Info().Str("name", am.Name).Str("uri", uri.SanitizeURI(am.URI)).Bool("proxy", am.ProxyRequests).Bool("readonly", am.ReadOnly).Msg("Configured Alertmanager source")
+	log.Info().
+		Str("name", am.Name).
+		Str("uri", uri.SanitizeURI(am.URI)).
+		Bool("proxy", am.ProxyRequests).
+		Bool("readonly", am.ReadOnly).
+		Msg("Configured Alertmanager source")
 	return nil
 }
 

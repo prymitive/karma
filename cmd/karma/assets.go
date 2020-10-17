@@ -2,14 +2,14 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"html/template"
+	"io"
+	"io/ioutil"
+	"mime"
 	"net/http"
-	"os"
+	"path/filepath"
 	"strings"
 	"time"
-
-	"github.com/gin-gonic/gin"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
 )
@@ -20,19 +20,6 @@ type binaryFileSystem struct {
 
 func (b *binaryFileSystem) Open(name string) (http.File, error) {
 	return b.fs.Open(name)
-}
-
-func (b *binaryFileSystem) Exists(prefix string, filepath string) bool {
-	if p := strings.TrimPrefix(filepath, prefix); len(p) < len(filepath) {
-		if _, err := b.fs.Open(p); err != nil {
-			// file does not exist
-			return false
-		}
-		// file exist
-		return true
-	}
-	// file path doesn't start with fs prefix, so this file isn't stored here
-	return false
 }
 
 func newBinaryFileSystem(root string) *binaryFileSystem {
@@ -76,36 +63,82 @@ func loadTemplate(t *template.Template, path string) (*template.Template, error)
 	return t, nil
 }
 
-func serveFileOr404(path string, contentType string, c *gin.Context) {
-	c.Header("Cache-Control", "no-cache, no-store, must-revalidate")
-	if path == "" {
-		c.Data(200, contentType, nil)
-		return
-	}
-	if _, err := os.Stat(path); os.IsNotExist(err) {
-		c.Data(404, contentType, []byte(fmt.Sprintf("%s not found", path)))
-		return
-	}
-	c.File(path)
+func contentText(w http.ResponseWriter) {
+	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 }
 
-func setStaticHeaders(prefix string) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		if strings.HasPrefix(c.Request.URL.Path, prefix) {
-			c.Header("Cache-Control", "public, max-age=31536000")
-			expiresTime := time.Now().AddDate(0, 0, 365).Format(http.TimeFormat)
-			c.Header("Expires", expiresTime)
-			c.Next()
+func serveFileOr404(path string, contentType string) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+		if path == "" {
+			w.Header().Set("Content-Type", contentType)
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write([]byte{})
+			return
 		}
+		data, err := ioutil.ReadFile(path)
+		if err != nil {
+			contentText(w)
+			w.WriteHeader(http.StatusNotFound)
+			_, _ = w.Write([]byte(err.Error()))
+			return
+		}
+		w.Header().Set("Content-Type", contentType)
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write(data)
 	}
 }
 
-func clearStaticHeaders(prefix string) gin.HandlerFunc {
-	return func(c *gin.Context) {
-		if strings.HasPrefix(c.Request.URL.Path, prefix) {
-			c.Header("Cache-Control", "")
-			c.Header("Expires", "")
-			c.Next()
-		}
+func serverStaticFiles(prefix string, fs *binaryFileSystem) func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if !strings.HasPrefix(r.URL.Path, prefix) {
+				next.ServeHTTP(w, r)
+				return
+			}
+
+			path := strings.TrimPrefix(r.URL.Path, prefix)
+			fl, err := fs.Open(path)
+			if err != nil {
+				next.ServeHTTP(w, r)
+				return
+			}
+			defer fl.Close()
+
+			ct := mime.TypeByExtension(filepath.Ext(path))
+			if ct == "" {
+				ct = "application/octet-stream"
+			}
+
+			w.Header().Set("Content-Type", ct)
+			w.WriteHeader(http.StatusOK)
+			_, _ = io.Copy(w, fl)
+		})
+	}
+}
+
+func setStaticHeaders(prefix string) func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if strings.HasPrefix(r.URL.Path, prefix) {
+				w.Header().Set("Cache-Control", "public, max-age=31536000")
+				expiresTime := time.Now().AddDate(0, 0, 365).Format(http.TimeFormat)
+				w.Header().Set("Expires", expiresTime)
+			}
+			next.ServeHTTP(w, r)
+		})
+	}
+}
+
+func clearStaticHeaders(prefix string) func(next http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if strings.HasPrefix(r.URL.Path, prefix) {
+				w.Header().Del("Cache-Control")
+				w.Header().Del("Expires")
+
+			}
+			next.ServeHTTP(w, r)
+		})
 	}
 }

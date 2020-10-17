@@ -36,8 +36,8 @@ func TestLogConfig(t *testing.T) {
 
 func TestMetrics(t *testing.T) {
 	mockConfig()
-	r := ginTestEngine()
-	setupMetrics(r)
+	r := testRouter()
+	setupRouter(r)
 	req := httptest.NewRequest("GET", "/metrics", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)

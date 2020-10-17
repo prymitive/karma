@@ -71,13 +71,20 @@ func (am *Alertmanager) probeVersion() string {
 
 	url, err := uri.JoinURL(am.URI, "metrics")
 	if err != nil {
-		log.Error().Err(err).Str("uri", am.SanitizedURI()).Msg("Failed to join url with /metrics path")
+		log.Error().
+			Err(err).
+			Str("uri", am.SanitizedURI()).
+			Msg("Failed to join url with /metrics path")
 		return fakeVersion
 	}
 
 	source, err := am.reader.Read(url, am.HTTPHeaders)
 	if err != nil {
-		log.Error().Err(err).Str("alertmanager", am.Name).Str("uri", am.SanitizedURI()).Msg("Request failed")
+		log.Error().
+			Err(err).
+			Str("alertmanager", am.Name).
+			Str("uri", am.SanitizedURI()).
+			Msg("Request failed")
 		return fakeVersion
 	}
 	defer source.Close()
@@ -86,7 +93,10 @@ func (am *Alertmanager) probeVersion() string {
 	if err != nil {
 		return fakeVersion
 	}
-	log.Info().Str("version", version).Str("alertmanager", am.Name).Msg("Upstream version")
+	log.Info().
+		Str("version", version).
+		Str("alertmanager", am.Name).
+		Msg("Upstream version")
 
 	return version
 }
@@ -140,9 +150,16 @@ func (am *Alertmanager) pullSilences(version string) error {
 	if err != nil {
 		return err
 	}
-	log.Info().Str("alertmanager", am.Name).Int("silences", len(silences)).Dur("duration", time.Since(start)).Msg("Got silences")
+	log.Info().
+		Str("alertmanager", am.Name).
+		Int("silences", len(silences)).
+		Dur("duration", time.Since(start)).
+		Msg("Got silences")
 
-	log.Info().Str("alertmanager", am.Name).Int("silences", len(silences)).Msg("Detecting ticket links in silences")
+	log.Info().
+		Str("alertmanager", am.Name).
+		Int("silences", len(silences)).
+		Msg("Detecting ticket links in silences")
 	silenceMap := make(map[string]models.Silence, len(silences))
 	for _, silence := range silences {
 		silence := silence // scopelint pin
@@ -194,9 +211,16 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	if err != nil {
 		return err
 	}
-	log.Info().Str("alertmanager", am.Name).Int("groups", len(groups)).Dur("duration", time.Since((start))).Msg("Collected alert groups")
+	log.Info().
+		Str("alertmanager", am.Name).
+		Int("groups", len(groups)).
+		Dur("duration", time.Since((start))).
+		Msg("Collected alert groups")
 
-	log.Info().Str("alertmanager", am.Name).Int("groups", len(groups)).Msg("Deduplicating alert groups")
+	log.Info().
+		Str("alertmanager", am.Name).
+		Int("groups", len(groups)).
+		Msg("Deduplicating alert groups")
 	uniqueGroups := map[string]models.AlertGroup{}
 	uniqueAlerts := map[string]map[string]models.Alert{}
 	knownLabelsMap := map[string]bool{}
@@ -228,7 +252,10 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	colors := models.LabelsColorMap{}
 	autocompleteMap := map[string]models.Autocomplete{}
 
-	log.Info().Str("alertmanager", am.Name).Int("groups", len(uniqueGroups)).Msg("Processing deduplicated alert groups")
+	log.Info().
+		Str("alertmanager", am.Name).
+		Int("groups", len(uniqueGroups)).
+		Msg("Processing deduplicated alert groups")
 	for _, ag := range uniqueGroups {
 		alerts := make(models.AlertList, 0, len(uniqueAlerts[ag.ID]))
 		for _, alert := range uniqueAlerts[ag.ID] {
@@ -281,7 +308,10 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		dedupedGroups = append(dedupedGroups, ag)
 	}
 
-	log.Info().Str("alertmanager", am.Name).Int("hints", len(autocompleteMap)).Msg("Merging autocomplete hints")
+	log.Info().
+		Str("alertmanager", am.Name).
+		Int("hints", len(autocompleteMap)).
+		Msg("Merging autocomplete hints")
 	autocomplete := make([]models.Autocomplete, 0, len(autocompleteMap))
 	for _, hint := range autocompleteMap {
 		autocomplete = append(autocomplete, hint)
@@ -440,7 +470,12 @@ func (am *Alertmanager) Error() string {
 	missing, _ := slices.StringSliceDiff(configPeers, apiPeers)
 
 	if len(missing) > 0 {
-		log.Debug().Str("alertmanager", am.Name).Strs("configured", configPeers).Strs("api", apiPeers).Strs("missing", missing).Msg("Cluster peers mismatch")
+		log.Debug().
+			Str("alertmanager", am.Name).
+			Strs("configured", configPeers).
+			Strs("api", apiPeers).
+			Strs("missing", missing).
+			Msg("Cluster peers mismatch")
 		return fmt.Sprintf("missing cluster peers: %s", strings.Join(missing, ", "))
 	}
 
