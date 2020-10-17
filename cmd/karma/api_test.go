@@ -992,7 +992,8 @@ func TestVerifyAllGroups(t *testing.T) {
 		t.Logf("Testing API using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		apiCache.Flush()
-		r := ginTestEngine()
+		r := testRouter()
+		setupRouter(r)
 		req := httptest.NewRequest("GET", "/alerts.json", nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
@@ -1231,7 +1232,8 @@ func TestSortOrder(t *testing.T) {
 		for i := 1; i <= 3; i++ {
 			t.Logf("Testing API using mock files from Alertmanager %s [try %d]", version, i)
 			mockAlerts(version)
-			r := ginTestEngine()
+			r := testRouter()
+			setupRouter(r)
 
 			for _, testCase := range sortTests {
 				apiCache.Flush()

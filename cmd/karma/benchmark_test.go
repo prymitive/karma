@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/prymitive/karma/internal/mock"
+	"github.com/rs/zerolog"
 )
 
 func reportMemoryMetrics(b *testing.B) {
@@ -20,6 +21,8 @@ func reportMemoryMetrics(b *testing.B) {
 }
 
 func BenchmarkCompress(b *testing.B) {
+	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+
 	data, err := ioutil.ReadFile("./tests/compress/alerts.json")
 	if err != nil {
 		b.Errorf("Failed to read data: %s", err.Error())
@@ -43,6 +46,8 @@ func BenchmarkCompress(b *testing.B) {
 }
 
 func BenchmarkDecompress(b *testing.B) {
+	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+
 	data, err := ioutil.ReadFile("./tests/compress/alerts.json")
 	if err != nil {
 		b.Errorf("Failed to read data: %s", err.Error())
@@ -68,6 +73,8 @@ func BenchmarkDecompress(b *testing.B) {
 }
 
 func BenchmarkCompressionAndDecompression(b *testing.B) {
+	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+
 	data, err := ioutil.ReadFile("./tests/compress/alerts.json")
 	if err != nil {
 		b.Errorf("Failed to read data: %s", err.Error())
@@ -93,6 +100,8 @@ func BenchmarkCompressionAndDecompression(b *testing.B) {
 }
 
 func BenchmarkPullAlerts(b *testing.B) {
+	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+
 	mockConfig()
 	for _, version := range mock.ListAllMocks() {
 		version := version
@@ -110,10 +119,13 @@ func BenchmarkPullAlerts(b *testing.B) {
 }
 
 func BenchmarkAlertsAPIMisses(b *testing.B) {
+	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+
 	mockConfig()
 	for _, version := range mock.ListAllMocks() {
 		mockAlerts(version)
-		r := ginTestEngine()
+		r := testRouter()
+		setupRouter(r)
 		b.Run(version, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				b.StopTimer()
@@ -134,10 +146,13 @@ func BenchmarkAlertsAPIMisses(b *testing.B) {
 }
 
 func BenchmarkAlertsAPIHits(b *testing.B) {
+	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+
 	mockConfig()
 	for _, version := range mock.ListAllMocks() {
 		mockAlerts(version)
-		r := ginTestEngine()
+		r := testRouter()
+		setupRouter(r)
 
 		req := httptest.NewRequest("GET", "/alerts.json?q=", nil)
 		resp := httptest.NewRecorder()

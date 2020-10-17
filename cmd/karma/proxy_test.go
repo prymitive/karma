@@ -68,29 +68,27 @@ var proxyTests = []proxyTest{
 		localPath:   "/proxy/alertmanager/INVALID/api/v2/silences",
 		upstreamURI: "",
 		code:        404,
-		response:    "404 page not found",
+		response:    "404 page not found\n",
 	},
 	{
 		method:      "DELETE",
 		localPath:   "/proxy/alertmanager/INVALID/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
 		upstreamURI: "http://localhost:9093/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
 		code:        404,
-		response:    "404 page not found",
+		response:    "404 page not found\n",
 	},
 	// valid alertmanager name, but invalid method
 	{
 		method:      "GET",
 		localPath:   "/proxy/alertmanager/dummy/api/v2/silences",
 		upstreamURI: "",
-		code:        404,
-		response:    "404 page not found",
+		code:        405,
 	},
 	{
 		method:      "GET",
 		localPath:   "/proxy/alertmanager/dummy/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
 		upstreamURI: "http://localhost:9093/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
-		code:        404,
-		response:    "404 page not found",
+		code:        405,
 	},
 }
 
@@ -105,7 +103,7 @@ func TestProxy(t *testing.T) {
 
 	config.Config.Listen.Prefix = ""
 
-	r := ginTestEngine()
+	r := testRouter()
 	am, err := alertmanager.NewAlertmanager(
 		"cluster",
 		"dummy",
@@ -116,10 +114,8 @@ func TestProxy(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	err = setupRouterProxyHandlers(r, am)
-	if err != nil {
-		t.Errorf("Failed to setup proxy for Alertmanager %s: %s", am.Name, err)
-	}
+
+	setupRouterProxyHandlers(r, am)
 
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
@@ -217,7 +213,7 @@ func TestProxyHeaders(t *testing.T) {
 
 	for _, testCase := range proxyHeaderTests {
 		testCase := testCase //scopelint pin
-		r := ginTestEngine()
+		r := testRouter()
 		am, err := alertmanager.NewAlertmanager(
 			"cluster",
 			"dummy",
@@ -229,10 +225,7 @@ func TestProxyHeaders(t *testing.T) {
 		if err != nil {
 			t.Error(err)
 		}
-		err = setupRouterProxyHandlers(r, am)
-		if err != nil {
-			t.Errorf("Failed to setup proxy for Alertmanager %s: %s", am.Name, err)
-		}
+		setupRouterProxyHandlers(r, am)
 
 		httpmock.Reset()
 		httpmock.RegisterResponder(testCase.method, testCase.upstreamURI, func(req *http.Request) (*http.Response, error) {
@@ -328,7 +321,7 @@ func TestProxyToSubURIAlertmanager(t *testing.T) {
 		t.Run(fmt.Sprintf("prefix=%s|uri=%s", testCase.listenPrefix, testCase.alertmanagerURI), func(t *testing.T) {
 			httpmock.Reset()
 			config.Config.Listen.Prefix = testCase.listenPrefix
-			r := ginTestEngine()
+			r := testRouter()
 
 			am, err := alertmanager.NewAlertmanager(
 				"cluster",
@@ -340,10 +333,7 @@ func TestProxyToSubURIAlertmanager(t *testing.T) {
 			if err != nil {
 				t.Error(err)
 			}
-			err = setupRouterProxyHandlers(r, am)
-			if err != nil {
-				t.Errorf("Failed to setup proxy for Alertmanager %s: %s", am.Name, err)
-			}
+			setupRouterProxyHandlers(r, am)
 
 			httpmock.RegisterResponder("POST", "http://alertmanager.example.com/suburi/api/v2/silences", func(req *http.Request) (*http.Response, error) {
 				return httpmock.NewStringResponse(200, "ok"), nil
@@ -407,6 +397,7 @@ func TestProxyUserRewrite(t *testing.T) {
 			requestBasicAuthUser:     "john",
 			requestBasicAuthPassword: "foobar",
 			frontednRequestBody:      `{XXX`,
+			proxyRequestBody:         "invalid character 'X' looking for beginning of object key string\n",
 		},
 		{
 			name:         "basicAuth, missing credentials",
@@ -456,10 +447,11 @@ func TestProxyUserRewrite(t *testing.T) {
 		},
 
 		{
-			name:         "header auth, missing header",
-			responseCode: 401,
-			headerName:   "X-Auth",
-			headerRe:     "(.+)",
+			name:             "header auth, missing header",
+			responseCode:     401,
+			proxyRequestBody: "Access denied\n",
+			headerName:       "X-Auth",
+			headerRe:         "(.+)",
 		},
 		{
 			name:       "header auth, invalid header",
@@ -468,7 +460,8 @@ func TestProxyUserRewrite(t *testing.T) {
 			requestHeaders: map[string]string{
 				"X-Auth": "xxx",
 			},
-			responseCode: 401,
+			responseCode:     401,
+			proxyRequestBody: "Access denied\n",
 		},
 		{
 			name:         "header auth, correct credentials, fixed username",
@@ -524,7 +517,6 @@ func TestProxyUserRewrite(t *testing.T) {
 				config.Config.Authentication.Header.Name = testCase.headerName
 				config.Config.Authentication.Header.ValueRegex = testCase.headerRe
 				config.Config.Authentication.BasicAuth.Users = testCase.basicAuthUsers
-				r := ginTestEngine()
 
 				am, err := alertmanager.NewAlertmanager(
 					"cluster",
@@ -536,10 +528,10 @@ func TestProxyUserRewrite(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				err = setupRouterProxyHandlers(r, am)
-				if err != nil {
-					t.Errorf("Failed to setup proxy for Alertmanager %s: %s", am.Name, err)
-				}
+
+				r := testRouter()
+				setupRouter(r)
+				setupRouterProxyHandlers(r, am)
 
 				apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 				httpmock.Reset()
@@ -1164,7 +1156,8 @@ func TestProxySilenceACL(t *testing.T) {
 
 				silenceACLs = testCase.silenceACLs
 
-				r := ginTestEngine()
+				r := testRouter()
+				setupRouter(r)
 
 				am, err := alertmanager.NewAlertmanager(
 					"cluster",
@@ -1176,10 +1169,7 @@ func TestProxySilenceACL(t *testing.T) {
 				if err != nil {
 					t.Error(err)
 				}
-				err = setupRouterProxyHandlers(r, am)
-				if err != nil {
-					t.Errorf("Failed to setup proxy for Alertmanager %s: %s", am.Name, err)
-				}
+				setupRouterProxyHandlers(r, am)
 
 				apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 				httpmock.Reset()
@@ -1204,24 +1194,5 @@ func TestProxySilenceACL(t *testing.T) {
 				}
 			}
 		})
-	}
-}
-
-func TestNewAlertmanagerProxyWithInvalidURL(t *testing.T) {
-	am := alertmanager.Alertmanager{URI: "%gh&%ij"}
-	proxy, err := NewAlertmanagerProxy(&am)
-	if err == nil {
-		t.Errorf("NewAlertmanagerProxy didn't return any error")
-	}
-	if proxy != nil {
-		t.Errorf("NewAlertmanagerProxy returned a proxy instance: %v", proxy)
-	}
-}
-
-func TestSetupRouterProxyHandlersWithInvalidURL(t *testing.T) {
-	am := alertmanager.Alertmanager{URI: "%gh&%ij"}
-	err := setupRouterProxyHandlers(nil, &am)
-	if err == nil {
-		t.Errorf("setupRouterProxyHandlers didn't return any error")
 	}
 }

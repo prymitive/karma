@@ -51,8 +51,8 @@ env LOG_TIMESTAMP=false
 env RECEIVERS_KEEP='keep1 keep2'
 env RECEIVERS_STRIP='strip1 strip2'
 
-env SENTRY_DSN=abcdef1234567890
-env SENTRY_PUBLIC=1234567890abcdef
+env SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
+env SENTRY_PUBLIC=https://examplePublicKey@o0.ingest.sentry.io/1
 
 env SILENCEFORM_STRIP_LABELS='job severity region'
 
@@ -173,8 +173,8 @@ level=info msg="  strip:"
 level=info msg="  - strip1"
 level=info msg="  - strip2"
 level=info msg="sentry:"
-level=info msg="  private: abcdef1234567890"
-level=info msg="  public: 1234567890abcdef"
+level=info msg="  private: https://examplePublicKey@o0.ingest.sentry.io/0"
+level=info msg="  public: https://examplePublicKey@o0.ingest.sentry.io/1"
 level=info msg="silences:"
 level=info msg="  comments:"
 level=info msg="    linkDetect:"

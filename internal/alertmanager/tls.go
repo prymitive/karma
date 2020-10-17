@@ -10,7 +10,9 @@ import (
 )
 
 func configureTLSRootCAs(tlsConfig *tls.Config, caPath string) error {
-	log.Debug().Str("path", caPath).Msg("Loading TLS CA cert")
+	log.Debug().
+		Str("path", caPath).
+		Msg("Loading TLS CA cert")
 	caCert, err := ioutil.ReadFile(caPath)
 	if err != nil {
 		return err
@@ -22,7 +24,10 @@ func configureTLSRootCAs(tlsConfig *tls.Config, caPath string) error {
 }
 
 func configureTLSClientCert(tlsConfig *tls.Config, certPath, keyPath string) error {
-	log.Debug().Str("cert", certPath).Str("key", keyPath).Msg("Loading TLS cert and key")
+	log.Debug().
+		Str("cert", certPath).
+		Str("key", keyPath).
+		Msg("Loading TLS cert and key")
 	cert, err := tls.LoadX509KeyPair(certPath, keyPath)
 	if err != nil {
 		log.Debug().Err(err).Msg("Failed to load TLS cert and key")

@@ -16,7 +16,10 @@ type HTTPURIReader struct {
 
 func (r *HTTPURIReader) Read(uri string, headers map[string]string) (io.ReadCloser, error) {
 	suri := SanitizeURI(uri)
-	log.Info().Str("uri", suri).Dur("timeout", r.client.Timeout).Msg("GET request")
+	log.Info().
+		Str("uri", suri).
+		Dur("timeout", r.client.Timeout).
+		Msg("GET request")
 
 	request, err := http.NewRequest("GET", uri, nil)
 	if err != nil {

@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 	"math"
+	"net/http"
 	"sort"
 
 	"github.com/fvbommel/sortorder"
-	"github.com/gin-gonic/gin"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
@@ -166,13 +166,13 @@ func sortByStartsAt(i, j int, groups []models.APIAlertGroup, sortReverse bool) b
 	return groups[i].LatestStartsAt.Before(groups[j].LatestStartsAt)
 }
 
-func getSortOptions(c *gin.Context) (string, string, string) {
-	sortOrder, found := c.GetQuery("sortOrder")
+func getSortOptions(r *http.Request) (string, string, string) {
+	sortOrder, found := lookupQueryString(r, "sortOrder")
 	if !found || sortOrder == "" {
 		sortOrder = config.Config.Grid.Sorting.Order
 	}
 
-	sortReverse, found := c.GetQuery("sortReverse")
+	sortReverse, found := lookupQueryString(r, "sortReverse")
 	if !found || (sortReverse != "0" && sortReverse != "1") {
 		if config.Config.Grid.Sorting.Reverse {
 			sortReverse = "1"
@@ -181,7 +181,7 @@ func getSortOptions(c *gin.Context) (string, string, string) {
 		}
 	}
 
-	sortLabel, found := c.GetQuery("sortLabel")
+	sortLabel, found := lookupQueryString(r, "sortLabel")
 	if !found || sortLabel == "" {
 		sortLabel = config.Config.Grid.Sorting.Label
 	}
@@ -189,8 +189,8 @@ func getSortOptions(c *gin.Context) (string, string, string) {
 	return sortOrder, sortReverse, sortLabel
 }
 
-func sortAlertGroups(c *gin.Context, groups []models.APIAlertGroup) []models.APIAlertGroup {
-	sortOrder, sortReverse, sortLabel := getSortOptions(c)
+func sortAlertGroups(r *http.Request, groups []models.APIAlertGroup) []models.APIAlertGroup {
+	sortOrder, sortReverse, sortLabel := getSortOptions(r)
 
 	switch sortOrder {
 	case "startsAt":
@@ -238,11 +238,11 @@ func sortAlertGroups(c *gin.Context, groups []models.APIAlertGroup) []models.API
 	return groups
 }
 
-func sortGrids(c *gin.Context, gridLabel string, gridsMap map[string]models.APIGrid, gridSortReverse bool) []models.APIGrid {
+func sortGrids(r *http.Request, gridLabel string, gridsMap map[string]models.APIGrid, gridSortReverse bool) []models.APIGrid {
 	grids := make([]models.APIGrid, 0, len(gridsMap))
 
 	for _, g := range gridsMap {
-		g.AlertGroups = sortAlertGroups(c, g.AlertGroups)
+		g.AlertGroups = sortAlertGroups(r, g.AlertGroups)
 		grids = append(grids, g)
 	}
 

@@ -85,8 +85,8 @@ level=info msg="receivers:"
 level=info msg="  keep: []"
 level=info msg="  strip: []"
 level=info msg="sentry:"
-level=info msg="  private: secret"
-level=info msg="  public: \"123456789\""
+level=info msg="  private: https://examplePublicKey@o0.ingest.sentry.io/0"
+level=info msg="  public: https://examplePublicKey@o0.ingest.sentry.io/1"
 level=info msg="silences:"
 level=info msg="  comments:"
 level=info msg="    linkDetect:"
@@ -125,8 +125,8 @@ alertmanager:
     - name: default
       uri: http://127.0.0.1:9093
 sentry:
-  private: secret
-  public: 123456789
+  private: https://examplePublicKey@o0.ingest.sentry.io/0
+  public: https://examplePublicKey@o0.ingest.sentry.io/1
 
 -- test.sh --
 #!/bin/sh

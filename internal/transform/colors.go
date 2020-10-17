@@ -44,7 +44,11 @@ func rgbToBrightness(r, g, b uint8) int32 {
 func parseCustomColor(colorStore models.LabelsColorMap, key, val, customColor string) {
 	color, err := plcolors.Parse(customColor)
 	if err != nil {
-		log.Warn().Str("key", key).Str("value", val).Err(err).Msg("Failed to parse custom color")
+		log.Warn().
+			Err(err).
+			Str("key", key).
+			Str("value", val).
+			Msg("Failed to parse custom color")
 		return
 	}
 	rgb := color.ToRGB()

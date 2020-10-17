@@ -1,14 +1,13 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"net/http/httptest"
 	"os"
 	"testing"
 
 	"github.com/prymitive/karma/internal/config"
-
-	"github.com/gin-contrib/static"
 )
 
 type customizationAssetsTest struct {
@@ -38,56 +37,63 @@ func TestCustomizationAssets(t *testing.T) {
 			customJS: "foo/bar/custom.js",
 			path:     "/custom.js",
 			code:     404,
-			body:     "foo/bar/custom.js not found",
-			mime:     "application/javascript",
+			body:     "open foo/bar/custom.js: no such file or directory",
+			mime:     "text/plain; charset=utf-8",
 		},
 		{
 			customCSS: "foo/bar/custom.css",
 			path:      "/custom.css",
 			code:      404,
-			body:      "foo/bar/custom.css not found",
-			mime:      "text/css",
+			body:      "open foo/bar/custom.css: no such file or directory",
+			mime:      "text/plain; charset=utf-8",
 		},
 		{
 			customJS: "../../ui/.env",
 			path:     "/custom.js",
 			code:     200,
 			body:     "PUBLIC_URL=.\nEXTEND_ESLINT=true\n",
-			mime:     "text/plain; charset=utf-8",
+			mime:     "application/javascript",
 		},
 		{
 			customCSS: "../../ui/.env",
 			path:      "/custom.css",
 			code:      200,
 			body:      "PUBLIC_URL=.\nEXTEND_ESLINT=true\n",
-			mime:      "text/plain; charset=utf-8",
+			mime:      "text/css",
 		},
 	}
 
 	mockConfig()
-	for _, staticFileTest := range customizationAssetsTests {
-		config.Config.Custom.CSS = staticFileTest.customCSS
-		config.Config.Custom.JS = staticFileTest.customJS
-		r := ginTestEngine()
+	for i, staticFileTest := range customizationAssetsTests {
+		t.Run(fmt.Sprintf("%d/%s", i, staticFileTest.path), func(t *testing.T) {
+			config.Config.Custom.CSS = staticFileTest.customCSS
+			config.Config.Custom.JS = staticFileTest.customJS
+			r := testRouter()
+			setupRouter(r)
 
-		req := httptest.NewRequest("GET", staticFileTest.path, nil)
-		resp := httptest.NewRecorder()
-		r.ServeHTTP(resp, req)
-		if resp.Code != staticFileTest.code {
-			t.Errorf("Invalid status code for GET %s: %d", staticFileTest.path, resp.Code)
-		}
-		if resp.Body.String() != staticFileTest.body {
-			t.Errorf("Invalid body for GET %s: %s, expected %s", staticFileTest.path, resp.Body.String(), staticFileTest.body)
-		}
-		if resp.Result().Header.Get("Content-Type") != staticFileTest.mime {
-			t.Errorf("Invalid Content-Type for GET %s: %s, expected %s", staticFileTest.path, resp.Result().Header.Get("Content-Type"), staticFileTest.mime)
-		}
+			req := httptest.NewRequest("GET", staticFileTest.path, nil)
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != staticFileTest.code {
+				t.Errorf("Invalid status code for GET %s: %d", staticFileTest.path, resp.Code)
+			}
+			if resp.Body.String() != staticFileTest.body {
+				t.Errorf("Invalid body for GET %s: %s, expected %s", staticFileTest.path, resp.Body.String(), staticFileTest.body)
+			}
+			if resp.Result().Header.Get("Cache-Control") != "no-cache, no-store, must-revalidate" {
+				t.Errorf("Invalid Cache-Control for GET %s: %s, expected %s", staticFileTest.path, resp.Result().Header.Get("Cache-Control"), "no-cache, no-store, must-revalidate")
+			}
+			if resp.Result().Header.Get("Content-Type") != staticFileTest.mime {
+				t.Errorf("Invalid Content-Type for GET %s: %s, expected %s", staticFileTest.path, resp.Result().Header.Get("Content-Type"), staticFileTest.mime)
+			}
+		})
 	}
 }
 
 func TestStaticExpires404(t *testing.T) {
 	mockConfig()
-	r := ginTestEngine()
+	r := testRouter()
+	setupRouter(r)
 
 	req := httptest.NewRequest("GET", "/static/foobar.js", nil)
 	resp := httptest.NewRecorder()
@@ -136,15 +142,16 @@ func TestLoadTemplateUnparsable(t *testing.T) {
 
 func TestAssetFallbackMIME(t *testing.T) {
 	mockConfig()
-	r := ginTestEngine()
-	r.Use(static.Serve(getViewURL("/"), newBinaryFileSystem("cmd/karma/tests/bindata")))
+	r := testRouter()
+	r.Use(serverStaticFiles(getViewURL("/"), newBinaryFileSystem("cmd/karma/tests/bindata")))
+	setupRouter(r)
 	req := httptest.NewRequest("GET", "/bin.data", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
 	if resp.Code != 200 {
 		t.Errorf("Invalid status code for GET %s: %d", "/bin.data", resp.Code)
 	}
-	if resp.Result().Header.Get("Content-Type") != "text/plain; charset=utf-8" {
+	if resp.Result().Header.Get("Content-Type") != "application/octet-stream" {
 		t.Errorf("Invalid Content-Type for GET /bin.data: %s, expected 'text/plain; charset=utf-8'", resp.Result().Header.Get("Content-Type"))
 	}
 }
@@ -185,7 +192,8 @@ func TestStaticFiles(t *testing.T) {
 	}
 
 	mockConfig()
-	r := ginTestEngine()
+	r := testRouter()
+	setupRouter(r)
 	for _, staticFileTest := range staticFileTests {
 		req := httptest.NewRequest("GET", staticFileTest.path, nil)
 		resp := httptest.NewRecorder()
@@ -247,7 +255,8 @@ func TestStaticFilesPrefix(t *testing.T) {
 	os.Setenv("LISTEN_PREFIX", "/sub")
 	defer os.Unsetenv("LISTEN_PREFIX")
 	mockConfig()
-	r := ginTestEngine()
+	r := testRouter()
+	setupRouter(r)
 	for _, staticFileTest := range staticFilePrefixTests {
 		req := httptest.NewRequest("GET", staticFileTest.path, nil)
 		resp := httptest.NewRecorder()
