@@ -91,7 +91,6 @@ func setupRouter(router *chi.Mux) {
 	compressor := middleware.NewCompressor(flate.DefaultCompression)
 	router.Use(compressor.Handler)
 
-	router.Use(setStaticHeaders(getViewURL("/static/")))
 	router.Use(serverStaticFiles(getViewURL("/"), staticBuildFileSystem))
 	// next 2 lines are to allow service raw sources so sentry can fetch source maps
 	router.Use(serverStaticFiles(getViewURL("/static/js/"), staticSrcFileSystem))
@@ -99,14 +98,10 @@ func setupRouter(router *chi.Mux) {
 	// compressed sources are under /static/js/main.js and reference ../static/js/main.js
 	// so we end up with /static/static/js
 	router.Use(serverStaticFiles(getViewURL("/static/static/js/"), staticSrcFileSystem))
-
-	router.Use(clearStaticHeaders(getViewURL("/static/")))
-
 	router.Use(cors.Handler(cors.Options{
 		AllowOriginFunc: func(r *http.Request, origin string) bool {
 			return true
 		},
-		// AllowOriginFunc:  func(r *http.Request, origin string) bool { return true },
 		AllowedMethods:   []string{"GET", "POST", "DELETE"},
 		AllowedHeaders:   []string{"Origin"},
 		ExposedHeaders:   []string{"Content-Length"},

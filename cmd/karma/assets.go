@@ -109,36 +109,14 @@ func serverStaticFiles(prefix string, fs *binaryFileSystem) func(next http.Handl
 			if ct == "" {
 				ct = "application/octet-stream"
 			}
-
 			w.Header().Set("Content-Type", ct)
+
+			w.Header().Set("Cache-Control", "public, max-age=31536000")
+			expiresTime := time.Now().AddDate(0, 0, 365).Format(http.TimeFormat)
+			w.Header().Set("Expires", expiresTime)
+
 			w.WriteHeader(http.StatusOK)
 			_, _ = io.Copy(w, fl)
-		})
-	}
-}
-
-func setStaticHeaders(prefix string) func(next http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if strings.HasPrefix(r.URL.Path, prefix) {
-				w.Header().Set("Cache-Control", "public, max-age=31536000")
-				expiresTime := time.Now().AddDate(0, 0, 365).Format(http.TimeFormat)
-				w.Header().Set("Expires", expiresTime)
-			}
-			next.ServeHTTP(w, r)
-		})
-	}
-}
-
-func clearStaticHeaders(prefix string) func(next http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			if strings.HasPrefix(r.URL.Path, prefix) {
-				w.Header().Del("Cache-Control")
-				w.Header().Del("Expires")
-
-			}
-			next.ServeHTTP(w, r)
 		})
 	}
 }
