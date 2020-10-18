@@ -135,6 +135,7 @@ type configSchema struct {
 		Config    bool
 		Level     string
 		Format    string
+		Requests  bool
 		Timestamp bool
 	}
 	Receivers struct {

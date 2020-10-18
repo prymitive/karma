@@ -99,6 +99,7 @@ func SetupFlags(f *pflag.FlagSet) {
 		"Log level, one of: debug, info, warning, error, fatal and panic")
 	f.String("log.format", "text",
 		"Log format, one of: text, json")
+	f.Bool("log.requests", false, "Enable request logging")
 	f.Bool("log.timestamp", false, "Add timestamps to all log messages")
 
 	f.StringSlice("receivers.keep", []string{},

@@ -103,6 +103,7 @@ log:
   config: false
   level: info
   format: text
+  requests: false
   timestamp: false
 receivers:
   keep: []

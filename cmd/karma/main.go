@@ -204,6 +204,9 @@ func msgFormatter(msg interface{}) string {
 	return fmt.Sprintf("msg=%q", msg)
 }
 func lvlFormatter(level interface{}) string {
+	if level == nil {
+		return ""
+	}
 	return fmt.Sprintf("level=%s", level)
 }
 
