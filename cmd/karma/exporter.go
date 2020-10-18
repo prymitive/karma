@@ -12,6 +12,7 @@ import (
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prymitive/karma/internal/config"
 	"github.com/rs/zerolog/log"
 )
 
@@ -69,11 +70,14 @@ func promMiddleware(next http.Handler) http.Handler {
 		respSizeBytes.WithLabelValues(lvs...).Observe(float64(ww.BytesWritten()))
 
 		ww.Header().Set("Content-Length", strconv.Itoa(ww.BytesWritten()))
-		log.Info().
-			Str("path", r.URL.Path).
-			Str("duration", time.Since(start).String()).
-			Str("method", r.Method).Int("code", ww.Status()).
-			Int("bytes", ww.BytesWritten()).
-			Msg("Request completed")
+		if config.Config.Log.Requests {
+			log.Log().
+				Str("address", r.RemoteAddr).
+				Str("path", r.URL.RequestURI()).
+				Str("duration", time.Since(start).String()).
+				Str("method", r.Method).Int("code", ww.Status()).
+				Int("bytes", ww.BytesWritten()).
+				Msg("Request completed")
+		}
 	})
 }

@@ -834,6 +834,7 @@ log:
   config: bool
   level: string
   format: string
+  requests: bool
   timestamp: bool
 ```
 
@@ -842,6 +843,7 @@ log:
   `warning`, `error`, `fatal` and `panic`.
 - `format` - controls how log messages are formatted, possible values are
   `text` and `json`. If set to `json` each log will be a JSON object
+- `requests` - if set to `true` karma will log all requests
 - `timestamp` - if set to `true` all log messages will include a timestamp
 
 Defaults:
@@ -851,6 +853,7 @@ log:
   config: false
   level: info
   format: text
+  requests: false
   timestamp: false
 ```
 
