@@ -7,7 +7,7 @@ ifeq ($(GOBIN),)
 GOBIN = $(shell go env GOPATH)/bin
 endif
 
-ui/build/index.html: $(call rwildcard, ui/src ui/package.json ui/package-lock.json, *)
+ui/build/index.html: $(call rwildcard, ui/src ui/package.json ui/package-lock.json ui/public, *)
 	@$(MAKE) -C ui build
 
 $(GOBIN)/go-bindata: tools/go-bindata/go.mod tools/go-bindata/go.sum

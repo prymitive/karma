@@ -1,0 +1,18 @@
+# GET / contains the content of custom.js when --custom.js is set
+
+exec sh ./test.sh &
+karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8084 --custom.js=custom.js
+wait
+cmp stdout stdout.txt
+
+-- stdout.txt --
+alert( Hello, world! );
+-- custom.js --
+alert( 'Hello, world!' );
+-- test.sh --
+#!/bin/sh
+
+while [ ! -f karma.pid ]; do sleep 1 ; done
+sleep 1
+curl -s http://127.0.0.1:8084/ | tr -d '\n' | sed s_'.*<script type="application/javascript">'_''_g | sed s_'</script>.*'_''_g | xargs
+cat karma.pid | xargs kill

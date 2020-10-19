@@ -1000,8 +1000,6 @@ func TestAuthentication(t *testing.T) {
 				"/labelNames.json",
 				"/labelValues.json?name=foo",
 				"/silences.json",
-				"/custom.css",
-				"/custom.js",
 			} {
 				req := httptest.NewRequest("GET", path, nil)
 				for k, v := range testCase.requestHeaders {

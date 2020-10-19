@@ -1,0 +1,18 @@
+# GET / contains the content of custom.css when --custom.css is set
+
+exec sh ./test.sh &
+karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8083 --custom.css=custom.css
+wait
+cmp stdout stdout.txt
+
+-- stdout.txt --
+body { background-color: red; }
+-- custom.css --
+body { background-color: red; }
+-- test.sh --
+#!/bin/sh
+
+while [ ! -f karma.pid ]; do sleep 1 ; done
+sleep 1
+curl -s http://127.0.0.1:8083/ | tr -d '\n' | sed s_'.*<head>'_''_g | sed s_'</head>.*'_''_g | sed s_'.*<style>'_''_g | sed s_'</style>.*'_''_g | xargs
+cat karma.pid | xargs kill

@@ -88,14 +88,43 @@ func index(w http.ResponseWriter, r *http.Request) {
 	defaults, _ := json.Marshal(config.Config.UI)
 	defaultsB64 := base64.StdEncoding.EncodeToString(defaults)
 
+	var err error
+
+	customCSS := ""
+	if config.Config.Custom.CSS != "" {
+		log.Debug().Str("path", config.Config.Custom.CSS).Msg("Loading custom CSS file")
+		data, err := ioutil.ReadFile(config.Config.Custom.CSS)
+		if err != nil {
+			log.Error().Err(err).Msg("Failed to read custom CSS file")
+		} else {
+			customCSS = fmt.Sprintf("<style>%s</style>", string(data))
+		}
+	}
+
+	customJS := ""
+	if config.Config.Custom.JS != "" {
+		log.Debug().Str("path", config.Config.Custom.JS).Msg("Loading custom JS file")
+		data, err := ioutil.ReadFile(config.Config.Custom.JS)
+		if err != nil {
+			log.Error().Err(err).Msg("Failed to read custom JS file")
+		} else {
+			customJS = fmt.Sprintf(`<script type="application/javascript">%s</script>`, string(data))
+		}
+	}
+
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	_ = indexTemplate.Execute(w, map[string]string{
+	err = indexTemplate.Execute(w, map[string]string{
 		"KarmaName":     config.Config.Karma.Name,
 		"Version":       version,
 		"SentryDSN":     config.Config.Sentry.Public,
 		"DefaultFilter": filtersB64,
 		"Defaults":      defaultsB64,
+		"CustomCSS":     customCSS,
+		"CustomJS":      customJS,
 	})
+	if err != nil {
+		log.Error().Err(err).Msg("Failed to render HTML template")
+	}
 }
 
 func populateAPIFilters(matchFilters []filters.FilterT) []models.Filter {

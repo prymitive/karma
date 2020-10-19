@@ -1,8 +1,7 @@
-# Works in simple mode when single --alertmanager.uri flag is passed
+# Logs an error when custom.js points to a missing file
 
 exec sh -x ./test.sh &
-karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8069
-! stdout .
+karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8086 --custom.js=custom.js
 cmp stderr stderr.txt
 
 -- stderr.txt --
@@ -17,7 +16,8 @@ level=error msg="Request failed" error="Get \"http://127.0.0.1/metrics\": dial t
 level=error msg="Collection failed" error="Get \"http://127.0.0.1/api/v2/status\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default
 level=info msg="Collection completed"
 level=info msg="Done, starting HTTP server"
-level=info msg="Starting HTTP server" address=127.0.0.1:8069
+level=info msg="Starting HTTP server" address=127.0.0.1:8086
+level=error msg="Failed to read custom JS file" error="open custom.js: no such file or directory"
 level=info msg="Shutting down HTTP server"
 level=info msg="HTTP server shut down"
 level=info msg="Removing PID file" path=karma.pid
@@ -26,4 +26,5 @@ level=info msg="Removing PID file" path=karma.pid
 
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 1
+curl -s http://127.0.0.1:8086/
 cat karma.pid | xargs kill

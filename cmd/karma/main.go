@@ -4,7 +4,6 @@ import (
 	"compress/flate"
 	"context"
 	"fmt"
-	"html/template"
 	"io/ioutil"
 	"mime"
 	"net"
@@ -16,6 +15,7 @@ import (
 	"strconv"
 	"strings"
 	"syscall"
+	"text/template"
 	"time"
 
 	"github.com/getsentry/sentry-go"
@@ -132,9 +132,6 @@ func setupRouter(router *chi.Mux) {
 	router.Get(getViewURL("/labelNames.json"), knownLabelNames)
 	router.Get(getViewURL("/labelValues.json"), knownLabelValues)
 	router.Get(getViewURL("/silences.json"), silences)
-
-	router.Get(getViewURL("/custom.css"), serveFileOr404(config.Config.Custom.CSS, "text/css"))
-	router.Get(getViewURL("/custom.js"), serveFileOr404(config.Config.Custom.JS, "application/javascript"))
 
 	if config.Config.Debug {
 		router.Mount(getViewURL("/debug"), middleware.Profiler())

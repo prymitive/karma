@@ -1,94 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"html/template"
 	"net/http/httptest"
 	"os"
 	"testing"
-
-	"github.com/prymitive/karma/internal/config"
+	"text/template"
 )
-
-type customizationAssetsTest struct {
-	customJS  string
-	customCSS string
-	path      string
-	code      int
-	body      string
-	mime      string
-}
-
-func TestCustomizationAssets(t *testing.T) {
-	customizationAssetsTests := []customizationAssetsTest{
-		{
-			path: "/custom.js",
-			code: 200,
-			body: "",
-			mime: "application/javascript",
-		},
-		{
-			path: "/custom.css",
-			code: 200,
-			body: "",
-			mime: "text/css",
-		},
-		{
-			customJS: "foo/bar/custom.js",
-			path:     "/custom.js",
-			code:     404,
-			body:     "open foo/bar/custom.js: no such file or directory",
-			mime:     "text/plain; charset=utf-8",
-		},
-		{
-			customCSS: "foo/bar/custom.css",
-			path:      "/custom.css",
-			code:      404,
-			body:      "open foo/bar/custom.css: no such file or directory",
-			mime:      "text/plain; charset=utf-8",
-		},
-		{
-			customJS: "../../ui/.env",
-			path:     "/custom.js",
-			code:     200,
-			body:     "PUBLIC_URL=.\nEXTEND_ESLINT=true\n",
-			mime:     "application/javascript",
-		},
-		{
-			customCSS: "../../ui/.env",
-			path:      "/custom.css",
-			code:      200,
-			body:      "PUBLIC_URL=.\nEXTEND_ESLINT=true\n",
-			mime:      "text/css",
-		},
-	}
-
-	mockConfig()
-	for i, staticFileTest := range customizationAssetsTests {
-		t.Run(fmt.Sprintf("%d/%s", i, staticFileTest.path), func(t *testing.T) {
-			config.Config.Custom.CSS = staticFileTest.customCSS
-			config.Config.Custom.JS = staticFileTest.customJS
-			r := testRouter()
-			setupRouter(r)
-
-			req := httptest.NewRequest("GET", staticFileTest.path, nil)
-			resp := httptest.NewRecorder()
-			r.ServeHTTP(resp, req)
-			if resp.Code != staticFileTest.code {
-				t.Errorf("Invalid status code for GET %s: %d", staticFileTest.path, resp.Code)
-			}
-			if resp.Body.String() != staticFileTest.body {
-				t.Errorf("Invalid body for GET %s: %s, expected %s", staticFileTest.path, resp.Body.String(), staticFileTest.body)
-			}
-			if resp.Result().Header.Get("Cache-Control") != "no-cache, no-store, must-revalidate" {
-				t.Errorf("Invalid Cache-Control for GET %s: %s, expected %s", staticFileTest.path, resp.Result().Header.Get("Cache-Control"), "no-cache, no-store, must-revalidate")
-			}
-			if resp.Result().Header.Get("Content-Type") != staticFileTest.mime {
-				t.Errorf("Invalid Content-Type for GET %s: %s, expected %s", staticFileTest.path, resp.Result().Header.Get("Content-Type"), staticFileTest.mime)
-			}
-		})
-	}
-}
 
 func TestStaticExpires404(t *testing.T) {
 	mockConfig()

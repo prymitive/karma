@@ -2,13 +2,12 @@ package main
 
 import (
 	"errors"
-	"html/template"
 	"io"
-	"io/ioutil"
 	"mime"
 	"net/http"
 	"path/filepath"
 	"strings"
+	"text/template"
 	"time"
 
 	assetfs "github.com/elazarl/go-bindata-assetfs"
@@ -61,32 +60,6 @@ func loadTemplate(t *template.Template, path string) (*template.Template, error)
 	}
 
 	return t, nil
-}
-
-func contentText(w http.ResponseWriter) {
-	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-}
-
-func serveFileOr404(path string, contentType string) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
-		if path == "" {
-			w.Header().Set("Content-Type", contentType)
-			w.WriteHeader(http.StatusOK)
-			_, _ = w.Write([]byte{})
-			return
-		}
-		data, err := ioutil.ReadFile(path)
-		if err != nil {
-			contentText(w)
-			w.WriteHeader(http.StatusNotFound)
-			_, _ = w.Write([]byte(err.Error()))
-			return
-		}
-		w.Header().Set("Content-Type", contentType)
-		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write(data)
-	}
 }
 
 func serverStaticFiles(prefix string, fs *binaryFileSystem) func(next http.Handler) http.Handler {
