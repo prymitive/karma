@@ -4,6 +4,11 @@ import Adapter from "enzyme-adapter-react-16";
 
 import { FetchRetryConfig } from "Common/Fetch";
 
+import { useFetchGetMock } from "__fixtures__/useFetchGet";
+import { useFetchGet } from "Hooks/useFetchGet";
+
+jest.mock("Hooks/useFetchGet");
+
 // https://github.com/airbnb/enzyme
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -32,3 +37,11 @@ FetchRetryConfig.maxTimeout = 10;
 
 // usePopper uses useLayoutEffect but that fails in enzyme
 React.useLayoutEffect = React.useEffect;
+
+beforeEach(() => {
+  useFetchGetMock.fetch.reset();
+  (useFetchGet as jest.MockedFunction<typeof useFetchGetMock>).mockRestore();
+  (useFetchGet as jest.MockedFunction<
+    typeof useFetchGetMock
+  >).mockImplementation(useFetchGetMock);
+});

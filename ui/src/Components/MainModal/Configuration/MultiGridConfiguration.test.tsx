@@ -7,8 +7,8 @@ import fetchMock from "fetch-mock";
 import toDiffableHtml from "diffable-html";
 
 import { MockThemeContext } from "__mocks__/Theme";
+import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { Settings } from "Stores/Settings";
-import { useFetchGet } from "__mocks__/Hooks/useFetchGet";
 import { MultiGridConfiguration } from "./MultiGridConfiguration";
 
 let settingsStore: Settings;
@@ -25,8 +25,6 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  useFetchGet.mockReset();
-  fetchMock.reset();
 });
 
 const FakeConfiguration = () => {
@@ -63,11 +61,14 @@ describe("<MultiGridConfiguration />", () => {
   });
 
   it("label select handles fetch errors", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: null,
       error: "fake error",
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = ExpandSortLabelSuggestions();
     const options = tree.find("div.react-select__option");

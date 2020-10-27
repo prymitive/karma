@@ -8,8 +8,9 @@ import { EmptyAPIResponse } from "__mocks__/Fetch";
 import { MockAlertGroup, MockAlert } from "__mocks__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
+import { useFetchGet } from "Hooks/useFetchGet";
 import { StringToOption } from "Common/Select";
-import { useFetchGet } from "__mocks__/Hooks/useFetchGet";
+import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { SilencePreview } from ".";
 
 let alertStore: AlertStore;
@@ -28,7 +29,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  useFetchGet.mockReset();
+  (useFetchGet as jest.MockedFunction<typeof useFetchGetMock>).mockReset();
 });
 
 const MockAPIResponse = () => {
@@ -103,7 +104,7 @@ describe("<SilencePreview />", () => {
   });
 
   it("matches snapshot", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: MockAPIResponse(),
       error: false,
       isLoading: false,
@@ -115,7 +116,7 @@ describe("<SilencePreview />", () => {
   });
 
   it("renders Placeholder while loading preview", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: null,
       error: false,
       isLoading: true,
@@ -132,7 +133,7 @@ describe("<SilencePreview />", () => {
   });
 
   it("handles empty grid response correctly", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: EmptyAPIResponse(),
       error: false,
       isLoading: false,
@@ -144,7 +145,7 @@ describe("<SilencePreview />", () => {
   });
 
   it("renders FetchError on failed fetch", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: null,
       error: "Fetch error",
       isLoading: false,

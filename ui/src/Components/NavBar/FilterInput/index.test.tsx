@@ -5,9 +5,10 @@ import { mount, render } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
+import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { useFetchGet } from "__mocks__/Hooks/useFetchGet";
+import { useFetchGet } from "Hooks/useFetchGet";
 import { FilterInput } from ".";
 
 let alertStore: AlertStore;
@@ -29,7 +30,6 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  (useFetchGet as any).mockReset();
   global.window.innerWidth = originalInnerWidth;
 });
 
@@ -142,8 +142,8 @@ describe("<FilterInput Autosuggest />", () => {
       jest.runOnlyPendingTimers();
     });
 
-    expect((useFetchGet as any).fetch.calls).toHaveLength(1);
-    expect((useFetchGet as any).fetch.calls[0]).toContain(
+    expect(useFetchGetMock.fetch.calls).toHaveLength(1);
+    expect(useFetchGetMock.fetch.calls[0]).toContain(
       "./autocomplete.json?term=cluster"
     );
   });
@@ -154,7 +154,7 @@ describe("<FilterInput Autosuggest />", () => {
     act(() => {
       jest.runOnlyPendingTimers();
     });
-    expect((useFetchGet as any).fetch.calls).toHaveLength(0);
+    expect(useFetchGetMock.fetch.calls).toHaveLength(0);
   });
 
   it("clicking on a suggestion adds it to filters", async () => {
@@ -182,12 +182,14 @@ describe("<FilterInput Autosuggest />", () => {
   });
 
   it("handles failed suggestion fetches", async () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: null,
       error: "fake error",
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
       get: jest.fn(),
+      cancelGet: jest.fn(),
     });
 
     const tree = MountedInput();

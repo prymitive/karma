@@ -9,6 +9,8 @@ import fetchMock from "fetch-mock";
 import { FetchRetryConfig } from "Common/Fetch";
 import { useFetchGet } from "./useFetchGet";
 
+jest.unmock("./useFetchGet");
+
 describe("useFetchGet", () => {
   beforeAll(() => {
     fetchMock.mock("http://localhost/ok", {

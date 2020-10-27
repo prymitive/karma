@@ -6,7 +6,8 @@ import toDiffableHtml from "diffable-html";
 
 import { MockThemeContext } from "__mocks__/Theme";
 import { NewEmptyMatcher, MatcherWithIDT } from "Stores/SilenceFormStore";
-import { useFetchGet } from "__mocks__/Hooks/useFetchGet";
+import { useFetchGet } from "Hooks/useFetchGet";
+import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { LabelNameInput } from "./LabelNameInput";
 
 let matcher: MatcherWithIDT;
@@ -20,7 +21,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  useFetchGet.mockReset();
+  (useFetchGet as jest.MockedFunction<typeof useFetchGetMock>).mockReset();
 });
 
 const MountedLabelNameInput = (isValid: boolean) => {
@@ -70,15 +71,21 @@ describe("<LabelNameInput />", () => {
 
   it("populates suggestions on mount", () => {
     MountedLabelNameInput(true);
-    expect(useFetchGet.mock.calls[0][0]).toBe("./labelNames.json");
+    expect(
+      (useFetchGet as jest.MockedFunction<typeof useFetchGetMock>).mock
+        .calls[0][0]
+    ).toBe("./labelNames.json");
   });
 
   it("handles fetch errors when populating suggestions", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: null,
       error: "fake error",
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = MountedLabelNameInput(true);
     tree.find("input").simulate("change", { target: { value: "f" } });

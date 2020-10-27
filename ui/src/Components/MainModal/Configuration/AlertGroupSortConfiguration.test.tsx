@@ -5,11 +5,12 @@ import { mount } from "enzyme";
 import toDiffableHtml from "diffable-html";
 
 import { MockThemeContext } from "__mocks__/Theme";
+import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { Settings } from "Stores/Settings";
-import { useFetchGet } from "__mocks__/Hooks/useFetchGet";
 import { AlertGroupSortConfiguration } from "./AlertGroupSortConfiguration";
 
 let settingsStore: Settings;
+
 beforeEach(() => {
   settingsStore = new Settings(null);
 
@@ -18,7 +19,6 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  useFetchGet.mockReset();
 });
 
 const FakeConfiguration = () => {
@@ -51,6 +51,16 @@ describe("<AlertGroupSortConfiguration />", () => {
   });
 
   it("changing sort order value update settingsStore", () => {
+    useFetchGetMock.fetch.setMockedData({
+      response: null,
+      error: "fake error",
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
+
     settingsStore.gridConfig.setSortOrder("label");
     expect(settingsStore.gridConfig.config.sortOrder).toBe(
       settingsStore.gridConfig.options.label.value
@@ -119,11 +129,14 @@ describe("<AlertGroupSortConfiguration />", () => {
   });
 
   it("label select handles fetch errors", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: null,
       error: "fake error",
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = ExpandSortLabelSuggestions();
     const options = tree.find("div.react-select__option");

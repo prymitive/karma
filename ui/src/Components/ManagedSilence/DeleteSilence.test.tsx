@@ -10,7 +10,6 @@ import { PressKey } from "__mocks__/PressKey";
 import { APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { useFetchGet } from "__mocks__/Hooks/useFetchGet";
 import { useFetchDelete } from "__mocks__/Hooks/useFetchDelete";
 import { DeleteSilence, DeleteSilenceModalContent } from "./DeleteSilence";
 
@@ -50,7 +49,6 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  useFetchGet.mockReset();
   useFetchDelete.mockReset();
   clear();
   document.body.className = "";
