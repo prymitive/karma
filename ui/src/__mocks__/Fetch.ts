@@ -1,4 +1,8 @@
-import { APIAlertsResponseT, APILabelCounterT } from "Models/APITypes";
+import {
+  APIAlertsResponseT,
+  APILabelCounterT,
+  APIManagedSilenceT,
+} from "Models/APITypes";
 import { MockAlert, MockAlertGroup, MockSilence } from "./Alerts";
 
 const EmptyAPIResponse = (): APIAlertsResponseT => ({
@@ -109,7 +113,7 @@ const MockAPIResponse = () => {
 };
 
 const MockSilenceResponse = (cluster: string, count: number) => {
-  const silences = [];
+  const silences: APIManagedSilenceT[] = [];
   for (let index = 1; index <= count; index++) {
     const silence = MockSilence();
     silence.id = `silence${index}`;

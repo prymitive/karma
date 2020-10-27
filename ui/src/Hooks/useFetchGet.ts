@@ -22,10 +22,7 @@ interface ResponseState<T> {
   retryCount: number;
 }
 
-const useFetchGet = <T>(
-  uri: string,
-  { autorun = true, deps = [], fetcher = null }: FetchGetOptionsT = {}
-): {
+export interface FetchGetResultT<T> {
   response: null | T;
   error: null | string;
   isLoading: boolean;
@@ -33,7 +30,12 @@ const useFetchGet = <T>(
   retryCount: number;
   get: () => void;
   cancelGet: () => void;
-} => {
+}
+
+const useFetchGet = <T>(
+  uri: string,
+  { autorun = true, deps = [], fetcher = null }: FetchGetOptionsT = {}
+): FetchGetResultT<T> => {
   const [response, setResponse] = useState<ResponseState<T>>({
     response: null,
     error: null,

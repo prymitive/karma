@@ -1,16 +1,35 @@
 import { useState, useEffect, useCallback } from "react";
 
 import { MockAPIResponse, MockSilenceResponse } from "__mocks__/Fetch";
+import { FetchGetResultT } from "Hooks/useFetchGet";
+import { APIAlertsResponseT, APIManagedSilenceT } from "Models/APITypes";
+
+type responseT = null | string[] | APIAlertsResponseT | APIManagedSilenceT[];
 
 interface mockedDataT {
-  response: any;
-  error: undefined | string;
+  response: undefined | responseT;
+  error: undefined | null | string;
   isLoading: undefined | boolean;
   isRetrying: undefined | boolean;
+  retryCount: undefined | number;
+  get: () => void;
+  cancelGet: () => void;
 }
 
-const MockFetchStats = {
-  getCalls: [] as string[],
+interface mockFetchStatsT {
+  getCalls: string[];
+  readonly calls: string[];
+  wasCalled: (uri: string) => void;
+  reset: () => void;
+  mockedData: mockedDataT;
+  setMockedData: (data: mockedDataT) => void;
+}
+
+const mockGet = jest.fn();
+const mockCancelGet = jest.fn();
+
+const MockFetchStats: mockFetchStatsT = {
+  getCalls: [],
   get calls() {
     return this.getCalls;
   },
@@ -18,12 +37,15 @@ const MockFetchStats = {
     this.getCalls.push(uri);
   },
   reset() {
-    this.getCalls = [] as string[];
+    this.getCalls = [];
     this.mockedData = {
       response: undefined,
       error: undefined,
       isLoading: undefined,
       isRetrying: undefined,
+      retryCount: undefined,
+      get: mockGet,
+      cancelGet: mockCancelGet,
     };
   },
   mockedData: {
@@ -31,14 +53,20 @@ const MockFetchStats = {
     error: undefined,
     isLoading: undefined,
     isRetrying: undefined,
-  } as mockedDataT,
+    retryCount: undefined,
+    get: mockGet,
+    cancelGet: mockCancelGet,
+  },
   setMockedData(data: mockedDataT) {
     this.mockedData = data;
   },
 };
 
-const Mock = (uri: string, { autorun = true, deps = [] } = {}) => {
-  const [response, setResponse] = useState(null as null | any);
+const useFetchGetMock = (
+  uri: string,
+  { autorun = true, deps = [] } = {}
+): FetchGetResultT<responseT> => {
+  const [response, setResponse] = useState(null as responseT);
   const [error] = useState(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [isRetrying] = useState<boolean>(false);
@@ -123,17 +151,17 @@ const Mock = (uri: string, { autorun = true, deps = [] } = {}) => {
       MockFetchStats.mockedData.isRetrying !== undefined
         ? MockFetchStats.mockedData.isRetrying
         : isRetrying,
+    retryCount:
+      MockFetchStats.mockedData.retryCount !== undefined
+        ? MockFetchStats.mockedData.retryCount
+        : 0,
     get,
     cancelGet,
   };
 };
 
-const useFetchGet = jest.fn(Mock);
-(useFetchGet as any).fetch = MockFetchStats;
-(useFetchGet as any).mockReset = () => {
-  useFetchGet.mockClear();
-  useFetchGet.mockImplementation(Mock);
-  MockFetchStats.reset();
-};
+useFetchGetMock.fetch = MockFetchStats;
+useFetchGetMock._mockGet = mockGet;
+useFetchGetMock._cancelGet = mockCancelGet;
 
-export { useFetchGet };
+export { useFetchGetMock };

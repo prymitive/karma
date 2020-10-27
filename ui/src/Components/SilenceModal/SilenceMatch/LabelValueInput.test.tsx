@@ -4,6 +4,7 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
+import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { MockThemeContext } from "__mocks__/Theme";
 import {
   SilenceFormStore,
@@ -11,7 +12,6 @@ import {
   MatcherWithIDT,
 } from "Stores/SilenceFormStore";
 import { StringToOption } from "Common/Select";
-import { useFetchGet } from "__mocks__/Hooks/useFetchGet";
 import { LabelValueInput } from "./LabelValueInput";
 
 let silenceFormStore: SilenceFormStore;
@@ -27,7 +27,6 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  useFetchGet.mockReset();
 });
 
 const MountedLabelValueInput = (isValid: boolean) => {
@@ -49,8 +48,8 @@ describe("<LabelValueInput />", () => {
   it("fetches suggestions on mount", () => {
     const tree = MountedLabelValueInput(true);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
-    expect((useFetchGet as any).fetch.calls).toHaveLength(1);
-    expect((useFetchGet as any).fetch.calls[0]).toBe(
+    expect(useFetchGetMock.fetch.calls).toHaveLength(1);
+    expect(useFetchGetMock.fetch.calls[0]).toBe(
       "./labelValues.json?name=cluster"
     );
   });
@@ -58,7 +57,7 @@ describe("<LabelValueInput />", () => {
   it("doesn't fetch suggestions if name is not set", () => {
     matcher.name = "";
     MountedLabelValueInput(true);
-    expect((useFetchGet as any).fetch.calls).toHaveLength(0);
+    expect(useFetchGetMock.fetch.calls).toHaveLength(0);
   });
 
   it("doesn't renders ValidationError after passed validation", () => {

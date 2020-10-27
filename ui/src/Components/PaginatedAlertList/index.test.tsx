@@ -4,9 +4,10 @@ import { mount } from "enzyme";
 
 import { advanceTo, clear } from "jest-date-mock";
 
+import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { EmptyAPIResponse } from "__mocks__/Fetch";
 import { AlertStore } from "Stores/AlertStore";
-import { useFetchGet } from "__mocks__/Hooks/useFetchGet";
+import { useFetchGet } from "Hooks/useFetchGet";
 import { useFetchDelete } from "__mocks__/Hooks/useFetchDelete";
 import { PaginatedAlertList } from ".";
 
@@ -40,7 +41,6 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  useFetchGet.mockReset();
   useFetchDelete.mockReset();
   clear();
   document.body.className = "";
@@ -48,11 +48,14 @@ afterEach(() => {
 
 describe("<PaginatedAlertList />", () => {
   it("renders Placeholder while loading preview", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: null,
-      error: false,
+      error: null,
       isLoading: true,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = mount(
       <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
@@ -61,11 +64,14 @@ describe("<PaginatedAlertList />", () => {
   });
 
   it("renders Placeholder while response is empty", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: null,
-      error: false,
+      error: null,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = mount(
       <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
@@ -82,11 +88,14 @@ describe("<PaginatedAlertList />", () => {
   });
 
   it("renders empty LabelSetList with empty response", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: EmptyAPIResponse(),
-      error: false,
+      error: null,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = mount(
       <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
@@ -113,11 +122,14 @@ describe("<PaginatedAlertList />", () => {
   });
 
   it("handles empty grid response correctly", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: EmptyAPIResponse(),
-      error: false,
+      error: null,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = mount(
       <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
@@ -126,11 +138,14 @@ describe("<PaginatedAlertList />", () => {
   });
 
   it("renders FetchError on failed preview fetch", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: null,
       error: "fake error",
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = mount(
       <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />

@@ -7,15 +7,15 @@ import toDiffableHtml from "diffable-html";
 
 import { advanceTo, clear } from "jest-date-mock";
 
+import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { MockSilence } from "__mocks__/Alerts";
 import { MockThemeContext } from "__mocks__/Theme";
 import { PressKey } from "__mocks__/PressKey";
-import { APISilenceT } from "Models/APITypes";
+import { APISilenceT, APIManagedSilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
-import { useFetchGet } from "__mocks__/Hooks/useFetchGet";
 import Browser from ".";
 
 let alertStore: AlertStore;
@@ -62,14 +62,13 @@ afterEach(() => {
   jest.restoreAllMocks();
   jest.clearAllTimers();
   clear();
-  useFetchGet.mockReset();
 
   localStorage.setItem("fetchConfig.interval", "");
   global.window.innerWidth = 1024;
 });
 
-const MockSilenceList = (count: number) => {
-  const silences = [];
+const MockSilenceList = (count: number): APIManagedSilenceT[] => {
+  const silences: APIManagedSilenceT[] = [];
   for (let index = 1; index <= count; index++) {
     const silence = MockSilence();
     silence.id = `silence${index}`;
@@ -77,6 +76,7 @@ const MockSilenceList = (count: number) => {
       cluster: cluster,
       alertCount: 123,
       silence: silence,
+      isExpired: false,
     });
   }
   return silences;
@@ -99,7 +99,7 @@ const MountedBrowser = () => {
 describe("<Browser />", () => {
   it("fetches /silences.json on mount", () => {
     MountedBrowser();
-    expect((useFetchGet as any).fetch.calls[0]).toBe(
+    expect(useFetchGetMock.fetch.calls[0]).toBe(
       "./silences.json?sortReverse=0&showExpired=0&searchTerm="
     );
   });
@@ -123,12 +123,12 @@ describe("<Browser />", () => {
       jest.runOnlyPendingTimers();
     });
 
-    expect((useFetchGet as any).fetch.calls).toHaveLength(4);
+    expect(useFetchGetMock.fetch.calls).toHaveLength(4);
   });
 
   it("enabling reverse sort passes sortReverse=1 to the API", () => {
     const tree = MountedBrowser();
-    expect((useFetchGet as any).fetch.calls[0]).toBe(
+    expect(useFetchGetMock.fetch.calls[0]).toBe(
       "./silences.json?sortReverse=0&showExpired=0&searchTerm="
     );
 
@@ -136,7 +136,7 @@ describe("<Browser />", () => {
     expect(sortOrder.text()).toBe("Sort order");
     sortOrder.simulate("click");
 
-    expect((useFetchGet as any).fetch.calls[1]).toBe(
+    expect(useFetchGetMock.fetch.calls[1]).toBe(
       "./silences.json?sortReverse=1&showExpired=0&searchTerm="
     );
   });
@@ -147,7 +147,7 @@ describe("<Browser />", () => {
     const expiredCheckbox = tree.find("input[type='checkbox']");
     expiredCheckbox.simulate("change", { target: { checked: true } });
 
-    expect((useFetchGet as any).fetch.calls[1]).toBe(
+    expect(useFetchGetMock.fetch.calls[1]).toBe(
       "./silences.json?sortReverse=0&showExpired=1&searchTerm="
     );
   });
@@ -161,21 +161,24 @@ describe("<Browser />", () => {
     act(() => {
       jest.advanceTimersByTime(1000);
     });
-    expect((useFetchGet as any).fetch.calls).toHaveLength(2);
-    expect((useFetchGet as any).fetch.calls[0]).toBe(
+    expect(useFetchGetMock.fetch.calls).toHaveLength(2);
+    expect(useFetchGetMock.fetch.calls[0]).toBe(
       "./silences.json?sortReverse=0&showExpired=0&searchTerm="
     );
-    expect((useFetchGet as any).fetch.calls[1]).toBe(
+    expect(useFetchGetMock.fetch.calls[1]).toBe(
       "./silences.json?sortReverse=0&showExpired=0&searchTerm=foo"
     );
   });
 
   it("renders loading placeholder before fetch finishes", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: null,
       error: null,
       isLoading: true,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = MountedBrowser();
     expect(tree.find("Placeholder")).toHaveLength(1);
@@ -183,11 +186,14 @@ describe("<Browser />", () => {
   });
 
   it("renders loading placeholder before fetch finishes", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: null,
       error: null,
       isLoading: true,
       isRetrying: true,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = MountedBrowser();
     expect(tree.find("Placeholder")).toHaveLength(1);
@@ -195,11 +201,14 @@ describe("<Browser />", () => {
   });
 
   it("renders empty placeholder after fetch with zero results", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: [],
       error: null,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = MountedBrowser();
     expect(tree.find("Placeholder")).toHaveLength(1);
@@ -207,17 +216,21 @@ describe("<Browser />", () => {
   });
 
   it("renders silences after successful fetch", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: [
         {
           cluster: cluster,
           alertCount: 123,
           silence: silence,
+          isExpired: false,
         },
       ],
       error: null,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = MountedBrowser();
     expect(tree.find("ManagedSilence")).toHaveLength(1);
@@ -225,11 +238,14 @@ describe("<Browser />", () => {
 
   it("renders only first 6 silences on desktop", () => {
     global.window.innerWidth = 1024;
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: MockSilenceList(7),
       error: null,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = MountedBrowser();
     expect(tree.find("ManagedSilence")).toHaveLength(6);
@@ -237,22 +253,28 @@ describe("<Browser />", () => {
 
   it("renders only first 6 silences on mobile", () => {
     global.window.innerWidth = 500;
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: MockSilenceList(7),
       error: null,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = MountedBrowser();
     expect(tree.find("ManagedSilence")).toHaveLength(4);
   });
 
   it("renders last silence after page change", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: MockSilenceList(7),
       error: null,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = MountedBrowser();
 
@@ -268,11 +290,14 @@ describe("<Browser />", () => {
   });
 
   it("renders next/previous page after arrow key press", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: MockSilenceList(13),
       error: null,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = MountedBrowser();
 
@@ -314,11 +339,14 @@ describe("<Browser />", () => {
   });
 
   it("resets pagination to last page on truncation", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: MockSilenceList(13),
       error: null,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = MountedBrowser();
 
@@ -329,22 +357,28 @@ describe("<Browser />", () => {
     expect(tree.find("ManagedSilence")).toHaveLength(1);
     expect(tree.find("li.page-item").at(3).hasClass("active")).toBe(true);
 
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: MockSilenceList(8),
       error: null,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     tree.find("button.btn-secondary").simulate("click");
 
     expect(tree.find("ManagedSilence")).toHaveLength(2);
     expect(tree.find("li.page-item").at(2).hasClass("active")).toBe(true);
 
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: [],
       error: null,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     tree.find("button.btn-secondary").simulate("click");
 
@@ -353,11 +387,14 @@ describe("<Browser />", () => {
   });
 
   it("renders error after failed fetch", () => {
-    (useFetchGet as any).fetch.setMockedData({
+    useFetchGetMock.fetch.setMockedData({
       response: null,
       error: "fake failure",
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = MountedBrowser();
 
@@ -367,7 +404,7 @@ describe("<Browser />", () => {
 
   it("resets the timer on unmount", () => {
     const tree = MountedBrowser();
-    expect((useFetchGet as any).fetch.calls).toHaveLength(1);
+    expect(useFetchGetMock.fetch.calls).toHaveLength(1);
 
     tree.unmount();
 
@@ -376,6 +413,6 @@ describe("<Browser />", () => {
       jest.runOnlyPendingTimers();
     });
 
-    expect((useFetchGet as any).fetch.calls).toHaveLength(1);
+    expect(useFetchGetMock.fetch.calls).toHaveLength(1);
   });
 });
