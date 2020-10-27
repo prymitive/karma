@@ -2,9 +2,9 @@ import React from "react";
 
 import { shallow } from "enzyme";
 
-import { MockThemeContext } from "__mocks__/Theme";
 import toDiffableHtml from "diffable-html";
 
+import { MockThemeContext } from "__fixtures__/Theme";
 import { EmptyGrid } from ".";
 
 beforeAll(() => {

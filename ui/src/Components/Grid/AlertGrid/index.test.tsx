@@ -5,12 +5,12 @@ import { shallow, mount } from "enzyme";
 
 import { advanceBy, clear } from "jest-date-mock";
 
-import { MockAlert, MockAlertGroup } from "__mocks__/Alerts";
+import { MockAlert, MockAlertGroup } from "__fixtures__/Alerts";
+import { mockMatchMedia } from "__fixtures__/matchMedia";
 import {
   MockThemeContext,
   MockThemeContextWithoutAnimations,
-} from "__mocks__/Theme";
-import { mockMatchMedia } from "__mocks__/matchMedia";
+} from "__fixtures__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";

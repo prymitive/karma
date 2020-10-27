@@ -5,7 +5,7 @@ import { mount } from "enzyme";
 
 import copy from "copy-to-clipboard";
 
-import { MockAlertGroup } from "__mocks__/Alerts";
+import { MockAlertGroup } from "__fixtures__/Alerts";
 import { APIAlertGroupT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";

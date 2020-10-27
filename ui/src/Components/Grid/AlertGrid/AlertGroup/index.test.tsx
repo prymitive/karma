@@ -3,11 +3,11 @@ import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
-import { MockAlert, MockAlertGroup } from "__mocks__/Alerts";
+import { MockAlert, MockAlertGroup } from "__fixtures__/Alerts";
 import {
   MockThemeContext,
   MockThemeContextWithoutAnimations,
-} from "__mocks__/Theme";
+} from "__fixtures__/Theme";
 import { APIAlertGroupT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings, CollapseStateT } from "Stores/Settings";

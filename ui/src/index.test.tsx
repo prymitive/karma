@@ -1,8 +1,8 @@
 import fetchMock from "fetch-mock";
 
-import { EmptyAPIResponse } from "__mocks__/Fetch";
-import { DefaultsBase64 } from "__mocks__/Defaults";
-import { mockMatchMedia } from "__mocks__/matchMedia";
+import { EmptyAPIResponse } from "__fixtures__/Fetch";
+import { DefaultsBase64 } from "__fixtures__/Defaults";
+import { mockMatchMedia } from "__fixtures__/matchMedia";
 
 const settingsElement = {
   dataset: {

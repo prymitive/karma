@@ -1,6 +1,6 @@
 import subMinutes from "date-fns/subMinutes";
 
-import { AlertStateT } from "Models/APITypes";
+import { AlertStateT, APIAlertGroupT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { MockAlert, MockAlertGroup, MockSilence } from "./Alerts";
 
@@ -9,7 +9,7 @@ const MockGroup = (
   alertCount: number,
   active: number,
   suppressed: number
-) => {
+): APIAlertGroupT => {
   const alerts = [];
   for (let i = 1; i <= alertCount; i++) {
     let state: AlertStateT;
@@ -69,7 +69,7 @@ const MockGroup = (
   return group;
 };
 
-const MockGrid = (alertStore: AlertStore) => {
+const MockGrid = (alertStore: AlertStore): void => {
   alertStore.settings.values.alertAcknowledgement.enabled = true;
   alertStore.data.receivers = ["by-cluster-service", "by-name"];
 

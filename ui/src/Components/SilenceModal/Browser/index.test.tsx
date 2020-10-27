@@ -8,9 +8,9 @@ import toDiffableHtml from "diffable-html";
 import { advanceTo, clear } from "jest-date-mock";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
-import { MockSilence } from "__mocks__/Alerts";
-import { MockThemeContext } from "__mocks__/Theme";
-import { PressKey } from "__mocks__/PressKey";
+import { MockSilence } from "__fixtures__/Alerts";
+import { PressKey } from "__fixtures__/PressKey";
+import { MockThemeContext } from "__fixtures__/Theme";
 import { APISilenceT, APIManagedSilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";

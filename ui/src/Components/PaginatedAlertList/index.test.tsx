@@ -5,7 +5,7 @@ import { mount } from "enzyme";
 import { advanceTo, clear } from "jest-date-mock";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
-import { EmptyAPIResponse } from "__mocks__/Fetch";
+import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import { AlertStore } from "Stores/AlertStore";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { useFetchDelete } from "__mocks__/Hooks/useFetchDelete";

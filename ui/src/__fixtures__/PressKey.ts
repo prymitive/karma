@@ -1,6 +1,6 @@
 import { act } from "react-dom/test-utils";
 
-function PressKey(key: string, code: number) {
+function PressKey(key: string, code: number): void {
   act(() => {
     document.dispatchEvent(
       new KeyboardEvent("keydown", {

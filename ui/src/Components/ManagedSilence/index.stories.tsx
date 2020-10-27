@@ -2,7 +2,7 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 
-import { MockSilence } from "__mocks__/Alerts";
+import { MockSilence } from "__fixtures__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ManagedSilence } from ".";

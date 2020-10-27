@@ -4,10 +4,10 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { MockThemeContext } from "__mocks__/Theme";
+import { MockThemeContext } from "__fixtures__/Theme";
+import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { NewEmptyMatcher, MatcherWithIDT } from "Stores/SilenceFormStore";
 import { useFetchGet } from "Hooks/useFetchGet";
-import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { LabelNameInput } from "./LabelNameInput";
 
 let matcher: MatcherWithIDT;

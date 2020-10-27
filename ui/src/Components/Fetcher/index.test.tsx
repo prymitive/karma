@@ -9,7 +9,7 @@ import toDiffableHtml from "diffable-html";
 
 import { advanceTo, advanceBy, clear } from "jest-date-mock";
 
-import { EmptyAPIResponse } from "__mocks__/Fetch";
+import { EmptyAPIResponse } from "__fixtures__/Fetch";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";

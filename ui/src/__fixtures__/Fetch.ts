@@ -1,9 +1,9 @@
+import { MockAlert, MockAlertGroup, MockSilence } from "__fixtures__/Alerts";
 import {
   APIAlertsResponseT,
   APILabelCounterT,
   APIManagedSilenceT,
 } from "Models/APITypes";
-import { MockAlert, MockAlertGroup, MockSilence } from "./Alerts";
 
 const EmptyAPIResponse = (): APIAlertsResponseT => ({
   status: "success",

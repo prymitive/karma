@@ -4,7 +4,7 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { MockSilence } from "__mocks__/Alerts";
+import { MockSilence } from "__fixtures__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { RenderSilence } from "./Silences";

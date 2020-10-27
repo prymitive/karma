@@ -7,7 +7,7 @@ import { storiesOf } from "@storybook/react";
 import addHours from "date-fns/addHours";
 import addDays from "date-fns/addDays";
 
-import { MockSilence } from "__mocks__/Alerts";
+import { MockSilence } from "__fixtures__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import {

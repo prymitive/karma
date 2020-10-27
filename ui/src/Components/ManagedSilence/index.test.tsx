@@ -6,8 +6,8 @@ import toDiffableHtml from "diffable-html";
 
 import { advanceTo, clear } from "jest-date-mock";
 
-import { MockSilence } from "__mocks__/Alerts";
-import { MockThemeContext } from "__mocks__/Theme";
+import { MockSilence } from "__fixtures__/Alerts";
+import { MockThemeContext } from "__fixtures__/Theme";
 import { APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";

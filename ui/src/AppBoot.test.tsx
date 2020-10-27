@@ -1,6 +1,6 @@
 import * as Sentry from "@sentry/browser";
 
-import { DefaultsBase64, DefaultsObject } from "__mocks__/Defaults";
+import { DefaultsBase64, DefaultsObject } from "__fixtures__/Defaults";
 import {
   SettingsElement,
   SetupSentry,
