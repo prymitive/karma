@@ -27,7 +27,7 @@
     "@types/qs": "6.9.5",
     "@types/react": "16.9.54",
     "@types/react-autosuggest": "10.0.1",
-    "@types/react-dom": "16.9.8",
+    "@types/react-dom": "16.9.9",
     "@types/react-highlighter": "0.3.4",
     "@types/react-js-pagination": "3.0.3",
     "@types/react-select": "3.0.22",
