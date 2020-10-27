@@ -354,3 +354,25 @@ describe("<App /> theme", () => {
     });
   }
 });
+
+describe("<App /> animations", () => {
+  const getApp = (animations: boolean) =>
+    mount(
+      <App
+        defaultFilters={["foo=bar"]}
+        uiDefaults={Object.assign({}, uiDefaults, { Animations: animations })}
+      />
+    );
+
+  it("enables animations in the context when set via UI defaults", () => {
+    const tree = getApp(true);
+    expect(tree.find("Transition").at(0).prop("timeout")).toBe(500);
+    tree.unmount();
+  });
+
+  it("disables animations in the context when disabled via UI defaults", () => {
+    const tree = getApp(false);
+    expect(tree.find("Transition").at(0).prop("timeout")).toBe(0);
+    tree.unmount();
+  });
+});
