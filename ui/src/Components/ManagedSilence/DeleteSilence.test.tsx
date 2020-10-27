@@ -7,11 +7,13 @@ import { advanceTo, clear } from "jest-date-mock";
 
 import { MockSilence } from "__fixtures__/Alerts";
 import { PressKey } from "__fixtures__/PressKey";
+import { useFetchDelete } from "Hooks/useFetchDelete";
 import { APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { useFetchDelete } from "__mocks__/Hooks/useFetchDelete";
 import { DeleteSilence, DeleteSilenceModalContent } from "./DeleteSilence";
+
+jest.mock("Hooks/useFetchDelete");
 
 let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;
@@ -48,8 +50,9 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mockClear();
+
   jest.restoreAllMocks();
-  useFetchDelete.mockReset();
   clear();
   document.body.className = "";
 });
@@ -142,19 +145,33 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("sends a DELETE request after clicking 'Confirm' button", () => {
+    (useFetchDelete as jest.MockedFunction<
+      typeof useFetchDelete
+    >).mockReturnValue({ response: "success", error: null, isDeleting: false });
+
     const tree = MountedDeleteSilenceModalContent();
     tree.find(".btn-danger").simulate("click");
 
-    expect(useFetchDelete.mock.calls[0][0]).toBe(
+    expect(
+      (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mock
+        .calls[0][0]
+    ).toBe(
       "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f"
     );
-    expect(useFetchDelete.mock.calls[0][1]).toMatchObject({
+    expect(
+      (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mock
+        .calls[0][1]
+    ).toMatchObject({
       headers: {},
       credentials: "include",
     });
   });
 
   it("sends headers from alertmanager config", () => {
+    (useFetchDelete as jest.MockedFunction<
+      typeof useFetchDelete
+    >).mockReturnValue({ response: "success", error: null, isDeleting: false });
+
     alertStore.data.upstreams.instances[0].headers = {
       Authorization: "Basic ***",
     };
@@ -162,31 +179,62 @@ describe("<DeleteSilenceModalContent />", () => {
     const tree = MountedDeleteSilenceModalContent();
     tree.find(".btn-danger").simulate("click");
 
-    expect(useFetchDelete.mock.calls[0][0]).toBe(
+    expect(
+      (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mock
+        .calls[0][0]
+    ).toBe(
       "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f"
     );
-    expect(useFetchDelete.mock.calls[0][1]).toMatchObject({
+    expect(
+      (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mock
+        .calls[0][1]
+    ).toMatchObject({
       credentials: "include",
       headers: { Authorization: "Basic ***" },
     });
   });
 
   it("uses CORS credentials from alertmanager config", () => {
+    (useFetchDelete as jest.MockedFunction<
+      typeof useFetchDelete
+    >).mockReturnValue({ response: "success", error: null, isDeleting: false });
+
     alertStore.data.upstreams.instances[0].corsCredentials = "omit";
 
     const tree = MountedDeleteSilenceModalContent();
     tree.find(".btn-danger").simulate("click");
 
-    expect(useFetchDelete.mock.calls[0][0]).toBe(
+    expect(
+      (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mock
+        .calls[0][0]
+    ).toBe(
       "http://localhost:9093/api/v2/silence/04d37636-2350-4878-b382-e0b50353230f"
     );
-    expect(useFetchDelete.mock.calls[0][1]).toMatchObject({
+    expect(
+      (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mock
+        .calls[0][1]
+    ).toMatchObject({
       credentials: "omit",
       headers: {},
     });
   });
 
+  it("renders ProgressMessage while awaiting response status", () => {
+    (useFetchDelete as jest.MockedFunction<
+      typeof useFetchDelete
+    >).mockReturnValue({ response: null, error: null, isDeleting: true });
+
+    const tree = MountedDeleteSilenceModalContent();
+    tree.find(".btn-danger").simulate("click");
+
+    expect(tree.find("ProgressMessage")).toHaveLength(1);
+  });
+
   it("renders SuccessMessage on successful response status", () => {
+    (useFetchDelete as jest.MockedFunction<
+      typeof useFetchDelete
+    >).mockReturnValue({ response: "success", error: null, isDeleting: false });
+
     const tree = MountedDeleteSilenceModalContent();
     tree.find(".btn-danger").simulate("click");
 
@@ -194,7 +242,9 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("renders ErrorMessage on failed delete fetch request", () => {
-    useFetchDelete.mockReturnValue({
+    (useFetchDelete as jest.MockedFunction<
+      typeof useFetchDelete
+    >).mockReturnValue({
       response: null,
       error: "failed",
       isDeleting: false,
@@ -207,7 +257,9 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("'Retry' button is present after failed delete", () => {
-    useFetchDelete.mockReturnValue({
+    (useFetchDelete as jest.MockedFunction<
+      typeof useFetchDelete
+    >).mockReturnValue({
       response: null,
       error: "fake error",
       isDeleting: false,
@@ -220,6 +272,10 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("'Retry' button is not present after successful delete", () => {
+    (useFetchDelete as jest.MockedFunction<
+      typeof useFetchDelete
+    >).mockReturnValue({ response: "success", error: null, isDeleting: false });
+
     const tree = MountedDeleteSilenceModalContent();
     tree.find(".btn-danger").simulate("click");
 
@@ -227,7 +283,9 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("Clicking 'Retry' button triggers new delete", () => {
-    useFetchDelete.mockReturnValue({
+    (useFetchDelete as jest.MockedFunction<
+      typeof useFetchDelete
+    >).mockReturnValue({
       response: null,
       error: "fake error",
       isDeleting: false,

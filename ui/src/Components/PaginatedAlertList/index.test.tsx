@@ -8,7 +8,6 @@ import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import { AlertStore } from "Stores/AlertStore";
 import { useFetchGet } from "Hooks/useFetchGet";
-import { useFetchDelete } from "__mocks__/Hooks/useFetchDelete";
 import { PaginatedAlertList } from ".";
 
 let alertStore: AlertStore;
@@ -41,7 +40,6 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  useFetchDelete.mockReset();
   clear();
   document.body.className = "";
 });
