@@ -375,7 +375,7 @@ describe("useFetchGet", () => {
     FetchRetryConfig.retries = 0;
 
     let tree: any = false;
-    const fetcher = jest.fn(() =>
+    const fetcher = (): Promise<Response> =>
       Promise.resolve({
         headers: {
           get: () => "text/plain",
@@ -384,8 +384,7 @@ describe("useFetchGet", () => {
           tree.unmount();
           return "ok";
         },
-      })
-    );
+      } as any);
     jest.useRealTimers();
 
     const Component = () => {
