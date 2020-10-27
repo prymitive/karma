@@ -86,7 +86,7 @@ const EmptyAPIResponse = (): APIAlertsResponseT => ({
   },
 });
 
-const MockAPIResponse = () => {
+const MockAPIResponse = (): APIAlertsResponseT => {
   const response = EmptyAPIResponse();
   response.grids = [
     {
@@ -112,7 +112,10 @@ const MockAPIResponse = () => {
   return response;
 };
 
-const MockSilenceResponse = (cluster: string, count: number) => {
+const MockSilenceResponse = (
+  cluster: string,
+  count: number
+): APIManagedSilenceT[] => {
   const silences: APIManagedSilenceT[] = [];
   for (let index = 1; index <= count; index++) {
     const silence = MockSilence();
