@@ -2,7 +2,7 @@ import React from "react";
 
 import { mount } from "enzyme";
 
-import { PressKey } from "__mocks__/PressKey";
+import { PressKey } from "__fixtures__/PressKey";
 import { Modal, ModalInner } from ".";
 
 beforeEach(() => {

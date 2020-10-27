@@ -6,7 +6,7 @@ import fetchMock from "fetch-mock";
 
 import toDiffableHtml from "diffable-html";
 
-import { MockThemeContext } from "__mocks__/Theme";
+import { MockThemeContext } from "__fixtures__/Theme";
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { Settings } from "Stores/Settings";
 import { MultiGridConfiguration } from "./MultiGridConfiguration";

@@ -5,8 +5,8 @@ import { mount } from "enzyme";
 
 import { advanceTo, clear } from "jest-date-mock";
 
-import { MockSilence } from "__mocks__/Alerts";
-import { PressKey } from "__mocks__/PressKey";
+import { MockSilence } from "__fixtures__/Alerts";
+import { PressKey } from "__fixtures__/PressKey";
 import { APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";

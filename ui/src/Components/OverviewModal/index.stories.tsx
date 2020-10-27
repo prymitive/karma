@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 import { storiesOf } from "@storybook/react";
 
-import { MockGrid } from "__mocks__/Stories";
+import { MockGrid } from "__fixtures__/Stories";
 import { AlertStore } from "Stores/AlertStore";
 import { OverviewModalContent } from "./OverviewModalContent";
 

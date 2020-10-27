@@ -9,7 +9,7 @@ import {
   MockAlertGroup,
   MockSilence,
   MockAlertmanager,
-} from "__mocks__/Alerts";
+} from "__fixtures__/Alerts";
 import { StringToOption, OptionT, MultiValueOptionT } from "Common/Select";
 import {
   SilenceFormStore,

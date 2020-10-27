@@ -1,7 +1,7 @@
 import fetchMock from "fetch-mock";
 
-import { EmptyAPIResponse } from "__mocks__/Fetch";
-import { MockGroup } from "__mocks__/Stories";
+import { EmptyAPIResponse } from "__fixtures__/Fetch";
+import { MockGroup } from "__fixtures__/Stories";
 import {
   AlertStore,
   AlertStoreStatuses,

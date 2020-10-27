@@ -4,7 +4,7 @@ import { mount, shallow } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { MockThemeContext } from "__mocks__/Theme";
+import { MockThemeContext } from "__fixtures__/Theme";
 import { UpgradeNeeded } from ".";
 
 beforeEach(() => {

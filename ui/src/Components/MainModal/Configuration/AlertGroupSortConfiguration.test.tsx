@@ -4,7 +4,7 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { MockThemeContext } from "__mocks__/Theme";
+import { MockThemeContext } from "__fixtures__/Theme";
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { Settings } from "Stores/Settings";
 import { AlertGroupSortConfiguration } from "./AlertGroupSortConfiguration";

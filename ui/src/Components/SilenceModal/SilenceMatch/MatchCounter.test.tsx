@@ -5,7 +5,7 @@ import { mount } from "enzyme";
 import toDiffableHtml from "diffable-html";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
-import { EmptyAPIResponse } from "__mocks__/Fetch";
+import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import {
   SilenceFormStore,
   NewEmptyMatcher,

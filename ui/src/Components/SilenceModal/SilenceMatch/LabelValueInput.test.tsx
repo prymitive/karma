@@ -5,7 +5,7 @@ import { mount } from "enzyme";
 import toDiffableHtml from "diffable-html";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
-import { MockThemeContext } from "__mocks__/Theme";
+import { MockThemeContext } from "__fixtures__/Theme";
 import {
   SilenceFormStore,
   NewEmptyMatcher,

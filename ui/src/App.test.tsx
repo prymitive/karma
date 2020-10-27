@@ -2,7 +2,7 @@ import React from "react";
 
 import { mount } from "enzyme";
 
-import { mockMatchMedia } from "__mocks__/matchMedia";
+import { mockMatchMedia } from "__fixtures__/matchMedia";
 import { UIDefaults, ThemeT } from "Models/UI";
 import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { StringToOption } from "Common/Select";

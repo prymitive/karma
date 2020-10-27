@@ -1,7 +1,7 @@
 import fetchMock from "fetch-mock";
 
-import { EmptyAPIResponse } from "__mocks__/Fetch";
-import { mockMatchMedia } from "__mocks__/matchMedia";
+import { EmptyAPIResponse } from "__fixtures__/Fetch";
+import { mockMatchMedia } from "__fixtures__/matchMedia";
 
 declare let global: any;
 declare let window: any;

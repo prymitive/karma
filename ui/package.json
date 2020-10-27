@@ -106,6 +106,7 @@
     "collectCoverageFrom": [
       "src/**/*.{js,ts,tsx}",
       "!src/**/*.stories.{js,ts,tsx}",
+      "!src/__fixtures__/Stories.{js,ts,tsx}",
       "!src/react-app-env.d.ts",
       "!src/Models/*.ts"
     ]

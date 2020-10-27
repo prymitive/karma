@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 
-import { MockAPIResponse, MockSilenceResponse } from "__mocks__/Fetch";
+import { MockAPIResponse, MockSilenceResponse } from "__fixtures__/Fetch";
 import { FetchGetResultT } from "Hooks/useFetchGet";
 import { APIAlertsResponseT, APIManagedSilenceT } from "Models/APITypes";
 

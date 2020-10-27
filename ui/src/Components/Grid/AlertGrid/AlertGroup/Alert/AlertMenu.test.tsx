@@ -3,7 +3,7 @@ import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
-import { MockAlertGroup, MockAlert } from "__mocks__/Alerts";
+import { MockAlertGroup, MockAlert } from "__fixtures__/Alerts";
 import { APIAlertGroupT, APIAlertT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";

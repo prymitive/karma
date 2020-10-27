@@ -4,7 +4,7 @@ import { mount } from "enzyme";
 
 import copy from "copy-to-clipboard";
 
-import { MockThemeContext } from "__mocks__/Theme";
+import { MockThemeContext } from "__fixtures__/Theme";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";

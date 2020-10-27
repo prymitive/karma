@@ -12,9 +12,9 @@ import {
   MockAnnotation,
   MockAlertGroup,
   MockSilence,
-} from "__mocks__/Alerts";
+} from "__fixtures__/Alerts";
+import { MockThemeContext } from "__fixtures__/Theme";
 import { APIAlertGroupT, APIAlertT } from "Models/APITypes";
-import { MockThemeContext } from "__mocks__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BorderClassMap } from "Common/Colors";
