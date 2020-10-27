@@ -1,4 +1,11 @@
-const mockMatchMedia = (mapOfMedia: any) => {
+interface mapOfMediaT {
+  matches: boolean;
+  media: string;
+}
+
+const mockMatchMedia = (mapOfMedia: {
+  [query: string]: mapOfMediaT;
+}): jest.MockedFunction<typeof window.matchMedia> => {
   return jest.fn().mockImplementation((query) => {
     return {
       matches: mapOfMedia[query] ? mapOfMedia[query].matches : false,

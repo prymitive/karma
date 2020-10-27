@@ -8,7 +8,6 @@ import toDiffableHtml from "diffable-html";
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { useFetchGet } from "Hooks/useFetchGet";
 import { FilterInput } from ".";
 
 let alertStore: AlertStore;
