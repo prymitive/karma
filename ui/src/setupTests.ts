@@ -1,6 +1,9 @@
 import React from "react";
+
 import Enzyme from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
+
+import { useInView } from "react-intersection-observer";
 
 import { FetchRetryConfig } from "Common/Fetch";
 
@@ -8,6 +11,8 @@ import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { useFetchGet } from "Hooks/useFetchGet";
 
 jest.mock("Hooks/useFetchGet");
+
+jest.mock("react-intersection-observer");
 
 // https://github.com/airbnb/enzyme
 Enzyme.configure({ adapter: new Adapter() });
@@ -44,4 +49,10 @@ beforeEach(() => {
   (useFetchGet as jest.MockedFunction<
     typeof useFetchGetMock
   >).mockImplementation(useFetchGetMock);
+
+  (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
+    jest.fn(),
+    true,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ] as any);
 });
