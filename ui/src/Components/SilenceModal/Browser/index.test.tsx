@@ -185,7 +185,7 @@ describe("<Browser />", () => {
     expect(toDiffableHtml(tree.html())).toMatch(/fa-spinner/);
   });
 
-  it("renders loading placeholder before fetch finishes", () => {
+  it("loading placeholder has text-danger class when retrying fetches", () => {
     useFetchGetMock.fetch.setMockedData({
       response: null,
       error: null,

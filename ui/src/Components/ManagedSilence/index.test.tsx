@@ -179,7 +179,7 @@ describe("<ManagedSilence />", () => {
     expect(button.text()).toBe("Recreate");
   });
 
-  it("clicking on Edit calls ", () => {
+  it("clicking on Edit calls", () => {
     const tree = MountedManagedSilence();
     tree.find("svg.text-muted.cursor-pointer").simulate("click");
 

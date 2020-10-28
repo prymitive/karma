@@ -168,9 +168,7 @@ describe("<FilterInputLabel /> onChange", () => {
       NewUnappliedFilter("bar=baz")
     );
   });
-});
 
-describe("<FilterInputLabel /> onChange", () => {
   it("clicking on the X button removes filters from alertStore", () => {
     alertStore.filters.setFilterValues([
       NewUnappliedFilter("foo=bar"),

@@ -280,7 +280,7 @@ describe("<TabContentStart />", () => {
     ValidateTimeButton(tree, "startsAt", 3, /angle-down/, -1 * 60 * 1000);
   });
 
-  it("scrolling down on the minute button subtracts 1m from startsAt", () => {
+  it("scrolling down by deltaY=2 on the minute button subtracts 1m from startsAt", () => {
     const tree = MountedTabContentStart();
     ValidateTimeWheel(
       tree,
@@ -296,7 +296,7 @@ describe("<TabContentStart />", () => {
     ValidateTimeWheel(tree, "startsAt", "td.components-minute", -50, 60 * 1000);
   });
 
-  it("scrolling down on the minute subtracts 1m from startsAt", () => {
+  it("scrolling down by deltaY=1 on the minute subtracts 1m from startsAt", () => {
     const tree = MountedTabContentStart();
     ValidateTimeWheel(
       tree,
