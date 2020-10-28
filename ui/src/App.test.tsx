@@ -345,7 +345,7 @@ describe("<App /> theme", () => {
     },
   ];
   for (const testCase of testCases) {
-    it(testCase.name, () => {
+    it(`${testCase.name}`, () => {
       window.matchMedia = mockMatchMedia(testCase.matchMedia);
       const tree = getApp(testCase.settings);
       expect(tree.find(testCase.theme)).toHaveLength(1);

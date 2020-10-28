@@ -103,7 +103,7 @@ describe("<SilenceComment />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
-  it("Matches snapshot when collapsed and multiple clusters are present", () => {
+  it("Matches snapshot when expanded and multiple clusters are present", () => {
     MockMultipleClusters();
     const tree = MountedSilenceComment(false, "ha");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();

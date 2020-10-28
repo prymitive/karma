@@ -147,7 +147,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
 "
 `;
 
-exports[`<SilenceComment /> Matches snapshot when collapsed and multiple clusters are present 2`] = `
+exports[`<SilenceComment /> Matches snapshot when expanded 1`] = `
 "
 <div class=\\"d-flex flex-row\\">
   <div class=\\"flex-shrink-0 flex-grow-0\\">
@@ -206,7 +206,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
 "
 `;
 
-exports[`<SilenceComment /> Matches snapshot when expanded 1`] = `
+exports[`<SilenceComment /> Matches snapshot when expanded and multiple clusters are present 1`] = `
 "
 <div class=\\"d-flex flex-row\\">
   <div class=\\"flex-shrink-0 flex-grow-0\\">
