@@ -60,9 +60,7 @@ describe("AlertStore.data", () => {
       store.data.getClusterAlertmanagersWithoutReadOnly("default")
     ).toEqual(["default"]);
   });
-});
 
-describe("AlertStore.data", () => {
   it("getClusterAlertmanagersWithoutReadOnly handles clusters with no writable instances", () => {
     const store = new AlertStore([]);
     store.data.setUpstreams({
@@ -273,17 +271,6 @@ describe("AlertStore.filters", () => {
       null,
       "",
       "http://localhost/?q=bar"
-    );
-  });
-
-  it("addFilter() updates window.history", () => {
-    const store = new AlertStore([]);
-    const historyMock = jest.spyOn(global.window.history, "pushState");
-    store.filters.addFilter("foo");
-    expect(historyMock).toHaveBeenLastCalledWith(
-      null,
-      "",
-      "http://localhost/?q=foo"
     );
   });
 
