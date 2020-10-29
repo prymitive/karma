@@ -1,0 +1,187 @@
+# Correctly passes TLS client config to the upstream
+
+exec sh -x ./tls.sh
+exec sh -x ./test.sh &
+exec sh -c 'I=0 ; while [ ! -f alertmanager.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done'
+karma.bin-should-work --pid-file=karma.pid
+! stdout .
+stderr 'level=info msg="Upstream version" alertmanager=client-auth version=0.21.0'
+stderr 'level=info msg="Got silences" alertmanager=client-auth duration=.+ silences=0'
+stderr 'level=info msg="Detecting ticket links in silences" alertmanager=client-auth silences=0'
+stderr 'level=info msg="Collected alert groups" alertmanager=client-auth duration=.+ groups=0'
+stderr 'level=info msg="Deduplicating alert groups" alertmanager=client-auth groups=0'
+stderr 'level=info msg="Processing deduplicated alert groups" alertmanager=client-auth groups=0'
+stderr 'level=info msg="Merging autocomplete hints" alertmanager=client-auth hints=0'
+stderr 'level=info msg="Collection completed"'
+
+-- alertmanager.conf --
+[req]
+distinguished_name = DN
+x509_extensions = SAN
+[DN]
+CN = 127.0.0.1
+[SAN]
+basicConstraints     = CA:FALSE
+subjectKeyIdentifier = hash
+keyUsage             = digitalSignature, keyEncipherment
+extendedKeyUsage     = clientAuth, serverAuth
+subjectAltName       = @alt_names
+[alt_names]
+DNS.1 = localhost
+IP.1  = 127.0.0.1
+
+-- karma.conf --
+[req]
+distinguished_name = DN
+req_extensions = SAN
+[DN]
+CN = karma
+[SAN]
+basicConstraints     = CA:FALSE
+subjectKeyIdentifier = hash
+keyUsage             = digitalSignature, keyEncipherment
+extendedKeyUsage     = clientAuth, serverAuth
+subjectAltName       = @alt_names
+[alt_names]
+DNS.1 = karma
+
+-- tls.sh --
+openssl ecparam -genkey -name secp256r1 | openssl ec -out ca.key
+openssl req -new -x509 -days 7 -key ca.key -out ca.pem -subj "/C=CI/ST=CI/L=CI/O=CI/CN=FakeCA"
+
+openssl ecparam -genkey -name secp256r1 | openssl ec -out alertmanager.key
+openssl req -new -key alertmanager.key -out alertmanager.csr -subj "/C=CI/ST=CI/L=CI/O=CI/CN=127.0.0.1" -config alertmanager.conf -extensions SAN
+openssl x509 -req -days 7 -extfile alertmanager.conf -extensions SAN -in alertmanager.csr -CA ca.pem -CAkey ca.key -set_serial 01 -out alertmanager.pem
+openssl x509 -in alertmanager.pem -text
+
+openssl ecparam -genkey -name secp256r1 | openssl ec -out karma.key
+openssl req -new -key karma.key -out karma.csr -subj "/C=CI/ST=CI/L=CI/O=CI/CN=karma" -config karma.conf -extensions SAN
+openssl x509 -req -days 7 -extfile karma.conf -extensions SAN -in karma.csr -CA ca.pem -CAkey ca.key -set_serial 02 -out karma.pem
+openssl x509 -in karma.pem -text
+
+-- test.sh --
+#!/bin/sh
+
+env GOCACHE=$TMPDIR go run alertmanager.go &
+
+I=0
+while [ ! -f karma.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done
+
+sleep 5
+cat karma.pid | xargs kill
+cat alertmanager.pid | xargs kill
+
+-- karma.yaml --
+alertmanager:
+  interval: 1h
+  servers:
+    - name: client-auth
+      uri: https://127.0.0.1:9084
+      timeout: 10s
+      tls:
+        ca: ca.pem
+        cert: karma.pem
+        key: karma.key
+listen:
+  address: 127.0.0.1
+  port: 8084
+
+-- alertmanager.go --
+package main
+
+import (
+	"context"
+	"crypto/tls"
+	"crypto/x509"
+	"io"
+	"io/ioutil"
+	"log"
+	"net"
+	"net/http"
+	"os"
+	"os/signal"
+	"strconv"
+	"syscall"
+	"time"
+)
+
+func metrics(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/plain; version=0.0.4; charset=utf-8")
+	io.WriteString(w, `alertmanager_build_info{version="0.21.0"} 1
+`)
+}
+
+func status(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	io.WriteString(w, `
+{
+    "cluster": {
+        "name": "01EB67XCFES27NAFAGSW48NAHC",
+        "peers": [
+            {
+                "address": "172.17.0.2:9094",
+                "name": "01EB67XCFES27NAFAGSW48NAHC"
+            }
+        ],
+        "status": "ready"
+    },
+    "versionInfo": {
+        "version": "0.21.0"
+    }
+}`)
+}
+
+func empty(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	io.WriteString(w, "[]")
+}
+
+func main() {
+	pid := os.Getpid()
+	err := ioutil.WriteFile("alertmanager.pid", []byte(strconv.Itoa(pid)), 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	http.HandleFunc("/metrics", metrics)
+	http.HandleFunc("/api/v2/status", status)
+	http.HandleFunc("/api/v2/silences", empty)
+	http.HandleFunc("/api/v2/alerts/groups", empty)
+
+	caCert, err := ioutil.ReadFile("ca.pem")
+	if err != nil {
+		log.Fatal(err)
+	}
+	caCertPool := x509.NewCertPool()
+	caCertPool.AppendCertsFromPEM(caCert)
+
+	tlsConfig := &tls.Config{
+		ClientCAs:          caCertPool,
+		ClientAuth:         tls.RequireAndVerifyClientCert,
+		InsecureSkipVerify: true,
+	}
+
+	listener, err := net.Listen("tcp", "127.0.0.1:9084")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	server := &http.Server{
+		Addr:      "127.0.0.1:9084",
+		TLSConfig: tlsConfig,
+	}
+
+	go func() {
+		err := server.ServeTLS(listener, "alertmanager.pem", "alertmanager.key")
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+	<-stop
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	server.Shutdown(ctx)
+}

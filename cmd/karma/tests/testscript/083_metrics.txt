@@ -1,0 +1,140 @@
+# GET /metrics returns same list of metrics
+
+exec sh -x ./test.sh &
+karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8083
+! stdout .
+cmp stderr stderr.txt
+cmp curl.txt metrics.txt
+
+-- metrics.txt --
+# HELP go_gc_duration_seconds A summary of the pause duration of garbage collection cycles.
+# TYPE go_gc_duration_seconds summary
+go_gc_duration_seconds{quantile="0"}
+go_gc_duration_seconds{quantile="0.25"}
+go_gc_duration_seconds{quantile="0.5"}
+go_gc_duration_seconds{quantile="0.75"}
+go_gc_duration_seconds{quantile="1"}
+go_gc_duration_seconds_sum
+go_gc_duration_seconds_count
+# HELP go_goroutines Number of goroutines that currently exist.
+# TYPE go_goroutines gauge
+go_goroutines
+# HELP go_info Information about the Go environment.
+# TYPE go_info gauge
+go_info{version="go1.15.3"}
+# HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
+# TYPE go_memstats_alloc_bytes gauge
+go_memstats_alloc_bytes
+# HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
+# TYPE go_memstats_alloc_bytes_total counter
+go_memstats_alloc_bytes_total
+# HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table.
+# TYPE go_memstats_buck_hash_sys_bytes gauge
+go_memstats_buck_hash_sys_bytes
+# HELP go_memstats_frees_total Total number of frees.
+# TYPE go_memstats_frees_total counter
+go_memstats_frees_total
+# HELP go_memstats_gc_cpu_fraction The fraction of this program's available CPU time used by the GC since the program started.
+# TYPE go_memstats_gc_cpu_fraction gauge
+go_memstats_gc_cpu_fraction
+# HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata.
+# TYPE go_memstats_gc_sys_bytes gauge
+go_memstats_gc_sys_bytes
+# HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and still in use.
+# TYPE go_memstats_heap_alloc_bytes gauge
+go_memstats_heap_alloc_bytes
+# HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used.
+# TYPE go_memstats_heap_idle_bytes gauge
+go_memstats_heap_idle_bytes
+# HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use.
+# TYPE go_memstats_heap_inuse_bytes gauge
+go_memstats_heap_inuse_bytes
+# HELP go_memstats_heap_objects Number of allocated objects.
+# TYPE go_memstats_heap_objects gauge
+go_memstats_heap_objects
+# HELP go_memstats_heap_released_bytes Number of heap bytes released to OS.
+# TYPE go_memstats_heap_released_bytes gauge
+go_memstats_heap_released_bytes
+# HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system.
+# TYPE go_memstats_heap_sys_bytes gauge
+go_memstats_heap_sys_bytes
+# HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
+# TYPE go_memstats_last_gc_time_seconds gauge
+go_memstats_last_gc_time_seconds
+# HELP go_memstats_lookups_total Total number of pointer lookups.
+# TYPE go_memstats_lookups_total counter
+go_memstats_lookups_total
+# HELP go_memstats_mallocs_total Total number of mallocs.
+# TYPE go_memstats_mallocs_total counter
+go_memstats_mallocs_total
+# HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures.
+# TYPE go_memstats_mcache_inuse_bytes gauge
+go_memstats_mcache_inuse_bytes
+# HELP go_memstats_mcache_sys_bytes Number of bytes used for mcache structures obtained from system.
+# TYPE go_memstats_mcache_sys_bytes gauge
+go_memstats_mcache_sys_bytes
+# HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures.
+# TYPE go_memstats_mspan_inuse_bytes gauge
+go_memstats_mspan_inuse_bytes
+# HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system.
+# TYPE go_memstats_mspan_sys_bytes gauge
+go_memstats_mspan_sys_bytes
+# HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place.
+# TYPE go_memstats_next_gc_bytes gauge
+go_memstats_next_gc_bytes
+# HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations.
+# TYPE go_memstats_other_sys_bytes gauge
+go_memstats_other_sys_bytes
+# HELP go_memstats_stack_inuse_bytes Number of bytes in use by the stack allocator.
+# TYPE go_memstats_stack_inuse_bytes gauge
+go_memstats_stack_inuse_bytes
+# HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator.
+# TYPE go_memstats_stack_sys_bytes gauge
+go_memstats_stack_sys_bytes
+# HELP go_memstats_sys_bytes Number of bytes obtained from system.
+# TYPE go_memstats_sys_bytes gauge
+go_memstats_sys_bytes
+# HELP go_threads Number of OS threads created.
+# TYPE go_threads gauge
+go_threads
+# HELP karma_alertmanager_errors_total Total number of errors encounter when requesting data from Alertmanager API
+# TYPE karma_alertmanager_errors_total counter
+karma_alertmanager_errors_total{alertmanager="default",endpoint="alerts"}
+karma_alertmanager_errors_total{alertmanager="default",endpoint="silences"}
+# HELP karma_alertmanager_up 1 if last call to Alertmanager API succeeded
+# TYPE karma_alertmanager_up gauge
+karma_alertmanager_up{alertmanager="default"}
+# HELP karma_collect_cycles_total Total number of alert collection cycles run
+# TYPE karma_collect_cycles_total counter
+karma_collect_cycles_total{alertmanager="default"}
+# HELP promhttp_metric_handler_requests_in_flight Current number of scrapes being served.
+# TYPE promhttp_metric_handler_requests_in_flight gauge
+promhttp_metric_handler_requests_in_flight
+# HELP promhttp_metric_handler_requests_total Total number of scrapes by HTTP status code.
+# TYPE promhttp_metric_handler_requests_total counter
+promhttp_metric_handler_requests_total{code="200"}
+promhttp_metric_handler_requests_total{code="500"}
+promhttp_metric_handler_requests_total{code="503"}
+-- stderr.txt --
+level=info msg="Version: dev"
+level=info msg="Configured Alertmanager source" name=default proxy=false readonly=false uri=http://127.0.0.1
+level=info msg="Writing PID file" path=karma.pid
+level=info msg="Initial Alertmanager collection"
+level=info msg="Pulling latest alerts and silences from Alertmanager"
+level=info msg="Collecting alerts and silences" alertmanager=default
+level=info msg="GET request" timeout=40 uri=http://127.0.0.1/metrics
+level=error msg="Request failed" error="Get \"http://127.0.0.1/metrics\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default uri=http://127.0.0.1
+level=error msg="Collection failed" error="Get \"http://127.0.0.1/api/v2/status\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default
+level=info msg="Collection completed"
+level=info msg="Done, starting HTTP server"
+level=info msg="Starting HTTP server" address=127.0.0.1:8083
+level=info msg="Shutting down HTTP server"
+level=info msg="HTTP server shut down"
+level=info msg="Removing PID file" path=karma.pid
+-- test.sh --
+#!/bin/sh
+
+while [ ! -f karma.pid ]; do sleep 1 ; done
+sleep 5
+curl -s http://localhost:8083/metrics | grep -v 'process_' | sed -E s_' ([0-9]+|[0-9]+\.[0-9]+|[0-9]+\.[0-9]+e(\+|\-)[0-9]+)$'_''_g > curl.txt
+cat karma.pid | xargs kill
