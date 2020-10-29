@@ -1,6 +1,6 @@
 # Fails is we cannot remove a PID file
 
-exec sh -ex ./test.sh &
+exec sh -x ./test.sh &
 karma.bin-should-fail --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8073
 ! stdout .
 cmp stderr stderr.txt

@@ -1,6 +1,6 @@
 # Configures sentry when enabled
 
-exec sh -ex ./test.sh &
+exec sh -x ./test.sh &
 karma.bin-should-work --pid-file=karma.pid --log.config=true --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8068
 ! stdout .
 cmp stderr stderr.txt

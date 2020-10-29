@@ -1,7 +1,6 @@
 package mock
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
@@ -21,13 +20,7 @@ func GetAbsoluteMockPath(filename string, version string) string {
 // GetMockResponder returns a httpmock.Responder for given file/version
 func GetMockResponder(url string, version string, filename string) httpmock.Responder {
 	fullPath := GetAbsoluteMockPath(filename, version)
-	mockJSON, err := ioutil.ReadFile(fullPath)
-	if err != nil {
-		panic(fmt.Errorf("failed to read %s: %s", fullPath, err))
-	}
-	if len(mockJSON) == 0 {
-		panic(fmt.Errorf("empty mock file '%s'", fullPath))
-	}
+	mockJSON, _ := ioutil.ReadFile(fullPath)
 	return httpmock.NewBytesResponder(200, mockJSON)
 }
 
@@ -41,11 +34,7 @@ func ListAllMocks() []string {
 	_, f, _, _ := runtime.Caller(0)
 	cwd := filepath.Dir(f)
 
-	dirents, err := ioutil.ReadDir(cwd)
-	if err != nil {
-		panic(err)
-	}
-
+	dirents, _ := ioutil.ReadDir(cwd)
 	dirs := []string{}
 	for _, dirent := range dirents {
 		if dirent.IsDir() {
