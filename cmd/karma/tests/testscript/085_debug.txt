@@ -1,0 +1,31 @@
+# Enables pprof endpoints when debug is enabled
+
+exec sh -x ./test.sh &
+karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8085 --debug
+! stdout .
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=info msg="Version: dev"
+level=info msg="Configured Alertmanager source" name=default proxy=false readonly=false uri=http://127.0.0.1
+level=info msg="Writing PID file" path=karma.pid
+level=info msg="Initial Alertmanager collection"
+level=info msg="Pulling latest alerts and silences from Alertmanager"
+level=info msg="Collecting alerts and silences" alertmanager=default
+level=info msg="GET request" timeout=40 uri=http://127.0.0.1/metrics
+level=error msg="Request failed" error="Get \"http://127.0.0.1/metrics\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default uri=http://127.0.0.1
+level=error msg="Collection failed" error="Get \"http://127.0.0.1/api/v2/status\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default
+level=info msg="Collection completed"
+level=info msg="Done, starting HTTP server"
+level=info msg="Starting HTTP server" address=127.0.0.1:8085
+level=info msg="Shutting down HTTP server"
+level=info msg="HTTP server shut down"
+level=info msg="Removing PID file" path=karma.pid
+-- test.sh --
+#!/bin/sh
+
+while [ ! -f karma.pid ]; do sleep 1 ; done
+sleep 1
+curl -s -o heap.gz http://localhost:8085/debug/pprof/heap
+cat karma.pid | xargs kill
+gzip -d heap.gz || exit 1
