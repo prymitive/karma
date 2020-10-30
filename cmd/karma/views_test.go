@@ -1032,6 +1032,35 @@ func TestAuthentication(t *testing.T) {
 	}
 }
 
+func TestInvalidBasicAuthHeader(t *testing.T) {
+	config.Config.Authentication.Header.Name = ""
+	config.Config.Authentication.Header.ValueRegex = ""
+	config.Config.Authentication.BasicAuth.Users = []config.AuthenticationUser{
+		{Username: "john", Password: "foobar"},
+	}
+	r := testRouter()
+	setupRouter(r)
+	mockCache()
+	for _, path := range []string{
+		"/",
+		"/alerts.json",
+		"/autocomplete.json?term=foo",
+		"/labelNames.json",
+		"/labelValues.json?name=foo",
+		"/silences.json",
+		"/custom.css",
+		"/custom.js",
+	} {
+		req := httptest.NewRequest("GET", path, nil)
+		req.Header.Set("Authorization", "")
+		resp := httptest.NewRecorder()
+		r.ServeHTTP(resp, req)
+		if resp.Code != 401 {
+			t.Errorf("Expected 401 from %s, got %d", path, resp.Code)
+		}
+	}
+}
+
 func TestUpstreamStatus(t *testing.T) {
 	zerolog.SetGlobalLevel(zerolog.FatalLevel)
 
