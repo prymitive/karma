@@ -1,0 +1,19 @@
+# Invalid sentry DSN raises an error
+
+karma.bin-should-fail --config.file=karma.yaml --check-config
+! stdout .
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=info msg="Reading configuration file" path=karma.yaml
+level=info msg="Version: dev"
+level=info msg="Configured Alertmanager source" name=default proxy=false readonly=false uri=http://127.0.0.1:9093
+level=error msg="Sentry initialization failed" error="[Sentry] DsnParseError: invalid scheme" dsn=abcd
+level=error msg="Execution failed" error="sentry configuration is invalid"
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: default
+      uri: http://127.0.0.1:9093
+sentry:
+  public: abcd
