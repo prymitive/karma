@@ -2133,6 +2133,82 @@ func TestUpstreamStatus(t *testing.T) {
 				},
 			},
 		},
+		{
+			Name: "Single alertmanager with unparsable metrics",
+			mocks: []mockT{
+				{
+					uri:  "http://only.example.com/metrics",
+					code: 200,
+					body: `alertmanager_build_info{version="0.20.0"`,
+				},
+				{
+					uri:  "http://only.example.com/api/v2/status",
+					code: 200,
+					body: `{
+	"cluster": {
+		"name": "AAAAAAAAAAAAAAAAAAAAAAAAAA",
+		"peers": [
+			{
+				"address": "10.16.0.1:9094",
+				"name": "AAAAAAAAAAAAAAAAAAAAAAAAAA"
+			}
+		],
+		"status": "ready"
+	},
+	"versionInfo": {
+		"version":"0.20.0"
+	}
+}`,
+				},
+				{
+					uri:  "http://only.example.com/api/v2/alerts/groups",
+					code: 200,
+					body: "[]",
+				},
+				{
+					uri:  "http://only.example.com/api/v2/silences",
+					code: 200,
+					body: "[]",
+				},
+			},
+			upstreams: []config.AlertmanagerConfig{
+				{
+					Name:     "only",
+					URI:      "http://only.example.com",
+					Proxy:    false,
+					ReadOnly: false,
+					Headers:  map[string]string{},
+					CORS: config.AlertmanagerCORS{
+						Credentials: "same-site",
+					},
+					Timeout: time.Second * 10,
+				},
+			},
+			status: models.AlertmanagerAPISummary{
+				Counters: models.AlertmanagerAPICounters{
+					Total:   1,
+					Healthy: 1,
+					Failed:  0,
+				},
+				Instances: []models.AlertmanagerAPIStatus{
+					{
+						Name:            "only",
+						URI:             "http://only.example.com",
+						PublicURI:       "http://only.example.com",
+						ReadOnly:        false,
+						Headers:         map[string]string{},
+						CORSCredentials: "same-site",
+						Error:           "",
+						Version:         "",
+						Cluster:         "only",
+						ClusterMembers:  []string{"only"},
+					},
+				},
+				Clusters: map[string][]string{
+					"only": {"only"},
+				},
+			},
+		},
 	}
 
 	for _, testCase := range testCases {
