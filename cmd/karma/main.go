@@ -373,7 +373,8 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, error) {
 			Dsn:     config.Config.Sentry.Public,
 			Release: version,
 		}); err != nil {
-			log.Error().Err(err).Msg("Sentry initialization failed")
+			log.Error().Err(err).Str("dsn", config.Config.Sentry.Public).Msg("Sentry initialization failed")
+			return nil, fmt.Errorf("sentry configuration is invalid")
 		}
 	}
 
