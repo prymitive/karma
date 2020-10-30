@@ -97,10 +97,6 @@ func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) 
 		}
 
 		ver := alertmanager.Version()
-		if ver == "" {
-			ver = "999.0"
-		}
-
 		m, err := mapper.GetSilenceMapper(ver)
 		if err != nil {
 			log.Error().Err(err).

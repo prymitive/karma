@@ -115,7 +115,6 @@ func status(c *client.AlertmanagerAPI, timeout time.Duration) (models.Alertmanag
 		return ret, err
 	}
 
-	ret.Version = *status.Payload.VersionInfo.Version
 	ret.ID = status.Payload.Cluster.Name
 	for _, p := range status.Payload.Cluster.Peers {
 		ret.PeerIDs = append(ret.PeerIDs, *p.Name)

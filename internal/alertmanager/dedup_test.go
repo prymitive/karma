@@ -182,8 +182,10 @@ func TestStripReceivers(t *testing.T) {
 }
 
 func TestClearData(t *testing.T) {
-	zerolog.SetGlobalLevel(zerolog.PanicLevel)
+	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
 	for _, version := range mock.ListAllMocks() {
 		name := fmt.Sprintf("clear-data-mock-%s", version)
 		uri := fmt.Sprintf("http://localhost/clear/%s", version)
@@ -191,8 +193,8 @@ func TestClearData(t *testing.T) {
 
 		mock.RegisterURL(fmt.Sprintf("%s/metrics", uri), version, "metrics")
 		_ = am.Pull()
-		if am.Version() != "" {
-			t.Errorf("[%s] Got non-empty version string: %s", am.Name, am.Version())
+		if am.Version() == "" {
+			t.Errorf("[%s] Got empty version string", am.Name)
 		}
 		if am.Error() == "" {
 			t.Errorf("[%s] Got empty error string", am.Name)

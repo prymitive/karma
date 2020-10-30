@@ -1113,12 +1113,14 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://ha1.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1`,
+					body: `alertmanager_build_info{version="0.20.0"} 1
+					`,
 				},
 				{
 					uri:  "http://ha2.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.19.0"} 1`,
+					body: `alertmanager_build_info{version="0.19.0"} 1
+					`,
 				},
 				{
 					uri:  "http://ha1.example.com/api/v2/status",
@@ -1256,12 +1258,14 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://ha1.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1`,
+					body: `alertmanager_build_info{version="0.20.0"} 1
+					`,
 				},
 				{
 					uri:  "http://ha2.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.19.0"} 1`,
+					body: `alertmanager_build_info{version="0.19.0"} 1
+					`,
 				},
 				{
 					uri:  "http://ha1.example.com/api/v2/status",
@@ -1397,12 +1401,14 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://ha1.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1`,
+					body: `alertmanager_build_info{version="0.20.0"} 1
+					`,
 				},
 				{
 					uri:  "http://ha2.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.19.0"} 1`,
+					body: `alertmanager_build_info{version="0.19.0"} 1
+					`,
 				},
 				{
 					uri:  "http://ha1.example.com/api/v2/status",
@@ -1532,12 +1538,14 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://ha1.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1`,
+					body: `alertmanager_build_info{version="0.20.0"} 1
+					`,
 				},
 				{
 					uri:  "http://ha2.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.19.0"} 1`,
+					body: `alertmanager_build_info{version="0.19.0"} 1
+					`,
 				},
 				{
 					uri:  "http://ha1.example.com/api/v2/status",
@@ -1666,12 +1674,14 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://broken1.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1`,
+					body: `alertmanager_build_info{version="0.20.0"} 1
+					`,
 				},
 				{
 					uri:  "http://broken2.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1`,
+					body: `alertmanager_build_info{version="0.20.0"} 1
+					`,
 				},
 				{
 					uri:  "http://broken1.example.com/api/v2/status",
@@ -1812,7 +1822,8 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://ha2.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.21.0"} 1`,
+					body: `alertmanager_build_info{version="0.21.0"} 1
+					`,
 				},
 				{
 					uri:  "http://ha1.example.com/api/v2/status",
@@ -1922,7 +1933,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "omit",
 						Error:           "",
-						Version:         "0.20.0",
+						Version:         "",
 						Cluster:         "Errors",
 						ClusterMembers:  []string{"ha1", "ha2"},
 					},
@@ -1934,7 +1945,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "omit",
 						Error:           "json: cannot unmarshal array into Go value of type string",
-						Version:         "0.19.0",
+						Version:         "0.21.0",
 						Cluster:         "Errors",
 						ClusterMembers:  []string{"ha1", "ha2"},
 					},
@@ -1950,7 +1961,8 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://ha1.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1`,
+					body: `alertmanager_build_info{version="0.20.0"} 1
+					`,
 				},
 				{
 					uri:  "http://ha2.example.com/metrics",
@@ -1960,7 +1972,8 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://single.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.21.0"} 1`,
+					body: `alertmanager_build_info{version="0.21.0"} 1
+					`,
 				},
 				{
 					uri:  "http://ha1.example.com/api/v2/status",
@@ -2124,23 +2137,30 @@ func TestUpstreamStatus(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(testCase.Name, func(t *testing.T) {
+			zerolog.SetGlobalLevel(zerolog.DebugLevel)
+
 			httpmock.Activate()
 			defer httpmock.DeactivateAndReset()
-			for _, m := range testCase.mocks {
-				httpmock.RegisterResponder("GET", m.uri, httpmock.NewStringResponder(m.code, m.body))
-			}
 
+			config.Config.Listen.Prefix = "/"
+			config.Config.Authentication.Header.Name = ""
+			config.Config.Authentication.BasicAuth.Users = []config.AuthenticationUser{}
+
+			apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 			alertmanager.UnregisterAll()
-			mockConfig()
 			config.Config.Alertmanager.Servers = testCase.upstreams
 			err := setupUpstreams()
 			if err != nil {
 				t.Error(err)
 			}
-			zerolog.SetGlobalLevel(zerolog.FatalLevel)
-			pullFromAlertmanager()
 			r := testRouter()
 			setupRouter(r)
+
+			httpmock.Reset()
+			for _, m := range testCase.mocks {
+				httpmock.RegisterResponder("GET", m.uri, httpmock.NewStringResponder(m.code, m.body))
+			}
+			pullFromAlertmanager()
 
 			req := httptest.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
 			resp := httptest.NewRecorder()
