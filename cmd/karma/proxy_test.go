@@ -445,7 +445,6 @@ func TestProxyUserRewrite(t *testing.T) {
 ]}`,
 			proxyRequestBody: `{"id":"1234567890","comment":"comment","createdBy":"john","endsAt":"2000-02-01T00:02:03.000Z","matchers":[{"isRegex":false,"name":"alertname","value":"Fake Alert"},{"isRegex":true,"name":"foo","value":"(bar|baz)"}],"startsAt":"2000-02-01T00:00:00.000Z"}`,
 		},
-
 		{
 			name:             "header auth, missing header",
 			responseCode:     401,
@@ -1132,6 +1131,26 @@ func TestProxySilenceACL(t *testing.T) {
 			requestUsername:     "uncle",
 			frontednRequestBody: defaultBody,
 			responseCode:        400,
+		},
+		{
+			name: "invalid silence JSON",
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block all regex silences",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{NameRegex: regexp.MustCompile(".*"), ValueRegex: regexp.MustCompile(".*"), IsRegex: true},
+						},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{},
+				},
+			},
+			requestUsername:     "bob",
+			frontednRequestBody: `{XXXX: 1bC]}`,
+			responseCode:        500,
 		},
 	}
 

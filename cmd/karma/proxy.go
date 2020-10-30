@@ -84,14 +84,14 @@ func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) 
 			Str("uri", r.RequestURI).
 			Msg("Proxy request")
 
+		defer r.Body.Close()
 		body, err := ioutil.ReadAll(r.Body)
-		r.Body.Close()
 		if err != nil {
 			log.Error().Err(err).
 				Str("alertmanager", alertmanager.Name).
 				Str("method", r.Method).
 				Str("uri", r.RequestURI).
-				Msg("Failed to close proxied request")
+				Msg("Failed to read proxied request")
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -112,33 +112,35 @@ func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) 
 			return
 		}
 
-		silence, err := m.Unmarshal(body)
-		if err != nil {
-			log.Error().
-				Err(err).
-				Str("alertmanager", alertmanager.Name).
-				Str("method", r.Method).
-				Str("uri", r.RequestURI).
-				Msg("Failed to unmarshal silence body")
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		for i, acl := range silenceACLs {
-			username := getUserFromContext(r)
-			isAllowed, err := acl.isAllowed(alertmanager.Name, silence, username)
-			log.Debug().Int("index", i).Bool("allowed", isAllowed).Err(err).Msg("ACL rule check")
+		if len(silenceACLs) > 0 {
+			silence, err := m.Unmarshal(body)
 			if err != nil {
-				log.Warn().Err(err).
+				log.Error().
+					Err(err).
 					Str("alertmanager", alertmanager.Name).
 					Str("method", r.Method).
 					Str("uri", r.RequestURI).
-					Msg("Proxy request was blocked by ACL rule")
-				http.Error(w, err.Error(), http.StatusBadRequest)
+					Msg("Failed to unmarshal silence body")
+				http.Error(w, err.Error(), http.StatusInternalServerError)
 				return
 			}
-			if isAllowed {
-				break
+
+			for i, acl := range silenceACLs {
+				username := getUserFromContext(r)
+				isAllowed, err := acl.isAllowed(alertmanager.Name, silence, username)
+				log.Debug().Int("index", i).Bool("allowed", isAllowed).Err(err).Msg("ACL rule check")
+				if err != nil {
+					log.Warn().Err(err).
+						Str("alertmanager", alertmanager.Name).
+						Str("method", r.Method).
+						Str("uri", r.RequestURI).
+						Msg("Proxy request was blocked by ACL rule")
+					http.Error(w, err.Error(), http.StatusBadRequest)
+					return
+				}
+				if isAllowed {
+					break
+				}
 			}
 		}
 
