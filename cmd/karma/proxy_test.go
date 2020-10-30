@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -378,15 +379,7 @@ func TestProxyUserRewrite(t *testing.T) {
   { "isRegex": false, "name": "alertname", "value": "Fake Alert" },
   { "isRegex": true, "name": "foo", "value": "(bar|baz)" }
 ]}`,
-			proxyRequestBody: `{
-"comment": "comment",
-"createdBy": "username",
-"startsAt": "2000-02-01T00:00:00.000Z",
-"endsAt": "2000-02-01T00:02:03.000Z",
-"matchers": [
-  { "isRegex": false, "name": "alertname", "value": "Fake Alert" },
-  { "isRegex": true, "name": "foo", "value": "(bar|baz)" }
-]}`,
+			proxyRequestBody: `{"comment":"comment","createdBy":"","endsAt":"2000-02-01T00:02:03.000Z","matchers":[{"isRegex":false,"name":"alertname","value":"Fake Alert"},{"isRegex":true,"name":"foo","value":"(bar|baz)"}],"startsAt":"2000-02-01T00:00:00.000Z"}`,
 		},
 		{
 			name:         "basicAuth, correct credentials, invalid JSON",
@@ -513,6 +506,7 @@ func TestProxyUserRewrite(t *testing.T) {
 				t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 
 				config.Config.Listen.Prefix = "/"
+				config.Config.Authentication.Enabled = true
 				config.Config.Authentication.Header.Name = testCase.headerName
 				config.Config.Authentication.Header.ValueRegex = testCase.headerRe
 				config.Config.Authentication.BasicAuth.Users = testCase.basicAuthUsers
@@ -1213,5 +1207,108 @@ func TestProxySilenceACL(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+type errReader int
+
+func (errReader) Read(p []byte) (n int, err error) {
+	return 0, errors.New("request read error")
+}
+
+func TestProxyRequestReadFailure(t *testing.T) {
+	for _, version := range mock.ListAllMocks() {
+		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
+		config.Config.Listen.Prefix = "/"
+		config.Config.Authentication.Header.Name = ""
+		config.Config.Authentication.BasicAuth.Users = []config.AuthenticationUser{}
+
+		r := testRouter()
+		setupRouter(r)
+
+		am, err := alertmanager.NewAlertmanager(
+			"cluster",
+			"proxyRead",
+			"http://localhost",
+			alertmanager.WithRequestTimeout(time.Second*5),
+			alertmanager.WithProxy(true),
+		)
+		if err != nil {
+			t.Error(err)
+		}
+		setupRouterProxyHandlers(r, am)
+
+		req := httptest.NewRequest("POST", "/proxy/alertmanager/proxyRead/api/v2/silences", errReader(0))
+
+		resp := newCloseNotifyingRecorder()
+		r.ServeHTTP(resp, req)
+		if resp.Code != 500 {
+			t.Errorf("Got response code %d instead of 500", resp.Code)
+		}
+
+		gotBody, _ := ioutil.ReadAll(resp.Body)
+		if string(gotBody) != "request read error\n" {
+			t.Errorf("Body mismatch:\n%s", gotBody)
+		}
+	}
+}
+
+func TestProxyRequestToUnsupportedAlertmanager(t *testing.T) {
+	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	config.Config.Listen.Prefix = "/"
+	config.Config.Authentication.Header.Name = ""
+	config.Config.Authentication.BasicAuth.Users = []config.AuthenticationUser{}
+
+	r := testRouter()
+	setupRouter(r)
+
+	am, err := alertmanager.NewAlertmanager(
+		"cluster",
+		"proxyToUnsupported",
+		"http://localhost",
+		alertmanager.WithRequestTimeout(time.Second*5),
+		alertmanager.WithProxy(true),
+	)
+	if err != nil {
+		t.Error(err)
+	}
+	setupRouterProxyHandlers(r, am)
+
+	apiCache = cache.New(cache.NoExpiration, 10*time.Second)
+	httpmock.Reset()
+	httpmock.RegisterResponder("GET", "http://localhost/metrics", httpmock.NewStringResponder(200, `alertmanager_build_info{version="0.1.0"} 1
+	`))
+	httpmock.RegisterResponder("GET", "http://localhost/api/v2/status", httpmock.NewStringResponder(200, `{
+		"cluster": {
+			"name": "BBBBBBBBBBBBBBBBBBBBBBBBBB",
+			"peers": [],
+			"status": "ready"
+		}
+	}`))
+	httpmock.RegisterResponder("POST", "http://localhost/api/v2/silences", httpmock.NewStringResponder(200, "{}"))
+	httpmock.RegisterResponder("GET", "http://localhost/api/v2/silences", httpmock.NewStringResponder(200, "[]"))
+	httpmock.RegisterResponder("GET", "http://localhost/api/v2/alerts/groups", httpmock.NewStringResponder(200, "[]"))
+	_ = am.Pull()
+
+	if ver := am.Version(); ver != "0.1.0" {
+		t.Errorf("Got wrong version: %q", ver)
+		return
+	}
+
+	req := httptest.NewRequest("POST", "/proxy/alertmanager/proxyToUnsupported/api/v2/silences", ioutil.NopCloser(bytes.NewBufferString(`{}`)))
+
+	resp := newCloseNotifyingRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Code != 500 {
+		t.Errorf("Got response code %d instead of 500", resp.Code)
+	}
+
+	gotBody, _ := ioutil.ReadAll(resp.Body)
+	if string(gotBody) != "can't find silence mapper for Alertmanager 0.1.0\n" {
+		t.Errorf("Body mismatch:\n%s", gotBody)
 	}
 }

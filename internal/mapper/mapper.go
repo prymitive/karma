@@ -51,10 +51,18 @@ func fixSemVersion(version string) string {
 	return strings.SplitN(version, "-", 2)[0]
 }
 
+func latestIfEmpty(version string) string {
+	if version == "" {
+		return "999.0"
+	}
+	return version
+}
+
 // GetAlertMapper returns mapper for given version
 func GetAlertMapper(version string) (AlertMapper, error) {
+	ver := latestIfEmpty(version)
 	for _, m := range alertMappers {
-		if m.IsSupported(fixSemVersion(version)) {
+		if m.IsSupported(fixSemVersion(ver)) {
 			return m, nil
 		}
 	}
@@ -69,8 +77,9 @@ func RegisterSilenceMapper(m SilenceMapper) {
 
 // GetSilenceMapper returns mapper for given version
 func GetSilenceMapper(version string) (SilenceMapper, error) {
+	ver := latestIfEmpty(version)
 	for _, m := range silenceMappers {
-		if m.IsSupported(fixSemVersion(version)) {
+		if m.IsSupported(fixSemVersion(ver)) {
 			return m, nil
 		}
 	}
@@ -85,8 +94,9 @@ func RegisterStatusMapper(m StatusMapper) {
 
 // GetStatusMapper returns mapper for given version
 func GetStatusMapper(version string) (StatusMapper, error) {
+	ver := latestIfEmpty(version)
 	for _, m := range statusMappers {
-		if m.IsSupported(fixSemVersion(version)) {
+		if m.IsSupported(fixSemVersion(ver)) {
 			return m, nil
 		}
 	}

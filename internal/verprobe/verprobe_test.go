@@ -36,6 +36,11 @@ func TestDetect(t *testing.T) {
 			metrics: "alertmanager_build_info{version=\"1.2.3\"} 1\n",
 			version: "1.2.3",
 		},
+		{
+			metrics: "alertmanager_build_info{foo=\"bar\"} 1",
+			version: "",
+			isError: true,
+		},
 	}
 
 	for _, testCase := range testCases {

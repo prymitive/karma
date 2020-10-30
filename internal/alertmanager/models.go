@@ -50,14 +50,15 @@ type Alertmanager struct {
 	// lock protects data access while updating
 	lock sync.RWMutex
 	// fields for storing pulled data
-	alertGroups  []models.AlertGroup
-	silences     map[string]models.Silence
-	colors       models.LabelsColorMap
-	autocomplete []models.Autocomplete
-	knownLabels  []string
-	lastError    string
-	status       models.AlertmanagerStatus
-	clusterName  string
+	alertGroups      []models.AlertGroup
+	silences         map[string]models.Silence
+	colors           models.LabelsColorMap
+	autocomplete     []models.Autocomplete
+	knownLabels      []string
+	lastError        string
+	lastVersionProbe string
+	status           models.AlertmanagerStatus
+	clusterName      string
 	// metrics tracked per alertmanager instance
 	Metrics alertmanagerMetrics
 	// headers to send with each AlertManager request
@@ -67,15 +68,13 @@ type Alertmanager struct {
 }
 
 func (am *Alertmanager) probeVersion() string {
-	const fakeVersion = "999.0.0"
-
 	url, err := uri.JoinURL(am.URI, "metrics")
 	if err != nil {
 		log.Error().
 			Err(err).
 			Str("uri", am.SanitizedURI()).
 			Msg("Failed to join url with /metrics path")
-		return fakeVersion
+		return ""
 	}
 
 	source, err := am.reader.Read(url, am.HTTPHeaders)
@@ -85,13 +84,14 @@ func (am *Alertmanager) probeVersion() string {
 			Str("alertmanager", am.Name).
 			Str("uri", am.SanitizedURI()).
 			Msg("Request failed")
-		return fakeVersion
+		return ""
 	}
 	defer source.Close()
 
 	version, err := verprobe.Detect(source)
 	if err != nil {
-		return fakeVersion
+		log.Error().Err(err).Str("alertmanager", am.Name).Msg("Error while discovering version")
+		return ""
 	}
 	log.Info().
 		Str("version", version).
@@ -130,7 +130,6 @@ func (am *Alertmanager) clearData() {
 func (am *Alertmanager) clearStatus() {
 	am.lock.Lock()
 	am.status = models.AlertmanagerStatus{
-		Version: "",
 		ID:      "",
 		PeerIDs: []string{},
 	}
@@ -337,6 +336,11 @@ func (am *Alertmanager) Pull() error {
 	am.Metrics.Cycles++
 
 	version := am.probeVersion()
+	am.lock.Lock()
+	am.lastVersionProbe = version
+	am.lock.Unlock()
+
+	log.Debug().Str("alertmanager", am.Name).Str("version", version).Msg("Probed alertmanager version")
 
 	// verify that URI is correct
 	_, err := url.Parse(am.URI)
@@ -493,7 +497,7 @@ func (am *Alertmanager) Version() string {
 	am.lock.RLock()
 	defer am.lock.RUnlock()
 
-	return am.status.Version
+	return am.lastVersionProbe
 }
 
 // ClusterPeers returns a list of IDs of all peers this instance
