@@ -30,7 +30,7 @@
     "@types/react-dom": "16.9.9",
     "@types/react-highlighter": "0.3.4",
     "@types/react-js-pagination": "3.0.3",
-    "@types/react-select": "3.0.22",
+    "@types/react-select": "3.0.23",
     "@typescript-eslint/eslint-plugin": "4.6.0",
     "@typescript-eslint/parser": "4.6.0",
     "body-scroll-lock": "3.1.5",
