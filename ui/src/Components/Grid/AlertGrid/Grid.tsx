@@ -43,7 +43,7 @@ const Grid: FC<{
 }) => {
   const context = React.useContext(ThemeContext);
   const { ref, repack } = useGrid(gridSizesConfig);
-  const debouncedRepack = useCallback(() => debounce(repack, 10), [repack]);
+  const debouncedRepack = useCallback(debounce(repack, 10), [repack]);
 
   const [groupsToRender, setGroupsToRender] = useState<number>(50);
 
