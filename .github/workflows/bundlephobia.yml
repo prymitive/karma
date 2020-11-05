@@ -1,0 +1,22 @@
+name: "UI bundle size check"
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+defaults:
+  run:
+    working-directory: ui
+jobs:
+  bundlecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: carlesnunez/check-my-bundlephobia@v1.7.0
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          strict: false
+          threshold: 500
+          ignore-dev-dependencies: true
