@@ -8,11 +8,9 @@ import { InhibitedByModal } from ".";
 
 let alertStore: AlertStore;
 
-beforeAll(() => {
-  jest.useFakeTimers();
-});
-
 beforeEach(() => {
+  jest.useFakeTimers();
+
   alertStore = new AlertStore([]);
 });
 
@@ -107,9 +105,13 @@ describe("<InhibitedByModal />", () => {
     const tree = mount(
       <InhibitedByModal alertStore={alertStore} fingerprints={["foo=bar"]} />
     );
+
     const toggle = tree.find("span.badge.badge-light");
     toggle.simulate("click");
-    tree.unmount();
+
+    act(() => {
+      tree.unmount();
+    });
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
 });

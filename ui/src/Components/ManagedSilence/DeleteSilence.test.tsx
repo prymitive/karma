@@ -59,17 +59,6 @@ afterEach(() => {
 
 const MockOnHide = jest.fn();
 
-const MountedDeleteSilence = () => {
-  return mount(
-    <DeleteSilence
-      alertStore={alertStore}
-      silenceFormStore={silenceFormStore}
-      cluster={cluster}
-      silence={silence}
-    />
-  );
-};
-
 const MountedDeleteSilenceModalContent = () => {
   return mount(
     <DeleteSilenceModalContent
@@ -84,18 +73,39 @@ const MountedDeleteSilenceModalContent = () => {
 
 describe("<DeleteSilence />", () => {
   it("label is 'Delete' by default", () => {
-    const tree = MountedDeleteSilence();
+    const tree = mount(
+      <DeleteSilence
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        cluster={cluster}
+        silence={silence}
+      />
+    );
     expect(tree.text()).toBe("Delete");
   });
 
   it("opens modal on click", () => {
-    const tree = MountedDeleteSilence();
+    const tree = mount(
+      <DeleteSilence
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        cluster={cluster}
+        silence={silence}
+      />
+    );
     tree.find("button.btn-danger").simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(1);
   });
 
   it("closes modal on close button click", () => {
-    const tree = MountedDeleteSilence();
+    const tree = mount(
+      <DeleteSilence
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        cluster={cluster}
+        silence={silence}
+      />
+    );
     tree.find("button.btn-danger").simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(1);
 
@@ -108,7 +118,14 @@ describe("<DeleteSilence />", () => {
   });
 
   it("closes modal on esc button press", () => {
-    const tree = MountedDeleteSilence();
+    const tree = mount(
+      <DeleteSilence
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        cluster={cluster}
+        silence={silence}
+      />
+    );
     tree.find("button.btn-danger").simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(1);
 
@@ -122,7 +139,14 @@ describe("<DeleteSilence />", () => {
 
   it("button is disabled when all alertmanager instances are read-only", () => {
     alertStore.data.upstreams.instances[0].readonly = true;
-    const tree = MountedDeleteSilence();
+    const tree = mount(
+      <DeleteSilence
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        cluster={cluster}
+        silence={silence}
+      />
+    );
     expect(tree.find("button").prop("disabled")).toBe(true);
 
     tree.find("button").at(0).simulate("click");
@@ -140,7 +164,9 @@ describe("<DeleteSilenceModalContent />", () => {
   it("unblurs silence form on unmount", () => {
     const tree = MountedDeleteSilenceModalContent();
     expect(silenceFormStore.toggle.blurred).toBe(true);
-    tree.unmount();
+    act(() => {
+      tree.unmount();
+    });
     expect(silenceFormStore.toggle.blurred).toBe(false);
   });
 

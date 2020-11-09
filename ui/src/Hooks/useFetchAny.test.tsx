@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { renderHook } from "@testing-library/react-hooks";
 
@@ -176,7 +177,7 @@ describe("useFetchAny", () => {
 
     const upstreams = [{ uri: "http://localhost/slow/ok", options: {} }];
     const Component = () => {
-      const { response, error, inProgress } = useFetchAny(upstreams);
+      const { response, error, inProgress } = useFetchAny<string>(upstreams);
       return (
         <span>
           <span>{response}</span>
@@ -201,7 +202,7 @@ describe("useFetchAny", () => {
 
     const upstreams = [{ uri: "http://localhost/slow/500", options: {} }];
     const Component = () => {
-      const { response, error, inProgress } = useFetchAny(upstreams);
+      const { response, error, inProgress } = useFetchAny<string>(upstreams);
       return (
         <span>
           <span>{response}</span>
@@ -211,8 +212,10 @@ describe("useFetchAny", () => {
       );
     };
 
-    const tree = mount(<Component />);
-    tree.unmount();
+    act(() => {
+      const tree = mount(<Component />);
+      tree.unmount();
+    });
 
     await fetchMock.flush(true);
   });
@@ -225,7 +228,7 @@ describe("useFetchAny", () => {
 
     const upstreams = [{ uri: "http://localhost/slow/error", options: {} }];
     const Component = () => {
-      const { response, error, inProgress } = useFetchAny(upstreams);
+      const { response, error, inProgress } = useFetchAny<string>(upstreams);
       return (
         <span>
           <span>{response}</span>
@@ -235,8 +238,10 @@ describe("useFetchAny", () => {
       );
     };
 
-    const tree = mount(<Component />);
-    tree.unmount();
+    act(() => {
+      const tree = mount(<Component />);
+      tree.unmount();
+    });
 
     await fetchMock.flush(true);
   });
@@ -332,7 +337,9 @@ describe("useFetchAny", () => {
           get: () => "text/plain",
         },
         text: async () => {
-          tree.unmount();
+          act(() => {
+            tree.unmount();
+          });
           return "ok";
         },
       })
@@ -340,7 +347,7 @@ describe("useFetchAny", () => {
 
     const upstreams = [{ uri: "http://localhost/slow/body", options: {} }];
     const Component = () => {
-      const { response, error, inProgress } = useFetchAny(upstreams, {
+      const { response, error, inProgress } = useFetchAny<string>(upstreams, {
         fetcher: fetcher,
       });
       return (
@@ -352,6 +359,8 @@ describe("useFetchAny", () => {
       );
     };
 
-    tree = mount(<Component />);
+    act(() => {
+      tree = mount(<Component />);
+    });
   });
 });
