@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { renderHook } from "@testing-library/react-hooks";
 
@@ -155,8 +156,10 @@ describe("useFetchDelete", () => {
       );
     };
 
-    const tree = mount(<Component />);
-    tree.unmount();
+    act(() => {
+      const tree = mount(<Component />);
+      tree.unmount();
+    });
 
     await fetchMock.flush(true);
   });
@@ -181,8 +184,10 @@ describe("useFetchDelete", () => {
       );
     };
 
-    const tree = mount(<Component />);
-    tree.unmount();
+    act(() => {
+      const tree = mount(<Component />);
+      tree.unmount();
+    });
 
     await fetchMock.flush(true);
   });

@@ -69,16 +69,10 @@ const MockEmptyAPIResponseWithoutFilters = () => {
   });
 };
 
-const MountedFetcher = () => {
-  return mount(
-    <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
-  );
-};
-
 describe("<Fetcher />", () => {
   it("changing interval changes how often fetch is called", () => {
     settingsStore.fetchConfig.setInterval(1);
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
     advanceBy(3 * 1000);
@@ -116,21 +110,23 @@ describe("<Fetcher />", () => {
 
   it("calls alertStore.fetchWithThrottle on mount", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledTimes(1);
   });
 
   it("calls alertStore.fetchWithThrottle again after filter change", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
-    const tree = MountedFetcher();
+    const tree = mount(
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+    );
     alertStore.filters.setFilterValues([]);
     tree.setProps({});
     expect(fetchSpy).toHaveBeenCalledTimes(2);
   });
 
   it("keeps calling alertStore.fetchWithThrottle every minute", () => {
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
     advanceBy(62 * 1000);
@@ -156,7 +152,7 @@ describe("<Fetcher />", () => {
     MockEmptyAPIResponseWithoutFilters();
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     settingsStore.gridConfig.setSortOrder("default");
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith("", false, "", "", "");
   });
 
@@ -165,7 +161,7 @@ describe("<Fetcher />", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     settingsStore.gridConfig.setSortOrder("disabled");
     settingsStore.gridConfig.setSortReverse(false);
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith("", false, "disabled", "", "");
   });
 
@@ -174,7 +170,7 @@ describe("<Fetcher />", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     settingsStore.gridConfig.setSortOrder("disabled");
     settingsStore.gridConfig.setSortReverse(true);
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith("", false, "disabled", "", "");
   });
 
@@ -183,7 +179,7 @@ describe("<Fetcher />", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     settingsStore.gridConfig.setSortOrder("startsAt");
     settingsStore.gridConfig.setSortReverse(false);
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith("", false, "startsAt", "", "0");
   });
 
@@ -192,7 +188,7 @@ describe("<Fetcher />", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     settingsStore.gridConfig.setSortOrder("startsAt");
     settingsStore.gridConfig.setSortReverse(true);
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith("", false, "startsAt", "", "1");
   });
 
@@ -202,7 +198,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("label");
     settingsStore.gridConfig.setSortLabel("cluster");
     settingsStore.gridConfig.setSortReverse(false);
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith("", false, "label", "cluster", "0");
   });
 
@@ -212,7 +208,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("label");
     settingsStore.gridConfig.setSortLabel("job");
     settingsStore.gridConfig.setSortReverse(true);
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith("", false, "label", "job", "1");
   });
 
@@ -222,7 +218,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("label");
     settingsStore.gridConfig.setSortLabel("instance");
     settingsStore.gridConfig.setSortReverse(null);
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith("", false, "label", "instance", "");
   });
 
@@ -232,7 +228,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("default");
     settingsStore.multiGridConfig.setGridLabel("cluster");
     settingsStore.multiGridConfig.setGridSortReverse(false);
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith("cluster", false, "", "", "");
   });
 
@@ -242,7 +238,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("default");
     settingsStore.multiGridConfig.setGridLabel("cluster");
     settingsStore.multiGridConfig.setGridSortReverse(true);
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith("cluster", true, "", "", "");
   });
 
@@ -252,20 +248,26 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("default");
     settingsStore.multiGridConfig.setGridLabel("");
     settingsStore.multiGridConfig.setGridSortReverse(true);
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledWith("", true, "", "", "");
   });
 
   it("internal timer is null after unmount", () => {
-    const tree = MountedFetcher();
-    expect(fetchSpy).toHaveBeenCalledTimes(1);
-
-    tree.unmount();
-    expect(fetchSpy).toHaveBeenCalledTimes(1);
-
-    settingsStore.gridConfig.setSortReverse(
-      !settingsStore.gridConfig.config.reverseSort
+    const tree = mount(
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
     );
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      tree.unmount();
+    });
+    expect(fetchSpy).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      settingsStore.gridConfig.setSortReverse(
+        !settingsStore.gridConfig.config.reverseSort
+      );
+    });
     expect(fetchSpy).toHaveBeenCalledTimes(1);
     act(() => {
       jest.runOnlyPendingTimers();
@@ -275,13 +277,13 @@ describe("<Fetcher />", () => {
 
   it("doesn't fetch on mount when paused", () => {
     alertStore.status.pause();
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledTimes(0);
   });
 
   it("doesn't fetch on update when paused", () => {
     alertStore.status.pause();
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     settingsStore.gridConfig.setSortReverse(
       !settingsStore.gridConfig.config.reverseSort
     );
@@ -290,7 +292,7 @@ describe("<Fetcher />", () => {
 
   it("fetches on update when resumed", () => {
     alertStore.status.pause();
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     alertStore.status.resume();
     settingsStore.gridConfig.setSortReverse(
       !settingsStore.gridConfig.config.reverseSort
@@ -303,7 +305,7 @@ describe("<Fetcher />", () => {
 
   it("fetches on resume", () => {
     alertStore.status.pause();
-    MountedFetcher();
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     alertStore.status.resume();
     advanceBy(2 * 1000);
     act(() => {
@@ -315,7 +317,9 @@ describe("<Fetcher />", () => {
 
 describe("<Fetcher /> children", () => {
   it("renders Dots when countdown is in progress", () => {
-    const tree = MountedFetcher();
+    const tree = mount(
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+    );
     expect(tree.find("div.components-fetcher")).toHaveLength(1);
   });
 
@@ -323,12 +327,16 @@ describe("<Fetcher /> children", () => {
     act(() => {
       alertStore.info.upgradeNeeded = true;
     });
-    const tree = MountedFetcher();
+    const tree = mount(
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+    );
     expect(tree.find("div.navbar-brand").children()).toHaveLength(0);
   });
 
   it("renders PauseButton when paused", () => {
-    const tree = MountedFetcher();
+    const tree = mount(
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+    );
     act(() => {
       alertStore.status.pause();
     });
@@ -336,7 +344,9 @@ describe("<Fetcher /> children", () => {
   });
 
   it("renders PauseButton when paused and hovered", () => {
-    const tree = MountedFetcher();
+    const tree = mount(
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+    );
     act(() => {
       alertStore.status.pause();
     });
@@ -350,7 +360,9 @@ describe("<Fetcher /> children", () => {
   });
 
   it("renders PlayButton when hovered", () => {
-    const tree = MountedFetcher();
+    const tree = mount(
+      <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
+    );
     tree.find(".navbar-brand").simulate("mouseenter");
     tree.update();
     expect(toDiffableHtml(tree.html())).toMatch(/fa-play/);

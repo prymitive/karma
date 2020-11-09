@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
@@ -27,7 +28,9 @@ describe("<FetchPauser />", () => {
 
   it("unmounting FetchPauser resumes alertStore", () => {
     const tree = MountedFetchPauser();
-    tree.unmount();
+    act(() => {
+      tree.unmount();
+    });
     expect(alertStore.status.paused).toBe(false);
   });
 });

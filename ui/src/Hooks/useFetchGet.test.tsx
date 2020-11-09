@@ -1,4 +1,5 @@
 import React from "react";
+import { act as actReact } from "react-dom/test-utils";
 
 import { renderHook, act } from "@testing-library/react-hooks";
 
@@ -252,8 +253,10 @@ describe("useFetchGet", () => {
       );
     };
 
-    const tree = mount(<Component />);
-    tree.unmount();
+    actReact(() => {
+      const tree = mount(<Component />);
+      tree.unmount();
+    });
 
     for (let i = 0; i <= FetchRetryConfig.retries; i++) {
       jest.runOnlyPendingTimers();
@@ -281,8 +284,10 @@ describe("useFetchGet", () => {
       );
     };
 
-    const tree = mount(<Component />);
-    tree.unmount();
+    actReact(() => {
+      const tree = mount(<Component />);
+      tree.unmount();
+    });
 
     for (let i = 0; i <= FetchRetryConfig.retries; i++) {
       jest.runOnlyPendingTimers();
@@ -309,8 +314,10 @@ describe("useFetchGet", () => {
       );
     };
 
-    const tree = mount(<Component />);
-    tree.unmount();
+    actReact(() => {
+      const tree = mount(<Component />);
+      tree.unmount();
+    });
 
     for (let i = 0; i <= FetchRetryConfig.retries; i++) {
       jest.runOnlyPendingTimers();
@@ -338,8 +345,10 @@ describe("useFetchGet", () => {
       );
     };
 
-    const tree = mount(<Component />);
-    tree.unmount();
+    actReact(() => {
+      const tree = mount(<Component />);
+      tree.unmount();
+    });
 
     jest.runOnlyPendingTimers();
     await fetchMock.flush(true);
@@ -364,8 +373,10 @@ describe("useFetchGet", () => {
       );
     };
 
-    const tree = mount(<Component />);
-    tree.unmount();
+    actReact(() => {
+      const tree = mount(<Component />);
+      tree.unmount();
+    });
 
     jest.runOnlyPendingTimers();
     await fetchMock.flush(true);
@@ -381,7 +392,9 @@ describe("useFetchGet", () => {
           get: () => "text/plain",
         },
         text: async () => {
-          tree.unmount();
+          actReact(() => {
+            tree.unmount();
+          });
           return "ok";
         },
       } as any);
@@ -401,6 +414,8 @@ describe("useFetchGet", () => {
       );
     };
 
-    tree = mount(<Component />);
+    actReact(() => {
+      tree = mount(<Component />);
+    });
   });
 });

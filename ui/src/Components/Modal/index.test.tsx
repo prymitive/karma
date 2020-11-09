@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
@@ -61,7 +62,9 @@ describe("<ModalInner />", () => {
 
   it("'modal-open' class is removed from body node after modal is unmounted", () => {
     const tree = MountedModal(true);
-    tree.unmount();
+    act(() => {
+      tree.unmount();
+    });
     expect(document.body.className.split(" ")).not.toContain("modal-open");
   });
 
@@ -88,7 +91,9 @@ describe("<ModalInner />", () => {
     const tree = MountedModal(true, true);
     expect(document.body.className.split(" ")).toContain("modal-open");
 
-    tree.unmount();
+    act(() => {
+      tree.unmount();
+    });
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
 

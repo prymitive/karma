@@ -1,4 +1,5 @@
 import React from "react";
+import { act } from "react-dom/test-utils";
 
 import { mount, shallow } from "enzyme";
 
@@ -30,8 +31,12 @@ describe("<UpgradeNeeded />", () => {
     const reloadSpy = jest
       .spyOn(global.window.location, "reload")
       .mockImplementation(() => {});
+
     mount(<UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />);
-    jest.runOnlyPendingTimers();
+
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(reloadSpy).toBeCalled();
   });
 
@@ -39,11 +44,19 @@ describe("<UpgradeNeeded />", () => {
     const reloadSpy = jest
       .spyOn(global.window.location, "reload")
       .mockImplementation(() => {});
+
     const tree = mount(
       <UpgradeNeeded newVersion="1.2.3" reloadAfter={100000000} />
     );
-    tree.unmount();
-    jest.runOnlyPendingTimers();
+    expect(reloadSpy).not.toBeCalled();
+
+    act(() => {
+      tree.unmount();
+    });
+
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(reloadSpy).not.toBeCalled();
   });
 });
