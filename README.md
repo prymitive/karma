@@ -229,25 +229,25 @@ By default it will listen on port `8080` and will have mock alerts.
 ### Running pre-build docker image
 
 Official docker images are built and hosted on
-[hub.docker.com](https://hub.docker.com/r/lmierzwa/karma/).
+[Github](https://github.com/users/prymitive/packages/container/package/karma).
 
 Images are built automatically for:
 
-- release tags in git - `lmierzwa/karma:vX.Y.Z`
-- master branch commits - `lmierzwa/karma:latest`
+- release tags in git - `ghcr.io/prymitive/karma:vX.Y.Z`
+- master branch commits - `ghcr.io/prymitive/karma:latest`
 
 #### Examples
 
 To start a release image run:
 
-    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com lmierzwa/karma:vX.Y.Z
+    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com ghcr.io/prymitive/karma:vX.Y.Z
 
 Latest release details can be found on
 [GitHub](https://github.com/prymitive/karma/releases).
 
 To start docker image build from lastet master branch run:
 
-    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com lmierzwa/karma:latest
+    docker run -e ALERTMANAGER_URI=https://alertmanager.example.com ghcr.io/prymitive/karma:latest
 
 Note that latest master branch might have bugs or breaking changes. Using
 release images is strongly recommended for any production use.
