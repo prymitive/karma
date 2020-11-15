@@ -185,8 +185,8 @@ github.com/go-openapi/strfmt v0.19.2/go.mod h1:0yX7dbo8mKIvc3XSKp7MNfxw4JytCfCD6
 github.com/go-openapi/strfmt v0.19.3/go.mod h1:0yX7dbo8mKIvc3XSKp7MNfxw4JytCfCD6+bY1AVL9LU=
 github.com/go-openapi/strfmt v0.19.4/go.mod h1:eftuHTlB/dI8Uq8JJOyRlieZf+WkkxUuk0dgdHXr2Qk=
 github.com/go-openapi/strfmt v0.19.5/go.mod h1:eftuHTlB/dI8Uq8JJOyRlieZf+WkkxUuk0dgdHXr2Qk=
-github.com/go-openapi/strfmt v0.19.9 h1:PjMdTmHJqIhWUA39r1MDm3Zh8eJUkqD/cR8XMWPSTMg=
-github.com/go-openapi/strfmt v0.19.9/go.mod h1:qBBipho+3EoIqn6YDI+4RnQEtj6jT/IdKm+PAlXxSUc=
+github.com/go-openapi/strfmt v0.19.10 h1:FEv6Pt/V4wLwP4vOCZbWlpfmi8kj4UiRip34IDE6SGw=
+github.com/go-openapi/strfmt v0.19.10/go.mod h1:qBBipho+3EoIqn6YDI+4RnQEtj6jT/IdKm+PAlXxSUc=
 github.com/go-openapi/swag v0.17.0/go.mod h1:AByQ+nYG6gQg71GINrmuDXCPWdL640yX49/kXLo40Tg=
 github.com/go-openapi/swag v0.18.0/go.mod h1:AByQ+nYG6gQg71GINrmuDXCPWdL640yX49/kXLo40Tg=
 github.com/go-openapi/swag v0.19.2/go.mod h1:POnQmlKehdgb5mhVOsnJFsivZCEZ/vjK9gh66Z9tfKk=
