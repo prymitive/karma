@@ -90,7 +90,7 @@
     "jest-canvas-mock": "2.3.0",
     "jest-date-mock": "1.0.8",
     "markdownlint-cli": "0.24.0",
-    "puppeteer": "5.4.1",
+    "puppeteer": "5.5.0",
     "react-test-renderer": "17.0.1",
     "source-map-explorer": "2.5.0"
   },
