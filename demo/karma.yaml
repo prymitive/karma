@@ -32,8 +32,6 @@ alertAcknowledgement:
 annotations:
   hidden:
     - help
-custom:
-  js: /custom.js
 debug: true
 filters:
   default:
