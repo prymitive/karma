@@ -89,7 +89,7 @@
     "enzyme": "3.11.0",
     "jest-canvas-mock": "2.3.0",
     "jest-date-mock": "1.0.8",
-    "markdownlint-cli": "0.24.0",
+    "markdownlint-cli": "0.25.0",
     "puppeteer": "5.5.0",
     "react-test-renderer": "17.0.1",
     "source-map-explorer": "2.5.0"
