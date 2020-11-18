@@ -1,7 +1,5 @@
 package main
 
-// stripped down version of https://github.com/chenjiandongx/ginprom
-
 import (
 	"fmt"
 	"net/http"

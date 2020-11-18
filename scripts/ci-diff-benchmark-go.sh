@@ -8,7 +8,7 @@ git reset --hard FETCH_HEAD
 
 make benchmark-go | tee master.txt
 
-git reset --hard ${TRAVIS_PULL_REQUEST_SHA}
+git reset --hard ${GITHUB_SHA}
 make benchmark-go | tee new.txt
 
 make benchmark-compare-go | tee benchstat.txt

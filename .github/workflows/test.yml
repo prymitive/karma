@@ -1,0 +1,796 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  release:
+    types:
+      - published
+
+jobs:
+  test-go:
+    name: Test Go code
+    if: github.event_name != 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set git slug envs
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.5
+
+      - name: Cache Go modules
+        id: cache-go-modules
+        uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-master-go-modules-
+
+      - name: Fetch all Go modules
+        if: steps.cache-go-modules.outputs.cache-hit != 'true'
+        run: make download-deps-go
+
+      - name: Mock web assets
+        run: make mock-assets
+
+      - name: Test Go code
+        run: make test-go
+
+      - name: Report code coverage
+        uses: codecov/codecov-action@v1
+        with:
+          flags: backend
+
+  lint-go:
+    name: Lint Go code
+    needs: test-go
+    if: github.event_name != 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set git slug envs
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.5
+
+      - name: Cache Go modules
+        id: cache-go-modules
+        uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-master-go-modules-
+
+      - name: Fetch all Go modules
+        if: steps.cache-go-modules.outputs.cache-hit != 'true'
+        run: make download-deps-go
+
+      - name: Mock web assets
+        run: make mock-assets
+
+      - name: Lint Go code
+        run: make make lint-go
+
+  format-go:
+    name: Check Go code formatting
+    needs: lint-go
+    if: github.event_name != 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.5
+
+      - name: Format Go code
+        run: make format-go
+
+      - name: Check for local changes
+        run: git diff --exit-code
+
+  go-mod-tidy:
+    name: Verify go.sum
+    if: github.event_name != 'release'
+    needs: lint-go
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.5
+
+      - name: Mock web assets
+        run: make mock-assets
+
+      - name: Fetch code
+        run: go get -d -v ./cmd/karma
+
+      - name: Run go mod tidy
+        run: go mod tidy
+
+      - name: Tidy tools
+        run: make tools-go-mod-tidy
+
+      - name: Check for local changes
+        run: git diff --exit-code
+
+  openapi:
+    name: Verify OpenAPI client code
+    if: github.event_name != 'release'
+    needs:
+      - lint-go
+      - go-mod-tidy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.5
+
+      - name: Generate OpenAPI code
+        run: make openapi-client
+
+      - name: Check for local changes
+        run: git diff --exit-code
+
+  test-js:
+    name: Test JS code
+    if: github.event_name != 'release'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        env:
+          - ""
+          - "env TZ=Pacific/Easter"
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set git slug envs
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+
+      - name: Cache NPM modules
+        id: cache-npm
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-master-npm-
+
+      - name: Fetch all NPM dependencies
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+        run: make -C ui npm-fetch
+
+      - name: Test Node JS code
+        run: ${{ matrix.env }} make -C ui test-js
+        env:
+          NODE_ENV: test
+
+      - name: Report code coverage
+        uses: codecov/codecov-action@v1
+        with:
+          flags: ui
+
+  lint-js:
+    name: Lint JS code
+    if: github.event_name != 'release'
+    needs: test-js
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set git slug envs
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+
+      - name: Cache NPM modules
+        id: cache-npm
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-master-npm-
+
+      - name: Fetch all NPM dependencies
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+        run: make -C ui npm-fetch
+
+      - name: Lint Node JS code
+        run: make -C ui lint-js
+
+  format-js:
+    name: Check JS code formatting
+    if: github.event_name != 'release'
+    needs: lint-js
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set git slug envs
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+
+      - name: Cache NPM modules
+        id: cache-npm
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-master-npm-
+
+      - name: Fetch all NPM dependencies
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+        run: make -C ui npm-fetch
+
+      - name: Lint Node JS code
+        run: make -C ui format
+
+      - name: Check for local changes
+        run: git diff --exit-code
+
+  deps-js:
+    name: Check JS dependencies
+    if: github.event_name != 'release'
+    needs: lint-js
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set git slug envs
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+
+      - name: Cache NPM modules
+        id: cache-npm
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-master-npm-
+
+      - name: Fetch all NPM dependencies
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+        run: make -C ui npm-fetch
+
+      - name: Lint Node JS dependencies
+        run: make -C ui lint-deps
+
+  lint-versions:
+    name: Lint Versions
+    if: github.event_name != 'release'
+    needs: lint-go
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Lint Go Versions
+        run: make lint-golang-version
+
+      - name: Lint Node JS Versions
+        run: make lint-nodejs-version
+
+      - name: Lint Bootstrap Version
+        run: make lint-bootstrap-version
+
+  typescript:
+    name: Check for non-typescript components
+    if: github.event_name != 'release'
+    needs: lint-js
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Check for non-typescript UI components
+        run: make -C ui lint-typescript
+
+  changelog:
+    name: Generate Changelog
+    if: github.event_name != 'release'
+    needs:
+      - lint-go
+      - lint-js
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set git slug envs
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.5
+
+      - name: Cache Go modules
+        id: cache-go-modules
+        uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-master-go-modules-
+
+      - name: Fetch all Go modules
+        if: steps.cache-go-modules.outputs.cache-hit != 'true'
+        run: make download-deps-go
+
+      - name: Generate Changelog
+        run: make changelog
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  git-commit:
+    name: Lint git commit
+    if: github.event_name != 'release'
+    needs:
+      - lint-go
+      - lint-js
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 100
+
+      - name: Lint git commit
+        uses: wagoid/commitlint-github-action@v2.0.3
+        with:
+          configFile: .commitlintrc.js
+
+  docs:
+    name: Lint documentation
+    if: github.event_name != 'release'
+    needs:
+      - lint-go
+      - lint-js
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Run markdown-lint
+        uses: avto-dev/markdown-lint@v1.4.0
+        with:
+          args: "*.md docs"
+
+  benchmark-go:
+    name: Benchmark Go code compare
+    if: github.event_name == 'pull_request'
+    needs:
+      - lint-go
+      - lint-js
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 200
+
+      - name: Set git slug envs
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.5
+
+      - name: Cache Go modules
+        id: cache-go-modules
+        uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-master-go-modules-
+
+      - name: Fetch all Go modules
+        if: steps.cache-go-modules.outputs.cache-hit != 'true'
+        run: make download-deps-go
+
+      - name: Mock web assets
+        run: make mock-assets
+
+      - name: Run benchmark
+        run: ./scripts/have-backend-changes.sh || ./scripts/ci-diff-benchmark-go.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_NUMBER: ${{ github.event.number }}
+
+  webpack-bundle-size:
+    name: Webpack bundle size compare
+    if: github.event_name == 'pull_request'
+    needs:
+      - lint-go
+      - lint-js
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 200
+
+      - name: Set git slug envs
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+
+      - name: Cache NPM modules
+        id: cache-npm
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-master-npm-
+
+      - name: Fetch all NPM dependencies
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+        run: make -C ui npm-fetch
+
+      - name: Diff bundle size
+        run: ./scripts/have-ui-changes.sh || ./scripts/ci-diff-webpack.sh
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PULL_REQUEST_NUMBER: ${{ github.event.number }}
+
+  percy:
+    name: Percy UI snapshots
+    if: github.event_name != 'release'
+    needs:
+      - test-go
+      - test-js
+      - format-go
+      - format-js
+      - lint-go
+      - lint-js
+      - go-mod-tidy
+      - openapi
+      - git-commit
+      - lint-versions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 200
+
+      - name: Set git slug envs
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+
+      - name: Cache NPM modules
+        id: cache-npm
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-master-npm-
+
+      - name: Fetch all NPM dependencies
+        if: steps.cache-npm.outputs.cache-hit != 'true'
+        run: make -C ui npm-fetch
+
+      - name: Run Percy
+        shell: bash
+        run: ./scripts/percy-skip-deps.sh || make -C ui test-percy
+        env:
+          NODE_ENV: test
+          PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
+
+  cross-compile:
+    name: Cross compile binaries
+    needs:
+      - test-go
+      - test-js
+      - format-go
+      - format-js
+      - lint-go
+      - lint-js
+      - go-mod-tidy
+      - openapi
+      - git-commit
+      - lint-versions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 200
+
+      - name: Set git slug envs
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.5
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+
+      - name: Cache Go modules and build cache
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/go/pkg/mod
+            ~/.cache/go-build
+            ~/.npm
+          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-cc-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-master-go-cc-
+
+      - name: Cross compile binaries
+        run: make crosscompile -j 2
+        env:
+          NODE_ENV: production
+
+      - name: Compress binaries
+        run: |
+          mkdir -p artifacts
+          export SOURCE_DATE_EPOCH=$(git show -s --format=%ci ${GITHUB_SHA})
+          for i in karma-*; do tar --mtime="${SOURCE_DATE_EPOCH}" --owner=0 --group=0 --numeric-owner -c $i | gzip -n - > artifacts/$i.tar.gz; done
+          shasum -a 512 artifacts/karma-*.tar.gz | tee artifacts/sha512sum.txt
+      - name: Get release
+        if: github.event_name == 'release'
+        id: get_release
+        uses: bruceadams/get-release@v1.2.2
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+      - name: Upload binaries to GitHub release
+        if: github.event_name == 'release'
+        uses: AButler/upload-release-assets@v2.0
+        with:
+          files: "artifacts/*"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+  docker:
+    name: Build docker image
+    needs:
+      - test-go
+      - test-js
+      - format-go
+      - format-js
+      - lint-go
+      - lint-js
+      - go-mod-tidy
+      - openapi
+      - git-commit
+      - lint-versions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 200
+
+      - name: Set git slug envs
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Build Docker image
+        run: make docker-image
+
+      - name: "Tag :latest for Docker Hub"
+        run: docker tag karma:latest lmierzwa/karma:latest
+
+      - name: "Tag :vX.Y for Docker Hub"
+        if: github.event_name == 'release'
+        run: docker tag karma:latest lmierzwa/karma:${{ env.GITHUB_REF_SLUG }}
+
+      - name: Login to Docker Hub
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: echo "${DOCKER_HUB_PASSWORD}" | docker login -u lmierzwa --password-stdin
+        env:
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+
+      - name: Push Docker image to Docker Hub
+        if: github.event_name != 'pull_request'
+        run: docker push lmierzwa/karma
+
+      - name: "Tag :latest for GitHub Container Registry"
+        run: docker tag karma:latest ghcr.io/prymitive/karma:latest
+
+      - name: "Tag :vX.Y for GitHub Container Registry"
+        if: github.event_name == 'release'
+        run: docker tag karma:latest ghcr.io/prymitive/karma:${{ env.GITHUB_REF_SLUG }}
+
+      - name: Login to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        shell: bash
+        run: echo "${GITHUB_PKG_TOKEN}" | docker login ghcr.io -u prymitive --password-stdin
+        env:
+          GITHUB_PKG_TOKEN: ${{ secrets.GITHUB_PKG_TOKEN }}
+
+      - name: Push Docker image to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        run: docker push ghcr.io/prymitive/karma
+
+  demo-deploy:
+    name: Deploy demo app to Heroku
+    needs:
+      - test-go
+      - test-js
+      - format-go
+      - format-js
+      - lint-go
+      - lint-js
+      - go-mod-tidy
+      - openapi
+      - git-commit
+      - lint-versions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 200
+
+      - name: Set git slug envs
+        uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Get version
+        run: |
+          echo "::stop-commands::`echo -n ${{ github.token }} | sha256sum | head -c 64`"
+          VERSION=$(make show-version)
+          echo "::set-env name=VERSION::${VERSION}"
+          echo "::`echo -n ${{ github.token }} | sha256sum | head -c 64`::"
+
+      - name: Build Docker image
+        run: docker build --build-arg VERSION=${VERSION} -t registry.heroku.com/karma-demo/web -f demo/Dockerfile .
+
+      - name: Write .netrc
+        run: |
+          echo "machine api.heroku.com" >> $HOME/.netrc
+          echo "  login l.mierzwa@gmail.com" >> $HOME/.netrc
+          echo "  password ${HEROKU_API_KEY}" >> $HOME/.netrc
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+      - name: Login to Heroku
+        run: echo "${HEROKU_API_KEY}" | docker login registry.heroku.com -u _  --password-stdin
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+      - name: Push docker image to Heroku
+        run: docker push registry.heroku.com/karma-demo/web
+
+      - name: Install Heroku CLI
+        run: curl -s --connect-timeout 30 --fail https://cli-assets.heroku.com/install.sh | sh
+
+      - name: Trigger Heroku release
+        run: /usr/local/bin/heroku container:release web --app karma-demo
+
+  demo-e2e:
+    name: Test demo app
+    needs: demo-deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+
+      - name: Run e2e test
+        run: make -C ui test-demo
+
+  codeql:
+    name: CodeQL
+    if: github.event_name != 'release'
+    needs:
+      - cross-compile
+      - docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          # We must fetch at least the immediate parents so that if this is
+          # a pull request then we can checkout the head.
+          fetch-depth: 2
+
+      # If this run was triggered by a pull request event, then checkout
+      # the head of the pull request instead of the merge commit.
+      - run: git checkout HEAD^2
+        if: github.event_name == 'pull_request'
+
+      # Initializes the CodeQL tools for scanning.
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v1
+        # Override language selection by uncommenting this and choosing your languages
+        # with:
+        #   languages: go, javascript, csharp, python, cpp, java
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v1
+
+  anchore:
+    name: Anchore Container Scan
+    if: github.event_name != 'release'
+    needs:
+      - cross-compile
+      - docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v2
+
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag localbuild/testimage:latest
+
+      - name: Run the local Anchore scan action itself with GitHub Advanced Security code scanning integration enabled
+        uses: anchore/scan-action@v2
+        with:
+          image: "localbuild/testimage:latest"
+          acs-report-enable: true
+
+      - name: Upload Anchore Scan Report
+        uses: github/codeql-action/upload-sarif@v1
+        with:
+          sarif_file: results.sarif

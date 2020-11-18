@@ -4,11 +4,11 @@ set -o errexit
 set -o pipefail
 
 
-if [ "${TRAVIS_BRANCH}" == "master" ] && [ -n ${TRAVIS_COMMIT_RANGE} ]; then
-  RANGE="${TRAVIS_COMMIT_RANGE}"
+if [ "${GITHUB_HEAD_REF_SLUG}" == "master" ]; then
+  RANGE="HEAD~.."
 else
   git fetch origin master
-  RANGE="FETCH_HEAD...${TRAVIS_COMMIT}"
+  RANGE="FETCH_HEAD...${GITHUB_SHA}"
 fi
 
 

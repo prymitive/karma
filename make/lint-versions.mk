@@ -1,22 +1,24 @@
+.PHONY: find-golang-versions
+find-golang-versions:
+	@find $(CURDIR) -name Dockerfile -exec grep 'FROM golang' {} \; | cut -d: -f2 | cut -d'-' -f1
+	@grep go-version $(CURDIR)/.github/workflows/* | awk '{print $$3}'
+
 .PHONY: lint-golang-version
 lint-golang-version:
-	$(eval CI_VERSION := $(shell grep -E '^(\ +)go:' .travis.yml | awk '{print $$2}' | tr -d "'\"" | sed -E s_'^([0-9]+\.[0-9]+)$$'_'\1.0'_g))
-	$(eval BUILD_VERSION := $(shell grep -E '^FROM golang:' Dockerfile | cut -d : -f 2 | awk '{print $1}' | cut -d '-' -f 1))
-	$(eval DEMO_VERSION := $(shell grep -E '^FROM golang:' demo/Dockerfile | cut -d : -f 2 | awk '{print $1}' | cut -d '-' -f 1))
-	@if [ "$(CI_VERSION)" != "$(BUILD_VERSION)" ] || [ "$(CI_VERSION)" != "$(DEMO_VERSION)" ] || [ "$(BUILD_VERSION)" != "$(DEMO_VERSION)" ]; then \
-		echo "Golang version mismatch: CI_VERSION=$(CI_VERSION) BUILD_VERSION=$(BUILD_VERSION) DEMO_VERSION=$(DEMO_VERSION)"; \
-		exit 1; \
-	fi
+	$(eval VERSIONS := $(shell make find-golang-versions | sort | uniq))
+	$(eval COUNT := $(shell echo "$(VERSIONS)" | wc -w))
+	@if [ $(COUNT) -gt 1 ]; then echo "Multiple Go versions: $(VERSIONS)" ; exit 1 ; fi
+
+.PHONY: find-nodejs-versions
+find-nodejs-versions:
+	@find $(CURDIR) -name Dockerfile -exec grep 'FROM node' {} \; | cut -d: -f2 | cut -d'-' -f1
+	@grep node-version $(CURDIR)/.github/workflows/* | awk '{print $$3}'
 
 .PHONY: lint-nodejs-version
 lint-nodejs-version:
-	$(eval CI_VERSION := $(shell cat .nvmrc))
-	$(eval BUILD_VERSION := $(shell grep -E '^FROM node:' Dockerfile | cut -d : -f 2 | awk '{print $1}' | cut -d '-' -f 1))
-	$(eval DEMO_VERSION := $(shell grep -E '^FROM node:' demo/Dockerfile | cut -d : -f 2 | awk '{print $1}' | cut -d '-' -f 1))
-	@if [ "$(CI_VERSION)" != "$(BUILD_VERSION)" ] || [ "$(CI_VERSION)" != "$(DEMO_VERSION)" ] || [ "$(BUILD_VERSION)" != "$(DEMO_VERSION)" ]; then \
-		echo "Node version mismatch: CI_VERSION=$(CI_VERSION) BUILD_VERSION=$(BUILD_VERSION) DEMO_VERSION=$(DEMO_VERSION)"; \
-		exit 1; \
-	fi
+	$(eval VERSIONS := $(shell make find-nodejs-versions | sort | uniq))
+	$(eval COUNT := $(shell echo "$(VERSIONS)" | wc -w))
+	@if [ $(COUNT) -gt 1 ]; then echo "Multiple NodeJS versions: $(VERSIONS)" ; exit 1 ; fi
 
 .PHONY: lint-bootstrap-version
 lint-bootstrap-version:
