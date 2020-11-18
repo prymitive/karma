@@ -8,7 +8,5 @@ ignores:
   # devDeps
   - "@types/jest"
   - "@types/node"
-  - "@commitlint/travis-cli"
   - "@storybook/preset-create-react-app"
   - depcheck
-  - markdownlint-cli

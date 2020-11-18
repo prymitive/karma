@@ -62,6 +62,7 @@ format-go:
 
 .PHONY: download-deps-go
 download-deps-go:
+	@for f in $(wildcard tools/*/go.mod) ; do echo ">>> $$f" && cd $(CURDIR)/`dirname "$$f"` && $(GO) mod download && cd $(CURDIR) ; done
 	$(GO) mod download
 
 .PHONY: install-deps-build-go

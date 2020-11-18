@@ -78,7 +78,7 @@ if __name__ == '__main__':
         sys.exit(1)
 
     token = os.getenv('GITHUB_TOKEN')
-    pr = os.getenv('TRAVIS_PULL_REQUEST')
+    pr = os.getenv('PULL_REQUEST_NUMBER')
     commentName = sys.argv[1]
     commentFile = sys.argv[2]
     format = sys.argv[3]
@@ -87,7 +87,7 @@ if __name__ == '__main__':
         print('GITHUB_TOKEN env variable is missing')
         sys.exit(1)
     if not pr:
-        print('TRAVIS_PULL_REQUEST env variable is missing')
+        print('PULL_REQUEST_NUMBER env variable is missing')
         sys.exit(1)
     if not commentName or not commentFile or not format:
         print('Usage: NAME PATH FORMAT')
