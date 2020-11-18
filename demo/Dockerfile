@@ -33,7 +33,6 @@ COPY demo/generator.py /generator.py
 COPY --from=go-builder /src/karma /karma
 COPY demo/karma.yaml /etc/karma.yaml
 COPY demo/acls.yaml /etc/acls.yaml
-COPY demo/custom.js /custom.js
 RUN adduser -D karma
 USER karma
 ENV GOGC=50
