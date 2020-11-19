@@ -2,7 +2,7 @@ name: Maintenance
 
 on:
   schedule:
-    - cron: "10 20 * * 4"
+    - cron: "20 21 * * 4"
 
 jobs:
   npm-upgrades:
@@ -24,13 +24,12 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v3.5.0
         with:
+          token: ${{ secrets.GH_REPO_TOKEN }}
           author: "Łukasz Mierzwa <l.mierzwa@gmail.com>"
           commit-message: "chore(ui): upgrade all 3rd party dependencies"
           branch: npm-upgrades
           delete-branch: true
           title: "chore(ui): upgrade all 3rd party dependencies"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_REPO_TOKEN }}
 
       - name: Check outputs
         run: |
@@ -49,6 +48,9 @@ jobs:
         with:
           go-version: 1.15.5
 
+      - name: Mock web assets
+        run: make mock-assets
+
       - name: Upgrade all Go modules
         run: go get -u ./...
 
@@ -59,13 +61,12 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v3.5.0
         with:
+          token: ${{ secrets.GH_REPO_TOKEN }}
           author: "Łukasz Mierzwa <l.mierzwa@gmail.com>"
           commit-message: "chore(backend): upgrade all Go modules"
           branch: go-mod-upgrades
           delete-branch: true
           title: "chore(backend): upgrade all Go modules"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_REPO_TOKEN }}
 
       - name: Check outputs
         run: |
