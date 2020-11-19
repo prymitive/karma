@@ -386,7 +386,7 @@ jobs:
           fetch-depth: 100
 
       - name: Lint git commit
-        uses: wagoid/commitlint-github-action@v2.0.3
+        uses: wagoid/commitlint-github-action@v2.1.1
         with:
           configFile: .commitlintrc.js
 
