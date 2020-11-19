@@ -1,0 +1,43 @@
+name: Maintenance
+
+on:
+  schedule:
+    - cron: "15 18 * * 4"
+
+jobs:
+  npm-upgrades:
+    name: Regenerate package-lock.json
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+
+      - name: Regenerate package-lock.json
+        run: make -C ui npm-upgrade
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git commit -m "chore(ui): upgrade all 3rd party dependencies"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: npm-upgrades
+
+      - name: Initialize Pull Request
+        uses: gha-utilities/init-pull-request@v0.2.0
+        with:
+          verbose: true
+          pull_request_token: ${{ secrets.GITHUB_TOKEN }}
+          head: npm-upgrades
+          base: master
+          title: "chore(ui): upgrade all 3rd party dependencies"
+          body: "Automated package-lock.json update"

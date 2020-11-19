@@ -61,3 +61,8 @@ format: $(NODE_PATH)/prettier
 
 build/stats.json: build
 	source-map-explorer build/static/*/*.{js,css} --json > build/stats.json
+
+.PHONY: npm-upgrade
+npm-upgrade:
+	rm -fr node_modules package-lock.json
+	npm install
