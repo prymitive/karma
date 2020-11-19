@@ -661,9 +661,9 @@ jobs:
       - name: Login to GitHub Container Registry
         if: github.event_name != 'pull_request'
         shell: bash
-        run: echo "${GITHUB_PKG_TOKEN}" | docker login ghcr.io -u prymitive --password-stdin
+        run: echo "${GH_PKG_TOKEN}" | docker login ghcr.io -u prymitive --password-stdin
         env:
-          GITHUB_PKG_TOKEN: ${{ secrets.GITHUB_PKG_TOKEN }}
+          GH_PKG_TOKEN: ${{ secrets.GH_PKG_TOKEN }}
 
       - name: Push Docker image to GitHub Container Registry
         if: github.event_name != 'pull_request'
