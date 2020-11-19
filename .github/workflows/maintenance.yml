@@ -2,7 +2,7 @@ name: Maintenance
 
 on:
   schedule:
-    - cron: "10 19 * * 4"
+    - cron: "10 20 * * 4"
 
 jobs:
   npm-upgrades:
@@ -29,6 +29,8 @@ jobs:
           branch: npm-upgrades
           delete-branch: true
           title: "chore(ui): upgrade all 3rd party dependencies"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_REPO_TOKEN }}
 
       - name: Check outputs
         run: |
