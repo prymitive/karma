@@ -36,3 +36,38 @@ jobs:
         run: |
           echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
           echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+
+  go-mod-upgrades:
+    name: Upgrade all Go modules
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.5
+
+      - name: Upgrade all Go modules
+        run: go get -u ./...
+
+      - name: Run go mod tidy
+        run: go mod tidy
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3.5.0
+        with:
+          author: "Łukasz Mierzwa <l.mierzwa@gmail.com>"
+          commit-message: "chore(backend): upgrade all Go modules"
+          branch: go-mod-upgrades
+          delete-branch: true
+          title: "chore(backend): upgrade all Go modules"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_REPO_TOKEN }}
+
+      - name: Check outputs
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
