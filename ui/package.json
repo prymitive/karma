@@ -11,7 +11,7 @@
     "@juggle/resize-observer": "3.2.0",
     "@popperjs/core": "2.5.4",
     "@sentry/browser": "5.27.4",
-    "@storybook/react": "6.0.28",
+    "@storybook/react": "6.1.0",
     "@types/body-scroll-lock": "2.6.1",
     "@types/bricks.js": "1.8.1",
     "@types/enzyme": "3.10.8",
