@@ -2,7 +2,7 @@ name: Maintenance
 
 on:
   schedule:
-    - cron: "15 18 * * 4"
+    - cron: "10 19 * * 4"
 
 jobs:
   npm-upgrades:
@@ -20,24 +20,17 @@ jobs:
       - name: Regenerate package-lock.json
         run: make -C ui npm-upgrade
 
-      - name: Commit changes
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git commit -m "chore(ui): upgrade all 3rd party dependencies"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@master
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3.5.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          author: "Łukasz Mierzwa <l.mierzwa@gmail.com>"
+          commit-message: "chore(ui): upgrade all 3rd party dependencies"
           branch: npm-upgrades
-
-      - name: Initialize Pull Request
-        uses: gha-utilities/init-pull-request@v0.2.0
-        with:
-          verbose: true
-          pull_request_token: ${{ secrets.GITHUB_TOKEN }}
-          head: npm-upgrades
-          base: master
+          delete-branch: true
           title: "chore(ui): upgrade all 3rd party dependencies"
-          body: "Automated package-lock.json update"
+
+      - name: Check outputs
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
