@@ -79,3 +79,7 @@ function loadStories() {
 configure(loadStories, module);
 
 serializeStories(getStorybook);
+
+export const parameters = {
+  layout: "fullscreen",
+};
