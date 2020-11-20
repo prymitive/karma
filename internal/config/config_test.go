@@ -97,6 +97,9 @@ labels:
     - gg
 listen:
   address: 0.0.0.0
+  tls:
+    cert: ""
+    key: ""
   port: 80
   prefix: /
 log:

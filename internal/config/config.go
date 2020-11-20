@@ -112,6 +112,8 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.String("listen.address", "", "IP/Hostname to listen on")
 	f.Int("listen.port", 8080, "HTTP port to listen on")
 	f.String("listen.prefix", "/", "URL prefix")
+	f.String("listen.tls.cert", "", "TLS certificate path (enables HTTPS)")
+	f.String("listen.tls.key", "", "TLS key path (enables HTTPS)")
 
 	f.String("sentry.public", "", "Sentry DSN for Go exceptions")
 	f.String("sentry.private", "", "Sentry DSN for JavaScript exceptions")
@@ -347,6 +349,14 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 
 	if config.Listen.Prefix != "" && !strings.HasPrefix(config.Listen.Prefix, "/") {
 		return "", fmt.Errorf("listen.prefix must start with '/', got %q", config.Listen.Prefix)
+	}
+
+	if config.Listen.TLS.Cert != "" && config.Listen.TLS.Key == "" {
+		return "", fmt.Errorf("listen.tls.key must be set when listen.tls.cert is set")
+	}
+
+	if config.Listen.TLS.Key != "" && config.Listen.TLS.Cert == "" {
+		return "", fmt.Errorf("listen.tls.cert must be set when listen.tls.key is set")
 	}
 
 	// accept single Alertmanager server from flag/env if nothing is set yet

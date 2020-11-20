@@ -439,17 +439,34 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	if err != nil {
 		return err
 	}
-	log.Info().Str("address", listener.Addr().String()).Msg("Starting HTTP server")
 
 	httpServer := &http.Server{
 		Addr:    listen,
 		Handler: router,
 	}
-	go func() {
-		_ = httpServer.Serve(listener)
-	}()
 
 	quit := make(chan os.Signal, 1)
+
+	if config.Config.Listen.TLS.Cert != "" {
+		log.Info().Str("address", listener.Addr().String()).Msg("Starting HTTPS server")
+		go func() {
+			err := httpServer.ServeTLS(listener, config.Config.Listen.TLS.Cert, config.Config.Listen.TLS.Key)
+			if err != nil && err != http.ErrServerClosed {
+				log.Error().Err(err).Msg("HTTPS server startup error")
+				quit <- syscall.SIGTERM
+			}
+		}()
+	} else {
+		log.Info().Str("address", listener.Addr().String()).Msg("Starting HTTP server")
+		go func() {
+			err := httpServer.Serve(listener)
+			if err != nil && err != http.ErrServerClosed {
+				log.Error().Err(err).Msg("HTTP server startup error")
+				quit <- syscall.SIGTERM
+			}
+		}()
+	}
+
 	signal.Notify(quit, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 	log.Info().Msg("Shutting down HTTP server")
