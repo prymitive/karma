@@ -1,0 +1,39 @@
+# Terminates with an error on slow client
+
+exec sh -x ./test.sh &
+karma.bin-should-fail --pid-file=karma.pid --alertmanager.uri http://127.0.0.1 --listen.address=127.0.0.1 --listen.port 8094
+! stdout .
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=info msg="Reading configuration file" path=karma.yaml
+level=info msg="Version: dev"
+level=info msg="Configured Alertmanager source" name=proxied proxy=true readonly=false uri=http://127.0.0.1:9094
+level=info msg="Setting up proxy endpoints" alertmanager=proxied
+level=info msg="Writing PID file" path=karma.pid
+level=info msg="Initial Alertmanager collection"
+level=info msg="Pulling latest alerts and silences from Alertmanager"
+level=info msg="Collecting alerts and silences" alertmanager=proxied
+level=info msg="GET request" timeout=40 uri=http://127.0.0.1:9094/metrics
+level=error msg="Request failed" error="Get \"http://127.0.0.1:9094/metrics\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied uri=http://127.0.0.1:9094
+level=error msg="Collection failed" error="Get \"http://127.0.0.1:9094/api/v2/status\": dial tcp 127.0.0.1:9094: connect: connection refused" alertmanager=proxied
+level=info msg="Collection completed"
+level=info msg="Done, starting HTTP server"
+level=info msg="Starting HTTP server" address=127.0.0.1:8094
+level=info msg="Shutting down HTTP server"
+level=error msg="Execution failed" error="shutdown error: context deadline exceeded"
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: proxied
+      uri: http://127.0.0.1:9094
+      proxy: true
+debug: true
+-- test.sh --
+#!/bin/sh
+
+while [ ! -f karma.pid ]; do sleep 1 ; done
+sleep 1
+curl -s --limit-rate 1 http://127.0.0.1:8094/debug/pprof/profile?seconds=45 &
+sleep 1
+cat karma.pid | xargs kill
