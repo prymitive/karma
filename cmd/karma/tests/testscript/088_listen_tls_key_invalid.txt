@@ -1,0 +1,45 @@
+# Fails on invalid TLS key
+
+exec sh -x ./tls.sh
+karma.bin-should-work --pid-file=karma.pid --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8088
+! stdout .
+cmp stderr stderr.txt
+
+-- server.bad --
+BAD KEY
+-- stderr.txt --
+level=info msg="Reading configuration file" path=karma.yaml
+level=info msg="Version: dev"
+level=info msg="Configured Alertmanager source" name=local proxy=false readonly=false uri=https://127.0.0.1:9093
+level=info msg="Writing PID file" path=karma.pid
+level=info msg="Initial Alertmanager collection"
+level=info msg="Pulling latest alerts and silences from Alertmanager"
+level=info msg="Collecting alerts and silences" alertmanager=local
+level=info msg="GET request" timeout=10 uri=https://127.0.0.1:9093/metrics
+level=error msg="Request failed" error="Get \"https://127.0.0.1:9093/metrics\": dial tcp 127.0.0.1:9093: connect: connection refused" alertmanager=local uri=https://127.0.0.1:9093
+level=error msg="Collection failed" error="Get \"https://127.0.0.1:9093/api/v2/status\": dial tcp 127.0.0.1:9093: connect: connection refused" alertmanager=local
+level=info msg="Collection completed"
+level=info msg="Done, starting HTTP server"
+level=info msg="Starting HTTPS server" address=127.0.0.1:8088
+level=error msg="HTTPS server startup error" error="tls: failed to find any PEM data in key input"
+level=info msg="Shutting down HTTP server"
+level=info msg="HTTP server shut down"
+level=info msg="Removing PID file" path=karma.pid
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: local
+      uri: https://127.0.0.1:9093
+      timeout: 10s
+listen:
+  tls:
+    cert: server.pem
+    key: server.bad
+
+-- tls.sh --
+openssl genrsa -out ca.key 2048
+openssl req -x509 -new -nodes -key ca.key -days 7 -out ca.pem -subj "/C=CI/ST=CI/L=CI/O=CI/CN=FakeCA"
+
+openssl genrsa -out server.key 2048
+openssl req -new -key server.key -out server.csr -subj "/C=CI/ST=CI/L=CI/O=CI/CN=karma.example.com"
+openssl x509 -req -in server.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out server.pem -days 7

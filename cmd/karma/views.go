@@ -38,7 +38,7 @@ func badRequestJSON(w http.ResponseWriter, error string) {
 }
 
 func pong(w http.ResponseWriter, r *http.Request) {
-	_, _ = w.Write([]byte("Pong"))
+	_, _ = w.Write([]byte("Pong\n"))
 }
 
 func compressResponse(data []byte) ([]byte, error) {
@@ -82,7 +82,7 @@ func decompressCachedResponse(data []byte) ([]byte, error) {
 func pushPath(w http.ResponseWriter, path string) {
 	if pusher, ok := w.(http.Pusher); ok {
 		if err := pusher.Push(path, nil); err != nil {
-			log.Warn().Str("path", path).Msg("Failed to push server path via HTTP/2")
+			log.Debug().Err(err).Str("path", path).Msg("Failed to push server path via HTTP/2")
 		}
 	}
 }

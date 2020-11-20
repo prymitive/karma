@@ -128,8 +128,12 @@ type configSchema struct {
 	}
 	Listen struct {
 		Address string
-		Port    int
-		Prefix  string
+		TLS     struct {
+			Cert string
+			Key  string
+		}
+		Port   int
+		Prefix string
 	}
 	Log struct {
 		Config    bool
