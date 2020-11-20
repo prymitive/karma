@@ -54,7 +54,6 @@ jobs:
 
   lint-go:
     name: Lint Go code
-    needs: test-go
     if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
@@ -87,77 +86,6 @@ jobs:
 
       - name: Lint Go code
         run: make make lint-go
-
-  format-go:
-    name: Check Go code formatting
-    needs: lint-go
-    if: github.event_name != 'release'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.15.5
-
-      - name: Format Go code
-        run: make format-go
-
-      - name: Check for local changes
-        run: git diff --exit-code
-
-  go-mod-tidy:
-    name: Verify go.sum
-    if: github.event_name != 'release'
-    needs: lint-go
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.15.5
-
-      - name: Mock web assets
-        run: make mock-assets
-
-      - name: Fetch code
-        run: go get -d -v ./cmd/karma
-
-      - name: Run go mod tidy
-        run: go mod tidy
-
-      - name: Tidy tools
-        run: make tools-go-mod-tidy
-
-      - name: Check for local changes
-        run: git diff --exit-code
-
-  openapi:
-    name: Verify OpenAPI client code
-    if: github.event_name != 'release'
-    needs:
-      - lint-go
-      - go-mod-tidy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.15.5
-
-      - name: Generate OpenAPI code
-        run: make openapi-client
-
-      - name: Check for local changes
-        run: git diff --exit-code
 
   test-js:
     name: Test JS code
@@ -206,7 +134,6 @@ jobs:
   lint-js:
     name: Lint JS code
     if: github.event_name != 'release'
-    needs: test-js
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -236,10 +163,43 @@ jobs:
       - name: Lint Node JS code
         run: make -C ui lint-js
 
+  stage-test:
+    name: "=== Test stage ==="
+    needs:
+      - test-go
+      - test-js
+      - lint-go
+      - lint-js
+    if: github.event_name != 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: All tests passed
+        run: "true"
+
+  format-go:
+    name: Check Go code formatting
+    needs: stage-test
+    if: github.event_name != 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.5
+
+      - name: Format Go code
+        run: make format-go
+
+      - name: Check for local changes
+        run: git diff --exit-code
+
   format-js:
     name: Check JS code formatting
     if: github.event_name != 'release'
-    needs: lint-js
+    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -272,10 +232,59 @@ jobs:
       - name: Check for local changes
         run: git diff --exit-code
 
+  go-mod-tidy:
+    name: Verify go.sum
+    if: github.event_name != 'release'
+    needs: stage-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.5
+
+      - name: Mock web assets
+        run: make mock-assets
+
+      - name: Fetch code
+        run: go get -d -v ./cmd/karma
+
+      - name: Run go mod tidy
+        run: go mod tidy
+
+      - name: Tidy tools
+        run: make tools-go-mod-tidy
+
+      - name: Check for local changes
+        run: git diff --exit-code
+
+  openapi:
+    name: Verify OpenAPI client code
+    if: github.event_name != 'release'
+    needs: stage-test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.15.5
+
+      - name: Generate OpenAPI code
+        run: make openapi-client
+
+      - name: Check for local changes
+        run: git diff --exit-code
+
   deps-js:
     name: Check JS dependencies
     if: github.event_name != 'release'
-    needs: lint-js
+    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -308,7 +317,7 @@ jobs:
   lint-versions:
     name: Lint Versions
     if: github.event_name != 'release'
-    needs: lint-go
+    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -326,7 +335,7 @@ jobs:
   typescript:
     name: Check for non-typescript components
     if: github.event_name != 'release'
-    needs: lint-js
+    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -338,9 +347,7 @@ jobs:
   changelog:
     name: Generate Changelog
     if: github.event_name != 'release'
-    needs:
-      - lint-go
-      - lint-js
+    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -375,9 +382,7 @@ jobs:
   git-commit:
     name: Lint git commit
     if: github.event_name != 'release'
-    needs:
-      - lint-go
-      - lint-js
+    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -393,9 +398,7 @@ jobs:
   docs:
     name: Lint documentation
     if: github.event_name != 'release'
-    needs:
-      - lint-go
-      - lint-js
+    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -406,21 +409,48 @@ jobs:
         with:
           args: "*.md docs"
 
+  stage-lint:
+    name: "=== Lint stage ==="
+    needs:
+      - format-go
+      - go-mod-tidy
+      - openapi
+      - deps-js
+      - lint-versions
+      - typescript
+      - changelog
+      - git-commit
+      - docs
+    if: github.event_name != 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: All linters passed
+        run: "true"
+
   benchmark-go:
     name: Benchmark Go code compare
     if: github.event_name == 'pull_request'
     needs:
-      - lint-go
-      - lint-js
+      - stage-test
+      - stage-lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
       - name: Set git slug envs
         uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Get modified files
+        uses: tony84727/changed-file-filter@0.0.3
+        id: filter
+        with:
+          filters: |
+            backend:
+              - 'cmd/**/*'
+              - 'internal/**/*'
+              - 'go.mod'
+              - 'go.sum'
 
       - name: Set up Go
         uses: actions/setup-go@v2
@@ -441,10 +471,12 @@ jobs:
         run: make download-deps-go
 
       - name: Mock web assets
+        if: steps.filter.outputs.backend == 'true'
         run: make mock-assets
 
       - name: Run benchmark
-        run: ./scripts/have-backend-changes.sh || ./scripts/ci-diff-benchmark-go.sh
+        if: steps.filter.outputs.backend == 'true'
+        run: ./scripts/ci-diff-benchmark-go.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_NUMBER: ${{ github.event.number }}
@@ -453,17 +485,23 @@ jobs:
     name: Webpack bundle size compare
     if: github.event_name == 'pull_request'
     needs:
-      - lint-go
-      - lint-js
+      - stage-test
+      - stage-lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
       - name: Set git slug envs
         uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Get modified files
+        uses: tony84727/changed-file-filter@0.0.3
+        id: filter
+        with:
+          filters: |
+            ui:
+              - 'ui/**/*'
 
       - name: Set up Node JS
         uses: actions/setup-node@v1
@@ -484,7 +522,8 @@ jobs:
         run: make -C ui npm-fetch
 
       - name: Diff bundle size
-        run: ./scripts/have-ui-changes.sh || ./scripts/ci-diff-webpack.sh
+        if: steps.filter.outputs.ui == 'true'
+        run: ./scripts/ci-diff-webpack.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PULL_REQUEST_NUMBER: ${{ github.event.number }}
@@ -493,25 +532,25 @@ jobs:
     name: Percy UI snapshots
     if: github.event_name != 'release'
     needs:
-      - test-go
-      - test-js
-      - format-go
-      - format-js
-      - lint-go
-      - lint-js
-      - go-mod-tidy
-      - openapi
-      - git-commit
-      - lint-versions
+      - stage-test
+      - stage-lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
       - name: Set git slug envs
         uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Get modified files
+        uses: tony84727/changed-file-filter@0.0.3
+        id: filter
+        with:
+          filters: |
+            percy:
+              - 'ui/src/**/*'
+              - 'ui/.storybook/*'
+              - 'ui/package.json'
 
       - name: Set up Node JS
         uses: actions/setup-node@v1
@@ -532,7 +571,7 @@ jobs:
         run: make -C ui npm-fetch
 
       - name: Run Percy
-        shell: bash
+        if: steps.filter.outputs.percy == 'true'
         run: ./scripts/percy-skip-deps.sh || make -C ui test-percy
         env:
           NODE_ENV: test
@@ -541,16 +580,8 @@ jobs:
   cross-compile:
     name: Cross compile binaries
     needs:
-      - test-go
-      - test-js
-      - format-go
-      - format-js
-      - lint-go
-      - lint-js
-      - go-mod-tidy
-      - openapi
-      - git-commit
-      - lint-versions
+      - stage-test
+      - stage-lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -610,16 +641,8 @@ jobs:
   docker:
     name: Build docker image
     needs:
-      - test-go
-      - test-js
-      - format-go
-      - format-js
-      - lint-go
-      - lint-js
-      - go-mod-tidy
-      - openapi
-      - git-commit
-      - lint-versions
+      - stage-test
+      - stage-lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -672,16 +695,8 @@ jobs:
   demo-deploy:
     name: Deploy demo app to Heroku
     needs:
-      - test-go
-      - test-js
-      - format-go
-      - format-js
-      - lint-go
-      - lint-js
-      - go-mod-tidy
-      - openapi
-      - git-commit
-      - lint-versions
+      - stage-test
+      - stage-lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -691,6 +706,14 @@ jobs:
 
       - name: Set git slug envs
         uses: rlespinasse/github-slug-action@3.1.0
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.15.1
+
+      - name: Install Heroku CLI
+        run: curl -s --connect-timeout 30 --fail https://cli-assets.heroku.com/install.sh | sh
 
       - name: Build Docker image
         run: docker build --build-arg VERSION=$(make show-version) -t registry.heroku.com/karma-demo/web -f demo/Dockerfile .
@@ -712,24 +735,12 @@ jobs:
       - name: Push docker image to Heroku
         run: docker push registry.heroku.com/karma-demo/web
 
-      - name: Install Heroku CLI
-        run: curl -s --connect-timeout 30 --fail https://cli-assets.heroku.com/install.sh | sh
-
       - name: Trigger Heroku release
         run: /usr/local/bin/heroku container:release web --app karma-demo
 
-  demo-e2e:
-    name: Test demo app
-    needs: demo-deploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up Node JS
-        uses: actions/setup-node@v1
-        with:
-          node-version: 14.15.1
-
       - name: Run e2e test
         run: make -C ui test-demo
+
+      - name: Rollback on failure
+        if: failure()
+        run: /usr/local/bin/heroku rollback web --app karma-demo
