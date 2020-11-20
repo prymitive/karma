@@ -798,6 +798,9 @@ listen:
   address: string
   port: integer
   prefix: string
+  tls:
+    cert: string
+    key: string
 ```
 
 - `address` - Hostname or IP to listen on.
@@ -805,6 +808,8 @@ listen:
 - `prefix` - URL root for karma, you can use to if you wish to serve it from
   location other than `/`. This option is mostly useful when using karma behind
   reverse proxy with other services on the same IP but different URL root.
+- `tls:cert` - path to a TLS certificate, enables listening on HTTPS instead of HTTP,
+- `tls:key` - path to a TLS key, required when `tls.cert` is set
 
 Example where karma would listen for HTTP requests on `http://1.2.3.4:80/karma/`
 
@@ -815,6 +820,17 @@ listen:
   prefix: /karma/
 ```
 
+Example where karma would listen for HTTPS requests on `https://1.2.3.4:443/`
+
+```YAML
+listen:
+  address: 1.2.3.4
+  port: 443
+  tls:
+    cert: server.pem
+    key: server.key
+```
+
 Defaults:
 
 ```YAML
@@ -822,6 +838,9 @@ listen:
   address: "0.0.0.0"
   port: 8080
   prefix: /
+  tls:
+    cert: ""
+    key: ""
 ```
 
 ### Log
