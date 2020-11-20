@@ -471,7 +471,7 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	<-quit
 	log.Info().Msg("Shutting down HTTP server")
 
-	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 	if err := httpServer.Shutdown(ctx); err != nil {
 		return fmt.Errorf("shutdown error: %s", err)
