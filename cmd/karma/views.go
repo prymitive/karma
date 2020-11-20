@@ -79,8 +79,18 @@ func decompressCachedResponse(data []byte) ([]byte, error) {
 	return p, nil
 }
 
+func pushPath(w http.ResponseWriter, path string) {
+	if pusher, ok := w.(http.Pusher); ok {
+		if err := pusher.Push(path, nil); err != nil {
+			log.Warn().Str("path", path).Msg("Failed to push server path via HTTP/2")
+		}
+	}
+}
+
 func index(w http.ResponseWriter, r *http.Request) {
 	noCache(w)
+	pushPath(w, getViewURL("/custom.css"))
+	pushPath(w, getViewURL("/custom.js"))
 
 	filtersJSON, _ := json.Marshal(config.Config.Filters.Default)
 	filtersB64 := base64.StdEncoding.EncodeToString(filtersJSON)
