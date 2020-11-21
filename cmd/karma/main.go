@@ -3,6 +3,7 @@ package main
 import (
 	"compress/flate"
 	"context"
+	"errors"
 	"fmt"
 	"html/template"
 	"io/ioutil"
@@ -451,7 +452,7 @@ func serve(errorHandling pflag.ErrorHandling) error {
 		log.Info().Str("address", listener.Addr().String()).Msg("Starting HTTPS server")
 		go func() {
 			err := httpServer.ServeTLS(listener, config.Config.Listen.TLS.Cert, config.Config.Listen.TLS.Key)
-			if err != nil && err != http.ErrServerClosed {
+			if !errors.Is(err, http.ErrServerClosed) {
 				log.Error().Err(err).Msg("HTTPS server startup error")
 				quit <- syscall.SIGTERM
 			}
@@ -460,7 +461,7 @@ func serve(errorHandling pflag.ErrorHandling) error {
 		log.Info().Str("address", listener.Addr().String()).Msg("Starting HTTP server")
 		go func() {
 			err := httpServer.Serve(listener)
-			if err != nil && err != http.ErrServerClosed {
+			if !errors.Is(err, http.ErrServerClosed) {
 				log.Error().Err(err).Msg("HTTP server startup error")
 				quit <- syscall.SIGTERM
 			}

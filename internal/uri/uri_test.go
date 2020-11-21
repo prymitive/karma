@@ -5,6 +5,7 @@ import (
 	"compress/gzip"
 	"crypto/tls"
 	"crypto/x509"
+	"errors"
 	"io"
 	"net/http"
 	"net/http/httptest"
@@ -99,7 +100,7 @@ func readAll(source io.ReadCloser) (int64, error) {
 		got, err := source.Read(b)
 		readSize += int64(got)
 		if err != nil {
-			if err == io.EOF {
+			if errors.Is(err, io.EOF) {
 				return readSize, nil
 			}
 			return readSize, err
