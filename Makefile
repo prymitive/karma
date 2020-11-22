@@ -5,7 +5,7 @@ include make/docker.mk
 include make/lint-versions.mk
 
 .PHONY: lint
-lint: lint-versions
+lint: lint-bootstrap-version
 	make -C ui lint-js
 	make -C ui lint-docs
 
