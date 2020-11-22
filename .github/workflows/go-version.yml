@@ -23,8 +23,8 @@ jobs:
       - name: Synchronise Go version in actions
         uses: bejoistic/str-replace@v1.0.2
         with:
-          find: "go-version: .+"
-          replace: "go-version: ${{ env.GO_VERSION }}"
+          find: "(.+ go-version): .+"
+          replace: "$1: ${{ env.GO_VERSION }}"
           include: ".github/workflows/*"
 
       - name: Create Pull Request
@@ -34,7 +34,7 @@ jobs:
           token: ${{ secrets.GH_REPO_TOKEN }}
           author: "Łukasz Mierzwa <l.mierzwa@gmail.com>"
           commit-message: "chore(actions): use latest Go version"
-          branch: npm-upgrades
+          branch: version-sync-go
           delete-branch: true
           title: "chore(actions): use latest Go version"
 
