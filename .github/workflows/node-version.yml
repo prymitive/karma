@@ -21,11 +21,8 @@ jobs:
           echo "NODE_VERSION=$(grep 'FROM node:' Dockerfile | cut -d ':' -f2 | cut -d '-' -f1 | tr -d '\n')" >> $GITHUB_ENV
 
       - name: Synchronise Node version in actions
-        uses: bejoistic/str-replace@v1.0.2
-        with:
-          find: "(.+ node-version): .+"
-          replace: "$1: ${{ env.NODE_VERSION }}"
-          include: ".github/workflows/*"
+        run: |
+          sed -i "" -E s/'([\ \t]+)node-version: .+'/'\1node-version: ${{ env.NODE_VERSION }}'/g .github/workflows/*
 
       - name: Create Pull Request
         id: cpr

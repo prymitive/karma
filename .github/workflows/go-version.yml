@@ -21,11 +21,8 @@ jobs:
           echo "GO_VERSION=$(grep 'FROM golang:' Dockerfile | cut -d ':' -f2 | cut -d '-' -f1 | tr -d '\n')" >> $GITHUB_ENV
 
       - name: Synchronise Go version in actions
-        uses: bejoistic/str-replace@v1.0.2
-        with:
-          find: "(.+ go-version): .+"
-          replace: "$1: ${{ env.GO_VERSION }}"
-          include: ".github/workflows/*"
+        run: |
+          sed -i "" -E s/'([\ \t]+)go-version: .+'/'\1go-version: ${{ env.GO_VERSION }}'/g .github/workflows/*
 
       - name: Create Pull Request
         id: cpr
