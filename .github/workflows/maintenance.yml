@@ -2,7 +2,7 @@ name: Maintenance
 
 on:
   schedule:
-    - cron: "15 15 * * 7"
+    - cron: "15 15 * * 0"
 
 jobs:
   npm-upgrades:
