@@ -4,12 +4,11 @@ on:
   push:
     branches:
       - master
-      - test-actions
     paths:
       - Dockerfile
 
 jobs:
-  go-version-sync:
+  version-sync:
     name: Synchronise go-version
     runs-on: ubuntu-latest
     steps:
@@ -17,14 +16,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Get Go version from Dockerfile
-        run: echo ::set-env name=GOVERSION::$(grep 'FROM golang:' Dockerfile | cut -d ':' -f2 | cut -d '-' -f1 | tr -d '\n')
+        run: |
+          echo "GO_VERSION=$(grep 'FROM golang:' Dockerfile | cut -d ':' -f2 | cut -d '-' -f1 | tr -d '\n')" >> $GITHUB_ENV
 
       - name: Synchronise Go version in actions
-        uses: bejoistic/str-replace@v1.0.2
-        with:
-          find: "go-version: .+"
-          replace: "go-version: ${{ env.GOVERSION }}"
-          include: ".github/workflows/*"
+        run: |
+          sed -i -E s/'([\ \t]+)go-version: .+'/'\1go-version: ${{ env.GO_VERSION }}'/g .github/workflows/*
 
       - name: Create Pull Request
         id: cpr
@@ -33,7 +30,7 @@ jobs:
           token: ${{ secrets.GH_REPO_TOKEN }}
           author: "Łukasz Mierzwa <l.mierzwa@gmail.com>"
           commit-message: "chore(actions): use latest Go version"
-          branch: npm-upgrades
+          branch: version-sync-go
           delete-branch: true
           title: "chore(actions): use latest Go version"
 
