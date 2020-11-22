@@ -81,18 +81,6 @@ mock-assets: $(GOBIN)/go-bindata-assetfs
 	env PATH="$(PATH):$(GOBIN)" $(GOBIN)/go-bindata-assetfs -o cmd/karma/bindata_assetfs.go -nometadata ui/build/... cmd/karma/tests/bindata/...
 	rm -fr ui/build
 
-$(GOBIN)/github-changelog-generator: tools/github-changelog-generator/go.mod tools/github-changelog-generator/go.sum
-	$(GO) install -modfile=tools/github-changelog-generator/go.mod github.com/digitalocean/github-changelog-generator
-.PHONY: changelog
-changelog: $(GOBIN)/github-changelog-generator
-	@echo "Full changelog:"
-	@github-changelog-generator\
-		-org prymitive \
-		-repo karma \
-		| grep -vE '@renovate|@dependabot' \
-		| sed s/' PR '/' '/g \
-		| sed s/'- @prymitive -'/'-'/g
-
 .PHONY: tools-go-mod-tidy
 tools-go-mod-tidy:
 	@for f in $(wildcard tools/*/go.mod) ; do echo ">>> $$f" && cd $(CURDIR)/`dirname "$$f"` && go mod tidy && cd $(CURDIR) ; done

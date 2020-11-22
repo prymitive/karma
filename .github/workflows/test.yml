@@ -338,41 +338,6 @@ jobs:
       - name: Check for non-typescript UI components
         run: make -C ui lint-typescript
 
-  changelog:
-    name: Generate Changelog
-    if: github.event_name != 'release'
-    needs: stage-test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.1.0
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.15.5
-
-      - name: Cache Go modules
-        id: cache-go-modules
-        uses: actions/cache@v2
-        with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-master-go-modules-
-
-      - name: Fetch all Go modules
-        if: steps.cache-go-modules.outputs.cache-hit != 'true'
-        run: make download-deps-go
-
-      - name: Generate Changelog
-        run: make changelog
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
   git-commit:
     name: Lint git commit
     if: github.event_name != 'release'
@@ -412,7 +377,6 @@ jobs:
       - deps-js
       - lint-versions
       - typescript
-      - changelog
       - git-commit
       - docs
     if: github.event_name != 'release'
