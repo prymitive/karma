@@ -323,12 +323,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Lint Go Versions
-        run: make lint-golang-version
-
-      - name: Lint Node JS Versions
-        run: make lint-nodejs-version
-
       - name: Lint Bootstrap Version
         run: make lint-bootstrap-version
 

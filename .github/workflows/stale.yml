@@ -1,4 +1,4 @@
-name: Maintenance
+name: Stale
 
 on:
   schedule:

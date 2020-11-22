@@ -1,0 +1,43 @@
+name: Node version
+
+on:
+  push:
+    branches:
+      - master
+      - test-actions
+    paths:
+      - Dockerfile
+
+jobs:
+  go-version-sync:
+    name: Synchronise go-version
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Get Node version from Dockerfile
+        run: echo ::set-env name=GOVERSION::$(grep 'FROM node:' Dockerfile | cut -d ':' -f2 | cut -d '-' -f1 | tr -d '\n')
+
+      - name: Synchronise Node version in actions
+        uses: bejoistic/str-replace@v1.0.2
+        with:
+          find: "node-version: .+"
+          replace: "node-version: ${{ env.GOVERSION }}"
+          include: ".github/workflows/*"
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3.5.0
+        with:
+          token: ${{ secrets.GH_REPO_TOKEN }}
+          author: "Łukasz Mierzwa <l.mierzwa@gmail.com>"
+          commit-message: "chore(actions): use latest Node version"
+          branch: npm-upgrades
+          delete-branch: true
+          title: "chore(actions): use latest Node version"
+
+      - name: Check outputs
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
