@@ -2,7 +2,7 @@ name: Maintenance
 
 on:
   schedule:
-    - cron: "15 15 * * 0"
+    - cron: "15 21 * * 0"
 
 jobs:
   npm-upgrades:
@@ -19,6 +19,9 @@ jobs:
 
       - name: Regenerate package-lock.json
         run: make -C ui npm-upgrade
+
+      - name: Rebuild react app
+        run: make -C ui build
 
       - name: Create Pull Request
         id: cpr
