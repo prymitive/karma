@@ -25,8 +25,6 @@ RUN CGO_ENABLED=0 make -C /src VERSION="${VERSION:-dev}" karma
 
 FROM gcr.io/distroless/base
 ARG VERSION
-LABEL org.opencontainers.image.source https://github.com/prymitive/karma
-LABEL org.opencontainers.image.version ${VERSION}
 COPY --from=go-builder /src/karma /karma
 EXPOSE 8080
 ENTRYPOINT ["/karma"]
