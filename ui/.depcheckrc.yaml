@@ -5,6 +5,8 @@ ignores:
   - bootswatch
   - node-sass
   - typeface-open-sans
+  - babel-loader
+  - webpack
   # devDeps
   - "@types/jest"
   - "@types/node"
