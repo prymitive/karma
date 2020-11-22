@@ -6,6 +6,3 @@ lint-bootstrap-version:
 		echo "Bootstrap version mismatch: BOOTSTRAP_VERSION=$(BOOTSTRAP_VERSION) BOOTSWATCH_VERSION=$(BOOTSWATCH_VERSION)"; \
 		exit 1; \
 	fi
-
-.PHONY: lint-versions
-lint-versions: lint-golang-version lint-nodejs-version
