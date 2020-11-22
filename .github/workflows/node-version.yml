@@ -9,21 +9,22 @@ on:
       - Dockerfile
 
 jobs:
-  go-version-sync:
-    name: Synchronise go-version
+  version-sync:
+    name: Synchronise node-version
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Get Node version from Dockerfile
-        run: echo ::set-env name=GOVERSION::$(grep 'FROM node:' Dockerfile | cut -d ':' -f2 | cut -d '-' -f1 | tr -d '\n')
+        run: |
+          echo "NODE_VERSION=$(grep 'FROM node:' Dockerfile | cut -d ':' -f2 | cut -d '-' -f1 | tr -d '\n')" >> $GITHUB_ENV
 
       - name: Synchronise Node version in actions
         uses: bejoistic/str-replace@v1.0.2
         with:
           find: "node-version: .+"
-          replace: "node-version: ${{ env.GOVERSION }}"
+          replace: "node-version: ${{ env.NODE_VERSION }}"
           include: ".github/workflows/*"
 
       - name: Create Pull Request
