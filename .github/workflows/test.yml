@@ -611,14 +611,6 @@ jobs:
       - name: Set git slug envs
         uses: rlespinasse/github-slug-action@3.1.0
 
-      - name: Docker meta
-        id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1.8.4
-        with:
-          images: |
-            lmierzwa/karma
-            ghcr.io/prymitive/karma
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
@@ -638,6 +630,24 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GH_PKG_TOKEN }}
 
+      - name: Setup docker tags
+        if: github.event_name == 'release'
+        run: |
+          echo 'DOCKER_TAGS<<EOF' >> $GITHUB_ENV
+          echo 'lmierzwa/karma:${{ env.GITHUB_REF_SLUG }}' >> $GITHUB_ENV
+          echo 'lmierzwa/karma:latest' >> $GITHUB_ENV
+          echo 'ghcr.io/prymitive/karma:${{ env.GITHUB_REF_SLUG }}' >> $GITHUB_ENV
+          echo 'ghcr.io/prymitive/karma:latest' >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      - name: Setup docker tags
+        if: github.event_name != 'release'
+        run: |
+          echo 'DOCKER_TAGS<<EOF' >> $GITHUB_ENV
+          echo 'lmierzwa/karma:latest' >> $GITHUB_ENV
+          echo 'ghcr.io/prymitive/karma:latest' >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
@@ -646,8 +656,7 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
+          tags: ${{ env.DOCKER_TAGS }}
 
   demo-deploy:
     name: Deploy demo app to Heroku
