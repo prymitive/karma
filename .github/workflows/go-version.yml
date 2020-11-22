@@ -22,7 +22,7 @@ jobs:
 
       - name: Synchronise Go version in actions
         run: |
-          sed -i "" -E s/'([\ \t]+)go-version: .+'/'\1go-version: ${{ env.GO_VERSION }}'/g .github/workflows/*
+          sed -i -E s/'([\ \t]+)go-version: .+'/'\1go-version: ${{ env.GO_VERSION }}'/g .github/workflows/*
 
       - name: Create Pull Request
         id: cpr
