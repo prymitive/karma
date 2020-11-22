@@ -743,4 +743,4 @@ jobs:
 
       - name: Rollback on failure
         if: failure()
-        run: /usr/local/bin/heroku rollback web --app karma-demo
+        run: /usr/local/bin/heroku releases:rollback --app karma-demo
