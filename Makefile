@@ -7,7 +7,6 @@ include make/lint-versions.mk
 .PHONY: lint
 lint: lint-bootstrap-version
 	make -C ui lint-js
-	make -C ui lint-docs
 
 .PHONY: test
 test: lint
