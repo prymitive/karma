@@ -2,12 +2,12 @@ name: Maintenance
 
 on:
   schedule:
-    - cron: "0 23 * * 0"
+    - cron: "0 20 * * 1"
 
 jobs:
   npm-upgrades:
     name: Regenerate package-lock.json
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
