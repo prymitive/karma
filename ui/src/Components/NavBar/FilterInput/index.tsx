@@ -59,6 +59,7 @@ const FilterInput: FC<{
     if (!IsMobile()) {
       ((autosuggestRef.current as Autosuggest)
         .input as HTMLInputElement).focus();
+      setIsFocused(true);
     }
   }, []);
 
@@ -95,6 +96,7 @@ const FilterInput: FC<{
     ) {
       ((autosuggestRef.current as Autosuggest)
         .input as HTMLInputElement).focus();
+      setIsFocused(true);
     }
   };
 
@@ -150,8 +152,6 @@ const FilterInput: FC<{
           onClick={(event) =>
             onInputClick((event.target as HTMLDivElement).className)
           }
-          onFocus={() => setIsFocused(true)}
-          onBlur={onBlur}
         >
           {alertStore.filters.values.map((filter) => (
             <FilterInputLabel
@@ -175,6 +175,8 @@ const FilterInput: FC<{
             inputProps={{
               value: value,
               onChange: onChange,
+              onFocus: () => setIsFocused(true),
+              onBlur: onBlur,
             }}
             theme={AutosuggestTheme}
           />

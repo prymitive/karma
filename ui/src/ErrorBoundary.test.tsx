@@ -13,6 +13,9 @@ let consoleSpy: any;
 beforeEach(() => {
   jest.useFakeTimers();
   consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+
+  delete window.location;
+  window.location = { reload: jest.fn() };
 });
 
 afterEach(() => {

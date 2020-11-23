@@ -13,14 +13,12 @@ let silenceFormStore: SilenceFormStore;
 
 let originalInnerWidth: number;
 
-beforeAll(() => {
-  originalInnerWidth = global.innerWidth;
-});
-
 beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
   silenceFormStore = new SilenceFormStore();
+
+  originalInnerWidth = global.innerWidth;
 });
 
 afterEach(() => {

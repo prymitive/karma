@@ -7,7 +7,7 @@ import toDiffableHtml from "diffable-html";
 import { MockThemeContext } from "__fixtures__/Theme";
 import { EmptyGrid } from ".";
 
-beforeAll(() => {
+beforeEach(() => {
   jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
 });
 

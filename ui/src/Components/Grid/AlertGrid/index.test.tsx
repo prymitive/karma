@@ -28,7 +28,15 @@ declare let global: any;
 declare let document: any;
 declare let window: any;
 
-beforeAll(() => {
+beforeEach(() => {
+  alertStore = new AlertStore([]);
+  settingsStore = new Settings(null);
+  silenceFormStore = new SilenceFormStore();
+
+  window.matchMedia = mockMatchMedia({});
+
+  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
+
   Object.defineProperty(document.body, "clientWidth", {
     writable: true,
     value: 1000,
@@ -42,16 +50,6 @@ beforeAll(() => {
     };
   });
   global.ResizeObserverEntry = jest.fn();
-});
-
-beforeEach(() => {
-  alertStore = new AlertStore([]);
-  settingsStore = new Settings(null);
-  silenceFormStore = new SilenceFormStore();
-
-  window.matchMedia = mockMatchMedia({});
-
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
 });
 
 afterEach(() => {

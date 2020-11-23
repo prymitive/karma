@@ -1,4 +1,11 @@
-import React, { FC, useEffect, useState, useCallback, MouseEvent } from "react";
+import React, {
+  FC,
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  MouseEvent,
+} from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -43,7 +50,7 @@ const Grid: FC<{
 }) => {
   const context = React.useContext(ThemeContext);
   const { ref, repack } = useGrid(gridSizesConfig);
-  const debouncedRepack = useCallback(debounce(repack, 10), [repack]);
+  const debouncedRepack = useMemo(() => debounce(() => repack(), 10), [repack]);
 
   const [groupsToRender, setGroupsToRender] = useState<number>(50);
 

@@ -14,14 +14,11 @@ import { MainModal } from ".";
 let alertStore: AlertStore;
 let settingsStore: Settings;
 
-beforeAll(() => {
-  jest.useFakeTimers();
-});
-
 beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
 
+  jest.useFakeTimers();
   fetchMock.reset();
   fetchMock.mock("*", {
     body: JSON.stringify([]),

@@ -6,7 +6,7 @@ import { mount } from "enzyme";
 import { TooltipWrapper } from ".";
 
 describe("TooltipWrapper", () => {
-  beforeAll(() => {
+  beforeEach(() => {
     jest.useFakeTimers();
   });
 

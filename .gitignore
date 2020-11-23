@@ -5,4 +5,5 @@
 /ui/build
 /ui/coverage
 /ui/node_modules
+/ui/.eslintcache
 /TODO.md

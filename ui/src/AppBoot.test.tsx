@@ -8,14 +8,6 @@ import {
   ParseUIDefaults,
 } from "./AppBoot";
 
-beforeAll(() => {
-  // https://github.com/jamesmfriedman/rmwc/issues/103#issuecomment-360007979
-  Object.defineProperty(window.HTMLElement.prototype, "dataset", {
-    writable: true,
-    value: {},
-  });
-});
-
 // https://github.com/getsentry/sentry-javascript/blob/8184a5472e4a18f8b11873123ee1d940b64317c3/packages/minimal/test/lib/minimal.test.ts#L20
 declare let global: any;
 
@@ -24,6 +16,12 @@ afterEach(() => {
   // reset sentry state before each mock, that's the only way to revert
   // Sentry.init() that I found
   global.__SENTRY__ = {};
+
+  // https://github.com/jamesmfriedman/rmwc/issues/103#issuecomment-360007979
+  Object.defineProperty(window.HTMLElement.prototype, "dataset", {
+    writable: true,
+    value: {},
+  });
 });
 
 const FakeDSN = "https://81a9ef37a6ed4fdb80e9ea2310d1ed28@127.0.0.1/1234123";

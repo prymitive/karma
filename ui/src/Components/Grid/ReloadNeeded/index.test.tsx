@@ -12,6 +12,9 @@ beforeEach(() => {
   jest.useFakeTimers();
   jest.clearAllTimers();
   jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
+
+  delete window.location;
+  window.location = { reload: jest.fn() };
 });
 
 afterEach(() => {

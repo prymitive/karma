@@ -5,6 +5,7 @@ plugins:
   - "prettier"
 extends:
   - react-app
+  - react-app/jest
   - "plugin:@typescript-eslint/recommended"
   - "prettier/@typescript-eslint"
   - "plugin:prettier/recommended"
