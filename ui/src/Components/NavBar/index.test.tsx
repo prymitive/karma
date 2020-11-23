@@ -17,7 +17,7 @@ let resizeCallback: (val: any) => void;
 
 declare let global: any;
 
-beforeAll(() => {
+beforeEach(() => {
   jest.useFakeTimers();
   jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
 
@@ -29,9 +29,7 @@ beforeAll(() => {
     };
   });
   global.ResizeObserverEntry = jest.fn();
-});
 
-beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
   silenceFormStore = new SilenceFormStore();

@@ -10,12 +10,10 @@ import { AlertGroupCollapseConfiguration } from "./AlertGroupCollapseConfigurati
 
 let settingsStore: Settings;
 
-beforeAll(() => {
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
-});
-
 beforeEach(() => {
   settingsStore = new Settings(null);
+
+  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
 });
 
 const FakeConfiguration = () => {

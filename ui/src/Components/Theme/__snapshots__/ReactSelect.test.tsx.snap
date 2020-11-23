@@ -30,10 +30,10 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
                  tabindex=\\"0\\"
                  type=\\"text\\"
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                 style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
                  value
           >
-          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
+          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
         </div>
       </div>
@@ -81,10 +81,10 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
                  tabindex=\\"0\\"
                  type=\\"text\\"
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                 style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
                  value
           >
-          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
+          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
         </div>
       </div>
@@ -133,10 +133,10 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
                  tabindex=\\"0\\"
                  type=\\"text\\"
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                 style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
                  value
           >
-          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
+          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
         </div>
       </div>
@@ -184,10 +184,10 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
                  tabindex=\\"0\\"
                  type=\\"text\\"
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                 style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
                  value
           >
-          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
+          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
         </div>
       </div>
@@ -249,10 +249,10 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
                  tabindex=\\"0\\"
                  type=\\"text\\"
                  aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing: content-box; width: 2px; border: 0px; font-size: inherit; opacity: 1; outline: 0; padding: 0px;\\"
+                 style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
                  value
           >
-          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-size: inherit; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
+          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
         </div>
       </div>

@@ -13,14 +13,11 @@ import { SilenceProgress } from "./SilenceProgress";
 
 let silence: APISilenceT;
 
-beforeAll(() => {
-  jest.useFakeTimers();
-});
-
 beforeEach(() => {
   silence = MockSilence();
 
   jest.restoreAllMocks();
+  jest.useFakeTimers();
 });
 
 afterEach(() => {

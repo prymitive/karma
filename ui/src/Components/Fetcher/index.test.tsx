@@ -21,11 +21,8 @@ let settingsStore: Settings;
 let fetchSpy: any;
 let requestAnimationFrameSpy: any;
 
-beforeAll(() => {
-  jest.useFakeTimers();
-});
-
 beforeEach(() => {
+  jest.useFakeTimers();
   advanceTo(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
 
   alertStore = new AlertStore(["label=value"]);

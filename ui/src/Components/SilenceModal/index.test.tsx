@@ -16,20 +16,21 @@ let alertStore: AlertStore;
 let settingsStore: Settings;
 let silenceFormStore: SilenceFormStore;
 
-beforeAll(() => {
+beforeEach(() => {
+  alertStore = new AlertStore([]);
+  settingsStore = new Settings(null);
+  silenceFormStore = new SilenceFormStore();
+
   jest.useFakeTimers();
+  fetchMock.reset();
   fetchMock.mock("*", {
     body: JSON.stringify([]),
   });
 });
 
-beforeEach(() => {
-  alertStore = new AlertStore([]);
-  settingsStore = new Settings(null);
-  silenceFormStore = new SilenceFormStore();
-});
-
 afterEach(() => {
+  jest.restoreAllMocks();
+  fetchMock.reset();
   document.body.className = "";
 });
 

@@ -17,11 +17,9 @@ let group: APIAlertGroupT;
 let MockAfterClick: () => void;
 let MockSetIsMenuOpen: () => void;
 
-beforeAll(() => {
-  jest.useFakeTimers();
-});
-
 beforeEach(() => {
+  jest.useFakeTimers();
+
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
 

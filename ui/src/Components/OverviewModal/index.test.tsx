@@ -8,12 +8,9 @@ import { OverviewModal } from ".";
 
 let alertStore: AlertStore;
 
-beforeAll(() => {
-  jest.useFakeTimers();
-});
-
 beforeEach(() => {
   alertStore = new AlertStore([]);
+  jest.useFakeTimers();
 });
 
 afterEach(() => {

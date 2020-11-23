@@ -17,14 +17,11 @@ let silenceFormStore: SilenceFormStore;
 let MockAfterClick: () => void;
 let MockSetIsMenuOpen: () => void;
 
-beforeAll(() => {
-  jest.useFakeTimers();
-});
-
 beforeEach(() => {
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
 
+  jest.useFakeTimers();
   jest.clearAllMocks();
   MockAfterClick = jest.fn();
   MockSetIsMenuOpen = jest.fn();

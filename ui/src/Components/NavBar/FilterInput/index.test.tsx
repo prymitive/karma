@@ -17,7 +17,6 @@ let originalInnerWidth: number;
 declare let global: any;
 
 beforeAll(() => {
-  jest.useFakeTimers();
   originalInnerWidth = global.window.innerWidth;
 });
 
@@ -25,6 +24,7 @@ beforeEach(() => {
   global.window.innerWidth = originalInnerWidth;
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
+  jest.useFakeTimers();
 });
 
 afterEach(() => {
@@ -62,13 +62,17 @@ describe("<FilterInput />", () => {
   it("input gets focus by default on desktop", () => {
     global.window.innerWidth = 768;
     const tree = MountedInput();
-    expect(tree.find("input:focus")).toHaveLength(1);
+    expect(
+      tree.find("div.components-filterinput-outer").hasClass("bg-focused")
+    ).toBe(true);
   });
 
   it("input doesn't get focus by default on mobile", () => {
     global.window.innerWidth = 767;
     const tree = MountedInput();
-    expect(tree.find("input:focus")).toHaveLength(0);
+    expect(
+      tree.find("div.components-filterinput-outer").hasClass("bg-focused")
+    ).toBe(false);
   });
 
   it("onChange should modify inputStore.value", () => {
@@ -113,9 +117,12 @@ describe("<FilterInput />", () => {
 
   it("clicking on form-control div focuses input", () => {
     const tree = MountedInput();
-    const formControl = tree.find(".form-control");
+    const formControl = tree.find("div.form-control");
     formControl.simulate("click");
-    expect(tree.find("input:focus")).toHaveLength(1);
+    //expect(tree.find("input:focus")).toHaveLength(1);
+    expect(
+      tree.find("div.components-filterinput-outer").hasClass("bg-focused")
+    ).toBe(true);
   });
 
   it("focusing input changes background color", () => {

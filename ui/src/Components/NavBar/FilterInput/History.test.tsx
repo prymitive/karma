@@ -12,15 +12,12 @@ let settingsStore: Settings;
 
 declare let global: any;
 
-beforeAll(() => {
-  jest.useFakeTimers();
-});
-
 beforeEach(() => {
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
 
   global.window.innerWidth = 1024;
+  jest.useFakeTimers();
 });
 
 afterEach(() => {
