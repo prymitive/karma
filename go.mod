@@ -3,7 +3,7 @@ module github.com/prymitive/karma
 go 1.15
 
 require (
-	github.com/Masterminds/semver/v3 v3.1.0
+	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/certifi/gocertifi v0.0.0-20200922220541-2c3bb06c6054 // indirect
 	github.com/cnf/structhash v0.0.0-20201013183111-a92e111048cd
 	github.com/elazarl/go-bindata-assetfs v1.0.1
