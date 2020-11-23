@@ -6,12 +6,12 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
   <span aria-live=\\"polite\\"
         class=\\"css-1laao21-a11yText\\"
   >
-    <p id=\\"aria-selection-event\\">
+    <span id=\\"aria-selection-event\\">
       &nbsp;
-    </p>
-    <p id=\\"aria-context\\">
+    </span>
+    <span id=\\"aria-context\\">
       &nbsp;  0 results available. Select is focused ,type to refine list, press Down to open the menu,
-    </p>
+    </span>
   </span>
   <div class=\\" css-11rrdhm-control\\">
     <div class=\\" css-1ne8613-ValueContainer\\">
