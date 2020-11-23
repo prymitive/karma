@@ -1,13 +1,19 @@
 name: Maintenance
 
 on:
+  push:
+    branches:
+      - macos
+  pull_request:
+    branches:
+      - macos
   schedule:
     - cron: "0 23 * * 0"
 
 jobs:
   npm-upgrades:
     name: Regenerate package-lock.json
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
