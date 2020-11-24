@@ -182,7 +182,7 @@ export interface APISettingsT {
     enabled: boolean;
     durationSeconds: number;
     author: string;
-    commentPrefix: string;
+    comment: string;
   };
 }
 

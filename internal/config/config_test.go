@@ -52,7 +52,7 @@ alertAcknowledgement:
   enabled: false
   duration: 15m0s
   author: karma
-  commentPrefix: ACK!
+  comment: ACK! This alert was acknowledged using karma on %NOW%
 annotations:
   default:
     hidden: true

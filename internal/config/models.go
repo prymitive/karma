@@ -81,10 +81,10 @@ type configSchema struct {
 		CORS        AlertmanagerCORS `yaml:"-" koanf:"cors"`
 	}
 	AlertAcknowledgement struct {
-		Enabled       bool
-		Duration      time.Duration
-		Author        string
-		CommentPrefix string `yaml:"commentPrefix" koanf:"commentPrefix"`
+		Enabled  bool
+		Duration time.Duration
+		Author   string
+		Comment  string
 	} `yaml:"alertAcknowledgement" koanf:"alertAcknowledgement"`
 	Annotations struct {
 		Default struct {

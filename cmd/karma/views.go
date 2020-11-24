@@ -167,7 +167,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 			Enabled:         config.Config.AlertAcknowledgement.Enabled,
 			DurationSeconds: int(config.Config.AlertAcknowledgement.Duration.Seconds()),
 			Author:          config.Config.AlertAcknowledgement.Author,
-			CommentPrefix:   config.Config.AlertAcknowledgement.CommentPrefix,
+			Comment:         config.Config.AlertAcknowledgement.Comment,
 		},
 	}
 	resp.Authentication = models.AuthenticationInfo{

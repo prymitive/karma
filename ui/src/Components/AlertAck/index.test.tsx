@@ -31,7 +31,7 @@ beforeEach(() => {
     enabled: true,
     durationSeconds: 123,
     author: "default author",
-    commentPrefix: "PREFIX",
+    comment: "COMMENT",
   };
   alertStore.data.setUpstreams({
     counters: { total: 1, healthy: 1, failed: 0 },
@@ -284,8 +284,7 @@ describe("<AlertAck />", () => {
     silenceFormStore.data.setAuthor("karma/ui");
     await MountAndClick();
     expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({
-      comment:
-        "PREFIX This alert was acknowledged using karma on Tue, 01 Feb 2000 00:00:00 GMT",
+      comment: "COMMENT",
       createdBy: "karma/ui",
       endsAt: "2000-02-01T00:02:03.000Z",
       matchers: [
@@ -299,11 +298,29 @@ describe("<AlertAck />", () => {
   it("uses settings when generating payload", async () => {
     alertStore.settings.values.alertAcknowledgement.durationSeconds = 237;
     alertStore.settings.values.alertAcknowledgement.author = "me";
-    alertStore.settings.values.alertAcknowledgement.commentPrefix = "";
+    alertStore.settings.values.alertAcknowledgement.comment = "comment";
+    await MountAndClick();
+    expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({
+      comment: "comment",
+      createdBy: "me",
+      endsAt: "2000-02-01T00:03:57.000Z",
+      matchers: [
+        { isRegex: false, name: "alertname", value: "Fake Alert" },
+        { isRegex: true, name: "foo", value: "(bar|baz)" },
+      ],
+      startsAt: "2000-02-01T00:00:00.000Z",
+    });
+  });
+
+  it("injects timestamp when configured", async () => {
+    alertStore.settings.values.alertAcknowledgement.durationSeconds = 237;
+    alertStore.settings.values.alertAcknowledgement.author = "me";
+    alertStore.settings.values.alertAcknowledgement.comment =
+      "ACK! This alert was acknowledged using karma on %NOW%";
     await MountAndClick();
     expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({
       comment:
-        "This alert was acknowledged using karma on Tue, 01 Feb 2000 00:00:00 GMT",
+        "ACK! This alert was acknowledged using karma on Tue, 01 Feb 2000 00:00:00 GMT",
       createdBy: "me",
       endsAt: "2000-02-01T00:03:57.000Z",
       matchers: [
@@ -319,11 +336,10 @@ describe("<AlertAck />", () => {
     alertStore.info.authentication.username = "auth@example.com";
     alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
     alertStore.settings.values.alertAcknowledgement.author = "me";
-    alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";
+    alertStore.settings.values.alertAcknowledgement.comment = "FOO: bar";
     await MountAndClick();
     expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({
-      comment:
-        "FOO: This alert was acknowledged using karma on Tue, 01 Feb 2000 00:00:00 GMT",
+      comment: "FOO: bar",
       createdBy: "auth@example.com",
       endsAt: "2000-02-01T00:03:42.000Z",
       matchers: [
@@ -339,12 +355,11 @@ describe("<AlertAck />", () => {
     alertStore.info.authentication.username = "wrong";
     alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
     alertStore.settings.values.alertAcknowledgement.author = "me";
-    alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";
+    alertStore.settings.values.alertAcknowledgement.comment = "FOO: bar";
     silenceFormStore.data.setAuthor("bob@example.com");
     await MountAndClick();
     expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({
-      comment:
-        "FOO: This alert was acknowledged using karma on Tue, 01 Feb 2000 00:00:00 GMT",
+      comment: "FOO: bar",
       createdBy: "bob@example.com",
       endsAt: "2000-02-01T00:03:42.000Z",
       matchers: [
@@ -358,12 +373,11 @@ describe("<AlertAck />", () => {
   it("uses default author as fallback", async () => {
     alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
     alertStore.settings.values.alertAcknowledgement.author = "me";
-    alertStore.settings.values.alertAcknowledgement.commentPrefix = "FOO:";
+    alertStore.settings.values.alertAcknowledgement.comment = "FOO: bar";
     silenceFormStore.data.setAuthor("");
     await MountAndClick();
     expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({
-      comment:
-        "FOO: This alert was acknowledged using karma on Tue, 01 Feb 2000 00:00:00 GMT",
+      comment: "FOO: bar",
       createdBy: "me",
       endsAt: "2000-02-01T00:03:42.000Z",
       matchers: [

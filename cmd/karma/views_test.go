@@ -857,7 +857,7 @@ func TestEmptySettings(t *testing.T) {
 			Enabled:         false,
 			DurationSeconds: 900,
 			Author:          "karma",
-			CommentPrefix:   "ACK!",
+			Comment:         "ACK! This alert was acknowledged using karma on %NOW%",
 		},
 	}
 

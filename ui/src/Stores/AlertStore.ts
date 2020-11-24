@@ -413,7 +413,7 @@ class AlertStore {
             enabled: false as boolean,
             durationSeconds: 900,
             author: "karma / author missing",
-            commentPrefix: "",
+            comment: "ACK! This alert was acknowledged using karma",
           },
         },
       },
