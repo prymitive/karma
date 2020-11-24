@@ -3,10 +3,9 @@ ignores:
   # deps
   - bootstrap
   - bootswatch
-  - node-sass
+  - sass
   - typeface-open-sans
   - babel-loader
-  - webpack
   # devDeps
   - "@types/jest"
   - "@types/node"
