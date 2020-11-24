@@ -1,5 +1,5 @@
-github.com/kyoh86/looppointer v0.1.6 h1:NUISBF8QIGf2zZ7vs4nLhdk0RCpTCovcrbiPc29sMMQ=
-github.com/kyoh86/looppointer v0.1.6/go.mod h1:l0cRF49N6xDPx8IuBGC/imZo8Yn1BBLJY0vzI+4fepc=
+github.com/kyoh86/looppointer v0.1.7 h1:q5sZOhFvmvQ6ZoZxvPB/Mjj2croWX7L49BBuI4XQWCM=
+github.com/kyoh86/looppointer v0.1.7/go.mod h1:l0cRF49N6xDPx8IuBGC/imZo8Yn1BBLJY0vzI+4fepc=
 github.com/kyoh86/nolint v0.0.0-20200711045849-7a7b0d649b7a h1:WKwgzTn8xp2JuhOUsTbi+h+QygLZSfVGwaYZUejGMMw=
 github.com/kyoh86/nolint v0.0.0-20200711045849-7a7b0d649b7a/go.mod h1:hPeUNhNOZ22wXzQKMzeYKXVFTBjJ9czxjeIDyI1ueVM=
 github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
