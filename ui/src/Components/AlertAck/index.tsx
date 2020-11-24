@@ -74,19 +74,17 @@ const AlertAck: FC<{
       const durationSeconds = toJS(
         alertStore.settings.values.alertAcknowledgement.durationSeconds
       );
-      const commentPrefix = toJS(
-        alertStore.settings.values.alertAcknowledgement.commentPrefix
-      );
       const now = new Date();
+      const comment = toJS(
+        alertStore.settings.values.alertAcknowledgement.comment
+      ).replace("%NOW%", now.toUTCString());
       c.push({
         payload: GenerateAlertmanagerSilenceData(
           now,
           addSeconds(now, durationSeconds),
           MatchersFromGroup(group, [], group.alerts, true),
           author,
-          `${
-            commentPrefix ? commentPrefix + " " : ""
-          }This alert was acknowledged using karma on ${now.toUTCString()}`
+          comment
         ),
         clusterName: clusterName,
         members: clusterMembers,

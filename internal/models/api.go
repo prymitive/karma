@@ -281,7 +281,7 @@ type AlertAcknowledgementSettings struct {
 	Enabled         bool   `json:"enabled"`
 	DurationSeconds int    `json:"durationSeconds"`
 	Author          string `json:"author"`
-	CommentPrefix   string `json:"commentPrefix"`
+	Comment         string `json:"comment"`
 }
 
 // Settings is used to export karma configuration that is used by UI

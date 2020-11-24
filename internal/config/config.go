@@ -58,7 +58,7 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.Bool("alertAcknowledgement.enabled", false, "Enable alert acknowledging")
 	f.Duration("alertAcknowledgement.duration", time.Minute*15, "Initial silence duration when acknowledging alerts with short lived silences")
 	f.String("alertAcknowledgement.author", "karma", "Default silence author when acknowledging alerts with short lived silences")
-	f.String("alertAcknowledgement.commentPrefix", "ACK!", "Comment prefix used when acknowledging alerts with short lived silences")
+	f.String("alertAcknowledgement.comment", "ACK! This alert was acknowledged using karma on %NOW%", "Comment used when acknowledging alerts with short lived silences")
 
 	f.String("authorization.acl.silences", "", "Path to silence ACL config file")
 
@@ -193,8 +193,8 @@ func readEnvVariables(k *koanf.Koanf) {
 			return "alertAcknowledgement.duration"
 		case "ALERTACKNOWLEDGEMENT_AUTHOR":
 			return "alertAcknowledgement.author"
-		case "ALERTACKNOWLEDGEMENT_COMMENTPREFIX":
-			return "alertAcknowledgement.commentPrefix"
+		case "ALERTACKNOWLEDGEMENT_COMMENT":
+			return "alertAcknowledgement.comment"
 		case "AUTHENTICATION_HEADER_VALUE_RE":
 			return "authentication.header.value_re"
 		case "SILENCEFORM_STRIP_LABELS":

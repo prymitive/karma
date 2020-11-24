@@ -93,7 +93,7 @@ level=info msg="alertAcknowledgement:"
 level=info msg="  enabled: true"
 level=info msg="  duration: 7m0s"
 level=info msg="  author: karma"
-level=info msg="  commentPrefix: ACK!"
+level=info msg="  comment: ACK! This is comment"
 level=info msg="annotations:"
 level=info msg="  default:"
 level=info msg="    hidden: true"
@@ -261,7 +261,7 @@ alertAcknowledgement:
   enabled: true
   duration: 7m0s
   author: karma
-  commentPrefix: ACK!
+  comment: ACK! This is comment
 annotations:
   default:
     hidden: true

@@ -73,7 +73,7 @@ const EmptyAPIResponse = (): APIAlertsResponseT => ({
       enabled: false,
       durationSeconds: 900,
       author: "karma / author missing",
-      commentPrefix: "",
+      comment: "ACK! Mock comment",
     },
     staticColorLabels: ["job"],
     annotationsDefaultHidden: false,

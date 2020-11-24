@@ -37,7 +37,7 @@ alertAcknowledgement:
   enabled: zzz
   duration: 7m0s
   author: karma
-  commentPrefix: ACK!
+  comment: comment
 annotations:
   default:
     hidden: z
