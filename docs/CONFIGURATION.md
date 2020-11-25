@@ -431,16 +431,6 @@ alertAcknowledgement:
   enabled: false
   duration: 15m0s
   author: karma
-  comment: ACK! This alert was acknowledged using karma
-```
-
-Example with timestamp in the comment:
-
-```YAML
-alertAcknowledgement:
-  enabled: false
-  duration: 15m0s
-  author: karma
   comment: ACK! This alert was acknowledged using karma on %NOW%
 ```
 
