@@ -21,9 +21,14 @@ func userGroups(username string) []string {
 	return groups
 }
 
-func headerAuth(name, valueRegex string) func(next http.Handler) http.Handler {
+func headerAuth(name, valueRegex string, allowBypass []string) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if slices.StringInSlice(allowBypass, r.URL.Path) {
+				next.ServeHTTP(w, r)
+				return
+			}
+
 			user := r.Header.Get(name)
 			if user == "" {
 				w.WriteHeader(http.StatusUnauthorized)
@@ -53,9 +58,14 @@ func getUserFromContext(r *http.Request) string {
 	return username.(string)
 }
 
-func basicAuth(creds map[string]string) func(next http.Handler) http.Handler {
+func basicAuth(creds map[string]string, allowBypass []string) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if slices.StringInSlice(allowBypass, r.URL.Path) {
+				next.ServeHTTP(w, r)
+				return
+			}
+
 			user, pass, ok := r.BasicAuth()
 			if !ok {
 				basicAuthFailed(w)

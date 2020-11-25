@@ -1002,6 +1002,10 @@ func TestAuthentication(t *testing.T) {
 				"/silences.json",
 				"/custom.css",
 				"/custom.js",
+				"/health",
+				"/health?foo",
+				"/metrics",
+				"/metrics?bar=foo",
 			} {
 				req := httptest.NewRequest("GET", path, nil)
 				for k, v := range testCase.requestHeaders {
@@ -1010,6 +1014,14 @@ func TestAuthentication(t *testing.T) {
 				req.SetBasicAuth(testCase.requestBasicAuthUser, testCase.requestBasicAuthPassword)
 				resp := httptest.NewRecorder()
 				r.ServeHTTP(resp, req)
+
+				if strings.HasPrefix(path, "/health") || strings.HasPrefix(path, "/metrics") {
+					if resp.Code != 200 {
+						t.Errorf("%s should always return 200, got %d", path, resp.Code)
+					}
+					continue
+				}
+
 				if resp.Code != testCase.responseCode {
 					t.Errorf("Expected %d from %s, got %d", testCase.responseCode, path, resp.Code)
 				}
@@ -2242,7 +2254,7 @@ func TestUpstreamStatus(t *testing.T) {
 
 	for _, testCase := range testCases {
 		t.Run(testCase.Name, func(t *testing.T) {
-			zerolog.SetGlobalLevel(zerolog.DebugLevel)
+			zerolog.SetGlobalLevel(zerolog.FatalLevel)
 
 			httpmock.Activate()
 			defer httpmock.DeactivateAndReset()
