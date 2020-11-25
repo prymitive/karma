@@ -110,16 +110,20 @@ func setupRouter(router *chi.Mux) {
 		MaxAge:           300,
 	}))
 
+	allowAuthBypass := []string{
+		getViewURL("/health"),
+		getViewURL("/metrics"),
+	}
 	if config.Config.Authentication.Header.Name != "" {
 		config.Config.Authentication.Enabled = true
-		router.Use(headerAuth(config.Config.Authentication.Header.Name, config.Config.Authentication.Header.ValueRegex))
+		router.Use(headerAuth(config.Config.Authentication.Header.Name, config.Config.Authentication.Header.ValueRegex, allowAuthBypass))
 	} else if len(config.Config.Authentication.BasicAuth.Users) > 0 {
 		config.Config.Authentication.Enabled = true
 		users := map[string]string{}
 		for _, u := range config.Config.Authentication.BasicAuth.Users {
 			users[u.Username] = u.Password
 		}
-		router.Use(basicAuth(users))
+		router.Use(basicAuth(users, allowAuthBypass))
 	}
 
 	router.Get(getViewURL("/"), index)
