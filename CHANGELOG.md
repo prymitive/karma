@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.76
+
+### Fixed
+
+- Fixed release builds using Github Actions
+
 ## v0.75
 
 ### Fixed
