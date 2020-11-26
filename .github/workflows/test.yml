@@ -163,22 +163,8 @@ jobs:
       - name: Lint Node JS code
         run: make -C ui lint-js
 
-  stage-test:
-    name: "=== Test stage ==="
-    needs:
-      - test-go
-      - test-js
-      - lint-go
-      - lint-js
-    if: github.event_name != 'release'
-    runs-on: ubuntu-latest
-    steps:
-      - name: All tests passed
-        run: "true"
-
   format-go:
     name: Check Go code formatting
-    needs: stage-test
     if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
@@ -199,7 +185,6 @@ jobs:
   format-js:
     name: Check JS code formatting
     if: github.event_name != 'release'
-    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -235,7 +220,6 @@ jobs:
   go-mod-tidy:
     name: Verify go.sum
     if: github.event_name != 'release'
-    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -264,7 +248,6 @@ jobs:
   openapi:
     name: Verify OpenAPI client code
     if: github.event_name != 'release'
-    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -284,7 +267,6 @@ jobs:
   deps-js:
     name: Check JS dependencies
     if: github.event_name != 'release'
-    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -317,7 +299,6 @@ jobs:
   lint-versions:
     name: Lint Versions
     if: github.event_name != 'release'
-    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -329,7 +310,6 @@ jobs:
   typescript:
     name: Check for non-typescript components
     if: github.event_name != 'release'
-    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -341,7 +321,6 @@ jobs:
   git-commit:
     name: Lint git commit
     if: github.event_name != 'release'
-    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -357,7 +336,6 @@ jobs:
   docs:
     name: Lint documentation
     if: github.event_name != 'release'
-    needs: stage-test
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -368,9 +346,13 @@ jobs:
         with:
           args: "*.md docs"
 
-  stage-lint:
+  stage-test-and-lint:
     name: "=== Lint stage ==="
     needs:
+      - test-go
+      - test-js
+      - lint-go
+      - lint-js
       - format-go
       - go-mod-tidy
       - openapi
@@ -388,9 +370,7 @@ jobs:
   benchmark-go:
     name: Benchmark Go code compare
     if: github.event_name == 'pull_request'
-    needs:
-      - stage-test
-      - stage-lint
+    needs: stage-test-and-lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -442,9 +422,7 @@ jobs:
   webpack-bundle-size:
     name: Webpack bundle size compare
     if: github.event_name == 'pull_request'
-    needs:
-      - stage-test
-      - stage-lint
+    needs: stage-test-and-lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -489,9 +467,7 @@ jobs:
   percy:
     name: Percy UI snapshots
     if: github.event_name != 'release'
-    needs:
-      - stage-test
-      - stage-lint
+    needs: stage-test-and-lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -537,9 +513,7 @@ jobs:
 
   cross-compile:
     name: Cross compile binaries
-    needs:
-      - stage-test
-      - stage-lint
+    needs: stage-test-and-lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -598,9 +572,7 @@ jobs:
 
   docker:
     name: Build docker image
-    needs:
-      - stage-test
-      - stage-lint
+    needs: stage-test-and-lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -630,7 +602,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GH_PKG_TOKEN }}
 
-      - name: Setup docker tags
+      - name: "Setup docker tags (latest + vX.Y)"
         if: github.event_name == 'release'
         run: |
           echo 'DOCKER_TAGS<<EOF' >> $GITHUB_ENV
@@ -640,7 +612,7 @@ jobs:
           echo 'ghcr.io/prymitive/karma:latest' >> $GITHUB_ENV
           echo 'EOF' >> $GITHUB_ENV
 
-      - name: Setup docker tags
+      - name: "Setup docker tags (latest)"
         if: github.event_name != 'release'
         run: |
           echo 'DOCKER_TAGS<<EOF' >> $GITHUB_ENV
@@ -654,15 +626,15 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.DOCKER_TAGS }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
   demo-deploy:
     name: Deploy demo app to Heroku
-    needs:
-      - stage-test
-      - stage-lint
+    needs: stage-test-and-lint
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
