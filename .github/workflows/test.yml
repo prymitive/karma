@@ -14,7 +14,6 @@ on:
 jobs:
   test-go:
     name: Test Go code
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -89,7 +88,6 @@ jobs:
 
   test-js:
     name: Test JS code
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     strategy:
       matrix:
