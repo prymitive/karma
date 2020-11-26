@@ -331,6 +331,7 @@ jobs:
       - name: Run markdown-lint
         uses: avto-dev/markdown-lint@v1.4.0
         with:
+          config: .markdownlint.yml
           args: "*.md docs"
 
   stage-test-and-lint:
