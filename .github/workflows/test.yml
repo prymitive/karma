@@ -53,7 +53,6 @@ jobs:
 
   lint-go:
     name: Lint Go code
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -131,7 +130,6 @@ jobs:
 
   lint-js:
     name: Lint JS code
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -163,7 +161,6 @@ jobs:
 
   format-go:
     name: Check Go code formatting
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -182,7 +179,6 @@ jobs:
 
   format-js:
     name: Check JS code formatting
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -217,7 +213,6 @@ jobs:
 
   go-mod-tidy:
     name: Verify go.sum
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -245,7 +240,6 @@ jobs:
 
   openapi:
     name: Verify OpenAPI client code
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -264,7 +258,6 @@ jobs:
 
   deps-js:
     name: Check JS dependencies
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -296,7 +289,6 @@ jobs:
 
   lint-versions:
     name: Lint Versions
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -307,7 +299,6 @@ jobs:
 
   typescript:
     name: Check for non-typescript components
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -318,7 +309,6 @@ jobs:
 
   git-commit:
     name: Lint git commit
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -333,7 +323,6 @@ jobs:
 
   docs:
     name: Lint documentation
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -345,7 +334,7 @@ jobs:
           args: "*.md docs"
 
   stage-test-and-lint:
-    name: "=== Lint stage ==="
+    name: "=== Test and lint stage ==="
     needs:
       - test-go
       - test-js
@@ -359,7 +348,6 @@ jobs:
       - typescript
       - git-commit
       - docs
-    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     steps:
       - name: All linters passed
