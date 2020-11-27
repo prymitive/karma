@@ -22,7 +22,7 @@ require (
 	github.com/jarcoal/httpmock v1.0.6
 	github.com/knadh/koanf v0.14.0
 	github.com/loikg/ravenchi v2.0.0+incompatible
-	github.com/mitchellh/mapstructure v1.3.3
+	github.com/mitchellh/mapstructure v1.4.0
 	github.com/patrickmn/go-cache v2.1.1-0.20180815053127-5633e0862627+incompatible
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/prometheus/client_golang v1.8.0
