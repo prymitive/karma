@@ -617,6 +617,10 @@ jobs:
         run: |
           echo "DOCKER_PATFORMS=linux/amd64" >> $GITHUB_ENV
 
+      - name: "Setup image version"
+        run: |
+          echo "VERSION=$(make show-version)" >> $GITHUB_ENV
+
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
@@ -626,6 +630,8 @@ jobs:
           platforms: ${{ env.DOCKER_PATFORMS }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ env.DOCKER_TAGS }}
+          build-args: |
+            VERSION=${{ env.VERSION }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
