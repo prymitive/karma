@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Docker images reported version as `dev` #2479.
+
 ## v0.76
 
 ### Fixed
