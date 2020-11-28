@@ -91,7 +91,7 @@
     "jest-date-mock": "1.0.8",
     "puppeteer": "5.5.0",
     "react-test-renderer": "17.0.1",
-    "source-map-explorer": "2.5.0"
+    "source-map-explorer": "2.5.1"
   },
   "scripts": {
     "start": "NODE_ENV=dev REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
