@@ -538,11 +538,13 @@ jobs:
           NODE_ENV: production
 
       - name: Compress binaries
+        shell: bash
         run: |
           mkdir -p artifacts
           export SOURCE_DATE_EPOCH=$(git show -s --format=%ci ${GITHUB_SHA})
           for i in karma-*; do tar --mtime="${SOURCE_DATE_EPOCH}" --owner=0 --group=0 --numeric-owner -c $i | gzip -n - > artifacts/$i.tar.gz; done
-          shasum -a 512 artifacts/karma-*.tar.gz | tee artifacts/sha512sum.txt
+          (cd artifacts && shasum -a 512 karma-*.tar.gz | tee sha512sum.txt)
+
       - name: Get release
         if: github.event_name == 'release'
         id: get_release
