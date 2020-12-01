@@ -55,7 +55,8 @@ const MountedAlert = (
   alert: APIAlertT,
   group: APIAlertGroupT,
   showAlertmanagers: boolean,
-  showReceiver: boolean
+  showReceiver: boolean,
+  showOnlyExpandedAnnotations: boolean
 ) => {
   return mount(
     <Alert
@@ -63,6 +64,7 @@ const MountedAlert = (
       group={group}
       showAlertmanagers={showAlertmanagers}
       showReceiver={showReceiver}
+      showOnlyExpandedAnnotations={showOnlyExpandedAnnotations}
       afterUpdate={MockAfterUpdate}
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
@@ -79,7 +81,7 @@ describe("<Alert />", () => {
   it("matches snapshot with showAlertmanagers=false showReceiver=false", () => {
     const alert = MockedAlert();
     const group = MockAlertGroup({}, [alert], [], {}, {});
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
@@ -87,7 +89,7 @@ describe("<Alert />", () => {
     const alert = MockedAlert();
     alert.alertmanager[0].inhibitedBy = ["123456"];
     const group = MockAlertGroup({}, [alert], [], {}, {});
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
@@ -105,7 +107,7 @@ describe("<Alert />", () => {
       inhibitedBy: ["123456"],
     });
     const group = MockAlertGroup({}, [alert], [], {}, {});
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     expect(tree.find(".fa-volume-mute")).toHaveLength(1);
   });
 
@@ -113,14 +115,14 @@ describe("<Alert />", () => {
     const alert = MockedAlert();
     alert.alertmanager[0].inhibitedBy = ["123456"];
     const group = MockAlertGroup({}, [alert], [], {}, {});
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     expect(tree.find(".fa-volume-mute")).toHaveLength(1);
   });
 
   it("renders @cluster label with showAlertmanagers=true", () => {
     const alert = MockedAlert();
     const group = MockAlertGroup({}, [alert], [], {}, {});
-    const tree = MountedAlert(alert, group, true, false);
+    const tree = MountedAlert(alert, group, true, false, false);
     const label = tree
       .find("FilteringLabel")
       .filterWhere((elem) => elem.props().name === "@cluster");
@@ -150,7 +152,7 @@ describe("<Alert />", () => {
       inhibitedBy: [],
     });
     const group = MockAlertGroup({}, [alert], [], {}, {});
-    const tree = MountedAlert(alert, group, true, false);
+    const tree = MountedAlert(alert, group, true, false, false);
     const labels = tree
       .find("FilteringLabel")
       .filterWhere((elem) => elem.props().name === "@cluster");
@@ -162,7 +164,7 @@ describe("<Alert />", () => {
   it("renders @receiver label with showReceiver=true", () => {
     const alert = MockedAlert();
     const group = MockAlertGroup({}, [alert], [], {}, {});
-    const tree = MountedAlert(alert, group, false, true);
+    const tree = MountedAlert(alert, group, false, true, false);
     const label = tree
       .find("FilteringLabel")
       .filterWhere((elem) => elem.props().name === "@receiver");
@@ -178,7 +180,7 @@ describe("<Alert />", () => {
       },
     };
     const group = MockAlertGroup({}, [alert], [], {}, { default: [] });
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     const silence = tree.find("ManagedSilence");
     expect(silence).toHaveLength(1);
     expect(silence.html()).toMatch(/Mocked Silence/);
@@ -193,7 +195,7 @@ describe("<Alert />", () => {
       },
     };
     const group = MockAlertGroup({}, [alert], [], {}, { default: [] });
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     const silence = tree.find("FallbackSilenceDesciption");
     expect(silence).toHaveLength(1);
     expect(silence.html()).not.toMatch(/Mocked Silence/);
@@ -208,7 +210,7 @@ describe("<Alert />", () => {
       },
     };
     const group = MockAlertGroup({}, [alert], [], {}, { default: [] });
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     const silence = tree.find("FallbackSilenceDesciption");
     expect(silence).toHaveLength(1);
     expect(silence.html()).not.toMatch(/Mocked Silence/);
@@ -244,7 +246,7 @@ describe("<Alert />", () => {
       },
     };
     const group = MockAlertGroup({}, [alert], [], {}, {});
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     const silence = tree.find("ManagedSilence");
     expect(silence).toHaveLength(1);
     expect(silence.html()).toMatch(/Mocked Silence/);
@@ -260,16 +262,60 @@ describe("<Alert />", () => {
       {},
       { default: ["silence123456789"] }
     );
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     const silence = tree.find("ManagedSilence");
     expect(silence).toHaveLength(0);
+  });
+
+  it("renders collapsed annotations when showOnlyExpandedAnnotations=false", () => {
+    const alert = MockedAlert();
+    alert.annotations = [
+      {
+        name: "visible",
+        value: "1",
+        visible: true,
+        isLink: false,
+      },
+      {
+        name: "invisible",
+        value: "2",
+        visible: false,
+        isLink: false,
+      },
+    ];
+    const group = MockAlertGroup({}, [alert], [], {}, {});
+    const tree = MountedAlert(alert, group, false, false, false);
+    const annotations = tree.find("div.components-grid-annotation");
+    expect(annotations).toHaveLength(2);
+  });
+
+  it("doesn't render collapsed annotations when showOnlyExpandedAnnotations=true", () => {
+    const alert = MockedAlert();
+    alert.annotations = [
+      {
+        name: "visible",
+        value: "1",
+        visible: true,
+        isLink: false,
+      },
+      {
+        name: "invisible",
+        value: "2",
+        visible: false,
+        isLink: false,
+      },
+    ];
+    const group = MockAlertGroup({}, [alert], [], {}, {});
+    const tree = MountedAlert(alert, group, false, false, true);
+    const annotations = tree.find("div.components-grid-annotation");
+    expect(annotations).toHaveLength(1);
   });
 
   it("uses BorderClassMap.active when @state=active", () => {
     const alert = MockedAlert();
     alert.state = "active";
     const group = MockAlertGroup({}, [alert], [], {}, {});
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     expect(
       tree
         .find(".components-grid-alertgrid-alertgroup-alert")
@@ -281,7 +327,7 @@ describe("<Alert />", () => {
     const alert = MockedAlert();
     alert.state = "suppressed";
     const group = MockAlertGroup({}, [alert], [], {}, {});
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     expect(
       tree
         .find(".components-grid-alertgrid-alertgroup-alert")
@@ -293,7 +339,7 @@ describe("<Alert />", () => {
     const alert = MockedAlert();
     alert.state = "unprocessed";
     const group = MockAlertGroup({}, [alert], [], {}, {});
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     expect(
       tree
         .find(".components-grid-alertgrid-alertgroup-alert")
@@ -307,7 +353,7 @@ describe("<Alert />", () => {
     const alert = MockedAlert();
     (alert.state as string) = "foobar";
     const group = MockAlertGroup({}, [alert], [], {}, {});
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     expect(
       tree
         .find(".components-grid-alertgrid-alertgroup-alert")
@@ -322,7 +368,7 @@ describe("<Alert />", () => {
 
     const alert = MockedAlert();
     const group = MockAlertGroup({}, [alert], [], {}, {});
-    const tree = MountedAlert(alert, group, false, false);
+    const tree = MountedAlert(alert, group, false, false, false);
     expect(
       tree
         .find("span.components-label.badge.badge-secondary.cursor-pointer")

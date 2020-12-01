@@ -216,6 +216,7 @@ const AlertGroup: FC<{
                       alertStore.data.receivers.length > 1 &&
                       group.alerts.length === 1
                     }
+                    showOnlyExpandedAnnotations={alertStore.ui.isIdle}
                     afterUpdate={afterUpdate}
                     alertStore={alertStore}
                     silenceFormStore={silenceFormStore}
