@@ -13,7 +13,7 @@ exports[`<FilterBarConfiguration /> matches snapshot with default values 1`] = `
       <label class=\\"custom-control-label cursor-pointer mr-3\\"
              for=\\"configuration-autohide\\"
       >
-        Hide filter bar when idle
+        Hide filter bar and alert details when idle
       </label>
     </span>
   </div>

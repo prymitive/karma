@@ -205,6 +205,13 @@ describe("<AlertGroup />", () => {
     expect(tree.find("ul.list-group")).toHaveLength(0);
   });
 
+  it("renders reduced details when idle", () => {
+    MockAlerts(10);
+    alertStore.ui.setIsIdle(true);
+    const tree = MountedAlertGroup(jest.fn(), true, 10, MockThemeContext);
+    expect(tree.find("Alert")).toHaveLength(1);
+  });
+
   it("is collapsed by default on desktop when defaultCollapseState=collapsed", () => {
     // set window.innerWidth to 2k to mock a desktop window
     ValidateCollapse(2048, "collapsed", true);

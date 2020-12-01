@@ -192,12 +192,18 @@ interface AlertStoreStatusT {
   stop: () => void;
 }
 
+interface AlertStoreUIT {
+  isIdle: boolean;
+  setIsIdle: (val: boolean) => void;
+}
+
 class AlertStore {
   filters: AlertStoreFiltersT;
   data: AlertStoreDataT;
   info: AlertStoreInfoT;
   settings: AlertStoreSettingsT;
   status: AlertStoreStatusT;
+  ui: AlertStoreUIT;
 
   constructor(initialFilters: null | string[]) {
     this.filters = observable(
@@ -472,6 +478,18 @@ class AlertStore {
         stop: action.bound,
       },
       { name: "Store status" }
+    );
+
+    this.ui = observable(
+      {
+        isIdle: false as boolean,
+        setIsIdle(val: boolean) {
+          this.isIdle = val;
+        },
+      },
+      {
+        setIsIdle: action.bound,
+      }
     );
 
     if (initialFilters !== null) this.filters.setFilters(initialFilters);

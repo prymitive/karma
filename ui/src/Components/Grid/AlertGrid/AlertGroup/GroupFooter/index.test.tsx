@@ -150,4 +150,55 @@ describe("<GroupFooter />", () => {
     const tree = MountedGroupFooter();
     expect(toDiffableHtml(tree.html())).not.toMatch(/@receiver:/);
   });
+
+  it("doesn't render silences when showSilences=false", () => {
+    for (let index = 0; index < group.alerts.length; index++) {
+      group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
+    }
+    group.shared.silences = { default: ["123456789"] };
+
+    alertStore.data.silences = {
+      default: {
+        "123456789": MockSilence(),
+      },
+    };
+    alertStore.data.silences["default"]["123456789"].id = "123456789";
+
+    const tree = mount(
+      <GroupFooter
+        group={group}
+        alertmanagers={["default"]}
+        afterUpdate={MockAfterUpdate}
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        showSilences={false}
+      />,
+      {
+        wrappingComponent: ThemeContext.Provider,
+        wrappingComponentProps: { value: MockThemeContext },
+      }
+    );
+    expect(
+      tree.find("div.components-grid-alertgrid-alertgroup-shared-silence")
+    ).toHaveLength(0);
+  });
+
+  it("doesn't render annotations when showAnnotations=false", () => {
+    const tree = mount(
+      <GroupFooter
+        group={group}
+        alertmanagers={["default"]}
+        afterUpdate={MockAfterUpdate}
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        showAnnotations={false}
+      />,
+      {
+        wrappingComponent: ThemeContext.Provider,
+        wrappingComponentProps: { value: MockThemeContext },
+      }
+    );
+    expect(tree.find("RenderLinkAnnotation")).toHaveLength(0);
+    expect(tree.find("RenderNonLinkAnnotation")).toHaveLength(0);
+  });
 });
