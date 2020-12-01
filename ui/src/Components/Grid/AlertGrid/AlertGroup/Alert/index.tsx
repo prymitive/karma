@@ -22,6 +22,7 @@ const Alert: FC<{
   alert: APIAlertT;
   showAlertmanagers: boolean;
   showReceiver: boolean;
+  showOnlyExpandedAnnotations: boolean;
   afterUpdate: () => void;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
@@ -31,6 +32,7 @@ const Alert: FC<{
   alert,
   showAlertmanagers,
   showReceiver,
+  showOnlyExpandedAnnotations,
   afterUpdate,
   alertStore,
   silenceFormStore,
@@ -86,6 +88,7 @@ const Alert: FC<{
       <div>
         {alert.annotations
           .filter((a) => a.isLink === false)
+          .filter((a) => a.visible === true || !showOnlyExpandedAnnotations)
           .map((a) => (
             <RenderNonLinkAnnotation
               key={a.name}

@@ -58,6 +58,8 @@ storiesOf("NavBar", module).add("NavBar", () => {
     NewFilter("foo", "", "", "", true, true, 2),
   ]);
 
+  settingsStore.filterBarConfig.setAutohide(false);
+
   const history = [
     [NewFilter("alertname=Foo", "alertname", "=", "foo", true, true, 15)],
     [
