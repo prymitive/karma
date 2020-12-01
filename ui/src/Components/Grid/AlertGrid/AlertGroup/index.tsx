@@ -6,6 +6,7 @@ import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
+import { faEllipsisH } from "@fortawesome/free-solid-svg-icons/faEllipsisH";
 
 import { APIAlertT, APIAlertGroupT, AlertStateT } from "Models/APITypes";
 import { Settings } from "Stores/Settings";
@@ -201,41 +202,57 @@ const AlertGroup: FC<{
         {isCollapsed ? null : (
           <div className="card-body px-2 py-1 components-grid-alertgrid-card">
             <ul className="list-group">
-              {group.alerts.slice(0, alertsToRender).map((alert) => (
-                <Alert
-                  key={alert.id}
-                  group={group}
-                  alert={alert}
-                  showAlertmanagers={
-                    showAlertmanagers && !showAlertmanagersInFooter
-                  }
-                  showReceiver={
-                    alertStore.data.receivers.length > 1 &&
-                    group.alerts.length === 1
-                  }
-                  afterUpdate={afterUpdate}
-                  alertStore={alertStore}
-                  silenceFormStore={silenceFormStore}
-                  setIsMenuOpen={setIsMenuOpen}
-                />
-              ))}
+              {group.alerts
+                .slice(0, alertStore.ui.isIdle ? 1 : alertsToRender)
+                .map((alert) => (
+                  <Alert
+                    key={alert.id}
+                    group={group}
+                    alert={alert}
+                    showAlertmanagers={
+                      showAlertmanagers && !showAlertmanagersInFooter
+                    }
+                    showReceiver={
+                      alertStore.data.receivers.length > 1 &&
+                      group.alerts.length === 1
+                    }
+                    afterUpdate={afterUpdate}
+                    alertStore={alertStore}
+                    silenceFormStore={silenceFormStore}
+                    setIsMenuOpen={setIsMenuOpen}
+                  />
+                ))}
               {group.alerts.length > defaultRenderCount ? (
-                <li className="list-group-item border-0 p-0 text-center bg-transparent">
-                  <LoadButton
-                    icon={faMinus}
-                    action={loadLess}
-                    tooltip="Show fewer alerts in this group"
-                  />
-                  <small className="text-muted mx-2">
-                    {Math.min(alertsToRender, group.alerts.length)}
-                    {" of "}
-                    {group.alerts.length}
-                  </small>
-                  <LoadButton
-                    icon={faPlus}
-                    action={loadMore}
-                    tooltip="Show more alerts in this group"
-                  />
+                <li
+                  className="list-group-item border-0 p-0 text-center bg-transparent"
+                  style={{
+                    lineHeight: alertStore.ui.isIdle ? "1rem" : undefined,
+                  }}
+                >
+                  {alertStore.ui.isIdle ? (
+                    <FontAwesomeIcon
+                      icon={faEllipsisH}
+                      className="text-muted"
+                    />
+                  ) : (
+                    <React.Fragment>
+                      <LoadButton
+                        icon={faMinus}
+                        action={loadLess}
+                        tooltip="Show fewer alerts in this group"
+                      />
+                      <small className="text-muted mx-2">
+                        {Math.min(alertsToRender, group.alerts.length)}
+                        {" of "}
+                        {group.alerts.length}
+                      </small>
+                      <LoadButton
+                        icon={faPlus}
+                        action={loadMore}
+                        tooltip="Show more alerts in this group"
+                      />
+                    </React.Fragment>
+                  )}
                 </li>
               ) : null}
             </ul>
@@ -248,6 +265,8 @@ const AlertGroup: FC<{
             afterUpdate={afterUpdate}
             alertStore={alertStore}
             silenceFormStore={silenceFormStore}
+            showAnnotations={!alertStore.ui.isIdle}
+            showSilences={!alertStore.ui.isIdle}
           />
         ) : null}
       </div>

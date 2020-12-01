@@ -16,21 +16,33 @@ const GroupFooter: FC<{
   afterUpdate: () => void;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
-}> = ({ group, alertmanagers, afterUpdate, alertStore, silenceFormStore }) => {
+  showAnnotations?: boolean;
+  showSilences?: boolean;
+}> = ({
+  group,
+  alertmanagers,
+  afterUpdate,
+  alertStore,
+  silenceFormStore,
+  showAnnotations = true,
+  showSilences = true,
+}) => {
   return (
     <div className="card-footer components-grid-alertgrid-alertgroup-footer px-2 py-1">
       <div className="mb-1">
-        {group.shared.annotations
-          .filter((a) => a.isLink === false)
-          .map((a) => (
-            <RenderNonLinkAnnotation
-              key={a.name}
-              name={a.name}
-              value={a.value}
-              visible={a.visible}
-              afterUpdate={afterUpdate}
-            />
-          ))}
+        {showAnnotations
+          ? group.shared.annotations
+              .filter((a) => a.isLink === false)
+              .map((a) => (
+                <RenderNonLinkAnnotation
+                  key={a.name}
+                  name={a.name}
+                  value={a.value}
+                  visible={a.visible}
+                  afterUpdate={afterUpdate}
+                />
+              ))
+          : null}
       </div>
       {Object.entries(group.shared.labels).map(([name, value]) => (
         <FilteringLabel
@@ -55,12 +67,18 @@ const GroupFooter: FC<{
           alertStore={alertStore}
         />
       ) : null}
-      {group.shared.annotations
-        .filter((a) => a.isLink === true)
-        .map((a) => (
-          <RenderLinkAnnotation key={a.name} name={a.name} value={a.value} />
-        ))}
-      {Object.keys(group.shared.silences).length === 0 ? null : (
+      {showAnnotations
+        ? group.shared.annotations
+            .filter((a) => a.isLink === true)
+            .map((a) => (
+              <RenderLinkAnnotation
+                key={a.name}
+                name={a.name}
+                value={a.value}
+              />
+            ))
+        : null}
+      {Object.keys(group.shared.silences).length === 0 ? null : showSilences ? (
         <div className="components-grid-alertgrid-alertgroup-shared-silence rounded-0 border-0">
           {Object.entries(group.shared.silences).map(([cluster, silences]) =>
             silences.map((silenceID) => (
@@ -75,7 +93,7 @@ const GroupFooter: FC<{
             ))
           )}
         </div>
-      )}
+      ) : null}
     </div>
   );
 };

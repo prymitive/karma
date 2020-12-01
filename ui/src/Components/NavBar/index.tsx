@@ -27,7 +27,6 @@ const NavBar: FC<{
   silenceFormStore: SilenceFormStore;
   fixedTop?: boolean;
 }> = ({ alertStore, settingsStore, silenceFormStore, fixedTop = true }) => {
-  const [isIdle, setIsIdle] = useState<boolean>(false);
   const [containerClass, setContainerClass] = useState<string>("visible");
 
   const context = React.useContext(ThemeContext);
@@ -44,12 +43,12 @@ const NavBar: FC<{
   );
 
   const onActive = useCallback(() => {
-    setIsIdle(false);
-  }, []);
+    alertStore.ui.setIsIdle(false);
+  }, [alertStore.ui]);
 
   const onIdle = useCallback(() => {
-    setIsIdle(true);
-  }, []);
+    alertStore.ui.setIsIdle(true);
+  }, [alertStore.ui]);
 
   const { pause, reset } = useIdleTimer({
     timeout: IsMobile() ? MobileIdleTimeout : DesktopIdleTimeout,
@@ -60,7 +59,7 @@ const NavBar: FC<{
 
   useEffect(() => {
     let timer: number;
-    if (isIdle) {
+    if (alertStore.ui.isIdle) {
       timer = window.setTimeout(
         () => updateBodyPaddingTop(true),
         context.animations.duration
@@ -69,7 +68,12 @@ const NavBar: FC<{
       updateBodyPaddingTop(false);
     }
     return () => window.clearTimeout(timer);
-  }, [height, updateBodyPaddingTop, isIdle, context.animations.duration]);
+  }, [
+    height,
+    updateBodyPaddingTop,
+    alertStore.ui.isIdle,
+    context.animations.duration,
+  ]);
 
   useEffect(
     () =>
@@ -89,7 +93,7 @@ const NavBar: FC<{
     <div className={`container p-0 m-0 mw-100 ${containerClass}`}>
       <CSSTransition
         classNames="components-animation-navbar"
-        in={!isIdle}
+        in={!alertStore.ui.isIdle}
         timeout={context.animations.duration}
         onEntering={() => {}}
         onExited={() => {}}

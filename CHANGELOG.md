@@ -6,6 +6,10 @@
 
 - Docker images reported version as `dev` #2479.
 
+### Changed
+
+- Alert groups will be rendered fewer details when idle.
+
 ## v0.76
 
 ### Fixed

@@ -25,7 +25,7 @@ const FilterBarConfiguration: FC<{
             className="custom-control-label cursor-pointer mr-3"
             htmlFor="configuration-autohide"
           >
-            Hide filter bar when idle
+            Hide filter bar and alert details when idle
           </label>
         </span>
       </div>
