@@ -29,7 +29,7 @@
     "@types/react-dom": "17.0.0",
     "@types/react-highlighter": "0.3.4",
     "@types/react-js-pagination": "3.0.3",
-    "@types/react-select": "3.0.26",
+    "@types/react-select": "3.0.27",
     "@typescript-eslint/eslint-plugin": "4.9.0",
     "@typescript-eslint/parser": "4.9.0",
     "babel-loader": "8.1.0",
