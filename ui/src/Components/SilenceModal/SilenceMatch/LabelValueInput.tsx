@@ -31,7 +31,7 @@ const GenerateHashFromMatchers = (
     },
   });
 
-const Placeholder: FC<PlaceholderProps<OptionT>> = (props) => {
+const Placeholder: FC<PlaceholderProps<OptionT, true>> = (props) => {
   return (
     <div>
       <components.Placeholder {...props} />
@@ -39,7 +39,7 @@ const Placeholder: FC<PlaceholderProps<OptionT>> = (props) => {
   );
 };
 
-interface ValueContainerPropsT extends ValueContainerProps<OptionT> {
+interface ValueContainerPropsT extends ValueContainerProps<OptionT, true> {
   selectProps: {
     silenceFormStore: SilenceFormStore;
     matcher: MatcherWithIDT;
@@ -51,7 +51,7 @@ const ValueContainer: FC<ValueContainerPropsT> = ({
   selectProps,
   ...props
 }) => (
-  <components.ValueContainer {...(props as ValueContainerProps<OptionT>)}>
+  <components.ValueContainer {...(props as ValueContainerProps<OptionT, true>)}>
     {selectProps.matcher.values.length > 0 ? (
       <MatchCounter
         key={GenerateHashFromMatchers(
@@ -108,7 +108,9 @@ const LabelValueInput: FC<{
       hideSelectedOptions
       isMulti
       components={{
-        ValueContainer: ValueContainer as FC<ValueContainerProps<OptionT>>,
+        ValueContainer: ValueContainer as FC<
+          ValueContainerProps<OptionT, true>
+        >,
         Placeholder: Placeholder,
       }}
       silenceFormStore={silenceFormStore}
