@@ -1,6 +1,6 @@
 # Changelog
 
-## [Unreleased]
+## v0.77
 
 ### Fixed
 
@@ -8,7 +8,7 @@
 
 ### Changed
 
-- Alert groups will be rendered fewer details when idle.
+- Alert groups will be rendered with fewer details when idle.
 
 ## v0.76
 
