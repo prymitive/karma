@@ -25,7 +25,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.5
+          go-version: 1.15.6
 
       - name: Cache Go modules
         id: cache-go-modules
@@ -64,7 +64,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.5
+          go-version: 1.15.6
 
       - name: Cache Go modules
         id: cache-go-modules
@@ -169,7 +169,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.5
+          go-version: 1.15.6
 
       - name: Format Go code
         run: make format-go
@@ -221,7 +221,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.5
+          go-version: 1.15.6
 
       - name: Mock web assets
         run: make mock-assets
@@ -248,7 +248,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.5
+          go-version: 1.15.6
 
       - name: Generate OpenAPI code
         run: make openapi-client
@@ -380,7 +380,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.5
+          go-version: 1.15.6
 
       - name: Cache Go modules
         id: cache-go-modules
@@ -514,7 +514,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.5
+          go-version: 1.15.6
 
       - name: Set up Node JS
         uses: actions/setup-node@v1
