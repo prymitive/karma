@@ -6,12 +6,7 @@
   "postUpdateOptions": ["gomodTidy"],
   "packageRules": [
     {
-      "excludePackageNames": ["node"],
-      "automerge": true
-    },
-    {
-      "packageNames": ["node"],
-      "updateTypes": ["minor", "patch"],
+      "updateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true
     }
   ]
