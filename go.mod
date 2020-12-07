@@ -9,7 +9,7 @@ require (
 	github.com/elazarl/go-bindata-assetfs v1.0.1
 	github.com/fvbommel/sortorder v1.0.2
 	github.com/getsentry/raven-go v0.2.0 // indirect
-	github.com/getsentry/sentry-go v0.8.0
+	github.com/getsentry/sentry-go v0.9.0
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/go-chi/cors v1.1.1
 	github.com/go-openapi/errors v0.19.9
@@ -30,7 +30,7 @@ require (
 	github.com/rogpeppe/go-internal v1.6.2
 	github.com/rs/zerolog v1.20.0
 	github.com/spf13/pflag v1.0.5
-	golang.org/x/sys v0.0.0-20201119102817-f84b799fce68 // indirect
+	golang.org/x/sys v0.0.0-20201204225414-ed752295db88 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v2 v2.4.0
