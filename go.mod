@@ -9,7 +9,7 @@ require (
 	github.com/elazarl/go-bindata-assetfs v1.0.1
 	github.com/fvbommel/sortorder v1.0.2
 	github.com/getsentry/raven-go v0.2.0 // indirect
-	github.com/getsentry/sentry-go v0.8.0
+	github.com/getsentry/sentry-go v0.9.0
 	github.com/go-chi/chi v4.1.2+incompatible
 	github.com/go-chi/cors v1.1.1
 	github.com/go-openapi/errors v0.19.9
