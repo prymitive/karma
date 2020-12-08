@@ -1,5 +1,11 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Don't reset regex toggle when adding new silence labels #2520
+
 ## v0.77
 
 ### Fixed

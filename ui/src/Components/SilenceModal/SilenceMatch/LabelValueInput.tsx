@@ -101,8 +101,6 @@ const LabelValueInput: FC<{
         // force regex if we have multiple values
         if (matcher.values.length > 1 && matcher.isRegex === false) {
           matcher.isRegex = true;
-        } else if (matcher.values.length === 1 && matcher.isRegex === true) {
-          matcher.isRegex = false;
         }
       }}
       hideSelectedOptions
