@@ -102,14 +102,14 @@ describe("<LabelValueInput />", () => {
     expect(matcher.isRegex).toBe(false);
   });
 
-  it("selecting one option when matcher.isRegex=true changes it back to false", () => {
+  it("selecting one option when matcher.isRegex=true doesn't change it back to false", () => {
     matcher.isRegex = true;
     const tree = MountedLabelValueInput(true);
     tree.find("input").simulate("change", { target: { value: "f" } });
     expect(matcher.isRegex).toBe(true);
     const options = tree.find("div.react-select__option");
     options.at(0).simulate("click");
-    expect(matcher.isRegex).toBe(false);
+    expect(matcher.isRegex).toBe(true);
   });
 
   it("selecting multiple options forces matcher.isRegex=true", () => {
