@@ -9,6 +9,10 @@ type AlertmanagerCORS struct {
 	Credentials string
 }
 
+type AlertmanagerHealthcheck struct {
+	Filters map[string][]string `yaml:"filters" koanf:"filters"`
+}
+
 type AlertmanagerConfig struct {
 	Cluster     string
 	Name        string
@@ -23,8 +27,9 @@ type AlertmanagerConfig struct {
 		Key                string
 		InsecureSkipVerify bool `yaml:"insecureSkipVerify" koanf:"insecureSkipVerify"`
 	}
-	Headers map[string]string
-	CORS    AlertmanagerCORS `yaml:"cors" koanf:"cors"`
+	Headers     map[string]string
+	CORS        AlertmanagerCORS        `yaml:"cors" koanf:"cors"`
+	Healthcheck AlertmanagerHealthcheck `yaml:"healthcheck" koanf:"healthcheck"`
 }
 
 type LinkDetectRules struct {

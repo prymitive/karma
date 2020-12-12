@@ -409,6 +409,7 @@ func (config *configSchema) LogValues() {
 			ReadOnly:    s.ReadOnly,
 			Headers:     s.Headers,
 			CORS:        s.CORS,
+			Healthcheck: s.Healthcheck,
 		}
 		servers = append(servers, server)
 	}

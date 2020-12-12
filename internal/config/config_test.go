@@ -48,6 +48,8 @@ alertmanager:
     headers: {}
     cors:
       credentials: include
+    healthcheck:
+      filters: {}
 alertAcknowledgement:
   enabled: false
   duration: 15m0s

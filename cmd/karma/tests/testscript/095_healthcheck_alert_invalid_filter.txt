@@ -1,0 +1,18 @@
+# Raises an error if healthcheck uses invalid filter
+karma.bin-should-fail --check-config
+! stdout .
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=info msg="Reading configuration file" path=karma.yaml
+level=info msg="Version: dev"
+level=error msg="Execution failed" error="failed to create Alertmanager 'default' with URI 'https://127.0.0.1:9093': \"alertname==\" is not a valid filter"
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: default
+      uri: https://127.0.0.1:9093
+      healthcheck:
+        filters:
+          prom1:
+            - alertname==

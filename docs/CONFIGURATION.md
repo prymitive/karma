@@ -176,6 +176,8 @@ alertmanager:
         any: string
       cors:
         credentials: string
+      healthcheck:
+        filters: map (string: list of strings)
 ```
 
 - `interval` - how often alerts should be refreshed, a string in
@@ -244,6 +246,41 @@ alertmanager:
   `omit` or `same-origin` if Alertmanager is configured to respond with
   `Access-Control-Allow-Origin: *`,
   [see docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSNotSupportingCredentials).
+- `healthcheck:filters` - define healtchecks using alert filters. When set karma
+  will search for alerts matching defined filters and show an error if it doesn't
+  match anything. This can be used with a [Dead man's switch](https://en.wikipedia.org/wiki/Dead_man%27s_switch)
+  style alert to notify karma users that there's a problem with alerting pipeline.
+  Syntax for this option is a map where key is the name of the filter set (used in
+  the UI when showing errors) and the value is a list of filters.
+
+  Example:
+
+  - Setup always on alert in each Prometheus server (prom1 and prom2):
+
+    ```YAML
+    - alert: DeadMansSwitch
+      expr: vector(1)
+    ```
+
+  - Add healtcheck configuration to karma:
+
+    ```YAML
+    alertmanager:
+      servers:
+        - name: am
+          uri: https://alertmanager.example.com
+          healthcheck:
+            filters:
+              prom1:
+                - alertname=DeadMansSwitch
+                - instance=prom1
+              prom2:
+                - alertname=DeadMansSwitch
+                - instance=prom2
+    ```
+
+  If any of these alerts is missing from alertmanager karma will show a warning
+  in the UI.
 
 Note: there are multiple supported combination of URI settings which result in
 a slightly different behavior. Settings that control it are:

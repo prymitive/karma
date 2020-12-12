@@ -32,6 +32,11 @@ type alertmanagerMetrics struct {
 	Errors map[string]float64
 }
 
+type healthCheck struct {
+	filters  []filters.FilterT
+	wasFound bool
+}
+
 // Alertmanager represents Alertmanager upstream instance
 type Alertmanager struct {
 	URI            string        `json:"uri"`
@@ -65,6 +70,7 @@ type Alertmanager struct {
 	HTTPHeaders map[string]string
 	// CORS credentials
 	CORSCredentials string `json:"corsCredentials"`
+	healthchecks    map[string]healthCheck
 }
 
 func (am *Alertmanager) probeVersion() string {
@@ -203,6 +209,16 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		return err
 	}
 
+	healthchecks := map[string]healthCheck{}
+	am.lock.RLock()
+	for name, hc := range am.healthchecks {
+		healthchecks[name] = healthCheck{
+			filters:  hc.filters,
+			wasFound: false,
+		}
+	}
+	am.lock.RUnlock()
+
 	var groups []models.AlertGroup
 
 	start := time.Now()
@@ -233,6 +249,8 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			}
 		}
 		for _, alert := range ag.Alerts {
+			alert := alert
+
 			if _, found := uniqueAlerts[agID]; !found {
 				uniqueAlerts[agID] = map[string]models.Alert{}
 			}
@@ -243,8 +261,33 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			for key := range alert.Labels {
 				knownLabelsMap[key] = true
 			}
-		}
 
+			for name, hc := range am.healthchecks {
+				positiveMatch := false
+				negativeMatch := false
+				for _, hcFilter := range hc.filters {
+					if hcFilter.Match(&alert, 0) {
+						log.Debug().
+							Str("alertmanager", am.Name).
+							Str("healthcheck", name).
+							Msg("Healthcheck alert matched")
+						positiveMatch = true
+					} else {
+						negativeMatch = true
+					}
+				}
+				if positiveMatch && !negativeMatch {
+					log.Debug().
+						Str("alertmanager", am.Name).
+						Str("healthcheck", name).
+						Msg("Marking healthcheck alert as found")
+					healthchecks[name] = healthCheck{
+						filters:  hc.filters,
+						wasFound: true,
+					}
+				}
+			}
+		}
 	}
 
 	dedupedGroups := make([]models.AlertGroup, 0, len(uniqueGroups))
@@ -326,6 +369,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	am.colors = colors
 	am.autocomplete = autocomplete
 	am.knownLabels = knownLabels
+	am.healthchecks = healthchecks
 	am.lock.Unlock()
 
 	return nil
@@ -380,6 +424,12 @@ func (am *Alertmanager) Pull() error {
 	am.lastError = ""
 	am.clusterName = ""
 	am.lock.Unlock()
+
+	for name, hc := range am.healthchecks {
+		if !hc.wasFound {
+			am.setError(fmt.Sprintf("Healthcheck filter %q didn't match any alerts", name))
+		}
+	}
 
 	return nil
 }

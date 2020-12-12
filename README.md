@@ -110,6 +110,15 @@ only after all alerts are resolved you can use
 See [configuration docs](/docs/CONFIGURATION.md#alert-acknowledgement) for
 details.
 
+### Dead Man’s Switch support
+
+Starting with `v0.78` karma can be configured to check for
+[Dead Man’s Switch](https://en.wikipedia.org/wiki/Dead_man%27s_switch)
+style alerts (alert that is always firing). If no alert is found in given
+alertmanager karma will show an error in the UI.
+See `healthcheck:filters` option on [configuration docs](/docs/CONFIGURATION.md#alertmanagers)
+for details.
+
 ### Dark mode
 
 Starting with `v0.52` release karma includes both light and dark themes.

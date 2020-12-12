@@ -2330,3 +2330,78 @@ func TestGetUserFromContextPresent(t *testing.T) {
 		t.Errorf("getUserFromContext() returned user=%q", user)
 	}
 }
+
+func TestHealthcheckAlerts(t *testing.T) {
+	type testCaseT struct {
+		healthchecks map[string][]string
+		hasError     bool
+	}
+
+	testCases := []testCaseT{
+		{
+			healthchecks: map[string][]string{},
+			hasError:     false,
+		},
+		{
+			healthchecks: map[string][]string{
+				"active": {"alertname=Host_Down"},
+			},
+			hasError: false,
+		},
+		{
+			healthchecks: map[string][]string{
+				"active": {
+					"alertname=Host_Down",
+					"cluster=staging",
+				},
+			},
+			hasError: false,
+		},
+		{
+			healthchecks: map[string][]string{
+				"active": {"alertname=FooBar"},
+			},
+			hasError: true,
+		},
+		{
+			healthchecks: map[string][]string{
+				"active": {
+					"alertname=Host_Down",
+					"cluster=unknown",
+				},
+			},
+			hasError: true,
+		},
+	}
+
+	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	for i, testCase := range testCases {
+		for _, version := range mock.ListAllMocks() {
+			t.Run(fmt.Sprintf("%d/%s", i, version), func(t *testing.T) {
+				httpmock.Activate()
+				defer httpmock.DeactivateAndReset()
+				mockCache()
+				mock.RegisterURL("http://localhost/metrics", version, "metrics")
+				mock.RegisterURL("http://localhost/api/v2/status", version, "api/v2/status")
+				mock.RegisterURL("http://localhost/api/v2/silences", version, "api/v2/silences")
+				mock.RegisterURL("http://localhost/api/v2/alerts/groups", version, "api/v2/alerts/groups")
+
+				am, err := alertmanager.NewAlertmanager(
+					"cluster",
+					"healthchecks",
+					"http://localhost",
+					alertmanager.WithHealthchecks(testCase.healthchecks),
+				)
+				if err != nil {
+					t.Error(err)
+					return
+				}
+				_ = am.Pull()
+				hasError := am.Error() != ""
+				if hasError != testCase.hasError {
+					t.Errorf("error=%q expected=%v", am.Error(), testCase.hasError)
+				}
+			})
+		}
+	}
+}

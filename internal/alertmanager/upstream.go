@@ -8,6 +8,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/uri"
 
@@ -42,7 +43,8 @@ func NewAlertmanager(cluster, name, upstreamURI string, opts ...Option) (*Alertm
 				labelValueErrorsSilences: 0,
 			},
 		},
-		status: models.AlertmanagerStatus{},
+		status:       models.AlertmanagerStatus{},
+		healthchecks: map[string]healthCheck{},
 	}
 
 	for _, opt := range opts {
@@ -173,6 +175,27 @@ func WithExternalURI(uri string) Option {
 func WithCORSCredentials(val string) Option {
 	return func(am *Alertmanager) error {
 		am.CORSCredentials = val
+		return nil
+	}
+}
+
+func WithHealthchecks(val map[string][]string) Option {
+	return func(am *Alertmanager) error {
+		healthchecks := map[string]healthCheck{}
+		for name, filterExpressions := range val {
+			hc := healthCheck{
+				filters: []filters.FilterT{},
+			}
+			for _, filterExpression := range filterExpressions {
+				f := filters.NewFilter(filterExpression)
+				if f == nil || !f.GetIsValid() {
+					return fmt.Errorf("%q is not a valid filter", filterExpression)
+				}
+				hc.filters = append(hc.filters, f)
+			}
+			healthchecks[name] = hc
+		}
+		am.healthchecks = healthchecks
 		return nil
 	}
 }
