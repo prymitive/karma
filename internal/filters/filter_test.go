@@ -2,6 +2,7 @@ package filters_test
 
 import (
 	"encoding/json"
+	"strings"
 	"testing"
 	"time"
 
@@ -25,10 +26,35 @@ type filterTest struct {
 
 var tests = []filterTest{
 	{
+		Expression: "",
+		IsValid:    false,
+	},
+	{
+		Expression: " ",
+		IsValid:    false,
+	},
+	{
+		Expression: "\t",
+		IsValid:    false,
+	},
+	{
 		Expression: "@state=active",
 		IsValid:    true,
 		Alert:      models.Alert{},
 		IsMatch:    false,
+	},
+	{
+		Expression: "@state=active ",
+		IsValid:    true,
+		Alert:      models.Alert{},
+		IsMatch:    false,
+	},
+	{
+		Expression:          "@state=active ",
+		IsValid:             true,
+		Alert:               models.Alert{State: "active"},
+		IsMatch:             true,
+		IsAlertmanagerMatch: true,
 	},
 	{
 		Expression:          "@state!=active",
@@ -794,7 +820,7 @@ func TestFilters(t *testing.T) {
 			if !ft.IsMatch && f.GetHits() != 0 {
 				t.Errorf("[%s] GetHits() returned %#v after non-match, expected 0", ft.Expression, f.GetHits())
 			}
-			if f.GetRawText() != ft.Expression {
+			if f.GetRawText() != strings.Trim(ft.Expression, " \t") {
 				t.Errorf("[%s] GetRawText() returned %#v != %s passed as the expression", ft.Expression, f.GetRawText(), ft.Expression)
 			}
 
