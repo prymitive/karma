@@ -342,6 +342,7 @@ jobs:
       - lint-go
       - lint-js
       - format-go
+      - format-js
       - go-mod-tidy
       - openapi
       - deps-js
