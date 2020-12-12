@@ -6,6 +6,39 @@
 
 - Don't reset regex toggle when adding new silence labels #2520
 
+### Added
+
+- Added support for DeadMansSwitch alerts via `healtcheck:alerts` option
+  on alertmanager upstream configuration #2512.
+  Example:
+
+  - Setup always on alert in each Prometheus server (prom1 and prom2):
+
+    ```YAML
+    - alert: DeadMansSwitch
+      expr: vector(1)
+    ```
+
+  - Add healtcheck configuration to karma:
+
+    ```YAML
+    alertmanager:
+      servers:
+        - name: am
+          uri: https://alertmanager.example.com
+          healthcheck:
+            alerts:
+              prom1:
+                - alertname=DeadMansSwitch
+                - instance=prom1
+              prom2:
+                - alertname=DeadMansSwitch
+                - instance=prom2
+    ```
+
+  If any of these alerts is missing from alertmanager karma will show a warning
+  in the UI.
+
 ## v0.77
 
 ### Fixed

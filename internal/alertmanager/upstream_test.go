@@ -76,6 +76,42 @@ var testCases = []testCase{
 		},
 		shouldFail: true,
 	},
+	{
+		config: config.AlertmanagerConfig{
+			Cluster:     "cluster",
+			Name:        "name",
+			URI:         "http://localhost:9093",
+			ExternalURI: "http://localhost:9093",
+			Timeout:     time.Second * 30,
+			Proxy:       false,
+			ReadOnly:    false,
+			Headers:     map[string]string{},
+			Healthcheck: config.AlertmanagerHealthcheck{
+				Filters: map[string][]string{
+					"prom1": {"@age>a"},
+				},
+			},
+		},
+		shouldFail: true,
+	},
+	{
+		config: config.AlertmanagerConfig{
+			Cluster:     "cluster",
+			Name:        "name",
+			URI:         "http://localhost:9093",
+			ExternalURI: "http://localhost:9093",
+			Timeout:     time.Second * 30,
+			Proxy:       false,
+			ReadOnly:    false,
+			Headers:     map[string]string{},
+			Healthcheck: config.AlertmanagerHealthcheck{
+				Filters: map[string][]string{
+					"prom1": {" "},
+				},
+			},
+		},
+		shouldFail: true,
+	},
 }
 
 func TestOptions(t *testing.T) {
@@ -100,6 +136,7 @@ func TestOptions(t *testing.T) {
 			WithHTTPTransport(httpTransport), // we will pass a nil unless TLS.CA or TLS.Cert is set
 			WithHTTPHeaders(tc.config.Headers),
 			WithCORSCredentials(tc.config.CORS.Credentials),
+			WithHealthchecks(tc.config.Healthcheck.Filters),
 		)
 		didFail := err != nil
 		if didFail != tc.shouldFail {
