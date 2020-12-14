@@ -30,7 +30,8 @@ require (
 	github.com/rogpeppe/go-internal v1.6.2
 	github.com/rs/zerolog v1.20.0
 	github.com/spf13/pflag v1.0.5
-	golang.org/x/sys v0.0.0-20201119102817-f84b799fce68 // indirect
+	golang.org/x/net v0.0.0-20201209123823-ac852fbbde11 // indirect
+	golang.org/x/sys v0.0.0-20201214095126-aec9a390925b // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v2 v2.4.0
