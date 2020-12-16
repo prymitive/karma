@@ -101,7 +101,7 @@ jobs:
         uses: rlespinasse/github-slug-action@3.1.0
 
       - name: Set up Node JS
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14.15.1
 
@@ -139,7 +139,7 @@ jobs:
         uses: rlespinasse/github-slug-action@3.1.0
 
       - name: Set up Node JS
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14.15.1
 
@@ -188,7 +188,7 @@ jobs:
         uses: rlespinasse/github-slug-action@3.1.0
 
       - name: Set up Node JS
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14.15.1
 
@@ -267,7 +267,7 @@ jobs:
         uses: rlespinasse/github-slug-action@3.1.0
 
       - name: Set up Node JS
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14.15.1
 
@@ -428,7 +428,7 @@ jobs:
               - 'ui/**/*'
 
       - name: Set up Node JS
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14.15.1
 
@@ -475,7 +475,7 @@ jobs:
               - 'ui/package.json'
 
       - name: Set up Node JS
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14.15.1
 
@@ -518,7 +518,7 @@ jobs:
           go-version: 1.15.6
 
       - name: Set up Node JS
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14.15.1
 
@@ -652,7 +652,7 @@ jobs:
         uses: rlespinasse/github-slug-action@3.1.0
 
       - name: Set up Node JS
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2
         with:
           node-version: 14.15.1
 
