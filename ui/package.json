@@ -10,7 +10,7 @@
     "@fortawesome/react-fontawesome": "0.1.13",
     "@juggle/resize-observer": "3.2.0",
     "@popperjs/core": "2.6.0",
-    "@sentry/browser": "5.29.1",
+    "@sentry/browser": "5.29.2",
     "@storybook/react": "6.1.11",
     "@types/body-scroll-lock": "2.6.1",
     "@types/bricks.js": "1.8.1",
