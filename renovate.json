@@ -2,7 +2,7 @@
   "extends": ["config:base"],
   "prHourlyLimit": 1,
   "rebaseStalePrs": false,
-  "masterIssue": true,
+  "dependencyDashboard": true,
   "postUpdateOptions": ["gomodTidy"],
   "packageRules": [
     {
