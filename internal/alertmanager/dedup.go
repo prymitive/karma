@@ -66,6 +66,7 @@ func DedupAlerts() []models.AlertGroup {
 			continue
 		}
 		ag := models.AlertGroup(agList[0])
+		ag.Labels = transform.StripLables(config.Config.Labels.Keep, config.Config.Labels.Strip, ag.Labels)
 		ag.Alerts = make(models.AlertList, 0, len(alerts))
 		for _, alert := range alerts {
 			alert := alert // scopelint pin

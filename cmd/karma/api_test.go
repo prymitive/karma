@@ -1288,3 +1288,73 @@ func TestSortOrder(t *testing.T) {
 		}
 	}
 }
+
+func verifyStrippedLabels(t *testing.T, labels map[string]string, keep, strip []string) {
+	for _, l := range strip {
+		if val, ok := labels[l]; ok {
+			t.Errorf("Found stripped label %s=%s on %v", l, val, labels)
+		}
+	}
+	if len(keep) > 0 && len(strip) == 0 {
+		for k, v := range labels {
+			ok := false
+			for _, l := range keep {
+				if k == l {
+					ok = true
+				}
+			}
+			if !ok {
+				t.Errorf("Found label %s=%s that's not on the keep list: %v", k, v, keep)
+			}
+		}
+	}
+}
+
+func TestStripLabels(t *testing.T) {
+	type testCaseT struct {
+		keep  []string
+		strip []string
+	}
+
+	testCases := []testCaseT{
+		{keep: []string{}, strip: []string{}},
+		{keep: []string{}, strip: []string{"alertname"}},
+		{keep: []string{"alertname"}, strip: []string{}},
+	}
+
+	mockConfig()
+	for _, version := range mock.ListAllMocks() {
+		t.Logf("Testing API using mock files from Alertmanager %s", version)
+		mockAlerts(version)
+		r := testRouter()
+		setupRouter(r)
+
+		for _, testCase := range testCases {
+			config.Config.Labels.Keep = testCase.keep
+			config.Config.Labels.Strip = testCase.strip
+			apiCache.Flush()
+			req := httptest.NewRequest("GET", "/alerts.json", nil)
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != http.StatusOK {
+				t.Errorf("GET /alerts.json returned status %d", resp.Code)
+			}
+
+			ur := models.AlertsResponse{}
+			err := json.Unmarshal(resp.Body.Bytes(), &ur)
+			if err != nil {
+				t.Errorf("Failed to unmarshal response: %s", err)
+			}
+
+			for _, grid := range ur.Grids {
+				for _, ag := range grid.AlertGroups {
+					for _, alert := range ag.Alerts {
+						verifyStrippedLabels(t, alert.Labels, testCase.keep, testCase.strip)
+					}
+					verifyStrippedLabels(t, ag.Labels, testCase.keep, testCase.strip)
+					verifyStrippedLabels(t, ag.Shared.Labels, testCase.keep, testCase.strip)
+				}
+			}
+		}
+	}
+}
