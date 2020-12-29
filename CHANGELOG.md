@@ -1,5 +1,12 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Not all labels were stripped when using `lables:keep` or `labels:strip`
+  option #2585.
+
 ## v0.78
 
 ### Fixed
