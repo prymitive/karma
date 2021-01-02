@@ -1,5 +1,12 @@
 import { CSSProperties } from "react";
-import { Styles } from "react-select";
+import {
+  ControlProps,
+  IndicatorContainerProps,
+  OptionTypeBase,
+  SingleValueProps,
+  Styles,
+  ValueContainerProps,
+} from "react-select";
 
 interface ReactSelectTheme {
   color: string;
@@ -52,12 +59,19 @@ interface StateFnT {
   isDisabled: boolean;
 }
 
-const ReactSelectStyles = (theme: ReactSelectTheme): Styles => ({
-  control: (base: CSSProperties, state: StateFnT) =>
-    state.isFocused
+const ReactSelectStyles = <
+  OptionType extends OptionTypeBase,
+  IsMulti extends boolean
+>(
+  theme: ReactSelectTheme
+): Styles<OptionType, IsMulti> => ({
+  control: (base: CSSProperties, props: ControlProps<OptionType, IsMulti>) =>
+    props.isFocused
       ? {
           ...base,
-          backgroundColor: theme.backgroundColor,
+          backgroundColor: props.isDisabled
+            ? theme.disabledValueContainerBackground
+            : theme.valueContainerBackground,
           outline: "0",
           outlineOffset: "-2px",
           boxShadow: `0 0 0 0.2rem ${theme.focusedBoxShadow}`,
@@ -69,20 +83,22 @@ const ReactSelectStyles = (theme: ReactSelectTheme): Styles => ({
         }
       : {
           ...base,
-          backgroundColor: "inherit",
+          backgroundColor: props.isDisabled
+            ? theme.disabledValueContainerBackground
+            : theme.valueContainerBackground,
           borderRadius: "0.25rem",
           borderColor: theme.borderColor,
           "&:hover": { borderColor: theme.borderColor },
         },
-  valueContainer: (base: CSSProperties, state: StateFnT) =>
-    state.isMulti
+  valueContainer: (
+    base: CSSProperties,
+    props: ValueContainerProps<OptionType, IsMulti>
+  ) =>
+    props.isMulti
       ? {
           ...base,
           borderTopLeftRadius: "0.25rem",
           borderBottomLeftRadius: "0.25rem",
-          backgroundColor: state.isDisabled
-            ? theme.disabledValueContainerBackground
-            : theme.valueContainerBackground,
           paddingLeft: "4px",
           paddingRight: "4px",
           display: "flex",
@@ -95,11 +111,8 @@ const ReactSelectStyles = (theme: ReactSelectTheme): Styles => ({
           ...base,
           borderTopLeftRadius: "0.25rem",
           borderBottomLeftRadius: "0.25rem",
-          backgroundColor: state.isDisabled
-            ? theme.disabledValueContainerBackground
-            : theme.valueContainerBackground,
         },
-  singleValue: (base: CSSProperties) => ({
+  singleValue: (base: CSSProperties, props: SingleValueProps<OptionType>) => ({
     ...base,
     color: theme.singleValueColor,
   }),
@@ -138,9 +151,12 @@ const ReactSelectStyles = (theme: ReactSelectTheme): Styles => ({
     ...base,
     color: "inherit",
   }),
-  indicatorsContainer: (base: CSSProperties, state: StateFnT) => ({
+  indicatorsContainer: (
+    base: CSSProperties,
+    props: IndicatorContainerProps<OptionType, IsMulti>
+  ) => ({
     ...base,
-    backgroundColor: state.isDisabled
+    backgroundColor: props.isDisabled
       ? theme.disabledValueContainerBackground
       : theme.valueContainerBackground,
     borderTopRightRadius: "0.25rem",

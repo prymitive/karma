@@ -42,7 +42,8 @@ const Placeholder = () => {
 
 export interface ThemeCtx {
   isDark: boolean;
-  reactSelectStyles: Styles;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  reactSelectStyles: Styles<any, any>;
   animations: {
     duration: number;
   };

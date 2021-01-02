@@ -30,6 +30,12 @@ describe("<WrappedCustomMultiSelect />", () => {
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
+  it("matches snapshot when focused and disabled", () => {
+    const tree = mount(<ThemedSelect autoFocus isDisabled />);
+    tree.find("input").simulate("focus");
+    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+  });
+
   it("matches snapshot with a value", () => {
     const tree = mount(
       <ThemedSelect
