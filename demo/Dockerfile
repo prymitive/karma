@@ -1,4 +1,4 @@
-FROM node:14.15.3-alpine as nodejs-builder
+FROM node:14.15.4-alpine as nodejs-builder
 RUN mkdir -p /src/ui
 COPY ui/package.json ui/package-lock.json /src/ui/
 ENV NODE_ENV=production
