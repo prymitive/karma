@@ -19,7 +19,7 @@ require (
 	github.com/go-openapi/validate v0.20.0
 	github.com/google/go-cmp v0.5.4
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
-	github.com/jarcoal/httpmock v1.0.6
+	github.com/jarcoal/httpmock v1.0.7
 	github.com/knadh/koanf v0.14.0
 	github.com/loikg/ravenchi v2.0.0+incompatible
 	github.com/mitchellh/mapstructure v1.4.0
