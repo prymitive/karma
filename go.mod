@@ -19,7 +19,7 @@ require (
 	github.com/go-openapi/validate v0.20.0
 	github.com/google/go-cmp v0.5.4
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
-	github.com/jarcoal/httpmock v1.0.6
+	github.com/jarcoal/httpmock v1.0.7
 	github.com/knadh/koanf v0.14.0
 	github.com/loikg/ravenchi v2.0.0+incompatible
 	github.com/mitchellh/mapstructure v1.4.0
@@ -31,7 +31,7 @@ require (
 	github.com/rs/zerolog v1.20.0
 	github.com/spf13/pflag v1.0.5
 	golang.org/x/net v0.0.0-20201224014010-6772e930b67b // indirect
-	golang.org/x/sys v0.0.0-20201223074533-0d417f636930 // indirect
+	golang.org/x/sys v0.0.0-20201231184435-2d18734c6014 // indirect
 	google.golang.org/protobuf v1.25.0 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v2 v2.4.0
