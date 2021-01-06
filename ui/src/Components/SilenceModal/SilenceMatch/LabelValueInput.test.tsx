@@ -35,6 +35,7 @@ const MountedLabelValueInput = (isValid: boolean) => {
       silenceFormStore={silenceFormStore}
       matcher={matcher}
       isValid={isValid}
+      allowNewValues={true}
     />
   );
 };

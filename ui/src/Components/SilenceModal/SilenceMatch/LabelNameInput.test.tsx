@@ -25,7 +25,9 @@ afterEach(() => {
 });
 
 const MountedLabelNameInput = (isValid: boolean) => {
-  return mount(<LabelNameInput matcher={matcher} isValid={isValid} />);
+  return mount(
+    <LabelNameInput matcher={matcher} isValid={isValid} isDisabled={false} />
+  );
 };
 
 describe("<LabelNameInput />", () => {

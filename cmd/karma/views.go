@@ -169,6 +169,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 			Author:          config.Config.AlertAcknowledgement.Author,
 			Comment:         config.Config.AlertAcknowledgement.Comment,
 		},
+		SilenceExistingAlertsOnly: config.Config.SilenceExistingAlertsOnly,
 	}
 	resp.Authentication = models.AuthenticationInfo{
 		Enabled:  config.Config.Authentication.Enabled,

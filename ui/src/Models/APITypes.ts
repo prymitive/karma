@@ -184,6 +184,7 @@ export interface APISettingsT {
     author: string;
     comment: string;
   };
+  silenceExistingAlertsOnly: boolean;
 }
 
 export interface APIAlertsResponseT {

@@ -70,7 +70,8 @@ const LabelValueInput: FC<{
   silenceFormStore: SilenceFormStore;
   matcher: MatcherWithIDT;
   isValid: boolean;
-}> = observer(({ silenceFormStore, matcher, isValid }) => {
+  allowNewValues: boolean;
+}> = observer(({ silenceFormStore, matcher, isValid, allowNewValues }) => {
   const { response, get, cancelGet } = useFetchGet<string[]>(
     FormatBackendURI(`labelValues.json?name=${matcher.name}`),
     { autorun: false }
@@ -113,6 +114,7 @@ const LabelValueInput: FC<{
       }}
       silenceFormStore={silenceFormStore}
       matcher={matcher}
+      isValidNewOption={allowNewValues ? undefined : () => false}
     />
   );
 });

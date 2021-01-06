@@ -79,6 +79,7 @@ const EmptyAPIResponse = (): APIAlertsResponseT => ({
     annotationsDefaultHidden: false,
     annotationsHidden: [],
     annotationsVisible: [],
+    silenceExistingAlertsOnly: false,
   },
   authentication: {
     username: "",

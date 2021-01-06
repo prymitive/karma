@@ -16,17 +16,30 @@ const SilenceMatch: FC<{
   showDelete: boolean;
   onDelete: () => void;
   isValid: boolean;
-}> = ({ silenceFormStore, matcher, showDelete, onDelete, isValid }) => {
+  allowNewValues: boolean;
+}> = ({
+  silenceFormStore,
+  matcher,
+  showDelete,
+  onDelete,
+  isValid,
+  allowNewValues,
+}) => {
   return (
     <div className="d-flex flex-fill flex-lg-row flex-column mb-3">
       <div className="flex-shrink-0 flex-grow-0 flex-basis-25 pr-lg-2 pb-2 pb-lg-0">
-        <LabelNameInput matcher={matcher} isValid={isValid} />
+        <LabelNameInput
+          matcher={matcher}
+          isValid={isValid}
+          isDisabled={!allowNewValues}
+        />
       </div>
       <div className="flex-shrink-0 flex-grow-0 flex-basis-50 pr-lg-2 pb-2 pb-lg-0">
         <LabelValueInput
           silenceFormStore={silenceFormStore}
           matcher={matcher}
           isValid={isValid}
+          allowNewValues={allowNewValues}
         />
       </div>
       <div className="flex-shrink-0 flex-grow-1 flex-basis-auto form-check form-check-inline d-flex justify-content-between m-0">

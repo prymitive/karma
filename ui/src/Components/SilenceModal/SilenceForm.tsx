@@ -194,21 +194,29 @@ const SilenceForm: FC<{
           onDelete={() => {
             silenceFormStore.data.deleteMatcher(matcher.id);
           }}
-          showDelete={silenceFormStore.data.matchers.length > 1}
+          showDelete={
+            !alertStore.settings.values.silenceExistingAlertsOnly &&
+            silenceFormStore.data.matchers.length > 1
+          }
           isValid={!silenceFormStore.data.wasValidated}
+          allowNewValues={!alertStore.settings.values.silenceExistingAlertsOnly}
         />
       ))}
-      <div className="d-flex flex-row justify-content-between mb-3">
-        <TooltipWrapper title="Add a matcher">
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            onClick={addMore}
-          >
-            <FontAwesomeIcon icon={faPlus} fixedWidth />
-          </button>
-        </TooltipWrapper>
-      </div>
+      {!alertStore.settings.values.silenceExistingAlertsOnly ? (
+        <div className="d-flex flex-row justify-content-between mb-3">
+          <TooltipWrapper title="Add a matcher">
+            <button
+              type="button"
+              className="btn btn-outline-secondary"
+              onClick={addMore}
+            >
+              <FontAwesomeIcon icon={faPlus} fixedWidth />
+            </button>
+          </TooltipWrapper>
+        </div>
+      ) : (
+        <div />
+      )}
       <DateTimeSelect silenceFormStore={silenceFormStore} />
       {alertStore.info.authentication.enabled ? (
         <AuthenticatedAuthorInput alertStore={alertStore} />

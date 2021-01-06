@@ -421,6 +421,7 @@ class AlertStore {
             author: "karma / author missing",
             comment: "ACK! This alert was acknowledged using karma",
           },
+          silenceExistingAlertsOnly: false as boolean,
         },
       },
       {},

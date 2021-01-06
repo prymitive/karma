@@ -286,13 +286,14 @@ type AlertAcknowledgementSettings struct {
 
 // Settings is used to export karma configuration that is used by UI
 type Settings struct {
-	StaticColorLabels        []string                     `json:"staticColorLabels"`
-	AnnotationsDefaultHidden bool                         `json:"annotationsDefaultHidden"`
-	AnnotationsHidden        []string                     `json:"annotationsHidden"`
-	AnnotationsVisible       []string                     `json:"annotationsVisible"`
-	Sorting                  SortSettings                 `json:"sorting"`
-	SilenceForm              SilenceFormSettings          `json:"silenceForm"`
-	AlertAcknowledgement     AlertAcknowledgementSettings `json:"alertAcknowledgement"`
+	StaticColorLabels         []string                     `json:"staticColorLabels"`
+	AnnotationsDefaultHidden  bool                         `json:"annotationsDefaultHidden"`
+	AnnotationsHidden         []string                     `json:"annotationsHidden"`
+	AnnotationsVisible        []string                     `json:"annotationsVisible"`
+	Sorting                   SortSettings                 `json:"sorting"`
+	SilenceForm               SilenceFormSettings          `json:"silenceForm"`
+	AlertAcknowledgement      AlertAcknowledgementSettings `json:"alertAcknowledgement"`
+	SilenceExistingAlertsOnly bool                         `json:"silenceExistingAlertsOnly"`
 }
 
 type AuthenticationInfo struct {

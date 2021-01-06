@@ -28,6 +28,7 @@ const ShallowLabelValueInput = () => {
       showDelete={false}
       onDelete={MockOnDelete}
       isValid={true}
+      allowNewValues={true}
     />
   );
 };

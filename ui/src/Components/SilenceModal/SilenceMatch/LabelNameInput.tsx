@@ -12,7 +12,8 @@ import { NewLabelName, OptionT, StringToOption } from "Common/Select";
 const LabelNameInput: FC<{
   matcher: MatcherWithIDT;
   isValid: boolean;
-}> = ({ matcher, isValid }) => {
+  isDisabled: boolean;
+}> = ({ matcher, isValid, isDisabled }) => {
   const { response } = useFetchGet<string[]>(
     FormatBackendURI(`labelNames.json`)
   );
@@ -34,6 +35,7 @@ const LabelNameInput: FC<{
         matcher.name = (option as OptionT).value;
       }}
       hideSelectedOptions
+      isDisabled={isDisabled}
     />
   );
 };
