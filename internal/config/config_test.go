@@ -123,6 +123,7 @@ silences:
 silenceForm:
   strip:
     labels: []
+silenceExistingAlertsOnly: false
 ui:
   refresh: 30s
   hideFiltersWhenIdle: true

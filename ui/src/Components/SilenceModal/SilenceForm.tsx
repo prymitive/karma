@@ -214,9 +214,7 @@ const SilenceForm: FC<{
             </button>
           </TooltipWrapper>
         </div>
-      ) : (
-        <div />
-      )}
+      ) : undefined}
       <DateTimeSelect silenceFormStore={silenceFormStore} />
       {alertStore.info.authentication.enabled ? (
         <AuthenticatedAuthorInput alertStore={alertStore} />
