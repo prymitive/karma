@@ -405,4 +405,11 @@ describe("<SilenceForm /> in edit mode", () => {
     const select = tree.find("StateManager").at(0);
     expect((select.props() as any).isDisabled).toBeFalsy();
   });
+
+  it("showing readonly SilenceForm", () => {
+    alertStore.settings.values.silenceExistingAlertsOnly = true;
+    const tree = MountedSilenceForm();
+    const button = tree.find("button[placeholder='AddMatcher']");
+    expect(button).toHaveLength(0);
+  });
 });
