@@ -20,7 +20,7 @@ require (
 	github.com/google/go-cmp v0.5.4
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.7
-	github.com/knadh/koanf v0.14.1
+	github.com/knadh/koanf v0.15.0
 	github.com/loikg/ravenchi v2.0.0+incompatible
 	github.com/mitchellh/mapstructure v1.4.0
 	github.com/patrickmn/go-cache v2.1.1-0.20180815053127-5633e0862627+incompatible
