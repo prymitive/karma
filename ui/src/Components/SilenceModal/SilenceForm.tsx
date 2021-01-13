@@ -199,7 +199,7 @@ const SilenceForm: FC<{
             silenceFormStore.data.matchers.length > 1
           }
           isValid={!silenceFormStore.data.wasValidated}
-          allowNewValues={!alertStore.settings.values.silenceExistingAlertsOnly}
+          isDisabled={alertStore.settings.values.silenceExistingAlertsOnly}
         />
       ))}
       {!alertStore.settings.values.silenceExistingAlertsOnly ? (

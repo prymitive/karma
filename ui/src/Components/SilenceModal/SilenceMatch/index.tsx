@@ -16,14 +16,14 @@ const SilenceMatch: FC<{
   showDelete: boolean;
   onDelete: () => void;
   isValid: boolean;
-  allowNewValues: boolean;
+  isDisabled: boolean;
 }> = ({
   silenceFormStore,
   matcher,
   showDelete,
   onDelete,
   isValid,
-  allowNewValues,
+  isDisabled,
 }) => {
   return (
     <div className="d-flex flex-fill flex-lg-row flex-column mb-3">
@@ -31,7 +31,7 @@ const SilenceMatch: FC<{
         <LabelNameInput
           matcher={matcher}
           isValid={isValid}
-          isDisabled={!allowNewValues}
+          isDisabled={isDisabled}
         />
       </div>
       <div className="flex-shrink-0 flex-grow-0 flex-basis-50 pr-lg-2 pb-2 pb-lg-0">
@@ -39,7 +39,7 @@ const SilenceMatch: FC<{
           silenceFormStore={silenceFormStore}
           matcher={matcher}
           isValid={isValid}
-          allowNewValues={allowNewValues}
+          isDisabled={isDisabled}
         />
       </div>
       <div className="flex-shrink-0 flex-grow-1 flex-basis-auto form-check form-check-inline d-flex justify-content-between m-0">
@@ -55,7 +55,7 @@ const SilenceMatch: FC<{
                 matcher.isRegex = event.target.checked;
               }
             }}
-            disabled={matcher.values.length > 1}
+            disabled={isDisabled || matcher.values.length > 1}
           />
           <label
             className="custom-control-label cursor-pointer mr-3"
