@@ -27,23 +27,24 @@ describe("<AlertGroupConfiguration />", () => {
     const tree = FakeConfiguration();
     expect(settingsStore.alertGroupConfig.config.defaultRenderCount).toBe(5);
 
-    const slider = tree.find(`Slider [onKeyDown]`).first();
+    const slider = tree.find(`div.input-range-thumb`).first();
+    slider.simulate("click");
 
-    slider.simulate("keyDown", { keyCode: 37 });
-    slider.simulate("keyUp", { keyCode: 37 });
+    slider.simulate("keyDown", { key: "ArrowLeft", keyCode: 37 });
+    slider.simulate("keyUp", { key: "ArrowLeft", keyCode: 37 });
 
     expect(settingsStore.alertGroupConfig.config.defaultRenderCount).toBe(4);
 
-    slider.simulate("keyDown", { keyCode: 39 });
-    slider.simulate("keyUp", { keyCode: 39 });
-    slider.simulate("keyDown", { keyCode: 39 });
-    slider.simulate("keyUp", { keyCode: 39 });
+    slider.simulate("keyDown", { key: "ArrowRight", keyCode: 39 });
+    slider.simulate("keyUp", { key: "ArrowRight", keyCode: 39 });
+    slider.simulate("keyDown", { key: "ArrowRight", keyCode: 39 });
+    slider.simulate("keyUp", { key: "ArrowRight", keyCode: 39 });
     expect(settingsStore.alertGroupConfig.config.defaultRenderCount).toBe(6);
   });
 
   it("custom interval value is rendered correctly", () => {
     settingsStore.alertGroupConfig.config.defaultRenderCount = 4;
     const component = FakeConfiguration();
-    expect(component.find("InputRange").props().value).toBe(4);
+    expect(component.find("Range").props().values).toContain(4);
   });
 });

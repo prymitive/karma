@@ -2,16 +2,16 @@ import React, { FC, useState } from "react";
 
 import debounce from "lodash.debounce";
 
-import InputRange from "react-input-range";
+import { Range } from "react-range";
 
 import { Settings } from "Stores/Settings";
 
 const AlertGroupWidthConfiguration: FC<{
   settingsStore: Settings;
 }> = ({ settingsStore }) => {
-  const [groupWidth, setGroupWidth] = useState<number>(
-    settingsStore.gridConfig.config.groupWidth
-  );
+  const [groupWidth, setGroupWidth] = useState<number[]>([
+    settingsStore.gridConfig.config.groupWidth,
+  ]);
 
   const onChangeComplete = debounce((value: number) => {
     settingsStore.gridConfig.config.groupWidth = value as number;
@@ -19,13 +19,23 @@ const AlertGroupWidthConfiguration: FC<{
 
   return (
     <div className="form-group mb-0 text-center">
-      <InputRange
-        minValue={300}
-        maxValue={800}
-        step={20}
-        value={groupWidth}
-        onChange={(value) => setGroupWidth(value as number)}
-        onChangeComplete={(value) => onChangeComplete(value as number)}
+      <Range
+        step={10}
+        min={300}
+        max={800}
+        values={groupWidth}
+        onChange={(values) => setGroupWidth(values)}
+        onFinalChange={(values) => onChangeComplete(values[0])}
+        renderTrack={({ props, children }) => (
+          <div className="input-range-track" {...props}>
+            {children}
+          </div>
+        )}
+        renderThumb={({ props }) => (
+          <div className="input-range-thumb" {...props}>
+            {groupWidth}
+          </div>
+        )}
       />
     </div>
   );
