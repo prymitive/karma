@@ -3,43 +3,20 @@
 exports[`<FetchConfiguration /> matches snapshot with default values 1`] = `
 "
 <div class=\\"form-group mb-0 text-center\\">
-  <div aria-disabled=\\"false\\"
-       class=\\"input-range\\"
+  <div class=\\"input-range-track\\"
+       style=\\"transform: scale(1); cursor: pointer;\\"
   >
-    <span class=\\"input-range__label input-range__label--min\\">
-      <span class=\\"input-range__label-container\\">
-        10s
-      </span>
-    </span>
-    <div class=\\"input-range__track input-range__track--background\\">
-      <div style=\\"left: 0%; width: 18.181818181818183%;\\"
-           class=\\"input-range__track input-range__track--active\\"
-      >
-      </div>
-      <span class=\\"input-range__slider-container\\"
-            style=\\"position: absolute; left: 18.181818181818183%;\\"
-      >
-        <span class=\\"input-range__label input-range__label--value\\">
-          <span class=\\"input-range__label-container\\">
-            30s
-          </span>
-        </span>
-        <div aria-valuemax=\\"120\\"
-             aria-valuemin=\\"10\\"
-             aria-valuenow=\\"30\\"
-             class=\\"input-range__slider\\"
-             draggable=\\"false\\"
-             role=\\"slider\\"
-             tabindex=\\"0\\"
-        >
-        </div>
-      </span>
+    <div class=\\"input-range-thumb\\"
+         style=\\"position: absolute; z-index: 0; cursor: grab; user-select: none; transform: translate(NaNpx, NaNpx);\\"
+         tabindex=\\"0\\"
+         aria-valuemax=\\"120\\"
+         aria-valuemin=\\"10\\"
+         aria-valuenow=\\"30\\"
+         draggable=\\"false\\"
+         role=\\"slider\\"
+    >
+      30s
     </div>
-    <span class=\\"input-range__label input-range__label--max\\">
-      <span class=\\"input-range__label-container\\">
-        120s
-      </span>
-    </span>
   </div>
 </div>
 "

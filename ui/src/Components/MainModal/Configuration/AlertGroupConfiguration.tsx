@@ -1,15 +1,15 @@
 import React, { FC, useState } from "react";
 
-import InputRange from "react-input-range";
+import { Range } from "react-range";
 
 import { Settings } from "Stores/Settings";
 
 const AlertGroupConfiguration: FC<{
   settingsStore: Settings;
 }> = ({ settingsStore }) => {
-  const [defaultRenderCount, setDefaultRenderCount] = useState<number>(
-    settingsStore.alertGroupConfig.config.defaultRenderCount
-  );
+  const [defaultRenderCount, setDefaultRenderCount] = useState<number[]>([
+    settingsStore.alertGroupConfig.config.defaultRenderCount,
+  ]);
 
   const onChangeComplete = (value: number) => {
     settingsStore.alertGroupConfig.setDefaultRenderCount(value as number);
@@ -17,13 +17,23 @@ const AlertGroupConfiguration: FC<{
 
   return (
     <div className="form-group mb-0 text-center">
-      <InputRange
-        minValue={1}
-        maxValue={10}
+      <Range
         step={1}
-        value={defaultRenderCount}
-        onChange={(value) => setDefaultRenderCount(value as number)}
-        onChangeComplete={(value) => onChangeComplete(value as number)}
+        min={1}
+        max={10}
+        values={defaultRenderCount}
+        onChange={(values) => setDefaultRenderCount(values)}
+        onFinalChange={(values) => onChangeComplete(values[0])}
+        renderTrack={({ props, children }) => (
+          <div className="input-range-track" {...props}>
+            {children}
+          </div>
+        )}
+        renderThumb={({ props }) => (
+          <div className="input-range-thumb" {...props}>
+            {defaultRenderCount}
+          </div>
+        )}
       />
     </div>
   );
