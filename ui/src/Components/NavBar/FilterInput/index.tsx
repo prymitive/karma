@@ -3,7 +3,6 @@ import React, { FC, useEffect, useState, useRef, useCallback } from "react";
 import { observer } from "mobx-react-lite";
 
 import Autosuggest from "react-autosuggest";
-import Highlight from "react-highlighter";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
@@ -104,14 +103,22 @@ const FilterInput: FC<{
     suggestion: string,
     { query }: { query: string }
   ) => {
+    const parts = suggestion.split(new RegExp(`(${query})`, "gi"));
     return (
-      <Highlight
-        matchElement="span"
-        matchClass="font-weight-bold"
-        search={query}
-      >
-        {suggestion}
-      </Highlight>
+      <span>
+        {parts.map((part, i) => (
+          <span
+            key={i}
+            style={
+              part.toLowerCase() === query.toLowerCase()
+                ? { fontWeight: "bold" }
+                : {}
+            }
+          >
+            {part}
+          </span>
+        ))}
+      </span>
     );
   };
 
