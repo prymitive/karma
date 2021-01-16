@@ -8,7 +8,7 @@ file.
 ## Git tags and branches
 
 Every release tag name will follow `vX.Y.Z` naming scheme, example: `v0.1.0`.
-All releases are tagged against the `master` branch.
+All releases are tagged against the `main` branch.
 
 ## Commit messages
 

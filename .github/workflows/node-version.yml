@@ -3,7 +3,7 @@ name: Node version
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - Dockerfile
 

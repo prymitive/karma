@@ -3,10 +3,10 @@ name: Test
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
   release:
     types:
       - published
@@ -34,7 +34,7 @@ jobs:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-master-go-modules-
+            ${{ runner.os }}-main-go-modules-
 
       - name: Fetch all Go modules
         if: steps.cache-go-modules.outputs.cache-hit != 'true'
@@ -73,7 +73,7 @@ jobs:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-master-go-modules-
+            ${{ runner.os }}-main-go-modules-
 
       - name: Fetch all Go modules
         if: steps.cache-go-modules.outputs.cache-hit != 'true'
@@ -112,7 +112,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-master-npm-
+            ${{ runner.os }}-main-npm-
 
       - name: Fetch all NPM dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
@@ -150,7 +150,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-master-npm-
+            ${{ runner.os }}-main-npm-
 
       - name: Fetch all NPM dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
@@ -199,7 +199,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-master-npm-
+            ${{ runner.os }}-main-npm-
 
       - name: Fetch all NPM dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
@@ -278,7 +278,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-master-npm-
+            ${{ runner.os }}-main-npm-
 
       - name: Fetch all NPM dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
@@ -390,7 +390,7 @@ jobs:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-master-go-modules-
+            ${{ runner.os }}-main-go-modules-
 
       - name: Fetch all Go modules
         if: steps.cache-go-modules.outputs.cache-hit != 'true'
@@ -439,7 +439,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-master-npm-
+            ${{ runner.os }}-main-npm-
 
       - name: Fetch all NPM dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
@@ -486,7 +486,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-master-npm-
+            ${{ runner.os }}-main-npm-
 
       - name: Fetch all NPM dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
@@ -531,7 +531,7 @@ jobs:
             ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-cc-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-master-go-cc-
+            ${{ runner.os }}-main-go-cc-
 
       - name: Cross compile binaries
         run: make crosscompile -j 2
