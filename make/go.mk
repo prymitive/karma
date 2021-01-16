@@ -36,7 +36,7 @@ benchmark-go:
 $(GOBIN)/benchstat: tools/benchstat/go.mod tools/benchstat/go.sum
 	@$(GO) install -modfile=tools/benchstat/go.mod golang.org/x/perf/cmd/benchstat
 benchmark-compare-go: $(GOBIN)/benchstat
-	@$(GOBIN)/benchstat master.txt new.txt
+	@$(GOBIN)/benchstat main.txt new.txt
 
 $(GOBIN)/looppointer: tools/looppointer/go.mod tools/looppointer/go.sum
 	$(GO) install -modfile=tools/looppointer/go.mod github.com/kyoh86/looppointer/cmd/looppointer

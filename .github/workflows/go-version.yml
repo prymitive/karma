@@ -3,7 +3,7 @@ name: Go version
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - Dockerfile
 
