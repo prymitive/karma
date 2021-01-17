@@ -199,3 +199,10 @@ func WithHealthchecks(val map[string][]string) Option {
 		return nil
 	}
 }
+
+func WithHealthchecksVisible(val bool) Option {
+	return func(am *Alertmanager) error {
+		am.healthchecksVisible = val
+		return nil
+	}
+}

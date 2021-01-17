@@ -49,6 +49,7 @@ alertmanager:
     cors:
       credentials: include
     healthcheck:
+      visible: false
       filters: {}
 alertAcknowledgement:
   enabled: false

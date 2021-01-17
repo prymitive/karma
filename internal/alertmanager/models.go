@@ -69,8 +69,9 @@ type Alertmanager struct {
 	// headers to send with each AlertManager request
 	HTTPHeaders map[string]string
 	// CORS credentials
-	CORSCredentials string `json:"corsCredentials"`
-	healthchecks    map[string]healthCheck
+	CORSCredentials     string `json:"corsCredentials"`
+	healthchecks        map[string]healthCheck
+	healthchecksVisible bool
 }
 
 func (am *Alertmanager) probeVersion() string {
@@ -262,29 +263,10 @@ func (am *Alertmanager) pullAlerts(version string) error {
 				knownLabelsMap[key] = true
 			}
 
-			for name, hc := range am.healthchecks {
-				positiveMatch := false
-				negativeMatch := false
-				for _, hcFilter := range hc.filters {
-					if hcFilter.Match(&alert, 0) {
-						log.Debug().
-							Str("alertmanager", am.Name).
-							Str("healthcheck", name).
-							Msg("Healthcheck alert matched")
-						positiveMatch = true
-					} else {
-						negativeMatch = true
-					}
-				}
-				if positiveMatch && !negativeMatch {
-					log.Debug().
-						Str("alertmanager", am.Name).
-						Str("healthcheck", name).
-						Msg("Marking healthcheck alert as found")
-					healthchecks[name] = healthCheck{
-						filters:  hc.filters,
-						wasFound: true,
-					}
+			if name, hc := am.IsHealthCheckAlert(&alert); hc != nil {
+				healthchecks[name] = healthCheck{
+					filters:  hc.filters,
+					wasFound: true,
 				}
 			}
 		}
@@ -611,4 +593,27 @@ func (am *Alertmanager) IsHealthy() bool {
 	defer am.lock.RUnlock()
 
 	return am.lastError == ""
+}
+
+func (am *Alertmanager) IsHealthCheckAlert(alert *models.Alert) (string, *healthCheck) {
+	for name, hc := range am.healthchecks {
+		hc := hc
+		positiveMatch := false
+		negativeMatch := false
+		for _, hcFilter := range hc.filters {
+			if hcFilter.Match(alert, 0) {
+				log.Debug().
+					Str("alertmanager", am.Name).
+					Str("healthcheck", name).
+					Msg("Healthcheck alert matched")
+				positiveMatch = true
+			} else {
+				negativeMatch = true
+			}
+		}
+		if positiveMatch && !negativeMatch {
+			return name, &hc
+		}
+	}
+	return "", nil
 }

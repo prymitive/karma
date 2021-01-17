@@ -8,6 +8,8 @@ import (
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/transform"
+
+	"github.com/rs/zerolog/log"
 )
 
 // DedupAlerts will collect alert groups from all defined Alertmanager
@@ -38,6 +40,21 @@ func DedupAlerts() []models.AlertGroup {
 				if transform.StripReceivers(config.Config.Receivers.Keep, config.Config.Receivers.Strip, alert.Receiver) {
 					continue
 				}
+
+				keep := true
+				for _, am := range upstreams {
+					if !am.healthchecksVisible {
+						if _, hc := am.IsHealthCheckAlert(&alert); hc != nil {
+							log.Debug().Str("fingerprint", alert.Fingerprint).Msg("Skipping healtcheck alert")
+							keep = false
+							break
+						}
+					}
+				}
+				if !keep {
+					continue
+				}
+
 				alertLFP := alert.LabelsFingerprint()
 				a, found := alerts[alertLFP]
 				if found {
