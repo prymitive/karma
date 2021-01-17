@@ -2334,6 +2334,7 @@ func TestGetUserFromContextPresent(t *testing.T) {
 func TestHealthcheckAlerts(t *testing.T) {
 	type testCaseT struct {
 		healthchecks map[string][]string
+		visible      bool
 		hasError     bool
 	}
 
@@ -2346,6 +2347,13 @@ func TestHealthcheckAlerts(t *testing.T) {
 			healthchecks: map[string][]string{
 				"active": {"alertname=Host_Down"},
 			},
+			hasError: false,
+		},
+		{
+			healthchecks: map[string][]string{
+				"active": {"alertname=Host_Down"},
+			},
+			visible:  true,
 			hasError: false,
 		},
 		{
@@ -2391,15 +2399,35 @@ func TestHealthcheckAlerts(t *testing.T) {
 					"healthchecks",
 					"http://localhost",
 					alertmanager.WithHealthchecks(testCase.healthchecks),
+					alertmanager.WithHealthchecksVisible(testCase.visible),
 				)
 				if err != nil {
 					t.Error(err)
 					return
 				}
+
+				alertmanager.UnregisterAll()
+				err = alertmanager.RegisterAlertmanager(am)
+				if err != nil {
+					t.Error(err)
+					return
+				}
+
 				_ = am.Pull()
 				hasError := am.Error() != ""
 				if hasError != testCase.hasError {
 					t.Errorf("error=%q expected=%v", am.Error(), testCase.hasError)
+				}
+
+				alertGroups := alertmanager.DedupAlerts()
+				for _, ag := range alertGroups {
+					for _, alert := range ag.Alerts {
+						alert := alert
+						name, hc := am.IsHealthCheckAlert(&alert)
+						if hc != nil && !testCase.visible {
+							t.Errorf("%s visible=%v but got hc alert %v", name, testCase.visible, alert)
+						}
+					}
 				}
 			})
 		}

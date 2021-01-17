@@ -10,6 +10,7 @@ type AlertmanagerCORS struct {
 }
 
 type AlertmanagerHealthcheck struct {
+	Visible bool                `yaml:"visible" koanf:"visible"`
 	Filters map[string][]string `yaml:"filters" koanf:"filters"`
 }
 

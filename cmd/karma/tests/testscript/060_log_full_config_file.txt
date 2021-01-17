@@ -44,6 +44,7 @@ level=info msg="    headers: {}"
 level=info msg="    cors:"
 level=info msg="      credentials: include"
 level=info msg="    healthcheck:"
+level=info msg="      visible: false"
 level=info msg="      filters: {}"
 level=info msg="  - cluster: HA"
 level=info msg="    name: ha2"
@@ -61,6 +62,7 @@ level=info msg="    headers: {}"
 level=info msg="    cors:"
 level=info msg="      credentials: omit"
 level=info msg="    healthcheck:"
+level=info msg="      visible: false"
 level=info msg="      filters: {}"
 level=info msg="  - cluster: \"\""
 level=info msg="    name: local"
@@ -79,6 +81,7 @@ level=info msg="      X-Auth-Test: some-token-or-other-string"
 level=info msg="    cors:"
 level=info msg="      credentials: same-origin"
 level=info msg="    healthcheck:"
+level=info msg="      visible: false"
 level=info msg="      filters:"
 level=info msg="        prom1:"
 level=info msg="        - alertname=DeadMansSwitch"
@@ -102,7 +105,11 @@ level=info msg="    headers: {}"
 level=info msg="    cors:"
 level=info msg="      credentials: include"
 level=info msg="    healthcheck:"
-level=info msg="      filters: {}"
+level=info msg="      visible: true"
+level=info msg="      filters:"
+level=info msg="        prom1:"
+level=info msg="        - alertname=DeadMansSwitch"
+level=info msg="        - instance=prom1"
 level=info msg="alertAcknowledgement:"
 level=info msg="  enabled: true"
 level=info msg="  duration: 7m0s"
@@ -279,6 +286,12 @@ alertmanager:
         ca: ca.pem
         cert: cert.pem
         key: key.pem
+      healthcheck:
+        visible: true
+        filters:
+          prom1:
+            - alertname=DeadMansSwitch
+            - instance=prom1
 alertAcknowledgement:
   enabled: true
   duration: 7m0s

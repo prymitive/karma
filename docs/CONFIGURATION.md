@@ -177,6 +177,7 @@ alertmanager:
       cors:
         credentials: string
       healthcheck:
+        visible: bool
         filters: map (string: list of strings)
 ```
 
@@ -246,6 +247,10 @@ alertmanager:
   `omit` or `same-origin` if Alertmanager is configured to respond with
   `Access-Control-Allow-Origin: *`,
   [see docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSNotSupportingCredentials).
+- `healthcheck:visible` - enable this option if you want `healthcheck:filters`
+  alerts to be visible in karma UI. An alternative to enabling this option is to
+  route healcheck alerts to alertmanager receiver that isn't visible using default
+  karma filters.
 - `healthcheck:filters` - define healtchecks using alert filters. When set karma
   will search for alerts matching defined filters and show an error if it doesn't
   match anything. This can be used with a [Dead man's switch](https://en.wikipedia.org/wiki/Dead_man%27s_switch)

@@ -7,6 +7,11 @@
 - Not all labels were stripped when using `lables:keep` or `labels:strip`
   option #2585.
 
+### Added
+
+- `healthcheck:visible` alertmanager option to control if healtcheck alerts
+  should be visible in the UI #2614.
+
 ## v0.78
 
 ### Fixed
