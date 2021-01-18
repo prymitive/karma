@@ -414,6 +414,7 @@ class AlertStore {
             strip: {
               labels: [] as string[],
             },
+            silenceExistingAlertsOnly: false as boolean,
           },
           alertAcknowledgement: {
             enabled: false as boolean,
@@ -421,7 +422,6 @@ class AlertStore {
             author: "karma / author missing",
             comment: "ACK! This alert was acknowledged using karma",
           },
-          silenceExistingAlertsOnly: false as boolean,
         },
       },
       {},

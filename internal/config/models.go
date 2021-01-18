@@ -166,9 +166,9 @@ type configSchema struct {
 		Strip struct {
 			Labels []string
 		}
+		SilenceExistingAlertsOnly bool `yaml:"silenceExistingAlertsOnly" koanf:"silenceExistingAlertsOnly"`
 	} `yaml:"silenceForm" koanf:"silenceForm"`
-	SilenceExistingAlertsOnly bool `yaml:"silenceExistingAlertsOnly"`
-	UI                        struct {
+	UI struct {
 		Refresh              time.Duration
 		HideFiltersWhenIdle  bool   `yaml:"hideFiltersWhenIdle" koanf:"hideFiltersWhenIdle"`
 		ColorTitlebar        bool   `yaml:"colorTitlebar" koanf:"colorTitlebar"`

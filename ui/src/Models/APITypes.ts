@@ -177,6 +177,7 @@ export interface APISettingsT {
     strip: {
       labels: string[];
     };
+    silenceExistingAlertsOnly: boolean;
   };
   alertAcknowledgement: {
     enabled: boolean;
@@ -184,7 +185,6 @@ export interface APISettingsT {
     author: string;
     comment: string;
   };
-  silenceExistingAlertsOnly: boolean;
 }
 
 export interface APIAlertsResponseT {

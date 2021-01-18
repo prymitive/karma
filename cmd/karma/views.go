@@ -162,6 +162,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 			Strip: models.SilenceFormStripSettings{
 				Labels: config.Config.SilenceForm.Strip.Labels,
 			},
+			SilenceExistingAlertsOnly: config.Config.SilenceForm.SilenceExistingAlertsOnly,
 		},
 		AlertAcknowledgement: models.AlertAcknowledgementSettings{
 			Enabled:         config.Config.AlertAcknowledgement.Enabled,
@@ -169,7 +170,6 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 			Author:          config.Config.AlertAcknowledgement.Author,
 			Comment:         config.Config.AlertAcknowledgement.Comment,
 		},
-		SilenceExistingAlertsOnly: config.Config.SilenceExistingAlertsOnly,
 	}
 	resp.Authentication = models.AuthenticationInfo{
 		Enabled:  config.Config.Authentication.Enabled,

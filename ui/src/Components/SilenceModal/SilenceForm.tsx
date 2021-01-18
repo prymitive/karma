@@ -195,14 +195,16 @@ const SilenceForm: FC<{
             silenceFormStore.data.deleteMatcher(matcher.id);
           }}
           showDelete={
-            !alertStore.settings.values.silenceExistingAlertsOnly &&
+            !alertStore.settings.values.silenceForm.silenceExistingAlertsOnly &&
             silenceFormStore.data.matchers.length > 1
           }
           isValid={!silenceFormStore.data.wasValidated}
-          isDisabled={alertStore.settings.values.silenceExistingAlertsOnly}
+          isDisabled={
+            alertStore.settings.values.silenceForm.silenceExistingAlertsOnly
+          }
         />
       ))}
-      {!alertStore.settings.values.silenceExistingAlertsOnly ? (
+      {!alertStore.settings.values.silenceForm.silenceExistingAlertsOnly ? (
         <div className="d-flex flex-row justify-content-between mb-3">
           <TooltipWrapper title="Add a matcher">
             <button

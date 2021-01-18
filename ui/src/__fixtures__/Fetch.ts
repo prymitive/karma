@@ -68,6 +68,7 @@ const EmptyAPIResponse = (): APIAlertsResponseT => ({
       strip: {
         labels: [],
       },
+      silenceExistingAlertsOnly: false,
     },
     alertAcknowledgement: {
       enabled: false,
@@ -79,7 +80,6 @@ const EmptyAPIResponse = (): APIAlertsResponseT => ({
     annotationsDefaultHidden: false,
     annotationsHidden: [],
     annotationsVisible: [],
-    silenceExistingAlertsOnly: false,
   },
   authentication: {
     username: "",
