@@ -407,7 +407,7 @@ describe("<SilenceForm /> in edit mode", () => {
   });
 
   it("showing readonly SilenceForm", () => {
-    alertStore.settings.values.silenceExistingAlertsOnly = true;
+    alertStore.settings.values.silenceForm.silenceExistingAlertsOnly = true;
     const tree = MountedSilenceForm();
     const button = tree.find("button[placeholder='AddMatcher']");
     expect(button).toHaveLength(0);
