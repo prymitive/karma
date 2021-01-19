@@ -6,6 +6,7 @@ package models
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"encoding/json"
 	"strconv"
 
@@ -51,7 +52,6 @@ func (m *ClusterStatus) Validate(formats strfmt.Registry) error {
 }
 
 func (m *ClusterStatus) validatePeers(formats strfmt.Registry) error {
-
 	if swag.IsZero(m.Peers) { // not required
 		return nil
 	}
@@ -116,6 +116,38 @@ func (m *ClusterStatus) validateStatus(formats strfmt.Registry) error {
 	// value enum
 	if err := m.validateStatusEnum("status", "body", *m.Status); err != nil {
 		return err
+	}
+
+	return nil
+}
+
+// ContextValidate validate this cluster status based on the context it is used
+func (m *ClusterStatus) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
+	var res []error
+
+	if err := m.contextValidatePeers(ctx, formats); err != nil {
+		res = append(res, err)
+	}
+
+	if len(res) > 0 {
+		return errors.CompositeValidationError(res...)
+	}
+	return nil
+}
+
+func (m *ClusterStatus) contextValidatePeers(ctx context.Context, formats strfmt.Registry) error {
+
+	for i := 0; i < len(m.Peers); i++ {
+
+		if m.Peers[i] != nil {
+			if err := m.Peers[i].ContextValidate(ctx, formats); err != nil {
+				if ve, ok := err.(*errors.Validation); ok {
+					return ve.ValidateName("peers" + "." + strconv.Itoa(i))
+				}
+				return err
+			}
+		}
+
 	}
 
 	return nil

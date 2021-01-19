@@ -29,7 +29,6 @@ func (o *GetReceiversReader) ReadResponse(response runtime.ClientResponse, consu
 			return nil, err
 		}
 		return result, nil
-
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -40,7 +39,7 @@ func NewGetReceiversOK() *GetReceiversOK {
 	return &GetReceiversOK{}
 }
 
-/*GetReceiversOK handles this case with default header values.
+/* GetReceiversOK describes a response with status code 200, with default header values.
 
 Get receivers response
 */
@@ -51,7 +50,6 @@ type GetReceiversOK struct {
 func (o *GetReceiversOK) Error() string {
 	return fmt.Sprintf("[GET /receivers][%d] getReceiversOK  %+v", 200, o.Payload)
 }
-
 func (o *GetReceiversOK) GetPayload() []*models.Receiver {
 	return o.Payload
 }

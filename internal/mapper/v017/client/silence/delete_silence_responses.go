@@ -33,7 +33,6 @@ func (o *DeleteSilenceReader) ReadResponse(response runtime.ClientResponse, cons
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -44,7 +43,7 @@ func NewDeleteSilenceOK() *DeleteSilenceOK {
 	return &DeleteSilenceOK{}
 }
 
-/*DeleteSilenceOK handles this case with default header values.
+/* DeleteSilenceOK describes a response with status code 200, with default header values.
 
 Delete silence response
 */
@@ -65,7 +64,7 @@ func NewDeleteSilenceInternalServerError() *DeleteSilenceInternalServerError {
 	return &DeleteSilenceInternalServerError{}
 }
 
-/*DeleteSilenceInternalServerError handles this case with default header values.
+/* DeleteSilenceInternalServerError describes a response with status code 500, with default header values.
 
 Internal server error
 */
@@ -76,7 +75,6 @@ type DeleteSilenceInternalServerError struct {
 func (o *DeleteSilenceInternalServerError) Error() string {
 	return fmt.Sprintf("[DELETE /silence/{silenceID}][%d] deleteSilenceInternalServerError  %+v", 500, o.Payload)
 }
-
 func (o *DeleteSilenceInternalServerError) GetPayload() string {
 	return o.Payload
 }

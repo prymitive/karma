@@ -35,7 +35,6 @@ func (o *GetSilencesReader) ReadResponse(response runtime.ClientResponse, consum
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -46,7 +45,7 @@ func NewGetSilencesOK() *GetSilencesOK {
 	return &GetSilencesOK{}
 }
 
-/*GetSilencesOK handles this case with default header values.
+/* GetSilencesOK describes a response with status code 200, with default header values.
 
 Get silences response
 */
@@ -57,7 +56,6 @@ type GetSilencesOK struct {
 func (o *GetSilencesOK) Error() string {
 	return fmt.Sprintf("[GET /silences][%d] getSilencesOK  %+v", 200, o.Payload)
 }
-
 func (o *GetSilencesOK) GetPayload() models.GettableSilences {
 	return o.Payload
 }
@@ -77,7 +75,7 @@ func NewGetSilencesInternalServerError() *GetSilencesInternalServerError {
 	return &GetSilencesInternalServerError{}
 }
 
-/*GetSilencesInternalServerError handles this case with default header values.
+/* GetSilencesInternalServerError describes a response with status code 500, with default header values.
 
 Internal server error
 */
@@ -88,7 +86,6 @@ type GetSilencesInternalServerError struct {
 func (o *GetSilencesInternalServerError) Error() string {
 	return fmt.Sprintf("[GET /silences][%d] getSilencesInternalServerError  %+v", 500, o.Payload)
 }
-
 func (o *GetSilencesInternalServerError) GetPayload() string {
 	return o.Payload
 }

@@ -39,7 +39,6 @@ func (o *PostAlertsReader) ReadResponse(response runtime.ClientResponse, consume
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -50,7 +49,7 @@ func NewPostAlertsOK() *PostAlertsOK {
 	return &PostAlertsOK{}
 }
 
-/*PostAlertsOK handles this case with default header values.
+/* PostAlertsOK describes a response with status code 200, with default header values.
 
 Create alerts response
 */
@@ -71,7 +70,7 @@ func NewPostAlertsBadRequest() *PostAlertsBadRequest {
 	return &PostAlertsBadRequest{}
 }
 
-/*PostAlertsBadRequest handles this case with default header values.
+/* PostAlertsBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
@@ -82,7 +81,6 @@ type PostAlertsBadRequest struct {
 func (o *PostAlertsBadRequest) Error() string {
 	return fmt.Sprintf("[POST /alerts][%d] postAlertsBadRequest  %+v", 400, o.Payload)
 }
-
 func (o *PostAlertsBadRequest) GetPayload() string {
 	return o.Payload
 }
@@ -102,7 +100,7 @@ func NewPostAlertsInternalServerError() *PostAlertsInternalServerError {
 	return &PostAlertsInternalServerError{}
 }
 
-/*PostAlertsInternalServerError handles this case with default header values.
+/* PostAlertsInternalServerError describes a response with status code 500, with default header values.
 
 Internal server error
 */
@@ -113,7 +111,6 @@ type PostAlertsInternalServerError struct {
 func (o *PostAlertsInternalServerError) Error() string {
 	return fmt.Sprintf("[POST /alerts][%d] postAlertsInternalServerError  %+v", 500, o.Payload)
 }
-
 func (o *PostAlertsInternalServerError) GetPayload() string {
 	return o.Payload
 }
