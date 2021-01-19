@@ -238,24 +238,6 @@ jobs:
       - name: Check for local changes
         run: git diff --exit-code
 
-  openapi:
-    name: Verify OpenAPI client code
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.15.6
-
-      - name: Generate OpenAPI code
-        run: make openapi-client
-
-      - name: Check for local changes
-        run: git diff --exit-code
-
   deps-js:
     name: Check JS dependencies
     runs-on: ubuntu-latest
@@ -344,7 +326,6 @@ jobs:
       - format-go
       - format-js
       - go-mod-tidy
-      - openapi
       - deps-js
       - lint-versions
       - typescript
