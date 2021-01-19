@@ -11,7 +11,6 @@
     "@juggle/resize-observer": "3.2.0",
     "@popperjs/core": "2.6.0",
     "@sentry/browser": "6.0.0",
-    "@storybook/react": "6.1.14",
     "@types/body-scroll-lock": "2.6.1",
     "@types/bricks.js": "1.8.1",
     "@types/enzyme": "3.10.8",
@@ -79,6 +78,7 @@
   },
   "devDependencies": {
     "@percy-io/percy-storybook": "2.1.0",
+    "@storybook/react": "6.1.14",
     "@storybook/preset-create-react-app": "3.1.5",
     "@testing-library/react-hooks": "5.0.0",
     "@wojtekmaj/enzyme-adapter-react-17": "0.4.1",
