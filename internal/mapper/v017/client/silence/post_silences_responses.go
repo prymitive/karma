@@ -6,6 +6,7 @@ package silence
 // Editing this file might prove futile when you re-run the swagger generate command
 
 import (
+	"context"
 	"fmt"
 	"io"
 
@@ -40,7 +41,6 @@ func (o *PostSilencesReader) ReadResponse(response runtime.ClientResponse, consu
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -51,7 +51,7 @@ func NewPostSilencesOK() *PostSilencesOK {
 	return &PostSilencesOK{}
 }
 
-/*PostSilencesOK handles this case with default header values.
+/* PostSilencesOK describes a response with status code 200, with default header values.
 
 Create / update silence response
 */
@@ -62,7 +62,6 @@ type PostSilencesOK struct {
 func (o *PostSilencesOK) Error() string {
 	return fmt.Sprintf("[POST /silences][%d] postSilencesOK  %+v", 200, o.Payload)
 }
-
 func (o *PostSilencesOK) GetPayload() *PostSilencesOKBody {
 	return o.Payload
 }
@@ -84,7 +83,7 @@ func NewPostSilencesBadRequest() *PostSilencesBadRequest {
 	return &PostSilencesBadRequest{}
 }
 
-/*PostSilencesBadRequest handles this case with default header values.
+/* PostSilencesBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
@@ -95,7 +94,6 @@ type PostSilencesBadRequest struct {
 func (o *PostSilencesBadRequest) Error() string {
 	return fmt.Sprintf("[POST /silences][%d] postSilencesBadRequest  %+v", 400, o.Payload)
 }
-
 func (o *PostSilencesBadRequest) GetPayload() string {
 	return o.Payload
 }
@@ -115,7 +113,7 @@ func NewPostSilencesNotFound() *PostSilencesNotFound {
 	return &PostSilencesNotFound{}
 }
 
-/*PostSilencesNotFound handles this case with default header values.
+/* PostSilencesNotFound describes a response with status code 404, with default header values.
 
 A silence with the specified ID was not found
 */
@@ -126,7 +124,6 @@ type PostSilencesNotFound struct {
 func (o *PostSilencesNotFound) Error() string {
 	return fmt.Sprintf("[POST /silences][%d] postSilencesNotFound  %+v", 404, o.Payload)
 }
-
 func (o *PostSilencesNotFound) GetPayload() string {
 	return o.Payload
 }
@@ -152,6 +149,11 @@ type PostSilencesOKBody struct {
 
 // Validate validates this post silences o k body
 func (o *PostSilencesOKBody) Validate(formats strfmt.Registry) error {
+	return nil
+}
+
+// ContextValidate validates this post silences o k body based on context it is used
+func (o *PostSilencesOKBody) ContextValidate(ctx context.Context, formats strfmt.Registry) error {
 	return nil
 }
 

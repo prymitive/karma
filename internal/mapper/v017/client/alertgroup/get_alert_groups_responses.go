@@ -41,7 +41,6 @@ func (o *GetAlertGroupsReader) ReadResponse(response runtime.ClientResponse, con
 			return nil, err
 		}
 		return nil, result
-
 	default:
 		return nil, runtime.NewAPIError("response status code does not match any response statuses defined for this endpoint in the swagger spec", response, response.Code())
 	}
@@ -52,7 +51,7 @@ func NewGetAlertGroupsOK() *GetAlertGroupsOK {
 	return &GetAlertGroupsOK{}
 }
 
-/*GetAlertGroupsOK handles this case with default header values.
+/* GetAlertGroupsOK describes a response with status code 200, with default header values.
 
 Get alert groups response
 */
@@ -63,7 +62,6 @@ type GetAlertGroupsOK struct {
 func (o *GetAlertGroupsOK) Error() string {
 	return fmt.Sprintf("[GET /alerts/groups][%d] getAlertGroupsOK  %+v", 200, o.Payload)
 }
-
 func (o *GetAlertGroupsOK) GetPayload() models.AlertGroups {
 	return o.Payload
 }
@@ -83,7 +81,7 @@ func NewGetAlertGroupsBadRequest() *GetAlertGroupsBadRequest {
 	return &GetAlertGroupsBadRequest{}
 }
 
-/*GetAlertGroupsBadRequest handles this case with default header values.
+/* GetAlertGroupsBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
@@ -94,7 +92,6 @@ type GetAlertGroupsBadRequest struct {
 func (o *GetAlertGroupsBadRequest) Error() string {
 	return fmt.Sprintf("[GET /alerts/groups][%d] getAlertGroupsBadRequest  %+v", 400, o.Payload)
 }
-
 func (o *GetAlertGroupsBadRequest) GetPayload() string {
 	return o.Payload
 }
@@ -114,7 +111,7 @@ func NewGetAlertGroupsInternalServerError() *GetAlertGroupsInternalServerError {
 	return &GetAlertGroupsInternalServerError{}
 }
 
-/*GetAlertGroupsInternalServerError handles this case with default header values.
+/* GetAlertGroupsInternalServerError describes a response with status code 500, with default header values.
 
 Internal server error
 */
@@ -125,7 +122,6 @@ type GetAlertGroupsInternalServerError struct {
 func (o *GetAlertGroupsInternalServerError) Error() string {
 	return fmt.Sprintf("[GET /alerts/groups][%d] getAlertGroupsInternalServerError  %+v", 500, o.Payload)
 }
-
 func (o *GetAlertGroupsInternalServerError) GetPayload() string {
 	return o.Payload
 }
