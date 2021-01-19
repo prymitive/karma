@@ -17,5 +17,6 @@
     "jsx": "react-jsx",
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", ".stories"]
+  "include": ["src"],
+  "exclude": ["**/*.stories.tsx"]
 }
