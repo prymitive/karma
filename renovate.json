@@ -1,8 +1,7 @@
 {
   "extends": ["config:base"],
   "prHourlyLimit": 1,
-  "prCreation": "not-pending",
-  "prNotPendingHours": 4,
+  "stabilityDays": 1,
   "dependencyDashboard": true,
   "postUpdateOptions": ["gomodTidy"],
   "packageRules": [
