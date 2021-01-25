@@ -8,6 +8,7 @@ import { MockThemeContext } from "__fixtures__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
 import { SilenceModalContent } from "./SilenceModalContent";
 
 let alertStore: AlertStore;
@@ -15,8 +16,6 @@ let settingsStore: Settings;
 let silenceFormStore: SilenceFormStore;
 
 beforeEach(() => {
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
-
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
   silenceFormStore = new SilenceFormStore();
@@ -56,7 +55,11 @@ const MountedSilenceModalContent = () => {
       settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
       onHide={MockOnHide}
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
 };
 

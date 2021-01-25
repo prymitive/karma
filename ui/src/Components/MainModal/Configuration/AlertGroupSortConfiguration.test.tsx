@@ -7,14 +7,13 @@ import toDiffableHtml from "diffable-html";
 import { MockThemeContext } from "__fixtures__/Theme";
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { Settings } from "Stores/Settings";
+import { ThemeContext } from "Components/Theme";
 import { AlertGroupSortConfiguration } from "./AlertGroupSortConfiguration";
 
 let settingsStore: Settings;
 
 beforeEach(() => {
   settingsStore = new Settings(null);
-
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
 });
 
 afterEach(() => {
@@ -22,7 +21,10 @@ afterEach(() => {
 });
 
 const FakeConfiguration = () => {
-  return mount(<AlertGroupSortConfiguration settingsStore={settingsStore} />);
+  return mount(<AlertGroupSortConfiguration settingsStore={settingsStore} />, {
+    wrappingComponent: ThemeContext.Provider,
+    wrappingComponentProps: { value: MockThemeContext },
+  });
 };
 
 const ExpandSortLabelSuggestions = () => {

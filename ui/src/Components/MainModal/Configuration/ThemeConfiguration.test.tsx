@@ -6,18 +6,20 @@ import toDiffableHtml from "diffable-html";
 
 import { MockThemeContext } from "__fixtures__/Theme";
 import { Settings, ThemeT } from "Stores/Settings";
+import { ThemeContext } from "Components/Theme";
 import { ThemeConfiguration } from "./ThemeConfiguration";
 
 let settingsStore: Settings;
 
 beforeEach(() => {
   settingsStore = new Settings(null);
-
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
 });
 
 const FakeConfiguration = () => {
-  return mount(<ThemeConfiguration settingsStore={settingsStore} />);
+  return mount(<ThemeConfiguration settingsStore={settingsStore} />, {
+    wrappingComponent: ThemeContext.Provider,
+    wrappingComponentProps: { value: MockThemeContext },
+  });
 };
 
 describe("<ThemeConfiguration />", () => {
