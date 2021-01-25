@@ -311,7 +311,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run markdown-lint
-        uses: avto-dev/markdown-lint@v1.4.0
+        uses: avto-dev/markdown-lint@v1.5.0
         with:
           config: .markdownlint.yml
           args: "*.md docs"
