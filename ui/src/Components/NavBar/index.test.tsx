@@ -7,6 +7,7 @@ import { MockThemeContext } from "__fixtures__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
 import NavBar from ".";
 import { MobileIdleTimeout, DesktopIdleTimeout } from "./timeouts";
 
@@ -19,8 +20,6 @@ declare let global: any;
 
 beforeEach(() => {
   jest.useFakeTimers();
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
-
   global.ResizeObserver = jest.fn((cb) => {
     resizeCallback = cb;
     return {
@@ -52,7 +51,11 @@ const MountedNavbar = (fixedTop?: boolean) => {
       settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
       fixedTop={fixedTop}
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
 };
 
