@@ -39,7 +39,7 @@
         - name: am
           uri: https://alertmanager.example.com
           healthcheck:
-            alerts:
+            filters:
               prom1:
                 - alertname=DeadMansSwitch
                 - instance=prom1
