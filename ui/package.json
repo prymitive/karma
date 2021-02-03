@@ -86,7 +86,7 @@
     "enzyme": "3.11.0",
     "jest-canvas-mock": "2.3.0",
     "jest-date-mock": "1.0.8",
-    "puppeteer": "6.0.0",
+    "puppeteer": "7.0.0",
     "react-test-renderer": "17.0.1",
     "source-map-explorer": "2.5.2"
   },
