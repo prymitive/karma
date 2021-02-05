@@ -25,6 +25,7 @@ const SetupSentry = (settingsElement: HTMLElement | null): void => {
       init({
         dsn: settingsElement.dataset.sentryDsn,
         release: version,
+        autoSessionTracking: false,
       });
     } catch (err) {
       console.error("Sentry config failed: " + err);
