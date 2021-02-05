@@ -3,7 +3,7 @@ name: Node version
 on:
   push:
     branches:
-      - main
+      - node-test
     paths:
       - Dockerfile
 
