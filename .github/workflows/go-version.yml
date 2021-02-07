@@ -33,6 +33,7 @@ jobs:
           branch: version-sync-go
           delete-branch: true
           title: "chore(actions): use latest Go version"
+          labels: automerge
 
       - name: Check outputs
         run: |

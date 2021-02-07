@@ -1,22 +1,27 @@
-name: Open API
+name: Maintenance
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - internal/mapper/*/Dockerfile
+  schedule:
+    - cron: "0 20 * * 0"
 
 jobs:
-  code-sync:
-    name: Regenerate OpenAPI client code
-    runs-on: ubuntu-latest
+  npm-upgrades:
+    name: Regenerate package-lock.json
+    runs-on: macos-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Regenerate OpenAPI client code
-        run: make openapi-client
+      - name: Set up Node JS
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.15.4
+
+      - name: Regenerate package-lock.json
+        run: make -C ui npm-upgrade
+
+      - name: Rebuild react app
+        run: make -C ui build
 
       - name: Create Pull Request
         id: cpr
@@ -24,10 +29,10 @@ jobs:
         with:
           token: ${{ secrets.GH_REPO_TOKEN }}
           author: "Łukasz Mierzwa <l.mierzwa@gmail.com>"
-          commit-message: "chore(backend): regenerate openapi code"
-          branch: openapi-sync
+          commit-message: "chore(ui): upgrade all 3rd party dependencies"
+          branch: npm-upgrades
           delete-branch: true
-          title: "chore(backend): regenerate openapi code"
+          title: "chore(ui): upgrade all 3rd party dependencies"
           labels: automerge
 
       - name: Check outputs
