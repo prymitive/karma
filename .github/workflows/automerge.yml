@@ -1,0 +1,37 @@
+name: Automerge
+
+on:
+  pull_request:
+    branches:
+      - main
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
+      - opened
+      - edited
+      - ready_for_review
+      - reopened
+      - unlocked
+  pull_request_review:
+    types:
+      - submitted
+  check_suite:
+    types:
+      - completed
+
+jobs:
+  automerge:
+    runs-on: ubuntu-latest
+    steps:
+      - name: automerge
+        uses: "pascalgn/automerge-action@v0.13.0"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "automerge,!WIP"
+          MERGE_REMOVE_LABELS: "automerge"
+          MERGE_METHOD: "squash"
+          MERGE_FORKS: "false"
+          MERGE_DELETE_BRANCH: "true"
+          UPDATE_LABELS: "automerge,!WIP"
+          UPDATE_METHOD: "rebase"
