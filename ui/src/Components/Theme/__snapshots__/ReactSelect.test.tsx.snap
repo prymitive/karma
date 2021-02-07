@@ -41,8 +41,8 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
     <div class=\\" css-vcwr3k-IndicatorsContainer\\">
       <span class=\\" css-1okebmr-indicatorSeparator\\">
       </span>
-      <div aria-hidden=\\"true\\"
-           class=\\" css-1ij327q-indicatorContainer\\"
+      <div class=\\" css-1ij327q-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -103,8 +103,8 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
     <div class=\\" css-15bdmde-IndicatorsContainer\\">
       <span class=\\" css-109onse-indicatorSeparator\\">
       </span>
-      <div aria-hidden=\\"true\\"
-           class=\\" css-1ij327q-indicatorContainer\\"
+      <div class=\\" css-1ij327q-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -154,8 +154,8 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
     <div class=\\" css-vcwr3k-IndicatorsContainer\\">
       <span class=\\" css-1okebmr-indicatorSeparator\\">
       </span>
-      <div aria-hidden=\\"true\\"
-           class=\\" css-tlfecz-indicatorContainer\\"
+      <div class=\\" css-tlfecz-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -206,8 +206,8 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
     <div class=\\" css-15bdmde-IndicatorsContainer\\">
       <span class=\\" css-109onse-indicatorSeparator\\">
       </span>
-      <div aria-hidden=\\"true\\"
-           class=\\" css-tlfecz-indicatorContainer\\"
+      <div class=\\" css-tlfecz-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -257,8 +257,8 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
     <div class=\\" css-vcwr3k-IndicatorsContainer\\">
       <span class=\\" css-1okebmr-indicatorSeparator\\">
       </span>
-      <div aria-hidden=\\"true\\"
-           class=\\" css-tlfecz-indicatorContainer\\"
+      <div class=\\" css-tlfecz-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -320,8 +320,8 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
       </div>
     </div>
     <div class=\\" css-vcwr3k-IndicatorsContainer\\">
-      <div aria-hidden=\\"true\\"
-           class=\\" css-tlfecz-indicatorContainer\\"
+      <div class=\\" css-tlfecz-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
@@ -336,8 +336,8 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
       </div>
       <span class=\\" css-1okebmr-indicatorSeparator\\">
       </span>
-      <div aria-hidden=\\"true\\"
-           class=\\" css-tlfecz-indicatorContainer\\"
+      <div class=\\" css-tlfecz-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"

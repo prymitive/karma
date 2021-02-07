@@ -148,8 +148,8 @@ exports[`<Configuration /> matches snapshot 1`] = `
             <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
               <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
               </span>
-              <div aria-hidden=\\"true\\"
-                   class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+              <div class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                   aria-hidden=\\"true\\"
               >
                 <svg height=\\"20\\"
                      width=\\"20\\"
@@ -345,8 +345,8 @@ exports[`<Configuration /> matches snapshot 1`] = `
             <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
               <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
               </span>
-              <div aria-hidden=\\"true\\"
-                   class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+              <div class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                   aria-hidden=\\"true\\"
               >
                 <svg height=\\"20\\"
                      width=\\"20\\"
@@ -423,8 +423,8 @@ exports[`<Configuration /> matches snapshot 1`] = `
                 <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
                   <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
                   </span>
-                  <div aria-hidden=\\"true\\"
-                       class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                  <div class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                       aria-hidden=\\"true\\"
                   >
                     <svg height=\\"20\\"
                          width=\\"20\\"
@@ -503,8 +503,8 @@ exports[`<Configuration /> matches snapshot 1`] = `
                 <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
                   <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
                   </span>
-                  <div aria-hidden=\\"true\\"
-                       class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                  <div class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+                       aria-hidden=\\"true\\"
                   >
                     <svg height=\\"20\\"
                          width=\\"20\\"
