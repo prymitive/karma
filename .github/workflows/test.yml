@@ -620,8 +620,6 @@ jobs:
           tags: ${{ env.DOCKER_TAGS }}
           build-args: |
             VERSION=${{ env.VERSION }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
 
   demo-deploy:
     name: Deploy demo app to Heroku
