@@ -23,3 +23,5 @@ jobs:
           days-before-close: 7
           close-issue-label: wontfix
           close-pr-label: wontfix
+          exempt-issue-labels: "bug,enhancement"
+          exempt-pr-labels: "bug,enhancement"
