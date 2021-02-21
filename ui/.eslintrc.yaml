@@ -7,8 +7,7 @@ extends:
   - react-app
   - react-app/jest
   - "plugin:@typescript-eslint/recommended"
-  - "prettier/@typescript-eslint"
-  - "plugin:prettier/recommended"
+  - "prettier"
 settings:
   react:
     version: detect
