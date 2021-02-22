@@ -684,7 +684,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: "Update status"
-        uses: Sibz/github-status-action@v1.1.1
+        uses: Sibz/github-status-action@v1.1.2
         with:
           authToken: ${{ secrets.GH_REPO_TOKEN }}
           context: "Mergeable"
