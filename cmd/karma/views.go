@@ -41,6 +41,10 @@ func pong(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte("Pong\n"))
 }
 
+func robots(w http.ResponseWriter, r *http.Request) {
+	_, _ = w.Write([]byte("User-agent: *\nDisallow: /\n"))
+}
+
 func compressResponse(data []byte) ([]byte, error) {
 	var b bytes.Buffer
 	// this only fails if we pass unsupported level (3 is valid)
