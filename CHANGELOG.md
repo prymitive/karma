@@ -1,5 +1,11 @@
 # Changelog
 
+## [unreleased]
+
+### Added
+
+- Add `/robots.txt` to block search engine crawlers.
+
 ## v0.79
 
 ### Fixed

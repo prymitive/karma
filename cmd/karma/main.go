@@ -128,6 +128,7 @@ func setupRouter(router *chi.Mux) {
 
 	router.Get(getViewURL("/"), index)
 	router.Get(getViewURL("/health"), pong)
+	router.Get(getViewURL("/robots.txt"), robots)
 	router.Get(getViewURL("/metrics"), http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h := promhttp.Handler()
 		h.ServeHTTP(w, r)
