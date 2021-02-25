@@ -5,6 +5,8 @@
 ### Added
 
 - Add `/robots.txt` to block search engine crawlers.
+- Easily change multi-grid source label via quick access dropdown on the grid
+  header.
 
 ## v0.79
 

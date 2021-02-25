@@ -248,7 +248,7 @@ describe("<Grid />", () => {
     tree.setProps({ grid: grid });
     expect(tree.find("AlertGroup")).toHaveLength(10);
 
-    tree.find("span.cursor-pointer").at(0).simulate("click");
+    tree.find("span.cursor-pointer").at(1).simulate("click");
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -257,7 +257,7 @@ describe("<Grid />", () => {
       0
     );
 
-    tree.find("span.cursor-pointer").at(0).simulate("click");
+    tree.find("span.cursor-pointer").at(1).simulate("click");
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -625,7 +625,7 @@ describe("<AlertGrid />", () => {
       .find("Grid")
       .at(0)
       .find("span.cursor-pointer")
-      .at(0)
+      .at(1)
       .simulate("click", { altKey: true });
   });
 

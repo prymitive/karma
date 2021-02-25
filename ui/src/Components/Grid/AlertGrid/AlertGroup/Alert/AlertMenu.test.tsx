@@ -108,12 +108,16 @@ describe("<AlertMenu />", () => {
     const toggle = tree.find("span.cursor-pointer");
 
     toggle.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
     expect(tree.find("div.dropdown-menu")).toHaveLength(1);
 
     toggle.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     tree.update();
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(2);
     expect(tree.find("div.dropdown-menu")).toHaveLength(0);
@@ -130,7 +134,9 @@ describe("<AlertMenu />", () => {
     expect(tree.find("div.dropdown-menu")).toHaveLength(1);
 
     tree.find("a.dropdown-item").at(0).simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     tree.update();
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(2);
     expect(tree.find("div.dropdown-menu")).toHaveLength(0);

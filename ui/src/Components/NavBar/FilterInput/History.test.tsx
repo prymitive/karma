@@ -47,7 +47,9 @@ const PopulateHistory = (tree: ReactWrapper, count: number) => {
       AppliedFilter("baz", "=~", `bar${i}`),
     ]);
     tree.update();
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
   }
 };
 
@@ -74,11 +76,15 @@ describe("<History />", () => {
     const toggle = tree.find("button.cursor-pointer");
 
     toggle.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(tree.find("div.dropdown-menu")).toHaveLength(1);
 
     toggle.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     tree.update();
     expect(tree.find("div.dropdown-menu")).toHaveLength(0);
     await act(() => promise);
@@ -93,7 +99,9 @@ describe("<History />", () => {
     expect(tree.find("div.dropdown-menu")).toHaveLength(1);
 
     tree.find(".component-history-button").at(0).simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     tree.update();
     expect(tree.find("div.dropdown-menu")).toHaveLength(0);
     await act(() => promise);
@@ -158,7 +166,9 @@ describe("<HistoryMenu />", () => {
     expect(alertStore.filters.values).toHaveLength(1);
 
     button.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(alertStore.filters.values).toHaveLength(2);
     expect(alertStore.filters.values[0]).toMatchObject({ raw: "foo=bar1" });
     expect(alertStore.filters.values[1]).toMatchObject({ raw: "baz=~bar1" });
@@ -229,7 +239,9 @@ describe("<HistoryMenu />", () => {
     expect(button.text()).toBe("Save filters");
 
     button.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(settingsStore.savedFilters.config.filters).toHaveLength(2);
     expect(settingsStore.savedFilters.config.filters).toContain("foo=bar");
     expect(settingsStore.savedFilters.config.filters).toContain("bar=~baz");
@@ -243,7 +255,9 @@ describe("<HistoryMenu />", () => {
     const button = tree.find(".component-history-button").at(1);
     expect(button.text()).toBe("Reset filters");
     button.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(settingsStore.savedFilters.config.filters).toHaveLength(0);
   });
 
@@ -256,7 +270,9 @@ describe("<HistoryMenu />", () => {
     const button = tree.find(".component-history-button").at(2);
     expect(button.text()).toBe("Clear history");
     button.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     tree.update();
     expect(tree.find("button.dropdown-item")).toHaveLength(0);
   });
