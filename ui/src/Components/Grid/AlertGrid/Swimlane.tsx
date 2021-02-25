@@ -4,18 +4,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTh } from "@fortawesome/free-solid-svg-icons/faTh";
 
 import { AlertStore } from "Stores/AlertStore";
+import { Settings } from "Stores/Settings";
 import { APIGridT } from "Models/APITypes";
 import FilteringLabel from "Components/Labels/FilteringLabel";
 import FilteringCounterBadge from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { ToggleIcon } from "Components/ToggleIcon";
+import { GridLabelSelect } from "./GridLabelSelect";
 
 const Swimlane: FC<{
   alertStore: AlertStore;
+  settingsStore: Settings;
   grid: APIGridT;
   isExpanded: boolean;
   onToggle: (event: MouseEvent) => void;
-}> = ({ alertStore, grid, isExpanded, onToggle }) => {
+}> = ({ alertStore, settingsStore, grid, isExpanded, onToggle }) => {
   return (
     <h5 className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 mt-2 mb-0 border border-dark">
       <span className="flex-shrink-0 flex-grow-0">
@@ -23,7 +26,7 @@ const Swimlane: FC<{
           <FontAwesomeIcon icon={faTh} className="text-muted" />
         </span>
       </span>
-      <span className="flex-shrink-1 flex-grow-1" style={{ minWidth: "0px" }}>
+      <span className="flex-shrink-1 flex-grow-0" style={{ minWidth: "0px" }}>
         {grid.labelName !== "" && grid.labelValue !== "" && (
           <FilteringLabel
             key={grid.labelValue}
@@ -33,6 +36,14 @@ const Swimlane: FC<{
           />
         )}
       </span>
+      {grid.labelName !== "" && grid.labelValue !== "" && (
+        <span
+          className="flex-shrink-0 flex-grow-1 px-0"
+          style={{ minWidth: "0px" }}
+        >
+          <GridLabelSelect settingsStore={settingsStore} />
+        </span>
+      )}
       <span className="flex-shrink-0 flex-grow-0 ml-2 mr-0">
         <FilteringCounterBadge
           name="@state"

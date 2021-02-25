@@ -127,6 +127,7 @@ const Grid: FC<{
       >
         <Swimlane
           alertStore={alertStore}
+          settingsStore={settingsStore}
           grid={grid}
           isExpanded={isExpanded}
           onToggle={onCollapseClick}
