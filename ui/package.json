@@ -13,7 +13,7 @@
     "@fortawesome/free-solid-svg-icons": "5.15.2",
     "@fortawesome/react-fontawesome": "0.1.14",
     "@juggle/resize-observer": "3.3.0",
-    "@popperjs/core": "2.8.4",
+    "@popperjs/core": "2.8.5",
     "@sentry/browser": "6.2.0",
     "@types/body-scroll-lock": "2.6.1",
     "@types/bricks.js": "1.8.1",
