@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState } from "react";
+import React, { FC, ReactNode, useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
 import TransitionGroup from "react-transition-group/TransitionGroup";
@@ -7,9 +7,9 @@ import { CSSTransition } from "react-transition-group";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons/faCircle";
+import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 
 import { ThemeContext } from "Components/Theme";
-import { ToggleIcon } from "Components/ToggleIcon";
 
 const Toast: FC<{
   icon: IconDefinition;
@@ -17,6 +17,16 @@ const Toast: FC<{
   message: ReactNode;
 }> = ({ icon, iconClass, message }) => {
   const [isOpen, setIsOpen] = useState(true);
+
+  useEffect(() => {
+    const show = () => setIsOpen(true);
+    window.addEventListener("showNotifications", show);
+    return () => {
+      window.removeEventListener("showNotifications", show);
+    };
+  }, []);
+
+  if (!isOpen) return null;
 
   return (
     <div className="m-1 bg-toast text-white rounded shadow">
@@ -29,15 +39,14 @@ const Toast: FC<{
           <FontAwesomeIcon icon={icon} className="fa-stack-1x text-white" />
         </div>
         <div className="flex-shrink-1 flex-grow-1 align-self-center ml-1 mr-3 text-break text-wrap">
-          {isOpen ? message : null}
+          {message}
         </div>
         <div className="flex-shrink-0 flex-grow-0 align-self-top">
-          <span className="badge components-label with-click with-click-dark">
-            <ToggleIcon
-              isOpen={isOpen}
-              className={`cursor-pointer ${isOpen ? "m-2" : "mr-2"}`}
-              onClick={() => setIsOpen((v) => !v)}
-            />
+          <span
+            className="badge components-label cursor-pointer with-click with-click-dark"
+            onClick={() => setIsOpen(false)}
+          >
+            <FontAwesomeIcon icon={faTimes} />
           </span>
         </div>
       </div>

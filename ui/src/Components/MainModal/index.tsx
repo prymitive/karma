@@ -29,7 +29,7 @@ const MainModal: FC<{
       <li
         className={`nav-item components-navbar-button ${
           isVisible ? "border-info" : ""
-        }`}
+        } ml-auto`}
       >
         <TooltipWrapper title="Settings">
           <span
@@ -37,7 +37,7 @@ const MainModal: FC<{
             className="nav-link cursor-pointer"
             onClick={toggle}
           >
-            <FontAwesomeIcon icon={faCog} />
+            <FontAwesomeIcon icon={faCog} fixedWidth />
           </span>
         </TooltipWrapper>
       </li>

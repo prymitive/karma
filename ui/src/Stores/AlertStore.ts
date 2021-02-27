@@ -152,6 +152,7 @@ interface AlertStoreDataT {
   setUpstreams: (u: APIAlertsResponseUpstreamsT) => void;
   setInstances: (i: APIAlertmanagerUpstreamT[]) => void;
   setClusters: (c: APIAlertsResponseUpstreamsClusterMapT) => void;
+  readonly upstreamsWithErrors: APIAlertmanagerUpstreamT[];
 }
 
 interface AlertStoreInfoT {
@@ -342,6 +343,11 @@ class AlertStore {
         },
         setClusters(c: APIAlertsResponseUpstreamsClusterMapT) {
           this.upstreams.clusters = c;
+        },
+        get upstreamsWithErrors(): APIAlertmanagerUpstreamT[] {
+          return this.upstreams.instances.filter(
+            (upstream) => upstream.error !== ""
+          );
         },
       },
       {
