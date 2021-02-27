@@ -59,37 +59,12 @@ const MountedNavbar = (fixedTop?: boolean) => {
   );
 };
 
-const ValidateNavClass = (totalFilters: number, expectedClass: string) => {
-  for (let i = 0; i < totalFilters; i++) {
-    alertStore.filters.addFilter(`foo=${i}`);
-  }
-  const tree = MountedNavbar();
-  const nav = tree.find("ul.navbar-nav");
-  expect((nav.props().className as string).split(" ")).toContain(expectedClass);
-};
-
 describe("<NavBar />", () => {
   it("navbar-brand shows 15 alerts with totalAlerts=15", () => {
     alertStore.info.setTotalAlerts(15);
     const tree = MountedNavbar();
     const brand = tree.find("span.navbar-brand");
     expect(brand.text()).toBe("15");
-  });
-
-  it("navbar-nav includes 'flex-row' class with 0 filters", () => {
-    ValidateNavClass(0, "flex-row");
-  });
-
-  it("navbar-nav includes 'flex-row' class with 1 filter", () => {
-    ValidateNavClass(1, "flex-column");
-  });
-
-  it("navbar-nav includes 'flex-column' class with 2 filters", () => {
-    ValidateNavClass(2, "flex-column");
-  });
-
-  it("navbar-nav includes 'flex-column' class with 3 filters", () => {
-    ValidateNavClass(3, "flex-column");
   });
 
   it("navbar includes 'fixed-top' class by default", () => {

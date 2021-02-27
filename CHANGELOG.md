@@ -8,6 +8,10 @@
 - Easily change multi-grid source label via quick access dropdown on the grid
   header.
 
+### Changed
+
+- Reworked how notifications are displayed.
+
 ## v0.79
 
 ### Fixed

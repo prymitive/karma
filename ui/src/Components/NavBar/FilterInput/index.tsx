@@ -147,7 +147,11 @@ const FilterInput: FC<{
   return (
     // data-filters is there to register filters for observation in mobx
     // in order to re-render input component
-    <form className="form-inline mw-100" onSubmit={onSubmit}>
+    <form
+      className="form-inline flex-grow-1 flex-shrink-1 mr-auto"
+      style={{ minWidth: "0px" }}
+      onSubmit={onSubmit}
+    >
       <div
         ref={formRef}
         className={`input-group w-100 mr-2 components-filterinput-outer ${
