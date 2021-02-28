@@ -10,7 +10,7 @@ require (
 	github.com/fvbommel/sortorder v1.0.2
 	github.com/getsentry/raven-go v0.2.0 // indirect
 	github.com/getsentry/sentry-go v0.10.0
-	github.com/go-chi/chi v1.5.4
+	github.com/go-chi/chi/v5/v5 v5.0.0
 	github.com/go-chi/cors v1.1.1
 	github.com/go-openapi/errors v0.20.0
 	github.com/go-openapi/runtime v0.19.26
