@@ -15,7 +15,8 @@ const Toast: FC<{
   icon: IconDefinition;
   iconClass: string;
   message: ReactNode;
-}> = ({ icon, iconClass, message }) => {
+  hasClose: boolean;
+}> = ({ icon, iconClass, message, hasClose }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
@@ -41,14 +42,16 @@ const Toast: FC<{
         <div className="flex-shrink-1 flex-grow-1 align-self-center ml-1 mr-3 text-break text-wrap">
           {message}
         </div>
-        <div className="flex-shrink-0 flex-grow-0 align-self-top">
-          <span
-            className="badge components-label cursor-pointer with-click with-click-dark"
-            onClick={() => setIsOpen(false)}
-          >
-            <FontAwesomeIcon icon={faTimes} />
-          </span>
-        </div>
+        {hasClose ? (
+          <div className="flex-shrink-0 flex-grow-0 align-self-top">
+            <span
+              className="badge components-label cursor-pointer with-click with-click-dark"
+              onClick={() => setIsOpen(false)}
+            >
+              <FontAwesomeIcon icon={faTimes} />
+            </span>
+          </div>
+        ) : null}
       </div>
     </div>
   );
