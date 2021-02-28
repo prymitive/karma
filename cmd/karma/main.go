@@ -26,10 +26,9 @@ import (
 	"github.com/prymitive/karma/internal/transform"
 	"github.com/prymitive/karma/internal/uri"
 
-	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	"github.com/loikg/ravenchi"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -86,7 +85,7 @@ func setupRouter(router *chi.Mux) {
 	_ = mime.AddExtensionType(".ico", "image/x-icon")
 
 	router.Use(promMiddleware)
-	router.Use(ravenchi.SentryRecovery)
+	router.Use(sentryRecovery)
 	router.Use(middleware.RealIP)
 
 	compressor := middleware.NewCompressor(flate.DefaultCompression)
