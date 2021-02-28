@@ -2445,3 +2445,115 @@ func TestHealthcheckAlerts(t *testing.T) {
 		}
 	}
 }
+
+func TestAlertFilters(t *testing.T) {
+	type testCaseT struct {
+		filters    []string
+		alertCount int
+	}
+
+	testCases := []testCaseT{
+		{
+			filters:    []string{},
+			alertCount: 24,
+		},
+		{
+			filters:    []string{"@alertmanager=xxx"},
+			alertCount: 0,
+		},
+		{
+			filters:    []string{"@alertmanager=c1a"},
+			alertCount: 24,
+		},
+		{
+			filters:    []string{"@cluster=cluster1"},
+			alertCount: 24,
+		},
+		{
+			filters:    []string{"@cluster=cluster2"},
+			alertCount: 24,
+		},
+	}
+
+	for _, tc := range testCases {
+		var filters []string
+		for _, f := range tc.filters {
+			filters = append(filters, "q="+f)
+		}
+		q := strings.Join(filters, "&")
+		for _, version := range mock.ListAllMocks() {
+			t.Run(q, func(t *testing.T) {
+				t.Logf("Validating alerts.json response using mock files from Alertmanager %s", version)
+
+				httpmock.Activate()
+				defer httpmock.DeactivateAndReset()
+
+				mockCache()
+
+				alertmanager.UnregisterAll()
+
+				mock.RegisterURL("http://localhost/c1a/metrics", version, "metrics")
+				mock.RegisterURL("http://localhost/c1a/api/v2/status", version, "api/v2/status")
+				mock.RegisterURL("http://localhost/c1a/api/v2/silences", version, "api/v2/silences")
+				mock.RegisterURL("http://localhost/c1a/api/v2/alerts/groups", version, "api/v2/alerts/groups")
+				c1a, err := alertmanager.NewAlertmanager("cluster1", "c1a", "http://localhost/c1a")
+				if err != nil {
+					t.Fatal(err)
+				}
+				err = alertmanager.RegisterAlertmanager(c1a)
+				if err != nil {
+					t.Fatal(err)
+				}
+
+				mock.RegisterURL("http://localhost/c1b/metrics", version, "metrics")
+				mock.RegisterURL("http://localhost/c1b/api/v2/status", version, "api/v2/status")
+				mock.RegisterURL("http://localhost/c1b/api/v2/silences", version, "api/v2/silences")
+				mock.RegisterURL("http://localhost/c1b/api/v2/alerts/groups", version, "api/v2/alerts/groups")
+				c1b, err := alertmanager.NewAlertmanager("cluster1", "c1b", "http://localhost/c1b")
+				if err != nil {
+					t.Fatal(err)
+				}
+				err = alertmanager.RegisterAlertmanager(c1b)
+				if err != nil {
+					t.Fatal(err)
+				}
+
+				mock.RegisterURL("http://localhost/c2a/metrics", version, "metrics")
+				mock.RegisterURL("http://localhost/c2a/api/v2/status", version, "api/v2/status")
+				mock.RegisterURL("http://localhost/c2a/api/v2/silences", version, "api/v2/silences")
+				mock.RegisterURL("http://localhost/c2a/api/v2/alerts/groups", version, "api/v2/alerts/groups")
+				c2a, err := alertmanager.NewAlertmanager("cluster2", "c2a", "http://localhost/c2a")
+				if err != nil {
+					t.Fatal(err)
+				}
+				err = alertmanager.RegisterAlertmanager(c2a)
+				if err != nil {
+					t.Fatal(err)
+				}
+
+				pullFromAlertmanager()
+
+				r := testRouter()
+				setupRouter(r)
+				// re-run a few times to test the cache
+				for i := 1; i <= 3; i++ {
+					req := httptest.NewRequest("GET", fmt.Sprintf("/alerts.json?%s", q), nil)
+					resp := httptest.NewRecorder()
+					r.ServeHTTP(resp, req)
+					if resp.Code != http.StatusOK {
+						t.Errorf("GET /alerts.json returned status %d", resp.Code)
+					}
+					ur := models.AlertsResponse{}
+					body := resp.Body.Bytes()
+					err := json.Unmarshal(body, &ur)
+					if err != nil {
+						t.Errorf("Failed to unmarshal response: %s", err)
+					}
+					if ur.TotalAlerts != tc.alertCount {
+						t.Errorf("Got %d alerts, expected %d", ur.TotalAlerts, tc.alertCount)
+					}
+				}
+			})
+		}
+	}
+}
