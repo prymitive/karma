@@ -17,6 +17,7 @@ describe("<Toast />", () => {
         icon={faExclamation}
         iconClass="text-danger"
         message="fake error"
+        hasClose
       />
     );
     expect(toDiffableHtml(tree.html())).toMatch(/fake error/);
@@ -28,6 +29,7 @@ describe("<Toast />", () => {
         icon={faExclamation}
         iconClass="text-danger"
         message="fake error"
+        hasClose
       />
     );
     expect(toDiffableHtml(tree.html())).toMatch(/fake error/);
@@ -42,6 +44,7 @@ describe("<Toast />", () => {
         icon={faExclamation}
         iconClass="text-danger"
         message="fake error"
+        hasClose
       />
     );
     expect(toDiffableHtml(tree.html())).toMatch(/fake error/);
@@ -57,12 +60,37 @@ describe("<Toast />", () => {
     expect(toDiffableHtml(tree.html())).toMatch(/fake error/);
   });
 
+  it("renders close icon when hasClose=true", () => {
+    const tree = mount(
+      <Toast
+        icon={faExclamation}
+        iconClass="text-danger"
+        message="fake error"
+        hasClose={true}
+      />
+    );
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-times/);
+  });
+
+  it("doesn't render close icon when hasClose=false", () => {
+    const tree = mount(
+      <Toast
+        icon={faExclamation}
+        iconClass="text-danger"
+        message="fake error"
+        hasClose={false}
+      />
+    );
+    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-times/);
+  });
+
   it("unmounts cleanly", () => {
     const tree = mount(
       <Toast
         icon={faExclamation}
         iconClass="text-danger"
         message="fake error"
+        hasClose
       />
     );
     tree.unmount();

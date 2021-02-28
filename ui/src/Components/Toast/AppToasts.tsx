@@ -56,6 +56,7 @@ const AppToasts: FC<{
                 message={upstream.error}
               />
             }
+            hasClose
           />
         ))}
         {alertStore.info.upgradeReady ? (
@@ -64,6 +65,7 @@ const AppToasts: FC<{
             icon={faArrowUp}
             iconClass="text-success"
             message={<UpgradeToastMessage alertStore={alertStore} />}
+            hasClose={false}
           />
         ) : null}
       </ToastContainer>
