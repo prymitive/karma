@@ -5,9 +5,12 @@ import { mount } from "enzyme";
 
 import fetchMock from "fetch-mock";
 
+import { MockGrid } from "__fixtures__/Stories";
+import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { GridLabelSelect } from "./GridLabelSelect";
 
+let alertStore: AlertStore;
 let settingsStore: Settings;
 
 beforeEach(() => {
@@ -16,13 +19,16 @@ beforeEach(() => {
     body: JSON.stringify([]),
   });
 
+  alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
 
   jest.useFakeTimers();
 });
 
 const MountedGridLabelSelect = () => {
-  return mount(<GridLabelSelect settingsStore={settingsStore} />);
+  return mount(
+    <GridLabelSelect alertStore={alertStore} settingsStore={settingsStore} />
+  );
 };
 
 describe("<GridLabelSelect />", () => {
@@ -35,10 +41,27 @@ describe("<GridLabelSelect />", () => {
 
   it("clicking toggle renders select dropdown", async () => {
     const promise = Promise.resolve();
+    MockGrid(alertStore);
     const tree = MountedGridLabelSelect();
     const toggle = tree.find("span.components-grid-label-select-dropdown");
     toggle.simulate("click");
     expect(tree.find("div.components-grid-label-select-menu")).toHaveLength(1);
+    await act(() => promise);
+  });
+
+  it("clicking an option updates grid settings", async () => {
+    const promise = Promise.resolve();
+    MockGrid(alertStore);
+    const tree = MountedGridLabelSelect();
+
+    const toggle = tree.find("span.components-grid-label-select-dropdown");
+    toggle.simulate("click");
+    expect(tree.find("div.components-grid-label-select-menu")).toHaveLength(1);
+
+    settingsStore.multiGridConfig.config.gridLabel = "foo";
+    const options = tree.find("div.react-select__option");
+    options.at(4).simulate("click");
+    expect(settingsStore.multiGridConfig.config.gridLabel).toBe("cluster");
     await act(() => promise);
   });
 

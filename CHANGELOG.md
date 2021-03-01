@@ -1,5 +1,11 @@
 # Changelog
 
+## [unreleased]
+
+### Changed
+
+- Multi-grid label dropdown will only show label names from visible alerts.
+
 ## v0.80
 
 ### Added

@@ -11,23 +11,96 @@ import { observer } from "mobx-react-lite";
 
 import { Manager, Reference, Popper } from "react-popper";
 
+import AsyncSelect from "react-select/async";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 
+import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { CommonPopperModifiers } from "Common/Popper";
+import { NewLabelName, StringToOption, OptionT } from "Common/Select";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
+import { ThemeContext } from "Components/Theme";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
-import { GridLabelName } from "Components/MainModal/Configuration/GridLabelName";
 
 const NullContainer: FC = () => null;
+
+const GridLabelNameSelect: FC<{
+  alertStore: AlertStore;
+  settingsStore: Settings;
+}> = ({ alertStore, settingsStore }) => {
+  const loadOptions = (
+    inputValue: string,
+    callback: (options: OptionT[]) => void
+  ) => {
+    const labelNames: { [key: string]: boolean } = {
+      "@alertmanager": true,
+      "@cluster": true,
+      "@receiver": true,
+    };
+
+    alertStore.data.grids.forEach((grid) => {
+      labelNames[grid.labelName] = true;
+      grid.alertGroups.forEach((group) => {
+        Object.keys(group.labels).forEach((name) => {
+          labelNames[name] = true;
+        });
+        Object.keys(group.shared.labels).forEach((name) => {
+          labelNames[name] = true;
+        });
+        group.alerts.forEach((alert) => {
+          Object.keys(alert.labels).forEach((name) => {
+            labelNames[name] = true;
+          });
+        });
+      });
+    });
+
+    callback(
+      Object.keys(labelNames)
+        .sort()
+        .map((key) => StringToOption(key))
+    );
+  };
+
+  const context = React.useContext(ThemeContext);
+
+  return (
+    <AsyncSelect
+      styles={context.reactSelectStyles}
+      classNamePrefix="react-select"
+      formatCreateLabel={NewLabelName}
+      loadOptions={loadOptions}
+      defaultOptions
+      onChange={(option) => {
+        settingsStore.multiGridConfig.config.gridLabel = (option as OptionT).value;
+      }}
+      menuIsOpen={true}
+      components={{
+        ClearIndicator: null,
+        IndicatorSeparator: null,
+        DropdownIndicator: null,
+        ValueContainer: NullContainer,
+        Control: NullContainer,
+      }}
+    />
+  );
+};
 
 const Dropdown: FC<{
   popperPlacement?: string;
   popperRef?: Ref<HTMLDivElement>;
   popperStyle?: CSSProperties;
+  alertStore: AlertStore;
   settingsStore: Settings;
-}> = ({ popperPlacement, popperRef, popperStyle, settingsStore }) => {
+}> = ({
+  popperPlacement,
+  popperRef,
+  popperStyle,
+  alertStore,
+  settingsStore,
+}) => {
   return (
     <div
       className="dropdown-menu d-block shadow components-grid-label-select-menu border-0 p-0"
@@ -39,24 +112,18 @@ const Dropdown: FC<{
       }}
       data-placement={popperPlacement}
     >
-      <GridLabelName
+      <GridLabelNameSelect
+        alertStore={alertStore}
         settingsStore={settingsStore}
-        isOpen={true}
-        selectComponents={{
-          ClearIndicator: null,
-          IndicatorSeparator: null,
-          DropdownIndicator: null,
-          ValueContainer: NullContainer,
-          Control: NullContainer,
-        }}
       />
     </div>
   );
 };
 
 const GridLabelSelect: FC<{
+  alertStore: AlertStore;
   settingsStore: Settings;
-}> = observer(({ settingsStore }) => {
+}> = observer(({ alertStore, settingsStore }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const hide = useCallback(() => setIsVisible(false), []);
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
@@ -86,6 +153,7 @@ const GridLabelSelect: FC<{
                 popperPlacement={placement}
                 popperRef={ref}
                 popperStyle={style}
+                alertStore={alertStore}
                 settingsStore={settingsStore}
               />
             )}

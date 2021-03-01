@@ -1,7 +1,6 @@
 import React, { FC } from "react";
 
 import Creatable from "react-select/creatable";
-import { GroupTypeBase, SelectComponentsConfig } from "react-select";
 
 import { useFetchGet } from "Hooks/useFetchGet";
 import { FormatBackendURI } from "Stores/AlertStore";
@@ -25,11 +24,7 @@ const staticValues = [
 
 const GridLabelName: FC<{
   settingsStore: Settings;
-  isOpen?: boolean | undefined;
-  selectComponents?:
-    | Partial<SelectComponentsConfig<OptionT, false, GroupTypeBase<OptionT>>>
-    | undefined;
-}> = ({ settingsStore, isOpen = undefined, selectComponents = undefined }) => {
+}> = ({ settingsStore }) => {
   const { response } = useFetchGet<string[]>(
     FormatBackendURI(`labelNames.json`)
   );
@@ -56,8 +51,6 @@ const GridLabelName: FC<{
       onChange={(option) => {
         settingsStore.multiGridConfig.config.gridLabel = (option as OptionT).value;
       }}
-      menuIsOpen={isOpen}
-      components={selectComponents}
     />
   );
 };

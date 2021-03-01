@@ -41,7 +41,10 @@ const Swimlane: FC<{
           className="flex-shrink-0 flex-grow-1 px-0"
           style={{ minWidth: "0px" }}
         >
-          <GridLabelSelect settingsStore={settingsStore} />
+          <GridLabelSelect
+            alertStore={alertStore}
+            settingsStore={settingsStore}
+          />
         </span>
       )}
       <span className="flex-shrink-0 flex-grow-0 ml-2 mr-0">
