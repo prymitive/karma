@@ -14,7 +14,7 @@
     "@fortawesome/react-fontawesome": "0.1.14",
     "@juggle/resize-observer": "3.3.0",
     "@popperjs/core": "2.8.6",
-    "@sentry/browser": "6.2.0",
+    "@sentry/browser": "6.2.1",
     "@types/body-scroll-lock": "2.6.1",
     "@types/bricks.js": "1.8.1",
     "@types/enzyme": "3.10.8",
