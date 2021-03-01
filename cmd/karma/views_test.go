@@ -779,6 +779,24 @@ func TestSilences(t *testing.T) {
 			showExpired: "1",
 			results:     []string{silenceHostDown, silenceInstance, silenceServer7},
 		},
+		{
+			searchTerm:  "@cluster=Default",
+			sortReverse: "0",
+			showExpired: "0",
+			results:     []string{silenceHostDown, silenceInstance, silenceServer7},
+		},
+		{
+			searchTerm:  "Default",
+			sortReverse: "0",
+			showExpired: "0",
+			results:     []string{silenceHostDown, silenceInstance, silenceServer7},
+		},
+		{
+			searchTerm:  "instance=server7",
+			sortReverse: "0",
+			showExpired: "0",
+			results:     []string{silenceServer7},
+		},
 	}
 
 	mockConfig()
