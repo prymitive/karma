@@ -17,8 +17,6 @@ rules:
   "@typescript-eslint/no-empty-function": off
   # noisy
   "@typescript-eslint/explicit-function-return-type": off
-  #   # https://github.com/typescript-eslint/typescript-eslint/issues/2502
-  "@typescript-eslint/no-use-before-define": off
 overrides:
   - files:
       - "**/__mocks__/*.ts"
