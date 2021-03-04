@@ -17,7 +17,7 @@ require (
 	github.com/go-openapi/strfmt v0.20.0
 	github.com/go-openapi/swag v0.19.14
 	github.com/go-openapi/validate v0.20.2
-	github.com/google/go-cmp v0.5.4
+	github.com/google/go-cmp v0.5.5
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/jarcoal/httpmock v1.0.8
 	github.com/knadh/koanf v0.15.0
