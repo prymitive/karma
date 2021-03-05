@@ -3,6 +3,12 @@
 exports[`<AlertManagerInput /> matches snapshot 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
+  <span aria-live=\\"polite\\"
+        aria-atomic=\\"false\\"
+        aria-relevant=\\"additions text\\"
+        class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <div class=\\"react-select__control css-cat782-control\\">
     <div class=\\"react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-115r1xl-ValueContainer\\">
       <div class=\\"css-owt1hd-multiValue react-select__multi-value\\">
