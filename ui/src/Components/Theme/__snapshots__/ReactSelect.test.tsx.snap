@@ -4,13 +4,14 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
   <span aria-live=\\"polite\\"
+        aria-atomic=\\"false\\"
+        aria-relevant=\\"additions text\\"
         class=\\"css-1f43avz-a11yText-A11yText\\"
   >
-    <span id=\\"aria-selection-event\\">
-      &nbsp;
+    <span id=\\"aria-selection\\">
     </span>
     <span id=\\"aria-context\\">
-      &nbsp;  0 results available. Select is focused ,type to refine list, press Down to open the menu,
+      Select is focused ,type to refine list, press Down to open the menu,
     </span>
   </span>
   <div class=\\" css-11rrdhm-control\\">
@@ -65,13 +66,14 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
 "
 <div class=\\" css-14jk2my-container\\">
   <span aria-live=\\"polite\\"
+        aria-atomic=\\"false\\"
+        aria-relevant=\\"additions text\\"
         class=\\"css-1f43avz-a11yText-A11yText\\"
   >
-    <span id=\\"aria-selection-event\\">
-      &nbsp;
+    <span id=\\"aria-selection\\">
     </span>
     <span id=\\"aria-context\\">
-      &nbsp;  0 results available. Select is focused ,type to refine list, press Down to open the menu,
+      Select is focused ,type to refine list, press Down to open the menu,
     </span>
   </span>
   <div class=\\" css-1tnfzgk-control\\">
@@ -79,7 +81,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
       <div class=\\" css-1wa3eu0-placeholder\\">
         Select...
       </div>
-      <div class=\\"css-ps6ina-Input\\">
+      <div class=\\"css-1h1cjkp-Input\\">
         <div class
              style=\\"display: inline-block;\\"
         >
@@ -126,6 +128,12 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
 exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
+  <span aria-live=\\"polite\\"
+        aria-atomic=\\"false\\"
+        aria-relevant=\\"additions text\\"
+        class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <div class=\\" css-cat782-control\\">
     <div class=\\" css-17yk2dy-ValueContainer\\">
       <div class=\\" css-1wh03ml-singleValue\\">
@@ -177,12 +185,18 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
 exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
 "
 <div class=\\" css-14jk2my-container\\">
+  <span aria-live=\\"polite\\"
+        aria-atomic=\\"false\\"
+        aria-relevant=\\"additions text\\"
+        class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <div class=\\" css-j5h6r7-control\\">
     <div class=\\" css-17yk2dy-ValueContainer\\">
       <div class=\\" css-1wh03ml-singleValue\\">
         foo
       </div>
-      <div class=\\"css-ps6ina-Input\\">
+      <div class=\\"css-1h1cjkp-Input\\">
         <div class
              style=\\"display: inline-block;\\"
         >
@@ -229,6 +243,12 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
 exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
+  <span aria-live=\\"polite\\"
+        aria-atomic=\\"false\\"
+        aria-relevant=\\"additions text\\"
+        class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <div class=\\" css-cat782-control\\">
     <div class=\\" css-115r1xl-ValueContainer\\">
       <div class=\\" css-1wa3eu0-placeholder\\">
@@ -280,6 +300,12 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a value 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
+  <span aria-live=\\"polite\\"
+        aria-atomic=\\"false\\"
+        aria-relevant=\\"additions text\\"
+        class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <div class=\\" css-cat782-control\\">
     <div class=\\" css-115r1xl-ValueContainer\\">
       <div class=\\"css-owt1hd-multiValue\\">

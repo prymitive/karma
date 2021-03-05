@@ -6,6 +6,12 @@ exports[`<MultiGridConfiguration /> matches snapshot with default values 1`] = `
   <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
     <div class=\\"flex-shrink-0 flex-grow-1 flex-basis-auto mx-0 mx-lg-1 mt-1 mt-lg-0\\">
       <div class=\\" css-2b097c-container\\">
+        <span aria-live=\\"polite\\"
+              aria-atomic=\\"false\\"
+              aria-relevant=\\"additions text\\"
+              class=\\"css-1f43avz-a11yText-A11yText\\"
+        >
+        </span>
         <div class=\\"react-select__control css-cat782-control\\">
           <div class=\\"react-select__value-container react-select__value-container--has-value css-17yk2dy-ValueContainer\\">
             <div class=\\"react-select__single-value css-1wh03ml-singleValue\\">
