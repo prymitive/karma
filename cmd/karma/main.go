@@ -19,13 +19,14 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/getsentry/sentry-go"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/transform"
 	"github.com/prymitive/karma/internal/uri"
 
+	"github.com/getsentry/sentry-go"
+	sentryhttp "github.com/getsentry/sentry-go/http"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -84,8 +85,12 @@ func getViewURL(sub string) string {
 func setupRouter(router *chi.Mux) {
 	_ = mime.AddExtensionType(".ico", "image/x-icon")
 
+	sentryMiddleware := sentryhttp.New(sentryhttp.Options{
+		Repanic: true,
+	})
+
 	router.Use(promMiddleware)
-	router.Use(sentryRecovery)
+	router.Use(sentryMiddleware.Handle)
 	router.Use(middleware.RealIP)
 
 	compressor := middleware.NewCompressor(flate.DefaultCompression)
@@ -383,6 +388,8 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, error) {
 			log.Error().Err(err).Str("dsn", config.Config.Sentry.Public).Msg("Sentry initialization failed")
 			return nil, fmt.Errorf("sentry configuration is invalid")
 		}
+		log.Info().Msg("Sentry enabled")
+		defer sentry.Flush(time.Second)
 	}
 
 	setupRouter(router)
