@@ -204,4 +204,5 @@ level=info msg="  collapseGroups: expanded"
 level=info msg="  multiGridLabel: cluster"
 level=info msg="  multiGridSortReverse: true"
 level=info msg="Configured Alertmanager source" name=ro proxy=false readonly=true uri=http://127.0.0.1:9093
+level=info msg="Sentry enabled"
 level=info msg="Configuration is valid"

@@ -113,6 +113,7 @@ level=info msg="  collapseGroups: collapsedOnMobile"
 level=info msg="  multiGridLabel: \"\""
 level=info msg="  multiGridSortReverse: false"
 level=info msg="Configured Alertmanager source" name=default proxy=false readonly=false uri=http://127.0.0.1:9093
+level=info msg="Sentry enabled"
 level=info msg="Writing PID file" path=karma.pid
 level=info msg="Initial Alertmanager collection"
 level=info msg="Pulling latest alerts and silences from Alertmanager"
