@@ -508,6 +508,7 @@ annotations:
   keep: list of strings
   strip: list of strings
   order: list of strings
+  actions: list of strings
 ```
 
 - `default:hidden` - bool, true if all annotations should be hidden by default.
@@ -519,6 +520,8 @@ annotations:
 - `order` - custom order of annotation names. All annotations listed here will
   appear first in the order specified here. Remaining annotations will be sorted
   alphabetically and appended at the end.
+- `actions` - list of annotations that will be moved to alert dropdown menu.
+  this only applies to annotations where value is a link.
 
 The difference between `hidden`/`visible` and `keep`/`strip` is that hidden
 annotations are still accessible, but they are shown in the UI collapsed by
@@ -528,7 +531,8 @@ annotations are removed entirely and never presented to the user.
 Example where all annotations except `summary` are hidden by default. If there
 are additional annotation keys user will need to click on the `+` icon to see
 them. `summary` annotation will always appear first in the UI, followed by
-`help` and all other annotations (sorted alphabetically).
+`help` and all other annotations (sorted alphabetically). Any annotation with
+name `jira` and a value that is a URL will be moved to alerts dropdown menu.
 
 ```YAML
 annotations:
@@ -544,6 +548,8 @@ annotations:
   order:
     - summary
     - help
+  actions:
+    - jira
 ```
 
 Example where all annotations except `details` are visible by default. If

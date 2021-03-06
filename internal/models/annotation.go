@@ -12,10 +12,11 @@ import (
 // Annotation extends Alertmanager scheme of key:value with additional data
 // to control how given annotation should be rendered
 type Annotation struct {
-	Name    string `json:"name"`
-	Value   string `json:"value"`
-	Visible bool   `json:"visible"`
-	IsLink  bool   `json:"isLink"`
+	Name     string `json:"name"`
+	Value    string `json:"value"`
+	Visible  bool   `json:"visible"`
+	IsLink   bool   `json:"isLink"`
+	IsAction bool   `json:"isAction"`
 }
 
 // Annotations is a slice of Annotation structs, needed to implement sorting
@@ -58,10 +59,11 @@ func AnnotationsFromMap(m map[string]string) Annotations {
 	annotations := make(Annotations, 0, len(m))
 	for name, value := range m {
 		a := Annotation{
-			Name:    name,
-			Value:   value,
-			Visible: isVisible(name),
-			IsLink:  isLink(value),
+			Name:     name,
+			Value:    value,
+			Visible:  isVisible(name),
+			IsLink:   isLink(value),
+			IsAction: isAction(name),
 		}
 		annotations = append(annotations, a)
 	}
@@ -105,4 +107,8 @@ func isVisible(name string) bool {
 	}
 	// default to show everything
 	return true
+}
+
+func isAction(name string) bool {
+	return slices.StringInSlice(config.Config.Annotations.Actions, name)
 }

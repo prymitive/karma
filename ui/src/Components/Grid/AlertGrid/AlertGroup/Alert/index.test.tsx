@@ -42,9 +42,9 @@ const MockSetIsMenuOpen = jest.fn();
 const MockedAlert = () => {
   return MockAlert(
     [
-      MockAnnotation("help", "some long text", true, false),
-      MockAnnotation("hidden", "some hidden text", false, false),
-      MockAnnotation("link", "http://localhost", true, true),
+      MockAnnotation("help", "some long text", true, false, false),
+      MockAnnotation("hidden", "some hidden text", false, false, false),
+      MockAnnotation("link", "http://localhost", true, true, false),
     ],
     { job: "node_exporter", cluster: "dev" },
     "active"
@@ -275,12 +275,14 @@ describe("<Alert />", () => {
         value: "1",
         visible: true,
         isLink: false,
+        isAction: false,
       },
       {
         name: "invisible",
         value: "2",
         visible: false,
         isLink: false,
+        isAction: false,
       },
     ];
     const group = MockAlertGroup({}, [alert], [], {}, {});
@@ -297,12 +299,14 @@ describe("<Alert />", () => {
         value: "1",
         visible: true,
         isLink: false,
+        isAction: false,
       },
       {
         name: "invisible",
         value: "2",
         visible: false,
         isLink: false,
+        isAction: false,
       },
     ];
     const group = MockAlertGroup({}, [alert], [], {}, {});

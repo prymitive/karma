@@ -186,4 +186,85 @@ describe("<MenuContent />", () => {
     const link = tree.find("a.dropdown-item[href='localhost/prometheus']");
     expect(link.text()).toBe("default");
   });
+
+  it("renders action annotations when present", () => {
+    alert = MockAlert(
+      [
+        {
+          name: "nonLinkAction",
+          value: "nonLinkAction",
+          visible: true,
+          isLink: false,
+          isAction: true,
+        },
+        {
+          name: "linkAction",
+          value: "linkAction",
+          visible: true,
+          isLink: true,
+          isAction: true,
+        },
+        {
+          name: "nonLinkNonAction",
+          value: "nonLinkNonAction",
+          visible: true,
+          isLink: false,
+          isAction: false,
+        },
+      ],
+      { foo: "bar" },
+      "active"
+    );
+    group = MockAlertGroup(
+      { alertname: "Fake Alert" },
+      [alert],
+      [
+        {
+          name: "nonLinkActionShared",
+          value: "nonLinkActionShared",
+          visible: true,
+          isLink: false,
+          isAction: true,
+        },
+        {
+          name: "linkActionShared",
+          value: "linkActionShared",
+          visible: true,
+          isLink: true,
+          isAction: true,
+        },
+        {
+          name: "nonLinkNonActionShared",
+          value: "nonLinkNonActionShared",
+          visible: true,
+          isLink: false,
+          isAction: false,
+        },
+      ],
+      {},
+      {}
+    );
+
+    const tree = MountedMenuContent(group);
+    expect(tree.find("a.dropdown-item")).toHaveLength(3);
+
+    const link1 = tree.find("a.dropdown-item[href='linkAction']");
+    expect(link1.text()).toBe("linkAction");
+
+    const link2 = tree.find("a.dropdown-item[href='linkActionShared']");
+    expect(link2.text()).toBe("linkActionShared");
+
+    expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
+      0
+    );
+    expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
+      0
+    );
+    expect(
+      tree.find("a.dropdown-item[href='nonLinkNonActionShared']")
+    ).toHaveLength(0);
+    expect(
+      tree.find("a.dropdown-item[href='nonLinkNonActionShared']")
+    ).toHaveLength(0);
+  });
 });

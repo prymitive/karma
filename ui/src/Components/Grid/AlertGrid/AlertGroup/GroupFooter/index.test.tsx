@@ -32,9 +32,15 @@ const MockGroup = () => {
       MockAlert([], {}, "suppressed"),
     ],
     [
-      MockAnnotation("summary", "This is summary", true, false),
-      MockAnnotation("hidden", "This is hidden annotation", false, false),
-      MockAnnotation("link", "http://link.example.com", true, true),
+      MockAnnotation("summary", "This is summary", true, false, false),
+      MockAnnotation(
+        "hidden",
+        "This is hidden annotation",
+        false,
+        false,
+        false
+      ),
+      MockAnnotation("link", "http://link.example.com", true, true, false),
     ],
     { label1: "foo", label2: "bar" },
     {}

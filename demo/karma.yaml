@@ -37,6 +37,8 @@ alertAcknowledgement:
 annotations:
   hidden:
     - help
+  actions:
+    - docs
 debug: true
 filters:
   default:

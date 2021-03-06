@@ -191,4 +191,49 @@ describe("<MenuContent />", () => {
     button.simulate("click");
     expect(silenceFormStore.toggle.visible).toBe(false);
   });
+
+  it("renders action annotations when present", () => {
+    const group = MockAlertGroup(
+      { alertname: "Fake Alert" },
+      [],
+      [
+        {
+          name: "nonLinkAction",
+          value: "nonLinkAction",
+          visible: true,
+          isLink: false,
+          isAction: true,
+        },
+        {
+          name: "linkAction",
+          value: "linkAction",
+          visible: true,
+          isLink: true,
+          isAction: true,
+        },
+        {
+          name: "nonLinkNonAction",
+          value: "nonLinkNonAction",
+          visible: true,
+          isLink: false,
+          isAction: false,
+        },
+      ],
+      {},
+      {}
+    );
+
+    const tree = MountedMenuContent(group);
+    expect(tree.find("a.dropdown-item")).toHaveLength(1);
+
+    const link = tree.find("a.dropdown-item[href='linkAction']");
+    expect(link.text()).toBe("linkAction");
+
+    expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
+      0
+    );
+    expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
+      0
+    );
+  });
 });

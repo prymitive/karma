@@ -144,7 +144,8 @@ class AlwaysOnAlert(AlertGenerator):
                              severity="info", job="node_exporter", region="US"),
                 self._annotations(
                     summary="Silence this alert, it's always firing",
-                    repo="Repo: https://github.com/prymitive/karma")
+                    repo="Repo: https://github.com/prymitive/karma",
+                    docs="https://karma-dashboard.io/docs/CONFIGURATION.html")
             ) for i in range(1, size)]
         return _gen(10, "dev") + _gen(5, "staging") + _gen(3, "prod")
 
@@ -241,7 +242,8 @@ class DiskFreeLowAlert(AlertGenerator):
                          self._annotations(
                             summary="Only {}% free space left on /disk".format(
                                 spaceFree),
-                            dashboard="https://wikipedia.org/wiki/Disk_storage")
+                            dashboard="https://wikipedia.org/wiki/Disk_storage",
+                            docs="https://karma-dashboard.io/docs/CONFIGURATION.html")
                 )
             )
         return alerts
@@ -449,6 +451,7 @@ class RichAnnotations(AlertGenerator):
                         html="<a href='http://localhost'>this is link</a>",
                         moreHTML="<div>this is a div</div>",
                         emoji="🤔🔥",
+                        docs="🤔🔥 <div>this is a div</div>",
                      )
             )
         ]

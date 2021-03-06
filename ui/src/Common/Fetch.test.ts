@@ -28,7 +28,7 @@ describe("Fetch", () => {
 
   for (const [name, func] of Object.entries(tests)) {
     it(`${name}: passes '{credentials: include}' to all requests`, async () => {
-      const request = func("http://example.com/", {});
+      const request = func("http://example.com/", {}, jest.fn());
       await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetchMock.lastUrl()).toBe("http://example.com/");
       expect(fetchMock.lastOptions()).toEqual(
@@ -37,26 +37,34 @@ describe("Fetch", () => {
     });
 
     it(`${name}: custom keys are merged with defaults`, async () => {
-      const request = func("http://example.com/", {
-        foo: "bar",
-      });
+      const request = func(
+        "http://example.com/",
+        {
+          foo: "bar",
+        },
+        () => {}
+      );
       await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetchMock.lastUrl()).toBe("http://example.com/");
       expect(fetchMock.lastOptions()).toEqual(
-        merge({}, CommonOptions, methodOptions[name], { foo: "bar" })
+        merge({}, CommonOptions, methodOptions[name], { foo: "bar" }, () => {})
       );
     });
 
     it(`${name}: custom credentials are used when passed`, async () => {
-      const request = func("http://example.com", {
-        credentials: "none",
-        redirect: "follow",
-      });
+      const request = func(
+        "http://example.com",
+        {
+          credentials: "omit",
+          redirect: "follow",
+        },
+        () => {}
+      );
       await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetchMock.lastUrl()).toBe("http://example.com/");
       expect(fetchMock.lastOptions()).toEqual(
         merge({}, CommonOptions, methodOptions[name], {
-          credentials: "none",
+          credentials: "omit",
           redirect: "follow",
         })
       );
@@ -69,7 +77,7 @@ describe("Fetch", () => {
       throws: new Error("Fetch error"),
     });
 
-    const request = FetchGet("http://example.com", {});
+    const request = FetchGet("http://example.com", {}, jest.fn());
     await expect(request).rejects.toThrow("Fetch error");
 
     expect(fetchMock.calls()).toHaveLength(FetchRetryConfig.retries + 1);

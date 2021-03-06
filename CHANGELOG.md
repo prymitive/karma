@@ -2,6 +2,11 @@
 
 ## [unreleased]
 
+### Added
+
+- Added `annotations:actions` option allowing to move some annotations
+  to alert dropdown menu #2596.
+
 ### Changed
 
 - Multi-grid label dropdown will only show label names from visible alerts.
