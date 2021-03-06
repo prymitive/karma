@@ -101,6 +101,7 @@ type configSchema struct {
 		Keep    []string
 		Strip   []string
 		Order   []string
+		Actions []string
 	}
 	Custom struct {
 		CSS string

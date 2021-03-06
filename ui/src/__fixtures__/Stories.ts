@@ -31,18 +31,21 @@ const MockGroup = (
               value: "http://localhost",
               visible: true,
               isLink: true,
+              isAction: false,
             },
             {
               name: "help",
               value: "this is a summary text",
               visible: true,
               isLink: false,
+              isAction: false,
             },
             {
               name: "hidden",
               value: "this is hidden by default",
               visible: false,
               isLink: false,
+              isAction: false,
             },
             {
               name: "linkify",
@@ -50,6 +53,14 @@ const MockGroup = (
                 "annotation with a link to github.com/prymitive/karma project page",
               visible: true,
               isLink: false,
+              isAction: false,
+            },
+            {
+              name: "action",
+              value: "http://localhost",
+              visible: true,
+              isLink: true,
+              isAction: true,
             },
           ]
         : [],
@@ -229,6 +240,7 @@ const MockGrid = (alertStore: AlertStore): void => {
           value: "Only 5% free space left on /disk",
           visible: true,
           isLink: false,
+          isAction: false,
         },
       ];
     }

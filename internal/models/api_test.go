@@ -89,7 +89,8 @@ func TestDedupSharedMaps(t *testing.T) {
           "name": "foo",
           "value": "bar",
           "visible": false,
-          "isLink": false
+          "isLink": false,
+          "isAction": false
         }
       ],
       "labels": {
@@ -217,7 +218,8 @@ func TestDedupSharedMaps(t *testing.T) {
         "name": "summary",
         "value": "this is summary",
         "visible": false,
-        "isLink": false
+        "isLink": false,
+        "isAction": false
       }
     ],
     "labels": {},

@@ -15,8 +15,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
+import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 
-import { APIAlertT, APIAlertGroupT } from "Models/APITypes";
+import { APIAlertT, APIAlertGroupT, APIAnnotationT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
@@ -27,6 +28,7 @@ import { FetchPauser } from "Components/FetchPauser";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { DateFromNow } from "Components/DateFromNow";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
+import { MenuLink } from "Components/Grid/AlertGrid/AlertGroup/MenuLink";
 
 const PopperModifiers = [
   ...CommonPopperModifiers,
@@ -78,6 +80,15 @@ const MenuContent: FC<{
   alertStore,
   silenceFormStore,
 }) => {
+  const actions: APIAnnotationT[] = [
+    ...alert.annotations
+      .filter((a) => a.isLink === true)
+      .filter((a) => a.isAction === true),
+    ...group.shared.annotations
+      .filter((a) => a.isLink === true)
+      .filter((a) => a.isAction === true),
+  ];
+
   return (
     <FetchPauser alertStore={alertStore}>
       <div
@@ -88,18 +99,29 @@ const MenuContent: FC<{
       >
         <h6 className="dropdown-header">Alert source links:</h6>
         {alert.alertmanager.map((am) => (
-          <a
+          <MenuLink
             key={am.name}
-            className="dropdown-item"
-            href={am.source}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={afterClick}
-          >
-            <FontAwesomeIcon className="mr-1" icon={faExternalLinkAlt} />
-            {am.name}
-          </a>
+            icon={faExternalLinkAlt}
+            text={am.name}
+            uri={am.source}
+            afterClick={afterClick}
+          />
         ))}
+        {actions.length ? (
+          <React.Fragment>
+            <div className="dropdown-divider" />
+            <h6 className="dropdown-header">Actions:</h6>
+            {actions.map((action) => (
+              <MenuLink
+                key={action.name}
+                icon={faWrench}
+                text={action.name}
+                uri={action.value}
+                afterClick={afterClick}
+              />
+            ))}
+          </React.Fragment>
+        ) : null}
         <div className="dropdown-divider" />
         <div
           className={`dropdown-item ${

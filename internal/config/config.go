@@ -72,6 +72,7 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.StringSlice("annotations.keep", []string{},
 		"List of annotations to keep, all other annotations will be stripped")
 	f.StringSlice("annotations.strip", []string{}, "List of annotations to ignore")
+	f.StringSlice("annotations.actions", []string{}, "List of annotations that will be moved to the alert menu")
 
 	f.String("config.file", "", "Full path to the configuration file, 'karma.yaml' will be used if found in the current working directory")
 

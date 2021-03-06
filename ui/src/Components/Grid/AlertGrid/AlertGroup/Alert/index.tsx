@@ -136,6 +136,7 @@ const Alert: FC<{
       ) : null}
       {alert.annotations
         .filter((a) => a.isLink === true)
+        .filter((a) => a.isAction === false)
         .map((a) => (
           <RenderLinkAnnotation key={a.name} name={a.name} value={a.value} />
         ))}

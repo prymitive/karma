@@ -12,12 +12,14 @@ const MockAnnotation = (
   name: string,
   value: string,
   visible: boolean,
-  isLink: boolean
+  isLink: boolean,
+  isAction: boolean
 ): APIAnnotationT => ({
   name: name,
   value: value,
   visible: visible,
   isLink: isLink,
+  isAction: isAction,
 });
 
 const MockAlert = (

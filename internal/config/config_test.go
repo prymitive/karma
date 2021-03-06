@@ -65,6 +65,7 @@ annotations:
   keep: []
   strip: []
   order: []
+  actions: []
 custom:
   css: /custom.css
   js: /custom.js
@@ -317,6 +318,7 @@ func TestDefaultConfig(t *testing.T) {
 	expectedConfig.Annotations.Visible = []string{}
 	expectedConfig.Annotations.Keep = []string{}
 	expectedConfig.Annotations.Strip = []string{}
+	expectedConfig.Annotations.Actions = []string{}
 	expectedConfig.Labels.Keep = []string{}
 	expectedConfig.Labels.Strip = []string{}
 	expectedConfig.Labels.Color.Static = []string{}
