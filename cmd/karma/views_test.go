@@ -13,19 +13,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/go-chi/chi/v5"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 
-	cache "github.com/patrickmn/go-cache"
-
+	"github.com/go-chi/chi/v5"
 	"github.com/google/go-cmp/cmp"
 	"github.com/jarcoal/httpmock"
+	cache "github.com/patrickmn/go-cache"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
 )
 

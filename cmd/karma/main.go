@@ -24,6 +24,7 @@ import (
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/transform"
 	"github.com/prymitive/karma/internal/uri"
+	"github.com/prymitive/karma/ui"
 
 	"github.com/getsentry/sentry-go"
 	sentryhttp "github.com/getsentry/sentry-go/http"
@@ -49,9 +50,6 @@ var (
 	// If there are requests with the same filter we should respond from cache
 	// rather than do all the filtering every time
 	apiCache *cache.Cache
-
-	staticBuildFileSystem = newBinaryFileSystem("ui/build")
-	staticSrcFileSystem   = newBinaryFileSystem("ui/src")
 
 	indexTemplate *template.Template
 
@@ -96,13 +94,13 @@ func setupRouter(router *chi.Mux) {
 	compressor := middleware.NewCompressor(flate.DefaultCompression)
 	router.Use(compressor.Handler)
 
-	router.Use(serverStaticFiles(getViewURL("/"), staticBuildFileSystem))
+	router.Use(serverStaticFiles(getViewURL("/"), "build"))
 	// next 2 lines are to allow service raw sources so sentry can fetch source maps
-	router.Use(serverStaticFiles(getViewURL("/static/js/"), staticSrcFileSystem))
+	router.Use(serverStaticFiles(getViewURL("/static/js/"), "src"))
 	// FIXME
 	// compressed sources are under /static/js/main.js and reference ../static/js/main.js
 	// so we end up with /static/static/js
-	router.Use(serverStaticFiles(getViewURL("/static/static/js/"), staticSrcFileSystem))
+	router.Use(serverStaticFiles(getViewURL("/static/static/js/"), "src"))
 	router.Use(cors.Handler(cors.Options{
 		AllowOriginFunc: func(r *http.Request, origin string) bool {
 			return true
@@ -278,7 +276,7 @@ func setupLogger() error {
 
 func loadTemplates() error {
 	var t *template.Template
-	t, err := loadTemplate(t, "ui/build/index.html")
+	t, err := template.ParseFS(ui.StaticFiles, "build/index.html")
 	if err != nil {
 		return fmt.Errorf("failed to load template: %s", err)
 	}

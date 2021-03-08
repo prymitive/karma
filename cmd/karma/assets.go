@@ -1,8 +1,6 @@
 package main
 
 import (
-	"errors"
-	"html/template"
 	"io"
 	"io/ioutil"
 	"mime"
@@ -11,57 +9,9 @@ import (
 	"strings"
 	"time"
 
-	assetfs "github.com/elazarl/go-bindata-assetfs"
+	"github.com/prymitive/karma/ui"
+	"github.com/rs/zerolog/log"
 )
-
-type binaryFileSystem struct {
-	fs http.FileSystem
-}
-
-func (b *binaryFileSystem) Open(name string) (http.File, error) {
-	return b.fs.Open(name)
-}
-
-func newBinaryFileSystem(root string) *binaryFileSystem {
-	fs := &assetfs.AssetFS{
-		Asset: Asset,
-		// Don't render directory index, return 404 for /static/ requests)
-		AssetDir: func(path string) ([]string, error) {
-			return nil, errors.New("not found")
-		},
-		Prefix: root,
-	}
-	return &binaryFileSystem{fs}
-}
-
-// load a template from binary asset resource
-func loadTemplate(t *template.Template, path string) (*template.Template, error) {
-	templateContent, err := Asset(path)
-	if err != nil {
-		return nil, err
-	}
-
-	var tmpl *template.Template
-	if t == nil {
-		// if template wasn't yet initialized do it here
-		t = template.New(path)
-	}
-
-	if path == t.Name() {
-		tmpl = t
-	} else {
-		// if we already have an instance of template.Template then
-		// add a new file to it
-		tmpl = t.New(path)
-	}
-
-	_, err = tmpl.Parse(string(templateContent))
-	if err != nil {
-		return nil, err
-	}
-
-	return t, nil
-}
 
 func contentText(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
@@ -89,23 +39,30 @@ func serveFileOr404(path string, contentType string) http.HandlerFunc {
 	}
 }
 
-func serverStaticFiles(prefix string, fs *binaryFileSystem) func(next http.Handler) http.Handler {
+func serverStaticFiles(prefix, root string) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			fixedPath := strings.TrimPrefix(r.URL.Path, prefix)
+			filePath := strings.TrimSuffix(root, "/") + "/" + strings.TrimPrefix(fixedPath, "/")
+
+			log.Debug().Str("path", r.URL.Path).Str("root", root).Str("prefix", prefix).Str("filePath", filePath).Msg("Static file request")
+
 			if !strings.HasPrefix(r.URL.Path, prefix) {
+				log.Debug().Str("path", r.URL.Path).Str("prefix", prefix).Msg("Ignoring static file request")
 				next.ServeHTTP(w, r)
 				return
 			}
 
-			path := strings.TrimPrefix(r.URL.Path, prefix)
-			fl, err := fs.Open(path)
+			fl, err := ui.StaticFiles.Open(filePath)
 			if err != nil {
+				log.Debug().Str("path", r.URL.Path).Msg("Static file not found")
 				next.ServeHTTP(w, r)
 				return
 			}
 			defer fl.Close()
+			log.Debug().Str("path", r.URL.Path).Msg("Static file found")
 
-			ct := mime.TypeByExtension(filepath.Ext(path))
+			ct := mime.TypeByExtension(filepath.Ext(filePath))
 			if ct == "" {
 				ct = "application/octet-stream"
 			}

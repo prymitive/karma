@@ -15,7 +15,7 @@ test: lint
 
 .PHONY: clean
 clean:
-	rm -fr cmd/karma/bindata_assetfs.go $(NAME) $(NAME)-* ui/build ui/node_modules coverage.txt
+	rm -fr $(NAME) $(NAME)-* ui/build ui/node_modules coverage.txt
 
 .PHONY: show-version
 show-version:

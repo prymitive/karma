@@ -8,15 +8,8 @@ endif
 ui/build/index.html: $(call rwildcard, ui/src ui/package.json ui/package-lock.json, *)
 	@$(MAKE) -C ui build
 
-$(GOBIN)/go-bindata: tools/go-bindata/go.mod tools/go-bindata/go.sum
-	go install -modfile=tools/go-bindata/go.mod github.com/go-bindata/go-bindata/...
-$(GOBIN)/go-bindata-assetfs: $(GOBIN)/go-bindata tools/go-bindata/go.mod tools/go-bindata/go.sum
-	go install -modfile=tools/go-bindata/go.mod github.com/elazarl/go-bindata-assetfs/...
-cmd/karma/bindata_assetfs.go: $(GOBIN)/go-bindata-assetfs $(SOURCES_JS) ui/build/index.html
-	env PATH="$(PATH):$(GOBIN)" $(GOBIN)/go-bindata-assetfs -o cmd/karma/bindata_assetfs.go ui/build/... ui/src/... cmd/karma/tests/bindata/...
-
 .DEFAULT_GOAL := $(NAME)
-$(NAME): go.mod go.sum cmd/karma/bindata_assetfs.go $(SOURCES_GO)
+$(NAME): go.mod go.sum $(SOURCES_GO) ui/build/index.html
 	go build -ldflags "-X main.version=$(VERSION)" ./cmd/karma
 
 .PHONY: test-go
@@ -63,21 +56,17 @@ download-deps-go:
 	@for f in $(wildcard tools/*/go.mod) ; do echo ">>> $$f" && cd $(CURDIR)/`dirname "$$f"` && go mod download && cd $(CURDIR) ; done
 	go mod download
 
-.PHONY: install-deps-build-go
-install-deps-build-go: $(GOBIN)/go-bindata-assetfs
-
 .PHONY: openapi-client
 openapi-client:
 	for f in $(wildcard internal/mapper/*/Dockerfile) ; do $(MAKE) -C `dirname "$$f"` ; done
 
-# Creates mock bindata_assetfs.go with source assets
 .PHONY: mock-assets
-mock-assets: $(GOBIN)/go-bindata-assetfs
+mock-assets:
 	rm -fr ui/build
 	mkdir ui/build
 	cp ui/public/* ui/build/
-	env PATH="$(PATH):$(GOBIN)" $(GOBIN)/go-bindata-assetfs -o cmd/karma/bindata_assetfs.go -nometadata ui/build/... cmd/karma/tests/bindata/...
-	rm -fr ui/build
+	mkdir ui/build/static
+	touch ui/build/static/main.js
 
 .PHONY: tools-go-mod-tidy
 tools-go-mod-tidy:
