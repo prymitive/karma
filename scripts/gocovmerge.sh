@@ -6,7 +6,6 @@ set -o pipefail
 echo "mode: set" > coverage.txt
 cat profile.* \
   | grep -v mode: \
-  | grep -vE '^github.com/prymitive/karma/cmd/karma/bindata_assetfs.go:' \
   | sort -r \
   | awk '{if($1 != last) {print $0;last=$1}}' >> coverage.txt
 rm -f profile.*

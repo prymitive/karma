@@ -14,10 +14,9 @@ COPY make /src/make
 COPY go.mod /src/go.mod
 COPY go.sum /src/go.sum
 RUN make -C /src download-deps-go
-COPY tools/go-bindata /src/tools/go-bindata
-RUN make -C /src install-deps-build-go
 COPY --from=nodejs-builder /src/ui/src /src/ui/src
 COPY --from=nodejs-builder /src/ui/build /src/ui/build
+COPY --from=nodejs-builder /src/ui/embed.go /src/ui/embed.go
 COPY cmd /src/cmd
 COPY internal /src/internal
 ARG VERSION

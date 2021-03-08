@@ -1,7 +1,7 @@
 include make/vars.mk
 
 word-split = $(word $2,$(subst -, ,$1))
-cc-%: go.mod go.sum cmd/karma/bindata_assetfs.go $(SOURCES_GO)
+cc-%: go.mod go.sum $(SOURCES_GO) ui/build/index.html
 	$(eval GOOS := $(call word-split,$*,1))
 	$(eval GOARCH := $(call word-split,$*,2))
 	$(eval GOARM := $(call word-split,$*,3))

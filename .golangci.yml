@@ -1,4 +1,2 @@
 run:
   deadline: 5m
-  skip-files:
-    - bindata_assetfs.go

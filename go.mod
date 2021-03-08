@@ -5,7 +5,6 @@ go 1.16
 require (
 	github.com/Masterminds/semver/v3 v3.1.1
 	github.com/cnf/structhash v0.0.0-20201127153200-e1b16c1ebc08
-	github.com/elazarl/go-bindata-assetfs v1.0.1
 	github.com/fvbommel/sortorder v1.0.2
 	github.com/getsentry/sentry-go v0.10.0
 	github.com/go-chi/chi/v5 v5.0.0
