@@ -8,7 +8,7 @@ from urllib.request import Request, urlopen
 def requests_post(url, data):
     req = Request(url)
     req.add_header('Content-Type', 'application/json')
-    response = urlopen(req, json.dumps(data))
+    response = urlopen(req, json.dumps(data).encode('utf-8'))
 
 
 requests_post('http://localhost:9093/api/v1/silences',
