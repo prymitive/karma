@@ -486,10 +486,11 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 	if err := httpServer.Shutdown(ctx); err != nil {
+		_ = removePidFile()
 		return fmt.Errorf("shutdown error: %s", err)
 	}
-	log.Info().Msg("HTTP server shut down")
 
+	log.Info().Msg("HTTP server shut down")
 	return removePidFile()
 }
 

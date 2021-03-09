@@ -1,6 +1,6 @@
 # GET /metrics returns same list of metrics
 
-exec sh -x ./test.sh &
+exec bash -x ./test.sh &
 karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8083
 ! stdout .
 cmp stderr stderr.txt
@@ -129,8 +129,6 @@ level=info msg="Shutting down HTTP server"
 level=info msg="HTTP server shut down"
 level=info msg="Removing PID file" path=karma.pid
 -- test.sh --
-#!/bin/sh
-
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 5
 curl -s http://localhost:8083/metrics | grep -vE 'process_|go_info' | perl -pe "s/^([a-zA-Z].+)[ ]([0-9\.\-\+eE]+)$/\1/g" > curl.txt

@@ -1,14 +1,12 @@
 # Basic Auth headers are passed to the UI in the API response
 
-exec sh -x ./test.sh &
+exec bash -x ./test.sh &
 karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://foo:bar@127.0.0.1 --listen.address=127.0.0.1 --listen.port=8076
 wait
 stdout '"headers":{"Authorization":"Basic Zm9vOmJhcg=="}'
 stdout '"publicURI":"http://foo:bar@127.0.0.1"'
 
 -- test.sh --
-#!/bin/sh
-
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 1
 curl -s http://127.0.0.1:8076/alerts.json

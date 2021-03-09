@@ -1,6 +1,6 @@
 # Configures sentry when enabled
 
-exec sh -x ./test.sh &
+exec bash -x ./test.sh &
 karma.bin-should-work --pid-file=karma.pid --log.config=true --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8068
 ! stdout .
 cmp stderr stderr.txt
@@ -138,8 +138,6 @@ sentry:
   public: https://examplePublicKey@o0.ingest.sentry.io/1
 
 -- test.sh --
-#!/bin/sh
-
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 1
 cat karma.pid | xargs kill
