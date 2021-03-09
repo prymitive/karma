@@ -4,7 +4,7 @@
 import json
 import os
 import sys
-import urllib2
+from urllib.request import urlopen
 
 
 def apiRequest(token, path, owner='prymitive', repo='karma'):
