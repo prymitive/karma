@@ -1,13 +1,14 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import json
 import time
-import urllib2
+from urllib.request import Request, urlopen
+
 
 def requests_post(url, data):
-    req = urllib2.Request(url)
+    req = Request(url)
     req.add_header('Content-Type', 'application/json')
-    response = urllib2.urlopen(req, json.dumps(data))
+    response = urlopen(req, json.dumps(data))
 
 
 requests_post('http://localhost:9093/api/v1/silences',
