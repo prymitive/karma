@@ -1,7 +1,7 @@
 # Listens on HTTPS when enabled
 
-exec sh -x ./tls.sh
-exec sh -x ./test.sh &
+exec bash -x ./tls.sh
+exec bash -x ./test.sh &
 karma.bin-should-work --pid-file=karma.pid --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8087
 ! stdout .
 wait
@@ -48,8 +48,6 @@ openssl req -new -key server.key -out server.csr -subj "/C=CI/ST=CI/L=CI/O=CI/CN
 openssl x509 -req -in server.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out server.pem -days 7
 
 -- test.sh --
-#!/bin/sh
-
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 1
 curl -s --resolve karma.example.com:8087:127.0.0.1 --cacert ca.pem -o http1.txt --http1.1 https://karma.example.com:8087/health

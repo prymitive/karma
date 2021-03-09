@@ -17,7 +17,7 @@ I=0
 for d in $PKGS; do
     I=$((I+1))
     COVFILE="profile.test.${I}"
-    (go test -coverprofile="${COVFILE}" -coverpkg="$COVERPKG" $d 2>&1 || exit 2) \
+    (go test -count=1 -coverprofile="${COVFILE}" -coverpkg="$COVERPKG" $d 2>&1 || exit 2) \
         | grep -v 'warning: no packages being tested depend on matches for pattern' \
         | sed s/'of statements in .*'/''/g
 done
