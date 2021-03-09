@@ -174,7 +174,7 @@ func main() {
 	go func() {
 		err := server.ServeTLS(listener, "alertmanager.pem", "alertmanager.key")
 		if err != nil {
-			log.Fatal(err)
+			log.Printf("ServeTLS returned error: %v", err)
 		}
 	}()
 
