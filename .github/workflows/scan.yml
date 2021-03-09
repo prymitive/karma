@@ -7,7 +7,7 @@ on:
 jobs:
   codeql:
     name: CodeQL
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -28,7 +28,7 @@ jobs:
 
   anchore:
     name: Anchore Container Scan
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout the code
         uses: actions/checkout@v2
