@@ -82,7 +82,7 @@
   "devDependencies": {
     "@percy-io/percy-storybook": "2.1.0",
     "@storybook/react": "6.1.21",
-    "@storybook/preset-create-react-app": "3.1.6",
+    "@storybook/preset-create-react-app": "3.1.7",
     "@testing-library/react-hooks": "5.1.0",
     "@wojtekmaj/enzyme-adapter-react-17": "0.4.1",
     "depcheck": "1.4.0",
