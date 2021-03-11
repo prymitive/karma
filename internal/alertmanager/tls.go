@@ -3,8 +3,8 @@ package alertmanager
 import (
 	"crypto/tls"
 	"crypto/x509"
-	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/rs/zerolog/log"
 )
@@ -13,7 +13,7 @@ func configureTLSRootCAs(tlsConfig *tls.Config, caPath string) error {
 	log.Debug().
 		Str("path", caPath).
 		Msg("Loading TLS CA cert")
-	caCert, err := ioutil.ReadFile(caPath)
+	caCert, err := os.ReadFile(caPath)
 	if err != nil {
 		return err
 	}

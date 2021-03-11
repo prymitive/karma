@@ -2,7 +2,7 @@ package config
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 
 	yaml "gopkg.in/yaml.v2"
 )
@@ -47,7 +47,7 @@ type silencesACLSchema struct {
 func ReadSilenceACLConfig(path string) (*silencesACLSchema, error) {
 	cfg := silencesACLSchema{}
 
-	f, err := ioutil.ReadFile(path)
+	f, err := os.ReadFile(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load silence ACL configuration file %q: %v", path, err)
 	}

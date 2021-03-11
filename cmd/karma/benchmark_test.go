@@ -1,9 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
-	"io/ioutil"
 	"net/http/httptest"
+	"os"
 	"runtime"
 	"testing"
 
@@ -23,14 +24,14 @@ func reportMemoryMetrics(b *testing.B) {
 func BenchmarkCompress(b *testing.B) {
 	zerolog.SetGlobalLevel(zerolog.FatalLevel)
 
-	data, err := ioutil.ReadFile("./tests/compress/alerts.json")
+	data, err := os.ReadFile("./tests/compress/alerts.json")
 	if err != nil {
 		b.Errorf("Failed to read data: %s", err.Error())
 	}
 
 	b.Run("Run", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			compressed, err := compressResponse(data)
+			compressed, err := compressResponse(data, nil)
 			if err != nil {
 				b.Errorf("Failed to compress data: %s", err.Error())
 			}
@@ -48,19 +49,19 @@ func BenchmarkCompress(b *testing.B) {
 func BenchmarkDecompress(b *testing.B) {
 	zerolog.SetGlobalLevel(zerolog.FatalLevel)
 
-	data, err := ioutil.ReadFile("./tests/compress/alerts.json")
+	data, err := os.ReadFile("./tests/compress/alerts.json")
 	if err != nil {
 		b.Errorf("Failed to read data: %s", err.Error())
 	}
 
-	compressed, err := compressResponse(data)
+	compressed, err := compressResponse(data, nil)
 	if err != nil {
 		b.Errorf("Failed to compress data: %s", err.Error())
 	}
 
 	b.Run("Run", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			_, err := decompressCachedResponse(compressed)
+			_, err := decompressCachedResponse(bytes.NewReader(compressed))
 			if err != nil {
 				b.Errorf("Failed to decompress data: %s", err.Error())
 			}
@@ -75,19 +76,19 @@ func BenchmarkDecompress(b *testing.B) {
 func BenchmarkCompressionAndDecompression(b *testing.B) {
 	zerolog.SetGlobalLevel(zerolog.FatalLevel)
 
-	data, err := ioutil.ReadFile("./tests/compress/alerts.json")
+	data, err := os.ReadFile("./tests/compress/alerts.json")
 	if err != nil {
 		b.Errorf("Failed to read data: %s", err.Error())
 	}
 
 	b.Run("Run", func(b *testing.B) {
 		for i := 0; i < b.N; i++ {
-			compressed, err := compressResponse(data)
+			compressed, err := compressResponse(data, nil)
 			if err != nil {
 				b.Errorf("Failed to compress data: %s", err.Error())
 			}
 
-			_, err = decompressCachedResponse(compressed)
+			_, err = decompressCachedResponse(bytes.NewReader(compressed))
 			if err != nil {
 				b.Errorf("Failed to decompress data: %s", err.Error())
 			}
