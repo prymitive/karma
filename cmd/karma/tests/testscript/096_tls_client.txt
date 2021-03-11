@@ -92,7 +92,6 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"io"
-	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -136,7 +135,7 @@ func empty(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	pid := os.Getpid()
-	err := ioutil.WriteFile("alertmanager.pid", []byte(strconv.Itoa(pid)), 0644)
+	err := os.WriteFile("alertmanager.pid", []byte(strconv.Itoa(pid)), 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -146,7 +145,7 @@ func main() {
 	http.HandleFunc("/api/v2/silences", empty)
 	http.HandleFunc("/api/v2/alerts/groups", empty)
 
-	caCert, err := ioutil.ReadFile("ca.pem")
+	caCert, err := os.ReadFile("ca.pem")
 	if err != nil {
 		log.Fatal(err)
 	}

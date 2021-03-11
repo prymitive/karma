@@ -2,9 +2,9 @@ package main
 
 import (
 	"io"
-	"io/ioutil"
 	"mime"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strings"
 	"time"
@@ -26,7 +26,7 @@ func serveFileOr404(path string, contentType string) http.HandlerFunc {
 			_, _ = w.Write([]byte{})
 			return
 		}
-		data, err := ioutil.ReadFile(path)
+		data, err := os.ReadFile(path)
 		if err != nil {
 			contentText(w)
 			w.WriteHeader(http.StatusNotFound)

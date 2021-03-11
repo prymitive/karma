@@ -3,7 +3,7 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httputil"
 	"net/url"
@@ -85,7 +85,7 @@ func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) 
 			Msg("Proxy request")
 
 		defer r.Body.Close()
-		body, err := ioutil.ReadAll(r.Body)
+		body, err := io.ReadAll(r.Body)
 		if err != nil {
 			log.Error().Err(err).
 				Str("alertmanager", alertmanager.Name).
@@ -153,11 +153,11 @@ func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) 
 				return
 			}
 
-			r.Body = ioutil.NopCloser(bytes.NewBuffer(newBody))
+			r.Body = io.NopCloser(bytes.NewBuffer(newBody))
 			r.ContentLength = int64(len(newBody))
 			r.Header.Set("Content-Length", fmt.Sprintf("%d", r.ContentLength))
 		} else {
-			r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+			r.Body = io.NopCloser(bytes.NewBuffer(body))
 		}
 
 		h.ServeHTTP(w, r)

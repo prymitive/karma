@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"strings"
 	"time"
@@ -130,7 +129,7 @@ func SetupFlags(f *pflag.FlagSet) {
 }
 
 func validateConfigFile(path string) error {
-	f, err := ioutil.ReadFile(path)
+	f, err := os.ReadFile(path)
 	if err != nil {
 		return err
 	}

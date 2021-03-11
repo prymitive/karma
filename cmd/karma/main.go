@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"mime"
 	"net"
 	"net/http"
@@ -404,7 +403,7 @@ func writePidFile() error {
 	if pidFile != "" {
 		log.Info().Str("path", pidFile).Msg("Writing PID file")
 		pid := os.Getpid()
-		err := ioutil.WriteFile(pidFile, []byte(strconv.Itoa(pid)), 0644)
+		err := os.WriteFile(pidFile, []byte(strconv.Itoa(pid)), 0644)
 		if err != nil {
 			return fmt.Errorf("failed to write a PID file: %s", err)
 		}
