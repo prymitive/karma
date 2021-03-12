@@ -25,7 +25,7 @@ require (
 	github.com/prometheus/client_golang v1.9.0
 	github.com/prometheus/common v0.19.0
 	github.com/prometheus/procfs v0.6.0 // indirect
-	github.com/rogpeppe/go-internal v1.7.0
+	github.com/rogpeppe/go-internal v1.8.0
 	github.com/rs/zerolog v1.20.0
 	github.com/spf13/pflag v1.0.5
 	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110 // indirect
