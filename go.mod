@@ -23,7 +23,7 @@ require (
 	github.com/patrickmn/go-cache v2.1.1-0.20180815053127-5633e0862627+incompatible
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/prometheus/client_golang v1.9.0
-	github.com/prometheus/common v0.18.0
+	github.com/prometheus/common v0.19.0
 	github.com/prometheus/procfs v0.6.0 // indirect
 	github.com/rogpeppe/go-internal v1.7.0
 	github.com/rs/zerolog v1.20.0
