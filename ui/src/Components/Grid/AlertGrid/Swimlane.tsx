@@ -20,7 +20,7 @@ const Swimlane: FC<{
   onToggle: (event: MouseEvent) => void;
 }> = ({ alertStore, settingsStore, grid, isExpanded, onToggle }) => {
   return (
-    <h5 className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 mt-2 mb-0 border border-dark">
+    <h5 className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 my-1 border border-dark">
       <span className="flex-shrink-0 flex-grow-0">
         <span className="badge components-label px-0 ml-1 mr-3">
           <FontAwesomeIcon icon={faTh} className="text-muted" />
