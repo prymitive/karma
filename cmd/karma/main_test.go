@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/prymitive/karma/internal/config"
 
@@ -119,5 +120,38 @@ func TestGetViewURL(t *testing.T) {
 				t.Errorf("getViewURL(%s) returned %q, expected %q", testCase.view, result, testCase.result)
 			}
 		})
+	}
+}
+
+func TestPullFromAlertmanager(t *testing.T) {
+	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+	mockConfig()
+	mockCache()
+	lastPull = time.Time{}
+
+	start := time.Now()
+	pullFromAlertmanager()
+	dur := time.Since(start)
+	if dur > time.Second {
+		t.Errorf("First pullFromAlertmanager took %s, expected <= 1s", dur)
+		return
+	}
+
+	start = time.Now()
+	pullFromAlertmanager()
+	dur = time.Since(start)
+	if dur < time.Second*5 {
+		t.Errorf("Second pullFromAlertmanager took %s, expected >= 5s", dur)
+		return
+	}
+
+	time.Sleep(time.Second * 6)
+
+	start = time.Now()
+	pullFromAlertmanager()
+	dur = time.Since(start)
+	if dur > time.Second {
+		t.Errorf("Third pullFromAlertmanager took %s, expected <= 1s", dur)
+		return
 	}
 }
