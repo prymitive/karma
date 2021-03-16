@@ -8,9 +8,9 @@
     "node": "14.16.0"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "1.2.34",
-    "@fortawesome/free-regular-svg-icons": "5.15.2",
-    "@fortawesome/free-solid-svg-icons": "5.15.2",
+    "@fortawesome/fontawesome-svg-core": "1.2.35",
+    "@fortawesome/free-regular-svg-icons": "5.15.3",
+    "@fortawesome/free-solid-svg-icons": "5.15.3",
     "@fortawesome/react-fontawesome": "0.1.14",
     "@juggle/resize-observer": "3.3.0",
     "@popperjs/core": "2.9.1",
