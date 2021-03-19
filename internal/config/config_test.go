@@ -37,6 +37,7 @@ alertmanager:
     name: default
     uri: http://localhost
     external_uri: http://example.com
+    proxy_url: ""
     timeout: 40s
     proxy: false
     readonly: false
