@@ -403,6 +403,7 @@ func (config *configSchema) LogValues() {
 			Name:        s.Name,
 			URI:         uri.SanitizeURI(s.URI),
 			ExternalURI: uri.SanitizeURI(s.ExternalURI),
+			ProxyURL:    s.ProxyURL,
 			Timeout:     s.Timeout,
 			TLS:         s.TLS,
 			Proxy:       s.Proxy,

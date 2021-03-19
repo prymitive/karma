@@ -172,6 +172,7 @@ alertmanager:
         cert: string
         key: string
         insecureSkipVerify: bool
+      proxy_url: string
       headers:
         any: string
       cors:
@@ -235,6 +236,9 @@ alertmanager:
   Note that this option requires `tls:cert` to be also set.
 - `tls:insecureSkipVerify` - disable server certificate validation, can be set
   to allow using self-signed certs, use at your own risk
+- `proxy_url` - sets a proxy for HTTP client used for making requests to the
+  upstream server. This can be used to access servers available via SOCKS5
+  proxy.
 - `headers` - a map with a list of key: values which are header: value.
   These custom headers will be sent with every request to the alert manager
   instance.
@@ -414,6 +418,9 @@ alertmanager:
       uri: https://test.example.com
       tls:
         insecureSkipVerify: true
+    - name: socks5
+      uri: https://internal.address
+      proxy_url: socks5://proxy.local:5000
 ```
 
 Defaults:

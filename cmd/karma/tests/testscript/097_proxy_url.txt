@@ -1,4 +1,4 @@
-# Validates that case sensitive keys are read correctly from config file
+# Check if proxy_url is set correctly on server configuration
 karma.bin-should-work --log.config=true --config.file=karma.yaml --check-config
 ! stdout .
 cmp stderr stderr.txt
@@ -21,10 +21,10 @@ level=info msg="alertmanager:"
 level=info msg="  interval: 1m0s"
 level=info msg="  servers:"
 level=info msg="  - cluster: \"\""
-level=info msg="    name: am"
-level=info msg="    uri: https://127.0.0.1:9093"
+level=info msg="    name: socks5_proxy"
+level=info msg="    uri: http://127.0.0.1"
 level=info msg="    external_uri: \"\""
-level=info msg="    proxy_url: \"\""
+level=info msg="    proxy_url: socks5://local.proxy:1080"
 level=info msg="    timeout: 40s"
 level=info msg="    proxy: false"
 level=info msg="    readonly: false"
@@ -72,17 +72,7 @@ level=info msg="labels:"
 level=info msg="  keep: []"
 level=info msg="  strip: []"
 level=info msg="  color:"
-level=info msg="    custom:"
-level=info msg="      region:"
-level=info msg="      - value_re: .*"
-level=info msg="        color: '#736598'"
-level=info msg="      severity:"
-level=info msg="      - value: P3"
-level=info msg="        color: '#87c4e0'"
-level=info msg="      - value: P2"
-level=info msg="        color: '#ffae42'"
-level=info msg="      - value: P1"
-level=info msg="        color: '#ff220c'"
+level=info msg="    custom: {}"
 level=info msg="    static: []"
 level=info msg="    unique: []"
 level=info msg="listen:"
@@ -122,23 +112,11 @@ level=info msg="  alertsPerGroup: 5"
 level=info msg="  collapseGroups: collapsedOnMobile"
 level=info msg="  multiGridLabel: \"\""
 level=info msg="  multiGridSortReverse: false"
-level=info msg="Configured Alertmanager source" name=am proxy=false readonly=false uri=https://127.0.0.1:9093
+level=info msg="Configured Alertmanager source" name=socks5_proxy proxy=false readonly=false uri=http://127.0.0.1
 level=info msg="Configuration is valid"
 -- karma.yaml --
 alertmanager:
   servers:
-    - name: am
-      uri: https://127.0.0.1:9093
-labels:
-  color:
-    custom:
-      region:
-        - value_re: ".*"
-          color: "#736598"
-      severity:
-        - value: P3
-          color: "#87c4e0"
-        - value: P2
-          color: "#ffae42"
-        - value: P1
-          color: "#ff220c"
+    - name: socks5_proxy
+      uri: http://127.0.0.1
+      proxy_url: socks5://local.proxy:1080
