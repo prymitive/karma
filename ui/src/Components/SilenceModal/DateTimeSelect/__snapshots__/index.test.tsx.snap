@@ -290,6 +290,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             >
               <div class=\\"DayPicker-Caption\\"
                    role=\\"heading\\"
+                   aria-live=\\"polite\\"
               >
                 <div>
                   February 2061
@@ -841,6 +842,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             >
               <div class=\\"DayPicker-Caption\\"
                    role=\\"heading\\"
+                   aria-live=\\"polite\\"
               >
                 <div>
                   February 2060
