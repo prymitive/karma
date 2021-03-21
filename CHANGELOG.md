@@ -4,8 +4,10 @@
 
 ### Added
 
-- Added `annotations:actions` option allowing to move some annotations
+- `annotations:actions` option allowing to move some annotations
   to alert dropdown menu #2596.
+- `proxy_url` alertmanager option to use when a proxy sever needs to be
+  used for requests from karma to alertmanager API #2903 (@mhrabovcin).
 
 ### Changed
 
