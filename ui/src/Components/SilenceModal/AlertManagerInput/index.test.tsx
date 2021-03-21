@@ -7,14 +7,13 @@ import toDiffableHtml from "diffable-html";
 import { MockThemeContext } from "__fixtures__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
 import { AlertManagerInput } from ".";
 
 let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;
 
 beforeEach(() => {
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
-
   alertStore = new AlertStore([]);
   alertStore.data.upstreams.clusters = {
     HA: ["am1", "am2"],
@@ -66,7 +65,11 @@ const MountedAlertManagerInput = () => {
     <AlertManagerInput
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
 };
 

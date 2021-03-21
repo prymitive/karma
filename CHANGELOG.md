@@ -1,11 +1,41 @@
 # Changelog
 
-## [Unreleased]
+## [unreleased]
+
+### Added
+
+- `annotations:actions` option allowing to move some annotations
+  to alert dropdown menu #2596.
+- `proxy_url` alertmanager option to use when a proxy sever needs to be
+  used for requests from karma to alertmanager API #2903 (@mhrabovcin).
+
+### Changed
+
+- Multi-grid label dropdown will only show label names from visible alerts.
+
+## v0.80
+
+### Added
+
+- Add `/robots.txt` to block search engine crawlers.
+- Easily change multi-grid source label via quick access dropdown on the grid
+  header.
+
+### Changed
+
+- Reworked how notifications are displayed.
+
+## v0.79
 
 ### Fixed
 
 - Not all labels were stripped when using `lables:keep` or `labels:strip`
   option #2585.
+
+### Added
+
+- `healthcheck:visible` alertmanager option to control if healtcheck alerts
+  should be visible in the UI #2614.
 
 ## v0.78
 
@@ -34,7 +64,7 @@
         - name: am
           uri: https://alertmanager.example.com
           healthcheck:
-            alerts:
+            filters:
               prom1:
                 - alertname=DeadMansSwitch
                 - instance=prom1

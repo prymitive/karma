@@ -10,6 +10,7 @@ type AlertmanagerCORS struct {
 }
 
 type AlertmanagerHealthcheck struct {
+	Visible bool                `yaml:"visible" koanf:"visible"`
 	Filters map[string][]string `yaml:"filters" koanf:"filters"`
 }
 
@@ -18,6 +19,7 @@ type AlertmanagerConfig struct {
 	Name        string
 	URI         string
 	ExternalURI string `yaml:"external_uri" koanf:"external_uri"`
+	ProxyURL    string `yaml:"proxy_url" koanf:"proxy_url"`
 	Timeout     time.Duration
 	Proxy       bool
 	ReadOnly    bool `yaml:"readonly"`
@@ -81,6 +83,7 @@ type configSchema struct {
 		Timeout     time.Duration    `yaml:"-" koanf:"timeout"`
 		URI         string           `yaml:"-" koanf:"uri"`
 		ExternalURI string           `yaml:"-" koanf:"external_uri"`
+		ProxyURL    string           `yaml:"-" koanf:"proxy_url"`
 		Proxy       bool             `yaml:"-" koanf:"proxy"`
 		ReadOnly    bool             `yaml:"-" koanf:"readonly"`
 		CORS        AlertmanagerCORS `yaml:"-" koanf:"cors"`
@@ -100,6 +103,7 @@ type configSchema struct {
 		Keep    []string
 		Strip   []string
 		Order   []string
+		Actions []string
 	}
 	Custom struct {
 		CSS string

@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
@@ -13,19 +15,18 @@ import (
 	"testing"
 	"time"
 
-	"github.com/go-chi/chi"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
-	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
 
-	cache "github.com/patrickmn/go-cache"
-
+	"github.com/go-chi/chi/v5"
 	"github.com/google/go-cmp/cmp"
 	"github.com/jarcoal/httpmock"
+	cache "github.com/patrickmn/go-cache"
+	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
 )
 
@@ -72,6 +73,18 @@ func TestHealth(t *testing.T) {
 	r.ServeHTTP(resp, req)
 	if resp.Code != http.StatusOK {
 		t.Errorf("GET /health returned status %d", resp.Code)
+	}
+}
+
+func TestRobots(t *testing.T) {
+	mockConfig()
+	r := testRouter()
+	setupRouter(r)
+	req := httptest.NewRequest("GET", "/robots.txt", nil)
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Code != http.StatusOK {
+		t.Errorf("GET /robots.txt returned status %d", resp.Code)
 	}
 }
 
@@ -134,6 +147,7 @@ func mockAlerts(version string) {
 	mock.RegisterURL("http://localhost/api/v2/silences", version, "api/v2/silences")
 	mock.RegisterURL("http://localhost/api/v2/alerts/groups", version, "api/v2/alerts/groups")
 
+	lastPull = time.Time{}
 	pullFromAlertmanager()
 }
 
@@ -766,6 +780,24 @@ func TestSilences(t *testing.T) {
 			sortReverse: "1",
 			showExpired: "1",
 			results:     []string{silenceHostDown, silenceInstance, silenceServer7},
+		},
+		{
+			searchTerm:  "@cluster=Default",
+			sortReverse: "0",
+			showExpired: "0",
+			results:     []string{silenceHostDown, silenceInstance, silenceServer7},
+		},
+		{
+			searchTerm:  "Default",
+			sortReverse: "0",
+			showExpired: "0",
+			results:     []string{silenceHostDown, silenceInstance, silenceServer7},
+		},
+		{
+			searchTerm:  "instance=server7",
+			sortReverse: "0",
+			showExpired: "0",
+			results:     []string{silenceServer7},
 		},
 	}
 
@@ -2277,6 +2309,7 @@ func TestUpstreamStatus(t *testing.T) {
 			for _, m := range testCase.mocks {
 				httpmock.RegisterResponder("GET", m.uri, httpmock.NewStringResponder(m.code, m.body))
 			}
+			lastPull = time.Time{}
 			pullFromAlertmanager()
 
 			req := httptest.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
@@ -2334,6 +2367,7 @@ func TestGetUserFromContextPresent(t *testing.T) {
 func TestHealthcheckAlerts(t *testing.T) {
 	type testCaseT struct {
 		healthchecks map[string][]string
+		visible      bool
 		hasError     bool
 	}
 
@@ -2346,6 +2380,13 @@ func TestHealthcheckAlerts(t *testing.T) {
 			healthchecks: map[string][]string{
 				"active": {"alertname=Host_Down"},
 			},
+			hasError: false,
+		},
+		{
+			healthchecks: map[string][]string{
+				"active": {"alertname=Host_Down"},
+			},
+			visible:  true,
 			hasError: false,
 		},
 		{
@@ -2391,17 +2432,223 @@ func TestHealthcheckAlerts(t *testing.T) {
 					"healthchecks",
 					"http://localhost",
 					alertmanager.WithHealthchecks(testCase.healthchecks),
+					alertmanager.WithHealthchecksVisible(testCase.visible),
 				)
 				if err != nil {
 					t.Error(err)
 					return
 				}
+
+				alertmanager.UnregisterAll()
+				err = alertmanager.RegisterAlertmanager(am)
+				if err != nil {
+					t.Error(err)
+					return
+				}
+
 				_ = am.Pull()
 				hasError := am.Error() != ""
 				if hasError != testCase.hasError {
 					t.Errorf("error=%q expected=%v", am.Error(), testCase.hasError)
 				}
+
+				alertGroups := alertmanager.DedupAlerts()
+				for _, ag := range alertGroups {
+					for _, alert := range ag.Alerts {
+						alert := alert
+						name, hc := am.IsHealthCheckAlert(&alert)
+						if hc != nil && !testCase.visible {
+							t.Errorf("%s visible=%v but got hc alert %v", name, testCase.visible, alert)
+						}
+					}
+				}
 			})
 		}
+	}
+}
+
+func TestAlertFilters(t *testing.T) {
+	type testCaseT struct {
+		filters    []string
+		alertCount int
+	}
+
+	testCases := []testCaseT{
+		{
+			filters:    []string{},
+			alertCount: 24,
+		},
+		{
+			filters:    []string{"@alertmanager=xxx"},
+			alertCount: 0,
+		},
+		{
+			filters:    []string{"@alertmanager=c1a"},
+			alertCount: 24,
+		},
+		{
+			filters:    []string{"@cluster=cluster1"},
+			alertCount: 24,
+		},
+		{
+			filters:    []string{"@cluster=cluster2"},
+			alertCount: 24,
+		},
+	}
+
+	for _, tc := range testCases {
+		var filters []string
+		for _, f := range tc.filters {
+			filters = append(filters, "q="+f)
+		}
+		q := strings.Join(filters, "&")
+		for _, version := range mock.ListAllMocks() {
+			t.Run(q, func(t *testing.T) {
+				t.Logf("Validating alerts.json response using mock files from Alertmanager %s", version)
+
+				httpmock.Activate()
+				defer httpmock.DeactivateAndReset()
+
+				mockCache()
+
+				alertmanager.UnregisterAll()
+
+				mock.RegisterURL("http://localhost/c1a/metrics", version, "metrics")
+				mock.RegisterURL("http://localhost/c1a/api/v2/status", version, "api/v2/status")
+				mock.RegisterURL("http://localhost/c1a/api/v2/silences", version, "api/v2/silences")
+				mock.RegisterURL("http://localhost/c1a/api/v2/alerts/groups", version, "api/v2/alerts/groups")
+				c1a, err := alertmanager.NewAlertmanager("cluster1", "c1a", "http://localhost/c1a")
+				if err != nil {
+					t.Fatal(err)
+				}
+				err = alertmanager.RegisterAlertmanager(c1a)
+				if err != nil {
+					t.Fatal(err)
+				}
+
+				mock.RegisterURL("http://localhost/c1b/metrics", version, "metrics")
+				mock.RegisterURL("http://localhost/c1b/api/v2/status", version, "api/v2/status")
+				mock.RegisterURL("http://localhost/c1b/api/v2/silences", version, "api/v2/silences")
+				mock.RegisterURL("http://localhost/c1b/api/v2/alerts/groups", version, "api/v2/alerts/groups")
+				c1b, err := alertmanager.NewAlertmanager("cluster1", "c1b", "http://localhost/c1b")
+				if err != nil {
+					t.Fatal(err)
+				}
+				err = alertmanager.RegisterAlertmanager(c1b)
+				if err != nil {
+					t.Fatal(err)
+				}
+
+				mock.RegisterURL("http://localhost/c2a/metrics", version, "metrics")
+				mock.RegisterURL("http://localhost/c2a/api/v2/status", version, "api/v2/status")
+				mock.RegisterURL("http://localhost/c2a/api/v2/silences", version, "api/v2/silences")
+				mock.RegisterURL("http://localhost/c2a/api/v2/alerts/groups", version, "api/v2/alerts/groups")
+				c2a, err := alertmanager.NewAlertmanager("cluster2", "c2a", "http://localhost/c2a")
+				if err != nil {
+					t.Fatal(err)
+				}
+				err = alertmanager.RegisterAlertmanager(c2a)
+				if err != nil {
+					t.Fatal(err)
+				}
+
+				lastPull = time.Time{}
+				pullFromAlertmanager()
+
+				r := testRouter()
+				setupRouter(r)
+				// re-run a few times to test the cache
+				for i := 1; i <= 3; i++ {
+					req := httptest.NewRequest("GET", fmt.Sprintf("/alerts.json?%s", q), nil)
+					resp := httptest.NewRecorder()
+					r.ServeHTTP(resp, req)
+					if resp.Code != http.StatusOK {
+						t.Errorf("GET /alerts.json returned status %d", resp.Code)
+					}
+					ur := models.AlertsResponse{}
+					body := resp.Body.Bytes()
+					err := json.Unmarshal(body, &ur)
+					if err != nil {
+						t.Errorf("Failed to unmarshal response: %s", err)
+					}
+					if ur.TotalAlerts != tc.alertCount {
+						t.Errorf("Got %d alerts, expected %d", ur.TotalAlerts, tc.alertCount)
+					}
+				}
+			})
+		}
+	}
+}
+
+type gzErrWriter struct {
+	failWrite bool
+	failClose bool
+}
+
+func (ew *gzErrWriter) Write(p []byte) (n int, err error) {
+	if ew.failWrite {
+		return 0, errors.New("Write error")
+	}
+	return len(p), nil
+}
+func (ew *gzErrWriter) Close() error {
+	if ew.failClose {
+		return errors.New("Close error")
+	}
+	return nil
+}
+
+func TestCompressResponseWriteError(t *testing.T) {
+	_, err := compressResponse(nil, &gzErrWriter{failWrite: true})
+	if err == nil {
+		t.Error("compressResponse() didn't return any error")
+	}
+}
+
+func TestCompressResponseCloseError(t *testing.T) {
+	_, err := compressResponse(nil, &gzErrWriter{failClose: true})
+	if err == nil {
+		t.Error("compressResponse() didn't return any error")
+	}
+}
+
+type gzErrReader struct {
+	failAfter int
+	reads     int
+}
+
+func (er *gzErrReader) Read(p []byte) (n int, err error) {
+	if er.reads >= er.failAfter {
+		return 0, errors.New("Read error")
+	}
+	er.reads++
+
+	b, err := compressResponse([]byte("abcd"), nil)
+	if err != nil {
+		return 0, err
+	}
+
+	return bytes.NewReader(b).Read(p)
+}
+
+func TestDecompressResponseResetError(t *testing.T) {
+	_, err := decompressCachedResponse(&gzErrReader{failAfter: 0})
+	if err == nil {
+		t.Error("decompressCachedResponse() didn't return any error")
+		return
+	}
+	if err.Error() != "failed to created new compression reader: Read error" {
+		t.Errorf("decompressCachedResponse() returned wrong error: %s", err)
+	}
+}
+
+func TestDecompressResponseReadError(t *testing.T) {
+	_, err := decompressCachedResponse(&gzErrReader{failAfter: 1})
+	if err == nil {
+		t.Error("decompressCachedResponse() didn't return any error")
+		return
+	}
+	if err.Error() != "failed to decompress data: Read error" {
+		t.Errorf("decompressCachedResponse() returned wrong error: %s", err)
 	}
 }

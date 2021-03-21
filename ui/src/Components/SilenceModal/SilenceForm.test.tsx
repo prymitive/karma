@@ -9,6 +9,7 @@ import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { QueryOperators, StaticLabels } from "Common/Query";
+import { ThemeContext } from "Components/Theme";
 import SilenceForm from "./SilenceForm";
 
 let alertStore: AlertStore;
@@ -16,8 +17,6 @@ let settingsStore: Settings;
 let silenceFormStore: SilenceFormStore;
 
 beforeEach(() => {
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
-
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
   silenceFormStore = new SilenceFormStore();
@@ -48,7 +47,11 @@ const MountedSilenceForm = () => {
       silenceFormStore={silenceFormStore}
       settingsStore={settingsStore}
       previewOpen={false}
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
 };
 

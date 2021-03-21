@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"regexp"
@@ -535,11 +535,11 @@ func TestProxyUserRewrite(t *testing.T) {
 				_ = am.Pull()
 
 				httpmock.RegisterResponder("POST", "http://localhost/api/v2/silences", func(req *http.Request) (*http.Response, error) {
-					body, _ := ioutil.ReadAll(req.Body)
+					body, _ := io.ReadAll(req.Body)
 					return httpmock.NewBytesResponse(200, body), nil
 				})
 
-				req := httptest.NewRequest("POST", "/proxy/alertmanager/proxyAuth/api/v2/silences", ioutil.NopCloser(bytes.NewBufferString(testCase.frontednRequestBody)))
+				req := httptest.NewRequest("POST", "/proxy/alertmanager/proxyAuth/api/v2/silences", io.NopCloser(bytes.NewBufferString(testCase.frontednRequestBody)))
 				for k, v := range testCase.requestHeaders {
 					req.Header.Set(k, v)
 				}
@@ -551,7 +551,7 @@ func TestProxyUserRewrite(t *testing.T) {
 					t.Errorf("Got response code %d instead of %d", resp.Code, testCase.responseCode)
 				}
 
-				gotBody, _ := ioutil.ReadAll(resp.Body)
+				gotBody, _ := io.ReadAll(resp.Body)
 				if string(gotBody) != testCase.proxyRequestBody {
 					diff := difflib.UnifiedDiff{
 						A:        difflib.SplitLines(testCase.proxyRequestBody),
@@ -1193,11 +1193,11 @@ func TestProxySilenceACL(t *testing.T) {
 				_ = am.Pull()
 
 				httpmock.RegisterResponder("POST", "http://localhost/api/v2/silences", func(req *http.Request) (*http.Response, error) {
-					body, _ := ioutil.ReadAll(req.Body)
+					body, _ := io.ReadAll(req.Body)
 					return httpmock.NewBytesResponse(200, body), nil
 				})
 
-				req := httptest.NewRequest("POST", "/proxy/alertmanager/proxyACL/api/v2/silences", ioutil.NopCloser(bytes.NewBufferString(testCase.frontednRequestBody)))
+				req := httptest.NewRequest("POST", "/proxy/alertmanager/proxyACL/api/v2/silences", io.NopCloser(bytes.NewBufferString(testCase.frontednRequestBody)))
 				req.Header.Set("X-User", testCase.requestUsername)
 
 				resp := newCloseNotifyingRecorder()
@@ -1246,7 +1246,7 @@ func TestProxyRequestReadFailure(t *testing.T) {
 			t.Errorf("Got response code %d instead of 500", resp.Code)
 		}
 
-		gotBody, _ := ioutil.ReadAll(resp.Body)
+		gotBody, _ := io.ReadAll(resp.Body)
 		if string(gotBody) != "request read error\n" {
 			t.Errorf("Body mismatch:\n%s", gotBody)
 		}
@@ -1299,7 +1299,7 @@ func TestProxyRequestToUnsupportedAlertmanager(t *testing.T) {
 		return
 	}
 
-	req := httptest.NewRequest("POST", "/proxy/alertmanager/proxyToUnsupported/api/v2/silences", ioutil.NopCloser(bytes.NewBufferString(`{}`)))
+	req := httptest.NewRequest("POST", "/proxy/alertmanager/proxyToUnsupported/api/v2/silences", io.NopCloser(bytes.NewBufferString(`{}`)))
 
 	resp := newCloseNotifyingRecorder()
 	r.ServeHTTP(resp, req)
@@ -1307,7 +1307,7 @@ func TestProxyRequestToUnsupportedAlertmanager(t *testing.T) {
 		t.Errorf("Got response code %d instead of 500", resp.Code)
 	}
 
-	gotBody, _ := ioutil.ReadAll(resp.Body)
+	gotBody, _ := io.ReadAll(resp.Body)
 	if string(gotBody) != "can't find silence mapper for Alertmanager 0.1.0\n" {
 		t.Errorf("Body mismatch:\n%s", gotBody)
 	}

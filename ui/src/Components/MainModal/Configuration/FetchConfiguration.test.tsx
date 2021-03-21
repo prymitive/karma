@@ -26,24 +26,25 @@ describe("<FetchConfiguration />", () => {
     const tree = FakeConfiguration();
     expect(settingsStore.fetchConfig.config.interval).toBe(30);
 
-    const slider = tree.find(`Slider [onKeyDown]`).first();
+    const slider = tree.find(`div.input-range-thumb`).first();
+    slider.simulate("click");
 
-    slider.simulate("keyDown", { keyCode: 37 });
-    slider.simulate("keyUp", { keyCode: 37 });
+    slider.simulate("keyDown", { key: "ArrowLeft", keyCode: 37 });
+    slider.simulate("keyUp", { key: "ArrowLeft", keyCode: 37 });
 
     expect(settingsStore.fetchConfig.config.interval).toBe(20);
 
-    slider.simulate("keyDown", { keyCode: 39 });
-    slider.simulate("keyUp", { keyCode: 39 });
-    slider.simulate("keyDown", { keyCode: 39 });
-    slider.simulate("keyUp", { keyCode: 39 });
+    slider.simulate("keyDown", { key: "ArrowRight", keyCode: 39 });
+    slider.simulate("keyUp", { key: "ArrowRight", keyCode: 39 });
+    slider.simulate("keyDown", { key: "ArrowRight", keyCode: 39 });
+    slider.simulate("keyUp", { key: "ArrowRight", keyCode: 39 });
 
     expect(settingsStore.fetchConfig.config.interval).toBe(40);
   });
 
   it("custom interval value is rendered correctly", () => {
-    settingsStore.fetchConfig.setInterval(66);
+    settingsStore.fetchConfig.setInterval(70);
     const component = FakeConfiguration();
-    expect(component.find("InputRange").props().value).toBe(66);
+    expect(component.find("Range").props().values).toContain(70);
   });
 });

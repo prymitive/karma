@@ -71,9 +71,7 @@ const AlertManagerInput: FC<{
       }
       isMulti
       onChange={(newValue) => {
-        silenceFormStore.data.setAlertmanagers(
-          (newValue as MultiValueOptionT[]) || ([] as MultiValueOptionT[])
-        );
+        silenceFormStore.data.setAlertmanagers(newValue as MultiValueOptionT[]);
       }}
       isDisabled={silenceFormStore.data.silenceID !== null}
     />

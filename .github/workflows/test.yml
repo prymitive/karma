@@ -3,10 +3,10 @@ name: Test
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     branches:
-      - master
+      - main
   release:
     types:
       - published
@@ -14,18 +14,18 @@ on:
 jobs:
   test-go:
     name: Test Go code
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.1.0
+        uses: rlespinasse/github-slug-action@3.3.0
 
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.6
+          go-version: 1.16.2
 
       - name: Cache Go modules
         id: cache-go-modules
@@ -34,7 +34,7 @@ jobs:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-master-go-modules-
+            ${{ runner.os }}-main-go-modules-
 
       - name: Fetch all Go modules
         if: steps.cache-go-modules.outputs.cache-hit != 'true'
@@ -44,7 +44,11 @@ jobs:
         run: make mock-assets
 
       - name: Test Go code
-        run: make test-go
+        uses: nick-invision/retry@v2.4.0
+        with:
+          timeout_minutes: 10
+          max_attempts: 5
+          command: make test-go
 
       - name: Report code coverage
         uses: codecov/codecov-action@v1
@@ -53,18 +57,18 @@ jobs:
 
   lint-go:
     name: Lint Go code
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.1.0
+        uses: rlespinasse/github-slug-action@3.3.0
 
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.6
+          go-version: 1.16.2
 
       - name: Cache Go modules
         id: cache-go-modules
@@ -73,7 +77,7 @@ jobs:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-master-go-modules-
+            ${{ runner.os }}-main-go-modules-
 
       - name: Fetch all Go modules
         if: steps.cache-go-modules.outputs.cache-hit != 'true'
@@ -87,7 +91,7 @@ jobs:
 
   test-js:
     name: Test JS code
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         env:
@@ -98,12 +102,12 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.1.0
+        uses: rlespinasse/github-slug-action@3.3.0
 
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.15.4
+          node-version: 14.16.0
 
       - name: Cache NPM modules
         id: cache-npm
@@ -112,7 +116,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-master-npm-
+            ${{ runner.os }}-main-npm-
 
       - name: Fetch all NPM dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
@@ -130,18 +134,18 @@ jobs:
 
   lint-js:
     name: Lint JS code
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.1.0
+        uses: rlespinasse/github-slug-action@3.3.0
 
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.15.4
+          node-version: 14.16.0
 
       - name: Cache NPM modules
         id: cache-npm
@@ -150,7 +154,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-master-npm-
+            ${{ runner.os }}-main-npm-
 
       - name: Fetch all NPM dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
@@ -161,7 +165,7 @@ jobs:
 
   format-go:
     name: Check Go code formatting
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -169,7 +173,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.6
+          go-version: 1.16.2
 
       - name: Format Go code
         run: make format-go
@@ -179,18 +183,18 @@ jobs:
 
   format-js:
     name: Check JS code formatting
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.1.0
+        uses: rlespinasse/github-slug-action@3.3.0
 
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.15.4
+          node-version: 14.16.0
 
       - name: Cache NPM modules
         id: cache-npm
@@ -199,7 +203,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-master-npm-
+            ${{ runner.os }}-main-npm-
 
       - name: Fetch all NPM dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
@@ -213,7 +217,7 @@ jobs:
 
   go-mod-tidy:
     name: Verify go.sum
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -221,7 +225,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.6
+          go-version: 1.16.2
 
       - name: Mock web assets
         run: make mock-assets
@@ -238,38 +242,20 @@ jobs:
       - name: Check for local changes
         run: git diff --exit-code
 
-  openapi:
-    name: Verify OpenAPI client code
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.15.6
-
-      - name: Generate OpenAPI code
-        run: make openapi-client
-
-      - name: Check for local changes
-        run: git diff --exit-code
-
   deps-js:
     name: Check JS dependencies
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.1.0
+        uses: rlespinasse/github-slug-action@3.3.0
 
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.15.4
+          node-version: 14.16.0
 
       - name: Cache NPM modules
         id: cache-npm
@@ -278,7 +264,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-master-npm-
+            ${{ runner.os }}-main-npm-
 
       - name: Fetch all NPM dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
@@ -289,7 +275,7 @@ jobs:
 
   lint-versions:
     name: Lint Versions
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -299,7 +285,7 @@ jobs:
 
   typescript:
     name: Check for non-typescript components
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -309,7 +295,7 @@ jobs:
 
   git-commit:
     name: Lint git commit
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -317,19 +303,19 @@ jobs:
           fetch-depth: 0
 
       - name: Lint git commit
-        uses: wagoid/commitlint-github-action@v2.1.6
+        uses: wagoid/commitlint-github-action@v3.0.6
         with:
           configFile: .commitlintrc.js
 
   docs:
     name: Lint documentation
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Run markdown-lint
-        uses: avto-dev/markdown-lint@v1.4.0
+        uses: avto-dev/markdown-lint@v1.5.0
         with:
           config: .markdownlint.yml
           args: "*.md docs"
@@ -344,13 +330,12 @@ jobs:
       - format-go
       - format-js
       - go-mod-tidy
-      - openapi
       - deps-js
       - lint-versions
       - typescript
       - git-commit
       - docs
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: All linters passed
         run: "true"
@@ -359,13 +344,13 @@ jobs:
     name: Benchmark Go code compare
     if: github.event_name == 'pull_request'
     needs: stage-test-and-lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.1.0
+        uses: rlespinasse/github-slug-action@3.3.0
 
       - name: Get modified files
         uses: tony84727/changed-file-filter@0.0.3
@@ -381,7 +366,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.6
+          go-version: 1.16.2
 
       - name: Cache Go modules
         id: cache-go-modules
@@ -390,7 +375,7 @@ jobs:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-master-go-modules-
+            ${{ runner.os }}-main-go-modules-
 
       - name: Fetch all Go modules
         if: steps.cache-go-modules.outputs.cache-hit != 'true'
@@ -411,13 +396,13 @@ jobs:
     name: Webpack bundle size compare
     if: github.event_name == 'pull_request'
     needs: stage-test-and-lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.1.0
+        uses: rlespinasse/github-slug-action@3.3.0
 
       - name: Get modified files
         uses: tony84727/changed-file-filter@0.0.3
@@ -430,7 +415,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.15.4
+          node-version: 14.16.0
 
       - name: Cache NPM modules
         id: cache-npm
@@ -439,7 +424,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-master-npm-
+            ${{ runner.os }}-main-npm-
 
       - name: Fetch all NPM dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
@@ -456,13 +441,13 @@ jobs:
     name: Percy UI snapshots
     if: github.event_name != 'release'
     needs: stage-test-and-lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.1.0
+        uses: rlespinasse/github-slug-action@3.3.0
 
       - name: Get modified files
         uses: tony84727/changed-file-filter@0.0.3
@@ -477,7 +462,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.15.4
+          node-version: 14.16.0
 
       - name: Cache NPM modules
         id: cache-npm
@@ -486,7 +471,7 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-master-npm-
+            ${{ runner.os }}-main-npm-
 
       - name: Fetch all NPM dependencies
         if: steps.cache-npm.outputs.cache-hit != 'true'
@@ -502,7 +487,7 @@ jobs:
   cross-compile:
     name: Cross compile binaries
     needs: stage-test-and-lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -510,17 +495,17 @@ jobs:
           fetch-depth: 0
 
       - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.1.0
+        uses: rlespinasse/github-slug-action@3.3.0
 
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.15.6
+          go-version: 1.16.2
 
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.15.4
+          node-version: 14.16.0
 
       - name: Cache Go modules and build cache
         uses: actions/cache@v2
@@ -531,7 +516,7 @@ jobs:
             ~/.npm
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-cc-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-master-go-cc-
+            ${{ runner.os }}-main-go-cc-
 
       - name: Cross compile binaries
         run: make crosscompile -j 2
@@ -563,7 +548,7 @@ jobs:
   docker:
     name: Build docker image
     needs: stage-test-and-lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -571,7 +556,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.1.0
+        uses: rlespinasse/github-slug-action@3.3.0
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -635,13 +620,11 @@ jobs:
           tags: ${{ env.DOCKER_TAGS }}
           build-args: |
             VERSION=${{ env.VERSION }}
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache
 
   demo-deploy:
     name: Deploy demo app to Heroku
     needs: stage-test-and-lint
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -649,12 +632,12 @@ jobs:
           fetch-depth: 0
 
       - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.1.0
+        uses: rlespinasse/github-slug-action@3.3.0
 
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.15.4
+          node-version: 14.16.0
 
       - name: Install Heroku CLI
         run: curl -s --connect-timeout 30 --fail https://cli-assets.heroku.com/install.sh | sh
@@ -688,3 +671,23 @@ jobs:
       - name: Rollback on failure
         if: failure()
         run: /usr/local/bin/heroku releases:rollback --app karma-demo
+
+  stage-build-and-deploy:
+    name: "=== Build and deploy stage ==="
+    needs:
+      - benchmark-go
+      - webpack-bundle-size
+      - percy
+      - cross-compile
+      - docker
+      - demo-deploy
+    runs-on: ubuntu-20.04
+    steps:
+      - name: "Update status"
+        uses: Sibz/github-status-action@v1.1.4
+        with:
+          authToken: ${{ secrets.GH_REPO_TOKEN }}
+          context: "Mergeable"
+          description: "Passed"
+          state: "success"
+          sha: ${{github.event.pull_request.head.sha || github.sha}}

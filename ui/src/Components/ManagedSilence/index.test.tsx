@@ -188,10 +188,8 @@ describe("<ManagedSilence />", () => {
     const button = tree.find(".btn-primary");
     expect(button.text()).toBe("Edit");
 
-    const fillSpy = jest.spyOn(silenceFormStore.data, "fillFormFromSilence");
     button.simulate("click");
     expect(silenceFormStore.data.silenceID).toBe(silence.id);
-    expect(fillSpy).toHaveBeenCalled();
   });
 
   it("call onDidUpdate if passed", () => {

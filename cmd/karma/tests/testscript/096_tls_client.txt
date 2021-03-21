@@ -1,8 +1,8 @@
 # Correctly passes TLS client config to the upstream
 
-exec sh -x ./tls.sh
-exec sh -x ./test.sh &
-exec sh -c 'I=0 ; while [ ! -f alertmanager.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done'
+exec bash -x ./tls.sh
+exec bash -x ./test.sh &
+exec bash -c 'I=0 ; while [ ! -f alertmanager.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done'
 karma.bin-should-work --pid-file=karma.pid
 ! stdout .
 stderr 'level=info msg="Upstream version" alertmanager=client-auth version=0.21.0'
@@ -60,8 +60,6 @@ openssl x509 -req -days 7 -extfile karma.conf -extensions SAN -in karma.csr -CA 
 openssl x509 -in karma.pem -text
 
 -- test.sh --
-#!/bin/sh
-
 env GOCACHE=$TMPDIR go run alertmanager.go &
 
 I=0
@@ -76,7 +74,7 @@ alertmanager:
   interval: 1h
   servers:
     - name: client-auth
-      uri: https://127.0.0.1:9084
+      uri: https://127.0.0.1:9096
       timeout: 10s
       tls:
         ca: ca.pem
@@ -84,7 +82,7 @@ alertmanager:
         key: karma.key
 listen:
   address: 127.0.0.1
-  port: 8084
+  port: 8096
 
 -- alertmanager.go --
 package main
@@ -94,7 +92,6 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"io"
-	"io/ioutil"
 	"log"
 	"net"
 	"net/http"
@@ -138,7 +135,7 @@ func empty(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	pid := os.Getpid()
-	err := ioutil.WriteFile("alertmanager.pid", []byte(strconv.Itoa(pid)), 0644)
+	err := os.WriteFile("alertmanager.pid", []byte(strconv.Itoa(pid)), 0644)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -148,7 +145,7 @@ func main() {
 	http.HandleFunc("/api/v2/silences", empty)
 	http.HandleFunc("/api/v2/alerts/groups", empty)
 
-	caCert, err := ioutil.ReadFile("ca.pem")
+	caCert, err := os.ReadFile("ca.pem")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -161,20 +158,20 @@ func main() {
 		InsecureSkipVerify: true,
 	}
 
-	listener, err := net.Listen("tcp", "127.0.0.1:9084")
+	listener, err := net.Listen("tcp", "127.0.0.1:9096")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	server := &http.Server{
-		Addr:      "127.0.0.1:9084",
+		Addr:      "127.0.0.1:9096",
 		TLSConfig: tlsConfig,
 	}
 
 	go func() {
 		err := server.ServeTLS(listener, "alertmanager.pem", "alertmanager.key")
 		if err != nil {
-			log.Fatal(err)
+			log.Printf("ServeTLS returned error: %v", err)
 		}
 	}()
 

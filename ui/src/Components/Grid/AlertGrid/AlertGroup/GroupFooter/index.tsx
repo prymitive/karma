@@ -70,6 +70,7 @@ const GroupFooter: FC<{
       {showAnnotations
         ? group.shared.annotations
             .filter((a) => a.isLink === true)
+            .filter((a) => a.isAction === false)
             .map((a) => (
               <RenderLinkAnnotation
                 key={a.name}

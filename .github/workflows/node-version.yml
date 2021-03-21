@@ -3,14 +3,14 @@ name: Node version
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - Dockerfile
 
 jobs:
   version-sync:
     name: Synchronise node-version
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -22,10 +22,11 @@ jobs:
       - name: Synchronise Node version in actions
         run: |
           sed -i -E s/'([\ \t]+)node-version: .+'/'\1node-version: ${{ env.NODE_VERSION }}'/g .github/workflows/*
+          sed -i -E s/'([\ \t]+)"node": .+'/'\1"node": "${{ env.NODE_VERSION }}"'/g ui/package.json
 
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v3.6.0
+        uses: peter-evans/create-pull-request@v3.8.2
         with:
           token: ${{ secrets.GH_REPO_TOKEN }}
           author: "Łukasz Mierzwa <l.mierzwa@gmail.com>"
@@ -33,6 +34,7 @@ jobs:
           branch: version-sync-node
           delete-branch: true
           title: "chore(actions): use latest Node version"
+          labels: automerge
 
       - name: Check outputs
         run: |

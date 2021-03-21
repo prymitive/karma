@@ -6,9 +6,9 @@ on:
 
 jobs:
   stale:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
-      - uses: actions/stale@v3.0.14
+      - uses: actions/stale@v3.0.18
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-message: |
@@ -23,3 +23,5 @@ jobs:
           days-before-close: 7
           close-issue-label: wontfix
           close-pr-label: wontfix
+          exempt-issue-labels: "bug,enhancement"
+          exempt-pr-labels: "bug,enhancement"

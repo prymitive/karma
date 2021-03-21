@@ -26,24 +26,25 @@ describe("<AlertGroupWidthConfiguration />", () => {
     const tree = FakeConfiguration();
     expect(settingsStore.gridConfig.config.groupWidth).toBe(420);
 
-    const slider = tree.find(`Slider [onKeyDown]`).first();
+    const slider = tree.find(`div.input-range-thumb`).first();
+    slider.simulate("click");
 
-    slider.simulate("keyDown", { keyCode: 37 });
-    slider.simulate("keyUp", { keyCode: 37 });
+    slider.simulate("keyDown", { key: "ArrowLeft", keyCode: 37 });
+    slider.simulate("keyUp", { key: "ArrowLeft", keyCode: 37 });
 
-    expect(settingsStore.gridConfig.config.groupWidth).toBe(400);
+    expect(settingsStore.gridConfig.config.groupWidth).toBe(410);
 
-    slider.simulate("keyDown", { keyCode: 39 });
-    slider.simulate("keyUp", { keyCode: 39 });
-    slider.simulate("keyDown", { keyCode: 39 });
-    slider.simulate("keyUp", { keyCode: 39 });
+    slider.simulate("keyDown", { key: "ArrowRight", keyCode: 39 });
+    slider.simulate("keyUp", { key: "ArrowRight", keyCode: 39 });
+    slider.simulate("keyDown", { key: "ArrowRight", keyCode: 39 });
+    slider.simulate("keyUp", { key: "ArrowRight", keyCode: 39 });
 
-    expect(settingsStore.gridConfig.config.groupWidth).toBe(440);
+    expect(settingsStore.gridConfig.config.groupWidth).toBe(430);
   });
 
   it("custom interval value is rendered correctly", () => {
-    settingsStore.gridConfig.config.groupWidth = 455;
+    settingsStore.gridConfig.config.groupWidth = 460;
     const component = FakeConfiguration();
-    expect(component.find("InputRange").props().value).toBe(455);
+    expect(component.find("Range").props().values).toContain(460);
   });
 });

@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
 import { faShareSquare } from "@fortawesome/free-solid-svg-icons/faShareSquare";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
+import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 
 import { APIAlertGroupT } from "Models/APITypes";
 import { FormatAlertsQ } from "Stores/AlertStore";
@@ -28,6 +29,7 @@ import { CommonPopperModifiers } from "Common/Popper";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { FetchPauser } from "Components/FetchPauser";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
+import { MenuLink } from "Components/Grid/AlertGrid/AlertGroup/MenuLink";
 
 const PopperModifiers = [
   ...CommonPopperModifiers,
@@ -91,6 +93,10 @@ const MenuContent: FC<{
   ].join("");
   const groupLink = `${baseURL}?${FormatAlertsQ(groupFilters)}`;
 
+  const actions = group.shared.annotations
+    .filter((a) => a.isLink === true)
+    .filter((a) => a.isAction === true);
+
   return (
     <FetchPauser alertStore={alertStore}>
       <div
@@ -99,6 +105,21 @@ const MenuContent: FC<{
         style={popperStyle}
         data-placement={popperPlacement}
       >
+        {actions.length ? (
+          <React.Fragment>
+            <h6 className="dropdown-header">Actions:</h6>
+            {actions.map((action) => (
+              <MenuLink
+                key={action.name}
+                icon={faWrench}
+                text={action.name}
+                uri={action.value}
+                afterClick={afterClick}
+              />
+            ))}
+            <div className="dropdown-divider" />
+          </React.Fragment>
+        ) : null}
         <div
           className="dropdown-item cursor-pointer"
           onClick={() => {

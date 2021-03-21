@@ -1,6 +1,6 @@
 # Configures sentry when enabled
 
-exec sh -x ./test.sh &
+exec bash -x ./test.sh &
 karma.bin-should-work --pid-file=karma.pid --log.config=true --config.file=karma.yaml --listen.address=127.0.0.1 --listen.port=8068
 ! stdout .
 cmp stderr stderr.txt
@@ -26,6 +26,7 @@ level=info msg="  - cluster: \"\""
 level=info msg="    name: default"
 level=info msg="    uri: http://127.0.0.1:9093"
 level=info msg="    external_uri: \"\""
+level=info msg="    proxy_url: \"\""
 level=info msg="    timeout: 40s"
 level=info msg="    proxy: false"
 level=info msg="    readonly: false"
@@ -38,6 +39,7 @@ level=info msg="    headers: {}"
 level=info msg="    cors:"
 level=info msg="      credentials: include"
 level=info msg="    healthcheck:"
+level=info msg="      visible: false"
 level=info msg="      filters: {}"
 level=info msg="alertAcknowledgement:"
 level=info msg="  enabled: false"
@@ -52,6 +54,7 @@ level=info msg="  visible: []"
 level=info msg="  keep: []"
 level=info msg="  strip: []"
 level=info msg="  order: []"
+level=info msg="  actions: []"
 level=info msg="custom:"
 level=info msg="  css: \"\""
 level=info msg="  js: \"\""
@@ -113,6 +116,7 @@ level=info msg="  collapseGroups: collapsedOnMobile"
 level=info msg="  multiGridLabel: \"\""
 level=info msg="  multiGridSortReverse: false"
 level=info msg="Configured Alertmanager source" name=default proxy=false readonly=false uri=http://127.0.0.1:9093
+level=info msg="Sentry enabled"
 level=info msg="Writing PID file" path=karma.pid
 level=info msg="Initial Alertmanager collection"
 level=info msg="Pulling latest alerts and silences from Alertmanager"
@@ -136,8 +140,6 @@ sentry:
   public: https://examplePublicKey@o0.ingest.sentry.io/1
 
 -- test.sh --
-#!/bin/sh
-
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 1
 cat karma.pid | xargs kill

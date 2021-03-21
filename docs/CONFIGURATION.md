@@ -172,11 +172,13 @@ alertmanager:
         cert: string
         key: string
         insecureSkipVerify: bool
+      proxy_url: string
       headers:
         any: string
       cors:
         credentials: string
       healthcheck:
+        visible: bool
         filters: map (string: list of strings)
 ```
 
@@ -234,6 +236,9 @@ alertmanager:
   Note that this option requires `tls:cert` to be also set.
 - `tls:insecureSkipVerify` - disable server certificate validation, can be set
   to allow using self-signed certs, use at your own risk
+- `proxy_url` - sets a proxy for HTTP client used for making requests to the
+  upstream server. This can be used to access servers available via SOCKS5
+  proxy.
 - `headers` - a map with a list of key: values which are header: value.
   These custom headers will be sent with every request to the alert manager
   instance.
@@ -246,6 +251,10 @@ alertmanager:
   `omit` or `same-origin` if Alertmanager is configured to respond with
   `Access-Control-Allow-Origin: *`,
   [see docs](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS/Errors/CORSNotSupportingCredentials).
+- `healthcheck:visible` - enable this option if you want `healthcheck:filters`
+  alerts to be visible in karma UI. An alternative to enabling this option is to
+  route healcheck alerts to alertmanager receiver that isn't visible using default
+  karma filters.
 - `healthcheck:filters` - define healtchecks using alert filters. When set karma
   will search for alerts matching defined filters and show an error if it doesn't
   match anything. This can be used with a [Dead man's switch](https://en.wikipedia.org/wiki/Dead_man%27s_switch)
@@ -409,6 +418,9 @@ alertmanager:
       uri: https://test.example.com
       tls:
         insecureSkipVerify: true
+    - name: socks5
+      uri: https://internal.address
+      proxy_url: socks5://proxy.local:5000
 ```
 
 Defaults:
@@ -503,6 +515,7 @@ annotations:
   keep: list of strings
   strip: list of strings
   order: list of strings
+  actions: list of strings
 ```
 
 - `default:hidden` - bool, true if all annotations should be hidden by default.
@@ -514,6 +527,8 @@ annotations:
 - `order` - custom order of annotation names. All annotations listed here will
   appear first in the order specified here. Remaining annotations will be sorted
   alphabetically and appended at the end.
+- `actions` - list of annotations that will be moved to alert dropdown menu.
+  this only applies to annotations where value is a link.
 
 The difference between `hidden`/`visible` and `keep`/`strip` is that hidden
 annotations are still accessible, but they are shown in the UI collapsed by
@@ -523,7 +538,8 @@ annotations are removed entirely and never presented to the user.
 Example where all annotations except `summary` are hidden by default. If there
 are additional annotation keys user will need to click on the `+` icon to see
 them. `summary` annotation will always appear first in the UI, followed by
-`help` and all other annotations (sorted alphabetically).
+`help` and all other annotations (sorted alphabetically). Any annotation with
+name `jira` and a value that is a URL will be moved to alerts dropdown menu.
 
 ```YAML
 annotations:
@@ -539,6 +555,8 @@ annotations:
   order:
     - summary
     - help
+  actions:
+    - jira
 ```
 
 Example where all annotations except `details` are visible by default. If

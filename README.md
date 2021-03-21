@@ -130,7 +130,7 @@ media queries.
 
 ## Demo
 
-[Online demo](https://karma-demo.herokuapp.com/) is running latest master branch
+[Online demo](https://karma-demo.herokuapp.com/) is running latest main branch
 or PR branch version. It might include features that are experimental and not
 yet ready to be included.
 
@@ -243,7 +243,7 @@ Official docker images are built and hosted on
 Images are built automatically for:
 
 - release tags in git - `ghcr.io/prymitive/karma:vX.Y.Z`
-- master branch commits - `ghcr.io/prymitive/karma:latest`
+- main branch commits - `ghcr.io/prymitive/karma:latest`
 
 #### Examples
 
@@ -254,11 +254,11 @@ To start a release image run:
 Latest release details can be found on
 [GitHub](https://github.com/prymitive/karma/releases).
 
-To start docker image build from lastet master branch run:
+To start docker image build from lastet main branch run:
 
     docker run -e ALERTMANAGER_URI=https://alertmanager.example.com ghcr.io/prymitive/karma:latest
 
-Note that latest master branch might have bugs or breaking changes. Using
+Note that latest main branch might have bugs or breaking changes. Using
 release images is strongly recommended for any production use.
 
 ### Building a Docker image

@@ -32,6 +32,7 @@ level=info msg="  - cluster: HA"
 level=info msg="    name: ha1"
 level=info msg="    uri: http://127.0.0.1:9093"
 level=info msg="    external_uri: \"\""
+level=info msg="    proxy_url: \"\""
 level=info msg="    timeout: 10s"
 level=info msg="    proxy: true"
 level=info msg="    readonly: false"
@@ -44,11 +45,13 @@ level=info msg="    headers: {}"
 level=info msg="    cors:"
 level=info msg="      credentials: include"
 level=info msg="    healthcheck:"
+level=info msg="      visible: false"
 level=info msg="      filters: {}"
 level=info msg="  - cluster: HA"
 level=info msg="    name: ha2"
 level=info msg="    uri: http://127.0.0.1:9094"
 level=info msg="    external_uri: \"\""
+level=info msg="    proxy_url: \"\""
 level=info msg="    timeout: 10s"
 level=info msg="    proxy: false"
 level=info msg="    readonly: true"
@@ -61,11 +64,13 @@ level=info msg="    headers: {}"
 level=info msg="    cors:"
 level=info msg="      credentials: omit"
 level=info msg="    healthcheck:"
+level=info msg="      visible: false"
 level=info msg="      filters: {}"
 level=info msg="  - cluster: \"\""
 level=info msg="    name: local"
 level=info msg="    uri: http://foo:xxx@127.0.0.1:9095"
 level=info msg="    external_uri: \"\""
+level=info msg="    proxy_url: \"\""
 level=info msg="    timeout: 40s"
 level=info msg="    proxy: true"
 level=info msg="    readonly: false"
@@ -79,6 +84,7 @@ level=info msg="      X-Auth-Test: some-token-or-other-string"
 level=info msg="    cors:"
 level=info msg="      credentials: same-origin"
 level=info msg="    healthcheck:"
+level=info msg="      visible: false"
 level=info msg="      filters:"
 level=info msg="        prom1:"
 level=info msg="        - alertname=DeadMansSwitch"
@@ -90,6 +96,7 @@ level=info msg="  - cluster: \"\""
 level=info msg="    name: client-auth"
 level=info msg="    uri: https://127.0.0.1:9096"
 level=info msg="    external_uri: \"\""
+level=info msg="    proxy_url: \"\""
 level=info msg="    timeout: 10s"
 level=info msg="    proxy: false"
 level=info msg="    readonly: false"
@@ -102,7 +109,11 @@ level=info msg="    headers: {}"
 level=info msg="    cors:"
 level=info msg="      credentials: include"
 level=info msg="    healthcheck:"
-level=info msg="      filters: {}"
+level=info msg="      visible: true"
+level=info msg="      filters:"
+level=info msg="        prom1:"
+level=info msg="        - alertname=DeadMansSwitch"
+level=info msg="        - instance=prom1"
 level=info msg="alertAcknowledgement:"
 level=info msg="  enabled: true"
 level=info msg="  duration: 7m0s"
@@ -125,6 +136,7 @@ level=info msg="  - strip3"
 level=info msg="  order:"
 level=info msg="  - summary"
 level=info msg="  - help"
+level=info msg="  actions: []"
 level=info msg="custom:"
 level=info msg="  css: /custom.css"
 level=info msg="  js: /custom.js"
@@ -225,6 +237,7 @@ level=info msg="Configured Alertmanager source" name=ha1 proxy=true readonly=fal
 level=info msg="Configured Alertmanager source" name=ha2 proxy=false readonly=true uri=http://127.0.0.1:9094
 level=info msg="Configured Alertmanager source" name=local proxy=true readonly=false uri=http://foo:xxx@127.0.0.1:9095
 level=info msg="Configured Alertmanager source" name=client-auth proxy=false readonly=false uri=https://127.0.0.1:9096
+level=info msg="Sentry enabled"
 level=info msg="Setting up proxy endpoints" alertmanager=ha1
 level=info msg="Setting up proxy endpoints" alertmanager=local
 level=info msg="Configuration is valid"
@@ -280,6 +293,12 @@ alertmanager:
         ca: ca.pem
         cert: cert.pem
         key: key.pem
+      healthcheck:
+        visible: true
+        filters:
+          prom1:
+            - alertname=DeadMansSwitch
+            - instance=prom1
 alertAcknowledgement:
   enabled: true
   duration: 7m0s

@@ -7,6 +7,7 @@ import { MockThemeContext } from "__fixtures__/Theme";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
 import NavBar from ".";
 import { MobileIdleTimeout, DesktopIdleTimeout } from "./timeouts";
 
@@ -19,8 +20,6 @@ declare let global: any;
 
 beforeEach(() => {
   jest.useFakeTimers();
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
-
   global.ResizeObserver = jest.fn((cb) => {
     resizeCallback = cb;
     return {
@@ -52,17 +51,12 @@ const MountedNavbar = (fixedTop?: boolean) => {
       settingsStore={settingsStore}
       silenceFormStore={silenceFormStore}
       fixedTop={fixedTop}
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
-};
-
-const ValidateNavClass = (totalFilters: number, expectedClass: string) => {
-  for (let i = 0; i < totalFilters; i++) {
-    alertStore.filters.addFilter(`foo=${i}`);
-  }
-  const tree = MountedNavbar();
-  const nav = tree.find("ul.navbar-nav");
-  expect((nav.props().className as string).split(" ")).toContain(expectedClass);
 };
 
 describe("<NavBar />", () => {
@@ -71,22 +65,6 @@ describe("<NavBar />", () => {
     const tree = MountedNavbar();
     const brand = tree.find("span.navbar-brand");
     expect(brand.text()).toBe("15");
-  });
-
-  it("navbar-nav includes 'flex-row' class with 0 filters", () => {
-    ValidateNavClass(0, "flex-row");
-  });
-
-  it("navbar-nav includes 'flex-row' class with 1 filter", () => {
-    ValidateNavClass(1, "flex-column");
-  });
-
-  it("navbar-nav includes 'flex-column' class with 2 filters", () => {
-    ValidateNavClass(2, "flex-column");
-  });
-
-  it("navbar-nav includes 'flex-column' class with 3 filters", () => {
-    ValidateNavClass(3, "flex-column");
   });
 
   it("navbar includes 'fixed-top' class by default", () => {

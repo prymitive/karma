@@ -29,7 +29,7 @@ const SilenceModal: FC<{
       <li
         className={`nav-item components-navbar-button ${
           silenceFormStore.toggle.visible ? "border-info" : ""
-        }`}
+        } ml-auto`}
       >
         <TooltipWrapper title="New silence">
           <span
@@ -37,7 +37,7 @@ const SilenceModal: FC<{
             className="nav-link cursor-pointer"
             onClick={silenceFormStore.toggle.toggle}
           >
-            <FontAwesomeIcon icon={faBellSlash} />
+            <FontAwesomeIcon icon={faBellSlash} fixedWidth />
           </span>
         </TooltipWrapper>
       </li>

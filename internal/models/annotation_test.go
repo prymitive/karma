@@ -1,10 +1,10 @@
 package models_test
 
 import (
-	"reflect"
 	"sort"
 	"testing"
 
+	"github.com/google/go-cmp/cmp"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
 )
@@ -15,6 +15,7 @@ type annotationMapsTestCase struct {
 	annotations   models.Annotations
 	visible       []string
 	hidden        []string
+	actions       []string
 }
 
 var annotationMapsTestCases = []annotationMapsTestCase{
@@ -24,10 +25,11 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:    "foo",
-				Value:   "bar",
-				Visible: true,
-				IsLink:  false,
+				Name:     "foo",
+				Value:    "bar",
+				Visible:  true,
+				IsLink:   false,
+				IsAction: false,
 			},
 		},
 	},
@@ -37,10 +39,11 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:    "foo",
-				Value:   "http://localhost",
-				Visible: true,
-				IsLink:  true,
+				Name:     "foo",
+				Value:    "http://localhost",
+				Visible:  true,
+				IsLink:   true,
+				IsAction: false,
 			},
 		},
 	},
@@ -50,10 +53,11 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:    "foo",
-				Value:   "ftp://localhost",
-				Visible: true,
-				IsLink:  true,
+				Name:     "foo",
+				Value:    "ftp://localhost",
+				Visible:  true,
+				IsLink:   true,
+				IsAction: false,
 			},
 		},
 	},
@@ -61,21 +65,32 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		annotationMap: map[string]string{
 			"foo": "https://localhost/xxx",
 			"abc": "xyz",
+			"act": "https://localhost/act",
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:    "abc",
-				Value:   "xyz",
-				Visible: true,
-				IsLink:  false,
+				Name:     "abc",
+				Value:    "xyz",
+				Visible:  true,
+				IsLink:   false,
+				IsAction: false,
 			},
 			models.Annotation{
-				Name:    "foo",
-				Value:   "https://localhost/xxx",
-				Visible: true,
-				IsLink:  true,
+				Name:     "act",
+				Value:    "https://localhost/act",
+				Visible:  true,
+				IsLink:   true,
+				IsAction: true,
+			},
+			models.Annotation{
+				Name:     "foo",
+				Value:    "https://localhost/xxx",
+				Visible:  true,
+				IsLink:   true,
+				IsAction: false,
 			},
 		},
+		actions: []string{"act"},
 	},
 	{
 		annotationMap: map[string]string{
@@ -83,10 +98,11 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:    "notLink",
-				Value:   "https://some-links.domain.com/healthcheck in dev (job: blackbox) is not successfully probing via the blackbox prober. this could be due to the endpoint being offline, returning an invalid status code, taking too long to respond, etc.",
-				Visible: true,
-				IsLink:  false,
+				Name:     "notLink",
+				Value:    "https://some-links.domain.com/healthcheck in dev (job: blackbox) is not successfully probing via the blackbox prober. this could be due to the endpoint being offline, returning an invalid status code, taking too long to respond, etc.",
+				Visible:  true,
+				IsLink:   false,
+				IsAction: false,
 			},
 		},
 	},
@@ -96,10 +112,11 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:    "notLink",
-				Value:   "mailto:me@example.com",
-				Visible: true,
-				IsLink:  false,
+				Name:     "notLink",
+				Value:    "mailto:me@example.com",
+				Visible:  true,
+				IsLink:   false,
+				IsAction: false,
 			},
 		},
 	},
@@ -111,10 +128,11 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:    "hidden",
-				Value:   "value",
-				Visible: false,
-				IsLink:  false,
+				Name:     "hidden",
+				Value:    "value",
+				Visible:  false,
+				IsLink:   false,
+				IsAction: false,
 			},
 		},
 	},
@@ -129,22 +147,25 @@ var annotationMapsTestCases = []annotationMapsTestCase{
 		},
 		annotations: models.Annotations{
 			models.Annotation{
-				Name:    "default",
-				Value:   "value",
-				Visible: false,
-				IsLink:  false,
+				Name:     "default",
+				Value:    "value",
+				Visible:  false,
+				IsLink:   false,
+				IsAction: false,
 			},
 			models.Annotation{
-				Name:    "hidden",
-				Value:   "value",
-				Visible: false,
-				IsLink:  false,
+				Name:     "hidden",
+				Value:    "value",
+				Visible:  false,
+				IsLink:   false,
+				IsAction: false,
 			},
 			models.Annotation{
-				Name:    "visible",
-				Value:   "value",
-				Visible: true,
-				IsLink:  false,
+				Name:     "visible",
+				Value:    "value",
+				Visible:  true,
+				IsLink:   false,
+				IsAction: false,
 			},
 		},
 	},
@@ -155,10 +176,10 @@ func TestAnnotationsFromMap(t *testing.T) {
 		config.Config.Annotations.Default.Hidden = testCase.defaultHidden
 		config.Config.Annotations.Hidden = testCase.hidden
 		config.Config.Annotations.Visible = testCase.visible
+		config.Config.Annotations.Actions = testCase.actions
 		result := models.AnnotationsFromMap(testCase.annotationMap)
-		if !reflect.DeepEqual(testCase.annotations, result) {
-			t.Errorf("AnnotationsFromMap result mismatch for map %v, expected %v got %v",
-				testCase.annotationMap, testCase.annotations, result)
+		if diff := cmp.Diff(testCase.annotations, result); diff != "" {
+			t.Errorf("AnnotationsFromMap result mismatch (-want +got):\n%s", diff)
 		}
 	}
 }

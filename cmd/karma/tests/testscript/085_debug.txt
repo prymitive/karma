@@ -1,6 +1,6 @@
 # Enables pprof endpoints when debug is enabled
 
-exec sh -x ./test.sh &
+exec bash -x ./test.sh &
 karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8085 --debug
 ! stdout .
 cmp stderr stderr.txt
@@ -22,8 +22,6 @@ level=info msg="Shutting down HTTP server"
 level=info msg="HTTP server shut down"
 level=info msg="Removing PID file" path=karma.pid
 -- test.sh --
-#!/bin/sh
-
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 1
 curl -s -o heap.gz http://localhost:8085/debug/pprof/heap

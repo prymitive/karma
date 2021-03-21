@@ -1,4 +1,4 @@
-import { CSSProperties } from "react";
+import { CSSObject } from "@emotion/serialize";
 import {
   ControlProps,
   IndicatorContainerProps,
@@ -65,7 +65,7 @@ const ReactSelectStyles = <
 >(
   theme: ReactSelectTheme
 ): Styles<OptionType, IsMulti> => ({
-  control: (base: CSSProperties, props: ControlProps<OptionType, IsMulti>) =>
+  control: (base: CSSObject, props: ControlProps<OptionType, IsMulti>) =>
     props.isFocused
       ? {
           ...base,
@@ -91,7 +91,7 @@ const ReactSelectStyles = <
           "&:hover": { borderColor: theme.borderColor },
         },
   valueContainer: (
-    base: CSSProperties,
+    base: CSSObject,
     props: ValueContainerProps<OptionType, IsMulti>
   ) =>
     props.isMulti
@@ -112,11 +112,11 @@ const ReactSelectStyles = <
           borderTopLeftRadius: "0.25rem",
           borderBottomLeftRadius: "0.25rem",
         },
-  singleValue: (base: CSSProperties, props: SingleValueProps<OptionType>) => ({
+  singleValue: (base: CSSObject, props: SingleValueProps<OptionType>) => ({
     ...base,
     color: theme.singleValueColor,
   }),
-  multiValue: (base: CSSProperties) => ({
+  multiValue: (base: CSSObject) => ({
     ...base,
     borderRadius: "4px",
     backgroundColor: theme.optionHoverBackground,
@@ -124,7 +124,7 @@ const ReactSelectStyles = <
       backgroundColor: theme.optionHoverBackground,
     },
   }),
-  multiValueLabel: (base: CSSProperties) => ({
+  multiValueLabel: (base: CSSObject) => ({
     ...base,
     color: theme.color,
     whiteSpace: "normal",
@@ -134,7 +134,7 @@ const ReactSelectStyles = <
       color: theme.color,
     },
   }),
-  multiValueRemove: (base: CSSProperties) => ({
+  multiValueRemove: (base: CSSObject) => ({
     ...base,
     cursor: "pointer",
     color: theme.color,
@@ -147,12 +147,12 @@ const ReactSelectStyles = <
       opacity: "0.75",
     },
   }),
-  input: (base: CSSProperties) => ({
+  input: (base: CSSObject) => ({
     ...base,
     color: "inherit",
   }),
   indicatorsContainer: (
-    base: CSSProperties,
+    base: CSSObject,
     props: IndicatorContainerProps<OptionType, IsMulti>
   ) => ({
     ...base,
@@ -162,19 +162,19 @@ const ReactSelectStyles = <
     borderTopRightRadius: "0.25rem",
     borderBottomRightRadius: "0.25rem",
   }),
-  dropdownIndicator: (base: CSSProperties, state: StateFnT) =>
+  dropdownIndicator: (base: CSSObject, state: StateFnT) =>
     state.isFocused
       ? {
           ...base,
           "&:hover": { color: "inherit" },
         }
       : { ...base },
-  menu: (base: CSSProperties) => ({
+  menu: (base: CSSObject) => ({
     ...base,
     zIndex: 1500,
     backgroundColor: theme.menuBackground,
   }),
-  option: (base: CSSProperties) => ({
+  option: (base: CSSObject) => ({
     ...base,
     color: "inherit",
     backgroundColor: "inherit",

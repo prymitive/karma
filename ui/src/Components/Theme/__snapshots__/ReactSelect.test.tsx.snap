@@ -4,13 +4,14 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
   <span aria-live=\\"polite\\"
-        class=\\"css-1laao21-a11yText\\"
+        aria-atomic=\\"false\\"
+        aria-relevant=\\"additions text\\"
+        class=\\"css-1f43avz-a11yText-A11yText\\"
   >
-    <span id=\\"aria-selection-event\\">
-      &nbsp;
+    <span id=\\"aria-selection\\">
     </span>
     <span id=\\"aria-context\\">
-      &nbsp;  0 results available. Select is focused ,type to refine list, press Down to open the menu,
+      Select is focused ,type to refine list, press Down to open the menu,
     </span>
   </span>
   <div class=\\" css-11rrdhm-control\\">
@@ -41,15 +42,15 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
     <div class=\\" css-vcwr3k-IndicatorsContainer\\">
       <span class=\\" css-1okebmr-indicatorSeparator\\">
       </span>
-      <div aria-hidden=\\"true\\"
-           class=\\" css-1ij327q-indicatorContainer\\"
+      <div class=\\" css-1ij327q-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
              viewbox=\\"0 0 20 20\\"
              aria-hidden=\\"true\\"
              focusable=\\"false\\"
-             class=\\"css-6q0nyr-Svg\\"
+             class=\\"css-tj5bde-Svg\\"
         >
           <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
           </path>
@@ -65,13 +66,14 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
 "
 <div class=\\" css-14jk2my-container\\">
   <span aria-live=\\"polite\\"
-        class=\\"css-1laao21-a11yText\\"
+        aria-atomic=\\"false\\"
+        aria-relevant=\\"additions text\\"
+        class=\\"css-1f43avz-a11yText-A11yText\\"
   >
-    <span id=\\"aria-selection-event\\">
-      &nbsp;
+    <span id=\\"aria-selection\\">
     </span>
     <span id=\\"aria-context\\">
-      &nbsp;  0 results available. Select is focused ,type to refine list, press Down to open the menu,
+      Select is focused ,type to refine list, press Down to open the menu,
     </span>
   </span>
   <div class=\\" css-1tnfzgk-control\\">
@@ -79,7 +81,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
       <div class=\\" css-1wa3eu0-placeholder\\">
         Select...
       </div>
-      <div class=\\"css-ps6ina-Input\\">
+      <div class=\\"css-1h1cjkp-Input\\">
         <div class
              style=\\"display: inline-block;\\"
         >
@@ -103,15 +105,15 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
     <div class=\\" css-15bdmde-IndicatorsContainer\\">
       <span class=\\" css-109onse-indicatorSeparator\\">
       </span>
-      <div aria-hidden=\\"true\\"
-           class=\\" css-1ij327q-indicatorContainer\\"
+      <div class=\\" css-1ij327q-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
              viewbox=\\"0 0 20 20\\"
              aria-hidden=\\"true\\"
              focusable=\\"false\\"
-             class=\\"css-6q0nyr-Svg\\"
+             class=\\"css-tj5bde-Svg\\"
         >
           <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
           </path>
@@ -126,6 +128,12 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
 exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
+  <span aria-live=\\"polite\\"
+        aria-atomic=\\"false\\"
+        aria-relevant=\\"additions text\\"
+        class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <div class=\\" css-cat782-control\\">
     <div class=\\" css-17yk2dy-ValueContainer\\">
       <div class=\\" css-1wh03ml-singleValue\\">
@@ -154,15 +162,15 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
     <div class=\\" css-vcwr3k-IndicatorsContainer\\">
       <span class=\\" css-1okebmr-indicatorSeparator\\">
       </span>
-      <div aria-hidden=\\"true\\"
-           class=\\" css-tlfecz-indicatorContainer\\"
+      <div class=\\" css-tlfecz-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
              viewbox=\\"0 0 20 20\\"
              aria-hidden=\\"true\\"
              focusable=\\"false\\"
-             class=\\"css-6q0nyr-Svg\\"
+             class=\\"css-tj5bde-Svg\\"
         >
           <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
           </path>
@@ -177,12 +185,18 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
 exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
 "
 <div class=\\" css-14jk2my-container\\">
+  <span aria-live=\\"polite\\"
+        aria-atomic=\\"false\\"
+        aria-relevant=\\"additions text\\"
+        class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <div class=\\" css-j5h6r7-control\\">
     <div class=\\" css-17yk2dy-ValueContainer\\">
       <div class=\\" css-1wh03ml-singleValue\\">
         foo
       </div>
-      <div class=\\"css-ps6ina-Input\\">
+      <div class=\\"css-1h1cjkp-Input\\">
         <div class
              style=\\"display: inline-block;\\"
         >
@@ -206,15 +220,15 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
     <div class=\\" css-15bdmde-IndicatorsContainer\\">
       <span class=\\" css-109onse-indicatorSeparator\\">
       </span>
-      <div aria-hidden=\\"true\\"
-           class=\\" css-tlfecz-indicatorContainer\\"
+      <div class=\\" css-tlfecz-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
              viewbox=\\"0 0 20 20\\"
              aria-hidden=\\"true\\"
              focusable=\\"false\\"
-             class=\\"css-6q0nyr-Svg\\"
+             class=\\"css-tj5bde-Svg\\"
         >
           <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
           </path>
@@ -229,6 +243,12 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
 exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
+  <span aria-live=\\"polite\\"
+        aria-atomic=\\"false\\"
+        aria-relevant=\\"additions text\\"
+        class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <div class=\\" css-cat782-control\\">
     <div class=\\" css-115r1xl-ValueContainer\\">
       <div class=\\" css-1wa3eu0-placeholder\\">
@@ -257,15 +277,15 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
     <div class=\\" css-vcwr3k-IndicatorsContainer\\">
       <span class=\\" css-1okebmr-indicatorSeparator\\">
       </span>
-      <div aria-hidden=\\"true\\"
-           class=\\" css-tlfecz-indicatorContainer\\"
+      <div class=\\" css-tlfecz-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
              viewbox=\\"0 0 20 20\\"
              aria-hidden=\\"true\\"
              focusable=\\"false\\"
-             class=\\"css-6q0nyr-Svg\\"
+             class=\\"css-tj5bde-Svg\\"
         >
           <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
           </path>
@@ -280,6 +300,12 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a value 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
+  <span aria-live=\\"polite\\"
+        aria-atomic=\\"false\\"
+        aria-relevant=\\"additions text\\"
+        class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <div class=\\" css-cat782-control\\">
     <div class=\\" css-115r1xl-ValueContainer\\">
       <div class=\\"css-owt1hd-multiValue\\">
@@ -292,7 +318,7 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
                viewbox=\\"0 0 20 20\\"
                aria-hidden=\\"true\\"
                focusable=\\"false\\"
-               class=\\"css-6q0nyr-Svg\\"
+               class=\\"css-tj5bde-Svg\\"
           >
             <path d=\\"M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z\\">
             </path>
@@ -320,15 +346,15 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
       </div>
     </div>
     <div class=\\" css-vcwr3k-IndicatorsContainer\\">
-      <div aria-hidden=\\"true\\"
-           class=\\" css-tlfecz-indicatorContainer\\"
+      <div class=\\" css-tlfecz-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
              viewbox=\\"0 0 20 20\\"
              aria-hidden=\\"true\\"
              focusable=\\"false\\"
-             class=\\"css-6q0nyr-Svg\\"
+             class=\\"css-tj5bde-Svg\\"
         >
           <path d=\\"M14.348 14.849c-0.469 0.469-1.229 0.469-1.697 0l-2.651-3.030-2.651 3.029c-0.469 0.469-1.229 0.469-1.697 0-0.469-0.469-0.469-1.229 0-1.697l2.758-3.15-2.759-3.152c-0.469-0.469-0.469-1.228 0-1.697s1.228-0.469 1.697 0l2.652 3.031 2.651-3.031c0.469-0.469 1.228-0.469 1.697 0s0.469 1.229 0 1.697l-2.758 3.152 2.758 3.15c0.469 0.469 0.469 1.229 0 1.698z\\">
           </path>
@@ -336,15 +362,15 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
       </div>
       <span class=\\" css-1okebmr-indicatorSeparator\\">
       </span>
-      <div aria-hidden=\\"true\\"
-           class=\\" css-tlfecz-indicatorContainer\\"
+      <div class=\\" css-tlfecz-indicatorContainer\\"
+           aria-hidden=\\"true\\"
       >
         <svg height=\\"20\\"
              width=\\"20\\"
              viewbox=\\"0 0 20 20\\"
              aria-hidden=\\"true\\"
              focusable=\\"false\\"
-             class=\\"css-6q0nyr-Svg\\"
+             class=\\"css-tj5bde-Svg\\"
         >
           <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
           </path>

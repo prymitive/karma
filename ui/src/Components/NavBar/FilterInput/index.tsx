@@ -3,7 +3,6 @@ import React, { FC, useEffect, useState, useRef, useCallback } from "react";
 import { observer } from "mobx-react-lite";
 
 import Autosuggest from "react-autosuggest";
-import Highlight from "react-highlighter";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
@@ -104,14 +103,22 @@ const FilterInput: FC<{
     suggestion: string,
     { query }: { query: string }
   ) => {
+    const parts = suggestion.split(new RegExp(`(${query})`, "gi"));
     return (
-      <Highlight
-        matchElement="span"
-        matchClass="font-weight-bold"
-        search={query}
-      >
-        {suggestion}
-      </Highlight>
+      <span>
+        {parts.map((part, i) => (
+          <span
+            key={i}
+            style={
+              part.toLowerCase() === query.toLowerCase()
+                ? { fontWeight: "bold" }
+                : {}
+            }
+          >
+            {part}
+          </span>
+        ))}
+      </span>
     );
   };
 
@@ -140,7 +147,11 @@ const FilterInput: FC<{
   return (
     // data-filters is there to register filters for observation in mobx
     // in order to re-render input component
-    <form className="form-inline mw-100" onSubmit={onSubmit}>
+    <form
+      className="form-inline flex-grow-1 flex-shrink-1 mr-auto"
+      style={{ minWidth: "0px" }}
+      onSubmit={onSubmit}
+    >
       <div
         ref={formRef}
         className={`input-group w-100 mr-2 components-filterinput-outer ${

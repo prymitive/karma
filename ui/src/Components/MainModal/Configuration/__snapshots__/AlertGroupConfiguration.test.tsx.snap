@@ -3,43 +3,20 @@
 exports[`<AlertGroupConfiguration /> matches snapshot with default values 1`] = `
 "
 <div class=\\"form-group mb-0 text-center\\">
-  <div aria-disabled=\\"false\\"
-       class=\\"input-range\\"
+  <div class=\\"input-range-track\\"
+       style=\\"transform: scale(1); cursor: pointer;\\"
   >
-    <span class=\\"input-range__label input-range__label--min\\">
-      <span class=\\"input-range__label-container\\">
-        1
-      </span>
-    </span>
-    <div class=\\"input-range__track input-range__track--background\\">
-      <div style=\\"left: 0%; width: 44.44444444444444%;\\"
-           class=\\"input-range__track input-range__track--active\\"
-      >
-      </div>
-      <span class=\\"input-range__slider-container\\"
-            style=\\"position: absolute; left: 44.44444444444444%;\\"
-      >
-        <span class=\\"input-range__label input-range__label--value\\">
-          <span class=\\"input-range__label-container\\">
-            5
-          </span>
-        </span>
-        <div aria-valuemax=\\"10\\"
-             aria-valuemin=\\"1\\"
-             aria-valuenow=\\"5\\"
-             class=\\"input-range__slider\\"
-             draggable=\\"false\\"
-             role=\\"slider\\"
-             tabindex=\\"0\\"
-        >
-        </div>
-      </span>
+    <div class=\\"input-range-thumb\\"
+         style=\\"position: absolute; z-index: 0; cursor: grab; user-select: none; transform: translate(NaNpx, NaNpx);\\"
+         tabindex=\\"0\\"
+         aria-valuemax=\\"10\\"
+         aria-valuemin=\\"1\\"
+         aria-valuenow=\\"5\\"
+         draggable=\\"false\\"
+         role=\\"slider\\"
+    >
+      5
     </div>
-    <span class=\\"input-range__label input-range__label--max\\">
-      <span class=\\"input-range__label-container\\">
-        10
-      </span>
-    </span>
   </div>
 </div>
 "

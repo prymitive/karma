@@ -1,0 +1,36 @@
+name: Open API
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - internal/mapper/*/Dockerfile
+
+jobs:
+  code-sync:
+    name: Regenerate OpenAPI client code
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Regenerate OpenAPI client code
+        run: make openapi-client
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3.8.2
+        with:
+          token: ${{ secrets.GH_REPO_TOKEN }}
+          author: "Łukasz Mierzwa <l.mierzwa@gmail.com>"
+          commit-message: "chore(backend): regenerate openapi code"
+          branch: openapi-sync
+          delete-branch: true
+          title: "chore(backend): regenerate openapi code"
+          labels: automerge
+
+      - name: Check outputs
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"

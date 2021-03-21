@@ -7,14 +7,13 @@ import toDiffableHtml from "diffable-html";
 import { MockThemeContext } from "__fixtures__/Theme";
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { NewEmptyMatcher, MatcherWithIDT } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { LabelNameInput } from "./LabelNameInput";
 
 let matcher: MatcherWithIDT;
 
 beforeEach(() => {
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
-
   matcher = NewEmptyMatcher();
   matcher.name = "cluster";
 });
@@ -25,9 +24,10 @@ afterEach(() => {
 });
 
 const MountedLabelNameInput = (isValid: boolean) => {
-  return mount(
-    <LabelNameInput matcher={matcher} isValid={isValid} isDisabled={false} />
-  );
+  return mount(<LabelNameInput matcher={matcher} isValid={isValid} isDisabled={false} />, {
+    wrappingComponent: ThemeContext.Provider,
+    wrappingComponentProps: { value: MockThemeContext },
+  });
 };
 
 describe("<LabelNameInput />", () => {

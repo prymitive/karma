@@ -98,7 +98,7 @@ const LabelValueInput: FC<{
       }
       placeholder={isValid ? "Label value" : <ValidationError />}
       onChange={(newValue) => {
-        matcher.values = (newValue || []) as OptionT[];
+        matcher.values = newValue as OptionT[];
         // force regex if we have multiple values
         if (matcher.values.length > 1 && matcher.isRegex === false) {
           matcher.isRegex = true;

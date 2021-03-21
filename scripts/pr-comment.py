@@ -1,10 +1,10 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 
 import json
 import os
 import sys
-import urllib2
+from urllib.request import Request, urlopen
 
 
 def apiRequest(token, path, owner='prymitive', repo='karma'):
@@ -12,7 +12,7 @@ def apiRequest(token, path, owner='prymitive', repo='karma'):
     uri = 'https://{api}/repos/{owner}/{repo}{path}'.format(
         api=api, owner=owner, repo=repo, pr=pr, path=path)
 
-    req = urllib2.Request(uri)
+    req = Request(uri)
     req.add_header('Authorization', 'token %s' % token)
     req.add_header("Content-Type", "application/json")
 
@@ -21,7 +21,7 @@ def apiRequest(token, path, owner='prymitive', repo='karma'):
 def findComment(pr, token, commentName):
     req = apiRequest(token, "/issues/{pr}/comments".format(pr=pr))
     try:
-        response = urllib2.urlopen(req)
+        response = urlopen(req)
     except Exception as e:
         print("Request to '%s' failed: %s" % (uri, e))
     else:
@@ -40,9 +40,9 @@ def editComment(pr, token, commentID, commentName, comment):
     req.get_method = lambda: 'PATCH'
     print('Editing a comment on {uri}'.format(uri=req.get_full_url()))
 
+    body = json.dumps({"body": formatComment(commentName, comment)}).encode('utf-8')
     try:
-        urllib2.urlopen(
-            req, json.dumps({"body": formatComment(commentName, comment)}))
+        urlopen(req, body)
     except Exception as e:
         print("Failed to updated comment '%s': %s" % (req.get_full_url(), e))
         sys.exit(1)
@@ -52,9 +52,9 @@ def postComment(pr, token, commentName, comment):
     req = apiRequest(token, "/issues/{pr}/comments".format(pr=pr))
     print('Posting new comment to {uri}'.format(uri=req.get_full_url()))
 
+    body = json.dumps({"body": formatComment(commentName, comment)}).encode('utf-8')
     try:
-        urllib2.urlopen(
-            req, json.dumps({"body": formatComment(commentName, comment)}))
+        urlopen(req, body)
     except Exception as e:
         print("Failed to create a comment '%s': %s" % (req.get_full_url(), e))
         sys.exit(1)
@@ -66,7 +66,7 @@ def deleteComment(pr, token, commentID):
     print('Deleting comment on {uri}'.format(uri=req.get_full_url()))
 
     try:
-        urllib2.urlopen(req)
+        urlopen(req)
     except Exception as e:
         print("Failed to updated comment '%s': %s" % (req.get_full_url(), e))
         sys.exit(1)

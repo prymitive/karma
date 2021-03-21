@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"html/template"
 	"net/http/httptest"
 	"os"
 	"testing"
@@ -103,56 +102,18 @@ func TestStaticExpires404(t *testing.T) {
 	}
 }
 
-func TestLoadTemplateChained(t *testing.T) {
-	var tmpl *template.Template
-	tmpl, err := loadTemplate(tmpl, "ui/build/index.html")
-	if tmpl == nil {
-		t.Errorf("loadTemplate returned nil")
-	}
-	if err != nil {
-		t.Errorf("loadTemplate returned error: %s", err)
-	}
-
-	tmpl, err = loadTemplate(tmpl, "ui/build/manifest.json")
-	if tmpl == nil {
-		t.Errorf("loadTemplate returned nil")
-	}
-	if err != nil {
-		t.Errorf("loadTemplate returned error: %s", err)
-	}
-
-	if tmpl.Name() != "ui/build/index.html" {
-		t.Errorf("tmpl.Name() returned %q", tmpl.Name())
-	}
-}
-
-func TestLoadTemplateMissing(t *testing.T) {
-	_, err := loadTemplate(nil, "/this/file/does/not/exist")
-	if err == nil {
-		t.Error("loadTemplate() with invalid path didn't return any error")
-	}
-}
-
-func TestLoadTemplateUnparsable(t *testing.T) {
-	_, err := loadTemplate(nil, "cmd/karma/tests/bindata/go-test-invalid.html")
-	if err == nil {
-		t.Error("loadTemplate() with unparsable file didn't return any error")
-	}
-}
-
 func TestAssetFallbackMIME(t *testing.T) {
 	mockConfig()
 	r := testRouter()
-	r.Use(serverStaticFiles(getViewURL("/"), newBinaryFileSystem("cmd/karma/tests/bindata")))
 	setupRouter(r)
-	req := httptest.NewRequest("GET", "/bin.data", nil)
+	req := httptest.NewRequest("GET", "/static/js/App.tsx", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
 	if resp.Code != 200 {
-		t.Errorf("Invalid status code for GET %s: %d", "/bin.data", resp.Code)
+		t.Errorf("Invalid status code for GET %s: %d", "/static/js/App.tsx", resp.Code)
 	}
 	if resp.Result().Header.Get("Content-Type") != "application/octet-stream" {
-		t.Errorf("Invalid Content-Type for GET /bin.data: %s, expected 'text/plain; charset=utf-8'", resp.Result().Header.Get("Content-Type"))
+		t.Errorf("Invalid Content-Type for GET /static/js/App.tsx: %s, expected 'text/plain; charset=utf-8'", resp.Result().Header.Get("Content-Type"))
 	}
 }
 
@@ -186,6 +147,16 @@ func TestStaticFiles(t *testing.T) {
 		},
 		{
 			path: "/static/abcd",
+			code: 404,
+			mime: "text/plain; charset=utf-8",
+		},
+		{
+			path: "/static/",
+			code: 404,
+			mime: "text/plain; charset=utf-8",
+		},
+		{
+			path: "/static/js/404.js",
 			code: 404,
 			mime: "text/plain; charset=utf-8",
 		},

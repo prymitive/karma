@@ -1,0 +1,41 @@
+name: Maintenance
+
+on:
+  schedule:
+    - cron: "0 20 * * 0"
+
+jobs:
+  npm-upgrades:
+    name: Regenerate package-lock.json
+    runs-on: macos-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14.16.0
+
+      - name: Regenerate package-lock.json
+        run: make -C ui npm-upgrade
+
+      - name: Rebuild react app
+        run: make -C ui build
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3.8.2
+        with:
+          token: ${{ secrets.GH_REPO_TOKEN }}
+          author: "Łukasz Mierzwa <l.mierzwa@gmail.com>"
+          commit-message: "chore(ui): upgrade all 3rd party dependencies"
+          branch: npm-upgrades
+          delete-branch: true
+          title: "chore(ui): upgrade all 3rd party dependencies"
+          labels: automerge
+
+      - name: Check outputs
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"

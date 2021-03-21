@@ -37,6 +37,7 @@ alertmanager:
     name: default
     uri: http://localhost
     external_uri: http://example.com
+    proxy_url: ""
     timeout: 40s
     proxy: false
     readonly: false
@@ -49,6 +50,7 @@ alertmanager:
     cors:
       credentials: include
     healthcheck:
+      visible: false
       filters: {}
 alertAcknowledgement:
   enabled: false
@@ -64,6 +66,7 @@ annotations:
   keep: []
   strip: []
   order: []
+  actions: []
 custom:
   css: /custom.css
   js: /custom.js
@@ -317,6 +320,7 @@ func TestDefaultConfig(t *testing.T) {
 	expectedConfig.Annotations.Visible = []string{}
 	expectedConfig.Annotations.Keep = []string{}
 	expectedConfig.Annotations.Strip = []string{}
+	expectedConfig.Annotations.Actions = []string{}
 	expectedConfig.Labels.Keep = []string{}
 	expectedConfig.Labels.Strip = []string{}
 	expectedConfig.Labels.Color.Static = []string{}

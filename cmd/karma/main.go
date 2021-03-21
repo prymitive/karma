@@ -6,10 +6,10 @@ import (
 	"errors"
 	"fmt"
 	"html/template"
-	"io/ioutil"
 	"mime"
 	"net"
 	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
 	"path"
@@ -19,17 +19,18 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/getsentry/sentry-go"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/transform"
 	"github.com/prymitive/karma/internal/uri"
+	"github.com/prymitive/karma/ui"
 
-	"github.com/go-chi/chi"
-	"github.com/go-chi/chi/middleware"
+	"github.com/getsentry/sentry-go"
+	sentryhttp "github.com/getsentry/sentry-go/http"
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	"github.com/loikg/ravenchi"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -49,9 +50,6 @@ var (
 	// If there are requests with the same filter we should respond from cache
 	// rather than do all the filtering every time
 	apiCache *cache.Cache
-
-	staticBuildFileSystem = newBinaryFileSystem("ui/build")
-	staticSrcFileSystem   = newBinaryFileSystem("ui/src")
 
 	indexTemplate *template.Template
 
@@ -85,20 +83,24 @@ func getViewURL(sub string) string {
 func setupRouter(router *chi.Mux) {
 	_ = mime.AddExtensionType(".ico", "image/x-icon")
 
+	sentryMiddleware := sentryhttp.New(sentryhttp.Options{
+		Repanic: true,
+	})
+
 	router.Use(promMiddleware)
-	router.Use(ravenchi.SentryRecovery)
+	router.Use(sentryMiddleware.Handle)
 	router.Use(middleware.RealIP)
 
 	compressor := middleware.NewCompressor(flate.DefaultCompression)
 	router.Use(compressor.Handler)
 
-	router.Use(serverStaticFiles(getViewURL("/"), staticBuildFileSystem))
+	router.Use(serverStaticFiles(getViewURL("/"), "build"))
 	// next 2 lines are to allow service raw sources so sentry can fetch source maps
-	router.Use(serverStaticFiles(getViewURL("/static/js/"), staticSrcFileSystem))
+	router.Use(serverStaticFiles(getViewURL("/static/js/"), "src"))
 	// FIXME
 	// compressed sources are under /static/js/main.js and reference ../static/js/main.js
 	// so we end up with /static/static/js
-	router.Use(serverStaticFiles(getViewURL("/static/static/js/"), staticSrcFileSystem))
+	router.Use(serverStaticFiles(getViewURL("/static/static/js/"), "src"))
 	router.Use(cors.Handler(cors.Options{
 		AllowOriginFunc: func(r *http.Request, origin string) bool {
 			return true
@@ -128,6 +130,7 @@ func setupRouter(router *chi.Mux) {
 
 	router.Get(getViewURL("/"), index)
 	router.Get(getViewURL("/health"), pong)
+	router.Get(getViewURL("/robots.txt"), robots)
 	router.Get(getViewURL("/metrics"), http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		h := promhttp.Handler()
 		h.ServeHTTP(w, r)
@@ -181,6 +184,18 @@ func setupUpstreams() error {
 			}
 		}
 
+		// if a connection proxy address was provided use it to connect to the remote server
+		if s.ProxyURL != "" {
+			if httpTransport == nil {
+				httpTransport = &http.Transport{}
+			}
+			proxyURL, err := url.Parse(s.ProxyURL)
+			if err != nil {
+				return fmt.Errorf("failed to parse provided proxy url %q: %w", s.ProxyURL, err)
+			}
+			httpTransport.(*http.Transport).Proxy = http.ProxyURL(proxyURL)
+		}
+
 		am, err := alertmanager.NewAlertmanager(
 			s.Cluster,
 			s.Name,
@@ -189,10 +204,11 @@ func setupUpstreams() error {
 			alertmanager.WithRequestTimeout(s.Timeout),
 			alertmanager.WithProxy(s.Proxy),
 			alertmanager.WithReadOnly(s.ReadOnly),
-			alertmanager.WithHTTPTransport(httpTransport), // we will pass a nil unless TLS.CA or TLS.Cert is set
+			alertmanager.WithHTTPTransport(httpTransport), // we will pass a nil unless TLS.CA, TLS.Cert or ProxyURL is set
 			alertmanager.WithHTTPHeaders(s.Headers),
 			alertmanager.WithCORSCredentials(s.CORS.Credentials),
 			alertmanager.WithHealthchecks(s.Healthcheck.Filters),
+			alertmanager.WithHealthchecksVisible(s.Healthcheck.Visible),
 		)
 		if err != nil {
 			return fmt.Errorf("failed to create Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
@@ -272,7 +288,7 @@ func setupLogger() error {
 
 func loadTemplates() error {
 	var t *template.Template
-	t, err := loadTemplate(t, "ui/build/index.html")
+	t, err := template.ParseFS(ui.StaticFiles, "build/index.html")
 	if err != nil {
 		return fmt.Errorf("failed to load template: %s", err)
 	}
@@ -382,6 +398,8 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, error) {
 			log.Error().Err(err).Str("dsn", config.Config.Sentry.Public).Msg("Sentry initialization failed")
 			return nil, fmt.Errorf("sentry configuration is invalid")
 		}
+		log.Info().Msg("Sentry enabled")
+		defer sentry.Flush(time.Second)
 	}
 
 	setupRouter(router)
@@ -398,7 +416,7 @@ func writePidFile() error {
 	if pidFile != "" {
 		log.Info().Str("path", pidFile).Msg("Writing PID file")
 		pid := os.Getpid()
-		err := ioutil.WriteFile(pidFile, []byte(strconv.Itoa(pid)), 0644)
+		err := os.WriteFile(pidFile, []byte(strconv.Itoa(pid)), 0644)
 		if err != nil {
 			return fmt.Errorf("failed to write a PID file: %s", err)
 		}
@@ -480,10 +498,11 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()
 	if err := httpServer.Shutdown(ctx); err != nil {
+		_ = removePidFile()
 		return fmt.Errorf("shutdown error: %s", err)
 	}
-	log.Info().Msg("HTTP server shut down")
 
+	log.Info().Msg("HTTP server shut down")
 	return removePidFile()
 }
 

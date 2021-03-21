@@ -28,7 +28,6 @@ import "Styles/App.scss";
 const Grid = React.lazy(() => import("Components/Grid"));
 const NavBar = React.lazy(() => import("Components/NavBar"));
 const FaviconBadge = React.lazy(() => import("Components/FaviconBadge"));
-const AppToasts = React.lazy(() => import("Components/Toast/AppToasts"));
 
 interface AppProps {
   defaultFilters: Array<string>;
@@ -131,7 +130,6 @@ const App: FunctionComponent<AppProps> = observer(
               settingsStore={settingsStore}
               silenceFormStore={silenceFormStore}
             />
-            <AppToasts alertStore={alertStore} />
             <FaviconBadge alertStore={alertStore} />
           </React.Suspense>
         </ThemeContext.Provider>

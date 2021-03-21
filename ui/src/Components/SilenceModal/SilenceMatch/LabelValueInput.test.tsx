@@ -11,6 +11,7 @@ import {
   NewEmptyMatcher,
   MatcherWithIDT,
 } from "Stores/SilenceFormStore";
+import { ThemeContext } from "Components/Theme";
 import { StringToOption } from "Common/Select";
 import { LabelValueInput } from "./LabelValueInput";
 
@@ -18,8 +19,6 @@ let silenceFormStore: SilenceFormStore;
 let matcher: MatcherWithIDT;
 
 beforeEach(() => {
-  jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
-
   silenceFormStore = new SilenceFormStore();
   matcher = NewEmptyMatcher();
   matcher.name = "cluster";
@@ -36,7 +35,11 @@ const MountedLabelValueInput = (isValid: boolean) => {
       matcher={matcher}
       isValid={isValid}
       isDisabled={false}
-    />
+    />,
+    {
+      wrappingComponent: ThemeContext.Provider,
+      wrappingComponentProps: { value: MockThemeContext },
+    }
   );
 };
 

@@ -108,12 +108,16 @@ describe("<GroupMenu />", () => {
     const toggle = tree.find("span.cursor-pointer");
 
     toggle.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(1);
     expect(tree.find("div.dropdown-menu")).toHaveLength(1);
 
     toggle.simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     tree.update();
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(2);
     expect(tree.find("div.dropdown-menu")).toHaveLength(0);
@@ -131,7 +135,9 @@ describe("<GroupMenu />", () => {
     expect(tree.find("div.dropdown-menu")).toHaveLength(1);
 
     tree.find("div.dropdown-item").at(0).simulate("click");
-    jest.runOnlyPendingTimers();
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
     tree.update();
     expect(MockSetIsMenuOpen).toHaveBeenCalledTimes(2);
     expect(tree.find("div.dropdown-menu")).toHaveLength(0);
@@ -184,5 +190,50 @@ describe("<MenuContent />", () => {
     expect(button.hasClass("disabled")).toBe(true);
     button.simulate("click");
     expect(silenceFormStore.toggle.visible).toBe(false);
+  });
+
+  it("renders action annotations when present", () => {
+    const group = MockAlertGroup(
+      { alertname: "Fake Alert" },
+      [],
+      [
+        {
+          name: "nonLinkAction",
+          value: "nonLinkAction",
+          visible: true,
+          isLink: false,
+          isAction: true,
+        },
+        {
+          name: "linkAction",
+          value: "linkAction",
+          visible: true,
+          isLink: true,
+          isAction: true,
+        },
+        {
+          name: "nonLinkNonAction",
+          value: "nonLinkNonAction",
+          visible: true,
+          isLink: false,
+          isAction: false,
+        },
+      ],
+      {},
+      {}
+    );
+
+    const tree = MountedMenuContent(group);
+    expect(tree.find("a.dropdown-item")).toHaveLength(1);
+
+    const link = tree.find("a.dropdown-item[href='linkAction']");
+    expect(link.text()).toBe("linkAction");
+
+    expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
+      0
+    );
+    expect(tree.find("a.dropdown-item[href='nonLinkNonAction']")).toHaveLength(
+      0
+    );
   });
 });

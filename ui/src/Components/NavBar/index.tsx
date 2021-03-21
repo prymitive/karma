@@ -16,6 +16,7 @@ import { IsMobile } from "Common/Device";
 import { OverviewModal } from "Components/OverviewModal";
 import { MainModal } from "Components/MainModal";
 import SilenceModal from "Components/SilenceModal";
+import AppToasts from "Components/Toast/AppToasts";
 import { ThemeContext } from "Components/Theme";
 import { Fetcher } from "Components/Fetcher";
 import { FilterInput } from "./FilterInput";
@@ -102,23 +103,19 @@ const NavBar: FC<{
       >
         <nav
           ref={ref}
-          className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-inline-block ${
+          className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-flex ${
             fixedTop ? "fixed-top" : "w-100"
-          }`}
+          } align-items-start`}
         >
-          <span className="navbar-nav float-left d-flex flex-row">
+          <span className="navbar-nav d-flex flex-row">
             <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block">
               <OverviewModal alertStore={alertStore} />
             </span>
             <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
           </span>
-          <ul
-            className={`navbar-nav float-right d-flex ${
-              alertStore.filters.values.length >= 1
-                ? "flex-column flex-sm-row flex-md-row flex-lg-row flex-xl-row"
-                : "flex-row"
-            }`}
-          >
+          <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
+          <ul className="navbar-nav flex-wrap flex-shrink-1">
+            <AppToasts alertStore={alertStore} />
             <SilenceModal
               alertStore={alertStore}
               silenceFormStore={silenceFormStore}
@@ -126,7 +123,6 @@ const NavBar: FC<{
             />
             <MainModal alertStore={alertStore} settingsStore={settingsStore} />
           </ul>
-          <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
         </nav>
       </CSSTransition>
     </div>

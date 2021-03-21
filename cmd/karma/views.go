@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"sort"
 	"strings"
@@ -41,10 +41,17 @@ func pong(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write([]byte("Pong\n"))
 }
 
-func compressResponse(data []byte) ([]byte, error) {
+func robots(w http.ResponseWriter, r *http.Request) {
+	_, _ = w.Write([]byte("User-agent: *\nDisallow: /\n"))
+}
+
+func compressResponse(data []byte, gz io.WriteCloser) ([]byte, error) {
 	var b bytes.Buffer
-	// this only fails if we pass unsupported level (3 is valid)
-	gz, _ := gzip.NewWriterLevel(&b, 3)
+
+	if gz == nil {
+		// this only fails if we pass unsupported level (3 is valid)
+		gz, _ = gzip.NewWriterLevel(&b, 3)
+	}
 
 	_, err := gz.Write(data)
 	if err != nil {
@@ -66,16 +73,16 @@ func compressResponse(data []byte) ([]byte, error) {
 	return compressed, nil
 }
 
-func decompressCachedResponse(data []byte) ([]byte, error) {
-	b := bytes.NewReader(data)
-	z, err := gzip.NewReader(b)
+func decompressCachedResponse(r io.Reader) ([]byte, error) {
+	z, err := gzip.NewReader(r)
 	if err != nil {
 		return nil, fmt.Errorf("failed to created new compression reader: %s", err.Error())
 	}
-	p, err := ioutil.ReadAll(z)
+	p, err := io.ReadAll(z)
 	if err != nil {
 		return nil, fmt.Errorf("failed to decompress data: %s", err.Error())
 	}
+	z.Close()
 	return p, nil
 }
 
@@ -185,7 +192,8 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 
 	data, found := apiCache.Get(cacheKey)
 	if found {
-		rawData, _ := decompressCachedResponse(data.([]byte))
+		r := bytes.NewReader(data.([]byte))
+		rawData, _ := decompressCachedResponse(r)
 		// need to overwrite settings as they can have user specific data
 		newResp := models.AlertsResponse{}
 		_ = json.Unmarshal(rawData, &newResp)
@@ -480,7 +488,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	resp.Receivers = receivers
 
 	data, _ = json.Marshal(resp)
-	compressedData, _ := compressResponse(data.([]byte))
+	compressedData, _ := compressResponse(data.([]byte), nil)
 	apiCache.Set(cacheKey, compressedData, -1)
 
 	mimeJSON(w)
