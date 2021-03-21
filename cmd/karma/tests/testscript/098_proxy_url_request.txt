@@ -1,0 +1,135 @@
+# Uses proxy_url to connect to upstream
+
+exec bash -x ./test.sh &
+exec bash -c 'I=0 ; while [ ! -f alertmanager.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done'
+karma.bin-should-work --pid-file=karma.pid
+! stdout .
+stderr 'level=info msg="Configured Alertmanager source" name=proxy-url proxy=false readonly=false uri=http://am.example.com'
+stderr 'level=info msg="GET request" timeout=10 uri=http://am.example.com/metrics'
+stderr 'level=info msg="Upstream version" alertmanager=proxy-url version=0.21.0'
+stderr 'level=info msg="Got silences" alertmanager=proxy-url duration=.+ silences=0'
+stderr 'level=info msg="Collected alert groups" alertmanager=proxy-url duration=.+ groups=0'
+stderr 'level=info msg="Deduplicating alert groups" alertmanager=proxy-url groups=0'
+stderr 'level=info msg="Processing deduplicated alert groups" alertmanager=proxy-url groups=0'
+stderr 'level=info msg="Merging autocomplete hints" alertmanager=proxy-url hints=0'
+stderr 'level=info msg="Collection completed"'
+
+-- test.sh --
+env GOCACHE=$TMPDIR go run alertmanager.go &
+
+I=0
+while [ ! -f karma.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done
+
+sleep 5
+cat karma.pid | xargs kill
+cat alertmanager.pid | xargs kill
+
+-- karma.yaml --
+alertmanager:
+  interval: 1h
+  servers:
+    - name: proxy-url
+      uri: http://am.example.com
+      timeout: 10s
+      proxy_url: http://127.0.0.1:9098
+listen:
+  address: 127.0.0.1
+  port: 8098
+
+-- alertmanager.go --
+package main
+
+import (
+	"context"
+	"io"
+	"log"
+	"net"
+	"net/http"
+	"os"
+	"os/signal"
+	"strconv"
+	"syscall"
+	"time"
+)
+
+func metrics(w http.ResponseWriter, r *http.Request) {
+	if r.Host != "am.example.com" {
+		w.WriteHeader(400)
+		return
+	}
+
+	w.Header().Set("Content-Type", "text/plain; version=0.0.4; charset=utf-8")
+	io.WriteString(w, `alertmanager_build_info{version="0.21.0"} 1
+`)
+}
+
+func status(w http.ResponseWriter, r *http.Request) {
+	if r.Host != "am.example.com" {
+		w.WriteHeader(400)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	io.WriteString(w, `
+{
+    "cluster": {
+        "name": "01EB67XCFES27NAFAGSW48NAHC",
+        "peers": [
+            {
+                "address": "172.17.0.2:9094",
+                "name": "01EB67XCFES27NAFAGSW48NAHC"
+            }
+        ],
+        "status": "ready"
+    },
+    "versionInfo": {
+        "version": "0.21.0"
+    }
+}`)
+}
+
+func empty(w http.ResponseWriter, r *http.Request) {
+	if r.Host != "am.example.com" {
+		w.WriteHeader(400)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	io.WriteString(w, "[]")
+}
+
+func main() {
+	pid := os.Getpid()
+	err := os.WriteFile("alertmanager.pid", []byte(strconv.Itoa(pid)), 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	http.HandleFunc("/metrics", metrics)
+	http.HandleFunc("/api/v2/status", status)
+	http.HandleFunc("/api/v2/silences", empty)
+	http.HandleFunc("/api/v2/alerts/groups", empty)
+
+	listener, err := net.Listen("tcp", "127.0.0.1:9098")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	server := &http.Server{
+		Addr: "127.0.0.1:9098",
+	}
+
+	go func() {
+		err := server.Serve(listener)
+		if err != nil {
+			log.Printf("Serve returned error: %v", err)
+		}
+	}()
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+	<-stop
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	server.Shutdown(ctx)
+}

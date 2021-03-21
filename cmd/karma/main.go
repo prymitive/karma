@@ -193,11 +193,7 @@ func setupUpstreams() error {
 			if err != nil {
 				return fmt.Errorf("failed to parse provided proxy url %q: %w", s.ProxyURL, err)
 			}
-			if transport, ok := httpTransport.(*http.Transport); ok {
-				transport.Proxy = http.ProxyURL(proxyURL)
-			} else {
-				return fmt.Errorf("failed to set ProxyURL for Alertmanager '%s' with URL '%s': %s", s.Name, s.ProxyURL, err)
-			}
+			httpTransport.(*http.Transport).Proxy = http.ProxyURL(proxyURL)
 		}
 
 		am, err := alertmanager.NewAlertmanager(
