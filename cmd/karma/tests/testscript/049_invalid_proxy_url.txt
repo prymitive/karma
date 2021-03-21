@@ -1,0 +1,15 @@
+# Raises an error if proxy_url is invalid
+karma.bin-should-fail --config.file=karma.yaml
+! stdout .
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=info msg="Reading configuration file" path=karma.yaml
+level=info msg="Version: dev"
+level=error msg="Execution failed" error="failed to parse provided proxy url \"%gh&%ij\": parse \"%gh&%ij\": invalid URL escape \"%gh\""
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: with_proxy
+      uri: http://127.0.0.1:9093
+      proxy_url: '%gh&%ij'
