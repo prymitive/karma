@@ -147,7 +147,6 @@ func mockAlerts(version string) {
 	mock.RegisterURL("http://localhost/api/v2/silences", version, "api/v2/silences")
 	mock.RegisterURL("http://localhost/api/v2/alerts/groups", version, "api/v2/alerts/groups")
 
-	lastPull = time.Time{}
 	pullFromAlertmanager()
 }
 
@@ -2309,7 +2308,6 @@ func TestUpstreamStatus(t *testing.T) {
 			for _, m := range testCase.mocks {
 				httpmock.RegisterResponder("GET", m.uri, httpmock.NewStringResponder(m.code, m.body))
 			}
-			lastPull = time.Time{}
 			pullFromAlertmanager()
 
 			req := httptest.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
@@ -2552,7 +2550,6 @@ func TestAlertFilters(t *testing.T) {
 					t.Fatal(err)
 				}
 
-				lastPull = time.Time{}
 				pullFromAlertmanager()
 
 				r := testRouter()

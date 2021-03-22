@@ -1,6 +1,10 @@
 # Changelog
 
-## [unreleased]
+## v0.81
+
+### Fixed
+
+- Fixed a deadlock issue that could cause karma to hang #2888.
 
 ### Added
 
