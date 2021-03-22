@@ -546,19 +546,27 @@ func (am *Alertmanager) ClusterPeers() []string {
 // that are in the same cluster as this instance (including self).
 // Names are the same as in karma configuration.
 func (am *Alertmanager) ClusterMemberNames() []string {
+	// copy status so we don't need to hold RLock until return
+	status := models.AlertmanagerStatus{}
 	am.lock.RLock()
-	defer am.lock.RUnlock()
+	status.ID = am.status.ID
+	copy(am.status.PeerIDs, status.PeerIDs)
+	am.lock.RUnlock()
 
 	members := []string{am.Name}
 
 	upstreams := GetAlertmanagers()
 	for _, upstream := range upstreams {
+		// skip self, it's already part of members slice
+		if upstream.Name == am.Name {
+			continue
+		}
 		for _, peerID := range upstream.ClusterPeers() {
 			// IF
 			// other alertmanagers peerID is in this alertmanager cluster status
 			// OR
 			// this alertmanager peerID is in other alertmanagers cluster status
-			if slices.StringInSlice(am.status.PeerIDs, peerID) || peerID == am.status.ID {
+			if slices.StringInSlice(status.PeerIDs, peerID) || peerID == status.ID {
 				if !slices.StringInSlice(members, upstream.Name) {
 					members = append(members, upstream.Name)
 				}
