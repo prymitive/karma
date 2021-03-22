@@ -56,7 +56,7 @@
     "mobx-stored": "1.1.0",
     "prettier": "2.2.1",
     "promise-retry": "2.0.1",
-    "qs": "6.10.0",
+    "qs": "6.10.1",
     "react": "17.0.1",
     "react-app-polyfill": "2.0.0",
     "react-autosuggest": "10.1.0",
