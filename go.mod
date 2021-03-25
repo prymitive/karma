@@ -8,7 +8,7 @@ require (
 	github.com/cnf/structhash v0.0.0-20201127153200-e1b16c1ebc08
 	github.com/fvbommel/sortorder v1.0.2
 	github.com/getsentry/sentry-go v0.10.0
-	github.com/go-chi/chi/v5 v5.0.1
+	github.com/go-chi/chi/v5 v5.0.2
 	github.com/go-chi/cors v1.1.1
 	github.com/go-openapi/errors v0.20.0
 	github.com/go-openapi/runtime v0.19.27
