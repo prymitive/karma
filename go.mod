@@ -9,7 +9,7 @@ require (
 	github.com/fvbommel/sortorder v1.0.2
 	github.com/getsentry/sentry-go v0.10.0
 	github.com/go-chi/chi/v5 v5.0.2
-	github.com/go-chi/cors v1.1.1
+	github.com/go-chi/cors v1.2.0
 	github.com/go-openapi/errors v0.20.0
 	github.com/go-openapi/runtime v0.19.27
 	github.com/go-openapi/strfmt v0.20.0
