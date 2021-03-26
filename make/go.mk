@@ -35,17 +35,11 @@ $(GOBIN)/looppointer: tools/looppointer/go.mod tools/looppointer/go.sum
 lint-go-looppointer: $(GOBIN)/looppointer
 	$(ENV) looppointer -c 2 ./...
 
-$(GOBIN)/staticcheck: tools/staticcheck/go.mod tools/staticcheck/go.sum
-	go install -modfile=tools/staticcheck/go.mod honnef.co/go/tools/cmd/staticcheck
-.PHONY: lint-go-staticcheck
-lint-go-staticcheck: $(GOBIN)/staticcheck
-	$(ENV) staticcheck ./...
-
 $(GOBIN)/golangci-lint: tools/golangci-lint/go.mod tools/golangci-lint/go.sum
 	go install -modfile=tools/golangci-lint/go.mod github.com/golangci/golangci-lint/cmd/golangci-lint
 .PHONY: lint-go
-lint-go: $(GOBIN)/golangci-lint lint-go-looppointer lint-go-staticcheck
-	$(ENV) golangci-lint run -v
+lint-go: $(GOBIN)/golangci-lint lint-go-looppointer
+	$(ENV) golangci-lint run -v --timeout 5m -E staticcheck,misspell
 
 .PHONY: format-go
 format-go:
