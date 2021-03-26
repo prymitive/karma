@@ -229,7 +229,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	k := koanf.New(".")
 	var configFileUsed string
 
-	// 3. read all environemnt variables
+	// 3. read all environment variables
 	readEnvVariables(k)
 	// 2. read config file
 	cf, err := readConfigFile(k, flags)
