@@ -215,33 +215,6 @@ jobs:
       - name: Check for local changes
         run: git diff --exit-code
 
-  go-mod-tidy:
-    name: Verify go.sum
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v2
-
-      - name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-          go-version: 1.16.2
-
-      - name: Mock web assets
-        run: make mock-assets
-
-      - name: Fetch code
-        run: go get -d -v ./cmd/karma
-
-      - name: Run go mod tidy
-        run: go mod tidy
-
-      - name: Tidy tools
-        run: make tools-go-mod-tidy
-
-      - name: Check for local changes
-        run: git diff --exit-code
-
   deps-js:
     name: Check JS dependencies
     runs-on: ubuntu-20.04
@@ -329,7 +302,6 @@ jobs:
       - lint-js
       - format-go
       - format-js
-      - go-mod-tidy
       - deps-js
       - lint-versions
       - typescript
