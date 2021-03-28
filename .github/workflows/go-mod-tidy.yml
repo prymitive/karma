@@ -1,0 +1,46 @@
+name: Go mod tidy
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - go.mod
+      - go.sum
+      - tools/*/go.mod
+      - tools/*/go.sum
+
+jobs:
+  version-sync:
+    name: Run go mod tidy
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16.2
+
+      - name: Run go mod tidy
+        run: |
+          go mod tidy
+          make tools-go-mod-tidy
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3.8.2
+        with:
+          token: ${{ secrets.GH_REPO_TOKEN }}
+          author: "Łukasz Mierzwa <l.mierzwa@gmail.com>"
+          commit-message: "fix(deps): run go mod tidy"
+          branch: go-mod-tidy
+          delete-branch: true
+          title: "fix(deps): run go mod tidy"
+          labels: automerge
+
+      - name: Check outputs
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
