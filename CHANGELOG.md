@@ -1,5 +1,12 @@
 # Changelog
 
+## [unreleased]
+
+### Fixed
+
+- Header values are now sanitised before logging when `log:config` is
+  enabled #2930.
+
 ## v0.81
 
 ### Fixed
