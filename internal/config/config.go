@@ -398,6 +398,10 @@ func (config *configSchema) LogValues() {
 	// replace passwords in Alertmanager URIs with 'xxx'
 	servers := []AlertmanagerConfig{}
 	for _, s := range cfg.Alertmanager.Servers {
+		h := map[string]string{}
+		for key := range s.Headers {
+			h[key] = "***"
+		}
 		server := AlertmanagerConfig{
 			Cluster:     s.Cluster,
 			Name:        s.Name,
@@ -408,7 +412,7 @@ func (config *configSchema) LogValues() {
 			TLS:         s.TLS,
 			Proxy:       s.Proxy,
 			ReadOnly:    s.ReadOnly,
-			Headers:     s.Headers,
+			Headers:     h,
 			CORS:        s.CORS,
 			Healthcheck: s.Healthcheck,
 		}
