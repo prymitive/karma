@@ -30,6 +30,10 @@ alertmanager:
       uri: http://127.0.0.1:9094
       proxy: true
 debug: true
+listen:
+  timeout:
+    read: 1m
+    write: 1m
 -- test.sh --
 trap "echo got signal" SIGTERM SIGINT
 

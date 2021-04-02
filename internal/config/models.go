@@ -137,7 +137,11 @@ type configSchema struct {
 	}
 	Listen struct {
 		Address string
-		TLS     struct {
+		Timeout struct {
+			Read  time.Duration
+			Write time.Duration
+		}
+		TLS struct {
 			Cert string
 			Key  string
 		}

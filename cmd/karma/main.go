@@ -465,8 +465,10 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	}
 
 	httpServer := &http.Server{
-		Addr:    listen,
-		Handler: router,
+		Addr:         listen,
+		Handler:      router,
+		ReadTimeout:  config.Config.Listen.Timeout.Read,
+		WriteTimeout: config.Config.Listen.Timeout.Write,
 	}
 
 	quit := make(chan os.Signal, 1)
