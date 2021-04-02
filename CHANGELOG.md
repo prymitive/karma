@@ -7,6 +7,11 @@
 - Header values are now sanitised before logging when `log:config` is
   enabled #2930.
 
+### Added
+
+- `listen:timeout:read` and `listen:timeout:write` config options for
+  setting HTTP server request read and response write timeouts.
+
 ## v0.81
 
 ### Fixed

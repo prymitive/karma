@@ -114,6 +114,8 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.String("listen.prefix", "/", "URL prefix")
 	f.String("listen.tls.cert", "", "TLS certificate path (enables HTTPS)")
 	f.String("listen.tls.key", "", "TLS key path (enables HTTPS)")
+	f.Duration("listen.timeout.read", time.Second*10, "HTTP request read timeout")
+	f.Duration("listen.timeout.write", time.Second*20, "HTTP response write timeout")
 
 	f.String("sentry.public", "", "Sentry DSN for Go exceptions")
 	f.String("sentry.private", "", "Sentry DSN for JavaScript exceptions")

@@ -102,6 +102,9 @@ labels:
     - gg
 listen:
   address: 0.0.0.0
+  timeout:
+    read: 10s
+    write: 20s
   tls:
     cert: ""
     key: ""

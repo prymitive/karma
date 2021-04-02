@@ -852,6 +852,9 @@ Syntax:
 listen:
   address: string
   port: integer
+  timeout:
+    read: duration
+    write: duration
   prefix: string
   tls:
     cert: string
@@ -860,6 +863,8 @@ listen:
 
 - `address` - Hostname or IP to listen on.
 - `port` - HTTP port to listen on.
+- `timeout:read` - HTTP server request read timeout
+- `timeout:write` - HTTP server response write timeout
 - `prefix` - URL root for karma, you can use to if you wish to serve it from
   location other than `/`. This option is mostly useful when using karma behind
   reverse proxy with other services on the same IP but different URL root.
