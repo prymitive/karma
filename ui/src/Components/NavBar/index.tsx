@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useCallback } from "react";
+import React, { FC, useState, useEffect, useCallback, useRef } from "react";
 
 import { reaction } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -32,7 +32,8 @@ const NavBar: FC<{
 
   const context = React.useContext(ThemeContext);
 
-  const { ref, height } = useDimensions({});
+  const ref = useRef<HTMLElement>();
+  const { observe, height } = useDimensions({});
 
   const updateBodyPaddingTop = useCallback(
     (idle) => {
@@ -102,7 +103,10 @@ const NavBar: FC<{
         exit
       >
         <nav
-          ref={ref}
+          ref={(el) => {
+            observe(el as HTMLElement);
+            ref.current = el as HTMLElement;
+          }}
           className={`navbar navbar-expand navbar-dark p-1 bg-primary-transparent d-flex ${
             fixedTop ? "fixed-top" : "w-100"
           } align-items-start`}
