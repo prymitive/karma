@@ -1,4 +1,4 @@
-import React, { FC, Ref, useEffect, useState } from "react";
+import React, { FC, useEffect, useState, useRef } from "react";
 
 import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -21,8 +21,9 @@ const AlertGrid: FC<{
   silenceFormStore: SilenceFormStore;
   settingsStore: Settings;
 }> = ({ alertStore, settingsStore, silenceFormStore }) => {
+  const ref = useRef<HTMLDivElement>();
   const { width: windowWidth } = useWindowSize();
-  const { ref, width: bodyWidth } = useDimensions();
+  const { observe, width: bodyWidth } = useDimensions();
 
   const [gridSizesConfig, setGridSizesConfig] = useState<SizeDetail[]>(
     GridSizesConfig(settingsStore.gridConfig.config.groupWidth)
@@ -58,7 +59,12 @@ const AlertGrid: FC<{
 
   return (
     <React.Fragment>
-      <div ref={ref as Ref<HTMLDivElement>} />
+      <div
+        ref={(el) => {
+          observe(el as HTMLElement);
+          ref.current = el as HTMLDivElement;
+        }}
+      />
       {alertStore.data.grids.map((grid) => (
         <Grid
           key={`${grid.labelName}/${grid.labelValue}`}
