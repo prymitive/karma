@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState, useEffect } from "react";
+import React, { FC, useState, useEffect } from "react";
 
 import parseISO from "date-fns/parseISO";
 import differenceInSeconds from "date-fns/differenceInSeconds";
@@ -15,9 +15,7 @@ const formatLabel = (timestamp: string) => {
   });
 };
 
-export const DateFromNow: FunctionComponent<{ timestamp: string }> = ({
-  timestamp,
-}) => {
+export const DateFromNow: FC<{ timestamp: string }> = ({ timestamp }) => {
   const [label, setLabel] = useState<string>(formatLabel(timestamp));
 
   useEffect(() => {

@@ -1,9 +1,9 @@
-import React, { FunctionComponent } from "react";
+import React, { FC } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
 
-const ToggleIcon: FunctionComponent<{
+const ToggleIcon: FC<{
   isOpen: boolean;
   className?: string;
   onClick?: () => void;

@@ -1,11 +1,8 @@
-import React, { FunctionComponent, ReactNode, useState } from "react";
+import React, { FC, ReactNode, useState } from "react";
 
 import { ToggleIcon } from "Components/ToggleIcon";
 
-const Trigger: FunctionComponent<{ text: string; isOpen: boolean }> = ({
-  text,
-  isOpen,
-}) => (
+const Trigger: FC<{ text: string; isOpen: boolean }> = ({ text, isOpen }) => (
   <div className="d-flex flex-row justify-content-between">
     <div>{text}</div>
     <div>
@@ -14,7 +11,7 @@ const Trigger: FunctionComponent<{ text: string; isOpen: boolean }> = ({
   </div>
 );
 
-const Accordion: FunctionComponent<{
+const Accordion: FC<{
   text: string;
   content: ReactNode;
   defaultIsOpen?: boolean;
