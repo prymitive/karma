@@ -1,9 +1,4 @@
-import React, {
-  Component,
-  StatelessComponent,
-  ReactNode,
-  ErrorInfo,
-} from "react";
+import React, { Component, FC, ReactNode, ErrorInfo } from "react";
 
 import { captureException } from "@sentry/browser";
 
@@ -16,7 +11,7 @@ interface InternalErrorProps {
   progressLeft: number;
 }
 
-const InternalError: StatelessComponent<InternalErrorProps> = (props) => (
+const InternalError: FC<InternalErrorProps> = (props) => (
   <div className="text-placeholder screen-center">
     <div className="container-fluid text-center">
       <h1 className="display-1">
@@ -78,7 +73,9 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   componentDidCatch(error: Error, { componentStack }: ErrorInfo): void {
     if (this.state.cachedError === null) {
       this.setState({ cachedError: error });
-      captureException(error, { contexts: { react: { componentStack } } });
+      captureException(error, {
+        contexts: { react: { componentStack } },
+      });
     }
     // reload after 60s, this is to fix wall monitors automatically
     // but only if the timer isn't set yet
