@@ -10,6 +10,7 @@ require (
 	github.com/getsentry/sentry-go v0.10.0
 	github.com/go-chi/chi/v5 v5.0.2
 	github.com/go-chi/cors v1.2.0
+	github.com/go-openapi/analysis v0.20.1 // indirect
 	github.com/go-openapi/errors v0.20.0
 	github.com/go-openapi/runtime v0.19.27
 	github.com/go-openapi/strfmt v0.20.1
@@ -29,8 +30,9 @@ require (
 	github.com/rogpeppe/go-internal v1.8.0
 	github.com/rs/zerolog v1.21.0
 	github.com/spf13/pflag v1.0.5
-	golang.org/x/net v0.0.0-20210329181859-df645c7b52b1 // indirect
-	golang.org/x/sys v0.0.0-20210326220804-49726bf1d181 // indirect
+	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4 // indirect
+	golang.org/x/sys v0.0.0-20210403161142-5e06dd20ab57 // indirect
+	golang.org/x/text v0.3.6 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v2 v2.4.0
 )
