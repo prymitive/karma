@@ -6,6 +6,7 @@
 
 - Header values are now sanitised before logging when `log:config` is
   enabled #2930.
+- Fixed a deadlock issue that could cause karma to hang #2944 (@jonaz).
 
 ### Added
 

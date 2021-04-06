@@ -493,12 +493,16 @@ func (am *Alertmanager) setError(err string) {
 	am.lastError = err
 }
 
-func (am *Alertmanager) Error() string {
+func (am *Alertmanager) getLastError() string {
 	am.lock.RLock()
 	defer am.lock.RUnlock()
+	return am.lastError
+}
 
-	if am.lastError != "" {
-		return am.lastError
+func (am *Alertmanager) Error() string {
+	lastError := am.getLastError()
+	if lastError != "" {
+		return lastError
 	}
 
 	configPeers := clusterMembersFromConfig(am)
@@ -597,10 +601,8 @@ func (am *Alertmanager) ClusterName() string {
 }
 
 func (am *Alertmanager) IsHealthy() bool {
-	am.lock.RLock()
-	defer am.lock.RUnlock()
-
-	return am.lastError == ""
+	lastError := am.getLastError()
+	return lastError == ""
 }
 
 func (am *Alertmanager) IsHealthCheckAlert(alert *models.Alert) (string, *healthCheck) {
