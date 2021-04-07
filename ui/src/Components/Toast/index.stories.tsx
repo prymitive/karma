@@ -1,11 +1,9 @@
-import React from "react";
-
 import { storiesOf } from "@storybook/react";
 
 import { faArrowUp } from "@fortawesome/free-solid-svg-icons/faArrowUp";
 import { faExclamation } from "@fortawesome/free-solid-svg-icons/faExclamation";
 
-import { AlertStore } from "Stores/AlertStore";
+import { AlertStore } from "../../Stores/AlertStore";
 import { Toast } from ".";
 import { ToastMessage, UpgradeToastMessage } from "./ToastMessages";
 
@@ -26,12 +24,14 @@ storiesOf("AppToasts", module).add("AppToasts", () => {
             message="connection refused"
           />
         }
+        hasClose
       />
       <Toast
         key="upgrade"
         icon={faArrowUp}
         iconClass="text-success"
         message={<UpgradeToastMessage alertStore={alertStore} />}
+        hasClose={false}
       />
     </div>
   );

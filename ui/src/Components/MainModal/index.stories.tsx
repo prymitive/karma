@@ -4,8 +4,8 @@ import { storiesOf } from "@storybook/react";
 
 import fetchMock from "fetch-mock";
 
-import { AlertStore } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
+import { AlertStore } from "../../Stores/AlertStore";
+import { Settings } from "../../Stores/Settings";
 import { MainModalContent } from "./MainModalContent";
 
 import "Styles/Percy.scss";

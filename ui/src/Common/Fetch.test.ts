@@ -6,7 +6,7 @@ import fetchMock from "fetch-mock";
 
 beforeEach(() => {
   fetchMock.reset();
-  fetchMock.any({
+  fetchMock.mock("*", {
     status: 200,
     body: "ok",
   });
@@ -22,7 +22,7 @@ describe("Fetch", () => {
     FetchGet: FetchGet,
   };
 
-  const methodOptions = {
+  const methodOptions: { [key: string]: RequestInit } = {
     FetchGet: { method: "GET", mode: "cors" },
   };
 
@@ -40,14 +40,20 @@ describe("Fetch", () => {
       const request = func(
         "http://example.com/",
         {
-          foo: "bar",
+          keepalive: false,
         },
         () => {}
       );
       await expect(request).resolves.toMatchObject({ status: 200 });
       expect(fetchMock.lastUrl()).toBe("http://example.com/");
       expect(fetchMock.lastOptions()).toEqual(
-        merge({}, CommonOptions, methodOptions[name], { foo: "bar" }, () => {})
+        merge(
+          {},
+          CommonOptions,
+          methodOptions[name],
+          { keepalive: false },
+          () => {}
+        )
       );
     });
 
@@ -73,7 +79,7 @@ describe("Fetch", () => {
 
   it("FetchGet switches to no-cors for the last retry", async () => {
     fetchMock.reset();
-    fetchMock.any({
+    fetchMock.mock("*", {
       throws: new Error("Fetch error"),
     });
 
@@ -101,7 +107,7 @@ describe("Fetch", () => {
 
   it("FetchGet calls beforeRetry before each retry", async () => {
     fetchMock.reset();
-    fetchMock.any({
+    fetchMock.mock("*", {
       throws: new Error("Fetch error"),
     });
 

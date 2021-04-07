@@ -64,7 +64,7 @@ const Modal: FC<{
 }) => {
   const context = React.useContext(ThemeContext);
   return ReactDOM.createPortal(
-    <React.Fragment>
+    <>
       <CSSTransition
         in={isOpen}
         classNames={
@@ -90,7 +90,7 @@ const Modal: FC<{
       >
         <div className="modal-backdrop d-block" />
       </CSSTransition>
-    </React.Fragment>,
+    </>,
     document.body
   );
 };

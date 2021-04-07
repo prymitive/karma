@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
@@ -46,7 +46,7 @@ const SilenceComment: FC<{
   );
 
   return (
-    <React.Fragment>
+    <>
       <div className="d-flex flex-row">
         <div className="flex-shrink-0 flex-grow-0">
           <FontAwesomeIcon
@@ -97,7 +97,7 @@ const SilenceComment: FC<{
           </div>
         </div>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

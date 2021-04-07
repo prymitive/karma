@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ReactNode, FC } from "react";
+import { useState, useEffect, ReactNode, FC } from "react";
 import { createPortal } from "react-dom";
 
 import { CSSTransition } from "react-transition-group";
@@ -61,7 +61,7 @@ const TooltipWrapper: FC<{
   }, [isHovering, isVisible, wasClicked]);
 
   return (
-    <React.Fragment>
+    <>
       <div
         onClick={() => setWasClicked(true)}
         onMouseOver={supportsTouch ? undefined : showTooltip}
@@ -96,7 +96,7 @@ const TooltipWrapper: FC<{
             document.body
           )
         : null}
-    </React.Fragment>
+    </>
   );
 };
 

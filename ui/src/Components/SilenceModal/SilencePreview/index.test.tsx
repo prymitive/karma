@@ -1,5 +1,3 @@
-import React from "react";
-
 import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
@@ -106,9 +104,12 @@ describe("<SilencePreview />", () => {
   it("matches snapshot", () => {
     useFetchGetMock.fetch.setMockedData({
       response: MockAPIResponse(),
-      error: false,
+      error: undefined,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
 
     const tree = MountedSilencePreview();
@@ -118,9 +119,12 @@ describe("<SilencePreview />", () => {
   it("renders Placeholder while loading preview", () => {
     useFetchGetMock.fetch.setMockedData({
       response: null,
-      error: false,
+      error: undefined,
       isLoading: true,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
     const tree = MountedSilencePreview();
     expect(tree.find("Placeholder")).toHaveLength(1);
@@ -135,9 +139,12 @@ describe("<SilencePreview />", () => {
   it("handles empty grid response correctly", () => {
     useFetchGetMock.fetch.setMockedData({
       response: EmptyAPIResponse(),
-      error: false,
+      error: undefined,
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
 
     const tree = MountedSilencePreview();
@@ -150,6 +157,9 @@ describe("<SilencePreview />", () => {
       error: "Fetch error",
       isLoading: false,
       isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
     });
 
     const tree = MountedSilencePreview();

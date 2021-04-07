@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -15,7 +15,7 @@ const SilenceSubmitController: FC<{
   silenceFormStore: SilenceFormStore;
 }> = ({ silenceFormStore, alertStore }) => {
   return (
-    <React.Fragment>
+    <>
       {Object.keys(silenceFormStore.data.requestsByCluster).length === 1 ? (
         <SingleClusterStatus
           silenceFormStore={silenceFormStore}
@@ -37,7 +37,7 @@ const SilenceSubmitController: FC<{
           Back
         </button>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

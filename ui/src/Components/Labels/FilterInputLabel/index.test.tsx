@@ -1,5 +1,3 @@
-import React from "react";
-
 import { shallow, mount } from "enzyme";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";

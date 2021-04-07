@@ -8,6 +8,8 @@ import toDiffableHtml from "diffable-html";
 import { MockThemeContext } from "__fixtures__/Theme";
 import { UpgradeNeeded } from ".";
 
+declare let window: any;
+
 beforeEach(() => {
   jest.useFakeTimers();
   jest.clearAllTimers();

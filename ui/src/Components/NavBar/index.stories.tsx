@@ -107,7 +107,7 @@ storiesOf("NavBar", module).add("NavBar", () => {
   ];
 
   return (
-    <React.Fragment>
+    <>
       <NavBar
         alertStore={alertStore}
         settingsStore={settingsStore}
@@ -124,6 +124,6 @@ storiesOf("NavBar", module).add("NavBar", () => {
         settingsStore={settingsStore}
         afterClick={() => {}}
       />
-    </React.Fragment>
+    </>
   );
 });

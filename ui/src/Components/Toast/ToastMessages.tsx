@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState, useCallback } from "react";
+import { FC, ReactNode, useState, useCallback } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";

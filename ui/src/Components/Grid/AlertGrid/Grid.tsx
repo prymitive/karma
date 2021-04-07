@@ -116,7 +116,7 @@ const Grid: FC<{
   });
 
   return (
-    <React.Fragment>
+    <>
       <CSSTransition
         key={grid.labelValue}
         in={grid.labelName !== ""}
@@ -200,7 +200,7 @@ const Grid: FC<{
           </CSSTransition>
         )}
       </TransitionGroup>
-    </React.Fragment>
+    </>
   );
 };
 

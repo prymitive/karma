@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useState } from "react";
 
 import { ToggleIcon } from "Components/ToggleIcon";
 

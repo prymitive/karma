@@ -25,7 +25,7 @@ const MainModal: FC<{
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 
   return (
-    <React.Fragment>
+    <>
       <li
         className={`nav-item components-navbar-button ${
           isVisible ? "border-info" : ""
@@ -57,7 +57,7 @@ const MainModal: FC<{
           />
         </React.Suspense>
       </Modal>
-    </React.Fragment>
+    </>
   );
 };
 

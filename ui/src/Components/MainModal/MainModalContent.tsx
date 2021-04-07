@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 
 import { Observer } from "mobx-react-lite";
 
@@ -26,7 +26,7 @@ const MainModalContent: FC<{
   const [tab, setTab] = useState<OpenTabT>(openTab);
 
   return (
-    <React.Fragment>
+    <>
       <div className="modal-header py-2">
         <nav className="nav nav-pills nav-justified w-100">
           <Tab
@@ -71,7 +71,7 @@ const MainModalContent: FC<{
           )}
         </Observer>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

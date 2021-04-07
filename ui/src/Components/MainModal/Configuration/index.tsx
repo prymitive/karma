@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 import { Settings } from "Stores/Settings";
 import { Accordion } from "Components/Accordion";
@@ -31,11 +31,11 @@ const Configuration: FC<{
     <Accordion
       text="Theme"
       content={
-        <React.Fragment>
+        <>
           <ThemeConfiguration settingsStore={settingsStore} />
           <AlertGroupTitleBarColor settingsStore={settingsStore} />
           <AnimationsConfiguration settingsStore={settingsStore} />
-        </React.Fragment>
+        </>
       }
       defaultIsOpen={defaultIsOpen}
     />

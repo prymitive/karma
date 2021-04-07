@@ -1,4 +1,4 @@
-import React, { FC, memo } from "react";
+import { FC, memo } from "react";
 
 import { APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";

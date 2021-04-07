@@ -1,5 +1,3 @@
-import React from "react";
-
 import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
@@ -7,6 +5,8 @@ import toDiffableHtml from "diffable-html";
 import * as Sentry from "@sentry/browser";
 
 import { ErrorBoundary } from "./ErrorBoundary";
+
+declare let window: any;
 
 let consoleSpy: any;
 

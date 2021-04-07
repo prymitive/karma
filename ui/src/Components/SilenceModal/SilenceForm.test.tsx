@@ -1,5 +1,3 @@
-import React from "react";
-
 import { mount } from "enzyme";
 
 import copy from "copy-to-clipboard";

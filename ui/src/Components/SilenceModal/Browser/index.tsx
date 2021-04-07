@@ -89,7 +89,7 @@ const Browser: FC<{
   const context = React.useContext(ThemeContext);
 
   return (
-    <React.Fragment>
+    <>
       <div
         className="d-flex flex-fill flex-lg-row flex-column justify-content-between mb-3"
         data-refresh={settingsStore.fetchConfig.config.interval}
@@ -146,7 +146,7 @@ const Browser: FC<{
       ) : response === null || response.length === 0 ? (
         <Placeholder content="Nothing to show" />
       ) : (
-        <React.Fragment>
+        <>
           <TransitionGroup component={null} appear enter exit={false}>
             {response
               .slice((activePage - 1) * maxPerPage, activePage * maxPerPage)
@@ -175,9 +175,9 @@ const Browser: FC<{
             totalItemsCount={response.length}
             setPageCallback={setActivePage}
           />
-        </React.Fragment>
+        </>
       )}
-    </React.Fragment>
+    </>
   );
 };
 

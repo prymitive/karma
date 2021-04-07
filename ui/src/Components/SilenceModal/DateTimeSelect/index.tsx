@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useCallback, ReactNode } from "react";
+import { FC, useEffect, useState, useCallback, ReactNode } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -220,46 +220,46 @@ const DateTimeSelect: FC<{
   }, [updateTimeNow]);
 
   return (
-    <React.Fragment>
+    <>
       <ul className="nav nav-tabs nav-fill">
         <Tab
           title={
-            <React.Fragment>
+            <>
               <span className="mr-1">Starts</span>
               <OffsetBadge
                 prefixLabel="in "
                 startDate={timeNow}
                 endDate={silenceFormStore.data.startsAt}
               />
-            </React.Fragment>
+            </>
           }
           active={currentTab === "start"}
           onClick={() => setCurrentTab("start")}
         />
         <Tab
           title={
-            <React.Fragment>
+            <>
               <span className="mr-1">Ends</span>
               <OffsetBadge
                 prefixLabel="in "
                 startDate={timeNow}
                 endDate={silenceFormStore.data.endsAt}
               />
-            </React.Fragment>
+            </>
           }
           active={currentTab === "end"}
           onClick={() => setCurrentTab("end")}
         />
         <Tab
           title={
-            <React.Fragment>
+            <>
               <span className="mr-1">Duration</span>
               <OffsetBadge
                 prefixLabel=""
                 startDate={silenceFormStore.data.startsAt}
                 endDate={silenceFormStore.data.endsAt}
               />
-            </React.Fragment>
+            </>
           }
           active={currentTab === "duration"}
           onClick={() => setCurrentTab("duration")}
@@ -276,7 +276,7 @@ const DateTimeSelect: FC<{
           <TabContentEnd silenceFormStore={silenceFormStore} />
         ) : null}
       </div>
-    </React.Fragment>
+    </>
   );
 });
 

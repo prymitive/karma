@@ -1,4 +1,3 @@
-import React from "react";
 import { act } from "react-dom/test-utils";
 
 import { renderHook } from "@testing-library/react-hooks";
@@ -331,19 +330,17 @@ describe("useFetchAny", () => {
 
   it("doesn't update response after cleanup on slow body read", async () => {
     let tree: any = null;
-    const fetcher = jest.fn((_: RequestInfo) =>
-      Promise.resolve({
-        headers: {
-          get: () => "text/plain",
-        },
-        text: async () => {
-          act(() => {
-            tree.unmount();
-          });
-          return "ok";
-        },
-      })
-    );
+    const resp = new Response() as any;
+    resp.headers = {
+      get: () => "text/plain",
+    };
+    resp.text = async () => {
+      act(() => {
+        tree.unmount();
+      });
+      return "ok";
+    };
+    const fetcher = jest.fn((_: RequestInfo) => Promise.resolve(resp));
 
     const upstreams = [{ uri: "http://localhost/slow/body", options: {} }];
     const Component = () => {

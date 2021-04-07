@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
@@ -19,7 +19,7 @@ const SilencePreview: FC<{
   ];
 
   return (
-    <React.Fragment>
+    <>
       <div className="mb-3">
         <PaginatedAlertList
           alertStore={alertStore}
@@ -45,7 +45,7 @@ const SilencePreview: FC<{
           Back
         </button>
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

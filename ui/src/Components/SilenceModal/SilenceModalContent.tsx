@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 import { Observer } from "mobx-react-lite";
 
@@ -40,7 +40,7 @@ const SilenceModalContent: FC<{
   return (
     <Observer>
       {() => (
-        <React.Fragment>
+        <>
           <div className="modal-header py-2">
             <nav className="nav nav-pills nav-justified w-100">
               <Tab
@@ -110,7 +110,7 @@ const SilenceModalContent: FC<{
               />
             ) : null}
           </div>
-        </React.Fragment>
+        </>
       )}
     </Observer>
   );

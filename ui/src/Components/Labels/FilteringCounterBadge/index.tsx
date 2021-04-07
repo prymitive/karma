@@ -1,4 +1,4 @@
-import React, { FC, useCallback, MouseEvent } from "react";
+import { FC, useCallback, MouseEvent } from "react";
 
 import { observer } from "mobx-react-lite";
 

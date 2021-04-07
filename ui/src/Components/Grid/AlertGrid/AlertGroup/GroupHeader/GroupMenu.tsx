@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  useRef,
-  useState,
-  useCallback,
-  Ref,
-  CSSProperties,
-} from "react";
+import { FC, useRef, useState, useCallback, Ref, CSSProperties } from "react";
 
 import copy from "copy-to-clipboard";
 
@@ -106,7 +99,7 @@ const MenuContent: FC<{
         data-placement={popperPlacement}
       >
         {actions.length ? (
-          <React.Fragment>
+          <>
             <h6 className="dropdown-header">Actions:</h6>
             {actions.map((action) => (
               <MenuLink
@@ -118,7 +111,7 @@ const MenuContent: FC<{
               />
             ))}
             <div className="dropdown-divider" />
-          </React.Fragment>
+          </>
         ) : null}
         <div
           className="dropdown-item cursor-pointer"
