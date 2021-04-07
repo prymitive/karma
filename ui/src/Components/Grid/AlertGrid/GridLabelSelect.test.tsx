@@ -7,10 +7,12 @@ import fetchMock from "fetch-mock";
 import { MockGrid } from "__fixtures__/Stories";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { APIGridT } from "Models/APITypes";
 import { GridLabelSelect } from "./GridLabelSelect";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;
+let grid: APIGridT;
 
 beforeEach(() => {
   fetchMock.reset();
@@ -20,13 +22,27 @@ beforeEach(() => {
 
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
+  grid = {
+    labelName: "foo",
+    labelValue: "bar",
+    alertGroups: [],
+    stateCount: {
+      active: 0,
+      suppressed: 0,
+      unprocessed: 0,
+    },
+  };
 
   jest.useFakeTimers();
 });
 
 const MountedGridLabelSelect = () => {
   return mount(
-    <GridLabelSelect alertStore={alertStore} settingsStore={settingsStore} />
+    <GridLabelSelect
+      alertStore={alertStore}
+      settingsStore={settingsStore}
+      grid={grid}
+    />
   );
 };
 

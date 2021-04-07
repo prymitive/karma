@@ -44,6 +44,7 @@ const Swimlane: FC<{
           <GridLabelSelect
             alertStore={alertStore}
             settingsStore={settingsStore}
+            grid={grid}
           />
         </span>
       )}

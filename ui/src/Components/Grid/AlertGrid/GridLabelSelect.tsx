@@ -18,6 +18,7 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { APIGridT } from "Models/APITypes";
 import { CommonPopperModifiers } from "Common/Popper";
 import { NewLabelName, StringToOption, OptionT } from "Common/Select";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
@@ -29,7 +30,8 @@ const NullContainer: FC = () => null;
 const GridLabelNameSelect: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
-}> = ({ alertStore, settingsStore }) => {
+  grid: APIGridT;
+}> = ({ alertStore, settingsStore, grid }) => {
   const loadOptions = (
     inputValue: string,
     callback: (options: OptionT[]) => void
@@ -59,6 +61,7 @@ const GridLabelNameSelect: FC<{
 
     callback(
       Object.keys(labelNames)
+        .filter((labelName) => labelName !== grid.labelName)
         .sort()
         .map((key) => StringToOption(key))
     );
@@ -94,12 +97,14 @@ const Dropdown: FC<{
   popperStyle?: CSSProperties;
   alertStore: AlertStore;
   settingsStore: Settings;
+  grid: APIGridT;
 }> = ({
   popperPlacement,
   popperRef,
   popperStyle,
   alertStore,
   settingsStore,
+  grid,
 }) => {
   return (
     <div
@@ -115,6 +120,7 @@ const Dropdown: FC<{
       <GridLabelNameSelect
         alertStore={alertStore}
         settingsStore={settingsStore}
+        grid={grid}
       />
     </div>
   );
@@ -123,7 +129,8 @@ const Dropdown: FC<{
 const GridLabelSelect: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
-}> = observer(({ alertStore, settingsStore }) => {
+  grid: APIGridT;
+}> = observer(({ alertStore, settingsStore, grid }) => {
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const hide = useCallback(() => setIsVisible(false), []);
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
@@ -155,6 +162,7 @@ const GridLabelSelect: FC<{
                 popperStyle={style}
                 alertStore={alertStore}
                 settingsStore={settingsStore}
+                grid={grid}
               />
             )}
           </Popper>
