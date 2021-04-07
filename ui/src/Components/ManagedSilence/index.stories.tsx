@@ -2,9 +2,9 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 
-import { MockSilence } from "__fixtures__/Alerts";
-import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import { MockSilence } from "../../__fixtures__/Alerts";
+import { AlertStore } from "../../Stores/AlertStore";
+import { SilenceFormStore } from "../../Stores/SilenceFormStore";
 import { ManagedSilence } from ".";
 
 import "Styles/Percy.scss";
@@ -70,7 +70,7 @@ storiesOf("ManagedSilence", module)
     expiredSilence.endsAt = "2018-08-14T11:00:00Z";
 
     return (
-      <React.Fragment>
+      <>
         <ManagedSilence
           cluster={cluster}
           alertCount={123}
@@ -129,6 +129,6 @@ storiesOf("ManagedSilence", module)
           onDidUpdate={() => {}}
           isOpen={true}
         />
-      </React.Fragment>
+      </>
     );
   });

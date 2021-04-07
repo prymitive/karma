@@ -1,4 +1,4 @@
-import React, { FC, Ref } from "react";
+import { FC, Ref } from "react";
 
 import { renderHook } from "@testing-library/react-hooks";
 
@@ -6,28 +6,28 @@ import { mount } from "enzyme";
 
 import { useGrid } from "./useGrid";
 
+const sizes = [{ columns: 2, gutter: 0 }];
+
+const Component: FC<{ count: number }> = ({ count }) => {
+  const { ref, repack } = useGrid(sizes);
+  return (
+    <div ref={ref as Ref<any>} id="root" onClick={repack}>
+      {Array.from(Array(count).keys()).map((i) => (
+        <div key={i} id={`item${i}`} style={{ width: 400 }}></div>
+      ))}
+    </div>
+  );
+};
+
 describe("useGrid", () => {
-  const sizes = [{ columns: 2, gutter: 0 }];
-  const Component: FC<{ count: number }> = ({ count }) => {
-    const { ref, repack } = useGrid(sizes);
-
-    return (
-      <div ref={ref as Ref<any>} id="root" onClick={repack}>
-        {Array.from(Array(count).keys()).map((i) => (
-          <div key={i} id={`item${i}`} style={{ width: 400 }}></div>
-        ))}
-      </div>
-    );
-  };
-
   it("does nothing if ref is null", () => {
     const { result } = renderHook(() => useGrid([]));
-    expect(result.current.ref.current).toBe(null);
+    expect(result.current.ref).toMatchObject({ current: null });
   });
 
   it("repack does nothing if ref is null", () => {
     const { result } = renderHook(() => useGrid([]));
-    expect(result.current.ref.current).toBe(null);
+    expect(result.current.ref).toMatchObject({ current: null });
     result.current.repack();
   });
 

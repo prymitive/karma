@@ -29,7 +29,7 @@ const OverviewModal: FC<{
   const { ref, props } = useFlashTransition(alertStore.info.totalAlerts);
 
   return (
-    <React.Fragment>
+    <>
       <TooltipWrapper title="Show alert overview">
         <CSSTransition {...props}>
           <div
@@ -57,7 +57,7 @@ const OverviewModal: FC<{
           />
         </React.Suspense>
       </Modal>
-    </React.Fragment>
+    </>
   );
 });
 

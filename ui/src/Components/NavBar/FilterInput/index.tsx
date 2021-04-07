@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useRef, useCallback } from "react";
+import { FC, useEffect, useState, useRef, useCallback } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -127,7 +127,7 @@ const FilterInput: FC<{
     ...inputProps
   }) => {
     return (
-      <React.Fragment>
+      <>
         {alertStore.filters.values.length ? null : (
           <span className="input-group-text d-inline-block mr-2 border-0 bg-inherit px-1">
             <FontAwesomeIcon icon={faSearch} />
@@ -140,7 +140,7 @@ const FilterInput: FC<{
           value={value}
           {...inputProps}
         />
-      </React.Fragment>
+      </>
     );
   };
 

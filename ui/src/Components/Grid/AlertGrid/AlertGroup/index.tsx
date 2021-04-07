@@ -236,7 +236,7 @@ const AlertGroup: FC<{
                       className="text-muted"
                     />
                   ) : (
-                    <React.Fragment>
+                    <>
                       <LoadButton
                         icon={faMinus}
                         action={loadLess}
@@ -252,7 +252,7 @@ const AlertGroup: FC<{
                         action={loadMore}
                         tooltip="Show more alerts in this group"
                       />
-                    </React.Fragment>
+                    </>
                   )}
                 </li>
               ) : null}

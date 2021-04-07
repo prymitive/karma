@@ -25,7 +25,7 @@ const SilenceModal: FC<{
   settingsStore: Settings;
 }> = ({ alertStore, silenceFormStore, settingsStore }) => {
   return (
-    <React.Fragment>
+    <>
       <li
         className={`nav-item components-navbar-button ${
           silenceFormStore.toggle.visible ? "border-info" : ""
@@ -64,7 +64,7 @@ const SilenceModal: FC<{
           />
         </React.Suspense>
       </Modal>
-    </React.Fragment>
+    </>
   );
 };
 

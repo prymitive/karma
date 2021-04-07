@@ -1,7 +1,7 @@
-import React from "react";
+import { FC } from "react";
 
 import "Styles/LightThemeLoader.scss";
 
-const LightTheme: React.FC = () => null;
+const LightTheme: FC = () => null;
 
 export default LightTheme;

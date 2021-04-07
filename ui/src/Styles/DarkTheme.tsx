@@ -1,7 +1,7 @@
-import React from "react";
+import { FC } from "react";
 
 import "Styles/DarkThemeLoader.scss";
 
-const DarkTheme: React.FC = () => null;
+const DarkTheme: FC = () => null;
 
 export default DarkTheme;

@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import { FC, useState, useEffect } from "react";
 
 import parseISO from "date-fns/parseISO";
 import differenceInSeconds from "date-fns/differenceInSeconds";
@@ -26,5 +26,5 @@ export const DateFromNow: FC<{ timestamp: string }> = ({ timestamp }) => {
     return () => clearInterval(timer);
   }, [timestamp]);
 
-  return <React.Fragment>{label}</React.Fragment>;
+  return <>{label}</>;
 };

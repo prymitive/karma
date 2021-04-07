@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  Ref,
-  CSSProperties,
-  useRef,
-  useState,
-  useCallback,
-} from "react";
+import { FC, Ref, CSSProperties, useRef, useState, useCallback } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -108,7 +101,7 @@ const MenuContent: FC<{
           />
         ))}
         {actions.length ? (
-          <React.Fragment>
+          <>
             <div className="dropdown-divider" />
             <h6 className="dropdown-header">Actions:</h6>
             {actions.map((action) => (
@@ -120,7 +113,7 @@ const MenuContent: FC<{
                 afterClick={afterClick}
               />
             ))}
-          </React.Fragment>
+          </>
         ) : null}
         <div className="dropdown-divider" />
         <div

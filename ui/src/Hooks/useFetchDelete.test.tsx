@@ -1,4 +1,3 @@
-import React from "react";
 import { act } from "react-dom/test-utils";
 
 import { renderHook } from "@testing-library/react-hooks";

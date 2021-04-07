@@ -1,4 +1,4 @@
-import React, { Component, FC, ReactNode, ErrorInfo } from "react";
+import { Component, FC, ReactNode, ErrorInfo } from "react";
 
 import { captureException } from "@sentry/browser";
 

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useState, useRef } from "react";
 
 import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -58,7 +58,7 @@ const AlertGrid: FC<{
   useHotkeys("alt+space", alertStore.status.togglePause);
 
   return (
-    <React.Fragment>
+    <>
       <div
         ref={(el) => {
           observe(el as HTMLElement);
@@ -77,7 +77,7 @@ const AlertGrid: FC<{
           outerPadding={alertStore.data.gridPadding}
         />
       ))}
-    </React.Fragment>
+    </>
   );
 };
 

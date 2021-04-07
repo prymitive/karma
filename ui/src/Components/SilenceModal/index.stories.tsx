@@ -174,7 +174,7 @@ storiesOf("SilenceModal", module)
     });
 
     return (
-      <React.Fragment>
+      <>
         <Modal>
           <SilenceModalContent
             alertStore={alertStoreReadOnly}
@@ -209,7 +209,7 @@ storiesOf("SilenceModal", module)
             />
           </div>
         </Modal>
-      </React.Fragment>
+      </>
     );
   })
   .add("Browser", () => {

@@ -45,6 +45,7 @@ test-percy: $(NODE_PATH)/react-scripts $(NODE_PATH)/build-storybook $(NODE_PATH)
 lint-js: $(NODE_PATH)/eslint
 	@rm -fr node_modules/.cache/eslint-loader
 	eslint --ext .js,.jsx,.ts,.tsx src
+	tsc --noEmit -p .
 
 .PHONY: lint-deps
 lint-deps: $(NODE_PATH)/depcheck

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState, memo } from "react";
+import { FC, useEffect, useRef, useState, memo } from "react";
 
 import Linkify from "react-linkify";
 
@@ -42,7 +42,7 @@ const RenderNonLinkAnnotation: FC<{
         onClick={isVisible ? undefined : () => setIsVisible(!isVisible)}
       >
         {isVisible ? (
-          <React.Fragment>
+          <>
             <span
               onClick={() => setIsVisible(false)}
               className="cursor-pointer"
@@ -60,12 +60,12 @@ const RenderNonLinkAnnotation: FC<{
                 <span ref={ref}>{value}</span>
               </CSSTransition>
             </Linkify>
-          </React.Fragment>
+          </>
         ) : (
-          <React.Fragment>
+          <>
             <FontAwesomeIcon icon={faSearchPlus} className="mr-1" />
             {name}
-          </React.Fragment>
+          </>
         )}
       </div>
     </TooltipWrapper>

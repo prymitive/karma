@@ -1,5 +1,3 @@
-import React from "react";
-
 import { render } from "enzyme";
 
 import toDiffableHtml from "diffable-html";

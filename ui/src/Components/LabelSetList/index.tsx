@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 
 import { AlertStore } from "Stores/AlertStore";
 import { APIAlertGroupT } from "Models/APITypes";

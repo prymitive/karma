@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, ReactNode } from "react";
+import { FC, useEffect, useState, ReactNode } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
@@ -78,7 +78,7 @@ const DeleteResult: FC<{
   );
 
   return (
-    <React.Fragment>
+    <>
       {isDeleting ? (
         <ProgressMessage />
       ) : error ? (
@@ -102,7 +102,7 @@ const DeleteResult: FC<{
           </button>
         </div>
       ) : null}
-    </React.Fragment>
+    </>
   );
 };
 
@@ -121,7 +121,7 @@ const DeleteSilenceModalContent: FC<{
   }, [silenceFormStore.toggle]);
 
   return (
-    <React.Fragment>
+    <>
       <div className="modal-header">
         <h5 className="modal-title">Delete silence</h5>
         <button type="button" className="close" onClick={onHide}>
@@ -136,7 +136,7 @@ const DeleteSilenceModalContent: FC<{
             silence={silence}
           />
         ) : (
-          <React.Fragment>
+          <>
             <PaginatedAlertList
               alertStore={alertStore}
               filters={[
@@ -159,10 +159,10 @@ const DeleteSilenceModalContent: FC<{
                 Confirm
               </button>
             </div>
-          </React.Fragment>
+          </>
         )}
       </div>
-    </React.Fragment>
+    </>
   );
 };
 
@@ -180,7 +180,7 @@ const DeleteSilence: FC<{
   );
 
   return (
-    <React.Fragment>
+    <>
       <button
         className="btn btn-danger btn-sm"
         disabled={members.length === 0}
@@ -207,7 +207,7 @@ const DeleteSilence: FC<{
           onHide={() => setVisible(false)}
         />
       </Modal>
-    </React.Fragment>
+    </>
   );
 };
 

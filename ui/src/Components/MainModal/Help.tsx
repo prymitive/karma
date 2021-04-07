@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import { FC, ReactNode } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons/faInfoCircle";
@@ -9,7 +9,7 @@ const FilterOperatorHelp: FC<{
   operator: string;
   description: string;
 }> = ({ operator, description, children }) => (
-  <React.Fragment>
+  <>
     <dt>
       <kbd>{operator}</kbd> {description}
     </dt>
@@ -24,7 +24,7 @@ const FilterOperatorHelp: FC<{
       </div>
       <div>{children}</div>
     </dd>
-  </React.Fragment>
+  </>
 );
 
 const QueryHelp: FC<{
@@ -32,7 +32,7 @@ const QueryHelp: FC<{
   operators: string[];
   warning?: ReactNode;
 }> = ({ title, operators, warning, children }) => (
-  <React.Fragment>
+  <>
     <dt>{title}</dt>
     <dd className="mb-5">
       <div>
@@ -52,7 +52,7 @@ const QueryHelp: FC<{
       <div>Examples:</div>
       <ul>{children}</ul>
     </dd>
-  </React.Fragment>
+  </>
 );
 
 const FilterExample: FC<{

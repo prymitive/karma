@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, MouseEvent, WheelEvent } from "react";
+import { FC, useEffect, useRef, MouseEvent, WheelEvent } from "react";
 
 import { observer } from "mobx-react-lite";
 

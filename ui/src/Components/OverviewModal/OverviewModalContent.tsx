@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -12,7 +12,7 @@ const TableRows: FC<{
   alertStore: AlertStore;
   nameStats: APILabelCounterT[];
 }> = observer(({ alertStore, nameStats }) => (
-  <React.Fragment>
+  <>
     {nameStats.map((nameStats) => (
       <tr key={nameStats.name}>
         <td width="25%" className="text-nowrap mw-100 p-1">
@@ -48,7 +48,7 @@ const TableRows: FC<{
         </td>
       </tr>
     ))}
-  </React.Fragment>
+  </>
 ));
 
 const LabelsTable: FC<{
@@ -56,7 +56,7 @@ const LabelsTable: FC<{
   showAllLabels: boolean;
   toggleAllLabels: () => void;
 }> = observer(({ alertStore, showAllLabels, toggleAllLabels }) => (
-  <React.Fragment>
+  <>
     <table
       className="table table-borderless top-labels"
       style={{ tableLayout: "fixed" }}
@@ -94,7 +94,7 @@ const LabelsTable: FC<{
         ) : null}
       </tbody>
     </table>
-  </React.Fragment>
+  </>
 ));
 
 const NothingToShow: FC = () => (
@@ -111,7 +111,7 @@ const OverviewModalContent: FC<{
 }> = observer(({ alertStore, onHide }) => {
   const [showAllLabels, setShowAllLabels] = useState<boolean>(false);
   return (
-    <React.Fragment>
+    <>
       <div className="modal-header">
         <h5 className="modal-title">Overview</h5>
         <button type="button" className="close" onClick={onHide}>
@@ -129,7 +129,7 @@ const OverviewModalContent: FC<{
           />
         )}
       </div>
-    </React.Fragment>
+    </>
   );
 });
 

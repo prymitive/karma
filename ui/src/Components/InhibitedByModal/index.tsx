@@ -24,7 +24,7 @@ const InhibitedByModal: FC<{
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
 
   return (
-    <React.Fragment>
+    <>
       <TooltipWrapper title="This alert is inhibited by other alerts, click to see details">
         <span
           className="badge badge-light components-label components-label-with-hover cursor-pointer"
@@ -48,7 +48,7 @@ const InhibitedByModal: FC<{
           />
         </React.Suspense>
       </Modal>
-    </React.Fragment>
+    </>
   );
 };
 

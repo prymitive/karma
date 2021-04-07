@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 import { AlertStore } from "Stores/AlertStore";
 import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
@@ -10,7 +10,7 @@ const InhibitedByModalContent: FC<{
   onHide: () => void;
 }> = ({ alertStore, fingerprints, onHide }) => {
   return (
-    <React.Fragment>
+    <>
       <div className="modal-header">
         <h5 className="modal-title">Inhibiting alerts</h5>
         <button type="button" className="close" onClick={onHide}>
@@ -29,7 +29,7 @@ const InhibitedByModalContent: FC<{
           ]}
         />
       </div>
-    </React.Fragment>
+    </>
   );
 };
 
