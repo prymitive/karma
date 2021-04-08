@@ -39,6 +39,7 @@ const GroupFooter: FC<{
                   name={a.name}
                   value={a.value}
                   visible={a.visible}
+                  allowHTML={alertStore.settings.values.annotationsEnableHTML}
                   afterUpdate={afterUpdate}
                 />
               ))

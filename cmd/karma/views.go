@@ -165,6 +165,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		AnnotationsDefaultHidden: config.Config.Annotations.Default.Hidden,
 		AnnotationsHidden:        config.Config.Annotations.Hidden,
 		AnnotationsVisible:       config.Config.Annotations.Visible,
+		AnnotationsAllowHTML:     config.Config.Annotations.EnableInsecureHTML,
 		SilenceForm: models.SilenceFormSettings{
 			Strip: models.SilenceFormStripSettings{
 				Labels: config.Config.SilenceForm.Strip.Labels,
