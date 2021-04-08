@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	yaml "gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v3"
 )
 
 type SilenceMatcher struct {
@@ -47,12 +47,14 @@ type silencesACLSchema struct {
 func ReadSilenceACLConfig(path string) (*silencesACLSchema, error) {
 	cfg := silencesACLSchema{}
 
-	f, err := os.ReadFile(path)
+	f, err := os.Open(path)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load silence ACL configuration file %q: %v", path, err)
 	}
 
-	err = yaml.UnmarshalStrict(f, &cfg)
+	d := yaml.NewDecoder(f)
+	d.KnownFields(true)
+	err = d.Decode(&cfg)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse silence ACL configuration file %q: %v", path, err)
 	}

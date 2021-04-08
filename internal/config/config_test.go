@@ -1,6 +1,8 @@
 package config
 
 import (
+	"bytes"
+	"io"
 	"os"
 	"testing"
 	"time"
@@ -12,7 +14,7 @@ import (
 
 	"github.com/pmezard/go-difflib/difflib"
 
-	yaml "gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v3"
 )
 
 func resetEnv() {
@@ -33,25 +35,25 @@ authorization:
 alertmanager:
   interval: 1s
   servers:
-  - cluster: ""
-    name: default
-    uri: http://localhost
-    external_uri: http://example.com
-    proxy_url: ""
-    timeout: 40s
-    proxy: false
-    readonly: false
-    tls:
-      ca: ""
-      cert: ""
-      key: ""
-      insecureSkipVerify: false
-    headers: {}
-    cors:
-      credentials: include
-    healthcheck:
-      visible: false
-      filters: {}
+    - cluster: ""
+      name: default
+      uri: http://localhost
+      external_uri: http://example.com
+      proxy_url: ""
+      timeout: 40s
+      proxy: false
+      readonly: false
+      tls:
+        ca: ""
+        cert: ""
+        key: ""
+        insecureSkipVerify: false
+      headers: {}
+      cors:
+        credentials: include
+      healthcheck:
+        visible: false
+        filters: {}
 alertAcknowledgement:
   enabled: false
   duration: 15m0s
@@ -62,7 +64,7 @@ annotations:
     hidden: true
   hidden: []
   visible:
-  - summary
+    - summary
   keep: []
   strip: []
   order: []
@@ -73,8 +75,8 @@ custom:
 debug: true
 filters:
   default:
-  - '@state=active'
-  - foo=bar
+    - '@state=active'
+    - foo=bar
 grid:
   sorting:
     order: startsAt
@@ -86,20 +88,20 @@ karma:
   name: another karma
 labels:
   keep:
-  - foo
-  - bar
+    - foo
+    - bar
   strip:
-  - abc
-  - def
+    - abc
+    - def
   color:
     custom: {}
     static:
-    - a
-    - bb
-    - ccc
+      - a
+      - bb
+      - ccc
     unique:
-    - f
-    - gg
+      - f
+      - gg
 listen:
   address: 0.0.0.0
   timeout:
@@ -142,10 +144,14 @@ ui:
   multiGridSortReverse: false
 `
 
-	configDump, err := yaml.Marshal(Config)
+	var buf bytes.Buffer
+	enc := yaml.NewEncoder(&buf)
+	enc.SetIndent(2)
+	err := enc.Encode(Config)
 	if err != nil {
 		t.Error(err)
 	}
+	configDump, _ := io.ReadAll(&buf)
 
 	if string(configDump) != expectedConfig {
 		diff := difflib.UnifiedDiff{

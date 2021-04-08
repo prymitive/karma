@@ -22,7 +22,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
 
-	yaml "gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v3"
 )
 
 var (
@@ -131,13 +131,15 @@ func SetupFlags(f *pflag.FlagSet) {
 }
 
 func validateConfigFile(path string) error {
-	f, err := os.ReadFile(path)
+	f, err := os.Open(path)
 	if err != nil {
 		return err
 	}
 
 	cfg := configSchema{}
-	err = yaml.UnmarshalStrict(f, &cfg)
+	d := yaml.NewDecoder(f)
+	d.KnownFields(true)
+	err = d.Decode(&cfg)
 	if err != nil {
 		return err
 	}
@@ -427,9 +429,13 @@ func (config *configSchema) LogValues() {
 		config.Sentry.Private = uri.SanitizeURI(config.Sentry.Private)
 	}
 
-	out, _ := yaml.Marshal(cfg)
+	var buf bytes.Buffer
+	enc := yaml.NewEncoder(&buf)
+	enc.SetIndent(2)
+	_ = enc.Encode(cfg)
+
 	log.Info().Msg("Parsed configuration:")
-	scanner := bufio.NewScanner(bytes.NewReader(out))
+	scanner := bufio.NewScanner(&buf)
 	for scanner.Scan() {
 		log.Info().Msg(scanner.Text())
 	}
