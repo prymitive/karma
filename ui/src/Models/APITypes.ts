@@ -166,6 +166,7 @@ export interface APISettingsT {
   annotationsDefaultHidden: boolean;
   annotationsHidden: string[];
   annotationsVisible: string[];
+  annotationsEnableHTML: boolean;
   sorting: {
     grid: {
       order: string;

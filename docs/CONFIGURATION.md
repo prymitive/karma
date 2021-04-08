@@ -516,6 +516,7 @@ annotations:
   strip: list of strings
   order: list of strings
   actions: list of strings
+  enableInsecureHTML: bool
 ```
 
 - `default:hidden` - bool, true if all annotations should be hidden by default.
@@ -529,6 +530,14 @@ annotations:
   alphabetically and appended at the end.
 - `actions` - list of annotations that will be moved to alert dropdown menu.
   this only applies to annotations where value is a link.
+- `enableInsecureHTML` - by default all annotation values are escaped when
+  rendered in users browser, to prevent any injection attacks.
+  If this option is set to `true` escaping will be disabled which allows
+  HTML tags to be used in annotations, but if someone manages to send alerts
+  with annotations containing untrusted HTML/Javascript code to your alertmanager
+  instances karma will allow it to be executed in your browser.
+
+  **NOTE** Enable at your own risk.
 
 The difference between `hidden`/`visible` and `keep`/`strip` is that hidden
 annotations are still accessible, but they are shown in the UI collapsed by
@@ -584,6 +593,11 @@ annotations:
     hidden: false
   hidden: []
   visible: []
+  keep: []
+  strip: []
+  order: []
+  actions: []
+  enableInsecureHTML: false
 ```
 
 ### Filters

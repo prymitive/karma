@@ -69,6 +69,7 @@ annotations:
   strip: []
   order: []
   actions: []
+  enableInsecureHTML: false
 custom:
   css: /custom.css
   js: /custom.js

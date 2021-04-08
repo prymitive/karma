@@ -12,6 +12,7 @@
 
 - `listen:timeout:read` and `listen:timeout:write` config options for
   setting HTTP server request read and response write timeouts.
+- `annotations:enableInsecureHTML` config option #2886.
 
 ## v0.81
 

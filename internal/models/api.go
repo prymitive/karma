@@ -290,6 +290,7 @@ type Settings struct {
 	AnnotationsDefaultHidden bool                         `json:"annotationsDefaultHidden"`
 	AnnotationsHidden        []string                     `json:"annotationsHidden"`
 	AnnotationsVisible       []string                     `json:"annotationsVisible"`
+	AnnotationsAllowHTML     bool                         `json:"annotationsEnableHTML"`
 	Sorting                  SortSettings                 `json:"sorting"`
 	SilenceForm              SilenceFormSettings          `json:"silenceForm"`
 	AlertAcknowledgement     AlertAcknowledgementSettings `json:"alertAcknowledgement"`

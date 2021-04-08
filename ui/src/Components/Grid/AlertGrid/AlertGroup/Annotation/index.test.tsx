@@ -32,6 +32,7 @@ const ShallowNonLinkAnnotation = (visible: boolean) => {
       name="foo"
       value="some long text"
       visible={visible}
+      allowHTML={false}
       afterUpdate={MockAfterUpdate}
     />
   );
@@ -43,6 +44,7 @@ const MountedNonLinkAnnotation = (visible: boolean) => {
       name="foo"
       value="some long text"
       visible={visible}
+      allowHTML={false}
       afterUpdate={MockAfterUpdate}
     />
   );
@@ -54,6 +56,7 @@ const MountedNonLinkAnnotationContainingLink = (visible: boolean) => {
       name="foo"
       value="some long text with http://example.com link"
       visible={visible}
+      allowHTML={false}
       afterUpdate={MockAfterUpdate}
     />
   );
@@ -102,5 +105,33 @@ describe("<RenderNonLinkAnnotation />", () => {
     tree.find(".components-grid-annotation").simulate("click");
     expect(toDiffableHtml(tree.html())).toMatch(/fa-search-minus/);
     expect(toDiffableHtml(tree.html())).toMatch(/some long text/);
+  });
+
+  it("escapes HTML when allowHTML=false", () => {
+    const tree = shallow(
+      <RenderNonLinkAnnotation
+        name="foo"
+        value="<div>inside div</div>"
+        visible
+        allowHTML={false}
+        afterUpdate={MockAfterUpdate}
+      />
+    );
+    expect(toDiffableHtml(tree.html())).toMatch(
+      /&lt;div&gt;inside div&lt;\/div&gt;/
+    );
+  });
+
+  it("doesn't escape HTML when allowHTML=true", () => {
+    const tree = shallow(
+      <RenderNonLinkAnnotation
+        name="foo"
+        value="<div>inside div</div>"
+        visible
+        allowHTML={true}
+        afterUpdate={MockAfterUpdate}
+      />
+    );
+    expect(tree.html()).toMatch(/<div>inside div<\/div>/);
   });
 });

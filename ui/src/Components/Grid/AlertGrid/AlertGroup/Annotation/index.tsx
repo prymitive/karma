@@ -16,8 +16,9 @@ const RenderNonLinkAnnotation: FC<{
   name: string;
   value: string;
   visible: boolean;
+  allowHTML: boolean;
   afterUpdate: () => void;
-}> = memo(({ name, value, visible, afterUpdate }) => {
+}> = memo(({ name, value, visible, afterUpdate, allowHTML }) => {
   const mountRef = useRef<boolean>(false);
 
   const [isVisible, setIsVisible] = useState<boolean>(visible);
@@ -57,7 +58,14 @@ const RenderNonLinkAnnotation: FC<{
               }}
             >
               <CSSTransition {...props}>
-                <span ref={ref}>{value}</span>
+                {allowHTML ? (
+                  <span
+                    ref={ref}
+                    dangerouslySetInnerHTML={{ __html: value }}
+                  ></span>
+                ) : (
+                  <span ref={ref}>{value}</span>
+                )}
               </CSSTransition>
             </Linkify>
           </>

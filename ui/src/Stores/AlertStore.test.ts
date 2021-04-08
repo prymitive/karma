@@ -607,6 +607,7 @@ describe("AlertStore.fetch", () => {
       annotationsDefaultHidden: false,
       annotationsHidden: [],
       annotationsVisible: [],
+      annotationsEnableHTML: false,
     });
 
     // second fetch, should keep same settings
@@ -616,6 +617,7 @@ describe("AlertStore.fetch", () => {
       annotationsDefaultHidden: false,
       annotationsHidden: [],
       annotationsVisible: [],
+      annotationsEnableHTML: false,
     });
   });
 

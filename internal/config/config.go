@@ -72,6 +72,7 @@ func SetupFlags(f *pflag.FlagSet) {
 		"List of annotations to keep, all other annotations will be stripped")
 	f.StringSlice("annotations.strip", []string{}, "List of annotations to ignore")
 	f.StringSlice("annotations.actions", []string{}, "List of annotations that will be moved to the alert menu")
+	f.Bool("annotations.enableInsecureHTML", false, "Enable HTML strings in annotations to be parsed as HTML, enable at your own risk")
 
 	f.String("config.file", "", "Full path to the configuration file, 'karma.yaml' will be used if found in the current working directory")
 
@@ -199,6 +200,8 @@ func readEnvVariables(k *koanf.Koanf) {
 			return "alertAcknowledgement.author"
 		case "ALERTACKNOWLEDGEMENT_COMMENT":
 			return "alertAcknowledgement.comment"
+		case "ANNOTATIONS_ENABLEINSECUREHTML":
+			return "annotations.enableInsecureHTML"
 		case "AUTHENTICATION_HEADER_VALUE_RE":
 			return "authentication.header.value_re"
 		case "SILENCEFORM_STRIP_LABELS":

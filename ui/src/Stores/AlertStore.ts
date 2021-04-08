@@ -408,6 +408,7 @@ class AlertStore {
           annotationsDefaultHidden: false as boolean,
           annotationsHidden: [] as string[],
           annotationsVisible: [] as string[],
+          annotationsEnableHTML: false as boolean,
           sorting: {
             grid: {
               order: "startsAt",

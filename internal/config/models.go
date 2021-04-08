@@ -98,12 +98,13 @@ type configSchema struct {
 		Default struct {
 			Hidden bool
 		}
-		Hidden  []string
-		Visible []string
-		Keep    []string
-		Strip   []string
-		Order   []string
-		Actions []string
+		Hidden             []string
+		Visible            []string
+		Keep               []string
+		Strip              []string
+		Order              []string
+		Actions            []string
+		EnableInsecureHTML bool `yaml:"enableInsecureHTML" koanf:"enableInsecureHTML"`
 	}
 	Custom struct {
 		CSS string
