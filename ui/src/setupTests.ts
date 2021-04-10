@@ -5,6 +5,9 @@ import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 
 import { useInView } from "react-intersection-observer";
 
+// react-idle-timer >= 4.6.0
+import "regenerator-runtime/runtime";
+
 import { FetchRetryConfig } from "Common/Fetch";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
