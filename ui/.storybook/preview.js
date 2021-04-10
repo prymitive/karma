@@ -1,11 +1,4 @@
-import {
-  configure,
-  getStorybook,
-  setAddon,
-  addDecorator,
-} from "@storybook/react";
-
-import createPercyAddon from "@percy-io/percy-storybook";
+import { configure, getStorybook, addDecorator } from "@storybook/react";
 
 import { advanceTo } from "jest-date-mock";
 
@@ -18,9 +11,6 @@ import {
 import { config } from "react-transition-group";
 
 config.disabled = true;
-
-const { percyAddon, serializeStories } = createPercyAddon();
-setAddon(percyAddon);
 
 // mock date so the silence form always shows same preview
 advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 36, 40)));
