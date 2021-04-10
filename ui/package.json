@@ -80,7 +80,7 @@
     "typescript": "4.2.4"
   },
   "devDependencies": {
-    "@percy-io/percy-storybook": "2.1.0",
+    "@percy/storybook": "3.3.1",
     "@storybook/preset-create-react-app": "3.1.7",
     "@storybook/react": "6.2.7",
     "@testing-library/react-hooks": "5.1.1",
