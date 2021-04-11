@@ -4,11 +4,11 @@ exports[`<FilterInput /> matches snapshot with no filters 1`] = `
 "
 <div class=\\"input-group w-100 mr-2 components-filterinput-outer bg-transparent\\">
   <div class=\\"form-control components-filterinput border-0 rounded-0 bg-inherit\\">
-    <div role=\\"combobox\\"
+    <div class=\\"autosuggest d-inline-block mw-100\\"
+         role=\\"combobox\\"
          aria-haspopup=\\"listbox\\"
-         aria-owns=\\"react-autowhatever-1\\"
+         aria-owns=\\"downshift-0-menu\\"
          aria-expanded=\\"false\\"
-         class=\\"autosuggest d-inline-block mw-100\\"
     >
       <span class=\\"input-group-text d-inline-block mr-2 border-0 bg-inherit px-1\\">
         <svg aria-hidden=\\"true\\"
@@ -26,21 +26,22 @@ exports[`<FilterInput /> matches snapshot with no filters 1`] = `
           </path>
         </svg>
       </span>
-      <input type=\\"text\\"
-             class=\\"components-filterinput-wrapper text-white mw-100\\"
-             placeholder
+      <input class=\\"components-filterinput-wrapper text-white mw-100\\"
              size=\\"1\\"
-             value
-             autocomplete=\\"off\\"
+             id=\\"downshift-0-input\\"
              aria-autocomplete=\\"list\\"
-             aria-controls=\\"react-autowhatever-1\\"
+             aria-controls=\\"downshift-0-menu\\"
+             aria-labelledby=\\"downshift-0-label\\"
+             autocomplete=\\"off\\"
+             value
       >
-      <div id=\\"react-autowhatever-1\\"
-           role=\\"listbox\\"
-           class=\\"dropdown\\"
-      >
-      </div>
     </div>
+    <span class=\\"dropdown\\"
+          id=\\"downshift-0-menu\\"
+          role=\\"listbox\\"
+          aria-labelledby=\\"downshift-0-label\\"
+    >
+    </span>
   </div>
   <div class=\\"input-group-append\\">
     <span class=\\"input-group-text border-0 rounded-0 bg-inherit px-0\\">
@@ -153,27 +154,28 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
         </path>
       </svg>
     </button>
-    <div role=\\"combobox\\"
+    <div class=\\"autosuggest d-inline-block mw-100\\"
+         role=\\"combobox\\"
          aria-haspopup=\\"listbox\\"
-         aria-owns=\\"react-autowhatever-1\\"
+         aria-owns=\\"downshift-1-menu\\"
          aria-expanded=\\"false\\"
-         class=\\"autosuggest d-inline-block mw-100\\"
     >
-      <input type=\\"text\\"
-             class=\\"components-filterinput-wrapper text-white mw-100\\"
-             placeholder
+      <input class=\\"components-filterinput-wrapper text-white mw-100\\"
              size=\\"1\\"
-             value
-             autocomplete=\\"off\\"
+             id=\\"downshift-1-input\\"
              aria-autocomplete=\\"list\\"
-             aria-controls=\\"react-autowhatever-1\\"
+             aria-controls=\\"downshift-1-menu\\"
+             aria-labelledby=\\"downshift-1-label\\"
+             autocomplete=\\"off\\"
+             value
       >
-      <div id=\\"react-autowhatever-1\\"
-           role=\\"listbox\\"
-           class=\\"dropdown\\"
-      >
-      </div>
     </div>
+    <span class=\\"dropdown\\"
+          id=\\"downshift-1-menu\\"
+          role=\\"listbox\\"
+          aria-labelledby=\\"downshift-1-label\\"
+    >
+    </span>
   </div>
   <div class=\\"input-group-append\\">
     <span class=\\"input-group-text border-0 rounded-0 bg-inherit px-0\\">

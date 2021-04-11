@@ -124,22 +124,39 @@ describe("<FilterInput />", () => {
     ).toBe(true);
   });
 
+  it("clicking input changes background color", () => {
+    const tree = MountedInput();
+    tree.find("input").simulate("click");
+    expect(toDiffableHtml(tree.html())).toMatch(/bg-focused/);
+  });
+
   it("focusing input changes background color", () => {
+    const tree = MountedInput();
+    const input = tree.find("input");
+    input.simulate("focus");
+    expect(toDiffableHtml(tree.html())).toMatch(/bg-focused/);
+  });
+
+  it("focusing form changes background color", () => {
     const tree = MountedInput();
     const formControl = tree.find(".form-control");
     formControl.find("input").simulate("focus");
     expect(toDiffableHtml(tree.html())).toMatch(/bg-focused/);
   });
 
-  it("bluring input changes background color", () => {
+  it("bluring input changes background color", async () => {
     const tree = MountedInput();
     const formControl = tree.find(".form-control");
+    formControl
+      .find("input")
+      .simulate("change", { target: { value: "cluster" } });
     formControl.find("input").simulate("blur");
     expect(toDiffableHtml(tree.html())).not.toMatch(/bg-focused/);
+    tree.unmount();
   });
 });
 
-describe("<FilterInput Autosuggest />", () => {
+describe("<FilterInput autocomplete />", () => {
   it("fetches suggestions on input change", async () => {
     const tree = MountedInput();
     tree.find("input").simulate("change", { target: { value: "cluster" } });
@@ -151,6 +168,7 @@ describe("<FilterInput Autosuggest />", () => {
     expect(useFetchGetMock.fetch.calls[0]).toContain(
       "./autocomplete.json?term=cluster"
     );
+    tree.unmount();
   });
 
   it("doesn't fetch any suggestion if the input value is empty", () => {
@@ -160,6 +178,26 @@ describe("<FilterInput Autosuggest />", () => {
       jest.runOnlyPendingTimers();
     });
     expect(useFetchGetMock.fetch.calls).toHaveLength(0);
+    tree.unmount();
+  });
+
+  it("highliting a suggestion makes it active", async () => {
+    const tree = MountedInput();
+    tree.find("input").simulate("change", { target: { value: "cluster" } });
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+
+    // suggestions are rendered only when input is focused
+    tree.find("input").simulate("focus");
+    // find() doesn't pick up suggestions even when tree.html() shows them
+    // forcing update seems to solve it
+    // https://github.com/airbnb/enzyme/issues/1233#issuecomment-343449560
+    tree.update();
+
+    tree.find("input").simulate("keydown", { keyCode: 40, key: "ArrowDown" });
+    tree.update();
+    expect(tree.find(".dropdown-item").at(0).html()).toMatch(/active/);
   });
 
   it("clicking on a suggestion adds it to filters", async () => {
@@ -176,8 +214,7 @@ describe("<FilterInput Autosuggest />", () => {
     // forcing update seems to solve it
     // https://github.com/airbnb/enzyme/issues/1233#issuecomment-343449560
     tree.update();
-    // not sure why but suggestions are being found twice
-    const suggestion = tree.find(".dropdown-item").at(2);
+    const suggestion = tree.find(".dropdown-item").at(1);
     expect(suggestion.text()).toBe("cluster=prod");
     suggestion.simulate("click");
     expect(alertStore.filters.values).toHaveLength(1);
