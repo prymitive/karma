@@ -1,6 +1,6 @@
 # Changelog
 
-## [unreleased]
+## v0.82
 
 ### Fixed
 
