@@ -22,6 +22,7 @@ require (
 	github.com/jarcoal/httpmock v1.0.8
 	github.com/knadh/koanf v0.16.0
 	github.com/mailru/easyjson v0.7.7 // indirect
+	github.com/mitchellh/copystructure v1.1.2 // indirect
 	github.com/mitchellh/mapstructure v1.4.1
 	github.com/patrickmn/go-cache v2.1.1-0.20180815053127-5633e0862627+incompatible
 	github.com/pmezard/go-difflib v1.0.0
@@ -30,9 +31,8 @@ require (
 	github.com/rogpeppe/go-internal v1.8.0
 	github.com/rs/zerolog v1.21.0
 	github.com/spf13/pflag v1.0.5
-	golang.org/x/net v0.0.0-20210405180319-a5a99cb37ef4 // indirect
+	golang.org/x/net v0.0.0-20210410081132-afb366fc7cd1 // indirect
 	golang.org/x/sys v0.0.0-20210403161142-5e06dd20ab57 // indirect
-	golang.org/x/text v0.3.6 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
