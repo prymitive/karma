@@ -41,7 +41,7 @@
     "csshake": "1.5.3",
     "date-fns": "2.20.3",
     "downshift": "6.1.2",
-    "eslint-config-prettier": "8.1.0",
+    "eslint-config-prettier": "8.2.0",
     "eslint-plugin-prettier": "3.3.1",
     "favico.js": "0.3.10",
     "fetch-mock": "9.11.0",
