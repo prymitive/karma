@@ -146,6 +146,33 @@ func BenchmarkAlertsAPIMisses(b *testing.B) {
 	}
 }
 
+func BenchmarkAlertsAPIMissesAutoGrid(b *testing.B) {
+	zerolog.SetGlobalLevel(zerolog.FatalLevel)
+
+	mockConfig()
+	for _, version := range mock.ListAllMocks() {
+		mockAlerts(version)
+		r := testRouter()
+		setupRouter(r)
+		b.Run(version, func(b *testing.B) {
+			for i := 0; i < b.N; i++ {
+				b.StopTimer()
+				uri := fmt.Sprintf("/alerts.json?gridLabel=@auto&q=&_=%d", i)
+				req := httptest.NewRequest("GET", uri, nil)
+				resp := httptest.NewRecorder()
+				b.StartTimer()
+				r.ServeHTTP(resp, req)
+
+				b.StopTimer()
+				reportMemoryMetrics(b)
+				apiCache.Flush()
+				b.StartTimer()
+			}
+		})
+		break
+	}
+}
+
 func BenchmarkAlertsAPIHits(b *testing.B) {
 	zerolog.SetGlobalLevel(zerolog.FatalLevel)
 

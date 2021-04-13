@@ -75,7 +75,7 @@ describe("<GridLabelSelect />", () => {
 
     settingsStore.multiGridConfig.config.gridLabel = "foo";
     const options = tree.find("div.react-select__option");
-    options.at(4).simulate("click");
+    options.at(5).simulate("click");
     expect(settingsStore.multiGridConfig.config.gridLabel).toBe("cluster");
     await act(() => promise);
   });

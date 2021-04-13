@@ -1,5 +1,14 @@
 # Changelog
 
+## [unreleased]
+
+### Added
+
+- Added a new option on the list of labels used for multi-grid.
+  When set in the UI to `Automatic selection` selection or `@auto` in
+  `ui:multiGridLabel` config option karma will try to select the best
+  grid label based on current alerts.
+
 ## v0.82
 
 ### Fixed

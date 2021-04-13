@@ -17,6 +17,7 @@ const valueToOption = (v: string) => ({
 
 const staticValues = [
   { label: disabledLabel, value: "" },
+  { label: "Automatic selection", value: "@auto" },
   { label: "@alertmanager", value: "@alertmanager" },
   { label: "@cluster", value: "@cluster" },
   { label: "@receiver", value: "@receiver" },
