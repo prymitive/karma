@@ -7,6 +7,7 @@ import (
 	"sort"
 
 	"github.com/fvbommel/sortorder"
+	"github.com/rs/zerolog/log"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
@@ -15,17 +16,13 @@ import (
 	"github.com/prymitive/karma/internal/uri"
 )
 
-func getFiltersFromQuery(filterStrings []string) ([]filters.FilterT, bool) {
-	validFilters := false
+func getFiltersFromQuery(filterStrings []string) []filters.FilterT {
 	matchFilters := []filters.FilterT{}
 	for _, filterExpression := range filterStrings {
 		f := filters.NewFilter(filterExpression)
-		if f.GetIsValid() {
-			validFilters = true
-		}
 		matchFilters = append(matchFilters, f)
 	}
-	return matchFilters, validFilters
+	return matchFilters
 }
 
 func countLabel(countStore map[string]map[string]int, key string, val string) {
@@ -266,4 +263,118 @@ func sortGrids(r *http.Request, gridLabel string, gridsMap map[string]models.API
 	})
 
 	return grids
+}
+
+func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
+	var alertsCount int
+	labelNameToValueCount := map[string]map[string]int{}
+	for _, ag := range dedupedAlerts {
+		alertsCount += ag.Alerts.Len()
+		for _, alert := range ag.Alerts {
+			for key, val := range alert.Labels {
+				if _, ok := labelNameToValueCount[key]; !ok {
+					labelNameToValueCount[key] = map[string]int{}
+				}
+				if _, ok := labelNameToValueCount[key][val]; !ok {
+					labelNameToValueCount[key][val] = 0
+				}
+				labelNameToValueCount[key][val]++
+			}
+		}
+	}
+	log.Debug().Int("alerts", alertsCount).Msg("Alerts count for automatic grid label")
+
+	candidates := map[string]int{}
+	for key, vals := range labelNameToValueCount {
+		var total int
+		uniqueValues := map[string]struct{}{}
+		for val, cnt := range vals {
+			total += cnt
+			uniqueValues[val] = struct{}{}
+		}
+		log.Debug().Str("label", key).Int("alerts", total).Msg("Number of alerts per label")
+		if total < alertsCount {
+			continue
+		}
+		candidates[key] = len(uniqueValues)
+	}
+
+	var lastLabel string
+	var lastCnt int
+	for key, uniqueValues := range candidates {
+		log.Debug().Int("variants", uniqueValues).Str("label", key).Msg("Automatic grid label candidate")
+		if uniqueValues == 1 || uniqueValues == alertsCount {
+			continue
+		}
+		if lastCnt == 0 || uniqueValues < lastCnt || (uniqueValues == lastCnt && key > lastLabel) {
+			lastLabel = key
+			lastCnt = uniqueValues
+		}
+	}
+	return lastLabel
+}
+
+func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filteredAlerts []models.AlertGroup) {
+	var matches int
+	for _, ag := range dedupedAlerts {
+		agCopy := models.AlertGroup{
+			ID:                ag.ID,
+			Receiver:          ag.Receiver,
+			Labels:            ag.Labels,
+			LatestStartsAt:    ag.LatestStartsAt,
+			Alerts:            []models.Alert{},
+			AlertmanagerCount: map[string]int{},
+			StateCount:        map[string]int{},
+		}
+		for _, s := range models.AlertStateList {
+			agCopy.StateCount[s] = 0
+		}
+		for _, alert := range ag.Alerts {
+			alert := alert
+
+			var hadMismatch bool
+			for _, filter := range fl {
+				if filter.GetIsValid() {
+					if !filter.Match(&alert, matches) {
+						hadMismatch = true
+					}
+				}
+			}
+			if len(fl) > 0 && hadMismatch {
+				continue
+			}
+
+			blockedAMs := map[string]bool{}
+			for _, am := range alert.Alertmanager {
+				am := am
+				for _, filter := range fl {
+					if filter.GetIsValid() && filter.GetIsAlertmanagerFilter() && !filter.MatchAlertmanager(&am) {
+						blockedAMs[am.Name] = true
+					}
+				}
+			}
+			if len(blockedAMs) > 0 {
+				ams := []models.AlertmanagerInstance{}
+				for _, am := range alert.Alertmanager {
+					_, found := blockedAMs[am.Name]
+					if !found {
+						ams = append(ams, am)
+					}
+				}
+				alert.Alertmanager = ams
+			}
+			if len(alert.Alertmanager) == 0 {
+				continue
+			}
+
+			matches++
+			agCopy.Alerts = append(agCopy.Alerts, alert)
+			agCopy.StateCount[alert.State]++
+		}
+		if agCopy.Alerts.Len() > 0 {
+			filteredAlerts = append(filteredAlerts, agCopy)
+		}
+	}
+
+	return
 }

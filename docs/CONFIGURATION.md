@@ -1123,6 +1123,11 @@ ui:
   all alerts sharing that value will be placed on the same grid. There will be
   extra grid for alerts without that label. Grid sorting options will be used
   to sort the list of grids.
+  This option accepts additional special values:
+  - `@auto` - grid label will be selected automatically
+  - `@alertmanager` - one grid per alertmanager configured in karma config
+  - `@cluster` - one grid per alertmanager cluster
+  - `@receiver` - one grid per alertmanager receiver
 - `multiGridSortReverse` - when multi-grid is enabled set to `true` the order
   in which grids are displayed.
 

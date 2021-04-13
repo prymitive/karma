@@ -2296,6 +2296,7 @@ func TestUpstreamStatus(t *testing.T) {
 
 			apiCache = cache.New(cache.NoExpiration, 10*time.Second)
 			alertmanager.UnregisterAll()
+			upstreamSetup = false
 			config.Config.Alertmanager.Servers = testCase.upstreams
 			err := setupUpstreams()
 			if err != nil {
@@ -2438,6 +2439,7 @@ func TestHealthcheckAlerts(t *testing.T) {
 				}
 
 				alertmanager.UnregisterAll()
+				upstreamSetup = false
 				err = alertmanager.RegisterAlertmanager(am)
 				if err != nil {
 					t.Error(err)
@@ -2510,6 +2512,7 @@ func TestAlertFilters(t *testing.T) {
 				mockCache()
 
 				alertmanager.UnregisterAll()
+				upstreamSetup = false
 
 				mock.RegisterURL("http://localhost/c1a/metrics", version, "metrics")
 				mock.RegisterURL("http://localhost/c1a/api/v2/status", version, "api/v2/status")
@@ -2572,6 +2575,9 @@ func TestAlertFilters(t *testing.T) {
 						t.Errorf("Got %d alerts, expected %d", ur.TotalAlerts, tc.alertCount)
 					}
 				}
+
+				alertmanager.UnregisterAll()
+				upstreamSetup = false
 			})
 		}
 	}
@@ -2647,5 +2653,72 @@ func TestDecompressResponseReadError(t *testing.T) {
 	}
 	if err.Error() != "failed to decompress data: Read error" {
 		t.Errorf("decompressCachedResponse() returned wrong error: %s", err)
+	}
+}
+
+func TestAutoGrid(t *testing.T) {
+	type testCaseT struct {
+		q         string
+		gridLabel string
+	}
+
+	testCases := []testCaseT{
+		{
+			q:         "",
+			gridLabel: "",
+		},
+		{
+			q:         "gridLabel=@auto",
+			gridLabel: "job",
+		},
+		{
+			q:         "gridLabel=job",
+			gridLabel: "job",
+		},
+		{
+			q:         "gridLabel=@auto&q=instance=server5",
+			gridLabel: "job",
+		},
+		{
+			q:         "gridLabel=@auto&q=job=node_exporter",
+			gridLabel: "cluster",
+		},
+		{
+			q:         "gridLabel=@auto&q=cluster=prod",
+			gridLabel: "job",
+		},
+	}
+
+	mockConfig()
+	for _, tc := range testCases {
+		for _, version := range mock.ListAllMocks() {
+			t.Logf("Testing alerts using mock files from Alertmanager %s", version)
+			mockAlerts(version)
+			r := testRouter()
+			setupRouter(r)
+			// re-run a few times to test the cache
+			for i := 1; i <= 3; i++ {
+				req := httptest.NewRequest("GET", fmt.Sprintf("/alerts.json?%s", tc.q), nil)
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != http.StatusOK {
+					t.Errorf("GET /alerts.json returned status %d", resp.Code)
+				}
+
+				ur := models.AlertsResponse{}
+				err := json.Unmarshal(resp.Body.Bytes(), &ur)
+				if err != nil {
+					t.Errorf("Failed to unmarshal response: %s", err)
+				}
+				if len(ur.Grids) == 0 {
+					t.Errorf("[%s] Got empty grid list", tc.q)
+				}
+				for _, g := range ur.Grids {
+					if g.LabelName != tc.gridLabel {
+						t.Errorf("[%s] Got grid using label %s=%s, expected %s", tc.q, g.LabelName, g.LabelValue, tc.gridLabel)
+					}
+				}
+			}
+		}
 	}
 }

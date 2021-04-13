@@ -37,6 +37,7 @@ const GridLabelNameSelect: FC<{
     callback: (options: OptionT[]) => void
   ) => {
     const labelNames: { [key: string]: boolean } = {
+      "@auto": true,
       "@alertmanager": true,
       "@cluster": true,
       "@receiver": true,
@@ -63,7 +64,11 @@ const GridLabelNameSelect: FC<{
       Object.keys(labelNames)
         .filter((labelName) => labelName !== grid.labelName)
         .sort()
-        .map((key) => StringToOption(key))
+        .map((key) =>
+          key === "@auto"
+            ? { label: "Automatic selection", value: "@auto" }
+            : StringToOption(key)
+        )
     );
   };
 

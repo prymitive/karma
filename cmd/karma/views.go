@@ -209,7 +209,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 
 	gridLabel, _ := lookupQueryString(r, "gridLabel")
 	q, _ := lookupQueryStringSlice(r, "q")
-	matchFilters, validFilters := getFiltersFromQuery(q)
+	matchFilters := getFiltersFromQuery(q)
 
 	grids := map[string]models.APIGrid{}
 	colors := models.LabelsColorMap{}
@@ -228,8 +228,15 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 
 	allReceivers := map[string]bool{}
 
+	filtered := filterAlerts(dedupedAlerts, matchFilters)
+
+	if gridLabel == "@auto" {
+		gridLabel = autoGridLabel(filtered)
+		log.Debug().Str("label", gridLabel).Msg("Selected automatic grid label")
+	}
+
 	var matches int
-	for _, ag := range dedupedAlerts {
+	for _, ag := range filtered {
 		perGridAlertGroup := map[string]*models.AlertGroup{}
 
 		for _, alert := range ag.Alerts {
@@ -237,188 +244,151 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 
 			allReceivers[alert.Receiver] = true
 
-			results := []bool{}
-			if validFilters {
-				for _, filter := range matchFilters {
-					if filter.GetIsValid() {
-						match := filter.Match(&alert, matches)
-						results = append(results, match)
-					}
-				}
-			}
-			if !validFilters || (slices.BoolInSlice(results, true) && !slices.BoolInSlice(results, false)) {
+			matches++
 
-				blockedAMs := map[string]bool{}
+			alertGridLabelValues := map[string]bool{}
+			switch gridLabel {
+			case "@receiver":
+				alertGridLabelValues[alert.Receiver] = true
+			case "@alertmanager":
 				for _, am := range alert.Alertmanager {
-					am := am
-					for _, filter := range matchFilters {
-						if filter.GetIsValid() && filter.GetIsAlertmanagerFilter() && !filter.MatchAlertmanager(&am) {
-							blockedAMs[am.Name] = true
-						}
-					}
+					alertGridLabelValues[am.Name] = true
 				}
-				if len(blockedAMs) > 0 {
+			case "@cluster":
+				for _, am := range alert.Alertmanager {
+					alertGridLabelValues[am.Cluster] = true
+				}
+			default:
+				alertGridLabelValues[alert.Labels[gridLabel]] = true
+			}
+
+			for alertGridLabelValue := range alertGridLabelValues {
+				// we need to update fingerprints since we've modified some fields in dedup
+				// and agCopy.ContentFingerprint() depends on per alert fingerprint
+				// we update it here rather than in dedup since here we can apply it
+				// only for alerts left after filtering
+				alert.UpdateFingerprints()
+
+				agCopy, found := perGridAlertGroup[alertGridLabelValue]
+				if !found {
+					agCopy = &models.AlertGroup{
+						ID:                ag.ID,
+						Receiver:          ag.Receiver,
+						Labels:            ag.Labels,
+						LatestStartsAt:    ag.LatestStartsAt,
+						Alerts:            []models.Alert{},
+						AlertmanagerCount: map[string]int{},
+						StateCount:        map[string]int{},
+					}
+					for _, s := range models.AlertStateList {
+						agCopy.StateCount[s] = 0
+					}
+					perGridAlertGroup[alertGridLabelValue] = agCopy
+				}
+
+				stateCount := map[string]int{}
+				for _, s := range models.AlertStateList {
+					stateCount[s] = 0
+				}
+				switch gridLabel {
+				case "@alertmanager":
 					ams := []models.AlertmanagerInstance{}
 					for _, am := range alert.Alertmanager {
-						_, found := blockedAMs[am.Name]
-						if !found {
+						if am.Name == alertGridLabelValue {
 							ams = append(ams, am)
-						}
-					}
-					alert.Alertmanager = ams
-				}
-				if len(alert.Alertmanager) == 0 {
-					continue
-				}
-
-				matches++
-
-				alertGridLabelValues := map[string]bool{}
-				switch gridLabel {
-				case "@receiver":
-					alertGridLabelValues[alert.Receiver] = true
-				case "@alertmanager":
-					for _, am := range alert.Alertmanager {
-						alertGridLabelValues[am.Name] = true
-					}
-				case "@cluster":
-					for _, am := range alert.Alertmanager {
-						alertGridLabelValues[am.Cluster] = true
-					}
-				default:
-					alertGridLabelValues[alert.Labels[gridLabel]] = true
-				}
-
-				for alertGridLabelValue := range alertGridLabelValues {
-					alert := models.Alert(alert)
-
-					// we need to update fingerprints since we've modified some fields in dedup
-					// and agCopy.ContentFingerprint() depends on per alert fingerprint
-					// we update it here rather than in dedup since here we can apply it
-					// only for alerts left after filtering
-					alert.UpdateFingerprints()
-
-					agCopy, found := perGridAlertGroup[alertGridLabelValue]
-					if !found {
-						agCopy = &models.AlertGroup{
-							ID:                ag.ID,
-							Receiver:          ag.Receiver,
-							Labels:            ag.Labels,
-							LatestStartsAt:    ag.LatestStartsAt,
-							Alerts:            []models.Alert{},
-							AlertmanagerCount: map[string]int{},
-							StateCount:        map[string]int{},
-						}
-						for _, s := range models.AlertStateList {
-							agCopy.StateCount[s] = 0
-						}
-						perGridAlertGroup[alertGridLabelValue] = agCopy
-					}
-
-					stateCount := map[string]int{}
-					for _, s := range models.AlertStateList {
-						stateCount[s] = 0
-					}
-					switch gridLabel {
-					case "@alertmanager":
-						ams := []models.AlertmanagerInstance{}
-						for _, am := range alert.Alertmanager {
-							if am.Name == alertGridLabelValue {
-								ams = append(ams, am)
-								stateCount[am.State]++
-							}
-						}
-						alert.Alertmanager = ams
-					case "@cluster":
-						ams := []models.AlertmanagerInstance{}
-						for _, am := range alert.Alertmanager {
-							if am.Cluster == alertGridLabelValue {
-								ams = append(ams, am)
-								stateCount[am.State]++
-							}
-						}
-						alert.Alertmanager = ams
-					default:
-						for _, am := range alert.Alertmanager {
 							stateCount[am.State]++
 						}
 					}
-
-					if stateCount[models.AlertStateActive] > 0 {
-						alert.State = models.AlertStateActive
-					} else if stateCount[models.AlertStateSuppressed] > 0 {
-						alert.State = models.AlertStateSuppressed
-					} else {
-						alert.State = models.AlertStateUnprocessed
-					}
-
-					agCopy.Alerts = append(agCopy.Alerts, alert)
-
-					if len(upstreams.Clusters) > 1 {
-						clusters := map[string]bool{}
-						for _, am := range alert.Alertmanager {
-							clusters[am.Cluster] = true
-						}
-						for cluster := range clusters {
-							countLabel(counters, "@cluster", cluster)
-						}
-					}
-
-					countLabel(counters, "@state", alert.State)
-
-					countLabel(counters, "@receiver", alert.Receiver)
-					if ck, foundKey := dedupedColors["@receiver"]; foundKey {
-						if cv, foundVal := ck[alert.Receiver]; foundVal {
-							if _, found := colors["@receiver"]; !found {
-								colors["@receiver"] = map[string]models.LabelColors{}
-							}
-							colors["@receiver"][alert.Receiver] = cv
-						}
-					}
-
-					if ck, foundKey := dedupedColors["@alertmanager"]; foundKey {
-						for _, am := range alert.Alertmanager {
-							if cv, foundVal := ck[am.Name]; foundVal {
-								if _, found := colors["@alertmanager"]; !found {
-									colors["@alertmanager"] = map[string]models.LabelColors{}
-								}
-								colors["@alertmanager"][am.Name] = cv
-							}
-						}
-					}
-
-					if ck, foundKey := dedupedColors["@cluster"]; foundKey {
-						for _, am := range alert.Alertmanager {
-							if cv, foundVal := ck[am.Cluster]; foundVal {
-								if _, found := colors["@cluster"]; !found {
-									colors["@cluster"] = map[string]models.LabelColors{}
-								}
-								colors["@cluster"][am.Cluster] = cv
-							}
-						}
-					}
-
-					agCopy.StateCount[alert.State]++
-
+					alert.Alertmanager = ams
+				case "@cluster":
+					ams := []models.AlertmanagerInstance{}
 					for _, am := range alert.Alertmanager {
-						if _, found := agCopy.AlertmanagerCount[am.Name]; !found {
-							agCopy.AlertmanagerCount[am.Name] = 1
-						} else {
-							agCopy.AlertmanagerCount[am.Name]++
+						if am.Cluster == alertGridLabelValue {
+							ams = append(ams, am)
+							stateCount[am.State]++
 						}
 					}
+					alert.Alertmanager = ams
+				default:
+					for _, am := range alert.Alertmanager {
+						stateCount[am.State]++
+					}
+				}
 
-					for key, value := range alert.Labels {
-						if keyMap, foundKey := dedupedColors[key]; foundKey {
-							if color, foundColor := keyMap[value]; foundColor {
-								if _, found := colors[key]; !found {
-									colors[key] = map[string]models.LabelColors{}
-								}
-								colors[key][value] = color
-							}
-						}
-						countLabel(counters, key, value)
+				if stateCount[models.AlertStateActive] > 0 {
+					alert.State = models.AlertStateActive
+				} else if stateCount[models.AlertStateSuppressed] > 0 {
+					alert.State = models.AlertStateSuppressed
+				} else {
+					alert.State = models.AlertStateUnprocessed
+				}
+
+				agCopy.Alerts = append(agCopy.Alerts, alert)
+
+				if len(upstreams.Clusters) > 1 {
+					clusters := map[string]bool{}
+					for _, am := range alert.Alertmanager {
+						clusters[am.Cluster] = true
 					}
+					for cluster := range clusters {
+						countLabel(counters, "@cluster", cluster)
+					}
+				}
+
+				countLabel(counters, "@state", alert.State)
+
+				countLabel(counters, "@receiver", alert.Receiver)
+				if ck, foundKey := dedupedColors["@receiver"]; foundKey {
+					if cv, foundVal := ck[alert.Receiver]; foundVal {
+						if _, found := colors["@receiver"]; !found {
+							colors["@receiver"] = map[string]models.LabelColors{}
+						}
+						colors["@receiver"][alert.Receiver] = cv
+					}
+				}
+
+				if ck, foundKey := dedupedColors["@alertmanager"]; foundKey {
+					for _, am := range alert.Alertmanager {
+						if cv, foundVal := ck[am.Name]; foundVal {
+							if _, found := colors["@alertmanager"]; !found {
+								colors["@alertmanager"] = map[string]models.LabelColors{}
+							}
+							colors["@alertmanager"][am.Name] = cv
+						}
+					}
+				}
+
+				if ck, foundKey := dedupedColors["@cluster"]; foundKey {
+					for _, am := range alert.Alertmanager {
+						if cv, foundVal := ck[am.Cluster]; foundVal {
+							if _, found := colors["@cluster"]; !found {
+								colors["@cluster"] = map[string]models.LabelColors{}
+							}
+							colors["@cluster"][am.Cluster] = cv
+						}
+					}
+				}
+
+				agCopy.StateCount[alert.State]++
+
+				for _, am := range alert.Alertmanager {
+					if _, found := agCopy.AlertmanagerCount[am.Name]; !found {
+						agCopy.AlertmanagerCount[am.Name] = 1
+					} else {
+						agCopy.AlertmanagerCount[am.Name]++
+					}
+				}
+
+				for key, value := range alert.Labels {
+					if keyMap, foundKey := dedupedColors[key]; foundKey {
+						if color, foundColor := keyMap[value]; foundColor {
+							if _, found := colors[key]; !found {
+								colors[key] = map[string]models.LabelColors{}
+							}
+							colors[key][value] = color
+						}
+					}
+					countLabel(counters, key, value)
 				}
 			}
 		}
