@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.083
+## v0.83
 
 ### Added
 
