@@ -266,9 +266,10 @@ func sortGrids(r *http.Request, gridLabel string, gridsMap map[string]models.API
 }
 
 func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
-	var alertsCount int
+	var alertsCount, alertGroupsCount int
 	labelNameToValueCount := map[string]map[string]int{}
 	for _, ag := range dedupedAlerts {
+		alertGroupsCount++
 		alertsCount += ag.Alerts.Len()
 		for _, alert := range ag.Alerts {
 			for key, val := range alert.Labels {
@@ -282,7 +283,7 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 			}
 		}
 	}
-	log.Debug().Int("alerts", alertsCount).Msg("Alerts count for automatic grid label")
+	log.Debug().Int("alerts", alertsCount).Int("groups", alertGroupsCount).Msg("Alerts count for automatic grid label")
 
 	candidates := map[string]int{}
 	for key, vals := range labelNameToValueCount {
@@ -303,7 +304,7 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 	var lastCnt int
 	for key, uniqueValues := range candidates {
 		log.Debug().Int("variants", uniqueValues).Str("label", key).Msg("Automatic grid label candidate")
-		if uniqueValues == 1 || uniqueValues == alertsCount {
+		if uniqueValues == 1 || uniqueValues == alertsCount || uniqueValues == alertGroupsCount {
 			continue
 		}
 		if lastCnt == 0 || uniqueValues < lastCnt || (uniqueValues == lastCnt && key > lastLabel) {
