@@ -64,7 +64,7 @@
     "react-dom": "17.0.2",
     "react-hotkeys-hook": "3.3.0",
     "react-idle-timer": "4.6.1",
-    "react-intersection-observer": "8.31.0",
+    "react-intersection-observer": "8.31.1",
     "react-js-pagination": "3.0.3",
     "react-json-pretty": "2.2.0",
     "react-linkify": "0.2.2",
