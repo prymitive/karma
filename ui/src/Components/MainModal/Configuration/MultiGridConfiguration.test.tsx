@@ -54,6 +54,12 @@ describe("<MultiGridConfiguration />", () => {
     expect(tree.find("Creatable").text()).toBe("Disable multi-grid");
   });
 
+  it("correctly renders default option when multi-grid is set to @auto", () => {
+    settingsStore.multiGridConfig.config.gridLabel = "@auto";
+    const tree = FakeConfiguration();
+    expect(tree.find("Creatable").text()).toBe("Automatic selection");
+  });
+
   it("correctly renders default option when multi-grid is enabled", () => {
     settingsStore.multiGridConfig.config.gridLabel = "cluster";
     const tree = FakeConfiguration();
