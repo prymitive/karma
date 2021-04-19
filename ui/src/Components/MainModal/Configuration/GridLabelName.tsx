@@ -32,15 +32,18 @@ const GridLabelName: FC<{
 
   const context = React.useContext(ThemeContext);
 
+  const defaultValue =
+    settingsStore.multiGridConfig.config.gridLabel === "@auto"
+      ? { label: "Automatic selection", value: "@auto" }
+      : valueToOption(settingsStore.multiGridConfig.config.gridLabel);
+
   return (
     <Creatable
       styles={context.reactSelectStyles}
       classNamePrefix="react-select"
       instanceId="configuration-grid-label"
       formatCreateLabel={NewLabelName}
-      defaultValue={valueToOption(
-        settingsStore.multiGridConfig.config.gridLabel
-      )}
+      defaultValue={defaultValue}
       options={
         response
           ? [
@@ -50,7 +53,7 @@ const GridLabelName: FC<{
           : staticValues
       }
       onChange={(option) => {
-        settingsStore.multiGridConfig.config.gridLabel = (option as OptionT).value;
+        settingsStore.multiGridConfig.setGridLabel((option as OptionT).value);
       }}
     />
   );

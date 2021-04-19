@@ -25,23 +25,26 @@ import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { ThemeContext } from "Components/Theme";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
 
+const specialLabels: OptionT[] = [
+  { label: "Automatic selection", value: "@auto" },
+  { label: "@alertmanager", value: "@alertmanager" },
+  { label: "@cluster", value: "@cluster" },
+  { label: "@receiver", value: "@receiver" },
+];
+
 const NullContainer: FC = () => null;
 
 const GridLabelNameSelect: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
   grid: APIGridT;
-}> = ({ alertStore, settingsStore, grid }) => {
+  onClose: () => void;
+}> = ({ alertStore, settingsStore, grid, onClose }) => {
   const loadOptions = (
     inputValue: string,
     callback: (options: OptionT[]) => void
   ) => {
-    const labelNames: { [key: string]: boolean } = {
-      "@auto": true,
-      "@alertmanager": true,
-      "@cluster": true,
-      "@receiver": true,
-    };
+    const labelNames: { [key: string]: boolean } = {};
 
     alertStore.data.grids.forEach((grid) => {
       labelNames[grid.labelName] = true;
@@ -60,16 +63,24 @@ const GridLabelNameSelect: FC<{
       });
     });
 
-    callback(
-      Object.keys(labelNames)
-        .filter((labelName) => labelName !== grid.labelName)
-        .sort()
-        .map((key) =>
-          key === "@auto"
-            ? { label: "Automatic selection", value: "@auto" }
-            : StringToOption(key)
+    const autoEnabled =
+      settingsStore.multiGridConfig.config.gridLabel === "@auto";
+    const options = [
+      ...specialLabels.filter(
+        (val) =>
+          val.value !== "@auto" || (val.value === "@auto" && !autoEnabled)
+      ),
+      ...Object.keys(labelNames)
+        .filter(
+          (labelName) =>
+            autoEnabled === true ||
+            (autoEnabled === false && labelName !== grid.labelName)
         )
-    );
+        .sort()
+        .map((key) => StringToOption(key)),
+    ];
+
+    callback(options);
   };
 
   const context = React.useContext(ThemeContext);
@@ -82,7 +93,8 @@ const GridLabelNameSelect: FC<{
       loadOptions={loadOptions}
       defaultOptions
       onChange={(option) => {
-        settingsStore.multiGridConfig.config.gridLabel = (option as OptionT).value;
+        settingsStore.multiGridConfig.setGridLabel((option as OptionT).value);
+        onClose();
       }}
       menuIsOpen={true}
       components={{
@@ -103,6 +115,7 @@ const Dropdown: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
   grid: APIGridT;
+  onClose: () => void;
 }> = ({
   popperPlacement,
   popperRef,
@@ -110,6 +123,7 @@ const Dropdown: FC<{
   alertStore,
   settingsStore,
   grid,
+  onClose,
 }) => {
   return (
     <div
@@ -126,6 +140,7 @@ const Dropdown: FC<{
         alertStore={alertStore}
         settingsStore={settingsStore}
         grid={grid}
+        onClose={onClose}
       />
     </div>
   );
@@ -168,6 +183,7 @@ const GridLabelSelect: FC<{
                 alertStore={alertStore}
                 settingsStore={settingsStore}
                 grid={grid}
+                onClose={toggle}
               />
             )}
           </Popper>
