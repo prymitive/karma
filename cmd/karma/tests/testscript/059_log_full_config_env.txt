@@ -32,6 +32,8 @@ env FILTERS_DEFAULT='@receiver=by-cluster-service @state=active'
 env GRID_SORTING_ORDER=label
 env GRID_SORTING_REVERSE=false
 env GRID_SORTING_LABEL=severity
+env GRID_AUTO_IGNORE="region instance"
+env GRID_AUTO_ORDER="severity cluster"
 
 env KARMA_NAME=karma-demo
 
@@ -146,6 +148,11 @@ level=info msg="    reverse: false"
 level=info msg="    label: severity"
 level=info msg="    customValues:"
 level=info msg="      labels: {}"
+level=info msg="  auto:"
+level=info msg="    ignore:"
+level=info msg="      - '\"region'"
+level=info msg="    order:"
+level=info msg="      - '\"severity'"
 level=info msg="karma:"
 level=info msg="  name: karma-demo"
 level=info msg="labels:"

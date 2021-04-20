@@ -123,6 +123,10 @@ type configSchema struct {
 				Labels map[string]map[string]string
 			} `yaml:"customValues" koanf:"customValues"`
 		}
+		Auto struct {
+			Ignore []string
+			Order  []string
+		}
 	} `yaml:"grid"`
 	Karma struct {
 		Name string

@@ -54,6 +54,12 @@ grid:
           critical: 1
           warning: 2
           info: 3
+  auto:
+    order:
+      - severity
+      - cluster
+    ignore:
+      - region
 karma:
   name: karma-demo
 labels:

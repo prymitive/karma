@@ -2660,6 +2660,8 @@ func TestAutoGrid(t *testing.T) {
 	type testCaseT struct {
 		q         string
 		gridLabel string
+		ignore    []string
+		order     []string
 	}
 
 	testCases := []testCaseT{
@@ -2672,25 +2674,71 @@ func TestAutoGrid(t *testing.T) {
 			gridLabel: "job",
 		},
 		{
+			q:         "gridLabel=@auto&q=cluster!=prod",
+			gridLabel: "cluster",
+			ignore:    []string{"job"},
+			order:     []string{"cluster"},
+		},
+		{
+			q:         "gridLabel=@auto&q=cluster!=prod",
+			gridLabel: "cluster",
+			ignore:    []string{},
+			order:     []string{"cluster"},
+		},
+		{
+			q:         "gridLabel=@auto&q=cluster!=prod",
+			gridLabel: "job",
+			ignore:    []string{},
+			order:     []string{"job", "cluster"},
+		},
+		{
+			q:         "gridLabel=@auto&q=job=node_exporter",
+			gridLabel: "cluster",
+			ignore:    []string{},
+			order:     []string{"job", "cluster"},
+		},
+		{
+			q:         "gridLabel=@auto&q=cluster=dev",
+			gridLabel: "job",
+			ignore:    []string{},
+			order:     []string{"job", "cluster"},
+		},
+		{
+			q:         "gridLabel=@auto&q=cluster=dev",
+			gridLabel: "alertname",
+			ignore:    []string{},
+			order:     []string{},
+		},
+		{
 			q:         "gridLabel=job",
 			gridLabel: "job",
 		},
 		{
 			q:         "gridLabel=@auto&q=instance=server5",
 			gridLabel: "job",
+			ignore:    []string{"alertname"},
 		},
 		{
 			q:         "gridLabel=@auto&q=job=node_exporter",
 			gridLabel: "cluster",
+			ignore:    []string{"alertname"},
 		},
 		{
 			q:         "gridLabel=@auto&q=cluster=prod",
 			gridLabel: "job",
+			ignore:    []string{"alertname", "instance"},
 		},
 	}
 
+	defer func() {
+		config.Config.Grid.Auto.Ignore = []string{}
+		config.Config.Grid.Auto.Order = []string{}
+	}()
+
 	mockConfig()
 	for _, tc := range testCases {
+		config.Config.Grid.Auto.Ignore = tc.ignore
+		config.Config.Grid.Auto.Order = tc.order
 		for _, version := range mock.ListAllMocks() {
 			t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 			mockAlerts(version)
