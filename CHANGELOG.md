@@ -1,5 +1,13 @@
 # Changelog
 
+## [unreleased]
+
+### Added
+
+- Added `grid:auto` config section for fine tuning automatic label selection
+  for multi-grid, when multi-grid is configured to `Automatic selection`
+  in the UI or when `ui:multiGridLabel` config section is set to `@auto`.
+
 ## v0.83
 
 ### Added

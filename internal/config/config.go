@@ -72,6 +72,7 @@ func SetupFlags(f *pflag.FlagSet) {
 		"List of annotations to keep, all other annotations will be stripped")
 	f.StringSlice("annotations.strip", []string{}, "List of annotations to ignore")
 	f.StringSlice("annotations.actions", []string{}, "List of annotations that will be moved to the alert menu")
+	f.StringSlice("annotations.order", []string{}, "Preferred order of annotation names")
 	f.Bool("annotations.enableInsecureHTML", false, "Enable HTML strings in annotations to be parsed as HTML, enable at your own risk")
 
 	f.String("config.file", "", "Full path to the configuration file, 'karma.yaml' will be used if found in the current working directory")
@@ -94,6 +95,8 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.String("grid.sorting.order", "startsAt", "Default sort order for alert grid")
 	f.Bool("grid.sorting.reverse", true, "Reverse sort order")
 	f.String("grid.sorting.label", "alertname", "Label name to use when sorting alert grid by label")
+	f.StringSlice("grid.auto.ignore", []string{}, "List of label names not allowed for automatic multi-grid")
+	f.StringSlice("grid.auto.order", []string{}, "Order of preference for selecting label names for automatic multi-grid")
 
 	f.Bool("log.config", false, "Log used configuration to log on startup")
 	f.String("log.level", "info",

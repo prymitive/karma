@@ -645,6 +645,9 @@ grid:
     label: string
     customValues:
       labels: dict
+  auto:
+    ignore: list of strings
+    order: list of strings
 ```
 
 - `sorting:order` - default sort order for alert grid, valid values are:
@@ -668,6 +671,13 @@ grid:
   instead of original string values.
   Note: this option is not available via environment variables, you can only set
   it via the config file.
+- `auto:ignore` - list of label names that should never be selected as multi-grid
+  source label when multi-grid is configured to `Automatic selection` in the UI
+  or when `ui:multiGridLabel` is set to `@auto`.
+- `auto:order` - preferred order for selecting labels to be used as multi-grid
+  source label when multi-grid is configured to `Automatic selection` in the UI
+  or when `ui:multiGridLabel` is set to `@auto`. If a label name is not present
+  in this list labels with equal weight will be picked in alphabetic order.
 
 Defaults:
 
@@ -679,6 +689,9 @@ grid:
     label: alertname
     customValues:
       labels: {}
+  auto:
+    ignore: []
+    order: []
 ```
 
 Example with sorting using `severity` label and value mappings for it:

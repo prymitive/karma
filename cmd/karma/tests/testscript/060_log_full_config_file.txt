@@ -160,6 +160,13 @@ level=info msg="        severity:"
 level=info msg="          critical: \"1\""
 level=info msg="          info: \"3\""
 level=info msg="          warning: \"2\""
+level=info msg="  auto:"
+level=info msg="    ignore:"
+level=info msg="      - region"
+level=info msg="      - instance"
+level=info msg="    order:"
+level=info msg="      - severity"
+level=info msg="      - cluster"
 level=info msg="karma:"
 level=info msg="  name: karma-demo"
 level=info msg="labels:"
@@ -346,6 +353,13 @@ grid:
           critical: 1
           warning: 2
           info: 3
+  auto:
+    ignore:
+      - region
+      - instance
+    order:
+      - severity
+      - cluster
 karma:
   name: karma-demo
 labels:

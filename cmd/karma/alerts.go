@@ -13,6 +13,7 @@ import (
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/slices"
 	"github.com/prymitive/karma/internal/uri"
 )
 
@@ -265,6 +266,24 @@ func sortGrids(r *http.Request, gridLabel string, gridsMap map[string]models.API
 	return grids
 }
 
+func isPreferredLabel(label, other string) bool {
+	ai, aj := -1, -1
+	for index, name := range config.Config.Grid.Auto.Order {
+		if label == name {
+			ai = index
+		} else if other == name {
+			aj = index
+		}
+		if ai >= 0 && aj >= 0 {
+			return ai < aj
+		}
+	}
+	if ai != aj {
+		return aj < ai
+	}
+	return label < other
+}
+
 func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 	var alertsCount, alertGroupsCount int
 	labelNameToValueCount := map[string]map[string]int{}
@@ -287,6 +306,9 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 
 	candidates := map[string]int{}
 	for key, vals := range labelNameToValueCount {
+		if slices.StringInSlice(config.Config.Grid.Auto.Ignore, key) {
+			continue
+		}
 		var total int
 		uniqueValues := map[string]struct{}{}
 		for val, cnt := range vals {
@@ -303,11 +325,11 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 	var lastLabel string
 	var lastCnt int
 	for key, uniqueValues := range candidates {
-		log.Debug().Int("variants", uniqueValues).Str("label", key).Msg("Automatic grid label candidate")
 		if uniqueValues == 1 || uniqueValues == alertsCount || uniqueValues == alertGroupsCount {
 			continue
 		}
-		if lastCnt == 0 || uniqueValues < lastCnt || (uniqueValues == lastCnt && key > lastLabel) {
+		log.Debug().Int("variants", uniqueValues).Str("label", key).Msg("Automatic grid label candidate")
+		if lastCnt == 0 || uniqueValues < lastCnt || (uniqueValues == lastCnt && isPreferredLabel(key, lastLabel)) {
 			lastLabel = key
 			lastCnt = uniqueValues
 		}

@@ -85,6 +85,9 @@ grid:
     label: alertname
     customValues:
       labels: {}
+  auto:
+    ignore: []
+    order: []
 karma:
   name: another karma
 labels:
@@ -330,10 +333,13 @@ func TestDefaultConfig(t *testing.T) {
 	expectedConfig.Annotations.Keep = []string{}
 	expectedConfig.Annotations.Strip = []string{}
 	expectedConfig.Annotations.Actions = []string{}
+	expectedConfig.Annotations.Order = []string{}
 	expectedConfig.Labels.Keep = []string{}
 	expectedConfig.Labels.Strip = []string{}
 	expectedConfig.Labels.Color.Static = []string{}
 	expectedConfig.Labels.Color.Unique = []string{}
+	expectedConfig.Grid.Auto.Ignore = []string{}
+	expectedConfig.Grid.Auto.Order = []string{}
 	expectedConfig.Receivers.Keep = []string{}
 	expectedConfig.Receivers.Strip = []string{}
 	expectedConfig.SilenceForm.Strip.Labels = []string{}
