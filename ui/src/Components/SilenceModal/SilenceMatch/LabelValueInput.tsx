@@ -16,6 +16,7 @@ import { hashObject } from "Common/Hash";
 import { NewLabelValue, OptionT, StringToOption } from "Common/Select";
 import { ValidationError } from "Components/ValidationError";
 import { ThemeContext } from "Components/Theme";
+import { AnimatedMultiMenu } from "Components/Select";
 import { MatchCounter } from "./MatchCounter";
 
 const GenerateHashFromMatchers = (
@@ -110,6 +111,7 @@ const LabelValueInput: FC<{
           ValueContainerProps<OptionT, true>
         >,
         Placeholder: Placeholder,
+        Menu: AnimatedMultiMenu,
       }}
       silenceFormStore={silenceFormStore}
       matcher={matcher}

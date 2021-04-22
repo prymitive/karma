@@ -2,29 +2,26 @@ $duration: 0.15s;
 
 .components-animation-slide-enter,
 .components-animation-slide-appear {
-  opacity: 0.1;
-  transform: scaleY(0);
-  transform-origin: top;
+  opacity: 0;
+  transform: scale(0.95) translateY(-0.25em);
 }
 .components-animation-slide-enter-active,
 .components-animation-slide-appear-active {
   opacity: 1;
-  transform: scaleY(1);
-  transform-origin: top;
-  transition-property: transform, opacity;
+  transform: scale(1) translateY(0);
+  transition-property: transform;
   transition-duration: $duration;
-  transition-timing-function: ease-in-out;
+  transition-timing-function: ease-out;
 }
 
 .components-animation-slide-exit {
-  transform: scaleY(1);
   opacity: 1;
+  transform: scale(1) translateY(0);
 }
 .components-animation-slide-exit-active {
-  opacity: 0.1;
-  transform-origin: top;
-  transform: scaleY(0);
-  transition-property: transform, opacity;
+  opacity: 0;
+  transform: scale(0.95) translateY(-0.25em);
+  transition-property: opacity, transform;
   transition-duration: $duration;
-  transition-timing-function: ease-in-out;
+  transition-timing-function: ease-out;
 }

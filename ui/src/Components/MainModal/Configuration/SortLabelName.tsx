@@ -8,6 +8,7 @@ import { FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { ThemeContext } from "Components/Theme";
+import { AnimatedMenu } from "Components/Select";
 import { NewLabelName, StringToOption } from "Common/Select";
 
 const SortLabelName: FC<{
@@ -37,6 +38,7 @@ const SortLabelName: FC<{
         settingsStore.gridConfig.config.sortLabel = (option as OptionT)
           .value as string;
       }}
+      components={{ Menu: AnimatedMenu }}
     />
   );
 };
