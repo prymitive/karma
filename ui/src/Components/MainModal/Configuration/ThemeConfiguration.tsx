@@ -6,6 +6,7 @@ import Select from "react-select";
 
 import { OptionT } from "Common/Select";
 import { Settings, ThemeT } from "Stores/Settings";
+import { AnimatedMenu } from "Components/Select";
 import { ThemeContext } from "Components/Theme";
 
 const ThemeConfiguration: FC<{
@@ -42,6 +43,7 @@ const ThemeConfiguration: FC<{
         options={Object.values(settingsStore.themeConfig.options)}
         onChange={(option) => onChange((option as OptionT).value as ThemeT)}
         hideSelectedOptions
+        components={{ Menu: AnimatedMenu }}
       />
     </div>
   );

@@ -6,6 +6,7 @@ import Select from "react-select";
 
 import { OptionT } from "Common/Select";
 import { Settings, CollapseStateT } from "Stores/Settings";
+import { AnimatedMenu } from "Components/Select";
 import { ThemeContext } from "Components/Theme";
 
 const AlertGroupCollapseConfiguration: FC<{
@@ -46,6 +47,7 @@ const AlertGroupCollapseConfiguration: FC<{
           onCollapseChange((option as OptionT).value as CollapseStateT)
         }
         hideSelectedOptions
+        components={{ Menu: AnimatedMenu }}
       />
     </div>
   );

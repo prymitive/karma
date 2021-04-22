@@ -7,6 +7,7 @@ import { MatcherWithIDT } from "Stores/SilenceFormStore";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { ValidationError } from "Components/ValidationError";
 import { ThemeContext } from "Components/Theme";
+import { AnimatedMenu } from "Components/Select";
 import { NewLabelName, OptionT, StringToOption } from "Common/Select";
 
 const LabelNameInput: FC<{
@@ -34,6 +35,7 @@ const LabelNameInput: FC<{
         matcher.name = (option as OptionT).value;
       }}
       hideSelectedOptions
+      components={{ Menu: AnimatedMenu }}
     />
   );
 };

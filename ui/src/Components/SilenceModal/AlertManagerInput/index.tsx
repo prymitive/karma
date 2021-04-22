@@ -12,6 +12,7 @@ import {
 } from "Stores/SilenceFormStore";
 import { MultiValueOptionT } from "Common/Select";
 import { ThemeContext } from "Components/Theme";
+import { AnimatedMultiMenu } from "Components/Select";
 import { ValidationError } from "Components/ValidationError";
 
 const AlertManagerInput: FC<{
@@ -74,6 +75,7 @@ const AlertManagerInput: FC<{
         silenceFormStore.data.setAlertmanagers(newValue as MultiValueOptionT[]);
       }}
       isDisabled={silenceFormStore.data.silenceID !== null}
+      components={{ Menu: AnimatedMultiMenu }}
     />
   );
 });

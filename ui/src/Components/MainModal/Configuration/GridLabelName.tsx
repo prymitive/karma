@@ -6,6 +6,7 @@ import { useFetchGet } from "Hooks/useFetchGet";
 import { FormatBackendURI } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
+import { AnimatedMenu } from "Components/Select";
 import { NewLabelName, StringToOption, OptionT } from "Common/Select";
 
 const disabledLabel = "Disable multi-grid";
@@ -55,6 +56,7 @@ const GridLabelName: FC<{
       onChange={(option) => {
         settingsStore.multiGridConfig.setGridLabel((option as OptionT).value);
       }}
+      components={{ Menu: AnimatedMenu }}
     />
   );
 };

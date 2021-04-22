@@ -7,6 +7,7 @@ import Select from "react-select";
 import { Settings, SortOrderT } from "Stores/Settings";
 import { OptionT } from "Common/Select";
 import { ThemeContext } from "Components/Theme";
+import { AnimatedMenu } from "Components/Select";
 import { SortLabelName } from "./SortLabelName";
 
 const AlertGroupSortConfiguration: FC<{
@@ -56,6 +57,7 @@ const AlertGroupSortConfiguration: FC<{
               onSortOrderChange((option as OptionT).value as SortOrderT)
             }
             hideSelectedOptions
+            components={{ Menu: AnimatedMenu }}
           />
         </div>
         {settingsStore.gridConfig.config.sortOrder ===
