@@ -8,6 +8,11 @@
   for multi-grid, when multi-grid is configured to `Automatic selection`
   in the UI or when `ui:multiGridLabel` config section is set to `@auto`.
 
+### Changed
+
+- karma will no longer fail to start if config file contains multiple alertmanager
+  instances with different name but identical URI #3024.
+
 ## v0.83
 
 ### Added
