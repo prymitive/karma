@@ -75,11 +75,6 @@ func RegisterAlertmanager(am *Alertmanager) error {
 		return fmt.Errorf("alertmanager upstream '%s' already exist", am.Name)
 	}
 
-	for _, existingAM := range upstreams {
-		if existingAM.URI == am.URI {
-			return fmt.Errorf("alertmanager upstream '%s' already collects from '%s'", existingAM.Name, uri.SanitizeURI(existingAM.URI))
-		}
-	}
 	upstreams[am.Name] = am
 	// am.Name, uri.SanitizeURI(am.URI), am.ProxyRequests, am.ReadOnly
 	log.Info().
