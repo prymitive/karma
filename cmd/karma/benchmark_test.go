@@ -138,7 +138,7 @@ func BenchmarkAlertsAPIMisses(b *testing.B) {
 
 				b.StopTimer()
 				reportMemoryMetrics(b)
-				apiCache.Flush()
+				apiCache.Purge()
 				b.StartTimer()
 			}
 		})
@@ -165,7 +165,7 @@ func BenchmarkAlertsAPIMissesAutoGrid(b *testing.B) {
 
 				b.StopTimer()
 				reportMemoryMetrics(b)
-				apiCache.Flush()
+				apiCache.Purge()
 				b.StartTimer()
 			}
 		})

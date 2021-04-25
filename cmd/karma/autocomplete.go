@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"sort"
 	"strings"
-	"time"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 )
@@ -58,7 +57,7 @@ func knownLabelNames(w http.ResponseWriter, r *http.Request) {
 
 	data, _ = json.Marshal(acData)
 
-	apiCache.Set(cacheKey, data, time.Second*15)
+	_ = apiCache.Add(cacheKey, data)
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
@@ -89,7 +88,7 @@ func knownLabelValues(w http.ResponseWriter, r *http.Request) {
 
 	data, _ = json.Marshal(values)
 
-	apiCache.Set(cacheKey, data, time.Second*15)
+	_ = apiCache.Add(cacheKey, data)
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)

@@ -5,12 +5,11 @@ import (
 	"fmt"
 	"regexp"
 	"strconv"
-	"time"
 
-	cache "github.com/patrickmn/go-cache"
+	lru "github.com/hashicorp/golang-lru"
 )
 
-var matchCache = cache.New(5*time.Minute, 1*time.Minute)
+var matchCache, _ = lru.New(1000)
 
 type matcherT interface {
 	setOperator(operator string)
@@ -103,7 +102,7 @@ func (matcher *regexpMatcher) Compare(valA, valB interface{}) bool {
 		if err != nil {
 			return false
 		}
-		matchCache.Set(valB.(string), r, 1*time.Minute)
+		matchCache.Add(valB.(string), r)
 	}
 	return r.(*regexp.Regexp).MatchString(valA.(string))
 }

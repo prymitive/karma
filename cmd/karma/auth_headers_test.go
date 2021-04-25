@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
+	lru "github.com/hashicorp/golang-lru"
 	"github.com/jarcoal/httpmock"
-	cache "github.com/patrickmn/go-cache"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/mock"
 )
@@ -65,7 +65,7 @@ func TestAuthHeader(t *testing.T) {
 	for _, testCase := range authHeaderTests {
 		testCase := testCase //scopelint pin
 		for _, version := range mock.ListAllMocks() {
-			apiCache = cache.New(cache.NoExpiration, 10*time.Second)
+			apiCache, _ = lru.New(100)
 
 			am, err := alertmanager.NewAlertmanager(
 				"cluster",

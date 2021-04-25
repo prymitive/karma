@@ -12,14 +12,13 @@ import (
 	"testing"
 	"time"
 
-	cache "github.com/patrickmn/go-cache"
+	lru "github.com/hashicorp/golang-lru"
+	"github.com/jarcoal/httpmock"
+	"github.com/pmezard/go-difflib/difflib"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/rs/zerolog"
-
-	"github.com/jarcoal/httpmock"
-	"github.com/pmezard/go-difflib/difflib"
 )
 
 // httptest.NewRecorder() doesn't implement http.CloseNotifier
@@ -526,7 +525,7 @@ func TestProxyUserRewrite(t *testing.T) {
 				setupRouter(r)
 				setupRouterProxyHandlers(r, am)
 
-				apiCache = cache.New(cache.NoExpiration, 10*time.Second)
+				apiCache, _ = lru.New(100)
 				httpmock.Reset()
 				mock.RegisterURL("http://localhost/metrics", version, "metrics")
 				mock.RegisterURL("http://localhost/api/v2/status", version, "api/v2/status")
@@ -1184,7 +1183,7 @@ func TestProxySilenceACL(t *testing.T) {
 				}
 				setupRouterProxyHandlers(r, am)
 
-				apiCache = cache.New(cache.NoExpiration, 10*time.Second)
+				apiCache, _ = lru.New(100)
 				httpmock.Reset()
 				mock.RegisterURL("http://localhost/metrics", version, "metrics")
 				mock.RegisterURL("http://localhost/api/v2/status", version, "api/v2/status")
@@ -1278,7 +1277,7 @@ func TestProxyRequestToUnsupportedAlertmanager(t *testing.T) {
 	}
 	setupRouterProxyHandlers(r, am)
 
-	apiCache = cache.New(cache.NoExpiration, 10*time.Second)
+	apiCache, _ = lru.New(100)
 	httpmock.Reset()
 	httpmock.RegisterResponder("GET", "http://localhost/metrics", httpmock.NewStringResponder(200, `alertmanager_build_info{version="0.1.0"} 1
 	`))

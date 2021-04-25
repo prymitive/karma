@@ -31,12 +31,11 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
+	lru "github.com/hashicorp/golang-lru"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
-
-	cache "github.com/patrickmn/go-cache"
 )
 
 var (
@@ -49,7 +48,7 @@ var (
 	// apiCache will be used to keep short lived copy of JSON reponses generated for the UI
 	// If there are requests with the same filter we should respond from cache
 	// rather than do all the filtering every time
-	apiCache *cache.Cache
+	apiCache *lru.Cache
 
 	indexTemplate *template.Template
 
@@ -353,7 +352,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, error) {
 	}
 	transform.SetLinkRules(linkDetectRules)
 
-	apiCache = cache.New(cache.NoExpiration, 10*time.Second)
+	apiCache, _ = lru.New(1024)
 
 	err = setupUpstreams()
 	if err != nil {
