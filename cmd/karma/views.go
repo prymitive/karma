@@ -459,7 +459,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 
 	data, _ = json.Marshal(resp)
 	compressedData, _ := compressResponse(data.([]byte), nil)
-	apiCache.Set(cacheKey, compressedData, -1)
+	_ = apiCache.Add(cacheKey, compressedData)
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
@@ -505,7 +505,7 @@ func autocomplete(w http.ResponseWriter, r *http.Request) {
 	sort.Sort(sort.Reverse(acData))
 	data, _ = json.Marshal(acData)
 
-	apiCache.Set(cacheKey, data, time.Second*15)
+	_ = apiCache.Add(cacheKey, data)
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
@@ -630,7 +630,7 @@ func silences(w http.ResponseWriter, r *http.Request) {
 
 	data, _ = json.Marshal(dedupedSilences)
 
-	apiCache.Set(cacheKey, data, time.Second*15)
+	_ = apiCache.Add(cacheKey, data)
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)

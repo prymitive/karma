@@ -11,7 +11,7 @@ import (
 
 func pullFromAlertmanager() {
 	// always flush cache once we're done
-	defer apiCache.Flush()
+	defer apiCache.Purge()
 
 	log.Info().Msg("Pulling latest alerts and silences from Alertmanager")
 

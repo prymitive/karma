@@ -15,6 +15,7 @@ import (
 	"testing"
 	"time"
 
+	lru "github.com/hashicorp/golang-lru"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"
@@ -24,7 +25,6 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/google/go-cmp/cmp"
 	"github.com/jarcoal/httpmock"
-	cache "github.com/patrickmn/go-cache"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
@@ -130,9 +130,9 @@ func TestIndexPrefix(t *testing.T) {
 
 func mockCache() {
 	if apiCache == nil {
-		apiCache = cache.New(cache.NoExpiration, time.Hour)
+		apiCache, _ = lru.New(100)
 	} else {
-		apiCache.Flush()
+		apiCache.Purge()
 	}
 }
 
@@ -345,7 +345,7 @@ func TestGrids(t *testing.T) {
 				setupRouter(r)
 				// re-run a few times to test the cache
 				for i := 1; i <= 3; i++ {
-					apiCache.Flush()
+					apiCache.Purge()
 					req := httptest.NewRequest("GET", "/alerts.json?gridLabel="+testCase.gridLabel+testCase.requestQuery, nil)
 					resp := httptest.NewRecorder()
 					r.ServeHTTP(resp, req)
@@ -2294,7 +2294,7 @@ func TestUpstreamStatus(t *testing.T) {
 			config.Config.Authentication.Header.Name = ""
 			config.Config.Authentication.BasicAuth.Users = []config.AuthenticationUser{}
 
-			apiCache = cache.New(cache.NoExpiration, 10*time.Second)
+			apiCache, _ = lru.New(100)
 			alertmanager.UnregisterAll()
 			upstreamSetup = false
 			config.Config.Alertmanager.Servers = testCase.upstreams
