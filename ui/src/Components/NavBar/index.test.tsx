@@ -35,6 +35,11 @@ beforeEach(() => {
   // fix startsAt & endsAt dates so they don't change between tests
   silenceFormStore.data.setStart(new Date(Date.UTC(2018, 1, 30, 10, 25, 50)));
   silenceFormStore.data.setEnd(new Date(Date.UTC(2018, 1, 30, 11, 25, 50)));
+
+  jest.spyOn(window, "requestAnimationFrame").mockImplementation((cb) => {
+    cb(0);
+    return 0;
+  });
 });
 
 afterEach(() => {
