@@ -29,6 +29,7 @@ RUN apk add supervisor python3 && rm  -rf /tmp/* /var/cache/apk/*
 COPY demo/supervisord.conf /etc/supervisord.conf
 COPY demo/alertmanager.yaml /etc/alertmanager.yaml
 COPY demo/generator.py /generator.py
+COPY demo/prometheus.py /prometheus.py
 COPY --from=go-builder /src/karma /karma
 COPY demo/karma.yaml /etc/karma.yaml
 COPY demo/acls.yaml /etc/acls.yaml

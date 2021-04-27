@@ -182,7 +182,7 @@ describe("<MenuContent />", () => {
 
   it("source link points at alert source", () => {
     const tree = MountedMenuContent(group);
-    const link = tree.find("a.dropdown-item[href='localhost/prometheus']");
+    const link = tree.find("a.dropdown-item[href='localhost/graph']");
     expect(link.text()).toBe("default");
   });
 

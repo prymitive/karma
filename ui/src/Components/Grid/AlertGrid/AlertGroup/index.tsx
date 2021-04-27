@@ -15,6 +15,7 @@ import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BackgroundClassMap } from "Common/Colors";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { ThemeContext } from "Components/Theme";
+import { AlertHistory } from "Components/AlertHistory";
 import GroupHeader from "./GroupHeader";
 import Alert from "./Alert";
 import GroupFooter from "./GroupFooter";
@@ -201,6 +202,9 @@ const AlertGroup: FC<{
         />
         {isCollapsed ? null : (
           <div className="card-body px-2 py-1 components-grid-alertgrid-card">
+            {alertStore.settings.values.historyEnabled ? (
+              <AlertHistory group={group} />
+            ) : null}
             <ul className="list-group">
               {group.alerts
                 .slice(0, alertStore.ui.isIdle ? 1 : alertsToRender)

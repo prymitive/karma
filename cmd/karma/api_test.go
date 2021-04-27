@@ -993,7 +993,7 @@ func TestVerifyAllGroups(t *testing.T) {
 		mockAlerts(version)
 		apiCache.Purge()
 		r := testRouter()
-		setupRouter(r)
+		setupRouter(r, nil)
 		req := httptest.NewRequest("GET", "/alerts.json", nil)
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
@@ -1233,7 +1233,7 @@ func TestSortOrder(t *testing.T) {
 			t.Logf("Testing API using mock files from Alertmanager %s [try %d]", version, i)
 			mockAlerts(version)
 			r := testRouter()
-			setupRouter(r)
+			setupRouter(r, nil)
 
 			for _, testCase := range sortTests {
 				apiCache.Purge()
@@ -1327,7 +1327,7 @@ func TestStripLabels(t *testing.T) {
 		t.Logf("Testing API using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := testRouter()
-		setupRouter(r)
+		setupRouter(r, nil)
 
 		for _, testCase := range testCases {
 			config.Config.Labels.Keep = testCase.keep

@@ -88,6 +88,10 @@ grid:
   auto:
     ignore: []
     order: []
+history:
+  enabled: true
+  workers: 30
+  timeout: 20s
 karma:
   name: another karma
 labels:

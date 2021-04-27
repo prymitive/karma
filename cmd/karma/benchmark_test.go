@@ -126,7 +126,7 @@ func BenchmarkAlertsAPIMisses(b *testing.B) {
 	for _, version := range mock.ListAllMocks() {
 		mockAlerts(version)
 		r := testRouter()
-		setupRouter(r)
+		setupRouter(r, nil)
 		b.Run(version, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				b.StopTimer()
@@ -153,7 +153,7 @@ func BenchmarkAlertsAPIMissesAutoGrid(b *testing.B) {
 	for _, version := range mock.ListAllMocks() {
 		mockAlerts(version)
 		r := testRouter()
-		setupRouter(r)
+		setupRouter(r, nil)
 		b.Run(version, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				b.StopTimer()
@@ -180,7 +180,7 @@ func BenchmarkAlertsAPIHits(b *testing.B) {
 	for _, version := range mock.ListAllMocks() {
 		mockAlerts(version)
 		r := testRouter()
-		setupRouter(r)
+		setupRouter(r, nil)
 
 		req := httptest.NewRequest("GET", "/alerts.json?q=", nil)
 		resp := httptest.NewRecorder()

@@ -7,6 +7,8 @@
 - Added `grid:auto` config section for fine tuning automatic label selection
   for multi-grid, when multi-grid is configured to `Automatic selection`
   in the UI or when `ui:multiGridLabel` config section is set to `@auto`.
+- Added alert history estimation, see [README.md](/README.md#alert-history)
+  and [docs/CONFIGURATION.md](/docs/CONFIGURATION.md#alert-history) for details.
 
 ### Changed
 

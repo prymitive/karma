@@ -67,6 +67,7 @@ $with-click-light: $dark;
 @import "~bootswatch/dist/darkly/bootswatch";
 
 $alert-bg: $list-group-bg;
+$alert-history-inactive: lighten($gray-700, 2%);
 $alertgroup-body-bg: lighten($gray-700, 5%);
 $alertgroup-footer-bg: lighten($gray-700, 2%);
 $silence-bg: lighten($gray-900, 2%);

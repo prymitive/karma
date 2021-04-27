@@ -186,6 +186,7 @@ export interface APISettingsT {
     author: string;
     comment: string;
   };
+  historyEnabled: boolean;
 }
 
 export interface APIAlertsResponseT {
@@ -203,4 +204,14 @@ export interface APIAlertsResponseT {
   settings: APISettingsT;
   authentication: APIAlertsResponseAuthenticationT;
   receivers: string[];
+}
+
+export interface HistorySampleT {
+  timestamp: string;
+  value: number;
+}
+
+export interface HistoryResponseT {
+  error: string;
+  samples: HistorySampleT[];
 }

@@ -1,0 +1,115 @@
+# GET /history.json
+
+exec bash -x ./test.sh &
+karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8099 --history.enabled=true --history.timeout=10s
+! stdout .
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=info msg="Version: dev"
+level=info msg="Configured Alertmanager source" name=default proxy=false readonly=false uri=http://127.0.0.1
+level=info msg="Writing PID file" path=karma.pid
+level=info msg="Initial Alertmanager collection"
+level=info msg="Pulling latest alerts and silences from Alertmanager"
+level=info msg="Collecting alerts and silences" alertmanager=default
+level=info msg="GET request" timeout=40 uri=http://127.0.0.1/metrics
+level=error msg="Request failed" error="Get \"http://127.0.0.1/metrics\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default uri=http://127.0.0.1
+level=error msg="Collection failed" error="Get \"http://127.0.0.1/api/v2/status\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default
+level=info msg="Collection completed"
+level=info msg="Done, starting HTTP server"
+level=info msg="Starting HTTP server" address=127.0.0.1:8099
+level=info msg="Shutting down HTTP server"
+level=info msg="HTTP server shut down"
+level=info msg="Removing PID file" path=karma.pid
+-- query.json --
+{
+    "sources": [
+        "http://127.0.0.1:9099",
+        "http://127.0.0.1:9099"
+    ],
+    "labels": {
+        "alertname": "Fake Alert"
+    }
+}
+-- test.sh --
+env GOCACHE=$TMPDIR go run prometheus.go &
+while [ ! -f prometheus.pid ]; do sleep 1 ; done
+while [ ! -f karma.pid ]; do sleep 1 ; done
+sleep 5
+curl -s -f -o /dev/null -XPOST -d @query.json http://127.0.0.1:8099/history.json
+cat karma.pid | xargs kill
+cat prometheus.pid | xargs kill
+
+-- prometheus.go --
+package main
+
+import (
+	"context"
+	"io"
+	"log"
+	"net"
+	"net/http"
+	"os"
+	"os/signal"
+	"strconv"
+	"syscall"
+	"time"
+)
+
+func labelNames(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	io.WriteString(w, `{
+    "status": "success",
+    "data": ["alertname"]
+}`)
+}
+
+func query(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	io.WriteString(w, `{
+	"status": "success",
+	"data": {
+		"resultType": "matrix",
+		"result": [
+			{
+				"metric": {},
+				"values": []
+			}
+		]
+	}
+}`)
+}
+
+func main() {
+	pid := os.Getpid()
+	err := os.WriteFile("prometheus.pid", []byte(strconv.Itoa(pid)), 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	http.HandleFunc("/api/v1/labels", labelNames)
+	http.HandleFunc("/api/v1/query_range", query)
+
+	listener, err := net.Listen("tcp", "127.0.0.1:9099")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	server := &http.Server{
+		Addr: "127.0.0.1:9099",
+	}
+
+	go func() {
+		err := server.Serve(listener)
+		if err != nil {
+			log.Printf("Serve returned error: %v", err)
+		}
+	}()
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+	<-stop
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	server.Shutdown(ctx)
+}

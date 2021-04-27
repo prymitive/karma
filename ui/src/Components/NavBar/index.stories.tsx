@@ -2,9 +2,13 @@ import React from "react";
 
 import { storiesOf } from "@storybook/react";
 
-import { AlertStore, NewUnappliedFilter, FilterT } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import {
+  AlertStore,
+  NewUnappliedFilter,
+  FilterT,
+} from "../../Stores/AlertStore";
+import { Settings } from "../../Stores/Settings";
+import { SilenceFormStore } from "../../Stores/SilenceFormStore";
 import { HistoryMenu } from "./FilterInput/History";
 import NavBar from ".";
 

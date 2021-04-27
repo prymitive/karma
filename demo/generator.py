@@ -45,11 +45,12 @@ def jsonGetRequest(uri):
     response = urllib.request.urlopen(req)
     return json.load(response)
 
+
 def jsonPostRequest(uri, data):
     req = urllib.request.Request(uri)
     req.add_header("Content-Type", "application/json")
     try:
-        response = urllib.request.urlopen(req, json.dumps(data).encode('utf8'))
+        response = urllib.request.urlopen(req, json.dumps(data).encode("utf8"))
     except Exception as e:
         print("Request to '%s' failed: %s" % (uri, e))
 
@@ -64,18 +65,22 @@ def addSilence(matchers, startsAt, endsAt, createdBy, comment):
             continue
         if silence["createdBy"] == createdBy and silence["comment"] == comment:
             if json.dumps(silence["matchers"], sort_keys=True) == json.dumps(
-                    matchers, sort_keys=True):
+                matchers, sort_keys=True
+            ):
                 found = True
                 break
 
     if not found:
-        jsonPostRequest(uri, {
-            "matchers": matchers,
-            "startsAt": startsAt,
-            "endsAt": endsAt,
-            "createdBy": createdBy,
-            "comment": comment
-        })
+        jsonPostRequest(
+            uri,
+            {
+                "matchers": matchers,
+                "startsAt": startsAt,
+                "endsAt": endsAt,
+                "createdBy": createdBy,
+                "comment": comment,
+            },
+        )
 
 
 def addAlerts(alerts):
@@ -87,11 +92,11 @@ def newMatcher(name, value, isRegex):
     return {"name": name, "value": value, "isRegex": isRegex}
 
 
-def newAlert(labels, annotations=None, generatorURL="http://localhost:9093"):
+def newAlert(labels, annotations=None, generatorURL="http://localhost:8082/graph"):
     return {
         "labels": labels,
         "annotations": annotations or {},
-        "generatorURL": generatorURL
+        "generatorURL": generatorURL,
     }
 
 
@@ -139,14 +144,24 @@ class AlwaysOnAlert(AlertGenerator):
 
     def alerts(self):
         def _gen(size, cluster):
-            return [newAlert(
-                self._labels(instance="server{}".format(i), cluster=cluster,
-                             severity="info", job="node_exporter", region="US"),
-                self._annotations(
-                    summary="Silence this alert, it's always firing",
-                    repo="Repo: https://github.com/prymitive/karma",
-                    docs="https://karma-dashboard.io/docs/CONFIGURATION.html")
-            ) for i in range(1, size)]
+            return [
+                newAlert(
+                    self._labels(
+                        instance="server{}".format(i),
+                        cluster=cluster,
+                        severity="info",
+                        job="node_exporter",
+                        region="US",
+                    ),
+                    self._annotations(
+                        summary="Silence this alert, it's always firing",
+                        repo="Repo: https://github.com/prymitive/karma",
+                        docs="https://karma-dashboard.io/docs/CONFIGURATION.html",
+                    ),
+                )
+                for i in range(1, size)
+            ]
+
         return _gen(10, "dev") + _gen(5, "staging") + _gen(3, "prod")
 
 
@@ -158,14 +173,19 @@ class RandomInstances(AlertGenerator):
         instances = random.randint(0, 30)
         return [
             newAlert(
-                self._labels(instance="server{}".format(i), cluster="staging",
-                             severity="warning", job="node_exporter",
-                             region="US"),
+                self._labels(
+                    instance="server{}".format(i),
+                    cluster="staging",
+                    severity="warning",
+                    job="node_exporter",
+                    region="US",
+                ),
                 self._annotations(
-                    dashboard="https://www.google.com/search?q="
-                              "server{}".format(i),
-                    repo="Link to github.com maybe")
-            ) for i in range(0, instances)
+                    dashboard="https://www.google.com/search?q=" "server{}".format(i),
+                    repo="Link to github.com maybe",
+                ),
+            )
+            for i in range(0, instances)
         ]
 
 
@@ -179,14 +199,19 @@ class RandomName(AlertGenerator):
             throw = random.randint(0, 1000)
             alerts.append(
                 newAlert(
-                    self._labels(alertname="Alert Nr {}".format(throw),
-                                 instance="server{}".format(i),
-                                 cluster="dev", severity="info",
-                                 job="random_exporter", region="EU"),
+                    self._labels(
+                        alertname="Alert Nr {}".format(throw),
+                        instance="server{}".format(i),
+                        cluster="dev",
+                        severity="info",
+                        job="random_exporter",
+                        region="EU",
+                    ),
                     self._annotations(
                         summary="This is a random alert",
                         dashboard="https://www.google.com/search?q="
-                                  "server{}".format(i))
+                        "server{}".format(i),
+                    ),
                 )
             )
         return alerts
@@ -202,11 +227,16 @@ class LowChance(AlertGenerator):
             return []
         return [
             newAlert(
-                self._labels(instance="server{}".format(i), cluster="dev",
-                             severity="critical", job="random_exporter",
-                             region="EU"),
-                self._annotations()
-            ) for i in range(0, 3)
+                self._labels(
+                    instance="server{}".format(i),
+                    cluster="dev",
+                    severity="critical",
+                    job="random_exporter",
+                    region="EU",
+                ),
+                self._annotations(),
+            )
+            for i in range(0, 3)
         ]
 
 
@@ -217,10 +247,15 @@ class TimeAnnotation(AlertGenerator):
 
     def alerts(self):
         return [
-            newAlert(self._labels(instance="server1", cluster="prod",
-                                  severity="warning", job="ntp_exporter",
-                                  region="AP"),
-                     self._annotations(time=str(int(time.time())))
+            newAlert(
+                self._labels(
+                    instance="server1",
+                    cluster="prod",
+                    severity="warning",
+                    job="ntp_exporter",
+                    region="AP",
+                ),
+                self._annotations(time=str(int(time.time()))),
             )
         ]
 
@@ -234,16 +269,21 @@ class DiskFreeLowAlert(AlertGenerator):
         for i in range(0, 10):
             spaceFree = throw = random.randint(0, 10)
             alerts.append(
-                newAlert(self._labels(instance="server{}".format(i),
-                                      cluster="prod",
-                                      device="/dev/sda{}".format(i),
-                                      mount_point="/disk", severity="critical",
-                                      job="node_exporter", region="AP"),
-                         self._annotations(
-                            summary="Only {}% free space left on /disk".format(
-                                spaceFree),
-                            dashboard="https://wikipedia.org/wiki/Disk_storage",
-                            docs="https://karma-dashboard.io/docs/CONFIGURATION.html")
+                newAlert(
+                    self._labels(
+                        instance="server{}".format(i),
+                        cluster="prod",
+                        device="/dev/sda{}".format(i),
+                        mount_point="/disk",
+                        severity="critical",
+                        job="node_exporter",
+                        region="AP",
+                    ),
+                    self._annotations(
+                        summary="Only {}% free space left on /disk".format(spaceFree),
+                        dashboard="https://wikipedia.org/wiki/Disk_storage",
+                        docs="https://karma-dashboard.io/docs/CONFIGURATION.html",
+                    ),
                 )
             )
         return alerts
@@ -255,12 +295,17 @@ class SilencedAlert(AlertGenerator):
 
     def alerts(self):
         return [
-            newAlert(self._labels(instance="server1", cluster="prod",
-                                  severity="info", job="mysql_exporter",
-                                  region="SA"),
-                     self._annotations(
-                        alertReference="https://www."
-                                       "youtube.com/watch?v=dQw4w9WgXcQ")
+            newAlert(
+                self._labels(
+                    instance="server1",
+                    cluster="prod",
+                    severity="info",
+                    job="mysql_exporter",
+                    region="SA",
+                ),
+                self._annotations(
+                    alertReference="https://www." "youtube.com/watch?v=dQw4w9WgXcQ"
+                ),
             )
         ]
 
@@ -270,8 +315,11 @@ class SilencedAlert(AlertGenerator):
             (
                 [newMatcher("alertname", self.name, False)],
                 "{}Z".format(now.isoformat()),
-                "{}Z".format((now + datetime.timedelta(
-                    minutes=random.randint(1, 60))).isoformat()),
+                "{}Z".format(
+                    (
+                        now + datetime.timedelta(minutes=random.randint(1, 60))
+                    ).isoformat()
+                ),
                 "me@example.com",
                 "This alert is always silenced and the silence comment is very "
                 "long to test the UI. Lorem ipsum dolor sit amet, consectetur "
@@ -281,7 +329,7 @@ class SilencedAlert(AlertGenerator):
                 "consequat. Duis aute irure dolor in reprehenderit in voluptate"
                 " velit esse cillum dolore eu fugiat nulla pariatur. Excepteur "
                 "sint occaecat cupidatat non proident, sunt in culpa qui "
-                "officia deserunt mollit anim id est laborum."
+                "officia deserunt mollit anim id est laborum.",
             )
         ]
 
@@ -292,57 +340,79 @@ class MixedAlerts(AlertGenerator):
 
     def alerts(self):
         return [
-            newAlert(self._labels(instance="server{}".format(i), cluster="prod",
-                                  severity="warning", job="node_exporter",
-                                  region="SA"),
-                     self._annotations(
-                        alertReference="https://www."
-                                       "youtube.com/watch?v=dQw4w9WgXcQ")
-            ) for i in range(1, 9)
+            newAlert(
+                self._labels(
+                    instance="server{}".format(i),
+                    cluster="prod",
+                    severity="warning",
+                    job="node_exporter",
+                    region="SA",
+                ),
+                self._annotations(
+                    alertReference="https://www." "youtube.com/watch?v=dQw4w9WgXcQ"
+                ),
+            )
+            for i in range(1, 9)
         ]
 
     def silences(self):
         now = datetime.datetime.utcnow().replace(microsecond=0)
         return [
             (
-                [newMatcher("alertname", self.name, False),
-                 newMatcher("instance", "server(1|3|5|7)", True)],
+                [
+                    newMatcher("alertname", self.name, False),
+                    newMatcher("instance", "server(1|3|5|7)", True),
+                ],
                 "{}Z".format(now.isoformat()),
-                "{}Z".format((now + datetime.timedelta(
-                    minutes=random.randint(1, 30))).isoformat()),
+                "{}Z".format(
+                    (
+                        now + datetime.timedelta(minutes=random.randint(1, 30))
+                    ).isoformat()
+                ),
                 "me@example.com",
-                "Silence '{}''".format(self.name)
+                "Silence '{}''".format(self.name),
             )
         ]
 
 
 class LongNameAlerts(AlertGenerator):
-    name = ("Some Alerts With A Ridiculously Long Name To Test Label Truncation"
-           " In All The Places We Render Those Alerts")
+    name = (
+        "Some Alerts With A Ridiculously Long Name To Test Label Truncation"
+        " In All The Places We Render Those Alerts"
+    )
     comment = "This alert uses long strings to test the UI"
 
     def alerts(self):
         def _gen(size, cluster):
-            return [newAlert(
-                self._labels(instance="server{}".format(i), cluster=cluster,
-                             severity="info", job="textfile_exporter",
-                             region="CN",
-                             thisIsAVeryLongLabelNameToTestLabelTruncationInAllThePlacesWeRenderItLoremIpsumDolorSitAmet="1"),
-                self._annotations(
-                    verylong="Lorem ipsum dolor sit amet, consectetur "
-                             "adipiscing elit, sed do eiusmod tempor incididunt"
-                             " ut labore et dolore magna aliqua. Ut enim ad "
-                             "minim veniam, quis nostrud exercitation ullamco "
-                             "laboris nisi ut aliquip ex ea commodo consequat. "
-                             "Duis aute irure dolor in reprehenderit in "
-                             "voluptate velit esse cillum dolore eu fugiat "
-                             "nulla pariatur. Excepteur sint occaecat cupidatat"
-                             " non proident, sunt in culpa qui officia deserunt"
-                             " mollit anim id est laborum vvvvvvvvveeeeeeeeeeee"
-                             "errrrrrrrrrrrrrrrrrryyyyyyyyyyyyylllllllllooooooo"
-                             "nnnnnnngggggggggggggggwwwwwwwwwwwwooooooooooooooo"
-                             "rrrrrrrrrrrrrrddddddddddddddddddd")
-            ) for i in range(1, size)]
+            return [
+                newAlert(
+                    self._labels(
+                        instance="server{}".format(i),
+                        cluster=cluster,
+                        severity="info",
+                        job="textfile_exporter",
+                        region="CN",
+                        thisIsAVeryLongLabelNameToTestLabelTruncationInAllThePlacesWeRenderItLoremIpsumDolorSitAmet="1",
+                    ),
+                    self._annotations(
+                        verylong="Lorem ipsum dolor sit amet, consectetur "
+                        "adipiscing elit, sed do eiusmod tempor incididunt"
+                        " ut labore et dolore magna aliqua. Ut enim ad "
+                        "minim veniam, quis nostrud exercitation ullamco "
+                        "laboris nisi ut aliquip ex ea commodo consequat. "
+                        "Duis aute irure dolor in reprehenderit in "
+                        "voluptate velit esse cillum dolore eu fugiat "
+                        "nulla pariatur. Excepteur sint occaecat cupidatat"
+                        " non proident, sunt in culpa qui officia deserunt"
+                        " mollit anim id est laborum vvvvvvvvveeeeeeeeeeee"
+                        "errrrrrrrrrrrrrrrrrryyyyyyyyyyyyylllllllllooooooo"
+                        "nnnnnnngggggggggggggggwwwwwwwwwwwwooooooooooooooo"
+                        "rrrrrrrrrrrrrrddddddddddddddddddd"
+                    ),
+                )
+                for i in range(1, size)
+            ]
+
         return _gen(5, "dev") + _gen(1, "staging") + _gen(11, "prod")
 
 
@@ -352,10 +422,15 @@ class InhibitedAlert(AlertGenerator):
 
     def alerts(self):
         return [
-            newAlert(self._labels(instance="server1", cluster="prod",
-                                  severity="warning", job="textfile_exporter",
-                                  region="CN"),
-                     self._annotations()
+            newAlert(
+                self._labels(
+                    instance="server1",
+                    cluster="prod",
+                    severity="warning",
+                    job="textfile_exporter",
+                    region="CN",
+                ),
+                self._annotations(),
             )
         ]
 
@@ -366,10 +441,15 @@ class InhibitingAlert(AlertGenerator):
 
     def alerts(self):
         return [
-            newAlert(self._labels(instance="server1", cluster="prod",
-                                  severity="critical", job="textfile_exporter",
-                                  region="CN"),
-                     self._annotations()
+            newAlert(
+                self._labels(
+                    instance="server1",
+                    cluster="prod",
+                    severity="critical",
+                    job="textfile_exporter",
+                    region="CN",
+                ),
+                self._annotations(),
             )
         ]
 
@@ -380,12 +460,17 @@ class SilencedAlertWithJiraLink(AlertGenerator):
 
     def alerts(self):
         return [
-            newAlert(self._labels(instance="server%d" % i, cluster="staging",
-                                  severity="critical", job="node_exporter",
-                                  region="AF"),
-                     self._annotations(
-                        dashboard="https://www.atlassian.com/software/jira")
-            )  for i in range(1, 9)
+            newAlert(
+                self._labels(
+                    instance="server%d" % i,
+                    cluster="staging",
+                    severity="critical",
+                    job="node_exporter",
+                    region="AF",
+                ),
+                self._annotations(dashboard="https://www.atlassian.com/software/jira"),
+            )
+            for i in range(1, 9)
         ]
 
     def silences(self):
@@ -394,8 +479,7 @@ class SilencedAlertWithJiraLink(AlertGenerator):
             (
                 [newMatcher("alertname", self.name, False)],
                 "{}Z".format(now.isoformat()),
-                "{}Z".format((now + datetime.timedelta(
-                    minutes=30)).isoformat()),
+                "{}Z".format((now + datetime.timedelta(minutes=30)).isoformat()),
                 "me@example.com",
                 "DEVOPS-123 This text should be a link to the Jira ticket",
             )
@@ -409,11 +493,16 @@ class PaginationTest(AlertGenerator):
     def alerts(self):
         return [
             newAlert(
-                self._labels(instance="server{}".format(i), cluster="dev",
-                             severity="warning", job="node_exporter",
-                             region="US"),
-                self._annotations(dashboard="https://example.com")
-            ) for i in range(0, 500)
+                self._labels(
+                    instance="server{}".format(i),
+                    cluster="dev",
+                    severity="warning",
+                    job="node_exporter",
+                    region="US",
+                ),
+                self._annotations(dashboard="https://example.com"),
+            )
+            for i in range(0, 500)
         ]
 
     def silences(self):
@@ -422,11 +511,14 @@ class PaginationTest(AlertGenerator):
             (
                 [
                     newMatcher("alertname", self.name, False),
-                    newMatcher("instance", "server{}".format(i), True)
+                    newMatcher("instance", "server{}".format(i), True),
                 ],
                 "{}Z".format(now.isoformat()),
-                "{}Z".format((now + datetime.timedelta(
-                    minutes=random.randint(1, 30))).isoformat()),
+                "{}Z".format(
+                    (
+                        now + datetime.timedelta(minutes=random.randint(1, 30))
+                    ).isoformat()
+                ),
                 "me@example.com",
                 "DEVOPS-123 Pagination Test alert silenced with a long text "
                 "to see if it gets truncated properly. It only matches first "
@@ -434,9 +526,11 @@ class PaginationTest(AlertGenerator):
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed "
                 "do eiusmod tempor incididunt ut labore et dolore magna aliqua."
                 " Ut enim ad minim veniam, quis nostrud exercitation ullamco "
-                "laboris nisi ut aliquip ex ea commodo consequat. "
-            ) for i in range(0, 20)
+                "laboris nisi ut aliquip ex ea commodo consequat. ",
+            )
+            for i in range(0, 20)
         ]
+
 
 class RichAnnotations(AlertGenerator):
     name = "Rich Annotations"
@@ -444,15 +538,20 @@ class RichAnnotations(AlertGenerator):
 
     def alerts(self):
         return [
-            newAlert(self._labels(instance="server7", cluster="staging",
-                                  severity="warning", job="textfile_exporter",
-                                  region="SA"),
-                     self._annotations(
-                        html="<a href='http://localhost'>this is link</a>",
-                        moreHTML="<div>this is a div</div>",
-                        emoji="🤔🔥",
-                        docs="🤔🔥 <div>this is a div</div>",
-                     )
+            newAlert(
+                self._labels(
+                    instance="server7",
+                    cluster="staging",
+                    severity="warning",
+                    job="textfile_exporter",
+                    region="SA",
+                ),
+                self._annotations(
+                    html="<a href='http://localhost'>this is link</a>",
+                    moreHTML="<div>this is a div</div>",
+                    emoji="🤔🔥",
+                    docs="🤔🔥 <div>this is a div</div>",
+                ),
             )
         ]
 

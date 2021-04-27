@@ -84,7 +84,7 @@ func TestLabelAutocomplete(t *testing.T) {
 		t.Logf("Testing labels autocomplete using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := testRouter()
-		setupRouter(r)
+		setupRouter(r, nil)
 
 		for _, testVariant := range autocompleteTests {
 			for _, testCase := range testVariant.Tests {

@@ -39,7 +39,7 @@ const MockAlert = (
       cluster: "default",
       state: state,
       startsAt: "2018-08-14T17:36:40.017867056Z",
-      source: "localhost/prometheus",
+      source: "localhost/graph",
       silencedBy: [],
       inhibitedBy: [],
     },

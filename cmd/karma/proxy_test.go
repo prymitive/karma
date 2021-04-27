@@ -522,7 +522,7 @@ func TestProxyUserRewrite(t *testing.T) {
 				}
 
 				r := testRouter()
-				setupRouter(r)
+				setupRouter(r, nil)
 				setupRouterProxyHandlers(r, am)
 
 				apiCache, _ = lru.New(100)
@@ -1169,7 +1169,7 @@ func TestProxySilenceACL(t *testing.T) {
 				silenceACLs = testCase.silenceACLs
 
 				r := testRouter()
-				setupRouter(r)
+				setupRouter(r, nil)
 
 				am, err := alertmanager.NewAlertmanager(
 					"cluster",
@@ -1223,7 +1223,7 @@ func TestProxyRequestReadFailure(t *testing.T) {
 		config.Config.Authentication.BasicAuth.Users = []config.AuthenticationUser{}
 
 		r := testRouter()
-		setupRouter(r)
+		setupRouter(r, nil)
 
 		am, err := alertmanager.NewAlertmanager(
 			"cluster",
@@ -1263,7 +1263,7 @@ func TestProxyRequestToUnsupportedAlertmanager(t *testing.T) {
 	config.Config.Authentication.BasicAuth.Users = []config.AuthenticationUser{}
 
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 
 	am, err := alertmanager.NewAlertmanager(
 		"cluster",

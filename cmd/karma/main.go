@@ -79,7 +79,7 @@ func getViewURL(sub string) string {
 	return u
 }
 
-func setupRouter(router *chi.Mux) {
+func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 	_ = mime.AddExtensionType(".ico", "image/x-icon")
 
 	sentryMiddleware := sentryhttp.New(sentryhttp.Options{
@@ -139,6 +139,9 @@ func setupRouter(router *chi.Mux) {
 	router.Get(getViewURL("/labelNames.json"), knownLabelNames)
 	router.Get(getViewURL("/labelValues.json"), knownLabelValues)
 	router.Get(getViewURL("/silences.json"), silences)
+	router.Post(getViewURL("/history.json"), func(w http.ResponseWriter, r *http.Request) {
+		alertHistory(historyPoller, w, r)
+	})
 
 	router.Get(getViewURL("/custom.css"), serveFileOr404(config.Config.Custom.CSS, "text/css"))
 	router.Get(getViewURL("/custom.js"), serveFileOr404(config.Config.Custom.JS, "application/javascript"))
@@ -295,7 +298,7 @@ func loadTemplates() error {
 	return nil
 }
 
-func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, error) {
+func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, error) {
 	f := pflag.NewFlagSet("karma", errorHandling)
 	printVersion := f.Bool("version", false, "Print version and exit")
 	validateConfig := f.Bool("check-config", false, "Validate configuration and exit")
@@ -304,23 +307,23 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, error) {
 
 	err := f.Parse(os.Args[1:])
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	if *printVersion {
 		fmt.Println(version)
-		return nil, nil
+		return nil, nil, nil
 	}
 
 	configFile, err := config.Config.Read(f)
 	if err != nil {
 		_ = setupLogger()
-		return nil, err
+		return nil, nil, err
 	}
 
 	err = setupLogger()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	if configFile != "" {
@@ -331,7 +334,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, error) {
 
 	// timer duration cannot be zero second or a negative one
 	if config.Config.Alertmanager.Interval <= time.Second*0 {
-		return nil, fmt.Errorf("invalid alertmanager.interval value '%v'", config.Config.Alertmanager.Interval)
+		return nil, nil, fmt.Errorf("invalid alertmanager.interval value '%v'", config.Config.Alertmanager.Interval)
 	}
 
 	log.Info().Msgf("Version: %s", version)
@@ -342,11 +345,11 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, error) {
 	linkDetectRules := []models.LinkDetectRule{}
 	for _, rule := range config.Config.Silences.Comments.LinkDetect.Rules {
 		if rule.Regex == "" || rule.URITemplate == "" {
-			return nil, fmt.Errorf("invalid link detect rule, regex '%s' uriTemplate '%s'", rule.Regex, rule.URITemplate)
+			return nil, nil, fmt.Errorf("invalid link detect rule, regex '%s' uriTemplate '%s'", rule.Regex, rule.URITemplate)
 		}
 		re, err := regexp.Compile(rule.Regex)
 		if err != nil {
-			return nil, fmt.Errorf("invalid link detect rule '%s': %s", rule.Regex, err)
+			return nil, nil, fmt.Errorf("invalid link detect rule '%s': %s", rule.Regex, err)
 		}
 		linkDetectRules = append(linkDetectRules, models.LinkDetectRule{Regex: re, URITemplate: rule.URITemplate})
 	}
@@ -356,11 +359,11 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, error) {
 
 	err = setupUpstreams()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	if len(alertmanager.GetAlertmanagers()) == 0 {
-		return nil, fmt.Errorf("no valid Alertmanager URIs defined")
+		return nil, nil, fmt.Errorf("no valid Alertmanager URIs defined")
 	}
 
 	if config.Config.Authorization.ACL.Silences != "" {
@@ -369,13 +372,13 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, error) {
 			Msg("Reading silence ACL config file")
 		aclConfig, err := config.ReadSilenceACLConfig(config.Config.Authorization.ACL.Silences)
 		if err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 
 		for i, cfg := range aclConfig.Rules {
 			acl, err := newSilenceACLFromConfig(cfg)
 			if err != nil {
-				return nil, fmt.Errorf("invalid silence ACL rule at position %d: %s", i, err)
+				return nil, nil, fmt.Errorf("invalid silence ACL rule at position %d: %s", i, err)
 			}
 			silenceACLs = append(silenceACLs, acl)
 		}
@@ -384,7 +387,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, error) {
 
 	err = loadTemplates()
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	router := chi.NewRouter()
@@ -395,20 +398,21 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, error) {
 			Release: version,
 		}); err != nil {
 			log.Error().Err(err).Str("dsn", config.Config.Sentry.Public).Msg("Sentry initialization failed")
-			return nil, fmt.Errorf("sentry configuration is invalid")
+			return nil, nil, fmt.Errorf("sentry configuration is invalid")
 		}
 		log.Info().Msg("Sentry enabled")
 		defer sentry.Flush(time.Second)
 	}
 
-	setupRouter(router)
+	historyPoller := newHistoryPoller(100, config.Config.History.Timeout)
+	setupRouter(router, historyPoller)
 
 	if *validateConfig {
 		log.Info().Msg("Configuration is valid")
-		return nil, nil
+		return nil, nil, nil
 	}
 
-	return router, nil
+	return router, historyPoller, nil
 }
 
 func writePidFile() error {
@@ -435,7 +439,7 @@ func removePidFile() error {
 }
 
 func serve(errorHandling pflag.ErrorHandling) error {
-	router, err := mainSetup(errorHandling)
+	router, historyPoller, err := mainSetup(errorHandling)
 	if err != nil {
 		return err
 	}
@@ -446,6 +450,10 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	err = writePidFile()
 	if err != nil {
 		return err
+	}
+
+	if config.Config.History.Enabled {
+		go historyPoller.run(config.Config.History.Workers)
 	}
 
 	// before we start try to fetch data from Alertmanager
@@ -495,6 +503,8 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	signal.Notify(quit, os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 	log.Info().Msg("Shutting down HTTP server")
+
+	historyPoller.stop()
 
 	ctx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
 	defer cancel()

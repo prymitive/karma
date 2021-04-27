@@ -54,6 +54,23 @@ and annotations that are shared between all alerts are moved to the footer.
 
 ![Example](/docs/img/alertGroup.png)
 
+#### Alert history
+
+Alertmanager doesn't currently provide any long term storage of alert events
+or a way to query for historical alerts, but each Prometheus server sending
+alerts stores metrics related to triggered alerts.
+When `history:enabled` is `true` karma will use `source` fields from each alert
+to try querying alert related metrics on remote Prometheus servers.
+The result is the number of times given alert group triggered an alert per hour
+in the last 24h, displayed as 24 blocks. The darker the color the more alerts
+were triggered in that hour, as compared by all other hours.
+
+![Example](/docs/img/alertHistory.png)
+
+For this feature to work karma must be able to connect to all Prometheus servers
+sending alerts. Be sure to set `--web.external-url` Prometheus flag to a publicly
+reachable URL of each server.
+
 #### Inhibited alerts
 
 Inhibited alerts (suppressed by other alerts,

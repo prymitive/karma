@@ -7,15 +7,15 @@ import { storiesOf } from "@storybook/react";
 import addHours from "date-fns/addHours";
 import addDays from "date-fns/addDays";
 
-import { MockSilence } from "__fixtures__/Alerts";
-import { AlertStore } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
+import { MockSilence } from "../../__fixtures__/Alerts";
+import { AlertStore } from "../../Stores/AlertStore";
+import { Settings } from "../../Stores/Settings";
 import {
   SilenceFormStore,
   NewEmptyMatcher,
   MatcherWithIDT,
-} from "Stores/SilenceFormStore";
-import { StringToOption } from "Common/Select";
+} from "../../Stores/SilenceFormStore";
+import { StringToOption } from "../../Common/Select";
 import { DateTimeSelect } from "./DateTimeSelect";
 import { SilenceModalContent } from "./SilenceModalContent";
 

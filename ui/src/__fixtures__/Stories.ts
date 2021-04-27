@@ -213,7 +213,7 @@ const MockGrid = (alertStore: AlertStore): void => {
             cluster: "prod",
             state: "suppressed",
             startsAt: "2018-08-14T17:36:40.017867056Z",
-            source: "localhost/prometheus",
+            source: "http://localhost/graph",
             silencedBy: [
               j < 2 ? "'Fake Silence ID / Should be fallback'" : silence.id,
             ],

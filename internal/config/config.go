@@ -98,6 +98,10 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.StringSlice("grid.auto.ignore", []string{}, "List of label names not allowed for automatic multi-grid")
 	f.StringSlice("grid.auto.order", []string{}, "Order of preference for selecting label names for automatic multi-grid")
 
+	f.Bool("history.enabled", true, "Enable alert history queries")
+	f.Duration("history.timeout", time.Second*20, "Timeout for history queries against source Prometheus servers")
+	f.Int("history.workers", 30, "Number of history query workers to run")
+
 	f.Bool("log.config", false, "Log used configuration to log on startup")
 	f.String("log.level", "info",
 		"Log level, one of: debug, info, warning, error, fatal and panic")
