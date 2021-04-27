@@ -1,0 +1,26 @@
+name: Maintenance
+
+on:
+  push:
+    branches: [containers]
+
+jobs:
+  go-mod-upgrades:
+    name: Purge untagged packages
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/github-script@v4
+        id: my-script
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const packages = github.packages.getAllPackageVersionsForAPackageOwnedByTheAuthenticatedUser(
+              {
+                package_type: "container",
+                package_name: "karma",
+              }
+            );
+
+            for (const package of packages) {
+              console.info(package);
+            }
