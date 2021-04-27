@@ -141,7 +141,7 @@ describe("<AlertGroup />", () => {
         cluster: "HA",
         state: "active",
         startsAt: "2018-08-14T17:36:40.017867056Z",
-        source: "localhost/prometheus",
+        source: "http://localhost/graph",
         silencedBy: [],
         inhibitedBy: [],
       });
@@ -151,7 +151,7 @@ describe("<AlertGroup />", () => {
         cluster: "HA",
         state: "active",
         startsAt: "2018-08-14T17:36:40.017867056Z",
-        source: "localhost/prometheus",
+        source: "http://localhost/graph",
         silencedBy: [],
         inhibitedBy: [],
       });
@@ -423,5 +423,19 @@ describe("<AlertGroup /> card theme", () => {
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.find("GroupHeader").prop("themedCounters")).toBe(false);
+  });
+
+  it("renders AlertHistory when enabled", () => {
+    alertStore.settings.values.historyEnabled = true;
+    group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
+    const tree = MountedAlertGroup(jest.fn(), false);
+    expect(tree.find("AlertHistory")).toHaveLength(1);
+  });
+
+  it("doesn't render AlertHistory when disabled", () => {
+    alertStore.settings.values.historyEnabled = false;
+    group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
+    const tree = MountedAlertGroup(jest.fn(), false);
+    expect(tree.find("AlertHistory")).toHaveLength(0);
   });
 });

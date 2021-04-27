@@ -49,6 +49,7 @@ $with-click-light: $black;
 @import "~bootswatch/dist/flatly/bootswatch";
 
 $alert-bg: $white;
+$alert-history-inactive: lighten($light, 1%);
 $alertgroup-body-bg: $white;
 $alertgroup-footer-bg: $gray-100;
 $silence-bg: $gray-100;

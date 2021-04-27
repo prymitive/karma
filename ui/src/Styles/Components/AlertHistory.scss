@@ -1,0 +1,49 @@
+.alert-history-tooltip {
+  width: 100%;
+  line-height: 4px;
+}
+svg.alert-history {
+  height: 4px;
+  width: 100%;
+
+  margin-left: 1px;
+  margin-right: 1px;
+
+  rect {
+    width: 100%;
+    height: 100%;
+
+    transition-property: fill;
+    transition-duration: 0.3s;
+
+    &.firing {
+      &.firing-0 {
+        fill: #fadbd8;
+      }
+      &.firing-1 {
+        fill: #f3a69e;
+      }
+      &.firing-2 {
+        fill: #ee8277;
+      }
+      &.firing-3 {
+        fill: #e95e50;
+      }
+      &.firing-4 {
+        fill: #d04436;
+      }
+      &.firing-5 {
+        fill: #a2352a;
+      }
+    }
+    &.inactive {
+      fill: $alert-history-inactive;
+    }
+    &.fetching {
+      fill: transparent;
+    }
+    &.error {
+      fill: $warning;
+    }
+  }
+}

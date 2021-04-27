@@ -294,6 +294,7 @@ type Settings struct {
 	Sorting                  SortSettings                 `json:"sorting"`
 	SilenceForm              SilenceFormSettings          `json:"silenceForm"`
 	AlertAcknowledgement     AlertAcknowledgementSettings `json:"alertAcknowledgement"`
+	HistoryEnabled           bool                         `json:"historyEnabled"`
 }
 
 type AuthenticationInfo struct {

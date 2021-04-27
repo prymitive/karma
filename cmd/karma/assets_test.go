@@ -68,7 +68,7 @@ func TestCustomizationAssets(t *testing.T) {
 			config.Config.Custom.CSS = staticFileTest.customCSS
 			config.Config.Custom.JS = staticFileTest.customJS
 			r := testRouter()
-			setupRouter(r)
+			setupRouter(r, nil)
 
 			req := httptest.NewRequest("GET", staticFileTest.path, nil)
 			resp := httptest.NewRecorder()
@@ -92,7 +92,7 @@ func TestCustomizationAssets(t *testing.T) {
 func TestStaticExpires404(t *testing.T) {
 	mockConfig()
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 
 	req := httptest.NewRequest("GET", "/static/foobar.js", nil)
 	resp := httptest.NewRecorder()
@@ -105,7 +105,7 @@ func TestStaticExpires404(t *testing.T) {
 func TestAssetFallbackMIME(t *testing.T) {
 	mockConfig()
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 	req := httptest.NewRequest("GET", "/static/js/App.tsx", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
@@ -164,7 +164,7 @@ func TestStaticFiles(t *testing.T) {
 
 	mockConfig()
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 	for _, staticFileTest := range staticFileTests {
 		req := httptest.NewRequest("GET", staticFileTest.path, nil)
 		resp := httptest.NewRecorder()
@@ -227,7 +227,7 @@ func TestStaticFilesPrefix(t *testing.T) {
 	defer os.Unsetenv("LISTEN_PREFIX")
 	mockConfig()
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 	for _, staticFileTest := range staticFilePrefixTests {
 		req := httptest.NewRequest("GET", staticFileTest.path, nil)
 		resp := httptest.NewRecorder()

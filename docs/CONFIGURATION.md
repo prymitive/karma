@@ -710,6 +710,38 @@ grid:
           info: 3
 ```
 
+### Alert history
+
+`history` section allows to enable and configure alert history queries.
+When enabled karma will use `source` fields to try finding remote
+Prometheus servers sending alerts. If `source` is a link that points at
+a reachable Prometheus server then karma will query its metrics to estimate
+how many times did that alert fire in the last 24h.
+
+Syntax:
+
+```YAML
+history:
+  enabled: bool
+  timeout: duration
+  workers: integer
+```
+
+- `enabled` - enable alert history UI and backend query support
+- `timeout` - timeout for HTTP requests send to remote Prometheus servers
+- `workers` - number of worker threads to start, each worker handles
+  one outgoing HTTP request, more workers allows to handle more concurrent
+  queries if you have a large number of Prometheus servers sending alerts
+
+Defaults:
+
+```YAML
+history:
+  enabled: true
+  timeout: 20s
+  workers: 30
+```
+
 ### Karma
 
 `karma` section allows configuring miscellaneous internal options.

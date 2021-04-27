@@ -65,6 +65,10 @@ grid:
       - cluster
     ignore:
       - region
+history:
+  enabled: true
+  timeout: 5s
+  workers: 5
 karma:
   name: karma-demo
 labels:

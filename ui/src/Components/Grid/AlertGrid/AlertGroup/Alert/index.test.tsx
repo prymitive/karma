@@ -101,7 +101,7 @@ describe("<Alert />", () => {
       cluster: "HA",
       state: "active",
       startsAt: "2018-08-14T17:36:40.017867056Z",
-      source: "localhost/prometheus",
+      source: "http://localhost/graph",
       silencedBy: [],
       inhibitedBy: ["123456"],
     });
@@ -136,7 +136,7 @@ describe("<Alert />", () => {
       cluster: "HA",
       state: "active",
       startsAt: "2018-08-14T17:36:40.017867056Z",
-      source: "localhost/prometheus",
+      source: "http://localhost/graph",
       silencedBy: [],
       inhibitedBy: [],
     });
@@ -146,7 +146,7 @@ describe("<Alert />", () => {
       cluster: "HA",
       state: "active",
       startsAt: "2018-08-14T17:36:40.017867056Z",
-      source: "localhost/prometheus",
+      source: "http://localhost/graph",
       silencedBy: [],
       inhibitedBy: [],
     });

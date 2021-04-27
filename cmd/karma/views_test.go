@@ -67,7 +67,7 @@ func testRouter() *chi.Mux {
 func TestHealth(t *testing.T) {
 	mockConfig()
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 	req := httptest.NewRequest("GET", "/health", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
@@ -79,7 +79,7 @@ func TestHealth(t *testing.T) {
 func TestRobots(t *testing.T) {
 	mockConfig()
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 	req := httptest.NewRequest("GET", "/robots.txt", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
@@ -93,7 +93,7 @@ func TestHealthPrefix(t *testing.T) {
 	defer os.Unsetenv("LISTEN_PREFIX")
 	mockConfig()
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 	req := httptest.NewRequest("GET", "/prefix/health", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
@@ -105,7 +105,7 @@ func TestHealthPrefix(t *testing.T) {
 func TestIndex(t *testing.T) {
 	mockConfig()
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 	req := httptest.NewRequest("GET", "/", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
@@ -119,7 +119,7 @@ func TestIndexPrefix(t *testing.T) {
 	defer os.Unsetenv("LISTEN_PREFIX")
 	mockConfig()
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 	req := httptest.NewRequest("GET", "/prefix/", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
@@ -156,7 +156,7 @@ func TestAlerts(t *testing.T) {
 		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := testRouter()
-		setupRouter(r)
+		setupRouter(r, nil)
 		// re-run a few times to test the cache
 		for i := 1; i <= 3; i++ {
 			req := httptest.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
@@ -342,7 +342,7 @@ func TestGrids(t *testing.T) {
 			t.Run(fmt.Sprintf("version=%q gridLabel=%q query=%q", version, testCase.gridLabel, testCase.requestQuery), func(t *testing.T) {
 				mockAlerts(version)
 				r := testRouter()
-				setupRouter(r)
+				setupRouter(r, nil)
 				// re-run a few times to test the cache
 				for i := 1; i <= 3; i++ {
 					apiCache.Purge()
@@ -387,7 +387,7 @@ func TestValidateAllAlerts(t *testing.T) {
 		t.Logf("Validating alerts.json response using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := testRouter()
-		setupRouter(r)
+		setupRouter(r, nil)
 		// re-run a few times to test the cache
 		for i := 1; i <= 3; i++ {
 			req := httptest.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
@@ -569,7 +569,7 @@ func TestAutocomplete(t *testing.T) {
 		t.Logf("Testing autocomplete using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		r := testRouter()
-		setupRouter(r)
+		setupRouter(r, nil)
 
 		// re-run a few times to test the cache
 		for i := 1; i <= 3; i++ {
@@ -613,7 +613,7 @@ func TestAutocomplete(t *testing.T) {
 func TestGzipMiddleware(t *testing.T) {
 	mockConfig()
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
 		// re-run a few times to test the cache
@@ -640,7 +640,7 @@ func TestGzipMiddleware(t *testing.T) {
 func TestGzipMiddlewareWithoutAcceptEncoding(t *testing.T) {
 	mockConfig()
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
 		// re-run a few times to test the cache
@@ -806,7 +806,7 @@ func TestSilences(t *testing.T) {
 			t.Logf("Validating silences.json response using mock files from Alertmanager %s", version)
 			mockAlerts(version)
 			r := testRouter()
-			setupRouter(r)
+			setupRouter(r, nil)
 			// re-run a few times to test the cache
 			for i := 1; i <= 3; i++ {
 				uri := fmt.Sprintf("/silences.json?showExpired=%s&sortReverse=%s&searchTerm=%s", testCase.showExpired, testCase.sortReverse, testCase.searchTerm)
@@ -838,7 +838,7 @@ func TestSilences(t *testing.T) {
 func TestCORS(t *testing.T) {
 	mockConfig()
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 	req := httptest.NewRequest("OPTIONS", "/alerts.json", nil)
 	req.Header.Set("Origin", "foo.example.com")
 	resp := httptest.NewRecorder()
@@ -851,7 +851,7 @@ func TestCORS(t *testing.T) {
 func TestEmptySettings(t *testing.T) {
 	mockConfig()
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 	req := httptest.NewRequest("GET", "/alerts.json", nil)
 
 	resp := httptest.NewRecorder()
@@ -890,6 +890,7 @@ func TestEmptySettings(t *testing.T) {
 			Author:          "karma",
 			Comment:         "ACK! This alert was acknowledged using karma on %NOW%",
 		},
+		HistoryEnabled: true,
 	}
 
 	if diff := cmp.Diff(expectedSettings, ur.Settings); diff != "" {
@@ -1022,7 +1023,7 @@ func TestAuthentication(t *testing.T) {
 			config.Config.Authentication.Header.ValueRegex = testCase.headerRe
 			config.Config.Authentication.BasicAuth.Users = testCase.basicAuthUsers
 			r := testRouter()
-			setupRouter(r)
+			setupRouter(r, nil)
 			mockCache()
 			for _, path := range []string{
 				"/",
@@ -1082,7 +1083,7 @@ func TestInvalidBasicAuthHeader(t *testing.T) {
 		{Username: "john", Password: "foobar"},
 	}
 	r := testRouter()
-	setupRouter(r)
+	setupRouter(r, nil)
 	mockCache()
 	for _, path := range []string{
 		"/",
@@ -2303,7 +2304,7 @@ func TestUpstreamStatus(t *testing.T) {
 				t.Error(err)
 			}
 			r := testRouter()
-			setupRouter(r)
+			setupRouter(r, nil)
 
 			httpmock.Reset()
 			for _, m := range testCase.mocks {
@@ -2556,7 +2557,7 @@ func TestAlertFilters(t *testing.T) {
 				pullFromAlertmanager()
 
 				r := testRouter()
-				setupRouter(r)
+				setupRouter(r, nil)
 				// re-run a few times to test the cache
 				for i := 1; i <= 3; i++ {
 					req := httptest.NewRequest("GET", fmt.Sprintf("/alerts.json?%s", q), nil)
@@ -2743,7 +2744,7 @@ func TestAutoGrid(t *testing.T) {
 			t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 			mockAlerts(version)
 			r := testRouter()
-			setupRouter(r)
+			setupRouter(r, nil)
 			// re-run a few times to test the cache
 			for i := 1; i <= 3; i++ {
 				req := httptest.NewRequest("GET", fmt.Sprintf("/alerts.json?%s", tc.q), nil)

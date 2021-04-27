@@ -128,6 +128,11 @@ type configSchema struct {
 			Order  []string
 		}
 	} `yaml:"grid"`
+	History struct {
+		Enabled bool
+		Workers int
+		Timeout time.Duration
+	}
 	Karma struct {
 		Name string
 	}
