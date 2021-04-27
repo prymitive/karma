@@ -35,6 +35,11 @@ beforeEach(() => {
 
   window.matchMedia = mockMatchMedia({});
 
+  window.requestAnimationFrame = (cb: FrameRequestCallback) => {
+    cb(0);
+    return 0;
+  };
+
   jest.spyOn(React, "useContext").mockImplementation(() => MockThemeContext);
 
   Object.defineProperty(document.body, "clientWidth", {
