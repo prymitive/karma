@@ -14,7 +14,7 @@ jobs:
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
-            const packages = github.packages.getAllPackageVersionsForAPackageOwnedByTheAuthenticatedUser(
+            const packages = github.rest.packages.getAllPackageVersionsForAPackageOwnedByTheAuthenticatedUser(
               {
                 package_type: "container",
                 package_name: "karma",
