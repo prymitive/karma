@@ -26,3 +26,7 @@
     max-width: $modal-xl + 10;
   }
 }
+
+.modal-backdrop {
+  backdrop-filter: blur(2px);
+}
