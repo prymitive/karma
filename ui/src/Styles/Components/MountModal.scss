@@ -3,7 +3,6 @@ $move: -50px;
 $opacity-modal: 0;
 
 $duration-bg: 0.2s;
-$opacity-bg: 0.8;
 
 $easing-enter: ease-out;
 $easing-exit: ease-in;
@@ -34,24 +33,26 @@ $easing-exit: ease-in;
 }
 
 .components-animation-backdrop {
-  will-change: opacity;
+  will-change: background-color;
   transform: translateZ(0);
 }
 .components-animation-backdrop-enter {
-  opacity: 0.01;
+  background-color: rgba(30, 30, 30, 0.01);
 }
 .components-animation-backdrop-enter-active {
-  opacity: $opacity-bg;
+  background-color: rgba(30, 30, 30, 0.8);
   transition: opacity $duration-bg $easing-exit;
+  backdrop-filter: saturate(50%) blur(6px);
 }
 .components-animation-backdrop-enter-done {
-  opacity: $opacity-bg;
+  background-color: rgba(30, 30, 30, 0.8);
   transition: opacity $duration-bg $easing-exit;
+  backdrop-filter: saturate(50%) blur(6px);
 }
 .components-animation-backdrop-exit {
-  opacity: $opacity-bg;
+  background-color: rgba(30, 30, 30, 0.8);
 }
 .components-animation-backdrop-exit-active {
-  opacity: 0.01;
+  background-color: rgba(30, 30, 30, 0.01);
   transition: opacity $duration-bg $easing-exit;
 }
