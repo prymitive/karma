@@ -8,7 +8,7 @@ import { StaticLabels } from "Common/Query";
 import { AlertStateT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 
-const isBackgroundDark = (brightness: number) => brightness <= 125;
+const isBackgroundDark = (brightness: number) => brightness <= 130;
 
 export interface ClassAndStyleT {
   style: { [key: string]: string | number };
