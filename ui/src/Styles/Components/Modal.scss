@@ -12,7 +12,7 @@
 }
 
 .modal-content-blur {
-  filter: blur(2px);
+  filter: saturate(50%) blur(6px);
 }
 
 @include media-breakpoint-up(lg) {
@@ -25,8 +25,4 @@
   .modal-xl.modal-upper {
     max-width: $modal-xl + 10;
   }
-}
-
-.modal-backdrop {
-  backdrop-filter: blur(2px);
 }

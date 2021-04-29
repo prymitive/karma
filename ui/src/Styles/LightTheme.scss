@@ -48,15 +48,6 @@ $with-click-light: $black;
 @import "Styles/RebootlessBootstrap";
 @import "~bootswatch/dist/flatly/bootswatch";
 
-// this is used for navbar, to make it transparent
-.bg-primary-transparent {
-  background-color: rgba($primary, 0.95);
-}
-// version for modals
-.bg-primary-transparent-80 {
-  background-color: rgba($dark, 0.8);
-}
-
 $alert-bg: $white;
 $alertgroup-body-bg: $white;
 $alertgroup-footer-bg: $gray-100;
