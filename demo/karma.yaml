@@ -28,7 +28,7 @@ alertmanager:
         filters:
           DeadMansSwitch:
             - alertname=Random Instances
-            - instance=server30
+            - instance=server10
 
 alertAcknowledgement:
   enabled: true
