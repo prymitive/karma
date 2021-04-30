@@ -24,6 +24,11 @@ alertmanager:
       proxy: true
       cors:
         credentials: same-origin
+      healthcheck:
+        filters:
+          DeadMansSwitch:
+            - alertname=Random Instances
+            - instance=server30
 
 alertAcknowledgement:
   enabled: true
