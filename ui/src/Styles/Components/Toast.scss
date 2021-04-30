@@ -21,7 +21,13 @@
 }
 
 .bg-toast {
-  background-color: darken($dark, 5%);
+  @supports (backdrop-filter: blur(1px)) {
+    background-color: rgba(darken($dark, 5%), 0.85);
+    backdrop-filter: saturate(50%) blur(6px);
+  }
+  @supports not (backdrop-filter: blur(1px)) {
+    background-color: darken($dark, 5%);
+  }
 }
 
 .toast-upgrade-progressbar {
