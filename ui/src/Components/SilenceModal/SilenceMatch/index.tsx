@@ -55,7 +55,7 @@ const SilenceMatch: FC<{
           <TooltipWrapper title="Remove this matcher">
             <button
               type="button"
-              className="btn btn-outline-danger"
+              className="btn btn-sm btn-outline-danger"
               onClick={onDelete}
             >
               <FontAwesomeIcon icon={faTrash} fixedWidth />
