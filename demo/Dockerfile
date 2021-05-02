@@ -23,7 +23,7 @@ ARG VERSION
 RUN CGO_ENABLED=0 make -C /src VERSION="${VERSION:-dev}" karma
 
 FROM alpine:3.13
-COPY --from=ghcr.io/prymitive/kthxbye:v0.10 /kthxbye /kthxbye
+COPY --from=ghcr.io/prymitive/kthxbye:v0.11 /kthxbye /kthxbye
 COPY --from=prom/alertmanager:v0.21.0 /bin/alertmanager /alertmanager
 RUN apk add supervisor python3 && rm  -rf /tmp/* /var/cache/apk/*
 COPY demo/supervisord.conf /etc/supervisord.conf
