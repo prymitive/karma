@@ -86,7 +86,7 @@ describe("<Grid />", () => {
   });
 
   it("renders only FatalError on failed fetch", () => {
-    alertStore.status.error = "error";
+    alertStore.status.setError("error");
     alertStore.data.setUpstreams({
       counters: { total: 0, healthy: 0, failed: 1 },
       instances: [
@@ -110,33 +110,33 @@ describe("<Grid />", () => {
   });
 
   it("renders UpgradeNeeded when alertStore.info.upgradeNeeded=true", () => {
-    alertStore.info.upgradeNeeded = true;
+    alertStore.info.setUpgradeNeeded(true);
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<UpgradeNeeded />");
   });
 
   it("renders ReloadNeeded when alertStore.info.reloadNeeded=true", () => {
-    alertStore.info.reloadNeeded = true;
+    alertStore.info.setReloadNeeded(true);
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<ReloadNeeded />");
   });
 
   it("renders AlertGrid before any fetch finished when totalAlerts is 0", () => {
-    alertStore.info.version = "unknown";
+    alertStore.info.setVersion("unknown");
     alertStore.info.setTotalAlerts(0);
     const tree = ShallowGrid();
     expect(tree.find("AlertGrid")).toHaveLength(1);
   });
 
   it("renders EmptyGrid after first fetch when totalAlerts is 0", () => {
-    alertStore.info.version = "1.2.3";
+    alertStore.info.setVersion("1.2.3");
     alertStore.info.setTotalAlerts(0);
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<EmptyGrid />");
   });
 
   it("renders AlertGrid after first fetch finished when totalAlerts is >0", () => {
-    alertStore.info.version = "unknown";
+    alertStore.info.setVersion("unknown");
     alertStore.info.setTotalAlerts(1);
     const tree = ShallowGrid();
     expect(tree.find("AlertGrid")).toHaveLength(1);

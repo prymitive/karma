@@ -58,7 +58,7 @@ const makeErrors = () => {
 
 describe("<AppToasts />", () => {
   it("doesn't render anything when alertStore.info.upgradeNeeded=true", () => {
-    alertStore.info.upgradeNeeded = true;
+    alertStore.info.setUpgradeNeeded(true);
     const tree = mount(<AppToasts alertStore={alertStore} />);
     expect(tree.html()).toBe("");
   });
@@ -128,8 +128,8 @@ describe("<AppToasts />", () => {
 
   it("clicking navbar icon toggles all notifications", () => {
     makeErrors();
-    alertStore.info.upgradeNeeded = false;
-    alertStore.info.upgradeReady = false;
+    alertStore.info.setUpgradeNeeded(false);
+    alertStore.info.setUpgradeReady(false);
     const tree = mount(<AppToasts alertStore={alertStore} />);
     expect(tree.find("div.bg-toast")).toHaveLength(2);
     expect(tree.find("span.badge.cursor-pointer.with-click")).toHaveLength(2);
@@ -143,7 +143,7 @@ describe("<AppToasts />", () => {
   });
 
   it("renders UpgradeToastMessage when alertStore.info.upgradeReady=true", () => {
-    alertStore.info.upgradeReady = true;
+    alertStore.info.setUpgradeReady(true);
     const tree = mount(<AppToasts alertStore={alertStore} />);
     expect(tree.find("UpgradeToastMessage")).toHaveLength(1);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();

@@ -321,7 +321,7 @@ describe("<Fetcher /> children", () => {
 
   it("doesn't render any children when upgrade is needed", () => {
     act(() => {
-      alertStore.info.upgradeNeeded = true;
+      alertStore.info.setUpgradeNeeded(true);
     });
     const tree = mount(
       <Fetcher alertStore={alertStore} settingsStore={settingsStore} />

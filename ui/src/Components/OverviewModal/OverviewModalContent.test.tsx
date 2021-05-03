@@ -33,7 +33,7 @@ describe("<OverviewModalContent />", () => {
       NewUnappliedFilter("abc=xyz"),
       NewUnappliedFilter("foo=bar"),
     ]);
-    alertStore.data.counters = [
+    alertStore.data.setCounters([
       {
         name: "foo",
         hits: 16,
@@ -67,21 +67,21 @@ describe("<OverviewModalContent />", () => {
           },
         ],
       },
-    ];
+    ]);
 
     const tree = MountedOverviewModalContent();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("matches snapshot with no labels to show", () => {
-    alertStore.data.counters = [];
+    alertStore.data.setCounters([]);
     const tree = MountedOverviewModalContent();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("renders all labels after expand button click", () => {
     alertStore.info.setTotalAlerts(5);
-    alertStore.data.counters = [
+    alertStore.data.setCounters([
       {
         name: "foo",
         hits: 5,
@@ -102,7 +102,7 @@ describe("<OverviewModalContent />", () => {
           },
         ],
       },
-    ];
+    ]);
     const tree = MountedOverviewModalContent();
 
     expect(tree.find("span.components-label")).toHaveLength(2 + 1); // +1 for toggle icon

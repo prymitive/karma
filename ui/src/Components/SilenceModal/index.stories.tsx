@@ -47,8 +47,7 @@ storiesOf("SilenceModal", module)
     const settingsStore = new Settings(null);
     const silenceFormStore = new SilenceFormStore();
 
-    alertStore.info.authentication.enabled = true;
-    alertStore.info.authentication.username = "me@example.com";
+    alertStore.info.setAuthentication(true, "me@example.com");
 
     alertStore.data.setUpstreams({
       counters: { healthy: 3, failed: 0, total: 3 },
@@ -94,7 +93,7 @@ storiesOf("SilenceModal", module)
     });
 
     silenceFormStore.toggle.visible = true;
-    silenceFormStore.data.autofillMatchers = false;
+    silenceFormStore.data.setAutofillMatchers(false);
     silenceFormStore.data.setMatchers([
       MockMatcher("cluster", ["prod"], false),
       MockMatcher("instance", ["server1", "server3"], true),

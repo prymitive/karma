@@ -59,10 +59,10 @@ beforeEach(() => {
 
 describe("<SilenceSubmitController />", () => {
   it("renders MultiClusterStatus when multiple clusters are used", () => {
-    silenceFormStore.data.requestsByCluster = {
+    silenceFormStore.data.setRequestsByCluster({
       ha: NewClusterRequest("ha", ["am1", "am2"]),
       single: NewClusterRequest("single", ["single"]),
-    };
+    });
 
     const tree = shallow(
       <SilenceSubmitController
@@ -75,9 +75,9 @@ describe("<SilenceSubmitController />", () => {
   });
 
   it("renders SingleClusterStatus when multiple clusters are used", () => {
-    silenceFormStore.data.requestsByCluster = {
+    silenceFormStore.data.setRequestsByCluster({
       ha: NewClusterRequest("ha", ["am1", "am2"]),
-    };
+    });
 
     const tree = shallow(
       <SilenceSubmitController
@@ -90,7 +90,7 @@ describe("<SilenceSubmitController />", () => {
   });
 
   it("resets the form on 'Back' button click", () => {
-    silenceFormStore.data.currentStage = "submit";
+    silenceFormStore.data.setStage("submit");
     const tree = shallow(
       <SilenceSubmitController
         alertStore={alertStore}
@@ -105,10 +105,10 @@ describe("<SilenceSubmitController />", () => {
 
 describe("<MultiClusterStatus />", () => {
   it("renders all passed SilenceSubmitProgress", () => {
-    silenceFormStore.data.requestsByCluster = {
+    silenceFormStore.data.setRequestsByCluster({
       ha: NewClusterRequest("ha", ["am1", "am2"]),
       single: NewClusterRequest("single", ["single"]),
-    };
+    });
     const tree = shallow(
       <MultiClusterStatus
         alertStore={alertStore}
@@ -120,7 +120,7 @@ describe("<MultiClusterStatus />", () => {
 
   it("renders spinner for pending requests", () => {
     const single = NewClusterRequest("single", ["single"]);
-    silenceFormStore.data.requestsByCluster = { single: single };
+    silenceFormStore.data.setRequestsByCluster({ single: single });
     const tree = shallow(
       <MultiClusterStatus
         alertStore={alertStore}
@@ -137,7 +137,7 @@ describe("<MultiClusterStatus />", () => {
     const single = NewClusterRequest("single", ["single"]);
     single.isDone = true;
     single.error = "fake error";
-    silenceFormStore.data.requestsByCluster = { single: single };
+    silenceFormStore.data.setRequestsByCluster({ single: single });
     const tree = shallow(
       <MultiClusterStatus
         alertStore={alertStore}
@@ -155,7 +155,7 @@ describe("<MultiClusterStatus />", () => {
     single.isDone = true;
     single.silenceID = "123456789";
     single.silenceLink = "http://localhost";
-    silenceFormStore.data.requestsByCluster = { single: single };
+    silenceFormStore.data.setRequestsByCluster({ single: single });
     const tree = shallow(
       <MultiClusterStatus
         alertStore={alertStore}
@@ -175,7 +175,7 @@ describe("<MultiClusterStatus />", () => {
 describe("<SingleClusterStatus />", () => {
   it("renders spinner for pending requests", () => {
     const single = NewClusterRequest("single", ["single"]);
-    silenceFormStore.data.requestsByCluster = { single: single };
+    silenceFormStore.data.setRequestsByCluster({ single: single });
     const tree = shallow(
       <SingleClusterStatus
         alertStore={alertStore}
@@ -191,7 +191,7 @@ describe("<SingleClusterStatus />", () => {
     const single = NewClusterRequest("single", ["single"]);
     single.isDone = true;
     single.error = "fake error";
-    silenceFormStore.data.requestsByCluster = { single: single };
+    silenceFormStore.data.setRequestsByCluster({ single: single });
     const tree = shallow(
       <SingleClusterStatus
         alertStore={alertStore}
@@ -210,7 +210,7 @@ describe("<SingleClusterStatus />", () => {
     single.isDone = true;
     single.silenceID = "123456789";
     single.silenceLink = "http://localhost";
-    silenceFormStore.data.requestsByCluster = { single: single };
+    silenceFormStore.data.setRequestsByCluster({ single: single });
     const tree = shallow(
       <SingleClusterStatus
         alertStore={alertStore}

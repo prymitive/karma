@@ -14,7 +14,7 @@ const AlertGroupWidthConfiguration: FC<{
   ]);
 
   const onChangeComplete = debounce((value: number) => {
-    settingsStore.gridConfig.config.groupWidth = value as number;
+    settingsStore.gridConfig.setGroupWidth(value);
   }, 200);
 
   return (

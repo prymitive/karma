@@ -41,7 +41,7 @@ describe("<AlertGroupWidthConfiguration />", () => {
   });
 
   it("custom interval value is rendered correctly", () => {
-    settingsStore.gridConfig.config.groupWidth = 460;
+    settingsStore.gridConfig.setGroupWidth(460);
     const component = FakeConfiguration();
     expect(component.find("Range").props().values).toContain(460);
   });

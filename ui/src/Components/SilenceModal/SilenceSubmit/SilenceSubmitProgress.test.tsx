@@ -7,38 +7,41 @@ import fetchMock from "fetch-mock";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, NewClusterRequest } from "Stores/SilenceFormStore";
 import { SilenceSubmitProgress } from "./SilenceSubmitProgress";
+import { APIAlertsResponseUpstreamsT } from "Models/APITypes";
 
 let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;
+
+const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
+  counters: { total: 1, healthy: 1, failed: 0 },
+  clusters: { mockAlertmanager: ["mockAlertmanager"] },
+  instances: [
+    {
+      name: "mockAlertmanager",
+      uri: "http://localhost",
+      publicURI: "http://example.com",
+      readonly: false,
+      headers: { foo: "bar" },
+      corsCredentials: "include",
+      error: "",
+      version: "0.17.0",
+      cluster: "mockAlertmanager",
+      clusterMembers: ["mockAlertmanager"],
+    },
+  ],
+});
 
 beforeEach(() => {
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
 
-  alertStore.data.setUpstreams({
-    counters: { total: 1, healthy: 1, failed: 0 },
-    clusters: { mockAlertmanager: ["mockAlertmanager"] },
-    instances: [
-      {
-        name: "mockAlertmanager",
-        uri: "http://localhost",
-        publicURI: "http://example.com",
-        readonly: false,
-        headers: { foo: "bar" },
-        corsCredentials: "include",
-        error: "",
-        version: "0.17.0",
-        cluster: "mockAlertmanager",
-        clusterMembers: ["mockAlertmanager"],
-      },
-    ],
-  });
+  alertStore.data.setUpstreams(generateUpstreams());
 
-  silenceFormStore.data.requestsByCluster = {
+  silenceFormStore.data.setRequestsByCluster({
     mockAlertmanager: NewClusterRequest("mockAlertmanager", [
       "mockAlertmanager",
     ]),
-  };
+  });
 
   fetchMock.resetHistory();
   fetchMock.mock(
@@ -114,7 +117,9 @@ describe("<SilenceSubmitProgress />", () => {
   });
 
   it("uses CORS credentials from alertmanager config", async () => {
-    alertStore.data.upstreams.instances[0].corsCredentials = "same-origin";
+    const upstreams = generateUpstreams();
+    upstreams.instances[0].corsCredentials = "same-origin";
+    alertStore.data.setUpstreams(upstreams);
     MountedSilenceSubmitProgress();
     await act(async () => {
       await fetchMock.flush(true);
@@ -165,9 +170,9 @@ describe("<SilenceSubmitProgress />", () => {
         },
       ],
     });
-    silenceFormStore.data.requestsByCluster = {
+    silenceFormStore.data.setRequestsByCluster({
       ha: NewClusterRequest("ha", ["am1", "am2"]),
-    };
+    });
 
     mount(
       <SilenceSubmitProgress
@@ -234,9 +239,9 @@ describe("<SilenceSubmitProgress />", () => {
         },
       ],
     });
-    silenceFormStore.data.requestsByCluster = {
+    silenceFormStore.data.setRequestsByCluster({
       ha: NewClusterRequest("ha", ["am1", "am2"]),
-    };
+    });
 
     const tree = mount(
       <SilenceSubmitProgress
@@ -288,9 +293,9 @@ describe("<SilenceSubmitProgress />", () => {
         },
       ],
     });
-    silenceFormStore.data.requestsByCluster = {
+    silenceFormStore.data.setRequestsByCluster({
       ha: NewClusterRequest("ha", ["am1", "am2"]),
-    };
+    });
 
     mount(
       <SilenceSubmitProgress
@@ -327,9 +332,9 @@ describe("<SilenceSubmitProgress />", () => {
       clusters: { ha: ["am1", "am2"] },
       instances: [],
     });
-    silenceFormStore.data.requestsByCluster = {
+    silenceFormStore.data.setRequestsByCluster({
       ha: NewClusterRequest("ha", ["am1", "am2"]),
-    };
+    });
 
     mount(
       <SilenceSubmitProgress
@@ -393,9 +398,9 @@ describe("<SilenceSubmitProgress />", () => {
         },
       ],
     });
-    silenceFormStore.data.requestsByCluster = {
+    silenceFormStore.data.setRequestsByCluster({
       ha: NewClusterRequest("ha", ["am1", "am2"]),
-    };
+    });
 
     mount(
       <SilenceSubmitProgress
@@ -463,9 +468,9 @@ describe("<SilenceSubmitProgress />", () => {
         },
       ],
     });
-    silenceFormStore.data.requestsByCluster = {
+    silenceFormStore.data.setRequestsByCluster({
       ha: NewClusterRequest("ha", ["am1", "am2"]),
-    };
+    });
 
     mount(
       <SilenceSubmitProgress

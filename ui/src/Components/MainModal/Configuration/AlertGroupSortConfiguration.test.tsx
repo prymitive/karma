@@ -43,7 +43,7 @@ describe("<AlertGroupSortConfiguration />", () => {
   });
 
   it("invalid sortOrder value is reset on mount", () => {
-    (settingsStore.gridConfig.config.sortOrder as string) = "badValue";
+    settingsStore.gridConfig.setSortOrder("badValue" as any);
     FakeConfiguration();
     expect(settingsStore.gridConfig.config.sortOrder).toBe(
       settingsStore.gridConfig.options.default.value

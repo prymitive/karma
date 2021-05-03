@@ -27,7 +27,7 @@ const UpgradeToastMessage: FC<{
 
   const setPause = useCallback(() => {
     if (isPaused) {
-      alertStore.info.setUpgradeNeeded();
+      alertStore.info.setUpgradeNeeded(true);
     } else {
       setIsPaused(true);
     }
@@ -56,7 +56,7 @@ const UpgradeToastMessage: FC<{
           className={`progress-bar bg-white ${
             isPaused ? "" : "toast-upgrade-progressbar"
           }`}
-          onAnimationEnd={alertStore.info.setUpgradeNeeded}
+          onAnimationEnd={() => alertStore.info.setUpgradeNeeded(true)}
           role="progressbar"
           style={{ width: 100 }}
         ></div>

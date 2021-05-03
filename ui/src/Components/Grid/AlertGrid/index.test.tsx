@@ -437,7 +437,7 @@ describe("<AlertGrid />", () => {
     { canvas: 4000, columns: 10 },
   ].map((t) =>
     it(`renders ${t.columns} column(s) on ${t.canvas} breakpoint`, () => {
-      settingsStore.gridConfig.config.groupWidth = 400;
+      settingsStore.gridConfig.setGroupWidth(400);
       VerifyColumnCount(t.canvas - 1, t.canvas - 1, Math.max(1, t.columns - 1));
       VerifyColumnCount(t.canvas, t.canvas, t.columns);
       VerifyColumnCount(t.canvas + 1, t.canvas + 1, t.columns);
@@ -459,7 +459,7 @@ describe("<AlertGrid />", () => {
     { canvas: 3840, columns: 9 },
   ].map((t) =>
     it(`renders ${t.columns} column(s) with ${t.canvas} resolution`, () => {
-      settingsStore.gridConfig.config.groupWidth = 400;
+      settingsStore.gridConfig.setGroupWidth(400);
       VerifyColumnCount(t.canvas, t.canvas, t.columns);
     })
   );
@@ -522,7 +522,7 @@ describe("<AlertGrid />", () => {
   });
 
   it("scrollbar render doesn't resize alert groups", () => {
-    settingsStore.gridConfig.config.groupWidth = 400;
+    settingsStore.gridConfig.setGroupWidth(400);
 
     MockGroupList(20, 1);
     // set initial width
@@ -551,7 +551,7 @@ describe("<AlertGrid />", () => {
   });
 
   it("viewport resize doesn't allow loops", () => {
-    settingsStore.gridConfig.config.groupWidth = 400;
+    settingsStore.gridConfig.setGroupWidth(400);
 
     MockGroupList(10, 1);
 

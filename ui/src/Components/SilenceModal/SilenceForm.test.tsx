@@ -9,20 +9,19 @@ import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { QueryOperators, StaticLabels } from "Common/Query";
 import { ThemeContext } from "Components/Theme";
 import SilenceForm from "./SilenceForm";
+import { APIAlertsResponseUpstreamsT } from "Models/APITypes";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;
 let silenceFormStore: SilenceFormStore;
 
-beforeEach(() => {
-  alertStore = new AlertStore([]);
-  settingsStore = new Settings(null);
-  silenceFormStore = new SilenceFormStore();
-
-  alertStore.data.upstreams.clusters = {
-    am1: ["am1"],
-  };
-  alertStore.data.setInstances([
+const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
+  counters: {
+    healthy: 1,
+    failed: 0,
+    total: 1,
+  },
+  instances: [
     {
       name: "am1",
       uri: "http://am1.example.com",
@@ -35,7 +34,17 @@ beforeEach(() => {
       cluster: "am1",
       clusterMembers: ["am1"],
     },
-  ]);
+  ],
+  clusters: {
+    am1: ["am1"],
+  },
+});
+
+beforeEach(() => {
+  alertStore = new AlertStore([]);
+  settingsStore = new Settings(null);
+  silenceFormStore = new SilenceFormStore();
+  alertStore.data.setUpstreams(generateUpstreams());
 });
 
 const MountedSilenceForm = () => {
@@ -84,7 +93,7 @@ describe("<SilenceForm /> matchers", () => {
       ...filterCombos("cluster"),
       ...filterCombos("foo"),
     ]);
-    silenceFormStore.data.autofillMatchers = true;
+    silenceFormStore.data.setAutofillMatchers(true);
     const tree = MountedSilenceForm();
     const matchers = tree.find("SilenceMatch");
     expect(matchers).toHaveLength(6);
@@ -174,7 +183,7 @@ describe("<SilenceForm /> matchers", () => {
       ...filterCombos("cluster"),
       ...filterCombos("foo"),
     ]);
-    silenceFormStore.data.autofillMatchers = false;
+    silenceFormStore.data.setAutofillMatchers(false);
     const tree = MountedSilenceForm();
     const matchers = tree.find("SilenceMatch");
     expect(matchers).toHaveLength(1);
@@ -204,7 +213,7 @@ describe("<SilenceForm /> matchers", () => {
   });
 
   it("trash icon is visible when there are two matchers", () => {
-    silenceFormStore.data.autofillMatchers = false;
+    silenceFormStore.data.setAutofillMatchers(false);
     silenceFormStore.data.addEmptyMatcher();
     silenceFormStore.data.addEmptyMatcher();
     const tree = MountedSilenceForm();
@@ -216,7 +225,7 @@ describe("<SilenceForm /> matchers", () => {
   });
 
   it("clicking trash icon on a matcher select removes it", () => {
-    silenceFormStore.data.autofillMatchers = false;
+    silenceFormStore.data.setAutofillMatchers(false);
     silenceFormStore.data.addEmptyMatcher();
     silenceFormStore.data.addEmptyMatcher();
     silenceFormStore.data.addEmptyMatcher();
@@ -261,7 +270,7 @@ describe("<SilenceForm /> preview", () => {
     silenceFormStore.data.setAlertmanagers([{ label: "am1", value: ["am1"] }]);
     silenceFormStore.data.setAuthor("me@example.com");
     silenceFormStore.data.setComment("fake silence");
-    silenceFormStore.data.autofillMatchers = false;
+    silenceFormStore.data.setAutofillMatchers(false);
 
     const tree = MountedSilenceForm();
     tree.find(".badge.cursor-pointer.text-muted").simulate("click");
@@ -280,7 +289,7 @@ describe("<SilenceForm /> preview", () => {
     silenceFormStore.data.setAlertmanagers([{ label: "am1", value: ["am1"] }]);
     silenceFormStore.data.setAuthor("me@example.com");
     silenceFormStore.data.setComment("fake silence");
-    silenceFormStore.data.autofillMatchers = false;
+    silenceFormStore.data.setAutofillMatchers(false);
 
     const tree = MountedSilenceForm();
     tree.find(".badge.cursor-pointer.text-muted").simulate("click");
@@ -296,8 +305,7 @@ describe("<SilenceForm /> preview", () => {
 
 describe("<SilenceForm /> inputs", () => {
   it("author is read-only when info.authentication.enabled is true", () => {
-    alertStore.info.authentication.enabled = true;
-    alertStore.info.authentication.username = "auth@example.com";
+    alertStore.info.setAuthentication(true, "auth@example.com");
     const tree = MountedSilenceForm();
     const input = tree.find("input[placeholder='Author']");
     expect(input.props().readOnly).toBe(true);
@@ -306,7 +314,7 @@ describe("<SilenceForm /> inputs", () => {
   });
 
   it("default author value comes from Settings store", () => {
-    settingsStore.silenceFormConfig.config.author = "foo@example.com";
+    settingsStore.silenceFormConfig.saveAuthor("foo@example.com");
     const tree = MountedSilenceForm();
     const input = tree.find("input[placeholder='Author']");
     expect(input.props().value).toBe("foo@example.com");
@@ -314,7 +322,7 @@ describe("<SilenceForm /> inputs", () => {
   });
 
   it("default author value is empty if nothing is stored in Settings", () => {
-    settingsStore.silenceFormConfig.config.author = "";
+    settingsStore.silenceFormConfig.saveAuthor("");
     const tree = MountedSilenceForm();
     const input = tree.find("input[placeholder='Author']");
     expect(input.text()).toBe("");

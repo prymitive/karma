@@ -3,7 +3,11 @@ import { act } from "react-dom/test-utils";
 import { mount } from "enzyme";
 
 import { MockAlertGroup, MockAlert } from "__fixtures__/Alerts";
-import { APIAlertGroupT, APIAlertT } from "Models/APITypes";
+import {
+  APIAlertGroupT,
+  APIAlertT,
+  APIAlertsResponseUpstreamsT,
+} from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { AlertMenu, MenuContent } from "./AlertMenu";
@@ -15,6 +19,49 @@ let group: APIAlertGroupT;
 
 let MockAfterClick: () => void;
 let MockSetIsMenuOpen: () => void;
+
+const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
+  counters: { total: 1, healthy: 1, failed: 0 },
+  clusters: { default: ["am1"], ro: ["ro"], am2: ["am2"] },
+  instances: [
+    {
+      name: "am1",
+      uri: "http://localhost:8080",
+      publicURI: "http://example.com",
+      readonly: false,
+      headers: {},
+      corsCredentials: "include",
+      error: "",
+      version: "0.17.0",
+      cluster: "default",
+      clusterMembers: ["am1"],
+    },
+    {
+      name: "ro",
+      uri: "http://localhost:8080",
+      publicURI: "http://example.com",
+      readonly: true,
+      headers: {},
+      corsCredentials: "include",
+      error: "",
+      version: "0.17.0",
+      cluster: "ro",
+      clusterMembers: ["ro"],
+    },
+    {
+      name: "am2",
+      uri: "http://localhost:8080",
+      publicURI: "http://example.com",
+      readonly: false,
+      headers: {},
+      corsCredentials: "include",
+      error: "",
+      version: "0.17.0",
+      cluster: "am2",
+      clusterMembers: ["am2"],
+    },
+  ],
+});
 
 beforeEach(() => {
   jest.useFakeTimers();
@@ -28,48 +75,7 @@ beforeEach(() => {
   alert = MockAlert([], { foo: "bar" }, "active");
   group = MockAlertGroup({ alertname: "Fake Alert" }, [alert], [], {}, {});
 
-  alertStore.data.setUpstreams({
-    counters: { total: 1, healthy: 1, failed: 0 },
-    clusters: { default: ["am1"], ro: ["ro"], am2: ["am2"] },
-    instances: [
-      {
-        name: "am1",
-        uri: "http://localhost:8080",
-        publicURI: "http://example.com",
-        readonly: false,
-        headers: {},
-        corsCredentials: "include",
-        error: "",
-        version: "0.17.0",
-        cluster: "default",
-        clusterMembers: ["am1"],
-      },
-      {
-        name: "ro",
-        uri: "http://localhost:8080",
-        publicURI: "http://example.com",
-        readonly: true,
-        headers: {},
-        corsCredentials: "include",
-        error: "",
-        version: "0.17.0",
-        cluster: "ro",
-        clusterMembers: ["ro"],
-      },
-      {
-        name: "am2",
-        uri: "http://localhost:8080",
-        publicURI: "http://example.com",
-        readonly: false,
-        headers: {},
-        corsCredentials: "include",
-        error: "",
-        version: "0.17.0",
-        cluster: "am2",
-        clusterMembers: ["am2"],
-      },
-    ],
-  });
+  alertStore.data.setUpstreams(generateUpstreams());
 });
 
 const MountedAlertMenu = (group: APIAlertGroupT) => {
@@ -171,8 +177,10 @@ describe("<MenuContent />", () => {
   });
 
   it("'Silence' menu entry is disabled when all Alertmanager instances are read-only", () => {
-    alertStore.data.upstreams.instances[0].readonly = true;
-    alertStore.data.upstreams.instances[2].readonly = true;
+    const upstreams = generateUpstreams();
+    upstreams.instances[0].readonly = true;
+    upstreams.instances[2].readonly = true;
+    alertStore.data.setUpstreams(upstreams);
     const tree = MountedMenuContent(group);
     const button = tree.find(".dropdown-item").at(1);
     expect(button.hasClass("disabled")).toBe(true);

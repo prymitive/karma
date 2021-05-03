@@ -15,14 +15,20 @@ beforeEach(() => {
 
 describe("<GetClassAndStyle />", () => {
   it("static label uses StaticColorLabelClassMap.badge", () => {
-    alertStore.settings.values.staticColorLabels = ["foo", "job", "bar"];
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{ staticColorLabels: ["foo", "job", "bar"] },
+    });
     const cs = GetClassAndStyle(alertStore, "foo", "bar");
     expect(cs.colorClassNames).toContain(StaticColorLabelClassMap.badge);
   });
 
   Object.entries(StaticColorLabelClassMap).map(([key, _]) =>
     it(`non-static label doesn't use StaticColorLabelClassMap.${key}`, () => {
-      alertStore.settings.values.staticColorLabels = [];
+      alertStore.settings.setValues({
+        ...alertStore.settings.values,
+        ...{ staticColorLabels: [] },
+      });
       const cs = GetClassAndStyle(alertStore, "foo", "bar");
       expect(cs.colorClassNames).not.toContain(StaticColorLabelClassMap.badge);
     })
@@ -63,13 +69,19 @@ describe("<GetClassAndStyle />", () => {
   });
 
   it("style prop on a label included in staticColorLabels should be empty", () => {
-    alertStore.settings.values.staticColorLabels = ["foo", "job", "bar"];
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{ staticColorLabels: ["foo", "job", "bar"] },
+    });
     const cs = GetClassAndStyle(alertStore, "foo", "bar");
     expect(cs.style).toEqual({});
   });
 
   it("style prop on a label without any color information should be empty", () => {
-    alertStore.settings.values.staticColorLabels = [];
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{ staticColorLabels: [] },
+    });
     const cs = GetClassAndStyle(alertStore, "foo", "bar");
     expect(cs.style).toEqual({});
   });

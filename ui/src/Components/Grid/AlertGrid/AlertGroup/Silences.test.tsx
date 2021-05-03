@@ -33,7 +33,7 @@ describe("<RenderSilence />", () => {
   it("renders ManagedSilence if silence is present in AlertStore", () => {
     const silence = MockSilence();
 
-    alertStore.data.silences = { fakeCluster: { [silence.id]: silence } };
+    alertStore.data.setSilences({ fakeCluster: { [silence.id]: silence } });
 
     const tree = mount(
       <RenderSilence
@@ -52,7 +52,7 @@ describe("<RenderSilence />", () => {
   it("re-render when silence was removed AlertStore is a no-op", () => {
     const silence = MockSilence();
 
-    alertStore.data.silences = { fakeCluster: { [silence.id]: silence } };
+    alertStore.data.setSilences({ fakeCluster: { [silence.id]: silence } });
 
     const tree = mount(
       <RenderSilence
@@ -66,7 +66,7 @@ describe("<RenderSilence />", () => {
     expect(tree.find("ManagedSilence")).toHaveLength(1);
     const snapshot = toDiffableHtml(tree.html());
 
-    alertStore.data.silences = {};
+    alertStore.data.setSilences({});
 
     tree.setProps({});
     expect(tree.find("ManagedSilence")).toHaveLength(1);

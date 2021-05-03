@@ -138,6 +138,7 @@ class GridConfig {
   setSortOrder: (o: SortOrderT) => void;
   setSortLabel: (l: string) => void;
   setSortReverse: (v: boolean | null) => void;
+  setGroupWidth: (w: number) => void;
 
   constructor(groupWidth: number) {
     this.config = localStored(
@@ -159,6 +160,9 @@ class GridConfig {
     });
     this.setSortReverse = action((v: boolean | null) => {
       this.config.reverseSort = v;
+    });
+    this.setGroupWidth = action((w: number) => {
+      this.config.groupWidth = w;
     });
   }
 }

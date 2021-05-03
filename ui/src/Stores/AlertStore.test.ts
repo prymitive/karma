@@ -177,9 +177,9 @@ describe("AlertStore.info", () => {
   it("setUpgradeNeeded() sets upgradeNeeded to true", () => {
     const store = new AlertStore([]);
     expect(store.info.upgradeNeeded).toBe(false);
-    store.info.setUpgradeNeeded();
+    store.info.setUpgradeNeeded(true);
     expect(store.info.upgradeNeeded).toBe(true);
-    store.info.setUpgradeNeeded();
+    store.info.setUpgradeNeeded(true);
     expect(store.info.upgradeNeeded).toBe(true);
   });
 });
@@ -575,8 +575,8 @@ describe("AlertStore.fetch", () => {
   });
 
   it("unapplied filters are marked as applied on fetch error", async () => {
-    const store = new AlertStore(["foo"]);
-    store.filters.values[0].applied = false;
+    const store = new AlertStore([]);
+    store.filters.setFilterValues([NewUnappliedFilter("foo")]);
 
     jest.spyOn(console, "trace").mockImplementation(() => {});
     fetchMock.reset();
@@ -600,7 +600,7 @@ describe("AlertStore.fetch", () => {
     const store = new AlertStore(["label=value"]);
 
     // initial fetch, should update settings
-    store.settings.values = { foo: "bar" } as any;
+    store.settings.setValues({ foo: "bar" } as any);
     await expect(store.fetch("", false, "", "", "")).resolves.toBeUndefined();
     expect(store.settings.values).toMatchObject({
       staticColorLabels: ["job"],
@@ -664,14 +664,14 @@ describe("AlertStore.fetch", () => {
     const g1 = MockGroup("group1", 1, 1, 0);
     const g2 = MockGroup("group2", 1, 1, 0);
     const g3 = MockGroup("group3", 1, 1, 0);
-    store.data.grids = [
+    store.data.setGrids([
       {
         labelName: "",
         labelValue: "",
         alertGroups: [g1, g2, g3],
         stateCount: { unprocessed: 0, active: 3, suppressed: 0 },
       },
-    ];
+    ]);
     expect(store.data.grids).toHaveLength(1);
     expect(Object.keys(store.data.grids[0].alertGroups)).toHaveLength(3);
 

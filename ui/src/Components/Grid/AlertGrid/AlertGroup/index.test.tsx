@@ -42,7 +42,7 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
   group = MockGroup("fakeGroup");
 
-  alertStore.data.receivers = ["by-cluster-service", "by-name"];
+  alertStore.data.setReceivers(["by-cluster-service", "by-name"]);
 });
 
 afterEach(() => {
@@ -91,7 +91,7 @@ const ValidateCollapse = (
 ) => {
   global.innerWidth = innerWidth;
 
-  settingsStore.alertGroupConfig.config.defaultCollapseState = defaultCollapseState;
+  settingsStore.alertGroupConfig.setDefaultCollapseState(defaultCollapseState);
 
   MockAlerts(3);
   const tree = MountedAlertGroup(jest.fn(), false);
@@ -242,14 +242,14 @@ describe("<AlertGroup />", () => {
   });
 
   it("renders @receiver label when alertStore.data.receivers.length > 1", () => {
-    alertStore.data.receivers = ["foo", "bar"];
+    alertStore.data.setReceivers(["foo", "bar"]);
     MockAlerts(10);
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.html()).toMatch(/@receiver:/);
   });
 
   it("doesn't render @receiver label when alertStore.data.receivers.length == 0", () => {
-    alertStore.data.receivers = [];
+    alertStore.data.setReceivers([]);
     MockAlerts(10);
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.html()).not.toMatch(/@receiver:/);
@@ -426,14 +426,20 @@ describe("<AlertGroup /> card theme", () => {
   });
 
   it("renders AlertHistory when enabled", () => {
-    alertStore.settings.values.historyEnabled = true;
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{ historyEnabled: true },
+    });
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.find("AlertHistory")).toHaveLength(1);
   });
 
   it("doesn't render AlertHistory when disabled", () => {
-    alertStore.settings.values.historyEnabled = false;
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{ historyEnabled: false },
+    });
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.find("AlertHistory")).toHaveLength(0);
