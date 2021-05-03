@@ -237,13 +237,14 @@ interface SilenceFormStoreDataT {
   resetStartEnd: () => void;
   resetProgress: () => void;
   resetSilenceID: () => void;
-  setSilenceID: (id: string) => void;
+  setSilenceID: (id: string | null) => void;
   setAlertmanagers: (val: MultiValueOptionT[]) => void;
   setAutofillMatchers: (v: boolean) => void;
   setResetInputs: (v: boolean) => void;
-  setStageSubmit: () => void;
+  setStage: (val: SilenceFormStageT) => void;
   setMatchers: (m: MatcherWithIDT[]) => void;
   addEmptyMatcher: () => void;
+  addMatcherWithID: (m: MatcherWithIDT) => void;
   deleteMatcher: (id: string) => void;
   fillMatchersFromGroup: (
     group: APIAlertGroupT,
@@ -265,6 +266,11 @@ interface SilenceFormStoreDataT {
   incEnd: (minutes: number) => void;
   decEnd: (minutes: number) => void;
   setWasValidated: (v: boolean) => void;
+  setRequestsByCluster: (val: { [key: string]: ClusterRequestT }) => void;
+  setRequestsByClusterUpdate: (
+    key: string,
+    v: Partial<ClusterRequestT>
+  ) => void;
   readonly toAlertmanagerPayload: AlertmanagerSilencePayloadT;
   readonly toDuration: DurationT;
 }
@@ -411,7 +417,7 @@ class SilenceFormStore {
           this.silenceID = null;
         },
 
-        setSilenceID(id: string) {
+        setSilenceID(id: string | null) {
           this.silenceID = id;
         },
 
@@ -426,8 +432,8 @@ class SilenceFormStore {
           this.resetInputs = v;
         },
 
-        setStageSubmit() {
-          this.currentStage = "submit";
+        setStage(val: SilenceFormStageT) {
+          this.currentStage = val;
         },
 
         setMatchers(m: MatcherWithIDT[]) {
@@ -437,6 +443,9 @@ class SilenceFormStore {
         // append a new empty matcher to the list
         addEmptyMatcher() {
           this.matchers.push(NewEmptyMatcher());
+        },
+        addMatcherWithID(m: MatcherWithIDT) {
+          this.matchers.push(m);
         },
 
         deleteMatcher(id: string) {
@@ -541,6 +550,16 @@ class SilenceFormStore {
           this.wasValidated = v;
         },
 
+        setRequestsByCluster(val: { [key: string]: ClusterRequestT }) {
+          this.requestsByCluster = val;
+        },
+        setRequestsByClusterUpdate(key: string, v: Partial<ClusterRequestT>) {
+          this.requestsByCluster[key] = {
+            ...this.requestsByCluster[key],
+            ...v,
+          };
+        },
+
         get toAlertmanagerPayload() {
           const startsAt = new Date(this.startsAt);
           startsAt.setSeconds(0);
@@ -577,9 +596,10 @@ class SilenceFormStore {
         setAlertmanagers: action.bound,
         setAutofillMatchers: action.bound,
         setResetInputs: action.bound,
-        setStageSubmit: action.bound,
+        setStage: action.bound,
         setMatchers: action.bound,
         addEmptyMatcher: action.bound,
+        addMatcherWithID: action.bound,
         deleteMatcher: action.bound,
         fillMatchersFromGroup: action.bound,
         fillFormFromSilence: action.bound,
@@ -594,6 +614,8 @@ class SilenceFormStore {
         decEnd: action.bound,
         isValid: computed,
         setWasValidated: action.bound,
+        setRequestsByCluster: action.bound,
+        setRequestsByClusterUpdate: action.bound,
         toAlertmanagerPayload: computed,
         toDuration: computed,
       },

@@ -81,16 +81,23 @@ const MockGroup = (
 };
 
 const MockGrid = (alertStore: AlertStore): void => {
-  alertStore.settings.values.alertAcknowledgement.enabled = true;
-  alertStore.data.receivers = ["by-cluster-service", "by-name"];
+  alertStore.settings.setValues({
+    ...alertStore.settings.values,
+    ...{
+      alertAcknowledgement: {
+        ...alertStore.settings.values.alertAcknowledgement,
+        enabled: true,
+      },
+    },
+  });
+  alertStore.data.setReceivers(["by-cluster-service", "by-name"]);
 
   const silence = MockSilence();
   silence.startsAt = "2018-08-14T12:00:00Z";
   silence.endsAt = "2018-08-14T18:00:00Z";
-  alertStore.data.silences = { prod: {} };
-  alertStore.data.silences["prod"][silence.id] = silence;
+  alertStore.data.setSilences({ prod: { [silence.id]: silence } });
 
-  alertStore.data.colors = {
+  alertStore.data.setColors({
     group: {
       group1: {
         brightness: 50,
@@ -123,9 +130,9 @@ const MockGrid = (alertStore: AlertStore): void => {
         background: "rgba(66,250,123,255)",
       },
     },
-  };
+  });
 
-  alertStore.data.counters = [
+  alertStore.data.setCounters([
     {
       name: "@receiver",
       hits: 2,
@@ -193,7 +200,7 @@ const MockGrid = (alertStore: AlertStore): void => {
         },
       ],
     },
-  ];
+  ]);
 
   const groups = [];
   for (let i = 1; i <= 10; i++) {

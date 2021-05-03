@@ -7,17 +7,14 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
 import { AlertManagerInput } from ".";
+import { APIAlertsResponseUpstreamsT } from "Models/APITypes";
 
 let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;
 
-beforeEach(() => {
-  alertStore = new AlertStore([]);
-  alertStore.data.upstreams.clusters = {
-    HA: ["am1", "am2"],
-    am3: ["am3"],
-  };
-  alertStore.data.setInstances([
+const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
+  counters: { total: 3, healthy: 3, failed: 0 },
+  instances: [
     {
       name: "am1",
       uri: "http://am1.example.com",
@@ -54,7 +51,13 @@ beforeEach(() => {
       cluster: "am3",
       clusterMembers: ["am3"],
     },
-  ]);
+  ],
+  clusters: { HA: ["am1", "am2"], am3: ["am3"] },
+});
+
+beforeEach(() => {
+  alertStore = new AlertStore([]);
+  alertStore.data.setUpstreams(generateUpstreams());
   silenceFormStore = new SilenceFormStore();
 });
 
@@ -166,7 +169,7 @@ describe("<AlertManagerInput />", () => {
   });
 
   it("is enabled when silenceFormStore.data.silenceID is null", () => {
-    silenceFormStore.data.silenceID = null;
+    silenceFormStore.data.setSilenceID(null);
     const tree = MountedAlertManagerInput();
     const select = tree.find("StateManager");
     expect((select.props() as any).isDisabled).toBeFalsy();
@@ -192,9 +195,11 @@ describe("<AlertManagerInput />", () => {
   });
 
   it("doesn't include readonly instances", () => {
-    alertStore.data.upstreams.instances[0].readonly = true;
-    alertStore.data.upstreams.instances[2].readonly = true;
+    const upstreams = generateUpstreams();
+    upstreams.instances[0].readonly = true;
+    upstreams.instances[2].readonly = true;
     MountedAlertManagerInput();
+    alertStore.data.setUpstreams(upstreams);
     expect(silenceFormStore.data.alertmanagers).toHaveLength(1);
     expect(silenceFormStore.data.alertmanagers).toContainEqual({
       label: "am2",

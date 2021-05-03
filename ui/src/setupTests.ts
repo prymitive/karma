@@ -8,10 +8,19 @@ import { useInView } from "react-intersection-observer";
 // react-idle-timer >= 4.6.0
 import "regenerator-runtime/runtime";
 
+import { configure } from "mobx";
+
 import { FetchRetryConfig } from "Common/Fetch";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { useFetchGet } from "Hooks/useFetchGet";
+
+configure({
+  enforceActions: "always",
+  //computedRequiresReaction: true,
+  //reactionRequiresObservable: true,
+  //observableRequiresReaction: true,
+});
 
 jest.mock("Hooks/useFetchGet");
 

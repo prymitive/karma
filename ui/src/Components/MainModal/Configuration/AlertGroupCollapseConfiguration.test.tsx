@@ -30,8 +30,7 @@ describe("<AlertGroupCollapseConfiguration />", () => {
   });
 
   it("resets stored config to defaults if it is invalid", (done) => {
-    (settingsStore.alertGroupConfig.config
-      .defaultCollapseState as string) = "foo";
+    settingsStore.alertGroupConfig.setDefaultCollapseState("foo" as any);
     const tree = FakeConfiguration();
     const select = tree.find("div.react-select__value-container");
     expect(select.text()).toBe(

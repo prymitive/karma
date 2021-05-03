@@ -143,7 +143,7 @@ describe("<SilenceModal />", () => {
     // mark form as dirty, resetProgress() should change this value to false
     silenceFormStore.data.setWasValidated(true);
     // disable autofill, closing modal should re-enable it
-    silenceFormStore.data.autofillMatchers = false;
+    silenceFormStore.data.setAutofillMatchers(false);
 
     // click to hide
     toggle.simulate("click");

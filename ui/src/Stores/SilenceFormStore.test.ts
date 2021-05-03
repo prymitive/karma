@@ -70,7 +70,7 @@ describe("SilenceFormStore.toggle", () => {
 
   it("hide() set 'visible' to false", () => {
     expect(store.toggle.visible).toBe(false);
-    store.toggle.visible = true;
+    store.toggle.show();
     expect(store.toggle.visible).toBe(true);
     store.toggle.hide();
     expect(store.toggle.visible).toBe(false);
@@ -89,7 +89,7 @@ describe("SilenceFormStore.data", () => {
   });
 
   it("resetProgress() sets currentStage to UserInput", () => {
-    store.data.currentStage = "submit";
+    store.data.setStage("submit");
     store.data.resetProgress();
     expect(store.data.currentStage).toBe("form");
   });
@@ -292,7 +292,7 @@ describe("SilenceFormStore.data", () => {
   });
 
   it("fillMatchersFromGroup() resets silenceID if set", () => {
-    store.data.silenceID = "12345";
+    store.data.setSilenceID("12345");
     const group = MockGroup();
     store.data.fillMatchersFromGroup(group, [], [], [group.alerts[0]]);
     expect(store.data.silenceID).toBeNull();
@@ -401,14 +401,14 @@ describe("SilenceFormStore.data", () => {
   }
 
   it("toAlertmanagerPayload constains id when store.data.silenceID is set", () => {
-    store.data.silenceID = "12345";
+    store.data.setSilenceID("12345");
     expect(store.data.toAlertmanagerPayload).toMatchObject({
       id: "12345",
     });
   });
 
   it("toAlertmanagerPayload doesn't contain id when store.data.silenceID is null", () => {
-    store.data.silenceID = null;
+    store.data.setSilenceID(null);
     expect(store.data.toAlertmanagerPayload.id).toBeUndefined();
   });
 
@@ -437,7 +437,7 @@ describe("SilenceFormStore.data", () => {
     const b64 = store.data.toBase64;
 
     store.data.setMatchers([]);
-    store.data.comment = "";
+    store.data.setComment("");
 
     store.data.fromBase64(b64);
     expect(store.data.matchers).toMatchObject([
@@ -550,7 +550,7 @@ describe("SilenceFormStore.data.isValid", () => {
       MockMatcher("foo", [{ label: "bar", value: "bar" }]),
     ]);
     store.data.setAuthor("me@example.com");
-    store.data.comment = "fake silence";
+    store.data.setComment("fake silence");
     expect(store.data.isValid).toBe(true);
   });
 });

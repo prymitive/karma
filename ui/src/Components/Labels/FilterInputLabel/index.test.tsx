@@ -84,12 +84,18 @@ describe("<FilterInputLabel /> className", () => {
   });
 
   it("applied filter included in staticColorLabels with '=' matcher should use 'btn-info' class", () => {
-    alertStore.settings.values.staticColorLabels = ["foo"];
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{ staticColorLabels: ["foo"] },
+    });
     ValidateClass("=", true, "btn-info");
   });
 
   it("applied filter included in staticColorLabels with any matcher other than '=' should use 'btn-default' class", () => {
-    alertStore.settings.values.staticColorLabels = ["foo"];
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{ staticColorLabels: ["foo"] },
+    });
     for (const matcher of NonEqualMatchers) {
       ValidateClass(matcher, true, "btn-default");
     }

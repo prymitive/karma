@@ -7,7 +7,7 @@ import { advanceTo, clear } from "jest-date-mock";
 import { MockSilence } from "__fixtures__/Alerts";
 import { PressKey } from "__fixtures__/PressKey";
 import { useFetchDelete } from "Hooks/useFetchDelete";
-import { APISilenceT } from "Models/APITypes";
+import { APISilenceT, APIAlertsResponseUpstreamsT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { DeleteSilence, DeleteSilenceModalContent } from "./DeleteSilence";
@@ -19,6 +19,25 @@ let silenceFormStore: SilenceFormStore;
 let cluster: string;
 let silence: APISilenceT;
 
+const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
+  counters: { total: 1, healthy: 1, failed: 0 },
+  instances: [
+    {
+      name: "am1",
+      cluster: "am",
+      uri: "http://localhost:9093",
+      publicURI: "http://localhost:9093",
+      readonly: false,
+      error: "",
+      version: "0.17.0",
+      headers: {},
+      corsCredentials: "include",
+      clusterMembers: ["am1"],
+    },
+  ],
+  clusters: { am: ["am1"] },
+});
+
 beforeEach(() => {
   advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
   jest.useFakeTimers();
@@ -28,24 +47,7 @@ beforeEach(() => {
   cluster = "am";
   silence = MockSilence();
 
-  alertStore.data.setUpstreams({
-    counters: { total: 1, healthy: 1, failed: 0 },
-    instances: [
-      {
-        name: "am1",
-        cluster: "am",
-        uri: "http://localhost:9093",
-        publicURI: "http://localhost:9093",
-        readonly: false,
-        error: "",
-        version: "0.17.0",
-        headers: {},
-        corsCredentials: "include",
-        clusterMembers: ["am1"],
-      },
-    ],
-    clusters: { am: ["am1"] },
-  });
+  alertStore.data.setUpstreams(generateUpstreams());
 });
 
 afterEach(() => {
@@ -137,7 +139,10 @@ describe("<DeleteSilence />", () => {
   });
 
   it("button is disabled when all alertmanager instances are read-only", () => {
-    alertStore.data.upstreams.instances[0].readonly = true;
+    const upstreams = generateUpstreams();
+    upstreams.instances[0].readonly = true;
+    alertStore.data.setUpstreams(upstreams);
+
     const tree = mount(
       <DeleteSilence
         alertStore={alertStore}
@@ -197,9 +202,11 @@ describe("<DeleteSilenceModalContent />", () => {
       typeof useFetchDelete
     >).mockReturnValue({ response: "success", error: null, isDeleting: false });
 
-    alertStore.data.upstreams.instances[0].headers = {
+    const upstreams = generateUpstreams();
+    upstreams.instances[0].headers = {
       Authorization: "Basic ***",
     };
+    alertStore.data.setUpstreams(upstreams);
 
     const tree = MountedDeleteSilenceModalContent();
     tree.find(".btn-danger").simulate("click");
@@ -224,7 +231,9 @@ describe("<DeleteSilenceModalContent />", () => {
       typeof useFetchDelete
     >).mockReturnValue({ response: "success", error: null, isDeleting: false });
 
-    alertStore.data.upstreams.instances[0].corsCredentials = "omit";
+    const upstreams = generateUpstreams();
+    upstreams.instances[0].corsCredentials = "omit";
+    alertStore.data.setUpstreams(upstreams);
 
     const tree = MountedDeleteSilenceModalContent();
     tree.find(".btn-danger").simulate("click");

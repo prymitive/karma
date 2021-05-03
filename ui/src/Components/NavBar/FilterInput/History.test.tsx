@@ -138,7 +138,9 @@ describe("<HistoryMenu />", () => {
   it("renders correctly when rendered with a filter in history", async () => {
     const promise = Promise.resolve();
     const tree = MountedHistory();
-    PopulateHistory(tree, 1);
+    act(() => {
+      PopulateHistory(tree, 1);
+    });
     tree.find("button.cursor-pointer").simulate("click");
 
     expect(tree.text()).toBe(
@@ -155,7 +157,9 @@ describe("<HistoryMenu />", () => {
   it("clicking on a filter set in history populates alertStore", async () => {
     const promise = Promise.resolve();
     const tree = MountedHistory();
-    PopulateHistory(tree, 1);
+    act(() => {
+      PopulateHistory(tree, 1);
+    });
     tree.find("button.cursor-pointer").simulate("click");
 
     const button = tree.find("button.dropdown-item").at(0);
@@ -179,7 +183,9 @@ describe("<HistoryMenu />", () => {
 
     const promise = Promise.resolve();
     const tree = MountedHistory();
-    PopulateHistory(tree, 16);
+    act(() => {
+      PopulateHistory(tree, 16);
+    });
     tree.find("button.cursor-pointer").simulate("click");
     expect(tree.find("button.dropdown-item")).toHaveLength(8);
 
@@ -205,7 +211,9 @@ describe("<HistoryMenu />", () => {
 
     const promise = Promise.resolve();
     const tree = MountedHistory();
-    PopulateHistory(tree, 16);
+    act(() => {
+      PopulateHistory(tree, 16);
+    });
     tree.find("button.cursor-pointer").simulate("click");
     expect(tree.find("button.dropdown-item")).toHaveLength(4);
 
@@ -247,7 +255,7 @@ describe("<HistoryMenu />", () => {
   });
 
   it("clicking on 'Reset filters' clears current filter set in Settings", () => {
-    settingsStore.savedFilters.config.filters = ["foo=bar"];
+    settingsStore.savedFilters.save(["foo=bar"]);
     const tree = MountedHistory();
     tree.find("button.cursor-pointer").simulate("click");
 
@@ -260,9 +268,12 @@ describe("<HistoryMenu />", () => {
     expect(settingsStore.savedFilters.config.filters).toHaveLength(0);
   });
 
-  it("clicking on 'Clear history' clears the history", () => {
+  it("clicking on 'Clear history' clears the history", async () => {
+    const promise = Promise.resolve();
     const tree = MountedHistory();
-    PopulateHistory(tree, 5);
+    act(() => {
+      PopulateHistory(tree, 5);
+    });
     tree.find("button.cursor-pointer").simulate("click");
     expect(tree.find("button.dropdown-item")).toHaveLength(5);
 
@@ -274,5 +285,6 @@ describe("<HistoryMenu />", () => {
     });
     tree.update();
     expect(tree.find("button.dropdown-item")).toHaveLength(0);
+    await act(() => promise);
   });
 });

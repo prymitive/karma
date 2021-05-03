@@ -93,8 +93,7 @@ describe("<MainModalContent />", () => {
   });
 
   it("shows username when alertStore.info.authentication.enabled=true", () => {
-    alertStore.info.authentication.enabled = true;
-    alertStore.info.authentication.username = "me@example.com";
+    alertStore.info.setAuthentication(true, "me@example.com");
     const tree = mount(
       <span>
         {Wrapped(

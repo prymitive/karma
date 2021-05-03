@@ -26,12 +26,18 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
 
-  alertStore.settings.values.alertAcknowledgement = {
-    enabled: true,
-    durationSeconds: 123,
-    author: "default author",
-    comment: "COMMENT",
-  };
+  alertStore.settings.setValues({
+    ...alertStore.settings.values,
+    ...{
+      alertAcknowledgement: {
+        enabled: true,
+        durationSeconds: 123,
+        author: "default author",
+        comment: "COMMENT",
+      },
+    },
+  });
+
   alertStore.data.setUpstreams({
     counters: { total: 1, healthy: 1, failed: 0 },
     clusters: { default: ["default"] },
@@ -100,7 +106,17 @@ const MountAndClick = async () => {
 
 describe("<AlertAck />", () => {
   it("is null when acks are disabled", () => {
-    alertStore.settings.values.alertAcknowledgement.enabled = false;
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{
+        alertAcknowledgement: {
+          enabled: false,
+          durationSeconds: 123,
+          author: "default author",
+          comment: "COMMENT",
+        },
+      },
+    });
     const tree = MountedAlertAck();
     expect(tree.html()).toBe("");
   });
@@ -295,9 +311,17 @@ describe("<AlertAck />", () => {
   });
 
   it("uses settings when generating payload", async () => {
-    alertStore.settings.values.alertAcknowledgement.durationSeconds = 237;
-    alertStore.settings.values.alertAcknowledgement.author = "me";
-    alertStore.settings.values.alertAcknowledgement.comment = "comment";
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{
+        alertAcknowledgement: {
+          enabled: true,
+          durationSeconds: 237,
+          author: "me",
+          comment: "comment",
+        },
+      },
+    });
     await MountAndClick();
     expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({
       comment: "comment",
@@ -312,10 +336,17 @@ describe("<AlertAck />", () => {
   });
 
   it("injects timestamp when configured", async () => {
-    alertStore.settings.values.alertAcknowledgement.durationSeconds = 237;
-    alertStore.settings.values.alertAcknowledgement.author = "me";
-    alertStore.settings.values.alertAcknowledgement.comment =
-      "ACK! This alert was acknowledged using karma on %NOW%";
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{
+        alertAcknowledgement: {
+          enabled: true,
+          durationSeconds: 237,
+          author: "me",
+          comment: "ACK! This alert was acknowledged using karma on %NOW%",
+        },
+      },
+    });
     await MountAndClick();
     expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({
       comment:
@@ -331,11 +362,18 @@ describe("<AlertAck />", () => {
   });
 
   it("uses author from authentication info when auth is enabled", async () => {
-    alertStore.info.authentication.enabled = true;
-    alertStore.info.authentication.username = "auth@example.com";
-    alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
-    alertStore.settings.values.alertAcknowledgement.author = "me";
-    alertStore.settings.values.alertAcknowledgement.comment = "FOO: bar";
+    alertStore.info.setAuthentication(true, "auth@example.com");
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{
+        alertAcknowledgement: {
+          enabled: true,
+          durationSeconds: 222,
+          author: "me",
+          comment: "FOO: bar",
+        },
+      },
+    });
     await MountAndClick();
     expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({
       comment: "FOO: bar",
@@ -350,11 +388,18 @@ describe("<AlertAck />", () => {
   });
 
   it("uses author from silenceFormStore if authentication is disabled", async () => {
-    alertStore.info.authentication.enabled = false;
-    alertStore.info.authentication.username = "wrong";
-    alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
-    alertStore.settings.values.alertAcknowledgement.author = "me";
-    alertStore.settings.values.alertAcknowledgement.comment = "FOO: bar";
+    alertStore.info.setAuthentication(false, "wrong");
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{
+        alertAcknowledgement: {
+          enabled: true,
+          durationSeconds: 222,
+          author: "me",
+          comment: "FOO: bar",
+        },
+      },
+    });
     silenceFormStore.data.setAuthor("bob@example.com");
     await MountAndClick();
     expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({
@@ -370,9 +415,17 @@ describe("<AlertAck />", () => {
   });
 
   it("uses default author as fallback", async () => {
-    alertStore.settings.values.alertAcknowledgement.durationSeconds = 222;
-    alertStore.settings.values.alertAcknowledgement.author = "me";
-    alertStore.settings.values.alertAcknowledgement.comment = "FOO: bar";
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{
+        alertAcknowledgement: {
+          enabled: true,
+          durationSeconds: 222,
+          author: "me",
+          comment: "FOO: bar",
+        },
+      },
+    });
     silenceFormStore.data.setAuthor("");
     await MountAndClick();
     expect(JSON.parse((fetchMock.lastOptions() as any).body)).toEqual({

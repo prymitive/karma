@@ -11,7 +11,7 @@ import "Styles/Percy.scss";
 
 storiesOf("AppToasts", module).add("AppToasts", () => {
   const alertStore = new AlertStore([]);
-  alertStore.info.version = "999.99.0";
+  alertStore.info.setVersion("999.99.0");
 
   return (
     <div className="d-flex flex-column">

@@ -7,7 +7,7 @@ import copy from "copy-to-clipboard";
 import { advanceTo, clear } from "jest-date-mock";
 
 import { MockSilence } from "__fixtures__/Alerts";
-import { APISilenceT } from "Models/APITypes";
+import { APIAlertsResponseUpstreamsT, APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceDetails } from "./SilenceDetails";
@@ -19,30 +19,32 @@ let silence: APISilenceT;
 
 const MockEditSilence = jest.fn();
 
+const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
+  counters: { total: 1, healthy: 1, failed: 0 },
+  instances: [
+    {
+      name: "am1",
+      cluster: "am",
+      clusterMembers: ["am"],
+      uri: "http://localhost:9093",
+      publicURI: "http://example.com",
+      readonly: false,
+      error: "",
+      version: "0.17.0",
+      headers: {},
+      corsCredentials: "include",
+    },
+  ],
+  clusters: { am: ["am1"] },
+});
+
 beforeEach(() => {
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
   cluster = "am";
   silence = MockSilence();
 
-  alertStore.data.setUpstreams({
-    counters: { total: 1, healthy: 1, failed: 0 },
-    instances: [
-      {
-        name: "am1",
-        cluster: "am",
-        clusterMembers: ["am"],
-        uri: "http://localhost:9093",
-        publicURI: "http://example.com",
-        readonly: false,
-        error: "",
-        version: "0.17.0",
-        headers: {},
-        corsCredentials: "include",
-      },
-    ],
-    clusters: { am: ["am1"] },
-  });
+  alertStore.data.setUpstreams(generateUpstreams());
 
   jest.restoreAllMocks();
 });
@@ -97,7 +99,9 @@ describe("<SilenceDetails />", () => {
   });
 
   it("Edit silence button is disabled when all alertmanager instances are read-only", () => {
-    alertStore.data.upstreams.instances[0].readonly = true;
+    const upstreams = generateUpstreams();
+    upstreams.instances[0].readonly = true;
+    alertStore.data.setUpstreams(upstreams);
     const tree = MountedSilenceDetails();
     expect(tree.find("button").prop("disabled")).toBe(true);
 

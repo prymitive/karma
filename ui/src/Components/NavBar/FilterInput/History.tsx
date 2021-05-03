@@ -9,6 +9,7 @@ import {
   ReactNode,
 } from "react";
 
+import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 import { localStored } from "mobx-stored";
 
@@ -161,21 +162,28 @@ interface HistoryStorageT {
   filters: ReduceFilterT[][];
 }
 
-const History: FC<{
-  alertStore: AlertStore;
-  settingsStore: Settings;
-}> = observer(({ alertStore, settingsStore }) => {
-  // this will be dumped to local storage via mobx-stored
-  const history: HistoryStorageT = localStored(
-    "history.filters",
+class HistoryStorage {
+  config: HistoryStorageT = localStored(
+    "filters",
     {
-      filters: [],
+      filters: [] as ReduceFilterT[][],
     },
     {
       delay: 100,
     }
   );
 
+  setFilters = action((newFilters: ReduceFilterT[][]) => {
+    this.config.filters = newFilters;
+  });
+}
+
+const History: FC<{
+  alertStore: AlertStore;
+  settingsStore: Settings;
+}> = observer(({ alertStore, settingsStore }) => {
+  // this will be dumped to local storage via mobx-stored
+  const [history] = useState<HistoryStorage>(new HistoryStorage());
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const hide = useCallback(() => setIsVisible(false), []);
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
@@ -203,9 +211,11 @@ const History: FC<{
       // it up if user selects a filter set that was already in history
       const newHistory = [
         ...[validAppliedFilters],
-        ...history.filters.filter((f) => JSON.stringify(f) !== filtersJSON),
+        ...history.config.filters.filter(
+          (f) => JSON.stringify(f) !== filtersJSON
+        ),
       ].slice(0, 8);
-      history.filters = newHistory;
+      history.setFilters(newHistory);
     } else {
       mountRef.current = true;
     }
@@ -251,9 +261,9 @@ const History: FC<{
                 popperPlacement={placement}
                 popperRef={ref}
                 popperStyle={style}
-                filters={history.filters}
+                filters={history.config.filters}
                 onClear={() => {
-                  history.filters = [];
+                  history.setFilters([]);
                 }}
                 alertStore={alertStore}
                 settingsStore={settingsStore}

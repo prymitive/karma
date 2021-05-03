@@ -64,15 +64,18 @@ const SilenceSubmitProgress: FC<{
 
   useEffect(() => {
     if (!inProgress && error !== null) {
-      silenceFormStore.data.requestsByCluster[cluster].isDone = true;
-      silenceFormStore.data.requestsByCluster[cluster].error = error;
+      silenceFormStore.data.setRequestsByClusterUpdate(cluster, {
+        isDone: true,
+        error: error,
+      });
     } else if (!inProgress && response !== null) {
-      silenceFormStore.data.requestsByCluster[cluster].isDone = true;
-      silenceFormStore.data.requestsByCluster[cluster].silenceID =
-        response.silenceID;
-      silenceFormStore.data.requestsByCluster[cluster].silenceLink = `${
-        publicURIs[responseURI as string]
-      }/#/silences/${response.silenceID}`;
+      silenceFormStore.data.setRequestsByClusterUpdate(cluster, {
+        isDone: true,
+        silenceID: response.silenceID,
+        silenceLink: `${publicURIs[responseURI as string]}/#/silences/${
+          response.silenceID
+        }`,
+      });
     }
   }, [cluster, error, inProgress, publicURIs, response, responseURI]); // eslint-disable-line react-hooks/exhaustive-deps
 

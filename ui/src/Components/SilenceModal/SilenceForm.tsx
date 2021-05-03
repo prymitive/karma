@@ -102,7 +102,7 @@ const SilenceForm: FC<{
     }
 
     // reset cluster request state
-    silenceFormStore.data.requestsByCluster = {};
+    silenceFormStore.data.setRequestsByCluster({});
 
     if (silenceFormStore.data.autofillMatchers) {
       silenceFormStore.data.setMatchers([]);
@@ -124,7 +124,7 @@ const SilenceForm: FC<{
             } else {
               matcher.values = [StringToOption(f.value)];
             }
-            silenceFormStore.data.matchers.push(matcher);
+            silenceFormStore.data.addMatcherWithID(matcher);
           });
       }
     }
@@ -168,12 +168,12 @@ const SilenceForm: FC<{
     silenceFormStore.data.alertmanagers.forEach((am) => {
       rbc[am.label] = NewClusterRequest(am.label, am.value);
     });
-    silenceFormStore.data.requestsByCluster = rbc;
+    silenceFormStore.data.setRequestsByCluster(rbc);
 
     settingsStore.silenceFormConfig.saveAuthor(silenceFormStore.data.author);
 
     if (silenceFormStore.data.isValid)
-      silenceFormStore.data.currentStage = "preview";
+      silenceFormStore.data.setStage("preview");
 
     silenceFormStore.data.setWasValidated(true);
   };

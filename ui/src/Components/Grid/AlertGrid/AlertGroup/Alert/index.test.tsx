@@ -173,11 +173,11 @@ describe("<Alert />", () => {
   it("renders a silence if alert is silenced", () => {
     const alert = MockedAlert();
     alert.alertmanager[0].silencedBy = ["silence123456789"];
-    alertStore.data.silences = {
+    alertStore.data.setSilences({
       default: {
         silence123456789: MockSilence(),
       },
-    };
+    });
     const group = MockAlertGroup({}, [alert], [], {}, { default: [] });
     const tree = MountedAlert(alert, group, false, false, false);
     const silence = tree.find("ManagedSilence");
@@ -188,11 +188,11 @@ describe("<Alert />", () => {
   it("renders a fallback silence if the silence is not found in alertStore", () => {
     const alert = MockedAlert();
     alert.alertmanager[0].silencedBy = ["silence123456789"];
-    alertStore.data.silences = {
+    alertStore.data.setSilences({
       default: {
         "123": MockSilence(),
       },
-    };
+    });
     const group = MockAlertGroup({}, [alert], [], {}, { default: [] });
     const tree = MountedAlert(alert, group, false, false, false);
     const silence = tree.find("FallbackSilenceDesciption");
@@ -203,11 +203,11 @@ describe("<Alert />", () => {
   it("renders a fallback silence if the cluster is not found in alertStore", () => {
     const alert = MockedAlert();
     alert.alertmanager[0].silencedBy = ["silence123456789"];
-    alertStore.data.silences = {
+    alertStore.data.setSilences({
       foo: {
         "123": MockSilence(),
       },
-    };
+    });
     const group = MockAlertGroup({}, [alert], [], {}, { default: [] });
     const tree = MountedAlert(alert, group, false, false, false);
     const silence = tree.find("FallbackSilenceDesciption");
@@ -239,11 +239,11 @@ describe("<Alert />", () => {
         inhibitedBy: [],
       },
     ];
-    alertStore.data.silences = {
+    alertStore.data.setSilences({
       ha: {
         silence123456789: MockSilence(),
       },
-    };
+    });
     const group = MockAlertGroup({}, [alert], [], {}, {});
     const tree = MountedAlert(alert, group, false, false, false);
     const silence = tree.find("ManagedSilence");

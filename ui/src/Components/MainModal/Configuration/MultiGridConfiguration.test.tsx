@@ -49,19 +49,19 @@ describe("<MultiGridConfiguration />", () => {
   });
 
   it("correctly renders default option when multi-grid is disabled", () => {
-    settingsStore.multiGridConfig.config.gridLabel = "";
+    settingsStore.multiGridConfig.setGridLabel("");
     const tree = FakeConfiguration();
     expect(tree.find("Creatable").text()).toBe("Disable multi-grid");
   });
 
   it("correctly renders default option when multi-grid is set to @auto", () => {
-    settingsStore.multiGridConfig.config.gridLabel = "@auto";
+    settingsStore.multiGridConfig.setGridLabel("@auto");
     const tree = FakeConfiguration();
     expect(tree.find("Creatable").text()).toBe("Automatic selection");
   });
 
   it("correctly renders default option when multi-grid is enabled", () => {
-    settingsStore.multiGridConfig.config.gridLabel = "cluster";
+    settingsStore.multiGridConfig.setGridLabel("cluster");
     const tree = FakeConfiguration();
     expect(tree.find("Creatable").text()).toBe("cluster");
   });

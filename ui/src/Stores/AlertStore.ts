@@ -150,8 +150,11 @@ interface AlertStoreDataT {
   getColorData: (name: string, value: string) => APILabelColorT | undefined;
   setGrids: (g: APIGridT[]) => void;
   setUpstreams: (u: APIAlertsResponseUpstreamsT) => void;
-  setInstances: (i: APIAlertmanagerUpstreamT[]) => void;
   setClusters: (c: APIAlertsResponseUpstreamsClusterMapT) => void;
+  setSilences: (s: APIAlertsResponseSilenceMapT) => void;
+  setCounters: (c: APILabelCounterT[]) => void;
+  setReceivers: (r: string[]) => void;
+  setColors: (c: APIAlertsResponseColorsT) => void;
   readonly upstreamsWithErrors: APIAlertmanagerUpstreamT[];
 }
 
@@ -168,13 +171,17 @@ interface AlertStoreInfoT {
   reloadNeeded: boolean;
   setIsRetrying: () => void;
   clearIsRetrying: () => void;
-  setUpgradeNeeded: () => void;
-  setReloadNeeded: () => void;
+  setUpgradeNeeded: (v: boolean) => void;
+  setUpgradeReady: (v: boolean) => void;
+  setReloadNeeded: (v: boolean) => void;
   setTotalAlerts: (n: number) => void;
+  setAuthentication: (enabled: boolean, username: string) => void;
+  setVersion: (v: string) => void;
 }
 
 interface AlertStoreSettingsT {
   values: APISettingsT;
+  setValues: (v: APISettingsT) => void;
 }
 
 interface AlertStoreStatusT {
@@ -191,6 +198,7 @@ interface AlertStoreStatusT {
   resume: () => void;
   togglePause: () => void;
   stop: () => void;
+  setError: (e: null | string) => void;
 }
 
 interface AlertStoreUIT {
@@ -338,11 +346,20 @@ class AlertStore {
         setUpstreams(u: APIAlertsResponseUpstreamsT) {
           this.upstreams = u;
         },
-        setInstances(i: APIAlertmanagerUpstreamT[]) {
-          this.upstreams.instances = i;
-        },
         setClusters(c: APIAlertsResponseUpstreamsClusterMapT) {
           this.upstreams.clusters = c;
+        },
+        setSilences(s: APIAlertsResponseSilenceMapT) {
+          this.silences = s;
+        },
+        setCounters(c: APILabelCounterT[]) {
+          this.counters = c;
+        },
+        setReceivers(r: string[]) {
+          this.receivers = r;
+        },
+        setColors(c: APIAlertsResponseColorsT) {
+          this.colors = c;
         },
         get upstreamsWithErrors(): APIAlertmanagerUpstreamT[] {
           return this.upstreams.instances.filter(
@@ -357,8 +374,11 @@ class AlertStore {
         clustersWithoutReadOnly: computed,
         setGrids: action.bound,
         setUpstreams: action.bound,
-        setInstances: action.bound,
         setClusters: action.bound,
+        setSilences: action.bound,
+        setCounters: action.bound,
+        setReceivers: action.bound,
+        setColors: action.bound,
       },
       { name: "API Response data" }
     );
@@ -381,14 +401,24 @@ class AlertStore {
         clearIsRetrying() {
           this.isRetrying = false;
         },
-        setUpgradeNeeded() {
-          this.upgradeNeeded = true;
+        setUpgradeNeeded(v: boolean) {
+          this.upgradeNeeded = v;
         },
-        setReloadNeeded() {
-          this.reloadNeeded = true;
+        setUpgradeReady(v: boolean) {
+          this.upgradeReady = v;
+        },
+        setReloadNeeded(v: boolean) {
+          this.reloadNeeded = v;
         },
         setTotalAlerts(n: number) {
           this.totalAlerts = n;
+        },
+        setAuthentication(enabled: boolean, username: string) {
+          this.authentication.enabled = enabled;
+          this.authentication.username = username;
+        },
+        setVersion(v: string) {
+          this.version = v;
         },
       },
       {
@@ -397,6 +427,8 @@ class AlertStore {
         setReloadNeeded: action.bound,
         setUpgradeNeeded: action.bound,
         setTotalAlerts: action.bound,
+        setAuthentication: action.bound,
+        setVersion: action.bound,
       },
       { name: "API response info" }
     );
@@ -429,9 +461,14 @@ class AlertStore {
             comment: "ACK! This alert was acknowledged using karma",
           },
           historyEnabled: true,
+        } as APISettingsT,
+        setValues(v: APISettingsT) {
+          this.values = v;
         },
       },
-      {},
+      {
+        setValues: action.bound,
+      },
       {
         name: "Global settings",
       }
@@ -474,6 +511,9 @@ class AlertStore {
           this.paused = true;
           this.stopped = true;
         },
+        setError(e: null | string) {
+          this.error = e;
+        },
       },
       {
         setIdle: action,
@@ -484,6 +524,7 @@ class AlertStore {
         resume: action.bound,
         togglePause: action.bound,
         stop: action.bound,
+        setError: action.bound,
       },
       { name: "Store status" }
     );
@@ -532,7 +573,7 @@ class AlertStore {
           // if that request comes back as type=opaque then we might be getting
           // redirected by an auth proxy
           if (result.type === "opaque") {
-            this.info.setReloadNeeded();
+            this.info.setReloadNeeded(true);
           }
           this.info.clearIsRetrying();
           this.status.setProcessing();
@@ -607,7 +648,7 @@ class AlertStore {
       this.info.version !== "unknown" &&
       this.info.version !== result.version
     ) {
-      this.info.upgradeReady = true;
+      this.info.setUpgradeReady(true);
       this.status.stop();
     }
     // update extra root level keys that are stored under 'info'

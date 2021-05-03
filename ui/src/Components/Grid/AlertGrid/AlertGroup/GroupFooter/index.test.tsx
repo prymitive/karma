@@ -54,7 +54,7 @@ beforeEach(() => {
   group = MockGroup();
   advanceTo(new Date(Date.UTC(2000, 0, 1, 15, 0, 0)));
 
-  alertStore.data.receivers = ["by-cluster-service", "by-name"];
+  alertStore.data.setReceivers(["by-cluster-service", "by-name"]);
 });
 
 afterEach(() => {
@@ -90,11 +90,11 @@ describe("<GroupFooter />", () => {
       group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
     }
     group.shared.silences = { default: ["123456789"] };
-    alertStore.data.silences = {
+    alertStore.data.setSilences({
       default: {
         "123456789": MockSilence(),
       },
-    };
+    });
 
     const tree = MountedGroupFooter().find("GroupFooter");
     expect(tree.find("ManagedSilence")).toHaveLength(1);
@@ -105,9 +105,9 @@ describe("<GroupFooter />", () => {
       group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
     }
     group.shared.silences = { default: ["123456789"] };
-    alertStore.data.silences = {
+    alertStore.data.setSilences({
       default: {},
-    };
+    });
 
     const tree = MountedGroupFooter().find("GroupFooter");
     expect(tree.find("FallbackSilenceDesciption")).toHaveLength(1);
@@ -118,9 +118,9 @@ describe("<GroupFooter />", () => {
       group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
     }
     group.shared.silences = { default: ["123456789"] };
-    alertStore.data.silences = {
+    alertStore.data.setSilences({
       foo: {},
-    };
+    });
 
     const tree = MountedGroupFooter().find("GroupFooter");
     expect(tree.find("FallbackSilenceDesciption")).toHaveLength(1);
@@ -132,25 +132,26 @@ describe("<GroupFooter />", () => {
     }
     group.shared.silences = { default: ["123456789"] };
 
-    alertStore.data.silences = {
+    const silence = MockSilence();
+    silence.id = "123456789";
+    alertStore.data.setSilences({
       default: {
-        "123456789": MockSilence(),
+        "123456789": silence,
       },
-    };
-    alertStore.data.silences["default"]["123456789"].id = "123456789";
+    });
 
     const tree = MountedGroupFooter().find("GroupFooter");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("renders @receiver label when alertStore.data.receivers.length > 1", () => {
-    alertStore.data.receivers = ["foo", "bar"];
+    alertStore.data.setReceivers(["foo", "bar"]);
     const tree = MountedGroupFooter();
     expect(toDiffableHtml(tree.html())).toMatch(/@receiver:/);
   });
 
   it("doesn't render @receiver label when alertStore.data.receivers.length == 0", () => {
-    alertStore.data.receivers = [];
+    alertStore.data.setReceivers([]);
     const tree = MountedGroupFooter();
     expect(toDiffableHtml(tree.html())).not.toMatch(/@receiver:/);
   });
@@ -161,12 +162,13 @@ describe("<GroupFooter />", () => {
     }
     group.shared.silences = { default: ["123456789"] };
 
-    alertStore.data.silences = {
+    const silence = MockSilence();
+    silence.id = "123456789";
+    alertStore.data.setSilences({
       default: {
-        "123456789": MockSilence(),
+        "123456789": silence,
       },
-    };
-    alertStore.data.silences["default"]["123456789"].id = "123456789";
+    });
 
     const tree = mount(
       <GroupFooter

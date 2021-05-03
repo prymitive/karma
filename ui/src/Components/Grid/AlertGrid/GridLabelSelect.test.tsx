@@ -73,7 +73,7 @@ describe("<GridLabelSelect />", () => {
     toggle.simulate("click");
     expect(tree.find("div.components-grid-label-select-menu")).toHaveLength(1);
 
-    settingsStore.multiGridConfig.config.gridLabel = "foo";
+    settingsStore.multiGridConfig.setGridLabel("foo");
     const options = tree.find("div.react-select__option");
     options.at(5).simulate("click");
     expect(settingsStore.multiGridConfig.config.gridLabel).toBe("cluster");

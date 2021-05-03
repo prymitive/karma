@@ -9,7 +9,7 @@ let alertStore: AlertStore;
 
 beforeEach(() => {
   alertStore = new AlertStore([]);
-  alertStore.info.version = "1.2.3";
+  alertStore.info.setVersion("1.2.3");
 });
 
 describe("<ToastMessage />", () => {
@@ -44,6 +44,12 @@ describe("<UpgradeToastMessage />", () => {
     expect(tree.find("button").text()).toBe("Reload now");
 
     tree.find("button").simulate("click");
+    expect(alertStore.info.upgradeNeeded).toBe(true);
+  });
+
+  it("upgradeNeeded=true after onAnimationEnd is called", () => {
+    const tree = mount(<UpgradeToastMessage alertStore={alertStore} />);
+    tree.find("div.toast-upgrade-progressbar").simulate("animationend");
     expect(alertStore.info.upgradeNeeded).toBe(true);
   });
 });

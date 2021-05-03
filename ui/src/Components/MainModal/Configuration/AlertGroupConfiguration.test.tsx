@@ -41,7 +41,7 @@ describe("<AlertGroupConfiguration />", () => {
   });
 
   it("custom interval value is rendered correctly", () => {
-    settingsStore.alertGroupConfig.config.defaultRenderCount = 4;
+    settingsStore.alertGroupConfig.setDefaultRenderCount(4);
     const component = FakeConfiguration();
     expect(component.find("Range").props().values).toContain(4);
   });

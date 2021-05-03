@@ -19,7 +19,7 @@ const SortLabelName: FC<{
   );
 
   if (!settingsStore.gridConfig.config.sortLabel) {
-    settingsStore.gridConfig.config.sortLabel = StaticLabels.AlertName;
+    settingsStore.gridConfig.setSortLabel(StaticLabels.AlertName);
   }
 
   const context = React.useContext(ThemeContext);
@@ -30,13 +30,16 @@ const SortLabelName: FC<{
       classNamePrefix="react-select"
       instanceId="configuration-sort-label"
       formatCreateLabel={NewLabelName}
-      defaultValue={StringToOption(settingsStore.gridConfig.config.sortLabel)}
+      defaultValue={StringToOption(
+        settingsStore.gridConfig.config.sortLabel as string
+      )}
       options={
         response ? response.map((value: string) => StringToOption(value)) : []
       }
       onChange={(option) => {
-        settingsStore.gridConfig.config.sortLabel = (option as OptionT)
-          .value as string;
+        settingsStore.gridConfig.setSortLabel(
+          (option as OptionT).value as string
+        );
       }}
       components={{ Menu: AnimatedMenu }}
     />

@@ -39,7 +39,7 @@ storiesOf("NavBar", module).add("NavBar", () => {
   const silenceFormStore = new SilenceFormStore();
 
   alertStore.info.setTotalAlerts(197);
-  alertStore.data.colors = {
+  alertStore.data.setColors({
     cluster: {
       staging: {
         brightness: 205,
@@ -52,7 +52,7 @@ storiesOf("NavBar", module).add("NavBar", () => {
         background: "rgba(115,101,152,255)",
       },
     },
-  };
+  });
 
   alertStore.filters.setFilterValues([
     NewFilter("cluster=staging", "cluster", "=", "staging", true, true, 15),

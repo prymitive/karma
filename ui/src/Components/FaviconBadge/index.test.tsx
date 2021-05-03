@@ -36,7 +36,7 @@ describe("<FaviconBadge />", () => {
   });
 
   it("badge is updated when alertStore.status.error changes", () => {
-    alertStore.status.error = "foo";
+    alertStore.status.setError("foo");
     MountedFaviconBadge();
     expect(Favico.badge).toHaveBeenCalledTimes(1);
     expect(Favico.badge).toHaveBeenCalledWith("?");

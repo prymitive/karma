@@ -46,7 +46,7 @@ const SilenceModal: FC<{
         toggleOpen={silenceFormStore.toggle.toggle}
         onExited={() => {
           silenceFormStore.data.resetProgress();
-          silenceFormStore.data.autofillMatchers = true;
+          silenceFormStore.data.setAutofillMatchers(true);
         }}
       >
         <React.Suspense
