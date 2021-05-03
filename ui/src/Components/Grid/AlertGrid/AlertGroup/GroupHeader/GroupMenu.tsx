@@ -93,7 +93,7 @@ const MenuContent: FC<{
   return (
     <FetchPauser alertStore={alertStore}>
       <div
-        className="dropdown-menu d-block shadow"
+        className="dropdown-menu d-block shadow m-0"
         ref={popperRef}
         style={popperStyle}
         data-placement={popperPlacement}

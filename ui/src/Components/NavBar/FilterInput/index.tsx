@@ -172,7 +172,7 @@ const FilterInput: FC<{
           </div>
           <span className="dropdown" {...getMenuProps()}>
             {isOpen && inputValue && suggestions.length ? (
-              <div className="dropdown-menu show shadow">
+              <div className="dropdown-menu show shadow m-0">
                 {suggestions.slice(0, 10).map((item, index) => (
                   <li
                     className={`dropdown-item cursor-pointer ${

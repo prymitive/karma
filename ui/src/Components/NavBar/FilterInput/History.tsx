@@ -90,7 +90,7 @@ const HistoryMenu: FC<{
 
   return (
     <div
-      className="dropdown-menu d-block shadow components-navbar-historymenu"
+      className="dropdown-menu d-block shadow components-navbar-historymenu m-0"
       ref={popperRef}
       style={popperStyle}
       data-placement={popperPlacement}
