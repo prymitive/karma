@@ -127,7 +127,7 @@ const Dropdown: FC<{
 }) => {
   return (
     <div
-      className="dropdown-menu d-block shadow components-grid-label-select-menu border-0 p-0"
+      className="dropdown-menu d-block shadow components-grid-label-select-menu border-0 p-0 m-0"
       ref={popperRef}
       style={{
         fontSize: "1rem",
