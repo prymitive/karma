@@ -1,7 +1,7 @@
 import React, { FC, useState, useCallback } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCog } from "@fortawesome/free-solid-svg-icons/faCog";
+import { faSlidersH } from "@fortawesome/free-solid-svg-icons/faSlidersH";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
 import { AlertStore } from "Stores/AlertStore";
@@ -37,7 +37,7 @@ const MainModal: FC<{
             className="nav-link cursor-pointer"
             onClick={toggle}
           >
-            <FontAwesomeIcon icon={faCog} fixedWidth />
+            <FontAwesomeIcon icon={faSlidersH} fixedWidth />
           </span>
         </TooltipWrapper>
       </li>
