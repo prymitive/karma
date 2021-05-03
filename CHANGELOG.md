@@ -14,6 +14,7 @@
 
 - karma will no longer fail to start if config file contains multiple alertmanager
   instances with different name but identical URI #3024.
+- Minor UI tweaks.
 
 ## v0.83
 
