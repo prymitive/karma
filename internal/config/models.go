@@ -15,15 +15,16 @@ type AlertmanagerHealthcheck struct {
 }
 
 type AlertmanagerConfig struct {
-	Cluster     string
-	Name        string
-	URI         string
-	ExternalURI string `yaml:"external_uri" koanf:"external_uri"`
-	ProxyURL    string `yaml:"proxy_url" koanf:"proxy_url"`
-	Timeout     time.Duration
-	Proxy       bool
-	ReadOnly    bool `yaml:"readonly"`
-	TLS         struct {
+	Cluster           string
+	Name              string
+	URI               string
+	ExternalURI       string `yaml:"external_uri" koanf:"external_uri"`
+	CustomInternalURI string `yaml:"custom_internal_uri" koanf:"custom_internal_uri"`
+	ProxyURL          string `yaml:"proxy_url" koanf:"proxy_url"`
+	Timeout           time.Duration
+	Proxy             bool
+	ReadOnly          bool `yaml:"readonly"`
+	TLS               struct {
 		CA                 string
 		Cert               string
 		Key                string

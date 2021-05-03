@@ -203,6 +203,7 @@ func setupUpstreams() error {
 			s.Name,
 			s.URI,
 			alertmanager.WithExternalURI(s.ExternalURI),
+			alertmanager.WithCustomInternalURI(s.CustomInternalURI),
 			alertmanager.WithRequestTimeout(s.Timeout),
 			alertmanager.WithProxy(s.Proxy),
 			alertmanager.WithReadOnly(s.ReadOnly),
