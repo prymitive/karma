@@ -4,13 +4,11 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"path"
 	"sort"
 	"strings"
 	"sync"
 	"time"
 
-	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/models"
@@ -183,11 +181,7 @@ func (am *Alertmanager) pullSilences(version string) error {
 // InternalURI is the URI of this Alertmanager that will be used for all request made by the UI
 func (am *Alertmanager) InternalURI() string {
 	if am.ProxyRequests {
-		sub := fmt.Sprintf("/proxy/alertmanager/%s", am.Name)
-		if strings.HasPrefix(config.Config.Listen.Prefix, "/") {
-			return path.Join(config.Config.Listen.Prefix, sub)
-		}
-		return path.Join("/"+config.Config.Listen.Prefix, sub)
+		return fmt.Sprintf("./proxy/alertmanager/%s", am.Name)
 	}
 
 	// strip all user/pass information, fetch() doesn't support it anyway

@@ -33,13 +33,13 @@ var uriTests = []uriTest{
 	{
 		rawURI:      "http://alertmanager.example.com",
 		proxy:       true,
-		internalURI: "/proxy/alertmanager/test",
+		internalURI: "./proxy/alertmanager/test",
 		publicURI:   "http://alertmanager.example.com",
 	},
 	{
 		rawURI:      "http://alertmanager.example.com/foo",
 		proxy:       true,
-		internalURI: "/proxy/alertmanager/test",
+		internalURI: "./proxy/alertmanager/test",
 		publicURI:   "http://alertmanager.example.com/foo",
 	},
 	{
@@ -57,21 +57,21 @@ var uriTests = []uriTest{
 	{
 		rawURI:      "http://user:pass@alertmanager.example.com",
 		proxy:       true,
-		internalURI: "/proxy/alertmanager/test",
+		internalURI: "./proxy/alertmanager/test",
 		publicURI:   "http://user:pass@alertmanager.example.com",
 	},
 	{
 		rawURI:      "http://user:pass@alertmanager.example.com",
 		extURI:      "http://am.example.com",
 		proxy:       true,
-		internalURI: "/proxy/alertmanager/test",
+		internalURI: "./proxy/alertmanager/test",
 		publicURI:   "http://am.example.com",
 	},
 	{
 		rawURI:      "http://alertmanager.example.com",
 		extURI:      "http://am.example.com",
 		proxy:       true,
-		internalURI: "/proxy/alertmanager/test",
+		internalURI: "./proxy/alertmanager/test",
 		publicURI:   "http://am.example.com",
 	},
 	{
@@ -134,27 +134,27 @@ func TestAlertmanagerInternalURI(t *testing.T) {
 		{
 			prefix: "/",
 			proxy:  true,
-			uri:    "/proxy/alertmanager/default",
+			uri:    "./proxy/alertmanager/default",
 		},
 		{
 			prefix: "/root",
 			proxy:  true,
-			uri:    "/root/proxy/alertmanager/default",
+			uri:    "./proxy/alertmanager/default",
 		},
 		{
 			prefix: "/root/",
 			proxy:  true,
-			uri:    "/root/proxy/alertmanager/default",
+			uri:    "./proxy/alertmanager/default",
 		},
 		{
 			prefix: "root",
 			proxy:  true,
-			uri:    "/root/proxy/alertmanager/default",
+			uri:    "./proxy/alertmanager/default",
 		},
 		{
 			prefix: "root/",
 			proxy:  true,
-			uri:    "/root/proxy/alertmanager/default",
+			uri:    "./proxy/alertmanager/default",
 		},
 	}
 
