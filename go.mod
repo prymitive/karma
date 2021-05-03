@@ -21,6 +21,7 @@ require (
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/hashicorp/golang-lru v0.5.4
 	github.com/jarcoal/httpmock v1.0.8
+	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/knadh/koanf v0.16.0
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mitchellh/copystructure v1.1.2 // indirect
@@ -31,8 +32,8 @@ require (
 	github.com/rogpeppe/go-internal v1.8.0
 	github.com/rs/zerolog v1.21.0
 	github.com/spf13/pflag v1.0.5
-	golang.org/x/net v0.0.0-20210423184538-5f58ad60dda6 // indirect
-	golang.org/x/sys v0.0.0-20210426080607-c94f62235c83 // indirect
+	golang.org/x/net v0.0.0-20210503060351-7fd8e65b6420 // indirect
+	golang.org/x/sys v0.0.0-20210503173754-0981d6026fa6 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
