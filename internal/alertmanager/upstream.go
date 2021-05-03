@@ -80,7 +80,7 @@ func RegisterAlertmanager(am *Alertmanager) error {
 	log.Info().
 		Str("name", am.Name).
 		Str("uri", uri.SanitizeURI(am.URI)).
-		Str("custom_internal_url", uri.SanitizeURI(am.CustomInternalURI)).
+		Str("custom_internal_url", uri.SanitizeURI(am.InternalURIPrefix)).
 		Bool("proxy", am.ProxyRequests).
 		Bool("readonly", am.ReadOnly).
 		Msg("Configured Alertmanager source")
@@ -109,11 +109,11 @@ func GetAlertmanagerByName(name string) *Alertmanager {
 	return nil
 }
 
-// WithCustomInternalURI option can be passwd to NewAlertmanager in order to customize
+// WithInternalURIPrefix option can be passwd to NewAlertmanager in order to customize
 // internalURI for silence management
-func WithCustomInternalURI(uri string) Option {
+func WithInternalURIPrefix(prefix string) Option {
 	return func(am *Alertmanager) error {
-		am.CustomInternalURI = uri
+		am.InternalURIPrefix = prefix
 		return nil
 	}
 }

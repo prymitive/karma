@@ -130,7 +130,7 @@ func TestOptions(t *testing.T) {
 			tc.config.Name,
 			tc.config.URI,
 			WithExternalURI(tc.config.ExternalURI),
-			WithCustomInternalURI(tc.config.CustomInternalURI),
+			WithInternalURIPrefix(tc.config.InternalURIPrefix),
 			WithRequestTimeout(tc.config.Timeout),
 			WithProxy(tc.config.Proxy),
 			WithReadOnly(tc.config.ReadOnly),
@@ -153,8 +153,8 @@ func TestOptions(t *testing.T) {
 		if am.URI != tc.config.URI {
 			t.Errorf("AlertmanagerConfig with name '%s' and URI '%s' returned Alertmanager with URI '%s'", tc.config.Name, tc.config.URI, am.URI)
 		}
-		if am.CustomInternalURI != tc.config.CustomInternalURI {
-			t.Errorf("AlertmanagerConfig with name '%s' and proxy '%v' returned Alertmanager with customInternalURI '%v'", tc.config.Name, tc.config.CustomInternalURI, am.CustomInternalURI)
+		if am.InternalURIPrefix != tc.config.InternalURIPrefix {
+			t.Errorf("AlertmanagerConfig with name '%s' and proxy '%v' returned Alertmanager with InternalURIPrefix '%v'", tc.config.Name, tc.config.InternalURIPrefix, am.InternalURIPrefix)
 		}
 		if am.ProxyRequests != tc.config.Proxy {
 			t.Errorf("AlertmanagerConfig with name '%s' and proxy '%v' returned Alertmanager with proxy '%v'", tc.config.Name, tc.config.Proxy, am.ProxyRequests)

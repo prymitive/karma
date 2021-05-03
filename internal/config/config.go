@@ -44,6 +44,8 @@ func SetupFlags(f *pflag.FlagSet) {
 		"Alertmanager server URI (only used with simplified config)")
 	f.String("alertmanager.external_uri", "",
 		"Alertmanager server URI used for web UI links (only used with simplified config)")
+	f.String("alertmanager.internal_uri_prefix", "",
+		"Alertmanager server URI used for silence management (only used with proxy mode enabled)")
 	f.Duration("alertmanager.timeout", time.Second*40,
 		"Timeout for requests sent to the Alertmanager server (only used with simplified config)")
 	f.Bool("alertmanager.proxy", false,
@@ -377,14 +379,15 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	if len(config.Alertmanager.Servers) == 0 && config.Alertmanager.URI != "" {
 		config.Alertmanager.Servers = []AlertmanagerConfig{
 			{
-				Name:        config.Alertmanager.Name,
-				URI:         config.Alertmanager.URI,
-				ExternalURI: config.Alertmanager.ExternalURI,
-				Timeout:     config.Alertmanager.Timeout,
-				Proxy:       config.Alertmanager.Proxy,
-				ReadOnly:    config.Alertmanager.ReadOnly,
-				Headers:     make(map[string]string),
-				CORS:        config.Alertmanager.CORS,
+				Name:              config.Alertmanager.Name,
+				URI:               config.Alertmanager.URI,
+				ExternalURI:       config.Alertmanager.ExternalURI,
+				InternalURIPrefix: config.Alertmanager.InternalURIPrefix,
+				Timeout:           config.Alertmanager.Timeout,
+				Proxy:             config.Alertmanager.Proxy,
+				ReadOnly:          config.Alertmanager.ReadOnly,
+				Headers:           make(map[string]string),
+				CORS:              config.Alertmanager.CORS,
 			},
 		}
 	}

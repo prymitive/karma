@@ -19,7 +19,7 @@ type AlertmanagerConfig struct {
 	Name              string
 	URI               string
 	ExternalURI       string `yaml:"external_uri" koanf:"external_uri"`
-	CustomInternalURI string `yaml:"custom_internal_uri" koanf:"custom_internal_uri"`
+	InternalURIPrefix string `yaml:"internal_uri_prefix" koanf:"internal_uri_prefix"`
 	ProxyURL          string `yaml:"proxy_url" koanf:"proxy_url"`
 	Timeout           time.Duration
 	Proxy             bool
@@ -77,17 +77,18 @@ type configSchema struct {
 		} `yaml:"acl" koanf:"acl"`
 	}
 	Alertmanager struct {
-		Interval    time.Duration
-		Servers     []AlertmanagerConfig
-		Cluster     string           `yaml:"-" koanf:"cluster"`
-		Name        string           `yaml:"-" koanf:"name"`
-		Timeout     time.Duration    `yaml:"-" koanf:"timeout"`
-		URI         string           `yaml:"-" koanf:"uri"`
-		ExternalURI string           `yaml:"-" koanf:"external_uri"`
-		ProxyURL    string           `yaml:"-" koanf:"proxy_url"`
-		Proxy       bool             `yaml:"-" koanf:"proxy"`
-		ReadOnly    bool             `yaml:"-" koanf:"readonly"`
-		CORS        AlertmanagerCORS `yaml:"-" koanf:"cors"`
+		Interval          time.Duration
+		Servers           []AlertmanagerConfig
+		Cluster           string           `yaml:"-" koanf:"cluster"`
+		Name              string           `yaml:"-" koanf:"name"`
+		Timeout           time.Duration    `yaml:"-" koanf:"timeout"`
+		URI               string           `yaml:"-" koanf:"uri"`
+		ExternalURI       string           `yaml:"-" koanf:"external_uri"`
+		InternalURIPrefix string           `yaml:"-" koanf:"internal_uri_prefix"`
+		ProxyURL          string           `yaml:"-" koanf:"proxy_url"`
+		Proxy             bool             `yaml:"-" koanf:"proxy"`
+		ReadOnly          bool             `yaml:"-" koanf:"readonly"`
+		CORS              AlertmanagerCORS `yaml:"-" koanf:"cors"`
 	}
 	AlertAcknowledgement struct {
 		Enabled  bool

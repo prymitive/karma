@@ -43,7 +43,7 @@ type Alertmanager struct {
 	ExternalURI string `json:"-"`
 	// specify internalURI for silence management. If empty, use uri returned by InternalURI instead.
 	// Only works if proxy mode is enabled
-	CustomInternalURI string        `json:"-"`
+	InternalURIPrefix string        `json:"-"`
 	RequestTimeout    time.Duration `json:"timeout"`
 	Cluster           string        `json:"cluster"`
 	Name              string        `json:"name"`
@@ -186,10 +186,10 @@ func (am *Alertmanager) pullSilences(version string) error {
 // InternalURI is the URI of this Alertmanager that will be used for all request made by the UI
 func (am *Alertmanager) InternalURI() string {
 	if am.ProxyRequests {
-		if am.CustomInternalURI != "" {
-			return am.CustomInternalURI
-		}
 		sub := fmt.Sprintf("/proxy/alertmanager/%s", am.Name)
+		if am.InternalURIPrefix != "" {
+			return path.Join(am.InternalURIPrefix, sub)
+		}
 		if strings.HasPrefix(config.Config.Listen.Prefix, "/") {
 			return path.Join(config.Config.Listen.Prefix, sub)
 		}
