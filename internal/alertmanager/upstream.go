@@ -80,7 +80,7 @@ func RegisterAlertmanager(am *Alertmanager) error {
 	log.Info().
 		Str("name", am.Name).
 		Str("uri", uri.SanitizeURI(am.URI)).
-		Str("custom_internal_url", uri.SanitizeURI(am.InternalURIPrefix)).
+		Str("internal_url_prefix", uri.SanitizeURI(am.InternalURIPrefix)).
 		Bool("proxy", am.ProxyRequests).
 		Bool("readonly", am.ReadOnly).
 		Msg("Configured Alertmanager source")
