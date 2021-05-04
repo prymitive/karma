@@ -1,5 +1,11 @@
 # Changelog
 
+## [unreleased]
+
+### Fixed
+
+- History queries were always failing due to wrong Prometheus API usage.
+
 ## v0.84
 
 ### Added

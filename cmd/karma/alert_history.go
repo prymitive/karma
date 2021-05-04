@@ -248,7 +248,7 @@ func countAlerts(uri string, timeout time.Duration, labels map[string]string) (r
 
 	names, _, err := v1api.LabelNames(
 		ctx,
-		[]string{`__name__="ALERTS_FOR_STATE"`},
+		[]string{`{__name__="ALERTS_FOR_STATE"}`},
 		time.Now().Add(time.Minute*-5),
 		time.Now())
 	if err != nil {
