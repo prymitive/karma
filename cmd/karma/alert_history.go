@@ -183,12 +183,13 @@ func (hp *historyPoller) knownBadLookup(key string) (*knownBadUpstream, bool) {
 func (hp *historyPoller) startWorker(wid int) {
 	log.Debug().Int("worker", wid).Int("queue", cap(hp.queue)).Dur("timeout", hp.queryTimeout).Msg("Starting history poller")
 	for j := range hp.queue {
+		sourceURI := rewriteSource(config.Config.History.Rewrite, j.uri)
 		expiredAt := time.Now().Add(time.Minute * -5)
-		key := hashQuery(j.uri, j.labels)
+		key := hashQuery(sourceURI, j.labels)
 		if kb, found := hp.knownBadLookup(key); found && kb.timestamp.After(expiredAt) {
 			log.Debug().
 				Int("worker", wid).
-				Str("uri", j.uri).
+				Str("uri", sourceURI).
 				Interface("labels", j.labels).
 				Str("key", key).
 				Msg("Upstream already marked as invalid, skipping")
@@ -198,19 +199,19 @@ func (hp *historyPoller) startWorker(wid int) {
 		if v := hp.cacheLookup(key); v != nil && v.timestamp.After(expiredAt) {
 			log.Debug().
 				Int("worker", wid).
-				Str("uri", j.uri).
+				Str("uri", sourceURI).
 				Interface("labels", j.labels).
 				Str("key", key).
 				Msg("Got results from cache")
 			j.result <- historyQueryResult{values: v.values, err: nil}
 			continue
 		}
-		values, err := countAlerts(j.uri, hp.queryTimeout, j.labels)
+		values, err := countAlerts(sourceURI, hp.queryTimeout, j.labels)
 		if err != nil {
 			log.Error().
 				Err(err).
 				Int("worker", wid).
-				Str("uri", j.uri).
+				Str("uri", sourceURI).
 				Interface("labels", j.labels).
 				Msg("History query failed")
 			hp.knownBadSave(key, knownBadUpstream{timestamp: time.Now(), err: err})
@@ -233,7 +234,26 @@ func hashQuery(uri string, labels map[string]string) string {
 	return fmt.Sprintf("%x", hasher.Sum(nil))
 }
 
+func rewriteSource(rules []config.HistoryRewrite, uri string) string {
+	for _, rule := range rules {
+		if !rule.SourceRegex.MatchString(uri) {
+			continue
+		}
+		result := []byte{}
+		for _, submatches := range rule.SourceRegex.FindAllStringSubmatchIndex(uri, -1) {
+			result = rule.SourceRegex.ExpandString(result, rule.URI, uri, submatches)
+		}
+		log.Debug().Str("source", uri).Str("uri", string(result)).Msg("Alert history source rewrite")
+		return string(result)
+	}
+	return uri
+}
+
 func countAlerts(uri string, timeout time.Duration, labels map[string]string) (ret []OffsetSample, err error) {
+	if uri == "" {
+		return
+	}
+
 	client, err := api.NewClient(api.Config{
 		Address:      uri,
 		RoundTripper: http.DefaultTransport,

@@ -58,6 +58,12 @@ type AuthorizationGroup struct {
 	Members []string
 }
 
+type HistoryRewrite struct {
+	Source      string         `yaml:"source"`
+	SourceRegex *regexp.Regexp `yaml:"-"`
+	URI         string         `yaml:"uri"`
+}
+
 type configSchema struct {
 	Authentication struct {
 		Enabled bool `yaml:"-" koanf:"-"`
@@ -132,6 +138,7 @@ type configSchema struct {
 		Enabled bool
 		Workers int
 		Timeout time.Duration
+		Rewrite []HistoryRewrite
 	}
 	Karma struct {
 		Name string

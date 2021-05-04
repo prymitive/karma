@@ -373,6 +373,13 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 		return "", fmt.Errorf("listen.tls.cert must be set when listen.tls.key is set")
 	}
 
+	for i := 0; i < len(config.History.Rewrite); i++ {
+		config.History.Rewrite[i].SourceRegex, err = regex.CompileAnchored(config.History.Rewrite[i].Source)
+		if err != nil {
+			return "", fmt.Errorf("history.rewrite source regex %q is invalid: %v", config.History.Rewrite[i].Source, err)
+		}
+	}
+
 	// accept single Alertmanager server from flag/env if nothing is set yet
 	if len(config.Alertmanager.Servers) == 0 && config.Alertmanager.URI != "" {
 		config.Alertmanager.Servers = []AlertmanagerConfig{

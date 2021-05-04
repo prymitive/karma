@@ -725,6 +725,9 @@ history:
   enabled: bool
   timeout: duration
   workers: integer
+  rewrite:
+    - source: regex
+      uri: string
 ```
 
 - `enabled` - enable alert history UI and backend query support
@@ -732,6 +735,11 @@ history:
 - `workers` - number of worker threads to start, each worker handles
   one outgoing HTTP request, more workers allows to handle more concurrent
   queries if you have a large number of Prometheus servers sending alerts
+- `rewrite` - list of source rewrite rules applied before any request is send
+  to remote Prometheus. Rewrite rules can be used to modify URI used by karma
+  when connecting to Prometheus API if `source` field in alert uses addresses
+  not reachable from karma.
+  All regexes are anchored, `${N}` syntax can be used for capture groups.
 
 Defaults:
 
@@ -740,6 +748,28 @@ history:
   enabled: true
   timeout: 20s
   workers: 30
+  rewrite: []
+```
+
+Example with rewrite rule that will replace `https://prometheus.example.com`
+with `http://localhost:9093`:
+
+```YAML
+history:
+  rewrite:
+    - source: 'https://prometheus.example.com'
+      uri: 'http://localhost:9093'
+```
+
+Example with rewrite rule that will replace `https://*.example.com` with
+`http://prometheus-*.internal` (`https://dev.example.com` becomes
+`http://prometheus-dev.example.com`):
+
+```YAML
+history:
+  rewrite:
+    - source: 'https://(.+).example.com'
+      uri: 'http://prometheus-$1.internal'
 ```
 
 ### Karma
