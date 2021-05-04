@@ -92,6 +92,7 @@ history:
   enabled: true
   workers: 30
   timeout: 20s
+  rewrite: []
 karma:
   name: another karma
 labels:

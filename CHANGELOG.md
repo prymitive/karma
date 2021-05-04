@@ -5,6 +5,12 @@
 ### Fixed
 
 - History queries were always failing due to wrong Prometheus API usage.
+- URI handling for silence requests when proxy is used #3060.
+
+### Added
+
+- Ability to rewrite source URIs for alert history via `history:rewrite`
+  config section #3064.
 
 ## v0.84
 

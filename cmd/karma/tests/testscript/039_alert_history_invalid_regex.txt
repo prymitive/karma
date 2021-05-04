@@ -1,0 +1,18 @@
+# Raises an error if history.rewrite rule contains invalid regex
+karma.bin-should-fail --check-config
+! stdout .
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=error msg="Execution failed" error="history.rewrite source regex \"foo.++++++\" is invalid: error parsing regexp: invalid nested repetition operator: `++`"
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: default
+      uri: https://127.0.0.1:9093
+history:
+  rewrite:
+    - source: bar.+
+      uri: http://bar
+    - source: foo.++++++
+      uri: http://foo

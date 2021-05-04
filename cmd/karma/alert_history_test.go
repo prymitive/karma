@@ -13,6 +13,7 @@ import (
 	"github.com/jarcoal/httpmock"
 	"github.com/prometheus/common/model"
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/regex"
 	"github.com/rs/zerolog"
 )
 
@@ -95,6 +96,7 @@ func TestAlertHistory(t *testing.T) {
 		enabled bool
 		timeout time.Duration
 		workers int
+		rewrite []config.HistoryRewrite
 	}
 
 	type historyQuery struct {
@@ -318,12 +320,98 @@ func TestAlertHistory(t *testing.T) {
 				},
 			},
 		},
+		{
+			mocks: []mock{},
+			config: cfg{
+				enabled: true,
+				timeout: time.Second * 5,
+				workers: 5,
+				rewrite: []config.HistoryRewrite{
+					{
+						SourceRegex: regex.MustCompileAnchored(".+"),
+						URI:         "",
+					},
+				},
+			},
+			queries: []historyQuery{
+				{
+					payload: generateHistoryPayload(AlertHistoryPayload{
+						Sources: []string{"http://localhost:9092"},
+						Labels:  map[string]string{"alertname": "Fake Alert", "cluster": "prod"},
+					}),
+					code: 200,
+					response: AlertHistoryResponse{
+						Samples: generateHistorySamples(generateIntSlice(0, 0, 24), time.Hour),
+					},
+				},
+			},
+		},
+		{
+			mocks: []mock{
+				{
+					method: "GET",
+					uri:    regexp.MustCompile("^http://localhost:9100/api/v1/labels"),
+					responder: httpmock.NewJsonResponderOrPanic(200, prometheusAPIV1Labels{
+						Status: "success",
+						Data:   []string{"alertname", "instance", "job"},
+					}),
+				},
+				{
+					method: "POST",
+					uri:    regexp.MustCompile("^http://localhost:9100/api/v1/query_range"),
+					responder: httpmock.NewJsonResponderOrPanic(200, prometheusAPIV1QueryRange{
+						Status: "success",
+						Data: generateV1Matrix(
+							[]seriesValues{
+								{
+									metric: model.Metric{
+										"alertname": "Fake Alert",
+									},
+									values: generateIntSlice(0, 1, 24),
+								},
+							}, time.Hour),
+					}),
+				},
+			},
+			config: cfg{
+				enabled: true,
+				timeout: time.Second * 5,
+				workers: 5,
+				rewrite: []config.HistoryRewrite{
+					{
+						SourceRegex: regex.MustCompileAnchored("http://(.+):1111"),
+						URI:         "http://$1:9100",
+					},
+					{
+						SourceRegex: regex.MustCompileAnchored("foo"),
+						URI:         "",
+					},
+					{
+						SourceRegex: regex.MustCompileAnchored("http://(.+):909[0-9]"),
+						URI:         "http://$1:9100",
+					},
+				},
+			},
+			queries: []historyQuery{
+				{
+					payload: generateHistoryPayload(AlertHistoryPayload{
+						Sources: []string{"http://localhost:9090", "http://localhost:9091", "http://localhost:1111"},
+						Labels:  map[string]string{"alertname": "Fake Alert", "cluster": "prod"},
+					}),
+					code: 200,
+					response: AlertHistoryResponse{
+						Samples: generateHistorySamples(generateIntSlice(0, 3, 24), time.Hour),
+					},
+				},
+			},
+		},
 	}
 
 	defer func() {
 		config.Config.History.Enabled = true
 		config.Config.History.Timeout = time.Second * 20
 		config.Config.History.Workers = 30
+		config.Config.History.Rewrite = []config.HistoryRewrite{}
 	}()
 
 	httpmock.Activate()
@@ -353,6 +441,7 @@ func TestAlertHistory(t *testing.T) {
 			config.Config.History.Enabled = tc.config.enabled
 			config.Config.History.Timeout = tc.config.timeout
 			config.Config.History.Workers = tc.config.workers
+			config.Config.History.Rewrite = tc.config.rewrite
 
 			for _, q := range tc.queries {
 				t.Logf("Body: %s", string(q.payload))
@@ -408,9 +497,71 @@ func TestAbsTime(t *testing.T) {
 		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
 			d := absTimeDiff(tc.a, tc.b)
 			if diff := cmp.Diff(tc.diff, d); diff != "" {
-				t.Errorf("Incorrect absTimeDiff(-want +got):\n%s", diff)
+				t.Errorf("Incorrect absTimeDiff result (-want +got):\n%s", diff)
 			}
 		})
 	}
+}
 
+func TestRewriteSource(t *testing.T) {
+	type testCaseT struct {
+		rules []config.HistoryRewrite
+		uri   string
+		out   string
+	}
+
+	testCases := []testCaseT{
+		{
+			rules: []config.HistoryRewrite{},
+			uri:   "http://localhost",
+			out:   "http://localhost",
+		},
+		{
+			rules: []config.HistoryRewrite{
+				{
+					SourceRegex: regex.MustCompileAnchored("foo"),
+					URI:         "foo",
+				},
+			},
+			uri: "http://localhost",
+			out: "http://localhost",
+		},
+		{
+			rules: []config.HistoryRewrite{
+				{
+					SourceRegex: regex.MustCompileAnchored("foo"),
+					URI:         "foo",
+				},
+				{
+					SourceRegex: regex.MustCompileAnchored("http://local.+"),
+					URI:         "foo",
+				},
+			},
+			uri: "http://localhost",
+			out: "foo",
+		},
+		{
+			rules: []config.HistoryRewrite{
+				{
+					SourceRegex: regex.MustCompileAnchored("foo"),
+					URI:         "foo",
+				},
+				{
+					SourceRegex: regex.MustCompileAnchored("http://(.+).example.com"),
+					URI:         "https://prom-$1.example.com",
+				},
+			},
+			uri: "http://prod.example.com",
+			out: "https://prom-prod.example.com",
+		},
+	}
+
+	for i, tc := range testCases {
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			uri := rewriteSource(tc.rules, tc.uri)
+			if diff := cmp.Diff(tc.out, uri); diff != "" {
+				t.Errorf("Incorrect rewriteSource result (-want +got):\n%s", diff)
+			}
+		})
+	}
 }

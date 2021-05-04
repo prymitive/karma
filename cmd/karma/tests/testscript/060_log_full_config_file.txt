@@ -168,9 +168,12 @@ level=info msg="    order:"
 level=info msg="      - severity"
 level=info msg="      - cluster"
 level=info msg="history:"
-level=info msg="  enabled: true"
-level=info msg="  workers: 30"
-level=info msg="  timeout: 20s"
+level=info msg="  enabled: false"
+level=info msg="  workers: 123"
+level=info msg="  timeout: 1h0m0s"
+level=info msg="  rewrite:"
+level=info msg="    - source: http://(.+).example.com"
+level=info msg="      uri: https://prod-$1.example.com"
 level=info msg="karma:"
 level=info msg="  name: karma-demo"
 level=info msg="labels:"
@@ -364,6 +367,13 @@ grid:
     order:
       - severity
       - cluster
+history:
+  enabled: false
+  workers: 123
+  timeout: 1h
+  rewrite:
+    - source: "http://(.+).example.com"
+      uri: "https://prod-$1.example.com"
 karma:
   name: karma-demo
 labels:
