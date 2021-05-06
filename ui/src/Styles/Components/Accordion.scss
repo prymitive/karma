@@ -1,10 +1,9 @@
-.accordion {
-  .card {
+.accordion-item {
+  .accordion-header {
     overflow: unset;
 
-    .card-header.active {
+    .accordion-button:not(.collapsed) {
       color: $body-color;
-      background-color: $accordion-active-bg;
     }
   }
 }

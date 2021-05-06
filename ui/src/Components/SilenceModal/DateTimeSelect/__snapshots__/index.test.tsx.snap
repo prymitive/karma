@@ -5,30 +5,30 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
 <ul class=\\"nav nav-tabs nav-fill\\">
   <li class=\\"nav-item\\">
     <span class=\\"nav-link cursor-pointer \\">
-      <span class=\\"mr-1\\">
+      <span class=\\"me-1\\">
         Starts
       </span>
-      <span class=\\"badge badge-light\\">
+      <span class=\\"badge bg-light\\">
         now
       </span>
     </span>
   </li>
   <li class=\\"nav-item\\">
     <span class=\\"nav-link cursor-pointer \\">
-      <span class=\\"mr-1\\">
+      <span class=\\"me-1\\">
         Ends
       </span>
-      <span class=\\"badge badge-light\\">
+      <span class=\\"badge bg-light\\">
         in 366d
       </span>
     </span>
   </li>
   <li class=\\"nav-item\\">
     <span class=\\"nav-link cursor-pointer active\\">
-      <span class=\\"mr-1\\">
+      <span class=\\"me-1\\">
         Duration
       </span>
-      <span class=\\"badge badge-light\\">
+      <span class=\\"badge bg-light\\">
         366d
       </span>
     </span>
@@ -68,7 +68,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
               </h2>
             </td>
             <td class=\\"w-50\\">
-              <span class=\\"text-muted ml-2\\">
+              <span class=\\"text-muted ms-2\\">
                 days
               </span>
             </td>
@@ -130,7 +130,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
               </h2>
             </td>
             <td class=\\"w-50\\">
-              <span class=\\"text-muted ml-2\\">
+              <span class=\\"text-muted ms-2\\">
                 hours
               </span>
             </td>
@@ -192,7 +192,7 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
               </h2>
             </td>
             <td class=\\"w-50\\">
-              <span class=\\"text-muted ml-2\\">
+              <span class=\\"text-muted ms-2\\">
                 minutes
               </span>
             </td>
@@ -232,30 +232,30 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
 <ul class=\\"nav nav-tabs nav-fill\\">
   <li class=\\"nav-item\\">
     <span class=\\"nav-link cursor-pointer \\">
-      <span class=\\"mr-1\\">
+      <span class=\\"me-1\\">
         Starts
       </span>
-      <span class=\\"badge badge-light\\">
+      <span class=\\"badge bg-light\\">
         now
       </span>
     </span>
   </li>
   <li class=\\"nav-item\\">
     <span class=\\"nav-link cursor-pointer active\\">
-      <span class=\\"mr-1\\">
+      <span class=\\"me-1\\">
         Ends
       </span>
-      <span class=\\"badge badge-light\\">
+      <span class=\\"badge bg-light\\">
         in 366d
       </span>
     </span>
   </li>
   <li class=\\"nav-item\\">
     <span class=\\"nav-link cursor-pointer \\">
-      <span class=\\"mr-1\\">
+      <span class=\\"me-1\\">
         Duration
       </span>
-      <span class=\\"badge badge-light\\">
+      <span class=\\"badge bg-light\\">
         366d
       </span>
     </span>
@@ -784,30 +784,30 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
 <ul class=\\"nav nav-tabs nav-fill\\">
   <li class=\\"nav-item\\">
     <span class=\\"nav-link cursor-pointer active\\">
-      <span class=\\"mr-1\\">
+      <span class=\\"me-1\\">
         Starts
       </span>
-      <span class=\\"badge badge-light\\">
+      <span class=\\"badge bg-light\\">
         now
       </span>
     </span>
   </li>
   <li class=\\"nav-item\\">
     <span class=\\"nav-link cursor-pointer \\">
-      <span class=\\"mr-1\\">
+      <span class=\\"me-1\\">
         Ends
       </span>
-      <span class=\\"badge badge-light\\">
+      <span class=\\"badge bg-light\\">
         in 366d
       </span>
     </span>
   </li>
   <li class=\\"nav-item\\">
     <span class=\\"nav-link cursor-pointer \\">
-      <span class=\\"mr-1\\">
+      <span class=\\"me-1\\">
         Duration
       </span>
-      <span class=\\"badge badge-light\\">
+      <span class=\\"badge bg-light\\">
         366d
       </span>
     </span>

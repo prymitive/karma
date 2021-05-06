@@ -35,6 +35,10 @@
   /* there's "top: -1px" on ".btn .badge"
      which moves the badge a bit to high, reset it */
   top: 0;
+
+  &.btn-close {
+    background-image: none;
+  }
 }
 
 button.btn.components-filteredinputlabel {

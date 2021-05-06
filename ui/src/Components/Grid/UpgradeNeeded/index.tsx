@@ -27,7 +27,7 @@ const UpgradeNeeded: FC<{
           />
         </div>
         <p className="lead text-muted">
-          <FontAwesomeIcon className="mr-2" icon={faSpinner} spin />
+          <FontAwesomeIcon className="me-2" icon={faSpinner} spin />
           Upgrading to a new version: {newVersion}
         </p>
       </div>

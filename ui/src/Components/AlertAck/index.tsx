@@ -152,12 +152,12 @@ const AlertAck: FC<{
       }
     >
       <span
-        className={`badge badge-pill components-label components-label-with-hover px-2 ${
+        className={`badge rounded-pill components-label components-label-with-hover px-2 ${
           !isAcking && error
-            ? "badge-warning"
+            ? "bg-warning"
             : !isAcking && response
-            ? "badge-success"
-            : "badge-secondary"
+            ? "bg-success"
+            : "bg-secondary"
         }`}
         onClick={() => {
           if (!isAcking && !(response || error)) {

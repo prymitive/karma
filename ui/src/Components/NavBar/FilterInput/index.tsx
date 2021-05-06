@@ -128,7 +128,7 @@ const FilterInput: FC<{
     // data-filters is there to register filters for observation in mobx
     // in order to re-render input component
     <form
-      className="form-inline flex-grow-1 flex-shrink-1 mr-auto"
+      className="flex-grow-1 flex-shrink-1 mr-auto"
       style={{ minWidth: "0px" }}
       onSubmit={(event) => {
         event.preventDefault();
@@ -137,7 +137,7 @@ const FilterInput: FC<{
     >
       <div
         ref={formRef}
-        className={`input-group w-100 mr-2 components-filterinput-outer ${
+        className={`input-group w-100 me-2 components-filterinput-outer ${
           isFocused ? "bg-focused" : "bg-transparent"
         }`}
       >
@@ -159,7 +159,7 @@ const FilterInput: FC<{
             {...getComboboxProps()}
           >
             {alertStore.filters.values.length ? null : (
-              <span className="input-group-text d-inline-block mr-2 border-0 bg-inherit px-1">
+              <span className="input-group-text text-muted d-inline-block me-2 border-0 bg-inherit px-1">
                 <FontAwesomeIcon icon={faSearch} />
               </span>
             )}
@@ -201,9 +201,7 @@ const FilterInput: FC<{
             ) : null}
           </span>
         </div>
-        <div className="input-group-append">
-          <History alertStore={alertStore} settingsStore={settingsStore} />
-        </div>
+        <History alertStore={alertStore} settingsStore={settingsStore} />
       </div>
     </form>
   );

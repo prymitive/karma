@@ -59,7 +59,7 @@ const Duration: FC<{
               <h2>{value}</h2>
             </td>
             <td className="w-50">
-              <span className="text-muted ml-2">{label}</span>
+              <span className="text-muted ms-2">{label}</span>
             </td>
           </tr>
           <tr>

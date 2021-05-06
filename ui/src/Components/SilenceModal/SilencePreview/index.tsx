@@ -33,15 +33,15 @@ const SilencePreview: FC<{
           className="btn btn-primary"
           onClick={() => silenceFormStore.data.setStage("submit")}
         >
-          <FontAwesomeIcon icon={faCheckCircle} className="pr-1" />
+          <FontAwesomeIcon icon={faCheckCircle} className="pe-1" />
           Submit
         </button>
         <button
           type="button"
-          className="btn btn-danger mr-2"
+          className="btn btn-danger me-2"
           onClick={silenceFormStore.data.resetProgress}
         >
-          <FontAwesomeIcon icon={faArrowLeft} className="pr-1" />
+          <FontAwesomeIcon icon={faArrowLeft} className="pe-1" />
           Back
         </button>
       </div>

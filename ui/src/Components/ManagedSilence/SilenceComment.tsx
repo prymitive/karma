@@ -38,7 +38,7 @@ const SilenceComment: FC<{
           : "components-managed-silence-comment"
       }
     >
-      <FontAwesomeIcon className="mr-2" icon={faExternalLinkAlt} />
+      <FontAwesomeIcon className="me-2" icon={faExternalLinkAlt} />
       {silence.comment}
     </a>
   ) : (
@@ -63,12 +63,12 @@ const SilenceComment: FC<{
             {comment}
           </div>
           <div className="components-managed-silence-cite mt-1">
-            <span className="text-muted mr-2 font-italic">
+            <span className="text-muted me-2 font-italic">
               &mdash; {silence.createdBy}
             </span>
             {collapsed &&
             Object.keys(alertStore.data.upstreams.clusters).length > 1 ? (
-              <span className="badge badge-secondary mx-1 align-text-bottom p-1">
+              <span className="badge bg-secondary mx-1 align-text-bottom p-1">
                 {cluster}
               </span>
             ) : null}

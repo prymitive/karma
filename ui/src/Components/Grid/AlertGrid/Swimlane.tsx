@@ -22,7 +22,7 @@ const Swimlane: FC<{
   return (
     <h5 className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 my-1 border border-dark">
       <span className="flex-shrink-0 flex-grow-0">
-        <span className="badge components-label px-0 ml-1 mr-3">
+        <span className="badge components-label px-0 ms-1 me-3">
           <FontAwesomeIcon icon={faTh} className="text-muted" />
         </span>
       </span>
@@ -48,7 +48,7 @@ const Swimlane: FC<{
           />
         </span>
       )}
-      <span className="flex-shrink-0 flex-grow-0 ml-2 mr-0">
+      <span className="flex-shrink-0 flex-grow-0 ms-2 me-0">
         <FilteringCounterBadge
           name="@state"
           value="unprocessed"
@@ -71,7 +71,7 @@ const Swimlane: FC<{
           alertStore={alertStore}
         />
         <span
-          className="text-muted cursor-pointer badge with-click with-click-dark components-label ml-2 mr-1"
+          className="text-muted cursor-pointer badge with-click with-click-dark components-label ms-2 me-1"
           onClick={onToggle}
         >
           <TooltipWrapper title="Click to toggle this grid details or Alt+Click to toggle all grids">

@@ -2,7 +2,7 @@
 
 exports[`<FilterInput /> matches snapshot with no filters 1`] = `
 "
-<div class=\\"input-group w-100 mr-2 components-filterinput-outer bg-transparent\\">
+<div class=\\"input-group w-100 me-2 components-filterinput-outer bg-transparent\\">
   <div class=\\"form-control components-filterinput border-0 rounded-0 bg-inherit\\">
     <div class=\\"autosuggest d-inline-block mw-100\\"
          role=\\"combobox\\"
@@ -10,7 +10,7 @@ exports[`<FilterInput /> matches snapshot with no filters 1`] = `
          aria-owns=\\"downshift-0-menu\\"
          aria-expanded=\\"false\\"
     >
-      <span class=\\"input-group-text d-inline-block mr-2 border-0 bg-inherit px-1\\">
+      <span class=\\"input-group-text text-muted d-inline-block me-2 border-0 bg-inherit px-1\\">
         <svg aria-hidden=\\"true\\"
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
@@ -43,38 +43,36 @@ exports[`<FilterInput /> matches snapshot with no filters 1`] = `
     >
     </span>
   </div>
-  <div class=\\"input-group-append\\">
-    <span class=\\"input-group-text border-0 rounded-0 bg-inherit px-0\\">
-      <button class=\\"btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon\\"
-              type=\\"button\\"
-              data-toggle=\\"dropdown\\"
-              aria-haspopup=\\"true\\"
-              aria-expanded=\\"true\\"
+  <span class=\\"input-group-text border-0 rounded-0 bg-inherit px-0\\">
+    <button class=\\"btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon\\"
+            type=\\"button\\"
+            data-toggle=\\"dropdown\\"
+            aria-haspopup=\\"true\\"
+            aria-expanded=\\"true\\"
+    >
+      <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
+           data-prefix=\\"fas\\"
+           data-icon=\\"caret-down\\"
+           class=\\"svg-inline--fa fa-caret-down fa-w-10 \\"
+           role=\\"img\\"
+           xmlns=\\"http://www.w3.org/2000/svg\\"
+           viewbox=\\"0 0 320 512\\"
       >
-        <svg aria-hidden=\\"true\\"
-             focusable=\\"false\\"
-             data-prefix=\\"fas\\"
-             data-icon=\\"caret-down\\"
-             class=\\"svg-inline--fa fa-caret-down fa-w-10 \\"
-             role=\\"img\\"
-             xmlns=\\"http://www.w3.org/2000/svg\\"
-             viewbox=\\"0 0 320 512\\"
+        <path fill=\\"currentColor\\"
+              d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
         >
-          <path fill=\\"currentColor\\"
-                d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
-          >
-          </path>
-        </svg>
-      </button>
-    </span>
-  </div>
+        </path>
+      </svg>
+    </button>
+  </span>
 </div>
 "
 `;
 
 exports[`<FilterInput /> matches snapshot with some filters 1`] = `
 "
-<div class=\\"input-group w-100 mr-2 components-filterinput-outer bg-transparent\\">
+<div class=\\"input-group w-100 me-2 components-filterinput-outer bg-transparent\\">
   <div class=\\"form-control components-filterinput border-0 rounded-0 bg-inherit\\">
     <button type=\\"button\\"
             class=\\"btn-secondary btn-sm components-filteredinputlabel components-label btn d-inline-flex flex-row align-items-center\\"
@@ -93,7 +91,7 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
         >
         </path>
       </svg>
-      <div class=\\"components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ml-1 tooltip-trigger\\">
+      <div class=\\"components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ms-1 tooltip-trigger\\">
         <span tabindex=\\"0\\"
               class=\\"cursor-text px-1\\"
         >
@@ -104,7 +102,7 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
            data-icon=\\"times\\"
-           class=\\"svg-inline--fa fa-times fa-w-11 cursor-pointer text-reset ml-1 close\\"
+           class=\\"svg-inline--fa fa-times fa-w-11 cursor-pointer text-reset ms-1\\"
            role=\\"img\\"
            xmlns=\\"http://www.w3.org/2000/svg\\"
            viewbox=\\"0 0 352 512\\"
@@ -132,7 +130,7 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
         >
         </path>
       </svg>
-      <div class=\\"components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ml-1 tooltip-trigger\\">
+      <div class=\\"components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ms-1 tooltip-trigger\\">
         <span tabindex=\\"0\\"
               class=\\"cursor-text px-1\\"
         >
@@ -143,7 +141,7 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
            data-icon=\\"times\\"
-           class=\\"svg-inline--fa fa-times fa-w-11 cursor-pointer text-reset ml-1 close\\"
+           class=\\"svg-inline--fa fa-times fa-w-11 cursor-pointer text-reset ms-1\\"
            role=\\"img\\"
            xmlns=\\"http://www.w3.org/2000/svg\\"
            viewbox=\\"0 0 352 512\\"
@@ -177,31 +175,29 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
     >
     </span>
   </div>
-  <div class=\\"input-group-append\\">
-    <span class=\\"input-group-text border-0 rounded-0 bg-inherit px-0\\">
-      <button class=\\"btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon\\"
-              type=\\"button\\"
-              data-toggle=\\"dropdown\\"
-              aria-haspopup=\\"true\\"
-              aria-expanded=\\"true\\"
+  <span class=\\"input-group-text border-0 rounded-0 bg-inherit px-0\\">
+    <button class=\\"btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon\\"
+            type=\\"button\\"
+            data-toggle=\\"dropdown\\"
+            aria-haspopup=\\"true\\"
+            aria-expanded=\\"true\\"
+    >
+      <svg aria-hidden=\\"true\\"
+           focusable=\\"false\\"
+           data-prefix=\\"fas\\"
+           data-icon=\\"caret-down\\"
+           class=\\"svg-inline--fa fa-caret-down fa-w-10 \\"
+           role=\\"img\\"
+           xmlns=\\"http://www.w3.org/2000/svg\\"
+           viewbox=\\"0 0 320 512\\"
       >
-        <svg aria-hidden=\\"true\\"
-             focusable=\\"false\\"
-             data-prefix=\\"fas\\"
-             data-icon=\\"caret-down\\"
-             class=\\"svg-inline--fa fa-caret-down fa-w-10 \\"
-             role=\\"img\\"
-             xmlns=\\"http://www.w3.org/2000/svg\\"
-             viewbox=\\"0 0 320 512\\"
+        <path fill=\\"currentColor\\"
+              d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
         >
-          <path fill=\\"currentColor\\"
-                d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
-          >
-          </path>
-        </svg>
-      </button>
-    </span>
-  </div>
+        </path>
+      </svg>
+    </button>
+  </span>
 </div>
 "
 `;

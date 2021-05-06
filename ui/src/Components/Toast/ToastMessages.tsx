@@ -47,7 +47,7 @@ const UpgradeToastMessage: FC<{
           className="btn btn-sm btn-light"
           onClick={setPause}
         >
-          <FontAwesomeIcon icon={isPaused ? faSync : faStop} className="mr-2" />
+          <FontAwesomeIcon icon={isPaused ? faSync : faStop} className="me-2" />
           {isPaused ? "Reload now" : "Stop auto-reload"}
         </button>
       </div>

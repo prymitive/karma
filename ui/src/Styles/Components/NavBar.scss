@@ -21,12 +21,13 @@
     border-bottom: $border-width solid transparent;
 
     &.navbar-brand {
-      padding-top: 0.362rem;
-      padding-bottom: 0.362rem;
+      padding-top: 0.4rem;
+      padding-bottom: 0.4rem;
+      line-height: 1.8rem;
     }
 
     &:hover {
-      border-bottom: $border-width solid $info;
+      border-bottom: $border-width solid $white;
     }
   }
 

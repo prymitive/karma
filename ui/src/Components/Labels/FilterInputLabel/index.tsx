@@ -53,7 +53,7 @@ const FilterInputLabel: FC<{
           alertStore.filters.values.filter(
             (f) => f.hits !== alertStore.info.totalAlerts
           ).length > 0 ? (
-            <span className="badge badge-light badge-pill">{filter.hits}</span>
+            <span className="badge bg-light rounded-pill">{filter.hits}</span>
           ) : null
         ) : (
           <FontAwesomeIcon icon={faSpinner} spin />
@@ -63,7 +63,7 @@ const FilterInputLabel: FC<{
       )}
       <TooltipWrapper
         title="Click to edit this filter"
-        className="components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ml-1"
+        className="components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ms-1"
       >
         <InlineEdit
           className="cursor-text px-1"
@@ -75,7 +75,7 @@ const FilterInputLabel: FC<{
         />
       </TooltipWrapper>
       <FontAwesomeIcon
-        className="cursor-pointer text-reset ml-1 close"
+        className="cursor-pointer text-reset ms-1"
         icon={faTimes}
         onClick={() => alertStore.filters.removeFilter(filter.raw)}
       />

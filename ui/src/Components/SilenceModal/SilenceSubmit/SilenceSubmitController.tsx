@@ -33,7 +33,7 @@ const SilenceSubmitController: FC<{
           className="btn btn-primary"
           onClick={silenceFormStore.data.resetProgress}
         >
-          <FontAwesomeIcon icon={faArrowLeft} className="pr-1" />
+          <FontAwesomeIcon icon={faArrowLeft} className="pe-1" />
           Back
         </button>
       </div>

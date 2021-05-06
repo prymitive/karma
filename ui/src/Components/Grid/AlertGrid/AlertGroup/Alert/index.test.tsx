@@ -374,7 +374,7 @@ describe("<Alert />", () => {
     const tree = MountedAlert(alert, group, false, false, false);
     expect(
       tree
-        .find("span.components-label.badge.badge-secondary.cursor-pointer")
+        .find("span.components-label.badge.bg-secondary.cursor-pointer")
         .at(0)
         .text()
     ).toBe("just now");
@@ -385,7 +385,7 @@ describe("<Alert />", () => {
     });
     expect(
       tree
-        .find("span.components-label.badge.badge-secondary.cursor-pointer")
+        .find("span.components-label.badge.bg-secondary.cursor-pointer")
         .at(0)
         .text()
     ).toBe("a few seconds ago");
@@ -396,7 +396,7 @@ describe("<Alert />", () => {
     });
     expect(
       tree
-        .find("span.components-label.badge.badge-secondary.cursor-pointer")
+        .find("span.components-label.badge.bg-secondary.cursor-pointer")
         .at(0)
         .text()
     ).toBe("1 minute ago");
@@ -407,7 +407,7 @@ describe("<Alert />", () => {
     });
     expect(
       tree
-        .find("span.components-label.badge.badge-secondary.cursor-pointer")
+        .find("span.components-label.badge.bg-secondary.cursor-pointer")
         .at(0)
         .text()
     ).toBe("1 hour ago");
@@ -418,7 +418,7 @@ describe("<Alert />", () => {
     });
     expect(
       tree
-        .find("span.components-label.badge.badge-secondary.cursor-pointer")
+        .find("span.components-label.badge.bg-secondary.cursor-pointer")
         .at(0)
         .text()
     ).toBe("2 hours ago");
@@ -429,7 +429,7 @@ describe("<Alert />", () => {
     });
     expect(
       tree
-        .find("span.components-label.badge.badge-secondary.cursor-pointer")
+        .find("span.components-label.badge.bg-secondary.cursor-pointer")
         .at(0)
         .text()
     ).toBe("2 days ago");

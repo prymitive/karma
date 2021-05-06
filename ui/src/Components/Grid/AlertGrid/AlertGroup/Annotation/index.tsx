@@ -48,7 +48,7 @@ const RenderNonLinkAnnotation: FC<{
               onClick={() => setIsVisible(false)}
               className="cursor-pointer"
             >
-              <FontAwesomeIcon icon={faSearchMinus} className="mr-1" />
+              <FontAwesomeIcon icon={faSearchMinus} className="me-1" />
               <span className="text-muted">{name}: </span>
             </span>
             <Linkify
@@ -71,7 +71,7 @@ const RenderNonLinkAnnotation: FC<{
           </>
         ) : (
           <>
-            <FontAwesomeIcon icon={faSearchPlus} className="mr-1" />
+            <FontAwesomeIcon icon={faSearchPlus} className="me-1" />
             {name}
           </>
         )}

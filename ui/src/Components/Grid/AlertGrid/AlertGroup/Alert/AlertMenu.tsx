@@ -129,7 +129,7 @@ const MenuContent: FC<{
             }
           }}
         >
-          <FontAwesomeIcon className="mr-1" icon={faBellSlash} />
+          <FontAwesomeIcon className="me-1" icon={faBellSlash} />
           Silence this alert
         </div>
       </div>
@@ -166,13 +166,13 @@ const AlertMenu: FC<{
           <Reference>
             {({ ref }) => (
               <span
-                className="components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer"
+                className="components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer"
                 ref={ref}
                 onClick={toggle}
                 data-toggle="dropdown"
               >
                 <FontAwesomeIcon
-                  className="pr-1"
+                  className="pe-1"
                   style={{ width: "0.8rem" }}
                   icon={faCaretDown}
                 />

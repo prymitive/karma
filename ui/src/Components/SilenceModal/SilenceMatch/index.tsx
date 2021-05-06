@@ -38,13 +38,13 @@ const SilenceMatch: FC<{
   return (
     <div className="d-flex flex-fill flex-lg-row align-items-center flex-column mb-3">
       <div
-        className="flex-shrink-0 flex-grow-0 pr-lg-2 pb-2 pb-lg-0 w-100"
+        className="flex-shrink-0 flex-grow-0 pe-lg-2 pb-2 pb-lg-0 w-100"
         style={{ flexBasis: "25%" }}
       >
         <LabelNameInput matcher={matcher} isValid={isValid} />
       </div>
       <div
-        className="flex-shrink-0 flex-grow-0 pr-lg-2 pb-2 pb-lg-0 w-100"
+        className="flex-shrink-0 flex-grow-0 pe-lg-2 pb-2 pb-lg-0 w-100"
         style={{ flexBasis: "40%" }}
       >
         <LabelValueInput
@@ -57,12 +57,12 @@ const SilenceMatch: FC<{
         className="flex-shrink-0 flex-grow-1 w-100"
         style={{ flexBasis: "15%" }}
       >
-        <div className="d-flex justify-content-between form-check form-check-inline m-0">
+        <div className="d-flex justify-content-between form-check form-check-inline m-0 p-0">
           <div>
-            <span className="custom-control custom-switch">
+            <span className="form-check form-switch">
               <input
                 id={`isEqual-${matcher.id}`}
-                className="custom-control-input"
+                className="form-check-input"
                 type="checkbox"
                 value=""
                 checked={matcher.isEqual}
@@ -72,16 +72,16 @@ const SilenceMatch: FC<{
                 disabled={!enableIsEqual}
               />
               <label
-                className="custom-control-label cursor-pointer mr-3"
+                className="form-check-label cursor-pointer me-3"
                 htmlFor={`isEqual-${matcher.id}`}
               >
                 {matcher.isEqual ? "Silence matches" : "Exclude matches"}
               </label>
             </span>
-            <span className="custom-control custom-switch">
+            <span className="form-check form-switch">
               <input
                 id={`isRegex-${matcher.id}`}
-                className="custom-control-input"
+                className="form-check-input"
                 type="checkbox"
                 value=""
                 checked={matcher.isRegex}
@@ -93,7 +93,7 @@ const SilenceMatch: FC<{
                 disabled={matcher.values.length > 1}
               />
               <label
-                className="custom-control-label cursor-pointer mr-3"
+                className="form-check-label cursor-pointer me-3"
                 htmlFor={`isRegex-${matcher.id}`}
               >
                 Regex

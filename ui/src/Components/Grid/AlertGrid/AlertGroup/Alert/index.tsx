@@ -41,10 +41,10 @@ const Alert: FC<{
   const classNames = [
     "components-grid-alertgrid-alertgroup-alert",
     "list-group-item bg-transparent",
-    "pl-1 pr-0 py-0",
+    "ps-1 pe-0 py-0",
     "my-1",
     "rounded-0",
-    "border-left-1 border-right-0 border-top-0 border-bottom-0",
+    "border-start-1 border-end-0 border-top-0 border-bottom-0",
     BorderClassMap[alert.state] || "border-default",
   ];
 

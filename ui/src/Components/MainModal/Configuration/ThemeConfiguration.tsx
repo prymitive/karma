@@ -34,7 +34,7 @@ const ThemeConfiguration: FC<{
   const context = React.useContext(ThemeContext);
 
   return (
-    <div className="form-group mb-2">
+    <div className="mb-2">
       <Select
         styles={context.reactSelectStyles}
         classNamePrefix="react-select"

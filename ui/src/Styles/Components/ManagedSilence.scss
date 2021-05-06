@@ -16,8 +16,10 @@
 }
 
 .components-managed-silence-comment {
-  line-height: 1.4rem;
   color: $silence-comment-color;
+  line-height: 1.4rem;
+  font-size: 0.9rem;
+  font-style: italic;
 }
 
 .components-managed-silence-cite {

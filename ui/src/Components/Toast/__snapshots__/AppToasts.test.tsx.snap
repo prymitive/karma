@@ -57,7 +57,7 @@ exports[`<AppToasts /> renders UpgradeToastMessage when alertStore.info.upgradeR
           </path>
         </svg>
       </div>
-      <div class=\\"flex-shrink-1 flex-grow-1 align-self-center ml-1 mr-3 text-break text-wrap\\">
+      <div class=\\"flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap\\">
         <div>
           <div>
             New version available, updates are paused until this page auto reloads
@@ -75,7 +75,7 @@ exports[`<AppToasts /> renders UpgradeToastMessage when alertStore.info.upgradeR
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
                    data-icon=\\"stop\\"
-                   class=\\"svg-inline--fa fa-stop fa-w-14 mr-2\\"
+                   class=\\"svg-inline--fa fa-stop fa-w-14 me-2\\"
                    role=\\"img\\"
                    xmlns=\\"http://www.w3.org/2000/svg\\"
                    viewbox=\\"0 0 448 512\\"
@@ -162,7 +162,7 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
           </path>
         </svg>
       </div>
-      <div class=\\"flex-shrink-1 flex-grow-1 align-self-center ml-1 mr-3 text-break text-wrap\\">
+      <div class=\\"flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap\\">
         <div>
           <div>
             Alertmanager am1 raised an error
@@ -226,7 +226,7 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
           </path>
         </svg>
       </div>
-      <div class=\\"flex-shrink-1 flex-grow-1 align-self-center ml-1 mr-3 text-break text-wrap\\">
+      <div class=\\"flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap\\">
         <div>
           <div>
             Alertmanager am3 raised an error

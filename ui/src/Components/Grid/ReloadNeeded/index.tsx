@@ -22,7 +22,7 @@ const ReloadNeeded: FC<{
           className="screen-center-icon-big text-danger mb-4"
         />
         <p className="lead text-white bg-secondary p-3 rounded text-wrap text-break">
-          <FontAwesomeIcon className="mr-2" icon={faSpinner} spin />
+          <FontAwesomeIcon className="me-2" icon={faSpinner} spin />
           All API connection attempts failed. This migth be caused by
           authentication middleware, will try to reload.
         </p>

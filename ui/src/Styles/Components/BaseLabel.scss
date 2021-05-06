@@ -18,55 +18,55 @@
 }
 
 .btn-default,
-.badge-default {
+.bg-default {
   background-color: $color-default;
 }
 .border-default {
   border: 1px solid $color-default;
 }
 
-.components-label:not(.badge-pill) {
-  &.badge-default,
+.components-label:not(.rounded-pill) {
+  &.bg-default,
   &.btn-default {
     border: 1px solid darken($color-default, 2%);
   }
 
-  &.badge-primary,
+  &.bg-primary,
   &.btn-primary {
     border: 1px solid lighten($primary, 2%);
   }
-  &.badge-secondary,
+  &.bg-secondary,
   &.btn-secondary {
     border: 1px solid darken($secondary, 2%);
   }
-  &.badge-success,
+  &.bg-success,
   &.btn-success {
     border: 1px solid darken($success, 2%);
   }
-  &.badge-danger,
+  &.bg-danger,
   &.btn-danger {
     border: 1px solid lighten($danger, 2%);
   }
-  &.badge-warning,
+  &.bg-warning,
   &.btn-warning {
     border: 1px solid lighten($warning, 3%);
   }
-  &.badge-info,
+  &.bg-info,
   &.btn-info {
     border: 1px solid darken($info, 2%);
   }
-  &.badge-dark,
+  &.bg-dark,
   &.btn-dark {
     border: 1px solid darken($dark, 2%);
   }
 }
 
 /* badge class uses em and we modify font sizes a bit, so switch to rem */
-span.badge.components-label:not(.badge-pill) {
+span.badge.components-label:not(.rounded-pill) {
   padding-left: 0.4rem;
   padding-right: 0.4rem;
 }
-span.badge.components-label.badge-pill {
+span.badge.components-label.rounded-pill {
   padding-right: 0.6rem;
   padding-left: 0.6rem;
 }
@@ -127,5 +127,15 @@ span.components-label-dark,
     &:hover {
       color: $white;
     }
+  }
+}
+
+.components-label > svg.fa-times {
+  text-decoration: none;
+  line-height: 1;
+  opacity: 0.4;
+
+  &:hover {
+    opacity: 1;
   }
 }

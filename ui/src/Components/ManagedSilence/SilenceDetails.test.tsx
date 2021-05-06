@@ -92,7 +92,7 @@ describe("<SilenceDetails />", () => {
 
   it("clicking on the copy button copies silence ID to the clipboard", () => {
     const tree = MountedSilenceDetails();
-    const button = tree.find("span.badge.badge-secondary");
+    const button = tree.find("span.badge.bg-secondary");
     button.simulate("click");
     expect(copy).toHaveBeenCalledTimes(1);
     expect(copy).toHaveBeenCalledWith(silence.id);

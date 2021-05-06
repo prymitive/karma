@@ -41,7 +41,7 @@ const SingleClusterStatus: FC<{
           />
         )}
       </div>
-      <div className="badge badge-primary">{clusterRequest.cluster}</div>
+      <div className="badge bg-primary">{clusterRequest.cluster}</div>
       {clusterRequest.isDone ? (
         <p
           className={`mt-2 rounded text-center ${

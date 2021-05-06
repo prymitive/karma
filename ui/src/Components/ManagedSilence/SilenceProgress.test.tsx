@@ -33,7 +33,7 @@ describe("<SilenceProgress />", () => {
   it("renders with class 'danger' and no progressbar when expired", () => {
     advanceTo(new Date(Date.UTC(2001, 0, 1, 23, 0, 0)));
     const tree = MountedSilenceProgress();
-    expect(toDiffableHtml(tree.html())).toMatch(/badge-danger/);
+    expect(toDiffableHtml(tree.html())).toMatch(/bg-danger/);
     expect(tree.text()).toMatch(/Expired 1 year ago/);
   });
 

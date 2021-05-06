@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 import { Settings } from "Stores/Settings";
-import { Accordion } from "Components/Accordion";
+import { Accordion, AccordionItem } from "Components/Accordion";
 import { FetchConfiguration } from "./FetchConfiguration";
 import { FilterBarConfiguration } from "./FilterBarConfiguration";
 import { AlertGroupConfiguration } from "./AlertGroupConfiguration";
@@ -17,18 +17,18 @@ const Configuration: FC<{
   settingsStore: Settings;
   defaultIsOpen: boolean;
 }> = ({ settingsStore, defaultIsOpen }) => (
-  <form className="px-3 accordion">
-    <Accordion
+  <Accordion>
+    <AccordionItem
       text="Refresh interval"
       content={<FetchConfiguration settingsStore={settingsStore} />}
       defaultIsOpen={true}
     />
-    <Accordion
+    <AccordionItem
       text="Filter bar configuration"
       content={<FilterBarConfiguration settingsStore={settingsStore} />}
       defaultIsOpen={defaultIsOpen}
     />
-    <Accordion
+    <AccordionItem
       text="Theme"
       content={
         <>
@@ -39,34 +39,34 @@ const Configuration: FC<{
       }
       defaultIsOpen={defaultIsOpen}
     />
-    <Accordion
+    <AccordionItem
       text="Minimal alert group width"
       content={<AlertGroupWidthConfiguration settingsStore={settingsStore} />}
       defaultIsOpen={defaultIsOpen}
     />
-    <Accordion
+    <AccordionItem
       text="Default number of alerts to show per group"
       content={<AlertGroupConfiguration settingsStore={settingsStore} />}
       defaultIsOpen={defaultIsOpen}
     />
-    <Accordion
+    <AccordionItem
       text="Default alert group display"
       content={
         <AlertGroupCollapseConfiguration settingsStore={settingsStore} />
       }
       defaultIsOpen={defaultIsOpen}
     />
-    <Accordion
+    <AccordionItem
       text="Grid sort order"
       content={<AlertGroupSortConfiguration settingsStore={settingsStore} />}
       defaultIsOpen={defaultIsOpen}
     />
-    <Accordion
+    <AccordionItem
       text="Multi-grid source label"
       content={<MultiGridConfiguration settingsStore={settingsStore} />}
       defaultIsOpen={defaultIsOpen}
     />
-  </form>
+  </Accordion>
 );
 
 export { Configuration };

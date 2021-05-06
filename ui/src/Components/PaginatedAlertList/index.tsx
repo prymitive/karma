@@ -22,7 +22,7 @@ const FetchError: FC<{ message: ReactNode }> = ({ message }) => (
 );
 
 const Placeholder = () => (
-  <div className="jumbotron bg-transparent">
+  <div className="px-2 py-5 bg-transparent">
     <h1 className="display-5 text-placeholder text-center">
       <FontAwesomeIcon icon={faSpinner} size="lg" spin />
     </h1>

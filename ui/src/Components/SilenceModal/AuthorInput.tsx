@@ -16,11 +16,9 @@ const IconInput: FC<{
   readOnly?: boolean;
 }> = ({ type, autoComplete, icon, placeholder, value, onChange, ...extra }) => (
   <div className="input-group mb-3">
-    <div className="input-group-prepend">
-      <span className="input-group-text">
-        <FontAwesomeIcon icon={icon} />
-      </span>
-    </div>
+    <span className="input-group-text text-muted">
+      <FontAwesomeIcon icon={icon} />
+    </span>
     <input
       type={type}
       className="form-control"

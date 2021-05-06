@@ -3,8 +3,8 @@
 exports[`<LabelWithPercent /> matches snapshot with isActive=true 1`] = `
 "
 <div class=\\"d-inline-block mw-100\\">
-  <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-    <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+  <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+    <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
       25
     </span>
     <span>
@@ -19,7 +19,7 @@ exports[`<LabelWithPercent /> matches snapshot with isActive=true 1`] = `
          focusable=\\"false\\"
          data-prefix=\\"fas\\"
          data-icon=\\"times\\"
-         class=\\"svg-inline--fa fa-times fa-w-11 cursor-pointer text-reset ml-1 close\\"
+         class=\\"svg-inline--fa fa-times fa-w-11 cursor-pointer text-reset ms-1\\"
          role=\\"img\\"
          xmlns=\\"http://www.w3.org/2000/svg\\"
          viewbox=\\"0 0 352 512\\"
@@ -31,7 +31,7 @@ exports[`<LabelWithPercent /> matches snapshot with isActive=true 1`] = `
       </path>
     </svg>
   </span>
-  <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+  <div class=\\"progress components-labelWithPercent-progress me-1\\">
     <div class=\\"progress-bar bg-warning\\"
          role=\\"progressbar\\"
          style=\\"width: 50%;\\"
@@ -48,8 +48,8 @@ exports[`<LabelWithPercent /> matches snapshot with isActive=true 1`] = `
 exports[`<LabelWithPercent /> matches snapshot with offset=0 1`] = `
 "
 <div class=\\"d-inline-block mw-100\\">
-  <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-    <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+  <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+    <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
       25
     </span>
     <span>
@@ -61,7 +61,7 @@ exports[`<LabelWithPercent /> matches snapshot with offset=0 1`] = `
       </span>
     </span>
   </span>
-  <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+  <div class=\\"progress components-labelWithPercent-progress me-1\\">
     <div class=\\"progress-bar bg-warning\\"
          role=\\"progressbar\\"
          style=\\"width: 50%;\\"
@@ -78,8 +78,8 @@ exports[`<LabelWithPercent /> matches snapshot with offset=0 1`] = `
 exports[`<LabelWithPercent /> matches snapshot with offset=25 1`] = `
 "
 <div class=\\"d-inline-block mw-100\\">
-  <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-    <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+  <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+    <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
       25
     </span>
     <span>
@@ -91,7 +91,7 @@ exports[`<LabelWithPercent /> matches snapshot with offset=25 1`] = `
       </span>
     </span>
   </span>
-  <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+  <div class=\\"progress components-labelWithPercent-progress me-1\\">
     <div class=\\"progress-bar bg-transparent\\"
          role=\\"progressbar\\"
          style=\\"width: 25%;\\"

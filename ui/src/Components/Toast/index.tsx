@@ -39,7 +39,7 @@ const Toast: FC<{
           />
           <FontAwesomeIcon icon={icon} className="fa-stack-1x text-white" />
         </div>
-        <div className="flex-shrink-1 flex-grow-1 align-self-center ml-1 mr-3 text-break text-wrap">
+        <div className="flex-shrink-1 flex-grow-1 align-self-center ms-1 me-3 text-break text-wrap">
           {message}
         </div>
         {hasClose ? (

@@ -82,14 +82,14 @@ describe("<MainModal />", () => {
     expect(tree.find("MainModalContent")).toHaveLength(0);
   });
 
-  it("hides the modal when button.close is clicked", () => {
+  it("hides the modal when button.btn-close is clicked", () => {
     const tree = MountedMainModal();
     const toggle = tree.find(".nav-link");
 
     toggle.simulate("click");
     expect(tree.find("MainModalContent")).toHaveLength(1);
 
-    tree.find("button.close").simulate("click");
+    tree.find("button.btn-close").simulate("click");
     act(() => {
       jest.runOnlyPendingTimers();
     });

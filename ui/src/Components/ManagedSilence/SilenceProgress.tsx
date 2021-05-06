@@ -31,11 +31,11 @@ const SilenceProgress: FC<{
   }, [silence.startsAt, silence.endsAt]);
 
   return parseISO(silence.endsAt) < new Date() ? (
-    <span className="badge badge-danger align-text-bottom p-1">
+    <span className="badge bg-danger align-text-bottom p-1">
       Expired <DateFromNow timestamp={silence.endsAt} />
     </span>
   ) : (
-    <span className="badge badge-light nmb-05 align-text-bottom p-1">
+    <span className="badge bg-light nmb-05 align-text-bottom p-1">
       Expires <DateFromNow timestamp={silence.endsAt} />
       <div className="progress silence-progress">
         <div

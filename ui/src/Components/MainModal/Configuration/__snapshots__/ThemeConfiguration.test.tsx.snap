@@ -2,7 +2,7 @@
 
 exports[`<ThemeConfiguration /> matches snapshot with default values 1`] = `
 "
-<div class=\\"form-group mb-2\\">
+<div class=\\"mb-2\\">
   <div class=\\" css-2b097c-container\\">
     <span aria-live=\\"polite\\"
           aria-atomic=\\"false\\"

@@ -2,7 +2,7 @@
 
 exports[`<StaticLabel /> matches snapshot 1`] = `
 "
-<span class=\\"components-label badge badge-default components-label-dark \\">
+<span class=\\"components-label badge bg-default components-label-dark \\">
   <span class=\\"components-label-name\\">
     foo:
   </span>

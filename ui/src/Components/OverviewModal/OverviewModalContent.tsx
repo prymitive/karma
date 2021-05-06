@@ -16,8 +16,8 @@ const TableRows: FC<{
     {nameStats.map((nameStats) => (
       <tr key={nameStats.name}>
         <td width="25%" className="text-nowrap mw-100 p-1">
-          <span className="badge badge-light components-label mx-0 mt-0 mb-auto pl-0 text-left">
-            <span className="bg-primary text-white mr-1 px-1 components-labelWithPercent-percent">
+          <span className="badge bg-light components-label mx-0 mt-0 mb-auto ps-0 text-start">
+            <span className="bg-primary text-white me-1 px-1 components-labelWithPercent-percent">
               {nameStats.hits}
             </span>
             {nameStats.name}
@@ -98,7 +98,7 @@ const LabelsTable: FC<{
 ));
 
 const NothingToShow: FC = () => (
-  <div className="jumbotron bg-transparent">
+  <div className="px-2 py-5 bg-transparent">
     <h1 className="display-5 text-placeholder text-center">
       No labels to display
     </h1>
@@ -114,9 +114,7 @@ const OverviewModalContent: FC<{
     <>
       <div className="modal-header">
         <h5 className="modal-title">Overview</h5>
-        <button type="button" className="close" onClick={onHide}>
-          <span className="align-middle">&times;</span>
-        </button>
+        <button type="button" className="btn-close" onClick={onHide}></button>
       </div>
       <div className="modal-body">
         {alertStore.data.counters.length === 0 ? (

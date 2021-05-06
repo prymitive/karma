@@ -22,7 +22,7 @@ describe("<InhibitedByModal />", () => {
     const tree = mount(
       <InhibitedByModal alertStore={alertStore} fingerprints={["foo=bar"]} />
     );
-    const toggle = tree.find("span.badge.badge-light");
+    const toggle = tree.find("span.badge.bg-light");
     toggle.simulate("click");
     expect(tree.find("InhibitedByModalContent")).toHaveLength(0);
     expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(1);
@@ -32,7 +32,7 @@ describe("<InhibitedByModal />", () => {
     const tree = mount(
       <InhibitedByModal alertStore={alertStore} fingerprints={["foo=bar"]} />
     );
-    const toggle = tree.find("span.badge.badge-light");
+    const toggle = tree.find("span.badge.bg-light");
     toggle.simulate("click");
     expect(tree.find(".modal-title").text()).toBe("Inhibiting alerts");
     expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(0);
@@ -42,7 +42,7 @@ describe("<InhibitedByModal />", () => {
     const tree = mount(
       <InhibitedByModal alertStore={alertStore} fingerprints={["foo=bar"]} />
     );
-    const toggle = tree.find("span.badge.badge-light");
+    const toggle = tree.find("span.badge.bg-light");
 
     toggle.simulate("click");
     act(() => {
@@ -59,16 +59,16 @@ describe("<InhibitedByModal />", () => {
     expect(tree.find(".modal-title")).toHaveLength(0);
   });
 
-  it("hides the modal when button.close is clicked", () => {
+  it("hides the modal when button.btn-close is clicked", () => {
     const tree = mount(
       <InhibitedByModal alertStore={alertStore} fingerprints={["foo=bar"]} />
     );
-    const toggle = tree.find("span.badge.badge-light");
+    const toggle = tree.find("span.badge.bg-light");
 
     toggle.simulate("click");
     expect(tree.find(".modal-title").text()).toBe("Inhibiting alerts");
 
-    tree.find("button.close").simulate("click");
+    tree.find("button.btn-close").simulate("click");
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -80,7 +80,7 @@ describe("<InhibitedByModal />", () => {
     const tree = mount(
       <InhibitedByModal alertStore={alertStore} fingerprints={["foo=bar"]} />
     );
-    const toggle = tree.find("span.badge.badge-light");
+    const toggle = tree.find("span.badge.bg-light");
     toggle.simulate("click");
     expect(document.body.className.split(" ")).toContain("modal-open");
   });
@@ -90,10 +90,10 @@ describe("<InhibitedByModal />", () => {
       <InhibitedByModal alertStore={alertStore} fingerprints={["foo=bar"]} />
     );
 
-    tree.find("span.badge.badge-light").simulate("click");
+    tree.find("span.badge.bg-light").simulate("click");
     expect(document.body.className.split(" ")).toContain("modal-open");
 
-    tree.find("span.badge.badge-light").simulate("click");
+    tree.find("span.badge.bg-light").simulate("click");
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -105,7 +105,7 @@ describe("<InhibitedByModal />", () => {
       <InhibitedByModal alertStore={alertStore} fingerprints={["foo=bar"]} />
     );
 
-    const toggle = tree.find("span.badge.badge-light");
+    const toggle = tree.find("span.badge.bg-light");
     toggle.simulate("click");
 
     act(() => {

@@ -46,20 +46,18 @@ describe("<GetClassAndStyle />", () => {
 
   it("@state=active label should use StateLabelClassMap.active class", () => {
     const cs = GetClassAndStyle(alertStore, "@state", "active");
-    expect(cs.colorClassNames).toContain(`badge-${StateLabelClassMap.active}`);
+    expect(cs.colorClassNames).toContain(`bg-${StateLabelClassMap.active}`);
   });
 
   it("@state=suppressed label should use StateLabelClassMap.suppressed class", () => {
     const cs = GetClassAndStyle(alertStore, "@state", "suppressed");
-    expect(cs.colorClassNames).toContain(
-      `badge-${StateLabelClassMap.suppressed}`
-    );
+    expect(cs.colorClassNames).toContain(`bg-${StateLabelClassMap.suppressed}`);
   });
 
   it("@state=unprocessed label should use StateLabelClassMap.unprocessed class", () => {
     const cs = GetClassAndStyle(alertStore, "@state", "unprocessed");
     expect(cs.colorClassNames).toContain(
-      `badge-${StateLabelClassMap.unprocessed}`
+      `bg-${StateLabelClassMap.unprocessed}`
     );
   });
 

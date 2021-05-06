@@ -17,7 +17,7 @@ const MenuLink: FC<{
       rel="noopener noreferrer"
       onClick={afterClick}
     >
-      <FontAwesomeIcon className="mr-1" icon={icon} />
+      <FontAwesomeIcon className="me-1" icon={icon} />
       {text}
     </a>
   );

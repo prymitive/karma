@@ -234,7 +234,7 @@ const Fetcher: FC<{
 
   return (
     <div
-      className="navbar-brand py-0 mr-2 d-none d-sm-block"
+      className="navbar-brand py-0 me-2 d-none d-sm-block"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >

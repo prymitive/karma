@@ -24,10 +24,10 @@ exports[`<SilenceComment /> Matches snapshot when collapsed 1`] = `
       Mocked Silence
     </div>
     <div class=\\"components-managed-silence-cite mt-1\\">
-      <span class=\\"text-muted mr-2 font-italic\\">
+      <span class=\\"text-muted me-2 font-italic\\">
         — me@example.com
       </span>
-      <span class=\\"badge badge-light nmb-05 align-text-bottom p-1\\">
+      <span class=\\"badge bg-light nmb-05 align-text-bottom p-1\\">
         Expires in 30 minutes
         <div class=\\"progress silence-progress\\">
           <div class=\\"progress-bar bg-success\\"
@@ -45,7 +45,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed 1`] = `
   <div class=\\"flex-shrink-0 flex-grow-0\\">
     <div class=\\"d-flex flex-column flex-sm-row justify-content-between align-items-center\\">
       <div class=\\" tooltip-trigger\\">
-        <span class=\\"badge-primary badge-pill components-label-with-hover components-label badge\\">
+        <span class=\\"bg-primary rounded-pill components-label-with-hover components-label badge\\">
           123
         </span>
       </div>
@@ -96,13 +96,13 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
       Mocked Silence
     </div>
     <div class=\\"components-managed-silence-cite mt-1\\">
-      <span class=\\"text-muted mr-2 font-italic\\">
+      <span class=\\"text-muted me-2 font-italic\\">
         — me@example.com
       </span>
-      <span class=\\"badge badge-secondary mx-1 align-text-bottom p-1\\">
+      <span class=\\"badge bg-secondary mx-1 align-text-bottom p-1\\">
         ha
       </span>
-      <span class=\\"badge badge-light nmb-05 align-text-bottom p-1\\">
+      <span class=\\"badge bg-light nmb-05 align-text-bottom p-1\\">
         Expires in 30 minutes
         <div class=\\"progress silence-progress\\">
           <div class=\\"progress-bar bg-success\\"
@@ -120,7 +120,7 @@ exports[`<SilenceComment /> Matches snapshot when collapsed and multiple cluster
   <div class=\\"flex-shrink-0 flex-grow-0\\">
     <div class=\\"d-flex flex-column flex-sm-row justify-content-between align-items-center\\">
       <div class=\\" tooltip-trigger\\">
-        <span class=\\"badge-primary badge-pill components-label-with-hover components-label badge\\">
+        <span class=\\"bg-primary rounded-pill components-label-with-hover components-label badge\\">
           123
         </span>
       </div>
@@ -171,7 +171,7 @@ exports[`<SilenceComment /> Matches snapshot when expanded 1`] = `
       Mocked Silence
     </div>
     <div class=\\"components-managed-silence-cite mt-1\\">
-      <span class=\\"text-muted mr-2 font-italic\\">
+      <span class=\\"text-muted me-2 font-italic\\">
         — me@example.com
       </span>
     </div>
@@ -179,7 +179,7 @@ exports[`<SilenceComment /> Matches snapshot when expanded 1`] = `
   <div class=\\"flex-shrink-0 flex-grow-0\\">
     <div class=\\"d-flex flex-column flex-sm-row justify-content-between align-items-center\\">
       <div class=\\" tooltip-trigger\\">
-        <span class=\\"badge-primary badge-pill components-label-with-hover components-label badge\\">
+        <span class=\\"bg-primary rounded-pill components-label-with-hover components-label badge\\">
           123
         </span>
       </div>
@@ -230,7 +230,7 @@ exports[`<SilenceComment /> Matches snapshot when expanded and multiple clusters
       Mocked Silence
     </div>
     <div class=\\"components-managed-silence-cite mt-1\\">
-      <span class=\\"text-muted mr-2 font-italic\\">
+      <span class=\\"text-muted me-2 font-italic\\">
         — me@example.com
       </span>
     </div>
@@ -238,7 +238,7 @@ exports[`<SilenceComment /> Matches snapshot when expanded and multiple clusters
   <div class=\\"flex-shrink-0 flex-grow-0\\">
     <div class=\\"d-flex flex-column flex-sm-row justify-content-between align-items-center\\">
       <div class=\\" tooltip-trigger\\">
-        <span class=\\"badge-primary badge-pill components-label-with-hover components-label badge\\">
+        <span class=\\"bg-primary rounded-pill components-label-with-hover components-label badge\\">
           123
         </span>
       </div>

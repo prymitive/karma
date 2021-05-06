@@ -1,6 +1,6 @@
 // fallback class for labels
 const DefaultLabelClassMap = Object.freeze({
-  badge: "badge-default components-label-dark",
+  badge: "bg-default components-label-dark",
   btn: "btn-default components-label-dark",
 });
 
@@ -18,12 +18,12 @@ const BackgroundClassMap = Object.freeze({
 });
 
 const StaticColorLabelClassMap = Object.freeze({
-  badge: "badge-info components-label-dark",
+  badge: "bg-info components-label-dark",
   btn: "btn-info components-label-dark",
 });
 
 const AlertNameLabelClassMap = Object.freeze({
-  badge: "badge-dark components-label-dark",
+  badge: "bg-dark components-label-dark",
   btn: "btn-dark components-label-dark",
 });
 

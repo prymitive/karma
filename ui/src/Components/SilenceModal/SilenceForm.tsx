@@ -52,34 +52,31 @@ const ShareButton: FC<{
 
   return (
     <div className="input-group mb-3">
-      <div className="input-group-prepend">
-        <span className="input-group-text">
-          <TooltipWrapper title="Link to this form">
-            <FontAwesomeIcon icon={faShareAlt} />
-          </TooltipWrapper>
-        </span>
-      </div>
+      <span className="input-group-text text-muted">
+        <TooltipWrapper title="Link to this form">
+          <FontAwesomeIcon icon={faShareAlt} />
+        </TooltipWrapper>
+      </span>
       <input
         type="text"
         className="form-control"
         value={`${baseURL}?m=${silenceFormStore.data.toBase64}`}
         onChange={() => {}}
       />
-      <div ref={ref} className="input-group-append">
-        <span
-          className="input-group-text cursor-pointer"
-          onClick={() => {
-            copy(`${baseURL}?m=${silenceFormStore.data.toBase64}`);
-            setClickCount(clickCount + 1);
-          }}
-        >
-          <TooltipWrapper title="Copy to clipboard">
-            <CSSTransition {...props}>
-              <FontAwesomeIcon icon={faCopy} />
-            </CSSTransition>
-          </TooltipWrapper>
-        </span>
-      </div>
+      <span
+        ref={ref}
+        className="input-group-text text-muted cursor-pointer"
+        onClick={() => {
+          copy(`${baseURL}?m=${silenceFormStore.data.toBase64}`);
+          setClickCount(clickCount + 1);
+        }}
+      >
+        <TooltipWrapper title="Copy to clipboard">
+          <CSSTransition {...props}>
+            <FontAwesomeIcon icon={faCopy} />
+          </CSSTransition>
+        </TooltipWrapper>
+      </span>
     </div>
   );
 });
@@ -261,15 +258,15 @@ const SilenceForm: FC<{
           {silenceFormStore.data.silenceID === null ? null : (
             <button
               type="button"
-              className="btn btn-danger mr-2"
+              className="btn btn-danger me-2"
               onClick={silenceFormStore.data.resetSilenceID}
             >
-              <FontAwesomeIcon icon={faUndoAlt} className="mr-1" />
+              <FontAwesomeIcon icon={faUndoAlt} className="me-1" />
               Reset
             </button>
           )}
           <button type="submit" className="btn btn-primary">
-            <FontAwesomeIcon icon={faSearch} className="mr-1" />
+            <FontAwesomeIcon icon={faSearch} className="me-1" />
             Preview
           </button>
         </span>

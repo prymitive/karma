@@ -58,7 +58,7 @@ const FilteringCounterBadge: FC<{
     alertStore,
     name,
     value,
-    "badge-pill components-label-with-hover"
+    "rounded-pill components-label-with-hover"
   );
 
   return (
@@ -72,8 +72,8 @@ const FilteringCounterBadge: FC<{
             themed
               ? cs.className
               : [
-                  `badge-${defaultColor}`,
-                  "badge-pill components-label-with-hover",
+                  `bg-${defaultColor}`,
+                  "rounded-pill components-label-with-hover",
                   ...cs.baseClassNames,
                 ].join(" ")
           }
