@@ -8,11 +8,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
       Overview
     </h5>
     <button type=\\"button\\"
-            class=\\"close\\"
+            class=\\"btn-close\\"
     >
-      <span class=\\"align-middle\\">
-        ×
-      </span>
     </button>
   </div>
   <div class=\\"modal-body\\">
@@ -24,8 +21,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
           <td width=\\"25%\\"
               class=\\"text-nowrap mw-100 p-1\\"
           >
-            <span class=\\"badge badge-light components-label mx-0 mt-0 mb-auto pl-0 text-left\\">
-              <span class=\\"bg-primary text-white mr-1 px-1 components-labelWithPercent-percent\\">
+            <span class=\\"badge bg-light components-label mx-0 mt-0 mb-auto ps-0 text-start\\">
+              <span class=\\"bg-primary text-white me-1 px-1 components-labelWithPercent-percent\\">
                 16
               </span>
               foo
@@ -35,8 +32,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               class=\\"mw-100 p-1\\"
           >
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-                <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   8
                 </span>
                 <span>
@@ -48,7 +45,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress me-1\\">
                 <div class=\\"progress-bar bg-warning\\"
                      role=\\"progressbar\\"
                      style=\\"width: 50%;\\"
@@ -60,8 +57,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-                <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   4
                 </span>
                 <span>
@@ -73,7 +70,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress me-1\\">
                 <div class=\\"progress-bar bg-transparent\\"
                      role=\\"progressbar\\"
                      style=\\"width: 50%;\\"
@@ -93,8 +90,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-                <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   4
                 </span>
                 <span>
@@ -106,7 +103,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress me-1\\">
                 <div class=\\"progress-bar bg-transparent\\"
                      role=\\"progressbar\\"
                      style=\\"width: 75%;\\"
@@ -131,8 +128,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
           <td width=\\"25%\\"
               class=\\"text-nowrap mw-100 p-1\\"
           >
-            <span class=\\"badge badge-light components-label mx-0 mt-0 mb-auto pl-0 text-left\\">
-              <span class=\\"bg-primary text-white mr-1 px-1 components-labelWithPercent-percent\\">
+            <span class=\\"badge bg-light components-label mx-0 mt-0 mb-auto ps-0 text-start\\">
+              <span class=\\"bg-primary text-white me-1 px-1 components-labelWithPercent-percent\\">
                 20
               </span>
               bar
@@ -142,8 +139,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               class=\\"mw-100 p-1\\"
           >
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-                <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
                 <span>
@@ -155,7 +152,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress me-1\\">
                 <div class=\\"progress-bar bg-success\\"
                      role=\\"progressbar\\"
                      style=\\"width: 5%;\\"
@@ -167,8 +164,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-                <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
                 <span>
@@ -180,7 +177,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress me-1\\">
                 <div class=\\"progress-bar bg-transparent\\"
                      role=\\"progressbar\\"
                      style=\\"width: 5%;\\"
@@ -200,8 +197,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-                <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
                 <span>
@@ -213,7 +210,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress me-1\\">
                 <div class=\\"progress-bar bg-transparent\\"
                      role=\\"progressbar\\"
                      style=\\"width: 10%;\\"
@@ -233,8 +230,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-                <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
                 <span>
@@ -246,7 +243,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress me-1\\">
                 <div class=\\"progress-bar bg-transparent\\"
                      role=\\"progressbar\\"
                      style=\\"width: 15%;\\"
@@ -266,8 +263,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-                <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
                 <span>
@@ -279,7 +276,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress me-1\\">
                 <div class=\\"progress-bar bg-transparent\\"
                      role=\\"progressbar\\"
                      style=\\"width: 20%;\\"
@@ -299,8 +296,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-                <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
                 <span>
@@ -312,7 +309,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress me-1\\">
                 <div class=\\"progress-bar bg-transparent\\"
                      role=\\"progressbar\\"
                      style=\\"width: 25%;\\"
@@ -332,8 +329,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-                <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
                 <span>
@@ -345,7 +342,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress me-1\\">
                 <div class=\\"progress-bar bg-transparent\\"
                      role=\\"progressbar\\"
                      style=\\"width: 30%;\\"
@@ -365,8 +362,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-                <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
                 <span>
@@ -378,7 +375,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress me-1\\">
                 <div class=\\"progress-bar bg-transparent\\"
                      role=\\"progressbar\\"
                      style=\\"width: 35%;\\"
@@ -398,8 +395,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               </div>
             </div>
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-                <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+              <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   1
                 </span>
                 <span>
@@ -411,7 +408,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress me-1\\">
                 <div class=\\"progress-bar bg-transparent\\"
                      role=\\"progressbar\\"
                      style=\\"width: 40%;\\"
@@ -439,8 +436,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
           <td width=\\"25%\\"
               class=\\"text-nowrap mw-100 p-1\\"
           >
-            <span class=\\"badge badge-light components-label mx-0 mt-0 mb-auto pl-0 text-left\\">
-              <span class=\\"bg-primary text-white mr-1 px-1 components-labelWithPercent-percent\\">
+            <span class=\\"badge bg-light components-label mx-0 mt-0 mb-auto ps-0 text-start\\">
+              <span class=\\"bg-primary text-white me-1 px-1 components-labelWithPercent-percent\\">
                 5
               </span>
               alertname
@@ -450,8 +447,8 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
               class=\\"mw-100 p-1\\"
           >
             <div class=\\"d-inline-block mw-100\\">
-              <span class=\\"components-label badge badge-dark components-label-dark components-label-with-hover mb-0 pl-0 text-left\\">
-                <span class=\\"mr-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
+              <span class=\\"components-label badge bg-dark components-label-dark components-label-with-hover mb-0 ps-0 text-start\\">
+                <span class=\\"me-1 px-1 bg-primary text-white components-labelWithPercent-percent\\">
                   5
                 </span>
                 <span>
@@ -463,7 +460,7 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   </span>
                 </span>
               </span>
-              <div class=\\"progress components-labelWithPercent-progress mr-1\\">
+              <div class=\\"progress components-labelWithPercent-progress me-1\\">
                 <div class=\\"progress-bar bg-danger\\"
                      role=\\"progressbar\\"
                      style=\\"width: 100%;\\"
@@ -491,15 +488,12 @@ exports[`<OverviewModalContent /> matches snapshot with no labels to show 1`] = 
       Overview
     </h5>
     <button type=\\"button\\"
-            class=\\"close\\"
+            class=\\"btn-close\\"
     >
-      <span class=\\"align-middle\\">
-        ×
-      </span>
     </button>
   </div>
   <div class=\\"modal-body\\">
-    <div class=\\"jumbotron bg-transparent\\">
+    <div class=\\"px-2 py-5 bg-transparent\\">
       <h1 class=\\"display-5 text-placeholder text-center\\">
         No labels to display
       </h1>

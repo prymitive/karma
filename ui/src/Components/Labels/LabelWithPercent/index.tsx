@@ -42,7 +42,7 @@ const LabelWithPercent: FC<{
     alertStore,
     name,
     value,
-    "components-label-with-hover mb-0 pl-0 text-left"
+    "components-label-with-hover mb-0 ps-0 text-start"
   );
 
   const progressBarBg =
@@ -51,7 +51,7 @@ const LabelWithPercent: FC<{
   return (
     <div className="d-inline-block mw-100">
       <span className={cs.className} style={cs.style}>
-        <span className="mr-1 px-1 bg-primary text-white components-labelWithPercent-percent">
+        <span className="me-1 px-1 bg-primary text-white components-labelWithPercent-percent">
           {hits}
         </span>
         <span onClick={handleClick}>
@@ -60,14 +60,14 @@ const LabelWithPercent: FC<{
         </span>
         {isActive ? (
           <FontAwesomeIcon
-            className="cursor-pointer text-reset ml-1 close"
+            className="cursor-pointer text-reset ms-1"
             style={{ fontSize: "100%" }}
             icon={faTimes}
             onClick={removeFromFilters}
           />
         ) : null}
       </span>
-      <div className="progress components-labelWithPercent-progress mr-1">
+      <div className="progress components-labelWithPercent-progress me-1">
         {offset === 0 ? null : (
           <div
             className="progress-bar bg-transparent"

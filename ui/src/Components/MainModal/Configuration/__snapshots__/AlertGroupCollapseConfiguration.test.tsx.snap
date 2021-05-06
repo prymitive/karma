@@ -2,7 +2,7 @@
 
 exports[`<AlertGroupCollapseConfiguration /> matches snapshot with default values 1`] = `
 "
-<div class=\\"form-group mb-0\\">
+<div class=\\"mb-0\\">
   <div class=\\" css-2b097c-container\\">
     <span aria-live=\\"polite\\"
           aria-atomic=\\"false\\"

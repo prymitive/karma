@@ -1,17 +1,6 @@
 import { FC, ReactNode, useState } from "react";
 
-import { ToggleIcon } from "Components/ToggleIcon";
-
-const Trigger: FC<{ text: string; isOpen: boolean }> = ({ text, isOpen }) => (
-  <div className="d-flex flex-row justify-content-between">
-    <div>{text}</div>
-    <div>
-      <ToggleIcon isOpen={isOpen} className="text-muted" />
-    </div>
-  </div>
-);
-
-const Accordion: FC<{
+export const AccordionItem: FC<{
   text: string;
   content: ReactNode;
   defaultIsOpen?: boolean;
@@ -19,16 +8,23 @@ const Accordion: FC<{
   const [isOpen, setIsOpen] = useState<boolean>(defaultIsOpen || false);
 
   return (
-    <div className="accordion card">
-      <div
-        className={`card-header cursor-pointer ${isOpen ? "active" : ""}`}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <Trigger text={text} isOpen={isOpen} />
+    <div className="accordion-item">
+      <h2 className="accordion-header">
+        <button
+          className={`accordion-button ${isOpen ? "" : "collapsed"}`}
+          type="button"
+          onClick={() => setIsOpen((val) => !val)}
+        >
+          {text}
+        </button>
+      </h2>
+      <div className={`accordion-collapse ${isOpen ? "show" : ""}`}>
+        {isOpen ? <div className="accordion-body">{content}</div> : null}
       </div>
-      <div className={isOpen ? "card-body my-2" : ""}>{isOpen && content}</div>
     </div>
   );
 };
 
-export { Accordion };
+export const Accordion: FC = ({ children }) => {
+  return <div className="accordion">{children}</div>;
+};

@@ -26,10 +26,10 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
           Mocked Silence
         </div>
         <div class=\\"components-managed-silence-cite mt-1\\">
-          <span class=\\"text-muted mr-2 font-italic\\">
+          <span class=\\"text-muted me-2 font-italic\\">
             — me@example.com
           </span>
-          <span class=\\"badge badge-light nmb-05 align-text-bottom p-1\\">
+          <span class=\\"badge bg-light nmb-05 align-text-bottom p-1\\">
             Expires in 30 minutes
             <div class=\\"progress silence-progress\\">
               <div class=\\"progress-bar bg-success\\"
@@ -47,7 +47,7 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
       <div class=\\"flex-shrink-0 flex-grow-0\\">
         <div class=\\"d-flex flex-column flex-sm-row justify-content-between align-items-center\\">
           <div class=\\" tooltip-trigger\\">
-            <span class=\\"badge-primary badge-pill components-label-with-hover components-label badge\\">
+            <span class=\\"bg-primary rounded-pill components-label-with-hover components-label badge\\">
               123
             </span>
           </div>
@@ -102,7 +102,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
           Mocked Silence
         </div>
         <div class=\\"components-managed-silence-cite mt-1\\">
-          <span class=\\"text-muted mr-2 font-italic\\">
+          <span class=\\"text-muted me-2 font-italic\\">
             — me@example.com
           </span>
         </div>
@@ -110,7 +110,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
       <div class=\\"flex-shrink-0 flex-grow-0\\">
         <div class=\\"d-flex flex-column flex-sm-row justify-content-between align-items-center\\">
           <div class=\\" tooltip-trigger\\">
-            <span class=\\"badge-primary badge-pill components-label-with-hover components-label badge\\">
+            <span class=\\"bg-primary rounded-pill components-label-with-hover components-label badge\\">
               123
             </span>
           </div>
@@ -140,12 +140,12 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
       <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
         <div class=\\"flex-shrink-1 flex-grow-1 mw-1p\\">
           <div>
-            <span class=\\"badge px-1 mr-1 components-label\\">
+            <span class=\\"badge text-dark px-1 me-1 components-label\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
                    data-icon=\\"calendar-check\\"
-                   class=\\"svg-inline--fa fa-calendar-check fa-w-14 fa-fw text-muted mr-1\\"
+                   class=\\"svg-inline--fa fa-calendar-check fa-w-14 fa-fw text-muted me-1\\"
                    role=\\"img\\"
                    xmlns=\\"http://www.w3.org/2000/svg\\"
                    viewbox=\\"0 0 448 512\\"
@@ -157,12 +157,12 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
               </svg>
               Started 30 minutes ago
             </span>
-            <span class=\\"badge  px-1 mr-1 components-label\\">
+            <span class=\\"badge text-dark px-1 me-1 components-label\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
                    data-icon=\\"calendar-times\\"
-                   class=\\"svg-inline--fa fa-calendar-times fa-w-14 fa-fw text-muted mr-1\\"
+                   class=\\"svg-inline--fa fa-calendar-times fa-w-14 fa-fw text-muted me-1\\"
                    role=\\"img\\"
                    xmlns=\\"http://www.w3.org/2000/svg\\"
                    viewbox=\\"0 0 448 512\\"
@@ -176,12 +176,12 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
             </span>
           </div>
           <div class=\\"my-1 d-flex flex-row\\">
-            <span class=\\"badge px-1 mr-1 components-label flex-grow-0 flex-shrink-0\\">
+            <span class=\\"badge text-dark px-1 me-1 components-label flex-grow-0 flex-shrink-0\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
                    data-icon=\\"fingerprint\\"
-                   class=\\"svg-inline--fa fa-fingerprint fa-w-16 fa-fw text-muted mr-1\\"
+                   class=\\"svg-inline--fa fa-fingerprint fa-w-16 fa-fw text-muted me-1\\"
                    role=\\"img\\"
                    xmlns=\\"http://www.w3.org/2000/svg\\"
                    viewbox=\\"0 0 512 512\\"
@@ -193,11 +193,11 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
               </svg>
               ID:
             </span>
-            <span class=\\"badge badge-light px-1 mr-1 components-label\\">
+            <span class=\\"badge bg-light px-1 me-1 components-label\\">
               04d37636-2350-4878-b382-e0b50353230f
             </span>
             <div class=\\" tooltip-trigger\\">
-              <span class=\\"badge badge-secondary px-1 mr-1 components-label cursor-pointer\\">
+              <span class=\\"badge bg-secondary px-1 me-1 components-label cursor-pointer\\">
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
                      data-prefix=\\"fas\\"
@@ -216,12 +216,12 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
             </div>
           </div>
           <div class=\\"my-1\\">
-            <span class=\\"badge px-1 mr-1 components-label\\">
+            <span class=\\"badge text-dark px-1 me-1 components-label\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
                    data-icon=\\"home\\"
-                   class=\\"svg-inline--fa fa-home fa-w-18 fa-fw text-muted mr-1\\"
+                   class=\\"svg-inline--fa fa-home fa-w-18 fa-fw text-muted me-1\\"
                    role=\\"img\\"
                    xmlns=\\"http://www.w3.org/2000/svg\\"
                    viewbox=\\"0 0 576 512\\"
@@ -257,12 +257,12 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
           </div>
           <div class=\\"d-flex flex-row\\">
             <div class=\\"flex-shrink-0 flex-grow-0\\">
-              <span class=\\"badge px-1 mr-1 components-label\\">
+              <span class=\\"badge text-dark px-1 me-1 components-label\\">
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
                      data-prefix=\\"fas\\"
                      data-icon=\\"filter\\"
-                     class=\\"svg-inline--fa fa-filter fa-w-16 fa-fw text-muted mr-1\\"
+                     class=\\"svg-inline--fa fa-filter fa-w-16 fa-fw text-muted me-1\\"
                      role=\\"img\\"
                      xmlns=\\"http://www.w3.org/2000/svg\\"
                      viewbox=\\"0 0 512 512\\"
@@ -278,29 +278,29 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
             <div class=\\"flex-shrink-1 flex-grow-1 mw-1p\\"
                  style=\\"min-width: 0px;\\"
             >
-              <span class=\\"badge badge-primary px-1 mr-1 components-label\\">
+              <span class=\\"badge bg-primary px-1 me-1 components-label\\">
                 regex=~\\"equal\\"
               </span>
-              <span class=\\"badge badge-primary px-1 mr-1 components-label\\">
+              <span class=\\"badge bg-primary px-1 me-1 components-label\\">
                 regex!~\\"notEqual\\"
               </span>
-              <span class=\\"badge badge-primary px-1 mr-1 components-label\\">
+              <span class=\\"badge bg-primary px-1 me-1 components-label\\">
                 notRegex=\\"equal\\"
               </span>
-              <span class=\\"badge badge-primary px-1 mr-1 components-label\\">
+              <span class=\\"badge bg-primary px-1 me-1 components-label\\">
                 notRegex!=\\"notEqual\\"
               </span>
             </div>
           </div>
         </div>
-        <div class=\\"flex-shrink-0 flex-grow-0 mt-lg-0 mt-2 ml-lg-2 ml-0\\">
+        <div class=\\"flex-shrink-0 flex-grow-0 mt-lg-0 mt-2 ml-lg-2 ms-0\\">
           <div class=\\"d-flex flex-fill flex-lg-column flex-row justify-content-around\\">
             <button class=\\"btn btn-primary btn-sm mb-lg-2 mb-0\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
                    data-icon=\\"edit\\"
-                   class=\\"svg-inline--fa fa-edit fa-w-18 mr-1 d-none d-sm-inline-block\\"
+                   class=\\"svg-inline--fa fa-edit fa-w-18 me-1 d-none d-sm-inline-block\\"
                    role=\\"img\\"
                    xmlns=\\"http://www.w3.org/2000/svg\\"
                    viewbox=\\"0 0 576 512\\"
@@ -317,7 +317,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
                    data-icon=\\"trash\\"
-                   class=\\"svg-inline--fa fa-trash fa-w-14 mr-1 d-none d-sm-inline-block\\"
+                   class=\\"svg-inline--fa fa-trash fa-w-14 me-1 d-none d-sm-inline-block\\"
                    role=\\"img\\"
                    xmlns=\\"http://www.w3.org/2000/svg\\"
                    viewbox=\\"0 0 448 512\\"

@@ -2,7 +2,7 @@
 
 exports[`<Alert /> matches snapshot when inhibited 1`] = `
 "
-<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
+<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent ps-1 pe-0 py-0 my-1 rounded-0 border-start-1 border-end-0 border-top-0 border-bottom-0 border-danger\\">
   <div>
     <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
@@ -11,7 +11,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
                focusable=\\"false\\"
                data-prefix=\\"fas\\"
                data-icon=\\"search-minus\\"
-               class=\\"svg-inline--fa fa-search-minus fa-w-16 mr-1\\"
+               class=\\"svg-inline--fa fa-search-minus fa-w-16 me-1\\"
                role=\\"img\\"
                xmlns=\\"http://www.w3.org/2000/svg\\"
                viewbox=\\"0 0 512 512\\"
@@ -38,7 +38,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
              data-icon=\\"search-plus\\"
-             class=\\"svg-inline--fa fa-search-plus fa-w-16 mr-1\\"
+             class=\\"svg-inline--fa fa-search-plus fa-w-16 me-1\\"
              role=\\"img\\"
              xmlns=\\"http://www.w3.org/2000/svg\\"
              viewbox=\\"0 0 512 512\\"
@@ -53,14 +53,14 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     </div>
   </div>
   <span>
-    <span class=\\"components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer\\"
+    <span class=\\"components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer\\"
           data-toggle=\\"dropdown\\"
     >
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
            data-icon=\\"caret-down\\"
-           class=\\"svg-inline--fa fa-caret-down fa-w-10 pr-1\\"
+           class=\\"svg-inline--fa fa-caret-down fa-w-10 pe-1\\"
            role=\\"img\\"
            xmlns=\\"http://www.w3.org/2000/svg\\"
            viewbox=\\"0 0 320 512\\"
@@ -75,7 +75,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     </span>
   </span>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"badge badge-light components-label components-label-with-hover cursor-pointer\\">
+    <span class=\\"badge bg-light components-label components-label-with-hover cursor-pointer\\">
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
@@ -93,7 +93,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         job:
       </span>
@@ -103,7 +103,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         cluster:
       </span>
@@ -139,7 +139,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
 
 exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=false 1`] = `
 "
-<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent pl-1 pr-0 py-0 my-1 rounded-0 border-left-1 border-right-0 border-top-0 border-bottom-0 border-danger\\">
+<li class=\\"components-grid-alertgrid-alertgroup-alert list-group-item bg-transparent ps-1 pe-0 py-0 my-1 rounded-0 border-start-1 border-end-0 border-top-0 border-bottom-0 border-danger\\">
   <div>
     <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
@@ -148,7 +148,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
                focusable=\\"false\\"
                data-prefix=\\"fas\\"
                data-icon=\\"search-minus\\"
-               class=\\"svg-inline--fa fa-search-minus fa-w-16 mr-1\\"
+               class=\\"svg-inline--fa fa-search-minus fa-w-16 me-1\\"
                role=\\"img\\"
                xmlns=\\"http://www.w3.org/2000/svg\\"
                viewbox=\\"0 0 512 512\\"
@@ -175,7 +175,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
              data-icon=\\"search-plus\\"
-             class=\\"svg-inline--fa fa-search-plus fa-w-16 mr-1\\"
+             class=\\"svg-inline--fa fa-search-plus fa-w-16 me-1\\"
              role=\\"img\\"
              xmlns=\\"http://www.w3.org/2000/svg\\"
              viewbox=\\"0 0 512 512\\"
@@ -190,14 +190,14 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
     </div>
   </div>
   <span>
-    <span class=\\"components-label components-label-with-hover px-1 mr-1 badge badge-secondary cursor-pointer\\"
+    <span class=\\"components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer\\"
           data-toggle=\\"dropdown\\"
     >
       <svg aria-hidden=\\"true\\"
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
            data-icon=\\"caret-down\\"
-           class=\\"svg-inline--fa fa-caret-down fa-w-10 pr-1\\"
+           class=\\"svg-inline--fa fa-caret-down fa-w-10 pe-1\\"
            role=\\"img\\"
            xmlns=\\"http://www.w3.org/2000/svg\\"
            viewbox=\\"0 0 320 512\\"
@@ -212,7 +212,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
     </span>
   </span>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         job:
       </span>
@@ -222,7 +222,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         cluster:
       </span>

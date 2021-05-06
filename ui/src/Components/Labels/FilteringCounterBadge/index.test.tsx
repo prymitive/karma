@@ -76,17 +76,17 @@ const validateOnClick = (
 };
 
 describe("<FilteringCounterBadge />", () => {
-  it("themed @state=unprocessed counter badge should have className 'badge-secondary'", () => {
-    validateClassName("unprocessed", "badge-secondary", true);
+  it("themed @state=unprocessed counter badge should have className 'bg-secondary'", () => {
+    validateClassName("unprocessed", "bg-secondary", true);
   });
-  it("themed @state=active counter badge should have className 'badge-secondary'", () => {
-    validateClassName("active", "badge-danger", true);
+  it("themed @state=active counter badge should have className 'bg-secondary'", () => {
+    validateClassName("active", "bg-danger", true);
   });
-  it("themed @state=suppressed counter badge should have className 'badge-secondary'", () => {
-    validateClassName("suppressed", "badge-success", true);
+  it("themed @state=suppressed counter badge should have className 'bg-secondary'", () => {
+    validateClassName("suppressed", "bg-success", true);
   });
-  it("unthemed @state=suppressed counter badge should have className 'badge-light'", () => {
-    validateClassName("suppressed", "badge-light", false);
+  it("unthemed @state=suppressed counter badge should have className 'bg-light'", () => {
+    validateClassName("suppressed", "bg-light", false);
   });
 
   it("@state=unprocessed counter badge should have empty style", () => {

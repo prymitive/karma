@@ -34,7 +34,7 @@ const AlertGroupCollapseConfiguration: FC<{
   const context = React.useContext(ThemeContext);
 
   return (
-    <div className="form-group mb-0">
+    <div className="mb-0">
       <Select
         styles={context.reactSelectStyles}
         classNamePrefix="react-select"

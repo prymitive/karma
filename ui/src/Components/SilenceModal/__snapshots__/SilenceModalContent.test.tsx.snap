@@ -11,11 +11,8 @@ exports[`<SilenceModalContent /> Editor renders SilenceSubmitController when sil
       Browse
     </span>
     <button type=\\"button\\"
-            class=\\"close\\"
+            class=\\"btn-close my-auto\\"
     >
-      <span>
-        ×
-      </span>
     </button>
   </nav>
 </div>
@@ -34,7 +31,7 @@ exports[`<SilenceModalContent /> Editor renders SilenceSubmitController when sil
            focusable=\\"false\\"
            data-prefix=\\"fas\\"
            data-icon=\\"arrow-left\\"
-           class=\\"svg-inline--fa fa-arrow-left fa-w-14 pr-1\\"
+           class=\\"svg-inline--fa fa-arrow-left fa-w-14 pe-1\\"
            role=\\"img\\"
            xmlns=\\"http://www.w3.org/2000/svg\\"
            viewbox=\\"0 0 448 512\\"

@@ -130,20 +130,20 @@ describe("<SilenceComment />", () => {
 
   it("Doesn't render cluster badges when collapsed and only a single cluster is present", () => {
     const tree = MountedSilenceComment(true);
-    const ams = tree.find("span.badge.badge-secondary");
+    const ams = tree.find("span.badge.bg-secondary");
     expect(ams).toHaveLength(0);
   });
 
   it("Doesn't render cluster badges when expanded and only a single cluster is present", () => {
     const tree = MountedSilenceComment(false);
-    const ams = tree.find("span.badge.badge-secondary");
+    const ams = tree.find("span.badge.bg-secondary");
     expect(ams).toHaveLength(0);
   });
 
   it("Renders cluster badge when collapsed and multiple clusters are present", () => {
     MockMultipleClusters();
     const tree = MountedSilenceComment(true, "single");
-    const ams = tree.find("span.badge.badge-secondary");
+    const ams = tree.find("span.badge.bg-secondary");
     expect(ams).toHaveLength(1);
     expect(toDiffableHtml(ams.at(0).html())).toMatch(/single/);
   });
@@ -151,7 +151,7 @@ describe("<SilenceComment />", () => {
   it("Doesn't render cluster badge when expanded and multiple clusters are present", () => {
     MockMultipleClusters();
     const tree = MountedSilenceComment(false, "single");
-    const ams = tree.find("span.badge.badge-secondary");
+    const ams = tree.find("span.badge.bg-secondary");
     expect(ams).toHaveLength(0);
   });
 });

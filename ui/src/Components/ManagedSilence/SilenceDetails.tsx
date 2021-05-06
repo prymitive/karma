@@ -35,7 +35,7 @@ const SilenceIDCopyButton: FC<{
       <CSSTransition {...props}>
         <span
           ref={ref}
-          className="badge badge-secondary px-1 mr-1 components-label cursor-pointer"
+          className="badge bg-secondary px-1 me-1 components-label cursor-pointer"
           onClick={() => {
             copy(id);
             setClickCount(clickCount + 1);
@@ -64,7 +64,7 @@ const SilenceDetails: FC<{
   isUpper = false,
 }) => {
   const isExpired = parseISO(silence.endsAt) < new Date();
-  let expiresClass = "";
+  let expiresClass = "text-dark";
   let expiresLabel = "Expires";
   if (isExpired) {
     expiresClass = "text-danger";
@@ -84,19 +84,19 @@ const SilenceDetails: FC<{
       <div className="d-flex flex-fill flex-lg-row flex-column justify-content-between">
         <div className="flex-shrink-1 flex-grow-1 mw-1p">
           <div>
-            <span className="badge px-1 mr-1 components-label">
+            <span className="badge text-dark px-1 me-1 components-label">
               <FontAwesomeIcon
-                className="text-muted mr-1"
+                className="text-muted me-1"
                 icon={faCalendarCheck}
                 fixedWidth
               />
               Started <DateFromNow timestamp={silence.startsAt} />
             </span>
             <span
-              className={`badge ${expiresClass} px-1 mr-1 components-label`}
+              className={`badge ${expiresClass} px-1 me-1 components-label`}
             >
               <FontAwesomeIcon
-                className="text-muted mr-1"
+                className="text-muted me-1"
                 icon={faCalendarTimes}
                 fixedWidth
               />
@@ -104,23 +104,23 @@ const SilenceDetails: FC<{
             </span>
           </div>
           <div className="my-1 d-flex flex-row">
-            <span className="badge px-1 mr-1 components-label flex-grow-0 flex-shrink-0">
+            <span className="badge text-dark px-1 me-1 components-label flex-grow-0 flex-shrink-0">
               <FontAwesomeIcon
-                className="text-muted mr-1"
+                className="text-muted me-1"
                 icon={faFingerprint}
                 fixedWidth
               />
               ID:
             </span>
-            <span className="badge badge-light px-1 mr-1 components-label">
+            <span className="badge bg-light px-1 me-1 components-label">
               {silence.id}
             </span>
             <SilenceIDCopyButton id={silence.id} />
           </div>
           <div className="my-1">
-            <span className="badge px-1 mr-1 components-label">
+            <span className="badge text-dark px-1 me-1 components-label">
               <FontAwesomeIcon
-                className="text-muted mr-1"
+                className="text-muted me-1"
                 icon={faHome}
                 fixedWidth
               />
@@ -136,9 +136,9 @@ const SilenceDetails: FC<{
           </div>
           <div className="d-flex flex-row">
             <div className="flex-shrink-0 flex-grow-0">
-              <span className="badge px-1 mr-1 components-label">
+              <span className="badge text-dark px-1 me-1 components-label">
                 <FontAwesomeIcon
-                  className="text-muted mr-1"
+                  className="text-muted me-1"
                   icon={faFilter}
                   fixedWidth
                 />
@@ -152,7 +152,7 @@ const SilenceDetails: FC<{
               {silence.matchers.map((matcher, index) => (
                 <span
                   key={`${index}/${matcher.name}/${matcher.isRegex}/${matcher.value}`}
-                  className="badge badge-primary px-1 mr-1 components-label"
+                  className="badge bg-primary px-1 me-1 components-label"
                 >
                   {matcher.name}
                   {MatcherToOperator(matcher)}"{matcher.value}"
@@ -161,7 +161,7 @@ const SilenceDetails: FC<{
             </div>
           </div>
         </div>
-        <div className="flex-shrink-0 flex-grow-0 mt-lg-0 mt-2 ml-lg-2 ml-0">
+        <div className="flex-shrink-0 flex-grow-0 mt-lg-0 mt-2 ml-lg-2 ms-0">
           <div className="d-flex flex-fill flex-lg-column flex-row justify-content-around">
             <button
               className="btn btn-primary btn-sm mb-lg-2 mb-0"
@@ -171,7 +171,7 @@ const SilenceDetails: FC<{
               }}
             >
               <FontAwesomeIcon
-                className="mr-1 d-none d-sm-inline-block"
+                className="me-1 d-none d-sm-inline-block"
                 icon={faEdit}
               />
               {isExpired ? "Recreate" : "Edit"}

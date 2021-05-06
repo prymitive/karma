@@ -45,7 +45,7 @@ const Placeholder: FC<{
       classNames="components-animation-fade"
       timeout={context.animations.duration}
     >
-      <div className="jumbotron bg-transparent">
+      <div className="px-2 py-5 bg-transparent">
         <h1 className="display-5 text-placeholder text-center">{content}</h1>
       </div>
     </CSSTransition>
@@ -94,17 +94,17 @@ const Browser: FC<{
         className="d-flex flex-fill flex-lg-row flex-column justify-content-between mb-3"
         data-refresh={settingsStore.fetchConfig.config.interval}
       >
-        <span className="custom-control custom-switch my-auto flex-grow-0 flex-shrink-0">
+        <span className="form-check form-switch my-auto flex-grow-0 flex-shrink-0">
           <input
             id="silence-show-expired"
-            className="custom-control-input"
+            className="form-check-input"
             type="checkbox"
             value=""
             checked={showExpired}
             onChange={() => setShowExpired(!showExpired)}
           />
           <label
-            className="custom-control-label cursor-pointer"
+            className="form-check-label cursor-pointer"
             htmlFor="silence-show-expired"
           >
             Show expired
@@ -124,7 +124,7 @@ const Browser: FC<{
           onClick={() => setSortReverse(!sortReverse)}
         >
           <FontAwesomeIcon
-            className="mr-1"
+            className="me-1"
             icon={sortReverse ? faSortAmountUp : faSortAmountDownAlt}
           />
           Sort order

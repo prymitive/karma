@@ -72,7 +72,7 @@ const GroupHeader: FC<{
           />
         ))}
       </span>
-      <span className="flex-shrink-0 flex-grow-0 ml-auto pl-1">
+      <span className="flex-shrink-0 flex-grow-0 ml-auto ps-1">
         {group.stateCount.active > 0 && (
           <AlertAck
             alertStore={alertStore}

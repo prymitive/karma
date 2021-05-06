@@ -36,7 +36,7 @@ const MatchCounter: FC<{
   ) : (
     <TooltipWrapper title="Number of alerts matching this label">
       <span
-        className="badge badge-light badge-pill d-block"
+        className="badge bg-light rounded-pill d-block"
         style={{ fontSize: "85%", lineHeight: "1rem" }}
         data-am={silenceFormStore.data.alertmanagers.length}
       >

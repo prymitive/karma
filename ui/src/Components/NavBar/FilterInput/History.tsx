@@ -63,7 +63,7 @@ const ActionButton: FC<{
       afterClick();
     }}
   >
-    <FontAwesomeIcon icon={icon} className="mr-1" />
+    <FontAwesomeIcon icon={icon} className="me-1" />
     {title}
   </button>
 );
@@ -97,7 +97,7 @@ const HistoryMenu: FC<{
       data-placement={popperPlacement}
     >
       <h6 className="dropdown-header text-center">
-        <FontAwesomeIcon icon={faHistory} className="mr-1" />
+        <FontAwesomeIcon icon={faHistory} className="me-1" />
         Last used filters
       </h6>
       {filters.length === 0 ? (
@@ -112,7 +112,7 @@ const HistoryMenu: FC<{
               afterClick();
             }}
           >
-            <div className="components-navbar-historymenu-labels pl-2">
+            <div className="components-navbar-historymenu-labels ps-2">
               {historyFilters.map((f) => (
                 <HistoryLabel
                   key={f.raw}

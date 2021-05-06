@@ -3,7 +3,7 @@ import { FC, ReactNode } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons/faInfoCircle";
 
-import { Accordion } from "Components/Accordion";
+import { Accordion, AccordionItem } from "Components/Accordion";
 
 const FilterOperatorHelp: FC<{
   operator: string;
@@ -38,14 +38,14 @@ const QueryHelp: FC<{
       <div>
         Supported operators:{" "}
         {operators.map((op) => (
-          <kbd key={op} className="mr-1">
+          <kbd key={op} className="me-1">
             {op}
           </kbd>
         ))}
       </div>
       {warning ? (
         <div className="my-1 alert alert-secondary">
-          <FontAwesomeIcon icon={faInfoCircle} className="mr-1" />
+          <FontAwesomeIcon icon={faInfoCircle} className="me-1" />
           {warning}
         </div>
       ) : null}
@@ -60,15 +60,15 @@ const FilterExample: FC<{
 }> = ({ example, children }) => (
   <li>
     <div>
-      <span className="badge badge-info">{example}</span>
+      <span className="badge bg-info">{example}</span>
     </div>
     <div>{children}</div>
   </li>
 );
 
 const Help: FC<{ defaultIsOpen: boolean }> = ({ defaultIsOpen }) => (
-  <div className="accordion">
-    <Accordion
+  <Accordion>
+    <AccordionItem
       text="Fiter operators"
       content={
         <dl>
@@ -106,7 +106,7 @@ const Help: FC<{ defaultIsOpen: boolean }> = ({ defaultIsOpen }) => (
       }
       defaultIsOpen={true}
     />
-    <Accordion
+    <AccordionItem
       text="Filtering using alert labels"
       content={
         <dl>
@@ -144,7 +144,7 @@ const Help: FC<{ defaultIsOpen: boolean }> = ({ defaultIsOpen }) => (
       }
       defaultIsOpen={defaultIsOpen}
     />
-    <Accordion
+    <AccordionItem
       text="Filtering alerts using special filters"
       content={
         <dl>
@@ -312,7 +312,7 @@ const Help: FC<{ defaultIsOpen: boolean }> = ({ defaultIsOpen }) => (
       }
       defaultIsOpen={defaultIsOpen}
     />
-  </div>
+  </Accordion>
 );
 
 export { Help };

@@ -26,10 +26,10 @@ exports[`<RenderSilence /> renders ManagedSilence if silence is present in Alert
           Mocked Silence
         </div>
         <div class=\\"components-managed-silence-cite mt-1\\">
-          <span class=\\"text-muted mr-2 font-italic\\">
+          <span class=\\"text-muted me-2 font-italic\\">
             — me@example.com
           </span>
-          <span class=\\"badge badge-danger align-text-bottom p-1\\">
+          <span class=\\"badge bg-danger align-text-bottom p-1\\">
             Expired 21 years ago
           </span>
         </div>

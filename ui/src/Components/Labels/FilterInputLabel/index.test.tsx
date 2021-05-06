@@ -185,7 +185,7 @@ describe("<FilterInputLabel /> onChange", () => {
       />
     );
 
-    const button = tree.find("svg.close");
+    const button = tree.find("svg.fa-times");
     button.simulate("click");
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(
@@ -223,7 +223,7 @@ describe("<FilterInputLabel /> counter badge", () => {
         filter={alertStore.filters.values[0]}
       />
     );
-    const counter = tree.find(".badge-pill");
+    const counter = tree.find(".rounded-pill");
     expect(counter).toHaveLength(0);
   });
 
@@ -235,7 +235,7 @@ describe("<FilterInputLabel /> counter badge", () => {
         filter={alertStore.filters.values[0]}
       />
     );
-    const counter = tree.find(".badge-pill");
+    const counter = tree.find(".rounded-pill");
     expect(counter).toHaveLength(1);
   });
 
@@ -247,7 +247,7 @@ describe("<FilterInputLabel /> counter badge", () => {
         filter={alertStore.filters.values[1]}
       />
     );
-    const counter = tree.find(".badge-pill");
+    const counter = tree.find(".rounded-pill");
     expect(counter).toHaveLength(1);
   });
 });

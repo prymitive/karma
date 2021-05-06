@@ -27,7 +27,7 @@ const InhibitedByModal: FC<{
     <>
       <TooltipWrapper title="This alert is inhibited by other alerts, click to see details">
         <span
-          className="badge badge-light components-label components-label-with-hover cursor-pointer"
+          className="badge bg-light components-label components-label-with-hover cursor-pointer"
           onClick={toggle}
         >
           <FontAwesomeIcon className="text-success" icon={faVolumeMute} />

@@ -38,7 +38,7 @@ const GetClassAndStyle = (
   } else if (name === StaticLabels.State) {
     data.colorClassNames.push(
       StateLabelClassMap[value as AlertStateT]
-        ? `${elementType}-${StateLabelClassMap[value as AlertStateT]}`
+        ? `bg-${StateLabelClassMap[value as AlertStateT]}`
         : DefaultLabelClassMap[elementType]
     );
   } else if (alertStore.settings.values.staticColorLabels.includes(name)) {

@@ -16,9 +16,9 @@ import SilenceSubmitController from "./SilenceSubmit/SilenceSubmitController";
 import Browser from "./Browser";
 
 const ReadOnlyPlaceholder: FC = () => (
-  <div className="jumbotron bg-transparent">
+  <div className="px-2 py-5 bg-transparent">
     <h1 className="display-5 text-placeholder text-center">
-      <FontAwesomeIcon icon={faLock} className="mr-3" />
+      <FontAwesomeIcon icon={faLock} className="me-3" />
       Read only mode
     </h1>
   </div>
@@ -61,9 +61,11 @@ const SilenceModalContent: FC<{
                 active={silenceFormStore.tab.current === "browser"}
                 onClick={() => silenceFormStore.tab.setTab("browser")}
               />
-              <button type="button" className="close" onClick={onHide}>
-                <span>&times;</span>
-              </button>
+              <button
+                type="button"
+                className="btn-close my-auto"
+                onClick={onHide}
+              ></button>
             </nav>
           </div>
           <div

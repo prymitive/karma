@@ -11,7 +11,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
                focusable=\\"false\\"
                data-prefix=\\"fas\\"
                data-icon=\\"search-minus\\"
-               class=\\"svg-inline--fa fa-search-minus fa-w-16 mr-1\\"
+               class=\\"svg-inline--fa fa-search-minus fa-w-16 me-1\\"
                role=\\"img\\"
                xmlns=\\"http://www.w3.org/2000/svg\\"
                viewbox=\\"0 0 512 512\\"
@@ -38,7 +38,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
              data-icon=\\"search-plus\\"
-             class=\\"svg-inline--fa fa-search-plus fa-w-16 mr-1\\"
+             class=\\"svg-inline--fa fa-search-plus fa-w-16 me-1\\"
              role=\\"img\\"
              xmlns=\\"http://www.w3.org/2000/svg\\"
              viewbox=\\"0 0 512 512\\"
@@ -53,7 +53,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
     </div>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         label1:
       </span>
@@ -63,7 +63,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         label2:
       </span>
@@ -73,7 +73,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         @cluster:
       </span>
@@ -83,7 +83,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         @receiver:
       </span>
@@ -128,7 +128,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
                focusable=\\"false\\"
                data-prefix=\\"fas\\"
                data-icon=\\"search-minus\\"
-               class=\\"svg-inline--fa fa-search-minus fa-w-16 mr-1\\"
+               class=\\"svg-inline--fa fa-search-minus fa-w-16 me-1\\"
                role=\\"img\\"
                xmlns=\\"http://www.w3.org/2000/svg\\"
                viewbox=\\"0 0 512 512\\"
@@ -155,7 +155,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
              focusable=\\"false\\"
              data-prefix=\\"fas\\"
              data-icon=\\"search-plus\\"
-             class=\\"svg-inline--fa fa-search-plus fa-w-16 mr-1\\"
+             class=\\"svg-inline--fa fa-search-plus fa-w-16 me-1\\"
              role=\\"img\\"
              xmlns=\\"http://www.w3.org/2000/svg\\"
              viewbox=\\"0 0 512 512\\"
@@ -170,7 +170,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
     </div>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         label1:
       </span>
@@ -180,7 +180,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         label2:
       </span>
@@ -190,7 +190,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         @cluster:
       </span>
@@ -200,7 +200,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge badge-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
       <span class=\\"components-label-name\\">
         @receiver:
       </span>
@@ -255,10 +255,10 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
               Mocked Silence
             </div>
             <div class=\\"components-managed-silence-cite mt-1\\">
-              <span class=\\"text-muted mr-2 font-italic\\">
+              <span class=\\"text-muted me-2 font-italic\\">
                 — me@example.com
               </span>
-              <span class=\\"badge badge-danger align-text-bottom p-1\\">
+              <span class=\\"badge bg-danger align-text-bottom p-1\\">
                 Expired 14 hours ago
               </span>
             </div>

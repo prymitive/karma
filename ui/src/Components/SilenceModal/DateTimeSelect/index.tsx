@@ -30,7 +30,7 @@ const OffsetBadge: FC<{
   const minutes = differenceInMinutes(endDate, startDate) % 60;
 
   return (
-    <span className="badge badge-light">
+    <span className="badge bg-light">
       {days <= 0 && hours <= 0 && minutes <= 0 ? "now" : prefixLabel}
       {days > 0 ? `${days}d ` : null}
       {hours > 0 ? `${hours}h ` : null}
@@ -225,7 +225,7 @@ const DateTimeSelect: FC<{
         <Tab
           title={
             <>
-              <span className="mr-1">Starts</span>
+              <span className="me-1">Starts</span>
               <OffsetBadge
                 prefixLabel="in "
                 startDate={timeNow}
@@ -239,7 +239,7 @@ const DateTimeSelect: FC<{
         <Tab
           title={
             <>
-              <span className="mr-1">Ends</span>
+              <span className="me-1">Ends</span>
               <OffsetBadge
                 prefixLabel="in "
                 startDate={timeNow}
@@ -253,7 +253,7 @@ const DateTimeSelect: FC<{
         <Tab
           title={
             <>
-              <span className="mr-1">Duration</span>
+              <span className="me-1">Duration</span>
               <OffsetBadge
                 prefixLabel=""
                 startDate={silenceFormStore.data.startsAt}

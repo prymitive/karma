@@ -10,7 +10,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
     <div>
       <ul class=\\"list-group list-group-flush mb-3\\">
         <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-          <span class=\\"components-label badge badge-dark components-label-dark \\">
+          <span class=\\"components-label badge bg-dark components-label-dark \\">
             <span class=\\"components-label-name\\">
               alertname:
             </span>
@@ -18,7 +18,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
               foo
             </span>
           </span>
-          <span class=\\"components-label badge badge-default components-label-dark \\">
+          <span class=\\"components-label badge bg-default components-label-dark \\">
             <span class=\\"components-label-name\\">
               job:
             </span>
@@ -26,7 +26,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
               foo
             </span>
           </span>
-          <span class=\\"components-label badge badge-default components-label-dark \\">
+          <span class=\\"components-label badge bg-default components-label-dark \\">
             <span class=\\"components-label-name\\">
               instance:
             </span>
@@ -36,7 +36,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
           </span>
         </li>
         <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-          <span class=\\"components-label badge badge-dark components-label-dark \\">
+          <span class=\\"components-label badge bg-dark components-label-dark \\">
             <span class=\\"components-label-name\\">
               alertname:
             </span>
@@ -44,7 +44,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
               bar
             </span>
           </span>
-          <span class=\\"components-label badge badge-default components-label-dark \\">
+          <span class=\\"components-label badge bg-default components-label-dark \\">
             <span class=\\"components-label-name\\">
               job:
             </span>
@@ -52,7 +52,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
               bar
             </span>
           </span>
-          <span class=\\"components-label badge badge-default components-label-dark \\">
+          <span class=\\"components-label badge bg-default components-label-dark \\">
             <span class=\\"components-label-name\\">
               instance:
             </span>
@@ -62,7 +62,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
           </span>
         </li>
         <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-          <span class=\\"components-label badge badge-dark components-label-dark \\">
+          <span class=\\"components-label badge bg-dark components-label-dark \\">
             <span class=\\"components-label-name\\">
               alertname:
             </span>
@@ -70,7 +70,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
               bar
             </span>
           </span>
-          <span class=\\"components-label badge badge-default components-label-dark \\">
+          <span class=\\"components-label badge bg-default components-label-dark \\">
             <span class=\\"components-label-name\\">
               job:
             </span>
@@ -78,7 +78,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
               bar
             </span>
           </span>
-          <span class=\\"components-label badge badge-default components-label-dark \\">
+          <span class=\\"components-label badge bg-default components-label-dark \\">
             <span class=\\"components-label-name\\">
               instance:
             </span>
@@ -101,7 +101,7 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
          focusable=\\"false\\"
          data-prefix=\\"fas\\"
          data-icon=\\"check-circle\\"
-         class=\\"svg-inline--fa fa-check-circle fa-w-16 pr-1\\"
+         class=\\"svg-inline--fa fa-check-circle fa-w-16 pe-1\\"
          role=\\"img\\"
          xmlns=\\"http://www.w3.org/2000/svg\\"
          viewbox=\\"0 0 512 512\\"
@@ -114,13 +114,13 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
     Submit
   </button>
   <button type=\\"button\\"
-          class=\\"btn btn-danger mr-2\\"
+          class=\\"btn btn-danger me-2\\"
   >
     <svg aria-hidden=\\"true\\"
          focusable=\\"false\\"
          data-prefix=\\"fas\\"
          data-icon=\\"arrow-left\\"
-         class=\\"svg-inline--fa fa-arrow-left fa-w-14 pr-1\\"
+         class=\\"svg-inline--fa fa-arrow-left fa-w-14 pe-1\\"
          role=\\"img\\"
          xmlns=\\"http://www.w3.org/2000/svg\\"
          viewbox=\\"0 0 448 512\\"

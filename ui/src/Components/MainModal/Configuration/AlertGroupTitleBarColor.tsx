@@ -12,12 +12,12 @@ const AlertGroupTitleBarColor: FC<{
   };
 
   return (
-    <div className="form-group mb-0">
-      <div className="form-check form-check-inline">
-        <span className="custom-control custom-switch">
+    <div className="mb-0">
+      <div className="form-check form-check-inline mx-0 px-0">
+        <span className="form-check form-switch">
           <input
             id="configuration-colortitlebar"
-            className="custom-control-input"
+            className="form-check-input"
             type="checkbox"
             checked={
               settingsStore.alertGroupConfig.config.colorTitleBar || false
@@ -25,7 +25,7 @@ const AlertGroupTitleBarColor: FC<{
             onChange={(event) => onChange(event.target.checked)}
           />
           <label
-            className="custom-control-label cursor-pointer mr-3"
+            className="form-check-label cursor-pointer me-3"
             htmlFor="configuration-colortitlebar"
           >
             Color group titlebar

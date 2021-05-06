@@ -174,7 +174,7 @@ const GroupMenu: FC<{
               onClick={toggle}
               className={`${
                 themed ? "text-white with-click-light" : "text-muted"
-              } cursor-pointer badge components-label components-label-with-hover with-click mr-1`}
+              } cursor-pointer badge components-label components-label-with-hover with-click me-1`}
               data-toggle="dropdown"
             >
               <FontAwesomeIcon icon={faBars} />

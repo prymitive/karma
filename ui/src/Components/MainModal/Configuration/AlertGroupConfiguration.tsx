@@ -16,7 +16,7 @@ const AlertGroupConfiguration: FC<{
   };
 
   return (
-    <div className="form-group mb-0 text-center">
+    <div className="p-3 text-center">
       <Range
         step={1}
         min={1}

@@ -349,7 +349,7 @@ describe("<AlertGroup /> renderConfig", () => {
     tree
       .find("Alert")
       .at(0)
-      .find("span.badge-secondary.cursor-pointer")
+      .find("span.bg-secondary.cursor-pointer")
       .at(0)
       .simulate("click");
     await act(() => promise);

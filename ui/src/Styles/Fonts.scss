@@ -12,4 +12,6 @@ $badge-font-weight: 400;
 // the rest was kept for fallback used by "font-display: swap;"
 $font-family-sans-serif: "Open Sans", -apple-system, BlinkMacSystemFont,
   "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
-  "Segoe UI Emoji", "Segoe UI Symbol" !default;
+  "Segoe UI Emoji", "Segoe UI Symbol";
+
+$font-family-base: $font-family-sans-serif;

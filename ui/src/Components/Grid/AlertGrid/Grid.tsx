@@ -192,7 +192,7 @@ const Grid: FC<{
                     )
                   }
                 >
-                  <FontAwesomeIcon className="mr-2" icon={faAngleDoubleDown} />
+                  <FontAwesomeIcon className="me-2" icon={faAngleDoubleDown} />
                   Load more
                 </button>
               </div>

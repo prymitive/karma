@@ -159,7 +159,7 @@ const GridLabelSelect: FC<{
   useOnClickOutside(ref, hide, isVisible);
 
   return (
-    <div ref={ref} className="components-label badge pl-1 pr-2">
+    <div ref={ref} className="components-label badge ps-1 pe-2">
       <Manager>
         <Reference>
           {({ ref }) => (

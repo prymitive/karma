@@ -110,7 +110,7 @@ describe("<DeleteSilence />", () => {
     tree.find("button.btn-danger").simulate("click");
     expect(tree.find(".modal-body")).toHaveLength(1);
 
-    tree.find("button.close").simulate("click");
+    tree.find("button.btn-close").simulate("click");
     act(() => {
       jest.runOnlyPendingTimers();
     });

@@ -45,6 +45,10 @@ $with-click-default: $black;
 $with-click-dark: $white;
 $with-click-light: $black;
 
+$accordion-active-bg: $gray-100;
+$accordion-button-bg: $gray-100;
+$accordion-button-active-bg: $gray-100;
+
 @import "Styles/RebootlessBootstrap";
 @import "~bootswatch/dist/flatly/bootswatch";
 

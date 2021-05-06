@@ -39,9 +39,11 @@ const MainModalContent: FC<{
             active={tab === "help"}
             onClick={() => setTab("help")}
           />
-          <button type="button" className="close" onClick={onHide}>
-            <span>&times;</span>
-          </button>
+          <button
+            type="button"
+            className="btn-close my-auto"
+            onClick={onHide}
+          ></button>
         </nav>
       </div>
       <div className="modal-body">
@@ -57,7 +59,7 @@ const MainModalContent: FC<{
         <Observer>
           {() =>
             alertStore.info.authentication.enabled ? (
-              <span className="text-muted mr-2">
+              <span className="text-muted me-2">
                 Username: {alertStore.info.authentication.username}
               </span>
             ) : null

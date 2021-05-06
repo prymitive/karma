@@ -2,7 +2,7 @@
 
 exports[`<AlertGroupWidthConfiguration /> matches snapshot with default values 1`] = `
 "
-<div class=\\"form-group mb-0 text-center\\">
+<div class=\\"p-3 text-center\\">
   <div class=\\"input-range-track\\"
        style=\\"transform: scale(1); cursor: pointer;\\"
   >

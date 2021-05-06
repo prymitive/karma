@@ -69,7 +69,7 @@ const LabelSetList: FC<{
       />
     </div>
   ) : (
-    <div className="jumbotron bg-transparent">
+    <div className="px-2 py-5 bg-transparent">
       <h1 className="display-5 text-placeholder text-center">
         No alerts matched
       </h1>

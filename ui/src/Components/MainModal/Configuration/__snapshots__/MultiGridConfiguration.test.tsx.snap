@@ -2,7 +2,7 @@
 
 exports[`<MultiGridConfiguration /> matches snapshot with default values 1`] = `
 "
-<div class=\\"form-group mb-0\\">
+<div class=\\"mb-0\\">
   <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
     <div class=\\"flex-shrink-0 flex-grow-1 flex-basis-auto mx-0 mx-lg-1 mt-1 mt-lg-0\\">
       <div class=\\" css-2b097c-container\\">
@@ -58,13 +58,13 @@ exports[`<MultiGridConfiguration /> matches snapshot with default values 1`] = `
         </div>
       </div>
     </div>
-    <div class=\\"flex-shrink-1 flex-grow-0 form-check form-check-inline flex-basis-auto mt-1 mt-lg-0 ml-0 ml-lg-1 mr-0\\">
-      <span class=\\"custom-control custom-switch\\">
+    <div class=\\"flex-shrink-1 flex-grow-0 form-check form-check-inline flex-basis-auto my-1 my-lg-auto ms-0 ms-lg-2 me-0 px-0\\">
+      <span class=\\"form-check form-switch\\">
         <input id=\\"configuration-multigrid-sort-reverse\\"
-               class=\\"custom-control-input\\"
+               class=\\"form-check-input\\"
                type=\\"checkbox\\"
         >
-        <label class=\\"custom-control-label cursor-pointer mr-3\\"
+        <label class=\\"form-check-label cursor-pointer\\"
                for=\\"configuration-multigrid-sort-reverse\\"
         >
           Reverse order

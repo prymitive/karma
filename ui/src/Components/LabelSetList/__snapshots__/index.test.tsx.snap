@@ -9,7 +9,7 @@ exports[`<LabelSetList /> matches snapshot with populated list 1`] = `
   <div>
     <ul class=\\"list-group list-group-flush mb-3\\">
       <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-        <span class=\\"components-label badge badge-default components-label-dark \\">
+        <span class=\\"components-label badge bg-default components-label-dark \\">
           <span class=\\"components-label-name\\">
             foo:
           </span>
@@ -19,7 +19,7 @@ exports[`<LabelSetList /> matches snapshot with populated list 1`] = `
         </span>
       </li>
       <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-        <span class=\\"components-label badge badge-default components-label-dark \\">
+        <span class=\\"components-label badge bg-default components-label-dark \\">
           <span class=\\"components-label-name\\">
             job:
           </span>
@@ -29,7 +29,7 @@ exports[`<LabelSetList /> matches snapshot with populated list 1`] = `
         </span>
       </li>
       <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-        <span class=\\"components-label badge badge-default components-label-dark \\">
+        <span class=\\"components-label badge bg-default components-label-dark \\">
           <span class=\\"components-label-name\\">
             instance:
           </span>
@@ -39,7 +39,7 @@ exports[`<LabelSetList /> matches snapshot with populated list 1`] = `
         </span>
       </li>
       <li class=\\"list-group-item px-0 pt-2 pb-1\\">
-        <span class=\\"components-label badge badge-default components-label-dark \\">
+        <span class=\\"components-label badge bg-default components-label-dark \\">
           <span class=\\"components-label-name\\">
             cluster:
           </span>
