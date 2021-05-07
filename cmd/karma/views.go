@@ -94,6 +94,10 @@ func pushPath(w http.ResponseWriter, path string) {
 	}
 }
 
+func redirectIndex(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, r.URL.Path+"/", http.StatusMovedPermanently)
+}
+
 func index(w http.ResponseWriter, r *http.Request) {
 	noCache(w)
 	pushPath(w, getViewURL("/custom.css"))

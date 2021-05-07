@@ -60,15 +60,14 @@ var (
 func getViewURL(sub string) string {
 	var fixedSub string
 	fixedSub = sub
-	if !strings.HasPrefix(sub, "/") {
+	if sub != "" && !strings.HasPrefix(sub, "/") {
 		fixedSub = "/" + sub
 	}
 
 	var fixedPrefix string
-	fixedPrefix = config.Config.Listen.Prefix
-	if config.Config.Listen.Prefix != "" && !strings.HasPrefix(config.Config.Listen.Prefix, "/") {
-		fixedPrefix = "/" + config.Config.Listen.Prefix
-	}
+	fixedPrefix = strings.TrimPrefix(config.Config.Listen.Prefix, "/")
+	fixedPrefix = strings.TrimSuffix(fixedPrefix, "/")
+	fixedPrefix = "/" + fixedPrefix + "/"
 
 	u := path.Join(fixedPrefix, fixedSub)
 	if strings.HasSuffix(fixedSub, "/") && !strings.HasSuffix(u, "/") {
@@ -127,6 +126,9 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 		router.Use(basicAuth(users, allowAuthBypass))
 	}
 
+	if config.Config.Listen.Prefix != "/" {
+		router.Get(getViewURL(""), redirectIndex)
+	}
 	router.Get(getViewURL("/"), index)
 	router.Get(getViewURL("/health"), pong)
 	router.Get(getViewURL("/robots.txt"), robots)
