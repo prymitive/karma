@@ -103,28 +103,102 @@ func TestHealthPrefix(t *testing.T) {
 }
 
 func TestIndex(t *testing.T) {
-	mockConfig()
-	r := testRouter()
-	setupRouter(r, nil)
-	req := httptest.NewRequest("GET", "/", nil)
-	resp := httptest.NewRecorder()
-	r.ServeHTTP(resp, req)
-	if resp.Code != http.StatusOK {
-		t.Errorf("GET / returned status %d", resp.Code)
+	type testCaseT struct {
+		prefix   string
+		request  string
+		status   int
+		redirect string
 	}
-}
 
-func TestIndexPrefix(t *testing.T) {
-	os.Setenv("LISTEN_PREFIX", "/prefix")
-	defer os.Unsetenv("LISTEN_PREFIX")
-	mockConfig()
-	r := testRouter()
-	setupRouter(r, nil)
-	req := httptest.NewRequest("GET", "/prefix/", nil)
-	resp := httptest.NewRecorder()
-	r.ServeHTTP(resp, req)
-	if resp.Code != http.StatusOK {
-		t.Errorf("GET /prefix/ returned status %d", resp.Code)
+	testCases := []testCaseT{
+		{
+			prefix:  "",
+			request: "/",
+			status:  200,
+		},
+		{
+			prefix:  "",
+			request: "/alerts.json",
+			status:  200,
+		},
+		{
+			prefix:  "/",
+			request: "/",
+			status:  200,
+		},
+		{
+			prefix:  "/",
+			request: "/alerts.json",
+			status:  200,
+		},
+		{
+			prefix:  "/prefix",
+			request: "/",
+			status:  404,
+		},
+		{
+			prefix:  "/prefix",
+			request: "/alerts.json",
+			status:  404,
+		},
+		{
+			prefix:  "/prefix",
+			request: "/prefix/",
+			status:  200,
+		},
+		{
+			prefix:  "/prefix",
+			request: "/prefix/alerts.json",
+			status:  200,
+		},
+		{
+			prefix:   "/prefix",
+			request:  "/prefix",
+			status:   301,
+			redirect: "/prefix/",
+		},
+		{
+			prefix:   "/prefix/",
+			request:  "/prefix",
+			status:   301,
+			redirect: "/prefix/",
+		},
+		{
+			prefix:  "/prefix/",
+			request: "/prefix/",
+			status:  200,
+		},
+		{
+			prefix:  "/prefix/",
+			request: "/prefix/alerts.json",
+			status:  200,
+		},
+	}
+
+	defer func() {
+		config.Config.Listen.Prefix = "/"
+	}()
+
+	for _, tc := range testCases {
+		t.Run(fmt.Sprintf("prefix=%s request=%s status=%d", tc.prefix, tc.request, tc.status), func(t *testing.T) {
+			os.Setenv("LISTEN_PREFIX", tc.prefix)
+			defer os.Unsetenv("LISTEN_PREFIX")
+			mockConfig()
+			r := testRouter()
+			setupRouter(r, nil)
+			req := httptest.NewRequest("GET", tc.request, nil)
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != tc.status {
+				t.Errorf("GET %s returned status %d, expected %d", tc.request, resp.Code, tc.status)
+				return
+			}
+			if resp.Code/100 == 3 && tc.status/100 == 3 {
+				if resp.Header().Get("Location") != tc.redirect {
+					t.Errorf("GET %s returned redirect to %s, expected %s", tc.request, resp.Header().Get("Location"), tc.redirect)
+				}
+			}
+		})
 	}
 }
 
