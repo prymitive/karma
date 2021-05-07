@@ -107,7 +107,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.16.1
+          node-version: 16.1.0
 
       - name: Cache NPM modules
         id: cache-npm
@@ -145,7 +145,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.16.1
+          node-version: 16.1.0
 
       - name: Cache NPM modules
         id: cache-npm
@@ -194,7 +194,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.16.1
+          node-version: 16.1.0
 
       - name: Cache NPM modules
         id: cache-npm
@@ -228,7 +228,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.16.1
+          node-version: 16.1.0
 
       - name: Cache NPM modules
         id: cache-npm
@@ -387,7 +387,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.16.1
+          node-version: 16.1.0
 
       - name: Cache NPM modules
         id: cache-npm
@@ -434,7 +434,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.16.1
+          node-version: 16.1.0
 
       - name: Cache NPM modules
         id: cache-npm
@@ -477,7 +477,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.16.1
+          node-version: 16.1.0
 
       - name: Cache Go modules and build cache
         uses: actions/cache@v2
@@ -609,7 +609,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
-          node-version: 14.16.1
+          node-version: 16.1.0
 
       - name: Install Heroku CLI
         run: curl -s --connect-timeout 30 --fail https://cli-assets.heroku.com/install.sh | sh
