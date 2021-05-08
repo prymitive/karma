@@ -740,6 +740,8 @@ history:
   when connecting to Prometheus API if `source` field in alert uses addresses
   not reachable from karma.
   All regexes are anchored, `${N}` syntax can be used for capture groups.
+  You can rewrite uri to an empty string to disable connecting to that
+  specific Prometheus instance.
 
 Defaults:
 
@@ -770,6 +772,16 @@ history:
   rewrite:
     - source: 'https://(.+).example.com'
       uri: 'http://prometheus-$1.internal'
+```
+
+Example with rewrite rule that will disable sending any history queries to
+`http://prometheus.internal`:
+
+```YAML
+history:
+  rewrite:
+    - source: 'http://prometheus.internal'
+      uri: ''
 ```
 
 ### Karma
