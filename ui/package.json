@@ -59,7 +59,7 @@
     "qs": "6.10.1",
     "react": "17.0.2",
     "react-app-polyfill": "2.0.0",
-    "react-cool-dimensions": "2.0.3",
+    "react-cool-dimensions": "2.0.4",
     "react-day-picker": "7.4.10",
     "react-dom": "17.0.2",
     "react-hotkeys-hook": "3.3.1",
