@@ -13,7 +13,7 @@ SHELL        := env PATH=$(PATH) /bin/sh
 .DEFAULT_GOAL := build/index.html
 
 $(NODE_INSTALL): package.json package-lock.json
-	@if [ -e $(NODE_INSTALL) ]; then npm install ; else npm ci; fi
+	@if [ -e $(NODE_INSTALL) ]; then npm install ; else rm -fr node_modules && npm install; fi
 	touch $@
 
 .PHONY: npm-fetch
