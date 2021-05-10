@@ -41,9 +41,8 @@ const AlertAck: FC<{
   const [currentCluster, setCurrentCluster] = useState<number>(0);
   const [isAcking, setIsAcking] = useState<boolean>(false);
 
-  const { response, error, inProgress, reset } = useFetchAny<PostResponseT>(
-    upstreams
-  );
+  const { response, error, inProgress, reset } =
+    useFetchAny<PostResponseT>(upstreams);
 
   const onACK = () => {
     setIsAcking(true);

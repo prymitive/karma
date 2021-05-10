@@ -22,14 +22,10 @@ const MatchCounter: FC<{
     filters.push(AlertManagersToFilter(silenceFormStore.data.alertmanagers));
   }
 
-  const {
-    response,
-    error,
-    isLoading,
-    isRetrying,
-  } = useFetchGet<APIAlertsResponseT>(
-    FormatBackendURI("alerts.json?") + FormatAlertsQ(filters)
-  );
+  const { response, error, isLoading, isRetrying } =
+    useFetchGet<APIAlertsResponseT>(
+      FormatBackendURI("alerts.json?") + FormatAlertsQ(filters)
+    );
 
   return error ? (
     <TooltipWrapper

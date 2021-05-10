@@ -291,52 +291,45 @@ describe("<App /> theme", () => {
 
   const testCases: testCaseT[] = [
     {
-      name:
-        "applies LightTheme when config=auto and browser doesn't support prefers-color-scheme",
+      name: "applies LightTheme when config=auto and browser doesn't support prefers-color-scheme",
       settings: "auto",
       matchMedia: {},
       theme: "LightTheme",
     },
     {
-      name:
-        "applies LightTheme when config=auto and browser prefers-color-scheme:light matches",
+      name: "applies LightTheme when config=auto and browser prefers-color-scheme:light matches",
       settings: "auto",
       matchMedia: lightMatch(),
       theme: "LightTheme",
     },
     {
-      name:
-        "applies DarkTheme when config=auto and browser prefers-color-scheme:dark matches",
+      name: "applies DarkTheme when config=auto and browser prefers-color-scheme:dark matches",
       settings: "auto",
       matchMedia: darkMatch(),
       theme: "DarkTheme",
     },
 
     {
-      name:
-        "applies LightTheme when config=light and browser doesn't support prefers-color-scheme",
+      name: "applies LightTheme when config=light and browser doesn't support prefers-color-scheme",
       settings: "light",
       matchMedia: {},
       theme: "LightTheme",
     },
     {
-      name:
-        "applies LightTheme when config=light and browser prefers-color-scheme:light matches",
+      name: "applies LightTheme when config=light and browser prefers-color-scheme:light matches",
       settings: "light",
       matchMedia: lightMatch(),
       theme: "LightTheme",
     },
 
     {
-      name:
-        "applies DarkTheme when config=dark and browser doesn't support prefers-color-scheme",
+      name: "applies DarkTheme when config=dark and browser doesn't support prefers-color-scheme",
       settings: "dark",
       matchMedia: {},
       theme: "DarkTheme",
     },
     {
-      name:
-        "applies DarkTheme when config=dark and browser prefers-color-scheme:dark matches",
+      name: "applies DarkTheme when config=dark and browser prefers-color-scheme:dark matches",
       settings: "dark",
       matchMedia: darkMatch(),
       theme: "DarkTheme",
