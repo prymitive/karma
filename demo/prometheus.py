@@ -24,9 +24,15 @@ def generateSeries():
     return series
 
 
+def maybe_fail():
+    if random.randint(0, 100) > 98:
+        return True
+    return False
+
+
 class server(BaseHTTPRequestHandler):
-    def _set_headers(self):
-        self.send_response(200)
+    def _set_headers(self, code=200):
+        self.send_response(code)
         self.send_header("Content-type", "application/json")
         self.end_headers()
 
@@ -70,6 +76,10 @@ class server(BaseHTTPRequestHandler):
         self.do_GET()
 
     def do_GET(self):
+        if maybe_fail():
+            self._set_headers(code=500)
+            self.wfile.write(json.dumps({"status": "error"}).encode("utf-8"))
+            return
         self._set_headers()
         if self.path.startswith("/api/v1/labels"):
             self._label_names()
