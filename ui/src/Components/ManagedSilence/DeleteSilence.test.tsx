@@ -175,9 +175,9 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("sends a DELETE request after clicking 'Confirm' button", () => {
-    (useFetchDelete as jest.MockedFunction<
-      typeof useFetchDelete
-    >).mockReturnValue({ response: "success", error: null, isDeleting: false });
+    (
+      useFetchDelete as jest.MockedFunction<typeof useFetchDelete>
+    ).mockReturnValue({ response: "success", error: null, isDeleting: false });
 
     const tree = MountedDeleteSilenceModalContent();
     tree.find(".btn-danger").simulate("click");
@@ -198,9 +198,9 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("sends headers from alertmanager config", () => {
-    (useFetchDelete as jest.MockedFunction<
-      typeof useFetchDelete
-    >).mockReturnValue({ response: "success", error: null, isDeleting: false });
+    (
+      useFetchDelete as jest.MockedFunction<typeof useFetchDelete>
+    ).mockReturnValue({ response: "success", error: null, isDeleting: false });
 
     const upstreams = generateUpstreams();
     upstreams.instances[0].headers = {
@@ -227,9 +227,9 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("uses CORS credentials from alertmanager config", () => {
-    (useFetchDelete as jest.MockedFunction<
-      typeof useFetchDelete
-    >).mockReturnValue({ response: "success", error: null, isDeleting: false });
+    (
+      useFetchDelete as jest.MockedFunction<typeof useFetchDelete>
+    ).mockReturnValue({ response: "success", error: null, isDeleting: false });
 
     const upstreams = generateUpstreams();
     upstreams.instances[0].corsCredentials = "omit";
@@ -254,9 +254,9 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("renders ProgressMessage while awaiting response status", () => {
-    (useFetchDelete as jest.MockedFunction<
-      typeof useFetchDelete
-    >).mockReturnValue({ response: null, error: null, isDeleting: true });
+    (
+      useFetchDelete as jest.MockedFunction<typeof useFetchDelete>
+    ).mockReturnValue({ response: null, error: null, isDeleting: true });
 
     const tree = MountedDeleteSilenceModalContent();
     tree.find(".btn-danger").simulate("click");
@@ -265,9 +265,9 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("renders SuccessMessage on successful response status", () => {
-    (useFetchDelete as jest.MockedFunction<
-      typeof useFetchDelete
-    >).mockReturnValue({ response: "success", error: null, isDeleting: false });
+    (
+      useFetchDelete as jest.MockedFunction<typeof useFetchDelete>
+    ).mockReturnValue({ response: "success", error: null, isDeleting: false });
 
     const tree = MountedDeleteSilenceModalContent();
     tree.find(".btn-danger").simulate("click");
@@ -276,9 +276,9 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("renders ErrorMessage on failed delete fetch request", () => {
-    (useFetchDelete as jest.MockedFunction<
-      typeof useFetchDelete
-    >).mockReturnValue({
+    (
+      useFetchDelete as jest.MockedFunction<typeof useFetchDelete>
+    ).mockReturnValue({
       response: null,
       error: "failed",
       isDeleting: false,
@@ -291,9 +291,9 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("'Retry' button is present after failed delete", () => {
-    (useFetchDelete as jest.MockedFunction<
-      typeof useFetchDelete
-    >).mockReturnValue({
+    (
+      useFetchDelete as jest.MockedFunction<typeof useFetchDelete>
+    ).mockReturnValue({
       response: null,
       error: "fake error",
       isDeleting: false,
@@ -306,9 +306,9 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("'Retry' button is not present after successful delete", () => {
-    (useFetchDelete as jest.MockedFunction<
-      typeof useFetchDelete
-    >).mockReturnValue({ response: "success", error: null, isDeleting: false });
+    (
+      useFetchDelete as jest.MockedFunction<typeof useFetchDelete>
+    ).mockReturnValue({ response: "success", error: null, isDeleting: false });
 
     const tree = MountedDeleteSilenceModalContent();
     tree.find(".btn-danger").simulate("click");
@@ -317,9 +317,9 @@ describe("<DeleteSilenceModalContent />", () => {
   });
 
   it("Clicking 'Retry' button triggers new delete", () => {
-    (useFetchDelete as jest.MockedFunction<
-      typeof useFetchDelete
-    >).mockReturnValue({
+    (
+      useFetchDelete as jest.MockedFunction<typeof useFetchDelete>
+    ).mockReturnValue({
       response: null,
       error: "fake error",
       isDeleting: false,

@@ -36,7 +36,8 @@ require("jest-canvas-mock");
 require("jest-date-mock");
 
 // https://reactjs.org/blog/2019/08/08/react-v16.9.0.html#new-deprecations
-const reactDeprecationWarning = /.*has been renamed, and is not recommended for use.*/;
+const reactDeprecationWarning =
+  /.*has been renamed, and is not recommended for use.*/;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const consoleHandler = (message?: any, ...args: any): void => {
   if (reactDeprecationWarning.test(message as string) === false) {
@@ -58,9 +59,9 @@ React.useLayoutEffect = React.useEffect;
 beforeEach(() => {
   useFetchGetMock.fetch.reset();
   (useFetchGet as jest.MockedFunction<typeof useFetchGetMock>).mockRestore();
-  (useFetchGet as jest.MockedFunction<
-    typeof useFetchGetMock
-  >).mockImplementation(useFetchGetMock);
+  (
+    useFetchGet as jest.MockedFunction<typeof useFetchGetMock>
+  ).mockImplementation(useFetchGetMock);
 
   (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
     jest.fn(),

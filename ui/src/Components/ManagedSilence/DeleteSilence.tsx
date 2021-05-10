@@ -68,10 +68,7 @@ const DeleteResult: FC<{
     credentials: am.corsCredentials,
   });
 
-  const {
-    error,
-    isDeleting,
-  } = useFetchDelete(
+  const { error, isDeleting } = useFetchDelete(
     `${am.uri}/api/v2/silence/${silence.id}`,
     deleteFetchOptions,
     [currentTime]
@@ -175,9 +172,8 @@ const DeleteSilence: FC<{
 }> = ({ alertStore, silenceFormStore, cluster, silence, isUpper = false }) => {
   const [visible, setVisible] = useState<boolean>(false);
 
-  const members = alertStore.data.getClusterAlertmanagersWithoutReadOnly(
-    cluster
-  );
+  const members =
+    alertStore.data.getClusterAlertmanagersWithoutReadOnly(cluster);
 
   return (
     <>

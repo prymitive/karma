@@ -12,9 +12,8 @@ const TooltipWrapper: FC<{
   children: ReactNode;
   className?: string;
 }> = ({ title, children, className }) => {
-  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
-    null
-  );
+  const [referenceElement, setReferenceElement] =
+    useState<HTMLElement | null>(null);
   const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
   const { styles, attributes } = usePopper(referenceElement, popperElement, {
     placement: "top",
