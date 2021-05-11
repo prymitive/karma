@@ -47,10 +47,6 @@ lint-js: $(NODE_PATH)/eslint
 	eslint --ext .js,.jsx,.ts,.tsx src
 	tsc --noEmit -p .
 
-.PHONY: lint-deps
-lint-deps: $(NODE_PATH)/depcheck
-	depcheck $(CURDIR)
-
 .PHONY: lint-typescript
 lint-typescript:
 	@$(eval JSFILES := $(shell find $(CURDIR)/src \( -iname \*.js -o -iname \*.jsx \) -not -name setupTests.js ))

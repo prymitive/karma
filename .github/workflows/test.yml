@@ -222,29 +222,11 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.5.1
-
-      - name: Set up Node JS
-        uses: actions/setup-node@v2
+      - name: depcheck
+        uses: prymitive/depcheck-action@v1.0.14
         with:
-          node-version: 14.17.0
-
-      - name: Cache NPM modules
-        id: cache-npm
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-main-npm-
-
-      - name: Fetch all NPM dependencies
-        if: steps.cache-npm.outputs.cache-hit != 'true'
-        run: make -C ui npm-fetch
-
-      - name: Lint Node JS dependencies
-        run: make -C ui lint-deps
+          workdir: "./ui"
+          config: "./ui/.depcheckrc.yaml"
 
   lint-versions:
     name: Lint Versions

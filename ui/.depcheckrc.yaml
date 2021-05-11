@@ -10,4 +10,3 @@ ignores:
   - "@types/jest"
   - "@types/node"
   - "@storybook/preset-create-react-app"
-  - depcheck
