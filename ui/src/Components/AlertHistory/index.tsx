@@ -7,26 +7,48 @@ import { APIAlertGroupT, HistoryResponseT } from "Models/APITypes";
 import { useFetchAny, UpstreamT } from "Hooks/useFetchAny";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 
+interface minMaxT {
+  minValue: number;
+  maxValue: number;
+}
+
 const responseStub: HistoryResponseT = {
   error: "",
   samples: Array(24).fill({ timestamp: "", value: 0 }),
 };
 
-const promURIRe = new RegExp(/(https?:\/\/.+)\/graph?.+/);
+const promURIRe = new RegExp(/^(https?:\/\/.+)\//);
 
 export const AlertHistory: FC<{ group: APIAlertGroupT }> = ({ group }) => {
   const [ref, inView] = useInView({ triggerOnce: true });
 
+  const [epoch, setEpoch] = useState<number>(0);
   const [sources, setSources] = useState<string[]>([]);
   const [upstreams, setUpstreams] = useState<UpstreamT[]>([]);
   const [labels] = useState({ ...group.labels, ...group.shared.labels });
-  const { response, error, inProgress } =
-    useFetchAny<HistoryResponseT>(upstreams);
-  const [maxValue, setMaxValue] = useState<number>(0);
+  const { response, error } = useFetchAny<HistoryResponseT>(upstreams);
+  const [cachedResponse, setCachedResponse] =
+    useState<HistoryResponseT | null>(null);
+  const [minMaxValue, setMinMaxValue] = useState<minMaxT>({
+    minValue: 0,
+    maxValue: 0,
+  });
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setEpoch((val) => val + 1);
+    }, 5 * 60 * 1000);
+    return () => clearInterval(timer);
+  }, [inView]);
 
   useEffect(() => {
     if (response !== null) {
-      setMaxValue(Math.max(...response.samples.map((s) => s.value)));
+      setCachedResponse(response);
+      const max = Math.max(...response.samples.map((s) => s.value));
+      const min = Math.min(
+        ...response.samples.filter((s) => s.value > 0).map((s) => s.value)
+      );
+      setMinMaxValue({ minValue: min === Infinity ? 0 : min, maxValue: max });
     }
   }, [response]);
 
@@ -60,7 +82,7 @@ export const AlertHistory: FC<{ group: APIAlertGroupT }> = ({ group }) => {
         },
       },
     ]);
-  }, [inView, labels, sources]);
+  }, [inView, labels, sources, epoch]);
 
   return (
     <div className="w-100 d-flex">
@@ -68,9 +90,9 @@ export const AlertHistory: FC<{ group: APIAlertGroupT }> = ({ group }) => {
         ref={ref}
         className="w-100 d-flex justify-content-between align-self-center"
       >
-        {error || (response && response.error !== "") ? (
+        {error || (cachedResponse && cachedResponse.error !== "") ? (
           <TooltipWrapper
-            title={error || response?.error}
+            title={error || cachedResponse?.error}
             className="alert-history-tooltip"
           >
             <svg className="alert-history">
@@ -78,18 +100,22 @@ export const AlertHistory: FC<{ group: APIAlertGroupT }> = ({ group }) => {
             </svg>
           </TooltipWrapper>
         ) : (
-          (response || responseStub).samples.map((sample, i) => (
+          (cachedResponse || responseStub).samples.map((sample, i) => (
             <svg key={i} className="alert-history">
               <rect
                 rx={2}
                 ry={2}
                 className={
-                  inProgress || response === null
+                  cachedResponse === null
                     ? "fetching"
                     : sample.value > 0
-                    ? `firing firing-${Math.round(
-                        (sample.value / maxValue) * 5
-                      )}`
+                    ? `firing firing-${
+                        minMaxValue.minValue === minMaxValue.maxValue
+                          ? Math.min(minMaxValue.maxValue, 5)
+                          : Math.round(
+                              (sample.value / minMaxValue.maxValue) * 5
+                            )
+                      }`
                     : "inactive"
                 }
               ></rect>

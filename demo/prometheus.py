@@ -18,7 +18,7 @@ def generateSeries():
     for i in range(24):
         value = 0
         if random.randint(0, 100) > 75:
-            value = random.randint(0, 100)
+            value = random.randint(0, 10)
         series.append([now, str(value)])
         now = now - 3600
     return series
