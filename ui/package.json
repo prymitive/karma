@@ -84,7 +84,7 @@
     "@storybook/react": "6.2.9",
     "@testing-library/react-hooks": "5.1.2",
     "@wojtekmaj/enzyme-adapter-react-17": "0.6.1",
-    "depcheck": "1.4.0",
+    "depcheck": "1.4.1",
     "diffable-html": "4.0.0",
     "enzyme": "3.11.0",
     "jest-canvas-mock": "2.3.1",
