@@ -83,8 +83,10 @@ const MockSilence = (): APISilenceT => ({
   ticketID: "",
   ticketURL: "",
   matchers: [
-    { name: "foo", value: "bar", isRegex: false },
-    { name: "baz", value: "regex", isRegex: true },
+    { name: "regex", value: "equal", isRegex: true, isEqual: true },
+    { name: "regex", value: "notEqual", isRegex: true, isEqual: false },
+    { name: "notRegex", value: "equal", isRegex: false, isEqual: true },
+    { name: "notRegex", value: "notEqual", isRegex: false, isEqual: false },
   ],
 });
 

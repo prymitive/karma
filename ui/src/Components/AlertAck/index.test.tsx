@@ -303,8 +303,13 @@ describe("<AlertAck />", () => {
       createdBy: "karma/ui",
       endsAt: "2000-02-01T00:02:03.000Z",
       matchers: [
-        { isRegex: false, name: "alertname", value: "Fake Alert" },
-        { isRegex: true, name: "foo", value: "(bar|baz)" },
+        {
+          isRegex: false,
+          name: "alertname",
+          value: "Fake Alert",
+          isEqual: true,
+        },
+        { isRegex: true, name: "foo", value: "(bar|baz)", isEqual: true },
       ],
       startsAt: "2000-02-01T00:00:00.000Z",
     });
@@ -328,8 +333,13 @@ describe("<AlertAck />", () => {
       createdBy: "me",
       endsAt: "2000-02-01T00:03:57.000Z",
       matchers: [
-        { isRegex: false, name: "alertname", value: "Fake Alert" },
-        { isRegex: true, name: "foo", value: "(bar|baz)" },
+        {
+          isRegex: false,
+          name: "alertname",
+          value: "Fake Alert",
+          isEqual: true,
+        },
+        { isRegex: true, name: "foo", value: "(bar|baz)", isEqual: true },
       ],
       startsAt: "2000-02-01T00:00:00.000Z",
     });
@@ -354,8 +364,13 @@ describe("<AlertAck />", () => {
       createdBy: "me",
       endsAt: "2000-02-01T00:03:57.000Z",
       matchers: [
-        { isRegex: false, name: "alertname", value: "Fake Alert" },
-        { isRegex: true, name: "foo", value: "(bar|baz)" },
+        {
+          isRegex: false,
+          name: "alertname",
+          value: "Fake Alert",
+          isEqual: true,
+        },
+        { isRegex: true, name: "foo", value: "(bar|baz)", isEqual: true },
       ],
       startsAt: "2000-02-01T00:00:00.000Z",
     });
@@ -380,8 +395,13 @@ describe("<AlertAck />", () => {
       createdBy: "auth@example.com",
       endsAt: "2000-02-01T00:03:42.000Z",
       matchers: [
-        { isRegex: false, name: "alertname", value: "Fake Alert" },
-        { isRegex: true, name: "foo", value: "(bar|baz)" },
+        {
+          isRegex: false,
+          name: "alertname",
+          value: "Fake Alert",
+          isEqual: true,
+        },
+        { isRegex: true, name: "foo", value: "(bar|baz)", isEqual: true },
       ],
       startsAt: "2000-02-01T00:00:00.000Z",
     });
@@ -407,8 +427,13 @@ describe("<AlertAck />", () => {
       createdBy: "bob@example.com",
       endsAt: "2000-02-01T00:03:42.000Z",
       matchers: [
-        { isRegex: false, name: "alertname", value: "Fake Alert" },
-        { isRegex: true, name: "foo", value: "(bar|baz)" },
+        {
+          isRegex: false,
+          name: "alertname",
+          value: "Fake Alert",
+          isEqual: true,
+        },
+        { isRegex: true, name: "foo", value: "(bar|baz)", isEqual: true },
       ],
       startsAt: "2000-02-01T00:00:00.000Z",
     });
@@ -433,8 +458,13 @@ describe("<AlertAck />", () => {
       createdBy: "me",
       endsAt: "2000-02-01T00:03:42.000Z",
       matchers: [
-        { isRegex: false, name: "alertname", value: "Fake Alert" },
-        { isRegex: true, name: "foo", value: "(bar|baz)" },
+        {
+          isRegex: false,
+          name: "alertname",
+          value: "Fake Alert",
+          isEqual: true,
+        },
+        { isRegex: true, name: "foo", value: "(bar|baz)", isEqual: true },
       ],
       startsAt: "2000-02-01T00:00:00.000Z",
     });

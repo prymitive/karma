@@ -316,19 +316,37 @@ describe("SilenceFormStore.data", () => {
       value: [alertmanager.name],
     });
 
-    expect(store.data.matchers).toHaveLength(2);
+    expect(store.data.matchers).toHaveLength(4);
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
-        name: "foo",
-        values: [{ label: "bar", value: "bar" }],
-        isRegex: false,
+        name: "regex",
+        values: [{ label: "equal", value: "equal" }],
+        isRegex: true,
+        isEqual: true,
       })
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
-        name: "baz",
-        values: [{ label: "regex", value: "regex" }],
+        name: "regex",
+        values: [{ label: "notEqual", value: "notEqual" }],
         isRegex: true,
+        isEqual: false,
+      })
+    );
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "notRegex",
+        values: [{ label: "equal", value: "equal" }],
+        isRegex: false,
+        isEqual: true,
+      })
+    );
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "notRegex",
+        values: [{ label: "notEqual", value: "notEqual" }],
+        isRegex: false,
+        isEqual: false,
       })
     );
 
@@ -345,39 +363,84 @@ describe("SilenceFormStore.data", () => {
 
   const tests = [
     {
-      matcher: { name: "foo", value: "(bar1|bar2|bar3)", isRegex: true },
+      matcher: {
+        name: "foo",
+        value: "(bar1|bar2|bar3)",
+        isRegex: true,
+        isEqual: true,
+      },
       result: { name: "foo", values: ["bar1", "bar2", "bar3"] },
     },
     {
-      matcher: { name: "foo", value: "(bar1|bar2|bar3)", isRegex: false },
+      matcher: {
+        name: "foo",
+        value: "(bar1|bar2|bar3)",
+        isRegex: false,
+        isEqual: true,
+      },
       result: { name: "foo", values: ["(bar1|bar2|bar3)"] },
     },
     {
-      matcher: { name: "foo", value: "bar1|bar2|bar3)", isRegex: false },
+      matcher: {
+        name: "foo",
+        value: "bar1|bar2|bar3)",
+        isRegex: false,
+        isEqual: true,
+      },
       result: { name: "foo", values: ["bar1|bar2|bar3)"] },
     },
     {
-      matcher: { name: "foo", value: "(bar1|bar2|bar3", isRegex: false },
+      matcher: {
+        name: "foo",
+        value: "(bar1|bar2|bar3",
+        isRegex: false,
+        isEqual: true,
+      },
       result: { name: "foo", values: ["(bar1|bar2|bar3"] },
     },
     {
-      matcher: { name: "foo", value: "bar1|bar2|bar3", isRegex: true },
+      matcher: {
+        name: "foo",
+        value: "bar1|bar2|bar3",
+        isRegex: true,
+        isEqual: false,
+      },
       result: { name: "foo", values: ["bar1", "bar2", "bar3"] },
     },
     {
-      matcher: { name: "foo", value: "bar1|bar2|bar3", isRegex: false },
+      matcher: {
+        name: "foo",
+        value: "bar1|bar2|bar3",
+        isRegex: false,
+        isEqual: true,
+      },
       result: { name: "foo", values: ["bar1|bar2|bar3"] },
     },
     {
-      matcher: { name: "foo", value: "(.+|bar2|bar3)", isRegex: true },
+      matcher: {
+        name: "foo",
+        value: "(.+|bar2|bar3)",
+        isRegex: true,
+        isEqual: false,
+      },
       result: { name: "foo", values: ["(.+|bar2|bar3)"] },
     },
     {
-      matcher: { name: "foo", value: "bar1|bar?|bar3)", isRegex: true },
+      matcher: {
+        name: "foo",
+        value: "bar1|bar?|bar3)",
+        isRegex: true,
+        isEqual: true,
+      },
       result: { name: "foo", values: ["bar1|bar?|bar3)"] },
     },
     {
-      matcher: { name: "foo", value: "server(0|1)", isRegex: true },
+      matcher: {
+        name: "foo",
+        value: "server(0|1)",
+        isRegex: true,
+        isEqual: true,
+      },
       result: { name: "foo", values: ["server(0|1)"] },
     },
   ];
@@ -395,6 +458,7 @@ describe("SilenceFormStore.data", () => {
           name: t.result.name,
           values: t.result.values.map((v) => ({ label: v, value: v })),
           isRegex: t.matcher.isRegex,
+          isEqual: t.matcher.isEqual,
         })
       );
     });

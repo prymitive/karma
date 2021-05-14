@@ -2,6 +2,7 @@ const QueryOperators = Object.freeze({
   Equal: "=",
   NotEqual: "!=",
   Regex: "=~",
+  NegativeRegex: "!~",
 });
 
 const StaticLabels = Object.freeze({

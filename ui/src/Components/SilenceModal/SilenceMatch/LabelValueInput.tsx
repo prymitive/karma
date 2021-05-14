@@ -29,6 +29,7 @@ const GenerateHashFromMatchers = (
       name: matcher.name,
       values: matcher.values,
       isRegex: matcher.isRegex,
+      isEqual: matcher.isEqual,
     },
   });
 

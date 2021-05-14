@@ -19,6 +19,9 @@ import (
 // swagger:model matcher
 type Matcher struct {
 
+	// is equal
+	IsEqual *bool `json:"isEqual,omitempty"`
+
 	// is regex
 	// Required: true
 	IsRegex *bool `json:"isRegex"`

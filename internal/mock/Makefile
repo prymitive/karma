@@ -5,7 +5,7 @@ DOCKER_ARGS  := --name $(DOCKER_NAME) --rm -d -p 9093:9093 \
 								-v $(CURDIR)/alertmanager.yml:/etc/alertmanager/alertmanager.yml
 
 # list of Alertmanager versions to generate mock files for
-VERSIONS := 0.19.0 0.20.0 0.21.0
+VERSIONS := 0.19.0 0.20.0 0.21.0 0.22.0-rc.1
 
 %/.ok: livemock.py
 	$(eval VERSION := $(word 1, $(subst /, ,$@)))
@@ -21,14 +21,14 @@ VERSIONS := 0.19.0 0.20.0 0.21.0
 	@sleep 15
 
 	@echo "+ Sending mock alerts and silences"
-	@python livemock.py
+	@python3 livemock.py
 	@echo "+ Collecting API responses"
 
 	@mkdir -p $(CURDIR)/$(VERSION)/api/v$(API) $(CURDIR)/$(VERSION)/api/v$(API)/alerts
 	@curl --fail -s localhost:9093/metrics > $(CURDIR)/$(VERSION)/metrics
-	@curl --fail -s localhost:9093/api/v$(API)/status | python -m json.tool > $(CURDIR)/$(VERSION)/api/v$(API)/status
-	@curl --fail -s localhost:9093/api/v$(API)/silences | python -m json.tool > $(CURDIR)/$(VERSION)/api/v$(API)/silences
-	@curl --fail -s localhost:9093/api/v$(API)/alerts/groups | python -m json.tool > $(CURDIR)/$(VERSION)/api/v$(API)/alerts/groups
+	@curl --fail -s localhost:9093/api/v$(API)/status | python3 -m json.tool > $(CURDIR)/$(VERSION)/api/v$(API)/status
+	@curl --fail -s localhost:9093/api/v$(API)/silences | python3 -m json.tool > $(CURDIR)/$(VERSION)/api/v$(API)/silences
+	@curl --fail -s localhost:9093/api/v$(API)/alerts/groups | python3 -m json.tool > $(CURDIR)/$(VERSION)/api/v$(API)/alerts/groups
 
 	@touch $(VERSION)/.ok
 	@docker rm -f $(DOCKER_NAME)

@@ -88,8 +88,8 @@ def addAlerts(alerts):
         jsonPostRequest("{}/api/v2/alerts".format(api), alerts)
 
 
-def newMatcher(name, value, isRegex):
-    return {"name": name, "value": value, "isRegex": isRegex}
+def newMatcher(name, value, isRegex, isEqual=True):
+    return {"name": name, "value": value, "isRegex": isRegex, "isEqual": isEqual}
 
 
 def newAlert(labels, annotations=None, generatorURL="http://localhost:8082/graph"):
@@ -362,6 +362,7 @@ class MixedAlerts(AlertGenerator):
                 [
                     newMatcher("alertname", self.name, False),
                     newMatcher("instance", "server(1|3|5|7)", True),
+                    newMatcher("cluster", "dev", False, isEqual=False),
                 ],
                 "{}Z".format(now.isoformat()),
                 "{}Z".format(

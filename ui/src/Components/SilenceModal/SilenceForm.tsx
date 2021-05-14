@@ -1,5 +1,7 @@
 import { FC, useEffect, useState, MouseEvent, FormEvent } from "react";
 
+import semverLt from "semver/functions/lt";
+
 import { observer } from "mobx-react-lite";
 
 import copy from "copy-to-clipboard";
@@ -113,16 +115,23 @@ const SilenceForm: FC<{
             (f) =>
               f.name[0] !== "@" &&
               (f.matcher === QueryOperators.Equal ||
-                f.matcher === QueryOperators.Regex)
+                f.matcher === QueryOperators.NotEqual ||
+                f.matcher === QueryOperators.Regex ||
+                f.matcher === QueryOperators.NegativeRegex)
           )
           .forEach((f) => {
             const matcher = NewEmptyMatcher();
             matcher.name = f.name;
-            if (f.matcher === QueryOperators.Regex) {
+            if (
+              f.matcher === QueryOperators.Regex ||
+              f.matcher === QueryOperators.NegativeRegex
+            ) {
               matcher.values = [StringToOption(`.*${f.value}.*`)];
-              matcher.isRegex = f.matcher === QueryOperators.Regex;
+              matcher.isRegex = true;
+              matcher.isEqual = f.matcher === QueryOperators.Regex;
             } else {
               matcher.values = [StringToOption(f.value)];
+              matcher.isEqual = f.matcher === QueryOperators.Equal;
             }
             silenceFormStore.data.addMatcherWithID(matcher);
           });
@@ -196,6 +205,16 @@ const SilenceForm: FC<{
           }}
           showDelete={silenceFormStore.data.matchers.length > 1}
           isValid={!silenceFormStore.data.wasValidated}
+          enableIsEqual={
+            !semverLt(
+              alertStore.data.getMinVersion(
+                silenceFormStore.data.alertmanagers
+                  .map((am) => am.value)
+                  .reduce((a, b) => [...a, ...b], [])
+              ),
+              "0.22.0"
+            )
+          }
         />
       ))}
       <div className="d-flex flex-row justify-content-between mb-3">

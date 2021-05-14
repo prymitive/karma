@@ -7,26 +7,31 @@ Object {
   "endsAt": "2000-02-01T01:00:00.000Z",
   "matchers": Array [
     Object {
+      "isEqual": true,
       "isRegex": false,
       "name": "alertname",
       "value": "FakeAlert",
     },
     Object {
+      "isEqual": true,
       "isRegex": false,
       "name": "job",
       "value": "mock",
     },
     Object {
+      "isEqual": true,
       "isRegex": true,
       "name": "instance",
       "value": "(dev1|prod1|prod2)",
     },
     Object {
+      "isEqual": true,
       "isRegex": true,
       "name": "cluster",
       "value": "(dev|prod)",
     },
     Object {
+      "isEqual": true,
       "isRegex": false,
       "name": "",
       "value": "",

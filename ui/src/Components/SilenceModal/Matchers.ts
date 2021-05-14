@@ -1,18 +1,15 @@
 import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
 import { MultiValueOptionT } from "Common/Select";
-import { MatcherT } from "Stores/SilenceFormStore";
+import { MatcherT, MatcherToOperator } from "Stores/SilenceFormStore";
 
 const MatcherToFilter = (matcher: MatcherT): string => {
-  const operator = matcher.isRegex
-    ? QueryOperators.Regex
-    : QueryOperators.Equal;
   const value =
     matcher.values.length > 1
       ? `(${matcher.values.map((v) => v.value).join("|")})`
       : matcher.values[0].value;
   return FormatQuery(
     matcher.name,
-    operator,
+    MatcherToOperator(matcher),
     matcher.isRegex ? `^${value}$` : value
   );
 };

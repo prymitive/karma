@@ -6,6 +6,7 @@ export interface AlertmanagerSilenceMatcherT {
   name: string;
   value: string;
   isRegex: boolean;
+  isEqual: boolean;
 }
 
 export interface AlertmanagerSilencePayloadT {

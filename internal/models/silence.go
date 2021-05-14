@@ -6,6 +6,7 @@ type SilenceMatcher struct {
 	Name    string `json:"name"`
 	Value   string `json:"value"`
 	IsRegex bool   `json:"isRegex"`
+	IsEqual bool   `json:"isEqual"`
 }
 
 // Silence is vanilla silence + some additional attributes

@@ -279,10 +279,16 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
                  style=\\"min-width: 0px;\\"
             >
               <span class=\\"badge badge-primary px-1 mr-1 components-label\\">
-                foo=bar
+                regex=~\\"equal\\"
               </span>
               <span class=\\"badge badge-primary px-1 mr-1 components-label\\">
-                baz=~regex
+                regex!~\\"notEqual\\"
+              </span>
+              <span class=\\"badge badge-primary px-1 mr-1 components-label\\">
+                notRegex=\\"equal\\"
+              </span>
+              <span class=\\"badge badge-primary px-1 mr-1 components-label\\">
+                notRegex!=\\"notEqual\\"
               </span>
             </div>
           </div>

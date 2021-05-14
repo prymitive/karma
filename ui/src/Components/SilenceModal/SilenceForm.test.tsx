@@ -15,7 +15,9 @@ let alertStore: AlertStore;
 let settingsStore: Settings;
 let silenceFormStore: SilenceFormStore;
 
-const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
+const generateUpstreams = (
+  version = "0.22.0"
+): APIAlertsResponseUpstreamsT => ({
   counters: {
     healthy: 1,
     failed: 0,
@@ -30,7 +32,7 @@ const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
       headers: {},
       corsCredentials: "include",
       error: "",
-      version: "0.17.0",
+      version: version,
       cluster: "am1",
       clusterMembers: ["am1"],
     },
@@ -96,68 +98,332 @@ describe("<SilenceForm /> matchers", () => {
     silenceFormStore.data.setAutofillMatchers(true);
     const tree = MountedSilenceForm();
     const matchers = tree.find("SilenceMatch");
-    expect(matchers).toHaveLength(6);
-    expect(silenceFormStore.data.matchers).toHaveLength(6);
-    expect(silenceFormStore.data.matchers[0]).toMatchObject({
-      isRegex: false,
-      name: "alertname",
-      values: [
-        {
-          label: "alertnameEqual",
-          value: "alertnameEqual",
-        },
-      ],
-    });
-    expect(silenceFormStore.data.matchers[1]).toMatchObject({
-      isRegex: true,
-      name: "alertname",
-      values: [
-        {
-          label: ".*alertnameRegex.*",
-          value: ".*alertnameRegex.*",
-        },
-      ],
-    });
-    expect(silenceFormStore.data.matchers[2]).toMatchObject({
-      isRegex: false,
-      name: "cluster",
-      values: [
-        {
-          label: "clusterEqual",
-          value: "clusterEqual",
-        },
-      ],
-    });
-    expect(silenceFormStore.data.matchers[3]).toMatchObject({
-      isRegex: true,
-      name: "cluster",
-      values: [
-        {
-          label: ".*clusterRegex.*",
-          value: ".*clusterRegex.*",
-        },
-      ],
-    });
-    expect(silenceFormStore.data.matchers[4]).toMatchObject({
-      isRegex: false,
-      name: "foo",
-      values: [
-        {
-          label: "fooEqual",
-          value: "fooEqual",
-        },
-      ],
-    });
-    expect(silenceFormStore.data.matchers[5]).toMatchObject({
-      isRegex: true,
-      name: "foo",
-      values: [
-        {
-          label: ".*fooRegex.*",
-          value: ".*fooRegex.*",
-        },
-      ],
-    });
+    expect(matchers).toHaveLength(12);
+    expect(silenceFormStore.data.matchers).toHaveLength(12);
+    expect(silenceFormStore.data.matchers).toEqual([
+      {
+        id: "2",
+        isRegex: false,
+        isEqual: true,
+        name: "alertname",
+        values: [
+          {
+            label: "alertnameEqual",
+            value: "alertnameEqual",
+          },
+        ],
+      },
+      {
+        id: "3",
+        isRegex: false,
+        isEqual: false,
+        name: "alertname",
+        values: [
+          {
+            label: "alertnameNotEqual",
+            value: "alertnameNotEqual",
+          },
+        ],
+      },
+      {
+        id: "4",
+        isRegex: true,
+        isEqual: true,
+        name: "alertname",
+        values: [
+          {
+            label: ".*alertnameRegex.*",
+            value: ".*alertnameRegex.*",
+          },
+        ],
+      },
+      {
+        id: "5",
+        isRegex: true,
+        isEqual: false,
+        name: "alertname",
+        values: [
+          {
+            label: ".*alertnameNegativeRegex.*",
+            value: ".*alertnameNegativeRegex.*",
+          },
+        ],
+      },
+      {
+        id: "6",
+        isRegex: false,
+        isEqual: true,
+        name: "cluster",
+        values: [
+          {
+            label: "clusterEqual",
+            value: "clusterEqual",
+          },
+        ],
+      },
+      {
+        id: "7",
+        isRegex: false,
+        isEqual: false,
+        name: "cluster",
+        values: [
+          {
+            label: "clusterNotEqual",
+            value: "clusterNotEqual",
+          },
+        ],
+      },
+      {
+        id: "8",
+        isRegex: true,
+        isEqual: true,
+        name: "cluster",
+        values: [
+          {
+            label: ".*clusterRegex.*",
+            value: ".*clusterRegex.*",
+          },
+        ],
+      },
+      {
+        id: "9",
+        isRegex: true,
+        isEqual: false,
+        name: "cluster",
+        values: [
+          {
+            label: ".*clusterNegativeRegex.*",
+            value: ".*clusterNegativeRegex.*",
+          },
+        ],
+      },
+      {
+        id: "10",
+        isRegex: false,
+        isEqual: true,
+        name: "foo",
+        values: [
+          {
+            label: "fooEqual",
+            value: "fooEqual",
+          },
+        ],
+      },
+      {
+        id: "11",
+        isRegex: false,
+        isEqual: false,
+        name: "foo",
+        values: [
+          {
+            label: "fooNotEqual",
+            value: "fooNotEqual",
+          },
+        ],
+      },
+      {
+        id: "12",
+        isRegex: true,
+        isEqual: true,
+        name: "foo",
+        values: [
+          {
+            label: ".*fooRegex.*",
+            value: ".*fooRegex.*",
+          },
+        ],
+      },
+      {
+        id: "13",
+        isRegex: true,
+        isEqual: false,
+        name: "foo",
+        values: [
+          {
+            label: ".*fooNegativeRegex.*",
+            value: ".*fooNegativeRegex.*",
+          },
+        ],
+      },
+    ]);
+  });
+
+  it("correctly populates filters when enableIsEqual=false", () => {
+    alertStore.data.setUpstreams(generateUpstreams("0.17.0"));
+
+    const filter = (name: string, matcher: string, value: string) => {
+      const f = NewUnappliedFilter(`${name}${matcher}${value}`);
+      f.name = name;
+      f.matcher = matcher;
+      f.value = value;
+      return f;
+    };
+
+    const filterCombos = (name: string) =>
+      Object.entries(QueryOperators).map(([k, v]) =>
+        filter(name, v, `${name}${k}`)
+      );
+
+    alertStore.filters.setFilterValues([
+      ...filterCombos(StaticLabels.AlertName),
+      ...filterCombos(StaticLabels.AlertManager),
+      ...filterCombos(StaticLabels.Receiver),
+      ...filterCombos(StaticLabels.State),
+      ...filterCombos(StaticLabels.SilenceID),
+      ...filterCombos("cluster"),
+      ...filterCombos("foo"),
+    ]);
+    silenceFormStore.data.setAutofillMatchers(true);
+    const tree = MountedSilenceForm();
+    const matchers = tree.find("SilenceMatch");
+    expect(matchers).toHaveLength(12);
+    expect(silenceFormStore.data.matchers).toHaveLength(12);
+    expect(silenceFormStore.data.matchers).toEqual([
+      {
+        id: "14",
+        isRegex: false,
+        isEqual: true,
+        name: "alertname",
+        values: [
+          {
+            label: "alertnameEqual",
+            value: "alertnameEqual",
+          },
+        ],
+      },
+      {
+        id: "15",
+        isRegex: false,
+        isEqual: true,
+        name: "alertname",
+        values: [
+          {
+            label: "alertnameNotEqual",
+            value: "alertnameNotEqual",
+          },
+        ],
+      },
+      {
+        id: "16",
+        isRegex: true,
+        isEqual: true,
+        name: "alertname",
+        values: [
+          {
+            label: ".*alertnameRegex.*",
+            value: ".*alertnameRegex.*",
+          },
+        ],
+      },
+      {
+        id: "17",
+        isRegex: true,
+        isEqual: true,
+        name: "alertname",
+        values: [
+          {
+            label: ".*alertnameNegativeRegex.*",
+            value: ".*alertnameNegativeRegex.*",
+          },
+        ],
+      },
+      {
+        id: "18",
+        isRegex: false,
+        isEqual: true,
+        name: "cluster",
+        values: [
+          {
+            label: "clusterEqual",
+            value: "clusterEqual",
+          },
+        ],
+      },
+      {
+        id: "19",
+        isRegex: false,
+        isEqual: true,
+        name: "cluster",
+        values: [
+          {
+            label: "clusterNotEqual",
+            value: "clusterNotEqual",
+          },
+        ],
+      },
+      {
+        id: "20",
+        isRegex: true,
+        isEqual: true,
+        name: "cluster",
+        values: [
+          {
+            label: ".*clusterRegex.*",
+            value: ".*clusterRegex.*",
+          },
+        ],
+      },
+      {
+        id: "21",
+        isRegex: true,
+        isEqual: true,
+        name: "cluster",
+        values: [
+          {
+            label: ".*clusterNegativeRegex.*",
+            value: ".*clusterNegativeRegex.*",
+          },
+        ],
+      },
+      {
+        id: "22",
+        isRegex: false,
+        isEqual: true,
+        name: "foo",
+        values: [
+          {
+            label: "fooEqual",
+            value: "fooEqual",
+          },
+        ],
+      },
+      {
+        id: "23",
+        isRegex: false,
+        isEqual: true,
+        name: "foo",
+        values: [
+          {
+            label: "fooNotEqual",
+            value: "fooNotEqual",
+          },
+        ],
+      },
+      {
+        id: "24",
+        isRegex: true,
+        isEqual: true,
+        name: "foo",
+        values: [
+          {
+            label: ".*fooRegex.*",
+            value: ".*fooRegex.*",
+          },
+        ],
+      },
+      {
+        id: "25",
+        isRegex: true,
+        isEqual: true,
+        name: "foo",
+        values: [
+          {
+            label: ".*fooNegativeRegex.*",
+            value: ".*fooNegativeRegex.*",
+          },
+        ],
+      },
+    ]);
   });
 
   it("doesn't use filters to populate default matchers when silenceFormStore.data.autofillMatchers=false", () => {
