@@ -30,7 +30,7 @@ require (
 	github.com/prometheus/client_golang v1.10.0
 	github.com/prometheus/common v0.24.0
 	github.com/rogpeppe/go-internal v1.8.0
-	github.com/rs/zerolog v1.21.0
+	github.com/rs/zerolog v1.22.0
 	github.com/spf13/pflag v1.0.5
 	go.mongodb.org/mongo-driver v1.5.2 // indirect
 	golang.org/x/net v0.0.0-20210510120150-4163338589ed // indirect
