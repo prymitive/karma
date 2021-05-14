@@ -17,8 +17,7 @@ import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
 
 import { APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { QueryOperators } from "Common/Query";
+import { SilenceFormStore, MatcherToOperator } from "Stores/SilenceFormStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { RenderLinkAnnotation } from "Components/Grid/AlertGrid/AlertGroup/Annotation";
 import { DateFromNow } from "Components/DateFromNow";
@@ -156,10 +155,7 @@ const SilenceDetails: FC<{
                   className="badge badge-primary px-1 mr-1 components-label"
                 >
                   {matcher.name}
-                  {matcher.isRegex
-                    ? QueryOperators.Regex
-                    : QueryOperators.Equal}
-                  {matcher.value}
+                  {MatcherToOperator(matcher)}"{matcher.value}"
                 </span>
               ))}
             </div>

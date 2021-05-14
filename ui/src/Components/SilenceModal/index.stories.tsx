@@ -24,12 +24,14 @@ import "Styles/Percy.scss";
 const MockMatcher = (
   name: string,
   values: string[],
-  isRegex: boolean
+  isRegex: boolean,
+  isEqual: boolean
 ): MatcherWithIDT => {
   const matcher = NewEmptyMatcher();
   matcher.name = name;
   matcher.values = values.map((v) => StringToOption(v));
   matcher.isRegex = isRegex;
+  matcher.isEqual = isEqual;
   return matcher;
 };
 
@@ -95,14 +97,15 @@ storiesOf("SilenceModal", module)
     silenceFormStore.toggle.visible = true;
     silenceFormStore.data.setAutofillMatchers(false);
     silenceFormStore.data.setMatchers([
-      MockMatcher("cluster", ["prod"], false),
-      MockMatcher("instance", ["server1", "server3"], true),
+      MockMatcher("cluster", ["prod"], false, true),
+      MockMatcher("instance", ["server1", "server3"], true, false),
       MockMatcher(
         "tooLong",
         [
           "12345",
           "Some Alerts With A Ridiculously Long Name To Test Label Truncation In All The Places We Render Those Alerts",
         ],
+        true,
         true
       ),
     ]);

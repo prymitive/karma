@@ -48,7 +48,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -79,7 +79,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -112,7 +112,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -129,7 +129,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -146,7 +146,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -179,7 +179,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d"},
 					},
 				},
@@ -197,7 +197,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d", "378eaa69-097d-41c4-a8c2-fe6568c3abfc"},
 					},
 				},
@@ -215,7 +215,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d"},
 					},
 				},
@@ -255,7 +255,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -274,7 +274,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -293,7 +293,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -312,7 +312,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -331,7 +331,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -350,7 +350,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d"},
 					},
 				},
@@ -369,7 +369,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d", "378eaa69-097d-41c4-a8c2-fe6568c3abfc"},
 					},
 				},
@@ -388,7 +388,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d"},
 					},
 				},
@@ -419,7 +419,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -455,7 +455,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -472,7 +472,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -507,7 +507,7 @@ var groupTests = []groupTest{
 					{
 						Name:   "default",
 						State:  models.AlertStateSuppressed,
-						Source: "localhost/prometheus",
+						Source: "http://localhost/prometheus",
 					},
 				},
 				Labels: map[string]string{
@@ -523,7 +523,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -557,7 +557,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},
@@ -595,7 +595,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateSuppressed,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{"0804764c-6163-4c64-b0a9-08feebe2db4b"},
 					},
 				},
@@ -612,7 +612,7 @@ var groupTests = []groupTest{
 					{
 						Name:       "default",
 						State:      models.AlertStateActive,
-						Source:     "localhost/prometheus",
+						Source:     "http://localhost/prometheus",
 						SilencedBy: []string{},
 					},
 				},

@@ -1,10 +1,10 @@
 {
     "cluster": {
-        "name": "01E0V66J0DA7BAPZFEM9R3TDZ3",
+        "name": "01F5QKXYTJDKZ58DG59JXRC36J",
         "peers": [
             {
                 "address": "172.17.0.2:9094",
-                "name": "01E0V66J0DA7BAPZFEM9R3TDZ3"
+                "name": "01F5QKXYTJDKZ58DG59JXRC36J"
             }
         ],
         "status": "ready"
@@ -12,10 +12,10 @@
     "config": {
         "original": "global:\n  resolve_timeout: 5m\n  http_config: {}\n  smtp_hello: localhost\n  smtp_require_tls: true\n  pagerduty_url: https://events.pagerduty.com/v2/enqueue\n  hipchat_api_url: https://api.hipchat.com/\n  opsgenie_api_url: https://api.opsgenie.com/\n  wechat_api_url: https://qyapi.weixin.qq.com/cgi-bin/\n  victorops_api_url: https://alert.victorops.com/integrations/generic/20131114/alert/\nroute:\n  receiver: default\n  group_by:\n  - alertname\n  routes:\n  - receiver: by-cluster-service\n    group_by:\n    - alertname\n    - cluster\n    - service\n    match_re:\n      alertname: .*\n    continue: true\n  - receiver: by-name\n    group_by:\n    - alertname\n    match_re:\n      alertname: .*\n    continue: true\n  group_wait: 15s\n  group_interval: 35s\n  repeat_interval: 999h\ninhibit_rules:\n- source_match:\n    severity: critical\n  target_match:\n    severity: warning\n  equal:\n  - alertname\n  - cluster\n  - service\nreceivers:\n- name: default\n- name: by-cluster-service\n- name: by-name\ntemplates: []\n"
     },
-    "uptime": "2020-02-11T22:34:01.102Z",
+    "uptime": "2021-05-15T08:57:49.139Z",
     "versionInfo": {
         "branch": "HEAD",
-        "buildDate": "20191211-14:13:14",
+        "buildDate": "20191211-14:34:45",
         "buildUser": "root@00c3106655f8",
         "goVersion": "go1.13.5",
         "revision": "f74be0400a6243d10bb53812d6fa408ad71ff32d",

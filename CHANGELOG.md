@@ -1,5 +1,12 @@
 # Changelog
 
+## [unreleased]
+
+### Added
+
+- Added support for alertmanager `v0.22.0`
+  [negative matchers](https://github.com/prometheus/alertmanager/pull/2434).
+
 ## v0.85
 
 ### Fixed

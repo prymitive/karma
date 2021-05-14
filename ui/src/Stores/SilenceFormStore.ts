@@ -15,12 +15,15 @@ import {
   APIAlertGroupT,
   APIAlertmanagerUpstreamT,
   AlertmanagerSilencePayloadT,
+  AlertmanagerSilenceMatcherT,
 } from "Models/APITypes";
 import { StringToOption, OptionT, MultiValueOptionT } from "Common/Select";
+import { QueryOperators } from "Common/Query";
 
 export interface MatcherT {
   name: string;
   values: OptionT[];
+  isEqual: boolean;
   isRegex: boolean;
 }
 
@@ -32,6 +35,7 @@ interface SimplifiedMatcherT {
   n: string;
   v: string[];
   r: boolean;
+  e: boolean;
 }
 
 interface SilenceFormDataFromBase64 {
@@ -47,7 +51,21 @@ const NewEmptyMatcher = (): MatcherWithIDT => {
     name: "",
     values: [],
     isRegex: false,
+    isEqual: true,
   };
+};
+
+const MatcherToOperator = (
+  matcher: MatcherT | MatcherWithIDT | AlertmanagerSilenceMatcherT
+): string => {
+  if (matcher.isRegex) {
+    return matcher.isEqual === false
+      ? QueryOperators.NegativeRegex
+      : QueryOperators.Regex;
+  }
+  return matcher.isEqual === false
+    ? QueryOperators.NotEqual
+    : QueryOperators.Equal;
 };
 
 const AlertmanagerClustersToOption = (clusterDict: {
@@ -125,6 +143,7 @@ const MatchersFromGroup = (
         .sort()
         .map((value) => StringToOption(value)),
       isRegex: values.size > 1,
+      isEqual: true,
     });
   }
 
@@ -170,6 +189,7 @@ const GenerateAlertmanagerSilenceData = (
           ? m.values[0].value
           : "",
       isRegex: m.isRegex,
+      isEqual: m.isEqual,
     })),
     startsAt: startsAt.toISOString(),
     endsAt: endsAt.toISOString(),
@@ -343,6 +363,7 @@ class SilenceFormStore {
             m: this.matchers.map((m: MatcherWithIDT) => ({
               n: m.name,
               r: m.isRegex,
+              e: m.isEqual,
               v: m.values.map((v) => v.value),
             })),
             d: differenceInMinutes(this.endsAt, this.startsAt),
@@ -365,6 +386,7 @@ class SilenceFormStore {
             const matcher = NewEmptyMatcher();
             matcher.name = m.n;
             matcher.isRegex = m.r;
+            matcher.isEqual = m.e;
             matcher.values = m.v.map((v) => StringToOption(v));
             matchers.push(matcher);
           });
@@ -490,6 +512,7 @@ class SilenceFormStore {
             matcher.name = m.name;
             matcher.values = UnpackRegexMatcherValues(m.isRegex, m.value);
             matcher.isRegex = m.isRegex;
+            matcher.isEqual = m.isEqual === false ? false : true;
             matchers.push(matcher);
           }
           this.matchers = matchers;
@@ -631,4 +654,5 @@ export {
   MatchersFromGroup,
   GenerateAlertmanagerSilenceData,
   NewClusterRequest,
+  MatcherToOperator,
 };

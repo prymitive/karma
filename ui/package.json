@@ -31,6 +31,7 @@
     "@types/react-dom": "17.0.5",
     "@types/react-js-pagination": "3.0.3",
     "@types/react-select": "4.0.15",
+    "@types/semver": "7.3.6",
     "@typescript-eslint/eslint-plugin": "4.23.0",
     "@typescript-eslint/parser": "4.23.0",
     "body-scroll-lock": "3.1.5",
@@ -75,6 +76,7 @@
     "react-select": "4.3.1",
     "react-transition-group": "4.4.1",
     "sass": "1.32.13",
+    "semver": "7.3.5",
     "typeface-open-sans": "1.1.13",
     "typescript": "4.2.4"
   },

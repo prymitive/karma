@@ -1,9 +1,13 @@
 [
     {
+        "id": "aad6bfd1-d1c9-42c9-be92-c68869442b77",
+        "status": {
+            "state": "active"
+        },
+        "updatedAt": "2021-05-15T08:56:50.837Z",
         "comment": "Silenced instance",
         "createdBy": "john@example.com",
         "endsAt": "2063-01-01T00:00:00.000Z",
-        "id": "999ec7b4-eb29-4040-8e94-90974d2618e9",
         "matchers": [
             {
                 "isRegex": false,
@@ -11,17 +15,17 @@
                 "value": "web1"
             }
         ],
-        "startsAt": "2019-09-03T15:59:32.635Z",
+        "startsAt": "2021-05-15T08:56:50.837Z"
+    },
+    {
+        "id": "09a43a9b-a2f7-45af-bd3f-6234eb930dd3",
         "status": {
             "state": "active"
         },
-        "updatedAt": "2019-09-03T15:59:32.635Z"
-    },
-    {
+        "updatedAt": "2021-05-15T08:56:50.841Z",
         "comment": "Silenced Host_Down alerts in the dev cluster",
         "createdBy": "john@example.com",
         "endsAt": "2063-01-01T00:00:00.000Z",
-        "id": "6e9f90a8-6979-4cd9-b8bd-ac4c54e109b1",
         "matchers": [
             {
                 "isRegex": false,
@@ -34,17 +38,17 @@
                 "value": "dev"
             }
         ],
-        "startsAt": "2019-09-03T15:59:32.639Z",
+        "startsAt": "2021-05-15T08:56:50.841Z"
+    },
+    {
+        "id": "eebaf39c-dd50-4efd-92d1-67fae9c93abb",
         "status": {
             "state": "active"
         },
-        "updatedAt": "2019-09-03T15:59:32.639Z"
-    },
-    {
+        "updatedAt": "2021-05-15T08:56:50.846Z",
         "comment": "Silenced server7",
         "createdBy": "john@example.com",
         "endsAt": "2063-01-01T00:00:00.000Z",
-        "id": "e73ea4cb-f4ee-4ac6-950c-3b742d558455",
         "matchers": [
             {
                 "isRegex": false,
@@ -52,10 +56,6 @@
                 "value": "server7"
             }
         ],
-        "startsAt": "2019-09-03T15:59:32.640Z",
-        "status": {
-            "state": "active"
-        },
-        "updatedAt": "2019-09-03T15:59:32.640Z"
+        "startsAt": "2021-05-15T08:56:50.846Z"
     }
 ]

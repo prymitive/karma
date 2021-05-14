@@ -8,8 +8,8 @@ alertmanager_alerts_invalid_total{version="v1"} 0
 alertmanager_alerts_invalid_total{version="v2"} 0
 # HELP alertmanager_alerts_received_total The total number of received alerts.
 # TYPE alertmanager_alerts_received_total counter
-alertmanager_alerts_received_total{status="firing",version="v1"} 60
-alertmanager_alerts_received_total{status="firing",version="v2"} 0
+alertmanager_alerts_received_total{status="firing",version="v1"} 0
+alertmanager_alerts_received_total{status="firing",version="v2"} 60
 alertmanager_alerts_received_total{status="resolved",version="v1"} 0
 alertmanager_alerts_received_total{status="resolved",version="v2"} 0
 # HELP alertmanager_build_info A metric with a constant '1' value labeled by version, revision, branch, and goversion from which alertmanager was built.
@@ -17,7 +17,7 @@ alertmanager_alerts_received_total{status="resolved",version="v2"} 0
 alertmanager_build_info{branch="HEAD",goversion="go1.13.5",revision="f74be0400a6243d10bb53812d6fa408ad71ff32d",version="0.20.0"} 1
 # HELP alertmanager_cluster_alive_messages_total Total number of received alive messages.
 # TYPE alertmanager_cluster_alive_messages_total counter
-alertmanager_cluster_alive_messages_total{peer="01E0V66J0DA7BAPZFEM9R3TDZ3"} 1
+alertmanager_cluster_alive_messages_total{peer="01F5QKXYTJDKZ58DG59JXRC36J"} 1
 # HELP alertmanager_cluster_enabled Indicates whether the clustering is enabled or not.
 # TYPE alertmanager_cluster_enabled gauge
 alertmanager_cluster_enabled 1
@@ -54,7 +54,7 @@ alertmanager_cluster_messages_sent_total{msg_type="full_state"} 0
 alertmanager_cluster_messages_sent_total{msg_type="update"} 0
 # HELP alertmanager_cluster_peer_info A metric with a constant '1' value labeled by peer name.
 # TYPE alertmanager_cluster_peer_info gauge
-alertmanager_cluster_peer_info{peer="01E0V66J0DA7BAPZFEM9R3TDZ3"} 1
+alertmanager_cluster_peer_info{peer="01F5QKXYTJDKZ58DG59JXRC36J"} 1
 # HELP alertmanager_cluster_peers_joined_total A counter of the number of peers that have joined.
 # TYPE alertmanager_cluster_peers_joined_total counter
 alertmanager_cluster_peers_joined_total 1
@@ -81,7 +81,7 @@ alertmanager_cluster_refresh_join_total 0
 alertmanager_config_hash 6.2645753076152e+13
 # HELP alertmanager_config_last_reload_success_timestamp_seconds Timestamp of the last successful configuration reload.
 # TYPE alertmanager_config_last_reload_success_timestamp_seconds gauge
-alertmanager_config_last_reload_success_timestamp_seconds 1.581460441e+09
+alertmanager_config_last_reload_success_timestamp_seconds 1.621069069e+09
 # HELP alertmanager_config_last_reload_successful Whether the last configuration reload attempt was successful.
 # TYPE alertmanager_config_last_reload_successful gauge
 alertmanager_config_last_reload_successful 1
@@ -90,64 +90,14 @@ alertmanager_config_last_reload_successful 1
 alertmanager_dispatcher_aggregation_groups 10
 # HELP alertmanager_dispatcher_alert_processing_duration_seconds Summary of latencies for the processing of alerts.
 # TYPE alertmanager_dispatcher_alert_processing_duration_seconds summary
-alertmanager_dispatcher_alert_processing_duration_seconds_sum 0.0034392
+alertmanager_dispatcher_alert_processing_duration_seconds_sum 0.0012417509999999995
 alertmanager_dispatcher_alert_processing_duration_seconds_count 60
 # HELP alertmanager_http_concurrency_limit_exceeded_total Total number of times an HTTP request failed because the concurrency limit was reached.
 # TYPE alertmanager_http_concurrency_limit_exceeded_total counter
 alertmanager_http_concurrency_limit_exceeded_total{method="get"} 0
-# HELP alertmanager_http_request_duration_seconds Histogram of latencies for HTTP requests.
-# TYPE alertmanager_http_request_duration_seconds histogram
-alertmanager_http_request_duration_seconds_bucket{handler="/alerts",method="post",le="0.05"} 5
-alertmanager_http_request_duration_seconds_bucket{handler="/alerts",method="post",le="0.1"} 5
-alertmanager_http_request_duration_seconds_bucket{handler="/alerts",method="post",le="0.25"} 5
-alertmanager_http_request_duration_seconds_bucket{handler="/alerts",method="post",le="0.5"} 5
-alertmanager_http_request_duration_seconds_bucket{handler="/alerts",method="post",le="0.75"} 5
-alertmanager_http_request_duration_seconds_bucket{handler="/alerts",method="post",le="1"} 5
-alertmanager_http_request_duration_seconds_bucket{handler="/alerts",method="post",le="2"} 5
-alertmanager_http_request_duration_seconds_bucket{handler="/alerts",method="post",le="5"} 5
-alertmanager_http_request_duration_seconds_bucket{handler="/alerts",method="post",le="20"} 5
-alertmanager_http_request_duration_seconds_bucket{handler="/alerts",method="post",le="60"} 5
-alertmanager_http_request_duration_seconds_bucket{handler="/alerts",method="post",le="+Inf"} 5
-alertmanager_http_request_duration_seconds_sum{handler="/alerts",method="post"} 0.0049385
-alertmanager_http_request_duration_seconds_count{handler="/alerts",method="post"} 5
-alertmanager_http_request_duration_seconds_bucket{handler="/silences",method="post",le="0.05"} 3
-alertmanager_http_request_duration_seconds_bucket{handler="/silences",method="post",le="0.1"} 3
-alertmanager_http_request_duration_seconds_bucket{handler="/silences",method="post",le="0.25"} 3
-alertmanager_http_request_duration_seconds_bucket{handler="/silences",method="post",le="0.5"} 3
-alertmanager_http_request_duration_seconds_bucket{handler="/silences",method="post",le="0.75"} 3
-alertmanager_http_request_duration_seconds_bucket{handler="/silences",method="post",le="1"} 3
-alertmanager_http_request_duration_seconds_bucket{handler="/silences",method="post",le="2"} 3
-alertmanager_http_request_duration_seconds_bucket{handler="/silences",method="post",le="5"} 3
-alertmanager_http_request_duration_seconds_bucket{handler="/silences",method="post",le="20"} 3
-alertmanager_http_request_duration_seconds_bucket{handler="/silences",method="post",le="60"} 3
-alertmanager_http_request_duration_seconds_bucket{handler="/silences",method="post",le="+Inf"} 3
-alertmanager_http_request_duration_seconds_sum{handler="/silences",method="post"} 0.0010955000000000001
-alertmanager_http_request_duration_seconds_count{handler="/silences",method="post"} 3
 # HELP alertmanager_http_requests_in_flight Current number of HTTP requests being processed.
 # TYPE alertmanager_http_requests_in_flight gauge
 alertmanager_http_requests_in_flight{method="get"} 1
-# HELP alertmanager_http_response_size_bytes Histogram of response size for HTTP requests.
-# TYPE alertmanager_http_response_size_bytes histogram
-alertmanager_http_response_size_bytes_bucket{handler="/alerts",method="post",le="100"} 5
-alertmanager_http_response_size_bytes_bucket{handler="/alerts",method="post",le="1000"} 5
-alertmanager_http_response_size_bytes_bucket{handler="/alerts",method="post",le="10000"} 5
-alertmanager_http_response_size_bytes_bucket{handler="/alerts",method="post",le="100000"} 5
-alertmanager_http_response_size_bytes_bucket{handler="/alerts",method="post",le="1e+06"} 5
-alertmanager_http_response_size_bytes_bucket{handler="/alerts",method="post",le="1e+07"} 5
-alertmanager_http_response_size_bytes_bucket{handler="/alerts",method="post",le="1e+08"} 5
-alertmanager_http_response_size_bytes_bucket{handler="/alerts",method="post",le="+Inf"} 5
-alertmanager_http_response_size_bytes_sum{handler="/alerts",method="post"} 100
-alertmanager_http_response_size_bytes_count{handler="/alerts",method="post"} 5
-alertmanager_http_response_size_bytes_bucket{handler="/silences",method="post",le="100"} 3
-alertmanager_http_response_size_bytes_bucket{handler="/silences",method="post",le="1000"} 3
-alertmanager_http_response_size_bytes_bucket{handler="/silences",method="post",le="10000"} 3
-alertmanager_http_response_size_bytes_bucket{handler="/silences",method="post",le="100000"} 3
-alertmanager_http_response_size_bytes_bucket{handler="/silences",method="post",le="1e+06"} 3
-alertmanager_http_response_size_bytes_bucket{handler="/silences",method="post",le="1e+07"} 3
-alertmanager_http_response_size_bytes_bucket{handler="/silences",method="post",le="1e+08"} 3
-alertmanager_http_response_size_bytes_bucket{handler="/silences",method="post",le="+Inf"} 3
-alertmanager_http_response_size_bytes_sum{handler="/silences",method="post"} 240
-alertmanager_http_response_size_bytes_count{handler="/silences",method="post"} 3
 # HELP alertmanager_integrations Number of configured integrations.
 # TYPE alertmanager_integrations gauge
 alertmanager_integrations 0
@@ -345,23 +295,23 @@ alertmanager_silences_gc_duration_seconds_count 0
 alertmanager_silences_gossip_messages_propagated_total 0
 # HELP alertmanager_silences_queries_total How many silence queries were received.
 # TYPE alertmanager_silences_queries_total counter
-alertmanager_silences_queries_total 27
+alertmanager_silences_queries_total 25
 # HELP alertmanager_silences_query_duration_seconds Duration of silence query evaluation.
 # TYPE alertmanager_silences_query_duration_seconds histogram
-alertmanager_silences_query_duration_seconds_bucket{le="0.005"} 27
-alertmanager_silences_query_duration_seconds_bucket{le="0.01"} 27
-alertmanager_silences_query_duration_seconds_bucket{le="0.025"} 27
-alertmanager_silences_query_duration_seconds_bucket{le="0.05"} 27
-alertmanager_silences_query_duration_seconds_bucket{le="0.1"} 27
-alertmanager_silences_query_duration_seconds_bucket{le="0.25"} 27
-alertmanager_silences_query_duration_seconds_bucket{le="0.5"} 27
-alertmanager_silences_query_duration_seconds_bucket{le="1"} 27
-alertmanager_silences_query_duration_seconds_bucket{le="2.5"} 27
-alertmanager_silences_query_duration_seconds_bucket{le="5"} 27
-alertmanager_silences_query_duration_seconds_bucket{le="10"} 27
-alertmanager_silences_query_duration_seconds_bucket{le="+Inf"} 27
-alertmanager_silences_query_duration_seconds_sum 0.0015354
-alertmanager_silences_query_duration_seconds_count 27
+alertmanager_silences_query_duration_seconds_bucket{le="0.005"} 25
+alertmanager_silences_query_duration_seconds_bucket{le="0.01"} 25
+alertmanager_silences_query_duration_seconds_bucket{le="0.025"} 25
+alertmanager_silences_query_duration_seconds_bucket{le="0.05"} 25
+alertmanager_silences_query_duration_seconds_bucket{le="0.1"} 25
+alertmanager_silences_query_duration_seconds_bucket{le="0.25"} 25
+alertmanager_silences_query_duration_seconds_bucket{le="0.5"} 25
+alertmanager_silences_query_duration_seconds_bucket{le="1"} 25
+alertmanager_silences_query_duration_seconds_bucket{le="2.5"} 25
+alertmanager_silences_query_duration_seconds_bucket{le="5"} 25
+alertmanager_silences_query_duration_seconds_bucket{le="10"} 25
+alertmanager_silences_query_duration_seconds_bucket{le="+Inf"} 25
+alertmanager_silences_query_duration_seconds_sum 9.833599999999999e-05
+alertmanager_silences_query_duration_seconds_count 25
 # HELP alertmanager_silences_query_errors_total How many silence received queries did not succeed.
 # TYPE alertmanager_silences_query_errors_total counter
 alertmanager_silences_query_errors_total 0
@@ -374,13 +324,13 @@ alertmanager_silences_snapshot_duration_seconds_count 0
 alertmanager_silences_snapshot_size_bytes 0
 # HELP go_gc_duration_seconds A summary of the GC invocation durations.
 # TYPE go_gc_duration_seconds summary
-go_gc_duration_seconds{quantile="0"} 7.35e-05
-go_gc_duration_seconds{quantile="0.25"} 7.74e-05
-go_gc_duration_seconds{quantile="0.5"} 0.0001801
-go_gc_duration_seconds{quantile="0.75"} 0.0002177
-go_gc_duration_seconds{quantile="1"} 0.0012688
-go_gc_duration_seconds_sum 0.0019564
-go_gc_duration_seconds_count 6
+go_gc_duration_seconds{quantile="0"} 4.625e-06
+go_gc_duration_seconds{quantile="0.25"} 5.251e-06
+go_gc_duration_seconds{quantile="0.5"} 3.4459e-05
+go_gc_duration_seconds{quantile="0.75"} 0.000142584
+go_gc_duration_seconds{quantile="1"} 0.000205209
+go_gc_duration_seconds_sum 0.00046442
+go_gc_duration_seconds_count 7
 # HELP go_goroutines Number of goroutines that currently exist.
 # TYPE go_goroutines gauge
 go_goroutines 41
@@ -389,82 +339,82 @@ go_goroutines 41
 go_info{version="go1.13.5"} 1
 # HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
 # TYPE go_memstats_alloc_bytes gauge
-go_memstats_alloc_bytes 5.941048e+06
+go_memstats_alloc_bytes 5.212736e+06
 # HELP go_memstats_alloc_bytes_total Total number of bytes allocated, even if freed.
 # TYPE go_memstats_alloc_bytes_total counter
-go_memstats_alloc_bytes_total 1.6814272e+07
+go_memstats_alloc_bytes_total 1.7147056e+07
 # HELP go_memstats_buck_hash_sys_bytes Number of bytes used by the profiling bucket hash table.
 # TYPE go_memstats_buck_hash_sys_bytes gauge
-go_memstats_buck_hash_sys_bytes 1.448498e+06
+go_memstats_buck_hash_sys_bytes 1.449323e+06
 # HELP go_memstats_frees_total Total number of frees.
 # TYPE go_memstats_frees_total counter
-go_memstats_frees_total 113397
+go_memstats_frees_total 125253
 # HELP go_memstats_gc_cpu_fraction The fraction of this program's available CPU time used by the GC since the program started.
 # TYPE go_memstats_gc_cpu_fraction gauge
-go_memstats_gc_cpu_fraction 0.026924642551794952
+go_memstats_gc_cpu_fraction 0.022505239114461874
 # HELP go_memstats_gc_sys_bytes Number of bytes used for garbage collection system metadata.
 # TYPE go_memstats_gc_sys_bytes gauge
 go_memstats_gc_sys_bytes 2.38592e+06
 # HELP go_memstats_heap_alloc_bytes Number of heap bytes allocated and still in use.
 # TYPE go_memstats_heap_alloc_bytes gauge
-go_memstats_heap_alloc_bytes 5.941048e+06
+go_memstats_heap_alloc_bytes 5.212736e+06
 # HELP go_memstats_heap_idle_bytes Number of heap bytes waiting to be used.
 # TYPE go_memstats_heap_idle_bytes gauge
-go_memstats_heap_idle_bytes 5.8384384e+07
+go_memstats_heap_idle_bytes 5.8712064e+07
 # HELP go_memstats_heap_inuse_bytes Number of heap bytes that are in use.
 # TYPE go_memstats_heap_inuse_bytes gauge
-go_memstats_heap_inuse_bytes 7.90528e+06
+go_memstats_heap_inuse_bytes 7.479296e+06
 # HELP go_memstats_heap_objects Number of allocated objects.
 # TYPE go_memstats_heap_objects gauge
-go_memstats_heap_objects 42550
+go_memstats_heap_objects 32234
 # HELP go_memstats_heap_released_bytes Number of heap bytes released to OS.
 # TYPE go_memstats_heap_released_bytes gauge
-go_memstats_heap_released_bytes 5.799936e+07
+go_memstats_heap_released_bytes 5.8318848e+07
 # HELP go_memstats_heap_sys_bytes Number of heap bytes obtained from system.
 # TYPE go_memstats_heap_sys_bytes gauge
-go_memstats_heap_sys_bytes 6.6289664e+07
+go_memstats_heap_sys_bytes 6.619136e+07
 # HELP go_memstats_last_gc_time_seconds Number of seconds since 1970 of last garbage collection.
 # TYPE go_memstats_last_gc_time_seconds gauge
-go_memstats_last_gc_time_seconds 1.5814604411382413e+09
+go_memstats_last_gc_time_seconds 1.6210690691570094e+09
 # HELP go_memstats_lookups_total Total number of pointer lookups.
 # TYPE go_memstats_lookups_total counter
 go_memstats_lookups_total 0
 # HELP go_memstats_mallocs_total Total number of mallocs.
 # TYPE go_memstats_mallocs_total counter
-go_memstats_mallocs_total 155947
+go_memstats_mallocs_total 157487
 # HELP go_memstats_mcache_inuse_bytes Number of bytes in use by mcache structures.
 # TYPE go_memstats_mcache_inuse_bytes gauge
-go_memstats_mcache_inuse_bytes 3472
+go_memstats_mcache_inuse_bytes 6944
 # HELP go_memstats_mcache_sys_bytes Number of bytes used for mcache structures obtained from system.
 # TYPE go_memstats_mcache_sys_bytes gauge
 go_memstats_mcache_sys_bytes 16384
 # HELP go_memstats_mspan_inuse_bytes Number of bytes in use by mspan structures.
 # TYPE go_memstats_mspan_inuse_bytes gauge
-go_memstats_mspan_inuse_bytes 101592
+go_memstats_mspan_inuse_bytes 96560
 # HELP go_memstats_mspan_sys_bytes Number of bytes used for mspan structures obtained from system.
 # TYPE go_memstats_mspan_sys_bytes gauge
-go_memstats_mspan_sys_bytes 114688
+go_memstats_mspan_sys_bytes 98304
 # HELP go_memstats_next_gc_bytes Number of heap bytes when next garbage collection will take place.
 # TYPE go_memstats_next_gc_bytes gauge
-go_memstats_next_gc_bytes 9.47992e+06
+go_memstats_next_gc_bytes 8.694368e+06
 # HELP go_memstats_other_sys_bytes Number of bytes used for other system allocations.
 # TYPE go_memstats_other_sys_bytes gauge
-go_memstats_other_sys_bytes 687814
+go_memstats_other_sys_bytes 1.227661e+06
 # HELP go_memstats_stack_inuse_bytes Number of bytes in use by the stack allocator.
 # TYPE go_memstats_stack_inuse_bytes gauge
-go_memstats_stack_inuse_bytes 819200
+go_memstats_stack_inuse_bytes 917504
 # HELP go_memstats_stack_sys_bytes Number of bytes obtained from system for stack allocator.
 # TYPE go_memstats_stack_sys_bytes gauge
-go_memstats_stack_sys_bytes 819200
+go_memstats_stack_sys_bytes 917504
 # HELP go_memstats_sys_bytes Number of bytes obtained from system.
 # TYPE go_memstats_sys_bytes gauge
-go_memstats_sys_bytes 7.1762168e+07
+go_memstats_sys_bytes 7.2286456e+07
 # HELP go_threads Number of OS threads created.
 # TYPE go_threads gauge
-go_threads 9
+go_threads 13
 # HELP process_cpu_seconds_total Total user and system CPU time spent in seconds.
 # TYPE process_cpu_seconds_total counter
-process_cpu_seconds_total 0.43
+process_cpu_seconds_total 0.5
 # HELP process_max_fds Maximum number of open file descriptors.
 # TYPE process_max_fds gauge
 process_max_fds 1.048576e+06
@@ -473,13 +423,13 @@ process_max_fds 1.048576e+06
 process_open_fds 9
 # HELP process_resident_memory_bytes Resident memory size in bytes.
 # TYPE process_resident_memory_bytes gauge
-process_resident_memory_bytes 2.3588864e+07
+process_resident_memory_bytes 2.3314432e+07
 # HELP process_start_time_seconds Start time of the process since unix epoch in seconds.
 # TYPE process_start_time_seconds gauge
-process_start_time_seconds 1.58146044013e+09
+process_start_time_seconds 1.62106906864e+09
 # HELP process_virtual_memory_bytes Virtual memory size in bytes.
 # TYPE process_virtual_memory_bytes gauge
-process_virtual_memory_bytes 1.25657088e+08
+process_virtual_memory_bytes 1.25026304e+08
 # HELP process_virtual_memory_max_bytes Maximum amount of virtual memory available in bytes.
 # TYPE process_virtual_memory_max_bytes gauge
 process_virtual_memory_max_bytes -1
