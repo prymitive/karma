@@ -12,7 +12,7 @@
 }
 
 .modal-content-blur {
-  filter: saturate(50%) blur(6px);
+  filter: saturate(50%) blur(12px);
 }
 
 @include media-breakpoint-up(lg) {

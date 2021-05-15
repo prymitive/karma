@@ -38,10 +38,10 @@ input.components-filterinput-wrapper {
 }
 
 .bg-focused {
-  @supports (backdrop-filter: blur(1px)) {
+  @supports (backdrop-filter: blur(12px)) {
     background-color: rgba($bg-focused, 0.5);
   }
-  @supports not (backdrop-filter: blur(1px)) {
+  @supports not (backdrop-filter: blur(12px)) {
     background-color: $bg-focused;
   }
 }
