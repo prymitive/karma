@@ -42,12 +42,12 @@ $easing-exit: ease-in;
 .components-animation-backdrop-enter-active {
   background-color: rgba(30, 30, 30, 0.8);
   transition: opacity $duration-bg $easing-exit;
-  backdrop-filter: saturate(50%) blur(6px);
+  backdrop-filter: saturate(50%) blur(12px);
 }
 .components-animation-backdrop-enter-done {
   background-color: rgba(30, 30, 30, 0.8);
   transition: opacity $duration-bg $easing-exit;
-  backdrop-filter: saturate(50%) blur(6px);
+  backdrop-filter: saturate(50%) blur(12px);
 }
 .components-animation-backdrop-exit {
   background-color: rgba(30, 30, 30, 0.8);
