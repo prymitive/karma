@@ -6,7 +6,12 @@ ignores:
   - sass
   - typeface-open-sans
   - babel-loader
+  - prettier
+  - "@popperjs/core"
+  - react-scripts
+  - typescript
   # devDeps
   - "@types/jest"
   - "@types/node"
+  - "@percy/storybook"
   - "@storybook/preset-create-react-app"
