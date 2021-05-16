@@ -91,7 +91,6 @@
     "jest-canvas-mock": "2.3.1",
     "jest-date-mock": "1.0.8",
     "puppeteer": "9.1.1",
-    "react-test-renderer": "17.0.2",
     "regenerator-runtime": "0.13.7"
   },
   "scripts": {
