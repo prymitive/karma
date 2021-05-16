@@ -92,8 +92,7 @@
     "jest-date-mock": "1.0.8",
     "puppeteer": "9.1.1",
     "react-test-renderer": "17.0.2",
-    "regenerator-runtime": "0.13.7",
-    "source-map-explorer": "2.5.2"
+    "regenerator-runtime": "0.13.7"
   },
   "scripts": {
     "start": "NODE_ENV=dev REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
@@ -101,7 +100,7 @@
     "test": "react-scripts test",
     "storybook": "start-storybook",
     "snapshot": "build-storybook --quiet -s public && percy-storybook --widths=700,1280 --minimum_height=200",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
+    "analyze": "npx source-map-explorer 'build/static/js/*.js'"
   },
   "jest": {
     "collectCoverageFrom": [
