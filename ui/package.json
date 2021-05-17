@@ -32,7 +32,7 @@
     "@types/react-js-pagination": "3.0.3",
     "@types/react-select": "4.0.15",
     "@types/semver": "7.3.6",
-    "@typescript-eslint/eslint-plugin": "4.23.0",
+    "@typescript-eslint/eslint-plugin": "4.24.0",
     "@typescript-eslint/parser": "4.24.0",
     "body-scroll-lock": "3.1.5",
     "bootstrap": "4.6.0",
