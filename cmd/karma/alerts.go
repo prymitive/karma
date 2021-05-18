@@ -325,7 +325,8 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 	var lastLabel string
 	var lastCnt int
 	for key, uniqueValues := range candidates {
-		if uniqueValues == 1 || uniqueValues == alertsCount || uniqueValues == alertGroupsCount {
+		if uniqueValues == 1 || uniqueValues == alertsCount {
+			log.Debug().Int("variants", uniqueValues).Int("alerts", alertsCount).Int("groups", alertGroupsCount).Str("label", key).Msg("Excluding label from automatic grid selection")
 			continue
 		}
 		log.Debug().Int("variants", uniqueValues).Str("label", key).Msg("Automatic grid label candidate")
