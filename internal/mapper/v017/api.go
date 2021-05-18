@@ -155,11 +155,19 @@ func unmarshal(body []byte) (*models.Silence, error) {
 		CreatedBy: *s.CreatedBy,
 		Comment:   *s.Comment,
 	}
+
+	var isEqual bool
 	for _, m := range s.Matchers {
+		if m.IsEqual != nil {
+			isEqual = *m.IsEqual
+		} else {
+			isEqual = true
+		}
 		sm := models.SilenceMatcher{
 			Name:    *m.Name,
 			Value:   *m.Value,
 			IsRegex: *m.IsRegex,
+			IsEqual: isEqual,
 		}
 		us.Matchers = append(us.Matchers, sm)
 	}

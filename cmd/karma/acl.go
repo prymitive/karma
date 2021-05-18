@@ -26,7 +26,8 @@ type silenceFilter struct {
 	NameRegex  *regexp.Regexp
 	Value      string
 	ValueRegex *regexp.Regexp
-	IsRegex    bool
+	IsRegex    *bool
+	IsEqual    *bool
 }
 
 func (sf *silenceFilter) isMatch(silence *models.Silence) bool {
@@ -45,7 +46,17 @@ func (sf *silenceFilter) isMatch(silence *models.Silence) bool {
 			valueMatch = true
 		}
 
-		if nameMatch && valueMatch && sf.IsRegex == m.IsRegex {
+		isRegexMatch := true
+		if sf.IsRegex != nil && *sf.IsRegex != m.IsRegex {
+			isRegexMatch = false
+		}
+
+		isEqualMatch := true
+		if sf.IsEqual != nil && *sf.IsEqual != m.IsEqual {
+			isEqualMatch = false
+		}
+
+		if nameMatch && valueMatch && isRegexMatch && isEqualMatch {
 			return true
 		}
 	}
@@ -58,7 +69,8 @@ type silenceMatcher struct {
 	NameRegex  *regexp.Regexp
 	Value      string
 	ValueRegex *regexp.Regexp
-	IsRegex    bool
+	IsRegex    *bool
+	IsEqual    *bool
 }
 
 func (sm *silenceMatcher) isMatch(m models.SilenceMatcher) bool {
@@ -74,7 +86,10 @@ func (sm *silenceMatcher) isMatch(m models.SilenceMatcher) bool {
 	if sm.Value != "" && sm.Value != m.Value {
 		return false
 	}
-	if sm.IsRegex != m.IsRegex {
+	if sm.IsRegex != nil && *sm.IsRegex != m.IsRegex {
+		return false
+	}
+	if sm.IsEqual != nil && *sm.IsEqual != m.IsEqual {
 		return false
 	}
 	return true
@@ -116,9 +131,11 @@ func (acl *silenceACL) isAllowed(amName string, silence *models.Silence, usernam
 		}
 	}
 
-	filterMatch := len(acl.Scope.Filters) == 0
+	filterMatch := true
 	for _, aclFilter := range acl.Scope.Filters {
-		filterMatch = aclFilter.isMatch(silence)
+		if m := aclFilter.isMatch(silence); !m {
+			filterMatch = m
+		}
 	}
 
 	if groupMatch && amMatch && filterMatch {
@@ -207,6 +224,7 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 			Name:    filter.Name,
 			Value:   filter.Value,
 			IsRegex: filter.IsRegex,
+			IsEqual: filter.IsEqual,
 		}
 
 		if filter.NameRegex != "" {
@@ -248,6 +266,7 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 				Name:    matcherConfig.Name,
 				Value:   matcherConfig.Value,
 				IsRegex: matcherConfig.IsRegex,
+				IsEqual: matcherConfig.IsEqual,
 			}
 
 			if matcherConfig.NameRegex != "" {

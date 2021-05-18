@@ -7,6 +7,16 @@ import (
 	"github.com/prymitive/karma/internal/models"
 )
 
+func truePtr() *bool {
+	b := true
+	return &b
+}
+
+func falsePtr() *bool {
+	b := false
+	return &b
+}
+
 func TestAclSilenceMatcher(t *testing.T) {
 	type testCaseT struct {
 		requiredMatcher silenceMatcher
@@ -52,7 +62,7 @@ func TestAclSilenceMatcher(t *testing.T) {
 			requiredMatcher: silenceMatcher{
 				Name:    "foo",
 				Value:   "bar",
-				IsRegex: true,
+				IsRegex: truePtr(),
 			},
 			silenceMatcher: models.SilenceMatcher{
 				Name:  "foo",
@@ -64,7 +74,7 @@ func TestAclSilenceMatcher(t *testing.T) {
 			requiredMatcher: silenceMatcher{
 				Name:    "foo",
 				Value:   "bar",
-				IsRegex: false,
+				IsRegex: falsePtr(),
 			},
 			silenceMatcher: models.SilenceMatcher{
 				Name:    "foo",
@@ -72,6 +82,45 @@ func TestAclSilenceMatcher(t *testing.T) {
 				IsRegex: true,
 			},
 			isMatch: false,
+		},
+		{
+			requiredMatcher: silenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsRegex: falsePtr(),
+			},
+			silenceMatcher: models.SilenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsRegex: false,
+			},
+			isMatch: true,
+		},
+		{
+			requiredMatcher: silenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsRegex: truePtr(),
+			},
+			silenceMatcher: models.SilenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsRegex: false,
+			},
+			isMatch: false,
+		},
+		{
+			requiredMatcher: silenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsRegex: truePtr(),
+			},
+			silenceMatcher: models.SilenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsRegex: true,
+			},
+			isMatch: true,
 		},
 		{
 			requiredMatcher: silenceMatcher{
@@ -121,12 +170,68 @@ func TestAclSilenceMatcher(t *testing.T) {
 			requiredMatcher: silenceMatcher{
 				NameRegex:  regexp.MustCompile("^.+$"),
 				ValueRegex: regexp.MustCompile("^.+$"),
-				IsRegex:    true,
+				IsRegex:    truePtr(),
 			},
 			silenceMatcher: models.SilenceMatcher{
 				Name:    "foo",
 				Value:   "bar",
 				IsRegex: false,
+			},
+			isMatch: false,
+		},
+		{
+			requiredMatcher: silenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsRegex: truePtr(),
+				IsEqual: falsePtr(),
+			},
+			silenceMatcher: models.SilenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsRegex: true,
+				IsEqual: false,
+			},
+			isMatch: true,
+		},
+		{
+			requiredMatcher: silenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsRegex: truePtr(),
+				IsEqual: truePtr(),
+			},
+			silenceMatcher: models.SilenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsRegex: true,
+				IsEqual: true,
+			},
+			isMatch: true,
+		},
+		{
+			requiredMatcher: silenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsEqual: falsePtr(),
+			},
+			silenceMatcher: models.SilenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsEqual: true,
+			},
+			isMatch: false,
+		},
+		{
+			requiredMatcher: silenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsEqual: truePtr(),
+			},
+			silenceMatcher: models.SilenceMatcher{
+				Name:    "foo",
+				Value:   "bar",
+				IsEqual: false,
 			},
 			isMatch: false,
 		},
