@@ -31,7 +31,7 @@ const FilterInputLabel: FC<{
     alertStore,
     filter.matcher === QueryOperators.Equal ? filter.name : "",
     filter.matcher === QueryOperators.Equal ? filter.value : "",
-    "components-filteredinputlabel btn-sm",
+    "components-filteredinputlabel btn-sm text-white",
     "btn"
   );
 
