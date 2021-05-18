@@ -60,6 +60,25 @@ storiesOf("NavBar", module).add("NavBar", () => {
     NewFilter("instance!=server1", "instance", "!=", "server1", false, true, 0),
     NewFilter("server!!!=", "", "", "", true, false, 0),
     NewFilter("foo", "", "", "", true, true, 2),
+    NewFilter(
+      "@state=unprocessed",
+      "@state",
+      "=",
+      "unprocessed",
+      true,
+      true,
+      1
+    ),
+    NewFilter("@state=active", "@state", "=", "active", true, true, 0),
+    NewFilter(
+      "@state=suppressed",
+      "@state",
+      "=",
+      "suppressed",
+      true,
+      true,
+      101
+    ),
   ]);
 
   settingsStore.filterBarConfig.setAutohide(false);
@@ -105,7 +124,25 @@ storiesOf("NavBar", module).add("NavBar", () => {
         true,
         15
       ),
+      NewFilter(
+        "@state=unprocessed",
+        "@state",
+        "=",
+        "unprocessed",
+        true,
+        true,
+        1
+      ),
       NewFilter("@state=active", "@state", "=", "active", true, true, 1),
+      NewFilter(
+        "@state=suppressed",
+        "@state",
+        "=",
+        "suppressed",
+        true,
+        true,
+        1
+      ),
     ],
     [NewFilter("cluster=staging", "cluster", "=", "staging", true, true, 15)],
   ];
