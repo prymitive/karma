@@ -10,6 +10,10 @@
 - Silence ACL rules no longer default `isRegex` to be `false` for filters
   and matchers, see [ACL rules](/docs/ACLs.md) for updated docs.
 
+### Changed
+
+- Updated [bootstrap](https://getbootstrap.com/) to v5
+
 ## v0.85
 
 ### Fixed
