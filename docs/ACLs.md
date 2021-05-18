@@ -16,17 +16,20 @@ Example Alertmanager silence:
     {
       "name": "alertname",
       "value": "Test Alert",
-      "isRegex": false
+      "isRegex": false,
+      "isEqual": true
     },
     {
       "name": "cluster",
       "value": "prod",
-      "isRegex": false
+      "isRegex": false,
+      "isEqual": true
     },
     {
       "name": "instance",
       "value": "server1",
-      "isRegex": false
+      "isRegex": false,
+      "isEqual": true
     }
   ],
   "startsAt": "2020-03-09T20:11:00.000Z",
@@ -79,12 +82,14 @@ Silence example using regex:
     {
       "name": "alertname",
       "value": "Test Alert",
-      "isRegex": false
+      "isRegex": false,
+      "isEqual": true
     },
     {
       "name": "cluster",
       "value": "staging|prod",
-      "isRegex": true
+      "isRegex": true,
+      "isEqual": true
     }
   ],
   "startsAt": "2020-03-09T20:11:00.000Z",
@@ -110,12 +115,14 @@ so a silence like the one below should be blocked:
     {
       "name": "alertname",
       "value": "Test Alert",
-      "isRegex": false
+      "isRegex": false,
+      "isEqual": true
     },
     {
       "name": "cluster",
       "value": "prod",
-      "isRegex": false
+      "isRegex": false,
+      "isEqual": true
     }
   ],
   "startsAt": "2020-03-09T20:11:00.000Z",
@@ -131,7 +138,8 @@ But if we would create an ACL rule that simply blocks silences with matcher:
 {
   "name": "cluster",
   "value": "prod",
-  "isRegex": false
+  "isRegex": false,
+  "isEqual": true
 }
 ```
 
@@ -141,7 +149,8 @@ then any user could bypass that with a regex matcher like:
 {
   "name": "cluster",
   "value": "pro[d]",
-  "isRegex": true
+  "isRegex": true,
+  "isEqual": true
 }
 ```
 
@@ -188,6 +197,7 @@ matchers:
 - `scope:filters` - list of matcher filters evaluated when checking if this ACL
   should be applied to given silence. Those filters can be used to enforce
   ACL rules only to some silences and are compared against silence matchers.
+  All filters must be matching for given silence for ACL rule to be applied.
   Syntax:
 
   ```YAML
@@ -196,13 +206,23 @@ matchers:
   value: string
   value_re: regex
   isRegex: bool
+  isEqual: bool
   ```
 
-  Every rule must have `name` or `name_re` AND `value` or `value_re`, default
-  value for `isRegex` is `false`.
-  Filter works by comparing `name` and `name_re` with silence matcher `name`,
-  `value` and `value_re` with silence matcher `value` and `isRegex` on the
-  filter with `isRegex` on silence matcher. See examples below.
+  Every rule must have `name` or `name_re` AND `value` or `value_re`.
+
+  Filter works by comparing:
+
+  - `name` and `name_re` with silence matcher `name`.
+  - `value` and `value_re` with silence matcher `value`.
+  - `isRegex` on the filter with `isRegex` on silence matcher, if `isRegex` is
+    not set on a filter then that filter will match silences with both `true`
+    and `false` value on silence `isRegex`.
+  - `isEqual` on the filter with `isEqual` on silence matcher, if `isEqual` is
+    not set on a filter then that filter will match silences with both `true`
+    and `false` value on a silence `isEqual`.
+
+  See examples below.
   All regexes will be automatically anchored.
 
 - `matchers:required` - list of additional matchers that must be part of the
@@ -217,6 +237,7 @@ matchers:
   value: string
   value_re: regex
   isRegex: bool
+  isEqual: bool
   ```
 
   Fields:
@@ -224,20 +245,38 @@ matchers:
   - `name` - name to match, silence will be required to have a matcher with this
     exact name.
   - `name_re` - name regex to match against, silence will be required to have a
-    matcher with `name` field that matches this regex
+    matcher with `name` field that matches this regex.
   - `value` - value to match, silence will be required to have a matcher with
-    this exact value
+    this exact value.
   - `value_re` - value regex to match against, silence will be required to have
-    a matcher with `value` field that matches this regex
+    a matcher with `value` field that matches this regex.
+  - `isRegex` - value of silence matcher `isRegex`, if not set on a required
+    matcher then any value of `isRegex` on a silence will be allowed.
+  - `isEqual` - value of silence matcher `isEqual`, if not set on a required
+    matcher then any value of `isEqual` on a silence will be allowed.
 
   A single entry cannot have both `name` & `name_re` or `value` & `value_re` set
   at the same time.
 
 ## Examples
 
+### Block all silences
+
+This rule will match all silence and block it.
+
+```YAML
+rules:
+  - action: block
+    reason: silences are blocked
+    scope:
+      filters:
+        - name_re: .+
+          value_re: .+
+```
+
 ### Block silences using regex matchers
 
-This rule will match all silences with any matcher using regexes
+This rule will match all silence with any matcher using regexes
 (`isRegex: true` on the matcher) and block it.
 
 ```YAML
@@ -251,7 +290,22 @@ rules:
           isRegex: true
 ```
 
-### Allow group to create any silence
+### Block negative matchers on silences
+
+This rule will match all silence with `isEqual: false` and block it.
+
+```YAML
+rules:
+  - action: block
+    reason: silences are blocked
+    scope:
+      filters:
+        - name_re: .+
+          value_re: .+
+          isEqual: false
+```
+
+### Allow admin group to create any silence
 
 ```YAML
 rules:
@@ -291,6 +345,7 @@ rules:
       filters:
         - name: cluster
           value: prod
+          isEqual: true
 ```
 
 ### Require postgresAdmins group to always specify db=postgres in silences
@@ -309,6 +364,7 @@ rules:
       required:
         - name: db
           value: postgres
+          isEqual: true
 ```
 
 ### Require devTeam group to specify instance=server1-3
@@ -327,6 +383,7 @@ rules:
       required:
         - name: instance
           value_re: server[1-3]
+          isEqual: true
 ```
 
 ### Require everyone to always specify `team` matcher in silences

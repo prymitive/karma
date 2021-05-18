@@ -590,7 +590,7 @@ func TestProxySilenceACL(t *testing.T) {
 "endsAt": "2000-02-01T00:02:03.000Z",
 "matchers": [
 { "isRegex": false, "name": "alertname", "value": "Fake Alert" },
-{ "isRegex": true, "name": "foo", "value": "(bar|baz)" }
+{ "isRegex": true, "isEqual": true, "name": "foo", "value": "(bar|baz)"  }
 ]}`
 
 	proxyTests := []proxyTest{
@@ -852,7 +852,7 @@ func TestProxySilenceACL(t *testing.T) {
 							{
 								Name:    "foo",
 								Value:   "(bar|baz)",
-								IsRegex: true,
+								IsRegex: truePtr(),
 							},
 						},
 					},
@@ -870,7 +870,11 @@ func TestProxySilenceACL(t *testing.T) {
 					Reason: "block all regex silences",
 					Scope: silenceACLScope{
 						Filters: []silenceFilter{
-							{NameRegex: regexp.MustCompile(".*"), ValueRegex: regexp.MustCompile(".*"), IsRegex: true},
+							{
+								NameRegex:  regexp.MustCompile(".*"),
+								ValueRegex: regexp.MustCompile(".*"),
+								IsRegex:    truePtr(),
+							},
 						},
 						Groups:        []string{},
 						Alertmanagers: []string{},
@@ -894,7 +898,11 @@ func TestProxySilenceACL(t *testing.T) {
 					Reason: "block all regex silences",
 					Scope: silenceACLScope{
 						Filters: []silenceFilter{
-							{NameRegex: regexp.MustCompile(".*"), ValueRegex: regexp.MustCompile(".*"), IsRegex: true},
+							{
+								NameRegex:  regexp.MustCompile(".*"),
+								ValueRegex: regexp.MustCompile(".*"),
+								IsRegex:    truePtr(),
+							},
 						},
 						Groups:        []string{"admins"},
 						Alertmanagers: []string{},
@@ -906,7 +914,11 @@ func TestProxySilenceACL(t *testing.T) {
 					Reason: "block all regex silences",
 					Scope: silenceACLScope{
 						Filters: []silenceFilter{
-							{NameRegex: regexp.MustCompile(".*"), ValueRegex: regexp.MustCompile(".*"), IsRegex: true},
+							{
+								NameRegex:  regexp.MustCompile(".*"),
+								ValueRegex: regexp.MustCompile(".*"),
+								IsRegex:    truePtr(),
+							},
 						},
 						Groups:        []string{},
 						Alertmanagers: []string{},
@@ -954,7 +966,11 @@ func TestProxySilenceACL(t *testing.T) {
 					Reason: "block all regex silences",
 					Scope: silenceACLScope{
 						Filters: []silenceFilter{
-							{NameRegex: regexp.MustCompile(".*"), ValueRegex: regexp.MustCompile(".*"), IsRegex: true},
+							{
+								NameRegex:  regexp.MustCompile(".*"),
+								ValueRegex: regexp.MustCompile(".*"),
+								IsRegex:    truePtr(),
+							},
 						},
 						Groups:        []string{"admins"},
 						Alertmanagers: []string{},
@@ -966,7 +982,11 @@ func TestProxySilenceACL(t *testing.T) {
 					Reason: "block all regex silences",
 					Scope: silenceACLScope{
 						Filters: []silenceFilter{
-							{NameRegex: regexp.MustCompile(".*"), ValueRegex: regexp.MustCompile(".*"), IsRegex: true},
+							{
+								NameRegex:  regexp.MustCompile(".*"),
+								ValueRegex: regexp.MustCompile(".*"),
+								IsRegex:    truePtr(),
+							},
 						},
 						Groups:        []string{},
 						Alertmanagers: []string{},
@@ -1085,7 +1105,7 @@ func TestProxySilenceACL(t *testing.T) {
 							{
 								Name:       "foo",
 								ValueRegex: regexp.MustCompile("^.+$"),
-								IsRegex:    true,
+								IsRegex:    truePtr(),
 							},
 						},
 					},
@@ -1115,7 +1135,7 @@ func TestProxySilenceACL(t *testing.T) {
 							{
 								Name:       "alertname",
 								ValueRegex: regexp.MustCompile("^Fake Alert$"),
-								IsRegex:    true,
+								IsRegex:    truePtr(),
 							},
 						},
 					},
@@ -1126,6 +1146,98 @@ func TestProxySilenceACL(t *testing.T) {
 			responseCode:        400,
 		},
 		{
+			name: "block negative matchers - block",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+				"users":  {"alice"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block negative matchers",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{
+								NameRegex:  regexp.MustCompile("^.+$"),
+								ValueRegex: regexp.MustCompile("^.+$"),
+								IsEqual:    falsePtr(),
+							},
+						},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+				},
+			},
+			requestUsername: "uncle",
+			frontednRequestBody: `{
+				"comment": "comment",
+				"createdBy": "alice",
+				"startsAt": "2000-02-01T00:00:00.000Z",
+				"endsAt": "2000-02-01T00:02:03.000Z",
+				"matchers": [
+				{ "isRegex": false, "name": "alertname", "value": "Fake Alert" },
+				{ "isRegex": true, "isEqual": false, "name": "foo", "value": "(bar|baz)"  }
+				]}`,
+			responseCode: 400,
+		},
+		{
+			name: "block negative matchers - pass",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+				"users":  {"alice"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "block",
+					Reason: "block negative matchers",
+					Scope: silenceACLScope{
+						Filters: []silenceFilter{
+							{
+								NameRegex:  regexp.MustCompile("^.+$"),
+								ValueRegex: regexp.MustCompile("^.+$"),
+								IsEqual:    falsePtr(),
+							},
+						},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+				},
+			},
+			requestUsername:     "uncle",
+			frontednRequestBody: defaultBody,
+			responseCode:        200,
+		},
+		{
+			name: "require positive matcher",
+			authGroups: map[string][]string{
+				"admins": {"bob"},
+				"users":  {"alice"},
+			},
+			silenceACLs: []*silenceACL{
+				{
+					Action: "requireMatcher",
+					Reason: "require positive matcher",
+					Scope: silenceACLScope{
+						Filters:       []silenceFilter{},
+						Groups:        []string{},
+						Alertmanagers: []string{},
+					},
+					Matchers: aclMatchers{
+						Required: []silenceMatcher{
+							{
+								Name:    "alertname",
+								Value:   "Fake Alert",
+								IsEqual: truePtr(),
+							},
+						},
+					},
+				},
+			},
+			requestUsername:     "uncle",
+			frontednRequestBody: defaultBody,
+			responseCode:        200,
+		},
+		{
 			name: "invalid silence JSON",
 			silenceACLs: []*silenceACL{
 				{
@@ -1133,7 +1245,11 @@ func TestProxySilenceACL(t *testing.T) {
 					Reason: "block all regex silences",
 					Scope: silenceACLScope{
 						Filters: []silenceFilter{
-							{NameRegex: regexp.MustCompile(".*"), ValueRegex: regexp.MustCompile(".*"), IsRegex: true},
+							{
+								NameRegex:  regexp.MustCompile(".*"),
+								ValueRegex: regexp.MustCompile(".*"),
+								IsRegex:    truePtr(),
+							},
 						},
 						Groups:        []string{},
 						Alertmanagers: []string{},
