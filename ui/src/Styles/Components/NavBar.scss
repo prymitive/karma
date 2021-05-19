@@ -18,8 +18,6 @@
   }
 
   & .components-navbar-button {
-    border-bottom: $border-width solid transparent;
-
     &.navbar-brand {
       padding-top: 0.4rem;
       padding-bottom: 0.4rem;
@@ -27,7 +25,13 @@
     }
 
     &:hover {
-      border-bottom: $border-width solid $white;
+      border-radius: 0.4rem;
+      @supports (backdrop-filter: blur(12px)) {
+        background-color: rgba($bg-focused, 0.5);
+      }
+      @supports not (backdrop-filter: blur(12px)) {
+        background-color: $bg-focused;
+      }
     }
   }
 
