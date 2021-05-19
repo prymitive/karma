@@ -31,9 +31,9 @@ $form-check-indicator-disabled-bg: $gray-700;
 $form-check-indicator-checked-disabled-bg: $gray-700;
 
 $navbar-dark-brand-color: $navbar-dark-color;
-$navbar-dark-brand-hover-color: $white;
-$navbar-dark-hover-color: $white;
-$navbar-dark-active-color: $white;
+$navbar-dark-brand-hover-color: $gray-200;
+$navbar-dark-hover-color: $gray-200;
+$navbar-dark-active-color: $gray-200;
 
 // fix active tab color, for some reason it ends up with $primary as bg color
 $nav-tabs-link-active-bg: $gray-800;

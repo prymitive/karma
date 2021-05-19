@@ -23,9 +23,9 @@ $tooltip-max-width: 400px;
 $link-color: $gray-700;
 
 $navbar-dark-brand-color: $navbar-dark-color;
-$navbar-dark-brand-hover-color: $gray-500;
-$navbar-dark-hover-color: $gray-500;
-$navbar-dark-active-color: $gray-500;
+$navbar-dark-brand-hover-color: $gray-200;
+$navbar-dark-hover-color: $gray-200;
+$navbar-dark-active-color: $gray-200;
 
 // fix active tab color, for some reason it ends up with $primary as bg color
 $nav-tabs-link-active-bg: #fff;
