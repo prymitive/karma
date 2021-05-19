@@ -5,7 +5,6 @@ ignores:
   - bootswatch
   - sass
   - typeface-open-sans
-  - babel-loader
   - prettier
   - "@popperjs/core"
   - react-scripts
