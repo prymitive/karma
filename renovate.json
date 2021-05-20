@@ -8,5 +8,8 @@
       "updateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true
     }
-  ]
+  ],
+  "node": {
+    "supportPolicy": ["lts_latest"]
+  }
 }
