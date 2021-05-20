@@ -27,22 +27,20 @@ const SilenceComment: FC<{
   collapseToggle,
   alertStore,
 }) => {
-  const comment = silence.ticketURL ? (
-    <a
-      href={silence.ticketURL}
-      target="_blank"
-      rel="noopener noreferrer"
-      className={
-        collapsed
-          ? "components-managed-silence-comment mw-100 text-truncate d-block"
-          : "components-managed-silence-comment"
-      }
-    >
-      <FontAwesomeIcon className="me-2" icon={faExternalLinkAlt} />
-      {silence.comment}
-    </a>
-  ) : (
-    silence.comment
+  const comment = silence.comment.split(" ").map((w, i) =>
+    silence.ticketURL && w === silence.ticketID ? (
+      <a
+        key={i}
+        href={silence.ticketURL}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <FontAwesomeIcon className="me-2" icon={faExternalLinkAlt} />
+        {silence.ticketID}
+      </a>
+    ) : (
+      " " + w
+    )
   );
 
   return (
@@ -60,7 +58,7 @@ const SilenceComment: FC<{
               collapsed ? "text-truncate overflow-hidden" : ""
             }`}
           >
-            {comment}
+            {comment.map((w) => w)}
           </div>
           <div className="components-managed-silence-cite mt-1">
             <span className="text-muted me-2 font-italic">
