@@ -24,6 +24,7 @@ import { NewLabelName, StringToOption, OptionT } from "Common/Select";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { ThemeContext } from "Components/Theme";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
+import { FetchPauser } from "Components/FetchPauser";
 
 const specialLabels: OptionT[] = [
   { label: "Automatic selection", value: "@auto" },
@@ -126,23 +127,25 @@ const Dropdown: FC<{
   onClose,
 }) => {
   return (
-    <div
-      className="dropdown-menu d-block shadow components-grid-label-select-menu border-0 p-0 m-0"
-      ref={popperRef}
-      style={{
-        fontSize: "1rem",
-        fontWeight: "normal",
-        ...popperStyle,
-      }}
-      data-placement={popperPlacement}
-    >
-      <GridLabelNameSelect
-        alertStore={alertStore}
-        settingsStore={settingsStore}
-        grid={grid}
-        onClose={onClose}
-      />
-    </div>
+    <FetchPauser alertStore={alertStore}>
+      <div
+        className="dropdown-menu d-block shadow components-grid-label-select-menu border-0 p-0 m-0"
+        ref={popperRef}
+        style={{
+          fontSize: "1rem",
+          fontWeight: "normal",
+          ...popperStyle,
+        }}
+        data-placement={popperPlacement}
+      >
+        <GridLabelNameSelect
+          alertStore={alertStore}
+          settingsStore={settingsStore}
+          grid={grid}
+          onClose={onClose}
+        />
+      </div>
+    </FetchPauser>
   );
 };
 
