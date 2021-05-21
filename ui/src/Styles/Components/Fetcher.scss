@@ -1,13 +1,13 @@
 $totalWidth: 2.6rem;
 $fetcherWidth: 2rem;
-$pixSize: $fetcherWidth / 5;
+$pixSize: divide($fetcherWidth, 5);
 
 .invisible .components-fetcher {
   display: none;
 }
 
 .components-fetcher {
-  padding: (($totalWidth - $fetcherWidth) / 2);
+  padding: divide($totalWidth - $fetcherWidth, 2);
   width: ($pixSize * 5);
   height: ($pixSize * 5);
 
