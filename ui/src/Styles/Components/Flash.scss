@@ -1,0 +1,26 @@
+$duration: 800ms;
+
+.components-animation-flash-appear,
+.components-animation-flash-enter {
+  animation-name: flash;
+  animation-duration: $duration;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

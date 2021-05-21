@@ -9,6 +9,14 @@
     border-left-width: 3px;
     border-left-color: $silence-border;
   }
+
+  .silence-detail {
+    color: $silence-color;
+  }
+
+  .silence-id {
+    color: $silence-id;
+  }
 }
 
 .components-managed-silence-icon {

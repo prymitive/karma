@@ -64,7 +64,7 @@ const SilenceDetails: FC<{
   isUpper = false,
 }) => {
   const isExpired = parseISO(silence.endsAt) < new Date();
-  let expiresClass = "text-dark";
+  let expiresClass = "";
   let expiresLabel = "Expires";
   if (isExpired) {
     expiresClass = "text-danger";
@@ -84,7 +84,7 @@ const SilenceDetails: FC<{
       <div className="d-flex flex-fill flex-lg-row flex-column justify-content-between">
         <div className="flex-shrink-1 flex-grow-1 mw-1p">
           <div>
-            <span className="badge text-dark px-1 me-1 components-label">
+            <span className="badge px-1 me-1 components-label silence-detail">
               <FontAwesomeIcon
                 className="text-muted me-1"
                 icon={faCalendarCheck}
@@ -93,7 +93,7 @@ const SilenceDetails: FC<{
               Started <DateFromNow timestamp={silence.startsAt} />
             </span>
             <span
-              className={`badge ${expiresClass} px-1 me-1 components-label`}
+              className={`badge ${expiresClass} px-1 me-1 components-label silence-detail`}
             >
               <FontAwesomeIcon
                 className="text-muted me-1"
@@ -104,7 +104,7 @@ const SilenceDetails: FC<{
             </span>
           </div>
           <div className="my-1 d-flex flex-row">
-            <span className="badge text-dark px-1 me-1 components-label flex-grow-0 flex-shrink-0">
+            <span className="badge px-1 me-1 components-label silence-detail flex-grow-0 flex-shrink-0">
               <FontAwesomeIcon
                 className="text-muted me-1"
                 icon={faFingerprint}
@@ -112,13 +112,13 @@ const SilenceDetails: FC<{
               />
               ID:
             </span>
-            <span className="badge bg-light px-1 me-1 components-label">
+            <span className="badge bg-light px-1 me-1 components-label silence-id">
               {silence.id}
             </span>
             <SilenceIDCopyButton id={silence.id} />
           </div>
           <div className="my-1">
-            <span className="badge text-dark px-1 me-1 components-label">
+            <span className="badge px-1 me-1 components-label silence-detail">
               <FontAwesomeIcon
                 className="text-muted me-1"
                 icon={faHome}
@@ -136,7 +136,7 @@ const SilenceDetails: FC<{
           </div>
           <div className="d-flex flex-row">
             <div className="flex-shrink-0 flex-grow-0">
-              <span className="badge text-dark px-1 me-1 components-label">
+              <span className="badge px-1 me-1 components-label silence-detail">
                 <FontAwesomeIcon
                   className="text-muted me-1"
                   icon={faFilter}

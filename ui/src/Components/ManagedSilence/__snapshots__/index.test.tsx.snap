@@ -140,7 +140,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
       <div class=\\"d-flex flex-fill flex-lg-row flex-column justify-content-between\\">
         <div class=\\"flex-shrink-1 flex-grow-1 mw-1p\\">
           <div>
-            <span class=\\"badge text-dark px-1 me-1 components-label\\">
+            <span class=\\"badge px-1 me-1 components-label silence-detail\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
@@ -157,7 +157,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
               </svg>
               Started 30 minutes ago
             </span>
-            <span class=\\"badge text-dark px-1 me-1 components-label\\">
+            <span class=\\"badge  px-1 me-1 components-label silence-detail\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
@@ -176,7 +176,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
             </span>
           </div>
           <div class=\\"my-1 d-flex flex-row\\">
-            <span class=\\"badge text-dark px-1 me-1 components-label flex-grow-0 flex-shrink-0\\">
+            <span class=\\"badge px-1 me-1 components-label silence-detail flex-grow-0 flex-shrink-0\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
@@ -193,7 +193,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
               </svg>
               ID:
             </span>
-            <span class=\\"badge bg-light px-1 me-1 components-label\\">
+            <span class=\\"badge bg-light px-1 me-1 components-label silence-id\\">
               04d37636-2350-4878-b382-e0b50353230f
             </span>
             <div class=\\" tooltip-trigger\\">
@@ -216,7 +216,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
             </div>
           </div>
           <div class=\\"my-1\\">
-            <span class=\\"badge text-dark px-1 me-1 components-label\\">
+            <span class=\\"badge px-1 me-1 components-label silence-detail\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
@@ -257,7 +257,7 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
           </div>
           <div class=\\"d-flex flex-row\\">
             <div class=\\"flex-shrink-0 flex-grow-0\\">
-              <span class=\\"badge text-dark px-1 me-1 components-label\\">
+              <span class=\\"badge px-1 me-1 components-label silence-detail\\">
                 <svg aria-hidden=\\"true\\"
                      focusable=\\"false\\"
                      data-prefix=\\"fas\\"
