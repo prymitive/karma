@@ -278,16 +278,16 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
             <div class=\\"flex-shrink-1 flex-grow-1 mw-1p\\"
                  style=\\"min-width: 0px;\\"
             >
-              <span class=\\"badge bg-primary px-1 me-1 components-label\\">
+              <span class=\\"badge silence-matcher-equal px-1 me-1 components-label\\">
                 regex=~\\"equal\\"
               </span>
-              <span class=\\"badge bg-primary px-1 me-1 components-label\\">
+              <span class=\\"badge silence-matcher-negative px-1 me-1 components-label\\">
                 regex!~\\"notEqual\\"
               </span>
-              <span class=\\"badge bg-primary px-1 me-1 components-label\\">
+              <span class=\\"badge silence-matcher-equal px-1 me-1 components-label\\">
                 notRegex=\\"equal\\"
               </span>
-              <span class=\\"badge bg-primary px-1 me-1 components-label\\">
+              <span class=\\"badge silence-matcher-negative px-1 me-1 components-label\\">
                 notRegex!=\\"notEqual\\"
               </span>
             </div>
