@@ -152,7 +152,11 @@ const SilenceDetails: FC<{
               {silence.matchers.map((matcher, index) => (
                 <span
                   key={`${index}/${matcher.name}/${matcher.isRegex}/${matcher.value}`}
-                  className="badge bg-primary px-1 me-1 components-label"
+                  className={`badge ${
+                    matcher.isEqual
+                      ? "silence-matcher-equal"
+                      : "silence-matcher-negative"
+                  } px-1 me-1 components-label`}
                 >
                   {matcher.name}
                   {MatcherToOperator(matcher)}"{matcher.value}"

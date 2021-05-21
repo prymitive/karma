@@ -17,6 +17,13 @@
   .silence-id {
     color: $silence-id;
   }
+
+  .silence-matcher-equal {
+    background-color: #006a4e;
+  }
+  .silence-matcher-negative {
+    background-color: #c60c30;
+  }
 }
 
 .components-managed-silence-icon {
