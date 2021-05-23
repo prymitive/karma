@@ -620,7 +620,7 @@ jobs:
         run: /usr/local/bin/heroku container:release web --app karma-demo
 
       - name: Run e2e test
-        run: make -C ui test-demo
+        run: make -C ui/e2e test
 
       - name: Rollback on failure
         if: failure()

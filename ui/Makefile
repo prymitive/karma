@@ -33,10 +33,6 @@ build: build/index.html
 test-js: $(NODE_PATH)/react-scripts $(NODE_PATH)/jest
 	CI=true NODE_OPTIONS="--unhandled-rejections=strict" npm test -- --coverage
 
-.PHONY: test-demo
-test-demo: $(NODE_PATH)/react-scripts $(NODE_PATH)/jest
-	CI=true jest --runInBand e2e/demo.test.js
-
 .PHONY: test-percy
 test-percy: $(NODE_PATH)/react-scripts $(NODE_PATH)/build-storybook $(NODE_PATH)/percy-storybook
 	CI=true npm run snapshot

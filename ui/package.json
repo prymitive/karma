@@ -89,8 +89,7 @@
     "diffable-html": "4.0.0",
     "enzyme": "3.11.0",
     "jest-canvas-mock": "2.3.1",
-    "jest-date-mock": "1.0.8",
-    "puppeteer": "9.1.1"
+    "jest-date-mock": "1.0.8"
   },
   "scripts": {
     "start": "NODE_ENV=dev REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
