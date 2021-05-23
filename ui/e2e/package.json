@@ -1,0 +1,17 @@
+{
+  "name": "e2e",
+  "version": "0.0.1",
+  "license": "Apache-2.0",
+  "private": true,
+  "engines": {
+    "npm": ">=6.0 <7.0",
+    "node": "14.17.0"
+  },
+  "scripts": {
+    "test": "jest --runInBand demo.test.js"
+  },
+  "devDependencies": {
+    "jest": "26.6.3",
+    "puppeteer": "9.1.1"
+  }
+}
