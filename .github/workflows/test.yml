@@ -474,8 +474,6 @@ jobs:
 
       - name: Cross compile binaries
         run: make crosscompile -j 2
-        env:
-          NODE_ENV: production
 
       - name: Compress binaries
         shell: bash

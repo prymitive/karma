@@ -1,7 +1,6 @@
 FROM node:14.17.0-alpine as nodejs-builder
 RUN mkdir -p /src/ui
 COPY ui/package.json ui/package-lock.json /src/ui/
-ENV NODE_ENV=production
 RUN cd /src/ui && npm ci && touch node_modules/.install
 RUN apk add make git
 COPY ui /src/ui
