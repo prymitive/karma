@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 
 import fetchMock from "fetch-mock";
 
@@ -249,11 +249,13 @@ storiesOf("SilenceModal", module)
         name: "thisIsAveryLongNameToTestMatcherWrapping",
         value: "valueIsAlsoAbitLong",
         isRegex: false,
+        isEqual: true,
       });
       silence.matchers.push({
         name: "alertname",
         value: "(foo1|foo2|foo3|foo4)",
         isRegex: true,
+        isEqual: true,
       });
       silence.id = `silence${index}`;
       silences.push({

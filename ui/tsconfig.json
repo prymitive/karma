@@ -18,6 +18,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true
   },
-  "include": ["src"],
-  "exclude": ["**/*.stories.tsx"]
+  "include": ["src"]
 }
