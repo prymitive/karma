@@ -13,8 +13,8 @@ $btn-active-box-shadow: 0;
 
 $tooltip-max-width: 400px;
 
-@import "Styles/Fonts";
-@import "~bootswatch/dist/darkly/variables";
+@import "./Fonts";
+@import "bootswatch/dist/darkly/variables";
 
 $dark: darken($dark, 4%);
 
