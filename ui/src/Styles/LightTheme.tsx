@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import "Styles/LightThemeLoader.scss";
+import "./LightThemeLoader.scss";
 
 const LightTheme: FC = () => null;
 

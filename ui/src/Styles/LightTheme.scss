@@ -16,8 +16,8 @@ $btn-active-box-shadow: 0;
 
 $tooltip-max-width: 400px;
 
-@import "Styles/Fonts";
-@import "~bootswatch/dist/flatly/variables";
+@import "./Fonts";
+@import "bootswatch/dist/flatly/variables";
 
 // make links light gray by default instead of green
 $link-color: $gray-700;
@@ -49,8 +49,8 @@ $accordion-active-bg: $gray-100;
 $accordion-button-bg: $gray-100;
 $accordion-button-active-bg: $gray-100;
 
-@import "Styles/RebootlessBootstrap";
-@import "~bootswatch/dist/flatly/bootswatch";
+@import "./RebootlessBootstrap";
+@import "bootswatch/dist/flatly/bootswatch";
 
 $alert-bg: $white;
 $alert-history-inactive: lighten($light, 1%);
@@ -77,7 +77,7 @@ $input-range-thumb-font-color: $white;
 
 $color-default: #708090;
 
-@import "Styles/Components";
+@import "./Components";
 
 a {
   color: $link-color;

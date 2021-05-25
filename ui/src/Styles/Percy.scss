@@ -1,7 +1,7 @@
-@import "Styles/App";
-@import "Styles/LightThemeLoader";
-@import "Styles/DarkThemeLoader";
-@import "Styles/ResetCSS";
+@import "./App";
+@import "./LightThemeLoader";
+@import "./DarkThemeLoader";
+@import "./ResetCSS";
 
 .dropdown-menu {
   position: relative !important;
