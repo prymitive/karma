@@ -11,10 +11,10 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclama
 import { faSortAmountDownAlt } from "@fortawesome/free-solid-svg-icons/faSortAmountDownAlt";
 import { faSortAmountUp } from "@fortawesome/free-solid-svg-icons/faSortAmountUp";
 
-import { APIManagedSilenceT } from "Models/APITypes";
+import type { APIManagedSilenceT } from "Models/APITypes";
 import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { Settings } from "Stores/Settings";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { Settings } from "Stores/Settings";
 import { useFetchGet, FetchGetOptionsT } from "Hooks/useFetchGet";
 import { useDebounce } from "Hooks/useDebounce";
 import { IsMobile } from "Common/Device";

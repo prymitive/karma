@@ -1,10 +1,10 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import { AlertStore } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { AlertStore } from "Stores/AlertStore";
+import type { Settings } from "Stores/Settings";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import AlertGrid from "./AlertGrid";
 import { FatalError } from "./FatalError";
 import { UpgradeNeeded } from "./UpgradeNeeded";

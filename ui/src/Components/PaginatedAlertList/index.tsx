@@ -1,10 +1,10 @@
-import { FC, ReactNode } from "react";
+import type { FC, ReactNode } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
-import { APIAlertsResponseT } from "Models/APITypes";
+import type { APIAlertsResponseT } from "Models/APITypes";
 import { AlertStore, FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import {
   LabelSetList,

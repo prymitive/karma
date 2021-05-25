@@ -7,7 +7,7 @@ import fetchMock from "fetch-mock";
 import { MockGrid } from "__fixtures__/Stories";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
-import { APIGridT } from "Models/APITypes";
+import type { APIGridT } from "Models/APITypes";
 import { GridLabelSelect } from "./GridLabelSelect";
 
 let alertStore: AlertStore;

@@ -1,5 +1,5 @@
-import { CSSObject } from "@emotion/serialize";
-import {
+import type { CSSObject } from "@emotion/serialize";
+import type {
   ControlProps,
   IndicatorContainerProps,
   OptionTypeBase,

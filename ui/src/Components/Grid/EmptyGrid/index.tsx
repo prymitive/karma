@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMugHot } from "@fortawesome/free-solid-svg-icons/faMugHot";

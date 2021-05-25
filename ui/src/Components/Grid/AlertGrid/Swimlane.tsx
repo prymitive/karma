@@ -1,11 +1,11 @@
-import { FC, MouseEvent } from "react";
+import type { FC, MouseEvent } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTh } from "@fortawesome/free-solid-svg-icons/faTh";
 
-import { AlertStore } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
-import { APIGridT } from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
+import type { Settings } from "Stores/Settings";
+import type { APIGridT } from "Models/APITypes";
 import FilteringLabel from "Components/Labels/FilteringLabel";
 import FilteringCounterBadge from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";

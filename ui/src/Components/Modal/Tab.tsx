@@ -1,4 +1,4 @@
-import { FC, MouseEvent } from "react";
+import type { FC, MouseEvent } from "react";
 
 const Tab: FC<{
   title: string;

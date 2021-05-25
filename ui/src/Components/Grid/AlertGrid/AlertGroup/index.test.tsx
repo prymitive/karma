@@ -7,7 +7,7 @@ import {
   MockThemeContext,
   MockThemeContextWithoutAnimations,
 } from "__fixtures__/Theme";
-import { APIAlertGroupT } from "Models/APITypes";
+import type { APIAlertGroupT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings, CollapseStateT } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";

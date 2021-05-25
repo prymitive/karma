@@ -3,9 +3,9 @@ import React, { FC } from "react";
 import Creatable from "react-select/creatable";
 
 import { StaticLabels } from "Common/Query";
-import { OptionT } from "Common/Select";
+import type { OptionT } from "Common/Select";
 import { FormatBackendURI } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
+import type { Settings } from "Stores/Settings";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { ThemeContext } from "Components/Theme";
 import { AnimatedMenu } from "Components/Select";

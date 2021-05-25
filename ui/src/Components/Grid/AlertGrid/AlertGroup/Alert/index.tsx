@@ -1,14 +1,14 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import {
+import type {
   APIAlertT,
   APIAlertGroupT,
   APIAlertmanagerStateT,
 } from "Models/APITypes";
-import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { AlertStore } from "Stores/AlertStore";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BorderClassMap } from "Common/Colors";
 import { StaticLabels } from "Common/Query";
 import FilteringLabel from "Components/Labels/FilteringLabel";

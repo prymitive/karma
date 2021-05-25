@@ -13,7 +13,7 @@ import { faPause } from "@fortawesome/free-solid-svg-icons/faPause";
 import { faPlay } from "@fortawesome/free-solid-svg-icons/faPlay";
 
 import { AlertStore, AlertStoreStatuses } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
+import type { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 

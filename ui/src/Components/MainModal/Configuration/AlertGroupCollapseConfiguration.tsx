@@ -4,8 +4,8 @@ import { observer } from "mobx-react-lite";
 
 import Select from "react-select";
 
-import { OptionT } from "Common/Select";
-import { Settings, CollapseStateT } from "Stores/Settings";
+import type { OptionT } from "Common/Select";
+import type { Settings, CollapseStateT } from "Stores/Settings";
 import { AnimatedMenu } from "Components/Select";
 import { ThemeContext } from "Components/Theme";
 

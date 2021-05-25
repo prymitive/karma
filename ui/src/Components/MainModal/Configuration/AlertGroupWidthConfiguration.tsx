@@ -4,7 +4,7 @@ import debounce from "lodash.debounce";
 
 import { Range } from "react-range";
 
-import { Settings } from "Stores/Settings";
+import type { Settings } from "Stores/Settings";
 
 const AlertGroupWidthConfiguration: FC<{
   settingsStore: Settings;

@@ -8,7 +8,7 @@ import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
 import { SilenceModalContent } from "./SilenceModalContent";
-import { APIAlertsResponseUpstreamsT } from "Models/APITypes";
+import type { APIAlertsResponseUpstreamsT } from "Models/APITypes";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;

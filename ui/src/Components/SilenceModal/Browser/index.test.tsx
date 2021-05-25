@@ -10,7 +10,7 @@ import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { MockSilence } from "__fixtures__/Alerts";
 import { PressKey } from "__fixtures__/PressKey";
 import { MockThemeContext } from "__fixtures__/Theme";
-import { APISilenceT, APIManagedSilenceT } from "Models/APITypes";
+import type { APISilenceT, APIManagedSilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
 import { SilenceFormStore } from "Stores/SilenceFormStore";

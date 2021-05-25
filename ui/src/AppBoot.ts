@@ -2,7 +2,7 @@
 
 import { init } from "@sentry/browser";
 
-import { UIDefaults } from "Models/UI";
+import type { UIDefaults } from "Models/UI";
 
 const SettingsElement = (): HTMLElement | null =>
   document.getElementById("settings");

@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 
 import { Range } from "react-range";
 
-import { Settings } from "Stores/Settings";
+import type { Settings } from "Stores/Settings";
 
 const AlertGroupConfiguration: FC<{
   settingsStore: Settings;

@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSlidersH } from "@fortawesome/free-solid-svg-icons/faSlidersH";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
-import { AlertStore } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
+import type { AlertStore } from "Stores/AlertStore";
+import type { Settings } from "Stores/Settings";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { Modal } from "Components/Modal";
 

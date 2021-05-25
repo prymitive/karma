@@ -1,7 +1,7 @@
 import { FC, useState } from "react";
 
-import { AlertStore } from "Stores/AlertStore";
-import { APIAlertGroupT } from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
+import type { APIAlertGroupT } from "Models/APITypes";
 import { IsMobile } from "Common/Device";
 import { hashObject } from "Common/Hash";
 import StaticLabel from "Components/Labels/StaticLabel";

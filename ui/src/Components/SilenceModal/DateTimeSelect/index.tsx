@@ -10,7 +10,7 @@ import setSeconds from "date-fns/setSeconds";
 import DayPicker from "react-day-picker";
 import "react-day-picker/lib/style.css";
 
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Duration } from "./Duration";
 import { HourMinute } from "./HourMinute";
 

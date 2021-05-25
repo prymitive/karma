@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import parseISO from "date-fns/parseISO";
 import getUnixTime from "date-fns/getUnixTime";
 
-import { APISilenceT } from "Models/APITypes";
+import type { APISilenceT } from "Models/APITypes";
 import { DateFromNow } from "Components/DateFromNow";
 
 const calculatePercent = (startsAt: string, endsAt: string) => {

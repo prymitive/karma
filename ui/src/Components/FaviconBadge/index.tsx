@@ -4,7 +4,7 @@ import { autorun } from "mobx";
 
 import Favico from "favico.js";
 
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 
 const FaviconBadge: FC<{
   alertStore: AlertStore;

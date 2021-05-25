@@ -2,8 +2,8 @@ import { FC, useState } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import { APILabelCounterT } from "Models/APITypes";
-import { AlertStore } from "Stores/AlertStore";
+import type { APILabelCounterT } from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import LabelWithPercent from "Components/Labels/LabelWithPercent";
 import { ToggleIcon } from "Components/ToggleIcon";

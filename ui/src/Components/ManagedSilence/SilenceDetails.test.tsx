@@ -7,7 +7,7 @@ import copy from "copy-to-clipboard";
 import { advanceTo, clear } from "jest-date-mock";
 
 import { MockSilence } from "__fixtures__/Alerts";
-import { APIAlertsResponseUpstreamsT, APISilenceT } from "Models/APITypes";
+import type { APIAlertsResponseUpstreamsT, APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceDetails } from "./SilenceDetails";

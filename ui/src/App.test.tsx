@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 
 import { mockMatchMedia } from "__fixtures__/matchMedia";
-import { UIDefaults, ThemeT } from "Models/UI";
+import type { UIDefaults, ThemeT } from "Models/UI";
 import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { StringToOption } from "Common/Select";
 import { App } from "./App";

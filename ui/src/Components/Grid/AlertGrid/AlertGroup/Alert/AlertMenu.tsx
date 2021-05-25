@@ -10,8 +10,12 @@ import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
 import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 
-import { APIAlertT, APIAlertGroupT, APIAnnotationT } from "Models/APITypes";
-import { AlertStore } from "Stores/AlertStore";
+import type {
+  APIAlertT,
+  APIAlertGroupT,
+  APIAnnotationT,
+} from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
   AlertmanagerClustersToOption,

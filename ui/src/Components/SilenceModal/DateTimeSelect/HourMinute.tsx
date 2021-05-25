@@ -2,7 +2,7 @@ import { FC, useEffect, useRef, MouseEvent, WheelEvent } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleUp } from "@fortawesome/free-solid-svg-icons/faAngleUp";
 import { faAngleDown } from "@fortawesome/free-solid-svg-icons/faAngleDown";

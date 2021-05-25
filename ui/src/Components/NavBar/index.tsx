@@ -9,9 +9,9 @@ import { useIdleTimer } from "react-idle-timer";
 
 import { CSSTransition } from "react-transition-group";
 
-import { AlertStore } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { AlertStore } from "Stores/AlertStore";
+import type { Settings } from "Stores/Settings";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { IsMobile } from "Common/Device";
 import { OverviewModal } from "Components/OverviewModal";
 import { MainModal } from "Components/MainModal";

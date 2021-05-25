@@ -9,7 +9,7 @@ import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { QueryOperators, StaticLabels } from "Common/Query";
 import { ThemeContext } from "Components/Theme";
 import SilenceForm from "./SilenceForm";
-import { APIAlertsResponseUpstreamsT } from "Models/APITypes";
+import type { APIAlertsResponseUpstreamsT } from "Models/APITypes";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;

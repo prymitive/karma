@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -7,7 +7,7 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclama
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 
-import { AlertStore, FilterT } from "Stores/AlertStore";
+import type { AlertStore, FilterT } from "Stores/AlertStore";
 import { QueryOperators } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GetClassAndStyle } from "Components/Labels/Utils";

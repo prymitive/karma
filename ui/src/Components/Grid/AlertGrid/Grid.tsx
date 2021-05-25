@@ -11,7 +11,7 @@ import { observer } from "mobx-react-lite";
 
 import debounce from "lodash.debounce";
 
-import { SizeDetail } from "bricks.js";
+import type { SizeDetail } from "bricks.js";
 
 import TransitionGroup from "react-transition-group/TransitionGroup";
 import { CSSTransition } from "react-transition-group";
@@ -21,10 +21,10 @@ import FontFaceObserver from "fontfaceobserver";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleDoubleDown } from "@fortawesome/free-solid-svg-icons/faAngleDoubleDown";
 
-import { AlertStore } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { APIGridT } from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
+import type { Settings } from "Stores/Settings";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { APIGridT } from "Models/APITypes";
 import { useGrid } from "Hooks/useGrid";
 import { ThemeContext } from "Components/Theme";
 import { DefaultDetailsCollapseValue } from "./AlertGroup/DetailsToggle";

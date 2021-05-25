@@ -15,7 +15,7 @@ import { localStored } from "mobx-stored";
 
 import { Manager, Reference, Popper } from "react-popper";
 
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHistory } from "@fortawesome/free-solid-svg-icons/faHistory";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
@@ -23,8 +23,8 @@ import { faSave } from "@fortawesome/free-regular-svg-icons/faSave";
 import { faUndoAlt } from "@fortawesome/free-solid-svg-icons/faUndoAlt";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 
-import { AlertStore, FilterT } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
+import type { AlertStore, FilterT } from "Stores/AlertStore";
+import type { Settings } from "Stores/Settings";
 import { IsMobile } from "Common/Device";
 import { CommonPopperModifiers } from "Common/Popper";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";

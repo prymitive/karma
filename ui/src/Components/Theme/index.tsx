@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun } from "@fortawesome/free-solid-svg-icons/faSun";
 
-import { Styles } from "react-select";
+import type { Styles } from "react-select";
 
 const DarkTheme = React.lazy(() => import("Styles/DarkTheme"));
 const LightTheme = React.lazy(() => import("Styles/LightTheme"));

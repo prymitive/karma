@@ -4,7 +4,7 @@ import Creatable from "react-select/creatable";
 
 import { useFetchGet } from "Hooks/useFetchGet";
 import { FormatBackendURI } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
+import type { Settings } from "Stores/Settings";
 import { ThemeContext } from "Components/Theme";
 import { AnimatedMenu } from "Components/Select";
 import { NewLabelName, StringToOption, OptionT } from "Common/Select";

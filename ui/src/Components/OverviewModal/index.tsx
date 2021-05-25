@@ -7,7 +7,7 @@ import { CSSTransition } from "react-transition-group";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 import { useFlashTransition } from "Hooks/useFlashTransition";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { Modal } from "Components/Modal";

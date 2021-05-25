@@ -14,7 +14,7 @@ import {
   RainbowHistoryResponse,
   FailedHistoryResponse,
 } from "__fixtures__/AlertHistory";
-import { APIAlertGroupT, HistoryResponseT } from "Models/APITypes";
+import type { APIAlertGroupT, HistoryResponseT } from "Models/APITypes";
 import { AlertHistory } from ".";
 
 let group: APIAlertGroupT;

@@ -7,7 +7,7 @@ import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
 import { AlertManagerInput } from ".";
-import { APIAlertsResponseUpstreamsT } from "Models/APITypes";
+import type { APIAlertsResponseUpstreamsT } from "Models/APITypes";
 
 let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;

@@ -5,8 +5,8 @@ import {
   StateLabelClassMap,
 } from "Common/Colors";
 import { StaticLabels } from "Common/Query";
-import { AlertStateT } from "Models/APITypes";
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStateT } from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
 
 const isBackgroundDark = (brightness: number) => brightness <= 130;
 

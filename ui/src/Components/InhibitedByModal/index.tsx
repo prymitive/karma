@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { faVolumeMute } from "@fortawesome/free-solid-svg-icons/faVolumeMute";
 
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { Modal } from "Components/Modal";
 

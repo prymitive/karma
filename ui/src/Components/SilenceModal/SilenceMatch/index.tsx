@@ -6,7 +6,7 @@ import { observer } from "mobx-react-lite";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 
-import { SilenceFormStore, MatcherWithIDT } from "Stores/SilenceFormStore";
+import type { SilenceFormStore, MatcherWithIDT } from "Stores/SilenceFormStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { LabelNameInput } from "./LabelNameInput";
 import { LabelValueInput } from "./LabelValueInput";

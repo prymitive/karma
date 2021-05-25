@@ -11,8 +11,11 @@ import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 
-import { APIAlertGroupT, AlertmanagerSilencePayloadT } from "Models/APITypes";
-import { AlertStore } from "Stores/AlertStore";
+import type {
+  APIAlertGroupT,
+  AlertmanagerSilencePayloadT,
+} from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
   MatchersFromGroup,

@@ -4,7 +4,7 @@ import ReactDOM from "react-dom";
 import TransitionGroup from "react-transition-group/TransitionGroup";
 import { CSSTransition } from "react-transition-group";
 
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons/faCircle";
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";

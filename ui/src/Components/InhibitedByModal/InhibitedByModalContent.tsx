@@ -1,6 +1,6 @@
-import { FC } from "react";
+import type { FC } from "react";
 
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
 import { PaginatedAlertList } from "Components/PaginatedAlertList";
 

@@ -1,8 +1,8 @@
 import { FC, memo } from "react";
 
-import { APISilenceT } from "Models/APITypes";
-import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { APISilenceT } from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ManagedSilence } from "Components/ManagedSilence";
 
 const FallbackSilenceDesciption: FC<{

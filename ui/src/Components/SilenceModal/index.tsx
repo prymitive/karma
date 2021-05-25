@@ -6,9 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
-import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { Settings } from "Stores/Settings";
+import type { AlertStore } from "Stores/AlertStore";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { Settings } from "Stores/Settings";
 import { Modal } from "Components/Modal";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 

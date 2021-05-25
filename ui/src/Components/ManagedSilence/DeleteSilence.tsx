@@ -7,9 +7,9 @@ import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
 import { faRedo } from "@fortawesome/free-solid-svg-icons/faRedo";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 
-import { APISilenceT } from "Models/APITypes";
-import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { APISilenceT } from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
 import { useFetchDelete } from "Hooks/useFetchDelete";
 import { Modal } from "Components/Modal";

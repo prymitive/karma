@@ -5,12 +5,12 @@ import { observer } from "mobx-react-lite";
 
 import Select from "react-select";
 
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
   AlertmanagerClustersToOption,
 } from "Stores/SilenceFormStore";
-import { MultiValueOptionT } from "Common/Select";
+import type { MultiValueOptionT } from "Common/Select";
 import { ThemeContext } from "Components/Theme";
 import { AnimatedMultiMenu } from "Components/Select";
 import { ValidationError } from "Components/ValidationError";

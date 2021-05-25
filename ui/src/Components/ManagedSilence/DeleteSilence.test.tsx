@@ -7,7 +7,7 @@ import { advanceTo, clear } from "jest-date-mock";
 import { MockSilence } from "__fixtures__/Alerts";
 import { PressKey } from "__fixtures__/PressKey";
 import { useFetchDelete } from "Hooks/useFetchDelete";
-import { APISilenceT, APIAlertsResponseUpstreamsT } from "Models/APITypes";
+import type { APISilenceT, APIAlertsResponseUpstreamsT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { DeleteSilence, DeleteSilenceModalContent } from "./DeleteSilence";

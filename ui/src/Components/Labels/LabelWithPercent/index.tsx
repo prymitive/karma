@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 import { QueryOperators, FormatQuery } from "Common/Query";
 import { GetClassAndStyle } from "Components/Labels/Utils";
 

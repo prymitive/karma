@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -6,8 +6,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 
-import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { AlertStore } from "Stores/AlertStore";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceSubmitProgress } from "./SilenceSubmitProgress";
 
 const SingleClusterStatus: FC<{

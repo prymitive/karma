@@ -1,6 +1,6 @@
 import { FC, ReactElement, useEffect } from "react";
 
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 
 const FetchPauser: FC<{
   children: ReactElement;

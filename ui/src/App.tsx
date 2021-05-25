@@ -13,7 +13,7 @@ import {
   ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
 import { BodyTheme, ThemeContext } from "Components/Theme";
-import { UIDefaults } from "Models/UI";
+import type { UIDefaults } from "Models/UI";
 import { ErrorBoundary } from "./ErrorBoundary";
 
 import "Styles/ResetCSS.scss";

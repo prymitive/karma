@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { Observer } from "mobx-react-lite";
 
@@ -6,9 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 import { faLock } from "@fortawesome/free-solid-svg-icons/faLock";
 
-import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
-import { Settings } from "Stores/Settings";
+import type { AlertStore } from "Stores/AlertStore";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { Settings } from "Stores/Settings";
 import { Tab } from "Components/Modal/Tab";
 import SilenceForm from "./SilenceForm";
 import { SilencePreview } from "./SilencePreview";

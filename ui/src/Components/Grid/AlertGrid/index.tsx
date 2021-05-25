@@ -5,13 +5,13 @@ import { observer } from "mobx-react-lite";
 
 import useDimensions from "react-cool-dimensions";
 
-import { SizeDetail } from "bricks.js";
+import type { SizeDetail } from "bricks.js";
 
 import { useHotkeys } from "react-hotkeys-hook";
 
-import { AlertStore } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { AlertStore } from "Stores/AlertStore";
+import type { Settings } from "Stores/Settings";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { useWindowSize } from "Hooks/useWindowSize";
 import Grid from "./Grid";
 import { GridSizesConfig, GetGridElementWidth } from "./GridSize";

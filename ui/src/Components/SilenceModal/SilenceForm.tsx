@@ -17,14 +17,14 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import { faShareAlt } from "@fortawesome/free-solid-svg-icons/faShareAlt";
 import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
 
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
   NewEmptyMatcher,
   NewClusterRequest,
   ClusterRequestT,
 } from "Stores/SilenceFormStore";
-import { Settings } from "Stores/Settings";
+import type { Settings } from "Stores/Settings";
 import { StringToOption } from "Common/Select";
 import { QueryOperators } from "Common/Query";
 import { useFlashTransition } from "Hooks/useFlashTransition";

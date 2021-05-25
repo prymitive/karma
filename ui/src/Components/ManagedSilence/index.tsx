@@ -1,8 +1,8 @@
 import { FC, useEffect, useState } from "react";
 
-import { APISilenceT, APIAlertmanagerUpstreamT } from "Models/APITypes";
-import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { APISilenceT, APIAlertmanagerUpstreamT } from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { SilenceComment } from "./SilenceComment";
 import { SilenceDetails } from "./SilenceDetails";
 
