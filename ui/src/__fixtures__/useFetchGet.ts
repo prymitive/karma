@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 
 import { MockAPIResponse, MockSilenceResponse } from "__fixtures__/Fetch";
-import { FetchGetResultT } from "Hooks/useFetchGet";
-import { APIAlertsResponseT, APIManagedSilenceT } from "Models/APITypes";
+import type { FetchGetResultT } from "Hooks/useFetchGet";
+import type { APIAlertsResponseT, APIManagedSilenceT } from "Models/APITypes";
 
 type responseT = null | string[] | APIAlertsResponseT | APIManagedSilenceT[];
 

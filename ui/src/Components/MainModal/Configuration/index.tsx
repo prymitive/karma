@@ -1,6 +1,6 @@
-import { FC } from "react";
+import type { FC } from "react";
 
-import { Settings } from "Stores/Settings";
+import type { Settings } from "Stores/Settings";
 import { Accordion, AccordionItem } from "Components/Accordion";
 import { FetchConfiguration } from "./FetchConfiguration";
 import { FilterBarConfiguration } from "./FilterBarConfiguration";

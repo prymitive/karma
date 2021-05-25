@@ -10,7 +10,7 @@ import differenceInDays from "date-fns/differenceInDays";
 import differenceInHours from "date-fns/differenceInHours";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 
-import {
+import type {
   APIAlertT,
   APIAlertGroupT,
   APIAlertmanagerUpstreamT,
@@ -252,7 +252,7 @@ interface SilenceFormStoreDataT {
   autofillMatchers: boolean;
   resetInputs: boolean;
   readonly toBase64: string;
-  fromBase64: (s: string) => void;
+  fromBase64: (s: string) => boolean;
   readonly isValid: boolean;
   resetStartEnd: () => void;
   resetProgress: () => void;
@@ -372,7 +372,7 @@ class SilenceFormStore {
           return window.btoa(json);
         },
 
-        fromBase64(s: string) {
+        fromBase64(s: string): boolean {
           let parsed: SilenceFormDataFromBase64;
           try {
             parsed = JSON.parse(window.atob(s));

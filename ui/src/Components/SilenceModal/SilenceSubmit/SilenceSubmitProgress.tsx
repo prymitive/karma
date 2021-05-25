@@ -3,9 +3,9 @@ import { FC, useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons/faCircleNotch";
 
-import { AlertmanagerSilencePayloadT } from "Models/APITypes";
-import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { AlertmanagerSilencePayloadT } from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { useFetchAny, UpstreamT } from "Hooks/useFetchAny";
 
 interface PostResponseT {

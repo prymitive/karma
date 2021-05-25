@@ -1,11 +1,11 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
-import { APISilenceT } from "Models/APITypes";
-import { AlertStore } from "Stores/AlertStore";
+import type { APISilenceT } from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
 import FilteringCounterBadge from "Components/Labels/FilteringCounterBadge";
 import { ToggleIcon } from "Components/ToggleIcon";
 import { SilenceProgress } from "./SilenceProgress";

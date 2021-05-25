@@ -1,8 +1,8 @@
 import { action } from "mobx";
 import { localStored } from "mobx-stored";
 
-import { UIDefaults } from "Models/UI";
-import { OptionT } from "Common/Select";
+import type { UIDefaults } from "Models/UI";
+import type { OptionT } from "Common/Select";
 
 interface SavedFiltersStorage {
   filters: string[];

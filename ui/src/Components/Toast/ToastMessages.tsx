@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
 import { faSync } from "@fortawesome/free-solid-svg-icons/faSync";
 
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 
 const ToastMessage: FC<{
   title: ReactNode;

@@ -1,4 +1,4 @@
-import { SizeDetail } from "bricks.js";
+import type { SizeDetail } from "bricks.js";
 
 // grid sizes, defines how many columns are used depending on the screen width
 // this is config as expected by https://github.com/callmecavs/bricks.js#sizes

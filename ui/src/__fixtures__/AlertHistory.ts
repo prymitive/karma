@@ -1,4 +1,4 @@
-import { HistoryResponseT } from "Models/APITypes";
+import type { HistoryResponseT } from "Models/APITypes";
 
 export const EmptyHistoryResponse: HistoryResponseT = {
   error: "",

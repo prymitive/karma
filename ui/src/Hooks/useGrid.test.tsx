@@ -1,4 +1,4 @@
-import { FC, Ref } from "react";
+import type { FC, Ref } from "react";
 
 import { renderHook } from "@testing-library/react-hooks";
 

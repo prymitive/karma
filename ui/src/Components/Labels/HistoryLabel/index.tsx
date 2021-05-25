@@ -1,9 +1,9 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
 import { QueryOperators } from "Common/Query";
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 import { GetClassAndStyle } from "Components/Labels/Utils";
 
 const HistoryLabel: FC<{

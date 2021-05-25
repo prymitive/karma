@@ -3,7 +3,7 @@ import { act } from "react-dom/test-utils";
 import { mount } from "enzyme";
 
 import { MockAlertGroup, MockAlert } from "__fixtures__/Alerts";
-import {
+import type {
   APIAlertGroupT,
   APIAlertT,
   APIAlertsResponseUpstreamsT,

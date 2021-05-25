@@ -1,10 +1,10 @@
-import { FC, MouseEvent } from "react";
+import type { FC, MouseEvent } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import { APIAlertGroupT } from "Models/APITypes";
-import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { APIAlertGroupT } from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import FilteringLabel from "Components/Labels/FilteringLabel";
 import FilteringCounterBadge from "Components/Labels/FilteringCounterBadge";
 import { TooltipWrapper } from "Components/TooltipWrapper";

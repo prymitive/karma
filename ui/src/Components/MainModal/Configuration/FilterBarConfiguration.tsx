@@ -1,8 +1,8 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import { Settings } from "Stores/Settings";
+import type { Settings } from "Stores/Settings";
 
 const FilterBarConfiguration: FC<{
   settingsStore: Settings;

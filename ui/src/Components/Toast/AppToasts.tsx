@@ -7,7 +7,7 @@ import { faArrowUp } from "@fortawesome/free-solid-svg-icons/faArrowUp";
 import { faExclamation } from "@fortawesome/free-solid-svg-icons/faExclamation";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons/faInfoCircle";
 
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { ToastContainer, Toast } from ".";
 import { ToastMessage, UpgradeToastMessage } from "./ToastMessages";

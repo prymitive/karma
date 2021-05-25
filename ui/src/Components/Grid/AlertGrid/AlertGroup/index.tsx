@@ -2,16 +2,16 @@ import React, { FC, useEffect, useCallback, useState, ReactNode } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons/faEllipsisH";
 
-import { APIAlertT, APIAlertGroupT, AlertStateT } from "Models/APITypes";
-import { Settings } from "Stores/Settings";
-import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { APIAlertT, APIAlertGroupT, AlertStateT } from "Models/APITypes";
+import type { Settings } from "Stores/Settings";
+import type { AlertStore } from "Stores/AlertStore";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BackgroundClassMap } from "Common/Colors";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { ThemeContext } from "Components/Theme";

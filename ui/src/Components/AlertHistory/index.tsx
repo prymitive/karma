@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 import { FormatBackendURI } from "Stores/AlertStore";
-import { APIAlertGroupT, HistoryResponseT } from "Models/APITypes";
+import type { APIAlertGroupT, HistoryResponseT } from "Models/APITypes";
 import { useFetchAny, UpstreamT } from "Hooks/useFetchAny";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 

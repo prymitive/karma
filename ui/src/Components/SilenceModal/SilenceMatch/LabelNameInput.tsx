@@ -3,7 +3,7 @@ import React, { FC } from "react";
 import Creatable from "react-select/creatable";
 
 import { FormatBackendURI } from "Stores/AlertStore";
-import { MatcherWithIDT } from "Stores/SilenceFormStore";
+import type { MatcherWithIDT } from "Stores/SilenceFormStore";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { ValidationError } from "Components/ValidationError";
 import { ThemeContext } from "Components/Theme";

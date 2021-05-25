@@ -1,5 +1,5 @@
 import { IsMobile } from "Common/Device";
-import { Settings } from "Stores/Settings";
+import type { Settings } from "Stores/Settings";
 
 const DefaultDetailsCollapseValue = (settingsStore: Settings): boolean => {
   let defaultCollapseState;

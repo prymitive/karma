@@ -4,8 +4,8 @@ import { observer } from "mobx-react-lite";
 
 import Select from "react-select";
 
-import { Settings, SortOrderT } from "Stores/Settings";
-import { OptionT } from "Common/Select";
+import type { Settings, SortOrderT } from "Stores/Settings";
+import type { OptionT } from "Common/Select";
 import { ThemeContext } from "Components/Theme";
 import { AnimatedMenu } from "Components/Select";
 import { SortLabelName } from "./SortLabelName";

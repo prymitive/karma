@@ -1,7 +1,7 @@
 import subMinutes from "date-fns/subMinutes";
 
-import { AlertStateT, APIAlertGroupT } from "Models/APITypes";
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStateT, APIAlertGroupT } from "Models/APITypes";
+import type { AlertStore } from "Stores/AlertStore";
 import { MockAlert, MockAlertGroup, MockSilence } from "./Alerts";
 
 const MockGroup = (

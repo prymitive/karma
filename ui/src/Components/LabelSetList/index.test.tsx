@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { LabelsT } from "Models/APITypes";
+import type { LabelsT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { LabelSetList } from ".";
 

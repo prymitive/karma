@@ -10,7 +10,7 @@ import {
 import Creatable from "react-select/creatable";
 
 import { FormatBackendURI } from "Stores/AlertStore";
-import { SilenceFormStore, MatcherWithIDT } from "Stores/SilenceFormStore";
+import type { SilenceFormStore, MatcherWithIDT } from "Stores/SilenceFormStore";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { hashObject } from "Common/Hash";
 import { NewLabelValue, OptionT, StringToOption } from "Common/Select";

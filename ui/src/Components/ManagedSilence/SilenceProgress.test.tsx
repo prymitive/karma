@@ -7,7 +7,7 @@ import toDiffableHtml from "diffable-html";
 import { advanceTo, clear } from "jest-date-mock";
 
 import { MockSilence } from "__fixtures__/Alerts";
-import { APISilenceT } from "Models/APITypes";
+import type { APISilenceT } from "Models/APITypes";
 import { SilenceProgress } from "./SilenceProgress";
 
 let silence: APISilenceT;

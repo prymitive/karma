@@ -9,7 +9,7 @@ import { advanceTo, clear } from "jest-date-mock";
 import fetchMock from "fetch-mock";
 
 import { MockAlertGroup, MockAlert } from "__fixtures__/Alerts";
-import { APIAlertT, APIAlertGroupT } from "Models/APITypes";
+import type { APIAlertT, APIAlertGroupT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { AlertAck } from ".";

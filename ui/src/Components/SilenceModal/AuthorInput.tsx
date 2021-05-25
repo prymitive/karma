@@ -1,10 +1,10 @@
-import { FC, ChangeEvent } from "react";
+import type { FC, ChangeEvent } from "react";
 
-import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import type { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons/faUser";
 
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 
 const IconInput: FC<{
   type: string;

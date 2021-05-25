@@ -7,7 +7,7 @@ import fetchMock from "fetch-mock";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, NewClusterRequest } from "Stores/SilenceFormStore";
 import { SilenceSubmitProgress } from "./SilenceSubmitProgress";
-import { APIAlertsResponseUpstreamsT } from "Models/APITypes";
+import type { APIAlertsResponseUpstreamsT } from "Models/APITypes";
 
 let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;

@@ -12,7 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 
 import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
+import type { Settings } from "Stores/Settings";
 import { IsMobile } from "Common/Device";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { useDebounce } from "Hooks/useDebounce";

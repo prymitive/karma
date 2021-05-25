@@ -1,8 +1,8 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 import { GetClassAndStyle } from "Components/Labels/Utils";
 
 // Renders a static label element, no click actions, no hover

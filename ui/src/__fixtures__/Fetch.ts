@@ -1,5 +1,5 @@
 import { MockAlert, MockAlertGroup, MockSilence } from "__fixtures__/Alerts";
-import {
+import type {
   APIAlertsResponseT,
   APILabelCounterT,
   APIManagedSilenceT,

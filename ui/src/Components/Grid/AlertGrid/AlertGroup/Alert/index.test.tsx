@@ -13,7 +13,7 @@ import {
   MockSilence,
 } from "__fixtures__/Alerts";
 import { MockThemeContext } from "__fixtures__/Theme";
-import { APIAlertGroupT, APIAlertT } from "Models/APITypes";
+import type { APIAlertGroupT, APIAlertT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { BorderClassMap } from "Common/Colors";

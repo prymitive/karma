@@ -6,7 +6,7 @@ import { advanceTo, clear } from "jest-date-mock";
 
 import { MockSilence } from "__fixtures__/Alerts";
 import { MockThemeContext } from "__fixtures__/Theme";
-import { APISilenceT } from "Models/APITypes";
+import type { APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";

@@ -1,9 +1,9 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { components, MenuProps } from "react-select";
 
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
-import { OptionT, MultiValueOptionT } from "Common/Select";
+import type { OptionT, MultiValueOptionT } from "Common/Select";
 
 export const AnimatedMenu: FC<MenuProps<OptionT, false>> = (props) => {
   return (

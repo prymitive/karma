@@ -10,9 +10,9 @@ import { faShareSquare } from "@fortawesome/free-solid-svg-icons/faShareSquare";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 
-import { APIAlertGroupT } from "Models/APITypes";
+import type { APIAlertGroupT } from "Models/APITypes";
 import { FormatAlertsQ } from "Stores/AlertStore";
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 import {
   SilenceFormStore,
   AlertmanagerClustersToOption,

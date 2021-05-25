@@ -1,4 +1,4 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
@@ -6,9 +6,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
-import { APIAlertsResponseT } from "Models/APITypes";
+import type { APIAlertsResponseT } from "Models/APITypes";
 import { FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
-import { SilenceFormStore, MatcherWithIDT } from "Stores/SilenceFormStore";
+import type { SilenceFormStore, MatcherWithIDT } from "Stores/SilenceFormStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { MatcherToFilter, AlertManagersToFilter } from "../Matchers";

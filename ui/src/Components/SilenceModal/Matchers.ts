@@ -1,5 +1,5 @@
 import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
-import { MultiValueOptionT } from "Common/Select";
+import type { MultiValueOptionT } from "Common/Select";
 import { MatcherT, MatcherToOperator } from "Stores/SilenceFormStore";
 
 const MatcherToFilter = (matcher: MatcherT): string => {

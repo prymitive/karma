@@ -1,11 +1,11 @@
-import { FC } from "react";
+import type { FC } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons/faArrowLeft";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons/faCheckCircle";
 
-import { AlertStore } from "Stores/AlertStore";
-import { SilenceFormStore } from "Stores/SilenceFormStore";
+import type { AlertStore } from "Stores/AlertStore";
+import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { PaginatedAlertList } from "Components/PaginatedAlertList";
 import { MatcherToFilter, AlertManagersToFilter } from "../Matchers";
 

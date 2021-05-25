@@ -7,7 +7,7 @@ import qs from "qs";
 import semverSort from "semver/functions/sort";
 
 import { FetchGet } from "Common/Fetch";
-import {
+import type {
   APIAlertmanagerUpstreamT,
   APILabelColorT,
   APIAlertsResponseT,

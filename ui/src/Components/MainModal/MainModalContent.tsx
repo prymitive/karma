@@ -2,8 +2,8 @@ import { FC, useState } from "react";
 
 import { Observer } from "mobx-react-lite";
 
-import { AlertStore } from "Stores/AlertStore";
-import { Settings } from "Stores/Settings";
+import type { AlertStore } from "Stores/AlertStore";
+import type { Settings } from "Stores/Settings";
 import { Tab } from "Components/Modal/Tab";
 import { Configuration } from "./Configuration";
 import { Help } from "./Help";

@@ -2,7 +2,7 @@ import { FC, useCallback, MouseEvent } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import { AlertStore } from "Stores/AlertStore";
+import type { AlertStore } from "Stores/AlertStore";
 import { QueryOperators, FormatQuery } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { GetClassAndStyle } from "Components/Labels/Utils";

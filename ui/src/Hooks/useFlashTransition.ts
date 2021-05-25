@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, ReactNode } from "react";
 
-import { TransitionProps } from "react-transition-group/Transition";
+import type { TransitionProps } from "react-transition-group/Transition";
 
 import { useInView } from "react-intersection-observer";
 
