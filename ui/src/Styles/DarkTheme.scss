@@ -68,8 +68,8 @@ $accordion-bg: $gray-800;
 $accordion-button-bg: $gray-700;
 $accordion-button-active-bg: $gray-700;
 
-@import "Styles/RebootlessBootstrap";
-@import "~bootswatch/dist/darkly/bootswatch";
+@import "./RebootlessBootstrap";
+@import "bootswatch/dist/darkly/bootswatch";
 
 $alert-bg: $list-group-bg;
 $alert-history-inactive: lighten($gray-700, 2%);
@@ -96,7 +96,7 @@ $input-range-thumb-font-color: $white;
 
 $color-default: #708090;
 
-@import "Styles/Components";
+@import "./Components";
 
 .badge,
 .modal-content {

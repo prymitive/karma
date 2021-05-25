@@ -1,6 +1,6 @@
 import { FC } from "react";
 
-import "Styles/DarkThemeLoader.scss";
+import "./DarkThemeLoader.scss";
 
 const DarkTheme: FC = () => null;
 
