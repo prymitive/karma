@@ -3,10 +3,10 @@ const puppeteer = require("puppeteer");
 let browser;
 let page;
 
+jest.setTimeout(30000);
+
 describe("Demo", () => {
   beforeAll(async () => {
-    jest.setTimeout(30000);
-
     browser = await puppeteer.launch();
   });
 
