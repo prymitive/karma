@@ -1,0 +1,65 @@
+[
+    {
+        "id": "b0bf1aa5-5a8e-444a-aed7-813b0f4fa60a",
+        "status": {
+            "state": "active"
+        },
+        "updatedAt": "2021-05-27T12:19:18.855Z",
+        "comment": "Silenced instance",
+        "createdBy": "john@example.com",
+        "endsAt": "2063-01-01T00:00:00.000Z",
+        "matchers": [
+            {
+                "isEqual": true,
+                "isRegex": false,
+                "name": "instance",
+                "value": "web1"
+            }
+        ],
+        "startsAt": "2021-05-27T12:19:18.855Z"
+    },
+    {
+        "id": "eead8958-9b64-443f-a875-dc991eb04346",
+        "status": {
+            "state": "active"
+        },
+        "updatedAt": "2021-05-27T12:19:18.859Z",
+        "comment": "Silenced Host_Down alerts in the dev cluster",
+        "createdBy": "john@example.com",
+        "endsAt": "2063-01-01T00:00:00.000Z",
+        "matchers": [
+            {
+                "isEqual": true,
+                "isRegex": false,
+                "name": "alertname",
+                "value": "Host_Down"
+            },
+            {
+                "isEqual": true,
+                "isRegex": false,
+                "name": "cluster",
+                "value": "dev"
+            }
+        ],
+        "startsAt": "2021-05-27T12:19:18.859Z"
+    },
+    {
+        "id": "d55ed0e2-d435-45a1-8514-adec7eb0e9c0",
+        "status": {
+            "state": "active"
+        },
+        "updatedAt": "2021-05-27T12:19:18.865Z",
+        "comment": "Silenced server7",
+        "createdBy": "john@example.com",
+        "endsAt": "2063-01-01T00:00:00.000Z",
+        "matchers": [
+            {
+                "isEqual": true,
+                "isRegex": false,
+                "name": "instance",
+                "value": "server7"
+            }
+        ],
+        "startsAt": "2021-05-27T12:19:18.865Z"
+    }
+]
