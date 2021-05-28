@@ -265,12 +265,11 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 		),
 		ZeroFields: true,
 	}
-	kConf := koanf.UnmarshalConf{
+	err = k.UnmarshalWithConf("", &config, koanf.UnmarshalConf{
 		Tag:           "koanf",
 		FlatPaths:     false,
 		DecoderConfig: &dConf,
-	}
-	err = k.UnmarshalWithConf("", &config, kConf)
+	})
 	if err != nil {
 		return "", fmt.Errorf("failed to unmarshal configuration: %v", err)
 	}

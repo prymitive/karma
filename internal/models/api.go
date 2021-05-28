@@ -67,7 +67,7 @@ func (lvsl LabelValueStatsList) Less(i, j int) bool {
 	return lvsl[i].Hits > lvsl[j].Hits
 }
 
-// LabelStats is used in the overview modal, it shows top labels across alerts
+// LabelNameStats is used in the overview modal, it shows top labels across alerts
 type LabelNameStats struct {
 	Name   string              `json:"name"`
 	Values LabelValueStatsList `json:"values"`

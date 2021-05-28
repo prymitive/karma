@@ -30,7 +30,7 @@ type alertmanagerMetrics struct {
 	Errors map[string]float64
 }
 
-type healthCheck struct {
+type HealthCheck struct {
 	filters  []filters.FilterT
 	wasFound bool
 }
@@ -68,7 +68,7 @@ type Alertmanager struct {
 	HTTPHeaders map[string]string
 	// CORS credentials
 	CORSCredentials     string `json:"corsCredentials"`
-	healthchecks        map[string]healthCheck
+	healthchecks        map[string]HealthCheck
 	healthchecksVisible bool
 }
 
@@ -204,10 +204,10 @@ func (am *Alertmanager) pullAlerts(version string) error {
 		return err
 	}
 
-	healthchecks := map[string]healthCheck{}
+	healthchecks := map[string]HealthCheck{}
 	am.lock.RLock()
 	for name, hc := range am.healthchecks {
-		healthchecks[name] = healthCheck{
+		healthchecks[name] = HealthCheck{
 			filters:  hc.filters,
 			wasFound: false,
 		}
@@ -258,7 +258,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			}
 
 			if name, hc := am.IsHealthCheckAlert(&alert); hc != nil {
-				healthchecks[name] = healthCheck{
+				healthchecks[name] = HealthCheck{
 					filters:  hc.filters,
 					wasFound: true,
 				}
@@ -599,7 +599,7 @@ func (am *Alertmanager) IsHealthy() bool {
 	return lastError == ""
 }
 
-func (am *Alertmanager) IsHealthCheckAlert(alert *models.Alert) (string, *healthCheck) {
+func (am *Alertmanager) IsHealthCheckAlert(alert *models.Alert) (string, *HealthCheck) {
 	for name, hc := range am.healthchecks {
 		hc := hc
 		positiveMatch := false

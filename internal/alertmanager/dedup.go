@@ -113,7 +113,7 @@ func DedupAlerts() []models.AlertGroup {
 	return dedupedGroups
 }
 
-// DedupKnownLabels returns a deduplicated slice of all known label names
+// DedupSilences returns a deduplicated slice of all known silences
 func DedupSilences() []models.ManagedSilence {
 	silenceByCluster := map[string]map[string]models.Silence{}
 	upstreams := GetAlertmanagers()
