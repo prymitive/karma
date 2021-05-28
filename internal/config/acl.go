@@ -42,12 +42,12 @@ type SilenceACLRule struct {
 	Matchers SilenceACLMatchersConfig
 }
 
-type silencesACLSchema struct {
+type SilencesACLSchema struct {
 	Rules []SilenceACLRule
 }
 
-func ReadSilenceACLConfig(path string) (*silencesACLSchema, error) {
-	cfg := silencesACLSchema{}
+func ReadSilenceACLConfig(path string) (*SilencesACLSchema, error) {
+	cfg := SilencesACLSchema{}
 
 	f, err := os.Open(path)
 	if err != nil {

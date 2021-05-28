@@ -44,7 +44,7 @@ func NewAlertmanager(cluster, name, upstreamURI string, opts ...Option) (*Alertm
 			},
 		},
 		status:       models.AlertmanagerStatus{},
-		healthchecks: map[string]healthCheck{},
+		healthchecks: map[string]HealthCheck{},
 	}
 
 	for _, opt := range opts {
@@ -176,9 +176,9 @@ func WithCORSCredentials(val string) Option {
 
 func WithHealthchecks(val map[string][]string) Option {
 	return func(am *Alertmanager) error {
-		healthchecks := map[string]healthCheck{}
+		healthchecks := map[string]HealthCheck{}
 		for name, filterExpressions := range val {
-			hc := healthCheck{
+			hc := HealthCheck{
 				filters: []filters.FilterT{},
 			}
 			for _, filterExpression := range filterExpressions {
