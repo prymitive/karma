@@ -89,7 +89,7 @@
     "prettier": "2.3.0",
     "react-scripts": "4.0.3",
     "sass": "1.34.0",
-    "typescript": "4.2.4"
+    "typescript": "4.3.2"
   },
   "scripts": {
     "start": "REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
