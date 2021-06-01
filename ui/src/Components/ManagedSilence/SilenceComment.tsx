@@ -1,7 +1,6 @@
 import type { FC } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
 import type { APISilenceT } from "Models/APITypes";
@@ -35,7 +34,6 @@ const SilenceComment: FC<{
         target="_blank"
         rel="noopener noreferrer"
       >
-        <FontAwesomeIcon className="me-2" icon={faExternalLinkAlt} />
         {silence.ticketID}
       </a>
     ) : (
