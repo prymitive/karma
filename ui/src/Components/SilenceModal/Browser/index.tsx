@@ -147,7 +147,7 @@ const Browser: FC<{
         <Placeholder content="Nothing to show" />
       ) : (
         <>
-          <TransitionGroup component={null} appear enter exit={false}>
+          <TransitionGroup component={null} appear={false} enter exit={false}>
             {response
               .slice((activePage - 1) * maxPerPage, activePage * maxPerPage)
               .map((silence) => (
