@@ -25,6 +25,7 @@ import (
 	"github.com/prymitive/karma/internal/transform"
 	"github.com/prymitive/karma/internal/uri"
 	"github.com/prymitive/karma/ui"
+	"go.uber.org/automaxprocs/maxprocs"
 
 	"github.com/getsentry/sentry-go"
 	sentryhttp "github.com/getsentry/sentry-go/http"
@@ -453,6 +454,10 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	if err != nil {
 		return err
 	}
+
+	_, _ = maxprocs.Set(maxprocs.Logger(func(format string, v ...interface{}) {
+		log.Debug().Msgf(format, v)
+	}))
 
 	if config.Config.History.Enabled {
 		go historyPoller.run(config.Config.History.Workers)
