@@ -28,7 +28,7 @@ const MountedModal = (isOpen: boolean, isUpper?: boolean) => {
 describe("<ModalInner />", () => {
   it("scroll isn't enabled if ref is null", () => {
     const useRefSpy = jest.spyOn(React, "useRef").mockImplementation(() =>
-      Object.defineProperty({}, "current", {
+      Object.defineProperty({} as any, "current", {
         get: () => null,
         set: () => {},
       })
