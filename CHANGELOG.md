@@ -6,6 +6,7 @@
 
 - Use [uber-go/automaxprocs](https://github.com/uber-go/automaxprocs)
   to automatically adjust `GOMAXPROCS` to match Linux container CPU quota.
+  Runtime value of `GOMAXPROCS` is now exported as a `go_max_procs` metric.
 
 ## v0.86
 
