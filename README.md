@@ -262,6 +262,9 @@ Images are built automatically for:
 - release tags in git - `ghcr.io/prymitive/karma:vX.Y.Z`
 - main branch commits - `ghcr.io/prymitive/karma:latest`
 
+_NOTE_ karma uses [uber-go/automaxprocs](https://github.com/uber-go/automaxprocs)
+to automatically adjust `GOMAXPROCS` to match Linux container CPU quota.
+
 #### Examples
 
 To start a release image run:
