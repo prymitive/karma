@@ -19,6 +19,9 @@ go_gc_duration_seconds_count
 # HELP go_goroutines Number of goroutines that currently exist.
 # TYPE go_goroutines gauge
 go_goroutines
+# HELP go_max_procs Value of the GOMAXPROCS setting
+# TYPE go_max_procs gauge
+go_max_procs
 # HELP go_memstats_alloc_bytes Number of bytes allocated and still in use.
 # TYPE go_memstats_alloc_bytes gauge
 go_memstats_alloc_bytes

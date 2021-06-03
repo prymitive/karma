@@ -1,6 +1,8 @@
 package main
 
 import (
+	"runtime"
+
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prymitive/karma/internal/alertmanager"
 )
@@ -11,6 +13,7 @@ type karmaCollector struct {
 	cyclesTotal     *prometheus.Desc
 	errorsTotal     *prometheus.Desc
 	alertmanagerUp  *prometheus.Desc
+	goMaxProcs      *prometheus.Desc
 }
 
 func newKarmaCollector() *karmaCollector {
@@ -45,6 +48,12 @@ func newKarmaCollector() *karmaCollector {
 			[]string{"alertmanager"},
 			prometheus.Labels{},
 		),
+		goMaxProcs: prometheus.NewDesc(
+			"go_max_procs",
+			"Value of the GOMAXPROCS setting",
+			[]string{},
+			prometheus.Labels{},
+		),
 	}
 }
 
@@ -54,6 +63,7 @@ func (c *karmaCollector) Describe(ch chan<- *prometheus.Desc) {
 	ch <- c.cyclesTotal
 	ch <- c.errorsTotal
 	ch <- c.alertmanagerUp
+	ch <- c.goMaxProcs
 }
 
 func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
@@ -133,6 +143,12 @@ func (c *karmaCollector) Collect(ch chan<- prometheus.Metric) {
 			am.Name,
 		)
 	}
+
+	ch <- prometheus.MustNewConstMetric(
+		c.goMaxProcs,
+		prometheus.GaugeValue,
+		float64(runtime.GOMAXPROCS(0)),
+	)
 }
 
 func init() {
