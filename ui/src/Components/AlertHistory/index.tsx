@@ -27,8 +27,9 @@ export const AlertHistory: FC<{ group: APIAlertGroupT }> = ({ group }) => {
   const [upstreams, setUpstreams] = useState<UpstreamT[]>([]);
   const [labels] = useState({ ...group.labels, ...group.shared.labels });
   const { response, error } = useFetchAny<HistoryResponseT>(upstreams);
-  const [cachedResponse, setCachedResponse] =
-    useState<HistoryResponseT | null>(null);
+  const [cachedResponse, setCachedResponse] = useState<HistoryResponseT | null>(
+    null
+  );
   const [minMaxValue, setMinMaxValue] = useState<minMaxT>({
     minValue: 0,
     maxValue: 0,
