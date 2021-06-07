@@ -21,19 +21,17 @@ require (
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/hashicorp/golang-lru v0.5.4
 	github.com/jarcoal/httpmock v1.0.8
-	github.com/json-iterator/go v1.1.11 // indirect
 	github.com/knadh/koanf v1.1.0
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mitchellh/mapstructure v1.4.1
 	github.com/pmezard/go-difflib v1.0.0
-	github.com/prometheus/client_golang v1.10.0
+	github.com/prometheus/client_golang v1.11.0
 	github.com/prometheus/common v0.27.0
 	github.com/rogpeppe/go-internal v1.8.0
 	github.com/rs/zerolog v1.22.0
 	github.com/spf13/pflag v1.0.5
 	go.mongodb.org/mongo-driver v1.5.2 // indirect
 	go.uber.org/automaxprocs v1.4.0
-	golang.org/x/sys v0.0.0-20210531080801-fdfd190a6549 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
