@@ -96,6 +96,7 @@ type APIAlertGroupSharedMaps struct {
 	Labels      map[string]string   `json:"labels"`
 	Silences    map[string][]string `json:"silences"`
 	Sources     []string            `json:"sources"`
+	Clusters    map[string]int      `json:"clusters"`
 }
 
 // APIAlertGroup is how AlertGroup is returned in the API response
@@ -265,6 +266,18 @@ func (ag *APIAlertGroup) dedupSources() {
 	sort.Strings(ag.Shared.Sources)
 }
 
+func (ag *APIAlertGroup) dedupClusters() {
+	ag.Shared.Clusters = map[string]int{}
+	for _, alert := range ag.Alerts {
+		for _, am := range alert.Alertmanager {
+			if _, ok := ag.Shared.Clusters[am.Cluster]; !ok {
+				ag.Shared.Clusters[am.Cluster] = 0
+			}
+			ag.Shared.Clusters[am.Cluster]++
+		}
+	}
+}
+
 // DedupSharedMaps will find all labels and annotations shared by all alerts
 // in this group and moved them to Shared namespace
 func (ag *APIAlertGroup) DedupSharedMaps() {
@@ -283,6 +296,7 @@ func (ag *APIAlertGroup) DedupSharedMaps() {
 		}
 	}
 	ag.dedupSources()
+	ag.dedupClusters()
 }
 
 // GridSettings exposes all grid settings from the config file
