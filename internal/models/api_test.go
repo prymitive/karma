@@ -15,6 +15,7 @@ func TestDedupSharedMaps(t *testing.T) {
 		Fingerprint: "1",
 		Name:        "am",
 		Cluster:     "fakeCluster",
+		Source:      "https://am.example.com/graph",
 		SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
 		Source:      "https://am.example.com/graph",
 	}
