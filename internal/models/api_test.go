@@ -233,7 +233,10 @@ func TestDedupSharedMaps(t *testing.T) {
     },
     "sources": [
       "https://am.example.com"
-    ]
+    ],
+    "clusters": {
+      "fakeCluster": 6
+    }
   }
 }`
 
