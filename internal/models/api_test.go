@@ -15,6 +15,7 @@ func TestDedupSharedMaps(t *testing.T) {
 		Fingerprint: "1",
 		Name:        "am",
 		Cluster:     "fakeCluster",
+		Source:      "https://am.example.com/graph",
 		SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
 	}
 	ag := models.APIAlertGroup{
@@ -115,7 +116,10 @@ func TestDedupSharedMaps(t *testing.T) {
         "fakeSilence1",
         "fakeSilence2"
       ]
-    }
+    },
+    "sources": [
+      "https://am.example.com"
+    ]
   }
 }`
 
