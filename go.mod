@@ -12,6 +12,7 @@ require (
 	github.com/go-chi/cors v1.2.0
 	github.com/go-openapi/analysis v0.20.1 // indirect
 	github.com/go-openapi/errors v0.20.0
+	github.com/go-openapi/jsonreference v0.19.6 // indirect
 	github.com/go-openapi/runtime v0.19.29
 	github.com/go-openapi/strfmt v0.20.1
 	github.com/go-openapi/swag v0.19.15
@@ -30,8 +31,9 @@ require (
 	github.com/rogpeppe/go-internal v1.8.0
 	github.com/rs/zerolog v1.22.0
 	github.com/spf13/pflag v1.0.5
-	go.mongodb.org/mongo-driver v1.5.2 // indirect
+	go.mongodb.org/mongo-driver v1.5.3 // indirect
 	go.uber.org/automaxprocs v1.4.0
+	golang.org/x/sys v0.0.0-20210603125802-9665404d3644 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
