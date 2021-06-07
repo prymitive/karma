@@ -274,6 +274,10 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 				// only for alerts left after filtering
 				alert.UpdateFingerprints()
 
+				if alert.LabelsFP == "" {
+					panic("Got empty FP on alert")
+				}
+
 				agCopy, found := perGridAlertGroup[alertGridLabelValue]
 				if !found {
 					agCopy = &models.AlertGroup{
@@ -639,5 +643,66 @@ func silences(w http.ResponseWriter, r *http.Request) {
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
+	_, _ = w.Write(data.([]byte))
+}
+
+func alertByID(w http.ResponseWriter, r *http.Request) {
+	noCache(w)
+
+	gid, found := lookupQueryString(r, "group")
+	if !found || gid == "" {
+		badRequestJSON(w, "missing group=<alertID> parameter")
+		return
+	}
+
+	aid, found := lookupQueryString(r, "alert")
+	if !found || aid == "" {
+		badRequestJSON(w, "missing alert=<alertID> parameter")
+		return
+	}
+
+	// use full URI (including query args) as cache key
+	cacheKey := r.RequestURI
+
+	data, found := apiCache.Get(cacheKey)
+	if found {
+		r := bytes.NewReader(data.([]byte))
+		rawData, _ := decompressCachedResponse(r)
+		mimeJSON(w)
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write(rawData)
+		return
+	}
+
+	dedupedAlerts := alertmanager.DedupAlerts()
+	for _, ag := range dedupedAlerts {
+		if ag.ID != gid {
+			continue
+		}
+
+		apiAG := models.APIAlertGroup{AlertGroup: ag}
+		apiAG.DedupSharedMaps()
+
+		for _, alert := range apiAG.Alerts {
+			alert := alert
+
+			if alert.LabelsFP != aid {
+				continue
+			}
+
+			data, _ = json.Marshal(alert)
+			compressedData, _ := compressResponse(data.([]byte), nil)
+			_ = apiCache.Add(cacheKey, compressedData)
+
+			mimeJSON(w)
+			w.WriteHeader(http.StatusOK)
+			_, _ = w.Write(data.([]byte))
+			return
+		}
+	}
+
+	mimeJSON(w)
+	w.WriteHeader(http.StatusOK)
+	data, _ = json.Marshal(models.Alert{})
 	_, _ = w.Write(data.([]byte))
 }

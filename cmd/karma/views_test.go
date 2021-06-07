@@ -280,17 +280,31 @@ func TestAlerts(t *testing.T) {
 			}
 			for _, ag := range ur.Grids[0].AlertGroups {
 				for _, a := range ag.Alerts {
+					req := httptest.NewRequest("GET", fmt.Sprintf("/alert.json?group=%s&alert=%s", ag.ID, a.LabelsFP), nil)
+					resp := httptest.NewRecorder()
+					r.ServeHTTP(resp, req)
+					if resp.Code != http.StatusOK {
+						t.Errorf("GET /alert.json returned status %d", resp.Code)
+						continue
+					}
+					ar := models.Alert{}
+					err := json.Unmarshal(resp.Body.Bytes(), &ar)
+					if err != nil {
+						t.Errorf("Failed to unmarshal response: %s", err)
+						continue
+					}
+
 					linkCount := 0
-					for _, annotation := range a.Annotations {
+					for _, annotation := range ar.Annotations {
 						if annotation.IsLink {
 							linkCount++
 						}
 					}
 					if linkCount != 1 {
-						t.Errorf("Invalid number of links, got %d, expected 1, %v", linkCount, a)
+						t.Errorf("Invalid number of links, got %d, expected 1, %v", linkCount, ar)
 					}
-					if len(a.Alertmanager) == 0 {
-						t.Errorf("Alertmanager instance list is empty, %v", a)
+					if len(ar.Alertmanager) == 0 {
+						t.Errorf("Alertmanager instance list is empty, %v", ar)
 					}
 				}
 			}
@@ -478,11 +492,25 @@ func TestValidateAllAlerts(t *testing.T) {
 			}
 			for _, ag := range ur.Grids[0].AlertGroups {
 				for _, a := range ag.Alerts {
-					if !slices.StringInSlice(models.AlertStateList, a.State) {
-						t.Errorf("Invalid alert status '%s', not in %v", a.State, models.AlertStateList)
+					req := httptest.NewRequest("GET", fmt.Sprintf("/alert.json?group=%s&alert=%s", ag.ID, a.LabelsFP), nil)
+					resp := httptest.NewRecorder()
+					r.ServeHTTP(resp, req)
+					if resp.Code != http.StatusOK {
+						t.Errorf("GET /alert.json returned status %d", resp.Code)
+						continue
 					}
-					if len(a.Alertmanager) == 0 {
-						t.Errorf("Alertmanager instance list is empty, %v", a)
+					ar := models.Alert{}
+					err := json.Unmarshal(resp.Body.Bytes(), &ar)
+					if err != nil {
+						t.Errorf("Failed to unmarshal response: %s", err)
+						continue
+					}
+
+					if !slices.StringInSlice(models.AlertStateList, ar.State) {
+						t.Errorf("Invalid alert status '%s', not in %v", ar.State, models.AlertStateList)
+					}
+					if len(ar.Alertmanager) == 0 {
+						t.Errorf("Alertmanager instance list is empty, %v", ar)
 					}
 				}
 			}
@@ -2840,6 +2868,42 @@ func TestAutoGrid(t *testing.T) {
 					if g.LabelName != tc.gridLabel {
 						t.Errorf("[%s] Got grid using label %s=%s, expected %s", tc.q, g.LabelName, g.LabelValue, tc.gridLabel)
 					}
+				}
+			}
+		}
+	}
+}
+
+func TestAlert(t *testing.T) {
+	type testCaseT struct {
+		args string
+		code int
+	}
+
+	testCases := []testCaseT{
+		{args: "", code: 400},
+		{args: "alert=", code: 400},
+		{args: "group=", code: 400},
+		{args: "alert=&group=", code: 400},
+		{args: "alert=xxx&group=", code: 400},
+		{args: "alert=&group=xxx", code: 400},
+		{args: "alert=xxx&group=xxx", code: 200},
+	}
+
+	mockConfig()
+	for _, tc := range testCases {
+		for _, version := range mock.ListAllMocks() {
+			t.Logf("Testing alerts using mock files from Alertmanager %s", version)
+			mockAlerts(version)
+			r := testRouter()
+			setupRouter(r, nil)
+			// re-run a few times to test the cache
+			for i := 1; i <= 3; i++ {
+				req := httptest.NewRequest("GET", "/alert.json?"+tc.args, nil)
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != tc.code {
+					t.Errorf("GET /alert.json returned status %d, expected %d", resp.Code, tc.code)
 				}
 			}
 		}

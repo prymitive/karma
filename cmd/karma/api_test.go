@@ -970,20 +970,6 @@ func testAlertGroup(version string, t *testing.T, testCase groupTest, group mode
 		t.Errorf("[%s] Expected %d alert(s) but got %d on alert group receiver='%s' labels=%v",
 			version, len(testCase.alerts), len(group.Alerts), testCase.receiver, testCase.labels)
 	}
-	for _, expectedAlert := range testCase.alerts {
-		alertFound := false
-		for _, alert := range group.Alerts {
-			match := compareAlerts(expectedAlert, alert)
-			if match {
-				alertFound = true
-				testAlert(version, t, expectedAlert, alert)
-			}
-		}
-		if !alertFound {
-			t.Errorf("[%s] Expected alert receiver='%s' labels=%v not found in group: %v",
-				version, expectedAlert.Receiver, expectedAlert.Labels, group.Alerts)
-		}
-	}
 }
 
 func TestVerifyAllGroups(t *testing.T) {
@@ -1017,6 +1003,35 @@ func TestVerifyAllGroups(t *testing.T) {
 				if compareAlertGroups(testCase, group) {
 					groupFound = true
 					testAlertGroup(version, t, testCase, group)
+
+					for _, expectedAlert := range testCase.alerts {
+						alertFound := false
+						for _, alert := range group.Alerts {
+							req := httptest.NewRequest("GET", fmt.Sprintf("/alert.json?group=%s&alert=%s", group.ID, alert.LabelsFP), nil)
+							resp := httptest.NewRecorder()
+							r.ServeHTTP(resp, req)
+							if resp.Code != http.StatusOK {
+								t.Errorf("GET /alert.json returned status %d", resp.Code)
+								continue
+							}
+							ar := models.Alert{}
+							err := json.Unmarshal(resp.Body.Bytes(), &ar)
+							if err != nil {
+								t.Errorf("Failed to unmarshal response: %s", err)
+								continue
+							}
+
+							match := compareAlerts(expectedAlert, ar)
+							if match {
+								alertFound = true
+								testAlert(version, t, expectedAlert, ar)
+							}
+						}
+						if !alertFound {
+							t.Errorf("[%s] Expected alert receiver='%s' labels=%v not found in group: %v",
+								version, expectedAlert.Receiver, expectedAlert.Labels, group.Alerts)
+						}
+					}
 				}
 			}
 			if !groupFound {
@@ -1274,7 +1289,21 @@ func TestSortOrder(t *testing.T) {
 							values = append(values, v)
 						} else {
 							for _, alert := range ag.Alerts {
-								v = alert.Labels[testCase.expectedLabel]
+								req := httptest.NewRequest("GET", fmt.Sprintf("/alert.json?group=%s&alert=%s", ag.ID, alert.LabelsFP), nil)
+								resp := httptest.NewRecorder()
+								r.ServeHTTP(resp, req)
+								if resp.Code != http.StatusOK {
+									t.Errorf("GET /alert.json returned status %d", resp.Code)
+									continue
+								}
+								ar := models.Alert{}
+								err := json.Unmarshal(resp.Body.Bytes(), &ar)
+								if err != nil {
+									t.Errorf("Failed to unmarshal response: %s", err)
+									continue
+								}
+
+								v = ar.Labels[testCase.expectedLabel]
 								values = append(values, v)
 							}
 						}

@@ -2,12 +2,18 @@ package models
 
 import (
 	"crypto/sha1"
+	"encoding/json"
 	"fmt"
 	"io"
 	"time"
 
 	"github.com/cnf/structhash"
 )
+
+type APIAlert struct {
+	ID   string `json:"id"`
+	Hash string `json:"hash"`
+}
 
 // AlertList is flat list of karmaAlert objects
 type AlertList []Alert
@@ -29,6 +35,25 @@ func (a AlertList) Less(i, j int) bool {
 		return false
 	}
 	return a[i].LabelsFingerprint() < a[j].LabelsFingerprint()
+}
+
+func (a AlertList) MarshalJSON() ([]byte, error) {
+	ids := make([]APIAlert, 0, len(a))
+	for _, alert := range a {
+		ids = append(ids, APIAlert{ID: alert.LabelsFP, Hash: alert.contentFP})
+	}
+	return json.Marshal(ids)
+}
+
+func (a *AlertList) UnmarshalJSON(data []byte) error {
+	var alerts []APIAlert
+	if err := json.Unmarshal(data, &alerts); err != nil {
+		return err
+	}
+	for _, alert := range alerts {
+		*a = append(*a, Alert{LabelsFP: alert.ID, contentFP: alert.Hash})
+	}
+	return nil
 }
 
 // AlertGroup is vanilla Alertmanager group, but alerts are flattened

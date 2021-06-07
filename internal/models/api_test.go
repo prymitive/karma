@@ -84,129 +84,16 @@ func TestDedupSharedMaps(t *testing.T) {
   },
   "alerts": [
     {
-      "annotations": [
-        {
-          "name": "foo",
-          "value": "bar",
-          "visible": false,
-          "isLink": false,
-          "isAction": false
-        }
-      ],
-      "labels": {
-        "instance": "1",
-        "job": "node_exporter"
-      },
-      "startsAt": "0001-01-01T00:00:00Z",
-      "state": "suppressed",
-      "alertmanager": [
-        {
-          "fingerprint": "1",
-          "name": "am",
-          "cluster": "fakeCluster",
-          "state": "",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        },
-        {
-          "fingerprint": "1",
-          "name": "am",
-          "cluster": "fakeCluster",
-          "state": "",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        }
-      ],
-      "receiver": "",
-      "id": ""
+      "id": "",
+      "hash": ""
     },
     {
-      "annotations": [],
-      "labels": {
-        "instance": "2",
-        "job": "node_exporter"
-      },
-      "startsAt": "0001-01-01T00:00:00Z",
-      "state": "suppressed",
-      "alertmanager": [
-        {
-          "fingerprint": "1",
-          "name": "am",
-          "cluster": "fakeCluster",
-          "state": "",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        },
-        {
-          "fingerprint": "1",
-          "name": "am",
-          "cluster": "fakeCluster",
-          "state": "",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        }
-      ],
-      "receiver": "",
-      "id": ""
+      "id": "",
+      "hash": ""
     },
     {
-      "annotations": [],
-      "labels": {
-        "instance": "3",
-        "job": "blackbox"
-      },
-      "startsAt": "0001-01-01T00:00:00Z",
-      "state": "suppressed",
-      "alertmanager": [
-        {
-          "fingerprint": "1",
-          "name": "am",
-          "cluster": "fakeCluster",
-          "state": "",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        },
-        {
-          "fingerprint": "1",
-          "name": "am",
-          "cluster": "fakeCluster",
-          "state": "",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        }
-      ],
-      "receiver": "",
-      "id": ""
+      "id": "",
+      "hash": ""
     }
   ],
   "id": "",
