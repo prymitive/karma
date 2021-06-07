@@ -7,10 +7,13 @@ import {
   ReactSelectColors,
   ReactSelectStyles,
 } from "Components/Theme/ReactSelect";
+import { FetchRetryConfig } from "Common/Fetch";
 
 import { config } from "react-transition-group";
 
 config.disabled = true;
+
+FetchRetryConfig.retries = 0;
 
 // mock date so the silence form always shows same preview
 advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 36, 40)));
