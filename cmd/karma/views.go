@@ -706,3 +706,58 @@ func alertByID(w http.ResponseWriter, r *http.Request) {
 	data, _ = json.Marshal(models.Alert{})
 	_, _ = w.Write(data.([]byte))
 }
+
+type GridLabelsGroup struct {
+	ID     string   `json:"id"`
+	Alerts []string `json:"alerts"`
+}
+
+type GridLabelsRequest struct {
+	Groups []GridLabelsGroup `json:"groups"`
+}
+
+func gridLabels(w http.ResponseWriter, r *http.Request) {
+	noCache(w)
+
+	var payload GridLabelsRequest
+	err := json.NewDecoder(r.Body).Decode(&payload)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	labelMap := map[string]struct{}{}
+
+	dedupedAlerts := alertmanager.DedupAlerts()
+	for _, g := range payload.Groups {
+		for _, ag := range dedupedAlerts {
+			if ag.ID == g.ID {
+				for k := range ag.Labels {
+					labelMap[k] = struct{}{}
+				}
+				for _, aid := range g.Alerts {
+					for _, a := range ag.Alerts {
+						if a.LabelsFP == aid {
+							for k := range a.Labels {
+								labelMap[k] = struct{}{}
+							}
+							break
+						}
+					}
+				}
+				break
+			}
+		}
+	}
+
+	labels := make([]string, 0, len(labelMap))
+	for k := range labelMap {
+		labels = append(labels, k)
+	}
+	sort.Strings(labels)
+
+	mimeJSON(w)
+	w.WriteHeader(http.StatusOK)
+	data, _ := json.Marshal(labels)
+	_, _ = w.Write(data)
+}
