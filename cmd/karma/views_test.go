@@ -2845,3 +2845,91 @@ func TestAutoGrid(t *testing.T) {
 		}
 	}
 }
+
+func TestGridLabels(t *testing.T) {
+	type testCaseT struct {
+		payload []byte
+		code    int
+		labels  []string
+	}
+
+	mockConfig()
+	for _, version := range mock.ListAllMocks() {
+		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
+		mockAlerts(version)
+
+		alerts := alertmanager.DedupAlerts()
+
+		var ag1 *models.AlertGroup
+		var al1 []string
+
+		for _, ag := range alerts {
+			if ag.Labels["alertname"] == "Host_Down" {
+				ag1 = &ag
+				break
+			}
+		}
+		for _, alert := range ag1.Alerts {
+			al1 = append(al1, alert.LabelsFP)
+		}
+
+		testCases := []testCaseT{
+			{
+				payload: []byte("xxx"),
+				code:    http.StatusBadRequest,
+				labels:  []string{},
+			},
+			{
+				payload: nil,
+				code:    http.StatusBadRequest,
+				labels:  []string{},
+			},
+			{
+				payload: func() []byte {
+					b, _ := json.Marshal(GridLabelsRequest{Groups: []GridLabelsGroup{}})
+					return b
+				}(),
+				code:   http.StatusOK,
+				labels: []string{},
+			},
+			{
+				payload: func() []byte {
+					b, _ := json.Marshal(GridLabelsRequest{Groups: []GridLabelsGroup{
+						{
+							ID:     ag1.ID,
+							Alerts: al1,
+						},
+					}})
+					return b
+				}(),
+				code:   http.StatusOK,
+				labels: []string{"alertname", "cluster", "instance", "ip", "job"},
+			},
+		}
+		for _, tc := range testCases {
+			r := testRouter()
+			setupRouter(r, nil)
+			// re-run a few times to test the cache
+			for i := 1; i <= 3; i++ {
+				req := httptest.NewRequest("POST", "/gridLabels.json", bytes.NewReader(tc.payload))
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != tc.code {
+					t.Errorf("GET /gridLabels.json returned status %d, expected %d", resp.Code, tc.code)
+				}
+				if resp.Code != http.StatusOK {
+					continue
+				}
+
+				ur := []string{}
+				err := json.Unmarshal(resp.Body.Bytes(), &ur)
+				if err != nil {
+					t.Errorf("Failed to unmarshal response: %s", err)
+				}
+				if diff := cmp.Diff(tc.labels, ur); diff != "" {
+					t.Errorf("Wrong grid labels returned (-want +got):\n%s", diff)
+				}
+			}
+		}
+	}
+}

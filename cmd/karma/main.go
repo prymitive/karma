@@ -145,6 +145,7 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 	router.Post(getViewURL("/history.json"), func(w http.ResponseWriter, r *http.Request) {
 		alertHistory(historyPoller, w, r)
 	})
+	router.Post(getViewURL("/gridLabels.json"), gridLabels)
 
 	router.Get(getViewURL("/custom.css"), serveFileOr404(config.Config.Custom.CSS, "text/css"))
 	router.Get(getViewURL("/custom.js"), serveFileOr404(config.Config.Custom.JS, "application/javascript"))
