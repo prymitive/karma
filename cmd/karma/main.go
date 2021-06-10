@@ -139,6 +139,7 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 	}))
 	router.Get(getViewURL("/alerts.json"), alerts)
 	router.Get(getViewURL("/alert.json"), alertByID)
+	router.Get(getViewURL("/alertList.json"), alertList)
 	router.Get(getViewURL("/autocomplete.json"), autocomplete)
 	router.Get(getViewURL("/labelNames.json"), knownLabelNames)
 	router.Get(getViewURL("/labelValues.json"), knownLabelValues)
