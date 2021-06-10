@@ -2933,3 +2933,206 @@ func TestGridLabels(t *testing.T) {
 		}
 	}
 }
+
+func TestAlertList(t *testing.T) {
+	type testCaseT struct {
+		args   string
+		alerts AlertList
+	}
+
+	testCases := []testCaseT{
+		{
+			args: "",
+			alerts: AlertList{
+				Alerts: []map[string]string{
+					{
+						"alertname": "Free_Disk_Space_Too_Low",
+						"cluster":   "staging",
+						"disk":      "sda",
+						"instance":  "server5",
+						"job":       "node_exporter",
+					},
+					{
+						"alertname": "HTTP_Probe_Failed",
+						"cluster":   "dev",
+						"instance":  "web1",
+						"job":       "node_exporter",
+					},
+					{
+						"alertname": "HTTP_Probe_Failed",
+						"cluster":   "dev",
+						"instance":  "web2",
+						"job":       "node_exporter",
+					},
+					{
+						"alertname": "Host_Down",
+						"cluster":   "dev",
+						"instance":  "server6",
+						"ip":        "127.0.0.6",
+						"job":       "node_ping",
+					},
+					{
+						"alertname": "Host_Down",
+						"cluster":   "dev",
+						"instance":  "server7",
+						"ip":        "127.0.0.7",
+						"job":       "node_ping",
+					},
+					{
+						"alertname": "Host_Down",
+						"cluster":   "dev",
+						"instance":  "server8",
+						"ip":        "127.0.0.8",
+						"job":       "node_ping",
+					},
+					{
+						"alertname": "Host_Down",
+						"cluster":   "prod",
+						"instance":  "server1",
+						"ip":        "127.0.0.1",
+						"job":       "node_ping",
+					},
+					{
+						"alertname": "Host_Down",
+						"cluster":   "prod",
+						"instance":  "server2",
+						"ip":        "127.0.0.2",
+						"job":       "node_ping",
+					},
+					{
+						"alertname": "Host_Down",
+						"cluster":   "staging",
+						"instance":  "server3",
+						"ip":        "127.0.0.3",
+						"job":       "node_ping",
+					},
+					{
+						"alertname": "Host_Down",
+						"cluster":   "staging",
+						"instance":  "server4",
+						"ip":        "127.0.0.4",
+						"job":       "node_ping",
+					},
+					{
+						"alertname": "Host_Down",
+						"cluster":   "staging",
+						"instance":  "server5",
+						"ip":        "127.0.0.5",
+						"job":       "node_ping",
+					},
+					{
+						"alertname": "Memory_Usage_Too_High",
+						"cluster":   "prod",
+						"instance":  "server2",
+						"job":       "node_exporter",
+					},
+				},
+			},
+		},
+		{
+			args: "q=alertname=Free_Disk_Space_Too_Low",
+			alerts: AlertList{
+				Alerts: []map[string]string{
+					{
+						"alertname": "Free_Disk_Space_Too_Low",
+						"cluster":   "staging",
+						"disk":      "sda",
+						"instance":  "server5",
+						"job":       "node_exporter",
+					},
+				},
+			},
+		},
+		{
+			args: "q=alertname=HTTP_Probe_Failed",
+			alerts: AlertList{
+				Alerts: []map[string]string{
+					{
+						"alertname": "HTTP_Probe_Failed",
+						"cluster":   "dev",
+						"instance":  "web1",
+						"job":       "node_exporter",
+					},
+					{
+						"alertname": "HTTP_Probe_Failed",
+						"cluster":   "dev",
+						"instance":  "web2",
+						"job":       "node_exporter",
+					},
+				},
+			},
+		},
+		{
+			args: "q=instance=server2",
+			alerts: AlertList{
+				Alerts: []map[string]string{
+					{
+						"alertname": "Host_Down",
+						"cluster":   "prod",
+						"instance":  "server2",
+						"ip":        "127.0.0.2",
+						"job":       "node_ping",
+					},
+					{
+						"alertname": "Memory_Usage_Too_High",
+						"cluster":   "prod",
+						"instance":  "server2",
+						"job":       "node_exporter",
+					},
+				},
+			},
+		},
+		{
+			args: "q=alertname=Host_Down&q=cluster=prod",
+			alerts: AlertList{
+				Alerts: []map[string]string{
+					{
+						"alertname": "Host_Down",
+						"cluster":   "prod",
+						"instance":  "server1",
+						"ip":        "127.0.0.1",
+						"job":       "node_ping",
+					},
+					{
+						"alertname": "Host_Down",
+						"cluster":   "prod",
+						"instance":  "server2",
+						"ip":        "127.0.0.2",
+						"job":       "node_ping",
+					},
+				},
+			},
+		},
+	}
+
+	mockConfig()
+	for _, tc := range testCases {
+		for _, version := range mock.ListAllMocks() {
+			t.Run(fmt.Sprintf("%s:%s", version, tc.args), func(t *testing.T) {
+				t.Logf("Testing alerts using mock files from Alertmanager %s", version)
+				mockAlerts(version)
+				r := testRouter()
+				setupRouter(r, nil)
+				// re-run a few times to test the cache
+				for i := 1; i <= 3; i++ {
+					req := httptest.NewRequest("GET", "/alertList.json?"+tc.args, nil)
+					resp := httptest.NewRecorder()
+					r.ServeHTTP(resp, req)
+					if resp.Code != http.StatusOK {
+						t.Errorf("GET /alertList.json returned status %d", resp.Code)
+					}
+
+					ur := AlertList{}
+					err := json.Unmarshal(resp.Body.Bytes(), &ur)
+					if err != nil {
+						t.Errorf("Failed to unmarshal response: %s", err)
+					}
+					if diff := cmp.Diff(tc.alerts, ur); diff != "" {
+						t.Errorf("Wrong alert list returned (-want +got):\n%s", diff)
+					}
+				}
+			})
+			break
+		}
+	}
+}
