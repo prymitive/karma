@@ -3136,3 +3136,117 @@ func TestAlertList(t *testing.T) {
 		}
 	}
 }
+
+func TestGroupAlerts(t *testing.T) {
+	type testCaseT struct {
+		payload []byte
+		code    int
+		labels  []map[string]string
+	}
+
+	mockConfig()
+	for _, version := range mock.ListAllMocks() {
+		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
+		mockAlerts(version)
+
+		alerts := alertmanager.DedupAlerts()
+
+		var ag1 *models.AlertGroup
+		var al1 []string
+
+		for _, ag := range alerts {
+			if ag.Labels["alertname"] == "Host_Down" && ag.Labels["cluster"] == "staging" {
+				ag1 = &ag
+				break
+			}
+		}
+		for _, alert := range ag1.Alerts {
+			al1 = append(al1, alert.LabelsFP)
+		}
+
+		testCases := []testCaseT{
+			{
+				payload: []byte("xxx"),
+				code:    http.StatusBadRequest,
+				labels:  []map[string]string{},
+			},
+			{
+				payload: nil,
+				code:    http.StatusBadRequest,
+				labels:  []map[string]string{},
+			},
+			{
+				payload: func() []byte {
+					b, _ := json.Marshal(GridLabelsRequest{Groups: []GridLabelsGroup{}})
+					return b
+				}(),
+				code:   http.StatusOK,
+				labels: []map[string]string{},
+			},
+			{
+				payload: func() []byte {
+					b, _ := json.Marshal(GroupAlertsRequest{
+						ID:     ag1.ID,
+						Alerts: al1,
+					})
+					return b
+				}(),
+				code: http.StatusOK,
+				labels: []map[string]string{
+					{
+						"alertname": "Host_Down",
+						"cluster":   "staging",
+						"instance":  "server3",
+						"ip":        "127.0.0.3",
+						"job":       "node_ping",
+					},
+					{
+						"alertname": "Host_Down",
+						"cluster":   "staging",
+						"instance":  "server4",
+						"ip":        "127.0.0.4",
+						"job":       "node_ping",
+					},
+					{
+						"alertname": "Host_Down",
+						"cluster":   "staging",
+						"instance":  "server5",
+						"ip":        "127.0.0.5",
+						"job":       "node_ping",
+					},
+				},
+			},
+		}
+		for _, tc := range testCases {
+			r := testRouter()
+			setupRouter(r, nil)
+			// re-run a few times to test the cache
+			for i := 1; i <= 3; i++ {
+				req := httptest.NewRequest("POST", "/groupAlerts.json", bytes.NewReader(tc.payload))
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != tc.code {
+					t.Errorf("GET /groupAlerts.json returned status %d, expected %d", resp.Code, tc.code)
+				}
+				if resp.Code != http.StatusOK {
+					continue
+				}
+
+				ur := []models.Alert{}
+				err := json.Unmarshal(resp.Body.Bytes(), &ur)
+				if err != nil {
+					t.Errorf("Failed to unmarshal response: %s", err)
+				}
+				labels := []map[string]string{}
+				for _, alert := range ur {
+					labels = append(labels, alert.Labels)
+				}
+				sortSliceOfLabels(labels, []string{"alertname", "instance"}, "alertname")
+
+				if diff := cmp.Diff(tc.labels, labels); diff != "" {
+					t.Errorf("Wrong alert labels returned (-want +got):\n%s", diff)
+				}
+			}
+		}
+	}
+}

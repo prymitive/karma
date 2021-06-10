@@ -644,6 +644,46 @@ func silences(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write(data.([]byte))
 }
 
+type GroupAlertsRequest struct {
+	ID     string   `json:"id"`
+	Alerts []string `json:"alerts"`
+}
+
+func groupAlerts(w http.ResponseWriter, r *http.Request) {
+	noCache(w)
+
+	var payload GroupAlertsRequest
+	err := json.NewDecoder(r.Body).Decode(&payload)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	alerts := []models.Alert{}
+
+	dedupedAlerts := alertmanager.DedupAlerts()
+	for _, ag := range dedupedAlerts {
+		if ag.ID != payload.ID {
+			continue
+		}
+		for _, alert := range ag.Alerts {
+			alert := alert
+			for _, aid := range payload.Alerts {
+				if alert.LabelsFP == aid {
+					alerts = append(alerts, alert)
+					break
+				}
+			}
+
+		}
+	}
+
+	mimeJSON(w)
+	w.WriteHeader(http.StatusOK)
+	data, _ := json.Marshal(alerts)
+	_, _ = w.Write(data)
+}
+
 type GridLabelsGroup struct {
 	ID     string   `json:"id"`
 	Alerts []string `json:"alerts"`
@@ -755,20 +795,7 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 	for _, labels := range labelMap {
 		al.Alerts = append(al.Alerts, labels)
 	}
-	sort.Slice(al.Alerts, func(i, j int) bool {
-		for _, k := range sortKeys {
-			if al.Alerts[i][k] != "" && al.Alerts[j][k] == "" {
-				return true
-			}
-			if al.Alerts[i][k] == "" && al.Alerts[j][k] != "" {
-				return false
-			}
-			if al.Alerts[i][k] != al.Alerts[j][k] {
-				return sortorder.NaturalLess(al.Alerts[i][k], al.Alerts[j][k])
-			}
-		}
-		return sortorder.NaturalLess(al.Alerts[i]["alertname"], al.Alerts[j]["alertname"])
-	})
+	sortSliceOfLabels(al.Alerts, sortKeys, "alertname")
 
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
@@ -776,4 +803,21 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 	compressedData, _ := compressResponse(data, nil)
 	_ = apiCache.Add(cacheKey, compressedData)
 	_, _ = w.Write(data)
+}
+
+func sortSliceOfLabels(labels []map[string]string, sortKeys []string, fallback string) {
+	sort.Slice(labels, func(i, j int) bool {
+		for _, k := range sortKeys {
+			if labels[i][k] != "" && labels[j][k] == "" {
+				return true
+			}
+			if labels[i][k] == "" && labels[j][k] != "" {
+				return false
+			}
+			if labels[i][k] != labels[j][k] {
+				return sortorder.NaturalLess(labels[i][k], labels[j][k])
+			}
+		}
+		return sortorder.NaturalLess(labels[i][fallback], labels[j][fallback])
+	})
 }
