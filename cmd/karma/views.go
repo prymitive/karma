@@ -12,6 +12,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cnf/structhash"
+	"github.com/fvbommel/sortorder"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
@@ -660,4 +662,87 @@ func silences(w http.ResponseWriter, r *http.Request) {
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write(data.([]byte))
+}
+
+type AlertList struct {
+	Alerts []map[string]string `json:"alerts"`
+}
+
+func alertList(w http.ResponseWriter, r *http.Request) {
+	noCache(w)
+
+	// use full URI (including query args) as cache key
+	cacheKey := r.RequestURI
+
+	d, found := apiCache.Get(cacheKey)
+	if found {
+		r := bytes.NewReader(d.([]byte))
+		rawData, _ := decompressCachedResponse(r)
+		mimeJSON(w)
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write(rawData)
+		return
+	}
+
+	q, _ := lookupQueryStringSlice(r, "q")
+	matchFilters := getFiltersFromQuery(q)
+	dedupedAlerts := alertmanager.DedupAlerts()
+	filtered := filterAlerts(dedupedAlerts, matchFilters)
+
+	labelMap := map[string]map[string]string{}
+	for _, ag := range filtered {
+		for _, alert := range ag.Alerts {
+			labels := map[string]string{}
+			for k, v := range ag.Labels {
+				labels[k] = v
+			}
+			for k, v := range alert.Labels {
+				labels[k] = v
+			}
+			h := fmt.Sprintf("%x", structhash.Sha1(labels, 1))
+			labelMap[h] = labels
+		}
+	}
+
+	sortMap := map[string]struct{}{}
+	for _, k := range labelMap {
+		for v := range k {
+			sortMap[v] = struct{}{}
+		}
+	}
+	var sortKeys []string
+	for k := range sortMap {
+		sortKeys = append(sortKeys, k)
+	}
+	sort.Strings(sortKeys)
+
+	al := AlertList{}
+	for _, labels := range labelMap {
+		al.Alerts = append(al.Alerts, labels)
+	}
+	sortSliceOfLabels(al.Alerts, sortKeys, "alertname")
+
+	mimeJSON(w)
+	w.WriteHeader(http.StatusOK)
+	data, _ := json.Marshal(al)
+	compressedData, _ := compressResponse(data, nil)
+	_ = apiCache.Add(cacheKey, compressedData)
+	_, _ = w.Write(data)
+}
+
+func sortSliceOfLabels(labels []map[string]string, sortKeys []string, fallback string) {
+	sort.SliceStable(labels, func(i, j int) bool {
+		for _, k := range sortKeys {
+			if labels[i][k] != "" && labels[j][k] == "" {
+				return true
+			}
+			if labels[i][k] == "" && labels[j][k] != "" {
+				return false
+			}
+			if labels[i][k] != labels[j][k] {
+				return sortorder.NaturalLess(labels[i][k], labels[j][k])
+			}
+		}
+		return sortorder.NaturalLess(labels[i][fallback], labels[j][fallback])
+	})
 }
