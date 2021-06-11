@@ -1,6 +1,11 @@
 import subMinutes from "date-fns/subMinutes";
 
-import type { AlertStateT, APIAlertGroupT } from "Models/APITypes";
+import type {
+  AlertStateT,
+  APIAlertGroupT,
+  APISilenceT,
+  APIAlertT,
+} from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import { MockAlert, MockAlertGroup, MockSilence } from "./Alerts";
 
@@ -8,8 +13,9 @@ const MockGroup = (
   groupName: string,
   alertCount: number,
   active: number,
-  suppressed: number
-): APIAlertGroupT => {
+  suppressed: number,
+  silence: APISilenceT
+): [APIAlertGroupT, APIAlertT[]] => {
   const alerts = [];
   for (let i = 1; i <= alertCount; i++) {
     let state: AlertStateT;
@@ -70,6 +76,25 @@ const MockGroup = (
     alert.startsAt = subMinutes(new Date(), alertCount).toISOString();
     alerts.push(alert);
   }
+  for (let j = 0; j < alerts.length; j++) {
+    if (alerts[j].state === "suppressed") {
+      alerts[j].alertmanager = [
+        {
+          fingerprint: `fp-${j}`,
+          name: "prod1",
+          cluster: "prod",
+          state: "suppressed",
+          startsAt: "2018-08-14T17:36:40.017867056Z",
+          source: "http://localhost/graph",
+          silencedBy: [
+            j < 2 ? "'Fake Silence ID / Should be fallback'" : silence.id,
+          ],
+          inhibitedBy: [],
+        },
+      ];
+    }
+  }
+
   const group = MockAlertGroup(
     { alertname: "Fake Alert", group: groupName },
     alerts,
@@ -77,10 +102,12 @@ const MockGroup = (
     {},
     {}
   );
-  return group;
+  return [group, alerts];
 };
 
-const MockGrid = (alertStore: AlertStore): void => {
+const MockGrid = (alertStore: AlertStore): APIAlertT[][] => {
+  const allAlerts: APIAlertT[][] = [];
+
   alertStore.settings.setValues({
     ...alertStore.settings.values,
     ...{
@@ -209,26 +236,14 @@ const MockGrid = (alertStore: AlertStore): void => {
     const unprocessed = Math.max(0, i - active - suppressed);
 
     const id = `id${i}`;
-    const group = MockGroup(`group${i}`, i, active, suppressed);
-
-    for (let j = 0; j < group.alerts.length; j++) {
-      if (group.alerts[j].state === "suppressed") {
-        group.alerts[j].alertmanager = [
-          {
-            fingerprint: `fp-${i}-${j}`,
-            name: "prod1",
-            cluster: "prod",
-            state: "suppressed",
-            startsAt: "2018-08-14T17:36:40.017867056Z",
-            source: "http://localhost/graph",
-            silencedBy: [
-              j < 2 ? "'Fake Silence ID / Should be fallback'" : silence.id,
-            ],
-            inhibitedBy: [],
-          },
-        ];
-      }
-    }
+    const [group, alerts] = MockGroup(
+      `group${i}`,
+      i,
+      active,
+      suppressed,
+      silence
+    );
+    allAlerts.push(alerts);
 
     group.id = id;
     group.stateCount.active = active;
@@ -318,6 +333,8 @@ const MockGrid = (alertStore: AlertStore): void => {
       },
     },
   ]);
+
+  return allAlerts;
 };
 
 export { MockGrid, MockGroup };

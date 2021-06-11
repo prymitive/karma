@@ -7,6 +7,7 @@ import type {
   AlertStateT,
   LabelsT,
 } from "Models/APITypes";
+import { hashObject } from "Common/Hash";
 
 const MockAnnotation = (
   name: string,
@@ -27,7 +28,7 @@ const MockAlert = (
   labels: LabelsT,
   state: AlertStateT
 ): APIAlertT => ({
-  id: Math.random().toString(36),
+  id: `hash:${hashObject(labels)}`,
   annotations: annotations,
   labels: labels,
   startsAt: "2018-08-14T17:36:40.017867056Z",
@@ -56,7 +57,7 @@ const MockAlertGroup = (
 ): APIAlertGroupT => ({
   receiver: "by-name",
   labels: rootLabels,
-  alerts: alerts,
+  alerts: alerts.map((a) => ({ id: a.id, hash: a.id })),
   id: "099c5ca6d1c92f615b13056b935d0c8dee70f18c",
   alertmanagerCount: {
     default: 1,
@@ -70,6 +71,8 @@ const MockAlertGroup = (
     annotations: sharedAnnotations,
     labels: sharedLabels,
     silences: sharedSilences,
+    sources: ["https://secure.example.com/graph", "http://plain.example.com/"],
+    clusters: { default: 1 },
   },
 });
 

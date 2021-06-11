@@ -4,12 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
-import type { APIAlertsResponseT } from "Models/APITypes";
+import type { AlertListResponseT } from "Models/APITypes";
 import { AlertStore, FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
-import {
-  LabelSetList,
-  GroupListToUniqueLabelsList,
-} from "Components/LabelSetList";
+import { LabelSetList } from "Components/LabelSetList";
 import { useFetchGet } from "Hooks/useFetchGet";
 
 const FetchError: FC<{ message: ReactNode }> = ({ message }) => (
@@ -34,8 +31,8 @@ const PaginatedAlertList: FC<{
   filters: string[];
   title?: string;
 }> = ({ alertStore, filters, title }) => {
-  const { response, error, isLoading } = useFetchGet<APIAlertsResponseT>(
-    FormatBackendURI("alerts.json?") + FormatAlertsQ(filters)
+  const { response, error, isLoading } = useFetchGet<AlertListResponseT>(
+    FormatBackendURI("alertList.json?") + FormatAlertsQ(filters)
   );
 
   return error ? (
@@ -45,9 +42,7 @@ const PaginatedAlertList: FC<{
   ) : (
     <LabelSetList
       alertStore={alertStore}
-      labelsList={GroupListToUniqueLabelsList(
-        response.grids.length ? response.grids[0].alertGroups : []
-      )}
+      labelsList={response.alerts}
       title={title}
     />
   );

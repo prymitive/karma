@@ -16,6 +16,7 @@ import { faUndoAlt } from "@fortawesome/free-solid-svg-icons/faUndoAlt";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 import { faShareAlt } from "@fortawesome/free-solid-svg-icons/faShareAlt";
 import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
 import type { AlertStore } from "Stores/AlertStore";
 import {
@@ -99,6 +100,9 @@ const SilenceForm: FC<{
     } else {
       silenceFormStore.data.verifyStarEnd();
     }
+
+    // clear last error
+    silenceFormStore.data.setLastError(null);
 
     // reset cluster request state
     silenceFormStore.data.setRequestsByCluster({});
@@ -186,45 +190,58 @@ const SilenceForm: FC<{
 
   return (
     <form onSubmit={handleSubmit} autoComplete="on">
+      {silenceFormStore.data.lastError === null ? null : (
+        <div className="alert alert-danger mb-3 p-2" role="alert">
+          Failed to fetch group matchers: {silenceFormStore.data.lastError}
+        </div>
+      )}
       <div className="mb-3">
         <AlertManagerInput
           alertStore={alertStore}
           silenceFormStore={silenceFormStore}
         />
       </div>
-      {silenceFormStore.data.matchers.map((matcher) => (
-        <SilenceMatch
-          key={matcher.id}
-          silenceFormStore={silenceFormStore}
-          matcher={matcher}
-          onDelete={() => {
-            silenceFormStore.data.deleteMatcher(matcher.id);
-          }}
-          showDelete={silenceFormStore.data.matchers.length > 1}
-          isValid={!silenceFormStore.data.wasValidated}
-          enableIsEqual={
-            !semverLt(
-              alertStore.data.getMinVersion(
-                silenceFormStore.data.alertmanagers
-                  .map((am) => am.value)
-                  .reduce((a, b) => [...a, ...b], [])
-              ),
-              "0.22.0"
-            )
-          }
-        />
-      ))}
-      <div className="d-flex flex-row justify-content-between mb-3">
-        <TooltipWrapper title="Add a matcher">
-          <button
-            type="button"
-            className="btn btn-sm btn-outline-secondary"
-            onClick={addMore}
-          >
-            <FontAwesomeIcon icon={faPlus} fixedWidth />
-          </button>
-        </TooltipWrapper>
-      </div>
+      {silenceFormStore.data.isFilling ? (
+        <h1 className="text-center display-1 text-placeholder pt-4 pb-5 m-auto">
+          <FontAwesomeIcon icon={faSpinner} size="lg" spin />
+        </h1>
+      ) : (
+        silenceFormStore.data.matchers.map((matcher) => (
+          <SilenceMatch
+            key={matcher.id}
+            silenceFormStore={silenceFormStore}
+            matcher={matcher}
+            onDelete={() => {
+              silenceFormStore.data.deleteMatcher(matcher.id);
+            }}
+            showDelete={silenceFormStore.data.matchers.length > 1}
+            isValid={!silenceFormStore.data.wasValidated}
+            enableIsEqual={
+              !semverLt(
+                alertStore.data.getMinVersion(
+                  silenceFormStore.data.alertmanagers
+                    .map((am) => am.value)
+                    .reduce((a, b) => [...a, ...b], [])
+                ),
+                "0.22.0"
+              )
+            }
+          />
+        ))
+      )}
+      {silenceFormStore.data.isFilling ? null : (
+        <div className="d-flex flex-row justify-content-between mb-3">
+          <TooltipWrapper title="Add a matcher">
+            <button
+              type="button"
+              className="btn btn-sm btn-outline-secondary"
+              onClick={addMore}
+            >
+              <FontAwesomeIcon icon={faPlus} fixedWidth />
+            </button>
+          </TooltipWrapper>
+        </div>
+      )}
       <DateTimeSelect silenceFormStore={silenceFormStore} />
       {alertStore.info.authentication.enabled ? (
         <AuthenticatedAuthorInput alertStore={alertStore} />

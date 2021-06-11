@@ -116,7 +116,36 @@ storiesOf("Grid", module)
         }
       );
 
-    MockGrid(alertStore);
+    const allAlerts = MockGrid(alertStore);
+
+    for (const alerts of allAlerts) {
+      for (const a of alerts) {
+        fetchMock.mock(
+          {
+            name: a.id,
+            url: "begin:/alert.json?",
+            query: { alert: a.id },
+          },
+          a.labels.instance === "instance4"
+            ? { throws: new Error("fake fetch error") }
+            : a.labels.instance === "instance5"
+            ? {
+                id: "",
+                labels: {},
+                annotations: [],
+                startsAt: "",
+                state: "unprocessed",
+                alertmanager: [],
+                receiver: "",
+              }
+            : a,
+          {
+            matchPartialBody: true,
+            overwriteRoutes: true,
+          }
+        );
+      }
+    }
 
     return (
       <Grid

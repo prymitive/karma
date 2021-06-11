@@ -3,7 +3,6 @@ import { mount } from "enzyme";
 import toDiffableHtml from "diffable-html";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
-import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import {
   SilenceFormStore,
   NewEmptyMatcher,
@@ -35,6 +34,15 @@ const MountedMatchCounter = () => {
 
 describe("<MatchCounter />", () => {
   it("matches snapshot", () => {
+    useFetchGetMock.fetch.setMockedData({
+      response: { alerts: Array(25).map((i) => ({ alertname: `alert${i}` })) },
+      error: null,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
     const tree = MountedMatchCounter();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
@@ -86,10 +94,8 @@ describe("<MatchCounter />", () => {
   });
 
   it("totalAlerts is 0 after mount", () => {
-    const r = EmptyAPIResponse();
-    r.totalAlerts = 0;
     useFetchGetMock.fetch.setMockedData({
-      response: r,
+      response: { alerts: [] },
       error: null,
       isLoading: false,
       isRetrying: false,
@@ -103,6 +109,16 @@ describe("<MatchCounter />", () => {
   });
 
   it("updates totalAlerts after successful fetch", () => {
+    useFetchGetMock.fetch.setMockedData({
+      response: { alerts: Array(25).map((i) => ({ alertname: `alert${i}` })) },
+      error: null,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
+
     const tree = MountedMatchCounter();
     expect(tree.text()).toBe("25");
   });
@@ -111,7 +127,7 @@ describe("<MatchCounter />", () => {
     MountedMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
-    ).toBe("./alerts.json?q=foo%3Dbar");
+    ).toBe("./alertList.json?q=foo%3Dbar");
   });
 
   it("sends correct query string for a 'foo=~bar' matcher", () => {
@@ -119,7 +135,7 @@ describe("<MatchCounter />", () => {
     MountedMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
-    ).toBe("./alerts.json?q=foo%3D~%5Ebar%24");
+    ).toBe("./alertList.json?q=foo%3D~%5Ebar%24");
   });
 
   it("sends correct query string for a 'foo=~(bar|baz)' matcher", () => {
@@ -129,7 +145,7 @@ describe("<MatchCounter />", () => {
     MountedMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
-    ).toBe("./alerts.json?q=foo%3D~%5E%28bar%7Cbaz%29%24");
+    ).toBe("./alertList.json?q=foo%3D~%5E%28bar%7Cbaz%29%24");
   });
 
   it("selecting one Alertmanager instance appends it to the filters", () => {
@@ -142,7 +158,7 @@ describe("<MatchCounter />", () => {
     MountedMatchCounter();
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
-    ).toBe("./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%29%24");
+    ).toBe("./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%29%24");
   });
 
   it("selecting two Alertmanager instances appends it correctly to the filters", () => {
@@ -160,7 +176,7 @@ describe("<MatchCounter />", () => {
     expect(
       (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
     ).toBe(
-      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24"
+      "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24"
     );
   });
 });

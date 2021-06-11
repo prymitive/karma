@@ -66,7 +66,23 @@ beforeEach(() => {
 
   fetchMock.resetHistory();
   fetchMock.mock(
-    "*",
+    {
+      name: "alerts",
+      url: "/groupAlerts.json",
+    },
+    [
+      MockAlert([], { foo: "baz" }, "active"),
+      MockAlert([], { foo: "bar" }, "active"),
+    ],
+    {
+      overwriteRoutes: true,
+    }
+  );
+  fetchMock.mock(
+    {
+      name: "silence",
+      url: "end:/api/v2/silences",
+    },
     {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ silenceID: "123" }),
@@ -128,7 +144,10 @@ describe("<AlertAck />", () => {
 
   it("uses faExclamationCircle after failed fetch", async () => {
     fetchMock.mock(
-      "*",
+      {
+        name: "silence",
+        url: "end:/api/v2/silences",
+      },
       {
         status: 500,
         body: "error message",
@@ -142,13 +161,17 @@ describe("<AlertAck />", () => {
     button.simulate("click");
     await act(async () => {
       await fetchMock.flush(true);
+      await fetchMock.flush(true);
     });
     expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
   });
 
   it("resets faExclamationCircle after 20s", async () => {
     fetchMock.mock(
-      "*",
+      {
+        name: "silence",
+        url: "end:/api/v2/silences",
+      },
       {
         status: 500,
         body: "error message",
@@ -185,7 +208,7 @@ describe("<AlertAck />", () => {
 
   it("sends a POST request on click", async () => {
     await MountAndClick();
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.calls()).toHaveLength(2);
     expect(fetchMock.lastOptions()).toMatchObject({
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -217,19 +240,24 @@ describe("<AlertAck />", () => {
     };
 
     await MountAndClick();
-    expect(fetchMock.calls()).toHaveLength(2);
-    expect(fetchMock.calls()[0][0]).toBe(
+    expect(fetchMock.calls()).toHaveLength(3);
+    expect(fetchMock.calls()[0][0]).toBe("/groupAlerts.json");
+    expect(fetchMock.calls()[0][1]).toMatchObject({
+      method: "POST",
+      credentials: "include",
+    });
+    expect(fetchMock.calls()[1][0]).toBe(
       "http://m1.example.com/api/v2/silences"
     );
-    expect(fetchMock.calls()[0][1]).toMatchObject({
+    expect(fetchMock.calls()[1][1]).toMatchObject({
       method: "POST",
       credentials: "same-origin",
       headers: { "X-Cluster": "c1" },
     });
-    expect(fetchMock.calls()[1][0]).toBe(
+    expect(fetchMock.calls()[2][0]).toBe(
       "http://m3.example.com/api/v2/silences"
     );
-    expect(fetchMock.calls()[1][1]).toMatchObject({
+    expect(fetchMock.calls()[2][1]).toMatchObject({
       method: "POST",
       credentials: "include",
       headers: { "X-Cluster": "c2" },
@@ -261,11 +289,12 @@ describe("<AlertAck />", () => {
     };
 
     await MountAndClick();
-    expect(fetchMock.calls()).toHaveLength(2);
-    expect(fetchMock.calls()[0][0]).toBe(
+    expect(fetchMock.calls()).toHaveLength(3);
+    expect(fetchMock.calls()[0][0]).toBe("/groupAlerts.json");
+    expect(fetchMock.calls()[1][0]).toBe(
       "http://m2.example.com/api/v2/silences"
     );
-    expect(fetchMock.calls()[1][0]).toBe(
+    expect(fetchMock.calls()[2][0]).toBe(
       "http://m4.example.com/api/v2/silences"
     );
   });
@@ -278,15 +307,18 @@ describe("<AlertAck />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.calls()).toHaveLength(2);
 
     button.simulate("click");
-    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.calls()).toHaveLength(2);
   });
 
   it("sends correct payload", async () => {
     fetchMock.mock(
-      "*",
+      {
+        name: "silence",
+        url: "end:/api/v2/silences",
+      },
       {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ silenceID: "123456789" }),
@@ -472,12 +504,16 @@ describe("<AlertAck />", () => {
 
   it("sends POST request to /api/v2/silences", async () => {
     await MountAndClick();
-    const uri = fetchMock.calls()[0][0];
+    const uri = fetchMock.calls()[1][0];
     expect(uri).toBe("http://localhost/api/v2/silences");
   });
 
   it("will retry on another cluster member after 500 response", async () => {
     fetchMock.reset();
+    fetchMock.mock("/groupAlerts.json", [
+      MockAlert([], { foo: "baz" }, "active"),
+      MockAlert([], { foo: "bar" }, "active"),
+    ]);
     fetchMock.mock("http://m1.example.com/api/v2/silences", {
       status: 500,
       body: "error message",
@@ -523,23 +559,28 @@ describe("<AlertAck />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(4);
-    expect(fetchMock.calls()[0][0]).toBe(
+    expect(fetchMock.calls()).toHaveLength(5);
+    expect(fetchMock.calls()[0][0]).toBe("/groupAlerts.json");
+    expect(fetchMock.calls()[1][0]).toBe(
       "http://m1.example.com/api/v2/silences"
     );
-    expect(fetchMock.calls()[1][0]).toBe(
+    expect(fetchMock.calls()[2][0]).toBe(
       "http://m2.example.com/api/v2/silences"
     );
-    expect(fetchMock.calls()[2][0]).toBe(
+    expect(fetchMock.calls()[3][0]).toBe(
       "http://m3.example.com/api/v2/silences"
     );
-    expect(fetchMock.calls()[3][0]).toBe(
+    expect(fetchMock.calls()[4][0]).toBe(
       "http://m4.example.com/api/v2/silences"
     );
   });
 
   it("will retry on another cluster member after fetch failure", async () => {
     fetchMock.reset();
+    fetchMock.mock("/groupAlerts.json", [
+      MockAlert([], { foo: "baz" }, "active"),
+      MockAlert([], { foo: "bar" }, "active"),
+    ]);
     fetchMock.mock("http://m1.example.com/api/v2/silences", {
       throws: new TypeError("failed to fetch"),
     });
@@ -586,17 +627,18 @@ describe("<AlertAck />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(4);
-    expect(fetchMock.calls()[0][0]).toBe(
+    expect(fetchMock.calls()).toHaveLength(5);
+    expect(fetchMock.calls()[0][0]).toBe("/groupAlerts.json");
+    expect(fetchMock.calls()[1][0]).toBe(
       "http://m1.example.com/api/v2/silences"
     );
-    expect(fetchMock.calls()[1][0]).toBe(
+    expect(fetchMock.calls()[2][0]).toBe(
       "http://m2.example.com/api/v2/silences"
     );
-    expect(fetchMock.calls()[2][0]).toBe(
+    expect(fetchMock.calls()[3][0]).toBe(
       "http://m3.example.com/api/v2/silences"
     );
-    expect(fetchMock.calls()[3][0]).toBe(
+    expect(fetchMock.calls()[4][0]).toBe(
       "http://m4.example.com/api/v2/silences"
     );
   });
@@ -630,8 +672,9 @@ describe("<AlertAck />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(1);
-    expect(fetchMock.calls()[0][0]).toBe(
+    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.calls()[0][0]).toBe("/groupAlerts.json");
+    expect(fetchMock.calls()[1][0]).toBe(
       "http://am1.example.com/api/v2/silences"
     );
     expect(consoleSpy).toHaveBeenCalledTimes(1);

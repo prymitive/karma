@@ -53,17 +53,24 @@ export interface StateCountT {
   unprocessed: number;
 }
 
+export interface APIAlertGroupAlertT {
+  id: string;
+  hash: string;
+}
+
 export interface APIAlertGroupT {
   id: string;
   receiver: string;
   labels: LabelsT;
-  alerts: APIAlertT[];
+  alerts: APIAlertGroupAlertT[];
   alertmanagerCount: { [key: string]: number };
   stateCount: StateCountT;
   shared: {
     annotations: APIAnnotationT[];
     labels: LabelsT;
     silences: { [cluster: string]: string[] };
+    sources: string[];
+    clusters: { [cluster: string]: number };
   };
 }
 
@@ -215,4 +222,22 @@ export interface HistorySampleT {
 export interface HistoryResponseT {
   error: string;
   samples: HistorySampleT[];
+}
+
+export interface GridLabelsRequestGroupT {
+  id: string;
+  alerts: string[];
+}
+
+export interface GridLabelsRequestT {
+  groups: GridLabelsRequestGroupT[];
+}
+
+export interface AlertListResponseT {
+  alerts: LabelsT[];
+}
+
+export interface GroupAlertsRequestT {
+  id: string;
+  alerts: string[];
 }

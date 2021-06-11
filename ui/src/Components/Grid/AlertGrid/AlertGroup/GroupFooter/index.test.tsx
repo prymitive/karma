@@ -86,9 +86,6 @@ describe("<GroupFooter />", () => {
   });
 
   it("render deduplicated silence if present", () => {
-    for (let index = 0; index < group.alerts.length; index++) {
-      group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
-    }
     group.shared.silences = { default: ["123456789"] };
     alertStore.data.setSilences({
       default: {
@@ -101,9 +98,6 @@ describe("<GroupFooter />", () => {
   });
 
   it("render fallback silence if not found in alertStore", () => {
-    for (let index = 0; index < group.alerts.length; index++) {
-      group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
-    }
     group.shared.silences = { default: ["123456789"] };
     alertStore.data.setSilences({
       default: {},
@@ -114,9 +108,6 @@ describe("<GroupFooter />", () => {
   });
 
   it("render fallback silence if cluster not found in alertStore", () => {
-    for (let index = 0; index < group.alerts.length; index++) {
-      group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
-    }
     group.shared.silences = { default: ["123456789"] };
     alertStore.data.setSilences({
       foo: {},
@@ -127,9 +118,6 @@ describe("<GroupFooter />", () => {
   });
 
   it("mathes snapshot when silence is rendered", () => {
-    for (let index = 0; index < group.alerts.length; index++) {
-      group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
-    }
     group.shared.silences = { default: ["123456789"] };
 
     const silence = MockSilence();
@@ -157,9 +145,6 @@ describe("<GroupFooter />", () => {
   });
 
   it("doesn't render silences when showSilences=false", () => {
-    for (let index = 0; index < group.alerts.length; index++) {
-      group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
-    }
     group.shared.silences = { default: ["123456789"] };
 
     const silence = MockSilence();

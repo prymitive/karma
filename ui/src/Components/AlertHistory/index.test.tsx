@@ -36,7 +36,7 @@ const MockAlerts = (alertCount: number) => {
     const startsAt = new Date();
     alert.startsAt = startsAt.toISOString();
     alert.alertmanager[0].startsAt = startsAt.toISOString();
-    group.alerts.push(alert);
+    group.alerts.push({ id: alert.id, hash: alert.id });
   }
 };
 
@@ -63,7 +63,7 @@ describe("<AlertHistory />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.calls()).toHaveLength(1);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
@@ -85,7 +85,7 @@ describe("<AlertHistory />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.calls()).toHaveLength(1);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
@@ -135,7 +135,7 @@ describe("<AlertHistory />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.calls()).toHaveLength(1);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
@@ -157,7 +157,7 @@ describe("<AlertHistory />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.calls()).toHaveLength(1);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
@@ -264,7 +264,7 @@ describe("<AlertHistory />", () => {
       const startsAt = new Date();
       alert.startsAt = startsAt.toISOString();
       alert.alertmanager[0].startsAt = startsAt.toISOString();
-      g.alerts.push(alert);
+      g.alerts.push({ id: alert.id, hash: alert.id });
     }
 
     it(`${testCase.title}`, async () => {

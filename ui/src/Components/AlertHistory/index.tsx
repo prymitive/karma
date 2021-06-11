@@ -17,15 +17,13 @@ const responseStub: HistoryResponseT = {
   samples: Array(24).fill({ timestamp: "", value: 0 }),
 };
 
-const promURIRe = new RegExp(/^(https?:\/\/.+)\//);
-
 export const AlertHistory: FC<{ group: APIAlertGroupT }> = ({ group }) => {
   const [ref, inView] = useInView({ triggerOnce: true });
 
-  const [epoch, setEpoch] = useState<number>(0);
-  const [sources, setSources] = useState<string[]>([]);
+  const [lastUpdate, setLastUpdate] = useState<number>(0);
   const [upstreams, setUpstreams] = useState<UpstreamT[]>([]);
   const [labels] = useState({ ...group.labels, ...group.shared.labels });
+  const [sources] = useState(group.shared.sources);
   const { response, error } = useFetchAny<HistoryResponseT>(upstreams);
   const [cachedResponse, setCachedResponse] = useState<HistoryResponseT | null>(
     null
@@ -37,10 +35,13 @@ export const AlertHistory: FC<{ group: APIAlertGroupT }> = ({ group }) => {
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setEpoch((val) => val + 1);
-    }, 5 * 60 * 1000);
+      const now = new Date().getTime() / 1000;
+      if (inView && now - lastUpdate >= 300) {
+        setLastUpdate(now);
+      }
+    }, 60 * 1000);
     return () => clearInterval(timer);
-  }, [inView]);
+  }, [inView, lastUpdate]);
 
   useEffect(() => {
     if (response !== null) {
@@ -52,20 +53,6 @@ export const AlertHistory: FC<{ group: APIAlertGroupT }> = ({ group }) => {
       setMinMaxValue({ minValue: min === Infinity ? 0 : min, maxValue: max });
     }
   }, [response]);
-
-  useEffect(() => {
-    const sl: { [key: string]: boolean } = {};
-    for (const alert of group.alerts) {
-      for (const am of alert.alertmanager) {
-        const match = am.source.match(promURIRe);
-        if (match && match.length > 1) {
-          sl[match[1]] = true;
-        }
-      }
-    }
-    setSources(Object.keys(sl));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     if (!inView) {
@@ -83,7 +70,7 @@ export const AlertHistory: FC<{ group: APIAlertGroupT }> = ({ group }) => {
         },
       },
     ]);
-  }, [inView, labels, sources, epoch]);
+  }, [inView, lastUpdate, labels, sources]);
 
   return (
     <div className="w-100 d-flex">

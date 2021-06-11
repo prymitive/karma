@@ -10,15 +10,16 @@ import { faShareSquare } from "@fortawesome/free-solid-svg-icons/faShareSquare";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 
-import type { APIAlertGroupT } from "Models/APITypes";
+import type { APIAlertGroupT, GroupAlertsRequestT } from "Models/APITypes";
 import { FormatAlertsQ } from "Stores/AlertStore";
-import type { AlertStore } from "Stores/AlertStore";
+import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
 import {
   SilenceFormStore,
   AlertmanagerClustersToOption,
 } from "Stores/SilenceFormStore";
 import { QueryOperators, StaticLabels, FormatQuery } from "Common/Query";
 import { CommonPopperModifiers } from "Common/Popper";
+import { FetchGet } from "Common/Fetch";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { FetchPauser } from "Components/FetchPauser";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
@@ -46,13 +47,37 @@ const onSilenceClick = (
   );
 
   silenceFormStore.data.resetProgress();
-  silenceFormStore.data.fillMatchersFromGroup(
-    group,
-    alertStore.settings.values.silenceForm.strip.labels,
-    AlertmanagerClustersToOption(clusters)
-  );
+  silenceFormStore.data.setIsFilling(true);
   silenceFormStore.tab.setTab("editor");
   silenceFormStore.toggle.show();
+
+  const payload: GroupAlertsRequestT = {
+    id: group.id,
+    alerts: group.alerts.map((a) => a.id),
+  };
+  FetchGet(
+    FormatBackendURI("groupAlerts.json"),
+    {
+      method: "POST",
+      body: JSON.stringify(payload),
+    },
+    () => {}
+  )
+    .then((response) => response.json())
+    .then((response) => {
+      silenceFormStore.data.fillMatchersFromGroup(
+        group,
+        alertStore.settings.values.silenceForm.strip.labels,
+        AlertmanagerClustersToOption(clusters),
+        response
+      );
+      silenceFormStore.data.setIsFilling(false);
+    })
+    .catch((err) => {
+      console.trace(err);
+      silenceFormStore.data.setLastError(err.message);
+      silenceFormStore.data.setIsFilling(false);
+    });
 };
 
 const MenuContent: FC<{
