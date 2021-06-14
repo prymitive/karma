@@ -33,7 +33,8 @@ require (
 	github.com/spf13/pflag v1.0.5
 	go.mongodb.org/mongo-driver v1.5.3 // indirect
 	go.uber.org/automaxprocs v1.4.0
-	golang.org/x/sys v0.0.0-20210603125802-9665404d3644 // indirect
+	golang.org/x/net v0.0.0-20210614182718-04defd469f4e // indirect
+	golang.org/x/sys v0.0.0-20210611083646-a4fc73990273 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
