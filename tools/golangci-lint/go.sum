@@ -227,8 +227,8 @@ github.com/golangci/go-misc v0.0.0-20180628070357-927a3d87b613 h1:9kfjN3AdxcbsZB
 github.com/golangci/go-misc v0.0.0-20180628070357-927a3d87b613/go.mod h1:SyvUF2NxV+sN8upjjeVYr5W7tyxaT1JVtvhKhOn2ii8=
 github.com/golangci/gofmt v0.0.0-20190930125516-244bba706f1a h1:iR3fYXUjHCR97qWS8ch1y9zPNsgXThGwjKPrYfqMPks=
 github.com/golangci/gofmt v0.0.0-20190930125516-244bba706f1a/go.mod h1:9qCChq59u/eW8im404Q2WWTrnBUQKjpNYKMbU4M7EFU=
-github.com/golangci/golangci-lint v1.41.0 h1:1kfytWKEn2EPjniwD5xCwWtHAHR57q+vmDX3+VBoJac=
-github.com/golangci/golangci-lint v1.41.0/go.mod h1:30veY960fiZ7Lk2L3naBpz40K/AnztglOupwZVfcT1s=
+github.com/golangci/golangci-lint v1.41.1 h1:KH28pTSqRu6DTXIAANl1sPXNCmqg4VEH21z6G9Wj4SM=
+github.com/golangci/golangci-lint v1.41.1/go.mod h1:LPtcY3aAAU8wydHrKpnanx9Og8K/cblZSyGmI5CJZUk=
 github.com/golangci/lint-1 v0.0.0-20191013205115-297bf364a8e0 h1:MfyDlzVjl1hoaPzPD4Gpb/QgoRfSBR0jdhwGyAWwMSA=
 github.com/golangci/lint-1 v0.0.0-20191013205115-297bf364a8e0/go.mod h1:66R6K6P6VWk9I95jvqGxkqJxVWGFy9XlDwLwVz1RCFg=
 github.com/golangci/maligned v0.0.0-20180506175553-b1d89398deca h1:kNY3/svz5T29MYHubXix4aDDuE3RWHkPvopM/EDv/MA=
@@ -540,8 +540,8 @@ github.com/rogpeppe/go-internal v1.6.2/go.mod h1:xXDCJY+GAPziupqXw64V24skbSoqbTE
 github.com/rs/cors v1.7.0/go.mod h1:gFx+x8UowdsKA9AchylcLynDq+nNFfI8FkUZdN/jGCU=
 github.com/russross/blackfriday v1.5.2/go.mod h1:JO/DiYxRf+HjHt06OyowR9PTA263kcR/rfWxYHBV53g=
 github.com/russross/blackfriday/v2 v2.0.1/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
-github.com/ryancurrah/gomodguard v1.2.1 h1:t1WWL0RGJJBo5KZ0u2c/FGY1QQgx2gUbHWzBmOKWs98=
-github.com/ryancurrah/gomodguard v1.2.1/go.mod h1:tpI+C/nzvfUR3bF28b5QHpTn/jM/zlGniI++6ZlIWeE=
+github.com/ryancurrah/gomodguard v1.2.2 h1:ZJQeYHZ2kaJpojoQBaGqpsn5g7GMcePY36uUGW1umbs=
+github.com/ryancurrah/gomodguard v1.2.2/go.mod h1:tpI+C/nzvfUR3bF28b5QHpTn/jM/zlGniI++6ZlIWeE=
 github.com/ryanrolds/sqlclosecheck v0.3.0 h1:AZx+Bixh8zdUBxUA1NxbxVAS78vTPq4rCb8OUZI9xFw=
 github.com/ryanrolds/sqlclosecheck v0.3.0/go.mod h1:1gREqxyTGR3lVtpngyFo3hZAgk0KCtEdgEkHwDbigdA=
 github.com/ryanuber/columnize v0.0.0-20160712163229-9b3edd62028f/go.mod h1:sm1tb6uqfes/u+d4ooFouqFdy9/2g9QGwK3SQygK0Ts=
