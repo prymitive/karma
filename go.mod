@@ -22,7 +22,7 @@ require (
 	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/hashicorp/golang-lru v0.5.4
 	github.com/jarcoal/httpmock v1.0.8
-	github.com/knadh/koanf v1.1.0
+	github.com/knadh/koanf v1.1.1
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mitchellh/mapstructure v1.4.1
 	github.com/pmezard/go-difflib v1.0.0
