@@ -24,7 +24,8 @@ afterEach(() => {
   });
 });
 
-const FakeDSN = "https://81a9ef37a6ed4fdb80e9ea2310d1ed28@127.0.0.1/1234123";
+const FakeDSN =
+  "https://81a9ef37a6ed4fdb80e9ea2310d1ed28@sentry.example.com/1234123";
 
 const MockSettings = (
   version: string,
