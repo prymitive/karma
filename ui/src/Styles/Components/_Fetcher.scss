@@ -62,7 +62,7 @@ $pixSize: math.div($fetcherWidth, 5);
       }
 
       $tx: (($pixSize * 2) * $num);
-      $ty: (($pixSize * 2) * (floor(($i - 1)/3)));
+      $ty: (($pixSize * 2) * (floor(math.div(($i - 1), 3))));
 
       &:nth-of-type(#{$i}) {
         transform: translate($tx, $ty);
