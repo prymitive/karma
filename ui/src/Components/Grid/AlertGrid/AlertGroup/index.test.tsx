@@ -2,11 +2,14 @@ import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
+import fetchMock from "fetch-mock";
+
 import { MockAlert, MockAlertGroup } from "__fixtures__/Alerts";
 import {
   MockThemeContext,
   MockThemeContextWithoutAnimations,
 } from "__fixtures__/Theme";
+import { RainbowHistoryResponse } from "__fixtures__/AlertHistory";
 import type { APIAlertGroupT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings, CollapseStateT } from "Stores/Settings";
@@ -43,6 +46,10 @@ beforeEach(() => {
   group = MockGroup("fakeGroup");
 
   alertStore.data.setReceivers(["by-cluster-service", "by-name"]);
+  alertStore.settings.setValues({
+    ...alertStore.settings.values,
+    ...{ historyEnabled: false },
+  });
 });
 
 afterEach(() => {
@@ -342,6 +349,9 @@ describe("<AlertGroup /> renderConfig", () => {
   });
 
   it("uses 'z-index: 100' style after setIsMenuOpen() is called on any Alert", async () => {
+    fetchMock.reset();
+    fetchMock.mock("*", { body: "" });
+
     const promise = Promise.resolve();
     MockAlerts(5);
     const tree = MountedAlertGroup(jest.fn(), false);
@@ -425,14 +435,31 @@ describe("<AlertGroup /> card theme", () => {
     expect(tree.find("GroupHeader").prop("themedCounters")).toBe(false);
   });
 
-  it("renders AlertHistory when enabled", () => {
+  it("renders AlertHistory when enabled", async () => {
+    fetchMock.reset();
+    fetchMock.mock(
+      "/history.json",
+      {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(RainbowHistoryResponse),
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
+
     alertStore.settings.setValues({
       ...alertStore.settings.values,
       ...{ historyEnabled: true },
     });
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn(), false);
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
     expect(tree.find("AlertHistory")).toHaveLength(1);
+    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.calls()[0][0]).toBe("/history.json");
   });
 
   it("doesn't render AlertHistory when disabled", () => {
