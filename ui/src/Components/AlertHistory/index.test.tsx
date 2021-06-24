@@ -35,7 +35,10 @@ const MockAlerts = (alertCount: number) => {
     const alert = MockAlert([], { instance: `instance${i}` }, "active");
     const startsAt = new Date();
     alert.startsAt = startsAt.toISOString();
-    alert.alertmanager[0].startsAt = startsAt.toISOString();
+    for (let j = 0; j < alert.alertmanager.length; j++) {
+      alert.alertmanager[j].startsAt = startsAt.toISOString();
+      alert.alertmanager[j].source = "http://prometheus.example.com/graph";
+    }
     group.alerts.push(alert);
   }
 };
@@ -263,7 +266,11 @@ describe("<AlertHistory />", () => {
       const alert = MockAlert([], { instance: `instance${i}` }, "active");
       const startsAt = new Date();
       alert.startsAt = startsAt.toISOString();
-      alert.alertmanager[0].startsAt = startsAt.toISOString();
+      alert.alertmanager.push(alert.alertmanager[0]);
+      for (let j = 0; j < alert.alertmanager.length; j++) {
+        alert.alertmanager[j].startsAt = startsAt.toISOString();
+        alert.alertmanager[j].source = "http://prometheus.example.com/graph";
+      }
       g.alerts.push(alert);
     }
 
