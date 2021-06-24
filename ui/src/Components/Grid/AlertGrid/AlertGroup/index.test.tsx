@@ -163,6 +163,10 @@ describe("<AlertGroup />", () => {
         inhibitedBy: [],
       });
     }
+    group.shared.clusters = {
+      HA: group.alerts.length,
+      default: group.alerts.length,
+    };
     const tree = MountedAlertGroup(jest.fn(), true).find("AlertGroup");
     const labels = tree.find("GroupFooter").find("FilteringLabel");
     expect(labels).toHaveLength(3);
@@ -176,6 +180,7 @@ describe("<AlertGroup />", () => {
     for (let i = 0; i < group.alerts.length; i++) {
       group.alerts[i].alertmanager = [];
     }
+    group.shared.clusters = {};
     const tree = MountedAlertGroup(jest.fn(), true).find("AlertGroup");
     const labels = tree.find("GroupFooter").find("FilteringLabel");
     expect(labels).toHaveLength(1);
@@ -193,6 +198,10 @@ describe("<AlertGroup />", () => {
       fakeAlertmanager2: 1,
       fakeAlertmanager3: 1,
       fakeAlertmanager4: 1,
+    };
+    group.shared.clusters = {
+      HA: 2,
+      default: 1,
     };
     const tree = MountedAlertGroup(jest.fn(), true);
 

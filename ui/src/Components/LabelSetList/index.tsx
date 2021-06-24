@@ -1,32 +1,9 @@
 import { FC, useState } from "react";
 
 import type { AlertStore } from "Stores/AlertStore";
-import type { APIAlertGroupT } from "Models/APITypes";
 import { IsMobile } from "Common/Device";
-import { hashObject } from "Common/Hash";
 import StaticLabel from "Components/Labels/StaticLabel";
 import { PageSelect } from "Components/Pagination";
-
-// take a list of groups and outputs a list of label sets, this ignores
-// the receiver, so we'll end up with only unique alerts
-const GroupListToUniqueLabelsList = (
-  groups: APIAlertGroupT[]
-): { [labelName: string]: string }[] => {
-  const alerts: { [alertHash: string]: { [labelName: string]: string } } = {};
-  for (const group of groups) {
-    for (const alert of group.alerts) {
-      const alertLabels = Object.assign(
-        {},
-        group.labels,
-        group.shared.labels,
-        alert.labels
-      );
-      const alertHash = hashObject(alertLabels);
-      alerts[alertHash] = alertLabels;
-    }
-  }
-  return Object.values(alerts);
-};
 
 const LabelSetList: FC<{
   alertStore: AlertStore;
@@ -77,4 +54,4 @@ const LabelSetList: FC<{
   );
 };
 
-export { LabelSetList, GroupListToUniqueLabelsList };
+export { LabelSetList };

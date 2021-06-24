@@ -2,8 +2,6 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { EmptyAPIResponse } from "__fixtures__/Fetch";
-import { MockAlertGroup, MockAlert } from "__fixtures__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore, NewEmptyMatcher } from "Stores/SilenceFormStore";
 import { useFetchGet } from "Hooks/useFetchGet";
@@ -30,42 +28,6 @@ afterEach(() => {
   (useFetchGet as jest.MockedFunction<typeof useFetchGetMock>).mockReset();
 });
 
-const MockAPIResponse = () => {
-  const response = EmptyAPIResponse();
-
-  response.grids = [
-    {
-      labelName: "",
-      labelValue: "",
-      alertGroups: [
-        MockAlertGroup(
-          { alertname: "foo" },
-          [MockAlert([], { instance: "foo1" }, "active")],
-          [],
-          { job: "foo" },
-          {}
-        ),
-        MockAlertGroup(
-          { alertname: "bar" },
-          [
-            MockAlert([], { instance: "bar1" }, "active"),
-            MockAlert([], { instance: "bar2" }, "active"),
-          ],
-          [],
-          { job: "bar" },
-          {}
-        ),
-      ],
-      stateCount: {
-        unprocessed: 1,
-        suppressed: 2,
-        active: 3,
-      },
-    },
-  ];
-  return response;
-};
-
 const MountedSilencePreview = () => {
   return mount(
     <SilencePreview
@@ -87,7 +49,7 @@ describe("<SilencePreview />", () => {
     ]);
     MountedSilencePreview();
     expect(useFetchGet).toHaveBeenCalledWith(
-      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28amValue%29%24"
+      "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28amValue%29%24"
     );
   });
 
@@ -97,13 +59,13 @@ describe("<SilencePreview />", () => {
     ]);
     MountedSilencePreview();
     expect(useFetchGet).toHaveBeenCalledWith(
-      "./alerts.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24"
+      "./alertList.json?q=foo%3Dbar&q=%40alertmanager%3D~%5E%28am1%7Cam2%29%24"
     );
   });
 
   it("matches snapshot", () => {
     useFetchGetMock.fetch.setMockedData({
-      response: MockAPIResponse(),
+      response: { alerts: Array(25).map((i) => ({ alertname: `alert${i}` })) },
       error: undefined,
       isLoading: false,
       isRetrying: false,
@@ -131,6 +93,15 @@ describe("<SilencePreview />", () => {
   });
 
   it("renders StaticLabel after fetch", () => {
+    useFetchGetMock.fetch.setMockedData({
+      response: { alerts: [{ alertname: "Fake Alert", foo: "1", bar: "1" }] },
+      error: undefined,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
     const tree = MountedSilencePreview();
     expect(tree.text()).toMatch(/Affected alerts/);
     expect(tree.find("StaticLabel")).toHaveLength(3);
@@ -138,7 +109,7 @@ describe("<SilencePreview />", () => {
 
   it("handles empty grid response correctly", () => {
     useFetchGetMock.fetch.setMockedData({
-      response: EmptyAPIResponse(),
+      response: { alerts: [] },
       error: undefined,
       isLoading: false,
       isRetrying: false,

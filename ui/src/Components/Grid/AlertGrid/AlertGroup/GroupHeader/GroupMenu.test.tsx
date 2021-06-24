@@ -2,9 +2,11 @@ import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
+import fetchMock from "fetch-mock";
+
 import copy from "copy-to-clipboard";
 
-import { MockAlertGroup } from "__fixtures__/Alerts";
+import { MockAlertGroup, MockAlert } from "__fixtures__/Alerts";
 import type {
   APIAlertGroupT,
   APIAlertsResponseUpstreamsT,
@@ -172,16 +174,81 @@ describe("<MenuContent />", () => {
     expect(copy).toHaveBeenCalledTimes(1);
   });
 
-  it("clicking on 'Silence' icon opens the silence form modal", () => {
-    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
+  it("clicking on 'Silence' icon opens the silence form modal", async () => {
+    const group = MockAlertGroup(
+      { alertname: "Fake Alert" },
+      [MockAlert([], { alertname: "Fake Alert" }, "active")],
+      [],
+      {},
+      {}
+    );
     group.alertmanagerCount = { am1: 1, ro: 1 };
+
+    fetchMock.mock(
+      "/groupAlerts.json",
+      {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(group.alerts),
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
+
     const tree = MountedMenuContent(group);
     const button = tree.find(".dropdown-item").at(1);
     button.simulate("click");
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
     expect(silenceFormStore.toggle.visible).toBe(true);
     expect(silenceFormStore.data.alertmanagers).toMatchObject([
       { label: "am1", value: ["am1"] },
     ]);
+  });
+
+  it("retries fetch on exception", async () => {
+    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
+    group.alertmanagerCount = { am1: 1, ro: 1 };
+
+    fetchMock.mock(
+      "/groupAlerts.json",
+      { throws: new Error("Fetch error") },
+      { overwriteRoutes: true }
+    );
+
+    const tree = MountedMenuContent(group);
+    const button = tree.find(".dropdown-item").at(1);
+    button.simulate("click");
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
+    expect(silenceFormStore.toggle.visible).toBe(true);
+    expect(silenceFormStore.data.alertmanagers).toHaveLength(0);
+  });
+
+  it("Handles backend errors during fetch", async () => {
+    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
+    group.alertmanagerCount = { am1: 1, ro: 1 };
+
+    fetchMock.mock(
+      "/groupAlerts.json",
+      { code: 500, body: "Fake error" },
+      { overwriteRoutes: true }
+    );
+
+    const consoleSpy = jest
+      .spyOn(console, "trace")
+      .mockImplementation(jest.fn());
+
+    const tree = MountedMenuContent(group);
+    const button = tree.find(".dropdown-item").at(1);
+    button.simulate("click");
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
+    expect(silenceFormStore.toggle.visible).toBe(true);
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
   });
 
   it("'Silence' menu entry is disabled when all Alertmanager instances are read-only", () => {

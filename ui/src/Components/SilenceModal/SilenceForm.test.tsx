@@ -681,3 +681,21 @@ describe("<SilenceForm /> in edit mode", () => {
     expect((select.props() as any).isDisabled).toBeFalsy();
   });
 });
+
+describe("<SilenceForm /> loading", () => {
+  it("shows lastError if set", () => {
+    const tree = MountedSilenceForm();
+    silenceFormStore.data.setLastError("Fake last error");
+    tree.update();
+    expect(tree.find("div.alert").text()).toBe(
+      "Failed to fetch group matchers: Fake last error"
+    );
+  });
+
+  it("shows a spinner if loading matchers", () => {
+    const tree = MountedSilenceForm();
+    silenceFormStore.data.setIsFilling(true);
+    tree.update();
+    expect(tree.find("h1.text-placeholder")).toHaveLength(1);
+  });
+});

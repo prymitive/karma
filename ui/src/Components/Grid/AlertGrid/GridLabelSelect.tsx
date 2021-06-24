@@ -16,11 +16,12 @@ import AsyncSelect from "react-select/async";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 
-import type { AlertStore } from "Stores/AlertStore";
+import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
-import type { APIGridT } from "Models/APITypes";
+import type { APIGridT, GridLabelsRequestT } from "Models/APITypes";
 import { CommonPopperModifiers } from "Common/Popper";
 import { NewLabelName, StringToOption, OptionT } from "Common/Select";
+import { FetchGet } from "Common/Fetch";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { ThemeContext } from "Components/Theme";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
@@ -41,48 +42,58 @@ const GridLabelNameSelect: FC<{
   grid: APIGridT;
   onClose: () => void;
 }> = ({ alertStore, settingsStore, grid, onClose }) => {
-  const loadOptions = (
-    inputValue: string,
-    callback: (options: OptionT[]) => void
-  ) => {
-    const labelNames: { [key: string]: boolean } = {};
-
-    alertStore.data.grids.forEach((grid) => {
-      labelNames[grid.labelName] = true;
-      grid.alertGroups.forEach((group) => {
-        Object.keys(group.labels).forEach((name) => {
-          labelNames[name] = true;
-        });
-        Object.keys(group.shared.labels).forEach((name) => {
-          labelNames[name] = true;
-        });
-        group.alerts.forEach((alert) => {
-          Object.keys(alert.labels).forEach((name) => {
-            labelNames[name] = true;
+  const loadOptions = (inputValue: string) =>
+    new Promise<OptionT[]>((resolve) => {
+      const payload: GridLabelsRequestT = {
+        groups: [],
+      };
+      alertStore.data.grids.forEach((grid) => {
+        grid.alertGroups.forEach((group) => {
+          payload.groups.push({
+            id: group.id,
+            alerts: group.alerts.map((a) => a.id),
           });
         });
       });
+
+      const autoEnabled =
+        settingsStore.multiGridConfig.config.gridLabel === "@auto";
+
+      FetchGet(
+        FormatBackendURI("gridLabels.json"),
+        {
+          method: "POST",
+          body: JSON.stringify(payload),
+        },
+        () => {}
+      )
+        .then((result) => result.json())
+        .then((result) => {
+          resolve([
+            ...specialLabels.filter(
+              (val) =>
+                val.value !== "@auto" || (val.value === "@auto" && !autoEnabled)
+            ),
+            ...result
+              .filter(
+                (labelName: string) =>
+                  autoEnabled === true ||
+                  (autoEnabled === false && labelName !== grid.labelName)
+              )
+              .sort()
+              .map((key: string) => StringToOption(key)),
+          ]);
+        })
+        .catch((err) => {
+          console.trace(err);
+          resolve([
+            ...specialLabels.filter(
+              (val) =>
+                val.value !== "@auto" || (val.value === "@auto" && !autoEnabled)
+            ),
+          ]);
+        });
     });
-
-    const autoEnabled =
-      settingsStore.multiGridConfig.config.gridLabel === "@auto";
-    const options = [
-      ...specialLabels.filter(
-        (val) =>
-          val.value !== "@auto" || (val.value === "@auto" && !autoEnabled)
-      ),
-      ...Object.keys(labelNames)
-        .filter(
-          (labelName) =>
-            autoEnabled === true ||
-            (autoEnabled === false && labelName !== grid.labelName)
-        )
-        .sort()
-        .map((key) => StringToOption(key)),
-    ];
-
-    callback(options);
-  };
 
   const context = React.useContext(ThemeContext);
 

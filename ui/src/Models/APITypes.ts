@@ -65,6 +65,7 @@ export interface APIAlertGroupT {
     labels: LabelsT;
     silences: { [cluster: string]: string[] };
     sources: string[];
+    clusters: { [cluster: string]: number };
   };
 }
 
@@ -216,4 +217,22 @@ export interface HistorySampleT {
 export interface HistoryResponseT {
   error: string;
   samples: HistorySampleT[];
+}
+
+export interface GridLabelsRequestGroupT {
+  id: string;
+  alerts: string[];
+}
+
+export interface GridLabelsRequestT {
+  groups: GridLabelsRequestGroupT[];
+}
+
+export interface AlertListResponseT {
+  alerts: LabelsT[];
+}
+
+export interface GroupAlertsRequestT {
+  id: string;
+  alerts: string[];
 }

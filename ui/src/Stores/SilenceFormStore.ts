@@ -80,7 +80,7 @@ const AlertmanagerClustersToOption = (clusterDict: {
 const MatchersFromGroup = (
   group: APIAlertGroupT,
   stripLabels: string[],
-  alerts?: APIAlertT[],
+  alerts: APIAlertT[],
   onlyActive?: boolean
 ): MatcherWithIDT[] => {
   const matchers: MatcherWithIDT[] = [];
@@ -98,7 +98,7 @@ const MatchersFromGroup = (
   }
 
   // this is the list of alerts we'll use to generate matchers
-  const filteredAlerts = (alerts ? alerts : group.alerts).filter(
+  const filteredAlerts = alerts.filter(
     (alert) => !onlyActive || alert.state === "active"
   );
 
@@ -135,6 +135,7 @@ const MatchersFromGroup = (
       }
     }
   }
+
   for (const [key, values] of Object.entries(labels)) {
     matchers.push({
       id: uniqueId(),
@@ -270,8 +271,12 @@ interface SilenceFormStoreDataT {
     group: APIAlertGroupT,
     stripLabels: string[],
     alertmanagers: MultiValueOptionT[],
-    alerts?: APIAlertT[]
+    alerts: APIAlertT[]
   ) => void;
+  isFilling: boolean;
+  setIsFilling: (v: boolean) => void;
+  lastError: string | null;
+  setLastError: (e: string | null) => void;
   fillFormFromSilence: (
     alertmanager: APIAlertmanagerUpstreamT,
     silence: AlertmanagerSilencePayloadT
@@ -356,6 +361,14 @@ class SilenceFormStore {
         requestsByCluster: {} as { [key: string]: ClusterRequestT },
         autofillMatchers: true as boolean,
         resetInputs: true as boolean,
+        isFilling: false as boolean,
+        setIsFilling(v: boolean) {
+          this.isFilling = v;
+        },
+        lastError: null as string | null,
+        setLastError(e: string | null) {
+          this.lastError = e;
+        },
 
         get toBase64() {
           const json = JSON.stringify({
@@ -482,7 +495,7 @@ class SilenceFormStore {
           group: APIAlertGroupT,
           stripLabels: string[],
           alertmanagers: MultiValueOptionT[],
-          alerts?: APIAlertT[]
+          alerts: APIAlertT[]
         ) {
           this.alertmanagers = alertmanagers;
 
@@ -618,6 +631,8 @@ class SilenceFormStore {
         setSilenceID: action.bound,
         setAlertmanagers: action.bound,
         setAutofillMatchers: action.bound,
+        setIsFilling: action.bound,
+        setLastError: action.bound,
         setResetInputs: action.bound,
         setStage: action.bound,
         setMatchers: action.bound,

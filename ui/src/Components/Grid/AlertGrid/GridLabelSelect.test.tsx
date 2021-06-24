@@ -34,6 +34,21 @@ beforeEach(() => {
   };
 
   jest.useFakeTimers();
+
+  fetchMock.mock(
+    "*",
+    {
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(["alertname", "cluster", "job"]),
+    },
+    {
+      overwriteRoutes: true,
+    }
+  );
+});
+
+afterEach(() => {
+  fetchMock.reset();
 });
 
 const MountedGridLabelSelect = () => {
@@ -60,7 +75,62 @@ describe("<GridLabelSelect />", () => {
     const tree = MountedGridLabelSelect();
     const toggle = tree.find("span.components-grid-label-select-dropdown");
     toggle.simulate("click");
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
     expect(tree.find("div.components-grid-label-select-menu")).toHaveLength(1);
+    await act(() => promise);
+  });
+
+  it("dropdown handles fetch exceptions", async () => {
+    fetchMock.mock(
+      "*",
+      {
+        throws: new Error("fake error"),
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
+
+    const promise = Promise.resolve();
+    MockGrid(alertStore);
+    const tree = MountedGridLabelSelect();
+    const toggle = tree.find("span.components-grid-label-select-dropdown");
+    toggle.simulate("click");
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
+    expect(tree.find("div.components-grid-label-select-menu")).toHaveLength(1);
+    await act(() => promise);
+  });
+
+  it("dropdown handles fetch errors", async () => {
+    const consoleSpy = jest
+      .spyOn(console, "trace")
+      .mockImplementation(jest.fn());
+
+    fetchMock.mock(
+      "*",
+      {
+        code: 500,
+        body: "fake error",
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
+
+    const promise = Promise.resolve();
+    MockGrid(alertStore);
+    const tree = MountedGridLabelSelect();
+    const toggle = tree.find("span.components-grid-label-select-dropdown");
+    toggle.simulate("click");
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
+    expect(tree.find("div.components-grid-label-select-menu")).toHaveLength(1);
+    expect(consoleSpy).toBeCalledTimes(1);
     await act(() => promise);
   });
 
@@ -72,9 +142,14 @@ describe("<GridLabelSelect />", () => {
     const toggle = tree.find("span.components-grid-label-select-dropdown");
     toggle.simulate("click");
     expect(tree.find("div.components-grid-label-select-menu")).toHaveLength(1);
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
 
     settingsStore.multiGridConfig.setGridLabel("foo");
+    tree.update();
     const options = tree.find("div.react-select__option");
+    expect(options).toHaveLength(7);
     options.at(5).simulate("click");
     expect(settingsStore.multiGridConfig.config.gridLabel).toBe("cluster");
     await act(() => promise);

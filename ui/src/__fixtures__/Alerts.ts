@@ -7,6 +7,7 @@ import type {
   AlertStateT,
   LabelsT,
 } from "Models/APITypes";
+import { hashObject } from "Common/Hash";
 
 const MockAnnotation = (
   name: string,
@@ -27,7 +28,7 @@ const MockAlert = (
   labels: LabelsT,
   state: AlertStateT
 ): APIAlertT => ({
-  id: Math.random().toString(36),
+  id: `hash:${hashObject(labels)}`,
   annotations: annotations,
   labels: labels,
   startsAt: "2018-08-14T17:36:40.017867056Z",
@@ -71,6 +72,7 @@ const MockAlertGroup = (
     labels: sharedLabels,
     silences: sharedSilences,
     sources: ["https://secure.example.com/graph", "http://plain.example.com/"],
+    clusters: { default: 1 },
   },
 });
 

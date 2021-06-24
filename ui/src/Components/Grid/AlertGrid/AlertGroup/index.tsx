@@ -8,7 +8,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons/faEllipsisH";
 
-import type { APIAlertT, APIAlertGroupT, AlertStateT } from "Models/APITypes";
+import type { APIAlertGroupT, AlertStateT } from "Models/APITypes";
 import type { Settings } from "Stores/Settings";
 import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -36,15 +36,6 @@ const LoadButton: FC<{
         <FontAwesomeIcon className="text-muted" icon={icon} />
       </button>
     </TooltipWrapper>
-  );
-};
-
-const AllAlertsAreUsingSameAlertmanagers = (alerts: APIAlertT[]): boolean => {
-  const usedAMs = alerts.map((alert) =>
-    alert.alertmanager.map((am) => am.name).sort()
-  );
-  return usedAMs.every(
-    (listOfAMs) => JSON.stringify(listOfAMs) === JSON.stringify(usedAMs[0])
   );
 };
 
@@ -137,7 +128,7 @@ const AlertGroup: FC<{
     afterUpdate();
   });
 
-  const footerAlertmanagers: string[] = [];
+  let footerAlertmanagers: string[] = [];
   let showAlertmanagersInFooter = false;
 
   // There's no need to render @alertmanager labels if there's only 1
@@ -148,13 +139,14 @@ const AlertGroup: FC<{
     // alertmanagers (and there's > 1 alert to show, there's no footer for 1)
     showAlertmanagersInFooter =
       group.alerts.length > 1 &&
-      AllAlertsAreUsingSameAlertmanagers(group.alerts);
+      Object.values(group.shared.clusters).every(
+        (v) => v === Object.values(group.shared.clusters)[0]
+      );
     if (showAlertmanagersInFooter) {
-      for (const am of group.alerts[0].alertmanager) {
-        if (!footerAlertmanagers.includes(am.cluster)) {
-          footerAlertmanagers.push(am.cluster);
-        }
-      }
+      footerAlertmanagers = Object.entries(group.shared.clusters)
+        .filter(([_, v]) => v > 0)
+        .map(([k, _]) => k)
+        .sort((a, b) => a.toLowerCase().localeCompare(b.toLowerCase()));
     }
   }
 
