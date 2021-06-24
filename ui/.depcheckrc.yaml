@@ -14,5 +14,3 @@ ignores:
   - "@types/node"
   - "@percy/storybook"
   - "@storybook/preset-create-react-app"
-  - webpack
-  - babel-loader
