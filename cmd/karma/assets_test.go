@@ -50,14 +50,14 @@ func TestCustomizationAssets(t *testing.T) {
 			customJS: "../../ui/.env",
 			path:     "/custom.js",
 			code:     200,
-			body:     "PUBLIC_URL=.\nFAST_REFRESH=false\n",
+			body:     "PUBLIC_URL=.\nFAST_REFRESH=false\nSKIP_PREFLIGHT_CHECK=true\n",
 			mime:     "application/javascript",
 		},
 		{
 			customCSS: "../../ui/.env",
 			path:      "/custom.css",
 			code:      200,
-			body:      "PUBLIC_URL=.\nFAST_REFRESH=false\n",
+			body:      "PUBLIC_URL=.\nFAST_REFRESH=false\nSKIP_PREFLIGHT_CHECK=true\n",
 			mime:      "text/css",
 		},
 	}
