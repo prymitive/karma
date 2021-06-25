@@ -223,7 +223,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: depcheck
-        uses: prymitive/depcheck-action@v1.4.1
+        uses: prymitive/depcheck-action@v1.4.2
         with:
           workdir: "./ui"
           config: "./ui/.depcheckrc.yaml"
