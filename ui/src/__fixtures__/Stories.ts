@@ -211,6 +211,11 @@ const MockGrid = (alertStore: AlertStore): void => {
     const id = `id${i}`;
     const group = MockGroup(`group${i}`, i, active, suppressed);
 
+    group.shared.clusters = {
+      prod: 0,
+      dev: 0,
+    };
+
     for (let j = 0; j < group.alerts.length; j++) {
       if (group.alerts[j].state === "suppressed") {
         group.alerts[j].alertmanager = [
@@ -227,6 +232,9 @@ const MockGrid = (alertStore: AlertStore): void => {
             inhibitedBy: [],
           },
         ];
+        group.shared.clusters.prod++;
+      } else {
+        group.shared.clusters.dev++;
       }
     }
 

@@ -2864,6 +2864,7 @@ func TestGridLabels(t *testing.T) {
 		var al1 []string
 
 		for _, ag := range alerts {
+			ag := ag
 			if ag.Labels["alertname"] == "Host_Down" {
 				ag1 = &ag
 				break
@@ -3155,6 +3156,7 @@ func TestGroupAlerts(t *testing.T) {
 		var al1 []string
 
 		for _, ag := range alerts {
+			ag := ag
 			if ag.Labels["alertname"] == "Host_Down" && ag.Labels["cluster"] == "staging" {
 				ag1 = &ag
 				break
@@ -3248,5 +3250,100 @@ func TestGroupAlerts(t *testing.T) {
 				}
 			}
 		}
+	}
+}
+
+func TestSortSliceOfLabels(t *testing.T) {
+	type testCaseT struct {
+		labels   []map[string]string
+		sortKeys []string
+		fallback string
+		output   []map[string]string
+	}
+
+	testCases := []testCaseT{
+		{
+			labels: []map[string]string{
+				{"alertname": "alert2"},
+				{"alertname": "alert1"},
+			},
+			sortKeys: []string{},
+			fallback: "",
+			output: []map[string]string{
+				{"alertname": "alert2"},
+				{"alertname": "alert1"},
+			},
+		},
+		{
+			labels: []map[string]string{
+				{"alertname": "alert2"},
+				{"alertname": "alert1"},
+			},
+			sortKeys: []string{"alertname"},
+			fallback: "alertname",
+			output: []map[string]string{
+				{"alertname": "alert1"},
+				{"alertname": "alert2"},
+			},
+		},
+		{
+			labels: []map[string]string{
+				{"alertname": "alert2"},
+				{"alertname": "alert1"},
+			},
+			sortKeys: []string{},
+			fallback: "alertname",
+			output: []map[string]string{
+				{"alertname": "alert1"},
+				{"alertname": "alert2"},
+			},
+		},
+		{
+			labels: []map[string]string{
+				{"alertname": "alert2"},
+				{"alertname": "alert1"},
+			},
+			sortKeys: []string{"foo"},
+			fallback: "alertname",
+			output: []map[string]string{
+				{"alertname": "alert1"},
+				{"alertname": "alert2"},
+			},
+		},
+		{
+			labels: []map[string]string{
+				{"alertname": "alert1"},
+				{"alertname": "alert1"},
+			},
+			sortKeys: []string{"alertname"},
+			fallback: "alertname",
+			output: []map[string]string{
+				{"alertname": "alert1"},
+				{"alertname": "alert1"},
+			},
+		},
+		{
+			labels: []map[string]string{
+				{"alertname": "alert2", "job": "a"},
+				{"alertname": "alert1"},
+				{"alertname": "alert3", "job": "b"},
+			},
+			sortKeys: []string{"job"},
+			fallback: "alertname",
+			output: []map[string]string{
+				{"alertname": "alert2", "job": "a"},
+				{"alertname": "alert3", "job": "b"},
+				{"alertname": "alert1"},
+			},
+		},
+	}
+
+	for i, tc := range testCases {
+		t.Run(fmt.Sprintf("%d:%v", i, tc.sortKeys), func(t *testing.T) {
+			sortSliceOfLabels(tc.labels, tc.sortKeys, tc.fallback)
+			if diff := cmp.Diff(tc.output, tc.labels); diff != "" {
+				t.Errorf("Wrong labels order after sorting (-want +got):\n%s", diff)
+			}
+		})
 	}
 }

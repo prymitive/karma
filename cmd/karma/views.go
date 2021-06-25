@@ -806,7 +806,7 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 }
 
 func sortSliceOfLabels(labels []map[string]string, sortKeys []string, fallback string) {
-	sort.Slice(labels, func(i, j int) bool {
+	sort.SliceStable(labels, func(i, j int) bool {
 		for _, k := range sortKeys {
 			if labels[i][k] != "" && labels[j][k] == "" {
 				return true
