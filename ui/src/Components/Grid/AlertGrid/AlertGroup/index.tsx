@@ -139,9 +139,12 @@ const AlertGroup: FC<{
     // alertmanagers (and there's > 1 alert to show, there's no footer for 1)
     showAlertmanagersInFooter =
       group.alerts.length > 1 &&
-      Object.values(group.shared.clusters).every(
-        (v) => v === Object.values(group.shared.clusters)[0]
-      );
+      Object.values(group.shared.clusters)
+        .filter((v) => v > 0)
+        .every(
+          (v) =>
+            v === Object.values(group.shared.clusters).filter((v) => v > 0)[0]
+        );
     if (showAlertmanagersInFooter) {
       footerAlertmanagers = Object.entries(group.shared.clusters)
         .filter(([_, v]) => v > 0)
