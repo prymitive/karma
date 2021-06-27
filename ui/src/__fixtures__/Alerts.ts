@@ -70,6 +70,7 @@ const MockAlertGroup = (
     annotations: sharedAnnotations,
     labels: sharedLabels,
     silences: sharedSilences,
+    sources: ["https://secure.example.com/graph", "http://plain.example.com/"],
   },
 });
 

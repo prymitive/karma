@@ -458,7 +458,7 @@ describe("<AlertGroup /> card theme", () => {
       await fetchMock.flush(true);
     });
     expect(tree.find("AlertHistory")).toHaveLength(1);
-    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.calls()).toHaveLength(1);
     expect(fetchMock.calls()[0][0]).toBe("/history.json");
   });
 

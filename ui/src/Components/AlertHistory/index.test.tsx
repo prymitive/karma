@@ -4,6 +4,8 @@ import { mount } from "enzyme";
 
 import fetchMock from "fetch-mock";
 
+import { advanceTo, advanceBy, clear } from "jest-date-mock";
+
 import { useInView } from "react-intersection-observer";
 
 import toDiffableHtml from "diffable-html";
@@ -44,7 +46,14 @@ const MockAlerts = (alertCount: number) => {
 };
 
 beforeEach(() => {
+  jest.useFakeTimers();
+  advanceTo(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
   group = MockGroup("fakeGroup");
+});
+
+afterEach(() => {
+  fetchMock.reset();
+  clear();
 });
 
 describe("<AlertHistory />", () => {
@@ -66,8 +75,9 @@ describe("<AlertHistory />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.calls()).toHaveLength(1);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    tree.unmount();
   });
 
   it("matches snapshot with rainbow response", async () => {
@@ -88,8 +98,9 @@ describe("<AlertHistory />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.calls()).toHaveLength(1);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    tree.unmount();
   });
 
   it("doesn't fetch when not in view", async () => {
@@ -120,6 +131,49 @@ describe("<AlertHistory />", () => {
     expect(fetchMock.calls()).toHaveLength(0);
   });
 
+  it("fetches an update after 300 seconds", async () => {
+    fetchMock.resetHistory();
+    fetchMock.mock(
+      "*",
+      {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(RainbowHistoryResponse),
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
+
+    const inView = true;
+    (useInView as jest.MockedFunction<typeof useInView>).mockReturnValue([
+      jest.fn(),
+      inView,
+    ] as any);
+
+    MockAlerts(3);
+    const tree = mount(<AlertHistory group={group}></AlertHistory>);
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
+    expect(fetchMock.calls()).toHaveLength(1);
+
+    await act(async () => {
+      advanceBy(1000 * 299);
+      jest.runTimersToTime(1000 * 299);
+      await fetchMock.flush(true);
+    });
+    expect(fetchMock.calls()).toHaveLength(1);
+
+    await act(async () => {
+      advanceBy(1000 * 2);
+      jest.runTimersToTime(1000 * 2);
+      await fetchMock.flush(true);
+    });
+    expect(fetchMock.calls()).toHaveLength(2);
+
+    tree.unmount();
+  });
+
   it("handles reponses with errors", async () => {
     fetchMock.resetHistory();
     fetchMock.mock(
@@ -138,8 +192,9 @@ describe("<AlertHistory />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.calls()).toHaveLength(1);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    tree.unmount();
   });
 
   it("handles fetch errors", async () => {
@@ -160,8 +215,9 @@ describe("<AlertHistory />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(fetchMock.calls()).toHaveLength(2);
+    expect(fetchMock.calls()).toHaveLength(1);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    tree.unmount();
   });
 
   interface testCasesT {

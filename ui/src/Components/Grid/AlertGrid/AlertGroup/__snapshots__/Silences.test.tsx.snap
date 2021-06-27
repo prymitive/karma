@@ -30,7 +30,7 @@ exports[`<RenderSilence /> renders ManagedSilence if silence is present in Alert
             — me@example.com
           </span>
           <span class=\\"badge bg-danger align-text-bottom p-1\\">
-            Expired 21 years ago
+            Expired 1 month ago
           </span>
         </div>
       </div>

@@ -16,6 +16,7 @@ func TestDedupSharedMaps(t *testing.T) {
 		Name:        "am",
 		Cluster:     "fakeCluster",
 		SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
+		Source:      "https://am.example.com/graph",
 	}
 	ag := models.APIAlertGroup{
 		AlertGroup: models.AlertGroup{
@@ -106,7 +107,7 @@ func TestDedupSharedMaps(t *testing.T) {
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "source": "",
+          "source": "https://am.example.com/graph",
           "silencedBy": [
             "fakeSilence1",
             "fakeSilence2"
@@ -119,7 +120,7 @@ func TestDedupSharedMaps(t *testing.T) {
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "source": "",
+          "source": "https://am.example.com/graph",
           "silencedBy": [
             "fakeSilence1",
             "fakeSilence2"
@@ -145,7 +146,7 @@ func TestDedupSharedMaps(t *testing.T) {
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "source": "",
+          "source": "https://am.example.com/graph",
           "silencedBy": [
             "fakeSilence1",
             "fakeSilence2"
@@ -158,7 +159,7 @@ func TestDedupSharedMaps(t *testing.T) {
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "source": "",
+          "source": "https://am.example.com/graph",
           "silencedBy": [
             "fakeSilence1",
             "fakeSilence2"
@@ -184,7 +185,7 @@ func TestDedupSharedMaps(t *testing.T) {
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "source": "",
+          "source": "https://am.example.com/graph",
           "silencedBy": [
             "fakeSilence1",
             "fakeSilence2"
@@ -197,7 +198,7 @@ func TestDedupSharedMaps(t *testing.T) {
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "source": "",
+          "source": "https://am.example.com/graph",
           "silencedBy": [
             "fakeSilence1",
             "fakeSilence2"
@@ -228,7 +229,10 @@ func TestDedupSharedMaps(t *testing.T) {
         "fakeSilence1",
         "fakeSilence2"
       ]
-    }
+    },
+    "sources": [
+      "https://am.example.com"
+    ]
   }
 }`
 
@@ -249,6 +253,24 @@ func TestDedupSharedMaps(t *testing.T) {
 	}
 }
 
+func TestDedupSharedMapsSingleGroup(t *testing.T) {
+	ag := models.APIAlertGroup{
+		AlertGroup: models.AlertGroup{
+			Alerts: models.AlertList{
+				models.Alert{Labels: map[string]string{"foo": "bar"}},
+				models.Alert{Labels: map[string]string{"foo": "bar"}},
+			},
+		},
+	}
+	ag.DedupSharedMaps()
+	if len(ag.Shared.Annotations) > 0 {
+		t.Errorf("Expected empty shared annotations, got %v", ag.Shared.Annotations)
+	}
+	if len(ag.Shared.Labels) == 0 {
+		t.Errorf("Expected non-empty shared labels, got %v", ag.Shared.Labels)
+	}
+}
+
 func TestDedupSharedMapsWithSingleAlert(t *testing.T) {
 	ag := models.APIAlertGroup{
 		AlertGroup: models.AlertGroup{
@@ -258,6 +280,27 @@ func TestDedupSharedMapsWithSingleAlert(t *testing.T) {
 		},
 	}
 	ag.DedupSharedMaps()
+	if len(ag.Shared.Annotations) > 0 {
+		t.Errorf("Expected empty shared annotations, got %v", ag.Shared.Annotations)
+	}
+	if len(ag.Shared.Labels) > 0 {
+		t.Errorf("Expected empty shared labels, got %v", ag.Shared.Labels)
+	}
+}
+
+func TestDedupWithBadSource(t *testing.T) {
+	ag := models.APIAlertGroup{
+		AlertGroup: models.AlertGroup{
+			Alerts: models.AlertList{
+				models.Alert{Alertmanager: []models.AlertmanagerInstance{{Source: "%gh&%ij"}}},
+				models.Alert{Alertmanager: []models.AlertmanagerInstance{{Source: ""}}},
+			},
+		},
+	}
+	ag.DedupSharedMaps()
+	if len(ag.Shared.Sources) > 0 {
+		t.Errorf("Expected empty sources list, got %v", ag.Shared.Sources)
+	}
 }
 
 func TestNameStatsSort(t *testing.T) {

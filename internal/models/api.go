@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"net/url"
 	"sort"
 
 	"github.com/fvbommel/sortorder"
@@ -94,6 +95,7 @@ type APIAlertGroupSharedMaps struct {
 	Annotations Annotations         `json:"annotations"`
 	Labels      map[string]string   `json:"labels"`
 	Silences    map[string][]string `json:"silences"`
+	Sources     []string            `json:"sources"`
 }
 
 // APIAlertGroup is how AlertGroup is returned in the API response
@@ -237,6 +239,32 @@ func (ag *APIAlertGroup) dedupSilences() {
 	}
 }
 
+func (ag *APIAlertGroup) dedupSources() {
+	ag.Shared.Sources = []string{}
+
+	urls := map[string]struct{}{}
+	for _, alert := range ag.Alerts {
+		for _, am := range alert.Alertmanager {
+			u, err := url.Parse(am.Source)
+			if err != nil {
+				continue
+			}
+			u.Path = ""
+			u.RawQuery = ""
+			u.Fragment = ""
+			s := u.String()
+			if s != "" {
+				urls[u.String()] = struct{}{}
+			}
+		}
+	}
+
+	for u := range urls {
+		ag.Shared.Sources = append(ag.Shared.Sources, u)
+	}
+	sort.Strings(ag.Shared.Sources)
+}
+
 // DedupSharedMaps will find all labels and annotations shared by all alerts
 // in this group and moved them to Shared namespace
 func (ag *APIAlertGroup) DedupSharedMaps() {
@@ -254,6 +282,7 @@ func (ag *APIAlertGroup) DedupSharedMaps() {
 			Silences:    map[string][]string{},
 		}
 	}
+	ag.dedupSources()
 }
 
 // GridSettings exposes all grid settings from the config file
