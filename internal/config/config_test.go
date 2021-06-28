@@ -88,6 +88,7 @@ grid:
   auto:
     ignore: []
     order: []
+  groupLimit: 40
 history:
   enabled: true
   workers: 30

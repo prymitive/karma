@@ -167,6 +167,7 @@ level=info msg="      - instance"
 level=info msg="    order:"
 level=info msg="      - severity"
 level=info msg="      - cluster"
+level=info msg="  groupLimit: 1"
 level=info msg="history:"
 level=info msg="  enabled: false"
 level=info msg="  workers: 123"
@@ -367,6 +368,7 @@ grid:
     order:
       - severity
       - cluster
+  groupLimit: 1
 history:
   enabled: false
   workers: 123

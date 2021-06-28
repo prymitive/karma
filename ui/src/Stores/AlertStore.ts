@@ -207,6 +207,8 @@ interface AlertStoreStatusT {
 interface AlertStoreUIT {
   isIdle: boolean;
   setIsIdle: (val: boolean) => void;
+  limits: { [key: string]: { [val: string]: number } };
+  setLimit: (key: string, val: string, limit: number) => void;
 }
 
 class AlertStore {
@@ -474,6 +476,7 @@ class AlertStore {
             comment: "ACK! This alert was acknowledged using karma",
           },
           historyEnabled: true,
+          gridGroupLimit: 40,
         } as APISettingsT,
         setValues(v: APISettingsT) {
           this.values = v;
@@ -548,9 +551,14 @@ class AlertStore {
         setIsIdle(val: boolean) {
           this.isIdle = val;
         },
+        limits: {} as { [key: string]: { [val: string]: number } },
+        setLimit(key: string, val: string, limit: number) {
+          this.limits = { [key]: { ...this.limits[key], [val]: limit } };
+        },
       },
       {
         setIsIdle: action.bound,
+        setLimit: action.bound,
       }
     );
 
@@ -563,17 +571,21 @@ class AlertStore {
       gridSortReverse: boolean,
       sortOrder: string,
       sortLabel: string,
-      sortReverse: string
+      sortReverse: string,
+      limits: { [key: string]: number }
     ) => {
       this.status.setFetching();
 
-      const args = [
+      const args: string[] = [
         `gridLabel=${gridLabel}`,
         `gridSortReverse=${gridSortReverse ? "1" : "0"}`,
         `sortOrder=${sortOrder}`,
         `sortLabel=${sortLabel}`,
         `sortReverse=${sortReverse}`,
-      ];
+        Object.entries(limits)
+          .map(([key, value]) => `limit=${key}=${value}`)
+          .join("&"),
+      ].filter((arg) => arg !== "");
 
       const alertsURI =
         FormatBackendURI(`alerts.json?&${args.join("&")}&`) +

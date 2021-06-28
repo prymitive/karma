@@ -301,6 +301,7 @@ const MockGrid = (alertStore: AlertStore): void => {
       labelName: "cluster",
       labelValue: "prod",
       alertGroups: groups.slice(0, 7),
+      totalGroups: groups.slice(0, 7).length,
       stateCount: {
         unprocessed: 1,
         suppressed: 2,
@@ -311,6 +312,7 @@ const MockGrid = (alertStore: AlertStore): void => {
       labelName: "cluster",
       labelValue: "",
       alertGroups: groups.slice(7, 11),
+      totalGroups: groups.slice(7, 11).length,
       stateCount: {
         unprocessed: 0,
         suppressed: 10,

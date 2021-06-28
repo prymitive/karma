@@ -91,6 +91,7 @@ export interface APIGridT {
   labelName: string;
   labelValue: string;
   alertGroups: APIAlertGroupT[];
+  totalGroups: number;
   stateCount: StateCountT;
 }
 
@@ -189,6 +190,7 @@ export interface APISettingsT {
     comment: string;
   };
   historyEnabled: boolean;
+  gridGroupLimit: number;
 }
 
 export interface APIAlertsResponseT {

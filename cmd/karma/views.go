@@ -182,6 +182,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 			Comment:         config.Config.AlertAcknowledgement.Comment,
 		},
 		HistoryEnabled: config.Config.History.Enabled,
+		GridGroupLimit: config.Config.Grid.GroupLimit,
 	}
 	resp.Authentication = models.AuthenticationInfo{
 		Enabled:  config.Config.Authentication.Enabled,
@@ -215,6 +216,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	gridLabel, _ := lookupQueryString(r, "gridLabel")
 	q, _ := lookupQueryStringSlice(r, "q")
 	matchFilters := getFiltersFromQuery(q)
+	limits := lookupLoadLimits(r, "limit")
 
 	grids := map[string]models.APIGrid{}
 	colors := models.LabelsColorMap{}
@@ -438,15 +440,33 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	//resp.AlertGroups = sortAlertGroups(c, alerts)
+	v, _ := lookupQueryString(r, "gridSortReverse")
+	gridSortReverse := v == "1"
+	sortedGrids := sortGrids(r, gridLabel, grids, gridSortReverse)
+	for i := 0; i < len(sortedGrids); i++ {
+		sortedGrids[i].TotalGroups = len(sortedGrids[i].AlertGroups)
+
+		limit, found := limits[sortedGrids[i].LabelValue]
+		if !found {
+			limit = config.Config.Grid.GroupLimit
+		}
+
+		l := sortedGrids[i].TotalGroups
+		if limit < l {
+			l = limit
+		}
+		if l < 1 {
+			l = 1
+		}
+		sortedGrids[i].AlertGroups = sortedGrids[i].AlertGroups[:l]
+	}
+
 	for _, filter := range matchFilters {
 		if filter.GetValue() != "" && filter.GetMatcher() == "=" {
 			transform.ColorLabel(colors, filter.GetName(), filter.GetValue())
 		}
 	}
-
-	//resp.AlertGroups = sortAlertGroups(c, alerts)
-	v, _ := lookupQueryString(r, "gridSortReverse")
-	gridSortReverse := v == "1"
 
 	receivers := []string{}
 	for k := range allReceivers {
@@ -455,7 +475,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	}
 	sort.Strings(receivers)
 
-	resp.Grids = sortGrids(r, gridLabel, grids, gridSortReverse)
+	resp.Grids = sortedGrids
 	resp.Silences = silences
 	resp.Colors = colors
 	resp.Counters = countersToLabelStats(counters)

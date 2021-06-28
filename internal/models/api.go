@@ -324,6 +324,7 @@ type Settings struct {
 	SilenceForm              SilenceFormSettings          `json:"silenceForm"`
 	AlertAcknowledgement     AlertAcknowledgementSettings `json:"alertAcknowledgement"`
 	HistoryEnabled           bool                         `json:"historyEnabled"`
+	GridGroupLimit           int                          `json:"gridGroupLimit"`
 }
 
 type AuthenticationInfo struct {
@@ -335,6 +336,7 @@ type APIGrid struct {
 	LabelName   string          `json:"labelName"`
 	LabelValue  string          `json:"labelValue"`
 	AlertGroups []APIAlertGroup `json:"alertGroups"`
+	TotalGroups int             `json:"totalGroups"`
 	StateCount  map[string]int  `json:"stateCount"`
 }
 

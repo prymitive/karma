@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, FC } from "react";
 
-import { reaction } from "mobx";
+import { reaction, toJS } from "mobx";
 import { observer } from "mobx-react-lite";
 
 import addSeconds from "date-fns/addSeconds";
@@ -175,7 +175,10 @@ const Fetcher: FC<{
       settingsStore.multiGridConfig.config.gridSortReverse,
       sortSettings.sortOrder,
       sortSettings.sortLabel,
-      sortSettings.sortReverse
+      sortSettings.sortReverse,
+      Object.values(alertStore.ui.limits).length > 0
+        ? toJS(Object.values(alertStore.ui.limits)[0])
+        : {}
     );
   };
 
@@ -192,14 +195,16 @@ const Fetcher: FC<{
               .map((f: { raw: string }) => f.raw)
               .join(" "),
             grid: {
-              sortOrder: settingsStore.gridConfig.config.sortOrder,
-              sortLabel: settingsStore.gridConfig.config.sortLabel,
+              sortOrder: toJS(settingsStore.gridConfig.config.sortOrder),
+              sortLabel: toJS(settingsStore.gridConfig.config.sortLabel),
+              limits: toJS(alertStore.ui.limits),
             },
             multigrid: {
-              gridLabel: settingsStore.multiGridConfig.config.gridLabel,
-              gridSortReverse:
-                settingsStore.multiGridConfig.config.gridSortReverse,
-              reverseSort: settingsStore.gridConfig.config.reverseSort,
+              gridLabel: toJS(settingsStore.multiGridConfig.config.gridLabel),
+              gridSortReverse: toJS(
+                settingsStore.multiGridConfig.config.gridSortReverse
+              ),
+              reverseSort: toJS(settingsStore.gridConfig.config.reverseSort),
             },
           }),
         () => {

@@ -81,6 +81,7 @@ const EmptyAPIResponse = (): APIAlertsResponseT => ({
     annotationsVisible: [],
     annotationsEnableHTML: false,
     historyEnabled: true,
+    gridGroupLimit: 40,
   },
   authentication: {
     username: "",
@@ -103,6 +104,7 @@ const MockAPIResponse = (): APIAlertsResponseT => {
           {}
         ),
       ],
+      totalGroups: 1,
       stateCount: {
         unprocessed: 1,
         suppressed: 2,
