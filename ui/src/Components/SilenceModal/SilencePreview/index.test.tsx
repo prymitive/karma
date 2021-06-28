@@ -56,6 +56,7 @@ const MockAPIResponse = () => {
           {}
         ),
       ],
+      totalGroups: 2,
       stateCount: {
         unprocessed: 1,
         suppressed: 2,

@@ -7,6 +7,10 @@
 - Use [uber-go/automaxprocs](https://github.com/uber-go/automaxprocs)
   to automatically adjust `GOMAXPROCS` to match Linux container CPU quota.
   Runtime value of `GOMAXPROCS` is now exported as a `go_max_procs` metric.
+- API will now return only first 40 alert groups by default, the rest can
+  be loaded when user clicks on the `Load more` button.
+  `grid:groupLimit` config option was added to customise how many groups
+  are returned and displayed in the UI by default.
 
 ## v0.86
 

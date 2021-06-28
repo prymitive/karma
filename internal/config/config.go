@@ -97,6 +97,7 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.String("grid.sorting.label", "alertname", "Label name to use when sorting alert grid by label")
 	f.StringSlice("grid.auto.ignore", []string{}, "List of label names not allowed for automatic multi-grid")
 	f.StringSlice("grid.auto.order", []string{}, "Order of preference for selecting label names for automatic multi-grid")
+	f.Int("grid.groupLimit", 40, "Default number of groups to show for each grid")
 
 	f.Bool("history.enabled", true, "Enable alert history queries")
 	f.Duration("history.timeout", time.Second*20, "Timeout for history queries against source Prometheus servers")
@@ -211,6 +212,8 @@ func readEnvVariables(k *koanf.Koanf) {
 			return "annotations.enableInsecureHTML"
 		case "AUTHENTICATION_HEADER_VALUE_RE":
 			return "authentication.header.value_re"
+		case "GRID_GROUPLIMIT":
+			return "grid.groupLimit"
 		case "SILENCEFORM_STRIP_LABELS":
 			return "silenceForm.strip.labels"
 		case "UI_HIDEFILTERSWHENIDLE":

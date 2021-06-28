@@ -94,6 +94,9 @@ const MockGrid = () => ({
   alertGroups: alertStore.data.grids.length
     ? alertStore.data.grids[0].alertGroups
     : [],
+  totalGroups: alertStore.data.grids.length
+    ? alertStore.data.grids[0].alertGroups.length
+    : 0,
   stateCount: {
     unprocessed: 1,
     suppressed: 2,
@@ -148,7 +151,11 @@ const MockGroup = (groupName: string, alertCount: number) => {
   return group;
 };
 
-const MockGroupList = (count: number, alertPerGroup: number) => {
+const MockGroupList = (
+  count: number,
+  alertPerGroup: number,
+  totalGroups?: number
+) => {
   const groups = [];
   for (let i = 1; i <= count; i++) {
     const id = `id${i}`;
@@ -179,6 +186,7 @@ const MockGroupList = (count: number, alertPerGroup: number) => {
       labelName: "",
       labelValue: "",
       alertGroups: groups,
+      totalGroups: totalGroups ? totalGroups : groups.length,
       stateCount: {
         unprocessed: 1,
         suppressed: 2,
@@ -208,19 +216,69 @@ describe("<Grid />", () => {
     ).not.toMatch(/animate components-animation-fade-appear/);
   });
 
-  it("renders only first 50 alert groups", () => {
+  it("renders all alert groups", () => {
     MockGroupList(55, 5);
     const tree = MountedGrid();
     const alertGroups = tree.find("AlertGroup");
-    expect(alertGroups).toHaveLength(50);
+    expect(alertGroups).toHaveLength(55);
   });
 
-  it("appends 30 groups after clicking 'Load More' button", () => {
-    MockGroupList(85, 5);
-    const tree = MountedGrid();
+  it("appends more groups after clicking 'Load More' button", () => {
+    MockGroupList(40, 5, 70);
+    const tree = mount(
+      <Grid
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        settingsStore={settingsStore}
+        gridSizesConfig={GridSizesConfig(420)}
+        groupWidth={420}
+        grid={alertStore.data.grids[0]}
+        outerPadding={0}
+      />,
+      {
+        wrappingComponent: ThemeContext.Provider,
+        wrappingComponentProps: { value: MockThemeContext },
+      }
+    );
     tree.find("button").simulate("click");
-    const alertGroups = tree.find("AlertGroup");
-    expect(alertGroups).toHaveLength(80);
+    expect(alertStore.ui.limits).toStrictEqual({
+      "": { "": 40 + alertStore.settings.values.gridGroupLimit },
+    });
+  });
+
+  it("sets correct limits after clicking 'Load More' button", () => {
+    MockGroupList(50, 5, 60);
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      gridGroupLimit: 20,
+    });
+    alertStore.data.setGrids([
+      {
+        ...alertStore.data.grids[0],
+        labelName: "foo",
+        labelValue: "bar",
+        totalGroups: 69,
+      },
+    ]);
+    const tree = mount(
+      <Grid
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        settingsStore={settingsStore}
+        gridSizesConfig={GridSizesConfig(420)}
+        groupWidth={420}
+        grid={alertStore.data.grids[0]}
+        outerPadding={0}
+      />,
+      {
+        wrappingComponent: ThemeContext.Provider,
+        wrappingComponentProps: { value: MockThemeContext },
+      }
+    );
+    tree.find("button").simulate("click");
+    expect(alertStore.ui.limits).toStrictEqual({
+      foo: { bar: 70 },
+    });
   });
 
   it("doesn't sort groups when sorting is set to 'disabled'", () => {
@@ -338,6 +396,7 @@ describe("<Grid />", () => {
         labelName: "foo",
         labelValue: "bar",
         alertGroups: groups.slice(0, 10),
+        totalGroups: groups.slice(0, 10).length,
         stateCount: {
           unprocessed: 1,
           suppressed: 2,
@@ -348,6 +407,7 @@ describe("<Grid />", () => {
         labelName: "foo",
         labelValue: "",
         alertGroups: groups.slice(10, 20),
+        totalGroups: groups.slice(10, 20).length,
         stateCount: {
           unprocessed: 1,
           suppressed: 2,
@@ -591,6 +651,7 @@ describe("<AlertGrid />", () => {
         labelName: "foo",
         labelValue: "bar",
         alertGroups: groups,
+        totalGroups: groups.length,
         stateCount: {
           unprocessed: 1,
           suppressed: 2,
@@ -601,6 +662,7 @@ describe("<AlertGrid />", () => {
         labelName: "foo",
         labelValue: "",
         alertGroups: groups,
+        totalGroups: groups.length,
         stateCount: {
           unprocessed: 1,
           suppressed: 2,
@@ -629,6 +691,7 @@ describe("<AlertGrid />", () => {
         labelName: "foo",
         labelValue: "bar",
         alertGroups: groups,
+        totalGroups: groups.length,
         stateCount: {
           unprocessed: 0,
           suppressed: 0,
@@ -639,6 +702,7 @@ describe("<AlertGrid />", () => {
         labelName: "foo",
         labelValue: "",
         alertGroups: groups,
+        totalGroups: groups.length,
         stateCount: {
           unprocessed: 0,
           suppressed: 0,
@@ -672,6 +736,7 @@ describe("<AlertGrid />", () => {
         labelName: "",
         labelValue: "",
         alertGroups: groups,
+        totalGroups: groups.length,
         stateCount: {
           unprocessed: 0,
           suppressed: 0,

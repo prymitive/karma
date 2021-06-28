@@ -34,6 +34,7 @@ env GRID_SORTING_REVERSE=false
 env GRID_SORTING_LABEL=severity
 env GRID_AUTO_IGNORE="region instance"
 env GRID_AUTO_ORDER="severity cluster"
+env GRID_GROUPLIMIT=1
 
 env KARMA_NAME=karma-demo
 
@@ -153,6 +154,7 @@ level=info msg="    ignore:"
 level=info msg="      - '\"region'"
 level=info msg="    order:"
 level=info msg="      - '\"severity'"
+level=info msg="  groupLimit: 1"
 level=info msg="history:"
 level=info msg="  enabled: true"
 level=info msg="  workers: 30"

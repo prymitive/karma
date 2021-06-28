@@ -544,7 +544,9 @@ describe("AlertStore.fetch", () => {
     });
 
     const store = new AlertStore(["label=value"]);
-    await expect(store.fetch("", false, "", "", "")).resolves.toBeUndefined();
+    await expect(
+      store.fetch("", false, "", "", "", {})
+    ).resolves.toBeUndefined();
 
     expect(fetchMock.calls()).toHaveLength(1);
     expect(store.status.value).toEqual(AlertStoreStatuses.Idle);
@@ -558,7 +560,9 @@ describe("AlertStore.fetch", () => {
     });
 
     const store = new AlertStore([]);
-    await expect(store.fetch("", false, "", "", "")).resolves.toBeUndefined();
+    await expect(
+      store.fetch("", false, "", "", "", {})
+    ).resolves.toBeUndefined();
 
     expect(fetchMock.calls()).toHaveLength(1);
     expect(store.status.value).toEqual(AlertStoreStatuses.Failure);
@@ -575,9 +579,9 @@ describe("AlertStore.fetch", () => {
     });
 
     const store = new AlertStore([]);
-    await expect(store.fetch("", false, "", "", "")).resolves.toHaveProperty(
-      "error"
-    );
+    await expect(
+      store.fetch("", false, "", "", "", {})
+    ).resolves.toHaveProperty("error");
 
     expect(fetchMock.calls()).toHaveLength(10);
     expect(store.status.value).toEqual(AlertStoreStatuses.Failure);
@@ -595,9 +599,9 @@ describe("AlertStore.fetch", () => {
       throws: new Error("fetch error"),
     });
 
-    await expect(store.fetch("", false, "", "", "")).resolves.toHaveProperty(
-      "error"
-    );
+    await expect(
+      store.fetch("", false, "", "", "", {})
+    ).resolves.toHaveProperty("error");
     expect(fetchMock.calls()).toHaveLength(10);
   });
 
@@ -610,9 +614,9 @@ describe("AlertStore.fetch", () => {
       throws: new Error("fetch error"),
     });
 
-    await expect(store.fetch("", false, "", "", "")).resolves.toHaveProperty(
-      "error"
-    );
+    await expect(
+      store.fetch("", false, "", "", "", {})
+    ).resolves.toHaveProperty("error");
     expect(fetchMock.calls()).toHaveLength(10);
 
     const response = EmptyAPIResponse();
@@ -621,7 +625,9 @@ describe("AlertStore.fetch", () => {
       body: JSON.stringify(response),
     });
 
-    await expect(store.fetch("", false, "", "", "")).resolves.toBeUndefined();
+    await expect(
+      store.fetch("", false, "", "", "", {})
+    ).resolves.toBeUndefined();
     expect(fetchMock.calls()).toHaveLength(1);
 
     fetchMock.reset();
@@ -629,9 +635,9 @@ describe("AlertStore.fetch", () => {
       throws: new Error("fetch error"),
     });
 
-    await expect(store.fetch("", false, "", "", "")).resolves.toHaveProperty(
-      "error"
-    );
+    await expect(
+      store.fetch("", false, "", "", "", {})
+    ).resolves.toHaveProperty("error");
     expect(fetchMock.calls()).toHaveLength(10);
   });
 
@@ -649,7 +655,9 @@ describe("AlertStore.fetch", () => {
         }) as any
     );
 
-    await expect(store.fetch("", false, "", "", "")).resolves.toBeUndefined();
+    await expect(
+      store.fetch("", false, "", "", "", {})
+    ).resolves.toBeUndefined();
 
     expect(store.info.reloadNeeded).toBe(true);
   });
@@ -664,9 +672,9 @@ describe("AlertStore.fetch", () => {
       throws: new Error("fetch error"),
     });
 
-    await expect(store.fetch("", false, "", "", "")).resolves.toHaveProperty(
-      "error"
-    );
+    await expect(
+      store.fetch("", false, "", "", "", {})
+    ).resolves.toHaveProperty("error");
     expect(store.filters.values[0].applied).toBe(true);
   });
 
@@ -681,7 +689,9 @@ describe("AlertStore.fetch", () => {
 
     // initial fetch, should update settings
     store.settings.setValues({ foo: "bar" } as any);
-    await expect(store.fetch("", false, "", "", "")).resolves.toBeUndefined();
+    await expect(
+      store.fetch("", false, "", "", "", {})
+    ).resolves.toBeUndefined();
     expect(store.settings.values).toMatchObject({
       staticColorLabels: ["job"],
       annotationsDefaultHidden: false,
@@ -691,7 +701,9 @@ describe("AlertStore.fetch", () => {
     });
 
     // second fetch, should keep same settings
-    await expect(store.fetch("", false, "", "", "")).resolves.toBeUndefined();
+    await expect(
+      store.fetch("", false, "", "", "", {})
+    ).resolves.toBeUndefined();
     expect(store.settings.values).toMatchObject({
       staticColorLabels: ["job"],
       annotationsDefaultHidden: false,
@@ -708,7 +720,9 @@ describe("AlertStore.fetch", () => {
       body: JSON.stringify(response),
     });
     const store = new AlertStore(["label=value"]);
-    await expect(store.fetch("", false, "", "", "")).resolves.toBeUndefined();
+    await expect(
+      store.fetch("", false, "", "", "", {})
+    ).resolves.toBeUndefined();
     expect(store.info.upgradeReady).toBe(false);
 
     response.version = "newFakeVersion";
@@ -716,7 +730,9 @@ describe("AlertStore.fetch", () => {
     fetchMock.mock("*", {
       body: JSON.stringify(response),
     });
-    await expect(store.fetch("", false, "", "", "")).resolves.toBeUndefined();
+    await expect(
+      store.fetch("", false, "", "", "", {})
+    ).resolves.toBeUndefined();
     expect(store.info.upgradeReady).toBe(true);
   });
 
@@ -729,6 +745,7 @@ describe("AlertStore.fetch", () => {
         labelName: "",
         labelValue: "",
         alertGroups: [g1, g2],
+        totalGroups: 2,
         stateCount: { unprocessed: 0, active: 2, suppressed: 0 },
       },
     ];
@@ -749,6 +766,7 @@ describe("AlertStore.fetch", () => {
         labelName: "",
         labelValue: "",
         alertGroups: [g1, g2, g3],
+        totalGroups: 3,
         stateCount: { unprocessed: 0, active: 3, suppressed: 0 },
       },
     ]);
@@ -761,6 +779,7 @@ describe("AlertStore.fetch", () => {
         labelName: "",
         labelValue: "",
         alertGroups: [g1, g3],
+        totalGroups: 2,
         stateCount: { unprocessed: 0, active: 2, suppressed: 0 },
       },
     ];
@@ -778,7 +797,7 @@ describe("AlertStore.fetch", () => {
     });
     const store = new AlertStore(["label=value"]);
     await expect(
-      store.fetch("", false, "sortOrder", "sortLabel", "sortReverse")
+      store.fetch("", false, "sortOrder", "sortLabel", "sortReverse", {})
     ).resolves.toBeUndefined();
     expect(fetchMock.calls().length).toEqual(1);
     expect(fetchMock.calls()[0][0]).toBe(
@@ -794,11 +813,30 @@ describe("AlertStore.fetch", () => {
     });
     const store = new AlertStore(["label=value"]);
     await expect(
-      store.fetch("cluster", true, "sortOrder", "sortLabel", "sortReverse")
+      store.fetch("cluster", true, "sortOrder", "sortLabel", "sortReverse", {})
     ).resolves.toBeUndefined();
     expect(fetchMock.calls().length).toEqual(1);
     expect(fetchMock.calls()[0][0]).toBe(
       "/alerts.json?&gridLabel=cluster&gridSortReverse=1&sortOrder=sortOrder&sortLabel=sortLabel&sortReverse=sortReverse&q=label%3Dvalue"
+    );
+  });
+
+  it("uses correct query args with limits", async () => {
+    const response = EmptyAPIResponse();
+    fetchMock.reset();
+    fetchMock.mock("*", {
+      body: JSON.stringify(response),
+    });
+    const store = new AlertStore(["label=value"]);
+    store.ui.setLimit("foo", "bar", 7);
+    await expect(
+      store.fetch("cluster", true, "sortOrder", "sortLabel", "sortReverse", {
+        bar: 7,
+      })
+    ).resolves.toBeUndefined();
+    expect(fetchMock.calls().length).toEqual(1);
+    expect(fetchMock.calls()[0][0]).toBe(
+      "/alerts.json?&gridLabel=cluster&gridSortReverse=1&sortOrder=sortOrder&sortLabel=sortLabel&sortReverse=sortReverse&limit=bar=7&q=label%3Dvalue"
     );
   });
 });

@@ -648,6 +648,7 @@ grid:
   auto:
     ignore: list of strings
     order: list of strings
+  groupLimit: integer
 ```
 
 - `sorting:order` - default sort order for alert grid, valid values are:
@@ -678,6 +679,8 @@ grid:
   source label when multi-grid is configured to `Automatic selection` in the UI
   or when `ui:multiGridLabel` is set to `@auto`. If a label name is not present
   in this list labels with equal weight will be picked in alphabetic order.
+- `groupLimit` - default number of alert groups to show in the UI, loading more
+  will require user to click on `Load more` button.
 
 Defaults:
 
@@ -692,6 +695,7 @@ grid:
   auto:
     ignore: []
     order: []
+  groupLimit: 40
 ```
 
 Example with sorting using `severity` label and value mappings for it:

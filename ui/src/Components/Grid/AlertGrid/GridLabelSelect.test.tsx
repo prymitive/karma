@@ -26,6 +26,7 @@ beforeEach(() => {
     labelName: "foo",
     labelValue: "bar",
     alertGroups: [],
+    totalGroups: 0,
     stateCount: {
       active: 0,
       suppressed: 0,

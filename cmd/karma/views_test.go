@@ -965,6 +965,7 @@ func TestEmptySettings(t *testing.T) {
 			Comment:         "ACK! This alert was acknowledged using karma on %NOW%",
 		},
 		HistoryEnabled: true,
+		GridGroupLimit: 40,
 	}
 
 	if diff := cmp.Diff(expectedSettings, ur.Settings); diff != "" {
@@ -2839,6 +2840,155 @@ func TestAutoGrid(t *testing.T) {
 				for _, g := range ur.Grids {
 					if g.LabelName != tc.gridLabel {
 						t.Errorf("[%s] Got grid using label %s=%s, expected %s", tc.q, g.LabelName, g.LabelValue, tc.gridLabel)
+					}
+				}
+			}
+		}
+	}
+}
+
+func TestGridLimit(t *testing.T) {
+	type testCaseT struct {
+		groupLimit int
+		q          string
+		groups     map[string][]int
+	}
+
+	testCases := []testCaseT{
+		{
+			q: "",
+			groups: map[string][]int{
+				"": {10, 10},
+			},
+		},
+		{
+			groupLimit: 5,
+			q:          "",
+			groups: map[string][]int{
+				"": {10, 5},
+			},
+		},
+		{
+			groupLimit: 15,
+			q:          "",
+			groups: map[string][]int{
+				"": {10, 10},
+			},
+		},
+		{
+			q: "limit==1",
+			groups: map[string][]int{
+				"": {10, 1},
+			},
+		},
+		{
+			q: "limit",
+			groups: map[string][]int{
+				"": {10, 10},
+			},
+		},
+		{
+			q: "limit=",
+			groups: map[string][]int{
+				"": {10, 10},
+			},
+		},
+		{
+			q: "gridLabel=job&limit=node_exporter=1",
+			groups: map[string][]int{
+				"node_exporter": {6, 1},
+				"node_ping":     {4, 4},
+			},
+		},
+		{
+			q: "gridLabel=job&limit=node_exporter=a&limit=node_ping=1",
+			groups: map[string][]int{
+				"node_exporter": {6, 6},
+				"node_ping":     {4, 1},
+			},
+		},
+		{
+			q: "gridLabel=job&limit=node_exporter=0&limit=node_ping=2",
+			groups: map[string][]int{
+				"node_exporter": {6, 1},
+				"node_ping":     {4, 2},
+			},
+		},
+		{
+			q: "gridLabel=job&limit=node_exporter=0&limit=node_ping=20",
+			groups: map[string][]int{
+				"node_exporter": {6, 1},
+				"node_ping":     {4, 4},
+			},
+		},
+	}
+
+	defer func() {
+		config.Config.Grid.GroupLimit = 50
+	}()
+
+	mockConfig()
+	for _, tc := range testCases {
+		if tc.groupLimit > 0 {
+			config.Config.Grid.GroupLimit = tc.groupLimit
+		} else {
+			config.Config.Grid.GroupLimit = 50
+		}
+		for _, version := range mock.ListAllMocks() {
+			t.Logf("Testing grids using mock files from Alertmanager %s", version)
+			mockAlerts(version)
+			r := testRouter()
+			setupRouter(r, nil)
+			// re-run a few times to test the cache
+			for i := 1; i <= 3; i++ {
+				req := httptest.NewRequest("GET", fmt.Sprintf("/alerts.json?%s", tc.q), nil)
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != http.StatusOK {
+					t.Errorf("GET /alerts.json returned status %d", resp.Code)
+				}
+
+				ur := models.AlertsResponse{}
+				err := json.Unmarshal(resp.Body.Bytes(), &ur)
+				if err != nil {
+					t.Errorf("Failed to unmarshal response: %s", err)
+				}
+				if len(ur.Grids) == 0 {
+					t.Errorf("[%s] Got empty grid list", tc.q)
+				}
+				for _, grid := range ur.Grids {
+					if grid.TotalGroups == 0 {
+						t.Errorf("[%s] got empty grid for %s=%s", tc.q, grid.LabelName, grid.LabelValue)
+					}
+					found := false
+					for labelValue := range tc.groups {
+						if grid.LabelValue == labelValue {
+							found = true
+							break
+						}
+					}
+					if !found {
+						t.Errorf("[%s] got extra grid %s=%s", tc.q, grid.LabelName, grid.LabelValue)
+					}
+				}
+				for labelValue, totals := range tc.groups {
+					totalGroups := totals[0]
+					presentGroups := totals[1]
+					found := false
+					for _, grid := range ur.Grids {
+						if grid.LabelValue == labelValue {
+							found = true
+							if grid.TotalGroups != totalGroups {
+								t.Errorf("[%s] grid for label %s=%s returned totalGroups=%d, expected %d", tc.q, grid.LabelName, grid.LabelValue, grid.TotalGroups, totalGroups)
+							}
+							if len(grid.AlertGroups) != presentGroups {
+								t.Errorf("[%s] grid for label %s=%s returned %d alert groups, expected %d", tc.q, grid.LabelName, grid.LabelValue, len(grid.AlertGroups), presentGroups)
+							}
+							break
+						}
+					}
+					if !found {
+						t.Errorf("[%s] grid with label value %s missing", tc.q, labelValue)
 					}
 				}
 			}

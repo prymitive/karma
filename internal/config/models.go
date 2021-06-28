@@ -133,6 +133,7 @@ type configSchema struct {
 			Ignore []string
 			Order  []string
 		}
+		GroupLimit int `yaml:"groupLimit"`
 	} `yaml:"grid"`
 	History struct {
 		Enabled bool

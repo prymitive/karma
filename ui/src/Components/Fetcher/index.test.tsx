@@ -149,7 +149,7 @@ describe("<Fetcher />", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     settingsStore.gridConfig.setSortOrder("default");
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "", "", "");
+    expect(fetchSpy).toHaveBeenCalledWith("", false, "", "", "", {});
   });
 
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=disabled reverseSort=false", () => {
@@ -158,7 +158,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("disabled");
     settingsStore.gridConfig.setSortReverse(false);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "disabled", "", "");
+    expect(fetchSpy).toHaveBeenCalledWith("", false, "disabled", "", "", {});
   });
 
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=disabled reverseSort=true", () => {
@@ -167,7 +167,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("disabled");
     settingsStore.gridConfig.setSortReverse(true);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "disabled", "", "");
+    expect(fetchSpy).toHaveBeenCalledWith("", false, "disabled", "", "", {});
   });
 
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=startsAt reverseSort=false", () => {
@@ -176,7 +176,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("startsAt");
     settingsStore.gridConfig.setSortReverse(false);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "startsAt", "", "0");
+    expect(fetchSpy).toHaveBeenCalledWith("", false, "startsAt", "", "0", {});
   });
 
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=startsAt reverseSort=true", () => {
@@ -185,7 +185,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("startsAt");
     settingsStore.gridConfig.setSortReverse(true);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "startsAt", "", "1");
+    expect(fetchSpy).toHaveBeenCalledWith("", false, "startsAt", "", "1", {});
   });
 
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=label sortLabel=cluster reverseSort=false", () => {
@@ -195,7 +195,14 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortLabel("cluster");
     settingsStore.gridConfig.setSortReverse(false);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "label", "cluster", "0");
+    expect(fetchSpy).toHaveBeenCalledWith(
+      "",
+      false,
+      "label",
+      "cluster",
+      "0",
+      {}
+    );
   });
 
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=label sortLabel=job reverseSort=true", () => {
@@ -205,7 +212,7 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortLabel("job");
     settingsStore.gridConfig.setSortReverse(true);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "label", "job", "1");
+    expect(fetchSpy).toHaveBeenCalledWith("", false, "label", "job", "1", {});
   });
 
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=label sortLabel=instance reverseSort=null", () => {
@@ -215,7 +222,14 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortLabel("instance");
     settingsStore.gridConfig.setSortReverse(null);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "label", "instance", "");
+    expect(fetchSpy).toHaveBeenCalledWith(
+      "",
+      false,
+      "label",
+      "instance",
+      "",
+      {}
+    );
   });
 
   it("calls alertStore.fetchWithThrottle with gridLabel=cluster gridSortReverse=false", () => {
@@ -225,7 +239,7 @@ describe("<Fetcher />", () => {
     settingsStore.multiGridConfig.setGridLabel("cluster");
     settingsStore.multiGridConfig.setGridSortReverse(false);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("cluster", false, "", "", "");
+    expect(fetchSpy).toHaveBeenCalledWith("cluster", false, "", "", "", {});
   });
 
   it("calls alertStore.fetchWithThrottle with gridLabel=cluster gridSortReverse=true", () => {
@@ -235,7 +249,7 @@ describe("<Fetcher />", () => {
     settingsStore.multiGridConfig.setGridLabel("cluster");
     settingsStore.multiGridConfig.setGridSortReverse(true);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("cluster", true, "", "", "");
+    expect(fetchSpy).toHaveBeenCalledWith("cluster", true, "", "", "", {});
   });
 
   it("calls alertStore.fetchWithThrottle with gridLabel= gridSortReverse=true", () => {
@@ -245,7 +259,19 @@ describe("<Fetcher />", () => {
     settingsStore.multiGridConfig.setGridLabel("");
     settingsStore.multiGridConfig.setGridSortReverse(true);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", true, "", "", "");
+    expect(fetchSpy).toHaveBeenCalledWith("", true, "", "", "", {});
+  });
+
+  it("calls alertStore.fetchWithThrottle with limits set", () => {
+    MockEmptyAPIResponseWithoutFilters();
+    const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
+    settingsStore.gridConfig.setSortOrder("default");
+    settingsStore.multiGridConfig.setGridLabel("");
+    settingsStore.multiGridConfig.setGridSortReverse(false);
+    alertStore.ui.setLimit("old", "bar", 10);
+    alertStore.ui.setLimit("foo", "bar", 5);
+    mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
+    expect(fetchSpy).toHaveBeenCalledWith("", false, "", "", "", { bar: 5 });
   });
 
   it("internal timer is null after unmount", () => {

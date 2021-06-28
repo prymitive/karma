@@ -52,8 +52,6 @@ const Grid: FC<{
   const { ref, repack } = useGrid(gridSizesConfig);
   const debouncedRepack = useMemo(() => debounce(() => repack(), 10), [repack]);
 
-  const [groupsToRender, setGroupsToRender] = useState<number>(50);
-
   const [isExpanded, setIsExpanded] = useState<boolean>(
     !DefaultDetailsCollapseValue(settingsStore)
   );
@@ -106,12 +104,6 @@ const Grid: FC<{
   }, [debouncedRepack, onAlertGridCollapseEvent]);
 
   useEffect(() => {
-    if (groupsToRender > grid.alertGroups.length) {
-      setGroupsToRender(Math.max(50, grid.alertGroups.length));
-    }
-  }, [grid.alertGroups.length, groupsToRender]);
-
-  useEffect(() => {
     repack();
   });
 
@@ -144,7 +136,7 @@ const Grid: FC<{
       >
         <TransitionGroup component={null} appear enter exit>
           {isExpanded || grid.labelName === ""
-            ? grid.alertGroups.slice(0, groupsToRender).map((group) => (
+            ? grid.alertGroups.map((group) => (
                 <CSSTransition
                   key={group.id}
                   classNames={
@@ -175,7 +167,7 @@ const Grid: FC<{
         </TransitionGroup>
       </div>
       <TransitionGroup component={null} enter exit>
-        {isExpanded && grid.alertGroups.length > groupsToRender && (
+        {isExpanded && grid.totalGroups > grid.alertGroups.length && (
           <CSSTransition
             classNames="components-animation-fade"
             timeout={context.animations.duration}
@@ -186,11 +178,14 @@ const Grid: FC<{
                 <button
                   type="button"
                   className="btn btn-secondary mb-3"
-                  onClick={() =>
-                    setGroupsToRender(
-                      Math.min(groupsToRender + 30, grid.alertGroups.length)
-                    )
-                  }
+                  onClick={() => {
+                    alertStore.ui.setLimit(
+                      grid.labelName,
+                      grid.labelValue,
+                      grid.alertGroups.length +
+                        alertStore.settings.values.gridGroupLimit
+                    );
+                  }}
                 >
                   <FontAwesomeIcon className="me-2" icon={faAngleDoubleDown} />
                   Load more
