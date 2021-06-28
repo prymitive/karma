@@ -95,7 +95,7 @@
     "start": "REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "storybook": "start-storybook",
+    "storybook": "start-storybook -p 6006 -s public",
     "snapshot": "build-storybook --quiet -s public && percy-storybook --widths=700,1280 --minimum_height=200",
     "analyze": "npx source-map-explorer 'build/static/js/*.js'"
   },
