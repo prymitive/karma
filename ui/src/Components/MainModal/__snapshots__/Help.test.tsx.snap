@@ -158,7 +158,7 @@ exports[`<Help /> matches snapshot 1`] = `
           <dt>
             Match alerts based on any label
           </dt>
-          <dd class=\\"mb-5\\">
+          <dd>
             <div>
               Supported operators:
               <kbd class=\\"me-1\\">
@@ -316,7 +316,7 @@ exports[`<Help /> matches snapshot 1`] = `
           <dt>
             Match alerts based on the Alertmanager instance name they were collected from
           </dt>
-          <dd class=\\"mb-5\\">
+          <dd>
             <div>
               Supported operators:
               <kbd class=\\"me-1\\">
@@ -383,7 +383,7 @@ exports[`<Help /> matches snapshot 1`] = `
           <dt>
             Match alerts based on the Alertmanager cluster name
           </dt>
-          <dd class=\\"mb-5\\">
+          <dd>
             <div>
               Supported operators:
               <kbd class=\\"me-1\\">
@@ -450,7 +450,7 @@ exports[`<Help /> matches snapshot 1`] = `
           <dt>
             Match alerts based on the receiver name
           </dt>
-          <dd class=\\"mb-5\\">
+          <dd>
             <div>
               Supported operators:
               <kbd class=\\"me-1\\">
@@ -509,7 +509,7 @@ exports[`<Help /> matches snapshot 1`] = `
           <dt>
             Match alerts based on the state
           </dt>
-          <dd class=\\"mb-5\\">
+          <dd>
             <div>
               Supported operators:
               <kbd class=\\"me-1\\">
@@ -568,7 +568,7 @@ exports[`<Help /> matches snapshot 1`] = `
           <dt>
             Match alerts based on the Alertmanager alert fingerprint
           </dt>
-          <dd class=\\"mb-5\\">
+          <dd>
             <div>
               Supported operators:
               <kbd class=\\"me-1\\">
@@ -615,7 +615,7 @@ exports[`<Help /> matches snapshot 1`] = `
           <dt>
             Match suppressed alerts based on the silence ID
           </dt>
-          <dd class=\\"mb-5\\">
+          <dd>
             <div>
               Supported operators:
               <kbd class=\\"me-1\\">
@@ -662,7 +662,7 @@ exports[`<Help /> matches snapshot 1`] = `
           <dt>
             Match alerts based on the author of silence
           </dt>
-          <dd class=\\"mb-5\\">
+          <dd>
             <div>
               Supported operators:
               <kbd class=\\"me-1\\">
@@ -729,7 +729,7 @@ exports[`<Help /> matches snapshot 1`] = `
           <dt>
             Match alerts based on the ticket IDs detected in the silence comment
           </dt>
-          <dd class=\\"mb-5\\">
+          <dd>
             <div>
               Supported operators:
               <kbd class=\\"me-1\\">
@@ -745,7 +745,7 @@ exports[`<Help /> matches snapshot 1`] = `
                 !~
               </kbd>
             </div>
-            <div class=\\"my-1 alert alert-secondary\\">
+            <div class=\\"my-1 alert alert-secondary p-2\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
@@ -813,14 +813,14 @@ exports[`<Help /> matches snapshot 1`] = `
           <dt>
             Limit number of displayed alerts
           </dt>
-          <dd class=\\"mb-5\\">
+          <dd>
             <div>
               Supported operators:
               <kbd class=\\"me-1\\">
                 =
               </kbd>
             </div>
-            <div class=\\"my-1 alert alert-secondary\\">
+            <div class=\\"my-1 alert alert-secondary p-2\\">
               <svg aria-hidden=\\"true\\"
                    focusable=\\"false\\"
                    data-prefix=\\"fas\\"
@@ -856,7 +856,7 @@ exports[`<Help /> matches snapshot 1`] = `
           <dt>
             Match alerts based on creation timestamp
           </dt>
-          <dd class=\\"mb-5\\">
+          <dd>
             <div>
               Supported operators:
               <kbd class=\\"me-1\\">

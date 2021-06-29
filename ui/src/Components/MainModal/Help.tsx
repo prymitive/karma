@@ -34,7 +34,7 @@ const QueryHelp: FC<{
 }> = ({ title, operators, warning, children }) => (
   <>
     <dt>{title}</dt>
-    <dd className="mb-5">
+    <dd>
       <div>
         Supported operators:{" "}
         {operators.map((op) => (
@@ -44,7 +44,7 @@ const QueryHelp: FC<{
         ))}
       </div>
       {warning ? (
-        <div className="my-1 alert alert-secondary">
+        <div className="my-1 alert alert-secondary p-2">
           <FontAwesomeIcon icon={faInfoCircle} className="me-1" />
           {warning}
         </div>
