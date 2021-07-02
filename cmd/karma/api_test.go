@@ -1088,6 +1088,11 @@ func TestVerifyAllGroups(t *testing.T) {
 		if diff := cmp.Diff(expectedReceivers, ur.Receivers); diff != "" {
 			t.Errorf("Incorrect receivers list (-want +got):\n%s", diff)
 		}
+
+		expectedLabelNames := []string{"alertname", "cluster", "disk", "instance", "ip", "job"}
+		if diff := cmp.Diff(expectedLabelNames, ur.LabelNames); diff != "" {
+			t.Errorf("Incorrect labelNames list (-want +got):\n%s", diff)
+		}
 	}
 }
 

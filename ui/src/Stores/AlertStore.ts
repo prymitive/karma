@@ -139,6 +139,8 @@ interface AlertStoreDataT {
   colors: APIAlertsResponseColorsT;
   counters: APILabelCounterT[];
   grids: APIGridT[];
+  labelNames: string[];
+  setLabelNames: (v: string[]) => void;
   silences: APIAlertsResponseSilenceMapT;
   upstreams: APIAlertsResponseUpstreamsT;
   receivers: string[];
@@ -291,6 +293,10 @@ class AlertStore {
         colors: {} as APIAlertsResponseColorsT,
         counters: [] as APILabelCounterT[],
         grids: [] as APIGridT[],
+        labelNames: [] as string[],
+        setLabelNames(v: string[]) {
+          this.labelNames = v;
+        },
         silences: {} as APIAlertsResponseSilenceMapT,
         upstreams: {
           counters: { total: 0, healthy: 0, failed: 0 },
@@ -394,6 +400,7 @@ class AlertStore {
         setCounters: action.bound,
         setReceivers: action.bound,
         setColors: action.bound,
+        setLabelNames: action.bound,
       },
       { name: "API Response data" }
     );
@@ -663,6 +670,7 @@ class AlertStore {
     updates.colors = result.colors;
     updates.counters = result.counters;
     updates.grids = result.grids;
+    updates.labelNames = result.labelNames;
     updates.silences = result.silences;
     updates.upstreams = result.upstreams;
     updates.receivers = result.receivers;

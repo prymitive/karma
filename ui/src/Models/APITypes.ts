@@ -201,6 +201,7 @@ export interface APIAlertsResponseT {
   upstreams: APIAlertsResponseUpstreamsT;
   silences: APIAlertsResponseSilenceMapT;
   grids: APIGridT[];
+  labelNames: string[];
   totalAlerts: number;
   colors: APIAlertsResponseColorsT;
   filters: APIFilterT[];

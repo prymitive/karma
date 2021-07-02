@@ -349,6 +349,7 @@ type AlertsResponse struct {
 	Silences       map[string]map[string]Silence `json:"silences"`
 	Grids          []APIGrid                     `json:"grids"`
 	TotalAlerts    int                           `json:"totalAlerts"`
+	LabelNames     []string                      `json:"labelNames"`
 	Colors         LabelsColorMap                `json:"colors"`
 	Filters        []Filter                      `json:"filters"`
 	Counters       LabelNameStatsList            `json:"counters"`
