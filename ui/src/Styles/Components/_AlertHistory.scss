@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .alert-history-tooltip {
   width: 100%;
   height: 4px;
@@ -11,6 +13,12 @@ svg.alert-history {
 
   margin-left: 1px;
   margin-right: 1px;
+
+  @for $i from 1 through 24 {
+    &:nth-of-type(#{$i}) > rect.fetching {
+      animation-name: alert-history-loading-#{$i};
+    }
+  }
 
   rect {
     width: 100%;
@@ -43,10 +51,37 @@ svg.alert-history {
       fill: $alert-history-inactive;
     }
     &.fetching {
-      fill: transparent;
+      fill: $alert-history-inactive;
+      animation-timing-function: ease-out;
+      animation-duration: 12s;
+      animation-iteration-count: infinite;
     }
     &.error {
       fill: $warning;
+    }
+  }
+}
+
+@for $i from 1 through 24 {
+  @keyframes alert-history-loading-#{$i} {
+    $step: math.div(100, 25);
+    $start: ($step * $i) - $step;
+    $middle: ($step * $i);
+    $stop: ($step * $i) + $step;
+    0% {
+      opacity: 1;
+    }
+    #{$start * 1%} {
+      opacity: 1;
+    }
+    #{$middle * 1%} {
+      opacity: 0;
+    }
+    #{$stop * 1%} {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
     }
   }
 }
