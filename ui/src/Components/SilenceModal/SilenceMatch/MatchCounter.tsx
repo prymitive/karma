@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons/faExclamationCircle";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
 
-import type { APIAlertsResponseT } from "Models/APITypes";
+import type { AlertListResponseT } from "Models/APITypes";
 import { FormatBackendURI, FormatAlertsQ } from "Stores/AlertStore";
 import type { SilenceFormStore, MatcherWithIDT } from "Stores/SilenceFormStore";
 import { TooltipWrapper } from "Components/TooltipWrapper";
@@ -23,8 +23,8 @@ const MatchCounter: FC<{
   }
 
   const { response, error, isLoading, isRetrying } =
-    useFetchGet<APIAlertsResponseT>(
-      FormatBackendURI("alerts.json?") + FormatAlertsQ(filters)
+    useFetchGet<AlertListResponseT>(
+      FormatBackendURI("alertList.json?") + FormatAlertsQ(filters)
     );
 
   return error ? (
@@ -47,7 +47,7 @@ const MatchCounter: FC<{
             className={isRetrying ? "text-danger" : ""}
           />
         ) : (
-          Math.max(response.totalAlerts, 0)
+          response.alerts.length
         )}
       </span>
     </TooltipWrapper>

@@ -7,7 +7,7 @@ import { storiesOf } from "@storybook/react";
 import addHours from "date-fns/addHours";
 import addDays from "date-fns/addDays";
 
-import { MockSilence } from "../../__fixtures__/Alerts";
+import { MockSilence, MockAlert } from "../../__fixtures__/Alerts";
 import { AlertStore } from "../../Stores/AlertStore";
 import { Settings } from "../../Stores/Settings";
 import {
@@ -120,21 +120,21 @@ storiesOf("SilenceModal", module)
     silenceFormStore.tab.current = "editor";
 
     fetchMock.mock(
-      "begin:/alerts.json?q=cluster",
-      { totalAlerts: 0 },
+      "begin:/alertList.json?q=cluster",
+      { alerts: [] },
       {
         overwriteRoutes: true,
       }
     );
     fetchMock.mock(
-      "begin:/alerts.json?q=instance",
-      { totalAlerts: 23 },
+      "begin:/alertList.json?q=instance",
+      { alerts: Array(23).fill(MockAlert([], {}, "active")) },
       {
         overwriteRoutes: true,
       }
     );
     fetchMock.mock(
-      "begin:/alerts.json?q=tooLong",
+      "begin:/alertList.json?q=tooLong",
       {
         body: "error",
         status: 503,

@@ -3,7 +3,6 @@ import { mount } from "enzyme";
 import { advanceTo, clear } from "jest-date-mock";
 
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
-import { EmptyAPIResponse } from "__fixtures__/Fetch";
 import { AlertStore } from "Stores/AlertStore";
 import { useFetchGet } from "Hooks/useFetchGet";
 import { PaginatedAlertList } from ".";
@@ -76,6 +75,23 @@ describe("<PaginatedAlertList />", () => {
   });
 
   it("renders LabelSetList with StaticLabel on mount", () => {
+    useFetchGetMock.fetch.setMockedData({
+      response: {
+        alerts: [
+          {
+            alertname: "Fake Alert",
+            foo: "1",
+            bar: "2",
+          },
+        ],
+      },
+      error: undefined,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
     const tree = mount(
       <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
     );
@@ -85,7 +101,7 @@ describe("<PaginatedAlertList />", () => {
 
   it("renders empty LabelSetList with empty response", () => {
     useFetchGetMock.fetch.setMockedData({
-      response: EmptyAPIResponse(),
+      response: { alerts: [] },
       error: null,
       isLoading: false,
       isRetrying: false,
@@ -106,6 +122,23 @@ describe("<PaginatedAlertList />", () => {
   });
 
   it("renders StaticLabel after fetch", () => {
+    useFetchGetMock.fetch.setMockedData({
+      response: {
+        alerts: [
+          {
+            alertname: "Fake Alert",
+            foo: "1",
+            bar: "2",
+          },
+        ],
+      },
+      error: undefined,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
     const tree = mount(
       <PaginatedAlertList
         alertStore={alertStore}
@@ -119,7 +152,7 @@ describe("<PaginatedAlertList />", () => {
 
   it("handles empty grid response correctly", () => {
     useFetchGetMock.fetch.setMockedData({
-      response: EmptyAPIResponse(),
+      response: { alerts: [] },
       error: null,
       isLoading: false,
       isRetrying: false,
