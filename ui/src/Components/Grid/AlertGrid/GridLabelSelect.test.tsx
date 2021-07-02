@@ -33,6 +33,7 @@ beforeEach(() => {
       unprocessed: 0,
     },
   };
+  alertStore.data.setLabelNames(["alertname", "job", "cluster"]);
 
   jest.useFakeTimers();
 });

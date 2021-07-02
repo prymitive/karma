@@ -245,11 +245,19 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var matches int
+	labelMap := map[string]struct{}{}
 	for _, ag := range filtered {
 		perGridAlertGroup := map[string]*models.AlertGroup{}
 
+		for k := range ag.Labels {
+			labelMap[k] = struct{}{}
+		}
 		for _, alert := range ag.Alerts {
 			alert := alert // scopelint pin
+
+			for k := range alert.Labels {
+				labelMap[k] = struct{}{}
+			}
 
 			allReceivers[alert.Receiver] = true
 
@@ -442,7 +450,6 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	//resp.AlertGroups = sortAlertGroups(c, alerts)
 	v, _ := lookupQueryString(r, "gridSortReverse")
 	gridSortReverse := v == "1"
 	sortedGrids := sortGrids(r, gridLabel, grids, gridSortReverse)
@@ -476,6 +483,12 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		receivers = append(receivers, k)
 	}
 	sort.Strings(receivers)
+
+	resp.LabelNames = make([]string, 0, len(labelMap))
+	for label := range labelMap {
+		resp.LabelNames = append(resp.LabelNames, label)
+	}
+	sort.Strings(resp.LabelNames)
 
 	resp.Grids = sortedGrids
 	resp.Silences = silences

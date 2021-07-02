@@ -30,6 +30,7 @@ const EmptyAPIResponse = (): APIAlertsResponseT => ({
   },
   silences: { default: {} },
   grids: [],
+  labelNames: ["alertname", "job", "cluster"],
   receivers: ["by-cluster-service", "by-name"],
   totalAlerts: 0,
   colors: {},

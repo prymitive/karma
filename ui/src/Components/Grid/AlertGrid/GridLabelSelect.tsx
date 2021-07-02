@@ -45,25 +45,6 @@ const GridLabelNameSelect: FC<{
     inputValue: string,
     callback: (options: OptionT[]) => void
   ) => {
-    const labelNames: { [key: string]: boolean } = {};
-
-    alertStore.data.grids.forEach((grid) => {
-      labelNames[grid.labelName] = true;
-      grid.alertGroups.forEach((group) => {
-        Object.keys(group.labels).forEach((name) => {
-          labelNames[name] = true;
-        });
-        Object.keys(group.shared.labels).forEach((name) => {
-          labelNames[name] = true;
-        });
-        group.alerts.forEach((alert) => {
-          Object.keys(alert.labels).forEach((name) => {
-            labelNames[name] = true;
-          });
-        });
-      });
-    });
-
     const autoEnabled =
       settingsStore.multiGridConfig.config.gridLabel === "@auto";
     const options = [
@@ -71,7 +52,7 @@ const GridLabelNameSelect: FC<{
         (val) =>
           val.value !== "@auto" || (val.value === "@auto" && !autoEnabled)
       ),
-      ...Object.keys(labelNames)
+      ...alertStore.data.labelNames
         .filter(
           (labelName) =>
             autoEnabled === true ||
