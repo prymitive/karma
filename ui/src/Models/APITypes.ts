@@ -219,3 +219,7 @@ export interface HistoryResponseT {
   error: string;
   samples: HistorySampleT[];
 }
+
+export interface AlertListResponseT {
+  alerts: LabelsT[];
+}

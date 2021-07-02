@@ -2,9 +2,18 @@ import { useState, useEffect, useCallback } from "react";
 
 import { MockAPIResponse, MockSilenceResponse } from "__fixtures__/Fetch";
 import type { FetchGetResultT } from "Hooks/useFetchGet";
-import type { APIAlertsResponseT, APIManagedSilenceT } from "Models/APITypes";
+import type {
+  APIAlertsResponseT,
+  APIManagedSilenceT,
+  AlertListResponseT,
+} from "Models/APITypes";
 
-type responseT = null | string[] | APIAlertsResponseT | APIManagedSilenceT[];
+type responseT =
+  | null
+  | string[]
+  | APIAlertsResponseT
+  | APIManagedSilenceT[]
+  | AlertListResponseT;
 
 interface mockedDataT {
   response: undefined | responseT;
@@ -91,6 +100,10 @@ const useFetchGetMock = (
       {
         re: /^\.\/alerts\.json\?q=/,
         response: MockAPIResponse(),
+      },
+      {
+        re: /^\.\/alertList\.json\?q=/,
+        response: { alerts: [{ instance: "foo" }] },
       },
       // silence browser
       {

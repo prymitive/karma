@@ -1,5 +1,11 @@
 # Changelog
 
+## [unreleased]
+
+### Added
+
+- Added dedicated API endpoint for silence previews.
+
 ## v0.87
 
 ### Added
