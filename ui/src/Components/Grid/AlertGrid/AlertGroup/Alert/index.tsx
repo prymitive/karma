@@ -20,7 +20,6 @@ import { RenderSilence } from "../Silences";
 const Alert: FC<{
   group: APIAlertGroupT;
   alert: APIAlertT;
-  showAlertmanagers: boolean;
   showReceiver: boolean;
   showOnlyExpandedAnnotations: boolean;
   afterUpdate: () => void;
@@ -30,7 +29,6 @@ const Alert: FC<{
 }> = ({
   group,
   alert,
-  showAlertmanagers,
   showReceiver,
   showOnlyExpandedAnnotations,
   afterUpdate,
@@ -118,16 +116,16 @@ const Alert: FC<{
           alertStore={alertStore}
         />
       ))}
-      {showAlertmanagers
-        ? clusters.map((cluster) => (
-            <FilteringLabel
-              key={cluster}
-              name={StaticLabels.AlertmanagerCluster}
-              value={cluster}
-              alertStore={alertStore}
-            />
-          ))
-        : null}
+      {clusters
+        .filter((c) => group.shared.clusters.indexOf(c) < 0)
+        .map((cluster) => (
+          <FilteringLabel
+            key={cluster}
+            name={StaticLabels.AlertmanagerCluster}
+            value={cluster}
+            alertStore={alertStore}
+          />
+        ))}
       {showReceiver ? (
         <FilteringLabel
           name={StaticLabels.Receiver}

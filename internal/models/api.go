@@ -96,6 +96,7 @@ type APIAlertGroupSharedMaps struct {
 	Labels      map[string]string   `json:"labels"`
 	Silences    map[string][]string `json:"silences"`
 	Sources     []string            `json:"sources"`
+	Clusters    []string            `json:"clusters"`
 }
 
 // APIAlertGroup is how AlertGroup is returned in the API response
@@ -265,6 +266,32 @@ func (ag *APIAlertGroup) dedupSources() {
 	sort.Strings(ag.Shared.Sources)
 }
 
+func (ag *APIAlertGroup) dedupClusters() {
+	totalAlerts := len(ag.Alerts)
+
+	alertsPerCluster := map[string]int{}
+	for _, alert := range ag.Alerts {
+		clusters := map[string]struct{}{}
+		for _, am := range alert.Alertmanager {
+			clusters[am.Cluster] = struct{}{}
+		}
+		for cluster := range clusters {
+			if _, found := alertsPerCluster[cluster]; !found {
+				alertsPerCluster[cluster] = 0
+			}
+			alertsPerCluster[cluster]++
+		}
+	}
+
+	ag.Shared.Clusters = []string{}
+	for cluster, alerts := range alertsPerCluster {
+		if alerts == totalAlerts {
+			ag.Shared.Clusters = append(ag.Shared.Clusters, cluster)
+		}
+	}
+	sort.Strings(ag.Shared.Clusters)
+}
+
 // DedupSharedMaps will find all labels and annotations shared by all alerts
 // in this group and moved them to Shared namespace
 func (ag *APIAlertGroup) DedupSharedMaps() {
@@ -275,11 +302,13 @@ func (ag *APIAlertGroup) DedupSharedMaps() {
 		ag.dedupLabels()
 		ag.dedupAnnotations()
 		ag.dedupSilences()
+		ag.dedupClusters()
 	} else {
 		ag.Shared = APIAlertGroupSharedMaps{
 			Labels:      map[string]string{},
 			Annotations: Annotations{},
 			Silences:    map[string][]string{},
+			Clusters:    []string{},
 		}
 	}
 	ag.dedupSources()

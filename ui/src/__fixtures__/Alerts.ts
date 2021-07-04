@@ -71,6 +71,7 @@ const MockAlertGroup = (
     labels: sharedLabels,
     silences: sharedSilences,
     sources: ["https://secure.example.com/graph", "http://plain.example.com/"],
+    clusters: [],
   },
 });
 

@@ -12,7 +12,6 @@ import { RenderSilence } from "../Silences";
 
 const GroupFooter: FC<{
   group: APIAlertGroupT;
-  alertmanagers: string[];
   afterUpdate: () => void;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
@@ -20,7 +19,6 @@ const GroupFooter: FC<{
   showSilences?: boolean;
 }> = ({
   group,
-  alertmanagers,
   afterUpdate,
   alertStore,
   silenceFormStore,
@@ -53,7 +51,7 @@ const GroupFooter: FC<{
           alertStore={alertStore}
         />
       ))}
-      {alertmanagers.map((cluster) => (
+      {group.shared.clusters.map((cluster) => (
         <FilteringLabel
           key={cluster}
           name={StaticLabels.AlertmanagerCluster}

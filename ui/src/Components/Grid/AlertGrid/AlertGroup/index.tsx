@@ -8,7 +8,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons/faEllipsisH";
 
-import type { APIAlertT, APIAlertGroupT, AlertStateT } from "Models/APITypes";
+import type { APIAlertGroupT, AlertStateT } from "Models/APITypes";
 import type { Settings } from "Stores/Settings";
 import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -36,15 +36,6 @@ const LoadButton: FC<{
         <FontAwesomeIcon className="text-muted" icon={icon} />
       </button>
     </TooltipWrapper>
-  );
-};
-
-const AllAlertsAreUsingSameAlertmanagers = (alerts: APIAlertT[]): boolean => {
-  const usedAMs = alerts.map((alert) =>
-    alert.alertmanager.map((am) => am.name).sort()
-  );
-  return usedAMs.every(
-    (listOfAMs) => JSON.stringify(listOfAMs) === JSON.stringify(usedAMs[0])
   );
 };
 
@@ -137,27 +128,6 @@ const AlertGroup: FC<{
     afterUpdate();
   });
 
-  const footerAlertmanagers: string[] = [];
-  let showAlertmanagersInFooter = false;
-
-  // There's no need to render @alertmanager labels if there's only 1
-  // alertmanager upstream
-  if (showAlertmanagers) {
-    // Decide if we show @alertmanager label in footer or for every alert
-    // we show it in the footer only if every alert has the same set of
-    // alertmanagers (and there's > 1 alert to show, there's no footer for 1)
-    showAlertmanagersInFooter =
-      group.alerts.length > 1 &&
-      AllAlertsAreUsingSameAlertmanagers(group.alerts);
-    if (showAlertmanagersInFooter) {
-      for (const am of group.alerts[0].alertmanager) {
-        if (!footerAlertmanagers.includes(am.cluster)) {
-          footerAlertmanagers.push(am.cluster);
-        }
-      }
-    }
-  }
-
   let themedCounters = true;
   let cardBackgroundClass = "bg-light";
   if (settingsStore.alertGroupConfig.config.colorTitleBar) {
@@ -213,9 +183,6 @@ const AlertGroup: FC<{
                     key={alert.id}
                     group={group}
                     alert={alert}
-                    showAlertmanagers={
-                      showAlertmanagers && !showAlertmanagersInFooter
-                    }
                     showReceiver={
                       alertStore.data.receivers.length > 1 &&
                       group.alerts.length === 1
@@ -266,7 +233,6 @@ const AlertGroup: FC<{
         {isCollapsed === false && group.alerts.length > 1 ? (
           <GroupFooter
             group={group}
-            alertmanagers={footerAlertmanagers}
             afterUpdate={afterUpdate}
             alertStore={alertStore}
             silenceFormStore={silenceFormStore}
