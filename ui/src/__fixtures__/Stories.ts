@@ -234,6 +234,9 @@ const MockGrid = (alertStore: AlertStore): void => {
     group.stateCount.active = active;
     group.stateCount.suppressed = suppressed;
     group.stateCount.unprocessed = unprocessed;
+    if (i === 2 || i === 4) {
+      group.shared.clusters = ["default"];
+    }
     if (i < 3) {
       group.shared.labels = {
         cluster: `prod${i}`,

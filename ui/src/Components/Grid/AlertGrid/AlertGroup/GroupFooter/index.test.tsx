@@ -67,7 +67,6 @@ const MountedGroupFooter = () => {
   return mount(
     <GroupFooter
       group={group}
-      alertmanagers={["default"]}
       afterUpdate={MockAfterUpdate}
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
@@ -81,6 +80,7 @@ const MountedGroupFooter = () => {
 
 describe("<GroupFooter />", () => {
   it("matches snapshot", () => {
+    group.shared.clusters = ["default"];
     const tree = MountedGroupFooter().find("GroupFooter");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
@@ -131,6 +131,7 @@ describe("<GroupFooter />", () => {
       group.alerts[index].alertmanager[0].silencedBy = ["123456789"];
     }
     group.shared.silences = { default: ["123456789"] };
+    group.shared.clusters = ["default"];
 
     const silence = MockSilence();
     silence.id = "123456789";
@@ -173,7 +174,6 @@ describe("<GroupFooter />", () => {
     const tree = mount(
       <GroupFooter
         group={group}
-        alertmanagers={["default"]}
         afterUpdate={MockAfterUpdate}
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}
@@ -193,7 +193,6 @@ describe("<GroupFooter />", () => {
     const tree = mount(
       <GroupFooter
         group={group}
-        alertmanagers={["default"]}
         afterUpdate={MockAfterUpdate}
         alertStore={alertStore}
         silenceFormStore={silenceFormStore}

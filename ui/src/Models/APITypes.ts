@@ -65,6 +65,7 @@ export interface APIAlertGroupT {
     labels: LabelsT;
     silences: { [cluster: string]: string[] };
     sources: string[];
+    clusters: string[];
   };
 }
 

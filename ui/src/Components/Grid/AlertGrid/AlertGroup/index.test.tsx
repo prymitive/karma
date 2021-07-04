@@ -133,8 +133,9 @@ describe("<AlertGroup />", () => {
     ).toBe(false);
   });
 
-  it("renders Alertmanager cluster labels in footer if showAlertmanagersInFooter=true", () => {
+  it("renders Alertmanager cluster labels in footer if shared", () => {
     MockAlerts(2);
+    group.shared.clusters = ["default"];
     const tree = MountedAlertGroup(jest.fn(), true).find("AlertGroup");
     expect(tree.find("GroupFooter").html()).toMatch(/@cluster/);
   });
@@ -163,6 +164,7 @@ describe("<AlertGroup />", () => {
         inhibitedBy: [],
       });
     }
+    group.shared.clusters = ["default", "HA"];
     const tree = MountedAlertGroup(jest.fn(), true).find("AlertGroup");
     const labels = tree.find("GroupFooter").find("FilteringLabel");
     expect(labels).toHaveLength(3);
