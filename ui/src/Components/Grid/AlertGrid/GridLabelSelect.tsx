@@ -24,7 +24,6 @@ import { NewLabelName, StringToOption, OptionT } from "Common/Select";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { ThemeContext } from "Components/Theme";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
-import { FetchPauser } from "Components/FetchPauser";
 
 const specialLabels: OptionT[] = [
   { label: "Automatic selection", value: "@auto" },
@@ -74,8 +73,8 @@ const GridLabelNameSelect: FC<{
       formatCreateLabel={NewLabelName}
       loadOptions={loadOptions}
       defaultOptions
-      onChange={(option) => {
-        settingsStore.multiGridConfig.setGridLabel((option as OptionT).value);
+      onChange={(option: OptionT) => {
+        settingsStore.multiGridConfig.setGridLabel(option.value);
         onClose();
       }}
       menuIsOpen={true}
@@ -108,25 +107,23 @@ const Dropdown: FC<{
   onClose,
 }) => {
   return (
-    <FetchPauser alertStore={alertStore}>
-      <div
-        className="dropdown-menu d-block shadow components-grid-label-select-menu border-0 p-0 m-0"
-        ref={popperRef}
-        style={{
-          fontSize: "1rem",
-          fontWeight: "normal",
-          ...popperStyle,
-        }}
-        data-placement={popperPlacement}
-      >
-        <GridLabelNameSelect
-          alertStore={alertStore}
-          settingsStore={settingsStore}
-          grid={grid}
-          onClose={onClose}
-        />
-      </div>
-    </FetchPauser>
+    <div
+      className="dropdown-menu d-block shadow components-grid-label-select-menu border-0 p-0 m-0"
+      ref={popperRef}
+      style={{
+        fontSize: "1rem",
+        fontWeight: "normal",
+        ...popperStyle,
+      }}
+      data-placement={popperPlacement}
+    >
+      <GridLabelNameSelect
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        grid={grid}
+        onClose={onClose}
+      />
+    </div>
   );
 };
 
