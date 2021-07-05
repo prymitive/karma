@@ -5,18 +5,15 @@ import (
 	"image/color"
 	"io"
 	"math/rand"
-	"sync"
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/models"
 	"github.com/prymitive/karma/internal/slices"
 
-	"github.com/hansrodtang/randomcolor"
+	"github.com/prymitive/randomcolor"
 	"github.com/rs/zerolog/log"
 	plcolors "gopkg.in/go-playground/colors.v1"
 )
-
-var lock sync.RWMutex
 
 func labelToSeed(key string, val string) int64 {
 	h := sha1.New()
@@ -31,10 +28,8 @@ func labelToSeed(key string, val string) int64 {
 }
 
 func colorFromKeyVal(key, val string) color.Color {
-	lock.Lock()
-	defer lock.Unlock()
-	rand.Seed(labelToSeed(key, val))
-	return randomcolor.New(randomcolor.Random, randomcolor.LIGHT)
+	r := rand.New(rand.NewSource(labelToSeed(key, val)))
+	return randomcolor.New(r, randomcolor.Random, randomcolor.LIGHT)
 }
 
 func rgbToBrightness(r, g, b uint8) int32 {

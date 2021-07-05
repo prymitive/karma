@@ -19,7 +19,6 @@ require (
 	github.com/go-openapi/validate v0.20.2
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/go-cmp v0.5.6
-	github.com/hansrodtang/randomcolor v0.0.0-20160512071917-d27108b3d7a5
 	github.com/hashicorp/golang-lru v0.5.4
 	github.com/jarcoal/httpmock v1.0.8
 	github.com/knadh/koanf v1.1.1
@@ -28,6 +27,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/prometheus/client_golang v1.11.0
 	github.com/prometheus/common v0.29.0
+	github.com/prymitive/randomcolor v0.0.0-20210705210145-26c3401033a6
 	github.com/rogpeppe/go-internal v1.8.0
 	github.com/rs/zerolog v1.23.0
 	github.com/spf13/pflag v1.0.5
