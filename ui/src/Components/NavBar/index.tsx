@@ -118,7 +118,7 @@ const NavBar: FC<{
             <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
           </span>
           <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
-          <ul className="navbar-nav flex-wrap flex-shrink-1">
+          <ul className="navbar-nav flex-wrap flex-shrink-1 ms-1">
             <AppToasts alertStore={alertStore} />
             <SilenceModal
               alertStore={alertStore}
