@@ -285,27 +285,27 @@ func isPreferredLabel(label, other string) bool {
 }
 
 func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
-	var alertsCount, alertGroupsCount int
-	labelNameToValueCount := map[string]map[string]int{}
+	alertGroupsCount := len(dedupedAlerts)
+	var alertsCount int
+	labelToAlertCount := map[string]map[string]int{}
 	for _, ag := range dedupedAlerts {
-		alertGroupsCount++
 		alertsCount += ag.Alerts.Len()
 		for _, alert := range ag.Alerts {
 			for key, val := range alert.Labels {
-				if _, ok := labelNameToValueCount[key]; !ok {
-					labelNameToValueCount[key] = map[string]int{}
+				if _, ok := labelToAlertCount[key]; !ok {
+					labelToAlertCount[key] = map[string]int{}
 				}
-				if _, ok := labelNameToValueCount[key][val]; !ok {
-					labelNameToValueCount[key][val] = 0
+				if _, ok := labelToAlertCount[key][val]; !ok {
+					labelToAlertCount[key][val] = 0
 				}
-				labelNameToValueCount[key][val]++
+				labelToAlertCount[key][val]++
 			}
 		}
 	}
 	log.Debug().Int("alerts", alertsCount).Int("groups", alertGroupsCount).Msg("Alerts count for automatic grid label")
 
 	candidates := map[string]int{}
-	for key, vals := range labelNameToValueCount {
+	for key, vals := range labelToAlertCount {
 		if slices.StringInSlice(config.Config.Grid.Auto.Ignore, key) {
 			continue
 		}
@@ -325,7 +325,7 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 	var lastLabel string
 	var lastCnt int
 	for key, uniqueValues := range candidates {
-		if uniqueValues == 1 || uniqueValues == alertsCount {
+		if uniqueValues == 1 || uniqueValues >= alertsCount || uniqueValues >= alertGroupsCount {
 			log.Debug().Int("variants", uniqueValues).Int("alerts", alertsCount).Int("groups", alertGroupsCount).Str("label", key).Msg("Excluding label from automatic grid selection")
 			continue
 		}

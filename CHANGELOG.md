@@ -18,6 +18,11 @@
   `grid:groupLimit` config option was added to customise how many groups
   are returned and displayed in the UI by default.
 
+### Changed
+
+- Automatic grid label selection logic was tweaked to avoid splitting
+  alert groups.
+
 ## v0.86
 
 ### Added
