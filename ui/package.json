@@ -57,7 +57,7 @@
   "devDependencies": {
     "@percy/storybook": "3.3.1",
     "@storybook/preset-create-react-app": "3.2.0",
-    "@storybook/react": "6.3.2",
+    "@storybook/react": "6.3.3",
     "@testing-library/react-hooks": "7.0.1",
     "@types/body-scroll-lock": "2.6.2",
     "@types/bricks.js": "1.8.1",
