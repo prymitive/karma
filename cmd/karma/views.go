@@ -729,7 +729,9 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 	}
 	sort.Strings(sortKeys)
 
-	al := AlertList{}
+	al := AlertList{
+		Alerts: []map[string]string{},
+	}
 	for _, labels := range labelMap {
 		al.Alerts = append(al.Alerts, labels)
 	}

@@ -3165,6 +3165,12 @@ func TestAlertList(t *testing.T) {
 				},
 			},
 		},
+		{
+			args: "q=foo=bar",
+			alerts: AlertList{
+				Alerts: []map[string]string{},
+			},
+		},
 	}
 
 	mockConfig()
