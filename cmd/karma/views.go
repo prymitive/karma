@@ -222,7 +222,6 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 
 	grids := map[string]models.APIGrid{}
 	colors := models.LabelsColorMap{}
-	counters := map[string]map[string]int{}
 
 	dedupedAlerts := alertmanager.DedupAlerts()
 	dedupedColors := alertmanager.DedupColors()
@@ -342,19 +341,6 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 
 				agCopy.Alerts = append(agCopy.Alerts, alert)
 
-				if len(upstreams.Clusters) > 1 {
-					clusters := map[string]bool{}
-					for _, am := range alert.Alertmanager {
-						clusters[am.Cluster] = true
-					}
-					for cluster := range clusters {
-						countLabel(counters, "@cluster", cluster)
-					}
-				}
-
-				countLabel(counters, "@state", alert.State)
-
-				countLabel(counters, "@receiver", alert.Receiver)
 				if ck, foundKey := dedupedColors["@receiver"]; foundKey {
 					if cv, foundVal := ck[alert.Receiver]; foundVal {
 						if _, found := colors["@receiver"]; !found {
@@ -405,7 +391,6 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 							colors[key][value] = color
 						}
 					}
-					countLabel(counters, key, value)
 				}
 			}
 		}
@@ -493,7 +478,6 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	resp.Grids = sortedGrids
 	resp.Silences = silences
 	resp.Colors = colors
-	resp.Counters = countersToLabelStats(counters)
 	resp.Filters = populateAPIFilters(matchFilters)
 	resp.Receivers = receivers
 
@@ -760,4 +744,61 @@ func sortSliceOfLabels(labels []map[string]string, sortKeys []string, fallback s
 		}
 		return sortorder.NaturalLess(labels[i][fallback], labels[j][fallback])
 	})
+}
+
+func counters(w http.ResponseWriter, r *http.Request) {
+	noCache(w)
+
+	// use full URI (including query args) as cache key
+	cacheKey := r.RequestURI
+
+	d, found := apiCache.Get(cacheKey)
+	if found {
+		r := bytes.NewReader(d.([]byte))
+		rawData, _ := decompressCachedResponse(r)
+		mimeJSON(w)
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write(rawData)
+		return
+	}
+
+	q, _ := lookupQueryStringSlice(r, "q")
+	matchFilters := getFiltersFromQuery(q)
+	dedupedAlerts := alertmanager.DedupAlerts()
+	filtered := filterAlerts(dedupedAlerts, matchFilters)
+	upstreams := getUpstreams()
+	counters := map[string]map[string]int{}
+
+	var total int
+	for _, ag := range filtered {
+		total += len(ag.Alerts)
+		for _, alert := range ag.Alerts {
+			if len(upstreams.Clusters) > 1 {
+				clusters := map[string]struct{}{}
+				for _, am := range alert.Alertmanager {
+					clusters[am.Cluster] = struct{}{}
+				}
+				for cluster := range clusters {
+					countLabel(counters, "@cluster", cluster)
+				}
+			}
+			countLabel(counters, "@state", alert.State)
+			countLabel(counters, "@receiver", alert.Receiver)
+			for key, value := range alert.Labels {
+				countLabel(counters, key, value)
+			}
+		}
+	}
+
+	resp := models.Counters{
+		Total:    total,
+		Counters: countersToLabelStats(counters),
+	}
+
+	mimeJSON(w)
+	w.WriteHeader(http.StatusOK)
+	data, _ := json.Marshal(resp)
+	compressedData, _ := compressResponse(data, nil)
+	_ = apiCache.Add(cacheKey, compressedData)
+	_, _ = w.Write(data)
 }

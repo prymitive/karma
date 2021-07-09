@@ -206,7 +206,6 @@ export interface APIAlertsResponseT {
   totalAlerts: number;
   colors: APIAlertsResponseColorsT;
   filters: APIFilterT[];
-  counters: APILabelCounterT[];
   settings: APISettingsT;
   authentication: APIAlertsResponseAuthenticationT;
   receivers: string[];
@@ -224,4 +223,9 @@ export interface HistoryResponseT {
 
 export interface AlertListResponseT {
   alerts: LabelsT[];
+}
+
+export interface CountersResponseT {
+  total: number;
+  counters: APILabelCounterT[];
 }

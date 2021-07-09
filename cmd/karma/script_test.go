@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"testing"
 
+	"github.com/beme/abide"
 	"github.com/rogpeppe/go-internal/testscript"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
@@ -31,10 +33,17 @@ func mainShouldWork() int {
 }
 
 func TestMain(m *testing.M) {
-	os.Exit(testscript.RunMain(m, map[string]func() int{
+	ecode := testscript.RunMain(m, map[string]func() int{
 		"karma.bin-should-fail": mainShoulFail,
 		"karma.bin-should-work": mainShouldWork,
-	}))
+	})
+	err := abide.Cleanup()
+	if err != nil {
+		fmt.Printf("abide.Cleanup() error: %v\n", err)
+		ecode = 1
+	}
+	os.Exit(ecode)
+
 }
 
 func TestScripts(t *testing.T) {

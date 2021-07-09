@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
+import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { OverviewModalContent } from "./OverviewModalContent";
 
@@ -29,44 +30,73 @@ const MountedOverviewModalContent = () =>
 
 describe("<OverviewModalContent />", () => {
   it("matches snapshot with labels to show", () => {
-    alertStore.filters.setFilterValues([
-      NewUnappliedFilter("abc=xyz"),
-      NewUnappliedFilter("foo=bar"),
-    ]);
-    alertStore.data.setCounters([
-      {
-        name: "foo",
-        hits: 16,
-        values: [
-          { value: "bar1", raw: "foo=bar1", hits: 8, percent: 50, offset: 0 },
-          { value: "bar2", raw: "foo=bar2", hits: 4, percent: 25, offset: 50 },
-          { value: "bar3", raw: "foo=bar3", hits: 4, percent: 25, offset: 75 },
-        ],
-      },
-      {
-        name: "bar",
-        hits: 20,
-        values: Array.from(Array(20).keys()).map((i) => ({
-          value: `baz${i + 1}`,
-          raw: `bar=baz${i + 1}`,
-          hits: 1,
-          percent: 5,
-          offset: i * 5,
-        })),
-      },
-      {
-        name: "alertname",
-        hits: 5,
-        values: [
+    useFetchGetMock.fetch.setMockedData({
+      response: {
+        total: 1,
+        counters: [
           {
-            value: "Host_Down",
-            raw: "alertname=Host_Down",
+            name: "foo",
+            hits: 16,
+            values: [
+              {
+                value: "bar1",
+                raw: "foo=bar1",
+                hits: 8,
+                percent: 50,
+                offset: 0,
+              },
+              {
+                value: "bar2",
+                raw: "foo=bar2",
+                hits: 4,
+                percent: 25,
+                offset: 50,
+              },
+              {
+                value: "bar3",
+                raw: "foo=bar3",
+                hits: 4,
+                percent: 25,
+                offset: 75,
+              },
+            ],
+          },
+          {
+            name: "bar",
+            hits: 20,
+            values: Array.from(Array(20).keys()).map((i) => ({
+              value: `baz${i + 1}`,
+              raw: `bar=baz${i + 1}`,
+              hits: 1,
+              percent: 5,
+              offset: i * 5,
+            })),
+          },
+          {
+            name: "alertname",
             hits: 5,
-            percent: 100,
-            offset: 0,
+            values: [
+              {
+                value: "Host_Down",
+                raw: "alertname=Host_Down",
+                hits: 5,
+                percent: 100,
+                offset: 0,
+              },
+            ],
           },
         ],
       },
+      error: null,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
+    alertStore.filters.setFilterValues([
+      NewUnappliedFilter("abc=xyz"),
+      NewUnappliedFilter("foo=bar"),
     ]);
 
     const tree = MountedOverviewModalContent();
@@ -74,35 +104,62 @@ describe("<OverviewModalContent />", () => {
   });
 
   it("matches snapshot with no labels to show", () => {
-    alertStore.data.setCounters([]);
+    useFetchGetMock.fetch.setMockedData({
+      response: {
+        total: 20,
+        counters: [],
+      },
+      error: null,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
     const tree = MountedOverviewModalContent();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
   it("renders all labels after expand button click", () => {
-    alertStore.info.setTotalAlerts(5);
-    alertStore.data.setCounters([
-      {
-        name: "foo",
-        hits: 5,
-        values: [
-          { value: "bar", raw: "foo=bar", hits: 5, percent: 100, offset: 0 },
-        ],
-      },
-      {
-        name: "bar",
-        hits: 3,
-        values: [
+    useFetchGetMock.fetch.setMockedData({
+      response: {
+        total: 5,
+        counters: [
           {
-            value: "foo",
-            raw: "bar=foo",
+            name: "foo",
+            hits: 5,
+            values: [
+              {
+                value: "bar",
+                raw: "foo=bar",
+                hits: 5,
+                percent: 100,
+                offset: 0,
+              },
+            ],
+          },
+          {
+            name: "bar",
             hits: 3,
-            percent: 100,
-            offset: 0,
+            values: [
+              {
+                value: "foo",
+                raw: "bar=foo",
+                hits: 3,
+                percent: 100,
+                offset: 0,
+              },
+            ],
           },
         ],
       },
-    ]);
+      error: null,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
     const tree = MountedOverviewModalContent();
 
     expect(tree.find("span.components-label")).toHaveLength(2 + 1); // +1 for toggle icon

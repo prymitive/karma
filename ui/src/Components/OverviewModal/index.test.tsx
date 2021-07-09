@@ -2,6 +2,7 @@ import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
+import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { AlertStore } from "Stores/AlertStore";
 import { OverviewModal } from ".";
 
@@ -35,12 +36,83 @@ describe("<OverviewModal />", () => {
     expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(1);
   });
 
+  it("renders a spinner placeholder while fetch is in progress", () => {
+    useFetchGetMock.fetch.setMockedData({
+      response: null,
+      error: null,
+      isLoading: true,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
+    const tree = MountedOverviewModal();
+    const toggle = tree.find("div.navbar-brand");
+    toggle.simulate("click");
+    expect(tree.find("LoadingMessage")).toHaveLength(1);
+    expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(1);
+  });
+
+  it("renders an error message on fetch error", () => {
+    useFetchGetMock.fetch.setMockedData({
+      response: null,
+      error: "mock error",
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
+    const tree = MountedOverviewModal();
+    const toggle = tree.find("div.navbar-brand");
+    toggle.simulate("click");
+    expect(tree.find("ErrorMessage")).toHaveLength(1);
+    expect(tree.find("h1.text-danger").text()).toBe("mock error");
+  });
+
   it("renders modal content if fallback is not used", () => {
+    useFetchGetMock.fetch.setMockedData({
+      response: {
+        total: 20,
+        counters: [],
+      },
+      error: null,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
     const tree = MountedOverviewModal();
     const toggle = tree.find("div.navbar-brand");
     toggle.simulate("click");
     expect(tree.find(".modal-title").text()).toBe("Overview");
     expect(tree.find(".modal-content").find("svg.fa-spinner")).toHaveLength(0);
+  });
+
+  it("re-fetches counters after timestamp change", () => {
+    alertStore.info.setTimestamp("old");
+    useFetchGetMock.fetch.setMockedData({
+      response: {
+        total: 20,
+        counters: [],
+      },
+      error: null,
+      isLoading: false,
+      isRetrying: false,
+      retryCount: 0,
+      get: jest.fn(),
+      cancelGet: jest.fn(),
+    });
+    const tree = MountedOverviewModal();
+    const toggle = tree.find("div.navbar-brand");
+    toggle.simulate("click");
+    expect(useFetchGetMock.fetch.calls).toHaveLength(1);
+
+    act(() => {
+      alertStore.info.setTimestamp("new");
+    });
+    expect(useFetchGetMock.fetch.calls).toHaveLength(2);
   });
 
   it("hides the modal when toggle() is called twice", () => {

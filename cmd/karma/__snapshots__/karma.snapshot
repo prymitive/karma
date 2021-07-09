@@ -1,0 +1,801 @@
+/* snapshot: TestCounters/#00 */
+HTTP/1.1 200 OK
+Connection: close
+Cache-Control: no-cache, no-store, must-revalidate
+Content-Type: application/json
+Vary: Origin
+
+{
+  "counters": [
+    {
+      "hits": 48,
+      "name": "@cluster",
+      "values": [
+        {
+          "hits": 24,
+          "offset": 0,
+          "percent": 50,
+          "raw": "@cluster=cluster",
+          "value": "cluster"
+        },
+        {
+          "hits": 24,
+          "offset": 50,
+          "percent": 50,
+          "raw": "@cluster=single",
+          "value": "single"
+        }
+      ]
+    },
+    {
+      "hits": 24,
+      "name": "@receiver",
+      "values": [
+        {
+          "hits": 12,
+          "offset": 0,
+          "percent": 50,
+          "raw": "@receiver=by-cluster-service",
+          "value": "by-cluster-service"
+        },
+        {
+          "hits": 12,
+          "offset": 50,
+          "percent": 50,
+          "raw": "@receiver=by-name",
+          "value": "by-name"
+        }
+      ]
+    },
+    {
+      "hits": 24,
+      "name": "@state",
+      "values": [
+        {
+          "hits": 16,
+          "offset": 0,
+          "percent": 67,
+          "raw": "@state=active",
+          "value": "active"
+        },
+        {
+          "hits": 8,
+          "offset": 67,
+          "percent": 33,
+          "raw": "@state=suppressed",
+          "value": "suppressed"
+        }
+      ]
+    },
+    {
+      "hits": 24,
+      "name": "alertname",
+      "values": [
+        {
+          "hits": 16,
+          "offset": 0,
+          "percent": 67,
+          "raw": "alertname=Host_Down",
+          "value": "Host_Down"
+        },
+        {
+          "hits": 4,
+          "offset": 67,
+          "percent": 17,
+          "raw": "alertname=HTTP_Probe_Failed",
+          "value": "HTTP_Probe_Failed"
+        },
+        {
+          "hits": 2,
+          "offset": 84,
+          "percent": 8,
+          "raw": "alertname=Free_Disk_Space_Too_Low",
+          "value": "Free_Disk_Space_Too_Low"
+        },
+        {
+          "hits": 2,
+          "offset": 92,
+          "percent": 8,
+          "raw": "alertname=Memory_Usage_Too_High",
+          "value": "Memory_Usage_Too_High"
+        }
+      ]
+    },
+    {
+      "hits": 24,
+      "name": "cluster",
+      "values": [
+        {
+          "hits": 10,
+          "offset": 0,
+          "percent": 42,
+          "raw": "cluster=dev",
+          "value": "dev"
+        },
+        {
+          "hits": 8,
+          "offset": 42,
+          "percent": 33,
+          "raw": "cluster=staging",
+          "value": "staging"
+        },
+        {
+          "hits": 6,
+          "offset": 75,
+          "percent": 25,
+          "raw": "cluster=prod",
+          "value": "prod"
+        }
+      ]
+    },
+    {
+      "hits": 24,
+      "name": "instance",
+      "values": [
+        {
+          "hits": 4,
+          "offset": 0,
+          "percent": 17,
+          "raw": "instance=server2",
+          "value": "server2"
+        },
+        {
+          "hits": 4,
+          "offset": 17,
+          "percent": 17,
+          "raw": "instance=server5",
+          "value": "server5"
+        },
+        {
+          "hits": 2,
+          "offset": 34,
+          "percent": 9,
+          "raw": "instance=server1",
+          "value": "server1"
+        },
+        {
+          "hits": 2,
+          "offset": 43,
+          "percent": 9,
+          "raw": "instance=server3",
+          "value": "server3"
+        },
+        {
+          "hits": 2,
+          "offset": 52,
+          "percent": 8,
+          "raw": "instance=server4",
+          "value": "server4"
+        },
+        {
+          "hits": 2,
+          "offset": 60,
+          "percent": 8,
+          "raw": "instance=server6",
+          "value": "server6"
+        },
+        {
+          "hits": 2,
+          "offset": 68,
+          "percent": 8,
+          "raw": "instance=server7",
+          "value": "server7"
+        },
+        {
+          "hits": 2,
+          "offset": 76,
+          "percent": 8,
+          "raw": "instance=server8",
+          "value": "server8"
+        },
+        {
+          "hits": 2,
+          "offset": 84,
+          "percent": 8,
+          "raw": "instance=web1",
+          "value": "web1"
+        },
+        {
+          "hits": 2,
+          "offset": 92,
+          "percent": 8,
+          "raw": "instance=web2",
+          "value": "web2"
+        }
+      ]
+    },
+    {
+      "hits": 24,
+      "name": "job",
+      "values": [
+        {
+          "hits": 16,
+          "offset": 0,
+          "percent": 67,
+          "raw": "job=node_ping",
+          "value": "node_ping"
+        },
+        {
+          "hits": 8,
+          "offset": 67,
+          "percent": 33,
+          "raw": "job=node_exporter",
+          "value": "node_exporter"
+        }
+      ]
+    },
+    {
+      "hits": 16,
+      "name": "ip",
+      "values": [
+        {
+          "hits": 2,
+          "offset": 0,
+          "percent": 13,
+          "raw": "ip=127.0.0.1",
+          "value": "127.0.0.1"
+        },
+        {
+          "hits": 2,
+          "offset": 13,
+          "percent": 13,
+          "raw": "ip=127.0.0.2",
+          "value": "127.0.0.2"
+        },
+        {
+          "hits": 2,
+          "offset": 26,
+          "percent": 13,
+          "raw": "ip=127.0.0.3",
+          "value": "127.0.0.3"
+        },
+        {
+          "hits": 2,
+          "offset": 39,
+          "percent": 13,
+          "raw": "ip=127.0.0.4",
+          "value": "127.0.0.4"
+        },
+        {
+          "hits": 2,
+          "offset": 52,
+          "percent": 12,
+          "raw": "ip=127.0.0.5",
+          "value": "127.0.0.5"
+        },
+        {
+          "hits": 2,
+          "offset": 64,
+          "percent": 12,
+          "raw": "ip=127.0.0.6",
+          "value": "127.0.0.6"
+        },
+        {
+          "hits": 2,
+          "offset": 76,
+          "percent": 12,
+          "raw": "ip=127.0.0.7",
+          "value": "127.0.0.7"
+        },
+        {
+          "hits": 2,
+          "offset": 88,
+          "percent": 12,
+          "raw": "ip=127.0.0.8",
+          "value": "127.0.0.8"
+        }
+      ]
+    },
+    {
+      "hits": 2,
+      "name": "disk",
+      "values": [
+        {
+          "hits": 2,
+          "offset": 0,
+          "percent": 100,
+          "raw": "disk=sda",
+          "value": "sda"
+        }
+      ]
+    }
+  ],
+  "total": 24
+}
+
+/* snapshot: TestCounters/q=@cluster=single */
+HTTP/1.1 200 OK
+Connection: close
+Cache-Control: no-cache, no-store, must-revalidate
+Content-Type: application/json
+Vary: Origin
+
+{
+  "counters": [
+    {
+      "hits": 24,
+      "name": "@cluster",
+      "values": [
+        {
+          "hits": 24,
+          "offset": 0,
+          "percent": 100,
+          "raw": "@cluster=single",
+          "value": "single"
+        }
+      ]
+    },
+    {
+      "hits": 24,
+      "name": "@receiver",
+      "values": [
+        {
+          "hits": 12,
+          "offset": 0,
+          "percent": 50,
+          "raw": "@receiver=by-cluster-service",
+          "value": "by-cluster-service"
+        },
+        {
+          "hits": 12,
+          "offset": 50,
+          "percent": 50,
+          "raw": "@receiver=by-name",
+          "value": "by-name"
+        }
+      ]
+    },
+    {
+      "hits": 24,
+      "name": "@state",
+      "values": [
+        {
+          "hits": 16,
+          "offset": 0,
+          "percent": 67,
+          "raw": "@state=active",
+          "value": "active"
+        },
+        {
+          "hits": 8,
+          "offset": 67,
+          "percent": 33,
+          "raw": "@state=suppressed",
+          "value": "suppressed"
+        }
+      ]
+    },
+    {
+      "hits": 24,
+      "name": "alertname",
+      "values": [
+        {
+          "hits": 16,
+          "offset": 0,
+          "percent": 67,
+          "raw": "alertname=Host_Down",
+          "value": "Host_Down"
+        },
+        {
+          "hits": 4,
+          "offset": 67,
+          "percent": 17,
+          "raw": "alertname=HTTP_Probe_Failed",
+          "value": "HTTP_Probe_Failed"
+        },
+        {
+          "hits": 2,
+          "offset": 84,
+          "percent": 8,
+          "raw": "alertname=Free_Disk_Space_Too_Low",
+          "value": "Free_Disk_Space_Too_Low"
+        },
+        {
+          "hits": 2,
+          "offset": 92,
+          "percent": 8,
+          "raw": "alertname=Memory_Usage_Too_High",
+          "value": "Memory_Usage_Too_High"
+        }
+      ]
+    },
+    {
+      "hits": 24,
+      "name": "cluster",
+      "values": [
+        {
+          "hits": 10,
+          "offset": 0,
+          "percent": 42,
+          "raw": "cluster=dev",
+          "value": "dev"
+        },
+        {
+          "hits": 8,
+          "offset": 42,
+          "percent": 33,
+          "raw": "cluster=staging",
+          "value": "staging"
+        },
+        {
+          "hits": 6,
+          "offset": 75,
+          "percent": 25,
+          "raw": "cluster=prod",
+          "value": "prod"
+        }
+      ]
+    },
+    {
+      "hits": 24,
+      "name": "instance",
+      "values": [
+        {
+          "hits": 4,
+          "offset": 0,
+          "percent": 17,
+          "raw": "instance=server2",
+          "value": "server2"
+        },
+        {
+          "hits": 4,
+          "offset": 17,
+          "percent": 17,
+          "raw": "instance=server5",
+          "value": "server5"
+        },
+        {
+          "hits": 2,
+          "offset": 34,
+          "percent": 9,
+          "raw": "instance=server1",
+          "value": "server1"
+        },
+        {
+          "hits": 2,
+          "offset": 43,
+          "percent": 9,
+          "raw": "instance=server3",
+          "value": "server3"
+        },
+        {
+          "hits": 2,
+          "offset": 52,
+          "percent": 8,
+          "raw": "instance=server4",
+          "value": "server4"
+        },
+        {
+          "hits": 2,
+          "offset": 60,
+          "percent": 8,
+          "raw": "instance=server6",
+          "value": "server6"
+        },
+        {
+          "hits": 2,
+          "offset": 68,
+          "percent": 8,
+          "raw": "instance=server7",
+          "value": "server7"
+        },
+        {
+          "hits": 2,
+          "offset": 76,
+          "percent": 8,
+          "raw": "instance=server8",
+          "value": "server8"
+        },
+        {
+          "hits": 2,
+          "offset": 84,
+          "percent": 8,
+          "raw": "instance=web1",
+          "value": "web1"
+        },
+        {
+          "hits": 2,
+          "offset": 92,
+          "percent": 8,
+          "raw": "instance=web2",
+          "value": "web2"
+        }
+      ]
+    },
+    {
+      "hits": 24,
+      "name": "job",
+      "values": [
+        {
+          "hits": 16,
+          "offset": 0,
+          "percent": 67,
+          "raw": "job=node_ping",
+          "value": "node_ping"
+        },
+        {
+          "hits": 8,
+          "offset": 67,
+          "percent": 33,
+          "raw": "job=node_exporter",
+          "value": "node_exporter"
+        }
+      ]
+    },
+    {
+      "hits": 16,
+      "name": "ip",
+      "values": [
+        {
+          "hits": 2,
+          "offset": 0,
+          "percent": 13,
+          "raw": "ip=127.0.0.1",
+          "value": "127.0.0.1"
+        },
+        {
+          "hits": 2,
+          "offset": 13,
+          "percent": 13,
+          "raw": "ip=127.0.0.2",
+          "value": "127.0.0.2"
+        },
+        {
+          "hits": 2,
+          "offset": 26,
+          "percent": 13,
+          "raw": "ip=127.0.0.3",
+          "value": "127.0.0.3"
+        },
+        {
+          "hits": 2,
+          "offset": 39,
+          "percent": 13,
+          "raw": "ip=127.0.0.4",
+          "value": "127.0.0.4"
+        },
+        {
+          "hits": 2,
+          "offset": 52,
+          "percent": 12,
+          "raw": "ip=127.0.0.5",
+          "value": "127.0.0.5"
+        },
+        {
+          "hits": 2,
+          "offset": 64,
+          "percent": 12,
+          "raw": "ip=127.0.0.6",
+          "value": "127.0.0.6"
+        },
+        {
+          "hits": 2,
+          "offset": 76,
+          "percent": 12,
+          "raw": "ip=127.0.0.7",
+          "value": "127.0.0.7"
+        },
+        {
+          "hits": 2,
+          "offset": 88,
+          "percent": 12,
+          "raw": "ip=127.0.0.8",
+          "value": "127.0.0.8"
+        }
+      ]
+    },
+    {
+      "hits": 2,
+      "name": "disk",
+      "values": [
+        {
+          "hits": 2,
+          "offset": 0,
+          "percent": 100,
+          "raw": "disk=sda",
+          "value": "sda"
+        }
+      ]
+    }
+  ],
+  "total": 24
+}
+
+/* snapshot: TestCounters/q=@receiver=by-cluster-service&q=alertname=Host_Down&q=@state=active */
+HTTP/1.1 200 OK
+Connection: close
+Cache-Control: no-cache, no-store, must-revalidate
+Content-Type: application/json
+Vary: Origin
+
+{
+  "counters": [
+    {
+      "hits": 10,
+      "name": "@cluster",
+      "values": [
+        {
+          "hits": 5,
+          "offset": 0,
+          "percent": 50,
+          "raw": "@cluster=cluster",
+          "value": "cluster"
+        },
+        {
+          "hits": 5,
+          "offset": 50,
+          "percent": 50,
+          "raw": "@cluster=single",
+          "value": "single"
+        }
+      ]
+    },
+    {
+      "hits": 5,
+      "name": "@receiver",
+      "values": [
+        {
+          "hits": 5,
+          "offset": 0,
+          "percent": 100,
+          "raw": "@receiver=by-cluster-service",
+          "value": "by-cluster-service"
+        }
+      ]
+    },
+    {
+      "hits": 5,
+      "name": "@state",
+      "values": [
+        {
+          "hits": 5,
+          "offset": 0,
+          "percent": 100,
+          "raw": "@state=active",
+          "value": "active"
+        }
+      ]
+    },
+    {
+      "hits": 5,
+      "name": "alertname",
+      "values": [
+        {
+          "hits": 5,
+          "offset": 0,
+          "percent": 100,
+          "raw": "alertname=Host_Down",
+          "value": "Host_Down"
+        }
+      ]
+    },
+    {
+      "hits": 5,
+      "name": "cluster",
+      "values": [
+        {
+          "hits": 3,
+          "offset": 0,
+          "percent": 60,
+          "raw": "cluster=staging",
+          "value": "staging"
+        },
+        {
+          "hits": 2,
+          "offset": 60,
+          "percent": 40,
+          "raw": "cluster=prod",
+          "value": "prod"
+        }
+      ]
+    },
+    {
+      "hits": 5,
+      "name": "instance",
+      "values": [
+        {
+          "hits": 1,
+          "offset": 0,
+          "percent": 20,
+          "raw": "instance=server1",
+          "value": "server1"
+        },
+        {
+          "hits": 1,
+          "offset": 20,
+          "percent": 20,
+          "raw": "instance=server2",
+          "value": "server2"
+        },
+        {
+          "hits": 1,
+          "offset": 40,
+          "percent": 20,
+          "raw": "instance=server3",
+          "value": "server3"
+        },
+        {
+          "hits": 1,
+          "offset": 60,
+          "percent": 20,
+          "raw": "instance=server4",
+          "value": "server4"
+        },
+        {
+          "hits": 1,
+          "offset": 80,
+          "percent": 20,
+          "raw": "instance=server5",
+          "value": "server5"
+        }
+      ]
+    },
+    {
+      "hits": 5,
+      "name": "ip",
+      "values": [
+        {
+          "hits": 1,
+          "offset": 0,
+          "percent": 20,
+          "raw": "ip=127.0.0.1",
+          "value": "127.0.0.1"
+        },
+        {
+          "hits": 1,
+          "offset": 20,
+          "percent": 20,
+          "raw": "ip=127.0.0.2",
+          "value": "127.0.0.2"
+        },
+        {
+          "hits": 1,
+          "offset": 40,
+          "percent": 20,
+          "raw": "ip=127.0.0.3",
+          "value": "127.0.0.3"
+        },
+        {
+          "hits": 1,
+          "offset": 60,
+          "percent": 20,
+          "raw": "ip=127.0.0.4",
+          "value": "127.0.0.4"
+        },
+        {
+          "hits": 1,
+          "offset": 80,
+          "percent": 20,
+          "raw": "ip=127.0.0.5",
+          "value": "127.0.0.5"
+        }
+      ]
+    },
+    {
+      "hits": 5,
+      "name": "job",
+      "values": [
+        {
+          "hits": 5,
+          "offset": 0,
+          "percent": 100,
+          "raw": "job=node_ping",
+          "value": "node_ping"
+        }
+      ]
+    }
+  ],
+  "total": 5
+}
+
+/* snapshot: TestCounters/q=foo=bar */
+HTTP/1.1 200 OK
+Connection: close
+Cache-Control: no-cache, no-store, must-revalidate
+Content-Type: application/json
+Vary: Origin
+
+{
+  "counters": [],
+  "total": 0
+}

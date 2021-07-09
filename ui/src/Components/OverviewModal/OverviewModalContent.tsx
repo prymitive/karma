@@ -2,8 +2,16 @@ import { FC, useState } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import type { APILabelCounterT } from "Models/APITypes";
-import type { AlertStore } from "Stores/AlertStore";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
+
+import type { CountersResponseT, APILabelCounterT } from "Models/APITypes";
+import {
+  AlertStore,
+  FormatBackendURI,
+  FormatAPIFilterQuery,
+} from "Stores/AlertStore";
+import { useFetchGet } from "Hooks/useFetchGet";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import LabelWithPercent from "Components/Labels/LabelWithPercent";
 import { ToggleIcon } from "Components/ToggleIcon";
@@ -53,9 +61,10 @@ const TableRows: FC<{
 
 const LabelsTable: FC<{
   alertStore: AlertStore;
+  counters: CountersResponseT;
   showAllLabels: boolean;
   toggleAllLabels: () => void;
-}> = observer(({ alertStore, showAllLabels, toggleAllLabels }) => (
+}> = observer(({ alertStore, counters, showAllLabels, toggleAllLabels }) => (
   <>
     <table
       className="table table-borderless top-labels"
@@ -64,12 +73,12 @@ const LabelsTable: FC<{
       <tbody className="mw-100">
         <TableRows
           alertStore={alertStore}
-          nameStats={alertStore.data.counters.filter(
-            (nameStats) => nameStats.hits >= alertStore.info.totalAlerts
+          nameStats={counters.counters.filter(
+            (nameStats) => nameStats.hits >= counters.total
           )}
         ></TableRows>
-        {alertStore.data.counters.filter(
-          (nameStats) => nameStats.hits < alertStore.info.totalAlerts
+        {counters.counters.filter(
+          (nameStats) => nameStats.hits < counters.total
         ).length > 0 ? (
           <tr>
             <td colSpan={2} className="px-1 py-0">
@@ -87,8 +96,8 @@ const LabelsTable: FC<{
         {showAllLabels ? (
           <TableRows
             alertStore={alertStore}
-            nameStats={alertStore.data.counters.filter(
-              (nameStats) => nameStats.hits < alertStore.info.totalAlerts
+            nameStats={counters.counters.filter(
+              (nameStats) => nameStats.hits < counters.total
             )}
           ></TableRows>
         ) : null}
@@ -105,11 +114,34 @@ const NothingToShow: FC = () => (
   </div>
 );
 
+const LoadingMessage: FC = () => (
+  <div className="px-2 py-5 bg-transparent">
+    <h1 className="display-5 text-placeholder text-center">
+      <FontAwesomeIcon icon={faSpinner} size="lg" spin />
+    </h1>
+  </div>
+);
+
+const ErrorMessage: FC<{ error: string }> = ({ error }) => (
+  <div className="px-2 py-5 bg-transparent">
+    <h1 className="display-5 text-danger text-center">{error}</h1>
+  </div>
+);
+
 const OverviewModalContent: FC<{
   alertStore: AlertStore;
   onHide: () => void;
 }> = observer(({ alertStore, onHide }) => {
   const [showAllLabels, setShowAllLabels] = useState<boolean>(false);
+  const { response, error } = useFetchGet<CountersResponseT>(
+    FormatBackendURI(
+      `counters.json?${FormatAPIFilterQuery(
+        alertStore.filters.values.map((f) => f.raw)
+      )}`
+    ),
+    { deps: [alertStore.info.timestamp] }
+  );
+
   return (
     <>
       <div className="modal-header">
@@ -117,11 +149,16 @@ const OverviewModalContent: FC<{
         <button type="button" className="btn-close" onClick={onHide}></button>
       </div>
       <div className="modal-body">
-        {alertStore.data.counters.length === 0 ? (
+        {error !== null ? (
+          <ErrorMessage error={error} />
+        ) : response === null ? (
+          <LoadingMessage />
+        ) : response.counters.length === 0 ? (
           <NothingToShow />
         ) : (
           <LabelsTable
             alertStore={alertStore}
+            counters={response}
             showAllLabels={showAllLabels}
             toggleAllLabels={() => setShowAllLabels(!showAllLabels)}
           />
