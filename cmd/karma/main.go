@@ -143,6 +143,7 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 	router.Get(getViewURL("/labelNames.json"), knownLabelNames)
 	router.Get(getViewURL("/labelValues.json"), knownLabelValues)
 	router.Get(getViewURL("/silences.json"), silences)
+	router.Get(getViewURL("/counters.json"), counters)
 	router.Post(getViewURL("/history.json"), func(w http.ResponseWriter, r *http.Request) {
 		alertHistory(historyPoller, w, r)
 	})

@@ -12,7 +12,6 @@ import type {
   APILabelColorT,
   APIAlertsResponseT,
   APIAlertsResponseColorsT,
-  APILabelCounterT,
   APIGridT,
   APIAlertsResponseSilenceMapT,
   APIAlertsResponseUpstreamsT,
@@ -137,7 +136,6 @@ interface AlertStoreFiltersT {
 
 interface AlertStoreDataT {
   colors: APIAlertsResponseColorsT;
-  counters: APILabelCounterT[];
   grids: APIGridT[];
   labelNames: string[];
   setLabelNames: (v: string[]) => void;
@@ -157,7 +155,6 @@ interface AlertStoreDataT {
   setUpstreams: (u: APIAlertsResponseUpstreamsT) => void;
   setClusters: (c: APIAlertsResponseUpstreamsClusterMapT) => void;
   setSilences: (s: APIAlertsResponseSilenceMapT) => void;
-  setCounters: (c: APILabelCounterT[]) => void;
   setReceivers: (r: string[]) => void;
   setColors: (c: APIAlertsResponseColorsT) => void;
   readonly upstreamsWithErrors: APIAlertmanagerUpstreamT[];
@@ -169,6 +166,7 @@ interface AlertStoreInfoT {
     username: string;
   };
   totalAlerts: number;
+  timestamp: string;
   version: string;
   upgradeReady: boolean;
   upgradeNeeded: boolean;
@@ -182,6 +180,7 @@ interface AlertStoreInfoT {
   setTotalAlerts: (n: number) => void;
   setAuthentication: (enabled: boolean, username: string) => void;
   setVersion: (v: string) => void;
+  setTimestamp: (v: string) => void;
 }
 
 interface AlertStoreSettingsT {
@@ -291,7 +290,6 @@ class AlertStore {
     this.data = observable(
       {
         colors: {} as APIAlertsResponseColorsT,
-        counters: [] as APILabelCounterT[],
         grids: [] as APIGridT[],
         labelNames: [] as string[],
         setLabelNames(v: string[]) {
@@ -373,9 +371,6 @@ class AlertStore {
         setSilences(s: APIAlertsResponseSilenceMapT) {
           this.silences = s;
         },
-        setCounters(c: APILabelCounterT[]) {
-          this.counters = c;
-        },
         setReceivers(r: string[]) {
           this.receivers = r;
         },
@@ -397,7 +392,6 @@ class AlertStore {
         setUpstreams: action.bound,
         setClusters: action.bound,
         setSilences: action.bound,
-        setCounters: action.bound,
         setReceivers: action.bound,
         setColors: action.bound,
         setLabelNames: action.bound,
@@ -413,6 +407,7 @@ class AlertStore {
         },
         totalAlerts: 0,
         version: "unknown",
+        timestamp: "",
         upgradeReady: false as boolean,
         upgradeNeeded: false as boolean,
         isRetrying: false as boolean,
@@ -442,6 +437,9 @@ class AlertStore {
         setVersion(v: string) {
           this.version = v;
         },
+        setTimestamp(v: string) {
+          this.timestamp = v;
+        },
       },
       {
         setIsRetrying: action.bound,
@@ -451,6 +449,7 @@ class AlertStore {
         setTotalAlerts: action.bound,
         setAuthentication: action.bound,
         setVersion: action.bound,
+        setTimestamp: action.bound,
       },
       { name: "API response info" }
     );
@@ -668,7 +667,6 @@ class AlertStore {
 
     const updates: Partial<APIAlertsResponseT> = {};
     updates.colors = result.colors;
-    updates.counters = result.counters;
     updates.grids = result.grids;
     updates.labelNames = result.labelNames;
     updates.silences = result.silences;
@@ -687,6 +685,7 @@ class AlertStore {
     // update extra root level keys that are stored under 'info'
     this.info.totalAlerts = result.totalAlerts;
     this.info.version = result.version;
+    this.info.timestamp = result.timestamp;
     this.info.authentication = result.authentication;
 
     // settings exported via API

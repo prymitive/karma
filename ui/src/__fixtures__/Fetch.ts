@@ -1,9 +1,5 @@
 import { MockAlert, MockAlertGroup, MockSilence } from "__fixtures__/Alerts";
-import type {
-  APIAlertsResponseT,
-  APILabelCounterT,
-  APIManagedSilenceT,
-} from "Models/APITypes";
+import type { APIAlertsResponseT, APIManagedSilenceT } from "Models/APITypes";
 
 const EmptyAPIResponse = (): APIAlertsResponseT => ({
   status: "success",
@@ -44,7 +40,6 @@ const EmptyAPIResponse = (): APIAlertsResponseT => ({
       isValid: true,
     },
   ],
-  counters: [] as APILabelCounterT[],
   settings: {
     sorting: {
       grid: {

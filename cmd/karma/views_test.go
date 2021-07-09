@@ -15,6 +15,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/beme/abide"
 	lru "github.com/hashicorp/golang-lru"
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
@@ -274,9 +275,6 @@ func TestAlerts(t *testing.T) {
 			}
 			if ur.Status != "success" {
 				t.Errorf("[%s] Invalid status in response: %s", version, ur.Status)
-			}
-			if len(ur.Counters) != 6 {
-				t.Errorf("[%s] Invalid number of counters in response (%d): %v", version, len(ur.Counters), ur.Counters)
 			}
 			for _, ag := range ur.Grids[0].AlertGroups {
 				for _, a := range ag.Alerts {
@@ -3295,6 +3293,104 @@ func TestSortSliceOfLabels(t *testing.T) {
 			sortSliceOfLabels(tc.labels, tc.sortKeys, tc.fallback)
 			if diff := cmp.Diff(tc.output, tc.labels); diff != "" {
 				t.Errorf("Wrong labels order after sorting (-want +got):\n%s", diff)
+			}
+		})
+	}
+}
+
+func TestCounters(t *testing.T) {
+	type testCaseT struct {
+		args string
+	}
+
+	testCases := []testCaseT{
+		{
+			args: "q=foo=bar",
+		},
+		{
+			args: "",
+		},
+		{
+			args: "q=@receiver=by-cluster-service&q=alertname=Host_Down&q=@state=active",
+		},
+		{
+			args: "q=@cluster=single",
+		},
+	}
+
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+	mockCache()
+	version := mock.ListAllMocks()[0]
+
+	am1, err := alertmanager.NewAlertmanager(
+		"cluster",
+		"am1",
+		"http://localhost/1",
+	)
+	if err != nil {
+		t.Error(err)
+	}
+	mock.RegisterURL("http://localhost/1/metrics", version, "metrics")
+	mock.RegisterURL("http://localhost/1/api/v2/status", version, "api/v2/status")
+	mock.RegisterURL("http://localhost/1/api/v2/silences", version, "api/v2/silences")
+	mock.RegisterURL("http://localhost/1/api/v2/alerts/groups", version, "api/v2/alerts/groups")
+	err = alertmanager.RegisterAlertmanager(am1)
+	if err != nil {
+		t.Error(err)
+	}
+
+	am2, err := alertmanager.NewAlertmanager(
+		"cluster",
+		"am2",
+		"http://localhost/2",
+	)
+	if err != nil {
+		t.Error(err)
+	}
+	mock.RegisterURL("http://localhost/2/metrics", version, "metrics")
+	mock.RegisterURL("http://localhost/2/api/v2/status", version, "api/v2/status")
+	mock.RegisterURL("http://localhost/2/api/v2/silences", version, "api/v2/silences")
+	mock.RegisterURL("http://localhost/2/api/v2/alerts/groups", version, "api/v2/alerts/groups")
+	err = alertmanager.RegisterAlertmanager(am2)
+	if err != nil {
+		t.Error(err)
+	}
+
+	am3, err := alertmanager.NewAlertmanager(
+		"single",
+		"single",
+		"http://localhost/3",
+	)
+	if err != nil {
+		t.Error(err)
+	}
+	mock.RegisterURL("http://localhost/3/metrics", version, "metrics")
+	mock.RegisterURL("http://localhost/3/api/v2/status", version, "api/v2/status")
+	mock.RegisterURL("http://localhost/3/api/v2/silences", version, "api/v2/silences")
+	mock.RegisterURL("http://localhost/3/api/v2/alerts/groups", version, "api/v2/alerts/groups")
+	err = alertmanager.RegisterAlertmanager(am3)
+	if err != nil {
+		t.Error(err)
+	}
+
+	pullFromAlertmanager()
+
+	for _, tc := range testCases {
+		t.Run(tc.args, func(t *testing.T) {
+			r := testRouter()
+			setupRouter(r, nil)
+			// re-run a few times to test the cache
+			for i := 1; i <= 3; i++ {
+				req := httptest.NewRequest("GET", "/counters.json?"+tc.args, nil)
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != http.StatusOK {
+					t.Errorf("GET /counters.json returned status %d", resp.Code)
+				}
+				abide.AssertHTTPResponse(t, t.Name(), resp.Result())
 			}
 		})
 	}

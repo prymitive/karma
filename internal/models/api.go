@@ -381,7 +381,6 @@ type AlertsResponse struct {
 	LabelNames     []string                      `json:"labelNames"`
 	Colors         LabelsColorMap                `json:"colors"`
 	Filters        []Filter                      `json:"filters"`
-	Counters       LabelNameStatsList            `json:"counters"`
 	Settings       Settings                      `json:"settings"`
 	Authentication AuthenticationInfo            `json:"authentication"`
 	Receivers      []string                      `json:"receivers"`
@@ -392,4 +391,9 @@ type AlertsResponse struct {
 type Autocomplete struct {
 	Value  string   `json:"value"`
 	Tokens []string `json:"tokens"`
+}
+
+type Counters struct {
+	Total    int                `json:"total"`
+	Counters LabelNameStatsList `json:"counters"`
 }
