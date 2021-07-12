@@ -369,6 +369,16 @@ type APIGrid struct {
 	StateCount  map[string]int  `json:"stateCount"`
 }
 
+type AlertsRequest struct {
+	Filters         []string       `json:"filters"`
+	GridLabel       string         `json:"gridLabel"`
+	GridLimits      map[string]int `json:"gridLimits"`
+	GridSortReverse bool           `json:"gridSortReverse"`
+	SortOrder       string         `json:"sortOrder"`
+	SortLabel       string         `json:"sortLabel"`
+	SortReverse     bool           `json:"sortReverse"`
+}
+
 // AlertsResponse is the structure of JSON response UI will use to get alert data
 type AlertsResponse struct {
 	Status         string                        `json:"status"`

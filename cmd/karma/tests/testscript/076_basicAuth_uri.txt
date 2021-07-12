@@ -9,5 +9,16 @@ stdout '"publicURI":"http://foo:bar@127.0.0.1"'
 -- test.sh --
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 1
-curl -s http://127.0.0.1:8076/alerts.json
+curl -XPOST -d @request.json -s http://127.0.0.1:8076/alerts.json
 cat karma.pid | xargs kill
+
+-- request.json --
+{
+    "filters": [],
+    "gridLabel": "@auto",
+    "gridSortReverse": false,
+    "gridLimits": {},
+    "sortOrder": "",
+    "sortLabel": "",
+    "sortReverse": false
+}

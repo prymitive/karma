@@ -195,8 +195,15 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		resp.Settings.Sorting.ValueMapping = config.Config.Grid.Sorting.CustomValues.Labels
 	}
 
+	var request models.AlertsRequest
+	err := json.NewDecoder(r.Body).Decode(&request)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
 	// use full URI (including query args) as cache key
-	cacheKey := r.RequestURI
+	cacheKey := fmt.Sprintf("%x", structhash.Sha1(request, 1))
 
 	data, found := apiCache.Get(cacheKey)
 	if found {
@@ -215,10 +222,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	gridLabel, _ := lookupQueryString(r, "gridLabel")
-	q, _ := lookupQueryStringSlice(r, "q")
-	matchFilters := getFiltersFromQuery(q)
-	limits := lookupLoadLimits(r, "limit")
+	matchFilters := getFiltersFromQuery(request.Filters)
 
 	grids := map[string]models.APIGrid{}
 	colors := models.LabelsColorMap{}
@@ -238,6 +242,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 
 	filtered := filterAlerts(dedupedAlerts, matchFilters)
 
+	gridLabel := request.GridLabel
 	if gridLabel == "@auto" {
 		gridLabel = autoGridLabel(filtered)
 		log.Debug().Str("label", gridLabel).Msg("Selected automatic grid label")
@@ -435,13 +440,11 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	v, _ := lookupQueryString(r, "gridSortReverse")
-	gridSortReverse := v == "1"
-	sortedGrids := sortGrids(r, gridLabel, grids, gridSortReverse)
+	sortedGrids := sortGrids(request, gridLabel, grids, request.GridSortReverse)
 	for i := 0; i < len(sortedGrids); i++ {
 		sortedGrids[i].TotalGroups = len(sortedGrids[i].AlertGroups)
 
-		limit, found := limits[sortedGrids[i].LabelValue]
+		limit, found := request.GridLimits[sortedGrids[i].LabelValue]
 		if !found {
 			limit = config.Config.Grid.GroupLimit
 		}

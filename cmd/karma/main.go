@@ -137,7 +137,7 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 		h := promhttp.Handler()
 		h.ServeHTTP(w, r)
 	}))
-	router.Get(getViewURL("/alerts.json"), alerts)
+	router.Post(getViewURL("/alerts.json"), alerts)
 	router.Get(getViewURL("/alertList.json"), alertList)
 	router.Get(getViewURL("/autocomplete.json"), autocomplete)
 	router.Get(getViewURL("/labelNames.json"), knownLabelNames)
