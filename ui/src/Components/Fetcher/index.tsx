@@ -175,7 +175,7 @@ const Fetcher: FC<{
       settingsStore.multiGridConfig.config.gridSortReverse,
       sortSettings.sortOrder,
       sortSettings.sortLabel,
-      sortSettings.sortReverse,
+      sortSettings.sortReverse === "1",
       Object.values(alertStore.ui.limits).length > 0
         ? toJS(Object.values(alertStore.ui.limits)[0])
         : {}

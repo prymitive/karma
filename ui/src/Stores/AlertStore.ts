@@ -17,6 +17,7 @@ import type {
   APIAlertsResponseUpstreamsT,
   APIAlertsResponseUpstreamsClusterMapT,
   APISettingsT,
+  AlertsRequestT,
 } from "Models/APITypes";
 
 const QueryStringEncodeOptions = {
@@ -577,27 +578,28 @@ class AlertStore {
       gridSortReverse: boolean,
       sortOrder: string,
       sortLabel: string,
-      sortReverse: string,
+      sortReverse: boolean,
       limits: { [key: string]: number }
     ) => {
       this.status.setFetching();
 
-      const args: string[] = [
-        `gridLabel=${gridLabel}`,
-        `gridSortReverse=${gridSortReverse ? "1" : "0"}`,
-        `sortOrder=${sortOrder}`,
-        `sortLabel=${sortLabel}`,
-        `sortReverse=${sortReverse}`,
-        Object.entries(limits)
-          .map(([key, value]) => `limit=${key}=${value}`)
-          .join("&"),
-      ].filter((arg) => arg !== "");
+      const payload: AlertsRequestT = {
+        filters: this.filters.values.map((f) => f.raw),
+        gridLabel: gridLabel,
+        gridSortReverse: gridSortReverse,
+        gridLimits: limits,
+        sortOrder: sortOrder,
+        sortLabel: sortLabel,
+        sortReverse: sortReverse,
+      };
 
-      const alertsURI =
-        FormatBackendURI(`alerts.json?&${args.join("&")}&`) +
-        FormatAPIFilterQuery(this.filters.values.map((f) => f.raw));
+      const alertsURI = FormatBackendURI("alerts.json");
 
-      return await FetchGet(alertsURI, {}, this.info.setIsRetrying)
+      return await FetchGet(
+        alertsURI,
+        { method: "POST", body: JSON.stringify(payload) },
+        this.info.setIsRetrying
+      )
         .then((result) => {
           // we're sending requests with mode=cors so the response should also be type=cors
           // after a few failures in the retry loop we will switch to no-cors
