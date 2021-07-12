@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"math"
-	"net/http"
 	"sort"
 
 	"github.com/fvbommel/sortorder"
@@ -164,36 +163,29 @@ func sortByStartsAt(i, j int, groups []models.APIAlertGroup, sortReverse bool) b
 	return groups[i].LatestStartsAt.Before(groups[j].LatestStartsAt)
 }
 
-func getSortOptions(r *http.Request) (string, string, string) {
-	sortOrder, found := lookupQueryString(r, "sortOrder")
-	if !found || sortOrder == "" {
+func getSortOptions(r models.AlertsRequest) (string, bool, string) {
+	sortOrder := r.SortOrder
+	if sortOrder == "" {
 		sortOrder = config.Config.Grid.Sorting.Order
 	}
 
-	sortReverse, found := lookupQueryString(r, "sortReverse")
-	if !found || (sortReverse != "0" && sortReverse != "1") {
-		if config.Config.Grid.Sorting.Reverse {
-			sortReverse = "1"
-		} else {
-			sortReverse = "0"
-		}
-	}
+	sortReverse := r.SortReverse
 
-	sortLabel, found := lookupQueryString(r, "sortLabel")
-	if !found || sortLabel == "" {
+	sortLabel := r.SortLabel
+	if sortLabel == "" {
 		sortLabel = config.Config.Grid.Sorting.Label
 	}
 
 	return sortOrder, sortReverse, sortLabel
 }
 
-func sortAlertGroups(r *http.Request, groups []models.APIAlertGroup) []models.APIAlertGroup {
+func sortAlertGroups(r models.AlertsRequest, groups []models.APIAlertGroup) []models.APIAlertGroup {
 	sortOrder, sortReverse, sortLabel := getSortOptions(r)
 
 	switch sortOrder {
 	case "startsAt":
 		sort.Slice(groups, func(i, j int) bool {
-			return sortByStartsAt(i, j, groups, sortReverse == "1")
+			return sortByStartsAt(i, j, groups, sortReverse)
 		})
 	case "label":
 		sort.Slice(groups, func(i, j int) bool {
@@ -206,18 +198,18 @@ func sortAlertGroups(r *http.Request, groups []models.APIAlertGroup) []models.AP
 
 			if vi == "" {
 				// first label is missing
-				return sortReverse != "0"
+				return sortReverse
 			}
 			if vj == "" {
 				// second label is missing
-				return sortReverse == "0"
+				return !sortReverse
 			}
 			if vi == vj {
 				// both labels are equal fallback to timestamp sort
 				return sortByStartsAt(i, j, groups, true)
 			}
 			// finnally return groups sorted by label
-			if sortReverse == "1" {
+			if sortReverse {
 				return !sortorder.NaturalLess(vi, vj)
 			}
 			return sortorder.NaturalLess(vi, vj)
@@ -226,7 +218,7 @@ func sortAlertGroups(r *http.Request, groups []models.APIAlertGroup) []models.AP
 		// sort alert groups so they are always returned in the same order
 		// use group ID which is unique and immutable
 		sort.Slice(groups, func(i, j int) bool {
-			if sortReverse == "1" {
+			if sortReverse {
 				return groups[i].ID < groups[j].ID
 			}
 			return groups[i].ID > groups[j].ID
@@ -236,7 +228,7 @@ func sortAlertGroups(r *http.Request, groups []models.APIAlertGroup) []models.AP
 	return groups
 }
 
-func sortGrids(r *http.Request, gridLabel string, gridsMap map[string]models.APIGrid, gridSortReverse bool) []models.APIGrid {
+func sortGrids(r models.AlertsRequest, gridLabel string, gridsMap map[string]models.APIGrid, gridSortReverse bool) []models.APIGrid {
 	grids := make([]models.APIGrid, 0, len(gridsMap))
 
 	for _, g := range gridsMap {

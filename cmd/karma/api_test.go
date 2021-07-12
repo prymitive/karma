@@ -1,8 +1,8 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"reflect"
@@ -776,6 +776,15 @@ func testAlertGroup(version string, t *testing.T, testCase groupTest, group mode
 }
 
 func TestVerifyAllGroups(t *testing.T) {
+	payload, err := json.Marshal(models.AlertsRequest{
+		Filters:    []string{},
+		GridLimits: map[string]int{},
+	})
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+
 	mockConfig()
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing API using mock files from Alertmanager %s", version)
@@ -783,11 +792,11 @@ func TestVerifyAllGroups(t *testing.T) {
 		apiCache.Purge()
 		r := testRouter()
 		setupRouter(r, nil)
-		req := httptest.NewRequest("GET", "/alerts.json", nil)
+		req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
 		resp := httptest.NewRecorder()
 		r.ServeHTTP(resp, req)
 		if resp.Code != http.StatusOK {
-			t.Errorf("GET /alerts.json returned status %d", resp.Code)
+			t.Errorf("POST /alerts.json returned status %d", resp.Code)
 		}
 
 		ur := models.AlertsResponse{}
@@ -839,129 +848,102 @@ func TestVerifyAllGroups(t *testing.T) {
 
 type sortTest struct {
 	defaultSortReverse bool
-	filter             string
+	filter             []string
 	sortOrder          string
 	sortLabel          string
-	sortReverse        string
+	sortReverse        bool
 	expectedLabel      string
 	expectedValues     []string
 }
 
 var sortTests = []sortTest{
 	{
-		filter:         "q=@receiver=by-cluster-service",
+		filter:         []string{"@receiver=by-cluster-service"},
 		sortOrder:      "label",
 		sortLabel:      "cluster",
-		sortReverse:    "0",
+		sortReverse:    false,
 		expectedLabel:  "cluster",
 		expectedValues: []string{"dev", "dev", "prod", "prod", "staging", "staging"},
 	},
 	{
-		filter:         "q=@receiver=by-cluster-service",
+		filter:         []string{"@receiver=by-cluster-service"},
 		sortOrder:      "label",
 		sortLabel:      "cluster",
-		sortReverse:    "1",
+		sortReverse:    true,
 		expectedLabel:  "cluster",
 		expectedValues: []string{"staging", "staging", "prod", "prod", "dev", "dev"},
 	},
 	{
-		filter:         "q=cluster=dev",
+		filter:         []string{"cluster=dev"},
 		sortOrder:      "label",
 		sortLabel:      "cluster",
-		sortReverse:    "0",
+		sortReverse:    false,
 		expectedLabel:  "cluster",
 		expectedValues: []string{"dev", "dev", "dev", "dev"},
 	},
 	{
-		filter:         "q=@receiver=by-cluster-service",
+		filter:         []string{"@receiver=by-cluster-service"},
 		sortOrder:      "label",
 		sortLabel:      "disk",
-		sortReverse:    "0",
+		sortReverse:    false,
 		expectedLabel:  "disk",
 		expectedValues: []string{"sda", "", "", "", "", "", "", "", "", "", "", ""},
 	},
 	{
-		filter:         "q=@receiver=by-cluster-service",
+		filter:         []string{"@receiver=by-cluster-service"},
 		sortOrder:      "label",
 		sortLabel:      "disk",
-		sortReverse:    "1",
+		sortReverse:    true,
 		expectedLabel:  "disk",
 		expectedValues: []string{"", "", "", "", "", "", "", "", "", "", "", "sda"},
 	},
 	{
-		filter:         "q=@receiver=by-cluster-service",
+		filter:         []string{"@receiver=by-cluster-service"},
 		sortOrder:      "disabled",
 		sortLabel:      "",
-		sortReverse:    "0",
+		sortReverse:    false,
 		expectedLabel:  "cluster",
 		expectedValues: []string{"dev", "prod", "staging", "dev", "staging", "prod"},
 	},
 	{
-		filter:         "q=@receiver=by-cluster-service",
+		filter:         []string{"@receiver=by-cluster-service"},
 		sortOrder:      "disabled",
 		sortLabel:      "",
-		sortReverse:    "1",
+		sortReverse:    true,
 		expectedLabel:  "cluster",
 		expectedValues: []string{"prod", "staging", "dev", "staging", "prod", "dev"},
 	},
 	{
-		filter:         "q=@receiver=by-cluster-service",
+		filter:         []string{"@receiver=by-cluster-service"},
 		sortOrder:      "",
 		sortLabel:      "",
-		sortReverse:    "0",
+		sortReverse:    false,
 		expectedLabel:  "cluster",
 		expectedValues: []string{"dev", "dev", "prod", "prod", "staging", "staging"},
 	},
 	{
-		filter:         "q=@receiver=by-cluster-service",
+		filter:         []string{"@receiver=by-cluster-service"},
 		sortOrder:      "",
 		sortLabel:      "",
-		sortReverse:    "1",
+		sortReverse:    true,
 		expectedLabel:  "cluster",
 		expectedValues: []string{"staging", "staging", "prod", "prod", "dev", "dev"},
 	},
 	{
-		filter:         "q=@receiver=by-cluster-service",
+		filter:         []string{"@receiver=by-cluster-service"},
 		sortOrder:      "label",
 		sortLabel:      "job",
-		sortReverse:    "0",
+		sortReverse:    false,
 		expectedLabel:  "job",
 		expectedValues: []string{"node_exporter", "node_exporter", "node_exporter", "node_ping", "node_ping", "node_ping"},
 	},
 	{
-		filter:         "q=@receiver=by-cluster-service",
+		filter:         []string{"@receiver=by-cluster-service"},
 		sortOrder:      "label",
 		sortLabel:      "job",
-		sortReverse:    "1",
+		sortReverse:    true,
 		expectedLabel:  "job",
 		expectedValues: []string{"node_ping", "node_ping", "node_ping", "node_exporter", "node_exporter", "node_exporter"},
-	},
-	{
-		defaultSortReverse: true,
-		filter:             "q=@receiver=by-cluster-service",
-		sortOrder:          "label",
-		sortLabel:          "job",
-		sortReverse:        "a",
-		expectedLabel:      "job",
-		expectedValues:     []string{"node_ping", "node_ping", "node_ping", "node_exporter", "node_exporter", "node_exporter"},
-	},
-	{
-		defaultSortReverse: false,
-		filter:             "q=@receiver=by-cluster-service",
-		sortOrder:          "label",
-		sortLabel:          "job",
-		sortReverse:        "2",
-		expectedLabel:      "job",
-		expectedValues:     []string{"node_exporter", "node_exporter", "node_exporter", "node_ping", "node_ping", "node_ping"},
-	},
-	{
-		defaultSortReverse: false,
-		filter:             "q=@alertmanager!=default",
-		sortOrder:          "label",
-		sortLabel:          "job",
-		sortReverse:        "2",
-		expectedLabel:      "job",
-		expectedValues:     []string{},
 	},
 }
 
@@ -984,23 +966,27 @@ func TestSortOrder(t *testing.T) {
 			for _, testCase := range sortTests {
 				apiCache.Purge()
 				config.Config.Grid.Sorting.Reverse = testCase.defaultSortReverse
-				uri := fmt.Sprintf(
-					"/alerts.json?sortOrder=%s&sortLabel=%s&sortReverse=%s&%s",
-					testCase.sortOrder,
-					testCase.sortLabel,
-					testCase.sortReverse,
-					testCase.filter,
-				)
-				t.Logf("Request URI: %s", uri)
-				req := httptest.NewRequest("GET", uri, nil)
+
+				payload, err := json.Marshal(models.AlertsRequest{
+					Filters:     testCase.filter,
+					GridLimits:  map[string]int{},
+					SortLabel:   testCase.sortLabel,
+					SortOrder:   testCase.sortOrder,
+					SortReverse: testCase.sortReverse,
+				})
+				if err != nil {
+					t.Error(err)
+					t.FailNow()
+				}
+				req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
 				resp := httptest.NewRecorder()
 				r.ServeHTTP(resp, req)
 				if resp.Code != http.StatusOK {
-					t.Errorf("GET /alerts.json returned status %d", resp.Code)
+					t.Errorf("POST /alerts.json returned status %d", resp.Code)
 				}
 
 				ur := models.AlertsResponse{}
-				err := json.Unmarshal(resp.Body.Bytes(), &ur)
+				err = json.Unmarshal(resp.Body.Bytes(), &ur)
 				if err != nil {
 					t.Errorf("Failed to unmarshal response: %s", err)
 				}
@@ -1068,6 +1054,15 @@ func TestStripLabels(t *testing.T) {
 		{keep: []string{"alertname"}, strip: []string{}},
 	}
 
+	payload, err := json.Marshal(models.AlertsRequest{
+		Filters:    []string{},
+		GridLimits: map[string]int{},
+	})
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+
 	mockConfig()
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing API using mock files from Alertmanager %s", version)
@@ -1079,11 +1074,11 @@ func TestStripLabels(t *testing.T) {
 			config.Config.Labels.Keep = testCase.keep
 			config.Config.Labels.Strip = testCase.strip
 			apiCache.Purge()
-			req := httptest.NewRequest("GET", "/alerts.json", nil)
+			req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
 			resp := httptest.NewRecorder()
 			r.ServeHTTP(resp, req)
 			if resp.Code != http.StatusOK {
-				t.Errorf("GET /alerts.json returned status %d", resp.Code)
+				t.Errorf("POST /alerts.json returned status %d", resp.Code)
 			}
 
 			ur := models.AlertsResponse{}

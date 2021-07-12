@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"net/http"
 	"sort"
-	"strconv"
 	"strings"
 
 	"github.com/prymitive/karma/internal/alertmanager"
@@ -22,28 +21,6 @@ func lookupQueryString(r *http.Request, key string) (string, bool) {
 func lookupQueryStringSlice(r *http.Request, key string) ([]string, bool) {
 	vals, found := r.URL.Query()[key]
 	return vals, found
-}
-
-func lookupLoadLimits(r *http.Request, key string) map[string]int {
-	limits := map[string]int{}
-	vals, found := lookupQueryStringSlice(r, key)
-	if !found {
-		return limits
-	}
-	var limit int
-	var err error
-	for _, val := range vals {
-		valSlice := strings.SplitN(val, "=", 2)
-		if len(valSlice) != 2 {
-			continue
-		}
-		limit, err = strconv.Atoi(valSlice[1])
-		if err != nil {
-			continue
-		}
-		limits[valSlice[0]] = limit
-	}
-	return limits
 }
 
 // knownLabelNames allows querying known label names

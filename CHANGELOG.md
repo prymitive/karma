@@ -7,6 +7,10 @@
 - Added a dedicated API endpoint for silence previews.
 - Added a dedicated API endpoint for overview modal.
 
+### Changed
+
+- Refactored internal APIs.
+
 ## v0.87
 
 ### Added

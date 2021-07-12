@@ -119,7 +119,7 @@ func TestIndex(t *testing.T) {
 		},
 		{
 			prefix:  "",
-			request: "/alerts.json",
+			request: "/alertList.json",
 			status:  200,
 		},
 		{
@@ -129,7 +129,7 @@ func TestIndex(t *testing.T) {
 		},
 		{
 			prefix:  "/",
-			request: "/alerts.json",
+			request: "/alertList.json",
 			status:  200,
 		},
 		{
@@ -139,7 +139,7 @@ func TestIndex(t *testing.T) {
 		},
 		{
 			prefix:  "/prefix",
-			request: "/alerts.json",
+			request: "/alertList.json",
 			status:  404,
 		},
 		{
@@ -149,7 +149,7 @@ func TestIndex(t *testing.T) {
 		},
 		{
 			prefix:  "/prefix",
-			request: "/prefix/alerts.json",
+			request: "/prefix/alertList.json",
 			status:  200,
 		},
 		{
@@ -171,7 +171,7 @@ func TestIndex(t *testing.T) {
 		},
 		{
 			prefix:  "/prefix/",
-			request: "/prefix/alerts.json",
+			request: "/prefix/alertList.json",
 			status:  200,
 		},
 	}
@@ -226,6 +226,19 @@ func mockAlerts(version string) {
 }
 
 func TestAlerts(t *testing.T) {
+	payload, err := json.Marshal(models.AlertsRequest{
+		Filters: []string{
+			"@receiver=by-cluster-service",
+			"alertname=HTTP_Probe_Failed",
+			"instance=web1",
+		},
+		GridLimits: map[string]int{},
+	})
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+
 	mockConfig()
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
@@ -234,11 +247,11 @@ func TestAlerts(t *testing.T) {
 		setupRouter(r, nil)
 		// re-run a few times to test the cache
 		for i := 1; i <= 3; i++ {
-			req := httptest.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
+			req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
 			resp := httptest.NewRecorder()
 			r.ServeHTTP(resp, req)
 			if resp.Code != http.StatusOK {
-				t.Errorf("GET /alerts.json returned status %d", resp.Code)
+				t.Errorf("POST /alerts.json returned status %d", resp.Code)
 			}
 
 			ur := models.AlertsResponse{}
@@ -296,20 +309,40 @@ func TestAlerts(t *testing.T) {
 	}
 }
 
+func TestAlertsBadRequest(t *testing.T) {
+	mockConfig()
+	for _, version := range mock.ListAllMocks() {
+		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
+		mockAlerts(version)
+		r := testRouter()
+		setupRouter(r, nil)
+		// re-run a few times to test the cache
+		for i := 1; i <= 3; i++ {
+			req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader([]byte("foo bar{}")))
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != http.StatusBadRequest {
+				t.Errorf("POST /alerts.json returned status %d", resp.Code)
+			}
+		}
+	}
+}
+
 func TestGrids(t *testing.T) {
 	type testCaseGridT struct {
 		labelValue      string
 		alertGroupCount int
 	}
 	type testCaseT struct {
-		gridLabel    string
-		requestQuery string
-		grids        []testCaseGridT
+		request models.AlertsRequest
+		grids   []testCaseGridT
 	}
 	testCases := []testCaseT{
 		{
-			gridLabel:    "cluster",
-			requestQuery: "",
+			request: models.AlertsRequest{
+				GridLabel:  "cluster",
+				GridLimits: map[string]int{},
+			},
 			grids: []testCaseGridT{
 				{labelValue: "dev", alertGroupCount: 4},
 				{labelValue: "prod", alertGroupCount: 4},
@@ -317,8 +350,11 @@ func TestGrids(t *testing.T) {
 			},
 		},
 		{
-			gridLabel:    "cluster",
-			requestQuery: "&gridSortReverse=1",
+			request: models.AlertsRequest{
+				GridLabel:       "cluster",
+				GridLimits:      map[string]int{},
+				GridSortReverse: true,
+			},
 			grids: []testCaseGridT{
 				{labelValue: "staging", alertGroupCount: 4},
 				{labelValue: "prod", alertGroupCount: 4},
@@ -326,80 +362,107 @@ func TestGrids(t *testing.T) {
 			},
 		},
 		{
-			gridLabel:    "foo",
-			requestQuery: "",
+			request: models.AlertsRequest{
+				GridLabel:  "foo",
+				GridLimits: map[string]int{},
+			},
 			grids: []testCaseGridT{
 				{labelValue: "", alertGroupCount: 10},
 			},
 		},
 		{
-			gridLabel:    "",
-			requestQuery: "",
+			request: models.AlertsRequest{
+				GridLabel:  "",
+				GridLimits: map[string]int{},
+			},
 			grids: []testCaseGridT{
 				{labelValue: "", alertGroupCount: 10},
 			},
 		},
 		{
-			gridLabel:    "",
-			requestQuery: "&q=foo=bar",
-			grids:        []testCaseGridT{},
+			request: models.AlertsRequest{
+				GridLabel:  "",
+				GridLimits: map[string]int{},
+				Filters:    []string{"foo=bar"},
+			},
+			grids: []testCaseGridT{},
 		},
 		{
-			gridLabel:    "disk",
-			requestQuery: "",
+			request: models.AlertsRequest{
+				GridLabel:  "disk",
+				GridLimits: map[string]int{},
+			},
 			grids: []testCaseGridT{
 				{labelValue: "sda", alertGroupCount: 2},
 				{labelValue: "", alertGroupCount: 8},
 			},
 		},
 		{
-			gridLabel:    "disk",
-			requestQuery: "&gridSortReverse=1",
+			request: models.AlertsRequest{
+				GridLabel:       "disk",
+				GridLimits:      map[string]int{},
+				GridSortReverse: true,
+			},
 			grids: []testCaseGridT{
 				{labelValue: "", alertGroupCount: 8},
 				{labelValue: "sda", alertGroupCount: 2},
 			},
 		},
 		{
-			gridLabel:    "disk",
-			requestQuery: "&q=alertname=Free_Disk_Space_Too_Low",
+			request: models.AlertsRequest{
+				GridLabel:  "disk",
+				GridLimits: map[string]int{},
+				Filters:    []string{"alertname=Free_Disk_Space_Too_Low"},
+			},
 			grids: []testCaseGridT{
 				{labelValue: "sda", alertGroupCount: 2},
 			},
 		},
 		{
-			gridLabel:    "@alertmanager",
-			requestQuery: "",
+			request: models.AlertsRequest{
+				GridLabel:  "@alertmanager",
+				GridLimits: map[string]int{},
+			},
 			grids: []testCaseGridT{
 				{labelValue: "default", alertGroupCount: 10},
 			},
 		},
 		{
-			gridLabel:    "@cluster",
-			requestQuery: "",
+			request: models.AlertsRequest{
+				GridLabel:  "@cluster",
+				GridLimits: map[string]int{},
+			},
 			grids: []testCaseGridT{
 				{labelValue: "default", alertGroupCount: 10},
 			},
 		},
 		{
-			gridLabel:    "@receiver",
-			requestQuery: "",
+			request: models.AlertsRequest{
+				GridLabel:  "@receiver",
+				GridLimits: map[string]int{},
+			},
 			grids: []testCaseGridT{
 				{labelValue: "by-cluster-service", alertGroupCount: 6},
 				{labelValue: "by-name", alertGroupCount: 4},
 			},
 		},
 		{
-			gridLabel:    "@receiver",
-			requestQuery: "&gridSortReverse=1",
+			request: models.AlertsRequest{
+				GridLabel:       "@receiver",
+				GridLimits:      map[string]int{},
+				GridSortReverse: true,
+			},
 			grids: []testCaseGridT{
 				{labelValue: "by-name", alertGroupCount: 4},
 				{labelValue: "by-cluster-service", alertGroupCount: 6},
 			},
 		},
 		{
-			gridLabel:    "@receiver",
-			requestQuery: "&q=@receiver=by-name",
+			request: models.AlertsRequest{
+				GridLabel:  "@receiver",
+				GridLimits: map[string]int{},
+				Filters:    []string{"@receiver=by-name"},
+			},
 			grids: []testCaseGridT{
 				{labelValue: "by-name", alertGroupCount: 4},
 			},
@@ -411,18 +474,24 @@ func TestGrids(t *testing.T) {
 		version := version
 		for _, testCase := range testCases {
 			testCase := testCase
-			t.Run(fmt.Sprintf("version=%q gridLabel=%q query=%q", version, testCase.gridLabel, testCase.requestQuery), func(t *testing.T) {
+			t.Run(fmt.Sprintf("version=%q request=%v", version, testCase.request), func(t *testing.T) {
+				payload, err := json.Marshal(testCase.request)
+				if err != nil {
+					t.Error(err)
+					t.FailNow()
+				}
+
 				mockAlerts(version)
 				r := testRouter()
 				setupRouter(r, nil)
 				// re-run a few times to test the cache
 				for i := 1; i <= 3; i++ {
 					apiCache.Purge()
-					req := httptest.NewRequest("GET", "/alerts.json?gridLabel="+testCase.gridLabel+testCase.requestQuery, nil)
+					req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
 					resp := httptest.NewRecorder()
 					r.ServeHTTP(resp, req)
 					if resp.Code != http.StatusOK {
-						t.Errorf("GET /alerts.json returned status %d", resp.Code)
+						t.Errorf("POST /alerts.json returned status %d", resp.Code)
 					}
 
 					ur := models.AlertsResponse{}
@@ -436,8 +505,8 @@ func TestGrids(t *testing.T) {
 					} else {
 						for index, expectedGrid := range testCase.grids {
 							grid := ur.Grids[index]
-							if grid.LabelName != testCase.gridLabel {
-								t.Errorf("Got wrong labelName for grid %d: %q, expected %q", index, grid.LabelName, testCase.gridLabel)
+							if grid.LabelName != testCase.request.GridLabel {
+								t.Errorf("Got wrong labelName for grid %d: %q, expected %q", index, grid.LabelName, testCase.request.GridLabel)
 							}
 							if grid.LabelValue != expectedGrid.labelValue {
 								t.Errorf("Got wrong labelValue for grid %d: %q, expected %q", index, grid.LabelValue, expectedGrid.labelValue)
@@ -454,6 +523,18 @@ func TestGrids(t *testing.T) {
 }
 
 func TestValidateAllAlerts(t *testing.T) {
+	payload, err := json.Marshal(models.AlertsRequest{
+		Filters: []string{
+			"alertname=HTTP_Probe_Failed",
+			"instance=web1",
+		},
+		GridLimits: map[string]int{},
+	})
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+
 	mockConfig()
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Validating alerts.json response using mock files from Alertmanager %s", version)
@@ -462,11 +543,11 @@ func TestValidateAllAlerts(t *testing.T) {
 		setupRouter(r, nil)
 		// re-run a few times to test the cache
 		for i := 1; i <= 3; i++ {
-			req := httptest.NewRequest("GET", "/alerts.json?q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
+			req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
 			resp := httptest.NewRecorder()
 			r.ServeHTTP(resp, req)
 			if resp.Code != http.StatusOK {
-				t.Errorf("GET /alerts.json returned status %d", resp.Code)
+				t.Errorf("POST /alerts.json returned status %d", resp.Code)
 			}
 			ur := models.AlertsResponse{}
 			body := resp.Body.Bytes()
@@ -686,7 +767,7 @@ func TestGzipMiddleware(t *testing.T) {
 	mockConfig()
 	r := testRouter()
 	setupRouter(r, nil)
-	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
+	paths := []string{"/", "/alertList.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
 		// re-run a few times to test the cache
 		for i := 1; i <= 3; i++ {
@@ -713,7 +794,7 @@ func TestGzipMiddlewareWithoutAcceptEncoding(t *testing.T) {
 	mockConfig()
 	r := testRouter()
 	setupRouter(r, nil)
-	paths := []string{"/", "/alerts.json", "/autocomplete.json", "/metrics"}
+	paths := []string{"/", "/alertList.json", "/autocomplete.json", "/metrics"}
 	for _, path := range paths {
 		// re-run a few times to test the cache
 		for i := 1; i <= 3; i++ {
@@ -921,19 +1002,28 @@ func TestCORS(t *testing.T) {
 }
 
 func TestEmptySettings(t *testing.T) {
+	payload, err := json.Marshal(models.AlertsRequest{
+		Filters:    []string{},
+		GridLimits: map[string]int{},
+	})
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+
 	mockConfig()
 	r := testRouter()
 	setupRouter(r, nil)
-	req := httptest.NewRequest("GET", "/alerts.json", nil)
+	req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
 
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
 	if resp.Code != http.StatusOK {
-		t.Errorf("GET /alerts.json returned status %d", resp.Code)
+		t.Errorf("POST /alerts.json returned status %d", resp.Code)
 	}
 	ur := models.AlertsResponse{}
 	body := resp.Body.Bytes()
-	err := json.Unmarshal(body, &ur)
+	err = json.Unmarshal(body, &ur)
 	if err != nil {
 		t.Errorf("Failed to unmarshal response: %s", err)
 	}
@@ -1100,7 +1190,7 @@ func TestAuthentication(t *testing.T) {
 			mockCache()
 			for _, path := range []string{
 				"/",
-				"/alerts.json",
+				"/alertList.json",
 				"/autocomplete.json?term=foo",
 				"/labelNames.json",
 				"/labelValues.json?name=foo",
@@ -1160,7 +1250,7 @@ func TestInvalidBasicAuthHeader(t *testing.T) {
 	mockCache()
 	for _, path := range []string{
 		"/",
-		"/alerts.json",
+		"/alertList.json",
 		"/autocomplete.json?term=foo",
 		"/labelNames.json",
 		"/labelValues.json?name=foo",
@@ -2357,6 +2447,19 @@ func TestUpstreamStatus(t *testing.T) {
 		},
 	}
 
+	payload, err := json.Marshal(models.AlertsRequest{
+		Filters: []string{
+			"@receiver=by-cluster-service",
+			"alertname=HTTP_Probe_Failed",
+			"instance=web1",
+		},
+		GridLimits: map[string]int{},
+	})
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+
 	for _, testCase := range testCases {
 		t.Run(testCase.Name, func(t *testing.T) {
 			zerolog.SetGlobalLevel(zerolog.FatalLevel)
@@ -2385,11 +2488,11 @@ func TestUpstreamStatus(t *testing.T) {
 			}
 			pullFromAlertmanager()
 
-			req := httptest.NewRequest("GET", "/alerts.json?q=@receiver=by-cluster-service&q=alertname=HTTP_Probe_Failed&q=instance=web1", nil)
+			req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
 			resp := httptest.NewRecorder()
 			r.ServeHTTP(resp, req)
 			if resp.Code != http.StatusOK {
-				t.Errorf("GET /alerts.json returned status %d", resp.Code)
+				t.Errorf("POST /alerts.json returned status %d", resp.Code)
 			}
 
 			ur := models.AlertsResponse{}
@@ -2421,7 +2524,15 @@ func TestUpstreamStatus(t *testing.T) {
 }
 
 func TestGetUserFromContextMissing(t *testing.T) {
-	req := httptest.NewRequest("GET", "/alerts.json", nil)
+	payload, err := json.Marshal(models.AlertsRequest{
+		Filters:    []string{},
+		GridLimits: map[string]int{},
+	})
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+	req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
 	user := getUserFromContext(req)
 	if user != "" {
 		t.Errorf("getUserFromContext() returned user=%q", user)
@@ -2429,7 +2540,15 @@ func TestGetUserFromContextMissing(t *testing.T) {
 }
 
 func TestGetUserFromContextPresent(t *testing.T) {
-	req := httptest.NewRequest("GET", "/alerts.json", nil)
+	payload, err := json.Marshal(models.AlertsRequest{
+		Filters:    []string{},
+		GridLimits: map[string]int{},
+	})
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+	req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
 	ctx := context.WithValue(req.Context(), authUserKey("user"), "bob")
 	user := getUserFromContext(req.WithContext(ctx))
 	if user == "" {
@@ -2629,15 +2748,24 @@ func TestAlertFilters(t *testing.T) {
 
 				pullFromAlertmanager()
 
+				payload, err := json.Marshal(models.AlertsRequest{
+					Filters:    tc.filters,
+					GridLimits: map[string]int{},
+				})
+				if err != nil {
+					t.Error(err)
+					t.FailNow()
+				}
+
 				r := testRouter()
 				setupRouter(r, nil)
 				// re-run a few times to test the cache
 				for i := 1; i <= 3; i++ {
-					req := httptest.NewRequest("GET", fmt.Sprintf("/alerts.json?%s", q), nil)
+					req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
 					resp := httptest.NewRecorder()
 					r.ServeHTTP(resp, req)
 					if resp.Code != http.StatusOK {
-						t.Errorf("GET /alerts.json returned status %d", resp.Code)
+						t.Errorf("POST /alerts.json returned status %d", resp.Code)
 					}
 					ur := models.AlertsResponse{}
 					body := resp.Body.Bytes()
@@ -2732,7 +2860,7 @@ func TestDecompressResponseReadError(t *testing.T) {
 
 func TestAutoGrid(t *testing.T) {
 	type testCaseT struct {
-		q         string
+		request   models.AlertsRequest
 		gridLabel string
 		ignore    []string
 		order     []string
@@ -2740,65 +2868,112 @@ func TestAutoGrid(t *testing.T) {
 
 	testCases := []testCaseT{
 		{
-			q:         "",
+			request: models.AlertsRequest{
+				Filters:    []string{},
+				GridLimits: map[string]int{},
+				GridLabel:  "",
+			},
 			gridLabel: "",
 		},
 		{
-			q:         "gridLabel=@auto",
+			request: models.AlertsRequest{
+				Filters:    []string{},
+				GridLimits: map[string]int{},
+				GridLabel:  "@auto",
+			},
 			gridLabel: "job",
 		},
 		{
-			q:         "gridLabel=@auto&q=cluster!=prod",
+			request: models.AlertsRequest{
+				Filters:    []string{"cluster!=prod"},
+				GridLimits: map[string]int{},
+				GridLabel:  "@auto",
+			},
 			gridLabel: "cluster",
 			ignore:    []string{"job"},
 			order:     []string{"cluster"},
 		},
 		{
-			q:         "gridLabel=@auto&q=cluster!=prod",
+			request: models.AlertsRequest{
+				Filters:    []string{"cluster!=prod"},
+				GridLimits: map[string]int{},
+				GridLabel:  "@auto",
+			},
 			gridLabel: "cluster",
 			ignore:    []string{},
 			order:     []string{"cluster"},
 		},
 		{
-			q:         "gridLabel=@auto&q=cluster!=prod",
-			gridLabel: "job",
-			ignore:    []string{},
-			order:     []string{"job", "cluster"},
+			request: models.AlertsRequest{
+				Filters:    []string{"cluster!=prod"},
+				GridLimits: map[string]int{},
+				GridLabel:  "@auto",
+			}, gridLabel: "job",
+			ignore: []string{},
+			order:  []string{"job", "cluster"},
 		},
 		{
-			q:         "gridLabel=@auto&q=job=node_exporter",
+			request: models.AlertsRequest{
+				Filters:    []string{"job=node_exporter"},
+				GridLimits: map[string]int{},
+				GridLabel:  "@auto",
+			},
 			gridLabel: "cluster",
 			ignore:    []string{},
 			order:     []string{"job", "cluster"},
 		},
 		{
-			q:         "gridLabel=@auto&q=cluster=dev",
+			request: models.AlertsRequest{
+				Filters:    []string{"cluster!=dev"},
+				GridLimits: map[string]int{},
+				GridLabel:  "@auto",
+			},
 			gridLabel: "job",
 			ignore:    []string{},
 			order:     []string{"job", "cluster"},
 		},
 		{
-			q:         "gridLabel=@auto&q=cluster=dev",
+			request: models.AlertsRequest{
+				Filters:    []string{"cluster=dev"},
+				GridLimits: map[string]int{},
+				GridLabel:  "@auto",
+			},
 			gridLabel: "alertname",
 			ignore:    []string{},
 			order:     []string{},
 		},
 		{
-			q:         "gridLabel=job",
+			request: models.AlertsRequest{
+				Filters:    []string{},
+				GridLimits: map[string]int{},
+				GridLabel:  "job",
+			},
 			gridLabel: "job",
 		},
 		{
-			q:         "gridLabel=@auto&q=instance=server5",
+			request: models.AlertsRequest{
+				Filters:    []string{"instance=server5"},
+				GridLimits: map[string]int{},
+				GridLabel:  "@auto",
+			},
 			gridLabel: "job",
 			ignore:    []string{"alertname"},
 		},
 		{
-			q:         "gridLabel=@auto&q=job=node_exporter",
+			request: models.AlertsRequest{
+				Filters:    []string{"job=node_exporter"},
+				GridLimits: map[string]int{},
+				GridLabel:  "@auto",
+			},
 			gridLabel: "cluster",
 			ignore:    []string{"alertname"},
 		},
 		{
-			q:         "gridLabel=@auto&q=cluster=prod",
+			request: models.AlertsRequest{
+				Filters:    []string{"cluster=prod"},
+				GridLimits: map[string]int{},
+				GridLabel:  "@auto",
+			},
 			gridLabel: "job",
 			ignore:    []string{"alertname", "instance"},
 		},
@@ -2813,31 +2988,39 @@ func TestAutoGrid(t *testing.T) {
 	for _, tc := range testCases {
 		config.Config.Grid.Auto.Ignore = tc.ignore
 		config.Config.Grid.Auto.Order = tc.order
-		for _, version := range mock.ListAllMocks() {
+		payload, err := json.Marshal(tc.request)
+		if err != nil {
+			t.Error(err)
+			t.FailNow()
+		}
+		for i, version := range mock.ListAllMocks() {
 			t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 			mockAlerts(version)
 			r := testRouter()
 			setupRouter(r, nil)
 			// re-run a few times to test the cache
-			for i := 1; i <= 3; i++ {
-				req := httptest.NewRequest("GET", fmt.Sprintf("/alerts.json?%s", tc.q), nil)
+			for j := 1; j <= 3; j++ {
+				req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
 				resp := httptest.NewRecorder()
 				r.ServeHTTP(resp, req)
 				if resp.Code != http.StatusOK {
-					t.Errorf("GET /alerts.json returned status %d", resp.Code)
+					t.Errorf("POST /alerts.json returned status %d", resp.Code)
+					t.FailNow()
 				}
 
 				ur := models.AlertsResponse{}
 				err := json.Unmarshal(resp.Body.Bytes(), &ur)
 				if err != nil {
 					t.Errorf("Failed to unmarshal response: %s", err)
+					t.FailNow()
 				}
 				if len(ur.Grids) == 0 {
-					t.Errorf("[%s] Got empty grid list", tc.q)
+					t.Errorf("[%d] Got empty grid list", i)
+					t.FailNow()
 				}
 				for _, g := range ur.Grids {
 					if g.LabelName != tc.gridLabel {
-						t.Errorf("[%s] Got grid using label %s=%s, expected %s", tc.q, g.LabelName, g.LabelValue, tc.gridLabel)
+						t.Errorf("[%d] Got grid using label %s=%s, expected %s", i, g.LabelName, g.LabelValue, tc.gridLabel)
 					}
 				}
 			}
@@ -2848,72 +3031,89 @@ func TestAutoGrid(t *testing.T) {
 func TestGridLimit(t *testing.T) {
 	type testCaseT struct {
 		groupLimit int
-		q          string
+		request    models.AlertsRequest
 		groups     map[string][]int
 	}
-
 	testCases := []testCaseT{
 		{
-			q: "",
+			request: models.AlertsRequest{
+				Filters:    []string{},
+				GridLimits: map[string]int{},
+			},
 			groups: map[string][]int{
 				"": {10, 10},
 			},
 		},
 		{
 			groupLimit: 5,
-			q:          "",
+			request: models.AlertsRequest{
+				Filters:    []string{},
+				GridLimits: map[string]int{},
+			},
 			groups: map[string][]int{
 				"": {10, 5},
 			},
 		},
 		{
 			groupLimit: 15,
-			q:          "",
+			request: models.AlertsRequest{
+				Filters:    []string{},
+				GridLimits: map[string]int{},
+			},
 			groups: map[string][]int{
 				"": {10, 10},
 			},
 		},
 		{
-			q: "limit==1",
-			groups: map[string][]int{
-				"": {10, 1},
+			request: models.AlertsRequest{
+				Filters:   []string{},
+				GridLabel: "job",
+				GridLimits: map[string]int{
+					"node_exporter": 1,
+				},
 			},
-		},
-		{
-			q: "limit",
-			groups: map[string][]int{
-				"": {10, 10},
-			},
-		},
-		{
-			q: "limit=",
-			groups: map[string][]int{
-				"": {10, 10},
-			},
-		},
-		{
-			q: "gridLabel=job&limit=node_exporter=1",
 			groups: map[string][]int{
 				"node_exporter": {6, 1},
 				"node_ping":     {4, 4},
 			},
 		},
 		{
-			q: "gridLabel=job&limit=node_exporter=a&limit=node_ping=1",
+			request: models.AlertsRequest{
+				Filters:   []string{},
+				GridLabel: "job",
+				GridLimits: map[string]int{
+					"node_exporter": 10,
+					"node_ping":     1,
+				},
+			},
 			groups: map[string][]int{
 				"node_exporter": {6, 6},
 				"node_ping":     {4, 1},
 			},
 		},
 		{
-			q: "gridLabel=job&limit=node_exporter=0&limit=node_ping=2",
+			request: models.AlertsRequest{
+				Filters:   []string{},
+				GridLabel: "job",
+				GridLimits: map[string]int{
+					"node_exporter": 0,
+					"node_ping":     2,
+				},
+			},
 			groups: map[string][]int{
 				"node_exporter": {6, 1},
 				"node_ping":     {4, 2},
 			},
 		},
 		{
-			q: "gridLabel=job&limit=node_exporter=0&limit=node_ping=20",
+			request: models.AlertsRequest{
+				Filters:   []string{},
+				GridLabel: "job",
+				GridLimits: map[string]int{
+					"node_exporter": 0,
+					"node_ping":     20,
+				},
+			},
 			groups: map[string][]int{
 				"node_exporter": {6, 1},
 				"node_ping":     {4, 4},
@@ -2932,14 +3132,19 @@ func TestGridLimit(t *testing.T) {
 		} else {
 			config.Config.Grid.GroupLimit = 50
 		}
-		for _, version := range mock.ListAllMocks() {
+		payload, err := json.Marshal(tc.request)
+		if err != nil {
+			t.Error(err)
+			t.FailNow()
+		}
+		for i, version := range mock.ListAllMocks() {
 			t.Logf("Testing grids using mock files from Alertmanager %s", version)
 			mockAlerts(version)
 			r := testRouter()
 			setupRouter(r, nil)
 			// re-run a few times to test the cache
-			for i := 1; i <= 3; i++ {
-				req := httptest.NewRequest("GET", fmt.Sprintf("/alerts.json?%s", tc.q), nil)
+			for j := 1; j <= 3; j++ {
+				req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
 				resp := httptest.NewRecorder()
 				r.ServeHTTP(resp, req)
 				if resp.Code != http.StatusOK {
@@ -2952,11 +3157,11 @@ func TestGridLimit(t *testing.T) {
 					t.Errorf("Failed to unmarshal response: %s", err)
 				}
 				if len(ur.Grids) == 0 {
-					t.Errorf("[%s] Got empty grid list", tc.q)
+					t.Errorf("[%d] Got empty grid list", i)
 				}
 				for _, grid := range ur.Grids {
 					if grid.TotalGroups == 0 {
-						t.Errorf("[%s] got empty grid for %s=%s", tc.q, grid.LabelName, grid.LabelValue)
+						t.Errorf("[%d] got empty grid for %s=%s", i, grid.LabelName, grid.LabelValue)
 					}
 					found := false
 					for labelValue := range tc.groups {
@@ -2966,7 +3171,7 @@ func TestGridLimit(t *testing.T) {
 						}
 					}
 					if !found {
-						t.Errorf("[%s] got extra grid %s=%s", tc.q, grid.LabelName, grid.LabelValue)
+						t.Errorf("[%d] got extra grid %s=%s", i, grid.LabelName, grid.LabelValue)
 					}
 				}
 				for labelValue, totals := range tc.groups {
@@ -2977,16 +3182,16 @@ func TestGridLimit(t *testing.T) {
 						if grid.LabelValue == labelValue {
 							found = true
 							if grid.TotalGroups != totalGroups {
-								t.Errorf("[%s] grid for label %s=%s returned totalGroups=%d, expected %d", tc.q, grid.LabelName, grid.LabelValue, grid.TotalGroups, totalGroups)
+								t.Errorf("[%d] grid for label %s=%s returned totalGroups=%d, expected %d", i, grid.LabelName, grid.LabelValue, grid.TotalGroups, totalGroups)
 							}
 							if len(grid.AlertGroups) != presentGroups {
-								t.Errorf("[%s] grid for label %s=%s returned %d alert groups, expected %d", tc.q, grid.LabelName, grid.LabelValue, len(grid.AlertGroups), presentGroups)
+								t.Errorf("[%d] grid for label %s=%s returned %d alert groups, expected %d", i, grid.LabelName, grid.LabelValue, len(grid.AlertGroups), presentGroups)
 							}
 							break
 						}
 					}
 					if !found {
-						t.Errorf("[%s] grid with label value %s missing", tc.q, labelValue)
+						t.Errorf("[%d] grid with label value %s missing", i, labelValue)
 					}
 				}
 			}
