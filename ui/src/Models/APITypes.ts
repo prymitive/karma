@@ -229,3 +229,13 @@ export interface CountersResponseT {
   total: number;
   counters: APILabelCounterT[];
 }
+
+export interface AlertsRequestT {
+  filters: string[];
+  gridLabel: string;
+  gridLimits: { [key: string]: number };
+  gridSortReverse: boolean;
+  sortOrder: string;
+  sortLabel: string;
+  sortReverse: boolean;
+}
