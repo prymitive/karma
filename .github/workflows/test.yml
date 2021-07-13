@@ -25,7 +25,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.16.5
+          go-version: 1.16.6
 
       - name: Cache Go modules
         id: cache-go-modules
@@ -68,7 +68,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.16.5
+          go-version: 1.16.6
 
       - name: Cache Go modules
         id: cache-go-modules
@@ -173,7 +173,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.16.5
+          go-version: 1.16.6
 
       - name: Format Go code
         run: make format-go
@@ -320,7 +320,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.16.5
+          go-version: 1.16.6
 
       - name: Cache Go modules
         id: cache-go-modules
@@ -454,7 +454,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
-          go-version: 1.16.5
+          go-version: 1.16.6
 
       - name: Set up Node JS
         uses: actions/setup-node@v2
