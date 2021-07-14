@@ -545,7 +545,7 @@ describe("AlertStore.fetch", () => {
 
     const store = new AlertStore(["label=value"]);
     await expect(
-      store.fetch("", false, "", "", false, {})
+      store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toBeUndefined();
 
     expect(fetchMock.calls()).toHaveLength(1);
@@ -561,7 +561,7 @@ describe("AlertStore.fetch", () => {
 
     const store = new AlertStore([]);
     await expect(
-      store.fetch("", false, "", "", false, {})
+      store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toBeUndefined();
 
     expect(fetchMock.calls()).toHaveLength(1);
@@ -580,7 +580,7 @@ describe("AlertStore.fetch", () => {
 
     const store = new AlertStore([]);
     await expect(
-      store.fetch("", false, "", "", false, {})
+      store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toHaveProperty("error");
 
     expect(fetchMock.calls()).toHaveLength(10);
@@ -600,7 +600,7 @@ describe("AlertStore.fetch", () => {
     });
 
     await expect(
-      store.fetch("", false, "", "", false, {})
+      store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toHaveProperty("error");
     expect(fetchMock.calls()).toHaveLength(10);
   });
@@ -615,7 +615,7 @@ describe("AlertStore.fetch", () => {
     });
 
     await expect(
-      store.fetch("", false, "", "", false, {})
+      store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toHaveProperty("error");
     expect(fetchMock.calls()).toHaveLength(10);
 
@@ -626,7 +626,7 @@ describe("AlertStore.fetch", () => {
     });
 
     await expect(
-      store.fetch("", false, "", "", false, {})
+      store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toBeUndefined();
     expect(fetchMock.calls()).toHaveLength(1);
 
@@ -636,7 +636,7 @@ describe("AlertStore.fetch", () => {
     });
 
     await expect(
-      store.fetch("", false, "", "", false, {})
+      store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toHaveProperty("error");
     expect(fetchMock.calls()).toHaveLength(10);
   });
@@ -656,7 +656,7 @@ describe("AlertStore.fetch", () => {
     );
 
     await expect(
-      store.fetch("", false, "", "", false, {})
+      store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toBeUndefined();
 
     expect(store.info.reloadNeeded).toBe(true);
@@ -673,7 +673,7 @@ describe("AlertStore.fetch", () => {
     });
 
     await expect(
-      store.fetch("", false, "", "", false, {})
+      store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toHaveProperty("error");
     expect(store.filters.values[0].applied).toBe(true);
   });
@@ -690,7 +690,7 @@ describe("AlertStore.fetch", () => {
     // initial fetch, should update settings
     store.settings.setValues({ foo: "bar" } as any);
     await expect(
-      store.fetch("", false, "", "", false, {})
+      store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toBeUndefined();
     expect(store.settings.values).toMatchObject({
       staticColorLabels: ["job"],
@@ -702,7 +702,7 @@ describe("AlertStore.fetch", () => {
 
     // second fetch, should keep same settings
     await expect(
-      store.fetch("", false, "", "", false, {})
+      store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toBeUndefined();
     expect(store.settings.values).toMatchObject({
       staticColorLabels: ["job"],
@@ -721,7 +721,7 @@ describe("AlertStore.fetch", () => {
     });
     const store = new AlertStore(["label=value"]);
     await expect(
-      store.fetch("", false, "", "", false, {})
+      store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toBeUndefined();
     expect(store.info.upgradeReady).toBe(false);
 
@@ -731,7 +731,7 @@ describe("AlertStore.fetch", () => {
       body: JSON.stringify(response),
     });
     await expect(
-      store.fetch("", false, "", "", false, {})
+      store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toBeUndefined();
     expect(store.info.upgradeReady).toBe(true);
   });
@@ -797,7 +797,7 @@ describe("AlertStore.fetch", () => {
     });
     const store = new AlertStore(["label=value"]);
     await expect(
-      store.fetch("", false, "sortOrder", "sortLabel", false, {})
+      store.fetch("", false, "sortOrder", "sortLabel", false, {}, 5, {})
     ).resolves.toBeUndefined();
     expect(fetchMock.calls().length).toEqual(1);
     expect(fetchMock.calls()[0][0]).toBe("/alerts.json");
@@ -809,6 +809,8 @@ describe("AlertStore.fetch", () => {
       sortOrder: "sortOrder",
       sortLabel: "sortLabel",
       sortReverse: false,
+      defaultGroupLimit: 5,
+      groupLimits: {},
     });
   });
 
@@ -820,7 +822,7 @@ describe("AlertStore.fetch", () => {
     });
     const store = new AlertStore(["label=value"]);
     await expect(
-      store.fetch("cluster", true, "sortOrder", "sortLabel", true, {})
+      store.fetch("cluster", true, "sortOrder", "sortLabel", true, {}, 5, {})
     ).resolves.toBeUndefined();
     expect(fetchMock.calls().length).toEqual(1);
     expect(fetchMock.calls()[0][0]).toBe("/alerts.json");
@@ -832,6 +834,8 @@ describe("AlertStore.fetch", () => {
       sortOrder: "sortOrder",
       sortLabel: "sortLabel",
       sortReverse: true,
+      defaultGroupLimit: 5,
+      groupLimits: {},
     });
   });
 
@@ -842,11 +846,23 @@ describe("AlertStore.fetch", () => {
       body: JSON.stringify(response),
     });
     const store = new AlertStore(["label=value"]);
-    store.ui.setLimit("foo", "bar", 7);
+    store.ui.setGridGroupLimit("foo", "bar", 7);
+    store.ui.setGroupAlertLimit("1234567890", 7);
+    store.ui.setGroupAlertLimit("1234567891", 1);
+
     await expect(
-      store.fetch("cluster", true, "sortOrder", "sortLabel", false, {
-        bar: 7,
-      })
+      store.fetch(
+        "cluster",
+        true,
+        "sortOrder",
+        "sortLabel",
+        false,
+        {
+          bar: 7,
+        },
+        5,
+        { "1234567890": 7, "1234567891": 1 }
+      )
     ).resolves.toBeUndefined();
     expect(fetchMock.calls().length).toEqual(1);
     expect(fetchMock.calls()[0][0]).toBe("/alerts.json");
@@ -858,6 +874,66 @@ describe("AlertStore.fetch", () => {
       sortOrder: "sortOrder",
       sortLabel: "sortLabel",
       sortReverse: false,
+      defaultGroupLimit: 5,
+      groupLimits: { "1234567890": 7, "1234567891": 1 },
     });
+  });
+
+  it("purges unknown group limits after fetch", async () => {
+    const store = new AlertStore(["label=value"]);
+    store.ui.setGridGroupLimit("foo", "bar", 7);
+    store.ui.setGroupAlertLimit("g1", 7);
+    store.ui.setGroupAlertLimit("g2", 1);
+    store.ui.setGroupAlertLimit("g4", 6);
+
+    const g1 = MockGroup("group1", 1, 1, 0);
+    g1.id = "g1";
+    const g2 = MockGroup("group2", 1, 1, 0);
+    g2.id = "g2";
+    const g3 = MockGroup("group3", 1, 1, 0);
+    g3.id = "g3";
+    const response = EmptyAPIResponse();
+    response.grids = [
+      {
+        labelName: "",
+        labelValue: "",
+        alertGroups: [g1, g2, g3],
+        totalGroups: 3,
+        stateCount: { unprocessed: 0, active: 3, suppressed: 0 },
+      },
+    ];
+    fetchMock.reset();
+    fetchMock.mock("*", {
+      body: JSON.stringify(response),
+    });
+
+    await expect(
+      store.fetch(
+        "cluster",
+        true,
+        "sortOrder",
+        "sortLabel",
+        false,
+        {
+          bar: 7,
+        },
+        5,
+        { g1: 7, g2: 1, g4: 6 }
+      )
+    ).resolves.toBeUndefined();
+    expect(fetchMock.calls().length).toEqual(1);
+    expect(fetchMock.calls()[0][0]).toBe("/alerts.json");
+    expect(JSON.parse(fetchMock.calls()[0][1]?.body as string)).toStrictEqual({
+      filters: ["label=value"],
+      gridLabel: "cluster",
+      gridLimits: { bar: 7 },
+      gridSortReverse: true,
+      sortOrder: "sortOrder",
+      sortLabel: "sortLabel",
+      sortReverse: false,
+      defaultGroupLimit: 5,
+      groupLimits: { g1: 7, g2: 1, g4: 6 },
+    });
+    expect(store.ui.groupAlertLimits).toStrictEqual({ g1: 7, g2: 1 });
   });
 });

@@ -56,6 +56,7 @@ const MockAlertGroup = (
 ): APIAlertGroupT => ({
   receiver: "by-name",
   labels: rootLabels,
+  totalAlerts: alerts.length,
   alerts: alerts,
   id: "099c5ca6d1c92f615b13056b935d0c8dee70f18c",
   alertmanagerCount: {

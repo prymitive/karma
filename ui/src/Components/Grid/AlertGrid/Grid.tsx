@@ -179,7 +179,7 @@ const Grid: FC<{
                   type="button"
                   className="btn btn-secondary mb-3"
                   onClick={() => {
-                    alertStore.ui.setLimit(
+                    alertStore.ui.setGridGroupLimit(
                       grid.labelName,
                       grid.labelValue,
                       grid.alertGroups.length +

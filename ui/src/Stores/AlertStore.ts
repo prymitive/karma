@@ -209,8 +209,11 @@ interface AlertStoreStatusT {
 interface AlertStoreUIT {
   isIdle: boolean;
   setIsIdle: (val: boolean) => void;
-  limits: { [key: string]: { [val: string]: number } };
-  setLimit: (key: string, val: string, limit: number) => void;
+  gridGroupLimits: { [key: string]: { [val: string]: number } };
+  setGridGroupLimit: (key: string, val: string, limit: number) => void;
+  groupAlertLimits: { [gid: string]: number };
+  setGroupAlertLimit: (gid: string, limit: number) => void;
+  purgeGroupAlertLimits: (knownGids: string[]) => void;
 }
 
 class AlertStore {
@@ -558,14 +561,30 @@ class AlertStore {
         setIsIdle(val: boolean) {
           this.isIdle = val;
         },
-        limits: {} as { [key: string]: { [val: string]: number } },
-        setLimit(key: string, val: string, limit: number) {
-          this.limits = { [key]: { ...this.limits[key], [val]: limit } };
+        gridGroupLimits: {} as { [key: string]: { [val: string]: number } },
+        setGridGroupLimit(key: string, val: string, limit: number) {
+          this.gridGroupLimits = {
+            [key]: { ...this.gridGroupLimits[key], [val]: limit },
+          };
+        },
+        groupAlertLimits: {} as { [gid: string]: number },
+        setGroupAlertLimit(gid: string, limit: number) {
+          this.groupAlertLimits[gid] = limit;
+        },
+        purgeGroupAlertLimits(knownGids: string[]) {
+          const newLimits: { [gid: string]: number } = {};
+          Object.entries(this.groupAlertLimits)
+            .filter(([gid, _]) => knownGids.includes(gid))
+            .forEach(([gid, limit]) => {
+              newLimits[gid] = limit;
+            });
+          this.groupAlertLimits = newLimits;
         },
       },
       {
         setIsIdle: action.bound,
-        setLimit: action.bound,
+        setGridGroupLimit: action.bound,
+        setGroupAlertLimit: action.bound,
       }
     );
 
@@ -579,7 +598,9 @@ class AlertStore {
       sortOrder: string,
       sortLabel: string,
       sortReverse: boolean,
-      limits: { [key: string]: number }
+      gridGroupLimits: { [key: string]: number },
+      defaultGroupLimit: number,
+      groupAlertLimits: { [key: string]: number }
     ) => {
       this.status.setFetching();
 
@@ -587,10 +608,12 @@ class AlertStore {
         filters: this.filters.values.map((f) => f.raw),
         gridLabel: gridLabel,
         gridSortReverse: gridSortReverse,
-        gridLimits: limits,
+        gridLimits: gridGroupLimits,
         sortOrder: sortOrder,
         sortLabel: sortLabel,
         sortReverse: sortReverse,
+        defaultGroupLimit: defaultGroupLimit,
+        groupLimits: groupAlertLimits,
       };
 
       const alertsURI = FormatBackendURI("alerts.json");
@@ -675,6 +698,16 @@ class AlertStore {
     updates.upstreams = result.upstreams;
     updates.receivers = result.receivers;
     this.data = Object.assign(this.data, updates);
+
+    const knowGroups: string[] = [];
+    result.grids.map((grid) =>
+      grid.alertGroups
+        .map((group) => group.id)
+        .forEach((id) => {
+          knowGroups.push(id);
+        })
+    );
+    this.ui.purgeGroupAlertLimits(knowGroups);
 
     // before storing new version check if we need to reload
     if (

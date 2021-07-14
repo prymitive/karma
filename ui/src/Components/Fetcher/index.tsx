@@ -176,9 +176,11 @@ const Fetcher: FC<{
       sortSettings.sortOrder,
       sortSettings.sortLabel,
       sortSettings.sortReverse === "1",
-      Object.values(alertStore.ui.limits).length > 0
-        ? toJS(Object.values(alertStore.ui.limits)[0])
-        : {}
+      Object.values(alertStore.ui.gridGroupLimits).length > 0
+        ? toJS(Object.values(alertStore.ui.gridGroupLimits)[0])
+        : {},
+      settingsStore.alertGroupConfig.config.defaultRenderCount,
+      alertStore.ui.groupAlertLimits
     );
   };
 
@@ -197,7 +199,11 @@ const Fetcher: FC<{
             grid: {
               sortOrder: toJS(settingsStore.gridConfig.config.sortOrder),
               sortLabel: toJS(settingsStore.gridConfig.config.sortLabel),
-              limits: toJS(alertStore.ui.limits),
+              gridGroupLimits: toJS(alertStore.ui.gridGroupLimits),
+              defaultGroupLimit: toJS(
+                settingsStore.alertGroupConfig.config.defaultRenderCount
+              ),
+              groupAlertLimits: toJS(alertStore.ui.groupAlertLimits),
             },
             multigrid: {
               gridLabel: toJS(settingsStore.multiGridConfig.config.gridLabel),
