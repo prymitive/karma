@@ -232,7 +232,8 @@ func TestAlerts(t *testing.T) {
 			"alertname=HTTP_Probe_Failed",
 			"instance=web1",
 		},
-		GridLimits: map[string]int{},
+		GridLimits:        map[string]int{},
+		DefaultGroupLimit: 5,
 	})
 	if err != nil {
 		t.Error(err)
@@ -328,6 +329,51 @@ func TestAlertsBadRequest(t *testing.T) {
 	}
 }
 
+func TestAlertsLimitFallback(t *testing.T) {
+	payload, err := json.Marshal(models.AlertsRequest{
+		Filters:           []string{},
+		GridLimits:        map[string]int{},
+		GridLabel:         "",
+		DefaultGroupLimit: 0,
+	})
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+
+	mockConfig()
+	config.Config.UI.AlertsPerGroup = 1
+	for _, version := range mock.ListAllMocks() {
+		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
+		mockAlerts(version)
+		r := testRouter()
+		setupRouter(r, nil)
+		// re-run a few times to test the cache
+		for i := 1; i <= 3; i++ {
+			req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
+			resp := httptest.NewRecorder()
+			r.ServeHTTP(resp, req)
+			if resp.Code != http.StatusOK {
+				t.Errorf("POST /alerts.json returned status %d", resp.Code)
+			}
+
+			ur := models.AlertsResponse{}
+			err := json.Unmarshal(resp.Body.Bytes(), &ur)
+			if err != nil {
+				t.Errorf("Failed to unmarshal response: %s", err)
+			}
+			for _, grid := range ur.Grids {
+				for _, ag := range grid.AlertGroups {
+					al := len(ag.Alerts)
+					if al > 1 {
+						t.Errorf("[%s] Got %d alert group(s) in response, expected 1", version, al)
+					}
+				}
+			}
+		}
+	}
+}
+
 func TestGrids(t *testing.T) {
 	type testCaseGridT struct {
 		labelValue      string
@@ -340,8 +386,9 @@ func TestGrids(t *testing.T) {
 	testCases := []testCaseT{
 		{
 			request: models.AlertsRequest{
-				GridLabel:  "cluster",
-				GridLimits: map[string]int{},
+				GridLabel:         "cluster",
+				GridLimits:        map[string]int{},
+				DefaultGroupLimit: 5,
 			},
 			grids: []testCaseGridT{
 				{labelValue: "dev", alertGroupCount: 4},
@@ -351,9 +398,10 @@ func TestGrids(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				GridLabel:       "cluster",
-				GridLimits:      map[string]int{},
-				GridSortReverse: true,
+				GridLabel:         "cluster",
+				GridLimits:        map[string]int{},
+				GridSortReverse:   true,
+				DefaultGroupLimit: 5,
 			},
 			grids: []testCaseGridT{
 				{labelValue: "staging", alertGroupCount: 4},
@@ -363,8 +411,9 @@ func TestGrids(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				GridLabel:  "foo",
-				GridLimits: map[string]int{},
+				GridLabel:         "foo",
+				GridLimits:        map[string]int{},
+				DefaultGroupLimit: 5,
 			},
 			grids: []testCaseGridT{
 				{labelValue: "", alertGroupCount: 10},
@@ -372,8 +421,9 @@ func TestGrids(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				GridLabel:  "",
-				GridLimits: map[string]int{},
+				GridLabel:         "",
+				GridLimits:        map[string]int{},
+				DefaultGroupLimit: 5,
 			},
 			grids: []testCaseGridT{
 				{labelValue: "", alertGroupCount: 10},
@@ -381,16 +431,18 @@ func TestGrids(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				GridLabel:  "",
-				GridLimits: map[string]int{},
-				Filters:    []string{"foo=bar"},
+				GridLabel:         "",
+				GridLimits:        map[string]int{},
+				Filters:           []string{"foo=bar"},
+				DefaultGroupLimit: 5,
 			},
 			grids: []testCaseGridT{},
 		},
 		{
 			request: models.AlertsRequest{
-				GridLabel:  "disk",
-				GridLimits: map[string]int{},
+				GridLabel:         "disk",
+				GridLimits:        map[string]int{},
+				DefaultGroupLimit: 5,
 			},
 			grids: []testCaseGridT{
 				{labelValue: "sda", alertGroupCount: 2},
@@ -399,9 +451,10 @@ func TestGrids(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				GridLabel:       "disk",
-				GridLimits:      map[string]int{},
-				GridSortReverse: true,
+				GridLabel:         "disk",
+				GridLimits:        map[string]int{},
+				GridSortReverse:   true,
+				DefaultGroupLimit: 5,
 			},
 			grids: []testCaseGridT{
 				{labelValue: "", alertGroupCount: 8},
@@ -410,9 +463,10 @@ func TestGrids(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				GridLabel:  "disk",
-				GridLimits: map[string]int{},
-				Filters:    []string{"alertname=Free_Disk_Space_Too_Low"},
+				GridLabel:         "disk",
+				GridLimits:        map[string]int{},
+				Filters:           []string{"alertname=Free_Disk_Space_Too_Low"},
+				DefaultGroupLimit: 5,
 			},
 			grids: []testCaseGridT{
 				{labelValue: "sda", alertGroupCount: 2},
@@ -420,8 +474,9 @@ func TestGrids(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				GridLabel:  "@alertmanager",
-				GridLimits: map[string]int{},
+				GridLabel:         "@alertmanager",
+				GridLimits:        map[string]int{},
+				DefaultGroupLimit: 5,
 			},
 			grids: []testCaseGridT{
 				{labelValue: "default", alertGroupCount: 10},
@@ -429,8 +484,9 @@ func TestGrids(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				GridLabel:  "@cluster",
-				GridLimits: map[string]int{},
+				GridLabel:         "@cluster",
+				GridLimits:        map[string]int{},
+				DefaultGroupLimit: 5,
 			},
 			grids: []testCaseGridT{
 				{labelValue: "default", alertGroupCount: 10},
@@ -438,8 +494,9 @@ func TestGrids(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				GridLabel:  "@receiver",
-				GridLimits: map[string]int{},
+				GridLabel:         "@receiver",
+				GridLimits:        map[string]int{},
+				DefaultGroupLimit: 5,
 			},
 			grids: []testCaseGridT{
 				{labelValue: "by-cluster-service", alertGroupCount: 6},
@@ -448,9 +505,10 @@ func TestGrids(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				GridLabel:       "@receiver",
-				GridLimits:      map[string]int{},
-				GridSortReverse: true,
+				GridLabel:         "@receiver",
+				GridLimits:        map[string]int{},
+				GridSortReverse:   true,
+				DefaultGroupLimit: 5,
 			},
 			grids: []testCaseGridT{
 				{labelValue: "by-name", alertGroupCount: 4},
@@ -459,9 +517,10 @@ func TestGrids(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				GridLabel:  "@receiver",
-				GridLimits: map[string]int{},
-				Filters:    []string{"@receiver=by-name"},
+				GridLabel:         "@receiver",
+				GridLimits:        map[string]int{},
+				Filters:           []string{"@receiver=by-name"},
+				DefaultGroupLimit: 5,
 			},
 			grids: []testCaseGridT{
 				{labelValue: "by-name", alertGroupCount: 4},
@@ -528,7 +587,8 @@ func TestValidateAllAlerts(t *testing.T) {
 			"alertname=HTTP_Probe_Failed",
 			"instance=web1",
 		},
-		GridLimits: map[string]int{},
+		GridLimits:        map[string]int{},
+		DefaultGroupLimit: 5,
 	})
 	if err != nil {
 		t.Error(err)
@@ -1003,8 +1063,9 @@ func TestCORS(t *testing.T) {
 
 func TestEmptySettings(t *testing.T) {
 	payload, err := json.Marshal(models.AlertsRequest{
-		Filters:    []string{},
-		GridLimits: map[string]int{},
+		Filters:           []string{},
+		GridLimits:        map[string]int{},
+		DefaultGroupLimit: 5,
 	})
 	if err != nil {
 		t.Error(err)
@@ -2453,7 +2514,8 @@ func TestUpstreamStatus(t *testing.T) {
 			"alertname=HTTP_Probe_Failed",
 			"instance=web1",
 		},
-		GridLimits: map[string]int{},
+		GridLimits:        map[string]int{},
+		DefaultGroupLimit: 5,
 	})
 	if err != nil {
 		t.Error(err)
@@ -2525,8 +2587,9 @@ func TestUpstreamStatus(t *testing.T) {
 
 func TestGetUserFromContextMissing(t *testing.T) {
 	payload, err := json.Marshal(models.AlertsRequest{
-		Filters:    []string{},
-		GridLimits: map[string]int{},
+		Filters:           []string{},
+		GridLimits:        map[string]int{},
+		DefaultGroupLimit: 5,
 	})
 	if err != nil {
 		t.Error(err)
@@ -2541,8 +2604,9 @@ func TestGetUserFromContextMissing(t *testing.T) {
 
 func TestGetUserFromContextPresent(t *testing.T) {
 	payload, err := json.Marshal(models.AlertsRequest{
-		Filters:    []string{},
-		GridLimits: map[string]int{},
+		Filters:           []string{},
+		GridLimits:        map[string]int{},
+		DefaultGroupLimit: 5,
 	})
 	if err != nil {
 		t.Error(err)
@@ -2749,8 +2813,9 @@ func TestAlertFilters(t *testing.T) {
 				pullFromAlertmanager()
 
 				payload, err := json.Marshal(models.AlertsRequest{
-					Filters:    tc.filters,
-					GridLimits: map[string]int{},
+					Filters:           tc.filters,
+					GridLimits:        map[string]int{},
+					DefaultGroupLimit: 5,
 				})
 				if err != nil {
 					t.Error(err)
@@ -2869,25 +2934,28 @@ func TestAutoGrid(t *testing.T) {
 	testCases := []testCaseT{
 		{
 			request: models.AlertsRequest{
-				Filters:    []string{},
-				GridLimits: map[string]int{},
-				GridLabel:  "",
+				Filters:           []string{},
+				GridLimits:        map[string]int{},
+				GridLabel:         "",
+				DefaultGroupLimit: 5,
 			},
 			gridLabel: "",
 		},
 		{
 			request: models.AlertsRequest{
-				Filters:    []string{},
-				GridLimits: map[string]int{},
-				GridLabel:  "@auto",
+				Filters:           []string{},
+				GridLimits:        map[string]int{},
+				GridLabel:         "@auto",
+				DefaultGroupLimit: 5,
 			},
 			gridLabel: "job",
 		},
 		{
 			request: models.AlertsRequest{
-				Filters:    []string{"cluster!=prod"},
-				GridLimits: map[string]int{},
-				GridLabel:  "@auto",
+				Filters:           []string{"cluster!=prod"},
+				GridLimits:        map[string]int{},
+				GridLabel:         "@auto",
+				DefaultGroupLimit: 5,
 			},
 			gridLabel: "cluster",
 			ignore:    []string{"job"},
@@ -2895,9 +2963,10 @@ func TestAutoGrid(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				Filters:    []string{"cluster!=prod"},
-				GridLimits: map[string]int{},
-				GridLabel:  "@auto",
+				Filters:           []string{"cluster!=prod"},
+				GridLimits:        map[string]int{},
+				GridLabel:         "@auto",
+				DefaultGroupLimit: 5,
 			},
 			gridLabel: "cluster",
 			ignore:    []string{},
@@ -2905,18 +2974,20 @@ func TestAutoGrid(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				Filters:    []string{"cluster!=prod"},
-				GridLimits: map[string]int{},
-				GridLabel:  "@auto",
+				Filters:           []string{"cluster!=prod"},
+				GridLimits:        map[string]int{},
+				GridLabel:         "@auto",
+				DefaultGroupLimit: 5,
 			}, gridLabel: "job",
 			ignore: []string{},
 			order:  []string{"job", "cluster"},
 		},
 		{
 			request: models.AlertsRequest{
-				Filters:    []string{"job=node_exporter"},
-				GridLimits: map[string]int{},
-				GridLabel:  "@auto",
+				Filters:           []string{"job=node_exporter"},
+				GridLimits:        map[string]int{},
+				GridLabel:         "@auto",
+				DefaultGroupLimit: 5,
 			},
 			gridLabel: "cluster",
 			ignore:    []string{},
@@ -2924,9 +2995,10 @@ func TestAutoGrid(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				Filters:    []string{"cluster!=dev"},
-				GridLimits: map[string]int{},
-				GridLabel:  "@auto",
+				Filters:           []string{"cluster!=dev"},
+				GridLimits:        map[string]int{},
+				GridLabel:         "@auto",
+				DefaultGroupLimit: 5,
 			},
 			gridLabel: "job",
 			ignore:    []string{},
@@ -2934,9 +3006,10 @@ func TestAutoGrid(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				Filters:    []string{"cluster=dev"},
-				GridLimits: map[string]int{},
-				GridLabel:  "@auto",
+				Filters:           []string{"cluster=dev"},
+				GridLimits:        map[string]int{},
+				GridLabel:         "@auto",
+				DefaultGroupLimit: 5,
 			},
 			gridLabel: "alertname",
 			ignore:    []string{},
@@ -2944,35 +3017,39 @@ func TestAutoGrid(t *testing.T) {
 		},
 		{
 			request: models.AlertsRequest{
-				Filters:    []string{},
-				GridLimits: map[string]int{},
-				GridLabel:  "job",
+				Filters:           []string{},
+				GridLimits:        map[string]int{},
+				GridLabel:         "job",
+				DefaultGroupLimit: 5,
 			},
 			gridLabel: "job",
 		},
 		{
 			request: models.AlertsRequest{
-				Filters:    []string{"instance=server5"},
-				GridLimits: map[string]int{},
-				GridLabel:  "@auto",
+				Filters:           []string{"instance=server5"},
+				GridLimits:        map[string]int{},
+				GridLabel:         "@auto",
+				DefaultGroupLimit: 5,
 			},
 			gridLabel: "job",
 			ignore:    []string{"alertname"},
 		},
 		{
 			request: models.AlertsRequest{
-				Filters:    []string{"job=node_exporter"},
-				GridLimits: map[string]int{},
-				GridLabel:  "@auto",
+				Filters:           []string{"job=node_exporter"},
+				GridLimits:        map[string]int{},
+				GridLabel:         "@auto",
+				DefaultGroupLimit: 5,
 			},
 			gridLabel: "cluster",
 			ignore:    []string{"alertname"},
 		},
 		{
 			request: models.AlertsRequest{
-				Filters:    []string{"cluster=prod"},
-				GridLimits: map[string]int{},
-				GridLabel:  "@auto",
+				Filters:           []string{"cluster=prod"},
+				GridLimits:        map[string]int{},
+				GridLabel:         "@auto",
+				DefaultGroupLimit: 5,
 			},
 			gridLabel: "job",
 			ignore:    []string{"alertname", "instance"},
@@ -3037,8 +3114,9 @@ func TestGridLimit(t *testing.T) {
 	testCases := []testCaseT{
 		{
 			request: models.AlertsRequest{
-				Filters:    []string{},
-				GridLimits: map[string]int{},
+				Filters:           []string{},
+				GridLimits:        map[string]int{},
+				DefaultGroupLimit: 5,
 			},
 			groups: map[string][]int{
 				"": {10, 10},
@@ -3047,8 +3125,9 @@ func TestGridLimit(t *testing.T) {
 		{
 			groupLimit: 5,
 			request: models.AlertsRequest{
-				Filters:    []string{},
-				GridLimits: map[string]int{},
+				Filters:           []string{},
+				GridLimits:        map[string]int{},
+				DefaultGroupLimit: 5,
 			},
 			groups: map[string][]int{
 				"": {10, 5},
@@ -3057,8 +3136,9 @@ func TestGridLimit(t *testing.T) {
 		{
 			groupLimit: 15,
 			request: models.AlertsRequest{
-				Filters:    []string{},
-				GridLimits: map[string]int{},
+				Filters:           []string{},
+				GridLimits:        map[string]int{},
+				DefaultGroupLimit: 5,
 			},
 			groups: map[string][]int{
 				"": {10, 10},
@@ -3071,6 +3151,7 @@ func TestGridLimit(t *testing.T) {
 				GridLimits: map[string]int{
 					"node_exporter": 1,
 				},
+				DefaultGroupLimit: 5,
 			},
 			groups: map[string][]int{
 				"node_exporter": {6, 1},
@@ -3085,6 +3166,7 @@ func TestGridLimit(t *testing.T) {
 					"node_exporter": 10,
 					"node_ping":     1,
 				},
+				DefaultGroupLimit: 5,
 			},
 			groups: map[string][]int{
 				"node_exporter": {6, 6},
@@ -3099,6 +3181,7 @@ func TestGridLimit(t *testing.T) {
 					"node_exporter": 0,
 					"node_ping":     2,
 				},
+				DefaultGroupLimit: 5,
 			},
 			groups: map[string][]int{
 				"node_exporter": {6, 1},
@@ -3113,6 +3196,7 @@ func TestGridLimit(t *testing.T) {
 					"node_exporter": 0,
 					"node_ping":     20,
 				},
+				DefaultGroupLimit: 5,
 			},
 			groups: map[string][]int{
 				"node_exporter": {6, 1},

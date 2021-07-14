@@ -125,8 +125,9 @@ func BenchmarkAlertsAPIMisses(b *testing.B) {
 	zerolog.SetGlobalLevel(zerolog.FatalLevel)
 
 	payload, err := json.Marshal(models.AlertsRequest{
-		Filters:    []string{},
-		GridLimits: map[string]int{},
+		Filters:           []string{},
+		GridLimits:        map[string]int{},
+		DefaultGroupLimit: 5,
 	})
 	if err != nil {
 		b.Error(err)
@@ -172,8 +173,9 @@ func BenchmarkAlertsAPIMissesAutoGrid(b *testing.B) {
 					Filters: []string{
 						fmt.Sprintf("foo!=%d", i),
 					},
-					GridLimits: map[string]int{},
-					GridLabel:  "@auto",
+					GridLimits:        map[string]int{},
+					GridLabel:         "@auto",
+					DefaultGroupLimit: 5,
 				})
 				if err != nil {
 					b.Error(err)
@@ -198,8 +200,9 @@ func BenchmarkAlertsAPIHits(b *testing.B) {
 	zerolog.SetGlobalLevel(zerolog.FatalLevel)
 
 	payload, err := json.Marshal(models.AlertsRequest{
-		Filters:    []string{},
-		GridLimits: map[string]int{},
+		Filters:           []string{},
+		GridLimits:        map[string]int{},
+		DefaultGroupLimit: 5,
 	})
 	if err != nil {
 		b.Error(err)
