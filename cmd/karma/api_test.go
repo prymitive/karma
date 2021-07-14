@@ -777,8 +777,9 @@ func testAlertGroup(version string, t *testing.T, testCase groupTest, group mode
 
 func TestVerifyAllGroups(t *testing.T) {
 	payload, err := json.Marshal(models.AlertsRequest{
-		Filters:    []string{},
-		GridLimits: map[string]int{},
+		Filters:           []string{},
+		GridLimits:        map[string]int{},
+		DefaultGroupLimit: 50,
 	})
 	if err != nil {
 		t.Error(err)
@@ -968,11 +969,12 @@ func TestSortOrder(t *testing.T) {
 				config.Config.Grid.Sorting.Reverse = testCase.defaultSortReverse
 
 				payload, err := json.Marshal(models.AlertsRequest{
-					Filters:     testCase.filter,
-					GridLimits:  map[string]int{},
-					SortLabel:   testCase.sortLabel,
-					SortOrder:   testCase.sortOrder,
-					SortReverse: testCase.sortReverse,
+					Filters:           testCase.filter,
+					GridLimits:        map[string]int{},
+					SortLabel:         testCase.sortLabel,
+					SortOrder:         testCase.sortOrder,
+					SortReverse:       testCase.sortReverse,
+					DefaultGroupLimit: 5,
 				})
 				if err != nil {
 					t.Error(err)
@@ -1055,8 +1057,9 @@ func TestStripLabels(t *testing.T) {
 	}
 
 	payload, err := json.Marshal(models.AlertsRequest{
-		Filters:    []string{},
-		GridLimits: map[string]int{},
+		Filters:           []string{},
+		GridLimits:        map[string]int{},
+		DefaultGroupLimit: 5,
 	})
 	if err != nil {
 		t.Error(err)

@@ -213,6 +213,7 @@ func TestDedupSharedMaps(t *testing.T) {
   "id": "",
   "alertmanagerCount": null,
   "stateCount": null,
+  "totalAlerts": 0,
   "shared": {
     "annotations": [
       {

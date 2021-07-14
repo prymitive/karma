@@ -105,7 +105,8 @@ type APIAlertGroupSharedMaps struct {
 // annotations that are unique to that instance
 type APIAlertGroup struct {
 	AlertGroup
-	Shared APIAlertGroupSharedMaps `json:"shared"`
+	TotalAlerts int                     `json:"totalAlerts"`
+	Shared      APIAlertGroupSharedMaps `json:"shared"`
 }
 
 func (ag *APIAlertGroup) dedupLabels() {
@@ -370,13 +371,15 @@ type APIGrid struct {
 }
 
 type AlertsRequest struct {
-	Filters         []string       `json:"filters"`
-	GridLabel       string         `json:"gridLabel"`
-	GridLimits      map[string]int `json:"gridLimits"`
-	GridSortReverse bool           `json:"gridSortReverse"`
-	SortOrder       string         `json:"sortOrder"`
-	SortLabel       string         `json:"sortLabel"`
-	SortReverse     bool           `json:"sortReverse"`
+	Filters           []string       `json:"filters"`
+	GridLabel         string         `json:"gridLabel"`
+	GridLimits        map[string]int `json:"gridLimits"`
+	GridSortReverse   bool           `json:"gridSortReverse"`
+	SortOrder         string         `json:"sortOrder"`
+	SortLabel         string         `json:"sortLabel"`
+	SortReverse       bool           `json:"sortReverse"`
+	DefaultGroupLimit int            `json:"defaultGroupLimit"`
+	GroupLimits       map[string]int `json:"groupLimits"`
 }
 
 // AlertsResponse is the structure of JSON response UI will use to get alert data

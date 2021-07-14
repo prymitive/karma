@@ -6,6 +6,8 @@
 
 - Added a dedicated API endpoint for silence previews.
 - Added a dedicated API endpoint for overview modal.
+- Individual alert details are now lazy-loaded to improve performance
+  when dealing with a huge number of alerts per group.
 
 ### Changed
 
