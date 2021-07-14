@@ -58,6 +58,7 @@ export interface APIAlertGroupT {
   receiver: string;
   labels: LabelsT;
   alerts: APIAlertT[];
+  totalAlerts: number;
   alertmanagerCount: { [key: string]: number };
   stateCount: StateCountT;
   shared: {
@@ -238,4 +239,6 @@ export interface AlertsRequestT {
   sortOrder: string;
   sortLabel: string;
   sortReverse: boolean;
+  defaultGroupLimit: number;
+  groupLimits: { [key: string]: number };
 }

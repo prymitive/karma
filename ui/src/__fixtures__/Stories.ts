@@ -164,6 +164,8 @@ const MockGrid = (alertStore: AlertStore): void => {
     group.stateCount.active = active;
     group.stateCount.suppressed = suppressed;
     group.stateCount.unprocessed = unprocessed;
+    group.totalAlerts = i;
+    group.alerts = group.alerts.slice(0, Math.min(i, 5));
     if (i === 2 || i === 4) {
       group.shared.clusters = ["default"];
     }

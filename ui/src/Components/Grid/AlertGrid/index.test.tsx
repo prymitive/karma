@@ -241,7 +241,7 @@ describe("<Grid />", () => {
       }
     );
     tree.find("button").simulate("click");
-    expect(alertStore.ui.limits).toStrictEqual({
+    expect(alertStore.ui.gridGroupLimits).toStrictEqual({
       "": { "": 40 + alertStore.settings.values.gridGroupLimit },
     });
   });
@@ -276,7 +276,7 @@ describe("<Grid />", () => {
       }
     );
     tree.find("button").simulate("click");
-    expect(alertStore.ui.limits).toStrictEqual({
+    expect(alertStore.ui.gridGroupLimits).toStrictEqual({
       foo: { bar: 70 },
     });
   });

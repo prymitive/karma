@@ -149,7 +149,7 @@ describe("<Fetcher />", () => {
     const fetchSpy = jest.spyOn(alertStore, "fetchWithThrottle");
     settingsStore.gridConfig.setSortOrder("default");
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "", "", false, {});
+    expect(fetchSpy).toHaveBeenCalledWith("", false, "", "", false, {}, 5, {});
   });
 
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=disabled reverseSort=false", () => {
@@ -158,7 +158,16 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("disabled");
     settingsStore.gridConfig.setSortReverse(false);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "disabled", "", false, {});
+    expect(fetchSpy).toHaveBeenCalledWith(
+      "",
+      false,
+      "disabled",
+      "",
+      false,
+      {},
+      5,
+      {}
+    );
   });
 
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=disabled reverseSort=true", () => {
@@ -167,7 +176,16 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("disabled");
     settingsStore.gridConfig.setSortReverse(true);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "disabled", "", false, {});
+    expect(fetchSpy).toHaveBeenCalledWith(
+      "",
+      false,
+      "disabled",
+      "",
+      false,
+      {},
+      5,
+      {}
+    );
   });
 
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=startsAt reverseSort=false", () => {
@@ -176,7 +194,16 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("startsAt");
     settingsStore.gridConfig.setSortReverse(false);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "startsAt", "", false, {});
+    expect(fetchSpy).toHaveBeenCalledWith(
+      "",
+      false,
+      "startsAt",
+      "",
+      false,
+      {},
+      5,
+      {}
+    );
   });
 
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=startsAt reverseSort=true", () => {
@@ -185,7 +212,16 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("startsAt");
     settingsStore.gridConfig.setSortReverse(true);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "startsAt", "", true, {});
+    expect(fetchSpy).toHaveBeenCalledWith(
+      "",
+      false,
+      "startsAt",
+      "",
+      true,
+      {},
+      5,
+      {}
+    );
   });
 
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=label sortLabel=cluster reverseSort=false", () => {
@@ -201,6 +237,8 @@ describe("<Fetcher />", () => {
       "label",
       "cluster",
       false,
+      {},
+      5,
       {}
     );
   });
@@ -212,7 +250,16 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortLabel("job");
     settingsStore.gridConfig.setSortReverse(true);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "label", "job", true, {});
+    expect(fetchSpy).toHaveBeenCalledWith(
+      "",
+      false,
+      "label",
+      "job",
+      true,
+      {},
+      5,
+      {}
+    );
   });
 
   it("calls alertStore.fetchWithThrottle with correct sort arguments when sortOrder=label sortLabel=instance reverseSort=null", () => {
@@ -228,6 +275,8 @@ describe("<Fetcher />", () => {
       "label",
       "instance",
       false,
+      {},
+      5,
       {}
     );
   });
@@ -239,7 +288,16 @@ describe("<Fetcher />", () => {
     settingsStore.multiGridConfig.setGridLabel("cluster");
     settingsStore.multiGridConfig.setGridSortReverse(false);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("cluster", false, "", "", false, {});
+    expect(fetchSpy).toHaveBeenCalledWith(
+      "cluster",
+      false,
+      "",
+      "",
+      false,
+      {},
+      5,
+      {}
+    );
   });
 
   it("calls alertStore.fetchWithThrottle with gridLabel=cluster gridSortReverse=true", () => {
@@ -249,7 +307,16 @@ describe("<Fetcher />", () => {
     settingsStore.multiGridConfig.setGridLabel("cluster");
     settingsStore.multiGridConfig.setGridSortReverse(true);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("cluster", true, "", "", false, {});
+    expect(fetchSpy).toHaveBeenCalledWith(
+      "cluster",
+      true,
+      "",
+      "",
+      false,
+      {},
+      5,
+      {}
+    );
   });
 
   it("calls alertStore.fetchWithThrottle with gridLabel= gridSortReverse=true", () => {
@@ -259,7 +326,7 @@ describe("<Fetcher />", () => {
     settingsStore.multiGridConfig.setGridLabel("");
     settingsStore.multiGridConfig.setGridSortReverse(true);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", true, "", "", false, {});
+    expect(fetchSpy).toHaveBeenCalledWith("", true, "", "", false, {}, 5, {});
   });
 
   it("calls alertStore.fetchWithThrottle with limits set", () => {
@@ -268,10 +335,19 @@ describe("<Fetcher />", () => {
     settingsStore.gridConfig.setSortOrder("default");
     settingsStore.multiGridConfig.setGridLabel("");
     settingsStore.multiGridConfig.setGridSortReverse(false);
-    alertStore.ui.setLimit("old", "bar", 10);
-    alertStore.ui.setLimit("foo", "bar", 5);
+    alertStore.ui.setGridGroupLimit("old", "bar", 10);
+    alertStore.ui.setGridGroupLimit("foo", "bar", 5);
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
-    expect(fetchSpy).toHaveBeenCalledWith("", false, "", "", false, { bar: 5 });
+    expect(fetchSpy).toHaveBeenCalledWith(
+      "",
+      false,
+      "",
+      "",
+      false,
+      { bar: 5 },
+      5,
+      {}
+    );
   });
 
   it("internal timer is null after unmount", () => {

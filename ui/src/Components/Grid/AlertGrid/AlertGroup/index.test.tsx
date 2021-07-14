@@ -56,7 +56,7 @@ afterEach(() => {
   global.innerWidth = originalInnerWidth;
 });
 
-const MockAlerts = (alertCount: number) => {
+const MockAlerts = (alertCount: number, totalAlerts: number) => {
   for (let i = 1; i <= alertCount; i++) {
     const alert = MockAlert([], { instance: `instance${i}` }, "active");
     const startsAt = new Date();
@@ -64,12 +64,12 @@ const MockAlerts = (alertCount: number) => {
     alert.alertmanager[0].startsAt = startsAt.toISOString();
     group.alerts.push(alert);
   }
+  group.totalAlerts = totalAlerts;
 };
 
 const MountedAlertGroup = (
   afterUpdate: () => void,
   showAlertmanagers: boolean,
-  initialAlertsToRender?: number,
   theme?: ThemeCtx
 ) => {
   return mount(
@@ -77,7 +77,6 @@ const MountedAlertGroup = (
       afterUpdate={afterUpdate}
       group={group}
       showAlertmanagers={showAlertmanagers}
-      initialAlertsToRender={initialAlertsToRender}
       settingsStore={settingsStore}
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}
@@ -100,32 +99,31 @@ const ValidateCollapse = (
 
   settingsStore.alertGroupConfig.setDefaultCollapseState(defaultCollapseState);
 
-  MockAlerts(3);
+  MockAlerts(3, 3);
   const tree = MountedAlertGroup(jest.fn(), false);
   expect(tree.find("Alert")).toHaveLength(shouldBeCollapsed ? 0 : 3);
 };
 
 describe("<AlertGroup />", () => {
   it("doesn't crash on unmount", () => {
-    MockAlerts(5);
+    MockAlerts(5, 5);
     const tree = MountedAlertGroup(jest.fn(), true);
     tree.unmount();
   });
 
   it("uses 'animate' class when settingsStore.themeConfig.config.animations is true", () => {
-    MockAlerts(5);
-    const tree = MountedAlertGroup(jest.fn(), true, 5, MockThemeContext);
+    MockAlerts(5, 5);
+    const tree = MountedAlertGroup(jest.fn(), true, MockThemeContext);
     expect(
       tree.find("div.components-grid-alertgrid-alertgroup").hasClass("animate")
     ).toBe(true);
   });
 
   it("doesn't use 'animate' class when settingsStore.themeConfig.config.animations is false", () => {
-    MockAlerts(5);
+    MockAlerts(5, 5);
     const tree = MountedAlertGroup(
       jest.fn(),
       true,
-      5,
       MockThemeContextWithoutAnimations
     );
     expect(
@@ -134,14 +132,14 @@ describe("<AlertGroup />", () => {
   });
 
   it("renders Alertmanager cluster labels in footer if shared", () => {
-    MockAlerts(2);
+    MockAlerts(2, 2);
     group.shared.clusters = ["default"];
     const tree = MountedAlertGroup(jest.fn(), true).find("AlertGroup");
     expect(tree.find("GroupFooter").html()).toMatch(/@cluster/);
   });
 
   it("only renders one @cluster label per cluster in the footer", () => {
-    MockAlerts(2);
+    MockAlerts(2, 2);
     for (let i = 0; i < group.alerts.length; i++) {
       group.alerts[i].alertmanager.push({
         fingerprint: "123",
@@ -174,7 +172,7 @@ describe("<AlertGroup />", () => {
   });
 
   it("doesn't render @cluster labels with empty alertmanager array", () => {
-    MockAlerts(2);
+    MockAlerts(2, 2);
     for (let i = 0; i < group.alerts.length; i++) {
       group.alerts[i].alertmanager = [];
     }
@@ -185,7 +183,7 @@ describe("<AlertGroup />", () => {
   });
 
   it("doesn't render @cluster labels in footer when they are unique", () => {
-    MockAlerts(5);
+    MockAlerts(5, 5);
     for (let i = 0; i < group.alerts.length; i++) {
       group.alerts[i].alertmanager[0].name = `fakeAlertmanager${i}`;
     }
@@ -206,7 +204,7 @@ describe("<AlertGroup />", () => {
   });
 
   it("only renders titlebar when collapsed", () => {
-    MockAlerts(10);
+    MockAlerts(5, 10);
     const tree = MountedAlertGroup(jest.fn(), false);
     tree.find("span.badge.cursor-pointer").at(1).simulate("click");
     expect(tree.find("Alert")).toHaveLength(0);
@@ -214,9 +212,9 @@ describe("<AlertGroup />", () => {
   });
 
   it("renders reduced details when idle", () => {
-    MockAlerts(10);
+    MockAlerts(5, 10);
     alertStore.ui.setIsIdle(true);
-    const tree = MountedAlertGroup(jest.fn(), true, 10, MockThemeContext);
+    const tree = MountedAlertGroup(jest.fn(), true, MockThemeContext);
     expect(tree.find("Alert")).toHaveLength(1);
   });
 
@@ -252,40 +250,43 @@ describe("<AlertGroup />", () => {
 
   it("renders @receiver label when alertStore.data.receivers.length > 1", () => {
     alertStore.data.setReceivers(["foo", "bar"]);
-    MockAlerts(10);
+    MockAlerts(5, 10);
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.html()).toMatch(/@receiver:/);
   });
 
   it("doesn't render @receiver label when alertStore.data.receivers.length == 0", () => {
     alertStore.data.setReceivers([]);
-    MockAlerts(10);
+    MockAlerts(5, 10);
     const tree = MountedAlertGroup(jest.fn(), false);
     expect(tree.html()).not.toMatch(/@receiver:/);
   });
 });
 
-const ValidateLoadButtonPresent = (totalAlerts: number, isPresent: boolean) => {
-  MockAlerts(totalAlerts);
+const ValidateLoadButtonPresent = (
+  alertCount: number,
+  totalAlerts: number,
+  isPresent: boolean
+) => {
+  MockAlerts(alertCount, totalAlerts);
   const tree = MountedAlertGroup(jest.fn(), false);
   const buttons = tree.find("button");
   expect(buttons).toHaveLength(isPresent ? 2 : 0);
 };
 
 const ValidateLoadButtonAction = (
+  alertCount: number,
   totalAlerts: number,
   buttonIndex: number,
   iconMatch: RegExp,
-  loadedAlerts: number,
-  alertsToRenderBeforeClick?: number
+  loadedAlerts: number
 ) => {
-  MockAlerts(totalAlerts);
-  const tree = MountedAlertGroup(jest.fn(), false, alertsToRenderBeforeClick);
+  MockAlerts(alertCount, totalAlerts);
+  const tree = MountedAlertGroup(jest.fn(), false);
   const loadMore = tree.find("button").at(buttonIndex);
   expect(loadMore.html()).toMatch(iconMatch);
   loadMore.simulate("click");
-  tree.update();
-  expect(tree.find("Alert")).toHaveLength(loadedAlerts);
+  expect(alertStore.ui.groupAlertLimits[group.id]).toBe(loadedAlerts);
 };
 
 describe("<AlertGroup /> renderConfig", () => {
@@ -293,61 +294,52 @@ describe("<AlertGroup /> renderConfig", () => {
     expect(settingsStore.alertGroupConfig.config.defaultRenderCount).toBe(5);
   });
 
-  it("renders only up to settingsStore.alertGroupConfig.config.defaultRenderCount alerts", () => {
-    MockAlerts(50);
-    const tree = MountedAlertGroup(jest.fn(), false).find("AlertGroup");
-    const alerts = tree.find("Alert");
-    expect(alerts).toHaveLength(
-      settingsStore.alertGroupConfig.config.defaultRenderCount
-    );
-  });
-
   it("load buttons are not rendered for 1 alert", () => {
-    ValidateLoadButtonPresent(1, false);
+    ValidateLoadButtonPresent(1, 1, false);
   });
 
   it("load buttons are not rendered for 5 alerts", () => {
-    ValidateLoadButtonPresent(5, false);
+    ValidateLoadButtonPresent(5, 5, false);
   });
 
   it("load buttons are rendered for 6 alert", () => {
-    ValidateLoadButtonPresent(6, true);
+    ValidateLoadButtonPresent(5, 6, true);
   });
 
   it("clicking - icon hides 1 alert if there's 6 in total", () => {
-    ValidateLoadButtonAction(6, 0, /fa-minus/, 5, 6);
+    ValidateLoadButtonAction(6, 6, 0, /fa-minus/, 5);
   });
 
   it("clicking - icon hides 1 alert if there's 6 in total and we're showing 3", () => {
-    ValidateLoadButtonAction(6, 0, /fa-minus/, 2, 3);
+    ValidateLoadButtonAction(3, 6, 0, /fa-minus/, 2);
   });
 
   it("clicking - icon hides 2 alerts if there's 7 in total and we're showing 7", () => {
-    ValidateLoadButtonAction(7, 0, /fa-minus/, 5, 7);
+    ValidateLoadButtonAction(7, 7, 0, /fa-minus/, 5);
   });
 
   it("clicking - icon hides 5 alerts if there's 10 in total and we're showing 10", () => {
-    ValidateLoadButtonAction(10, 0, /fa-minus/, 5, 10);
+    ValidateLoadButtonAction(10, 10, 0, /fa-minus/, 5);
   });
 
   it("clicking - icon hides 5 alerts if there's 18 in total and we're showing 17", () => {
-    ValidateLoadButtonAction(18, 0, /fa-minus/, 12, 17);
+    ValidateLoadButtonAction(17, 18, 0, /fa-minus/, 12);
   });
 
   it("clicking + icon loads 1 more alert if there's 6 in total", () => {
-    ValidateLoadButtonAction(6, 1, /fa-plus/, 6);
+    ValidateLoadButtonAction(5, 6, 1, /fa-plus/, 6);
   });
 
   it("clicking + icon loads 4 more alert if there's 9 in total", () => {
-    ValidateLoadButtonAction(9, 1, /fa-plus/, 9);
+    ValidateLoadButtonAction(5, 9, 1, /fa-plus/, 9);
   });
 
   it("clicking + icon loads 5 more alert if there's 14 in total", () => {
-    ValidateLoadButtonAction(14, 1, /fa-plus/, 10);
+    ValidateLoadButtonAction(5, 14, 1, /fa-plus/, 10);
   });
 
   it("clicking + icon loads 5 more alert if there's 25 in total and we're showing 16", () => {
-    ValidateLoadButtonAction(25, 1, /fa-plus/, 22, 17);
+    ValidateLoadButtonAction(16, 25, 1, /fa-plus/, 21);
   });
 
   it("uses 'z-index: 100' style after setIsMenuOpen() is called on any Alert", async () => {
@@ -355,7 +347,7 @@ describe("<AlertGroup /> renderConfig", () => {
     fetchMock.mock("*", { body: "" });
 
     const promise = Promise.resolve();
-    MockAlerts(5);
+    MockAlerts(5, 5);
     const tree = MountedAlertGroup(jest.fn(), false);
 
     tree
@@ -373,7 +365,7 @@ describe("<AlertGroup /> renderConfig", () => {
 
   it("uses 'z-index: 100' style after setIsMenuOpen() is called on AlertGroup header menu", async () => {
     const promise = Promise.resolve();
-    MockAlerts(5);
+    MockAlerts(5, 5);
     const tree = MountedAlertGroup(jest.fn(), false);
 
     tree.find("span.cursor-pointer").at(0).simulate("click");

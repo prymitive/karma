@@ -48,7 +48,6 @@ const AlertGroup: FC<{
   silenceFormStore: SilenceFormStore;
   groupWidth: number;
   gridLabelValue: string;
-  initialAlertsToRender?: number;
 }> = ({
   group,
   showAlertmanagers,
@@ -58,16 +57,9 @@ const AlertGroup: FC<{
   settingsStore,
   groupWidth,
   gridLabelValue,
-  initialAlertsToRender,
 }) => {
   const defaultRenderCount =
     settingsStore.alertGroupConfig.config.defaultRenderCount;
-
-  const [alertsToRenderInternal, setAlertsToRender] = useState<number | null>(
-    initialAlertsToRender || null
-  );
-
-  const alertsToRender = alertsToRenderInternal || defaultRenderCount;
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
@@ -94,15 +86,19 @@ const AlertGroup: FC<{
   };
 
   const loadMore = () => {
-    const step = getStepSize(group.alerts.length);
-    // show cur+step, but not more that total alert count
-    setAlertsToRender(Math.min(alertsToRender + step, group.alerts.length));
+    const step = getStepSize(group.totalAlerts);
+    alertStore.ui.setGroupAlertLimit(
+      group.id,
+      Math.min(group.alerts.length + step, group.totalAlerts)
+    );
   };
 
   const loadLess = () => {
-    const step = getStepSize(group.alerts.length);
-    // show cur-step, but not less than 1
-    setAlertsToRender(Math.max(alertsToRender - step, 1));
+    const step = getStepSize(group.totalAlerts);
+    alertStore.ui.setGroupAlertLimit(
+      group.id,
+      Math.max(group.alerts.length - step, 1)
+    );
   };
 
   const onAlertGroupCollapseEvent = useCallback(
@@ -177,7 +173,7 @@ const AlertGroup: FC<{
             ) : null}
             <ul className="list-group">
               {group.alerts
-                .slice(0, alertStore.ui.isIdle ? 1 : alertsToRender)
+                .slice(0, alertStore.ui.isIdle ? 1 : group.alerts.length)
                 .map((alert) => (
                   <Alert
                     key={alert.id}
@@ -194,7 +190,7 @@ const AlertGroup: FC<{
                     setIsMenuOpen={setIsMenuOpen}
                   />
                 ))}
-              {group.alerts.length > defaultRenderCount ? (
+              {group.totalAlerts > defaultRenderCount ? (
                 <li
                   className="list-group-item border-0 p-0 text-center bg-transparent"
                   style={{
@@ -214,9 +210,9 @@ const AlertGroup: FC<{
                         tooltip="Show fewer alerts in this group"
                       />
                       <small className="text-muted mx-2">
-                        {Math.min(alertsToRender, group.alerts.length)}
-                        {" of "}
                         {group.alerts.length}
+                        {" of "}
+                        {group.totalAlerts}
                       </small>
                       <LoadButton
                         icon={faPlus}
