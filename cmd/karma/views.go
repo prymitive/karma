@@ -118,6 +118,8 @@ func index(w http.ResponseWriter, r *http.Request) {
 		"SentryDSN":     config.Config.Sentry.Public,
 		"DefaultFilter": filtersB64,
 		"Defaults":      defaultsB64,
+		"CustomCSS":     config.Config.Custom.CSS,
+		"CustomJS":      config.Config.Custom.JS,
 	})
 }
 
