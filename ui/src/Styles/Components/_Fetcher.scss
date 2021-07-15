@@ -41,7 +41,7 @@ $pixSize: math.div($fetcherWidth, 5);
     height: ($pixSize - 0.1rem);
     border-radius: 100%;
 
-    transition-property: opacity, background-color;
+    transition-property: opacity;
     transition-duration: 0.2s;
     transition-timing-function: ease-in-out;
 
