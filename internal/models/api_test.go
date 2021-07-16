@@ -1,11 +1,12 @@
 package models_test
 
 import (
+	"bytes"
 	"encoding/json"
 	"sort"
 	"testing"
 
-	"github.com/pmezard/go-difflib/difflib"
+	"github.com/beme/abide"
 
 	"github.com/prymitive/karma/internal/models"
 )
@@ -44,7 +45,7 @@ func TestDedupSharedMaps(t *testing.T) {
 					Alertmanager: []models.AlertmanagerInstance{am, am},
 				},
 				models.Alert{
-					State: models.AlertStateSuppressed,
+					State: models.AlertStateActive,
 					Annotations: models.Annotations{
 						models.Annotation{
 							Name:  "summary",
@@ -70,6 +71,7 @@ func TestDedupSharedMaps(t *testing.T) {
 						"alertname": "FakeAlert",
 						"job":       "blackbox",
 						"instance":  "3",
+						"extra":     "ignore",
 					},
 					Alertmanager: []models.AlertmanagerInstance{am, am},
 				},
@@ -78,191 +80,16 @@ func TestDedupSharedMaps(t *testing.T) {
 	}
 	ag.DedupSharedMaps()
 
-	expectedJSON := `{
-  "receiver": "",
-  "labels": {
-    "alertname": "FakeAlert"
-  },
-  "alerts": [
-    {
-      "annotations": [
-        {
-          "name": "foo",
-          "value": "bar",
-          "visible": false,
-          "isLink": false,
-          "isAction": false
-        }
-      ],
-      "labels": {
-        "instance": "1",
-        "job": "node_exporter"
-      },
-      "startsAt": "0001-01-01T00:00:00Z",
-      "state": "suppressed",
-      "alertmanager": [
-        {
-          "fingerprint": "1",
-          "name": "am",
-          "cluster": "fakeCluster",
-          "state": "",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com/graph",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        },
-        {
-          "fingerprint": "1",
-          "name": "am",
-          "cluster": "fakeCluster",
-          "state": "",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com/graph",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        }
-      ],
-      "receiver": "",
-      "id": ""
-    },
-    {
-      "annotations": [],
-      "labels": {
-        "instance": "2",
-        "job": "node_exporter"
-      },
-      "startsAt": "0001-01-01T00:00:00Z",
-      "state": "suppressed",
-      "alertmanager": [
-        {
-          "fingerprint": "1",
-          "name": "am",
-          "cluster": "fakeCluster",
-          "state": "",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com/graph",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        },
-        {
-          "fingerprint": "1",
-          "name": "am",
-          "cluster": "fakeCluster",
-          "state": "",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com/graph",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        }
-      ],
-      "receiver": "",
-      "id": ""
-    },
-    {
-      "annotations": [],
-      "labels": {
-        "instance": "3",
-        "job": "blackbox"
-      },
-      "startsAt": "0001-01-01T00:00:00Z",
-      "state": "suppressed",
-      "alertmanager": [
-        {
-          "fingerprint": "1",
-          "name": "am",
-          "cluster": "fakeCluster",
-          "state": "",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com/graph",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        },
-        {
-          "fingerprint": "1",
-          "name": "am",
-          "cluster": "fakeCluster",
-          "state": "",
-          "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com/graph",
-          "silencedBy": [
-            "fakeSilence1",
-            "fakeSilence2"
-          ],
-          "inhibitedBy": null
-        }
-      ],
-      "receiver": "",
-      "id": ""
-    }
-  ],
-  "id": "",
-  "alertmanagerCount": null,
-  "stateCount": null,
-  "totalAlerts": 0,
-  "shared": {
-    "annotations": [
-      {
-        "name": "summary",
-        "value": "this is summary",
-        "visible": false,
-        "isLink": false,
-        "isAction": false
-      }
-    ],
-    "labels": {},
-    "silences": {
-      "fakeCluster": [
-        "fakeSilence1",
-        "fakeSilence2"
-      ]
-    },
-    "sources": [
-      "https://am.example.com"
-    ],
-    "clusters": [
-      "fakeCluster"
-    ]
-  }
-}`
-
 	agJSON, _ := json.MarshalIndent(ag, "", "  ")
-	if string(agJSON) != expectedJSON {
-		diff := difflib.UnifiedDiff{
-			A:        difflib.SplitLines(expectedJSON),
-			B:        difflib.SplitLines(string(agJSON)),
-			FromFile: "Expected",
-			ToFile:   "Current",
-			Context:  3,
-		}
-		text, err := difflib.GetUnifiedDiffString(diff)
-		if err != nil {
-			t.Error(err)
-		}
-		t.Errorf("JSON mismatch:\n%s", text)
-	}
+	abide.AssertReader(t, "SharedMaps", bytes.NewReader(agJSON))
 }
 
 func TestDedupSharedMapsSingleGroup(t *testing.T) {
 	ag := models.APIAlertGroup{
 		AlertGroup: models.AlertGroup{
 			Alerts: models.AlertList{
-				models.Alert{Labels: map[string]string{"foo": "bar"}},
-				models.Alert{Labels: map[string]string{"foo": "bar"}},
+				models.Alert{State: models.AlertStateActive, Labels: map[string]string{"foo": "bar"}},
+				models.Alert{State: models.AlertStateUnprocessed, Labels: map[string]string{"foo": "bar"}},
 			},
 		},
 	}

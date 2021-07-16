@@ -105,8 +105,9 @@ type APIAlertGroupSharedMaps struct {
 // annotations that are unique to that instance
 type APIAlertGroup struct {
 	AlertGroup
-	TotalAlerts int                     `json:"totalAlerts"`
-	Shared      APIAlertGroupSharedMaps `json:"shared"`
+	TotalAlerts int                            `json:"totalAlerts"`
+	Shared      APIAlertGroupSharedMaps        `json:"shared"`
+	AllLabels   map[string]map[string][]string `json:"allLabels"`
 }
 
 func (ag *APIAlertGroup) dedupLabels() {
@@ -293,9 +294,55 @@ func (ag *APIAlertGroup) dedupClusters() {
 	sort.Strings(ag.Shared.Clusters)
 }
 
+func (ag *APIAlertGroup) populateAllLabels() {
+	ag.AllLabels = map[string]map[string][]string{
+		AlertStateActive:      {},
+		AlertStateSuppressed:  {},
+		AlertStateUnprocessed: {},
+	}
+
+	labels := map[string]int{}
+	for _, alert := range ag.Alerts {
+		for k := range alert.Labels {
+			if _, ok := labels[k]; !ok {
+				labels[k] = 0
+			}
+			labels[k]++
+		}
+	}
+
+	labelNames := map[string]struct{}{}
+	totalAlerts := len(ag.Alerts)
+	for k, totalValues := range labels {
+		if totalValues == totalAlerts {
+			labelNames[k] = struct{}{}
+		}
+	}
+
+	for _, alert := range ag.Alerts {
+		for k, v := range alert.Labels {
+			if _, ok := labelNames[k]; !ok {
+				continue
+			}
+			if _, ok := ag.AllLabels[alert.State][k]; !ok {
+				ag.AllLabels[alert.State][k] = []string{}
+			}
+			if !slices.StringInSlice(ag.AllLabels[alert.State][k], v) {
+				ag.AllLabels[alert.State][k] = append(ag.AllLabels[alert.State][k], v)
+			}
+		}
+	}
+	for state := range ag.AllLabels {
+		for k := range ag.AllLabels[state] {
+			sort.Strings(ag.AllLabels[state][k])
+		}
+	}
+}
+
 // DedupSharedMaps will find all labels and annotations shared by all alerts
 // in this group and moved them to Shared namespace
 func (ag *APIAlertGroup) DedupSharedMaps() {
+	ag.populateAllLabels()
 	// remove all labels that are used for grouping
 	ag.removeGroupingLabels()
 	// don't dedup if we only have a single alert in this group
