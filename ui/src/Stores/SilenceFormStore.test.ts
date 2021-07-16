@@ -126,6 +126,12 @@ describe("SilenceFormStore.data", () => {
 
   it("fillMatchersFromGroup() creates correct matcher object for a group", () => {
     const group = MockGroup();
+    group.allLabels.active = {
+      alertname: ["FakeAlert"],
+      job: ["mock"],
+      instance: ["dev1", "prod1", "prod2"],
+      cluster: ["dev", "prod"],
+    };
     store.data.fillMatchersFromGroup(
       group,
       [],
@@ -168,6 +174,187 @@ describe("SilenceFormStore.data", () => {
           { label: "prod", value: "prod" },
         ],
         isRegex: true,
+      })
+    );
+  });
+
+  it("fillMatchersFromGroup() creates correct matcher object for a list of alerts", () => {
+    const group = MockGroup();
+    group.allLabels.active = {
+      alertname: ["FakeAlert"],
+      job: ["mock"],
+      instance: ["dev1", "prod1", "prod2"],
+      cluster: ["dev", "prod"],
+    };
+    store.data.fillMatchersFromGroup(
+      group,
+      ["job"],
+      AlertmanagerClustersToOption({ ha: ["am1", "am2"] }),
+      group.alerts.slice(0, 2)
+    );
+    expect(store.data.alertmanagers).toMatchObject([
+      { label: "Cluster: ha", value: ["am1", "am2"] },
+    ]);
+    expect(store.data.matchers).toHaveLength(3);
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "alertname",
+        values: [{ label: "FakeAlert", value: "FakeAlert" }],
+        isRegex: false,
+      })
+    );
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "instance",
+        values: [
+          { label: "prod1", value: "prod1" },
+          { label: "prod2", value: "prod2" },
+        ],
+        isRegex: true,
+      })
+    );
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "cluster",
+        values: [{ label: "prod", value: "prod" }],
+        isRegex: false,
+      })
+    );
+  });
+
+  it("fillMatchersFromGroup() creates correct matcher object for a list of alerts with common labels", () => {
+    const group = MockGroup();
+    group.allLabels.active = {
+      alertname: ["FakeAlert"],
+      job: ["mock"],
+      instance: ["dev1", "prod1", "prod2"],
+      cluster: ["dev", "prod"],
+    };
+
+    store.data.fillMatchersFromGroup(
+      group,
+      ["job"],
+      AlertmanagerClustersToOption({ ha: ["am1", "am2"] }),
+      [group.alerts[0], group.alerts[2]]
+    );
+    expect(store.data.alertmanagers).toMatchObject([
+      { label: "Cluster: ha", value: ["am1", "am2"] },
+    ]);
+    expect(store.data.matchers).toHaveLength(3);
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "alertname",
+        values: [{ label: "FakeAlert", value: "FakeAlert" }],
+        isRegex: false,
+      })
+    );
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "instance",
+        values: [
+          { label: "dev1", value: "dev1" },
+          { label: "prod1", value: "prod1" },
+        ],
+        isRegex: true,
+      })
+    );
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "cluster",
+        values: [
+          { label: "dev", value: "dev" },
+          { label: "prod", value: "prod" },
+        ],
+        isRegex: true,
+      })
+    );
+  });
+
+  it("fillMatchersFromGroup() creates correct matcher object for a list of alerts with uncommon labels", () => {
+    const alerts = [
+      MockAlert([], { instance: "1", banana: "ignore" }, "active"),
+      MockAlert([], { instance: "2" }, "suppressed"),
+      MockAlert([], { instance: "3" }, "active"),
+    ];
+    const group = MockAlertGroup(
+      { alertname: "FakeAlert" },
+      alerts,
+      [],
+      {
+        job: "mock",
+      },
+      {}
+    );
+    group.allLabels.active = {
+      alertname: ["FakeAlert"],
+      job: ["mock"],
+      instance: ["dev1", "prod1", "prod2"],
+      cluster: ["dev", "prod"],
+    };
+
+    store.data.fillMatchersFromGroup(
+      group,
+      ["job"],
+      AlertmanagerClustersToOption({ ha: ["am1", "am2"] }),
+      [group.alerts[0], group.alerts[2]]
+    );
+    expect(store.data.alertmanagers).toMatchObject([
+      { label: "Cluster: ha", value: ["am1", "am2"] },
+    ]);
+    expect(store.data.matchers).toHaveLength(2);
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "alertname",
+        values: [{ label: "FakeAlert", value: "FakeAlert" }],
+        isRegex: false,
+      })
+    );
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "instance",
+        values: [
+          { label: "1", value: "1" },
+          { label: "3", value: "3" },
+        ],
+        isRegex: true,
+      })
+    );
+  });
+
+  it("fillMatchersFromGroup() creates correct matcher object for a list of alerts with no labels", () => {
+    const alerts = [
+      MockAlert([], {}, "active"),
+      MockAlert([], {}, "suppressed"),
+      MockAlert([], {}, "active"),
+    ];
+    const group = MockAlertGroup(
+      { alertname: "FakeAlert" },
+      alerts,
+      [],
+      {
+        job: "mock",
+      },
+      {}
+    );
+    group.allLabels.active = {
+      alertname: ["FakeAlert"],
+    };
+
+    store.data.fillMatchersFromGroup(
+      group,
+      ["job"],
+      AlertmanagerClustersToOption({ ha: ["am1", "am2"] }),
+      [group.alerts[0], group.alerts[2]]
+    );
+    expect(store.data.alertmanagers).toMatchObject([
+      { label: "Cluster: ha", value: ["am1", "am2"] },
+    ]);
+    expect(store.data.matchers).toHaveLength(1);
+    expect(store.data.matchers).toContainEqual(
+      expect.objectContaining({
+        name: "alertname",
+        values: [{ label: "FakeAlert", value: "FakeAlert" }],
+        isRegex: false,
       })
     );
   });
@@ -262,6 +449,11 @@ describe("SilenceFormStore.data", () => {
       },
       {}
     );
+    group.allLabels.active = {
+      alertname: ["Alert1", "Alert2", "Alert3"],
+      job: ["mock"],
+      region: ["AF"],
+    };
     store.data.fillMatchersFromGroup(group, [], []);
     expect(store.data.matchers).toHaveLength(3);
     expect(store.data.matchers).toContainEqual(
@@ -478,6 +670,12 @@ describe("SilenceFormStore.data", () => {
 
   it("toAlertmanagerPayload creates payload that matches snapshot", () => {
     const group = MockGroup();
+    group.allLabels.active = {
+      alertname: ["FakeAlert"],
+      job: ["mock"],
+      instance: ["dev1", "prod1", "prod2"],
+      cluster: ["dev", "prod"],
+    };
     store.data.fillMatchersFromGroup(group, [], []);
     // add empty matcher so we test empty string rendering
     store.data.addEmptyMatcher();
