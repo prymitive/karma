@@ -80,8 +80,34 @@ const AlertmanagerClustersToOption = (clusterDict: {
 const MatchersFromGroup = (
   group: APIAlertGroupT,
   stripLabels: string[],
-  alerts?: APIAlertT[],
   onlyActive?: boolean
+): MatcherWithIDT[] => {
+  const matchers: MatcherWithIDT[] = [];
+
+  for (const [state, labels] of Object.entries(group.allLabels)) {
+    if (onlyActive === true && state !== "active") {
+      continue;
+    }
+    for (const [key, values] of Object.entries(labels).filter(
+      ([key, _]) => !stripLabels.includes(key)
+    )) {
+      matchers.push({
+        id: uniqueId(),
+        name: key,
+        values: values.map((value) => StringToOption(value)),
+        isRegex: values.length > 1,
+        isEqual: true,
+      });
+    }
+  }
+
+  return matchers;
+};
+
+const MatchersFromAlerts = (
+  group: APIAlertGroupT,
+  stripLabels: string[],
+  alerts: APIAlertT[]
 ): MatcherWithIDT[] => {
   const matchers: MatcherWithIDT[] = [];
 
@@ -97,13 +123,8 @@ const MatchersFromGroup = (
     }
   }
 
-  // this is the list of alerts we'll use to generate matchers
-  const filteredAlerts = (alerts ? alerts : group.alerts).filter(
-    (alert) => !onlyActive || alert.state === "active"
-  );
-
   // array of arrays with label keys for each alert
-  const allLabelKeys = filteredAlerts
+  const allLabelKeys = alerts
     .map((alert) => Object.keys(alert.labels))
     .filter((a) => a.length > 0);
 
@@ -125,7 +146,7 @@ const MatchersFromGroup = (
 
   // add matchers for all unique labels in this group
   const labels: { [key: string]: Set<string> } = {};
-  for (const alert of filteredAlerts) {
+  for (const alert of alerts) {
     for (const [key, value] of Object.entries(alert.labels)) {
       if (sharedLabelKeys.includes(key) && !stripLabels.includes(key)) {
         if (!labels[key]) {
@@ -486,7 +507,9 @@ class SilenceFormStore {
         ) {
           this.alertmanagers = alertmanagers;
 
-          this.matchers = MatchersFromGroup(group, stripLabels, alerts);
+          this.matchers = alerts
+            ? MatchersFromAlerts(group, stripLabels, alerts)
+            : MatchersFromGroup(group, stripLabels);
           // ensure that silenceID is nulled, since it's used to edit silences
           // and this is used to silence groups
           this.silenceID = null;
@@ -652,6 +675,7 @@ export {
   NewEmptyMatcher,
   AlertmanagerClustersToOption,
   MatchersFromGroup,
+  MatchersFromAlerts,
   GenerateAlertmanagerSilenceData,
   NewClusterRequest,
   MatcherToOperator,

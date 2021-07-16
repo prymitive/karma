@@ -84,7 +84,7 @@ const AlertAck: FC<{
         payload: GenerateAlertmanagerSilenceData(
           now,
           addSeconds(now, durationSeconds),
-          MatchersFromGroup(group, [], group.alerts, true),
+          MatchersFromGroup(group, [], true),
           author,
           comment
         ),

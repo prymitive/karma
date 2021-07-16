@@ -63,6 +63,10 @@ beforeEach(() => {
     MockAlert([], { foo: "ignore" }, "suppressed"),
   ];
   group = MockAlertGroup({ alertname: "Fake Alert" }, alerts, [], {}, {});
+  group.allLabels.active = {
+    alertname: ["Fake Alert"],
+    foo: ["bar", "baz"],
+  };
 
   fetchMock.resetHistory();
   fetchMock.mock(

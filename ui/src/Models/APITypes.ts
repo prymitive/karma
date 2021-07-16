@@ -59,6 +59,11 @@ export interface APIAlertGroupT {
   labels: LabelsT;
   alerts: APIAlertT[];
   totalAlerts: number;
+  allLabels: {
+    active: { [key: string]: string[] };
+    suppressed: { [key: string]: string[] };
+    unprocessed: { [key: string]: string[] };
+  };
   alertmanagerCount: { [key: string]: number };
   stateCount: StateCountT;
   shared: {
