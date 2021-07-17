@@ -260,7 +260,7 @@ jobs:
       - name: Lint git commit
         uses: wagoid/commitlint-github-action@v4.0.2
         with:
-          configFile: .commitlintrc.js
+          configFile: .commitlintrc.cjs
 
   docs:
     name: Lint documentation
