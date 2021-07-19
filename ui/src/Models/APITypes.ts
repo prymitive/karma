@@ -173,6 +173,7 @@ export interface APILabelCounterT {
 
 export interface APISettingsT {
   staticColorLabels: string[];
+  valueOnlyLabels: string[];
   annotationsDefaultHidden: boolean;
   annotationsHidden: string[];
   annotationsVisible: string[];

@@ -36,7 +36,11 @@ const FilteringLabel: FC<{
   return (
     <TooltipWrapper title="Click to only show alerts with this label or Alt+Click to hide them">
       <span className={cs.className} style={cs.style} onClick={handleClick}>
-        <span className="components-label-name">{name}:</span>{" "}
+        {alertStore.settings.values.valueOnlyLabels.includes(name) ? null : (
+          <>
+            <span className="components-label-name">{name}:</span>{" "}
+          </>
+        )}
         <span className="components-label-value">{value}</span>
       </span>
     </TooltipWrapper>

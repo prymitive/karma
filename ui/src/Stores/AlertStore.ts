@@ -462,6 +462,7 @@ class AlertStore {
       {
         values: {
           staticColorLabels: [] as string[],
+          valueOnlyLabels: [] as string[],
           annotationsDefaultHidden: false as boolean,
           annotationsHidden: [] as string[],
           annotationsVisible: [] as string[],

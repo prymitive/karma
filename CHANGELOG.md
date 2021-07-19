@@ -9,6 +9,7 @@
 - Individual alert details are now lazy-loaded to improve performance
   when dealing with a huge number of alerts per group.
 - Added `/version` endpoint returning karma and Go runtime version #3332.
+- Added `labels:valueOnly` config option, see #3221.
 
 ### Changed
 
