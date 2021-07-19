@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"runtime"
 	"sort"
 	"strings"
 	"time"
@@ -37,6 +38,20 @@ func badRequestJSON(w http.ResponseWriter, error string) {
 	w.WriteHeader(http.StatusBadRequest)
 	out, _ := json.Marshal(map[string]string{"error": error})
 	_, _ = w.Write(out)
+}
+
+type KarmaVersion struct {
+	Version string `json:"version"`
+	Golang  string `json:"golang"`
+}
+
+func versionHandler(w http.ResponseWriter, r *http.Request) {
+	ver := KarmaVersion{
+		Version: version,
+		Golang:  runtime.Version(),
+	}
+	data, _ := json.MarshalIndent(ver, "", "  ")
+	_, _ = w.Write(data)
 }
 
 func pong(w http.ResponseWriter, r *http.Request) {

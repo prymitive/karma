@@ -114,6 +114,7 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 	allowAuthBypass := []string{
 		getViewURL("/health"),
 		getViewURL("/metrics"),
+		getViewURL("/version"),
 	}
 	if config.Config.Authentication.Header.Name != "" {
 		config.Config.Authentication.Enabled = true
@@ -131,6 +132,7 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 		router.Get(getViewURL(""), redirectIndex)
 	}
 	router.Get(getViewURL("/"), index)
+	router.Get(getViewURL("/version"), versionHandler)
 	router.Get(getViewURL("/health"), pong)
 	router.Get(getViewURL("/robots.txt"), robots)
 	router.Get(getViewURL("/metrics"), http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
