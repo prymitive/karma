@@ -114,6 +114,7 @@ const ShallowGrid = () => {
       groupWidth={420}
       grid={MockGrid()}
       outerPadding={0}
+      paddingTop={0}
     />
   );
 };
@@ -128,6 +129,7 @@ const MountedGrid = (theme?: ThemeCtx) => {
       groupWidth={420}
       grid={MockGrid()}
       outerPadding={0}
+      paddingTop={0}
     />,
     {
       wrappingComponent: ThemeContext.Provider,
@@ -234,6 +236,7 @@ describe("<Grid />", () => {
         groupWidth={420}
         grid={alertStore.data.grids[0]}
         outerPadding={0}
+        paddingTop={0}
       />,
       {
         wrappingComponent: ThemeContext.Provider,
@@ -269,6 +272,7 @@ describe("<Grid />", () => {
         groupWidth={420}
         grid={alertStore.data.grids[0]}
         outerPadding={0}
+        paddingTop={0}
       />,
       {
         wrappingComponent: ThemeContext.Provider,

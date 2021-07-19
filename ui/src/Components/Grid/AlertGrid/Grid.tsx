@@ -39,6 +39,7 @@ const Grid: FC<{
   groupWidth: number;
   grid: APIGridT;
   outerPadding: number;
+  paddingTop: number;
 }> = ({
   alertStore,
   settingsStore,
@@ -47,6 +48,7 @@ const Grid: FC<{
   groupWidth,
   grid,
   outerPadding,
+  paddingTop,
 }) => {
   const context = React.useContext(ThemeContext);
   const { ref, repack } = useGrid(gridSizesConfig);
@@ -123,6 +125,7 @@ const Grid: FC<{
           grid={grid}
           isExpanded={isExpanded}
           onToggle={onCollapseClick}
+          paddingTop={paddingTop}
         />
       </CSSTransition>
       <div

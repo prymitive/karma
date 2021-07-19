@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useRef } from "react";
+import { FC, useEffect, useState, useRef, useCallback } from "react";
 
 import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
@@ -57,6 +57,17 @@ const AlertGrid: FC<{
 
   useHotkeys("alt+space", alertStore.status.togglePause);
 
+  const [paddingTop, setPaddingTop] = useState<number>(0);
+  const onNavbarResize = useCallback((event) => {
+    setPaddingTop(event.detail);
+  }, []);
+  useEffect(() => {
+    window.addEventListener("navbarResize", onNavbarResize);
+    return () => {
+      window.removeEventListener("navbarResize", onNavbarResize);
+    };
+  }, [onNavbarResize]);
+
   return (
     <>
       <div
@@ -66,16 +77,18 @@ const AlertGrid: FC<{
         }}
       />
       {alertStore.data.grids.map((grid) => (
-        <Grid
-          key={`${grid.labelName}/${grid.labelValue}`}
-          alertStore={alertStore}
-          silenceFormStore={silenceFormStore}
-          settingsStore={settingsStore}
-          gridSizesConfig={gridSizesConfig}
-          groupWidth={groupWidth}
-          grid={grid}
-          outerPadding={alertStore.data.gridPadding}
-        />
+        <div key={`${grid.labelName}/${grid.labelValue}`}>
+          <Grid
+            alertStore={alertStore}
+            silenceFormStore={silenceFormStore}
+            settingsStore={settingsStore}
+            gridSizesConfig={gridSizesConfig}
+            groupWidth={groupWidth}
+            grid={grid}
+            outerPadding={alertStore.data.gridPadding}
+            paddingTop={paddingTop}
+          />
+        </div>
       ))}
     </>
   );
