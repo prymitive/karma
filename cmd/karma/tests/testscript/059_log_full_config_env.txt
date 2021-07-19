@@ -42,6 +42,7 @@ env LABELS_COLOR_STATIC=job
 env LABELS_COLOR_UNIQUE='@receiver instance cluster'
 env LABELS_KEEP='keep1 keep2'
 env LABELS_STRIP='strip1 strip2'
+env LABELS_VALUEONLY='value1 value2'
 
 env LISTEN_ADDRESS=127.0.0.1
 env LISTEN_PORT=1234
@@ -169,6 +170,7 @@ level=info msg="    - keep2"
 level=info msg="  strip:"
 level=info msg="    - strip1"
 level=info msg="    - strip2"
+level=info msg="  valueOnly: []"
 level=info msg="  color:"
 level=info msg="    custom: {}"
 level=info msg="    static:"

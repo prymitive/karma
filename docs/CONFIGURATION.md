@@ -834,6 +834,7 @@ labels:
           color: string
   keep: list of strings
   strip: list of strings
+  valueOnly: list of strings
 ```
 
 - `color:static` - list of label names that will all have the same color applied
@@ -862,6 +863,8 @@ labels:
 
 - `keep` - list of allowed labels, if empty all labels are allowed.
 - `strip` - list of ignored labels.
+- `valueOnly` - list of label names for which only the value will be displayed
+  in the UI.
 
 Example with static color for the `job` label (every `job` label will have the
 same color regardless of the value) and unique color for the `@receiver` label

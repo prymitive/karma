@@ -91,6 +91,8 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.StringSlice("labels.keep", []string{},
 		"List of labels to keep, all other labels will be stripped")
 	f.StringSlice("labels.strip", []string{}, "List of labels to ignore")
+	f.StringSlice("labels.valueOnly", []string{},
+		"List of label names for which only the name will be shown in the UI")
 
 	f.String("grid.sorting.order", "startsAt", "Default sort order for alert grid")
 	f.Bool("grid.sorting.reverse", true, "Reverse sort order")

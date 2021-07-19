@@ -103,6 +103,7 @@ labels:
   strip:
     - abc
     - def
+  valueOnly: []
   color:
     custom: {}
     static:
@@ -344,6 +345,7 @@ func TestDefaultConfig(t *testing.T) {
 	expectedConfig.Labels.Strip = []string{}
 	expectedConfig.Labels.Color.Static = []string{}
 	expectedConfig.Labels.Color.Unique = []string{}
+	expectedConfig.Labels.ValueOnly = []string{}
 	expectedConfig.Grid.Auto.Ignore = []string{}
 	expectedConfig.Grid.Auto.Order = []string{}
 	expectedConfig.Receivers.Keep = []string{}
