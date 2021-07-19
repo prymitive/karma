@@ -96,6 +96,11 @@ labels:
           color: "#ffae42"
         - value: critical
           color: "#ff220c"
+  valueOnly:
+    - severity
+    - job
+    - region
+    - "@cluster"
 log:
   config: false
   level: warning
