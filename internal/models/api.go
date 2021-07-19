@@ -406,6 +406,7 @@ type AlertAcknowledgementSettings struct {
 // Settings is used to export karma configuration that is used by UI
 type Settings struct {
 	StaticColorLabels        []string                     `json:"staticColorLabels"`
+	ValueOnlyLabels          []string                     `json:"valueOnlyLabels"`
 	AnnotationsDefaultHidden bool                         `json:"annotationsDefaultHidden"`
 	AnnotationsHidden        []string                     `json:"annotationsHidden"`
 	AnnotationsVisible       []string                     `json:"annotationsVisible"`
