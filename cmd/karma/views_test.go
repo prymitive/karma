@@ -89,6 +89,18 @@ func TestRobots(t *testing.T) {
 	}
 }
 
+func TestVersion(t *testing.T) {
+	mockConfig()
+	r := testRouter()
+	setupRouter(r, nil)
+	req := httptest.NewRequest("GET", "/version", nil)
+	resp := httptest.NewRecorder()
+	r.ServeHTTP(resp, req)
+	if resp.Code != http.StatusOK {
+		t.Errorf("GET /version returned status %d", resp.Code)
+	}
+}
+
 func TestHealthPrefix(t *testing.T) {
 	os.Setenv("LISTEN_PREFIX", "/prefix")
 	defer os.Unsetenv("LISTEN_PREFIX")
