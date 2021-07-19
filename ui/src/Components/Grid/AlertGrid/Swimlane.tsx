@@ -18,9 +18,20 @@ const Swimlane: FC<{
   grid: APIGridT;
   isExpanded: boolean;
   onToggle: (event: MouseEvent) => void;
-}> = ({ alertStore, settingsStore, grid, isExpanded, onToggle }) => {
+  paddingTop: number;
+}> = ({
+  alertStore,
+  settingsStore,
+  grid,
+  isExpanded,
+  onToggle,
+  paddingTop,
+}) => {
   return (
-    <h5 className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 my-1 border border-dark">
+    <h5
+      className="components-grid-swimlane d-flex flex-row justify-content-between rounded px-2 py-1 my-1 border border-dark"
+      style={{ top: paddingTop }}
+    >
       <span className="flex-shrink-0 flex-grow-0 d-none d-sm-block">
         <span className="badge components-label px-0 ms-1 me-3">
           <FontAwesomeIcon icon={faTh} className="text-muted" />

@@ -40,6 +40,11 @@ const NavBar: FC<{
       const paddingTop = idle ? 0 : height + 8;
       document.body.style.paddingTop = `${paddingTop}px`;
       setContainerClass(idle ? "invisible" : "visible");
+
+      const toggleEvent = new CustomEvent("navbarResize", {
+        detail: paddingTop,
+      });
+      window.dispatchEvent(toggleEvent);
     },
     [height]
   );
