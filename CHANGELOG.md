@@ -12,6 +12,9 @@
 ### Changed
 
 - Refactored internal APIs.
+- Grid labels are no longer shown on alert groups #3222.
+  To ensure that those labrls are always visible swimlanes are now using
+  `position: sticky`.
 
 ## v0.87
 
