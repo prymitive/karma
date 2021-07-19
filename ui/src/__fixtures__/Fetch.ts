@@ -72,6 +72,7 @@ const EmptyAPIResponse = (): APIAlertsResponseT => ({
       comment: "ACK! Mock comment",
     },
     staticColorLabels: ["job"],
+    valueOnlyLabels: [],
     annotationsDefaultHidden: false,
     annotationsHidden: [],
     annotationsVisible: [],

@@ -80,4 +80,26 @@ describe("<FilteringLabel />", () => {
     const tree = MountedFilteringLabel("foo", "bar");
     expect(tree.hasClass("components-label-bright")).toBe(true);
   });
+
+  it("doesn't render the name if it's included in valueOnlyLabels", () => {
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      valueOnlyLabels: ["foo"],
+    });
+    const tree = mount(
+      <FilteringLabel alertStore={alertStore} name="foo" value="bar" />
+    );
+    expect(tree.text()).toBe("bar");
+  });
+
+  it("renders the name if it's not included in valueOnlyLabels", () => {
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      valueOnlyLabels: ["bar"],
+    });
+    const tree = mount(
+      <FilteringLabel alertStore={alertStore} name="foo" value="bar" />
+    );
+    expect(tree.text()).toBe("foo: bar");
+  });
 });
