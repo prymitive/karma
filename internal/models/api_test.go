@@ -78,7 +78,7 @@ func TestDedupSharedMaps(t *testing.T) {
 			},
 		},
 	}
-	ag.DedupSharedMaps()
+	ag.DedupSharedMaps(nil)
 
 	agJSON, _ := json.MarshalIndent(ag, "", "  ")
 	abide.AssertReader(t, "SharedMaps", bytes.NewReader(agJSON))
@@ -93,7 +93,7 @@ func TestDedupSharedMapsSingleGroup(t *testing.T) {
 			},
 		},
 	}
-	ag.DedupSharedMaps()
+	ag.DedupSharedMaps(nil)
 	if len(ag.Shared.Annotations) > 0 {
 		t.Errorf("Expected empty shared annotations, got %v", ag.Shared.Annotations)
 	}
@@ -110,7 +110,7 @@ func TestDedupSharedMapsWithSingleAlert(t *testing.T) {
 			},
 		},
 	}
-	ag.DedupSharedMaps()
+	ag.DedupSharedMaps(nil)
 	if len(ag.Shared.Annotations) > 0 {
 		t.Errorf("Expected empty shared annotations, got %v", ag.Shared.Annotations)
 	}
@@ -128,7 +128,7 @@ func TestDedupWithBadSource(t *testing.T) {
 			},
 		},
 	}
-	ag.DedupSharedMaps()
+	ag.DedupSharedMaps(nil)
 	if len(ag.Shared.Sources) > 0 {
 		t.Errorf("Expected empty sources list, got %v", ag.Shared.Sources)
 	}

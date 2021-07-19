@@ -25,7 +25,6 @@ import (
 	"github.com/prymitive/karma/internal/transform"
 	"github.com/prymitive/karma/internal/uri"
 	"github.com/prymitive/karma/ui"
-	"go.uber.org/automaxprocs/maxprocs"
 
 	"github.com/getsentry/sentry-go"
 	sentryhttp "github.com/getsentry/sentry-go/http"
@@ -37,6 +36,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/pflag"
+	"go.uber.org/automaxprocs/maxprocs"
 )
 
 var (
