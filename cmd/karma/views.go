@@ -417,7 +417,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 				ag.LatestStartsAt = ag.FindLatestStartsAt()
 				ag.Hash = ag.ContentFingerprint()
 				apiAG := models.APIAlertGroup{AlertGroup: *ag, TotalAlerts: len(ag.Alerts)}
-				apiAG.DedupSharedMaps()
+				apiAG.DedupSharedMaps([]string{gridLabel})
 				resp.TotalAlerts += len(ag.Alerts)
 
 				alertLimit, found := request.GroupLimits[ag.ID]

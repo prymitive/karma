@@ -146,10 +146,23 @@ func (ag *APIAlertGroup) dedupLabels() {
 
 }
 
-func (ag *APIAlertGroup) removeGroupingLabels() {
+func (ag *APIAlertGroup) removeGroupingLabels(dropNames []string) {
+	newGroupLabels := map[string]string{}
+	for name, val := range ag.Labels {
+		if slices.StringInSlice(dropNames, name) {
+			continue
+		}
+		newGroupLabels[name] = val
+	}
+	ag.Labels = newGroupLabels
+
 	for i, alert := range ag.Alerts {
 		newAlertLabels := map[string]string{}
 		for name, val := range alert.Labels {
+			if slices.StringInSlice(dropNames, name) {
+				// skip all labels from the drop list
+				continue
+			}
 			if _, found := ag.Labels[name]; found {
 				// skip all labels that are used for grouping
 				continue
@@ -341,10 +354,10 @@ func (ag *APIAlertGroup) populateAllLabels() {
 
 // DedupSharedMaps will find all labels and annotations shared by all alerts
 // in this group and moved them to Shared namespace
-func (ag *APIAlertGroup) DedupSharedMaps() {
+func (ag *APIAlertGroup) DedupSharedMaps(ignoredLabels []string) {
 	ag.populateAllLabels()
 	// remove all labels that are used for grouping
-	ag.removeGroupingLabels()
+	ag.removeGroupingLabels(ignoredLabels)
 	// don't dedup if we only have a single alert in this group
 	if len(ag.Alerts) > 1 {
 		ag.dedupLabels()
