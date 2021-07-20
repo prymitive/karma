@@ -259,6 +259,20 @@ exports[`<Help /> matches snapshot 1`] = `
               <li>
                 <div>
                   <span class=\\"badge bg-info\\">
+                    service!~.+
+                  </span>
+                </div>
+                <div>
+                  Match alerts without any value for label
+                  <code>
+                    service
+                  </code>
+                  .
+                </div>
+              </li>
+              <li>
+                <div>
+                  <span class=\\"badge bg-info\\">
                     service=~apache[1-3]
                   </span>
                 </div>
