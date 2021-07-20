@@ -130,6 +130,9 @@ const Help: FC<{ defaultIsOpen: boolean }> = ({ defaultIsOpen }) => (
               Match alerts with label <code>service</code> matching regular
               expression <code>/.*apache.*/</code>.
             </FilterExample>
+            <FilterExample example="service!~.+">
+              Match alerts without any value for label <code>service</code>.
+            </FilterExample>
             <FilterExample example="service=~apache[1-3]">
               Match alerts with label <code>service</code> matching regular
               expression <code>/.*apache[1-3].*/</code>.
