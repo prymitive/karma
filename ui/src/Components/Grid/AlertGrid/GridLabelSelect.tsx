@@ -131,47 +131,57 @@ const GridLabelSelect: FC<{
   alertStore: AlertStore;
   settingsStore: Settings;
   grid: APIGridT;
-}> = observer(({ alertStore, settingsStore, grid }) => {
-  const [isVisible, setIsVisible] = useState<boolean>(false);
-  const hide = useCallback(() => setIsVisible(false), []);
-  const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
+  onMenuOpen: () => void;
+  onMenuClose: () => void;
+}> = observer(
+  ({ alertStore, settingsStore, grid, onMenuOpen, onMenuClose }) => {
+    const [isVisible, setIsVisible] = useState<boolean>(false);
+    const hide = useCallback(() => setIsVisible(false), []);
+    const toggle = useCallback(() => {
+      if (isVisible) {
+        onMenuClose();
+      } else {
+        onMenuOpen();
+      }
+      setIsVisible(!isVisible);
+    }, [isVisible, onMenuOpen, onMenuClose]);
+    const ref = useRef<HTMLDivElement | null>(null);
+    useOnClickOutside(ref, hide, isVisible);
 
-  const ref = useRef<HTMLDivElement | null>(null);
-  useOnClickOutside(ref, hide, isVisible);
-
-  return (
-    <div ref={ref} className="components-label badge ps-1 pe-2">
-      <Manager>
-        <Reference>
-          {({ ref }) => (
-            <span
-              ref={ref}
-              onClick={toggle}
-              className="border-0 rounded-0 bg-inherit cursor-pointer px-1 py-0 components-grid-label-select-dropdown"
-              data-toggle="dropdown"
-            >
-              <FontAwesomeIcon className="text-muted" icon={faCaretDown} />
-            </span>
-          )}
-        </Reference>
-        <DropdownSlide in={isVisible} unmountOnExit>
-          <Popper modifiers={CommonPopperModifiers}>
-            {({ placement, ref, style }) => (
-              <Dropdown
-                popperPlacement={placement}
-                popperRef={ref}
-                popperStyle={style}
-                alertStore={alertStore}
-                settingsStore={settingsStore}
-                grid={grid}
-                onClose={toggle}
-              />
+    return (
+      <div ref={ref} className="components-label badge ps-1 pe-2">
+        <Manager>
+          <Reference>
+            {({ ref }) => (
+              <span
+                ref={ref}
+                onClick={toggle}
+                className="border-0 rounded-0 bg-inherit cursor-pointer px-1 py-0 components-grid-label-select-dropdown"
+                data-toggle="dropdown"
+              >
+                <FontAwesomeIcon className="text-muted" icon={faCaretDown} />
+              </span>
             )}
-          </Popper>
-        </DropdownSlide>
-      </Manager>
-    </div>
-  );
-});
+          </Reference>
+          <DropdownSlide in={isVisible} unmountOnExit>
+            <Popper modifiers={CommonPopperModifiers}>
+              {({ placement, ref, style }) => (
+                <Dropdown
+                  popperPlacement={placement}
+                  popperRef={ref}
+                  popperStyle={style}
+                  alertStore={alertStore}
+                  settingsStore={settingsStore}
+                  grid={grid}
+                  onClose={toggle}
+                />
+              )}
+            </Popper>
+          </DropdownSlide>
+        </Manager>
+      </div>
+    );
+  }
+);
 
 export { GridLabelSelect };

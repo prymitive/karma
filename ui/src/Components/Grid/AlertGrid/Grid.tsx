@@ -109,8 +109,15 @@ const Grid: FC<{
     repack();
   });
 
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+
   return (
-    <>
+    <div
+      style={{
+        position: isMenuOpen ? "relative" : undefined,
+        zIndex: isMenuOpen ? 102 : undefined,
+      }}
+    >
       <CSSTransition
         key={grid.labelValue}
         in={grid.labelName !== ""}
@@ -126,6 +133,8 @@ const Grid: FC<{
           isExpanded={isExpanded}
           onToggle={onCollapseClick}
           paddingTop={paddingTop}
+          onMenuOpen={() => setIsMenuOpen(true)}
+          onMenuClose={() => setIsMenuOpen(false)}
         />
       </CSSTransition>
       <div
@@ -198,7 +207,7 @@ const Grid: FC<{
           </CSSTransition>
         )}
       </TransitionGroup>
-    </>
+    </div>
   );
 };
 

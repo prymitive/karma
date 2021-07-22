@@ -5,14 +5,24 @@ import { mount } from "enzyme";
 import fetchMock from "fetch-mock";
 
 import { MockGrid } from "__fixtures__/Stories";
+import { MockThemeContextWithoutAnimations } from "__fixtures__/Theme";
+import { mockMatchMedia } from "__fixtures__/matchMedia";
 import { AlertStore } from "Stores/AlertStore";
 import { Settings } from "Stores/Settings";
+import { SilenceFormStore } from "Stores/SilenceFormStore";
 import type { APIGridT } from "Models/APITypes";
+import { ThemeContext } from "Components/Theme";
+import AlertGrid from ".";
 import { GridLabelSelect } from "./GridLabelSelect";
 
 let alertStore: AlertStore;
 let settingsStore: Settings;
+let silenceFormStore: SilenceFormStore;
 let grid: APIGridT;
+
+declare let global: any;
+declare let document: any;
+declare let window: any;
 
 beforeEach(() => {
   fetchMock.reset();
@@ -22,6 +32,7 @@ beforeEach(() => {
 
   alertStore = new AlertStore([]);
   settingsStore = new Settings(null);
+  silenceFormStore = new SilenceFormStore();
   grid = {
     labelName: "foo",
     labelValue: "bar",
@@ -35,6 +46,15 @@ beforeEach(() => {
   };
   alertStore.data.setLabelNames(["alertname", "job", "cluster"]);
 
+  window.matchMedia = mockMatchMedia({});
+  global.ResizeObserver = jest.fn((cb) => {
+    return {
+      observe: jest.fn(),
+      disconnect: jest.fn(),
+    };
+  });
+  global.ResizeObserverEntry = jest.fn();
+
   jest.useFakeTimers();
 });
 
@@ -44,6 +64,8 @@ const MountedGridLabelSelect = () => {
       alertStore={alertStore}
       settingsStore={settingsStore}
       grid={grid}
+      onMenuOpen={jest.fn()}
+      onMenuClose={jest.fn()}
     />
   );
 };
@@ -124,6 +146,48 @@ describe("<GridLabelSelect />", () => {
     });
     tree.update();
     expect(tree.find("div.components-grid-label-select-menu")).toHaveLength(0);
+    await act(() => promise);
+  });
+
+  it("opening label select sets z-index", async () => {
+    const promise = Promise.resolve();
+    alertStore.data.setGrids([
+      {
+        labelName: "foo",
+        labelValue: "bar",
+        alertGroups: [],
+        totalGroups: 0,
+        stateCount: {
+          unprocessed: 1,
+          suppressed: 2,
+          active: 3,
+        },
+      },
+    ]);
+    const tree = mount(
+      <AlertGrid
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        silenceFormStore={silenceFormStore}
+      />,
+      {
+        wrappingComponent: ThemeContext.Provider,
+        wrappingComponentProps: { value: MockThemeContextWithoutAnimations },
+      }
+    );
+
+    tree.find("span.components-grid-label-select-dropdown").simulate("click");
+    expect(tree.find("div.components-grid-label-select-menu")).toHaveLength(1);
+    expect(tree.find("div").at(1).props().style?.zIndex).toBe(102);
+
+    tree.find("span.components-grid-label-select-dropdown").simulate("click");
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+    tree.update();
+    expect(tree.find("div.components-grid-label-select-menu")).toHaveLength(0);
+    expect(tree.find("div").at(1).props().style?.zIndex).toBeUndefined();
+
     await act(() => promise);
   });
 });
