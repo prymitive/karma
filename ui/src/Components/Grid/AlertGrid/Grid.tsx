@@ -110,6 +110,20 @@ const Grid: FC<{
   });
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const onMenuOpen = useCallback(
+    (event) => {
+      if (event.detail.labelValue === grid.labelValue) {
+        setIsMenuOpen(event.detail.isOpen);
+      }
+    },
+    [grid.labelValue]
+  );
+  useEffect(() => {
+    window.addEventListener("gridMenuOpen", onMenuOpen);
+    return () => {
+      window.removeEventListener("gridMenuOpen", onMenuOpen);
+    };
+  }, [onMenuOpen]);
 
   return (
     <div
@@ -133,8 +147,6 @@ const Grid: FC<{
           isExpanded={isExpanded}
           onToggle={onCollapseClick}
           paddingTop={paddingTop}
-          onMenuOpen={() => setIsMenuOpen(true)}
-          onMenuClose={() => setIsMenuOpen(false)}
         />
       </CSSTransition>
       <div
@@ -162,10 +174,8 @@ const Grid: FC<{
                   unmountOnExit
                 >
                   <AlertGroup
+                    grid={grid}
                     group={group}
-                    showAlertmanagers={
-                      Object.keys(alertStore.data.upstreams.clusters).length > 1
-                    }
                     afterUpdate={debouncedRepack}
                     alertStore={alertStore}
                     settingsStore={settingsStore}

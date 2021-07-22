@@ -19,8 +19,6 @@ const Swimlane: FC<{
   isExpanded: boolean;
   onToggle: (event: MouseEvent) => void;
   paddingTop: number;
-  onMenuOpen: () => void;
-  onMenuClose: () => void;
 }> = ({
   alertStore,
   settingsStore,
@@ -28,8 +26,6 @@ const Swimlane: FC<{
   isExpanded,
   onToggle,
   paddingTop,
-  onMenuOpen,
-  onMenuClose,
 }) => {
   return (
     <h5
@@ -63,8 +59,6 @@ const Swimlane: FC<{
             alertStore={alertStore}
             settingsStore={settingsStore}
             grid={grid}
-            onMenuOpen={onMenuOpen}
-            onMenuClose={onMenuClose}
           />
         </span>
       )}
