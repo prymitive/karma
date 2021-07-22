@@ -77,18 +77,17 @@ const AlertGrid: FC<{
         }}
       />
       {alertStore.data.grids.map((grid) => (
-        <div key={`${grid.labelName}/${grid.labelValue}`}>
-          <Grid
-            alertStore={alertStore}
-            silenceFormStore={silenceFormStore}
-            settingsStore={settingsStore}
-            gridSizesConfig={gridSizesConfig}
-            groupWidth={groupWidth}
-            grid={grid}
-            outerPadding={alertStore.data.gridPadding}
-            paddingTop={paddingTop}
-          />
-        </div>
+        <Grid
+          key={`${grid.labelName}/${grid.labelValue}`}
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          settingsStore={settingsStore}
+          gridSizesConfig={gridSizesConfig}
+          groupWidth={groupWidth}
+          grid={grid}
+          outerPadding={alertStore.data.gridPadding}
+          paddingTop={paddingTop}
+        />
       ))}
     </>
   );
