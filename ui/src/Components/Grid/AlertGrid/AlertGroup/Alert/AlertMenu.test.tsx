@@ -7,6 +7,7 @@ import type {
   APIAlertGroupT,
   APIAlertT,
   APIAlertsResponseUpstreamsT,
+  APIGridT,
 } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -16,6 +17,7 @@ let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;
 let alert: APIAlertT;
 let group: APIAlertGroupT;
+let grid: APIGridT;
 
 let MockAfterClick: () => void;
 let MockSetIsMenuOpen: () => void;
@@ -74,6 +76,17 @@ beforeEach(() => {
 
   alert = MockAlert([], { foo: "bar" }, "active");
   group = MockAlertGroup({ alertname: "Fake Alert" }, [alert], [], {}, {});
+  grid = {
+    labelName: "foo",
+    labelValue: "bar",
+    alertGroups: [],
+    totalGroups: 0,
+    stateCount: {
+      active: 0,
+      suppressed: 0,
+      unprocessed: 0,
+    },
+  };
 
   alertStore.data.setUpstreams(generateUpstreams());
 });
@@ -81,6 +94,7 @@ beforeEach(() => {
 const MountedAlertMenu = (group: APIAlertGroupT) => {
   return mount(
     <AlertMenu
+      grid={grid}
       group={group}
       alert={alert}
       alertStore={alertStore}

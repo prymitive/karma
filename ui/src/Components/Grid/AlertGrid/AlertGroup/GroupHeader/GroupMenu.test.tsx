@@ -8,6 +8,7 @@ import { MockAlertGroup } from "__fixtures__/Alerts";
 import type {
   APIAlertGroupT,
   APIAlertsResponseUpstreamsT,
+  APIGridT,
 } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -15,6 +16,7 @@ import { GroupMenu, MenuContent } from "./GroupMenu";
 
 let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;
+let grid: APIGridT;
 
 let MockAfterClick: () => void;
 let MockSetIsMenuOpen: () => void;
@@ -72,11 +74,24 @@ beforeEach(() => {
   MockSetIsMenuOpen = jest.fn();
 
   alertStore.data.setUpstreams(generateUpstreams());
+
+  grid = {
+    labelName: "foo",
+    labelValue: "bar",
+    alertGroups: [],
+    totalGroups: 0,
+    stateCount: {
+      active: 0,
+      suppressed: 0,
+      unprocessed: 0,
+    },
+  };
 });
 
 const MountedGroupMenu = (group: APIAlertGroupT, themed: boolean) => {
   return mount(
     <GroupMenu
+      grid={grid}
       group={group}
       alertStore={alertStore}
       silenceFormStore={silenceFormStore}

@@ -11,6 +11,7 @@ import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalL
 import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
 
 import type {
+  APIGridT,
   APIAlertT,
   APIAlertGroupT,
   APIAnnotationT,
@@ -142,19 +143,25 @@ const MenuContent: FC<{
 };
 
 const AlertMenu: FC<{
+  grid: APIGridT;
   group: APIAlertGroupT;
   alert: APIAlertT;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
   setIsMenuOpen: (isOpen: boolean) => void;
 }> = observer(
-  ({ group, alert, alertStore, silenceFormStore, setIsMenuOpen }) => {
+  ({ grid, group, alert, alertStore, silenceFormStore, setIsMenuOpen }) => {
     const [isHidden, setIsHidden] = useState<boolean>(true);
 
     const toggle = useCallback(() => {
+      window.dispatchEvent(
+        new CustomEvent("gridMenuOpen", {
+          detail: { isOpen: isHidden, labelValue: grid.labelValue },
+        })
+      );
       setIsMenuOpen(isHidden);
       setIsHidden(!isHidden);
-    }, [isHidden, setIsMenuOpen]);
+    }, [grid.labelValue, isHidden, setIsMenuOpen]);
 
     const hide = useCallback(() => {
       setIsHidden(true);

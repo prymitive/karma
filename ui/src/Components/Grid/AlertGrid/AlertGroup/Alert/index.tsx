@@ -3,6 +3,7 @@ import type { FC } from "react";
 import { observer } from "mobx-react-lite";
 
 import type {
+  APIGridT,
   APIAlertT,
   APIAlertGroupT,
   APIAlertmanagerStateT,
@@ -18,6 +19,7 @@ import { AlertMenu } from "./AlertMenu";
 import { RenderSilence } from "../Silences";
 
 const Alert: FC<{
+  grid: APIGridT;
   group: APIAlertGroupT;
   alert: APIAlertT;
   showReceiver: boolean;
@@ -27,6 +29,7 @@ const Alert: FC<{
   silenceFormStore: SilenceFormStore;
   setIsMenuOpen: (isOpen: boolean) => void;
 }> = ({
+  grid,
   group,
   alert,
   showReceiver,
@@ -99,6 +102,7 @@ const Alert: FC<{
           ))}
       </div>
       <AlertMenu
+        grid={grid}
         group={group}
         alert={alert}
         alertStore={alertStore}

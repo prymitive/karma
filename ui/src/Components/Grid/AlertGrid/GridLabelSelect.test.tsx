@@ -64,8 +64,6 @@ const MountedGridLabelSelect = () => {
       alertStore={alertStore}
       settingsStore={settingsStore}
       grid={grid}
-      onMenuOpen={jest.fn()}
-      onMenuClose={jest.fn()}
     />
   );
 };
@@ -189,5 +187,79 @@ describe("<GridLabelSelect />", () => {
     expect(tree.find("div").at(1).props().style?.zIndex).toBeUndefined();
 
     await act(() => promise);
+  });
+
+  it("sending event from current grid sets z-index", () => {
+    alertStore.data.setGrids([
+      {
+        labelName: "foo",
+        labelValue: "baz",
+        alertGroups: [],
+        totalGroups: 0,
+        stateCount: {
+          unprocessed: 1,
+          suppressed: 2,
+          active: 3,
+        },
+      },
+    ]);
+    const tree = mount(
+      <AlertGrid
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        silenceFormStore={silenceFormStore}
+      />,
+      {
+        wrappingComponent: ThemeContext.Provider,
+        wrappingComponentProps: { value: MockThemeContextWithoutAnimations },
+      }
+    );
+
+    act(() => {
+      window.dispatchEvent(
+        new CustomEvent("gridMenuOpen", {
+          detail: { isOpen: true, labelValue: "baz" },
+        })
+      );
+    });
+    tree.update();
+    expect(tree.find("div").at(1).props().style?.zIndex).toBe(102);
+  });
+
+  it("sending event from a different grid is ignored", () => {
+    alertStore.data.setGrids([
+      {
+        labelName: "foo",
+        labelValue: "baz",
+        alertGroups: [],
+        totalGroups: 0,
+        stateCount: {
+          unprocessed: 1,
+          suppressed: 2,
+          active: 3,
+        },
+      },
+    ]);
+    const tree = mount(
+      <AlertGrid
+        alertStore={alertStore}
+        settingsStore={settingsStore}
+        silenceFormStore={silenceFormStore}
+      />,
+      {
+        wrappingComponent: ThemeContext.Provider,
+        wrappingComponentProps: { value: MockThemeContextWithoutAnimations },
+      }
+    );
+
+    act(() => {
+      window.dispatchEvent(
+        new CustomEvent("gridMenuOpen", {
+          detail: { isOpen: true, labelValue: "fake" },
+        })
+      );
+    });
+    tree.update();
+    expect(tree.find("div").at(1).props().style?.zIndex).toBeUndefined();
   });
 });

@@ -8,7 +8,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
 import { faEllipsisH } from "@fortawesome/free-solid-svg-icons/faEllipsisH";
 
-import type { APIAlertGroupT, AlertStateT } from "Models/APITypes";
+import type { APIGridT, APIAlertGroupT, AlertStateT } from "Models/APITypes";
 import type { Settings } from "Stores/Settings";
 import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -40,8 +40,8 @@ const LoadButton: FC<{
 };
 
 const AlertGroup: FC<{
+  grid: APIGridT;
   group: APIAlertGroupT;
-  showAlertmanagers: boolean;
   afterUpdate: () => void;
   alertStore: AlertStore;
   settingsStore: Settings;
@@ -49,8 +49,8 @@ const AlertGroup: FC<{
   groupWidth: number;
   gridLabelValue: string;
 }> = ({
+  grid,
   group,
-  showAlertmanagers,
   afterUpdate,
   silenceFormStore,
   alertStore,
@@ -159,6 +159,7 @@ const AlertGroup: FC<{
         <GroupHeader
           isCollapsed={isCollapsed}
           setIsCollapsed={setIsCollapsed}
+          grid={grid}
           group={group}
           alertStore={alertStore}
           silenceFormStore={silenceFormStore}
@@ -177,6 +178,7 @@ const AlertGroup: FC<{
                 .map((alert) => (
                   <Alert
                     key={alert.id}
+                    grid={grid}
                     group={group}
                     alert={alert}
                     showReceiver={

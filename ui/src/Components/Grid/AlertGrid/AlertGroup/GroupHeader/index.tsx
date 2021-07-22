@@ -2,7 +2,7 @@ import type { FC, MouseEvent } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import type { APIAlertGroupT } from "Models/APITypes";
+import type { APIAlertGroupT, APIGridT } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import FilteringLabel from "Components/Labels/FilteringLabel";
@@ -15,6 +15,7 @@ import { GroupMenu } from "./GroupMenu";
 const GroupHeader: FC<{
   isCollapsed: boolean;
   setIsCollapsed: (isCollapsed: boolean) => void;
+  grid: APIGridT;
   group: APIAlertGroupT;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
@@ -24,6 +25,7 @@ const GroupHeader: FC<{
 }> = ({
   isCollapsed,
   setIsCollapsed,
+  grid,
   group,
   alertStore,
   silenceFormStore,
@@ -55,6 +57,7 @@ const GroupHeader: FC<{
     >
       <span className="flex-shrink-0 flex-grow-0">
         <GroupMenu
+          grid={grid}
           group={group}
           alertStore={alertStore}
           silenceFormStore={silenceFormStore}
