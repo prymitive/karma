@@ -97,6 +97,7 @@ labels:
         - value: critical
           color: "#ff220c"
   valueOnly:
+    - alertname
     - severity
     - job
     - region
