@@ -240,24 +240,14 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	matchFilters := getFiltersFromQuery(request.Filters)
-
 	grids := map[string]models.APIGrid{}
 	colors := models.LabelsColorMap{}
+	silences := map[string]map[string]models.Silence{}
+	allReceivers := map[string]bool{}
 
 	dedupedAlerts := alertmanager.DedupAlerts()
 	dedupedColors := alertmanager.DedupColors()
-
-	silences := map[string]map[string]models.Silence{}
-	for _, am := range alertmanager.GetAlertmanagers() {
-		key := am.ClusterName()
-		if _, found := silences[key]; !found {
-			silences[key] = map[string]models.Silence{}
-		}
-	}
-
-	allReceivers := map[string]bool{}
-
+	matchFilters := getFiltersFromQuery(request.Filters)
 	filtered := filterAlerts(dedupedAlerts, matchFilters)
 
 	gridLabel := request.GridLabel
@@ -424,7 +414,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 					for _, am := range alert.Alertmanager {
 						for _, silence := range am.Silences {
 							if _, found := silences[am.Cluster][silence.ID]; !found {
-								if _, found :=  silences[am.Cluster]; !found {
+								if _, found := silences[am.Cluster]; !found {
 									silences[am.Cluster] = map[string]models.Silence{}
 								}
 								silences[am.Cluster][silence.ID] = *silence
