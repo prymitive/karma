@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.89
+
+### Fixed
+
+- API could error if multiple alertmanager upstreams belonging to the
+  same cluster were configured, but `cluster` option was unset
+  #3372 (@valihanov).
+
 ## v0.88
 
 ### Added
