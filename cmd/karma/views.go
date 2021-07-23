@@ -424,6 +424,9 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 					for _, am := range alert.Alertmanager {
 						for _, silence := range am.Silences {
 							if _, found := silences[am.Cluster][silence.ID]; !found {
+								if _, found :=  silences[am.Cluster]; !found {
+									silences[am.Cluster] = map[string]models.Silence{}
+								}
 								silences[am.Cluster][silence.ID] = *silence
 							}
 						}
