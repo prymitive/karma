@@ -36,9 +36,9 @@ describe("Demo", () => {
     await expect(alertGroups.length).toBeGreaterThan(10);
     await expect(alertGroups).toEqual(
       expect.arrayContaining([
-        "alertname: Inhibition Test Alertcluster: prod1",
-        "alertname: Disk Free Lowcluster: prod10",
-        "alertname: Time Annotationcluster: prod1",
+        "Inhibition Test Alertcluster: prod1",
+        "Disk Free Lowcluster: prod10",
+        "Time Annotationcluster: prod1",
       ])
     );
   });
