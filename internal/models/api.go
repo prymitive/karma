@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/url"
 	"sort"
+	"strings"
 
 	"github.com/fvbommel/sortorder"
 
@@ -259,18 +260,23 @@ func (ag *APIAlertGroup) dedupSources() {
 	ag.Shared.Sources = []string{}
 
 	urls := map[string]struct{}{}
+	var err error
+	var u *url.URL
 	for _, alert := range ag.Alerts {
 		for _, am := range alert.Alertmanager {
-			u, err := url.Parse(am.Source)
+			u, err = url.Parse(am.Source)
 			if err != nil {
 				continue
 			}
-			u.Path = ""
-			u.RawQuery = ""
-			u.Fragment = ""
-			s := u.String()
-			if s != "" {
-				urls[u.String()] = struct{}{}
+			if u.String() == "" {
+				continue
+			}
+
+			index := strings.Index(am.Source, "/graph?")
+			if index >= 0 {
+				urls[am.Source[:index]+"/"] = struct{}{}
+			} else {
+				urls[am.Source] = struct{}{}
 			}
 		}
 	}

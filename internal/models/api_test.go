@@ -12,13 +12,6 @@ import (
 )
 
 func TestDedupSharedMaps(t *testing.T) {
-	am := models.AlertmanagerInstance{
-		Fingerprint: "1",
-		Name:        "am",
-		Cluster:     "fakeCluster",
-		SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
-		Source:      "https://am.example.com/graph",
-	}
 	ag := models.APIAlertGroup{
 		AlertGroup: models.AlertGroup{
 			Labels: map[string]string{
@@ -42,7 +35,22 @@ func TestDedupSharedMaps(t *testing.T) {
 						"job":       "node_exporter",
 						"instance":  "1",
 					},
-					Alertmanager: []models.AlertmanagerInstance{am, am},
+					Alertmanager: []models.AlertmanagerInstance{
+						{
+							Fingerprint: "1",
+							Name:        "am1",
+							Cluster:     "fakeCluster",
+							SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
+							Source:      "https://prom.example.com/graph?foo",
+						},
+						{
+							Fingerprint: "2",
+							Name:        "am2",
+							Cluster:     "fakeCluster",
+							SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
+							Source:      "https://prom.example.com/subdir/graph?bar",
+						},
+					},
 				},
 				models.Alert{
 					State: models.AlertStateActive,
@@ -57,7 +65,22 @@ func TestDedupSharedMaps(t *testing.T) {
 						"job":       "node_exporter",
 						"instance":  "2",
 					},
-					Alertmanager: []models.AlertmanagerInstance{am, am},
+					Alertmanager: []models.AlertmanagerInstance{
+						{
+							Fingerprint: "1",
+							Name:        "am1",
+							Cluster:     "fakeCluster",
+							SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
+							Source:      "https://am.example.com",
+						},
+						{
+							Fingerprint: "1",
+							Name:        "am2",
+							Cluster:     "fakeCluster",
+							SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
+							Source:      "https://am.example.com",
+						},
+					},
 				},
 				models.Alert{
 					State: models.AlertStateSuppressed,
@@ -73,7 +96,22 @@ func TestDedupSharedMaps(t *testing.T) {
 						"instance":  "3",
 						"extra":     "ignore",
 					},
-					Alertmanager: []models.AlertmanagerInstance{am, am},
+					Alertmanager: []models.AlertmanagerInstance{
+						{
+							Fingerprint: "1",
+							Name:        "am1",
+							Cluster:     "fakeCluster",
+							SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
+							Source:      "https://am.example.com/graph",
+						},
+						{
+							Fingerprint: "1",
+							Name:        "am2",
+							Cluster:     "fakeCluster",
+							SilencedBy:  []string{"fakeSilence1", "fakeSilence2"},
+							Source:      "https://am.example.com/graph",
+						},
+					},
 				},
 			},
 		},
