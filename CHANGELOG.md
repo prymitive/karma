@@ -1,5 +1,13 @@
 # Changelog
 
+## [unreleased]
+
+### Fixed
+
+- Alert history will now correctly handle Prometheus servers with
+  `--web.external-url` containing sub-uri, see
+  [#3387](https://github.com/prymitive/karma/issues/3387)
+
 ## v0.89
 
 ### Fixed

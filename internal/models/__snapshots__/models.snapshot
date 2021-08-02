@@ -24,11 +24,11 @@
       "alertmanager": [
         {
           "fingerprint": "1",
-          "name": "am",
+          "name": "am1",
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com/graph",
+          "source": "https://prom.example.com/graph?foo",
           "silencedBy": [
             "fakeSilence1",
             "fakeSilence2"
@@ -36,12 +36,12 @@
           "inhibitedBy": null
         },
         {
-          "fingerprint": "1",
-          "name": "am",
+          "fingerprint": "2",
+          "name": "am2",
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com/graph",
+          "source": "https://prom.example.com/subdir/graph?bar",
           "silencedBy": [
             "fakeSilence1",
             "fakeSilence2"
@@ -63,11 +63,11 @@
       "alertmanager": [
         {
           "fingerprint": "1",
-          "name": "am",
+          "name": "am1",
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com/graph",
+          "source": "https://am.example.com",
           "silencedBy": [
             "fakeSilence1",
             "fakeSilence2"
@@ -76,11 +76,11 @@
         },
         {
           "fingerprint": "1",
-          "name": "am",
+          "name": "am2",
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
-          "source": "https://am.example.com/graph",
+          "source": "https://am.example.com",
           "silencedBy": [
             "fakeSilence1",
             "fakeSilence2"
@@ -103,7 +103,7 @@
       "alertmanager": [
         {
           "fingerprint": "1",
-          "name": "am",
+          "name": "am1",
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
@@ -116,7 +116,7 @@
         },
         {
           "fingerprint": "1",
-          "name": "am",
+          "name": "am2",
           "cluster": "fakeCluster",
           "state": "",
           "startsAt": "0001-01-01T00:00:00Z",
@@ -154,7 +154,10 @@
       ]
     },
     "sources": [
-      "https://am.example.com"
+      "https://am.example.com",
+      "https://am.example.com/graph",
+      "https://prom.example.com/",
+      "https://prom.example.com/subdir/"
     ],
     "clusters": [
       "fakeCluster"
