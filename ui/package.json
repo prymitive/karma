@@ -77,7 +77,7 @@
     "@types/react-select": "4.0.17",
     "@types/semver": "7.3.8",
     "@typescript-eslint/eslint-plugin": "4.28.5",
-    "@typescript-eslint/parser": "4.28.5",
+    "@typescript-eslint/parser": "4.29.0",
     "@wojtekmaj/enzyme-adapter-react-17": "0.6.3",
     "diffable-html": "4.1.0",
     "enzyme": "3.11.0",
