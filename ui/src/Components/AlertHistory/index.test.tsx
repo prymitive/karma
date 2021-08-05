@@ -16,10 +16,15 @@ import {
   RainbowHistoryResponse,
   FailedHistoryResponse,
 } from "__fixtures__/AlertHistory";
-import type { APIAlertGroupT, HistoryResponseT } from "Models/APITypes";
+import type {
+  APIAlertGroupT,
+  APIGridT,
+  HistoryResponseT,
+} from "Models/APITypes";
 import { AlertHistory } from ".";
 
 let group: APIAlertGroupT;
+let grid: APIGridT;
 
 const MockGroup = (groupName: string) => {
   const group = MockAlertGroup(
@@ -49,14 +54,123 @@ beforeEach(() => {
   jest.useFakeTimers();
   advanceTo(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
   group = MockGroup("fakeGroup");
+  grid = {
+    labelName: "foo",
+    labelValue: "bar",
+    alertGroups: [],
+    totalGroups: 0,
+    stateCount: {
+      active: 0,
+      suppressed: 0,
+      unprocessed: 0,
+    },
+  };
 });
 
 afterEach(() => {
+  fetchMock.resetHistory();
   fetchMock.reset();
   clear();
 });
 
 describe("<AlertHistory />", () => {
+  it("send a correct payload with empty grid", async () => {
+    fetchMock.resetHistory();
+    fetchMock.mock(
+      "*",
+      {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(EmptyHistoryResponse),
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
+
+    grid.labelName = "";
+    grid.labelValue = "";
+    MockAlerts(3);
+    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
+    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.calls()[0][1]?.body).toStrictEqual(
+      JSON.stringify({
+        sources: [
+          "https://secure.example.com/graph",
+          "http://plain.example.com/",
+        ],
+        labels: { alertname: "Fake Alert", groupName: "fakeGroup" },
+      })
+    );
+    tree.unmount();
+  });
+
+  it("send a correct payload with non-empty grid", async () => {
+    fetchMock.resetHistory();
+    fetchMock.mock(
+      "*",
+      {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(EmptyHistoryResponse),
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
+
+    MockAlerts(3);
+    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
+    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.calls()[0][1]?.body).toStrictEqual(
+      JSON.stringify({
+        sources: [
+          "https://secure.example.com/graph",
+          "http://plain.example.com/",
+        ],
+        labels: { alertname: "Fake Alert", groupName: "fakeGroup", foo: "bar" },
+      })
+    );
+    tree.unmount();
+  });
+
+  it("send a correct payload with @cluster grid", async () => {
+    fetchMock.resetHistory();
+    fetchMock.mock(
+      "*",
+      {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(EmptyHistoryResponse),
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
+
+    grid.labelName = "@cluster";
+    grid.labelValue = "prod";
+    MockAlerts(3);
+    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
+    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.calls()[0][1]?.body).toStrictEqual(
+      JSON.stringify({
+        sources: [
+          "https://secure.example.com/graph",
+          "http://plain.example.com/",
+        ],
+        labels: { alertname: "Fake Alert", groupName: "fakeGroup" },
+      })
+    );
+    tree.unmount();
+  });
+
   it("matches snapshot with empty response", async () => {
     fetchMock.resetHistory();
     fetchMock.mock(
@@ -71,7 +185,7 @@ describe("<AlertHistory />", () => {
     );
 
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group}></AlertHistory>);
+    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -94,7 +208,7 @@ describe("<AlertHistory />", () => {
     );
 
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group}></AlertHistory>);
+    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -122,7 +236,7 @@ describe("<AlertHistory />", () => {
     ] as any);
 
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group}></AlertHistory>);
+    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -151,7 +265,7 @@ describe("<AlertHistory />", () => {
     ] as any);
 
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group}></AlertHistory>);
+    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -188,7 +302,7 @@ describe("<AlertHistory />", () => {
     );
 
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group}></AlertHistory>);
+    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -211,7 +325,7 @@ describe("<AlertHistory />", () => {
     );
 
     MockAlerts(3);
-    const tree = mount(<AlertHistory group={group}></AlertHistory>);
+    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
     await act(async () => {
       await fetchMock.flush(true);
     });
@@ -329,6 +443,17 @@ describe("<AlertHistory />", () => {
       }
       g.alerts.push(alert);
     }
+    const gr = {
+      labelName: "foo",
+      labelValue: "bar",
+      alertGroups: [],
+      totalGroups: 0,
+      stateCount: {
+        active: 0,
+        suppressed: 0,
+        unprocessed: 0,
+      },
+    };
 
     it(`${testCase.title}`, async () => {
       fetchMock.resetHistory();
@@ -343,7 +468,7 @@ describe("<AlertHistory />", () => {
         }
       );
 
-      const tree = mount(<AlertHistory group={g}></AlertHistory>);
+      const tree = mount(<AlertHistory group={g} grid={gr}></AlertHistory>);
       await act(async () => {
         await fetchMock.flush(true);
       });
