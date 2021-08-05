@@ -92,7 +92,7 @@ def newMatcher(name, value, isRegex, isEqual=True):
     return {"name": name, "value": value, "isRegex": isRegex, "isEqual": isEqual}
 
 
-def newAlert(labels, annotations=None, generatorURL="http://localhost:8082/graph"):
+def newAlert(labels, annotations=None, generatorURL="http://localhost:8082/graph?foo"):
     return {
         "labels": labels,
         "annotations": annotations or {},
