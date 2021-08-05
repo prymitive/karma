@@ -10,6 +10,11 @@
 - Alert history queries didn't include grid labels as those got
   removed from alert groups in #3222, this is now fixed.
 
+### Changed
+
+- Reduced CSS bundle size by removing unused CSS rules with
+  [PurgeCSS](https://purgecss.com/).
+
 ## v0.89
 
 ### Fixed

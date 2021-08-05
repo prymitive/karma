@@ -50,14 +50,14 @@ function ReduceFilter(filter: FilterT): ReduceFilterT {
 }
 
 const ActionButton: FC<{
-  color: string;
+  colorClass: string;
   icon: IconDefinition;
   title: ReactNode;
   action: () => void;
   afterClick: () => void;
-}> = ({ color, icon, title, action, afterClick }) => (
+}> = ({ colorClass, icon, title, action, afterClick }) => (
   <button
-    className={`component-history-button btn btn-sm btn-${color}`}
+    className={`component-history-button btn btn-sm ${colorClass}`}
     onClick={() => {
       action();
       afterClick();
@@ -129,7 +129,7 @@ const HistoryMenu: FC<{
       <div className="dropdown-divider" />
       <div className="px-3 d-flex justify-content-center flex-wrap">
         <ActionButton
-          color="success"
+          colorClass="btn-success"
           icon={faSave}
           title="Save filters"
           action={() => {
@@ -140,14 +140,14 @@ const HistoryMenu: FC<{
           afterClick={afterClick}
         />
         <ActionButton
-          color="danger"
+          colorClass="btn-danger"
           icon={faUndoAlt}
           title="Reset filters"
           action={settingsStore.savedFilters.clear}
           afterClick={afterClick}
         />
         <ActionButton
-          color="secondary"
+          colorClass="btn-secondary"
           icon={faTrash}
           title="Clear history"
           action={onClear}

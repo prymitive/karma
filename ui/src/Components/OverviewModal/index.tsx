@@ -43,7 +43,7 @@ const OverviewModal: FC<{
           </div>
         </CSSTransition>
       </TooltipWrapper>
-      <Modal size="xl" isOpen={isVisible} toggleOpen={toggle}>
+      <Modal size="modal-xl" isOpen={isVisible} toggleOpen={toggle}>
         <React.Suspense
           fallback={
             <h1 className="display-1 text-placeholder p-5 m-auto">

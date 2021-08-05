@@ -10,7 +10,7 @@ import { useHotkeys } from "react-hotkeys-hook";
 import { ThemeContext } from "Components/Theme";
 
 const ModalInner: FC<{
-  size: "lg" | "xl";
+  size: "modal-lg" | "modal-xl";
   isUpper: boolean;
   toggleOpen: () => void;
 }> = ({ size, isUpper, toggleOpen, children }) => {
@@ -36,7 +36,7 @@ const ModalInner: FC<{
     <div className="modal-open">
       <div ref={ref} className="modal d-block" role="dialog">
         <div
-          className={`modal-dialog modal-${size} ${
+          className={`modal-dialog ${size} ${
             isUpper ? "modal-upper shadow" : ""
           }`}
           role="document"
@@ -49,13 +49,13 @@ const ModalInner: FC<{
 };
 
 const Modal: FC<{
-  size?: "lg" | "xl";
+  size?: "modal-lg" | "modal-xl";
   isOpen: boolean;
   isUpper?: boolean;
   toggleOpen: () => void;
   onExited?: () => void;
 }> = ({
-  size = "lg",
+  size = "modal-lg",
   isOpen,
   isUpper = false,
   toggleOpen,
