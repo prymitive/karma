@@ -170,7 +170,7 @@ const AlertGroup: FC<{
         {isCollapsed ? null : (
           <div className="card-body px-2 py-1 components-grid-alertgrid-card">
             {alertStore.settings.values.historyEnabled ? (
-              <AlertHistory group={group} />
+              <AlertHistory group={group} grid={grid} />
             ) : null}
             <ul className="list-group">
               {group.alerts

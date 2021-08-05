@@ -3,7 +3,11 @@ import { FC, useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
 import { FormatBackendURI } from "Stores/AlertStore";
-import type { APIAlertGroupT, HistoryResponseT } from "Models/APITypes";
+import type {
+  APIAlertGroupT,
+  APIGridT,
+  HistoryResponseT,
+} from "Models/APITypes";
 import { useFetchAny, UpstreamT } from "Hooks/useFetchAny";
 import { TooltipWrapper } from "Components/TooltipWrapper";
 
@@ -22,12 +26,21 @@ const GetUTCSeconds = (): number => {
   return (now.getTime() + now.getTimezoneOffset()) / 1000;
 };
 
-export const AlertHistory: FC<{ group: APIAlertGroupT }> = ({ group }) => {
+export const AlertHistory: FC<{ group: APIAlertGroupT; grid: APIGridT }> = ({
+  group,
+  grid,
+}) => {
   const [ref, inView] = useInView({ triggerOnce: true });
 
   const [lastUpdate, setLastUpdate] = useState<number>(GetUTCSeconds());
   const [upstreams, setUpstreams] = useState<UpstreamT[]>([]);
-  const [labels] = useState({ ...group.labels, ...group.shared.labels });
+  const [labels] = useState({
+    ...group.labels,
+    ...group.shared.labels,
+    ...(grid.labelName !== "" && grid.labelName[0] !== "@"
+      ? { [grid.labelName]: grid.labelValue }
+      : {}),
+  });
   const [sources] = useState(group.shared.sources);
   const { response, error } = useFetchAny<HistoryResponseT>(upstreams);
   const [cachedResponse, setCachedResponse] = useState<HistoryResponseT | null>(
