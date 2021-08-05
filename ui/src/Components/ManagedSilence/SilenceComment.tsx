@@ -80,7 +80,7 @@ const SilenceComment: FC<{
               counter={alertCount}
               themed={false}
               alwaysVisible={alertCountAlwaysVisible}
-              defaultColor="primary"
+              defaultColor="bg-primary"
               isAppend={false}
             />
             <span className="badge components-label with-click">

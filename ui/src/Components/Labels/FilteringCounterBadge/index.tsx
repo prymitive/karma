@@ -20,7 +20,7 @@ const FilteringCounterBadge: FC<{
   counter: number;
   themed: boolean;
   alwaysVisible?: boolean;
-  defaultColor?: "light" | "primary";
+  defaultColor?: "bg-light" | "bg-primary";
   isAppend?: boolean;
 }> = ({
   alertStore,
@@ -29,7 +29,7 @@ const FilteringCounterBadge: FC<{
   counter,
   themed,
   alwaysVisible = false,
-  defaultColor = "light",
+  defaultColor = "bg-light",
   isAppend = true,
 }) => {
   const { ref, props } = useFlashTransition(counter);
@@ -72,7 +72,7 @@ const FilteringCounterBadge: FC<{
             themed
               ? cs.className
               : [
-                  `bg-${defaultColor}`,
+                  `${defaultColor}`,
                   "rounded-pill components-label-with-hover",
                   ...cs.baseClassNames,
                 ].join(" ")

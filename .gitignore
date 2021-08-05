@@ -2,6 +2,7 @@
 /karma
 /karma-*
 /ui/build
+/ui/build.pre
 /ui/coverage
 /ui/node_modules
 /ui/.eslintcache

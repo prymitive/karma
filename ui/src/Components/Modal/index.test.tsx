@@ -34,7 +34,7 @@ describe("<ModalInner />", () => {
       })
     );
     const tree = mount(
-      <ModalInner size="lg" isUpper toggleOpen={fakeToggle} />
+      <ModalInner size="modal-lg" isUpper toggleOpen={fakeToggle} />
     );
     tree.setProps({ isUpper: false });
     tree.setProps({ isUpper: true });

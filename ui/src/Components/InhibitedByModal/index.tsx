@@ -33,7 +33,7 @@ const InhibitedByModal: FC<{
           <FontAwesomeIcon className="text-success" icon={faVolumeMute} />
         </span>
       </TooltipWrapper>
-      <Modal size="lg" isOpen={isVisible} toggleOpen={toggle}>
+      <Modal size="modal-lg" isOpen={isVisible} toggleOpen={toggle}>
         <React.Suspense
           fallback={
             <h1 className="display-1 text-placeholder p-5 m-auto">
