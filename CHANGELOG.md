@@ -7,6 +7,8 @@
 - Alert history will now correctly handle Prometheus servers with
   `--web.external-url` containing sub-uri, see
   [#3387](https://github.com/prymitive/karma/issues/3387)
+- Alert history queries didn't include grid labels as those got
+  removed from alert groups in #3222, this is now fixed.
 
 ## v0.89
 
