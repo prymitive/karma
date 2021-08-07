@@ -99,6 +99,7 @@ $input-range-thumb-font-color: $white;
 
 $color-default: #708090;
 
+@import "./BootstrapRoot.scss";
 @import "./Components";
 
 .badge,

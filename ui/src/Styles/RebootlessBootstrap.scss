@@ -1,11 +1,14 @@
+// Configuration
 @import "bootstrap/scss/functions";
 @import "bootstrap/scss/variables";
 @import "bootstrap/scss/mixins";
 @import "bootstrap/scss/utilities";
+
+// Layout & components
 //@import "bootstrap/scss/root";
 //@import "bootstrap/scss/reboot";
 //@import "bootstrap/scss/type";
-//@import "bootstrap/scss/images";
+@import "bootstrap/scss/images";
 @import "bootstrap/scss/containers";
 @import "bootstrap/scss/grid";
 @import "bootstrap/scss/tables";
@@ -18,19 +21,24 @@
 @import "bootstrap/scss/navbar";
 @import "bootstrap/scss/card";
 @import "bootstrap/scss/accordion";
-//@import "bootstrap/scss/breadcrumb";
+@import "bootstrap/scss/breadcrumb";
 @import "bootstrap/scss/pagination";
 @import "bootstrap/scss/badge";
 @import "bootstrap/scss/alert";
 @import "bootstrap/scss/progress";
 @import "bootstrap/scss/list-group";
 @import "bootstrap/scss/close";
-//@import "bootstrap/scss/toasts";
+@import "bootstrap/scss/toasts";
 @import "bootstrap/scss/modal";
 @import "bootstrap/scss/tooltip";
-//@import "bootstrap/scss/popover";
-//@import "bootstrap/scss/carousel";
-//@import "bootstrap/scss/spinners";
-//@import "bootstrap/scss/offcanvas";
+@import "bootstrap/scss/popover";
+@import "bootstrap/scss/carousel";
+@import "bootstrap/scss/spinners";
+@import "bootstrap/scss/offcanvas";
+@import "bootstrap/scss/placeholders";
+
+// Helpers
 @import "bootstrap/scss/helpers";
+
+// Utilities
 @import "bootstrap/scss/utilities/api";
