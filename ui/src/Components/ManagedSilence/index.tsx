@@ -52,7 +52,7 @@ const ManagedSilence: FC<{
 
   return (
     <div className="card my-1 components-managed-silence">
-      <div className="card-header rounded-0 border-bottom-0 px-3">
+      <div className="card-header rounded-0 border-bottom-0 px-2">
         <SilenceComment
           alertStore={alertStore}
           cluster={cluster}
@@ -64,7 +64,7 @@ const ManagedSilence: FC<{
         />
       </div>
       {showDetails ? (
-        <div className="card-body pt-0">
+        <div className="card-body pt-0 px-2">
           <SilenceDetails
             cluster={cluster}
             silence={silence}

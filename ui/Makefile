@@ -24,6 +24,7 @@ $(NODE_PATH)/%: $(NODE_INSTALL)
 
 build/index.html: $(NODE_INSTALL) $(NODE_PATH)/react-scripts $(call rwildcard, public src, *) purgecss.config.js
 	@rm -fr node_modules/.cache/eslint-loader
+	cat node_modules/bootstrap/scss/_root.scss | sed s/':root {'/'* {'/ > src/Styles/BootstrapRoot.scss
 	npm run build
 
 .PHONY: build
@@ -58,11 +59,12 @@ build/stats.json: build
 .PHONY: backup-css
 backup-css:
 	mkdir -p build.pre/static
+	rm -fr build.pre/static/*
 	cp -R build/static/css build.pre/static/css
 
 build.pre/css.diff: build purgecss.config.js
 	npx prettier -w build.pre/static/css/*.css build/static/css/*.css
-	diff -uN build.pre/static/css build/static/css > build.pre/css.diff || echo
+	diff -uNr build.pre/static/css build/static/css > build.pre/css.diff || echo
 
 .PHONY: npm-upgrade
 npm-upgrade:
