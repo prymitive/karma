@@ -93,7 +93,7 @@ describe("<ErrorBoundary />", () => {
   it("calls window.location.reload after 60s", () => {
     const reloadSpy = jest.spyOn(global.window.location, "reload");
     MountedFailingComponent();
-    jest.runTimersToTime(1000 * 61);
+    jest.advanceTimersByTime(1000 * 61);
     expect(reloadSpy).toHaveBeenCalled();
     expect(consoleSpy).toHaveBeenCalled();
   });
@@ -104,15 +104,15 @@ describe("<ErrorBoundary />", () => {
     (tree as any)
       .instance()
       .componentDidCatch(new Error("foo"), { componentStack: "bar" });
-    jest.runTimersToTime(1000 * 10);
+    jest.advanceTimersByTime(1000 * 10);
     (tree as any)
       .instance()
       .componentDidCatch(new Error("foo"), { componentStack: "bar" });
-    jest.runTimersToTime(1000 * 5);
+    jest.advanceTimersByTime(1000 * 5);
     (tree as any)
       .instance()
       .componentDidCatch(new Error("foo"), { componentStack: "bar" });
-    jest.runTimersToTime(1000 * 5);
+    jest.advanceTimersByTime(1000 * 5);
     (tree as any)
       .instance()
       .componentDidCatch(new Error("foo"), { componentStack: "bar" });

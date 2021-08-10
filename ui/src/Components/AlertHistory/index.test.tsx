@@ -273,14 +273,14 @@ describe("<AlertHistory />", () => {
 
     await act(async () => {
       advanceBy(1000 * 299);
-      jest.runTimersToTime(1000 * 299);
+      jest.advanceTimersByTime(1000 * 299);
       await fetchMock.flush(true);
     });
     expect(fetchMock.calls()).toHaveLength(1);
 
     await act(async () => {
       advanceBy(1000 * 2);
-      jest.runTimersToTime(1000 * 2);
+      jest.advanceTimersByTime(1000 * 2);
       await fetchMock.flush(true);
     });
     expect(fetchMock.calls()).toHaveLength(2);

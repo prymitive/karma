@@ -122,7 +122,7 @@ describe("<IdleTimer />", () => {
     global.window.innerWidth = 500;
     const tree = MountedNavbar();
     act(() => {
-      jest.runTimersToTime(MobileIdleTimeout + 1000);
+      jest.advanceTimersByTime(MobileIdleTimeout + 1000);
     });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(false);
@@ -133,7 +133,7 @@ describe("<IdleTimer />", () => {
     global.window.innerWidth = 769;
     const tree = MountedNavbar();
     act(() => {
-      jest.runTimersToTime(DesktopIdleTimeout + 1000);
+      jest.advanceTimersByTime(DesktopIdleTimeout + 1000);
     });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(false);
@@ -145,7 +145,7 @@ describe("<IdleTimer />", () => {
     const tree = MountedNavbar();
     act(() => {
       alertStore.filters.addFilter("cluster=dev");
-      jest.runTimersToTime(MobileIdleTimeout + 1000);
+      jest.advanceTimersByTime(MobileIdleTimeout + 1000);
     });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
@@ -157,7 +157,7 @@ describe("<IdleTimer />", () => {
     const tree = MountedNavbar();
     act(() => {
       alertStore.filters.addFilter("cluster=dev");
-      jest.runTimersToTime(DesktopIdleTimeout + 1000);
+      jest.advanceTimersByTime(DesktopIdleTimeout + 1000);
     });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
@@ -169,7 +169,7 @@ describe("<IdleTimer />", () => {
     const tree = MountedNavbar();
     act(() => {
       alertStore.filters.addFilter("cluster=dev");
-      jest.runTimersToTime(MobileIdleTimeout + 1000);
+      jest.advanceTimersByTime(MobileIdleTimeout + 1000);
     });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
@@ -177,7 +177,7 @@ describe("<IdleTimer />", () => {
 
     alertStore.filters.applyAllFilters();
     act(() => {
-      jest.runTimersToTime(MobileIdleTimeout + 1000);
+      jest.advanceTimersByTime(MobileIdleTimeout + 1000);
     });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(false);
@@ -189,7 +189,7 @@ describe("<IdleTimer />", () => {
     const tree = MountedNavbar();
     act(() => {
       alertStore.filters.addFilter("cluster=dev");
-      jest.runTimersToTime(DesktopIdleTimeout + 1000);
+      jest.advanceTimersByTime(DesktopIdleTimeout + 1000);
     });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
@@ -197,7 +197,7 @@ describe("<IdleTimer />", () => {
 
     alertStore.filters.applyAllFilters();
     act(() => {
-      jest.runTimersToTime(DesktopIdleTimeout + 1000);
+      jest.advanceTimersByTime(DesktopIdleTimeout + 1000);
     });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(false);
@@ -208,7 +208,7 @@ describe("<IdleTimer />", () => {
     const tree = MountedNavbar();
 
     act(() => {
-      jest.runTimersToTime(DesktopIdleTimeout + 1000);
+      jest.advanceTimersByTime(DesktopIdleTimeout + 1000);
     });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(false);
@@ -228,7 +228,7 @@ describe("<IdleTimer />", () => {
   it("body padding-top is 0px when navbar is hidden", () => {
     const tree = MountedNavbar();
     act(() => {
-      jest.runTimersToTime(DesktopIdleTimeout + 1000);
+      jest.advanceTimersByTime(DesktopIdleTimeout + 1000);
     });
     tree.update();
     expect(
@@ -242,7 +242,7 @@ describe("<IdleTimer />", () => {
     settingsStore.filterBarConfig.setAutohide(false);
     const tree = MountedNavbar();
     act(() => {
-      jest.runTimersToTime(1000 * 3600);
+      jest.advanceTimersByTime(1000 * 3600);
     });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
@@ -254,7 +254,7 @@ describe("<IdleTimer />", () => {
     const tree = MountedNavbar();
     alertStore.status.pause();
     act(() => {
-      jest.runTimersToTime(1000 * 3600);
+      jest.advanceTimersByTime(1000 * 3600);
     });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
@@ -267,7 +267,7 @@ describe("<IdleTimer />", () => {
 
     act(() => {
       alertStore.status.pause();
-      jest.runTimersToTime(1000 * 3600);
+      jest.advanceTimersByTime(1000 * 3600);
     });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(true);
@@ -275,11 +275,11 @@ describe("<IdleTimer />", () => {
 
     act(() => {
       alertStore.status.resume();
-      jest.runTimersToTime(1000 * 60 * 3 + 1000);
+      jest.advanceTimersByTime(1000 * 60 * 3 + 1000);
     });
     tree.update();
     act(() => {
-      jest.runTimersToTime(1000);
+      jest.advanceTimersByTime(1000);
     });
     tree.update();
     expect(tree.find(".container").hasClass("visible")).toBe(false);
