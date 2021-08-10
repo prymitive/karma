@@ -54,6 +54,7 @@ jobs:
         uses: codecov/codecov-action@v2.0.2
         with:
           flags: backend
+          files: ./coverage.txt
 
   lint-go:
     name: Lint Go code
@@ -131,6 +132,7 @@ jobs:
         uses: codecov/codecov-action@v2.0.2
         with:
           flags: ui
+          directory: ./ui/coverage
 
   lint-js:
     name: Lint JS code
