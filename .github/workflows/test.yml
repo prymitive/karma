@@ -102,26 +102,12 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.5.1
-
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
           node-version: 14.17.5
-
-      - name: Cache NPM modules
-        id: cache-npm
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-main-npm-
-
-      - name: Fetch all NPM dependencies
-        if: steps.cache-npm.outputs.cache-hit != 'true'
-        run: make -C ui npm-fetch
+          cache: 'npm'
+          cache-dependency-path: 'ui/package-lock.json'
 
       - name: Test Node JS code
         run: ${{ matrix.env }} make -C ui test-js
@@ -141,26 +127,12 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.5.1
-
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
           node-version: 14.17.5
-
-      - name: Cache NPM modules
-        id: cache-npm
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-main-npm-
-
-      - name: Fetch all NPM dependencies
-        if: steps.cache-npm.outputs.cache-hit != 'true'
-        run: make -C ui npm-fetch
+          cache: 'npm'
+          cache-dependency-path: 'ui/package-lock.json'
 
       - name: Lint Node JS code
         run: make -C ui lint-js
@@ -190,26 +162,12 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.5.1
-
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
           node-version: 14.17.5
-
-      - name: Cache NPM modules
-        id: cache-npm
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-main-npm-
-
-      - name: Fetch all NPM dependencies
-        if: steps.cache-npm.outputs.cache-hit != 'true'
-        run: make -C ui npm-fetch
+          cache: 'npm'
+          cache-dependency-path: 'ui/package-lock.json'
 
       - name: Lint Node JS code
         run: make -C ui format
@@ -357,9 +315,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.5.1
-
       - name: Get modified files
         uses: tony84727/changed-file-filter@v0.1.0
         id: filter
@@ -372,19 +327,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14.17.5
-
-      - name: Cache NPM modules
-        id: cache-npm
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-main-npm-
-
-      - name: Fetch all NPM dependencies
-        if: steps.cache-npm.outputs.cache-hit != 'true'
-        run: make -C ui npm-fetch
+          cache: 'npm'
+          cache-dependency-path: 'ui/package-lock.json'
 
       - name: Diff bundle size
         if: steps.filter.outputs.ui == 'true'
@@ -402,9 +346,6 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v2
 
-      - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.5.1
-
       - name: Get modified files
         uses: tony84727/changed-file-filter@v0.1.0
         id: filter
@@ -419,19 +360,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14.17.5
-
-      - name: Cache NPM modules
-        id: cache-npm
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-main-npm-
-
-      - name: Fetch all NPM dependencies
-        if: steps.cache-npm.outputs.cache-hit != 'true'
-        run: make -C ui npm-fetch
+          cache: 'npm'
+          cache-dependency-path: 'ui/package-lock.json'
 
       - name: Run Percy
         if: steps.filter.outputs.percy == 'true'
@@ -450,9 +380,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.5.1
-
       - name: Set up Go
         uses: actions/setup-go@v2
         with:
@@ -462,17 +389,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14.17.5
-
-      - name: Cache Go modules and build cache
-        uses: actions/cache@v2
-        with:
-          path: |
-            ~/go/pkg/mod
-            ~/.cache/go-build
-            ~/.npm
-          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-cc-${{ hashFiles('**/go.sum') }}
-          restore-keys: |
-            ${{ runner.os }}-main-go-cc-
+          cache: 'npm'
+          cache-dependency-path: 'ui/package-lock.json'
 
       - name: Cross compile binaries
         run: make crosscompile -j 2
@@ -587,13 +505,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set git slug envs
-        uses: rlespinasse/github-slug-action@3.5.1
-
       - name: Set up Node JS
         uses: actions/setup-node@v2
         with:
           node-version: 14.17.5
+          cache: 'npm'
+          cache-dependency-path: 'ui/e2e/package-lock.json'
 
       - name: Install Heroku CLI
         run: curl -s --connect-timeout 30 --fail https://cli-assets.heroku.com/install.sh | sh
