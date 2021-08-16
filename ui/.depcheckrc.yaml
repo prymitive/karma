@@ -12,6 +12,7 @@ ignores:
   # devDeps
   - "@types/jest"
   - "@types/node"
+  - "@percy/cli"
   - "@percy/storybook"
   - "@storybook/preset-create-react-app"
   - "purgecss"
