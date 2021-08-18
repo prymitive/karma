@@ -405,6 +405,65 @@ func TestAlertHistory(t *testing.T) {
 				},
 			},
 		},
+		{
+			mocks: []mock{
+				{
+					method: "GET",
+					uri:    regexp.MustCompile("^http://localhost:9100/api/v1/labels"),
+					responder: httpmock.NewJsonResponderOrPanic(200, prometheusAPIV1Labels{
+						Status: "success",
+						Data:   []string{"alertname", "instance", "job"},
+					}),
+				},
+				{
+					method: "POST",
+					uri:    regexp.MustCompile("^http://localhost:9100/api/v1/query_range"),
+					responder: httpmock.NewJsonResponderOrPanic(200, prometheusAPIV1QueryRange{
+						Status: "success",
+						Data: generateV1Matrix(
+							[]seriesValues{
+								{
+									metric: model.Metric{
+										"alertname": "Fake Alert",
+									},
+									values: generateIntSlice(0, 1, 24),
+								},
+							}, time.Hour),
+					}),
+				},
+			},
+			config: cfg{
+				enabled: true,
+				timeout: time.Second * 5,
+				workers: 5,
+				rewrite: []config.HistoryRewrite{
+					{
+						SourceRegex: regex.MustCompileAnchored("http://(.+):1111"),
+						URI:         "http://$1:9100",
+					},
+					{
+						SourceRegex: regex.MustCompileAnchored("foo"),
+						URI:         "",
+					},
+					{
+						SourceRegex: regex.MustCompileAnchored("http://(.+):909[0-9]"),
+						URI:         "http://$1:9100",
+					},
+				},
+			},
+			queries: []historyQuery{
+				{
+					payload: generateHistoryPayload(AlertHistoryPayload{
+						Sources: []string{"http://localhost:9090/", "http://localhost:9091/", "http://localhost:1111/"},
+						Labels:  map[string]string{"alertname": "Fake Alert", "cluster": "prod"},
+					}),
+					code: 200,
+					response: AlertHistoryResponse{
+						Samples: generateHistorySamples(generateIntSlice(0, 3, 24), time.Hour),
+					},
+				},
+			},
+		},
 	}
 
 	defer func() {

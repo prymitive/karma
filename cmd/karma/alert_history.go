@@ -235,6 +235,8 @@ func hashQuery(uri string, labels map[string]string) string {
 }
 
 func rewriteSource(rules []config.HistoryRewrite, uri string) string {
+	// trim trailing / to ensure all URIs are without a /
+	uri = strings.TrimSuffix(uri, "/")
 	for _, rule := range rules {
 		if !rule.SourceRegex.MatchString(uri) {
 			continue
