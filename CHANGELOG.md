@@ -1,5 +1,12 @@
 # Changelog
 
+## [unreleased]
+
+### Fixed
+
+- Alert history rewrite rule wouldn't work unless they had a `/` suffix in
+  `source` field, this is now fixed and rewrite rules works as documented.
+
 ## v0.90
 
 ### Fixed
