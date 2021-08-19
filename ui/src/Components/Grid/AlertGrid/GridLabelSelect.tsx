@@ -169,7 +169,7 @@ const GridLabelSelect: FC<{
           )}
         </Reference>
         <DropdownSlide in={isVisible} unmountOnExit>
-          <Popper modifiers={CommonPopperModifiers}>
+          <Popper placement="bottom" modifiers={CommonPopperModifiers}>
             {({ placement, ref, style }) => (
               <Dropdown
                 popperPlacement={placement}
