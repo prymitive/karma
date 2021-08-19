@@ -20,4 +20,10 @@ export const CommonPopperModifiers = [
       roundOffsets: true,
     },
   },
+  {
+    name: "flip",
+    options: {
+      fallbackPlacements: [],
+    },
+  },
 ];

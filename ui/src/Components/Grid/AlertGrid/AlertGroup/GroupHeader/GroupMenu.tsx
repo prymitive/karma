@@ -188,7 +188,7 @@ const GroupMenu: FC<{
           )}
         </Reference>
         <DropdownSlide in={!isHidden} unmountOnExit>
-          <Popper placement="bottom-start" modifiers={PopperModifiers}>
+          <Popper placement="bottom" modifiers={PopperModifiers}>
             {({ placement, ref, style }) => (
               <MenuContent
                 popperPlacement={placement}
