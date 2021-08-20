@@ -27,7 +27,8 @@ type AlertmanagerConfig struct {
 		CA                 string
 		Cert               string
 		Key                string
-		InsecureSkipVerify bool `yaml:"insecureSkipVerify" koanf:"insecureSkipVerify"`
+		ServerName         string `yaml:"serverName" koanf:"serverName"`
+		InsecureSkipVerify bool   `yaml:"insecureSkipVerify" koanf:"insecureSkipVerify"`
 	}
 	Headers     map[string]string
 	CORS        AlertmanagerCORS        `yaml:"cors" koanf:"cors"`

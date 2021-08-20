@@ -39,8 +39,12 @@ func configureTLSClientCert(tlsConfig *tls.Config, certPath, keyPath string) err
 
 // NewHTTPTransport handles the logic of creating a http.RoundTripper instance
 // with properl tls.Config setup
-func NewHTTPTransport(caPath, certPath, keyPath string, insecureSkipVerify bool) (http.RoundTripper, error) {
+func NewHTTPTransport(caPath, certPath, keyPath string, insecureSkipVerify bool, serverName string) (http.RoundTripper, error) {
 	tlsConfig := &tls.Config{InsecureSkipVerify: insecureSkipVerify}
+
+	if serverName != "" {
+		tlsConfig.ServerName = serverName
+	}
 
 	if caPath != "" {
 		err := configureTLSRootCAs(tlsConfig, caPath)

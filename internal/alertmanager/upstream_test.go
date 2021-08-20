@@ -119,7 +119,7 @@ func TestOptions(t *testing.T) {
 		var httpTransport http.RoundTripper
 		var err error
 		if tc.config.TLS.CA != "" || tc.config.TLS.Cert != "" || tc.config.TLS.InsecureSkipVerify {
-			httpTransport, err = NewHTTPTransport(tc.config.TLS.CA, tc.config.TLS.Cert, tc.config.TLS.Key, tc.config.TLS.InsecureSkipVerify)
+			httpTransport, err = NewHTTPTransport(tc.config.TLS.CA, tc.config.TLS.Cert, tc.config.TLS.Key, tc.config.TLS.InsecureSkipVerify, "")
 			if err != nil {
 				t.Errorf("Failed to create HTTP transport for Alertmanager '%s' with URI '%s': %s", tc.config.Name, tc.config.URI, err)
 			}
