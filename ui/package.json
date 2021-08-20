@@ -83,7 +83,7 @@
     "diffable-html": "4.1.0",
     "enzyme": "3.11.0",
     "eslint-config-prettier": "8.3.0",
-    "eslint-plugin-prettier": "3.4.0",
+    "eslint-plugin-prettier": "3.4.1",
     "fetch-mock": "9.11.0",
     "jest-canvas-mock": "2.3.1",
     "jest-date-mock": "1.0.8",
