@@ -55,7 +55,7 @@
     "typeface-open-sans": "1.1.13"
   },
   "devDependencies": {
-    "@percy/cli": "1.0.0-beta.66",
+    "@percy/cli": "1.0.0-beta.67",
     "@percy/storybook": "4.0.1",
     "@storybook/preset-create-react-app": "3.2.0",
     "@storybook/react": "6.3.7",
