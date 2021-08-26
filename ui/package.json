@@ -56,7 +56,7 @@
   },
   "devDependencies": {
     "@percy/cli": "1.0.0-beta.67",
-    "@percy/storybook": "4.0.1",
+    "@percy/storybook": "4.0.2",
     "@storybook/preset-create-react-app": "3.2.0",
     "@storybook/react": "6.3.7",
     "@testing-library/react-hooks": "7.0.1",
