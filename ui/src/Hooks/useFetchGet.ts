@@ -119,7 +119,8 @@ const useFetchGet = <T>(
     } catch (error) {
       setResponse((r) => ({
         ...r,
-        error: error.message,
+        error:
+          error instanceof Error ? error.message : `unknown error: ${error}`,
         isLoading: false,
         isRetrying: false,
       }));

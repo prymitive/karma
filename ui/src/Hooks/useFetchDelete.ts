@@ -45,7 +45,9 @@ const useFetchDelete = (
         }
       } catch (error) {
         if (!isCancelled) {
-          setError(error.message);
+          setError(
+            error instanceof Error ? error.message : `unknown error: ${error}`
+          );
           setIsDeleting(false);
         }
       }
