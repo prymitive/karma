@@ -20,6 +20,9 @@ describe("useFetchGet", () => {
     fetchMock.mock("http://localhost/error", {
       throws: new TypeError("failed to fetch"),
     });
+    fetchMock.mock("http://localhost/unknown", {
+      throws: "foo",
+    });
   });
 
   beforeEach(() => {
@@ -203,6 +206,27 @@ describe("useFetchGet", () => {
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe("failed to fetch");
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isRetrying).toBe(false);
+  });
+
+  it("error is updated after unknown error", async () => {
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useFetchGet<string>("http://localhost/unknown")
+    );
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe(null);
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.isRetrying).toBe(false);
+
+    for (let i = 0; i <= FetchRetryConfig.retries; i++) {
+      jest.runOnlyPendingTimers();
+      await waitForNextUpdate();
+    }
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe("unknown error: foo");
     expect(result.current.isLoading).toBe(false);
     expect(result.current.isRetrying).toBe(false);
   });

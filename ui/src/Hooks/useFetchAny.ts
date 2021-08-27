@@ -107,7 +107,10 @@ const useFetchAny = <T>(
           } else {
             setResponse({
               response: null,
-              error: error.message,
+              error:
+                error instanceof Error
+                  ? error.message
+                  : `unknown error: ${error}`,
               responseURI: null,
               inProgress: false,
             });
