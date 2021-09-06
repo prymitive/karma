@@ -33,7 +33,7 @@ require (
 	github.com/rogpeppe/go-internal v1.8.0
 	github.com/rs/zerolog v1.24.0
 	github.com/spf13/pflag v1.0.5
-	go.mongodb.org/mongo-driver v1.7.1 // indirect
+	go.mongodb.org/mongo-driver v1.7.2 // indirect
 	go.uber.org/automaxprocs v1.4.0
 	golang.org/x/net v0.0.0-20210813160813-60bc85c4be6d // indirect
 	golang.org/x/sys v0.0.0-20210816183151-1e6c022a8912 // indirect
