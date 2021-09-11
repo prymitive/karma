@@ -84,6 +84,7 @@ const MatchersFromGroup = (
 ): MatcherWithIDT[] => {
   const matchers: MatcherWithIDT[] = [];
 
+  const allLabels: { [key: string]: string[] } = {};
   for (const [state, labels] of Object.entries(group.allLabels)) {
     if (onlyActive === true && state !== "active") {
       continue;
@@ -91,14 +92,19 @@ const MatchersFromGroup = (
     for (const [key, values] of Object.entries(labels).filter(
       ([key, _]) => !stripLabels.includes(key)
     )) {
-      matchers.push({
-        id: uniqueId(),
-        name: key,
-        values: values.map((value) => StringToOption(value)),
-        isRegex: values.length > 1,
-        isEqual: true,
-      });
+      allLabels[key] = Array.from(
+        new Set([...(allLabels[key] || []), ...values])
+      );
     }
+  }
+  for (const [key, values] of Object.entries(allLabels)) {
+    matchers.push({
+      id: uniqueId(),
+      name: key,
+      values: values.map((value) => StringToOption(value)),
+      isRegex: values.length > 1,
+      isEqual: true,
+    });
   }
 
   return matchers;

@@ -132,6 +132,12 @@ describe("SilenceFormStore.data", () => {
       instance: ["dev1", "prod1", "prod2"],
       cluster: ["dev", "prod"],
     };
+    group.allLabels.suppressed = {
+      alertname: ["FakeAlert"],
+      job: ["mock"],
+      instance: ["dev2", "dev3", "dev4"],
+      cluster: ["dev"],
+    };
     store.data.fillMatchersFromGroup(
       group,
       [],
@@ -162,6 +168,9 @@ describe("SilenceFormStore.data", () => {
           { label: "dev1", value: "dev1" },
           { label: "prod1", value: "prod1" },
           { label: "prod2", value: "prod2" },
+          { label: "dev2", value: "dev2" },
+          { label: "dev3", value: "dev3" },
+          { label: "dev4", value: "dev4" },
         ],
         isRegex: true,
       })
