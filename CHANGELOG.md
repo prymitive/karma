@@ -6,6 +6,8 @@
 
 - Alert history rewrite rule wouldn't work unless they had a `/` suffix in
   `source` field, this is now fixed and rewrite rules works as documented.
+- Clicking `Silence this group` could generate duplicated label matchers
+  #3509.
 
 ## v0.90
 
