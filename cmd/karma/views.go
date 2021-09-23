@@ -315,10 +315,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 					perGridAlertGroup[alertGridLabelValue] = agCopy
 				}
 
-				stateCount := map[string]int{}
-				for _, s := range models.AlertStateList {
-					stateCount[s] = 0
-				}
+				stateCount := newStateCount()
 				switch gridLabel {
 				case "@alertmanager":
 					ams := []models.AlertmanagerInstance{}
@@ -344,13 +341,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 
-				if stateCount[models.AlertStateActive] > 0 {
-					alert.State = models.AlertStateActive
-				} else if stateCount[models.AlertStateSuppressed] > 0 {
-					alert.State = models.AlertStateSuppressed
-				} else {
-					alert.State = models.AlertStateUnprocessed
-				}
+				alert.State = stateFromStateCount(stateCount)
 
 				agCopy.Alerts = append(agCopy.Alerts, alert)
 
@@ -800,6 +791,14 @@ func counters(w http.ResponseWriter, r *http.Request) {
 	for _, ag := range filtered {
 		total += len(ag.Alerts)
 		for _, alert := range ag.Alerts {
+			alert := alert
+
+			stateCount := newStateCount()
+			for _, am := range alert.Alertmanager {
+				stateCount[am.State]++
+			}
+			alert.State = stateFromStateCount(stateCount)
+
 			if len(upstreams.Clusters) > 1 {
 				clusters := map[string]struct{}{}
 				for _, am := range alert.Alertmanager {
