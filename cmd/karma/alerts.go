@@ -394,3 +394,21 @@ func filterAlerts(dedupedAlerts []models.AlertGroup, fl []filters.FilterT) (filt
 
 	return
 }
+
+func newStateCount() map[string]int {
+	stateCount := map[string]int{}
+	for _, s := range models.AlertStateList {
+		stateCount[s] = 0
+	}
+	return stateCount
+}
+
+func stateFromStateCount(stateCount map[string]int) string {
+	if stateCount[models.AlertStateActive] > 0 {
+		return models.AlertStateActive
+	} else if stateCount[models.AlertStateSuppressed] > 0 {
+		return models.AlertStateSuppressed
+	} else {
+		return models.AlertStateUnprocessed
+	}
+}

@@ -1,5 +1,11 @@
 # Changelog
 
+## [unreleased]
+
+### Fixed
+
+- Overview modal could show incorrect counters for `@state` labels.
+
 ## v0.91
 
 ### Fixed
