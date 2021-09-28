@@ -26,6 +26,9 @@ func testReadConfig(t *testing.T) {
   header:
     name: ""
     value_re: ""
+    group_name: ""
+    group_value_re: ""
+    group_value_separator: ""
   basicAuth:
     users: []
 authorization:

@@ -118,7 +118,14 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 	}
 	if config.Config.Authentication.Header.Name != "" {
 		config.Config.Authentication.Enabled = true
-		router.Use(headerAuth(config.Config.Authentication.Header.Name, config.Config.Authentication.Header.ValueRegex, allowAuthBypass))
+		router.Use(headerAuth(
+			config.Config.Authentication.Header.Name,
+			config.Config.Authentication.Header.ValueRegex,
+			config.Config.Authentication.Header.GroupName,
+			config.Config.Authentication.Header.GroupValueRegex,
+			config.Config.Authentication.Header.GroupValueSeparator,
+			allowAuthBypass,
+		))
 	} else if len(config.Config.Authentication.BasicAuth.Users) > 0 {
 		config.Config.Authentication.Enabled = true
 		users := map[string]string{}

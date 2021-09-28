@@ -61,6 +61,14 @@ authentication:
   group will be used as the silence form author field.
   All regexes are anchored.
   This option must be set when `authentication:users:header:name` is set.
+- `authentication:users:header:group_name` - name of the header that will
+  contain any groups the user has.
+- `authentication:users:header:group_value_re` - Similar to
+  `authentication:users:header:value_re`, but for groups instead of usernames.
+  Must be set when `authentication:users:header:group_name` is set.
+- `authentication:users:header:group_value_separator` - If set, this will be
+  used to split the group header to multiple group names. The split is done
+  before evaluating the value regex. Optional.
 - `authentication:users` - list of users (username & password) allowed to login.
   Passwords are stored plain without any encryption.
   When set HTTP basic authentication will be used.
