@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"net/http"
+	"strings"
 
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/regex"
@@ -21,7 +22,7 @@ func userGroups(username string) []string {
 	return groups
 }
 
-func headerAuth(name, valueRegex string, allowBypass []string) func(next http.Handler) http.Handler {
+func headerAuth(name, valueRegex, groupName, groupValueRegex, groupValueSeparator string, allowBypass []string) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			if slices.StringInSlice(allowBypass, r.URL.Path) {
@@ -38,16 +39,33 @@ func headerAuth(name, valueRegex string, allowBypass []string) func(next http.Ha
 
 			reg := regex.MustCompileAnchored(valueRegex)
 			matches := reg.FindAllStringSubmatch(user, 1)
-			if len(matches) > 0 && len(matches[0]) > 1 {
-				userName := matches[0][1]
-				ctx := context.WithValue(r.Context(), authUserKey("user"), userName)
-				ctx = context.WithValue(ctx, authUserKey("groups"), userGroups(userName))
-				next.ServeHTTP(w, r.WithContext(ctx))
+			if len(matches) == 0 || len(matches[0]) <= 1 {
+				w.WriteHeader(http.StatusUnauthorized)
+				_, _ = w.Write([]byte("Access denied\n"))
 				return
 			}
-			w.WriteHeader(http.StatusUnauthorized)
-			_, _ = w.Write([]byte("Access denied\n"))
 
+			userName := matches[0][1]
+			groups := userGroups(userName)
+
+			if groupName != "" {
+				rawGroups := []string{r.Header.Get(groupName)}
+				if groupValueSeparator != "" {
+					rawGroups = strings.Split(rawGroups[0], groupValueSeparator)
+				}
+
+				groupRegex := regex.MustCompileAnchored(groupValueRegex)
+				for _, group := range rawGroups {
+					groupMatches := groupRegex.FindAllStringSubmatch(group, 1)
+					if len(groupMatches) != 0 && len(groupMatches[0]) > 1 {
+						groups = append(groups, groupMatches[0][1])
+					}
+				}
+			}
+
+			ctx := context.WithValue(r.Context(), authUserKey("user"), userName)
+			ctx = context.WithValue(ctx, authUserKey("groups"), groups)
+			next.ServeHTTP(w, r.WithContext(ctx))
 		})
 	}
 }

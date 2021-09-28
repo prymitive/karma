@@ -68,8 +68,11 @@ type configSchema struct {
 	Authentication struct {
 		Enabled bool `yaml:"-" koanf:"-"`
 		Header  struct {
-			Name       string
-			ValueRegex string `yaml:"value_re" koanf:"value_re"`
+			Name                string
+			ValueRegex          string `yaml:"value_re" koanf:"value_re"`
+			GroupName           string `yaml:"group_name" koanf:"group_name"`
+			GroupValueRegex     string `yaml:"group_value_re" koanf:"group_value_re"`
+			GroupValueSeparator string `yaml:"group_value_separator" koanf:"group_value_separator"`
 		}
 		BasicAuth struct {
 			Users []AuthenticationUser
