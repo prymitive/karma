@@ -49,7 +49,7 @@
     "react-media-hook": "0.4.9",
     "react-popper": "2.2.5",
     "react-range": "1.8.11",
-    "react-select": "4.3.1",
+    "react-select": "5.0.0",
     "react-transition-group": "4.4.2",
     "semver": "7.3.5",
     "typeface-open-sans": "1.1.13"
