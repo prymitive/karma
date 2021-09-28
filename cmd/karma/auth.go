@@ -39,7 +39,9 @@ func headerAuth(name, valueRegex string, allowBypass []string) func(next http.Ha
 			reg := regex.MustCompileAnchored(valueRegex)
 			matches := reg.FindAllStringSubmatch(user, 1)
 			if len(matches) > 0 && len(matches[0]) > 1 {
-				ctx := context.WithValue(r.Context(), authUserKey("user"), matches[0][1])
+				userName := matches[0][1]
+				ctx := context.WithValue(r.Context(), authUserKey("user"), userName)
+				ctx = context.WithValue(ctx, authUserKey("groups"), userGroups(userName))
 				next.ServeHTTP(w, r.WithContext(ctx))
 				return
 			}
@@ -56,6 +58,14 @@ func getUserFromContext(r *http.Request) string {
 		return ""
 	}
 	return username.(string)
+}
+
+func getGroupsFromContext(r *http.Request) []string {
+	groups := r.Context().Value(authUserKey("groups"))
+	if groups == nil {
+		return []string{}
+	}
+	return groups.([]string)
 }
 
 func basicAuth(creds map[string]string, allowBypass []string) func(next http.Handler) http.Handler {
@@ -79,6 +89,7 @@ func basicAuth(creds map[string]string, allowBypass []string) func(next http.Han
 			}
 
 			ctx := context.WithValue(r.Context(), authUserKey("user"), user)
+			ctx = context.WithValue(ctx, authUserKey("groups"), userGroups(user))
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})
 	}
