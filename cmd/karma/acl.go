@@ -112,9 +112,7 @@ type silenceACL struct {
 	Matchers aclMatchers
 }
 
-func (acl *silenceACL) isAllowed(amName string, silence *models.Silence, username string) (bool, error) {
-	groups := userGroups(username)
-
+func (acl *silenceACL) isAllowed(amName string, silence *models.Silence, groups []string) (bool, error) {
 	groupMatch := len(acl.Scope.Groups) == 0
 	for _, aclGroup := range acl.Scope.Groups {
 		if slices.StringInSlice(groups, aclGroup) {

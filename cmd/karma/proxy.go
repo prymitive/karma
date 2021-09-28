@@ -122,8 +122,8 @@ func handlePostRequest(alertmanager *alertmanager.Alertmanager, h http.Handler) 
 			}
 
 			for i, acl := range silenceACLs {
-				username := getUserFromContext(r)
-				isAllowed, err := acl.isAllowed(alertmanager.Name, silence, username)
+				groups := getGroupsFromContext(r)
+				isAllowed, err := acl.isAllowed(alertmanager.Name, silence, groups)
 				log.Debug().Int("index", i).Bool("allowed", isAllowed).Err(err).Msg("ACL rule check")
 				if err != nil {
 					log.Warn().Err(err).
