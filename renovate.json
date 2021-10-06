@@ -7,6 +7,10 @@
     {
       "updateTypes": ["minor", "patch", "pin", "digest"],
       "automerge": true
+    },
+    {
+      "matchPackagePatterns": ["bootstrap", "bootswatch"],
+      "groupName": "bootstrap"
     }
   ],
   "node": {
