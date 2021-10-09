@@ -132,6 +132,8 @@ func (m *PostableAlert) validateAnnotations(formats strfmt.Registry) error {
 		if err := m.Annotations.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("annotations")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("annotations")
 			}
 			return err
 		}
@@ -190,6 +192,8 @@ func (m *PostableAlert) contextValidateAnnotations(ctx context.Context, formats 
 	if err := m.Annotations.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
 			return ve.ValidateName("annotations")
+		} else if ce, ok := err.(*errors.CompositeError); ok {
+			return ce.ValidateName("annotations")
 		}
 		return err
 	}

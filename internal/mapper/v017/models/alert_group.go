@@ -70,6 +70,8 @@ func (m *AlertGroup) validateAlerts(formats strfmt.Registry) error {
 			if err := m.Alerts[i].Validate(formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("alerts" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("alerts" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
@@ -90,6 +92,8 @@ func (m *AlertGroup) validateLabels(formats strfmt.Registry) error {
 		if err := m.Labels.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("labels")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("labels")
 			}
 			return err
 		}
@@ -108,6 +112,8 @@ func (m *AlertGroup) validateReceiver(formats strfmt.Registry) error {
 		if err := m.Receiver.Validate(formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("receiver")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("receiver")
 			}
 			return err
 		}
@@ -146,6 +152,8 @@ func (m *AlertGroup) contextValidateAlerts(ctx context.Context, formats strfmt.R
 			if err := m.Alerts[i].ContextValidate(ctx, formats); err != nil {
 				if ve, ok := err.(*errors.Validation); ok {
 					return ve.ValidateName("alerts" + "." + strconv.Itoa(i))
+				} else if ce, ok := err.(*errors.CompositeError); ok {
+					return ce.ValidateName("alerts" + "." + strconv.Itoa(i))
 				}
 				return err
 			}
@@ -161,6 +169,8 @@ func (m *AlertGroup) contextValidateLabels(ctx context.Context, formats strfmt.R
 	if err := m.Labels.ContextValidate(ctx, formats); err != nil {
 		if ve, ok := err.(*errors.Validation); ok {
 			return ve.ValidateName("labels")
+		} else if ce, ok := err.(*errors.CompositeError); ok {
+			return ce.ValidateName("labels")
 		}
 		return err
 	}
@@ -174,6 +184,8 @@ func (m *AlertGroup) contextValidateReceiver(ctx context.Context, formats strfmt
 		if err := m.Receiver.ContextValidate(ctx, formats); err != nil {
 			if ve, ok := err.(*errors.Validation); ok {
 				return ve.ValidateName("receiver")
+			} else if ce, ok := err.(*errors.CompositeError); ok {
+				return ce.ValidateName("receiver")
 			}
 			return err
 		}
