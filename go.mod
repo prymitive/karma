@@ -33,10 +33,10 @@ require (
 	github.com/rogpeppe/go-internal v1.8.0
 	github.com/rs/zerolog v1.25.0
 	github.com/spf13/pflag v1.0.5
-	go.mongodb.org/mongo-driver v1.7.2 // indirect
+	go.mongodb.org/mongo-driver v1.7.3 // indirect
 	go.uber.org/automaxprocs v1.4.0
-	golang.org/x/net v0.0.0-20211004195052-b30845b58a23 // indirect
-	golang.org/x/sys v0.0.0-20211004093028-2c5d950f24ef // indirect
+	golang.org/x/net v0.0.0-20211011170408-caeb26a5c8c0 // indirect
+	golang.org/x/sys v0.0.0-20211007075335-d3039528d8ac // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
@@ -50,8 +50,8 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
-	github.com/go-openapi/loads v0.20.2 // indirect
-	github.com/go-openapi/spec v0.20.3 // indirect
+	github.com/go-openapi/loads v0.20.3 // indirect
+	github.com/go-openapi/spec v0.20.4 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
