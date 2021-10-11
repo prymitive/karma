@@ -135,21 +135,8 @@ const GridLabelSelect: FC<{
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const hide = useCallback(() => setIsVisible(false), []);
   const toggle = useCallback(() => {
-    if (isVisible) {
-      window.dispatchEvent(
-        new CustomEvent("gridMenuOpen", {
-          detail: { isOpen: false, labelValue: grid.labelValue },
-        })
-      );
-    } else {
-      window.dispatchEvent(
-        new CustomEvent("gridMenuOpen", {
-          detail: { isOpen: true, labelValue: grid.labelValue },
-        })
-      );
-    }
     setIsVisible(!isVisible);
-  }, [isVisible, grid.labelValue]);
+  }, [isVisible]);
   const ref = useRef<HTMLDivElement | null>(null);
   useOnClickOutside(ref, hide, isVisible);
 
