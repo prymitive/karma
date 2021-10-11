@@ -40,6 +40,7 @@ const Grid: FC<{
   grid: APIGridT;
   outerPadding: number;
   paddingTop: number;
+  zIndex: number;
 }> = ({
   alertStore,
   settingsStore,
@@ -49,6 +50,7 @@ const Grid: FC<{
   grid,
   outerPadding,
   paddingTop,
+  zIndex,
 }) => {
   const context = React.useContext(ThemeContext);
   const { ref, repack } = useGrid(gridSizesConfig);
@@ -109,27 +111,11 @@ const Grid: FC<{
     repack();
   });
 
-  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const onMenuOpen = useCallback(
-    (event) => {
-      if (event.detail.labelValue === grid.labelValue) {
-        setIsMenuOpen(event.detail.isOpen);
-      }
-    },
-    [grid.labelValue]
-  );
-  useEffect(() => {
-    window.addEventListener("gridMenuOpen", onMenuOpen);
-    return () => {
-      window.removeEventListener("gridMenuOpen", onMenuOpen);
-    };
-  }, [onMenuOpen]);
-
   return (
     <div
       style={{
-        position: isMenuOpen ? "relative" : undefined,
-        zIndex: isMenuOpen ? 102 : undefined,
+        position: "relative",
+        zIndex: zIndex,
       }}
     >
       <CSSTransition

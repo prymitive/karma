@@ -76,7 +76,7 @@ const AlertGrid: FC<{
           ref.current = el as HTMLDivElement;
         }}
       />
-      {alertStore.data.grids.map((grid) => (
+      {alertStore.data.grids.map((grid, index) => (
         <Grid
           key={`${grid.labelName}/${grid.labelValue}`}
           alertStore={alertStore}
@@ -87,6 +87,7 @@ const AlertGrid: FC<{
           grid={grid}
           outerPadding={alertStore.data.gridPadding}
           paddingTop={paddingTop}
+          zIndex={100 + alertStore.data.grids.length - index}
         />
       ))}
     </>

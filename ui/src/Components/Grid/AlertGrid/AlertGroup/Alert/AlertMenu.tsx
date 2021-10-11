@@ -154,14 +154,9 @@ const AlertMenu: FC<{
     const [isHidden, setIsHidden] = useState<boolean>(true);
 
     const toggle = useCallback(() => {
-      window.dispatchEvent(
-        new CustomEvent("gridMenuOpen", {
-          detail: { isOpen: isHidden, labelValue: grid.labelValue },
-        })
-      );
       setIsMenuOpen(isHidden);
       setIsHidden(!isHidden);
-    }, [grid.labelValue, isHidden, setIsMenuOpen]);
+    }, [isHidden, setIsMenuOpen]);
 
     const hide = useCallback(() => {
       setIsHidden(true);
