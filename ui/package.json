@@ -49,7 +49,7 @@
     "react-media-hook": "0.4.9",
     "react-popper": "2.2.5",
     "react-range": "1.8.11",
-    "react-select": "4.3.1",
+    "react-select": "5.1.0",
     "react-transition-group": "4.4.2",
     "semver": "7.3.5",
     "typeface-open-sans": "1.1.13"
@@ -75,7 +75,7 @@
     "@types/react": "17.0.29",
     "@types/react-dom": "17.0.9",
     "@types/react-js-pagination": "3.0.4",
-    "@types/react-select": "4.0.18",
+    "@types/react-select": "5.0.0",
     "@types/semver": "7.3.8",
     "@typescript-eslint/eslint-plugin": "5.0.0",
     "@typescript-eslint/parser": "5.0.0",
