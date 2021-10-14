@@ -120,7 +120,7 @@ const Browser: FC<{
         />
         <button
           type="button"
-          className="btn btn-secondary flex-grow-0 flex-shrink-0 button-in-flex"
+          className="btn btn-secondary flex-grow-0 flex-shrink-0"
           onClick={() => setSortReverse(!sortReverse)}
         >
           <FontAwesomeIcon
