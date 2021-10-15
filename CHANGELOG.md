@@ -1,5 +1,11 @@
 # Changelog
 
+## [unreleased]
+
+### Fixed
+
+- Toast popup messages didn't respond to clicks.
+
 ## v0.92
 
 ### Fixed

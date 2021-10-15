@@ -24,7 +24,7 @@ exports[`<AppToasts /> renders UpgradeToastMessage when alertStore.info.upgradeR
     </span>
   </div>
 </li>
-<div class=\\"toast-container d-flex flex-column\\">
+<div class=\\"components-toast-container d-flex flex-column\\">
   <div class=\\"m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active\\">
     <div class=\\"d-flex flex-row p-1\\">
       <div class=\\"flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x\\">
@@ -129,7 +129,7 @@ exports[`<AppToasts /> renders upstream error toasts for each unhealthy upstream
     </span>
   </div>
 </li>
-<div class=\\"toast-container d-flex flex-column\\">
+<div class=\\"components-toast-container d-flex flex-column\\">
   <div class=\\"m-1 bg-toast text-white rounded shadow components-animation-fade-appear components-animation-fade-appear-active\\">
     <div class=\\"d-flex flex-row p-1\\">
       <div class=\\"flex-shrink-0 flex-grow-0 align-self-center fa-stack fa-2x\\">

@@ -61,7 +61,7 @@ const ToastContainer: FC = ({ children }) => {
   const context = React.useContext(ThemeContext);
 
   return ReactDOM.createPortal(
-    <div className="toast-container d-flex flex-column">
+    <div className="components-toast-container d-flex flex-column">
       <TransitionGroup component={null} appear enter exit>
         {React.Children.map(children, (toast, i) =>
           toast ? (
