@@ -22,7 +22,7 @@ require (
 	github.com/google/go-cmp v0.5.6
 	github.com/hashicorp/golang-lru v0.5.4
 	github.com/jarcoal/httpmock v1.0.8
-	github.com/knadh/koanf v1.2.4
+	github.com/knadh/koanf v1.3.0
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/mitchellh/mapstructure v1.4.2
 	github.com/pmezard/go-difflib v1.0.0
@@ -35,8 +35,8 @@ require (
 	github.com/spf13/pflag v1.0.5
 	go.mongodb.org/mongo-driver v1.7.3 // indirect
 	go.uber.org/automaxprocs v1.4.0
-	golang.org/x/net v0.0.0-20211011170408-caeb26a5c8c0 // indirect
-	golang.org/x/sys v0.0.0-20211007075335-d3039528d8ac // indirect
+	golang.org/x/net v0.0.0-20211015210444-4f30a5c0130f // indirect
+	golang.org/x/sys v0.0.0-20211015200801-69063c4bb744 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/go-playground/colors.v1 v1.2.0
