@@ -6,9 +6,10 @@ exports[`<AlertHistory /> handles fetch errors 1`] = `
   <div class=\\"w-100 d-flex justify-content-between align-self-center\\">
     <div class=\\"alert-history-tooltip tooltip-trigger\\">
       <svg class=\\"alert-history\\">
-        <rect rx=\\"2\\"
-              ry=\\"2\\"
-              class=\\"error\\"
+        <rect
+          rx=\\"2\\"
+          ry=\\"2\\"
+          class=\\"error\\"
         >
         </rect>
       </svg>
@@ -24,9 +25,10 @@ exports[`<AlertHistory /> handles reponses with errors 1`] = `
   <div class=\\"w-100 d-flex justify-content-between align-self-center\\">
     <div class=\\"alert-history-tooltip tooltip-trigger\\">
       <svg class=\\"alert-history\\">
-        <rect rx=\\"2\\"
-              ry=\\"2\\"
-              class=\\"error\\"
+        <rect
+          rx=\\"2\\"
+          ry=\\"2\\"
+          class=\\"error\\"
         >
         </rect>
       </svg>
@@ -41,170 +43,194 @@ exports[`<AlertHistory /> matches snapshot with empty response 1`] = `
 <div class=\\"w-100 d-flex\\">
   <div class=\\"w-100 d-flex justify-content-between align-self-center\\">
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
@@ -218,170 +244,194 @@ exports[`<AlertHistory /> matches snapshot with rainbow response 1`] = `
 <div class=\\"w-100 d-flex\\">
   <div class=\\"w-100 d-flex justify-content-between align-self-center\\">
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-1\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-1\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-2\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-2\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-3\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-3\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-4\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-4\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-5\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-5\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-1\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-1\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-2\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-2\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-3\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-3\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-4\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-4\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-5\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-5\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-1\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-1\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-2\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-2\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-3\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-3\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-4\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-4\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-5\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-5\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"inactive\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"inactive\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-1\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-1\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-2\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-2\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-3\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-3\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-4\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-4\\"
       >
       </rect>
     </svg>
     <svg class=\\"alert-history\\">
-      <rect rx=\\"2\\"
-            ry=\\"2\\"
-            class=\\"firing firing-5\\"
+      <rect
+        rx=\\"2\\"
+        ry=\\"2\\"
+        class=\\"firing firing-5\\"
       >
       </rect>
     </svg>

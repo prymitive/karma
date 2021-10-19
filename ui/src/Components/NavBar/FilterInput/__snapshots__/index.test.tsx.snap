@@ -4,63 +4,71 @@ exports[`<FilterInput /> matches snapshot with no filters 1`] = `
 "
 <div class=\\"input-group w-100 me-2 components-filterinput-outer bg-transparent\\">
   <div class=\\"form-control components-filterinput border-0 rounded-0 bg-inherit\\">
-    <div class=\\"autosuggest d-inline-block mw-100\\"
-         role=\\"combobox\\"
-         aria-haspopup=\\"listbox\\"
-         aria-owns=\\"downshift-0-menu\\"
-         aria-expanded=\\"false\\"
+    <div
+      class=\\"autosuggest d-inline-block mw-100\\"
+      role=\\"combobox\\"
+      aria-haspopup=\\"listbox\\"
+      aria-owns=\\"downshift-0-menu\\"
+      aria-expanded=\\"false\\"
     >
       <span class=\\"input-group-text text-muted d-inline-block me-2 border-0 bg-inherit px-1\\">
-        <svg aria-hidden=\\"true\\"
-             focusable=\\"false\\"
-             data-prefix=\\"fas\\"
-             data-icon=\\"search\\"
-             class=\\"svg-inline--fa fa-search fa-w-16 \\"
-             role=\\"img\\"
-             xmlns=\\"http://www.w3.org/2000/svg\\"
-             viewbox=\\"0 0 512 512\\"
+        <svg
+          aria-hidden=\\"true\\"
+          focusable=\\"false\\"
+          data-prefix=\\"fas\\"
+          data-icon=\\"search\\"
+          class=\\"svg-inline--fa fa-search fa-w-16 \\"
+          role=\\"img\\"
+          xmlns=\\"http://www.w3.org/2000/svg\\"
+          viewbox=\\"0 0 512 512\\"
         >
-          <path fill=\\"currentColor\\"
-                d=\\"M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z\\"
+          <path
+            fill=\\"currentColor\\"
+            d=\\"M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z\\"
           >
           </path>
         </svg>
       </span>
-      <input class=\\"components-filterinput-wrapper text-white mw-100\\"
-             size=\\"1\\"
-             id=\\"downshift-0-input\\"
-             aria-autocomplete=\\"list\\"
-             aria-controls=\\"downshift-0-menu\\"
-             aria-labelledby=\\"downshift-0-label\\"
-             autocomplete=\\"off\\"
-             value
+      <input
+        class=\\"components-filterinput-wrapper text-white mw-100\\"
+        size=\\"1\\"
+        id=\\"downshift-0-input\\"
+        aria-autocomplete=\\"list\\"
+        aria-controls=\\"downshift-0-menu\\"
+        aria-labelledby=\\"downshift-0-label\\"
+        autocomplete=\\"off\\"
+        value
       >
     </div>
-    <span class=\\"dropdown\\"
-          id=\\"downshift-0-menu\\"
-          role=\\"listbox\\"
-          aria-labelledby=\\"downshift-0-label\\"
+    <span
+      class=\\"dropdown\\"
+      id=\\"downshift-0-menu\\"
+      role=\\"listbox\\"
+      aria-labelledby=\\"downshift-0-label\\"
     >
     </span>
   </div>
   <span class=\\"input-group-text border-0 rounded-0 bg-inherit px-0\\">
-    <button class=\\"btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon\\"
-            type=\\"button\\"
-            data-toggle=\\"dropdown\\"
-            aria-haspopup=\\"true\\"
-            aria-expanded=\\"true\\"
+    <button
+      class=\\"btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon\\"
+      type=\\"button\\"
+      data-toggle=\\"dropdown\\"
+      aria-haspopup=\\"true\\"
+      aria-expanded=\\"true\\"
     >
-      <svg aria-hidden=\\"true\\"
-           focusable=\\"false\\"
-           data-prefix=\\"fas\\"
-           data-icon=\\"caret-down\\"
-           class=\\"svg-inline--fa fa-caret-down fa-w-10 \\"
-           role=\\"img\\"
-           xmlns=\\"http://www.w3.org/2000/svg\\"
-           viewbox=\\"0 0 320 512\\"
+      <svg
+        aria-hidden=\\"true\\"
+        focusable=\\"false\\"
+        data-prefix=\\"fas\\"
+        data-icon=\\"caret-down\\"
+        class=\\"svg-inline--fa fa-caret-down fa-w-10 \\"
+        role=\\"img\\"
+        xmlns=\\"http://www.w3.org/2000/svg\\"
+        viewbox=\\"0 0 320 512\\"
       >
-        <path fill=\\"currentColor\\"
-              d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
+        <path
+          fill=\\"currentColor\\"
+          d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
         >
         </path>
       </svg>
@@ -74,125 +82,143 @@ exports[`<FilterInput /> matches snapshot with some filters 1`] = `
 "
 <div class=\\"input-group w-100 me-2 components-filterinput-outer bg-transparent\\">
   <div class=\\"form-control components-filterinput border-0 rounded-0 bg-inherit\\">
-    <button type=\\"button\\"
-            class=\\"btn-secondary btn-sm components-filteredinputlabel components-label btn d-inline-flex flex-row align-items-center\\"
+    <button
+      type=\\"button\\"
+      class=\\"btn-secondary btn-sm components-filteredinputlabel components-label btn d-inline-flex flex-row align-items-center\\"
     >
-      <svg aria-hidden=\\"true\\"
-           focusable=\\"false\\"
-           data-prefix=\\"fas\\"
-           data-icon=\\"spinner\\"
-           class=\\"svg-inline--fa fa-spinner fa-w-16 fa-spin \\"
-           role=\\"img\\"
-           xmlns=\\"http://www.w3.org/2000/svg\\"
-           viewbox=\\"0 0 512 512\\"
+      <svg
+        aria-hidden=\\"true\\"
+        focusable=\\"false\\"
+        data-prefix=\\"fas\\"
+        data-icon=\\"spinner\\"
+        class=\\"svg-inline--fa fa-spinner fa-w-16 fa-spin \\"
+        role=\\"img\\"
+        xmlns=\\"http://www.w3.org/2000/svg\\"
+        viewbox=\\"0 0 512 512\\"
       >
-        <path fill=\\"currentColor\\"
-              d=\\"M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z\\"
+        <path
+          fill=\\"currentColor\\"
+          d=\\"M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z\\"
         >
         </path>
       </svg>
       <div class=\\"components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ms-1 tooltip-trigger\\">
-        <span tabindex=\\"0\\"
-              class=\\"cursor-text px-1\\"
+        <span
+          tabindex=\\"0\\"
+          class=\\"cursor-text px-1\\"
         >
           foo=bar
         </span>
       </div>
-      <svg aria-hidden=\\"true\\"
-           focusable=\\"false\\"
-           data-prefix=\\"fas\\"
-           data-icon=\\"times\\"
-           class=\\"svg-inline--fa fa-times fa-w-11 cursor-pointer text-reset ms-1\\"
-           role=\\"img\\"
-           xmlns=\\"http://www.w3.org/2000/svg\\"
-           viewbox=\\"0 0 352 512\\"
+      <svg
+        aria-hidden=\\"true\\"
+        focusable=\\"false\\"
+        data-prefix=\\"fas\\"
+        data-icon=\\"times\\"
+        class=\\"svg-inline--fa fa-times fa-w-11 cursor-pointer text-reset ms-1\\"
+        role=\\"img\\"
+        xmlns=\\"http://www.w3.org/2000/svg\\"
+        viewbox=\\"0 0 352 512\\"
       >
-        <path fill=\\"currentColor\\"
-              d=\\"M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z\\"
+        <path
+          fill=\\"currentColor\\"
+          d=\\"M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z\\"
         >
         </path>
       </svg>
     </button>
-    <button type=\\"button\\"
-            class=\\"btn-secondary btn-sm components-filteredinputlabel components-label btn d-inline-flex flex-row align-items-center\\"
+    <button
+      type=\\"button\\"
+      class=\\"btn-secondary btn-sm components-filteredinputlabel components-label btn d-inline-flex flex-row align-items-center\\"
     >
-      <svg aria-hidden=\\"true\\"
-           focusable=\\"false\\"
-           data-prefix=\\"fas\\"
-           data-icon=\\"spinner\\"
-           class=\\"svg-inline--fa fa-spinner fa-w-16 fa-spin \\"
-           role=\\"img\\"
-           xmlns=\\"http://www.w3.org/2000/svg\\"
-           viewbox=\\"0 0 512 512\\"
+      <svg
+        aria-hidden=\\"true\\"
+        focusable=\\"false\\"
+        data-prefix=\\"fas\\"
+        data-icon=\\"spinner\\"
+        class=\\"svg-inline--fa fa-spinner fa-w-16 fa-spin \\"
+        role=\\"img\\"
+        xmlns=\\"http://www.w3.org/2000/svg\\"
+        viewbox=\\"0 0 512 512\\"
       >
-        <path fill=\\"currentColor\\"
-              d=\\"M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z\\"
+        <path
+          fill=\\"currentColor\\"
+          d=\\"M304 48c0 26.51-21.49 48-48 48s-48-21.49-48-48 21.49-48 48-48 48 21.49 48 48zm-48 368c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zm208-208c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.49-48-48-48zM96 256c0-26.51-21.49-48-48-48S0 229.49 0 256s21.49 48 48 48 48-21.49 48-48zm12.922 99.078c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.491-48-48-48zm294.156 0c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48c0-26.509-21.49-48-48-48zM108.922 60.922c-26.51 0-48 21.49-48 48s21.49 48 48 48 48-21.49 48-48-21.491-48-48-48z\\"
         >
         </path>
       </svg>
       <div class=\\"components-filteredinputlabel-text flex-grow-1 flex-shrink-1 ms-1 tooltip-trigger\\">
-        <span tabindex=\\"0\\"
-              class=\\"cursor-text px-1\\"
+        <span
+          tabindex=\\"0\\"
+          class=\\"cursor-text px-1\\"
         >
           baz!=bar
         </span>
       </div>
-      <svg aria-hidden=\\"true\\"
-           focusable=\\"false\\"
-           data-prefix=\\"fas\\"
-           data-icon=\\"times\\"
-           class=\\"svg-inline--fa fa-times fa-w-11 cursor-pointer text-reset ms-1\\"
-           role=\\"img\\"
-           xmlns=\\"http://www.w3.org/2000/svg\\"
-           viewbox=\\"0 0 352 512\\"
+      <svg
+        aria-hidden=\\"true\\"
+        focusable=\\"false\\"
+        data-prefix=\\"fas\\"
+        data-icon=\\"times\\"
+        class=\\"svg-inline--fa fa-times fa-w-11 cursor-pointer text-reset ms-1\\"
+        role=\\"img\\"
+        xmlns=\\"http://www.w3.org/2000/svg\\"
+        viewbox=\\"0 0 352 512\\"
       >
-        <path fill=\\"currentColor\\"
-              d=\\"M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z\\"
+        <path
+          fill=\\"currentColor\\"
+          d=\\"M242.72 256l100.07-100.07c12.28-12.28 12.28-32.19 0-44.48l-22.24-22.24c-12.28-12.28-32.19-12.28-44.48 0L176 189.28 75.93 89.21c-12.28-12.28-32.19-12.28-44.48 0L9.21 111.45c-12.28 12.28-12.28 32.19 0 44.48L109.28 256 9.21 356.07c-12.28 12.28-12.28 32.19 0 44.48l22.24 22.24c12.28 12.28 32.2 12.28 44.48 0L176 322.72l100.07 100.07c12.28 12.28 32.2 12.28 44.48 0l22.24-22.24c12.28-12.28 12.28-32.19 0-44.48L242.72 256z\\"
         >
         </path>
       </svg>
     </button>
-    <div class=\\"autosuggest d-inline-block mw-100\\"
-         role=\\"combobox\\"
-         aria-haspopup=\\"listbox\\"
-         aria-owns=\\"downshift-1-menu\\"
-         aria-expanded=\\"false\\"
+    <div
+      class=\\"autosuggest d-inline-block mw-100\\"
+      role=\\"combobox\\"
+      aria-haspopup=\\"listbox\\"
+      aria-owns=\\"downshift-1-menu\\"
+      aria-expanded=\\"false\\"
     >
-      <input class=\\"components-filterinput-wrapper text-white mw-100\\"
-             size=\\"1\\"
-             id=\\"downshift-1-input\\"
-             aria-autocomplete=\\"list\\"
-             aria-controls=\\"downshift-1-menu\\"
-             aria-labelledby=\\"downshift-1-label\\"
-             autocomplete=\\"off\\"
-             value
+      <input
+        class=\\"components-filterinput-wrapper text-white mw-100\\"
+        size=\\"1\\"
+        id=\\"downshift-1-input\\"
+        aria-autocomplete=\\"list\\"
+        aria-controls=\\"downshift-1-menu\\"
+        aria-labelledby=\\"downshift-1-label\\"
+        autocomplete=\\"off\\"
+        value
       >
     </div>
-    <span class=\\"dropdown\\"
-          id=\\"downshift-1-menu\\"
-          role=\\"listbox\\"
-          aria-labelledby=\\"downshift-1-label\\"
+    <span
+      class=\\"dropdown\\"
+      id=\\"downshift-1-menu\\"
+      role=\\"listbox\\"
+      aria-labelledby=\\"downshift-1-label\\"
     >
     </span>
   </div>
   <span class=\\"input-group-text border-0 rounded-0 bg-inherit px-0\\">
-    <button class=\\"btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon\\"
-            type=\\"button\\"
-            data-toggle=\\"dropdown\\"
-            aria-haspopup=\\"true\\"
-            aria-expanded=\\"true\\"
+    <button
+      class=\\"btn border-0 rounded-0 bg-inherit cursor-pointer components-navbar-history px-2 py-0 components-navbar-icon\\"
+      type=\\"button\\"
+      data-toggle=\\"dropdown\\"
+      aria-haspopup=\\"true\\"
+      aria-expanded=\\"true\\"
     >
-      <svg aria-hidden=\\"true\\"
-           focusable=\\"false\\"
-           data-prefix=\\"fas\\"
-           data-icon=\\"caret-down\\"
-           class=\\"svg-inline--fa fa-caret-down fa-w-10 \\"
-           role=\\"img\\"
-           xmlns=\\"http://www.w3.org/2000/svg\\"
-           viewbox=\\"0 0 320 512\\"
+      <svg
+        aria-hidden=\\"true\\"
+        focusable=\\"false\\"
+        data-prefix=\\"fas\\"
+        data-icon=\\"caret-down\\"
+        class=\\"svg-inline--fa fa-caret-down fa-w-10 \\"
+        role=\\"img\\"
+        xmlns=\\"http://www.w3.org/2000/svg\\"
+        viewbox=\\"0 0 320 512\\"
       >
-        <path fill=\\"currentColor\\"
-              d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
+        <path
+          fill=\\"currentColor\\"
+          d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
         >
         </path>
       </svg>

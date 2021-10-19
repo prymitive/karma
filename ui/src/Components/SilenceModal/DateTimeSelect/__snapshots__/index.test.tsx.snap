@@ -42,17 +42,19 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
           <tr>
             <td class=\\"w-50 text-center with-click px-2\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-up\\"
-                     class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-up\\"
+                  class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
                   >
                   </path>
                 </svg>
@@ -76,17 +78,19 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
           <tr>
             <td class=\\"w-50 text-center with-click px-2\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-down\\"
-                     class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-down\\"
+                  class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
                   >
                   </path>
                 </svg>
@@ -104,17 +108,19 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
           <tr>
             <td class=\\"w-50 text-center with-click px-2\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-up\\"
-                     class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-up\\"
+                  class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
                   >
                   </path>
                 </svg>
@@ -138,17 +144,19 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
           <tr>
             <td class=\\"w-50 text-center with-click px-2\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-down\\"
-                     class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-down\\"
+                  class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
                   >
                   </path>
                 </svg>
@@ -166,17 +174,19 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
           <tr>
             <td class=\\"w-50 text-center with-click px-2\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-up\\"
-                     class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-up\\"
+                  class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
                   >
                   </path>
                 </svg>
@@ -200,17 +210,19 @@ exports[`<DateTimeSelect /> 'Duration' tab matches snapshot 1`] = `
           <tr>
             <td class=\\"w-50 text-center with-click px-2\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-down\\"
-                     class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-down\\"
+                  class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
                   >
                   </path>
                 </svg>
@@ -264,88 +276,103 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
 <div class=\\"tab-content mb-3\\">
   <div class=\\"d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2\\">
     <div class=\\"d-flex justify-content-center align-items-center\\">
-      <div class=\\"DayPicker components-date-range\\"
-           lang=\\"en\\"
+      <div
+        class=\\"DayPicker components-date-range\\"
+        lang=\\"en\\"
       >
-        <div class=\\"DayPicker-wrapper\\"
-             tabindex=\\"0\\"
+        <div
+          class=\\"DayPicker-wrapper\\"
+          tabindex=\\"0\\"
         >
           <div class=\\"DayPicker-NavBar\\">
-            <span tabindex=\\"0\\"
-                  role=\\"button\\"
-                  aria-label=\\"Previous Month\\"
-                  class=\\"DayPicker-NavButton DayPicker-NavButton--prev\\"
+            <span
+              tabindex=\\"0\\"
+              role=\\"button\\"
+              aria-label=\\"Previous Month\\"
+              class=\\"DayPicker-NavButton DayPicker-NavButton--prev\\"
             >
             </span>
-            <span tabindex=\\"0\\"
-                  role=\\"button\\"
-                  aria-label=\\"Next Month\\"
-                  class=\\"DayPicker-NavButton DayPicker-NavButton--next\\"
+            <span
+              tabindex=\\"0\\"
+              role=\\"button\\"
+              aria-label=\\"Next Month\\"
+              class=\\"DayPicker-NavButton DayPicker-NavButton--next\\"
             >
             </span>
           </div>
           <div class=\\"DayPicker-Months\\">
-            <div class=\\"DayPicker-Month\\"
-                 role=\\"grid\\"
+            <div
+              class=\\"DayPicker-Month\\"
+              role=\\"grid\\"
             >
-              <div class=\\"DayPicker-Caption\\"
-                   role=\\"heading\\"
-                   aria-live=\\"polite\\"
+              <div
+                class=\\"DayPicker-Caption\\"
+                role=\\"heading\\"
+                aria-live=\\"polite\\"
               >
                 <div>
                   February 2061
                 </div>
               </div>
-              <div class=\\"DayPicker-Weekdays\\"
-                   role=\\"rowgroup\\"
+              <div
+                class=\\"DayPicker-Weekdays\\"
+                role=\\"rowgroup\\"
               >
-                <div class=\\"DayPicker-WeekdaysRow\\"
-                     role=\\"row\\"
+                <div
+                  class=\\"DayPicker-WeekdaysRow\\"
+                  role=\\"row\\"
                 >
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Sunday\\">
                       Su
                     </abbr>
                   </div>
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Monday\\">
                       Mo
                     </abbr>
                   </div>
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Tuesday\\">
                       Tu
                     </abbr>
                   </div>
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Wednesday\\">
                       We
                     </abbr>
                   </div>
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Thursday\\">
                       Th
                     </abbr>
                   </div>
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Friday\\">
                       Fr
                     </abbr>
                   </div>
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Saturday\\">
                       Sa
@@ -353,306 +380,347 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                   </div>
                 </div>
               </div>
-              <div class=\\"DayPicker-Body\\"
-                   role=\\"rowgroup\\"
+              <div
+                class=\\"DayPicker-Body\\"
+                role=\\"rowgroup\\"
               >
-                <div class=\\"DayPicker-Week\\"
-                     role=\\"row\\"
+                <div
+                  class=\\"DayPicker-Week\\"
+                  role=\\"row\\"
                 >
-                  <div aria-disabled=\\"true\\"
-                       class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
+                  <div
+                    aria-disabled=\\"true\\"
+                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
                   >
                   </div>
-                  <div aria-disabled=\\"true\\"
-                       class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
+                  <div
+                    aria-disabled=\\"true\\"
+                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
                   >
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--end DayPicker-Day--selected\\"
-                       tabindex=\\"0\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Tue Feb 01 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--end DayPicker-Day--selected\\"
+                    tabindex=\\"0\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Tue Feb 01 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     1
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Wed Feb 02 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Wed Feb 02 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     2
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Thu Feb 03 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Thu Feb 03 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     3
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Fri Feb 04 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Fri Feb 04 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     4
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sat Feb 05 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sat Feb 05 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     5
                   </div>
                 </div>
-                <div class=\\"DayPicker-Week\\"
-                     role=\\"row\\"
+                <div
+                  class=\\"DayPicker-Week\\"
+                  role=\\"row\\"
                 >
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sun Feb 06 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sun Feb 06 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     6
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Mon Feb 07 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Mon Feb 07 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     7
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Tue Feb 08 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Tue Feb 08 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     8
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Wed Feb 09 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Wed Feb 09 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     9
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Thu Feb 10 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Thu Feb 10 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     10
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Fri Feb 11 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Fri Feb 11 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     11
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sat Feb 12 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sat Feb 12 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     12
                   </div>
                 </div>
-                <div class=\\"DayPicker-Week\\"
-                     role=\\"row\\"
+                <div
+                  class=\\"DayPicker-Week\\"
+                  role=\\"row\\"
                 >
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sun Feb 13 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sun Feb 13 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     13
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Mon Feb 14 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Mon Feb 14 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     14
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Tue Feb 15 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Tue Feb 15 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     15
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Wed Feb 16 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Wed Feb 16 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     16
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Thu Feb 17 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Thu Feb 17 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     17
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Fri Feb 18 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Fri Feb 18 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     18
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sat Feb 19 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sat Feb 19 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     19
                   </div>
                 </div>
-                <div class=\\"DayPicker-Week\\"
-                     role=\\"row\\"
+                <div
+                  class=\\"DayPicker-Week\\"
+                  role=\\"row\\"
                 >
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sun Feb 20 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sun Feb 20 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     20
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Mon Feb 21 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Mon Feb 21 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     21
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Tue Feb 22 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Tue Feb 22 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     22
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Wed Feb 23 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Wed Feb 23 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     23
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Thu Feb 24 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Thu Feb 24 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     24
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Fri Feb 25 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Fri Feb 25 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     25
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sat Feb 26 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sat Feb 26 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     26
                   </div>
                 </div>
-                <div class=\\"DayPicker-Week\\"
-                     role=\\"row\\"
+                <div
+                  class=\\"DayPicker-Week\\"
+                  role=\\"row\\"
                 >
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sun Feb 27 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sun Feb 27 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     27
                   </div>
-                  <div class=\\"DayPicker-Day\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Mon Feb 28 2061\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"false\\"
+                  <div
+                    class=\\"DayPicker-Day\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Mon Feb 28 2061\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"false\\"
                   >
                     28
                   </div>
-                  <div aria-disabled=\\"true\\"
-                       class=\\"DayPicker-Day DayPicker-Day--outside\\"
+                  <div
+                    aria-disabled=\\"true\\"
+                    class=\\"DayPicker-Day DayPicker-Day--outside\\"
                   >
                   </div>
-                  <div aria-disabled=\\"true\\"
-                       class=\\"DayPicker-Day DayPicker-Day--outside\\"
+                  <div
+                    aria-disabled=\\"true\\"
+                    class=\\"DayPicker-Day DayPicker-Day--outside\\"
                   >
                   </div>
-                  <div aria-disabled=\\"true\\"
-                       class=\\"DayPicker-Day DayPicker-Day--outside\\"
+                  <div
+                    aria-disabled=\\"true\\"
+                    class=\\"DayPicker-Day DayPicker-Day--outside\\"
                   >
                   </div>
-                  <div aria-disabled=\\"true\\"
-                       class=\\"DayPicker-Day DayPicker-Day--outside\\"
+                  <div
+                    aria-disabled=\\"true\\"
+                    class=\\"DayPicker-Day DayPicker-Day--outside\\"
                   >
                   </div>
-                  <div aria-disabled=\\"true\\"
-                       class=\\"DayPicker-Day DayPicker-Day--outside\\"
+                  <div
+                    aria-disabled=\\"true\\"
+                    class=\\"DayPicker-Day DayPicker-Day--outside\\"
                   >
                   </div>
                 </div>
@@ -660,10 +728,11 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             </div>
           </div>
           <div class=\\"DayPicker-Footer\\">
-            <button type=\\"button\\"
-                    tabindex=\\"0\\"
-                    class=\\"DayPicker-TodayButton\\"
-                    aria-label=\\"Today\\"
+            <button
+              type=\\"button\\"
+              tabindex=\\"0\\"
+              class=\\"DayPicker-TodayButton\\"
+              aria-label=\\"Today\\"
             >
               Today
             </button>
@@ -677,17 +746,19 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
           <tr>
             <td class=\\"components-hour-up with-click\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-up\\"
-                     class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-up\\"
+                  class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
                   >
                   </path>
                 </svg>
@@ -697,17 +768,19 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             </td>
             <td class=\\"components-minute-up with-click\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-up\\"
-                     class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-up\\"
+                  class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
                   >
                   </path>
                 </svg>
@@ -734,17 +807,19 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
           <tr>
             <td class=\\"components-hour-down with-click\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-down\\"
-                     class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-down\\"
+                  class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
                   >
                   </path>
                 </svg>
@@ -754,17 +829,19 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             </td>
             <td class=\\"components-minute-down with-click\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-down\\"
-                     class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-down\\"
+                  class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
                   >
                   </path>
                 </svg>
@@ -816,88 +893,103 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
 <div class=\\"tab-content mb-3\\">
   <div class=\\"d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2\\">
     <div class=\\"d-flex justify-content-center align-items-center\\">
-      <div class=\\"DayPicker components-date-range\\"
-           lang=\\"en\\"
+      <div
+        class=\\"DayPicker components-date-range\\"
+        lang=\\"en\\"
       >
-        <div class=\\"DayPicker-wrapper\\"
-             tabindex=\\"0\\"
+        <div
+          class=\\"DayPicker-wrapper\\"
+          tabindex=\\"0\\"
         >
           <div class=\\"DayPicker-NavBar\\">
-            <span tabindex=\\"0\\"
-                  role=\\"button\\"
-                  aria-label=\\"Previous Month\\"
-                  class=\\"DayPicker-NavButton DayPicker-NavButton--prev\\"
+            <span
+              tabindex=\\"0\\"
+              role=\\"button\\"
+              aria-label=\\"Previous Month\\"
+              class=\\"DayPicker-NavButton DayPicker-NavButton--prev\\"
             >
             </span>
-            <span tabindex=\\"0\\"
-                  role=\\"button\\"
-                  aria-label=\\"Next Month\\"
-                  class=\\"DayPicker-NavButton DayPicker-NavButton--next\\"
+            <span
+              tabindex=\\"0\\"
+              role=\\"button\\"
+              aria-label=\\"Next Month\\"
+              class=\\"DayPicker-NavButton DayPicker-NavButton--next\\"
             >
             </span>
           </div>
           <div class=\\"DayPicker-Months\\">
-            <div class=\\"DayPicker-Month\\"
-                 role=\\"grid\\"
+            <div
+              class=\\"DayPicker-Month\\"
+              role=\\"grid\\"
             >
-              <div class=\\"DayPicker-Caption\\"
-                   role=\\"heading\\"
-                   aria-live=\\"polite\\"
+              <div
+                class=\\"DayPicker-Caption\\"
+                role=\\"heading\\"
+                aria-live=\\"polite\\"
               >
                 <div>
                   February 2060
                 </div>
               </div>
-              <div class=\\"DayPicker-Weekdays\\"
-                   role=\\"rowgroup\\"
+              <div
+                class=\\"DayPicker-Weekdays\\"
+                role=\\"rowgroup\\"
               >
-                <div class=\\"DayPicker-WeekdaysRow\\"
-                     role=\\"row\\"
+                <div
+                  class=\\"DayPicker-WeekdaysRow\\"
+                  role=\\"row\\"
                 >
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Sunday\\">
                       Su
                     </abbr>
                   </div>
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Monday\\">
                       Mo
                     </abbr>
                   </div>
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Tuesday\\">
                       Tu
                     </abbr>
                   </div>
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Wednesday\\">
                       We
                     </abbr>
                   </div>
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Thursday\\">
                       Th
                     </abbr>
                   </div>
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Friday\\">
                       Fr
                     </abbr>
                   </div>
-                  <div class=\\"DayPicker-Weekday\\"
-                       role=\\"columnheader\\"
+                  <div
+                    class=\\"DayPicker-Weekday\\"
+                    role=\\"columnheader\\"
                   >
                     <abbr title=\\"Saturday\\">
                       Sa
@@ -905,311 +997,352 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                   </div>
                 </div>
               </div>
-              <div class=\\"DayPicker-Body\\"
-                   role=\\"rowgroup\\"
+              <div
+                class=\\"DayPicker-Body\\"
+                role=\\"rowgroup\\"
               >
-                <div class=\\"DayPicker-Week\\"
-                     role=\\"row\\"
+                <div
+                  class=\\"DayPicker-Week\\"
+                  role=\\"row\\"
                 >
-                  <div class=\\"DayPicker-Day DayPicker-Day--start DayPicker-Day--selected DayPicker-Day--today\\"
-                       tabindex=\\"0\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sun Feb 01 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--start DayPicker-Day--selected DayPicker-Day--today\\"
+                    tabindex=\\"0\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sun Feb 01 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     1
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Mon Feb 02 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Mon Feb 02 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     2
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Tue Feb 03 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Tue Feb 03 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     3
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Wed Feb 04 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Wed Feb 04 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     4
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Thu Feb 05 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Thu Feb 05 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     5
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Fri Feb 06 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Fri Feb 06 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     6
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sat Feb 07 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sat Feb 07 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     7
                   </div>
                 </div>
-                <div class=\\"DayPicker-Week\\"
-                     role=\\"row\\"
+                <div
+                  class=\\"DayPicker-Week\\"
+                  role=\\"row\\"
                 >
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sun Feb 08 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sun Feb 08 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     8
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Mon Feb 09 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Mon Feb 09 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     9
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Tue Feb 10 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Tue Feb 10 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     10
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Wed Feb 11 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Wed Feb 11 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     11
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Thu Feb 12 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Thu Feb 12 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     12
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Fri Feb 13 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Fri Feb 13 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     13
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sat Feb 14 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sat Feb 14 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     14
                   </div>
                 </div>
-                <div class=\\"DayPicker-Week\\"
-                     role=\\"row\\"
+                <div
+                  class=\\"DayPicker-Week\\"
+                  role=\\"row\\"
                 >
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sun Feb 15 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sun Feb 15 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     15
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Mon Feb 16 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Mon Feb 16 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     16
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Tue Feb 17 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Tue Feb 17 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     17
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Wed Feb 18 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Wed Feb 18 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     18
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Thu Feb 19 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Thu Feb 19 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     19
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Fri Feb 20 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Fri Feb 20 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     20
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sat Feb 21 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sat Feb 21 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     21
                   </div>
                 </div>
-                <div class=\\"DayPicker-Week\\"
-                     role=\\"row\\"
+                <div
+                  class=\\"DayPicker-Week\\"
+                  role=\\"row\\"
                 >
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sun Feb 22 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sun Feb 22 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     22
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Mon Feb 23 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Mon Feb 23 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     23
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Tue Feb 24 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Tue Feb 24 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     24
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Wed Feb 25 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Wed Feb 25 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     25
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Thu Feb 26 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Thu Feb 26 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     26
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Fri Feb 27 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Fri Feb 27 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     27
                   </div>
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sat Feb 28 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sat Feb 28 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     28
                   </div>
                 </div>
-                <div class=\\"DayPicker-Week\\"
-                     role=\\"row\\"
+                <div
+                  class=\\"DayPicker-Week\\"
+                  role=\\"row\\"
                 >
-                  <div class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                       tabindex=\\"-1\\"
-                       role=\\"gridcell\\"
-                       aria-label=\\"Sun Feb 29 2060\\"
-                       aria-disabled=\\"false\\"
-                       aria-selected=\\"true\\"
+                  <div
+                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
+                    tabindex=\\"-1\\"
+                    role=\\"gridcell\\"
+                    aria-label=\\"Sun Feb 29 2060\\"
+                    aria-disabled=\\"false\\"
+                    aria-selected=\\"true\\"
                   >
                     29
                   </div>
-                  <div aria-disabled=\\"true\\"
-                       class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
+                  <div
+                    aria-disabled=\\"true\\"
+                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
                   >
                   </div>
-                  <div aria-disabled=\\"true\\"
-                       class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
+                  <div
+                    aria-disabled=\\"true\\"
+                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
                   >
                   </div>
-                  <div aria-disabled=\\"true\\"
-                       class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
+                  <div
+                    aria-disabled=\\"true\\"
+                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
                   >
                   </div>
-                  <div aria-disabled=\\"true\\"
-                       class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
+                  <div
+                    aria-disabled=\\"true\\"
+                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
                   >
                   </div>
-                  <div aria-disabled=\\"true\\"
-                       class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
+                  <div
+                    aria-disabled=\\"true\\"
+                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
                   >
                   </div>
-                  <div aria-disabled=\\"true\\"
-                       class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
+                  <div
+                    aria-disabled=\\"true\\"
+                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
                   >
                   </div>
                 </div>
@@ -1217,10 +1350,11 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             </div>
           </div>
           <div class=\\"DayPicker-Footer\\">
-            <button type=\\"button\\"
-                    tabindex=\\"0\\"
-                    class=\\"DayPicker-TodayButton\\"
-                    aria-label=\\"Today\\"
+            <button
+              type=\\"button\\"
+              tabindex=\\"0\\"
+              class=\\"DayPicker-TodayButton\\"
+              aria-label=\\"Today\\"
             >
               Today
             </button>
@@ -1234,17 +1368,19 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
           <tr>
             <td class=\\"components-hour-up with-click\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-up\\"
-                     class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-up\\"
+                  class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
                   >
                   </path>
                 </svg>
@@ -1254,17 +1390,19 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             </td>
             <td class=\\"components-minute-up with-click\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-up\\"
-                     class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-up\\"
+                  class=\\"svg-inline--fa fa-angle-up fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M177 159.7l136 136c9.4 9.4 9.4 24.6 0 33.9l-22.6 22.6c-9.4 9.4-24.6 9.4-33.9 0L160 255.9l-96.4 96.4c-9.4 9.4-24.6 9.4-33.9 0L7 329.7c-9.4-9.4-9.4-24.6 0-33.9l136-136c9.4-9.5 24.6-9.5 34-.1z\\"
                   >
                   </path>
                 </svg>
@@ -1291,17 +1429,19 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
           <tr>
             <td class=\\"components-hour-down with-click\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-down\\"
-                     class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-down\\"
+                  class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
                   >
                   </path>
                 </svg>
@@ -1311,17 +1451,19 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             </td>
             <td class=\\"components-minute-down with-click\\">
               <span>
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"angle-down\\"
-                     class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 320 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"angle-down\\"
+                  class=\\"svg-inline--fa fa-angle-down fa-w-10 fa-2x text-muted cursor-pointer\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 320 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M143 352.3L7 216.3c-9.4-9.4-9.4-24.6 0-33.9l22.6-22.6c9.4-9.4 24.6-9.4 33.9 0l96.4 96.4 96.4-96.4c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9l-136 136c-9.2 9.4-24.4 9.4-33.8 0z\\"
                   >
                   </path>
                 </svg>

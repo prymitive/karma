@@ -5,13 +5,15 @@ exports[`<AnimationsConfiguration /> matches snapshot with default values 1`] = 
 <div class=\\"mb-0\\">
   <div class=\\"form-check form-check-inline mx-0 px-0\\">
     <span class=\\"form-check form-switch\\">
-      <input id=\\"configuration-animations\\"
-             class=\\"form-check-input\\"
-             type=\\"checkbox\\"
-             checked
+      <input
+        id=\\"configuration-animations\\"
+        class=\\"form-check-input\\"
+        type=\\"checkbox\\"
+        checked
       >
-      <label class=\\"form-check-label cursor-pointer me-3\\"
-             for=\\"configuration-animations\\"
+      <label
+        class=\\"form-check-label cursor-pointer me-3\\"
+        for=\\"configuration-animations\\"
       >
         Enable animations
       </label>
