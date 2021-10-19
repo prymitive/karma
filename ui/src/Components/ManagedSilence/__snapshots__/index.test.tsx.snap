@@ -6,17 +6,19 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
   <div class=\\"card-header rounded-0 border-bottom-0 px-2\\">
     <div class=\\"d-flex flex-row\\">
       <div class=\\"flex-shrink-0 flex-grow-0\\">
-        <svg aria-hidden=\\"true\\"
-             focusable=\\"false\\"
-             data-prefix=\\"fas\\"
-             data-icon=\\"bell-slash\\"
-             class=\\"svg-inline--fa fa-bell-slash fa-w-20 components-managed-silence-icon text-muted\\"
-             role=\\"img\\"
-             xmlns=\\"http://www.w3.org/2000/svg\\"
-             viewbox=\\"0 0 640 512\\"
+        <svg
+          aria-hidden=\\"true\\"
+          focusable=\\"false\\"
+          data-prefix=\\"fas\\"
+          data-icon=\\"bell-slash\\"
+          class=\\"svg-inline--fa fa-bell-slash fa-w-20 components-managed-silence-icon text-muted\\"
+          role=\\"img\\"
+          xmlns=\\"http://www.w3.org/2000/svg\\"
+          viewbox=\\"0 0 640 512\\"
         >
-          <path fill=\\"currentColor\\"
-                d=\\"M633.82 458.1l-90.62-70.05c.19-1.38.8-2.66.8-4.06.05-7.55-2.61-15.27-8.61-21.71-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84c-40.33 8.38-74.66 31.07-97.59 62.57L45.47 3.37C38.49-2.05 28.43-.8 23.01 6.18L3.37 31.45C-2.05 38.42-.8 48.47 6.18 53.9l588.35 454.73c6.98 5.43 17.03 4.17 22.46-2.81l19.64-25.27c5.42-6.97 4.17-17.02-2.81-22.45zM157.23 251.54c-8.61 67.96-36.41 93.33-52.62 110.75-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h241.92L157.23 251.54zM320 512c35.32 0 63.97-28.65 63.97-64H256.03c0 35.35 28.65 64 63.97 64z\\"
+          <path
+            fill=\\"currentColor\\"
+            d=\\"M633.82 458.1l-90.62-70.05c.19-1.38.8-2.66.8-4.06.05-7.55-2.61-15.27-8.61-21.71-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84c-40.33 8.38-74.66 31.07-97.59 62.57L45.47 3.37C38.49-2.05 28.43-.8 23.01 6.18L3.37 31.45C-2.05 38.42-.8 48.47 6.18 53.9l588.35 454.73c6.98 5.43 17.03 4.17 22.46-2.81l19.64-25.27c5.42-6.97 4.17-17.02-2.81-22.45zM157.23 251.54c-8.61 67.96-36.41 93.33-52.62 110.75-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h241.92L157.23 251.54zM320 512c35.32 0 63.97-28.65 63.97-64H256.03c0 35.35 28.65 64 63.97 64z\\"
           >
           </path>
         </svg>
@@ -32,12 +34,13 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
           <span class=\\"badge bg-light nmb-05 align-text-bottom p-1\\">
             Expires in 30 minutes
             <div class=\\"progress silence-progress\\">
-              <div class=\\"progress-bar bg-success\\"
-                   role=\\"progressbar\\"
-                   style=\\"width: 50%;\\"
-                   aria-valuenow=\\"50\\"
-                   aria-valuemin=\\"0\\"
-                   aria-valuemax=\\"100\\"
+              <div
+                class=\\"progress-bar bg-success\\"
+                role=\\"progressbar\\"
+                style=\\"width: 50%;\\"
+                aria-valuenow=\\"50\\"
+                aria-valuemin=\\"0\\"
+                aria-valuemax=\\"100\\"
               >
               </div>
             </div>
@@ -52,18 +55,20 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
             </span>
           </div>
           <span class=\\"badge components-label with-click\\">
-            <svg aria-hidden=\\"true\\"
-                 focusable=\\"false\\"
-                 data-prefix=\\"fas\\"
-                 data-icon=\\"chevron-down\\"
-                 class=\\"svg-inline--fa fa-chevron-down fa-w-14 fa-rotate-180 components-managed-silence-icon m-auto text-muted cursor-pointer\\"
-                 role=\\"img\\"
-                 xmlns=\\"http://www.w3.org/2000/svg\\"
-                 viewbox=\\"0 0 448 512\\"
-                 style=\\"transition: transform 0.25s ease-in-out;\\"
+            <svg
+              aria-hidden=\\"true\\"
+              focusable=\\"false\\"
+              data-prefix=\\"fas\\"
+              data-icon=\\"chevron-down\\"
+              class=\\"svg-inline--fa fa-chevron-down fa-w-14 fa-rotate-180 components-managed-silence-icon m-auto text-muted cursor-pointer\\"
+              role=\\"img\\"
+              xmlns=\\"http://www.w3.org/2000/svg\\"
+              viewbox=\\"0 0 448 512\\"
+              style=\\"transition: transform 0.25s ease-in-out;\\"
             >
-              <path fill=\\"currentColor\\"
-                    d=\\"M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z\\"
+              <path
+                fill=\\"currentColor\\"
+                d=\\"M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z\\"
               >
               </path>
             </svg>
@@ -82,17 +87,19 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
   <div class=\\"card-header rounded-0 border-bottom-0 px-2\\">
     <div class=\\"d-flex flex-row\\">
       <div class=\\"flex-shrink-0 flex-grow-0\\">
-        <svg aria-hidden=\\"true\\"
-             focusable=\\"false\\"
-             data-prefix=\\"fas\\"
-             data-icon=\\"bell-slash\\"
-             class=\\"svg-inline--fa fa-bell-slash fa-w-20 components-managed-silence-icon text-muted\\"
-             role=\\"img\\"
-             xmlns=\\"http://www.w3.org/2000/svg\\"
-             viewbox=\\"0 0 640 512\\"
+        <svg
+          aria-hidden=\\"true\\"
+          focusable=\\"false\\"
+          data-prefix=\\"fas\\"
+          data-icon=\\"bell-slash\\"
+          class=\\"svg-inline--fa fa-bell-slash fa-w-20 components-managed-silence-icon text-muted\\"
+          role=\\"img\\"
+          xmlns=\\"http://www.w3.org/2000/svg\\"
+          viewbox=\\"0 0 640 512\\"
         >
-          <path fill=\\"currentColor\\"
-                d=\\"M633.82 458.1l-90.62-70.05c.19-1.38.8-2.66.8-4.06.05-7.55-2.61-15.27-8.61-21.71-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84c-40.33 8.38-74.66 31.07-97.59 62.57L45.47 3.37C38.49-2.05 28.43-.8 23.01 6.18L3.37 31.45C-2.05 38.42-.8 48.47 6.18 53.9l588.35 454.73c6.98 5.43 17.03 4.17 22.46-2.81l19.64-25.27c5.42-6.97 4.17-17.02-2.81-22.45zM157.23 251.54c-8.61 67.96-36.41 93.33-52.62 110.75-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h241.92L157.23 251.54zM320 512c35.32 0 63.97-28.65 63.97-64H256.03c0 35.35 28.65 64 63.97 64z\\"
+          <path
+            fill=\\"currentColor\\"
+            d=\\"M633.82 458.1l-90.62-70.05c.19-1.38.8-2.66.8-4.06.05-7.55-2.61-15.27-8.61-21.71-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16V32c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84c-40.33 8.38-74.66 31.07-97.59 62.57L45.47 3.37C38.49-2.05 28.43-.8 23.01 6.18L3.37 31.45C-2.05 38.42-.8 48.47 6.18 53.9l588.35 454.73c6.98 5.43 17.03 4.17 22.46-2.81l19.64-25.27c5.42-6.97 4.17-17.02-2.81-22.45zM157.23 251.54c-8.61 67.96-36.41 93.33-52.62 110.75-6 6.45-8.66 14.16-8.61 21.71.11 16.4 12.98 32 32.1 32h241.92L157.23 251.54zM320 512c35.32 0 63.97-28.65 63.97-64H256.03c0 35.35 28.65 64 63.97 64z\\"
           >
           </path>
         </svg>
@@ -115,18 +122,20 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
             </span>
           </div>
           <span class=\\"badge components-label with-click\\">
-            <svg aria-hidden=\\"true\\"
-                 focusable=\\"false\\"
-                 data-prefix=\\"fas\\"
-                 data-icon=\\"chevron-down\\"
-                 class=\\"svg-inline--fa fa-chevron-down fa-w-14 components-managed-silence-icon m-auto text-muted cursor-pointer\\"
-                 role=\\"img\\"
-                 xmlns=\\"http://www.w3.org/2000/svg\\"
-                 viewbox=\\"0 0 448 512\\"
-                 style=\\"transition: transform 0.25s ease-in-out;\\"
+            <svg
+              aria-hidden=\\"true\\"
+              focusable=\\"false\\"
+              data-prefix=\\"fas\\"
+              data-icon=\\"chevron-down\\"
+              class=\\"svg-inline--fa fa-chevron-down fa-w-14 components-managed-silence-icon m-auto text-muted cursor-pointer\\"
+              role=\\"img\\"
+              xmlns=\\"http://www.w3.org/2000/svg\\"
+              viewbox=\\"0 0 448 512\\"
+              style=\\"transition: transform 0.25s ease-in-out;\\"
             >
-              <path fill=\\"currentColor\\"
-                    d=\\"M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z\\"
+              <path
+                fill=\\"currentColor\\"
+                d=\\"M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z\\"
               >
               </path>
             </svg>
@@ -141,34 +150,38 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
         <div class=\\"flex-shrink-1 flex-grow-1 mw-1p\\">
           <div>
             <span class=\\"badge px-1 me-1 components-label silence-detail\\">
-              <svg aria-hidden=\\"true\\"
-                   focusable=\\"false\\"
-                   data-prefix=\\"fas\\"
-                   data-icon=\\"calendar-check\\"
-                   class=\\"svg-inline--fa fa-calendar-check fa-w-14 fa-fw text-muted me-1\\"
-                   role=\\"img\\"
-                   xmlns=\\"http://www.w3.org/2000/svg\\"
-                   viewbox=\\"0 0 448 512\\"
+              <svg
+                aria-hidden=\\"true\\"
+                focusable=\\"false\\"
+                data-prefix=\\"fas\\"
+                data-icon=\\"calendar-check\\"
+                class=\\"svg-inline--fa fa-calendar-check fa-w-14 fa-fw text-muted me-1\\"
+                role=\\"img\\"
+                xmlns=\\"http://www.w3.org/2000/svg\\"
+                viewbox=\\"0 0 448 512\\"
               >
-                <path fill=\\"currentColor\\"
-                      d=\\"M436 160H12c-6.627 0-12-5.373-12-12v-36c0-26.51 21.49-48 48-48h48V12c0-6.627 5.373-12 12-12h40c6.627 0 12 5.373 12 12v52h128V12c0-6.627 5.373-12 12-12h40c6.627 0 12 5.373 12 12v52h48c26.51 0 48 21.49 48 48v36c0 6.627-5.373 12-12 12zM12 192h424c6.627 0 12 5.373 12 12v260c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V204c0-6.627 5.373-12 12-12zm333.296 95.947l-28.169-28.398c-4.667-4.705-12.265-4.736-16.97-.068L194.12 364.665l-45.98-46.352c-4.667-4.705-12.266-4.736-16.971-.068l-28.397 28.17c-4.705 4.667-4.736 12.265-.068 16.97l82.601 83.269c4.667 4.705 12.265 4.736 16.97.068l142.953-141.805c4.705-4.667 4.736-12.265.068-16.97z\\"
+                <path
+                  fill=\\"currentColor\\"
+                  d=\\"M436 160H12c-6.627 0-12-5.373-12-12v-36c0-26.51 21.49-48 48-48h48V12c0-6.627 5.373-12 12-12h40c6.627 0 12 5.373 12 12v52h128V12c0-6.627 5.373-12 12-12h40c6.627 0 12 5.373 12 12v52h48c26.51 0 48 21.49 48 48v36c0 6.627-5.373 12-12 12zM12 192h424c6.627 0 12 5.373 12 12v260c0 26.51-21.49 48-48 48H48c-26.51 0-48-21.49-48-48V204c0-6.627 5.373-12 12-12zm333.296 95.947l-28.169-28.398c-4.667-4.705-12.265-4.736-16.97-.068L194.12 364.665l-45.98-46.352c-4.667-4.705-12.266-4.736-16.971-.068l-28.397 28.17c-4.705 4.667-4.736 12.265-.068 16.97l82.601 83.269c4.667 4.705 12.265 4.736 16.97.068l142.953-141.805c4.705-4.667 4.736-12.265.068-16.97z\\"
                 >
                 </path>
               </svg>
               Started 30 minutes ago
             </span>
             <span class=\\"badge  px-1 me-1 components-label silence-detail\\">
-              <svg aria-hidden=\\"true\\"
-                   focusable=\\"false\\"
-                   data-prefix=\\"fas\\"
-                   data-icon=\\"calendar-times\\"
-                   class=\\"svg-inline--fa fa-calendar-times fa-w-14 fa-fw text-muted me-1\\"
-                   role=\\"img\\"
-                   xmlns=\\"http://www.w3.org/2000/svg\\"
-                   viewbox=\\"0 0 448 512\\"
+              <svg
+                aria-hidden=\\"true\\"
+                focusable=\\"false\\"
+                data-prefix=\\"fas\\"
+                data-icon=\\"calendar-times\\"
+                class=\\"svg-inline--fa fa-calendar-times fa-w-14 fa-fw text-muted me-1\\"
+                role=\\"img\\"
+                xmlns=\\"http://www.w3.org/2000/svg\\"
+                viewbox=\\"0 0 448 512\\"
               >
-                <path fill=\\"currentColor\\"
-                      d=\\"M436 160H12c-6.6 0-12-5.4-12-12v-36c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48v36c0 6.6-5.4 12-12 12zM12 192h424c6.6 0 12 5.4 12 12v260c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V204c0-6.6 5.4-12 12-12zm257.3 160l48.1-48.1c4.7-4.7 4.7-12.3 0-17l-28.3-28.3c-4.7-4.7-12.3-4.7-17 0L224 306.7l-48.1-48.1c-4.7-4.7-12.3-4.7-17 0l-28.3 28.3c-4.7 4.7-4.7 12.3 0 17l48.1 48.1-48.1 48.1c-4.7 4.7-4.7 12.3 0 17l28.3 28.3c4.7 4.7 12.3 4.7 17 0l48.1-48.1 48.1 48.1c4.7 4.7 12.3 4.7 17 0l28.3-28.3c4.7-4.7 4.7-12.3 0-17L269.3 352z\\"
+                <path
+                  fill=\\"currentColor\\"
+                  d=\\"M436 160H12c-6.6 0-12-5.4-12-12v-36c0-26.5 21.5-48 48-48h48V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h128V12c0-6.6 5.4-12 12-12h40c6.6 0 12 5.4 12 12v52h48c26.5 0 48 21.5 48 48v36c0 6.6-5.4 12-12 12zM12 192h424c6.6 0 12 5.4 12 12v260c0 26.5-21.5 48-48 48H48c-26.5 0-48-21.5-48-48V204c0-6.6 5.4-12 12-12zm257.3 160l48.1-48.1c4.7-4.7 4.7-12.3 0-17l-28.3-28.3c-4.7-4.7-12.3-4.7-17 0L224 306.7l-48.1-48.1c-4.7-4.7-12.3-4.7-17 0l-28.3 28.3c-4.7 4.7-4.7 12.3 0 17l48.1 48.1-48.1 48.1c-4.7 4.7-4.7 12.3 0 17l28.3 28.3c4.7 4.7 12.3 4.7 17 0l48.1-48.1 48.1 48.1c4.7 4.7 12.3 4.7 17 0l28.3-28.3c4.7-4.7 4.7-12.3 0-17L269.3 352z\\"
                 >
                 </path>
               </svg>
@@ -177,17 +190,19 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
           </div>
           <div class=\\"my-1 d-flex flex-row\\">
             <span class=\\"badge px-1 me-1 components-label silence-detail flex-grow-0 flex-shrink-0\\">
-              <svg aria-hidden=\\"true\\"
-                   focusable=\\"false\\"
-                   data-prefix=\\"fas\\"
-                   data-icon=\\"fingerprint\\"
-                   class=\\"svg-inline--fa fa-fingerprint fa-w-16 fa-fw text-muted me-1\\"
-                   role=\\"img\\"
-                   xmlns=\\"http://www.w3.org/2000/svg\\"
-                   viewbox=\\"0 0 512 512\\"
+              <svg
+                aria-hidden=\\"true\\"
+                focusable=\\"false\\"
+                data-prefix=\\"fas\\"
+                data-icon=\\"fingerprint\\"
+                class=\\"svg-inline--fa fa-fingerprint fa-w-16 fa-fw text-muted me-1\\"
+                role=\\"img\\"
+                xmlns=\\"http://www.w3.org/2000/svg\\"
+                viewbox=\\"0 0 512 512\\"
               >
-                <path fill=\\"currentColor\\"
-                      d=\\"M256.12 245.96c-13.25 0-24 10.74-24 24 1.14 72.25-8.14 141.9-27.7 211.55-2.73 9.72 2.15 30.49 23.12 30.49 10.48 0 20.11-6.92 23.09-17.52 13.53-47.91 31.04-125.41 29.48-224.52.01-13.25-10.73-24-23.99-24zm-.86-81.73C194 164.16 151.25 211.3 152.1 265.32c.75 47.94-3.75 95.91-13.37 142.55-2.69 12.98 5.67 25.69 18.64 28.36 13.05 2.67 25.67-5.66 28.36-18.64 10.34-50.09 15.17-101.58 14.37-153.02-.41-25.95 19.92-52.49 54.45-52.34 31.31.47 57.15 25.34 57.62 55.47.77 48.05-2.81 96.33-10.61 143.55-2.17 13.06 6.69 25.42 19.76 27.58 19.97 3.33 26.81-15.1 27.58-19.77 8.28-50.03 12.06-101.21 11.27-152.11-.88-55.8-47.94-101.88-104.91-102.72zm-110.69-19.78c-10.3-8.34-25.37-6.8-33.76 3.48-25.62 31.5-39.39 71.28-38.75 112 .59 37.58-2.47 75.27-9.11 112.05-2.34 13.05 6.31 25.53 19.36 27.89 20.11 3.5 27.07-14.81 27.89-19.36 7.19-39.84 10.5-80.66 9.86-121.33-.47-29.88 9.2-57.88 28-80.97 8.35-10.28 6.79-25.39-3.49-33.76zm109.47-62.33c-15.41-.41-30.87 1.44-45.78 4.97-12.89 3.06-20.87 15.98-17.83 28.89 3.06 12.89 16 20.83 28.89 17.83 11.05-2.61 22.47-3.77 34-3.69 75.43 1.13 137.73 61.5 138.88 134.58.59 37.88-1.28 76.11-5.58 113.63-1.5 13.17 7.95 25.08 21.11 26.58 16.72 1.95 25.51-11.88 26.58-21.11a929.06 929.06 0 0 0 5.89-119.85c-1.56-98.75-85.07-180.33-186.16-181.83zm252.07 121.45c-2.86-12.92-15.51-21.2-28.61-18.27-12.94 2.86-21.12 15.66-18.26 28.61 4.71 21.41 4.91 37.41 4.7 61.6-.11 13.27 10.55 24.09 23.8 24.2h.2c13.17 0 23.89-10.61 24-23.8.18-22.18.4-44.11-5.83-72.34zm-40.12-90.72C417.29 43.46 337.6 1.29 252.81.02 183.02-.82 118.47 24.91 70.46 72.94 24.09 119.37-.9 181.04.14 246.65l-.12 21.47c-.39 13.25 10.03 24.31 23.28 24.69.23.02.48.02.72.02 12.92 0 23.59-10.3 23.97-23.3l.16-23.64c-.83-52.5 19.16-101.86 56.28-139 38.76-38.8 91.34-59.67 147.68-58.86 69.45 1.03 134.73 35.56 174.62 92.39 7.61 10.86 22.56 13.45 33.42 5.86 10.84-7.62 13.46-22.59 5.84-33.43z\\"
+                <path
+                  fill=\\"currentColor\\"
+                  d=\\"M256.12 245.96c-13.25 0-24 10.74-24 24 1.14 72.25-8.14 141.9-27.7 211.55-2.73 9.72 2.15 30.49 23.12 30.49 10.48 0 20.11-6.92 23.09-17.52 13.53-47.91 31.04-125.41 29.48-224.52.01-13.25-10.73-24-23.99-24zm-.86-81.73C194 164.16 151.25 211.3 152.1 265.32c.75 47.94-3.75 95.91-13.37 142.55-2.69 12.98 5.67 25.69 18.64 28.36 13.05 2.67 25.67-5.66 28.36-18.64 10.34-50.09 15.17-101.58 14.37-153.02-.41-25.95 19.92-52.49 54.45-52.34 31.31.47 57.15 25.34 57.62 55.47.77 48.05-2.81 96.33-10.61 143.55-2.17 13.06 6.69 25.42 19.76 27.58 19.97 3.33 26.81-15.1 27.58-19.77 8.28-50.03 12.06-101.21 11.27-152.11-.88-55.8-47.94-101.88-104.91-102.72zm-110.69-19.78c-10.3-8.34-25.37-6.8-33.76 3.48-25.62 31.5-39.39 71.28-38.75 112 .59 37.58-2.47 75.27-9.11 112.05-2.34 13.05 6.31 25.53 19.36 27.89 20.11 3.5 27.07-14.81 27.89-19.36 7.19-39.84 10.5-80.66 9.86-121.33-.47-29.88 9.2-57.88 28-80.97 8.35-10.28 6.79-25.39-3.49-33.76zm109.47-62.33c-15.41-.41-30.87 1.44-45.78 4.97-12.89 3.06-20.87 15.98-17.83 28.89 3.06 12.89 16 20.83 28.89 17.83 11.05-2.61 22.47-3.77 34-3.69 75.43 1.13 137.73 61.5 138.88 134.58.59 37.88-1.28 76.11-5.58 113.63-1.5 13.17 7.95 25.08 21.11 26.58 16.72 1.95 25.51-11.88 26.58-21.11a929.06 929.06 0 0 0 5.89-119.85c-1.56-98.75-85.07-180.33-186.16-181.83zm252.07 121.45c-2.86-12.92-15.51-21.2-28.61-18.27-12.94 2.86-21.12 15.66-18.26 28.61 4.71 21.41 4.91 37.41 4.7 61.6-.11 13.27 10.55 24.09 23.8 24.2h.2c13.17 0 23.89-10.61 24-23.8.18-22.18.4-44.11-5.83-72.34zm-40.12-90.72C417.29 43.46 337.6 1.29 252.81.02 183.02-.82 118.47 24.91 70.46 72.94 24.09 119.37-.9 181.04.14 246.65l-.12 21.47c-.39 13.25 10.03 24.31 23.28 24.69.23.02.48.02.72.02 12.92 0 23.59-10.3 23.97-23.3l.16-23.64c-.83-52.5 19.16-101.86 56.28-139 38.76-38.8 91.34-59.67 147.68-58.86 69.45 1.03 134.73 35.56 174.62 92.39 7.61 10.86 22.56 13.45 33.42 5.86 10.84-7.62 13.46-22.59 5.84-33.43z\\"
                 >
                 </path>
               </svg>
@@ -198,17 +213,19 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
             </span>
             <div class=\\" tooltip-trigger\\">
               <span class=\\"badge bg-secondary px-1 me-1 components-label cursor-pointer\\">
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"copy\\"
-                     class=\\"svg-inline--fa fa-copy fa-w-14 \\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 448 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"copy\\"
+                  class=\\"svg-inline--fa fa-copy fa-w-14 \\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 448 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M320 448v40c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V120c0-13.255 10.745-24 24-24h72v296c0 30.879 25.121 56 56 56h168zm0-344V0H152c-13.255 0-24 10.745-24 24v368c0 13.255 10.745 24 24 24h272c13.255 0 24-10.745 24-24V128H344c-13.2 0-24-10.8-24-24zm120.971-31.029L375.029 7.029A24 24 0 0 0 358.059 0H352v96h96v-6.059a24 24 0 0 0-7.029-16.97z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M320 448v40c0 13.255-10.745 24-24 24H24c-13.255 0-24-10.745-24-24V120c0-13.255 10.745-24 24-24h72v296c0 30.879 25.121 56 56 56h168zm0-344V0H152c-13.255 0-24 10.745-24 24v368c0 13.255 10.745 24 24 24h272c13.255 0 24-10.745 24-24V128H344c-13.2 0-24-10.8-24-24zm120.971-31.029L375.029 7.029A24 24 0 0 0 358.059 0H352v96h96v-6.059a24 24 0 0 0-7.029-16.97z\\"
                   >
                   </path>
                 </svg>
@@ -217,38 +234,43 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
           </div>
           <div class=\\"my-1\\">
             <span class=\\"badge px-1 me-1 components-label silence-detail\\">
-              <svg aria-hidden=\\"true\\"
-                   focusable=\\"false\\"
-                   data-prefix=\\"fas\\"
-                   data-icon=\\"home\\"
-                   class=\\"svg-inline--fa fa-home fa-w-18 fa-fw text-muted me-1\\"
-                   role=\\"img\\"
-                   xmlns=\\"http://www.w3.org/2000/svg\\"
-                   viewbox=\\"0 0 576 512\\"
+              <svg
+                aria-hidden=\\"true\\"
+                focusable=\\"false\\"
+                data-prefix=\\"fas\\"
+                data-icon=\\"home\\"
+                class=\\"svg-inline--fa fa-home fa-w-18 fa-fw text-muted me-1\\"
+                role=\\"img\\"
+                xmlns=\\"http://www.w3.org/2000/svg\\"
+                viewbox=\\"0 0 576 512\\"
               >
-                <path fill=\\"currentColor\\"
-                      d=\\"M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z\\"
+                <path
+                  fill=\\"currentColor\\"
+                  d=\\"M280.37 148.26L96 300.11V464a16 16 0 0 0 16 16l112.06-.29a16 16 0 0 0 15.92-16V368a16 16 0 0 1 16-16h64a16 16 0 0 1 16 16v95.64a16 16 0 0 0 16 16.05L464 480a16 16 0 0 0 16-16V300L295.67 148.26a12.19 12.19 0 0 0-15.3 0zM571.6 251.47L488 182.56V44.05a12 12 0 0 0-12-12h-56a12 12 0 0 0-12 12v72.61L318.47 43a48 48 0 0 0-61 0L4.34 251.47a12 12 0 0 0-1.6 16.9l25.5 31A12 12 0 0 0 45.15 301l235.22-193.74a12.19 12.19 0 0 1 15.3 0L530.9 301a12 12 0 0 0 16.9-1.6l25.5-31a12 12 0 0 0-1.7-16.93z\\"
                 >
                 </path>
               </svg>
               View in Alertmanager:
             </span>
-            <a href=\\"http://example.com/#/silences/04d37636-2350-4878-b382-e0b50353230f\\"
-               target=\\"_blank\\"
-               rel=\\"noopener noreferrer\\"
-               class=\\"components-label components-label-with-hover badge components-grid-annotation-link\\"
+            <a
+              href=\\"http://example.com/#/silences/04d37636-2350-4878-b382-e0b50353230f\\"
+              target=\\"_blank\\"
+              rel=\\"noopener noreferrer\\"
+              class=\\"components-label components-label-with-hover badge components-grid-annotation-link\\"
             >
-              <svg aria-hidden=\\"true\\"
-                   focusable=\\"false\\"
-                   data-prefix=\\"fas\\"
-                   data-icon=\\"external-link-alt\\"
-                   class=\\"svg-inline--fa fa-external-link-alt fa-w-16 \\"
-                   role=\\"img\\"
-                   xmlns=\\"http://www.w3.org/2000/svg\\"
-                   viewbox=\\"0 0 512 512\\"
+              <svg
+                aria-hidden=\\"true\\"
+                focusable=\\"false\\"
+                data-prefix=\\"fas\\"
+                data-icon=\\"external-link-alt\\"
+                class=\\"svg-inline--fa fa-external-link-alt fa-w-16 \\"
+                role=\\"img\\"
+                xmlns=\\"http://www.w3.org/2000/svg\\"
+                viewbox=\\"0 0 512 512\\"
               >
-                <path fill=\\"currentColor\\"
-                      d=\\"M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z\\"
+                <path
+                  fill=\\"currentColor\\"
+                  d=\\"M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z\\"
                 >
                 </path>
               </svg>
@@ -258,25 +280,28 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
           <div class=\\"d-flex flex-row\\">
             <div class=\\"flex-shrink-0 flex-grow-0\\">
               <span class=\\"badge px-1 me-1 components-label silence-detail\\">
-                <svg aria-hidden=\\"true\\"
-                     focusable=\\"false\\"
-                     data-prefix=\\"fas\\"
-                     data-icon=\\"filter\\"
-                     class=\\"svg-inline--fa fa-filter fa-w-16 fa-fw text-muted me-1\\"
-                     role=\\"img\\"
-                     xmlns=\\"http://www.w3.org/2000/svg\\"
-                     viewbox=\\"0 0 512 512\\"
+                <svg
+                  aria-hidden=\\"true\\"
+                  focusable=\\"false\\"
+                  data-prefix=\\"fas\\"
+                  data-icon=\\"filter\\"
+                  class=\\"svg-inline--fa fa-filter fa-w-16 fa-fw text-muted me-1\\"
+                  role=\\"img\\"
+                  xmlns=\\"http://www.w3.org/2000/svg\\"
+                  viewbox=\\"0 0 512 512\\"
                 >
-                  <path fill=\\"currentColor\\"
-                        d=\\"M487.976 0H24.028C2.71 0-8.047 25.866 7.058 40.971L192 225.941V432c0 7.831 3.821 15.17 10.237 19.662l80 55.98C298.02 518.69 320 507.493 320 487.98V225.941l184.947-184.97C520.021 25.896 509.338 0 487.976 0z\\"
+                  <path
+                    fill=\\"currentColor\\"
+                    d=\\"M487.976 0H24.028C2.71 0-8.047 25.866 7.058 40.971L192 225.941V432c0 7.831 3.821 15.17 10.237 19.662l80 55.98C298.02 518.69 320 507.493 320 487.98V225.941l184.947-184.97C520.021 25.896 509.338 0 487.976 0z\\"
                   >
                   </path>
                 </svg>
                 Matchers:
               </span>
             </div>
-            <div class=\\"flex-shrink-1 flex-grow-1 mw-1p\\"
-                 style=\\"min-width: 0px;\\"
+            <div
+              class=\\"flex-shrink-1 flex-grow-1 mw-1p\\"
+              style=\\"min-width: 0px;\\"
             >
               <span class=\\"badge silence-matcher-equal px-1 me-1 components-label\\">
                 regex=~\\"equal\\"
@@ -296,34 +321,38 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
         <div class=\\"flex-shrink-0 flex-grow-0 mt-lg-0 mt-2 ml-lg-2 ms-0\\">
           <div class=\\"d-flex flex-fill flex-lg-column flex-row justify-content-around\\">
             <button class=\\"btn btn-primary btn-sm mb-lg-2 mb-0\\">
-              <svg aria-hidden=\\"true\\"
-                   focusable=\\"false\\"
-                   data-prefix=\\"fas\\"
-                   data-icon=\\"edit\\"
-                   class=\\"svg-inline--fa fa-edit fa-w-18 me-1 d-none d-sm-inline-block\\"
-                   role=\\"img\\"
-                   xmlns=\\"http://www.w3.org/2000/svg\\"
-                   viewbox=\\"0 0 576 512\\"
+              <svg
+                aria-hidden=\\"true\\"
+                focusable=\\"false\\"
+                data-prefix=\\"fas\\"
+                data-icon=\\"edit\\"
+                class=\\"svg-inline--fa fa-edit fa-w-18 me-1 d-none d-sm-inline-block\\"
+                role=\\"img\\"
+                xmlns=\\"http://www.w3.org/2000/svg\\"
+                viewbox=\\"0 0 576 512\\"
               >
-                <path fill=\\"currentColor\\"
-                      d=\\"M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z\\"
+                <path
+                  fill=\\"currentColor\\"
+                  d=\\"M402.6 83.2l90.2 90.2c3.8 3.8 3.8 10 0 13.8L274.4 405.6l-92.8 10.3c-12.4 1.4-22.9-9.1-21.5-21.5l10.3-92.8L388.8 83.2c3.8-3.8 10-3.8 13.8 0zm162-22.9l-48.8-48.8c-15.2-15.2-39.9-15.2-55.2 0l-35.4 35.4c-3.8 3.8-3.8 10 0 13.8l90.2 90.2c3.8 3.8 10 3.8 13.8 0l35.4-35.4c15.2-15.3 15.2-40 0-55.2zM384 346.2V448H64V128h229.8c3.2 0 6.2-1.3 8.5-3.5l40-40c7.6-7.6 2.2-20.5-8.5-20.5H48C21.5 64 0 85.5 0 112v352c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V306.2c0-10.7-12.9-16-20.5-8.5l-40 40c-2.2 2.3-3.5 5.3-3.5 8.5z\\"
                 >
                 </path>
               </svg>
               Edit
             </button>
             <button class=\\"btn btn-danger btn-sm\\">
-              <svg aria-hidden=\\"true\\"
-                   focusable=\\"false\\"
-                   data-prefix=\\"fas\\"
-                   data-icon=\\"trash\\"
-                   class=\\"svg-inline--fa fa-trash fa-w-14 me-1 d-none d-sm-inline-block\\"
-                   role=\\"img\\"
-                   xmlns=\\"http://www.w3.org/2000/svg\\"
-                   viewbox=\\"0 0 448 512\\"
+              <svg
+                aria-hidden=\\"true\\"
+                focusable=\\"false\\"
+                data-prefix=\\"fas\\"
+                data-icon=\\"trash\\"
+                class=\\"svg-inline--fa fa-trash fa-w-14 me-1 d-none d-sm-inline-block\\"
+                role=\\"img\\"
+                xmlns=\\"http://www.w3.org/2000/svg\\"
+                viewbox=\\"0 0 448 512\\"
               >
-                <path fill=\\"currentColor\\"
-                      d=\\"M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z\\"
+                <path
+                  fill=\\"currentColor\\"
+                  d=\\"M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z\\"
                 >
                 </path>
               </svg>

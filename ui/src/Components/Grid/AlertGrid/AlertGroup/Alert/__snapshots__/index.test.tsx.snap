@@ -7,17 +7,19 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
         <span class=\\"cursor-pointer\\">
-          <svg aria-hidden=\\"true\\"
-               focusable=\\"false\\"
-               data-prefix=\\"fas\\"
-               data-icon=\\"search-minus\\"
-               class=\\"svg-inline--fa fa-search-minus fa-w-16 me-1\\"
-               role=\\"img\\"
-               xmlns=\\"http://www.w3.org/2000/svg\\"
-               viewbox=\\"0 0 512 512\\"
+          <svg
+            aria-hidden=\\"true\\"
+            focusable=\\"false\\"
+            data-prefix=\\"fas\\"
+            data-icon=\\"search-minus\\"
+            class=\\"svg-inline--fa fa-search-minus fa-w-16 me-1\\"
+            role=\\"img\\"
+            xmlns=\\"http://www.w3.org/2000/svg\\"
+            viewbox=\\"0 0 512 512\\"
           >
-            <path fill=\\"currentColor\\"
-                  d=\\"M304 192v32c0 6.6-5.4 12-12 12H124c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm201 284.7L476.7 505c-9.4 9.4-24.6 9.4-33.9 0L343 405.3c-4.5-4.5-7-10.6-7-17V372c-35.3 27.6-79.7 44-128 44C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208c0 48.3-16.4 92.7-44 128h16.3c6.4 0 12.5 2.5 17 7l99.7 99.7c9.3 9.4 9.3 24.6 0 34zM344 208c0-75.2-60.8-136-136-136S72 132.8 72 208s60.8 136 136 136 136-60.8 136-136z\\"
+            <path
+              fill=\\"currentColor\\"
+              d=\\"M304 192v32c0 6.6-5.4 12-12 12H124c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm201 284.7L476.7 505c-9.4 9.4-24.6 9.4-33.9 0L343 405.3c-4.5-4.5-7-10.6-7-17V372c-35.3 27.6-79.7 44-128 44C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208c0 48.3-16.4 92.7-44 128h16.3c6.4 0 12.5 2.5 17 7l99.7 99.7c9.3 9.4 9.3 24.6 0 34zM344 208c0-75.2-60.8-136-136-136S72 132.8 72 208s60.8 136 136 136 136-60.8 136-136z\\"
             >
             </path>
           </svg>
@@ -34,17 +36,19 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     </div>
     <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
-        <svg aria-hidden=\\"true\\"
-             focusable=\\"false\\"
-             data-prefix=\\"fas\\"
-             data-icon=\\"search-plus\\"
-             class=\\"svg-inline--fa fa-search-plus fa-w-16 me-1\\"
-             role=\\"img\\"
-             xmlns=\\"http://www.w3.org/2000/svg\\"
-             viewbox=\\"0 0 512 512\\"
+        <svg
+          aria-hidden=\\"true\\"
+          focusable=\\"false\\"
+          data-prefix=\\"fas\\"
+          data-icon=\\"search-plus\\"
+          class=\\"svg-inline--fa fa-search-plus fa-w-16 me-1\\"
+          role=\\"img\\"
+          xmlns=\\"http://www.w3.org/2000/svg\\"
+          viewbox=\\"0 0 512 512\\"
         >
-          <path fill=\\"currentColor\\"
-                d=\\"M304 192v32c0 6.6-5.4 12-12 12h-56v56c0 6.6-5.4 12-12 12h-32c-6.6 0-12-5.4-12-12v-56h-56c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h56v-56c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v56h56c6.6 0 12 5.4 12 12zm201 284.7L476.7 505c-9.4 9.4-24.6 9.4-33.9 0L343 405.3c-4.5-4.5-7-10.6-7-17V372c-35.3 27.6-79.7 44-128 44C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208c0 48.3-16.4 92.7-44 128h16.3c6.4 0 12.5 2.5 17 7l99.7 99.7c9.3 9.4 9.3 24.6 0 34zM344 208c0-75.2-60.8-136-136-136S72 132.8 72 208s60.8 136 136 136 136-60.8 136-136z\\"
+          <path
+            fill=\\"currentColor\\"
+            d=\\"M304 192v32c0 6.6-5.4 12-12 12h-56v56c0 6.6-5.4 12-12 12h-32c-6.6 0-12-5.4-12-12v-56h-56c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h56v-56c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v56h56c6.6 0 12 5.4 12 12zm201 284.7L476.7 505c-9.4 9.4-24.6 9.4-33.9 0L343 405.3c-4.5-4.5-7-10.6-7-17V372c-35.3 27.6-79.7 44-128 44C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208c0 48.3-16.4 92.7-44 128h16.3c6.4 0 12.5 2.5 17 7l99.7 99.7c9.3 9.4 9.3 24.6 0 34zM344 208c0-75.2-60.8-136-136-136S72 132.8 72 208s60.8 136 136 136 136-60.8 136-136z\\"
           >
           </path>
         </svg>
@@ -53,21 +57,24 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     </div>
   </div>
   <span>
-    <span class=\\"components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer\\"
-          data-toggle=\\"dropdown\\"
+    <span
+      class=\\"components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer\\"
+      data-toggle=\\"dropdown\\"
     >
-      <svg aria-hidden=\\"true\\"
-           focusable=\\"false\\"
-           data-prefix=\\"fas\\"
-           data-icon=\\"caret-down\\"
-           class=\\"svg-inline--fa fa-caret-down fa-w-10 pe-1\\"
-           role=\\"img\\"
-           xmlns=\\"http://www.w3.org/2000/svg\\"
-           viewbox=\\"0 0 320 512\\"
-           style=\\"width: 0.8rem;\\"
+      <svg
+        aria-hidden=\\"true\\"
+        focusable=\\"false\\"
+        data-prefix=\\"fas\\"
+        data-icon=\\"caret-down\\"
+        class=\\"svg-inline--fa fa-caret-down fa-w-10 pe-1\\"
+        role=\\"img\\"
+        xmlns=\\"http://www.w3.org/2000/svg\\"
+        viewbox=\\"0 0 320 512\\"
+        style=\\"width: 0.8rem;\\"
       >
-        <path fill=\\"currentColor\\"
-              d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
+        <path
+          fill=\\"currentColor\\"
+          d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
         >
         </path>
       </svg>
@@ -76,17 +83,19 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
   </span>
   <div class=\\" tooltip-trigger\\">
     <span class=\\"badge bg-light components-label components-label-with-hover cursor-pointer\\">
-      <svg aria-hidden=\\"true\\"
-           focusable=\\"false\\"
-           data-prefix=\\"fas\\"
-           data-icon=\\"volume-mute\\"
-           class=\\"svg-inline--fa fa-volume-mute fa-w-16 text-success\\"
-           role=\\"img\\"
-           xmlns=\\"http://www.w3.org/2000/svg\\"
-           viewbox=\\"0 0 512 512\\"
+      <svg
+        aria-hidden=\\"true\\"
+        focusable=\\"false\\"
+        data-prefix=\\"fas\\"
+        data-icon=\\"volume-mute\\"
+        class=\\"svg-inline--fa fa-volume-mute fa-w-16 text-success\\"
+        role=\\"img\\"
+        xmlns=\\"http://www.w3.org/2000/svg\\"
+        viewbox=\\"0 0 512 512\\"
       >
-        <path fill=\\"currentColor\\"
-              d=\\"M215.03 71.05L126.06 160H24c-13.26 0-24 10.74-24 24v144c0 13.25 10.74 24 24 24h102.06l88.97 88.95c15.03 15.03 40.97 4.47 40.97-16.97V88.02c0-21.46-25.96-31.98-40.97-16.97zM461.64 256l45.64-45.64c6.3-6.3 6.3-16.52 0-22.82l-22.82-22.82c-6.3-6.3-16.52-6.3-22.82 0L416 210.36l-45.64-45.64c-6.3-6.3-16.52-6.3-22.82 0l-22.82 22.82c-6.3 6.3-6.3 16.52 0 22.82L370.36 256l-45.63 45.63c-6.3 6.3-6.3 16.52 0 22.82l22.82 22.82c6.3 6.3 16.52 6.3 22.82 0L416 301.64l45.64 45.64c6.3 6.3 16.52 6.3 22.82 0l22.82-22.82c6.3-6.3 6.3-16.52 0-22.82L461.64 256z\\"
+        <path
+          fill=\\"currentColor\\"
+          d=\\"M215.03 71.05L126.06 160H24c-13.26 0-24 10.74-24 24v144c0 13.25 10.74 24 24 24h102.06l88.97 88.95c15.03 15.03 40.97 4.47 40.97-16.97V88.02c0-21.46-25.96-31.98-40.97-16.97zM461.64 256l45.64-45.64c6.3-6.3 6.3-16.52 0-22.82l-22.82-22.82c-6.3-6.3-16.52-6.3-22.82 0L416 210.36l-45.64-45.64c-6.3-6.3-16.52-6.3-22.82 0l-22.82 22.82c-6.3 6.3-6.3 16.52 0 22.82L370.36 256l-45.63 45.63c-6.3 6.3-6.3 16.52 0 22.82l22.82 22.82c6.3 6.3 16.52 6.3 22.82 0L416 301.64l45.64 45.64c6.3 6.3 16.52 6.3 22.82 0l22.82-22.82c6.3-6.3 6.3-16.52 0-22.82L461.64 256z\\"
         >
         </path>
       </svg>
@@ -112,22 +121,25 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
       </span>
     </span>
   </div>
-  <a href=\\"http://localhost\\"
-     target=\\"_blank\\"
-     rel=\\"noopener noreferrer\\"
-     class=\\"components-label components-label-with-hover badge components-grid-annotation-link\\"
+  <a
+    href=\\"http://localhost\\"
+    target=\\"_blank\\"
+    rel=\\"noopener noreferrer\\"
+    class=\\"components-label components-label-with-hover badge components-grid-annotation-link\\"
   >
-    <svg aria-hidden=\\"true\\"
-         focusable=\\"false\\"
-         data-prefix=\\"fas\\"
-         data-icon=\\"external-link-alt\\"
-         class=\\"svg-inline--fa fa-external-link-alt fa-w-16 \\"
-         role=\\"img\\"
-         xmlns=\\"http://www.w3.org/2000/svg\\"
-         viewbox=\\"0 0 512 512\\"
+    <svg
+      aria-hidden=\\"true\\"
+      focusable=\\"false\\"
+      data-prefix=\\"fas\\"
+      data-icon=\\"external-link-alt\\"
+      class=\\"svg-inline--fa fa-external-link-alt fa-w-16 \\"
+      role=\\"img\\"
+      xmlns=\\"http://www.w3.org/2000/svg\\"
+      viewbox=\\"0 0 512 512\\"
     >
-      <path fill=\\"currentColor\\"
-            d=\\"M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z\\"
+      <path
+        fill=\\"currentColor\\"
+        d=\\"M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z\\"
       >
       </path>
     </svg>
@@ -144,17 +156,19 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
     <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100\\">
         <span class=\\"cursor-pointer\\">
-          <svg aria-hidden=\\"true\\"
-               focusable=\\"false\\"
-               data-prefix=\\"fas\\"
-               data-icon=\\"search-minus\\"
-               class=\\"svg-inline--fa fa-search-minus fa-w-16 me-1\\"
-               role=\\"img\\"
-               xmlns=\\"http://www.w3.org/2000/svg\\"
-               viewbox=\\"0 0 512 512\\"
+          <svg
+            aria-hidden=\\"true\\"
+            focusable=\\"false\\"
+            data-prefix=\\"fas\\"
+            data-icon=\\"search-minus\\"
+            class=\\"svg-inline--fa fa-search-minus fa-w-16 me-1\\"
+            role=\\"img\\"
+            xmlns=\\"http://www.w3.org/2000/svg\\"
+            viewbox=\\"0 0 512 512\\"
           >
-            <path fill=\\"currentColor\\"
-                  d=\\"M304 192v32c0 6.6-5.4 12-12 12H124c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm201 284.7L476.7 505c-9.4 9.4-24.6 9.4-33.9 0L343 405.3c-4.5-4.5-7-10.6-7-17V372c-35.3 27.6-79.7 44-128 44C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208c0 48.3-16.4 92.7-44 128h16.3c6.4 0 12.5 2.5 17 7l99.7 99.7c9.3 9.4 9.3 24.6 0 34zM344 208c0-75.2-60.8-136-136-136S72 132.8 72 208s60.8 136 136 136 136-60.8 136-136z\\"
+            <path
+              fill=\\"currentColor\\"
+              d=\\"M304 192v32c0 6.6-5.4 12-12 12H124c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm201 284.7L476.7 505c-9.4 9.4-24.6 9.4-33.9 0L343 405.3c-4.5-4.5-7-10.6-7-17V372c-35.3 27.6-79.7 44-128 44C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208c0 48.3-16.4 92.7-44 128h16.3c6.4 0 12.5 2.5 17 7l99.7 99.7c9.3 9.4 9.3 24.6 0 34zM344 208c0-75.2-60.8-136-136-136S72 132.8 72 208s60.8 136 136 136 136-60.8 136-136z\\"
             >
             </path>
           </svg>
@@ -171,17 +185,19 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
     </div>
     <div class=\\" tooltip-trigger\\">
       <div class=\\"mb-1 p-1 bg-light d-inline-block rounded components-grid-annotation text-break mw-100 cursor-pointer\\">
-        <svg aria-hidden=\\"true\\"
-             focusable=\\"false\\"
-             data-prefix=\\"fas\\"
-             data-icon=\\"search-plus\\"
-             class=\\"svg-inline--fa fa-search-plus fa-w-16 me-1\\"
-             role=\\"img\\"
-             xmlns=\\"http://www.w3.org/2000/svg\\"
-             viewbox=\\"0 0 512 512\\"
+        <svg
+          aria-hidden=\\"true\\"
+          focusable=\\"false\\"
+          data-prefix=\\"fas\\"
+          data-icon=\\"search-plus\\"
+          class=\\"svg-inline--fa fa-search-plus fa-w-16 me-1\\"
+          role=\\"img\\"
+          xmlns=\\"http://www.w3.org/2000/svg\\"
+          viewbox=\\"0 0 512 512\\"
         >
-          <path fill=\\"currentColor\\"
-                d=\\"M304 192v32c0 6.6-5.4 12-12 12h-56v56c0 6.6-5.4 12-12 12h-32c-6.6 0-12-5.4-12-12v-56h-56c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h56v-56c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v56h56c6.6 0 12 5.4 12 12zm201 284.7L476.7 505c-9.4 9.4-24.6 9.4-33.9 0L343 405.3c-4.5-4.5-7-10.6-7-17V372c-35.3 27.6-79.7 44-128 44C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208c0 48.3-16.4 92.7-44 128h16.3c6.4 0 12.5 2.5 17 7l99.7 99.7c9.3 9.4 9.3 24.6 0 34zM344 208c0-75.2-60.8-136-136-136S72 132.8 72 208s60.8 136 136 136 136-60.8 136-136z\\"
+          <path
+            fill=\\"currentColor\\"
+            d=\\"M304 192v32c0 6.6-5.4 12-12 12h-56v56c0 6.6-5.4 12-12 12h-32c-6.6 0-12-5.4-12-12v-56h-56c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h56v-56c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v56h56c6.6 0 12 5.4 12 12zm201 284.7L476.7 505c-9.4 9.4-24.6 9.4-33.9 0L343 405.3c-4.5-4.5-7-10.6-7-17V372c-35.3 27.6-79.7 44-128 44C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208c0 48.3-16.4 92.7-44 128h16.3c6.4 0 12.5 2.5 17 7l99.7 99.7c9.3 9.4 9.3 24.6 0 34zM344 208c0-75.2-60.8-136-136-136S72 132.8 72 208s60.8 136 136 136 136-60.8 136-136z\\"
           >
           </path>
         </svg>
@@ -190,21 +206,24 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
     </div>
   </div>
   <span>
-    <span class=\\"components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer\\"
-          data-toggle=\\"dropdown\\"
+    <span
+      class=\\"components-label components-label-with-hover px-1 me-1 badge bg-secondary cursor-pointer\\"
+      data-toggle=\\"dropdown\\"
     >
-      <svg aria-hidden=\\"true\\"
-           focusable=\\"false\\"
-           data-prefix=\\"fas\\"
-           data-icon=\\"caret-down\\"
-           class=\\"svg-inline--fa fa-caret-down fa-w-10 pe-1\\"
-           role=\\"img\\"
-           xmlns=\\"http://www.w3.org/2000/svg\\"
-           viewbox=\\"0 0 320 512\\"
-           style=\\"width: 0.8rem;\\"
+      <svg
+        aria-hidden=\\"true\\"
+        focusable=\\"false\\"
+        data-prefix=\\"fas\\"
+        data-icon=\\"caret-down\\"
+        class=\\"svg-inline--fa fa-caret-down fa-w-10 pe-1\\"
+        role=\\"img\\"
+        xmlns=\\"http://www.w3.org/2000/svg\\"
+        viewbox=\\"0 0 320 512\\"
+        style=\\"width: 0.8rem;\\"
       >
-        <path fill=\\"currentColor\\"
-              d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
+        <path
+          fill=\\"currentColor\\"
+          d=\\"M31.3 192h257.3c17.8 0 26.7 21.5 14.1 34.1L174.1 354.8c-7.8 7.8-20.5 7.8-28.3 0L17.2 226.1C4.6 213.5 13.5 192 31.3 192z\\"
         >
         </path>
       </svg>
@@ -231,22 +250,25 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
       </span>
     </span>
   </div>
-  <a href=\\"http://localhost\\"
-     target=\\"_blank\\"
-     rel=\\"noopener noreferrer\\"
-     class=\\"components-label components-label-with-hover badge components-grid-annotation-link\\"
+  <a
+    href=\\"http://localhost\\"
+    target=\\"_blank\\"
+    rel=\\"noopener noreferrer\\"
+    class=\\"components-label components-label-with-hover badge components-grid-annotation-link\\"
   >
-    <svg aria-hidden=\\"true\\"
-         focusable=\\"false\\"
-         data-prefix=\\"fas\\"
-         data-icon=\\"external-link-alt\\"
-         class=\\"svg-inline--fa fa-external-link-alt fa-w-16 \\"
-         role=\\"img\\"
-         xmlns=\\"http://www.w3.org/2000/svg\\"
-         viewbox=\\"0 0 512 512\\"
+    <svg
+      aria-hidden=\\"true\\"
+      focusable=\\"false\\"
+      data-prefix=\\"fas\\"
+      data-icon=\\"external-link-alt\\"
+      class=\\"svg-inline--fa fa-external-link-alt fa-w-16 \\"
+      role=\\"img\\"
+      xmlns=\\"http://www.w3.org/2000/svg\\"
+      viewbox=\\"0 0 512 512\\"
     >
-      <path fill=\\"currentColor\\"
-            d=\\"M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z\\"
+      <path
+        fill=\\"currentColor\\"
+        d=\\"M432,320H400a16,16,0,0,0-16,16V448H64V128H208a16,16,0,0,0,16-16V80a16,16,0,0,0-16-16H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V336A16,16,0,0,0,432,320ZM488,0h-128c-21.37,0-32.05,25.91-17,41l35.73,35.73L135,320.37a24,24,0,0,0,0,34L157.67,377a24,24,0,0,0,34,0L435.28,133.32,471,169c15,15,41,4.5,41-17V24A24,24,0,0,0,488,0Z\\"
       >
       </path>
     </svg>

@@ -3,10 +3,11 @@
 exports[`<LabelValueInput /> fetches suggestions on mount 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
-  <span aria-live=\\"polite\\"
-        aria-atomic=\\"false\\"
-        aria-relevant=\\"additions text\\"
-        class=\\"css-1f43avz-a11yText-A11yText\\"
+  <span
+    aria-live=\\"polite\\"
+    aria-atomic=\\"false\\"
+    aria-relevant=\\"additions text\\"
+    class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
   <div class=\\"react-select__control css-cat782-control\\">
@@ -17,19 +18,21 @@ exports[`<LabelValueInput /> fetches suggestions on mount 1`] = `
         </div>
       </div>
       <div class=\\"css-ps6ina-Input\\">
-        <div class=\\"react-select__input\\"
-             style=\\"display: inline-block;\\"
+        <div
+          class=\\"react-select__input\\"
+          style=\\"display: inline-block;\\"
         >
-          <input autocapitalize=\\"none\\"
-                 autocomplete=\\"off\\"
-                 autocorrect=\\"off\\"
-                 id=\\"react-select-silence-input-label-value-2-input\\"
-                 spellcheck=\\"false\\"
-                 tabindex=\\"0\\"
-                 type=\\"text\\"
-                 aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
-                 value
+          <input
+            autocapitalize=\\"none\\"
+            autocomplete=\\"off\\"
+            autocorrect=\\"off\\"
+            id=\\"react-select-silence-input-label-value-2-input\\"
+            spellcheck=\\"false\\"
+            tabindex=\\"0\\"
+            type=\\"text\\"
+            aria-autocomplete=\\"list\\"
+            style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
+            value
           >
           <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
@@ -39,15 +42,17 @@ exports[`<LabelValueInput /> fetches suggestions on mount 1`] = `
     <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
       <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
       </span>
-      <div class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
-           aria-hidden=\\"true\\"
+      <div
+        class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+        aria-hidden=\\"true\\"
       >
-        <svg height=\\"20\\"
-             width=\\"20\\"
-             viewbox=\\"0 0 20 20\\"
-             aria-hidden=\\"true\\"
-             focusable=\\"false\\"
-             class=\\"css-tj5bde-Svg\\"
+        <svg
+          height=\\"20\\"
+          width=\\"20\\"
+          viewbox=\\"0 0 20 20\\"
+          aria-hidden=\\"true\\"
+          focusable=\\"false\\"
+          class=\\"css-tj5bde-Svg\\"
         >
           <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
           </path>
@@ -62,10 +67,11 @@ exports[`<LabelValueInput /> fetches suggestions on mount 1`] = `
 exports[`<LabelValueInput /> matches snapshot 1`] = `
 "
 <div class=\\" css-2b097c-container\\">
-  <span aria-live=\\"polite\\"
-        aria-atomic=\\"false\\"
-        aria-relevant=\\"additions text\\"
-        class=\\"css-1f43avz-a11yText-A11yText\\"
+  <span
+    aria-live=\\"polite\\"
+    aria-atomic=\\"false\\"
+    aria-relevant=\\"additions text\\"
+    class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
   <div class=\\"react-select__control css-cat782-control\\">
@@ -76,19 +82,21 @@ exports[`<LabelValueInput /> matches snapshot 1`] = `
         </div>
       </div>
       <div class=\\"css-ps6ina-Input\\">
-        <div class=\\"react-select__input\\"
-             style=\\"display: inline-block;\\"
+        <div
+          class=\\"react-select__input\\"
+          style=\\"display: inline-block;\\"
         >
-          <input autocapitalize=\\"none\\"
-                 autocomplete=\\"off\\"
-                 autocorrect=\\"off\\"
-                 id=\\"react-select-silence-input-label-value-1-input\\"
-                 spellcheck=\\"false\\"
-                 tabindex=\\"0\\"
-                 type=\\"text\\"
-                 aria-autocomplete=\\"list\\"
-                 style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
-                 value
+          <input
+            autocapitalize=\\"none\\"
+            autocomplete=\\"off\\"
+            autocorrect=\\"off\\"
+            id=\\"react-select-silence-input-label-value-1-input\\"
+            spellcheck=\\"false\\"
+            tabindex=\\"0\\"
+            type=\\"text\\"
+            aria-autocomplete=\\"list\\"
+            style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
+            value
           >
           <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
           </div>
@@ -98,15 +106,17 @@ exports[`<LabelValueInput /> matches snapshot 1`] = `
     <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">
       <span class=\\"react-select__indicator-separator css-1okebmr-indicatorSeparator\\">
       </span>
-      <div class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
-           aria-hidden=\\"true\\"
+      <div
+        class=\\"react-select__indicator react-select__dropdown-indicator css-tlfecz-indicatorContainer\\"
+        aria-hidden=\\"true\\"
       >
-        <svg height=\\"20\\"
-             width=\\"20\\"
-             viewbox=\\"0 0 20 20\\"
-             aria-hidden=\\"true\\"
-             focusable=\\"false\\"
-             class=\\"css-tj5bde-Svg\\"
+        <svg
+          height=\\"20\\"
+          width=\\"20\\"
+          viewbox=\\"0 0 20 20\\"
+          aria-hidden=\\"true\\"
+          focusable=\\"false\\"
+          class=\\"css-tj5bde-Svg\\"
         >
           <path d=\\"M4.516 7.548c0.436-0.446 1.043-0.481 1.576 0l3.908 3.747 3.908-3.747c0.533-0.481 1.141-0.446 1.574 0 0.436 0.445 0.408 1.197 0 1.615-0.406 0.418-4.695 4.502-4.695 4.502-0.217 0.223-0.502 0.335-0.787 0.335s-0.57-0.112-0.789-0.335c0 0-4.287-4.084-4.695-4.502s-0.436-1.17 0-1.615z\\">
           </path>
