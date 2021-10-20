@@ -27,7 +27,7 @@ require (
 	github.com/mitchellh/mapstructure v1.4.2
 	github.com/pmezard/go-difflib v1.0.0
 	github.com/prometheus/client_golang v1.11.0
-	github.com/prometheus/common v0.32.0
+	github.com/prometheus/common v0.32.1
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/prymitive/randomcolor v0.0.0-20210705210145-26c3401033a6
 	github.com/rogpeppe/go-internal v1.8.0
