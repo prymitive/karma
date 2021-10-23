@@ -132,7 +132,13 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 		for _, u := range config.Config.Authentication.BasicAuth.Users {
 			users[u.Username] = u.Password
 		}
-		router.Use(basicAuth(users, allowAuthBypass))
+		router.Use(basicAuth(
+			users,
+			config.Config.Authentication.Header.GroupName,
+			config.Config.Authentication.Header.GroupValueRegex,
+			config.Config.Authentication.Header.GroupValueSeparator,
+			allowAuthBypass,
+		))
 	}
 
 	if config.Config.Listen.Prefix != "/" {

@@ -11,9 +11,9 @@ level=info msg="authentication:"
 level=info msg="  header:"
 level=info msg="    name: \"\""
 level=info msg="    value_re: \"\""
-level=info msg="    group_name: \"\""
-level=info msg="    group_value_re: \"\""
-level=info msg="    group_value_separator: \"\""
+level=info msg="    group_name: X-Groups"
+level=info msg="    group_value_re: .+"
+level=info msg="    group_value_separator: ','"
 level=info msg="  basicAuth:"
 level=info msg="    users:"
 level=info msg="      - username: number"
@@ -267,6 +267,10 @@ level=info msg="Setting up proxy endpoints" alertmanager=local
 level=info msg="Configuration is valid"
 -- custom.yaml --
 authentication:
+  header:
+    group_name: X-Groups
+    group_value_re: .+
+    group_value_separator: ','
   basicAuth:
     users:
       - username: number

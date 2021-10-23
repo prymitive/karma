@@ -6,6 +6,10 @@
 
 - Toast popup messages didn't respond to clicks.
 
+### Added
+
+- Loading user groups from HTTP headers, #3361 (@supertassu).
+
 ## v0.92
 
 ### Fixed

@@ -289,6 +289,10 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 		return "", fmt.Errorf("both authentication.basicAuth.users and authentication.header.name is set, only one can be enabled")
 	}
 
+	if config.Authentication.Header.GroupValueSeparator == "" {
+		config.Authentication.Header.GroupValueSeparator = " "
+	}
+
 	if config.Authentication.Header.ValueRegex != "" {
 		_, err = regex.CompileAnchored(config.Authentication.Header.ValueRegex)
 		if err != nil {
@@ -299,6 +303,17 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 		}
 	} else if config.Authentication.Header.Name != "" {
 		return "", fmt.Errorf("authentication.header.value_re is required when authentication.header.name is set")
+	}
+	if config.Authentication.Header.GroupValueRegex != "" {
+		_, err = regex.CompileAnchored(config.Authentication.Header.GroupValueRegex)
+		if err != nil {
+			return "", fmt.Errorf("invalid regex for authentication.header.group_value_re: %s", err.Error())
+		}
+		if config.Authentication.Header.GroupName == "" {
+			return "", fmt.Errorf("authentication.header.group_name is required when authentication.header.group_value_re is set")
+		}
+	} else if config.Authentication.Header.GroupName != "" {
+		return "", fmt.Errorf("authentication.header.group_value_re is required when authentication.header.group_name is set")
 	}
 
 	for _, u := range config.Authentication.BasicAuth.Users {

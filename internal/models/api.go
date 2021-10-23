@@ -425,8 +425,9 @@ type Settings struct {
 }
 
 type AuthenticationInfo struct {
-	Enabled  bool   `json:"enabled"`
-	Username string `json:"username"`
+	Enabled  bool     `json:"enabled"`
+	Username string   `json:"username"`
+	Groups   []string `json:"groups"`
 }
 
 type APIGrid struct {
