@@ -163,8 +163,10 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	ts, _ := start.UTC().MarshalText()
 
 	var username string
+	var groups []string
 	if config.Config.Authentication.Enabled {
 		username = getUserFromContext(r)
+		groups = getGroupsFromContext(r)
 	}
 
 	upstreams := getUpstreams()
@@ -207,6 +209,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	resp.Authentication = models.AuthenticationInfo{
 		Enabled:  config.Config.Authentication.Enabled,
 		Username: username,
+		Groups:   groups,
 	}
 
 	if config.Config.Grid.Sorting.CustomValues.Labels != nil {

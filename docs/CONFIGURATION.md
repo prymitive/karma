@@ -45,6 +45,9 @@ authentication:
   header:
     name: string
     value_re: regex
+    group_name: string
+    group_value_re: regex
+    group_value_separator: string
   basicAuth:
     users:
       - username: string
@@ -66,9 +69,9 @@ authentication:
 - `authentication:users:header:group_value_re` - Similar to
   `authentication:users:header:value_re`, but for groups instead of usernames.
   Must be set when `authentication:users:header:group_name` is set.
-- `authentication:users:header:group_value_separator` - If set, this will be
+- `authentication:users:header:group_value_separator` - This will be
   used to split the group header to multiple group names. The split is done
-  before evaluating the value regex. Optional.
+  after evaluating the value regex. Default value is `" "`.
 - `authentication:users` - list of users (username & password) allowed to login.
   Passwords are stored plain without any encryption.
   When set HTTP basic authentication will be used.
@@ -105,6 +108,21 @@ authentication:
   header:
     name: X-Auth
     value_re: ^(.+)$
+```
+
+Example where the `X-Auth-User` and `X-Auth-Groups` headers will be used to
+set username and list of groups. This assume that `X-Auth-Groups` value has
+`Groups: foo,bar` syntax, where `foo` and `bar` are two groups user belongs to.
+
+```YAML
+authentication:
+  header:
+    name: X-Auth-User
+    value_re: ^(.+)$
+    group_name: X-Auth-Groups
+    group_value_re: 'Groups: (.+)'
+    group_value_separator: ','
+
 ```
 
 ### Authorization

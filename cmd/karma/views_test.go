@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -1140,12 +1141,16 @@ func TestAuthentication(t *testing.T) {
 		name                     string
 		headerName               string
 		headerRe                 string
+		groupName                string
+		groupRe                  string
+		groupSeparator           string
 		basicAuthUsers           []config.AuthenticationUser
 		requestHeaders           map[string]string
 		requestBasicAuthUser     string
 		requestBasicAuthPassword string
 		responseCode             int
 		responseUsername         string
+		responseGroups           []string
 	}
 
 	authTests := []authTest{
@@ -1207,6 +1212,7 @@ func TestAuthentication(t *testing.T) {
 			requestBasicAuthPassword: "foobar",
 			responseCode:             200,
 			responseUsername:         "john",
+			responseGroups:           []string{},
 		},
 		{
 			name:         "header auth, missing header, 401",
@@ -1241,6 +1247,7 @@ func TestAuthentication(t *testing.T) {
 			},
 			responseCode:     200,
 			responseUsername: "john",
+			responseGroups:   []string{},
 		},
 		{
 			name:       "header auth, header correct #2, 200",
@@ -1251,19 +1258,159 @@ func TestAuthentication(t *testing.T) {
 			},
 			responseCode:     200,
 			responseUsername: "john",
+			responseGroups:   []string{},
+		},
+		{
+			name:           "header auth, no groups, 200",
+			headerName:     "X-Auth",
+			headerRe:       "Username (.+)",
+			groupName:      "X-Auth-Groups",
+			groupRe:        "(.+)",
+			groupSeparator: ",",
+			requestHeaders: map[string]string{
+				"X-Auth": "Username john",
+			},
+			responseCode:     200,
+			responseUsername: "john",
+			responseGroups:   []string{},
+		},
+		{
+			name:           "header auth, group present, 200",
+			headerName:     "X-Auth",
+			headerRe:       "Username (.+)",
+			groupName:      "X-Auth-Groups",
+			groupRe:        "(.+)",
+			groupSeparator: ",",
+			requestHeaders: map[string]string{
+				"X-Auth":        "Username john",
+				"X-Auth-Groups": "foo",
+			},
+			responseCode:     200,
+			responseUsername: "john",
+			responseGroups:   []string{"foo"},
+		},
+		{
+			name:           "header auth, unmatched groups, 200",
+			headerName:     "X-Auth",
+			headerRe:       "Username (.+)",
+			groupName:      "X-Auth-Groups",
+			groupRe:        "Groups: (.+)",
+			groupSeparator: ",",
+			requestHeaders: map[string]string{
+				"X-Auth":        "Username john",
+				"X-Auth-Groups": "foo",
+			},
+			responseCode:     200,
+			responseUsername: "john",
+			responseGroups:   []string{},
+		},
+		{
+			name:           "header auth, empty groups, 200",
+			headerName:     "X-Auth",
+			headerRe:       "Username (.+)",
+			groupName:      "X-Auth-Groups",
+			groupRe:        "Groups: (.+)",
+			groupSeparator: ",",
+			requestHeaders: map[string]string{
+				"X-Auth":        "Username john",
+				"X-Auth-Groups": "Groups:",
+			},
+			responseCode:     200,
+			responseUsername: "john",
+			responseGroups:   []string{},
+		},
+		{
+			name:           "header auth, empty groups with spaces, 200",
+			headerName:     "X-Auth",
+			headerRe:       "Username (.+)",
+			groupName:      "X-Auth-Groups",
+			groupRe:        "Groups: (.+)",
+			groupSeparator: ",",
+			requestHeaders: map[string]string{
+				"X-Auth":        "Username john",
+				"X-Auth-Groups": "Groups:    ",
+			},
+			responseCode:     200,
+			responseUsername: "john",
+			responseGroups:   []string{},
+		},
+		{
+			name:           "header auth, multiple groups, 200",
+			headerName:     "X-Auth",
+			headerRe:       "Username (.+)",
+			groupName:      "X-Auth-Groups",
+			groupRe:        "(.+)",
+			groupSeparator: ",",
+			requestHeaders: map[string]string{
+				"X-Auth":        "Username john",
+				"X-Auth-Groups": "foo,bar, baz baz   ",
+			},
+			responseCode:     200,
+			responseUsername: "john",
+			responseGroups:   []string{"foo", "bar", "baz baz"},
+		},
+		{
+			name:           "header auth, multiple groups separated by spaces, 200",
+			headerName:     "X-Auth",
+			headerRe:       "Username (.+)",
+			groupName:      "X-Auth-Groups",
+			groupRe:        "(.+)",
+			groupSeparator: " ",
+			requestHeaders: map[string]string{
+				"X-Auth":        "Username john",
+				"X-Auth-Groups": "foo bar baz baz   ",
+			},
+			responseCode:     200,
+			responseUsername: "john",
+			responseGroups:   []string{"foo", "bar", "baz", "baz"},
+		},
+		{
+			name:           "header auth, only groups enabled, no basic auth, 200",
+			groupName:      "X-Auth-Groups",
+			groupRe:        "(.+)",
+			groupSeparator: " ",
+			requestHeaders: map[string]string{
+				"X-Auth":        "Username john",
+				"X-Auth-Groups": "foo",
+			},
+			responseCode:     200,
+			responseUsername: "",
+			responseGroups:   []string{},
+		},
+		{
+			name: "header auth, only groups enabled, basic auth, 200",
+			basicAuthUsers: []config.AuthenticationUser{
+				{Username: "john", Password: "foobar"},
+			},
+			requestBasicAuthUser:     "john",
+			requestBasicAuthPassword: "foobar",
+			groupName:                "X-Auth-Groups",
+			groupRe:                  "Groups (.+)",
+			groupSeparator:           " ",
+			requestHeaders: map[string]string{
+				"X-Auth-Groups": "Groups foo bar",
+			},
+			responseCode:     200,
+			responseUsername: "john",
+			responseGroups:   []string{"foo", "bar"},
 		},
 	}
 
+	zerolog.SetGlobalLevel(zerolog.FatalLevel)
 	for _, testCase := range authTests {
 		t.Run(testCase.name, func(t *testing.T) {
 			config.Config.Authentication.Header.Name = testCase.headerName
 			config.Config.Authentication.Header.ValueRegex = testCase.headerRe
+			config.Config.Authentication.Header.GroupName = testCase.groupName
+			config.Config.Authentication.Header.GroupValueRegex = testCase.groupRe
+			config.Config.Authentication.Header.GroupValueSeparator = testCase.groupSeparator
 			config.Config.Authentication.BasicAuth.Users = testCase.basicAuthUsers
 			r := testRouter()
 			setupRouter(r, nil)
 			mockCache()
 			for _, path := range []string{
 				"/",
+				"/alerts.json",
 				"/alertList.json",
 				"/autocomplete.json?term=foo",
 				"/labelNames.json",
@@ -1276,7 +1423,23 @@ func TestAuthentication(t *testing.T) {
 				"/metrics",
 				"/metrics?bar=foo",
 			} {
-				req := httptest.NewRequest("GET", path, nil)
+				method := "GET"
+				var body io.Reader
+				if path == "/alerts.json" {
+					method = "POST"
+					payload, err := json.Marshal(models.AlertsRequest{
+						Filters:           []string{},
+						GridLimits:        map[string]int{},
+						DefaultGroupLimit: 50,
+					})
+					if err != nil {
+						t.Error(err)
+						t.FailNow()
+					}
+					body = bytes.NewReader(payload)
+				}
+
+				req := httptest.NewRequest(method, path, body)
 				for k, v := range testCase.requestHeaders {
 					req.Header.Set(k, v)
 				}
@@ -1306,6 +1469,10 @@ func TestAuthentication(t *testing.T) {
 					}
 					if ur.Authentication.Username != testCase.responseUsername {
 						t.Errorf("Got Authentication.Username=%s, expected %s", ur.Authentication.Username, testCase.responseUsername)
+					}
+					if diff := cmp.Diff(ur.Authentication.Groups, testCase.responseGroups); diff != "" {
+						t.Errorf("Incorrect groups list (-want +got):\n%s", diff)
+						break
 					}
 				}
 			}
