@@ -1,6 +1,7 @@
 package transform
 
 import (
+	"regexp"
 	"strings"
 
 	"github.com/prymitive/karma/internal/models"
@@ -10,17 +11,18 @@ import (
 // StripLables allows filtering out some labels from alerts
 // it takes the list of label keys to ignore and alert label map
 // it will return label map without labels found on the ignore list
-func StripLables(keptLabels, ignoredLabels []string, sourceLabels map[string]string) map[string]string {
-	// empty keep list means keep everything by default
-	keepAll := len(keptLabels) == 0
+func StripLables(keptLabels, ignoredLabels []string, keptLabelsRegex, ignoredLabelsRegex []*regexp.Regexp,
+	sourceLabels map[string]string) map[string]string {
+	// empty keep lists means keep everything by default
+	keepAll := len(keptLabels) == 0 && len(keptLabelsRegex) == 0
 	labels := map[string]string{}
 	for label, value := range sourceLabels {
 		// is explicitly marked to be kept
-		inKeep := slices.StringInSlice(keptLabels, label)
+		inKeep := slices.StringInSlice(keptLabels, label) || matchesAnyRegex(label, keptLabelsRegex)
 		// is explicitly marked to be stripped
-		inStrip := slices.StringInSlice(ignoredLabels, label)
+		inStrip := slices.StringInSlice(ignoredLabels, label) || matchesAnyRegex(label, ignoredLabelsRegex)
 		if (keepAll || inKeep) && !inStrip {
-			// strip leading and trailung space in label value
+			// strip leading and trailing space in label value
 			// this is to normalize values in case space is added by Alertmanager rules
 			labels[label] = strings.TrimSpace(value)
 		}
@@ -60,4 +62,13 @@ func StripAnnotations(keptAnnotations, ignoredAnnotations []string, sourceAnnota
 		}
 	}
 	return annotations
+}
+
+func matchesAnyRegex(value string, regexes []*regexp.Regexp) bool {
+	for _, regex := range regexes {
+		if regex.MatchString(value) {
+			return true
+		}
+	}
+	return false
 }

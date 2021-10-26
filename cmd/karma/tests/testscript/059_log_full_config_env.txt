@@ -41,7 +41,9 @@ env KARMA_NAME=karma-demo
 env LABELS_COLOR_STATIC=job
 env LABELS_COLOR_UNIQUE='@receiver instance cluster'
 env LABELS_KEEP='keep1 keep2'
+env LABELS_KEEP_RE='keep_re1 keep_re2'
 env LABELS_STRIP='strip1 strip2'
+env LABELS_STRIP_RE='strip_re1 strip_re2'
 env LABELS_VALUEONLY='value1 value2'
 
 env LISTEN_ADDRESS=127.0.0.1
@@ -170,9 +172,15 @@ level=info msg="labels:"
 level=info msg="  keep:"
 level=info msg="    - keep1"
 level=info msg="    - keep2"
+level=info msg="  keep_re:"
+level=info msg="    - keep_re1"
+level=info msg="    - keep_re2"
 level=info msg="  strip:"
 level=info msg="    - strip1"
 level=info msg="    - strip2"
+level=info msg="  strip_re:"
+level=info msg="    - strip_re1"
+level=info msg="    - strip_re2"
 level=info msg="  valueOnly: []"
 level=info msg="  color:"
 level=info msg="    custom: {}"

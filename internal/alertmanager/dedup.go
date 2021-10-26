@@ -83,12 +83,14 @@ func DedupAlerts() []models.AlertGroup {
 			continue
 		}
 		ag := models.AlertGroup(agList[0])
-		ag.Labels = transform.StripLables(config.Config.Labels.Keep, config.Config.Labels.Strip, ag.Labels)
+		ag.Labels = transform.StripLables(config.Config.Labels.Keep, config.Config.Labels.Strip,
+			config.Config.Labels.CompiledKeepRegex, config.Config.Labels.CompiledStripRegex, ag.Labels)
 		ag.Alerts = make(models.AlertList, 0, len(alerts))
 		for _, alert := range alerts {
 			alert := alert // scopelint pin
 			// strip labels and annotations user doesn't want to see in the UI
-			alert.Labels = transform.StripLables(config.Config.Labels.Keep, config.Config.Labels.Strip, alert.Labels)
+			alert.Labels = transform.StripLables(config.Config.Labels.Keep, config.Config.Labels.Strip,
+				config.Config.Labels.CompiledKeepRegex, config.Config.Labels.CompiledStripRegex, alert.Labels)
 			alert.Annotations = transform.StripAnnotations(config.Config.Annotations.Keep, config.Config.Annotations.Strip, alert.Annotations)
 			// calculate final alert state based on the most important value found
 			// in the list of states from all instances

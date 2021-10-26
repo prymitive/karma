@@ -1,7 +1,9 @@
 package transform_test
 
 import (
+	"github.com/prymitive/karma/internal/regex"
 	"reflect"
+	"regexp"
 	"testing"
 
 	"github.com/prymitive/karma/internal/models"
@@ -9,16 +11,20 @@ import (
 )
 
 type stripLabelTest struct {
-	strip  []string
-	keep   []string
-	before map[string]string
-	after  map[string]string
+	strip      []string
+	keep       []string
+	stripRegex []string
+	keepRegex  []string
+	before     map[string]string
+	after      map[string]string
 }
 
 var stripLabelTests = []stripLabelTest{
 	{
-		strip: []string{"env"},
-		keep:  []string{},
+		strip:      []string{"env"},
+		keep:       []string{},
+		stripRegex: []string{},
+		keepRegex:  []string{},
 		before: map[string]string{
 			"host":  "localhost",
 			"env":   "production",
@@ -30,22 +36,10 @@ var stripLabelTests = []stripLabelTest{
 		},
 	},
 	{
-		strip: []string{"server"},
-		keep:  []string{},
-		before: map[string]string{
-			"host":  "localhost",
-			"env":   "production",
-			"level": "info",
-		},
-		after: map[string]string{
-			"host":  "localhost",
-			"env":   "production",
-			"level": "info",
-		},
-	},
-	{
-		strip: []string{},
-		keep:  []string{},
+		strip:      []string{"server"},
+		keep:       []string{},
+		stripRegex: []string{},
+		keepRegex:  []string{},
 		before: map[string]string{
 			"host":  "localhost",
 			"env":   "production",
@@ -58,16 +52,36 @@ var stripLabelTests = []stripLabelTest{
 		},
 	},
 	{
-		strip: []string{"host"},
-		keep:  []string{},
+		strip:      []string{},
+		keep:       []string{},
+		stripRegex: []string{},
+		keepRegex:  []string{},
+		before: map[string]string{
+			"host":  "localhost",
+			"env":   "production",
+			"level": "info",
+		},
+		after: map[string]string{
+			"host":  "localhost",
+			"env":   "production",
+			"level": "info",
+		},
+	},
+	{
+		strip:      []string{"host"},
+		keep:       []string{},
+		stripRegex: []string{},
+		keepRegex:  []string{},
 		before: map[string]string{
 			"host": "localhost",
 		},
 		after: map[string]string{},
 	},
 	{
-		strip: []string{},
-		keep:  []string{"env"},
+		strip:      []string{},
+		keep:       []string{"env"},
+		stripRegex: []string{},
+		keepRegex:  []string{},
 		before: map[string]string{
 			"host":  "localhost",
 			"env":   "production",
@@ -78,8 +92,10 @@ var stripLabelTests = []stripLabelTest{
 		},
 	},
 	{
-		strip: []string{"env"},
-		keep:  []string{"host"},
+		strip:      []string{"env"},
+		keep:       []string{"host"},
+		stripRegex: []string{},
+		keepRegex:  []string{},
 		before: map[string]string{
 			"host":  "localhost",
 			"env":   "production",
@@ -90,23 +106,96 @@ var stripLabelTests = []stripLabelTest{
 		},
 	},
 	{
-		strip: []string{},
-		keep:  []string{"env"},
+		strip:      []string{},
+		keep:       []string{"env"},
+		stripRegex: []string{},
+		keepRegex:  []string{},
 		before: map[string]string{
 			"host":  "localhost",
 			"level": "info",
 		},
 		after: map[string]string{},
 	},
+	{
+		strip:      []string{},
+		keep:       []string{},
+		stripRegex: []string{".*e.*"},
+		keepRegex:  []string{},
+		before: map[string]string{
+			"host":  "localhost",
+			"env":   "production",
+			"level": "info",
+		},
+		after: map[string]string{
+			"host": "localhost",
+		},
+	},
+	{
+		strip:      []string{},
+		keep:       []string{},
+		stripRegex: []string{},
+		keepRegex:  []string{".*e.*"},
+		before: map[string]string{
+			"host":  "localhost",
+			"env":   "production",
+			"level": "info",
+		},
+		after: map[string]string{
+			"env":   "production",
+			"level": "info",
+		},
+	},
+	{
+		strip:      []string{},
+		keep:       []string{"env", "level"},
+		stripRegex: []string{".*el"},
+		keepRegex:  []string{},
+		before: map[string]string{
+			"host":  "localhost",
+			"env":   "production",
+			"level": "info",
+		},
+		after: map[string]string{
+			"env": "production",
+		},
+	},
+	{
+		strip:      []string{"level"},
+		keep:       []string{},
+		stripRegex: []string{},
+		keepRegex:  []string{".*e.*"},
+		before: map[string]string{
+			"host":  "localhost",
+			"env":   "production",
+			"level": "info",
+		},
+		after: map[string]string{
+			"env": "production",
+		},
+	},
 }
 
 func TestStripLables(t *testing.T) {
 	for _, testCase := range stripLabelTests {
-		labels := transform.StripLables(testCase.keep, testCase.strip, testCase.before)
+		keepRegex := getCompiledRegex(testCase.keepRegex, t)
+		stripRegex := getCompiledRegex(testCase.stripRegex, t)
+		labels := transform.StripLables(testCase.keep, testCase.strip, keepRegex, stripRegex, testCase.before)
 		if !reflect.DeepEqual(labels, testCase.after) {
 			t.Errorf("StripLables failed, expected %v, got %v", testCase.after, labels)
 		}
 	}
+}
+
+func getCompiledRegex(regexes []string, t *testing.T) []*regexp.Regexp {
+	compiledRegexes := []*regexp.Regexp{}
+	for _, r := range regexes {
+		c, err := regex.CompileAnchored(r)
+		if err != nil {
+			t.Errorf("Invalid test setup: invalid regex '%s': %s", r, err)
+		}
+		compiledRegexes = append(compiledRegexes, c)
+	}
+	return compiledRegexes
 }
 
 type stripReceiverTest struct {
