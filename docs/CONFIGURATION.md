@@ -841,7 +841,8 @@ karma:
 UI.
 All labels will be parsed when collecting alerts from Alertmanager API and
 used when deduplicating alerts, but some labels aren't useful to users and so
-can be removed from the UI, this is controlled by `keep` and `strip` options.
+can be removed from the UI, this is controlled by `keep`, `keep_re`, `strip`
+and `strip_re` options.
 `colors` section allows configuring which labels should have colors applied
 to label background in the UI. Colors can help visually identify alerts
 with shared labels, for example coloring hostname label will allow to quickly
@@ -859,7 +860,9 @@ labels:
           value_re: regex
           color: string
   keep: list of strings
+  keep_re: list of regex
   strip: list of strings
+  strip_re: list of regex
   valueOnly: list of strings
 ```
 
@@ -887,8 +890,14 @@ labels:
   Note: this option is not available via environment variables, you can only set
   it via the config file.
 
-- `keep` - list of allowed labels, if empty all labels are allowed.
+- `keep` - list of allowed labels, if both `keep` and `keep_re` are empty all
+  labels are allowed.
+- `keep_re` - list of Go compatible [regular expressions](https://golang.org/pkg/regexp/)
+  to keep matching labels; all regexes will be automatically anchored; if both
+  `keep` and `keep_re` are empty all labels are allowed.
 - `strip` - list of ignored labels.
+- `strip_re` - list of Go compatible [regular expressions](https://golang.org/pkg/regexp/)
+  to ignore matching labels; all regexes will be automatically anchored.
 - `valueOnly` - list of label names for which only the value will be displayed
   in the UI.
 
@@ -922,6 +931,15 @@ labels:
     - alertname
     - instance
   strip: []
+```
+
+Example where only labels with the prefix `custom_` are allowed:
+
+```YAML
+labels:
+  keep: []
+  keep_re:
+    - 'custom_.*'
 ```
 
 Example where `severity` label will have a red color for `critical`, yellow
@@ -974,7 +992,9 @@ labels:
     unique: []
     custom: {}
   keep: []
+  keep_re: []
   strip: []
+  strip_re: []
 ```
 
 ### Listen

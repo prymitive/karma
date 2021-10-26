@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"os"
+	"regexp"
 	"strings"
 	"time"
 
@@ -90,7 +91,10 @@ func SetupFlags(f *pflag.FlagSet) {
 		"List of label names that should have unique color")
 	f.StringSlice("labels.keep", []string{},
 		"List of labels to keep, all other labels will be stripped")
+	f.StringSlice("labels.keep_re", []string{},
+		"List of regular expressions to keep matching labels, all other labels will be stripped")
 	f.StringSlice("labels.strip", []string{}, "List of labels to ignore")
+	f.StringSlice("labels.strip_re", []string{}, "List of regular expressions to ignore matching labels")
 	f.StringSlice("labels.valueOnly", []string{},
 		"List of label names for which only the name will be shown in the UI")
 
@@ -216,6 +220,10 @@ func readEnvVariables(k *koanf.Koanf) {
 			return "authentication.header.value_re"
 		case "GRID_GROUPLIMIT":
 			return "grid.groupLimit"
+		case "LABELS_KEEP_RE":
+			return "labels.keep_re"
+		case "LABELS_STRIP_RE":
+			return "labels.strip_re"
 		case "SILENCEFORM_STRIP_LABELS":
 			return "silenceForm.strip.labels"
 		case "UI_HIDEFILTERSWHENIDLE":
@@ -351,6 +359,22 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 		}
 		if len(authGroup.Members) == 0 {
 			return "", fmt.Errorf("'members' is required for every authorization group")
+		}
+	}
+
+	config.Labels.CompiledKeepRegex = make([]*regexp.Regexp, len(config.Labels.KeepRegex))
+	for i, keepRegex := range config.Labels.KeepRegex {
+		config.Labels.CompiledKeepRegex[i], err = regex.CompileAnchored(keepRegex)
+		if err != nil {
+			return "", fmt.Errorf("keep regex rule '%s' is invalid: %s", keepRegex, err)
+		}
+	}
+
+	config.Labels.CompiledStripRegex = make([]*regexp.Regexp, len(config.Labels.StripRegex))
+	for i, stripRegex := range config.Labels.StripRegex {
+		config.Labels.CompiledStripRegex[i], err = regex.CompileAnchored(stripRegex)
+		if err != nil {
+			return "", fmt.Errorf("strip regex rule '%s' is invalid: %s", stripRegex, err)
 		}
 	}
 

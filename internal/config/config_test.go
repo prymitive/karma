@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"io"
 	"os"
+	"regexp"
 	"testing"
 	"time"
 
@@ -103,9 +104,14 @@ labels:
   keep:
     - foo
     - bar
+  keep_re:
+    - fo+
+    - ba.
   strip:
     - abc
     - def
+  strip_re:
+    - g.*
   valueOnly: []
   color:
     custom: {}
@@ -205,7 +211,9 @@ func TestReadConfig(t *testing.T) {
 	os.Setenv("LABELS_COLOR_STATIC", "a bb ccc")
 	os.Setenv("LABELS_COLOR_UNIQUE", "f gg")
 	os.Setenv("LABELS_KEEP", "foo bar")
+	os.Setenv("LABELS_KEEP_RE", "fo+ ba.")
 	os.Setenv("LABELS_STRIP", "abc def")
+	os.Setenv("LABELS_STRIP_RE", "g.*")
 	os.Setenv("LISTEN_ADDRESS", "0.0.0.0")
 	os.Setenv("LISTEN_PORT", "80")
 	os.Setenv("SENTRY_PRIVATE", "secret key")
@@ -332,6 +340,26 @@ func TestInvalidCORSCredentials(t *testing.T) {
 	}
 }
 
+func TestInvalidKeepRegex(t *testing.T) {
+	resetEnv()
+	os.Setenv("LABELS_KEEP_RE", "fo**")
+
+	_, err := mockConfigRead()
+	if err == nil {
+		t.Error("Invalid labels.keep_re regex didn't return any error")
+	}
+}
+
+func TestInvalidStripRegex(t *testing.T) {
+	resetEnv()
+	os.Setenv("LABELS_STRIP_RE", "fo**")
+
+	_, err := mockConfigRead()
+	if err == nil {
+		t.Error("Invalid labels.strip_re regex didn't return any error")
+	}
+}
+
 func TestDefaultConfig(t *testing.T) {
 	resetEnv()
 	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
@@ -345,7 +373,11 @@ func TestDefaultConfig(t *testing.T) {
 	expectedConfig.Annotations.Actions = []string{}
 	expectedConfig.Annotations.Order = []string{}
 	expectedConfig.Labels.Keep = []string{}
+	expectedConfig.Labels.KeepRegex = []string{}
+	expectedConfig.Labels.CompiledKeepRegex = []*regexp.Regexp{}
 	expectedConfig.Labels.Strip = []string{}
+	expectedConfig.Labels.StripRegex = []string{}
+	expectedConfig.Labels.CompiledStripRegex = []*regexp.Regexp{}
 	expectedConfig.Labels.Color.Static = []string{}
 	expectedConfig.Labels.Color.Unique = []string{}
 	expectedConfig.Labels.ValueOnly = []string{}
