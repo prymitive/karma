@@ -113,6 +113,9 @@ labels:
   strip_re:
     - g.*
   valueOnly: []
+  valueOnly_re:
+    - fo+
+    - .ar
   color:
     custom: {}
     static:
@@ -214,6 +217,7 @@ func TestReadConfig(t *testing.T) {
 	os.Setenv("LABELS_KEEP_RE", "fo+ ba.")
 	os.Setenv("LABELS_STRIP", "abc def")
 	os.Setenv("LABELS_STRIP_RE", "g.*")
+	os.Setenv("LABELS_VALUEONLY_RE", "fo+ .ar")
 	os.Setenv("LISTEN_ADDRESS", "0.0.0.0")
 	os.Setenv("LISTEN_PORT", "80")
 	os.Setenv("SENTRY_PRIVATE", "secret key")
@@ -381,6 +385,8 @@ func TestDefaultConfig(t *testing.T) {
 	expectedConfig.Labels.Color.Static = []string{}
 	expectedConfig.Labels.Color.Unique = []string{}
 	expectedConfig.Labels.ValueOnly = []string{}
+	expectedConfig.Labels.ValueOnlyRegex = []string{}
+	expectedConfig.Labels.AnchoredValueOnlyRegex = []string{}
 	expectedConfig.Grid.Auto.Ignore = []string{}
 	expectedConfig.Grid.Auto.Order = []string{}
 	expectedConfig.Receivers.Keep = []string{}

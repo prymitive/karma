@@ -33,10 +33,23 @@ const FilteringLabel: FC<{
     "components-label-with-hover"
   );
 
+  function isRegex(value: string): boolean {
+    try {
+      RegExp(value);
+      return true;
+    } catch {
+      console.error(`Invalid regex '${value}'`);
+      return false;
+    }
+  }
+
   return (
     <TooltipWrapper title="Click to only show alerts with this label or Alt+Click to hide them">
       <span className={cs.className} style={cs.style} onClick={handleClick}>
-        {alertStore.settings.values.valueOnlyLabels.includes(name) ? null : (
+        {alertStore.settings.values.valueOnlyLabels.includes(name) ||
+        alertStore.settings.values.valueOnlyRegexLabels.some(
+          (regex) => isRegex(regex) && name.match(regex)
+        ) ? null : (
           <>
             <span className="components-label-name">{name}:</span>{" "}
           </>

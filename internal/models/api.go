@@ -413,6 +413,7 @@ type AlertAcknowledgementSettings struct {
 type Settings struct {
 	StaticColorLabels        []string                     `json:"staticColorLabels"`
 	ValueOnlyLabels          []string                     `json:"valueOnlyLabels"`
+	ValueOnlyRegexLabels     []string                     `json:"valueOnlyRegexLabels"`
 	AnnotationsDefaultHidden bool                         `json:"annotationsDefaultHidden"`
 	AnnotationsHidden        []string                     `json:"annotationsHidden"`
 	AnnotationsVisible       []string                     `json:"annotationsVisible"`

@@ -73,6 +73,7 @@ const EmptyAPIResponse = (): APIAlertsResponseT => ({
     },
     staticColorLabels: ["job"],
     valueOnlyLabels: [],
+    valueOnlyRegexLabels: [],
     annotationsDefaultHidden: false,
     annotationsHidden: [],
     annotationsVisible: [],

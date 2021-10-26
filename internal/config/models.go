@@ -148,14 +148,16 @@ type configSchema struct {
 		Name string
 	}
 	Labels struct {
-		Keep                    []string
-		KeepRegex               []string         `yaml:"keep_re" koanf:"keep_re"`
-		CompiledKeepRegex       []*regexp.Regexp `yaml:"-"`
-		Strip                   []string
-		StripRegex              []string         `yaml:"strip_re" koanf:"strip_re"`
-		CompiledStripRegex      []*regexp.Regexp `yaml:"-"`
-		ValueOnly               []string         `yaml:"valueOnly" koanf:"valueOnly"`
-		Color                   struct {
+		Keep                   []string
+		KeepRegex              []string         `yaml:"keep_re" koanf:"keep_re"`
+		CompiledKeepRegex      []*regexp.Regexp `yaml:"-"`
+		Strip                  []string
+		StripRegex             []string         `yaml:"strip_re" koanf:"strip_re"`
+		CompiledStripRegex     []*regexp.Regexp `yaml:"-"`
+		ValueOnly              []string         `yaml:"valueOnly" koanf:"valueOnly"`
+		ValueOnlyRegex         []string         `yaml:"valueOnly_re" koanf:"valueOnly_re"`
+		AnchoredValueOnlyRegex []string         `yaml:"-"`
+		Color                  struct {
 			Custom CustomLabelColors
 			Static []string
 			Unique []string

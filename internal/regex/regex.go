@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func wrapRegex(r string) string {
+func WrapRegexWithAnchors(r string) string {
 	var prefix, suffix string
 	if !strings.HasPrefix(r, "^") {
 		prefix = "^"
@@ -18,9 +18,9 @@ func wrapRegex(r string) string {
 
 func MustCompileAnchored(r string) *regexp.Regexp {
 
-	return regexp.MustCompile(wrapRegex(r))
+	return regexp.MustCompile(WrapRegexWithAnchors(r))
 }
 
 func CompileAnchored(r string) (*regexp.Regexp, error) {
-	return regexp.Compile(wrapRegex(r))
+	return regexp.Compile(WrapRegexWithAnchors(r))
 }

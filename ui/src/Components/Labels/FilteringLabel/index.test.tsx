@@ -102,4 +102,38 @@ describe("<FilteringLabel />", () => {
     );
     expect(tree.text()).toBe("foo: bar");
   });
+
+  it("doesn't render the name if it matches a regex in valueOnlyRegexLabels", () => {
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      valueOnlyRegexLabels: ["^fo*$"],
+    });
+    const tree = mount(
+      <FilteringLabel alertStore={alertStore} name="foo" value="bar" />
+    );
+    expect(tree.text()).toBe("bar");
+  });
+
+  it("renders the name if it does not match any regex in valueOnlyRegexLabels", () => {
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      valueOnlyRegexLabels: ["^[^o]*$"],
+    });
+    const tree = mount(
+      <FilteringLabel alertStore={alertStore} name="foo" value="bar" />
+    );
+    expect(tree.text()).toBe("foo: bar");
+  });
+
+  it("renders the name if valueOnlyRegexLabels provides invalid regex", () => {
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      valueOnlyRegexLabels: ["^fo**$"],
+    });
+    jest.spyOn(global.console, "error").mockImplementation(() => {});
+    const tree = mount(
+      <FilteringLabel alertStore={alertStore} name="foo" value="bar" />
+    );
+    expect(tree.text()).toBe("foo: bar");
+  });
 });
