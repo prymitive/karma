@@ -1105,6 +1105,7 @@ func TestEmptySettings(t *testing.T) {
 	expectedSettings := models.Settings{
 		StaticColorLabels:        []string{},
 		ValueOnlyLabels:          []string{},
+		ValueOnlyRegexLabels:     []string{},
 		AnnotationsDefaultHidden: false,
 		AnnotationsHidden:        []string{},
 		AnnotationsVisible:       []string{},

@@ -188,6 +188,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		},
 		StaticColorLabels:        config.Config.Labels.Color.Static,
 		ValueOnlyLabels:          config.Config.Labels.ValueOnly,
+		ValueOnlyRegexLabels:     config.Config.Labels.AnchoredValueOnlyRegex,
 		AnnotationsDefaultHidden: config.Config.Annotations.Default.Hidden,
 		AnnotationsHidden:        config.Config.Annotations.Hidden,
 		AnnotationsVisible:       config.Config.Annotations.Visible,

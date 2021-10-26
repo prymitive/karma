@@ -97,6 +97,8 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.StringSlice("labels.strip_re", []string{}, "List of regular expressions to ignore matching labels")
 	f.StringSlice("labels.valueOnly", []string{},
 		"List of label names for which only the name will be shown in the UI")
+	f.StringSlice("labels.valueOnly_re", []string{},
+		"List of regular expressions to show only the name of matching labels")
 
 	f.String("grid.sorting.order", "startsAt", "Default sort order for alert grid")
 	f.Bool("grid.sorting.reverse", true, "Reverse sort order")
@@ -224,6 +226,8 @@ func readEnvVariables(k *koanf.Koanf) {
 			return "labels.keep_re"
 		case "LABELS_STRIP_RE":
 			return "labels.strip_re"
+		case "LABELS_VALUEONLY_RE":
+			return "labels.valueOnly_re"
 		case "SILENCEFORM_STRIP_LABELS":
 			return "silenceForm.strip.labels"
 		case "UI_HIDEFILTERSWHENIDLE":
@@ -376,6 +380,11 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 		if err != nil {
 			return "", fmt.Errorf("strip regex rule '%s' is invalid: %s", stripRegex, err)
 		}
+	}
+
+	config.Labels.AnchoredValueOnlyRegex = make([]string, len(config.Labels.ValueOnlyRegex))
+	for i, valueOnlyRegex := range config.Labels.ValueOnlyRegex {
+		config.Labels.AnchoredValueOnlyRegex[i] = regex.WrapRegexWithAnchors(valueOnlyRegex)
 	}
 
 	for labelName, customColors := range config.Labels.Color.Custom {

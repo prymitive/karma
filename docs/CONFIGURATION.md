@@ -864,6 +864,7 @@ labels:
   strip: list of strings
   strip_re: list of regex
   valueOnly: list of strings
+  valueOnly_re: list of regex
 ```
 
 - `color:static` - list of label names that will all have the same color applied
@@ -900,6 +901,10 @@ labels:
   to ignore matching labels; all regexes will be automatically anchored.
 - `valueOnly` - list of label names for which only the value will be displayed
   in the UI.
+- `valueOnly_re` - list of JavaScript compatible
+  [regular expressions](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions/Cheatsheet)
+  to display only the value for matching labels; all regexes will be
+  automatically anchored.
 
 Example with static color for the `job` label (every `job` label will have the
 same color regardless of the value) and unique color for the `@receiver` label
@@ -995,6 +1000,8 @@ labels:
   keep_re: []
   strip: []
   strip_re: []
+  valueOnly: []
+  valueOnly_re: []
 ```
 
 ### Listen
