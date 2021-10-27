@@ -10,6 +10,7 @@ import (
 )
 
 type uriTest struct {
+	name        string
 	rawURI      string
 	extURI      string
 	proxy       bool
@@ -19,48 +20,56 @@ type uriTest struct {
 
 var uriTests = []uriTest{
 	{
+		name:        "test",
 		rawURI:      "http://alertmanager.example.com",
 		proxy:       false,
 		internalURI: "http://alertmanager.example.com",
 		publicURI:   "http://alertmanager.example.com",
 	},
 	{
+		name:        "test",
 		rawURI:      "http://alertmanager.example.com/foo",
 		proxy:       false,
 		internalURI: "http://alertmanager.example.com/foo",
 		publicURI:   "http://alertmanager.example.com/foo",
 	},
 	{
+		name:        "test",
 		rawURI:      "http://alertmanager.example.com",
 		proxy:       true,
 		internalURI: "./proxy/alertmanager/test",
 		publicURI:   "http://alertmanager.example.com",
 	},
 	{
+		name:        "test",
 		rawURI:      "http://alertmanager.example.com/foo",
 		proxy:       true,
 		internalURI: "./proxy/alertmanager/test",
 		publicURI:   "http://alertmanager.example.com/foo",
 	},
 	{
+		name:        "test",
 		rawURI:      "http://user:pass@alertmanager.example.com",
 		proxy:       false,
 		internalURI: "http://alertmanager.example.com",
 		publicURI:   "http://user:pass@alertmanager.example.com",
 	},
 	{
+		name:        "test",
 		rawURI:      "https://user:pass@alertmanager.example.com/foo",
 		proxy:       false,
 		internalURI: "https://alertmanager.example.com/foo",
 		publicURI:   "https://user:pass@alertmanager.example.com/foo",
 	},
 	{
+		name:        "test",
 		rawURI:      "http://user:pass@alertmanager.example.com",
 		proxy:       true,
 		internalURI: "./proxy/alertmanager/test",
 		publicURI:   "http://user:pass@alertmanager.example.com",
 	},
 	{
+		name:        "test",
 		rawURI:      "http://user:pass@alertmanager.example.com",
 		extURI:      "http://am.example.com",
 		proxy:       true,
@@ -68,6 +77,7 @@ var uriTests = []uriTest{
 		publicURI:   "http://am.example.com",
 	},
 	{
+		name:        "test",
 		rawURI:      "http://alertmanager.example.com",
 		extURI:      "http://am.example.com",
 		proxy:       true,
@@ -75,6 +85,7 @@ var uriTests = []uriTest{
 		publicURI:   "http://am.example.com",
 	},
 	{
+		name:        "test",
 		rawURI:      "http://user:pass@alertmanager.example.com",
 		extURI:      "http://am.example.com",
 		proxy:       false,
@@ -82,17 +93,32 @@ var uriTests = []uriTest{
 		publicURI:   "http://am.example.com",
 	},
 	{
+		name:        "test",
 		rawURI:      "http://alertmanager.example.com",
 		extURI:      "http://am.example.com",
 		proxy:       false,
 		internalURI: "http://am.example.com",
 		publicURI:   "http://am.example.com",
+	},
+	{
+		name:        "test with (spaces)",
+		rawURI:      "http://alertmanager.example.com",
+		proxy:       true,
+		internalURI: `./proxy/alertmanager/test%20with%20%28spaces%29`,
+		publicURI:   "http://alertmanager.example.com",
+	},
+	{
+		name:        "test with  (spaces)",
+		rawURI:      "http://alertmanager.example.com",
+		proxy:       true,
+		internalURI: `./proxy/alertmanager/test%20with%20%20%28spaces%29`,
+		publicURI:   "http://alertmanager.example.com",
 	},
 }
 
 func TestAlertmanagerURI(t *testing.T) {
 	for i, test := range uriTests {
-		am, err := NewAlertmanager("cluster", "test", test.rawURI, WithExternalURI(test.extURI), WithProxy(test.proxy))
+		am, err := NewAlertmanager("cluster", test.name, test.rawURI, WithExternalURI(test.extURI), WithProxy(test.proxy))
 		if err != nil {
 			t.Error(err)
 		}
