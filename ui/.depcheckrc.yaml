@@ -16,3 +16,4 @@ ignores:
   - "@percy/storybook"
   - "@storybook/preset-create-react-app"
   - "purgecss"
+  - "eslint-plugin-jest"
