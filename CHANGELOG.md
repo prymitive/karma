@@ -5,6 +5,8 @@
 ### Fixed
 
 - Toast popup messages didn't respond to clicks.
+- Alertmanager with brackets in the name wasn't able to create, edit
+  or delete silences #3651.
 
 ### Added
 
