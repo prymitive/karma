@@ -256,7 +256,7 @@ jobs:
 
   benchmark-go:
     name: Benchmark Go code compare
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
     needs: stage-test-and-lint
     runs-on: ubuntu-20.04
     steps:
@@ -309,7 +309,7 @@ jobs:
 
   webpack-bundle-size:
     name: Webpack bundle size compare
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
     needs: stage-test-and-lint
     runs-on: ubuntu-20.04
     steps:
@@ -341,7 +341,7 @@ jobs:
 
   percy:
     name: Percy UI snapshots
-    if: github.event_name != 'release'
+    if: github.event_name != 'release' && github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
     needs: stage-test-and-lint
     runs-on: ubuntu-20.04
     steps:
@@ -500,6 +500,7 @@ jobs:
 
   demo-deploy:
     name: Deploy demo app to Heroku
+    if: github.event.pull_request.head.repo.full_name == github.event.pull_request.base.repo.full_name
     needs: stage-test-and-lint
     runs-on: ubuntu-20.04
     steps:
