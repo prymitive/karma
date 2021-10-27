@@ -283,14 +283,15 @@ jobs:
         with:
           go-version: 1.17.2
 
-      - name: Cache Go modules
-        id: cache-go-modules
+      - name: Cache Go
         uses: actions/cache@v2
         with:
-          path: ~/go/pkg/mod
-          key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-benchmark-${{ hashFiles('**/go.sum') }}
           restore-keys: |
-            ${{ runner.os }}-main-go-modules-
+            ${{ runner.os }}-go-benchmark-
 
       - name: Fetch all Go modules
         if: steps.cache-go-modules.outputs.cache-hit != 'true'
@@ -387,6 +388,16 @@ jobs:
         uses: actions/setup-go@v2
         with:
           go-version: 1.17.2
+
+      - name: Cache Go
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
 
       - name: Set up Node JS
         uses: actions/setup-node@v2
