@@ -21,6 +21,11 @@ To run included tests and linters run:
 
     make test
 
+Some backend tests are using snapshot files. To update those snapshots after
+a breaking change run tests using:
+
+    UPDATE_SNAPSHOTS=1 go test -count=1 ./cmd/karma
+
 ## Vendoring dependencies
 
 [Go modules](https://github.com/golang/go/wiki/Modules) are used for managing
