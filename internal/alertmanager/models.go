@@ -181,7 +181,7 @@ func (am *Alertmanager) pullSilences(version string) error {
 // InternalURI is the URI of this Alertmanager that will be used for all request made by the UI
 func (am *Alertmanager) InternalURI() string {
 	if am.ProxyRequests {
-		return fmt.Sprintf("./proxy/alertmanager/%s", am.Name)
+		return fmt.Sprintf("./proxy/alertmanager/%s", url.PathEscape(am.Name))
 	}
 
 	// strip all user/pass information, fetch() doesn't support it anyway

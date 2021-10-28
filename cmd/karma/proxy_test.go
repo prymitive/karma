@@ -50,14 +50,14 @@ var proxyTests = []proxyTest{
 	// valid alertmanager and methods
 	{
 		method:      "POST",
-		localPath:   "/proxy/alertmanager/dummy/api/v2/silences",
+		localPath:   "/proxy/alertmanager/dummy%20with%20%28space%29/api/v2/silences",
 		upstreamURI: "http://localhost:9093/api/v2/silences",
 		code:        200,
 		response:    "{\"status\":\"success\",\"data\":{\"silenceId\":\"d8a61ca8-ee2e-4076-999f-276f1e986bf3\"}}",
 	},
 	{
 		method:      "DELETE",
-		localPath:   "/proxy/alertmanager/dummy/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
+		localPath:   "/proxy/alertmanager/dummy%20with%20%28space%29/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
 		upstreamURI: "http://localhost:9093/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
 		code:        200,
 		response:    "{\"status\":\"success\"}",
@@ -80,13 +80,13 @@ var proxyTests = []proxyTest{
 	// valid alertmanager name, but invalid method
 	{
 		method:      "GET",
-		localPath:   "/proxy/alertmanager/dummy/api/v2/silences",
+		localPath:   "/proxy/alertmanager/dummy%20with%20%28space%29/api/v2/silences",
 		upstreamURI: "",
 		code:        405,
 	},
 	{
 		method:      "GET",
-		localPath:   "/proxy/alertmanager/dummy/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
+		localPath:   "/proxy/alertmanager/dummy%20with%20%28space%29/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
 		upstreamURI: "http://localhost:9093/api/v2/silence/d8a61ca8-ee2e-4076-999f-276f1e986bf3",
 		code:        405,
 	},
@@ -106,7 +106,7 @@ func TestProxy(t *testing.T) {
 	r := testRouter()
 	am, err := alertmanager.NewAlertmanager(
 		"cluster",
-		"dummy",
+		"dummy with (space)",
 		"http://localhost:9093",
 		alertmanager.WithRequestTimeout(time.Second*5),
 		alertmanager.WithProxy(true),
@@ -155,7 +155,7 @@ type proxyHeaderTest struct {
 var proxyHeaderTests = []proxyHeaderTest{
 	{
 		method:           "POST",
-		localPath:        "/proxy/alertmanager/dummy/api/v2/silences",
+		localPath:        "/proxy/alertmanager/dummy%20with%20%28space%29/api/v2/silences",
 		upstreamURI:      "http://localhost:9093/api/v2/silences",
 		code:             200,
 		alertmanagerURI:  "http://localhost:9093",
@@ -166,7 +166,7 @@ var proxyHeaderTests = []proxyHeaderTest{
 	},
 	{
 		method:           "POST",
-		localPath:        "/proxy/alertmanager/dummy/api/v2/silences",
+		localPath:        "/proxy/alertmanager/dummy%20with%20%28space%29/api/v2/silences",
 		upstreamURI:      "http://alertmanager.example.com/api/v2/silences",
 		code:             200,
 		alertmanagerURI:  "http://alertmanager.example.com",
@@ -177,7 +177,7 @@ var proxyHeaderTests = []proxyHeaderTest{
 	},
 	{
 		method:              "POST",
-		localPath:           "/proxy/alertmanager/dummy/api/v2/silences",
+		localPath:           "/proxy/alertmanager/dummy%20with%20%28space%29/api/v2/silences",
 		upstreamURI:         "http://alertmanager.example.com/api/v2/silences",
 		code:                200,
 		alertmanagerURI:     "http://foo:bar@alertmanager.example.com",
@@ -188,7 +188,7 @@ var proxyHeaderTests = []proxyHeaderTest{
 	},
 	{
 		method:              "POST",
-		localPath:           "/proxy/alertmanager/dummy/api/v2/silences",
+		localPath:           "/proxy/alertmanager/dummy%20with%20%28space%29/api/v2/silences",
 		upstreamURI:         "http://alertmanager.example.com/api/v2/silences",
 		code:                200,
 		alertmanagerURI:     "http://foo@alertmanager.example.com",
@@ -216,7 +216,7 @@ func TestProxyHeaders(t *testing.T) {
 		r := testRouter()
 		am, err := alertmanager.NewAlertmanager(
 			"cluster",
-			"dummy",
+			"dummy with (space)",
 			testCase.alertmanagerURI,
 			alertmanager.WithRequestTimeout(time.Second*5),
 			alertmanager.WithProxy(true),
