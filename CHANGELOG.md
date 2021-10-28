@@ -11,6 +11,8 @@
 ### Added
 
 - Loading user groups from HTTP headers, #3361 (@supertassu).
+- Added `labels:keep_re`, `labels:strip_re` and `labels:valueOnly_re` config
+  options #3659 (@aalexk).
 
 ## v0.92
 
