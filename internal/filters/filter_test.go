@@ -496,7 +496,7 @@ var tests = []filterTest{
 	{
 		Expression: "node=vps1",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
 		IsMatch:    true,
 	},
 	{
@@ -508,68 +508,68 @@ var tests = []filterTest{
 	{
 		Expression: "node!=vps1",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
 		IsMatch:    false,
 	},
 	{
 		Expression: "node!=vps1",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: map[string]string{"node": "vps2"}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps2"}}},
 		IsMatch:    true,
 	},
 	{
 		Expression: "node=~vps",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
 		IsMatch:    true,
 	},
 	{
 		Expression: "node!~vps",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
 		IsMatch:    false,
 	},
 	{
 		Expression: "node!~abc",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
 		IsMatch:    true,
 	},
 	{
 		Expression: "node!~",
 		IsValid:    false,
-		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
 		IsMatch:    false,
 	},
 	{
 		Expression: "node=",
 		IsValid:    false,
-		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
 		IsMatch:    false,
 	},
 	{
 		Expression: "node===",
 		IsValid:    false,
-		Alert:      models.Alert{Labels: map[string]string{"node": "vps1"}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: "node", Value: "vps1"}}},
 		IsMatch:    false,
 	},
 
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: map[string]string{"key": "abc"}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: "key", Value: "abc"}}},
 		IsMatch:    true,
 	},
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: map[string]string{"key": "XXXabcx"}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: "key", Value: "XXXabcx"}}},
 		IsMatch:    true,
 	},
 	{
 		Expression: "abc",
 		IsValid:    true,
-		Alert:      models.Alert{Labels: map[string]string{"abc": "xxxab"}},
+		Alert:      models.Alert{Labels: models.Labels{{Name: "abc", Value: "xxxab"}}},
 		IsMatch:    false,
 	},
 	{

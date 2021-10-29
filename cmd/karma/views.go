@@ -224,7 +224,6 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// use full URI (including query args) as cache key
 	cacheKey := fmt.Sprintf("%x", structhash.Sha1(request, 1))
 
 	data, found := apiCache.Get(cacheKey)
@@ -265,14 +264,14 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	for _, ag := range filtered {
 		perGridAlertGroup := map[string]*models.AlertGroup{}
 
-		for k := range ag.Labels {
-			labelMap[k] = struct{}{}
+		for _, l := range ag.Labels {
+			labelMap[l.Name] = struct{}{}
 		}
 		for _, alert := range ag.Alerts {
 			alert := alert // scopelint pin
 
-			for k := range alert.Labels {
-				labelMap[k] = struct{}{}
+			for _, l := range alert.Labels {
+				labelMap[l.Name] = struct{}{}
 			}
 
 			allReceivers[alert.Receiver] = true
@@ -292,7 +291,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 					alertGridLabelValues[am.Cluster] = true
 				}
 			default:
-				alertGridLabelValues[alert.Labels[gridLabel]] = true
+				alertGridLabelValues[alert.Labels.GetValue(gridLabel)] = true
 			}
 
 			for alertGridLabelValue := range alertGridLabelValues {
@@ -390,13 +389,13 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 
-				for key, value := range alert.Labels {
-					if keyMap, foundKey := dedupedColors[key]; foundKey {
-						if color, foundColor := keyMap[value]; foundColor {
-							if _, found := colors[key]; !found {
-								colors[key] = map[string]models.LabelColors{}
+				for _, l := range alert.Labels {
+					if keyMap, foundKey := dedupedColors[l.Name]; foundKey {
+						if color, foundColor := keyMap[l.Value]; foundColor {
+							if _, found := colors[l.Name]; !found {
+								colors[l.Name] = map[string]models.LabelColors{}
 							}
-							colors[key][value] = color
+							colors[l.Name][l.Value] = color
 						}
 					}
 				}
@@ -684,7 +683,7 @@ func silences(w http.ResponseWriter, r *http.Request) {
 }
 
 type AlertList struct {
-	Alerts []map[string]string `json:"alerts"`
+	Alerts []models.Labels `json:"alerts"`
 }
 
 func alertList(w http.ResponseWriter, r *http.Request) {
@@ -711,12 +710,9 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 	labelMap := map[string]map[string]string{}
 	for _, ag := range filtered {
 		for _, alert := range ag.Alerts {
-			labels := map[string]string{}
-			for k, v := range ag.Labels {
-				labels[k] = v
-			}
-			for k, v := range alert.Labels {
-				labels[k] = v
+			labels := ag.Labels.Map()
+			for _, l := range alert.Labels {
+				labels[l.Name] = l.Value
 			}
 			h := fmt.Sprintf("%x", structhash.Sha1(labels, 1))
 			labelMap[h] = labels
@@ -736,10 +732,15 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 	sort.Strings(sortKeys)
 
 	al := AlertList{
-		Alerts: []map[string]string{},
+		Alerts: []models.Labels{},
 	}
 	for _, labels := range labelMap {
-		al.Alerts = append(al.Alerts, labels)
+		alert := models.Labels{}
+		for k, v := range labels {
+			alert = alert.Set(k, v)
+		}
+		sort.Sort(alert)
+		al.Alerts = append(al.Alerts, alert)
 	}
 	sortSliceOfLabels(al.Alerts, sortKeys, "alertname")
 
@@ -751,20 +752,22 @@ func alertList(w http.ResponseWriter, r *http.Request) {
 	_, _ = w.Write(data)
 }
 
-func sortSliceOfLabels(labels []map[string]string, sortKeys []string, fallback string) {
+func sortSliceOfLabels(labels []models.Labels, sortKeys []string, fallback string) {
 	sort.SliceStable(labels, func(i, j int) bool {
 		for _, k := range sortKeys {
-			if labels[i][k] != "" && labels[j][k] == "" {
+			vi := labels[i].GetValue(k)
+			vj := labels[j].GetValue(k)
+			if vi != "" && vj == "" {
 				return true
 			}
-			if labels[i][k] == "" && labels[j][k] != "" {
+			if vi == "" && vj != "" {
 				return false
 			}
-			if labels[i][k] != labels[j][k] {
-				return sortorder.NaturalLess(labels[i][k], labels[j][k])
+			if vi != vj {
+				return sortorder.NaturalLess(vi, vj)
 			}
 		}
-		return sortorder.NaturalLess(labels[i][fallback], labels[j][fallback])
+		return sortorder.NaturalLess(labels[i].GetValue(fallback), labels[j].GetValue(fallback))
 	})
 }
 
@@ -814,8 +817,8 @@ func counters(w http.ResponseWriter, r *http.Request) {
 			}
 			countLabel(counters, "@state", alert.State)
 			countLabel(counters, "@receiver", alert.Receiver)
-			for key, value := range alert.Labels {
-				countLabel(counters, key, value)
+			for _, l := range alert.Labels {
+				countLabel(counters, l.Name, l.Value)
 			}
 		}
 	}

@@ -2,9 +2,11 @@ package models
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/cnf/structhash"
+	"github.com/fvbommel/sortorder"
 )
 
 // AlertStateUnprocessed means that Alertmanager notify didn't yet process it
@@ -24,16 +26,91 @@ var AlertStateList = []string{
 	AlertStateSuppressed,
 }
 
+type Label struct {
+	Name  string `json:"name"`
+	Value string `json:"value"`
+}
+
+func (l Label) String() string {
+	return fmt.Sprintf("%s=\"%s\"", l.Name, l.Value)
+}
+
+type Labels []Label
+
+func (ls Labels) String() string {
+	var s []string
+	for _, l := range ls {
+		s = append(s, l.String())
+	}
+	return strings.Join(s, ",")
+}
+
+func (ls Labels) Map() map[string]string {
+	m := make(map[string]string, len(ls))
+	for _, l := range ls {
+		m[l.Name] = l.Value
+	}
+	return m
+}
+
+func (ls Labels) Len() int {
+	return len(ls)
+}
+
+func (ls Labels) Swap(i, j int) {
+	ls[i], ls[j] = ls[j], ls[i]
+}
+
+func (ls Labels) Less(i, j int) bool {
+	if ls[i].Name == ls[j].Name {
+		return sortorder.NaturalLess(ls[i].Value, ls[j].Value)
+	}
+	return sortorder.NaturalLess(ls[i].Name, ls[j].Name)
+}
+
+func (ls Labels) Get(name string) *Label {
+	for _, l := range ls {
+		l := l
+		if l.Name == name {
+			return &l
+		}
+	}
+	return nil
+}
+
+func (ls Labels) GetValue(name string) string {
+	for _, l := range ls {
+		if l.Name == name {
+			return l.Value
+		}
+	}
+	return ""
+}
+
+func (ls Labels) Add(l Label) Labels {
+	if ls.Get(l.Name) != nil {
+		return ls
+	}
+	return append(ls, l)
+}
+
+func (ls Labels) Set(name, value string) Labels {
+	if ls.Get(name) != nil {
+		return ls
+	}
+	return append(ls, Label{Name: name, Value: value})
+}
+
 // Alert is vanilla alert + some additional attributes
 // karma extends an alert object with:
 // * Links map, it's generated from annotations if annotation value is an url
 //   it's pulled out of annotation map and returned under links field,
 //   karma UI used this to show links differently than other annotations
 type Alert struct {
-	Annotations Annotations       `json:"annotations"`
-	Labels      map[string]string `json:"labels"`
-	StartsAt    time.Time         `json:"startsAt"`
-	State       string            `json:"state"`
+	Annotations Annotations `json:"annotations"`
+	Labels      Labels      `json:"labels"`
+	StartsAt    time.Time   `json:"startsAt"`
+	State       string      `json:"state"`
 	// those are not exposed in JSON, Alertmanager specific value will be in kept
 	// in the Alertmanager slice
 	// skip those when generating alert fingerprint too
@@ -52,7 +129,7 @@ type Alert struct {
 // UpdateFingerprints will generate a new set of fingerprints for this alert
 // it should be called after modifying any field that isn't tagged with hash:"-"
 func (a *Alert) UpdateFingerprints() {
-	a.LabelsFP = fmt.Sprintf("%x", structhash.Sha1(a.Labels, 1))
+	a.LabelsFP = fmt.Sprintf("%x", structhash.Sha1(a.Labels.Map(), 1))
 	a.contentFP = fmt.Sprintf("%x", structhash.Sha1(a, 1))
 }
 

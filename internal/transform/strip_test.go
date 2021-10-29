@@ -1,12 +1,12 @@
 package transform_test
 
 import (
-	"github.com/prymitive/karma/internal/regex"
 	"reflect"
 	"regexp"
 	"testing"
 
 	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/regex"
 	"github.com/prymitive/karma/internal/transform"
 )
 
@@ -15,8 +15,8 @@ type stripLabelTest struct {
 	keep       []string
 	stripRegex []string
 	keepRegex  []string
-	before     map[string]string
-	after      map[string]string
+	before     models.Labels
+	after      models.Labels
 }
 
 var stripLabelTests = []stripLabelTest{
@@ -25,14 +25,14 @@ var stripLabelTests = []stripLabelTest{
 		keep:       []string{},
 		stripRegex: []string{},
 		keepRegex:  []string{},
-		before: map[string]string{
-			"host":  "localhost",
-			"env":   "production",
-			"level": "info",
+		before: models.Labels{
+			{Name: "host", Value: "localhost"},
+			{Name: "env", Value: "production"},
+			{Name: "level", Value: "info"},
 		},
-		after: map[string]string{
-			"host":  "localhost",
-			"level": "info",
+		after: models.Labels{
+			{Name: "host", Value: "localhost"},
+			{Name: "level", Value: "info"},
 		},
 	},
 	{
@@ -40,15 +40,15 @@ var stripLabelTests = []stripLabelTest{
 		keep:       []string{},
 		stripRegex: []string{},
 		keepRegex:  []string{},
-		before: map[string]string{
-			"host":  "localhost",
-			"env":   "production",
-			"level": "info",
+		before: models.Labels{
+			{Name: "host", Value: "localhost"},
+			{Name: "env", Value: "production"},
+			{Name: "level", Value: "info"},
 		},
-		after: map[string]string{
-			"host":  "localhost",
-			"env":   "production",
-			"level": "info",
+		after: models.Labels{
+			{Name: "env", Value: "production"},
+			{Name: "host", Value: "localhost"},
+			{Name: "level", Value: "info"},
 		},
 	},
 	{
@@ -56,15 +56,15 @@ var stripLabelTests = []stripLabelTest{
 		keep:       []string{},
 		stripRegex: []string{},
 		keepRegex:  []string{},
-		before: map[string]string{
-			"host":  "localhost",
-			"env":   "production",
-			"level": "info",
+		before: models.Labels{
+			{Name: "env", Value: "production"},
+			{Name: "host", Value: "localhost"},
+			{Name: "level", Value: "info"},
 		},
-		after: map[string]string{
-			"host":  "localhost",
-			"env":   "production",
-			"level": "info",
+		after: models.Labels{
+			{Name: "env", Value: "production"},
+			{Name: "host", Value: "localhost"},
+			{Name: "level", Value: "info"},
 		},
 	},
 	{
@@ -72,23 +72,23 @@ var stripLabelTests = []stripLabelTest{
 		keep:       []string{},
 		stripRegex: []string{},
 		keepRegex:  []string{},
-		before: map[string]string{
-			"host": "localhost",
+		before: models.Labels{
+			{Name: "host", Value: "localhost"},
 		},
-		after: map[string]string{},
+		after: models.Labels{},
 	},
 	{
 		strip:      []string{},
 		keep:       []string{"env"},
 		stripRegex: []string{},
 		keepRegex:  []string{},
-		before: map[string]string{
-			"host":  "localhost",
-			"env":   "production",
-			"level": "info",
+		before: models.Labels{
+			{Name: "host", Value: "localhost"},
+			{Name: "env", Value: "production"},
+			{Name: "level", Value: "info"},
 		},
-		after: map[string]string{
-			"env": "production",
+		after: models.Labels{
+			{Name: "env", Value: "production"},
 		},
 	},
 	{
@@ -96,13 +96,13 @@ var stripLabelTests = []stripLabelTest{
 		keep:       []string{"host"},
 		stripRegex: []string{},
 		keepRegex:  []string{},
-		before: map[string]string{
-			"host":  "localhost",
-			"env":   "production",
-			"level": "info",
+		before: models.Labels{
+			{Name: "host", Value: "localhost"},
+			{Name: "env", Value: "production"},
+			{Name: "level", Value: "info"},
 		},
-		after: map[string]string{
-			"host": "localhost",
+		after: models.Labels{
+			{Name: "host", Value: "localhost"},
 		},
 	},
 	{
@@ -110,24 +110,24 @@ var stripLabelTests = []stripLabelTest{
 		keep:       []string{"env"},
 		stripRegex: []string{},
 		keepRegex:  []string{},
-		before: map[string]string{
-			"host":  "localhost",
-			"level": "info",
+		before: models.Labels{
+			{Name: "host", Value: "localhost"},
+			{Name: "level", Value: "info"},
 		},
-		after: map[string]string{},
+		after: models.Labels{},
 	},
 	{
 		strip:      []string{},
 		keep:       []string{},
 		stripRegex: []string{".*e.*"},
 		keepRegex:  []string{},
-		before: map[string]string{
-			"host":  "localhost",
-			"env":   "production",
-			"level": "info",
+		before: models.Labels{
+			{Name: "host", Value: "localhost"},
+			{Name: "env", Value: "production"},
+			{Name: "level", Value: "info"},
 		},
-		after: map[string]string{
-			"host": "localhost",
+		after: models.Labels{
+			{Name: "host", Value: "localhost"},
 		},
 	},
 	{
@@ -135,14 +135,14 @@ var stripLabelTests = []stripLabelTest{
 		keep:       []string{},
 		stripRegex: []string{},
 		keepRegex:  []string{".*e.*"},
-		before: map[string]string{
-			"host":  "localhost",
-			"env":   "production",
-			"level": "info",
+		before: models.Labels{
+			{Name: "host", Value: "localhost"},
+			{Name: "env", Value: "production"},
+			{Name: "level", Value: "info"},
 		},
-		after: map[string]string{
-			"env":   "production",
-			"level": "info",
+		after: models.Labels{
+			{Name: "env", Value: "production"},
+			{Name: "level", Value: "info"},
 		},
 	},
 	{
@@ -150,13 +150,13 @@ var stripLabelTests = []stripLabelTest{
 		keep:       []string{"env", "level"},
 		stripRegex: []string{".*el"},
 		keepRegex:  []string{},
-		before: map[string]string{
-			"host":  "localhost",
-			"env":   "production",
-			"level": "info",
+		before: models.Labels{
+			{Name: "host", Value: "localhost"},
+			{Name: "env", Value: "production"},
+			{Name: "level", Value: "info"},
 		},
-		after: map[string]string{
-			"env": "production",
+		after: models.Labels{
+			{Name: "env", Value: "production"},
 		},
 	},
 	{
@@ -164,13 +164,13 @@ var stripLabelTests = []stripLabelTest{
 		keep:       []string{},
 		stripRegex: []string{},
 		keepRegex:  []string{".*e.*"},
-		before: map[string]string{
-			"host":  "localhost",
-			"env":   "production",
-			"level": "info",
+		before: models.Labels{
+			{Name: "host", Value: "localhost"},
+			{Name: "env", Value: "production"},
+			{Name: "level", Value: "info"},
 		},
-		after: map[string]string{
-			"env": "production",
+		after: models.Labels{
+			{Name: "env", Value: "production"},
 		},
 	},
 }

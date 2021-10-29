@@ -97,8 +97,10 @@ var agFPTests = []agFPTest{
 	{
 		name: "different Labels shouldn't change content fingerprint",
 		ag: models.AlertGroup{
-			Receiver:   "default",
-			Labels:     map[string]string{"foo": "bar"},
+			Receiver: "default",
+			Labels: models.Labels{
+				{Name: "foo", Value: "bar"},
+			},
 			StateCount: map[string]int{"default": 0},
 		},
 		fpChange: false,
@@ -107,10 +109,12 @@ var agFPTests = []agFPTest{
 		name: "different set of alerts should change content fingerprint",
 		ag: models.AlertGroup{
 			Receiver: "default",
-			Labels:   map[string]string{"foo": "bar"},
+			Labels:   models.Labels{{Name: "foo", Value: "bar"}},
 			Alerts: models.AlertList{
 				models.Alert{
-					Labels: map[string]string{"foo1": "bar"},
+					Labels: models.Labels{
+						{Name: "foo1", Value: "bar"},
+					},
 				},
 			},
 			StateCount: map[string]int{"default": 0},
@@ -121,10 +125,12 @@ var agFPTests = []agFPTest{
 		name: "another different set of alerts should change content fingerprint",
 		ag: models.AlertGroup{
 			Receiver: "default",
-			Labels:   map[string]string{"bar": "foo"},
+			Labels:   models.Labels{{Name: "bar", Value: "foo"}},
 			Alerts: models.AlertList{
 				models.Alert{
-					Labels: map[string]string{"bar": "foo"},
+					Labels: models.Labels{
+						{Name: "bar", Value: "foo"},
+					},
 				},
 			},
 			StateCount: map[string]int{"default": 0},
@@ -135,10 +141,14 @@ var agFPTests = []agFPTest{
 		name: "repeating last set of alerts shouldn't change content fingerprint",
 		ag: models.AlertGroup{
 			Receiver: "default",
-			Labels:   map[string]string{"bar": "foo"},
+			Labels: models.Labels{
+				{Name: "bar", Value: "foo"},
+			},
 			Alerts: models.AlertList{
 				models.Alert{
-					Labels: map[string]string{"bar": "foo"},
+					Labels: models.Labels{
+						{Name: "bar", Value: "foo"},
+					},
 				},
 			},
 			StateCount: map[string]int{"default": 0},

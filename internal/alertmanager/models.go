@@ -253,8 +253,8 @@ func (am *Alertmanager) pullAlerts(version string) error {
 			if _, found := uniqueAlerts[agID][alertCFP]; !found {
 				uniqueAlerts[agID][alertCFP] = alert
 			}
-			for key := range alert.Labels {
-				knownLabelsMap[key] = true
+			for _, l := range alert.Labels {
+				knownLabelsMap[l.Name] = true
 			}
 
 			if name, hc := am.IsHealthCheckAlert(&alert); hc != nil {
@@ -305,8 +305,8 @@ func (am *Alertmanager) pullAlerts(version string) error {
 				transform.ColorLabel(colors, "@alertmanager", am.Name)
 				transform.ColorLabel(colors, "@cluster", am.Cluster)
 			}
-			for k, v := range alert.Labels {
-				transform.ColorLabel(colors, k, v)
+			for _, l := range alert.Labels {
+				transform.ColorLabel(colors, l.Name, l.Value)
 			}
 
 			alert.UpdateFingerprints()

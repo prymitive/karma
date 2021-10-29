@@ -94,7 +94,7 @@ func (lnsl LabelNameStatsList) Less(i, j int) bool {
 // APIAlertGroupSharedMaps defines shared part of APIAlertGroup
 type APIAlertGroupSharedMaps struct {
 	Annotations Annotations         `json:"annotations"`
-	Labels      map[string]string   `json:"labels"`
+	Labels      Labels              `json:"labels"`
 	Silences    map[string][]string `json:"silences"`
 	Sources     []string            `json:"sources"`
 	Clusters    []string            `json:"clusters"`
@@ -117,8 +117,8 @@ func (ag *APIAlertGroup) dedupLabels() {
 	labelCounts := make(map[string]int, len(ag.Alerts))
 
 	for _, alert := range ag.Alerts {
-		for name, val := range alert.Labels {
-			key := fmt.Sprintf("%s\n%s", name, val)
+		for _, l := range alert.Labels {
+			key := fmt.Sprintf("%s\n%s", l.Name, l.Value)
 			_, found := labelCounts[key]
 			if found {
 				labelCounts[key]++
@@ -128,16 +128,16 @@ func (ag *APIAlertGroup) dedupLabels() {
 		}
 	}
 
-	sharedLabels := map[string]string{}
+	sharedLabels := Labels{}
 
 	for i, alert := range ag.Alerts {
-		newAlertLabels := map[string]string{}
-		for name, val := range alert.Labels {
-			key := fmt.Sprintf("%s\n%s", name, val)
+		newAlertLabels := Labels{}
+		for _, l := range alert.Labels {
+			key := fmt.Sprintf("%s\n%s", l.Name, l.Value)
 			if labelCounts[key] == totalAlerts {
-				sharedLabels[name] = val
+				sharedLabels = sharedLabels.Add(l)
 			} else {
-				newAlertLabels[name] = val
+				newAlertLabels = newAlertLabels.Add(l)
 			}
 		}
 		ag.Alerts[i].Labels = newAlertLabels
@@ -148,27 +148,27 @@ func (ag *APIAlertGroup) dedupLabels() {
 }
 
 func (ag *APIAlertGroup) removeGroupingLabels(dropNames []string) {
-	newGroupLabels := map[string]string{}
-	for name, val := range ag.Labels {
-		if slices.StringInSlice(dropNames, name) {
+	newGroupLabels := Labels{}
+	for _, l := range ag.Labels {
+		if slices.StringInSlice(dropNames, l.Name) {
 			continue
 		}
-		newGroupLabels[name] = val
+		newGroupLabels = newGroupLabels.Add(l)
 	}
 	ag.Labels = newGroupLabels
 
 	for i, alert := range ag.Alerts {
-		newAlertLabels := map[string]string{}
-		for name, val := range alert.Labels {
-			if slices.StringInSlice(dropNames, name) {
+		newAlertLabels := Labels{}
+		for _, l := range alert.Labels {
+			if slices.StringInSlice(dropNames, l.Name) {
 				// skip all labels from the drop list
 				continue
 			}
-			if _, found := ag.Labels[name]; found {
+			if v := ag.Labels.Get(l.Name); v != nil {
 				// skip all labels that are used for grouping
 				continue
 			}
-			newAlertLabels[name] = val
+			newAlertLabels = newAlertLabels.Add(l)
 		}
 		ag.Alerts[i].Labels = newAlertLabels
 	}
@@ -322,11 +322,11 @@ func (ag *APIAlertGroup) populateAllLabels() {
 
 	labels := map[string]int{}
 	for _, alert := range ag.Alerts {
-		for k := range alert.Labels {
-			if _, ok := labels[k]; !ok {
-				labels[k] = 0
+		for _, l := range alert.Labels {
+			if _, ok := labels[l.Name]; !ok {
+				labels[l.Name] = 0
 			}
-			labels[k]++
+			labels[l.Name]++
 		}
 	}
 
@@ -339,15 +339,15 @@ func (ag *APIAlertGroup) populateAllLabels() {
 	}
 
 	for _, alert := range ag.Alerts {
-		for k, v := range alert.Labels {
-			if _, ok := labelNames[k]; !ok {
+		for _, l := range alert.Labels {
+			if _, ok := labelNames[l.Name]; !ok {
 				continue
 			}
-			if _, ok := ag.AllLabels[alert.State][k]; !ok {
-				ag.AllLabels[alert.State][k] = []string{}
+			if _, ok := ag.AllLabels[alert.State][l.Name]; !ok {
+				ag.AllLabels[alert.State][l.Name] = []string{}
 			}
-			if !slices.StringInSlice(ag.AllLabels[alert.State][k], v) {
-				ag.AllLabels[alert.State][k] = append(ag.AllLabels[alert.State][k], v)
+			if !slices.StringInSlice(ag.AllLabels[alert.State][l.Name], l.Value) {
+				ag.AllLabels[alert.State][l.Name] = append(ag.AllLabels[alert.State][l.Name], l.Value)
 			}
 		}
 	}
@@ -372,7 +372,7 @@ func (ag *APIAlertGroup) DedupSharedMaps(ignoredLabels []string) {
 		ag.dedupClusters()
 	} else {
 		ag.Shared = APIAlertGroupSharedMaps{
-			Labels:      map[string]string{},
+			Labels:      Labels{},
 			Annotations: Annotations{},
 			Silences:    map[string][]string{},
 			Clusters:    []string{},

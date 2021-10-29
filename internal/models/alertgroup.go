@@ -35,14 +35,14 @@ func (a AlertList) Less(i, j int) bool {
 // There is a hash computed from all alerts, it's used by UI to quickly tell
 // if there was any change in a group and it needs to refresh it
 type AlertGroup struct {
-	Receiver          string            `json:"receiver"`
-	Labels            map[string]string `json:"labels"`
-	Alerts            AlertList         `json:"alerts"`
-	ID                string            `json:"id"`
-	Hash              string            `json:"-"`
-	AlertmanagerCount map[string]int    `json:"alertmanagerCount"`
-	StateCount        map[string]int    `json:"stateCount"`
-	LatestStartsAt    time.Time         `json:"-"`
+	Receiver          string         `json:"receiver"`
+	Labels            Labels         `json:"labels"`
+	Alerts            AlertList      `json:"alerts"`
+	ID                string         `json:"id"`
+	Hash              string         `json:"-"`
+	AlertmanagerCount map[string]int `json:"alertmanagerCount"`
+	StateCount        map[string]int `json:"stateCount"`
+	LatestStartsAt    time.Time      `json:"-"`
 }
 
 // LabelsFingerprint is a checksum of this AlertGroup labels and the receiver
@@ -50,7 +50,7 @@ type AlertGroup struct {
 func (ag AlertGroup) LabelsFingerprint() string {
 	agIDHasher := sha1.New()
 	_, _ = io.WriteString(agIDHasher, ag.Receiver)
-	_, _ = io.WriteString(agIDHasher, fmt.Sprintf("%x", structhash.Sha1(ag.Labels, 1)))
+	_, _ = io.WriteString(agIDHasher, fmt.Sprintf("%x", structhash.Sha1(ag.Labels.Map(), 1)))
 	return fmt.Sprintf("%x", agIDHasher.Sum(nil))
 }
 
