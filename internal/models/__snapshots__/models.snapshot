@@ -1,9 +1,12 @@
 /* snapshot: SharedMaps */
 {
   "receiver": "",
-  "labels": {
-    "alertname": "FakeAlert"
-  },
+  "labels": [
+    {
+      "name": "alertname",
+      "value": "FakeAlert"
+    }
+  ],
   "alerts": [
     {
       "annotations": [
@@ -15,10 +18,16 @@
           "isAction": false
         }
       ],
-      "labels": {
-        "instance": "1",
-        "job": "node_exporter"
-      },
+      "labels": [
+        {
+          "name": "job",
+          "value": "node_exporter"
+        },
+        {
+          "name": "instance",
+          "value": "1"
+        }
+      ],
       "startsAt": "0001-01-01T00:00:00Z",
       "state": "suppressed",
       "alertmanager": [
@@ -54,10 +63,16 @@
     },
     {
       "annotations": [],
-      "labels": {
-        "instance": "2",
-        "job": "node_exporter"
-      },
+      "labels": [
+        {
+          "name": "job",
+          "value": "node_exporter"
+        },
+        {
+          "name": "instance",
+          "value": "2"
+        }
+      ],
       "startsAt": "0001-01-01T00:00:00Z",
       "state": "active",
       "alertmanager": [
@@ -93,11 +108,20 @@
     },
     {
       "annotations": [],
-      "labels": {
-        "extra": "ignore",
-        "instance": "3",
-        "job": "blackbox"
-      },
+      "labels": [
+        {
+          "name": "job",
+          "value": "blackbox"
+        },
+        {
+          "name": "instance",
+          "value": "3"
+        },
+        {
+          "name": "extra",
+          "value": "ignore"
+        }
+      ],
       "startsAt": "0001-01-01T00:00:00Z",
       "state": "suppressed",
       "alertmanager": [
@@ -146,7 +170,7 @@
         "isAction": false
       }
     ],
-    "labels": {},
+    "labels": [],
     "silences": {
       "fakeCluster": [
         "fakeSilence1",

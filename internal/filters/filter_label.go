@@ -14,7 +14,7 @@ type labelFilter struct {
 
 func (filter *labelFilter) Match(alert *models.Alert, matches int) bool {
 	if filter.IsValid {
-		isMatch := filter.Matcher.Compare(alert.Labels[filter.Matched], filter.Value)
+		isMatch := filter.Matcher.Compare(alert.Labels.GetValue(filter.Matched), filter.Value)
 		if isMatch {
 			filter.Hits++
 		}
@@ -32,44 +32,44 @@ func newLabelFilter() FilterT {
 func labelAutocomplete(name string, operators []string, alerts []models.Alert) []models.Autocomplete {
 	tokens := map[string]models.Autocomplete{}
 	for _, alert := range alerts {
-		for key, value := range alert.Labels {
+		for _, l := range alert.Labels {
 			for _, operator := range operators {
 				switch operator {
 				case equalOperator, notEqualOperator:
-					token := fmt.Sprintf("%s%s%s", key, operator, value)
+					token := fmt.Sprintf("%s%s%s", l.Name, operator, l.Value)
 					tokens[token] = makeAC(
 						token,
 						[]string{
-							key,
-							fmt.Sprintf("%s%s", key, operator),
-							value,
+							l.Name,
+							fmt.Sprintf("%s%s", l.Name, operator),
+							l.Value,
 						},
 					)
 				case regexpOperator, negativeRegexOperator:
-					substrings := strings.Split(value, " ")
+					substrings := strings.Split(l.Value, " ")
 					if len(substrings) > 1 {
 						for _, substring := range substrings {
-							token := fmt.Sprintf("%s%s%s", key, operator, substring)
+							token := fmt.Sprintf("%s%s%s", l.Name, operator, substring)
 							tokens[token] = makeAC(
 								token,
 								[]string{
-									key,
-									fmt.Sprintf("%s%s", key, operator),
-									value,
+									l.Name,
+									fmt.Sprintf("%s%s", l.Name, operator),
+									l.Value,
 									substring,
 								},
 							)
 						}
 					}
 				case moreThanOperator, lessThanOperator:
-					if _, err := strconv.Atoi(value); err == nil {
-						token := fmt.Sprintf("%s%s%s", key, operator, value)
+					if _, err := strconv.Atoi(l.Value); err == nil {
+						token := fmt.Sprintf("%s%s%s", l.Name, operator, l.Value)
 						tokens[token] = makeAC(
 							token,
 							[]string{
-								key,
-								fmt.Sprintf("%s%s", key, operator),
-								value,
+								l.Name,
+								fmt.Sprintf("%s%s", l.Name, operator),
+								l.Value,
 							},
 						)
 					}

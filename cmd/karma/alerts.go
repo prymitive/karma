@@ -141,14 +141,14 @@ func resolveLabelValue(name, value string) string {
 }
 
 func getGroupLabel(group *models.APIAlertGroup, label string) string {
-	if v, found := group.Labels[label]; found {
-		return resolveLabelValue(label, v)
+	if v := group.Labels.Get(label); v != nil {
+		return resolveLabelValue(label, v.Value)
 	}
-	if v, found := group.Shared.Labels[label]; found {
-		return resolveLabelValue(label, v)
+	if v := group.Shared.Labels.Get(label); v != nil {
+		return resolveLabelValue(label, v.Value)
 	}
-	if v, found := group.Alerts[0].Labels[label]; found {
-		return resolveLabelValue(label, v)
+	if v := group.Alerts[0].Labels.Get(label); v != nil {
+		return resolveLabelValue(label, v.Value)
 	}
 	return ""
 }
@@ -283,14 +283,14 @@ func autoGridLabel(dedupedAlerts []models.AlertGroup) string {
 	for _, ag := range dedupedAlerts {
 		alertsCount += ag.Alerts.Len()
 		for _, alert := range ag.Alerts {
-			for key, val := range alert.Labels {
-				if _, ok := labelToAlertCount[key]; !ok {
-					labelToAlertCount[key] = map[string]int{}
+			for _, l := range alert.Labels {
+				if _, ok := labelToAlertCount[l.Name]; !ok {
+					labelToAlertCount[l.Name] = map[string]int{}
 				}
-				if _, ok := labelToAlertCount[key][val]; !ok {
-					labelToAlertCount[key][val] = 0
+				if _, ok := labelToAlertCount[l.Name][l.Value]; !ok {
+					labelToAlertCount[l.Name][l.Value] = 0
 				}
-				labelToAlertCount[key][val]++
+				labelToAlertCount[l.Name][l.Value]++
 			}
 		}
 	}

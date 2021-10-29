@@ -31,9 +31,9 @@ var acTests = []acTest{
 		Alerts: []models.Alert{
 			{
 				State: models.AlertStateActive,
-				Labels: map[string]string{
-					"foo":    "bar",
-					"number": "1",
+				Labels: models.Labels{
+					{Name: "foo", Value: "bar"},
+					{Name: "number", Value: "1"},
 				},
 				Receiver: "default",
 				Alertmanager: []models.AlertmanagerInstance{
@@ -43,9 +43,9 @@ var acTests = []acTest{
 			},
 			{
 				State: models.AlertStateSuppressed,
-				Labels: map[string]string{
-					"foo":    "bar baz",
-					"number": "5",
+				Labels: models.Labels{
+					{Name: "foo", Value: "bar baz"},
+					{Name: "number", Value: "5"},
 				},
 				Receiver: "not default",
 				Alertmanager: []models.AlertmanagerInstance{

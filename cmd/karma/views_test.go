@@ -3474,87 +3474,87 @@ func TestAlertList(t *testing.T) {
 		{
 			args: "",
 			alerts: AlertList{
-				Alerts: []map[string]string{
+				Alerts: []models.Labels{
 					{
-						"alertname": "Free_Disk_Space_Too_Low",
-						"cluster":   "staging",
-						"disk":      "sda",
-						"instance":  "server5",
-						"job":       "node_exporter",
+						{Name: "alertname", Value: "Free_Disk_Space_Too_Low"},
+						{Name: "cluster", Value: "staging"},
+						{Name: "disk", Value: "sda"},
+						{Name: "instance", Value: "server5"},
+						{Name: "job", Value: "node_exporter"},
 					},
 					{
-						"alertname": "HTTP_Probe_Failed",
-						"cluster":   "dev",
-						"instance":  "web1",
-						"job":       "node_exporter",
+						{Name: "alertname", Value: "HTTP_Probe_Failed"},
+						{Name: "cluster", Value: "dev"},
+						{Name: "instance", Value: "web1"},
+						{Name: "job", Value: "node_exporter"},
 					},
 					{
-						"alertname": "HTTP_Probe_Failed",
-						"cluster":   "dev",
-						"instance":  "web2",
-						"job":       "node_exporter",
+						{Name: "alertname", Value: "HTTP_Probe_Failed"},
+						{Name: "cluster", Value: "dev"},
+						{Name: "instance", Value: "web2"},
+						{Name: "job", Value: "node_exporter"},
 					},
 					{
-						"alertname": "Host_Down",
-						"cluster":   "dev",
-						"instance":  "server6",
-						"ip":        "127.0.0.6",
-						"job":       "node_ping",
+						{Name: "alertname", Value: "Host_Down"},
+						{Name: "cluster", Value: "dev"},
+						{Name: "instance", Value: "server6"},
+						{Name: "ip", Value: "127.0.0.6"},
+						{Name: "job", Value: "node_ping"},
 					},
 					{
-						"alertname": "Host_Down",
-						"cluster":   "dev",
-						"instance":  "server7",
-						"ip":        "127.0.0.7",
-						"job":       "node_ping",
+						{Name: "alertname", Value: "Host_Down"},
+						{Name: "cluster", Value: "dev"},
+						{Name: "instance", Value: "server7"},
+						{Name: "ip", Value: "127.0.0.7"},
+						{Name: "job", Value: "node_ping"},
 					},
 					{
-						"alertname": "Host_Down",
-						"cluster":   "dev",
-						"instance":  "server8",
-						"ip":        "127.0.0.8",
-						"job":       "node_ping",
+						{Name: "alertname", Value: "Host_Down"},
+						{Name: "cluster", Value: "dev"},
+						{Name: "instance", Value: "server8"},
+						{Name: "ip", Value: "127.0.0.8"},
+						{Name: "job", Value: "node_ping"},
 					},
 					{
-						"alertname": "Host_Down",
-						"cluster":   "prod",
-						"instance":  "server1",
-						"ip":        "127.0.0.1",
-						"job":       "node_ping",
+						{Name: "alertname", Value: "Host_Down"},
+						{Name: "cluster", Value: "prod"},
+						{Name: "instance", Value: "server1"},
+						{Name: "ip", Value: "127.0.0.1"},
+						{Name: "job", Value: "node_ping"},
 					},
 					{
-						"alertname": "Host_Down",
-						"cluster":   "prod",
-						"instance":  "server2",
-						"ip":        "127.0.0.2",
-						"job":       "node_ping",
+						{Name: "alertname", Value: "Host_Down"},
+						{Name: "cluster", Value: "prod"},
+						{Name: "instance", Value: "server2"},
+						{Name: "ip", Value: "127.0.0.2"},
+						{Name: "job", Value: "node_ping"},
 					},
 					{
-						"alertname": "Host_Down",
-						"cluster":   "staging",
-						"instance":  "server3",
-						"ip":        "127.0.0.3",
-						"job":       "node_ping",
+						{Name: "alertname", Value: "Host_Down"},
+						{Name: "cluster", Value: "staging"},
+						{Name: "instance", Value: "server3"},
+						{Name: "ip", Value: "127.0.0.3"},
+						{Name: "job", Value: "node_ping"},
 					},
 					{
-						"alertname": "Host_Down",
-						"cluster":   "staging",
-						"instance":  "server4",
-						"ip":        "127.0.0.4",
-						"job":       "node_ping",
+						{Name: "alertname", Value: "Host_Down"},
+						{Name: "cluster", Value: "staging"},
+						{Name: "instance", Value: "server4"},
+						{Name: "ip", Value: "127.0.0.4"},
+						{Name: "job", Value: "node_ping"},
 					},
 					{
-						"alertname": "Host_Down",
-						"cluster":   "staging",
-						"instance":  "server5",
-						"ip":        "127.0.0.5",
-						"job":       "node_ping",
+						{Name: "alertname", Value: "Host_Down"},
+						{Name: "cluster", Value: "staging"},
+						{Name: "instance", Value: "server5"},
+						{Name: "ip", Value: "127.0.0.5"},
+						{Name: "job", Value: "node_ping"},
 					},
 					{
-						"alertname": "Memory_Usage_Too_High",
-						"cluster":   "prod",
-						"instance":  "server2",
-						"job":       "node_exporter",
+						{Name: "alertname", Value: "Memory_Usage_Too_High"},
+						{Name: "cluster", Value: "prod"},
+						{Name: "instance", Value: "server2"},
+						{Name: "job", Value: "node_exporter"},
 					},
 				},
 			},
@@ -3562,13 +3562,13 @@ func TestAlertList(t *testing.T) {
 		{
 			args: "q=alertname=Free_Disk_Space_Too_Low",
 			alerts: AlertList{
-				Alerts: []map[string]string{
+				Alerts: []models.Labels{
 					{
-						"alertname": "Free_Disk_Space_Too_Low",
-						"cluster":   "staging",
-						"disk":      "sda",
-						"instance":  "server5",
-						"job":       "node_exporter",
+						{Name: "alertname", Value: "Free_Disk_Space_Too_Low"},
+						{Name: "cluster", Value: "staging"},
+						{Name: "disk", Value: "sda"},
+						{Name: "instance", Value: "server5"},
+						{Name: "job", Value: "node_exporter"},
 					},
 				},
 			},
@@ -3576,18 +3576,18 @@ func TestAlertList(t *testing.T) {
 		{
 			args: "q=alertname=HTTP_Probe_Failed",
 			alerts: AlertList{
-				Alerts: []map[string]string{
+				Alerts: []models.Labels{
 					{
-						"alertname": "HTTP_Probe_Failed",
-						"cluster":   "dev",
-						"instance":  "web1",
-						"job":       "node_exporter",
+						{Name: "alertname", Value: "HTTP_Probe_Failed"},
+						{Name: "cluster", Value: "dev"},
+						{Name: "instance", Value: "web1"},
+						{Name: "job", Value: "node_exporter"},
 					},
 					{
-						"alertname": "HTTP_Probe_Failed",
-						"cluster":   "dev",
-						"instance":  "web2",
-						"job":       "node_exporter",
+						{Name: "alertname", Value: "HTTP_Probe_Failed"},
+						{Name: "cluster", Value: "dev"},
+						{Name: "instance", Value: "web2"},
+						{Name: "job", Value: "node_exporter"},
 					},
 				},
 			},
@@ -3595,19 +3595,19 @@ func TestAlertList(t *testing.T) {
 		{
 			args: "q=instance=server2",
 			alerts: AlertList{
-				Alerts: []map[string]string{
+				Alerts: []models.Labels{
 					{
-						"alertname": "Host_Down",
-						"cluster":   "prod",
-						"instance":  "server2",
-						"ip":        "127.0.0.2",
-						"job":       "node_ping",
+						{Name: "alertname", Value: "Host_Down"},
+						{Name: "cluster", Value: "prod"},
+						{Name: "instance", Value: "server2"},
+						{Name: "ip", Value: "127.0.0.2"},
+						{Name: "job", Value: "node_ping"},
 					},
 					{
-						"alertname": "Memory_Usage_Too_High",
-						"cluster":   "prod",
-						"instance":  "server2",
-						"job":       "node_exporter",
+						{Name: "alertname", Value: "Memory_Usage_Too_High"},
+						{Name: "cluster", Value: "prod"},
+						{Name: "instance", Value: "server2"},
+						{Name: "job", Value: "node_exporter"},
 					},
 				},
 			},
@@ -3615,20 +3615,20 @@ func TestAlertList(t *testing.T) {
 		{
 			args: "q=alertname=Host_Down&q=cluster=prod",
 			alerts: AlertList{
-				Alerts: []map[string]string{
+				Alerts: []models.Labels{
 					{
-						"alertname": "Host_Down",
-						"cluster":   "prod",
-						"instance":  "server1",
-						"ip":        "127.0.0.1",
-						"job":       "node_ping",
+						{Name: "alertname", Value: "Host_Down"},
+						{Name: "cluster", Value: "prod"},
+						{Name: "instance", Value: "server1"},
+						{Name: "ip", Value: "127.0.0.1"},
+						{Name: "job", Value: "node_ping"},
 					},
 					{
-						"alertname": "Host_Down",
-						"cluster":   "prod",
-						"instance":  "server2",
-						"ip":        "127.0.0.2",
-						"job":       "node_ping",
+						{Name: "alertname", Value: "Host_Down"},
+						{Name: "cluster", Value: "prod"},
+						{Name: "instance", Value: "server2"},
+						{Name: "ip", Value: "127.0.0.2"},
+						{Name: "job", Value: "node_ping"},
 					},
 				},
 			},
@@ -3636,7 +3636,7 @@ func TestAlertList(t *testing.T) {
 		{
 			args: "q=foo=bar",
 			alerts: AlertList{
-				Alerts: []map[string]string{},
+				Alerts: []models.Labels{},
 			},
 		},
 	}
@@ -3675,85 +3675,85 @@ func TestAlertList(t *testing.T) {
 
 func TestSortSliceOfLabels(t *testing.T) {
 	type testCaseT struct {
-		labels   []map[string]string
+		labels   []models.Labels
 		sortKeys []string
 		fallback string
-		output   []map[string]string
+		output   []models.Labels
 	}
 
 	testCases := []testCaseT{
 		{
-			labels: []map[string]string{
-				{"alertname": "alert2"},
-				{"alertname": "alert1"},
+			labels: []models.Labels{
+				{{Name: "alertname", Value: "alert2"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 			sortKeys: []string{},
 			fallback: "",
-			output: []map[string]string{
-				{"alertname": "alert2"},
-				{"alertname": "alert1"},
+			output: []models.Labels{
+				{{Name: "alertname", Value: "alert2"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 		},
 		{
-			labels: []map[string]string{
-				{"alertname": "alert2"},
-				{"alertname": "alert1"},
+			labels: []models.Labels{
+				{{Name: "alertname", Value: "alert2"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 			sortKeys: []string{"alertname"},
 			fallback: "alertname",
-			output: []map[string]string{
-				{"alertname": "alert1"},
-				{"alertname": "alert2"},
+			output: []models.Labels{
+				{{Name: "alertname", Value: "alert1"}},
+				{{Name: "alertname", Value: "alert2"}},
 			},
 		},
 		{
-			labels: []map[string]string{
-				{"alertname": "alert2"},
-				{"alertname": "alert1"},
+			labels: []models.Labels{
+				{{Name: "alertname", Value: "alert2"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 			sortKeys: []string{},
 			fallback: "alertname",
-			output: []map[string]string{
-				{"alertname": "alert1"},
-				{"alertname": "alert2"},
+			output: []models.Labels{
+				{{Name: "alertname", Value: "alert1"}},
+				{{Name: "alertname", Value: "alert2"}},
 			},
 		},
 		{
-			labels: []map[string]string{
-				{"alertname": "alert2"},
-				{"alertname": "alert1"},
+			labels: []models.Labels{
+				{{Name: "alertname", Value: "alert2"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 			sortKeys: []string{"foo"},
 			fallback: "alertname",
-			output: []map[string]string{
-				{"alertname": "alert1"},
-				{"alertname": "alert2"},
+			output: []models.Labels{
+				{{Name: "alertname", Value: "alert1"}},
+				{{Name: "alertname", Value: "alert2"}},
 			},
 		},
 		{
-			labels: []map[string]string{
-				{"alertname": "alert1"},
-				{"alertname": "alert1"},
+			labels: []models.Labels{
+				{{Name: "alertname", Value: "alert1"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 			sortKeys: []string{"alertname"},
 			fallback: "alertname",
-			output: []map[string]string{
-				{"alertname": "alert1"},
-				{"alertname": "alert1"},
+			output: []models.Labels{
+				{{Name: "alertname", Value: "alert1"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 		},
 		{
-			labels: []map[string]string{
-				{"alertname": "alert2", "job": "a"},
-				{"alertname": "alert1"},
-				{"alertname": "alert3", "job": "b"},
+			labels: []models.Labels{
+				{{Name: "alertname", Value: "alert2"}, {Name: "job", Value: "a"}},
+				{{Name: "alertname", Value: "alert1"}},
+				{{Name: "alertname", Value: "alert3"}, {Name: "job", Value: "b"}},
 			},
 			sortKeys: []string{"job"},
 			fallback: "alertname",
-			output: []map[string]string{
-				{"alertname": "alert2", "job": "a"},
-				{"alertname": "alert3", "job": "b"},
-				{"alertname": "alert1"},
+			output: []models.Labels{
+				{{Name: "alertname", Value: "alert2"}, {Name: "job", Value: "a"}},
+				{{Name: "alertname", Value: "alert3"}, {Name: "job", Value: "b"}},
+				{{Name: "alertname", Value: "alert1"}},
 			},
 		},
 	}

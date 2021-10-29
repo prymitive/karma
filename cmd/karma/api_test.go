@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 
@@ -18,7 +19,7 @@ import (
 )
 
 type groupTest struct {
-	labels     map[string]string
+	labels     models.Labels
 	receiver   string
 	alerts     []models.Alert
 	id         string
@@ -28,8 +29,8 @@ type groupTest struct {
 var groupTests = []groupTest{
 	{
 		receiver: "by-name",
-		labels: map[string]string{
-			"alertname": "Memory_Usage_Too_High",
+		labels: models.Labels{
+			{Name: "alertname", Value: "Memory_Usage_Too_High"},
 		},
 		alerts: []models.Alert{
 			{
@@ -38,10 +39,10 @@ var groupTests = []groupTest{
 					models.Annotation{Visible: true, Name: "alert", Value: "Memory usage exceeding threshold"},
 					models.Annotation{Visible: true, Name: "dashboard", Value: "http://localhost/dashboard.html", IsLink: true},
 				},
-				Labels: map[string]string{
-					"cluster":  "prod",
-					"instance": "server2",
-					"job":      "node_exporter",
+				Labels: models.Labels{
+					{Name: "cluster", Value: "prod"},
+					{Name: "instance", Value: "server2"},
+					{Name: "job", Value: "node_exporter"},
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -64,9 +65,9 @@ var groupTests = []groupTest{
 	},
 	{
 		receiver: "by-cluster-service",
-		labels: map[string]string{
-			"alertname": "Memory_Usage_Too_High",
-			"cluster":   "prod",
+		labels: models.Labels{
+			{Name: "alertname", Value: "Memory_Usage_Too_High"},
+			{Name: "cluster", Value: "prod"},
 		},
 		alerts: []models.Alert{
 			{
@@ -83,9 +84,9 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Labels: map[string]string{
-					"instance": "server2",
-					"job":      "node_exporter",
+				Labels: models.Labels{
+					{Name: "instance", Value: "server2"},
+					{Name: "job", Value: "node_exporter"},
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -100,9 +101,9 @@ var groupTests = []groupTest{
 	},
 	{
 		receiver: "by-cluster-service",
-		labels: map[string]string{
-			"alertname": "Host_Down",
-			"cluster":   "staging",
+		labels: models.Labels{
+			{Name: "alertname", Value: "Host_Down"},
+			{Name: "cluster", Value: "staging"},
 		},
 		alerts: []models.Alert{
 			{
@@ -116,9 +117,9 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Labels: map[string]string{
-					"instance": "server3",
-					"ip":       "127.0.0.3",
+				Labels: models.Labels{
+					{Name: "instance", Value: "server3"},
+					{Name: "ip", Value: "127.0.0.3"},
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -133,9 +134,9 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Labels: map[string]string{
-					"instance": "server4",
-					"ip":       "127.0.0.4",
+				Labels: models.Labels{
+					{Name: "instance", Value: "server4"},
+					{Name: "ip", Value: "127.0.0.4"},
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -150,9 +151,9 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Labels: map[string]string{
-					"instance": "server5",
-					"ip":       "127.0.0.5",
+				Labels: models.Labels{
+					{Name: "instance", Value: "server5"},
+					{Name: "ip", Value: "127.0.0.5"},
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -167,9 +168,9 @@ var groupTests = []groupTest{
 	},
 	{
 		receiver: "by-cluster-service",
-		labels: map[string]string{
-			"alertname": "Host_Down",
-			"cluster":   "dev",
+		labels: models.Labels{
+			{Name: "alertname", Value: "Host_Down"},
+			{Name: "cluster", Value: "dev"},
 		},
 		alerts: []models.Alert{
 			{
@@ -183,9 +184,9 @@ var groupTests = []groupTest{
 						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d"},
 					},
 				},
-				Labels: map[string]string{
-					"instance": "server6",
-					"ip":       "127.0.0.6",
+				Labels: models.Labels{
+					{Name: "instance", Value: "server6"},
+					{Name: "ip", Value: "127.0.0.6"},
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
@@ -201,9 +202,9 @@ var groupTests = []groupTest{
 						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d", "378eaa69-097d-41c4-a8c2-fe6568c3abfc"},
 					},
 				},
-				Labels: map[string]string{
-					"instance": "server7",
-					"ip":       "127.0.0.7",
+				Labels: models.Labels{
+					{Name: "instance", Value: "server7"},
+					{Name: "ip", Value: "127.0.0.7"},
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
@@ -219,9 +220,9 @@ var groupTests = []groupTest{
 						SilencedBy: []string{"168f139d-77e4-41d6-afb5-8fe2cfd0cc9d"},
 					},
 				},
-				Labels: map[string]string{
-					"instance": "server8",
-					"ip":       "127.0.0.8",
+				Labels: models.Labels{
+					{Name: "instance", Value: "server8"},
+					{Name: "ip", Value: "127.0.0.8"},
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
@@ -236,8 +237,8 @@ var groupTests = []groupTest{
 	},
 	{
 		receiver: "by-name",
-		labels: map[string]string{
-			"alertname": "Host_Down",
+		labels: models.Labels{
+			{Name: "alertname", Value: "Host_Down"},
 		},
 		alerts: []models.Alert{
 			{
@@ -245,10 +246,10 @@ var groupTests = []groupTest{
 				Annotations: models.Annotations{
 					models.Annotation{Visible: true, Name: "url", Value: "http://localhost/example.html", IsLink: true},
 				},
-				Labels: map[string]string{
-					"cluster":  "prod",
-					"instance": "server1",
-					"ip":       "127.0.0.1",
+				Labels: models.Labels{
+					{Name: "cluster", Value: "prod"},
+					{Name: "instance", Value: "server1"},
+					{Name: "ip", Value: "127.0.0.1"},
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -264,10 +265,10 @@ var groupTests = []groupTest{
 			{
 				StartsAt:    time.Date(2019, time.January, 1, 0, 1, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
-				Labels: map[string]string{
-					"cluster":  "prod",
-					"instance": "server2",
-					"ip":       "127.0.0.2",
+				Labels: models.Labels{
+					{Name: "cluster", Value: "prod"},
+					{Name: "instance", Value: "server2"},
+					{Name: "ip", Value: "127.0.0.2"},
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -283,10 +284,10 @@ var groupTests = []groupTest{
 			{
 				StartsAt:    time.Date(2019, time.January, 1, 0, 1, 0, 1, time.UTC),
 				Annotations: models.Annotations{},
-				Labels: map[string]string{
-					"cluster":  "staging",
-					"instance": "server3",
-					"ip":       "127.0.0.3",
+				Labels: models.Labels{
+					{Name: "cluster", Value: "staging"},
+					{Name: "instance", Value: "server3"},
+					{Name: "ip", Value: "127.0.0.3"},
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -302,10 +303,10 @@ var groupTests = []groupTest{
 			{
 				StartsAt:    time.Date(2019, time.January, 1, 0, 0, 59, 0, time.UTC),
 				Annotations: models.Annotations{},
-				Labels: map[string]string{
-					"cluster":  "staging",
-					"instance": "server4",
-					"ip":       "127.0.0.4",
+				Labels: models.Labels{
+					{Name: "cluster", Value: "staging"},
+					{Name: "instance", Value: "server4"},
+					{Name: "ip", Value: "127.0.0.4"},
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -321,10 +322,10 @@ var groupTests = []groupTest{
 			{
 				StartsAt:    time.Date(2019, time.January, 10, 0, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
-				Labels: map[string]string{
-					"cluster":  "staging",
-					"instance": "server5",
-					"ip":       "127.0.0.5",
+				Labels: models.Labels{
+					{Name: "cluster", Value: "staging"},
+					{Name: "instance", Value: "server5"},
+					{Name: "ip", Value: "127.0.0.5"},
 				},
 				State: models.AlertStateActive,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -340,10 +341,10 @@ var groupTests = []groupTest{
 			{
 				StartsAt:    time.Date(2019, time.January, 10, 1, 0, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
-				Labels: map[string]string{
-					"cluster":  "dev",
-					"instance": "server6",
-					"ip":       "127.0.0.6",
+				Labels: models.Labels{
+					{Name: "cluster", Value: "dev"},
+					{Name: "instance", Value: "server6"},
+					{Name: "ip", Value: "127.0.0.6"},
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -359,10 +360,10 @@ var groupTests = []groupTest{
 			{
 				StartsAt:    time.Date(2019, time.January, 10, 0, 20, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
-				Labels: map[string]string{
-					"cluster":  "dev",
-					"instance": "server7",
-					"ip":       "127.0.0.7",
+				Labels: models.Labels{
+					{Name: "cluster", Value: "dev"},
+					{Name: "instance", Value: "server7"},
+					{Name: "ip", Value: "127.0.0.7"},
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -378,10 +379,10 @@ var groupTests = []groupTest{
 			{
 				StartsAt:    time.Date(2019, time.January, 10, 0, 21, 0, 0, time.UTC),
 				Annotations: models.Annotations{},
-				Labels: map[string]string{
-					"cluster":  "dev",
-					"instance": "server8",
-					"ip":       "127.0.0.8",
+				Labels: models.Labels{
+					{Name: "cluster", Value: "dev"},
+					{Name: "instance", Value: "server8"},
+					{Name: "ip", Value: "127.0.0.8"},
 				},
 				State: models.AlertStateSuppressed,
 				Alertmanager: []models.AlertmanagerInstance{
@@ -404,9 +405,9 @@ var groupTests = []groupTest{
 	},
 	{
 		receiver: "by-cluster-service",
-		labels: map[string]string{
-			"alertname": "Free_Disk_Space_Too_Low",
-			"cluster":   "staging",
+		labels: models.Labels{
+			{Name: "alertname", Value: "Free_Disk_Space_Too_Low"},
+			{Name: "cluster", Value: "staging"},
 		},
 		alerts: []models.Alert{
 			{
@@ -423,10 +424,10 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Labels: map[string]string{
-					"instance": "server5",
-					"job":      "node_exporter",
-					"disk":     "sda",
+				Labels: models.Labels{
+					{Name: "disk", Value: "sda"},
+					{Name: "instance", Value: "server5"},
+					{Name: "job", Value: "node_exporter"},
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -441,9 +442,9 @@ var groupTests = []groupTest{
 	},
 	{
 		receiver: "by-cluster-service",
-		labels: map[string]string{
-			"alertname": "Host_Down",
-			"cluster":   "prod",
+		labels: models.Labels{
+			{Name: "alertname", Value: "Host_Down"},
+			{Name: "cluster", Value: "prod"},
 		},
 		alerts: []models.Alert{
 			{
@@ -459,9 +460,9 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Labels: map[string]string{
-					"instance": "server1",
-					"ip":       "127.0.0.1",
+				Labels: models.Labels{
+					{Name: "instance", Value: "server1"},
+					{Name: "ip", Value: "127.0.0.1"},
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -476,9 +477,9 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Labels: map[string]string{
-					"instance": "server2",
-					"ip":       "127.0.0.2",
+				Labels: models.Labels{
+					{Name: "instance", Value: "server2"},
+					{Name: "ip", Value: "127.0.0.2"},
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -493,8 +494,8 @@ var groupTests = []groupTest{
 	},
 	{
 		receiver: "by-name",
-		labels: map[string]string{
-			"alertname": "HTTP_Probe_Failed",
+		labels: models.Labels{
+			{Name: "alertname", Value: "HTTP_Probe_Failed"},
 		},
 		alerts: []models.Alert{
 			{
@@ -510,8 +511,8 @@ var groupTests = []groupTest{
 						Source: "http://localhost/prometheus",
 					},
 				},
-				Labels: map[string]string{
-					"instance": "web1",
+				Labels: models.Labels{
+					{Name: "instance", Value: "web1"},
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-name",
@@ -527,8 +528,8 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Labels: map[string]string{
-					"instance": "web2",
+				Labels: models.Labels{
+					{Name: "instance", Value: "web2"},
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-name",
@@ -543,8 +544,8 @@ var groupTests = []groupTest{
 	},
 	{
 		receiver: "by-name",
-		labels: map[string]string{
-			"alertname": "Free_Disk_Space_Too_Low",
+		labels: models.Labels{
+			{Name: "alertname", Value: "Free_Disk_Space_Too_Low"},
 		},
 		alerts: []models.Alert{
 			{
@@ -561,11 +562,11 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Labels: map[string]string{
-					"cluster":  "staging",
-					"instance": "server5",
-					"job":      "node_exporter",
-					"disk":     "sda",
+				Labels: models.Labels{
+					{Name: "cluster", Value: "staging"},
+					{Name: "disk", Value: "sda"},
+					{Name: "instance", Value: "server5"},
+					{Name: "job", Value: "node_exporter"},
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-name",
@@ -580,9 +581,9 @@ var groupTests = []groupTest{
 	},
 	{
 		receiver: "by-cluster-service",
-		labels: map[string]string{
-			"alertname": "HTTP_Probe_Failed",
-			"cluster":   "dev",
+		labels: models.Labels{
+			{Name: "alertname", Value: "HTTP_Probe_Failed"},
+			{Name: "cluster", Value: "dev"},
 		},
 		alerts: []models.Alert{
 			{
@@ -599,8 +600,8 @@ var groupTests = []groupTest{
 						SilencedBy: []string{"0804764c-6163-4c64-b0a9-08feebe2db4b"},
 					},
 				},
-				Labels: map[string]string{
-					"instance": "web1",
+				Labels: models.Labels{
+					{Name: "instance", Value: "web1"},
 				},
 				State:    models.AlertStateSuppressed,
 				Receiver: "by-cluster-service",
@@ -616,8 +617,8 @@ var groupTests = []groupTest{
 						SilencedBy: []string{},
 					},
 				},
-				Labels: map[string]string{
-					"instance": "web2",
+				Labels: models.Labels{
+					{Name: "instance", Value: "web2"},
 				},
 				State:    models.AlertStateActive,
 				Receiver: "by-cluster-service",
@@ -641,12 +642,12 @@ func compareAlertGroups(testCase groupTest, group models.APIAlertGroup) bool {
 	if len(testCase.labels) != len(group.Labels) {
 		return false
 	}
-	for key, val := range testCase.labels {
-		v, found := group.Labels[key]
-		if !found {
+	for _, l := range testCase.labels {
+		v := group.Labels.Get(l.Name)
+		if v == nil {
 			return false
 		}
-		if val != v {
+		if l.Value != v.Value {
 			return false
 		}
 	}
@@ -660,12 +661,12 @@ func compareAlerts(expectedAlert, gotAlert models.Alert) bool {
 	if len(gotAlert.Labels) != len(expectedAlert.Labels) {
 		return false
 	}
-	for key, val := range expectedAlert.Labels {
-		v, found := gotAlert.Labels[key]
-		if !found {
+	for _, l := range expectedAlert.Labels {
+		v := gotAlert.Labels.Get(l.Name)
+		if v == nil {
 			return false
 		}
-		if val != v {
+		if l.Value != v.Value {
 			return false
 		}
 	}
@@ -1000,22 +1001,23 @@ func TestSortOrder(t *testing.T) {
 				} else {
 					values := []string{}
 					for _, ag := range ur.Grids[0].AlertGroups {
-						v := ag.Labels[testCase.expectedLabel]
+						v := ag.Labels.GetValue(testCase.expectedLabel)
 						if v == "" {
-							v = ag.Shared.Labels[testCase.expectedLabel]
+							v = ag.Shared.Labels.GetValue(testCase.expectedLabel)
 						}
 						if v != "" {
 							values = append(values, v)
 						} else {
 							for _, alert := range ag.Alerts {
-								v = alert.Labels[testCase.expectedLabel]
+								v = alert.Labels.GetValue(testCase.expectedLabel)
 								values = append(values, v)
 							}
 						}
 					}
 
 					if diff := cmp.Diff(testCase.expectedValues, values); diff != "" {
-						t.Errorf("Incorrectly sorted values (-want +got):\n%s", diff)
+						t.Errorf("Incorrectly sorted values for filter=%q order=%s label=%q reverse=%v (-want +got):\n%s",
+							strings.Join(testCase.filter, " "), testCase.sortOrder, testCase.sortLabel, testCase.sortReverse, diff)
 					}
 				}
 			}
@@ -1023,22 +1025,22 @@ func TestSortOrder(t *testing.T) {
 	}
 }
 
-func verifyStrippedLabels(t *testing.T, labels map[string]string, keep, strip []string) {
+func verifyStrippedLabels(t *testing.T, labels models.Labels, keep, strip []string) {
 	for _, l := range strip {
-		if val, ok := labels[l]; ok {
-			t.Errorf("Found stripped label %s=%s on %v", l, val, labels)
+		if val := labels.Get(l); val != nil {
+			t.Errorf("Found stripped label %s=%s on %v", val.Name, val.Value, labels)
 		}
 	}
 	if len(keep) > 0 && len(strip) == 0 {
-		for k, v := range labels {
+		for _, ll := range labels {
 			ok := false
 			for _, l := range keep {
-				if k == l {
+				if ll.Name == l {
 					ok = true
 				}
 			}
 			if !ok {
-				t.Errorf("Found label %s=%s that's not on the keep list: %v", k, v, keep)
+				t.Errorf("Found label %s=%s that's not on the keep list: %v", ll.Name, ll.Value, keep)
 			}
 		}
 	}

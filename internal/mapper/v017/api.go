@@ -49,17 +49,27 @@ func groups(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.AlertGro
 	ret := make([]models.AlertGroup, 0, len(groups.Payload))
 
 	for _, group := range groups.Payload {
+		ls := models.Labels{}
+		for k, v := range group.Labels {
+			ls = ls.Set(k, v)
+		}
+		sort.Sort(ls)
 		g := models.AlertGroup{
 			Receiver: *group.Receiver.Name,
-			Labels:   group.Labels,
+			Labels:   ls,
 			Alerts:   make(models.AlertList, 0, len(group.Alerts)),
 		}
 		for _, alert := range group.Alerts {
+			ls := models.Labels{}
+			for k, v := range alert.Labels {
+				ls = ls.Set(k, v)
+			}
+			sort.Sort(ls)
 			a := models.Alert{
 				Fingerprint:  *alert.Fingerprint,
 				Receiver:     *group.Receiver.Name,
 				Annotations:  models.AnnotationsFromMap(alert.Annotations),
-				Labels:       alert.Labels,
+				Labels:       ls,
 				StartsAt:     time.Time(*alert.StartsAt),
 				GeneratorURL: alert.GeneratorURL.String(),
 				State:        *alert.Status.State,

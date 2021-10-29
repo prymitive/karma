@@ -33,8 +33,8 @@ func (filter *fuzzyFilter) Match(alert *models.Alert, matches int) bool {
 			}
 		}
 
-		for _, val := range alert.Labels {
-			if filter.Matcher.Compare(val, filter.Value) {
+		for _, l := range alert.Labels {
+			if filter.Matcher.Compare(l.Value, filter.Value) {
 				filter.Hits++
 				return true
 			}

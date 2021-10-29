@@ -2,6 +2,7 @@ package transform
 
 import (
 	"regexp"
+	"sort"
 	"strings"
 
 	"github.com/prymitive/karma/internal/models"
@@ -12,21 +13,22 @@ import (
 // it takes the list of label keys to ignore and alert label map
 // it will return label map without labels found on the ignore list
 func StripLables(keptLabels, ignoredLabels []string, keptLabelsRegex, ignoredLabelsRegex []*regexp.Regexp,
-	sourceLabels map[string]string) map[string]string {
+	sourceLabels models.Labels) models.Labels {
 	// empty keep lists means keep everything by default
 	keepAll := len(keptLabels) == 0 && len(keptLabelsRegex) == 0
-	labels := map[string]string{}
-	for label, value := range sourceLabels {
+	labels := models.Labels{}
+	for _, label := range sourceLabels {
 		// is explicitly marked to be kept
-		inKeep := slices.StringInSlice(keptLabels, label) || matchesAnyRegex(label, keptLabelsRegex)
+		inKeep := slices.StringInSlice(keptLabels, label.Name) || matchesAnyRegex(label.Name, keptLabelsRegex)
 		// is explicitly marked to be stripped
-		inStrip := slices.StringInSlice(ignoredLabels, label) || matchesAnyRegex(label, ignoredLabelsRegex)
+		inStrip := slices.StringInSlice(ignoredLabels, label.Name) || matchesAnyRegex(label.Name, ignoredLabelsRegex)
 		if (keepAll || inKeep) && !inStrip {
 			// strip leading and trailing space in label value
 			// this is to normalize values in case space is added by Alertmanager rules
-			labels[label] = strings.TrimSpace(value)
+			labels = labels.Set(label.Name, strings.TrimSpace(label.Value))
 		}
 	}
+	sort.Sort(labels)
 	return labels
 }
 
