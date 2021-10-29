@@ -563,23 +563,3 @@ jobs:
       - name: Rollback on failure
         if: failure()
         run: /usr/local/bin/heroku releases:rollback --app karma-demo
-
-  stage-build-and-deploy:
-    name: "=== Build and deploy stage ==="
-    needs:
-      - benchmark-go
-      - webpack-bundle-size
-      - percy
-      - cross-compile
-      - docker
-      - demo-deploy
-    runs-on: ubuntu-20.04
-    steps:
-      - name: "Update status"
-        uses: Sibz/github-status-action@v1.1.6
-        with:
-          authToken: ${{ secrets.GH_REPO_TOKEN }}
-          context: "Mergeable"
-          description: "Passed"
-          state: "success"
-          sha: ${{github.event.pull_request.head.sha || github.sha}}
