@@ -14,8 +14,8 @@ require (
 	github.com/go-openapi/analysis v0.20.1 // indirect
 	github.com/go-openapi/errors v0.20.1
 	github.com/go-openapi/jsonreference v0.19.6 // indirect
-	github.com/go-openapi/runtime v0.20.0
-	github.com/go-openapi/strfmt v0.20.3
+	github.com/go-openapi/runtime v0.21.0
+	github.com/go-openapi/strfmt v0.21.0
 	github.com/go-openapi/swag v0.19.15
 	github.com/go-openapi/validate v0.20.3
 	github.com/golang/protobuf v1.5.2 // indirect
@@ -50,7 +50,7 @@ require (
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/fsnotify/fsnotify v1.5.1 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
-	github.com/go-openapi/loads v0.20.3 // indirect
+	github.com/go-openapi/loads v0.21.0 // indirect
 	github.com/go-openapi/spec v0.20.4 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
