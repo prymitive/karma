@@ -35,7 +35,11 @@ const MountedMatchCounter = () => {
 describe("<MatchCounter />", () => {
   it("matches snapshot", () => {
     useFetchGetMock.fetch.setMockedData({
-      response: { alerts: Array(25).map((i) => ({ alertname: `alert${i}` })) },
+      response: {
+        alerts: Array(25).map((i) => [
+          { name: "alertname", value: `alert${i}` },
+        ]),
+      },
       error: null,
       isLoading: false,
       isRetrying: false,
@@ -110,7 +114,11 @@ describe("<MatchCounter />", () => {
 
   it("updates totalAlerts after successful fetch", () => {
     useFetchGetMock.fetch.setMockedData({
-      response: { alerts: Array(25).map((i) => ({ alertname: `alert${i}` })) },
+      response: {
+        alerts: Array(25).map((i) => [
+          { name: "alertname", value: `alert${i}` },
+        ]),
+      },
       error: null,
       isLoading: false,
       isRetrying: false,

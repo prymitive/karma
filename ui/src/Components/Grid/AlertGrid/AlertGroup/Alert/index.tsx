@@ -112,11 +112,11 @@ const Alert: FC<{
       {inhibitedBy.length > 0 ? (
         <InhibitedByModal alertStore={alertStore} fingerprints={inhibitedBy} />
       ) : null}
-      {Object.entries(alert.labels).map(([name, value]) => (
+      {alert.labels.map((label) => (
         <FilteringLabel
-          key={name}
-          name={name}
-          value={value}
+          key={label.name}
+          name={label.name}
+          value={label.value}
           alertStore={alertStore}
         />
       ))}

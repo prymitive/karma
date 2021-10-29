@@ -34,9 +34,9 @@ export const AlertHistory: FC<{ group: APIAlertGroupT; grid: APIGridT }> = ({
 
   const [lastUpdate, setLastUpdate] = useState<number>(GetUTCSeconds());
   const [upstreams, setUpstreams] = useState<UpstreamT[]>([]);
-  const [labels] = useState({
-    ...group.labels,
-    ...group.shared.labels,
+  const [labels] = useState<{ [key: string]: string }>({
+    ...Object.fromEntries(group.labels.map((l) => [l.name, l.value])),
+    ...Object.fromEntries(group.shared.labels.map((l) => [l.name, l.value])),
     ...(grid.labelName !== "" && grid.labelName[0] !== "@"
       ? { [grid.labelName]: grid.labelValue }
       : {}),

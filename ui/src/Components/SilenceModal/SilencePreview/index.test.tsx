@@ -65,7 +65,11 @@ describe("<SilencePreview />", () => {
 
   it("matches snapshot", () => {
     useFetchGetMock.fetch.setMockedData({
-      response: { alerts: Array(25).map((i) => ({ alertname: `alert${i}` })) },
+      response: {
+        alerts: Array(25).map((i) => [
+          { name: "alertname", value: `alert${i}` },
+        ]),
+      },
       error: undefined,
       isLoading: false,
       isRetrying: false,
@@ -94,7 +98,15 @@ describe("<SilencePreview />", () => {
 
   it("renders StaticLabel after fetch", () => {
     useFetchGetMock.fetch.setMockedData({
-      response: { alerts: [{ alertname: "Fake Alert", foo: "1", bar: "1" }] },
+      response: {
+        alerts: [
+          [
+            { name: "alertname", value: "Fake Alert" },
+            { name: "foo", value: "1" },
+            { name: "bar", value: "1" },
+          ],
+        ],
+      },
       error: undefined,
       isLoading: false,
       isRetrying: false,

@@ -95,10 +95,10 @@ const MockAPIResponse = (): APIAlertsResponseT => {
       labelValue: "",
       alertGroups: [
         MockAlertGroup(
-          { alertname: "foo" },
-          [MockAlert([], { instance: "foo" }, "suppressed")],
+          [{ name: "alertname", value: "foo" }],
+          [MockAlert([], [{ name: "instance", value: "foo" }], "suppressed")],
           [],
-          { cluster: "dev" },
+          [{ name: "cluster", value: "dev" }],
           {}
         ),
       ],

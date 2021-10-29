@@ -43,11 +43,11 @@ const GroupFooter: FC<{
               ))
           : null}
       </div>
-      {Object.entries(group.shared.labels).map(([name, value]) => (
+      {group.shared.labels.map((label) => (
         <FilteringLabel
-          key={name}
-          name={name}
-          value={value}
+          key={label.name}
+          name={label.name}
+          value={label.value}
           alertStore={alertStore}
         />
       ))}

@@ -25,17 +25,41 @@ beforeEach(() => {
 
 const MockGroup = () => {
   const alerts = [
-    MockAlert([], { instance: "prod1", cluster: "prod" }, "active"),
-    MockAlert([], { instance: "prod2", cluster: "prod" }, "active"),
-    MockAlert([], { instance: "dev1", cluster: "dev" }, "active"),
+    MockAlert(
+      [],
+      [
+        { name: "instance", value: "prod1" },
+        { name: "cluster", value: "prod" },
+      ],
+      "active"
+    ),
+    MockAlert(
+      [],
+      [
+        { name: "instance", value: "prod2" },
+        { name: "cluster", value: "prod" },
+      ],
+      "active"
+    ),
+    MockAlert(
+      [],
+      [
+        { name: "instance", value: "dev1" },
+        { name: "cluster", value: "dev" },
+      ],
+      "active"
+    ),
   ];
   const group = MockAlertGroup(
-    { alertname: "FakeAlert" },
+    [{ name: "alertname", value: "FakeAlert" }],
     alerts,
     [],
-    {
-      job: "mock",
-    },
+    [
+      {
+        name: "job",
+        value: "mock",
+      },
+    ],
     {}
   );
   return group;
@@ -281,17 +305,27 @@ describe("SilenceFormStore.data", () => {
 
   it("fillMatchersFromGroup() creates correct matcher object for a list of alerts with uncommon labels", () => {
     const alerts = [
-      MockAlert([], { instance: "1", banana: "ignore" }, "active"),
-      MockAlert([], { instance: "2" }, "suppressed"),
-      MockAlert([], { instance: "3" }, "active"),
+      MockAlert(
+        [],
+        [
+          { name: "instance", value: "1" },
+          { name: "banana", value: "ignore" },
+        ],
+        "active"
+      ),
+      MockAlert([], [{ name: "instance", value: "2" }], "suppressed"),
+      MockAlert([], [{ name: "instance", value: "3" }], "active"),
     ];
     const group = MockAlertGroup(
-      { alertname: "FakeAlert" },
+      [{ name: "alertname", value: "FakeAlert" }],
       alerts,
       [],
-      {
-        job: "mock",
-      },
+      [
+        {
+          name: "job",
+          value: "mock",
+        },
+      ],
       {}
     );
     group.allLabels.active = {
@@ -332,17 +366,15 @@ describe("SilenceFormStore.data", () => {
 
   it("fillMatchersFromGroup() creates correct matcher object for a list of alerts with no labels", () => {
     const alerts = [
-      MockAlert([], {}, "active"),
-      MockAlert([], {}, "suppressed"),
-      MockAlert([], {}, "active"),
+      MockAlert([], [], "active"),
+      MockAlert([], [], "suppressed"),
+      MockAlert([], [], "active"),
     ];
     const group = MockAlertGroup(
-      { alertname: "FakeAlert" },
+      [{ name: "alertname", value: "FakeAlert" }],
       alerts,
       [],
-      {
-        job: "mock",
-      },
+      [{ name: "job", value: "mock" }],
       {}
     );
     group.allLabels.active = {
@@ -430,32 +462,37 @@ describe("SilenceFormStore.data", () => {
 
   it("fillMatchersFromGroup() handles alerts with different label sets", () => {
     const group = MockAlertGroup(
-      { region: "AF" },
+      [{ name: "region", value: "AF" }],
       [
         MockAlert(
           [],
-          {
-            alertname: "Alert1",
-            cluster: "prod",
-            foo: "bar",
-          },
+          [
+            { name: "alertname", value: "Alert1" },
+            { name: "cluster", value: "prod" },
+            { name: "foo", value: "bar" },
+          ],
           "active"
         ),
         MockAlert(
           [],
-          {
-            alertname: "Alert2",
-            instance: "prod2",
-            cluster: "prod",
-          },
+          [
+            { name: "alertname", value: "Alert2" },
+            { name: "cluster", value: "prod2" },
+            { name: "foo", value: "prod" },
+          ],
           "active"
         ),
-        MockAlert([], { alertname: "Alert3", instance: "dev1" }, "active"),
+        MockAlert(
+          [],
+          [
+            { name: "alertname", value: "Alert3" },
+            { name: "instance", value: "dev1" },
+          ],
+          "active"
+        ),
       ],
       [],
-      {
-        job: "mock",
-      },
+      [{ name: "job", value: "mock" }],
       {}
     );
     group.allLabels.active = {

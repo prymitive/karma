@@ -20,18 +20,22 @@ import type {
   APIAlertGroupT,
   APIGridT,
   HistoryResponseT,
+  LabelsT,
 } from "Models/APITypes";
 import { AlertHistory } from ".";
 
 let group: APIAlertGroupT;
 let grid: APIGridT;
 
-const MockGroup = (groupName: string) => {
+const MockGroup = (groupName: string, sharedLabels: LabelsT = []) => {
   const group = MockAlertGroup(
-    { alertname: "Fake Alert", groupName: groupName },
+    [
+      { name: "alertname", value: "Fake Alert" },
+      { name: "groupName", value: groupName },
+    ],
     [],
     [],
-    {},
+    sharedLabels,
     {}
   );
   return group;
@@ -39,7 +43,11 @@ const MockGroup = (groupName: string) => {
 
 const MockAlerts = (alertCount: number) => {
   for (let i = 1; i <= alertCount; i++) {
-    const alert = MockAlert([], { instance: `instance${i}` }, "active");
+    const alert = MockAlert(
+      [],
+      [{ name: "instance", value: `instance${i}` }],
+      "active"
+    );
     const startsAt = new Date();
     alert.startsAt = startsAt.toISOString();
     for (let j = 0; j < alert.alertmanager.length; j++) {
@@ -166,6 +174,47 @@ describe("<AlertHistory />", () => {
           "http://plain.example.com/",
         ],
         labels: { alertname: "Fake Alert", groupName: "fakeGroup" },
+      })
+    );
+    tree.unmount();
+  });
+
+  it("send a correct payload with shared labels", async () => {
+    fetchMock.resetHistory();
+    fetchMock.mock(
+      "*",
+      {
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(EmptyHistoryResponse),
+      },
+      {
+        overwriteRoutes: true,
+      }
+    );
+
+    MockAlerts(3);
+    group = MockGroup("fakeGroup", [
+      { name: "shared1", value: "value1" },
+      { name: "shared2", value: "value2" },
+    ]);
+    const tree = mount(<AlertHistory group={group} grid={grid}></AlertHistory>);
+    await act(async () => {
+      await fetchMock.flush(true);
+    });
+    expect(fetchMock.calls()).toHaveLength(1);
+    expect(fetchMock.calls()[0][1]?.body).toStrictEqual(
+      JSON.stringify({
+        sources: [
+          "https://secure.example.com/graph",
+          "http://plain.example.com/",
+        ],
+        labels: {
+          alertname: "Fake Alert",
+          groupName: "fakeGroup",
+          shared1: "value1",
+          shared2: "value2",
+          foo: "bar",
+        },
       })
     );
     tree.unmount();
@@ -433,7 +482,11 @@ describe("<AlertHistory />", () => {
   for (const testCase of testCases) {
     const g = MockGroup("fakeGroup");
     for (let i = 1; i <= 5; i++) {
-      const alert = MockAlert([], { instance: `instance${i}` }, "active");
+      const alert = MockAlert(
+        [],
+        [{ name: "instance", value: `instance${i}` }],
+        "active"
+      );
       const startsAt = new Date();
       alert.startsAt = startsAt.toISOString();
       alert.alertmanager.push(alert.alertmanager[0]);

@@ -26,10 +26,13 @@ let originalInnerWidth: number;
 
 const MockGroup = (groupName: string) => {
   const group = MockAlertGroup(
-    { alertname: "Fake Alert", groupName: groupName },
+    [
+      { name: "alertname", value: "Fake Alert" },
+      { name: "groupName", value: "groupName" },
+    ],
     [],
     [],
-    {},
+    [],
     {}
   );
   return group;
@@ -71,7 +74,11 @@ afterEach(() => {
 
 const MockAlerts = (alertCount: number, totalAlerts: number) => {
   for (let i = 1; i <= alertCount; i++) {
-    const alert = MockAlert([], { instance: `instance${i}` }, "active");
+    const alert = MockAlert(
+      [],
+      [{ name: "instance", value: `instance${i}` }],
+      "active"
+    );
     const startsAt = new Date();
     alert.startsAt = startsAt.toISOString();
     alert.alertmanager[0].startsAt = startsAt.toISOString();

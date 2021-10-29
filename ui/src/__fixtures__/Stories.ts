@@ -64,17 +64,20 @@ const MockGroup = (
             },
           ]
         : [],
-      { instance: `instance${i}` },
+      [{ name: "instance", value: `instance${i}` }],
       state
     );
     alert.startsAt = subMinutes(new Date(), alertCount).toISOString();
     alerts.push(alert);
   }
   const group = MockAlertGroup(
-    { alertname: "Fake Alert", group: groupName },
+    [
+      { name: "alertname", value: "Fake Alert" },
+      { name: "group", value: groupName },
+    ],
     alerts,
     [],
-    {},
+    [],
     {}
   );
   return group;
@@ -170,10 +173,10 @@ const MockGrid = (alertStore: AlertStore): void => {
       group.shared.clusters = ["default"];
     }
     if (i < 3) {
-      group.shared.labels = {
-        cluster: `prod${i}`,
-        job: "textfile_exporter",
-      };
+      group.shared.labels = [
+        { name: "cluster", value: `prod${i}` },
+        { name: "job", value: "textfile_exporter" },
+      ];
     }
     if (i < 5) {
       group.shared.annotations = [

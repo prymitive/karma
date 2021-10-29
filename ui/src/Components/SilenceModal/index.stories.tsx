@@ -128,7 +128,7 @@ storiesOf("SilenceModal", module)
     );
     fetchMock.mock(
       "begin:/alertList.json?q=instance",
-      { alerts: Array(23).fill(MockAlert([], {}, "active")) },
+      { alerts: Array(23).fill(MockAlert([], [], "active")) },
       {
         overwriteRoutes: true,
       }

@@ -58,11 +58,17 @@ beforeEach(() => {
   });
 
   alerts = [
-    MockAlert([], { foo: "bar" }, "active"),
-    MockAlert([], { foo: "baz" }, "active"),
-    MockAlert([], { foo: "ignore" }, "suppressed"),
+    MockAlert([], [{ name: "foo", value: "bar" }], "active"),
+    MockAlert([], [{ name: "foo", value: "baz" }], "active"),
+    MockAlert([], [{ name: "foo", value: "ignore" }], "suppressed"),
   ];
-  group = MockAlertGroup({ alertname: "Fake Alert" }, alerts, [], {}, {});
+  group = MockAlertGroup(
+    [{ name: "alertname", value: "Fake Alert" }],
+    alerts,
+    [],
+    [],
+    {}
+  );
   group.allLabels.active = {
     alertname: ["Fake Alert"],
     foo: ["bar", "baz"],

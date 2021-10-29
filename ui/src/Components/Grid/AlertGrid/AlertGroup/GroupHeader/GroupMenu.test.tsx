@@ -103,7 +103,13 @@ const MountedGroupMenu = (group: APIAlertGroupT, themed: boolean) => {
 
 describe("<GroupMenu />", () => {
   it("menu content is hidden by default", () => {
-    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
+    const group = MockAlertGroup(
+      [{ name: "alertname", value: "Fake Alert" }],
+      [],
+      [],
+      [],
+      {}
+    );
     const tree = MountedGroupMenu(group, true);
     expect(tree.find("div.dropdown-menu")).toHaveLength(0);
     expect(MockSetIsMenuOpen).not.toHaveBeenCalled();
@@ -111,7 +117,13 @@ describe("<GroupMenu />", () => {
 
   it("clicking toggle renders menu content", async () => {
     const promise = Promise.resolve();
-    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
+    const group = MockAlertGroup(
+      [{ name: "alertname", value: "Fake Alert" }],
+      [],
+      [],
+      [],
+      {}
+    );
     const tree = MountedGroupMenu(group, true);
     const toggle = tree.find("span.cursor-pointer");
     toggle.simulate("click");
@@ -122,7 +134,13 @@ describe("<GroupMenu />", () => {
 
   it("clicking toggle twice hides menu content", async () => {
     const promise = Promise.resolve();
-    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
+    const group = MockAlertGroup(
+      [{ name: "alertname", value: "Fake Alert" }],
+      [],
+      [],
+      [],
+      {}
+    );
     const tree = MountedGroupMenu(group, true);
     const toggle = tree.find("span.cursor-pointer");
 
@@ -145,7 +163,13 @@ describe("<GroupMenu />", () => {
 
   it("clicking menu item hides menu content", async () => {
     const promise = Promise.resolve();
-    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
+    const group = MockAlertGroup(
+      [{ name: "alertname", value: "Fake Alert" }],
+      [],
+      [],
+      [],
+      {}
+    );
     const tree = MountedGroupMenu(group, true);
     const toggle = tree.find("span.cursor-pointer");
 
@@ -180,7 +204,13 @@ const MountedMenuContent = (group: APIAlertGroupT) => {
 
 describe("<MenuContent />", () => {
   it("clicking on 'Copy' icon copies the link to clickboard", () => {
-    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
+    const group = MockAlertGroup(
+      [{ name: "alertname", value: "Fake Alert" }],
+      [],
+      [],
+      [],
+      {}
+    );
     const tree = MountedMenuContent(group);
     const button = tree.find(".dropdown-item").at(0);
     button.simulate("click");
@@ -188,7 +218,13 @@ describe("<MenuContent />", () => {
   });
 
   it("clicking on 'Silence' icon opens the silence form modal", () => {
-    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
+    const group = MockAlertGroup(
+      [{ name: "alertname", value: "Fake Alert" }],
+      [],
+      [],
+      [],
+      {}
+    );
     group.alertmanagerCount = { am1: 1, ro: 1 };
     const tree = MountedMenuContent(group);
     const button = tree.find(".dropdown-item").at(1);
@@ -205,7 +241,13 @@ describe("<MenuContent />", () => {
     upstreams.instances[2].readonly = true;
     alertStore.data.setUpstreams(upstreams);
 
-    const group = MockAlertGroup({ alertname: "Fake Alert" }, [], [], {}, {});
+    const group = MockAlertGroup(
+      [{ name: "alertname", value: "Fake Alert" }],
+      [],
+      [],
+      [],
+      {}
+    );
     const tree = MountedMenuContent(group);
     const button = tree.find(".dropdown-item").at(1);
     expect(button.hasClass("disabled")).toBe(true);
@@ -215,7 +257,7 @@ describe("<MenuContent />", () => {
 
   it("renders action annotations when present", () => {
     const group = MockAlertGroup(
-      { alertname: "Fake Alert" },
+      [{ name: "alertname", value: "Fake Alert" }],
       [],
       [
         {
@@ -240,7 +282,7 @@ describe("<MenuContent />", () => {
           isAction: false,
         },
       ],
-      {},
+      [],
       {}
     );
 

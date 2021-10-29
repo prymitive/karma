@@ -4,10 +4,11 @@ import type { AlertStore } from "Stores/AlertStore";
 import { IsMobile } from "Common/Device";
 import StaticLabel from "Components/Labels/StaticLabel";
 import { PageSelect } from "Components/Pagination";
+import type { LabelsT } from "Models/APITypes";
 
 const LabelSetList: FC<{
   alertStore: AlertStore;
-  labelsList: { [labelName: string]: string }[];
+  labelsList: LabelsT[];
   title?: string;
 }> = ({ alertStore, labelsList, title }) => {
   const [activePage, setActivePage] = useState<number>(1);
@@ -26,12 +27,12 @@ const LabelSetList: FC<{
                 key={`${index}/${labels.length}`}
                 className="list-group-item px-0 pt-2 pb-1"
               >
-                {Object.entries(labels).map(([name, value]) => (
+                {labels.map((label) => (
                   <StaticLabel
-                    key={name}
+                    key={label.name}
                     alertStore={alertStore}
-                    name={name}
-                    value={value}
+                    name={label.name}
+                    value={label.value}
                   />
                 ))}
               </li>
