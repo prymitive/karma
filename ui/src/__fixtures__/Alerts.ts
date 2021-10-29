@@ -63,7 +63,7 @@ const MockAlertGroup = (
     suppressed: {},
     unprocessed: {},
   },
-  id: "099c5ca6d1c92f615b13056b935d0c8dee70f18c",
+  id: "839708582c92ce59088d0af392601eec2d0fc02b",
   alertmanagerCount: {
     default: 1,
   },

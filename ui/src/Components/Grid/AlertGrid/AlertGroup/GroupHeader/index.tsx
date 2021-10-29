@@ -66,11 +66,11 @@ const GroupHeader: FC<{
         />
       </span>
       <span className="flex-shrink-1 flex-grow-1" style={{ minWidth: 0 }}>
-        {Object.keys(group.labels).map((name) => (
+        {group.labels.map((label) => (
           <FilteringLabel
-            key={name}
-            name={name}
-            value={group.labels[name]}
+            key={label.name}
+            name={label.name}
+            value={label.value}
             alertStore={alertStore}
           />
         ))}

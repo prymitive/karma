@@ -119,7 +119,11 @@ const MatchersFromAlerts = (
 
   // add matchers for all shared labels in this group
   for (const [key, value] of Object.entries(
-    Object.assign({}, group.labels, group.shared.labels)
+    Object.assign(
+      {},
+      Object.fromEntries(group.labels.map((l) => [l.name, l.value])),
+      Object.fromEntries(group.shared.labels.map((l) => [l.name, l.value]))
+    )
   )) {
     if (!stripLabels.includes(key)) {
       const matcher = NewEmptyMatcher();
@@ -131,7 +135,7 @@ const MatchersFromAlerts = (
 
   // array of arrays with label keys for each alert
   const allLabelKeys = alerts
-    .map((alert) => Object.keys(alert.labels))
+    .map((alert) => alert.labels.map((l) => l.name))
     .filter((a) => a.length > 0);
 
   // this is the list of label key that are shared across all alerts in the group
@@ -153,12 +157,15 @@ const MatchersFromAlerts = (
   // add matchers for all unique labels in this group
   const labels: { [key: string]: Set<string> } = {};
   for (const alert of alerts) {
-    for (const [key, value] of Object.entries(alert.labels)) {
-      if (sharedLabelKeys.includes(key) && !stripLabels.includes(key)) {
-        if (!labels[key]) {
-          labels[key] = new Set();
+    for (const label of alert.labels) {
+      if (
+        sharedLabelKeys.includes(label.name) &&
+        !stripLabels.includes(label.name)
+      ) {
+        if (!labels[label.name]) {
+          labels[label.name] = new Set();
         }
-        labels[key].add(value);
+        labels[label.name].add(label.value);
       }
     }
   }

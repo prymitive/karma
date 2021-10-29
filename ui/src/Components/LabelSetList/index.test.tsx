@@ -35,17 +35,17 @@ describe("<LabelSetList />", () => {
   });
 
   it("renders labels on populated list", () => {
-    const tree = MountedLabelSetList([{ foo: "bar" }]);
+    const tree = MountedLabelSetList([[{ name: "foo", value: "bar" }]]);
     expect(tree.text()).not.toBe("No alerts matched");
     expect(tree.find("ul.list-group").text()).toBe("foo: bar");
   });
 
   it("matches snapshot with populated list", () => {
     const tree = MountedLabelSetList([
-      { foo: "bar" },
-      { job: "node_exporter" },
-      { instance: "server1" },
-      { cluster: "prod" },
+      [{ name: "foo", value: "bar" }],
+      [{ name: "job", value: "node_exporter" }],
+      [{ name: "instance", value: "server1" }],
+      [{ name: "cluster", value: "prod" }],
     ]);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
@@ -53,7 +53,9 @@ describe("<LabelSetList />", () => {
   it("doesn't render pagination when list has 10 elements on  desktop", () => {
     global.window.innerWidth = 1024;
     const tree = MountedLabelSetList(
-      Array.from(Array(10), (_, i) => ({ instance: `server${i}` }))
+      Array.from(Array(10), (_, i) => [
+        { name: "instance", value: `server${i}` },
+      ])
     );
     expect(tree.find(".pagination")).toHaveLength(0);
   });
@@ -61,7 +63,9 @@ describe("<LabelSetList />", () => {
   it("doesn't render pagination when list has 5 elements on  desktop", () => {
     global.window.innerWidth = 500;
     const tree = MountedLabelSetList(
-      Array.from(Array(5), (_, i) => ({ instance: `server${i}` }))
+      Array.from(Array(5), (_, i) => [
+        { name: "instance", value: `server${i}` },
+      ])
     );
     expect(tree.find(".pagination")).toHaveLength(0);
   });
@@ -69,7 +73,9 @@ describe("<LabelSetList />", () => {
   it("renders pagination when list has 11 elements on desktop", () => {
     global.window.innerWidth = 1024;
     const tree = MountedLabelSetList(
-      Array.from(Array(11), (_, i) => ({ instance: `server${i}` }))
+      Array.from(Array(11), (_, i) => [
+        { name: "instance", value: `server${i}` },
+      ])
     );
     expect(tree.find(".pagination")).toHaveLength(1);
   });
@@ -77,14 +83,18 @@ describe("<LabelSetList />", () => {
   it("renders pagination when list has 6 elements on mobile", () => {
     global.window.innerWidth = 500;
     const tree = MountedLabelSetList(
-      Array.from(Array(6), (_, i) => ({ instance: `server${i}` }))
+      Array.from(Array(6), (_, i) => [
+        { name: "instance", value: `server${i}` },
+      ])
     );
     expect(tree.find(".pagination")).toHaveLength(1);
   });
 
   it("clicking on pagination changes displayed elements", () => {
     const tree = MountedLabelSetList(
-      Array.from(Array(21), (_, i) => ({ instance: `server${i + 1}` }))
+      Array.from(Array(21), (_, i) => [
+        { name: "instance", value: `server${i + 1}` },
+      ])
     );
     const pageLink = tree.find(".page-link").at(3);
     pageLink.simulate("click");

@@ -105,7 +105,7 @@ const useFetchGetMock = (
       },
       {
         re: /^\.\/alertList\.json\?q=/,
-        response: { alerts: [{ instance: "foo" }] },
+        response: { alerts: [[{ name: "instance", value: "foo" }]] },
       },
       // silence browser
       {

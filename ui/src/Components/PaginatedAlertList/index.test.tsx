@@ -78,11 +78,11 @@ describe("<PaginatedAlertList />", () => {
     useFetchGetMock.fetch.setMockedData({
       response: {
         alerts: [
-          {
-            alertname: "Fake Alert",
-            foo: "1",
-            bar: "2",
-          },
+          [
+            { name: "alertname", value: "Fake Alert" },
+            { name: "foo", value: "1" },
+            { name: "bar", value: "2" },
+          ],
         ],
       },
       error: undefined,
@@ -125,11 +125,11 @@ describe("<PaginatedAlertList />", () => {
     useFetchGetMock.fetch.setMockedData({
       response: {
         alerts: [
-          {
-            alertname: "Fake Alert",
-            foo: "1",
-            bar: "2",
-          },
+          [
+            { name: "alertname", value: "Fake Alert" },
+            { name: "foo", value: "1" },
+            { name: "bar", value: "2" },
+          ],
         ],
       },
       error: undefined,

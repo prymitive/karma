@@ -72,8 +72,8 @@ const MenuContent: FC<{
   alertStore,
   silenceFormStore,
 }) => {
-  const groupFilters = Object.keys(group.labels).map((name) =>
-    FormatQuery(name, QueryOperators.Equal, group.labels[name])
+  const groupFilters = group.labels.map((label) =>
+    FormatQuery(label.name, QueryOperators.Equal, label.value)
   );
   groupFilters.push(
     FormatQuery(StaticLabels.Receiver, QueryOperators.Equal, group.receiver)

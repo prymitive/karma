@@ -1,6 +1,11 @@
 export type AlertStateT = "unprocessed" | "active" | "suppressed";
 
-export type LabelsT = { [key: string]: string };
+export interface LabelT {
+  name: string;
+  value: string;
+}
+
+export type LabelsT = LabelT[];
 
 export interface AlertmanagerSilenceMatcherT {
   name: string;

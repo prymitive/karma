@@ -74,8 +74,14 @@ beforeEach(() => {
   MockAfterClick = jest.fn();
   MockSetIsMenuOpen = jest.fn();
 
-  alert = MockAlert([], { foo: "bar" }, "active");
-  group = MockAlertGroup({ alertname: "Fake Alert" }, [alert], [], {}, {});
+  alert = MockAlert([], [{ name: "foo", value: "bar Alert" }], "active");
+  group = MockAlertGroup(
+    [{ name: "alertname", value: "Fake Alert" }],
+    [alert],
+    [],
+    [],
+    {}
+  );
   grid = {
     labelName: "foo",
     labelValue: "bar",
@@ -233,11 +239,11 @@ describe("<MenuContent />", () => {
           isAction: false,
         },
       ],
-      { foo: "bar" },
+      [{ name: "foo", value: "bar" }],
       "active"
     );
     group = MockAlertGroup(
-      { alertname: "Fake Alert" },
+      [{ name: "alertname", value: "Fake Alert" }],
       [alert],
       [
         {
@@ -262,7 +268,7 @@ describe("<MenuContent />", () => {
           isAction: false,
         },
       ],
-      {},
+      [],
       {}
     );
 

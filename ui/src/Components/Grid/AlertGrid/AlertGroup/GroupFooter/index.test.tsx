@@ -23,11 +23,11 @@ let silenceFormStore: SilenceFormStore;
 
 const MockGroup = () => {
   const group = MockAlertGroup(
-    { alertname: "Fake Alert" },
+    [{ name: "alertname", value: "Fake Alert" }],
     [
-      MockAlert([], {}, "suppressed"),
-      MockAlert([], {}, "suppressed"),
-      MockAlert([], {}, "suppressed"),
+      MockAlert([], [], "suppressed"),
+      MockAlert([], [], "suppressed"),
+      MockAlert([], [], "suppressed"),
     ],
     [
       MockAnnotation("summary", "This is summary", true, false, false),
@@ -40,7 +40,10 @@ const MockGroup = () => {
       ),
       MockAnnotation("link", "http://link.example.com", true, true, false),
     ],
-    { label1: "foo", label2: "bar" },
+    [
+      { name: "label1", value: "foo" },
+      { name: "label2", value: "bar" },
+    ],
     {}
   );
   return group;
