@@ -17,8 +17,15 @@ describe("<GetClassAndStyle />", () => {
   it("static label uses StaticColorLabelClassMap.badge", () => {
     alertStore.settings.setValues({
       ...alertStore.settings.values,
-      ...{ staticColorLabels: ["foo", "job", "bar"] },
+      ...{
+        labels: {
+          foo: { isStatic: true, isValueOnly: false },
+          job: { isStatic: true, isValueOnly: false },
+          bar: { isStatic: true, isValueOnly: false },
+        },
+      },
     });
+    expect(alertStore.settings.values.labels.foo.isStatic).toBe(true);
     const cs = GetClassAndStyle(alertStore, "foo", "bar");
     expect(cs.colorClassNames).toContain(StaticColorLabelClassMap.badge);
   });
@@ -27,7 +34,9 @@ describe("<GetClassAndStyle />", () => {
     it(`non-static label doesn't use StaticColorLabelClassMap.${key}`, () => {
       alertStore.settings.setValues({
         ...alertStore.settings.values,
-        ...{ staticColorLabels: [] },
+        ...{
+          labels: {},
+        },
       });
       const cs = GetClassAndStyle(alertStore, "foo", "bar");
       expect(cs.colorClassNames).not.toContain(StaticColorLabelClassMap.badge);
@@ -73,7 +82,13 @@ describe("<GetClassAndStyle />", () => {
   it("style prop on a label included in staticColorLabels should be empty", () => {
     alertStore.settings.setValues({
       ...alertStore.settings.values,
-      ...{ staticColorLabels: ["foo", "job", "bar"] },
+      ...{
+        labels: {
+          foo: { isStatic: true, isValueOnly: false },
+          job: { isStatic: true, isValueOnly: false },
+          bar: { isStatic: true, isValueOnly: false },
+        },
+      },
     });
     const cs = GetClassAndStyle(alertStore, "foo", "bar");
     expect(cs.style).toEqual({});
@@ -82,7 +97,7 @@ describe("<GetClassAndStyle />", () => {
   it("style prop on a label without any color information should be empty", () => {
     alertStore.settings.setValues({
       ...alertStore.settings.values,
-      ...{ staticColorLabels: [] },
+      ...{ labels: {} },
     });
     const cs = GetClassAndStyle(alertStore, "foo", "bar");
     expect(cs.style).toEqual({});

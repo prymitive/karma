@@ -461,9 +461,6 @@ class AlertStore {
     this.settings = observable(
       {
         values: {
-          staticColorLabels: [] as string[],
-          valueOnlyLabels: [] as string[],
-          valueOnlyRegexLabels: [] as string[],
           annotationsDefaultHidden: false as boolean,
           annotationsHidden: [] as string[],
           annotationsVisible: [] as string[],
@@ -489,6 +486,7 @@ class AlertStore {
           },
           historyEnabled: true,
           gridGroupLimit: 40,
+          labels: {},
         } as APISettingsT,
         setValues(v: APISettingsT) {
           this.values = v;
