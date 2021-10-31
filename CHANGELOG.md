@@ -14,6 +14,10 @@
 - Added `labels:keep_re`, `labels:strip_re` and `labels:valueOnly_re` config
   options #3659 (@aalexk).
 
+### Changed
+
+- Refactored internal APIs.
+
 ## v0.92
 
 ### Fixed
