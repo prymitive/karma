@@ -71,15 +71,15 @@ const EmptyAPIResponse = (): APIAlertsResponseT => ({
       author: "karma / author missing",
       comment: "ACK! Mock comment",
     },
-    staticColorLabels: ["job"],
-    valueOnlyLabels: [],
-    valueOnlyRegexLabels: [],
     annotationsDefaultHidden: false,
     annotationsHidden: [],
     annotationsVisible: [],
     annotationsEnableHTML: false,
     historyEnabled: true,
     gridGroupLimit: 40,
+    labels: {
+      job: { isStatic: true, isValueOnly: false },
+    },
   },
   authentication: {
     username: "",
@@ -95,10 +95,31 @@ const MockAPIResponse = (): APIAlertsResponseT => {
       labelValue: "",
       alertGroups: [
         MockAlertGroup(
-          [{ name: "alertname", value: "foo" }],
-          [MockAlert([], [{ name: "instance", value: "foo" }], "suppressed")],
+          [
+            {
+              name: "alertname",
+              value: "foo",
+            },
+          ],
+          [
+            MockAlert(
+              [],
+              [
+                {
+                  name: "instance",
+                  value: "foo",
+                },
+              ],
+              "suppressed"
+            ),
+          ],
           [],
-          [{ name: "cluster", value: "dev" }],
+          [
+            {
+              name: "cluster",
+              value: "dev",
+            },
+          ],
           {}
         ),
       ],

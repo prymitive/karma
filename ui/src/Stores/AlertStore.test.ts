@@ -693,7 +693,12 @@ describe("AlertStore.fetch", () => {
       store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toBeUndefined();
     expect(store.settings.values).toMatchObject({
-      staticColorLabels: ["job"],
+      labels: {
+        job: {
+          isStatic: true,
+          isValueOnly: false,
+        },
+      },
       annotationsDefaultHidden: false,
       annotationsHidden: [],
       annotationsVisible: [],
@@ -705,7 +710,12 @@ describe("AlertStore.fetch", () => {
       store.fetch("", false, "", "", false, {}, 5, {})
     ).resolves.toBeUndefined();
     expect(store.settings.values).toMatchObject({
-      staticColorLabels: ["job"],
+      labels: {
+        job: {
+          isStatic: true,
+          isValueOnly: false,
+        },
+      },
       annotationsDefaultHidden: false,
       annotationsHidden: [],
       annotationsVisible: [],

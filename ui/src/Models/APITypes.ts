@@ -176,10 +176,14 @@ export interface APILabelCounterT {
   hits: number;
 }
 
+export interface APILabelSettingsT {
+  isStatic: boolean;
+  isValueOnly: boolean;
+}
+
+export type APILabelsSettingsT = { [key: string]: APILabelSettingsT };
+
 export interface APISettingsT {
-  staticColorLabels: string[];
-  valueOnlyLabels: string[];
-  valueOnlyRegexLabels: string[];
   annotationsDefaultHidden: boolean;
   annotationsHidden: string[];
   annotationsVisible: string[];
@@ -205,6 +209,7 @@ export interface APISettingsT {
   };
   historyEnabled: boolean;
   gridGroupLimit: number;
+  labels: APILabelsSettingsT;
 }
 
 export interface APIAlertsResponseT {
