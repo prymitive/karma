@@ -156,7 +156,7 @@ type configSchema struct {
 		CompiledStripRegex     []*regexp.Regexp `yaml:"-"`
 		ValueOnly              []string         `yaml:"valueOnly" koanf:"valueOnly"`
 		ValueOnlyRegex         []string         `yaml:"valueOnly_re" koanf:"valueOnly_re"`
-		AnchoredValueOnlyRegex []string         `yaml:"-"`
+		CompiledValueOnlyRegex []*regexp.Regexp `yaml:"-"`
 		Color                  struct {
 			Custom CustomLabelColors
 			Static []string

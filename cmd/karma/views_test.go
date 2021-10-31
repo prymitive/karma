@@ -22,6 +22,7 @@ import (
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
+	"github.com/prymitive/karma/internal/regex"
 	"github.com/prymitive/karma/internal/slices"
 
 	"github.com/go-chi/chi/v5"
@@ -1103,9 +1104,6 @@ func TestEmptySettings(t *testing.T) {
 	}
 
 	expectedSettings := models.Settings{
-		StaticColorLabels:        []string{},
-		ValueOnlyLabels:          []string{},
-		ValueOnlyRegexLabels:     []string{},
 		AnnotationsDefaultHidden: false,
 		AnnotationsHidden:        []string{},
 		AnnotationsVisible:       []string{},
@@ -1130,6 +1128,7 @@ func TestEmptySettings(t *testing.T) {
 		},
 		HistoryEnabled: true,
 		GridGroupLimit: 40,
+		Labels:         models.LabelsSettings{},
 	}
 
 	if diff := cmp.Diff(expectedSettings, ur.Settings); diff != "" {
@@ -3861,6 +3860,147 @@ func TestCounters(t *testing.T) {
 					t.Errorf("GET /counters.json returned status %d", resp.Code)
 				}
 				abide.AssertHTTPResponse(t, t.Name(), resp.Result())
+			}
+		})
+	}
+}
+
+func TestLabelSettings(t *testing.T) {
+	type testCaseT struct {
+		static      []string
+		valueOnly   []string
+		valueOnlyRe []*regexp.Regexp
+		labels      models.LabelsSettings
+	}
+
+	testCases := []testCaseT{
+		{
+			static:      []string{},
+			valueOnly:   []string{},
+			valueOnlyRe: []*regexp.Regexp{},
+			labels:      models.LabelsSettings{},
+		},
+		{
+			static:      []string{"job"},
+			valueOnly:   []string{},
+			valueOnlyRe: []*regexp.Regexp{},
+			labels: models.LabelsSettings{
+				"job": models.LabelSettings{
+					IsStatic:    true,
+					IsValueOnly: false,
+				},
+			},
+		},
+		{
+			static:      []string{"job"},
+			valueOnly:   []string{"job"},
+			valueOnlyRe: []*regexp.Regexp{},
+			labels: models.LabelsSettings{
+				"job": models.LabelSettings{
+					IsStatic:    true,
+					IsValueOnly: true,
+				},
+			},
+		},
+		{
+			static:      []string{},
+			valueOnly:   []string{},
+			valueOnlyRe: []*regexp.Regexp{regex.MustCompileAnchored("al.*e")},
+			labels: models.LabelsSettings{
+				"alertname": models.LabelSettings{
+					IsStatic:    false,
+					IsValueOnly: true,
+				},
+			},
+		},
+		{
+			static:      []string{"@alertmanager", "@cluster", "@receiver", "@state"},
+			valueOnly:   []string{},
+			valueOnlyRe: []*regexp.Regexp{regex.MustCompileAnchored("@.+")},
+			labels: models.LabelsSettings{
+				"@alertmanager": models.LabelSettings{
+					IsStatic:    true,
+					IsValueOnly: true,
+				},
+				"@cluster": models.LabelSettings{
+					IsStatic:    true,
+					IsValueOnly: true,
+				},
+				"@receiver": models.LabelSettings{
+					IsStatic:    true,
+					IsValueOnly: true,
+				},
+				"@state": models.LabelSettings{
+					IsStatic:    true,
+					IsValueOnly: true,
+				},
+			},
+		},
+		{
+			static:      []string{},
+			valueOnly:   []string{"alertname"},
+			valueOnlyRe: []*regexp.Regexp{},
+			labels: models.LabelsSettings{
+				"alertname": models.LabelSettings{
+					IsStatic:    false,
+					IsValueOnly: true,
+				},
+			},
+		},
+	}
+
+	httpmock.Activate()
+	defer httpmock.DeactivateAndReset()
+
+	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
+	mockCache()
+	version := mock.ListAllMocks()[0]
+
+	payload, err := json.Marshal(models.AlertsRequest{
+		Filters:           []string{},
+		GridLimits:        map[string]int{},
+		DefaultGroupLimit: 5,
+	})
+	if err != nil {
+		t.Error(err)
+		t.FailNow()
+	}
+
+	defer func() {
+		config.Config.Labels.Color.Static = []string{}
+		config.Config.Labels.ValueOnly = []string{}
+		config.Config.Labels.CompiledValueOnlyRegex = []*regexp.Regexp{}
+	}()
+
+	for i, tc := range testCases {
+		mockConfig()
+		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
+		mockAlerts(version)
+		config.Config.Labels.Color.Static = tc.static
+		config.Config.Labels.ValueOnly = tc.valueOnly
+		config.Config.Labels.CompiledValueOnlyRegex = tc.valueOnlyRe
+		t.Run(fmt.Sprintf("%d", i), func(t *testing.T) {
+			r := testRouter()
+			setupRouter(r, nil)
+			for i := 1; i <= 3; i++ {
+				req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
+				resp := httptest.NewRecorder()
+				r.ServeHTTP(resp, req)
+				if resp.Code != http.StatusOK {
+					t.Errorf("POST /alerts.json returned status %d", resp.Code)
+				}
+				ur := models.AlertsResponse{}
+				err := json.Unmarshal(resp.Body.Bytes(), &ur)
+				if err != nil {
+					t.Errorf("Failed to unmarshal response: %s", err)
+				}
+				if ur.TotalAlerts == 0 {
+					t.Error("TotalAlerts=0")
+					t.FailNow()
+				}
+				if diff := cmp.Diff(tc.labels, ur.Settings.Labels); diff != "" {
+					t.Errorf("Wrong labels returned (-want +got):\n%s", diff)
+				}
 			}
 		})
 	}
