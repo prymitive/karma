@@ -3,6 +3,7 @@ package slices
 import (
 	"crypto/sha1"
 	"fmt"
+	"regexp"
 )
 
 // BoolInSlice returns true if given bool is found in a slice of bools
@@ -68,4 +69,13 @@ func StringSliceDiff(slice1 []string, slice2 []string) ([]string, []string) {
 	}
 
 	return missing, extra
+}
+
+func MatchesAnyRegex(value string, regexes []*regexp.Regexp) bool {
+	for _, regex := range regexes {
+		if regex.MatchString(value) {
+			return true
+		}
+	}
+	return false
 }

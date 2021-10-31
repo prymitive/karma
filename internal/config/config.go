@@ -382,9 +382,12 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 		}
 	}
 
-	config.Labels.AnchoredValueOnlyRegex = make([]string, len(config.Labels.ValueOnlyRegex))
+	config.Labels.CompiledValueOnlyRegex = make([]*regexp.Regexp, len(config.Labels.ValueOnlyRegex))
 	for i, valueOnlyRegex := range config.Labels.ValueOnlyRegex {
-		config.Labels.AnchoredValueOnlyRegex[i] = regex.WrapRegexWithAnchors(valueOnlyRegex)
+		config.Labels.CompiledValueOnlyRegex[i], err = regex.CompileAnchored(valueOnlyRegex)
+		if err != nil {
+			return "", fmt.Errorf("valueOnly regex rule '%s' is invalid: %s", valueOnlyRegex, err)
+		}
 	}
 
 	for labelName, customColors := range config.Labels.Color.Custom {

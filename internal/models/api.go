@@ -409,11 +409,15 @@ type AlertAcknowledgementSettings struct {
 	Comment         string `json:"comment"`
 }
 
+type LabelSettings struct {
+	IsStatic    bool `json:"isStatic"`
+	IsValueOnly bool `json:"isValueOnly"`
+}
+
+type LabelsSettings map[string]LabelSettings
+
 // Settings is used to export karma configuration that is used by UI
 type Settings struct {
-	StaticColorLabels        []string                     `json:"staticColorLabels"`
-	ValueOnlyLabels          []string                     `json:"valueOnlyLabels"`
-	ValueOnlyRegexLabels     []string                     `json:"valueOnlyRegexLabels"`
 	AnnotationsDefaultHidden bool                         `json:"annotationsDefaultHidden"`
 	AnnotationsHidden        []string                     `json:"annotationsHidden"`
 	AnnotationsVisible       []string                     `json:"annotationsVisible"`
@@ -423,6 +427,7 @@ type Settings struct {
 	AlertAcknowledgement     AlertAcknowledgementSettings `json:"alertAcknowledgement"`
 	HistoryEnabled           bool                         `json:"historyEnabled"`
 	GridGroupLimit           int                          `json:"gridGroupLimit"`
+	Labels                   LabelsSettings               `json:"labels"`
 }
 
 type AuthenticationInfo struct {

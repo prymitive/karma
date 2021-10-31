@@ -386,7 +386,7 @@ func TestDefaultConfig(t *testing.T) {
 	expectedConfig.Labels.Color.Unique = []string{}
 	expectedConfig.Labels.ValueOnly = []string{}
 	expectedConfig.Labels.ValueOnlyRegex = []string{}
-	expectedConfig.Labels.AnchoredValueOnlyRegex = []string{}
+	expectedConfig.Labels.CompiledValueOnlyRegex = []*regexp.Regexp{}
 	expectedConfig.Grid.Auto.Ignore = []string{}
 	expectedConfig.Grid.Auto.Order = []string{}
 	expectedConfig.Receivers.Keep = []string{}

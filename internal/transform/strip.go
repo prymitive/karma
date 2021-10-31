@@ -17,15 +17,20 @@ func StripLables(keptLabels, ignoredLabels []string, keptLabelsRegex, ignoredLab
 	// empty keep lists means keep everything by default
 	keepAll := len(keptLabels) == 0 && len(keptLabelsRegex) == 0
 	labels := models.Labels{}
+	var inKeep, inStrip bool
 	for _, label := range sourceLabels {
 		// is explicitly marked to be kept
-		inKeep := slices.StringInSlice(keptLabels, label.Name) || matchesAnyRegex(label.Name, keptLabelsRegex)
+		inKeep = slices.StringInSlice(keptLabels, label.Name) || slices.MatchesAnyRegex(label.Name, keptLabelsRegex)
 		// is explicitly marked to be stripped
-		inStrip := slices.StringInSlice(ignoredLabels, label.Name) || matchesAnyRegex(label.Name, ignoredLabelsRegex)
+		inStrip = slices.StringInSlice(ignoredLabels, label.Name) || slices.MatchesAnyRegex(label.Name, ignoredLabelsRegex)
 		if (keepAll || inKeep) && !inStrip {
-			// strip leading and trailing space in label value
-			// this is to normalize values in case space is added by Alertmanager rules
-			labels = labels.Set(label.Name, strings.TrimSpace(label.Value))
+			l := models.Label{
+				Name: label.Name,
+				// strip leading and trailing space in label value
+				// this is to normalize values in case space is added by Alertmanager rules
+				Value: strings.TrimSpace(label.Value),
+			}
+			labels = labels.Add(l)
 		}
 	}
 	sort.Sort(labels)
@@ -64,13 +69,4 @@ func StripAnnotations(keptAnnotations, ignoredAnnotations []string, sourceAnnota
 		}
 	}
 	return annotations
-}
-
-func matchesAnyRegex(value string, regexes []*regexp.Regexp) bool {
-	for _, regex := range regexes {
-		if regex.MatchString(value) {
-			return true
-		}
-	}
-	return false
 }

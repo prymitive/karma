@@ -186,9 +186,6 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 			},
 			ValueMapping: map[string]map[string]string{},
 		},
-		StaticColorLabels:        config.Config.Labels.Color.Static,
-		ValueOnlyLabels:          config.Config.Labels.ValueOnly,
-		ValueOnlyRegexLabels:     config.Config.Labels.AnchoredValueOnlyRegex,
 		AnnotationsDefaultHidden: config.Config.Annotations.Default.Hidden,
 		AnnotationsHidden:        config.Config.Annotations.Hidden,
 		AnnotationsVisible:       config.Config.Annotations.Visible,
@@ -206,6 +203,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		},
 		HistoryEnabled: config.Config.History.Enabled,
 		GridGroupLimit: config.Config.Grid.GroupLimit,
+		Labels:         models.LabelsSettings{},
 	}
 	resp.Authentication = models.AuthenticationInfo{
 		Enabled:  config.Config.Authentication.Enabled,
@@ -233,7 +231,9 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 		// need to overwrite settings as they can have user specific data
 		newResp := models.AlertsResponse{}
 		_ = json.Unmarshal(rawData, &newResp)
+		labels := newResp.Settings.Labels
 		newResp.Settings = resp.Settings
+		newResp.Settings.Labels = labels
 		newResp.Timestamp = string(ts)
 		newResp.Authentication = resp.Authentication
 		newData, _ := json.Marshal(&newResp)
@@ -480,6 +480,7 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	for _, filter := range matchFilters {
 		if filter.GetValue() != "" && filter.GetMatcher() == "=" {
 			transform.ColorLabel(colors, filter.GetName(), filter.GetValue())
+			labelSettings(filter.GetName(), resp.Settings.Labels)
 		}
 	}
 
@@ -496,6 +497,8 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	}
 	sort.Strings(resp.LabelNames)
 
+	labelsSettings(sortedGrids, resp.Settings.Labels)
+
 	resp.Grids = sortedGrids
 	resp.Silences = silences
 	resp.Colors = colors
@@ -509,6 +512,44 @@ func alerts(w http.ResponseWriter, r *http.Request) {
 	mimeJSON(w)
 	w.WriteHeader(http.StatusOK)
 	_, _ = w.Write(data.([]byte))
+}
+
+func labelsSettings(grids []models.APIGrid, store models.LabelsSettings) {
+	labelSettings("@alertmanager", store)
+	labelSettings("@cluster", store)
+	labelSettings("@receiver", store)
+	labelSettings("@state", store)
+	for _, grid := range grids {
+		labelSettings(grid.LabelName, store)
+		for _, ag := range grid.AlertGroups {
+			for _, label := range ag.Labels {
+				labelSettings(label.Name, store)
+			}
+			for _, alert := range ag.Alerts {
+				for _, label := range alert.Labels {
+					labelSettings(label.Name, store)
+				}
+			}
+		}
+	}
+}
+
+func labelSettings(name string, store models.LabelsSettings) {
+	var isStatic, isValueOnly bool
+	if slices.StringInSlice(config.Config.Labels.Color.Static, name) {
+		isStatic = true
+	}
+	if slices.StringInSlice(config.Config.Labels.ValueOnly, name) || slices.MatchesAnyRegex(name, config.Config.Labels.CompiledValueOnlyRegex) {
+		isValueOnly = true
+	}
+	if isStatic || isValueOnly {
+		if _, ok := store[name]; !ok {
+			store[name] = models.LabelSettings{
+				IsStatic:    isStatic,
+				IsValueOnly: isValueOnly,
+			}
+		}
+	}
 }
 
 // autocomplete endpoint, json, used for filter autocomplete hints

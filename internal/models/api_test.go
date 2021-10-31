@@ -15,7 +15,7 @@ func TestDedupSharedMaps(t *testing.T) {
 	ag := models.APIAlertGroup{
 		AlertGroup: models.AlertGroup{
 			Labels: models.Labels{
-				{"alertname", "FakeAlert"},
+				{Name: "alertname", Value: "FakeAlert"},
 			},
 			Alerts: models.AlertList{
 				models.Alert{
@@ -31,9 +31,9 @@ func TestDedupSharedMaps(t *testing.T) {
 						},
 					},
 					Labels: models.Labels{
-						{"alertname", "FakeAlert"},
-						{"job", "node_exporter"},
-						{"instance", "1"},
+						{Name: "alertname", Value: "FakeAlert"},
+						{Name: "job", Value: "node_exporter"},
+						{Name: "instance", Value: "1"},
 					},
 					Alertmanager: []models.AlertmanagerInstance{
 						{
@@ -61,9 +61,9 @@ func TestDedupSharedMaps(t *testing.T) {
 						},
 					},
 					Labels: models.Labels{
-						{"alertname", "FakeAlert"},
-						{"job", "node_exporter"},
-						{"instance", "2"},
+						{Name: "alertname", Value: "FakeAlert"},
+						{Name: "job", Value: "node_exporter"},
+						{Name: "instance", Value: "2"},
 					},
 					Alertmanager: []models.AlertmanagerInstance{
 						{
@@ -91,10 +91,10 @@ func TestDedupSharedMaps(t *testing.T) {
 						},
 					},
 					Labels: models.Labels{
-						{"alertname", "FakeAlert"},
-						{"job", "blackbox"},
-						{"instance", "3"},
-						{"extra", "ignore"},
+						{Name: "alertname", Value: "FakeAlert"},
+						{Name: "job", Value: "blackbox"},
+						{Name: "instance", Value: "3"},
+						{Name: "extra", Value: "ignore"},
 					},
 					Alertmanager: []models.AlertmanagerInstance{
 						{
@@ -126,8 +126,18 @@ func TestDedupSharedMapsSingleGroup(t *testing.T) {
 	ag := models.APIAlertGroup{
 		AlertGroup: models.AlertGroup{
 			Alerts: models.AlertList{
-				models.Alert{State: models.AlertStateActive, Labels: models.Labels{{"foo", "bar"}}},
-				models.Alert{State: models.AlertStateUnprocessed, Labels: models.Labels{{"foo", "bar"}}},
+				models.Alert{
+					State: models.AlertStateActive,
+					Labels: models.Labels{
+						{Name: "foo", Value: "bar"},
+					},
+				},
+				models.Alert{
+					State: models.AlertStateUnprocessed,
+					Labels: models.Labels{
+						{Name: "foo", Value: "bar"},
+					},
+				},
 			},
 		},
 	}
