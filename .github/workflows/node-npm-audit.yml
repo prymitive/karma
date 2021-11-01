@@ -18,7 +18,7 @@ jobs:
           node-version: 16.13.0
 
       - name: Regenerate package-lock.json
-        run: cd ui && npm audit fix
+        run: cd ui && npm audit fix --audit-level=none
 
       - name: Rebuild react app
         run: make -C ui build

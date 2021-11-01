@@ -1,6 +1,12 @@
 name: Scan
 
 on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
   schedule:
     - cron: "0 6 * * 4"
 
@@ -8,6 +14,10 @@ jobs:
   codeql:
     name: CodeQL
     runs-on: ubuntu-20.04
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -38,11 +48,16 @@ jobs:
 
       - name: Run the local Anchore scan action itself with GitHub Advanced Security code scanning integration enabled
         uses: anchore/scan-action@v3
+        id: scan
         with:
           image: "localbuild/testimage:latest"
           acs-report-enable: true
+          fail-build: false
 
-      - name: Upload Anchore Scan Report
+      - name: Inspect action SARIF report
+        run: cat ${{ steps.scan.outputs.sarif }}
+
+      - name: Upload Anchore scan SARIF report
         uses: github/codeql-action/upload-sarif@v1
         with:
-          sarif_file: results.sarif
+          sarif_file: ${{ steps.scan.outputs.sarif }}
