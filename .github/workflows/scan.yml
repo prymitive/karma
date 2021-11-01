@@ -22,42 +22,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
         with:
-          # We must fetch at least the immediate parents so that if this is
-          # a pull request then we can checkout the head.
-          fetch-depth: 2
+          fetch-depth: 0
 
-      # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v1
-        # Override language selection by uncommenting this and choosing your languages
-        # with:
-        #   languages: go, javascript, csharp, python, cpp, java
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
-
-  anchore:
-    name: Anchore Container Scan
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout the code
-        uses: actions/checkout@v2
-
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag localbuild/testimage:latest
-
-      - name: Run the local Anchore scan action itself with GitHub Advanced Security code scanning integration enabled
-        uses: anchore/scan-action@v3
-        id: scan
-        with:
-          image: "localbuild/testimage:latest"
-          acs-report-enable: true
-          fail-build: false
-
-      - name: Inspect action SARIF report
-        run: cat ${{ steps.scan.outputs.sarif }}
-
-      - name: Upload Anchore scan SARIF report
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: ${{ steps.scan.outputs.sarif }}
