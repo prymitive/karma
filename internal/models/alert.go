@@ -7,6 +7,7 @@ import (
 
 	"github.com/cnf/structhash"
 	"github.com/fvbommel/sortorder"
+	"github.com/prymitive/karma/internal/config"
 )
 
 // AlertStateUnprocessed means that Alertmanager notify didn't yet process it
@@ -62,6 +63,20 @@ func (ls Labels) Swap(i, j int) {
 }
 
 func (ls Labels) Less(i, j int) bool {
+	ai, aj := -1, -1
+	for index, name := range config.Config.Labels.Order {
+		if ls[i].Name == name {
+			ai = index
+		} else if ls[j].Name == name {
+			aj = index
+		}
+		if ai >= 0 && aj >= 0 {
+			return ai < aj
+		}
+	}
+	if ai != aj {
+		return aj < ai
+	}
 	if ls[i].Name == ls[j].Name {
 		return sortorder.NaturalLess(ls[i].Value, ls[j].Value)
 	}

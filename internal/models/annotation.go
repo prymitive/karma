@@ -5,6 +5,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/fvbommel/sortorder"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/slices"
 )
@@ -50,7 +51,7 @@ func (a Annotations) Less(i, j int) bool {
 		return aj < ai
 	}
 	// If neither annotation was in c.C.A.Order, sort alphabetically.
-	return a[i].Name < a[j].Name
+	return sortorder.NaturalLess(a[i].Name, a[j].Name)
 }
 
 // AnnotationsFromMap will convert a map[string]string to a list of Annotation

@@ -859,6 +859,7 @@ labels:
         - value: string
           value_re: regex
           color: string
+  order: list of strings
   keep: list of strings
   keep_re: list of regex
   strip: list of strings
@@ -891,6 +892,9 @@ labels:
   Note: this option is not available via environment variables, you can only set
   it via the config file.
 
+- `order` - custom order of label names. All labels listed here will
+  appear first in the order specified here. Remaining labels will be sorted
+  alphabetically and appended at the end.
 - `keep` - list of allowed labels, if both `keep` and `keep_re` are empty all
   labels are allowed.
 - `keep_re` - list of Go compatible [regular expressions](https://golang.org/pkg/regexp/)

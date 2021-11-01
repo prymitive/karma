@@ -101,6 +101,7 @@ history:
 karma:
   name: another karma
 labels:
+  order: []
   keep:
     - foo
     - bar
@@ -376,6 +377,7 @@ func TestDefaultConfig(t *testing.T) {
 	expectedConfig.Annotations.Strip = []string{}
 	expectedConfig.Annotations.Actions = []string{}
 	expectedConfig.Annotations.Order = []string{}
+	expectedConfig.Labels.Order = []string{}
 	expectedConfig.Labels.Keep = []string{}
 	expectedConfig.Labels.KeepRegex = []string{}
 	expectedConfig.Labels.CompiledKeepRegex = []*regexp.Regexp{}

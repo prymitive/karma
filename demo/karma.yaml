@@ -72,6 +72,9 @@ history:
 karma:
   name: karma-demo
 labels:
+  order:
+    - instance
+    - job
   color:
     static:
       - job
