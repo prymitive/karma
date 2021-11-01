@@ -181,6 +181,9 @@ level=info msg="      uri: https://prod-$1.example.com"
 level=info msg="karma:"
 level=info msg="  name: karma-demo"
 level=info msg="labels:"
+level=info msg="  order:"
+level=info msg="    - order1"
+level=info msg="    - order2"
 level=info msg="  keep:"
 level=info msg="    - keep1"
 level=info msg="    - keep2"
@@ -397,6 +400,9 @@ history:
 karma:
   name: karma-demo
 labels:
+  order:
+    - order1
+    - order2
   keep:
     - keep1
     - keep2

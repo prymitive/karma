@@ -148,6 +148,7 @@ type configSchema struct {
 		Name string
 	}
 	Labels struct {
+		Order                  []string
 		Keep                   []string
 		KeepRegex              []string         `yaml:"keep_re" koanf:"keep_re"`
 		CompiledKeepRegex      []*regexp.Regexp `yaml:"-"`

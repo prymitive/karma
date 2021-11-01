@@ -85,6 +85,7 @@ func SetupFlags(f *pflag.FlagSet) {
 
 	f.StringSlice("filters.default", []string{}, "List of default filters")
 
+	f.StringSlice("labels.order", []string{}, "Preferred order of label names")
 	f.StringSlice("labels.color.static", []string{},
 		"List of label names that should have the same (but distinct) color")
 	f.StringSlice("labels.color.unique", []string{},
@@ -226,6 +227,8 @@ func readEnvVariables(k *koanf.Koanf) {
 			return "labels.keep_re"
 		case "LABELS_STRIP_RE":
 			return "labels.strip_re"
+		case "LABELS_VALUEONLY":
+			return "labels.valueOnly"
 		case "LABELS_VALUEONLY_RE":
 			return "labels.valueOnly_re"
 		case "SILENCEFORM_STRIP_LABELS":

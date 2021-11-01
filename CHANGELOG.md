@@ -13,6 +13,7 @@
 - Loading user groups from HTTP headers, #3361 (@supertassu).
 - Added `labels:keep_re`, `labels:strip_re` and `labels:valueOnly_re` config
   options #3659 (@aalexk).
+- `labels:order` config option to allow customising order of labels #3500.
 
 ### Changed
 

@@ -38,6 +38,7 @@ env GRID_GROUPLIMIT=1
 
 env KARMA_NAME=karma-demo
 
+env LABELS_ORDER='job instance'
 env LABELS_COLOR_STATIC=job
 env LABELS_COLOR_UNIQUE='@receiver instance cluster'
 env LABELS_KEEP='keep1 keep2'
@@ -45,6 +46,7 @@ env LABELS_KEEP_RE='keep_re1 keep_re2'
 env LABELS_STRIP='strip1 strip2'
 env LABELS_STRIP_RE='strip_re1 strip_re2'
 env LABELS_VALUEONLY='value1 value2'
+env LABELS_VALUEONLY_RE='foo.+'
 
 env LISTEN_ADDRESS=127.0.0.1
 env LISTEN_PORT=1234
@@ -169,6 +171,9 @@ level=info msg="  rewrite: []"
 level=info msg="karma:"
 level=info msg="  name: karma-demo"
 level=info msg="labels:"
+level=info msg="  order:"
+level=info msg="    - job"
+level=info msg="    - instance"
 level=info msg="  keep:"
 level=info msg="    - keep1"
 level=info msg="    - keep2"
@@ -181,8 +186,11 @@ level=info msg="    - strip2"
 level=info msg="  strip_re:"
 level=info msg="    - strip_re1"
 level=info msg="    - strip_re2"
-level=info msg="  valueOnly: []"
-level=info msg="  valueOnly_re: []"
+level=info msg="  valueOnly:"
+level=info msg="    - value1"
+level=info msg="    - value2"
+level=info msg="  valueOnly_re:"
+level=info msg="    - foo.+"
 level=info msg="  color:"
 level=info msg="    custom: {}"
 level=info msg="    static:"
