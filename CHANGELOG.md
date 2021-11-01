@@ -19,6 +19,7 @@
 
 - Refactored internal APIs.
 - Overview modal won't show label name for every value to save screen space.
+- Retry failed requests when collecting alerts and silences from alertmanager.
 
 ## v0.92
 

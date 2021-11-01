@@ -1,12 +1,17 @@
 package main
 
 import (
+	"fmt"
 	"runtime"
 	"sync"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 
 	"github.com/rs/zerolog/log"
+)
+
+const (
+	maxTries = 2
 )
 
 func pullFromAlertmanager() {
@@ -22,9 +27,17 @@ func pullFromAlertmanager() {
 	for _, upstream := range upstreams {
 		go func(am *alertmanager.Alertmanager) {
 			log.Info().Str("alertmanager", am.Name).Msg("Collecting alerts and silences")
-			err := am.Pull()
-			if err != nil {
-				log.Error().Err(err).Str("alertmanager", am.Name).Msg("Collection failed")
+			for i := 1; i <= maxTries; i++ {
+				err := am.Pull()
+				if err != nil {
+					log.Error().
+						Err(err).
+						Str("alertmanager", am.Name).
+						Str("try", fmt.Sprintf("%d/%d", i, maxTries)).
+						Msg("Collection failed")
+				} else {
+					break
+				}
 			}
 			wg.Done()
 		}(upstream)
