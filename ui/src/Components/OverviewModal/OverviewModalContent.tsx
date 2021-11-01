@@ -48,7 +48,7 @@ const TableRows: FC<{
               }
             />
           ))}
-          {nameStats.values.length > 9 ? (
+          {nameStats.values.length > 10 ? (
             <div className="components-label badge my-2 text-muted mw-100">
               +{nameStats.values.length - 9} more
             </div>

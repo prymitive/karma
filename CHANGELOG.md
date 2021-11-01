@@ -17,6 +17,7 @@
 ### Changed
 
 - Refactored internal APIs.
+- Overview modal won't show label name for every value to save screen space.
 
 ## v0.92
 

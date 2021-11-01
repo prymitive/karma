@@ -8,9 +8,6 @@ exports[`<LabelWithPercent /> matches snapshot with isActive=true 1`] = `
       25
     </span>
     <span>
-      <span class=\\"components-label-name\\">
-        foo:
-      </span>
       <span class=\\"components-label-value\\">
         bar
       </span>
@@ -56,9 +53,6 @@ exports[`<LabelWithPercent /> matches snapshot with offset=0 1`] = `
       25
     </span>
     <span>
-      <span class=\\"components-label-name\\">
-        foo:
-      </span>
       <span class=\\"components-label-value\\">
         bar
       </span>
@@ -87,9 +81,6 @@ exports[`<LabelWithPercent /> matches snapshot with offset=25 1`] = `
       25
     </span>
     <span>
-      <span class=\\"components-label-name\\">
-        foo:
-      </span>
       <span class=\\"components-label-value\\">
         bar
       </span>
