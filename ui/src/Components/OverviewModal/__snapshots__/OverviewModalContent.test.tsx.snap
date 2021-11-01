@@ -41,9 +41,6 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   8
                 </span>
                 <span>
-                  <span class=\\"components-label-name\\">
-                    foo:
-                  </span>
                   <span class=\\"components-label-value\\">
                     bar1
                   </span>
@@ -67,9 +64,6 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   4
                 </span>
                 <span>
-                  <span class=\\"components-label-name\\">
-                    foo:
-                  </span>
                   <span class=\\"components-label-value\\">
                     bar2
                   </span>
@@ -102,9 +96,6 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   4
                 </span>
                 <span>
-                  <span class=\\"components-label-name\\">
-                    foo:
-                  </span>
                   <span class=\\"components-label-value\\">
                     bar3
                   </span>
@@ -155,9 +146,6 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-name\\">
-                    bar:
-                  </span>
                   <span class=\\"components-label-value\\">
                     baz1
                   </span>
@@ -181,9 +169,6 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-name\\">
-                    bar:
-                  </span>
                   <span class=\\"components-label-value\\">
                     baz2
                   </span>
@@ -216,9 +201,6 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-name\\">
-                    bar:
-                  </span>
                   <span class=\\"components-label-value\\">
                     baz3
                   </span>
@@ -251,9 +233,6 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-name\\">
-                    bar:
-                  </span>
                   <span class=\\"components-label-value\\">
                     baz4
                   </span>
@@ -286,9 +265,6 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-name\\">
-                    bar:
-                  </span>
                   <span class=\\"components-label-value\\">
                     baz5
                   </span>
@@ -321,9 +297,6 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-name\\">
-                    bar:
-                  </span>
                   <span class=\\"components-label-value\\">
                     baz6
                   </span>
@@ -356,9 +329,6 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-name\\">
-                    bar:
-                  </span>
                   <span class=\\"components-label-value\\">
                     baz7
                   </span>
@@ -391,9 +361,6 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-name\\">
-                    bar:
-                  </span>
                   <span class=\\"components-label-value\\">
                     baz8
                   </span>
@@ -426,9 +393,6 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   1
                 </span>
                 <span>
-                  <span class=\\"components-label-name\\">
-                    bar:
-                  </span>
                   <span class=\\"components-label-value\\">
                     baz9
                   </span>
@@ -482,9 +446,6 @@ exports[`<OverviewModalContent /> matches snapshot with labels to show 1`] = `
                   5
                 </span>
                 <span>
-                  <span class=\\"components-label-name\\">
-                    alertname:
-                  </span>
                   <span class=\\"components-label-value\\">
                     Host_Down
                   </span>

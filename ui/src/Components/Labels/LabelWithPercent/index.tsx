@@ -55,7 +55,6 @@ const LabelWithPercent: FC<{
           {hits}
         </span>
         <span onClick={handleClick}>
-          <span className="components-label-name">{name}:</span>{" "}
           <span className="components-label-value">{value}</span>
         </span>
         {isActive ? (
