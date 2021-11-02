@@ -31,7 +31,7 @@ require (
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/prymitive/randomcolor v0.0.0-20210705210145-26c3401033a6
 	github.com/rogpeppe/go-internal v1.8.0
-	github.com/rs/zerolog v1.25.0
+	github.com/rs/zerolog v1.26.0
 	github.com/spf13/pflag v1.0.5
 	go.mongodb.org/mongo-driver v1.7.3 // indirect
 	go.uber.org/automaxprocs v1.4.0
