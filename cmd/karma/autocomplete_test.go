@@ -79,7 +79,7 @@ var autocompleteTests = []autocompleteTest{
 }
 
 func TestLabelAutocomplete(t *testing.T) {
-	mockConfig()
+	mockConfig(t.Setenv)
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing labels autocomplete using mock files from Alertmanager %s", version)
 		mockAlerts(version)

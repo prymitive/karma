@@ -476,7 +476,7 @@ func TestAlertHistory(t *testing.T) {
 	httpmock.Activate()
 	defer httpmock.DeactivateAndReset()
 
-	mockConfig()
+	mockConfig(t.Setenv)
 
 	hp := newHistoryPoller(1, time.Second*5)
 	r := testRouter()

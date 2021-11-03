@@ -33,10 +33,10 @@ func mimeJSON(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
 }
 
-func badRequestJSON(w http.ResponseWriter, error string) {
+func badRequestJSON(w http.ResponseWriter, err string) {
 	mimeJSON(w)
 	w.WriteHeader(http.StatusBadRequest)
-	out, _ := json.Marshal(map[string]string{"error": error})
+	out, _ := json.Marshal(map[string]string{"error": err})
 	_, _ = w.Write(out)
 }
 
@@ -72,11 +72,11 @@ func compressResponse(data []byte, gz io.WriteCloser) ([]byte, error) {
 
 	_, err := gz.Write(data)
 	if err != nil {
-		return nil, fmt.Errorf("failed to compress data: %s", err.Error())
+		return nil, fmt.Errorf("failed to compress data: %w", err)
 	}
 
 	if err = gz.Close(); err != nil {
-		return nil, fmt.Errorf("failed to close compression writer: %s", err.Error())
+		return nil, fmt.Errorf("failed to close compression writer: %w", err)
 	}
 
 	compressed := b.Bytes()
@@ -93,11 +93,11 @@ func compressResponse(data []byte, gz io.WriteCloser) ([]byte, error) {
 func decompressCachedResponse(r io.Reader) ([]byte, error) {
 	z, err := gzip.NewReader(r)
 	if err != nil {
-		return nil, fmt.Errorf("failed to created new compression reader: %s", err.Error())
+		return nil, fmt.Errorf("failed to created new compression reader: %w", err)
 	}
 	p, err := io.ReadAll(z)
 	if err != nil {
-		return nil, fmt.Errorf("failed to decompress data: %s", err.Error())
+		return nil, fmt.Errorf("failed to decompress data: %w", err)
 	}
 	z.Close()
 	return p, nil

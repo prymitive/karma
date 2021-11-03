@@ -202,7 +202,7 @@ func setupUpstreams() error {
 		if s.TLS.CA != "" || s.TLS.Cert != "" || s.TLS.InsecureSkipVerify {
 			httpTransport, err = alertmanager.NewHTTPTransport(s.TLS.CA, s.TLS.Cert, s.TLS.Key, s.TLS.InsecureSkipVerify)
 			if err != nil {
-				return fmt.Errorf("failed to create HTTP transport for Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
+				return fmt.Errorf("failed to create HTTP transport for Alertmanager '%s' with URI '%s': %w", s.Name, uri.SanitizeURI(s.URI), err)
 			}
 		}
 
@@ -233,11 +233,11 @@ func setupUpstreams() error {
 			alertmanager.WithHealthchecksVisible(s.Healthcheck.Visible),
 		)
 		if err != nil {
-			return fmt.Errorf("failed to create Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
+			return fmt.Errorf("failed to create Alertmanager '%s' with URI '%s': %w", s.Name, uri.SanitizeURI(s.URI), err)
 		}
 		err = alertmanager.RegisterAlertmanager(am)
 		if err != nil {
-			return fmt.Errorf("failed to register Alertmanager '%s' with URI '%s': %s", s.Name, uri.SanitizeURI(s.URI), err)
+			return fmt.Errorf("failed to register Alertmanager '%s' with URI '%s': %w", s.Name, uri.SanitizeURI(s.URI), err)
 		}
 	}
 
@@ -312,7 +312,7 @@ func loadTemplates() error {
 	var t *template.Template
 	t, err := template.ParseFS(ui.StaticFiles, "build/index.html")
 	if err != nil {
-		return fmt.Errorf("failed to load template: %s", err)
+		return fmt.Errorf("failed to load template: %w", err)
 	}
 	indexTemplate = t
 	return nil
@@ -369,7 +369,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, err
 		}
 		re, err := regexp.Compile(rule.Regex)
 		if err != nil {
-			return nil, nil, fmt.Errorf("invalid link detect rule '%s': %s", rule.Regex, err)
+			return nil, nil, fmt.Errorf("invalid link detect rule '%s': %w", rule.Regex, err)
 		}
 		linkDetectRules = append(linkDetectRules, models.LinkDetectRule{Regex: re, URITemplate: rule.URITemplate})
 	}
@@ -398,7 +398,7 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, err
 		for i, cfg := range aclConfig.Rules {
 			acl, err := newSilenceACLFromConfig(cfg)
 			if err != nil {
-				return nil, nil, fmt.Errorf("invalid silence ACL rule at position %d: %s", i, err)
+				return nil, nil, fmt.Errorf("invalid silence ACL rule at position %d: %w", i, err)
 			}
 			silenceACLs = append(silenceACLs, acl)
 		}
@@ -441,7 +441,7 @@ func writePidFile() error {
 		pid := os.Getpid()
 		err := os.WriteFile(pidFile, []byte(strconv.Itoa(pid)), 0644)
 		if err != nil {
-			return fmt.Errorf("failed to write a PID file: %s", err)
+			return fmt.Errorf("failed to write a PID file: %w", err)
 		}
 	}
 	return nil
@@ -452,7 +452,7 @@ func removePidFile() error {
 		log.Info().Str("path", pidFile).Msg("Removing PID file")
 		err := os.Remove(pidFile)
 		if err != nil {
-			return fmt.Errorf("failed to remove PID file: %s", err)
+			return fmt.Errorf("failed to remove PID file: %w", err)
 		}
 	}
 	return nil
@@ -534,7 +534,7 @@ func serve(errorHandling pflag.ErrorHandling) error {
 	defer cancel()
 	if err := httpServer.Shutdown(ctx); err != nil {
 		_ = removePidFile()
-		return fmt.Errorf("shutdown error: %s", err)
+		return fmt.Errorf("shutdown error: %w", err)
 	}
 
 	log.Info().Msg("HTTP server shut down")

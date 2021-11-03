@@ -3,7 +3,6 @@ package config
 import (
 	"bytes"
 	"io"
-	"os"
 	"regexp"
 	"testing"
 	"time"
@@ -17,10 +16,6 @@ import (
 
 	yaml "gopkg.in/yaml.v3"
 )
-
-func resetEnv() {
-	os.Clearenv()
-}
 
 func testReadConfig(t *testing.T) {
 	expectedConfig := `authentication:
@@ -200,42 +195,40 @@ func mockConfigRead() (string, error) {
 }
 
 func TestReadConfig(t *testing.T) {
-	resetEnv()
 	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
-	os.Setenv("ALERTMANAGER_INTERVAL", "1s")
-	os.Setenv("ALERTMANAGER_URI", "http://localhost")
-	os.Setenv("ALERTMANAGER_EXTERNAL_URI", "http://example.com")
-	os.Setenv("ANNOTATIONS_DEFAULT_HIDDEN", "true")
-	os.Setenv("ANNOTATIONS_VISIBLE", "summary")
-	os.Setenv("CUSTOM_CSS", "/custom.css")
-	os.Setenv("CUSTOM_JS", "/custom.js")
-	os.Setenv("DEBUG", "true")
-	os.Setenv("FILTERS_DEFAULT", "@state=active foo=bar")
-	os.Setenv("KARMA_NAME", "another karma")
-	os.Setenv("LABELS_COLOR_STATIC", "a bb ccc")
-	os.Setenv("LABELS_COLOR_UNIQUE", "f gg")
-	os.Setenv("LABELS_KEEP", "foo bar")
-	os.Setenv("LABELS_KEEP_RE", "fo+ ba.")
-	os.Setenv("LABELS_STRIP", "abc def")
-	os.Setenv("LABELS_STRIP_RE", "g.*")
-	os.Setenv("LABELS_VALUEONLY_RE", "fo+ .ar")
-	os.Setenv("LISTEN_ADDRESS", "0.0.0.0")
-	os.Setenv("LISTEN_PORT", "80")
-	os.Setenv("SENTRY_PRIVATE", "secret key")
-	os.Setenv("SENTRY_PUBLIC", "public key")
+	t.Setenv("ALERTMANAGER_INTERVAL", "1s")
+	t.Setenv("ALERTMANAGER_URI", "http://localhost")
+	t.Setenv("ALERTMANAGER_EXTERNAL_URI", "http://example.com")
+	t.Setenv("ANNOTATIONS_DEFAULT_HIDDEN", "true")
+	t.Setenv("ANNOTATIONS_VISIBLE", "summary")
+	t.Setenv("CUSTOM_CSS", "/custom.css")
+	t.Setenv("CUSTOM_JS", "/custom.js")
+	t.Setenv("DEBUG", "true")
+	t.Setenv("FILTERS_DEFAULT", "@state=active foo=bar")
+	t.Setenv("KARMA_NAME", "another karma")
+	t.Setenv("LABELS_COLOR_STATIC", "a bb ccc")
+	t.Setenv("LABELS_COLOR_UNIQUE", "f gg")
+	t.Setenv("LABELS_KEEP", "foo bar")
+	t.Setenv("LABELS_KEEP_RE", "fo+ ba.")
+	t.Setenv("LABELS_STRIP", "abc def")
+	t.Setenv("LABELS_STRIP_RE", "g.*")
+	t.Setenv("LABELS_VALUEONLY_RE", "fo+ .ar")
+	t.Setenv("LISTEN_ADDRESS", "0.0.0.0")
+	t.Setenv("LISTEN_PORT", "80")
+	t.Setenv("SENTRY_PRIVATE", "secret key")
+	t.Setenv("SENTRY_PUBLIC", "public key")
 	_, _ = mockConfigRead()
 	testReadConfig(t)
 }
 
 func TestReadSimpleConfig(t *testing.T) {
-	resetEnv()
 	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
-	os.Setenv("ALERTMANAGER_URI", "http://localhost")
-	os.Setenv("ALERTMANAGER_EXTERNAL_URI", "http://localhost:9090")
-	os.Setenv("ALERTMANAGER_NAME", "single")
-	os.Setenv("ALERTMANAGER_TIMEOUT", "15s")
-	os.Setenv("ALERTMANAGER_PROXY", "true")
-	os.Setenv("ALERTMANAGER_INTERVAL", "3m")
+	t.Setenv("ALERTMANAGER_URI", "http://localhost")
+	t.Setenv("ALERTMANAGER_EXTERNAL_URI", "http://localhost:9090")
+	t.Setenv("ALERTMANAGER_NAME", "single")
+	t.Setenv("ALERTMANAGER_TIMEOUT", "15s")
+	t.Setenv("ALERTMANAGER_PROXY", "true")
+	t.Setenv("ALERTMANAGER_INTERVAL", "3m")
 	_, _ = mockConfigRead()
 	if len(Config.Alertmanager.Servers) != 1 {
 		t.Errorf("Expected 1 Alertmanager server, got %d", len(Config.Alertmanager.Servers))
@@ -306,8 +299,7 @@ func TestLogValues(t *testing.T) {
 }
 
 func TestInvalidGridSortingOrder(t *testing.T) {
-	resetEnv()
-	os.Setenv("GRID_SORTING_ORDER", "foo")
+	t.Setenv("GRID_SORTING_ORDER", "foo")
 
 	_, err := mockConfigRead()
 	if err == nil {
@@ -316,8 +308,7 @@ func TestInvalidGridSortingOrder(t *testing.T) {
 }
 
 func TestInvalidUICollapseGroups(t *testing.T) {
-	resetEnv()
-	os.Setenv("UI_COLLAPSEGROUPS", "foo")
+	t.Setenv("UI_COLLAPSEGROUPS", "foo")
 
 	_, err := mockConfigRead()
 	if err == nil {
@@ -326,8 +317,7 @@ func TestInvalidUICollapseGroups(t *testing.T) {
 }
 
 func TestInvalidUITheme(t *testing.T) {
-	resetEnv()
-	os.Setenv("UI_THEME", "foo")
+	t.Setenv("UI_THEME", "foo")
 
 	_, err := mockConfigRead()
 	if err == nil {
@@ -336,8 +326,7 @@ func TestInvalidUITheme(t *testing.T) {
 }
 
 func TestInvalidCORSCredentials(t *testing.T) {
-	resetEnv()
-	os.Setenv("ALERTMANAGER_CORS_CREDENTIALS", "foo")
+	t.Setenv("ALERTMANAGER_CORS_CREDENTIALS", "foo")
 
 	_, err := mockConfigRead()
 	if err == nil {
@@ -346,8 +335,7 @@ func TestInvalidCORSCredentials(t *testing.T) {
 }
 
 func TestInvalidKeepRegex(t *testing.T) {
-	resetEnv()
-	os.Setenv("LABELS_KEEP_RE", "fo**")
+	t.Setenv("LABELS_KEEP_RE", "fo**")
 
 	_, err := mockConfigRead()
 	if err == nil {
@@ -356,8 +344,7 @@ func TestInvalidKeepRegex(t *testing.T) {
 }
 
 func TestInvalidStripRegex(t *testing.T) {
-	resetEnv()
-	os.Setenv("LABELS_STRIP_RE", "fo**")
+	t.Setenv("LABELS_STRIP_RE", "fo**")
 
 	_, err := mockConfigRead()
 	if err == nil {
@@ -366,7 +353,6 @@ func TestInvalidStripRegex(t *testing.T) {
 }
 
 func TestDefaultConfig(t *testing.T) {
-	resetEnv()
 	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	_, _ = mockConfigRead()
 

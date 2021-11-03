@@ -1,7 +1,6 @@
 package alertmanager_test
 
 import (
-	"os"
 	"testing"
 
 	"github.com/prymitive/karma/internal/alertmanager"
@@ -34,8 +33,8 @@ func BenchmarkDedupAutocomplete(b *testing.B) {
 }
 
 func BenchmarkDedupColors(b *testing.B) {
-	os.Setenv("LABELS_COLOR_UNIQUE", "cluster instance @receiver")
-	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	b.Setenv("LABELS_COLOR_UNIQUE", "cluster instance @receiver")
+	b.Setenv("ALERTMANAGER_URI", "http://localhost")
 
 	f := pflag.NewFlagSet(".", pflag.ExitOnError)
 	config.SetupFlags(f)

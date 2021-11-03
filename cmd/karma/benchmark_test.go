@@ -105,7 +105,7 @@ func BenchmarkCompressionAndDecompression(b *testing.B) {
 func BenchmarkPullAlerts(b *testing.B) {
 	zerolog.SetGlobalLevel(zerolog.FatalLevel)
 
-	mockConfig()
+	mockConfig(b.Setenv)
 	for _, version := range mock.ListAllMocks() {
 		version := version
 		b.Run(version, func(b *testing.B) {
@@ -134,7 +134,7 @@ func BenchmarkAlertsAPIMisses(b *testing.B) {
 		b.FailNow()
 	}
 
-	mockConfig()
+	mockConfig(b.Setenv)
 	for _, version := range mock.ListAllMocks() {
 		mockAlerts(version)
 		r := testRouter()
@@ -161,7 +161,7 @@ func BenchmarkAlertsAPIMisses(b *testing.B) {
 func BenchmarkAlertsAPIMissesAutoGrid(b *testing.B) {
 	zerolog.SetGlobalLevel(zerolog.FatalLevel)
 
-	mockConfig()
+	mockConfig(b.Setenv)
 	for _, version := range mock.ListAllMocks() {
 		mockAlerts(version)
 		r := testRouter()
@@ -209,7 +209,7 @@ func BenchmarkAlertsAPIHits(b *testing.B) {
 		b.FailNow()
 	}
 
-	mockConfig()
+	mockConfig(b.Setenv)
 	for _, version := range mock.ListAllMocks() {
 		mockAlerts(version)
 		r := testRouter()

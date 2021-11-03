@@ -62,7 +62,7 @@ func TestCustomizationAssets(t *testing.T) {
 		},
 	}
 
-	mockConfig()
+	mockConfig(t.Setenv)
 	for i, staticFileTest := range customizationAssetsTests {
 		t.Run(fmt.Sprintf("%d/%s", i, staticFileTest.path), func(t *testing.T) {
 			config.Config.Custom.CSS = staticFileTest.customCSS
@@ -90,7 +90,7 @@ func TestCustomizationAssets(t *testing.T) {
 }
 
 func TestStaticExpires404(t *testing.T) {
-	mockConfig()
+	mockConfig(t.Setenv)
 	r := testRouter()
 	setupRouter(r, nil)
 
@@ -103,7 +103,7 @@ func TestStaticExpires404(t *testing.T) {
 }
 
 func TestAssetFallbackMIME(t *testing.T) {
-	mockConfig()
+	mockConfig(t.Setenv)
 	r := testRouter()
 	setupRouter(r, nil)
 	req := httptest.NewRequest("GET", "/static/js/App.tsx", nil)
@@ -162,7 +162,7 @@ func TestStaticFiles(t *testing.T) {
 		},
 	}
 
-	mockConfig()
+	mockConfig(t.Setenv)
 	r := testRouter()
 	setupRouter(r, nil)
 	for _, staticFileTest := range staticFileTests {
@@ -223,9 +223,9 @@ func TestStaticFilesPrefix(t *testing.T) {
 		},
 	}
 
-	os.Setenv("LISTEN_PREFIX", "/sub")
+	t.Setenv("LISTEN_PREFIX", "/sub")
 	defer os.Unsetenv("LISTEN_PREFIX")
-	mockConfig()
+	mockConfig(t.Setenv)
 	r := testRouter()
 	setupRouter(r, nil)
 	for _, staticFileTest := range staticFilePrefixTests {
