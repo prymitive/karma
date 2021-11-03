@@ -261,7 +261,7 @@ func countAlerts(uri string, timeout time.Duration, labels map[string]string) (r
 		RoundTripper: http.DefaultTransport,
 	})
 	if err != nil {
-		return nil, fmt.Errorf("failed to create Prometheus API client: %v", err)
+		return nil, fmt.Errorf("failed to create Prometheus API client: %w", err)
 	}
 
 	v1api := v1.NewAPI(client)
@@ -274,7 +274,7 @@ func countAlerts(uri string, timeout time.Duration, labels map[string]string) (r
 		time.Now().Add(time.Minute*-5),
 		time.Now())
 	if err != nil {
-		return nil, fmt.Errorf("failed to query Prometheus for label names: %s", err)
+		return nil, fmt.Errorf("failed to query Prometheus for label names: %w", err)
 	}
 
 	r := v1.Range{
@@ -299,7 +299,7 @@ func countAlerts(uri string, timeout time.Duration, labels map[string]string) (r
 
 	result, _, err := v1api.QueryRange(ctx, q, r)
 	if err != nil {
-		return nil, fmt.Errorf("failed to run a range query Prometheus for alerts: %v", err)
+		return nil, fmt.Errorf("failed to run a range query Prometheus for alerts: %w", err)
 	}
 
 	if samples, ok := result.(model.Matrix); ok {

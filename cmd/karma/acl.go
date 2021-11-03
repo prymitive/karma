@@ -228,7 +228,7 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 		if filter.NameRegex != "" {
 			re, err := regex.CompileAnchored(filter.NameRegex)
 			if err != nil {
-				return nil, fmt.Errorf("invalid ACL rule, failed to parse name_re %q: %s", filter.NameRegex, err)
+				return nil, fmt.Errorf("invalid ACL rule, failed to parse name_re %q: %w", filter.NameRegex, err)
 			}
 			f.NameRegex = re
 		}
@@ -236,7 +236,7 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 		if filter.ValueRegex != "" {
 			re, err := regex.CompileAnchored(filter.ValueRegex)
 			if err != nil {
-				return nil, fmt.Errorf("invalid ACL rule, failed to parse value_re %q: %s", filter.ValueRegex, err)
+				return nil, fmt.Errorf("invalid ACL rule, failed to parse value_re %q: %w", filter.ValueRegex, err)
 			}
 			f.ValueRegex = re
 		}
@@ -270,7 +270,7 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 			if matcherConfig.NameRegex != "" {
 				re, err := regex.CompileAnchored(matcherConfig.NameRegex)
 				if err != nil {
-					return nil, fmt.Errorf("invalid ACL rule, failed to parse name_re %q: %s", matcherConfig.NameRegex, err)
+					return nil, fmt.Errorf("invalid ACL rule, failed to parse name_re %q: %w", matcherConfig.NameRegex, err)
 				}
 				m.NameRegex = re
 			}
@@ -278,7 +278,7 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 			if matcherConfig.ValueRegex != "" {
 				re, err := regex.CompileAnchored(matcherConfig.ValueRegex)
 				if err != nil {
-					return nil, fmt.Errorf("invalid ACL rule, failed to parse value_re %q: %s", matcherConfig.ValueRegex, err)
+					return nil, fmt.Errorf("invalid ACL rule, failed to parse value_re %q: %w", matcherConfig.ValueRegex, err)
 				}
 				m.ValueRegex = re
 			}

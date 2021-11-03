@@ -35,10 +35,12 @@ import (
 
 var upstreamSetup = false
 
-func mockConfig() {
+type setenvFunc func(key, val string)
+
+func mockConfig(setenv setenvFunc) {
 	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
-	os.Setenv("ALERTMANAGER_URI", "http://localhost")
-	os.Setenv("LABELS_COLOR_UNIQUE", "alertname @receiver @alertmanager @cluster")
+	setenv("ALERTMANAGER_URI", "http://localhost")
+	setenv("LABELS_COLOR_UNIQUE", "alertname @receiver @alertmanager @cluster")
 
 	f := pflag.NewFlagSet(".", pflag.ExitOnError)
 	config.SetupFlags(f)
@@ -68,7 +70,7 @@ func testRouter() *chi.Mux {
 }
 
 func TestHealth(t *testing.T) {
-	mockConfig()
+	mockConfig(t.Setenv)
 	r := testRouter()
 	setupRouter(r, nil)
 	req := httptest.NewRequest("GET", "/health", nil)
@@ -80,7 +82,7 @@ func TestHealth(t *testing.T) {
 }
 
 func TestRobots(t *testing.T) {
-	mockConfig()
+	mockConfig(t.Setenv)
 	r := testRouter()
 	setupRouter(r, nil)
 	req := httptest.NewRequest("GET", "/robots.txt", nil)
@@ -92,7 +94,7 @@ func TestRobots(t *testing.T) {
 }
 
 func TestVersion(t *testing.T) {
-	mockConfig()
+	mockConfig(t.Setenv)
 	r := testRouter()
 	setupRouter(r, nil)
 	req := httptest.NewRequest("GET", "/version", nil)
@@ -104,9 +106,9 @@ func TestVersion(t *testing.T) {
 }
 
 func TestHealthPrefix(t *testing.T) {
-	os.Setenv("LISTEN_PREFIX", "/prefix")
+	t.Setenv("LISTEN_PREFIX", "/prefix")
 	defer os.Unsetenv("LISTEN_PREFIX")
-	mockConfig()
+	mockConfig(t.Setenv)
 	r := testRouter()
 	setupRouter(r, nil)
 	req := httptest.NewRequest("GET", "/prefix/health", nil)
@@ -196,9 +198,9 @@ func TestIndex(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(fmt.Sprintf("prefix=%s request=%s status=%d", tc.prefix, tc.request, tc.status), func(t *testing.T) {
-			os.Setenv("LISTEN_PREFIX", tc.prefix)
+			t.Setenv("LISTEN_PREFIX", tc.prefix)
 			defer os.Unsetenv("LISTEN_PREFIX")
-			mockConfig()
+			mockConfig(t.Setenv)
 			r := testRouter()
 			setupRouter(r, nil)
 			req := httptest.NewRequest("GET", tc.request, nil)
@@ -254,7 +256,7 @@ func TestAlerts(t *testing.T) {
 		t.FailNow()
 	}
 
-	mockConfig()
+	mockConfig(t.Setenv)
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 		mockAlerts(version)
@@ -325,7 +327,7 @@ func TestAlerts(t *testing.T) {
 }
 
 func TestAlertsBadRequest(t *testing.T) {
-	mockConfig()
+	mockConfig(t.Setenv)
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 		mockAlerts(version)
@@ -355,7 +357,7 @@ func TestAlertsLimitFallback(t *testing.T) {
 		t.FailNow()
 	}
 
-	mockConfig()
+	mockConfig(t.Setenv)
 	config.Config.UI.AlertsPerGroup = 1
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
@@ -542,7 +544,7 @@ func TestGrids(t *testing.T) {
 		},
 	}
 
-	mockConfig()
+	mockConfig(t.Setenv)
 	for _, version := range mock.ListAllMocks() {
 		version := version
 		for _, testCase := range testCases {
@@ -609,7 +611,7 @@ func TestValidateAllAlerts(t *testing.T) {
 		t.FailNow()
 	}
 
-	mockConfig()
+	mockConfig(t.Setenv)
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Validating alerts.json response using mock files from Alertmanager %s", version)
 		mockAlerts(version)
@@ -791,7 +793,7 @@ var acTests = []acTestCase{
 }
 
 func TestAutocomplete(t *testing.T) {
-	mockConfig()
+	mockConfig(t.Setenv)
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing autocomplete using mock files from Alertmanager %s", version)
 		mockAlerts(version)
@@ -838,7 +840,7 @@ func TestAutocomplete(t *testing.T) {
 }
 
 func TestGzipMiddleware(t *testing.T) {
-	mockConfig()
+	mockConfig(t.Setenv)
 	r := testRouter()
 	setupRouter(r, nil)
 	paths := []string{"/", "/alertList.json", "/autocomplete.json", "/metrics"}
@@ -865,7 +867,7 @@ func TestGzipMiddleware(t *testing.T) {
 }
 
 func TestGzipMiddlewareWithoutAcceptEncoding(t *testing.T) {
-	mockConfig()
+	mockConfig(t.Setenv)
 	r := testRouter()
 	setupRouter(r, nil)
 	paths := []string{"/", "/alertList.json", "/autocomplete.json", "/metrics"}
@@ -1027,7 +1029,7 @@ func TestSilences(t *testing.T) {
 		},
 	}
 
-	mockConfig()
+	mockConfig(t.Setenv)
 	for _, testCase := range silenceTestCases {
 		for _, version := range mock.ListAllMocks() {
 			t.Logf("Validating silences.json response using mock files from Alertmanager %s", version)
@@ -1063,7 +1065,7 @@ func TestSilences(t *testing.T) {
 }
 
 func TestCORS(t *testing.T) {
-	mockConfig()
+	mockConfig(t.Setenv)
 	r := testRouter()
 	setupRouter(r, nil)
 	req := httptest.NewRequest("OPTIONS", "/alerts.json", nil)
@@ -1086,7 +1088,7 @@ func TestEmptySettings(t *testing.T) {
 		t.FailNow()
 	}
 
-	mockConfig()
+	mockConfig(t.Setenv)
 	r := testRouter()
 	setupRouter(r, nil)
 	req := httptest.NewRequest("POST", "/alerts.json", bytes.NewReader(payload))
@@ -3241,7 +3243,7 @@ func TestAutoGrid(t *testing.T) {
 		config.Config.Grid.Auto.Order = []string{}
 	}()
 
-	mockConfig()
+	mockConfig(t.Setenv)
 	for _, tc := range testCases {
 		config.Config.Grid.Auto.Ignore = tc.ignore
 		config.Config.Grid.Auto.Order = tc.order
@@ -3389,7 +3391,7 @@ func TestGridLimit(t *testing.T) {
 		config.Config.Grid.GroupLimit = 50
 	}()
 
-	mockConfig()
+	mockConfig(t.Setenv)
 	for _, tc := range testCases {
 		if tc.groupLimit > 0 {
 			config.Config.Grid.GroupLimit = tc.groupLimit
@@ -3640,7 +3642,7 @@ func TestAlertList(t *testing.T) {
 		},
 	}
 
-	mockConfig()
+	mockConfig(t.Setenv)
 	for _, tc := range testCases {
 		for _, version := range mock.ListAllMocks() {
 			t.Run(fmt.Sprintf("%s:%s", version, tc.args), func(t *testing.T) {
@@ -3973,7 +3975,7 @@ func TestLabelSettings(t *testing.T) {
 	}()
 
 	for i, tc := range testCases {
-		mockConfig()
+		mockConfig(t.Setenv)
 		t.Logf("Testing alerts using mock files from Alertmanager %s", version)
 		mockAlerts(version)
 		config.Config.Labels.Color.Static = tc.static

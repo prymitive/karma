@@ -2,7 +2,6 @@ package alertmanager_test
 
 import (
 	"fmt"
-	"os"
 	"strings"
 	"testing"
 	"time"
@@ -96,7 +95,7 @@ func TestDedupAlertsWithoutLabels(t *testing.T) {
 }
 
 func TestDedupSilences(t *testing.T) {
-	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	t.Setenv("ALERTMANAGER_URI", "http://localhost")
 	mockConfigRead()
 	if err := pullAlerts(); err != nil {
 		t.Error(err)
@@ -129,8 +128,8 @@ func TestDedupAutocomplete(t *testing.T) {
 }
 
 func TestDedupColors(t *testing.T) {
-	os.Setenv("LABELS_COLOR_UNIQUE", "cluster instance @receiver")
-	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	t.Setenv("LABELS_COLOR_UNIQUE", "cluster instance @receiver")
+	t.Setenv("ALERTMANAGER_URI", "http://localhost")
 	mockConfigRead()
 	if err := pullAlerts(); err != nil {
 		t.Error(err)
@@ -143,7 +142,7 @@ func TestDedupColors(t *testing.T) {
 }
 
 func TestDedupKnownLabels(t *testing.T) {
-	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	t.Setenv("ALERTMANAGER_URI", "http://localhost")
 	mockConfigRead()
 	if err := pullAlerts(); err != nil {
 		t.Error(err)
@@ -156,7 +155,7 @@ func TestDedupKnownLabels(t *testing.T) {
 }
 
 func TestDedupKnownLabelValues(t *testing.T) {
-	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	t.Setenv("ALERTMANAGER_URI", "http://localhost")
 	mockConfigRead()
 	if err := pullAlerts(); err != nil {
 		t.Error(err)
@@ -169,8 +168,8 @@ func TestDedupKnownLabelValues(t *testing.T) {
 }
 
 func TestStripReceivers(t *testing.T) {
-	os.Setenv("RECEIVERS_STRIP", "by-name by-cluster-service")
-	os.Setenv("ALERTMANAGER_URI", "http://localhost")
+	t.Setenv("RECEIVERS_STRIP", "by-name by-cluster-service")
+	t.Setenv("ALERTMANAGER_URI", "http://localhost")
 	mockConfigRead()
 	if err := pullAlerts(); err != nil {
 		t.Error(err)

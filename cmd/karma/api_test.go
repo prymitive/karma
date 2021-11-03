@@ -787,7 +787,7 @@ func TestVerifyAllGroups(t *testing.T) {
 		t.FailNow()
 	}
 
-	mockConfig()
+	mockConfig(t.Setenv)
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing API using mock files from Alertmanager %s", version)
 		mockAlerts(version)
@@ -950,7 +950,7 @@ var sortTests = []sortTest{
 }
 
 func TestSortOrder(t *testing.T) {
-	mockConfig()
+	mockConfig(t.Setenv)
 	config.Config.Grid.Sorting.Order = "label"
 	config.Config.Grid.Sorting.Label = "cluster"
 	config.Config.Grid.Sorting.CustomValues.Labels = map[string]map[string]string{}
@@ -1068,7 +1068,7 @@ func TestStripLabels(t *testing.T) {
 		t.FailNow()
 	}
 
-	mockConfig()
+	mockConfig(t.Setenv)
 	for _, version := range mock.ListAllMocks() {
 		t.Logf("Testing API using mock files from Alertmanager %s", version)
 		mockAlerts(version)

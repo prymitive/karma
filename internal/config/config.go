@@ -184,7 +184,7 @@ func readConfigFile(k *koanf.Koanf, flags *pflag.FlagSet) (string, error) {
 	}
 	if configFile != "" {
 		if err := k.Load(file.Provider(configFile), yamlParser.Parser()); err != nil {
-			return "", fmt.Errorf("failed to load configuration file %q: %v", configFile, err)
+			return "", fmt.Errorf("failed to load configuration file %q: %w", configFile, err)
 		}
 		return configFile, nil
 	}
@@ -291,12 +291,12 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 		DecoderConfig: &dConf,
 	})
 	if err != nil {
-		return "", fmt.Errorf("failed to unmarshal configuration: %v", err)
+		return "", fmt.Errorf("failed to unmarshal configuration: %w", err)
 	}
 
 	if configFileUsed != "" {
 		if err := validateConfigFile(configFileUsed); err != nil {
-			return "", fmt.Errorf("failed to parse configuration file %q: %v", configFileUsed, err)
+			return "", fmt.Errorf("failed to parse configuration file %q: %w", configFileUsed, err)
 		}
 	}
 
@@ -311,7 +311,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	if config.Authentication.Header.ValueRegex != "" {
 		_, err = regex.CompileAnchored(config.Authentication.Header.ValueRegex)
 		if err != nil {
-			return "", fmt.Errorf("invalid regex for authentication.header.value_re: %s", err.Error())
+			return "", fmt.Errorf("invalid regex for authentication.header.value_re: %w", err)
 		}
 		if config.Authentication.Header.Name == "" {
 			return "", fmt.Errorf("authentication.header.name is required when authentication.header.value_re is set")
@@ -322,7 +322,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	if config.Authentication.Header.GroupValueRegex != "" {
 		_, err = regex.CompileAnchored(config.Authentication.Header.GroupValueRegex)
 		if err != nil {
-			return "", fmt.Errorf("invalid regex for authentication.header.group_value_re: %s", err.Error())
+			return "", fmt.Errorf("invalid regex for authentication.header.group_value_re: %w", err)
 		}
 		if config.Authentication.Header.GroupName == "" {
 			return "", fmt.Errorf("authentication.header.group_name is required when authentication.header.group_value_re is set")
@@ -373,7 +373,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	for i, keepRegex := range config.Labels.KeepRegex {
 		config.Labels.CompiledKeepRegex[i], err = regex.CompileAnchored(keepRegex)
 		if err != nil {
-			return "", fmt.Errorf("keep regex rule '%s' is invalid: %s", keepRegex, err)
+			return "", fmt.Errorf("keep regex rule '%s' is invalid: %w", keepRegex, err)
 		}
 	}
 
@@ -381,7 +381,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	for i, stripRegex := range config.Labels.StripRegex {
 		config.Labels.CompiledStripRegex[i], err = regex.CompileAnchored(stripRegex)
 		if err != nil {
-			return "", fmt.Errorf("strip regex rule '%s' is invalid: %s", stripRegex, err)
+			return "", fmt.Errorf("strip regex rule '%s' is invalid: %w", stripRegex, err)
 		}
 	}
 
@@ -389,7 +389,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	for i, valueOnlyRegex := range config.Labels.ValueOnlyRegex {
 		config.Labels.CompiledValueOnlyRegex[i], err = regex.CompileAnchored(valueOnlyRegex)
 		if err != nil {
-			return "", fmt.Errorf("valueOnly regex rule '%s' is invalid: %s", valueOnlyRegex, err)
+			return "", fmt.Errorf("valueOnly regex rule '%s' is invalid: %w", valueOnlyRegex, err)
 		}
 	}
 
@@ -401,7 +401,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 			if customColor.ValueRegex != "" {
 				config.Labels.Color.Custom[labelName][i].CompiledRegex, err = regex.CompileAnchored(customColor.ValueRegex)
 				if err != nil {
-					return "", fmt.Errorf("failed to parse custom color regex rule '%s' for '%s' label: %s", customColor.ValueRegex, labelName, err)
+					return "", fmt.Errorf("failed to parse custom color regex rule '%s' for '%s' label: %w", customColor.ValueRegex, labelName, err)
 				}
 			}
 		}
@@ -434,7 +434,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 	for i := 0; i < len(config.History.Rewrite); i++ {
 		config.History.Rewrite[i].SourceRegex, err = regex.CompileAnchored(config.History.Rewrite[i].Source)
 		if err != nil {
-			return "", fmt.Errorf("history.rewrite source regex %q is invalid: %v", config.History.Rewrite[i].Source, err)
+			return "", fmt.Errorf("history.rewrite source regex %q is invalid: %w", config.History.Rewrite[i].Source, err)
 		}
 	}
 

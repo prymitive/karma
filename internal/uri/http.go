@@ -45,7 +45,7 @@ func (r *HTTPURIReader) Read(uri string, headers map[string]string) (io.ReadClos
 	case "gzip":
 		reader, err = gzip.NewReader(resp.Body)
 		if err != nil {
-			return nil, fmt.Errorf("failed to decode gzipped content: %s", err.Error())
+			return nil, fmt.Errorf("failed to decode gzipped content: %w", err)
 		}
 	default:
 		reader = resp.Body
