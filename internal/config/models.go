@@ -9,6 +9,13 @@ type AlertmanagerCORS struct {
 	Credentials string
 }
 
+type AlertmanagerTLS struct {
+	CA                 string
+	Cert               string
+	Key                string
+	InsecureSkipVerify bool `yaml:"insecureSkipVerify" koanf:"insecureSkipVerify"`
+}
+
 type AlertmanagerHealthcheck struct {
 	Visible bool                `yaml:"visible" koanf:"visible"`
 	Filters map[string][]string `yaml:"filters" koanf:"filters"`
@@ -23,12 +30,7 @@ type AlertmanagerConfig struct {
 	Timeout     time.Duration
 	Proxy       bool
 	ReadOnly    bool `yaml:"readonly"`
-	TLS         struct {
-		CA                 string
-		Cert               string
-		Key                string
-		InsecureSkipVerify bool `yaml:"insecureSkipVerify" koanf:"insecureSkipVerify"`
-	}
+	TLS         AlertmanagerTLS
 	Headers     map[string]string
 	CORS        AlertmanagerCORS        `yaml:"cors" koanf:"cors"`
 	Healthcheck AlertmanagerHealthcheck `yaml:"healthcheck" koanf:"healthcheck"`
@@ -96,6 +98,7 @@ type configSchema struct {
 		Proxy       bool             `yaml:"-" koanf:"proxy"`
 		ReadOnly    bool             `yaml:"-" koanf:"readonly"`
 		CORS        AlertmanagerCORS `yaml:"-" koanf:"cors"`
+		TLS         AlertmanagerTLS  `yaml:"-" koanf:"tls"`
 	}
 	AlertAcknowledgement struct {
 		Enabled  bool

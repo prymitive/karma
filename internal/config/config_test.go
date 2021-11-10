@@ -229,6 +229,10 @@ func TestReadSimpleConfig(t *testing.T) {
 	t.Setenv("ALERTMANAGER_TIMEOUT", "15s")
 	t.Setenv("ALERTMANAGER_PROXY", "true")
 	t.Setenv("ALERTMANAGER_INTERVAL", "3m")
+	t.Setenv("ALERTMANAGER_TLS_CA", "/my-ca.cer")
+	t.Setenv("ALERTMANAGER_TLS_CERT", "/my-cert.cer")
+	t.Setenv("ALERTMANAGER_TLS_KEY", "/my-cert.key")
+	t.Setenv("ALERTMANAGER_TLS_INSECURE_SKIP_VERIFY", "true")
 	_, _ = mockConfigRead()
 	if len(Config.Alertmanager.Servers) != 1 {
 		t.Errorf("Expected 1 Alertmanager server, got %d", len(Config.Alertmanager.Servers))
@@ -251,6 +255,18 @@ func TestReadSimpleConfig(t *testing.T) {
 		}
 		if am.Proxy != true {
 			t.Errorf("Expect Alertmanager proxy 'true' got '%v'", am.Proxy)
+		}
+		if am.TLS.CA != "/my-ca.cer" {
+			t.Errorf("Expected Alertmanager TLS CA '/my-ca.cer' got '%s'", am.TLS.CA)
+		}
+		if am.TLS.Cert != "/my-cert.cer" {
+			t.Errorf("Expected Alertmanager TLS Cert '/my-cert.cer' got '%s'", am.TLS.Cert)
+		}
+		if am.TLS.Key != "/my-cert.key" {
+			t.Errorf("Expected Alertmanager TLS Key '/my-cert.key' got '%s'", am.TLS.Key)
+		}
+		if am.TLS.InsecureSkipVerify != true {
+			t.Errorf("Expected Alertmanager TLS insecureSkipVerify 'true' got '%v'", am.TLS.InsecureSkipVerify)
 		}
 	}
 }

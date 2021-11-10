@@ -52,6 +52,12 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.Bool("alertmanager.readonly", false,
 		"Enable read-only mode that disable silence management (only used with simplified config)")
 	f.String("alertmanager.cors.credentials", "include", "CORS credentials policy for browser fetch requests")
+	f.String("alertmanager.tls.ca", "", "Path to CA certificate used to establish TLS connection to the "+
+		"Alertmanager server (only used with simplified config)")
+	f.String("alertmanager.tls.cert", "", "Path to a TLS client certificate file to use when establishing "+
+		"TLS connections to the Alertmanager server - requires alertmanager.tls.key to be set (only used with simplified config)")
+	f.String("alertmanager.tls.key", "", "Path to a TLS client key file to use when establishing "+
+		"TLS connections to the Alertmanager server - requires alertmanager.tls.key to be set (only used with simplified config)")
 
 	f.String("karma.name", "karma", "Name for the karma instance")
 
@@ -209,6 +215,8 @@ func readEnvVariables(k *koanf.Koanf) {
 		switch s {
 		case "ALERTMANAGER_EXTERNAL_URI":
 			return "alertmanager.external_uri"
+		case "ALERTMANAGER_TLS_INSECURE_SKIP_VERIFY":
+			return "alertmanager.tls.insecureSkipVerify"
 		case "ALERTACKNOWLEDGEMENT_ENABLED":
 			return "alertAcknowledgement.enabled"
 		case "ALERTACKNOWLEDGEMENT_DURATION":
@@ -450,6 +458,7 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 				ReadOnly:    config.Alertmanager.ReadOnly,
 				Headers:     make(map[string]string),
 				CORS:        config.Alertmanager.CORS,
+				TLS:         config.Alertmanager.TLS,
 			},
 		}
 	}
