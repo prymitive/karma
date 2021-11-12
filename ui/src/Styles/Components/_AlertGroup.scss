@@ -1,11 +1,11 @@
 .components-grid-alertgrid-alertgroup {
   padding: 0.3rem;
 
-  &.components-animation-fade-appear-done.animate,
-  &.components-animation-fade-enter-done.animate {
+  &.components-animation-alergroup-appear-done.animate,
+  &.components-animation-alergroup-enter-done.animate {
     z-index: 1;
     transition-property: transform;
-    transition-duration: 0.4s;
+    transition-duration: 0.25s;
     transition-timing-function: ease-in-out;
   }
 }

@@ -14,6 +14,15 @@ $duration: 0.5s;
   opacity: 1;
 }
 .components-animation-fade-exit-active {
-  opacity: 0.01;
+  opacity: 0;
   transition: opacity $duration ease-out;
+}
+
+@keyframes alert-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
