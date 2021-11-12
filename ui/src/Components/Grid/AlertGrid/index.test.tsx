@@ -211,7 +211,7 @@ describe("<Grid />", () => {
     const tree = MountedGrid(MockThemeContext);
     expect(
       tree.find("div.components-grid-alertgrid-alertgroup").html()
-    ).toMatch(/animate components-animation-fade-appear/);
+    ).toMatch(/animate components-animation-alergroup-appear/);
   });
 
   it("doesn't use animations when settingsStore.themeConfig.config.animations is false", () => {
@@ -222,7 +222,7 @@ describe("<Grid />", () => {
     const tree = MountedGrid(MockThemeContextWithoutAnimations);
     expect(
       tree.find("div.components-grid-alertgrid-alertgroup").html()
-    ).not.toMatch(/animate components-animation-fade-appear/);
+    ).not.toMatch(/animate components-animation-alertgroup-appear/);
   });
 
   it("renders all alert groups", () => {

@@ -1,0 +1,21 @@
+@use "sass:math";
+
+$duration: 0.5s;
+
+.components-animation-alergroup-appear,
+.components-animation-alergroup-enter {
+  opacity: 0;
+}
+.components-animation-alergroup-appear-active,
+.components-animation-alergroup-enter-active {
+  opacity: 1;
+  transition: opacity math.div($duration, 2) ease-in math.div($duration, 2);
+}
+
+.components-animation-alergroup-exit {
+  opacity: 1;
+}
+.components-animation-alergroup-exit-active {
+  opacity: 0;
+  transition: opacity $duration ease-out;
+}

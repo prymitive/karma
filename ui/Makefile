@@ -22,7 +22,7 @@ npm-fetch: $(NODE_INSTALL)
 $(NODE_PATH)/%: $(NODE_INSTALL)
 	@if [ ! -x $@ ]; then echo "missing script: $@" ; exit 1; fi
 
-build/index.html: $(NODE_INSTALL) $(NODE_PATH)/react-scripts $(call rwildcard, public src, *) purgecss.config.js
+build/index.html: $(NODE_INSTALL) $(NODE_PATH)/react-scripts $(call rwildcard, public src, *) purgecss.config.js restore-css
 	@rm -fr node_modules/.cache/eslint-loader
 	cat node_modules/bootstrap/scss/_root.scss | sed s/':root {'/'* {'/ > src/Styles/BootstrapRoot.scss
 	npm run build
@@ -61,6 +61,10 @@ backup-css:
 	mkdir -p build.pre/static
 	rm -fr build.pre/static/*
 	cp -R build/static/css build.pre/static/css
+
+.PHONY: restore-css
+restore-css:
+	@(test -d build.pre/static/css && rm -fr build/static/css && cp -R build.pre/static/css build/static/css) || echo
 
 build.pre/css.diff: build purgecss.config.js
 	npx prettier -w build.pre/static/css/*.css build/static/css/*.css

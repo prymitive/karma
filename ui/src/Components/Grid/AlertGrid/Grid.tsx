@@ -151,7 +151,7 @@ const Grid: FC<{
                   key={group.id}
                   classNames={
                     context.animations.duration
-                      ? "components-animation-fade"
+                      ? "components-animation-alergroup"
                       : ""
                   }
                   timeout={context.animations.duration}
