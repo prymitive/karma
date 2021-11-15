@@ -2,7 +2,12 @@
 
 exports[`<AlertManagerInput /> matches snapshot 1`] = `
 "
-<div class=\\" css-2b097c-container\\">
+<div class=\\" css-b62m3t-container\\">
+  <span
+    id=\\"react-select-silence-input-alertmanagers-live-region\\"
+    class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <span
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
@@ -10,13 +15,17 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
-  <div class=\\"react-select__control css-cat782-control\\">
+  <div class=\\"react-select__control css-n90zkc-control\\">
     <div class=\\"react-select__value-container react-select__value-container--is-multi react-select__value-container--has-value css-115r1xl-ValueContainer\\">
       <div class=\\"css-owt1hd-multiValue react-select__multi-value\\">
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           Cluster: HA
         </div>
-        <div class=\\"css-1ucqin4 react-select__multi-value__remove\\">
+        <div
+          role=\\"button\\"
+          class=\\"css-1ucqin4 react-select__multi-value__remove\\"
+          aria-label=\\"Remove Cluster: HA\\"
+        >
           <svg
             height=\\"14\\"
             width=\\"14\\"
@@ -34,7 +43,11 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
         <div class=\\"css-xbn6jz react-select__multi-value__label\\">
           am3
         </div>
-        <div class=\\"css-1ucqin4 react-select__multi-value__remove\\">
+        <div
+          role=\\"button\\"
+          class=\\"css-1ucqin4 react-select__multi-value__remove\\"
+          aria-label=\\"Remove am3\\"
+        >
           <svg
             height=\\"14\\"
             width=\\"14\\"
@@ -48,26 +61,28 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
           </svg>
         </div>
       </div>
-      <div class=\\"css-ps6ina-Input\\">
-        <div
+      <div
+        class=\\"react-select__input-container css-dmcbcz-Input\\"
+        data-value
+      >
+        <input
           class=\\"react-select__input\\"
-          style=\\"display: inline-block;\\"
+          style=\\"opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;\\"
+          autocapitalize=\\"none\\"
+          autocomplete=\\"off\\"
+          autocorrect=\\"off\\"
+          id=\\"react-select-silence-input-alertmanagers-input\\"
+          spellcheck=\\"false\\"
+          tabindex=\\"0\\"
+          type=\\"text\\"
+          aria-autocomplete=\\"list\\"
+          aria-expanded=\\"false\\"
+          aria-haspopup=\\"true\\"
+          aria-controls=\\"react-select-silence-input-alertmanagers-listbox\\"
+          aria-owns=\\"react-select-silence-input-alertmanagers-listbox\\"
+          role=\\"combobox\\"
+          value
         >
-          <input
-            autocapitalize=\\"none\\"
-            autocomplete=\\"off\\"
-            autocorrect=\\"off\\"
-            id=\\"react-select-silence-input-alertmanagers-input\\"
-            spellcheck=\\"false\\"
-            tabindex=\\"0\\"
-            type=\\"text\\"
-            aria-autocomplete=\\"list\\"
-            style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
-            value
-          >
-          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
-          </div>
-        </div>
       </div>
     </div>
     <div class=\\"react-select__indicators css-vcwr3k-IndicatorsContainer\\">

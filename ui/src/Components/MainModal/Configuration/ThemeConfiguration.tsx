@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import Select from "react-select";
+import Select, { OnChangeValue } from "react-select";
 
 import type { OptionT } from "Common/Select";
 import type { Settings, ThemeT } from "Stores/Settings";
@@ -20,7 +20,7 @@ const ThemeConfiguration: FC<{
     settingsStore.themeConfig.setTheme("auto");
   }
 
-  const valueToOption = (val: ThemeT) => {
+  const valueToOption = (val: ThemeT): OptionT => {
     return {
       label: settingsStore.themeConfig.options[val].label,
       value: val,
@@ -40,10 +40,14 @@ const ThemeConfiguration: FC<{
         classNamePrefix="react-select"
         instanceId="configuration-theme"
         defaultValue={valueToOption(settingsStore.themeConfig.config.theme)}
-        options={Object.values(settingsStore.themeConfig.options)}
-        onChange={(option) => onChange((option as OptionT).value as ThemeT)}
+        options={Object.values(settingsStore.themeConfig.options) as OptionT[]}
+        onChange={(option: OnChangeValue<OptionT, false>) =>
+          onChange((option as OptionT).value as ThemeT)
+        }
         hideSelectedOptions
-        components={{ Menu: AnimatedMenu }}
+        components={{
+          Menu: AnimatedMenu,
+        }}
       />
     </div>
   );

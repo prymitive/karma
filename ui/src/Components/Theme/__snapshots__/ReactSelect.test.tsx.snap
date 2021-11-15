@@ -2,44 +2,56 @@
 
 exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
 "
-<div class=\\" css-2b097c-container\\">
+<div class=\\" css-b62m3t-container\\">
+  <span
+    id=\\"react-select-3-live-region\\"
+    class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+    <span id=\\"aria-selection\\">
+      option , selected.
+    </span>
+    <span id=\\"aria-context\\">
+      Select is focused ,type to refine list, press Down to open the menu,
+    </span>
+  </span>
   <span
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
     aria-relevant=\\"additions text\\"
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
-    <span id=\\"aria-selection\\">
-    </span>
-    <span id=\\"aria-context\\">
-      Select is focused ,type to refine list, press Down to open the menu,
-    </span>
   </span>
   <div class=\\" css-11rrdhm-control\\">
-    <div class=\\" css-17yk2dy-ValueContainer\\">
-      <div class=\\" css-1wa3eu0-placeholder\\">
+    <div class=\\" css-1kabp7a-ValueContainer\\">
+      <div
+        class=\\" css-14el2xx-placeholder\\"
+        id=\\"react-select-3-placeholder\\"
+      >
         Select...
       </div>
-      <div class=\\"css-ps6ina-Input\\">
-        <div
+      <div
+        class=\\" css-dmcbcz-Input\\"
+        data-value
+      >
+        <input
           class
-          style=\\"display: inline-block;\\"
+          style=\\"opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;\\"
+          autocapitalize=\\"none\\"
+          autocomplete=\\"off\\"
+          autocorrect=\\"off\\"
+          id=\\"react-select-3-input\\"
+          spellcheck=\\"false\\"
+          tabindex=\\"0\\"
+          type=\\"text\\"
+          aria-autocomplete=\\"list\\"
+          aria-expanded=\\"false\\"
+          aria-haspopup=\\"true\\"
+          aria-controls=\\"react-select-3-listbox\\"
+          aria-owns=\\"react-select-3-listbox\\"
+          role=\\"combobox\\"
+          aria-describedby=\\"react-select-3-placeholder\\"
+          value
         >
-          <input
-            autocapitalize=\\"none\\"
-            autocomplete=\\"off\\"
-            autocorrect=\\"off\\"
-            id=\\"react-select-3-input\\"
-            spellcheck=\\"false\\"
-            tabindex=\\"0\\"
-            type=\\"text\\"
-            aria-autocomplete=\\"list\\"
-            style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
-            value
-          >
-          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
-          </div>
-        </div>
       </div>
     </div>
     <div class=\\" css-vcwr3k-IndicatorsContainer\\">
@@ -69,45 +81,57 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
 
 exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled 1`] = `
 "
-<div class=\\" css-14jk2my-container\\">
+<div class=\\" css-3iigni-container\\">
+  <span
+    id=\\"react-select-4-live-region\\"
+    class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+    <span id=\\"aria-selection\\">
+      option , selected.
+    </span>
+    <span id=\\"aria-context\\">
+      Select is focused ,type to refine list, press Down to open the menu,
+    </span>
+  </span>
   <span
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
     aria-relevant=\\"additions text\\"
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
-    <span id=\\"aria-selection\\">
-    </span>
-    <span id=\\"aria-context\\">
-      Select is focused ,type to refine list, press Down to open the menu,
-    </span>
   </span>
   <div class=\\" css-1tnfzgk-control\\">
-    <div class=\\" css-17yk2dy-ValueContainer\\">
-      <div class=\\" css-1wa3eu0-placeholder\\">
+    <div class=\\" css-1kabp7a-ValueContainer\\">
+      <div
+        class=\\" css-14el2xx-placeholder\\"
+        id=\\"react-select-4-placeholder\\"
+      >
         Select...
       </div>
-      <div class=\\"css-1h1cjkp-Input\\">
-        <div
+      <div
+        class=\\" css-9ehl8g-Input\\"
+        data-value
+      >
+        <input
           class
-          style=\\"display: inline-block;\\"
+          style=\\"opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;\\"
+          disabled
+          autocapitalize=\\"none\\"
+          autocomplete=\\"off\\"
+          autocorrect=\\"off\\"
+          id=\\"react-select-4-input\\"
+          spellcheck=\\"false\\"
+          tabindex=\\"0\\"
+          type=\\"text\\"
+          aria-autocomplete=\\"list\\"
+          aria-expanded=\\"false\\"
+          aria-haspopup=\\"true\\"
+          aria-controls=\\"react-select-4-listbox\\"
+          aria-owns=\\"react-select-4-listbox\\"
+          role=\\"combobox\\"
+          aria-describedby=\\"react-select-4-placeholder\\"
+          value
         >
-          <input
-            disabled
-            autocapitalize=\\"none\\"
-            autocomplete=\\"off\\"
-            autocorrect=\\"off\\"
-            id=\\"react-select-4-input\\"
-            spellcheck=\\"false\\"
-            tabindex=\\"0\\"
-            type=\\"text\\"
-            aria-autocomplete=\\"list\\"
-            style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
-            value
-          >
-          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
-          </div>
-        </div>
       </div>
     </div>
     <div class=\\" css-15bdmde-IndicatorsContainer\\">
@@ -137,7 +161,12 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
 
 exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
 "
-<div class=\\" css-2b097c-container\\">
+<div class=\\" css-b62m3t-container\\">
+  <span
+    id=\\"react-select-5-live-region\\"
+    class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <span
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
@@ -145,31 +174,33 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
-  <div class=\\" css-cat782-control\\">
-    <div class=\\" css-17yk2dy-ValueContainer\\">
-      <div class=\\" css-1wh03ml-singleValue\\">
+  <div class=\\" css-n90zkc-control\\">
+    <div class=\\" css-1kabp7a-ValueContainer\\">
+      <div class=\\" css-bgy71k-singleValue\\">
         foo
       </div>
-      <div class=\\"css-ps6ina-Input\\">
-        <div
+      <div
+        class=\\" css-dmcbcz-Input\\"
+        data-value
+      >
+        <input
           class
-          style=\\"display: inline-block;\\"
+          style=\\"opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;\\"
+          autocapitalize=\\"none\\"
+          autocomplete=\\"off\\"
+          autocorrect=\\"off\\"
+          id=\\"react-select-5-input\\"
+          spellcheck=\\"false\\"
+          tabindex=\\"0\\"
+          type=\\"text\\"
+          aria-autocomplete=\\"list\\"
+          aria-expanded=\\"false\\"
+          aria-haspopup=\\"true\\"
+          aria-controls=\\"react-select-5-listbox\\"
+          aria-owns=\\"react-select-5-listbox\\"
+          role=\\"combobox\\"
+          value
         >
-          <input
-            autocapitalize=\\"none\\"
-            autocomplete=\\"off\\"
-            autocorrect=\\"off\\"
-            id=\\"react-select-5-input\\"
-            spellcheck=\\"false\\"
-            tabindex=\\"0\\"
-            type=\\"text\\"
-            aria-autocomplete=\\"list\\"
-            style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
-            value
-          >
-          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
-          </div>
-        </div>
       </div>
     </div>
     <div class=\\" css-vcwr3k-IndicatorsContainer\\">
@@ -199,7 +230,12 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
 
 exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] = `
 "
-<div class=\\" css-14jk2my-container\\">
+<div class=\\" css-3iigni-container\\">
+  <span
+    id=\\"react-select-7-live-region\\"
+    class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <span
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
@@ -207,32 +243,34 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
-  <div class=\\" css-j5h6r7-control\\">
-    <div class=\\" css-17yk2dy-ValueContainer\\">
-      <div class=\\" css-1wh03ml-singleValue\\">
+  <div class=\\" css-1imhm17-control\\">
+    <div class=\\" css-1kabp7a-ValueContainer\\">
+      <div class=\\" css-bgy71k-singleValue\\">
         foo
       </div>
-      <div class=\\"css-1h1cjkp-Input\\">
-        <div
+      <div
+        class=\\" css-9ehl8g-Input\\"
+        data-value
+      >
+        <input
           class
-          style=\\"display: inline-block;\\"
+          style=\\"opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;\\"
+          disabled
+          autocapitalize=\\"none\\"
+          autocomplete=\\"off\\"
+          autocorrect=\\"off\\"
+          id=\\"react-select-7-input\\"
+          spellcheck=\\"false\\"
+          tabindex=\\"0\\"
+          type=\\"text\\"
+          aria-autocomplete=\\"list\\"
+          aria-expanded=\\"false\\"
+          aria-haspopup=\\"true\\"
+          aria-controls=\\"react-select-7-listbox\\"
+          aria-owns=\\"react-select-7-listbox\\"
+          role=\\"combobox\\"
+          value
         >
-          <input
-            disabled
-            autocapitalize=\\"none\\"
-            autocomplete=\\"off\\"
-            autocorrect=\\"off\\"
-            id=\\"react-select-7-input\\"
-            spellcheck=\\"false\\"
-            tabindex=\\"0\\"
-            type=\\"text\\"
-            aria-autocomplete=\\"list\\"
-            style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
-            value
-          >
-          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
-          </div>
-        </div>
       </div>
     </div>
     <div class=\\" css-15bdmde-IndicatorsContainer\\">
@@ -262,7 +300,12 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
 
 exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 "
-<div class=\\" css-2b097c-container\\">
+<div class=\\" css-b62m3t-container\\">
+  <span
+    id=\\"react-select-2-live-region\\"
+    class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <span
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
@@ -270,31 +313,37 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
-  <div class=\\" css-cat782-control\\">
+  <div class=\\" css-n90zkc-control\\">
     <div class=\\" css-115r1xl-ValueContainer\\">
-      <div class=\\" css-1wa3eu0-placeholder\\">
+      <div
+        class=\\" css-14el2xx-placeholder\\"
+        id=\\"react-select-2-placeholder\\"
+      >
         Select...
       </div>
-      <div class=\\"css-ps6ina-Input\\">
-        <div
+      <div
+        class=\\" css-dmcbcz-Input\\"
+        data-value
+      >
+        <input
           class
-          style=\\"display: inline-block;\\"
+          style=\\"opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;\\"
+          autocapitalize=\\"none\\"
+          autocomplete=\\"off\\"
+          autocorrect=\\"off\\"
+          id=\\"react-select-2-input\\"
+          spellcheck=\\"false\\"
+          tabindex=\\"0\\"
+          type=\\"text\\"
+          aria-autocomplete=\\"list\\"
+          aria-expanded=\\"false\\"
+          aria-haspopup=\\"true\\"
+          aria-controls=\\"react-select-2-listbox\\"
+          aria-owns=\\"react-select-2-listbox\\"
+          role=\\"combobox\\"
+          aria-describedby=\\"react-select-2-placeholder\\"
+          value
         >
-          <input
-            autocapitalize=\\"none\\"
-            autocomplete=\\"off\\"
-            autocorrect=\\"off\\"
-            id=\\"react-select-2-input\\"
-            spellcheck=\\"false\\"
-            tabindex=\\"0\\"
-            type=\\"text\\"
-            aria-autocomplete=\\"list\\"
-            style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
-            value
-          >
-          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
-          </div>
-        </div>
       </div>
     </div>
     <div class=\\" css-vcwr3k-IndicatorsContainer\\">
@@ -324,7 +373,12 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
 
 exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a value 1`] = `
 "
-<div class=\\" css-2b097c-container\\">
+<div class=\\" css-b62m3t-container\\">
+  <span
+    id=\\"react-select-6-live-region\\"
+    class=\\"css-1f43avz-a11yText-A11yText\\"
+  >
+  </span>
   <span
     aria-live=\\"polite\\"
     aria-atomic=\\"false\\"
@@ -332,13 +386,17 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
     class=\\"css-1f43avz-a11yText-A11yText\\"
   >
   </span>
-  <div class=\\" css-cat782-control\\">
+  <div class=\\" css-n90zkc-control\\">
     <div class=\\" css-115r1xl-ValueContainer\\">
       <div class=\\"css-owt1hd-multiValue\\">
         <div class=\\"css-xbn6jz\\">
           foo
         </div>
-        <div class=\\"css-1ucqin4\\">
+        <div
+          role=\\"button\\"
+          class=\\"css-1ucqin4\\"
+          aria-label=\\"Remove foo\\"
+        >
           <svg
             height=\\"14\\"
             width=\\"14\\"
@@ -352,26 +410,28 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
           </svg>
         </div>
       </div>
-      <div class=\\"css-ps6ina-Input\\">
-        <div
+      <div
+        class=\\" css-dmcbcz-Input\\"
+        data-value
+      >
+        <input
           class
-          style=\\"display: inline-block;\\"
+          style=\\"opacity: 1; width: 100%; grid-area: 1 / 2; min-width: 2px; border: 0px; margin: 0px; outline: 0; padding: 0px;\\"
+          autocapitalize=\\"none\\"
+          autocomplete=\\"off\\"
+          autocorrect=\\"off\\"
+          id=\\"react-select-6-input\\"
+          spellcheck=\\"false\\"
+          tabindex=\\"0\\"
+          type=\\"text\\"
+          aria-autocomplete=\\"list\\"
+          aria-expanded=\\"false\\"
+          aria-haspopup=\\"true\\"
+          aria-controls=\\"react-select-6-listbox\\"
+          aria-owns=\\"react-select-6-listbox\\"
+          role=\\"combobox\\"
+          value
         >
-          <input
-            autocapitalize=\\"none\\"
-            autocomplete=\\"off\\"
-            autocorrect=\\"off\\"
-            id=\\"react-select-6-input\\"
-            spellcheck=\\"false\\"
-            tabindex=\\"0\\"
-            type=\\"text\\"
-            aria-autocomplete=\\"list\\"
-            style=\\"box-sizing: content-box; width: 2px; border: 0px; opacity: 1; outline: 0; padding: 0px;\\"
-            value
-          >
-          <div style=\\"position: absolute; top: 0px; left: 0px; visibility: hidden; height: 0px; overflow: scroll; white-space: pre; font-family: -webkit-small-control; letter-spacing: normal; text-transform: none;\\">
-          </div>
-        </div>
       </div>
     </div>
     <div class=\\" css-vcwr3k-IndicatorsContainer\\">

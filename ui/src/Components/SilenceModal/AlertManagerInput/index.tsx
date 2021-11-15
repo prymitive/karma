@@ -3,7 +3,7 @@ import React, { FC, useEffect } from "react";
 import { autorun } from "mobx";
 import { observer } from "mobx-react-lite";
 
-import Select from "react-select";
+import Select, { OnChangeValue } from "react-select";
 
 import type { AlertStore } from "Stores/AlertStore";
 import {
@@ -71,7 +71,7 @@ const AlertManagerInput: FC<{
         )
       }
       isMulti
-      onChange={(newValue) => {
+      onChange={(newValue: OnChangeValue<MultiValueOptionT, true>) => {
         silenceFormStore.data.setAlertmanagers(newValue as MultiValueOptionT[]);
       }}
       isDisabled={silenceFormStore.data.silenceID !== null}

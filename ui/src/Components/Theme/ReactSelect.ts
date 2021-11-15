@@ -1,10 +1,8 @@
-import type { CSSObject } from "@emotion/serialize";
 import type {
   ControlProps,
-  IndicatorContainerProps,
-  OptionTypeBase,
+  IndicatorsContainerProps,
   SingleValueProps,
-  Styles,
+  StylesConfig,
   ValueContainerProps,
 } from "react-select";
 
@@ -59,13 +57,10 @@ interface StateFnT {
   isDisabled: boolean;
 }
 
-const ReactSelectStyles = <
-  OptionType extends OptionTypeBase,
-  IsMulti extends boolean
->(
+const ReactSelectStyles = <OptionType extends unknown, IsMulti extends boolean>(
   theme: ReactSelectTheme
-): Styles<OptionType, IsMulti> => ({
-  control: (base: CSSObject, props: ControlProps<OptionType, IsMulti>) =>
+): StylesConfig<OptionType, IsMulti> => ({
+  control: (base, props: ControlProps<OptionType, IsMulti>) =>
     props.isFocused
       ? {
           ...base,
@@ -90,10 +85,7 @@ const ReactSelectStyles = <
           borderColor: theme.borderColor,
           "&:hover": { borderColor: theme.borderColor },
         },
-  valueContainer: (
-    base: CSSObject,
-    props: ValueContainerProps<OptionType, IsMulti>
-  ) =>
+  valueContainer: (base, props: ValueContainerProps<OptionType, IsMulti>) =>
     props.isMulti
       ? {
           ...base,
@@ -112,11 +104,11 @@ const ReactSelectStyles = <
           borderTopLeftRadius: "0.25rem",
           borderBottomLeftRadius: "0.25rem",
         },
-  singleValue: (base: CSSObject, props: SingleValueProps<OptionType>) => ({
+  singleValue: (base, props: SingleValueProps<OptionType>) => ({
     ...base,
     color: theme.singleValueColor,
   }),
-  multiValue: (base: CSSObject) => ({
+  multiValue: (base) => ({
     ...base,
     borderRadius: "4px",
     backgroundColor: theme.optionHoverBackground,
@@ -124,7 +116,7 @@ const ReactSelectStyles = <
       backgroundColor: theme.optionHoverBackground,
     },
   }),
-  multiValueLabel: (base: CSSObject) => ({
+  multiValueLabel: (base) => ({
     ...base,
     color: theme.color,
     whiteSpace: "normal",
@@ -134,7 +126,7 @@ const ReactSelectStyles = <
       color: theme.color,
     },
   }),
-  multiValueRemove: (base: CSSObject) => ({
+  multiValueRemove: (base) => ({
     ...base,
     cursor: "pointer",
     color: theme.color,
@@ -147,13 +139,13 @@ const ReactSelectStyles = <
       opacity: "0.75",
     },
   }),
-  input: (base: CSSObject) => ({
+  input: (base) => ({
     ...base,
     color: "inherit",
   }),
   indicatorsContainer: (
-    base: CSSObject,
-    props: IndicatorContainerProps<OptionType, IsMulti>
+    base,
+    props: IndicatorsContainerProps<OptionType, IsMulti>
   ) => ({
     ...base,
     backgroundColor: props.isDisabled
@@ -162,19 +154,19 @@ const ReactSelectStyles = <
     borderTopRightRadius: "0.25rem",
     borderBottomRightRadius: "0.25rem",
   }),
-  dropdownIndicator: (base: CSSObject, state: StateFnT) =>
+  dropdownIndicator: (base, state: StateFnT) =>
     state.isFocused
       ? {
           ...base,
           "&:hover": { color: "inherit" },
         }
       : { ...base },
-  menu: (base: CSSObject) => ({
+  menu: (base) => ({
     ...base,
     zIndex: 1500,
     backgroundColor: theme.menuBackground,
   }),
-  option: (base: CSSObject) => ({
+  option: (base) => ({
     ...base,
     color: "inherit",
     backgroundColor: "inherit",
