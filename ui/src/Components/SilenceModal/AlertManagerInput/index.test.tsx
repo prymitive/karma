@@ -77,8 +77,8 @@ const MountedAlertManagerInput = () => {
 const ValidateSuggestions = () => {
   const tree = MountedAlertManagerInput();
   // clear all selected instances, they are selected by default
-  const clear = tree.find("ClearIndicator");
-  // https://github.com/JedWatson/react-select/blob/c22d296d50917e210836fb011ae3e565895e6440/src/__tests__/Select.test.js#L1873
+  const clear = tree.find("div.react-select__clear-indicator");
+  // https://github.com/JedWatson/react-select/blob/a5f16df18502e6008730969427c6b61a5ffda56f/packages/react-select/src/__tests__/Select.test.tsx#L2722-L2725
   clear.simulate("mousedown", { button: 0 });
   // click on the react-select component doesn't seem to trigger options
   // rendering in tests, so change the input instead
