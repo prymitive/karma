@@ -3,7 +3,9 @@ import React, { FC, useEffect } from "react";
 import { observer } from "mobx-react-lite";
 
 import {
+  ActionMeta,
   components,
+  OnChangeValue,
   PlaceholderProps,
   ValueContainerProps,
 } from "react-select";
@@ -16,7 +18,7 @@ import { hashObject } from "Common/Hash";
 import { NewLabelValue, OptionT, StringToOption } from "Common/Select";
 import { ValidationError } from "Components/ValidationError";
 import { ThemeContext } from "Components/Theme";
-import { AnimatedMultiMenu } from "Components/Select";
+import { AnimatedMenuMultiple } from "Components/Select";
 import { MatchCounter } from "./MatchCounter";
 
 const GenerateHashFromMatchers = (
@@ -33,39 +35,10 @@ const GenerateHashFromMatchers = (
     },
   });
 
-const Placeholder: FC<PlaceholderProps<OptionT, true>> = (props) => {
-  return (
-    <div>
-      <components.Placeholder {...props} />
-    </div>
-  );
-};
-
-interface ValueContainerPropsT extends ValueContainerProps<OptionT, true> {
-  selectProps: {
-    silenceFormStore: SilenceFormStore;
-    matcher: MatcherWithIDT;
-  };
-}
-
-const ValueContainer: FC<ValueContainerPropsT> = ({
-  children,
-  selectProps,
-  ...props
-}) => (
-  <components.ValueContainer {...(props as ValueContainerProps<OptionT, true>)}>
-    {selectProps.matcher.values.length > 0 ? (
-      <MatchCounter
-        key={GenerateHashFromMatchers(
-          selectProps.silenceFormStore,
-          selectProps.matcher
-        )}
-        silenceFormStore={selectProps.silenceFormStore}
-        matcher={selectProps.matcher}
-      />
-    ) : null}
-    {children}
-  </components.ValueContainer>
+const Placeholder = (props: PlaceholderProps<OptionT, true>) => (
+  <div>
+    <components.Placeholder {...props} />
+  </div>
 );
 
 const LabelValueInput: FC<{
@@ -87,6 +60,21 @@ const LabelValueInput: FC<{
 
   const context = React.useContext(ThemeContext);
 
+  const ValueContainer = (props: ValueContainerProps<OptionT, true>) => (
+    <components.ValueContainer
+      {...(props as ValueContainerProps<OptionT, true>)}
+    >
+      {matcher.values.length > 0 ? (
+        <MatchCounter
+          key={GenerateHashFromMatchers(silenceFormStore, matcher)}
+          silenceFormStore={silenceFormStore}
+          matcher={matcher}
+        />
+      ) : null}
+      {props.children}
+    </components.ValueContainer>
+  );
+
   return (
     <Creatable
       styles={context.reactSelectStyles}
@@ -95,10 +83,15 @@ const LabelValueInput: FC<{
       formatCreateLabel={NewLabelValue}
       defaultValue={matcher.values}
       options={
-        response ? response.map((value: string) => StringToOption(value)) : []
+        response
+          ? response.map((value: string) => StringToOption(value))
+          : ([] as OptionT[])
       }
       placeholder={isValid ? "Label value" : <ValidationError />}
-      onChange={(newValue) => {
+      onChange={(
+        newValue: OnChangeValue<OptionT, true>,
+        _: ActionMeta<OptionT>
+      ) => {
         matcher.values = newValue as OptionT[];
         // force regex if we have multiple values
         if (matcher.values.length > 1 && matcher.isRegex === false) {
@@ -108,14 +101,10 @@ const LabelValueInput: FC<{
       hideSelectedOptions
       isMulti
       components={{
-        ValueContainer: ValueContainer as FC<
-          ValueContainerProps<OptionT, true>
-        >,
+        ValueContainer: ValueContainer,
         Placeholder: Placeholder,
-        Menu: AnimatedMultiMenu,
+        Menu: AnimatedMenuMultiple,
       }}
-      silenceFormStore={silenceFormStore}
-      matcher={matcher}
     />
   );
 });

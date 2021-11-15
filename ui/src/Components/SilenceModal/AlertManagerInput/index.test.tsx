@@ -171,14 +171,14 @@ describe("<AlertManagerInput />", () => {
   it("is enabled when silenceFormStore.data.silenceID is null", () => {
     silenceFormStore.data.setSilenceID(null);
     const tree = MountedAlertManagerInput();
-    const select = tree.find("StateManager");
+    const select = tree.find("SelectContainer");
     expect((select.props() as any).isDisabled).toBeFalsy();
   });
 
   it("is disabled when silenceFormStore.data.silenceID is not null", () => {
     silenceFormStore.data.setSilenceID("1234");
     const tree = MountedAlertManagerInput();
-    const select = tree.find("StateManager");
+    const select = tree.find("SelectContainer");
     expect((select.props() as any).isDisabled).toBe(true);
   });
 

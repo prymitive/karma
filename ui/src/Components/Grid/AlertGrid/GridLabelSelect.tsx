@@ -11,6 +11,7 @@ import { observer } from "mobx-react-lite";
 
 import { Manager, Reference, Popper } from "react-popper";
 
+import type { OnChangeValue } from "react-select";
 import AsyncSelect from "react-select/async";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -20,7 +21,7 @@ import type { AlertStore } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
 import type { APIGridT } from "Models/APITypes";
 import { CommonPopperModifiers } from "Common/Popper";
-import { NewLabelName, StringToOption, OptionT } from "Common/Select";
+import { StringToOption, OptionT } from "Common/Select";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { ThemeContext } from "Components/Theme";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
@@ -70,16 +71,15 @@ const GridLabelNameSelect: FC<{
     <AsyncSelect
       styles={context.reactSelectStyles}
       classNamePrefix="react-select"
-      formatCreateLabel={NewLabelName}
       loadOptions={loadOptions}
       defaultOptions
-      onChange={(option: OptionT) => {
-        settingsStore.multiGridConfig.setGridLabel(option.value);
+      onChange={(option: OnChangeValue<OptionT, false>) => {
+        settingsStore.multiGridConfig.setGridLabel((option as OptionT).value);
         onClose();
       }}
       menuIsOpen={true}
       components={{
-        ClearIndicator: null,
+        ClearIndicator: NullContainer,
         IndicatorSeparator: null,
         DropdownIndicator: null,
         ValueContainer: NullContainer,

@@ -645,7 +645,7 @@ describe("<SilenceForm /> in edit mode", () => {
   it("opening form with silenceID set disables AlertManagerInput", () => {
     silenceFormStore.data.setSilenceID("12345");
     const tree = MountedSilenceForm();
-    const select = tree.find("StateManager").at(0);
+    const select = tree.find("SelectContainer").at(0);
     expect((select.props() as any).isDisabled).toBe(true);
   });
 
@@ -677,7 +677,7 @@ describe("<SilenceForm /> in edit mode", () => {
     const tree = MountedSilenceForm();
     const button = tree.find("button.btn-danger");
     button.simulate("click");
-    const select = tree.find("StateManager").at(0);
+    const select = tree.find("SelectContainer").at(0);
     expect((select.props() as any).isDisabled).toBeFalsy();
   });
 });

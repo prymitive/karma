@@ -2,7 +2,7 @@ import React, { FC } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import Select from "react-select";
+import Select, { OnChangeValue } from "react-select";
 
 import type { Settings, SortOrderT } from "Stores/Settings";
 import type { OptionT } from "Common/Select";
@@ -29,7 +29,7 @@ const AlertGroupSortConfiguration: FC<{
     settingsStore.gridConfig.setSortReverse(value);
   };
 
-  const valueToOption = (val: SortOrderT) => {
+  const valueToOption = (val: SortOrderT): OptionT => {
     return { label: settingsStore.gridConfig.options[val].label, value: val };
   };
 
@@ -52,12 +52,16 @@ const AlertGroupSortConfiguration: FC<{
             defaultValue={valueToOption(
               settingsStore.gridConfig.config.sortOrder
             )}
-            options={Object.values(settingsStore.gridConfig.options)}
-            onChange={(option) =>
+            options={
+              Object.values(settingsStore.gridConfig.options) as OptionT[]
+            }
+            onChange={(option: OnChangeValue<OptionT, false>) =>
               onSortOrderChange((option as OptionT).value as SortOrderT)
             }
             hideSelectedOptions
-            components={{ Menu: AnimatedMenu }}
+            components={{
+              Menu: AnimatedMenu,
+            }}
           />
         </div>
         {settingsStore.gridConfig.config.sortOrder ===

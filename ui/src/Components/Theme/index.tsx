@@ -1,10 +1,10 @@
 import React, { FC, useEffect } from "react";
 import ReactDOM from "react-dom";
 
+import type { StylesConfig } from "react-select/dist/declarations/src/styles";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSun } from "@fortawesome/free-solid-svg-icons/faSun";
-
-import type { Styles } from "react-select";
 
 const DarkTheme = React.lazy(() => import("Styles/DarkTheme"));
 const LightTheme = React.lazy(() => import("Styles/LightTheme"));
@@ -43,7 +43,7 @@ const Placeholder = () => {
 export interface ThemeCtx {
   isDark: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  reactSelectStyles: Styles<any, any>;
+  reactSelectStyles: StylesConfig<any, any>;
   animations: {
     duration: number;
   };
