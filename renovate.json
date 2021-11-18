@@ -6,7 +6,8 @@
   "packageRules": [
     {
       "updateTypes": ["minor", "patch", "pin", "digest"],
-      "automerge": true
+      "automerge": true,
+      "platformAutomerge": true
     },
     {
       "matchPackagePatterns": ["bootstrap", "bootswatch"],
