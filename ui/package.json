@@ -95,7 +95,7 @@
   "scripts": {
     "start": "REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
     "build": "react-scripts build",
-    "postbuild": "make backup-css && purgecss -c purgecss.config.js",
+    "postbuild": "make backup-css && purgecss -c purgecss.config.js -o build/static/css",
     "test": "react-scripts test",
     "storybook": "start-storybook",
     "snapshot": "build-storybook --quiet -s public && percy storybook --verbose ./storybook-static",
