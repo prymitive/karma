@@ -5,7 +5,7 @@
   "private": true,
   "engines": {
     "npm": ">=8.1 <9.0",
-    "node": "16.13.0"
+    "node": "16.13.1"
   },
   "scripts": {
     "test": "jest --runInBand demo.test.js"
