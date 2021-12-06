@@ -182,16 +182,20 @@ func newSilenceACLFromConfig(cfg config.SilenceACLRule) (*silenceACL, error) {
 	}
 
 	for _, groupName := range cfg.Scope.Groups {
-		var wasFound bool
-		for _, authGroup := range config.Config.Authorization.Groups {
-			if authGroup.Name == groupName {
-				wasFound = true
-				break
+		// Can't validate the group name if it comes dynamically from a http proxy
+		if config.Config.Authentication.Header.GroupName == "" {
+			var wasFound bool
+			for _, authGroup := range config.Config.Authorization.Groups {
+				if authGroup.Name == groupName {
+					wasFound = true
+					break
+				}
+			}
+			if !wasFound {
+				return nil, fmt.Errorf("invalid silence ACL rule, no group with name %q found in authorization.groups configuration", groupName)
 			}
 		}
-		if !wasFound {
-			return nil, fmt.Errorf("invalid silence ACL rule, no group with name %q found in authorization.groups configuration", groupName)
-		}
+
 		acl.Scope.Groups = append(acl.Scope.Groups, groupName)
 	}
 
