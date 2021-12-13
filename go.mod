@@ -60,9 +60,9 @@ require (
 	github.com/prometheus/client_model v0.2.0 // indirect
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/sergi/go-diff v1.0.0 // indirect
-	go.mongodb.org/mongo-driver v1.8.0 // indirect
-	golang.org/x/net v0.0.0-20211205041911-012df41ee64c // indirect
-	golang.org/x/sys v0.0.0-20211205182925-97ca703d548d // indirect
+	go.mongodb.org/mongo-driver v1.8.1 // indirect
+	golang.org/x/net v0.0.0-20211209124913-491a49abca63 // indirect
+	golang.org/x/sys v0.0.0-20211210111614-af8b64212486 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
 	gopkg.in/errgo.v2 v2.1.0 // indirect
