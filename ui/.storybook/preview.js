@@ -1,6 +1,6 @@
-import { configure, getStorybook, addDecorator } from "@storybook/react";
+import { configure, addDecorator } from "@storybook/react";
 
-import { advanceTo } from "jest-date-mock";
+import timemachine from "timemachine";
 
 import { ThemeContext } from "Components/Theme";
 import {
@@ -13,7 +13,9 @@ import { config } from "react-transition-group";
 config.disabled = true;
 
 // mock date so the silence form always shows same preview
-advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 36, 40)));
+timemachine.config({
+  dateString: "August 14, 2018 17:36:40",
+});
 
 addDecorator((story) => {
   document.body.style = "";

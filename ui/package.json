@@ -57,8 +57,10 @@
   "devDependencies": {
     "@percy/cli": "1.0.0-beta.71",
     "@percy/storybook": "4.1.0",
-    "@storybook/preset-create-react-app": "3.2.0",
-    "@storybook/react": "6.4.9",
+    "@storybook/builder-webpack5": "6.5.0-alpha.3",
+    "@storybook/manager-webpack5": "6.5.0-alpha.3",
+    "@storybook/preset-create-react-app": "4.0.0",
+    "@storybook/react": "6.5.0-alpha.3",
     "@testing-library/react-hooks": "7.0.2",
     "@types/body-scroll-lock": "3.1.0",
     "@types/bricks.js": "1.8.2",
@@ -89,6 +91,7 @@
     "purgecss": "4.1.3",
     "react-scripts": "5.0.0",
     "sass": "1.45.0",
+    "timemachine": "0.3.2",
     "typescript": "4.5.4"
   },
   "scripts": {
@@ -97,7 +100,7 @@
     "postbuild": "make backup-css && purgecss -c purgecss.config.js -o build/static/css",
     "test": "react-scripts test",
     "storybook": "start-storybook",
-    "snapshot": "build-storybook --quiet -s public && percy storybook --verbose ./storybook-static",
+    "snapshot": "build-storybook --quiet && percy storybook --verbose ./storybook-static",
     "analyze": "npx source-map-explorer 'build/static/js/*.js'"
   },
   "jest": {
