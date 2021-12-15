@@ -4,8 +4,6 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { advanceTo, clear } from "jest-date-mock";
-
 import fetchMock from "fetch-mock";
 
 import { MockAlertGroup, MockAlert } from "__fixtures__/Alerts";
@@ -20,8 +18,8 @@ let alerts: APIAlertT[];
 let group: APIAlertGroupT;
 
 beforeEach(() => {
-  jest.useFakeTimers();
-  advanceTo(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
+  jest.useFakeTimers("modern");
+  jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
 
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
@@ -92,7 +90,7 @@ afterEach(() => {
   jest.clearAllTimers();
   jest.clearAllMocks();
   jest.restoreAllMocks();
-  clear();
+  jest.useRealTimers();
 });
 
 const MountedAlertAck = () => {

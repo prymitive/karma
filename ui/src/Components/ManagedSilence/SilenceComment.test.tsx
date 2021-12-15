@@ -1,7 +1,5 @@
 import { mount } from "enzyme";
 
-import { advanceTo, clear } from "jest-date-mock";
-
 import toDiffableHtml from "diffable-html";
 
 import { MockSilence } from "__fixtures__/Alerts";
@@ -13,7 +11,8 @@ let silence: APISilenceT;
 let alertStore: AlertStore;
 
 beforeEach(() => {
-  advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
+  jest.useFakeTimers("modern");
+  jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
 
   silence = MockSilence();
   alertStore = new AlertStore([]);
@@ -21,7 +20,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  clear();
+  jest.useRealTimers();
 });
 
 const CollapseMock = jest.fn();

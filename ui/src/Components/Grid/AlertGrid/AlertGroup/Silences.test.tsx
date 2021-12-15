@@ -2,8 +2,6 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { advanceTo, clear } from "jest-date-mock";
-
 import { MockSilence } from "__fixtures__/Alerts";
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
@@ -17,11 +15,12 @@ describe("<RenderSilence />", () => {
     alertStore = new AlertStore([]);
     silenceFormStore = new SilenceFormStore();
 
-    advanceTo(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
+    jest.useFakeTimers("modern");
+    jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
   });
 
   afterEach(() => {
-    clear();
+    jest.useRealTimers();
   });
 
   it("renders fallback text if silence is not present in AlertStore", () => {

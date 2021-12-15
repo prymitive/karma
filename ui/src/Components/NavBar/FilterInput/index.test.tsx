@@ -1,6 +1,6 @@
 import { act } from "react-dom/test-utils";
 
-import { mount, render } from "enzyme";
+import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
@@ -39,7 +39,7 @@ const MountedInput = () => {
 
 describe("<FilterInput />", () => {
   it("matches snapshot with no filters", () => {
-    const tree = render(
+    const tree = mount(
       <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
@@ -51,7 +51,7 @@ describe("<FilterInput />", () => {
       NewUnappliedFilter("foo=bar"),
       NewUnappliedFilter("baz!=bar"),
     ]);
-    const tree = render(
+    const tree = mount(
       <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
     );
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();

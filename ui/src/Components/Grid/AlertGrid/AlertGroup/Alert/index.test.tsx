@@ -2,8 +2,6 @@ import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
-import { advanceTo, clear } from "jest-date-mock";
-
 import toDiffableHtml from "diffable-html";
 
 import {
@@ -25,7 +23,8 @@ let silenceFormStore: SilenceFormStore;
 let grid: APIGridT;
 
 beforeEach(() => {
-  advanceTo(new Date(Date.UTC(2018, 7, 15, 20, 40, 0)));
+  jest.useFakeTimers("modern");
+  jest.setSystemTime(new Date(Date.UTC(2018, 7, 15, 20, 40, 0)));
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
 
@@ -43,8 +42,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  // reset Date() to current time
-  clear();
+  jest.useRealTimers();
   jest.restoreAllMocks();
 });
 
@@ -380,7 +378,7 @@ describe("<Alert />", () => {
   it("alert timestamp is updated every minute", () => {
     jest.useFakeTimers();
 
-    advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 36, 41)));
+    jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 17, 36, 41)));
 
     const alert = MockedAlert();
     const group = MockAlertGroup([], [alert], [], [], {});
@@ -392,7 +390,7 @@ describe("<Alert />", () => {
         .text()
     ).toBe("just now");
 
-    advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 36, 42)));
+    jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 17, 36, 42)));
     act(() => {
       jest.advanceTimersByTime(31 * 1000);
     });
@@ -403,7 +401,7 @@ describe("<Alert />", () => {
         .text()
     ).toBe("a few seconds ago");
 
-    advanceTo(new Date(Date.UTC(2018, 7, 14, 17, 37, 41)));
+    jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 17, 37, 41)));
     act(() => {
       jest.advanceTimersByTime(31 * 1000);
     });
@@ -414,7 +412,7 @@ describe("<Alert />", () => {
         .text()
     ).toBe("1 minute ago");
 
-    advanceTo(new Date(Date.UTC(2018, 7, 14, 18, 36, 41)));
+    jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 18, 36, 41)));
     act(() => {
       jest.advanceTimersByTime(31 * 1000);
     });
@@ -425,7 +423,7 @@ describe("<Alert />", () => {
         .text()
     ).toBe("1 hour ago");
 
-    advanceTo(new Date(Date.UTC(2018, 7, 14, 19, 36, 41)));
+    jest.setSystemTime(new Date(Date.UTC(2018, 7, 14, 19, 36, 41)));
     act(() => {
       jest.advanceTimersByTime(31 * 1000);
     });
@@ -436,7 +434,7 @@ describe("<Alert />", () => {
         .text()
     ).toBe("2 hours ago");
 
-    advanceTo(new Date(Date.UTC(2018, 7, 16, 19, 36, 41)));
+    jest.setSystemTime(new Date(Date.UTC(2018, 7, 16, 19, 36, 41)));
     act(() => {
       jest.advanceTimersByTime(31 * 1000);
     });

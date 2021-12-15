@@ -1,7 +1,5 @@
 import { mount } from "enzyme";
 
-import { advanceTo, clear } from "jest-date-mock";
-
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { AlertStore } from "Stores/AlertStore";
 import { useFetchGet } from "Hooks/useFetchGet";
@@ -10,8 +8,8 @@ import { PaginatedAlertList } from ".";
 let alertStore: AlertStore;
 
 beforeEach(() => {
-  advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
-  jest.useFakeTimers();
+  jest.useFakeTimers("modern");
+  jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
 
   alertStore = new AlertStore([]);
 
@@ -37,7 +35,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  clear();
+  jest.useRealTimers();
   document.body.className = "";
 });
 

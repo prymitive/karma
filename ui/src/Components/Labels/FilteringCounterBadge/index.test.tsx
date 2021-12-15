@@ -1,4 +1,4 @@
-import { mount, render } from "enzyme";
+import { mount } from "enzyme";
 
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 import { QueryOperators } from "Common/Query";
@@ -100,7 +100,7 @@ describe("<FilteringCounterBadge />", () => {
   });
 
   it("counter badge should have correct children based on the counter prop value", () => {
-    const tree = render(
+    const tree = mount(
       <FilteringCounterBadge
         alertStore={alertStore}
         name="@state"

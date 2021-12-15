@@ -4,8 +4,6 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { advanceTo, clear } from "jest-date-mock";
-
 import { useFetchGetMock } from "__fixtures__/useFetchGet";
 import { MockSilence } from "__fixtures__/Alerts";
 import { PressKey } from "__fixtures__/PressKey";
@@ -26,8 +24,8 @@ let silence: APISilenceT;
 declare let global: any;
 
 beforeEach(() => {
-  advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
-  jest.useFakeTimers();
+  jest.useFakeTimers("modern");
+  jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
 
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
@@ -60,7 +58,7 @@ beforeEach(() => {
 afterEach(() => {
   jest.restoreAllMocks();
   jest.clearAllTimers();
-  clear();
+  jest.useRealTimers();
 
   localStorage.setItem("fetchConfig.interval", "");
   global.window.innerWidth = 1024;
@@ -107,17 +105,17 @@ describe("<Browser />", () => {
     settingsStore.fetchConfig.setInterval(1);
     MountedBrowser();
 
-    advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 2)));
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 2)));
     act(() => {
       jest.runOnlyPendingTimers();
     });
 
-    advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 4)));
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 4)));
     act(() => {
       jest.runOnlyPendingTimers();
     });
 
-    advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 6)));
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 6)));
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -408,7 +406,7 @@ describe("<Browser />", () => {
     tree.unmount();
 
     act(() => {
-      advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 59)));
+      jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 59)));
       jest.runOnlyPendingTimers();
     });
 

@@ -4,8 +4,6 @@ import { mount } from "enzyme";
 
 import fetchMock from "fetch-mock";
 
-import { advanceTo, advanceBy, clear } from "jest-date-mock";
-
 import { useInView } from "react-intersection-observer";
 
 import toDiffableHtml from "diffable-html";
@@ -59,8 +57,9 @@ const MockAlerts = (alertCount: number) => {
 };
 
 beforeEach(() => {
-  jest.useFakeTimers();
-  advanceTo(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
+  jest.useFakeTimers("modern");
+  jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
+
   group = MockGroup("fakeGroup");
   grid = {
     labelName: "foo",
@@ -78,7 +77,7 @@ beforeEach(() => {
 afterEach(() => {
   fetchMock.resetHistory();
   fetchMock.reset();
-  clear();
+  jest.useRealTimers();
 });
 
 describe("<AlertHistory />", () => {
@@ -321,14 +320,12 @@ describe("<AlertHistory />", () => {
     expect(fetchMock.calls()).toHaveLength(1);
 
     await act(async () => {
-      advanceBy(1000 * 299);
       jest.advanceTimersByTime(1000 * 299);
       await fetchMock.flush(true);
     });
     expect(fetchMock.calls()).toHaveLength(1);
 
     await act(async () => {
-      advanceBy(1000 * 2);
       jest.advanceTimersByTime(1000 * 2);
       await fetchMock.flush(true);
     });

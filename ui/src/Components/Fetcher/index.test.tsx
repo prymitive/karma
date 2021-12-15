@@ -6,8 +6,6 @@ import fetchMock from "fetch-mock";
 
 import toDiffableHtml from "diffable-html";
 
-import { advanceTo, advanceBy, clear } from "jest-date-mock";
-
 import { EmptyAPIResponse } from "__fixtures__/Fetch";
 
 import { AlertStore } from "Stores/AlertStore";
@@ -21,8 +19,8 @@ let fetchSpy: any;
 let requestAnimationFrameSpy: any;
 
 beforeEach(() => {
-  jest.useFakeTimers();
-  advanceTo(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
+  jest.useFakeTimers("modern");
+  jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
 
   alertStore = new AlertStore(["label=value"]);
   fetchSpy = jest
@@ -51,7 +49,7 @@ afterEach(() => {
   jest.clearAllTimers();
   jest.clearAllMocks();
   jest.restoreAllMocks();
-  clear();
+  jest.useRealTimers();
   fetchMock.reset();
 });
 
@@ -71,7 +69,9 @@ describe("<Fetcher />", () => {
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
-    advanceBy(3 * 1000);
+    jest.setSystemTime(
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 3 * 1000
+    );
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -79,25 +79,33 @@ describe("<Fetcher />", () => {
 
     settingsStore.fetchConfig.setInterval(600);
 
-    advanceBy(3 * 1000);
+    jest.setSystemTime(
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 6 * 1000
+    );
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
-    advanceBy(32 * 1000);
+    jest.setSystemTime(
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 38 * 1000
+    );
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
-    advanceBy(62 * 1000);
+    jest.setSystemTime(
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 100 * 1000
+    );
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
-    advanceBy(602 * 1000);
+    jest.setSystemTime(
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 702 * 1000
+    );
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -125,19 +133,25 @@ describe("<Fetcher />", () => {
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     expect(fetchSpy).toHaveBeenCalledTimes(1);
 
-    advanceBy(62 * 1000);
+    jest.setSystemTime(
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 62 * 1000
+    );
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(fetchSpy).toHaveBeenCalledTimes(2);
 
-    advanceBy(62 * 1000);
+    jest.setSystemTime(
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 124 * 1000
+    );
     act(() => {
       jest.runOnlyPendingTimers();
     });
     expect(fetchSpy).toHaveBeenCalledTimes(3);
 
-    advanceBy(62 * 1000);
+    jest.setSystemTime(
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 186 * 1000
+    );
     act(() => {
       jest.runOnlyPendingTimers();
     });
@@ -405,7 +419,9 @@ describe("<Fetcher />", () => {
     alertStore.status.pause();
     mount(<Fetcher alertStore={alertStore} settingsStore={settingsStore} />);
     alertStore.status.resume();
-    advanceBy(2 * 1000);
+    jest.setSystemTime(
+      new Date(Date.UTC(2000, 1, 1, 0, 0, 0)).getTime() + 2 * 1000
+    );
     act(() => {
       jest.runOnlyPendingTimers();
     });

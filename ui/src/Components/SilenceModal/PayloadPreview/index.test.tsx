@@ -1,4 +1,4 @@
-import { render } from "enzyme";
+import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
@@ -13,7 +13,7 @@ describe("<PayloadPreview />", () => {
     silenceFormStore.data.setAuthor("me@example.com");
     silenceFormStore.data.setComment("PayloadPreview test");
 
-    const tree = render(<PayloadPreview silenceFormStore={silenceFormStore} />);
+    const tree = mount(<PayloadPreview silenceFormStore={silenceFormStore} />);
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 });
