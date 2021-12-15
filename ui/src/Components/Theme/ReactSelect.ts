@@ -57,7 +57,7 @@ interface StateFnT {
   isDisabled: boolean;
 }
 
-const ReactSelectStyles = <OptionType extends unknown, IsMulti extends boolean>(
+const ReactSelectStyles = <OptionType, IsMulti extends boolean>(
   theme: ReactSelectTheme
 ): StylesConfig<OptionType, IsMulti> => ({
   control: (base, props: ControlProps<OptionType, IsMulti>) =>

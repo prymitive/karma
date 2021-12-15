@@ -58,13 +58,13 @@ build/stats.json: build
 
 .PHONY: backup-css
 backup-css:
-	mkdir -p build.pre/static
+	mkdir -p build/static/css build.pre/static
 	rm -fr build.pre/static/*
 	cp -R build/static/css build.pre/static/css
 
 .PHONY: restore-css
 restore-css:
-	@(test -d build.pre/static/css && rm -fr build/static/css && cp -R build.pre/static/css build/static/css) || echo
+	@(test -d build/static/css && test -d build.pre/static/css && rm -fr build/static/css && cp -R build.pre/static/css build/static/css) || echo
 
 build.pre/css.diff: build purgecss.config.js
 	npx prettier -w build.pre/static/css/*.css build/static/css/*.css
