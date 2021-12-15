@@ -32,9 +32,6 @@ Enzyme.configure({ adapter: new Adapter() });
 // favico.js needs canvas
 require("jest-canvas-mock");
 
-// used to mock current time since we render moment.fromNow() in some places
-require("jest-date-mock");
-
 // https://reactjs.org/blog/2019/08/08/react-v16.9.0.html#new-deprecations
 const reactDeprecationWarning =
   /.*has been renamed, and is not recommended for use.*/;

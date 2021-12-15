@@ -2,8 +2,6 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { advanceTo, clear } from "jest-date-mock";
-
 import {
   MockAlertGroup,
   MockAnnotation,
@@ -55,15 +53,16 @@ beforeEach(() => {
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
   group = MockGroup();
-  advanceTo(new Date(Date.UTC(2000, 0, 1, 15, 0, 0)));
+
+  jest.useFakeTimers("modern");
+  jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 15, 0, 0)));
 
   alertStore.data.setReceivers(["by-cluster-service", "by-name"]);
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
-  // reset Date() to current time
-  clear();
+  jest.useRealTimers();
 });
 
 const MountedGroupFooter = () => {

@@ -2,8 +2,6 @@ import { act } from "react-dom/test-utils";
 
 import { mount, shallow } from "enzyme";
 
-import { advanceTo, clear } from "jest-date-mock";
-
 import toDiffableHtml from "diffable-html";
 
 import addMinutes from "date-fns/addMinutes";
@@ -21,13 +19,15 @@ import {
 let silenceFormStore: SilenceFormStore;
 
 beforeEach(() => {
+  jest.useFakeTimers("modern");
+
   silenceFormStore = new SilenceFormStore();
   silenceFormStore.data.setStart(new Date(2060, 1, 1, 0, 0, 0));
   silenceFormStore.data.setEnd(new Date(2061, 1, 1, 0, 0, 0));
 });
 
 afterEach(() => {
-  clear();
+  jest.useRealTimers();
 });
 
 const ShallowDateTimeSelect = () => {
@@ -56,7 +56,7 @@ describe("<DateTimeSelect />", () => {
   });
 
   it("'Duration' tab matches snapshot", () => {
-    advanceTo(new Date(2060, 1, 1, 0, 0, 0));
+    jest.setSystemTime(new Date(2060, 1, 1, 0, 0, 0));
     const tree = MountedDateTimeSelect();
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
@@ -75,7 +75,7 @@ describe("<DateTimeSelect />", () => {
   });
 
   it("'Starts' tab matches snapshot", () => {
-    advanceTo(new Date(2060, 1, 1, 0, 0, 0));
+    jest.setSystemTime(new Date(2060, 1, 1, 0, 0, 0));
     const tree = MountedDateTimeSelect();
     tree.find(".nav-link").at(0).simulate("click");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
@@ -96,7 +96,7 @@ describe("<DateTimeSelect />", () => {
   });
 
   it("'Ends' tab matches snapshot", () => {
-    advanceTo(new Date(2060, 1, 1, 0, 0, 0));
+    jest.setSystemTime(new Date(2060, 1, 1, 0, 0, 0));
     const tree = MountedDateTimeSelect();
     tree.find(".nav-link").at(1).simulate("click");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
@@ -121,14 +121,14 @@ describe("<DateTimeSelect />", () => {
 
   it("'Ends' tab offset badge is updated after 1 minute", () => {
     jest.useFakeTimers();
-    advanceTo(new Date(2060, 1, 1, 12, 0, 0));
+    jest.setSystemTime(new Date(2060, 1, 1, 12, 0, 0));
     silenceFormStore.data.setStart(new Date(2060, 1, 1, 12, 0, 0));
     silenceFormStore.data.setEnd(new Date(2060, 1, 1, 13, 0, 0));
 
     const tree = MountedDateTimeSelect();
     expect(tree.find(".nav-link").at(1).text()).toBe("Endsin 1h ");
 
-    advanceTo(new Date(2060, 1, 1, 12, 1, 0));
+    jest.setSystemTime(new Date(2060, 1, 1, 12, 1, 0));
     act(() => {
       jest.runOnlyPendingTimers();
     });

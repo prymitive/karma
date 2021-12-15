@@ -2,8 +2,6 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import { advanceTo, clear } from "jest-date-mock";
-
 import { MockSilence } from "__fixtures__/Alerts";
 import { MockThemeContext } from "__fixtures__/Theme";
 import type { APISilenceT } from "Models/APITypes";
@@ -18,7 +16,8 @@ let cluster: string;
 let silence: APISilenceT;
 
 beforeEach(() => {
-  advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
+  jest.useFakeTimers("modern");
+  jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
 
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
@@ -49,7 +48,7 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
-  clear();
+  jest.useRealTimers();
 });
 
 const MountedManagedSilence = (onDidUpdate?: () => void) => {
@@ -169,7 +168,7 @@ describe("<ManagedSilence />", () => {
   });
 
   it("shows Recreate button on expired silence", () => {
-    advanceTo(new Date(Date.UTC(2000, 0, 1, 23, 30, 0)));
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 23, 30, 0)));
     const tree = MountedManagedSilence();
     tree.find("svg.text-muted.cursor-pointer").simulate("click");
 

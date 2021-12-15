@@ -4,8 +4,6 @@ import toDiffableHtml from "diffable-html";
 
 import copy from "copy-to-clipboard";
 
-import { advanceTo, clear } from "jest-date-mock";
-
 import { MockSilence } from "__fixtures__/Alerts";
 import type { APIAlertsResponseUpstreamsT, APISilenceT } from "Models/APITypes";
 import { AlertStore } from "Stores/AlertStore";
@@ -47,12 +45,12 @@ beforeEach(() => {
   alertStore.data.setUpstreams(generateUpstreams());
 
   jest.restoreAllMocks();
+  jest.useFakeTimers("modern");
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
-  // reset Date() to current time
-  clear();
+  jest.useRealTimers();
 });
 
 const MountedSilenceDetails = () => {
@@ -69,14 +67,14 @@ const MountedSilenceDetails = () => {
 
 describe("<SilenceDetails />", () => {
   it("unexpired silence endsAt label doesn't use 'danger' class", () => {
-    advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
     const tree = MountedSilenceDetails();
     const endsAt = tree.find("span.badge").at(1);
     expect(toDiffableHtml(endsAt.html())).not.toMatch(/text-danger/);
   });
 
   it("expired silence endsAt label uses 'danger' class", () => {
-    advanceTo(new Date(Date.UTC(2000, 0, 1, 23, 0, 0)));
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 23, 0, 0)));
     const tree = MountedSilenceDetails();
     const endsAt = tree.find("span.badge").at(1);
     expect(toDiffableHtml(endsAt.html())).toMatch(/text-danger/);

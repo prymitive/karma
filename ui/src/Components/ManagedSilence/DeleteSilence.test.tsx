@@ -2,8 +2,6 @@ import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
-import { advanceTo, clear } from "jest-date-mock";
-
 import { MockSilence } from "__fixtures__/Alerts";
 import { PressKey } from "__fixtures__/PressKey";
 import { useFetchDelete } from "Hooks/useFetchDelete";
@@ -39,8 +37,8 @@ const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
 });
 
 beforeEach(() => {
-  advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
-  jest.useFakeTimers();
+  jest.useFakeTimers("modern");
+  jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
 
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();
@@ -54,7 +52,7 @@ afterEach(() => {
   (useFetchDelete as jest.MockedFunction<typeof useFetchDelete>).mockClear();
 
   jest.restoreAllMocks();
-  clear();
+  jest.useRealTimers();
   document.body.className = "";
 });
 
@@ -329,7 +327,7 @@ describe("<DeleteSilenceModalContent />", () => {
     tree.find(".btn-danger").simulate("click");
     expect(useFetchDelete).toHaveBeenCalledTimes(1);
 
-    advanceTo(new Date(Date.UTC(2000, 0, 1, 0, 30, 1)));
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 1)));
     tree.find(".btn-danger").simulate("click");
     expect(useFetchDelete).toHaveBeenCalledTimes(2);
   });

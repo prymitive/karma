@@ -3,8 +3,6 @@ import { act } from "react-dom/test-utils";
 
 import { shallow, mount } from "enzyme";
 
-import { advanceBy, clear } from "jest-date-mock";
-
 import { MockAlert, MockAlertGroup } from "__fixtures__/Alerts";
 import { mockMatchMedia } from "__fixtures__/matchMedia";
 import {
@@ -61,7 +59,7 @@ afterEach(() => {
   jest.clearAllTimers();
   jest.clearAllMocks();
   jest.restoreAllMocks();
-  clear();
+  jest.useRealTimers();
 });
 
 const MountedAlertGrid = () => {
@@ -451,11 +449,13 @@ describe("<Grid />", () => {
   });
 
   it("doesn't throw errors after FontFaceObserver timeout", () => {
-    jest.useFakeTimers();
+    jest.useFakeTimers("modern");
+    jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
+
     MockGroupList(1, 1);
     MountedGrid();
     // skip a minute to trigger FontFaceObserver timeout handler
-    advanceBy(60 * 1000);
+    jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 1, 0)));
     act(() => {
       jest.runOnlyPendingTimers();
     });

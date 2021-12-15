@@ -259,9 +259,7 @@ describe("<SilenceSubmitProgress />", () => {
       />
     );
     await act(async () => {
-      await act(async () => {
-        await fetchMock.flush(true);
-      });
+      await fetchMock.flush(true);
     });
     tree.update();
     expect(fetchMock.calls()).toHaveLength(2);
@@ -313,9 +311,7 @@ describe("<SilenceSubmitProgress />", () => {
       />
     );
     await act(async () => {
-      await act(async () => {
-        await fetchMock.flush(true);
-      });
+      await fetchMock.flush(true);
     });
     expect(fetchMock.calls()[0][0]).toBe(
       "http://am1.example.com/api/v2/silences"
@@ -352,9 +348,7 @@ describe("<SilenceSubmitProgress />", () => {
       />
     );
     await act(async () => {
-      await act(async () => {
-        await fetchMock.flush(true);
-      });
+      await fetchMock.flush(true);
     });
     expect(fetchMock.calls()).toHaveLength(0);
     expect(consoleSpy).toHaveBeenCalledTimes(2);
@@ -418,9 +412,7 @@ describe("<SilenceSubmitProgress />", () => {
       />
     );
     await act(async () => {
-      await act(async () => {
-        await fetchMock.flush(true);
-      });
+      await fetchMock.flush(true);
     });
     expect(fetchMock.calls()).toHaveLength(1);
     expect(fetchMock.calls()[0][0]).toBe(
@@ -498,9 +490,7 @@ describe("<SilenceSubmitProgress />", () => {
   it("renders silence link on successful fetch", async () => {
     const tree = MountedSilenceSubmitProgress();
     await act(async () => {
-      await act(async () => {
-        await fetchMock.flush(true);
-      });
+      await fetchMock.flush(true);
     });
     tree.update();
     expect(
@@ -521,9 +511,7 @@ describe("<SilenceSubmitProgress />", () => {
     });
     const tree = MountedSilenceSubmitProgress();
     await act(async () => {
-      await act(async () => {
-        await fetchMock.flush(true);
-      });
+      await fetchMock.flush(true);
     });
     tree.update();
     expect(
