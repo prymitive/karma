@@ -5,4 +5,8 @@ module.exports = {
   typescript: {
     reactDocgen: "none",
   },
+  core: {
+    builder: "webpack5",
+  },
+  staticDirs: ["../public"],
 };
