@@ -18,6 +18,7 @@ import (
 
 	"github.com/beme/abide"
 	lru "github.com/hashicorp/golang-lru"
+
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"

@@ -9,9 +9,10 @@ import (
 	"runtime"
 	"testing"
 
+	"github.com/rs/zerolog"
+
 	"github.com/prymitive/karma/internal/mock"
 	"github.com/prymitive/karma/internal/models"
-	"github.com/rs/zerolog"
 )
 
 func reportMemoryMetrics(b *testing.B) {

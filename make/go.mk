@@ -41,9 +41,12 @@ $(GOBIN)/golangci-lint: tools/golangci-lint/go.mod tools/golangci-lint/go.sum
 lint-go: $(GOBIN)/golangci-lint lint-go-looppointer
 	$(ENV) golangci-lint run -v --timeout 5m -E staticcheck,misspell,promlinter,revive,tenv,errorlint,exportloopref,predeclared
 
+$(GOBIN)/lint-go-goimports: tools/goimports/go.mod tools/goimports/go.sum
+	go install -modfile=tools/goimports/go.mod golang.org/x/tools/cmd/goimports
 .PHONY: format-go
-format-go:
+format-go: $(GOBIN)/lint-go-goimports
 	gofmt -l -s -w .
+	goimports -local github.com/prymitive/karma -w .
 
 .PHONY: download-deps-go
 download-deps-go:

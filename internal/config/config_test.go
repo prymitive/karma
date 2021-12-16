@@ -8,9 +8,10 @@ import (
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/prymitive/karma/internal/uri"
 	"github.com/rs/zerolog"
 	"github.com/spf13/pflag"
+
+	"github.com/prymitive/karma/internal/uri"
 
 	"github.com/pmezard/go-difflib/difflib"
 

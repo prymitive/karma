@@ -15,10 +15,11 @@ import (
 	lru "github.com/hashicorp/golang-lru"
 	"github.com/jarcoal/httpmock"
 	"github.com/pmezard/go-difflib/difflib"
+	"github.com/rs/zerolog"
+
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/mock"
-	"github.com/rs/zerolog"
 )
 
 // httptest.NewRecorder() doesn't implement http.CloseNotifier
