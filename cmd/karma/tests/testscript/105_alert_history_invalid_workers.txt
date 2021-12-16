@@ -1,0 +1,13 @@
+karma.bin-should-fail --check-config
+! stdout .
+cmp stderr stderr.txt
+
+-- stderr.txt --
+level=error msg="Execution failed" error="history.workers must be >= 1"
+-- karma.yaml --
+alertmanager:
+  servers:
+    - name: default
+      uri: https://127.0.0.1:9093
+history:
+  workers: 0

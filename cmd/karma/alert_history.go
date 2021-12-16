@@ -16,9 +16,12 @@ import (
 	"github.com/prometheus/client_golang/api"
 	v1 "github.com/prometheus/client_golang/api/prometheus/v1"
 	"github.com/prometheus/common/model"
+	"github.com/rs/zerolog/log"
+
+	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/slices"
-	"github.com/rs/zerolog/log"
+	uriUtil "github.com/prymitive/karma/internal/uri"
 )
 
 type AlertHistoryPayload struct {
@@ -138,7 +141,7 @@ func newHistoryPoller(queueSize int, queryTimeout time.Duration) *historyPoller 
 
 func (hp *historyPoller) run(workers int) {
 	wg := sync.WaitGroup{}
-	for w := 1; w < workers; w++ {
+	for w := 1; w <= workers; w++ {
 		w := w
 		wg.Add(1)
 		go func() {
@@ -206,7 +209,15 @@ func (hp *historyPoller) startWorker(wid int) {
 			j.result <- historyQueryResult{values: v.values, err: nil}
 			continue
 		}
-		values, err := countAlerts(sourceURI, hp.queryTimeout, j.labels)
+		transport, err := rewriteTransport(config.Config.History.Rewrite, j.uri)
+		if err != nil {
+			log.Warn().
+				Int("worker", wid).
+				Str("uri", sourceURI).
+				Err(err).
+				Msg("Error while configuring HTTP transport for history request")
+		}
+		values, err := countAlerts(sourceURI, hp.queryTimeout, transport, j.labels)
 		if err != nil {
 			log.Error().
 				Err(err).
@@ -251,14 +262,33 @@ func rewriteSource(rules []config.HistoryRewrite, uri string) string {
 	return uri
 }
 
-func countAlerts(uri string, timeout time.Duration, labels map[string]string) (ret []OffsetSample, err error) {
+func rewriteTransport(rules []config.HistoryRewrite, uri string) (http.RoundTripper, error) {
+	// trim trailing / to ensure all URIs are without a /
+	uri = strings.TrimSuffix(uri, "/")
+	for _, rule := range rules {
+		if !rule.SourceRegex.MatchString(uri) {
+			continue
+		}
+		if rule.TLS.CA != "" || rule.TLS.Cert != "" || rule.TLS.InsecureSkipVerify {
+			transport, err := alertmanager.NewHTTPTransport(rule.TLS.CA, rule.TLS.Cert, rule.TLS.Key, rule.TLS.InsecureSkipVerify)
+			if err != nil {
+				return http.DefaultTransport, fmt.Errorf("failed to create HTTP transport for '%s': %w", uriUtil.SanitizeURI(uri), err)
+			}
+			return transport, nil
+		}
+	}
+
+	return http.DefaultTransport, nil
+}
+
+func countAlerts(uri string, timeout time.Duration, transport http.RoundTripper, labels map[string]string) (ret []OffsetSample, err error) {
 	if uri == "" {
 		return
 	}
 
 	client, err := api.NewClient(api.Config{
 		Address:      uri,
-		RoundTripper: http.DefaultTransport,
+		RoundTripper: transport,
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create Prometheus API client: %w", err)

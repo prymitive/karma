@@ -61,9 +61,10 @@ type AuthorizationGroup struct {
 }
 
 type HistoryRewrite struct {
-	Source      string         `yaml:"source"`
-	SourceRegex *regexp.Regexp `yaml:"-"`
-	URI         string         `yaml:"uri"`
+	Source      string          `yaml:"source"`
+	SourceRegex *regexp.Regexp  `yaml:"-"`
+	URI         string          `yaml:"uri"`
+	TLS         AlertmanagerTLS `yaml:"tls" koanf:"tls"`
 }
 
 type configSchema struct {

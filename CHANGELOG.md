@@ -1,5 +1,13 @@
 # Changelog
 
+## [next]
+
+### Added
+
+- `tls` options to `history:rewrite` rules, allowing customising TLS options
+  for requests made by karma to Prometheus servers when querying alert
+  history, #3707.
+
 ## v0.93
 
 ### Fixed

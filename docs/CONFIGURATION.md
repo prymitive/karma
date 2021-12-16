@@ -758,6 +758,11 @@ history:
   rewrite:
     - source: regex
       uri: string
+      tls:
+        ca: string
+        cert: string
+        key: string
+        insecureSkipVerify: bool
 ```
 
 - `enabled` - enable alert history UI and backend query support
@@ -766,9 +771,9 @@ history:
   one outgoing HTTP request, more workers allows to handle more concurrent
   queries if you have a large number of Prometheus servers sending alerts
 - `rewrite` - list of source rewrite rules applied before any request is send
-  to remote Prometheus. Rewrite rules can be used to modify URI used by karma
-  when connecting to Prometheus API if `source` field in alert uses addresses
-  not reachable from karma.
+  to remote Prometheus. Rewrite rules can be used to modify URI or TLS settings
+  used by karma when connecting to Prometheus API if `source` field in alert
+  uses addresses not reachable from karma.
   All regexes are anchored, `${N}` syntax can be used for capture groups.
   You can rewrite uri to an empty string to disable connecting to that
   specific Prometheus instance.
@@ -812,6 +817,17 @@ history:
   rewrite:
     - source: 'http://prometheus.internal'
       uri: ''
+```
+
+Example with rewrite rule that configures TLS settings without modifying URI:
+
+```YAML
+history:
+  rewrite:
+    - source: '(.*)'
+      uri: '$1'
+      tls:
+        insecureSkipVerify: true
 ```
 
 ### Karma
