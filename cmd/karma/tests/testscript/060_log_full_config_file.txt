@@ -178,6 +178,18 @@ level=info msg="  timeout: 1h0m0s"
 level=info msg="  rewrite:"
 level=info msg="    - source: http://(.+).example.com"
 level=info msg="      uri: https://prod-$1.example.com"
+level=info msg="      tls:"
+level=info msg="        ca: \"\""
+level=info msg="        cert: \"\""
+level=info msg="        key: \"\""
+level=info msg="        insecureSkipVerify: false"
+level=info msg="    - source: (.+)"
+level=info msg="      uri: $1"
+level=info msg="      tls:"
+level=info msg="        ca: /etc/ca.pem"
+level=info msg="        cert: /etc/server.pem"
+level=info msg="        key: /etc/server.key"
+level=info msg="        insecureSkipVerify: true"
 level=info msg="karma:"
 level=info msg="  name: karma-demo"
 level=info msg="labels:"
@@ -397,6 +409,13 @@ history:
   rewrite:
     - source: "http://(.+).example.com"
       uri: "https://prod-$1.example.com"
+    - source: "(.+)"
+      uri: "$1"
+      tls:
+        ca: /etc/ca.pem
+        cert: /etc/server.pem
+        key: /etc/server.key
+        insecureSkipVerify: true
 karma:
   name: karma-demo
 labels:

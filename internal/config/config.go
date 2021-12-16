@@ -439,6 +439,9 @@ func (config *configSchema) Read(flags *pflag.FlagSet) (string, error) {
 		return "", fmt.Errorf("listen.tls.cert must be set when listen.tls.key is set")
 	}
 
+	if config.History.Workers < 1 {
+		return "", fmt.Errorf("history.workers must be >= 1")
+	}
 	for i := 0; i < len(config.History.Rewrite); i++ {
 		config.History.Rewrite[i].SourceRegex, err = regex.CompileAnchored(config.History.Rewrite[i].Source)
 		if err != nil {
