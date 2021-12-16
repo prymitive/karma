@@ -3,9 +3,10 @@ package alertmanager_test
 import (
 	"testing"
 
+	"github.com/spf13/pflag"
+
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
-	"github.com/spf13/pflag"
 )
 
 func BenchmarkDedupAlerts(b *testing.B) {

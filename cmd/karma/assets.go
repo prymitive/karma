@@ -9,8 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/prymitive/karma/ui"
 	"github.com/rs/zerolog/log"
+
+	"github.com/prymitive/karma/ui"
 )
 
 func contentText(w http.ResponseWriter) {

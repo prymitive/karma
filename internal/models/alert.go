@@ -7,6 +7,7 @@ import (
 
 	"github.com/cnf/structhash"
 	"github.com/fvbommel/sortorder"
+
 	"github.com/prymitive/karma/internal/config"
 )
 

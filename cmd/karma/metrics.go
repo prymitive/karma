@@ -4,6 +4,7 @@ import (
 	"runtime"
 
 	"github.com/prometheus/client_golang/prometheus"
+
 	"github.com/prymitive/karma/internal/alertmanager"
 )
 

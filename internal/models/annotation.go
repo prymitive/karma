@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/fvbommel/sortorder"
+
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/slices"
 )

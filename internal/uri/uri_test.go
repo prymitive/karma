@@ -12,8 +12,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/prymitive/karma/internal/uri"
 	"github.com/rs/zerolog"
+
+	"github.com/prymitive/karma/internal/uri"
 )
 
 type httpTransportTest struct {

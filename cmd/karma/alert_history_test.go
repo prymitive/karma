@@ -12,9 +12,10 @@ import (
 	"github.com/google/go-cmp/cmp"
 	"github.com/jarcoal/httpmock"
 	"github.com/prometheus/common/model"
+	"github.com/rs/zerolog"
+
 	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/regex"
-	"github.com/rs/zerolog"
 )
 
 type prometheusAPIV1Labels struct {

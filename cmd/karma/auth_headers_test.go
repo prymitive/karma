@@ -8,6 +8,7 @@ import (
 
 	lru "github.com/hashicorp/golang-lru"
 	"github.com/jarcoal/httpmock"
+
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/mock"
 )
