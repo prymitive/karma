@@ -1124,12 +1124,15 @@ Syntax:
 
 ```YAML
 silences:
+  expired: duration
   comments:
     linkDetect:
       rules: list of link detection rules
 ```
 
-- `comments:linkDetect:rules` allows to specify a list of rules to detect links
+- `expired` - controls how long expired silences are shown on active alerts.
+  Set it to a negative value to disable showing expired silences.
+- `comments:linkDetect:rules` - allows to specify a list of rules to detect links
   inside silence comments. It's intended to find ticket system ID strings and
   turn them into links.
   Each rule must specify:
@@ -1139,6 +1142,21 @@ silences:
   - `uriTemplate` - template string that will be used to generate a link.
     Each template must include `$1` which will be replaced with text matched
     by the `regex`.
+
+Examples where alerts that got unsilenced will show silences expired between
+now and 15 minutes ago:
+
+```YAML
+silences:
+  expired: 15m
+```
+
+Examples where alerts that got unsilenced will not show recently expired silences:
+
+```YAML
+silences:
+  expired: -1m
+```
 
 Example where a string `DEVOPS-123` inside a comment would be rendered as a link
 to a JIRA ticket `https://jira.example.com/browse/DEVOPS-123`.

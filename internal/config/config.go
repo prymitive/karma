@@ -131,6 +131,7 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.StringSlice("receivers.strip", []string{},
 		"List of receivers to not display alerts for")
 
+	f.Duration("silences.expired", time.Minute*10, "Maximum age of expired silences to show on active alerts")
 	f.StringSlice("silenceform.strip.labels", []string{}, "List of labels to ignore when auto-filling silence form from alerts")
 
 	f.String("listen.address", "", "IP/Hostname to listen on")

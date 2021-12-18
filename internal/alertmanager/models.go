@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/prymitive/karma/internal/config"
 	"github.com/prymitive/karma/internal/filters"
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/models"
@@ -270,6 +271,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	colors := models.LabelsColorMap{}
 	autocompleteMap := map[string]models.Autocomplete{}
 
+	maxExpired := time.Now().Add(-config.Config.Silences.Expired)
 	log.Info().
 		Str("alertmanager", am.Name).
 		Int("groups", len(uniqueGroups)).
@@ -283,6 +285,14 @@ func (am *Alertmanager) pullAlerts(version string) error {
 				silence, err := am.SilenceByID(silenceID)
 				if err == nil {
 					silences[silenceID] = &silence
+				}
+			}
+			if config.Config.Silences.Expired > 0 &&
+				alert.State == models.AlertStateActive &&
+				alert.StartsAt.Before(maxExpired) {
+				for _, silence := range am.ExpiredSilences(alert.Labels.Map()) {
+					silences[silence.ID] = silence
+					alert.SilencedBy = append(alert.SilencedBy, silence.ID)
 				}
 			}
 
@@ -442,6 +452,22 @@ func (am *Alertmanager) SilenceByID(id string) (models.Silence, error) {
 		return models.Silence{}, fmt.Errorf("silence '%s' not found", id)
 	}
 	return s, nil
+}
+
+func (am *Alertmanager) ExpiredSilences(labels map[string]string) (silences []*models.Silence) {
+	am.lock.RLock()
+	defer am.lock.RUnlock()
+
+	now := time.Now()
+	maxExpired := now.Add(-config.Config.Silences.Expired)
+	for _, silence := range am.silences {
+		silence := silence
+		if silence.EndsAt.Before(now) && !silence.EndsAt.Before(maxExpired) && silence.IsMatch(labels) {
+			silences = append(silences, &silence)
+		}
+	}
+
+	return silences
 }
 
 // Colors returns a copy of all color maps

@@ -145,6 +145,7 @@ sentry:
   private: secret key
   public: public key
 silences:
+  expired: 10m0s
   comments:
     linkDetect:
       rules: []

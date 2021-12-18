@@ -197,6 +197,7 @@ type configSchema struct {
 		Public  string
 	}
 	Silences struct {
+		Expired  time.Duration
 		Comments struct {
 			LinkDetect struct {
 				Rules []LinkDetectRules `yaml:"rules"`
