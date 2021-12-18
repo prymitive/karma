@@ -7,6 +7,9 @@
 - `tls` options to `history:rewrite` rules, allowing customising TLS options
   for requests made by karma to Prometheus servers when querying alert
   history, #3707.
+- Unsilenced alerts will now show recently expired silences. By default silences
+  expired in the last 10 minutes will be shown, this can be configued by setting
+  `silences:expired` option or `--silences.expired` flag.
 
 ## v0.93
 

@@ -19,6 +19,7 @@ import (
 func init() {
 	zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	httpmock.Activate()
+
 	for _, version := range mock.ListAllMocks() {
 		name := fmt.Sprintf("dedup-mock-%s", version)
 		uri := fmt.Sprintf("http://%s.localhost", version)

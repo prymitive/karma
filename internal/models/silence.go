@@ -1,12 +1,28 @@
 package models
 
-import "time"
+import (
+	"time"
+
+	"github.com/prymitive/karma/internal/regex"
+)
 
 type SilenceMatcher struct {
 	Name    string `json:"name"`
 	Value   string `json:"value"`
 	IsRegex bool   `json:"isRegex"`
 	IsEqual bool   `json:"isEqual"`
+}
+
+func (sm SilenceMatcher) IsMatch(labels map[string]string) bool {
+	v, ok := labels[sm.Name]
+	if !ok {
+		return !sm.IsEqual
+	}
+
+	if sm.IsRegex {
+		return sm.IsEqual == regex.MustCompileAnchored(sm.Value).MatchString(v)
+	}
+	return sm.IsEqual == (sm.Value == v)
 }
 
 // Silence is vanilla silence + some additional attributes
@@ -24,6 +40,15 @@ type Silence struct {
 	// karma fields
 	TicketID  string `json:"ticketID"`
 	TicketURL string `json:"ticketURL"`
+}
+
+func (s Silence) IsMatch(labels map[string]string) bool {
+	for _, m := range s.Matchers {
+		if !m.IsMatch(labels) {
+			return false
+		}
+	}
+	return true
 }
 
 // ManagedSilence is a standalone silence detached from any alert

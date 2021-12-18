@@ -63,6 +63,8 @@ env RECEIVERS_STRIP='strip1 strip2'
 env SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
 env SENTRY_PUBLIC=https://examplePublicKey@o0.ingest.sentry.io/1
 
+env SILENCES_EXPIRED=1s
+
 env SILENCEFORM_STRIP_LABELS='job severity region'
 
 env UI_REFRESH=10s
@@ -226,6 +228,7 @@ level=info msg="sentry:"
 level=info msg="  private: https://examplePublicKey@o0.ingest.sentry.io/0"
 level=info msg="  public: https://examplePublicKey@o0.ingest.sentry.io/1"
 level=info msg="silences:"
+level=info msg="  expired: 1s"
 level=info msg="  comments:"
 level=info msg="    linkDetect:"
 level=info msg="      rules: []"

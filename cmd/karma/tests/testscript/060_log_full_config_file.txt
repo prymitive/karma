@@ -258,6 +258,7 @@ level=info msg="sentry:"
 level=info msg="  private: https://examplePublicKey@o0.ingest.sentry.io/0"
 level=info msg="  public: https://examplePublicKey@o0.ingest.sentry.io/1"
 level=info msg="silences:"
+level=info msg="  expired: 5m0s"
 level=info msg="  comments:"
 level=info msg="    linkDetect:"
 level=info msg="      rules:"
@@ -473,6 +474,7 @@ sentry:
   private: https://examplePublicKey@o0.ingest.sentry.io/0
   public: https://examplePublicKey@o0.ingest.sentry.io/1
 silences:
+  expired: 5m
   comments:
     linkDetect:
       rules:

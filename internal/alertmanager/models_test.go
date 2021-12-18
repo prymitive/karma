@@ -3,8 +3,12 @@ package alertmanager
 import (
 	"fmt"
 	"testing"
+	"time"
+
+	"github.com/jarcoal/httpmock"
 
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/mapper/v017/models"
 
 	"github.com/rs/zerolog"
 )
@@ -245,5 +249,147 @@ func TestAlertmanagerFetchStatusWithInvalidVersion(t *testing.T) {
 	_, err := am.fetchStatus("0.0.1")
 	if err == nil {
 		t.Error("am.fetchStatus(invalid version) didn't return any error")
+	}
+}
+
+func TestExpiredSilences(t *testing.T) {
+	config.Config.Silences.Expired = time.Minute * 10
+
+	uri := "http://localhost:9999"
+	httpmock.Activate()
+
+	now := time.Now()
+	m5 := now.Add(-5 * time.Minute)
+	m5b, _ := m5.MarshalJSON()
+	m15 := now.Add(-15 * time.Minute)
+	m15b, _ := m15.MarshalJSON()
+	m25 := now.Add(-25 * time.Minute)
+	m25b, _ := m25.MarshalJSON()
+	p15 := now.Add(15 * time.Minute)
+	p15b, _ := p15.MarshalJSON()
+
+	httpmock.RegisterResponder("GET", fmt.Sprintf("%s/metrics", uri),
+		httpmock.NewStringResponder(200, "alertmanager_build_info{version=\"0.22.1\"} 1\n"))
+	httpmock.RegisterResponder("GET", fmt.Sprintf("%s/api/v2/status", uri),
+		httpmock.NewStringResponder(200, `{
+		"cluster": {
+			"name": "BBBBBBBBBBBBBBBBBBBBBBBBBB",
+			"peers": [],
+			"status": "ready"
+		}
+	}`))
+	httpmock.RegisterResponder("GET", fmt.Sprintf("%s/api/v2/silences", uri),
+		httpmock.NewStringResponder(200, fmt.Sprintf(`[
+{
+  "id": "b2396f57-c2c3-4225-958f-70ba933a5d81",
+  "status": {
+    "state": "expired"
+  },
+  "startsAt": %s,
+  "updatedAt": %s,
+  "endsAt": %s,
+  "comment": "expired silence",
+  "createdBy": "test",
+  "matchers": [
+    {
+      "isEqual": true,
+      "isRegex": false,
+      "name": "alertname",
+      "value": "ExampleAlertAlwaysFiring"
+    }
+  ]
+},
+{
+	"id": "wrong-matchers",
+	"status": {
+	  "state": "expired"
+	},
+	"startsAt": %s,
+	"updatedAt": %s,
+	"endsAt": %s,
+	"comment": "expired silence",
+	"createdBy": "test",
+	"matchers": [
+	  {
+		"isEqual": false,
+		"isRegex": false,
+		"name": "alertname",
+		"value": "ExampleAlertAlwaysFiring"
+	  }
+	]
+  },
+{
+	"id": "wrong-expiry",
+	"status": {
+	  "state": "expired"
+	},
+	"startsAt": %s,
+	"updatedAt": %s,
+	"endsAt": %s,
+	"comment": "expired silence",
+	"createdBy": "test",
+	"matchers": [
+	  {
+		"isEqual": true,
+		"isRegex": false,
+		"name": "alertname",
+		"value": "ExampleAlertAlwaysFiring"
+	  }
+	]
+  }
+]`,
+			string(m15b), string(m15b), string(m5b),
+			string(m15b), string(m15b), string(m5b),
+			string(m25b), string(m25b), string(m15b))))
+	httpmock.RegisterResponder("GET", fmt.Sprintf("%s/api/v2/alerts/groups", uri),
+		httpmock.NewStringResponder(200, fmt.Sprintf(`[{
+  "alerts": [
+    {
+      "annotations": {},
+	  "startsAt": %s,
+	  "updatedAt": %s,
+      "endsAt": %s,
+      "fingerprint": "8b0a45d044ddacec",
+      "receivers": [ {"name": "web.hook"} ],
+      "status": {
+        "inhibitedBy": [],
+        "silencedBy": [],
+        "state": "active"
+      },
+      "generatorURL": "http://localhost",
+      "labels": {
+        "alertname": "ExampleAlertAlwaysFiring",
+        "job": "alertmanager"
+      }
+    }
+  ],
+  "labels": {
+    "alertname": "ExampleAlertAlwaysFiring"
+  },
+  "receiver": {
+    "name": "web.hook"
+  }
+}]`, string(m25b), string(m25b), string(p15b))))
+
+	am, _ := NewAlertmanager("expired", "expired", uri)
+
+	if err := am.Pull(); err != nil {
+		t.Error(err)
+	}
+	alertGroups := am.Alerts()
+	if len(alertGroups) != 1 {
+		t.Errorf("Expected %d alert groups, got %d", 1, len(alertGroups))
+	}
+	for _, ag := range alertGroups {
+		for _, alert := range ag.Alerts {
+			if alert.State == models.AlertStatusStateActive {
+				if len(alert.SilencedBy) < 1 {
+					t.Errorf("Alert should include expired silence")
+				}
+				if alert.SilencedBy[0] != "b2396f57-c2c3-4225-958f-70ba933a5d81" {
+					t.Errorf("Alerts silenced by wrong silence: %s", alert.SilencedBy[0])
+				}
+			}
+		}
 	}
 }
