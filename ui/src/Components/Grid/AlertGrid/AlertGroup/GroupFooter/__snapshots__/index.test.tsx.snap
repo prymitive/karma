@@ -100,7 +100,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
     href=\\"http://link.example.com\\"
     target=\\"_blank\\"
     rel=\\"noopener noreferrer\\"
-    class=\\"components-label components-label-with-hover badge border border-secondary components-grid-annotation-link\\"
+    class=\\"components-label components-label-with-hover badge border components-grid-annotation-link\\"
   >
     <svg
       aria-hidden=\\"true\\"
@@ -224,7 +224,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
     href=\\"http://link.example.com\\"
     target=\\"_blank\\"
     rel=\\"noopener noreferrer\\"
-    class=\\"components-label components-label-with-hover badge border border-secondary components-grid-annotation-link\\"
+    class=\\"components-label components-label-with-hover badge border components-grid-annotation-link\\"
   >
     <svg
       aria-hidden=\\"true\\"
