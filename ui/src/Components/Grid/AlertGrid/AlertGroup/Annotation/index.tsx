@@ -90,7 +90,7 @@ const RenderLinkAnnotation: FC<{
       href={value}
       target="_blank"
       rel="noopener noreferrer"
-      className="components-label components-label-with-hover badge components-grid-annotation-link"
+      className="components-label components-label-with-hover badge border components-grid-annotation-link"
     >
       <FontAwesomeIcon icon={faExternalLinkAlt} /> {name}
     </a>
