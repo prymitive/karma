@@ -125,7 +125,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     href=\\"http://localhost\\"
     target=\\"_blank\\"
     rel=\\"noopener noreferrer\\"
-    class=\\"components-label components-label-with-hover badge border components-grid-annotation-link\\"
+    class=\\"components-label components-label-with-hover badge border border-secondary components-grid-annotation-link\\"
   >
     <svg
       aria-hidden=\\"true\\"
@@ -254,7 +254,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
     href=\\"http://localhost\\"
     target=\\"_blank\\"
     rel=\\"noopener noreferrer\\"
-    class=\\"components-label components-label-with-hover badge border components-grid-annotation-link\\"
+    class=\\"components-label components-label-with-hover badge border border-secondary components-grid-annotation-link\\"
   >
     <svg
       aria-hidden=\\"true\\"
