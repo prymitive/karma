@@ -52,6 +52,12 @@ icon.
 Each individual alert will show unique labels and annotations. Labels
 and annotations that are shared between all alerts are moved to the footer.
 
+Active alerts will show recently expired silences, to allow re-silincing
+if needed.
+This is controlled via `silences:expired` setting. `10m` value would show
+silences expired in the last 10 minutes but only for alerts that started firing
+more than 10 minutes ago.
+
 ![Example](/docs/img/alertGroup.png)
 
 #### Alert history
