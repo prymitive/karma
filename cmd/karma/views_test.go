@@ -1033,34 +1033,36 @@ func TestSilences(t *testing.T) {
 	mockConfig(t.Setenv)
 	for _, testCase := range silenceTestCases {
 		for _, version := range mock.ListAllMocks() {
-			t.Logf("Validating silences.json response using mock files from Alertmanager %s", version)
-			mockAlerts(version)
-			r := testRouter()
-			setupRouter(r, nil)
-			// re-run a few times to test the cache
-			for i := 1; i <= 3; i++ {
-				uri := fmt.Sprintf("/silences.json?showExpired=%s&sortReverse=%s&searchTerm=%s", testCase.showExpired, testCase.sortReverse, testCase.searchTerm)
-				req := httptest.NewRequest("GET", uri, nil)
-				resp := httptest.NewRecorder()
-				r.ServeHTTP(resp, req)
-				if resp.Code != http.StatusOK {
-					t.Errorf("GET /silences.json returned status %d", resp.Code)
+			t.Run(version, func(t *testing.T) {
+				t.Logf("Validating silences.json response using mock files from Alertmanager %s", version)
+				mockAlerts(version)
+				r := testRouter()
+				setupRouter(r, nil)
+				// re-run a few times to test the cache
+				for i := 1; i <= 3; i++ {
+					uri := fmt.Sprintf("/silences.json?showExpired=%s&sortReverse=%s&searchTerm=%s", testCase.showExpired, testCase.sortReverse, testCase.searchTerm)
+					req := httptest.NewRequest("GET", uri, nil)
+					resp := httptest.NewRecorder()
+					r.ServeHTTP(resp, req)
+					if resp.Code != http.StatusOK {
+						t.Errorf("GET /silences.json returned status %d", resp.Code)
+					}
+					ur := []models.ManagedSilence{}
+					body := resp.Body.Bytes()
+					err := json.Unmarshal(body, &ur)
+					if err != nil {
+						t.Errorf("Failed to unmarshal response: %s", err)
+					}
+					results := []string{}
+					for _, silence := range ur {
+						results = append(results, silence.Silence.Comment)
+					}
+					sort.Strings(results) // can't rely on API order since it's sorted based on timestamps, resort
+					if diff := cmp.Diff(testCase.results, results); diff != "" {
+						t.Errorf("Wrong silences returned for '%s' (-want +got):\n%s", uri, diff)
+					}
 				}
-				ur := []models.ManagedSilence{}
-				body := resp.Body.Bytes()
-				err := json.Unmarshal(body, &ur)
-				if err != nil {
-					t.Errorf("Failed to unmarshal response: %s", err)
-				}
-				results := []string{}
-				for _, silence := range ur {
-					results = append(results, silence.Silence.Comment)
-				}
-				sort.Strings(results) // can't rely on API order since it's sorted based on timestamps, resort
-				if diff := cmp.Diff(testCase.results, results); diff != "" {
-					t.Errorf("Wrong silences returned for '%s' (-want +got):\n%s", uri, diff)
-				}
-			}
+			})
 		}
 	}
 }
@@ -2280,7 +2282,7 @@ func TestUpstreamStatus(t *testing.T) {
 						ReadOnly:        true,
 						Headers:         map[string]string{},
 						CORSCredentials: "omit",
-						Error:           "invalid character 'I' looking for beginning of value",
+						Error:           "invalid response status code: 500",
 						Version:         "0.20.0",
 						Cluster:         "broken1 | broken2",
 						ClusterMembers:  []string{"broken1", "broken2"},
@@ -2424,7 +2426,7 @@ func TestUpstreamStatus(t *testing.T) {
 						ReadOnly:        true,
 						Headers:         map[string]string{},
 						CORSCredentials: "omit",
-						Error:           "json: cannot unmarshal array into Go value of type string",
+						Error:           "invalid response status code: 500",
 						Version:         "0.21.0",
 						Cluster:         "Errors",
 						ClusterMembers:  []string{"ha1", "ha2"},

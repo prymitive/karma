@@ -13,7 +13,6 @@ import (
 	"github.com/prymitive/karma/internal/mapper/v017/client"
 	"github.com/prymitive/karma/internal/mapper/v017/client/alertgroup"
 	"github.com/prymitive/karma/internal/mapper/v017/client/general"
-	"github.com/prymitive/karma/internal/mapper/v017/client/silence"
 	ammodels "github.com/prymitive/karma/internal/mapper/v017/models"
 	"github.com/prymitive/karma/internal/models"
 )
@@ -87,22 +86,22 @@ func groups(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.AlertGro
 	return ret, nil
 }
 
-func silences(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.Silence, error) {
-	silences, err := c.Silence.GetSilences(silence.NewGetSilencesParamsWithTimeout(timeout))
+func silences(c *http.Client, uri string, timeout time.Duration) ([]models.Silence, error) {
+	sl, err := streamSilences(c, uri, timeout)
 	if err != nil {
-		return []models.Silence{}, err
+		return nil, err
 	}
 
-	ret := make([]models.Silence, 0, len(silences.Payload))
+	ret := make([]models.Silence, 0, len(sl))
 
 	var isEqual bool
-	for _, s := range silences.Payload {
+	for _, s := range sl {
 		us := models.Silence{
-			ID:        *s.ID,
-			StartsAt:  time.Time(*s.StartsAt),
-			EndsAt:    time.Time(*s.EndsAt),
-			CreatedBy: *s.CreatedBy,
-			Comment:   *s.Comment,
+			ID:        s.ID,
+			StartsAt:  s.StartsAt,
+			EndsAt:    s.EndsAt,
+			CreatedBy: s.CreatedBy,
+			Comment:   s.Comment,
 		}
 		for _, m := range s.Matchers {
 			if m.IsEqual != nil {
@@ -111,9 +110,9 @@ func silences(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.Silenc
 				isEqual = true
 			}
 			sm := models.SilenceMatcher{
-				Name:    *m.Name,
-				Value:   *m.Value,
-				IsRegex: *m.IsRegex,
+				Name:    m.Name,
+				Value:   m.Value,
+				IsRegex: m.IsRegex,
 				IsEqual: isEqual,
 			}
 			us.Matchers = append(us.Matchers, sm)
