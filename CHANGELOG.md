@@ -12,6 +12,9 @@
   configured by setting `silences:expired` option or `--silences.expired` flag.
   Setting this value to `5m` will show silences if they expired in the last 5
   minutes but only if the alert started firing at least 5 minutes ago.
+- `alertAcknowledgement:comment` will replace `%NOWLOC%` string with a timestamp
+  formatted using local time zone, use `%NOW%` for timestamps using `UTC` timezone,
+  #3704.
 
 ## v0.93
 

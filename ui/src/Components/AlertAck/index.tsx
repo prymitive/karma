@@ -79,7 +79,9 @@ const AlertAck: FC<{
       const now = new Date();
       const comment = toJS(
         alertStore.settings.values.alertAcknowledgement.comment
-      ).replace("%NOW%", now.toUTCString());
+      )
+        .replace("%NOW%", now.toUTCString())
+        .replace("%NOWLOC%", now.toString());
       c.push({
         payload: GenerateAlertmanagerSilenceData(
           now,

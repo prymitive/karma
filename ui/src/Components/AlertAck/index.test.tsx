@@ -353,7 +353,7 @@ describe("<AlertAck />", () => {
     });
   });
 
-  it("injects timestamp when configured", async () => {
+  it("injects UTC timestamp when configured", async () => {
     alertStore.settings.setValues({
       ...alertStore.settings.values,
       ...{
@@ -382,6 +382,28 @@ describe("<AlertAck />", () => {
       ],
       startsAt: "2000-02-01T00:00:00.000Z",
     });
+  });
+
+  it("injects local timezone timestamp when configured", async () => {
+    alertStore.settings.setValues({
+      ...alertStore.settings.values,
+      ...{
+        alertAcknowledgement: {
+          enabled: true,
+          durationSeconds: 237,
+          author: "me",
+          comment: "ACK! This alert was acknowledged using karma on %NOWLOC%",
+        },
+      },
+    });
+    await MountAndClick();
+    const comment = JSON.parse((fetchMock.lastOptions() as any).body).comment;
+    expect(comment).not.toEqual(
+      "ACK! This alert was acknowledged using karma on Tue Feb 01 2000 00:00:00 GMT"
+    );
+    expect(comment).toMatch(
+      /ACK! This alert was acknowledged using karma on (Mon Jan 31 2000 19|Tue Feb 01 2000 00):00:00 GMT([+-]+)[0-9]+ \(.*\)/
+    );
   });
 
   it("uses author from authentication info when auth is enabled", async () => {

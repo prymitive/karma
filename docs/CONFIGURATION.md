@@ -497,7 +497,8 @@ alertAcknowledgement:
 - `author` - default author for acknowledgement silences. If user set the
   author field on the silence form then that value will be used instead.
 - `comment` - custom comment used for acknowledgement silences (optional).
-  If the comment contains `%NOW%` it will be replaced by current timestamp.
+  If the comment contains `%NOW%` it will be replaced by current timestamp
+  with UTC timezone, to use timestamp with local timezone use `%NOWLOC%`.
 
 Defaults:
 
