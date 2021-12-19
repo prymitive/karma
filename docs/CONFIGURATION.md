@@ -1131,6 +1131,7 @@ silences:
 ```
 
 - `expired` - controls how long expired silences are shown on active alerts.
+  Expired silences are only visible if alert itself is older than this value.
   Set it to a negative value to disable showing expired silences.
 - `comments:linkDetect:rules` - allows to specify a list of rules to detect links
   inside silence comments. It's intended to find ticket system ID strings and
@@ -1143,8 +1144,8 @@ silences:
     Each template must include `$1` which will be replaced with text matched
     by the `regex`.
 
-Examples where alerts that got unsilenced will show silences expired between
-now and 15 minutes ago:
+Examples where alerts that got unsilenced will show silences expired in the last
+15 minutes:
 
 ```YAML
 silences:
