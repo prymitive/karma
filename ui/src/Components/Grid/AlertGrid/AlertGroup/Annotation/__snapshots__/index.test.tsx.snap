@@ -6,7 +6,7 @@ exports[`<RenderLinkAnnotation /> matches snapshot 1`] = `
   href=\\"http://localhost/foo\\"
   target=\\"_blank\\"
   rel=\\"noopener noreferrer\\"
-  class=\\"components-label components-label-with-hover badge border border-secondary components-grid-annotation-link\\"
+  class=\\"components-label components-label-with-hover badge border components-grid-annotation-link\\"
 >
   <svg
     aria-hidden=\\"true\\"

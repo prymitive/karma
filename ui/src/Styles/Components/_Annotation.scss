@@ -6,6 +6,9 @@
 .components-grid-annotation-link {
   text-decoration: none;
   color: $link-color;
+  &.border {
+    border-color: $annotation-link-border !important;
+  }
 }
 .components-grid-annotation-link:hover {
   text-decoration: none;
