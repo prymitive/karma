@@ -40,6 +40,25 @@ beforeEach(() => {
     cb(0);
     return 0;
   });
+
+  alertStore.data.setUpstreams({
+    counters: { total: 1, healthy: 1, failed: 0 },
+    instances: [
+      {
+        name: "dev",
+        cluster: "dev",
+        clusterMembers: ["dev"],
+        uri: "https://am.example.com",
+        publicURI: "https://am.example.com",
+        error: "",
+        readonly: false,
+        headers: {},
+        corsCredentials: "include",
+        version: "",
+      },
+    ],
+    clusters: { dev: ["dev"] },
+  });
 });
 
 afterEach(() => {
@@ -64,6 +83,17 @@ const MountedNavbar = (fixedTop?: boolean) => {
 };
 
 describe("<NavBar />", () => {
+  it("renders null with no upstreams", () => {
+    alertStore.data.setUpstreams({
+      counters: { total: 0, healthy: 0, failed: 0 },
+      instances: [],
+      clusters: {},
+    });
+    alertStore.info.setTotalAlerts(15);
+    const tree = MountedNavbar();
+    expect(tree.find("span.navbar-brand")).toHaveLength(0);
+  });
+
   it("navbar-brand shows 15 alerts with totalAlerts=15", () => {
     alertStore.info.setTotalAlerts(15);
     const tree = MountedNavbar();

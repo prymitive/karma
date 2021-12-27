@@ -10,6 +10,7 @@ import { FatalError } from "./FatalError";
 import { UpgradeNeeded } from "./UpgradeNeeded";
 import { ReloadNeeded } from "./ReloadNeeded";
 import { EmptyGrid } from "./EmptyGrid";
+import { NoUpstream } from "./NoUpstream";
 
 const Grid: FC<{
   alertStore: AlertStore;
@@ -30,7 +31,11 @@ const Grid: FC<{
     <FatalError message={alertStore.data.upstreams.instances[0].error} />
   ) : alertStore.info.version !== "unknown" &&
     alertStore.info.totalAlerts === 0 ? (
-    <EmptyGrid />
+    alertStore.data.upstreams.instances.length === 0 ? (
+      <NoUpstream />
+    ) : (
+      <EmptyGrid />
+    )
   ) : (
     <AlertGrid
       alertStore={alertStore}

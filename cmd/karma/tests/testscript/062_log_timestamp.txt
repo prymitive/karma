@@ -1,5 +1,12 @@
 # Logs timestamps when log.timestamp is set to true
-karma.bin-should-fail --log.timestamp=true
+
+exec bash -x ./test.sh &
+karma.bin-should-work --log.timestamp=true --pid-file=karma.pid --listen.address=127.0.0.1 --listen.port=8062
 ! stdout .
 stderr '[0-9][0-9]:[0-9][0-9]:[0-9][0-9] level=info msg="Version: dev"'
-stderr '[0-9][0-9]:[0-9][0-9]:[0-9][0-9] level=error msg="Execution failed" error="no valid Alertmanager URIs defined"'
+stderr '[0-9][0-9]:[0-9][0-9]:[0-9][0-9] level=info msg="Pulling latest alerts and silences from Alertmanager"'
+
+-- test.sh --
+while [ ! -f karma.pid ]; do sleep 1 ; done
+sleep 5
+cat karma.pid | xargs kill

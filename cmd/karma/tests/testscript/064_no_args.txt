@@ -1,8 +1,0 @@
-# Raises an error if no alertmanager uri is set
-karma.bin-should-fail
-! stdout .
-cmp stderr stderr.txt
-
--- stderr.txt --
-level=info msg="Version: dev"
-level=error msg="Execution failed" error="no valid Alertmanager URIs defined"

@@ -1,5 +1,17 @@
 # Changelog
 
+## [next]
+
+### Fixed
+
+- Messages are now logged correctly when both `--log.format=json` and
+  `--log.timestamp=true` flags are set #3822.
+
+### Changed
+
+- Show a placeholder message if no alertmanager server is configured, instead of
+  failing to start.
+
 ## v0.94
 
 ### Added

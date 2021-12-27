@@ -4,6 +4,11 @@ import { act } from "react-dom/test-utils";
 import { mount } from "enzyme";
 
 import { PressKey } from "__fixtures__/PressKey";
+import {
+  MockThemeContext,
+  MockThemeContextWithoutAnimations,
+} from "__fixtures__/Theme";
+import { ThemeContext } from "Components/Theme";
 import { Modal, ModalInner } from ".";
 
 beforeEach(() => {
@@ -114,6 +119,38 @@ describe("<ModalInner />", () => {
     );
     const mountModal = tree.find("CSSTransition").at(0);
     expect((mountModal.props() as any).onExited).toBe(onExited);
+  });
+
+  it("uses components-animation-modal class when animations are enabled", () => {
+    const onExited = jest.fn();
+    const tree = mount(
+      <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
+        <div />
+      </Modal>,
+      {
+        wrappingComponent: ThemeContext.Provider,
+        wrappingComponentProps: { value: MockThemeContext },
+      }
+    );
+    const mountModal = tree.find("CSSTransition").at(0);
+    expect((mountModal.props() as any).classNames).toBe(
+      "components-animation-modal"
+    );
+  });
+
+  it("doesn't use components-animation-modal class when animations are disabled", () => {
+    const onExited = jest.fn();
+    const tree = mount(
+      <Modal isOpen={true} toggleOpen={fakeToggle} onExited={onExited}>
+        <div />
+      </Modal>,
+      {
+        wrappingComponent: ThemeContext.Provider,
+        wrappingComponentProps: { value: MockThemeContextWithoutAnimations },
+      }
+    );
+    const mountModal = tree.find("CSSTransition").at(0);
+    expect((mountModal.props() as any).classNames).toBe("");
   });
 
   it("toggleOpen is called after pressing 'esc'", () => {

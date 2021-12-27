@@ -36,6 +36,24 @@ storiesOf("NavBar", module).add("NavBar", () => {
   const settingsStore = new Settings(null);
   const silenceFormStore = new SilenceFormStore();
 
+  alertStore.data.setUpstreams({
+    counters: { total: 1, healthy: 1, failed: 0 },
+    instances: [
+      {
+        name: "dev",
+        cluster: "dev",
+        clusterMembers: ["dev"],
+        uri: "https://am.example.com",
+        publicURI: "https://am.example.com",
+        error: "",
+        readonly: false,
+        headers: {},
+        corsCredentials: "include",
+        version: "",
+      },
+    ],
+    clusters: { dev: ["dev"] },
+  });
   alertStore.info.setTotalAlerts(197);
   alertStore.data.setColors({
     cluster: {

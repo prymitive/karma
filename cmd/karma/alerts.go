@@ -84,7 +84,9 @@ func countersToLabelStats(counters map[string]map[string]int) models.LabelNameSt
 }
 
 func getUpstreams() models.AlertmanagerAPISummary {
-	summary := models.AlertmanagerAPISummary{}
+	summary := models.AlertmanagerAPISummary{
+		Instances: []models.AlertmanagerAPIStatus{},
+	}
 
 	clusters := map[string][]string{}
 	upstreams := alertmanager.GetAlertmanagers()

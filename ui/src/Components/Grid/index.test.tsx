@@ -131,8 +131,38 @@ describe("<Grid />", () => {
   it("renders EmptyGrid after first fetch when totalAlerts is 0", () => {
     alertStore.info.setVersion("1.2.3");
     alertStore.info.setTotalAlerts(0);
+    alertStore.data.setUpstreams({
+      counters: { total: 1, healthy: 1, failed: 1 },
+      instances: [
+        {
+          name: "dev",
+          cluster: "dev",
+          clusterMembers: ["dev"],
+          uri: "https://am.example.com",
+          publicURI: "https://am.example.com",
+          error: "",
+          readonly: false,
+          headers: {},
+          corsCredentials: "include",
+          version: "",
+        },
+      ],
+      clusters: { dev: ["dev"] },
+    });
     const tree = ShallowGrid();
     expect(tree.text()).toBe("<EmptyGrid />");
+  });
+
+  it("renders NoUpstream after first fetch when upstream list is empty", () => {
+    alertStore.info.setVersion("1.2.3");
+    alertStore.info.setTotalAlerts(0);
+    alertStore.data.setUpstreams({
+      counters: { total: 0, healthy: 0, failed: 0 },
+      instances: [],
+      clusters: {},
+    });
+    const tree = ShallowGrid();
+    expect(tree.text()).toBe("<NoUpstream />");
   });
 
   it("renders AlertGrid after first fetch finished when totalAlerts is >0", () => {

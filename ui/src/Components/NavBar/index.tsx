@@ -117,21 +117,33 @@ const NavBar: FC<{
           } align-items-start`}
         >
           <span className="navbar-nav d-flex flex-row">
-            <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block">
-              <OverviewModal alertStore={alertStore} />
-            </span>
+            {alertStore.data.upstreams.instances.length === 0 ? null : (
+              <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block">
+                <OverviewModal alertStore={alertStore} />
+              </span>
+            )}
             <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
           </span>
-          <FilterInput alertStore={alertStore} settingsStore={settingsStore} />
-          <ul className="navbar-nav flex-wrap flex-shrink-1 ms-1">
-            <AppToasts alertStore={alertStore} />
-            <SilenceModal
+          {alertStore.data.upstreams.instances.length === 0 ? null : (
+            <FilterInput
               alertStore={alertStore}
-              silenceFormStore={silenceFormStore}
               settingsStore={settingsStore}
             />
-            <MainModal alertStore={alertStore} settingsStore={settingsStore} />
-          </ul>
+          )}
+          {alertStore.data.upstreams.instances.length === 0 ? null : (
+            <ul className="navbar-nav flex-wrap flex-shrink-1 ms-1">
+              <AppToasts alertStore={alertStore} />
+              <SilenceModal
+                alertStore={alertStore}
+                silenceFormStore={silenceFormStore}
+                settingsStore={settingsStore}
+              />
+              <MainModal
+                alertStore={alertStore}
+                settingsStore={settingsStore}
+              />
+            </ul>
+          )}
         </nav>
       </CSSTransition>
     </div>
