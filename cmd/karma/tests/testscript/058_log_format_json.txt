@@ -1,8 +1,22 @@
 # Logs messages as JSON when log.format=json is passed
-karma.bin-should-fail --log.format=json --log.timestamp=false
+
+exec bash -x ./test.sh &
+karma.bin-should-work --log.format=json --log.timestamp=false --pid-file=karma.pid --listen.address=127.0.0.1 --listen.port=8058
 ! stdout .
 cmp stderr stderr.txt
 
 -- stderr.txt --
 {"level":"info","message":"Version: dev"}
-{"level":"error","error":"no valid Alertmanager URIs defined","message":"Execution failed"}
+{"level":"info","path":"karma.pid","message":"Writing PID file"}
+{"level":"info","message":"Initial Alertmanager collection"}
+{"level":"info","message":"Pulling latest alerts and silences from Alertmanager"}
+{"level":"info","message":"Collection completed"}
+{"level":"info","message":"Done, starting HTTP server"}
+{"level":"info","address":"127.0.0.1:8058","message":"Starting HTTP server"}
+{"level":"info","message":"Shutting down HTTP server"}
+{"level":"info","message":"HTTP server shut down"}
+{"level":"info","path":"karma.pid","message":"Removing PID file"}
+-- test.sh --
+while [ ! -f karma.pid ]; do sleep 1 ; done
+sleep 5
+cat karma.pid | xargs kill

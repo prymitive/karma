@@ -254,6 +254,10 @@ func lvlFormatter(level interface{}) string {
 	return fmt.Sprintf("level=%s", level)
 }
 
+func discardFormatter(msg interface{}) string {
+	return ""
+}
+
 func initLogger() {
 	log.Logger = log.Logger.Output(zerolog.ConsoleWriter{
 		Out:           os.Stderr,
@@ -279,9 +283,19 @@ func setupLogger() error {
 				FormatMessage: msgFormatter,
 				TimeFormat:    "15:04:05",
 			})
+		} else {
+			log.Logger = zerolog.New(os.Stderr).Output(zerolog.ConsoleWriter{
+				Out:             os.Stderr,
+				NoColor:         true,
+				FormatLevel:     lvlFormatter,
+				FormatMessage:   msgFormatter,
+				FormatTimestamp: discardFormatter,
+			})
 		}
 	case "json":
-		if !config.Config.Log.Timestamp {
+		if config.Config.Log.Timestamp {
+			log.Logger = zerolog.New(os.Stderr).With().Timestamp().Logger()
+		} else {
 			log.Logger = zerolog.New(os.Stderr).With().Logger()
 		}
 	default:
@@ -380,10 +394,6 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, err
 	err = setupUpstreams()
 	if err != nil {
 		return nil, nil, err
-	}
-
-	if len(alertmanager.GetAlertmanagers()) == 0 {
-		return nil, nil, fmt.Errorf("no valid Alertmanager URIs defined")
 	}
 
 	if config.Config.Authorization.ACL.Silences != "" {
