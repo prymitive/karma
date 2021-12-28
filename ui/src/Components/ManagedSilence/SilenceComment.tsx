@@ -52,7 +52,7 @@ const SilenceComment: FC<{
         </div>
         <div className="mx-2 flex-shrink-1 flex-grow-1 mw-1p">
           <div
-            className={`font-italic components-managed-silence-comment ${
+            className={`components-managed-silence-comment ${
               collapsed ? "text-truncate overflow-hidden" : ""
             }`}
           >
