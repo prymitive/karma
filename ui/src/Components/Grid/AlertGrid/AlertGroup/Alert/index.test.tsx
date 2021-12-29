@@ -138,7 +138,7 @@ describe("<Alert />", () => {
     const group = MockAlertGroup([], [alert], [], [], {});
     const tree = MountedAlert(alert, group, false, false);
     const label = tree
-      .find("FilteringLabel")
+      .find("Memo(FilteringLabel)")
       .filterWhere((elem) => elem.props().name === "@cluster");
     expect(label.text()).toBe("@cluster: default");
   });
@@ -168,7 +168,7 @@ describe("<Alert />", () => {
     const group = MockAlertGroup([], [alert], [], [], {});
     const tree = MountedAlert(alert, group, false, false);
     const labels = tree
-      .find("FilteringLabel")
+      .find("Memo(FilteringLabel)")
       .filterWhere((elem) => elem.props().name === "@cluster");
     expect(labels).toHaveLength(2);
     expect(labels.at(0).text()).toBe("@cluster: default");
@@ -180,7 +180,7 @@ describe("<Alert />", () => {
     const group = MockAlertGroup([], [alert], [], [], {});
     const tree = MountedAlert(alert, group, true, false);
     const label = tree
-      .find("FilteringLabel")
+      .find("Memo(FilteringLabel)")
       .filterWhere((elem) => elem.props().name === "@receiver");
     expect(label.text()).toBe("@receiver: by-name");
   });

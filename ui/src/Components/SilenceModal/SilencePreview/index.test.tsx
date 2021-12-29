@@ -116,7 +116,7 @@ describe("<SilencePreview />", () => {
     });
     const tree = MountedSilencePreview();
     expect(tree.text()).toMatch(/Affected alerts/);
-    expect(tree.find("StaticLabel")).toHaveLength(3);
+    expect(tree.find("Memo(StaticLabel)")).toHaveLength(3);
   });
 
   it("handles empty grid response correctly", () => {

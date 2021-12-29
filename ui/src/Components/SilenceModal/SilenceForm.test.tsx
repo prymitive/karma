@@ -67,7 +67,7 @@ const MountedSilenceForm = () => {
 describe("<SilenceForm /> matchers", () => {
   it("has an empty matcher selects on default render", () => {
     const tree = MountedSilenceForm();
-    const matchers = tree.find("SilenceMatch");
+    const matchers = tree.find("Memo(SilenceMatch)");
     expect(matchers).toHaveLength(1);
     expect(silenceFormStore.data.matchers).toHaveLength(1);
   });
@@ -97,7 +97,7 @@ describe("<SilenceForm /> matchers", () => {
     ]);
     silenceFormStore.data.setAutofillMatchers(true);
     const tree = MountedSilenceForm();
-    const matchers = tree.find("SilenceMatch");
+    const matchers = tree.find("Memo(SilenceMatch)");
     expect(matchers).toHaveLength(12);
     expect(silenceFormStore.data.matchers).toHaveLength(12);
     expect(silenceFormStore.data.matchers).toEqual([
@@ -275,7 +275,7 @@ describe("<SilenceForm /> matchers", () => {
     ]);
     silenceFormStore.data.setAutofillMatchers(true);
     const tree = MountedSilenceForm();
-    const matchers = tree.find("SilenceMatch");
+    const matchers = tree.find("Memo(SilenceMatch)");
     expect(matchers).toHaveLength(12);
     expect(silenceFormStore.data.matchers).toHaveLength(12);
     expect(silenceFormStore.data.matchers).toEqual([
@@ -451,7 +451,7 @@ describe("<SilenceForm /> matchers", () => {
     ]);
     silenceFormStore.data.setAutofillMatchers(false);
     const tree = MountedSilenceForm();
-    const matchers = tree.find("SilenceMatch");
+    const matchers = tree.find("Memo(SilenceMatch)");
     expect(matchers).toHaveLength(1);
     expect(silenceFormStore.data.matchers[0]).toMatchObject({
       isRegex: false,
@@ -464,7 +464,7 @@ describe("<SilenceForm /> matchers", () => {
     const tree = MountedSilenceForm();
     const button = tree.find("button[type='button']");
     button.simulate("click", { preventDefault: jest.fn() });
-    const matchers = tree.find("SilenceMatch");
+    const matchers = tree.find("Memo(SilenceMatch)");
     expect(matchers).toHaveLength(2);
     expect(silenceFormStore.data.matchers).toHaveLength(2);
   });
@@ -473,7 +473,7 @@ describe("<SilenceForm /> matchers", () => {
     const tree = MountedSilenceForm();
     expect(silenceFormStore.data.matchers).toHaveLength(1);
 
-    const matcher = tree.find("SilenceMatch");
+    const matcher = tree.find("Memo(SilenceMatch)");
     const button = matcher.find("button");
     expect(button).toHaveLength(0);
   });
@@ -485,7 +485,7 @@ describe("<SilenceForm /> matchers", () => {
     const tree = MountedSilenceForm();
     expect(silenceFormStore.data.matchers).toHaveLength(2);
 
-    const matcher = tree.find("SilenceMatch");
+    const matcher = tree.find("Memo(SilenceMatch)");
     const button = matcher.find("button");
     expect(button).toHaveLength(2);
   });
@@ -498,7 +498,7 @@ describe("<SilenceForm /> matchers", () => {
     const tree = MountedSilenceForm();
     expect(silenceFormStore.data.matchers).toHaveLength(3);
 
-    const matchers = tree.find("SilenceMatch");
+    const matchers = tree.find("Memo(SilenceMatch)");
     const toDelete = matchers.at(1);
     const button = toDelete.find("button");
     button.simulate("click");
@@ -509,23 +509,23 @@ describe("<SilenceForm /> matchers", () => {
 describe("<SilenceForm /> preview", () => {
   it("doesn't render PayloadPreview by default", () => {
     const tree = MountedSilenceForm();
-    expect(tree.find("PayloadPreview")).toHaveLength(0);
+    expect(tree.find("Memo(PayloadPreview)")).toHaveLength(0);
   });
 
   it("renders PayloadPreview after clicking the toggle", () => {
     const tree = MountedSilenceForm();
     tree.find("span.badge.cursor-pointer.text-muted").simulate("click");
-    expect(tree.find("PayloadPreview")).toHaveLength(1);
+    expect(tree.find("Memo(PayloadPreview)")).toHaveLength(1);
   });
 
   it("clicking on the toggle icon toggles PayloadPreview", () => {
     const tree = MountedSilenceForm();
     const button = tree.find(".badge.cursor-pointer.text-muted");
-    expect(tree.find("PayloadPreview")).toHaveLength(0);
+    expect(tree.find("Memo(PayloadPreview)")).toHaveLength(0);
     button.simulate("click");
-    expect(tree.find("PayloadPreview")).toHaveLength(1);
+    expect(tree.find("Memo(PayloadPreview)")).toHaveLength(1);
     button.simulate("click");
-    expect(tree.find("PayloadPreview")).toHaveLength(0);
+    expect(tree.find("Memo(PayloadPreview)")).toHaveLength(0);
   });
 
   it("clicking on the copy button copies form link to the clipboard", () => {

@@ -117,7 +117,7 @@ const ValidateCollapse = (
 
   MockAlerts(3, 3);
   const tree = MountedAlertGroup(jest.fn());
-  expect(tree.find("Alert")).toHaveLength(shouldBeCollapsed ? 0 : 3);
+  expect(tree.find("Memo(Alert)")).toHaveLength(shouldBeCollapsed ? 0 : 3);
 };
 
 describe("<AlertGroup />", () => {
@@ -149,8 +149,8 @@ describe("<AlertGroup />", () => {
   it("renders Alertmanager cluster labels in footer if shared", () => {
     MockAlerts(2, 2);
     group.shared.clusters = ["default"];
-    const tree = MountedAlertGroup(jest.fn()).find("AlertGroup");
-    expect(tree.find("GroupFooter").html()).toMatch(/@cluster/);
+    const tree = MountedAlertGroup(jest.fn()).find("Memo(AlertGroup)");
+    expect(tree.find("Memo(GroupFooter)").html()).toMatch(/@cluster/);
   });
 
   it("only renders one @cluster label per cluster in the footer", () => {
@@ -178,8 +178,8 @@ describe("<AlertGroup />", () => {
       });
     }
     group.shared.clusters = ["default", "HA"];
-    const tree = MountedAlertGroup(jest.fn()).find("AlertGroup");
-    const labels = tree.find("GroupFooter").find("FilteringLabel");
+    const tree = MountedAlertGroup(jest.fn()).find("Memo(AlertGroup)");
+    const labels = tree.find("Memo(GroupFooter)").find("Memo(FilteringLabel)");
     expect(labels).toHaveLength(3);
     expect(labels.at(0).text()).toBe("@cluster: default");
     expect(labels.at(1).text()).toBe("@cluster: HA");
@@ -191,8 +191,8 @@ describe("<AlertGroup />", () => {
     for (let i = 0; i < group.alerts.length; i++) {
       group.alerts[i].alertmanager = [];
     }
-    const tree = MountedAlertGroup(jest.fn()).find("AlertGroup");
-    const labels = tree.find("GroupFooter").find("FilteringLabel");
+    const tree = MountedAlertGroup(jest.fn()).find("Memo(AlertGroup)");
+    const labels = tree.find("Memo(GroupFooter)").find("Memo(FilteringLabel)");
     expect(labels).toHaveLength(1);
     expect(labels.at(0).text()).toBe("@receiver: by-name");
   });
@@ -214,7 +214,7 @@ describe("<AlertGroup />", () => {
     const alerts = tree.find("ul.list-group");
     expect(alerts.html()).toMatch(/@cluster/);
 
-    const footer = tree.find("GroupFooter");
+    const footer = tree.find("Memo(GroupFooter)");
     expect(footer.html()).not.toMatch(/@cluster/);
   });
 
@@ -222,7 +222,7 @@ describe("<AlertGroup />", () => {
     MockAlerts(5, 10);
     const tree = MountedAlertGroup(jest.fn());
     tree.find("span.badge.cursor-pointer").at(1).simulate("click");
-    expect(tree.find("Alert")).toHaveLength(0);
+    expect(tree.find("Memo(Alert)")).toHaveLength(0);
     expect(tree.find("ul.list-group")).toHaveLength(0);
   });
 
@@ -230,7 +230,7 @@ describe("<AlertGroup />", () => {
     MockAlerts(5, 10);
     alertStore.ui.setIsIdle(true);
     const tree = MountedAlertGroup(jest.fn(), MockThemeContext);
-    expect(tree.find("Alert")).toHaveLength(1);
+    expect(tree.find("Memo(Alert)")).toHaveLength(1);
   });
 
   it("is collapsed by default on desktop when defaultCollapseState=collapsed", () => {
@@ -366,7 +366,7 @@ describe("<AlertGroup /> renderConfig", () => {
     const tree = MountedAlertGroup(jest.fn());
 
     tree
-      .find("Alert")
+      .find("Memo(Alert)")
       .at(0)
       .find("span.bg-secondary.cursor-pointer")
       .at(0)
@@ -407,7 +407,7 @@ describe("<AlertGroup /> card theme", () => {
     settingsStore.alertGroupConfig.setColorTitleBar(false);
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn());
-    expect(tree.find("GroupHeader").prop("themedCounters")).toBe(true);
+    expect(tree.find("Memo(GroupHeader)").prop("themedCounters")).toBe(true);
   });
 
   it("renders bg-light border when colorTitleBar=true and there are multiple alert states", () => {
@@ -424,7 +424,7 @@ describe("<AlertGroup /> card theme", () => {
     settingsStore.alertGroupConfig.setColorTitleBar(true);
     group.stateCount = { active: 5, suppressed: 6, unprocessed: 7 };
     const tree = MountedAlertGroup(jest.fn());
-    expect(tree.find("GroupHeader").prop("themedCounters")).toBe(true);
+    expect(tree.find("Memo(GroupHeader)").prop("themedCounters")).toBe(true);
   });
 
   it("renders state based background when colorTitleBar=true and there's only one alert state", () => {
@@ -441,7 +441,7 @@ describe("<AlertGroup /> card theme", () => {
     settingsStore.alertGroupConfig.setColorTitleBar(true);
     group.stateCount = { active: 5, suppressed: 0, unprocessed: 0 };
     const tree = MountedAlertGroup(jest.fn());
-    expect(tree.find("GroupHeader").prop("themedCounters")).toBe(false);
+    expect(tree.find("Memo(GroupHeader)").prop("themedCounters")).toBe(false);
   });
 
   it("renders AlertHistory when enabled", async () => {
