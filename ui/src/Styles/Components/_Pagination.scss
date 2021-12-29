@@ -1,3 +1,8 @@
 .components-pagination:focus {
   outline: none;
 }
+
+button.page-link:focus {
+  color: $pagination-hover-color;
+  background-color: $pagination-hover-bg;
+}

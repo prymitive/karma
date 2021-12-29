@@ -58,6 +58,54 @@ describe("<PageSelect />", () => {
     expect(setPageCallback).toHaveBeenLastCalledWith(1);
   });
 
+  it("calls setPageCallback on button press", () => {
+    const setPageCallback = jest.fn();
+
+    const tree = mount(
+      <PageSelect
+        totalPages={15}
+        maxPerPage={5}
+        totalItemsCount={15 * 5}
+        setPageCallback={setPageCallback}
+      />
+    );
+    tree.simulate("focus");
+
+    for (const elem of [
+      { index: 0, page: 1, label: "" }, // <<
+      { index: 1, page: 1, label: "" }, // <
+      { index: 2, page: 1, label: "1" }, // <<12345>> -> <<12345>>
+      { index: 3, page: 2, label: "2" }, // <<12345>> -> <<12345>>
+      { index: 4, page: 3, label: "3" }, // <<12345>> -> <<12345>>
+      { index: 5, page: 4, label: "4" }, // <<12345>> -> <<23456>>
+      { index: 4, page: 4, label: "4" }, //  <<23456>> -> <<23456>>
+      { index: 0, page: 1, label: "" }, //  <<23456>> -> <<12345>>
+      { index: 6, page: 5, label: "5" }, //  <<12345>> -> <<34567>>
+      { index: 7, page: 6, label: "" }, //  <<34567>> -> <<45678>>
+      { index: 1, page: 5, label: "" }, //  <<34567>> -> <<23456>>
+      { index: 8, page: 15, label: "" }, //  <<23456>> -> <<end>>
+    ]) {
+      expect(tree.find("button.page-link").at(elem.index).text()).toBe(
+        elem.label
+      );
+      tree.find("button.page-link").at(elem.index).simulate("click");
+      expect(setPageCallback).toHaveBeenLastCalledWith(elem.page);
+    }
+  });
+
+  it("doesn't render anything if totalItemsCount <= maxPerPage", () => {
+    global.innerWidth = 1024;
+    const tree = mount(
+      <PageSelect
+        totalPages={1}
+        maxPerPage={5}
+        totalItemsCount={5}
+        setPageCallback={jest.fn()}
+      />
+    );
+    expect(tree.find(".page-link")).toHaveLength(0);
+  });
+
   it("renders 5 page range on desktop", () => {
     global.innerWidth = 1024;
     const tree = mount(
