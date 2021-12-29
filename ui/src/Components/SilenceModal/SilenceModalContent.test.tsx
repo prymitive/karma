@@ -79,7 +79,7 @@ describe("<SilenceModalContent />", () => {
     const tabs = tree.find("Tab");
     tabs.at(1).simulate("click");
     tree.update();
-    const form = tree.find("Browser");
+    const form = tree.find("Memo(Browser)");
     expect(form).toHaveLength(1);
   });
 
@@ -88,7 +88,7 @@ describe("<SilenceModalContent />", () => {
     const tree = MountedSilenceModalContent();
     const tabs = tree.find("Tab");
     tabs.at(0).simulate("click");
-    const form = tree.find("SilenceForm");
+    const form = tree.find("Memo(SilenceForm)");
     expect(form).toHaveLength(1);
   });
 
@@ -138,7 +138,7 @@ describe("<SilenceModalContent /> Editor", () => {
   it("renders SilenceForm when silenceFormStore.data.currentStage is 'UserInput'", () => {
     silenceFormStore.data.setStage("form");
     const tree = MountedSilenceModalContent();
-    const form = tree.find("SilenceForm");
+    const form = tree.find("Memo(SilenceForm)");
     expect(form).toHaveLength(1);
   });
 
@@ -160,7 +160,7 @@ describe("<SilenceModalContent /> Browser", () => {
   it("renders silence browser when tab is set to Browser", () => {
     silenceFormStore.tab.setTab("browser");
     const tree = MountedSilenceModalContent();
-    const form = tree.find("Browser");
+    const form = tree.find("Memo(Browser)");
     expect(form).toHaveLength(1);
   });
 });

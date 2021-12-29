@@ -83,7 +83,7 @@ const MountedGroupFooter = () => {
 describe("<GroupFooter />", () => {
   it("matches snapshot", () => {
     group.shared.clusters = ["default"];
-    const tree = MountedGroupFooter().find("GroupFooter");
+    const tree = MountedGroupFooter().find("Memo(GroupFooter)");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 
@@ -98,7 +98,7 @@ describe("<GroupFooter />", () => {
       },
     });
 
-    const tree = MountedGroupFooter().find("GroupFooter");
+    const tree = MountedGroupFooter().find("Memo(GroupFooter)");
     expect(tree.find("ManagedSilence")).toHaveLength(1);
   });
 
@@ -111,7 +111,7 @@ describe("<GroupFooter />", () => {
       default: {},
     });
 
-    const tree = MountedGroupFooter().find("GroupFooter");
+    const tree = MountedGroupFooter().find("Memo(GroupFooter)");
     expect(tree.find("FallbackSilenceDesciption")).toHaveLength(1);
   });
 
@@ -124,7 +124,7 @@ describe("<GroupFooter />", () => {
       foo: {},
     });
 
-    const tree = MountedGroupFooter().find("GroupFooter");
+    const tree = MountedGroupFooter().find("Memo(GroupFooter)");
     expect(tree.find("FallbackSilenceDesciption")).toHaveLength(1);
   });
 
@@ -143,7 +143,7 @@ describe("<GroupFooter />", () => {
       },
     });
 
-    const tree = MountedGroupFooter().find("GroupFooter");
+    const tree = MountedGroupFooter().find("Memo(GroupFooter)");
     expect(toDiffableHtml(tree.html())).toMatchSnapshot();
   });
 

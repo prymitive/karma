@@ -116,7 +116,7 @@ describe("<History />", () => {
     const tree = MountedHistory();
     tree.find("button.cursor-pointer").simulate("click");
     expect(tree.find("button.dropdown-item")).toHaveLength(1);
-    const labels = tree.find("HistoryLabel");
+    const labels = tree.find("Memo(HistoryLabel)");
     expect(labels).toHaveLength(2);
     expect(labels.at(0).html()).toMatch(/>foo=bar</);
     expect(labels.at(1).html()).toMatch(/>baz!=bar</);
@@ -147,7 +147,7 @@ describe("<HistoryMenu />", () => {
       "Last used filtersfoo=bar1baz=~bar1Save filtersReset filtersClear history"
     );
 
-    const labels = tree.find("HistoryLabel");
+    const labels = tree.find("Memo(HistoryLabel)");
     expect(labels).toHaveLength(2);
     expect(labels.at(0).html()).toMatch(/>foo=bar1</);
     expect(labels.at(1).html()).toMatch(/>baz=~bar1</);
@@ -193,13 +193,13 @@ describe("<HistoryMenu />", () => {
     expect(labelSets).toHaveLength(8);
 
     // oldest pushed label should be rendered last
-    const labelsLast = labelSets.last().find("HistoryLabel");
+    const labelsLast = labelSets.last().find("Memo(HistoryLabel)");
     expect(labelsLast).toHaveLength(2);
     expect(labelsLast.at(0).html()).toMatch(/>foo=bar9</);
     expect(labelsLast.at(1).html()).toMatch(/>baz=~bar9</);
 
     // most recently pushed label should be rendered fist
-    const labelsFist = labelSets.first().find("HistoryLabel");
+    const labelsFist = labelSets.first().find("Memo(HistoryLabel)");
     expect(labelsFist).toHaveLength(2);
     expect(labelsFist.at(0).html()).toMatch(/>foo=bar16</);
     expect(labelsFist.at(1).html()).toMatch(/>baz=~bar16</);
@@ -221,13 +221,13 @@ describe("<HistoryMenu />", () => {
     expect(labelSets).toHaveLength(4);
 
     // oldest pushed label should be rendered last
-    const labelsLast = labelSets.last().find("HistoryLabel");
+    const labelsLast = labelSets.last().find("Memo(HistoryLabel)");
     expect(labelsLast).toHaveLength(2);
     expect(labelsLast.at(0).html()).toMatch(/>foo=bar13</);
     expect(labelsLast.at(1).html()).toMatch(/>baz=~bar13</);
 
     // most recently pushed label should be rendered fist
-    const labelsFist = labelSets.first().find("HistoryLabel");
+    const labelsFist = labelSets.first().find("Memo(HistoryLabel)");
     expect(labelsFist).toHaveLength(2);
     expect(labelsFist.at(0).html()).toMatch(/>foo=bar16</);
     expect(labelsFist.at(1).html()).toMatch(/>baz=~bar16</);

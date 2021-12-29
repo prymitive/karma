@@ -94,7 +94,7 @@ describe("<PaginatedAlertList />", () => {
       <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
     );
     expect(tree.find("LabelSetList")).toHaveLength(1);
-    expect(tree.find("StaticLabel")).toHaveLength(3);
+    expect(tree.find("Memo(StaticLabel)")).toHaveLength(3);
   });
 
   it("renders empty LabelSetList with empty response", () => {
@@ -111,7 +111,7 @@ describe("<PaginatedAlertList />", () => {
       <PaginatedAlertList alertStore={alertStore} filters={["foo=bar"]} />
     );
     expect(tree.find("LabelSetList")).toHaveLength(1);
-    expect(tree.find("StaticLabel")).toHaveLength(0);
+    expect(tree.find("Memo(StaticLabel)")).toHaveLength(0);
   });
 
   it("fetches affected alerts on mount", () => {
@@ -145,7 +145,7 @@ describe("<PaginatedAlertList />", () => {
       />
     );
     expect(tree.text()).toMatch(/Affected alerts/);
-    expect(tree.find("StaticLabel")).toHaveLength(3);
+    expect(tree.find("Memo(StaticLabel)")).toHaveLength(3);
   });
 
   it("handles empty grid response correctly", () => {

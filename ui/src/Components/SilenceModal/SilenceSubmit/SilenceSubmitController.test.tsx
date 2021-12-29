@@ -70,8 +70,8 @@ describe("<SilenceSubmitController />", () => {
         silenceFormStore={silenceFormStore}
       />
     );
-    expect(tree.find("MultiClusterStatus")).toHaveLength(1);
-    expect(tree.find("SingleClusterStatus")).toHaveLength(0);
+    expect(tree.find("Memo(MultiClusterStatus)")).toHaveLength(1);
+    expect(tree.find("Memo(SingleClusterStatus)")).toHaveLength(0);
   });
 
   it("renders SingleClusterStatus when multiple clusters are used", () => {
@@ -85,8 +85,8 @@ describe("<SilenceSubmitController />", () => {
         silenceFormStore={silenceFormStore}
       />
     );
-    expect(tree.find("MultiClusterStatus")).toHaveLength(0);
-    expect(tree.find("SingleClusterStatus")).toHaveLength(1);
+    expect(tree.find("Memo(MultiClusterStatus)")).toHaveLength(0);
+    expect(tree.find("Memo(SingleClusterStatus)")).toHaveLength(1);
   });
 
   it("resets the form on 'Back' button click", () => {
