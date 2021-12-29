@@ -12,85 +12,63 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
       </ul>
     </div>
     <div class=\\"components-pagination\\">
-      <div class=\\"mt-3\\">
-        <ul class=\\"pagination justify-content-center\\">
-          <li class=\\"page-item disabled\\">
-            <a
-              class=\\"page-link\\"
-              href=\\"#\\"
-              aria-label=\\"Go to previous page\\"
+      <ul class=\\"pagination justify-content-center mt-3\\">
+        <li class=\\"page-item disabled\\">
+          <button class=\\"page-link\\">
+            <svg
+              aria-hidden=\\"true\\"
+              focusable=\\"false\\"
+              data-prefix=\\"fas\\"
+              data-icon=\\"angle-left\\"
+              class=\\"svg-inline--fa fa-angle-left fa-w-8 \\"
+              role=\\"img\\"
+              xmlns=\\"http://www.w3.org/2000/svg\\"
+              viewbox=\\"0 0 256 512\\"
             >
-              <svg
-                aria-hidden=\\"true\\"
-                focusable=\\"false\\"
-                data-prefix=\\"fas\\"
-                data-icon=\\"angle-left\\"
-                class=\\"svg-inline--fa fa-angle-left fa-w-8 \\"
-                role=\\"img\\"
-                xmlns=\\"http://www.w3.org/2000/svg\\"
-                viewbox=\\"0 0 256 512\\"
+              <path
+                fill=\\"currentColor\\"
+                d=\\"M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z\\"
               >
-                <path
-                  fill=\\"currentColor\\"
-                  d=\\"M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z\\"
-                >
-                </path>
-              </svg>
-            </a>
-          </li>
-          <li class=\\"page-item active\\">
-            <a
-              class=\\"page-link font-weight-bold\\"
-              href=\\"#\\"
-              aria-label=\\"Go to page number 1\\"
+              </path>
+            </svg>
+          </button>
+        </li>
+        <li class=\\"page-item active font-weight-bold\\">
+          <button class=\\"page-link\\">
+            1
+          </button>
+        </li>
+        <li class=\\"page-item \\">
+          <button class=\\"page-link\\">
+            2
+          </button>
+        </li>
+        <li class=\\"page-item \\">
+          <button class=\\"page-link\\">
+            3
+          </button>
+        </li>
+        <li class=\\"page-item \\">
+          <button class=\\"page-link\\">
+            <svg
+              aria-hidden=\\"true\\"
+              focusable=\\"false\\"
+              data-prefix=\\"fas\\"
+              data-icon=\\"angle-right\\"
+              class=\\"svg-inline--fa fa-angle-right fa-w-8 \\"
+              role=\\"img\\"
+              xmlns=\\"http://www.w3.org/2000/svg\\"
+              viewbox=\\"0 0 256 512\\"
             >
-              1
-            </a>
-          </li>
-          <li class=\\"page-item\\">
-            <a
-              class=\\"page-link\\"
-              href=\\"#\\"
-              aria-label=\\"Go to page number 2\\"
-            >
-              2
-            </a>
-          </li>
-          <li class=\\"page-item\\">
-            <a
-              class=\\"page-link\\"
-              href=\\"#\\"
-              aria-label=\\"Go to page number 3\\"
-            >
-              3
-            </a>
-          </li>
-          <li class=\\"page-item\\">
-            <a
-              class=\\"page-link\\"
-              href=\\"#\\"
-              aria-label=\\"Go to next page\\"
-            >
-              <svg
-                aria-hidden=\\"true\\"
-                focusable=\\"false\\"
-                data-prefix=\\"fas\\"
-                data-icon=\\"angle-right\\"
-                class=\\"svg-inline--fa fa-angle-right fa-w-8 \\"
-                role=\\"img\\"
-                xmlns=\\"http://www.w3.org/2000/svg\\"
-                viewbox=\\"0 0 256 512\\"
+              <path
+                fill=\\"currentColor\\"
+                d=\\"M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z\\"
               >
-                <path
-                  fill=\\"currentColor\\"
-                  d=\\"M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z\\"
-                >
-                </path>
-              </svg>
-            </a>
-          </li>
-        </ul>
-      </div>
+              </path>
+            </svg>
+          </button>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
