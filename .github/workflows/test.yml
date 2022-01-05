@@ -188,6 +188,26 @@ jobs:
           workdir: "./ui"
           config: "./ui/.depcheckrc.yaml"
 
+  package-lock:
+    name: Check package-lock.json
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Set up Node JS
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.13.1
+          cache: 'npm'
+          cache-dependency-path: 'ui/package-lock.json'
+
+      - name: Run npm install
+        run: cd ui && npm i
+
+      - name: Check for local changes
+        run: git diff --exit-code
+
   lint-versions:
     name: Lint Versions
     runs-on: ubuntu-20.04
@@ -245,6 +265,7 @@ jobs:
       - format-go
       - format-js
       - deps-js
+      - package-lock
       - lint-versions
       - typescript
       - git-commit
