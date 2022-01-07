@@ -2,7 +2,6 @@ import React, { FC, useState, useEffect, ReactNode } from "react";
 
 import { observer } from "mobx-react-lite";
 
-import TransitionGroup from "react-transition-group/TransitionGroup";
 import { CSSTransition } from "react-transition-group";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -86,8 +85,6 @@ const Browser: FC<{
     return () => clearInterval(timer);
   }, [settingsStore.fetchConfig.config.interval]);
 
-  const context = React.useContext(ThemeContext);
-
   return (
     <>
       <div
@@ -147,28 +144,20 @@ const Browser: FC<{
         <Placeholder content="Nothing to show" />
       ) : (
         <>
-          <TransitionGroup component={null} appear={false} enter exit={false}>
-            {response
-              .slice((activePage - 1) * maxPerPage, activePage * maxPerPage)
-              .map((silence) => (
-                <CSSTransition
-                  key={`${silence.cluster}/${silence.silence.id}`}
-                  classNames="components-animation-fade"
-                  timeout={context.animations.duration}
-                  unmountOnExit
-                >
-                  <ManagedSilence
-                    cluster={silence.cluster}
-                    alertCount={silence.alertCount}
-                    alertCountAlwaysVisible={true}
-                    silence={silence.silence}
-                    alertStore={alertStore}
-                    silenceFormStore={silenceFormStore}
-                    isNested={true}
-                  />
-                </CSSTransition>
-              ))}
-          </TransitionGroup>
+          {response
+            .slice((activePage - 1) * maxPerPage, activePage * maxPerPage)
+            .map((silence) => (
+              <ManagedSilence
+                key={`${silence.cluster}/${silence.silence.id}`}
+                cluster={silence.cluster}
+                alertCount={silence.alertCount}
+                alertCountAlwaysVisible={true}
+                silence={silence.silence}
+                alertStore={alertStore}
+                silenceFormStore={silenceFormStore}
+                isNested={true}
+              />
+            ))}
           <PageSelect
             totalPages={Math.ceil(response.length / maxPerPage)}
             maxPerPage={maxPerPage}
