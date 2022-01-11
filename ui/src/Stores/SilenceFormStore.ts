@@ -77,6 +77,10 @@ const AlertmanagerClustersToOption = (clusterDict: {
     value: clusterMembers,
   }));
 
+export const EscapeRegex = (v: string): string => {
+  return v.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+};
+
 const MatchersFromGroup = (
   group: APIAlertGroupT,
   stripLabels: string[],
@@ -218,9 +222,13 @@ const GenerateAlertmanagerSilenceData = (
       name: m.name,
       value:
         m.values.length > 1
-          ? `(${m.values.map((v) => v.value).join("|")})`
+          ? `(${m.values
+              .map((v) => (v.wasCreated ? v.value : EscapeRegex(v.value)))
+              .join("|")})`
           : m.values.length === 1
-          ? m.values[0].value
+          ? m.values[0].wasCreated
+            ? m.values[0].value
+            : EscapeRegex(m.values[0].value)
           : "",
       isRegex: m.isRegex,
       isEqual: m.isEqual,

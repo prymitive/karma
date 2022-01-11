@@ -24,6 +24,7 @@ const ThemeConfiguration: FC<{
     return {
       label: settingsStore.themeConfig.options[val].label,
       value: val,
+      wasCreated: false,
     };
   };
 

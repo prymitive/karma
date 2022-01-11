@@ -6,6 +6,7 @@
 
 - Messages are now logged correctly when both `--log.format=json` and
   `--log.timestamp=true` flags are set #3822.
+- Escape label values in silence form #3866.
 
 ### Changed
 

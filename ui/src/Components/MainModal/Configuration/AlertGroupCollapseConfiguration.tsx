@@ -24,6 +24,7 @@ const AlertGroupCollapseConfiguration: FC<{
     return {
       label: settingsStore.alertGroupConfig.options[val].label,
       value: val,
+      wasCreated: false,
     };
   };
 

@@ -5,6 +5,7 @@ export const NewLabelValue = (v: string): string => `New value: ${v}`;
 export interface OptionT {
   label: string;
   value: string;
+  wasCreated: boolean;
 }
 
 export interface MultiValueOptionT {
@@ -15,4 +16,5 @@ export interface MultiValueOptionT {
 export const StringToOption = (value: string): OptionT => ({
   label: value,
   value: value,
+  wasCreated: false,
 });

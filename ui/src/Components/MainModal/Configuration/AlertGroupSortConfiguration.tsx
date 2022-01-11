@@ -30,7 +30,11 @@ const AlertGroupSortConfiguration: FC<{
   };
 
   const valueToOption = (val: SortOrderT): OptionT => {
-    return { label: settingsStore.gridConfig.options[val].label, value: val };
+    return {
+      label: settingsStore.gridConfig.options[val].label,
+      value: val,
+      wasCreated: false,
+    };
   };
 
   const hideReverse =

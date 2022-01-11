@@ -27,10 +27,10 @@ import { ThemeContext } from "Components/Theme";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
 
 const specialLabels: OptionT[] = [
-  { label: "Automatic selection", value: "@auto" },
-  { label: "@alertmanager", value: "@alertmanager" },
-  { label: "@cluster", value: "@cluster" },
-  { label: "@receiver", value: "@receiver" },
+  { label: "Automatic selection", value: "@auto", wasCreated: false },
+  { label: "@alertmanager", value: "@alertmanager", wasCreated: false },
+  { label: "@cluster", value: "@cluster", wasCreated: false },
+  { label: "@receiver", value: "@receiver", wasCreated: false },
 ];
 
 const NullContainer: FC = () => null;
