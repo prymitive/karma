@@ -59,12 +59,21 @@ interface AlertGroupConfigStorage {
 }
 class AlertGroupConfig {
   options = Object.freeze({
-    expanded: { label: "Always expanded", value: "expanded" },
+    expanded: {
+      label: "Always expanded",
+      value: "expanded",
+      wasCreated: false,
+    },
     collapsedOnMobile: {
       label: "Collapse on mobile",
       value: "collapsedOnMobile",
+      wasCreated: false,
     },
-    collapsed: { label: "Always collapsed", value: "collapsed" },
+    collapsed: {
+      label: "Always collapsed",
+      value: "collapsed",
+      wasCreated: false,
+    },
   });
 
   config: AlertGroupConfigStorage;
@@ -128,10 +137,18 @@ interface GridConfigStorage {
 }
 class GridConfig {
   options = Object.freeze({
-    default: { label: "Use defaults from karma config file", value: "default" },
-    disabled: { label: "No sorting", value: "disabled" },
-    startsAt: { label: "Sort by alert timestamp", value: "startsAt" },
-    label: { label: "Sort by alert label", value: "label" },
+    default: {
+      label: "Use defaults from karma config file",
+      value: "default",
+      wasCreated: false,
+    },
+    disabled: { label: "No sorting", value: "disabled", wasCreated: false },
+    startsAt: {
+      label: "Sort by alert timestamp",
+      value: "startsAt",
+      wasCreated: false,
+    },
+    label: { label: "Sort by alert label", value: "label", wasCreated: false },
   });
 
   config: GridConfigStorage;
@@ -206,9 +223,10 @@ class ThemeConfig {
       auto: {
         label: "Automatic theme, follow browser preference",
         value: "auto",
+        wasCreated: false,
       },
-      light: { label: "Light theme", value: "light" },
-      dark: { label: "Dark theme", value: "dark" },
+      light: { label: "Light theme", value: "light", wasCreated: false },
+      dark: { label: "Dark theme", value: "dark", wasCreated: false },
     });
 
     this.config = localStored(

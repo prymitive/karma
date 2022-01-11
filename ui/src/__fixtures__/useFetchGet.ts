@@ -98,6 +98,10 @@ const useFetchGetMock = (
         uri: "./labelValues.json?name=cluster",
         response: ["dev", "staging", "prod"],
       },
+      {
+        uri: "./labelValues.json?name=regex",
+        response: ["(dev)", "staging (.+)", "\\prod\\"],
+      },
       // matcher value counters
       {
         re: /^\.\/alerts\.json\?q=/,

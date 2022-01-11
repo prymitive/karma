@@ -110,6 +110,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: "alertnameEqual",
             value: "alertnameEqual",
+            wasCreated: false,
           },
         ],
       },
@@ -122,6 +123,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: "alertnameNotEqual",
             value: "alertnameNotEqual",
+            wasCreated: false,
           },
         ],
       },
@@ -134,6 +136,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: ".*alertnameRegex.*",
             value: ".*alertnameRegex.*",
+            wasCreated: false,
           },
         ],
       },
@@ -146,6 +149,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: ".*alertnameNegativeRegex.*",
             value: ".*alertnameNegativeRegex.*",
+            wasCreated: false,
           },
         ],
       },
@@ -158,6 +162,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: "clusterEqual",
             value: "clusterEqual",
+            wasCreated: false,
           },
         ],
       },
@@ -170,6 +175,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: "clusterNotEqual",
             value: "clusterNotEqual",
+            wasCreated: false,
           },
         ],
       },
@@ -182,6 +188,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: ".*clusterRegex.*",
             value: ".*clusterRegex.*",
+            wasCreated: false,
           },
         ],
       },
@@ -194,6 +201,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: ".*clusterNegativeRegex.*",
             value: ".*clusterNegativeRegex.*",
+            wasCreated: false,
           },
         ],
       },
@@ -206,6 +214,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: "fooEqual",
             value: "fooEqual",
+            wasCreated: false,
           },
         ],
       },
@@ -218,6 +227,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: "fooNotEqual",
             value: "fooNotEqual",
+            wasCreated: false,
           },
         ],
       },
@@ -230,6 +240,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: ".*fooRegex.*",
             value: ".*fooRegex.*",
+            wasCreated: false,
           },
         ],
       },
@@ -242,6 +253,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: ".*fooNegativeRegex.*",
             value: ".*fooNegativeRegex.*",
+            wasCreated: false,
           },
         ],
       },
@@ -288,6 +300,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: "alertnameEqual",
             value: "alertnameEqual",
+            wasCreated: false,
           },
         ],
       },
@@ -300,6 +313,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: "alertnameNotEqual",
             value: "alertnameNotEqual",
+            wasCreated: false,
           },
         ],
       },
@@ -312,6 +326,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: ".*alertnameRegex.*",
             value: ".*alertnameRegex.*",
+            wasCreated: false,
           },
         ],
       },
@@ -324,6 +339,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: ".*alertnameNegativeRegex.*",
             value: ".*alertnameNegativeRegex.*",
+            wasCreated: false,
           },
         ],
       },
@@ -336,6 +352,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: "clusterEqual",
             value: "clusterEqual",
+            wasCreated: false,
           },
         ],
       },
@@ -348,6 +365,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: "clusterNotEqual",
             value: "clusterNotEqual",
+            wasCreated: false,
           },
         ],
       },
@@ -360,6 +378,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: ".*clusterRegex.*",
             value: ".*clusterRegex.*",
+            wasCreated: false,
           },
         ],
       },
@@ -372,6 +391,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: ".*clusterNegativeRegex.*",
             value: ".*clusterNegativeRegex.*",
+            wasCreated: false,
           },
         ],
       },
@@ -384,6 +404,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: "fooEqual",
             value: "fooEqual",
+            wasCreated: false,
           },
         ],
       },
@@ -396,6 +417,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: "fooNotEqual",
             value: "fooNotEqual",
+            wasCreated: false,
           },
         ],
       },
@@ -408,6 +430,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: ".*fooRegex.*",
             value: ".*fooRegex.*",
+            wasCreated: false,
           },
         ],
       },
@@ -420,6 +443,7 @@ describe("<SilenceForm /> matchers", () => {
           {
             label: ".*fooNegativeRegex.*",
             value: ".*fooNegativeRegex.*",
+            wasCreated: false,
           },
         ],
       },
@@ -531,7 +555,9 @@ describe("<SilenceForm /> preview", () => {
   it("clicking on the copy button copies form link to the clipboard", () => {
     const matcher = NewEmptyMatcher();
     matcher.name = "job";
-    matcher.values = [{ label: "node_exporter", value: "node_exporter" }];
+    matcher.values = [
+      { label: "node_exporter", value: "node_exporter", wasCreated: false },
+    ];
     silenceFormStore.data.setMatchers([matcher]);
     silenceFormStore.data.setAlertmanagers([{ label: "am1", value: ["am1"] }]);
     silenceFormStore.data.setAuthor("me@example.com");
@@ -550,7 +576,9 @@ describe("<SilenceForm /> preview", () => {
   it("silence form share link doesn't change on new input", () => {
     const matcher = NewEmptyMatcher();
     matcher.name = "job";
-    matcher.values = [{ label: "node_exporter", value: "node_exporter" }];
+    matcher.values = [
+      { label: "node_exporter", value: "node_exporter", wasCreated: false },
+    ];
     silenceFormStore.data.setMatchers([matcher]);
     silenceFormStore.data.setAlertmanagers([{ label: "am1", value: ["am1"] }]);
     silenceFormStore.data.setAuthor("me@example.com");
@@ -620,7 +648,9 @@ describe("<SilenceForm />", () => {
   it("calling submit move form to the 'Preview' stage when form is valid", () => {
     const matcher = NewEmptyMatcher();
     matcher.name = "job";
-    matcher.values = [{ label: "node_exporter", value: "node_exporter" }];
+    matcher.values = [
+      { label: "node_exporter", value: "node_exporter", wasCreated: false },
+    ];
     silenceFormStore.data.setMatchers([matcher]);
     silenceFormStore.data.setAlertmanagers([{ label: "am1", value: ["am1"] }]);
     silenceFormStore.data.setAuthor("me@example.com");

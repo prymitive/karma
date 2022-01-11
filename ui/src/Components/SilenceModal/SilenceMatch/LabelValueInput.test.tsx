@@ -10,8 +10,9 @@ import {
   MatcherWithIDT,
 } from "Stores/SilenceFormStore";
 import { ThemeContext } from "Components/Theme";
-import { StringToOption } from "Common/Select";
+import { OptionT, StringToOption } from "Common/Select";
 import { LabelValueInput } from "./LabelValueInput";
+import { act } from "react-dom/test-utils";
 
 let silenceFormStore: SilenceFormStore;
 let matcher: MatcherWithIDT;
@@ -121,6 +122,22 @@ describe("<LabelValueInput />", () => {
     options.at(0).simulate("click");
     options.at(1).simulate("click");
     expect(matcher.isRegex).toBe(true);
+  });
+
+  it("creating a manual option sets wasCreated=true", () => {
+    const tree = MountedLabelValueInput(true);
+    const input = tree.find("Select").instance();
+    const options: OptionT[] = [
+      { label: "foo", value: "foo", wasCreated: false },
+    ];
+    act(() => {
+      (input.props as any).onChange(options, { action: "create-option" });
+    });
+    expect(matcher.values[0]).toStrictEqual({
+      label: "foo",
+      value: "foo",
+      wasCreated: true,
+    });
   });
 
   it("removing last value sets matcher.values to []", () => {

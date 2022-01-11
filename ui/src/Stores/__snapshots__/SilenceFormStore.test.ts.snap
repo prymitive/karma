@@ -40,3 +40,86 @@ Object {
   "startsAt": "2000-02-01T00:00:00.000Z",
 }
 `;
+
+exports[`SilenceFormStore.data toAlertmanagerPayload creates payload that matches snapshot with regex values 1`] = `
+Object {
+  "comment": "toAlertmanagerPayload test",
+  "createdBy": "me@example.com",
+  "endsAt": "2000-02-01T01:00:00.000Z",
+  "matchers": Array [
+    Object {
+      "isEqual": false,
+      "isRegex": true,
+      "name": "notEqualRegexAuto",
+      "value": "\\\\^\\\\(\\\\.\\\\+\\\\)\\\\$",
+    },
+    Object {
+      "isEqual": true,
+      "isRegex": true,
+      "name": "equalRegexAuto",
+      "value": "\\\\^\\\\(\\\\.\\\\+\\\\)\\\\$",
+    },
+    Object {
+      "isEqual": true,
+      "isRegex": false,
+      "name": "equalNotRegexAuto",
+      "value": "\\\\^\\\\(\\\\.\\\\+\\\\)\\\\$",
+    },
+    Object {
+      "isEqual": false,
+      "isRegex": false,
+      "name": "notEqualnotRegexAuto",
+      "value": "\\\\^\\\\(\\\\.\\\\+\\\\)\\\\$",
+    },
+    Object {
+      "isEqual": false,
+      "isRegex": true,
+      "name": "notEqualRegexCreated",
+      "value": "^(.+)$",
+    },
+    Object {
+      "isEqual": true,
+      "isRegex": true,
+      "name": "equalRegexCreated",
+      "value": "^(.+)$",
+    },
+    Object {
+      "isEqual": true,
+      "isRegex": false,
+      "name": "equalNotRegexCreated",
+      "value": "^(.+)$",
+    },
+    Object {
+      "isEqual": false,
+      "isRegex": false,
+      "name": "notEqualnotRegexAuto",
+      "value": "^(.+)$",
+    },
+    Object {
+      "isEqual": false,
+      "isRegex": true,
+      "name": "notEqualRegexCreatedMulti",
+      "value": "(^(.+)$|\\\\)",
+    },
+    Object {
+      "isEqual": true,
+      "isRegex": true,
+      "name": "equalRegexCreatedMulti",
+      "value": "(^(.+)$|\\\\)",
+    },
+    Object {
+      "isEqual": false,
+      "isRegex": true,
+      "name": "notEqualRegexAuto",
+      "value": "(\\\\^\\\\(\\\\.\\\\+\\\\)\\\\$|\\\\)",
+    },
+    Object {
+      "isEqual": true,
+      "isRegex": true,
+      "name": "equalRegexAuto",
+      "value": "(\\\\^\\\\(\\\\.\\\\+\\\\)\\\\$|\\\\)",
+    },
+  ],
+  "startsAt": "2000-02-01T00:00:00.000Z",
+}
+`;

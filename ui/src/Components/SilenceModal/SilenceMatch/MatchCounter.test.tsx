@@ -145,6 +145,50 @@ describe("<MatchCounter />", () => {
     ).toBe("./alertList.json?q=foo%3D~%5Ebar%24");
   });
 
+  it("sends correct query string for a 'foo=(x)' matcher with wasCreated=true & isRegex=false", () => {
+    const v = StringToOption("(x)");
+    v.wasCreated = true;
+    matcher.values = [v];
+    matcher.isRegex = false;
+    MountedMatchCounter();
+    expect(
+      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
+    ).toBe("./alertList.json?q=foo%3D%28x%29");
+  });
+
+  it("sends correct query string for a 'foo=(x)' matcher with wasCreated=true & isRegex=true", () => {
+    const v = StringToOption("(x)");
+    v.wasCreated = true;
+    matcher.values = [v];
+    matcher.isRegex = true;
+    MountedMatchCounter();
+    expect(
+      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
+    ).toBe("./alertList.json?q=foo%3D~%5E%28x%29%24");
+  });
+
+  it("sends correct query string for a 'foo=(x)' matcher with wasCreated=false & isRegex=false", () => {
+    const v = StringToOption("(x)");
+    v.wasCreated = false;
+    matcher.values = [v];
+    matcher.isRegex = false;
+    MountedMatchCounter();
+    expect(
+      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
+    ).toBe("./alertList.json?q=foo%3D%28x%29");
+  });
+
+  it("sends correct query string for a 'foo=(x)' matcher with wasCreated=false & isRegex=true", () => {
+    const v = StringToOption("(x)");
+    v.wasCreated = false;
+    matcher.values = [v];
+    matcher.isRegex = true;
+    MountedMatchCounter();
+    expect(
+      (useFetchGet as jest.MockedFunction<typeof useFetchGet>).mock.calls[0][0]
+    ).toBe("./alertList.json?q=foo%3D~%5E%5C%28x%5C%29%24");
+  });
+
   it("sends correct query string for a 'foo=~(bar|baz)' matcher", () => {
     matcher.values = [StringToOption("bar"), StringToOption("baz")];
     matcher.isRegex = true;

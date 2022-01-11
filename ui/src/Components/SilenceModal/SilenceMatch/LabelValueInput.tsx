@@ -90,12 +90,15 @@ const LabelValueInput: FC<{
       placeholder={isValid ? "Label value" : <ValidationError />}
       onChange={(
         newValue: OnChangeValue<OptionT, true>,
-        _: ActionMeta<OptionT>
+        meta: ActionMeta<OptionT>
       ) => {
         matcher.values = newValue as OptionT[];
         // force regex if we have multiple values
         if (matcher.values.length > 1 && matcher.isRegex === false) {
           matcher.isRegex = true;
+        }
+        if (meta.action === "create-option") {
+          matcher.values[matcher.values.length - 1].wasCreated = true;
         }
       }}
       hideSelectedOptions

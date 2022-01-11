@@ -14,14 +14,15 @@ const disabledLabel = "Disable multi-grid";
 const valueToOption = (v: string) => ({
   label: v ? v : disabledLabel,
   value: v,
+  wasCreated: false,
 });
 
 const staticValues = [
-  { label: disabledLabel, value: "" },
-  { label: "Automatic selection", value: "@auto" },
-  { label: "@alertmanager", value: "@alertmanager" },
-  { label: "@cluster", value: "@cluster" },
-  { label: "@receiver", value: "@receiver" },
+  { label: disabledLabel, value: "", wasCreated: false },
+  { label: "Automatic selection", value: "@auto", wasCreated: false },
+  { label: "@alertmanager", value: "@alertmanager", wasCreated: false },
+  { label: "@cluster", value: "@cluster", wasCreated: false },
+  { label: "@receiver", value: "@receiver", wasCreated: false },
 ];
 
 const GridLabelName: FC<{
@@ -35,7 +36,7 @@ const GridLabelName: FC<{
 
   const defaultValue =
     settingsStore.multiGridConfig.config.gridLabel === "@auto"
-      ? { label: "Automatic selection", value: "@auto" }
+      ? { label: "Automatic selection", value: "@auto", wasCreated: false }
       : valueToOption(settingsStore.multiGridConfig.config.gridLabel);
 
   return (

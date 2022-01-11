@@ -174,14 +174,14 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "alertname",
-        values: [{ label: "FakeAlert", value: "FakeAlert" }],
+        values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
       })
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "job",
-        values: [{ label: "mock", value: "mock" }],
+        values: [{ label: "mock", value: "mock", wasCreated: false }],
         isRegex: false,
       })
     );
@@ -189,12 +189,12 @@ describe("SilenceFormStore.data", () => {
       expect.objectContaining({
         name: "instance",
         values: [
-          { label: "dev1", value: "dev1" },
-          { label: "prod1", value: "prod1" },
-          { label: "prod2", value: "prod2" },
-          { label: "dev2", value: "dev2" },
-          { label: "dev3", value: "dev3" },
-          { label: "dev4", value: "dev4" },
+          { label: "dev1", value: "dev1", wasCreated: false },
+          { label: "prod1", value: "prod1", wasCreated: false },
+          { label: "prod2", value: "prod2", wasCreated: false },
+          { label: "dev2", value: "dev2", wasCreated: false },
+          { label: "dev3", value: "dev3", wasCreated: false },
+          { label: "dev4", value: "dev4", wasCreated: false },
         ],
         isRegex: true,
       })
@@ -203,8 +203,8 @@ describe("SilenceFormStore.data", () => {
       expect.objectContaining({
         name: "cluster",
         values: [
-          { label: "dev", value: "dev" },
-          { label: "prod", value: "prod" },
+          { label: "dev", value: "dev", wasCreated: false },
+          { label: "prod", value: "prod", wasCreated: false },
         ],
         isRegex: true,
       })
@@ -232,7 +232,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "alertname",
-        values: [{ label: "FakeAlert", value: "FakeAlert" }],
+        values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
       })
     );
@@ -240,8 +240,8 @@ describe("SilenceFormStore.data", () => {
       expect.objectContaining({
         name: "instance",
         values: [
-          { label: "prod1", value: "prod1" },
-          { label: "prod2", value: "prod2" },
+          { label: "prod1", value: "prod1", wasCreated: false },
+          { label: "prod2", value: "prod2", wasCreated: false },
         ],
         isRegex: true,
       })
@@ -249,7 +249,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "cluster",
-        values: [{ label: "prod", value: "prod" }],
+        values: [{ label: "prod", value: "prod", wasCreated: false }],
         isRegex: false,
       })
     );
@@ -277,7 +277,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "alertname",
-        values: [{ label: "FakeAlert", value: "FakeAlert" }],
+        values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
       })
     );
@@ -285,8 +285,8 @@ describe("SilenceFormStore.data", () => {
       expect.objectContaining({
         name: "instance",
         values: [
-          { label: "dev1", value: "dev1" },
-          { label: "prod1", value: "prod1" },
+          { label: "dev1", value: "dev1", wasCreated: false },
+          { label: "prod1", value: "prod1", wasCreated: false },
         ],
         isRegex: true,
       })
@@ -295,8 +295,8 @@ describe("SilenceFormStore.data", () => {
       expect.objectContaining({
         name: "cluster",
         values: [
-          { label: "dev", value: "dev" },
-          { label: "prod", value: "prod" },
+          { label: "dev", value: "dev", wasCreated: false },
+          { label: "prod", value: "prod", wasCreated: false },
         ],
         isRegex: true,
       })
@@ -348,7 +348,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "alertname",
-        values: [{ label: "FakeAlert", value: "FakeAlert" }],
+        values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
       })
     );
@@ -356,8 +356,8 @@ describe("SilenceFormStore.data", () => {
       expect.objectContaining({
         name: "instance",
         values: [
-          { label: "1", value: "1" },
-          { label: "3", value: "3" },
+          { label: "1", value: "1", wasCreated: false },
+          { label: "3", value: "3", wasCreated: false },
         ],
         isRegex: true,
       })
@@ -394,7 +394,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "alertname",
-        values: [{ label: "FakeAlert", value: "FakeAlert" }],
+        values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
       })
     );
@@ -415,28 +415,28 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "alertname",
-        values: [{ label: "FakeAlert", value: "FakeAlert" }],
+        values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
       })
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "job",
-        values: [{ label: "mock", value: "mock" }],
+        values: [{ label: "mock", value: "mock", wasCreated: false }],
         isRegex: false,
       })
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "instance",
-        values: [{ label: "prod1", value: "prod1" }],
+        values: [{ label: "prod1", value: "prod1", wasCreated: false }],
         isRegex: false,
       })
     );
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "cluster",
-        values: [{ label: "prod", value: "prod" }],
+        values: [{ label: "prod", value: "prod", wasCreated: false }],
         isRegex: false,
       })
     );
@@ -454,7 +454,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "alertname",
-        values: [{ label: "FakeAlert", value: "FakeAlert" }],
+        values: [{ label: "FakeAlert", value: "FakeAlert", wasCreated: false }],
         isRegex: false,
       })
     );
@@ -505,7 +505,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "region",
-        values: [{ label: "AF", value: "AF" }],
+        values: [{ label: "AF", value: "AF", wasCreated: false }],
         isRegex: false,
       })
     );
@@ -513,9 +513,9 @@ describe("SilenceFormStore.data", () => {
       expect.objectContaining({
         name: "alertname",
         values: [
-          { label: "Alert1", value: "Alert1" },
-          { label: "Alert2", value: "Alert2" },
-          { label: "Alert3", value: "Alert3" },
+          { label: "Alert1", value: "Alert1", wasCreated: false },
+          { label: "Alert2", value: "Alert2", wasCreated: false },
+          { label: "Alert3", value: "Alert3", wasCreated: false },
         ],
         isRegex: true,
       })
@@ -523,7 +523,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "job",
-        values: [{ label: "mock", value: "mock" }],
+        values: [{ label: "mock", value: "mock", wasCreated: false }],
         isRegex: false,
       })
     );
@@ -558,7 +558,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "regex",
-        values: [{ label: "equal", value: "equal" }],
+        values: [{ label: "equal", value: "equal", wasCreated: false }],
         isRegex: true,
         isEqual: true,
       })
@@ -566,7 +566,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "regex",
-        values: [{ label: "notEqual", value: "notEqual" }],
+        values: [{ label: "notEqual", value: "notEqual", wasCreated: false }],
         isRegex: true,
         isEqual: false,
       })
@@ -574,7 +574,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "notRegex",
-        values: [{ label: "equal", value: "equal" }],
+        values: [{ label: "equal", value: "equal", wasCreated: false }],
         isRegex: false,
         isEqual: true,
       })
@@ -582,7 +582,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "notRegex",
-        values: [{ label: "notEqual", value: "notEqual" }],
+        values: [{ label: "notEqual", value: "notEqual", wasCreated: false }],
         isRegex: false,
         isEqual: false,
       })
@@ -694,7 +694,11 @@ describe("SilenceFormStore.data", () => {
       expect(silenceFormStorestore.data.matchers).toContainEqual(
         expect.objectContaining({
           name: t.result.name,
-          values: t.result.values.map((v) => ({ label: v, value: v })),
+          values: t.result.values.map((v) => ({
+            label: v,
+            value: v,
+            wasCreated: false,
+          })),
           isRegex: t.matcher.isRegex,
           isEqual: t.matcher.isEqual,
         })
@@ -725,6 +729,112 @@ describe("SilenceFormStore.data", () => {
     store.data.fillMatchersFromGroup(group, [], []);
     // add empty matcher so we test empty string rendering
     store.data.addEmptyMatcher();
+    store.data.setStart(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
+    store.data.setEnd(new Date(Date.UTC(2000, 1, 1, 1, 0, 0)));
+    store.data.setAuthor("me@example.com");
+    store.data.setComment("toAlertmanagerPayload test");
+    expect(store.data.toAlertmanagerPayload).toMatchSnapshot();
+  });
+
+  it("toAlertmanagerPayload creates payload that matches snapshot with regex values", () => {
+    store.data.setMatchers([
+      {
+        id: "1",
+        name: "notEqualRegexAuto",
+        values: [{ label: "foo", value: "^(.+)$", wasCreated: false }],
+        isEqual: false,
+        isRegex: true,
+      },
+      {
+        id: "2",
+        name: "equalRegexAuto",
+        values: [{ label: "foo", value: "^(.+)$", wasCreated: false }],
+        isEqual: true,
+        isRegex: true,
+      },
+      {
+        id: "3",
+        name: "equalNotRegexAuto",
+        values: [{ label: "foo", value: "^(.+)$", wasCreated: false }],
+        isEqual: true,
+        isRegex: false,
+      },
+      {
+        id: "4",
+        name: "notEqualnotRegexAuto",
+        values: [{ label: "foo", value: "^(.+)$", wasCreated: false }],
+        isEqual: false,
+        isRegex: false,
+      },
+      {
+        id: "5",
+        name: "notEqualRegexCreated",
+        values: [{ label: "foo", value: "^(.+)$", wasCreated: true }],
+        isEqual: false,
+        isRegex: true,
+      },
+      {
+        id: "6",
+        name: "equalRegexCreated",
+        values: [{ label: "foo", value: "^(.+)$", wasCreated: true }],
+        isEqual: true,
+        isRegex: true,
+      },
+      {
+        id: "7",
+        name: "equalNotRegexCreated",
+        values: [{ label: "foo", value: "^(.+)$", wasCreated: true }],
+        isEqual: true,
+        isRegex: false,
+      },
+      {
+        id: "8",
+        name: "notEqualnotRegexAuto",
+        values: [{ label: "foo", value: "^(.+)$", wasCreated: true }],
+        isEqual: false,
+        isRegex: false,
+      },
+      {
+        id: "9",
+        name: "notEqualRegexCreatedMulti",
+        values: [
+          { label: "foo", value: "^(.+)$", wasCreated: true },
+          { label: "bar", value: "\\", wasCreated: true },
+        ],
+        isEqual: false,
+        isRegex: true,
+      },
+      {
+        id: "10",
+        name: "equalRegexCreatedMulti",
+        values: [
+          { label: "foo", value: "^(.+)$", wasCreated: true },
+          { label: "bar", value: "\\", wasCreated: true },
+        ],
+        isEqual: true,
+        isRegex: true,
+      },
+      {
+        id: "11",
+        name: "notEqualRegexAuto",
+        values: [
+          { label: "foo", value: "^(.+)$", wasCreated: false },
+          { label: "bar", value: "\\", wasCreated: true },
+        ],
+        isEqual: false,
+        isRegex: true,
+      },
+      {
+        id: "12",
+        name: "equalRegexAuto",
+        values: [
+          { label: "foo", value: "^(.+)$", wasCreated: false },
+          { label: "bar", value: "\\", wasCreated: true },
+        ],
+        isEqual: true,
+        isRegex: true,
+      },
+    ]);
     store.data.setStart(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
     store.data.setEnd(new Date(Date.UTC(2000, 1, 1, 1, 0, 0)));
     store.data.setAuthor("me@example.com");
@@ -793,7 +903,7 @@ describe("SilenceFormStore.data", () => {
 describe("SilenceFormStore.data.isValid", () => {
   it("isValid returns 'false' if alertmanagers list is empty", () => {
     store.data.setMatchers([
-      MockMatcher("foo", [{ label: "bar", value: "bar" }]),
+      MockMatcher("foo", [{ label: "bar", value: "bar", wasCreated: false }]),
     ]);
     store.data.setAuthor("me@example.com");
     store.data.setComment("fake silence");
@@ -810,7 +920,9 @@ describe("SilenceFormStore.data.isValid", () => {
 
   it("isValid returns 'false' if matchers list is pupulated when a matcher without any name", () => {
     store.data.setAlertmanagers([MockAlertmanagerOption()]);
-    store.data.setMatchers([MockMatcher("", [{ label: "bar", value: "bar" }])]);
+    store.data.setMatchers([
+      MockMatcher("", [{ label: "bar", value: "bar", wasCreated: false }]),
+    ]);
     store.data.setAuthor("me@example.com");
     store.data.setComment("fake silence");
     expect(store.data.isValid).toBe(false);
@@ -835,7 +947,7 @@ describe("SilenceFormStore.data.isValid", () => {
   it("isValid returns 'false' if author is empty", () => {
     store.data.setAlertmanagers([MockAlertmanagerOption()]);
     store.data.setMatchers([
-      MockMatcher("foo", [{ label: "bar", value: "bar" }]),
+      MockMatcher("foo", [{ label: "bar", value: "bar", wasCreated: false }]),
     ]);
     store.data.setAuthor("");
     store.data.setComment("fake silence");
@@ -845,7 +957,7 @@ describe("SilenceFormStore.data.isValid", () => {
   it("isValid returns 'false' if comment is empty", () => {
     store.data.setAlertmanagers([MockAlertmanagerOption()]);
     store.data.setMatchers([
-      MockMatcher("foo", [{ label: "bar", value: "bar" }]),
+      MockMatcher("foo", [{ label: "bar", value: "bar", wasCreated: false }]),
     ]);
     store.data.setAuthor("me@example.com");
     store.data.setComment("");
@@ -855,7 +967,7 @@ describe("SilenceFormStore.data.isValid", () => {
   it("isValid returns 'true' if all fileds are set", () => {
     store.data.setAlertmanagers([MockAlertmanagerOption()]);
     store.data.setMatchers([
-      MockMatcher("foo", [{ label: "bar", value: "bar" }]),
+      MockMatcher("foo", [{ label: "bar", value: "bar", wasCreated: false }]),
     ]);
     store.data.setAuthor("me@example.com");
     store.data.setComment("fake silence");

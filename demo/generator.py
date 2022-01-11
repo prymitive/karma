@@ -557,6 +557,26 @@ class RichAnnotations(AlertGenerator):
         ]
 
 
+class RegexEscapeValue(AlertGenerator):
+    name = "Labels with rich values"
+    comment = "This alert will have rich labels"
+
+    def alerts(self):
+        return [
+            newAlert(
+                self._labels(
+                    instance="server{}".format(i),
+                    cluster="staging",
+                    job="textfile_exporter",
+                    region="SA",
+                    device="Device {} (main)".format(i % 2),
+                    regex="^device{}(.+)bar\\$".format(i),
+                ),
+            )
+            for i in range(0, 10)
+        ]
+
+
 if __name__ == "__main__":
     generators = [
         AlwaysOnAlert(MAX_INTERVAL),
@@ -573,6 +593,7 @@ if __name__ == "__main__":
         SilencedAlertWithJiraLink(MAX_INTERVAL),
         PaginationTest(MAX_INTERVAL),
         RichAnnotations(MAX_INTERVAL),
+        RegexEscapeValue(MAX_INTERVAL),
     ]
     while True:
         for g in generators:
