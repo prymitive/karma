@@ -56,10 +56,10 @@
   "devDependencies": {
     "@percy/cli": "1.0.0-beta.72",
     "@percy/storybook": "4.1.0",
-    "@storybook/builder-webpack5": "6.5.0-alpha.14",
-    "@storybook/manager-webpack5": "6.5.0-alpha.14",
+    "@storybook/builder-webpack5": "6.5.0-alpha.15",
+    "@storybook/manager-webpack5": "6.5.0-alpha.15",
     "@storybook/preset-create-react-app": "4.0.0",
-    "@storybook/react": "6.5.0-alpha.14",
+    "@storybook/react": "6.5.0-alpha.15",
     "@testing-library/react-hooks": "7.0.2",
     "@types/body-scroll-lock": "3.1.0",
     "@types/bricks.js": "1.8.2",
