@@ -13,8 +13,5 @@
       "matchPackagePatterns": ["bootstrap", "bootswatch"],
       "groupName": "bootstrap"
     }
-  ],
-  "node": {
-    "supportPolicy": ["lts_latest"]
-  }
+  ]
 }
