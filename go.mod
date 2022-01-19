@@ -15,7 +15,7 @@ require (
 	github.com/go-openapi/strfmt v0.21.1
 	github.com/go-openapi/swag v0.19.15
 	github.com/go-openapi/validate v0.20.3
-	github.com/google/go-cmp v0.5.6
+	github.com/google/go-cmp v0.5.7
 	github.com/hashicorp/golang-lru v0.5.4
 	github.com/jarcoal/httpmock v1.1.0
 	github.com/knadh/koanf v1.4.0
