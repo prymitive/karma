@@ -89,7 +89,7 @@ describe("<NavBar />", () => {
       instances: [],
       clusters: {},
     });
-    alertStore.info.setTotalAlerts(15);
+    alertStore.info.setTimestamp("123");
     const tree = MountedNavbar();
     expect(tree.find("span.navbar-brand")).toHaveLength(0);
   });

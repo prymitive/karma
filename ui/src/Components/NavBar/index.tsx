@@ -117,20 +117,23 @@ const NavBar: FC<{
           } align-items-start`}
         >
           <span className="navbar-nav d-flex flex-row">
-            {alertStore.data.upstreams.instances.length === 0 ? null : (
+            {alertStore.info.timestamp !== "" &&
+            alertStore.data.upstreams.instances.length === 0 ? null : (
               <span className="navbar-brand p-0 my-0 mx-2 h1 d-none d-sm-block">
                 <OverviewModal alertStore={alertStore} />
               </span>
             )}
             <Fetcher alertStore={alertStore} settingsStore={settingsStore} />
           </span>
-          {alertStore.data.upstreams.instances.length === 0 ? null : (
+          {alertStore.info.timestamp !== "" &&
+          alertStore.data.upstreams.instances.length === 0 ? null : (
             <FilterInput
               alertStore={alertStore}
               settingsStore={settingsStore}
             />
           )}
-          {alertStore.data.upstreams.instances.length === 0 ? null : (
+          {alertStore.info.timestamp !== "" &&
+          alertStore.data.upstreams.instances.length === 0 ? null : (
             <ul className="navbar-nav flex-wrap flex-shrink-1 ms-1">
               <AppToasts alertStore={alertStore} />
               <SilenceModal
