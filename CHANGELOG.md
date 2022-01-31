@@ -1,6 +1,6 @@
 # Changelog
 
-## [next]
+## v0.95
 
 ### Fixed
 
