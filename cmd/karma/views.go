@@ -696,13 +696,13 @@ func silences(w http.ResponseWriter, r *http.Request) {
 	}
 	for _, alertGroup := range alertmanager.DedupAlerts() {
 		for _, alert := range alertGroup.Alerts {
-			clustersDone := map[string]bool{}
+			sidDone := map[string]struct{}{}
 			for _, am := range alert.Alertmanager {
 				for _, sID := range am.SilencedBy {
-					if _, found := clustersDone[am.Cluster]; !found {
+					if _, found := sidDone[sID]; !found {
 						if _, ok := silenceCounters[sID]; ok {
 							silenceCounters[sID]++
-							clustersDone[am.Cluster] = true
+							sidDone[sID] = struct{}{}
 						}
 					}
 				}
