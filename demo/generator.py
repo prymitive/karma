@@ -571,6 +571,8 @@ class RegexEscapeValue(AlertGenerator):
                     region="SA",
                     device="Device {} (main)".format(i % 2),
                     regex="^device{}(.+)bar\\$".format(i),
+                    address="10.0.0.1{}".format(i),
+                    pod="my-pod",
                 ),
             )
             for i in range(0, 10)

@@ -223,10 +223,12 @@ const GenerateAlertmanagerSilenceData = (
       value:
         m.values.length > 1
           ? `(${m.values
-              .map((v) => (v.wasCreated ? v.value : EscapeRegex(v.value)))
+              .map((v) =>
+                v.wasCreated || !m.isRegex ? v.value : EscapeRegex(v.value)
+              )
               .join("|")})`
           : m.values.length === 1
-          ? m.values[0].wasCreated
+          ? m.values[0].wasCreated || !m.isRegex
             ? m.values[0].value
             : EscapeRegex(m.values[0].value)
           : "",
