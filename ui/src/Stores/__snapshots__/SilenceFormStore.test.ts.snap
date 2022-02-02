@@ -63,13 +63,13 @@ Object {
       "isEqual": true,
       "isRegex": false,
       "name": "equalNotRegexAuto",
-      "value": "\\\\^\\\\(\\\\.\\\\+\\\\)\\\\$",
+      "value": "^(.+)$",
     },
     Object {
       "isEqual": false,
       "isRegex": false,
       "name": "notEqualnotRegexAuto",
-      "value": "\\\\^\\\\(\\\\.\\\\+\\\\)\\\\$",
+      "value": "^(.+)$",
     },
     Object {
       "isEqual": false,
