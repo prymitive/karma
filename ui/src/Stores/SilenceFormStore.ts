@@ -81,6 +81,10 @@ export const EscapeRegex = (v: string): string => {
   return v.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
 };
 
+export const UnescapeRegex = (v: string): string => {
+  return v.replaceAll("\\", "");
+};
+
 const MatchersFromGroup = (
   group: APIAlertGroupT,
   stripLabels: string[],
@@ -247,15 +251,22 @@ const GenerateAlertmanagerSilenceData = (
 };
 
 const UnpackRegexMatcherValues = (isRegex: boolean, value: string) => {
-  if (isRegex && value.match(/^\((\w+\|)+\w+\)$/)) {
-    return value
+  let val: string = value;
+  if (isRegex) {
+    val = UnescapeRegex(val);
+  }
+  if (isRegex && val.match(/^\(([a-zA-Z0-9_\-. ]+\|)+[a-zA-Z0-9_\-. ]+\)$/)) {
+    return val
       .slice(1, -1)
       .split("|")
       .map((v) => StringToOption(v));
-  } else if (isRegex && value.match(/^(\w+\|)+\w+$/)) {
-    return value.split("|").map((v) => StringToOption(v));
+  } else if (
+    isRegex &&
+    val.match(/^([a-zA-Z0-9_\-. ]+\|)+[a-zA-Z0-9_\-. ]+$/)
+  ) {
+    return val.split("|").map((v) => StringToOption(v));
   } else {
-    return [StringToOption(value)];
+    return [StringToOption(val)];
   }
 };
 

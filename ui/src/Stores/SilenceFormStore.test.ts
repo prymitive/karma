@@ -681,6 +681,60 @@ describe("SilenceFormStore.data", () => {
       },
       result: { name: "foo", values: ["server(0|1)"] },
     },
+    {
+      matcher: {
+        name: "foo",
+        value: "10\\.0\\.0\\.1|10\\.0\\.0\\.2",
+        isRegex: true,
+        isEqual: true,
+      },
+      result: { name: "foo", values: ["10.0.0.1", "10.0.0.2"] },
+    },
+    {
+      matcher: {
+        name: "foo",
+        value: "10\\.0\\.0\\.1|10\\.0\\.0\\.2",
+        isRegex: false,
+        isEqual: true,
+      },
+      result: { name: "foo", values: ["10\\.0\\.0\\.1|10\\.0\\.0\\.2"] },
+    },
+    {
+      matcher: {
+        name: "foo",
+        value: "(bar\\-1|bar\\-2|1\\.2)",
+        isRegex: true,
+        isEqual: true,
+      },
+      result: { name: "foo", values: ["bar-1", "bar-2", "1.2"] },
+    },
+    {
+      matcher: {
+        name: "foo",
+        value: "(bar\\-1|bar\\-2|1\\.2)",
+        isRegex: false,
+        isEqual: true,
+      },
+      result: { name: "foo", values: ["(bar\\-1|bar\\-2|1\\.2)"] },
+    },
+    {
+      matcher: {
+        name: "foo",
+        value: "foo bar|1-2",
+        isRegex: true,
+        isEqual: true,
+      },
+      result: { name: "foo", values: ["foo bar", "1-2"] },
+    },
+    {
+      matcher: {
+        name: "foo",
+        value: "foo bar|1-2",
+        isRegex: false,
+        isEqual: true,
+      },
+      result: { name: "foo", values: ["foo bar|1-2"] },
+    },
   ];
   for (const t of tests) {
     it(`fillFormFromSilence() unpacks ${t.matcher.name}=${t.matcher.value} isRegex=${t.matcher.isRegex} into ${t.result.name}=${t.result.values}`, () => {

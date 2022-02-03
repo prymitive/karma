@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.97
+
+### Fixed
+
+- Fix escaping regex values in when editing silences #3936.
+
 ## v0.96
 
 ### Fixed
