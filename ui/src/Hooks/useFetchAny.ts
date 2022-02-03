@@ -92,7 +92,7 @@ const useFetchAny = <T>(
               } else {
                 setResponse({
                   response: null,
-                  error: body,
+                  error: body ? body : `${res.status} ${res.statusText}`,
                   responseURI: null,
                   inProgress: false,
                 });
