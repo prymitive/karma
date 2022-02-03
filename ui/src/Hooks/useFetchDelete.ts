@@ -39,7 +39,7 @@ const useFetchDelete = (
             setResponse(text);
             setIsDeleting(false);
           } else {
-            setError(text);
+            setError(text ? text : `${res.status} ${res.statusText}`);
             setIsDeleting(false);
           }
         }

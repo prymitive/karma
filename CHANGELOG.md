@@ -5,6 +5,7 @@
 ### Fixed
 
 - Fix escaping regex values in when editing silences #3936.
+- Fix UI handling of 401 errors #3942.
 
 ## v0.96
 

@@ -17,6 +17,7 @@ describe("useFetchGet", () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: "ok" }),
     });
+    fetchMock.mock("http://localhost/401", 401);
     fetchMock.mock("http://localhost/error", {
       throws: new TypeError("failed to fetch"),
     });
@@ -185,6 +186,25 @@ describe("useFetchGet", () => {
 
     expect(result.current.response).toBe(null);
     expect(result.current.error).toBe("error");
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.isRetrying).toBe(false);
+  });
+
+  it("error is updated after 401 error", async () => {
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useFetchGet<string>("http://localhost/401")
+    );
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe(null);
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.isRetrying).toBe(false);
+
+    jest.runOnlyPendingTimers();
+    await waitForNextUpdate();
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe("401 Unauthorized");
     expect(result.current.isLoading).toBe(false);
     expect(result.current.isRetrying).toBe(false);
   });

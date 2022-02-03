@@ -11,6 +11,7 @@ import { useFetchDelete } from "./useFetchDelete";
 describe("useFetchDelete", () => {
   beforeAll(() => {
     fetchMock.mock("http://localhost/ok", "body ok");
+    fetchMock.mock("http://localhost/401", 401);
     fetchMock.mock("http://localhost/500", {
       status: 500,
       body: "fake error",
@@ -76,6 +77,22 @@ describe("useFetchDelete", () => {
 
     expect(result.current.response).toBe("body ok");
     expect(result.current.error).toBe(null);
+    expect(result.current.isDeleting).toBe(false);
+  });
+
+  it("error is updated after 401 error", async () => {
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useFetchDelete("http://localhost/401", EmptyOptions)
+    );
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe(null);
+    expect(result.current.isDeleting).toBe(true);
+
+    await waitForNextUpdate();
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe("401 Unauthorized");
     expect(result.current.isDeleting).toBe(false);
   });
 

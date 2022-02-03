@@ -19,6 +19,7 @@ describe("useFetchAny", () => {
       status: 500,
       body: "fake error",
     });
+    fetchMock.mock("http://localhost/401", 401);
     fetchMock.mock("http://localhost/error", {
       throws: new TypeError("failed to fetch"),
     });
@@ -131,6 +132,25 @@ describe("useFetchAny", () => {
     expect(result.current.error).toBe(null);
     expect(result.current.inProgress).toBe(false);
     expect(result.current.responseURI).toBe("http://localhost/ok/json");
+  });
+
+  it("error is using status code if body is empty", async () => {
+    const upstreams = [{ uri: "http://localhost/401", options: {} }];
+    const { result, waitForNextUpdate } = renderHook(() =>
+      useFetchAny(upstreams)
+    );
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe(null);
+    expect(result.current.inProgress).toBe(true);
+    expect(result.current.responseURI).toBe(null);
+
+    await waitForNextUpdate();
+
+    expect(result.current.response).toBe(null);
+    expect(result.current.error).toBe("401 Unauthorized");
+    expect(result.current.inProgress).toBe(false);
+    expect(result.current.responseURI).toBe(null);
   });
 
   it("error is updated after 500 error", async () => {

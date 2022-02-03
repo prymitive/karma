@@ -108,7 +108,7 @@ const useFetchGet = <T>(
           } else {
             setResponse({
               response: null,
-              error: body,
+              error: body ? body : `${res.status} ${res.statusText}`,
               isLoading: false,
               isRetrying: false,
               retryCount: 0,
