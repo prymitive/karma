@@ -33,6 +33,7 @@ then `@cluster` will be available as well, to set a custom name for each cluster
 see [CONFIGURATION.md](docs/CONFIGURATION.md#alertmanagers).
 
 ![Screenshot](/docs/img/screenshot.png)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fprymitive%2Fkarma.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fprymitive%2Fkarma?ref=badge_shield)
 
 ### Alert visualization
 
@@ -311,3 +312,6 @@ Please see [CONTRIBUTING](/CONTRIBUTING.md) for details.
 ## License
 
 Apache License 2.0, please see [LICENSE](/LICENSE).
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fprymitive%2Fkarma.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fprymitive%2Fkarma?ref=badge_large)
