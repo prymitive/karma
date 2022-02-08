@@ -145,7 +145,7 @@ describe("<MultiClusterStatus />", () => {
       />
     );
     expect(tree.find("tr")).toHaveLength(1);
-    expect(tree.find("td").at(0).html()).toMatch(/fa-exclamation-circle/);
+    expect(tree.find("td").at(0).html()).toMatch(/fa-circle-exclamation/);
     expect(tree.find("td").at(1).text()).toBe("single");
     expect(tree.find("td").at(2).text()).toBe("fake error");
   });
@@ -163,7 +163,7 @@ describe("<MultiClusterStatus />", () => {
       />
     );
     expect(tree.find("tr")).toHaveLength(1);
-    expect(tree.find("td").at(0).html()).toMatch(/fa-check-circle/);
+    expect(tree.find("td").at(0).html()).toMatch(/fa-circle-check/);
     expect(tree.find("td").at(1).text()).toBe("single");
     expect(tree.find("td").at(2).text()).toBe("123456789");
     expect(
@@ -199,7 +199,7 @@ describe("<SingleClusterStatus />", () => {
       />
     );
     expect(tree.find("div.display-1").at(0).html()).toMatch(
-      /fa-exclamation-circle/
+      /fa-circle-exclamation/
     );
     expect(tree.find("div.badge.bg-primary").text()).toBe("single");
     expect(tree.find("p").text()).toBe("fake error");
@@ -218,7 +218,7 @@ describe("<SingleClusterStatus />", () => {
       />
     );
 
-    expect(tree.find("div.display-1").at(0).html()).toMatch(/fa-check-circle/);
+    expect(tree.find("div.display-1").at(0).html()).toMatch(/fa-circle-check/);
     expect(tree.find("div.badge.bg-primary").text()).toBe("single");
     expect(tree.find("p").text()).toBe("123456789");
     expect(tree.find("p").find('a[href="http://localhost"]')).toHaveLength(1);

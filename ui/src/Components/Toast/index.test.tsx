@@ -67,7 +67,7 @@ describe("<Toast />", () => {
         hasClose={true}
       />
     );
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-times/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-xmark/);
   });
 
   it("doesn't render close icon when hasClose=false", () => {
@@ -79,7 +79,7 @@ describe("<Toast />", () => {
         hasClose={false}
       />
     );
-    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-times/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-xmark/);
   });
 
   it("unmounts cleanly", () => {

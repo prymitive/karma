@@ -39,7 +39,7 @@ describe("<LabelNameInput />", () => {
     matcher.name = "";
     const tree = MountedLabelNameInput(true);
     expect(toDiffableHtml(tree.html())).toMatch(/Label name/);
-    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-circle-exclamation/);
     expect(toDiffableHtml(tree.html())).not.toMatch(/Required/);
   });
 
@@ -48,7 +48,7 @@ describe("<LabelNameInput />", () => {
     matcher.name = "";
     const tree = MountedLabelNameInput(false);
     expect(toDiffableHtml(tree.html())).not.toMatch(/Label name/);
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-circle-exclamation/);
     expect(toDiffableHtml(tree.html())).toMatch(/Required/);
   });
 

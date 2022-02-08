@@ -151,7 +151,7 @@ describe("<AlertAck />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-circle-exclamation/);
   });
 
   it("resets faExclamationCircle after 20s", async () => {
@@ -171,13 +171,13 @@ describe("<AlertAck />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-circle-exclamation/);
 
     act(() => {
       jest.advanceTimersByTime(21 * 1000);
     });
     tree.update();
-    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-circle-exclamation/);
     expect(toDiffableHtml(tree.html())).toMatch(/fa-check/);
   });
 
@@ -188,7 +188,7 @@ describe("<AlertAck />", () => {
     await act(async () => {
       await fetchMock.flush(true);
     });
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-check-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-circle-check/);
   });
 
   it("sends a POST request on click", async () => {

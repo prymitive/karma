@@ -94,7 +94,7 @@ describe("<MatchCounter />", () => {
     });
 
     const tree = MountedMatchCounter();
-    expect(tree.find("svg.fa-exclamation-circle.text-danger")).toHaveLength(1);
+    expect(tree.find("svg.fa-circle-exclamation.text-danger")).toHaveLength(1);
   });
 
   it("totalAlerts is 0 after mount", () => {

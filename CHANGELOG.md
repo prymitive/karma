@@ -1,5 +1,11 @@
 # Changelog
 
+## [next]
+
+### Changed
+
+- Upgraded [Font Awesome](https://fontawesome.com/) icons to 6.0
+
 ## v0.97
 
 ### Fixed

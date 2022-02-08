@@ -45,10 +45,7 @@ const SilenceComment: FC<{
     <>
       <div className="d-flex flex-row">
         <div className="flex-shrink-0 flex-grow-0">
-          <FontAwesomeIcon
-            icon={faBellSlash}
-            className="components-managed-silence-icon text-muted"
-          />
+          <FontAwesomeIcon icon={faBellSlash} className="text-muted" />
         </div>
         <div className="mx-2 flex-shrink-1 flex-grow-1 mw-1p">
           <div
@@ -86,7 +83,7 @@ const SilenceComment: FC<{
             <span className="badge components-label with-click">
               <ToggleIcon
                 isOpen={!collapsed}
-                className="components-managed-silence-icon m-auto text-muted cursor-pointer"
+                className="m-auto text-muted cursor-pointer"
                 onClick={collapseToggle}
               />
             </span>

@@ -122,7 +122,7 @@ describe("<Alert />", () => {
     });
     const group = MockAlertGroup([], [alert], [], [], {});
     const tree = MountedAlert(alert, group, false, false);
-    expect(tree.find(".fa-volume-mute")).toHaveLength(1);
+    expect(tree.find(".fa-volume-xmark")).toHaveLength(1);
   });
 
   it("inhibition icon passes only unique fingerprints", () => {
@@ -130,7 +130,7 @@ describe("<Alert />", () => {
     alert.alertmanager[0].inhibitedBy = ["123456"];
     const group = MockAlertGroup([], [alert], [], [], {});
     const tree = MountedAlert(alert, group, false, false);
-    expect(tree.find(".fa-volume-mute")).toHaveLength(1);
+    expect(tree.find(".fa-volume-xmark")).toHaveLength(1);
   });
 
   it("renders @cluster label for non-shared clusters", () => {

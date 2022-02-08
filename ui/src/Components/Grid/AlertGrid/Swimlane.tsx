@@ -1,7 +1,7 @@
 import type { FC, MouseEvent } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTh } from "@fortawesome/free-solid-svg-icons/faTh";
+import { faGrip } from "@fortawesome/free-solid-svg-icons/faGrip";
 
 import type { AlertStore } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
@@ -34,7 +34,7 @@ const Swimlane: FC<{
     >
       <span className="flex-shrink-0 flex-grow-0 d-none d-sm-block">
         <span className="badge components-label px-0 ms-1 me-3">
-          <FontAwesomeIcon icon={faTh} className="text-muted" />
+          <FontAwesomeIcon icon={faGrip} className="text-muted" />
         </span>
       </span>
       <span
