@@ -64,13 +64,13 @@ describe("<LabelValueInput />", () => {
 
   it("doesn't renders ValidationError after passed validation", () => {
     const tree = MountedLabelValueInput(true);
-    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-circle-exclamation/);
     expect(toDiffableHtml(tree.html())).not.toMatch(/Required/);
   });
 
   it("renders ValidationError after failed validation", () => {
     const tree = MountedLabelValueInput(false);
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-circle-exclamation/);
     expect(toDiffableHtml(tree.html())).toMatch(/Required/);
   });
 

@@ -396,7 +396,7 @@ describe("<Browser />", () => {
     const tree = MountedBrowser();
 
     expect(tree.find("FetchError")).toHaveLength(1);
-    expect(toDiffableHtml(tree.html())).toMatch(/exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-circle-exclamation/);
   });
 
   it("resets the timer on unmount", () => {

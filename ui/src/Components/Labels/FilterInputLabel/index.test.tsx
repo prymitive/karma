@@ -193,7 +193,7 @@ describe("<FilterInputLabel /> onChange", () => {
       />
     );
 
-    const button = tree.find("svg.fa-times");
+    const button = tree.find("svg.fa-xmark");
     button.simulate("click");
     expect(alertStore.filters.values).toHaveLength(1);
     expect(alertStore.filters.values).toContainEqual(

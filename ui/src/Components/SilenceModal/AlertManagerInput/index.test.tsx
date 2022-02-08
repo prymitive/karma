@@ -95,7 +95,7 @@ describe("<AlertManagerInput />", () => {
   it("doesn't render ValidationError after passed validation", () => {
     const tree = MountedAlertManagerInput();
     silenceFormStore.data.setWasValidated(true);
-    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).not.toMatch(/fa-circle-exclamation/);
     expect(toDiffableHtml(tree.html())).not.toMatch(/Required/);
   });
 
@@ -105,7 +105,7 @@ describe("<AlertManagerInput />", () => {
     tree.find(".react-select__multi-value__remove").at(0).simulate("click");
     silenceFormStore.data.setAlertmanagers([]);
     silenceFormStore.data.setWasValidated(true);
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-exclamation-circle/);
+    expect(toDiffableHtml(tree.html())).toMatch(/fa-circle-exclamation/);
     expect(toDiffableHtml(tree.html())).toMatch(/Required/);
   });
 

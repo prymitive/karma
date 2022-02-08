@@ -33,7 +33,7 @@ describe("<UpgradeToastMessage />", () => {
     expect(tree.find("button").text()).toBe("Stop auto-reload");
 
     tree.find("button").simulate("click");
-    expect(tree.find("button").html()).toMatch(/fa-sync/);
+    expect(tree.find("button").html()).toMatch(/fa-arrows-rotate/);
     expect(tree.find("button").text()).toBe("Reload now");
   });
 

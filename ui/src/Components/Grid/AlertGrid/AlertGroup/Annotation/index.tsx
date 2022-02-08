@@ -6,8 +6,8 @@ import { CSSTransition } from "react-transition-group";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
-import { faSearchPlus } from "@fortawesome/free-solid-svg-icons/faSearchPlus";
-import { faSearchMinus } from "@fortawesome/free-solid-svg-icons/faSearchMinus";
+import { faAngleLeft } from "@fortawesome/free-solid-svg-icons/faAngleLeft";
+import { faAngleRight } from "@fortawesome/free-solid-svg-icons/faAngleRight";
 
 import { TooltipWrapper } from "Components/TooltipWrapper";
 import { useFlashTransition } from "Hooks/useFlashTransition";
@@ -48,7 +48,10 @@ const RenderNonLinkAnnotation: FC<{
               onClick={() => setIsVisible(false)}
               className="cursor-pointer"
             >
-              <FontAwesomeIcon icon={faSearchMinus} className="me-1" />
+              <FontAwesomeIcon
+                icon={faAngleRight}
+                className="me-1 text-muted"
+              />
               <span className="text-muted">{name}: </span>
             </span>
             <Linkify
@@ -71,7 +74,7 @@ const RenderNonLinkAnnotation: FC<{
           </>
         ) : (
           <>
-            <FontAwesomeIcon icon={faSearchPlus} className="me-1" />
+            <FontAwesomeIcon icon={faAngleLeft} className="me-1" />
             {name}
           </>
         )}

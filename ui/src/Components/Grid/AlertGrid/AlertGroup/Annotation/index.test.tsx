@@ -91,19 +91,19 @@ describe("<RenderNonLinkAnnotation />", () => {
 
   it("clicking on - icon hides the value", () => {
     const tree = MountedNonLinkAnnotation(true);
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-search-minus/);
+    expect(toDiffableHtml(tree.html())).toMatch(/angle-right/);
     expect(toDiffableHtml(tree.html())).toMatch(/some long text/);
-    tree.find(".fa-search-minus").simulate("click");
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-search-plus/);
+    tree.find(".fa-angle-right").simulate("click");
+    expect(toDiffableHtml(tree.html())).toMatch(/angle-left/);
     expect(toDiffableHtml(tree.html())).not.toMatch(/some long text/);
   });
 
   it("clicking on + icon shows the value", () => {
     const tree = MountedNonLinkAnnotation(false);
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-search-plus/);
+    expect(toDiffableHtml(tree.html())).toMatch(/angle-left/);
     expect(toDiffableHtml(tree.html())).not.toMatch(/some long text/);
     tree.find(".components-grid-annotation").simulate("click");
-    expect(toDiffableHtml(tree.html())).toMatch(/fa-search-minus/);
+    expect(toDiffableHtml(tree.html())).toMatch(/angle-right/);
     expect(toDiffableHtml(tree.html())).toMatch(/some long text/);
   });
 
