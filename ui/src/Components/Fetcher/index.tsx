@@ -30,7 +30,7 @@ const PauseButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
         <FontAwesomeIcon
           className="cursor-pointer text-muted components-fetcher-icon mx-2"
           icon={faPause}
-          size="lg"
+          fixedWidth
           onClick={alertStore.status.resume}
         />
       </CSSTransition>
@@ -51,7 +51,7 @@ const PlayButton: FC<{ alertStore: AlertStore }> = ({ alertStore }) => {
         <FontAwesomeIcon
           className="cursor-pointer text-muted components-fetcher-icon mx-2"
           icon={faPlay}
-          size="lg"
+          fixedWidth
           onClick={alertStore.status.pause}
         />
       </CSSTransition>
