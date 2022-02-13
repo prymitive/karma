@@ -123,11 +123,15 @@ const SilenceForm: FC<{
               f.matcher === QueryOperators.Regex ||
               f.matcher === QueryOperators.NegativeRegex
             ) {
-              matcher.values = [StringToOption(`.*${f.value}.*`)];
+              matcher.values = [
+                { ...StringToOption(`.*${f.value}.*`), wasCreated: true },
+              ];
               matcher.isRegex = true;
               matcher.isEqual = f.matcher === QueryOperators.Regex;
             } else {
-              matcher.values = [StringToOption(f.value)];
+              matcher.values = [
+                { ...StringToOption(f.value), wasCreated: true },
+              ];
               matcher.isEqual = f.matcher === QueryOperators.Equal;
             }
             silenceFormStore.data.addMatcherWithID(matcher);

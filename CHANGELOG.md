@@ -2,6 +2,10 @@
 
 ## [next]
 
+### Fixed
+
+- Fixed regexp escaping for auto-populated silence matchers #3936.
+
 ### Changed
 
 - Upgraded [Font Awesome](https://fontawesome.com/) icons to 6.0
