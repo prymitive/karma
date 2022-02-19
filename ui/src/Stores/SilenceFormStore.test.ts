@@ -558,7 +558,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "regex",
-        values: [{ label: "equal", value: "equal", wasCreated: false }],
+        values: [{ label: "equal", value: "equal", wasCreated: true }],
         isRegex: true,
         isEqual: true,
       })
@@ -566,7 +566,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "regex",
-        values: [{ label: "notEqual", value: "notEqual", wasCreated: false }],
+        values: [{ label: "notEqual", value: "notEqual", wasCreated: true }],
         isRegex: true,
         isEqual: false,
       })
@@ -574,7 +574,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "notRegex",
-        values: [{ label: "equal", value: "equal", wasCreated: false }],
+        values: [{ label: "equal", value: "equal", wasCreated: true }],
         isRegex: false,
         isEqual: true,
       })
@@ -582,7 +582,7 @@ describe("SilenceFormStore.data", () => {
     expect(store.data.matchers).toContainEqual(
       expect.objectContaining({
         name: "notRegex",
-        values: [{ label: "notEqual", value: "notEqual", wasCreated: false }],
+        values: [{ label: "notEqual", value: "notEqual", wasCreated: true }],
         isRegex: false,
         isEqual: false,
       })
@@ -607,7 +607,14 @@ describe("SilenceFormStore.data", () => {
         isRegex: true,
         isEqual: true,
       },
-      result: { name: "foo", values: ["bar1", "bar2", "bar3"] },
+      result: {
+        name: "foo",
+        values: [
+          StringToOption("bar1"),
+          StringToOption("bar2"),
+          StringToOption("bar3"),
+        ],
+      },
     },
     {
       matcher: {
@@ -616,7 +623,10 @@ describe("SilenceFormStore.data", () => {
         isRegex: false,
         isEqual: true,
       },
-      result: { name: "foo", values: ["(bar1|bar2|bar3)"] },
+      result: {
+        name: "foo",
+        values: [{ ...StringToOption("(bar1|bar2|bar3)"), wasCreated: true }],
+      },
     },
     {
       matcher: {
@@ -625,7 +635,10 @@ describe("SilenceFormStore.data", () => {
         isRegex: false,
         isEqual: true,
       },
-      result: { name: "foo", values: ["bar1|bar2|bar3)"] },
+      result: {
+        name: "foo",
+        values: [{ ...StringToOption("bar1|bar2|bar3)"), wasCreated: true }],
+      },
     },
     {
       matcher: {
@@ -634,7 +647,10 @@ describe("SilenceFormStore.data", () => {
         isRegex: false,
         isEqual: true,
       },
-      result: { name: "foo", values: ["(bar1|bar2|bar3"] },
+      result: {
+        name: "foo",
+        values: [{ ...StringToOption("(bar1|bar2|bar3"), wasCreated: true }],
+      },
     },
     {
       matcher: {
@@ -643,7 +659,14 @@ describe("SilenceFormStore.data", () => {
         isRegex: true,
         isEqual: false,
       },
-      result: { name: "foo", values: ["bar1", "bar2", "bar3"] },
+      result: {
+        name: "foo",
+        values: [
+          StringToOption("bar1"),
+          StringToOption("bar2"),
+          StringToOption("bar3"),
+        ],
+      },
     },
     {
       matcher: {
@@ -652,7 +675,10 @@ describe("SilenceFormStore.data", () => {
         isRegex: false,
         isEqual: true,
       },
-      result: { name: "foo", values: ["bar1|bar2|bar3"] },
+      result: {
+        name: "foo",
+        values: [{ ...StringToOption("bar1|bar2|bar3"), wasCreated: true }],
+      },
     },
     {
       matcher: {
@@ -661,7 +687,10 @@ describe("SilenceFormStore.data", () => {
         isRegex: true,
         isEqual: false,
       },
-      result: { name: "foo", values: ["(.+|bar2|bar3)"] },
+      result: {
+        name: "foo",
+        values: [{ ...StringToOption("(.+|bar2|bar3)"), wasCreated: true }],
+      },
     },
     {
       matcher: {
@@ -670,7 +699,10 @@ describe("SilenceFormStore.data", () => {
         isRegex: true,
         isEqual: true,
       },
-      result: { name: "foo", values: ["bar1|bar?|bar3)"] },
+      result: {
+        name: "foo",
+        values: [{ ...StringToOption("bar1|bar?|bar3)"), wasCreated: true }],
+      },
     },
     {
       matcher: {
@@ -679,7 +711,10 @@ describe("SilenceFormStore.data", () => {
         isRegex: true,
         isEqual: true,
       },
-      result: { name: "foo", values: ["server(0|1)"] },
+      result: {
+        name: "foo",
+        values: [{ ...StringToOption("server(0|1)"), wasCreated: true }],
+      },
     },
     {
       matcher: {
@@ -688,7 +723,10 @@ describe("SilenceFormStore.data", () => {
         isRegex: true,
         isEqual: true,
       },
-      result: { name: "foo", values: ["10.0.0.1", "10.0.0.2"] },
+      result: {
+        name: "foo",
+        values: [StringToOption("10.0.0.1"), StringToOption("10.0.0.2")],
+      },
     },
     {
       matcher: {
@@ -697,7 +735,15 @@ describe("SilenceFormStore.data", () => {
         isRegex: false,
         isEqual: true,
       },
-      result: { name: "foo", values: ["10\\.0\\.0\\.1|10\\.0\\.0\\.2"] },
+      result: {
+        name: "foo",
+        values: [
+          {
+            ...StringToOption("10\\.0\\.0\\.1|10\\.0\\.0\\.2"),
+            wasCreated: true,
+          },
+        ],
+      },
     },
     {
       matcher: {
@@ -706,7 +752,14 @@ describe("SilenceFormStore.data", () => {
         isRegex: true,
         isEqual: true,
       },
-      result: { name: "foo", values: ["bar-1", "bar-2", "1.2"] },
+      result: {
+        name: "foo",
+        values: [
+          StringToOption("bar-1"),
+          StringToOption("bar-2"),
+          StringToOption("1.2"),
+        ],
+      },
     },
     {
       matcher: {
@@ -715,7 +768,12 @@ describe("SilenceFormStore.data", () => {
         isRegex: false,
         isEqual: true,
       },
-      result: { name: "foo", values: ["(bar\\-1|bar\\-2|1\\.2)"] },
+      result: {
+        name: "foo",
+        values: [
+          { ...StringToOption("(bar\\-1|bar\\-2|1\\.2)"), wasCreated: true },
+        ],
+      },
     },
     {
       matcher: {
@@ -724,7 +782,10 @@ describe("SilenceFormStore.data", () => {
         isRegex: true,
         isEqual: true,
       },
-      result: { name: "foo", values: ["foo bar", "1-2"] },
+      result: {
+        name: "foo",
+        values: [StringToOption("foo bar"), StringToOption("1-2")],
+      },
     },
     {
       matcher: {
@@ -733,11 +794,18 @@ describe("SilenceFormStore.data", () => {
         isRegex: false,
         isEqual: true,
       },
-      result: { name: "foo", values: ["foo bar|1-2"] },
+      result: {
+        name: "foo",
+        values: [{ ...StringToOption("foo bar|1-2"), wasCreated: true }],
+      },
     },
   ];
   for (const t of tests) {
-    it(`fillFormFromSilence() unpacks ${t.matcher.name}=${t.matcher.value} isRegex=${t.matcher.isRegex} into ${t.result.name}=${t.result.values}`, () => {
+    it(`fillFormFromSilence() unpacks ${t.matcher.name}=${
+      t.matcher.value
+    } isRegex=${t.matcher.isRegex} into ${t.result.name}=${JSON.stringify(
+      t.result.values.map((v) => v.value)
+    )}`, () => {
       const silenceFormStorestore = new SilenceFormStore();
       const alertmanager = MockAlertmanager();
       const silence = MockSilence();
@@ -748,11 +816,7 @@ describe("SilenceFormStore.data", () => {
       expect(silenceFormStorestore.data.matchers).toContainEqual(
         expect.objectContaining({
           name: t.result.name,
-          values: t.result.values.map((v) => ({
-            label: v,
-            value: v,
-            wasCreated: false,
-          })),
+          values: t.result.values,
           isRegex: t.matcher.isRegex,
           isEqual: t.matcher.isEqual,
         })

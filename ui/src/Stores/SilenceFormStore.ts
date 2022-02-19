@@ -266,7 +266,7 @@ const UnpackRegexMatcherValues = (isRegex: boolean, value: string) => {
   ) {
     return val.split("|").map((v) => StringToOption(v));
   } else {
-    return [StringToOption(val)];
+    return [{ ...StringToOption(val), wasCreated: true }];
   }
 };
 
