@@ -120,16 +120,18 @@ const Alert: FC<{
           alertStore={alertStore}
         />
       ))}
-      {clusters
-        .filter((c) => group.shared.clusters.indexOf(c) < 0)
-        .map((cluster) => (
-          <FilteringLabel
-            key={cluster}
-            name={StaticLabels.AlertmanagerCluster}
-            value={cluster}
-            alertStore={alertStore}
-          />
-        ))}
+      {Object.keys(alertStore.data.upstreams.clusters).length > 1
+        ? clusters
+            .filter((c) => group.shared.clusters.indexOf(c) < 0)
+            .map((cluster) => (
+              <FilteringLabel
+                key={cluster}
+                name={StaticLabels.AlertmanagerCluster}
+                value={cluster}
+                alertStore={alertStore}
+              />
+            ))
+        : null}
       {showReceiver ? (
         <FilteringLabel
           name={StaticLabels.Receiver}

@@ -51,14 +51,16 @@ const GroupFooter: FC<{
           alertStore={alertStore}
         />
       ))}
-      {group.shared.clusters.map((cluster) => (
-        <FilteringLabel
-          key={cluster}
-          name={StaticLabels.AlertmanagerCluster}
-          value={cluster}
-          alertStore={alertStore}
-        />
-      ))}
+      {Object.keys(alertStore.data.upstreams.clusters).length > 1
+        ? group.shared.clusters.map((cluster) => (
+            <FilteringLabel
+              key={cluster}
+              name={StaticLabels.AlertmanagerCluster}
+              value={cluster}
+              alertStore={alertStore}
+            />
+          ))
+        : null}
       {alertStore.data.receivers.length > 1 ? (
         <FilteringLabel
           name={StaticLabels.Receiver}

@@ -6,6 +6,10 @@
 
 - Fixed regexp escaping when editing silences #3936.
 
+### Changed
+
+- Don't render `@cluster` labels if there's only one cluster configured #3994.
+
 ## v0.98
 
 ### Fixed
