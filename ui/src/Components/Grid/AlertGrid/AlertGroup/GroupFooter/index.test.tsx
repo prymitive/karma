@@ -208,4 +208,70 @@ describe("<GroupFooter />", () => {
     expect(tree.find("RenderLinkAnnotation")).toHaveLength(0);
     expect(tree.find("RenderNonLinkAnnotation")).toHaveLength(0);
   });
+
+  it("renders @cluster label if there's more than one cluster", () => {
+    alertStore.data.setUpstreams({
+      counters: { total: 2, healthy: 2, failed: 0 },
+      clusters: { default: ["default"], second: ["second"] },
+      instances: [
+        {
+          name: "default",
+          cluster: "default",
+          clusterMembers: ["default"],
+          uri: "http://localhost",
+          publicURI: "http://localhost",
+          error: "",
+          version: "0.21.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+        {
+          name: "second",
+          cluster: "second",
+          clusterMembers: ["second"],
+          uri: "http://localhost",
+          publicURI: "http://localhost",
+          error: "",
+          version: "0.21.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+      ],
+    });
+    group.shared.clusters = ["default", "second"];
+    const tree = mount(
+      <GroupFooter
+        group={group}
+        afterUpdate={MockAfterUpdate}
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        showAnnotations={false}
+      />,
+      {
+        wrappingComponent: ThemeContext.Provider,
+        wrappingComponentProps: { value: MockThemeContext },
+      }
+    );
+    expect(toDiffableHtml(tree.html())).toMatch(/@cluster:/);
+  });
+
+  it("doesn't render @cluster label if there's only one cluster", () => {
+    group.shared.clusters = ["default"];
+    const tree = mount(
+      <GroupFooter
+        group={group}
+        afterUpdate={MockAfterUpdate}
+        alertStore={alertStore}
+        silenceFormStore={silenceFormStore}
+        showAnnotations={false}
+      />,
+      {
+        wrappingComponent: ThemeContext.Provider,
+        wrappingComponentProps: { value: MockThemeContext },
+      }
+    );
+    expect(toDiffableHtml(tree.html())).not.toMatch(/@cluster:/);
+  });
 });

@@ -147,13 +147,85 @@ describe("<AlertGroup />", () => {
   });
 
   it("renders Alertmanager cluster labels in footer if shared", () => {
+    alertStore.data.setUpstreams({
+      counters: { total: 2, healthy: 2, failed: 0 },
+      clusters: { default: ["default"], second: ["second"] },
+      instances: [
+        {
+          name: "default",
+          cluster: "default",
+          clusterMembers: ["default"],
+          uri: "http://localhost",
+          publicURI: "http://localhost",
+          error: "",
+          version: "0.21.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+        {
+          name: "second",
+          cluster: "second",
+          clusterMembers: ["second"],
+          uri: "http://localhost",
+          publicURI: "http://localhost",
+          error: "",
+          version: "0.21.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+      ],
+    });
     MockAlerts(2, 2);
-    group.shared.clusters = ["default"];
+    group.shared.clusters = ["default", "second"];
     const tree = MountedAlertGroup(jest.fn()).find("Memo(AlertGroup)");
     expect(tree.find("Memo(GroupFooter)").html()).toMatch(/@cluster/);
   });
 
   it("only renders one @cluster label per cluster in the footer", () => {
+    alertStore.data.setUpstreams({
+      counters: { total: 2, healthy: 2, failed: 0 },
+      clusters: { default: ["default"], HA: ["ha1", "ha2"] },
+      instances: [
+        {
+          name: "default",
+          cluster: "default",
+          clusterMembers: ["default"],
+          uri: "http://localhost",
+          publicURI: "http://localhost",
+          error: "",
+          version: "0.21.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+        {
+          name: "ha1",
+          cluster: "HA",
+          clusterMembers: ["ha1", "ha2"],
+          uri: "http://localhost",
+          publicURI: "http://localhost",
+          error: "",
+          version: "0.21.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+        {
+          name: "ha2",
+          cluster: "HA",
+          clusterMembers: ["ha1", "ha2"],
+          uri: "http://localhost",
+          publicURI: "http://localhost",
+          error: "",
+          version: "0.21.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+      ],
+    });
     MockAlerts(2, 2);
     for (let i = 0; i < group.alerts.length; i++) {
       group.alerts[i].alertmanager.push({
@@ -198,6 +270,36 @@ describe("<AlertGroup />", () => {
   });
 
   it("doesn't render @cluster labels in footer when they are unique", () => {
+    alertStore.data.setUpstreams({
+      counters: { total: 2, healthy: 2, failed: 0 },
+      clusters: { default: ["default"], second: ["second"] },
+      instances: [
+        {
+          name: "default",
+          cluster: "default",
+          clusterMembers: ["default"],
+          uri: "http://localhost",
+          publicURI: "http://localhost",
+          error: "",
+          version: "0.21.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+        {
+          name: "second",
+          cluster: "second",
+          clusterMembers: ["second"],
+          uri: "http://localhost",
+          publicURI: "http://localhost",
+          error: "",
+          version: "0.21.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+      ],
+    });
     MockAlerts(5, 5);
     for (let i = 0; i < group.alerts.length; i++) {
       group.alerts[i].alertmanager[0].name = `fakeAlertmanager${i}`;

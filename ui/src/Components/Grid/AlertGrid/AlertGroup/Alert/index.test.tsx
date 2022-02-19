@@ -134,6 +134,37 @@ describe("<Alert />", () => {
   });
 
   it("renders @cluster label for non-shared clusters", () => {
+    alertStore.data.setUpstreams({
+      counters: { total: 2, healthy: 2, failed: 0 },
+      clusters: { default: ["default"], second: ["second"] },
+      instances: [
+        {
+          name: "default",
+          cluster: "default",
+          clusterMembers: ["default"],
+          uri: "http://localhost",
+          publicURI: "http://localhost",
+          error: "",
+          version: "0.21.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+        {
+          name: "second",
+          cluster: "second",
+          clusterMembers: ["second"],
+          uri: "http://localhost",
+          publicURI: "http://localhost",
+          error: "",
+          version: "0.21.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+      ],
+    });
+
     const alert = MockedAlert();
     const group = MockAlertGroup([], [alert], [], [], {});
     const tree = MountedAlert(alert, group, false, false);
@@ -144,6 +175,36 @@ describe("<Alert />", () => {
   });
 
   it("only renders one @cluster label per alertmanager cluster", () => {
+    alertStore.data.setUpstreams({
+      counters: { total: 2, healthy: 2, failed: 0 },
+      clusters: { default: ["default"], second: ["second"] },
+      instances: [
+        {
+          name: "default",
+          cluster: "default",
+          clusterMembers: ["default"],
+          uri: "http://localhost",
+          publicURI: "http://localhost",
+          error: "",
+          version: "0.21.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+        {
+          name: "HA",
+          cluster: "HA",
+          clusterMembers: ["HA"],
+          uri: "http://localhost",
+          publicURI: "http://localhost",
+          error: "",
+          version: "0.21.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+      ],
+    });
     const alert = MockedAlert();
     alert.alertmanager.push({
       fingerprint: "123",
