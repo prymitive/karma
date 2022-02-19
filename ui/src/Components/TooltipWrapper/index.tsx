@@ -50,7 +50,7 @@ const TooltipWrapper: FC<{
       window.clearTimeout(timerShow);
       window.clearTimeout(timerHide);
       setIsVisible(false);
-    } else if (!isVisible && isHovering) {
+    } else if (!isVisible) {
       clearTimeout(timerHide);
       timerShow = window.setTimeout(() => setIsVisible(true), 1000);
     }
