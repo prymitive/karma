@@ -22,7 +22,11 @@ const FaviconBadge: FC<{
     () =>
       autorun(() => {
         favico.badge(
-          alertStore.status.error === null ? alertStore.info.totalAlerts : "?"
+          alertStore.data.upstreamsWithErrors.length > 0
+            ? "!"
+            : alertStore.status.error === null
+            ? alertStore.info.totalAlerts
+            : "?"
         );
       }),
     [] // eslint-disable-line react-hooks/exhaustive-deps
