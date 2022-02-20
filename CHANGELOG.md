@@ -9,6 +9,7 @@
 ### Changed
 
 - Don't render `@cluster` labels if there's only one cluster configured #3994.
+- Show `!` on favicon badge if there's any alertmanager upstream with errors #3987.
 
 ## v0.98
 
