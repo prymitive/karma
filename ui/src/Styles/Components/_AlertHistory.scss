@@ -11,8 +11,12 @@ svg.alert-history {
   width: 100%;
   vertical-align: bottom;
 
-  margin-left: 1px;
-  margin-right: 1px;
+  &:not(:first-child) {
+    margin-left: 1px;
+  }
+  &:not(:last-child) {
+    margin-right: 1px;
+  }
 
   @for $i from 1 through 24 {
     &:nth-of-type(#{$i}) > rect.fetching {
