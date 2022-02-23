@@ -24,6 +24,14 @@ jobs:
           sed -i -E s/'([\ \t]+)node-version: .+'/'\1node-version: ${{ env.NODE_VERSION }}'/g .github/workflows/*
           sed -i -E s/'([\ \t]+)"node": .+'/'\1"node": "${{ env.NODE_VERSION }}"'/g ui/package.json ui/*/package.json
 
+      - name: Set up Node JS
+        uses: actions/setup-node@v2
+        with:
+          node-version: "${{ env.NODE_VERSION }}"
+
+      - name: Regenerate package-lock.json
+        run: cd ui && npm i
+
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3.12.1
