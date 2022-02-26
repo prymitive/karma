@@ -103,7 +103,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Node JS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 17.6.0
           cache: 'npm'
@@ -128,7 +128,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Node JS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 17.6.0
           cache: 'npm'
@@ -163,7 +163,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Node JS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 17.6.0
           cache: 'npm'
@@ -196,7 +196,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Node JS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 17.6.0
           cache: 'npm'
@@ -348,7 +348,7 @@ jobs:
               - 'ui/**/*'
 
       - name: Set up Node JS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 17.6.0
           cache: 'npm'
@@ -382,7 +382,7 @@ jobs:
               - 'ui/package.json'
 
       - name: Set up Node JS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 17.6.0
           cache: 'npm'
@@ -421,7 +421,7 @@ jobs:
             ${{ runner.os }}-go-
 
       - name: Set up Node JS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 17.6.0
           cache: 'npm'
@@ -542,7 +542,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up Node JS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 17.6.0
           cache: 'npm'

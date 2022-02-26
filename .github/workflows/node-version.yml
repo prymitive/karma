@@ -25,7 +25,7 @@ jobs:
           sed -i -E s/'([\ \t]+)"node": .+'/'\1"node": "${{ env.NODE_VERSION }}"'/g ui/package.json ui/*/package.json
 
       - name: Set up Node JS
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: "${{ env.NODE_VERSION }}"
 
