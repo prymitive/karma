@@ -579,6 +579,39 @@ class RegexEscapeValue(AlertGenerator):
         ]
 
 
+class SometimesSilenced(AlertGenerator):
+    name = "Sometimes Silenced Alert"
+    comment = "This alert is sometimes silenced"
+
+    def alerts(self):
+        return [
+            newAlert(
+                self._labels(
+                    instance="server1",
+                    cluster="staging",
+                    severity="info",
+                    job="mysql_exporter",
+                    region="US",
+                ),
+            )
+        ]
+
+    def silences(self):
+        throw = random.randint(0, 100)
+        if throw > 20:
+            return []
+        now = datetime.datetime.utcnow().replace(microsecond=0)
+        return [
+            (
+                [newMatcher("alertname", self.name, False)],
+                "{}Z".format(now.isoformat()),
+                "{}Z".format((now + datetime.timedelta(minutes=8)).isoformat()),
+                "me@example.com",
+                "This alert is sometimes silenced",
+            )
+        ]
+
+
 if __name__ == "__main__":
     generators = [
         AlwaysOnAlert(MAX_INTERVAL),
@@ -596,6 +629,7 @@ if __name__ == "__main__":
         PaginationTest(MAX_INTERVAL),
         RichAnnotations(MAX_INTERVAL),
         RegexEscapeValue(MAX_INTERVAL),
+        SometimesSilenced(MAX_INTERVAL),
     ]
     while True:
         for g in generators:
