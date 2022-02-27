@@ -271,7 +271,6 @@ func (am *Alertmanager) pullAlerts(version string) error {
 	colors := models.LabelsColorMap{}
 	autocompleteMap := map[string]models.Autocomplete{}
 
-	maxExpired := time.Now().Add(-config.Config.Silences.Expired)
 	log.Info().
 		Str("alertmanager", am.Name).
 		Int("groups", len(uniqueGroups)).
@@ -288,8 +287,7 @@ func (am *Alertmanager) pullAlerts(version string) error {
 				}
 			}
 			if config.Config.Silences.Expired > 0 &&
-				alert.State == models.AlertStateActive &&
-				alert.StartsAt.Before(maxExpired) {
+				alert.State == models.AlertStateActive {
 				for _, silence := range am.ExpiredSilences(alert.Labels.Map()) {
 					silences[silence.ID] = silence
 					alert.SilencedBy = append(alert.SilencedBy, silence.ID)
