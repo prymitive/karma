@@ -598,7 +598,7 @@ class SometimesSilenced(AlertGenerator):
 
     def silences(self):
         throw = random.randint(0, 100)
-        if throw > 20:
+        if throw > 10:
             return []
         now = datetime.datetime.utcnow().replace(microsecond=0)
         return [

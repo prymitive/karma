@@ -1132,8 +1132,8 @@ silences:
 ```
 
 - `expired` - controls how long expired silences are shown on active alerts.
-  Expired silences are only visible if alert itself is older than this value.
-  Set it to a negative value to disable showing expired silences.
+  If `expired` is set to `5m` silences expired in the last 5 minutes will be
+  shown. Set it to zero or a negative value to disable showing expired silences.
 - `comments:linkDetect:rules` - allows to specify a list of rules to detect links
   inside silence comments. It's intended to find ticket system ID strings and
   turn them into links.

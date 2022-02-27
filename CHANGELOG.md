@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.100
+
+### Changed
+
+- `silences:expired` option no longer takes alerts age into account.
+
 ## v0.99
 
 ### Fixed
