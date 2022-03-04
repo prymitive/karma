@@ -83,13 +83,13 @@ go_gc_heap_tiny_allocs_objects_total
 go_gc_pauses_seconds_total_bucket{le="-5e-324"}
 go_gc_pauses_seconds_total_bucket{le="9.999999999999999e-10"}
 go_gc_pauses_seconds_total_bucket{le="9.999999999999999e-09"}
-go_gc_pauses_seconds_total_bucket{le="1.2799999999999998e-07"}
-go_gc_pauses_seconds_total_bucket{le="1.2799999999999998e-06"}
-go_gc_pauses_seconds_total_bucket{le="1.6383999999999998e-05"}
-go_gc_pauses_seconds_total_bucket{le="0.00016383999999999998"}
-go_gc_pauses_seconds_total_bucket{le="0.0020971519999999997"}
-go_gc_pauses_seconds_total_bucket{le="0.020971519999999997"}
-go_gc_pauses_seconds_total_bucket{le="0.26843545599999996"}
+go_gc_pauses_seconds_total_bucket{le="9.999999999999998e-08"}
+go_gc_pauses_seconds_total_bucket{le="1.0239999999999999e-06"}
+go_gc_pauses_seconds_total_bucket{le="1.0239999999999999e-05"}
+go_gc_pauses_seconds_total_bucket{le="0.00010239999999999998"}
+go_gc_pauses_seconds_total_bucket{le="0.0010485759999999998"}
+go_gc_pauses_seconds_total_bucket{le="0.010485759999999998"}
+go_gc_pauses_seconds_total_bucket{le="0.10485759999999998"}
 go_gc_pauses_seconds_total_bucket{le="+Inf"}
 go_gc_pauses_seconds_total_sum NaN
 go_gc_pauses_seconds_total_count
@@ -221,13 +221,13 @@ go_sched_goroutines_goroutines
 go_sched_latencies_seconds_bucket{le="-5e-324"}
 go_sched_latencies_seconds_bucket{le="9.999999999999999e-10"}
 go_sched_latencies_seconds_bucket{le="9.999999999999999e-09"}
-go_sched_latencies_seconds_bucket{le="1.2799999999999998e-07"}
-go_sched_latencies_seconds_bucket{le="1.2799999999999998e-06"}
-go_sched_latencies_seconds_bucket{le="1.6383999999999998e-05"}
-go_sched_latencies_seconds_bucket{le="0.00016383999999999998"}
-go_sched_latencies_seconds_bucket{le="0.0020971519999999997"}
-go_sched_latencies_seconds_bucket{le="0.020971519999999997"}
-go_sched_latencies_seconds_bucket{le="0.26843545599999996"}
+go_sched_latencies_seconds_bucket{le="9.999999999999998e-08"}
+go_sched_latencies_seconds_bucket{le="1.0239999999999999e-06"}
+go_sched_latencies_seconds_bucket{le="1.0239999999999999e-05"}
+go_sched_latencies_seconds_bucket{le="0.00010239999999999998"}
+go_sched_latencies_seconds_bucket{le="0.0010485759999999998"}
+go_sched_latencies_seconds_bucket{le="0.010485759999999998"}
+go_sched_latencies_seconds_bucket{le="0.10485759999999998"}
 go_sched_latencies_seconds_bucket{le="+Inf"}
 go_sched_latencies_seconds_sum NaN
 go_sched_latencies_seconds_count
