@@ -61,7 +61,7 @@ $alertgroup-body-bg: $white;
 $alertgroup-footer-bg: $gray-100;
 $silence-id: $dark;
 $silence-color: $dark;
-$silence-bg: $gray-100;
+$silence-bg: lighten($gray-200, 4%);
 $silence-border: $gray-700;
 $silence-comment-color: $gray-800;
 $accordion-active-bg: $gray-200;

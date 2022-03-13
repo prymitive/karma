@@ -36,17 +36,11 @@
   font-size: 85%;
 }
 
-// negative margin used for silence expiry badges with progress
-.nmb-05 {
-  margin-bottom: -($spacer * 0.125) !important;
-}
-
 // SilenceProgress
-.badge > .silence-progress.progress {
-  height: 2px;
-  margin-top: 0.125rem;
+.silence-progress.progress {
+  height: 3px;
 }
 
-.badge > .silence-progress.progress > .progress-bar {
-  height: 2px;
+.silence-progress.progress > .progress-bar {
+  height: 3px;
 }

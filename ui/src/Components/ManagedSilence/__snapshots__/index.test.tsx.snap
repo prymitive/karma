@@ -27,24 +27,15 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
         <div class=\\"components-managed-silence-comment text-truncate overflow-hidden\\">
           Mocked Silence
         </div>
-        <div class=\\"components-managed-silence-cite mt-1\\">
-          <span class=\\"text-muted me-2 font-italic\\">
+        <div class=\\"components-managed-silence-cite mt-1 d-flex flex-row\\">
+          <span class=\\"text-muted text-truncate overflow-hidden me-2\\">
             — me@example.com
           </span>
-          <span class=\\"badge bg-light nmb-05 align-text-bottom p-1\\">
-            Expires in 30 minutes
-            <div class=\\"progress silence-progress\\">
-              <div
-                class=\\"progress-bar bg-success\\"
-                role=\\"progressbar\\"
-                style=\\"width: 50%;\\"
-                aria-valuenow=\\"50\\"
-                aria-valuemin=\\"0\\"
-                aria-valuemax=\\"100\\"
-              >
-              </div>
-            </div>
-          </span>
+          <div class=\\"d-flex flex-row justify-content-end flex-grow-1\\">
+            <span class=\\"badge bg-light components-label\\">
+              Expires in 30 minutes
+            </span>
+          </div>
         </div>
       </div>
       <div class=\\"flex-shrink-0 flex-grow-0\\">
@@ -75,6 +66,17 @@ exports[`<ManagedSilence /> matches snapshot when collapsed 1`] = `
           </span>
         </div>
       </div>
+    </div>
+  </div>
+  <div class=\\"progress silence-progress mx-2 mb-1\\">
+    <div
+      class=\\"progress-bar bg-success\\"
+      role=\\"progressbar\\"
+      style=\\"width: 50%;\\"
+      aria-valuenow=\\"50\\"
+      aria-valuemin=\\"0\\"
+      aria-valuemax=\\"100\\"
+    >
     </div>
   </div>
 </div>
@@ -108,8 +110,8 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
         <div class=\\"components-managed-silence-comment \\">
           Mocked Silence
         </div>
-        <div class=\\"components-managed-silence-cite mt-1\\">
-          <span class=\\"text-muted me-2 font-italic\\">
+        <div class=\\"components-managed-silence-cite mt-1 d-flex flex-row\\">
+          <span class=\\"text-muted text-truncate overflow-hidden \\">
             — me@example.com
           </span>
         </div>
@@ -361,6 +363,17 @@ exports[`<ManagedSilence /> matches snapshot with expaned details 1`] = `
           </div>
         </div>
       </div>
+    </div>
+  </div>
+  <div class=\\"progress silence-progress mx-2 mb-1\\">
+    <div
+      class=\\"progress-bar bg-success\\"
+      role=\\"progressbar\\"
+      style=\\"width: 50%;\\"
+      aria-valuenow=\\"50\\"
+      aria-valuemin=\\"0\\"
+      aria-valuemax=\\"100\\"
+    >
     </div>
   </div>
 </div>

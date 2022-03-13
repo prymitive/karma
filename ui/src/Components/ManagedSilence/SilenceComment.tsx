@@ -1,5 +1,9 @@
 import type { FC } from "react";
 
+import { observer } from "mobx-react-lite";
+
+import parseISO from "date-fns/parseISO";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 
@@ -7,7 +11,21 @@ import type { APISilenceT } from "Models/APITypes";
 import type { AlertStore } from "Stores/AlertStore";
 import FilteringCounterBadge from "Components/Labels/FilteringCounterBadge";
 import { ToggleIcon } from "Components/ToggleIcon";
-import { SilenceProgress } from "./SilenceProgress";
+import { DateFromNow } from "Components/DateFromNow";
+
+const SilenceProgress: FC<{
+  silence: APISilenceT;
+}> = observer(({ silence }) => {
+  return parseISO(silence.endsAt) < new Date() ? (
+    <span className="badge bg-danger components-label">
+      Expired <DateFromNow timestamp={silence.endsAt} />
+    </span>
+  ) : (
+    <span className="badge bg-light components-label">
+      Expires <DateFromNow timestamp={silence.endsAt} />
+    </span>
+  );
+});
 
 const SilenceComment: FC<{
   cluster: string;
@@ -17,81 +35,91 @@ const SilenceComment: FC<{
   collapseToggle: () => void;
   alertStore: AlertStore;
   alertCountAlwaysVisible?: boolean;
-}> = ({
-  cluster,
-  silence,
-  alertCount,
-  alertCountAlwaysVisible,
-  collapsed,
-  collapseToggle,
-  alertStore,
-}) => {
-  const comment = silence.comment.split(" ").map((w, i) =>
-    silence.ticketURL && w === silence.ticketID ? (
-      <a
-        key={i}
-        href={silence.ticketURL}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {silence.ticketID}
-      </a>
-    ) : (
-      " " + w
-    )
-  );
+}> = observer(
+  ({
+    cluster,
+    silence,
+    alertCount,
+    alertCountAlwaysVisible,
+    collapsed,
+    collapseToggle,
+    alertStore,
+  }) => {
+    const comment = silence.comment.split(" ").map((w, i) =>
+      silence.ticketURL && w === silence.ticketID ? (
+        <a
+          key={i}
+          href={silence.ticketURL}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {silence.ticketID}
+        </a>
+      ) : (
+        " " + w
+      )
+    );
 
-  return (
-    <>
-      <div className="d-flex flex-row">
-        <div className="flex-shrink-0 flex-grow-0">
-          <FontAwesomeIcon icon={faBellSlash} className="text-muted" />
-        </div>
-        <div className="mx-2 flex-shrink-1 flex-grow-1 mw-1p">
-          <div
-            className={`components-managed-silence-comment ${
-              collapsed ? "text-truncate overflow-hidden" : ""
-            }`}
-          >
-            {comment.map((w) => w)}
+    return (
+      <>
+        <div className="d-flex flex-row">
+          <div className="flex-shrink-0 flex-grow-0">
+            <FontAwesomeIcon icon={faBellSlash} className="text-muted" />
           </div>
-          <div className="components-managed-silence-cite mt-1">
-            <span className="text-muted me-2 font-italic">
-              &mdash; {silence.createdBy}
-            </span>
-            {collapsed &&
-            Object.keys(alertStore.data.upstreams.clusters).length > 1 ? (
-              <span className="badge bg-secondary mx-1 align-text-bottom p-1">
-                {cluster}
+          <div className="mx-2 flex-shrink-1 flex-grow-1 mw-1p">
+            <div
+              className={`components-managed-silence-comment ${
+                collapsed ? "text-truncate overflow-hidden" : ""
+              }`}
+            >
+              {comment.map((w) => w)}
+            </div>
+            <div className="components-managed-silence-cite mt-1 d-flex flex-row">
+              <span
+                className={`text-muted text-truncate overflow-hidden ${
+                  collapsed ? "me-2" : ""
+                }`}
+              >
+                &mdash; {silence.createdBy}
               </span>
-            ) : null}
-            {collapsed ? <SilenceProgress silence={silence} /> : null}
+              {collapsed ? (
+                <div className="d-flex flex-row justify-content-end flex-grow-1">
+                  <SilenceProgress silence={silence} />
+                  {Object.keys(alertStore.data.upstreams.clusters).length >
+                  1 ? (
+                    <span className="badge bg-secondary mx-1 components-label">
+                      {cluster}
+                    </span>
+                  ) : null}
+                </div>
+              ) : null}
+            </div>
           </div>
-        </div>
-        <div className="flex-shrink-0 flex-grow-0">
-          <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center">
-            <FilteringCounterBadge
-              alertStore={alertStore}
-              name="@silence_id"
-              value={silence.id}
-              counter={alertCount}
-              themed={false}
-              alwaysVisible={alertCountAlwaysVisible}
-              defaultColor="bg-primary"
-              isAppend={false}
-            />
-            <span className="badge components-label with-click">
-              <ToggleIcon
-                isOpen={!collapsed}
-                className="m-auto text-muted cursor-pointer"
-                onClick={collapseToggle}
+          <div className="flex-shrink-0 flex-grow-0">
+            <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center">
+              <FilteringCounterBadge
+                alertStore={alertStore}
+                name="@silence_id"
+                value={silence.id}
+                counter={alertCount}
+                themed={false}
+                alwaysVisible={alertCountAlwaysVisible}
+                defaultColor="bg-primary"
+                isAppend={false}
               />
-            </span>
+              <span className="badge components-label with-click">
+                <ToggleIcon
+                  isOpen={!collapsed}
+                  className="m-auto text-muted cursor-pointer"
+                  onClick={collapseToggle}
+                />
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-    </>
-  );
-};
+      </>
+    );
+  }
+);
 
-export { SilenceComment };
+export { SilenceComment, SilenceProgress };

@@ -1,4 +1,5 @@
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 
 import toDiffableHtml from "diffable-html";
 
@@ -194,5 +195,55 @@ describe("<ManagedSilence />", () => {
     const tree = MountedManagedSilence(fakeUpdate);
     tree.find("svg.text-muted.cursor-pointer").simulate("click");
     expect(fakeUpdate).toHaveBeenCalled();
+  });
+});
+
+describe("<ManagedSilence progress bar />", () => {
+  it("renders with class 'danger' and no progressbar when expired", () => {
+    jest.setSystemTime(new Date(Date.UTC(2001, 0, 1, 23, 0, 0)));
+    const tree = MountedManagedSilence();
+    expect(toDiffableHtml(tree.html())).toMatch(/bg-danger/);
+    expect(tree.text()).toMatch(/Expired 1 year ago/);
+  });
+
+  it("progressbar uses class 'danger' when > 90%", () => {
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 55, 0)));
+    const tree = MountedManagedSilence();
+    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-danger/);
+  });
+
+  it("progressbar uses class 'danger' when > 75%", () => {
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 50, 0)));
+    const tree = MountedManagedSilence();
+    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-warning/);
+  });
+
+  it("progressbar uses class 'success' when <= 75%", () => {
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
+    const tree = MountedManagedSilence();
+    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-success/);
+  });
+
+  it("progressbar is updated every 30 seconds", () => {
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
+    const tree = MountedManagedSilence();
+    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-success/);
+
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 50, 0)));
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-warning/);
+
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 55, 0)));
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+    expect(toDiffableHtml(tree.html())).toMatch(/progress-bar bg-danger/);
+  });
+
+  it("unmounts cleanly", () => {
+    const tree = MountedManagedSilence();
+    tree.unmount();
   });
 });
