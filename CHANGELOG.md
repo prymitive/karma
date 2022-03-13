@@ -5,6 +5,7 @@
 ### Changed
 
 - `silences:expired` option no longer takes alerts age into account.
+- Moved silence progress bar to the bottom of the silence block.
 
 ## v0.99
 

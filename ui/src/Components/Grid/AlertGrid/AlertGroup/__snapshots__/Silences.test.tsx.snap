@@ -27,13 +27,15 @@ exports[`<RenderSilence /> renders ManagedSilence if silence is present in Alert
         <div class=\\"components-managed-silence-comment text-truncate overflow-hidden\\">
           Mocked Silence
         </div>
-        <div class=\\"components-managed-silence-cite mt-1\\">
-          <span class=\\"text-muted me-2 font-italic\\">
+        <div class=\\"components-managed-silence-cite mt-1 d-flex flex-row\\">
+          <span class=\\"text-muted text-truncate overflow-hidden me-2\\">
             — me@example.com
           </span>
-          <span class=\\"badge bg-danger align-text-bottom p-1\\">
-            Expired 1 month ago
-          </span>
+          <div class=\\"d-flex flex-row justify-content-end flex-grow-1\\">
+            <span class=\\"badge bg-danger components-label\\">
+              Expired 1 month ago
+            </span>
+          </div>
         </div>
       </div>
       <div class=\\"flex-shrink-0 flex-grow-0\\">
@@ -59,6 +61,17 @@ exports[`<RenderSilence /> renders ManagedSilence if silence is present in Alert
           </span>
         </div>
       </div>
+    </div>
+  </div>
+  <div class=\\"progress silence-progress mx-2 mb-1\\">
+    <div
+      class=\\"progress-bar bg-danger\\"
+      role=\\"progressbar\\"
+      style=\\"width: 74400%;\\"
+      aria-valuenow=\\"74400\\"
+      aria-valuemin=\\"0\\"
+      aria-valuemax=\\"100\\"
+    >
     </div>
   </div>
 </div>
