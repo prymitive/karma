@@ -206,6 +206,13 @@ describe("<ManagedSilence progress bar />", () => {
     expect(tree.text()).toMatch(/Expired 1 year ago/);
   });
 
+  it("renders with class 'warning' if <= 5m is left", () => {
+    jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 56, 0)));
+    const tree = MountedManagedSilence();
+    expect(toDiffableHtml(tree.html())).toMatch(/bg-warning/);
+    expect(tree.text()).toMatch(/Expires in 4 minutes/);
+  });
+
   it("progressbar uses class 'danger' when > 90%", () => {
     jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 55, 0)));
     const tree = MountedManagedSilence();
