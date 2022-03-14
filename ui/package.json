@@ -56,8 +56,8 @@
   "devDependencies": {
     "@percy/cli": "1.0.0-beta.76",
     "@percy/storybook": "4.1.0",
-    "@storybook/builder-webpack5": "6.5.0-alpha.47",
-    "@storybook/manager-webpack5": "6.5.0-alpha.47",
+    "@storybook/builder-webpack5": "6.5.0-alpha.48",
+    "@storybook/manager-webpack5": "6.5.0-alpha.48",
     "@storybook/preset-create-react-app": "4.0.1",
     "@storybook/react": "6.5.0-alpha.47",
     "@testing-library/react-hooks": "7.0.2",
