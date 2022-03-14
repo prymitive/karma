@@ -3,6 +3,7 @@ import type { FC } from "react";
 import { observer } from "mobx-react-lite";
 
 import parseISO from "date-fns/parseISO";
+import { differenceInSeconds } from "date-fns";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
@@ -16,12 +17,20 @@ import { DateFromNow } from "Components/DateFromNow";
 const SilenceProgress: FC<{
   silence: APISilenceT;
 }> = observer(({ silence }) => {
-  return parseISO(silence.endsAt) < new Date() ? (
-    <span className="badge bg-danger components-label">
-      Expired <DateFromNow timestamp={silence.endsAt} />
-    </span>
-  ) : (
-    <span className="badge bg-light components-label">
+  const diff = differenceInSeconds(parseISO(silence.endsAt), new Date());
+  if (diff <= 0) {
+    return (
+      <span className="badge bg-danger components-label">
+        Expired <DateFromNow timestamp={silence.endsAt} />
+      </span>
+    );
+  }
+  return (
+    <span
+      className={`badge ${
+        diff <= 300 ? "bg-warning" : "bg-light"
+      } components-label`}
+    >
       Expires <DateFromNow timestamp={silence.endsAt} />
     </span>
   );
