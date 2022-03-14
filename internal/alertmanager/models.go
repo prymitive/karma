@@ -294,6 +294,15 @@ func (am *Alertmanager) pullAlerts(version string) error {
 				}
 			}
 
+			sort.Slice(alert.SilencedBy, func(i, j int) bool {
+				si := silences[alert.SilencedBy[i]]
+				sj := silences[alert.SilencedBy[j]]
+				if si != nil && sj != nil {
+					return si.EndsAt.Unix() < sj.EndsAt.Unix()
+				}
+				return alert.SilencedBy[i] < alert.SilencedBy[j]
+			})
+
 			alert.Alertmanager = []models.AlertmanagerInstance{
 				{
 					Fingerprint: alert.Fingerprint,
