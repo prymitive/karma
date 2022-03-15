@@ -298,7 +298,10 @@ func (am *Alertmanager) pullAlerts(version string) error {
 				si := silences[alert.SilencedBy[i]]
 				sj := silences[alert.SilencedBy[j]]
 				if si != nil && sj != nil {
-					return si.EndsAt.Unix() < sj.EndsAt.Unix()
+					if alert.State == models.AlertStateSuppressed {
+						return si.EndsAt.Unix() < sj.EndsAt.Unix()
+					}
+					return si.EndsAt.Unix() > sj.EndsAt.Unix()
 				}
 				return alert.SilencedBy[i] < alert.SilencedBy[j]
 			})
