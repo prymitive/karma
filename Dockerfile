@@ -15,6 +15,7 @@ COPY go.sum /src/go.sum
 RUN make -C /src download-deps-go
 COPY --from=nodejs-builder /src/ui/src /src/ui/src
 COPY --from=nodejs-builder /src/ui/build /src/ui/build
+COPY --from=nodejs-builder /src/ui/mock /src/ui/mock
 COPY --from=nodejs-builder /src/ui/embed.go /src/ui/embed.go
 COPY cmd /src/cmd
 COPY internal /src/internal

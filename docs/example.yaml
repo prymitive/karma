@@ -56,9 +56,6 @@ silences:
 receivers:
   keep: []
   strip: []
-sentry:
-  private: secret
-  public: 123456789
 silenceForm:
   strip:
     labels:

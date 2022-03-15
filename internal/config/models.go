@@ -192,10 +192,6 @@ type configSchema struct {
 		Keep  []string
 		Strip []string
 	}
-	Sentry struct {
-		Private string
-		Public  string
-	}
 	Silences struct {
 		Expired  time.Duration
 		Comments struct {

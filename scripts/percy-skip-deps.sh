@@ -22,7 +22,7 @@ git log --no-merges --name-only --pretty=format: ${RANGE} | grep -Ev '^$' | sort
   elif [[ "${FILE}" == "ui/package.json" ]]; then
     echo "[?] ${FILE}"
     git diff --no-prefix --diff-filter=M --unified=0 ${RANGE} -- ui/package.json | grep -E '^\+ ' | tr -d '":,' | while read I NAME VERSION ; do
-      if [[ "${NAME}" =~ ^(@types|@sentry)/.+ ]]; then
+      if [[ "${NAME}" =~ ^@types/.+ ]]; then
         echo "[S] ${NAME}: ${VERSION}"
       else
         echo "[P] ${NAME}: ${VERSION}"

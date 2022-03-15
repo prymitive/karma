@@ -106,14 +106,14 @@ func TestAssetFallbackMIME(t *testing.T) {
 	mockConfig(t.Setenv)
 	r := testRouter()
 	setupRouter(r, nil)
-	req := httptest.NewRequest("GET", "/static/js/App.tsx", nil)
+	req := httptest.NewRequest("GET", "/__test__/test.file", nil)
 	resp := httptest.NewRecorder()
 	r.ServeHTTP(resp, req)
 	if resp.Code != 200 {
-		t.Errorf("Invalid status code for GET %s: %d", "/static/js/App.tsx", resp.Code)
+		t.Errorf("Invalid status code for GET %s: %d", "/__test__/test.file", resp.Code)
 	}
 	if resp.Result().Header.Get("Content-Type") != "application/octet-stream" {
-		t.Errorf("Invalid Content-Type for GET /static/js/App.tsx: %s, expected 'text/plain; charset=utf-8'", resp.Result().Header.Get("Content-Type"))
+		t.Errorf("Invalid Content-Type for GET /__test__/test.file: %s, expected 'text/plain; charset=utf-8'", resp.Result().Header.Get("Content-Type"))
 	}
 }
 

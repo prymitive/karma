@@ -1205,32 +1205,6 @@ receivers:
   strip: []
 ```
 
-### Sentry
-
-`sentry` section allows configuring [Sentry](https://sentry.io) integration. See
-[Sentry documentation](https://docs.sentry.io/quickstart/#configure-the-dsn) for
-details.
-Syntax:
-
-```YAML
-sentry:
-  private: string
-  public: string
-```
-
-- `private` - Sentry DSN for Go exceptions, this value is only used by karma
-  binary and never exposed to the user.
-- `public` - Sentry DSN for JavaScript exceptions, this value will be exposed
-  to the user browser.
-
-Example:
-
-```YAML
-sentry:
-  private: https://<key>:<secret>@sentry.io/<project>
-  public: https://<key>:<secret>@sentry.io/<project>
-```
-
 ## Silence form
 
 `silenceForm` section allows customizing silence form behavior.
@@ -1339,8 +1313,7 @@ ui:
 In order to keep the core code simple karma doesn't support any way of extending
 provided functionality. There is however possibility to inject custom CSS &
 JavaScript code, which can be used to either override built in CSS styles
-or integrate with extra services, for example using error handlers other than
-Sentry.
+or integrate with extra services.
 
 ```YAML
 custom:
@@ -1386,8 +1359,6 @@ Exceptions for passing flags:
   option
 - `PORT` - used by gin webserver, same effect as setting `listen:port` config
   option
-- `SENTRY_DSN` - is used by Sentry itself, same effect as passing value to
-  `sentry:private` config option.
 
 There's no support for configuring multiple alertmanager servers using
 environment variables, but it's possible to configure a single Alertmanager

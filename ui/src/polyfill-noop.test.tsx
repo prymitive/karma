@@ -8,8 +8,6 @@ declare let window: any;
 
 const settingsElement = {
   dataset: {
-    sentryDsn: "",
-    version: "1.2.3",
     defaultFiltersBase64: "WyJmb289YmFyIiwiYmFyPX5iYXoiXQ==",
   },
 };

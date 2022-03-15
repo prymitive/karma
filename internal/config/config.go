@@ -142,9 +142,6 @@ func SetupFlags(f *pflag.FlagSet) {
 	f.Duration("listen.timeout.read", time.Second*10, "HTTP request read timeout")
 	f.Duration("listen.timeout.write", time.Second*20, "HTTP response write timeout")
 
-	f.String("sentry.public", "", "Sentry DSN for Go exceptions")
-	f.String("sentry.private", "", "Sentry DSN for JavaScript exceptions")
-
 	f.Duration("ui.refresh", time.Second*30, "UI refresh interval")
 	f.Bool("ui.hideFiltersWhenIdle", true, "Hide the filters bar when idle")
 	f.Bool("ui.colorTitlebar", false, "Color alert group titlebar based on alert state")
@@ -200,9 +197,8 @@ func readConfigFile(k *koanf.Koanf, flags *pflag.FlagSet) (string, error) {
 
 func readEnvVariables(k *koanf.Koanf) {
 	customEnvs := map[string]string{
-		"HOST":       "listen.address",
-		"PORT":       "listen.port",
-		"SENTRY_DSN": "sentry.private",
+		"HOST": "listen.address",
+		"PORT": "listen.port",
 	}
 	for env, key := range customEnvs {
 		if _, found := os.LookupEnv(env); found {
@@ -511,11 +507,6 @@ func (config *configSchema) LogValues() {
 		servers = append(servers, server)
 	}
 	cfg.Alertmanager.Servers = servers
-
-	// replace secret in Sentry DNS with 'xxx'
-	if config.Sentry.Private != "" {
-		config.Sentry.Private = uri.SanitizeURI(config.Sentry.Private)
-	}
 
 	var buf bytes.Buffer
 	enc := yaml.NewEncoder(&buf)

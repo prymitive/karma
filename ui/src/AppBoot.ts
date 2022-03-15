@@ -1,37 +1,9 @@
 // helpers used to bootstrap App instance and environment for it
 
-import { init } from "@sentry/browser";
-
 import type { UIDefaults } from "Models/UI";
 
 const SettingsElement = (): HTMLElement | null =>
   document.getElementById("settings");
-
-const SetupSentry = (settingsElement: HTMLElement | null): void => {
-  if (
-    settingsElement !== null &&
-    settingsElement.dataset.sentryDsn &&
-    settingsElement.dataset.sentryDsn !== "{{ .SentryDSN }}"
-  ) {
-    let version = "unknown";
-    if (
-      settingsElement.dataset.version &&
-      settingsElement.dataset.version !== "{{ .Version }}"
-    ) {
-      version = settingsElement.dataset.version;
-    }
-
-    try {
-      init({
-        dsn: settingsElement.dataset.sentryDsn,
-        release: version,
-        autoSessionTracking: false,
-      });
-    } catch (err) {
-      console.error("Sentry config failed: " + err);
-    }
-  }
-};
 
 const ParseDefaultFilters = (settingsElement: HTMLElement | null): string[] => {
   let defaultFilters = [];
@@ -66,4 +38,4 @@ const ParseUIDefaults = (
   }
 };
 
-export { SettingsElement, SetupSentry, ParseDefaultFilters, ParseUIDefaults };
+export { SettingsElement, ParseDefaultFilters, ParseUIDefaults };
