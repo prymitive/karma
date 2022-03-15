@@ -1,21 +1,12 @@
-import * as Sentry from "@sentry/browser";
-
 import { DefaultsBase64, DefaultsObject } from "__fixtures__/Defaults";
 import {
   SettingsElement,
-  SetupSentry,
   ParseDefaultFilters,
   ParseUIDefaults,
 } from "./AppBoot";
 
-// https://github.com/getsentry/sentry-javascript/blob/8184a5472e4a18f8b11873123ee1d940b64317c3/packages/minimal/test/lib/minimal.test.ts#L20
-declare let global: any;
-
 afterEach(() => {
   jest.restoreAllMocks();
-  // reset sentry state before each mock, that's the only way to revert
-  // Sentry.init() that I found
-  global.__SENTRY__ = {};
 
   // https://github.com/jamesmfriedman/rmwc/issues/103#issuecomment-360007979
   Object.defineProperty(window.HTMLElement.prototype, "dataset", {
@@ -24,31 +15,16 @@ afterEach(() => {
   });
 });
 
-const FakeDSN =
-  "https://81a9ef37a6ed4fdb80e9ea2310d1ed28@sentry.example.com/1234123";
-
-const MockSettings = (
-  version: string,
-  SentryDsn: string,
-  defaultFilters: string[]
-) => {
+const MockSettings = (defaultFilters: string[]) => {
   return jest.spyOn(document, "getElementById").mockImplementation(() => {
     const filtersBase64 = btoa(JSON.stringify(defaultFilters));
     const settings = document.createElement("span");
     settings.id = "settings";
     (settings as any).dataset = {
-      version: version,
-      SentryDsn: SentryDsn,
       defaultFiltersBase64: filtersBase64,
     };
     return settings;
   });
-};
-
-const SentryClient = (SentryDsn: string, version?: string) => {
-  const settings = document.createElement("span");
-  (settings as any).dataset = { sentryDsn: SentryDsn, version: version };
-  SetupSentry(settings);
 };
 
 const FiltersSetting = (filters: any) => {
@@ -66,50 +42,10 @@ describe("SettingsElement()", () => {
   });
 
   it("returns correct span when '#settings' is present", () => {
-    const spy = MockSettings("ver1", "fakeDSN", []);
+    const spy = MockSettings([]);
     const settings = SettingsElement();
     expect(spy).toHaveBeenCalledTimes(1);
     expect((settings as any).id).toBe("settings");
-    expect((settings as any).dataset.version).toBe("ver1");
-    expect((settings as any).dataset.SentryDsn).toBe("fakeDSN");
-  });
-});
-
-describe("SetupSentry()", () => {
-  it("does nothing when Sentry DSN is missing", () => {
-    const sentrySpy = jest.spyOn(Sentry, "init");
-    SentryClient("");
-    expect(sentrySpy).not.toHaveBeenCalled();
-  });
-
-  it("configures Sentry when DSN is present", () => {
-    const sentrySpy = jest.spyOn(Sentry, "init");
-    SentryClient(FakeDSN);
-    expect(sentrySpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        dsn: FakeDSN,
-        release: "unknown", // default version
-      })
-    );
-  });
-
-  it("passes release option when version attr is present", () => {
-    const sentrySpy = jest.spyOn(Sentry, "init");
-    SentryClient(FakeDSN, "ver1");
-    expect(sentrySpy).toHaveBeenCalledWith(
-      expect.objectContaining({
-        dsn: FakeDSN,
-        release: "ver1",
-      })
-    );
-  });
-
-  it("logs an error when invalid DSN is passed to Sentry", () => {
-    const consoleSpy = jest
-      .spyOn(console, "error")
-      .mockImplementation(() => {});
-    SentryClient("invalidDSN");
-    expect(consoleSpy).toHaveBeenCalledTimes(1);
   });
 });
 

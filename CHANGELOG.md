@@ -6,6 +6,8 @@
 
 - `silences:expired` option no longer takes alerts age into account.
 - Moved silence progress bar to the bottom of the silence block.
+- Removed sentry support to reduce application size.
+  `sentry:private` and `sentry:public` config options are no longer valid.
 
 ## v0.99
 

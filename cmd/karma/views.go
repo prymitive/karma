@@ -130,8 +130,6 @@ func index(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	_ = indexTemplate.Execute(w, map[string]string{
 		"KarmaName":     config.Config.Karma.Name,
-		"Version":       version,
-		"SentryDSN":     config.Config.Sentry.Public,
 		"DefaultFilter": filtersB64,
 		"Defaults":      defaultsB64,
 		"CustomCSS":     config.Config.Custom.CSS,

@@ -141,9 +141,6 @@ log:
 receivers:
   keep: []
   strip: []
-sentry:
-  private: secret key
-  public: public key
 silences:
   expired: 10m0s
   comments:
@@ -217,8 +214,6 @@ func TestReadConfig(t *testing.T) {
 	t.Setenv("LABELS_VALUEONLY_RE", "fo+ .ar")
 	t.Setenv("LISTEN_ADDRESS", "0.0.0.0")
 	t.Setenv("LISTEN_PORT", "80")
-	t.Setenv("SENTRY_PRIVATE", "secret key")
-	t.Setenv("SENTRY_PUBLIC", "public key")
 	_, _ = mockConfigRead()
 	testReadConfig(t)
 }

@@ -6,8 +6,6 @@ import { mockMatchMedia } from "__fixtures__/matchMedia";
 
 const settingsElement = {
   dataset: {
-    sentryDsn: "",
-    version: "1.2.3",
     defaultFiltersBase64: "WyJmb289YmFyIiwiYmFyPX5iYXoiXQ==",
   },
 };

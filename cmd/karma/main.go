@@ -26,8 +26,6 @@ import (
 	"github.com/prymitive/karma/internal/uri"
 	"github.com/prymitive/karma/ui"
 
-	"github.com/getsentry/sentry-go"
-	sentryhttp "github.com/getsentry/sentry-go/http"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
@@ -82,24 +80,14 @@ func getViewURL(sub string) string {
 func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 	_ = mime.AddExtensionType(".ico", "image/x-icon")
 
-	sentryMiddleware := sentryhttp.New(sentryhttp.Options{
-		Repanic: true,
-	})
-
 	router.Use(promMiddleware)
-	router.Use(sentryMiddleware.Handle)
 	router.Use(middleware.RealIP)
 
 	compressor := middleware.NewCompressor(flate.DefaultCompression)
 	router.Use(compressor.Handler)
 
 	router.Use(serverStaticFiles(getViewURL("/"), "build"))
-	// next 2 lines are to allow service raw sources so sentry can fetch source maps
-	router.Use(serverStaticFiles(getViewURL("/static/js/"), "src"))
-	// FIXME
-	// compressed sources are under /static/js/main.js and reference ../static/js/main.js
-	// so we end up with /static/static/js
-	router.Use(serverStaticFiles(getViewURL("/static/static/js/"), "src"))
+	router.Use(serverStaticFiles(getViewURL("/__test__/"), "mock"))
 	router.Use(cors.Handler(cors.Options{
 		AllowOriginFunc: func(r *http.Request, origin string) bool {
 			return true
@@ -421,18 +409,6 @@ func mainSetup(errorHandling pflag.ErrorHandling) (*chi.Mux, *historyPoller, err
 	}
 
 	router := chi.NewRouter()
-
-	if config.Config.Sentry.Public != "" {
-		if err := sentry.Init(sentry.ClientOptions{
-			Dsn:     config.Config.Sentry.Public,
-			Release: version,
-		}); err != nil {
-			log.Error().Err(err).Str("dsn", config.Config.Sentry.Public).Msg("Sentry initialization failed")
-			return nil, nil, fmt.Errorf("sentry configuration is invalid")
-		}
-		log.Info().Msg("Sentry enabled")
-		defer sentry.Flush(time.Second)
-	}
 
 	historyPoller := newHistoryPoller(100, config.Config.History.Timeout)
 	setupRouter(router, historyPoller)

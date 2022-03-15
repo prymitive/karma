@@ -2,8 +2,6 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
-import * as Sentry from "@sentry/browser";
-
 import { ErrorBoundary } from "./ErrorBoundary";
 
 declare let window: any;
@@ -46,48 +44,6 @@ describe("<ErrorBoundary />", () => {
     jest.spyOn(ErrorBoundary.prototype, "componentDidCatch");
     MountedFailingComponent();
     expect(ErrorBoundary.prototype.componentDidCatch).toHaveBeenCalled();
-  });
-
-  it("componentDidCatch should report to sentry", () => {
-    const sentrySpy = jest.spyOn(Sentry, "captureException");
-    MountedFailingComponent();
-    expect(sentrySpy).toHaveBeenCalled();
-  });
-
-  it("componentDidCatch passes scope to sentry", () => {
-    const sentrySpy = jest.spyOn(Sentry, "captureException");
-    Sentry.init({ dsn: "https://foobar@localhost/123456" });
-
-    const tree = mount(
-      <ErrorBoundary>
-        <div />
-      </ErrorBoundary>
-    );
-    (tree as any)
-      .instance()
-      .componentDidCatch(new Error("foo"), { componentStack: "bar" });
-    expect(sentrySpy).toHaveBeenCalled();
-  });
-
-  it("componentDidCatch is only called once", () => {
-    const sentrySpy = jest.spyOn(Sentry, "captureException");
-    Sentry.init({ dsn: "https://foobar@localhost/123456" });
-
-    const tree = mount(
-      <ErrorBoundary>
-        <div />
-      </ErrorBoundary>
-    );
-    (tree as any)
-      .instance()
-      .componentDidCatch(new Error("foo"), { componentStack: "bar" });
-    (tree as any)
-      .instance()
-      .componentDidCatch(new Error("foo"), { componentStack: "bar" });
-    (tree as any)
-      .instance()
-      .componentDidCatch(new Error("foo"), { componentStack: "bar" });
-    expect(sentrySpy).toHaveBeenCalledTimes(1);
   });
 
   it("calls window.location.reload after 60s", () => {

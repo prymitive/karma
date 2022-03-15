@@ -108,9 +108,6 @@ labels:
 log:
   config: false
   level: warning
-sentry:
-  private: "https://84a9ef37a6ed4fdb80e9ea2310d1ed26:8c6ee6f0ab02406482ff4b4e824e2c27@o185090.ingest.sentry.io/1279017"
-  public: "https://84a9ef37a6ed4fdb80e9ea2310d1ed26@o185090.ingest.sentry.io/1279017"
 silences:
   comments:
     linkDetect:

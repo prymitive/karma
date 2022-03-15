@@ -60,9 +60,6 @@ env LOG_TIMESTAMP=false
 env RECEIVERS_KEEP='keep1 keep2'
 env RECEIVERS_STRIP='strip1 strip2'
 
-env SENTRY_DSN=https://examplePublicKey@o0.ingest.sentry.io/0
-env SENTRY_PUBLIC=https://examplePublicKey@o0.ingest.sentry.io/1
-
 env SILENCES_EXPIRED=1s
 
 env SILENCEFORM_STRIP_LABELS='job severity region'
@@ -224,9 +221,6 @@ level=info msg="    - keep2"
 level=info msg="  strip:"
 level=info msg="    - strip1"
 level=info msg="    - strip2"
-level=info msg="sentry:"
-level=info msg="  private: https://examplePublicKey@o0.ingest.sentry.io/0"
-level=info msg="  public: https://examplePublicKey@o0.ingest.sentry.io/1"
 level=info msg="silences:"
 level=info msg="  expired: 1s"
 level=info msg="  comments:"
@@ -250,5 +244,4 @@ level=info msg="  collapseGroups: expanded"
 level=info msg="  multiGridLabel: cluster"
 level=info msg="  multiGridSortReverse: true"
 level=info msg="Configured Alertmanager source" name=ro proxy=false readonly=true uri=http://127.0.0.1:9093
-level=info msg="Sentry enabled"
 level=info msg="Configuration is valid"
