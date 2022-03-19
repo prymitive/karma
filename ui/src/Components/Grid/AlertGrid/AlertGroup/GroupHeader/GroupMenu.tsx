@@ -2,7 +2,7 @@ import { FC, useRef, useState, useCallback, Ref, CSSProperties } from "react";
 
 import copy from "copy-to-clipboard";
 
-import { Manager, Reference, Popper } from "react-popper";
+import { useFloating, shift, flip, offset } from "@floating-ui/react-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
@@ -18,16 +18,10 @@ import {
   AlertmanagerClustersToOption,
 } from "Stores/SilenceFormStore";
 import { QueryOperators, StaticLabels, FormatQuery } from "Common/Query";
-import { CommonPopperModifiers } from "Common/Popper";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { FetchPauser } from "Components/FetchPauser";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
 import { MenuLink } from "Components/Grid/AlertGrid/AlertGroup/MenuLink";
-
-const PopperModifiers = [
-  ...CommonPopperModifiers,
-  { name: "offset", options: { offset: "-5px, 0px" } },
-];
 
 const onSilenceClick = (
   alertStore: AlertStore,
@@ -56,17 +50,19 @@ const onSilenceClick = (
 };
 
 const MenuContent: FC<{
-  popperPlacement?: string;
-  popperRef?: Ref<HTMLDivElement>;
-  popperStyle?: CSSProperties;
+  x: number | null;
+  y: number | null;
+  floating: Ref<HTMLDivElement> | null;
+  strategy: CSSProperties["position"];
   group: APIAlertGroupT;
   afterClick: () => void;
   alertStore: AlertStore;
   silenceFormStore: SilenceFormStore;
 }> = ({
-  popperPlacement,
-  popperRef,
-  popperStyle,
+  x,
+  y,
+  floating,
+  strategy,
   group,
   afterClick,
   alertStore,
@@ -94,9 +90,12 @@ const MenuContent: FC<{
     <FetchPauser alertStore={alertStore}>
       <div
         className="dropdown-menu d-block shadow m-0"
-        ref={popperRef}
-        style={popperStyle}
-        data-placement={popperPlacement}
+        ref={floating}
+        style={{
+          position: strategy,
+          top: y ?? "",
+          left: x ?? "",
+        }}
       >
         {actions.length ? (
           <>
@@ -165,39 +164,35 @@ const GroupMenu: FC<{
   const rootRef = useRef<HTMLSpanElement | null>(null);
   useOnClickOutside(rootRef, hide, !isHidden);
 
+  const { x, y, reference, floating, strategy } = useFloating({
+    placement: "bottom-start",
+    middleware: [shift(), flip(), offset(5)],
+  });
+
   return (
     <span ref={rootRef}>
-      <Manager>
-        <Reference>
-          {({ ref }) => (
-            <span
-              ref={ref}
-              onClick={toggle}
-              className={`${
-                themed ? "text-white with-click-light" : "text-muted"
-              } cursor-pointer badge components-label components-label-with-hover with-click me-1`}
-              data-toggle="dropdown"
-            >
-              <FontAwesomeIcon icon={faBars} />
-            </span>
-          )}
-        </Reference>
-        <DropdownSlide in={!isHidden} unmountOnExit>
-          <Popper placement="bottom" modifiers={PopperModifiers}>
-            {({ placement, ref, style }) => (
-              <MenuContent
-                popperPlacement={placement}
-                popperRef={ref}
-                popperStyle={style}
-                group={group}
-                alertStore={alertStore}
-                silenceFormStore={silenceFormStore}
-                afterClick={hide}
-              />
-            )}
-          </Popper>
-        </DropdownSlide>
-      </Manager>
+      <span
+        ref={reference}
+        onClick={toggle}
+        className={`${
+          themed ? "text-white with-click-light" : "text-muted"
+        } cursor-pointer badge components-label components-label-with-hover with-click me-1`}
+        data-toggle="dropdown"
+      >
+        <FontAwesomeIcon icon={faBars} />
+      </span>
+      <DropdownSlide in={!isHidden} unmountOnExit>
+        <MenuContent
+          group={group}
+          alertStore={alertStore}
+          silenceFormStore={silenceFormStore}
+          afterClick={hide}
+          x={x}
+          y={y}
+          floating={floating}
+          strategy={strategy}
+        />
+      </DropdownSlide>
     </span>
   );
 };

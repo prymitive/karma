@@ -234,7 +234,8 @@ describe("<HistoryMenu />", () => {
     await act(() => promise);
   });
 
-  it("clicking on 'Save filters' saves current filter set to Settings", () => {
+  it("clicking on 'Save filters' saves current filter set to Settings", async () => {
+    const promise = Promise.resolve();
     alertStore.filters.setFilterValues([
       AppliedFilter("foo", "=", "bar"),
       AppliedFilter("bar", "=~", "baz"),
@@ -252,9 +253,11 @@ describe("<HistoryMenu />", () => {
     expect(settingsStore.savedFilters.config.filters).toHaveLength(2);
     expect(settingsStore.savedFilters.config.filters).toContain("foo=bar");
     expect(settingsStore.savedFilters.config.filters).toContain("bar=~baz");
+    await act(() => promise);
   });
 
-  it("clicking on 'Reset filters' clears current filter set in Settings", () => {
+  it("clicking on 'Reset filters' clears current filter set in Settings", async () => {
+    const promise = Promise.resolve();
     settingsStore.savedFilters.save(["foo=bar"]);
     const tree = MountedHistory();
     tree.find("button.cursor-pointer").simulate("click");
@@ -266,6 +269,7 @@ describe("<HistoryMenu />", () => {
       jest.runOnlyPendingTimers();
     });
     expect(settingsStore.savedFilters.config.filters).toHaveLength(0);
+    await act(() => promise);
   });
 
   it("clicking on 'Clear history' clears the history", async () => {

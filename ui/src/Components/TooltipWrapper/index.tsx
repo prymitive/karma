@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 
 import { CSSTransition } from "react-transition-group";
 
-import { usePopper } from "react-popper";
+import { useFloating, shift, flip } from "@floating-ui/react-dom";
 
 import { useSupportsTouch } from "Hooks/useSupportsTouch";
 
@@ -12,20 +12,9 @@ const TooltipWrapper: FC<{
   children: ReactNode;
   className?: string;
 }> = ({ title, children, className }) => {
-  const [referenceElement, setReferenceElement] = useState<HTMLElement | null>(
-    null
-  );
-  const [popperElement, setPopperElement] = useState<HTMLElement | null>(null);
-  const { styles, attributes } = usePopper(referenceElement, popperElement, {
+  const { x, y, reference, floating, strategy } = useFloating({
     placement: "top",
-    modifiers: [
-      {
-        name: "preventOverflow",
-        options: {
-          rootBoundary: "viewport",
-        },
-      },
-    ],
+    middleware: [shift(), flip()],
   });
 
   const supportsTouch = useSupportsTouch();
@@ -69,7 +58,7 @@ const TooltipWrapper: FC<{
         onTouchStart={supportsTouch ? showTooltip : undefined}
         onTouchCancel={supportsTouch ? hideTooltip : undefined}
         onTouchEnd={supportsTouch ? hideTooltip : undefined}
-        ref={setReferenceElement}
+        ref={reference}
         className={`${className ? className : ""} tooltip-trigger`}
       >
         {children}
@@ -86,9 +75,12 @@ const TooltipWrapper: FC<{
             >
               <div
                 className="tooltip tooltip-inner"
-                ref={setPopperElement}
-                style={styles.popper}
-                {...attributes.popper}
+                ref={floating}
+                style={{
+                  position: strategy,
+                  top: y ?? "",
+                  left: x ?? "",
+                }}
               >
                 {title}
               </div>

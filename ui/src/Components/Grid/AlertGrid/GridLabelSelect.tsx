@@ -9,7 +9,7 @@ import React, {
 
 import { observer } from "mobx-react-lite";
 
-import { Manager, Reference, Popper } from "react-popper";
+import { useFloating, shift, flip, offset } from "@floating-ui/react-dom";
 
 import type { OnChangeValue } from "react-select";
 import AsyncSelect from "react-select/async";
@@ -20,7 +20,6 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 import type { AlertStore } from "Stores/AlertStore";
 import type { Settings } from "Stores/Settings";
 import type { APIGridT } from "Models/APITypes";
-import { CommonPopperModifiers } from "Common/Popper";
 import { StringToOption, OptionT } from "Common/Select";
 import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { ThemeContext } from "Components/Theme";
@@ -90,17 +89,19 @@ const GridLabelNameSelect: FC<{
 };
 
 const Dropdown: FC<{
-  popperPlacement?: string;
-  popperRef?: Ref<HTMLDivElement>;
-  popperStyle?: CSSProperties;
+  x: number | null;
+  y: number | null;
+  floating: Ref<HTMLDivElement> | null;
+  strategy: CSSProperties["position"];
   alertStore: AlertStore;
   settingsStore: Settings;
   grid: APIGridT;
   onClose: () => void;
 }> = ({
-  popperPlacement,
-  popperRef,
-  popperStyle,
+  x,
+  y,
+  floating,
+  strategy,
   alertStore,
   settingsStore,
   grid,
@@ -109,13 +110,14 @@ const Dropdown: FC<{
   return (
     <div
       className="dropdown-menu d-block shadow components-grid-label-select-menu border-0 p-0 m-0"
-      ref={popperRef}
+      ref={floating}
       style={{
         fontSize: "1rem",
         fontWeight: "normal",
-        ...popperStyle,
+        position: strategy,
+        top: y ?? "",
+        left: x ?? "",
       }}
-      data-placement={popperPlacement}
     >
       <GridLabelNameSelect
         alertStore={alertStore}
@@ -140,37 +142,33 @@ const GridLabelSelect: FC<{
   const ref = useRef<HTMLDivElement | null>(null);
   useOnClickOutside(ref, hide, isVisible);
 
+  const { x, y, reference, floating, strategy } = useFloating({
+    placement: "bottom",
+    middleware: [shift(), flip(), offset(5)],
+  });
+
   return (
     <div ref={ref} className="components-label badge ps-1 pe-2">
-      <Manager>
-        <Reference>
-          {({ ref }) => (
-            <span
-              ref={ref}
-              onClick={toggle}
-              className="border-0 rounded-0 bg-inherit cursor-pointer px-1 py-0 components-grid-label-select-dropdown"
-              data-toggle="dropdown"
-            >
-              <FontAwesomeIcon className="text-muted" icon={faCaretDown} />
-            </span>
-          )}
-        </Reference>
-        <DropdownSlide in={isVisible} unmountOnExit>
-          <Popper placement="bottom" modifiers={CommonPopperModifiers}>
-            {({ placement, ref, style }) => (
-              <Dropdown
-                popperPlacement={placement}
-                popperRef={ref}
-                popperStyle={style}
-                alertStore={alertStore}
-                settingsStore={settingsStore}
-                grid={grid}
-                onClose={toggle}
-              />
-            )}
-          </Popper>
-        </DropdownSlide>
-      </Manager>
+      <span
+        ref={reference}
+        onClick={toggle}
+        className="border-0 rounded-0 bg-inherit cursor-pointer px-1 py-0 components-grid-label-select-dropdown"
+        data-toggle="dropdown"
+      >
+        <FontAwesomeIcon className="text-muted" icon={faCaretDown} />
+      </span>
+      <DropdownSlide in={isVisible} unmountOnExit>
+        <Dropdown
+          alertStore={alertStore}
+          settingsStore={settingsStore}
+          grid={grid}
+          onClose={toggle}
+          x={x}
+          y={y}
+          floating={floating}
+          strategy={strategy}
+        />
+      </DropdownSlide>
     </div>
   );
 });

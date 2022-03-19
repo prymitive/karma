@@ -172,9 +172,12 @@ storiesOf("NavBar", module).add("NavBar", () => {
         fixedTop={false}
       />
       <HistoryMenu
-        popperPlacement="top"
-        popperRef={() => {}}
-        popperStyle={{}}
+        x={0}
+        y={0}
+        floating={null}
+        strategy={"absolute"}
+        maxWidth={null}
+        maxHeight={null}
         filters={history}
         onClear={() => {}}
         alertStore={alertStore}
