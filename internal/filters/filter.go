@@ -28,7 +28,7 @@ type alertFilter struct {
 	Matched              string
 	Matcher              matcherT
 	RawText              string
-	Value                interface{}
+	Value                any
 	Hits                 int
 	IsValid              bool
 	IsAlertmanagerFilter bool

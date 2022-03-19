@@ -202,7 +202,7 @@ func readEnvVariables(k *koanf.Koanf) {
 	}
 	for env, key := range customEnvs {
 		if _, found := os.LookupEnv(env); found {
-			_ = k.Load(confmap.Provider(map[string]interface{}{
+			_ = k.Load(confmap.Provider(map[string]any{
 				key: os.Getenv(env),
 			}, "."), nil)
 		}
