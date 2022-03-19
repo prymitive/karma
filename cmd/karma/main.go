@@ -232,17 +232,17 @@ func setupUpstreams() error {
 	return nil
 }
 
-func msgFormatter(msg interface{}) string {
+func msgFormatter(msg any) string {
 	return fmt.Sprintf("msg=%q", msg)
 }
-func lvlFormatter(level interface{}) string {
+func lvlFormatter(level any) string {
 	if level == nil {
 		return ""
 	}
 	return fmt.Sprintf("level=%s", level)
 }
 
-func discardFormatter(msg interface{}) string {
+func discardFormatter(msg any) string {
 	return ""
 }
 
@@ -252,7 +252,7 @@ func initLogger() {
 		NoColor:       true,
 		FormatLevel:   lvlFormatter,
 		FormatMessage: msgFormatter,
-		FormatTimestamp: func(interface{}) string {
+		FormatTimestamp: func(any) string {
 			return ""
 		},
 	})
@@ -458,7 +458,7 @@ func serve(errorHandling pflag.ErrorHandling) error {
 		return err
 	}
 
-	_, _ = maxprocs.Set(maxprocs.Logger(func(format string, v ...interface{}) {
+	_, _ = maxprocs.Set(maxprocs.Logger(func(format string, v ...any) {
 		log.Debug().Msgf(format, v)
 	}))
 

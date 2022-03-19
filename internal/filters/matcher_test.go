@@ -6,8 +6,8 @@ import (
 )
 
 type matchTest struct {
-	ValA     interface{}
-	ValB     interface{}
+	ValA     any
+	ValB     any
 	IsValid  bool
 	Expacted bool
 }
