@@ -191,9 +191,10 @@ describe("<GroupMenu />", () => {
 const MountedMenuContent = (group: APIAlertGroupT) => {
   return mount(
     <MenuContent
-      popperPlacement="top"
-      popperRef={jest.fn()}
-      popperStyle={{}}
+      x={0}
+      y={0}
+      floating={null}
+      strategy={"absolute"}
       group={group}
       afterClick={MockAfterClick}
       alertStore={alertStore}

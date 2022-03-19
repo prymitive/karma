@@ -50,7 +50,7 @@ global.console.trace = consoleHandler;
 FetchRetryConfig.minTimeout = 2;
 FetchRetryConfig.maxTimeout = 10;
 
-// usePopper uses useLayoutEffect but that fails in enzyme
+// floating-ui uses useLayoutEffect but that fails in enzyme
 React.useLayoutEffect = React.useEffect;
 
 beforeEach(() => {

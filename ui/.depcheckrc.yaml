@@ -6,7 +6,6 @@ ignores:
   - sass
   - typeface-open-sans
   - prettier
-  - "@popperjs/core"
   - react-scripts
   - typescript
   # devDeps

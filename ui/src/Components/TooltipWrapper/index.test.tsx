@@ -29,7 +29,7 @@ describe("TooltipWrapper", () => {
     expect(tree.find("div.foo").text()).toBe("Hover me");
   });
 
-  it("on non-touch devices it renders tooltip on mouseOver and hides on mouseLeave", () => {
+  it("on non-touch devices it renders tooltip on mouseOver and hides on mouseLeave", async () => {
     const tree = mount(
       <TooltipWrapper title="my title">
         <span>Hover me</span>
@@ -49,9 +49,13 @@ describe("TooltipWrapper", () => {
     });
     tree.update();
     expect(tree.find("div.tooltip")).toHaveLength(0);
+
+    await act(async () => {
+      jest.runAllTimers();
+    });
   });
 
-  it("on touch devices it renders tooltip on touchStart and hides on touchEnd", () => {
+  it("on touch devices it renders tooltip on touchStart and hides on touchEnd", async () => {
     const tree = mount(
       <TooltipWrapper title="my title">
         <span>Hover me</span>
@@ -77,6 +81,10 @@ describe("TooltipWrapper", () => {
     });
     tree.update();
     expect(tree.find("div.tooltip")).toHaveLength(0);
+
+    await act(async () => {
+      jest.runAllTimers();
+    });
   });
 
   it("hides the tooltip after click and show again on mouseOver", () => {
