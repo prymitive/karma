@@ -72,7 +72,6 @@ const HistoryMenu: FC<{
   y: number | null;
   floating: Ref<HTMLDivElement> | null;
   strategy: CSSProperties["position"];
-  maxWidth: number | null;
   maxHeight: number | null;
   filters: ReduceFilterT[][];
   alertStore: AlertStore;
@@ -84,7 +83,6 @@ const HistoryMenu: FC<{
   y,
   floating,
   strategy,
-  maxWidth,
   maxHeight,
   filters,
   alertStore,
@@ -102,7 +100,6 @@ const HistoryMenu: FC<{
         position: strategy,
         top: y ?? "",
         left: x ?? "",
-        maxWidth: maxWidth ?? "",
         maxHeight: maxHeight ?? "",
       }}
     >
@@ -195,7 +192,6 @@ const History: FC<{
   // this will be dumped to local storage via mobx-stored
   const [history] = useState<HistoryStorage>(new HistoryStorage());
   const [isVisible, setIsVisible] = useState<boolean>(false);
-  const [maxWidth, setMaxWidth] = useState<number | null>(null);
   const [maxHeight, setMaxHeight] = useState<number | null>(null);
   const hide = useCallback(() => setIsVisible(false), []);
   const toggle = useCallback(() => setIsVisible(!isVisible), [isVisible]);
@@ -207,8 +203,7 @@ const History: FC<{
       flip(),
       offset(5),
       size({
-        apply({ width, height }) {
-          setMaxWidth(width);
+        apply({ height }) {
           setMaxHeight(height);
         },
       }),
@@ -279,7 +274,6 @@ const History: FC<{
           y={y}
           floating={floating}
           strategy={strategy}
-          maxWidth={maxWidth}
           maxHeight={maxHeight}
         />
       </DropdownSlide>
