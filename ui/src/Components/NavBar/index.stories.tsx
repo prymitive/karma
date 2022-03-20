@@ -176,7 +176,6 @@ storiesOf("NavBar", module).add("NavBar", () => {
         y={0}
         floating={null}
         strategy={"absolute"}
-        maxWidth={null}
         maxHeight={null}
         filters={history}
         onClear={() => {}}
