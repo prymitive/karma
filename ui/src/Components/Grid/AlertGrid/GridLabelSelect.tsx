@@ -9,7 +9,7 @@ import React, {
 
 import { observer } from "mobx-react-lite";
 
-import { useFloating, shift, flip, offset } from "@floating-ui/react-dom";
+import { useFloating, shift, offset } from "@floating-ui/react-dom";
 
 import type { OnChangeValue } from "react-select";
 import AsyncSelect from "react-select/async";
@@ -144,7 +144,7 @@ const GridLabelSelect: FC<{
 
   const { x, y, reference, floating, strategy } = useFloating({
     placement: "bottom",
-    middleware: [shift(), flip(), offset(5)],
+    middleware: [shift(), offset(5)],
   });
 
   return (

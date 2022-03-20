@@ -2,7 +2,7 @@ import { FC, useRef, useState, useCallback, Ref, CSSProperties } from "react";
 
 import copy from "copy-to-clipboard";
 
-import { useFloating, shift, flip, offset } from "@floating-ui/react-dom";
+import { useFloating, shift, offset } from "@floating-ui/react-dom";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
@@ -166,7 +166,7 @@ const GroupMenu: FC<{
 
   const { x, y, reference, floating, strategy } = useFloating({
     placement: "bottom-start",
-    middleware: [shift(), flip(), offset(5)],
+    middleware: [shift(), offset(5)],
   });
 
   return (
