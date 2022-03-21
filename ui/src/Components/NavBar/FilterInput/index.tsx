@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons/faSearch";
 
 import { AlertStore, FormatBackendURI } from "Stores/AlertStore";
+import { EscapeRegex } from "Stores/SilenceFormStore";
 import type { Settings } from "Stores/Settings";
 import { IsMobile } from "Common/Device";
 import { useFetchGet } from "Hooks/useFetchGet";
@@ -182,7 +183,7 @@ const FilterInput: FC<{
                     {...getItemProps({ item, index })}
                   >
                     {item
-                      .split(new RegExp(`(${inputValue})`, "gi"))
+                      .split(new RegExp(`(${EscapeRegex(inputValue)})`, "gi"))
                       .map((part, i) => (
                         <span
                           key={i}

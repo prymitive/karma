@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.101
+
+### Fixed
+
+- Don't crash on autocomplete errors.
+
 ## v0.100
 
 ### Changed
