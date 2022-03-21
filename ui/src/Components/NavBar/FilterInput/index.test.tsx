@@ -181,9 +181,28 @@ describe("<FilterInput autocomplete />", () => {
     tree.unmount();
   });
 
-  it("highliting a suggestion makes it active", async () => {
+  it("highlighting a suggestion makes it active", async () => {
     const tree = MountedInput();
     tree.find("input").simulate("change", { target: { value: "cluster" } });
+    act(() => {
+      jest.runOnlyPendingTimers();
+    });
+
+    // suggestions are rendered only when input is focused
+    tree.find("input").simulate("focus");
+    // find() doesn't pick up suggestions even when tree.html() shows them
+    // forcing update seems to solve it
+    // https://github.com/airbnb/enzyme/issues/1233#issuecomment-343449560
+    tree.update();
+
+    tree.find("input").simulate("keydown", { keyCode: 40, key: "ArrowDown" });
+    tree.update();
+    expect(tree.find(".dropdown-item").at(0).html()).toMatch(/active/);
+  });
+
+  it("handles invalid regexp values", async () => {
+    const tree = MountedInput();
+    tree.find("input").simulate("change", { target: { value: "foo(" } });
     act(() => {
       jest.runOnlyPendingTimers();
     });
