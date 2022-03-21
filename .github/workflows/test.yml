@@ -29,7 +29,7 @@ jobs:
 
       - name: Cache Go modules
         id: cache-go-modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
@@ -73,7 +73,7 @@ jobs:
 
       - name: Cache Go modules
         id: cache-go-modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/go/pkg/mod
           key: ${{ runner.os }}-${{ env.GITHUB_REF_SLUG }}-go-modules-${{ hashFiles('**/go.sum') }}
@@ -305,7 +305,7 @@ jobs:
           go-version: 1.18.0
 
       - name: Cache Go
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.cache/go-build
@@ -411,7 +411,7 @@ jobs:
           go-version: 1.18.0
 
       - name: Cache Go
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: |
             ~/.cache/go-build
