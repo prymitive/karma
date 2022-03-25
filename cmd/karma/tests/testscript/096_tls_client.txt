@@ -47,16 +47,16 @@ DNS.1 = karma
 
 -- tls.sh --
 openssl ecparam -genkey -name secp256r1 | openssl ec -out ca.key
-openssl req -new -x509 -days 7 -key ca.key -out ca.pem -subj "/C=CI/ST=CI/L=CI/O=CI/CN=FakeCA"
+openssl req -new -x509 -sha256 -days 7 -key ca.key -out ca.pem -subj "/C=CI/ST=CI/L=CI/O=CI/CN=FakeCA"
 
 openssl ecparam -genkey -name secp256r1 | openssl ec -out alertmanager.key
 openssl req -new -key alertmanager.key -out alertmanager.csr -subj "/C=CI/ST=CI/L=CI/O=CI/CN=127.0.0.1" -config alertmanager.conf -extensions SAN
-openssl x509 -req -days 7 -extfile alertmanager.conf -extensions SAN -in alertmanager.csr -CA ca.pem -CAkey ca.key -set_serial 01 -out alertmanager.pem
+openssl x509 -req -sha256 -days 7 -extfile alertmanager.conf -extensions SAN -in alertmanager.csr -CA ca.pem -CAkey ca.key -set_serial 01 -out alertmanager.pem
 openssl x509 -in alertmanager.pem -text
 
 openssl ecparam -genkey -name secp256r1 | openssl ec -out karma.key
 openssl req -new -key karma.key -out karma.csr -subj "/C=CI/ST=CI/L=CI/O=CI/CN=karma" -config karma.conf -extensions SAN
-openssl x509 -req -days 7 -extfile karma.conf -extensions SAN -in karma.csr -CA ca.pem -CAkey ca.key -set_serial 02 -out karma.pem
+openssl x509 -req -sha256 -days 7 -extfile karma.conf -extensions SAN -in karma.csr -CA ca.pem -CAkey ca.key -set_serial 02 -out karma.pem
 openssl x509 -in karma.pem -text
 
 -- test.sh --
