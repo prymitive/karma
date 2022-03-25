@@ -44,7 +44,7 @@ openssl genrsa -out ca.key 2048
 openssl req -x509 -new -nodes -key ca.key -days 7 -out ca.pem -subj "/C=CI/ST=CI/L=CI/O=CI/CN=FakeCA"
 
 openssl genrsa -out server.key 2048
-openssl req -new -key server.key -out server.csr -subj "/C=CI/ST=CI/L=CI/O=CI/CN=karma.example.com"
+openssl req -new -sha256 -key server.key -out server.csr -subj "/C=CI/ST=CI/L=CI/O=CI/CN=karma.example.com"
 openssl x509 -req -in server.csr -CA ca.pem -CAkey ca.key -CAcreateserial -out server.pem -days 7
 
 -- test.sh --
