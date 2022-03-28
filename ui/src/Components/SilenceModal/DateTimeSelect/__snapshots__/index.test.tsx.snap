@@ -276,466 +276,591 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
 <div class=\\"tab-content mb-3\\">
   <div class=\\"d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2\\">
     <div class=\\"d-flex justify-content-center align-items-center\\">
-      <div
-        class=\\"DayPicker components-date-range\\"
-        lang=\\"en\\"
-      >
-        <div
-          class=\\"DayPicker-wrapper\\"
-          tabindex=\\"0\\"
-        >
-          <div class=\\"DayPicker-NavBar\\">
-            <span
-              tabindex=\\"0\\"
-              role=\\"button\\"
-              aria-label=\\"Previous Month\\"
-              class=\\"DayPicker-NavButton DayPicker-NavButton--prev\\"
-            >
-            </span>
-            <span
-              tabindex=\\"0\\"
-              role=\\"button\\"
-              aria-label=\\"Next Month\\"
-              class=\\"DayPicker-NavButton DayPicker-NavButton--next\\"
-            >
-            </span>
-          </div>
-          <div class=\\"DayPicker-Months\\">
-            <div
-              class=\\"DayPicker-Month\\"
-              role=\\"grid\\"
-            >
-              <div
-                class=\\"DayPicker-Caption\\"
-                role=\\"heading\\"
+      <div class=\\"components-date-range\\">
+        <div class=\\"rdp-months\\">
+          <div class=\\"rdp-month rdp-caption_start rdp-caption_end\\">
+            <div class=\\"rdp-caption\\">
+              <h2
+                class=\\"rdp-caption_label\\"
                 aria-live=\\"polite\\"
+                aria-atomic=\\"true\\"
+                id=\\"6\\"
               >
-                <div>
-                  February 2061
-                </div>
-              </div>
-              <div
-                class=\\"DayPicker-Weekdays\\"
-                role=\\"rowgroup\\"
-              >
-                <div
-                  class=\\"DayPicker-WeekdaysRow\\"
-                  role=\\"row\\"
+                February 2061
+              </h2>
+              <div class=\\"rdp-nav\\">
+                <button
+                  aria-label=\\"Go to previous month\\"
+                  class=\\"rdp-button_reset rdp-button rdp-nav_button rdp-nav_button_previous\\"
+                  type=\\"button\\"
                 >
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
+                  <svg
+                    width=\\"16px\\"
+                    height=\\"16px\\"
+                    viewbox=\\"0 0 120 120\\"
+                    class=\\"rdp-nav_icon\\"
                   >
-                    <abbr title=\\"Sunday\\">
-                      Su
-                    </abbr>
-                  </div>
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
-                  >
-                    <abbr title=\\"Monday\\">
-                      Mo
-                    </abbr>
-                  </div>
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
-                  >
-                    <abbr title=\\"Tuesday\\">
-                      Tu
-                    </abbr>
-                  </div>
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
-                  >
-                    <abbr title=\\"Wednesday\\">
-                      We
-                    </abbr>
-                  </div>
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
-                  >
-                    <abbr title=\\"Thursday\\">
-                      Th
-                    </abbr>
-                  </div>
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
-                  >
-                    <abbr title=\\"Friday\\">
-                      Fr
-                    </abbr>
-                  </div>
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
-                  >
-                    <abbr title=\\"Saturday\\">
-                      Sa
-                    </abbr>
-                  </div>
-                </div>
-              </div>
-              <div
-                class=\\"DayPicker-Body\\"
-                role=\\"rowgroup\\"
-              >
-                <div
-                  class=\\"DayPicker-Week\\"
-                  role=\\"row\\"
+                    <path
+                      d=\\"M69.490332,3.34314575 C72.6145263,0.218951416 77.6798462,0.218951416 80.8040405,3.34314575 C83.8617626,6.40086786 83.9268205,11.3179931 80.9992143,14.4548388 L80.8040405,14.6568542 L35.461,60 L80.8040405,105.343146 C83.8617626,108.400868 83.9268205,113.317993 80.9992143,116.454839 L80.8040405,116.656854 C77.7463184,119.714576 72.8291931,119.779634 69.6923475,116.852028 L69.490332,116.656854 L18.490332,65.6568542 C15.4326099,62.5991321 15.367552,57.6820069 18.2951583,54.5451612 L18.490332,54.3431458 L69.490332,3.34314575 Z\\"
+                      fill=\\"currentColor\\"
+                      fill-rule=\\"nonzero\\"
+                    >
+                    </path>
+                  </svg>
+                </button>
+                <button
+                  aria-label=\\"Go to next month\\"
+                  class=\\"rdp-button_reset rdp-button rdp-nav_button rdp-nav_button_next\\"
+                  type=\\"button\\"
                 >
-                  <div
-                    aria-disabled=\\"true\\"
-                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
+                  <svg
+                    width=\\"16px\\"
+                    height=\\"16px\\"
+                    viewbox=\\"0 0 120 120\\"
+                    class=\\"rdp-nav_icon\\"
                   >
-                  </div>
-                  <div
-                    aria-disabled=\\"true\\"
-                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
-                  >
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--end DayPicker-Day--selected\\"
-                    tabindex=\\"0\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Tue Feb 01 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    1
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Wed Feb 02 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    2
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Thu Feb 03 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    3
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Fri Feb 04 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    4
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sat Feb 05 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    5
-                  </div>
-                </div>
-                <div
-                  class=\\"DayPicker-Week\\"
-                  role=\\"row\\"
-                >
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sun Feb 06 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    6
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Mon Feb 07 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    7
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Tue Feb 08 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    8
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Wed Feb 09 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    9
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Thu Feb 10 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    10
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Fri Feb 11 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    11
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sat Feb 12 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    12
-                  </div>
-                </div>
-                <div
-                  class=\\"DayPicker-Week\\"
-                  role=\\"row\\"
-                >
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sun Feb 13 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    13
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Mon Feb 14 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    14
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Tue Feb 15 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    15
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Wed Feb 16 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    16
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Thu Feb 17 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    17
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Fri Feb 18 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    18
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sat Feb 19 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    19
-                  </div>
-                </div>
-                <div
-                  class=\\"DayPicker-Week\\"
-                  role=\\"row\\"
-                >
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sun Feb 20 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    20
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Mon Feb 21 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    21
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Tue Feb 22 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    22
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Wed Feb 23 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    23
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Thu Feb 24 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    24
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Fri Feb 25 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    25
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sat Feb 26 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    26
-                  </div>
-                </div>
-                <div
-                  class=\\"DayPicker-Week\\"
-                  role=\\"row\\"
-                >
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sun Feb 27 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    27
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Mon Feb 28 2061\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"false\\"
-                  >
-                    28
-                  </div>
-                  <div
-                    aria-disabled=\\"true\\"
-                    class=\\"DayPicker-Day DayPicker-Day--outside\\"
-                  >
-                  </div>
-                  <div
-                    aria-disabled=\\"true\\"
-                    class=\\"DayPicker-Day DayPicker-Day--outside\\"
-                  >
-                  </div>
-                  <div
-                    aria-disabled=\\"true\\"
-                    class=\\"DayPicker-Day DayPicker-Day--outside\\"
-                  >
-                  </div>
-                  <div
-                    aria-disabled=\\"true\\"
-                    class=\\"DayPicker-Day DayPicker-Day--outside\\"
-                  >
-                  </div>
-                  <div
-                    aria-disabled=\\"true\\"
-                    class=\\"DayPicker-Day DayPicker-Day--outside\\"
-                  >
-                  </div>
-                </div>
+                    <path
+                      d=\\"M49.8040405,3.34314575 C46.6798462,0.218951416 41.6145263,0.218951416 38.490332,3.34314575 C35.4326099,6.40086786 35.367552,11.3179931 38.2951583,14.4548388 L38.490332,14.6568542 L83.8333725,60 L38.490332,105.343146 C35.4326099,108.400868 35.367552,113.317993 38.2951583,116.454839 L38.490332,116.656854 C41.5480541,119.714576 46.4651794,119.779634 49.602025,116.852028 L49.8040405,116.656854 L100.804041,65.6568542 C103.861763,62.5991321 103.926821,57.6820069 100.999214,54.5451612 L100.804041,54.3431458 L49.8040405,3.34314575 Z\\"
+                      fill=\\"currentColor\\"
+                    >
+                    </path>
+                  </svg>
+                </button>
               </div>
             </div>
-          </div>
-          <div class=\\"DayPicker-Footer\\">
-            <button
-              type=\\"button\\"
-              tabindex=\\"0\\"
-              class=\\"DayPicker-TodayButton\\"
-              aria-label=\\"Today\\"
+            <table
+              class=\\"rdp-table\\"
+              role=\\"grid\\"
+              aria-labelledby=\\"6\\"
             >
-              Today
-            </button>
+              <thead class=\\"rdp-head\\">
+                <tr class=\\"rdp-head_row\\">
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      Su
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Sunday
+                    </span>
+                  </th>
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      Mo
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Monday
+                    </span>
+                  </th>
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      Tu
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Tuesday
+                    </span>
+                  </th>
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      We
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Wednesday
+                    </span>
+                  </th>
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      Th
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Thursday
+                    </span>
+                  </th>
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      Fr
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Friday
+                    </span>
+                  </th>
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      Sa
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Saturday
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class=\\"rdp-tbody\\">
+                <tr class=\\"rdp-row\\">
+                  <td class=\\"rdp-cell\\">
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_end\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"0\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        1
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        1st February (Tuesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        2
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        2nd February (Wednesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        3
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        3rd February (Thursday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        4
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        4th February (Friday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        5
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        5th February (Saturday)
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+                <tr class=\\"rdp-row\\">
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        6
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        6th February (Sunday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        7
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        7th February (Monday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        8
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        8th February (Tuesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        9
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        9th February (Wednesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        10
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        10th February (Thursday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        11
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        11th February (Friday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        12
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        12th February (Saturday)
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+                <tr class=\\"rdp-row\\">
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        13
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        13th February (Sunday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        14
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        14th February (Monday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        15
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        15th February (Tuesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        16
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        16th February (Wednesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        17
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        17th February (Thursday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        18
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        18th February (Friday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        19
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        19th February (Saturday)
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+                <tr class=\\"rdp-row\\">
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        20
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        20th February (Sunday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        21
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        21st February (Monday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        22
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        22nd February (Tuesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        23
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        23rd February (Wednesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        24
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        24th February (Thursday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        25
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        25th February (Friday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        26
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        26th February (Saturday)
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+                <tr class=\\"rdp-row\\">
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        27
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        27th February (Sunday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        28
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        28th February (Monday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot class=\\"rdp-tfoot\\">
+                <tr>
+                  <td colspan=\\"8\\">
+                    <div class=\\"d-flex justify-content-around mt-3\\">
+                      <button class=\\"btn btn-light btn-sm\\">
+                        <svg
+                          aria-hidden=\\"true\\"
+                          focusable=\\"false\\"
+                          data-prefix=\\"fas\\"
+                          data-icon=\\"calendar-day\\"
+                          class=\\"svg-inline--fa fa-calendar-day fa-fw me-1\\"
+                          role=\\"img\\"
+                          xmlns=\\"http://www.w3.org/2000/svg\\"
+                          viewbox=\\"0 0 448 512\\"
+                        >
+                          <path
+                            fill=\\"currentColor\\"
+                            d=\\"M160 32V64H288V32C288 14.33 302.3 0 320 0C337.7 0 352 14.33 352 32V64H400C426.5 64 448 85.49 448 112V160H0V112C0 85.49 21.49 64 48 64H96V32C96 14.33 110.3 0 128 0C145.7 0 160 14.33 160 32zM0 192H448V464C448 490.5 426.5 512 400 512H48C21.49 512 0 490.5 0 464V192zM80 256C71.16 256 64 263.2 64 272V368C64 376.8 71.16 384 80 384H176C184.8 384 192 376.8 192 368V272C192 263.2 184.8 256 176 256H80z\\"
+                          >
+                          </path>
+                        </svg>
+                        Today
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
         </div>
       </div>
@@ -893,471 +1018,634 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
 <div class=\\"tab-content mb-3\\">
   <div class=\\"d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2\\">
     <div class=\\"d-flex justify-content-center align-items-center\\">
-      <div
-        class=\\"DayPicker components-date-range\\"
-        lang=\\"en\\"
-      >
-        <div
-          class=\\"DayPicker-wrapper\\"
-          tabindex=\\"0\\"
-        >
-          <div class=\\"DayPicker-NavBar\\">
-            <span
-              tabindex=\\"0\\"
-              role=\\"button\\"
-              aria-label=\\"Previous Month\\"
-              class=\\"DayPicker-NavButton DayPicker-NavButton--prev\\"
-            >
-            </span>
-            <span
-              tabindex=\\"0\\"
-              role=\\"button\\"
-              aria-label=\\"Next Month\\"
-              class=\\"DayPicker-NavButton DayPicker-NavButton--next\\"
-            >
-            </span>
-          </div>
-          <div class=\\"DayPicker-Months\\">
-            <div
-              class=\\"DayPicker-Month\\"
-              role=\\"grid\\"
-            >
-              <div
-                class=\\"DayPicker-Caption\\"
-                role=\\"heading\\"
+      <div class=\\"components-date-range\\">
+        <div class=\\"rdp-months\\">
+          <div class=\\"rdp-month rdp-caption_start rdp-caption_end\\">
+            <div class=\\"rdp-caption\\">
+              <h2
+                class=\\"rdp-caption_label\\"
                 aria-live=\\"polite\\"
+                aria-atomic=\\"true\\"
+                id=\\"3\\"
               >
-                <div>
-                  February 2060
-                </div>
-              </div>
-              <div
-                class=\\"DayPicker-Weekdays\\"
-                role=\\"rowgroup\\"
-              >
-                <div
-                  class=\\"DayPicker-WeekdaysRow\\"
-                  role=\\"row\\"
+                February 2060
+              </h2>
+              <div class=\\"rdp-nav\\">
+                <button
+                  aria-label=\\"Go to previous month\\"
+                  class=\\"rdp-button_reset rdp-button rdp-nav_button rdp-nav_button_previous\\"
+                  type=\\"button\\"
                 >
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
+                  <svg
+                    width=\\"16px\\"
+                    height=\\"16px\\"
+                    viewbox=\\"0 0 120 120\\"
+                    class=\\"rdp-nav_icon\\"
                   >
-                    <abbr title=\\"Sunday\\">
-                      Su
-                    </abbr>
-                  </div>
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
-                  >
-                    <abbr title=\\"Monday\\">
-                      Mo
-                    </abbr>
-                  </div>
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
-                  >
-                    <abbr title=\\"Tuesday\\">
-                      Tu
-                    </abbr>
-                  </div>
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
-                  >
-                    <abbr title=\\"Wednesday\\">
-                      We
-                    </abbr>
-                  </div>
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
-                  >
-                    <abbr title=\\"Thursday\\">
-                      Th
-                    </abbr>
-                  </div>
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
-                  >
-                    <abbr title=\\"Friday\\">
-                      Fr
-                    </abbr>
-                  </div>
-                  <div
-                    class=\\"DayPicker-Weekday\\"
-                    role=\\"columnheader\\"
-                  >
-                    <abbr title=\\"Saturday\\">
-                      Sa
-                    </abbr>
-                  </div>
-                </div>
-              </div>
-              <div
-                class=\\"DayPicker-Body\\"
-                role=\\"rowgroup\\"
-              >
-                <div
-                  class=\\"DayPicker-Week\\"
-                  role=\\"row\\"
+                    <path
+                      d=\\"M69.490332,3.34314575 C72.6145263,0.218951416 77.6798462,0.218951416 80.8040405,3.34314575 C83.8617626,6.40086786 83.9268205,11.3179931 80.9992143,14.4548388 L80.8040405,14.6568542 L35.461,60 L80.8040405,105.343146 C83.8617626,108.400868 83.9268205,113.317993 80.9992143,116.454839 L80.8040405,116.656854 C77.7463184,119.714576 72.8291931,119.779634 69.6923475,116.852028 L69.490332,116.656854 L18.490332,65.6568542 C15.4326099,62.5991321 15.367552,57.6820069 18.2951583,54.5451612 L18.490332,54.3431458 L69.490332,3.34314575 Z\\"
+                      fill=\\"currentColor\\"
+                      fill-rule=\\"nonzero\\"
+                    >
+                    </path>
+                  </svg>
+                </button>
+                <button
+                  aria-label=\\"Go to next month\\"
+                  class=\\"rdp-button_reset rdp-button rdp-nav_button rdp-nav_button_next\\"
+                  type=\\"button\\"
                 >
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--start DayPicker-Day--selected DayPicker-Day--today\\"
-                    tabindex=\\"0\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sun Feb 01 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
+                  <svg
+                    width=\\"16px\\"
+                    height=\\"16px\\"
+                    viewbox=\\"0 0 120 120\\"
+                    class=\\"rdp-nav_icon\\"
                   >
-                    1
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Mon Feb 02 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    2
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Tue Feb 03 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    3
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Wed Feb 04 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    4
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Thu Feb 05 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    5
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Fri Feb 06 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    6
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sat Feb 07 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    7
-                  </div>
-                </div>
-                <div
-                  class=\\"DayPicker-Week\\"
-                  role=\\"row\\"
-                >
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sun Feb 08 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    8
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Mon Feb 09 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    9
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Tue Feb 10 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    10
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Wed Feb 11 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    11
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Thu Feb 12 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    12
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Fri Feb 13 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    13
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sat Feb 14 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    14
-                  </div>
-                </div>
-                <div
-                  class=\\"DayPicker-Week\\"
-                  role=\\"row\\"
-                >
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sun Feb 15 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    15
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Mon Feb 16 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    16
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Tue Feb 17 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    17
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Wed Feb 18 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    18
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Thu Feb 19 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    19
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Fri Feb 20 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    20
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sat Feb 21 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    21
-                  </div>
-                </div>
-                <div
-                  class=\\"DayPicker-Week\\"
-                  role=\\"row\\"
-                >
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sun Feb 22 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    22
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Mon Feb 23 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    23
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Tue Feb 24 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    24
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Wed Feb 25 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    25
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Thu Feb 26 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    26
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Fri Feb 27 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    27
-                  </div>
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sat Feb 28 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    28
-                  </div>
-                </div>
-                <div
-                  class=\\"DayPicker-Week\\"
-                  role=\\"row\\"
-                >
-                  <div
-                    class=\\"DayPicker-Day DayPicker-Day--selected\\"
-                    tabindex=\\"-1\\"
-                    role=\\"gridcell\\"
-                    aria-label=\\"Sun Feb 29 2060\\"
-                    aria-disabled=\\"false\\"
-                    aria-selected=\\"true\\"
-                  >
-                    29
-                  </div>
-                  <div
-                    aria-disabled=\\"true\\"
-                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
-                  >
-                  </div>
-                  <div
-                    aria-disabled=\\"true\\"
-                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
-                  >
-                  </div>
-                  <div
-                    aria-disabled=\\"true\\"
-                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
-                  >
-                  </div>
-                  <div
-                    aria-disabled=\\"true\\"
-                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
-                  >
-                  </div>
-                  <div
-                    aria-disabled=\\"true\\"
-                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
-                  >
-                  </div>
-                  <div
-                    aria-disabled=\\"true\\"
-                    class=\\"DayPicker-Day DayPicker-Day--selected DayPicker-Day--outside\\"
-                  >
-                  </div>
-                </div>
+                    <path
+                      d=\\"M49.8040405,3.34314575 C46.6798462,0.218951416 41.6145263,0.218951416 38.490332,3.34314575 C35.4326099,6.40086786 35.367552,11.3179931 38.2951583,14.4548388 L38.490332,14.6568542 L83.8333725,60 L38.490332,105.343146 C35.4326099,108.400868 35.367552,113.317993 38.2951583,116.454839 L38.490332,116.656854 C41.5480541,119.714576 46.4651794,119.779634 49.602025,116.852028 L49.8040405,116.656854 L100.804041,65.6568542 C103.861763,62.5991321 103.926821,57.6820069 100.999214,54.5451612 L100.804041,54.3431458 L49.8040405,3.34314575 Z\\"
+                      fill=\\"currentColor\\"
+                    >
+                    </path>
+                  </svg>
+                </button>
               </div>
             </div>
-          </div>
-          <div class=\\"DayPicker-Footer\\">
-            <button
-              type=\\"button\\"
-              tabindex=\\"0\\"
-              class=\\"DayPicker-TodayButton\\"
-              aria-label=\\"Today\\"
+            <table
+              class=\\"rdp-table\\"
+              role=\\"grid\\"
+              aria-labelledby=\\"3\\"
             >
-              Today
-            </button>
+              <thead class=\\"rdp-head\\">
+                <tr class=\\"rdp-head_row\\">
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      Su
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Sunday
+                    </span>
+                  </th>
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      Mo
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Monday
+                    </span>
+                  </th>
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      Tu
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Tuesday
+                    </span>
+                  </th>
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      We
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Wednesday
+                    </span>
+                  </th>
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      Th
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Thursday
+                    </span>
+                  </th>
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      Fr
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Friday
+                    </span>
+                  </th>
+                  <th
+                    scope=\\"col\\"
+                    class=\\"rdp-head_cell\\"
+                  >
+                    <span aria-hidden=\\"true\\">
+                      Sa
+                    </span>
+                    <span class=\\"rdp-vhidden\\">
+                      Saturday
+                    </span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody class=\\"rdp-tbody\\">
+                <tr class=\\"rdp-row\\">
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_today rdp-day_range_start\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"0\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        1
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        1st February (Sunday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        2
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        2nd February (Monday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        3
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        3rd February (Tuesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        4
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        4th February (Wednesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        5
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        5th February (Thursday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        6
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        6th February (Friday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        7
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        7th February (Saturday)
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+                <tr class=\\"rdp-row\\">
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        8
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        8th February (Sunday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        9
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        9th February (Monday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        10
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        10th February (Tuesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        11
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        11th February (Wednesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        12
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        12th February (Thursday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        13
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        13th February (Friday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        14
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        14th February (Saturday)
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+                <tr class=\\"rdp-row\\">
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        15
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        15th February (Sunday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        16
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        16th February (Monday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        17
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        17th February (Tuesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        18
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        18th February (Wednesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        19
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        19th February (Thursday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        20
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        20th February (Friday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        21
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        21st February (Saturday)
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+                <tr class=\\"rdp-row\\">
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        22
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        22nd February (Sunday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        23
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        23rd February (Monday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        24
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        24th February (Tuesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        25
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        25th February (Wednesday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        26
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        26th February (Thursday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        27
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        27th February (Friday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        28
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        28th February (Saturday)
+                      </span>
+                    </button>
+                  </td>
+                </tr>
+                <tr class=\\"rdp-row\\">
+                  <td class=\\"rdp-cell\\">
+                    <button
+                      class=\\"rdp-button_reset rdp-button rdp-day rdp-day_selected rdp-day_range_middle\\"
+                      aria-pressed=\\"true\\"
+                      tabindex=\\"-1\\"
+                      type=\\"button\\"
+                    >
+                      <span aria-hidden=\\"true\\">
+                        29
+                      </span>
+                      <span class=\\"rdp-vhidden\\">
+                        29th February (Sunday)
+                      </span>
+                    </button>
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                  </td>
+                  <td class=\\"rdp-cell\\">
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot class=\\"rdp-tfoot\\">
+                <tr>
+                  <td colspan=\\"8\\">
+                    <div class=\\"d-flex justify-content-around mt-3\\">
+                      <button
+                        class=\\"btn btn-light btn-sm\\"
+                        disabled
+                      >
+                        <svg
+                          aria-hidden=\\"true\\"
+                          focusable=\\"false\\"
+                          data-prefix=\\"fas\\"
+                          data-icon=\\"calendar-day\\"
+                          class=\\"svg-inline--fa fa-calendar-day fa-fw me-1\\"
+                          role=\\"img\\"
+                          xmlns=\\"http://www.w3.org/2000/svg\\"
+                          viewbox=\\"0 0 448 512\\"
+                        >
+                          <path
+                            fill=\\"currentColor\\"
+                            d=\\"M160 32V64H288V32C288 14.33 302.3 0 320 0C337.7 0 352 14.33 352 32V64H400C426.5 64 448 85.49 448 112V160H0V112C0 85.49 21.49 64 48 64H96V32C96 14.33 110.3 0 128 0C145.7 0 160 14.33 160 32zM0 192H448V464C448 490.5 426.5 512 400 512H48C21.49 512 0 490.5 0 464V192zM80 256C71.16 256 64 263.2 64 272V368C64 376.8 71.16 384 80 384H176C184.8 384 192 376.8 192 368V272C192 263.2 184.8 256 176 256H80z\\"
+                          >
+                          </path>
+                        </svg>
+                        Today
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
         </div>
       </div>

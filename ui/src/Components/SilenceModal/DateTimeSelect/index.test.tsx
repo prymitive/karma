@@ -7,6 +7,7 @@ import toDiffableHtml from "diffable-html";
 import addMinutes from "date-fns/addMinutes";
 import addHours from "date-fns/addHours";
 import differenceInMilliseconds from "date-fns/differenceInMilliseconds";
+import { format } from "date-fns";
 
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import {
@@ -204,7 +205,7 @@ describe("<TabContentStart />", () => {
     expect(silenceFormStore.data.startsAt.toISOString()).toBe(
       new Date(2060, 1, 1, 0, 0, 0).toISOString()
     );
-    tree.find('div[aria-label="Wed Feb 18 2060"]').simulate("click");
+    tree.find("button.rdp-button.rdp-day").at(17).simulate("click");
     expect(silenceFormStore.data.startsAt.toISOString()).toBe(
       new Date(2060, 1, 18, 0, 0, 0).toISOString()
     );
@@ -213,6 +214,20 @@ describe("<TabContentStart />", () => {
   it("clicking on the hour inc button adds 1h to startsAt", () => {
     const tree = MountedTabContentStart();
     ValidateTimeButton(tree, "startsAt", 0, /angle-up/, 3600 * 1000);
+  });
+
+  it("Today button takes you back to the current month", () => {
+    const tree = MountedTabContentStart();
+    expect(silenceFormStore.data.startsAt.toISOString()).toBe(
+      new Date(2060, 1, 1, 0, 0, 0).toISOString()
+    );
+    expect(tree.find(".rdp-caption_label").text()).toBe("February 2060");
+    tree.find("button.rdp-button.rdp-nav_button_next").simulate("click");
+    expect(tree.find(".rdp-caption_label").text()).toBe("March 2060");
+    tree.find("button.btn.btn-light.btn-sm").simulate("click");
+    expect(tree.find(".rdp-caption_label").text()).toBe(
+      format(new Date(), "LLLL yyyy")
+    );
   });
 
   it("scrolling up on the hour button adds 1h to startsAt", () => {
@@ -317,7 +332,7 @@ describe("<TabContentEnd />", () => {
     expect(silenceFormStore.data.endsAt.toISOString()).toBe(
       new Date(2061, 1, 1, 0, 0, 0).toISOString()
     );
-    tree.find('div[aria-label="Thu Feb 24 2061"]').simulate("click");
+    tree.find("button.rdp-button.rdp-day").at(23).simulate("click");
     expect(silenceFormStore.data.endsAt.toISOString()).toBe(
       new Date(2061, 1, 24, 0, 0, 0).toISOString()
     );
@@ -326,6 +341,20 @@ describe("<TabContentEnd />", () => {
   it("clicking on the hour inc button adds 1h to endsAt", () => {
     const tree = MountedTabContentEnd();
     ValidateTimeButton(tree, "endsAt", 0, /angle-up/, 3600 * 1000);
+  });
+
+  it("Today button takes you back to the current month", () => {
+    const tree = MountedTabContentEnd();
+    expect(silenceFormStore.data.endsAt.toISOString()).toBe(
+      new Date(2061, 1, 1, 0, 0, 0).toISOString()
+    );
+    expect(tree.find(".rdp-caption_label").text()).toBe("February 2061");
+    tree.find("button.rdp-button.rdp-nav_button_next").simulate("click");
+    expect(tree.find(".rdp-caption_label").text()).toBe("March 2061");
+    tree.find("button.btn.btn-light.btn-sm").simulate("click");
+    expect(tree.find(".rdp-caption_label").text()).toBe(
+      format(new Date(), "LLLL yyyy")
+    );
   });
 
   it("scrolling up on the hour button adds 1h to endsAt", () => {

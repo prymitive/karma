@@ -6,9 +6,13 @@ import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInHours from "date-fns/differenceInHours";
 import differenceInDays from "date-fns/differenceInDays";
 import setSeconds from "date-fns/setSeconds";
+import isSameMonth from "date-fns/isSameMonth";
 
-import DayPicker from "react-day-picker";
-import "react-day-picker/lib/style.css";
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarDay } from "@fortawesome/free-solid-svg-icons/faCalendarDay";
 
 import type { SilenceFormStore } from "Stores/SilenceFormStore";
 import { Duration } from "./Duration";
@@ -57,16 +61,34 @@ const Tab: FC<{
 const TabContentStart: FC<{
   silenceFormStore: SilenceFormStore;
 }> = observer(({ silenceFormStore }) => {
+  const today = new Date();
+  const [month, setMonth] = useState<Date>(silenceFormStore.data.startsAt);
+
+  const footer = (
+    <div className="d-flex justify-content-around mt-3">
+      <button
+        className="btn btn-light btn-sm"
+        disabled={isSameMonth(today, month)}
+        onClick={() => setMonth(today)}
+      >
+        <FontAwesomeIcon icon={faCalendarDay} className="me-1" fixedWidth />
+        Today
+      </button>
+    </div>
+  );
+
   return (
     <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2">
       <div className="d-flex justify-content-center align-items-center">
         <DayPicker
           className="components-date-range"
-          month={silenceFormStore.data.startsAt}
-          disabledDays={{
+          mode="range"
+          month={month}
+          onMonthChange={setMonth}
+          footer={footer}
+          disabled={{
             before: nowZeroSeconds(),
           }}
-          todayButton="Today"
           onDayClick={(val) => {
             const startsAt = new Date(val);
             startsAt.setHours(silenceFormStore.data.startsAt.getHours());
@@ -75,7 +97,7 @@ const TabContentStart: FC<{
             silenceFormStore.data.setStart(startsAt);
             silenceFormStore.data.verifyStarEnd();
           }}
-          selectedDays={{
+          selected={{
             from: silenceFormStore.data.startsAt,
             to: silenceFormStore.data.endsAt,
           }}
@@ -98,16 +120,34 @@ const TabContentStart: FC<{
 
 const TabContentEnd: FC<{ silenceFormStore: SilenceFormStore }> = observer(
   ({ silenceFormStore }) => {
+    const today = new Date();
+    const [month, setMonth] = useState<Date>(silenceFormStore.data.endsAt);
+
+    const footer = (
+      <div className="d-flex justify-content-around mt-3">
+        <button
+          className="btn btn-light btn-sm"
+          disabled={isSameMonth(today, month)}
+          onClick={() => setMonth(today)}
+        >
+          <FontAwesomeIcon icon={faCalendarDay} className="me-1" fixedWidth />
+          Today
+        </button>
+      </div>
+    );
+
     return (
       <div className="d-flex flex-sm-row flex-column justify-content-around mx-3 mt-2">
         <div className="d-flex justify-content-center align-items-center">
           <DayPicker
             className="components-date-range"
-            month={silenceFormStore.data.endsAt}
-            disabledDays={{
+            mode="range"
+            month={month}
+            onMonthChange={setMonth}
+            footer={footer}
+            disabled={{
               before: setSeconds(silenceFormStore.data.startsAt, 0),
             }}
-            todayButton="Today"
             onDayClick={(val) => {
               const endsAt = new Date(val);
               endsAt.setHours(silenceFormStore.data.endsAt.getHours());
@@ -116,7 +156,7 @@ const TabContentEnd: FC<{ silenceFormStore: SilenceFormStore }> = observer(
               silenceFormStore.data.setEnd(endsAt);
               silenceFormStore.data.verifyStarEnd();
             }}
-            selectedDays={{
+            selected={{
               from: silenceFormStore.data.startsAt,
               to: silenceFormStore.data.endsAt,
             }}
