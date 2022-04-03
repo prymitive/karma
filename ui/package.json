@@ -93,7 +93,11 @@
   "overrides": {
     "@storybook/builder-webpack5": "6.5.0-alpha.55",
     "@storybook/manager-webpack5": "6.5.0-alpha.55",
-    "@storybook/react": "6.5.0-alpha.55"
+    "@storybook/react": "6.5.0-alpha.55",
+    "trim@0.0.1": "0.0.3",
+    "trim-newlines@1.0.0": "3.0.1",
+    "nth-check@1.0.2": "2.0.1",
+    "glob-parent@3.1.0": "6.0.2"
   },
   "scripts": {
     "start": "REACT_APP_BACKEND_URI=http://localhost:8080 react-scripts start",
