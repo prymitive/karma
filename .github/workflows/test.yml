@@ -390,7 +390,7 @@ jobs:
 
       - name: Run Percy
         if: steps.filter.outputs.percy == 'true'
-        run: ./scripts/percy-skip-deps.sh || make -C ui test-percy
+        run: make -C ui test-percy
         env:
           NODE_ENV: test
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
