@@ -60,8 +60,8 @@ require (
 	github.com/prometheus/procfs v0.7.3 // indirect
 	github.com/sergi/go-diff v1.2.0 // indirect
 	go.mongodb.org/mongo-driver v1.8.4 // indirect
-	golang.org/x/net v0.0.0-20220325170049-de3da57026de // indirect
-	golang.org/x/sys v0.0.0-20220328115105-d36c6a25d886 // indirect
+	golang.org/x/net v0.0.0-20220403103023-749bd193bc2b // indirect
+	golang.org/x/sys v0.0.0-20220403205710-6acee93ad0eb // indirect
 	golang.org/x/text v0.3.7 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/errgo.v2 v2.1.0 // indirect
