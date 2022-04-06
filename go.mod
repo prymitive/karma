@@ -26,7 +26,7 @@ require (
 	github.com/rogpeppe/go-internal v1.8.1
 	github.com/rs/zerolog v1.26.1
 	github.com/spf13/pflag v1.0.5
-	go.uber.org/automaxprocs v1.4.0
+	go.uber.org/automaxprocs v1.5.0
 	gopkg.in/go-playground/colors.v1 v1.2.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
