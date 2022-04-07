@@ -86,7 +86,7 @@
     "prettier": "2.6.2",
     "purgecss": "4.1.3",
     "react-scripts": "5.0.0",
-    "sass": "1.49.11",
+    "sass": "1.50.0",
     "timemachine": "0.3.2",
     "typescript": "4.6.3"
   },
