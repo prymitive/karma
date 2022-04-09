@@ -61,7 +61,7 @@
     "@testing-library/react-hooks": "7.0.2",
     "@types/body-scroll-lock": "3.1.0",
     "@types/bricks.js": "1.8.2",
-    "@types/enzyme": "3.10.11",
+    "@types/enzyme": "3.10.12",
     "@types/fontfaceobserver": "2.1.0",
     "@types/jest": "27.4.1",
     "@types/lodash.debounce": "4.0.6",
