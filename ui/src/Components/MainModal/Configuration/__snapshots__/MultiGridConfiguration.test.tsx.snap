@@ -40,8 +40,6 @@ exports[`<MultiGridConfiguration /> matches snapshot with default values 1`] = `
                 aria-autocomplete=\\"list\\"
                 aria-expanded=\\"false\\"
                 aria-haspopup=\\"true\\"
-                aria-controls=\\"react-select-configuration-grid-label-listbox\\"
-                aria-owns=\\"react-select-configuration-grid-label-listbox\\"
                 role=\\"combobox\\"
                 value
               >

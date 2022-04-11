@@ -130,8 +130,6 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
                         aria-autocomplete=\\"list\\"
                         aria-expanded=\\"false\\"
                         aria-haspopup=\\"true\\"
-                        aria-controls=\\"react-select-configuration-theme-listbox\\"
-                        aria-owns=\\"react-select-configuration-theme-listbox\\"
                         role=\\"combobox\\"
                         value
                       >
@@ -311,8 +309,6 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
                         aria-autocomplete=\\"list\\"
                         aria-expanded=\\"false\\"
                         aria-haspopup=\\"true\\"
-                        aria-controls=\\"react-select-configuration-collapse-listbox\\"
-                        aria-owns=\\"react-select-configuration-collapse-listbox\\"
                         role=\\"combobox\\"
                         value
                       >
@@ -393,8 +389,6 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
                             aria-autocomplete=\\"list\\"
                             aria-expanded=\\"false\\"
                             aria-haspopup=\\"true\\"
-                            aria-controls=\\"react-select-configuration-sort-order-listbox\\"
-                            aria-owns=\\"react-select-configuration-sort-order-listbox\\"
                             role=\\"combobox\\"
                             value
                           >
@@ -477,8 +471,6 @@ exports[`<MainModalContent /> matches snapshot 1`] = `
                             aria-autocomplete=\\"list\\"
                             aria-expanded=\\"false\\"
                             aria-haspopup=\\"true\\"
-                            aria-controls=\\"react-select-configuration-grid-label-listbox\\"
-                            aria-owns=\\"react-select-configuration-grid-label-listbox\\"
                             role=\\"combobox\\"
                             value
                           >
