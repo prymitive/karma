@@ -10,7 +10,7 @@ ui/build/index.html: $(call rwildcard, ui/src ui/package.json ui/package-lock.js
 
 .DEFAULT_GOAL := $(NAME)
 $(NAME): go.mod go.sum $(SOURCES_GO) ui/build/index.html
-	go build -trimpath -ldflags "-X main.version=$(VERSION) -s -w" ./cmd/karma
+	go build -trimpath -modcacherw -ldflags "-X main.version=$(VERSION) -s -w" ./cmd/karma
 
 .PHONY: test-go
 test-go:
