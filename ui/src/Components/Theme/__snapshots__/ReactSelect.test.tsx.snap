@@ -46,8 +46,6 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused 1`] = `
           aria-autocomplete=\\"list\\"
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
-          aria-controls=\\"react-select-3-listbox\\"
-          aria-owns=\\"react-select-3-listbox\\"
           role=\\"combobox\\"
           aria-describedby=\\"react-select-3-placeholder\\"
           value
@@ -126,8 +124,6 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot when focused and disabled
           aria-autocomplete=\\"list\\"
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
-          aria-controls=\\"react-select-4-listbox\\"
-          aria-owns=\\"react-select-4-listbox\\"
           role=\\"combobox\\"
           aria-describedby=\\"react-select-4-placeholder\\"
           value
@@ -196,8 +192,6 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with a value 1`] = `
           aria-autocomplete=\\"list\\"
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
-          aria-controls=\\"react-select-5-listbox\\"
-          aria-owns=\\"react-select-5-listbox\\"
           role=\\"combobox\\"
           value
         >
@@ -266,8 +260,6 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isDisabled=true 1`] 
           aria-autocomplete=\\"list\\"
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
-          aria-controls=\\"react-select-7-listbox\\"
-          aria-owns=\\"react-select-7-listbox\\"
           role=\\"combobox\\"
           value
         >
@@ -338,8 +330,6 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true 1`] = `
           aria-autocomplete=\\"list\\"
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
-          aria-controls=\\"react-select-2-listbox\\"
-          aria-owns=\\"react-select-2-listbox\\"
           role=\\"combobox\\"
           aria-describedby=\\"react-select-2-placeholder\\"
           value
@@ -427,8 +417,6 @@ exports[`<WrappedCustomMultiSelect /> matches snapshot with isMulti=true and a v
           aria-autocomplete=\\"list\\"
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
-          aria-controls=\\"react-select-6-listbox\\"
-          aria-owns=\\"react-select-6-listbox\\"
           role=\\"combobox\\"
           value
         >

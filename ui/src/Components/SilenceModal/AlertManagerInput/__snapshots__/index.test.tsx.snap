@@ -78,8 +78,6 @@ exports[`<AlertManagerInput /> matches snapshot 1`] = `
           aria-autocomplete=\\"list\\"
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
-          aria-controls=\\"react-select-silence-input-alertmanagers-listbox\\"
-          aria-owns=\\"react-select-silence-input-alertmanagers-listbox\\"
           role=\\"combobox\\"
           value
         >

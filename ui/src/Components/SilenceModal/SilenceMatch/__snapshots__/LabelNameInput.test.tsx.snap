@@ -37,8 +37,6 @@ exports[`<LabelNameInput /> matches snapshot 1`] = `
           aria-autocomplete=\\"list\\"
           aria-expanded=\\"false\\"
           aria-haspopup=\\"true\\"
-          aria-controls=\\"react-select-silence-input-label-name-1-listbox\\"
-          aria-owns=\\"react-select-silence-input-label-name-1-listbox\\"
           role=\\"combobox\\"
           value
         >
