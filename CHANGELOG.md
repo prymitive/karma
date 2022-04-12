@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.102
+
+### Fixed
+
+- Correctly set filter history.
+
 ## v0.101
 
 ### Fixed
