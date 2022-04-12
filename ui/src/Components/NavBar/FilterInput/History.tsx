@@ -9,7 +9,7 @@ import {
   CSSProperties,
 } from "react";
 
-import { action } from "mobx";
+import { action, autorun } from "mobx";
 import { observer } from "mobx-react-lite";
 import { localStored } from "mobx-stored";
 
@@ -212,30 +212,38 @@ const History: FC<{
 
   // every time this component updates we will rewrite history
   // (if there are changes)
-  useEffect(() => {
-    // we don't store unapplied (we only have raw text for those, we need
-    // name & value for coloring) or invalid filters
-    // also check for value, name might be missing for fuzzy filters, but
-    // the value should always be set
-    const validAppliedFilters = alertStore.filters.values
-      .filter((f) => f.applied && f.isValid && f.value)
-      .map((f) => ReduceFilter(f));
+  useEffect(
+    () =>
+      autorun(() => {
+        // we don't store unapplied (we only have raw text for those, we need
+        // name & value for coloring) or invalid filters
+        // also check for value, name might be missing for fuzzy filters, but
+        // the value should always be set
+        const validAppliedFilters = alertStore.filters.values
+          .filter((f) => f.applied && f.isValid && f.value)
+          .map((f) => ReduceFilter(f));
 
-    // don't store empty filters in history
-    if (validAppliedFilters.length === 0) return;
-    // make a JSON dump for comparing later with what's already stored
-    const filtersJSON = JSON.stringify(validAppliedFilters);
+        // don't store empty filters in history
+        if (validAppliedFilters.length === 0) return;
+        // make a JSON dump for comparing later with what's already stored
+        const filtersJSON = JSON.stringify(validAppliedFilters);
 
-    // rewrite history putting current filter set on top, this will move
-    // it up if user selects a filter set that was already in history
-    const newHistory = [
-      ...[validAppliedFilters],
-      ...history.config.filters.filter(
-        (f) => JSON.stringify(f) !== filtersJSON
-      ),
-    ].slice(0, 8);
-    history.setFilters(newHistory);
-  }, [history, alertStore.filters.values]);
+        // rewrite history putting current filter set on top, this will move
+        // it up if user selects a filter set that was already in history
+        const newHistory = [
+          ...[validAppliedFilters],
+          ...history.config.filters.filter(
+            (f) => JSON.stringify(f) !== filtersJSON
+          ),
+        ].slice(0, 8);
+        if (
+          JSON.stringify(newHistory) !== JSON.stringify(history.config.filters)
+        ) {
+          history.setFilters(newHistory);
+        }
+      }),
+    [alertStore.filters.values, history]
+  );
 
   const ref = useRef<HTMLSpanElement | null>(null);
   useOnClickOutside(ref, hide, isVisible);
