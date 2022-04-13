@@ -5,6 +5,7 @@
 ### Fixed
 
 - Correctly set filter history.
+- Correctly escape label values when quering Prometheus for alert history.
 
 ## v0.101
 
