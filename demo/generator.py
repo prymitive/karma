@@ -569,7 +569,7 @@ class RegexEscapeValue(AlertGenerator):
                     cluster="staging",
                     job="textfile_exporter",
                     region="SA",
-                    device="Device {} (main)".format(i % 2),
+                    device='Device {} (main) "quoted"'.format(i % 2),
                     regex="^device{}(.+)bar\\$".format(i),
                     address="10.0.0.1{}".format(i),
                     pod="my-pod",

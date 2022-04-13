@@ -313,13 +313,13 @@ func countAlerts(uri string, timeout time.Duration, transport http.RoundTripper,
 		Step:  time.Hour,
 	}
 
-	lv := []string{}
+	lv := model.LabelSet{}
 	for k, v := range labels {
 		if slices.StringInSlice(names, k) {
-			lv = append(lv, fmt.Sprintf(`%s="%s"`, k, v))
+			lv[model.LabelName(k)] = model.LabelValue(v)
 		}
 	}
-	q := fmt.Sprintf("changes(ALERTS_FOR_STATE{%s}[1h])", strings.Join(lv, ","))
+	q := fmt.Sprintf("changes(ALERTS_FOR_STATE{%s}[1h])", lv)
 	log.Debug().
 		Str("uri", uri).
 		Interface("labels", labels).
