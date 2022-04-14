@@ -2,6 +2,8 @@
 
 ## v0.103
 
+### Fixed
+
 - Fixed a regression in alert history queries.
 
 ## v0.102
