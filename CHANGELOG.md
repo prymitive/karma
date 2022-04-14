@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.103
+
+- Fixed a regression in alert history queries.
+
 ## v0.102
 
 ### Fixed

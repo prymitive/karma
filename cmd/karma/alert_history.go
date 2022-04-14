@@ -319,7 +319,7 @@ func countAlerts(uri string, timeout time.Duration, transport http.RoundTripper,
 			lv[model.LabelName(k)] = model.LabelValue(v)
 		}
 	}
-	q := fmt.Sprintf("changes(ALERTS_FOR_STATE{%s}[1h])", lv)
+	q := fmt.Sprintf("changes(ALERTS_FOR_STATE%s[1h])", lv)
 	log.Debug().
 		Str("uri", uri).
 		Interface("labels", labels).
