@@ -55,7 +55,7 @@ describe("<FaviconBadge />", () => {
           headers: { foo: "bar" },
           corsCredentials: "include",
           error: 'Healthcheck filter "DeadMansSwitch" didn\'t match any alerts',
-          version: "0.21.0",
+          version: "0.24.0",
           cluster: "default",
           clusterMembers: ["default"],
         },

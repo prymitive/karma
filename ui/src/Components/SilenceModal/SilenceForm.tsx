@@ -1,7 +1,5 @@
 import { FC, useEffect, useState, MouseEvent, FormEvent } from "react";
 
-import semverLt from "semver/functions/lt";
-
 import { observer } from "mobx-react-lite";
 
 import copy from "copy-to-clipboard";
@@ -206,16 +204,6 @@ const SilenceForm: FC<{
           }}
           showDelete={silenceFormStore.data.matchers.length > 1}
           isValid={!silenceFormStore.data.wasValidated}
-          enableIsEqual={
-            !semverLt(
-              alertStore.data.getMinVersion(
-                silenceFormStore.data.alertmanagers
-                  .map((am) => am.value)
-                  .reduce((a, b) => [...a, ...b], [])
-              ),
-              "0.22.0"
-            )
-          }
         />
       ))}
       <div className="d-flex flex-row justify-content-between mb-3">

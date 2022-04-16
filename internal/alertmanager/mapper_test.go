@@ -8,9 +8,9 @@ import (
 
 func TestGetAlertMapper(t *testing.T) {
 	versions := []string{
-		"0.19.0",
-		"0.20.0-rc.0",
-		"0.20.0-rc.0-2",
+		"0.22.0",
+		"0.24.0-rc.0",
+		"0.24.0-rc.0-2",
 	}
 
 	for _, version := range versions {
@@ -35,6 +35,7 @@ func TestGetInvalidAlertMapper(t *testing.T) {
 	versions := []string{
 		"0.16.0",
 		"0.10.0-rc.0",
+		"0.21.4",
 	}
 
 	for _, version := range versions {

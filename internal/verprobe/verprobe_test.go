@@ -18,6 +18,7 @@ func TestDetect(t *testing.T) {
 		{
 			metrics: "",
 			version: "",
+			isError: true,
 		},
 		{
 			metrics: "xxxx",
@@ -27,10 +28,12 @@ func TestDetect(t *testing.T) {
 		{
 			metrics: "alertmanager_build_info 1\n",
 			version: "",
+			isError: true,
 		},
 		{
 			metrics: "alertmanager_build_info{foo=\"bar\"} 1\n",
 			version: "",
+			isError: true,
 		},
 		{
 			metrics: "alertmanager_build_info{version=\"1.2.3\"} 1\n",

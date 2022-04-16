@@ -109,7 +109,7 @@ const MockAlertmanager = (): APIAlertmanagerUpstreamT => ({
   },
   corsCredentials: "include",
   error: "",
-  version: "0.17.0",
+  version: "0.24.0",
   clusterMembers: ["default"],
 });
 

@@ -4,8 +4,6 @@ import throttle from "lodash.throttle";
 
 import qs from "qs";
 
-import semverSort from "semver/functions/sort";
-
 import { FetchGet } from "Common/Fetch";
 import type {
   APIAlertmanagerUpstreamT,
@@ -147,7 +145,6 @@ interface AlertStoreDataT {
   getAlertmanagerByName: (name: string) => APIAlertmanagerUpstreamT | undefined;
   isReadOnlyAlertmanager: (name: string) => boolean;
   getClusterAlertmanagersWithoutReadOnly: (clusterID: string) => string[];
-  getMinVersion: (ams: string[]) => string;
   readonly readOnlyAlertmanagers: APIAlertmanagerUpstreamT[];
   readonly readWriteAlertmanagers: APIAlertmanagerUpstreamT[];
   readonly clustersWithoutReadOnly: APIAlertsResponseUpstreamsClusterMapT;
@@ -347,16 +344,6 @@ class AlertStore {
             }
           }
           return clusters;
-        },
-        getMinVersion(ams: string[]) {
-          const versions = semverSort(
-            this.upstreams.instances
-              .filter((am) => ams.includes(am.name))
-              .map((am) => am.version.split("-")[0])
-              .map((ver) => (ver ? ver : "0.22.0")), // assume v0.22.0 if not known
-            true
-          );
-          return versions.length > 0 ? versions[0] : "0.22.0";
         },
         getColorData(name: string, value: string): APILabelColorT | undefined {
           if (this.colors[name] !== undefined) {

@@ -6,7 +6,7 @@ karma.bin-should-work --pid-file=karma.pid
 ! stdout .
 stderr 'level=info msg="Configured Alertmanager source" name=proxy-url proxy=false readonly=false uri=http://am.example.com'
 stderr 'level=info msg="GET request" timeout=10 uri=http://am.example.com/metrics'
-stderr 'level=info msg="Upstream version" alertmanager=proxy-url version=0.21.0'
+stderr 'level=info msg="Upstream version" alertmanager=proxy-url version=0.24.0'
 stderr 'level=info msg="Got silences" alertmanager=proxy-url duration=.+ silences=0'
 stderr 'level=info msg="Collected alert groups" alertmanager=proxy-url duration=.+ groups=0'
 stderr 'level=info msg="Deduplicating alert groups" alertmanager=proxy-url groups=0'
@@ -58,8 +58,9 @@ func metrics(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+    w.WriteHeader(200)
 	w.Header().Set("Content-Type", "text/plain; version=0.0.4; charset=utf-8")
-	io.WriteString(w, `alertmanager_build_info{version="0.21.0"} 1
+	io.WriteString(w, `alertmanager_build_info{version="0.24.0"} 1
 `)
 }
 
@@ -83,7 +84,7 @@ func status(w http.ResponseWriter, r *http.Request) {
         "status": "ready"
     },
     "versionInfo": {
-        "version": "0.21.0"
+        "version": "0.24.0"
     }
 }`)
 }
