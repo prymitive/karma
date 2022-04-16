@@ -1593,13 +1593,13 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://ha1.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1
+					body: `alertmanager_build_info{version="0.23.0"} 1
 					`,
 				},
 				{
 					uri:  "http://ha2.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.19.0"} 1
+					body: `alertmanager_build_info{version="0.22.0"} 1
 					`,
 				},
 				{
@@ -1621,7 +1621,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
   },
 	"versionInfo": {
-		"version":"0.20.0"
+		"version":"0.23.0"
 	}
 }`,
 				},
@@ -1644,7 +1644,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.19.0"
+		"version":"0.22.0"
 	}
 }`,
 				},
@@ -1710,7 +1710,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "omit",
 						Error:           "",
-						Version:         "0.20.0",
+						Version:         "0.23.0",
 						Cluster:         "HA",
 						ClusterMembers:  []string{"ha1", "ha2"},
 					},
@@ -1722,7 +1722,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "omit",
 						Error:           "",
-						Version:         "0.19.0",
+						Version:         "0.22.0",
 						Cluster:         "HA",
 						ClusterMembers:  []string{"ha1", "ha2"},
 					},
@@ -1738,13 +1738,13 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://ha1.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1
+					body: `alertmanager_build_info{version="0.23.0"} 1
 					`,
 				},
 				{
 					uri:  "http://ha2.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.19.0"} 1
+					body: `alertmanager_build_info{version="0.22.0"} 1
 					`,
 				},
 				{
@@ -1766,7 +1766,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.20.0"
+		"version":"0.23.0"
 	}
 }`,
 				},
@@ -1789,7 +1789,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.19.0"
+		"version":"0.22.0"
 	}
 }`,
 				},
@@ -1853,7 +1853,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "same-site",
 						Error:           "",
-						Version:         "0.20.0",
+						Version:         "0.23.0",
 						Cluster:         "ha1 | ha2",
 						ClusterMembers:  []string{"ha1", "ha2"},
 					},
@@ -1865,7 +1865,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "same-site",
 						Error:           "",
-						Version:         "0.19.0",
+						Version:         "0.22.0",
 						Cluster:         "ha1 | ha2",
 						ClusterMembers:  []string{"ha1", "ha2"},
 					},
@@ -1881,13 +1881,13 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://ha1.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1
+					body: `alertmanager_build_info{version="0.23.0"} 1
 					`,
 				},
 				{
 					uri:  "http://ha2.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.19.0"} 1
+					body: `alertmanager_build_info{version="0.22.0"} 1
 					`,
 				},
 				{
@@ -1905,7 +1905,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
   },
 	"versionInfo": {
-		"version":"0.20.0"
+		"version":"0.23.0"
 	}
 }`,
 				},
@@ -1924,7 +1924,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.19.0"
+		"version":"0.22.0"
 	}
 }`,
 				},
@@ -1990,7 +1990,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "omit",
 						Error:           "missing cluster peers: ha2",
-						Version:         "0.20.0",
+						Version:         "0.23.0",
 						Cluster:         "Broken HA",
 						ClusterMembers:  []string{"ha1"},
 					},
@@ -2002,7 +2002,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "omit",
 						Error:           "missing cluster peers: ha1",
-						Version:         "0.19.0",
+						Version:         "0.22.0",
 						Cluster:         "Broken HA",
 						ClusterMembers:  []string{"ha2"},
 					},
@@ -2018,13 +2018,13 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://ha1.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1
+					body: `alertmanager_build_info{version="0.23.0"} 1
 					`,
 				},
 				{
 					uri:  "http://ha2.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.19.0"} 1
+					body: `alertmanager_build_info{version="0.22.0"} 1
 					`,
 				},
 				{
@@ -2042,7 +2042,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.20.0"
+		"version":"0.23.0"
 	}
 }`,
 				},
@@ -2061,7 +2061,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.19.0"
+		"version":"0.22.0"
 	}
 }`,
 				},
@@ -2125,7 +2125,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "omit",
 						Error:           "",
-						Version:         "0.20.0",
+						Version:         "0.23.0",
 						Cluster:         "ha1",
 						ClusterMembers:  []string{"ha1"},
 					},
@@ -2137,7 +2137,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "omit",
 						Error:           "",
-						Version:         "0.19.0",
+						Version:         "0.22.0",
 						Cluster:         "ha2",
 						ClusterMembers:  []string{"ha2"},
 					},
@@ -2154,13 +2154,13 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://broken1.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1
+					body: `alertmanager_build_info{version="0.23.0"} 1
 					`,
 				},
 				{
 					uri:  "http://broken2.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1
+					body: `alertmanager_build_info{version="0.23.0"} 1
 					`,
 				},
 				{
@@ -2182,7 +2182,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.20.0"
+		"version":"0.23.0"
 	}
 }`,
 				},
@@ -2205,7 +2205,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.20.0"
+		"version":"0.23.0"
 	}
 }`,
 				},
@@ -2269,7 +2269,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "omit",
 						Error:           "",
-						Version:         "0.20.0",
+						Version:         "0.23.0",
 						Cluster:         "broken1 | broken2",
 						ClusterMembers:  []string{"broken1", "broken2"},
 					},
@@ -2281,7 +2281,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "omit",
 						Error:           "invalid character 'I' looking for beginning of value",
-						Version:         "0.20.0",
+						Version:         "0.23.0",
 						Cluster:         "broken1 | broken2",
 						ClusterMembers:  []string{"broken1", "broken2"},
 					},
@@ -2302,7 +2302,7 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://ha2.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.21.0"} 1
+					body: `alertmanager_build_info{version="0.22.1"} 1
 					`,
 				},
 				{
@@ -2324,7 +2324,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.20.0"
+		"version":"0.23.0"
 	}
 }`,
 				},
@@ -2347,7 +2347,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.19.0"
+		"version":"0.22.0"
 	}
 }`,
 				},
@@ -2425,7 +2425,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "omit",
 						Error:           "json: cannot unmarshal array into Go value of type string",
-						Version:         "0.21.0",
+						Version:         "0.22.1",
 						Cluster:         "Errors",
 						ClusterMembers:  []string{"ha1", "ha2"},
 					},
@@ -2441,18 +2441,18 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://ha1.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"} 1
+					body: `alertmanager_build_info{version="0.23.0"} 1
 					`,
 				},
 				{
 					uri:  "http://ha2.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.19.0"} 1`,
+					body: `alertmanager_build_info{version="0.22.0"} 1`,
 				},
 				{
 					uri:  "http://single.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.21.0"} 1
+					body: `alertmanager_build_info{version="0.22.1"} 1
 					`,
 				},
 				{
@@ -2474,7 +2474,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.20.0"
+		"version":"0.23.0"
 	}
 }`,
 				},
@@ -2497,7 +2497,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.19.0"
+		"version":"0.22.0"
 	}
 }`,
 				},
@@ -2516,7 +2516,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.21.0"
+		"version":"0.22.1"
 	}
 }`,
 				},
@@ -2590,7 +2590,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "same-site",
 						Error:           "",
-						Version:         "0.20.0",
+						Version:         "0.23.0",
 						Cluster:         "ha1",
 						ClusterMembers:  []string{"ha1"},
 					},
@@ -2602,7 +2602,7 @@ func TestUpstreamStatus(t *testing.T) {
 						Headers:         map[string]string{},
 						CORSCredentials: "same-site",
 						Error:           "",
-						Version:         "0.21.0",
+						Version:         "0.22.1",
 						Cluster:         "single",
 						ClusterMembers:  []string{"single"},
 					},
@@ -2619,7 +2619,7 @@ func TestUpstreamStatus(t *testing.T) {
 				{
 					uri:  "http://only.example.com/metrics",
 					code: 200,
-					body: `alertmanager_build_info{version="0.20.0"`,
+					body: `alertmanager_build_info{version="0.23.0"`,
 				},
 				{
 					uri:  "http://only.example.com/api/v2/status",
@@ -2636,7 +2636,7 @@ func TestUpstreamStatus(t *testing.T) {
 		"status": "ready"
 	},
 	"versionInfo": {
-		"version":"0.20.0"
+		"version":"0.23.0"
 	}
 }`,
 				},

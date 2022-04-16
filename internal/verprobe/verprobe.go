@@ -1,6 +1,7 @@
 package verprobe
 
 import (
+	"fmt"
 	"io"
 
 	"github.com/prometheus/common/expfmt"
@@ -20,19 +21,17 @@ func Detect(r io.Reader) (string, error) {
 		return "", err
 	}
 
-	version := ""
 	for name, m := range metrics {
 		if name == buildInfoMetric {
 			for _, v := range m.Metric {
 				for _, l := range v.Label {
 					if l.GetName() == versionLabel {
-						version = l.GetValue()
-						break
+						return l.GetValue(), nil
 					}
 				}
 			}
 		}
 	}
 
-	return version, nil
+	return "", fmt.Errorf("%s{%s=...} metric is not exported from alertmanger", buildInfoMetric, versionLabel)
 }

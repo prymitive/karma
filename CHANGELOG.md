@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.104
+
+### Changed
+
+- Dropped support for alertmanager older than `0.22.0`.
+
 ## v0.103
 
 ### Fixed

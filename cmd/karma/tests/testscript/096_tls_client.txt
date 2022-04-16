@@ -5,7 +5,7 @@ exec bash -x ./test.sh &
 exec bash -c 'I=0 ; while [ ! -f alertmanager.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done'
 karma.bin-should-work --pid-file=karma.pid
 ! stdout .
-stderr 'level=info msg="Upstream version" alertmanager=client-auth version=0.21.0'
+stderr 'level=info msg="Upstream version" alertmanager=client-auth version=0.24.0'
 stderr 'level=info msg="Got silences" alertmanager=client-auth duration=.+ silences=0'
 stderr 'level=info msg="Detecting ticket links in silences" alertmanager=client-auth silences=0'
 stderr 'level=info msg="Collected alert groups" alertmanager=client-auth duration=.+ groups=0'
@@ -104,7 +104,7 @@ import (
 
 func metrics(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; version=0.0.4; charset=utf-8")
-	io.WriteString(w, `alertmanager_build_info{version="0.21.0"} 1
+	io.WriteString(w, `alertmanager_build_info{version="0.24.0"} 1
 `)
 }
 
@@ -123,7 +123,7 @@ func status(w http.ResponseWriter, r *http.Request) {
         "status": "ready"
     },
     "versionInfo": {
-        "version": "0.21.0"
+        "version": "0.24.0"
     }
 }`)
 }

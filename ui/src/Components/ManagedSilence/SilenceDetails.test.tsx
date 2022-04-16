@@ -28,7 +28,7 @@ const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
       publicURI: "http://example.com",
       readonly: false,
       error: "",
-      version: "0.17.0",
+      version: "0.24.0",
       headers: {},
       corsCredentials: "include",
     },

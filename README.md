@@ -5,9 +5,7 @@ Alert dashboard for
 
 ---
 
-Alertmanager `>=0.19.0` is required as older versions might not show all
-receivers in karma, see
-[issue #812](https://github.com/prymitive/karma/issues/812) for details.
+Alertmanager `>=0.22.0` is required.
 
 ---
 

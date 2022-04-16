@@ -1,6 +1,5 @@
-import { FC, useEffect } from "react";
+import type { FC } from "react";
 
-import { action } from "mobx";
 import { observer } from "mobx-react-lite";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,24 +16,7 @@ const SilenceMatch: FC<{
   showDelete: boolean;
   onDelete: () => void;
   isValid: boolean;
-  enableIsEqual: boolean;
-}> = ({
-  silenceFormStore,
-  matcher,
-  showDelete,
-  onDelete,
-  isValid,
-  enableIsEqual,
-}) => {
-  const setIsEqual = action(() => (matcher.isEqual = true));
-
-  useEffect(() => {
-    if (!enableIsEqual) {
-      setIsEqual();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enableIsEqual]);
-
+}> = ({ silenceFormStore, matcher, showDelete, onDelete, isValid }) => {
   return (
     <div className="d-flex flex-fill flex-lg-row align-items-center flex-column mb-3">
       <div
@@ -69,7 +51,6 @@ const SilenceMatch: FC<{
                 onChange={(event) => {
                   matcher.isEqual = event.target.checked;
                 }}
-                disabled={!enableIsEqual}
               />
               <label
                 className="form-check-label cursor-pointer me-3"

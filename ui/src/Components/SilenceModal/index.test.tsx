@@ -81,7 +81,7 @@ describe("<SilenceModal />", () => {
           uri: "http://localhost:9093",
           publicURI: "http://localhost:9093",
           error: "",
-          version: "0.21.0",
+          version: "0.24.0",
           headers: {},
           corsCredentials: "same-origin",
           readonly: false,

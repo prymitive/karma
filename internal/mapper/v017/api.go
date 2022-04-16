@@ -95,7 +95,6 @@ func silences(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.Silenc
 
 	ret := make([]models.Silence, 0, len(silences.Payload))
 
-	var isEqual bool
 	for _, s := range silences.Payload {
 		us := models.Silence{
 			ID:        *s.ID,
@@ -105,16 +104,11 @@ func silences(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.Silenc
 			Comment:   *s.Comment,
 		}
 		for _, m := range s.Matchers {
-			if m.IsEqual != nil {
-				isEqual = *m.IsEqual
-			} else {
-				isEqual = true
-			}
 			sm := models.SilenceMatcher{
 				Name:    *m.Name,
 				Value:   *m.Value,
 				IsRegex: *m.IsRegex,
-				IsEqual: isEqual,
+				IsEqual: *m.IsEqual,
 			}
 			us.Matchers = append(us.Matchers, sm)
 		}

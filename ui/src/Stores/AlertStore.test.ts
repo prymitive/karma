@@ -38,7 +38,7 @@ describe("AlertStore.data", () => {
           headers: { foo: "bar" },
           corsCredentials: "include",
           error: "",
-          version: "0.17.0",
+          version: "0.24.0",
           cluster: "default",
           clusterMembers: ["default", "readonly"],
         },
@@ -50,7 +50,7 @@ describe("AlertStore.data", () => {
           headers: {},
           corsCredentials: "include",
           error: "",
-          version: "0.17.0",
+          version: "0.24.0",
           cluster: "default",
           clusterMembers: ["default", "readonly"],
         },
@@ -75,7 +75,7 @@ describe("AlertStore.data", () => {
           headers: {},
           corsCredentials: "include",
           error: "",
-          version: "0.17.0",
+          version: "0.24.0",
           cluster: "default",
           clusterMembers: ["ro1", "ro2"],
         },
@@ -87,7 +87,7 @@ describe("AlertStore.data", () => {
           headers: {},
           corsCredentials: "include",
           error: "",
-          version: "0.17.0",
+          version: "0.24.0",
           cluster: "default",
           clusterMembers: ["ro1", "ro2"],
         },
@@ -96,86 +96,6 @@ describe("AlertStore.data", () => {
     expect(
       store.data.getClusterAlertmanagersWithoutReadOnly("default")
     ).toEqual([]);
-  });
-
-  it("getMinVersion() returns minimum version", () => {
-    const store = new AlertStore([]);
-    store.data.setUpstreams({
-      counters: { total: 4, healthy: 3, failed: 1 },
-      clusters: {
-        default: ["ro1", "ro2"],
-        single: ["single"],
-        failed: ["failed"],
-      },
-      instances: [
-        {
-          name: "ro1",
-          uri: "http://localhost",
-          publicURI: "http://example.com:8080",
-          readonly: true,
-          headers: {},
-          corsCredentials: "include",
-          error: "",
-          version: "0.17.0",
-          cluster: "default",
-          clusterMembers: ["ro1", "ro2"],
-        },
-        {
-          name: "ro2",
-          uri: "http://localhost:8081",
-          publicURI: "http://example.com",
-          readonly: true,
-          headers: {},
-          corsCredentials: "include",
-          error: "",
-          version: "0.20.0",
-          cluster: "default",
-          clusterMembers: ["ro1", "ro2"],
-        },
-        {
-          name: "single",
-          uri: "http://localhost",
-          publicURI: "http://example.com:8082",
-          readonly: true,
-          headers: {},
-          corsCredentials: "include",
-          error: "",
-          version: "0.21.0",
-          cluster: "single",
-          clusterMembers: ["single"],
-        },
-        {
-          name: "failed",
-          uri: "http://localhost",
-          publicURI: "http://example.com:8083",
-          readonly: true,
-          headers: {},
-          corsCredentials: "include",
-          error: "",
-          version: "",
-          cluster: "failed",
-          clusterMembers: ["failed"],
-        },
-      ],
-    });
-    expect(store.data.getMinVersion(["single"])).toEqual("0.21.0");
-    expect(store.data.getMinVersion(["ro1", "ro2"])).toEqual("0.17.0");
-    expect(store.data.getMinVersion(["single", "ro1"])).toEqual("0.17.0");
-    expect(store.data.getMinVersion(["single", "ro2"])).toEqual("0.20.0");
-    expect(store.data.getMinVersion(["ro1", "ro2"])).toEqual("0.17.0");
-    expect(store.data.getMinVersion(["single", "ro1", "ro2"])).toEqual(
-      "0.17.0"
-    );
-    expect(
-      store.data.getMinVersion(["single", "failed", "ro1", "ro2"])
-    ).toEqual("0.17.0");
-    expect(store.data.getMinVersion(["failed"])).toEqual("0.22.0");
-    expect(store.data.getMinVersion([])).toEqual("0.22.0");
-    expect(store.data.getMinVersion(["foo"])).toEqual("0.22.0");
-    expect(store.data.getMinVersion(["foo", "single"])).toEqual("0.21.0");
-    expect(store.data.getMinVersion(["foo", "single", "failed"])).toEqual(
-      "0.21.0"
-    );
   });
 });
 
