@@ -8,7 +8,7 @@
     "node": "17.9.0"
   },
   "dependencies": {
-    "@floating-ui/react-dom": "0.6.2",
+    "@floating-ui/react-dom": "0.6.3",
     "@fortawesome/fontawesome-svg-core": "6.1.1",
     "@fortawesome/free-regular-svg-icons": "6.1.1",
     "@fortawesome/free-solid-svg-icons": "6.1.1",
