@@ -8,7 +8,7 @@ require (
 	github.com/cnf/structhash v0.0.0-20201127153200-e1b16c1ebc08
 	github.com/fvbommel/sortorder v1.0.2
 	github.com/go-chi/chi/v5 v5.0.7
-	github.com/go-chi/cors v1.2.0
+	github.com/go-chi/cors v1.2.1
 	github.com/go-openapi/errors v0.20.2
 	github.com/go-openapi/runtime v0.23.3
 	github.com/go-openapi/strfmt v0.21.2
