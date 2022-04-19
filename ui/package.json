@@ -63,7 +63,7 @@
     "@types/enzyme": "3.10.12",
     "@types/fontfaceobserver": "2.1.0",
     "@types/jest": "27.4.1",
-    "@types/lodash.debounce": "4.0.6",
+    "@types/lodash.debounce": "4.0.7",
     "@types/lodash.merge": "4.6.6",
     "@types/lodash.throttle": "4.1.6",
     "@types/lodash.uniqueid": "4.0.6",
