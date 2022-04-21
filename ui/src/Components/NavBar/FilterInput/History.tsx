@@ -242,7 +242,7 @@ const History: FC<{
           history.setFilters(newHistory);
         }
       }),
-    [alertStore.filters.values, history]
+    [] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
   const ref = useRef<HTMLSpanElement | null>(null);
