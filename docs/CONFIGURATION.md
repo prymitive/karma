@@ -159,7 +159,7 @@ authentication:
       - username: john
         password: secret
 authorization:
-  acls:
+  acl:
     silences: /etc/karma/acls.yaml
   groups:
     - name: admins
