@@ -42,10 +42,8 @@ afterEach(() => {
   localStorage.setItem("themeConfig", "");
   jest.restoreAllMocks();
   window.history.pushState({}, "App", "/");
-  global.window.location = {
-    href: "http://localhost/",
-    search: "",
-  };
+  global.window.location.href = "http://localhost/";
+  global.window.location.search = "";
 });
 
 describe("<App />", () => {
@@ -125,7 +123,7 @@ describe("<App />", () => {
     };
 
     const event = new PopStateEvent("popstate");
-    window.onpopstate(event);
+    window.dispatchEvent(event);
 
     expect(window.location.search).toBe("?q=bar");
   });
@@ -137,7 +135,7 @@ describe("<App />", () => {
     tree.unmount();
 
     const event = new PopStateEvent("popstate");
-    window.onpopstate(event);
+    window.dispatchEvent(event);
   });
 
   it("populates silence from from 'm' query arg", () => {

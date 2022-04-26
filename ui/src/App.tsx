@@ -73,9 +73,9 @@ const App: FC<AppProps> = observer(({ defaultFilters, uiDefaults }) => {
   );
 
   useEffect(() => {
-    window.onpopstate = onPopState;
+    window.addEventListener("popstate", onPopState);
     return () => {
-      window.onpopstate = () => {};
+      window.removeEventListener("popstate", onPopState);
     };
   }, [onPopState]);
 
