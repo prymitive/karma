@@ -11,7 +11,7 @@
     "test": "jest --runInBand demo.test.js"
   },
   "devDependencies": {
-    "jest": "28.0.1",
+    "jest": "28.0.2",
     "puppeteer": "13.6.0"
   }
 }
