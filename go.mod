@@ -35,12 +35,12 @@ require (
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
-	github.com/fsnotify/fsnotify v1.5.3 // indirect
+	github.com/fsnotify/fsnotify v1.5.4 // indirect
 	github.com/go-openapi/analysis v0.21.3 // indirect
 	github.com/go-openapi/jsonpointer v0.19.5 // indirect
 	github.com/go-openapi/jsonreference v0.20.0 // indirect
 	github.com/go-openapi/loads v0.21.1 // indirect
-	github.com/go-openapi/spec v0.20.5 // indirect
+	github.com/go-openapi/spec v0.20.6 // indirect
 	github.com/go-stack/stack v1.8.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
@@ -59,7 +59,7 @@ require (
 	github.com/sergi/go-diff v1.2.0 // indirect
 	go.mongodb.org/mongo-driver v1.9.0 // indirect
 	golang.org/x/net v0.0.0-20220407224826-aac1ed45d8e3 // indirect
-	golang.org/x/sys v0.0.0-20220422013727-9388b58f7150 // indirect
+	golang.org/x/sys v0.0.0-20220502124256-b6088ccd6cba // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 	gopkg.in/errgo.v2 v2.1.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
