@@ -3,6 +3,8 @@ import React from "react";
 import Enzyme from "enzyme";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 
+import "@testing-library/jest-dom";
+
 import { useInView } from "react-intersection-observer";
 
 // react-idle-timer >= 4.6.0
