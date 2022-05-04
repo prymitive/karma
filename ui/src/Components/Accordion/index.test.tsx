@@ -1,50 +1,51 @@
-import { mount } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import { Accordion, AccordionItem } from ".";
 
 describe("<Accordion />", () => {
   it("matches snapshot", () => {
-    const tree = mount(
+    const { asFragment } = render(
       <Accordion>
         <AccordionItem text="title 1" content="item 1" />
         <AccordionItem text="title 2" content="item 2" defaultIsOpen />
         <AccordionItem text="title 1" content="item 1" />
       </Accordion>
     );
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    expect(asFragment()).toMatchSnapshot();
   });
 });
 
 describe("<AccordionItem />", () => {
   it("doesn't render content by default", () => {
-    const tree = mount(<AccordionItem text="title" content="content" />);
-    expect(tree.text()).toBe("title");
+    render(<AccordionItem text="title" content="content" />);
+    expect(screen.getByRole("button")).toHaveTextContent("title");
   });
 
   it("doesn't render content when defaultIsOpen=false", () => {
-    const tree = mount(
+    render(
       <AccordionItem text="title" content="content" defaultIsOpen={false} />
     );
-    expect(tree.text()).toBe("title");
+    expect(screen.getByRole("button")).toHaveTextContent("title");
   });
 
   it("renders content when defaultIsOpen=true", () => {
-    const tree = mount(
+    render(
       <AccordionItem text="title" content="content" defaultIsOpen={true} />
     );
-    expect(tree.text()).toBe("titlecontent");
+    expect(screen.getByText("content")).toBeTruthy();
   });
 
-  it("toggles content after header click", () => {
-    const tree = mount(<AccordionItem text="title" content="content" />);
-    expect(tree.text()).toBe("title");
+  it("toggles content after header click", async () => {
+    render(<AccordionItem text="title" content="content" />);
+    expect(screen.getByRole("button")).toHaveTextContent("title");
 
-    tree.find("button.accordion-button").simulate("click");
-    expect(tree.text()).toBe("titlecontent");
+    const user = userEvent.setup();
 
-    tree.find("button.accordion-button").simulate("click");
-    expect(tree.text()).toBe("title");
+    await user.click(screen.getByRole("button"));
+    expect(screen.getByText("content")).toBeTruthy();
+
+    await user.click(screen.getByRole("button"));
+    expect(screen.queryByText("content")).toBeFalsy();
   });
 });
