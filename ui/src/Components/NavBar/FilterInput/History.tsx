@@ -203,8 +203,8 @@ const History: FC<{
       flip(),
       offset(5),
       size({
-        apply({ height }) {
-          setMaxHeight(height);
+        apply({ availableHeight }) {
+          setMaxHeight(availableHeight);
         },
       }),
     ],
