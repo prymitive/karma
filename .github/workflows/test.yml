@@ -350,7 +350,7 @@ jobs:
       - name: Set up Node JS
         uses: actions/setup-node@v3
         with:
-          node-version: 18.1.0
+          node-version: 17.9.0
           cache: 'npm'
           cache-dependency-path: 'ui/package-lock.json'
 
