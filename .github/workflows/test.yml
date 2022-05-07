@@ -466,7 +466,7 @@ jobs:
         uses: rlespinasse/github-slug-action@4.2.4
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v1
+        uses: docker/setup-qemu-action@v2
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
