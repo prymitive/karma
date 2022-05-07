@@ -102,7 +102,7 @@
     "test": "react-scripts test",
     "storybook": "start-storybook",
     "snapshot": "build-storybook --quiet && percy storybook --verbose ./storybook-static",
-    "analyze": "npx source-map-explorer 'build/static/js/*.js'"
+    "analyze": "NODE_OPTIONS=--no-experimental-fetch npx source-map-explorer 'build/static/js/*.js'"
   },
   "jest": {
     "collectCoverageFrom": [
