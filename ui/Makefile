@@ -54,7 +54,7 @@ format: $(NODE_PATH)/prettier
 	prettier --write 'src/**/*.ts' 'src/**/*.tsx'
 
 build/stats.json: build
-	npx source-map-explorer build/static/*/*.{js,css} --json > build/stats.json
+	env NODE_OPTIONS=--no-experimental-fetch npx source-map-explorer build/static/*/*.{js,css} --json > build/stats.json
 
 .PHONY: backup-css
 backup-css:
