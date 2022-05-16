@@ -3,8 +3,8 @@
 exec bash -x ./test.sh &
 karma.bin-should-work --log.format=json --log.timestamp=true --pid-file=karma.pid --listen.address=127.0.0.1 --listen.port=8064
 ! stdout .
-stderr '{"level":"info","time":"[0-9]+-[0-9]+-[0-9]+T[0-9]+:[0-9]+:[0-9]+Z","message":"Version: dev"}'
-stderr '{"level":"info","time":"[0-9]+-[0-9]+-[0-9]+T[0-9]+:[0-9]+:[0-9]+Z","message":"Pulling latest alerts and silences from Alertmanager"}'
+stderr '{"level":"info","time":"[0-9]+-[0-9]+-[0-9]+T[0-9]+:[0-9]+:[0-9]+.*","message":"Version: dev"}'
+stderr '{"level":"info","time":"[0-9]+-[0-9]+-[0-9]+T[0-9]+:[0-9]+:[0-9]+.*","message":"Pulling latest alerts and silences from Alertmanager"}'
 
 -- test.sh --
 while [ ! -f karma.pid ]; do sleep 1 ; done
