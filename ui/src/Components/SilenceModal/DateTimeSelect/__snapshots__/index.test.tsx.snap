@@ -292,6 +292,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <button
                   aria-label=\\"Go to previous month\\"
                   class=\\"rdp-button_reset rdp-button rdp-nav_button rdp-nav_button_previous\\"
+                  aria-disabled=\\"false\\"
                   type=\\"button\\"
                 >
                   <svg
@@ -311,6 +312,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <button
                   aria-label=\\"Go to next month\\"
                   class=\\"rdp-button_reset rdp-button rdp-nav_button rdp-nav_button_next\\"
+                  aria-disabled=\\"false\\"
                   type=\\"button\\"
                 >
                   <svg
@@ -1034,6 +1036,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <button
                   aria-label=\\"Go to previous month\\"
                   class=\\"rdp-button_reset rdp-button rdp-nav_button rdp-nav_button_previous\\"
+                  aria-disabled=\\"false\\"
                   type=\\"button\\"
                 >
                   <svg
@@ -1053,6 +1056,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <button
                   aria-label=\\"Go to next month\\"
                   class=\\"rdp-button_reset rdp-button rdp-nav_button rdp-nav_button_next\\"
+                  aria-disabled=\\"false\\"
                   type=\\"button\\"
                 >
                   <svg
