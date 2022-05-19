@@ -53,10 +53,10 @@
   "devDependencies": {
     "@percy/cli": "1.2.1",
     "@percy/storybook": "4.2.0",
-    "@storybook/builder-webpack5": "6.5.0-rc.0",
-    "@storybook/manager-webpack5": "6.5.0-rc.0",
+    "@storybook/builder-webpack5": "6.5.0",
+    "@storybook/manager-webpack5": "6.5.0",
     "@storybook/preset-create-react-app": "4.1.0",
-    "@storybook/react": "6.5.0-rc.0",
+    "@storybook/react": "6.5.0",
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "12.1.5",
     "@testing-library/react-hooks": "8.0.0",
@@ -91,9 +91,9 @@
     "typescript": "4.6.4"
   },
   "overrides": {
-    "@storybook/builder-webpack5": "6.5.0-rc.0",
-    "@storybook/manager-webpack5": "6.5.0-rc.0",
-    "@storybook/react": "6.5.0-rc.0",
+    "@storybook/builder-webpack5": "6.5.0",
+    "@storybook/manager-webpack5": "6.5.0",
+    "@storybook/react": "6.5.0",
     "react-scripts@5.0.1": {
       "autoprefixer": "10.4.5"
     }
