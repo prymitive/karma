@@ -95,7 +95,7 @@
     "@storybook/manager-webpack5": "6.5.0-rc.0",
     "@storybook/react": "6.5.0-rc.0",
     "react-scripts@5.0.1": {
-      "autoprefixer": "10.4.5"
+      "autoprefixer": "10.4.7"
     }
   },
   "scripts": {
