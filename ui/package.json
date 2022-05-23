@@ -55,7 +55,7 @@
     "@percy/storybook": "4.2.0",
     "@storybook/builder-webpack5": "6.5.4",
     "@storybook/manager-webpack5": "6.5.4",
-    "@storybook/preset-create-react-app": "4.1.0",
+    "@storybook/preset-create-react-app": "4.1.1",
     "@storybook/react": "6.5.4",
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "12.1.5",
