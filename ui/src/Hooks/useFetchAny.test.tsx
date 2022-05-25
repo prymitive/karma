@@ -382,7 +382,10 @@ describe("useFetchAny", () => {
       });
       return "ok";
     };
-    const fetcher = jest.fn((_: RequestInfo) => Promise.resolve(resp));
+    const fetcher = jest.fn(
+      (input: RequestInfo | URL, init?: RequestInit | undefined) =>
+        Promise.resolve(resp)
+    );
 
     const upstreams = [{ uri: "http://localhost/slow/body", options: {} }];
     const Component = () => {
