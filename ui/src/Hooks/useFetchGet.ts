@@ -6,7 +6,10 @@ import promiseRetry from "promise-retry";
 
 import { CommonOptions, FetchRetryConfig } from "Common/Fetch";
 
-export type FetchFunctionT = (request: RequestInfo) => Promise<Response>;
+export type FetchFunctionT = (
+  input: RequestInfo | URL,
+  init?: RequestInit | undefined
+) => Promise<Response>;
 
 export interface FetchGetOptionsT {
   autorun?: boolean;

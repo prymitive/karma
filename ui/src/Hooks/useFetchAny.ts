@@ -9,7 +9,10 @@ export interface UpstreamT {
   options: RequestInit;
 }
 
-export type FetchFunctionT = (request: RequestInfo) => Promise<Response>;
+export type FetchFunctionT = (
+  input: RequestInfo | URL,
+  init?: RequestInit | undefined
+) => Promise<Response>;
 
 export interface FetchAnyOptionsT {
   fetcher?: null | FetchFunctionT;
