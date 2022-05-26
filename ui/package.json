@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@percy/cli": "1.2.1",
-    "@percy/storybook": "4.2.0",
+    "@percy/storybook": "4.2.1",
     "@storybook/builder-webpack5": "6.5.5",
     "@storybook/manager-webpack5": "6.5.5",
     "@storybook/preset-create-react-app": "4.1.1",
