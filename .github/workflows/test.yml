@@ -390,7 +390,9 @@ jobs:
 
       - name: Run Percy
         if: steps.filter.outputs.percy == 'true'
-        run: make -C ui test-percy
+        uses: percy/storybook-action@v0.1.4
+        with:
+          working-directory: ui
         env:
           NODE_ENV: test
           PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
