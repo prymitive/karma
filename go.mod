@@ -28,7 +28,7 @@ require (
 	github.com/spf13/pflag v1.0.5
 	go.uber.org/automaxprocs v1.5.1
 	gopkg.in/go-playground/colors.v1 v1.2.0
-	gopkg.in/yaml.v3 v3.0.0
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
