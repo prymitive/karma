@@ -1,17 +1,15 @@
-import { shallow } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render } from "@testing-library/react";
 
 import { ToggleIcon } from ".";
 
 describe("<ToggleIcon />", () => {
   it("matches snapshot when open", () => {
-    const tree = shallow(<ToggleIcon isOpen={true} />);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = render(<ToggleIcon isOpen={true} />);
+    expect(asFragment()).toMatchSnapshot();
   });
 
   it("matches snapshot when closed", () => {
-    const tree = shallow(<ToggleIcon isOpen={false} />);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = render(<ToggleIcon isOpen={false} />);
+    expect(asFragment()).toMatchSnapshot();
   });
 });
