@@ -1,12 +1,10 @@
-import { shallow } from "enzyme";
-
-import toDiffableHtml from "diffable-html";
+import { render } from "@testing-library/react";
 
 import { ValidationError } from ".";
 
 describe("<ValidationError />", () => {
   it("matches snapshot", () => {
-    const tree = shallow(<ValidationError />);
-    expect(toDiffableHtml(tree.html())).toMatchSnapshot();
+    const { asFragment } = render(<ValidationError />);
+    expect(asFragment()).toMatchSnapshot();
   });
 });
