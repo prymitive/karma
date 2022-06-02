@@ -23,7 +23,7 @@ let silenceFormStore: SilenceFormStore;
 let grid: APIGridT;
 
 beforeEach(() => {
-  jest.useFakeTimers("modern");
+  jest.useFakeTimers();
   jest.setSystemTime(new Date(Date.UTC(2018, 7, 15, 20, 40, 0)));
   alertStore = new AlertStore([]);
   silenceFormStore = new SilenceFormStore();

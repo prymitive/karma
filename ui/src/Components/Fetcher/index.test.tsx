@@ -19,7 +19,7 @@ let fetchSpy: any;
 let requestAnimationFrameSpy: any;
 
 beforeEach(() => {
-  jest.useFakeTimers("modern");
+  jest.useFakeTimers();
   jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
 
   alertStore = new AlertStore(["label=value"]);

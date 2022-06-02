@@ -54,7 +54,7 @@ beforeEach(() => {
   silenceFormStore = new SilenceFormStore();
   group = MockGroup();
 
-  jest.useFakeTimers("modern");
+  jest.useFakeTimers();
   jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 15, 0, 0)));
 
   alertStore.data.setReceivers(["by-cluster-service", "by-name"]);

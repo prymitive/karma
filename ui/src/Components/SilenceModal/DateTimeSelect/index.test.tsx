@@ -20,7 +20,7 @@ import {
 let silenceFormStore: SilenceFormStore;
 
 beforeEach(() => {
-  jest.useFakeTimers("modern");
+  jest.useFakeTimers();
 
   silenceFormStore = new SilenceFormStore();
   silenceFormStore.data.setStart(new Date(2060, 1, 1, 0, 0, 0));
