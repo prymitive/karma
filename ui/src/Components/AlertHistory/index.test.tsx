@@ -57,7 +57,7 @@ const MockAlerts = (alertCount: number) => {
 };
 
 beforeEach(() => {
-  jest.useFakeTimers("modern");
+  jest.useFakeTimers();
   jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
 
   group = MockGroup("fakeGroup");

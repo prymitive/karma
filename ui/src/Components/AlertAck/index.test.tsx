@@ -18,7 +18,7 @@ let alerts: APIAlertT[];
 let group: APIAlertGroupT;
 
 beforeEach(() => {
-  jest.useFakeTimers("modern");
+  jest.useFakeTimers();
   jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
 
   alertStore = new AlertStore([]);

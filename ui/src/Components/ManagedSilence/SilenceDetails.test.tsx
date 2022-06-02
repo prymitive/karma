@@ -45,7 +45,7 @@ beforeEach(() => {
   alertStore.data.setUpstreams(generateUpstreams());
 
   jest.restoreAllMocks();
-  jest.useFakeTimers("modern");
+  jest.useFakeTimers();
 });
 
 afterEach(() => {

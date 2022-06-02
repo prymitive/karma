@@ -15,7 +15,7 @@ describe("<RenderSilence />", () => {
     alertStore = new AlertStore([]);
     silenceFormStore = new SilenceFormStore();
 
-    jest.useFakeTimers("modern");
+    jest.useFakeTimers();
     jest.setSystemTime(new Date(Date.UTC(2000, 1, 1, 0, 0, 0)));
   });
 

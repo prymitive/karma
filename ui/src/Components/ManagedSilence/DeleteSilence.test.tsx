@@ -37,7 +37,7 @@ const generateUpstreams = (): APIAlertsResponseUpstreamsT => ({
 });
 
 beforeEach(() => {
-  jest.useFakeTimers("modern");
+  jest.useFakeTimers();
   jest.setSystemTime(new Date(Date.UTC(2000, 0, 1, 0, 30, 0)));
 
   alertStore = new AlertStore([]);
