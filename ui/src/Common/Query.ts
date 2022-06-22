@@ -12,7 +12,9 @@ const StaticLabels = Object.freeze({
   Fingerprint: "@fingerprint",
   Receiver: "@receiver",
   State: "@state",
-  SilenceID: "@silence_id",
+  SilencedBy: "@silenced_by",
+  Inhibited: "@inhibited",
+  InhibitedBy: "@inhibited_by",
 });
 
 function FormatQuery(name: string, operator: string, value: string): string {

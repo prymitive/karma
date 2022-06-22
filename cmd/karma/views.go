@@ -518,6 +518,8 @@ func labelsSettings(grids []models.APIGrid, store models.LabelsSettings) {
 	labelSettings("@cluster", store)
 	labelSettings("@receiver", store)
 	labelSettings("@state", store)
+	labelSettings("@inhibited", store)
+	labelSettings("@inhibited_by", store)
 	for _, grid := range grids {
 		labelSettings(grid.LabelName, store)
 		for _, ag := range grid.AlertGroups {

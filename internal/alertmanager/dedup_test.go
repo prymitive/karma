@@ -116,8 +116,8 @@ func TestDedupAutocomplete(t *testing.T) {
 	}
 	ac := alertmanager.DedupAutocomplete()
 	mockCount := len(mock.ListAllMockURIs())
-	// 74 hints for everything except @alertmanager and @silence_id
-	// 4 hints for @silence_id 1 and 2
+	// 74 hints for everything except @alertmanager and @silenced_by
+	// 4 hints for @silenced_by 1 and 2
 	// 2 hints per @alertmanager
 	// 2 hits per @cluster
 	// 6 hints for silences in for each alertmanager
