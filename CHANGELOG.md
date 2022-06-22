@@ -1,10 +1,10 @@
 # Changelog
 
-## v0.105
+## v0.104
+
+### Added
 
 - Added `@inhibited` and `@inhibited_by` filters #4397.
-
-## v0.104
 
 ### Changed
 
