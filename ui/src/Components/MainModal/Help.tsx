@@ -241,12 +241,38 @@ const Help: FC<{ defaultIsOpen: boolean }> = ({ defaultIsOpen }) => (
             title="Match suppressed alerts based on the silence ID"
             operators={["=", "!="]}
           >
-            <FilterExample example="@silence_id=abc123456789">
+            <FilterExample example="@silenced_by=abc123456789">
               Match alerts suppressed by silence <code>abc123456789</code>.
             </FilterExample>
-            <FilterExample example="@silence_id!=abc123456789">
+            <FilterExample example="@silenced_by!=abc123456789">
               Match alerts suppressed by any silence except{" "}
               <code>abc123456789</code>.
+            </FilterExample>
+          </QueryHelp>
+
+          <QueryHelp
+            title="Match alerts depending if they are inhibited or not."
+            operators={["="]}
+          >
+            <FilterExample example="@inhibited=true">
+              Match alerts that are inhibited.
+            </FilterExample>
+            <FilterExample example="@inhibited=false">
+              Match alerts that are not inhibited.
+            </FilterExample>
+          </QueryHelp>
+
+          <QueryHelp
+            title="Match inhibited alerts based on the fingerprint of the inhibiting alert"
+            operators={["=", "!="]}
+          >
+            <FilterExample example="@inhibited_by=abc123456789">
+              Match alerts inhibited by alert with fingerprint{" "}
+              <code>abc123456789</code>.
+            </FilterExample>
+            <FilterExample example="@inhibited_by!=abc123456789">
+              Match alerts inhibited by alert any alert except the one with
+              fingerprint <code>abc123456789</code>.
             </FilterExample>
           </QueryHelp>
 
@@ -284,6 +310,19 @@ const Help: FC<{ defaultIsOpen: boolean }> = ({ defaultIsOpen }) => (
             <FilterExample example="@silence_ticket=~PROJECT">
               Match silenced alerts where detected ticket ID matches regular
               expression <code>/.*PROJECT.*/</code>.
+            </FilterExample>
+          </QueryHelp>
+
+          <QueryHelp
+            title="Match suppressed alerts based on the fingerprint of the alert inhibiting them"
+            operators={["=", "!=", "=~", "!~"]}
+          >
+            <FilterExample example="@inhibited_by=abc123456789">
+              Match alerts inhibited by alert with fingerprint{" "}
+              <code>abc123456789</code>.
+            </FilterExample>
+            <FilterExample example="@inhibited_by=~.+">
+              Match any inhibited alert.{" "}
             </FilterExample>
           </QueryHelp>
 

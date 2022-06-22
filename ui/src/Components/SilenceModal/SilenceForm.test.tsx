@@ -91,7 +91,7 @@ describe("<SilenceForm /> matchers", () => {
       ...filterCombos(StaticLabels.AlertManager),
       ...filterCombos(StaticLabels.Receiver),
       ...filterCombos(StaticLabels.State),
-      ...filterCombos(StaticLabels.SilenceID),
+      ...filterCombos(StaticLabels.SilencedBy),
       ...filterCombos("cluster"),
       ...filterCombos("foo"),
     ]);
@@ -279,7 +279,7 @@ describe("<SilenceForm /> matchers", () => {
       ...filterCombos(StaticLabels.AlertManager),
       ...filterCombos(StaticLabels.Receiver),
       ...filterCombos(StaticLabels.State),
-      ...filterCombos(StaticLabels.SilenceID),
+      ...filterCombos(StaticLabels.SilencedBy),
       ...filterCombos("cluster"),
       ...filterCombos("foo"),
     ]);

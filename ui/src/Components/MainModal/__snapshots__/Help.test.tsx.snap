@@ -649,7 +649,7 @@ exports[`<Help /> matches snapshot 1`] = `
               <li>
                 <div>
                   <span class=\\"badge bg-info\\">
-                    @silence_id=abc123456789
+                    @silenced_by=abc123456789
                   </span>
                 </div>
                 <div>
@@ -663,11 +663,94 @@ exports[`<Help /> matches snapshot 1`] = `
               <li>
                 <div>
                   <span class=\\"badge bg-info\\">
-                    @silence_id!=abc123456789
+                    @silenced_by!=abc123456789
                   </span>
                 </div>
                 <div>
                   Match alerts suppressed by any silence except
+                  <code>
+                    abc123456789
+                  </code>
+                  .
+                </div>
+              </li>
+            </ul>
+          </dd>
+          <dt>
+            Match alerts depending if they are inhibited or not.
+          </dt>
+          <dd>
+            <div>
+              Supported operators:
+              <kbd class=\\"me-1\\">
+                =
+              </kbd>
+            </div>
+            <div>
+              Examples:
+            </div>
+            <ul>
+              <li>
+                <div>
+                  <span class=\\"badge bg-info\\">
+                    @inhibited=true
+                  </span>
+                </div>
+                <div>
+                  Match alerts that are inhibited.
+                </div>
+              </li>
+              <li>
+                <div>
+                  <span class=\\"badge bg-info\\">
+                    @inhibited=false
+                  </span>
+                </div>
+                <div>
+                  Match alerts that are not inhibited.
+                </div>
+              </li>
+            </ul>
+          </dd>
+          <dt>
+            Match inhibited alerts based on the fingerprint of the inhibiting alert
+          </dt>
+          <dd>
+            <div>
+              Supported operators:
+              <kbd class=\\"me-1\\">
+                =
+              </kbd>
+              <kbd class=\\"me-1\\">
+                !=
+              </kbd>
+            </div>
+            <div>
+              Examples:
+            </div>
+            <ul>
+              <li>
+                <div>
+                  <span class=\\"badge bg-info\\">
+                    @inhibited_by=abc123456789
+                  </span>
+                </div>
+                <div>
+                  Match alerts inhibited by alert with fingerprint
+                  <code>
+                    abc123456789
+                  </code>
+                  .
+                </div>
+              </li>
+              <li>
+                <div>
+                  <span class=\\"badge bg-info\\">
+                    @inhibited_by!=abc123456789
+                  </span>
+                </div>
+                <div>
+                  Match alerts inhibited by alert any alert except the one with fingerprint
                   <code>
                     abc123456789
                   </code>
@@ -825,6 +908,55 @@ exports[`<Help /> matches snapshot 1`] = `
                     /.*PROJECT.*/
                   </code>
                   .
+                </div>
+              </li>
+            </ul>
+          </dd>
+          <dt>
+            Match suppressed alerts based on the fingerprint of the alert inhibiting them
+          </dt>
+          <dd>
+            <div>
+              Supported operators:
+              <kbd class=\\"me-1\\">
+                =
+              </kbd>
+              <kbd class=\\"me-1\\">
+                !=
+              </kbd>
+              <kbd class=\\"me-1\\">
+                =~
+              </kbd>
+              <kbd class=\\"me-1\\">
+                !~
+              </kbd>
+            </div>
+            <div>
+              Examples:
+            </div>
+            <ul>
+              <li>
+                <div>
+                  <span class=\\"badge bg-info\\">
+                    @inhibited_by=abc123456789
+                  </span>
+                </div>
+                <div>
+                  Match alerts inhibited by alert with fingerprint
+                  <code>
+                    abc123456789
+                  </code>
+                  .
+                </div>
+              </li>
+              <li>
+                <div>
+                  <span class=\\"badge bg-info\\">
+                    @inhibited_by=~.+
+                  </span>
+                </div>
+                <div>
+                  Match any inhibited alert.
                 </div>
               </li>
             </ul>

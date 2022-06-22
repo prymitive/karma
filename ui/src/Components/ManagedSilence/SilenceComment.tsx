@@ -13,6 +13,7 @@ import type { AlertStore } from "Stores/AlertStore";
 import FilteringCounterBadge from "Components/Labels/FilteringCounterBadge";
 import { ToggleIcon } from "Components/ToggleIcon";
 import { DateFromNow } from "Components/DateFromNow";
+import { StaticLabels } from "Common/Query";
 
 const SilenceProgress: FC<{
   silence: APISilenceT;
@@ -108,7 +109,7 @@ const SilenceComment: FC<{
             <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center">
               <FilteringCounterBadge
                 alertStore={alertStore}
-                name="@silence_id"
+                name={StaticLabels.SilencedBy}
                 value={silence.id}
                 counter={alertCount}
                 themed={false}

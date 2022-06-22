@@ -3917,7 +3917,7 @@ func TestLabelSettings(t *testing.T) {
 			},
 		},
 		{
-			static:      []string{"@alertmanager", "@cluster", "@receiver", "@state"},
+			static:      []string{"@alertmanager", "@cluster", "@inhibited", "@inhibited_by", "@receiver", "@state"},
 			valueOnly:   []string{},
 			valueOnlyRe: []*regexp.Regexp{regex.MustCompileAnchored("@.+")},
 			labels: models.LabelsSettings{
@@ -3926,6 +3926,14 @@ func TestLabelSettings(t *testing.T) {
 					IsValueOnly: true,
 				},
 				"@cluster": models.LabelSettings{
+					IsStatic:    true,
+					IsValueOnly: true,
+				},
+				"@inhibited": models.LabelSettings{
+					IsStatic:    true,
+					IsValueOnly: true,
+				},
+				"@inhibited_by": models.LabelSettings{
 					IsStatic:    true,
 					IsValueOnly: true,
 				},

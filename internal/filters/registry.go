@@ -62,9 +62,23 @@ var AllFilters = []filterConfig{
 		Autocomplete:       stateAutocomplete,
 	},
 	{
+		Label:              "@inhibited",
+		LabelRe:            regexp.MustCompile("^@inhibited$"),
+		SupportedOperators: []string{equalOperator},
+		Factory:            newInhibitedFilter,
+		Autocomplete:       inhibitedAutocomplete,
+	},
+	{
+		Label:              "@inhibited_by",
+		LabelRe:            regexp.MustCompile("^@inhibited_by$"),
+		SupportedOperators: []string{equalOperator, notEqualOperator},
+		Factory:            newInhibitedByFilter,
+		Autocomplete:       inhibitedByAutocomplete,
+	},
+	{
 		Label:              "@fingerprint",
 		LabelRe:            regexp.MustCompile("^@fingerprint$"),
-		SupportedOperators: []string{regexpOperator, equalOperator, notEqualOperator},
+		SupportedOperators: []string{equalOperator, notEqualOperator},
 		Factory:            newFingerprintFilter,
 	},
 	{
@@ -82,8 +96,8 @@ var AllFilters = []filterConfig{
 		Autocomplete:       ageAutocomplete,
 	},
 	{
-		Label:              "@silence_id",
-		LabelRe:            regexp.MustCompile("^@silence_id$"),
+		Label:              "@silenced_by",
+		LabelRe:            regexp.MustCompile("^@silenced_by$"),
 		SupportedOperators: []string{equalOperator, notEqualOperator},
 		Factory:            newsilenceIDFilter,
 		Autocomplete:       silenceIDAutocomplete,

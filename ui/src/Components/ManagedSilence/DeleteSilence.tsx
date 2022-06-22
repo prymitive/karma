@@ -136,7 +136,7 @@ const DeleteSilenceModalContent: FC<{
               alertStore={alertStore}
               filters={[
                 FormatQuery(
-                  StaticLabels.SilenceID,
+                  StaticLabels.SilencedBy,
                   QueryOperators.Equal,
                   silence.id
                 ),
