@@ -29,7 +29,7 @@
     "lodash.merge": "4.6.2",
     "lodash.throttle": "4.1.1",
     "lodash.uniqueid": "4.0.1",
-    "mobx": "6.6.0",
+    "mobx": "6.6.1",
     "mobx-react-lite": "3.4.0",
     "mobx-stored": "1.1.0",
     "promise-retry": "2.0.1",
