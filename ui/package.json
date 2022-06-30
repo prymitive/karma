@@ -81,7 +81,7 @@
     "eslint-config-prettier": "8.5.0",
     "eslint-config-react-app": "7.0.1",
     "eslint-plugin-jest": "26.5.3",
-    "eslint-plugin-prettier": "4.1.0",
+    "eslint-plugin-prettier": "4.2.1",
     "fetch-mock": "9.11.0",
     "prettier": "2.7.1",
     "purgecss": "4.1.3",
