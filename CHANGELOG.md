@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.105
+
+### Changed
+
+- Change max value of `alertsPerGroup` to 25 #4420.
+
 ## v0.104
 
 ### Added
