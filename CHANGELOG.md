@@ -2,6 +2,10 @@
 
 ## v0.105
 
+### Added
+
+- Allow to copy alert payload from alerts dropdown menu #4378.
+
 ### Changed
 
 - Change max value of `alertsPerGroup` to 25 #4420.
