@@ -4,11 +4,14 @@ import { observer } from "mobx-react-lite";
 
 import { useFloating, shift, offset } from "@floating-ui/react-dom";
 
+import copy from "copy-to-clipboard";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons/faCaretDown";
 import { faBellSlash } from "@fortawesome/free-solid-svg-icons/faBellSlash";
 import { faExternalLinkAlt } from "@fortawesome/free-solid-svg-icons/faExternalLinkAlt";
 import { faWrench } from "@fortawesome/free-solid-svg-icons/faWrench";
+import { faCopy } from "@fortawesome/free-solid-svg-icons/faCopy";
 
 import type {
   APIGridT,
@@ -26,6 +29,7 @@ import { DropdownSlide } from "Components/Animations/DropdownSlide";
 import { DateFromNow } from "Components/DateFromNow";
 import { useOnClickOutside } from "Hooks/useOnClickOutside";
 import { MenuLink } from "Components/Grid/AlertGrid/AlertGroup/MenuLink";
+import { alertToJSON } from "Common/Alert";
 
 const onSilenceClick = (
   alertStore: AlertStore,
@@ -104,6 +108,17 @@ const MenuContent: FC<{
             afterClick={afterClick}
           />
         ))}
+        <div className="dropdown-divider" />
+        <div
+          className="dropdown-item cursor-pointer"
+          onClick={() => {
+            copy(JSON.stringify(alertToJSON(group, alert)));
+            afterClick();
+          }}
+        >
+          <FontAwesomeIcon className="me-1" icon={faCopy} />
+          Copy to clipboard
+        </div>
         {actions.length ? (
           <>
             <div className="dropdown-divider" />

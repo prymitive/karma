@@ -2,6 +2,8 @@ import { act } from "react-dom/test-utils";
 
 import { mount } from "enzyme";
 
+import copy from "copy-to-clipboard";
+
 import { MockAlertGroup, MockAlert } from "__fixtures__/Alerts";
 import type {
   APIAlertGroupT,
@@ -12,6 +14,7 @@ import type {
 import { AlertStore } from "Stores/AlertStore";
 import { SilenceFormStore } from "Stores/SilenceFormStore";
 import { AlertMenu, MenuContent } from "./AlertMenu";
+import { alertToJSON } from "Common/Alert";
 
 let alertStore: AlertStore;
 let silenceFormStore: SilenceFormStore;
@@ -189,7 +192,7 @@ describe("<MenuContent />", () => {
   it("clicking on 'Silence' icon opens the silence form modal", () => {
     group.alertmanagerCount = { am1: 1, ro: 1 };
     const tree = MountedMenuContent(group);
-    const button = tree.find(".dropdown-item").at(1);
+    const button = tree.find(".dropdown-item").at(2);
     button.simulate("click");
     expect(silenceFormStore.toggle.visible).toBe(true);
     expect(silenceFormStore.data.alertmanagers).toMatchObject([
@@ -203,7 +206,7 @@ describe("<MenuContent />", () => {
     upstreams.instances[2].readonly = true;
     alertStore.data.setUpstreams(upstreams);
     const tree = MountedMenuContent(group);
-    const button = tree.find(".dropdown-item").at(1);
+    const button = tree.find(".dropdown-item").at(2);
     expect(button.hasClass("disabled")).toBe(true);
     button.simulate("click");
     expect(silenceFormStore.toggle.visible).toBe(false);
@@ -294,5 +297,13 @@ describe("<MenuContent />", () => {
     expect(
       tree.find("a.dropdown-item[href='nonLinkNonActionShared']")
     ).toHaveLength(0);
+  });
+
+  it("clicking on 'Copy' icon copies alert data to clipboard", async () => {
+    group.alertmanagerCount = { am1: 1, ro: 1 };
+    const tree = MountedMenuContent(group);
+    const button = tree.find(".dropdown-item").at(1);
+    button.simulate("click");
+    expect(copy).toBeCalledWith(JSON.stringify(alertToJSON(group, alert)));
   });
 });
