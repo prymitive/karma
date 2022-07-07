@@ -56,6 +56,6 @@ func NewHTTPTransport(caPath, certPath, keyPath string, insecureSkipVerify bool)
 		}
 	}
 
-	transport := http.Transport{TLSClientConfig: tlsConfig}
+	transport := http.Transport{TLSClientConfig: tlsConfig, DisableCompression: true}
 	return &transport, nil
 }
