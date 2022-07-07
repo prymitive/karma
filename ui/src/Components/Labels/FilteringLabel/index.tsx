@@ -2,6 +2,8 @@ import { FC, useCallback, MouseEvent } from "react";
 
 import { observer } from "mobx-react-lite";
 
+import copy from "copy-to-clipboard";
+
 import type { AlertStore } from "Stores/AlertStore";
 import { QueryOperators, FormatQuery } from "Common/Query";
 import { TooltipWrapper } from "Components/TooltipWrapper";
@@ -14,12 +16,19 @@ const FilteringLabel: FC<{
 }> = ({ alertStore, name, value }) => {
   const handleClick = useCallback(
     (event: MouseEvent) => {
-      // left click       => apply foo=bar filter
-      // left click + alt => apply foo!=bar filter
-      const operator =
-        event.altKey === true ? QueryOperators.NotEqual : QueryOperators.Equal;
+      // left click         => apply foo=bar filter
+      // left click + alt   => apply foo!=bar filter
+      // left click + shift => copy label value
 
       event.preventDefault();
+
+      if (event.shiftKey) {
+        copy(value);
+        return;
+      }
+
+      const operator =
+        event.altKey === true ? QueryOperators.NotEqual : QueryOperators.Equal;
 
       alertStore.filters.addFilter(FormatQuery(name, operator, value));
     },
@@ -30,11 +39,11 @@ const FilteringLabel: FC<{
     alertStore,
     name,
     value,
-    "components-label-with-hover"
+    "components-label-with-hover components-label-without-select"
   );
 
   return (
-    <TooltipWrapper title="Click to only show alerts with this label or Alt+Click to hide them">
+    <TooltipWrapper title="Click to only show alerts with this label or Alt+Click to hide them. You can copy the value of this label with Shift+Click.">
       <span className={cs.className} style={cs.style} onClick={handleClick}>
         {alertStore.settings.values.labels[name]?.isValueOnly ? null : (
           <>

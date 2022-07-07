@@ -2,6 +2,8 @@ import { mount } from "enzyme";
 
 import toDiffableHtml from "diffable-html";
 
+import copy from "copy-to-clipboard";
+
 import { AlertStore, NewUnappliedFilter } from "Stores/AlertStore";
 
 import FilteringLabel from ".";
@@ -57,6 +59,11 @@ describe("<FilteringLabel />", () => {
     expect(alertStore.filters.values).toContainEqual(
       NewUnappliedFilter("bar=baz")
     );
+  });
+
+  it("calling onClick() while holding Shift key copies label value to clipboard", () => {
+    RenderAndClick("foo", "bar", { shiftKey: true });
+    expect(copy).toHaveBeenCalledWith("bar");
   });
 
   it("label with dark background color should have 'components-label-dark' class", () => {
