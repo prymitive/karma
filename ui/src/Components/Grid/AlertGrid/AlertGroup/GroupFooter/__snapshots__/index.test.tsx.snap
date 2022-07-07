@@ -57,7 +57,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
     </div>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
       <span class=\\"components-label-name\\">
         label1:
       </span>
@@ -67,7 +67,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
       <span class=\\"components-label-name\\">
         label2:
       </span>
@@ -77,7 +77,7 @@ exports[`<GroupFooter /> matches snapshot 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
       <span class=\\"components-label-name\\">
         @receiver:
       </span>
@@ -171,7 +171,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
     </div>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
       <span class=\\"components-label-name\\">
         label1:
       </span>
@@ -181,7 +181,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
       <span class=\\"components-label-name\\">
         label2:
       </span>
@@ -191,7 +191,7 @@ exports[`<GroupFooter /> mathes snapshot when silence is rendered 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
       <span class=\\"components-label-name\\">
         @receiver:
       </span>

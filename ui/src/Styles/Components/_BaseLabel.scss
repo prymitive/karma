@@ -3,6 +3,10 @@
   cursor: pointer;
 }
 
+.components-label-without-select {
+  user-select: none;
+}
+
 .components-label {
   border: 1px solid transparent;
 

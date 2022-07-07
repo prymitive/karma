@@ -102,7 +102,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
       <span class=\\"components-label-name\\">
         job:
       </span>
@@ -112,7 +112,7 @@ exports[`<Alert /> matches snapshot when inhibited 1`] = `
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
       <span class=\\"components-label-name\\">
         cluster:
       </span>
@@ -231,7 +231,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
     </span>
   </span>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
       <span class=\\"components-label-name\\">
         job:
       </span>
@@ -241,7 +241,7 @@ exports[`<Alert /> matches snapshot with showAlertmanagers=false showReceiver=fa
     </span>
   </div>
   <div class=\\" tooltip-trigger\\">
-    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover\\">
+    <span class=\\"components-label badge bg-default components-label-dark components-label-with-hover components-label-without-select\\">
       <span class=\\"components-label-name\\">
         cluster:
       </span>

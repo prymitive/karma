@@ -5,6 +5,8 @@
 ### Added
 
 - Allow to copy alert payload from alerts dropdown menu #4378.
+- Clicking on a label while holding `Shift` will now copy its value
+  to clipboard #4378.
 
 ### Changed
 
