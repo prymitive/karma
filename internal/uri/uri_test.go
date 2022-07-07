@@ -2,7 +2,6 @@ package uri_test
 
 import (
 	"bytes"
-	"compress/gzip"
 	"crypto/tls"
 	"crypto/x509"
 	"errors"
@@ -12,6 +11,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/klauspost/compress/gzip"
 	"github.com/rs/zerolog"
 
 	"github.com/prymitive/karma/internal/uri"

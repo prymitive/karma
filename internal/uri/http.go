@@ -1,11 +1,11 @@
 package uri
 
 import (
-	"compress/gzip"
 	"fmt"
 	"io"
 	"net/http"
 
+	"github.com/klauspost/compress/gzip"
 	"github.com/rs/zerolog/log"
 )
 

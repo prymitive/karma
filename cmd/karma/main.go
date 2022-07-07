@@ -1,7 +1,6 @@
 package main
 
 import (
-	"compress/flate"
 	"context"
 	"errors"
 	"fmt"
@@ -30,6 +29,7 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
 	lru "github.com/hashicorp/golang-lru"
+	"github.com/klauspost/compress/flate"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"

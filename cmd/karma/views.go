@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"compress/gzip"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -15,6 +14,7 @@ import (
 
 	"github.com/cnf/structhash"
 	"github.com/fvbommel/sortorder"
+	"github.com/klauspost/compress/gzip"
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
