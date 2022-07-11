@@ -30,16 +30,15 @@ func (sm SilenceMatcher) IsMatch(labels map[string]string) bool {
 // extracted ID is used to generate link to JIRA issue
 // this means karma needs to store additional fields for each silence
 type Silence struct {
-	ID        string           `json:"id"`
-	Matchers  []SilenceMatcher `json:"matchers"`
 	StartsAt  time.Time        `json:"startsAt"`
 	EndsAt    time.Time        `json:"endsAt"`
 	CreatedAt time.Time        `json:"createdAt"`
+	ID        string           `json:"id"`
+	TicketID  string           `json:"ticketID"`
 	CreatedBy string           `json:"createdBy"`
 	Comment   string           `json:"comment"`
-	// karma fields
-	TicketID  string `json:"ticketID"`
-	TicketURL string `json:"ticketURL"`
+	TicketURL string           `json:"ticketURL"`
+	Matchers  []SilenceMatcher `json:"matchers"`
 }
 
 func (s Silence) IsMatch(labels map[string]string) bool {
@@ -54,7 +53,7 @@ func (s Silence) IsMatch(labels map[string]string) bool {
 // ManagedSilence is a standalone silence detached from any alert
 type ManagedSilence struct {
 	Cluster    string  `json:"cluster"`
-	IsExpired  bool    `json:"isExpired"`
-	AlertCount int     `json:"alertCount"`
 	Silence    Silence `json:"silence"`
+	AlertCount int     `json:"alertCount"`
+	IsExpired  bool    `json:"isExpired"`
 }

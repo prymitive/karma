@@ -11,8 +11,8 @@ import (
 
 type requestTest struct {
 	PathSuffix string
-	StatusCode int
 	Results    []string
+	StatusCode int
 }
 
 type autocompleteTest struct {

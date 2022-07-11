@@ -36,7 +36,7 @@ func StringSliceToSHA1(stringArray []string) (string, error) {
 	return fmt.Sprintf("%x", h.Sum(nil)), nil
 }
 
-func StringSliceDiff(slice1 []string, slice2 []string) ([]string, []string) {
+func StringSliceDiff(slice1, slice2 []string) ([]string, []string) {
 	missing := []string{}
 	extra := []string{}
 

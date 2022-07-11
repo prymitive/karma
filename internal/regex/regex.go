@@ -17,7 +17,6 @@ func WrapRegexWithAnchors(r string) string {
 }
 
 func MustCompileAnchored(r string) *regexp.Regexp {
-
 	return regexp.MustCompile(WrapRegexWithAnchors(r))
 }
 

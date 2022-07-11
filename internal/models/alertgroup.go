@@ -35,14 +35,14 @@ func (a AlertList) Less(i, j int) bool {
 // There is a hash computed from all alerts, it's used by UI to quickly tell
 // if there was any change in a group and it needs to refresh it
 type AlertGroup struct {
-	Receiver          string         `json:"receiver"`
-	Labels            Labels         `json:"labels"`
-	Alerts            AlertList      `json:"alerts"`
+	LatestStartsAt    time.Time      `json:"-"`
+	StateCount        map[string]int `json:"stateCount"`
+	AlertmanagerCount map[string]int `json:"alertmanagerCount"`
 	ID                string         `json:"id"`
 	Hash              string         `json:"-"`
-	AlertmanagerCount map[string]int `json:"alertmanagerCount"`
-	StateCount        map[string]int `json:"stateCount"`
-	LatestStartsAt    time.Time      `json:"-"`
+	Receiver          string         `json:"receiver"`
+	Alerts            AlertList      `json:"alerts"`
+	Labels            Labels         `json:"labels"`
 }
 
 // LabelsFingerprint is a checksum of this AlertGroup labels and the receiver

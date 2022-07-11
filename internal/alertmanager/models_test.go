@@ -17,9 +17,9 @@ type uriTest struct {
 	name        string
 	rawURI      string
 	extURI      string
-	proxy       bool
 	internalURI string
 	publicURI   string
+	proxy       bool
 }
 
 var uriTests = []uriTest{
@@ -152,8 +152,8 @@ func TestAlertmanagerSilenceByID(t *testing.T) {
 func TestAlertmanagerInternalURI(t *testing.T) {
 	type testCaseT struct {
 		prefix string
-		proxy  bool
 		uri    string
+		proxy  bool
 	}
 	tests := []testCaseT{
 		{

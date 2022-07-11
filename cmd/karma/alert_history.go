@@ -25,8 +25,8 @@ import (
 )
 
 type AlertHistoryPayload struct {
-	Sources []string          `json:"sources"`
 	Labels  map[string]string `json:"labels"`
+	Sources []string          `json:"sources"`
 }
 
 type OffsetSample struct {
@@ -100,19 +100,19 @@ func alertHistory(historyPoller *historyPoller, w http.ResponseWriter, r *http.R
 }
 
 type historyQueryResult struct {
-	values []OffsetSample
 	err    error
+	values []OffsetSample
 }
 
 type historyJob struct {
-	uri    string
 	labels map[string]string
 	result chan<- historyQueryResult
+	uri    string
 }
 
 type cachedOffsets struct {
-	values    []OffsetSample
 	timestamp time.Time
+	values    []OffsetSample
 }
 
 type knownBadUpstream struct {
@@ -122,9 +122,9 @@ type knownBadUpstream struct {
 
 type historyPoller struct {
 	queue        chan historyJob
-	queryTimeout time.Duration
 	knownBad     *lru.Cache
 	cache        *lru.Cache
+	queryTimeout time.Duration
 }
 
 func newHistoryPoller(queueSize int, queryTimeout time.Duration) *historyPoller {

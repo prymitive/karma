@@ -43,8 +43,8 @@ type proxyTest struct {
 	method      string
 	localPath   string
 	upstreamURI string
-	code        int
 	response    string
+	code        int
 }
 
 var proxyTests = []proxyTest{
@@ -142,15 +142,15 @@ func TestProxy(t *testing.T) {
 }
 
 type proxyHeaderTest struct {
-	method              string
+	alertmanagerHeaders map[string]string
 	localPath           string
 	upstreamURI         string
-	code                int
 	alertmanagerURI     string
 	alertmanagerHost    string
-	alertmanagerHeaders map[string]string
+	method              string
 	authUser            string
 	authPass            string
+	code                int
 }
 
 var proxyHeaderTests = []proxyHeaderTest{
@@ -213,7 +213,7 @@ func TestProxyHeaders(t *testing.T) {
 	defer httpmock.DeactivateAndReset()
 
 	for _, testCase := range proxyHeaderTests {
-		testCase := testCase //scopelint pin
+		testCase := testCase // scopelint pin
 		r := testRouter()
 		am, err := alertmanager.NewAlertmanager(
 			"cluster",
@@ -352,18 +352,16 @@ func TestProxyToSubURIAlertmanager(t *testing.T) {
 
 func TestProxyUserRewrite(t *testing.T) {
 	type proxyTest struct {
-		name string
-
+		requestHeaders           map[string]string
+		name                     string
 		headerName               string
 		headerRe                 string
-		basicAuthUsers           []config.AuthenticationUser
-		requestHeaders           map[string]string
 		requestBasicAuthUser     string
 		requestBasicAuthPassword string
-
-		frontednRequestBody string
-		proxyRequestBody    string
-		responseCode        int
+		frontednRequestBody      string
+		proxyRequestBody         string
+		basicAuthUsers           []config.AuthenticationUser
+		responseCode             int
 	}
 
 	proxyTests := []proxyTest{
@@ -573,14 +571,11 @@ func TestProxyUserRewrite(t *testing.T) {
 
 func TestProxySilenceACL(t *testing.T) {
 	type proxyTest struct {
-		name string
-
-		authGroups  map[string][]string
-		silenceACLs []*silenceACL
-
-		requestUsername string
-
+		authGroups          map[string][]string
+		name                string
+		requestUsername     string
 		frontednRequestBody string
+		silenceACLs         []*silenceACL
 		responseCode        int
 	}
 

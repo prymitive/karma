@@ -17,17 +17,15 @@ const (
 	aclActionAllow          = "allow"
 )
 
-var (
-	allACLActions = []string{aclActionAllow, aclActionBlock, aclActionRequireMatcher}
-)
+var allACLActions = []string{aclActionAllow, aclActionBlock, aclActionRequireMatcher}
 
 type silenceFilter struct {
-	Name       string
 	NameRegex  *regexp.Regexp
-	Value      string
 	ValueRegex *regexp.Regexp
 	IsRegex    *bool
 	IsEqual    *bool
+	Name       string
+	Value      string
 }
 
 func (sf *silenceFilter) isMatch(silence *models.Silence) bool {
@@ -65,12 +63,12 @@ func (sf *silenceFilter) isMatch(silence *models.Silence) bool {
 }
 
 type silenceMatcher struct {
-	Name       string
 	NameRegex  *regexp.Regexp
-	Value      string
 	ValueRegex *regexp.Regexp
 	IsRegex    *bool
 	IsEqual    *bool
+	Name       string
+	Value      string
 }
 
 func (sm *silenceMatcher) isMatch(m models.SilenceMatcher) bool {

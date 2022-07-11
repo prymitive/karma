@@ -16,12 +16,12 @@ import (
 
 type filterTest struct {
 	Expression          string
-	IsValid             bool
-	IsMatch             bool
-	IsAlertmanagerMatch bool
 	Alert               models.Alert
 	Silence             models.Silence
 	Alertmanagers       []models.AlertmanagerInstance
+	IsValid             bool
+	IsMatch             bool
+	IsAlertmanagerMatch bool
 }
 
 var tests = []filterTest{
@@ -960,10 +960,10 @@ func TestFilters(t *testing.T) {
 
 type limitFilterTest struct {
 	Expression string
-	IsValid    bool
-	IsMatch    []bool
 	Value      string
+	IsMatch    []bool
 	Hits       int
+	IsValid    bool
 }
 
 var limitTests = []limitFilterTest{

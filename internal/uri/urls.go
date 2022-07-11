@@ -8,7 +8,7 @@ import (
 
 // JoinURL can be used to join a base url (http(s)://domain.com) and a path (/my/path)
 // it will return a joined string or an error (if you supply invalid url)
-func JoinURL(base string, sub string) (string, error) {
+func JoinURL(base, sub string) (string, error) {
 	u, err := url.Parse(base)
 	if err != nil {
 		return "", err

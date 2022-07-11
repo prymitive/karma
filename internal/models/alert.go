@@ -123,23 +123,18 @@ func (ls Labels) Set(name, value string) Labels {
 //   it's pulled out of annotation map and returned under links field,
 //   karma UI used this to show links differently than other annotations
 type Alert struct {
-	Annotations Annotations `json:"annotations"`
-	Labels      Labels      `json:"labels"`
-	StartsAt    time.Time   `json:"startsAt"`
-	State       string      `json:"state"`
-	// those are not exposed in JSON, Alertmanager specific value will be in kept
-	// in the Alertmanager slice
-	// skip those when generating alert fingerprint too
-	Fingerprint  string   `json:"-" hash:"-"`
-	GeneratorURL string   `json:"-" hash:"-"`
-	SilencedBy   []string `json:"-" hash:"-"`
-	InhibitedBy  []string `json:"-" hash:"-"`
-	// karma fields
-	Alertmanager []AlertmanagerInstance `json:"alertmanager"`
+	StartsAt     time.Time              `json:"startsAt"`
+	State        string                 `json:"state"`
+	Fingerprint  string                 `json:"-" hash:"-"`
+	GeneratorURL string                 `json:"-" hash:"-"`
 	Receiver     string                 `json:"receiver"`
-	// fingerprints are precomputed for speed
-	LabelsFP  string `json:"id" hash:"-"`
-	contentFP string `hash:"-"`
+	LabelsFP     string                 `json:"id" hash:"-"`
+	contentFP    string                 `hash:"-"`
+	Annotations  Annotations            `json:"annotations"`
+	Labels       Labels                 `json:"labels"`
+	SilencedBy   []string               `json:"-" hash:"-"`
+	InhibitedBy  []string               `json:"-" hash:"-"`
+	Alertmanager []AlertmanagerInstance `json:"alertmanager"`
 }
 
 // UpdateFingerprints will generate a new set of fingerprints for this alert

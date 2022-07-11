@@ -14,8 +14,8 @@ import (
 func TestSortByStartsAt(t *testing.T) {
 	type testCaseT struct {
 		groups      []models.APIAlertGroup
-		sortReverse bool
 		sorted      []models.APIAlertGroup
+		sortReverse bool
 	}
 
 	g1 := models.AlertGroup{

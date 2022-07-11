@@ -199,9 +199,9 @@ func getCompiledRegex(regexes []string, t *testing.T) []*regexp.Regexp {
 }
 
 type stripReceiverTest struct {
+	receiver string
 	strip    []string
 	keep     []string
-	receiver string
 	stripped bool
 }
 

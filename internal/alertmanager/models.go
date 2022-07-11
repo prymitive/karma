@@ -27,8 +27,8 @@ const (
 )
 
 type alertmanagerMetrics struct {
-	Cycles float64
 	Errors map[string]float64
+	Cycles float64
 }
 
 type HealthCheck struct {
@@ -38,38 +38,29 @@ type HealthCheck struct {
 
 // Alertmanager represents Alertmanager upstream instance
 type Alertmanager struct {
-	URI            string        `json:"uri"`
-	ExternalURI    string        `json:"-"`
-	RequestTimeout time.Duration `json:"timeout"`
-	Cluster        string        `json:"cluster"`
-	Name           string        `json:"name"`
-	// whenever this instance should be proxied
-	ProxyRequests bool `json:"proxyRequests"`
-	ReadOnly      bool `json:"readonly"`
-	// reader instances are specific to URI scheme we collect from
-	reader uri.Reader
-	// implements how we fetch requests from the Alertmanager, we don't set it
-	// by default so it's nil and http.DefaultTransport is used
-	HTTPTransport http.RoundTripper `json:"-"`
-	// lock protects data access while updating
-	lock sync.RWMutex
-	// fields for storing pulled data
-	alertGroups      []models.AlertGroup
-	silences         map[string]models.Silence
-	colors           models.LabelsColorMap
-	autocomplete     []models.Autocomplete
-	knownLabels      []string
-	lastError        string
-	lastVersionProbe string
-	status           models.AlertmanagerStatus
-	clusterName      string
-	// metrics tracked per alertmanager instance
-	Metrics alertmanagerMetrics
-	// headers to send with each AlertManager request
-	HTTPHeaders map[string]string
-	// CORS credentials
-	CORSCredentials     string `json:"corsCredentials"`
+	reader              uri.Reader
+	Metrics             alertmanagerMetrics
+	HTTPTransport       http.RoundTripper `json:"-"`
+	colors              models.LabelsColorMap
 	healthchecks        map[string]HealthCheck
+	silences            map[string]models.Silence
+	HTTPHeaders         map[string]string
+	lastError           string
+	CORSCredentials     string `json:"corsCredentials"`
+	Name                string `json:"name"`
+	clusterName         string
+	Cluster             string `json:"cluster"`
+	ExternalURI         string `json:"-"`
+	lastVersionProbe    string
+	URI                 string `json:"uri"`
+	status              models.AlertmanagerStatus
+	knownLabels         []string
+	autocomplete        []models.Autocomplete
+	alertGroups         []models.AlertGroup
+	RequestTimeout      time.Duration `json:"timeout"`
+	lock                sync.RWMutex
+	ReadOnly            bool `json:"readonly"`
+	ProxyRequests       bool `json:"proxyRequests"`
 	healthchecksVisible bool
 }
 

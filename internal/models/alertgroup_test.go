@@ -198,8 +198,8 @@ func TestFingerprint(t *testing.T) {
 }
 
 type findLatestStartsAtTest struct {
-	alerts           []models.Alert
 	expectedStartsAt time.Time
+	alerts           []models.Alert
 }
 
 var findLatestStartsAtTests = []findLatestStartsAtTest{

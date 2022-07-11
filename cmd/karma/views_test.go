@@ -124,8 +124,8 @@ func TestIndex(t *testing.T) {
 	type testCaseT struct {
 		prefix   string
 		request  string
-		status   int
 		redirect string
+		status   int
 	}
 
 	testCases := []testCaseT{
@@ -397,8 +397,8 @@ func TestGrids(t *testing.T) {
 		alertGroupCount int
 	}
 	type testCaseT struct {
-		request models.AlertsRequest
 		grids   []testCaseGridT
+		request models.AlertsRequest
 	}
 	testCases := []testCaseT{
 		{
@@ -1141,19 +1141,19 @@ func TestEmptySettings(t *testing.T) {
 
 func TestAuthentication(t *testing.T) {
 	type authTest struct {
-		name                     string
-		headerName               string
+		requestHeaders           map[string]string
+		responseUsername         string
 		headerRe                 string
 		groupName                string
 		groupRe                  string
 		groupSeparator           string
-		basicAuthUsers           []config.AuthenticationUser
-		requestHeaders           map[string]string
+		name                     string
+		headerName               string
 		requestBasicAuthUser     string
 		requestBasicAuthPassword string
-		responseCode             int
-		responseUsername         string
+		basicAuthUsers           []config.AuthenticationUser
 		responseGroups           []string
+		responseCode             int
 	}
 
 	authTests := []authTest{
@@ -1517,8 +1517,8 @@ func TestUpstreamStatus(t *testing.T) {
 
 	type mockT struct {
 		uri  string
-		code int
 		body string
+		code int
 	}
 
 	type testCaseT struct {
@@ -3044,6 +3044,7 @@ func (ew *gzErrWriter) Write(p []byte) (n int, err error) {
 	}
 	return len(p), nil
 }
+
 func (ew *gzErrWriter) Close() error {
 	if ew.failClose {
 		return errors.New("Close error")
@@ -3108,10 +3109,10 @@ func TestDecompressResponseReadError(t *testing.T) {
 
 func TestAutoGrid(t *testing.T) {
 	type testCaseT struct {
-		request   models.AlertsRequest
 		gridLabel string
 		ignore    []string
 		order     []string
+		request   models.AlertsRequest
 	}
 
 	testCases := []testCaseT{
@@ -3290,9 +3291,9 @@ func TestAutoGrid(t *testing.T) {
 
 func TestGridLimit(t *testing.T) {
 	type testCaseT struct {
-		groupLimit int
-		request    models.AlertsRequest
 		groups     map[string][]int
+		request    models.AlertsRequest
+		groupLimit int
 	}
 	testCases := []testCaseT{
 		{
@@ -3870,10 +3871,10 @@ func TestCounters(t *testing.T) {
 
 func TestLabelSettings(t *testing.T) {
 	type testCaseT struct {
+		labels      models.LabelsSettings
 		static      []string
 		valueOnly   []string
 		valueOnlyRe []*regexp.Regexp
-		labels      models.LabelsSettings
 	}
 
 	testCases := []testCaseT{

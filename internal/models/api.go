@@ -36,8 +36,8 @@ func (c *Color) ToString() string {
 // LabelColors holds color information for labels that should be colored in the UI
 // every configured label will have a distinct coloring for each value
 type LabelColors struct {
-	Brightness int32  `json:"brightness"`
 	Background string `json:"background"`
+	Brightness int32  `json:"brightness"`
 }
 
 // LabelsColorMap is a map of "Label Key" -> "Label Value" -> karmaLabelColors
@@ -59,9 +59,11 @@ type LabelValueStatsList []LabelValueStats
 func (lvsl LabelValueStatsList) Len() int {
 	return len(lvsl)
 }
+
 func (lvsl LabelValueStatsList) Swap(i, j int) {
 	lvsl[i], lvsl[j] = lvsl[j], lvsl[i]
 }
+
 func (lvsl LabelValueStatsList) Less(i, j int) bool {
 	if lvsl[i].Hits == lvsl[j].Hits {
 		return sortorder.NaturalLess(lvsl[i].Value, lvsl[j].Value)
@@ -81,9 +83,11 @@ type LabelNameStatsList []LabelNameStats
 func (lnsl LabelNameStatsList) Len() int {
 	return len(lnsl)
 }
+
 func (lnsl LabelNameStatsList) Swap(i, j int) {
 	lnsl[i], lnsl[j] = lnsl[j], lnsl[i]
 }
+
 func (lnsl LabelNameStatsList) Less(i, j int) bool {
 	if lnsl[i].Hits == lnsl[j].Hits {
 		return lnsl[i].Name < lnsl[j].Name
@@ -106,9 +110,9 @@ type APIAlertGroupSharedMaps struct {
 // annotations that are unique to that instance
 type APIAlertGroup struct {
 	AlertGroup
-	TotalAlerts int                            `json:"totalAlerts"`
-	Shared      APIAlertGroupSharedMaps        `json:"shared"`
 	AllLabels   map[string]map[string][]string `json:"allLabels"`
+	Shared      APIAlertGroupSharedMaps        `json:"shared"`
+	TotalAlerts int                            `json:"totalAlerts"`
 }
 
 func (ag *APIAlertGroup) dedupLabels() {
@@ -144,7 +148,6 @@ func (ag *APIAlertGroup) dedupLabels() {
 	}
 
 	ag.Shared.Labels = sharedLabels
-
 }
 
 func (ag *APIAlertGroup) removeGroupingLabels(dropNames []string) {
@@ -384,14 +387,14 @@ func (ag *APIAlertGroup) DedupSharedMaps(ignoredLabels []string) {
 // GridSettings exposes all grid settings from the config file
 type GridSettings struct {
 	Order   string `json:"order"`
-	Reverse bool   `json:"reverse"`
 	Label   string `json:"label"`
+	Reverse bool   `json:"reverse"`
 }
 
 // SortSettings nests all settings specific to sorting
 type SortSettings struct {
-	Grid         GridSettings                 `json:"grid"`
 	ValueMapping map[string]map[string]string `json:"valueMapping"`
+	Grid         GridSettings                 `json:"grid"`
 }
 
 type SilenceFormStripSettings struct {
@@ -403,10 +406,10 @@ type SilenceFormSettings struct {
 }
 
 type AlertAcknowledgementSettings struct {
-	Enabled         bool   `json:"enabled"`
-	DurationSeconds int    `json:"durationSeconds"`
 	Author          string `json:"author"`
 	Comment         string `json:"comment"`
+	DurationSeconds int    `json:"durationSeconds"`
+	Enabled         bool   `json:"enabled"`
 }
 
 type LabelSettings struct {
@@ -418,59 +421,59 @@ type LabelsSettings map[string]LabelSettings
 
 // Settings is used to export karma configuration that is used by UI
 type Settings struct {
-	AnnotationsDefaultHidden bool                         `json:"annotationsDefaultHidden"`
+	Labels                   LabelsSettings               `json:"labels"`
+	Sorting                  SortSettings                 `json:"sorting"`
 	AnnotationsHidden        []string                     `json:"annotationsHidden"`
 	AnnotationsVisible       []string                     `json:"annotationsVisible"`
-	AnnotationsAllowHTML     bool                         `json:"annotationsEnableHTML"`
-	Sorting                  SortSettings                 `json:"sorting"`
 	SilenceForm              SilenceFormSettings          `json:"silenceForm"`
 	AlertAcknowledgement     AlertAcknowledgementSettings `json:"alertAcknowledgement"`
-	HistoryEnabled           bool                         `json:"historyEnabled"`
 	GridGroupLimit           int                          `json:"gridGroupLimit"`
-	Labels                   LabelsSettings               `json:"labels"`
+	AnnotationsDefaultHidden bool                         `json:"annotationsDefaultHidden"`
+	HistoryEnabled           bool                         `json:"historyEnabled"`
+	AnnotationsAllowHTML     bool                         `json:"annotationsEnableHTML"`
 }
 
 type AuthenticationInfo struct {
-	Enabled  bool     `json:"enabled"`
 	Username string   `json:"username"`
 	Groups   []string `json:"groups"`
+	Enabled  bool     `json:"enabled"`
 }
 
 type APIGrid struct {
+	StateCount  map[string]int  `json:"stateCount"`
 	LabelName   string          `json:"labelName"`
 	LabelValue  string          `json:"labelValue"`
 	AlertGroups []APIAlertGroup `json:"alertGroups"`
 	TotalGroups int             `json:"totalGroups"`
-	StateCount  map[string]int  `json:"stateCount"`
 }
 
 type AlertsRequest struct {
-	Filters           []string       `json:"filters"`
-	GridLabel         string         `json:"gridLabel"`
 	GridLimits        map[string]int `json:"gridLimits"`
-	GridSortReverse   bool           `json:"gridSortReverse"`
+	GroupLimits       map[string]int `json:"groupLimits"`
+	GridLabel         string         `json:"gridLabel"`
 	SortOrder         string         `json:"sortOrder"`
 	SortLabel         string         `json:"sortLabel"`
-	SortReverse       bool           `json:"sortReverse"`
+	Filters           []string       `json:"filters"`
 	DefaultGroupLimit int            `json:"defaultGroupLimit"`
-	GroupLimits       map[string]int `json:"groupLimits"`
+	GridSortReverse   bool           `json:"gridSortReverse"`
+	SortReverse       bool           `json:"sortReverse"`
 }
 
 // AlertsResponse is the structure of JSON response UI will use to get alert data
 type AlertsResponse struct {
-	Status         string                        `json:"status"`
+	Colors         LabelsColorMap                `json:"colors"`
+	Silences       map[string]map[string]Silence `json:"silences"`
 	Timestamp      string                        `json:"timestamp"`
 	Version        string                        `json:"version"`
-	Upstreams      AlertmanagerAPISummary        `json:"upstreams"`
-	Silences       map[string]map[string]Silence `json:"silences"`
+	Status         string                        `json:"status"`
 	Grids          []APIGrid                     `json:"grids"`
-	TotalAlerts    int                           `json:"totalAlerts"`
 	LabelNames     []string                      `json:"labelNames"`
-	Colors         LabelsColorMap                `json:"colors"`
-	Filters        []Filter                      `json:"filters"`
-	Settings       Settings                      `json:"settings"`
-	Authentication AuthenticationInfo            `json:"authentication"`
 	Receivers      []string                      `json:"receivers"`
+	Filters        []Filter                      `json:"filters"`
+	Authentication AuthenticationInfo            `json:"authentication"`
+	Settings       Settings                      `json:"settings"`
+	Upstreams      AlertmanagerAPISummary        `json:"upstreams"`
+	TotalAlerts    int                           `json:"totalAlerts"`
 }
 
 // Autocomplete is the structure of autocomplete object for filter hints
@@ -481,6 +484,6 @@ type Autocomplete struct {
 }
 
 type Counters struct {
-	Total    int                `json:"total"`
 	Counters LabelNameStatsList `json:"counters"`
+	Total    int                `json:"total"`
 }

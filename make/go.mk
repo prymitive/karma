@@ -39,7 +39,7 @@ $(GOBIN)/golangci-lint: tools/golangci-lint/go.mod tools/golangci-lint/go.sum
 	go install -modfile=tools/golangci-lint/go.mod github.com/golangci/golangci-lint/cmd/golangci-lint
 .PHONY: lint-go
 lint-go: $(GOBIN)/golangci-lint lint-go-looppointer
-	$(ENV) golangci-lint run -v --timeout 5m -E staticcheck,misspell,promlinter,revive,tenv,errorlint,exportloopref,predeclared
+	$(ENV) golangci-lint run -v
 
 $(GOBIN)/lint-go-goimports: tools/goimports/go.mod tools/goimports/go.sum
 	go install -modfile=tools/goimports/go.mod golang.org/x/tools/cmd/goimports
