@@ -30,7 +30,6 @@ func (filter *alertmanagerClusterFilter) Match(alert *models.Alert, matches int)
 
 func (filter *alertmanagerClusterFilter) MatchAlertmanager(am *models.AlertmanagerInstance) bool {
 	return filter.Matcher.Compare(am.Cluster, filter.Value)
-
 }
 
 func newAlertmanagerClusterFilter() FilterT {

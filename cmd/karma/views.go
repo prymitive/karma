@@ -680,7 +680,7 @@ func silences(w http.ResponseWriter, r *http.Request) {
 		recentFirst = false
 	}
 
-	sort.Slice(dedupedSilences, func(i int, j int) bool {
+	sort.Slice(dedupedSilences, func(i, j int) bool {
 		if dedupedSilences[i].Silence.EndsAt.Equal(dedupedSilences[j].Silence.EndsAt) {
 			if dedupedSilences[i].Silence.StartsAt.Equal(dedupedSilences[j].Silence.StartsAt) {
 				return dedupedSilences[i].Silence.ID < dedupedSilences[j].Silence.ID

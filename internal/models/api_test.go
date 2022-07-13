@@ -183,7 +183,7 @@ func TestDedupWithBadSource(t *testing.T) {
 }
 
 func TestNameStatsSort(t *testing.T) {
-	var nameStats = models.LabelNameStatsList{
+	nameStats := models.LabelNameStatsList{
 		{
 			Name: "@state",
 			Hits: 24,

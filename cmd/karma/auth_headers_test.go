@@ -64,7 +64,7 @@ func TestAuthHeader(t *testing.T) {
 	defer httpmock.DeactivateAndReset()
 
 	for _, testCase := range authHeaderTests {
-		testCase := testCase //scopelint pin
+		testCase := testCase // scopelint pin
 		for _, version := range mock.ListAllMocks() {
 			apiCache, _ = lru.New(100)
 
@@ -85,7 +85,8 @@ func TestAuthHeader(t *testing.T) {
 				"metrics",
 				"api/v2/status",
 				"api/v2/silences",
-				"api/v2/alerts/groups"} {
+				"api/v2/alerts/groups",
+			} {
 
 				uri := fmt.Sprintf("%s/%s", testCase.alertmanagerURI, m)
 

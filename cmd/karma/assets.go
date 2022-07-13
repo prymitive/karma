@@ -18,7 +18,7 @@ func contentText(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 }
 
-func serveFileOr404(path string, contentType string) http.HandlerFunc {
+func serveFileOr404(path, contentType string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
 		if path == "" {

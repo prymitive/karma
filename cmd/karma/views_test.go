@@ -3044,6 +3044,7 @@ func (ew *gzErrWriter) Write(p []byte) (n int, err error) {
 	}
 	return len(p), nil
 }
+
 func (ew *gzErrWriter) Close() error {
 	if ew.failClose {
 		return errors.New("Close error")

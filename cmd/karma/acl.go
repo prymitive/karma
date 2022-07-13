@@ -17,9 +17,7 @@ const (
 	aclActionAllow          = "allow"
 )
 
-var (
-	allACLActions = []string{aclActionAllow, aclActionBlock, aclActionRequireMatcher}
-)
+var allACLActions = []string{aclActionAllow, aclActionBlock, aclActionRequireMatcher}
 
 type silenceFilter struct {
 	Name       string

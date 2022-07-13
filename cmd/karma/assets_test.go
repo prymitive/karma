@@ -124,7 +124,7 @@ func TestStaticFiles(t *testing.T) {
 		mime string
 	}
 
-	var staticFileTests = []staticFileTestCase{
+	staticFileTests := []staticFileTestCase{
 		{
 			path: "/favicon.ico",
 			code: 200,
@@ -185,7 +185,7 @@ func TestStaticFilesPrefix(t *testing.T) {
 		mime string
 	}
 
-	var staticFilePrefixTests = []staticFileTestCase{
+	staticFilePrefixTests := []staticFileTestCase{
 		{
 			path: "/sub/favicon.ico",
 			code: 200,

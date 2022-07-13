@@ -43,7 +43,6 @@ func TestMain(m *testing.M) {
 		ecode = 1
 	}
 	os.Exit(ecode)
-
 }
 
 func TestScripts(t *testing.T) {
