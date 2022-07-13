@@ -133,9 +133,9 @@ listen:
   port: 80
   prefix: /
 log:
-  config: false
   level: info
   format: text
+  config: false
   requests: false
   timestamp: false
 receivers:

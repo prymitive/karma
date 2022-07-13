@@ -59,9 +59,11 @@ type LabelValueStatsList []LabelValueStats
 func (lvsl LabelValueStatsList) Len() int {
 	return len(lvsl)
 }
+
 func (lvsl LabelValueStatsList) Swap(i, j int) {
 	lvsl[i], lvsl[j] = lvsl[j], lvsl[i]
 }
+
 func (lvsl LabelValueStatsList) Less(i, j int) bool {
 	if lvsl[i].Hits == lvsl[j].Hits {
 		return sortorder.NaturalLess(lvsl[i].Value, lvsl[j].Value)
@@ -81,9 +83,11 @@ type LabelNameStatsList []LabelNameStats
 func (lnsl LabelNameStatsList) Len() int {
 	return len(lnsl)
 }
+
 func (lnsl LabelNameStatsList) Swap(i, j int) {
 	lnsl[i], lnsl[j] = lnsl[j], lnsl[i]
 }
+
 func (lnsl LabelNameStatsList) Less(i, j int) bool {
 	if lnsl[i].Hits == lnsl[j].Hits {
 		return lnsl[i].Name < lnsl[j].Name
@@ -144,7 +148,6 @@ func (ag *APIAlertGroup) dedupLabels() {
 	}
 
 	ag.Shared.Labels = sharedLabels
-
 }
 
 func (ag *APIAlertGroup) removeGroupingLabels(dropNames []string) {
@@ -417,6 +420,7 @@ type LabelSettings struct {
 type LabelsSettings map[string]LabelSettings
 
 // Settings is used to export karma configuration that is used by UI
+// nolint: maligned
 type Settings struct {
 	AnnotationsDefaultHidden bool                         `json:"annotationsDefaultHidden"`
 	AnnotationsHidden        []string                     `json:"annotationsHidden"`
@@ -444,6 +448,7 @@ type APIGrid struct {
 	StateCount  map[string]int  `json:"stateCount"`
 }
 
+// nolint: maligned
 type AlertsRequest struct {
 	Filters           []string       `json:"filters"`
 	GridLabel         string         `json:"gridLabel"`

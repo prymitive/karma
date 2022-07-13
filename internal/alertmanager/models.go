@@ -37,6 +37,7 @@ type HealthCheck struct {
 }
 
 // Alertmanager represents Alertmanager upstream instance
+// nolint: maligned
 type Alertmanager struct {
 	URI            string        `json:"uri"`
 	ExternalURI    string        `json:"-"`

@@ -107,6 +107,7 @@ type configSchema struct {
 		Author   string
 		Comment  string
 	} `yaml:"alertAcknowledgement" koanf:"alertAcknowledgement"`
+	// nolint: maligned
 	Annotations struct {
 		Default struct {
 			Hidden bool
@@ -182,9 +183,9 @@ type configSchema struct {
 		Prefix string
 	}
 	Log struct {
-		Config    bool
 		Level     string
 		Format    string
+		Config    bool
 		Requests  bool
 		Timestamp bool
 	}
@@ -205,6 +206,7 @@ type configSchema struct {
 			Labels []string
 		}
 	} `yaml:"silenceForm" koanf:"silenceForm"`
+	// nolint: maligned
 	UI struct {
 		Refresh              time.Duration
 		HideFiltersWhenIdle  bool   `yaml:"hideFiltersWhenIdle" koanf:"hideFiltersWhenIdle"`

@@ -1,0 +1,40 @@
+run:
+  deadline: 5m
+
+output:
+  sort-results: true
+
+linters:
+  enable:
+    - depguard
+    - gofumpt
+    - goimports
+    - revive
+    - misspell
+    - staticcheck
+    - promlinter
+    - tenv
+    - errorlint
+    - exportloopref
+    - predeclared
+    - maligned
+
+issues:
+  max-same-issues: 0
+  exclude-rules:
+    - path: _test.go
+      linters:
+        - maligned
+
+linters-settings:
+  depguard:
+    list-type: blacklist
+    include-go-root: true
+    packages-with-error-message:
+      - io/ioutil: "Use corresponding 'os' or 'io' functions instead."
+  goimports:
+    local-prefixes: github.com/prymitive/karma
+  gofumpt:
+    extra-rules: true
+  maligned:
+    suggest-new: true

@@ -26,10 +26,8 @@ import (
 	yaml "gopkg.in/yaml.v3"
 )
 
-var (
-	// Config will hold final configuration read from the file and flags
-	Config *configSchema
-)
+// Config will hold final configuration read from the file and flags
+var Config *configSchema
 
 func init() {
 	Config = &configSchema{}

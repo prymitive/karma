@@ -21,7 +21,7 @@ func (hrt *headersRoundTripper) RoundTrip(r *http.Request) (*http.Response, erro
 	return hrt.inner.RoundTrip(r)
 }
 
-func SetAuth(inner http.RoundTripper, username string, password string) http.RoundTripper {
+func SetAuth(inner http.RoundTripper, username, password string) http.RoundTripper {
 	return &authRoundTripper{
 		inner:    inner,
 		Username: username,

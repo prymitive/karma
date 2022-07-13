@@ -242,7 +242,6 @@ func DedupKnownLabelValues(name string) []string {
 			for _, alert := range ag.Alerts {
 				if v := alert.Labels.Get(name); v != nil {
 					dedupedValues[v.Value] = true
-
 				}
 			}
 		}

@@ -26,11 +26,12 @@ type Annotations []Annotation
 
 func (a Annotations) Len() int {
 	return len(a)
-
 }
+
 func (a Annotations) Swap(i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
+
 func (a Annotations) Less(i, j int) bool {
 	// Sort the anotations listed in config.Config.Annotations.Order first, in
 	// the order they appear in that list; remaining annotations are sorted alphabetically.

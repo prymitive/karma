@@ -167,7 +167,7 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 		}
 	}
 
-	walkFunc := func(method string, route string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) error {
+	walkFunc := func(method, route string, handler http.Handler, middlewares ...func(http.Handler) http.Handler) error {
 		log.Debug().
 			Str("method", method).
 			Str("route", route).
@@ -235,6 +235,7 @@ func setupUpstreams() error {
 func msgFormatter(msg any) string {
 	return fmt.Sprintf("msg=%q", msg)
 }
+
 func lvlFormatter(level any) string {
 	if level == nil {
 		return ""
@@ -425,7 +426,7 @@ func writePidFile() error {
 	if pidFile != "" {
 		log.Info().Str("path", pidFile).Msg("Writing PID file")
 		pid := os.Getpid()
-		err := os.WriteFile(pidFile, []byte(strconv.Itoa(pid)), 0644)
+		err := os.WriteFile(pidFile, []byte(strconv.Itoa(pid)), 0o644)
 		if err != nil {
 			return fmt.Errorf("failed to write a PID file: %w", err)
 		}

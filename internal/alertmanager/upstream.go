@@ -18,9 +18,7 @@ import (
 // Option allows to pass functional options to NewAlertmanager()
 type Option func(am *Alertmanager) error
 
-var (
-	upstreams = map[string]*Alertmanager{}
-)
+var upstreams = map[string]*Alertmanager{}
 
 // NewAlertmanager creates a new Alertmanager instance
 func NewAlertmanager(cluster, name, upstreamURI string, opts ...Option) (*Alertmanager, error) {

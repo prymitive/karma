@@ -10,21 +10,21 @@ import (
 )
 
 // GetAbsoluteMockPath returns absolute path for given mock file
-func GetAbsoluteMockPath(filename string, version string) string {
+func GetAbsoluteMockPath(filename, version string) string {
 	_, f, _, _ := runtime.Caller(0)
 	cwd := filepath.Dir(f)
 	return path.Join(cwd, version, filename)
 }
 
 // GetMockResponder returns a httpmock.Responder for given file/version
-func GetMockResponder(url string, version string, filename string) httpmock.Responder {
+func GetMockResponder(url, version, filename string) httpmock.Responder {
 	fullPath := GetAbsoluteMockPath(filename, version)
 	mockJSON, _ := os.ReadFile(fullPath)
 	return httpmock.NewBytesResponder(200, mockJSON)
 }
 
 // RegisterURL for given url and return 200 status register mock http responder
-func RegisterURL(url string, version string, filename string) {
+func RegisterURL(url, version, filename string) {
 	httpmock.RegisterResponder("GET", url, GetMockResponder(url, version, filename))
 }
 

@@ -15,7 +15,7 @@ import (
 	plcolors "gopkg.in/go-playground/colors.v1"
 )
 
-func labelToSeed(key string, val string) int64 {
+func labelToSeed(key, val string) int64 {
 	h := sha1.New()
 	_, _ = io.WriteString(h, key)
 	_, _ = io.WriteString(h, val)
@@ -66,7 +66,7 @@ func parseCustomColor(colorStore models.LabelsColorMap, key, val, customColor st
 // ColorLabel update karmaColorMap object with a color object generated
 // from label key and value passed here
 // It's used to generate unique colors for configured labels
-func ColorLabel(colorStore models.LabelsColorMap, key string, val string) {
+func ColorLabel(colorStore models.LabelsColorMap, key, val string) {
 	// first handle custom colors
 	_, ok := config.Config.Labels.Color.Custom[key]
 	if ok {

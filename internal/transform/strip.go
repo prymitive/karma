@@ -13,7 +13,8 @@ import (
 // it takes the list of label keys to ignore and alert label map
 // it will return label map without labels found on the ignore list
 func StripLables(keptLabels, ignoredLabels []string, keptLabelsRegex, ignoredLabelsRegex []*regexp.Regexp,
-	sourceLabels models.Labels) models.Labels {
+	sourceLabels models.Labels,
+) models.Labels {
 	// empty keep lists means keep everything by default
 	keepAll := len(keptLabels) == 0 && len(keptLabelsRegex) == 0
 	labels := models.Labels{}
