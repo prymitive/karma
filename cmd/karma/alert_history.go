@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"sort"
 	"strings"
 	"sync"
@@ -269,13 +270,25 @@ func rewriteTransport(rules []config.HistoryRewrite, uri string) (http.RoundTrip
 		if !rule.SourceRegex.MatchString(uri) {
 			continue
 		}
+		var err error
+		transport := http.DefaultTransport
+
 		if rule.TLS.CA != "" || rule.TLS.Cert != "" || rule.TLS.InsecureSkipVerify {
-			transport, err := alertmanager.NewHTTPTransport(rule.TLS.CA, rule.TLS.Cert, rule.TLS.Key, rule.TLS.InsecureSkipVerify)
+			transport, err = alertmanager.NewHTTPTransport(rule.TLS.CA, rule.TLS.Cert, rule.TLS.Key, rule.TLS.InsecureSkipVerify)
 			if err != nil {
 				return http.DefaultTransport, fmt.Errorf("failed to create HTTP transport for '%s': %w", uriUtil.SanitizeURI(uri), err)
 			}
-			return transport, nil
 		}
+
+		if rule.ProxyURL != "" {
+			proxyURL, err := url.Parse(rule.ProxyURL)
+			if err != nil {
+				return http.DefaultTransport, fmt.Errorf("failed to parse provided proxy url %q: %w", rule.ProxyURL, err)
+			}
+			transport.(*http.Transport).Proxy = http.ProxyURL(proxyURL)
+		}
+
+		return transport, nil
 	}
 
 	return http.DefaultTransport, nil

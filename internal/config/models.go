@@ -65,6 +65,7 @@ type HistoryRewrite struct {
 	SourceRegex *regexp.Regexp  `yaml:"-"`
 	URI         string          `yaml:"uri"`
 	TLS         AlertmanagerTLS `yaml:"tls" koanf:"tls"`
+	ProxyURL    string          `yaml:"proxy_url" koanf:"proxy_url"`
 }
 
 type configSchema struct {
