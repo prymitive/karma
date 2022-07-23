@@ -759,6 +759,7 @@ history:
   rewrite:
     - source: regex
       uri: string
+      proxy_url: string
       tls:
         ca: string
         cert: string
@@ -829,6 +830,16 @@ history:
       uri: '$1'
       tls:
         insecureSkipVerify: true
+```
+
+Example with rewrite rule that configures a proxy without modifying URI:
+
+```YAML
+history:
+  rewrite:
+    - source: '(.*)'
+      uri: '$1'
+      proxy_url: socks5://proxy.local:5000
 ```
 
 ### Karma
