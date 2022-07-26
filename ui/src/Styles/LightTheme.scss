@@ -57,6 +57,9 @@ $table-accent-bg: transparent;
 
 $card-cap-bg: inherit;
 
+$kbd-color: $white;
+$kbd-bg: $dark;
+
 @import "./RebootlessBootstrap";
 @import "bootswatch/dist/flatly/bootswatch";
 
@@ -90,4 +93,14 @@ $color-default: #708090;
 
 a {
   color: $link-color;
+}
+
+button.btn {
+  --bs-btn-active-border-color: transparent;
+  --bs-btn-hover-border-color: transparent;
+}
+
+kbd {
+  font-family: $font-family-monospace;
+  color: $white;
 }
