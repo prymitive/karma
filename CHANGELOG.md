@@ -2,6 +2,10 @@
 
 ## v0.106
 
+### Added
+
+- `proxy_url` option for history rewrite rules #4510 (@tolleiv).
+
 ### Changed
 
 - Upgraded [Bootstrap](https://getbootstrap.com/) to v5.2.
