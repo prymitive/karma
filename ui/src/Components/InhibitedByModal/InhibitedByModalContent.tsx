@@ -4,6 +4,21 @@ import type { AlertStore } from "Stores/AlertStore";
 import { FormatQuery, QueryOperators, StaticLabels } from "Common/Query";
 import { PaginatedAlertList } from "Components/PaginatedAlertList";
 
+const formatQuery = (fingerprints: string[]): string => {
+  if (fingerprints.length === 1) {
+    return FormatQuery(
+      StaticLabels.Fingerprint,
+      QueryOperators.Equal,
+      fingerprints[0]
+    );
+  }
+  return FormatQuery(
+    StaticLabels.Fingerprint,
+    QueryOperators.Regex,
+    `^(${fingerprints.join("|")})$`
+  );
+};
+
 const InhibitedByModalContent: FC<{
   alertStore: AlertStore;
   fingerprints: string[];
@@ -18,13 +33,7 @@ const InhibitedByModalContent: FC<{
       <div className="modal-body">
         <PaginatedAlertList
           alertStore={alertStore}
-          filters={[
-            FormatQuery(
-              StaticLabels.Fingerprint,
-              QueryOperators.Regex,
-              `^(${fingerprints.join("|")})$`
-            ),
-          ]}
+          filters={[formatQuery(fingerprints)]}
         />
       </div>
     </>

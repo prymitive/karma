@@ -106,7 +106,10 @@ const PageSelect: FC<{
                 page === activePage ? "active font-weight-bold" : ""
               }`}
             >
-              <button className="page-link" onClick={() => onChange(page)}>
+              <button
+                className={`page-link ${page === activePage ? "active" : ""}`}
+                onClick={() => onChange(page)}
+              >
                 {page}
               </button>
             </li>

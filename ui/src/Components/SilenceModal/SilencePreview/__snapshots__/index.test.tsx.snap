@@ -34,17 +34,17 @@ exports[`<SilencePreview /> matches snapshot 1`] = `
           </button>
         </li>
         <li class=\\"page-item active font-weight-bold\\">
-          <button class=\\"page-link\\">
+          <button class=\\"page-link active\\">
             1
           </button>
         </li>
         <li class=\\"page-item \\">
-          <button class=\\"page-link\\">
+          <button class=\\"page-link \\">
             2
           </button>
         </li>
         <li class=\\"page-item \\">
-          <button class=\\"page-link\\">
+          <button class=\\"page-link \\">
             3
           </button>
         </li>
