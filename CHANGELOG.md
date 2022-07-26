@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.106
+
+### Changed
+
+- Upgraded [Bootstrap](https://getbootstrap.com/) to v5.2.
+
 ## v0.105
 
 ### Added
