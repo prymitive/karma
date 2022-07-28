@@ -1,7 +1,7 @@
 import type { FC } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
+import { faChevronUp } from "@fortawesome/free-solid-svg-icons/faChevronUp";
 
 const ToggleIcon: FC<{
   isOpen: boolean;
@@ -10,7 +10,7 @@ const ToggleIcon: FC<{
 }> = ({ className, isOpen, onClick }) => {
   return (
     <FontAwesomeIcon
-      icon={faChevronDown}
+      icon={faChevronUp}
       rotation={isOpen ? undefined : 180}
       className={className}
       style={{ transition: "transform 0.25s ease-in-out" }}
