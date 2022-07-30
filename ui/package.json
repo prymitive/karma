@@ -47,7 +47,7 @@
     "react-media-hook": "0.4.9",
     "react-range": "1.8.14",
     "react-select": "5.4.0",
-    "react-transition-group": "4.4.2",
+    "react-transition-group": "4.4.4",
     "typeface-open-sans": "1.1.13"
   },
   "devDependencies": {
