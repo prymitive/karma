@@ -61,8 +61,8 @@ require (
 	github.com/sergi/go-diff v1.2.0 // indirect
 	go.mongodb.org/mongo-driver v1.10.0 // indirect
 	golang.org/x/net v0.0.0-20220407224826-aac1ed45d8e3 // indirect
-	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
-	google.golang.org/protobuf v1.28.0 // indirect
+	golang.org/x/sys v0.0.0-20220731174439-a90be440212d // indirect
+	google.golang.org/protobuf v1.28.1 // indirect
 	gopkg.in/errgo.v2 v2.1.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
