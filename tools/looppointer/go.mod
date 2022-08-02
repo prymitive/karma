@@ -1,6 +1,6 @@
 module _
 
-go 1.18
+go 1.19
 
 require github.com/kyoh86/looppointer v0.1.8-0.20220224024524-f953a93c424a
 
