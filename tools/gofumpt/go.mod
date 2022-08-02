@@ -1,6 +1,6 @@
 module _
 
-go 1.18
+go 1.19
 
 require mvdan.cc/gofumpt v0.3.1
 
