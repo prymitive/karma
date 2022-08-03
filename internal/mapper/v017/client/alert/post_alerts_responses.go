@@ -49,7 +49,8 @@ func NewPostAlertsOK() *PostAlertsOK {
 	return &PostAlertsOK{}
 }
 
-/* PostAlertsOK describes a response with status code 200, with default header values.
+/*
+	PostAlertsOK describes a response with status code 200, with default header values.
 
 Create alerts response
 */
@@ -70,7 +71,8 @@ func NewPostAlertsBadRequest() *PostAlertsBadRequest {
 	return &PostAlertsBadRequest{}
 }
 
-/* PostAlertsBadRequest describes a response with status code 400, with default header values.
+/*
+	PostAlertsBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
@@ -100,7 +102,8 @@ func NewPostAlertsInternalServerError() *PostAlertsInternalServerError {
 	return &PostAlertsInternalServerError{}
 }
 
-/* PostAlertsInternalServerError describes a response with status code 500, with default header values.
+/*
+	PostAlertsInternalServerError describes a response with status code 500, with default header values.
 
 Internal server error
 */

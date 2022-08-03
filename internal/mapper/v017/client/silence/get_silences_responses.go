@@ -45,7 +45,8 @@ func NewGetSilencesOK() *GetSilencesOK {
 	return &GetSilencesOK{}
 }
 
-/* GetSilencesOK describes a response with status code 200, with default header values.
+/*
+	GetSilencesOK describes a response with status code 200, with default header values.
 
 Get silences response
 */
@@ -75,7 +76,8 @@ func NewGetSilencesInternalServerError() *GetSilencesInternalServerError {
 	return &GetSilencesInternalServerError{}
 }
 
-/* GetSilencesInternalServerError describes a response with status code 500, with default header values.
+/*
+	GetSilencesInternalServerError describes a response with status code 500, with default header values.
 
 Internal server error
 */

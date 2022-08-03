@@ -53,10 +53,12 @@ func NewGetSilencesParamsWithHTTPClient(client *http.Client) *GetSilencesParams 
 	}
 }
 
-/* GetSilencesParams contains all the parameters to send to the API endpoint
-   for the get silences operation.
+/*
+GetSilencesParams contains all the parameters to send to the API endpoint
 
-   Typically these are written to a http.Request.
+	for the get silences operation.
+
+	Typically these are written to a http.Request.
 */
 type GetSilencesParams struct {
 

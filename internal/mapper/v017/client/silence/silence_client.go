@@ -42,7 +42,7 @@ type ClientService interface {
 }
 
 /*
-  DeleteSilence Delete a silence by its ID
+DeleteSilence Delete a silence by its ID
 */
 func (a *Client) DeleteSilence(params *DeleteSilenceParams, opts ...ClientOption) (*DeleteSilenceOK, error) {
 	// TODO: Validate the params before sending
@@ -80,7 +80,7 @@ func (a *Client) DeleteSilence(params *DeleteSilenceParams, opts ...ClientOption
 }
 
 /*
-  GetSilence Get a silence by its ID
+GetSilence Get a silence by its ID
 */
 func (a *Client) GetSilence(params *GetSilenceParams, opts ...ClientOption) (*GetSilenceOK, error) {
 	// TODO: Validate the params before sending
@@ -118,7 +118,7 @@ func (a *Client) GetSilence(params *GetSilenceParams, opts ...ClientOption) (*Ge
 }
 
 /*
-  GetSilences Get a list of silences
+GetSilences Get a list of silences
 */
 func (a *Client) GetSilences(params *GetSilencesParams, opts ...ClientOption) (*GetSilencesOK, error) {
 	// TODO: Validate the params before sending
@@ -156,7 +156,7 @@ func (a *Client) GetSilences(params *GetSilencesParams, opts ...ClientOption) (*
 }
 
 /*
-  PostSilences Post a new silence or update an existing one
+PostSilences Post a new silence or update an existing one
 */
 func (a *Client) PostSilences(params *PostSilencesParams, opts ...ClientOption) (*PostSilencesOK, error) {
 	// TODO: Validate the params before sending

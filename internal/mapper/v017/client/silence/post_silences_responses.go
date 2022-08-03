@@ -51,7 +51,8 @@ func NewPostSilencesOK() *PostSilencesOK {
 	return &PostSilencesOK{}
 }
 
-/* PostSilencesOK describes a response with status code 200, with default header values.
+/*
+	PostSilencesOK describes a response with status code 200, with default header values.
 
 Create / update silence response
 */
@@ -83,7 +84,8 @@ func NewPostSilencesBadRequest() *PostSilencesBadRequest {
 	return &PostSilencesBadRequest{}
 }
 
-/* PostSilencesBadRequest describes a response with status code 400, with default header values.
+/*
+	PostSilencesBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
@@ -113,7 +115,8 @@ func NewPostSilencesNotFound() *PostSilencesNotFound {
 	return &PostSilencesNotFound{}
 }
 
-/* PostSilencesNotFound describes a response with status code 404, with default header values.
+/*
+	PostSilencesNotFound describes a response with status code 404, with default header values.
 
 A silence with the specified ID was not found
 */
@@ -138,7 +141,8 @@ func (o *PostSilencesNotFound) readResponse(response runtime.ClientResponse, con
 	return nil
 }
 
-/*PostSilencesOKBody post silences o k body
+/*
+PostSilencesOKBody post silences o k body
 swagger:model PostSilencesOKBody
 */
 type PostSilencesOKBody struct {

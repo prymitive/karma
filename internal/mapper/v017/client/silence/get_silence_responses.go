@@ -51,7 +51,8 @@ func NewGetSilenceOK() *GetSilenceOK {
 	return &GetSilenceOK{}
 }
 
-/* GetSilenceOK describes a response with status code 200, with default header values.
+/*
+	GetSilenceOK describes a response with status code 200, with default header values.
 
 Get silence response
 */
@@ -83,7 +84,8 @@ func NewGetSilenceNotFound() *GetSilenceNotFound {
 	return &GetSilenceNotFound{}
 }
 
-/* GetSilenceNotFound describes a response with status code 404, with default header values.
+/*
+	GetSilenceNotFound describes a response with status code 404, with default header values.
 
 A silence with the specified ID was not found
 */
@@ -104,7 +106,8 @@ func NewGetSilenceInternalServerError() *GetSilenceInternalServerError {
 	return &GetSilenceInternalServerError{}
 }
 
-/* GetSilenceInternalServerError describes a response with status code 500, with default header values.
+/*
+	GetSilenceInternalServerError describes a response with status code 500, with default header values.
 
 Internal server error
 */
