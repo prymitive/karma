@@ -51,7 +51,8 @@ func NewGetAlertGroupsOK() *GetAlertGroupsOK {
 	return &GetAlertGroupsOK{}
 }
 
-/* GetAlertGroupsOK describes a response with status code 200, with default header values.
+/*
+	GetAlertGroupsOK describes a response with status code 200, with default header values.
 
 Get alert groups response
 */
@@ -81,7 +82,8 @@ func NewGetAlertGroupsBadRequest() *GetAlertGroupsBadRequest {
 	return &GetAlertGroupsBadRequest{}
 }
 
-/* GetAlertGroupsBadRequest describes a response with status code 400, with default header values.
+/*
+	GetAlertGroupsBadRequest describes a response with status code 400, with default header values.
 
 Bad request
 */
@@ -111,7 +113,8 @@ func NewGetAlertGroupsInternalServerError() *GetAlertGroupsInternalServerError {
 	return &GetAlertGroupsInternalServerError{}
 }
 
-/* GetAlertGroupsInternalServerError describes a response with status code 500, with default header values.
+/*
+	GetAlertGroupsInternalServerError describes a response with status code 500, with default header values.
 
 Internal server error
 */

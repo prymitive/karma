@@ -119,9 +119,9 @@ func (ls Labels) Set(name, value string) Labels {
 
 // Alert is vanilla alert + some additional attributes
 // karma extends an alert object with:
-// * Links map, it's generated from annotations if annotation value is an url
-//   it's pulled out of annotation map and returned under links field,
-//   karma UI used this to show links differently than other annotations
+//   - Links map, it's generated from annotations if annotation value is an url
+//     it's pulled out of annotation map and returned under links field,
+//     karma UI used this to show links differently than other annotations
 type Alert struct {
 	Annotations Annotations `json:"annotations"`
 	Labels      Labels      `json:"labels"`
