@@ -44,7 +44,7 @@ jobs:
         run: make mock-assets
 
       - name: Test Go code
-        uses: nick-invision/retry@v2.7.0
+        uses: nick-invision/retry@v2.7.1
         with:
           timeout_minutes: 10
           max_attempts: 5
@@ -575,7 +575,7 @@ jobs:
         run: /usr/local/bin/heroku container:release web --app karma-demo
 
       - name: Run e2e test
-        uses: nick-invision/retry@v2.7.0
+        uses: nick-invision/retry@v2.7.1
         with:
           timeout_minutes: 10
           max_attempts: 3
