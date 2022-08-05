@@ -99,6 +99,13 @@ func setupRouter(router *chi.Mux, historyPoller *historyPoller) {
 		MaxAge:           300,
 	}))
 
+	router.NotFound(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate")
+		contentText(w)
+		w.WriteHeader(http.StatusNotFound)
+		_, _ = w.Write([]byte("Not found"))
+	})
+
 	allowAuthBypass := []string{
 		getViewURL("/health"),
 		getViewURL("/metrics"),
