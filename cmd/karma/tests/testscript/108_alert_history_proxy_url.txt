@@ -28,8 +28,8 @@ level=info msg="Removing PID file" path=karma.pid
 -- query.json --
 {
     "sources": [
-        "http://127.0.0.1:9099",
-        "http://127.0.0.1:9099"
+        "http://127.0.0.1:6108",
+        "http://127.0.0.1:6108"
     ],
     "labels": {
         "alertname": "Fake Alert"
