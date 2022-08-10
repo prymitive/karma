@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.107
+
+### Changed
+
+- Don't show fatal error page if configured health checks are failing but
+  alertmanager is still showing alerts. A popup message with will still
+  be visible.
+
 ## v0.106
 
 ### Added
