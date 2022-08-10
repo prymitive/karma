@@ -62,6 +62,30 @@ describe("<Grid />", () => {
     expect(tree.text()).toBe("<FatalError />");
   });
 
+  it("renders AlertGrid if there's only one upstream and it's unhealthy but there are alerts", () => {
+    alertStore.data.setUpstreams({
+      counters: { total: 1, healthy: 0, failed: 1 },
+      instances: [
+        {
+          name: "am1",
+          cluster: "am",
+          clusterMembers: ["am"],
+          uri: "http://am1",
+          publicURI: "http://am1",
+          error: "error",
+          version: "0.24.0",
+          readonly: false,
+          corsCredentials: "include",
+          headers: {},
+        },
+      ],
+      clusters: { am1: ["am1"] },
+    });
+    alertStore.info.setTotalAlerts(1);
+    const tree = ShallowGrid();
+    expect(tree.find("Memo(AlertGrid)")).toHaveLength(1);
+  });
+
   it("renders FatalError if there's only one upstream and it's unhealthy but without any error", () => {
     alertStore.data.setUpstreams({
       counters: { total: 1, healthy: 0, failed: 1 },

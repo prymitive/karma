@@ -27,7 +27,8 @@ const Grid: FC<{
     alertStore.data.upstreams.counters.total === 1 &&
     alertStore.data.upstreams.counters.healthy === 0 &&
     alertStore.data.upstreams.instances[0] &&
-    alertStore.data.upstreams.instances[0].error !== "" ? (
+    alertStore.data.upstreams.instances[0].error !== "" &&
+    alertStore.info.totalAlerts === 0 ? (
     <FatalError message={alertStore.data.upstreams.instances[0].error} />
   ) : alertStore.info.version !== "unknown" &&
     alertStore.info.totalAlerts === 0 ? (
