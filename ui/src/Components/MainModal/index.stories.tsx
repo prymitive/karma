@@ -10,7 +10,7 @@ import "Styles/Percy.scss";
 
 storiesOf("MainModal", module)
   .addDecorator((storyFn) => (
-    <div>
+    <div className="modal d-block" style={{ position: "relative" }}>
       <div className="modal-dialog modal-lg" role="document">
         <div className="modal-content">{storyFn()}</div>
       </div>

@@ -36,7 +36,7 @@ const MockMatcher = (
 };
 
 const Modal: FC = ({ children }) => (
-  <div>
+  <div className="modal d-block" style={{ position: "relative" }}>
     <div className="modal-dialog modal-lg" role="document">
       <div className="modal-content">{children}</div>
     </div>
