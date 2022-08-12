@@ -284,7 +284,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 class=\\"rdp-caption_label\\"
                 aria-live=\\"polite\\"
                 aria-atomic=\\"true\\"
-                id=\\"6\\"
+                id=\\"react-day-picker-6\\"
               >
                 February 2061
               </h2>
@@ -292,7 +292,6 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <button
                   aria-label=\\"Go to previous month\\"
                   class=\\"rdp-button_reset rdp-button rdp-nav_button rdp-nav_button_previous\\"
-                  aria-disabled=\\"false\\"
                   type=\\"button\\"
                 >
                   <svg
@@ -312,7 +311,6 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
                 <button
                   aria-label=\\"Go to next month\\"
                   class=\\"rdp-button_reset rdp-button rdp-nav_button rdp-nav_button_next\\"
-                  aria-disabled=\\"false\\"
                   type=\\"button\\"
                 >
                   <svg
@@ -333,7 +331,7 @@ exports[`<DateTimeSelect /> 'Ends' tab matches snapshot 1`] = `
             <table
               class=\\"rdp-table\\"
               role=\\"grid\\"
-              aria-labelledby=\\"6\\"
+              aria-labelledby=\\"react-day-picker-6\\"
             >
               <thead class=\\"rdp-head\\">
                 <tr class=\\"rdp-head_row\\">
@@ -1028,7 +1026,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 class=\\"rdp-caption_label\\"
                 aria-live=\\"polite\\"
                 aria-atomic=\\"true\\"
-                id=\\"3\\"
+                id=\\"react-day-picker-3\\"
               >
                 February 2060
               </h2>
@@ -1036,7 +1034,6 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <button
                   aria-label=\\"Go to previous month\\"
                   class=\\"rdp-button_reset rdp-button rdp-nav_button rdp-nav_button_previous\\"
-                  aria-disabled=\\"false\\"
                   type=\\"button\\"
                 >
                   <svg
@@ -1056,7 +1053,6 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
                 <button
                   aria-label=\\"Go to next month\\"
                   class=\\"rdp-button_reset rdp-button rdp-nav_button rdp-nav_button_next\\"
-                  aria-disabled=\\"false\\"
                   type=\\"button\\"
                 >
                   <svg
@@ -1077,7 +1073,7 @@ exports[`<DateTimeSelect /> 'Starts' tab matches snapshot 1`] = `
             <table
               class=\\"rdp-table\\"
               role=\\"grid\\"
-              aria-labelledby=\\"3\\"
+              aria-labelledby=\\"react-day-picker-3\\"
             >
               <thead class=\\"rdp-head\\">
                 <tr class=\\"rdp-head_row\\">
