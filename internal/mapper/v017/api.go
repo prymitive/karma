@@ -41,9 +41,7 @@ func newClient(uri string, headers map[string]string, httpTransport http.RoundTr
 }
 
 // Alerts will fetch all alert groups from the API
-func groups(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.AlertGroup, error) {
-	interner := intern.New()
-
+func groups(c *client.AlertmanagerAPI, timeout time.Duration, si *intern.Interner) ([]models.AlertGroup, error) {
 	groups, err := c.Alertgroup.GetAlertGroups(alertgroup.NewGetAlertGroupsParamsWithTimeout(timeout))
 	if err != nil {
 		return []models.AlertGroup{}, err
@@ -54,28 +52,28 @@ func groups(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.AlertGro
 	for _, group := range groups.Payload {
 		ls := models.Labels{}
 		for k, v := range group.Labels {
-			ls = ls.Set(interner.Intern(k), interner.Intern(v))
+			ls = ls.Set(si.String(k), si.String(v))
 		}
 		sort.Sort(ls)
 		g := models.AlertGroup{
-			Receiver: interner.Intern(*group.Receiver.Name),
+			Receiver: si.String(*group.Receiver.Name),
 			Labels:   ls,
 			Alerts:   make(models.AlertList, 0, len(group.Alerts)),
 		}
 		for _, alert := range group.Alerts {
 			ls := models.Labels{}
 			for k, v := range alert.Labels {
-				ls = ls.Set(interner.Intern(k), interner.Intern(v))
+				ls = ls.Set(si.String(k), si.String(v))
 			}
 			sort.Sort(ls)
 			a := models.Alert{
 				Fingerprint:  *alert.Fingerprint,
-				Receiver:     interner.Intern(*group.Receiver.Name),
+				Receiver:     si.String(*group.Receiver.Name),
 				Annotations:  models.AnnotationsFromMap(alert.Annotations),
 				Labels:       ls,
 				StartsAt:     time.Time(*alert.StartsAt),
-				GeneratorURL: interner.Intern(alert.GeneratorURL.String()),
-				State:        interner.Intern(*alert.Status.State),
+				GeneratorURL: si.String(alert.GeneratorURL.String()),
+				State:        si.String(*alert.Status.State),
 				InhibitedBy:  alert.Status.InhibitedBy,
 				SilencedBy:   alert.Status.SilencedBy,
 			}
@@ -90,9 +88,7 @@ func groups(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.AlertGro
 	return ret, nil
 }
 
-func silences(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.Silence, error) {
-	interner := intern.New()
-
+func silences(c *client.AlertmanagerAPI, timeout time.Duration, si *intern.Interner) ([]models.Silence, error) {
 	silences, err := c.Silence.GetSilences(silence.NewGetSilencesParamsWithTimeout(timeout))
 	if err != nil {
 		return []models.Silence{}, err
@@ -105,13 +101,13 @@ func silences(c *client.AlertmanagerAPI, timeout time.Duration) ([]models.Silenc
 			ID:        *s.ID,
 			StartsAt:  time.Time(*s.StartsAt),
 			EndsAt:    time.Time(*s.EndsAt),
-			CreatedBy: interner.Intern(*s.CreatedBy),
-			Comment:   interner.Intern(*s.Comment),
+			CreatedBy: si.String(*s.CreatedBy),
+			Comment:   si.String(*s.Comment),
 		}
 		for _, m := range s.Matchers {
 			sm := models.SilenceMatcher{
-				Name:    interner.Intern(*m.Name),
-				Value:   interner.Intern(*m.Value),
+				Name:    si.String(*m.Name),
+				Value:   si.String(*m.Value),
 				IsRegex: *m.IsRegex,
 				IsEqual: *m.IsEqual,
 			}

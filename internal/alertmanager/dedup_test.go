@@ -8,6 +8,7 @@ import (
 
 	"github.com/prymitive/karma/internal/alertmanager"
 	"github.com/prymitive/karma/internal/config"
+	"github.com/prymitive/karma/internal/intern"
 	"github.com/prymitive/karma/internal/mock"
 
 	"github.com/jarcoal/httpmock"
@@ -40,8 +41,9 @@ func init() {
 }
 
 func pullAlerts() error {
+	si := intern.New()
 	for _, am := range alertmanager.GetAlertmanagers() {
-		err := am.Pull()
+		err := am.Pull(si)
 		if err != nil {
 			return err
 		}
@@ -192,7 +194,7 @@ func TestClearData(t *testing.T) {
 		am, _ := alertmanager.NewAlertmanager("cluster", name, uri, alertmanager.WithRequestTimeout(time.Second))
 
 		mock.RegisterURL(fmt.Sprintf("%s/metrics", uri), version, "metrics")
-		_ = am.Pull()
+		_ = am.Pull(intern.New())
 		if am.Version() == "" {
 			t.Errorf("[%s] Got empty version string", am.Name)
 		}
@@ -211,7 +213,7 @@ func TestClearData(t *testing.T) {
 
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/status", uri), version, "api/v2/status")
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/silences", uri), version, "api/v2/silences")
-		_ = am.Pull()
+		_ = am.Pull(intern.New())
 		if am.Version() == "" {
 			t.Errorf("[%s] Got empty version string: %s", am.Name, am.Version())
 		}
@@ -229,7 +231,7 @@ func TestClearData(t *testing.T) {
 		}
 
 		mock.RegisterURL(fmt.Sprintf("%s/api/v2/alerts/groups", uri), version, "api/v2/alerts/groups")
-		_ = am.Pull()
+		_ = am.Pull(intern.New())
 		if am.Version() == "" {
 			t.Errorf("[%s] Got empty version string", am.Name)
 		}

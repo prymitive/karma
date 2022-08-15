@@ -6,6 +6,7 @@ import (
 
 	"github.com/Masterminds/semver/v3"
 
+	"github.com/prymitive/karma/internal/intern"
 	"github.com/prymitive/karma/internal/mapper"
 	"github.com/prymitive/karma/internal/models"
 )
@@ -22,7 +23,7 @@ func (m AlertMapper) IsSupported(version string) bool {
 	return versionRange.Check(semver.MustParse(version))
 }
 
-func (m AlertMapper) Collect(uri string, headers map[string]string, timeout time.Duration, httpTransport http.RoundTripper) ([]models.AlertGroup, error) {
+func (m AlertMapper) Collect(si *intern.Interner, uri string, headers map[string]string, timeout time.Duration, httpTransport http.RoundTripper) ([]models.AlertGroup, error) {
 	c := newClient(uri, headers, httpTransport)
-	return groups(c, timeout)
+	return groups(c, timeout, si)
 }
