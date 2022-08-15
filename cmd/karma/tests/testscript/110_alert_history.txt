@@ -1,7 +1,7 @@
 # GET /history.json
 
 exec bash -x ./test.sh &
-karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8099 --history.enabled=true --history.timeout=10s
+karma.bin-should-work --pid-file=karma.pid --alertmanager.uri=http://127.0.0.1 --listen.address=127.0.0.1 --listen.port=8110 --history.enabled=true --history.timeout=10s
 ! stdout .
 cmp stderr stderr.txt
 
@@ -20,15 +20,15 @@ level=error msg="Request failed" error="Get \"http://127.0.0.1/metrics\": dial t
 level=error msg="Collection failed" error="Get \"http://127.0.0.1/api/v2/status\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default try=2/2
 level=info msg="Collection completed"
 level=info msg="Done, starting HTTP server"
-level=info msg="Starting HTTP server" address=127.0.0.1:8099
+level=info msg="Starting HTTP server" address=127.0.0.1:8110
 level=info msg="Shutting down HTTP server"
 level=info msg="HTTP server shut down"
 level=info msg="Removing PID file" path=karma.pid
 -- query.json --
 {
     "sources": [
-        "http://127.0.0.1:9099",
-        "http://127.0.0.1:9099"
+        "http://127.0.0.1:9110",
+        "http://127.0.0.1:9110"
     ],
     "labels": {
         "alertname": "Fake Alert"
@@ -39,7 +39,7 @@ env GOCACHE=$TMPDIR go run prometheus.go &
 while [ ! -f prometheus.pid ]; do sleep 1 ; done
 while [ ! -f karma.pid ]; do sleep 1 ; done
 sleep 5
-curl -s -f -o /dev/null -XPOST -d @query.json http://127.0.0.1:8099/history.json
+curl -s -f -o /dev/null -XPOST -d @query.json http://127.0.0.1:8110/history.json
 cat karma.pid | xargs kill
 cat prometheus.pid | xargs kill
 
@@ -93,13 +93,13 @@ func main() {
 	http.HandleFunc("/api/v1/labels", labelNames)
 	http.HandleFunc("/api/v1/query_range", query)
 
-	listener, err := net.Listen("tcp", "127.0.0.1:9099")
+	listener, err := net.Listen("tcp", "127.0.0.1:9110")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	server := &http.Server{
-		Addr: "127.0.0.1:9099",
+		Addr: "127.0.0.1:9110",
 	}
 
 	go func() {
