@@ -50,7 +50,7 @@ func groups(c *client.AlertmanagerAPI, timeout time.Duration, si *intern.Interne
 	ret := make([]models.AlertGroup, 0, len(groups.Payload))
 
 	for _, group := range groups.Payload {
-		ls := models.Labels{}
+		ls := make(models.Labels, 0, len(group.Labels))
 		for k, v := range group.Labels {
 			ls = ls.Set(si.String(k), si.String(v))
 		}
@@ -61,7 +61,7 @@ func groups(c *client.AlertmanagerAPI, timeout time.Duration, si *intern.Interne
 			Alerts:   make(models.AlertList, 0, len(group.Alerts)),
 		}
 		for _, alert := range group.Alerts {
-			ls := models.Labels{}
+			ls := make(models.Labels, 0, len(alert.Labels))
 			for k, v := range alert.Labels {
 				ls = ls.Set(si.String(k), si.String(v))
 			}

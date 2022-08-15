@@ -473,8 +473,8 @@ func (am *Alertmanager) ExpiredSilences(labels map[string]string) (silences []*m
 	now := time.Now()
 	maxExpired := now.Add(-config.Config.Silences.Expired)
 	for _, silence := range am.silences {
-		silence := silence
 		if silence.EndsAt.Before(now) && !silence.EndsAt.Before(maxExpired) && silence.IsMatch(labels) {
+			silence := silence
 			silences = append(silences, &silence)
 		}
 	}
