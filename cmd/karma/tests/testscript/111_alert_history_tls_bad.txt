@@ -21,8 +21,8 @@ level=error msg="Request failed" error="Get \"http://127.0.0.1/metrics\": dial t
 level=error msg="Collection failed" error="Get \"http://127.0.0.1/api/v2/status\": dial tcp 127.0.0.1:80: connect: connection refused" alertmanager=default try=2/2
 level=info msg="Collection completed"
 level=info msg="Done, starting HTTP server"
-level=info msg="Starting HTTP server" address=127.0.0.1:8104
-level=warn msg="Error while configuring HTTP transport for history request" error="failed to create HTTP transport for 'http://127.0.0.1:9104': open /xxx/yyy/ca.pem: no such file or directory" uri=http://127.0.0.1:9104 worker=1
+level=info msg="Starting HTTP server" address=127.0.0.1:8111
+level=warn msg="Error while configuring HTTP transport for history request" error="failed to create HTTP transport for 'http://127.0.0.1:9111': open /xxx/yyy/ca.pem: no such file or directory" uri=http://127.0.0.1:9111 worker=1
 level=info msg="Shutting down HTTP server"
 level=info msg="HTTP server shut down"
 level=info msg="Removing PID file" path=karma.pid
@@ -33,7 +33,7 @@ alertmanager:
       uri: http://127.0.0.1
 listen:
   address: 127.0.0.1
-  port: 8104
+  port: 8111
 history:
   enabled: true
   workers: 1
@@ -47,8 +47,8 @@ history:
 -- query.json --
 {
     "sources": [
-        "http://127.0.0.1:9104",
-        "http://127.0.0.1:9104"
+        "http://127.0.0.1:9111",
+        "http://127.0.0.1:9111"
     ],
     "labels": {
         "alertname": "Fake Alert"
@@ -64,7 +64,7 @@ I=0
 while [ ! -f karma.pid ] && [ $I -lt 30 ]; do sleep 1; I=$((I+1)); done
 
 sleep 5
-curl -s -f -o /dev/null -XPOST -d @query.json http://127.0.0.1:8104/history.json
+curl -s -f -o /dev/null -XPOST -d @query.json http://127.0.0.1:8111/history.json
 cat karma.pid | xargs kill
 cat prometheus.pid | xargs kill
 
@@ -118,13 +118,13 @@ func main() {
 	http.HandleFunc("/api/v1/labels", labelNames)
 	http.HandleFunc("/api/v1/query_range", query)
 
-	listener, err := net.Listen("tcp", "127.0.0.1:9104")
+	listener, err := net.Listen("tcp", "127.0.0.1:9111")
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	server := &http.Server{
-		Addr: "127.0.0.1:9104",
+		Addr: "127.0.0.1:9111",
 	}
 
 	go func() {
